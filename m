@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B54928BDF
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E3C928BE7
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:39:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPl0F-00032E-C6; Fri, 05 Jul 2024 11:37:40 -0400
+	id 1sPkzy-0002b6-Fo; Fri, 05 Jul 2024 11:37:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzw-0002bM-B7
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:20 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1sPkzs-0002Zq-F2
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:16 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzu-0001Ht-Pe
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:20 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-58ba3e38028so2365231a12.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:18 -0700 (PDT)
+ id 1sPkzp-0001GP-Id
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:16 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-58b5f7bf3edso1118672a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193837; x=1720798637; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193832; x=1720798632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WM8Oz4o9c2T29sVKmOxM7YRppBa9hMmSs60bXcG4GL4=;
- b=fFLu3nfSX4XXV8wpthNLS5Ml1/Vb35lL7gzgtD8R+3tj8OleGZ4BwWkdV0rIADfaom
- GFMoMnTBtB3KwAIK4qWFvtzXG58LnnHBFbPPHQ/wm8xvbUr4nDGuXF+Kaf4neIlJALra
- ALvZtRaki0dLPcDvjKRg70UQJVyKQLbSegohB4hw+mJqT4wky5Rrz8L8r8F2dTY5LGI3
- lw6OzCmKL3FudHqAcHU1gNiodbbMX2J19iQw1TIwnzb01vN8tJWfsnBC/ZrZ8ieW+r7H
- ab/asXQCRbRKJrfC76p5/QYinSvln+7mus/0urOcXRzzH3hJ09BbihxNq8F+vKl2rsEY
- zyGQ==
+ bh=Ua23xrZ298Q42RDQyaYLhWTnQd77z5dPlxT8bKsVuUY=;
+ b=T9OaeGVBYQU0WVa+fs/1TSFsI2Ra0XfWN6SmbU2MCwsrwBM9Nd1NUlnHgpNVo3HMZU
+ /KvfSlU7pS69DQwacEeFvsNy2MnzesDOqMfSwX9N1XZ8oACPR1bYcu9nyHRT80z0TwlB
+ fEtNv9IWOAYg2hve9mKiLVhvIWoN+cDejvStI+rVwzXWQmu+Jg+kBrj5Dw5lrC+55DT3
+ m5QXW3lkoEP+tyQrvm0lHnQ2FwdhLMSgZLMC+vGSkOm0HvQ/72Ja/bKAwhV1mMdHiYfq
+ cAjZRWnMIl5QSOuHBm79sFDE06VN5YdlbWfGhQ3/hR/Hvgui8YOr+DKps2Bn7S3iexD5
+ Zu5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193837; x=1720798637;
+ d=1e100.net; s=20230601; t=1720193832; x=1720798632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WM8Oz4o9c2T29sVKmOxM7YRppBa9hMmSs60bXcG4GL4=;
- b=KZnPrvpU3a4JkCveesfPCT/bxvA4sOF7/3wqs6iXPe0+ycIkilMKEmmKTAEW4J7OYh
- IMlMNh/JqogX+PbRstjB/dBoEI52UKX9F9lRfNuBkffnZ1LAsRfGZlLf/KCpHMHZQAgh
- ipXCzfGQTETyCU0oKJiR22bYbKns+Zcr4+lzXGSt5BX1o7L5VBeF/5W/AaVue3ksKY2q
- 2Wvz19XKU9MA66XFTLUldT4KFscUqkYJAfEG0v6tLK2vb6eLSkp5rKVYxI+vBWHvJplF
- r+3EniVIrMg8/Xo93vJGLi/4Eed7aF+dhUxQcUTY8PJZTNDZ2jHNyb0KA856e5mNMoDT
- wP8Q==
-X-Gm-Message-State: AOJu0YyB5sgLtg+qb8hxhNTYoRpcDg9fVpCe8Z/9e1MCX5rHaX4Giz9i
- hSmSMgLWG68HWNgDtm5j+YsliRGbgRGaNe7xd7kEyk9Fpc16K7gP5zKm7eQ/jA8=
-X-Google-Smtp-Source: AGHT+IFub/N3G6hdjFsYcNS+1QLYj8GR53cqoUWTQFkL/xqPfEYgLt5skzjhHwCGDqivmUh7OZPcnw==
-X-Received: by 2002:a05:6402:2548:b0:585:c001:c1b5 with SMTP id
- 4fb4d7f45d1cf-58e5a6f21bemr3745694a12.5.1720193837133; 
- Fri, 05 Jul 2024 08:37:17 -0700 (PDT)
+ bh=Ua23xrZ298Q42RDQyaYLhWTnQd77z5dPlxT8bKsVuUY=;
+ b=p4D6qxljGzmHviwGs6cfIIXTFv97hXYpOz+JElLpqNZ/5QVgWiX//VxmCXGei7pC18
+ EiQnG686TeN3p+ORE8OUcUZlVoQ97KuQp9JJsq+HvP/0wjG+Qd8cS2FtntMK557VSGFv
+ 6Rle/titkftRyBSd3NioLQ6vcRFzI/l1i+sUc27GcrDUt5SMUyuv46opGyFUcCtrzcXQ
+ 7SRLuMnj2iyOQYh4pQd9ud0rYGmPCTZFVge7QrDYR+nR3r9driEDtGVyzkLzgRjKZkvl
+ YioO8fs6eO8wQTE/bGujc4MA+v7a5gxGZZ+yl26tvzabIDCOxEVaP71sgt5zGSkR4L2E
+ ucqA==
+X-Gm-Message-State: AOJu0YzcGPUcChp5U+uH4HLehFfquFbqaRPVhYGWnkkUKWWMa0YaMvHv
+ W1OiAOlFZhpCHg5Z2QDjYJx4Nx6SbZSUspqL5OaA9NfcO4kCFI7bWIrvKgnLMDE=
+X-Google-Smtp-Source: AGHT+IFZccrel+TFP0JVYkHmWdVeZ5dXJTaanWcRPzpZB2PkqoX9Q4At3wMRE6ZwNXLYT2CNqZAgog==
+X-Received: by 2002:a05:6402:1ece:b0:57d:496:209a with SMTP id
+ 4fb4d7f45d1cf-58e5994eb84mr4943921a12.6.1720193831410; 
+ Fri, 05 Jul 2024 08:37:11 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58ec828b34asm1785413a12.15.2024.07.05.08.37.12
+ 4fb4d7f45d1cf-5907e4d79ddsm212536a12.59.2024.07.05.08.37.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:37:14 -0700 (PDT)
+ Fri, 05 Jul 2024 08:37:10 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7384E62152;
+ by draig.lan (Postfix) with ESMTP id 896355F876;
  Fri,  5 Jul 2024 16:30:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 26/40] plugins/lockstep: clean-up output
-Date: Fri,  5 Jul 2024 16:30:38 +0100
-Message-Id: <20240705153052.1219696-27-alex.bennee@linaro.org>
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PULL 27/40] plugins: Ensure vCPU index is assigned in init/exit hooks
+Date: Fri,  5 Jul 2024 16:30:39 +0100
+Message-Id: <20240705153052.1219696-28-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +98,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We were repeating information which wasn't super clear. As we already
-will have dumped the last failing PC just note the divergence and dump
-the previous instruction log.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Since vCPUs are hashed by their index, this index can't
+be uninitialized (UNASSIGNED_CPU_INDEX).
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240606124010.2460-2-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-27-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-28-alex.bennee@linaro.org>
 
-diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index 1765fd6c36..6a7e9bbb39 100644
---- a/contrib/plugins/lockstep.c
-+++ b/contrib/plugins/lockstep.c
-@@ -135,10 +135,13 @@ static void report_divergance(ExecState *us, ExecState *them)
+diff --git a/plugins/core.c b/plugins/core.c
+index 9d737d8278..a864275ae7 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -245,6 +245,7 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
+ {
+     bool success;
  
-     /* Output short log entry of going out of sync... */
-     if (verbose || divrec.distance == 1 || diverged) {
--        g_string_printf(out,
--                        "@ 0x%016" PRIx64 " vs 0x%016" PRIx64
-+        g_string_printf(out, "@ "
-+                        "0x%016" PRIx64 " (%" PRId64 ") vs "
-+                        "0x%016" PRIx64 " (%" PRId64 ")"
-                         " (%d/%d since last)\n",
--                        us->pc, them->pc, g_slist_length(divergence_log),
-+                        us->pc, us->insn_count,
-+                        them->pc, them->insn_count,
-+                        g_slist_length(divergence_log),
-                         divrec.distance);
-         qemu_plugin_outs(out->str);
-     }
-@@ -147,10 +150,7 @@ static void report_divergance(ExecState *us, ExecState *them)
-         int i;
-         GSList *entry;
++    assert(cpu->cpu_index != UNASSIGNED_CPU_INDEX);
+     qemu_rec_mutex_lock(&plugin.lock);
+     plugin.num_vcpus = MAX(plugin.num_vcpus, cpu->cpu_index + 1);
+     plugin_cpu_update__locked(&cpu->cpu_index, NULL, NULL);
+@@ -263,6 +264,7 @@ void qemu_plugin_vcpu_exit_hook(CPUState *cpu)
  
--        g_string_printf(out,
--                        "Δ insn_count @ 0x%016" PRIx64
--                        " (%"PRId64") vs 0x%016" PRIx64 " (%"PRId64")\n",
--                        us->pc, us->insn_count, them->pc, them->insn_count);
-+        g_string_printf(out, "Δ too high, we have diverged, previous insns\n");
+     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_EXIT);
  
-         for (entry = log, i = 0;
-              g_slist_next(entry) && i < 5;
-@@ -163,7 +163,7 @@ static void report_divergance(ExecState *us, ExecState *them)
-                                    prev->insn_count);
-         }
-         qemu_plugin_outs(out->str);
--        qemu_plugin_outs("too much divergence... giving up.");
-+        qemu_plugin_outs("giving up\n");
-         qemu_plugin_uninstall(our_id, plugin_cleanup);
-     }
- }
++    assert(cpu->cpu_index != UNASSIGNED_CPU_INDEX);
+     qemu_rec_mutex_lock(&plugin.lock);
+     success = g_hash_table_remove(plugin.cpu_ht, &cpu->cpu_index);
+     g_assert(success);
 -- 
 2.39.2
 
