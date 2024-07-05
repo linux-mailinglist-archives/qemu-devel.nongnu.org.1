@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E88792841C
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95FA9283FE
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:44:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPecJ-00035q-5I; Fri, 05 Jul 2024 04:48:31 -0400
+	id 1sPeVt-00026x-1y; Fri, 05 Jul 2024 04:41:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebR-00011A-4S
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:37 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ id 1sPeVJ-0000Cj-Nn
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:19 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebA-0004CP-RN
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:36 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52ea2f58448so1290408e87.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:19 -0700 (PDT)
+ id 1sPeVG-0003Jt-9R
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:17 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-58b447c513aso1603682a12.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:41:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720169238; x=1720774038; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720168872; x=1720773672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=77YvatHWOR33cTX9z3lD3BFIb9bFvCKghDfoEWx4ifM=;
- b=YxgaobAkELsg/R7aYC8kgWRAOGKUmEcWuLAQS1qvktdmE2YnzYMY2Pg2F9pdBGgfov
- /AjjTPx1eobbI5gdgvtN4ql+u97iHPMw4qwqaQossAU3fLrFAraYHQhYQqvU0n35ejEt
- vwBLgBBe6EYeGLueE7CVZOXqrQeJjl9IvNEJLm0iVF45ByVBz6xcti0BUy5qIQuz9g04
- vmWUX9xq04qLbV0/PBQ6A4BgkvCXevDsu4JDz9Jx5Ysg5ib+kd38q07cgFzTbApUt2Kj
- s75TcjD8T3Tni+BWVQRkacRZJVu6G1dr5vBNkHPs046uTBolRW07mJYSSAZ909J4oB3/
- WL2g==
+ bh=WvX7+SgECJPhb0T5tWrIRbH04Gv0AGqro5YYirQFxyg=;
+ b=L6MF1EHgBWcQcLw2SdqnhtDnOiqUi+b3NrurTwtiv25p7lVHijxk+nN/UlwBH5/lA9
+ GvRalrmqHwVoMBwCUocuC/WUTh4PTSQeKB/rNHBbv0KPhLuHYIYmtSFKoktOE15bNmHU
+ eRTDZotm6VfHxZJKhgE/+jLo2dFtDuLRfsFImHg4WvRqqoSFOS2TquncRVrcef4hsDhw
+ CWvmUkPiM5x++8mI/kAV/UbOaV4nRTPpzRPHyEurhQAnXOLU7qa8168h17izwtIpCv9N
+ Pb4obYFS1HS4+Af9G7ZyZRVTli8WM4OyMuKJKDMeYb5+5wHlYEZrzbXmLTLkUGM3/nwR
+ pedg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720169238; x=1720774038;
+ d=1e100.net; s=20230601; t=1720168872; x=1720773672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=77YvatHWOR33cTX9z3lD3BFIb9bFvCKghDfoEWx4ifM=;
- b=r0aKpilZA6Y5S3UHBHHZiTtQ8yRbQgd4dRsUb/6O+yd2x0Zp8m10iRiNr6czNiw3GJ
- ovxAO0gmfxHrsx5v0mLGE/WSE7N0Lj2qwCiuWR4ye0BYSMS2gEYY1bvta0qYkYFuhvgP
- orBCYT9Es+kqVDwX3VAX4YGvtMoRt3z6VvZ/6tvIKDONZciR4GdpNTOhlDAjMw49OCmg
- e451P2ml0sZ6Un+bDGCbqgY5B3/tXV1bWokAvkzfd0rtNJVw14WsylxPZjhqrl1jSGkJ
- ERQzO2rapPHSNvie4Ey4cXBQKC6OmS1NiA4RIP/X4ZiGoc5npMW/GtRl7parIdidFDeB
- rFhA==
-X-Gm-Message-State: AOJu0YzfN6NtqGMqygCHR33QE/AI9G11x73CaM1Oqi+UH0qXoCXd62Kz
- 5zx0IePTFE4j7LNpx79FzefoQhp20gIxJiwm+cAr4tsoq9O9jymT4ChOeT/9isc=
-X-Google-Smtp-Source: AGHT+IFg1/+kF3iTierx2fmPEuZ+gpoRIneMJUDTMazG/hSFaQyo9o15Q648oMk5deFvwrCi4aiyxg==
-X-Received: by 2002:a05:6512:15a9:b0:52e:a60e:3a0e with SMTP id
- 2adb3069b0e04-52ea60e3b9cmr1232186e87.0.1720169238294; 
- Fri, 05 Jul 2024 01:47:18 -0700 (PDT)
+ bh=WvX7+SgECJPhb0T5tWrIRbH04Gv0AGqro5YYirQFxyg=;
+ b=Wsolt8YIvJr2dbun3BY+/bCqbdTTHY48YknOXVCu/iorOP7kTM4WtB8kL1dLvw3Xw/
+ m7HCAa8Qi9mgWWnM2tjjIi+v/Lun2dSf0R61TtvezhwFC4LFdZPsTLZqKrhsB1hGWq+C
+ OpWKbbXf0es5lbECRTKpwY1sx7HuZ71sz6E2idD2YANA8VS+UyWg9ldvKXtL5RyjAIsm
+ HjSR0Ui6v9jlEylTGBMOUt+G8zk8hYorrm9mxN+T0lnRMnt/B6p1c9Po18WBV2cnL98x
+ fDz/EWoDooV8QyTNMjXBXIqrxWXKNSesm9OdRLRzQtETQuny0Ckq174grNr9Sr9y/cty
+ jCWQ==
+X-Gm-Message-State: AOJu0YyD+jq4ug5PW/3dZBrKgv4n+pbIkXOkBTYmtAOO3xZUKwgtWf3g
+ dVRMB7tnEjUi0hfGnbguDwlf0o7TRqViJYsuRx0MP61Qq3PkwQd1htlHDRmK2lg=
+X-Google-Smtp-Source: AGHT+IFrpiaAN3+feRSdRsvnCvArcCwzJ1Q9bU/rUzThQ6cok8wKc04usnuqU91fT6rVmyhBE7/uwA==
+X-Received: by 2002:a05:6402:909:b0:57d:1e27:65ea with SMTP id
+ 4fb4d7f45d1cf-58e5c824bc7mr3161580a12.34.1720168871463; 
+ Fri, 05 Jul 2024 01:41:11 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58c9061becfsm3499904a12.83.2024.07.05.01.47.12
+ 4fb4d7f45d1cf-58d75e20c30sm2718149a12.43.2024.07.05.01.41.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:47:16 -0700 (PDT)
+ Fri, 05 Jul 2024 01:41:06 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6D9E9621AC;
+ by draig.lan (Postfix) with ESMTP id 8A4BE621B4;
  Fri,  5 Jul 2024 09:40:51 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,24 +77,24 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH v2 38/40] gdbstub: Use true to set cmd_startswith
-Date: Fri,  5 Jul 2024 09:40:45 +0100
-Message-Id: <20240705084047.857176-39-alex.bennee@linaro.org>
+Subject: [PATCH v2 39/40] gdbstub: Add support for MTE in user mode
+Date: Fri,  5 Jul 2024 09:40:46 +0100
+Message-Id: <20240705084047.857176-40-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,362 +112,399 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-cmd_startswith is a boolean so use 'true' to set it instead of 1.
+This commit implements the stubs to handle the qIsAddressTagged,
+qMemTag, and QMemTag GDB packets, allowing all GDB 'memory-tag'
+subcommands to work with QEMU gdbstub on aarch64 user mode. It also
+implements the get/set functions for the special GDB MTE register
+'tag_ctl', used to control the MTE fault type at runtime.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240628050850.536447-10-gustavo.romero@linaro.org>
+Message-Id: <20240628050850.536447-11-gustavo.romero@linaro.org>
 ---
- gdbstub/gdbstub.c | 80 +++++++++++++++++++++++------------------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
+ configs/targets/aarch64-linux-user.mak |   2 +-
+ target/arm/internals.h                 |   6 +
+ target/arm/cpu.c                       |   1 +
+ target/arm/gdbstub.c                   |  46 +++++
+ target/arm/gdbstub64.c                 | 223 +++++++++++++++++++++++++
+ gdb-xml/aarch64-mte.xml                |  11 ++
+ 6 files changed, 288 insertions(+), 1 deletion(-)
+ create mode 100644 gdb-xml/aarch64-mte.xml
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 5c1612ed2a..b9ad0a063e 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1433,26 +1433,26 @@ static const GdbCmdParseEntry gdb_v_commands_table[] = {
-     {
-         .handler = handle_v_cont_query,
-         .cmd = "Cont?",
--        .cmd_startswith = 1
-+        .cmd_startswith = true
-     },
-     {
-         .handler = handle_v_cont,
-         .cmd = "Cont",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .allow_stop_reply = true,
-         .schema = "s0"
-     },
-     {
-         .handler = handle_v_attach,
-         .cmd = "Attach;",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .allow_stop_reply = true,
-         .schema = "l0"
-     },
-     {
-         .handler = handle_v_kill,
-         .cmd = "Kill;",
--        .cmd_startswith = 1
-+        .cmd_startswith = true
-     },
- #ifdef CONFIG_USER_ONLY
-     /*
-@@ -1462,25 +1462,25 @@ static const GdbCmdParseEntry gdb_v_commands_table[] = {
-     {
-         .handler = gdb_handle_v_file_open,
-         .cmd = "File:open:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "s,L,L0"
-     },
-     {
-         .handler = gdb_handle_v_file_close,
-         .cmd = "File:close:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l0"
-     },
-     {
-         .handler = gdb_handle_v_file_pread,
-         .cmd = "File:pread:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l,L,L0"
-     },
-     {
-         .handler = gdb_handle_v_file_readlink,
-         .cmd = "File:readlink:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "s0"
-     },
+diff --git a/configs/targets/aarch64-linux-user.mak b/configs/targets/aarch64-linux-user.mak
+index ba8bc5fe3f..8f0ed21d76 100644
+--- a/configs/targets/aarch64-linux-user.mak
++++ b/configs/targets/aarch64-linux-user.mak
+@@ -1,6 +1,6 @@
+ TARGET_ARCH=aarch64
+ TARGET_BASE_ARCH=arm
+-TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
++TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
+ TARGET_HAS_BFLT=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 11b5da2562..e1aa1a63b9 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -358,6 +358,10 @@ void init_cpreg_list(ARMCPU *cpu);
+ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu);
+ void arm_translate_init(void);
+ 
++void arm_cpu_register_gdb_commands(ARMCPU *cpu);
++void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *, GArray *,
++                                       GArray *);
++
+ void arm_restore_state_to_opc(CPUState *cs,
+                               const TranslationBlock *tb,
+                               const uint64_t *data);
+@@ -1640,6 +1644,8 @@ int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg);
+ int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_pauth_reg(CPUState *cs, uint8_t *buf, int reg);
++int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg);
++int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg);
+ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp);
+ void arm_cpu_sme_finalize(ARMCPU *cpu, Error **errp);
+ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 35fa281f1b..14d4eca127 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2518,6 +2518,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     register_cp_regs_for_features(cpu);
+     arm_cpu_register_gdb_regs_for_features(cpu);
++    arm_cpu_register_gdb_commands(cpu);
+ 
+     init_cpreg_list(cpu);
+ 
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index a3bb73cfa7..c3a9b5eb1e 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -21,6 +21,7 @@
+ #include "cpu.h"
+ #include "exec/gdbstub.h"
+ #include "gdbstub/helpers.h"
++#include "gdbstub/commands.h"
+ #include "sysemu/tcg.h"
+ #include "internals.h"
+ #include "cpu-features.h"
+@@ -474,6 +475,41 @@ static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
  #endif
-@@ -1748,7 +1748,7 @@ static const GdbCmdParseEntry gdb_gen_query_set_common_table[] = {
-     {
-         .handler = handle_set_qemu_sstep,
-         .cmd = "qemu.sstep=",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l0"
-     },
- };
-@@ -1804,7 +1804,7 @@ static const GdbCmdParseEntry gdb_gen_query_table[] = {
-     {
-         .handler = handle_query_thread_extra,
-         .cmd = "ThreadExtraInfo,",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "t0"
-     },
- #ifdef CONFIG_USER_ONLY
-@@ -1816,14 +1816,14 @@ static const GdbCmdParseEntry gdb_gen_query_table[] = {
-     {
-         .handler = gdb_handle_query_rcmd,
-         .cmd = "Rcmd,",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "s0"
-     },
- #endif
-     {
-         .handler = handle_query_supported,
-         .cmd = "Supported:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "s0"
-     },
-     {
-@@ -1834,7 +1834,7 @@ static const GdbCmdParseEntry gdb_gen_query_table[] = {
-     {
-         .handler = handle_query_xfer_features,
-         .cmd = "Xfer:features:read:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "s:l,l0"
-     },
- #if defined(CONFIG_USER_ONLY)
-@@ -1842,27 +1842,27 @@ static const GdbCmdParseEntry gdb_gen_query_table[] = {
-     {
-         .handler = gdb_handle_query_xfer_auxv,
-         .cmd = "Xfer:auxv:read::",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l,l0"
-     },
-     {
-         .handler = gdb_handle_query_xfer_siginfo,
-         .cmd = "Xfer:siginfo:read::",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l,l0"
-      },
- #endif
-     {
-         .handler = gdb_handle_query_xfer_exec_file,
-         .cmd = "Xfer:exec-file:read:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l:l,l0"
-     },
- #endif
-     {
-         .handler = gdb_handle_query_attached,
-         .cmd = "Attached:",
--        .cmd_startswith = 1
-+        .cmd_startswith = true
-     },
-     {
-         .handler = gdb_handle_query_attached,
-@@ -1901,14 +1901,14 @@ static const GdbCmdParseEntry gdb_gen_set_table[] = {
-     {
-         .handler = handle_set_qemu_sstep,
-         .cmd = "qemu.sstep:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l0"
-     },
- #ifndef CONFIG_USER_ONLY
-     {
-         .handler = gdb_handle_set_qemu_phy_mem_mode,
-         .cmd = "qemu.PhyMemMode:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "l0"
-     },
- #endif
-@@ -1916,7 +1916,7 @@ static const GdbCmdParseEntry gdb_gen_set_table[] = {
-     {
-         .handler = gdb_handle_set_catch_syscalls,
-         .cmd = "CatchSyscalls:",
--        .cmd_startswith = 1,
-+        .cmd_startswith = true,
-         .schema = "s0",
-     },
- #endif
-@@ -2012,7 +2012,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry target_halted_cmd_desc = {
-                 .handler = handle_target_halt,
-                 .cmd = "?",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .allow_stop_reply = true,
-             };
-             cmd_parser = &target_halted_cmd_desc;
-@@ -2023,7 +2023,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry continue_cmd_desc = {
-                 .handler = handle_continue,
-                 .cmd = "c",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .allow_stop_reply = true,
-                 .schema = "L0"
-             };
-@@ -2035,7 +2035,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry cont_with_sig_cmd_desc = {
-                 .handler = handle_cont_with_sig,
-                 .cmd = "C",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .allow_stop_reply = true,
-                 .schema = "l0"
-             };
-@@ -2047,7 +2047,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry v_cmd_desc = {
-                 .handler = handle_v_commands,
-                 .cmd = "v",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "s0"
-             };
-             cmd_parser = &v_cmd_desc;
-@@ -2064,7 +2064,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry detach_cmd_desc = {
-                 .handler = handle_detach,
-                 .cmd = "D",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "?.l0"
-             };
-             cmd_parser = &detach_cmd_desc;
-@@ -2075,7 +2075,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry step_cmd_desc = {
-                 .handler = handle_step,
-                 .cmd = "s",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .allow_stop_reply = true,
-                 .schema = "L0"
-             };
-@@ -2087,7 +2087,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry backward_cmd_desc = {
-                 .handler = handle_backward,
-                 .cmd = "b",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .allow_stop_reply = true,
-                 .schema = "o0"
-             };
-@@ -2099,7 +2099,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry file_io_cmd_desc = {
-                 .handler = gdb_handle_file_io,
-                 .cmd = "F",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "L,L,o0"
-             };
-             cmd_parser = &file_io_cmd_desc;
-@@ -2110,7 +2110,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry read_all_regs_cmd_desc = {
-                 .handler = handle_read_all_regs,
-                 .cmd = "g",
--                .cmd_startswith = 1
-+                .cmd_startswith = true
-             };
-             cmd_parser = &read_all_regs_cmd_desc;
+ #endif /* CONFIG_TCG */
+ 
++void arm_cpu_register_gdb_commands(ARMCPU *cpu)
++{
++    GArray *query_table =
++        g_array_new(FALSE, FALSE, sizeof(GdbCmdParseEntry));
++    GArray *set_table =
++        g_array_new(FALSE, FALSE, sizeof(GdbCmdParseEntry));
++    GString *qsupported_features = g_string_new(NULL);
++
++    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
++    #ifdef TARGET_AARCH64
++        aarch64_cpu_register_gdb_commands(cpu, qsupported_features, query_table,
++                                          set_table);
++    #endif
++    }
++
++    /* Set arch-specific handlers for 'q' commands. */
++    if (query_table->len) {
++        gdb_extend_query_table(&g_array_index(query_table,
++                                              GdbCmdParseEntry, 0),
++                                              query_table->len);
++    }
++
++    /* Set arch-specific handlers for 'Q' commands. */
++    if (set_table->len) {
++        gdb_extend_set_table(&g_array_index(set_table,
++                             GdbCmdParseEntry, 0),
++                             set_table->len);
++    }
++
++    /* Set arch-specific qSupported feature. */
++    if (qsupported_features->len) {
++        gdb_extend_qsupported_features(qsupported_features->str);
++    }
++}
++
+ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -507,6 +543,16 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+                                      gdb_find_static_feature("aarch64-pauth.xml"),
+                                      0);
          }
-@@ -2120,7 +2120,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry write_all_regs_cmd_desc = {
-                 .handler = handle_write_all_regs,
-                 .cmd = "G",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "s0"
-             };
-             cmd_parser = &write_all_regs_cmd_desc;
-@@ -2131,7 +2131,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry read_mem_cmd_desc = {
-                 .handler = handle_read_mem,
-                 .cmd = "m",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "L,L0"
-             };
-             cmd_parser = &read_mem_cmd_desc;
-@@ -2142,7 +2142,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry write_mem_cmd_desc = {
-                 .handler = handle_write_mem,
-                 .cmd = "M",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "L,L:s0"
-             };
-             cmd_parser = &write_mem_cmd_desc;
-@@ -2153,7 +2153,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry get_reg_cmd_desc = {
-                 .handler = handle_get_reg,
-                 .cmd = "p",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "L0"
-             };
-             cmd_parser = &get_reg_cmd_desc;
-@@ -2164,7 +2164,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry set_reg_cmd_desc = {
-                 .handler = handle_set_reg,
-                 .cmd = "P",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "L?s0"
-             };
-             cmd_parser = &set_reg_cmd_desc;
-@@ -2175,7 +2175,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry insert_bp_cmd_desc = {
-                 .handler = handle_insert_bp,
-                 .cmd = "Z",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "l?L?L0"
-             };
-             cmd_parser = &insert_bp_cmd_desc;
-@@ -2186,7 +2186,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry remove_bp_cmd_desc = {
-                 .handler = handle_remove_bp,
-                 .cmd = "z",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "l?L?L0"
-             };
-             cmd_parser = &remove_bp_cmd_desc;
-@@ -2197,7 +2197,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry set_thread_cmd_desc = {
-                 .handler = handle_set_thread,
-                 .cmd = "H",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "o.t0"
-             };
-             cmd_parser = &set_thread_cmd_desc;
-@@ -2208,7 +2208,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry thread_alive_cmd_desc = {
-                 .handler = handle_thread_alive,
-                 .cmd = "T",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "t0"
-             };
-             cmd_parser = &thread_alive_cmd_desc;
-@@ -2219,7 +2219,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry gen_query_cmd_desc = {
-                 .handler = handle_gen_query,
-                 .cmd = "q",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "s0"
-             };
-             cmd_parser = &gen_query_cmd_desc;
-@@ -2230,7 +2230,7 @@ static int gdb_handle_packet(const char *line_buf)
-             static const GdbCmdParseEntry gen_set_cmd_desc = {
-                 .handler = handle_gen_set,
-                 .cmd = "Q",
--                .cmd_startswith = 1,
-+                .cmd_startswith = true,
-                 .schema = "s0"
-             };
-             cmd_parser = &gen_set_cmd_desc;
++
++#ifdef CONFIG_USER_ONLY
++        /* Memory Tagging Extension (MTE) 'tag_ctl' pseudo-register. */
++        if (cpu_isar_feature(aa64_mte, cpu)) {
++            gdb_register_coprocessor(cs, aarch64_gdb_get_tag_ctl_reg,
++                                     aarch64_gdb_set_tag_ctl_reg,
++                                     gdb_find_static_feature("aarch64-mte.xml"),
++                                     0);
++        }
++#endif
+ #endif
+     } else {
+         if (arm_feature(env, ARM_FEATURE_NEON)) {
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index caa31ff3fa..2e2bc2700b 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -21,6 +21,12 @@
+ #include "cpu.h"
+ #include "internals.h"
+ #include "gdbstub/helpers.h"
++#include "gdbstub/commands.h"
++#include "tcg/mte_helper.h"
++#if defined(CONFIG_USER_ONLY) && defined(CONFIG_LINUX)
++#include <sys/prctl.h>
++#include "mte_user_helper.h"
++#endif
+ 
+ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+@@ -381,3 +387,220 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
+ 
+     return &cpu->dyn_svereg_feature.desc;
+ }
++
++#ifdef CONFIG_USER_ONLY
++int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++    uint64_t tcf0;
++
++    assert(reg == 0);
++
++    tcf0 = extract64(env->cp15.sctlr_el[1], 38, 2);
++
++    return gdb_get_reg64(buf, tcf0);
++}
++
++int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    uint8_t tcf;
++
++    assert(reg == 0);
++
++    tcf = *buf << PR_MTE_TCF_SHIFT;
++
++    if (!tcf) {
++        return 0;
++    }
++
++    /*
++     * 'tag_ctl' register is actually a "pseudo-register" provided by GDB to
++     * expose options regarding the type of MTE fault that can be controlled at
++     * runtime.
++     */
++    arm_set_mte_tcf0(env, tcf);
++
++    return 1;
++}
++
++static void handle_q_memtag(GArray *params, void *user_ctx)
++{
++    ARMCPU *cpu = ARM_CPU(user_ctx);
++    CPUARMState *env = &cpu->env;
++
++    uint64_t addr = gdb_get_cmd_param(params, 0)->val_ull;
++    uint64_t len = gdb_get_cmd_param(params, 1)->val_ul;
++    int type = gdb_get_cmd_param(params, 2)->val_ul;
++
++    uint8_t *tags;
++    uint8_t addr_tag;
++
++    g_autoptr(GString) str_buf = g_string_new(NULL);
++
++    /*
++     * GDB does not query multiple tags for a memory range on remote targets, so
++     * that's not supported either by gdbstub.
++     */
++    if (len != 1) {
++        gdb_put_packet("E02");
++    }
++
++    /* GDB never queries a tag different from an allocation tag (type 1). */
++    if (type != 1) {
++        gdb_put_packet("E03");
++    }
++
++    /* Note that tags are packed here (2 tags packed in one byte). */
++    tags = allocation_tag_mem_probe(env, 0, addr, MMU_DATA_LOAD, 8 /* 64-bit */,
++                                    MMU_DATA_LOAD, true, 0);
++    if (!tags) {
++        /* Address is not in a tagged region. */
++        gdb_put_packet("E04");
++        return;
++    }
++
++    /* Unpack tag from byte. */
++    addr_tag = load_tag1(addr, tags);
++    g_string_printf(str_buf, "m%.2x", addr_tag);
++
++    gdb_put_packet(str_buf->str);
++}
++
++static void handle_q_isaddresstagged(GArray *params, void *user_ctx)
++{
++    ARMCPU *cpu = ARM_CPU(user_ctx);
++    CPUARMState *env = &cpu->env;
++
++    uint64_t addr = gdb_get_cmd_param(params, 0)->val_ull;
++
++    uint8_t *tags;
++    const char *reply;
++
++    tags = allocation_tag_mem_probe(env, 0, addr, MMU_DATA_LOAD, 8 /* 64-bit */,
++                                    MMU_DATA_LOAD, true, 0);
++    reply = tags ? "01" : "00";
++
++    gdb_put_packet(reply);
++}
++
++static void handle_Q_memtag(GArray *params, void *user_ctx)
++{
++    ARMCPU *cpu = ARM_CPU(user_ctx);
++    CPUARMState *env = &cpu->env;
++
++    uint64_t start_addr = gdb_get_cmd_param(params, 0)->val_ull;
++    uint64_t len = gdb_get_cmd_param(params, 1)->val_ul;
++    int type = gdb_get_cmd_param(params, 2)->val_ul;
++    char const *new_tags_str = gdb_get_cmd_param(params, 3)->data;
++
++    uint64_t end_addr;
++
++    int num_new_tags;
++    uint8_t *tags;
++
++    g_autoptr(GByteArray) new_tags = g_byte_array_new();
++
++    /*
++     * Only the allocation tag (i.e. type 1) can be set at the stub side.
++     */
++    if (type != 1) {
++        gdb_put_packet("E02");
++        return;
++    }
++
++    end_addr = start_addr + (len - 1); /* 'len' is always >= 1 */
++    /* Check if request's memory range does not cross page boundaries. */
++    if ((start_addr ^ end_addr) & TARGET_PAGE_MASK) {
++        gdb_put_packet("E03");
++        return;
++    }
++
++    /*
++     * Get all tags in the page starting from the tag of the start address.
++     * Note that there are two tags packed into a single byte here.
++     */
++    tags = allocation_tag_mem_probe(env, 0, start_addr, MMU_DATA_STORE,
++                                    8 /* 64-bit */, MMU_DATA_STORE, true, 0);
++    if (!tags) {
++        /* Address is not in a tagged region. */
++        gdb_put_packet("E04");
++        return;
++    }
++
++    /* Convert tags provided by GDB, 2 hex digits per tag. */
++    num_new_tags = strlen(new_tags_str) / 2;
++    gdb_hextomem(new_tags, new_tags_str, num_new_tags);
++
++    uint64_t address = start_addr;
++    int new_tag_index = 0;
++    while (address <= end_addr) {
++        uint8_t new_tag;
++        int packed_index;
++
++        /*
++         * Find packed tag index from unpacked tag index. There are two tags
++         * in one packed index (one tag per nibble).
++         */
++        packed_index = new_tag_index / 2;
++
++        new_tag = new_tags->data[new_tag_index % num_new_tags];
++        store_tag1(address, tags + packed_index, new_tag);
++
++        address += TAG_GRANULE;
++        new_tag_index++;
++    }
++
++    gdb_put_packet("OK");
++}
++
++enum Command {
++    qMemTags,
++    qIsAddressTagged,
++    QMemTags,
++    NUM_CMDS
++};
++
++static GdbCmdParseEntry cmd_handler_table[NUM_CMDS] = {
++    [qMemTags] = {
++        .handler = handle_q_memtag,
++        .cmd_startswith = true,
++        .cmd = "MemTags:",
++        .schema = "L,l:l0",
++        .need_cpu_context = true
++    },
++    [qIsAddressTagged] = {
++        .handler = handle_q_isaddresstagged,
++        .cmd_startswith = true,
++        .cmd = "IsAddressTagged:",
++        .schema = "L0",
++        .need_cpu_context = true
++    },
++    [QMemTags] = {
++        .handler = handle_Q_memtag,
++        .cmd_startswith = true,
++        .cmd = "MemTags:",
++        .schema = "L,l:l:s0",
++        .need_cpu_context = true
++    },
++};
++#endif /* CONFIG_USER_ONLY */
++
++void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *qsupported,
++                                       GArray *qtable, GArray *stable)
++{
++#ifdef CONFIG_USER_ONLY
++    /* MTE */
++    if (cpu_isar_feature(aa64_mte, cpu)) {
++        g_string_append(qsupported, ";memory-tagging+");
++
++        g_array_append_val(qtable, cmd_handler_table[qMemTags]);
++        g_array_append_val(qtable, cmd_handler_table[qIsAddressTagged]);
++
++        g_array_append_val(stable, cmd_handler_table[QMemTags]);
++    }
++#endif
++}
+diff --git a/gdb-xml/aarch64-mte.xml b/gdb-xml/aarch64-mte.xml
+new file mode 100644
+index 0000000000..4b70b4f17a
+--- /dev/null
++++ b/gdb-xml/aarch64-mte.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0"?>
++<!-- Copyright (C) 2021-2023 Free Software Foundation, Inc.
++
++     Copying and distribution of this file, with or without modification,
++     are permitted in any medium without royalty provided the copyright
++     notice and this notice are preserved.  -->
++
++<!DOCTYPE feature SYSTEM "gdb-target.dtd">
++<feature name="org.gnu.gdb.aarch64.mte">
++  <reg name="tag_ctl" bitsize="64" type="uint64" group="system" save-restore="no"/>
++</feature>
 -- 
 2.39.2
 
