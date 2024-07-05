@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F32D928722
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 12:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181B992874D
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 12:57:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPgY6-0000EL-Vd; Fri, 05 Jul 2024 06:52:18 -0400
+	id 1sPgcB-0002AT-UB; Fri, 05 Jul 2024 06:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sPgY4-0000Dw-Bh
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 06:52:16 -0400
-Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sPgc9-00028X-Kt
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 06:56:29 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sPgY2-0004Q9-Hq
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 06:52:16 -0400
-Received: by mail-ua1-x933.google.com with SMTP id
- a1e0cc1a2514c-80d61a602f2so475782241.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 03:52:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sPgc7-0006Yk-7F
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 06:56:29 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1fafb9a33b3so7964575ad.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 03:56:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1720176732; x=1720781532;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mrQ/A7HS7PhvkryAUz/aM4tXJFGVGYfTqfWYcG8Ti+4=;
- b=ZM6h+hq0q20skKWtvIQScqPAxd/wtpn6A3010Y9lC5JnDeIKMZLKInQxA0P8Eywa46
- JxWAF9W7KvJLJ8RRml2xqzAEs+2lCZOT4ky6E9hYbL/1tWjERd0GzDgb/xQWla6fAqj9
- yF4tLo3gczd4lQTHs/V75ogkv5OxDpxkhtJXtxz+tq7YA8o8e6+lXJkvMQwwaT2ZDZyc
- ij+2SalxYkW/1/zkBi2D3O8gcLZ3sWv1A9rQnpsd0qBkRZTDTP67iWEagG/woHeA6sXr
- VLgeJGiu3cWz03mEui2NQJ6pv+bR0lnUTfv2MRPPcixIKnz1MGMm+3I1ofTyWUTFMAIF
- xCqQ==
+ d=bytedance.com; s=google; t=1720176983; x=1720781783; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3e7KptOEaYocxrc+0ZzQ+mp68VC1C9a7NZ0Is9aEo14=;
+ b=T8/CRCe4BzZV0BHm9SgmpGar9BbylhsbIbyelmwCZ/e4S92bWAxEycLY1TxePLH0xd
+ uHo8s3nqyvprTJBK0Fdg6Lg1yLskq/yyRD7ryb8MHdqELPHVERTBrpY2c972/Qv0PveC
+ taMKzbJJE11O6cQ/AOdCWW/uGX/EJLxNHITf1hf5QvszprcHlaAxZQi1B+c732QhGjCk
+ 5QAEe5fxKOdz52chBUjHPnpdELGel6NGj3AJLc18FyLdDYdDCYPI2cacPwWA0esiRv5I
+ IbCsnLiJxwvqdqtAkvLCenTn5R7tK+pdhWnOcMQOu6hIHypFeI1fu/0dGgxpOkv/oLOA
+ TClg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720176732; x=1720781532;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1720176983; x=1720781783;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=mrQ/A7HS7PhvkryAUz/aM4tXJFGVGYfTqfWYcG8Ti+4=;
- b=jVcSoi8sDizGt8bMV0TUabz7YGpwS5hnCvDLkJQqWO0SEcnMpov+AXgMY3Rs7cyYY7
- L/AP5NGs0XPktMYkfisyca0oQAc52ybZtkyDmyfkkj11z2/aZeIfYgnLFwUgmN3ZuWeL
- bOjcoxYauYxUJUuWg05qsH4yGA+dG+uNKB3tiZF2mmfPpLrCbR3L7hljJvSGs+gWWN4E
- aP8ZtJLDGxeD9q36JrAmAQ6We5+B8MQktnaL8fUf53H5Ul0+CKUuXL3btNUjHnsfIH6S
- fZcLkda6CrL84C+i3O8aEcu7+nQ2zoKfcsh493HNmgRT8HSVsk99gW0gtxyDxsrr4GU9
- LoHw==
+ bh=3e7KptOEaYocxrc+0ZzQ+mp68VC1C9a7NZ0Is9aEo14=;
+ b=onNIyq09vuLzS+7P4VOpsnwZwHTm/LVU9BBtY9cuED40nncT8EFNVQfH654MAxxjvz
+ 71U0pkfzyyRpKKbl66WO3oLKkDwlVETh4nzfz78VNFe938lw/w9q4YC7+YTruodsEmhR
+ sXcHRDb8Ybr4k0tPch07Gdd+xVfYao1VovRBaOdRPIxngIwWnKoOUv7ucIv5EIlXdcMa
+ jONVISuXm/0Qh1Or72DX1SAt06yHHrWAbOMfqmUC6N1tmH9u8Hj5ZDtv0NlgXuiL67aB
+ +0UsEAHDeOWUN+CpZeDUD4rOXqzmLr47ni4GKOzN0AHUnWS0WzZf3Mvwp/3S9Powt2jM
+ aqvQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXeuk84wNFv5q8PSk74FbtCYvb5BYpoCsnVScw7eeOmzH49tUZalGar2x7SUwPgosOL5SA7o58HjFmZXxLO2sxcu7pm2nU=
-X-Gm-Message-State: AOJu0Yz2dhZXpYRmIgCVAv3mGM9Hzp1sDDIzC9nOenymzz9luCU9wuIX
- nK5eMbtqWc0cmLinYEKODLBcMxYfPrgtp7+bYZqzIyddJ0sY1ZusZHxUASd4k3BCo6LIiYeXMOB
- OOo88UZk8t48t70usX2/cbQl0NfFbM4x/ciZp
-X-Google-Smtp-Source: AGHT+IF/9zTOwDHaP6Nb8ZqQRkG8FCfHv09/AnqwCauZkjKkCjmBd8j1apcLEJNAKnLFG/iPZ1Zwe1aNwiDwClP7Y2s=
-X-Received: by 2002:a05:6122:1982:b0:4f2:edfa:a72e with SMTP id
- 71dfb90a1353d-4f2f3f3e680mr4981186e0c.6.1720176731138; Fri, 05 Jul 2024
- 03:52:11 -0700 (PDT)
+ AJvYcCWAkzjgZYmV99BKetaixSsj4PzvxpXyjWHhAg2vtn9sxWBZ2rXwdtEN73zCInNQ8ugpV0FlvsDaRvSmaPCIkgrUfgtf+nc=
+X-Gm-Message-State: AOJu0Yw96LchEoxMEO+w0RRqA1nmwEQKlYsC3JAxZHTZE2scKxkc5nub
+ 78ZUiZbs/1Vq2lMTZhb3o/j52kgXe9EABynq6HzrA4D7uURjv1V2449hx3thp7Q=
+X-Google-Smtp-Source: AGHT+IHUvyKSArRdVDiB6xOnr5PwB5zve/fCiXrjoZF/7khnaRp0Vf6a5LvpX7Wmirh2P1QTfRNRzw==
+X-Received: by 2002:a17:902:f54f:b0:1fb:30f2:3b80 with SMTP id
+ d9443c01a7336-1fb33efe08emr32074185ad.52.1720176982973; 
+ Fri, 05 Jul 2024 03:56:22 -0700 (PDT)
+Received: from n37-006-243.byted.org ([180.184.84.173])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fac0ba60a2sm141292125ad.0.2024.07.05.03.56.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Jul 2024 03:56:22 -0700 (PDT)
+From: Changqi Lu <luchangqi.123@bytedance.com>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
+ kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
+ pizhenwei@bytedance.com, Changqi Lu <luchangqi.123@bytedance.com>
+Subject: [PATCH v7 00/10] Support persistent reservation operations
+Date: Fri,  5 Jul 2024 18:56:04 +0800
+Message-Id: <20240705105614.3377694-1-luchangqi.123@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
- <20240627-cursor-v2-3-c3cd3ee35616@daynix.com>
-In-Reply-To: <20240627-cursor-v2-3-c3cd3ee35616@daynix.com>
-From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Fri, 5 Jul 2024 12:52:00 +0200
-Message-ID: <CAAibmn3GHALkLnG_BXSLZOKrVzKTkU0zWJSQNkGCe-+BLvOZ5g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] ui/cocoa: Add cursor composition
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>, 
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000002ceb1061c7ddbd4"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::933;
- envelope-from=phil@philjordan.eu; helo=mail-ua1-x933.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,56 +94,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000002ceb1061c7ddbd4
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-I've just tried to rebase my own patches on top of this work and noticed
-the following typo:
+Patch v7 has been modified.
+Thanks again to Stefan for reviewing the code.
 
-On Thu, 27 Jun 2024 at 13:17, Akihiko Odaki <akihiko.odaki@daynix.com>
-wrote:
+v6->v7:
+- Add buferlen size check at SCSI layer.
+- Add pr_cap calculation in bdrv_merge_limits() function at block layer,
+  so the ugly bs->file->bs->bl.pr_cap in scsi and nvme layers was
+  changed to bs->bl.pr_cap.
+- Fix memory leak at iscsi driver, and some other spelling errors.
 
->  static void cocoa_refresh(DisplayChangeListener *dcl);
-> +static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, int
-> on);
+v5->v6:
+- Add relevant comments in the io layer.
+
+v4->v5:
+- Fixed a memory leak bug at hw/nvme/ctrl.c.
+
+v3->v4:
+- At the nvme layer, the two patches of enabling the ONCS
+  function and enabling rescap are combined into one.
+- At the nvme layer, add helper functions for pr capacity
+  conversion between the block layer and the nvme layer.
+
+v2->v3:
+In v2 Persist Through Power Loss(PTPL) is enable default.
+In v3 PTPL is supported, which is passed as a parameter.
+
+v1->v2:
+- Add sg_persist --report-capabilities for SCSI protocol and enable
+  oncs and rescap for NVMe protocol.
+- Add persistent reservation capabilities constants and helper functions for
+  SCSI and NVMe protocol.
+- Add comments for necessary APIs.
+
+v1:
+- Add seven APIs about persistent reservation command for block layer.
+  These APIs including reading keys, reading reservations, registering,
+  reserving, releasing, clearing and preempting.
+- Add the necessary pr-related operation APIs for both the
+  SCSI protocol and NVMe protocol at the device layer.
+- Add scsi driver at the driver layer to verify the functions
 
 
-The above prototype does not match the below definition - note the type
-mismatch on the last parameter:
+Changqi Lu (10):
+  block: add persistent reservation in/out api
+  block/raw: add persistent reservation in/out driver
+  scsi/constant: add persistent reservation in/out protocol constants
+  scsi/util: add helper functions for persistent reservation types
+    conversion
+  hw/scsi: add persistent reservation in/out api for scsi device
+  block/nvme: add reservation command protocol constants
+  hw/nvme: add helper functions for converting reservation types
+  hw/nvme: enable ONCS and rescap function
+  hw/nvme: add reservation protocal command
+  block/iscsi: add persistent reservation in/out driver
 
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, bool
-> on)
-> +{
-> +    dispatch_async(dispatch_get_main_queue(), ^{
-> +        [cocoaView setMouseX:x y:y on:on];
-> +    });
-> +}
->
+ block/block-backend.c             | 403 ++++++++++++++++++++++++++++
+ block/io.c                        | 164 ++++++++++++
+ block/iscsi.c                     | 431 ++++++++++++++++++++++++++++++
+ block/raw-format.c                |  56 ++++
+ hw/nvme/ctrl.c                    | 326 +++++++++++++++++++++-
+ hw/nvme/ns.c                      |   5 +
+ hw/nvme/nvme.h                    |  88 ++++++
+ hw/scsi/scsi-disk.c               | 368 +++++++++++++++++++++++++
+ include/block/block-common.h      |  40 +++
+ include/block/block-io.h          |  20 ++
+ include/block/block_int-common.h  |  84 ++++++
+ include/block/nvme.h              | 100 ++++++-
+ include/scsi/constants.h          |  52 ++++
+ include/scsi/utils.h              |   8 +
+ include/sysemu/block-backend-io.h |  24 ++
+ scsi/utils.c                      |  81 ++++++
+ 16 files changed, 2247 insertions(+), 3 deletions(-)
 
---00000000000002ceb1061c7ddbd4
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+-- 
+2.20.1
 
-<div dir=3D"ltr"><div>I&#39;ve just tried to rebase my own patches on top o=
-f this work and noticed the following typo:<br></div><br><div class=3D"gmai=
-l_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, 27 Jun 2024 at 13:17=
-, Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.oda=
-ki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">
-=C2=A0static void cocoa_refresh(DisplayChangeListener *dcl);<br>
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, int =
-on);</blockquote><div>=C2=A0</div><div>The above prototype does not match t=
-he below definition - note the type mismatch on the last parameter: <br></d=
-iv><div><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
- 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, bool=
- on)<br>
-+{<br>
-+=C2=A0 =C2=A0 dispatch_async(dispatch_get_main_queue(), ^{<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 [cocoaView setMouseX:x y:y on:on];<br>
-+=C2=A0 =C2=A0 });<br>
-+}<br></blockquote><div>=C2=A0</div><div><br></div></div></div>
-
---00000000000002ceb1061c7ddbd4--
 
