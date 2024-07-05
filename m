@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14ECE928817
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 13:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C527192881A
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 13:42:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPhJA-0003nW-E3; Fri, 05 Jul 2024 07:40:56 -0400
+	id 1sPhJx-0004Os-3v; Fri, 05 Jul 2024 07:41:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sPhJ5-0003fp-1z; Fri, 05 Jul 2024 07:40:51 -0400
+ id 1sPhJU-0003xe-UG
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 07:41:22 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sPhJ2-0007mE-Q6; Fri, 05 Jul 2024 07:40:50 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WFs4L161Cz6K6V9;
- Fri,  5 Jul 2024 19:39:30 +0800 (CST)
+ id 1sPhJO-0007tK-Tb
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 07:41:16 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WFs5L1wLXz6JBW1;
+ Fri,  5 Jul 2024 19:40:22 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 236B6140B18;
- Fri,  5 Jul 2024 19:40:40 +0800 (CST)
-Received: from localhost (10.122.19.247) by lhrpeml500005.china.huawei.com
+ by mail.maildlp.com (Postfix) with ESMTPS id 66FD5140B55;
+ Fri,  5 Jul 2024 19:41:06 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 5 Jul
- 2024 12:40:39 +0100
-Date: Fri, 5 Jul 2024 12:40:38 +0100
-To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-CC: Zhao Liu <zhao1.liu@linux.intel.com>, Fan Ni <fan.ni@samsung.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-stable@nongnu.org"
- <qemu-stable@nongnu.org>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] hw/cxl/cxl-host: Fix guest crash when getting cxl-fmw
- property
-Message-ID: <20240705124038.0000053c@huawei.com>
-In-Reply-To: <3cccc5ba-81b9-4391-b187-27562ebc6c85@fujitsu.com>
-References: <20240704093404.1848132-1-zhao1.liu@linux.intel.com>
- <3cccc5ba-81b9-4391-b187-27562ebc6c85@fujitsu.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ 2024 12:41:06 +0100
+Date: Fri, 5 Jul 2024 12:41:04 +0100
+To: <linux-cxl@vger.kernel.org>, <mst@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, <qemu-devel@nongnu.org>, Li Zhijian
+ <lizhijian@fujitsu.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH qemu 0/3] hw/cxl: Misc minor improvements
+Message-ID: <20240705123930.000064e8@huawei.com>
+In-Reply-To: <20240702143425.717452-1-Jonathan.Cameron@huawei.com>
+References: <20240702143425.717452-1-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+X-Originating-IP: [10.203.174.77]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 Received-SPF: pass client-ip=185.176.79.56;
  envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
@@ -64,72 +64,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 5 Jul 2024 02:39:51 +0000
-"Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> wrote:
+On Tue, 2 Jul 2024 15:34:22 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> On 04/07/2024 17:34, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Guest crashes (Segmentation fault) when getting cxl-fmw property via
-> > qmp:
-> >   
+> Before pushing on to more significant features a few unrelated patches
+> doing tidying up + one to avoid people setting the memory backend both
+> for a CXL type 3 device and as normal RAM in an attempt to get SRAT to
+> cover it correctly.  We've had multiple 'bug' reports from this and if
+> nothing else I'd like to stop getting those!
 > 
-> IMO, it's fair to say "Guest crashes" which generally means the guest kernel panic etc.
-> I'd prefer the subject like:
-> hw/cxl/cxl-host: Fix segmentation fault when getting cxl-fmw property
-Agreed. I've picked this up and edited the description.
+> Based on master + the two DCD series Michael Tsirkin has queued.
+> 
+> Based-on: [PATCH v8 00/14] Enabling DCD emulation support in Qemu
+> Based-on: https://lore.kernel.org/qemu-devel/20240523174651.1089554-1-nifan.cxl@gmail.com/
+> Based-on: [PATCH qemu 0/2] hw/cxl: DCD tweaks and improvements.
+> Based-on: https://lore.kernel.org/qemu-devel/20240625170805.359278-1-Jonathan.Cameron@huawei.com/
 
-I've just hit send on a v2 of the misc minor fixes series with this
-replacing the patch that dropped cfmws_list
-
-Thanks,
-
-Jonathan
+I'll send a v2 that replaces the unused cfmw_list with the fix
+that makes us of it to avoid a crash.
 
 
 > 
+> Fan Ni (1):
+>   hw/cxl/cxl-mailbox-utils: remove unneeded mailbox output payload space
+>     zeroing
 > 
-> Otherwise,
+> Jonathan Cameron (1):
+>   hw/cxl: Check for multiple mappings of memory backends.
 > 
-> Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+> Li Zhijian (1):
+>   hw/cxl: Get rid of unused cfmw_list
 > 
+>  include/hw/cxl/cxl.h       |  1 -
+>  hw/cxl/cxl-host.c          |  1 -
+>  hw/cxl/cxl-mailbox-utils.c |  7 -------
+>  hw/mem/cxl_type3.c         | 15 +++++++++++++++
+>  4 files changed, 15 insertions(+), 9 deletions(-)
 > 
-> > (QEMU) qom-get path=machine property=cxl-fmw
-> > 
-> > This issue is caused by accessing wrong callback (opaque) type in
-> > machine_get_cfmw().
-> > 
-> > cxl_machine_init() sets the callback as `CXLState *` type but
-> > machine_get_cfmw() treats the callback as
-> > `CXLFixedMemoryWindowOptionsList **`.
-> > 
-> > Fix this error by casting opaque to `CXLState *` type in
-> > machine_get_cfmw().
-> > 
-> > Fixes: 03b39fcf64bc ("hw/cxl: Make the CXL fixed memory window setup a machine parameter.")
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   hw/cxl/cxl-host.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-> > index c5f5fcfd64d0..e9f2543c43c6 100644
-> > --- a/hw/cxl/cxl-host.c
-> > +++ b/hw/cxl/cxl-host.c
-> > @@ -315,7 +315,8 @@ static void machine_set_cxl(Object *obj, Visitor *v, const char *name,
-> >   static void machine_get_cfmw(Object *obj, Visitor *v, const char *name,
-> >                                void *opaque, Error **errp)
-> >   {
-> > -    CXLFixedMemoryWindowOptionsList **list = opaque;
-> > +    CXLState *state = opaque;
-> > +    CXLFixedMemoryWindowOptionsList **list = &state->cfmw_list;
-> >   
-> >       visit_type_CXLFixedMemoryWindowOptionsList(v, name, list, errp);
-> >     
 
 
