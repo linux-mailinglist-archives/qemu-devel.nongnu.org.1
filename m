@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B075928BBB
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A5928BDE
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:38:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPku8-0005o1-N1; Fri, 05 Jul 2024 11:31:20 -0400
+	id 1sPl0A-0002h6-2i; Fri, 05 Jul 2024 11:37:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPku6-0005m6-6V
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:18 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1sPkzy-0002cO-Js
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:22 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPktz-0000Sh-6e
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:17 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-58b447c513aso2092292a12.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:10 -0700 (PDT)
+ id 1sPkzw-0001IW-Va
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:22 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a77cc73d35fso130563566b.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193470; x=1720798270; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193839; x=1720798639; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6cFGUCF6aXfdVBiObpZIc6vFZvFIj8S4CeyY/mINKQs=;
- b=O0OcE8yq6tiE1hX795UrGKjsRy3xhJgfDvoLgmCSuOjVUsXwWMIhH+yK5N/QMVZPuj
- 5iDO+WkCybMr01nkJMJpJn6htq3ulIpsTXmAqEXK4nkRObqOJ2+XxhSZ0BFZE1gFQEpx
- 75HRdHGGLWWDDhobgRPJYbteyV4H7v1dE8PTsamynhwry4InFQS6WSi9zM7c9NKweGfE
- fBvM2CbFSRS9ZsVa/+SQ9b50M/AYKOlcJ3YfGh/qIL0wuQr0I7FQsOBKmI7h/ZwrErs8
- 4iT7HWT2i44QiWyUCXqLM6Izzb5hqYzXtldLLgwxp0xTk6FMYCTAR6feBBfYNJRzbZ8/
- emgQ==
+ bh=tcblXcJm1xF5LxPcrc6RNUAzD4wW3iGRX/uV+phD6V0=;
+ b=LYl7hFAque1r8d9B93ePkItkHP0yvn4oi7GgmfPKnr90xEfGPF0n7jrFZeAVNQU3oT
+ OGnESmOsYBnsqRPOd7wH3xLA4JGftWt5GIewBWPlfm7zid6BXPdgnahoOCTtTsk6CJ63
+ VN4OV7lSKJxWcqBBOVxSSMi6Bs78V3G/fBDbbGLlm6Ilgmu0qjYv+p8Ias6SXro/uFsD
+ e7mWP4TzXMPp4dkVAGfKTI7tWPHTAZ6nNSASyCN7ci44qrweV2pAC8cMcyhghrO+DkAx
+ lEAKtYmWJw7WUKinT4bUE+IEQRQ0hPUP4Mu4xnw1c4V4K8tiO9Xq+kIryaBssYwvaSJa
+ oThw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193470; x=1720798270;
+ d=1e100.net; s=20230601; t=1720193839; x=1720798639;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6cFGUCF6aXfdVBiObpZIc6vFZvFIj8S4CeyY/mINKQs=;
- b=j2NuYsWsOG7CdpHLQDg6rv/29Msd+kKVw4g3EQh0cfFMIP3va10x8dPvPp+QG4ZNoQ
- sh+cnq/3CMah3KPSHodJmTqZmXAb9+V7CqH6WoFyBtOw+hGmcXsU/oURFTJMhgvyBqeq
- E3HegEb6xyNODJqCjwY9JM6Oe69jQHDGGivHbyR6dGxBDtxwcHkeVwl9nsqxeMwZPIGi
- b7MVtSI0qna9moigCvBjTL/pQUXXATEUJ3mbUx1dSH9uoA3NuCDiM3USrD3P5oJkHwNu
- O44EB8+3ZZ3cXUgellm/QJIy1zPfikjViMbo3g1kTw1Jcidx7U7/KMO7x8+MBi52pAjf
- 2dCA==
-X-Gm-Message-State: AOJu0Yyw6jQyIGax3uqxbH9VCXJ9IT3aqOtxY7h1TKya0luuUwG5ZBSR
- Qfbdj68N04vaiyN1U0TeMxYVzzx/JMZVqRXDBY/H9exooXNUyiwAiXUoTJcAS9M=
-X-Google-Smtp-Source: AGHT+IG2K7cA/ePZmnblXWY7PjDLAcdXRkoPuTCpt227Vdx7wfAi8XfRD8e+k7sEI4mPQ4ekceUU2A==
-X-Received: by 2002:a05:6402:11c8:b0:58b:565d:ac92 with SMTP id
- 4fb4d7f45d1cf-58e5b4a7759mr3682778a12.22.1720193468808; 
- Fri, 05 Jul 2024 08:31:08 -0700 (PDT)
+ bh=tcblXcJm1xF5LxPcrc6RNUAzD4wW3iGRX/uV+phD6V0=;
+ b=aFV3UtBRYNYPzbuEO+9DhMMFT5ioG26aFlewKCpfVCNJK9PwlVB9Ra7visDjeE9PmP
+ o/HuMUK5FSCSuCl8zWg/61O3QhBOZHkBuCyqT1M7/sid93vXH09ZKuh+V0DPFWlm28Ao
+ enqBNNUXpoqt1WJ3AuQYuZ5HHg8SAFiDKuGf2bjlZzYCR5qfAD9XBW4QxSFMt2j8117e
+ 6xoR4nQNsAiUQW46TRP00fM55YrKMrPe9L+Hdq2dwbI3Gmp3DxYP6dswzzf/PrB4/D6u
+ N3VfcKFH/HLK6YMVsvEAEMQRFR7gKnG/tP12qpydnnhTHcx7xK8GInSSO+Q5KyP5oH5D
+ jiFw==
+X-Gm-Message-State: AOJu0YwbJy4JimxQNNBxAqJXP10UN26SPRLgfqPiyfjwM3AVEkOpWSJc
+ lJ+Mnt0NoqoKdcy7apXx/q2DP2E7gtumwGAzZcNbTf28FDFwfkIZXJRjPQQT9SA=
+X-Google-Smtp-Source: AGHT+IHP5vAOBmjMJaXra2aiwjJhGqJHotB4VfhfRqcWkzIhyw0Vuk1bxsrne9XAORZTgUdlXO0zoA==
+X-Received: by 2002:a17:906:d1d2:b0:a77:cfe9:8ed5 with SMTP id
+ a640c23a62f3a-a77cfe98f21mr157190366b.30.1720193839427; 
+ Fri, 05 Jul 2024 08:37:19 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5907e4d79ddsm207464a12.59.2024.07.05.08.31.02
+ a640c23a62f3a-a77c3ef218bsm103433166b.71.2024.07.05.08.37.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:31:06 -0700 (PDT)
+ Fri, 05 Jul 2024 08:37:14 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5B65C62174;
+ by draig.lan (Postfix) with ESMTP id 7384B62176;
  Fri,  5 Jul 2024 16:30:56 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 35/40] target/arm: Factor out code for setting MTE TCF0 field
-Date: Fri,  5 Jul 2024 16:30:47 +0100
-Message-Id: <20240705153052.1219696-36-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 36/40] gdbstub: Make hex conversion function non-internal
+Date: Fri,  5 Jul 2024 16:30:48 +0100
+Message-Id: <20240705153052.1219696-37-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,168 +99,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Factor out the code used for setting the MTE TCF0 field from the prctl
-code into a convenient function. Other subsystems, like gdbstub, need to
-set this field as well, so keep it as a separate function to avoid
-duplication and ensure consistency in how this field is set across the
-board.
+Make gdb_hextomem non-internal so it's not confined to use only in
+gdbstub.c.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-Id: <20240628050850.536447-7-gustavo.romero@linaro.org>
-[AJB: clean-up includes, move MTE defines]
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240628050850.536447-8-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-36-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-37-alex.bennee@linaro.org>
 
-diff --git a/linux-user/aarch64/mte_user_helper.h b/linux-user/aarch64/mte_user_helper.h
-new file mode 100644
-index 0000000000..8685e5175a
---- /dev/null
-+++ b/linux-user/aarch64/mte_user_helper.h
-@@ -0,0 +1,32 @@
-+/*
-+ * ARM MemTag convenience functions.
-+ *
-+ * This code is licensed under the GNU GPL v2 or later.
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+
-+#ifndef AARCH64_MTE_USER_HELPER_H
-+#define AARCH64_MTE USER_HELPER_H
-+
-+#ifndef PR_MTE_TCF_SHIFT
-+# define PR_MTE_TCF_SHIFT       1
-+# define PR_MTE_TCF_NONE        (0UL << PR_MTE_TCF_SHIFT)
-+# define PR_MTE_TCF_SYNC        (1UL << PR_MTE_TCF_SHIFT)
-+# define PR_MTE_TCF_ASYNC       (2UL << PR_MTE_TCF_SHIFT)
-+# define PR_MTE_TCF_MASK        (3UL << PR_MTE_TCF_SHIFT)
-+# define PR_MTE_TAG_SHIFT       3
-+# define PR_MTE_TAG_MASK        (0xffffUL << PR_MTE_TAG_SHIFT)
-+#endif
-+
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index 34121dc61a..bf5a5c6302 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -107,7 +107,6 @@ static inline int tohex(int v)
+ 
+ void gdb_put_strbuf(void);
+ int gdb_put_packet_binary(const char *buf, int len, bool dump);
+-void gdb_hextomem(GByteArray *mem, const char *buf, int len);
+ void gdb_memtohex(GString *buf, const uint8_t *mem, int len);
+ void gdb_memtox(GString *buf, const char *mem, int len);
+ void gdb_read_byte(uint8_t ch);
+diff --git a/include/gdbstub/commands.h b/include/gdbstub/commands.h
+index 306dfdef97..e51f276b40 100644
+--- a/include/gdbstub/commands.h
++++ b/include/gdbstub/commands.h
+@@ -91,4 +91,10 @@ void gdb_extend_set_table(GdbCmdParseEntry *table, int size);
+  */
+ void gdb_extend_qsupported_features(char *qsupported_features);
+ 
 +/**
-+ * arm_set_mte_tcf0 - Set TCF0 field in SCTLR_EL1 register
-+ * @env: The CPU environment
-+ * @value: The value to be set for the Tag Check Fault in EL0 field.
-+ *
-+ * Only SYNC and ASYNC modes can be selected. If ASYMM mode is given, the SYNC
-+ * mode is selected instead. So, there is no way to set the ASYMM mode.
++ * Convert a hex string to bytes. Conversion is done per byte, so 2 hex digits
++ * are converted to 1 byte. Invalid hex digits are treated as 0 digits.
 + */
-+void arm_set_mte_tcf0(CPUArchState *env, abi_long value);
++void gdb_hextomem(GByteArray *mem, const char *buf, int len);
 +
-+#endif /* AARCH64_MTE_USER_HELPER_H */
-diff --git a/linux-user/aarch64/target_prctl.h b/linux-user/aarch64/target_prctl.h
-index aa8e203c15..ed75b9e4b5 100644
---- a/linux-user/aarch64/target_prctl.h
-+++ b/linux-user/aarch64/target_prctl.h
-@@ -7,6 +7,7 @@
- #define AARCH64_TARGET_PRCTL_H
- 
- #include "target/arm/cpu-features.h"
-+#include "mte_user_helper.h"
- 
- static abi_long do_prctl_sve_get_vl(CPUArchState *env)
- {
-@@ -173,26 +174,7 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
-     env->tagged_addr_enable = arg2 & PR_TAGGED_ADDR_ENABLE;
- 
-     if (cpu_isar_feature(aa64_mte, cpu)) {
--        /*
--         * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
--         *
--         * The kernel has a per-cpu configuration for the sysadmin,
--         * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
--         * which qemu does not implement.
--         *
--         * Because there is no performance difference between the modes, and
--         * because SYNC is most useful for debugging MTE errors, choose SYNC
--         * as the preferred mode.  With this preference, and the way the API
--         * uses only two bits, there is no way for the program to select
--         * ASYMM mode.
--         */
--        unsigned tcf = 0;
--        if (arg2 & PR_MTE_TCF_SYNC) {
--            tcf = 1;
--        } else if (arg2 & PR_MTE_TCF_ASYNC) {
--            tcf = 2;
--        }
--        env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
-+        arm_set_mte_tcf0(env, arg2);
- 
-         /*
-          * Write PR_MTE_TAG to GCR_EL1[Exclude].
-diff --git a/linux-user/aarch64/mte_user_helper.c b/linux-user/aarch64/mte_user_helper.c
-new file mode 100644
-index 0000000000..a5b1c8503b
---- /dev/null
-+++ b/linux-user/aarch64/mte_user_helper.c
-@@ -0,0 +1,35 @@
-+/*
-+ * ARM MemTag convenience functions.
-+ *
-+ * This code is licensed under the GNU GPL v2 or later.
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu.h"
-+#include "mte_user_helper.h"
-+
-+void arm_set_mte_tcf0(CPUArchState *env, abi_long value)
-+{
-+    /*
-+     * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
-+     *
-+     * The kernel has a per-cpu configuration for the sysadmin,
-+     * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
-+     * which qemu does not implement.
-+     *
-+     * Because there is no performance difference between the modes, and
-+     * because SYNC is most useful for debugging MTE errors, choose SYNC
-+     * as the preferred mode.  With this preference, and the way the API
-+     * uses only two bits, there is no way for the program to select
-+     * ASYMM mode.
-+     */
-+    unsigned tcf = 0;
-+    if (value & PR_MTE_TCF_SYNC) {
-+        tcf = 1;
-+    } else if (value & PR_MTE_TCF_ASYNC) {
-+        tcf = 2;
-+    }
-+    env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
-+}
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e2804312fc..b8c278b91d 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6281,15 +6281,6 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
- # define PR_GET_TAGGED_ADDR_CTRL 56
- # define PR_TAGGED_ADDR_ENABLE  (1UL << 0)
- #endif
--#ifndef PR_MTE_TCF_SHIFT
--# define PR_MTE_TCF_SHIFT       1
--# define PR_MTE_TCF_NONE        (0UL << PR_MTE_TCF_SHIFT)
--# define PR_MTE_TCF_SYNC        (1UL << PR_MTE_TCF_SHIFT)
--# define PR_MTE_TCF_ASYNC       (2UL << PR_MTE_TCF_SHIFT)
--# define PR_MTE_TCF_MASK        (3UL << PR_MTE_TCF_SHIFT)
--# define PR_MTE_TAG_SHIFT       3
--# define PR_MTE_TAG_MASK        (0xffffUL << PR_MTE_TAG_SHIFT)
--#endif
- #ifndef PR_SET_IO_FLUSHER
- # define PR_SET_IO_FLUSHER 57
- # define PR_GET_IO_FLUSHER 58
-diff --git a/linux-user/aarch64/meson.build b/linux-user/aarch64/meson.build
-index 248c578d15..f75bb3cd75 100644
---- a/linux-user/aarch64/meson.build
-+++ b/linux-user/aarch64/meson.build
-@@ -9,3 +9,5 @@ vdso_le_inc = gen_vdso.process('vdso-le.so',
-                                extra_args: ['-r', '__kernel_rt_sigreturn'])
- 
- linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [vdso_be_inc, vdso_le_inc])
-+
-+linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [files('mte_user_helper.c')])
+ #endif /* GDBSTUB_COMMANDS_H */
 -- 
 2.39.2
 
