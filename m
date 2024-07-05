@@ -2,75 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF078927FFD
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 04:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CD992800B
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 04:08:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPYEk-0002UW-NB; Thu, 04 Jul 2024 21:59:46 -0400
+	id 1sPYMX-0006dk-FF; Thu, 04 Jul 2024 22:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sPYEg-0002TK-F2
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 21:59:43 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1sPYMT-0006c6-7s; Thu, 04 Jul 2024 22:07:45 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sPYEe-0002Vj-0c
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 21:59:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720144780; x=1751680780;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=H5aKULNt4WSucCpS33VBoTqFB2U+MngO5Rz+nQDfDew=;
- b=Eij/3Mogp6p7eTspowIBlbShKA+/utwvOEU30RFOcBhd1+LDiSLHNfbw
- lh6WmAWTf49utV17y05gQi/EykvTdtN6pPTS2IOL+NgAleFBrSd7KW9qT
- bNtVJhNex2Sk6Gn9+tleLieIVJwmIRBQDmBuXZj7Kv/YU4PwKWWWzPalT
- kuOVmeMR/Noo5Z8w9hRRrU4Nj3EIL1UKetbymUOhpduaduWpXo99BQI03
- BHQTYo+alAkbZZiE6I6nafUxgiyvLbu1IDWbn2OEXs4DfrtQiPxtbvEWa
- PdcnXb5VWmcfeJILVbDVzQeb7s8cTVlIudRFwdtbsxKvl1+TeTwXvFgty A==;
-X-CSE-ConnectionGUID: eH43dk/XR/KgK/ZOLRo9zQ==
-X-CSE-MsgGUID: IXPcUyGNQ/uYtgec879YpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28820686"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="28820686"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 18:59:37 -0700
-X-CSE-ConnectionGUID: v/fgd0WsTXKYXpSlhOVeNA==
-X-CSE-MsgGUID: 73xskWlKTLid94cGL7iGvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="51695204"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 04 Jul 2024 18:59:34 -0700
-Date: Fri, 5 Jul 2024 10:15:12 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "mst@redhat.com" <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linuxarm@huawei.com" <linuxarm@huawei.com>,
- Zhao Liu <zhao1.liu@linux.intel.com>
-Subject: Re: [PATCH 1/3] hw/cxl: Get rid of unused cfmw_list
-Message-ID: <ZodXMPef9bIROG5u@intel.com>
-References: <20240702143425.717452-1-Jonathan.Cameron@huawei.com>
- <20240702143425.717452-2-Jonathan.Cameron@huawei.com>
- <5ffea576-0b87-46c1-b4dc-e09bd253805e@fujitsu.com>
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1sPYMQ-0000GB-JE; Thu, 04 Jul 2024 22:07:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=202312; t=1720145250;
+ bh=9TY8OzjLg5dvNEnqa/AJm+CxMGhLLtdC1z5QlJXJ2b8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=dvP/ba2FWNY7KvBwc1eAMjbC/mrmrisKxfMMCbVAWjrmzxmj0amJZD6S3hKWBwUKa
+ KpcXxFauaJ0ndBHU2lhKjAZqHVyMfOv3WKm7zen32PjP2iCU4hXcxuU7ydghIK6De0
+ V62E/4/ztwtlDvHHfy6c2RSTWME60yB8Dtzjb91rf3oEuQL9gaGX4zoY8dxAAZgwca
+ jC/6RTXC9svlGoKn9jDC4FG769HKcukIIcCHZ0C8hDbIuCZW4ndODdUjFuUK1uDQ0m
+ RLPUvdziznFKsJaPINEDQL4QZnnu1gw4JNDRtMMSWEWucrIi7fsMNkLbTk+2/uUfX0
+ Wp3wFy9t8rb7w==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+ id 4WFcNL62MHz4wbr; Fri,  5 Jul 2024 12:07:30 +1000 (AEST)
+Date: Fri, 5 Jul 2024 11:33:17 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH v2 06/15] ppc/vof: Fix unaligned FDT property access
+Message-ID: <ZodNXYfKAy0CcaRt@zatzit>
+References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
+ <20240627-san-v2-6-750bb0946dbd@daynix.com>
+ <CAFEAcA-Zmc0BQgUiqEgzCvVGWyiPt9bo+Xt90n4wxhJ3_D91fA@mail.gmail.com>
+ <Zn98p6CUV0KnIo50@zatzit>
+ <CAFEAcA_LN8i66KUkxrgg=CUKJNYM=s9pTYv6w5QQ7PSU1Q3=bg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="0Injt77FYeqCm07l"
 Content-Disposition: inline
-In-Reply-To: <5ffea576-0b87-46c1-b4dc-e09bd253805e@fujitsu.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+In-Reply-To: <CAFEAcA_LN8i66KUkxrgg=CUKJNYM=s9pTYv6w5QQ7PSU1Q3=bg@mail.gmail.com>
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=dgibson@gandalf.ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,63 +82,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 05, 2024 at 01:04:51AM +0000, Zhijian Li (Fujitsu) wrote:
-> Date: Fri, 5 Jul 2024 01:04:51 +0000
-> From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-> Subject: Re: [PATCH 1/3] hw/cxl: Get rid of unused cfmw_list
-> 
-> Jonathan,
-> 
-> 
-> There is a new user for cfmw_list now
-> https://lore.kernel.org/qemu-devel/20240704093404.1848132-1-zhao1.liu@linux.intel.com/
-> 
-> So I think we should drop this patch.
 
-Hi Zhijian,
+--0Injt77FYeqCm07l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm not a "real" user and that bug was originally found by code reading.
+On Thu, Jul 04, 2024 at 01:15:57PM +0100, Peter Maydell wrote:
+> On Sat, 29 Jun 2024 at 04:17, David Gibson <david@gibson.dropbear.id.au> =
+wrote:
+> >
+> > On Fri, Jun 28, 2024 at 04:20:02PM +0100, Peter Maydell wrote:
+> > > On Thu, 27 Jun 2024 at 14:39, Akihiko Odaki <akihiko.odaki@daynix.com=
+> wrote:
+> > > >
+> > > > FDT properties are aligned by 4 bytes, not 8 bytes.
+> > > >
+> > > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > > > ---
+> > > >  hw/ppc/vof.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+> > > > index e3b430a81f4f..b5b6514d79fc 100644
+> > > > --- a/hw/ppc/vof.c
+> > > > +++ b/hw/ppc/vof.c
+> > > > @@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, =
+GArray *claimed, uint64_t base)
+> > > >      mem0_reg =3D fdt_getprop(fdt, offset, "reg", &proplen);
+> > > >      g_assert(mem0_reg && proplen =3D=3D sizeof(uint32_t) * (ac + s=
+c));
+> > > >      if (sc =3D=3D 2) {
+> > > > -        mem0_end =3D be64_to_cpu(*(uint64_t *)(mem0_reg + sizeof(u=
+int32_t) * ac));
+> > > > +        mem0_end =3D ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
+> > > >      } else {
+> > > >          mem0_end =3D be32_to_cpu(*(uint32_t *)(mem0_reg + sizeof(u=
+int32_t) * ac));
+> > > >      }
+> > >
+> > > I did wonder if there was a better way to do what this is doing,
+> > > but neither we (in system/device_tree.c) nor libfdt seem to
+> > > provide one.
+> >
+> > libfdt does provide unaligned access helpers (fdt32_ld() etc.), but
+> > not an automatic aligned-or-unaligned helper.   Maybe we should add tha=
+t?
+>=20
+> fdt32_ld() and friends only do the "load from this bit of memory"
+> part, which we already have QEMU utility functions for (and which
+> are this patch uses).
+>=20
+> This particular bit of code is dealing with an fdt property ("memory")
+> that is an array of (address, size) tuples where address and size
+> can independently be either 32 or 64 bits, and it wants the
+> size value of tuple 0. So the missing functionality is something at
+> a higher level than fdt32_ld() which would let you say "give me
+> tuple N field X" with some way to specify the tuple layout. (Which
+> is an awkward kind of API to write in C.)
 
-So that fix won't block your drop. :-)
+Ah, right.  Yeah.. that's a pretty awkward API in C.
 
-And I think the fix is worth being laned before cfmw_list gets dropped,
-for being able to port backwards to stable QEMU.
- 
-> On 02/07/2024 22:34, Jonathan Cameron wrote:
-> > From: Li Zhijian <lizhijian@fujitsu.com>
-> > 
-> > There is no user for this member. All '-M cxl-fmw.N' options have
-> > been parsed and saved to CXLState.fixed_windows.
-> > 
-> > Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >   include/hw/cxl/cxl.h | 1 -
-> >   hw/cxl/cxl-host.c    | 1 -
-> >   2 files changed, 2 deletions(-)
-> > 
-> > diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
-> > index 75e47b6864..e3ecbef038 100644
-> > --- a/include/hw/cxl/cxl.h
-> > +++ b/include/hw/cxl/cxl.h
-> > @@ -43,7 +43,6 @@ typedef struct CXLState {
-> >       MemoryRegion host_mr;
-> >       unsigned int next_mr_idx;
-> >       GList *fixed_windows;
-> > -    CXLFixedMemoryWindowOptionsList *cfmw_list;
-> >   } CXLState;
-> >   
-> >   struct CXLHost {
-> > diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-> > index c5f5fcfd64..926d3d3da7 100644
-> > --- a/hw/cxl/cxl-host.c
-> > +++ b/hw/cxl/cxl-host.c
-> > @@ -335,7 +335,6 @@ static void machine_set_cfmw(Object *obj, Visitor *v, const char *name,
-> >       for (it = cfmw_list; it; it = it->next) {
-> >           cxl_fixed_memory_window_config(state, it->value, errp);
-> >       }
-> > -    state->cfmw_list = cfmw_list;
-> >   }
-> >   
-> >   void cxl_machine_init(Object *obj, CXLState *state)
+> Slightly less general, but for this case we could perhaps have
+> something like the getprop equivalent of qemu_fdt_setprop_sized_cells():
+>=20
+>   uint64_t value_array[2];
+>   qemu_fdt_getprop_sized_cells(fdt, nodename, "memory", &value_array,
+>                                ac, sc);
+>   /*
+>    * fills in value_array[0] with address, value_array[1] with size,
+>    * probably barfs if the varargs-list of cell-sizes doesn't
+>    * cover the whole property, similar to the current assert on
+>    * proplen.
+>    */
+>   mem0_end =3D value_array[0];
+
+Seems reasonable to me.  The only other thought I had was something
+like Python's struct.unpack() [0].  But your suggestion is probably
+more natural in C.
+
+[0] https://docs.python.org/3/library/struct.html#struct.unpack
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--0Injt77FYeqCm07l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmaHTVwACgkQzQJF27ox
+2GcAUg/+NEM0aQR3ZiiUaW57idGniuDnFmcj10jKgu2NjaMrZb0mDNn3467xHMQK
+CdZ8z8QPj6s7AqLAKdCzm5XQTL+UGvhT2cgX+C/WD2s7mFl0EKoCSxqQFw5Gjntz
+fuYIo4zD1nbkpFn/Yr//rtPi9oFOp3LxIaITVZG3n7OZhbZkTPjRpkROEpmdONLx
+AQcWOP1U9GXSkPJ23990kdekSiOh7zf8C7Wy3TSSHc4SA6KNcasuRdkr08B1044G
+R21NmsbBKcLOKiidhedEsiI+m7ZVRC2toDahWC/ujHVXQeOtd6LjJn1N0bSLyewD
+S26u7/t+n7cSM8mqwNmzMBCwK8PeGHhFnWlH/innBNmY1kHh66j7485+3MY1e5KX
+A1dJk4hNOwKMV5zWhO+37TQM5Q8IUp+6S0N4zqbGfUgd6B7WZHMv3qoj0XFyi2PL
+bWd53A5aQI09QUNt8hvoJ9oKwcwtjBoywCloL1Gg9PnPh+SSjT8BaWcwyfwr8IYQ
+875N6CrxkXQ5wi3mUS2mAYR4X7BWil6vZ5cGYYTS+mi01Ac7Ly5kK5vYxwQMToPQ
+HQt5E8mTrahcomHIWjpJwySUu9XNsFdFkUIGL2qROFU6TisX5G0Nx9Ks4C3fNlPM
+QE06IYKrGJxXBjQ7yWJYJCInNrHKh7XVdcH44jXy+iQYRCOjuiY=
+=NV6x
+-----END PGP SIGNATURE-----
+
+--0Injt77FYeqCm07l--
 
