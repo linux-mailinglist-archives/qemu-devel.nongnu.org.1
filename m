@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84F4928413
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C0C928408
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:48:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPecD-0002YJ-NM; Fri, 05 Jul 2024 04:48:25 -0400
+	id 1sPebU-0000vV-8s; Fri, 05 Jul 2024 04:47:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebP-0000yr-3D
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:35 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1sPebG-0000tl-Td
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:27 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeb8-0004BV-UX
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:34 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2ebe40673e8so18483871fa.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:15 -0700 (PDT)
+ id 1sPeb3-0004Ax-OI
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:26 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-58b966b4166so1702972a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720169234; x=1720774034; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720169232; x=1720774032; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1i+oRffwUlRN86HbVYMqaafbL1Oir7rskJUuAdQaFjw=;
- b=ppwm+SJsomM+1lbrpmkabKEHNZ4qNKJsnvC7Vp4rrNsFNd9FH5h5la6ZL4UX2cDE/g
- 4R+M0FTrGJT5eRclbxMe0ki4iSyTHzPLZICIjZFs29Ozp/oWzWXUxN1eCJMTTR+9QOQ2
- gidjEVPCE0OZ6SKYDkk4ZVg4TzWIahLp8VUxZscBX5ODiMpG/chF2z+ZisgHwcFcHQEH
- Mv+NKPkA+2YfHQGb5LOuxZA3cgFrF/4ecnvfaCOokSdRYsib8s8Xp/xTnBCXG+qiG9Du
- OVGG6YQyEmipdT5Xw9nlwWZHz2JM/VihxKn8rCZ/yy+XOFAVd5gtL1BH7xhNpXvOQthW
- +nMg==
+ bh=JoliEJsSzkKhZQwY3f6Epel/jCgNkpeyE6ZHVJ+pXJo=;
+ b=Qvi2a9XjpxLe5AkyUofn6/LikWpfyagKI2mRbm40T+GS1gFCTMTdMgOyqo1AA9ydVP
+ TbCfsDJ41dylcx+WGxPCbh7pUA72WPa5bpwoq7mxiuT551yZ/+oo2w9FwzQV2ZLb8jEJ
+ S05s7reCIgFIgRKICG0DFYhfr/B3jZyFBjV+NqklnBc+Q0qIGaD1uQe88EMk3PL3/r4N
+ XuLYnfESkOYhJzlNErEBwEToWjdhsLLYZ35mm+VOFofFMiPglrQx4+mfpvbHdHbF4Boy
+ +0NvRmrEbHGQLVcA6IJcaGBWHA41sWRU6x2+FbDNPqyhKb3WClXFTxppRlxeGBVDe8bJ
+ xseg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720169234; x=1720774034;
+ d=1e100.net; s=20230601; t=1720169232; x=1720774032;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1i+oRffwUlRN86HbVYMqaafbL1Oir7rskJUuAdQaFjw=;
- b=flJZomAnAqdjqXtSjnLHkrapYHSZS27xaYMrR+rIGdx17Z6YYsJ8dnUHxm67L/bCTY
- 1wQt2v4taKoti44gSwbhYXIZ+sAt+7Fp/jwPi8NjUpTB0kqaCHc3qwqs1V+k1Nv6kVId
- dgya4/1Ljg1V+NiPo2/KqfOklB8FNMjHrSPUXGkQlMZGFrn7K+cmONOsFzz/wK2ZQLya
- 9A0ITcEuZXjNwSy8xc4ohtbGx8qZ5P8Mgdx6LrCGzyMZ8FIiayLf0zTMrG2vk54ezrzy
- 6YxBPDZUgBa1D7kxb8Kfnt9bQz0UF/LFmDqHKc7SOvpTQb1CoKKMq5cgPW4eEceXk4st
- KB4A==
-X-Gm-Message-State: AOJu0Yw+/XrTTxRta/bAIIN9MgbsIu3h7XFzHdImNs8qqepnc3Itgf1G
- So5xzREoWELndKbXeb7pt4/JSpQPHfzhBTAvJqcd8jQJk9iAoij5yK6nhTEjaWk=
-X-Google-Smtp-Source: AGHT+IEGm064V0QCGpWjJY6+PWDvIDXdJSVlgntXRI1y+n4/3hPExEwt+0OzAzz73AOFRhlJ05lDIQ==
-X-Received: by 2002:a19:ca13:0:b0:52c:9421:2739 with SMTP id
- 2adb3069b0e04-52ea061b1bemr2470634e87.9.1720169234057; 
- Fri, 05 Jul 2024 01:47:14 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58ea536b05dsm1530036a12.8.2024.07.05.01.47.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ bh=JoliEJsSzkKhZQwY3f6Epel/jCgNkpeyE6ZHVJ+pXJo=;
+ b=sq+BzcHXwCL9S5d4t8addtNZzcW8Pkt3CkAFqErmz00w75rBSoBnGcX14sUG096/en
+ tsWsIvaLxwi0CZc+ED9wgZ61xfarFQsgvFzmubBt7pgS+FYmxHkSkHeyzTkOophxtoWS
+ kzEZShoNZHnIqO7QdKMdMPvUtcSODH4nDMposODDrp1bHDDApIQlfROtpvhOwfkqPzh+
+ R7inbuHMpLyzRsWscbZvOqEQQ7QEFJ9+dpX475CcuIkDYBCNR4bb48wNca6n00RzWFdM
+ wMO/Drotl1qfQSl+wDJYBpQ9UrjNrOa5N++GgDGActZ2ctyC3XTekKSlX/s9528uYafW
+ oSog==
+X-Gm-Message-State: AOJu0YzTOJ/GBSG/D2Tm8w/ndSXPt+UHnKQHRs8uq875nzpsQtHmFWni
+ M5xL09EavA6uhbnNSz3I33tsTGDykYzOMsbNuE+wCYowxlU3XCE1lX9yE80g5dA=
+X-Google-Smtp-Source: AGHT+IF5VPLchM8xkt4tOfpWY9w6IdBRhKtzuufLUL6EXMGsg8G6JvkrPJpaKA75LaO44V8otM3+gA==
+X-Received: by 2002:a05:6402:17c4:b0:585:3a33:9de0 with SMTP id
+ 4fb4d7f45d1cf-58e5aecb62cmr2266271a12.26.1720169231829; 
  Fri, 05 Jul 2024 01:47:11 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-58f9d3f11ffsm573363a12.67.2024.07.05.01.47.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Jul 2024 01:47:10 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3C3C662177;
+ by draig.lan (Postfix) with ESMTP id 5527F6217D;
  Fri,  5 Jul 2024 09:40:51 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,24 +77,24 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH v2 36/40] gdbstub: Make hex conversion function non-internal
-Date: Fri,  5 Jul 2024 09:40:43 +0100
-Message-Id: <20240705084047.857176-37-alex.bennee@linaro.org>
+Subject: [PATCH v2 37/40] gdbstub: Pass CPU context to command handler
+Date: Fri,  5 Jul 2024 09:40:44 +0100
+Message-Id: <20240705084047.857176-38-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,45 +112,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Make gdb_hextomem non-internal so it's not confined to use only in
-gdbstub.c.
+Allow passing the current CPU context to command handlers via user_ctx
+when the handler requires it.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240628050850.536447-8-gustavo.romero@linaro.org>
+Message-Id: <20240628050850.536447-9-gustavo.romero@linaro.org>
 ---
- gdbstub/internals.h        | 1 -
- include/gdbstub/commands.h | 6 ++++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/gdbstub/commands.h | 3 +++
+ gdbstub/gdbstub.c          | 7 ++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 34121dc61a..bf5a5c6302 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -107,7 +107,6 @@ static inline int tohex(int v)
- 
- void gdb_put_strbuf(void);
- int gdb_put_packet_binary(const char *buf, int len, bool dump);
--void gdb_hextomem(GByteArray *mem, const char *buf, int len);
- void gdb_memtohex(GString *buf, const uint8_t *mem, int len);
- void gdb_memtox(GString *buf, const char *mem, int len);
- void gdb_read_byte(uint8_t ch);
 diff --git a/include/gdbstub/commands.h b/include/gdbstub/commands.h
-index 306dfdef97..e51f276b40 100644
+index e51f276b40..f3058f9dda 100644
 --- a/include/gdbstub/commands.h
 +++ b/include/gdbstub/commands.h
-@@ -91,4 +91,10 @@ void gdb_extend_set_table(GdbCmdParseEntry *table, int size);
+@@ -54,6 +54,8 @@ typedef union GdbCmdVariant {
+  * "stop reply" packet. The list of commands that accept such response is
+  * defined at the GDB Remote Serial Protocol documentation. See:
+  * https://sourceware.org/gdb/onlinedocs/gdb/Stop-Reply-Packets.html#Stop-Reply-Packets.
++ *
++ * @need_cpu_context: Pass current CPU context to command handler via user_ctx.
   */
- void gdb_extend_qsupported_features(char *qsupported_features);
+ typedef struct GdbCmdParseEntry {
+     GdbCmdHandler handler;
+@@ -61,6 +63,7 @@ typedef struct GdbCmdParseEntry {
+     bool cmd_startswith;
+     const char *schema;
+     bool allow_stop_reply;
++    bool need_cpu_context;
+ } GdbCmdParseEntry;
  
-+/**
-+ * Convert a hex string to bytes. Conversion is done per byte, so 2 hex digits
-+ * are converted to 1 byte. Invalid hex digits are treated as 0 digits.
-+ */
-+void gdb_hextomem(GByteArray *mem, const char *buf, int len);
+ /**
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index b1ca253f97..5c1612ed2a 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -938,6 +938,7 @@ static bool process_string_cmd(const char *data,
+ 
+     for (i = 0; i < num_cmds; i++) {
+         const GdbCmdParseEntry *cmd = &cmds[i];
++        void *user_ctx = NULL;
+         g_assert(cmd->handler && cmd->cmd);
+ 
+         if ((cmd->cmd_startswith && !startswith(data, cmd->cmd)) ||
+@@ -952,8 +953,12 @@ static bool process_string_cmd(const char *data,
+             }
+         }
+ 
++        if (cmd->need_cpu_context) {
++            user_ctx = (void *)gdbserver_state.g_cpu;
++        }
 +
- #endif /* GDBSTUB_COMMANDS_H */
+         gdbserver_state.allow_stop_reply = cmd->allow_stop_reply;
+-        cmd->handler(params, NULL);
++        cmd->handler(params, user_ctx);
+         return true;
+     }
+ 
 -- 
 2.39.2
 
