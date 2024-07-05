@@ -2,104 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EC59283D9
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB2E9283DC
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:41:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPeTv-0007MW-IP; Fri, 05 Jul 2024 04:39:51 -0400
+	id 1sPeVO-0000FJ-Vu; Fri, 05 Jul 2024 04:41:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sPeTs-0007Kw-LS
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:39:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sPeTq-0001qO-Ob
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:39:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720168785;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=U2zz8KCHD3hS0K+Ngii5R4uTxbaAh3WfFnqhJ8jnM9w=;
- b=PJtMol09yGUZmNzkPI+pK6g1DYKnnR5JLonLvibUkOi+np8L/DXMHRsLQc58kQp5bRjjWG
- bJHzwLuBFN8wvaTorT2w0AYL2xFWgCMpQcyoVy3A1W4gJCEC5cuF9wQMAchU6vsy04Ghq7
- xeVNjKzqXp5zE/FJL5D2qkXTkuNUDBc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-Macqqvy5PuqCCFIkvu6NRA-1; Fri, 05 Jul 2024 04:39:43 -0400
-X-MC-Unique: Macqqvy5PuqCCFIkvu6NRA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-367990a5796so970135f8f.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:39:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sPeV1-0008Qm-N9
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:40:59 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sPeUt-0003Ag-MP
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:40:59 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-58b447c51bfso1785569a12.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:40:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720168849; x=1720773649; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3AncV0n0Nr8xyguEQlZ6mHLdeGfbGdlqoVR8NDgRWgE=;
+ b=e01xI4RWH5X8U+aIECuMwsX1oBYNq6JMDqGJec8CGOE2SGaSPxVEmsJGDgOOeyp/mF
+ p1O2QCNUU8mmaAd7/cq4vwnuMxYk1TANguagX/untfHGo4grIoDfxlb/6Sq0jDCKlueD
+ XDPeeIQLuvfPjTR0yjOsRH9nm+zgm8f58XUsWbbN76EEK3Sxvez743a0910HbrnQOgFT
+ PL/fCKp+gZ7E/2pQsuuDVnIA+CSOpvWWyvBgrkOsVpa3MBsvHyamj9rmqhpa/E6WglQW
+ 1ngf0ZUfZxfccrZcZ9B7+cZVdy89tbp1IKNn/UC9l1dtDoSiIvM+sRn4EFkXoHcFo8cZ
+ 0acQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720168782; x=1720773582;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U2zz8KCHD3hS0K+Ngii5R4uTxbaAh3WfFnqhJ8jnM9w=;
- b=Rg4oKH0w4xVM7XOnlTT1Wb/ol6uorE2vSNWjpxYod4UUVAUFi7IG4ppE2sMhFtWW4b
- O0ZMSLbtR41cL1FuVKGkmkuiP+9ECGTabbwOFhWG6jhVksIbQd+gDibvv2Wnr/pQ5Or6
- KlZ1HPVoYGpJ2Qr6qowoxBva5ooNo4v9exjrJLZaQ45kE3T6NA3ydYNPfzFdrJ1RY1WZ
- m/BLSHiSi+fTWwgtRuRFyOXN0EFuxs6x4oNgp5c9AT1FCcBwKxceb39Nhx0BD1FnEpCj
- K9vzy3bkWT9W/AzziQcza8UAtgBb8qvGLT0N/YGwnLNY3OiyAnH0914SzwL1wk2ghpOj
- GlLw==
-X-Gm-Message-State: AOJu0YwnUMIrpf0rGCcdl5RJwvERs8tk+9wGLPPegZMsWm5x6qNrgVfo
- EqL8E39EqNigXHT3CtKhY25wt2MoHJjkbV4gGoQQbxu4qxVAmoX+fGb7cFNysWHghK2P3EC0DFH
- QXOdMdNeeYg4Vgu5VcxHnKGfjAycbg0hy748QjDjst2bxr55ogLDF
-X-Received: by 2002:adf:a3d2:0:b0:367:97b9:d5ed with SMTP id
- ffacd0b85a97d-3679dd310edmr3035688f8f.9.1720168782394; 
- Fri, 05 Jul 2024 01:39:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+t1XN3u02n1jZWTWFk/RQGfXmkCoYnTzjYMJlQbmj+L7qLMYRBMTwkf0q28VksAjMJKzs/w==
-X-Received: by 2002:adf:a3d2:0:b0:367:97b9:d5ed with SMTP id
- ffacd0b85a97d-3679dd310edmr3035658f8f.9.1720168781636; 
- Fri, 05 Jul 2024 01:39:41 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.134.140])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-367900fd1e5sm6862057f8f.63.2024.07.05.01.39.38
+ d=1e100.net; s=20230601; t=1720168849; x=1720773649;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3AncV0n0Nr8xyguEQlZ6mHLdeGfbGdlqoVR8NDgRWgE=;
+ b=mcdBXrKVQ8s6SgWOUaOTI7QHzLtLh+nnAjsFa3V2StHBfx8+qGG8IMlIZvAeTAK9xx
+ L/pbx2ShC+dOoY8wQzUsFmRpt8msMBXdY846yuQSLtIxHGkZnltNPybiBsMIjP8veHiR
+ WkY3lVluYKLDeGffPX2er3qr5OSqv6xVIQnzDsYOOuryKzfv7MC+7D8SDHBsHAY6aALl
+ 6fnxygASmSTrkGUtEu+y+XAOUYmS2XLD4YoGAWLUF/vgp/COHmoAcQzcpNI8rJOlv+c2
+ FobKOGHnNCi+P5p3ZJNHmICFhYoZb26W+MsPOgcRuOUafAwriVnVapqpZvQ80waBR1Qx
+ +gog==
+X-Gm-Message-State: AOJu0Yw/+Y3i8mKxQXH6rBCbUOAX2IyBfpqhtBeN8VHa28AB8KmQf1a+
+ /mdJcQoZwmV38DT6IoFfRCjJcBcKpU0i57k/HpcvE0Q0YsbVWJiQrf9oIbeB+W0=
+X-Google-Smtp-Source: AGHT+IG3S5PRLiu98hSW6qo6ukMthRZU9uUJVJ/rpc60nqOrix7Dkw1nok/5dKsEXS5nfTaf3ndE+w==
+X-Received: by 2002:a17:907:3f8b:b0:a72:8fc7:ef7f with SMTP id
+ a640c23a62f3a-a77ba72c6camr275860466b.65.1720168849023; 
+ Fri, 05 Jul 2024 01:40:49 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a77d23494a8sm23446666b.35.2024.07.05.01.40.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:39:41 -0700 (PDT)
-Date: Fri, 5 Jul 2024 10:39:33 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Coiby Xu <Coiby.Xu@gmail.com>, 
- Kevin Wolf <kwolf@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- stefanha@redhat.com, Markus Armbruster <armbru@redhat.com>, slp@redhat.com, 
- Eduardo Habkost <eduardo@habkost.net>, David Hildenbrand <david@redhat.com>, 
- Raphael Norwitz <raphael@enfabrica.net>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-block@nongnu.org, 
- Brad Smith <brad@comstyle.com>, Hanna Reitz <hreitz@redhat.com>,
- Eric Blake <eblake@redhat.com>, 
- gmaglione@redhat.com, Paolo Bonzini <pbonzini@redhat.com>, 
- Jason Wang <jasowang@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v8 00/13] vhost-user: support any POSIX system (tested on
- macOS, FreeBSD, OpenBSD)
-Message-ID: <suvpzkb3ppdodjdyo5zcpngz5mwrrlq3nfowemh4tqjghbc4si@hzrsr23fganv>
-References: <20240618100043.144657-1-sgarzare@redhat.com>
- <20240703184624-mutt-send-email-mst@kernel.org>
+ Fri, 05 Jul 2024 01:40:48 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id AC8585F876;
+ Fri,  5 Jul 2024 09:40:47 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Aleksandar Rikalo <arikalo@gmail.com>, Mads Ynddal <mads@ynddal.dk>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Xu <peterx@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paul Burton <paulburton@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH v2 00/40] July maintainer updates (32bit, testing, plugins,
+ gdbstub)
+Date: Fri,  5 Jul 2024 09:40:07 +0100
+Message-Id: <20240705084047.857176-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240703184624-mutt-send-email-mst@kernel.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,108 +106,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 03, 2024 at 06:49:30PM GMT, Michael S. Tsirkin wrote:
->On Tue, Jun 18, 2024 at 12:00:30PM +0200, Stefano Garzarella wrote:
->> As discussed with Michael and Markus [1], this version also includes the patch
->> on which v7 depended to simplify the merge in Michael's tree.
->>
->> The series is all reviewed, so if there are no new changes required, I would
->> ask to merge it.
->
->
->I dropped patches 9 and 10 for now since otherwise make vm-build-freebsd
->fails.
->
->Pls figure it out and resend just 9 and 10.
+Hi,
 
-I replicated locally, but I can't understand why it only happens in 
-certain architectures, in my case on loongarch64, ppc64, and riscv32:
+This is a grab bag of fixes and clean-ups as we swiftly approach the
+soft freeze deadline. The i386 TCG fix has been dropped now rth's TCG
+clean-ups have been merged. I've also taken a series from Richard that
+built on Akihiko's TCG test cleanups. There is one new fix I came
+across when doing some gcov testing.
 
-326/846 qemu:qtest+qtest-loongarch64 / qtest-loongarch64/qos-test
-ERROR          116.10s   killed by signal 6 SIGABRT
-337/846 qemu:qtest+qtest-ppc64 / qtest-ppc64/qos-test
-ERROR          115.10s   killed by signal 6 SIGABRT
-339/846 qemu:qtest+qtest-riscv32 / qtest-riscv32/qos-test
-ERROR          107.65s   killed by signal 6 SIGABRT
+The following still need review:
 
-I focused on ppc64 running `gmake --output-sync -j6 check-qtest-ppc64` 
-in the FreeBSD VM and it fails every time. In particular, the test that 
-fails is the `vhost-user/reconnect` test, in fact disabling it this way, 
-the qos-test tests always pass:
+  plugins/lockstep: clean-up output
+  plugins/lockstep: mention the one-insn-per-tb option
+  plugins/lockstep: preserve sock_path
+  test/plugins: preserve the instruction record over translations
+  test/plugin: make insn plugin less noisy by default
+  gitlab: don't bother with KVM for TCI builds
+  hw/core: ensure kernel_end never gets used undefined
+  testing: restore some testing for i686
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 0fa8951c9f..c3d686f0ee 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -1118,9 +1119,11 @@ static void register_vhost_user_test(void)
-                   "virtio-net",
-                   test_migrate, &opts);
+Akihiko Odaki (6):
+  tests/docker: Specify --userns keep-id for Podman
+  tests/tcg/aarch64: Explicitly specify register width
+  tests/tcg/aarch64: Fix irg operand type
+  tests/tcg/aarch64: Do not use x constraint
+  tests/tcg/arm: Fix fcvt result messages
+  tests/tcg/arm: Manually register allocate half-precision numbers
 
-+#if 0
-      opts.before = vhost_user_test_setup_reconnect;
-      qos_add_test("vhost-user/reconnect", "virtio-net",
-                   test_reconnect, &opts);
-+#endif
+Alex Bennée (11):
+  tests/lcitool: fix debian-i686-cross toolchain prefix
+  testing: restore some testing for i686
+  tracepoints: move physmem trace points
+  hw/core: ensure kernel_end never gets used undefined
+  gitlab: don't bother with KVM for TCI builds
+  test/plugin: make insn plugin less noisy by default
+  test/plugins: preserve the instruction record over translations
+  plugins/lockstep: preserve sock_path
+  plugins/lockstep: make mixed-mode safe
+  plugins/lockstep: mention the one-insn-per-tb option
+  plugins/lockstep: clean-up output
 
-      opts.before = vhost_user_test_setup_connect_fail;
-      qos_add_test("vhost-user/connect-fail", "virtio-net",
+Gustavo Romero (11):
+  gdbstub: Clean up process_string_cmd
+  gdbstub: Move GdbCmdParseEntry into a new header file
+  gdbstub: Add support for target-specific stubs
+  target/arm: Fix exception case in allocation_tag_mem_probe
+  target/arm: Make some MTE helpers widely available
+  target/arm: Factor out code for setting MTE TCF0 field
+  gdbstub: Make hex conversion function non-internal
+  gdbstub: Pass CPU context to command handler
+  gdbstub: Use true to set cmd_startswith
+  gdbstub: Add support for MTE in user mode
+  tests/tcg/aarch64: Add MTE gdbstub tests
 
-Analyzing the test, what happens is that after the disconnection, the 
-test doesn't receive VHOST_USER_SET_MEM_TABLE message, so the second 
-`wait_for_fds()` fails after the 5 sec timeout (increasing it doesn't 
-help), not having received the fds.
+Philippe Mathieu-Daudé (3):
+  plugins: Ensure vCPU index is assigned in init/exit hooks
+  plugins: Free CPUPluginState before destroying vCPU state
+  accel/tcg: Move qemu_plugin_vcpu_init__async() to plugins/
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 0fa8951c9f..c3d686f0ee 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -976,6 +976,7 @@ static void test_reconnect(void *obj, void *arg, 
-QGuestAllocator *alloc)
-      g_source_set_callback(src, reconnect_cb, s, NULL);
-      g_source_attach(src, s->context);
-      g_source_unref(src);
-+    // THIS one is failing
-      g_assert(wait_for_fds(s));
-      wait_for_rings_started(s, 2);
-  }
+Richard Henderson (9):
+  tests/tcg/minilib: Constify digits in print_num
+  tests/tcg: Adjust variable defintion from cc-option
+  tests/tcg/aarch64: Drop -fno-tree-loop-distribute-patterns
+  tests/tcg/aarch64: Add -fno-integrated-as for sme
+  tests/tcg/arm: Drop -N from LDFLAGS
+  tests/tcg/arm: Use -fno-integrated-as for test-arm-iwmmxt
+  tests/tcg/arm: Use -march and -mfpu for fcvt
+  tests/tcg/arm: Use vmrs/vmsr instead of mcr/mrc
+  linux-user/main: Suppress out-of-range comparison warning for clang
 
-This is the test log (note: IIUC QEMU failures happen after the test 
-exits on the assertion, so so it could mean that the chardev reconnected 
-correctly):
+ configure                                     |   4 +
+ configs/targets/aarch64-linux-user.mak        |   2 +-
+ gdbstub/internals.h                           |  23 -
+ include/gdbstub/commands.h                    | 103 +++
+ include/qemu/plugin.h                         |   3 +
+ linux-user/aarch64/mte_user_helper.h          |  32 +
+ linux-user/aarch64/target_prctl.h             |  22 +-
+ target/arm/internals.h                        |   6 +
+ target/arm/tcg/mte_helper.h                   |  66 ++
+ contrib/plugins/lockstep.c                    |  23 +-
+ gdbstub/gdbstub.c                             | 341 ++++++----
+ gdbstub/syscalls.c                            |   7 +-
+ gdbstub/system.c                              |   7 +-
+ gdbstub/user-target.c                         |  25 +-
+ gdbstub/user.c                                |   7 +-
+ hw/core/cpu-common.c                          |  14 +-
+ hw/core/loader-fit.c                          |   2 +-
+ linux-user/aarch64/mte_user_helper.c          |  35 +
+ linux-user/main.c                             |   1 +
+ linux-user/syscall.c                          |   9 -
+ plugins/core.c                                |  10 +-
+ system/physmem.c                              |   4 +-
+ target/arm/cpu.c                              |   1 +
+ target/arm/gdbstub.c                          |  46 ++
+ target/arm/gdbstub64.c                        | 223 +++++++
+ target/arm/tcg/mte_helper.c                   |  48 +-
+ tests/plugin/insn.c                           | 112 +++-
+ tests/tcg/aarch64/bti-1.c                     |   6 +-
+ tests/tcg/aarch64/bti-3.c                     |   6 +-
+ tests/tcg/aarch64/mte-1.c                     |   2 +-
+ tests/tcg/aarch64/mte-8.c                     |  99 +++
+ tests/tcg/arm/fcvt.c                          |  28 +-
+ tests/tcg/minilib/printf.c                    |   2 +-
+ .gitlab-ci.d/buildtest.yml                    |   2 +-
+ .gitlab-ci.d/crossbuilds.yml                  |  13 +-
+ gdb-xml/aarch64-mte.xml                       |  11 +
+ linux-user/aarch64/meson.build                |   2 +
+ system/trace-events                           |   6 +
+ tests/docker/Makefile.include                 |   7 +-
+ .../dockerfiles/debian-i686-cross.docker      |   2 +-
+ tests/lcitool/refresh                         |   2 +-
+ tests/tcg/Makefile.target                     |   2 +-
+ tests/tcg/aarch64/Makefile.softmmu-target     |   4 +-
+ tests/tcg/aarch64/Makefile.target             |  32 +-
+ tests/tcg/aarch64/fcvt.ref                    | 604 +++++++++---------
+ tests/tcg/aarch64/gdbstub/test-mte.py         |  86 +++
+ tests/tcg/arm/Makefile.softmmu-target         |   4 +-
+ tests/tcg/arm/Makefile.target                 |  12 +-
+ tests/tcg/arm/fcvt.ref                        | 604 +++++++++---------
+ trace-events                                  |   5 -
+ 50 files changed, 1771 insertions(+), 946 deletions(-)
+ create mode 100644 include/gdbstub/commands.h
+ create mode 100644 linux-user/aarch64/mte_user_helper.h
+ create mode 100644 target/arm/tcg/mte_helper.h
+ create mode 100644 linux-user/aarch64/mte_user_helper.c
+ create mode 100644 tests/tcg/aarch64/mte-8.c
+ create mode 100644 gdb-xml/aarch64-mte.xml
+ create mode 100644 tests/tcg/aarch64/gdbstub/test-mte.py
 
-     ▶ 28/30 /ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/virtio-net-pci/virtio-net/virtio-net-tests/vhost-user/reconnect - ERROR:../src/tests/qtest/qos-test.c:191:subprocess_run_one_test: child process (/ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/virtio-net-pci/virtio-net/virtio-net-tests/vhost-user/reconnect/subprocess [54991]) failed unexpectedly FAIL
-     ▶ 28/30                                                                   ERROR
-     [28-30/30] 🌒 qemu:qtest+qtest-ppc64 / qtest-ppc64/qmp-cmd-test                       [28-30/30] 🌓 qemu:qtest+qtest-ppc64 / qtest-ppc64/migration-test                     28/30 qemu:qtest+qtest-ppc64 / qtest-ppc64/qos-test                       ERROR           21.53s   killed by signal 6 SIGABRT
-     >>> PYTHON=/usr/home/qemu/qemu-test.OD8v2L/build/pyvenv/bin/python3.9 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 G_TEST_DBUS_DAEMON=/usr/home/qemu/qemu-test.OD8v2L/src/tests/dbus-vmstate-daemon.sh QTEST_QEMU_BINARY=./qemu-system-ppc64 MALLOC_PERTURB_=141 QTEST_QEMU_IMG=./qemu-img QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /usr/home/qemu/qemu-test.OD8v2L/build/tests/qtest/qos-test --tap -k
-     ―――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――
-     stderr:
-     Vhost user backend fails to broadcast fake RARP
-     qemu-system-ppc64: -chardev socket,id=chr-reconnect,path=/tmp/vhost-test-Z5VMQ2/reconnect.sock,server=on: info: QEMU waiting for connection on: disconnected:unix:/tmp/vhost-test-Z5VMQ2/reconnect.sock,server=on
-     **
-     ERROR:../src/tests/qtest/vhost-user-test.c:255:wait_for_fds: assertion failed: (s->fds_num)
-     qemu-system-ppc64: Failed to set msg fds.
-     qemu-system-ppc64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
-     qemu-system-ppc64: Failed to set msg fds.
-     qemu-system-ppc64: vhost_set_vring_endian failed: Invalid argument (22)
-     qemu-system-ppc64: Failed to set msg fds.
-     qemu-system-ppc64: vhost VQ 1 ring restore failed: -22: Invalid argument 
-     (22)
-     qemu-system-ppc64: Failed to set msg fds.
-     qemu-system-ppc64: vhost_set_vring_endian failed: Invalid argument (22)
-     qemu-system-ppc64: Failed to write msg. Wrote -1 instead of 12.
-     qemu-system-ppc64: vhost_backend_init failed: Protocol error
-     qemu-system-ppc64: failed to init vhost_net for queue 0
-     **
-     ERROR:../src/tests/qtest/qos-test.c:191:subprocess_run_one_test: child process (/ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/virtio-net-pci/virtio-net/virtio-net-tests/vhost-user/reconnect/subprocess [54991]) failed unexpectedly
-     
-     (test program exited with status code -6)
-
-
-I would think of some endianness problem, but it's strange that it only 
-happens in the reconnect test. Next week I'll try to figure out why this 
-is systematic only on some architectures, does anyone have any ideas?
-
-Thanks,
-Stefano
+-- 
+2.39.2
 
 
