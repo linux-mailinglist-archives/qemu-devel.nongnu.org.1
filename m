@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFB1928BC1
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9874A928BB9
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:33:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPku8-0005nX-6Y; Fri, 05 Jul 2024 11:31:20 -0400
+	id 1sPku0-0005gw-T7; Fri, 05 Jul 2024 11:31:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPku5-0005lL-Cf
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:17 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1sPktv-0005dC-CX
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:07 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPktt-0000QL-NB
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:17 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a77bf336171so258696966b.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:05 -0700 (PDT)
+ id 1sPktq-0000O6-Vi
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:07 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-52ea5dc3c66so1501632e87.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193464; x=1720798264; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193461; x=1720798261; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7dL44LVhy8HUCuCBi0juUZMiha6qD0o8n5oVMcUj9i8=;
- b=rOu1jg4h4D7/QSccAJLykUdGoMYVJPY+OLfDkpAzju70lC8rSGZnNJtq3BIkNTV2cn
- EsHEYFBHaCoiKvKkeXr+CodvT4L0MC/HYdUy90g00HvIfzgpIqS5sP+KiKdaxLkGezpz
- 3Xgmw3BjobTaCPSpPEvylQQcrV1XSO+T/0z590QcXRllQsgJGeEgNBS7y/hWDZVZla48
- Ca3fEWPO4T0d1abC/YHOkN66WkLbc/Nxb5+HYHgApN0AvLfzu2bsxhmH/TFIVLAeH0uW
- C9PG8TmBV8Ys+bFNDizfT3Bsi4ES9zfrzRHzNkW2vJb9PMa+g3v5Mbaw5r269bKbAfrO
- 9B9w==
+ bh=mWUoJ8jMYHKZK6JbWNGMObF6aodq8m6nBv1ts3bfECs=;
+ b=Sg2UBWVl7UkQNaW0vv0qf0dJ4Jw9egmEwa+LkZInYeT9numwHEfcGhoHWGVZ7DliYZ
+ lmQFvXLPwqaCPevX4+5ESVBcHjqofLY7/IwSf1J2OA1ipPkaqYORdpS3xqPrcdC5f56T
+ 9wJUQfjlyoQpS4Wz+DNwQuJzrbFrIA71mNl4/nV7x0hGlB7KIXsX1mWDDuU7zImYcMXK
+ +3ncEoOtfjELiQXEQGJ0S2vZ587sqSAw0SaFQsE4WtjXonTKnCSQkLkYVNcWDqlCUBjb
+ vtbffZiJQXgqKXxjd0xvUFdgJzr4g9j7R747ogopJ2chwgmZsyFTIvR2vdLccFeyBEDh
+ 4bxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193464; x=1720798264;
+ d=1e100.net; s=20230601; t=1720193461; x=1720798261;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7dL44LVhy8HUCuCBi0juUZMiha6qD0o8n5oVMcUj9i8=;
- b=YhoFi41Z0Qest3tfZiNqLk1xOlbwMy+Su5ekGFkJiDMMWBuACrZO3dAHJdw0Fs53dY
- NMczSDWP+1IOLeEYq3kIfUATBYGLK8iiYlAgaIRv2Z4luKgqBLB59+zLJojJCQO2v2TC
- IpX2qjVpxi9fIuUdbWeKvCW/SsVeIAspSG0bevh7nSM6j9/8GYh5mbCombeBF0efDIH0
- wrPk3yiGjJDgwa+lFAWnCMbSzL1dYbKQHZ7+AobJWXK0rj8U7pG+cQQTBfMcr8Wi/dtD
- v8qEVn5spkaclEh4+xKIZswUuNj+X9rqKiViYU4FkOK9zV+koA4YBjor6Ymad84n6OTt
- K1Jw==
-X-Gm-Message-State: AOJu0YzOA6EEmG7tdDwns7nKIgFjCRC4w1DJ0CqN3ay2NkInMi5Fsf2i
- WdOBiF2Yl7XEWmlZMNO/qXv0OHVM6HmwIqWovczc+IGJd223qSbEYGev/BAunxQ=
-X-Google-Smtp-Source: AGHT+IHvNJccW14j2SjIdj+564lohEMfSN7YgUhr1SpvIt/cFbGQRsI7MxrWEtQrYFkJ9BE4g9Bp1A==
-X-Received: by 2002:a17:906:1919:b0:a72:4207:479b with SMTP id
- a640c23a62f3a-a77bd99ec6cmr368981466b.5.1720193463682; 
- Fri, 05 Jul 2024 08:31:03 -0700 (PDT)
+ bh=mWUoJ8jMYHKZK6JbWNGMObF6aodq8m6nBv1ts3bfECs=;
+ b=HdlBeNr2BcWdYOu/WMT3XcKr6fcO2uyg1A+KTkqqAjli+7rx6leaPSrmuter1MUkfx
+ 37Pn0I3Egk+8IMiOoqwiShQjVvLae9LzZQ5yR+qLLD01vvh4pnxVA/ucrEuUSD90I0l2
+ 1TnDbPPeRolBzfNWRfYCxP7d/R6riFRKl8doK2LHdiMHe2hay+sZT3/FvwiqWd7T60we
+ zRJb3gEJ/U6FZ6666eGXau3ebVKQtOroXVWLJJPAotPbawa/rXubIsX0pMcZbPRA5d8I
+ iexomt7+Aa2kdsZnpjAQtBw9+E9v/NlCitsSZDmktktcLxb7tI2IMcoB+QULFSKX8l4u
+ 3yWw==
+X-Gm-Message-State: AOJu0Yzjhv/d6ocD2hD7ByqqgFSbvSmkTWHFCcMm7h8WdnUqdz1h3l2d
+ opktlS8XztUnIswOp+9pJw/oxPGzDRrRumUusJAvEZfVEmoZO4oKDbJsVMA0VyCbdCf+ZB8/+hd
+ s
+X-Google-Smtp-Source: AGHT+IG0SSWEJpdw2cBbq/3YXwpEo0ihf9pl6B/13VyKeqvdIa58uYBQExqWIflSxlPgNT2fdf27+g==
+X-Received: by 2002:a05:6512:32a6:b0:52d:3ada:4b6b with SMTP id
+ 2adb3069b0e04-52ea060dc75mr4337366e87.1.1720193460674; 
+ Fri, 05 Jul 2024 08:31:00 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77c4cdee52sm101519766b.128.2024.07.05.08.30.55
+ a640c23a62f3a-a77a18c7123sm236694766b.58.2024.07.05.08.30.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Jul 2024 08:30:57 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0D0D2620FA;
+ by draig.lan (Postfix) with ESMTP id 21C23620FD;
  Fri,  5 Jul 2024 16:30:54 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 11/40] tests/tcg/aarch64: Do not use x constraint
-Date: Fri,  5 Jul 2024 16:30:23 +0100
-Message-Id: <20240705153052.1219696-12-alex.bennee@linaro.org>
+Subject: [PULL 12/40] tests/tcg/aarch64: Add -fno-integrated-as for sme
+Date: Fri,  5 Jul 2024 16:30:24 +0100
+Message-Id: <20240705153052.1219696-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,85 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-clang version 18.1.6 does not support x constraint for AArch64.
-Use w instead.
+The only use of SME is inline assembly.  Both gcc and clang only
+support SME with very recent releases; by deferring detection to
+the assembler we get better test coverage.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240627-tcg-v2-5-1690a813348e@daynix.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240630190050.160642-7-richard.henderson@linaro.org>
+Message-Id: <20240630190050.160642-8-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-12-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-13-alex.bennee@linaro.org>
 
-diff --git a/tests/tcg/arm/fcvt.c b/tests/tcg/arm/fcvt.c
-index 7ac47b564e..f631197287 100644
---- a/tests/tcg/arm/fcvt.c
-+++ b/tests/tcg/arm/fcvt.c
-@@ -126,7 +126,7 @@ static void convert_single_to_half(void)
-         asm("vcvtb.f16.f32 %0, %1" : "=t" (output) : "x" (input));
- #else
-         uint16_t output;
--        asm("fcvt %h0, %s1" : "=w" (output) : "x" (input));
-+        asm("fcvt %h0, %s1" : "=w" (output) : "w" (input));
- #endif
-         print_half_number(i, output);
-     }
-@@ -149,7 +149,7 @@ static void convert_single_to_double(void)
- #if defined(__arm__)
-         asm("vcvt.f64.f32 %P0, %1" : "=w" (output) : "t" (input));
- #else
--        asm("fcvt %d0, %s1" : "=w" (output) : "x" (input));
-+        asm("fcvt %d0, %s1" : "=w" (output) : "w" (input));
- #endif
-         print_double_number(i, output);
-     }
-@@ -244,7 +244,7 @@ static void convert_double_to_half(void)
-         /* asm("vcvtb.f16.f64 %0, %P1" : "=t" (output) : "x" (input)); */
-         output = input;
- #else
--        asm("fcvt %h0, %d1" : "=w" (output) : "x" (input));
-+        asm("fcvt %h0, %d1" : "=w" (output) : "w" (input));
- #endif
-         print_half_number(i, output);
-     }
-@@ -267,7 +267,7 @@ static void convert_double_to_single(void)
- #if defined(__arm__)
-         asm("vcvt.f32.f64 %0, %P1" : "=w" (output) : "x" (input));
- #else
--        asm("fcvt %s0, %d1" : "=w" (output) : "x" (input));
-+        asm("fcvt %s0, %d1" : "=w" (output) : "w" (input));
- #endif
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 11ccde5579..ad1774c2ce 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -20,6 +20,7 @@ run-fcvt: fcvt
  
-         print_single_number(i, output);
-@@ -335,7 +335,7 @@ static void convert_half_to_double(void)
-         /* asm("vcvtb.f64.f16 %P0, %1" : "=w" (output) : "t" (input)); */
-         output = input;
- #else
--        asm("fcvt %d0, %h1" : "=w" (output) : "x" (input));
-+        asm("fcvt %d0, %h1" : "=w" (output) : "w" (input));
- #endif
-         print_double_number(i, output);
-     }
-@@ -357,7 +357,7 @@ static void convert_half_to_single(void)
- #if defined(__arm__)
-         asm("vcvtb.f32.f16 %0, %1" : "=w" (output) : "x" ((uint32_t)input));
- #else
--        asm("fcvt %s0, %h1" : "=w" (output) : "x" (input));
-+        asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
- #endif
-         print_single_number(i, output);
-     }
-@@ -380,7 +380,7 @@ static void convert_half_to_integer(void)
-         /* asm("vcvt.s32.f16 %0, %1" : "=t" (output) : "t" (input)); v8.2*/
-         output = input;
- #else
--        asm("fcvt %s0, %h1" : "=w" (output) : "x" (input));
-+        asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
- #endif
-         print_int64(i, output);
-     }
+ config-cc.mak: Makefile
+ 	$(quiet-@)( \
++	    fnia=`$(call cc-test,-fno-integrated-as) && echo -fno-integrated-as`; \
+ 	    $(call cc-option,-march=armv8.1-a+sve,          CROSS_CC_HAS_SVE); \
+ 	    $(call cc-option,-march=armv8.1-a+sve2,         CROSS_CC_HAS_SVE2); \
+ 	    $(call cc-option,-march=armv8.2-a,              CROSS_CC_HAS_ARMV8_2); \
+@@ -27,7 +28,7 @@ config-cc.mak: Makefile
+ 	    $(call cc-option,-march=armv8.5-a,              CROSS_CC_HAS_ARMV8_5); \
+ 	    $(call cc-option,-mbranch-protection=standard,  CROSS_CC_HAS_ARMV8_BTI); \
+ 	    $(call cc-option,-march=armv8.5-a+memtag,       CROSS_CC_HAS_ARMV8_MTE); \
+-	    $(call cc-option,-Wa$(COMMA)-march=armv9-a+sme, CROSS_AS_HAS_ARMV9_SME)) 3> config-cc.mak
++	    $(call cc-option,-Wa$(COMMA)-march=armv9-a+sme $$fnia, CROSS_AS_HAS_ARMV9_SME)) 3> config-cc.mak
+ -include config-cc.mak
+ 
+ ifneq ($(CROSS_CC_HAS_ARMV8_2),)
 -- 
 2.39.2
 
