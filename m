@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E859283FD
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F859283FC
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:44:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPeVr-00021r-3e; Fri, 05 Jul 2024 04:41:51 -0400
+	id 1sPeVs-00026K-Co; Fri, 05 Jul 2024 04:41:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeVG-00009h-FT
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:16 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1sPeVH-0000B1-Or
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:17 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeVD-0003IH-In
+ id 1sPeVD-0003Ii-KI
  for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:14 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-58b447c51bfso1786014a12.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:41:09 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a77baa87743so154559966b.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1720168869; x=1720773669; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z+z1akQCdvD4EPIckgvY2ywucJ1AQ3R2DHXwf7IjKDc=;
- b=ndxaD3ACtGucNmxTduEJYr7U1uNmPv+WMKgXwsqf0o4Tn9HDH4+rspT45KH7wheQ8+
- z5Un7TXQPgIfasrBZMBpxgNjGVvTPcIr0lzn/hAIeU3ooRXQwzPMwXawUePmg6Ylr74G
- tj7idwWtD6EbAheulxdsFKbFfSoPopJsVSMwV3lEnknm7Pu+M+Q73qaspuxFeOL7KwFL
- nR0780dOSn/DiHSerwZE1LMdnpdMXcJ28tWhLT8yKld0xvWVxeo/9G7tnuHbzOX0BTft
- s2fGo33ab7xq/h/QaRTxVMMjVynyxUcqNFfGw4zuOKCl+TgfQpiELDr4WLUFw6SVAPd7
- D6eQ==
+ bh=n7/WIgjhiNKuvbrWJzfyGMGasKiffFNGnc0cAcukpvo=;
+ b=RZ6ju7fIZhHAnlNc3hviFnG3Ms0Ttx4OC2Hft5JZi4fKYm4lT9/aI3P8NtWkfSmiWe
+ tdfMoLIAJqFUogWXN17FYyhVussQEWzfeFV0Py/bhiCBrhCxezXt1eTjynHgHR92sW5/
+ aF1ahvzMxuTtwTQlIMABmOj8yBM/3RDU3U2F2mgI40jk1EkVamlJjmQqRfWNC8it06vK
+ h4ItX73KiMZQbAO/xUZcovmTLkpNQHzPm4Z/9TGRT4vZqYzuxaFB8lr7JRe2N+KYxjl/
+ NL+xDWPhq/ed9rSOEurIiw+T9/1rZNUzaLocK3R1/LT/syjYxgT2AZTt3czk/8V34/L6
+ N/Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1720168869; x=1720773669;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z+z1akQCdvD4EPIckgvY2ywucJ1AQ3R2DHXwf7IjKDc=;
- b=OWO5quiJPjWH5hcoWCM5pRNP5Kz5TRR1aptjjt3da2HJV/Lq6kKsscx6ws98W82hnM
- ZwjyJgrtTMhtmo/i++azWCJESyJjF3i2RyMqPXKkh6pzoufP9Obfjuc/XEUBNh44J+X/
- GxoWYBwl01ibek3O2td4d/OiIK+mQYcoYIqOaBeJxUAYeknh8QQ/6CfLrxuI8spsQeLN
- AUI6pJ2uCkbNl0HL86bu2MxQ4fcjN/5e/8ZILY9foFx6TfZnI7AivyWsBHK0Yc9YScXo
- dFKBjgRdEzlDAr9WM03TgSao8p6ncHSejUQCA5XPKgT6PBnu91xRzjc039vsh8KNODTR
- HZIA==
-X-Gm-Message-State: AOJu0YwvSh+HneYxAxmBZvCikcxoUQu6mym2BKwthGQkDzp8XlN1fWs1
- +PYBSY0BKTm/c9yKcvjFDwm/vZ6uYi7fj8gCrxd78+b3MWLWnME7Ha+yeMv4QyM=
-X-Google-Smtp-Source: AGHT+IFyHg2rkZgGiY42rqPAYRhZULZTk8PAfnHDMb2P387ScVI/ThA5hJE8jhCFt/yupzymWrXSyQ==
-X-Received: by 2002:a05:6402:5ce:b0:58e:dbd:65cd with SMTP id
- 4fb4d7f45d1cf-58e5b5a68b0mr2957743a12.26.1720168868595; 
- Fri, 05 Jul 2024 01:41:08 -0700 (PDT)
+ bh=n7/WIgjhiNKuvbrWJzfyGMGasKiffFNGnc0cAcukpvo=;
+ b=Z13JkJELskZHDe0aGeajfY5kItrdaFq+kcSX21qUeJcNK/IUcrh2kzQxBykIVdsrTQ
+ 8gMf+sKU8G2z7GbXw5cH4SSqtdAHmqbXGdXXli01X9M0PLFH41y6yDLV4tzqzlrh2WSm
+ kZCk/Xu6PDe/qLyBIflu4qDkaDktHCsOT0zRrx2Po0fMg5Mq/DX2xqDF6GygtQPXbc9N
+ aaFPdVZUEJvih3VKOztZvyVbX1OoraHgazFuotSaNEmvv/PGiHoJ7OPl5krBGTPXMwEQ
+ VJR3KvOIJDbuGKycHVBmgOmskAnKe9jZvmK16WJrEzqdj0KAGyiqaqneES8I3vqWGNqE
+ ZpNQ==
+X-Gm-Message-State: AOJu0YwdIOTkXm9zREwi1zjSBec30snT5HL57obU12bB+n70kxWUkXAz
+ 963gC1ZbrC6Ft14bXQIYDK+G5E9RrMosFJuKr1LT5YAFEsi3n3VhReL6o1jjvgY=
+X-Google-Smtp-Source: AGHT+IHHvDecRfbh/FrhD0fTeHK/XRfCXPO616Gx3CpYamFKgCABcpgsCQ3FWeD8qFBa6oFpzecxrA==
+X-Received: by 2002:a17:906:f296:b0:a77:cdaa:88aa with SMTP id
+ a640c23a62f3a-a77cdaa8b23mr68176466b.4.1720168869010; 
+ Fri, 05 Jul 2024 01:41:09 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58fbfccf0f9sm444538a12.75.2024.07.05.01.40.58
+ a640c23a62f3a-a72aaf18933sm668677766b.13.2024.07.05.01.40.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Jul 2024 01:41:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7D4CF62156;
+ by draig.lan (Postfix) with ESMTP id 9461162157;
  Fri,  5 Jul 2024 09:40:50 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,19 +75,19 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paul Burton <paulburton@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v2 29/40] accel/tcg: Move qemu_plugin_vcpu_init__async() to
- plugins/
-Date: Fri,  5 Jul 2024 09:40:36 +0100
-Message-Id: <20240705084047.857176-30-alex.bennee@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>,
+ Gustavo Romero <gustavo.romero@linaro.org>
+Subject: [PATCH v2 30/40] gdbstub: Clean up process_string_cmd
+Date: Fri,  5 Jul 2024 09:40:37 +0100
+Message-Id: <20240705084047.857176-31-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,74 +110,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Calling qemu_plugin_vcpu_init__async() on the vCPU thread
-is a detail of plugins, not relevant to TCG vCPU management.
+Change 'process_string_cmd' to return true on success and false on
+failure, instead of 0 and -1.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240606124010.2460-4-philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240628050850.536447-2-gustavo.romero@linaro.org>
 ---
- hw/core/cpu-common.c | 9 +--------
- plugins/core.c       | 8 +++++++-
- 2 files changed, 8 insertions(+), 9 deletions(-)
+ gdbstub/gdbstub.c | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 8f6cb64da3..b19e1fdacf 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -192,13 +192,6 @@ static void cpu_common_parse_features(const char *typename, char *features,
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index b3574997ea..37314b92e5 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -962,14 +962,14 @@ static inline int startswith(const char *string, const char *pattern)
+   return !strncmp(string, pattern, strlen(pattern));
+ }
+ 
+-static int process_string_cmd(const char *data,
+-                              const GdbCmdParseEntry *cmds, int num_cmds)
++static bool process_string_cmd(const char *data,
++                               const GdbCmdParseEntry *cmds, int num_cmds)
+ {
+     int i;
+     g_autoptr(GArray) params = g_array_new(false, true, sizeof(GdbCmdVariant));
+ 
+     if (!cmds) {
+-        return -1;
++        return false;
+     }
+ 
+     for (i = 0; i < num_cmds; i++) {
+@@ -984,16 +984,16 @@ static int process_string_cmd(const char *data,
+         if (cmd->schema) {
+             if (cmd_parse_params(&data[strlen(cmd->cmd)],
+                                  cmd->schema, params)) {
+-                return -1;
++                return false;
+             }
+         }
+ 
+         gdbserver_state.allow_stop_reply = cmd->allow_stop_reply;
+         cmd->handler(params, NULL);
+-        return 0;
++        return true;
+     }
+ 
+-    return -1;
++    return false;
+ }
+ 
+ static void run_cmd_parser(const char *data, const GdbCmdParseEntry *cmd)
+@@ -1007,7 +1007,7 @@ static void run_cmd_parser(const char *data, const GdbCmdParseEntry *cmd)
+ 
+     /* In case there was an error during the command parsing we must
+     * send a NULL packet to indicate the command is not supported */
+-    if (process_string_cmd(data, cmd, 1)) {
++    if (!process_string_cmd(data, cmd, 1)) {
+         gdb_put_packet("");
      }
  }
- 
--#ifdef CONFIG_PLUGIN
--static void qemu_plugin_vcpu_init__async(CPUState *cpu, run_on_cpu_data unused)
--{
--    qemu_plugin_vcpu_init_hook(cpu);
--}
--#endif
--
- static void cpu_common_realizefn(DeviceState *dev, Error **errp)
- {
-     CPUState *cpu = CPU(dev);
-@@ -274,7 +267,7 @@ static void cpu_common_initfn(Object *obj)
- #ifdef CONFIG_PLUGIN
-     if (tcg_enabled()) {
-         cpu->plugin_state = qemu_plugin_create_vcpu_state();
--        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
-+        qemu_plugin_vcpu_init_hook(cpu);
+@@ -1523,9 +1523,9 @@ static void handle_v_commands(GArray *params, void *user_ctx)
+         return;
      }
- #endif
- }
-diff --git a/plugins/core.c b/plugins/core.c
-index a864275ae7..12c67b4b4e 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -241,7 +241,7 @@ static void plugin_grow_scoreboards__locked(CPUState *cpu)
-     end_exclusive();
- }
  
--void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-+static void qemu_plugin_vcpu_init__async(CPUState *cpu, run_on_cpu_data unused)
- {
-     bool success;
- 
-@@ -258,6 +258,12 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INIT);
+-    if (process_string_cmd(get_param(params, 0)->data,
+-                           gdb_v_commands_table,
+-                           ARRAY_SIZE(gdb_v_commands_table))) {
++    if (!process_string_cmd(get_param(params, 0)->data,
++                            gdb_v_commands_table,
++                            ARRAY_SIZE(gdb_v_commands_table))) {
+         gdb_put_packet("");
+     }
  }
+@@ -1889,15 +1889,15 @@ static void handle_gen_query(GArray *params, void *user_ctx)
+         return;
+     }
  
-+void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-+{
-+    /* Plugin initialization must wait until the cpu start executing code */
-+    async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
-+}
-+
- void qemu_plugin_vcpu_exit_hook(CPUState *cpu)
- {
-     bool success;
+-    if (!process_string_cmd(get_param(params, 0)->data,
+-                            gdb_gen_query_set_common_table,
+-                            ARRAY_SIZE(gdb_gen_query_set_common_table))) {
++    if (process_string_cmd(get_param(params, 0)->data,
++                           gdb_gen_query_set_common_table,
++                           ARRAY_SIZE(gdb_gen_query_set_common_table))) {
+         return;
+     }
+ 
+-    if (process_string_cmd(get_param(params, 0)->data,
+-                           gdb_gen_query_table,
+-                           ARRAY_SIZE(gdb_gen_query_table))) {
++    if (!process_string_cmd(get_param(params, 0)->data,
++                            gdb_gen_query_table,
++                            ARRAY_SIZE(gdb_gen_query_table))) {
+         gdb_put_packet("");
+     }
+ }
+@@ -1908,13 +1908,13 @@ static void handle_gen_set(GArray *params, void *user_ctx)
+         return;
+     }
+ 
+-    if (!process_string_cmd(get_param(params, 0)->data,
+-                            gdb_gen_query_set_common_table,
+-                            ARRAY_SIZE(gdb_gen_query_set_common_table))) {
++    if (process_string_cmd(get_param(params, 0)->data,
++                           gdb_gen_query_set_common_table,
++                           ARRAY_SIZE(gdb_gen_query_set_common_table))) {
+         return;
+     }
+ 
+-    if (process_string_cmd(get_param(params, 0)->data,
++    if (!process_string_cmd(get_param(params, 0)->data,
+                            gdb_gen_set_table,
+                            ARRAY_SIZE(gdb_gen_set_table))) {
+         gdb_put_packet("");
 -- 
 2.39.2
 
