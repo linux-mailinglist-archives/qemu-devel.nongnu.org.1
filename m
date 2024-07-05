@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114CF928BE0
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BA7928BF5
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:48:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPl0C-0002pr-Fx; Fri, 05 Jul 2024 11:37:36 -0400
+	id 1sPl9a-0005m6-9k; Fri, 05 Jul 2024 11:47:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPl02-0002dl-Qa
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:26 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ id 1sPl9Y-0005lx-FE
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:47:16 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPl00-0001JE-0m
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:26 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a77b550128dso228461266b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:23 -0700 (PDT)
+ id 1sPl9W-0005dj-Tp
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:47:16 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a72517e6225so200780166b.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:47:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193842; x=1720798642; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720194433; x=1720799233; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n236Rd+ZsQdBpOfpU2JzZjmyVcpBVPLX43laLzo8bCU=;
- b=fcMOHP/xRw1Ihu5WbaqRNOzWTzsxWxKQCxeWvoMez8bFVb071MtwFBvbXh9VhqlJ8p
- ZpQjbA3Q72/0oy6Rg4v4dsBTcy9TPChd0PnayRYLDgEwjzW9LGXjTwx3vkaCqR8kaDjj
- e1A82X2qKIAeAzCj1T660VOoJWS6Y4DDgUh62uWYq5IeaUDbedwOL4u+hyw3wZWVI8OV
- vF77wxCruGyCLpSrSnC8p6f1pq2ZROihwopmA/nivRIm2XnQzPAbVt2wNgavz0M/Ea3H
- rtCchRTs8+xhLiqOMoJwSnfuFPki0hgif1AAO2ePiPJVQmQb9DYKOVfSkPaQrIukiKHV
- viVg==
+ bh=rcX3YpwLOTpsYf6Zhkg5VHQ84A4CmDm7f1BhkBXtQSg=;
+ b=v6x66gDWZIcj7Rb9RA3+pRjGb9NtRY19pacTflwaG2+Vo0C9XGMC+hqQ1xCvCuAP7r
+ W3kjfk/T8eqMIhr/W6AHeuLPVZ4pYgaXxijIkZ082BaEci+809NdEXuIe/FouaNuTmqu
+ fNNlAuM5IQ/rwgkL0tTRvse/Dxo7m+VQgzSjztcO7YbOuAWOQX6iPndY26lSc2KHoB+d
+ IXuX+37ijJNvRK4WRUDkgjvHOnst/tWGhVxw44RIOFsohocqhtDBD0GU0z/XM3/jjYmg
+ 8lFn+s8vjLL4CQqKd/cFFvL6hYsgUEP2iIsyU3fNn3Ckaa6up8xuNJqoS9zo13ENp2bt
+ AFKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193842; x=1720798642;
+ d=1e100.net; s=20230601; t=1720194433; x=1720799233;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n236Rd+ZsQdBpOfpU2JzZjmyVcpBVPLX43laLzo8bCU=;
- b=f+3JnG/0i/hMjon9GCb9j4jDVj3bEF1Bx+zF8uc0ZyI9rZgG3q2ZJgw4cVuC5xFRa3
- ewRp0n1+QTU/uTG35mMQoUA1GptLbBq4vE4yEHMzXMT4aKuNkXTRDA1jxh4LDjfFPCnz
- CWarqb7SLzDmHCxsEQs9CsF99fJay/rdUf77o2zEcFZeDxjfmBGBo9evTCKCKbSP1wUZ
- MrB5tLfH6tLi/WlsNVe31VjvGw79qenA+WDKU+pnD6BbVkzpolwhcM8+V0tcS9Xw/4qr
- bLx7dCTJ4X/QXfPUyi7KZ8TtI7bVigu2peh8523ZncGxTTIwhMTPOd0xrzFCUvR/zX5e
- fuxw==
-X-Gm-Message-State: AOJu0YwvWWUeXwPiO/322npYd1z6qAGzE2cg0JM/Ftg4XRBQvPTG/xGh
- +0bau+XJRe3CdID7xcuk58aZhJjSbXDV+T/kbHLeSt2oQ4P+uOnafD/eqUnQqG0=
-X-Google-Smtp-Source: AGHT+IHEyA5Tw15ixlH7b6MQBwt7uQYKFPV7w9u6HhVlGiGwOvgNj3lx2hQhViuqIaw+/8lNk4n3nA==
-X-Received: by 2002:a17:906:c00f:b0:a77:dc23:5625 with SMTP id
- a640c23a62f3a-a77dc235698mr55196266b.22.1720193842229; 
- Fri, 05 Jul 2024 08:37:22 -0700 (PDT)
+ bh=rcX3YpwLOTpsYf6Zhkg5VHQ84A4CmDm7f1BhkBXtQSg=;
+ b=SmVkYPFdv52ZkjlaIk6HoXrNqXGOM4NvgEXa2DihH0lg3soYbFC6YZWf7gW2ZiRwDo
+ DEH1fPWfuwMmiZQSig4n2aO38/CdJsm/APz4QRMl5LTGdKWa6isHWEwVmNVifTTyN3cl
+ z7aHk6JcC5p/p1yZzThd5J+rg62k2YcRiw9FJ0Mth2+9eueuBZPKMwgMNdCS1QzcYnS4
+ OH8WAWvP2RXYMX6NZd/9olnat+IBnq0xtVz9y9obBGzF8TJX4IHvZOU5aj9mRhM74NrU
+ GbJ8U0LEEH5jWzd7hDUqB2mnBf/KYQmWEtd3q5lnqIVcp+i4PxB4cTi6bGnbreZNIz3V
+ pdNQ==
+X-Gm-Message-State: AOJu0Yys4yT/j8672BHUjFROciVseKdFwGAql/tKusoW3Ikj+0QYLZwA
+ qfrr3Ow3FLH5yY8gWsayOsuUHMF5JpsbqH9EkwveHNnSakSoObyY0IFCe3GufsQ=
+X-Google-Smtp-Source: AGHT+IHZakTOQ63u/vDKjw44Uccj2lVU1sTcoUBNRJ82FyC4S746mGvFDpyZSgcVR24XXRn4D+kliw==
+X-Received: by 2002:a17:906:8746:b0:a77:c5e4:eebd with SMTP id
+ a640c23a62f3a-a77c5e4f35fmr225965566b.26.1720194432531; 
+ Fri, 05 Jul 2024 08:47:12 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77dba80177sm25511866b.30.2024.07.05.08.37.14
+ a640c23a62f3a-a72ab065672sm694985966b.136.2024.07.05.08.47.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:37:20 -0700 (PDT)
+ Fri, 05 Jul 2024 08:47:11 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CB2666211E;
+ by draig.lan (Postfix) with ESMTP id E421D62139;
  Fri,  5 Jul 2024 16:30:54 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 19/40] linux-user/main: Suppress out-of-range comparison
- warning for clang
-Date: Fri,  5 Jul 2024 16:30:31 +0100
-Message-Id: <20240705153052.1219696-20-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 20/40] gitlab: don't bother with KVM for TCI builds
+Date: Fri,  5 Jul 2024 16:30:32 +0100
+Message-Id: <20240705153052.1219696-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+In fact any other accelerator would be pointless as the point is to
+exercise the TCI accelerator anyway.
 
-For arm32 host and arm64 guest we get
-
-.../main.c:851:32: error: result of comparison of constant 70368744177664 with expression of type 'unsigned long' is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-        if (TASK_UNMAPPED_BASE < reserved_va) {
-            ~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~
-
-We already disable -Wtype-limits here, for this exact comparison, but
-that is not enough for clang.  Disable -Wtautological-compare as well,
-which is a superset.  GCC ignores the unknown warning flag.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240630190050.160642-15-richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-20-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-21-alex.bennee@linaro.org>
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 94c99a1366..7d3cf45fa9 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -843,6 +843,7 @@ int main(int argc, char **argv, char **envp)
-      */
- #pragma GCC diagnostic push
- #pragma GCC diagnostic ignored "-Wtype-limits"
-+#pragma GCC diagnostic ignored "-Wtautological-compare"
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 425fc6479b..e3a0758bd9 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -635,7 +635,7 @@ build-tci:
+     - TARGETS="aarch64 arm hppa m68k microblaze ppc64 s390x x86_64"
+     - mkdir build
+     - cd build
+-    - ../configure --enable-tcg-interpreter --disable-docs --disable-gtk --disable-vnc
++    - ../configure --enable-tcg-interpreter --disable-kvm --disable-docs --disable-gtk --disable-vnc
+         --target-list="$(for tg in $TARGETS; do echo -n ${tg}'-softmmu '; done)"
+         || { cat config.log meson-logs/meson-log.txt && exit 1; }
+     - make -j"$JOBS"
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 3de0341afe..cb499e4ee0 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -68,7 +68,7 @@ cross-i686-tci:
+   variables:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins
++    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+     MAKE_CHECK_ARGS: check check-tcg
  
-     /*
-      * Select an initial value for task_unmapped_base that is in range.
+ cross-mipsel-system:
 -- 
 2.39.2
 
