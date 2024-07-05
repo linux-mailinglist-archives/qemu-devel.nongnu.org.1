@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C2E927F62
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 02:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CBC927F63
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 02:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPWuW-0002qv-Na; Thu, 04 Jul 2024 20:34:48 -0400
+	id 1sPWue-0002s6-RD; Thu, 04 Jul 2024 20:34:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sPWuU-0002qW-UH
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 20:34:47 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1sPWuc-0002rN-8Z
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 20:34:54 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sPWuT-00005m-GE
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 20:34:46 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fb472eacf4so1480695ad.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 17:34:44 -0700 (PDT)
+ id 1sPWuV-000062-Q2
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 20:34:54 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1fb1c69e936so6506725ad.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 17:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720139682; x=1720744482; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720139685; x=1720744485; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h1iFjXkNAAiUT1/HXJR1NSUSkejcZSCzgqp885X9UqQ=;
- b=eD4XBSFpAs7y3Ufc8Gm8AsEe4iKkEAv/bkM7Dm4nn2sohe65wfajiK/PUyem1okib4
- 1aKgjvgN2vir1mydEqCpE9RVEmMnqeMUbl7RxSfGM0A7n6YR9jvDKzPs8qhUYBioQBHc
- WhCXSgzSWI+MgAtH2RNTXVSg87bDTMsJsDhPmj/frnO47VrfOtfps9+nyAHmaGe9UDdx
- /yAHrAj/qAbzDO4zQrw3s1lBYVOZ9JYZGwwSuywxPpknIr8sLNBMzDnSNuChrBxyWX6m
- CO1I+iWzyP7XplcCuRgZEnsfXbpED7N/YJNHRmxdf0305+8dkVwF3RvTtigLq6fRqi6G
- XolA==
+ bh=yOP79DkfK/fAVcgsdZKxRrcYS8Q5/qCqkdMA5kudYBI=;
+ b=LRJwnd2iEaxN65l0ERWzs4/ge2aol7lcPWQqSRmyQm1iohnQY62/EUIAIuVoGrX5qh
+ 6ycbM4fcZ0FObXxqQn3SbuiD6z1EQM7OEcW6PKbj1WYm4gjHWpn1lmGWv41CXu3sDrHV
+ 3L6UfKoLiAuhQh8fSDEndhcnQBhF1bCdZ7X8h2Ob2f34v+eDGlLAZSBOGVHNF/NR8VWM
+ JgA4zvbO2W5quhFSAoRXB7mz7/5u00w2zIMedS3f4MCZWhSa8bA2GQe9LIg1DhEhiZS7
+ REEBcAI+YQruAWmvYnmVx+MLukVk44r6HUsP17/8YIwoGqKap9+ZHf3rpBhBht74alZu
+ iEsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720139682; x=1720744482;
+ d=1e100.net; s=20230601; t=1720139685; x=1720744485;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h1iFjXkNAAiUT1/HXJR1NSUSkejcZSCzgqp885X9UqQ=;
- b=u+1pRWpwu7fRW3qfpU1CRdFA4hzz4hgTJeNah77s4YC3gQGhCU8T/h2W1tcxQhqQrK
- 6mnhog/19o5qvB+Qj6W/PQaounrwc3S3nPCg2Dk5WGUDrOrSiEgUPANPFylVuBlQY2FD
- IbEThNLkVdoYfCokYyd9aiA5+mOoD9DFoLVxn/KTC2XN3FrqaZw+ULi/63+PEfVeiba2
- pG4ieIV4i1E6R2UgN8IkiIjkfX7sEzNmKlH6nZgb1f3Z9BSvfFtQzCLpkNNIkv7pYeNt
- b/Izk+KqCLovThHt3XTQLmZPSuw7L6tNKzf8Jfqvh2DiFnBrJdrNcdSALPKxYxdXaQbX
- olfg==
-X-Gm-Message-State: AOJu0YylzvREgywqHncK/SF8I9u6BuMPxhtS8mXaNiSVhI1kxYBxfeRq
- qFfsytB/fCegdkG2KTeUE2rm2GTZFHqQVQD7OT8Pwy05TLe2MjduUCfyG1G3q40rImTO9HlWOsd
- WKn0=
-X-Google-Smtp-Source: AGHT+IG154iHBBybjVeuM2QNASFY0GJAiVkmZCOUmjByhw9qGrumwECi3PApkbLRqGXkiEQtMVo40g==
-X-Received: by 2002:a17:903:244a:b0:1f7:345a:e23d with SMTP id
- d9443c01a7336-1fb33e7ef9emr26496615ad.31.1720139682084; 
- Thu, 04 Jul 2024 17:34:42 -0700 (PDT)
+ bh=yOP79DkfK/fAVcgsdZKxRrcYS8Q5/qCqkdMA5kudYBI=;
+ b=sKrCbXMdZjNzpaqPqSI1F+qmOew7OmTnOD5/4437Wx9nVioMlBmFljExb0Ye4Dn29h
+ MknWR4fvo2mPzJr33cskgE08YD2Tb3btGb8GOVOOBoQHBoskCud7wj8KSd98txlT9GV8
+ 8h2+jkYcW5/meMC78ZWbdZv30Yhea9Ca0C9Gd5FlW45XLqt+up6YiR8uToXQePatDnFx
+ 0s+ft9g+EXAaie0K4GgGhnUstboamF3bGl0aRFnlTkzoc4Oo/XPgLugAMxOpI0MPY5TE
+ O2e3S3y5zxM8HHr62sGWFrZauwfinugan5stBIfHXwyq5Qxt5Db0whqiINfFTZ6icAsC
+ z+gg==
+X-Gm-Message-State: AOJu0Yy9sLBjJX8LjltXelEfBbBPib+pr9DYVIg1lNhPoW5Tp5isfLGL
+ uS4oaGjmy5/rU6quy3nl/OJW0ag+I4IZxqyZaat066yVS35lsYVS6KRTyjUf/e1RHmbPHROxiG2
+ IPPM=
+X-Google-Smtp-Source: AGHT+IEJ+drZBnwkvsYC8A9ihYSl+//C+hh+qgbysfKlZ5LtghOhIzjj6IBofHR60TtbQ/FLNrRVfA==
+X-Received: by 2002:a17:902:d4cb:b0:1fb:3735:af84 with SMTP id
+ d9443c01a7336-1fb3735b2c5mr19910635ad.67.1720139685346; 
+ Thu, 04 Jul 2024 17:34:45 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fb1a075616sm39008595ad.15.2024.07.04.17.34.39
+ d9443c01a7336-1fb1a075616sm39008595ad.15.2024.07.04.17.34.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jul 2024 17:34:41 -0700 (PDT)
+ Thu, 04 Jul 2024 17:34:44 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexandre Iooss <erdnaxe@crans.org>,
@@ -67,18 +67,17 @@ Cc: Alexandre Iooss <erdnaxe@crans.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xingtao Yao <yaoxt.fnst@fujitsu.com>
-Subject: [PATCH v5 1/7] plugins: fix mem callback array size
-Date: Thu,  4 Jul 2024 17:34:15 -0700
-Message-Id: <20240705003421.750895-2-pierrick.bouvier@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 2/7] plugins: save value during memory accesses
+Date: Thu,  4 Jul 2024 17:34:16 -0700
+Message-Id: <20240705003421.750895-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705003421.750895-1-pierrick.bouvier@linaro.org>
 References: <20240705003421.750895-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,36 +100,525 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-data was correctly copied, but size of array was not set
-(g_array_sized_new only reserves memory, but does not set size).
+Different code paths handle memory accesses:
+- tcg generated code
+- load/store helpers
+- atomic helpers
 
-As a result, callbacks were not called for code path relying on
-plugin_register_vcpu_mem_cb().
+This value is saved in cpu->neg.plugin_mem_value_{high,low}. Values are
+written only for accessed word size (upper bits are not set).
 
-Found when trying to trigger mem access callbacks for atomic
-instructions.
+Atomic operations are doing read/write at the same time, so we generate
+two memory callbacks instead of one, to allow plugins to access distinct
+values.
 
-Reviewed-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
+For now, we can have access only up to 128 bits, thus split this in two
+64 bits words. When QEMU will support wider operations, we'll be able to
+reconsider this.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ accel/tcg/atomic_template.h   | 66 ++++++++++++++++++++++++++++++-----
+ include/hw/core/cpu.h         |  4 +++
+ include/qemu/plugin.h         |  4 +++
+ plugins/core.c                |  6 ++++
+ tcg/tcg-op-ldst.c             | 66 +++++++++++++++++++++++++++++++----
+ accel/tcg/atomic_common.c.inc | 13 ++++++-
+ accel/tcg/ldst_common.c.inc   | 38 ++++++++++++--------
+ 7 files changed, 167 insertions(+), 30 deletions(-)
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index b6bae32b997..ec89a085b43 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -85,8 +85,7 @@ static void gen_enable_mem_helper(struct qemu_plugin_tb *ptb,
-     len = insn->mem_cbs->len;
-     arr = g_array_sized_new(false, false,
-                             sizeof(struct qemu_plugin_dyn_cb), len);
--    memcpy(arr->data, insn->mem_cbs->data,
--           len * sizeof(struct qemu_plugin_dyn_cb));
-+    g_array_append_vals(arr, insn->mem_cbs->data, len);
-     qemu_plugin_add_dyn_cb_arr(arr);
+diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
+index 1dc2151dafd..89593b2502f 100644
+--- a/accel/tcg/atomic_template.h
++++ b/accel/tcg/atomic_template.h
+@@ -53,6 +53,14 @@
+ # error unsupported data size
+ #endif
  
-     tcg_gen_st_ptr(tcg_constant_ptr((intptr_t)arr), tcg_env,
++#if DATA_SIZE == 16
++# define VALUE_LOW(val) int128_getlo(val)
++# define VALUE_HIGH(val) int128_gethi(val)
++#else
++# define VALUE_LOW(val) val
++# define VALUE_HIGH(val) 0
++#endif
++
+ #if DATA_SIZE >= 4
+ # define ABI_TYPE  DATA_TYPE
+ #else
+@@ -83,7 +91,12 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, abi_ptr addr,
+     ret = qatomic_cmpxchg__nocheck(haddr, cmpv, newv);
+ #endif
+     ATOMIC_MMU_CLEANUP;
+-    atomic_trace_rmw_post(env, addr, oi);
++    atomic_trace_rmw_post(env, addr,
++                          VALUE_LOW(ret),
++                          VALUE_HIGH(ret),
++                          VALUE_LOW(newv),
++                          VALUE_HIGH(newv),
++                          oi);
+     return ret;
+ }
+ 
+@@ -97,7 +110,12 @@ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, abi_ptr addr, ABI_TYPE val,
+ 
+     ret = qatomic_xchg__nocheck(haddr, val);
+     ATOMIC_MMU_CLEANUP;
+-    atomic_trace_rmw_post(env, addr, oi);
++    atomic_trace_rmw_post(env, addr,
++                          VALUE_LOW(ret),
++                          VALUE_HIGH(ret),
++                          VALUE_LOW(val),
++                          VALUE_HIGH(val),
++                          oi);
+     return ret;
+ }
+ 
+@@ -109,7 +127,12 @@ ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+     haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE, retaddr);   \
+     ret = qatomic_##X(haddr, val);                                  \
+     ATOMIC_MMU_CLEANUP;                                             \
+-    atomic_trace_rmw_post(env, addr, oi);                           \
++    atomic_trace_rmw_post(env, addr,                                \
++                          VALUE_LOW(ret),                           \
++                          VALUE_HIGH(ret),                          \
++                          VALUE_LOW(val),                           \
++                          VALUE_HIGH(val),                          \
++                          oi);                                      \
+     return ret;                                                     \
+ }
+ 
+@@ -145,7 +168,12 @@ ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+         cmp = qatomic_cmpxchg__nocheck(haddr, old, new);            \
+     } while (cmp != old);                                           \
+     ATOMIC_MMU_CLEANUP;                                             \
+-    atomic_trace_rmw_post(env, addr, oi);                           \
++    atomic_trace_rmw_post(env, addr,                                \
++                          VALUE_LOW(old),                           \
++                          VALUE_HIGH(old),                          \
++                          VALUE_LOW(xval),                          \
++                          VALUE_HIGH(xval),                         \
++                          oi);                                      \
+     return RET;                                                     \
+ }
+ 
+@@ -188,7 +216,12 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, abi_ptr addr,
+     ret = qatomic_cmpxchg__nocheck(haddr, BSWAP(cmpv), BSWAP(newv));
+ #endif
+     ATOMIC_MMU_CLEANUP;
+-    atomic_trace_rmw_post(env, addr, oi);
++    atomic_trace_rmw_post(env, addr,
++                          VALUE_LOW(ret),
++                          VALUE_HIGH(ret),
++                          VALUE_LOW(newv),
++                          VALUE_HIGH(newv),
++                          oi);
+     return BSWAP(ret);
+ }
+ 
+@@ -202,7 +235,12 @@ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, abi_ptr addr, ABI_TYPE val,
+ 
+     ret = qatomic_xchg__nocheck(haddr, BSWAP(val));
+     ATOMIC_MMU_CLEANUP;
+-    atomic_trace_rmw_post(env, addr, oi);
++    atomic_trace_rmw_post(env, addr,
++                          VALUE_LOW(ret),
++                          VALUE_HIGH(ret),
++                          VALUE_LOW(val),
++                          VALUE_HIGH(val),
++                          oi);
+     return BSWAP(ret);
+ }
+ 
+@@ -214,7 +252,12 @@ ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+     haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE, retaddr);   \
+     ret = qatomic_##X(haddr, BSWAP(val));                           \
+     ATOMIC_MMU_CLEANUP;                                             \
+-    atomic_trace_rmw_post(env, addr, oi);                           \
++    atomic_trace_rmw_post(env, addr,                                \
++                          VALUE_LOW(ret),                           \
++                          VALUE_HIGH(ret),                          \
++                          VALUE_LOW(val),                           \
++                          VALUE_HIGH(val),                          \
++                          oi);                                      \
+     return BSWAP(ret);                                              \
+ }
+ 
+@@ -247,7 +290,12 @@ ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+         ldn = qatomic_cmpxchg__nocheck(haddr, ldo, BSWAP(new));     \
+     } while (ldo != ldn);                                           \
+     ATOMIC_MMU_CLEANUP;                                             \
+-    atomic_trace_rmw_post(env, addr, oi);                           \
++    atomic_trace_rmw_post(env, addr,                                \
++                          VALUE_LOW(old),                           \
++                          VALUE_HIGH(old),                          \
++                          VALUE_LOW(xval),                          \
++                          VALUE_HIGH(xval),                         \
++                          oi);                                      \
+     return RET;                                                     \
+ }
+ 
+@@ -281,3 +329,5 @@ GEN_ATOMIC_HELPER_FN(add_fetch, ADD, DATA_TYPE, new)
+ #undef SUFFIX
+ #undef DATA_SIZE
+ #undef SHIFT
++#undef VALUE_LOW
++#undef VALUE_HIGH
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index a2c8536943f..e92cba049fd 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -350,6 +350,8 @@ typedef union IcountDecr {
+  *                         from CPUArchState, via small negative offsets.
+  * @can_do_io: True if memory-mapped IO is allowed.
+  * @plugin_mem_cbs: active plugin memory callbacks
++ * @plugin_mem_value_low: 64 lower bits of latest accessed mem value.
++ * @plugin_mem_value_high: 64 higher bits of latest accessed mem value.
+  */
+ typedef struct CPUNegativeOffsetState {
+     CPUTLB tlb;
+@@ -358,6 +360,8 @@ typedef struct CPUNegativeOffsetState {
+      * The callback pointer are accessed via TCG (see gen_empty_mem_helper).
+      */
+     GArray *plugin_mem_cbs;
++    uint64_t plugin_mem_value_low;
++    uint64_t plugin_mem_value_high;
+ #endif
+     IcountDecr icount_decr;
+     bool can_do_io;
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index bc5aef979e7..a67f23c745e 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -164,6 +164,8 @@ qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1,
+ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret);
+ 
+ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
++                             uint64_t value_low,
++                             uint64_t value_high,
+                              MemOpIdx oi, enum qemu_plugin_mem_rw rw);
+ 
+ void qemu_plugin_flush_cb(void);
+@@ -248,6 +250,8 @@ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret)
+ { }
+ 
+ static inline void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
++                                           uint64_t value_low,
++                                           uint64_t value_high,
+                                            MemOpIdx oi,
+                                            enum qemu_plugin_mem_rw rw)
+ { }
+diff --git a/plugins/core.c b/plugins/core.c
+index 9d737d82787..9e3a65e38db 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -575,6 +575,8 @@ void exec_inline_op(enum plugin_dyn_cb_type type,
+ }
+ 
+ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
++                             uint64_t value_low,
++                             uint64_t value_high,
+                              MemOpIdx oi, enum qemu_plugin_mem_rw rw)
+ {
+     GArray *arr = cpu->neg.plugin_mem_cbs;
+@@ -583,6 +585,10 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
+     if (arr == NULL) {
+         return;
+     }
++
++    cpu->neg.plugin_mem_value_low = value_low;
++    cpu->neg.plugin_mem_value_high = value_high;
++
+     for (i = 0; i < arr->len; i++) {
+         struct qemu_plugin_dyn_cb *cb =
+             &g_array_index(arr, struct qemu_plugin_dyn_cb, i);
+diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
+index 85101602581..f04ea40ecbc 100644
+--- a/tcg/tcg-op-ldst.c
++++ b/tcg/tcg-op-ldst.c
+@@ -148,11 +148,11 @@ static TCGv_i64 plugin_maybe_preserve_addr(TCGTemp *addr)
+     return NULL;
+ }
+ 
++#ifdef CONFIG_PLUGIN
+ static void
+ plugin_gen_mem_callbacks(TCGv_i64 copy_addr, TCGTemp *orig_addr, MemOpIdx oi,
+                          enum qemu_plugin_mem_rw rw)
+ {
+-#ifdef CONFIG_PLUGIN
+     if (tcg_ctx->plugin_insn != NULL) {
+         qemu_plugin_meminfo_t info = make_plugin_meminfo(oi, rw);
+ 
+@@ -172,6 +172,54 @@ plugin_gen_mem_callbacks(TCGv_i64 copy_addr, TCGTemp *orig_addr, MemOpIdx oi,
+             }
+         }
+     }
++}
++#endif
++
++static void
++plugin_gen_mem_callbacks_i32(TCGv_i32 val,
++                             TCGv_i64 copy_addr, TCGTemp *orig_addr,
++                             MemOpIdx oi, enum qemu_plugin_mem_rw rw)
++{
++#ifdef CONFIG_PLUGIN
++    if (tcg_ctx->plugin_insn != NULL) {
++        tcg_gen_st_i32(val, tcg_env,
++                       offsetof(CPUState, neg.plugin_mem_value_low) -
++                       sizeof(CPUState));
++        plugin_gen_mem_callbacks(copy_addr, orig_addr, oi, rw);
++    }
++#endif
++}
++
++static void
++plugin_gen_mem_callbacks_i64(TCGv_i64 val,
++                             TCGv_i64 copy_addr, TCGTemp *orig_addr,
++                             MemOpIdx oi, enum qemu_plugin_mem_rw rw)
++{
++#ifdef CONFIG_PLUGIN
++    if (tcg_ctx->plugin_insn != NULL) {
++        tcg_gen_st_i64(val, tcg_env,
++                       offsetof(CPUState, neg.plugin_mem_value_low) -
++                       sizeof(CPUState));
++        plugin_gen_mem_callbacks(copy_addr, orig_addr, oi, rw);
++    }
++#endif
++}
++
++static void
++plugin_gen_mem_callbacks_i128(TCGv_i128 val,
++                             TCGv_i64 copy_addr, TCGTemp *orig_addr,
++                             MemOpIdx oi, enum qemu_plugin_mem_rw rw)
++{
++#ifdef CONFIG_PLUGIN
++    if (tcg_ctx->plugin_insn != NULL) {
++        tcg_gen_st_i64(TCGV128_LOW(val), tcg_env,
++                       offsetof(CPUState, neg.plugin_mem_value_low) -
++                       sizeof(CPUState));
++        tcg_gen_st_i64(TCGV128_HIGH(val), tcg_env,
++                       offsetof(CPUState, neg.plugin_mem_value_high) -
++                       sizeof(CPUState));
++        plugin_gen_mem_callbacks(copy_addr, orig_addr, oi, rw);
++    }
+ #endif
+ }
+ 
+@@ -203,7 +251,8 @@ static void tcg_gen_qemu_ld_i32_int(TCGv_i32 val, TCGTemp *addr,
+         opc = INDEX_op_qemu_ld_a64_i32;
+     }
+     gen_ldst(opc, tcgv_i32_temp(val), NULL, addr, oi);
+-    plugin_gen_mem_callbacks(copy_addr, addr, orig_oi, QEMU_PLUGIN_MEM_R);
++    plugin_gen_mem_callbacks_i32(val, copy_addr, addr, orig_oi,
++                                 QEMU_PLUGIN_MEM_R);
+ 
+     if ((orig_memop ^ memop) & MO_BSWAP) {
+         switch (orig_memop & MO_SIZE) {
+@@ -271,7 +320,7 @@ static void tcg_gen_qemu_st_i32_int(TCGv_i32 val, TCGTemp *addr,
+         }
+     }
+     gen_ldst(opc, tcgv_i32_temp(val), NULL, addr, oi);
+-    plugin_gen_mem_callbacks(NULL, addr, orig_oi, QEMU_PLUGIN_MEM_W);
++    plugin_gen_mem_callbacks_i32(val, NULL, addr, orig_oi, QEMU_PLUGIN_MEM_W);
+ 
+     if (swap) {
+         tcg_temp_free_i32(swap);
+@@ -324,7 +373,8 @@ static void tcg_gen_qemu_ld_i64_int(TCGv_i64 val, TCGTemp *addr,
+         opc = INDEX_op_qemu_ld_a64_i64;
+     }
+     gen_ldst_i64(opc, val, addr, oi);
+-    plugin_gen_mem_callbacks(copy_addr, addr, orig_oi, QEMU_PLUGIN_MEM_R);
++    plugin_gen_mem_callbacks_i64(val, copy_addr, addr, orig_oi,
++                                 QEMU_PLUGIN_MEM_R);
+ 
+     if ((orig_memop ^ memop) & MO_BSWAP) {
+         int flags = (orig_memop & MO_SIGN
+@@ -396,7 +446,7 @@ static void tcg_gen_qemu_st_i64_int(TCGv_i64 val, TCGTemp *addr,
+         opc = INDEX_op_qemu_st_a64_i64;
+     }
+     gen_ldst_i64(opc, val, addr, oi);
+-    plugin_gen_mem_callbacks(NULL, addr, orig_oi, QEMU_PLUGIN_MEM_W);
++    plugin_gen_mem_callbacks_i64(val, NULL, addr, orig_oi, QEMU_PLUGIN_MEM_W);
+ 
+     if (swap) {
+         tcg_temp_free_i64(swap);
+@@ -606,7 +656,8 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
+                            tcg_constant_i32(orig_oi));
+     }
+ 
+-    plugin_gen_mem_callbacks(ext_addr, addr, orig_oi, QEMU_PLUGIN_MEM_R);
++    plugin_gen_mem_callbacks_i128(val, ext_addr, addr, orig_oi,
++                                  QEMU_PLUGIN_MEM_R);
+ }
+ 
+ void tcg_gen_qemu_ld_i128_chk(TCGv_i128 val, TCGTemp *addr, TCGArg idx,
+@@ -722,7 +773,8 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+                            tcg_constant_i32(orig_oi));
+     }
+ 
+-    plugin_gen_mem_callbacks(ext_addr, addr, orig_oi, QEMU_PLUGIN_MEM_W);
++    plugin_gen_mem_callbacks_i128(val, ext_addr, addr, orig_oi,
++                                  QEMU_PLUGIN_MEM_W);
+ }
+ 
+ void tcg_gen_qemu_st_i128_chk(TCGv_i128 val, TCGTemp *addr, TCGArg idx,
+diff --git a/accel/tcg/atomic_common.c.inc b/accel/tcg/atomic_common.c.inc
+index 95a5c5ff12d..6056598c23d 100644
+--- a/accel/tcg/atomic_common.c.inc
++++ b/accel/tcg/atomic_common.c.inc
+@@ -14,9 +14,20 @@
+  */
+ 
+ static void atomic_trace_rmw_post(CPUArchState *env, uint64_t addr,
++                                  uint64_t read_value_low,
++                                  uint64_t read_value_high,
++                                  uint64_t write_value_low,
++                                  uint64_t write_value_high,
+                                   MemOpIdx oi)
+ {
+-    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_RW);
++    if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
++        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr,
++                                read_value_low, read_value_high,
++                                oi, QEMU_PLUGIN_MEM_R);
++        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr,
++                                write_value_low, write_value_high,
++                                oi, QEMU_PLUGIN_MEM_W);
++    }
+ }
+ 
+ /*
+diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
+index 87ceb954873..ebbf380d767 100644
+--- a/accel/tcg/ldst_common.c.inc
++++ b/accel/tcg/ldst_common.c.inc
+@@ -123,10 +123,15 @@ void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
+  * Load helpers for cpu_ldst.h
+  */
+ 
+-static void plugin_load_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
++static void plugin_load_cb(CPUArchState *env, abi_ptr addr,
++                           uint64_t value_low,
++                           uint64_t value_high,
++                           MemOpIdx oi)
+ {
+     if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
+-        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
++        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr,
++                                value_low, value_high,
++                                oi, QEMU_PLUGIN_MEM_R);
+     }
+ }
+ 
+@@ -136,7 +141,7 @@ uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra)
+ 
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_UB);
+     ret = do_ld1_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
+-    plugin_load_cb(env, addr, oi);
++    plugin_load_cb(env, addr, ret, 0, oi);
+     return ret;
+ }
+ 
+@@ -147,7 +152,7 @@ uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr addr,
+ 
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
+     ret = do_ld2_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
+-    plugin_load_cb(env, addr, oi);
++    plugin_load_cb(env, addr, ret, 0, oi);
+     return ret;
+ }
+ 
+@@ -158,7 +163,7 @@ uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr addr,
+ 
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
+     ret = do_ld4_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
+-    plugin_load_cb(env, addr, oi);
++    plugin_load_cb(env, addr, ret, 0, oi);
+     return ret;
+ }
+ 
+@@ -169,7 +174,7 @@ uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr addr,
+ 
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
+     ret = do_ld8_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
+-    plugin_load_cb(env, addr, oi);
++    plugin_load_cb(env, addr, ret, 0, oi);
+     return ret;
+ }
+ 
+@@ -180,7 +185,7 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
+ 
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
+     ret = do_ld16_mmu(env_cpu(env), addr, oi, ra);
+-    plugin_load_cb(env, addr, oi);
++    plugin_load_cb(env, addr, int128_getlo(ret), int128_gethi(ret), oi);
+     return ret;
+ }
+ 
+@@ -188,10 +193,15 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
+  * Store helpers for cpu_ldst.h
+  */
+ 
+-static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
++static void plugin_store_cb(CPUArchState *env, abi_ptr addr,
++                            uint64_t value_low,
++                            uint64_t value_high,
++                            MemOpIdx oi)
+ {
+     if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
+-        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
++        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr,
++                                value_low, value_high,
++                                oi, QEMU_PLUGIN_MEM_W);
+     }
+ }
+ 
+@@ -199,7 +209,7 @@ void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
+                  MemOpIdx oi, uintptr_t retaddr)
+ {
+     helper_stb_mmu(env, addr, val, oi, retaddr);
+-    plugin_store_cb(env, addr, oi);
++    plugin_store_cb(env, addr, val, 0, oi);
+ }
+ 
+ void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
+@@ -207,7 +217,7 @@ void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
+     do_st2_mmu(env_cpu(env), addr, val, oi, retaddr);
+-    plugin_store_cb(env, addr, oi);
++    plugin_store_cb(env, addr, val, 0, oi);
+ }
+ 
+ void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
+@@ -215,7 +225,7 @@ void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
+     do_st4_mmu(env_cpu(env), addr, val, oi, retaddr);
+-    plugin_store_cb(env, addr, oi);
++    plugin_store_cb(env, addr, val, 0, oi);
+ }
+ 
+ void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
+@@ -223,7 +233,7 @@ void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
+     do_st8_mmu(env_cpu(env), addr, val, oi, retaddr);
+-    plugin_store_cb(env, addr, oi);
++    plugin_store_cb(env, addr, val, 0, oi);
+ }
+ 
+ void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
+@@ -231,7 +241,7 @@ void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
+     do_st16_mmu(env_cpu(env), addr, val, oi, retaddr);
+-    plugin_store_cb(env, addr, oi);
++    plugin_store_cb(env, addr, int128_getlo(val), int128_gethi(val), oi);
+ }
+ 
+ /*
 -- 
 2.39.2
 
