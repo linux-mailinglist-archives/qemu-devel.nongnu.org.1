@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE54928412
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC3292840E
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:48:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPebl-0001Bd-PA; Fri, 05 Jul 2024 04:47:58 -0400
+	id 1sPeby-0001Wu-H6; Fri, 05 Jul 2024 04:48:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebL-0000wh-OI
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:33 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1sPebO-0000yB-6D
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:35 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeb8-0004BD-V2
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:30 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a77b550128dso175010166b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:14 -0700 (PDT)
+ id 1sPebA-0004Bw-QO
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:33 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-58b966b4166so1703069a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720169233; x=1720774033; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720169238; x=1720774038; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/lQrpNj9Yq6e2VZHJs41tWCzx2SCmT2FMLZDJQM+poI=;
- b=oG37dxXwk5vuKP2tLldFZ9w8iLZuAJguF4DWl50z1X3THqTvWmmOALLGKJ/Tny1rFf
- YOCFG3gnuqkZkIPPNuAlzTOJge2Wi/3BfNX58z/e8J6jujulDgJQ7tfy0I2NhXfCOos+
- F9Vb2zLCUpj48qNDUOzRi7TMdlz7reTD67QAXYLvygqF8ZUrrS8QjKZhygm5Hd2V8e54
- PdHQ3kvzS2UPG1U3/Uzh1uXDSIxUI0rvAeB6ksCCc1avY92fJ9JG8Shb+dG696CJ0otm
- lzqfInk3wKqXDxh4yC5XWDLnjC76q058U2xquuq4zP8P0MRhJ5Fi3YUBaPF34guA3o7C
- OhxQ==
+ bh=MXuTP0GCGD1U2EC0jCbVCWmWTWrrWZHqHe3306YwCaE=;
+ b=RRZnb2GUQhy61z+qWf+Rx3ER0q7PL+L7miqdTgAKbVUUsb30ASE2wamM85iLjy6jo+
+ k/gCHsLO1Ycv5kMDgdIO2zA+yvnoEQ46qcxH14LUIAZ6jWmsOdpxdS33wbNauJtiu8ty
+ 59zLi2RAI9PFmlWgz6IE80fVkbNKvFHO9J4ljUX2G/HwQ1yRqLPv7Uuf5YWYUn7ocPK9
+ 3EV6gu5zZXE64mNDTQ49qgWU1s0hidDu4pVuQ/vylfGK60YC1BYrHJbB3kIUTdwoCVc7
+ Z/uUiqKYWCURfEDAKSnB1KsIKKkzswNdLRiPiq8o0kf1TtH2L3Rb56jaMRjO1lAl3+JX
+ jtDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720169233; x=1720774033;
+ d=1e100.net; s=20230601; t=1720169238; x=1720774038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/lQrpNj9Yq6e2VZHJs41tWCzx2SCmT2FMLZDJQM+poI=;
- b=PDdudxiWN8AFX5OVXLli9zhW+pOv9jgZDoA9u3nHGYqL1aLHENo0jn6HuwpkQlwQzX
- aMhh9RVej3MlX/dvwf0fcuuqV74mPx2N7XotqtqIxchs5TFinSbrtr0dTlubm/jIChUb
- iJqGA1DFMENNQRKJ0ehamId+98wY7Le6Mf1+zKP+QMEogdZoVQEGbrQEImY/sI8xy6SE
- /qbETqWLCHsAJoeKFCAk7nCl5m/bvHnL8eO3591axTGQlzGpi5FZjbzzxZ8EXEOk4Cbt
- IBnqQMZVXd8RmKo77hpiDc8fieyU3bc2Za3tAhTcc09Wz+0gYriVzPTKx0ndtjiUE43N
- 2CXQ==
-X-Gm-Message-State: AOJu0YxYHJAJ0QGgQurlLESGcSt1yBvqyfbE0mfsiNBgR7QTop8WrvUm
- koGg72rAdVdUvhI+f4H3hO6PodXAY+3jBTeqPQide5FMuOJjRMwoVRvr62dXELg=
-X-Google-Smtp-Source: AGHT+IGdDQdvYQW/Eg4YM6ALwJo3mPLl9gsHQOQNAU81B1D6gECjzwAQ0okTX93dgHhOUQSazOC6Tg==
-X-Received: by 2002:a17:907:6e8d:b0:a68:b73d:30d0 with SMTP id
- a640c23a62f3a-a77ba45577emr318787266b.6.1720169233321; 
- Fri, 05 Jul 2024 01:47:13 -0700 (PDT)
+ bh=MXuTP0GCGD1U2EC0jCbVCWmWTWrrWZHqHe3306YwCaE=;
+ b=e2TB7zJc8ykOE/nCERlhiko7CaRv9FupP1VLaVYZJbIYUyojZ+ITAZFe0qk79c6DrE
+ oXUFf29pXI9AIBqkUcnbabdEOafNHzlTq0YxbjY2MEzvAUGL5l5rCTj5vnmjeDpI1JHe
+ eahPWsWOnSGH9B2grudIQPDyyRLS9YB7IT0bPmNNmAig2fHxcJwe91OSjlEQ519k/Dsd
+ RYTwdSWO0IWXGuptFvx55VlheZ9C/SKO16o/wLGzNNBc++G5Im3wmqoS6dn3Zb+PjZbN
+ 04MqafKpJZmxE6sp92NlXklM1DZXvCiTGlkmiqSizUh8j09toXYACC6fIlb2adj4Ew4h
+ CBig==
+X-Gm-Message-State: AOJu0YxyLOPqpxlZuhwPPDnkzKM0q59ycjYjuuls9RCYABZsaRwpTnCX
+ WKD3zDr6h5wrTyE3c/0ifqIM+YQTrjZzh2IXZO/ukZh25557FSIIeb5/2S5Qbco=
+X-Google-Smtp-Source: AGHT+IHW9KiHz33DZOiQ1P/zJcB5THfCLhw9h/N1JFfzRGzsRsTEIYccfvxOFuQ90S0y6vbL4TU61A==
+X-Received: by 2002:a05:6402:2105:b0:58c:2a57:b230 with SMTP id
+ 4fb4d7f45d1cf-58e5955a333mr3220448a12.13.1720169237559; 
+ Fri, 05 Jul 2024 01:47:17 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72b19d9b62sm630605866b.130.2024.07.05.01.47.10
+ 4fb4d7f45d1cf-58fb3ee74f6sm493139a12.68.2024.07.05.01.47.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:47:11 -0700 (PDT)
+ Fri, 05 Jul 2024 01:47:16 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 21A4A6214B;
+ by draig.lan (Postfix) with ESMTP id 37EA062152;
  Fri,  5 Jul 2024 09:40:50 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -76,17 +76,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paul Burton <paulburton@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v2 25/40] plugins/lockstep: mention the one-insn-per-tb option
-Date: Fri,  5 Jul 2024 09:40:32 +0100
-Message-Id: <20240705084047.857176-26-alex.bennee@linaro.org>
+Subject: [PATCH v2 26/40] plugins/lockstep: clean-up output
+Date: Fri,  5 Jul 2024 09:40:33 +0100
+Message-Id: <20240705084047.857176-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,27 +109,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This really helps with lockstep although its super slow on big jobs.
+We were repeating information which wasn't super clear. As we already
+will have dumped the last failing PC just note the divergence and dump
+the previous instruction log.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/lockstep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ contrib/plugins/lockstep.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index 761bcdf363..353bf12dfb 100644
+index 353bf12dfb..5b7dfc9c06 100644
 --- a/contrib/plugins/lockstep.c
 +++ b/contrib/plugins/lockstep.c
-@@ -14,7 +14,8 @@
-  * particular run may execute the exact same sequence of blocks. An
-  * asynchronous event (for example X11 graphics update) may cause a
-  * block to end early and a new partial block to start. This means
-- * serial only test cases are a better bet. -d nochain may also help.
-+ * serial only test cases are a better bet. -d nochain may also help
-+ * as well as -accel tcg,one-insn-per-tb=on
-  *
-  * This code is not thread safe!
-  *
+@@ -135,10 +135,13 @@ static void report_divergance(ExecState *us, ExecState *them)
+ 
+     /* Output short log entry of going out of sync... */
+     if (verbose || divrec.distance == 1 || diverged) {
+-        g_string_printf(out,
+-                        "@ 0x%016" PRIx64 " vs 0x%016" PRIx64
++        g_string_printf(out, "@ "
++                        "0x%016" PRIx64 " (%" PRId64 ") vs "
++                        "0x%016" PRIx64 " (%" PRId64 ")"
+                         " (%d/%d since last)\n",
+-                        us->pc, them->pc, g_slist_length(divergence_log),
++                        us->pc, us->insn_count,
++                        them->pc, them->insn_count,
++                        g_slist_length(divergence_log),
+                         divrec.distance);
+         qemu_plugin_outs(out->str);
+     }
+@@ -147,10 +150,7 @@ static void report_divergance(ExecState *us, ExecState *them)
+         int i;
+         GSList *entry;
+ 
+-        g_string_printf(out,
+-                        "Δ insn_count @ 0x%016" PRIx64
+-                        " (%"PRId64") vs 0x%016" PRIx64 " (%"PRId64")\n",
+-                        us->pc, us->insn_count, them->pc, them->insn_count);
++        g_string_printf(out, "Δ too high, we have diverged, previous insns\n");
+ 
+         for (entry = log, i = 0;
+              g_slist_next(entry) && i < 5;
+@@ -163,7 +163,7 @@ static void report_divergance(ExecState *us, ExecState *them)
+                                    prev->insn_count);
+         }
+         qemu_plugin_outs(out->str);
+-        qemu_plugin_outs("too much divergence... giving up.");
++        qemu_plugin_outs("giving up\n");
+         qemu_plugin_uninstall(our_id, plugin_cleanup);
+     }
+ }
 -- 
 2.39.2
 
