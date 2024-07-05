@@ -2,200 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41676928D7E
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 20:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3C3928D85
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 20:30:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPncQ-0007vU-Fg; Fri, 05 Jul 2024 14:25:14 -0400
+	id 1sPng9-0003Mj-Vr; Fri, 05 Jul 2024 14:29:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sPncI-0007uz-U5
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:25:06 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sPncG-0005YJ-Ek
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:25:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720203905; x=1751739905;
- h=message-id:date:from:subject:to:cc:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=1EaVsW5uWxdcECWnmSyHSEb2vbSCqWtcriYn9L6D9s4=;
- b=KVOPDObxyogdd++l6jtIBJ9ZmMSq9/p/UdFpMIyS+TcIkvL26tams6DE
- F/jj175dmUgs0csIFzGhg76pxILUJJOaKKDGLgDflaEo/jUlp160127th
- HMpwqUL0B1+cSJO0ntCFQoPFtAu36ezs++QKtj/7mtVnoQDI8a9dmP7VO
- mytNIYe3y41hiukl+RGTrAF0aRWN4zVAa2nhpzCgk9bSOW41PHwA7qQeW
- DbFW9YL7RwH1xehj8Y938qPVOccNbaPFX9T2PlO2s3a07qoYLTHv+59mV
- rpUGuDVJpSVdiV92mJY9P8dlZmMFyL9rLIJOM1L4JVDN2n8hG2nk7KVYO w==;
-X-CSE-ConnectionGUID: vFs2iOSNSmuAGu4F1NgfaQ==
-X-CSE-MsgGUID: BEUxhUKkQz2AYdTdHQzETw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28172414"
-X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; d="scan'208";a="28172414"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2024 11:25:02 -0700
-X-CSE-ConnectionGUID: QXGdrJ5qSquOQ4hYUBYOXQ==
-X-CSE-MsgGUID: j6v7oDM2SwGlYJf2+18V+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; d="scan'208";a="51886492"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Jul 2024 11:25:02 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 5 Jul 2024 11:25:01 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 5 Jul 2024 11:25:01 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 5 Jul 2024 11:25:01 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 5 Jul 2024 11:25:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XUGdu8I+9QTpMWiF6SzglbIIPybaUXPfb/hEmEV8vx5WLBYM9TXNJfDw1hRboe3yB5fggnx2L4S0v76z8PAr8erUiGbKhG/DEqHblZG+3nQRe2LIjP1UrtXADb/8ctGa+gup7VEHff3Uc4NN8qQBKR6sw/8nz3N2fpvmC0X9ogYq5W/tFrCe98ndPakVB2gMj4+s4u2zMFFT/Q3xWGoS9ZGgmEroFLAeZJup3mqSQX5ATZkitnore1om63uUw7TdgXHjCcqQKtaATKmm5CHDJnoVTxVNwYtZaX78x6/ao+cCMhHogGJSvE4C8XaVS1e8uQuD0b/+E5G1ScvxuRDVuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7QN8K7+rFC9oZ2t01G1cnAC1M4RPVYjyMKXfRc8ZbkE=;
- b=SeplTBAfA/IRbzLafFKa84DRHC+Yy1H9/MtmE4JBeseviuW3saKpct4U+kiGMxc2Jtlai0mmoH6dYEp24Vp8S+UOjO10dd9Eo/lbrHwCXQAlPbka8OcV3G0TO5ykBbZdXWi+lRc2VQpcaD1F3afqNUYTk6/2sKdgg/zexxELkA2xKJDZvF2s07DQuUMaTzKttCCtvjTU6ftCJiYZhWP18Zu7571lvxlbzgsZ4LhgMjSLaSsAtMwedfriArY4CNnl/ExvsGZi72SSaBRB1eqd5cTgTere8w5NFfz+G3Q+5BJuMyPgji6nSItYyYLrPdedOn25ek2rzD3UuGWYfE8+jA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
- by IA1PR11MB7942.namprd11.prod.outlook.com (2603:10b6:208:3fa::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.29; Fri, 5 Jul
- 2024 18:24:59 +0000
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::bd3d:59f2:9d29:346]) by PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::bd3d:59f2:9d29:346%5]) with mapi id 15.20.7719.029; Fri, 5 Jul 2024
- 18:24:58 +0000
-Message-ID: <d238020b-af06-40fd-8063-6563ccb6309c@intel.com>
-Date: Fri, 5 Jul 2024 11:24:55 -0700
-User-Agent: Mozilla Thunderbird
-From: "Kim, Dongwon" <dongwon.kim@intel.com>
-Subject: Re: [RFC PATCH 0/4] hw/display/virtio-gpu: Introducing asynchronous
- guest display render
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-CC: Gerd Hoffmann <kraxel@redhat.com>, <qemu-devel@nongnu.org>
-References: <20240620231727.235841-1-dongwon.kim@intel.com>
- <CAJ+F1CKRau8FGHMv0aBb_ocitavCzivrzpB2YtfNa22N7uVsWw@mail.gmail.com>
- <71ea0f44-fea9-45ca-8ce0-064e8581c7cf@intel.com>
- <CAJ+F1C+QPJAf1KbZSySmQYd7CF07Gk2qU89nxajdy90QRs4v3A@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAJ+F1C+QPJAf1KbZSySmQYd7CF07Gk2qU89nxajdy90QRs4v3A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0013.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::18) To PH8PR11MB6879.namprd11.prod.outlook.com
- (2603:10b6:510:229::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|IA1PR11MB7942:EE_
-X-MS-Office365-Filtering-Correlation-Id: 356abe6d-ec28-4152-fe1f-08dc9d1fc6f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZjQrNVVmUWdra3ExMFkySXE2aXp4S0NOdk9LV2NKSnhxeWRDZlpDOWNDc2p4?=
- =?utf-8?B?dTR1V3NlMEVGMUNkbm1JbUtUb1V2bVNNVzlrWldJZVFZbGxTcUN4b3MrMWVn?=
- =?utf-8?B?VklraEZjRkNvOGlvVXRscERaR3k0NE1iQThpdWlZRjlMVlhlS2FDbXprbWJJ?=
- =?utf-8?B?VGtTYVRKSUo3ZFRrMXpqMGlnMzFVZzVzQjF4T0ZFa21ZYjhzMXVzaWg3Q1p6?=
- =?utf-8?B?czNYNWlaTlZKUEhYZFV0QURsTUVVZU42MUNTdDlJOGhIY2toaEhlQUpRRlVL?=
- =?utf-8?B?YmNWalV2V28yM1lWbDI0YzZlY0lxWTdzNCtOaUxicDk0VzdvM2ZLQ2ovK2dO?=
- =?utf-8?B?MUo2bHEwSEJZc0ZVZzNpRmNacy9qVGIyNmRPYm41WnMxeW1VOEZDM2R2RzQx?=
- =?utf-8?B?eXBrZ3MyNy9MVWR3ajhXQkMvRE5hRXNsVVVSTmh4Q3huNktnNzJEYzJscnJ5?=
- =?utf-8?B?NVFta0M0TkdQT0JLem5vOTBuT0QwcTBpa092WE9nV2padTZsVE5ER25nK09V?=
- =?utf-8?B?Y2d5Tkprams2REhQT0VmUWxxQ2tpekIwWFB6cSt0MWtTT2d4c2RJRWI1VVBv?=
- =?utf-8?B?bG1OU21HYnVIbnFGU1E4NUgvSUJIWXA5TFZVVmFwek95WlQxQzhMZlgzYWFR?=
- =?utf-8?B?aGhENUllNXV6M01rSEN1d25BbnNtZUhueDJjR2hEVEZzd2I1Mmx1bTNJcFZ6?=
- =?utf-8?B?MXpsUzEwNVYxOTlkZEdaNnk3T1hjMFdNeVZwOWUrbVBoTzEwN1VLbk44b0sz?=
- =?utf-8?B?T1hiZWRoS0ZzMk82ZU82ZEJjcVNoRUd0ZE1mRmNSOU96Rk85NW5Sc1VQdlBp?=
- =?utf-8?B?VzRWcDJ3dkdlNDZicW9ucGpXMlRjMXV3Zlp4cStGbGg1WEtoVVA3c1pTRit1?=
- =?utf-8?B?YWlISXZoa1BvaFM0YWRFeDJNTnZsSllRcTRmWmU1eGs3Zkh6d3RHdFd0MUZq?=
- =?utf-8?B?eHBwQWQzMzd5UkQ0VTBremluWUkzNDFKWjV5LzVQMWY1SHJqUlRhQ3RrQ2w5?=
- =?utf-8?B?T1E2SkIxZEF2VXk5NVBCM25KeFlOdnFTQmY1aHRWa1NFRm5pSWhPTnpnZGJC?=
- =?utf-8?B?cm56NnRDNlB6ZjJLT0oyZi9TOWVMOEdIbDh2a3AvMDQ4NXYyaHpZMExDc0Qr?=
- =?utf-8?B?VGFyWmVqVlRzdWt4QU4rYlF3R2hqM2ZHVEVNNmUxTHkwanhibUw3OThMUDh4?=
- =?utf-8?B?bE10K2xXUWRwb1R5VUIvc1VLM1QwTDZ1MFFtZzhIYzN6am8wc0dsdVFsbE9B?=
- =?utf-8?B?U2hmZ1dxNGRhSWNraHNCakVjV0Z0NERGTVNNVnR4R0hzeGF5a1o4ajBpRC9E?=
- =?utf-8?B?akd5akI3UUIxTWtiK0dvWUZGRkM0K3JCRzBNVGxtaVJGejltTW8ySVl0aFJu?=
- =?utf-8?B?dVA3dGpML3ZhVFRKaFFPYzlDcTVQOEx5cjlPTXlJakFzbmtkQ1BOMXNMMm5C?=
- =?utf-8?B?dnU3bkFSQzhhcmswbmkwb0pnTXM0MXVuNmVuQ29Lc1JCRm5PbWdUYU9FWndY?=
- =?utf-8?B?TmJYV0s0dG04M3M3VWhiM0NqZzNIeXFwYlVvK3l6TXNuVzJOSHlMTGtGYlM1?=
- =?utf-8?B?TnM3dS8xRitKOUxnS0NldGNlRCtDK2V5Z0J4ckhvSjZvUU1GQlZiYWFkeTc3?=
- =?utf-8?B?MjVVYjFkbk9CVEpKQzNrdkVlaGpXNHMvUHIrMDBPOHdJMlJrQUdyK05JV3NI?=
- =?utf-8?B?SmtoQ1dkOVZMZng3aU5Wb0VRSEtkMkgxSGI5cFMwUXZFQVZ6V2NSRVo2dVFX?=
- =?utf-8?B?cVBUZWZzOVNSMmFES1hydVBWend6aXEzYVhRcUdmZ0YxSVhwOXdzT1BVR3RL?=
- =?utf-8?B?ZkhJNTJrOG9FMnBRV1NGQT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHRXdVlvZk9iR1o5bC9MTmJza0xidVdkQllLRS83RUZYWkg4MExoRUZNT0FK?=
- =?utf-8?B?bFJLeSsxT2tkVGVHQzJtTHBvYktRUWxEQWh4NENVd0I4TlNxTUFMTlIrbFdF?=
- =?utf-8?B?UjZhVWhRRXJvb1Y3Q3p6UmR0eCsybmtoT2dtd2ZVeUdVcTdDRHZKK1dHbTNT?=
- =?utf-8?B?R3JyVmxNWGRuSzNnQWVqWFBtUUIwbW1yOHpzQU9ZRy8vY1VxZFNEdzFKNmk4?=
- =?utf-8?B?RjhZYnhzWGlJaER0TmFtM0FBK0M2R0ZzNk9vZ1ZZVE5tQXc1NEx6RVlNZGFo?=
- =?utf-8?B?RUQ2WjhDa0JvTjY2VEVPSFpoejY4cldaV0dBcFZpQlhsaWNHMkJaSDJmL2p3?=
- =?utf-8?B?cWRPbFp0NndUSHhaSjFPald2M3ZyM2JLV2Y1OWxteXg0REdkR2RKaGM3ZEk3?=
- =?utf-8?B?SzZZVC9pdWsyM0dRYWxmbWtQcHlXOFFMVExXNDZBSmJRNWxJVGxPQm9qaEQy?=
- =?utf-8?B?bm5ETS9WcXZPS05qc3M5UjMvYjZIaG4vbXB6VDVFcFBNMkw0MGpkczQ3djB6?=
- =?utf-8?B?MjdocnhJQTN2LzdNNmhqa0ZUdmd5dWI1OURMbUhDakdhcjE1R0F3MUduYjAz?=
- =?utf-8?B?WW1nVk1XdW9idXRsR2UwaHJYZWdUaXZmQVRSNDIzcUlHWGcyNXErYVp1azBy?=
- =?utf-8?B?aDUrTWMrZmwzMm9sMUtkL3NFSW1JcmJ4djdQQ1dJdXJHckRMUk1BS0VZM0JZ?=
- =?utf-8?B?d28zMmtYRnZPNWZwcSs3TWNseVR5MzJFZUllQXFmZzdvcGFpb1poQ05rWkY1?=
- =?utf-8?B?dWV5NDdVYmFIdVpGRHE0UEJMMXVOQ0Jrc1JrNDBPaUpGK2JEMm9FcUo4MG9p?=
- =?utf-8?B?QWhRcTd2RHF6NEpvSmtJODQyY1c4VCtQM2xPcVpjeUxZUnJxZnJzelVSb2Vy?=
- =?utf-8?B?V3hqay9iSjNMSkJ1S3NHVElZVkpsdnpNWGU2cjN2U3VQVUlWdGI3cTZlSmJ1?=
- =?utf-8?B?OWlzZ3N5U0xxZXEvNGFHb2pKL3VKZFpnQVMzeTJBTDBQWlZlb2FnTUpEMjlt?=
- =?utf-8?B?dUE2aXgweENsVDZldUxYTmZYbWxMMXF5aDY5VXZ6NEQwck41T1ZCOWhuTDMy?=
- =?utf-8?B?N3piM1BJVk1HbUJRWU40ekV3M1lIUkxVMFNpenNjNVd1WFBjYndFT3R2NS94?=
- =?utf-8?B?dXBuK2xFV2thcVEzZ1dJZUczRUd6WDNMMWxuMERvQ3N2T2dWdVFyaFNmRUhR?=
- =?utf-8?B?OFVVN0JoalBWT2M1TmhQQVdoRzViTUNTMFVQVnp4MDVublpzZXN6Q1VTQjha?=
- =?utf-8?B?dmxGV041Q2NHNlZlSDBsT1BoM2J6bDdJRnZsb0NjZEhyQWlXQ2J6a3JXWDVO?=
- =?utf-8?B?Q0VtazBQTGhPWkZrR3ZGTFFzWmo0eVlQVDJHNHZLSGVMWFRUTTZRSjdZaVVL?=
- =?utf-8?B?K0M2VWdvSlJlMFMxT2dFMmhzQ2ZkZDZHdXFDb1lKOTF1QmlNMWtDN2JFRlp1?=
- =?utf-8?B?Slo4TzJ2dmttemxxbGh0d2lIcDdBWWw2OWw4R0duUVJXR3F3cHVGSTVkbE5v?=
- =?utf-8?B?TmVuSXRMN2FndlE2NVg1RldqTVJ3THM5TU44Rkk5N2ZiQXViMUdCVkUxQmo3?=
- =?utf-8?B?elEyZFhTM2Rhc041a1U4cDRlbVZjbmRkeFNRNXpqc2J6T3FndVpKMHNOekpk?=
- =?utf-8?B?bUFGUTFXdHJGZ0EzZmRuZHhaVFJuV09MTmZlYmp6QTgrSlhWeHN5VHR6VzJn?=
- =?utf-8?B?YkhXVTFhRDQ0WjJjQm4xWTFZd2hUSEs2NUkzdnNyRE5BVG9pMUxnMHRCNWY4?=
- =?utf-8?B?Qzg0anpXRzFVTWtzN2tqTStMdkJ0bm95akEyeEtxS0I1TlE3VysydmJoR1Z2?=
- =?utf-8?B?K085QVVuNlZIeGpmNVJTaVdaRmtHZ1dCQ0piQ0xVQkkyTVZ1WHZ4L1JZYVBE?=
- =?utf-8?B?M2svOUY5cmU2bVpjUDdPaGx5WXhIOERDdXVzYnRxenpIU3BYYVdNbGJzQzl5?=
- =?utf-8?B?ME1WY0kvTjR3TkxFR2l2M0IrcWlGbkVXVXZ4UDA5bzFwemhDUnh0TzFRbStR?=
- =?utf-8?B?WE1nOFRTWnNMM244Z3E3RFNDYk5EdXdvOGl1MjFxL00wT3d5bkNCVnM3Rm1a?=
- =?utf-8?B?a2Uwd3BJNG9zbURaQUVZVnNTUVFwTkRKQVM3Q2Y2dDVvQlczak5SN04yUVNQ?=
- =?utf-8?Q?JtwlDi16XiJ9mum8KaCUiJPJi?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 356abe6d-ec28-4152-fe1f-08dc9d1fc6f1
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jul 2024 18:24:58.8426 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DCMSg3dO7bTcB4LUurmABLpy75NzQqX3cVC+d8k9RjuBSodftnBJi1PE3RcRweltJoFGVO5JSC+Gb2GqgBMYLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7942
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=dongwon.kim@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1sPnfu-0003JM-9P
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:28:52 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1sPnfq-0006u7-3L
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:28:49 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3d921528dc4so317044b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 11:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1720204120; x=1720808920; darn=nongnu.org;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6tCTDhXAJL83d802zKbywfrsm1o/ipzHiT8fek1nNLk=;
+ b=g4D6tI+R2DYM/0vPbPrxCASO0sZ0wWaKnIyhgQ7Kcq+lqkxd8RBT+kaF6VBevKDVtq
+ y1f+bIbKdz3QK3MX1n/51aH5HqsfQ5KDnHBkOV1t8TNcQZjs7H9Sqt4R8U9Z1h6QK6UU
+ vF0kt3HkkJRNU8fpeWsOpIhHLInxbKW1qlPiIxdFrehQT9j11Jm34P7J5f0xmoiFquGm
+ kmivnW8w5COoP36YmSHE6CGLSFnfd6IGNeKGQDJWKFBpRgzZ5XfVtV25fQ/RMTEira6S
+ zXFeQi29tXs7HDpT1Kz2s/NTH8mwujA4YPQBbJdbsgrftUj2R7iVjdRhI7jakdi3c0dy
+ xcfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720204120; x=1720808920;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6tCTDhXAJL83d802zKbywfrsm1o/ipzHiT8fek1nNLk=;
+ b=Aqp5jeyen5ZHA5pIG7rm/dmRqZ2D4oJYM4uPPQDrXg27YXagsECvAttwB1SejsOPnI
+ cgjsa8k9IyE2D/Z5O/mP9Utj4poIEnLiU8jzTF3tLKNrPI0fFk7tqLiI7BHbGTmSJpQF
+ 7oanmdKddeCZ74l9BbUMjVnjhQPzZvadRS9+xbf33aRBkXbqGkbt8/lFj2558rJrvMcl
+ 1t6QyoBxdop8+AsXkuAMmYVAqeAaCVWP0diu4YOuY/72In5f1MgH80lBHpsjeIgRHiho
+ iiSeNSsWA1nShCgmT3vxZdTJBXOX2SpLAZ7ivaGIvC1Je2k6N7rqKWWCfIM/HAK17n7s
+ YK0w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW2Hzb0ui3P/hYp22p9X5xovE+uwghpJ6ISdbOlhDXNoelZek+vzLAoI45fQrKuO71170l+MZ0lenxogP/XRatHDGKZiao=
+X-Gm-Message-State: AOJu0YyV6y2nleH5Ok0zNBJjHc2w0W3wbHpWLfHceevRBKpZXG6rPc9h
+ h4CJ9Av2Tf39uWw12uVJW5a9+//ygbB9jhgTGWVXUmlQWsMlwuygMJzsYX+fxtI=
+X-Google-Smtp-Source: AGHT+IFBry7HRKBXE6zr0K5r29iu9xD7a/k8y7Z1A0hap4qp+pRFqxZ2wJfWi43dDFHyxkT9RLTTdQ==
+X-Received: by 2002:a05:6808:1312:b0:3d6:a032:f614 with SMTP id
+ 5614622812f47-3d914ea9b0dmr6019341b6e.50.1720204120264; 
+ Fri, 05 Jul 2024 11:28:40 -0700 (PDT)
+Received: from smtpclient.apple (ec2-54-152-246-50.compute-1.amazonaws.com.
+ [54.152.246.50]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-446514984b6sm70643471cf.68.2024.07.05.11.28.36
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 05 Jul 2024 11:28:39 -0700 (PDT)
+From: Yichen Wang <yichen.wang@bytedance.com>
+Message-Id: <8E9B92DE-5576-48C9-8878-3F750DA116E4@bytedance.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_2C82ACD3-D8A3-48C6-983E-F565A2ACD356"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [External] [PATCH v3 0/4] Implement using Intel QAT to offload
+ ZLIB
+Date: Fri, 5 Jul 2024 11:28:25 -0700
+In-Reply-To: <PH7PR11MB5941064312077F74CE235E45A3DF2@PH7PR11MB5941.namprd11.prod.outlook.com>
+Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Hao Xiang <hao.xiang@linux.dev>, "Zou, Nanhai" <nanhai.zou@intel.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+To: "Liu, Yuan1" <yuan1.liu@intel.com>
+References: <20240627223445.95096-1-yichen.wang@bytedance.com>
+ <ZoRSA4naaje878PK@x1n>
+ <PH7PR11MB5941E373F92A78EB5A7E4FCAA3DE2@PH7PR11MB5941.namprd11.prod.outlook.com>
+ <ZobBeWWyf5aHGROj@x1n>
+ <PH7PR11MB5941064312077F74CE235E45A3DF2@PH7PR11MB5941.namprd11.prod.outlook.com>
+X-Mailer: Apple Mail (2.3774.600.62)
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-oi1-x22e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -212,207 +107,1146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/2/2024 11:26 PM, Marc-André Lureau wrote:
-> Hi
-> 
-> On Tue, Jul 2, 2024 at 10:11 PM Kim, Dongwon <dongwon.kim@intel.com 
-> <mailto:dongwon.kim@intel.com>> wrote:
-> 
->     Hi Marc-André,
-> 
->     On 7/2/2024 3:29 AM, Marc-André Lureau wrote:
->      > Hi
->      >
->      > On Fri, Jun 21, 2024 at 3:20 AM <dongwon.kim@intel.com
->     <mailto:dongwon.kim@intel.com>
->      > <mailto:dongwon.kim@intel.com <mailto:dongwon.kim@intel.com>>> wrote:
->      >
->      >     From: Dongwon Kim <dongwon.kim@intel.com
->     <mailto:dongwon.kim@intel.com> <mailto:dongwon.kim@intel.com
->     <mailto:dongwon.kim@intel.com>>>
->      >
->      >     Introducing new virtio-gpu param, 'render_sync' when guest
->     scanout blob
->      >     is used (blob=true). The new param is used to specify when to
->     start
->      >     rendering a guest scanout frame.
->      >
->      >     By default (and so far) rendering of the guest frame is
->     started in
->      >     the draw event to make sure guest display update is
->     sychronized with
->      >     host's vsync. But this method inevitably brings some extra
->     wait because
->      >     most of time, the draw event is not happening right after the
->     guest
->      >     scanout frame is flushed.
->      >
->      >
->      >     This delay often makes the guest stuck at certain frame for
->     too long and
->      >     causes general performance degradation of graphic workloads
->     on the
->      >     guest's
->      >     side especially when the display update rate is high. This
->     unwanted perf
->      >     drop can be reduced if the guest scanout frame is rendered as
->     soon
->      >     as it is
->      >     flushed through 'VIRTIO_GPU_CMD_RESOURCE_FLUSH' msg. The gl
->     display
->      >     pipeline can be unblocked a lot earlier in this case so that
->     guest can
->      >     move to the next display frame right away.
->      >
->      >     However, this "asynchrounous" render mode may cause some waste of
->      >     resources
->      >     as the guest could produce more frames than what are actually
->     displayed
->      >     on the host display. This is similar as running rendering
->     apps with
->      >     no vblank
->      >     or vsync option. This is why this feature should stay as
->     optional.
->      >
->      >
->      > Indeed, I don't see much point in doing so, it's pure waste. If
->     you want
->      > to benchmark something perhaps. But then, why not simply run a
->     benchmark
->      > offscreen?
-> 
->     Benchmark score is not the primary reason. The problem we want to avoid
->     is the laggy display update due to too many asynchronous plane updates
->     happening in the guest in certain situations like when moving SW mouse
->     cursor rigorously on the guest. This is because the fence (as well as
->     response for the resource-flush cmd) is signaled in the draw event.
-> 
-> 
-> Presumably, you won't get more frames displayed (perhaps even less due 
-> to extra load), so why is it laggy? Is it because the guest is doing too 
-> much buffering? 
 
-Yes, I believe so. Virtio-gpu driver can't issue another resource flush 
-as the previous frame is still on hold by the host. But there are many 
-plane-update requests due to frame buffer updates because of the 
-movement of SW mouse cursor in between. BTW, we currently use dirtyFB 
-update on the guest running Xorg. Maybe using pageflip would make things 
-better but we haven't tried it yet.
-
-Because the mouse event queue isn't being drained
-> between scanouts?
+--Apple-Mail=_2C82ACD3-D8A3-48C6-983E-F565A2ACD356
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
 
 
-> 
->      >
->      >
->      >     The param 'render_sync' is set to 'true' by default and this
->     is in line
->      >     with traditional way while setting it to 'false' is basically
->     enabling
->      >     this asynchronouse mode.
->      >
->      >
->      > As it stands now, the option should actually be on the display
->     backend
->      > (gtk/gtk-egl), it's not implemented for other backends.
-> 
->     We can help to deploy this concept to other backends if needed.
-> 
-> 
-> Why not make it a gtk display option instead?
+> On Jul 5, 2024, at 1:32=E2=80=AFAM, Liu, Yuan1 <yuan1.liu@intel.com> =
+wrote:
+>=20
+>> -----Original Message-----
+>> From: Peter Xu <peterx@redhat.com <mailto:peterx@redhat.com>>
+>> Sent: Thursday, July 4, 2024 11:36 PM
+>> To: Liu, Yuan1 <yuan1.liu@intel.com <mailto:yuan1.liu@intel.com>>
+>> Cc: Wang, Yichen <yichen.wang@bytedance.com =
+<mailto:yichen.wang@bytedance.com>>; Paolo Bonzini
+>> <pbonzini@redhat.com <mailto:pbonzini@redhat.com>>; Daniel P. =
+Berrang=C3=A9 <berrange@redhat.com <mailto:berrange@redhat.com>>; =
+Eduardo
+>> Habkost <eduardo@habkost.net <mailto:eduardo@habkost.net>>; =
+Marc-Andr=C3=A9 Lureau
+>> <marcandre.lureau@redhat.com <mailto:marcandre.lureau@redhat.com>>; =
+Thomas Huth <thuth@redhat.com <mailto:thuth@redhat.com>>; Philippe
+>> Mathieu-Daud=C3=A9 <philmd@linaro.org <mailto:philmd@linaro.org>>; =
+Fabiano Rosas <farosas@suse.de <mailto:farosas@suse.de>>; Eric
+>> Blake <eblake@redhat.com <mailto:eblake@redhat.com>>; Markus =
+Armbruster <armbru@redhat.com <mailto:armbru@redhat.com>>; Laurent
+>> Vivier <lvivier@redhat.com <mailto:lvivier@redhat.com>>; =
+qemu-devel@nongnu.org <mailto:qemu-devel@nongnu.org>; Hao Xiang
+>> <hao.xiang@linux.dev <mailto:hao.xiang@linux.dev>>; Zou, Nanhai =
+<nanhai.zou@intel.com <mailto:nanhai.zou@intel.com>>; Ho-Ren (Jack)
+>> Chuang <horenchuang@bytedance.com <mailto:horenchuang@bytedance.com>>
+>> Subject: Re: [PATCH v3 0/4] Implement using Intel QAT to offload ZLIB
+>>=20
+>> On Thu, Jul 04, 2024 at 03:15:51AM +0000, Liu, Yuan1 wrote:
+>>>> -----Original Message-----
+>>>> From: Peter Xu <peterx@redhat.com>
+>>>> Sent: Wednesday, July 3, 2024 3:16 AM
+>>>> To: Wang, Yichen <yichen.wang@bytedance.com>
+>>>> Cc: Paolo Bonzini <pbonzini@redhat.com>; Daniel P. Berrang=C3=A9
+>>>> <berrange@redhat.com>; Eduardo Habkost <eduardo@habkost.net>; Marc-
+>> Andr=C3=A9
+>>>> Lureau <marcandre.lureau@redhat.com>; Thomas Huth =
+<thuth@redhat.com>;
+>>>> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>; Fabiano Rosas
+>>>> <farosas@suse.de>; Eric Blake <eblake@redhat.com>; Markus =
+Armbruster
+>>>> <armbru@redhat.com>; Laurent Vivier <lvivier@redhat.com>; qemu-
+>>>> devel@nongnu.org; Hao Xiang <hao.xiang@linux.dev>; Liu, Yuan1
+>>>> <yuan1.liu@intel.com>; Zou, Nanhai <nanhai.zou@intel.com>; Ho-Ren
+>> (Jack)
+>>>> Chuang <horenchuang@bytedance.com>
+>>>> Subject: Re: [PATCH v3 0/4] Implement using Intel QAT to offload =
+ZLIB
+>>>>=20
+>>>> On Thu, Jun 27, 2024 at 03:34:41PM -0700, Yichen Wang wrote:
+>>>>> v3:
+>>>>> - Rebase changes on top of master
+>>>>> - Merge two patches per Fabiano Rosas's comment
+>>>>> - Add versions into comments and documentations
+>>>>>=20
+>>>>> v2:
+>>>>> - Rebase changes on top of recent multifd code changes.
+>>>>> - Use QATzip API 'qzMalloc' and 'qzFree' to allocate QAT buffers.
+>>>>> - Remove parameter tuning and use QATzip's defaults for better
+>>>>>  performance.
+>>>>> - Add parameter to enable QAT software fallback.
+>>>>>=20
+>>>>> v1:
+>>>>> https://lists.nongnu.org/archive/html/qemu-devel/2023-
+>> 12/msg03761.html
+>>>>>=20
+>>>>> * Performance
+>>>>>=20
+>>>>> We present updated performance results. For circumstantial =
+reasons,
+>> v1
+>>>>> presented performance on a low-bandwidth (1Gbps) network.
+>>>>>=20
+>>>>> Here, we present updated results with a similar setup as before =
+but
+>> with
+>>>>> two main differences:
+>>>>>=20
+>>>>> 1. Our machines have a ~50Gbps connection, tested using 'iperf3'.
+>>>>> 2. We had a bug in our memory allocation causing us to only use =
+~1/2
+>> of
+>>>>> the VM's RAM. Now we properly allocate and fill nearly all of the
+>> VM's
+>>>>> RAM.
+>>>>>=20
+>>>>> Thus, the test setup is as follows:
+>>>>>=20
+>>>>> We perform multifd live migration over TCP using a VM with 64GB
+>> memory.
+>>>>> We prepare the machine's memory by powering it on, allocating a
+>> large
+>>>>> amount of memory (60GB) as a single buffer, and filling the buffer
+>> with
+>>>>> the repeated contents of the Silesia corpus[0]. This is in lieu of =
+a
+>>>> more
+>>>>> realistic memory snapshot, which proved troublesome to acquire.
+>>>>>=20
+>>>>> We analyze CPU usage by averaging the output of 'top' every second
+>>>>> during migration. This is admittedly imprecise, but we feel that =
+it
+>>>>> accurately portrays the different degrees of CPU usage of varying
+>>>>> compression methods.
+>>>>>=20
+>>>>> We present the latency, throughput, and CPU usage results for all =
+of
+>> the
+>>>>> compression methods, with varying numbers of multifd threads (4, =
+8,
+>> and
+>>>>> 16).
+>>>>>=20
+>>>>> [0] The Silesia corpus can be accessed here:
+>>>>> https://sun.aei.polsl.pl//~sdeor/index.php?page=3Dsilesia
+>>>>>=20
+>>>>> ** Results
+>>>>>=20
+>>>>> 4 multifd threads:
+>>>>>=20
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |method         |time(sec)      |throughput(mbps)|send =
+cpu%|recv
+>>>> cpu%|
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |qatzip         | 23.13         | 8749.94        |117.50
+>> |186.49
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |zlib           |254.35         |  771.87        |388.20
+>> |144.40
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |zstd           | 54.52         | 3442.59        |414.59
+>> |149.77
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |none           | 12.45         |43739.60        |159.71
+>> |204.96
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>=20
+>>>>> 8 multifd threads:
+>>>>>=20
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |method         |time(sec)      |throughput(mbps)|send =
+cpu%|recv
+>>>> cpu%|
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |qatzip         | 16.91         |12306.52        |186.37
+>> |391.84
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |zlib           |130.11         | 1508.89        |753.86
+>> |289.35
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |zstd           | 27.57         | 6823.23        |786.83
+>> |303.80
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |none           | 11.82         |46072.63        |163.74
+>> |238.56
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>=20
+>>>>> 16 multifd threads:
+>>>>>=20
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |method         |time(sec)      |throughput(mbps)|send =
+cpu%|recv
+>>>> cpu%|
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |qatzip         |18.64          |11044.52        | 573.61
+>> |437.65
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |zlib           |66.43          | 2955.79        |1469.68
+>> |567.47
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |zstd           |14.17          |13290.66        |1504.08
+>> |615.33
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>    |none           |16.82          |32363.26        | 180.74
+>> |217.17
+>>>> |
+>>>>>    =
+|---------------|---------------|----------------|---------|----
+>> ----
+>>>> -|
+>>>>>=20
+>>>>> ** Observations
+>>>>>=20
+>>>>> - In general, not using compression outperforms using compression =
+in
+>> a
+>>>>>  non-network-bound environment.
+>>>>> - 'qatzip' outperforms other compression workers with 4 and 8
+>> workers,
+>>>>>  achieving a ~91% latency reduction over 'zlib' with 4 workers, =
+and
+>> a
+>>>>> ~58% latency reduction over 'zstd' with 4 workers.
+>>>>> - 'qatzip' maintains comparable performance with 'zstd' at 16
+>> workers,
+>>>>>  showing a ~32% increase in latency. This performance difference
+>>>>> becomes more noticeable with more workers, as CPU compression is
+>> highly
+>>>>> parallelizable.
+>>>>> - 'qatzip' compression uses considerably less CPU than other
+>> compression
+>>>>>  methods. At 8 workers, 'qatzip' demonstrates a ~75% reduction in
+>>>>> compression CPU usage compared to 'zstd' and 'zlib'.
+>>>>> - 'qatzip' decompression CPU usage is less impressive, and is even
+>>>>>  slightly worse than 'zstd' and 'zlib' CPU usage at 4 and 16
+>> workers.
+>>>>=20
+>>>> Thanks for the results update.
+>>>>=20
+>>>> It looks like the docs/migration/ file is still missing.  It'll be
+>> great
+>>>> to
+>>>> have it in the next version or separately.
+>>>>=20
+>>>> So how it compares with QPL (which got merged already)?  They at =
+least
+>>>> look
+>>>> like both supported on an Intel platform, so an user whoever wants =
+to
+>>>> compress the RAM could start to look at both.  I'm utterly confused =
+on
+>> why
+>>>> Intel provides these two similar compressors.  It would be great to
+>> have
+>>>> some answer and perhaps put into the doc.
+>>=20
+>> Yuan,
+>>=20
+>>>=20
+>>> I would like to explain some of the reasons why we want to merge the
+>>> two QAT and IAA solutions into the community.
+>>=20
+>> Yes, these are very helpful information.  Please consider putting =
+them
+>> into
+>> the cover letter if there's a repost, and perhaps also in the doc/ =
+files.
+>>=20
+>>>=20
+>>> 1. Although Intel Xeon Sapphire Rapids supports both QAT and IAA,
+>> different
+>>>   SKUs support different numbers of QAT and IAA, so some users do =
+not
+>> have
+>>>   both QAT and IAA at the same time.
+>>>=20
+>>> 2. QAT products include PCIe cards, which are compatible with older =
+Xeon
+>>>   products and other non-Xeon products. And some users have already
+>> used QAT
+>>>   cards to accelerate live migration.
+>>=20
+>> Ah, this makes some sense to me.
+>>=20
+>> So a previous question always haunted me, where I wondered why an =
+user who
+>> bought all these fancy and expensive processors with QAT, would still =
+like
+>> to not invest on a better network of 50G or more, but stick with 10Gs
+>> ancient NICs and switches.
+>>=20
+>> So what you're saying is logically in some old clusters with old =
+chips and
+>> old network solutions, it's possible that user buys these PCIe cards
+>> separately so it may help with that old infra migrate VMs faster.  Is =
+that
+>> the case?
+>=20
+> Yes, users do not add a QAT card just for live migration. Users mainly =
+use=20
+> QAT-SRIOV technology to help cloud users offload compression and =
+encryption.
+>=20
+>> If so, we may still want some numbers showing how this performs in a
+>> network-limited environment, and how that helps users to migrate.  =
+Sorry
+>> if
+>> there's some back-and-forth requirement asking for these numbers, but =
+I
+>> think these are still important information when an user would like =
+to
+>> decide whether to use these features.  Again, put that into docs/ if
+>> proper
+>> would be nice too.
+>=20
+> Yes, I will provide some performance data at some specific=20
+> bandwidths(100Mbps/1Gbps/10Gbps). And add documentation to explain=20
+> the advantages of using QAT=20
+Just want to add some information here. So in ByteDance, the current =
+generation server is quipped with 2*100Gb NIC. We reserve 10Gbps for =
+control plane purposes which includes live migration here. So it is not =
+about we are using =E2=80=9Cgood network=E2=80=9D, it is about not =
+normal to use full bandwidth for control plane purposes. Hence we do =
+have a requirements for QAT/IAA in these cases.
+>>>=20
+>>> 3. In addition to compression, QAT and IAA also support various =
+other
+>> features
+>>>   to better serve different workloads. Here is an introduction to =
+the
+>> accelerators,
+>>>   including usage scenarios of QAT and IAA.
+>>>   https://www.intel.com/content/dam/www/central-
+>> =
+libraries/us/en/documents/2022-12/storage-engines-4th-gen-xeon-brief.pdf
+>>=20
+>> Thanks for the link.
+>>=20
+>> However this doesn't look like a reason to support it in migration?  =
+It
+>> needs to help migration in some form or another, no matter how many
+>> features it provides.. since migration may not consume them.
+>>=20
+>> Two major (but pure..) questions:
+>>=20
+>>  1) Why high cpu usage?
+>>=20
+>>     I raised this question below [1] too but I didn't yet get an =
+answer.
+>>     Ror 8-chan multifd, it's ~390% (QAT) v.s. ~240% (nocomp), even if
+>>     46Gbps bw for the latter... so when throttled it will be even =
+lower?
+>>=20
+>>     The paper you provided above has this upfront:
+>>=20
+>>        When a CPU can offload storage functions to built-in =
+accelerators,
+>>        it frees up cores for business-critical workloads...
+>>=20
+>>     Isn't that a major feature to be able to "offload" things?  Why =
+cpu
+>>     isn't freed even if the offload happened?
+>=20
+> Yes, it doesn't make sense, I will check this.
+>=20
+>>  2) TLS?
+>>=20
+>>     I think I asked before, I apologize if any of you've already =
+answered
+>>     and if I forgot.. but have any of you looked into offload TLS
+>> (instead
+>>     of compression) with the QATs?
+>=20
+> I'm sorry for not responding to the previous question about TLS. QAT =
+has many=20
+> related success cases (for example, OpenSSL).=20
+> =
+https://www.intel.com/content/dam/www/public/us/en/documents/solution-brie=
+fs/accelerating-openssl-brief.pdf
+>=20
+> I will send a separate RFC or patch about this part because the =
+software stacks of QAT=20
+> compression and encryption are independent, so we discuss them =
+separately.
+>=20
+>> Thanks,
+>>=20
+>>>=20
+>>> For users who have both QAT and IAA, we recommend the following for
+>> choosing a
+>>> live migration solution:
+>>>=20
+>>> 1. If the number of QAT devices is equal to or greater than the =
+number
+>> of IAA devices
+>>>   and network bandwidth is limited, it is recommended to use the
+>> QATZip(QAT) solution.
+>>>=20
+>>> 2. In other scenarios, the QPL (IAA) solution can be used first.
+>>>=20
+>>>> I am honestly curious too on whether are you planning to use it in
+>>>> production.  It looks like if the network resources are rich, =
+no-comp
+>> is
+>>>> mostly always better than qatzip, no matter on total migration time =
+or
+>> cpu
+>>>> consumption.  I'm pretty surprised that it'll take that much =
+resources
+>>>> even
+>>>> if the work should have been offloaded to the QAT chips iiuc.
+>>=20
+>> [1]
+>>=20
+>>>>=20
+>>>> I think it may not be a problem to merge this series even if it
+>> performs
+>>>> slower at some criterias.. but I think we may still want to know =
+when
+>> this
+>>>> should be used, or the good reason this should be merged (if it's =
+not
+>>>> about
+>>>> it outperforms others).
+>>>>=20
+>>>> Thanks,
+>>>>=20
+>>>>>=20
+>>>>>=20
+>>>>> Bryan Zhang (4):
+>>>>>  meson: Introduce 'qatzip' feature to the build system
+>>>>>  migration: Add migration parameters for QATzip
+>>>>>  migration: Introduce 'qatzip' compression method
+>>>>>  tests/migration: Add integration test for 'qatzip' compression
+>> method
+>>>>>=20
+>>>>> hw/core/qdev-properties-system.c |   6 +-
+>>>>> meson.build                      |  10 +
+>>>>> meson_options.txt                |   2 +
+>>>>> migration/meson.build            |   1 +
+>>>>> migration/migration-hmp-cmds.c   |   8 +
+>>>>> migration/multifd-qatzip.c       | 382
+>> +++++++++++++++++++++++++++++++
+>>>>> migration/multifd.h              |   1 +
+>>>>> migration/options.c              |  57 +++++
+>>>>> migration/options.h              |   2 +
+>>>>> qapi/migration.json              |  38 +++
+>>>>> scripts/meson-buildoptions.sh    |   6 +
+>>>>> tests/qtest/meson.build          |   4 +
+>>>>> tests/qtest/migration-test.c     |  35 +++
+>>>>> 13 files changed, 551 insertions(+), 1 deletion(-)
+>>>>> create mode 100644 migration/multifd-qatzip.c
+>>>>>=20
+>>>>> --
+>>>>> Yichen Wang
+>>>>>=20
+>>>>=20
+>>>> --
+>>>> Peter Xu
+>>>=20
+>>=20
+>> --
+>> Peter Xu
 
-That is possible but I made it virtio-gpu option as this is specific to 
-virtio-gpu backend. We can consider moving it to gtk layer if it makes 
-more sense.
 
-> 
-> 
->      >
->      > I am not convinced this is generally useful to be an extra option
->     though.
-> 
->     I initially thought this should be the default because the virtio-gpu
->     guest should not be hold by the host for too long in any cases. And
->     this
->     new approach is comparable to the default mode with blob=false where
->     the
->     guest is released as soon as the resource flush is done. Only
->     difference
->     is the resource synchronization using the fence.
-> 
-> 
-> virgl should be blocking rendering too
-> 
-> Could you detail your testing setup ?
+--Apple-Mail=_2C82ACD3-D8A3-48C6-983E-F565A2ACD356
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
 
-We use ubuntu linux as a guest OS but it's modified for our GFX SRIOV
-setup. I am not sure if this is the details you are looking for but here 
-is it: we virtualize our GPU using SRIOV. So individual linux guest have 
-their dedicated portion of GPU device that is detected and worked as 
-"render-only" device. And since it is render-only, we pair it with 
-virtio-gpu device/driver that provides display feature. Scanouts on the 
-guest are allocated by virtio-gpu then imported by Mesa driver then used 
-as a main framebuffer. On every plane update done by compositor will get
-virtio-gpu driver to issue resource-flush (followed by set scanout) to 
-host. Host (QEMU) gets this scanout data as blob (scatter-gather list) 
-then creates its own dmabuf using udmabuf driver. At every resource 
-flush, we block the render pipeline as well as the guest until the 
-rendering if finished for scanout synchronization as you know.
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;"><br =
+id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
+type=3D"cite"><div>On Jul 5, 2024, at 1:32=E2=80=AFAM, Liu, Yuan1 =
+&lt;yuan1.liu@intel.com&gt; wrote:</div><br =
+class=3D"Apple-interchange-newline"><div><meta =
+charset=3D"UTF-8"><blockquote type=3D"cite" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">-----Original Message-----<br>From: Peter Xu =
+&lt;<a =
+href=3D"mailto:peterx@redhat.com">peterx@redhat.com</a>&gt;<br>Sent: =
+Thursday, July 4, 2024 11:36 PM<br>To: Liu, Yuan1 &lt;<a =
+href=3D"mailto:yuan1.liu@intel.com">yuan1.liu@intel.com</a>&gt;<br>Cc: =
+Wang, Yichen &lt;<a =
+href=3D"mailto:yichen.wang@bytedance.com">yichen.wang@bytedance.com</a>&gt=
+;; Paolo Bonzini<br>&lt;<a =
+href=3D"mailto:pbonzini@redhat.com">pbonzini@redhat.com</a>&gt;; Daniel =
+P. Berrang=C3=A9 &lt;<a =
+href=3D"mailto:berrange@redhat.com">berrange@redhat.com</a>&gt;; =
+Eduardo<br>Habkost &lt;<a =
+href=3D"mailto:eduardo@habkost.net">eduardo@habkost.net</a>&gt;; =
+Marc-Andr=C3=A9 Lureau<br>&lt;<a =
+href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redhat.com</a=
+>&gt;; Thomas Huth &lt;<a =
+href=3D"mailto:thuth@redhat.com">thuth@redhat.com</a>&gt;; =
+Philippe<br>Mathieu-Daud=C3=A9 &lt;<a =
+href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt;; Fabiano =
+Rosas &lt;<a href=3D"mailto:farosas@suse.de">farosas@suse.de</a>&gt;; =
+Eric<br>Blake &lt;<a =
+href=3D"mailto:eblake@redhat.com">eblake@redhat.com</a>&gt;; Markus =
+Armbruster &lt;<a =
+href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt;; =
+Laurent<br>Vivier &lt;<a =
+href=3D"mailto:lvivier@redhat.com">lvivier@redhat.com</a>&gt;;<span =
+class=3D"Apple-converted-space">&nbsp;</span><a =
+href=3D"mailto:qemu-devel@nongnu.org">qemu-devel@nongnu.org</a>; Hao =
+Xiang<br>&lt;<a =
+href=3D"mailto:hao.xiang@linux.dev">hao.xiang@linux.dev</a>&gt;; Zou, =
+Nanhai &lt;<a =
+href=3D"mailto:nanhai.zou@intel.com">nanhai.zou@intel.com</a>&gt;; =
+Ho-Ren (Jack)<br>Chuang &lt;<a =
+href=3D"mailto:horenchuang@bytedance.com">horenchuang@bytedance.com</a>&gt=
+;<br>Subject: Re: [PATCH v3 0/4] Implement using Intel QAT to offload =
+ZLIB<br><br>On Thu, Jul 04, 2024 at 03:15:51AM +0000, Liu, Yuan1 =
+wrote:<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">-----Original Message-----<br>From: Peter Xu =
+&lt;peterx@redhat.com&gt;<br>Sent: Wednesday, July 3, 2024 3:16 =
+AM<br>To: Wang, Yichen &lt;yichen.wang@bytedance.com&gt;<br>Cc: Paolo =
+Bonzini &lt;pbonzini@redhat.com&gt;; Daniel P. =
+Berrang=C3=A9<br>&lt;berrange@redhat.com&gt;; Eduardo Habkost =
+&lt;eduardo@habkost.net&gt;; =
+Marc-<br></blockquote></blockquote>Andr=C3=A9<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">Lureau =
+&lt;marcandre.lureau@redhat.com&gt;; Thomas Huth =
+&lt;thuth@redhat.com&gt;;<br>Philippe Mathieu-Daud=C3=A9 =
+&lt;philmd@linaro.org&gt;; Fabiano Rosas<br>&lt;farosas@suse.de&gt;; =
+Eric Blake &lt;eblake@redhat.com&gt;; Markus =
+Armbruster<br>&lt;armbru@redhat.com&gt;; Laurent Vivier =
+&lt;lvivier@redhat.com&gt;; qemu-<br>devel@nongnu.org; Hao Xiang =
+&lt;hao.xiang@linux.dev&gt;; Liu, Yuan1<br>&lt;yuan1.liu@intel.com&gt;; =
+Zou, Nanhai &lt;nanhai.zou@intel.com&gt;; =
+Ho-Ren<br></blockquote></blockquote>(Jack)<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">Chuang =
+&lt;horenchuang@bytedance.com&gt;<br>Subject: Re: [PATCH v3 0/4] =
+Implement using Intel QAT to offload ZLIB<br><br>On Thu, Jun 27, 2024 at =
+03:34:41PM -0700, Yichen Wang wrote:<br><blockquote type=3D"cite">v3:<br>-=
+ Rebase changes on top of master<br>- Merge two patches per Fabiano =
+Rosas's comment<br>- Add versions into comments and =
+documentations<br><br>v2:<br>- Rebase changes on top of recent multifd =
+code changes.<br>- Use QATzip API 'qzMalloc' and 'qzFree' to allocate =
+QAT buffers.<br>- Remove parameter tuning and use QATzip's defaults for =
+better<br>&nbsp;performance.<br>- Add parameter to enable QAT software =
+fallback.<br><br>v1:<br>https://lists.nongnu.org/archive/html/qemu-devel/2=
+023-<br></blockquote></blockquote></blockquote>12/msg03761.html<br><blockq=
+uote type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite"><br>* Performance<br><br>We present updated performance =
+results. For circumstantial =
+reasons,<br></blockquote></blockquote></blockquote>v1<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">presented performance on a low-bandwidth (1Gbps) =
+network.<br><br>Here, we present updated results with a similar setup as =
+before but<br></blockquote></blockquote></blockquote>with<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote type=3D"cite">two =
+main differences:<br><br>1. Our machines have a ~50Gbps connection, =
+tested using 'iperf3'.<br>2. We had a bug in our memory allocation =
+causing us to only use =
+~1/2<br></blockquote></blockquote></blockquote>of<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote type=3D"cite">the =
+VM's RAM. Now we properly allocate and fill nearly all of =
+the<br></blockquote></blockquote></blockquote>VM's<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">RAM.<br><br>Thus, the test setup is as follows:<br><br>We =
+perform multifd live migration over TCP using a VM with =
+64GB<br></blockquote></blockquote></blockquote>memory.<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote type=3D"cite">We =
+prepare the machine's memory by powering it on, allocating =
+a<br></blockquote></blockquote></blockquote>large<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote type=3D"cite">amount =
+of memory (60GB) as a single buffer, and filling the =
+buffer<br></blockquote></blockquote></blockquote>with<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote type=3D"cite">the =
+repeated contents of the Silesia corpus[0]. This is in lieu of =
+a<br></blockquote>more<br><blockquote type=3D"cite">realistic memory =
+snapshot, which proved troublesome to acquire.<br><br>We analyze CPU =
+usage by averaging the output of 'top' every second<br>during migration. =
+This is admittedly imprecise, but we feel that it<br>accurately portrays =
+the different degrees of CPU usage of varying<br>compression =
+methods.<br><br>We present the latency, throughput, and CPU usage =
+results for all =
+of<br></blockquote></blockquote></blockquote>the<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">compression methods, with varying numbers of multifd =
+threads (4, =
+8,<br></blockquote></blockquote></blockquote>and<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">16).<br><br>[0] The Silesia corpus can be accessed =
+here:<br>https://sun.aei.polsl.pl//~sdeor/index.php?page=3Dsilesia<br><br>=
+** Results<br><br>4 multifd =
+threads:<br><br>&nbsp;&nbsp;&nbsp;|---------------|---------------|-------=
+---------|---------|----<br></blockquote></blockquote></blockquote>----<br=
+><blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|method =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|time(sec) =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|throughput(mbps)|send =
+cpu%|recv<br></blockquote>cpu%|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|qatzip =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 23.13 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 8749.94 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|117.50<br></blockquote></blockq=
+uote></blockquote>|186.49<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|zlib =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|254.35 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;771.87 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|388.20<br></blockquote></blockq=
+uote></blockquote>|144.40<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|zstd =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 54.52 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3442.59 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|414.59<br></blockquote></blockq=
+uote></blockquote>|149.77<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|none =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 12.45 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|43739.60 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|159.71<br></blockquote></blockq=
+uote></blockquote>|204.96<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite"><br>8 multifd =
+threads:<br><br>&nbsp;&nbsp;&nbsp;|---------------|---------------|-------=
+---------|---------|----<br></blockquote></blockquote></blockquote>----<br=
+><blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|method =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|time(sec) =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|throughput(mbps)|send =
+cpu%|recv<br></blockquote>cpu%|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|qatzip =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 16.91 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|12306.52 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|186.37<br></blockquote></blockq=
+uote></blockquote>|391.84<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|zlib =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|130.11 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1508.89 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|753.86<br></blockquote></blockq=
+uote></blockquote>|289.35<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|zstd =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 27.57 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 6823.23 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|786.83<br></blockquote></blockq=
+uote></blockquote>|303.80<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|none =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 11.82 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|46072.63 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|163.74<br></blockquote></blockq=
+uote></blockquote>|238.56<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite"><br>16 multifd =
+threads:<br><br>&nbsp;&nbsp;&nbsp;|---------------|---------------|-------=
+---------|---------|----<br></blockquote></blockquote></blockquote>----<br=
+><blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|method =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|time(sec) =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|throughput(mbps)|send =
+cpu%|recv<br></blockquote>cpu%|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|qatzip =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|18.64 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|11044.52 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+573.61<br></blockquote></blockquote></blockquote>|437.65<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|zlib =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|66.43 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2955.79 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|1469.68<br></blockquote></block=
+quote></blockquote>|567.47<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|zstd =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|14.17 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|13290.66 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|1504.08<br></blockquote></block=
+quote></blockquote>|615.33<br><blockquote type=3D"cite"><blockquote =
+type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|none =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|16.82 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|32363.26 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+180.74<br></blockquote></blockquote></blockquote>|217.17<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">|<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;&nbsp;|---------------|---------------|---------=
+-------|---------|----<br></blockquote></blockquote></blockquote>----<br><=
+blockquote type=3D"cite"><blockquote type=3D"cite">-|<br><blockquote =
+type=3D"cite"><br>** Observations<br><br>- In general, not using =
+compression outperforms using compression =
+in<br></blockquote></blockquote></blockquote>a<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">&nbsp;non-network-bound environment.<br>- 'qatzip' =
+outperforms other compression workers with 4 and =
+8<br></blockquote></blockquote></blockquote>workers,<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">&nbsp;achieving a ~91% latency reduction over 'zlib' with =
+4 workers, =
+and<br></blockquote></blockquote></blockquote>a<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote type=3D"cite">~58% =
+latency reduction over 'zstd' with 4 workers.<br>- 'qatzip' maintains =
+comparable performance with 'zstd' at =
+16<br></blockquote></blockquote></blockquote>workers,<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">&nbsp;showing a ~32% increase in latency. This performance =
+difference<br>becomes more noticeable with more workers, as CPU =
+compression =
+is<br></blockquote></blockquote></blockquote>highly<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">parallelizable.<br>- 'qatzip' compression uses =
+considerably less CPU than =
+other<br></blockquote></blockquote></blockquote>compression<br><blockquote=
+ type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">&nbsp;methods. At 8 workers, 'qatzip' demonstrates a ~75% =
+reduction in<br>compression CPU usage compared to 'zstd' and =
+'zlib'.<br>- 'qatzip' decompression CPU usage is less impressive, and is =
+even<br>&nbsp;slightly worse than 'zstd' and 'zlib' CPU usage at 4 and =
+16<br></blockquote></blockquote></blockquote>workers.<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><br>Thanks for the results =
+update.<br><br>It looks like the docs/migration/ file is still missing. =
+&nbsp;It'll be<br></blockquote></blockquote>great<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">to<br>have it in the next =
+version or separately.<br><br>So how it compares with QPL (which got =
+merged already)? &nbsp;They at least<br>look<br>like both supported on =
+an Intel platform, so an user whoever wants to<br>compress the RAM could =
+start to look at both. &nbsp;I'm utterly confused =
+on<br></blockquote></blockquote>why<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">Intel provides these two similar =
+compressors. &nbsp;It would be great =
+to<br></blockquote></blockquote>have<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">some answer and perhaps put into =
+the doc.<br></blockquote></blockquote><br>Yuan,<br><br><blockquote =
+type=3D"cite"><br>I would like to explain some of the reasons why we =
+want to merge the<br>two QAT and IAA solutions into the =
+community.<br></blockquote><br>Yes, these are very helpful information. =
+&nbsp;Please consider putting them<br>into<br>the cover letter if =
+there's a repost, and perhaps also in the doc/ files.<br><br><blockquote =
+type=3D"cite"><br>1. Although Intel Xeon Sapphire Rapids supports both =
+QAT and IAA,<br></blockquote>different<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;SKUs support different numbers of QAT and IAA, =
+so some users do not<br></blockquote>have<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;both QAT and IAA at the same time.<br><br>2. =
+QAT products include PCIe cards, which are compatible with older =
+Xeon<br>&nbsp;&nbsp;products and other non-Xeon products. And some users =
+have already<br></blockquote>used QAT<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;cards to accelerate live =
+migration.<br></blockquote><br>Ah, this makes some sense to =
+me.<br><br>So a previous question always haunted me, where I wondered =
+why an user who<br>bought all these fancy and expensive processors with =
+QAT, would still like<br>to not invest on a better network of 50G or =
+more, but stick with 10Gs<br>ancient NICs and switches.<br><br>So what =
+you're saying is logically in some old clusters with old chips =
+and<br>old network solutions, it's possible that user buys these PCIe =
+cards<br>separately so it may help with that old infra migrate VMs =
+faster. &nbsp;Is that<br>the case?<br></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Yes, users do not add a QAT card just for =
+live migration. Users mainly use<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">QAT-SRIOV technology to help cloud users =
+offload compression and encryption.</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">If so, we may still want some numbers showing =
+how this performs in a<br>network-limited environment, and how that =
+helps users to migrate. &nbsp;Sorry<br>if<br>there's some back-and-forth =
+requirement asking for these numbers, but I<br>think these are still =
+important information when an user would like to<br>decide whether to =
+use these features. &nbsp;Again, put that into docs/ =
+if<br>proper<br>would be nice too.<br></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Yes, I will provide some performance data =
+at some specific<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">bandwidths(100Mbps/1Gbps/10Gbps). And add =
+documentation to explain<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">the advantages of using QAT<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: =
+none;"></div></blockquote>Just want to add some information here. So in =
+ByteDance, the current generation server is quipped with 2*100Gb NIC. We =
+reserve 10Gbps for control plane purposes which includes live migration =
+here. So it is not about we are using =E2=80=9Cgood network=E2=80=9D, it =
+is about not normal to use full bandwidth for control plane purposes. =
+Hence we do have a requirements for QAT/IAA in these =
+cases.<br><blockquote type=3D"cite"><div><blockquote type=3D"cite" =
+style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: auto; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: auto; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
+type=3D"cite"><br>3. In addition to compression, QAT and IAA also =
+support various other<br></blockquote>features<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;to better serve different workloads. Here is =
+an introduction to the<br></blockquote>accelerators,<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;including usage scenarios of QAT and =
+IAA.<br>&nbsp;&nbsp;https://www.intel.com/content/dam/www/central-<br></bl=
+ockquote>libraries/us/en/documents/2022-12/storage-engines-4th-gen-xeon-br=
+ief.pdf<br><br>Thanks for the link.<br><br>However this doesn't look =
+like a reason to support it in migration? &nbsp;It<br>needs to help =
+migration in some form or another, no matter how many<br>features it =
+provides.. since migration may not consume them.<br><br>Two major (but =
+pure..) questions:<br><br>&nbsp;1) Why high cpu =
+usage?<br><br>&nbsp;&nbsp;&nbsp;&nbsp;I raised this question below [1] =
+too but I didn't yet get an answer.<br>&nbsp;&nbsp;&nbsp;&nbsp;Ror =
+8-chan multifd, it's ~390% (QAT) v.s. ~240% (nocomp), even =
+if<br>&nbsp;&nbsp;&nbsp;&nbsp;46Gbps bw for the latter... so when =
+throttled it will be even lower?<br><br>&nbsp;&nbsp;&nbsp;&nbsp;The =
+paper you provided above has this =
+upfront:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When a CPU can =
+offload storage functions to built-in =
+accelerators,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it frees up =
+cores for business-critical =
+workloads...<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Isn't that a major feature =
+to be able to "offload" things? &nbsp;Why =
+cpu<br>&nbsp;&nbsp;&nbsp;&nbsp;isn't freed even if the offload =
+happened?<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">Yes, it =
+doesn't make sense, I will check this.</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">&nbsp;2) TLS?<br><br>&nbsp;&nbsp;&nbsp;&nbsp;I =
+think I asked before, I apologize if any of you've already =
+answered<br>&nbsp;&nbsp;&nbsp;&nbsp;and if I forgot.. but have any of =
+you looked into offload TLS<br>(instead<br>&nbsp;&nbsp;&nbsp;&nbsp;of =
+compression) with the QATs?<br></blockquote><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">I'm =
+sorry for not responding to the previous question about TLS. QAT has =
+many<span class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">related success cases (for example, =
+OpenSSL).<span class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><a =
+href=3D"https://www.intel.com/content/dam/www/public/us/en/documents/solut=
+ion-briefs/accelerating-openssl-brief.pdf" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: =
+0px;">https://www.intel.com/content/dam/www/public/us/en/documents/solutio=
+n-briefs/accelerating-openssl-brief.pdf</a><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">I will =
+send a separate RFC or patch about this part because the software stacks =
+of QAT<span class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">compression and encryption are independent, =
+so we discuss them separately.</span><br style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">Thanks,<br><br><blockquote type=3D"cite"><br>For =
+users who have both QAT and IAA, we recommend the following =
+for<br></blockquote>choosing a<br><blockquote type=3D"cite">live =
+migration solution:<br><br>1. If the number of QAT devices is equal to =
+or greater than the number<br></blockquote>of IAA devices<br><blockquote =
+type=3D"cite">&nbsp;&nbsp;and network bandwidth is limited, it is =
+recommended to use the<br></blockquote>QATZip(QAT) =
+solution.<br><blockquote type=3D"cite"><br>2. In other scenarios, the =
+QPL (IAA) solution can be used first.<br><br><blockquote type=3D"cite">I =
+am honestly curious too on whether are you planning to use it =
+in<br>production. &nbsp;It looks like if the network resources are rich, =
+no-comp<br></blockquote></blockquote>is<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">mostly always better than =
+qatzip, no matter on total migration time =
+or<br></blockquote></blockquote>cpu<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">consumption. &nbsp;I'm pretty =
+surprised that it'll take that much resources<br>even<br>if the work =
+should have been offloaded to the QAT chips =
+iiuc.<br></blockquote></blockquote><br>[1]<br><br><blockquote =
+type=3D"cite"><blockquote type=3D"cite"><br>I think it may not be a =
+problem to merge this series even if =
+it<br></blockquote></blockquote>performs<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">slower at some criterias.. but I =
+think we may still want to know =
+when<br></blockquote></blockquote>this<br><blockquote =
+type=3D"cite"><blockquote type=3D"cite">should be used, or the good =
+reason this should be merged (if it's not<br>about<br>it outperforms =
+others).<br><br>Thanks,<br><br><blockquote type=3D"cite"><br><br>Bryan =
+Zhang (4):<br>&nbsp;meson: Introduce 'qatzip' feature to the build =
+system<br>&nbsp;migration: Add migration parameters for =
+QATzip<br>&nbsp;migration: Introduce 'qatzip' compression =
+method<br>&nbsp;tests/migration: Add integration test for 'qatzip' =
+compression<br></blockquote></blockquote></blockquote>method<br><blockquot=
+e type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite"><br>hw/core/qdev-properties-system.c | &nbsp;&nbsp;6 =
++-<br>meson.build =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;10 =
++<br>meson_options.txt =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;| &nbsp;&nbsp;2 +<br>migration/meson.build =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+&nbsp;&nbsp;1 +<br>migration/migration-hmp-cmds.c &nbsp;&nbsp;| =
+&nbsp;&nbsp;8 +<br>migration/multifd-qatzip.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+382<br></blockquote></blockquote></blockquote>++++++++++++++++++++++++++++=
++++<br><blockquote type=3D"cite"><blockquote type=3D"cite"><blockquote =
+type=3D"cite">migration/multifd.h =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;| &nbsp;&nbsp;1 +<br>migration/options.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;| &nbsp;57 +++++<br>migration/options.h =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;| &nbsp;&nbsp;2 +<br>qapi/migration.json =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;| &nbsp;38 +++<br>scripts/meson-buildoptions.sh &nbsp;&nbsp;&nbsp;| =
+&nbsp;&nbsp;6 +<br>tests/qtest/meson.build =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;4 =
++<br>tests/qtest/migration-test.c &nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;35 =
++++<br>13 files changed, 551 insertions(+), 1 deletion(-)<br>create mode =
+100644 migration/multifd-qatzip.c<br><br>--<br>Yichen =
+Wang<br><br></blockquote><br>--<br>Peter =
+Xu<br></blockquote><br></blockquote><br>--<br>Peter =
+Xu</blockquote></div></blockquote></div><br></body></html>=
 
-We do not use virgl (instead, the normal HW driver for SRIOV-Virtual 
-device is used).
-
-So this idea of having render_sync=false is based on
-
-1. glBlitFrameBuffer can be done anytime after resource-flush is received.
-2. the guest can be unblocked whenever the blob is used (cloned by 
-glBlitFrameBuffer).
-
-> 
-> thanks
-> 
-> 
->      >
->      >     Dongwon Kim (4):
->      >        hw/display/virtio-gpu: Introducing render_sync param
->      >        ui/egl-helpers: Consolidates create-sync and create-fence
->      >        ui/gtk-egl: Start rendering of guest blob scanout if
->     render_sync is
->      >          off
->      >        ui/gtk-gl-draw: Start rendering of guest blob scanout if
->     render_sync
->      >          is off
->      >
->      >       include/hw/virtio/virtio-gpu.h  |  3 ++
->      >       include/ui/dmabuf.h             |  4 +-
->      >       include/ui/egl-helpers.h        |  3 +-
->      >       hw/display/vhost-user-gpu.c     |  3 +-
->      >       hw/display/virtio-gpu-udmabuf.c |  3 +-
->      >       hw/display/virtio-gpu.c         |  2 +
->      >       hw/vfio/display.c               |  3 +-
->      >       ui/dbus-listener.c              |  2 +-
->      >       ui/dmabuf.c                     | 11 +++-
->      >       ui/egl-helpers.c                | 27 ++++------
->      >       ui/gtk-egl.c                    | 93
->     ++++++++++++++++++---------------
->      >       ui/gtk-gl-area.c                | 90
->     +++++++++++++++++++------------
->      >       12 files changed, 146 insertions(+), 98 deletions(-)
->      >
->      >     --
->      >     2.34.1
->      >
->      >
->      >
->      >
->      > --
->      > Marc-André Lureau
-> 
-> 
-> 
-> -- 
-> Marc-André Lureau
-
+--Apple-Mail=_2C82ACD3-D8A3-48C6-983E-F565A2ACD356--
 
