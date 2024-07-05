@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A5C92882A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 13:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7409A92889C
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 14:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPhPG-000881-3c; Fri, 05 Jul 2024 07:47:14 -0400
+	id 1sPhvS-0003A2-9p; Fri, 05 Jul 2024 08:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sPhP7-00087M-U2
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 07:47:08 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sPhvQ-00038R-C9
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 08:20:28 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sPhOx-0000BV-3j
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 07:46:59 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a7523f0870cso177657766b.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 04:46:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sPhvO-0001j3-OV
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 08:20:28 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-58bac81f39bso2179039a12.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 05:20:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720180013; x=1720784813; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720182025; x=1720786825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
  bh=IJW869YmlCIAYzX0Hbf3XJ2muKOBcrbLR8ldy6V+obI=;
- b=IjpOoeBdaQF9REKC8tNHhKQWbwavcp0O3ePlSihnzE66L+vK2/vrBdEULIFmqaH5DY
- UVPTeMXR23NCxTDBDNTHd6L0atw7GStYiCHBBfbfAUnZF5iF/rGKLqpE3WQ5fOq2nE3U
- 3rba7H6l0TT8x9fiRTMpR+zWT0P1KjtXDWL4phkFynt9I6sg3HseNm2Anpe8/cNAH9eC
- y81I1YxBRqJTA2JuXTcnHoUqIrwsKq9VjKkXA8QXAWDRNjQtWViZGbRLwJHlJE7u2Ato
- 1k3MjNg3oBSvqJAbck1KARKcX8DY1Wd8cTfSuEvbOfw5zJkIFMB4OA8+qx6qV8qkCQFF
- nxNg==
+ b=V1GOJVuIl2pWtGtyWsqioTEfhO6A3dwuUmlAJN46gM7sIrGlUd7p/liiXFMarQ8676
+ RGpO6dWA/G61+nSHi3y6kdShScSPRVw79Z+8VmN506kwOm5dKBgxjYK7hz+hnOcONOyF
+ zIe4Q4zEBZMour57HSykici79xC+I3VoNq0zcWP/0lYMeNdssGsCiuLxZv7rflEUvDKe
+ uM9NSI8mtED1fQryEjob591GXZs3w0IGQ87zRPCrm3E65AMyCFbOFaNVtHlDzk4NzmTc
+ uGvO2OYl8LU4i3lO4oFZ4e4dMDmEQyzZV8Z9eqFjLEdvxe3zK+2u3/Fdf8/hneI+UFxm
+ DSJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720180013; x=1720784813;
+ d=1e100.net; s=20230601; t=1720182025; x=1720786825;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=IJW869YmlCIAYzX0Hbf3XJ2muKOBcrbLR8ldy6V+obI=;
- b=MmAWP73XiHIIzufba+VOo5N+pL0pkEVJ1E1ThWbl5vAmDzu8S9FIf/RHnslPhcAwew
- kwahvJbOc6/fRFDn/nBuUbkjRz8YX59C3NtxnGH9b3H6pVT+R1mEKJNd8LLPmRMaMowT
- xunFqhubbtVl7YrfOfv+T7g6SZGV2hr5sa6yfSTQsMQxRKpzZzqRk6Pg1bSDao1rFXdM
- nMuue6nLhCM7DfCfrAsA0+Hlo1UInn9GLPSQiAxFPg424wFp+glbDe3sJoHM5NbPa73w
- lt0tw11uH4Ci3kaE4eMtx36pWlGeJQjdY3D9OJyXELZVElIF7xsH5xfxa4ssNrRecFMu
- RW5A==
-X-Gm-Message-State: AOJu0Yw6s27iUDsgJbAQvAT8oZhazdn2ikwcivpASk6YGzrVdCYzp3f3
- JaXOykyEm9tiiE3Ba2rg3uNdvgsgQTXTvLldRdo/biEG1FdDvkvC
-X-Google-Smtp-Source: AGHT+IEz2sSKO0imGVQXzy0apbO11a9Tl4uIyMDK8Hb9FZ2OL1+nQ59cl7+iKossCcArh6rHGJnQXQ==
-X-Received: by 2002:a17:906:58f:b0:a6f:badc:8d2 with SMTP id
- a640c23a62f3a-a77ba7223eamr299633166b.70.1720180012923; 
- Fri, 05 Jul 2024 04:46:52 -0700 (PDT)
+ b=mb37/n5nvsXWkMIIfcL0KjkNS+T6urPAy/xMydrLTMPUEZsJSB2OIiK6EEixYBWuok
+ j8OfNkZGeHMQHzzb4kV0pkwsgkgpF0iDa2UAMcydgTykfapXQJ2vnoZWw9cSTwcod1RT
+ T8X2uDmOnjmqWMatmYc5esutPNtkMFqnmdkicRwKYVBN07xjtNpXC8WLikX1qUNuejyw
+ SxxBFcAlUXq3l+b6lRQWg6JfJhs21SrUCM3PFR68atTKQQYlsJDT3rayjhgUkor3+GYG
+ qZ8Z9R7xHpresaRskWWgnvM3mns1EARcctf8Zqhlgy4rIvWbGYLfLvH+KDGiH3ONujJv
+ D01w==
+X-Gm-Message-State: AOJu0YyICKplqrzY+B4Aw8hxtK6z87oOjwpInivt9X704FBe9WFrHYz4
+ R4JL7Aef6iEW4fKIrJcbFFNUduYNwGIjsh9q8WgVG1jiS48lroAz
+X-Google-Smtp-Source: AGHT+IHOWua0yGxwDXRgfK0yqCn5Ceo9S861fFSwDHPpbUa/8tQZZVofzOG/9YGI7ahBqVUqWDPbcQ==
+X-Received: by 2002:a05:6402:1941:b0:58c:c29c:2b73 with SMTP id
+ 4fb4d7f45d1cf-58e5b4afc25mr2691501a12.40.1720182024829; 
+ Fri, 05 Jul 2024 05:20:24 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-077-191-230-110.77.191.pool.telefonica.de.
  [77.191.230.110]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77abd2a82asm169625466b.214.2024.07.05.04.46.52
+ 4fb4d7f45d1cf-59001f30e7esm466377a12.81.2024.07.05.05.20.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Jul 2024 04:46:52 -0700 (PDT)
+ Fri, 05 Jul 2024 05:20:24 -0700 (PDT)
 Date: Fri, 05 Jul 2024 11:46:49 +0000
 From: Bernhard Beschow <shentey@gmail.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
@@ -76,15 +76,15 @@ MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
