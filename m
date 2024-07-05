@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5AB928D88
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 20:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BC8928D84
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 20:30:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPnga-0003lD-8i; Fri, 05 Jul 2024 14:29:32 -0400
+	id 1sPngc-0003sD-LX; Fri, 05 Jul 2024 14:29:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sPngT-0003fV-Ul
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:29:28 -0400
-Received: from mail-qv1-xf2e.google.com ([2607:f8b0:4864:20::f2e])
+ id 1sPngX-0003jF-NZ
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:29:29 -0400
+Received: from mail-qv1-xf2b.google.com ([2607:f8b0:4864:20::f2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sPngF-0006wf-HS
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:29:25 -0400
-Received: by mail-qv1-xf2e.google.com with SMTP id
- 6a1803df08f44-6b5e4466931so8539026d6.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 11:29:11 -0700 (PDT)
+ id 1sPngI-0006wy-UG
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 14:29:29 -0400
+Received: by mail-qv1-xf2b.google.com with SMTP id
+ 6a1803df08f44-6b5ec93f113so9909226d6.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 11:29:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1720204150; x=1720808950; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=6rRygtm6o/m0r6HXaY5ID5TtA3O7HqCN8g6MPgxbGJY=;
- b=CiJ6HTpJBUrs6YQfnYeaZpjwh/a9SZb7Q/OZ/xYGoIECQ4qcdBmAmfpjVssw3V1Qw8
- GzhE1ycu0/T39DVdxvq8YUm3mwgJwCi8B9DQPVxkTFIQBqwba5pH/83lzan7Hqrob5Mn
- /UZt7J9b+iZmVeupflzu2vpnZyRc/TPGcqXoxeJf5UB0vqr5GisSaDSZpukp4NTpXAjf
- wom8qZctcOIizuXW0o25VXuVpazwXSi26SkyjQkExjm1FnMbmWdHNZa7g/dsACMrd2ZH
- vQB3VwgXSgy8P+Ku5gcvEWvY1CTVeNLYuEHqyibF0jymq71k6NptQoGpUJ8RSKg9vXWf
- HpQg==
+ d=bytedance.com; s=google; t=1720204154; x=1720808954; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZlRBJL/2kgLHCTVQl2/1heWLqm15rZiaaAznhm/gz9E=;
+ b=X1/GG/+IJrSX+Kv/wPuU9HIMlo4MqaCbD9IM2pj8+cy7xYPDEqU6LuZoRq1cYwEyvw
+ R1cqpgEG3Vu1Wwk5FoymUAGs2KXxg3CMk4BolGyuqSF7Q5j4JrnO92ZNi6c4WeeiiLnr
+ MfBb7aWem28R0pJsA+ValLc5A+ZOBNMieh/kFA3sWRZy1YMjbylFMhAR8Hw5bIhrEdiP
+ UZiQtNYrtgIv+G76vAE+D6L2o2OA4KCG4dtBt11xtQtsfkWF17qikgogbZoV/qtXWVZT
+ eREvX3hZDoRVdX1woSFn/xwW1NMP7DI9+TYnNPBsLD1Avo2lRjI+ZCPe+yWqgau56BVA
+ yIeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720204150; x=1720808950;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6rRygtm6o/m0r6HXaY5ID5TtA3O7HqCN8g6MPgxbGJY=;
- b=ci/Fp9KQTpZM/K5LF/IWsaaAk8RQEB0cJYGqnEdDYANT0EI9+WO6nQ/kbmLqmljR3n
- gD83fTs3KZHEZV/z0gKZqgtY4DGRpK/Jm1ZKe4t7cJh3S6ekJbBL32ftYYs7M2hN9YMt
- t8Buo203eu8du7XZ3MOuR6R2KSi7c7mUIYXmejXxBmRNJoQWUbbfgdCLhFPOGcyzkxlg
- VWwVGY97Ag6lmPIudNo8L80hCX5tTsAMouTSqnbMgPCIoPmpcidHd7qrxBbQdnFjrRKt
- 1TV5WJPqIWukg8Up71mPUSVXuY8YQOdVuetXsMRnoWf+U1jjhbaoJW5ce9qlVlKtgeWP
- rqLA==
+ d=1e100.net; s=20230601; t=1720204154; x=1720808954;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZlRBJL/2kgLHCTVQl2/1heWLqm15rZiaaAznhm/gz9E=;
+ b=TnIpzZzFwpQu4ySJXnn5Dz0YsIK+pn8/eUF8doZoBWEWOeizeULC+ShfTJqTQfPfjm
+ uIM7HRzl3jSGXav/3UWOcD6mJne2euxFwnilxI+iMbQUB5OgVXAHI4PCPt0lhWIxh2Ps
+ cjgtCPCxNH0S2N2oP9a8/3dJoWDzdHLB5M2oCnUqpNPGM6h/WerIIquaurhayCdaayhi
+ SZxp91266DsKbSxZHvatwagwuwMFLoGBoC/HjYILaSxWUho52u+ff5kma2zzHBYuOxJx
+ dzSiv0ZMz6o+xA7+zkJolfHjzSZ5SYf2e8c+Pe/hZE5UYpJ5NuPM0ledsv6474YSvEOd
+ cdUg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVN1a7yT6IcEAAej6b6kQam/dvPUQOwAblVe1ak3iPIOj2wPd2YEGCeRSnJHvupXjwBykBOl/tIAUd6TOT5gOJnRMM9kHY=
-X-Gm-Message-State: AOJu0YwsJvp4ZeSj3rq/tp5vS6I1NrR/F6qWy09gXMznSAPcWQoanWhy
- oqxp4ztWFYFeELXah8lqXCsYsqTFC4uUYGvTMrbTnNtMQXy6xhqo1SWNFdxO0y8=
-X-Google-Smtp-Source: AGHT+IFDvUBWGQAcLZEmWhHbR92wBlgR1kPWSCy3R05w/UhgbF9m9hKptcluJudiWsB1njA02gMhig==
-X-Received: by 2002:a05:6214:1c4d:b0:6b0:7b34:21c0 with SMTP id
- 6a1803df08f44-6b5ecfd88e3mr62881366d6.34.1720204150139; 
- Fri, 05 Jul 2024 11:29:10 -0700 (PDT)
+ AJvYcCU3D1hqPYOv6VHY2gBKIH6dLC4Z0oxXCf3HjY5JF1AuMC6uHq5FNgFJCSzFL9SQ2O0vM47rzq5mcObvrAO/iz6kNq4y4rc=
+X-Gm-Message-State: AOJu0YwsyDKp1IS0v/XIKqRi8E5lVv+Nr1MgBjaRLXHDvQPyk5A93LFK
+ zHEANUW2BryiU33H3ulqnyE6fPCAXxP8dzasX3MVBUzhNyWf+h29PF08Q8ipEKI=
+X-Google-Smtp-Source: AGHT+IFzIwsYkbBwiYaQDJildw88IIK4dzNI7RnNDvd8/EMHWNsj/cWeOpzxYESI+PykcQeXzi907w==
+X-Received: by 2002:a05:6214:19ca:b0:6b2:a091:284f with SMTP id
+ 6a1803df08f44-6b5ed1c41e5mr58089956d6.65.1720204153952; 
+ Fri, 05 Jul 2024 11:29:13 -0700 (PDT)
 Received: from DY4X0N7X05.bytedance.net
  (ec2-54-152-246-50.compute-1.amazonaws.com. [54.152.246.50])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b5fb7e316esm4972936d6.30.2024.07.05.11.29.05
+ 6a1803df08f44-6b5fb7e316esm4972936d6.30.2024.07.05.11.29.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jul 2024 11:29:09 -0700 (PDT)
+ Fri, 05 Jul 2024 11:29:13 -0700 (PDT)
 From: Yichen Wang <yichen.wang@bytedance.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -71,15 +72,18 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
  "Zou, Nanhai" <nanhai.zou@intel.com>,
  "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>
-Subject: [PATCH v4 0/4] Implement using Intel QAT to offload ZLIB
-Date: Fri,  5 Jul 2024 11:28:57 -0700
-Message-Id: <20240705182901.48948-1-yichen.wang@bytedance.com>
+ "Yichen Wang" <yichen.wang@bytedance.com>,
+ Bryan Zhang <bryan.zhang@bytedance.com>
+Subject: [PATCH v4 1/4] meson: Introduce 'qatzip' feature to the build system
+Date: Fri,  5 Jul 2024 11:28:58 -0700
+Message-Id: <20240705182901.48948-2-yichen.wang@bytedance.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20240705182901.48948-1-yichen.wang@bytedance.com>
+References: <20240705182901.48948-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2e;
- envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2b;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,143 +105,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v4:
-- Rebase changes on top of 1a2d52c7fcaeaaf4f2fe8d4d5183dccaeab67768
-- Move the IOV initialization to qatzip implementation
-- Only use qatzip to compress normal pages
+From: Bryan Zhang <bryan.zhang@bytedance.com>
 
-v3:
-- Rebase changes on top of master
-- Merge two patches per Fabiano Rosas's comment
-- Add versions into comments and documentations
+Add a 'qatzip' feature, which is automatically disabled, and which
+depends on the QATzip library if enabled.
 
-v2:
-- Rebase changes on top of recent multifd code changes.
-- Use QATzip API 'qzMalloc' and 'qzFree' to allocate QAT buffers.
-- Remove parameter tuning and use QATzip's defaults for better
-  performance.
-- Add parameter to enable QAT software fallback.
+Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
+---
+ meson.build                   | 10 ++++++++++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 3 files changed, 15 insertions(+)
 
-v1:
-https://lists.nongnu.org/archive/html/qemu-devel/2023-12/msg03761.html
-
-* Performance
-
-We present updated performance results. For circumstantial reasons, v1
-presented performance on a low-bandwidth (1Gbps) network.
-
-Here, we present updated results with a similar setup as before but with
-two main differences:
-
-1. Our machines have a ~50Gbps connection, tested using 'iperf3'.
-2. We had a bug in our memory allocation causing us to only use ~1/2 of
-the VM's RAM. Now we properly allocate and fill nearly all of the VM's
-RAM.
-
-Thus, the test setup is as follows:
-
-We perform multifd live migration over TCP using a VM with 64GB memory.
-We prepare the machine's memory by powering it on, allocating a large
-amount of memory (60GB) as a single buffer, and filling the buffer with
-the repeated contents of the Silesia corpus[0]. This is in lieu of a more
-realistic memory snapshot, which proved troublesome to acquire.
-
-We analyze CPU usage by averaging the output of 'top' every second
-during migration. This is admittedly imprecise, but we feel that it
-accurately portrays the different degrees of CPU usage of varying
-compression methods.
-
-We present the latency, throughput, and CPU usage results for all of the
-compression methods, with varying numbers of multifd threads (4, 8, and
-16).
-
-[0] The Silesia corpus can be accessed here:
-https://sun.aei.polsl.pl//~sdeor/index.php?page=silesia
-
-** Results
-
-4 multifd threads:
-
-    |---------------|---------------|----------------|---------|---------|
-    |method         |time(sec)      |throughput(mbps)|send cpu%|recv cpu%|
-    |---------------|---------------|----------------|---------|---------|
-    |qatzip         | 23.13         | 8749.94        |117.50   |186.49   |
-    |---------------|---------------|----------------|---------|---------|
-    |zlib           |254.35         |  771.87        |388.20   |144.40   |
-    |---------------|---------------|----------------|---------|---------|
-    |zstd           | 54.52         | 3442.59        |414.59   |149.77   |
-    |---------------|---------------|----------------|---------|---------|
-    |none           | 12.45         |43739.60        |159.71   |204.96   |
-    |---------------|---------------|----------------|---------|---------|
-
-8 multifd threads:
-
-    |---------------|---------------|----------------|---------|---------|
-    |method         |time(sec)      |throughput(mbps)|send cpu%|recv cpu%|
-    |---------------|---------------|----------------|---------|---------|
-    |qatzip         | 16.91         |12306.52        |186.37   |391.84   |
-    |---------------|---------------|----------------|---------|---------|
-    |zlib           |130.11         | 1508.89        |753.86   |289.35   |
-    |---------------|---------------|----------------|---------|---------|
-    |zstd           | 27.57         | 6823.23        |786.83   |303.80   |
-    |---------------|---------------|----------------|---------|---------|
-    |none           | 11.82         |46072.63        |163.74   |238.56   |
-    |---------------|---------------|----------------|---------|---------|
-
-16 multifd threads:
-
-    |---------------|---------------|----------------|---------|---------|
-    |method         |time(sec)      |throughput(mbps)|send cpu%|recv cpu%|
-    |---------------|---------------|----------------|---------|---------|
-    |qatzip         |18.64          |11044.52        | 573.61  |437.65   |
-    |---------------|---------------|----------------|---------|---------|
-    |zlib           |66.43          | 2955.79        |1469.68  |567.47   |
-    |---------------|---------------|----------------|---------|---------|
-    |zstd           |14.17          |13290.66        |1504.08  |615.33   |
-    |---------------|---------------|----------------|---------|---------|
-    |none           |16.82          |32363.26        | 180.74  |217.17   |
-    |---------------|---------------|----------------|---------|---------|
-
-** Observations
-
-- In general, not using compression outperforms using compression in a
-  non-network-bound environment.
-- 'qatzip' outperforms other compression workers with 4 and 8 workers,
-  achieving a ~91% latency reduction over 'zlib' with 4 workers, and a
-~58% latency reduction over 'zstd' with 4 workers.
-- 'qatzip' maintains comparable performance with 'zstd' at 16 workers,
-  showing a ~32% increase in latency. This performance difference
-becomes more noticeable with more workers, as CPU compression is highly
-parallelizable.
-- 'qatzip' compression uses considerably less CPU than other compression
-  methods. At 8 workers, 'qatzip' demonstrates a ~75% reduction in
-compression CPU usage compared to 'zstd' and 'zlib'.
-- 'qatzip' decompression CPU usage is less impressive, and is even
-  slightly worse than 'zstd' and 'zlib' CPU usage at 4 and 16 workers.
-
-
-Bryan Zhang (4):
-  meson: Introduce 'qatzip' feature to the build system
-  migration: Add migration parameters for QATzip
-  migration: Introduce 'qatzip' compression method
-  tests/migration: Add integration test for 'qatzip' compression method
-
- hw/core/qdev-properties-system.c |   6 +-
- meson.build                      |  10 +
- meson_options.txt                |   2 +
- migration/meson.build            |   1 +
- migration/migration-hmp-cmds.c   |   8 +
- migration/multifd-qatzip.c       | 391 +++++++++++++++++++++++++++++++
- migration/multifd.h              |   5 +-
- migration/options.c              |  57 +++++
- migration/options.h              |   2 +
- qapi/migration.json              |  38 +++
- scripts/meson-buildoptions.sh    |   3 +
- tests/qtest/meson.build          |   4 +
- tests/qtest/migration-test.c     |  35 +++
- 13 files changed, 559 insertions(+), 3 deletions(-)
- create mode 100644 migration/multifd-qatzip.c
-
+diff --git a/meson.build b/meson.build
+index 54e6b09f4f..820baf4745 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1244,6 +1244,14 @@ if not get_option('uadk').auto() or have_system
+      uadk = declare_dependency(dependencies: [libwd, libwd_comp])
+   endif
+ endif
++
++qatzip = not_found
++if get_option('qatzip').enabled()
++  qatzip = dependency('qatzip', version: '>=1.1.2',
++                      required: get_option('qatzip'),
++                      method: 'pkg-config')
++endif
++
+ virgl = not_found
+ 
+ have_vhost_user_gpu = have_tools and host_os == 'linux' and pixman.found()
+@@ -2378,6 +2386,7 @@ config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
+ config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_UADK', uadk.found())
++config_host_data.set('CONFIG_QATZIP', qatzip.found())
+ config_host_data.set('CONFIG_FUSE', fuse.found())
+ config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
+ config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
+@@ -4480,6 +4489,7 @@ summary_info += {'lzfse support':     liblzfse}
+ summary_info += {'zstd support':      zstd}
+ summary_info += {'Query Processing Library support': qpl}
+ summary_info += {'UADK Library support': uadk}
++summary_info += {'qatzip support':    qatzip}
+ summary_info += {'NUMA host support': numa}
+ summary_info += {'capstone':          capstone}
+ summary_info += {'libpmem support':   libpmem}
+diff --git a/meson_options.txt b/meson_options.txt
+index 0269fa0f16..35a69f6697 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -261,6 +261,8 @@ option('qpl', type : 'feature', value : 'auto',
+        description: 'Query Processing Library support')
+ option('uadk', type : 'feature', value : 'auto',
+        description: 'UADK Library support')
++option('qatzip', type: 'feature', value: 'disabled',
++       description: 'QATzip compression support')
+ option('fuse', type: 'feature', value: 'auto',
+        description: 'FUSE block device export')
+ option('fuse_lseek', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index cfadb5ea86..1ce467e9cc 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -163,6 +163,7 @@ meson_options_help() {
+   printf "%s\n" '  pixman          pixman support'
+   printf "%s\n" '  plugins         TCG plugins via shared library loading'
+   printf "%s\n" '  png             PNG support with libpng'
++  printf "%s\n" '  qatzip          QATzip compression support'
+   printf "%s\n" '  qcow1           qcow1 image format support'
+   printf "%s\n" '  qed             qed image format support'
+   printf "%s\n" '  qga-vss         build QGA VSS support (broken with MinGW)'
+@@ -427,6 +428,8 @@ _meson_option_parse() {
+     --enable-png) printf "%s" -Dpng=enabled ;;
+     --disable-png) printf "%s" -Dpng=disabled ;;
+     --prefix=*) quote_sh "-Dprefix=$2" ;;
++    --enable-qatzip) printf "%s" -Dqatzip=enabled ;;
++    --disable-qatzip) printf "%s" -Dqatzip=disabled ;;
+     --enable-qcow1) printf "%s" -Dqcow1=enabled ;;
+     --disable-qcow1) printf "%s" -Dqcow1=disabled ;;
+     --enable-qed) printf "%s" -Dqed=enabled ;;
 -- 
 Yichen Wang
 
