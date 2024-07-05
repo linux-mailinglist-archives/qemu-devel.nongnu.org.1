@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D0C928414
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B41129283F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPecB-0002KW-Rp; Fri, 05 Jul 2024 04:48:23 -0400
+	id 1sPeVV-0000jW-CB; Fri, 05 Jul 2024 04:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebO-0000yZ-VU
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:35 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1sPeVB-00007t-MZ
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:12 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebA-0004C5-R1
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:34 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a77d85f7fa3so29608866b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:19 -0700 (PDT)
+ id 1sPeV4-0003Fi-69
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:09 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a77c9d3e593so54847066b.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:41:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720169238; x=1720774038; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720168861; x=1720773661; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FcTtzsKeBB4MlD0Q7gjS8cN5rY9ihom2n5xaHwaWlG4=;
- b=E6AjQ6/KC3wCia/eGNAZM4aTvg/WGIbN54MU4Aop0M58BW1I1MVXoGt0jRkT+Rb8ic
- AGTkjmsVvk8iQzQ33m1vx1os98kjombRNmequqjdYaZnIPhIIQAu58lhnk+TcxsAOJsz
- FtbnFodlf4WORp9VjR84pYV9q8ZJZdF1OGLXEoyfqM6dPdnKIdi56QfktvlEiEshYi6c
- EIZV9mEyNwA28YWH4mdloNHVYY6YgKhl2eBiQKJVWjTIvZIkmZvsqvHHLY0K7O6IS70l
- 4hk1YBqiI/XoHBlgIppgZyWAdVX8beosZDmRY4VGaKIQ+WtcWYRjbRPtxtCB+lfLIzhB
- z82g==
+ bh=yZmaG2CChCOyc5PFSRDoUdccfXw50o6nOO/sLxGnTzs=;
+ b=ke+RX4eT7CB4KrEl3t1jZstQnSltMnECh8kAEoz/ez+U97xm7bZLg2VVo4HK3Qhnhh
+ 7YifdZCbpV5SlArmXTroll2yk7tjP1d+HeunxmiYyn/Rqx0SU9jSvaKM23YWHX8ENM/+
+ eNXfU81UIncjPykU5XYGgaDb8myrYXPsLkEvxu3KLZvz0pFGzYa9sxflSoZtY8TTw+Ak
+ WpCaLQBTfyEruqFxMqqT0HpsijDSqh4AYPmv7r7fAOmCHhOSEDmZqpqVVlAPvq2GaDeN
+ DdhZ3yObW/veUg0LVqQx8C0cuaDbWMrUZRzsx/Ab78GFssckURGMleDSOdZweevZlTsc
+ D0Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720169238; x=1720774038;
+ d=1e100.net; s=20230601; t=1720168861; x=1720773661;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FcTtzsKeBB4MlD0Q7gjS8cN5rY9ihom2n5xaHwaWlG4=;
- b=CJL8S2DQL752IDZVCQZZbE2jZh1sKfkfg21AJ4BxTblDUbrXcwlSAUwpO9UYSBYb0g
- uVz/FEETihBvSzBDHLkgukXgCIelJFMXS+b0RsYHxwRtUYAnjVT4ClG7arn+QEaiJjQJ
- YqjQv0ivefBjZbu9Cs8twuYmc7a00qo07nkOqobr9m+18OUSkvdvZfeIaXTjQ04mzbTP
- 5HkNNRpue6YAwE0dPCQ28HoxrTmJWMOsKCIoPg03GqsWI8QKmOS07n8z7G/C72MMCHAC
- VHUoyXROZbfEu90N/3Ge/YNxCplgDaQxler7IpoM4shUV/YuU5qSHAh4DTxO1PqPChC9
- WPfQ==
-X-Gm-Message-State: AOJu0Yx5gemF5UE2Wvz+20t/Q36+uWBq7geIxc4+WhXFLRF8w9kvlwwA
- 1ldDuFcN0HwyDzI+6w++yJxB/QswGAcPcd72CF8w5DOre20ECkqoMlCurblnUmY=
-X-Google-Smtp-Source: AGHT+IE42LIRsJmCP8FHhJ0bNVrRawiv6myytSeD1SwwYw2X9Vdn/RKT3wpeAQ8rRgqvAkoXWhhZ/Q==
-X-Received: by 2002:a17:906:d1d2:b0:a77:cfe9:8ed5 with SMTP id
- a640c23a62f3a-a77cfe98f21mr73338466b.30.1720169237896; 
- Fri, 05 Jul 2024 01:47:17 -0700 (PDT)
+ bh=yZmaG2CChCOyc5PFSRDoUdccfXw50o6nOO/sLxGnTzs=;
+ b=HlsXofAxG5WGimWzQ2My1Abwwz06BlhUzBkj/mVo+DlQwxJwdqmtbZe+r8TfNFVKB/
+ G56mgYuJbTl73Qiu1UjhCT4cO+fN5Ivlek9YX/aeRWz5HvfmEFXE6LZp8MRunYeghQis
+ bpZMa2BbIq1T9zfW/UXYZEFNedW65GL28ZIJfwoW9YqeJs8M1rAWOg8Vd1gf2xOie0Wn
+ iOcSoZR1lv1NGkjCpFY7MpQFwJmq6GeiosnKG59T0zOQMkG5Yggp1wSBjvyja8dC8t1b
+ B5I/y5VbAQJBRMFC0lf7G+OXnKtUmaAmruOHrz/wsmyKqmEYaSYWxXAyHv4XczV/FwCr
+ dGKQ==
+X-Gm-Message-State: AOJu0YxoUY8eD9OlGCYha0hdpM+UMT42D6Crc10Choeui82Xu5YnKhx+
+ YrRFsk6f/Ht4CvDxtHShO9V+BoGfqiOvSreRugfK5M7JE+PicGr9GBAfVbukDuE=
+X-Google-Smtp-Source: AGHT+IH4YaGA3ScYPYfsLtQV4WtJ7voz4HJOvSoYLgpxmEBjTT5wWGNArU3sTYTQziSTSaBFGHKf9A==
+X-Received: by 2002:a17:907:104a:b0:a6f:ab9c:7778 with SMTP id
+ a640c23a62f3a-a77ba4c949bmr247996366b.34.1720168860336; 
+ Fri, 05 Jul 2024 01:41:00 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72b033f3a3sm636125966b.187.2024.07.05.01.47.11
+ a640c23a62f3a-a72ab0651easm662620666b.137.2024.07.05.01.40.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:47:14 -0700 (PDT)
+ Fri, 05 Jul 2024 01:40:57 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1ADC662107;
+ by draig.lan (Postfix) with ESMTP id 3122D5F876;
  Fri,  5 Jul 2024 09:40:49 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,18 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 14/40] tests/tcg/arm: Drop -N from LDFLAGS
-Date: Fri,  5 Jul 2024 09:40:21 +0100
-Message-Id: <20240705084047.857176-15-alex.bennee@linaro.org>
+Subject: [PATCH v2 15/40] tests/tcg/arm: Use -fno-integrated-as for
+ test-arm-iwmmxt
+Date: Fri,  5 Jul 2024 09:40:22 +0100
+Message-Id: <20240705084047.857176-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,39 +113,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This is redudant with a linker script, and is not
-supported by clang.
+Clang does not support IWMXT instructions.
+Fall back to the external assembler.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240630190050.160642-10-richard.henderson@linaro.org>
+Message-Id: <20240630190050.160642-11-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/arm/Makefile.softmmu-target | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/tcg/arm/Makefile.target | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/arm/Makefile.softmmu-target b/tests/tcg/arm/Makefile.softmmu-target
-index 39e01ce49d..547063c08c 100644
---- a/tests/tcg/arm/Makefile.softmmu-target
-+++ b/tests/tcg/arm/Makefile.softmmu-target
-@@ -13,7 +13,7 @@ VPATH 		+= $(ARM_SRC)
- test-armv6m-undef: test-armv6m-undef.S
- 	$(CC) -mcpu=cortex-m0 -mfloat-abi=soft \
- 		-Wl,--build-id=none -x assembler-with-cpp \
--		$< -o $@ -nostdlib -N -static \
-+		$< -o $@ -nostdlib -static \
- 		-T $(ARM_SRC)/$@.ld
+diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+index 0a1965fce7..95f891bf8c 100644
+--- a/tests/tcg/arm/Makefile.target
++++ b/tests/tcg/arm/Makefile.target
+@@ -8,6 +8,11 @@ ARM_SRC=$(SRC_PATH)/tests/tcg/arm
+ # Set search path for all sources
+ VPATH 		+= $(ARM_SRC)
  
- run-test-armv6m-undef: QEMU_OPTS=-semihosting-config enable=on,target=native,chardev=output -M microbit -kernel
-@@ -30,7 +30,7 @@ CRT_PATH=$(ARM_SRC)
- LINK_SCRIPT=$(ARM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT)
- CFLAGS+=-nostdlib -ggdb -O0 $(MINILIB_INC)
--LDFLAGS+=-static -nostdlib -N $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
-+LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
++config-cc.mak: Makefile
++	$(quiet-@)( \
++	    $(call cc-option,-fno-integrated-as, CROSS_CC_HAS_FNIA)) 3> config-cc.mak
++-include config-cc.mak
++
+ float_madds: CFLAGS+=-mfpu=neon-vfpv4
  
- # building head blobs
- .PRECIOUS: $(CRT_OBJS)
+ # Basic Hello World
+@@ -17,7 +22,8 @@ hello-arm: LDFLAGS+=-nostdlib
+ 
+ # IWMXT floating point extensions
+ ARM_TESTS += test-arm-iwmmxt
+-test-arm-iwmmxt: CFLAGS+=-marm -march=iwmmxt -mabi=aapcs -mfpu=fpv4-sp-d16
++# Clang assembler does not support IWMXT, so use the external assembler.
++test-arm-iwmmxt: CFLAGS += -marm -march=iwmmxt -mabi=aapcs -mfpu=fpv4-sp-d16 $(CROSS_CC_HAS_FNIA)
+ test-arm-iwmmxt: test-arm-iwmmxt.S
+ 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+ 
 -- 
 2.39.2
 
