@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA199283E8
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99CC9283EF
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPeVg-0000tD-PF; Fri, 05 Jul 2024 04:41:41 -0400
+	id 1sPeVl-0001FC-Ns; Fri, 05 Jul 2024 04:41:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeV9-000071-CG
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:08 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1sPeVA-000079-79
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:09 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeV0-0003EF-4n
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:06 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-58be2b8b6b2so1738750a12.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:40:57 -0700 (PDT)
+ id 1sPeV1-0003EY-QX
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:07 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-58c947a6692so1848524a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:40:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720168856; x=1720773656; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720168858; x=1720773658; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J+f3EYij6+onpkKsDKRY7Afx2un37tsZeTZMpH2ViH0=;
- b=H1Dbg14whFX++Vn4pAh2z11fejjgvvFKl2uJZ2JBLe5Pnw0gkE3p/k7VxE6dK0pj//
- bIA22s+1dAgFxTo34Jbb6tpvLjibmFbLRkIhNM0j5FuR1RLHYCsz3LApSK3w4i4qWc3x
- r3FzO1zWz6Y/AMSYuyIJSn4nilU2eUkUcw2Cbjg9xQCWzgUWv3sUu65d+KPL/sMuFEaa
- VM57haFcGvTdR04+ZzzCseYjsmWftnO8CyD11jNKWL5cY9+q1lzEJtvlWgSii4p9PZWl
- JxvrsVoIKcjOu9BaAu6H3wkOlnWBrfIKF7nxArwoNjAqbc1WK7pj9E8yObtLcR+48RQy
- +4Kw==
+ bh=E9EC0lfXh+UHwj/Mj/Qr0ZvYxRRdaiCBWTot1xCG3AQ=;
+ b=loV4adKBgYpJ4yilSrIeWeDN6CUGH/xePzzQUj3ZaZ66SjRTk2BlyyXbrJek9UeW+N
+ FDDXu4MhaznDozr2m5+MbFkslJynXmsxSrh0qqpFfH6ayS4j4SCAMA0LzfAUPHrkmngt
+ wrpknjpX7osuoKGlCmDFFUQm5Ku3Ds7NifHf5OszstNydP5wHGrgPxSPhttKxKxfR2Yl
+ q3pC5rzSpIrXYbbgjczaObNPGdJCycQ5m1GRL2QDMvqIZK+WLrM0LmoibheU/XZCeQAk
+ 3sN4rDBrkiBhWd9ZOQu/wCaHKN+IeQ5gQooyO8CfAa08DnQ2TbliXAyZawxj7j6jVrps
+ EBYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720168856; x=1720773656;
+ d=1e100.net; s=20230601; t=1720168858; x=1720773658;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J+f3EYij6+onpkKsDKRY7Afx2un37tsZeTZMpH2ViH0=;
- b=HeEajxzhVJSQuOVEedJNiHYNtgoxcqjrviCl3xKf6JSuhpDWFRfxiSKBBSTgyUcrr5
- qTLQv5xa099b7JTsmxZ9hSFIuJJeh3vxrhrrpBTesUSPubWNYJ1wPZEuW7iFlLjLsZK9
- f9IpiqPiJ2GfPCyjZixxqxkHuGUd9jxnnV4G4lYUxBjpIovhbEWLLlKn2oretJxZhHuI
- 5bJ9e3qhIFAKV5vgmPGimdeKJfSVm9YDpYZRGjDRfYIm5efa+V/e0afuPDYihw9obgVb
- 4C3fIGR7Np+UfTNUoZROB+Yzbrtl/Hn9kG41D91oKdcQgazW2fQ5FaBb78jHnPpM1xMi
- JtEg==
-X-Gm-Message-State: AOJu0YyupQaOBo2uIABUvCtEI1UKtYV715ufTno1hqFB7px4x16z5J+4
- JKbQa76tIVXOPpjuBzu0r6WuNmAO5sfEsGT7ZyuvuS6+yzko8LEvF/axunvo3Ec=
-X-Google-Smtp-Source: AGHT+IFFjNmFaugNxWOwuSCArBG9LB7ZbMUXuEfL91kuc3JNc8SuixThQ4T42u1OgfHwk5UBmJO7sQ==
-X-Received: by 2002:a05:6402:13c8:b0:57a:3424:b36e with SMTP id
- 4fb4d7f45d1cf-58e596549admr2550505a12.13.1720168856187; 
- Fri, 05 Jul 2024 01:40:56 -0700 (PDT)
+ bh=E9EC0lfXh+UHwj/Mj/Qr0ZvYxRRdaiCBWTot1xCG3AQ=;
+ b=u1JCmjwARZJ7guwGA6wk9drsV76DRlMOZvteY/wsxrDMEZUqxANcmFAbSIYQL7objM
+ gcADfFEEDXbbqQgNWYc8rNl9nbBMA9IUOcnfcGKHHHi1wm4VcxGnpACFFMcoYKKMwfms
+ 55MEOX+g2Tl+v14kadcqxw+4ELen3zONLY7+jH+6pbrp3SRnnqxRLPyxbK+I+DwmcSmZ
+ LX34222hDoeWbmShfie/fifufoO2kBa5L08jmJf8KcEWIFnKYjEgYIDXy6SbZKxTEZNE
+ U2zqVgaUJTz9dIPEeplHh5kgeGuhuJEdiAJPWrEo8fG6ubgmcIM74A542jNnFsgIYAqk
+ CTCA==
+X-Gm-Message-State: AOJu0YxF6N1iBfJBD0T3IyJT2OyVpyQFcMexzp1+rWk/S61/lrSlIbeD
+ fa0yYH+iBlSkBhNIA73Lcj+pFCDluIgPIGEeXSSYsPVZF5222CJGnM3DptJ8QfU=
+X-Google-Smtp-Source: AGHT+IFPlAe/yeqeeL+QyAkpgE+7BfOeR8amWIqalG4yBuICloPccHsHgl5nfezLRvWbep3j7Ua18g==
+X-Received: by 2002:a05:6402:348f:b0:58e:4088:ebd with SMTP id
+ 4fb4d7f45d1cf-58e5a8e77admr3093639a12.9.1720168857963; 
+ Fri, 05 Jul 2024 01:40:57 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58ffe0f88d0sm267919a12.85.2024.07.05.01.40.50
+ 4fb4d7f45d1cf-58dfd5aeda6sm2152144a12.78.2024.07.05.01.40.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Jul 2024 01:40:52 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A43DA620F2;
+ by draig.lan (Postfix) with ESMTP id BCD8C620FA;
  Fri,  5 Jul 2024 09:40:48 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 10/40] tests/tcg/aarch64: Fix irg operand type
-Date: Fri,  5 Jul 2024 09:40:17 +0100
-Message-Id: <20240705084047.857176-11-alex.bennee@linaro.org>
+Subject: [PATCH v2 11/40] tests/tcg/aarch64: Do not use x constraint
+Date: Fri,  5 Jul 2024 09:40:18 +0100
+Message-Id: <20240705084047.857176-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,31 +112,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-irg expects 64-bit integers. Passing a 32-bit integer results in
-compilation failure with clang version 18.1.6.
+clang version 18.1.6 does not support x constraint for AArch64.
+Use w instead.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240627-tcg-v2-4-1690a813348e@daynix.com>
+Message-Id: <20240627-tcg-v2-5-1690a813348e@daynix.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240630190050.160642-6-richard.henderson@linaro.org>
+Message-Id: <20240630190050.160642-7-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/aarch64/mte-1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/arm/fcvt.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/tcg/aarch64/mte-1.c b/tests/tcg/aarch64/mte-1.c
-index 88dcd617ad..146cad4a04 100644
---- a/tests/tcg/aarch64/mte-1.c
-+++ b/tests/tcg/aarch64/mte-1.c
-@@ -15,7 +15,7 @@ int main(int ac, char **av)
-     enable_mte(PR_MTE_TCF_NONE);
-     p0 = alloc_mte_mem(sizeof(*p0));
+diff --git a/tests/tcg/arm/fcvt.c b/tests/tcg/arm/fcvt.c
+index 7ac47b564e..f631197287 100644
+--- a/tests/tcg/arm/fcvt.c
++++ b/tests/tcg/arm/fcvt.c
+@@ -126,7 +126,7 @@ static void convert_single_to_half(void)
+         asm("vcvtb.f16.f32 %0, %1" : "=t" (output) : "x" (input));
+ #else
+         uint16_t output;
+-        asm("fcvt %h0, %s1" : "=w" (output) : "x" (input));
++        asm("fcvt %h0, %s1" : "=w" (output) : "w" (input));
+ #endif
+         print_half_number(i, output);
+     }
+@@ -149,7 +149,7 @@ static void convert_single_to_double(void)
+ #if defined(__arm__)
+         asm("vcvt.f64.f32 %P0, %1" : "=w" (output) : "t" (input));
+ #else
+-        asm("fcvt %d0, %s1" : "=w" (output) : "x" (input));
++        asm("fcvt %d0, %s1" : "=w" (output) : "w" (input));
+ #endif
+         print_double_number(i, output);
+     }
+@@ -244,7 +244,7 @@ static void convert_double_to_half(void)
+         /* asm("vcvtb.f16.f64 %0, %P1" : "=t" (output) : "x" (input)); */
+         output = input;
+ #else
+-        asm("fcvt %h0, %d1" : "=w" (output) : "x" (input));
++        asm("fcvt %h0, %d1" : "=w" (output) : "w" (input));
+ #endif
+         print_half_number(i, output);
+     }
+@@ -267,7 +267,7 @@ static void convert_double_to_single(void)
+ #if defined(__arm__)
+         asm("vcvt.f32.f64 %0, %P1" : "=w" (output) : "x" (input));
+ #else
+-        asm("fcvt %s0, %d1" : "=w" (output) : "x" (input));
++        asm("fcvt %s0, %d1" : "=w" (output) : "w" (input));
+ #endif
  
--    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(1));
-+    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(1l));
-     assert(p1 != p0);
-     asm("subp %0,%1,%2" : "=r"(c) : "r"(p0), "r"(p1));
-     assert(c == 0);
+         print_single_number(i, output);
+@@ -335,7 +335,7 @@ static void convert_half_to_double(void)
+         /* asm("vcvtb.f64.f16 %P0, %1" : "=w" (output) : "t" (input)); */
+         output = input;
+ #else
+-        asm("fcvt %d0, %h1" : "=w" (output) : "x" (input));
++        asm("fcvt %d0, %h1" : "=w" (output) : "w" (input));
+ #endif
+         print_double_number(i, output);
+     }
+@@ -357,7 +357,7 @@ static void convert_half_to_single(void)
+ #if defined(__arm__)
+         asm("vcvtb.f32.f16 %0, %1" : "=w" (output) : "x" ((uint32_t)input));
+ #else
+-        asm("fcvt %s0, %h1" : "=w" (output) : "x" (input));
++        asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
+ #endif
+         print_single_number(i, output);
+     }
+@@ -380,7 +380,7 @@ static void convert_half_to_integer(void)
+         /* asm("vcvt.s32.f16 %0, %1" : "=t" (output) : "t" (input)); v8.2*/
+         output = input;
+ #else
+-        asm("fcvt %s0, %h1" : "=w" (output) : "x" (input));
++        asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
+ #endif
+         print_int64(i, output);
+     }
 -- 
 2.39.2
 
