@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB7A928BD6
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B075928BBB
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:33:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPl05-0002dj-EI; Fri, 05 Jul 2024 11:37:31 -0400
+	id 1sPku8-0005o1-N1; Fri, 05 Jul 2024 11:31:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPl00-0002cs-KK
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:24 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ id 1sPku6-0005m6-6V
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:18 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzx-0001Ii-E9
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:24 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a77c9c5d68bso102304166b.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:21 -0700 (PDT)
+ id 1sPktz-0000Sh-6e
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:17 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-58b447c513aso2092292a12.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193840; x=1720798640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193470; x=1720798270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=76ccM/rpS4+7b3Bhm1qL0Ddb7vrGKR7l9TAhXh8rp+A=;
- b=kjFNQzVEI8ykmlzOEf+A0Oy/chPrmFq+JvD6+Gc+OB0f1s8S51li9eEqodfNYyNogA
- tFC8Dx/EksX+JpErkm7Jbt5jZ/0fp3wGWJuQjNic72tgcycl8ynqQEr6M9xgfIR4c/xJ
- smF0iy2zxGikR2tvPgl5PbCsRR9SPODP4Ii2idGvXzg+5JokagHxqkI7eAuikiXn//pc
- 0Qecbpnqq5xEA9X7Kcvr75/X1CTt56+qRcsywvCdj282mHF+i5bTpdFE3ET8uSR1nI0c
- omNQRCldwdFvCpQF5Qr2I4UmqAVR+lV/CIYhrkNY1H4E/9f/S8fQbMkXNjpwC+vELQ/M
- HKzg==
+ bh=6cFGUCF6aXfdVBiObpZIc6vFZvFIj8S4CeyY/mINKQs=;
+ b=O0OcE8yq6tiE1hX795UrGKjsRy3xhJgfDvoLgmCSuOjVUsXwWMIhH+yK5N/QMVZPuj
+ 5iDO+WkCybMr01nkJMJpJn6htq3ulIpsTXmAqEXK4nkRObqOJ2+XxhSZ0BFZE1gFQEpx
+ 75HRdHGGLWWDDhobgRPJYbteyV4H7v1dE8PTsamynhwry4InFQS6WSi9zM7c9NKweGfE
+ fBvM2CbFSRS9ZsVa/+SQ9b50M/AYKOlcJ3YfGh/qIL0wuQr0I7FQsOBKmI7h/ZwrErs8
+ 4iT7HWT2i44QiWyUCXqLM6Izzb5hqYzXtldLLgwxp0xTk6FMYCTAR6feBBfYNJRzbZ8/
+ emgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193840; x=1720798640;
+ d=1e100.net; s=20230601; t=1720193470; x=1720798270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=76ccM/rpS4+7b3Bhm1qL0Ddb7vrGKR7l9TAhXh8rp+A=;
- b=lzKWrnJI3vSJFr7R6kyfTKwsRQk0teT6AhjCHz3ZlYOPGIga50YJCdvbxnDBRSd+DF
- tJE7Rs1+6yZ/ChBtQrIb4elNC5r62eDbV1397LZT/ezLCEiXtU1v14BDxp8b26ZJyncn
- hKeJ0pBW54gbQRXHfzOjE+BKuj7gT2A6Im4IPJ/djQ6zDwstP+B0mxt52XIgG+aa28Wz
- X6OpKuYphSMF58FuBnWVtQFg38QxH/t524C8czNCEr8ntcdcYD7bpOoQtGUXoxkb7uLJ
- QnPplKzI6Tjdq8DvSL4WNZpbwrrCm23Yqq94R1gY2ZRYE1jk78lz4PwSSMY4jk+Hz4uh
- oLqQ==
-X-Gm-Message-State: AOJu0YxSqNxEL+/NEpPkPEP8xe3g3JrovTMnW1ze98iAgEEpDmYHaCh/
- ieCMwZ9iAFXns/ChTZNi4P35wMe02QFVBTXvTkyy2e2E+53v1w2MqFNHZuCWi1I=
-X-Google-Smtp-Source: AGHT+IGhxE7tInDQ8kKj6jlkWBZRsDeJKtXZ+VjXhnql4D58J6iWxmk8b5TI+qCHMbN9/W6QZN65ZQ==
-X-Received: by 2002:a17:906:2c1a:b0:a77:d773:54ec with SMTP id
- a640c23a62f3a-a77d773565fmr118370966b.8.1720193839763; 
- Fri, 05 Jul 2024 08:37:19 -0700 (PDT)
+ bh=6cFGUCF6aXfdVBiObpZIc6vFZvFIj8S4CeyY/mINKQs=;
+ b=j2NuYsWsOG7CdpHLQDg6rv/29Msd+kKVw4g3EQh0cfFMIP3va10x8dPvPp+QG4ZNoQ
+ sh+cnq/3CMah3KPSHodJmTqZmXAb9+V7CqH6WoFyBtOw+hGmcXsU/oURFTJMhgvyBqeq
+ E3HegEb6xyNODJqCjwY9JM6Oe69jQHDGGivHbyR6dGxBDtxwcHkeVwl9nsqxeMwZPIGi
+ b7MVtSI0qna9moigCvBjTL/pQUXXATEUJ3mbUx1dSH9uoA3NuCDiM3USrD3P5oJkHwNu
+ O44EB8+3ZZ3cXUgellm/QJIy1zPfikjViMbo3g1kTw1Jcidx7U7/KMO7x8+MBi52pAjf
+ 2dCA==
+X-Gm-Message-State: AOJu0Yyw6jQyIGax3uqxbH9VCXJ9IT3aqOtxY7h1TKya0luuUwG5ZBSR
+ Qfbdj68N04vaiyN1U0TeMxYVzzx/JMZVqRXDBY/H9exooXNUyiwAiXUoTJcAS9M=
+X-Google-Smtp-Source: AGHT+IG2K7cA/ePZmnblXWY7PjDLAcdXRkoPuTCpt227Vdx7wfAi8XfRD8e+k7sEI4mPQ4ekceUU2A==
+X-Received: by 2002:a05:6402:11c8:b0:58b:565d:ac92 with SMTP id
+ 4fb4d7f45d1cf-58e5b4a7759mr3682778a12.22.1720193468808; 
+ Fri, 05 Jul 2024 08:31:08 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ab08d138sm690977466b.158.2024.07.05.08.37.12
+ 4fb4d7f45d1cf-5907e4d79ddsm207464a12.59.2024.07.05.08.31.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:37:14 -0700 (PDT)
+ Fri, 05 Jul 2024 08:31:06 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4086362170;
+ by draig.lan (Postfix) with ESMTP id 5B65C62174;
  Fri,  5 Jul 2024 16:30:56 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 34/40] target/arm: Make some MTE helpers widely available
-Date: Fri,  5 Jul 2024 16:30:46 +0100
-Message-Id: <20240705153052.1219696-35-alex.bennee@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 35/40] target/arm: Factor out code for setting MTE TCF0 field
+Date: Fri,  5 Jul 2024 16:30:47 +0100
+Message-Id: <20240705153052.1219696-36-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,165 +99,168 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Make the MTE helpers allocation_tag_mem_probe, load_tag1, and store_tag1
-available to other subsystems.
+Factor out the code used for setting the MTE TCF0 field from the prctl
+code into a convenient function. Other subsystems, like gdbstub, need to
+set this field as well, so keep it as a separate function to avoid
+duplication and ensure consistency in how this field is set across the
+board.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240628050850.536447-6-gustavo.romero@linaro.org>
+Message-Id: <20240628050850.536447-7-gustavo.romero@linaro.org>
+[AJB: clean-up includes, move MTE defines]
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-35-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-36-alex.bennee@linaro.org>
 
-diff --git a/target/arm/tcg/mte_helper.h b/target/arm/tcg/mte_helper.h
+diff --git a/linux-user/aarch64/mte_user_helper.h b/linux-user/aarch64/mte_user_helper.h
 new file mode 100644
-index 0000000000..1f471fb69b
+index 0000000000..8685e5175a
 --- /dev/null
-+++ b/target/arm/tcg/mte_helper.h
-@@ -0,0 +1,66 @@
++++ b/linux-user/aarch64/mte_user_helper.h
+@@ -0,0 +1,32 @@
 +/*
-+ * ARM MemTag operation helpers.
++ * ARM MemTag convenience functions.
 + *
 + * This code is licensed under the GNU GPL v2 or later.
 + *
 + * SPDX-License-Identifier: LGPL-2.1-or-later
 + */
 +
-+#ifndef TARGET_ARM_MTE_H
-+#define TARGET_ARM_MTE_H
++#ifndef AARCH64_MTE_USER_HELPER_H
++#define AARCH64_MTE USER_HELPER_H
 +
-+#include "exec/mmu-access-type.h"
-+
-+/**
-+ * allocation_tag_mem_probe:
-+ * @env: the cpu environment
-+ * @ptr_mmu_idx: the addressing regime to use for the virtual address
-+ * @ptr: the virtual address for which to look up tag memory
-+ * @ptr_access: the access to use for the virtual address
-+ * @ptr_size: the number of bytes in the normal memory access
-+ * @tag_access: the access to use for the tag memory
-+ * @probe: true to merely probe, never taking an exception
-+ * @ra: the return address for exception handling
-+ *
-+ * Our tag memory is formatted as a sequence of little-endian nibbles.
-+ * That is, the byte at (addr >> (LOG2_TAG_GRANULE + 1)) contains two
-+ * tags, with the tag at [3:0] for the lower addr and the tag at [7:4]
-+ * for the higher addr.
-+ *
-+ * Here, resolve the physical address from the virtual address, and return
-+ * a pointer to the corresponding tag byte.
-+ *
-+ * If there is no tag storage corresponding to @ptr, return NULL.
-+ *
-+ * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
-+ * three options:
-+ * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
-+ *     accessible, and do not take watchpoint traps. The calling code must
-+ *     handle those cases in the right priority compared to MTE traps.
-+ * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
-+ *     that the page is going to be accessible. We will take watchpoint traps.
-+ * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
-+ *     traps and watchpoint traps.
-+ * (probe = true, ra != 0 is invalid and will assert.)
-+ */
-+uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
-+                                  uint64_t ptr, MMUAccessType ptr_access,
-+                                  int ptr_size, MMUAccessType tag_access,
-+                                  bool probe, uintptr_t ra);
++#ifndef PR_MTE_TCF_SHIFT
++# define PR_MTE_TCF_SHIFT       1
++# define PR_MTE_TCF_NONE        (0UL << PR_MTE_TCF_SHIFT)
++# define PR_MTE_TCF_SYNC        (1UL << PR_MTE_TCF_SHIFT)
++# define PR_MTE_TCF_ASYNC       (2UL << PR_MTE_TCF_SHIFT)
++# define PR_MTE_TCF_MASK        (3UL << PR_MTE_TCF_SHIFT)
++# define PR_MTE_TAG_SHIFT       3
++# define PR_MTE_TAG_MASK        (0xffffUL << PR_MTE_TAG_SHIFT)
++#endif
 +
 +/**
-+ * load_tag1 - Load 1 tag (nibble) from byte
-+ * @ptr: The tagged address
-+ * @mem: The tag address (packed, 2 tags in byte)
++ * arm_set_mte_tcf0 - Set TCF0 field in SCTLR_EL1 register
++ * @env: The CPU environment
++ * @value: The value to be set for the Tag Check Fault in EL0 field.
++ *
++ * Only SYNC and ASYNC modes can be selected. If ASYMM mode is given, the SYNC
++ * mode is selected instead. So, there is no way to set the ASYMM mode.
 + */
-+int load_tag1(uint64_t ptr, uint8_t *mem);
++void arm_set_mte_tcf0(CPUArchState *env, abi_long value);
 +
-+/**
-+ * store_tag1 - Store 1 tag (nibble) into byte
-+ * @ptr: The tagged address
-+ * @mem: The tag address (packed, 2 tags in byte)
-+ * @tag: The tag to be stored in the nibble
++#endif /* AARCH64_MTE_USER_HELPER_H */
+diff --git a/linux-user/aarch64/target_prctl.h b/linux-user/aarch64/target_prctl.h
+index aa8e203c15..ed75b9e4b5 100644
+--- a/linux-user/aarch64/target_prctl.h
++++ b/linux-user/aarch64/target_prctl.h
+@@ -7,6 +7,7 @@
+ #define AARCH64_TARGET_PRCTL_H
+ 
+ #include "target/arm/cpu-features.h"
++#include "mte_user_helper.h"
+ 
+ static abi_long do_prctl_sve_get_vl(CPUArchState *env)
+ {
+@@ -173,26 +174,7 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
+     env->tagged_addr_enable = arg2 & PR_TAGGED_ADDR_ENABLE;
+ 
+     if (cpu_isar_feature(aa64_mte, cpu)) {
+-        /*
+-         * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
+-         *
+-         * The kernel has a per-cpu configuration for the sysadmin,
+-         * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
+-         * which qemu does not implement.
+-         *
+-         * Because there is no performance difference between the modes, and
+-         * because SYNC is most useful for debugging MTE errors, choose SYNC
+-         * as the preferred mode.  With this preference, and the way the API
+-         * uses only two bits, there is no way for the program to select
+-         * ASYMM mode.
+-         */
+-        unsigned tcf = 0;
+-        if (arg2 & PR_MTE_TCF_SYNC) {
+-            tcf = 1;
+-        } else if (arg2 & PR_MTE_TCF_ASYNC) {
+-            tcf = 2;
+-        }
+-        env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
++        arm_set_mte_tcf0(env, arg2);
+ 
+         /*
+          * Write PR_MTE_TAG to GCR_EL1[Exclude].
+diff --git a/linux-user/aarch64/mte_user_helper.c b/linux-user/aarch64/mte_user_helper.c
+new file mode 100644
+index 0000000000..a5b1c8503b
+--- /dev/null
++++ b/linux-user/aarch64/mte_user_helper.c
+@@ -0,0 +1,35 @@
++/*
++ * ARM MemTag convenience functions.
++ *
++ * This code is licensed under the GNU GPL v2 or later.
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
 + */
-+void store_tag1(uint64_t ptr, uint8_t *mem, int tag);
 +
-+#endif /* TARGET_ARM_MTE_H */
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index a50d576294..9d2ba287ee 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -29,6 +29,7 @@
- #include "hw/core/tcg-cpu-ops.h"
- #include "qapi/error.h"
- #include "qemu/guest-random.h"
-+#include "mte_helper.h"
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "mte_user_helper.h"
++
++void arm_set_mte_tcf0(CPUArchState *env, abi_long value)
++{
++    /*
++     * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
++     *
++     * The kernel has a per-cpu configuration for the sysadmin,
++     * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
++     * which qemu does not implement.
++     *
++     * Because there is no performance difference between the modes, and
++     * because SYNC is most useful for debugging MTE errors, choose SYNC
++     * as the preferred mode.  With this preference, and the way the API
++     * uses only two bits, there is no way for the program to select
++     * ASYMM mode.
++     */
++    unsigned tcf = 0;
++    if (value & PR_MTE_TCF_SYNC) {
++        tcf = 1;
++    } else if (value & PR_MTE_TCF_ASYNC) {
++        tcf = 2;
++    }
++    env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
++}
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index e2804312fc..b8c278b91d 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6281,15 +6281,6 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
+ # define PR_GET_TAGGED_ADDR_CTRL 56
+ # define PR_TAGGED_ADDR_ENABLE  (1UL << 0)
+ #endif
+-#ifndef PR_MTE_TCF_SHIFT
+-# define PR_MTE_TCF_SHIFT       1
+-# define PR_MTE_TCF_NONE        (0UL << PR_MTE_TCF_SHIFT)
+-# define PR_MTE_TCF_SYNC        (1UL << PR_MTE_TCF_SHIFT)
+-# define PR_MTE_TCF_ASYNC       (2UL << PR_MTE_TCF_SHIFT)
+-# define PR_MTE_TCF_MASK        (3UL << PR_MTE_TCF_SHIFT)
+-# define PR_MTE_TAG_SHIFT       3
+-# define PR_MTE_TAG_MASK        (0xffffUL << PR_MTE_TAG_SHIFT)
+-#endif
+ #ifndef PR_SET_IO_FLUSHER
+ # define PR_SET_IO_FLUSHER 57
+ # define PR_GET_IO_FLUSHER 58
+diff --git a/linux-user/aarch64/meson.build b/linux-user/aarch64/meson.build
+index 248c578d15..f75bb3cd75 100644
+--- a/linux-user/aarch64/meson.build
++++ b/linux-user/aarch64/meson.build
+@@ -9,3 +9,5 @@ vdso_le_inc = gen_vdso.process('vdso-le.so',
+                                extra_args: ['-r', '__kernel_rt_sigreturn'])
  
- 
- static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
-@@ -50,42 +51,10 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
-     return tag;
- }
- 
--/**
-- * allocation_tag_mem_probe:
-- * @env: the cpu environment
-- * @ptr_mmu_idx: the addressing regime to use for the virtual address
-- * @ptr: the virtual address for which to look up tag memory
-- * @ptr_access: the access to use for the virtual address
-- * @ptr_size: the number of bytes in the normal memory access
-- * @tag_access: the access to use for the tag memory
-- * @probe: true to merely probe, never taking an exception
-- * @ra: the return address for exception handling
-- *
-- * Our tag memory is formatted as a sequence of little-endian nibbles.
-- * That is, the byte at (addr >> (LOG2_TAG_GRANULE + 1)) contains two
-- * tags, with the tag at [3:0] for the lower addr and the tag at [7:4]
-- * for the higher addr.
-- *
-- * Here, resolve the physical address from the virtual address, and return
-- * a pointer to the corresponding tag byte.
-- *
-- * If there is no tag storage corresponding to @ptr, return NULL.
-- *
-- * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
-- * three options:
-- * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
-- *     accessible, and do not take watchpoint traps. The calling code must
-- *     handle those cases in the right priority compared to MTE traps.
-- * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
-- *     that the page is going to be accessible. We will take watchpoint traps.
-- * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
-- *     traps and watchpoint traps.
-- * (probe = true, ra != 0 is invalid and will assert.)
-- */
--static uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
--                                         uint64_t ptr, MMUAccessType ptr_access,
--                                         int ptr_size, MMUAccessType tag_access,
--                                         bool probe, uintptr_t ra)
-+uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
-+                                  uint64_t ptr, MMUAccessType ptr_access,
-+                                  int ptr_size, MMUAccessType tag_access,
-+                                  bool probe, uintptr_t ra)
- {
- #ifdef CONFIG_USER_ONLY
-     uint64_t clean_ptr = useronly_clean_ptr(ptr);
-@@ -287,7 +256,7 @@ uint64_t HELPER(addsubg)(CPUARMState *env, uint64_t ptr,
-     return address_with_allocation_tag(ptr + offset, rtag);
- }
- 
--static int load_tag1(uint64_t ptr, uint8_t *mem)
-+int load_tag1(uint64_t ptr, uint8_t *mem)
- {
-     int ofs = extract32(ptr, LOG2_TAG_GRANULE, 1) * 4;
-     return extract32(*mem, ofs, 4);
-@@ -321,7 +290,7 @@ static void check_tag_aligned(CPUARMState *env, uint64_t ptr, uintptr_t ra)
- }
- 
- /* For use in a non-parallel context, store to the given nibble.  */
--static void store_tag1(uint64_t ptr, uint8_t *mem, int tag)
-+void store_tag1(uint64_t ptr, uint8_t *mem, int tag)
- {
-     int ofs = extract32(ptr, LOG2_TAG_GRANULE, 1) * 4;
-     *mem = deposit32(*mem, ofs, 4, tag);
+ linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [vdso_be_inc, vdso_le_inc])
++
++linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [files('mte_user_helper.c')])
 -- 
 2.39.2
 
