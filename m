@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D517C928BCA
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F377F928BAF
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:32:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPktv-0005cq-5r; Fri, 05 Jul 2024 11:31:07 -0400
+	id 1sPktw-0005dH-43; Fri, 05 Jul 2024 11:31:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkts-0005bq-73
+ id 1sPkts-0005bs-71
  for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:04 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPktp-0000Ju-Sv
+ id 1sPktp-0000Nb-RJ
  for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:03 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-52ea2ce7abaso1860650e87.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:00 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-57cd26347d3so2426452a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:30:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193458; x=1720798258; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193459; x=1720798259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yb3iq8Uefi2wrk4lmxR12EyJjPJCI4ULXKQi9nDSkSE=;
- b=OQqyg1isdbClJoHoIs0oT5BZ+oNSIqP0HKXjRvYB3u5eHOQHxFlh9YltDwC9bHtLsd
- RjZfknKoP46HW1C53AWtM8fSHJrheCqL2BnJeuXAWEK3KYoUaXD5XVIOHf+KQdh24ir3
- kYN+WBdwlbALdrVTL29I2KTwWotQl4ppKeKCmbCYhhFUjOjBH1SiqoEyYNgO5EX/Ca+B
- evCvOqkwSabnYqmdY93F+rOsmO+ibWTFS0SB+CoqM6V/OowrardRjwfRMl7pwcNj+WAo
- bQpnD8BV7VKCYmDEzdWroL0wu5E0Pp2r/qvk7SAGume+7H5zK8v6GMmCmnE3J7/+E9rj
- ilrg==
+ bh=Xv12aEHcacHy909xjN8SHkQelk6UZTRk75aOEyUvjoM=;
+ b=w+dG1OpSGb+cNSmjPl20J3Nj95hNAbuTUE9QlFAmmHh2mgHm0Gwd5j/MTXEsGsKkYT
+ /OdOFaOQfDufFYTXX7/DK1QM7OBVGcj8M/TazCTPJgyZS33+2a2gv3hWlzIlLQRtt79Z
+ sXvUbdrLsPKKQCzofexVoHHyYakNThhcH7BVPG1HbDQn+/ItAe4DYy/5f1o5cM/eoBKB
+ Q8qhuBqHJCYm2JArLKNdw5Hwdir1rzIUFY+l/Ft4HXEcZK/mJMJ0XiJugSBQRLGSkkOw
+ cLEY0yjITDQOjCHPEkoTwxXPNR1BGHxCU6UDnBiFD5Wo6Jf2Z4veUtzgJtIl10tTGaNA
+ nLSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193458; x=1720798258;
+ d=1e100.net; s=20230601; t=1720193459; x=1720798259;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yb3iq8Uefi2wrk4lmxR12EyJjPJCI4ULXKQi9nDSkSE=;
- b=HikECl/UDx2qa7yLrl4ld/t/PDWPddDF/zeHoSG0LguRh3R5/RAb/E8aJIWjF9vDly
- CcOhxZBiDFOdGWEuJnFnikVcXmR5XcmHkoVQw0dRr766WxWN+ZxWslrUCq7em1Fgg/wT
- SiqSjyVUYT3iYvFCGTFfsmKfS2O7OVTd6qDmFnpcpFECnGYJQ84KQ4RiK4S9F04pHHJF
- PnrNN879EfiP/W0at/pGqlb8Lkru8vNRyOP9mpqPH2xnHlvpf6OCitPmmMXmBoE/NknO
- FqmfVft/CbMNnr5sMQ9P/RLyJvUxtyHJEi/W2pu0iA7QdpW6pERk1+zqTrdZ86Eqiv0Y
- 2dFg==
-X-Gm-Message-State: AOJu0YzTG/CMaB2mq7BCUurDjQEYG7GYj4hK7WiE1gDGa3v6L4vzWqkZ
- yVHZpIUREyvXFQ3EZ3fg6DHbPSHyJMOCbTVYbNNuQppV/sl/3xbfVKtRUVUPXIg=
-X-Google-Smtp-Source: AGHT+IHfMA9NFaJxHx6aXpr+68A520t5IjObMWRon1c2zY7oqiy+85/NpP25xu0BpNDt52ckLMFJSA==
-X-Received: by 2002:ac2:4115:0:b0:52c:f3fa:86c with SMTP id
- 2adb3069b0e04-52ea0629bc7mr3994185e87.18.1720193457678; 
- Fri, 05 Jul 2024 08:30:57 -0700 (PDT)
+ bh=Xv12aEHcacHy909xjN8SHkQelk6UZTRk75aOEyUvjoM=;
+ b=pFhz0yynPjjid1/LPrmb/C+7ucXWzT5Y/My1R4gh/KoqeQaLimtwYXca4Ue/Kcmldl
+ /L2OzOtYooFZJmfPOPu1SbzvsmS7l7Fyz1gEADCyf/ftgpd+J0E48hikmLgynY0yJU8F
+ gLR8Ik0vHJ/M6wzFVs9v2wLoPbUa41rq0vrHRdK1lI8sIWtH5lqN0z7y5frw7+hHs2j1
+ VVSkWquTTFaTgoPMR8MB3Cg5pKF/RN5POTA+eqeS/DVGOVsnsAEbS9QHm0RTMPJ5oIzX
+ HvG1Nu90AdjGCjWImVHySC6+XQN5JzGNqzJNJGo3xPkBWHR4eCHVUP1f3PS4opVz3B1j
+ XvSQ==
+X-Gm-Message-State: AOJu0Yy8TAG+t+BEyfT2Q2eNhnCQuet3Q1RCpx7PrrfKoZ/FLLfr9O/6
+ GedDt21uVrwZtYJWmj2nZtOkHutHdoT+V3dy4D0D/G6Q7/F6NcSdRSOclVCVKy1XGPye6+HHoko
+ w
+X-Google-Smtp-Source: AGHT+IFftEiOeAs1X03sFlaC9xR6z0gKqXmYs/z12ouezfcitktjOje10O0Gwb4jBt2dvLrwqP+cdQ==
+X-Received: by 2002:a05:6402:1cc1:b0:58b:4621:e866 with SMTP id
+ 4fb4d7f45d1cf-58e5cd12b99mr2738756a12.41.1720193458578; 
+ Fri, 05 Jul 2024 08:30:58 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58e9e68e110sm1929049a12.91.2024.07.05.08.30.54
+ 4fb4d7f45d1cf-58ad8730dcfsm5495220a12.7.2024.07.05.08.30.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:30:55 -0700 (PDT)
+ Fri, 05 Jul 2024 08:30:57 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7AA925F935;
+ by draig.lan (Postfix) with ESMTP id 909875F93A;
  Fri,  5 Jul 2024 16:30:53 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 05/40] tests/docker: Specify --userns keep-id for Podman
-Date: Fri,  5 Jul 2024 16:30:17 +0100
-Message-Id: <20240705153052.1219696-6-alex.bennee@linaro.org>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 06/40] tests/tcg/minilib: Constify digits in print_num
+Date: Fri,  5 Jul 2024 16:30:18 +0100
+Message-Id: <20240705153052.1219696-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,46 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Previously we are always specifying -u $(UID) to match the UID in the
-container with one outside. This causes a problem with rootless Podman.
+This avoids a memcpy to the stack when compiled with clang.
+Since we don't enable optimization, nor provide memcpy,
+this results in an undefined symbol error at link time.
 
-Rootless Podman remaps user IDs in the container to ones controllable
-for the current user outside. The -u option instructs Podman to use
-a specified UID in the container but does not affect the UID remapping.
-Therefore, the UID in the container can be remapped to some other UID
-outside the container. This can make the access to bind-mounted volumes
-fail because the remapped UID mismatches with the owner of the
-directories.
-
-Replace -u $(UID) with --userns keep-id, which fixes the UID remapping.
-This change is limited to Podman because Docker does not support
---userns keep-id.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240626-podman-v1-1-f8c8daf2bb0a@daynix.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20240630190050.160642-2-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-6-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-7-alex.bennee@linaro.org>
 
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 8df50a0ca0..708e3a72fb 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -207,7 +207,12 @@ docker-run: docker-qemu-src
- 	$(call quiet-command,						\
- 		$(RUNC) run 						\
- 			--rm						\
--			$(if $(NOUSER),,-u $(UID)) 			\
-+			$(if $(NOUSER),,				\
-+				$(if $(filter docker,$(RUNC)),		\
-+					-u $(UID),			\
-+					--userns keep-id		\
-+				)					\
-+			) 						\
- 			--security-opt seccomp=unconfined		\
- 			$(if $(DEBUG),-ti,)				\
- 			$(if $(NETWORK),$(if $(subst $(NETWORK),,1),--net=$(NETWORK)),--net=none) \
+diff --git a/tests/tcg/minilib/printf.c b/tests/tcg/minilib/printf.c
+index 10472b4f58..fb0189c2bb 100644
+--- a/tests/tcg/minilib/printf.c
++++ b/tests/tcg/minilib/printf.c
+@@ -27,7 +27,7 @@ static void print_str(char *s)
+ 
+ static void print_num(unsigned long long value, int base)
+ {
+-    char digits[] = "0123456789abcdef";
++    static const char digits[] = "0123456789abcdef";
+     char buf[32];
+     int i = sizeof(buf) - 2, j;
+ 
 -- 
 2.39.2
 
