@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BA7928BF5
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38554928BD5
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:37:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPl9a-0005m6-9k; Fri, 05 Jul 2024 11:47:18 -0400
+	id 1sPl00-0002bq-L9; Fri, 05 Jul 2024 11:37:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPl9Y-0005lx-FE
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:47:16 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1sPkzt-0002aZ-P8
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:17 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPl9W-0005dj-Tp
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:47:16 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a72517e6225so200780166b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:47:14 -0700 (PDT)
+ id 1sPkzr-0001Gv-Ma
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:17 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-58b966b41fbso2492910a12.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720194433; x=1720799233; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193834; x=1720798634; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rcX3YpwLOTpsYf6Zhkg5VHQ84A4CmDm7f1BhkBXtQSg=;
- b=v6x66gDWZIcj7Rb9RA3+pRjGb9NtRY19pacTflwaG2+Vo0C9XGMC+hqQ1xCvCuAP7r
- W3kjfk/T8eqMIhr/W6AHeuLPVZ4pYgaXxijIkZ082BaEci+809NdEXuIe/FouaNuTmqu
- fNNlAuM5IQ/rwgkL0tTRvse/Dxo7m+VQgzSjztcO7YbOuAWOQX6iPndY26lSc2KHoB+d
- IXuX+37ijJNvRK4WRUDkgjvHOnst/tWGhVxw44RIOFsohocqhtDBD0GU0z/XM3/jjYmg
- 8lFn+s8vjLL4CQqKd/cFFvL6hYsgUEP2iIsyU3fNn3Ckaa6up8xuNJqoS9zo13ENp2bt
- AFKg==
+ bh=0dlqVxV0N2PAZeKsvqSde0gH8murih16mQWVBlzmyoo=;
+ b=opyRY+Z6F3kWtt5Q+gralYQACf1pNgoKANX1Nd/L5WCeE0NIwSMflaM/q4O2uzixO7
+ O3YkX9KXz0iwPpugj0/fjE9TERNVPNBlwC0d/V+4NvZbiOJV3BQ1BKiFOFZAreKLxsWm
+ vHERnryTXtb0vid5KOcoqpGFk5Qrcs9A+9NhFVQMPHQ/4JpC9A7AiEDiYj8lmDCVWEab
+ qRZRlPpAyiN7n+TPDW4wMcFShcZ1DOMmLWMv/hWNHPlcFABl+Xc/0no3CpA98Mkr1Pyx
+ +hzifHzqZHw3baajGhAZAvWnwE711P3pDEsosPHoBuYmKKdYynvXQMd0r/dXooFcKfH8
+ GOww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720194433; x=1720799233;
+ d=1e100.net; s=20230601; t=1720193834; x=1720798634;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rcX3YpwLOTpsYf6Zhkg5VHQ84A4CmDm7f1BhkBXtQSg=;
- b=SmVkYPFdv52ZkjlaIk6HoXrNqXGOM4NvgEXa2DihH0lg3soYbFC6YZWf7gW2ZiRwDo
- DEH1fPWfuwMmiZQSig4n2aO38/CdJsm/APz4QRMl5LTGdKWa6isHWEwVmNVifTTyN3cl
- z7aHk6JcC5p/p1yZzThd5J+rg62k2YcRiw9FJ0Mth2+9eueuBZPKMwgMNdCS1QzcYnS4
- OH8WAWvP2RXYMX6NZd/9olnat+IBnq0xtVz9y9obBGzF8TJX4IHvZOU5aj9mRhM74NrU
- GbJ8U0LEEH5jWzd7hDUqB2mnBf/KYQmWEtd3q5lnqIVcp+i4PxB4cTi6bGnbreZNIz3V
- pdNQ==
-X-Gm-Message-State: AOJu0Yys4yT/j8672BHUjFROciVseKdFwGAql/tKusoW3Ikj+0QYLZwA
- qfrr3Ow3FLH5yY8gWsayOsuUHMF5JpsbqH9EkwveHNnSakSoObyY0IFCe3GufsQ=
-X-Google-Smtp-Source: AGHT+IHZakTOQ63u/vDKjw44Uccj2lVU1sTcoUBNRJ82FyC4S746mGvFDpyZSgcVR24XXRn4D+kliw==
-X-Received: by 2002:a17:906:8746:b0:a77:c5e4:eebd with SMTP id
- a640c23a62f3a-a77c5e4f35fmr225965566b.26.1720194432531; 
- Fri, 05 Jul 2024 08:47:12 -0700 (PDT)
+ bh=0dlqVxV0N2PAZeKsvqSde0gH8murih16mQWVBlzmyoo=;
+ b=J20LyX025Wz5hENEZhz2r7gxL3C9BouAqEcKkHqCbDcUuCUOpuL5TuN2hyanFga7wi
+ XmRBcvGGyTOOkRISZjHzltMSXNiZWSi6tA25jbljmAE6ni+KKh4iANuWAZQrtCY5IdZw
+ uUQHLKLeQLagG0tR9B951CTZuIqrhIKcg79vmcLjsrLf/d7DvV8u54nKq/jILrgVNCmp
+ g4s/BjgN1vffM+AAeLzbSKSgV8jWjQeU0VtyJDEO6PZGECue53DFRcPujBM7gH8XHEQe
+ zrXLwOiPNdOUnhgI2T3rieDa2ROSJeqTq2yO/O96Z3/HY+4GAERh/XZUI01YP+AsAY3Q
+ mcfQ==
+X-Gm-Message-State: AOJu0YzTm/mCWB0TUhAS2ERm/JD38FAYRWKLWFApsqXyWtY6cI/hwKuM
+ Wmhf2hY3BFCgqEWDnAxWcG28Nk85Pn5T9iptxcSOGDPStRHNNpEyA9JFkdiMO6M=
+X-Google-Smtp-Source: AGHT+IHw9YfQcIfOXRyMYZqDzbPJA9O7N83TExhGNDUBJ9JzqYXNTOKPz9MmwFsOuBpNU/MwPMlY8A==
+X-Received: by 2002:a17:907:76d4:b0:a77:dd5c:d7f4 with SMTP id
+ a640c23a62f3a-a77dd5ce42cmr45292866b.15.1720193834020; 
+ Fri, 05 Jul 2024 08:37:14 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ab065672sm694985966b.136.2024.07.05.08.47.11
+ a640c23a62f3a-a77cdc2e039sm56103766b.28.2024.07.05.08.37.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:47:11 -0700 (PDT)
+ Fri, 05 Jul 2024 08:37:11 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E421D62139;
- Fri,  5 Jul 2024 16:30:54 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 086EB6213B;
+ Fri,  5 Jul 2024 16:30:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 20/40] gitlab: don't bother with KVM for TCI builds
-Date: Fri,  5 Jul 2024 16:30:32 +0100
-Message-Id: <20240705153052.1219696-21-alex.bennee@linaro.org>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 21/40] test/plugin: make insn plugin less noisy by default
+Date: Fri,  5 Jul 2024 16:30:33 +0100
+Message-Id: <20240705153052.1219696-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,39 +98,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In fact any other accelerator would be pointless as the point is to
-exercise the TCI accelerator anyway.
+While the match functionality is useful lets make the verbosity
+optional while we are actually running.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-21-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-22-alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 425fc6479b..e3a0758bd9 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -635,7 +635,7 @@ build-tci:
-     - TARGETS="aarch64 arm hppa m68k microblaze ppc64 s390x x86_64"
-     - mkdir build
-     - cd build
--    - ../configure --enable-tcg-interpreter --disable-docs --disable-gtk --disable-vnc
-+    - ../configure --enable-tcg-interpreter --disable-kvm --disable-docs --disable-gtk --disable-vnc
-         --target-list="$(for tg in $TARGETS; do echo -n ${tg}'-softmmu '; done)"
-         || { cat config.log meson-logs/meson-log.txt && exit 1; }
-     - make -j"$JOBS"
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index 3de0341afe..cb499e4ee0 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -68,7 +68,7 @@ cross-i686-tci:
-   variables:
-     IMAGE: debian-i686-cross
-     ACCEL: tcg-interpreter
--    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins
-+    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
-     MAKE_CHECK_ARGS: check check-tcg
+diff --git a/tests/plugin/insn.c b/tests/plugin/insn.c
+index 5e0aa03223..524f9ddde8 100644
+--- a/tests/plugin/insn.c
++++ b/tests/plugin/insn.c
+@@ -20,6 +20,7 @@ static qemu_plugin_u64 insn_count;
  
- cross-mipsel-system:
+ static bool do_inline;
+ static bool do_size;
++static bool do_trace;
+ static GArray *sizes;
+ 
+ typedef struct {
+@@ -73,30 +74,30 @@ static void vcpu_insn_matched_exec_before(unsigned int cpu_index, void *udata)
+     MatchCount *match = qemu_plugin_scoreboard_find(insn_match->counts,
+                                                     cpu_index);
+ 
+-    g_autoptr(GString) ts = g_string_new("");
+-
+     insn->hits++;
+-    g_string_append_printf(ts, "0x%" PRIx64 ", '%s', %"PRId64 " hits",
+-                           insn->vaddr, insn->disas, insn->hits);
+ 
+     uint64_t icount = qemu_plugin_u64_get(insn_count, cpu_index);
+     uint64_t delta = icount - match->last_hit;
+ 
+     match->hits++;
+     match->total_delta += delta;
+-
+-    g_string_append_printf(ts,
+-                           " , cpu %u,"
+-                           " %"PRId64" match hits,"
+-                           " Δ+%"PRId64 " since last match,"
+-                           " %"PRId64 " avg insns/match\n",
+-                           cpu_index,
+-                           match->hits, delta,
+-                           match->total_delta / match->hits);
+-
+     match->last_hit = icount;
+ 
+-    qemu_plugin_outs(ts->str);
++    if (do_trace) {
++        g_autoptr(GString) ts = g_string_new("");
++        g_string_append_printf(ts, "0x%" PRIx64 ", '%s', %"PRId64 " hits",
++                               insn->vaddr, insn->disas, insn->hits);
++        g_string_append_printf(ts,
++                               " , cpu %u,"
++                               " %"PRId64" match hits,"
++                               " Δ+%"PRId64 " since last match,"
++                               " %"PRId64 " avg insns/match\n",
++                               cpu_index,
++                               match->hits, delta,
++                               match->total_delta / match->hits);
++
++        qemu_plugin_outs(ts->str);
++    }
+ }
+ 
+ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+@@ -216,6 +217,11 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+             }
+         } else if (g_strcmp0(tokens[0], "match") == 0) {
+             parse_match(tokens[1]);
++        } else if (g_strcmp0(tokens[0], "trace") == 0) {
++            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_trace)) {
++                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
++                return -1;
++            }
+         } else {
+             fprintf(stderr, "option parsing failed: %s\n", opt);
+             return -1;
 -- 
 2.39.2
 
