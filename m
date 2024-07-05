@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B119283DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4356E9283DB
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:41:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPeVO-0000Ek-IR; Fri, 05 Jul 2024 04:41:22 -0400
+	id 1sPeVO-0000Fa-Uj; Fri, 05 Jul 2024 04:41:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeV3-0008VZ-T2
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:01 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1sPeV6-000055-Ub
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:05 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeUx-0003Bp-AT
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:01 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a77c080b521so140625866b.3
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:40:54 -0700 (PDT)
+ id 1sPeUz-0003Dy-1n
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:03 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a77bf336171so193699366b.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720168853; x=1720773653; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720168856; x=1720773656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OZlcNQh9JE8A6UvoUX4jggiwG8ZzlIUOMNu3XJPgKMk=;
- b=tqhwIlZ6i0zbhhO9DTrUgJdHJ24GekigPUC6We5IxpZ4bBNz/gnf/VhZG1bee99Vgq
- ALijQtHZYIsSAcjczuz3OXtjduLtEpBt9J1ckcSSQMKANOJVUKYsPFGt/hyeu1SOCUEq
- aS5jw5oJd7X3ug3o1NgHaSSO/+1zMH/Llo5QjfyRodAyPvON8InqKt0qe5tKtKu2QwnK
- sUCI1WKak2fMfX5+SiK/RD7JR0DFgd+uJkX7XGKvprroy/ArIwVa23Swf2W7LcA3SJr/
- y++WuJEuNug0XP8rDWk+sp+Fg9a3FJzmiDm+IET9d/5WLSLh26j0njPZhVvL2tWHHZbu
- PIUg==
+ bh=Gn4+e2+s4PmF4hbnzvZLoM3JOdLV8P43Drx86Z36Eh4=;
+ b=WH79K5jt5VijLPJ9rYTfQ5s3rHxsY5YmItTG25tjZADPX6gA53NJU/UVlaQiiJVT6K
+ L5GhlTaSfKPrjXNNHmCZVXsX8bnJCYDine826jncIsvFZm3uKtIRL8EsTWOzoAQyCLBb
+ bkBrL/LiwvgXYM2We3f/6LBCVskQXZHSrUU3ORIHYrdevWWXzRPdYEz0mFS7uOcqS/Cg
+ +y2cT1zPwf+qCdrXRa5dgQLsluMGWgkPvzT9DScis7NrJPVMf2/daI16DIKnJkVd9kEW
+ WsXJLP2ROK6N6dyvJ2aSAA0LLOYbgbhDqamm3yI1f/LpnrN+lPg0nOtsUhspeTN7ryEF
+ 32rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720168853; x=1720773653;
+ d=1e100.net; s=20230601; t=1720168856; x=1720773656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OZlcNQh9JE8A6UvoUX4jggiwG8ZzlIUOMNu3XJPgKMk=;
- b=aorJxnGcVfgYvBbICVExJwFSo7YzAd2CczDfWM7BHH5yvgxou03F/2up1rVdPtYCZl
- 1NDmx1VmqPebDt7BCsBRkwAIVDQq46pHlLxZe0JbU5atwtaa+qG3IXc34ckkYwkKFC+x
- 4DOfGlQ5iU/4FCmSg/bqXfAZBfxw041fe7UXsnqNZltIaNR/A5pDy1w/p3/QO4PeRdXo
- T+E1RzCzuCWN4pw9aCqOJ5jOpheda+6AplkDnJwA35jcxGjVeNbvJD8iNJSWY3RuPs/U
- zexjooSZYXG6tZjcHreI/FfdXNinCx42rL++ic0X/tbe07KId23vj0t4SgVdLKpnpomM
- AEmw==
-X-Gm-Message-State: AOJu0YxER4GBSm0H2hBjljYxd4iy92qZXEkSdoX+aEJD4SENY9akCcD3
- P4Id75UZXtRJzpMrsRDTHpYMcOB/Guq//Apza9PX4swACvGR24B7dRqwkg7dIgk=
-X-Google-Smtp-Source: AGHT+IGEca9c2y5QxybSWiyxK5SfQYCByhlUDq0Jc+hVCy5ZX/RyNpkogt7N/MWgjassv6y6y/fkSA==
-X-Received: by 2002:a17:906:c1c4:b0:a77:d9d5:eb6d with SMTP id
- a640c23a62f3a-a77d9d5f2b4mr19526866b.61.1720168852782; 
- Fri, 05 Jul 2024 01:40:52 -0700 (PDT)
+ bh=Gn4+e2+s4PmF4hbnzvZLoM3JOdLV8P43Drx86Z36Eh4=;
+ b=q9ix/iJI3USz6Gxr13cobukTH4yz2BU+bow/X+nVgC4fu4Cq8zpYiWrt3Xk9ttztM2
+ KHK2YVWAe2fLdEnivxaoUvHNlZGvD9Gal8L8bL2pTspBKp5QvzR3U6gXFsPZlCGMON0G
+ PgIVpyQox2GB2RVpaK+n+eKdTlLecZqOiBXbgn+GchQqzHL7VHom8UpaqkY/xpc9b+iy
+ vFqawCswpbsNuGyUPxq8FsID/cU0uKE8LZtSHFFV8n19P2K3hqc1mmReIiREuS3bJk5E
+ NZhOninMfldLiOxdj7ykOGiu7HWy/ME56KPMustf411KlT+9QfmticV3Pm/ckn1rbWL9
+ LreA==
+X-Gm-Message-State: AOJu0Yz9q76A8V9fTcZjyd0egJnX3xn6wIGPdzSKt+ktvWP3ETfBoZOh
+ lce4bc7pPJBFSxdMJmw6u49dLBiBkwn04MXt5eBK9R1HgCMXjgRm6e7KPxW5ru0=
+X-Google-Smtp-Source: AGHT+IHTYlUK1n7yHNtv5mm3fMcB/Kv3tpsapVRqNhoYCZNR1AFm2JCeHFCr1OeKJeAx8f4QU7MDOQ==
+X-Received: by 2002:a17:906:f8d4:b0:a77:ba4d:a4ea with SMTP id
+ a640c23a62f3a-a77bda09b81mr283728566b.23.1720168855376; 
+ Fri, 05 Jul 2024 01:40:55 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77ae3f053esm156573066b.47.2024.07.05.01.40.49
+ a640c23a62f3a-a76841c4ffcsm261248866b.41.2024.07.05.01.40.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:40:50 -0700 (PDT)
+ Fri, 05 Jul 2024 01:40:52 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3E6D95F93A;
+ by draig.lan (Postfix) with ESMTP id 5BE075F9EB;
  Fri,  5 Jul 2024 09:40:48 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 06/40] tests/tcg/minilib: Constify digits in print_num
-Date: Fri,  5 Jul 2024 09:40:13 +0100
-Message-Id: <20240705084047.857176-7-alex.bennee@linaro.org>
+Subject: [PATCH v2 07/40] tests/tcg: Adjust variable defintion from cc-option
+Date: Fri,  5 Jul 2024 09:40:14 +0100
+Message-Id: <20240705084047.857176-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,32 +112,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This avoids a memcpy to the stack when compiled with clang.
-Since we don't enable optimization, nor provide memcpy,
-this results in an undefined symbol error at link time.
+Define the variable to the compiler flag used, not "y".
+This avoids replication of the compiler flag itself.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240630190050.160642-2-richard.henderson@linaro.org>
+Message-Id: <20240630190050.160642-3-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/minilib/printf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/Makefile.target                 |  2 +-
+ tests/tcg/aarch64/Makefile.softmmu-target |  2 +-
+ tests/tcg/aarch64/Makefile.target         | 15 ++++++++-------
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/tests/tcg/minilib/printf.c b/tests/tcg/minilib/printf.c
-index 10472b4f58..fb0189c2bb 100644
---- a/tests/tcg/minilib/printf.c
-+++ b/tests/tcg/minilib/printf.c
-@@ -27,7 +27,7 @@ static void print_str(char *s)
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index f21be50d3b..cb8cfeb6da 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -49,7 +49,7 @@ quiet-command = $(call quiet-@,$2,$3)$1
  
- static void print_num(unsigned long long value, int base)
- {
--    char digits[] = "0123456789abcdef";
-+    static const char digits[] = "0123456789abcdef";
-     char buf[32];
-     int i = sizeof(buf) - 2, j;
+ cc-test = $(CC) -Werror $1 -c -o /dev/null -xc /dev/null >/dev/null 2>&1
+ cc-option = if $(call cc-test, $1); then \
+-    echo "$(TARGET_PREFIX)$1 detected" && echo "$(strip $2)=y" >&3; else \
++    echo "$(TARGET_PREFIX)$1 detected" && echo "$(strip $2)=$(strip $1)" >&3; else \
+     echo "$(TARGET_PREFIX)$1 not detected"; fi
  
+ # $1 = test name, $2 = cmd, $3 = desc
+diff --git a/tests/tcg/aarch64/Makefile.softmmu-target b/tests/tcg/aarch64/Makefile.softmmu-target
+index 4b03ef602e..39d3f961c5 100644
+--- a/tests/tcg/aarch64/Makefile.softmmu-target
++++ b/tests/tcg/aarch64/Makefile.softmmu-target
+@@ -81,7 +81,7 @@ run-memory-replay: memory-replay run-memory-record
+ EXTRA_RUNS+=run-memory-replay
+ 
+ ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+-pauth-3: CFLAGS += -march=armv8.3-a
++pauth-3: CFLAGS += $(CROSS_CC_HAS_ARMV8_3)
+ else
+ pauth-3:
+ 	$(call skip-test, "BUILD of $@", "missing compiler support")
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 4ecbca6a41..11ccde5579 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -32,17 +32,17 @@ config-cc.mak: Makefile
+ 
+ ifneq ($(CROSS_CC_HAS_ARMV8_2),)
+ AARCH64_TESTS += dcpop
+-dcpop: CFLAGS += -march=armv8.2-a
++dcpop: CFLAGS += $(CROSS_CC_HAS_ARMV8_2)
+ endif
+ ifneq ($(CROSS_CC_HAS_ARMV8_5),)
+ AARCH64_TESTS += dcpodp
+-dcpodp: CFLAGS += -march=armv8.5-a
++dcpodp: CFLAGS += $(CROSS_CC_HAS_ARMV8_5)
+ endif
+ 
+ # Pauth Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+ AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5 test-2375
+-pauth-%: CFLAGS += -march=armv8.3-a
++pauth-%: CFLAGS += $(CROSS_CC_HAS_ARMV8_3)
+ test-2375: CFLAGS += -march=armv8.3-a
+ run-pauth-1: QEMU_OPTS += -cpu max
+ run-pauth-2: QEMU_OPTS += -cpu max
+@@ -55,7 +55,7 @@ endif
+ # bti-1 tests the elf notes, so we require special compiler support.
+ ifneq ($(CROSS_CC_HAS_ARMV8_BTI),)
+ AARCH64_TESTS += bti-1 bti-3
+-bti-1 bti-3: CFLAGS += -fno-stack-protector -mbranch-protection=standard
++bti-1 bti-3: CFLAGS += -fno-stack-protector $(CROSS_CC_HAS_ARMV8_BTI)
+ bti-1 bti-3: LDFLAGS += -nostdlib
+ endif
+ # bti-2 tests PROT_BTI, so no special compiler support required.
+@@ -64,12 +64,13 @@ AARCH64_TESTS += bti-2
+ # MTE Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_MTE),)
+ AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7
+-mte-%: CFLAGS += -march=armv8.5-a+memtag
++mte-%: CFLAGS += $(CROSS_CC_HAS_ARMV8_MTE)
+ endif
+ 
+ # SME Tests
+ ifneq ($(CROSS_AS_HAS_ARMV9_SME),)
+ AARCH64_TESTS += sme-outprod1 sme-smopa-1 sme-smopa-2
++sme-outprod1 sme-smopa-1 sme-smopa-2: CFLAGS += $(CROSS_AS_HAS_ARMV9_SME)
+ endif
+ 
+ # System Registers Tests
+@@ -99,7 +100,7 @@ TESTS += sha512-vector
+ ifneq ($(CROSS_CC_HAS_SVE),)
+ # SVE ioctl test
+ AARCH64_TESTS += sve-ioctls
+-sve-ioctls: CFLAGS+=-march=armv8.1-a+sve
++sve-ioctls: CFLAGS += $(CROSS_CC_HAS_SVE)
+ 
+ sha512-sve: CFLAGS=-O3 -march=armv8.1-a+sve
+ sha512-sve: sha512.c
+@@ -134,7 +135,7 @@ endif
+ 
+ ifneq ($(CROSS_CC_HAS_SVE2),)
+ AARCH64_TESTS += test-826
+-test-826: CFLAGS+=-march=armv8.1-a+sve2
++test-826: CFLAGS += $(CROSS_CC_HAS_SVE2)
+ endif
+ 
+ TESTS += $(AARCH64_TESTS)
 -- 
 2.39.2
 
