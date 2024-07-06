@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EBB929181
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 09:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF89929177
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 09:25:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPzmn-000726-El; Sat, 06 Jul 2024 03:24:45 -0400
+	id 1sPzmX-0006uT-J1; Sat, 06 Jul 2024 03:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmj-0006z8-Fe
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmV-0006tV-0C
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmU-0004TN-0K
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:41 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmT-0004TT-DN
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1720250662;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ns6nIeZPUAmhkYE6dKJvQg333aSyIsLC2CaNlzLLLFg=;
- b=O2AsphZM5UovDMRW9RUX8QQnW2OuQh/6Ggc7Zom0Bn+vA8jclw9VlE2Js8uTAZkIc0idER
- xzlETkFe34dWYt9VLdcO5rXK5hUEL+I70NfRADev1LfprGhaAvzxS88Bl/CNLUzwrJjjcM
- JkIRH5xOPIWdqZFqKBKQR4J2vN56s+c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=K8X4zlrzde625ZabI3gGP1AL9crUmNfJu7Zh7JxRUa8=;
+ b=KIe29W8w+nYIQo45YXVD4ITkT8egUDCpNUHqxHozeTAVhmOdcOuiJjEaJQYnLORZN9rpwZ
+ m2K8bZ14//qJW8VnsgoBmIp93W+G/eTHBvBaV9+qtBlqcw9D2A/f73PRCple9Mzkmqw/RC
+ HAGX6unmRApKDR2XCVee2ao37KmQjoE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-LmFgcelHPwaw6AigXPpgvA-1; Sat,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-4OzqQXAyOWGjBS4cwUrHxQ-1; Sat,
  06 Jul 2024 03:24:20 -0400
-X-MC-Unique: LmFgcelHPwaw6AigXPpgvA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: 4OzqQXAyOWGjBS4cwUrHxQ-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6718D19560AA; Sat,  6 Jul 2024 07:24:19 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6AF94195608A; Sat,  6 Jul 2024 07:24:19 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.4])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C50F51955F6B; Sat,  6 Jul 2024 07:24:18 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C3BCE1955F3B; Sat,  6 Jul 2024 07:24:18 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 88B1F21E5A6F; Sat,  6 Jul 2024 09:24:16 +0200 (CEST)
+ id 8B7C921E5A70; Sat,  6 Jul 2024 09:24:16 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 01/13] qapi: linter fixups
-Date: Sat,  6 Jul 2024 09:24:04 +0200
-Message-ID: <20240706072416.1717485-2-armbru@redhat.com>
+Subject: [PULL 02/13] docs/qapidoc: remove unused intersperse function
+Date: Sat,  6 Jul 2024 09:24:05 +0200
+Message-ID: <20240706072416.1717485-3-armbru@redhat.com>
 In-Reply-To: <20240706072416.1717485-1-armbru@redhat.com>
 References: <20240706072416.1717485-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,99 +83,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Fix minor irritants to pylint/flake8 et al.
-
-(Yes, these need to be guarded by the Python tests. That's a work in
-progress, a series that's quite likely to follow once I finish this
-Sphinx project. Please pardon the temporary irritation.)
+This function has been unused since since commit
+fd62bff901b (sphinx/qapidoc: Drop code to generate doc for simple
+union tag).
 
 Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20240626222128.406106-4-jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240626222128.406106-3-jsnow@redhat.com>
+[Commit message tweaked]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/introspect.py | 8 ++++----
- scripts/qapi/schema.py     | 6 +++---
- scripts/qapi/visit.py      | 5 +++--
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ docs/sphinx/qapidoc.py | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-index 86c075a6ad..ac14b20f30 100644
---- a/scripts/qapi/introspect.py
-+++ b/scripts/qapi/introspect.py
-@@ -27,8 +27,8 @@
- from .schema import (
-     QAPISchema,
-     QAPISchemaAlternatives,
--    QAPISchemaBranches,
-     QAPISchemaArrayType,
-+    QAPISchemaBranches,
-     QAPISchemaBuiltinType,
-     QAPISchemaEntity,
-     QAPISchemaEnumMember,
-@@ -233,9 +233,9 @@ def _use_type(self, typ: QAPISchemaType) -> str:
-             typ = type_int
-         elif (isinstance(typ, QAPISchemaArrayType) and
-               typ.element_type.json_type() == 'int'):
--            type_intList = self._schema.lookup_type('intList')
--            assert type_intList
--            typ = type_intList
-+            type_intlist = self._schema.lookup_type('intList')
-+            assert type_intlist
-+            typ = type_intlist
-         # Add type to work queue if new
-         if typ not in self._used_types:
-             self._used_types.append(typ)
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 721c470d2b..d65c35f6ee 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -730,6 +730,7 @@ def set_defined_in(self, name: str) -> None:
-         for v in self.variants:
-             v.set_defined_in(name)
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index f270b494f0..3c0565d0ce 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -50,16 +50,6 @@
+ __version__ = '1.0'
  
-+    # pylint: disable=unused-argument
-     def check(
-             self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
-     ) -> None:
-@@ -1166,7 +1167,7 @@ def _def_definition(self, defn: QAPISchemaDefinition) -> None:
-                 defn.info, "%s is already defined" % other_defn.describe())
-         self._entity_dict[defn.name] = defn
  
--    def lookup_entity(self,name: str) -> Optional[QAPISchemaEntity]:
-+    def lookup_entity(self, name: str) -> Optional[QAPISchemaEntity]:
-         return self._entity_dict.get(name)
+-# Function borrowed from pydash, which is under the MIT license
+-def intersperse(iterable, separator):
+-    """Yield the members of *iterable* interspersed with *separator*."""
+-    iterable = iter(iterable)
+-    yield next(iterable)
+-    for item in iterable:
+-        yield separator
+-        yield item
+-
+-
+ class QAPISchemaGenRSTVisitor(QAPISchemaVisitor):
+     """A QAPI schema visitor which generates docutils/Sphinx nodes
  
-     def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
-@@ -1302,11 +1303,10 @@ def _make_implicit_object_type(
-         name = 'q_obj_%s-%s' % (name, role)
-         typ = self.lookup_entity(name)
-         if typ:
--            assert(isinstance(typ, QAPISchemaObjectType))
-+            assert isinstance(typ, QAPISchemaObjectType)
-             # The implicit object type has multiple users.  This can
-             # only be a duplicate definition, which will be flagged
-             # later.
--            pass
-         else:
-             self._def_definition(QAPISchemaObjectType(
-                 name, info, None, ifcond, None, None, members, None))
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index e766acaac9..12f92e429f 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -280,8 +280,9 @@ def gen_visit_alternate(name: str,
-         abort();
-     default:
-         assert(visit_is_input(v));
--        error_setg(errp, "Invalid parameter type for '%%s', expected: %(name)s",
--                         name ? name : "null");
-+        error_setg(errp,
-+                   "Invalid parameter type for '%%s', expected: %(name)s",
-+                   name ? name : "null");
-         /* Avoid passing invalid *obj to qapi_free_%(c_name)s() */
-         g_free(*obj);
-         *obj = NULL;
 -- 
 2.45.0
 
