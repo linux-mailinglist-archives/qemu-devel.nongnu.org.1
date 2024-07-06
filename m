@@ -2,57 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900A9929178
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 09:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EBB929181
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 09:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPzmb-0006ve-9D; Sat, 06 Jul 2024 03:24:33 -0400
+	id 1sPzmn-000726-El; Sat, 06 Jul 2024 03:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmZ-0006vM-PA
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmj-0006z8-Fe
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmV-0004eW-Q8
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmU-0004TN-0K
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720250665;
+ s=mimecast20190719; t=1720250662;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mbrfMrKhRviUS8L/OBez6OrjkZWDd8rk1lrw+ZkRprI=;
- b=SY/sf9NTTH5lzhd7t6Ea24q3M9sQeJiHzoHz2r86zo1jKkux2zJ84hrezbNyiPNzW5SMuM
- ULokUVJPm0BX56eVUhmHTYDCm92alDUri9YI2iunsUezBnfmzQxiMaHCERqfOZWS7V7x1w
- s3fsEPigx4j5N5pIGef+1N9+98DRKSo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ns6nIeZPUAmhkYE6dKJvQg333aSyIsLC2CaNlzLLLFg=;
+ b=O2AsphZM5UovDMRW9RUX8QQnW2OuQh/6Ggc7Zom0Bn+vA8jclw9VlE2Js8uTAZkIc0idER
+ xzlETkFe34dWYt9VLdcO5rXK5hUEL+I70NfRADev1LfprGhaAvzxS88Bl/CNLUzwrJjjcM
+ JkIRH5xOPIWdqZFqKBKQR4J2vN56s+c=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-uaq87RtzPhSLC084OgGmYA-1; Sat,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-LmFgcelHPwaw6AigXPpgvA-1; Sat,
  06 Jul 2024 03:24:20 -0400
-X-MC-Unique: uaq87RtzPhSLC084OgGmYA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+X-MC-Unique: LmFgcelHPwaw6AigXPpgvA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE6E0195609E; Sat,  6 Jul 2024 07:24:19 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6718D19560AA; Sat,  6 Jul 2024 07:24:19 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.4])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C5F031955E85; Sat,  6 Jul 2024 07:24:18 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C50F51955F6B; Sat,  6 Jul 2024 07:24:18 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8724421E668B; Sat,  6 Jul 2024 09:24:16 +0200 (CEST)
+ id 88B1F21E5A6F; Sat,  6 Jul 2024 09:24:16 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 00/13] QAPI patches patches for 2024-07-06
-Date: Sat,  6 Jul 2024 09:24:03 +0200
-Message-ID: <20240706072416.1717485-1-armbru@redhat.com>
+Cc: richard.henderson@linaro.org,
+	John Snow <jsnow@redhat.com>
+Subject: [PULL 01/13] qapi: linter fixups
+Date: Sat,  6 Jul 2024 09:24:04 +0200
+Message-ID: <20240706072416.1717485-2-armbru@redhat.com>
+In-Reply-To: <20240706072416.1717485-1-armbru@redhat.com>
+References: <20240706072416.1717485-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -60,8 +64,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,75 +80,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f2cb4026fccfe073f84a4b440e41d3ed0c3134f6:
+From: John Snow <jsnow@redhat.com>
 
-  Merge tag 'pull-maintainer-july24-050724-1' of https://gitlab.com/stsquad/qemu into staging (2024-07-05 09:15:48 -0700)
+Fix minor irritants to pylint/flake8 et al.
 
-are available in the Git repository at:
+(Yes, these need to be guarded by the Python tests. That's a work in
+progress, a series that's quite likely to follow once I finish this
+Sphinx project. Please pardon the temporary irritation.)
 
-  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-07-06
+Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20240626222128.406106-3-jsnow@redhat.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ scripts/qapi/introspect.py | 8 ++++----
+ scripts/qapi/schema.py     | 6 +++---
+ scripts/qapi/visit.py      | 5 +++--
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-for you to fetch changes up to e389929d19a543ea5b34d02553b355f9f1c03162:
-
-  sphinx/qapidoc: Fix to generate doc for explicit, unboxed arguments (2024-07-06 08:58:24 +0200)
-
-----------------------------------------------------------------
-QAPI patches patches for 2024-07-06
-
-----------------------------------------------------------------
-John Snow (12):
-      qapi: linter fixups
-      docs/qapidoc: remove unused intersperse function
-      docs/qapidoc: delint a tiny portion of the module
-      qapi/parser: preserve indentation in QAPIDoc sections
-      qapi/parser: fix comment parsing immediately following a doc block
-      docs/qapidoc: fix nested parsing under untagged sections
-      qapi: fix non-compliant JSON examples
-      qapi: nail down convention that Errors sections are lists
-      qapi: convert "Note" sections to plain rST
-      qapi: update prose in note blocks
-      qapi: add markup to note blocks
-      qapi/parser: don't parse rST markup as section headers
-
-Markus Armbruster (1):
-      sphinx/qapidoc: Fix to generate doc for explicit, unboxed arguments
-
- docs/devel/qapi-code-gen.rst                   |  14 ++-
- docs/sphinx/qapidoc.py                         | 115 +++++++++++++++----------
- qapi/block-core.json                           |  35 +++-----
- qapi/block.json                                |   2 +-
- qapi/char.json                                 |  12 +--
- qapi/control.json                              |  20 ++---
- qapi/dump.json                                 |   2 +-
- qapi/introspect.json                           |   6 +-
- qapi/machine-target.json                       |  26 +++---
- qapi/machine.json                              |  49 +++++------
- qapi/migration.json                            |  16 ++--
- qapi/misc.json                                 |  91 ++++++++++---------
- qapi/net.json                                  |  12 +--
- qapi/pci.json                                  |   8 +-
- qapi/qdev.json                                 |  30 +++----
- qapi/qom.json                                  |  17 ++--
- qapi/rocker.json                               |  18 ++--
- qapi/run-state.json                            |  18 ++--
- qapi/sockets.json                              |  10 +--
- qapi/stats.json                                |  22 ++---
- qapi/transaction.json                          |  10 +--
- qapi/ui.json                                   |  31 ++++---
- qapi/virtio.json                               |  12 +--
- qga/qapi-schema.json                           |  48 +++++------
- scripts/qapi/introspect.py                     |   8 +-
- scripts/qapi/parser.py                         |  30 +++++--
- scripts/qapi/schema.py                         |   6 +-
- scripts/qapi/visit.py                          |   5 +-
- tests/qapi-schema/doc-empty-section.err        |   2 +-
- tests/qapi-schema/doc-empty-section.json       |   2 +-
- tests/qapi-schema/doc-good.json                |   9 +-
- tests/qapi-schema/doc-good.out                 |  43 +++++----
- tests/qapi-schema/doc-good.txt                 |  13 ++-
- tests/qapi-schema/doc-interleaved-section.json |   2 +-
- 34 files changed, 397 insertions(+), 347 deletions(-)
-
+diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+index 86c075a6ad..ac14b20f30 100644
+--- a/scripts/qapi/introspect.py
++++ b/scripts/qapi/introspect.py
+@@ -27,8 +27,8 @@
+ from .schema import (
+     QAPISchema,
+     QAPISchemaAlternatives,
+-    QAPISchemaBranches,
+     QAPISchemaArrayType,
++    QAPISchemaBranches,
+     QAPISchemaBuiltinType,
+     QAPISchemaEntity,
+     QAPISchemaEnumMember,
+@@ -233,9 +233,9 @@ def _use_type(self, typ: QAPISchemaType) -> str:
+             typ = type_int
+         elif (isinstance(typ, QAPISchemaArrayType) and
+               typ.element_type.json_type() == 'int'):
+-            type_intList = self._schema.lookup_type('intList')
+-            assert type_intList
+-            typ = type_intList
++            type_intlist = self._schema.lookup_type('intList')
++            assert type_intlist
++            typ = type_intlist
+         # Add type to work queue if new
+         if typ not in self._used_types:
+             self._used_types.append(typ)
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 721c470d2b..d65c35f6ee 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -730,6 +730,7 @@ def set_defined_in(self, name: str) -> None:
+         for v in self.variants:
+             v.set_defined_in(name)
+ 
++    # pylint: disable=unused-argument
+     def check(
+             self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
+     ) -> None:
+@@ -1166,7 +1167,7 @@ def _def_definition(self, defn: QAPISchemaDefinition) -> None:
+                 defn.info, "%s is already defined" % other_defn.describe())
+         self._entity_dict[defn.name] = defn
+ 
+-    def lookup_entity(self,name: str) -> Optional[QAPISchemaEntity]:
++    def lookup_entity(self, name: str) -> Optional[QAPISchemaEntity]:
+         return self._entity_dict.get(name)
+ 
+     def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
+@@ -1302,11 +1303,10 @@ def _make_implicit_object_type(
+         name = 'q_obj_%s-%s' % (name, role)
+         typ = self.lookup_entity(name)
+         if typ:
+-            assert(isinstance(typ, QAPISchemaObjectType))
++            assert isinstance(typ, QAPISchemaObjectType)
+             # The implicit object type has multiple users.  This can
+             # only be a duplicate definition, which will be flagged
+             # later.
+-            pass
+         else:
+             self._def_definition(QAPISchemaObjectType(
+                 name, info, None, ifcond, None, None, members, None))
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index e766acaac9..12f92e429f 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -280,8 +280,9 @@ def gen_visit_alternate(name: str,
+         abort();
+     default:
+         assert(visit_is_input(v));
+-        error_setg(errp, "Invalid parameter type for '%%s', expected: %(name)s",
+-                         name ? name : "null");
++        error_setg(errp,
++                   "Invalid parameter type for '%%s', expected: %(name)s",
++                   name ? name : "null");
+         /* Avoid passing invalid *obj to qapi_free_%(c_name)s() */
+         g_free(*obj);
+         *obj = NULL;
 -- 
 2.45.0
 
