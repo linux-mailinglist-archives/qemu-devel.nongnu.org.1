@@ -2,89 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54577929511
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 21:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E36D92952A
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 21:57:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQArH-0002FQ-7N; Sat, 06 Jul 2024 15:14:07 -0400
+	id 1sQBWE-0000Pl-68; Sat, 06 Jul 2024 15:56:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sQArF-0002F0-BD
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 15:14:05 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sQAr8-00046E-CT
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 15:14:00 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1fb4a332622so8425205ad.2
- for <qemu-devel@nongnu.org>; Sat, 06 Jul 2024 12:13:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720293237; x=1720898037; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7STuWpVF1UhnYDMLUoD7ybWThdG6Ll4ZkyWilqjfQZY=;
- b=LwtvRVLgbIldQj7/i/wodp+ZQwF6zs70kwMINjaV65QOQy1cnM017+m2+FtgZtn6lB
- 6JyZnJSP15iY6paHbSYat3aQ7YtedIuUJhNNZtT7SBPrn4L6QPifIKgcoLPy1OfyHQW7
- q0JlbnFxtrAzjSVMfYBDINN7/OXKW3pQ+30eKY9HhfeBMU8RAXYTSwNgvsmbAMOe9jdi
- YxiPvyrCYYpqAyEaa5oF+7sSurHKlYJwVT7s9eBpx48JMvhD4v4Iu/nHXUdfRc4Z2J59
- YKDH3/ysfqgn663GE4NK4Kyp1fcZdd9/f8wAJtH7xpKLS3JHpvaQPJUf9QB2D4LIcwXV
- NT0g==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sQBWB-0000PP-W5
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 15:56:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sQBWA-0000rw-8s
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 15:56:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720295781;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RiqRXPS5jruWf47z0jKHMOBGEx7vQ2JQUOMH2dok+r0=;
+ b=bba3pL/E9NibvhHrc7d1b4Ah91HsqfGhbS0N/x2aHAt9a3Sibj2snYOU4D/TEyjXnJ2V/z
+ AC7hCQOHt9AH6eXzYs70FPpIEMsCtj3FbR69wWwHKNuIjIkbu57SodXB8eaFjc7ZSmAWVR
+ COcO50Vcys8Y6i0IbHr8SrEc1rMJhqw=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-Vki9hOsRMNSFmv4mPTw4HQ-1; Sat, 06 Jul 2024 15:56:17 -0400
+X-MC-Unique: Vki9hOsRMNSFmv4mPTw4HQ-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2c967a7aceeso2656614a91.0
+ for <qemu-devel@nongnu.org>; Sat, 06 Jul 2024 12:56:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720293237; x=1720898037;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7STuWpVF1UhnYDMLUoD7ybWThdG6Ll4ZkyWilqjfQZY=;
- b=wa0+tmd4Ay9wZheCdF6kJwIG2kXaO6ymD0tjswkJLlsMSbl8fvWaKsYYvwziG9VZ1G
- 6aQQLx11lY14S2iMv6Uhzod/NU7ZuQwI9MMN5Dtm9JHAqQZkNEOx/MYtg8wgMH92DXn+
- OG4jU5v801Lx7L1FkHp5BakAo72/6GFv9Vi3fYXtwCPCLRhErJP5ABJG4Zmcr7zW7q98
- SSnqlhtC3ieMYJNowidhXN0hgyX/164H3/x+CEzVnF1V8a3xFKcuOuVFRMSOTezFHonl
- gGhulqcaYLyukU5GzsOMYyE6N9rp8fuXqhsnAj21jk18NmxIV8wZW1KiyUNEafuKVw9X
- 1vhQ==
-X-Gm-Message-State: AOJu0YxSUSYno3L7u9zz7N3OvCOI083ewG1PhYUUoLifr7ADesHmOGy4
- +8P7KFbeWWaRe8nByP4eYKJndI6ey3g5yHKrqDpkqVbqGskmLvieDnYOysGfZtEB4hqL1gr6Fba
- UB0M=
-X-Google-Smtp-Source: AGHT+IHTL6NT1sW8URpJu9m2uFRmW/cc/If1a+q5LARAES8piU9M7S3hw4ZBD/4KtxF7X1vZNWxTrQ==
-X-Received: by 2002:a17:902:e844:b0:1fb:5e1f:f5e1 with SMTP id
- d9443c01a7336-1fb5e1ff933mr22902575ad.26.1720293236742; 
- Sat, 06 Jul 2024 12:13:56 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::2193? ([2604:3d08:9384:1d00::2193])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fb21a90136sm64264995ad.298.2024.07.06.12.13.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 06 Jul 2024 12:13:56 -0700 (PDT)
-Message-ID: <5e01abc8-50dc-4601-9df9-cb74c02a22ec@linaro.org>
-Date: Sat, 6 Jul 2024 12:13:55 -0700
+ d=1e100.net; s=20230601; t=1720295776; x=1720900576;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RiqRXPS5jruWf47z0jKHMOBGEx7vQ2JQUOMH2dok+r0=;
+ b=R645xGnTDPBl5m0004tbz2LBzHpzwcFcm7aQ41i2rY04hmIxEOcn5f6nKh4j1ao4bi
+ yGyQNnWqolKllwU7nijg5O1sjbjXQWC6JLfu3gbJELp7AdQD9pA3JJOzL10H2LRKwdG8
+ QawfNbbDqBOz7G4cSSs5x1aE369S2XN0Mkj+5gxFb7eZAHDRaAkP27GJTQQQUafgscm6
+ 4408jqUeVo0FLlESXJkd39PMRiM20y2oXtkWCK6yY0Ob19XJiEyRE8iogfVbEc/5QcLJ
+ aG2ZMlOE554n4yk8Frc6wbQffjzZTff6QdGES8tpUc/QuX0vZcAXJzTsPHmGgEFuteWl
+ kyaA==
+X-Gm-Message-State: AOJu0YxzURjaI5K2S2QepTN18k8GqimXt2Ke2luyZGpup9c8UBd3wn99
+ X+f7nKkUNgO1lPz+WEwl9Xp6mpgxME+aIaUexgMShyTfM639z9NNgTE1Wgm6ZFNR8n6fg8LhA1r
+ fEhe1SXnwmIPjGdW1DwWQ+AmWITigA68KisAs/vv932uSIXia+qG2la+ZlCul7+M5aQR4LgI+ve
+ ICtxLlzrKa8XmERsu3l5nqavaKoF8=
+X-Received: by 2002:a17:90a:ba8f:b0:2c5:32c3:a777 with SMTP id
+ 98e67ed59e1d1-2c99c57fb63mr5738642a91.28.1720295776468; 
+ Sat, 06 Jul 2024 12:56:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGF2Bzp6w3FPM0GVsuNUs5n5G8Fa4Vf7GbL1f8XHDWvj1LSswaHmB/DmQ9/3VsB3y14LmgpLmuEqD/toCmgu20=
+X-Received: by 2002:a17:90a:ba8f:b0:2c5:32c3:a777 with SMTP id
+ 98e67ed59e1d1-2c99c57fb63mr5738607a91.28.1720295776127; Sat, 06 Jul 2024
+ 12:56:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/7] plugins: access values during a memory read/write
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Alexandre Iooss <erdnaxe@crans.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
+References: <20240703210144.339530-1-jsnow@redhat.com>
+ <20240703210144.339530-6-jsnow@redhat.com>
+ <87sewmtwdn.fsf@pond.sub.org>
+In-Reply-To: <87sewmtwdn.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Sat, 6 Jul 2024 15:56:03 -0400
+Message-ID: <CAFn=p-aeEYjCse3wiPEpwoXgm2R16U+MtZC83F=tkgy_wt8A1w@mail.gmail.com>
+Subject: Re: [PATCH 5/8] qapi: convert "Example" sections without titles
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Qemu-block <qemu-block@nongnu.org>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
  Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240705003421.750895-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240705003421.750895-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Lukas Straub <lukasstraub2@web.de>, 
+ Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, Hanna Reitz <hreitz@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, 
+ Alex Williamson <alex.williamson@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Jiri Pirko <jiri@resnulli.us>
+Content-Type: multipart/alternative; boundary="000000000000a52c89061c999274"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,76 +111,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Posted v6.
+--000000000000a52c89061c999274
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/4/24 17:34, Pierrick Bouvier wrote:
-> This series allows plugins to know which value is read/written during a memory
-> access.
-> 
-> For every memory access, we know copy this value before calling mem callbacks,
-> and those can query it using new API function:
-> - qemu_plugin_mem_get_value
-> 
-> Mem plugin was extended to print accesses, and a new test was added to check
-> functionality work as expected. A bug was found where callbacks were not
-> called as expected.
-> 
-> This will open new use cases for plugins, such as following specific values in
-> memory.
-> 
-> v5
-> - fixed width output for mem values in mem plugin
-> - move plugin_mem_value to CPUNegativeOffset
-> - tcg/tcg-op-ldst.c: only store word size mem access (do not set upper bits)
-> 
-> v4
-> - fix prototype for stubs qemu_plugin_vcpu_mem_cb (inverted low/high parameters
->    names)
-> - link gitlab bugs resolved (thanks @Anton Kochkov for reporting)
->    https://gitlab.com/qemu-project/qemu/-/issues/1719
->    https://gitlab.com/qemu-project/qemu/-/issues/2152
-> 
-> v3
-> - simplify API: return an algebraic data type for value accessed
->    this can be easily extended when QEMU will support wider accesses
-> - fix Makefile test (use quiet-command instead of manually run the command)
-> - rename upper/lower to high/low
-> - reorder functions parameters and code to low/high instead of high/low, to
->    follow current convention in QEMU codebase
-> 
-> v2
-> - fix compilation on aarch64 (missing undef in accel/tcg/atomic_template.h)
-> 
-> v3
-> - add info when printing memory accesses (insn_vaddr,mem_vaddr,mem_hwaddr)
-> 
-> Pierrick Bouvier (7):
->    plugins: fix mem callback array size
->    plugins: save value during memory accesses
->    plugins: extend API to get latest memory value accessed
->    tests/tcg: add mechanism to run specific tests with plugins
->    tests/tcg: allow to check output of plugins
->    tests/plugin/mem: add option to print memory accesses
->    tests/tcg/x86_64: add test for plugin memory access
-> 
->   accel/tcg/atomic_template.h                 | 66 +++++++++++++--
->   include/hw/core/cpu.h                       |  4 +
->   include/qemu/plugin.h                       |  4 +
->   include/qemu/qemu-plugin.h                  | 32 ++++++++
->   accel/tcg/plugin-gen.c                      |  3 +-
->   plugins/api.c                               | 33 ++++++++
->   plugins/core.c                              |  6 ++
->   tcg/tcg-op-ldst.c                           | 66 +++++++++++++--
->   tests/plugin/mem.c                          | 69 +++++++++++++++-
->   tests/tcg/x86_64/test-plugin-mem-access.c   | 89 +++++++++++++++++++++
->   accel/tcg/atomic_common.c.inc               | 13 ++-
->   accel/tcg/ldst_common.c.inc                 | 38 +++++----
->   plugins/qemu-plugins.symbols                |  1 +
->   tests/tcg/Makefile.target                   | 10 ++-
->   tests/tcg/x86_64/Makefile.target            |  7 ++
->   tests/tcg/x86_64/check-plugin-mem-access.sh | 48 +++++++++++
->   16 files changed, 455 insertions(+), 34 deletions(-)
->   create mode 100644 tests/tcg/x86_64/test-plugin-mem-access.c
->   create mode 100755 tests/tcg/x86_64/check-plugin-mem-access.sh
-> 
+On Sat, Jul 6, 2024, 10:42=E2=80=AFAM Markus Armbruster <armbru@redhat.com>=
+ wrote:
+
+> John Snow <jsnow@redhat.com> writes:
+>
+> > Use the no-option form of ".. qmp-example::" to convert any Examples
+> > that do not have any form of caption or explanation whatsoever. Note
+> > that in a few cases, example sections are split into two or more
+> > separate example blocks. This is only done stylistically to create a
+> > delineation between two or more logically independent examples.
+> >
+> > See commit-3: "docs/qapidoc: create qmp-example directive", for a
+> >               detailed explanation of this custom directive syntax.
+> >
+> > See commit+3: "qapi: remove "Example" doc section" for a detailed
+> >               explanation of why.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+>
+> [...]
+>
+> > diff --git a/qapi/run-state.json b/qapi/run-state.json
+> > index 252d7d6afa7..718a3c958e9 100644
+> > --- a/qapi/run-state.json
+> > +++ b/qapi/run-state.json
+>
+> [...]
+>
+> > @@ -453,7 +453,7 @@
+> >  #
+> >  # Since: 5.0
+> >  #
+> > -# Example:
+> > +# .. qmp-example::
+> >  #
+> >  #     <- { "event": "GUEST_CRASHLOADED",
+> >  #          "data": { "action": "run" },
+>
+> Trivial semantic conflict, we need
+>
+
+Caught on rebase late Fri, already fixed locally and will be in v2 (which I
+rebased on top of my sphinx 3.x patches, which change the do_parse() stuff
+too.)
+
+
+>   @@ -469,7 +469,7 @@
+>    #
+>    # Since: 9.1
+>    #
+>   -# Example:
+>   +# .. qmp-example::
+>    #
+>    #     <- { "event": "GUEST_PVSHUTDOWN",
+>    #          "timestamp": { "seconds": 1648245259, "microseconds": 89377=
+1
+> } }
+>
+>
+> > @@ -597,7 +597,7 @@
+> >  #
+> >  # Since: 5.2
+> >  #
+> > -# Example:
+> > +# .. qmp-example::
+> >  #
+> >  #     <- { "event": "MEMORY_FAILURE",
+> >  #          "data": { "recipient": "hypervisor",
+>
+> [...]
+>
+>
+
+--000000000000a52c89061c999274
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Sat, Jul 6, 2024, 10:42=E2=80=AFAM Markus Armbruste=
+r &lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:=
+<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bord=
+er-left:1px #ccc solid;padding-left:1ex">John Snow &lt;<a href=3D"mailto:js=
+now@redhat.com" target=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&g=
+t; writes:<br>
+<br>
+&gt; Use the no-option form of &quot;.. qmp-example::&quot; to convert any =
+Examples<br>
+&gt; that do not have any form of caption or explanation whatsoever. Note<b=
+r>
+&gt; that in a few cases, example sections are split into two or more<br>
+&gt; separate example blocks. This is only done stylistically to create a<b=
+r>
+&gt; delineation between two or more logically independent examples.<br>
+&gt;<br>
+&gt; See commit-3: &quot;docs/qapidoc: create qmp-example directive&quot;, =
+for a<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0detailed explana=
+tion of this custom directive syntax.<br>
+&gt;<br>
+&gt; See commit+3: &quot;qapi: remove &quot;Example&quot; doc section&quot;=
+ for a detailed<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0explanation of w=
+hy.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
+<br>
+[...]<br>
+<br>
+&gt; diff --git a/qapi/run-state.json b/qapi/run-state.json<br>
+&gt; index 252d7d6afa7..718a3c958e9 100644<br>
+&gt; --- a/qapi/run-state.json<br>
+&gt; +++ b/qapi/run-state.json<br>
+<br>
+[...]<br>
+<br>
+&gt; @@ -453,7 +453,7 @@<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Since: 5.0<br>
+&gt;=C2=A0 #<br>
+&gt; -# Example:<br>
+&gt; +# .. qmp-example::<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0&lt;- { &quot;event&quot;: &quot;GUEST_CRAS=
+HLOADED&quot;,<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;data&quot;: { &quot;ac=
+tion&quot;: &quot;run&quot; },<br>
+<br>
+Trivial semantic conflict, we need<br></blockquote></div></div><div dir=3D"=
+auto"><br></div><div dir=3D"auto">Caught on rebase late Fri, already fixed =
+locally and will be in v2 (which I rebased on top of my sphinx 3.x patches,=
+ which change the do_parse() stuff too.)</div><div dir=3D"auto"><br></div><=
+div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+=C2=A0 @@ -469,7 +469,7 @@<br>
+=C2=A0 =C2=A0#<br>
+=C2=A0 =C2=A0# Since: 9.1<br>
+=C2=A0 =C2=A0#<br>
+=C2=A0 -# Example:<br>
+=C2=A0 +# .. qmp-example::<br>
+=C2=A0 =C2=A0#<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0&lt;- { &quot;event&quot;: &quot;GUEST_PV=
+SHUTDOWN&quot;,<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;timestamp&quot;: { &=
+quot;seconds&quot;: 1648245259, &quot;microseconds&quot;: 893771 } }<br>
+<br>
+<br>
+&gt; @@ -597,7 +597,7 @@<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Since: 5.2<br>
+&gt;=C2=A0 #<br>
+&gt; -# Example:<br>
+&gt; +# .. qmp-example::<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0&lt;- { &quot;event&quot;: &quot;MEMORY_FAI=
+LURE&quot;,<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;data&quot;: { &quot;re=
+cipient&quot;: &quot;hypervisor&quot;,<br>
+<br>
+[...]<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000a52c89061c999274--
+
 
