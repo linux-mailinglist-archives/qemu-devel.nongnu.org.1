@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06FD929182
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 09:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71012929174
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 09:25:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPzmg-0006xQ-8n; Sat, 06 Jul 2024 03:24:38 -0400
+	id 1sPzmp-00072j-NX; Sat, 06 Jul 2024 03:24:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmc-0006wU-7K
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:34 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmk-0006zG-6Q
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmY-0004uk-9K
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:33 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sPzmU-0004Z2-AN
+ for qemu-devel@nongnu.org; Sat, 06 Jul 2024 03:24:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720250669;
+ s=mimecast20190719; t=1720250664;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ST6RAIv08C/rCDebIfMRLPAFcJWMXH0jxVm7ePQm5C4=;
- b=jHuLnx+kAnX0ni3dhEyKbv6AtSkEWbnWhMSVY4gySFacrJbFmXu/J+ctVSgCkF4XEDFkxC
- VOHLsxNGuiMnVMrCv05zfeGHI4nuAyLZVOiWxbFhLMS3eKOsDKebwnNnzvI5fDFW0MeeHV
- BFezP0t/fpSxox6Aq/JE58smEdOSMs8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=3+6/kX/LDqotJtx2AFNwS8iiHAoO1D3Wb76nmU7XcM0=;
+ b=SH2TcMFLsbsRtAg7aVzTOB9ecS92cbGqmcSC35xBZd4CoNP9TveCI7T4bKrmF2JkcRVkmo
+ s3G21ru3c5XX6RFGSIlO6B9S6MfoV/A2QMAbUgXY3PLWBCiZv4LxPMpkjiVbioggYXVRZQ
+ wA151GJnLqCfglF50OU4CejQ2cynjx8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-OYdfgf_4OcG2OORomZdjfg-1; Sat,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-DuA4tTw6NPC-xWxY7_GDkA-1; Sat,
  06 Jul 2024 03:24:23 -0400
-X-MC-Unique: OYdfgf_4OcG2OORomZdjfg-1
+X-MC-Unique: DuA4tTw6NPC-xWxY7_GDkA-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 83B8919560A2; Sat,  6 Jul 2024 07:24:22 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3AB8D195608A; Sat,  6 Jul 2024 07:24:22 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.4])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B88711955E8C; Sat,  6 Jul 2024 07:24:21 +0000 (UTC)
+ id D3ABE1955E70; Sat,  6 Jul 2024 07:24:21 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A65CE21F4B97; Sat,  6 Jul 2024 09:24:16 +0200 (CEST)
+ id A919521F4B99; Sat,  6 Jul 2024 09:24:16 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 11/13] qapi: add markup to note blocks
-Date: Sat,  6 Jul 2024 09:24:14 +0200
-Message-ID: <20240706072416.1717485-12-armbru@redhat.com>
+Subject: [PULL 12/13] qapi/parser: don't parse rST markup as section headers
+Date: Sat,  6 Jul 2024 09:24:15 +0200
+Message-ID: <20240706072416.1717485-13-armbru@redhat.com>
 In-Reply-To: <20240706072416.1717485-1-armbru@redhat.com>
 References: <20240706072416.1717485-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -64,7 +64,6 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,127 +82,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Generally, surround command-line options with ``literal`` markup to help
-it stand out from prose in rendered HTML, and add cross-references to
-replace "see also" messages.
+The double-colon synax is rST formatting that precedes a literal code
+block. We do not want to capture these as QAPI-specific sections.
 
-References to types, values, and other QAPI definitions are not yet
-adjusted here; they will be converted en masse in a subsequent patch
-after the new QAPI doc generator is merged.
+Coerce blocks that start with e.g. "Example::" to be parsed as untagged
+paragraphs instead of special tagged sections.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20240626222128.406106-14-jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240626222128.406106-13-jsnow@redhat.com>
+[Indentation tweaked for consistency]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/control.json   | 4 ++--
- qapi/misc.json      | 8 ++++----
- qapi/qdev.json      | 2 +-
- qapi/run-state.json | 2 +-
- qapi/sockets.json   | 2 +-
- qapi/ui.json        | 2 +-
- 6 files changed, 10 insertions(+), 10 deletions(-)
+ scripts/qapi/parser.py          | 9 +++++++--
+ tests/qapi-schema/doc-good.json | 3 +++
+ tests/qapi-schema/doc-good.out  | 3 +++
+ tests/qapi-schema/doc-good.txt  | 3 +++
+ 4 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/qapi/control.json b/qapi/control.json
-index 59d5e00c15..fe2af45120 100644
---- a/qapi/control.json
-+++ b/qapi/control.json
-@@ -24,8 +24,8 @@
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 0a13f0f541..6ad5663e54 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -544,10 +544,15 @@ def get_doc(self) -> 'QAPIDoc':
+                         line = self.get_doc_indented(doc)
+                     no_more_args = True
+                 elif match := re.match(
+-                        r'(Returns|Errors|Since|Notes?|Examples?|TODO): *',
+-                        line):
++                        r'(Returns|Errors|Since|Notes?|Examples?|TODO)'
++                        r'(?!::): *',
++                        line,
++                ):
+                     # tagged section
+ 
++                    # Note: "sections" with two colons are left alone as
++                    # rST markup and not interpreted as a section heading.
++
+                     # TODO: Remove this error sometime in 2025 or so
+                     # after we've fully transitioned to the new qapidoc
+                     # generator.
+diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
+index 32ff910b4f..b565895858 100644
+--- a/tests/qapi-schema/doc-good.json
++++ b/tests/qapi-schema/doc-good.json
+@@ -181,6 +181,9 @@
+ #  - *verbatim*
+ #  - {braces}
  #
- # .. note:: This command is valid exactly when first connecting: it must
- #    be issued before any other command will be accepted, and will fail
--#    once the monitor is accepting other commands.  (see qemu
--#    docs/interop/qmp-spec.rst)
-+#    once the monitor is accepting other commands.
-+#    (see :doc:`/interop/qmp-spec`)
- #
- # .. note:: The QMP client needs to explicitly enable QMP capabilities,
- #    otherwise all the QMP capabilities will be turned off by default.
-diff --git a/qapi/misc.json b/qapi/misc.json
-index 13ea82f525..b04efbadec 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -104,7 +104,7 @@
- # Returns a list of information about each iothread.
- #
- # .. note:: This list excludes the QEMU main loop thread, which is not
--#    declared using the -object iothread command-line option.  It is
-+#    declared using the ``-object iothread`` command-line option.  It is
- #    always the main thread of the process.
- #
- # Returns: a list of @IOThreadInfo for each iothread
-@@ -138,8 +138,8 @@
- #
- # .. note:: This function will succeed even if the guest is already in
- #    the stopped state.  In "inmigrate" state, it will ensure that the
--#    guest remains paused once migration finishes, as if the -S option
--#    was passed on the command line.
-+#    guest remains paused once migration finishes, as if the ``-S``
-+#    option was passed on the command line.
- #
- #    In the "suspended" state, it will completely stop the VM and cause
- #    a transition to the "paused" state.  (Since 9.0)
-@@ -161,7 +161,7 @@
- # .. note:: This command will succeed if the guest is currently running.
- #    It will also succeed if the guest is in the "inmigrate" state; in
- #    this case, the effect of the command is to make sure the guest
--#    starts once migration finishes, removing the effect of the -S
-+#    starts once migration finishes, removing the effect of the ``-S``
- #    command line option if it was passed.
- #
- #    If the VM was previously suspended, and not been reset or woken,
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index f5b35a814f..d031fc3590 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -59,7 +59,7 @@
- #        the 'docs/qdev-device-use.txt' file.
- #
- #     3. It's possible to list device properties by running QEMU with
--#        the "-device DEVICE,help" command-line argument, where DEVICE
-+#        the ``-device DEVICE,help`` command-line argument, where DEVICE
- #        is the device's name.
- #
- # Example:
-diff --git a/qapi/run-state.json b/qapi/run-state.json
-index 30cd25d3c9..4d40c88876 100644
---- a/qapi/run-state.json
-+++ b/qapi/run-state.json
-@@ -146,7 +146,7 @@
- # @reason: The @ShutdownCause which resulted in the SHUTDOWN.
- #     (since 4.0)
- #
--# .. note:: If the command-line option "-no-shutdown" has been
-+# .. note:: If the command-line option ``-no-shutdown`` has been
- #    specified, qemu will not exit, and a STOP event will eventually
- #    follow the SHUTDOWN event.
- #
-diff --git a/qapi/sockets.json b/qapi/sockets.json
-index 3970118bf4..4d78d2ccb7 100644
---- a/qapi/sockets.json
-+++ b/qapi/sockets.json
-@@ -181,7 +181,7 @@
- #
- # .. note:: This type is deprecated in favor of SocketAddress.  The
- #    difference between SocketAddressLegacy and SocketAddress is that
--#    the latter has fewer {} on the wire.
-+#    the latter has fewer ``{}`` on the wire.
- #
- # Since: 1.3
++# Note::
++#     Ceci n'est pas une note
++#
+ # Since: 2.10
  ##
-diff --git a/qapi/ui.json b/qapi/ui.json
-index a1999965e4..5bcccbfc93 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -1268,7 +1268,7 @@
- # Since: 2.6
- #
- # .. note:: The consoles are visible in the qom tree, under
--#    /backend/console[$index]. They have a device link and head
-+#    ``/backend/console[$index]``. They have a device link and head
- #    property, so it is possible to map which console belongs to which
- #    device and display.
- #
+ { 'command': 'cmd',
+diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
+index 631dc9f8da..a8e9456f60 100644
+--- a/tests/qapi-schema/doc-good.out
++++ b/tests/qapi-schema/doc-good.out
+@@ -190,6 +190,9 @@ frobnicate
+     section=Examples
+  - *verbatim*
+  - {braces}
++    section=None
++Note::
++    Ceci n'est pas une note
+     section=Since
+ 2.10
+ doc symbol=cmd-boxed
+diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
+index d8bfa742c2..30d457e548 100644
+--- a/tests/qapi-schema/doc-good.txt
++++ b/tests/qapi-schema/doc-good.txt
+@@ -231,6 +231,9 @@ Examples
+    - *verbatim*
+    - {braces}
+ 
++Note::
++   Ceci n'est pas une note
++
+ 
+ Since
+ ~~~~~
 -- 
 2.45.0
 
