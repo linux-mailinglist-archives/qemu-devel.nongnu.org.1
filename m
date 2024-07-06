@@ -2,60 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B36929537
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 22:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65158929532
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 22:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQC0d-00036Q-Q0; Sat, 06 Jul 2024 16:27:51 -0400
+	id 1sQBmn-0007dw-D9; Sat, 06 Jul 2024 16:13:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ziyao@disroot.org>) id 1sQBmK-0007bX-1m
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 16:13:04 -0400
-Received: from layka.disroot.org ([178.21.23.139])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ziyao@disroot.org>) id 1sQBmI-0005nl-3x
- for qemu-devel@nongnu.org; Sat, 06 Jul 2024 16:13:03 -0400
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1sQBmk-0007dC-0W; Sat, 06 Jul 2024 16:13:30 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1sQBmh-0005qY-5f; Sat, 06 Jul 2024 16:13:28 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 43DB54E6005;
+ Sat, 06 Jul 2024 22:13:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id fRS0oUd3Pp6t; Sat,  6 Jul 2024 22:13:16 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 487854E601B; Sat, 06 Jul 2024 22:13:16 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by disroot.org (Postfix) with ESMTP id F194141309;
- Sat,  6 Jul 2024 22:12:58 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id xXxihTdM_7Ra; Sat,  6 Jul 2024 22:12:58 +0200 (CEST)
-From: Yao Zi <ziyao@disroot.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
- t=1720296778; bh=0HCkpQ2r8rZxK0A07E+xUQPSbd2+j7DpUhibiR7DNp8=;
- h=From:To:Cc:Subject:Date;
- b=LcnYG0HOlCy8i+ERV+Wgap3GB8XdWuZ/mu7Ip1TqXwcGlRBX3z9WSEEZ78orIF8pH
- R91zTXF13vnEjH14bzieJkOHK3YAEaxJMYCxxqx8klLF5KX/ioqTaLbgCHT2alPBEn
- i5mPizT4q2goHrnwgwW8MzOHEcmSAm3J3PZfyoUMm6DU5ops0Zd9Kzz4443pI0UiKn
- o/8zah5ad7OYtQwxQiUHDU61BN0SSGE/wO6qgIX/bVrM4ASz3vr2OZ59yXM9PfJo9c
- UjeRLa63cyWa8yQcDgpPbT3eB8sG23iNMtmYI0AkvXvEylj0aQ96ZlxsMaS3pXUjX3
- eVewEhF3Ox6Ig==
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
-	Yao Zi <ziyao@disroot.org>
-Subject: [PATCH] meson.build: fix libgcrypt detection on system without
- libgcrypt-config
-Date: Sat,  6 Jul 2024 20:12:26 +0000
-Message-ID: <20240706201226.46089-1-ziyao@disroot.org>
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4682B746E3B;
+ Sat, 06 Jul 2024 22:13:16 +0200 (CEST)
+Date: Sat, 6 Jul 2024 22:13:16 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 33/43] target/ppc: Remove single use static inline function
+In-Reply-To: <D2GKLJBBSWBH.2873DA1I8QJ9Q@gmail.com>
+Message-ID: <dd077f40-4f90-4ad1-4c43-b98f62d1aed6@eik.bme.hu>
+References: <cover.1716763435.git.balaton@eik.bme.hu>
+ <c30ddd4f433bbe60629d2be66c5214076f677fa9.1716763435.git.balaton@eik.bme.hu>
+ <D2GKLJBBSWBH.2873DA1I8QJ9Q@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.21.23.139; envelope-from=ziyao@disroot.org;
- helo=layka.disroot.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 06 Jul 2024 16:27:42 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,32 +63,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-libgcrypt starts providing correct pkg-config configuration and dropping
-libgcrypt-config since 1.11.0. So use auto method for detection of
-libgcrypt, in which meson will try both pkg-config and libgcrypt-config.
+On Thu, 4 Jul 2024, Nicholas Piggin wrote:
+> On Mon May 27, 2024 at 9:13 AM AEST, BALATON Zoltan wrote:
+>> The ger_pack_masks() function is only used once and the inverse of
+>> this operation is already inlined so it can be inlined too in the only
+>> caller and removed from the header.
+>
+> Is this needed for later patches? I might prefer to keep it, even
 
-This fixes build failure when libgcrypt is enabled on a system without
-ligcrypt-config. Auto method for libgcrypt is supported by meson since
-0.49.0, which is higher than the version qemu requires.
+No, I think this patch can just be dropped then. I don't plan to make 
+another version of it so just leave it out if you don't want to take it.
 
-Signed-off-by: Yao Zi <ziyao@disroot.org>
----
- meson.build | 1 -
- 1 file changed, 1 deletion(-)
+Regards,
+BALATON Zoltan
 
-diff --git a/meson.build b/meson.build
-index 6a93da48e1..1b71824548 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1695,7 +1695,6 @@ endif
- if not gnutls_crypto.found()
-   if (not get_option('gcrypt').auto() or have_system) and not get_option('nettle').enabled()
-     gcrypt = dependency('libgcrypt', version: '>=1.8',
--                        method: 'config-tool',
-                         required: get_option('gcrypt'))
-     # Debian has removed -lgpg-error from libgcrypt-config
-     # as it "spreads unnecessary dependencies" which in
--- 
-2.45.2
-
+> move it into vsx-impl.c.inc and pull its inverse out into its own
+> function too even.
+>
+> Thanks,
+> Nick
+>
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>  target/ppc/internal.h               | 9 ---------
+>>  target/ppc/translate/vsx-impl.c.inc | 6 ++++--
+>>  2 files changed, 4 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+>> index 20fb2ec593..8e5a241f74 100644
+>> --- a/target/ppc/internal.h
+>> +++ b/target/ppc/internal.h
+>> @@ -293,13 +293,4 @@ FIELD(GER_MSK, XMSK, 0, 4)
+>>  FIELD(GER_MSK, YMSK, 4, 4)
+>>  FIELD(GER_MSK, PMSK, 8, 8)
+>>
+>> -static inline int ger_pack_masks(int pmsk, int ymsk, int xmsk)
+>> -{
+>> -    int msk = 0;
+>> -    msk = FIELD_DP32(msk, GER_MSK, XMSK, xmsk);
+>> -    msk = FIELD_DP32(msk, GER_MSK, YMSK, ymsk);
+>> -    msk = FIELD_DP32(msk, GER_MSK, PMSK, pmsk);
+>> -    return msk;
+>> -}
+>> -
+>>  #endif /* PPC_INTERNAL_H */
+>> diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+>> index 0266f09119..62950d348a 100644
+>> --- a/target/ppc/translate/vsx-impl.c.inc
+>> +++ b/target/ppc/translate/vsx-impl.c.inc
+>> @@ -2819,7 +2819,7 @@ static bool trans_XXSETACCZ(DisasContext *ctx, arg_X_a *a)
+>>  static bool do_ger(DisasContext *ctx, arg_MMIRR_XX3 *a,
+>>      void (*helper)(TCGv_env, TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_i32))
+>>  {
+>> -    uint32_t mask;
+>> +    uint32_t mask = 0;
+>>      TCGv_ptr xt, xa, xb;
+>>      REQUIRE_INSNS_FLAGS2(ctx, ISA310);
+>>      REQUIRE_VSX(ctx);
+>> @@ -2832,7 +2832,9 @@ static bool do_ger(DisasContext *ctx, arg_MMIRR_XX3 *a,
+>>      xa = gen_vsr_ptr(a->xa);
+>>      xb = gen_vsr_ptr(a->xb);
+>>
+>> -    mask = ger_pack_masks(a->pmsk, a->ymsk, a->xmsk);
+>> +    mask = FIELD_DP32(mask, GER_MSK, XMSK, a->xmsk);
+>> +    mask = FIELD_DP32(mask, GER_MSK, YMSK, a->ymsk);
+>> +    mask = FIELD_DP32(mask, GER_MSK, PMSK, a->pmsk);
+>>      helper(tcg_env, xa, xb, xt, tcg_constant_i32(mask));
+>>      return true;
+>>  }
+>
+>
 
