@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AA392994B
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jul 2024 20:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8702929972
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jul 2024 21:13:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQWZg-000647-BB; Sun, 07 Jul 2024 14:25:24 -0400
+	id 1sQXIV-0000kW-Ih; Sun, 07 Jul 2024 15:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sQWZW-00063b-Dj
- for qemu-devel@nongnu.org; Sun, 07 Jul 2024 14:25:14 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1sQXIT-0000kN-LF
+ for qemu-devel@nongnu.org; Sun, 07 Jul 2024 15:11:41 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sQWZT-0003Mu-14
- for qemu-devel@nongnu.org; Sun, 07 Jul 2024 14:25:14 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-25e15406855so2092027fac.0
- for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 11:25:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1sQXIS-00057n-1D
+ for qemu-devel@nongnu.org; Sun, 07 Jul 2024 15:11:41 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1fb0d7e4ee9so20860715ad.3
+ for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 12:11:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720376707; x=1720981507; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=x72S/bP572lZYGHI+vmbONPu26VdoFpVFLepZ7z0D+8=;
- b=Ow+OQPaaVJPs1JOE8G1l0/io8FAkNmcukYZWxxf+cMrajuF6EOCpoHmDqcHzFuWxT4
- HINLJB9hD62jCFebYu8UHlcCmiRgYU6HTEq9tsi5BhCFC7l4sqEulRQ2GyoqrqeDRBai
- afmPyxgnyKO3Yu5LTVx7BZpmRh6yfKLkNNj9N93zoQkeGdtQS+GOmS12BRaGyj75PuLa
- +p0vtaBWDPKWlcMD9tbyC5k+MtW0hXeqrtHmsjrj5rs4AGl0XzGkSJiWHOaSwg4BGa3o
- IQy0eCTFzx2Nd/fmZo4ucdR1CSKUiG6Hj2RM/fSG35uIu8IP1DiIkdcHa+jyCGepVNRC
- txjA==
+ d=gmail.com; s=20230601; t=1720379497; x=1720984297; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=x4Cvn0idnBY5rLrGLMI3XlTtjVp/Agnh7kMWDPo86Rw=;
+ b=PLa7JlQOLmioJ54gM5ZRZ1mqmfr/lkr7lcmoovNMWANIxdS4J3f0zTDF602RV9yg+d
+ nFrM1ecaLVbHplLAEKF4qYQZ0rwDh/MEjYIKbpsuEQGlVWt67sG3U8lYNpqdlVhzOIeO
+ WkBotl9X7I1xCDNcsX0YoMi9Y9xJF/LUCjO+IgkmsK4Z9b5UVYrsvNLr2cdx7j9HvYbP
+ HZRHZKz+cRTms50MTZjQPoCZFkvdoIMTLFDHQURGXDhtCXzd/c+/EI06IOGr/gRU9Dzh
+ Iy9NPV0NS1lOCz7jPziC7SGdZdnsjOiAtGSjrJIE7KPyihCGAhU6tfyRQuUWLqxEFeZc
+ LCOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720376707; x=1720981507;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x72S/bP572lZYGHI+vmbONPu26VdoFpVFLepZ7z0D+8=;
- b=Fhc4Kfec8K18ayy9RKElrjve/oCRKwO7yXh7U5LPbK2dCpJwshG2WNiICCF+Lp0wjJ
- o38n6jFFDb504IXYe58029uFTDvK9Ig/auXpxHa0ZvLi754jJwf/lklTkPUtGJdWcPKB
- SfjX9CjnzvAsCZjz0MEMGHGnZrVnhjKkVlqBSjfh2EhVGbnSTcTqWWXSQTXJ0Dm4k7Fv
- 9H5ApX6S/iJ3+6+8LKTWWabtToaIBdRPvoLYkKDyEebGaE3oxRNrV6elSFKsZ31/iINd
- J1tyKwA4ng1hOabC7qBFRWaILle0F2G/kyRhaMJmuaeOHhJPUdCYQ2SZzJguJQxeISBK
- ca9A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVJa2zHeC6QWG96w+QHwg4irxsui8ioBiYbqoi4ukdKh4xnpuXsFIHwJewQNYdsywgQF4FoXUm/j2zuUS55vbFHrHjClkY=
-X-Gm-Message-State: AOJu0YxZeFWI3RkryQLZ3bnbZGt268Ncsrpk1E775zGESKugDo3jSI5U
- laibeybLbFHABeLaOIC4K2msB1eEr5vSg6mlJCHiMuu+3wQonwWZaobimyQKLug=
-X-Google-Smtp-Source: AGHT+IGZgvnfqvCHeKaHfz5Cl7QPU0J1nKVF9xxyqLzuKjL/9fMxG8s9ykHkEXcEiGIdsfE5sMISCg==
-X-Received: by 2002:a05:6870:618a:b0:259:8b2f:8d76 with SMTP id
- 586e51a60fabf-25e2ba129a1mr8610725fac.20.1720376706735; 
- Sun, 07 Jul 2024 11:25:06 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ d=1e100.net; s=20230601; t=1720379497; x=1720984297;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x4Cvn0idnBY5rLrGLMI3XlTtjVp/Agnh7kMWDPo86Rw=;
+ b=hGpEnaj3KYRuZqAXHmlqXhPl9hs4aJkExCfMDypQPEbW+SHEAdLSzVqkYpCUwQ3asg
+ iYR6pvTqiLCoroXtGz2w9ew/NLGz2QXDMkMFoAL4xZJs7puAWKmjOmxfLAJz2Wh7MMP5
+ 9nOF9EsEoo0wRvh7KVU/qXLryiLjWAjA/6qLSWbdXGl9LHIeG+sYG6beR5acjOllcBN9
+ TkcHShi9Nk5W3PbJX/RRlsHIKbwfvgmj0Ya2HLZg3k7Lh7Dj/q+voeI4rMWQk22BuVyw
+ fb4PB7zcqkLYY9qdBvBqKsA/z03fXNFjYrEtUwUV5BROhgKKLgmXVTYR43TDvPmmlMWd
+ RwAQ==
+X-Gm-Message-State: AOJu0Yym4NPpsUcy+ZLWzkKcN2kLZH+ZgE8hBbslF+LRi02V6zFsh19u
+ UFwMRCixc133S28XFXGclotcASVfWdBHgmRerzXezVwQIf+b1OE+7D995Q==
+X-Google-Smtp-Source: AGHT+IF+RcyIo1tHgE3j1jzmumWixBWug3zk7Cb6h4Ti8vzs3yVnSNKLTmJ5zPTMNaDR90wVf947kg==
+X-Received: by 2002:a17:902:f70d:b0:1fb:80cf:fc95 with SMTP id
+ d9443c01a7336-1fb80cffef0mr27078495ad.62.1720379496482; 
+ Sun, 07 Jul 2024 12:11:36 -0700 (PDT)
+Received: from localhost.localdomain ([106.222.220.84])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b0fee6792sm4825305b3a.179.2024.07.07.11.25.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 07 Jul 2024 11:25:06 -0700 (PDT)
-Message-ID: <94961afc-f229-4e0d-be62-9e1cdb886e28@linaro.org>
-Date: Sun, 7 Jul 2024 11:25:04 -0700
+ d9443c01a7336-1fac11d8a70sm172156725ad.118.2024.07.07.12.11.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Jul 2024 12:11:36 -0700 (PDT)
+From: Ajeet Singh <itachis6234@gmail.com>
+X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
+To: qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>,
+	Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH v2 0/8] ARM AArch64 Support for BSD
+Date: Mon,  8 Jul 2024 00:41:20 +0530
+Message-Id: <20240707191128.10509-1-itachis@FreeBSD.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/7] tests/tcg/x86_64: add test for plugin memory access
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Alexandre Iooss
- <erdnaxe@crans.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
- Xingtao Yao <yaoxt.fnst@fujitsu.com>
-References: <20240706191335.878142-1-pierrick.bouvier@linaro.org>
- <20240706191335.878142-8-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240706191335.878142-8-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,17 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/24 12:13, Pierrick Bouvier wrote:
-> +++ b/tests/tcg/x86_64/test-plugin-mem-access.c
-> @@ -0,0 +1,89 @@
-> +#include <emmintrin.h>
-> +#include <pthread.h>
+Patch 1: Previous patches 1 to 5, which were reviewed and acked, have been folded into this patch.Some changes that were suggested,
+         such as replacing "pstate &= ~PSTATE_C" with faster constructs like "env->CF = 0", have been addressed in patch 8.
+Patch 2: In this patch, patches 6 to 11 have been folded. Changes such as using "ROUND_DOWN" for stack pointer calculation
+         and replacing "__uint128_t" with "Int128" in the following patch 8 have been addressed. Also, "CPUARMState" will be
+         changed to "CPUArchState" in the upcoming version, and the issue with "-R" is being worked on separately.
+Patch 3: Patches 12 to 16 were reviewed and folded. The function "get_second_rval" will be used upstream.
+Patch 4: Patches 17 to 19 were folded, and "__uint128_t" to "Int128" has been fixed in patch 8. Also, the suggestion to
+         use "const_le32()" has been deferred for now.
+Patch 5: Previously patch 20, the FP suggestion is being deferred, but the patch is ready for review.
+Patch 6: Previously patch 21 has been reviewed.
+Patch 7: Previously patch 22, same as patch 5.
+Patch 8: Previously patch 23. For now, no changes, but issues of other patches have been addressed, such as updating
+         AArch64 code to use CF directly and changing FP data structures to use Int128 instead of __uint128_t.
 
-All new files should have license boilerplate and description.
-You can use spdx to limit to just a couple of lines.
+Stacey Son (6):
+  bsd-user:Add CPU initialization and management functions
+  bsd-user:Add AArch64 register handling and related functions
+  bsd-user:Add ARM AArch64 signal handling support
+  bsd-user:Add get_mcontext function for ARM AArch64
+  bsd-user:Add set_mcontext function for ARM AArch64
+  bsd-user:Add AArch64 improvements and signal handling functions
 
+Warner Losh (2):
+  bsd-user:Add ARM AArch64 support and capabilities
+  bsd-user:Add setup_sigframe_arch function for ARM AArch64
 
-r~
+ bsd-user/aarch64/signal.c               | 137 +++++++++++++++++
+ bsd-user/aarch64/target_arch.h          |  28 ++++
+ bsd-user/aarch64/target_arch_cpu.c      |  31 ++++
+ bsd-user/aarch64/target_arch_cpu.h      | 188 ++++++++++++++++++++++++
+ bsd-user/aarch64/target_arch_elf.h      | 165 +++++++++++++++++++++
+ bsd-user/aarch64/target_arch_reg.h      |  56 +++++++
+ bsd-user/aarch64/target_arch_signal.h   |  80 ++++++++++
+ bsd-user/aarch64/target_arch_sigtramp.h |  48 ++++++
+ bsd-user/aarch64/target_arch_sysarch.h  |  42 ++++++
+ bsd-user/aarch64/target_arch_thread.h   |  61 ++++++++
+ bsd-user/aarch64/target_arch_vmparam.h  |  74 ++++++++++
+ bsd-user/aarch64/target_syscall.h       |  51 +++++++
+ bsd-user/qemu.h                         |   3 +
+ 13 files changed, 964 insertions(+)
+ create mode 100644 bsd-user/aarch64/signal.c
+ create mode 100644 bsd-user/aarch64/target_arch.h
+ create mode 100644 bsd-user/aarch64/target_arch_cpu.c
+ create mode 100644 bsd-user/aarch64/target_arch_cpu.h
+ create mode 100644 bsd-user/aarch64/target_arch_elf.h
+ create mode 100644 bsd-user/aarch64/target_arch_reg.h
+ create mode 100644 bsd-user/aarch64/target_arch_signal.h
+ create mode 100644 bsd-user/aarch64/target_arch_sigtramp.h
+ create mode 100644 bsd-user/aarch64/target_arch_sysarch.h
+ create mode 100644 bsd-user/aarch64/target_arch_thread.h
+ create mode 100644 bsd-user/aarch64/target_arch_vmparam.h
+ create mode 100644 bsd-user/aarch64/target_syscall.h
 
+-- 
+2.34.1
 
 
