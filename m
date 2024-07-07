@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB099929732
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jul 2024 11:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83095929733
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jul 2024 11:01:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQNkK-0002aR-27; Sun, 07 Jul 2024 04:59:48 -0400
+	id 1sQNkM-0002eg-FY; Sun, 07 Jul 2024 04:59:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1sQNkG-0002Yz-9P; Sun, 07 Jul 2024 04:59:44 -0400
-Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
+ id 1sQNkH-0002Zd-Gv; Sun, 07 Jul 2024 04:59:45 -0400
+Received: from zproxy4.enst.fr ([137.194.2.223])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1sQNkE-0006J1-Bc; Sun, 07 Jul 2024 04:59:44 -0400
+ id 1sQNkE-0006J6-B0; Sun, 07 Jul 2024 04:59:45 -0400
 Received: from localhost (localhost [IPv6:::1])
- by zproxy4.enst.fr (Postfix) with ESMTP id BB88D2075D;
- Sun,  7 Jul 2024 10:59:36 +0200 (CEST)
+ by zproxy4.enst.fr (Postfix) with ESMTP id B01A22077E;
+ Sun,  7 Jul 2024 10:59:37 +0200 (CEST)
 Received: from zproxy4.enst.fr ([IPv6:::1])
  by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id 91whTsW1Ly2u; Sun,  7 Jul 2024 10:59:36 +0200 (CEST)
+ id GSbPr4r7irzX; Sun,  7 Jul 2024 10:59:37 +0200 (CEST)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy4.enst.fr (Postfix) with ESMTP id 1BB6F206F0;
+ by zproxy4.enst.fr (Postfix) with ESMTP id E8401206F0;
  Sun,  7 Jul 2024 10:59:36 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr 1BB6F206F0
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr E8401206F0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
  s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1720342776;
- bh=BeaFKQuGG4jIe49CkCds4F/v3CiIYtAA1KyJr5W9pOs=;
+ bh=vgqKD2QOBi6bFJBvLWo5Afi4a+tq/8QOXwi1I5e8m3k=;
  h=From:To:Date:Message-ID:MIME-Version;
- b=uqvB/3QzPqXdItqEfSGsNE18OUPMyLz4ARrqZ7/9Cp87kZ6Bx2ExklHFpMJsgjjNr
- H8BUjPIXO9sVY9i5utAU5tP1xw+JUpzLV+2zJ3Rgxb2Ofj0GihZ/JtT5Rhn1pbypa1
- N0RpxPxv1HkBqfA9cnoURuBDvMA4iyVIya6MMlPM=
+ b=BbJ/Ms7/LmWUqouOOrn9Jz7sA04d1QSUMZ8Uv/WrmteoK9GB7rfQe0xoFvyzpw9Bk
+ Q6b5lpzbhOITNSYSmf1BvGKAlsP7rzCGUQfto3IRQZCozsVCsJomdpxjoxSdwAOGWA
+ ZIRL5QZ/tTR9bIyeGUDxe1JruEQVNxX+hWEAhdjY=
 X-Virus-Scanned: amavis at enst.fr
 Received: from zproxy4.enst.fr ([IPv6:::1])
  by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id k15C758iKCTk; Sun,  7 Jul 2024 10:59:35 +0200 (CEST)
+ id TAAXG3tW-j4g; Sun,  7 Jul 2024 10:59:36 +0200 (CEST)
 Received: from inesv-Inspiron-3501.enst.fr (unknown
  [IPv6:2a04:8ec0:0:124::190c])
- by zproxy4.enst.fr (Postfix) with ESMTPSA id 3BCC52075C;
+ by zproxy4.enst.fr (Postfix) with ESMTPSA id 08DD02076A;
  Sun,  7 Jul 2024 10:59:35 +0200 (CEST)
 From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
@@ -48,16 +48,16 @@ Cc: qemu-arm@nongnu.org, Alistair Francis <alistair@alistair23.me>,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 1/3] hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
-Date: Sun,  7 Jul 2024 10:58:53 +0200
-Message-ID: <20240707085927.122867-2-ines.varhol@telecom-paris.fr>
+Subject: [PATCH v3 2/3] hw/misc: In STM32L4x5 EXTI, handle direct interrupts
+Date: Sun,  7 Jul 2024 10:58:54 +0200
+Message-ID: <20240707085927.122867-3-ines.varhol@telecom-paris.fr>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240707085927.122867-1-ines.varhol@telecom-paris.fr>
 References: <20240707085927.122867-1-ines.varhol@telecom-paris.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:660:330f:2::df;
+Received-SPF: pass client-ip=137.194.2.223;
  envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy4.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,76 +80,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Up until now, the EXTI implementation had 16 inbound GPIOs connected to
-the 16 outbound GPIOs of STM32L4x5 SYSCFG.
-The EXTI actually handles 40 lines (namely 5 from STM32L4x5 USART
-devices which are already implemented in QEMU).
-In order to connect USART devices to EXTI, this commit consolidates
-constants `EXTI_NUM_INTERRUPT_OUT_LINES` (40) and
-`EXTI_NUM_GPIO_EVENT_IN_LINES` (16) into `EXTI_NUM_LINES` (40).
+The previous implementation for EXTI interrupts only handled
+"configurable" interrupts, like those originating from STM32L4x5 SYSCFG
+(the only device currently connected to the EXTI up until now).
+
+In order to connect STM32L4x5 USART to the EXTI, this commit adds
+handling for direct interrupts (interrupts without configurable edge).
 
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/misc/stm32l4x5_exti.h | 4 ++--
- hw/misc/stm32l4x5_exti.c         | 6 ++----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ hw/misc/stm32l4x5_exti.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5=
-_exti.h
-index 55f763fa37..62f79362f2 100644
---- a/include/hw/misc/stm32l4x5_exti.h
-+++ b/include/hw/misc/stm32l4x5_exti.h
-@@ -30,7 +30,7 @@
- #define TYPE_STM32L4X5_EXTI "stm32l4x5-exti"
- OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5ExtiState, STM32L4X5_EXTI)
-=20
--#define EXTI_NUM_INTERRUPT_OUT_LINES 40
-+#define EXTI_NUM_LINES 40
- #define EXTI_NUM_REGISTER 2
-=20
- struct Stm32l4x5ExtiState {
-@@ -47,7 +47,7 @@ struct Stm32l4x5ExtiState {
-=20
-     /* used for edge detection */
-     uint32_t irq_levels[EXTI_NUM_REGISTER];
--    qemu_irq irq[EXTI_NUM_INTERRUPT_OUT_LINES];
-+    qemu_irq irq[EXTI_NUM_LINES];
- };
-=20
- #endif
 diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
-index 6a2ec62d78..b9a69a69f6 100644
+index b9a69a69f6..e281841dcf 100644
 --- a/hw/misc/stm32l4x5_exti.c
 +++ b/hw/misc/stm32l4x5_exti.c
-@@ -42,7 +42,6 @@
- #define EXTI_SWIER2 0x30
- #define EXTI_PR2    0x34
-=20
--#define EXTI_NUM_GPIO_EVENT_IN_LINES 16
- #define EXTI_MAX_IRQ_PER_BANK 32
- #define EXTI_IRQS_BANK0  32
- #define EXTI_IRQS_BANK1  8
-@@ -238,7 +237,7 @@ static void stm32l4x5_exti_init(Object *obj)
- {
-     Stm32l4x5ExtiState *s =3D STM32L4X5_EXTI(obj);
-=20
--    for (size_t i =3D 0; i < EXTI_NUM_INTERRUPT_OUT_LINES; i++) {
-+    for (size_t i =3D 0; i < EXTI_NUM_LINES; i++) {
-         sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq[i]);
+@@ -113,6 +113,13 @@ static void stm32l4x5_exti_set_irq(void *opaque, int=
+ irq, int level)
+         return;
      }
 =20
-@@ -246,8 +245,7 @@ static void stm32l4x5_exti_init(Object *obj)
-                           TYPE_STM32L4X5_EXTI, 0x400);
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++    /* In case of a direct line interrupt */
++    if (extract32(exti_romask[bank], irq, 1)) {
++        qemu_set_irq(s->irq[oirq], level);
++        return;
++    }
++
++    /* In case of a configurable interrupt */
+     if ((level && extract32(s->rtsr[bank], irq, 1)) ||
+         (!level && extract32(s->ftsr[bank], irq, 1))) {
 =20
--    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq,
--                      EXTI_NUM_GPIO_EVENT_IN_LINES);
-+    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq, EXTI_NUM_LINE=
-S);
- }
-=20
- static const VMStateDescription vmstate_stm32l4x5_exti =3D {
 --=20
 2.43.2
 
