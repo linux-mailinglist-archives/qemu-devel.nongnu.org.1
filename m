@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445E9929971
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jul 2024 21:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8E92996C
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Jul 2024 21:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQXIe-0000mx-82; Sun, 07 Jul 2024 15:11:52 -0400
+	id 1sQXIe-0000my-Fn; Sun, 07 Jul 2024 15:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sQXIb-0000mJ-Nc
- for qemu-devel@nongnu.org; Sun, 07 Jul 2024 15:11:49 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1sQXId-0000mm-8b
+ for qemu-devel@nongnu.org; Sun, 07 Jul 2024 15:11:51 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sQXIZ-00059E-Pr
- for qemu-devel@nongnu.org; Sun, 07 Jul 2024 15:11:49 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1fb72eb3143so5584915ad.1
- for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 12:11:47 -0700 (PDT)
+ id 1sQXIb-00059a-Pg
+ for qemu-devel@nongnu.org; Sun, 07 Jul 2024 15:11:51 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1f65a3abd01so22586825ad.3
+ for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 12:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720379506; x=1720984306; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720379508; x=1720984308; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3mX/DMb2L404NJ60ga/gcKUOJORln93CqNAY7J2/D+Y=;
- b=mgkmeoCKLfBabgoxwJym3cP6yUwrYxJhQCerlDH2aKCbtUwej7F3V8CvjGqXUatE+K
- upGaxLb5p9cfJ29mMpnXh1sWTdzA2DPrwUHTUk6441Y1I0E4P+6hZ7pz9Qc2CIslmOvg
- OZ/ohCt7aS4mqvRXMAxUya5bEjq6GSOxc0dQvo97nBuF047KcpqbHHk3dZzC1dHqPudt
- qqwhUJgvLHRikJyMEv3SsW5tTZ8q2UfbbrFp2ySu0NxQSSyEZDrlu6v5+4wblS/9K1TQ
- a8ciSdLozji+yfPUqpXoxoRdezVaADKa55D6DDOPZznYhi5vRE8DLySeU+6qwg1a0U78
- Kw/g==
+ bh=7QeYYhSPAIOJyKkxryN3Nk246i89++ucyqIxnORISd4=;
+ b=OdjFWn5wM4rSaCxbrSNGokrwhJ0IX5Bz2jwNH4VRMb7LDxHeLPMFiIsaAUstQyxHex
+ EELjCMdgREHiJghrs1qrY5SVxNQ+aOLrX8j6YTj7ZT1cRz3/2W+hNhkR7RzAtzMPav4b
+ dsMvrjmUZpsQ6fZpvU+wY7lfW4gcK4Wt1zmXx8YqcCLqF7OEvpfu1RwbUtQoCvQ5c1HG
+ klcMeDttzXHwDWL1f+b5Xey8hZxckhyCgYketYr608Rbi2C+uYYIN0M+0QOZyI6crfdl
+ 3SSSzgnmG1xptrkuu6Dqa1mJb9wceyBPQjnvuMxhdNqwyPmG7aVpP4aU/eKGDUz8cYyH
+ /9aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720379506; x=1720984306;
+ d=1e100.net; s=20230601; t=1720379508; x=1720984308;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3mX/DMb2L404NJ60ga/gcKUOJORln93CqNAY7J2/D+Y=;
- b=g2xOLr2R+dhWHouEu7q38hwI1mSBmCcKJpRg4TrK1EDGBPHlyycwYQK0lMy+cB65NP
- POWO3jv9rs7ksrkpWP/RTn8yCmArCt6xbEBFXnAOqVbVo8NiG+KG3ctkH4rMM2/9UUwF
- Co/Wt47GYWNNGPRP3gku4yhxTty/hKixewDgWsVnZsm34wYTRSgJU2fmN8GJ6v+z2Ml0
- QpZJCBCe+ECnVMIurtq524miZmgQ1TMnpsaDPwOpOx6BJEkG78PV9iZj+jwpmo2Ipoep
- pUoEgWpR0pRhl7eqkC45OtKvwi1XgvLd5XtFzMyDfzkXVu0uZfmQvGOyDnJVz8gLenvx
- NloA==
-X-Gm-Message-State: AOJu0YyYa0GGbwkALgqc+QMg1naCjnUu7/Qus/mVlcIidPIbwZ1wAHz8
- Kf+l0euFdAuXWt8wG4YkK3BlNVaDhed8yeSXotFqGKzOJHXjrVQ8vjv6G6pY
-X-Google-Smtp-Source: AGHT+IFlQgkCtDIev81L4eKw6iKpyK3V3Spo9hDsTa3/fE6xjXeQXd5hWDNbHVvKElvEFlvj75oBtQ==
-X-Received: by 2002:a17:902:d2c1:b0:1fb:6121:dfc0 with SMTP id
- d9443c01a7336-1fb6121e339mr73778855ad.19.1720379505974; 
- Sun, 07 Jul 2024 12:11:45 -0700 (PDT)
+ bh=7QeYYhSPAIOJyKkxryN3Nk246i89++ucyqIxnORISd4=;
+ b=sOAAL3tF/JoPDYXfUthRX3fi9G7jRCvbQiPW0nCE1VzPGXFQGr1m0bNXGcdstaW6JD
+ DP0ry+W4g6ngGft1NNMc9PFvwV4FhmZr19qvINkV3LQf61mYADH+7rGYJcp3wG9RynMD
+ Q5nGCHj8IcE7/DJdnO5heH+GSsy9A95RuM9/8hpU4aHouLECANggfH3AZxG4nYupm54T
+ S5KFuHRYvrOc3jVps2o5Ssju2KOcO6koXQWunIs8f8mUAZIjHeAk72jh5Y/jUmu2XjEE
+ HX9WLG//X+V5aahdt15aN6KIZMYoFVMPvM2ViWeQMKOY84caYogoOdEV05Jnmz8SUMG5
+ 52Sw==
+X-Gm-Message-State: AOJu0Yx9RbuZYjMNXYfwMy6+ki/zlLW2uLazzxlGyVBzgjzS6P0IVNKm
+ sPsQ4Wk+2u/AiIf4uAECF74Aa+0mRYOR3Gtz2rTAuiEpgAnqob5jVFNv0Pt9
+X-Google-Smtp-Source: AGHT+IEOpgOprySwIe49Tz7iuItn+AUFtDpWnuVdEhm6ZbquG9KwJuDeIej/9Edzbwcron4XC3eGCw==
+X-Received: by 2002:a17:903:120b:b0:1f6:ed74:b4e3 with SMTP id
+ d9443c01a7336-1fb33e0511amr115189115ad.3.1720379508057; 
+ Sun, 07 Jul 2024 12:11:48 -0700 (PDT)
 Received: from localhost.localdomain ([106.222.220.84])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fac11d8a70sm172156725ad.118.2024.07.07.12.11.44
+ d9443c01a7336-1fac11d8a70sm172156725ad.118.2024.07.07.12.11.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Jul 2024 12:11:45 -0700 (PDT)
+ Sun, 07 Jul 2024 12:11:47 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Stacey Son <sson@FreeBSD.org>,
- Ajeet Singh <itachis@FreeBSD.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 4/8] bsd-user:Add ARM AArch64 signal handling support
-Date: Mon,  8 Jul 2024 00:41:24 +0530
-Message-Id: <20240707191128.10509-5-itachis@FreeBSD.org>
+ Ajeet Singh <itachis@FreeBSD.org>, Kyle Evans <kevans@FreeBSD.org>
+Subject: [PATCH v2 5/8] bsd-user:Add get_mcontext function for ARM AArch64
+Date: Mon,  8 Jul 2024 00:41:25 +0530
+Message-Id: <20240707191128.10509-6-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240707191128.10509-1-itachis@FreeBSD.org>
 References: <20240707191128.10509-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=itachis6234@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,226 +96,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-Added sigcode setup function for signal trampoline which initializes a sequence of instructions
-to handle signal returns and exits, copying this code to the target offset.
-Defined ARM AArch64 specific signal definitions including register indices and sizes,
-and introduced structures to represent general purpose registers, floating point registers, and machine context.
-Added function to set up signal handler arguments, populating register values in `CPUARMState`
-based on the provided signal, signal frame, signal action, and frame address.
+function to retrieve machine context,it populates the provided
+target_mcontext_t structure with information from the CPUARMState
+registers.
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Co-authored-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 ---
- bsd-user/aarch64/signal.c               | 53 ++++++++++++++++
- bsd-user/aarch64/target_arch_signal.h   | 80 +++++++++++++++++++++++++
- bsd-user/aarch64/target_arch_sigtramp.h | 48 +++++++++++++++
- 3 files changed, 181 insertions(+)
- create mode 100644 bsd-user/aarch64/signal.c
- create mode 100644 bsd-user/aarch64/target_arch_signal.h
- create mode 100644 bsd-user/aarch64/target_arch_sigtramp.h
+ bsd-user/aarch64/signal.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/bsd-user/aarch64/signal.c b/bsd-user/aarch64/signal.c
-new file mode 100644
-index 0000000000..98861f9ab3
---- /dev/null
+index 98861f9ab3..ab3bf8558a 100644
+--- a/bsd-user/aarch64/signal.c
 +++ b/bsd-user/aarch64/signal.c
-@@ -0,0 +1,53 @@
-+/*
-+ * ARM AArch64 specific signal definitions for bsd-user
-+ *
-+ * Copyright (c) 2015 Stacey D. Son <sson at FreeBSD>
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include "qemu/osdep.h"
-+
-+#include "qemu.h"
+@@ -51,3 +51,33 @@ abi_long set_sigtramp_args(CPUARMState *regs, int sig,
+ 
+     return 0;
+ }
 +
 +/*
-+ * Compare to sendsig() in sys/arm64/arm64/machdep.c
-+ * Assumes that target stack frame memory is locked.
++ * Compare to get_mcontext() in arm64/arm64/machdep.c
++ * Assumes that the memory is locked if mcp points to user memory.
 + */
-+abi_long set_sigtramp_args(CPUARMState *regs, int sig,
-+                           struct target_sigframe *frame,
-+                           abi_ulong frame_addr,
-+                           struct target_sigaction *ka)
++abi_long get_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int flags)
 +{
-+    /*
-+     * Arguments to signal handler:
-+     *  x0 = signal number
-+     *  x1 = siginfo pointer
-+     *  x2 = ucontext pointer
-+     *  pc/elr = signal handler pointer
-+     *  sp = sigframe struct pointer
-+     *  lr = sigtramp at base of user stack
-+     */
++    int err = 0, i;
++    uint64_t *gr = mcp->mc_gpregs.gp_x;
 +
-+    regs->xregs[0] = sig;
-+    regs->xregs[1] = frame_addr +
-+        offsetof(struct target_sigframe, sf_si);
-+    regs->xregs[2] = frame_addr +
-+        offsetof(struct target_sigframe, sf_uc);
-+
-+    regs->pc = ka->_sa_handler;
-+    regs->xregs[TARGET_REG_SP] = frame_addr;
-+    regs->xregs[TARGET_REG_LR] = TARGET_PS_STRINGS - TARGET_SZSIGCODE;
-+
-+    return 0;
-+}
-diff --git a/bsd-user/aarch64/target_arch_signal.h b/bsd-user/aarch64/target_arch_signal.h
-new file mode 100644
-index 0000000000..df17173316
---- /dev/null
-+++ b/bsd-user/aarch64/target_arch_signal.h
-@@ -0,0 +1,80 @@
-+/*
-+ * ARM AArch64 specific signal definitions for bsd-user
-+ *
-+ * Copyright (c) 2015 Stacey D. Son <sson at FreeBSD>
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef TARGET_ARCH_SIGNAL_H
-+#define TARGET_ARCH_SIGNAL_H
-+
-+#include "cpu.h"
-+
-+#define TARGET_REG_X0   0
-+#define TARGET_REG_X30  30
-+#define TARGET_REG_X31  31
-+#define TARGET_REG_LR   TARGET_REG_X30
-+#define TARGET_REG_SP   TARGET_REG_X31
-+
-+#define TARGET_INSN_SIZE    4       /* arm64 instruction size */
-+
-+/* Size of the signal trampolin code. See _sigtramp(). */
-+#define TARGET_SZSIGCODE    ((abi_ulong)(9 * TARGET_INSN_SIZE))
-+
-+/* compare to sys/arm64/include/_limits.h */
-+#define TARGET_MINSIGSTKSZ  (1024 * 4)                  /* min sig stack size */
-+#define TARGET_SIGSTKSZ     (TARGET_MINSIGSTKSZ + 32768)  /* recommended size */
-+
-+/* struct __mcontext in sys/arm64/include/ucontext.h */
-+
-+struct target_gpregs {
-+    uint64_t    gp_x[30];
-+    uint64_t    gp_lr;
-+    uint64_t    gp_sp;
-+    uint64_t    gp_elr;
-+    uint32_t    gp_spsr;
-+    uint32_t    gp_pad;
-+};
-+
-+struct target_fpregs {
-+    __uint128_t fp_q[32];
-+    uint32_t    fp_sr;
-+    uint32_t    fp_cr;
-+    uint32_t    fp_flags;
-+    uint32_t    fp_pad;
-+};
-+
-+struct target__mcontext {
-+    struct target_gpregs mc_gpregs;
-+    struct target_fpregs mc_fpregs;
-+    uint32_t    mc_flags;
-+#define TARGET_MC_FP_VALID  0x1
-+    uint32_t    mc_pad;
-+    uint64_t    mc_spare[8];
-+};
-+
-+typedef struct target__mcontext target_mcontext_t;
-+
-+#define TARGET_MCONTEXT_SIZE 880
-+#define TARGET_UCONTEXT_SIZE 960
-+
-+#include "target_os_ucontext.h"
-+
-+struct target_sigframe {
-+    target_siginfo_t    sf_si;  /* saved siginfo */
-+    target_ucontext_t   sf_uc;  /* saved ucontext */
-+};
-+
-+#endif /* TARGET_ARCH_SIGNAL_H */
-diff --git a/bsd-user/aarch64/target_arch_sigtramp.h b/bsd-user/aarch64/target_arch_sigtramp.h
-new file mode 100644
-index 0000000000..8cdd33b621
---- /dev/null
-+++ b/bsd-user/aarch64/target_arch_sigtramp.h
-@@ -0,0 +1,48 @@
-+/*
-+ * ARM AArch64 sigcode for bsd-user
-+ *
-+ * Copyright (c) 2015 Stacey D. Son <sson at FreeBSD>
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef TARGET_ARCH_SIGTRAMP_H
-+#define TARGET_ARCH_SIGTRAMP_H
-+
-+/* Compare to ENTRY(sigcode) in arm64/arm64/locore.S */
-+static inline abi_long setup_sigtramp(abi_ulong offset, unsigned sigf_uc,
-+        unsigned sys_sigreturn)
-+{
-+    int i;
-+    uint32_t sys_exit = TARGET_FREEBSD_NR_exit;
-+
-+    uint32_t sigtramp_code[] = {
-+    /* 1 */ 0x910003e0,                 /* mov x0, sp */
-+    /* 2 */ 0x91000000 + (sigf_uc << 10), /* add x0, x0, #SIGF_UC */
-+    /* 3 */ 0xd2800000 + (sys_sigreturn << 5) + 0x8, /* mov x8, #SYS_sigreturn */
-+    /* 4 */ 0xd4000001,                 /* svc #0 */
-+    /* 5 */ 0xd2800028 + (sys_exit << 5) + 0x8, /* mov x8, #SYS_exit */
-+    /* 6 */ 0xd4000001,                 /* svc #0 */
-+    /* 7 */ 0x17fffffc,                 /* b -4 */
-+    /* 8 */ sys_sigreturn,
-+    /* 9 */ sys_exit
-+    };
-+
-+    for (i = 0; i < 9; i++) {
-+        tswap32s(&sigtramp_code[i]);
++    mcp->mc_gpregs.gp_spsr = pstate_read(regs);
++    if (flags & TARGET_MC_GET_CLEAR_RET) {
++        gr[0] = 0UL;
++        mcp->mc_gpregs.gp_spsr &= ~CPSR_C;
++    } else {
++        gr[0] = tswap64(regs->xregs[0]);
 +    }
 +
-+    return memcpy_to_target(offset, sigtramp_code, TARGET_SZSIGCODE);
++    for (i = 1; i < 30; i++) {
++        gr[i] = tswap64(regs->xregs[i]);
++    }
++
++    mcp->mc_gpregs.gp_sp = tswap64(regs->xregs[TARGET_REG_SP]);
++    mcp->mc_gpregs.gp_lr = tswap64(regs->xregs[TARGET_REG_LR]);
++    mcp->mc_gpregs.gp_elr = tswap64(regs->pc);
++
++    /* XXX FP? */
++
++    return err;
 +}
-+#endif /* TARGET_ARCH_SIGTRAMP_H */
 -- 
 2.34.1
 
