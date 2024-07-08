@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68028929E7B
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 10:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F3A929E78
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 10:46:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQk0M-0002z6-In; Mon, 08 Jul 2024 04:45:50 -0400
+	id 1sQk0i-0003lD-Ar; Mon, 08 Jul 2024 04:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sQk0E-0002qV-Jv
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 04:45:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sQk0f-0003cn-Qu
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 04:46:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sQk0B-0006Df-Ik
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 04:45:41 -0400
+ id 1sQk0e-0006Ep-2Z
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 04:46:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720428337;
+ s=mimecast20190719; t=1720428365;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=j5vvyThLjz/CCzQ6le+qTa3R5al+8xwaGOIruyXZpKU=;
- b=NCd7gKDy4BJXNV2woO6nc42hfCqZliAvYEA6TwrRu76oZLv8LR4ibZcAlC0SnzAf3C4W6p
- n94urj0QKN2c/p493u1A2/lBQCbROxX4PHgDeULzQ8IFxTChZ5V5E0Skqh5F9XVXIHtPFz
- gfcBP+oTwAY9u1JIm+TXJ+OzZjI8KFM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=rx9SZeFCtEz1SFh4eJiESxqoU/bkdc78MhGWflkzakE=;
+ b=BH+3HXV234L8tznL/FMwvjermhwnmj4ax0CJ57tNlf+DnIoP1ESp8Ahl+ywJz48P+EnnTz
+ NVgpVjmEey7vzWQjIEMUWW1NqWJDvHH5YGYMrJes4lm9MAwA1c3wuiwtUP108XKV4TADx/
+ aZoSDgKOYGWn1CJbRof6JvraZKQJFko=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-BtnCVUEwO0yMC3cnlSDW8w-1; Mon,
- 08 Jul 2024 04:45:32 -0400
-X-MC-Unique: BtnCVUEwO0yMC3cnlSDW8w-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-YHADk5C3N6u_4yENL9oi_Q-1; Mon,
+ 08 Jul 2024 04:46:03 -0400
+X-MC-Unique: YHADk5C3N6u_4yENL9oi_Q-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B41C1955BCC; Mon,  8 Jul 2024 08:45:29 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1F9FF1955EA7; Mon,  8 Jul 2024 08:46:01 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.131])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C55E719560AE; Mon,  8 Jul 2024 08:45:27 +0000 (UTC)
-Date: Mon, 8 Jul 2024 10:45:26 +0200
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 20FD53000185; Mon,  8 Jul 2024 08:45:58 +0000 (UTC)
+Date: Mon, 8 Jul 2024 10:45:57 +0200
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Changqi Lu <luchangqi.123@bytedance.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
@@ -51,18 +51,16 @@ Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
  pbonzini@redhat.com, pl@dlhnet.de, kbusch@kernel.org,
  its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
  pizhenwei@bytedance.com
-Subject: Re: [PATCH v7 06/10] block/nvme: add reservation command protocol
- constants
-Message-ID: <20240708084526.GF38033@dynamic-pd01.res.v6.highway.a1.net>
+Subject: Re: [PATCH v7 00/10] Support persistent reservation operations
+Message-ID: <20240708084557.GG38033@dynamic-pd01.res.v6.highway.a1.net>
 References: <20240705105614.3377694-1-luchangqi.123@bytedance.com>
- <20240705105614.3377694-7-luchangqi.123@bytedance.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Nhj1MREeXoeZOCVT"
+ protocol="application/pgp-signature"; boundary="4zIwEnx5092SFEL0"
 Content-Disposition: inline
-In-Reply-To: <20240705105614.3377694-7-luchangqi.123@bytedance.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20240705105614.3377694-1-luchangqi.123@bytedance.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,40 +85,43 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Nhj1MREeXoeZOCVT
+--4zIwEnx5092SFEL0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 05, 2024 at 06:56:10PM +0800, Changqi Lu wrote:
-> Add constants for the NVMe persistent command protocol.
-> The constants include the reservation command opcode and
-> reservation type values defined in section 7 of the NVMe
-> 2.0 specification.
+On Fri, Jul 05, 2024 at 06:56:04PM +0800, Changqi Lu wrote:
+> Hi,
 >=20
-> Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
-> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-> ---
->  include/block/nvme.h | 61 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
+> Patch v7 has been modified.
+> Thanks again to Stefan for reviewing the code.
+>=20
+> v6->v7:
+> - Add buferlen size check at SCSI layer.
+> - Add pr_cap calculation in bdrv_merge_limits() function at block layer,
+>   so the ugly bs->file->bs->bl.pr_cap in scsi and nvme layers was
+>   changed to bs->bl.pr_cap.
+> - Fix memory leak at iscsi driver, and some other spelling errors.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+I have left comments. Thanks!
 
---Nhj1MREeXoeZOCVT
+Stefan
+
+--4zIwEnx5092SFEL0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaLpyYACgkQnKSrs4Gr
-c8gJzQf+JA0O3mxwV9JXaCIWLAy+bU8IF6gF5kDRNFTbL71a1RdXMw6j/s/Nuc4s
-Js8fkhTCB1VdL/8XDtj6X3rjLbwdGbfh7eH5n3gl4d2H1tk5ZL/KhoYvqfvdVXIH
-ncaz52fhfQCMOM6eQ6VoWtwtgMJcjmBMDJtoGW4jfUqa+RuJzMXsgKuI6gjC95ET
-Fb8xWq0zMJB39IlDkV6CxM/nh6UDmoyEvy1oCEJuR9/0NAZoHZlBivpoEqa2vysy
-IB5Z5DQbIrGHCCCRR6Wd4uhrCy18ZYlEQKHUxQltmTBgpjxEmH/SsmF0w5b+fM3i
-abln5CKV6n9k/WNgkuz097ypFFYTbw==
-=UTVK
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaLp0UACgkQnKSrs4Gr
+c8gYvgf+Ma68Xq6fh08kfwO8dEUTnHxAluZEq0AuaZORl7WwH2SFBl6eSMEz4Es7
+GANT/lm6jrJ1W55hSniNpym/Ge2uncPbt9PmeTqSwaItF7IaiR1IJxVpHFnela9G
+4tPO8AjhOZ2bmcuSCMi0xkslX4QnpspEyCG0LYWCnTbRSpBcMESUoNeJ/rU12yjL
+RfgRnDQHRNwHPUbFftekerrsePIHh310AKUi2J+BkGG7ca/PwtDbyXMUVQnhQ7OP
+QZcShxEnt0xirO+DIl4LIbypLLVfKEV6qBQktzoqVH13xOEyvEFd+2FOW+9i2OvK
+aT1RRkWKeo52pnWIGvbD1KulNqi+hw==
+=fXej
 -----END PGP SIGNATURE-----
 
---Nhj1MREeXoeZOCVT--
+--4zIwEnx5092SFEL0--
 
 
