@@ -2,57 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE19C92A38E
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 15:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8F192A39F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 15:29:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQoJn-0001gl-5q; Mon, 08 Jul 2024 09:22:11 -0400
+	id 1sQoPM-0001xA-8Z; Mon, 08 Jul 2024 09:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1sQoJk-0001at-WF; Mon, 08 Jul 2024 09:22:09 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sQoPK-0001rD-CI
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 09:27:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1sQoJf-0003uh-4T; Mon, 08 Jul 2024 09:22:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1720444918; h=From:To:Subject:Date:Message-Id:MIME-Version;
- bh=KogxXYbah1cU2iAB/kfLQdwgukHVYuAzaBwbvs2l0f8=;
- b=ZBTybYAxhvpbyuKuHRU9cd1as6js2ElOtq9ofKNfB5r7qo1ptVEmnvBUgoBIKhrtkJG5TD2UIvn0Uq4ZkogD6Rzcbbq38JyaAWS2e7jm7YLU/UnR3nNW7GrYVo+5V7agj9s1QDlbRulnSadObVifxim4TyUKtmGyFwFuQLnnoDs=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033037067113;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=11; SR=0;
- TI=SMTPD_---0WA7d09i_1720444917; 
-Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WA7d09i_1720444917) by smtp.aliyun-inc.com;
- Mon, 08 Jul 2024 21:21:58 +0800
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
- philmd@linaro.org, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Subject: [PATCH v4 7/7] tests/avocado: Add an avocado test for riscv64
-Date: Mon,  8 Jul 2024 21:16:44 +0800
-Message-Id: <20240708131645.1345-8-zhiwei_liu@linux.alibaba.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20240708131645.1345-1-zhiwei_liu@linux.alibaba.com>
-References: <20240708131645.1345-1-zhiwei_liu@linux.alibaba.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sQoPE-0004qL-Pd
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 09:27:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720445265;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GBg8DTmpRCRORQjVbZrwngCucqavvFsZaznshBr/qow=;
+ b=HdqPnQVY19vOaCD7dPkYnv3CvK8uJx653u8Sy30LFXwkmZ+CiwdnaOAm8mOlwYEfQZMW7W
+ apSektmF66rNUcZ45d5uo51DsUq5/pWsnhJIKcqAW/j2xf3YsNiCIae9PIJiefZkRrfUBD
+ P5kkBbXqiAWcCOENxjJGU71trtnwoa8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-483-uGV_R0z9NoqsA3RxlSzHng-1; Mon, 08 Jul 2024 09:27:43 -0400
+X-MC-Unique: uGV_R0z9NoqsA3RxlSzHng-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42666785d74so6815175e9.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 06:27:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720445262; x=1721050062;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GBg8DTmpRCRORQjVbZrwngCucqavvFsZaznshBr/qow=;
+ b=gVi2OOPdOo9po4ezkaqQTI18H4ohbmOLMlg3Y4d1RHC0H8Qy03M0XKY/m48pb6Z8Mi
+ PlN6zVYF7rp7Ak1GBXRRtAEMmFYK6w4nh6nFWi9M0ds6YxZmOaYr2YH2h1gmdnxINDm3
+ WzdKI/kR0JEOHg2+9vk2Xllr+kvVR55oxU5WbZ0iUN9RKu3WwhCeN3VhV9LH9GetRgm0
+ WGwHa1NitfGwZxmK/0EyrxIFOAs+o3Hb6X5y361dTuI12VZSoFAi1CpROMnZ17bNVuCx
+ G32zhLisPk74GuoSB7aP6GZcD6mlPb6bWuOuK8ewAEjfjg7Sk5wIMMLP2FIMxnH716Sn
+ YloQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWF3OOYYDwQIHDG41TYPf8G6s5V0aKdxBDtBPdAvSNaM2Uqfz57sQAhr/18eIRZYYBlBXsCwjjEt3QPBWRdl8Qca4msYls=
+X-Gm-Message-State: AOJu0Yy/1349TAVtKsRKe2zV9bPFHx/D0IZ2QMwpH+NUEakHKqwPZKM3
+ mWT/+6fm6dSStWN8MNPMEpdELmfBD4qgzJeWALarA3njHIwTF3jYBWpNH6ynRUsr8PLf5az2S1q
+ IZdy3HZ4seSMoqDtwAAIYDBTYFJwpNxu881TWVCGyJ1pCgXIZOaHV
+X-Received: by 2002:a05:600c:18a6:b0:426:5e32:4857 with SMTP id
+ 5b1f17b1804b1-4265e324bf4mr57943455e9.0.1720445262527; 
+ Mon, 08 Jul 2024 06:27:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBgTGkiDFwmSxtRUibcAU1uyNGdOna1nFKk4zkBlwuDdHmp6LNrGSvx9qeNRf9Wz+H6zLa9w==
+X-Received: by 2002:a05:600c:18a6:b0:426:5e32:4857 with SMTP id
+ 5b1f17b1804b1-4265e324bf4mr57943215e9.0.1720445262194; 
+ Mon, 08 Jul 2024 06:27:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4264a1d169dsm167318375e9.5.2024.07.08.06.27.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Jul 2024 06:27:41 -0700 (PDT)
+Message-ID: <2e9dd97d-6e67-41f1-a8a2-71c90b163c56@redhat.com>
+Date: Mon, 8 Jul 2024 15:27:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.133;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-133.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/19] hw/arm/smmu: Introduce CACHED_ENTRY_TO_ADDR
+Content-Language: en-US
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org, maz@kernel.org, nicolinc@nvidia.com, julien@xen.org,
+ richard.henderson@linaro.org, marcin.juszkiewicz@linaro.org
+References: <20240701110241.2005222-1-smostafa@google.com>
+ <20240701110241.2005222-8-smostafa@google.com>
+ <20240704180438.GD1693268@myrica>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240704180438.GD1693268@myrica>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,77 +107,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+Hi Mostafa,
 
-To regularly test booting Linux with rv32 on QEMU RV64,
-we have added a test to boot_linux_console.py to retrieve
-cpuinfo and verify if it shows 'rv32' when using RV64 to
-boot rv32 CPUs.
+On 7/4/24 20:04, Jean-Philippe Brucker wrote:
+> On Mon, Jul 01, 2024 at 11:02:29AM +0000, Mostafa Saleh wrote:
+>> Soon, smmuv3_do_translate() will be used to translate the CD and the
+>> TTBx, instead of re-writting the same logic to convert the returned
+>> cached entry to an address, add a new macro CACHED_ENTRY_TO_ADDR.
+>>
+>> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+>> ---
+>>  hw/arm/smmuv3.c              | 3 +--
+>>  include/hw/arm/smmu-common.h | 3 +++
+>>  2 files changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+>> index cc61708160..229b3c388c 100644
+>> --- a/hw/arm/smmuv3.c
+>> +++ b/hw/arm/smmuv3.c
+>> @@ -950,8 +950,7 @@ epilogue:
+>>      switch (status) {
+>>      case SMMU_TRANS_SUCCESS:
+>>          entry.perm = cached_entry->entry.perm;
+>> -        entry.translated_addr = cached_entry->entry.translated_addr +
+>> -                                    (addr & cached_entry->entry.addr_mask);
+>> +        entry.translated_addr = CACHED_ENTRY_TO_ADDR(cached_entry, addr);
+>>          entry.addr_mask = cached_entry->entry.addr_mask;
+>>          trace_smmuv3_translate_success(mr->parent_obj.name, sid, addr,
+>>                                         entry.translated_addr, entry.perm,
+>> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+>> index 96eb017e50..09d3b9e734 100644
+>> --- a/include/hw/arm/smmu-common.h
+>> +++ b/include/hw/arm/smmu-common.h
+>> @@ -37,6 +37,9 @@
+>>  #define VMSA_IDXMSK(isz, strd, lvl)         ((1ULL << \
+>>                                               VMSA_BIT_LVL(isz, strd, lvl)) - 1)
+>>  
+>> +#define CACHED_ENTRY_TO_ADDR(ent, addr)      (ent)->entry.translated_addr + \
+>> +                                             ((addr) & (ent)->entry.addr_mask);
+> nit: maybe wrap this in parenthesis to avoid future usage mistakes and
+> drop the semicolon 
+With Jean's comments taken into account,
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- tests/avocado/boot_linux_console.py | 37 +++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index c35fc5e9ba..f333253f69 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -12,6 +12,7 @@
- import lzma
- import gzip
- import shutil
-+import time
- 
- from avocado import skip
- from avocado import skipUnless
-@@ -1545,3 +1546,39 @@ def test_xtensa_lx60(self):
-         """
-         tar_hash = '49e88d9933742f0164b60839886c9739cb7a0d34'
-         self.do_test_advcal_2018('02', tar_hash, 'santas-sleigh-ride.elf')
-+
-+    def test_riscv64_virt_rv32i(self):
-+        """
-+        :avocado: tags=arch:riscv64
-+        :avocado: tags=machine:virt
-+        :avocado: tags=cpu:rv32
-+        """
-+        kernel_url = ('https://github.com/romanheros/rv32-linux/raw/master/'
-+                      'Image32.xz')
-+        kernel_hash = 'a7ced5c38722481e0821b7cd70719cf53e46c13b'
-+        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+
-+        kernel_path =  os.path.join(self.workdir, 'kernel.riscv32')
-+        archive.lzma_uncompress(kernel_path_xz, kernel_path)
-+
-+        rootfs_url = ('https://github.com/romanheros/rv32-linux/raw/master/'
-+                      'rootfs.ext2.xz')
-+        rootfs_hash = 'dc25ab9d4b233e8e0bcf7eb220d56fd2008fe263'
-+        rootfs_path_xz = self.fetch_asset(rootfs_url, asset_hash=rootfs_hash)
-+
-+        rootfs_path =  os.path.join(self.workdir, 'rootfs.riscv32')
-+        archive.lzma_uncompress(rootfs_path_xz, rootfs_path)
-+
-+        self.vm.set_console()
-+        kernel_command_line = 'root=/dev/vda ro console=ttyS0'
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-append', kernel_command_line,
-+                         '-drive', f'file={rootfs_path},format=raw,id=hd0,if=none',
-+                         '-device', 'virtio-blk-device,drive=hd0')
-+        self.vm.launch()
-+
-+        console_pattern = 'Welcome to Buildroot'
-+        self.wait_for_console_pattern(console_pattern)
-+        exec_command(self, 'root')
-+        time.sleep(0.1)
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo', 'rv32i')
--- 
-2.43.0
+Eric
+>
+> Thanks,
+> Jean
+>
+>> +
+>>  /*
+>>   * Page table walk error types
+>>   */
+>> -- 
+>> 2.45.2.803.g4e1b14247a-goog
+>>
 
 
