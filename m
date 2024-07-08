@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA2292A4D1
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 16:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8BA92A4DA
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 16:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQpSE-00055H-RB; Mon, 08 Jul 2024 10:34:59 -0400
+	id 1sQpSG-0005Hb-73; Mon, 08 Jul 2024 10:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sQpS7-0004cM-Ea
+ id 1sQpS7-0004cJ-EB
  for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:53 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sQpS3-0002X1-EY
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:49 -0400
+ id 1sQpS5-0002XM-B1
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:51 -0400
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4687fTfM004389;
- Mon, 8 Jul 2024 14:34:45 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4687fUAp004411;
+ Mon, 8 Jul 2024 14:34:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=f
- 1bRBqPzVSgljRFlFIl90pFkjgfs7i2Bi3J1zvMFLCg=; b=lEFRsp+/+9oito433
- N9j0RZEGkR2bR8WA/JC4tVA9czSbPuJd6LXFm0w5PFLkl01SGKz3grMoJ3zRA7yC
- GaOPdiQgNfsvwoeLHKRlWcIEs0ODS0SbvfOD84djHbW1OO1wv5lVEQypN/LH652Z
- cioT7VLlSXMzIGv9P8ZT+kTmz51vkr/DM0wEFqcKnF/xwwidWd2cwJp6xSsopRKW
- HFexgq0qhgXmBdtPyPI0MT+6FbYSFgWcke0wR0KtCrExZ80ZVIpZaRqoaf/TaYB8
- hrTVH3NGzXCRVdE8jfdcBFtfvzS/h0NH0ixKrcoKvNKCaDBiMopz9vykdHCGG0/r
- MqCIA==
+ :mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=V
+ ZFYf2w9uH843EDbavDX3kXTkQ2ntOH2OQJYTwoWxPY=; b=gS8DVRPTuiz8/dCj7
+ n5CgSqr07yQIBbNXamLfFEdB6QSlT2KYvYwKEnvDiqfEHYHY8Ya8wSwPw4mufgqi
+ BbGv7eUMGcwqxpCj6rW/sxqgzBnJiv1dZauQ9j93EeR0G2hH5M1OJlD6U8/3SpA1
+ hUigspf3JRo7IES3nFWwTkHVcpLZ2PEB0bXV8SUNLU0Pri04WHVob4ZMPR1PDj81
+ qPcBpYrpPN2huElsYZUzC8ytp1bdE/x0TrvqVMeJynMLioBrpJsvxa/+8vKSm+28
+ /K51phNjVfPSU7bVJWrcD9MMrQ8ce1kN5YQm2pDcvcL7WHd8jl3uLNtGUVSk70OI
+ f3DJA==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406xfsjsky-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406xfsjsm0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jul 2024 14:34:44 +0000 (GMT)
+ Mon, 08 Jul 2024 14:34:47 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 468DOSFK008768; Mon, 8 Jul 2024 14:34:43 GMT
+ with ESMTP id 468DM5TM007590; Mon, 8 Jul 2024 14:34:45 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 407tu1r715-1
+ 407tu1r73j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jul 2024 14:34:43 +0000
+ Mon, 08 Jul 2024 14:34:45 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 468EXkZH037381;
- Mon, 8 Jul 2024 14:34:42 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 468EXkZJ037381;
+ Mon, 8 Jul 2024 14:34:45 GMT
 Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-56-128.vpn.oracle.com
  [10.175.56.128])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 407tu1r6ms-8; Mon, 08 Jul 2024 14:34:42 +0000
+ 407tu1r6ms-9; Mon, 08 Jul 2024 14:34:45 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -60,10 +60,10 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v3 07/10] vfio/iommufd: Implement
- VFIOIOMMUClass::query_dirty_bitmap support
-Date: Mon,  8 Jul 2024 15:34:17 +0100
-Message-Id: <20240708143420.16953-8-joao.m.martins@oracle.com>
+Subject: [PATCH v3 08/10] vfio/iommufd: Parse hw_caps and store dirty tracking
+ support
+Date: Mon,  8 Jul 2024 15:34:18 +0100
+Message-Id: <20240708143420.16953-9-joao.m.martins@oracle.com>
 In-Reply-To: <20240708143420.16953-1-joao.m.martins@oracle.com>
 References: <20240708143420.16953-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -72,12 +72,12 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-08_09,2024-07-05_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxlogscore=987
+ mlxlogscore=951
  mlxscore=0 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2406180000 definitions=main-2407080109
-X-Proofpoint-ORIG-GUID: SztYO9LI5O9lS_QbPm-tt_YdM2n2SPIf
-X-Proofpoint-GUID: SztYO9LI5O9lS_QbPm-tt_YdM2n2SPIf
+X-Proofpoint-ORIG-GUID: JvqJKc-6J1A_vl2dZOV5RUwK0a4O7RjT
+X-Proofpoint-GUID: JvqJKc-6J1A_vl2dZOV5RUwK0a4O7RjT
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -102,141 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ioctl(iommufd, IOMMU_HWPT_GET_DIRTY_BITMAP, arg) is the UAPI
-that fetches the bitmap that tells what was dirty in an IOVA
-range.
+Fetch capabilities from IOMMU device and add a capability to
+host-iommu-device to reflect whether backing IOMMU has dirty tracking.
 
-A single bitmap is allocated and used across all the hwpts
-sharing an IOAS which is then used in log_sync() to set Qemu
-global bitmaps.
+This is in preparation to relax the migration eligibility when device
+doesn't have dirty tracking.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- include/sysemu/iommufd.h |  3 +++
- backends/iommufd.c       | 26 ++++++++++++++++++++++++++
- hw/vfio/iommufd.c        | 34 ++++++++++++++++++++++++++++++++++
- backends/trace-events    |  1 +
- 4 files changed, 64 insertions(+)
+ include/sysemu/host_iommu_device.h | 2 ++
+ backends/iommufd.c                 | 2 ++
+ hw/vfio/iommufd.c                  | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-index 1470377f55ba..223f1ea14e84 100644
---- a/include/sysemu/iommufd.h
-+++ b/include/sysemu/iommufd.h
-@@ -56,6 +56,9 @@ int iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
-                                void *data_ptr, uint32_t *out_hwpt);
- int iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
-                                        bool start);
-+int iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                     uint64_t iova, ram_addr_t size,
-+                                     uint64_t page_size, uint64_t *data);
+diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
+index ee6c813c8b22..d38a31693482 100644
+--- a/include/sysemu/host_iommu_device.h
++++ b/include/sysemu/host_iommu_device.h
+@@ -25,6 +25,7 @@
+ typedef struct HostIOMMUDeviceCaps {
+     uint32_t type;
+     uint8_t aw_bits;
++    bool dirty_tracking;
+ } HostIOMMUDeviceCaps;
  
- #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
+ #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
+@@ -97,6 +98,7 @@ struct HostIOMMUDeviceClass {
+  */
+ #define HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE        0
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS           1
++#define HOST_IOMMU_DEVICE_CAP_DIRTY_TRACKING    2
  
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX       64
+ #endif
 diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 69daabc27473..b2d3bbd7c31b 100644
+index b2d3bbd7c31b..9400d51004f0 100644
 --- a/backends/iommufd.c
 +++ b/backends/iommufd.c
-@@ -257,6 +257,32 @@ int iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
-     return ret;
- }
- 
-+int iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                     uint64_t iova, ram_addr_t size,
-+                                     uint64_t page_size, uint64_t *data)
-+{
-+    int ret;
-+    struct iommu_hwpt_get_dirty_bitmap get_dirty_bitmap = {
-+        .size = sizeof(get_dirty_bitmap),
-+        .hwpt_id = hwpt_id,
-+        .iova = iova,
-+        .length = size,
-+        .page_size = page_size,
-+        .data = (uintptr_t)data,
-+    };
-+
-+    ret = ioctl(be->fd, IOMMU_HWPT_GET_DIRTY_BITMAP, &get_dirty_bitmap);
-+    trace_iommufd_backend_get_dirty_bitmap(be->fd, hwpt_id, iova, size,
-+                                           page_size, ret);
-+    if (ret) {
-+        error_report("IOMMU_HWPT_GET_DIRTY_BITMAP (iova: 0x%"PRIx64
-+                     " size: 0x%"PRIx64") failed: %s", iova,
-+                     size, strerror(errno));
-+    }
-+
-+    return !ret ? 0 : -errno;
-+}
-+
- bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
-                                      uint32_t *type, void *data, uint32_t len,
-                                      uint64_t *caps, Error **errp)
+@@ -314,6 +314,8 @@ static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+     switch (cap) {
+     case HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE:
+         return caps->type;
++    case HOST_IOMMU_DEVICE_CAP_DIRTY_TRACKING:
++        return caps->dirty_tracking;
+     case HOST_IOMMU_DEVICE_CAP_AW_BITS:
+         return caps->aw_bits;
+     default:
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 158a98cb3b12..9fad47baed9e 100644
+index 9fad47baed9e..2678801f1cad 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -25,6 +25,7 @@
- #include "qemu/cutils.h"
- #include "qemu/chardev_open.h"
- #include "pci.h"
-+#include "exec/ram_addr.h"
+@@ -832,6 +832,7 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+         hiod->name = g_strdup(vdev->name);
+         caps->type = type;
+         caps->aw_bits = vfio_device_get_aw_bits(vdev);
++        caps->dirty_tracking = (hw_caps & IOMMU_HW_CAP_DIRTY_TRACKING);
+     }
  
- static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
-                             ram_addr_t size, void *vaddr, bool readonly)
-@@ -152,6 +153,38 @@ err:
-     return ret;
- }
- 
-+static int iommufd_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
-+                                      VFIOBitmap *vbmap, hwaddr iova,
-+                                      hwaddr size, Error **errp)
-+{
-+    VFIOIOMMUFDContainer *container = container_of(bcontainer,
-+                                                   VFIOIOMMUFDContainer,
-+                                                   bcontainer);
-+    int ret;
-+    VFIOIOASHwpt *hwpt;
-+    unsigned long page_size;
-+
-+    page_size = qemu_real_host_page_size();
-+    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-+        if (!iommufd_hwpt_dirty_tracking(hwpt)) {
-+            continue;
-+        }
-+
-+        ret = iommufd_backend_get_dirty_bitmap(container->be, hwpt->hwpt_id,
-+                                               iova, size, page_size,
-+                                               vbmap->bitmap);
-+        if (ret) {
-+            error_setg_errno(errp, ret,
-+                             "Failed to get dirty bitmap report, hwpt_id %u, iova: "
-+                             "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRIx,
-+                             hwpt->hwpt_id, iova, size);
-+            return ret;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
- {
-     ERRP_GUARD();
-@@ -777,6 +810,7 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
-     vioc->detach_device = iommufd_cdev_detach;
-     vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
-     vioc->set_dirty_page_tracking = iommufd_set_dirty_page_tracking;
-+    vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
- };
- 
- static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-diff --git a/backends/trace-events b/backends/trace-events
-index 28aca3b859d4..40811a316215 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -17,3 +17,4 @@ iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
- iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
- iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
- iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
-+iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%u iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
+     return true;
 -- 
 2.17.2
 
