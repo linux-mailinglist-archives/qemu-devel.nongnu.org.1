@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1384A929C9D
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 08:58:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4436E929CA1
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 08:58:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQiIH-0008RH-HM; Mon, 08 Jul 2024 02:56:13 -0400
+	id 1sQiIQ-0000c3-Vo; Mon, 08 Jul 2024 02:56:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sQiID-0008MT-16
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:56:09 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1sQiIN-0000RK-H9
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:56:19 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sQiI8-0001ol-Ve
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:56:07 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1fa9ecfb321so19386895ad.0
- for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 23:56:04 -0700 (PDT)
+ id 1sQiIJ-0001q5-JI
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:56:17 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-70b0013cf33so2235463b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 23:56:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1720421763; x=1721026563;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1720421770; x=1721026570;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vIEfURKz+p1ePfxL4ZyEDkPLusmBWgHYvO+HKUIo2A4=;
- b=LmjHWBlO0E68jEEnjnYdjJw9uvaMgZFhlu7gNIeq5sw54fwmP8EsPWe0gT9I6dxSzX
- Uf3NX9t7DJMRxfYQRF1zPvx5klkbH1kVo+YuJYcQYpbUOeFE4m7uDAv7opwK0Rx8/wY0
- SqWSJCA/2YwhdHFuk+KyAmInJBhBOyks/7n9JXhqE72nUEPpwsAt/Z5MWqyP/lxiGj5a
- XuXuLSn/qBievx9QPUP72JBlMwfZQGCmRZB2/buGGvM6Wrv53LqbMqDcvDw4k9tNHBOQ
- nL8Z23ylDe/bRELvMRI5WyN/ySP5rjLbZS2N/H2NlNlbgbLNh+KK4Bx0Cnt9EdDrZ6gL
- B+bg==
+ :reply-to; bh=dYsCw1FmqSn/YuppQ6AhBdpL7b5hTddKWxjDOuy7dBs=;
+ b=oyMsnlPmLQtNJLkmP55dvZl1kcbPpJMT5UANwbJO7TdlwwE+ma1zHDhTBM7o2lJVWG
+ /Xd1WpMAO5LQ5plbqETRc8/9wN427dFQrsOxqRhAglRku4eqbmhpsyK2iwRQUoLEdCVo
+ STytmkgkcG7aYf+JVHuk5NJCUSmdSBc2ywuknuLujksdkfFZWAHUr25I1Bo89aMzZiMe
+ 8ScHw6aaO8OgysgxK1OlGNSILxnzeUh+pQjmOIRZgms4SYNV5HWy/bSKByfYXJmp6To5
+ oYD7uPZpqFWZ7+6RfEOv/T1M01GNJYKQVdVZGBvRyasdVxIEMX5LxFkg4nhosGsOYs2+
+ enSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720421763; x=1721026563;
+ d=1e100.net; s=20230601; t=1720421770; x=1721026570;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vIEfURKz+p1ePfxL4ZyEDkPLusmBWgHYvO+HKUIo2A4=;
- b=lZZvj1Kctcm2RBtINKmlYDWpJ5tlYIGzR1ZGfsOlgIr5ED6EwpjXiiTYb9aYwAGtxt
- NyGGr5Qj49yMRGqkOoSP5iiWKbA4YMdOkYQsBQPZnx4gdgQzt4w6OxPOSwT/7e3HW5/2
- IPVWd3a1N/XobIXxOYumESqYi6dTKRM7UagMCmn5MG0//zlc7/cjH7J4H0tsS5sLygHy
- vI2C9zl5vf7eo/RYAKEBiMsRnpmM2uze2bbFcHY+IzAfJQ4WMSK5cMm4duYisK/N7SEg
- zk+Q8D/+GGJ0OonigVQ5w+/2j6u5z9yK4FtkabKF6j5TQ9UogEe3ppSSoMvpx2kbshI9
- pFTQ==
-X-Gm-Message-State: AOJu0YxfuME89uiXRbOoU8RxQkgajgvgIMquVLMrXOx/ZB8sus7MnmNh
- Qg+riGO5GfHfyDxQpoNU6vRB7BiWVrF556T441gqu1nYZuGlZ3W56ARS3rW486M=
-X-Google-Smtp-Source: AGHT+IHaHLFdVS3j6x0yV/mu2NdS069vJVNaVFKSSEeJYUo+CXcbTb/uvUGc5zl46xXmYEn41lnNAQ==
-X-Received: by 2002:a17:902:cec4:b0:1fb:72b4:8766 with SMTP id
- d9443c01a7336-1fb72b4898emr28292685ad.49.1720421763375; 
- Sun, 07 Jul 2024 23:56:03 -0700 (PDT)
+ bh=dYsCw1FmqSn/YuppQ6AhBdpL7b5hTddKWxjDOuy7dBs=;
+ b=ei8Z9hJcfxRcBBs/I5ixXbmV9LUSO9/D7p+StvPEVDiO7PCxQc/0zxZd8Ly61N968q
+ yi2QEq6R2lpxR1na8/PB/kWPyIJxBoIfJ0OsBXJljqG1tQoc8KnZyWmwfcfS3GQBSXMi
+ 7GjACwdbQ6gnQSkkqoS51R1nTIKoqGjgTmqg5X/UsG1uTaSwhdmSa8datA3I/lVtWJrb
+ Q44EzQiIWd/arLJNnDjqBPPyPi+/MWZRDNV8hpoFy4lth/SbDsHU06Qc0d1TltYm7qiH
+ YfM10n9Dpiv/QvF0AcAaozSZeOunUzXstTm3jOLU7j3dq2fPC9LWIXZ5fLbDfX5luGSv
+ Fyew==
+X-Gm-Message-State: AOJu0Yxe1ezNc0ZHoXEbFxwVKNFZyTTM7MZoxbMeDLeopB76aDdiusHB
+ 43GAwRGZU/2rYD7pk/WW19Yq33dY3jhaRNfV/9unIiDyJOGDokfNQmmMj68Swv8=
+X-Google-Smtp-Source: AGHT+IHfgbo/reFIOcNODiDMFxa4Po7UHW8YYN/I4KGCJzL8ZmEaHuGkly4b2a/dS/pDNoFvPtU0xg==
+X-Received: by 2002:a05:6a20:244c:b0:1c0:eb46:96f7 with SMTP id
+ adf61e73a8af0-1c0eb46973emr2272534637.61.1720421769497; 
+ Sun, 07 Jul 2024 23:56:09 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1fb438a7890sm57605205ad.185.2024.07.07.23.55.58
+ d9443c01a7336-1fb111382f5sm95501885ad.175.2024.07.07.23.56.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 07 Jul 2024 23:56:03 -0700 (PDT)
+ Sun, 07 Jul 2024 23:56:09 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 08 Jul 2024 15:55:13 +0900
-Subject: [PATCH v3 2/9] ppc/vof: Fix unaligned FDT property access
+Date: Mon, 08 Jul 2024 15:55:14 +0900
+Subject: [PATCH v3 3/9] migration: Free removed SaveStateEntry
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240708-san-v3-2-b03f671c40c6@daynix.com>
+Message-Id: <20240708-san-v3-3-b03f671c40c6@daynix.com>
 References: <20240708-san-v3-0-b03f671c40c6@daynix.com>
 In-Reply-To: <20240708-san-v3-0-b03f671c40c6@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -80,11 +80,10 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, 
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, 
- Peter Maydell <peter.maydell@linaro.org>
+ Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -106,28 +105,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FDT properties are aligned by 4 bytes, not 8 bytes.
+This fixes LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/ppc/vof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/savevm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-index e3b430a81f4f..b5b6514d79fc 100644
---- a/hw/ppc/vof.c
-+++ b/hw/ppc/vof.c
-@@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
-     mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
-     g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
-     if (sc == 2) {
--        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + sizeof(uint32_t) * ac));
-+        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
-     } else {
-         mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + sizeof(uint32_t) * ac));
+diff --git a/migration/savevm.c b/migration/savevm.c
+index deb57833f8a8..85958d7b09cd 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -874,6 +874,8 @@ int vmstate_replace_hack_for_ppc(VMStateIf *obj, int instance_id,
+ 
+     if (se) {
+         savevm_state_handler_remove(se);
++        g_free(se->compat);
++        g_free(se);
      }
+     return vmstate_register(obj, instance_id, vmsd, opaque);
+ }
 
 -- 
 2.45.2
