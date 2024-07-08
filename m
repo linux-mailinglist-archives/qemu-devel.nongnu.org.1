@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D77F92A369
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 15:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C3F92A366
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 15:02:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQnzt-0003bn-Ht; Mon, 08 Jul 2024 09:01:37 -0400
+	id 1sQnzw-0003eQ-VC; Mon, 08 Jul 2024 09:01:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minwoo.im@samsung.com>)
- id 1sQnzP-0003I1-VJ
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 09:01:09 -0400
-Received: from mailout3.samsung.com ([203.254.224.33])
+ id 1sQnze-0003O8-Ve
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 09:01:23 -0400
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minwoo.im@samsung.com>)
- id 1sQnzN-0000Ty-1y
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 09:01:07 -0400
+ id 1sQnzd-0000Vc-0U
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 09:01:22 -0400
 Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20240708130100epoutp034f603e8c5a2a718ce1ffc384e5e85134~gPmT1D9-o3173331733epoutp03_
- for <qemu-devel@nongnu.org>; Mon,  8 Jul 2024 13:01:00 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20240708130100epoutp034f603e8c5a2a718ce1ffc384e5e85134~gPmT1D9-o3173331733epoutp03_
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20240708130118epoutp04d7c5e9d50815e8b83c1858b5ae26f844~gPmkFrmpm2794427944epoutp045
+ for <qemu-devel@nongnu.org>; Mon,  8 Jul 2024 13:01:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20240708130118epoutp04d7c5e9d50815e8b83c1858b5ae26f844~gPmkFrmpm2794427944epoutp045
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1720443661;
- bh=RJ85eofAEtQ8l/AD50ikOpPStoax6lhjJ4W7KxwJ+cE=;
+ s=mail20170921; t=1720443678;
+ bh=atbixfmoFrSMDPhxFoLf58v61Dd8mAaW/YtTqUB5xmk=;
  h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=csC8JP1s9HtvQJatXZqHozwBFl6CpJiADW2xQtBdiQ2G+DKC026GOyxj1uoTwsOpj
- wR4yS+n7mfHJoWEbNI3m0Sb0iEqwqbsNVquZ9bOKWf2A2yFI0upAsHpr9yPLIZ0vAC
- dlXQoO7MLS3qQ5quoBOl1bcIWuADpqEJupw7QODo=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
- epcas2p2.samsung.com (KnoxPortal) with ESMTP id
- 20240708130100epcas2p2965f972d6b7288500c3300f36ce2527d~gPmTTfnJz2413524135epcas2p2J;
- Mon,  8 Jul 2024 13:01:00 +0000 (GMT)
-Received: from epsmges2p3.samsung.com (unknown [182.195.36.92]) by
- epsnrtp2.localdomain (Postfix) with ESMTP id 4WHkkz651Fz4x9Pw; Mon,  8 Jul
- 2024 13:00:59 +0000 (GMT)
-Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
- epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
- F6.02.09806.B03EB866; Mon,  8 Jul 2024 22:00:59 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
- epcas2p3.samsung.com (KnoxPortal) with ESMTPA id
- 20240708130059epcas2p39490ae6a7825c3b1d640f45c2288de68~gPmSV1jDE0794907949epcas2p3B;
- Mon,  8 Jul 2024 13:00:59 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
- epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20240708130059epsmtrp136bd05738142846627f7fb2a37354193~gPmSVClVc2472824728epsmtrp1T;
- Mon,  8 Jul 2024 13:00:59 +0000 (GMT)
-X-AuditID: b6c32a47-c6bff7000000264e-df-668be30bd73b
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 2E.78.19057.B03EB866; Mon,  8 Jul 2024 22:00:59 +0900 (KST)
-Received: from localhost (unknown [10.229.54.230]) by epsmtip2.samsung.com
+ b=catIq3ORcOplAvPxXTHRdw5kcbfNVrE7IHzsiyoC8G/l1wi5AgAsB71CB4AfqPHKs
+ YIrItSOLESaYfkgSBi1nM/3shj2lPMzgOZuN1rfXJ2msIqhgb/0bNHinHkKDvtLbEB
+ 42ozWWTQdA2sTU+gKpiZ4LQuHaM+5LKdhpnQYwh4=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+ epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+ 20240708130117epcas2p4c4fd30badc08b1839731163973993b7d~gPmjlivDy1069510695epcas2p4j;
+ Mon,  8 Jul 2024 13:01:17 +0000 (GMT)
+Received: from epsmgec2p1.samsung.com (unknown [182.195.36.100]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4WHklK10fWz4x9Pr; Mon,  8 Jul
+ 2024 13:01:17 +0000 (GMT)
+Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
+ epsmgec2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 12.03.56241.C13EB866; Mon,  8 Jul 2024 22:01:16 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+ epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20240708130116epcas2p2cbafced6c757ca5e35e9a7a08e699a76~gPmiT6qjy1774117741epcas2p2J;
+ Mon,  8 Jul 2024 13:01:16 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20240708130116epsmtrp25b1c7c083ed6e63453578d115b483762~gPmiSnyfR3038030380epsmtrp2U;
+ Mon,  8 Jul 2024 13:01:16 +0000 (GMT)
+X-AuditID: b6c32a43-c03fd7000000dbb1-d1-668be31cb9cf
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 36.38.18846.C13EB866; Mon,  8 Jul 2024 22:01:16 +0900 (KST)
+Received: from localhost (unknown [10.229.54.230]) by epsmtip1.samsung.com
  (KnoxPortal) with ESMTPA id
- 20240708130059epsmtip26b1f1f727946b33a14c943b740c7c117~gPmSI5cTZ1610316103epsmtip2E;
- Mon,  8 Jul 2024 13:00:59 +0000 (GMT)
-Date: Mon, 8 Jul 2024 21:48:31 +0900
+ 20240708130116epsmtip1905ea366e5f9cf3fd6c1a563197e3264~gPmiIqegT2682026820epsmtip1k;
+ Mon,  8 Jul 2024 13:01:16 +0000 (GMT)
+Date: Mon, 8 Jul 2024 21:48:49 +0900
 From: Minwoo Im <minwoo.im@samsung.com>
 To: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "jasowang@redhat.com"
@@ -66,58 +66,58 @@ Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "jasowang@redhat.com"
  "yi.l.liu@intel.com" <yi.l.liu@intel.com>, "joao.m.martins@oracle.com"
  <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
  "mst@redhat.com" <mst@redhat.com>, minwoo.im@samsung.com
-Subject: Re: [PATCH  v5 2/4] intel_iommu: move VTD_FRCD_PV and VTD_FRCD_PP
- declarations
-Message-ID: <ZovgH9Pi+Ugz/nVQ@localhost>
+Subject: Re: [PATCH  v5 3/4] intel_iommu: fix type of the mask field in
+ VTDIOTLBPageInvInfo
+Message-ID: <ZovgMSZ9NaEsTlr/@localhost>
 MIME-Version: 1.0
-In-Reply-To: <20240708113908.19535-3-clement.mathieu--drif@eviden.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDJsWRmVeSWpSXmKPExsWy7bCmmS734+40g2PthhZ/1i5ktlh26TOT
- xYnnn5ktlr7dym7x7PQBZov/v16xWmzZ/43d4njvDhaLuT+vsVgsvnWe0YHL49+6xywei/e8
- ZPJ4cm0zk8fHp7dYPN7vu8rm0bdlFWMAW1S2TUZqYkpqkUJqXnJ+SmZeuq2Sd3C8c7ypmYGh
- rqGlhbmSQl5ibqqtkotPgK5bZg7QbUoKZYk5pUChgMTiYiV9O5ui/NKSVIWM/OISW6XUgpSc
- AvMCveLE3OLSvHS9vNQSK0MDAyNToMKE7IyVbx8zF5xkrZi8iLWB8QdLFyMnh4SAicTVPycZ
- uxi5OIQEdjBKPD2whQnC+QTkHLrBDOF8Y5RoOHaKHaZl3rW7UC17GSV27z7DDuE8Z5R4dboP
- bDCLgIrEoQd3wWw2AXWJhqmvwGwRARuJptM7wLqZBaYzS9ztuMcKkhAWiJR4fu4VE4jNK6Ah
- cXXPEXYIW1Di5MwnYM2cAm4Sm9++Y4M4YyaHxJxdIRC2i8SEnt3MELawxKvjW6BOlZJ42d8G
- ZVdL/F9yCew5CYEWRomupSuhBtlLTOs4AbaAWSBT4sy6n0AHcQDFlSWO3IIK80l0HP7LDhHm
- lehoE4LoVJb4eOgQ1FpJieWXXkNN9JB4/u0PNByvMkrs2T+XeQKj3Cwk78xCsm0W0FhmAU2J
- 9bv0IcLyEs1bZzNDhKUllv/jQFKxgJFtFaNYakFxbnpqsVGBMTyyk/NzNzGCk62W+w7GGW8/
- 6B1iZOJgPMQowcGsJMI7/0Z3mhBvSmJlVWpRfnxRaU5q8SFGU2A8TWSWEk3OB6b7vJJ4QxNL
- AxMzM0NzI1MDcyVx3nutc1OEBNITS1KzU1MLUotg+pg4OKUamOJ7mA946BoWfjjV/3vVOqZJ
- JSccYgyOFu/dc0HS4mXmYx4W/aae7x82ayrN/5Tx0GrWf8GbCallP8IWhk/c/eat1a0yT90N
- TjwX1tnOL/oRUl60e32ewwf/JcmfTl27cO3FMaWX3R1Tf3XPYpnbfm6LMPPtvvYavbqbXMzz
- lx3gnqJlfP13l7SRI+cL8TMf3c1OHtZT717yyHP1sh2Xrvw5E1/Bf177dUrInP2Priw8/nD6
- zDvcU3zFppUrWGXZpqUlOzW1MGTxa3b3KjBOV14rq9K+Oy87LJE97GpCWs+SB3HXiqYnbVzK
- MMNE42fd2tXXUsL1Y+9evf/t9AJz1kK32i0NnMuSWNzvzvr+aIESS3FGoqEWc1FxIgCam9Qj
- PwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPLMWRmVeSWpSXmKPExsWy7bCSvC734+40g3fTBS3+rF3IbLHs0mcm
+In-Reply-To: <20240708113908.19535-4-clement.mathieu--drif@eviden.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDJsWRmVeSWpSXmKPExsWy7bCmqa7M4+40g+NPbSz+rF3IbLHs0mcm
  ixPPPzNbLH27ld3i2ekDzBb/f71itdiy/xu7xfHeHSwWc39eY7FYfOs8owOXx791j1k8Fu95
- yeTx5NpmJo+PT2+xeLzfd5XNo2/LKsYAtigum5TUnMyy1CJ9uwSujHN3JrIXvGCqeDNRtYFx
- M1MXIyeHhICJxLxrdxm7GLk4hAR2M0pc+nCLDSIhKbHv9E1WCFtY4n7LEVaIoqeMErtajzCD
- JFgEVCQOPbjLAmKzCahLNEx9BWaLCNhINJ3eATaVWWA2s8TpWTPB1gkLREo8P/cKzOYV0JC4
- uucIO8TUq4wSdz+eZoNICEqcnPkEbBIz0NQ/8y4BbeMAsqUllv/jgAjLSzRvnQ12BKeAm8Tm
- t+/YJjAKzkLSPQtJ9yyE7llIuhcwsqxilEwtKM5Nzy02LDDKSy3XK07MLS7NS9dLzs/dxAiO
- Iy2tHYx7Vn3QO8TIxMF4iFGCg1lJhHf+je40Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzfXvem
- CAmkJ5akZqemFqQWwWSZODilGphyBVe7Msg/sb6yLfHLO0GtxlOaZwpW+nkxHWqaUq73f+qr
- /IeJ1znfGJv+edn3YK7Fxw+TfJbOsBV2/G3GN7ElY00Dl8yfqNd5L+XeKFXvnqc2o0zp1cLp
- Z5ao+jadPXNMU225h8Tyht91sxjX6yXN0UyIlStsi9pp5F+jtDGP0WvLpQfZ3+LWrmEKjdDe
- 7P2HVXGZ8eI229jv7NHSBtWM+547ODjfku6UbdKTDZiWFlmVnWbPm/DUJPuSH/sC0Va7y2e1
- arYutj9+46V8SFhb7JVZH4rTNnY+W3pNN+no7QZLvz/XBIN8gh706jWzKYdqTMj6o3l91qJ7
- ygLXop9+NBG8s/d2jn0Tc1GdnxJLcUaioRZzUXEiAGtNIEwSAwAA
-X-CMS-MailID: 20240708130059epcas2p39490ae6a7825c3b1d640f45c2288de68
+ yeTx5NpmJo+PT2+xeLzfd5XNo2/LKsYAtqhsm4zUxJTUIoXUvOT8lMy8dFsl7+B453hTMwND
+ XUNLC3MlhbzE3FRbJRefAF23zByg25QUyhJzSoFCAYnFxUr6djZF+aUlqQoZ+cUltkqpBSk5
+ BeYFesWJucWleel6eaklVoYGBkamQIUJ2RmbH8xkLzjCU9E+pYmlgfEEVxcjJ4eEgInE7Rsd
+ bCC2kMAORolVneldjFxA9idGiTvr5zLDOStWzWWC6Vj4by1UYiejxJSm76wQznNGiR/n14DN
+ YhFQkXjdd4EZxGYTUJdomPqKBcQWEbCRaDq9gxGkgVlgOrPE3Y57rCAJYYFYiWdPVzOC2LwC
+ GhIvljayQtiCEidnPgFq5uDgFHCT+N9tBtIrITCVQ2L5t8vsECe5SMxtOAN1nrDEq+NboOJS
+ Ep/f7WWDsKsl/i+5xATR3MIo0bV0JVTCXmJaxwmw65gFMiXaFu1jBFkmIaAsceQWVJhPouPw
+ X3aIMK9ER5sQRKeyxMdDh5ghbEmJ5ZdeQ030kPjSd5YdEihXgUF38ArLBEa5WUjemYVk2yyg
+ scwCmhLrd+lDhOUlmrfOZoYIS0ss/8eBpGIBI9sqRrHUguLc9NRkowJDeGQn5+duYgQnWy3n
+ HYxX5v/TO8TIxMF4iFGCg1lJhHf+je40Id6UxMqq1KL8+KLSnNTiQ4ymwHiayCwlmpwPTPd5
+ JfGGJpYGJmZmhuZGpgbmSuK891rnpggJpCeWpGanphakFsH0MXFwSjUwNb1v9spb4fzj7Z3K
+ 1Ce2Fv7qm/d8irLYUSKTk8i7WuF4Lmeix/3lt8VYHz89rrnsxfGFPGxsYb83SPY3p97/bMX8
+ +OiSoMb2Kq03uRr2W5jyE3Ztbf4j9vd/4Pq90pN3MDOcOhzHsW/ZUxn/NWyP1jRmap41610i
+ KmXiV/A974/Foykuwko7Jp1f/2WlQ+0hlckT2b4LZnlNParzcN3V7ftdGJbtj3JNilKJ8fu2
+ 5fBaHZftfvF9wjsjFh14GBLpYh6yLqmq8Wnl6ka7k+xMXcGcAcJP5gsYzPqkbPis60/DM1nV
+ vEzd6VP/Vgkoaqk2MXkc3KHqu7Q8/HBw2+7kq9MVJvYkivrLuExhNWRSYinOSDTUYi4qTgQA
+ 79sh4z8EAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNLMWRmVeSWpSXmKPExsWy7bCSnK7M4+40g2MrpC3+rF3IbLHs0mcm
+ ixPPPzNbLH27ld3i2ekDzBb/f71itdiy/xu7xfHeHSwWc39eY7FYfOs8owOXx791j1k8Fu95
+ yeTx5NpmJo+PT2+xeLzfd5XNo2/LKsYAtigum5TUnMyy1CJ9uwSujD9rutkKHnNW/HixnL2B
+ sZmji5GTQ0LARGLhv7XMXYxcHEIC2xkl3v3+wAyRkJTYd/omK4QtLHG/5QgrRNFTRol/DxqY
+ QBIsAioSr/sugDWwCahLNEx9xQJiiwjYSDSd3sEI0sAsMJtZ4vSsmWANwgKxEs+ermYEsXkF
+ NCReLG2EmnqVUeLsianMEAlBiZMzn4BNYgaa+mfeJaA4B5AtLbH8HwdEWF6ieetssDCngJvE
+ /26zCYyCs5A0z0LSPAuheRaS5gWMLKsYRVMLinPTc5MLDPWKE3OLS/PS9ZLzczcxguNHK2gH
+ 47L1f/UOMTJxMB5ilOBgVhLhnX+jO02INyWxsiq1KD++qDQntfgQozQHi5I4r3JOZ4qQQHpi
+ SWp2ampBahFMlomDU6qBKfhO5bPI34+MV8yy/NRZqCF/sEkoRddyv1H734/qluwyf9s3qITd
+ e2Ji+KuMJTk7uzrkmkRR8+ek2cprb5XKG8zrTZCaftZsYQ57l9XtLbVK2b6vJsxte2cbbKwZ
+ 6J3TFnzL6L1O8Y7mU+s2Tt+5YnGOceSfwgNFkxLOXzwQuS3ncHzUqfB7XlcZVn7cXzDBb+WD
+ qIpI8Qm/r1oqWnJeEj/VVhFusZb70VzOqH28U4rKdu9a/C9McNkxt3r279fKmk64B4u0rl+X
+ 9ZIj6FAtx+WKri/Hjp85tLvjYiHH4U8f3+58LcopJGl0fftbPeGHprf3GT1O2fy+kmluUegU
+ sasPhKZ1sb7beG5eS72jshJLcUaioRZzUXEiAIQzZH0OAwAA
+X-CMS-MailID: 20240708130116epcas2p2cbafced6c757ca5e35e9a7a08e699a76
 X-Msg-Generator: CA
 Content-Type: multipart/mixed;
- boundary="----GYrZwOZf271lb0asq-_m8oi27wabo7t24X0BK_QM5T4hVeLi=_1a7f82_"
+ boundary="----40rWTt6DAFmUrjtMexcyNm5gpMTj9FMdHa8zGfbdWx6mQz74=_1a9016_"
 X-Sendblock-Type: AUTO_CONFIDENTIAL
 CMS-TYPE: 102P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240708114158epcas2p277593102571ef98ee26fe6ecefc367c5
+X-CMS-RootMailID: 20240708114202epcas2p34a65b1d59433192a5d3948f83ba1d6f8
 References: <20240708113908.19535-1-clement.mathieu--drif@eviden.com>
- <CGME20240708114158epcas2p277593102571ef98ee26fe6ecefc367c5@epcas2p2.samsung.com>
- <20240708113908.19535-3-clement.mathieu--drif@eviden.com>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=minwoo.im@samsung.com; helo=mailout3.samsung.com
+ <CGME20240708114202epcas2p34a65b1d59433192a5d3948f83ba1d6f8@epcas2p3.samsung.com>
+ <20240708113908.19535-4-clement.mathieu--drif@eviden.com>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=minwoo.im@samsung.com; helo=mailout4.samsung.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
 X-Spam_bar: ----
@@ -140,7 +140,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-------GYrZwOZf271lb0asq-_m8oi27wabo7t24X0BK_QM5T4hVeLi=_1a7f82_
+------40rWTt6DAFmUrjtMexcyNm5gpMTj9FMdHa8zGfbdWx6mQz74=_1a9016_
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
@@ -148,16 +148,33 @@ Content-Disposition: inline
 On 24-07-08 11:39:54, CLEMENT MATHIEU--DRIF wrote:
 > From: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 > 
-> These 2 macros are for high 64-bit of the FRCD registers.
-> Declarations have to be moved accordingly.
+> The mask we are trying to store into VTDIOTLBPageInvInfo.mask might not
+> fit in an uint8_t. Use uint64_t to avoid overflows.
+> 
+> Per the below code, it can overflow as am can be larger than 8 according
+> to the CH 6.5.2.3 IOTLB Invalidate. And you may want a fix tag as well.
+> 
+> info.mask = ~((1 << am) - 1);
+> 
+> CH 6.5.2.3 IOTLB Invalidate
+> 
+> Address Mask (AM): For page-selective-within-domain invalidations,
+> the Address Mask specifies the number of low order bits of the ADDR
+> field that must be masked for the invalidation operation. This field
+> enables software to request invalidation of contiguous mappings for
+> size-aligned regions. Refer to Table 19 for encodings of this field.
+> When invalidating a large-page translation, software must use the
+> appropriate Address Mask value (0 for 4KByte page, 9 for 2-MByte page,
+> and 18 for 1-GByte page). Hardware implementations report the maximum
+> supported address mask value through the Capability register.
 > 
 > Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
 Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
 
-------GYrZwOZf271lb0asq-_m8oi27wabo7t24X0BK_QM5T4hVeLi=_1a7f82_
+------40rWTt6DAFmUrjtMexcyNm5gpMTj9FMdHa8zGfbdWx6mQz74=_1a9016_
 Content-Type: text/plain; charset="utf-8"
 
 
-------GYrZwOZf271lb0asq-_m8oi27wabo7t24X0BK_QM5T4hVeLi=_1a7f82_--
+------40rWTt6DAFmUrjtMexcyNm5gpMTj9FMdHa8zGfbdWx6mQz74=_1a9016_--
 
