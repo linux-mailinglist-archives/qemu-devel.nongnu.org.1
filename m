@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0B192A27A
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DBF92A27B
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 14:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQnL7-0001tJ-4X; Mon, 08 Jul 2024 08:19:29 -0400
+	id 1sQnLS-0002rn-P6; Mon, 08 Jul 2024 08:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1sQnL0-0001gp-Qm
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 08:19:23 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1sQnKz-0001Vc-3v
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 08:19:22 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1fb0d88fd25so24267215ad.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 05:19:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1720441160; x=1721045960; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CUQGygF7ax3lHkGrG99vLN6/xen2jiCuqCocfv+MI40=;
- b=MnfMyJ2FS53Yj9WRqAyzHNGgMaB5mw7uuwfX2kSTWpf59LXZOOa9XragE2S+HR+am6
- uYn6xhTIVpvkqITbQ0/gUOu7N0dXHwy8IqK7PRqQ6AJEvrm/PSyWwVR/dUErljCsUBHI
- hVy+VtBuSsV64uksl/k4VHvdqDVL+N2V0gupK9/D8bL3YBQni6Feq96Y8neMjpOrikJ+
- qRBrYrclcFUu9vaOdhmJjOfdUtA6p5Ujdh697MRvTH7hphUrYJhuE0lIKpetFxkqscbR
- fjQGGK7hRl/pCAyCO+8JdBxmH5XNH7fMQvngKKmMle1ZJAEXwS5WQgzHrpiSJ7uKwMkX
- LWOw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sQnLQ-0002qz-PU
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 08:19:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sQnLA-0001Y3-AI
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 08:19:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720441169;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xTq5yVqCPZpdXGHaKk+gpskVcgIk8hdEn6rXQlWE1/I=;
+ b=UXo2WHrjjOO+oM27+7OvKd+CaB4/KpXASjVjNKP+uoAQH/83l2z1WwleD6DNnTe3VzOtk/
+ XSWJKpaaA+etBOjcqED6uaOBpttncP47y+F+hVCBgfOWphZBz/He3fw0gQ2IHtNQ7p97Lv
+ Dyp+BbVB+HGxGn/AvZRMifMJdVcDIdc=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-171--Xz1ulRzP5y_QXbjGK5RDg-1; Mon, 08 Jul 2024 08:19:24 -0400
+X-MC-Unique: -Xz1ulRzP5y_QXbjGK5RDg-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3d847876c6aso819865b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 05:19:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720441160; x=1721045960;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CUQGygF7ax3lHkGrG99vLN6/xen2jiCuqCocfv+MI40=;
- b=fHTR5jzHS2UXMSoPNp1W6baOnn9SqyMMBSYWvJsdFtO0YML+T5+GB+EFkISNvPBXfy
- aDgTuGp09q1gt9pRuAvOgEhxTGHCUr2a2h8yQcr5R03CSG4ZS0+ds+3F9zfSmF+aVlp/
- VS7ivoTByMgbHwLGXf2O35ZvBi//C8YO9TZ9i3nZHkgcw2GT3EKogUnLRUt6aKKFAzlm
- vLB2Lto3CZKSzscq5MbjXl1cAAm0Vv7T+Wwxz+ksrRVWgkcfRO9joGTIlcFXiCjkxr/9
- 0KMMr4sEYpxh/9KXNc9KETwP1CA96i4s16Lvi867ngaX2yqHHJ2S0DromznK9IVOx6hm
- biEA==
+ d=1e100.net; s=20230601; t=1720441164; x=1721045964;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xTq5yVqCPZpdXGHaKk+gpskVcgIk8hdEn6rXQlWE1/I=;
+ b=X+LXSxlpuOh11YbiA1uel9EX7b4w64MI5p8ORiPpJB6IRgf7qOX5HEIh3IMsFUj/vW
+ meZiVtHIlTlQ4laslJ2MWmJBeKHWch8stM8wQUBHc+U3WsZGRZWzXcG9jfn907oRoOsV
+ VdtNJK5S6+lwDtOHKPuu5Bw+NLzs+njYNAp9CnPlwoa+FqQn79TvotTPpwfpho85HJuy
+ LgO5sdEe52FuD39YtsDIo+Ig1FcvqUsCNlQECoLyVc+rs7Zva8xsePnS4L0cinh4k7P0
+ J5t53HIS6Q6ESIdU0wNSTlhp3wtreEa1z6pQ/M5hmXybcW94e6WCummHsQ9PQVjS7lMb
+ NLEQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXrfLt2f2QHyosjAlBkHIo5Q593VyMvKuN48bOsjmc/mklxpJJhRCdt8WjrSJoNhkJbBYvZXFshW+aTxpR/qMOpEHdlM4M=
-X-Gm-Message-State: AOJu0YxouaUrLR1xPbeyUreyCmpqiKWch+l/5x6H+RxcydVtfFWOt9Bq
- zxpGKGB6N5cLoY38T5ku4BK/z6HXAss4W7/gNttKidXjP8cpeuun2MndM/0aspg=
-X-Google-Smtp-Source: AGHT+IEzgYfv0Rl4nRCopHoGMt0ZDwqZv+8EQbB3KzschzsGx9lvFJ8fIHAId6YOdblYxRS+zaQVew==
-X-Received: by 2002:a17:902:cec5:b0:1fb:58e3:717d with SMTP id
- d9443c01a7336-1fb58e37251mr130739105ad.12.1720441159768; 
- Mon, 08 Jul 2024 05:19:19 -0700 (PDT)
-Received: from n37-006-243.byted.org ([180.184.49.4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fb4fa258f7sm56587195ad.169.2024.07.08.05.19.16
+ AJvYcCVhEX6hKSyH1NQqn7t2vyaAq3UG+mt5nZzjAytTI1+Hd+zr7rruVyurE87zMMiHNlVf8IvLE+ty102t7jLHHlc5bggJu74=
+X-Gm-Message-State: AOJu0YzNvXzWzDbXHBRWceGfMpj1osmIHmjUZwl1XojQX6T0Cqi3m8+X
+ 1xdtex/jKPDGg8jeWAH4Hgkul7eI3ljkblLD3idBgTz8NhwzcWIRWKJSMz7rk/sXO4/7667ksVR
+ 6Zo06GdyIHpFFfecOntGDJ60dC8dHiIjCuScMzZuqYThP61m19ye8
+X-Received: by 2002:a05:6871:24d7:b0:24f:e599:9168 with SMTP id
+ 586e51a60fabf-25e2b8d0139mr10961280fac.1.1720441163983; 
+ Mon, 08 Jul 2024 05:19:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFp0vN4aYOGfXNtHyd+Lm2sILPqB3LDc9BWEmJ4Nd6Y8z6B8w377JqbcOtizHxUTEyK2iLF8A==
+X-Received: by 2002:a05:6871:24d7:b0:24f:e599:9168 with SMTP id
+ 586e51a60fabf-25e2b8d0139mr10961267fac.1.1720441163569; 
+ Mon, 08 Jul 2024 05:19:23 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-79d69264fc0sm1073361385a.1.2024.07.08.05.19.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jul 2024 05:19:19 -0700 (PDT)
-From: Changqi Lu <luchangqi.123@bytedance.com>
-To: qemu-block@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
- ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
- kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
- pizhenwei@bytedance.com, Changqi Lu <luchangqi.123@bytedance.com>
-Subject: [PATCH v8 04/10] scsi/util: add helper functions for persistent
- reservation types conversion
-Date: Mon,  8 Jul 2024 20:18:48 +0800
-Message-Id: <20240708121854.1318876-5-luchangqi.123@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20240708121854.1318876-1-luchangqi.123@bytedance.com>
-References: <20240708121854.1318876-1-luchangqi.123@bytedance.com>
+ Mon, 08 Jul 2024 05:19:23 -0700 (PDT)
+Date: Mon, 8 Jul 2024 08:19:22 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Yi Liu <yi.l.liu@intel.com>, mst@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] MAINTAINERS: Add myself as a VT-d reviewer
+Message-ID: <ZovZSuGwvkE5--Tc@x1n>
+References: <20240708032112.796339-1-yi.l.liu@intel.com>
+ <CACGkMEtZ7yDzvGQOj9txFiYzaHgTtmHeeZmLH+uoxEBwkN0NDg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <CACGkMEtZ7yDzvGQOj9txFiYzaHgTtmHeeZmLH+uoxEBwkN0NDg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,135 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit introduces two helper functions
-that facilitate the conversion between the
-persistent reservation types used in the SCSI
-protocol and those used in the block layer.
+On Mon, Jul 08, 2024 at 11:24:48AM +0800, Jason Wang wrote:
+> On Mon, Jul 8, 2024 at 11:21 AM Yi Liu <yi.l.liu@intel.com> wrote:
+> >
+> > Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> > ---
+> >  MAINTAINERS | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 6725913c8b..61724b91d8 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -3656,6 +3656,7 @@ F: tests/uefi-test-tools/
+> >  VT-d Emulation
+> >  M: Michael S. Tsirkin <mst@redhat.com>
+> >  R: Jason Wang <jasowang@redhat.com>
+> > +R: Yi Liu <yi.l.liu@intel.com>
+> >  S: Supported
+> >  F: hw/i386/intel_iommu.c
+> >  F: hw/i386/intel_iommu_internal.h
+> > --
+> > 2.34.1
+> >
+> 
+> Acked-by: Jason Wang <jasowang@redhat.com>
+> 
+> Thanks!
 
-Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- include/scsi/utils.h |  8 +++++
- scsi/utils.c         | 81 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 89 insertions(+)
+Acked-by: Peter Xu <peterx@redhat.com>
 
-diff --git a/include/scsi/utils.h b/include/scsi/utils.h
-index d5c8efa16e..89a0b082fb 100644
---- a/include/scsi/utils.h
-+++ b/include/scsi/utils.h
-@@ -1,6 +1,8 @@
- #ifndef SCSI_UTILS_H
- #define SCSI_UTILS_H
- 
-+#include "block/block-common.h"
-+#include "scsi/constants.h"
- #ifdef CONFIG_LINUX
- #include <scsi/sg.h>
- #endif
-@@ -135,6 +137,12 @@ uint32_t scsi_data_cdb_xfer(uint8_t *buf);
- uint32_t scsi_cdb_xfer(uint8_t *buf);
- int scsi_cdb_length(uint8_t *buf);
- 
-+BlockPrType scsi_pr_type_to_block(SCSIPrType type);
-+SCSIPrType block_pr_type_to_scsi(BlockPrType type);
-+
-+uint8_t scsi_pr_cap_to_block(uint16_t scsi_pr_cap);
-+uint16_t block_pr_cap_to_scsi(uint8_t block_pr_cap);
-+
- /* Linux SG_IO interface.  */
- #ifdef CONFIG_LINUX
- #define SG_ERR_DRIVER_TIMEOUT  0x06
-diff --git a/scsi/utils.c b/scsi/utils.c
-index 357b036671..0dfdeb499d 100644
---- a/scsi/utils.c
-+++ b/scsi/utils.c
-@@ -658,3 +658,84 @@ int scsi_sense_from_host_status(uint8_t host_status,
-     }
-     return GOOD;
- }
-+
-+BlockPrType scsi_pr_type_to_block(SCSIPrType type)
-+{
-+    switch (type) {
-+    case SCSI_PR_WRITE_EXCLUSIVE:
-+        return BLK_PR_WRITE_EXCLUSIVE;
-+    case SCSI_PR_EXCLUSIVE_ACCESS:
-+        return BLK_PR_EXCLUSIVE_ACCESS;
-+    case SCSI_PR_WRITE_EXCLUSIVE_REGS_ONLY:
-+        return BLK_PR_WRITE_EXCLUSIVE_REGS_ONLY;
-+    case SCSI_PR_EXCLUSIVE_ACCESS_REGS_ONLY:
-+        return BLK_PR_EXCLUSIVE_ACCESS_REGS_ONLY;
-+    case SCSI_PR_WRITE_EXCLUSIVE_ALL_REGS:
-+        return BLK_PR_WRITE_EXCLUSIVE_ALL_REGS;
-+    case SCSI_PR_EXCLUSIVE_ACCESS_ALL_REGS:
-+        return BLK_PR_EXCLUSIVE_ACCESS_ALL_REGS;
-+    }
-+
-+    return 0;
-+}
-+
-+SCSIPrType block_pr_type_to_scsi(BlockPrType type)
-+{
-+    switch (type) {
-+    case BLK_PR_WRITE_EXCLUSIVE:
-+        return SCSI_PR_WRITE_EXCLUSIVE;
-+    case BLK_PR_EXCLUSIVE_ACCESS:
-+        return SCSI_PR_EXCLUSIVE_ACCESS;
-+    case BLK_PR_WRITE_EXCLUSIVE_REGS_ONLY:
-+        return SCSI_PR_WRITE_EXCLUSIVE_REGS_ONLY;
-+    case BLK_PR_EXCLUSIVE_ACCESS_REGS_ONLY:
-+        return SCSI_PR_EXCLUSIVE_ACCESS_REGS_ONLY;
-+    case BLK_PR_WRITE_EXCLUSIVE_ALL_REGS:
-+        return SCSI_PR_WRITE_EXCLUSIVE_ALL_REGS;
-+    case BLK_PR_EXCLUSIVE_ACCESS_ALL_REGS:
-+        return SCSI_PR_EXCLUSIVE_ACCESS_ALL_REGS;
-+    }
-+
-+    return 0;
-+}
-+
-+
-+uint8_t scsi_pr_cap_to_block(uint16_t scsi_pr_cap)
-+{
-+    uint8_t res = 0;
-+
-+    res |= (scsi_pr_cap & SCSI_PR_CAP_WR_EX) ?
-+           BLK_PR_CAP_WR_EX : 0;
-+    res |= (scsi_pr_cap & SCSI_PR_CAP_EX_AC) ?
-+           BLK_PR_CAP_EX_AC : 0;
-+    res |= (scsi_pr_cap & SCSI_PR_CAP_WR_EX_RO) ?
-+           BLK_PR_CAP_WR_EX_RO : 0;
-+    res |= (scsi_pr_cap & SCSI_PR_CAP_EX_AC_RO) ?
-+           BLK_PR_CAP_EX_AC_RO : 0;
-+    res |= (scsi_pr_cap & SCSI_PR_CAP_WR_EX_AR) ?
-+           BLK_PR_CAP_WR_EX_AR : 0;
-+    res |= (scsi_pr_cap & SCSI_PR_CAP_EX_AC_AR) ?
-+           BLK_PR_CAP_EX_AC_AR : 0;
-+
-+    return res;
-+}
-+
-+uint16_t block_pr_cap_to_scsi(uint8_t block_pr_cap)
-+{
-+    uint16_t res = 0;
-+
-+    res |= (block_pr_cap & BLK_PR_CAP_WR_EX) ?
-+              SCSI_PR_CAP_WR_EX : 0;
-+    res |= (block_pr_cap & BLK_PR_CAP_EX_AC) ?
-+              SCSI_PR_CAP_EX_AC : 0;
-+    res |= (block_pr_cap & BLK_PR_CAP_WR_EX_RO) ?
-+              SCSI_PR_CAP_WR_EX_RO : 0;
-+    res |= (block_pr_cap & BLK_PR_CAP_EX_AC_RO) ?
-+              SCSI_PR_CAP_EX_AC_RO : 0;
-+    res |= (block_pr_cap & BLK_PR_CAP_WR_EX_AR) ?
-+              SCSI_PR_CAP_WR_EX_AR : 0;
-+    res |= (block_pr_cap & BLK_PR_CAP_EX_AC_AR) ?
-+              SCSI_PR_CAP_EX_AC_AR : 0;
-+
-+    return res;
-+}
+Thanks!!
+
 -- 
-2.20.1
+Peter Xu
 
 
