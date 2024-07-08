@@ -2,65 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599D2929EBA
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 11:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A6D929F04
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 11:28:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQkPH-0008EE-BH; Mon, 08 Jul 2024 05:11:35 -0400
+	id 1sQkeY-0000AZ-Kf; Mon, 08 Jul 2024 05:27:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sQkP0-00085c-Nw; Mon, 08 Jul 2024 05:11:20 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sQkOy-0002WQ-6y; Mon, 08 Jul 2024 05:11:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720429876; x=1751965876;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jbNRfTeu4PCF7A092btP4KQ8q4LhmqDH1pqO7VmOkQA=;
- b=gbWuc4MAWbZDfq7WYWqzWtC++HgQMthBYXBctjZRf7wKTKfEupgqm734
- Zw2XKuz/CpfSfNHnZhvvf4E+jHAOzWFk/Wfx8kWEJsEB3EhQYSSH8tahS
- 5RVQ35U9MVudHGYKWn19JHZZqwYlsVQiTI87k6xIqvI3rKucL/Z7VY+vu
- X0dpjdbW2eoZBfzmSPBOGyBaohARWGOS8qneB8+qYbYPeoRU9JQcVwSEp
- nkIEx1xpA4ACWIWwBYVE6HNXyxrcmp0KmqQbKuB6CjN4m/ayrHGwEzoFh
- KGQ8T46n1GSt8iBS7gS+oBOIHcNuxof0+Vjw49IeDC8KKj0e9Ul+63D9d w==;
-X-CSE-ConnectionGUID: XD1HJLFaSkKYCxx9aAV1yQ==
-X-CSE-MsgGUID: Vg0ak+Q5T92xH6mMIrf3iA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11126"; a="28292142"
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="28292142"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2024 02:11:11 -0700
-X-CSE-ConnectionGUID: ilJW5QDJSkq6ZHJdJIqaqA==
-X-CSE-MsgGUID: /Eon3TuhRpW5s2r7xpUt0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="47414033"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 08 Jul 2024 02:11:10 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH] doc/net/l2tpv3: Update boolean fields' description to avoid
- short-form use
-Date: Mon,  8 Jul 2024 17:26:30 +0800
-Message-Id: <20240708092630.2596945-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sQkeM-0008Vz-Je
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 05:27:13 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sQkeL-0005dh-3N
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 05:27:10 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-57ccd1111aeso4708037a12.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 02:27:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720430827; x=1721035627; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Ga+Ta1L8WckIlByEL4NKaVCsySeBSp2lgHQDCsyQkTU=;
+ b=eZ/yqIVkUy2fWu0ErzoZSPh2M3d7lRwE7hFj6DdzS3/HzHHaOc8rLsLwm4Rd1xo9x8
+ y16rMRfLH2+0Y7GptAVPb9XVnalcS5IiQFqzv2FrxS1IDlTktK6P6XUskZcxKAMWJwCK
+ PDzuXSxzBNK3Rs7Y7F2tH2ek4PgZQhcIHnxrYkFjFjLJEfQ5vPrNhmRm5eg6R5CRAghx
+ FFTuZa7DHW2SzKhEbAgsuDvnmK9vsv0rVKDHn37E9Cln3EUTZZHoSwuG2Unf5BNy2JpO
+ vChKVgPQ+THfzmRA86q7IUpV6CxIIaNBGeuRK1m99z74U4XdZ6NkriOstQJ/C1gAUP7s
+ Z3mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720430827; x=1721035627;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ga+Ta1L8WckIlByEL4NKaVCsySeBSp2lgHQDCsyQkTU=;
+ b=sNwuLjp44XuGZYQgjfQu9goatNjh0cXwyd14M/sDuwP/y2V13IEQlkmdIPaviCMuBD
+ /ME1pBXcpgUXxmZwa7agqqA3y97UJPZfja7FoDCtpbFNna+siDB8FzhXW6I+pGCZ0W6k
+ 5tX5AHCUQefmAJXL76+AEs/WDiYQqW6wozWBEAYTWbV+SN7LAXSrABs5PuEwJRNG87N9
+ B4Q4umrhsKeKBS9WVozJWnLgrRr27ckg1GouqFEJ04e61wePrn6COCEd6saePyDaucvp
+ s+WKMTYuhnUuh00V+lt3GQylPmUyJ11aO9jDkxTqyi+vZx+fZ0KmVZQXVx1ynVEWj7Qe
+ UC9Q==
+X-Gm-Message-State: AOJu0YyAd9nM5FDRvpSJgnbgDeMrhppoYhr1qgaGwg4Ol56EzjXBIiyV
+ 6329BfQEliVm8rJk0t7L7mxNU6KkFy4YTd+HerJYAqTpSB37aapMpTQ5IfZv6g4=
+X-Google-Smtp-Source: AGHT+IHgq70MasG5948pSIEWXGJBR/uovzs0Tx/jl4hpM/PYRU0Ui80H08jRi/fwzSF5uxD7x7tjng==
+X-Received: by 2002:a05:6402:5114:b0:57c:6234:e95b with SMTP id
+ 4fb4d7f45d1cf-58e5a6ef55fmr8358621a12.5.1720430826733; 
+ Mon, 08 Jul 2024 02:27:06 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-58de8fe6322sm5467729a12.53.2024.07.08.02.27.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jul 2024 02:27:06 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 39B475F7A1;
+ Mon,  8 Jul 2024 10:27:05 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Yanan Wang <wangyanan55@huawei.com>,  Xingtao Yao
+ <yaoxt.fnst@fujitsu.com>
+Subject: Re: [PATCH v6 1/7] plugins: fix mem callback array size
+In-Reply-To: <20240706191335.878142-2-pierrick.bouvier@linaro.org> (Pierrick
+ Bouvier's message of "Sat, 6 Jul 2024 12:13:29 -0700")
+References: <20240706191335.878142-1-pierrick.bouvier@linaro.org>
+ <20240706191335.878142-2-pierrick.bouvier@linaro.org>
+Date: Mon, 08 Jul 2024 10:27:05 +0100
+Message-ID: <87v81gtes6.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,68 +100,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The short-form boolean options has been deprecated since v6.0 (refer
-to docs/about/deprecated.rst).
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-Update the description and example of boolean fields in l2tpv3 option to
-avoid deprecation warning.
+> data was correctly copied, but size of array was not set
+> (g_array_sized_new only reserves memory, but does not set size).
+>
+> As a result, callbacks were not called for code path relying on
+> plugin_register_vcpu_mem_cb().
+>
+> Found when trying to trigger mem access callbacks for atomic
+> instructions.
+>
+> Reviewed-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Cc: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- qemu-options.hx | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ad6521ef5e7e..edeaefe2c79a 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -3353,7 +3353,7 @@ SRST
-                          -device e1000,netdev=n1,mac=52:54:00:12:34:56 \\
-                          -netdev socket,id=n1,mcast=239.192.168.1:1102,localaddr=1.2.3.4
- 
--``-netdev l2tpv3,id=id,src=srcaddr,dst=dstaddr[,srcport=srcport][,dstport=dstport],txsession=txsession[,rxsession=rxsession][,ipv6=on|off][,udp=on|off][,cookie64][,counter][,pincounter][,txcookie=txcookie][,rxcookie=rxcookie][,offset=offset]``
-+``-netdev l2tpv3,id=id,src=srcaddr,dst=dstaddr[,srcport=srcport][,dstport=dstport],txsession=txsession[,rxsession=rxsession][,ipv6=on|off][,udp=on|off][,cookie64=on|off][,counter=on|off][,pincounter=on|off][,txcookie=txcookie][,rxcookie=rxcookie][,offset=offset]``
-     Configure a L2TPv3 pseudowire host network backend. L2TPv3 (RFC3931)
-     is a popular protocol to transport Ethernet (and other Layer 2) data
-     frames between two systems. It is present in routers, firewalls and
-@@ -3368,7 +3368,7 @@ SRST
-     ``dst=dstaddr``
-         destination address (mandatory)
- 
--    ``udp``
-+    ``udp=on``
-         select udp encapsulation (default is ip).
- 
-     ``srcport=srcport``
-@@ -3377,7 +3377,7 @@ SRST
-     ``dstport=dstport``
-         destination udp port.
- 
--    ``ipv6``
-+    ``ipv6=on``
-         force v6, otherwise defaults to v4.
- 
-     ``rxcookie=rxcookie``; \ ``txcookie=txcookie``
-@@ -3385,7 +3385,7 @@ SRST
-         Their function is mostly to prevent misconfiguration. By default
-         they are 32 bit.
- 
--    ``cookie64``
-+    ``cookie64=on``
-         Set cookie size to 64 bit instead of the default 32
- 
-     ``counter=off``
-@@ -3419,7 +3419,7 @@ SRST
-         # launch QEMU instance - if your network has reorder or is very lossy add ,pincounter
- 
-         |qemu_system| linux.img -device e1000,netdev=n1 \\
--            -netdev l2tpv3,id=n1,src=4.2.3.1,dst=1.2.3.4,udp,srcport=16384,dstport=16384,rxsession=0xffffffff,txsession=0xffffffff,counter
-+            -netdev l2tpv3,id=n1,src=4.2.3.1,dst=1.2.3.4,udp=on,srcport=16384,dstport=16384,rxsession=0xffffffff,txsession=0xffffffff,counter=on
- 
- ``-netdev vde,id=id[,sock=socketpath][,port=n][,group=groupname][,mode=octalmode]``
-     Configure VDE backend to connect to PORT n of a vde switch running
--- 
-2.34.1
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
