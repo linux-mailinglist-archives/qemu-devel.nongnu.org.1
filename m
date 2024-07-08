@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0CD929B02
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 05:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F3929B14
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 05:25:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQei1-00040d-LI; Sun, 07 Jul 2024 23:06:33 -0400
+	id 1sQf07-0008Q4-Ht; Sun, 07 Jul 2024 23:25:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sQehz-0003yt-EF
- for qemu-devel@nongnu.org; Sun, 07 Jul 2024 23:06:31 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1sQezz-0008Ot-8X
+ for qemu-devel@nongnu.org; Sun, 07 Jul 2024 23:25:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sQehx-0002ci-ED
- for qemu-devel@nongnu.org; Sun, 07 Jul 2024 23:06:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720407989; x=1751943989;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=HLlpZlQCuvieBDTYAh0yn3A2ZMIv7ImHFoPGoZG0XdA=;
- b=P9+nIqkQxWs6kfeL4uE2kSUK08x9VCmTedNoSfuWRncM3kbp7/ntRPHw
- uay/UHjQtXGQxldOx2KWEVtLLY4MrdY5CK73RIqJon2Tl5ARk/bd7mT1U
- wN3EFsYeY7eex23PRIo3H2InbU/WymvpeW8ccIL7P291E9uFXEiHmm7Jt
- rg9KR4uuqujqA226cyhMH1pdrtkTmXAxemI4e+sz7mQpea9QSq26fjmzb
- 1A36XtyfFMpyNCu0IiOR8l6WacV8FBBzBtOOTCN78ts9Vk5HuFwoOi7Aq
- pUkqFuPBKcr9LaUu3trLcc+VoxQEj9LPXCov75oYp4LG0N8EnS0F9mVRJ A==;
-X-CSE-ConnectionGUID: x23BwWYVQXG2SHbgEenFkQ==
-X-CSE-MsgGUID: 3L1xfV68REm3qA/5C5i1CA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11126"; a="20495899"
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="20495899"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jul 2024 20:06:26 -0700
-X-CSE-ConnectionGUID: x4TWM8dPR4Clj70+Pxqpjg==
-X-CSE-MsgGUID: E3nijltTTLmaIkhw0abDuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="84906879"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 07 Jul 2024 20:06:25 -0700
-Date: Mon, 8 Jul 2024 11:22:03 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Xin Li (Intel)" <xin@zytor.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xin3.li@intel.com
-Subject: Re: [PATCH v1 1/1] target/i386: Add VMX entry load FRED control name
- to VMX feature words
-Message-ID: <ZotbW5wiO+ijQZCO@intel.com>
-References: <20240707181057.2793329-1-xin@zytor.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1sQezx-0006Co-RH
+ for qemu-devel@nongnu.org; Sun, 07 Jul 2024 23:25:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720409103;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jq3KstHEkI4aUdy/qYvuyyWx359jRQacLLdvvfJOsMo=;
+ b=FBSQVYDPtPYhW9U3YUWrqtXdMY62Z6Q4Ou4TLsk01CLl5uT040/I/RnH6gQEDzELncLecQ
+ qo+0rp9NOfmeStKSW11Wq8NMg4DrR+ViFDrKkTVeRmkPQki5BezjTsrZsSuYUftMYHZc/8
+ rKQF23aj5e8jYNGm0crqI/ur8LECQTQ=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-ISebJjahNbaAgLCV5EKTCA-1; Sun, 07 Jul 2024 23:25:02 -0400
+X-MC-Unique: ISebJjahNbaAgLCV5EKTCA-1
+Received: by mail-il1-f198.google.com with SMTP id
+ e9e14a558f8ab-38260829891so36508875ab.1
+ for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 20:25:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720409101; x=1721013901;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Jq3KstHEkI4aUdy/qYvuyyWx359jRQacLLdvvfJOsMo=;
+ b=bf8cD7goHg856NNexoKaYfCCBo6qIgMa2xGLzJLqmnmFkWpGZZ7gkdxKMbn9vdqDrx
+ WQB+0CBdYBJziXE1q302q91m+VXQNu2sabx8KFTLuGkLczzUnArdeC9SW9AioFnDvWNw
+ hZsFr5QM+6GStgSdEuiQ9Q4eVF0zK+rDEOnUAn4fY+mdybaxaMQhaHIoD7nhLEX7Zt3q
+ HXZpdjcgKYHCfbYk2idoDDGdUTMzRu5mAARYpgcaG+93wqHnrOPhI9S9KQroe27vBlkU
+ /fmgqxMOmPoDMGKKXVW0HvUJSw5QnoBV1usVh/HZrc41liGOf2otCI5hxE1nYS0gSUjK
+ DzXg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUt2S66v8KQWqWexfyHCrMezdtXGfxG/Iu+MR1wT7JDAA/O1AqPhXhZI6s1ZPwtU6CfexzOyb+MZo7v6wEVlooabtn3TqM=
+X-Gm-Message-State: AOJu0YxVMe1pc5B0qggUUQuo+Tn8GldNGN3wJE6h93YqLewGrfMZW4V7
+ bBUeJz5MDxXM1kcnIwYmmeKQ+TmKc0HpzHTsIy/pH57IBqc4IMlSJmF4nWeUnRfrBtMjxcnpysA
+ uvPl4Lg1oNyKFSsxi89wuL31hpgBx6AYkkAQWtgCegPbcIFEhIF64l6K4XfjcotzsNYZvq3VUAR
+ y08vjf6YChFp7mDfAlH7kpOPs+Pf0=
+X-Received: by 2002:a05:6e02:152b:b0:375:a15e:d28b with SMTP id
+ e9e14a558f8ab-38399874d44mr147825565ab.16.1720409101526; 
+ Sun, 07 Jul 2024 20:25:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEX7+QuL1xA2zsoHrV1FvzxRuSgAbrpJbUA509biH9ZsMEso5Un28+1uIIiyCVjJFmcn9rgxwpsG5IKQE1jyJw=
+X-Received: by 2002:a05:6e02:152b:b0:375:a15e:d28b with SMTP id
+ e9e14a558f8ab-38399874d44mr147825465ab.16.1720409101227; Sun, 07 Jul 2024
+ 20:25:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240707181057.2793329-1-xin@zytor.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20240708032112.796339-1-yi.l.liu@intel.com>
+In-Reply-To: <20240708032112.796339-1-yi.l.liu@intel.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 8 Jul 2024 11:24:48 +0800
+Message-ID: <CACGkMEtZ7yDzvGQOj9txFiYzaHgTtmHeeZmLH+uoxEBwkN0NDg@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Add myself as a VT-d reviewer
+To: Yi Liu <yi.l.liu@intel.com>
+Cc: mst@redhat.com, qemu-devel@nongnu.org, peterx@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,22 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jul 07, 2024 at 11:10:57AM -0700, Xin Li (Intel) wrote:
-> Date: Sun,  7 Jul 2024 11:10:57 -0700
-> From: "Xin Li (Intel)" <xin@zytor.com>
-> Subject: [PATCH v1 1/1] target/i386: Add VMX entry load FRED control name
->  to VMX feature words
-> X-Mailer: git-send-email 2.45.2
-> 
-> As VMX entry load FRED control is required to enable FRED in nested VMX,
-> add it to VMX feature words.
-> 
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+On Mon, Jul 8, 2024 at 11:21=E2=80=AFAM Yi Liu <yi.l.liu@intel.com> wrote:
+>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 > ---
->  target/i386/cpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6725913c8b..61724b91d8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3656,6 +3656,7 @@ F: tests/uefi-test-tools/
+>  VT-d Emulation
+>  M: Michael S. Tsirkin <mst@redhat.com>
+>  R: Jason Wang <jasowang@redhat.com>
+> +R: Yi Liu <yi.l.liu@intel.com>
+>  S: Supported
+>  F: hw/i386/intel_iommu.c
+>  F: hw/i386/intel_iommu_internal.h
+> --
+> 2.34.1
+>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+Thanks!
 
 
