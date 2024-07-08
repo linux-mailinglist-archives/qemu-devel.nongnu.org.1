@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3367C92A4D7
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 16:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD82092A4DB
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 16:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQpRz-0003uR-OE; Mon, 08 Jul 2024 10:34:43 -0400
+	id 1sQpRv-0003ck-Ra; Mon, 08 Jul 2024 10:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sQpRx-0003ky-B8
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:41 -0400
+ id 1sQpRs-0003Sq-UV
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:37 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sQpRv-0002S5-FL
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:41 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4687fTWl017381;
- Mon, 8 Jul 2024 14:34:28 GMT
+ id 1sQpRq-0002Sf-SF
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 10:34:36 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4687fSJj000593;
+ Mon, 8 Jul 2024 14:34:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=corp-2023-11-20; bh=q6Ez0xZHxRg1FF
- /hZauua3wWcqIUu0LYTtJOMldDReI=; b=jPbf+XOocBScXsNibQbXuBVoy2/mgL
- DqW/xOkjpKYPfDv7B7PNCPrl7byFdUCzZoGwOxkOzHcG5z+C0taObpEctW/EGQm7
- a32n5lEBd4R2IeA2orjZOxAT9kt+6Sl+dF2R99awGJOxiiR5CiUrLo8vtFG3lc1k
- wWWEUNF3uBolT0fLJf3vrqPp370wSeexqI081Wqxrt+jGJyQJJSgoifKOOZxQLH8
- 7jIcgqgDS/cLKsfvgEYZ+mxUpLWW96/k4MeiI8OqutPvSSqN/sCCFpaLxtO5QNxd
- W3aJyE3Z/zFfX0ItM1f+XkxiGAirL+Q0QauRzNs1GB2YPGyrr6vBlqCQ==
+ from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=I
+ 3o+Y3tPTDDhYqxDwGJca8lPCovvHqZ6UeePhw50hUk=; b=EhafbAVseaxrLbega
+ 5cBGAbzghb/IJsNxjXiqwy/5VJoQj8dtHp2jaDOyqGQkgjBtv7bapk1EKjAKa2xZ
+ 3GjR2+qqJhofQzSqzI8xKwPJLwe4pTmFwsYEBUWjw80K9rBM1nvVED7TW8tVSoxK
+ vpjylhqNYONSSEd1Qre0buM5Q7ikFf4hE9CkxuYi0xsAJbY+sDCgx8o6c8Ag1V8v
+ ZS46jTKqPZBEZjsBdNsXRm/YbhULBmisys2GdzBU/2wRzQytqcbdeoJ14PyastNg
+ /byHh9oAyV9QJk9B6Z/n3mNwzwMQUYecxW95vzpB2imTaVQaVDpr6jksnY3ZWZhN
+ ocZNw==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406wknjsqy-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406wkcas6m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jul 2024 14:34:28 +0000 (GMT)
+ Mon, 08 Jul 2024 14:34:31 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 468DSiKG007181; Mon, 8 Jul 2024 14:34:27 GMT
+ with ESMTP id 468D8MPC007177; Mon, 8 Jul 2024 14:34:31 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 407tu1r6p5-1
+ 407tu1r6rb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Jul 2024 14:34:27 +0000
+ Mon, 08 Jul 2024 14:34:31 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 468EXkZ3037381;
- Mon, 8 Jul 2024 14:34:27 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 468EXkZ5037381;
+ Mon, 8 Jul 2024 14:34:30 GMT
 Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-56-128.vpn.oracle.com
  [10.175.56.128])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 407tu1r6ms-1; Mon, 08 Jul 2024 14:34:26 +0000
+ 407tu1r6ms-2; Mon, 08 Jul 2024 14:34:30 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -59,21 +60,24 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v3 00/10] hw/vfio: IOMMUFD Dirty Tracking 
-Date: Mon,  8 Jul 2024 15:34:10 +0100
-Message-Id: <20240708143420.16953-1-joao.m.martins@oracle.com>
+Subject: [PATCH v3 01/10] vfio/iommufd: Don't fail to realize on
+ IOMMU_GET_HW_INFO failure
+Date: Mon,  8 Jul 2024 15:34:11 +0100
+Message-Id: <20240708143420.16953-2-joao.m.martins@oracle.com>
+In-Reply-To: <20240708143420.16953-1-joao.m.martins@oracle.com>
+References: <20240708143420.16953-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-08_09,2024-07-05_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxlogscore=999
+ mlxlogscore=824
  mlxscore=0 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2406180000 definitions=main-2407080109
-X-Proofpoint-GUID: w7N-0cgkbBfVgli3vK_4yhhFCRVWiP3-
-X-Proofpoint-ORIG-GUID: w7N-0cgkbBfVgli3vK_4yhhFCRVWiP3-
+X-Proofpoint-ORIG-GUID: fEVxUn7o1_-aHk7FTJgBBWixuUiUYYVu
+X-Proofpoint-GUID: fEVxUn7o1_-aHk7FTJgBBWixuUiUYYVu
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -98,107 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This small series adds support for IOMMU dirty tracking support via the
-IOMMUFD backend. The hardware capability is available on most recent x86
-hardware. The series is divided organized as follows:
+mdevs aren't "physical" devices and when asking for backing IOMMU info, it
+fails the entire provisioning of the guest. Fix that by filling caps info
+when IOMMU_GET_HW_INFO succeeds plus discarding the error we would get into
+iommufd_backend_get_device_info().
 
-* Patch 1: Fixes a regression into mdev support with IOMMUFD. This
-           one is independent of the series but happened to cross it
-           while testing mdev with this series
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com> 
+Fixes: 930589520128 ("vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler")
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+---
+ hw/vfio/iommufd.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-* Patch 2: Adds a support to iommufd_get_device_info() for capabilities
-
-* Patches 3 - 7: IOMMUFD backend support for dirty tracking;
-
-Introduce auto domains -- Patch 3 goes into more detail, but the gist is that
-we will find and attach a device to a compatible IOMMU domain, or allocate a new
-hardware pagetable *or* rely on kernel IOAS attach (for mdevs). Afterwards the
-workflow is relatively simple:
-
-1) Probe device and allow dirty tracking in the HWPT
-2) Toggling dirty tracking on/off
-3) Read-and-clear of Dirty IOVAs
-
-The heuristics selected for (1) were to always request the HWPT for
-dirty tracking if supported, or rely on device dirty page tracking. This
-is a little simplistic and we aren't necessarily utilizing IOMMU dirty
-tracking even if we ask during hwpt allocation.
-
-The unmap case is deferred until further vIOMMU support with migration
-is added[3] which will then introduce the usage of
-IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR in GET_DIRTY_BITMAP ioctl in the
-dma unmap bitmap flow.
-
-* Patches 8-10: Don't block live migration where there's no VF dirty
-tracker, considering that we have IOMMU dirty tracking.
-
-Comments and feedback appreciated.
-
-Cheers,
-    Joao
-
-P.S. Suggest linux-next (or future v6.11) as hypervisor kernel as there's
-some bugs fixed there with regards to IOMMU hugepage dirty tracking.
-
-Changes since RFCv2[4]:
-* Always allocate hwpt with IOMMU_HWPT_ALLOC_DIRTY_TRACKING even if
-we end up not actually toggling dirty tracking. (Avihai)
-* Fix error handling widely in auto domains logic and all patches (Avihai)
-* Reuse iommufd_backend_get_device_info() for capabilities (Zhenzhong)
-* New patches 1 and 2 taking into consideration previous comments.
-* Store hwpt::flags to know if we have dirty tracking (Avihai)
-* New patch 8, that allows to query dirty tracking support after
-provisioning. This is a cleaner way to check IOMMU dirty tracking support
-when vfio::migration is iniitalized, as opposed to RFCv2 via device caps.
-device caps way is still used because at vfio attach we aren't yet with
-a fully initialized migration state.
-* Adopt error propagation in query,set dirty tracking
-* Misc improvements overall broadly and Avihai
-* Drop hugepages as it's a bit unrelated; I can pursue that patch
-* separately. The main motivation is to provide a way to test
-without hugepages similar to what vfio_type1_iommu.disable_hugepages=1
-does.
-
-Changes since RFCv1[2]:
-* Remove intel/amd dirty tracking emulation enabling
-* Remove the dirtyrate improvement for VF/IOMMU dirty tracking
-[Will pursue these two in separate series]
-* Introduce auto domains support
-* Enforce dirty tracking following the IOMMUFD UAPI for this
-* Add support for toggling hugepages in IOMMUFD
-* Auto enable support when VF supports migration to use IOMMU
-when it doesn't have VF dirty tracking
-* Add a parameter to toggle VF dirty tracking
-
-[0] https://lore.kernel.org/qemu-devel/20240201072818.327930-1-zhenzhong.duan@intel.com/
-[1] https://lore.kernel.org/qemu-devel/20240201072818.327930-10-zhenzhong.duan@intel.com/
-[2] https://lore.kernel.org/qemu-devel/20220428211351.3897-1-joao.m.martins@oracle.com/
-[3] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
-[4] https://lore.kernel.org/qemu-devel/20240212135643.5858-1-joao.m.martins@oracle.com/
-
-Joao Martins (10):
-  vfio/iommufd: don't fail to realize on IOMMU_GET_HW_INFO failure
-  backends/iommufd: Extend iommufd_backend_get_device_info() to fetch HW capabilities
-  vfio/iommufd: Return errno in iommufd_cdev_attach_ioas_hwpt()
-  vfio/iommufd: Introduce auto domain creation
-  vfio/iommufd: Probe and request hwpt dirty tracking capability
-  vfio/iommufd: Implement VFIOIOMMUClass::set_dirty_tracking support
-  vfio/iommufd: Implement VFIOIOMMUClass::query_dirty_bitmap support
-  vfio/iommufd: Parse hw_caps and store dirty tracking support
-  vfio/migration: Don't block migration device dirty tracking is unsupported
-  vfio/common: Allow disabling device dirty page tracking
-
- include/hw/vfio/vfio-common.h      |  11 ++
- include/sysemu/host_iommu_device.h |   2 +
- include/sysemu/iommufd.h           |  12 +-
- backends/iommufd.c                 |  81 ++++++++++-
- hw/vfio/common.c                   |   3 +
- hw/vfio/iommufd.c                  | 217 +++++++++++++++++++++++++++--
- hw/vfio/migration.c                |   7 +-
- hw/vfio/pci.c                      |   3 +
- backends/trace-events              |   3 +
- 9 files changed, 325 insertions(+), 14 deletions(-)
-
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index c2f158e60386..a4d23f488b01 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -631,15 +631,13 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+ 
+     hiod->agent = opaque;
+ 
+-    if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
+-                                         &type, &data, sizeof(data), errp)) {
+-        return false;
++    if (iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
++                                         &type, &data, sizeof(data), NULL)) {
++        hiod->name = g_strdup(vdev->name);
++        caps->type = type;
++        caps->aw_bits = vfio_device_get_aw_bits(vdev);
+     }
+ 
+-    hiod->name = g_strdup(vdev->name);
+-    caps->type = type;
+-    caps->aw_bits = vfio_device_get_aw_bits(vdev);
+-
+     return true;
+ }
+ 
 -- 
 2.17.2
 
