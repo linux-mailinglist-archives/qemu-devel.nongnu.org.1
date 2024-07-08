@@ -2,69 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2646C929C0F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 08:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8843929C94
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 08:57:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQhi6-0000l3-O2; Mon, 08 Jul 2024 02:18:50 -0400
+	id 1sQiI1-0007pG-SH; Mon, 08 Jul 2024 02:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1sQhi3-0000jS-8V
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:18:48 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1sQhi0-000386-R0
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:18:47 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8DxvuvChItmmukBAA--.5714S3;
- Mon, 08 Jul 2024 14:18:42 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxosTBhItmjEk_AA--.3890S3; 
- Mon, 08 Jul 2024 14:18:41 +0800 (CST)
-Subject: Re: [PATCH v2 2/2] target/loongarch: Fix cpu_reset set wrong CSR_CRMD
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@linaro.org
-References: <20240705021839.1004374-1-gaosong@loongson.cn>
- <20240705021839.1004374-2-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <4f425499-dde1-9027-3fb6-66d30c59e5cf@loongson.cn>
-Date: Mon, 8 Jul 2024 14:18:41 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sQiI0-0007kc-7m
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:55:56 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sQiHw-0001mb-PV
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 02:55:55 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-767506e1136so1652500a12.0
+ for <qemu-devel@nongnu.org>; Sun, 07 Jul 2024 23:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1720421751; x=1721026551;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BLMHbOmO7rZB07rZm/JRygb1KSCUKZmhbVac63WlWq8=;
+ b=Qmwit1iBZlQTFpcf6jAQmDmsz7WTNL+PGkzXIf9/5yKpwh4D/KlHeLK8LFxscUwasR
+ XEF58IGm9HEWcxWljppz8wW+m5fNWBnRfIsyhNPuRztm88DJHs1++XSxk9UH7/si7196
+ GuTjzF4bK6mwkbSop3PY9eJ7FY9Fbgx5XyPj7ZaXL9jIajCjFeeCbsvwaGbfC8Aj/5BN
+ 52UYWgH4TzEVFk9hfRHIZcFWKmZUJg7kFzuDYEGrL0LgGoY7N7sCIN7yOWhXinnSCgDW
+ oKxEh+SYYReuZiIkPxcQ+2A8w+LJT7JADCXzkoYZN8byvz9eGSYPHaGI6eMeRYlwCHZy
+ kRXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720421751; x=1721026551;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BLMHbOmO7rZB07rZm/JRygb1KSCUKZmhbVac63WlWq8=;
+ b=s5ntcIDz257faZsLYuRp+2cEqBeuY66KaCUNdItvK8+Xh6l5dkA05cmLaTEIgVBvpv
+ fLFw4GGhrl6D6i5Ds7LocAU/v04itMvR0n09s2zAH6q7sy7lxdtgPU6fkEMmwas3qDFU
+ 6tQzPqMyNywq9xXdY244LbfemIBL9KQNhzdXIhRvQZ772eTAioEk4tV425zGzURL2Zij
+ n2wzz6aHj75geUCHHbV6PjucW9WFLRIJahJgVWDonPie0oMXffGktdSLwxPiAG1YaYDh
+ XynLTUHa4nQhdx4qTdqdowOTXpNAKnbbe1a9nXvNWEGbqW8QnOvnvJ27sE1mOK38EiG9
+ 3TJw==
+X-Gm-Message-State: AOJu0Yxcw1nfrny/CFSOzOCsU3JPIEfYfTVs79BvM55aDGeXRNbxQe86
+ L4juKdMD7WcRvDUBRB36rb/vZEFOFAoSPFsqhW9VcugpPrBvWnwNwmXJtgdt4VE=
+X-Google-Smtp-Source: AGHT+IGcU0uuqGQ/NDSbZyj838RXRnvxG4w/JAEUL06+/qPt3q4lUtlL1+8Nl5ZeuotEY4uOl1e47Q==
+X-Received: by 2002:a05:6a20:748e:b0:1c0:f283:c4ed with SMTP id
+ adf61e73a8af0-1c0f283c73bmr3369850637.28.1720421750829; 
+ Sun, 07 Jul 2024 23:55:50 -0700 (PDT)
+Received: from localhost ([157.82.204.135])
+ by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-70b0932343asm6523151b3a.141.2024.07.07.23.55.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 07 Jul 2024 23:55:50 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v3 0/9] Fix check-qtest-ppc64 sanitizer errors
+Date: Mon, 08 Jul 2024 15:55:11 +0900
+Message-Id: <20240708-san-v3-0-b03f671c40c6@daynix.com>
 MIME-Version: 1.0
-In-Reply-To: <20240705021839.1004374-2-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxosTBhItmjEk_AA--.3890S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Aw1xCr48Ar4xWr4DCr43XFc_yoW8Xw1Dpw
- 48CFWvyF4YqwsrA343WanxWw1kXryrGws7t3sxGF1jkrs8Xry0vFWkJr1xKr47Ar4fAFWx
- XrnrZrW5ZF45XFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UN
- vtZUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.599,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAE+Ni2YC/1XMTQ6CMBCG4auQWVsznRYQV97DuCj9kS4spjUNh
+ HB3C8ZEl99knneBZKO3Cc7VAtFmn/wYyhCHCvSgwt0yb8oGQpLYUM2SCgy7VjnlpOOaoHw+o3V
+ +2ivXW9mDT68xzns08+369c3uM2fInNBakkDip+5i1Bz8dNTjA7ZApl/UfhAV1NbY99jJxvTmD
+ 63r+gby7f3ZzAAAAA==
+To: Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,41 +108,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Based-on: <3ad18bc590ef28e1526e8053568086b453e7ffde.1718211878.git.quic_mathbern@quicinc.com>
+("[PATCH] cpu: fix memleak of 'halt_cond' and 'thread'")
 
+I saw various sanitizer errors when running check-qtest-ppc64. While
+I could just turn off sanitizers, I decided to tackle them this time.
 
-On 2024/7/5 上午10:18, Song Gao wrote:
-> After cpu_reset, DATF in CSR_CRMD is 0, DATM is 0.
-> See the manual[1] 6.4.
-> 
->    [1]: https://github.com/loongson/LoongArch-Documentation/releases/download/2023.04.20/LoongArch-Vol1-v1.10-EN.pdf
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index 55d468af3c..763cde41c3 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -523,13 +523,13 @@ static void loongarch_cpu_reset_hold(Object *obj, ResetType type)
->       env->fcsr0 = 0x0;
->   
->       int n;
-> -    /* Set csr registers value after reset */
-> +    /* Set csr registers value after reset, see the manual 6.4. */
->       env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, PLV, 0);
->       env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, IE, 0);
->       env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DA, 1);
->       env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, PG, 0);
-> -    env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DATF, 1);
-> -    env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DATM, 1);
-> +    env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DATF, 0);
-> +    env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DATM, 0);
->   
->       env->CSR_EUEN = FIELD_DP64(env->CSR_EUEN, CSR_EUEN, FPE, 0);
->       env->CSR_EUEN = FIELD_DP64(env->CSR_EUEN, CSR_EUEN, SXE, 0);
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Unfortunately, GLib does not free test data in some cases so some
+sanitizer errors remain. All sanitizer errors will be gone with this
+patch series combined with the following change for GLib:
+https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4120
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v3:
+- Added patch "memory: Clarify that we use owner's reference count".
+- Added patch "memory: Refer to docs/devel/memory.rst for 'owner'".
+- Fixed the message of patch
+  "memory: Do not create circular reference with subregion".
+- Dropped patch "cpu: Free cpu_ases" in favor of:
+  https://lore.kernel.org/r/20240607115649.214622-7-salil.mehta@huawei.com/
+  ("[PATCH V13 6/8] physmem: Add helper function to destroy CPU
+  AddressSpace")
+- Dropped patches "hw/ide: Convert macio ide_irq into GPIO line" and
+  "hw/ide: Remove internal DMA qemu_irq" in favor of commit efb359346c7a
+  ("hw/ide/macio: switch from using qemu_allocate_irq() to qdev input
+  GPIOs")
+- Dropped patch "hw/isa/vt82c686: Define a GPIO line between vt82c686
+  and i8259" in favor of:
+  https://patchew.org/QEMU/20240704205854.18537-1-shentey@gmail.com/
+  ("[PATCH 0/3] Resolve vt82c686 and piix4 qemu_irq memory leaks")
+- Dropped pulled patches.
+- Link to v2: https://lore.kernel.org/r/20240627-san-v2-0-750bb0946dbd@daynix.com
+
+Changes in v2:
+- Rebased to "[PATCH] cpu: fix memleak of 'halt_cond' and 'thread'".
+  (Philippe Mathieu-Daudé)
+- Converted IRQs into GPIO lines and removed one qemu_irq usage.
+  (Peter Maydell)
+- s/suppresses/fixes/ (Michael S. Tsirkin)
+- Corrected title of patch "hw/virtio: Free vqs after vhost_dev_cleanup()"
+  (was "hw/virtio: Free vqs before vhost_dev_cleanup()")
+- Link to v1: https://lore.kernel.org/r/20240626-san-v1-0-f3cc42302189@daynix.com
+
+---
+Akihiko Odaki (9):
+      spapr: Free stdout path
+      ppc/vof: Fix unaligned FDT property access
+      migration: Free removed SaveStateEntry
+      memory: Do not refer to "memory region's reference count"
+      memory: Refer to docs/devel/memory.rst for "owner"
+      memory: Clarify that owner may be missing
+      memory: Clarify owner must not call memory_region_ref()
+      memory: Do not create circular reference with subregion
+      tests/qtest: Delete previous boot file
+
+ include/exec/memory.h        | 22 +++++++---------------
+ hw/ppc/spapr_vof.c           |  2 +-
+ hw/ppc/vof.c                 |  2 +-
+ migration/savevm.c           |  2 ++
+ system/memory.c              | 11 +++++++++--
+ tests/qtest/migration-test.c | 18 +++++++++++-------
+ 6 files changed, 31 insertions(+), 26 deletions(-)
+---
+base-commit: f2cb4026fccfe073f84a4b440e41d3ed0c3134f6
+change-id: 20240625-san-097afaf4f1c2
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
