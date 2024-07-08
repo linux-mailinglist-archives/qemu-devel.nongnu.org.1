@@ -2,71 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6816892A761
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 18:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1148092A783
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 18:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQrJ3-0006Xv-De; Mon, 08 Jul 2024 12:33:37 -0400
+	id 1sQrQ2-0004VD-LQ; Mon, 08 Jul 2024 12:40:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sQrJ1-0006Vo-7C
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 12:33:35 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sQrPr-0004PR-00
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 12:40:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sQrIv-00056x-Qz
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 12:33:34 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sQrPj-0006fe-PT
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 12:40:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720456409;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=xi/RORaJtup4y0JQaoatG6EuvaPE+SuZE7eUqube6Kk=;
- b=LugnnCWgXWr8t8CpwNserPdh77xKb3vl1l/5fLfp2k25tmpbU66spsKOT54j4whQ20B09w
- j3rU1vI3OGOzcrFQkNgg/wRA4NuY0OZx5/zpBYllTbjXlSxsuqQdFHKoaglcP1AdofC3li
- +Jvlh0OS0nwYpZpbSvInOIpy4U06tU0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-336-OGGFO4DiOmCJxWJwSGIb6Q-1; Mon,
- 08 Jul 2024 12:33:25 -0400
-X-MC-Unique: OGGFO4DiOmCJxWJwSGIb6Q-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C5E219103CE; Mon,  8 Jul 2024 16:33:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.51])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9205A3000181; Mon,  8 Jul 2024 16:33:15 +0000 (UTC)
-Date: Mon, 8 Jul 2024 17:33:12 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ s=mimecast20190719; t=1720456830;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=82QSr8yMWdaSe+3MZ74RhaXd+PtGZ+J9sQJR79iB+lE=;
+ b=WFmmGOB794CVjTEL9Q/WmA1VMFYtDc2K6d9MfwQkKrvkrFPlxsP5xIJNqE82mUrb8iJZNP
+ E4MDeJoxSfICms3vMyTGU8iTNdqQOY9JP3crne84mcDtNz8wzoQ9s36mshlIIesyXifOfQ
+ nqMq7UQwpGRLL/b015/cVzIRDDUHZrM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-QmmdWftePE-yPAMcdiv9Pg-1; Mon, 08 Jul 2024 12:40:28 -0400
+X-MC-Unique: QmmdWftePE-yPAMcdiv9Pg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6b5dc283dcfso2169876d6.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 09:40:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720456828; x=1721061628;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=82QSr8yMWdaSe+3MZ74RhaXd+PtGZ+J9sQJR79iB+lE=;
+ b=hr5Jv3YwR5bqdtn+j10oB9gbehZunKuNhxNFa3Eto+FqZxDg0fAHhwLSL2DTRQXDSQ
+ UN0htYEsxiMaMFb/JHw5kVqEAHS9KXHnPg3q3cCjhqTYW/dmZk3bBxOw+mXFDfLBmv/B
+ byTNscp1uTX3bSPA+GU+n8SXet6S4XdlYYhPtCKyXjTHxwtAh5dITGZ51lMmAlg+Cul7
+ 6GGfnFvs6uJn5rJj2nNZSuElatAzvk3FDprcjv4Y4kRlcWGuGw9B6sf6zBm+DPiNav7z
+ ZC3BnA8NgOkq8nVJEiO5WdGVmRizH9vZOAQhc02ODDb3WXwJJfPpHxb3Mimlc0lYxOb5
+ QQhg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXlv2TfPniZ6RGDKgVu3qVc9ozG0n8hdFfeQdHR1Rre8U6gBEYpOmh9mjK2CRqI308dKaZaRpZzYCleLcRbOIpzkHSS7e0=
+X-Gm-Message-State: AOJu0YwZ7T8yhMwVGlDEEGktIXT6qCrq+dusv2KpuJuvsIHQ5lD9ha9Z
+ XlZejfzlQNaJhmNTlxazmNqvpahG8WW9avWZMCWIHYQmxATNZnQp5B7RE2OcTHpXxcqGRpkLUrd
+ BA1y0N6DLbu+6iQ4Kn7p42dU918S3a1J7I1BDcTNQHTCRlf8mancm
+X-Received: by 2002:ad4:4e02:0:b0:6b2:b53a:5ef3 with SMTP id
+ 6a1803df08f44-6b61c1b4c5cmr2433206d6.3.1720456827565; 
+ Mon, 08 Jul 2024 09:40:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGDi41IDyAmKj1ejW5sJeKc2k5FDuShvGEVfw0xk47bV5rseN4cyz/oGYSOj8hf/n7/E6bn8A==
+X-Received: by 2002:ad4:4e02:0:b0:6b2:b53a:5ef3 with SMTP id
+ 6a1803df08f44-6b61c1b4c5cmr2432886d6.3.1720456827098; 
+ Mon, 08 Jul 2024 09:40:27 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6b61ba8d8e1sm897826d6.124.2024.07.08.09.40.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jul 2024 09:40:26 -0700 (PDT)
+Date: Mon, 8 Jul 2024 12:40:23 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [RFC PATCH v4 0/7] Add Rust support, implement ARM PL011
-Message-ID: <ZowUyFX7zcK1FvuG@redhat.com>
-References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
- <8dfd1047-436d-4157-83cb-9cad399544fe@redhat.com>
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH v2 09/15] memory: Do not create circular reference with
+ subregion
+Message-ID: <ZowWd7VR56QkWH3g@x1n>
+References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
+ <20240627-san-v2-9-750bb0946dbd@daynix.com> <ZoQ8cCrPXgK8I6b6@x1n>
+ <84a7b513-228c-4c8e-8519-6ab465d4e8c8@daynix.com>
+ <f52c6660-3a1c-449e-93c0-07e4cefebef3@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8dfd1047-436d-4157-83cb-9cad399544fe@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f52c6660-3a1c-449e-93c0-07e4cefebef3@linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -74,7 +102,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,80 +115,215 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 08, 2024 at 06:26:22PM +0200, Paolo Bonzini wrote:
-> On 7/4/24 14:15, Manos Pitsidianakis wrote:
-> > Changes from v3->v4:
-> > - Add rust-specific files to .gitattributes
-> > - Added help text to scripts/cargo_wrapper.py arguments (thanks Stephan)
-> > - Split bindings separate crate
-> > - Add declarative macros for symbols exported to QEMU to said crate
-> > - Lowered MSRV to 1.77.2
-> > - Removed auto-download and install of bindgen-cli
-> > - Fixed re-compilation of Rust objects in case they are missing from
-> >    filesystem
-> > - Fixed optimized builds by adding #[used] (thanks Pierrick for the help
-> >    debugging this)
+On Mon, Jul 08, 2024 at 10:06:44AM +0200, Philippe Mathieu-Daudé wrote:
+> On 6/7/24 13:59, Akihiko Odaki wrote:
+> > On 2024/07/03 2:44, Peter Xu wrote:
+> > > On Thu, Jun 27, 2024 at 10:37:52PM +0900, Akihiko Odaki wrote:
+> > > > A memory region does not use their own reference counters, but instead
+> > > > piggybacks on another QOM object, "owner" (unless the owner is not the
+> > > > memory region itself). When creating a subregion, a new reference to the
+> > > > owner of the container must be created. However, if the subregion is
+> > > > owned by the same QOM object, this result in a self-reference, and make
+> > > > the owner immortal. Avoid such a self-reference.
+> > > > 
+> > > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > > > ---
+> > > >   system/memory.c | 11 +++++++++--
+> > > >   1 file changed, 9 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/system/memory.c b/system/memory.c
+> > > > index 74cd73ebc78b..949f5016a68d 100644
+> > > > --- a/system/memory.c
+> > > > +++ b/system/memory.c
+> > > > @@ -2638,7 +2638,10 @@ static void
+> > > > memory_region_update_container_subregions(MemoryRegion
+> > > > *subregion)
+> > > >       memory_region_transaction_begin();
+> > > > -    memory_region_ref(subregion);
+> > > > +    if (mr->owner != subregion->owner) {
+> > > > +        memory_region_ref(subregion);
+> > > > +    }
+> > > > +
+> > > >       QTAILQ_FOREACH(other, &mr->subregions, subregions_link) {
+> > > >           if (subregion->priority >= other->priority) {
+> > > >               QTAILQ_INSERT_BEFORE(other, subregion, subregions_link);
+> > > > @@ -2696,7 +2699,11 @@ void
+> > > > memory_region_del_subregion(MemoryRegion *mr,
+> > > >           assert(alias->mapped_via_alias >= 0);
+> > > >       }
+> > > >       QTAILQ_REMOVE(&mr->subregions, subregion, subregions_link);
+> > > > -    memory_region_unref(subregion);
+> > > > +
+> > > > +    if (mr->owner != subregion->owner) {
+> > > > +        memory_region_unref(subregion);
+> > > > +    }
+> > > > +
+> > > >       memory_region_update_pending |= mr->enabled && subregion->enabled;
+> > > >       memory_region_transaction_commit();
+> > > >   }
+> > > 
+> > > This does look like a real issue.. the patch looks reasonable to me,
+> > > but I
+> > > wonder whether we should start to add some good comments in code to
+> > > reflect
+> > > that complexity starting from this one.  The MR refcount isn't easy to
+> > > understand to me.
+> > > 
+> > > It also lets me start to wonder how MR refcount went through until
+> > > it looks
+> > > like today..  It's definitely not extremely intuitive to use mr->owner as
+> > > the object to do refcounting if mr itself does has its own QObject,
+> > > meanwhile it has other tricks around.
+> > > 
+> > > E.g. the first thing I stumbled over when looking was the optimization
+> > > where we will avoid refcounting the mr when there's no owner, and IIUC it
+> > > was for the case when the "guest memory" (which will never be freed) used
+> > > to have no owner so we can speedup DMA if we know it won't go away.
+> > > 
+> > > https://lore.kernel.org/qemu-devel/1450263601-2828-5-git-send-email-pbonzini@redhat.com/
+> > > 
+> > > commit 612263cf33062f7441a5d0e3b37c65991fdc3210
+> > > Author: Paolo Bonzini <pbonzini@redhat.com>
+> > > Date:   Wed Dec 9 11:44:25 2015 +0100
+> > > 
+> > >      memory: avoid unnecessary object_ref/unref
+> > >      For the common case of DMA into non-hotplugged RAM, it is
+> > > unnecessary
+> > >      but expensive to do object_ref/unref.  Add back an owner field to
+> > >      MemoryRegion, so that these memory regions can skip the reference
+> > >      counting.
+> > > 
+> > > If so, it looks like it will stop working with memory-backends get
+> > > involved?  As I think those MRs will have owner set always, and I wonder
+> > > whether memory-backends should be the major way to specify guest
+> > > memory now
+> > > and in the future.  So I'm not sure how important that optimization is as
+> > > of now, and whether we could "simplify" it back to always do the refcount
+> > > if the major scenarios will not adopt it.
+> > > 
+> > > The other issue is we used owner refcount from the start of
+> > > memory_region_ref() got introduced, since:
+> > > 
+> > > commit 46637be269aaaceb9867ffdf176e906401138fff
+> > > Author: Paolo Bonzini <pbonzini@redhat.com>
+> > > Date:   Tue May 7 09:06:00 2013 +0200
+> > > 
+> > >      memory: add ref/unref
+> > > 
+> > > And we still have that in our document, even though I don't think
+> > > it's true
+> > > anymore:
+> > > 
+> > >   * ...  MemoryRegions actually do not have their
+> > >   * own reference count; they piggyback on a QOM object, their "owner".
+> > >   * This function adds a reference to the owner.
+> > > 
+> > > It looks like what happened is when introduced the change, MR is not
+> > > a QOM
+> > > object yet.  But it later is..
+> > > 
+> > > I mentioned all these only because I found that _if_ we can keep mr
+> > > refcounting as simple as other objects:
+> > > 
+> > > memory_region_ref(mr)
+> > > {
+> > >      object_ref(OBJECT(mr));
+> > > }
+> > > 
+> > > Then looks like this "recursive refcount" problem can also go away.  I'm
+> > > curious whether you or anyone tried to explore that path, or whether
+> > > above
+> > > doesn't make sense at all.
+> > 
+> > It unfortunately does not solve the problem.
+> > 
+> > The underlying problem is that the whole device must be kept alive while
+> > its memory region are. Indeed MemoryRegions do have refcounts, but
+> > incrementing them do not extend the lifetime of the devices (i.e., the
+> > owners). The refcount of the owners must be incremented for correctness.
+> > 
+> > Referencing a subregion MemoryRegion from its container MemoryRegion
+> > owned by the same device is an exceptional case. Incrementing the
+> > refcount of the owner extends the owner's lifetime to forever.
 > 
-> I think the largest issue is that I'd rather have a single cargo build using
-> a virtual manifest, because my hunch is that it'd be the easiest path
-> towards Kconfig integration.  But it's better to do this after merge, as the
-> changes are pretty large.  It's also independent from any other changes
-> targeted at removing unsafe code, so no need to hold back on merging.
+> Is it really an exceptional case?
 > 
-> Other comments I made that should however be addressed before merging, from
-> most to least important:
+> What I'm seeing are a lot of devices creating MR and never bother
+> to destroy them, so indeed owner (device) refcount never reaches 0.
 > 
-> - TODO comments when the code is doing potential undefined behavior
-> 
-> - module structure should IMO resemble the C part of the tree
-> 
-> - only generate bindings.rs.inc once
-> 
-> - a couple abstractions that I'd like to have now: a trait to store the CStr
-> corresponding to the structs, and one to generate all-zero structs without
-> having to type "unsafe { MaybeUninit::zeroed().assume_init() }"
-> 
-> - I pointed out a couple lints that are too broad and should be enabled
-> per-file, even if right now it's basically all files that include them.
-> 
-> - add support for --cargo and CARGO environment variables (if my patch works
-> without too much hassle)
-> 
-> - I'd like to use ctor instead of non-portable linker magic, and the cstr
-> crate instead of CStr statics or c""
-> 
-> - please check if -Wl,--whole-archive can be replaced with link_whole:
-> 
-> - probably, until Rust is enabled by default we should treat dependencies as
-> a moving target and not commit Cargo.lock files.  In the meanwhile we can
-> discuss how to handle them.
-> 
-> And a few aesthetic changes on top of this.
+> Most of the time when we create MR in .instance_init/.realize,
+> we neglect to implement the undo path (.instance_finalize or
+> .unrealize).
 
-This series is still missing changes to enable build on all targets
-during CI, including cross-compiles, to prove that we're doing the
-correct thing on all our targetted platforms. That's a must have
-before considering it suitable for merge.
+Right.  The cross-reference of MR <-> device makes sense from the concept
+level, but I'm not sure how much we rely on that from QEMU perspective
+currently.  It complicates refcount and looks like it needs some thoughts.
 
-I also believe we should default to enabling rust toolchain by
-default in configure, and require and explicit --without-rust
-to disable it, *despite* it not technically being a mandatory
-feature....yet.
+One proof is, when I replied I actually tested all qemu qtests with below
+patch and nothing yet explode:
 
-This is to give users a clear message that Rust is likely to
-become a fundamental part of QEMU, so they need to give feedback
-if they hit any problems / have use cases we've not anticipated
-that are problematic wrt Rust.
+===8<===
+diff --git a/system/memory.c b/system/memory.c
+index 2d69521360..a1d2c1f808 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1801,26 +1801,12 @@ Object *memory_region_owner(MemoryRegion *mr)
+ 
+ void memory_region_ref(MemoryRegion *mr)
+ {
+-    /* MMIO callbacks most likely will access data that belongs
+-     * to the owner, hence the need to ref/unref the owner whenever
+-     * the memory region is in use.
+-     *
+-     * The memory region is a child of its owner.  As long as the
+-     * owner doesn't call unparent itself on the memory region,
+-     * ref-ing the owner will also keep the memory region alive.
+-     * Memory regions without an owner are supposed to never go away;
+-     * we do not ref/unref them because it slows down DMA sensibly.
+-     */
+-    if (mr && mr->owner) {
+-        object_ref(mr->owner);
+-    }
++    object_ref(OBJECT(mr));
+ }
+ 
+ void memory_region_unref(MemoryRegion *mr)
+ {
+-    if (mr && mr->owner) {
+-        object_unref(mr->owner);
+-    }
++    object_unref(OBJECT(mr));
+ }
+===8<===
 
-With regards,
-Daniel
+I'm not sure how much it covers dynamic destruction of devices, though,
+where the device creates internal MRs to the guest address space.  I'm
+actually wondering whether we have other barriers already to avoid having
+any MR ops being invoked if a device was removed.
+
+So I think above indeed would remove the cross-ref we used to have. It
+might be a matter of whether that's fine for now to fix the cyclic ref
+issue alone, and even if we still want some cross-ref.. whether we should
+do it the old way.  I mean, the cross-ref can also be done in other forms,
+and it may not block MR has its own refcounts.
+
+Even if we want to have dev<->MR refcount, I wonder whether we should avoid
+having MR refcount the device, because it looks like "sub-object refs the
+parent" which sounds like a good source of cyclic refcount issue.  I wonder
+whether device should ref the MR instead (when MR is dynamically created; I
+am not sure whether we even need that if in Phil's comment where the MR
+object is a sub-struct-field of the Device object).  Then the device can
+provide a proper destroy() function to release the MRs under it, perhaps by
+disabling them first (then any ops should already fail after that), then
+unref the MRs with the hope that they're the last ref holder then MRs
+destroys there too.
+
+Thanks,
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
