@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D330F92A398
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 15:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2A292A281
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Jul 2024 14:21:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sQoLm-00024E-ES; Mon, 08 Jul 2024 09:24:14 -0400
+	id 1sQnL5-0001gc-3Y; Mon, 08 Jul 2024 08:19:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <halouworls@gmail.com>)
- id 1sQmUq-0000ZJ-NP
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 07:25:28 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sQnKu-0001d1-VS
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 08:19:18 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <halouworls@gmail.com>)
- id 1sQmUp-0005R5-3W
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 07:25:28 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-70b0bc1ef81so1617147b3a.1
- for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 04:25:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sQnKp-0001Tn-8I
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 08:19:14 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-707040e3017so2534041a12.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 05:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720437924; x=1721042724; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1720441144; x=1721045944; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=nCGoD0xBJw98jcj6O8YNShoey7vZZpF+2IbEsXyWDKk=;
- b=U7Rmt7UTub6b1WtUyIW3NIbv7rXYkz0t9+IbeKVJAJMB2ZMx+cRF7BANEuQPmylfmh
- vu7s+0k/RwpmgI37vi/MoqslGzC3iypcXYFqUUMwWIDDt2yhHwd8znFwT/pKppqjw/Xw
- ESbtDsaFzphsPHwzN20xkIuEdxeI8LTdypbMsdiXK5QYiN1k2fuq0rAcDETI3R+k0g4E
- JixYZOa3g5Nh6V8lU3mEVndL73e7kbF2XLJkzowa5U/Qqth5QbTALglRlVk1vjSXFDhu
- fhJ3pGhmInICelqG+d4dPuw6my+AvvsmueUhU/jaIJVQHmoEZCah+gbQuaeBaeIxVDu6
- Cupw==
+ bh=tSEhHjiskCQhJXGxGcGe0FFAr/6d1dYEoUj2mKF099s=;
+ b=WzNGCHW26MiRlgcS9AIMf6f6TS3ZUS8THS+JpYhj5sCV+7Tm2slvGvo1JQhtJKdRE5
+ RGLOT28ruyaf4F+fF6bjarASmYldj+eqZ4EJJxkvr5nIzZcXKfEVUOQ4WF2IQ7NRdluA
+ 2oUj5SbQ4I29rl5J+0TS6RWvqnqrkMEJFGemR/DsIQauayRWTgWLLHasv8V4HSzMMC6Q
+ 0NYhHQQMnUgclSNvivMIJCpr4Y3nvG3QbUqKIb0KK7HbuRGj23+h4iOb3esnpwggcOJe
+ o+4gTzMZjlsY11SngJ6DFNYc9d+V9xJGQQtddvGPZRaDowxdfVyuo9Gw7tVT17rPGiQK
+ OdDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720437924; x=1721042724;
+ d=1e100.net; s=20230601; t=1720441144; x=1721045944;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nCGoD0xBJw98jcj6O8YNShoey7vZZpF+2IbEsXyWDKk=;
- b=gLfLYcd2v3xuQIur0IRLs3z4/TIEnMdPFR3o0kP5XRrIvLNfxlbZhQt+gmrZMGzwdx
- yHRkrMF6baORXvFRqmuptovRc+rcvHX6y5TKoBJTSG6I5OW42mzD7kHVRre1N73ZJbCk
- 55fjrxzK9CLitltKLM2iIxMMjx7SsiZmLW5vcgcLOQkV17NQWfsLsCCyEMPPgQ4bHwr0
- eS1S747UG8YMak8nV8fMth7sNwtcu4C8xv9hCARnOHtmJUUM3Kfp617DKx29RM0+g1cN
- dg8y39sJUhk7fr6L05R5NDg4+dbzRXzxarLDH6szUmZjOXTP0DlZwzv5KCnTLz4LATcv
- 8cvg==
-X-Gm-Message-State: AOJu0YytVc2HysZNOZ6TRW8NommTWX0vEKRoVPm59aM7bo2DBRdmQigk
- 8qn6oTFXVAm21PWcH6zbkJ62DzGujZDuF34XAxfOUEwlsWX+wQfPlr5H1/lSBVc=
-X-Google-Smtp-Source: AGHT+IGnF+17yFBxgPVis7cdLBwxrh20nJu5+QF2M3YIJ2qzfwAMcnw55tgQhrq9+VvYjJkpK8zlxw==
-X-Received: by 2002:a05:6a20:2586:b0:1c0:f23b:cad3 with SMTP id
- adf61e73a8af0-1c0f23bcbd2mr2265437637.22.1720437923574; 
- Mon, 08 Jul 2024 04:25:23 -0700 (PDT)
-Received: from VM-0-25-fedora.. ([119.28.53.59])
- by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-1fb1a075616sm94462495ad.15.2024.07.08.04.25.22
+ bh=tSEhHjiskCQhJXGxGcGe0FFAr/6d1dYEoUj2mKF099s=;
+ b=jLNtbD/7WYJZGHIHWRkwPNoBn0DZyJaj1NKfcjpAfLMn/sdw7fT3/a5B0ArkPerzFj
+ C7OfY4tgXrkl1KR+uPHR76O6Di9HAPlVkPwLtdm0sc/gGBcRWpK5dIIOypPhQ7TXsuMm
+ FXNk762zde5sy5nVXZSS0goOnl8Szbewz5B7tA4S4H/q48YSYtAyn+WoUAlAcNehJ0WK
+ oQX7ud9mq0Pu90t9UeiEX6fgSHVNK3TQ5C1qEaCXUe+ekj1AbwFAFVtaZ9XvMK5WUx6e
+ POScVkBvDSdYMa8YO1cF3CqZHvqJ6ehIBqOvHyK8AqS2iAP6Dqti0SA7QuK1z5lok/HQ
+ ET1w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV7r9VODyTk76nFsxpUbXmQpntDQd9kMPdd7dIbcBLF3jjlB/IBNndoVvdnsvAxflW6M79d34t9QcmZ+N8eZ35Ka+xzS8M=
+X-Gm-Message-State: AOJu0Yxp3r6COTH47j/Ct7JR4/8Oln/Dfl/KzExloxiyhz6IP97/eROK
+ JM3gXw5WEa1lVhYbYserEYK+g0Pn28PzUM7yGJEFxn9zjqBE6oEd/J3kkKwPz4Q=
+X-Google-Smtp-Source: AGHT+IHt06xSizbOFVqsq5KMqUQ5cxHsJi9C26b8mKjUJdIhVloQd0edLBll3CHtbismJpNaYMxsLQ==
+X-Received: by 2002:a05:6a20:3d87:b0:1c2:93a7:2557 with SMTP id
+ adf61e73a8af0-1c293a727b5mr92640637.48.1720441144248; 
+ Mon, 08 Jul 2024 05:19:04 -0700 (PDT)
+Received: from n37-006-243.byted.org ([180.184.49.4])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fb4fa258f7sm56587195ad.169.2024.07.08.05.19.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jul 2024 04:25:23 -0700 (PDT)
-From: junjiehua <halouworls@gmail.com>
-X-Google-Original-From: junjiehua <junjiehua@tencent.com>
-To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Viktor Prutyanov <viktor.prutyanov@phystech.edu>,
- junjiehua <junjiehua@tencent.com>
-Subject: [PATCH] contrib/elf2dmp: a workaround for the buggy msvcrt.dll!fwrite
-Date: Mon,  8 Jul 2024 19:25:20 +0800
-Message-ID: <20240708112520.106127-1-junjiehua@tencent.com>
-X-Mailer: git-send-email 2.45.2
+ Mon, 08 Jul 2024 05:19:03 -0700 (PDT)
+From: Changqi Lu <luchangqi.123@bytedance.com>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
+ kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
+ pizhenwei@bytedance.com, Changqi Lu <luchangqi.123@bytedance.com>
+Subject: [PATCH v8 00/10] Support persistent reservation operations
+Date: Mon,  8 Jul 2024 20:18:44 +0800
+Message-Id: <20240708121854.1318876-1-luchangqi.123@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=halouworls@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 08 Jul 2024 09:24:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,58 +94,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-when building elf2dump with x86_64-w64-mingw32-gcc, fwrite is imported from
-msvcrt.dll. However, the implementation of msvcrt.dll!fwrite is buggy:
-it enters an infinite loop when the size of a single write exceeds 4GB.
-This patch addresses the issue by splitting large physical memory
-blocks into smaller chunks.
+Stefan, the issue you mentioned has been fixed.
 
-Signed-off-by: junjiehua <junjiehua@tencent.com>
----
- contrib/elf2dmp/main.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+Almost all patches have been reviewed, thank you very much
+to Stefan and Klaus.
 
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index d046a72ae6..1994553d95 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -23,6 +23,8 @@
- #define INITIAL_MXCSR   0x1f80
- #define MAX_NUMBER_OF_RUNS  42
- 
-+#define MAX_CHUNK_SIZE (128 * 1024 * 1024)
-+
- typedef struct idt_desc {
-     uint16_t offset1;   /* offset bits 0..15 */
-     uint16_t selector;
-@@ -434,13 +436,22 @@ static bool write_dump(struct pa_space *ps,
- 
-     for (i = 0; i < ps->block_nr; i++) {
-         struct pa_block *b = &ps->block[i];
-+        size_t offset = 0;
-+        size_t chunk_size;
- 
-         printf("Writing block #%zu/%zu of %"PRIu64" bytes to file...\n", i,
-                 ps->block_nr, b->size);
--        if (fwrite(b->addr, b->size, 1, dmp_file) != 1) {
--            eprintf("Failed to write block\n");
--            fclose(dmp_file);
--            return false;
-+
-+        while (offset < b->size) {
-+            chunk_size = (b->size - offset > MAX_CHUNK_SIZE)
-+                         ? MAX_CHUNK_SIZE
-+                         : (b->size - offset);
-+            if (fwrite(b->addr + offset, chunk_size, 1, dmp_file) != 1) {
-+                eprintf("Failed to write block\n");
-+                fclose(dmp_file);
-+                return false;
-+            }
-+            offset += chunk_size;
-         }
-     }
- 
+
+v7->v8:
+- Fix num_keys may be less than 0 at scsi_pr_read_keys_complete().
+- Fix buf memory leak at iscsi driver.
+
+v6->v7:
+- Add buferlen size check at SCSI layer.
+- Add pr_cap calculation in bdrv_merge_limits() function at block layer,
+  so the ugly bs->file->bs->bl.pr_cap in scsi and nvme layers was
+  changed to bs->bl.pr_cap.
+- Fix memory leak at iscsi driver, and some other spelling errors.
+
+v5->v6:
+- Add relevant comments in the io layer.
+
+v4->v5:
+- Fixed a memory leak bug at hw/nvme/ctrl.c.
+
+v3->v4:
+- At the nvme layer, the two patches of enabling the ONCS
+  function and enabling rescap are combined into one.
+- At the nvme layer, add helper functions for pr capacity
+  conversion between the block layer and the nvme layer.
+
+v2->v3:
+In v2 Persist Through Power Loss(PTPL) is enable default.
+In v3 PTPL is supported, which is passed as a parameter.
+
+v1->v2:
+- Add sg_persist --report-capabilities for SCSI protocol and enable
+  oncs and rescap for NVMe protocol.
+- Add persistent reservation capabilities constants and helper functions for
+  SCSI and NVMe protocol.
+- Add comments for necessary APIs.
+
+v1:
+- Add seven APIs about persistent reservation command for block layer.
+  These APIs including reading keys, reading reservations, registering,
+  reserving, releasing, clearing and preempting.
+- Add the necessary pr-related operation APIs for both the
+  SCSI protocol and NVMe protocol at the device layer.
+- Add scsi driver at the driver layer to verify the functions
+
+
+Changqi Lu (10):
+  block: add persistent reservation in/out api
+  block/raw: add persistent reservation in/out driver
+  scsi/constant: add persistent reservation in/out protocol constants
+  scsi/util: add helper functions for persistent reservation types
+    conversion
+  hw/scsi: add persistent reservation in/out api for scsi device
+  block/nvme: add reservation command protocol constants
+  hw/nvme: add helper functions for converting reservation types
+  hw/nvme: enable ONCS and rescap function
+  hw/nvme: add reservation protocal command
+  block/iscsi: add persistent reservation in/out driver
+
+ block/block-backend.c             | 403 ++++++++++++++++++++++++++++
+ block/io.c                        | 164 ++++++++++++
+ block/iscsi.c                     | 425 ++++++++++++++++++++++++++++++
+ block/raw-format.c                |  56 ++++
+ hw/nvme/ctrl.c                    | 326 ++++++++++++++++++++++-
+ hw/nvme/ns.c                      |   5 +
+ hw/nvme/nvme.h                    |  88 +++++++
+ hw/scsi/scsi-disk.c               | 368 ++++++++++++++++++++++++++
+ include/block/block-common.h      |  40 +++
+ include/block/block-io.h          |  20 ++
+ include/block/block_int-common.h  |  84 ++++++
+ include/block/nvme.h              | 100 ++++++-
+ include/scsi/constants.h          |  52 ++++
+ include/scsi/utils.h              |   8 +
+ include/sysemu/block-backend-io.h |  24 ++
+ scsi/utils.c                      |  81 ++++++
+ 16 files changed, 2241 insertions(+), 3 deletions(-)
+
 -- 
-2.45.2
+2.20.1
 
 
