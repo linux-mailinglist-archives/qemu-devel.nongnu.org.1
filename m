@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D13B92BBAD
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 15:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08D292BC03
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 15:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRB9v-0001po-Ka; Tue, 09 Jul 2024 09:45:31 -0400
+	id 1sRBGU-0004yV-4u; Tue, 09 Jul 2024 09:52:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRB9m-0001gZ-Tw
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 09:45:24 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRBGS-0004sX-36
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 09:52:16 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRB9Z-0002Ic-BX
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 09:45:20 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-426526d30aaso28645745e9.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 06:45:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRBGQ-0003gP-Ba
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 09:52:15 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4267300145eso6831525e9.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 06:52:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720532707; x=1721137507; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6Dy9tTmWCONrl3V4OHSFlfMTEYKzq0YJeFJJEkMNS3s=;
- b=alWsvwfhzHnK2URrWjrt8vbIVzzFbZM9aBR8ufViCm4XnoxDUoDTBHR19/R6xIhjHd
- T/P0aaGy9r7Nt+pMGTCsdihfNQuxq0P2Kntu/XLzufb+7wta7J7LCy4ka1HFcAxHhjU6
- oKjTkUaJ8NeaylYWs7uKQbp+w/TIT6ixi7pt9Q7b3R9SpumbgHH2Jid0pH3HYA3B0tKh
- W0rtYY+1PBNL5lLk5wgZJnHX54Jyjm2F2baqBKgi8wd1e6pI4cqECHm34DXmll1W3l6c
- bKxo4ouiZUUVcOsaSTcy7fbH1l1CK3ix6DchyxXrD/sHIM5/YOikCux4+EfVs26kG58W
- eZ1g==
+ d=linaro.org; s=google; t=1720533132; x=1721137932; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=v4oSgC3bB0kwhJ+sldQulWyG3JEUhm8BrV94K6ASACA=;
+ b=iYjNOKpA76CSl1ynutlOVzlRZ5xl7r5Nzu+goiUAi0EPOCyiCu8ZUGtYfDZ+eXbJcA
+ 2RqruUoioDUf1BNRCwVcvTdEyg2rw6e5f0rX3a+T2MpHMuMFckyI6o+vX21ddmSk3iDC
+ JOhGGH6roLNsw0RUijVCBa4W5AdAqnHQxlo+SD0OrvySIhETJU/KOtpV0vT+RSjvryHX
+ l1xxLIgs/lw9HUTwzpxBgcxOvckgDugzbnMVr4Fdgfd4PqLbCmSwZiNNLriwogdEI2TW
+ fKHBYqZKHN6QjLyCSwq/LjvI3E5vowlt8pX+AlYyO4zVuC7+y+z8h02JseM7X1ubZNwI
+ VP4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720532707; x=1721137507;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6Dy9tTmWCONrl3V4OHSFlfMTEYKzq0YJeFJJEkMNS3s=;
- b=E+QEiQ5vaMT2AB3MAmvdVcG9IovBPAIoDIYplWKbHRmfMhnXdNP095WBpZRPid43KD
- h0j2H3fxExaqqTc3Lf+zbZAVCd6lqXl6XOIbPPxahQyOoRLG9ufxpuW0GShC/AOBMPqy
- DwBnsyBAkxkDfc4QbxpoGrPI2xikaGaWeLxoBLAh/+D6Gsd5vr9F/+S5L7hMuytiq+BJ
- DQNkb8UVWXpwocODaWoXYtgEzvFivza8zlK6dETLov50bL92pg1nv2d0OjIN5aR5j+fX
- LCG2COaRfiIO89abctaZV6puDCs3fkjfV0of/G84XKvYpHrRcam3pRbmU0gnJBTV4oVC
- e0AQ==
+ d=1e100.net; s=20230601; t=1720533132; x=1721137932;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=v4oSgC3bB0kwhJ+sldQulWyG3JEUhm8BrV94K6ASACA=;
+ b=VYDo2d96RuuPZsvOioceLndiC8XnRrIZFPxSsI0WEkA+/wDsEZLRI+QcCPVlaS14jM
+ ojpZhlz3CMzOGHG06WUpWsH50BcjZl8Z7uVlHkaNktAiVYgoEQhxu4Vms+pYK/WrTFdx
+ pHp/aGbvKKCCTShHh16RJW4DscMHV0cWRE4vsXcMGm2PbuTzkUuVOasi+ZXStwXUk8JF
+ Sa5X8U41pulywDAEx3tybh/om/fFRT/LO9qirogREZ8Z6xBf8dpDLY+1FaBVag/rx3cu
+ sLvYrEJmM+0n+e/hWByq95PsfN/SL5zzkrYwbe5Nz5/ZpwEdRMboImg5WMI2xSX3lfht
+ sqDg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVoptHHpOJjI0rmWiWbJ/+rDsN7V5qpp5d2qGX1Hb2zVh2Dqy7scSV3RIkviypBmaeuQJOHH9pRnr/g/4BdSV3nko0DSY8=
-X-Gm-Message-State: AOJu0Yy4rAz6q5BPd1WJUOmVJeN9D9F4eVbb1tCZQVwDP7x+nenP+QcR
- H3BcuYY6lFMdAMyZ2i3HWnnfEwMCMsg4rq+eOo36GeRsFgo+pt8BqjrYnh1wbZS6kAJisJAKrTe
- xpOQ=
-X-Google-Smtp-Source: AGHT+IEp/dMayW4UQ93nGxgYCGP/0yh3e/c0RnkuTfvSS5LZbFcCO6nfLd53cOiNVs7nQj1t+qdwYQ==
-X-Received: by 2002:a05:600c:4a98:b0:426:64a2:5362 with SMTP id
- 5b1f17b1804b1-426707cf1bdmr19111725e9.8.1720532706866; 
- Tue, 09 Jul 2024 06:45:06 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1f22acsm210426605e9.24.2024.07.09.06.45.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jul 2024 06:45:06 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 2/2] target/arm: LDAPR should honour SCTLR_ELx.nAA
-Date: Tue,  9 Jul 2024 14:45:04 +0100
-Message-Id: <20240709134504.3500007-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240709134504.3500007-1-peter.maydell@linaro.org>
-References: <20240709134504.3500007-1-peter.maydell@linaro.org>
+ AJvYcCWlMQuFEs9a+LP8MIiMTx03sQeYXRFrn3MJURdRCZAPmoz/2do3xX7M+GpeTzHrVbGqKl00blDmBIuhrL5+QcQttjN+APY=
+X-Gm-Message-State: AOJu0Ywbj7aQF1xuslKsnJHhRnZZViHdWstCYhDAm3K5yCDQffuftgs5
+ j9MZ7KiOFYSs7lplDOTGqDNUwLglVe6Ihpq9crp8OZxS5Xa/4HpbHphLlYusFt4=
+X-Google-Smtp-Source: AGHT+IGEpAPiEapn3CExIVI9wqWDkJS7k3SRJdVDpw7oT3wboqjy6qw+eHkzLMaPcHrZBpHvps9HaQ==
+X-Received: by 2002:a05:600c:2109:b0:426:58cb:8ca4 with SMTP id
+ 5b1f17b1804b1-426708f1d36mr22108535e9.37.1720533132672; 
+ Tue, 09 Jul 2024 06:52:12 -0700 (PDT)
+Received: from [192.168.69.100] (vau06-h02-176-184-43-20.dsl.sta.abo.bbox.fr.
+ [176.184.43.20]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42727805e4csm4528885e9.27.2024.07.09.06.52.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jul 2024 06:52:12 -0700 (PDT)
+Message-ID: <3dacb6a1-9c56-4c1f-b21f-585742a307af@linaro.org>
+Date: Tue, 9 Jul 2024 15:52:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] target/arm: Fix handling of LDAPR/STLR with negative
+ offset
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240709134504.3500007-1-peter.maydell@linaro.org>
+ <20240709134504.3500007-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240709134504.3500007-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,50 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit c1a1f80518d360b when we added the FEAT_LSE2 relaxations to
-the alignment requirements for atomic and ordered loads and stores,
-we didn't quite get it right for LDAPR/LDAPRH/LDAPRB with no
-immediate offset.  These instructions were handled in the old decoder
-as part of disas_ldst_atomic(), but unlike all the other insns that
-function decoded (LDADD, LDCLR, etc) these insns are "ordered", not
-"atomic", so they should be using check_ordered_align() rather than
-check_atomic_align().  Commit c1a1f80518d360b used
-check_atomic_align() regardless for everything in
-disas_ldst_atomic().  We then carried that incorrect check over in
-the decodetree conversion, where LDAPR/LDAPRH/LDAPRB are now handled
-by trans_LDAPR().
+On 9/7/24 15:45, Peter Maydell wrote:
+> When we converted the LDAPR/STLR instructions to decodetree we
+> accidentally introduced a regression where the offset is negative.
+> The 9-bit immediate field is signed, and the old hand decoder
+> correctly used sextract32() to get it out of the insn word,
+> but the ldapr_stlr_i pattern in the decode file used "imm:9"
+> instead of "imm:s9", so it treated the field as unsigned.
+> 
+> Fix the pattern to treat the field as a signed immediate.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 2521b6073b7 ("target/arm: Convert LDAPR/STLR (imm) to decodetree")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2419
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   target/arm/tcg/a64.decode | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-The effect is that when FEAT_LSE2 is implemented, these instructions
-don't honour the SCTLR_ELx.nAA bit and will generate alignment
-faults when they should not.
-
-(The LDAPR insns with an immediate offset were in disas_ldst_ldapr_stlr()
-and then in trans_LDAPR_i() and trans_STLR_i(), and have always used
-the correct check_ordered_align().)
-
-Use check_ordered_align() in trans_LDAPR().
-
-Cc: qemu-stable@nongnu.org
-Fixes: c1a1f80518d360b ("target/arm: Relax ordered/atomic alignment checks for LSE2")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/translate-a64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 6c07aeaf3bd..5ea204d5009 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3543,7 +3543,7 @@ static bool trans_LDAPR(DisasContext *s, arg_LDAPR *a)
-     if (a->rn == 31) {
-         gen_check_sp_alignment(s);
-     }
--    mop = check_atomic_align(s, a->rn, a->sz);
-+    mop = check_ordered_align(s, a->rn, 0, false, a->sz);
-     clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn), false,
-                                 a->rn != 31, mop);
-     /*
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
