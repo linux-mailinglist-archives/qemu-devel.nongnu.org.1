@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00A592B8C8
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B4B92B8CD
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:52:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR9Mx-0005Tb-UX; Tue, 09 Jul 2024 07:50:51 -0400
+	id 1sR9My-0005YW-Np; Tue, 09 Jul 2024 07:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Mq-00054T-Vz
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:50:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Ms-0005Af-Fl
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:50:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Mo-0006Kv-Lh
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:50:44 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Mq-0006Lb-VX
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:50:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720525842;
+ s=mimecast20190719; t=1720525844;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EQpv0egXJNndOFARBXntRY0jNYVT/w4qa2wRWii6RKA=;
- b=JiwDy9TCc3bjyIHl3G2HpxwOdpjjYXqOWipwv9h6KB3wYnmRkcj3lNnhTpdKqRBnScstfG
- iAwPkG7MPHmz5Uozi8eg4JYimSo5MvkP82uZS7Y5y1tBIBg9VKPTJe1lW/WIeAH4Yg+dWq
- oicnpySChlAgM0caCQlSvLeRxhfBjWQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8taY1k+UlGNUyqXc/omqsBgz7mHZ39E8IuXRU5oAeUo=;
+ b=eIP8nBnOyry+KCG1i87tS2RiCg5juORfzPOFhpRdytKos3LwEKecOWxNjrHW84Dpt7KOLu
+ +s7XTyLF3UmsvUCnUE0b/a4Rdyf3HUG+x2GAAXVSLiEfToz0zkqVw8hSWyXEKAfQlAfJtY
+ wvia12w5TiLHRhwjPWNkLKZhdkJKw4s=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-341-MmulFxDVM2WZ2ZSt8VukCw-1; Tue,
- 09 Jul 2024 07:50:40 -0400
-X-MC-Unique: MmulFxDVM2WZ2ZSt8VukCw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-zrNK9WcKMZ6_1QK9o4vylQ-1; Tue,
+ 09 Jul 2024 07:50:42 -0400
+X-MC-Unique: zrNK9WcKMZ6_1QK9o4vylQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CBA1A19560B5; Tue,  9 Jul 2024 11:50:39 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B391819560B3; Tue,  9 Jul 2024 11:50:41 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.243])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D871C3000181; Tue,  9 Jul 2024 11:50:37 +0000 (UTC)
+ id F1C633000183; Tue,  9 Jul 2024 11:50:39 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 8/9] vfio/display: Fix potential memleak of edid info
-Date: Tue,  9 Jul 2024 13:50:16 +0200
-Message-ID: <20240709115017.798043-9-clg@redhat.com>
+Subject: [PULL 9/9] vfio/display: Fix vfio_display_edid_init() error path
+Date: Tue,  9 Jul 2024 13:50:17 +0200
+Message-ID: <20240709115017.798043-10-clg@redhat.com>
 In-Reply-To: <20240709115017.798043-1-clg@redhat.com>
 References: <20240709115017.798043-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,39 +83,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-EDID related device region info is leaked in vfio_display_edid_init()
-error path and VFIODisplay destroying path.
+vfio_display_edid_init() can fail for many reasons and return silently.
+It would be good to report the error.
+
+Old mdev driver may not support vfio edid region and we allow to go
+through in this case.
+
+vfio_display_edid_update() isn't changed because it can be called at
+runtime when UI changes (i.e. window resize).
 
 Fixes: 08479114b0de ("vfio/display: add edid support.")
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/vfio/display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/vfio/display.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index 661e921616f4b85613d5f6053c30348a4ee6cbd2..9c57fd388886100bf9eae061def39688d33a8695 100644
+index 9c57fd388886100bf9eae061def39688d33a8695..ea87830fe0d5fc66f3f27a16bde5d75b7b6280c0 100644
 --- a/hw/vfio/display.c
 +++ b/hw/vfio/display.c
-@@ -171,7 +171,9 @@ static void vfio_display_edid_init(VFIOPCIDevice *vdev)
- 
- err:
-     trace_vfio_display_edid_write_error();
-+    g_free(dpy->edid_info);
-     g_free(dpy->edid_regs);
-+    dpy->edid_info = NULL;
-     dpy->edid_regs = NULL;
-     return;
+@@ -124,7 +124,7 @@ static void vfio_display_edid_ui_info(void *opaque, uint32_t idx,
+     }
  }
-@@ -182,6 +184,7 @@ static void vfio_display_edid_exit(VFIODisplay *dpy)
-         return;
+ 
+-static void vfio_display_edid_init(VFIOPCIDevice *vdev)
++static bool vfio_display_edid_init(VFIOPCIDevice *vdev, Error **errp)
+ {
+     VFIODisplay *dpy = vdev->dpy;
+     int fd = vdev->vbasedev.fd;
+@@ -135,7 +135,8 @@ static void vfio_display_edid_init(VFIOPCIDevice *vdev)
+                                    VFIO_REGION_SUBTYPE_GFX_EDID,
+                                    &dpy->edid_info);
+     if (ret) {
+-        return;
++        /* Failed to get GFX edid info, allow to go through without edid. */
++        return true;
      }
  
-+    g_free(dpy->edid_info);
+     trace_vfio_display_edid_available();
+@@ -167,15 +168,16 @@ static void vfio_display_edid_init(VFIOPCIDevice *vdev)
+                                         vfio_display_edid_link_up, vdev);
+ 
+     vfio_display_edid_update(vdev, true, 0, 0);
+-    return;
++    return true;
+ 
+ err:
++    error_setg(errp, "vfio: failed to read GFX edid field");
+     trace_vfio_display_edid_write_error();
+     g_free(dpy->edid_info);
      g_free(dpy->edid_regs);
-     g_free(dpy->edid_blob);
-     timer_free(dpy->edid_link_timer);
+     dpy->edid_info = NULL;
+     dpy->edid_regs = NULL;
+-    return;
++    return false;
+ }
+ 
+ static void vfio_display_edid_exit(VFIODisplay *dpy)
+@@ -368,8 +370,7 @@ static bool vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
+             return false;
+         }
+     }
+-    vfio_display_edid_init(vdev);
+-    return true;
++    return vfio_display_edid_init(vdev, errp);
+ }
+ 
+ static void vfio_display_dmabuf_exit(VFIODisplay *dpy)
 -- 
 2.45.2
 
