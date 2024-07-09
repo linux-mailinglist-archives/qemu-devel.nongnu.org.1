@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47FE92BEAC
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 17:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 525E092BEB2
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 17:46:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRD0c-0008II-4x; Tue, 09 Jul 2024 11:44:02 -0400
+	id 1sRD2O-0007eW-M1; Tue, 09 Jul 2024 11:45:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=H1KF=OJ=kaod.org=clg@ozlabs.org>)
- id 1sRD0Z-00087i-F8; Tue, 09 Jul 2024 11:43:59 -0400
+ id 1sRD2H-0007Bq-CG; Tue, 09 Jul 2024 11:45:45 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=H1KF=OJ=kaod.org=clg@ozlabs.org>)
- id 1sRD0X-0001hI-AY; Tue, 09 Jul 2024 11:43:59 -0400
+ id 1sRD2E-0002KN-Ow; Tue, 09 Jul 2024 11:45:45 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WJQJR6TZBz4x1P;
- Wed, 10 Jul 2024 01:43:51 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WJQLW5dh1z4x1P;
+ Wed, 10 Jul 2024 01:45:39 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WJQJL44h3z4wny;
- Wed, 10 Jul 2024 01:43:46 +1000 (AEST)
-Message-ID: <04d15252-0b94-473f-8db2-02e221ea80ec@kaod.org>
-Date: Tue, 9 Jul 2024 17:43:44 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WJQLR3Cncz4w2M;
+ Wed, 10 Jul 2024 01:45:35 +1000 (AEST)
+Message-ID: <fd66f8ad-3dc9-4558-80c6-babf308dc90a@kaod.org>
+Date: Tue, 9 Jul 2024 17:45:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v47 12/19] hw/sd/sdcard: Simplify EXT_CSD values for spec
- v4.3
+Subject: Re: [PATCH v47 11/19] hw/sd/sdcard: Add eMMC 'boot-size' property
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -39,10 +38,10 @@ Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Jamin Lin <jamin_lin@aspeedtech.com>, Steven Lee
  <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>
 References: <20240709152556.52896-1-philmd@linaro.org>
- <20240709152556.52896-13-philmd@linaro.org>
+ <20240709152556.52896-12-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240709152556.52896-13-philmd@linaro.org>
+In-Reply-To: <20240709152556.52896-12-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -69,40 +68,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/9/24 5:25 PM, Philippe Mathieu-Daudé wrote:
-> - Set some keys to not defined / implemented:
->    . EXT_CSD_HPI_FEATURES
->    . EXT_CSD_BKOPS_SUPPORT
->    . EXT_CSD_SEC_FEATURE_SUPPORT
->    . EXT_CSD_ERASE_TIMEOUT_MULT
->    . EXT_CSD_PART_SWITCH_TIME
->    . EXT_CSD_OUT_OF_INTERRUPT_TIME
+> Avoid hardcoding 1MiB boot size in EXT_CSD_BOOT_MULT,
+> expose it as QOM property.
 > 
-> - Simplify:
->    . EXT_CSD_ACC_SIZE (6 -> 1)
->        16KB of super_page_size -> 512B (BDRV_SECTOR_SIZE)
->    . EXT_CSD_HC_ERASE_GRP_SIZE (4 -> 1)
->    . EXT_CSD_HC_WP_GRP_SIZE (4 -> 1)
->    . EXT_CSD_S_C_VCC[Q] (8 -> 1)
->    . EXT_CSD_S_A_TIMEOUT (17 -> 1)
->    . EXT_CSD_CARD_TYPE (7 -> 3)
->        Dual data rate -> High-Speed mode
-> 
-> - Update:
->    . EXT_CSD_CARD_TYPE (7 -> 3)
->        High-Speed MultiMediaCard @ 26MHz & 52MHz
->    . Performances (0xa -> 0x46)
->        Class B at 3MB/s. -> Class J at 21MB/s
->    . EXT_CSD_REV (5 -> 3)
->        Rev 1.5 (spec v4.41) -> Rev 1.3 (spec v4.3)
-> 
-> - Use load/store API to set EXT_CSD_SEC_CNT
-> 
-> - Remove R/W keys, normally zeroed at reset
->    . EXT_CSD_BOOT_INFO
+> By default, do not use any size. Board is responsible
+> to set the boot size property.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This should be merged in patch 10.
+I would move this patch at the end with the other patches adding
+boot support.
+
 
 Thanks,
 
@@ -111,74 +87,38 @@ C.
 
 
 > ---
->   hw/sd/sd.c | 50 ++++++++++++++++++--------------------------------
->   1 file changed, 18 insertions(+), 32 deletions(-)
+>   hw/sd/sd.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
 > diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index df0e2345c0..2a687977d1 100644
+> index c809961418..df0e2345c0 100644
 > --- a/hw/sd/sd.c
 > +++ b/hw/sd/sd.c
-> @@ -484,43 +484,29 @@ static void mmc_set_ext_csd(SDState *sd, uint64_t size)
+> @@ -129,6 +129,7 @@ struct SDState {
+>       /* Static properties */
 >   
->       memset(sd->ext_csd, 0, sizeof(sd->ext_csd));
+>       uint8_t spec_version;
+> +    uint64_t boot_part_size;
+>       BlockBackend *blk;
 >   
-> +    /* Properties segment (RO) */
->       sd->ext_csd[EXT_CSD_S_CMD_SET] = 0b1; /* supported command sets */
-> -    sd->ext_csd[EXT_CSD_HPI_FEATURES] = 0x3; /* HPI features  */
-> -    sd->ext_csd[EXT_CSD_BKOPS_SUPPORT] = 0x1; /* Background operations */
-> -    sd->ext_csd[241] = 0xA; /* 1st initialization time after partitioning */
-> -    sd->ext_csd[EXT_CSD_TRIM_MULT] = 0x1; /* Trim multiplier */
-> -    sd->ext_csd[EXT_CSD_SEC_FEATURE_SUPPORT] = 0x15; /* Secure feature */
-> -    sd->ext_csd[EXT_CSD_BOOT_INFO] = 0x7; /* Boot information */
-> +    sd->ext_csd[EXT_CSD_BOOT_INFO] = 0x0; /* Boot information */
->                                        /* Boot partition size. 128KB unit */
->       sd->ext_csd[EXT_CSD_BOOT_MULT] = sd->boot_part_size / (128 * KiB);
-> -    sd->ext_csd[EXT_CSD_ACC_SIZE] = 0x6; /* Access size */
-> -    sd->ext_csd[EXT_CSD_HC_ERASE_GRP_SIZE] = 0x4; /* HC Erase unit size */
-> +    sd->ext_csd[EXT_CSD_ACC_SIZE] = 0x1; /* Access size */
-> +    sd->ext_csd[EXT_CSD_HC_ERASE_GRP_SIZE] = 0x01; /* HC Erase unit size */
+>       const SDProto *proto;
+> @@ -490,7 +491,8 @@ static void mmc_set_ext_csd(SDState *sd, uint64_t size)
+>       sd->ext_csd[EXT_CSD_TRIM_MULT] = 0x1; /* Trim multiplier */
+>       sd->ext_csd[EXT_CSD_SEC_FEATURE_SUPPORT] = 0x15; /* Secure feature */
+>       sd->ext_csd[EXT_CSD_BOOT_INFO] = 0x7; /* Boot information */
+> -    sd->ext_csd[EXT_CSD_BOOT_MULT] = 0x8; /* Boot partition size. 128KB unit */
+> +                                     /* Boot partition size. 128KB unit */
+> +    sd->ext_csd[EXT_CSD_BOOT_MULT] = sd->boot_part_size / (128 * KiB);
+>       sd->ext_csd[EXT_CSD_ACC_SIZE] = 0x6; /* Access size */
+>       sd->ext_csd[EXT_CSD_HC_ERASE_GRP_SIZE] = 0x4; /* HC Erase unit size */
 >       sd->ext_csd[EXT_CSD_ERASE_TIMEOUT_MULT] = 0x01; /* HC erase timeout */
->       sd->ext_csd[EXT_CSD_REL_WR_SEC_C] = 0x1; /* Reliable write sector count */
-> -    sd->ext_csd[EXT_CSD_HC_WP_GRP_SIZE] = 0x4; /* HC write protect group size */
-> -    sd->ext_csd[EXT_CSD_S_C_VCC] = 0x8; /* Sleep current VCC  */
-> -    sd->ext_csd[EXT_CSD_S_C_VCCQ] = 0x7; /* Sleep current VCCQ */
-> -    sd->ext_csd[EXT_CSD_S_A_TIMEOUT] = 0x11; /* Sleep/Awake timeout */
-> -    sd->ext_csd[215] = (sectcount >> 24) & 0xff; /* Sector count */
-> -    sd->ext_csd[214] = (sectcount >> 16) & 0xff; /* ... */
-> -    sd->ext_csd[213] = (sectcount >> 8) & 0xff;  /* ... */
-> -    sd->ext_csd[EXT_CSD_SEC_CNT] = (sectcount & 0xff);       /* ... */
-> -    sd->ext_csd[210] = 0xa; /* Min write perf for 8bit@52Mhz */
-> -    sd->ext_csd[209] = 0xa; /* Min read perf for 8bit@52Mhz  */
-> -    sd->ext_csd[208] = 0xa; /* Min write perf for 4bit@52Mhz */
-> -    sd->ext_csd[207] = 0xa; /* Min read perf for 4bit@52Mhz */
-> -    sd->ext_csd[206] = 0xa; /* Min write perf for 4bit@26Mhz */
-> -    sd->ext_csd[205] = 0xa; /* Min read perf for 4bit@26Mhz */
-> -    sd->ext_csd[EXT_CSD_PART_SWITCH_TIME] = 0x1;
-> -    sd->ext_csd[EXT_CSD_OUT_OF_INTERRUPT_TIME] = 0x1;
-> -    sd->ext_csd[EXT_CSD_CARD_TYPE] = 0x7;
-> -    sd->ext_csd[EXT_CSD_STRUCTURE] = 0x2;
-> -    sd->ext_csd[EXT_CSD_REV] = 0x5;
-> -    sd->ext_csd[EXT_CSD_RPMB_MULT] = 0x1; /* RPMB size */
-> -    sd->ext_csd[EXT_CSD_PARTITION_SUPPORT] = 0x3;
-> -    sd->ext_csd[159] = 0x00; /* Max enhanced area size */
-> -    sd->ext_csd[158] = 0x00; /* ... */
-> -    sd->ext_csd[157] = 0xEC; /* ... */
-> +    sd->ext_csd[EXT_CSD_HC_WP_GRP_SIZE] = 0x01; /* HC write protect group size */
-> +    sd->ext_csd[EXT_CSD_S_C_VCC] = 0x01; /* Sleep current VCC  */
-> +    sd->ext_csd[EXT_CSD_S_C_VCCQ] = 0x01; /* Sleep current VCCQ */
-> +    sd->ext_csd[EXT_CSD_S_A_TIMEOUT] = 0x01; /* Sleep/Awake timeout */
-> +    stl_le_p(&sd->ext_csd[EXT_CSD_SEC_CNT], sectcount); /* Sector count */
-> +    sd->ext_csd[210] = 0x46; /* Min write perf for 8bit@52Mhz */
-> +    sd->ext_csd[209] = 0x46; /* Min read perf for 8bit@52Mhz  */
-> +    sd->ext_csd[208] = 0x46; /* Min write perf for 4bit@52Mhz */
-> +    sd->ext_csd[207] = 0x46; /* Min read perf for 4bit@52Mhz */
-> +    sd->ext_csd[206] = 0x46; /* Min write perf for 4bit@26Mhz */
-> +    sd->ext_csd[205] = 0x46; /* Min read perf for 4bit@26Mhz */
-> +    sd->ext_csd[EXT_CSD_CARD_TYPE] = 0b11;
-> +    sd->ext_csd[EXT_CSD_STRUCTURE] = 2;
-> +    sd->ext_csd[EXT_CSD_REV] = 3;
->   }
+> @@ -2693,6 +2695,7 @@ static Property sd_properties[] = {
+>   };
 >   
->   static void emmc_set_csd(SDState *sd, uint64_t size)
+>   static Property emmc_properties[] = {
+> +    DEFINE_PROP_UINT64("boot-size", SDState, boot_part_size, 0),
+>       DEFINE_PROP_END_OF_LIST()
+>   };
+>   
 
 
