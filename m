@@ -2,73 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDBA92B178
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 09:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B256092B1A6
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 09:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR5ZC-0003RD-KE; Tue, 09 Jul 2024 03:47:14 -0400
+	id 1sR5h2-0005c7-7W; Tue, 09 Jul 2024 03:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1sR5Yu-0003Nl-33; Tue, 09 Jul 2024 03:46:58 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sR5gk-0005aX-V1
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 03:55:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1sR5Yq-0007Oj-MX; Tue, 09 Jul 2024 03:46:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=202312; t=1720511202;
- bh=0h0Q72GUmfh/c4838TYp4OUUee9ueAOroICMvfyaeEk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=mS+wE7ulOHQBFgcOv9hApdFanh61QdFFjGnoHel631SLC2lODxtY7n3pzmpUdv5nm
- Yb9XdGkLjz8GwVefs+UT8ZzOoCupMbQ2G5sl7idTDbJdN/EL9dCHUW3uk/sgM3n/8+
- 5FIAS5+wnjKsLfxSYgJqXvWZec+WS/kRv2bSsCWGVXQerxSFm3FJex4ccSyRlUafp+
- Fyagg9KsgVtw7Ur5po7R+imPy7txqPbdeDD0YveN25UclfBtYImTOWb3w5OgLzaf6E
- qHQFLwiJafA/wKvSPULW1a5W6fphLsegQw+hJVC/BOY6D6hh4fU2Nmzfg9gzw+a7r6
- YZqxxjACiWcbA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
- id 4WJCjt3qNbz4xPc; Tue,  9 Jul 2024 17:46:42 +1000 (AEST)
-Date: Tue, 9 Jul 2024 17:46:39 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
-Subject: Re: [PATCH v2 06/15] ppc/vof: Fix unaligned FDT property access
-Message-ID: <Zozq33YdKd6pGUtZ@zatzit>
-References: <Zn98p6CUV0KnIo50@zatzit>
- <CAFEAcA_LN8i66KUkxrgg=CUKJNYM=s9pTYv6w5QQ7PSU1Q3=bg@mail.gmail.com>
- <D2H7KBZF8OA4.3EKIA8NHHJ3MJ@gmail.com> <ZodPOTAcLo1XF4MB@zatzit>
- <D2HBUN5N504E.27WH86Z4HPTKW@gmail.com> <ZoeAutfGIAaNEFBC@zatzit>
- <CAFEAcA-QyGWNqS5saqGMc9f4WVS5mg8+YjUfOczovaT6duZAvQ@mail.gmail.com>
- <ZonXSmp9XZxl_HHp@zatzit> <D2JZR5EF6CF1.1DDFFT4TZAD1H@gmail.com>
- <CAFEAcA9L+ApvH8bptyEi2C7fg=WPYLZecAUBv6mpx0o1-3K2=w@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sR5gh-0001bt-V5
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 03:55:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720511698;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=u0B+5rbNnUTcAnfUWR5+GoedIC3bWCGjQWr0Q0BF4QI=;
+ b=S3ws4dkUeuvpeldD7Ntjyx3ReeAregT5AfMIP4S5cJJhOiz4B5ABsIVJJhbcS4yo0PzGB2
+ TOtzmUTu30SHW62EgQjqy22PNiF4u2IjjBBCETWMMNSlFoeMoSo5AKA3LMlNEfSVlAHTio
+ G7Cc6nOgK+/MJpyoQ4zPImCHCsq2RFY=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-225-8iA_-qvsM2SAGZlM62Mn9Q-1; Tue, 09 Jul 2024 03:54:56 -0400
+X-MC-Unique: 8iA_-qvsM2SAGZlM62Mn9Q-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2ee890f0cecso50105141fa.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 00:54:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720511695; x=1721116495;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=u0B+5rbNnUTcAnfUWR5+GoedIC3bWCGjQWr0Q0BF4QI=;
+ b=fSqAytYD55/GAqnM7KFtp/9a29+Jg5u9cVlYrDM9Vi6SXQjSmOV2GBduViUJLq+Yhn
+ 9CJSFnOLPgrJRaU3eJ2vIZMi5r0Rcp5h7+QMe8ld4X5sU9fNUQ+P81iqn3X6yEMCf6t8
+ D+jFVvzh3u+zecOYXB7eWClb6DVCOdu4HVVflBG87oWOGaCgpj8rOq8a/4+g89UhGCjV
+ LSGwE76TqqnProz8HtFyTslzOy4YZSiYOPUyrmBhhs3wjaX0R65ttowH2sxYZ6eMtMgh
+ 98cO2fQI3mqN0/HfnHO9WPfp9zgyEjhMFApjnCfvh3mO4POjRmGrTHfgP+dJQd6ji+9g
+ kZ6w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXVxpLPz8lH2FV9/yJWbTYtqfF0fNdCQQlyajyPkGI2YMwPcC89wT3NVN9IWNqrrQETxBhEskdCjvbQOIdzxOubz+pR7E8=
+X-Gm-Message-State: AOJu0YyB0Je/Dd5pgbJkKWSPT0xZhLfSgq0lIezSQAbJVMCb70/YuWGI
+ rNWfydM7zEelPK29xNxHLaCMsHjp4hXGmJAo3ILVP4/BadzjZ/7qEVVHG1I9QywnpjFH3IM2m2u
+ vTe3agx4l1IGSX2rtNgH/FiP/h6q7AQxEbSr5nMoCmObpEncD5hcNFSZPlZBKXvv5vszxANGpC9
+ 8tvb6G1AR0qB2TrwtxBjcZBcFAVW4=
+X-Received: by 2002:a2e:8784:0:b0:2ec:4aac:8fd4 with SMTP id
+ 38308e7fff4ca-2eeb30b4cb1mr12072881fa.1.1720511695441; 
+ Tue, 09 Jul 2024 00:54:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFoCtJZXxBF9fcltAxUgfBKJn/vnLT40fqORs0CRoO8pIfoS+f4Z/zjPAN3DQdfRWZSRohLD73bqlUuJjGhnxk=
+X-Received: by 2002:a2e:8784:0:b0:2ec:4aac:8fd4 with SMTP id
+ 38308e7fff4ca-2eeb30b4cb1mr12072651fa.1.1720511695089; Tue, 09 Jul 2024
+ 00:54:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="8bAhviUwxguhI0sd"
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA9L+ApvH8bptyEi2C7fg=WPYLZecAUBv6mpx0o1-3K2=w@mail.gmail.com>
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=dgibson@gandalf.ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
+ <8dfd1047-436d-4157-83cb-9cad399544fe@redhat.com>
+ <ZowUyFX7zcK1FvuG@redhat.com>
+ <CABgObfZfQNSeYeCqcuNHcu=pyKz+f_MUc=9rZGRYxaPNBO-U4A@mail.gmail.com>
+ <Zowd-UxAnPmJSA0G@redhat.com>
+ <CABgObfaDKhKBcpmgypST=bo2KSqoNMCLKP-8oAvppxt9GDxBPA@mail.gmail.com>
+ <CAAjaMXa6E0koPXcytY9hEuUbhLeFcJqZsA3fz10q_HF0grz24w@mail.gmail.com>
+ <CABgObfa8KQOu6RPs1aqKww8qPeOjHppbH15aBCN+KvaOL=_W9A@mail.gmail.com>
+ <CAAjaMXZ+Sx_+4sNFs=zy+bP0d5gbyf_Buh9JS-ixsRCfxsdN4w@mail.gmail.com>
+In-Reply-To: <CAAjaMXZ+Sx_+4sNFs=zy+bP0d5gbyf_Buh9JS-ixsRCfxsdN4w@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 9 Jul 2024 09:54:43 +0200
+Message-ID: <CABgObfb3mmxZy_cEeUTbuGCN-3Nqs8x8dkGy7Ehyowd9LNbktg@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 0/7] Add Rust support, implement ARM PL011
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel <qemu-devel@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,109 +113,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jul 9, 2024 at 9:38=E2=80=AFAM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+> Ah, alright. That wasn't obvious because that e-mail was not directed
+> to me nor did it mention my name :)
 
---8bAhviUwxguhI0sd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh, ok. Sorry about that. Generally when I say "we" I include as large
+a part of the community as applicable.
 
-On Mon, Jul 08, 2024 at 04:59:30PM +0100, Peter Maydell wrote:
-> On Mon, 8 Jul 2024 at 08:49, Nicholas Piggin <npiggin@gmail.com> wrote:
-> >
-> > On Sun Jul 7, 2024 at 9:46 AM AEST, David Gibson wrote:
-> > > On Sat, Jul 06, 2024 at 11:37:08AM +0100, Peter Maydell wrote:
-> > > > On Fri, 5 Jul 2024 at 06:13, David Gibson <david@gibson.dropbear.id=
-=2Eau> wrote:
-> > > > > Huh.. well I'm getting different impressions of what the problem
-> > > > > actually is from what I initially read versus Peter Maydell's
-> > > > > comments, so I don't really know what to think.
-> > > > >
-> > > > > If it's just the load then fdt32_ld() etc. already exist.  Or is =
-it
-> > > > > really such a hot path that unconditionally handling unaligned
-> > > > > accesses isn't tenable?
-> > > >
-> > > > The specific problem here is that the code as written tries to
-> > > > cast a not-aligned-enough pointer to uint64_t* to do the load,
-> > > > which is UB.
-> > >
-> > > Ah... and I'm assuming it's the cast itself which triggers the UB, not
-> > > just dereferencing it.
-> >
-> > Oh it's just the cast itself that is UB? Looks like that's true.
-> > Interesting gcc and clang don't flag it, I guess they care about
-> > warning on practical breakage first.
->=20
-> Er, I was speaking a bit vaguely there, don't take my word for
-> it without going and looking at the text of the C standard.
+> I do not want to do that, in any case. I do not think it's the right appr=
+oach.
 
-Sure.
+No problem with that (and in fact I agree, as I'd prefer a speedy
+merge and doing the work on the QEMU master branch); however, we need
+to reach an agreement on that and everybody (including Daniel) needs
+to explain the reason for their position.
 
-> What I *meant* was that the practical problem here is that we
-> really do dereference a pointer for a 64-bit load when the
-> pointer isn't necessarily 64-bit-aligned.
+Daniel's proposed criteria for merging include:
+- CI integration
+- CI passing for all supported targets (thus lowering the MSRV to 1.63.0)
+- plus any the code changes that were or will be requested during review
 
-=46rom the qemu point of view, yes.  And theoretically, the fix is easy,
-since libfdt provides fdt32_ld() etc. for exactly this use case.  But..
+That seems to be a pretty high amount of work, and until it's done
+everyone else is unable to contribute, not even in directions
+orthogonal to the above (cross compilation support, less unsafe code,
+porting more devices). So something has to give: either we decide for
+an early merge, where the code is marked as experimental and disabled
+by default. Personally I think it's fine, the contingency plan is
+simply to "git rm -rf rust/". Or we can keep the above stringent
+requirements for merging, but then I don't see it as a one-person job.
 
-> As it happens, C99 says that it is the cast that is UB:
-> section 6.3.2.3 para 7 says:
->  "A pointer to an object or incomplete type may be converted to
->   a pointer to a different object or incomplete type. If the
->   resulting pointer is not correctly aligned for the pointed-to
->   type, the behavior is undefined. Otherwise, when converted back
->   again, the result shall compare equal to the original pointer."
+If I can say so, developing on a branch would also be a useful warm-up
+for you in the maintainer role, if we expect that there will be
+significant community contributions to Rust.
 
-=2E. this makes fdt32_ld() etc. unusable by design.
+Paolo
 
-> Presumably this is envisaging the possibility of a pointer cast
-> being a destructive operation somehow, such that e.g. a uint64_t*
-> can only represent 64-bit-aligned values. But I bet QEMU does
-> a lot of casting pointers around that might fall foul of this
-> rule, so I'm not particularly worried about trying to clean up
-> that kind of thing (until/unless analysers start warning about
-> it, in which case we have a specific set of things to clean up).
-
-Fair enough from the qemu point of view.  However, this unusable by
-design interface was written by me as part of a library I maintain, so
-it certainly worries *me*.
-
-> What I care about from the point of view of this patch
-> is that we fix the actually-broken-on-some-real-hardware problem
-> of doing the load as a misaligned access. My vote would be for
-> "take Akihiko's patch as-is, rather than gating fixing the bug
-> on deciding on an improvement/change to the fdt API or our
-> wrappers of it".
->=20
-> thanks
-> -- PMM
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---8bAhviUwxguhI0sd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmaM6t4ACgkQzQJF27ox
-2Gd67w//RbXjzTPyMisJ+Fn1jAW0vvt8NSGSxt0U93c3voCYBHgKeowEf1nJz46U
-IVtRlBK7S6eGmWYXDUX8UBica7aaRaPbeASisCBnhTTEDK3J4yGRt988QqU3/3SH
-V5YzOOyEobDJpQmPvAt5eJTsndP8z8HEEU+06KtnorBfVGvWUE8xONbwHXQGV4CZ
-VkEl1pPGiRyTupyI1f1gXAOrAI112TxQ0nsctvtKNUue2wBeWSXzqqRDzlphgS/K
-OMi3MXg2KmY0vf/fUsonj5YSPbY+f8MWga24m0Rgw2+FciN1vpZ4hnDZ2BWRdR4O
-ROsqTiwOR+OZasPZBWz/Fuff7hfa+Ug39yl3uNwvCQVcsxUPMhNlTGsAo7cRP6D9
-luSdoWSOPpZ+2p9z5AUJkZpmGyuUSd1GLI+DUo78wHCmYE0+b5o5kpwrmGmlHJJk
-tw5E65t8SYqInRFxIW7OQfLhaBslpW1dML31ItoB1XZTfAq+uDMXdH5sjxTbB3Xc
-hPBd1y4IQJd629oqmE7sN04ZGtaJBWaUSRiQlvFl/tWoWP5eSaAZAzcTAOcnYYp8
-B4CJZcc2R5akA1BTDMKCdkQJfiG7ENpKurZBM8zwdV9GTUm0NiqEagPoKJH6fbYl
-ap9U4Dyv3dMg99zGzUIVuM4NgtxapWiV49Nl4uomwN2LlaSL+3w=
-=DCX/
------END PGP SIGNATURE-----
-
---8bAhviUwxguhI0sd--
 
