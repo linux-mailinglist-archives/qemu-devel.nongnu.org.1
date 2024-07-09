@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DC392B8D5
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D4292B8D3
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR9Ov-0000g5-7y; Tue, 09 Jul 2024 07:52:53 -0400
+	id 1sR9Ov-0000iN-E7; Tue, 09 Jul 2024 07:52:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Os-0000Fn-01
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:52:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Ot-0000Vl-CT
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:52:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9On-0006UB-UN
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:52:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sR9Oo-0006WX-48
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:52:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720525955;
+ s=mimecast20190719; t=1720525962;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=tFbZlbAPq14JSYGSgHWHrMHgaSNG1BMaQNHUf1dKK/M=;
- b=dOTw+bQD6qPrm8mCNpBfGvpaI9vtWD0PNRM+x98WRauHwOv3nVM5fhq/+RUHchOa4+6F9r
- 1D5Uh4H1RHHVtevKZLCEzkGYSUKxk5NZafgSV4PpRD9hn6dRb2+eodxUCvOwNpi2rjQcER
- h2lajoWY38n4OoxGcikV1dPqcZDWE5Y=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dEDuTv8Lc1Ps4eGjmhzrrf4rkRo15i2vTl21HQehUUo=;
+ b=gl+E5jDbSDg8yEm0GOV7tCLdTM8qI8WKo3pn2tgDsQe9iKhwOtGIb8GnBE3mvFW09YFAQh
+ k+X+LYqjt7bkH5YBdIt1bBfxLWVwWi++wIO53LvIqdTUIuANNxpkTjQZW6H9wFrOIMLY5T
+ zkO2nzzclNcJ5YV896P00aQZrXo0rzE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-ieJyBd8oOl6ls5KWyNOMoQ-1; Tue,
- 09 Jul 2024 07:52:33 -0400
-X-MC-Unique: ieJyBd8oOl6ls5KWyNOMoQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-YLozJ8FFN8G1G4rbod1jaQ-1; Tue,
+ 09 Jul 2024 07:52:41 -0400
+X-MC-Unique: YLozJ8FFN8G1G4rbod1jaQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5593D1955F43; Tue,  9 Jul 2024 11:52:32 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 553A61956048; Tue,  9 Jul 2024 11:52:34 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.243])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E6B7F3000183; Tue,  9 Jul 2024 11:52:30 +0000 (UTC)
+ id 947423000181; Tue,  9 Jul 2024 11:52:32 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 0/8] aspeed queue
-Date: Tue,  9 Jul 2024 13:52:20 +0200
-Message-ID: <20240709115228.798904-1-clg@redhat.com>
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 1/8] hw/net:ftgmac100: update memory region size to 64KB
+Date: Tue,  9 Jul 2024 13:52:21 +0200
+Message-ID: <20240709115228.798904-2-clg@redhat.com>
+In-Reply-To: <20240709115228.798904-1-clg@redhat.com>
+References: <20240709115228.798904-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -76,39 +80,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 44b7329de469c121555a1acf9b288f3ae71b8e61:
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-  Merge tag 'pull-qapi-2024-07-06' of https://repo.or.cz/qemu/armbru into staging (2024-07-07 13:23:28 -0700)
+According to the datasheet of ASPEED SOCs,
+one MAC controller owns 128KB of register space for AST2500.
+However, one MAC controller only owns 64KB of register space for AST2600
+and AST2700. It set the memory region size 128KB and it occupied another
+controllers Address Spaces.
 
-are available in the Git repository at:
+Update one MAC controller memory region size to 0x1000
+because AST2500 did not use register spaces over than 64KB.
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20240709
+Introduce a new container region size to 0x1000 and its range
+is from 0 to 0xfff. This container is mapped a sub region
+for the current set of register.
+This sub region range is from 0 to 0xff.
 
-for you to fetch changes up to d847ea7cfc6321e2519f587d4077428d90557178:
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/net/ftgmac100.h |  4 ++++
+ hw/net/ftgmac100.c         | 11 ++++++++---
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-  machine_aspeed.py: update to test network for AST2700 (2024-07-09 08:05:44 +0200)
-
-----------------------------------------------------------------
-aspeed queue:
-
-* support AST2700 network
-
-----------------------------------------------------------------
-Jamin Lin (8):
-      hw/net:ftgmac100: update memory region size to 64KB
-      hw/net:ftgmac100: update ring base address to 64 bits
-      hw/net:ftgmac100: introduce TX and RX ring base address high registers to support 64 bits
-      hw/net:ftgmac100: update TX and RX packet buffers address to 64 bits
-      aspeed/soc: set dma64 property for AST2700 ftgmac100
-      hw/block: m25p80: support quad mode for w25q01jvq
-      machine_aspeed.py: update to test ASPEED OpenBMC SDK v09.02 for AST2700
-      machine_aspeed.py: update to test network for AST2700
-
- include/hw/net/ftgmac100.h      |  17 +++--
- hw/arm/aspeed_ast27x0.c         |   3 +
- hw/block/m25p80.c               |  16 +++++
- hw/net/ftgmac100.c              | 147 +++++++++++++++++++++++++++++++++-------
- tests/avocado/machine_aspeed.py |  12 ++--
- 5 files changed, 162 insertions(+), 33 deletions(-)
+diff --git a/include/hw/net/ftgmac100.h b/include/hw/net/ftgmac100.h
+index 765d1538a49f..269446e85838 100644
+--- a/include/hw/net/ftgmac100.h
++++ b/include/hw/net/ftgmac100.h
+@@ -14,6 +14,9 @@
+ #define TYPE_FTGMAC100 "ftgmac100"
+ OBJECT_DECLARE_SIMPLE_TYPE(FTGMAC100State, FTGMAC100)
+ 
++#define FTGMAC100_MEM_SIZE 0x1000
++#define FTGMAC100_REG_MEM_SIZE 0x100
++
+ #include "hw/sysbus.h"
+ #include "net/net.h"
+ 
+@@ -30,6 +33,7 @@ struct FTGMAC100State {
+     NICState *nic;
+     NICConf conf;
+     qemu_irq irq;
++    MemoryRegion iomem_container;
+     MemoryRegion iomem;
+ 
+     uint8_t frame[FTGMAC100_MAX_FRAME_SIZE];
+diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
+index 25e4c0cd5bfe..9e1f12cd331b 100644
+--- a/hw/net/ftgmac100.c
++++ b/hw/net/ftgmac100.c
+@@ -1107,9 +1107,14 @@ static void ftgmac100_realize(DeviceState *dev, Error **errp)
+         s->rxdes0_edorr = FTGMAC100_RXDES0_EDORR;
+     }
+ 
+-    memory_region_init_io(&s->iomem, OBJECT(dev), &ftgmac100_ops, s,
+-                          TYPE_FTGMAC100, 0x2000);
+-    sysbus_init_mmio(sbd, &s->iomem);
++    memory_region_init(&s->iomem_container, OBJECT(s),
++                       TYPE_FTGMAC100 ".container", FTGMAC100_MEM_SIZE);
++    sysbus_init_mmio(sbd, &s->iomem_container);
++
++    memory_region_init_io(&s->iomem, OBJECT(s), &ftgmac100_ops, s,
++                          TYPE_FTGMAC100 ".regs", FTGMAC100_REG_MEM_SIZE);
++    memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
++
+     sysbus_init_irq(sbd, &s->irq);
+     qemu_macaddr_default_if_unset(&s->conf.macaddr);
+ 
+-- 
+2.45.2
 
 
