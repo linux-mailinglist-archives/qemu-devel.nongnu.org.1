@@ -2,86 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FC092B86E
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 616EB92B880
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:41:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR98p-0001sh-9Y; Tue, 09 Jul 2024 07:36:15 -0400
+	id 1sR9D1-0007x7-S6; Tue, 09 Jul 2024 07:40:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sR98m-0001qr-7C
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:36:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sR9CO-0007Du-DX; Tue, 09 Jul 2024 07:40:00 -0400
+Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sR98W-0002uO-Su
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:36:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720524955;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RGhRgs1v32g/5H0w5aUKTxw+RAzFqjgpGlfR2LFu3dA=;
- b=E5ESyKPUcAYO0rNsOdu0Om2g0UyA3L4ZOX1S9+oxFP4VCH/O1m8s3jSZ4kSnqoFFQ4aI46
- CpD+4uxY1I+KrsSHbOedAYjUCX7q7kZcK5sal9QDANn+PzJPfi2fqk0dAE5igcjViwEIq6
- hGYZf7fTFyfW7yIrUlNJQza5TQ2Q96c=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-C62S6gBYObecb3IBu95Ryw-1; Tue,
- 09 Jul 2024 07:35:50 -0400
-X-MC-Unique: C62S6gBYObecb3IBu95Ryw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 81C231953962; Tue,  9 Jul 2024 11:35:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.4])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 33A7C195605F; Tue,  9 Jul 2024 11:35:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 394AB21E668F; Tue,  9 Jul 2024 13:35:44 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  qemu-block@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?=
- Lureau
- <marcandre.lureau@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Peter Maydell
- <peter.maydell@linaro.org>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,  Eduardo
- Habkost <eduardo@habkost.net>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Fabiano Rosas <farosas@suse.de>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Lukas Straub
- <lukasstraub2@web.de>,  Ani Sinha <anisinha@redhat.com>,  Igor Mammedov
- <imammedo@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Mads Ynddal <mads@ynddal.dk>,  Alex Williamson
- <alex.williamson@redhat.com>,  Eric Blake <eblake@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Yanan Wang
- <wangyanan55@huawei.com>,  Jiri Pirko <jiri@resnulli.us>
-Subject: Re: [PATCH 7/8] qapi: convert "Example" sections with longer prose
-In-Reply-To: <20240703210144.339530-8-jsnow@redhat.com> (John Snow's message
- of "Wed, 3 Jul 2024 17:01:42 -0400")
-References: <20240703210144.339530-1-jsnow@redhat.com>
- <20240703210144.339530-8-jsnow@redhat.com>
-Date: Tue, 09 Jul 2024 13:35:44 +0200
-Message-ID: <87o776g5m7.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sR9CK-0003SS-ID; Tue, 09 Jul 2024 07:39:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1720525120; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+ bh=6WeQ/TC4kAHtbqMkGbyFO2+Gwgg1z56Rftcq/gV6Psw=;
+ b=QdOt5FzY5UMy6KM32ujzCbq0Tab++B+2DuMxjettvRYwUiQeWXUasjgK7ArfMKZ7d7D2iGXz2Iy6ILWOw69bzddMWHSQcj1zm+ab1OIWJrfomPTM5eqc+0Db9XKJo+MPkIPtWRn4mmHH6LLCrngcryuJRRXC4gjj9e7RBxjWVwg=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R861e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033068173054;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0WABxGmd_1720525117; 
+Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0WABxGmd_1720525117) by smtp.aliyun-inc.com;
+ Tue, 09 Jul 2024 19:38:38 +0800
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
+ zhiwei_liu@linux.alibaba.com
+Subject: [PATCH v4 00/11] target/riscv: Support zimop/zcmop/zama16b/zabha
+Date: Tue,  9 Jul 2024 19:36:41 +0800
+Message-Id: <20240709113652.1239-1-zhiwei_liu@linux.alibaba.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.100;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-100.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,103 +66,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+I once used a wrong major opcode for zimop. It should use 0x73 as major opcode.
+This was detected after I got a toolchain with zimop support. Before that, I tested
+this implementation with hardwire code instruction instead of assemble code.
 
-> These examples require longer explanations or have explanations that
-> require markup to look reasonable when rendered and so use the longer
-> form of the ".. qmp-example::" directive.
->
-> By using the :annotated: option, the content in the example block is
-> assumed *not* to be a code block literal and is instead parsed as normal
-> rST - with the exception that any code literal blocks after `::` will
-> assumed to be a QMP code literal block.
->
-> Note: There's one title-less conversion in this patch that comes along
-> for the ride because it's part of a larger "Examples" block that was
-> better to convert all at once.
->
-> See commit-5: "docs/qapidoc: create qmp-example directive", for a
->               detailed explanation of this custom directive syntax.
->
-> See commit+1: "qapi: remove "Example" doc section" for a detailed
->               explanation of why.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  qapi/block.json     | 26 ++++++++++++++++----------
->  qapi/machine.json   | 30 ++++++++++++++++++++----------
->  qapi/migration.json |  7 +++++--
->  qapi/virtio.json    | 24 ++++++++++++++++++------
->  4 files changed, 59 insertions(+), 28 deletions(-)
->
-> diff --git a/qapi/block.json b/qapi/block.json
-> index 5ddd061e964..d95e9fd8140 100644
-> --- a/qapi/block.json
-> +++ b/qapi/block.json
-> @@ -545,31 +545,37 @@
->  #
->  # Since: 4.0
->  #
-> -# Example:
-> +# .. qmp-example::
-> +#    :annotated:
->  #
-> -#     Set new histograms for all io types with intervals
-> -#     [0, 10), [10, 50), [50, 100), [100, +inf):
-> +#    Set new histograms for all io types with intervals
-> +#    [0, 10), [10, 50), [50, 100), [100, +inf)::
->  #
->  #     -> { "execute": "block-latency-histogram-set",
->  #          "arguments": { "id": "drive0",
->  #                         "boundaries": [10, 50, 100] } }
->  #     <- { "return": {} }
->  #
-> -# Example:
-> +# .. qmp-example::
-> +#    :annotated:
->  #
-> -#     Set new histogram only for write, other histograms will remain
-> -#     not changed (or not created):
-> +#    Set new histogram only for write, other histograms will remain
-> +#    not changed (or not created)::
->  #
->  #     -> { "execute": "block-latency-histogram-set",
->  #          "arguments": { "id": "drive0",
->  #                         "boundaries-write": [10, 50, 100] } }
->  #     <- { "return": {} }
->  #
-> -# Example:
-> +# .. qmp-example::
-> +#    :annotated:
->  #
-> -#     Set new histograms with the following intervals:
-> -#       read, flush: [0, 10), [10, 50), [50, 100), [100, +inf)
-> -#       write: [0, 1000), [1000, 5000), [5000, +inf)
-> +#    Set new histograms with the following intervals:
-> +#
-> +#    - read, flush: [0, 10), [10, 50), [50, 100), [100, +inf)
-> +#    - write: [0, 1000), [1000, 5000), [5000, +inf)
-> +#
-> +#    ::
->  #
->  #     -> { "execute": "block-latency-histogram-set",
->  #          "arguments": { "id": "drive0",
-   #                         "boundaries": [10, 50, 100],
-   #                         "boundaries-write": [1000, 5000] } }
-   #     <- { "return": {} }
-   #
-   # .. qmp-example::
-   #    :title: Remove all latency histograms
-   #
-   #     -> { "execute": "block-latency-histogram-set",
-   #          "arguments": { "id": "drive0" } }
-   #     <- { "return": {} }
-   ##
+This patch set has been queued to alistair/riscv-to-apply.next, but it is still not
+merged by the master branch. I think we had better fix it before merging into the
+master.
 
-I think using :annotated: for this one as well will look better.
+v3->v4:
+    1. Fix zimop opcode and disassemble
 
-[...]
+v2->v3:
+    1. Add review tags.
+    2. Reword the patch 10 in commit log
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+v1->v2:
+    1. Fix the isa orders.
+    2. Make zimop/zcmop/zama16b/zabha depend on priviledged 1.13
+    3. Add review tags.
+
+The v2 patch set is here
+https://mail.gnu.org/archive/html/qemu-riscv/2024-06/msg00489.html
+
+The v1 patch set is here
+    1. zimop/zcmop
+        https://mail.gnu.org/archive/html/qemu-riscv/2024-05/msg00207.html
+    2. zama16b
+        https://mail.gnu.org/archive/html/qemu-riscv/2024-05/msg00212.html
+    3. zabha
+        https://mail.gnu.org/archive/html/qemu-riscv/2024-05/msg00214.html
+
+LIU Zhiwei (11):
+  target/riscv: Add zimop extension
+  disas/riscv: Support zimop disassemble
+  target/riscv: Add zcmop extension
+  disas/riscv: Support zcmop disassemble
+  target/riscv: Support Zama16b extension
+  target/riscv: Move gen_amo before implement Zabha
+  target/riscv: Add AMO instructions for Zabha
+  target/riscv: Move gen_cmpxchg before adding amocas.[b|h]
+  target/riscv: Add amocas.[b|h] for Zabha
+  target/riscv: Expose zabha extension as a cpu property
+  disas/riscv: Support zabha disassemble
+
+ disas/riscv.c                               | 181 ++++++++++++++++++++
+ target/riscv/cpu.c                          |   8 +
+ target/riscv/cpu_cfg.h                      |   4 +
+ target/riscv/insn16.decode                  |   1 +
+ target/riscv/insn32.decode                  |  33 ++++
+ target/riscv/insn_trans/trans_rva.c.inc     |  51 ++----
+ target/riscv/insn_trans/trans_rvd.c.inc     |  14 +-
+ target/riscv/insn_trans/trans_rvf.c.inc     |  14 +-
+ target/riscv/insn_trans/trans_rvi.c.inc     |   6 +
+ target/riscv/insn_trans/trans_rvzabha.c.inc | 145 ++++++++++++++++
+ target/riscv/insn_trans/trans_rvzacas.c.inc |  13 --
+ target/riscv/insn_trans/trans_rvzcmop.c.inc |  29 ++++
+ target/riscv/insn_trans/trans_rvzimop.c.inc |  37 ++++
+ target/riscv/tcg/tcg-cpu.c                  |   5 +
+ target/riscv/translate.c                    |  38 ++++
+ 15 files changed, 529 insertions(+), 50 deletions(-)
+ create mode 100644 target/riscv/insn_trans/trans_rvzabha.c.inc
+ create mode 100644 target/riscv/insn_trans/trans_rvzcmop.c.inc
+ create mode 100644 target/riscv/insn_trans/trans_rvzimop.c.inc
+
+-- 
+2.25.1
 
 
