@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BF192AE50
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 04:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2834792AE55
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 04:51:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR0ts-0007pQ-I9; Mon, 08 Jul 2024 22:48:16 -0400
+	id 1sR0xC-00027X-8C; Mon, 08 Jul 2024 22:51:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sR0tc-0006ys-P5
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 22:48:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sR0xA-00022E-ED
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 22:51:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sR0tZ-0003yw-GK
- for qemu-devel@nongnu.org; Mon, 08 Jul 2024 22:47:59 -0400
+ id 1sR0x8-0004zi-UE
+ for qemu-devel@nongnu.org; Mon, 08 Jul 2024 22:51:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720493274;
+ s=mimecast20190719; t=1720493498;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IfM8VNyqetsgSfQRL5ZOKAWvEEYEwNid5P2Z7k/shYs=;
- b=IFsEOIQohpXznEvWYTy2Fvic+Qj3AXex2XEiW7sXJxm2k8uDgSJH3DqXq16jqRPek7Itzn
- zos2y7Hju0LMBRjmQf44Oi336EcaZi/EkJ2DmyomyKur44irhNKxhRc27ra9CyN0NT7no0
- IK5X4zym7ZRvq/EMhzig/z68jtXDlVo=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OA8bFMklEuyOjtQBEPuHdk0sWxOcKI40ostgyJ61G9g=;
+ b=IfgoyuGLtjy/kKjCJjClHxS7XJqcP6R7LlVt70P1YDimX+mDmtQwjfw3fPNyC+MjnA3Mqf
+ lally7WiS4o5jfqYubJHxyPZ6h9mbfqaYrS7xssURoJ8Oxcot7YKCHWn39l8NF+p5krQfL
+ ridGUABuhj9DLe2NtwP0mzM1f1rT+Gs=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-7TBeOiZINva-kQA_Mf7CcQ-1; Mon, 08 Jul 2024 22:47:50 -0400
-X-MC-Unique: 7TBeOiZINva-kQA_Mf7CcQ-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3d93f4b2832so117284b6e.0
- for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 19:47:49 -0700 (PDT)
+ us-mta-528-j2Y4Kz74O3qI2dzg6Z276w-1; Mon, 08 Jul 2024 22:51:36 -0400
+X-MC-Unique: j2Y4Kz74O3qI2dzg6Z276w-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-7036e5add8dso1312470a34.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Jul 2024 19:51:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720493269; x=1721098069;
+ d=1e100.net; s=20230601; t=1720493496; x=1721098296;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IfM8VNyqetsgSfQRL5ZOKAWvEEYEwNid5P2Z7k/shYs=;
- b=c9O8/PdMv23nqmGpRG17joBL3FWyzUSBWr91uCo3DzyQdTTEfac1gUOq8ecv4qSTOc
- dtU2j3kiILU74L8ZpSLgN81+Q06PTYCLcZMqQ2ci3GqFGB1A9w0VlXtTzhm1B9koM6g7
- 0RA6xgkXCB5t9rA5FZ1Yg39xZK0g3408Qr4ZZbEc4HRK/kd5FoPtgC4vTpr5uCnz00yV
- n/1BEx/VLzfdcqbvBh6SsAV3Vg14igpctYdJc952UGkNMq0HUWHBnp7547UEiHkNjOcw
- 3YZIpvlN2H3cmk2bAvZOYsr9zPnutgx/IcfRpRBmTlppB2Z3Gz0dAk0Az4MGR9Ak+GXl
- 8zSA==
+ bh=OA8bFMklEuyOjtQBEPuHdk0sWxOcKI40ostgyJ61G9g=;
+ b=iO3UdWj7kWM8UTqVjswFdcYtOOFJwOhBziPXLyY1eeSyQauESws53jhPjhkCvFpjZh
+ pHCPX/fwFKciJ0+fW9zKECxsmBEvs1hEurr986HMGGD9b2qYgw3ij/L996rHTaSz8Ot3
+ ebCPgK+TnlLRIU5XIXhR37/jObRu56qafN54VRoldiUZZ05z3kK1VMRQCIP0ZlTS+bIM
+ cHY701BavhxbYGsTFY+PyFcnQIa239cWH6G5rb3jk0V0rJTuvkC3B5zz48qvtixdiHDR
+ q5I0Xkcl5vk8A6BFYdV7xenFH2aDMp1QyJ4QCJR21PqbT8TMysf/9TzfepG/5WB9RTnQ
+ s4cg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVtuxgCu70mGHj9VAbRicms6V2bCV9wAHjUPI+U1/cbb8lwCJ10kvubA4mKnJcHl0IRzsUJEOgs466tX0zY00gsjiTMiiw=
-X-Gm-Message-State: AOJu0YzJ73/sEDWsbR8ePYoxqHShnBnmAw09g8fY111ePIeCUdqmp6aw
- HTV57J1auvzA+FYrHdKciMxvq7jM+IK5nIk2Oa5zsxIXEscanHPdTpxxV/SbyNFa9sfdis/8n3n
- FPckCPDX8Dx6QFDIBj67ADOsPW3boYeRakFU7Ng+kuUIXl7DMp58dUWGQEiUQws9XAvDFwh18oO
- rHslUv6hJa9OEsy+dv5gGoy/WGaVQ=
-X-Received: by 2002:a05:6808:1312:b0:3d9:243a:7ae8 with SMTP id
- 5614622812f47-3d93c08c8cfmr1174317b6e.39.1720493269346; 
- Mon, 08 Jul 2024 19:47:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhaGO6Py2i5ioLApBwALwuXiLMZpq4gyRpG8fR9GlCwI6tnwffhfLgoU30ZhZtpCgjsc+8uIthUYbMcsN+e+s=
-X-Received: by 2002:a05:6808:1312:b0:3d9:243a:7ae8 with SMTP id
- 5614622812f47-3d93c08c8cfmr1174306b6e.39.1720493269026; Mon, 08 Jul 2024
- 19:47:49 -0700 (PDT)
+ AJvYcCUg7ZIe88sg1OWV1mG9abgQ7yPabI/TcJufc1Cdftu8L2AbBzrXXvBgo1jtXK+h6srfCnTfqvqMAQeKSwMgwUXTGZyYMCQ=
+X-Gm-Message-State: AOJu0YxPMzf4u4A0FWfc/Mzbpd8P/usUt5SBhUPEgrliBoMT7fBy9Ytx
+ 5dBCwTFMadZNR7qteRQYU9qcBNvG1WWMV8X4GLA2bMlfYrfFF4Ig8ZQ/9YN3Ix+PNRgY209ltYu
+ cP+xZuZUa5vgGXKBQGh6XNKIawFzpIcqN5fVA+Wq5UD3Czm4xMB5p967+8SEz1RI/rrgaq2fGGG
+ rIqtXOZOXr7GMwSJSeGOI3N/cy8IU=
+X-Received: by 2002:a05:6870:1728:b0:25e:ff1:8314 with SMTP id
+ 586e51a60fabf-25eae88a814mr670145fac.33.1720493496027; 
+ Mon, 08 Jul 2024 19:51:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFm3jWcRiJExUB1Lmo7e1k/13jDtySth6pSXUJc5m4mqhgTn2nKPzl0o/jPZnSi3OcbRbc6M2xpTpInF4TNSg4=
+X-Received: by 2002:a05:6870:1728:b0:25e:ff1:8314 with SMTP id
+ 586e51a60fabf-25eae88a814mr670132fac.33.1720493495583; Mon, 08 Jul 2024
+ 19:51:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240709022707.579474-1-lulu@redhat.com>
- <CACGkMEt9ixHst2P++YZ5qkA6tjSTCm+9WvJcv4=jW4ST=PiwMw@mail.gmail.com>
- <CACLfguXtnMs19LR1xVxEqv_kPVJyppDxj3m42UvbHforWv1WMw@mail.gmail.com>
-In-Reply-To: <CACLfguXtnMs19LR1xVxEqv_kPVJyppDxj3m42UvbHforWv1WMw@mail.gmail.com>
+References: <20240705105937.1630829-1-clement.mathieu--drif@eviden.com>
+ <20240705105937.1630829-2-clement.mathieu--drif@eviden.com>
+ <c8bd5b18-9e49-44f1-a1d3-05bd02a91bc5@intel.com>
+In-Reply-To: <c8bd5b18-9e49-44f1-a1d3-05bd02a91bc5@intel.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 9 Jul 2024 10:47:37 +0800
-Message-ID: <CACGkMEt-G5-VMG1ydFSN2+Z=mcOryyhvWyAGu4rqARggpuQc3Q@mail.gmail.com>
-Subject: Re: [RFC] virtio-net: check the mac address for vdpa device
-To: Cindy Lu <lulu@redhat.com>
-Cc: dtatulea@nvidia.com, mst@redhat.com, parav@nvidia.com, 
- qemu-devel@nongnu.org
+Date: Tue, 9 Jul 2024 10:51:24 +0800
+Message-ID: <CACGkMEvwBvjRQ5tpJLCHRfL6FRQHEGrT+FD2v1GpAmt5EGJzhQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] intel_iommu: fix FRCD construction macro
+To: Yi Liu <yi.l.liu@intel.com>
+Cc: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>,
+ "kevin.tian@intel.com" <kevin.tian@intel.com>, 
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "mst@redhat.com" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -99,79 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 9, 2024 at 10:41=E2=80=AFAM Cindy Lu <lulu@redhat.com> wrote:
+On Mon, Jul 8, 2024 at 3:04=E2=80=AFPM Yi Liu <yi.l.liu@intel.com> wrote:
 >
-> On Tue, 9 Jul 2024 at 10:33, Jason Wang <jasowang@redhat.com> wrote:
+> On 2024/7/5 19:01, CLEMENT MATHIEU--DRIF wrote:
+> > From: Cl=C3=A9ment Mathieu--Drif <clement.mathieu--drif@eviden.com>
 > >
-> > On Tue, Jul 9, 2024 at 10:27=E2=80=AFAM Cindy Lu <lulu@redhat.com> wrot=
-e:
-> > >
-> > > When using VDPA device, we should verify whether the MAC address in t=
-he
-> > > hardware matches the MAC address from the QEMU command line. If not,
-> > > we will need to update the related information.
-> > >
-> > > Signed-off-by: Cindy Lu <lulu@redhat.com>
+> > The constant must be unsigned, otherwise the two's complement
+> > overrides the other fields when a PASID is present.
 > >
-> > This seems to be a workaround, for example it means the mac address
-> > set from the qemu command line has the higher priority compared to the
-> > one that is provisioned by the host?
+> > Fixes: 1b2b12376c8a ("intel-iommu: PASID support")
 > >
-> > At least we need to have a warning here?
+>
+> The extra line behind the "Fixes tag" is not needed.
+>
+> > Signed-off-by: Cl=C3=A9ment Mathieu--Drif <clement.mathieu--drif@eviden=
+.com>
+> > Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+> > Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> > ---
+> >   hw/i386/intel_iommu_internal.h | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
 > >
-> In this design, the MAC address from the host will take higher
-> priority over the MAC address from the command line. I'm not sure if
-> this is acceptable?
+> > diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_inter=
+nal.h
+> > index f8cf99bddf..cbc4030031 100644
+> > --- a/hw/i386/intel_iommu_internal.h
+> > +++ b/hw/i386/intel_iommu_internal.h
+> > @@ -267,7 +267,7 @@
+> >   /* For the low 64-bit of 128-bit */
+> >   #define VTD_FRCD_FI(val)        ((val) & ~0xfffULL)
+> >   #define VTD_FRCD_PV(val)        (((val) & 0xffffULL) << 40)
+> > -#define VTD_FRCD_PP(val)        (((val) & 0x1) << 31)
+> > +#define VTD_FRCD_PP(val)        (((val) & 0x1ULL) << 31)
+> >   #define VTD_FRCD_IR_IDX(val)    (((val) & 0xffffULL) << 48)
+> >
+> >   /* DMA Remapping Fault Conditions */
+>
+> It might be fine to squash patch 02 of this series into this one. @Jason?
 
-That's fine but it seems not what I read for this patch?
-
-As you try to set config, or anything I missed here?
+Not sure, we may need this for -stable. So having a standalone patch
+doesn't hurt.
 
 Thanks
 
-> sure, will add some warning here
-> > Thanks
-> >
-> > > ---
-> > >  hw/net/virtio-net.c | 15 +++++++++++----
-> > >  1 file changed, 11 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> > > index 9c7e85caea..db04331b82 100644
-> > > --- a/hw/net/virtio-net.c
-> > > +++ b/hw/net/virtio-net.c
-> > > @@ -3739,10 +3739,17 @@ static void virtio_net_device_realize(DeviceS=
-tate *dev, Error **errp)
-> > >      nc->rxfilter_notify_enabled =3D 1;
-> > >
-> > >     if (nc->peer && nc->peer->info->type =3D=3D NET_CLIENT_DRIVER_VHO=
-ST_VDPA) {
-> > > -        struct virtio_net_config netcfg =3D {};
-> > > -        memcpy(&netcfg.mac, &n->nic_conf.macaddr, ETH_ALEN);
-> > > -        vhost_net_set_config(get_vhost_net(nc->peer),
-> > > -            (uint8_t *)&netcfg, 0, ETH_ALEN, VHOST_SET_CONFIG_TYPE_F=
-RONTEND);
-> > > +     struct virtio_net_config netcfg =3D {};
-> > > +     static const MACAddr zero =3D {.a =3D {0, 0, 0, 0, 0, 0}};
-> > > +     vhost_net_get_config(get_vhost_net(nc->peer), (uint8_t *)&netcf=
-g,
-> > > +                          ETH_ALEN);
-> > > +     if ((memcmp(&netcfg.mac, &n->nic_conf.macaddr, sizeof(MACAddr))=
- !=3D 0) &&
-> > > +         memcmp(&netcfg.mac, &zero, sizeof(zero) !=3D 0)) {
-> > > +       memcpy(&n->nic_conf.macaddr, &netcfg.mac, sizeof(MACAddr));
-> > > +       memcpy(&n->mac[0], &netcfg.mac, sizeof(MACAddr));
-> > > +     }
-> > > +     vhost_net_set_config(get_vhost_net(nc->peer), (uint8_t *)&netcf=
-g, 0,
-> > > +                          ETH_ALEN, VHOST_SET_CONFIG_TYPE_FRONTEND);
-> > >      }
-> > >      QTAILQ_INIT(&n->rsc_chains);
-> > >      n->qdev =3D dev;
-> > > --
-> > > 2.45.0
-> > >
-> >
+>
+> --
+> Regards,
+> Yi Liu
 >
 
 
