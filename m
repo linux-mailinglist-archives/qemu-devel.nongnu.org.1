@@ -2,86 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF8392C511
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 23:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C1B92C519
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 23:02:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRHvd-0005QO-R1; Tue, 09 Jul 2024 16:59:13 -0400
+	id 1sRHyE-0002Jp-40; Tue, 09 Jul 2024 17:01:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sRHva-0005EN-Cb
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 16:59:10 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRHyA-00028b-PH
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 17:01:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sRHvW-0005XB-C6
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 16:59:10 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469KtuIM005681;
- Tue, 9 Jul 2024 20:59:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=KgLDCh70MzL+z9CrRxPKd9/rhKIzpnFQenotDp8DH3Q=; b=
- Mzf5ofTDKwYkw0GleVk8T2SjNcSa/hrgEoCPLr1Utz1Tq2DSBM0C2zlwJTs4jp5M
- QZhYGaSLVjn26mzMN++JkYKmoNiRiHG+Oy840/TaA/c7/9qhvYXp1IvFv5LJrO03
- 5T8MHYxpI+4ocWlhEYx0VdT1YG+3U0fzb7aCwSJOalAo/B2FCw/xNlCaUy5+T77M
- ieHHSaQ2vbfbNsJKWWPT1Z+CBUJrHPdZjSVT+fLyC8z1cZiREV/uH+oEHkK46ZbZ
- ScQtiVLJyITmKBKWeeCqQfiC38FfvPUQR4ah+V+Xs0Dx4WssT444Uh2aVMTU6MYO
- 0t8SFSrQ4ch+G1clf41t+g==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406wknnym1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 09 Jul 2024 20:59:04 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 469KCjpT005055; Tue, 9 Jul 2024 20:59:03 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 407tve98t4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 09 Jul 2024 20:59:03 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 469KwwD7012128;
- Tue, 9 Jul 2024 20:59:03 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 407tve98qa-9; Tue, 09 Jul 2024 20:59:03 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 8/8] vfio-pci: recover from unmap-all-vaddr failure
-Date: Tue,  9 Jul 2024 13:58:57 -0700
-Message-Id: <1720558737-451106-9-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1720558737-451106-1-git-send-email-steven.sistare@oracle.com>
-References: <1720558737-451106-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-09_09,2024-07-09_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 bulkscore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2406180000 definitions=main-2407090143
-X-Proofpoint-GUID: vf1AnGtyxJQrR9paxth5Cj0mJWVMAaBW
-X-Proofpoint-ORIG-GUID: vf1AnGtyxJQrR9paxth5Cj0mJWVMAaBW
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRHy5-0006CZ-OY
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 17:01:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720558899;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TsxXBMowcezJEDRjoUPV7HFIcgDlWTQTz4rGgv9pKho=;
+ b=WZSDDjRr/e0G3cikFPjglQWR7dv0wjSodvC4JaXAOYkP3iNnl3syuiPWmHVezPC3dJc9I5
+ g8hbUqtgog4Kvd1skbE77c+JIXdRVmIXjvDFkiE7TJS2+bWdleXTSRaPcwQkgFsreEii8J
+ i2sz9HXz6vqhJjxK2pXdYEy8tfE5pk4=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-wostgBrOMe6z9U5-lM2oqQ-1; Tue, 09 Jul 2024 17:01:37 -0400
+X-MC-Unique: wostgBrOMe6z9U5-lM2oqQ-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-5c6702d6ef8so192486eaf.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 14:01:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720558897; x=1721163697;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TsxXBMowcezJEDRjoUPV7HFIcgDlWTQTz4rGgv9pKho=;
+ b=cIqaOd+NwhkQhJWNeODZcT/GY2ngohBHdMNmsU4hp1sGJr2uLdEKkNnxu/U6Aw4mXU
+ 7KLcXe4R+UYpwZl0fLIwcUlO8B+KhVVYa5FPAd52h12qcbnt9P8ZQ1UGE7ysAhof8fnT
+ WAVFZbMLS6M7Et1gX52A91VV8E57dRYDLRdOBve9Rakc3Lp9os9bpXf36ZS78gs87SK6
+ x223usO7HrAgnwhezk/Sw9G7SzPl1V7dxAbnPU2WwzPe/8Ii7/Vxb0JbiUeaC9OpWUNz
+ WaRJYclmLBUhYZfZvQTu1KMl6MKbuONgo18k0+kxBdPey8T6u4mGiAEOcVX9yevf7KbF
+ zNHg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUM4OM8/FpRySy/xIOokqbBNmvO3VjSkT+E2FeRU0kcUEjHraTYeoRqVLXCWZ9QLKLfM5Fl2zdzGon8MWb54AVnrUZK0BM=
+X-Gm-Message-State: AOJu0YxP7kvzbghqcFAnIBiw+fSfO+ed0mHiFTWe9bZKaIWyDX2H4fhK
+ E+3Fe5qMAkcu9PNio7ckxaCuyq+YLoD4vGo3voGNRwLpa9lf4Qs+6bzfcvGSvq4Ypa07NthHBZV
+ 4xdrVU7ONaXEw0FRhyOPNnIhMhYEkXk5fLfNuuNl7s53b9u5nhuJ0
+X-Received: by 2002:a05:6359:4ca1:b0:1ac:2b8b:a185 with SMTP id
+ e5c5f4694b2df-1ac2b8ba310mr161877555d.2.1720558896627; 
+ Tue, 09 Jul 2024 14:01:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCk4wOyxzBGtML3uUOq7JYceLSDdFhVFjS11LYCqMGwVz1evKRb4yHN94+nbu9B79pcdXU4g==
+X-Received: by 2002:a05:6359:4ca1:b0:1ac:2b8b:a185 with SMTP id
+ e5c5f4694b2df-1ac2b8ba310mr161874255d.2.1720558896104; 
+ Tue, 09 Jul 2024 14:01:36 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-79f19012068sm133098185a.31.2024.07.09.14.01.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jul 2024 14:01:35 -0700 (PDT)
+Date: Tue, 9 Jul 2024 17:01:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Hao Wu <wuhaotsh@google.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ qemu-arm@nongnu.org, Joel Stanley <joel@jms.id.au>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>, devel@lists.libvirt.org,
+ Luc Michel <luc.michel@amd.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Subject: Re: [PATCH v3 06/17] hw/sd/sdcard: Do not store vendor data on block
+ drive (CMD56)
+Message-ID: <Zo2lLLAwcZ8bBvO2@x1n>
+References: <20240627162232.80428-1-philmd@linaro.org>
+ <20240627162232.80428-7-philmd@linaro.org> <87cynmfggx.fsf@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87cynmfggx.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,206 +112,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If there are multiple containers and unmap-all fails for some container, we
-need to remap vaddr for the other containers for which unmap-all succeeded.
-Recover by walking all address ranges of all containers to restore the vaddr
-for each.  Do so by invoking the vfio listener callback, and passing a new
-"remap" flag that tells it to restore a mapping without re-allocating new
-userland data structures.
+On Tue, Jul 09, 2024 at 05:38:54PM -0300, Fabiano Rosas wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+> > "General command" (GEN_CMD, CMD56) is described as:
+> >
+> >   GEN_CMD is the same as the single block read or write
+> >   commands (CMD24 or CMD17). The difference is that [...]
+> >   the data block is not a memory payload data but has a
+> >   vendor specific format and meaning.
+> >
+> > Thus this block must not be stored overwriting data block
+> > on underlying storage drive. Keep it in a dedicated
+> > 'vendor_data[]' array.
+> >
+> > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > Tested-by: Cédric Le Goater <clg@redhat.com>
+> > ---
+> > RFC: Is it safe to reuse VMSTATE_UNUSED_V() (which happens
+> > to be the same size)?
+> 
+> Hi, sorry it took some time to get to this, I had just left for vacation
+> when you first posted.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- hw/vfio/common.c                      | 45 ++++++++++++++++++++++++++++++++---
- hw/vfio/cpr-legacy.c                  | 44 ++++++++++++++++++++++++++++++++++
- include/hw/vfio/vfio-common.h         |  4 +++-
- include/hw/vfio/vfio-container-base.h |  1 +
- 4 files changed, 90 insertions(+), 4 deletions(-)
+And I totally overlooked there's the email.. until you replied.  Welcome
+back.
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 5c7baad..da2e0ec 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -586,11 +586,12 @@ static void vfio_listener_region_add(MemoryListener *listener,
- {
-     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-                                                  listener);
--    vfio_container_region_add(bcontainer, section);
-+    vfio_container_region_add(bcontainer, section, false);
- }
- 
- void vfio_container_region_add(VFIOContainerBase *bcontainer,
--                               MemoryRegionSection *section)
-+                               MemoryRegionSection *section,
-+                               bool remap)
- {
-     hwaddr iova, end;
-     Int128 llend, llsize;
-@@ -626,6 +627,30 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
-         int iommu_idx;
- 
-         trace_vfio_listener_region_add_iommu(iova, end);
-+
-+        /*
-+         * If remap, then VFIO_DMA_UNMAP_FLAG_VADDR has been called, and we
-+         * want to remap the vaddr.  vfio_container_region_add was already
-+         * called in the past, so the giommu already exists.  Find it and
-+         * replay it, which calls vfio_dma_map further down the stack.
-+         */
-+
-+        if (remap) {
-+            hwaddr as_offset = section->offset_within_address_space;
-+            hwaddr iommu_offset = as_offset - section->offset_within_region;
-+
-+            QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
-+                if (giommu->iommu_mr == iommu_mr &&
-+                    giommu->iommu_offset == iommu_offset) {
-+                    memory_region_iommu_replay(giommu->iommu_mr, &giommu->n);
-+                    return;
-+                }
-+            }
-+            error_report("Container cannot find iommu region %s offset %lx",
-+                memory_region_name(section->mr), iommu_offset);
-+            goto fail;
-+        }
-+
-         /*
-          * FIXME: For VFIO iommu types which have KVM acceleration to
-          * avoid bouncing all map/unmaps through qemu this way, this
-@@ -676,7 +701,21 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
-      * about changes.
-      */
-     if (memory_region_has_ram_discard_manager(section->mr)) {
--        vfio_register_ram_discard_listener(bcontainer, section);
-+        /*
-+         * If remap, then VFIO_DMA_UNMAP_FLAG_VADDR has been called, and we
-+         * want to remap the vaddr.  vfio_container_region_add was already
-+         * called in the past, so the ram discard listener already exists.
-+         * Call its populate function directly, which calls vfio_dma_map.
-+         */
-+        if (remap)  {
-+            VFIORamDiscardListener *vrdl =
-+                vfio_find_ram_discard_listener(bcontainer, section);
-+            if (vrdl->listener.notify_populate(&vrdl->listener, section)) {
-+                error_report("listener.notify_populate failed");
-+            }
-+        } else {
-+            vfio_register_ram_discard_listener(bcontainer, section);
-+        }
-         return;
-     }
- 
-diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index bc51ebe..c4b95a8 100644
---- a/hw/vfio/cpr-legacy.c
-+++ b/hw/vfio/cpr-legacy.c
-@@ -29,9 +29,18 @@ static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
-         error_setg_errno(errp, errno, "vfio_dma_unmap_vaddr_all");
-         return false;
-     }
-+    container->vaddr_unmapped = true;
-     return true;
- }
- 
-+static void vfio_region_remap(MemoryListener *listener,
-+                              MemoryRegionSection *section)
-+{
-+    VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-+                                                 remap_listener);
-+    vfio_container_region_add(bcontainer, section, true);
-+}
-+
- static bool vfio_can_cpr_exec(VFIOContainer *container, Error **errp)
- {
-     if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
-@@ -95,6 +104,37 @@ static const VMStateDescription vfio_container_vmstate = {
-     }
- };
- 
-+static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
-+                                  MigrationEvent *e, Error **errp)
-+{
-+    VFIOContainer *container =
-+        container_of(notifier, VFIOContainer, cpr_exec_notifier);
-+    VFIOContainerBase *bcontainer = &container->bcontainer;
-+
-+    if (e->type != MIG_EVENT_PRECOPY_FAILED) {
-+        return 0;
-+    }
-+
-+    if (container->vaddr_unmapped) {
-+        /*
-+         * Force a call to vfio_region_remap for each mapped section by
-+         * temporarily registering a listener, which calls vfio_dma_map
-+         * further down the stack. Set reused so vfio_dma_map restores vaddr.
-+         */
-+        bcontainer->reused = true;
-+        bcontainer->remap_listener = (MemoryListener) {
-+            .name = "vfio recover",
-+            .region_add = vfio_region_remap
-+        };
-+        memory_listener_register(&bcontainer->remap_listener,
-+                                 bcontainer->space->as);
-+        memory_listener_unregister(&bcontainer->remap_listener);
-+        bcontainer->reused = false;
-+        container->vaddr_unmapped = false;
-+    }
-+    return 0;
-+}
-+
- bool vfio_legacy_cpr_register_container(VFIOContainerBase *bcontainer,
-                                         Error **errp)
- {
-@@ -107,6 +147,9 @@ bool vfio_legacy_cpr_register_container(VFIOContainerBase *bcontainer,
- 
-     vmstate_register(NULL, -1, &vfio_container_vmstate, container);
- 
-+    migration_add_notifier_mode(&container->cpr_exec_notifier,
-+                                vfio_cpr_fail_notifier,
-+                                MIG_MODE_CPR_EXEC);
-     return true;
- }
- 
-@@ -115,4 +158,5 @@ void vfio_legacy_cpr_unregister_container(VFIOContainerBase *bcontainer)
-     VFIOContainer *container = VFIO_CONTAINER(bcontainer);
- 
-     vmstate_unregister(NULL, &vfio_container_vmstate, container);
-+    migration_remove_notifier(&container->cpr_exec_notifier);
- }
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 7c4283b..1902c8f 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -81,6 +81,8 @@ typedef struct VFIOContainer {
-     VFIOContainerBase bcontainer;
-     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
-     unsigned iommu_type;
-+    NotifierWithReturn cpr_exec_notifier;
-+    bool vaddr_unmapped;
-     QLIST_HEAD(, VFIOGroup) group_list;
- } VFIOContainer;
- 
-@@ -292,7 +294,7 @@ int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
-                           uint64_t size, ram_addr_t ram_addr, Error **errp);
- 
- void vfio_container_region_add(VFIOContainerBase *bcontainer,
--                               MemoryRegionSection *section);
-+                               MemoryRegionSection *section, bool remap);
- void vfio_listener_register(VFIOContainerBase *bcontainer);
- 
- /* Returns 0 on success, or a negative errno. */
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 82ccf0c..3d30365 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -37,6 +37,7 @@ typedef struct VFIOContainerBase {
-     Object parent;
-     VFIOAddressSpace *space;
-     MemoryListener listener;
-+    MemoryListener remap_listener;
-     Error *error;
-     bool initialized;
-     bool reused;
+> 
+> I think it's ok:
+> 
+> {
+>   "field": "unused",
+>   "version_id": 1,
+>   "field_exists": false,
+>   "size": 512
+> },
+> 
+> vs.
+> 
+> {
+>   "field": "vendor_data",
+>   "version_id": 0,
+>   "field_exists": false,
+>   "num": 512,
+>   "size": 1
+> },
+> 
+> The unused field was introduced in 2016 so there's no chance of
+> migrating a QEMU that old to/from 9.1.
+
+What happens if an old qemu 9.0 sends rubbish here to a new QEMU, while the
+new QEMU would consider it meaningful data?
+
 -- 
-1.8.3.1
+Peter Xu
 
 
