@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED1C92BE64
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 17:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E48F92BE71
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 17:31:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRCjs-0003yD-3g; Tue, 09 Jul 2024 11:26:44 -0400
+	id 1sRCjs-0004Ad-SX; Tue, 09 Jul 2024 11:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRCje-0003mV-Uc
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 11:26:32 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRCjl-0003rX-AR
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 11:26:38 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRCjc-0006Em-FK
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 11:26:30 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4266eda81c5so12836165e9.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 08:26:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRCji-0006Fn-BY
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 11:26:37 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4265c2b602aso24560175e9.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 08:26:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720538786; x=1721143586; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720538792; x=1721143592; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=60ugG7sbucLNOSaT9RRMMhTNzSMzLQ61ZmEDNwXQ9Yk=;
- b=J9jg8Rg9JWoABE0qMwy7A+vzGeCVlheESLswLIhW9km776dchOcDogVPSA65ghbV8y
- /ElUvgKR89Xb/LOlDmOS4ueACfzZmHY9d14+eBB7kdNKaHwG5UG8HbJiF4l3nohPFZsc
- EM7YqP/5aVslqGqFWmBOwUi+bDgymJTQeKumiLnkb+Jj9uY5ScFlLbPE7H6H3eB942f2
- fsiPVsCd0f4nGu9tWxwn80l5UFGsgF57EqEHctlhrIefdB/s3BLQuQd2RInSCzWg/+73
- mQPQGn02dE//YOzbnx7genwmgPYQCsRs9kkS5+24JyNAzoVF/FiCepxow6JNjWL3sDLN
- T9Jw==
+ bh=CXlLcchVuZxoQd5Ht8ddmcX5yuPtqrGnU30hdQCRZeA=;
+ b=wLBm1JWJAGCwpEUIz+SWZFY6BqMyJcsMhgoEZ5rmwiUhI1tgCNwQYwRQoFw9/Q/J2J
+ Xci4BGQ7p8WlEclhjjblc1so0b1I1d8gX2n8E5Cp3makkfoeps04Ep1BoYrGRJEtM7ZY
+ Yw3o/iSBjRdSNdigXN4Q00xOvzhrPo6RnVwO4LV5KojEnKBiAMpN8lu6k8WbonIr6XEU
+ Wgs7RISADNilDoIyHFkUUCMzA7Nqzb6gPbn2kmYnHKpGvdaABiFUQOTEt9335jPtB0ek
+ J87mJiMsFnCuzcOxLDSrUo+mIPoYa4Mo65wZBQPqBpStUgk0q+KsKpWFFAsnRwsEmDaP
+ pLyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720538786; x=1721143586;
+ d=1e100.net; s=20230601; t=1720538792; x=1721143592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=60ugG7sbucLNOSaT9RRMMhTNzSMzLQ61ZmEDNwXQ9Yk=;
- b=BBfL9FyCG8iCf70Tops2nFrLNuf//J9kzKk+SKsvWhjC0JT7ARoJppHaJJlBrHOHCy
- lTLjkiPwT+n58CMOl+TNI/+lrKLD/kImmc6llCkJhYP5SRMpHdEmPuwktWbPyC6zXMYz
- YdKzhR5iFNVUJEepHjYZG2pzm6WfWV07/9fnjAcjmnidnURgidnVe/lKU5rmAxl/qmwM
- u9jfwSdtISK5FpDRM09/DRjm0Gk32a4C5E7Gcn8Vtkq1R2Q5z4bynBK9s3kmPNNF500k
- 91xWp014dSz6F3DKA9EPAwBo4de3p80E2uhNnTrXWCgoLIx2rD4n6BUSiFFekYR9/q9e
- dvyg==
-X-Gm-Message-State: AOJu0YxUjluX76v1NLbbFVmsitxQBP6TXMnhgz6GprtMvzrAnUKCvtmf
- kkypEoDfqdsYAHjfgroI/HscnlnQSSuEF6xQPhh70+MthrQZHyrnzYjWgDkeGd9d0Yd3xr1F4ql
- o
-X-Google-Smtp-Source: AGHT+IE+L/Jomaff9uJFwGSRDpVPwqXZ33qbELgWPaNXY8SQEgf8ySkR0STT8Xs+nJbASSge0qPT1g==
-X-Received: by 2002:a05:600c:22d4:b0:425:81bd:e5ee with SMTP id
- 5b1f17b1804b1-426707d07c5mr25276565e9.16.1720538786629; 
- Tue, 09 Jul 2024 08:26:26 -0700 (PDT)
+ bh=CXlLcchVuZxoQd5Ht8ddmcX5yuPtqrGnU30hdQCRZeA=;
+ b=tB+q3m6jf6Pg9M0CfejAiuVSHcw0GTEEoutlgmCVbOTWsID9tncbPBCfXZFtoXv675
+ zjBRQh4YMk0X+Mf7ISZInjcucraKsG+Y4bH+sw56Zyr8aPnXOsU4+IBjeKyD5x+C9gdQ
+ BPbFDM/cAl5jxcDO2bvpBjdtf/QyAy1DsHnKrV8Sxr+YzzFxZRJVkKWK+Ic9z7q2L05F
+ hW/YqZBnYSn2SB9S1P4HZawSJ2z5yj+VaEXIiVz60pUF7s2DxX/ucrruU8XsaaD+8NxZ
+ ha6JrcQ/UsjxUogeB37gF62camxhmFYXWuq61dmGYtux8/wYR95aGy6vaZfHK9RhUaal
+ tFIA==
+X-Gm-Message-State: AOJu0YxQLN7uNIgVe4UFbVN8A8QjfudbBSdM3wDhLRyxHWf4WJnRjWnB
+ NTRreaQmJfSVOt6uCn8RqgT4U2REbgHugShLadtoB6jJLkllFOQqvIQMZf1DGaGMMThb1dANcc/
+ X
+X-Google-Smtp-Source: AGHT+IFk79HH2hu7cTDdpnBFLD+ITevC+cUgjh3EOO+ZqTvtzUfI7HKi7dEThtOCYn6GgbkbaaiVqg==
+X-Received: by 2002:a05:600c:534b:b0:426:6ad8:3e3c with SMTP id
+ 5b1f17b1804b1-426707e2fa2mr19303475e9.17.1720538792517; 
+ Tue, 09 Jul 2024 08:26:32 -0700 (PDT)
 Received: from m1x-phil.lan (vau06-h02-176-184-43-20.dsl.sta.abo.bbox.fr.
  [176.184.43.20]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427270238a6sm12770615e9.20.2024.07.09.08.26.24
+ 5b1f17b1804b1-42662315363sm125665345e9.26.2024.07.09.08.26.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Jul 2024 08:26:26 -0700 (PDT)
+ Tue, 09 Jul 2024 08:26:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -64,17 +64,17 @@ Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jamin Lin <jamin_lin@aspeedtech.com>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>
-Subject: [PATCH v47 04/19] hw/sd/sdcard: Implement emmc_set_cid()
-Date: Tue,  9 Jul 2024 17:25:41 +0200
-Message-ID: <20240709152556.52896-5-philmd@linaro.org>
+Subject: [PATCH v47 05/19] hw/sd/sdcard: Implement emmc_set_csd()
+Date: Tue,  9 Jul 2024 17:25:42 +0200
+Message-ID: <20240709152556.52896-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240709152556.52896-1-philmd@linaro.org>
 References: <20240709152556.52896-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,49 +97,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-eMMC CID register is slightly different from SD:
-- One extra PNM (5 -> 6)
-- MDT is only 1 byte (2 -> 1).
+eMMC CSD register is very similar to SD one.
+Most notable change: the version announced is v4.3.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+TODO: comment magic values?
+---
+ hw/sd/sd.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 097c9cc61f..2d737a836f 100644
+index 2d737a836f..f580c6b2ae 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -446,6 +446,23 @@ static void sd_set_cid(SDState *sd)
-     sd->cid[15] = (sd_crc7(sd->cid, 15) << 1) | 1;
- }
+@@ -476,6 +476,44 @@ static const uint8_t sd_csd_rw_mask[16] = {
+     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xfc, 0xfe,
+ };
  
-+static void emmc_set_cid(SDState *sd)
++static void emmc_set_csd(SDState *sd, uint64_t size)
 +{
-+    sd->cid[0] = MID;       /* Fake card manufacturer ID (MID) */
-+    sd->cid[1] = 0b01;      /* CBX: BGA */
-+    sd->cid[2] = OID[0];    /* OEM/Application ID (OID) */
-+    sd->cid[3] = PNM[0];    /* Fake product name (PNM) */
-+    sd->cid[4] = PNM[1];
-+    sd->cid[5] = PNM[2];
-+    sd->cid[6] = PNM[3];
-+    sd->cid[7] = PNM[4];
-+    sd->cid[8] = PNM[4];
-+    sd->cid[9] = PRV;       /* Fake product revision (PRV) */
-+    stl_be_p(&sd->cid[10], 0xdeadbeef); /* Fake serial number (PSN) */
-+    sd->cid[14] = (MDT_MON << 4) | (MDT_YR - 1997); /* Manufacture date (MDT) */
-+    sd->cid[15] = (sd_crc7(sd->cid, 15) << 1) | 1;
++    int hwblock_shift = HWBLOCK_SHIFT;
++    uint32_t sectsize = (1 << (SECTOR_SHIFT + 1)) - 1;
++    uint32_t wpsize = (1 << (WPGROUP_SHIFT + 1)) - 1;
++
++    sd->csd[0] = (2 << 6) | (4 << 2);
++    sd->csd[1] = 0x07;
++    sd->csd[2] = 0x00;
++    sd->csd[3] = 0x32;
++    sd->csd[4] = 0x0f;
++    if (size <= 2 * GiB) {
++        /* use 1k blocks */
++        uint32_t csize1k = (size >> (CMULT_SHIFT + 10)) - 1;
++        sd->csd[5] = 0x5a;
++        sd->csd[6] = 0x80 | ((csize1k >> 10) & 0xf);
++        sd->csd[7] = (csize1k >> 2) & 0xff;
++    } else { /* >= 2GB : size stored in ext CSD, block addressing */
++        sd->csd[5] = 0x59;
++        sd->csd[6] = 0x8f;
++        sd->csd[7] = 0xff;
++        sd->ocr = FIELD_DP32(sd->ocr, OCR, CARD_CAPACITY, 1);
++    }
++    sd->csd[8] = 0xff;
++    sd->csd[9] = 0xfc |     /* Max. write current */
++        ((CMULT_SHIFT - 2) >> 1);
++    sd->csd[10] = 0x40 |    /* Erase sector size */
++        (((CMULT_SHIFT - 2) << 7) & 0x80) | (sectsize >> 1);
++    sd->csd[11] = 0x00 |    /* Write protect group size */
++        ((sectsize << 7) & 0x80) | wpsize;
++    sd->csd[12] = 0x90 |    /* Write speed factor */
++        (hwblock_shift >> 2);
++    sd->csd[13] = 0x20 |    /* Max. write data block length */
++        ((hwblock_shift << 6) & 0xc0);
++    sd->csd[14] = 0x00;
++    sd->csd[15] = (sd_crc7(sd->csd, 15) << 1) | 1;
 +}
 +
- /* Card-Specific Data register */
- 
- #define HWBLOCK_SHIFT   9        /* 512 bytes */
-@@ -2581,6 +2598,8 @@ static void emmc_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = false;
- 
+ static void sd_set_csd(SDState *sd, uint64_t size)
+ {
+     int hwblock_shift = HWBLOCK_SHIFT;
+@@ -2600,6 +2638,7 @@ static void emmc_class_init(ObjectClass *klass, void *data)
      sc->proto = &sd_proto_emmc;
-+
-+    sc->set_cid = emmc_set_cid;
+ 
+     sc->set_cid = emmc_set_cid;
++    sc->set_csd = emmc_set_csd;
  }
  
  static const TypeInfo sd_types[] = {
