@@ -2,194 +2,148 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDA492B8E9
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 13:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5211892B931
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 14:19:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR9Uw-0005wI-Cy; Tue, 09 Jul 2024 07:59:06 -0400
+	id 1sR9nd-0003dH-Me; Tue, 09 Jul 2024 08:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1sR9Ut-0005s4-Fs
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:59:03 -0400
-Received: from smarthost4.eviden.com ([80.78.11.85])
+ (Exim 4.90_1) (envelope-from <gankulkarni@os.amperecomputing.com>)
+ id 1sR3yj-0003kI-1k; Tue, 09 Jul 2024 02:05:29 -0400
+Received: from mail-eastusazlp170110003.outbound.protection.outlook.com
+ ([2a01:111:f403:c101::3] helo=BL0PR05CU006.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1sR9Ur-0007hH-48
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 07:59:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1720526341; x=1752062341;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=47++SvRSdwWasr2frv5NWCMwRnE7UHaGRQooq6aZOQs=;
- b=TW5a8Bgbv0Jp5wYZz2G4cnVCEcujElcEUAelGQ+OmrAyp/d9YaoqJy/I
- UFfKxkEr7n3dqkCrWO5UzfAq5lKz0NY5Y6ziHSCXinez2hs/vZucRIGqq
- FkeljD25oiU9mwUcXwySLSNJ6ZtpoWGldLiKUu44k3ZVhu93RGy6RpGx+
- AeZlK+ho2D9Rn16JxHr6IPut+mokQd+IdtRYjtCFyRy9v3ZbryDh+Bd+W
- HduP4L83FQrhu++FjmpBkkLPbFl0CoqVYqj1GLmnxyDODG32j63D0TMSP
- BpHjxol0nu+EdLlflPjfIg31x4ilPiMufCMjiRdEYG2D354x8pqnJxCko g==;
-X-IronPort-AV: E=Sophos;i="6.09,194,1716242400"; d="scan'208";a="16267917"
-X-MGA-submission: =?us-ascii?q?MDEbcRWYAhsUahkDZWz7A3FXCIJDZs3mFJ4KuN?=
- =?us-ascii?q?VN4erUMbtzEfvIvLnxdO8UCSafg7dyyUR6SSHmoouzDXCozbH66z797B?=
- =?us-ascii?q?7YwuUtFLBHAGUzCWhk608XuPGsHbgMpQb9nGuwdC2cnrSr1AHLG3Kfj7?=
- =?us-ascii?q?7IchYWcIJVo2TDE241Fcl8CQ=3D=3D?=
-Received: from mail-vi1eur02lp2041.outbound.protection.outlook.com (HELO
- EUR02-VI1-obe.outbound.protection.outlook.com) ([104.47.11.41])
- by smarthost4.eviden.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2024 13:58:56 +0200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L8yS/KMPFYOz5k5qGFo2pw+e1BJzT7KABLJHRpeVSvU/BoXUHfkZPZ5tsA63nZAUIGVOA1NCwFqacqViZD1YqBWA/x7cEVE4N3Q8d5IA8/QRIOYGqLsmAAsdLT4rouE3EzS8s4emBJPn4BOhe4DpUA9e17+Y9ySmLLgkyQIlRXaDBwQX7yAjdQNYKig1w3OoN18vCcpWhlNhdpZXXa4AMheY7t2L3ncgji24j3CiwddeJNwk8g263vsM/eFsBGUXOnMP0JGp9GVJflLXgqC0YW0zJjsRHiX6ckFWxl3Umx1MjhvsMY3TApydph+QazhmPkRYj8kijWPn0pmYnVCj7g==
+ (Exim 4.90_1) (envelope-from <gankulkarni@os.amperecomputing.com>)
+ id 1sR3ye-0005De-HO; Tue, 09 Jul 2024 02:05:26 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NScMd8ah/0r66jWno0u2TPdyv7s40uf0/rFfMjhh+edLeQMcWbRL0bUC/VNcFW+5xwq2oCMGUg8klEFhYWlMInLNthOq6ytwqAZoGLFjcM3EiEsZ+GWxNLeVA49Dr38GzoS1j0oF5357BCJCn0iWXzvwLLaXCKMmL0n+EIahd2G4jsC9DJlRqyYvTP7nQ/EBVRNHySi9ykcItQxNaK83K2wmGfCOUrmfLLggazd4ZxeCTmqDwfOXOEbDaJ0Oos3AKJL3/yiT1ukHoyRwUs2dlnyDwYBog1OdNunbN7luZUa+8s3RnBq7YRGysQwPX++zVXJWDQUx3BCl5sAB+QNdtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
+ s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=47++SvRSdwWasr2frv5NWCMwRnE7UHaGRQooq6aZOQs=;
- b=EQqZzmFLQTkq78bj6jMBphnXXt+N+RvfBo9hC5QKSyTF5Lg1kDB3kwhQP01vJLuPhThrEsajlG/mEb5Iss2F+S0ATZzk/s0cpkt2S5AdXYSSnquR/p8pqdeqaT6qGmadPxHMWUZc/kNJ/NfJossr+Ivf7RQMQGEidxgnSV+cVvFEpsAEAviHRePrOszM2YZPq/JZ7AKfkmPiGS/M8169KWIKXriXjwKGGfwQcmPIC2P3kNBa/mxKWf3v/Y1xrJdjA5B+CQXmvLereHqhl7pvUmAcpNOia1skh/JvIZwv97cpZ3iJblp2ik06YRrWTD+DPTpTlLCMVZwVlg6Rm39mMw==
+ bh=c2cRKcukKCWVNpDlp67KfDkVO2TwoI5+vukjMLxJhCM=;
+ b=S60u1AfKpe9bW+jGHtaZQu1kuB/IXO8MWlN+LTeW2VVYVWx8llVpn3C2iArIBsu3YZd9Ry7U6tUGTpOZKTiA1nIHS6zCB3NKopZwnMoUbwjOn8j0gng9Z3H2wL5UL5w19UypsG4U7mj0YkMIbCqaqWa7wfvX3WVLuEQzenHEdWPH7Z4R/24jHedhS5sFeA8g/YVnQTlP9jMihPeou+Qi5iinMy07wNfFdTs+H91YCojJA97JN/kMmhquWD1tCO+6OpgFv5TIEvB/v144Lt2X9rVb/+2BAe6E1t5kjQY1mZt5QrPuR6dq99Sy1WmXVcdhOZ/Y8dm/Q9LBVkJylbQGIg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
- dkim=pass header.d=eviden.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
- s=selector1;
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=47++SvRSdwWasr2frv5NWCMwRnE7UHaGRQooq6aZOQs=;
- b=bs4Py+3QsxYTyWKsli7JG8s82zxE50ZX15c/XNOL4TH52k3k5K262BQrycGDrln2xWavMDQKQx45ILkO2DJ5dpmGl6DGNujPZ1cD6/tngXPoCfu4/2L+6BDHc/tcBsay3PLn9vVgaWSapqelFIQX6qx7Wl0DR/nDHMHdusVhv9a6Uh8WMvexdCe5xQrWSUYYgABey4evoqUFvvKkVJ4ajGWEUeHgjeLuiUiRdG7/HnAJzzacA8SNPIQrieqDxyNIW59Qk4DoD0LoAF90V9j49ZH0M/kTy2ZulsVgeL1gvkeKCNk8Gf+OztKWOj+uPDkqsSkoO5dyZSQ2TlsjLHhDdw==
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
- by GVXPR07MB9984.eurprd07.prod.outlook.com (2603:10a6:150:11b::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.19; Tue, 9 Jul
- 2024 11:58:53 +0000
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d%4]) with mapi id 15.20.7762.016; Tue, 9 Jul 2024
- 11:58:53 +0000
-From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-To: Minwoo Im <minwoo.im@samsung.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, 
- "kevin.tian@intel.com" <kevin.tian@intel.com>, "yi.l.liu@intel.com"
- <yi.l.liu@intel.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>
-Subject: Re: [PATCH ats_vtd v5 20/22] pci: add a pci-level API for ATS
-Thread-Topic: [PATCH ats_vtd v5 20/22] pci: add a pci-level API for ATS
-Thread-Index: AQHazEQPZma3+RPBzE6mhYIQQIOAh7HuOTAAgAAdBIA=
-Date: Tue, 9 Jul 2024 11:58:53 +0000
-Message-ID: <929fc1df-0a19-4da0-8399-5d792dd25684@eviden.com>
-References: <20240702055221.1337035-1-clement.mathieu--drif@eviden.com>
- <CGME20240702055502epcas2p2f54e3234f35d28e73513a5634a7cb03a@epcas2p2.samsung.com>
- <20240702055221.1337035-21-clement.mathieu--drif@eviden.com>
- <Zo0NpttNP8OkrOG8@localhost>
-In-Reply-To: <Zo0NpttNP8OkrOG8@localhost>
-Accept-Language: en-GB, fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eviden.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|GVXPR07MB9984:EE_
-x-ms-office365-filtering-correlation-id: a9f411ba-c3e7-4f4f-0c96-08dca00e812e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?TWI5d1BScFBFMkROZ1pnZG1rRzQ4MmtHdDgxRFNXQ0NMaktCMU9GVGFnWGU3?=
- =?utf-8?B?REljSHYyeUdXS3Zwais4c2JCOTl2ekpEUTRGajJjNG0zZHp1QzJjbnBDWk9P?=
- =?utf-8?B?ZjdDWUExSUl4bVhUblpIWkdkQkFTUXg2d3drdHBtMk5UQjIydE9OTEM1N25V?=
- =?utf-8?B?cUZyaHFFNDFVUmR6YzdvbnVkckhmaVhXblg0SkpxekdUMDFVNTNNTkQ5Ti8y?=
- =?utf-8?B?Wm5GNlRaRWtZRGpkSVpjemhCRzNGSUg5allXVnZsNGRZdVZFeHNIQkR4anpO?=
- =?utf-8?B?bUhZYVhLYXRyb3JRNS9ZRlM5Ujd2dStEbW1XWHZNdCtyV3hBTzhSVWNRTDQz?=
- =?utf-8?B?SHNvSzRkdzRlb1ROQk8rVTVCdnBneUwxZ2VSYklYcU40VXA4ZUorYWlhMWw1?=
- =?utf-8?B?dVhmaHhiTG43TDU3T25LUXkyK29kdzhSRWFnc3AxUnN3SnQ4L1AzODA3TkRq?=
- =?utf-8?B?enVsMVBxL3lPZUVIQ1NqamhQRmRMdVBDc1JSdTF0NmF0bDJOekwwcDd1UEp0?=
- =?utf-8?B?YWR4THZoQUs0akxDV01SN2Ric21QdDJxS1FGci9GM3JXT0JacXlINDBHcVAr?=
- =?utf-8?B?UUZLMC96WW9wOHNtRjJIZFRUNExzeHNWbWhldDFPeEJ4UEdzbXZUZkd6TVR5?=
- =?utf-8?B?VXNIRUxoSTBuUzdHL3craXJsWHBIZ2cwNll5NlAzdGUrUndUc2c1WkwzcW80?=
- =?utf-8?B?Y1VLalREVnJ6MG82RUcyK0FTMkdVRktEdjlEbnU3QUcwL1loMmRnYlJtaGNF?=
- =?utf-8?B?eWlRdWEvWGlTYnZBaUY0TUhVVmk2UkdJd1FPdEI5b1RmYk41K1hWZkNZKzRE?=
- =?utf-8?B?eVJKYUJraWF4eCs3NHU0UXN6eFMvdTd2NnJCMDlranpwYm1nSEMxanpsYmR5?=
- =?utf-8?B?STZUZWRCZy9EbW5pa1UyR3VLdHgzR3pabXdIRGY3UUd4QlpKM1ZzSnFYbktv?=
- =?utf-8?B?ME11SlJtL3YxbUdJbFhuMTNBMndZZTdsWW10UWl2TGErNDVIU0VGQlhOOHVq?=
- =?utf-8?B?M2d2L2hLL2dEa2s2YWNGRGlvOGxuVXl0M0RQczNhNUhpdzUranNCaFd6bTRI?=
- =?utf-8?B?VFVwMmFDVUJHSlBoaEc0Rm1tSmk5R21VM09EcUx5TE5MWU0vbU5zbi9odS93?=
- =?utf-8?B?clBHZ244UFNyYkc2U3pZV1daOFdqcGx6Ym1VV0NocU1wNnRHNDVwZ2pvQ29O?=
- =?utf-8?B?c0YrSVdzV2ozak5vdkdlcWFxRDAzeW9FNVdQZEpibytBU2lkQnA3NzZJTlRM?=
- =?utf-8?B?NzZZOHB2dTI4YmJJOFp1eFF0N2FicVBsR0d5SjV4Q0lEV3FlTk1tNGxBTnNG?=
- =?utf-8?B?MTNHSkQ5NFpKa3JWTUxyU0RSTVpnelBTclRKS0NWbUVQMVkzNlBjd2ZFTXBC?=
- =?utf-8?B?QXBqenU0eUw3cTIzZmgyaWd3ZUxpbXVTY3JEOVNCaTRRT0hNZVVEWWE1ak9v?=
- =?utf-8?B?ckF3bGhTTGt4WUtPYWJHZ2x2ZGlDbmY3Y1o4U1lrRTQ3bTJMTGEyYWtDRWVC?=
- =?utf-8?B?b1VMQTltbnFCSldPa1Rabi9QbEdVNUYxME1KVHVhMXJVcm9FeWxlTndMN2k3?=
- =?utf-8?B?Q3BSVnBFOENUQjlaSTNnZ2t2WDlMYWkxdHM5VElWMXlvZHRLWDRXTVZUZEJ5?=
- =?utf-8?B?OURLM3pvdTgvN2tONU1jMFZ5Nkl6VlVMNS9HbkJKTW1NMlJpNXE2cUgzWnNp?=
- =?utf-8?B?V000dnk0KzEvK200NmpqUkR2RUx0MUV0MFR0dlZFZG9vR1kyYWJQSDcyRlZQ?=
- =?utf-8?B?bnVML2p3S24rbUpNUkY5RU5DSGorN1hrd3pjMGhoaXIveWc1enFDa1lNS1NJ?=
- =?utf-8?B?Y3YzQjVrbVRyUXdhMnpkNmxuYkRkVEwrSXlTY210QllQV1BndkowN1AwWSto?=
- =?utf-8?B?aGtPcnVyRGtocDUwSHZjR2M1WkV3T09JeU42b3htRlYyTkE9PQ==?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M3EvODN5OE8yZUFheThKelczN3E1TEw4T3dDWFFYbGRtZEFOaGZIVHM4cGVj?=
- =?utf-8?B?aWIrbGRsV1dHNmZTaUdIbmMzb3d2aGRCVTFaWXhRMWlWTm4zYTBzUDJuaHNt?=
- =?utf-8?B?T1BaWEZLUWxmc3JrNHc4VklTU2YvUU5VWjVvbHQ5NTlZdmM1RzhWbUNKOWRT?=
- =?utf-8?B?TXRKSGllYWZsZmNPOWJiRytLQ2MzTkFscGEzdHh2ZDZKdzR2dWw0R1lwT0Zk?=
- =?utf-8?B?YzFlMDVremNFV0Z6U2h1Q0VCRzNOT1liQzhud3oyWksveHFJWDFGZ0E2anR4?=
- =?utf-8?B?SWhTWjJBcHp2bnZncE9UNC83RnJxYWcyK1NlT1ZiMzhia0tBQ2oxNCtOcVd4?=
- =?utf-8?B?Nm5rd3RweGlCbFVRaFhlQmRLVlhCNnpDTXdKSkdBdDRQNWVMMXVhcitocWRE?=
- =?utf-8?B?SnZYQ2c5akdnTCtFdFY5c3Q5V2JyM1cyYTlRL3VPN1ZTMnJ0UXFneWk3Smlu?=
- =?utf-8?B?SDd1cEZUaklVVlU0NDlNUGtRbUk0OCtYbUpuVU9Zb0Rzb29QUDdnaGJqNlRM?=
- =?utf-8?B?a2FKMnR1YlhoRzRtK0RqMXVlWWkzT3JQelRtQS94TDNxODludnlmbS81cnRY?=
- =?utf-8?B?ZWdWNkw4K2pLOTMrR2pBV3IzSndNZGNERUViTjQ0VFc5QjYvMUZOOHlEa0lJ?=
- =?utf-8?B?NWE3bGFBSXF4Y2xHWGR1amI1bGxERkZBMDlaR2l4TmlKUlUxZ3RkY083Z1U4?=
- =?utf-8?B?b1J2dmhyMzJKdDZrUCtnOG4zRHFNemZDSkk1eVQ1bzlPOUVvS2krdGZxRG5C?=
- =?utf-8?B?OG05S0hVWHNNaWRaM2Q3SktaT2h0WXFhQnRuT1R5bVZPU0JCaVVOZHNTOGpC?=
- =?utf-8?B?bG9ETnB0RDEwcmdNMjlWUm5jTkRXNGNXTWczYW1pcFlzeUtkcHBUeDVSTjQz?=
- =?utf-8?B?US9IRk92bHhRcFJsbnE1VDhUQ3dXbG9kN3JZNS8rZkY1WjVSdHZ4OHR2aHIw?=
- =?utf-8?B?SjBPUWVTM1liT3hDc0k5M0RVVCtPaG4rRVZzOFRDUlduc1U3OTZZbHF4OGJs?=
- =?utf-8?B?dXNKZm52TnpCTnpzVGxDVDlFS1dSdlBjNlMxREJtUGdUdzFkRlhucWhpdmg4?=
- =?utf-8?B?NjRzci83bnpXU05ETUlUSDlBTDY4Z2ROR1hYVFFJMy9ZbGJwOW14V3dOL1Zy?=
- =?utf-8?B?ME5tLzZQSjhvc1FERUtLMi9kdDNLdUNiU2pQb0pxbUczajk1ZHJSWWtQbktE?=
- =?utf-8?B?eVI0dVdWRG9wQ1VSejRia0l0NlhQbVo0ZUs5SUN5SWo5QWd5cFd1RCtQRnhw?=
- =?utf-8?B?d1dIRmFNc0VrdENUaVNQVURyaGVnWjh5MGVuT2ZPdWpYcW9Mc05Fcm1zazN4?=
- =?utf-8?B?Y1prbFl0ai9UUERpajRWRkNBT3BYelBXUVVsTjgwWDJqbEZkeElIejRpTHFs?=
- =?utf-8?B?NVVyNEtrUXpZc2l6MUd0U09aNGpSU1BWeGlHNFVnVE8wc1FKbGl0amptNm5S?=
- =?utf-8?B?NjB3aExGOStLbXZlK3ZyYUZpL1pjaTIvSmpYZEhFRGxvOWlZT2x0RTBZa0ZL?=
- =?utf-8?B?L25LL2xRdE1CM1AyaGY4a3lyUnN3M1N6UGMyRi9WSFF0R21UMFg0YXJpS0lT?=
- =?utf-8?B?QnZNeDRjQ2NXamc3L3pyN0hWRWxnK3FZem5wcldoSkR3NmlkY3BMdm80dnJS?=
- =?utf-8?B?S3NzeDhPUVQzdFZoalJoRm9Hc3hEQUlKbVpVYjNXM3dOM3JDeTFwNjBwTnor?=
- =?utf-8?B?ZXMyL2lLbWtZNyt4RFVOUStFa0pYMWl2dU9PY21QWHdCeWw4d0d5ekZMUS9I?=
- =?utf-8?B?dzFCT3F4Q2w5Zk1FYm9RaktxKzFtU21IZkVxeXltNXZuOVBtcXl0d3p4SUdB?=
- =?utf-8?B?Ky9Hblk1enIzWXJ6NWkzVE1LRUtvckwvTnlIajYyczlJNzN6NnA5bzI4UUhx?=
- =?utf-8?B?dFc5d1hkT1cwYlRhMDArd096RDgzbjVGWGFabVlHeitUNW5wTC9zeFcrbzBQ?=
- =?utf-8?B?MVgwTUwyeW4rU0s4VmpDRnRoMk5ydnk0ZklpVVhveit2NXdTQVpDMWlnTUdq?=
- =?utf-8?B?M2tmOUtLU2FMempJSTVjU3R0bWVmTEtqZVpSSTlkam5kSEUzMXdCd2NId1c1?=
- =?utf-8?B?cllUWlliZzY3Z2I4d2FwYlgyNTJ0azk3YjIySFNVUDZxVWIxMFBkZnRJUGo3?=
- =?utf-8?B?VGxkL3pzSGJEZlplZXlvL3Y5V25NU1pwbFVUU1dnckRkTTMzOElhZXFibkI3?=
- =?utf-8?Q?Ep1AwbLWVvL++5I6prmxSfQ=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7BF0A4EC24E4A84F8CEB7A4FA9ABFB45@eurprd07.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ bh=c2cRKcukKCWVNpDlp67KfDkVO2TwoI5+vukjMLxJhCM=;
+ b=gy0tzwUja4EyYKzZTMEhHHyEoQH6PjZceasMZw3uC7mICkz5vuZWpJfIoPxdXOCnCva+B+RRdPxgSgo/0NE+49Sk4/YVtZJkcc8pln57+SSZ9QObRGf0rZsiPquX3LCpiioVVvf7BhizUDsnz6si2Mog1tFjt445FR6ONzr9BnA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from SJ2PR01MB8101.prod.exchangelabs.com (2603:10b6:a03:4f6::10) by
+ SJ0PR01MB6477.prod.exchangelabs.com (2603:10b6:a03:29b::15) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7741.36; Tue, 9 Jul 2024 06:05:17 +0000
+Received: from SJ2PR01MB8101.prod.exchangelabs.com
+ ([fe80::292:6d9c:eb9a:95c9]) by SJ2PR01MB8101.prod.exchangelabs.com
+ ([fe80::292:6d9c:eb9a:95c9%3]) with mapi id 15.20.7741.033; Tue, 9 Jul 2024
+ 06:05:17 +0000
+From: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, richard.henderson@linaro.org,
+ darren@os.amperecomputing.com, gankulkarni@os.amperecomputing.com
+Subject: [PATCH] arm/kvm: add support for MTE
+Date: Mon,  8 Jul 2024 23:04:48 -0700
+Message-Id: <20240709060448.251881-1-gankulkarni@os.amperecomputing.com>
+X-Mailer: git-send-email 2.40.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0PR04CA0022.namprd04.prod.outlook.com
+ (2603:10b6:610:76::27) To SJ2PR01MB8101.prod.exchangelabs.com
+ (2603:10b6:a03:4f6::10)
 MIME-Version: 1.0
-X-OriginatorOrg: eviden.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR01MB8101:EE_|SJ0PR01MB6477:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c3d3979-3db1-43a5-7fc1-08dc9fdd1b11
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|376014|52116014|1800799024|38350700014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5WzqLEcSDmKAXmeT6sP5sCrmIYfKr87lyloRL/OX/tGTU+q7ngkyRhYwz7Fx?=
+ =?us-ascii?Q?liYc4+fvMV9rdXhqCcQ7MQNG2PXnIiHXJoAa6yPVip1VW66kezSIWfKxvgT3?=
+ =?us-ascii?Q?yyKewJZh2+c1AbXPLXifloVhAySHmdzMKp9Hc1WjHvj8Tjw005dde9ILYomH?=
+ =?us-ascii?Q?6Vfy9AgOWrcHY8XJlpMg+czyt5Qb6TSDZ01It1LoZQ2In9HD1o5IlOxgn4+/?=
+ =?us-ascii?Q?4fgN3Nwwks8GAfd9JtaBY5bjuuNaixy6KoybY/wKoRFdRrffaKSlm4Obqs5R?=
+ =?us-ascii?Q?tPoyT+7s3Ch9V2AVnxYY4JU5dTCDMm2yPQDcwk9rseTl2DNgEWlko5OXuUHG?=
+ =?us-ascii?Q?uhGAlweJVQspvYP6wDoZOyklOyfrXa1Js+plJsrCocotWBBe55ushW5grEzU?=
+ =?us-ascii?Q?9E1mwqnJ+tXov12bPB5pB63EKMnn5iwxnZvODG/P5XS+MyYOqT5HxEQAaVaL?=
+ =?us-ascii?Q?TfTHKmHqJ8F+U2GOnqlfId7oWCKPBOkCibOC7P7zB3eWixUZaKStSBeud2oV?=
+ =?us-ascii?Q?uPuZysZRBz93NsAA+RqpWtek2yLUMUC0X9n/82nWTlNMTdV8vXI8Z9+lfqxx?=
+ =?us-ascii?Q?5p9K8XAVfIGDMR1BTWNH9agdEGQHZyEBmSH9TMeqkAMBnWmhge4xRkqWKZPs?=
+ =?us-ascii?Q?NiDACZ10HCGlTbb5JgJsCJqRyaGEiIHuan50rFPtwtiq9u0E7PiIvZqCJ+a6?=
+ =?us-ascii?Q?7KCwP8Kxzzx8symIIW541PY70XWnkgRkRaDxieJ86PLtphlZpPK4IK5HOMKR?=
+ =?us-ascii?Q?c/jRG3La+bVISig8dDiNf8s+uMVQWo310a1h42sgLHsRAyxHdDVdwOItTy8x?=
+ =?us-ascii?Q?yN+1uxMdop04NpHOrE29jJdGB+LLO1fL0eX9dM+WoDSnFtzdBhxDPSlA8lw9?=
+ =?us-ascii?Q?AtIGwxjI6+GhnVb86NGmg4w6Yg/q7EdaMtqpm7fkRCgaNtdNQvQQAC8ECWBi?=
+ =?us-ascii?Q?XAFkxAoMaWslClTil/AHiCaJRhImSxBtqK2OQHS+QFmFsu1FkmNXmukTh0jj?=
+ =?us-ascii?Q?ilbvxKs4aOQ9IVWtILgsKcYS6Y5FAT4nEnDfFMvyQ+Wxgm/cz8Xhrxb9TAiG?=
+ =?us-ascii?Q?MNHxRGyyAho4n8EFXCkHqhIynd5DRy8XGO1QdKgiYsqZdPUySWwBchcdRbJW?=
+ =?us-ascii?Q?pgw1BIgee+9eVqmtTZre0AkRIdSSWcQ3RkxGxhFX2Qe6BN7srsMM/VKy5qyt?=
+ =?us-ascii?Q?6amMH6WFwjujChPxQCtI3axs/LjMtowOcgdK1ij2sSnp0+Gv6REbAlI4NyBb?=
+ =?us-ascii?Q?tGDw4lJYCSLao6tvNjJC9Bp0G4onZidwzs9trgYZ+Anwa9K9gIHG68IdtQ1f?=
+ =?us-ascii?Q?A3t3C8SCq8cPZx5wWOaiunbffyqCYm6V9/dT3rjJFGmU9L86aape+dzI9qD1?=
+ =?us-ascii?Q?G95J71QoZeM3T0E/mDaMsDxiQbuvWkLVjHBc34H/cCiaG+Z4MA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR01MB8101.prod.exchangelabs.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?izBBkWLXYc2vsWyJJfWiEbVLbhX5TR7TU/4cjL/7165vR0I0sEDJ2v5f5eNt?=
+ =?us-ascii?Q?arsl1G730lx/4qiUPhlP8JWdDOlCw0PG9RC/cu/r3si09XmFACHgxdBCDv1F?=
+ =?us-ascii?Q?YWVZBwkTTjuVNFVBXOUMB2SCnthFUXHDe7YLBq4Ev9UCk14dnJM95xL9oXR5?=
+ =?us-ascii?Q?FYNM1HGNo9YR8PMJheGUvUaQUwlzhE8e0gvzzcYb2Gw0xo5XwYe7hEWeTI48?=
+ =?us-ascii?Q?ZUOKzWIPHntegX9aLvdGhZ0oGDdVOxe0EAAESysx8zWo6AIVbwAVvGX0RZR1?=
+ =?us-ascii?Q?TICyMIV31U1Z2kR2adGG6LifM7mz9+Nr79meAvS/4HRrCTztGrExaQuplfMz?=
+ =?us-ascii?Q?HyOU92QPA6pzGrG63fmWa+nFkHT021DVpFB4RGuGgFF+otv5eic8664Q/xGg?=
+ =?us-ascii?Q?7z5XFEu4MGOtVDwCH5B/XEidMejMJOgKiCoc4fp+2XAld80bxFKUAtKV94Ol?=
+ =?us-ascii?Q?ZrFXEmxEngCxRfgDGt7oIqBImWl3G5hQHXK4u+tLZlSEOkwGIcT/WWDD2RZV?=
+ =?us-ascii?Q?umsQfwys7SapBFbtKAf7RA4ecuvSdVfXWD7CZdnR+IwvJecFAddogbzs5H71?=
+ =?us-ascii?Q?XgpPIP82Er7xsmLwV3PVldcLT2DWYqJeA8p4cLr1Txru/ToVzWQTZtUCTuex?=
+ =?us-ascii?Q?sodvgyGLYwYofHrDqdiQCRC6IPhnvf0Isi4wfWRFrmDpGPMk22fJtalY4mAZ?=
+ =?us-ascii?Q?jF8vmofvPugP+WgERTjN/lvVAFllxlAvci7fG4DGNVDRy6BHPuA5NQNM7Kvw?=
+ =?us-ascii?Q?AP3vYAhUrwTuiTuUESek/5lNStrB89z/Wvy4Y3FJOsaMndrk4CEoW64hI6qT?=
+ =?us-ascii?Q?AlGeNBWLtRuVCC4Al5QjjwEAn6bGK6j7owAms2hZt5G36Q7ql4eMTAUJsBkk?=
+ =?us-ascii?Q?Au+EjE4nOXFEBAK2PIgGDUh7QqMvcUDzEqBWvS8H1RP8q3gh5u+2NNM4Wbea?=
+ =?us-ascii?Q?cFhsaxnKNrCs8O4fb7v0XFg1spy7Mtd7nBnZMfo9hPUgVhzdNquEFS39KJ/P?=
+ =?us-ascii?Q?EvUaWhQFeX9xb0M31tnb9bo+04NBQyTm49sPnfGx+s0LKo1nNNYsGTKXLv9j?=
+ =?us-ascii?Q?CL0zN2TDG5lD/wnAYb3OXUPKfJcz0G8cuebR1L78c0AI1AmjBP+MFfp8TmvT?=
+ =?us-ascii?Q?xd/kgrvEvKJz5D6cIDZacmqH8tbrkZ3H4xpBkPwiWH98O3NFxE9PGXuTL70Z?=
+ =?us-ascii?Q?ObXxmGYeL5i6ufy3FuBcpsqO92j/BGar4f59e8XI+Xko5hvIcaI7ZCwbdrB3?=
+ =?us-ascii?Q?NkjUd3hvEZI3QEgbQSCGfHMR3z9B04yA392svTkSHlGd7JrI06ra/bZE+eSR?=
+ =?us-ascii?Q?/JicnoC6kxnlBxuxsSKhExr3/HkjV/NEvwPaQKFExG6eU8c33Xn3OCGuqe15?=
+ =?us-ascii?Q?o+Wr0uJoR4j8N5/Py2ckWTIfVXtm5dXr9ee5tFzWoKQTRbRUmuXl9IHNOR+6?=
+ =?us-ascii?Q?mmAoXzW8SQ4qOXP3oybJ1IBYh/kRrllpw/xzq8Vr+gKXNKxDh/0Hbzyb81pQ?=
+ =?us-ascii?Q?wdq2plxRFSeUTpdl7IMJJvJ8Xx+3BTK7nvT7N3tZH9bIfw719YmuMvRtovRG?=
+ =?us-ascii?Q?M9C1+J9jdlngwT8Q/WeUZEJbJrHKraqW5YIDddjfile3FUM+uilKM4kxcm0E?=
+ =?us-ascii?Q?WVoHiibgNw/jZltkXeFbKQ8=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c3d3979-3db1-43a5-7fc1-08dc9fdd1b11
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR01MB8101.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9f411ba-c3e7-4f4f-0c96-08dca00e812e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2024 11:58:53.6522 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6W9jBrIMG3inms8ZH+LsKE62EKRnQeJ+FMEsItmlnRGutLtUHLzLPE/XxfJ+xK7JdnKqRvj8VHtFdwFRWVrWzZiSlvqe6XqBdradd/JexAS/Q0Gn7rOXb6XpLw/5L/Ve
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR07MB9984
-Received-SPF: pass client-ip=80.78.11.85;
- envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost4.eviden.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2024 06:05:17.1702 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4qu6BDH5taWH9yN31LoSSH3TEQFdnf1DVM6KPTiIKJZNzqZZSGLmkKKDQxu+m9o7DtJQU2RhyLdSwotrj+s87oANfh4ScSjkoCwkanqg50pRPvH17zv0/gJMBX5lKnnQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR01MB6477
+Received-SPF: pass client-ip=2a01:111:f403:c101::3;
+ envelope-from=gankulkarni@os.amperecomputing.com;
+ helo=BL0PR05CU006.outbound.protection.outlook.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 09 Jul 2024 08:18:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -204,59 +158,254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCk9uIDA5LzA3LzIwMjQgMTI6MTUsIE1pbndvbyBJbSB3cm90ZToNCj4gQ2F1dGlvbjogRXh0
-ZXJuYWwgZW1haWwuIERvIG5vdCBvcGVuIGF0dGFjaG1lbnRzIG9yIGNsaWNrIGxpbmtzLCB1bmxl
-c3MgdGhpcyBlbWFpbCBjb21lcyBmcm9tIGEga25vd24gc2VuZGVyIGFuZCB5b3Uga25vdyB0aGUg
-Y29udGVudCBpcyBzYWZlLg0KPg0KPg0KPiBPbiAyNC0wNy0wMiAwNTo1Mjo0NSwgQ0xFTUVOVCBN
-QVRISUVVLS1EUklGIHdyb3RlOg0KPj4gRnJvbTogQ2zDqW1lbnQgTWF0aGlldS0tRHJpZiA8Y2xl
-bWVudC5tYXRoaWV1LS1kcmlmQGV2aWRlbi5jb20+DQo+Pg0KPj4gRGV2aWNlcyBpbXBsZW1lbnRp
-bmcgQVRTIGNhbiBzZW5kIHRyYW5zbGF0aW9uIHJlcXVlc3RzIHVzaW5nDQo+PiBwY2lfYXRzX3Jl
-cXVlc3RfdHJhbnNsYXRpb25fcGFzaWQuDQo+Pg0KPj4gVGhlIGludmFsaWRhdGlvbiBldmVudHMg
-YXJlIHNlbnQgYmFjayB0byB0aGUgZGV2aWNlIHVzaW5nIHRoZSBpb21tdQ0KPj4gbm90aWZpZXIg
-bWFuYWdlZCB3aXRoIHBjaV9yZWdpc3Rlcl9pb21tdV90bGJfZXZlbnRfbm90aWZpZXIgYW5kDQo+
-PiBwY2lfdW5yZWdpc3Rlcl9pb21tdV90bGJfZXZlbnRfbm90aWZpZXINCj4+DQo+PiBTaWduZWQt
-b2ZmLWJ5OiBDbMOpbWVudCBNYXRoaWV1LS1EcmlmIDxjbGVtZW50Lm1hdGhpZXUtLWRyaWZAZXZp
-ZGVuLmNvbT4NCj4+IC0tLQ0KPj4gICBody9wY2kvcGNpLmMgICAgICAgICB8IDQ0ICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4+ICAgaW5jbHVkZS9ody9wY2kvcGNpLmgg
-fCA1MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gICAy
-IGZpbGVzIGNoYW5nZWQsIDk2IGluc2VydGlvbnMoKykNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvaHcv
-cGNpL3BjaS5jIGIvaHcvcGNpL3BjaS5jDQo+PiBpbmRleCA3YTQ4M2RkMDVkLi45M2I4MTZhZmYy
-IDEwMDY0NA0KPj4gLS0tIGEvaHcvcGNpL3BjaS5jDQo+PiArKysgYi9ody9wY2kvcGNpLmMNCj4+
-IEBAIC0yODMzLDYgKzI4MzMsNTAgQEAgdm9pZCBwY2lfZGV2aWNlX3Vuc2V0X2lvbW11X2Rldmlj
-ZShQQ0lEZXZpY2UgKmRldikNCj4+ICAgICAgIH0NCj4+ICAgfQ0KPj4NCj4+ICtzc2l6ZV90IHBj
-aV9hdHNfcmVxdWVzdF90cmFuc2xhdGlvbl9wYXNpZChQQ0lEZXZpY2UgKmRldiwgdWludDMyX3Qg
-cGFzaWQsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYm9v
-bCBwcml2X3JlcSwgYm9vbCBleGVjX3JlcSwNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBod2FkZHIgYWRkciwgc2l6ZV90IGxlbmd0aCwNCj4+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBib29sIG5vX3dyaXRlLCBJT01NVVRM
-QkVudHJ5ICpyZXN1bHQsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgc2l6ZV90IHJlc3VsdF9sZW5ndGgsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgdWludDMyX3QgKmVycl9jb3VudCkNCj4+ICt7DQo+PiArICAgIGFz
-c2VydChyZXN1bHRfbGVuZ3RoKTsNCj4+ICsgICAgSU9NTVVNZW1vcnlSZWdpb24gKmlvbW11X21y
-ID0gcGNpX2RldmljZV9pb21tdV9tZW1vcnlfcmVnaW9uX3Bhc2lkKGRldiwNCj4+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBwYXNpZCk7DQo+PiArICAgIGlmICghaW9tbXVfbXIgfHwgIXBjaWVfYXRzX2VuYWJs
-ZWQoZGV2KSkgew0KPj4gKyAgICAgICAgcmV0dXJuIC1FUEVSTTsNCj4+ICsgICAgfQ0KPj4gKyAg
-ICByZXR1cm4gbWVtb3J5X3JlZ2lvbl9pb21tdV9hdHNfcmVxdWVzdF90cmFuc2xhdGlvbihpb21t
-dV9tciwgcHJpdl9yZXEsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIGV4ZWNfcmVxLCBhZGRyLCBsZW5ndGgsDQo+PiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5vX3dyaXRlLCBy
-ZXN1bHQsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHJlc3VsdF9sZW5ndGgsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVycl9jb3VudCk7DQo+PiArfQ0KPiBDYW4gd2Ug
-dXNlIHRoaXMgZnVuY3Rpb24gbm90IGZyb20gdGhlIGVuZHBvaW50IFBDSSBkZXZpY2UsIGJ1dCBp
-bnNpZGUgb2YgdGhlIHBjaQ0KPiBzdWJzeXN0ZW0gKGh3L3BjaS9wY2kuYykgdG8gbWFrZSB0cmFu
-c3BhcmVudCBhYnN0cmFjdGlvbiBmb3IgQVRTIHJlcXVlc3QgZnJvbQ0KPiBQQ0kgZW5kcG9pbnQg
-ZGV2aWNlIFBPVj8gIEkgZ3Vlc3MgaXQgd291bGQgYmUgYmV0dGVyIHRvIGhhdmUgUENJIHN1YnN5
-c3RlbSB0bw0KPiBpc3N1ZSBBVFMgcmVxdWVzdCBpZiBwY2llX2F0c19lbmFibGVkKGRldikgcmF0
-aGVyIHRoYW4gY2FsbGluZyBmcm9tIHRoZSBlbmRwb2ludA0KPiBzaWRlLg0KSGksDQoNClRoaXMg
-c2VyaWVzIGFpbXMgdG8gYnJpbmcgc3VwcG9ydCBmb3IgU1ZNICh3ZSBhcmUgdHJ5aW5nIHRvIGlu
-dGVncmF0ZSANCnRoZSBwYXRjaGVzIGJpdCBieSBiaXQpLg0KIEZyb20gYSBzcGVjIHBvaW50IG9m
-IHZpZXcsIEkgZG9uJ3Qga25vdyBpZiBpdCB3b3VsZCBtYWtlIHNlbnNlIHRvIA0KaW1wbGVtZW50
-IHRoZSBTVk0gbG9naWMgYXQgdGhlIFBDSSBsZXZlbA0KYXMgaXQncyBzdXBwb3NlZCB0byBiZSBp
-bXBsZW1lbnRlZCBieSBlbmRwb2ludCBkZXZpY2VzLg0KSG93ZXZlciwgd2UgY291bGQgY29uc2lk
-ZXIgcHJvdmlkaW5nIGEgcmVmZXJlbmNlL3JldXNhYmxlL2VuY2Fwc3VsYXRlZCANCmltcGxlbWVu
-dGF0aW9uIG9mIFNWTSB3aXRoIGEgc2ltcGxpZmllZCBBUEkNCnRoYXQgd291bGQgY2FsbCB0aGUg
-cGNpXyogZnVuY3Rpb25zIHVuZGVyIHRoZSBob29kLg0KDQpEbyB5b3UgaGF2ZSBhIHNwZWNpZmlj
-IHVzZSBjYXNlIGluIG1pbmQ/DQoNCiA+Y21kDQoNCj4NCg==
+Extend the 'mte' property for the virt machine to cover KVM as
+well. For KVM, we don't allocate tag memory, but instead enable
+the capability.
+
+If MTE has been enabled, we need to disable migration, as we do not
+yet have a way to migrate the tags as well. Therefore, MTE will stay
+off with KVM unless requested explicitly.
+
+This patch is rework of commit b320e21c48ce64853904bea6631c0158cc2ef227
+which broke TCG since it made the TCG -cpu max
+report the presence of MTE to the guest even if the board hadn't
+enabled MTE by wiring up the tag RAM. This meant that if the guest
+then tried to use MTE QEMU would segfault accessing the
+non-existent tag RAM.
+
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+Signed-off-by: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+---
+
+This patch is boot tested on ARM64 with KVM and on X86 with TCG for mte=on
+and default case(no mte).
+
+ hw/arm/virt.c        | 72 ++++++++++++++++++++++++++------------------
+ target/arm/cpu.h     |  1 +
+ target/arm/kvm.c     | 40 ++++++++++++++++++++++++
+ target/arm/kvm_arm.h | 19 ++++++++++++
+ 4 files changed, 102 insertions(+), 30 deletions(-)
+
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index b0c68d66a3..cc9db79ec3 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2206,7 +2206,7 @@ static void machvirt_init(MachineState *machine)
+         exit(1);
+     }
+ 
+-    if (vms->mte && (kvm_enabled() || hvf_enabled())) {
++    if (vms->mte && hvf_enabled()) {
+         error_report("mach-virt: %s does not support providing "
+                      "MTE to the guest CPU",
+                      current_accel_name());
+@@ -2276,39 +2276,51 @@ static void machvirt_init(MachineState *machine)
+         }
+ 
+         if (vms->mte) {
+-            /* Create the memory region only once, but link to all cpus. */
+-            if (!tag_sysmem) {
+-                /*
+-                 * The property exists only if MemTag is supported.
+-                 * If it is, we must allocate the ram to back that up.
+-                 */
+-                if (!object_property_find(cpuobj, "tag-memory")) {
+-                    error_report("MTE requested, but not supported "
+-                                 "by the guest CPU");
+-                    exit(1);
++            if (tcg_enabled()) {
++                /* Create the memory region only once, but link to all cpus. */
++                if (!tag_sysmem) {
++                    /*
++                     * The property exists only if MemTag is supported.
++                     * If it is, we must allocate the ram to back that up.
++                     */
++                    if (!object_property_find(cpuobj, "tag-memory")) {
++                        error_report("MTE requested, but not supported "
++                                     "by the guest CPU");
++                        exit(1);
++                    }
++
++                    tag_sysmem = g_new(MemoryRegion, 1);
++                    memory_region_init(tag_sysmem, OBJECT(machine),
++                                       "tag-memory", UINT64_MAX / 32);
++
++                    if (vms->secure) {
++                        secure_tag_sysmem = g_new(MemoryRegion, 1);
++                        memory_region_init(secure_tag_sysmem, OBJECT(machine),
++                                           "secure-tag-memory",
++                                           UINT64_MAX / 32);
++
++                        /* As with ram, secure-tag takes precedence over tag. */
++                        memory_region_add_subregion_overlap(secure_tag_sysmem,
++                                                            0, tag_sysmem, -1);
++                    }
+                 }
+ 
+-                tag_sysmem = g_new(MemoryRegion, 1);
+-                memory_region_init(tag_sysmem, OBJECT(machine),
+-                                   "tag-memory", UINT64_MAX / 32);
+-
++                object_property_set_link(cpuobj, "tag-memory",
++                                         OBJECT(tag_sysmem), &error_abort);
+                 if (vms->secure) {
+-                    secure_tag_sysmem = g_new(MemoryRegion, 1);
+-                    memory_region_init(secure_tag_sysmem, OBJECT(machine),
+-                                       "secure-tag-memory", UINT64_MAX / 32);
+-
+-                    /* As with ram, secure-tag takes precedence over tag.  */
+-                    memory_region_add_subregion_overlap(secure_tag_sysmem, 0,
+-                                                        tag_sysmem, -1);
++                    object_property_set_link(cpuobj, "secure-tag-memory",
++                                             OBJECT(secure_tag_sysmem),
++                                             &error_abort);
+                 }
+-            }
+-
+-            object_property_set_link(cpuobj, "tag-memory", OBJECT(tag_sysmem),
+-                                     &error_abort);
+-            if (vms->secure) {
+-                object_property_set_link(cpuobj, "secure-tag-memory",
+-                                         OBJECT(secure_tag_sysmem),
+-                                         &error_abort);
++            } else if (kvm_enabled()) {
++                if (!kvm_arm_mte_supported()) {
++                    error_report("MTE requested, but not supported by KVM");
++                    exit(1);
++                }
++                kvm_arm_enable_mte(cpuobj, &error_abort);
++            } else {
++                    error_report("MTE requested, but not supported ");
++                    exit(1);
+             }
+         }
+ 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d8eb986a04..661d35d8d8 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1054,6 +1054,7 @@ struct ArchCPU {
+     bool prop_pauth_impdef;
+     bool prop_pauth_qarma3;
+     bool prop_lpa2;
++    OnOffAuto prop_mte;
+ 
+     /* DCZ blocksize, in log_2(words), ie low 4 bits of DCZID_EL0 */
+     uint8_t dcz_blocksize;
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 70f79eda33..0267a013e4 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -39,6 +39,7 @@
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ghes.h"
+ #include "target/arm/gtimer.h"
++#include "migration/blocker.h"
+ 
+ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+     KVM_CAP_LAST_INFO
+@@ -1793,6 +1794,11 @@ bool kvm_arm_sve_supported(void)
+     return kvm_check_extension(kvm_state, KVM_CAP_ARM_SVE);
+ }
+ 
++bool kvm_arm_mte_supported(void)
++{
++    return kvm_check_extension(kvm_state, KVM_CAP_ARM_MTE);
++}
++
+ QEMU_BUILD_BUG_ON(KVM_ARM64_SVE_VQ_MIN != 1);
+ 
+ uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
+@@ -2422,3 +2428,37 @@ int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+     }
+     return 0;
+ }
++
++void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
++{
++    static bool tried_to_enable;
++    static bool succeeded_to_enable;
++    Error *mte_migration_blocker = NULL;
++    int ret;
++
++    if (!tried_to_enable) {
++        /*
++         * MTE on KVM is enabled on a per-VM basis (and retrying doesn't make
++         * sense), and we only want a single migration blocker as well.
++         */
++        tried_to_enable = true;
++
++        ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_ARM_MTE, 0);
++        if (ret) {
++            error_setg_errno(errp, -ret, "Failed to enable KVM_CAP_ARM_MTE");
++            return;
++        }
++
++        /* TODO: Migration is not supported with MTE enabled */
++        error_setg(&mte_migration_blocker,
++                   "Live migration disabled due to MTE enabled");
++        if (migrate_add_blocker(&mte_migration_blocker, errp)) {
++            error_free(mte_migration_blocker);
++            return;
++        }
++        succeeded_to_enable = true;
++    }
++    if (succeeded_to_enable) {
++        object_property_set_bool(cpuobj, "has_mte", true, NULL);
++    }
++}
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index cfaa0d9bc7..4d293618a7 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -188,6 +188,13 @@ bool kvm_arm_pmu_supported(void);
+  */
+ bool kvm_arm_sve_supported(void);
+ 
++/**
++ * kvm_arm_mte_supported:
++ *
++ * Returns: true if KVM can enable MTE, and false otherwise.
++ */
++bool kvm_arm_mte_supported(void);
++
+ /**
+  * kvm_arm_get_max_vm_ipa_size:
+  * @ms: Machine state handle
+@@ -214,6 +221,8 @@ void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa);
+ 
+ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
+ 
++void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
++
+ #else
+ 
+ /*
+@@ -235,6 +244,11 @@ static inline bool kvm_arm_sve_supported(void)
+     return false;
+ }
+ 
++static inline bool kvm_arm_mte_supported(void)
++{
++    return false;
++}
++
+ /*
+  * These functions should never actually be called without KVM support.
+  */
+@@ -283,6 +297,11 @@ static inline uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
+     g_assert_not_reached();
+ }
+ 
++static inline void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
++{
++    g_assert_not_reached();
++}
++
+ #endif
+ 
+ #endif
+-- 
+2.44.0
+
 
