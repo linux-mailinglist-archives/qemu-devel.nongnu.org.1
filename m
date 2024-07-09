@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0757D92B914
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 14:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAA892B930
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Jul 2024 14:19:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sR9em-0002it-TE; Tue, 09 Jul 2024 08:09:16 -0400
+	id 1sR9np-0004W4-7I; Tue, 09 Jul 2024 08:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sR9ek-0002aX-2X
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 08:09:14 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sR9eg-0001Vc-J0
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 08:09:12 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-58c947a6692so6264927a12.0
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 05:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720526949; x=1721131749; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4Bq5n00imy9rQIePz4fJTbXX2aNjXlQDi1uni+2ghOk=;
- b=yc4l3IKWneiPYcMx/tWpA4JTlb20QrNuk1t6ly64mBH6kUjmvaiA9u7CsROqZdIMOj
- Dvc2Rm7iTMRUZ1qUTpVW0AohsVs2+P1cy26EX8qowtmvJA4O0qF7FDubnGiTVKzc/VDh
- TG0w/B9/H7pYLEv7Ci7QgKCwDkys0p/kfUA94Agn/GP/2cHh3uF0AcA7HkeurXmwpssX
- 8UajImB1W7ruQyOxBgStwjU79963pcQzgLgyySj0lHZJDUBVyFUIe7H2XP7THkdX8kfG
- B4bcOlaky+YSM62G6ynPGP5p7InwQrBSU1YwzVUiuXLA9h9HgR/jdrBmpuBYd3xkmrns
- GqHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720526949; x=1721131749;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4Bq5n00imy9rQIePz4fJTbXX2aNjXlQDi1uni+2ghOk=;
- b=Nqhh37mbNIXfyXWXJcmGvnRmvlR0ec9s7o0fCMU+Ku1D08UlZyt8gXX39fAGdvnxF9
- HJhuOPdMIXe2XTAvahgV8T6Nv34W0hft8J1r2Owi4HJH0DqEk+fjCUQPVCSwnFE+l1zw
- /qZykqHXgdEYH6/hHBbLszSSolBFzYJeGAkEniUK+V34IXOYLnpGPUn+QNsOVyIKaJ9H
- VQoxNsWzx0KjeoHLgvshJEIcOLknQPWqn2hl9ztOib64lX4hKpE2zND8MFG5LawT55+V
- bYzQDoQMVh9oDgShHvoQXCjUG5khBJ8+kfiaAHWlcn3gbuMVa88SYzvTTN+Q7jeUobK3
- kU6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVVoAeVH3pbVSdD7LCMszeqUrvsbz/mWxLwSrDo9v/duexYjtx9wRb0cxF9Sf02RXM9ukx9Yj3Lxb2FYA79VJSgqjT6WeY=
-X-Gm-Message-State: AOJu0YzclyWMkCI0zxbsTZcyhtlB3aU9VfoEWnIV++KBBvVXlHnR8A/K
- KSERso3zhtnkNQWGCEGyopVDr8vreSoey9VVfeZKnJM6Ha7f8c1PQJzQ1iUCGryXiTARQGQnjqc
- g8ZWKsrH75E2dwwHSQjKURwH4Ue8fJLrgpS/5fQ==
-X-Google-Smtp-Source: AGHT+IEtXz3cJitTuHnCXkuiq/aPaAGE54sUrON3/9GuzUdw37cV3jB/IkdpNZrbAA9+UG37Urm/WJVrdGl8EI6x9F4=
-X-Received: by 2002:aa7:d717:0:b0:58c:8c06:74c8 with SMTP id
- 4fb4d7f45d1cf-594bb869e18mr1404038a12.33.1720526948580; Tue, 09 Jul 2024
- 05:09:08 -0700 (PDT)
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sR9nm-0004S1-LI
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 08:18:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sR9nj-0003W1-PJ
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 08:18:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720527507;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QOKMXc8fzw70bOFUonbpwlQ39HIu24e4Qt2EoEul5lc=;
+ b=CKrhxLrYmStMnxwgDNa3q2RvCBR0RInURRHgAlHAdJnPkp9TydS0kDO4zMeKpHzI3Ulhe0
+ 4AHq5UmtTlrn4dm/kCd1TEChRqeaWVNfFQsVsVknRW615Gukgw2XA376i+2VIlt4BCD9au
+ hWV6hqdeNfW8qP+1+TBnYryImqCzSfU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-3zwa2izZN3SxelmJ2_X9yg-1; Tue,
+ 09 Jul 2024 08:18:25 -0400
+X-MC-Unique: 3zwa2izZN3SxelmJ2_X9yg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5407E196E09B; Tue,  9 Jul 2024 12:18:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.106])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D50B51955F40; Tue,  9 Jul 2024 12:18:18 +0000 (UTC)
+Date: Tue, 9 Jul 2024 13:18:15 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [RFC PATCH v4 0/7] Add Rust support, implement ARM PL011
+Message-ID: <Zo0qh51MPlmfFVUP@redhat.com>
 References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
- <4ce5a7330f594c6c94c8cc3aabceb061095bb855.1720094395.git.manos.pitsidianakis@linaro.org>
- <87msmqsunu.fsf@draig.linaro.org>
-In-Reply-To: <87msmqsunu.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 9 Jul 2024 13:08:57 +0100
-Message-ID: <CAFEAcA9X0564R7V=EsN2qxj51FNNkot3Pfev6mMgUbr35WYFZw@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 2/7] rust: add bindgen step as a meson dependency
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com, 
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ <8dfd1047-436d-4157-83cb-9cad399544fe@redhat.com>
+ <ZowUyFX7zcK1FvuG@redhat.com>
+ <CABgObfZfQNSeYeCqcuNHcu=pyKz+f_MUc=9rZGRYxaPNBO-U4A@mail.gmail.com>
+ <Zowd-UxAnPmJSA0G@redhat.com>
+ <CABgObfaDKhKBcpmgypST=bo2KSqoNMCLKP-8oAvppxt9GDxBPA@mail.gmail.com>
+ <CAAjaMXa6E0koPXcytY9hEuUbhLeFcJqZsA3fz10q_HF0grz24w@mail.gmail.com>
+ <CABgObfa8KQOu6RPs1aqKww8qPeOjHppbH15aBCN+KvaOL=_W9A@mail.gmail.com>
+ <CAAjaMXZ+Sx_+4sNFs=zy+bP0d5gbyf_Buh9JS-ixsRCfxsdN4w@mail.gmail.com>
+ <CABgObfb3mmxZy_cEeUTbuGCN-3Nqs8x8dkGy7Ehyowd9LNbktg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfb3mmxZy_cEeUTbuGCN-3Nqs8x8dkGy7Ehyowd9LNbktg@mail.gmail.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,58 +99,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Jul 2024 at 11:53, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
-e:
->
-> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-> > +msrv =3D {
-> > +  'rustc': '1.77.2',
-> > +  'cargo': '1.77.2',
-> > +  'bindgen': '0.69.4',
-> > +}
->
-> This is still pretty bleeding edge (it even tripped up on the
-> .cargo/bin/cargo I have installed). This needs to be set to the
-> baseline which from:
->
->   https://wiki.qemu.org/RustInQemu/2022
->
-> Looks to be 1.24.0 for rustc and I guess even lower for cargo (Debian
-> says 0.66.0). While it might make sense to delay merging if we are
-> waiting for one distro to produce a new LTS we shouldn't be needing
-> rustup by default.
+On Tue, Jul 09, 2024 at 09:54:43AM +0200, Paolo Bonzini wrote:
+> On Tue, Jul 9, 2024 at 9:38 AM Manos Pitsidianakis
+> <manos.pitsidianakis@linaro.org> wrote:
+> > Ah, alright. That wasn't obvious because that e-mail was not directed
+> > to me nor did it mention my name :)
+> 
+> Oh, ok. Sorry about that. Generally when I say "we" I include as large
+> a part of the community as applicable.
+> 
+> > I do not want to do that, in any case. I do not think it's the right approach.
+> 
+> No problem with that (and in fact I agree, as I'd prefer a speedy
+> merge and doing the work on the QEMU master branch); however, we need
+> to reach an agreement on that and everybody (including Daniel) needs
+> to explain the reason for their position.
+> 
+> Daniel's proposed criteria for merging include:
+> - CI integration
+> - CI passing for all supported targets (thus lowering the MSRV to 1.63.0)
+> - plus any the code changes that were or will be requested during review
+> 
+> That seems to be a pretty high amount of work, and until it's done
+> everyone else is unable to contribute, not even in directions
+> orthogonal to the above (cross compilation support, less unsafe code,
+> porting more devices).
 
-I suspect that some of the older distro releases in that chart
-have already fallen off the end of our supported-platforms set,
-so the minimum is probably newer than 1.24.0 now.
+My thought is that the initial merge focuses only on the build system
+integration. So that's basically patches 1 + 2 in this series.
 
-My take on this one is that (at some point, not necessarily
-right now) we want to look at:
+IMHO that is small enough that we should be able to demonstrate that
+we detect Rust, run bindgen & compile its result, on all our supported
+platforms without an unreasonable amount of effort.
 
- * what is the actual baseline requirement? We definitely want
-   to support "using rustup on an older system" (should be no
-   problem) and "current distro building QEMU using the distro's
-   rust", I assume. It would certainly be nice to have "building
-   QEMU on the older-but-still-in-our-support-list distro releases
-   with that distro's rust", but this probably implies not just
-   a minimum rust version but also a limited set of crates.
-   I think (but forget the details) that some of what we've done
-   with Python where we accept that the older-but-still-supported
-   distro will end up taking the "download at build time" path
-   in the build system might apply also for Rust.
- * what, on the Rust side, is the version requirement? Presumably
-   there's some features that are pretty much "we really need
-   this and can't do without it" and some which are "this would
-   be pretty awkward not to have but if we have to we can implement
-   some kind of fallback/alternative with a TODO note to come
-   back and clean up when our baseline moves forwards".
+>                         So something has to give: either we decide for
+> an early merge, where the code is marked as experimental and disabled
+> by default. Personally I think it's fine, the contingency plan is
+> simply to "git rm -rf rust/". Or we can keep the above stringent
+> requirements for merging, but then I don't see it as a one-person job.
 
-At that point we have more information to figure out what
-if any tradeoff we want to make.
+Patch 3, the high level APIs is where I see most of the work and
+collaboration being needed, but that doesn't need to be rushed into
+the first merge. We would have a "rust" subsystem + maintainer who
+would presumably have a staging tree, etc in the normal way we work
+and collaborate
 
-thanks
--- PMM
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
