@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4A192D483
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 16:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5770992D4D9
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 17:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRYc2-0000xk-Bu; Wed, 10 Jul 2024 10:48:06 -0400
+	id 1sRZ5O-0007Wl-9b; Wed, 10 Jul 2024 11:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sRYbp-0000ky-6L
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:47:53 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sRYbl-0001hD-D8
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:47:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720622869; x=1752158869;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=fD/d8ERF6hOd2bet4lSLB8gCVKV90IUi3IgfNiUuxIQ=;
- b=h+KtKTD+nG+hEKAIQaaNEsZneU+RUqc8UsivO0ynutx2OLes2OF+JL2P
- 1nYZDc3I4PvnViiaPTWoD2NjnxpOJNaJMrYNsrX3s/FucT7jlynaMap9y
- r1hJx5G32ShNn455kTMbdLKmxqOTfL9AOihg+Mf8Uah0taY6BfHN8oUJF
- XGrs9d8KMd3tEl4cqbhurqRBzaNQtMbNR5lOiGpcpnIW+t2PC5zPRslUj
- 98otPpbGMmN7kc4G17XC70qztpPg/x80AyE77NP6WxGdJxK55sPpnna7X
- +r5lG+o8wN94pAb2Liq1JaxT1TiC0T8RCcrmbb4XekuxDgkDZzcRdY0W7 g==;
-X-CSE-ConnectionGUID: CUzAV2ynQzeTsFg/1JRWcg==
-X-CSE-MsgGUID: Wg/JSIUmTUWwkRRI7DC+LQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="17768692"
-X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; d="scan'208";a="17768692"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2024 07:47:45 -0700
-X-CSE-ConnectionGUID: TgH4nn8HTyOYbu/ilIcFOQ==
-X-CSE-MsgGUID: 2PF/y5IEQcKuRd39o+H8+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; d="scan'208";a="53045164"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 10 Jul 2024 07:47:40 -0700
-Date: Wed, 10 Jul 2024 23:03:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Subject: Re: [RFC PATCH v4 2/7] rust: add bindgen step as a meson dependency
-Message-ID: <Zo6iuEfo7o+7SIoY@intel.com>
-References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
- <4ce5a7330f594c6c94c8cc3aabceb061095bb855.1720094395.git.manos.pitsidianakis@linaro.org>
- <87msmqsunu.fsf@draig.linaro.org>
- <CAFEAcA9X0564R7V=EsN2qxj51FNNkot3Pfev6mMgUbr35WYFZw@mail.gmail.com>
- <CABgObfbBqHoy4M78NR8EAQ-PV+X86qEK6_ra=tS0_bgqpAt1dw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sRZ5M-0007Vc-5K
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 11:18:24 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sRZ5K-0007cr-JF
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 11:18:23 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-70aec66c936so4638467b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 08:18:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720624701; x=1721229501; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zeehRk2zxOx+fW4LQEvVNvKsMPyKbvFR1hHWZSJ5RsE=;
+ b=B7rvNYNJLyiA6cywoKYrvK8pJS08KOn1dwuMGxqju4ZJpIYa+Dl5gGfZkRO8neShZ2
+ V0kFBKCyKrxL3ouLXY7WzDG4XiERVxBHxaQ78qPMo5zy40ZlVd8wfBtqRF9qfcxWenJN
+ TTpp5zd8MwV/pLVTMtmdMNmZCn+X5b6UgXhXD/1AGU3ko+nblqF4nUxnjN0fe8BqYfdW
+ j08FWiLiyOdxn34Tdm3emMSOqd1k/BW1hPBRhGIlMPryAGBWD6UfHDE3N7irEqW+eDMK
+ IqkSXbUY9HsUCFkWQktx9lQVQYt05ETuf0Z/yrATZmNUiatOgXYO+ri1Nrlr4FEF1Kn3
+ 1E5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720624701; x=1721229501;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zeehRk2zxOx+fW4LQEvVNvKsMPyKbvFR1hHWZSJ5RsE=;
+ b=SlEwUKcX2bEb2RCrmhJCpr/j0dAkm4Hp3PkOCur0tjLx/17tdHGK5E3ejCoqMlboje
+ WMRcGV9FmY+WxAqTvFbzsFQvDNWXViVFLqpcxJ3AgOi3iS6oPwuaOEHSWO3r0Kq6Tun/
+ Let2214olfs55XAORS5mmTD1Wr6On+74502RZOLy3afVS/8xwpuFvnMtLxRqlP+aItA/
+ bNKVs8micU41RiYqneubkcsxOc0Te1hjvc5sESGXrlG+8oQn52A+86MNIpIzTyO4tutB
+ qbFSbD0V+SjppJsffonwBVfulI7j/6KKQrz+YuAi4Dkzzy36eP0pakMIvy4mGBkkvPZY
+ xKCA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVqjkOJzMbTNmAjeihnNIaSOEsbf5j4VHF5O5W2rOjYDJdw8No2MbVHBbxQ89lyKeRmdqXw6J1Cnzdy/OoG+LDaFv2NlJE=
+X-Gm-Message-State: AOJu0YzG8AhFVUruChQs0Bj9jg9pEzKvwKjsM07B2FZF9JmfuUUo+J9/
+ seaAiLEwWNHXkbzCLcW+rgKumtIstiVTYnGIarD/UtJojKOsIuzhEULt0wNBngU=
+X-Google-Smtp-Source: AGHT+IF66ELYdWqrAMY2Zd+6vBZUtB8ho+LybVsQVr5aH8MMhBK2TDGH2U8EQkXqzIm3bS2YLwvNXA==
+X-Received: by 2002:a05:6a20:2583:b0:1c0:f23b:cad3 with SMTP id
+ adf61e73a8af0-1c29822de6dmr6082572637.22.1720624700868; 
+ Wed, 10 Jul 2024 08:18:20 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70b4396779csm3912671b3a.106.2024.07.10.08.18.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Jul 2024 08:18:20 -0700 (PDT)
+Message-ID: <04827c78-1757-4a7c-b0b4-7eefb1958499@linaro.org>
+Date: Wed, 10 Jul 2024 08:18:18 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfbBqHoy4M78NR8EAQ-PV+X86qEK6_ra=tS0_bgqpAt1dw@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/i386/tcg: fix POP to memory in long mode
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+References: <20240710141328.388955-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240710141328.388955-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,31 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 09, 2024 at 02:28:38PM +0200, Paolo Bonzini wrote:
+On 7/10/24 07:13, Paolo Bonzini wrote:
+> In long mode, POP to memory will write a full 64-bit value.  However,
+> the call to gen_writeback() in gen_POP will use MO_32 because the
+> decoding table is incorrect.
 > 
-> Here are the stopping points that I found over the last couple weeks:
+> The bug was latent until commit aea49fbb01a ("target/i386: use gen_writeback()
+> within gen_POP()", 2024-06-08), and then became visible because gen_op_st_v
+> now receives op->ot instead of the "ot" returned by gen_pop_T0.
 > 
-> 1.56.0: 2021 edition
-> 1.59.0: const CStr::from_bytes_with_nul_unchecked (needed by cstr
-> crate, see below)
-> 1.64.0: std::ffi::c_char
-> 1.65.0: Generic Associated Types
-> 1.74.0: Clippy can be configured in Cargo.toml
-> 1.77.0: C string literals, offset_of!
-> 
-> I think 1.59.0 is pretty much the lower bound. Not having offset_of!
-> will be a bit painful, but it can be worked around (and pretty much
-> has to be, because 1.77.0 is really new).
->
+> Analyzed-by: Clément Chigot<chigot@adacore.com>
+> Fixes: 5e9e21bcc4d ("target/i386: move 60-BF opcodes to new decoder", 2024-05-07)
+> Tested-by: Clément Chigot<chigot@adacore.com>
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> ---
+>   target/i386/tcg/decode-new.c.inc | 2 +-
+>   target/i386/tcg/emit.c.inc       | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
 
-An additional question: does our minimum rust version requirement
-indicate that users with this rust version can compile other
-dependencies that satisfy QEMU requirements, such as bindgen?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Because I find 1.59.0 can only go to compile bindgen 0.63.0 [1].
-
-[1]: bindgen 0.63.0 MSRV: https://github.com/rust-lang/rust-bindgen/tree/v0.63.0?tab=readme-ov-file#msrv
-
--Zhao
-
+r~
 
