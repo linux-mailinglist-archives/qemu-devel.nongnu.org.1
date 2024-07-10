@@ -2,41 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6DF92D4EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 17:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C522C92D520
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 17:37:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRZCZ-00018s-5e; Wed, 10 Jul 2024 11:25:51 -0400
+	id 1sRZMk-0003c0-Ir; Wed, 10 Jul 2024 11:36:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sRZCW-0000s3-45; Wed, 10 Jul 2024 11:25:48 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <SRS0=VgH8=OK=kaod.org=clg@ozlabs.org>)
+ id 1sRZMd-0003T0-Lm; Wed, 10 Jul 2024 11:36:15 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sRZCT-0000YF-TF; Wed, 10 Jul 2024 11:25:47 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id F1985472FF;
- Wed, 10 Jul 2024 17:25:34 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: fam@euphon.net, pbonzini@redhat.com, qemu-stable@nongnu.org,
- kwolf@redhat.com
-Subject: [PATCH] scsi: fix regression and honor bootindex again for legacy
- drives
-Date: Wed, 10 Jul 2024 17:25:29 +0200
-Message-Id: <20240710152529.1737407-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <SRS0=VgH8=OK=kaod.org=clg@ozlabs.org>)
+ id 1sRZMa-0002CN-GW; Wed, 10 Jul 2024 11:36:15 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WK2521sbQz4x3J;
+ Thu, 11 Jul 2024 01:36:06 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WK24w1q7mz4x3d;
+ Thu, 11 Jul 2024 01:35:59 +1000 (AEST)
+Message-ID: <09a1a960-5a79-4aa9-a57f-1c1efd809901@kaod.org>
+Date: Wed, 10 Jul 2024 17:35:53 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v48 00/12] hw/sd/sdcard: Add eMMC support
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Bin Meng <bmeng.cn@gmail.com>, Steven Lee <steven_lee@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>, Luc Michel <luc.michel@amd.com>,
+ qemu-arm@nongnu.org, qemu-block@nongnu.org, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>
+References: <20240710141408.69275-1-philmd@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240710141408.69275-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=VgH8=OK=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,58 +69,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 3089637461 ("scsi: Don't ignore most usb-storage properties")
-removed the call to object_property_set_int() and thus the 'set'
-method for the bootindex property was also not called anymore. Here
-that method is device_set_bootindex() (as configured by
-scsi_dev_instance_init() -> device_add_bootindex_property()) which as
-a side effect registers the device via add_boot_device_path().
+On 7/10/24 4:13 PM, Philippe Mathieu-Daudé wrote:
+> Tag to test Aspeed tree:
+>    https://gitlab.com/philmd/qemu/-/tags/aspeed_emmc-v8
+> 
+> Since v43:
+> - Reordered and squashed commits (Cédric)
+> 
+> Since v42:
+> - Stick to spec v4.3 (re-simplified EXT_CSD register & migrate)
+> - Fill CID register
+> - Few changes to CSD register
+> - Implement 'boot-mode' reset timing
+> - Add 'boot-size' property
+> 
+> Cédric Le Goater (2):
+>    hw/sd/sdcard: Add emmc_cmd_SET_RELATIVE_ADDR handler (CMD3)
+>    hw/sd/sdcard: Fix SET_BLOCK_COUNT command argument on eMMC (CMD23)
+> 
+> Joel Stanley (1):
+>    hw/sd/sdcard: Support boot area in emmc image
+> 
+> Luc Michel (1):
+>    hw/sd/sdcard: Implement eMMC sleep state (CMD5)
+> 
+> Philippe Mathieu-Daudé (6):
+>    hw/sd/sdcard: Basis for eMMC support
+>    hw/sd/sdcard: Register generic command handlers
+>    hw/sd/sdcard: Register unimplemented command handlers
+>    hw/sd/sdcard: Add mmc_cmd_PROGRAM_CID handler (CMD26)
+>    hw/sd/sdcard: Add eMMC 'boot-size' property
+>    hw/sd/sdcard: Implement eMMC 'boot-mode'
+> 
+> Sai Pavan Boddu (1):
+>    hw/sd/sdcard: Add mmc SWITCH function support (CMD6)
+> 
+> Vincent Palatin (1):
+>    hw/sd/sdcard: Add emmc_cmd_SEND_EXT_CSD handler (CMD8)
+> 
+>   include/hw/sd/sd.h |   3 +
+>   hw/sd/sd.c         | 418 ++++++++++++++++++++++++++++++++++++++++++++-
+>   hw/sd/trace-events |   3 +
+>   3 files changed, 418 insertions(+), 6 deletions(-)
 
-As reported by a downstream user [0], the bootindex property did not
-have the desired effect anymore for legacy drives. Fix the regression
-by explicitly calling the add_boot_device_path() function after
-checking that the bootindex is not yet used (to avoid
-add_boot_device_path() calling exit()).
 
-[0]: https://forum.proxmox.com/threads/149772/post-679433
+Shall we merge now ?
 
-Cc: qemu-stable@nongnu.org
-Fixes: 3089637461 ("scsi: Don't ignore most usb-storage properties")
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- hw/scsi/scsi-bus.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Thanks,
 
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 9e40b0c920..53eff5dd3d 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -384,6 +384,7 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
-     DeviceState *dev;
-     SCSIDevice *s;
-     DriveInfo *dinfo;
-+    Error *local_err = NULL;
- 
-     if (blk_is_sg(blk)) {
-         driver = "scsi-generic";
-@@ -403,6 +404,14 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
-     s = SCSI_DEVICE(dev);
-     s->conf = *conf;
- 
-+    check_boot_index(conf->bootindex, &local_err);
-+    if (local_err) {
-+        object_unparent(OBJECT(dev));
-+        error_propagate(errp, local_err);
-+        return NULL;
-+    }
-+    add_boot_device_path(conf->bootindex, dev, NULL);
-+
-     qdev_prop_set_uint32(dev, "scsi-id", unit);
-     if (object_property_find(OBJECT(dev), "removable")) {
-         qdev_prop_set_bit(dev, "removable", removable);
--- 
-2.39.2
+C.
+
 
 
 
