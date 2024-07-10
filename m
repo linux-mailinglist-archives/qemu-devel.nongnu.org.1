@@ -2,82 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55A492C7FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 03:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125FD92C801
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 03:41:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRMCs-0005nD-Ni; Tue, 09 Jul 2024 21:33:18 -0400
+	id 1sRMJv-0002xm-1E; Tue, 09 Jul 2024 21:40:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sRMCo-0005ki-Ax; Tue, 09 Jul 2024 21:33:14 -0400
-Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sRMCk-0001UH-0l; Tue, 09 Jul 2024 21:33:12 -0400
-Received: by mail-vk1-xa33.google.com with SMTP id
- 71dfb90a1353d-4e7eadf3668so2286727e0c.0; 
- Tue, 09 Jul 2024 18:33:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sRMJq-0002vG-0q; Tue, 09 Jul 2024 21:40:31 -0400
+Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sRMJn-0002xw-34; Tue, 09 Jul 2024 21:40:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720575187; x=1721179987; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qkx8kStre13Ac+v7aPPQ9slogI60apbpl/3c2FMpLxA=;
- b=TBp87x5nsgJiTVTbYO2UXltu2ynQOEONiodBWcv4UDrisauNKXrFbTlZeVfd2tmc4P
- NNAa2e125YaG6DytSwfBYo5ttXN2VHE3C/Ve2GsSmUoHsdtk6XN2PLc8q6HzUxmsNFmI
- 14Mu78dCadXggfd8xBqiPM5Opuo0iWlHNYq02oo+Os3aTE1Bmv1rzygjF8pLHzBle6D1
- zNq9lEVEAp6Z2SiLq6ZP+uydd67P+Nk7/bMT6rbMY6X439tVpAIky17v5Hxr8sUy3yS7
- fciAMOy2ibxi37BMTUE0T2+TJhbq1D6LvEm4TGBy7GwKlCapJFBO21/qL4F+uDzEwRsg
- dK2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720575187; x=1721179987;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qkx8kStre13Ac+v7aPPQ9slogI60apbpl/3c2FMpLxA=;
- b=JvVG2vIQk3SO3U/Wo0tphyXPFRCWy4usjfJqth8NeFkNtwzEvzv/i2PJUgphV4u3tX
- VAWPdIyJNPM7zOvVdbkKA7TGtot4+HYg+G8FHLgG9SvCgquStXDwpS0nFgXUDF/mAMlB
- M5Nt0bK4bS13PYjezG13ozm9oFNA3DfLEwNIxtD0Ohvf+ejR1fTKZ7RCPqS2CfxMyJs7
- Ci68P9Mh6lVKogrDonXuz6AmY1tJs338oDxHVkvuaQTK8fO5oVc48xPEQrPJb+XhkD4q
- EsJvSdhmsQwPhbOD7R5RhqVaNwb8MknZaH6XMFZpKKX6HrZSNghMggIReotRgLLcHxaf
- hJow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU1GH6HdBr1tw/+soMatBawyHUWkmlhG3xU2hL0rK1j2YwZdukQU0vntcvdu2uI2X7FtGjUn3rdCTWnLwZjDsatTc+M8Ok=
-X-Gm-Message-State: AOJu0YyeoCSFfr4jl8Eje/LfJ4klk3citzacdmnSTx+Lh18U/3n8xq7P
- +2Zotn/ysLzdXOR5nFgFTDCgkwgunwtsS0j+cNMViPQDWqkzOJwGFx1rVMnwvYtLd6fsfZWZqe+
- QVuLMqhMrqKpStW8IEPo36PB7Bsg=
-X-Google-Smtp-Source: AGHT+IElsuui7GpqoZopKMDfOpyvkIr/FEqKTeBrb+FX+NnYsAWAZp5xKjtfp+FAwroKjjyyI8mAY3d7165GhmMNb/g=
-X-Received: by 2002:a05:6102:1505:b0:48f:eb37:fd86 with SMTP id
- ada2fe7eead31-4903220aeffmr5234339137.30.1720575187505; Tue, 09 Jul 2024
- 18:33:07 -0700 (PDT)
+ d=linux.alibaba.com; s=default;
+ t=1720575614; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=1a6+uQnEOwp0DyKmcUQBFKCn9TG/xo+wIn35Orx1nEY=;
+ b=YBNDzU/NB3fKHneaa3uLeypJCcSvYuSSTbU1KCExPXkkNsKc8YWq8VyUb16J0khfTf1EbqSLJMV+2G7JJ1YBAFn55PcdkAPkxyDOwUX2muWwk2pPn6mXzIU6dKe38/UwV5sVztKtn2VYI7tSMjokVjKw+7apoVJgklTNP3S8DDM=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R601e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033032014031;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=11; SR=0;
+ TI=SMTPD_---0WADHC-d_1720575613; 
+Received: from 30.166.64.104(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0WADHC-d_1720575613) by smtp.aliyun-inc.com;
+ Wed, 10 Jul 2024 09:40:14 +0800
+Message-ID: <782baf65-68cd-409b-82f3-b24f3a9f9dc6@linux.alibaba.com>
+Date: Wed, 10 Jul 2024 09:38:46 +0800
 MIME-Version: 1.0
-References: <20240708131645.1345-1-zhiwei_liu@linux.alibaba.com>
- <20240708131645.1345-6-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20240708131645.1345-6-zhiwei_liu@linux.alibaba.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 10 Jul 2024 11:32:41 +1000
-Message-ID: <CAKmqyKN3U_iwf+vqJsaWpibpn8OjMFrfwBWgXUvnPWgCmXhF3w@mail.gmail.com>
-Subject: Re: [PATCH v4 5/7] target/riscv: Correct mcause/scause bit width for
- RV32 in RV64 QEMU
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com, 
- bmeng.cn@gmail.com, richard.henderson@linaro.org, philmd@linaro.org, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/7] tests/avocado: Add an avocado test for riscv64
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com,
+ alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com,
+ bmeng.cn@gmail.com, richard.henderson@linaro.org, philmd@linaro.org,
  TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa33.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240708131645.1345-1-zhiwei_liu@linux.alibaba.com>
+ <20240708131645.1345-8-zhiwei_liu@linux.alibaba.com>
+ <CAKmqyKNOE2J95o0CRxDnxV-G4gmogaF-MoDsU7v+TF1hZ49brg@mail.gmail.com>
+Content-Language: en-US
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <CAKmqyKNOE2J95o0CRxDnxV-G4gmogaF-MoDsU7v+TF1hZ49brg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.100;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-100.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,61 +72,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 8, 2024 at 11:21=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibab=
-a.com> wrote:
->
-> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
->
-> Ensure mcause high bit is correctly set by using 32-bit width for RV32
-> mode and 64-bit width for RV64 mode.
->
-> Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-> Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+On 2024/7/10 9:31, Alistair Francis wrote:
+> On Mon, Jul 8, 2024 at 11:22 PM LIU Zhiwei <zhiwei_liu@linux.alibaba.com> wrote:
+>> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+>>
+>> To regularly test booting Linux with rv32 on QEMU RV64,
+>> we have added a test to boot_linux_console.py to retrieve
+>> cpuinfo and verify if it shows 'rv32' when using RV64 to
+>> boot rv32 CPUs.
+>>
+>> Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+>> Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+>> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+>> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Something is wrong here, it should only be an Ack
 
-Alistair
+Sorry, I missed checking this. Will fix it in next version.
 
-> ---
->  target/riscv/cpu_helper.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+Zhiwei
+
 >
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 4f0ab90ac7..3eedb26cd9 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1673,6 +1673,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
->      target_ulong tinst =3D 0;
->      target_ulong htval =3D 0;
->      target_ulong mtval2 =3D 0;
-> +    int sxlen =3D 0;
-> +    int mxlen =3D 0;
->
->      if (!async) {
->          /* set tval to badaddr for traps with address information */
-> @@ -1799,7 +1801,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
->          s =3D set_field(s, MSTATUS_SPP, env->priv);
->          s =3D set_field(s, MSTATUS_SIE, 0);
->          env->mstatus =3D s;
-> -        env->scause =3D cause | ((target_ulong)async << (TARGET_LONG_BIT=
-S - 1));
-> +        sxlen =3D 16 << riscv_cpu_sxl(env);
-> +        env->scause =3D cause | ((target_ulong)async << (sxlen - 1));
->          env->sepc =3D env->pc;
->          env->stval =3D tval;
->          env->htval =3D htval;
-> @@ -1830,7 +1833,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
->          s =3D set_field(s, MSTATUS_MPP, env->priv);
->          s =3D set_field(s, MSTATUS_MIE, 0);
->          env->mstatus =3D s;
-> -        env->mcause =3D cause | ~(((target_ulong)-1) >> async);
-> +        mxlen =3D 16 << riscv_cpu_mxl(env);
-> +        env->mcause =3D cause | ((target_ulong)async << (mxlen - 1));
->          env->mepc =3D env->pc;
->          env->mtval =3D tval;
->          env->mtval2 =3D mtval2;
-> --
-> 2.43.0
->
->
+> Alistair
 
