@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4933892CB1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 08:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1206E92CB3E
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 08:38:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRQq1-000110-6J; Wed, 10 Jul 2024 02:30:02 -0400
+	id 1sRQxR-0001TF-6W; Wed, 10 Jul 2024 02:37:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sRQpz-0000wS-Hm
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:29:59 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sRQxO-0001Lh-Ql
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:37:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sRQpx-0000vn-RH
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:29:59 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sRQxM-0002i2-Qk
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:37:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720592997;
+ s=mimecast20190719; t=1720593454;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1Ql2wQ9TsVXf1SgGfQDPRSm5NqN+wHIJJjqUCwnWnLM=;
- b=PAL1BvbJoJeEb3IZ9g/rHXe6cPxoCHnHEHHHbTQv5EbeId8sZhzv5qzk3k4RxfcsQEvoFr
- rjr6THt2cJOhxuwkvPQ5O9I3HcofrZ2rPGlGVzBtF1aTMtXslFHAJtOGFsnqS3IScRbiTu
- WlTfgQtjZKvPn5p4K0BvMCeiyeyMt9M=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=me+H+3sKdqg7KyCoSb0g25ntktYChAt5Iq6L7H32KLs=;
+ b=jIoE2VcVLdAh/KuXpFJXA5/u7FzKKPZHFr+WeXPBP2LR6BaywpkGNJerXiCRNb4o5dubGA
+ O/sFSCYK1o9dNmm77Pho6VNRiWo4xGm/voBCfSWeCVXxdOmU7TTNoD1qIkwzggjHVEwxJZ
+ d82RWr3b97ttpN0/UdLdDMkkpSXaD/w=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-rMBVv1Q7NHKdKnkxgR4H_w-1; Wed, 10 Jul 2024 02:29:53 -0400
-X-MC-Unique: rMBVv1Q7NHKdKnkxgR4H_w-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-367990b4beeso4038819f8f.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 23:29:53 -0700 (PDT)
+ us-mta-251-kizu814WOGWJgJBR0MV_CQ-1; Wed, 10 Jul 2024 02:37:33 -0400
+X-MC-Unique: kizu814WOGWJgJBR0MV_CQ-1
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-65a14a9241bso14673277b3.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 23:37:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720592991; x=1721197791;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1Ql2wQ9TsVXf1SgGfQDPRSm5NqN+wHIJJjqUCwnWnLM=;
- b=ni8ogAtxN6GfVhfpvp/Gzie7yXFrUfKM/y98DKpFpqSeky1GelurX/uwW9zMUjpbj+
- kCt41Kgy67piUHwKizc3zfqS8dC379XBu5UHMR9SloZjNEQ1wBtED6mi0WShlWnzt0jf
- VG+we104JqC4tqJRRXX3r+B8NlrnOFOxYoXjBSkbdKNsmz/gWtT2NESq6UaVEDfdgxcT
- g8bdvDu5vk8QZT+QDHMHXph/QdX+MAsDPP2dWrEquptO6pYyx1GdIcm3pDn66VnJJF0c
- VUtn5wWwCi1s+qX/aDKow5MVz/oVUQ5nTsASXATk/xaxyw3n5Ry83db+sq1xmW7MJywp
- UtJQ==
-X-Gm-Message-State: AOJu0Yycdl3/4ZpO3e88h6akeD9/NJGWIRKhA6JvdhjZIF6mefcI89d0
- sCwIq3I1+MeG15E8e4PTHFW6aTdcpuLkDfXxCdHhNLMBUhOXm+VheLNUgWKkDn0/9nhzZx8h2ph
- wjo7UIlygxStL2a4BUNA2MhQ7IoV6h9W5X9BLpWdKIHzvfHpKM7bdtk3Bb2xG8Lt0RG7PNfd+IO
- s+FRQsI08CRRU46Uw/f3w5k/yCLv4hPafh4UT5
-X-Received: by 2002:a5d:68cd:0:b0:367:9d21:22cb with SMTP id
- ffacd0b85a97d-367cea73551mr2710222f8f.22.1720592991217; 
- Tue, 09 Jul 2024 23:29:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwouR3TO5lOWSmKO2x+OIXS3QBTsbFDmj3fcKeeVcSJ9tc6Hpn0lAFPJtC7bk4zCdIJhL/cA==
-X-Received: by 2002:a5d:68cd:0:b0:367:9d21:22cb with SMTP id
- ffacd0b85a97d-367cea73551mr2710212f8f.22.1720592990856; 
- Tue, 09 Jul 2024 23:29:50 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
+ d=1e100.net; s=20230601; t=1720593452; x=1721198252;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=me+H+3sKdqg7KyCoSb0g25ntktYChAt5Iq6L7H32KLs=;
+ b=NAmYbOD3bZjzS7MkC34I7A/9luaIWyCeDQYZ8SywTs6MTo7tq8Zx5MfchdvSku5VG+
+ rdVWSZ2/xxhChBl8hiRMgl43SyazDB/2d9M1dDKqdk5CZl+d2Rr2WuHXAPTz8NEEJEsB
+ glOz4ESeSvqUnS18pV5MjJQ7fokXzywpo/KbLNasLKdRD7xbELF68moeEiksw/6xNb35
+ T/WWsTYxCaLyvxDsL5oiHCfMONL2qzDXp9xlwKwHKnRO6bwPBk6OXa6G270/0LvTnSZq
+ ge9khCkgm4UAefyPjie+Jg66kg4ryOxWRkJTozY8pzh/78heVIJwlIEUl521xM9uw6Ie
+ /5og==
+X-Gm-Message-State: AOJu0Yx9val04XYgSB/Yq2E5ZDy2T1apir66enKxFgIAftT2tjfUi0wE
+ FDJ5VU/VwZu3v24Lnu/Nsqhrv8Y96xWJEvO/DzHK64d4i6uqGUmBB0F2r6ZNhzKRu2c920xDyBT
+ wsxyKxWC+Jkjvuqy4cgOJS6QlEg7WJoT9qwzKEbQr0aKthv1t1FB8
+X-Received: by 2002:a81:92c1:0:b0:64a:8767:b069 with SMTP id
+ 00721157ae682-658ee790471mr51374227b3.3.1720593452198; 
+ Tue, 09 Jul 2024 23:37:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqV7kPATxbILiSHlIrLHu2di0AudxWCBoRz5WZrLjiI4xTEnoV1uQr3fowQXpmJn2ye4vXlA==
+X-Received: by 2002:a81:92c1:0:b0:64a:8767:b069 with SMTP id
+ 00721157ae682-658ee790471mr51374117b3.3.1720593451789; 
+ Tue, 09 Jul 2024 23:37:31 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-367cde847bdsm4361702f8f.41.2024.07.09.23.29.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jul 2024 23:29:48 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: rrh.henry@gmail.com,
-	richard.henderson@linaro.org
-Subject: [PATCH 10/10] target/i386/tcg: save current task state before loading
- new one
-Date: Wed, 10 Jul 2024 08:29:20 +0200
-Message-ID: <20240710062920.73063-11-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240710062920.73063-1-pbonzini@redhat.com>
-References: <20240710062920.73063-1-pbonzini@redhat.com>
+ af79cd13be357-79f18f1a32bsm170535985a.0.2024.07.09.23.37.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 09 Jul 2024 23:37:31 -0700 (PDT)
+Message-ID: <75cbc7d9-b48e-4235-85cf-49dacf3c7483@redhat.com>
+Date: Wed, 10 Jul 2024 08:37:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 06/12] pcie_sriov: Reuse SR-IOV VF device instances
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+References: <20240627-reuse-v10-0-7ca0b8ed3d9f@daynix.com>
+ <20240627-reuse-v10-6-7ca0b8ed3d9f@daynix.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240627-reuse-v10-6-7ca0b8ed3d9f@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -102,129 +110,291 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is how the steps are ordered in the manual.  EFLAGS.NT is
-overwritten after the fact in the saved image.
+Hello,
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/tcg/seg_helper.c | 85 +++++++++++++++++++-----------------
- 1 file changed, 45 insertions(+), 40 deletions(-)
+This change introduced a regression on s390x. I could have spotted it
+earlier. Sorry about that. Here is the scenario,
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 77f2c65c3cf..7663e653e84 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -325,6 +325,42 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
-     access_prepare_mmu(&new, env, tss_base, tss_limit,
- 		       MMU_DATA_LOAD, cpu_mmu_index_kernel(env), retaddr);
- 
-+    /* save the current state in the old TSS */
-+    old_eflags = cpu_compute_eflags(env);
-+    if (old_type & 8) {
-+        /* 32 bit */
-+        access_stl(&old, env->tr.base + 0x20, next_eip);
-+        access_stl(&old, env->tr.base + 0x24, old_eflags);
-+        access_stl(&old, env->tr.base + (0x28 + 0 * 4), env->regs[R_EAX]);
-+        access_stl(&old, env->tr.base + (0x28 + 1 * 4), env->regs[R_ECX]);
-+        access_stl(&old, env->tr.base + (0x28 + 2 * 4), env->regs[R_EDX]);
-+        access_stl(&old, env->tr.base + (0x28 + 3 * 4), env->regs[R_EBX]);
-+        access_stl(&old, env->tr.base + (0x28 + 4 * 4), env->regs[R_ESP]);
-+        access_stl(&old, env->tr.base + (0x28 + 5 * 4), env->regs[R_EBP]);
-+        access_stl(&old, env->tr.base + (0x28 + 6 * 4), env->regs[R_ESI]);
-+        access_stl(&old, env->tr.base + (0x28 + 7 * 4), env->regs[R_EDI]);
-+        for (i = 0; i < 6; i++) {
-+            access_stw(&old, env->tr.base + (0x48 + i * 4),
-+                       env->segs[i].selector);
-+        }
-+    } else {
-+        /* 16 bit */
-+        access_stw(&old, env->tr.base + 0x0e, next_eip);
-+        access_stw(&old, env->tr.base + 0x10, old_eflags);
-+        access_stw(&old, env->tr.base + (0x12 + 0 * 2), env->regs[R_EAX]);
-+        access_stw(&old, env->tr.base + (0x12 + 1 * 2), env->regs[R_ECX]);
-+        access_stw(&old, env->tr.base + (0x12 + 2 * 2), env->regs[R_EDX]);
-+        access_stw(&old, env->tr.base + (0x12 + 3 * 2), env->regs[R_EBX]);
-+        access_stw(&old, env->tr.base + (0x12 + 4 * 2), env->regs[R_ESP]);
-+        access_stw(&old, env->tr.base + (0x12 + 5 * 2), env->regs[R_EBP]);
-+        access_stw(&old, env->tr.base + (0x12 + 6 * 2), env->regs[R_ESI]);
-+        access_stw(&old, env->tr.base + (0x12 + 7 * 2), env->regs[R_EDI]);
-+        for (i = 0; i < 4; i++) {
-+            access_stw(&old, env->tr.base + (0x22 + i * 2),
-+                       env->segs[i].selector);
-+        }
-+    }
-+
-     /* read all the registers from the new TSS */
-     if (type & 8) {
-         /* 32 bit */
-@@ -364,49 +400,16 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
-     if (source == SWITCH_TSS_JMP || source == SWITCH_TSS_IRET) {
-         tss_set_busy(env, env->tr.selector, 0, retaddr);
-     }
--    old_eflags = cpu_compute_eflags(env);
-+
-     if (source == SWITCH_TSS_IRET) {
-         old_eflags &= ~NT_MASK;
-+        if (old_type & 8) {
-+            access_stl(&old, env->tr.base + 0x24, old_eflags);
-+        } else {
-+            access_stw(&old, env->tr.base + 0x10, old_eflags);
-+	}
-     }
- 
--    /* save the current state in the old TSS */
--    if (old_type & 8) {
--        /* 32 bit */
--        access_stl(&old, env->tr.base + 0x20, next_eip);
--        access_stl(&old, env->tr.base + 0x24, old_eflags);
--        access_stl(&old, env->tr.base + (0x28 + 0 * 4), env->regs[R_EAX]);
--        access_stl(&old, env->tr.base + (0x28 + 1 * 4), env->regs[R_ECX]);
--        access_stl(&old, env->tr.base + (0x28 + 2 * 4), env->regs[R_EDX]);
--        access_stl(&old, env->tr.base + (0x28 + 3 * 4), env->regs[R_EBX]);
--        access_stl(&old, env->tr.base + (0x28 + 4 * 4), env->regs[R_ESP]);
--        access_stl(&old, env->tr.base + (0x28 + 5 * 4), env->regs[R_EBP]);
--        access_stl(&old, env->tr.base + (0x28 + 6 * 4), env->regs[R_ESI]);
--        access_stl(&old, env->tr.base + (0x28 + 7 * 4), env->regs[R_EDI]);
--        for (i = 0; i < 6; i++) {
--            access_stw(&old, env->tr.base + (0x48 + i * 4),
--                       env->segs[i].selector);
--        }
--    } else {
--        /* 16 bit */
--        access_stw(&old, env->tr.base + 0x0e, next_eip);
--        access_stw(&old, env->tr.base + 0x10, old_eflags);
--        access_stw(&old, env->tr.base + (0x12 + 0 * 2), env->regs[R_EAX]);
--        access_stw(&old, env->tr.base + (0x12 + 1 * 2), env->regs[R_ECX]);
--        access_stw(&old, env->tr.base + (0x12 + 2 * 2), env->regs[R_EDX]);
--        access_stw(&old, env->tr.base + (0x12 + 3 * 2), env->regs[R_EBX]);
--        access_stw(&old, env->tr.base + (0x12 + 4 * 2), env->regs[R_ESP]);
--        access_stw(&old, env->tr.base + (0x12 + 5 * 2), env->regs[R_EBP]);
--        access_stw(&old, env->tr.base + (0x12 + 6 * 2), env->regs[R_ESI]);
--        access_stw(&old, env->tr.base + (0x12 + 7 * 2), env->regs[R_EDI]);
--        for (i = 0; i < 4; i++) {
--            access_stw(&old, env->tr.base + (0x22 + i * 2),
--                       env->segs[i].selector);
--        }
--    }
--
--    /* now if an exception occurs, it will occurs in the next task
--       context */
--
-     if (source == SWITCH_TSS_CALL) {
-         cpu_stw_kernel_ra(env, tss_base, env->tr.selector, retaddr);
-         new_eflags |= NT_MASK;
-@@ -418,7 +421,9 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
-     }
- 
-     /* set the new CPU state */
--    /* from this point, any exception which occurs can give problems */
-+
-+    /* now if an exception occurs, it will occur in the next task context */
-+
-     env->cr[0] |= CR0_TS_MASK;
-     env->hflags |= HF_TS_MASK;
-     env->tr.selector = tss_selector;
--- 
-2.45.2
+QEMU now creates automatically the PCI device objects representing the
+VFs when the PF device is realized in pcie_sriov_pf_init(). This is
+good to report errors early but it has an important drawback.
+
+On s390x, PCI devices have a dual S390PCIBusDevice object. This device
+model has 'uid' and 'fid' properties which can be either set by the VMM
+or, if not, auto-generated by the S390PCIBusDevice realize handler. In
+the VF case, these ids are auto-generated by QEMU and they can possibly
+conflict with the uid number space of libvirt. The conflict is detected
+when the machine is created and the start is aborted with a message :
+
+   2024-07-08T12:51:42.876883Z qemu-system-s390x: -device {"driver":"zpci","uid":17,"fid":16,"target":"hostdev0","id":"zpci17"}: uid 17 already in use
+
+This problem can occur today with a s390x VM using an IGB device.
+
+It worked fine when the VFs were created at OS runtime because the initial
+topology of the machine was in place. Adding VFs was more or less like
+hotplug. AIUI, libvirt should have full control on the machine topology
+and so, creating VFs in QEMU at init time in the back of libvirt seems
+like a violation of this rule.
+
+That said, the s390x case is specific and could perhaps be handled in a
+special way.
+
+Thanks,
+
+C.
+
+
+
+On 6/27/24 8:07 AM, Akihiko Odaki wrote:
+> Disable SR-IOV VF devices by reusing code to power down PCI devices
+> instead of removing them when the guest requests to disable VFs. This
+> allows to realize devices and report VF realization errors at PF
+> realization time.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   include/hw/pci/pci.h        |  5 ---
+>   include/hw/pci/pci_device.h | 15 +++++++
+>   include/hw/pci/pcie_sriov.h |  1 -
+>   hw/pci/pci.c                |  2 +-
+>   hw/pci/pcie_sriov.c         | 95 +++++++++++++++++++--------------------------
+>   5 files changed, 56 insertions(+), 62 deletions(-)
+> 
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index 6c92b2f70008..442017b4865d 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -644,9 +644,4 @@ static inline void pci_irq_pulse(PCIDevice *pci_dev)
+>   MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
+>   void pci_set_enabled(PCIDevice *pci_dev, bool state);
+>   
+> -static inline void pci_set_power(PCIDevice *pci_dev, bool state)
+> -{
+> -    pci_set_enabled(pci_dev, state);
+> -}
+> -
+>   #endif
+> diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+> index d57f9ce83884..ca151325085d 100644
+> --- a/include/hw/pci/pci_device.h
+> +++ b/include/hw/pci/pci_device.h
+> @@ -205,6 +205,21 @@ static inline uint16_t pci_get_bdf(PCIDevice *dev)
+>       return PCI_BUILD_BDF(pci_bus_num(pci_get_bus(dev)), dev->devfn);
+>   }
+>   
+> +static inline void pci_set_power(PCIDevice *pci_dev, bool state)
+> +{
+> +    /*
+> +     * Don't change the enabled state of VFs when powering on/off the device.
+> +     *
+> +     * When powering on, VFs must not be enabled immediately but they must
+> +     * wait until the guest configures SR-IOV.
+> +     * When powering off, their corresponding PFs will be reset and disable
+> +     * VFs.
+> +     */
+> +    if (!pci_is_vf(pci_dev)) {
+> +        pci_set_enabled(pci_dev, state);
+> +    }
+> +}
+> +
+>   uint16_t pci_requester_id(PCIDevice *dev);
+>   
+>   /* DMA access functions */
+> diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
+> index aa704e8f9d9f..70649236c18a 100644
+> --- a/include/hw/pci/pcie_sriov.h
+> +++ b/include/hw/pci/pcie_sriov.h
+> @@ -18,7 +18,6 @@
+>   typedef struct PCIESriovPF {
+>       uint16_t num_vfs;   /* Number of virtual functions created */
+>       uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
+> -    const char *vfname; /* Reference to the device type used for the VFs */
+>       PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
+>   } PCIESriovPF;
+>   
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 295a32714a4a..c682c3dcb68e 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2822,7 +2822,7 @@ void pci_set_enabled(PCIDevice *d, bool state)
+>       memory_region_set_enabled(&d->bus_master_enable_region,
+>                                 (pci_get_word(d->config + PCI_COMMAND)
+>                                  & PCI_COMMAND_MASTER) && d->enabled);
+> -    if (!d->enabled) {
+> +    if (d->qdev.realized) {
+>           pci_device_reset(d);
+>       }
+>   }
+> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+> index f0bde0d3fc79..faadb0d2ea85 100644
+> --- a/hw/pci/pcie_sriov.c
+> +++ b/hw/pci/pcie_sriov.c
+> @@ -20,9 +20,16 @@
+>   #include "qapi/error.h"
+>   #include "trace.h"
+>   
+> -static PCIDevice *register_vf(PCIDevice *pf, int devfn,
+> -                              const char *name, uint16_t vf_num);
+> -static void unregister_vfs(PCIDevice *dev);
+> +static void unparent_vfs(PCIDevice *dev, uint16_t total_vfs)
+> +{
+> +    for (uint16_t i = 0; i < total_vfs; i++) {
+> +        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+> +        object_unparent(OBJECT(vf));
+> +        object_unref(OBJECT(vf));
+> +    }
+> +    g_free(dev->exp.sriov_pf.vf);
+> +    dev->exp.sriov_pf.vf = NULL;
+> +}
+>   
+>   bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>                           const char *vfname, uint16_t vf_dev_id,
+> @@ -30,6 +37,8 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>                           uint16_t vf_offset, uint16_t vf_stride,
+>                           Error **errp)
+>   {
+> +    BusState *bus = qdev_get_parent_bus(&dev->qdev);
+> +    int32_t devfn = dev->devfn + vf_offset;
+>       uint8_t *cfg = dev->config + offset;
+>       uint8_t *wmask;
+>   
+> @@ -49,7 +58,6 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>                           offset, PCI_EXT_CAP_SRIOV_SIZEOF);
+>       dev->exp.sriov_cap = offset;
+>       dev->exp.sriov_pf.num_vfs = 0;
+> -    dev->exp.sriov_pf.vfname = g_strdup(vfname);
+>       dev->exp.sriov_pf.vf = NULL;
+>   
+>       pci_set_word(cfg + PCI_SRIOV_VF_OFFSET, vf_offset);
+> @@ -83,14 +91,34 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>   
+>       qdev_prop_set_bit(&dev->qdev, "multifunction", true);
+>   
+> +    dev->exp.sriov_pf.vf = g_new(PCIDevice *, total_vfs);
+> +
+> +    for (uint16_t i = 0; i < total_vfs; i++) {
+> +        PCIDevice *vf = pci_new(devfn, vfname);
+> +        vf->exp.sriov_vf.pf = dev;
+> +        vf->exp.sriov_vf.vf_number = i;
+> +
+> +        if (!qdev_realize(&vf->qdev, bus, errp)) {
+> +            unparent_vfs(dev, i);
+> +            return false;
+> +        }
+> +
+> +        /* set vid/did according to sr/iov spec - they are not used */
+> +        pci_config_set_vendor_id(vf->config, 0xffff);
+> +        pci_config_set_device_id(vf->config, 0xffff);
+> +
+> +        dev->exp.sriov_pf.vf[i] = vf;
+> +        devfn += vf_stride;
+> +    }
+> +
+>       return true;
+>   }
+>   
+>   void pcie_sriov_pf_exit(PCIDevice *dev)
+>   {
+> -    unregister_vfs(dev);
+> -    g_free((char *)dev->exp.sriov_pf.vfname);
+> -    dev->exp.sriov_pf.vfname = NULL;
+> +    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
+> +
+> +    unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+>   }
+>   
+>   void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
+> @@ -156,38 +184,11 @@ void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
+>       }
+>   }
+>   
+> -static PCIDevice *register_vf(PCIDevice *pf, int devfn, const char *name,
+> -                              uint16_t vf_num)
+> -{
+> -    PCIDevice *dev = pci_new(devfn, name);
+> -    dev->exp.sriov_vf.pf = pf;
+> -    dev->exp.sriov_vf.vf_number = vf_num;
+> -    PCIBus *bus = pci_get_bus(pf);
+> -    Error *local_err = NULL;
+> -
+> -    qdev_realize(&dev->qdev, &bus->qbus, &local_err);
+> -    if (local_err) {
+> -        error_report_err(local_err);
+> -        return NULL;
+> -    }
+> -
+> -    /* set vid/did according to sr/iov spec - they are not used */
+> -    pci_config_set_vendor_id(dev->config, 0xffff);
+> -    pci_config_set_device_id(dev->config, 0xffff);
+> -
+> -    return dev;
+> -}
+> -
+>   static void register_vfs(PCIDevice *dev)
+>   {
+>       uint16_t num_vfs;
+>       uint16_t i;
+>       uint16_t sriov_cap = dev->exp.sriov_cap;
+> -    uint16_t vf_offset =
+> -        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
+> -    uint16_t vf_stride =
+> -        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
+> -    int32_t devfn = dev->devfn + vf_offset;
+>   
+>       assert(sriov_cap > 0);
+>       num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
+> @@ -195,18 +196,10 @@ static void register_vfs(PCIDevice *dev)
+>           return;
+>       }
+>   
+> -    dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
+> -
+>       trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
+>                                PCI_FUNC(dev->devfn), num_vfs);
+>       for (i = 0; i < num_vfs; i++) {
+> -        dev->exp.sriov_pf.vf[i] = register_vf(dev, devfn,
+> -                                              dev->exp.sriov_pf.vfname, i);
+> -        if (!dev->exp.sriov_pf.vf[i]) {
+> -            num_vfs = i;
+> -            break;
+> -        }
+> -        devfn += vf_stride;
+> +        pci_set_enabled(dev->exp.sriov_pf.vf[i], true);
+>       }
+>       dev->exp.sriov_pf.num_vfs = num_vfs;
+>   }
+> @@ -219,12 +212,8 @@ static void unregister_vfs(PCIDevice *dev)
+>       trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
+>                                  PCI_FUNC(dev->devfn), num_vfs);
+>       for (i = 0; i < num_vfs; i++) {
+> -        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+> -        object_unparent(OBJECT(vf));
+> -        object_unref(OBJECT(vf));
+> +        pci_set_enabled(dev->exp.sriov_pf.vf[i], false);
+>       }
+> -    g_free(dev->exp.sriov_pf.vf);
+> -    dev->exp.sriov_pf.vf = NULL;
+>       dev->exp.sriov_pf.num_vfs = 0;
+>   }
+>   
+> @@ -246,14 +235,10 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
+>                                PCI_FUNC(dev->devfn), off, val, len);
+>   
+>       if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
+> -        if (dev->exp.sriov_pf.num_vfs) {
+> -            if (!(val & PCI_SRIOV_CTRL_VFE)) {
+> -                unregister_vfs(dev);
+> -            }
+> +        if (val & PCI_SRIOV_CTRL_VFE) {
+> +            register_vfs(dev);
+>           } else {
+> -            if (val & PCI_SRIOV_CTRL_VFE) {
+> -                register_vfs(dev);
+> -            }
+> +            unregister_vfs(dev);
+>           }
+>       }
+>   }
+> 
 
 
