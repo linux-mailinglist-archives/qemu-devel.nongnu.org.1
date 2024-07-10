@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C170092D408
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 16:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E40B92D45B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 16:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRY8F-0003ox-9C; Wed, 10 Jul 2024 10:17:19 -0400
+	id 1sRYRQ-0006TK-TF; Wed, 10 Jul 2024 10:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sRY7z-0002rI-BE
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:17:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sRY7v-0004UG-IE
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:17:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720621018;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pEwMH4aUe0S8Koyu1Ux31ZzcoB926u5SAT1zJIr7HA0=;
- b=gggRfFVAETdMf9rIn3ViGfCxcjFo4YlTDYkZTJ7d3vSuv3VH8RxLWsdjw1qRY28JvtASqr
- SxTG5ekaoVjY9GmW6vzMnFVGgGSFl+t7xMg4TVbfWUfuQgKMNOITdEKrn/Uk0e4sz7wX9r
- bTQgQcOT3+1Y0pr0rrVp0E/H3Vs+ut4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-tof68BT0PAikbi-RUeoATw-1; Wed,
- 10 Jul 2024 10:16:55 -0400
-X-MC-Unique: tof68BT0PAikbi-RUeoATw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E326E19560A3; Wed, 10 Jul 2024 14:16:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.46])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A69801955F40; Wed, 10 Jul 2024 14:16:48 +0000 (UTC)
-Date: Wed, 10 Jul 2024 15:16:45 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Jason Wang <jasowang@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>,
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
- Vincenzo Maffione <v.maffione@gmail.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 4/4] virtio-net: Remove fallback from ebpf-rss-fds
-Message-ID: <Zo6XzRyoXsp6FUWu@redhat.com>
-References: <20240708-auto-v2-0-f4908b953f05@daynix.com>
- <20240708-auto-v2-4-f4908b953f05@daynix.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sRYRO-0006Pb-9d
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:37:06 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sRYRM-0008Cp-BV
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:37:05 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2c980b08b4bso4481610a91.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 07:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720622222; x=1721227022; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KPjBhqTMQQz+zEW5BDmFbWOo9n0F1MrwOUwA8+Jpr6g=;
+ b=vze2vlo9U+iTXnLH0w3Ici/vjKXoD1Nc+Io9Ci6z/zVmI4KkJD3+6TQ2j/ugr/xPbo
+ /Qb8ROFl1DDt2QyLj0cl90KEHzn6fOF4ZRI6PFo7Nn5xNiSRl9UFYGwq4rpxfD5qOnEj
+ gEXD5J+79gIbFsyoGkEAR2l5QMYekYXD7/Q2HR6gKJ57w0xr/qw2xTmek3SrUdO2Umiq
+ +dxBRdktGdoBnKDAc7vzBcBkblzQeBTo7nLYzOLAbVzs0f55GpEVTwt0HZVcFuOxKjl8
+ wsX5pd0/f6RutU9aFo9B7HZugVJ2Afqr01V+K1jgxuolrR0Q/nU+A5xAttg82tKmqWkY
+ xQmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720622222; x=1721227022;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KPjBhqTMQQz+zEW5BDmFbWOo9n0F1MrwOUwA8+Jpr6g=;
+ b=QSh3zkjS/BHp7ZR6T/RE1k9XJBj3OkEQ62iI76l1evFs0FQsHq0HtJGeJ8L9TpsS1A
+ W7viDjq/m4CgeXIEetQB/ot+biC2Q1kF1uKbOuAsZxmibDw9KrDAe4s+18N1LE++Tv9c
+ AOlqaderkReDdsCnAgowO2mOXtkMz1637kY47t6EwteGzOccFjGUr/5gvd+xIVj+iAyh
+ spK7uP4/6wDjzHbVoVYvrqeJhiuF/Pk/FNDgmAhgmFObvcbetOwVcrAt7z28MVQwZ+mv
+ AFyf0qCDyZC9QvNmkFbeFtj9JpFvtolwBNUVyWeRmp9/1Cvtihw3+FY1S3GQV1J7YfXq
+ rphg==
+X-Gm-Message-State: AOJu0YxqHCtvUdnaDlzxt8PyCyruo6Qp4w8xlQZR7eFEdfLnABFrBRMU
+ Xpey2u0NAqOWiAVcULOHJybhA9FqJMkLQW5FRxq57gDAx4ZISlx/6B/JdXY9n2E=
+X-Google-Smtp-Source: AGHT+IFjx9GNWv+yEnsm84ZlfU0gpq7J1Z1SKA4pJ/tlrGPEaj3CqT3D2sULOmObJv/adFi2TgrMYg==
+X-Received: by 2002:a17:90b:3a84:b0:2ca:7636:2214 with SMTP id
+ 98e67ed59e1d1-2ca763625e3mr1859187a91.4.1720622222226; 
+ Wed, 10 Jul 2024 07:37:02 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c99aabab9dsm11978185a91.57.2024.07.10.07.37.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Jul 2024 07:37:01 -0700 (PDT)
+Message-ID: <7059ae89-1181-48ce-b828-0837f7a62c93@linaro.org>
+Date: Wed, 10 Jul 2024 07:36:59 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240708-auto-v2-4-f4908b953f05@daynix.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/13] target/ppc: Hoist dcbz_size out of dcbz_common
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongu.org,
+ qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, max.chou@sifive.com
+References: <20240710032814.104643-1-richard.henderson@linaro.org>
+ <20240710032814.104643-7-richard.henderson@linaro.org>
+ <aedda59d-2a8f-94bd-246d-d32ee6cf19be@eik.bme.hu>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <aedda59d-2a8f-94bd-246d-d32ee6cf19be@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,117 +93,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 08, 2024 at 04:38:09PM +0900, Akihiko Odaki wrote:
-> If ebpf-rss-fds is specified but we fail to use, we should not fall
-> back to loading eBPF programs by ourselves as such makes the situation
-> complicated.
+On 7/10/24 05:11, BALATON Zoltan wrote:
+> On Tue, 9 Jul 2024, Richard Henderson wrote:
+>> The 970 logic does not apply to dcbzep, which is an e500 insn.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > 
-> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  hw/net/virtio-net.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
+> Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 > 
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index e779ba2df428..075c91f037d1 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -1396,15 +1396,9 @@ exit:
->  
->  static bool virtio_net_load_ebpf(VirtIONet *n)
->  {
-> -    bool ret = false;
-> -
-> -    if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
-> -        if (!(n->ebpf_rss_fds && virtio_net_load_ebpf_fds(n))) {
-> -            ret = ebpf_rss_load(&n->ebpf_rss);
-> -        }
-> -    }
-> -
-> -    return ret;
-> +    return virtio_net_attach_ebpf_to_backend(n->nic, -1) &&
-> +           (n->ebpf_rss_fds ? virtio_net_load_ebpf_fds(n) :
-> +                              ebpf_rss_load(&n->ebpf_rss));
->  }
->  
->  static void virtio_net_unload_ebpf(VirtIONet *n)
+> As all callers pass GETPC() to retaddr maybe that could be moved into dcbz_common() as i 
+> had in my patch.
 
-The eventual caller has an Error object that needs to be filled with
-error details, not warn_report().
-
-IMHO this patch needs to look like this:
+No, that would be incorrect usage of GETPC.
+It *must* be used in the HELPER directly called from TCG.
 
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9c7e85caea..c7fd52bbe9 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1314,21 +1314,21 @@ static void virtio_net_disable_rss(VirtIONet *n)
-     virtio_net_commit_rss_config(n);
- }
- 
--static bool virtio_net_load_ebpf_fds(VirtIONet *n)
-+static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
- {
-     int fds[EBPF_RSS_MAX_FDS] = { [0 ... EBPF_RSS_MAX_FDS - 1] = -1};
-     int ret = true;
-     int i = 0;
- 
-     if (n->nr_ebpf_rss_fds != EBPF_RSS_MAX_FDS) {
--        warn_report("Expected %d file descriptors but got %d",
--                    EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
--       return false;
--   }
-+        error_setg(errp, "Expected %d file descriptors but got %d",
-+                   EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
-+        return false;
-+    }
- 
-     for (i = 0; i < n->nr_ebpf_rss_fds; i++) {
-         fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i],
--                                  &error_warn);
-+                                  errp);
-         if (fds[i] < 0) {
-             ret = false;
-             goto exit;
-@@ -1347,14 +1347,15 @@ exit:
-     return ret;
- }
- 
--static bool virtio_net_load_ebpf(VirtIONet *n)
-+static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
- {
-     bool ret = false;
- 
-     if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
--        if (!(n->ebpf_rss_fds && virtio_net_load_ebpf_fds(n))) {
-+        if (n->ebpf_rss_fds)
-+            ret = virtio_net_load_ebpf_fds(n, errp);
-+        else
-             ret = ebpf_rss_load(&n->ebpf_rss);
--        }
-     }
- 
-     return ret;
-@@ -3750,7 +3751,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     net_rx_pkt_init(&n->rx_pkt);
- 
-     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        virtio_net_load_ebpf(n);
-+        virtio_net_load_ebpf(n, errp);
-     }
- }
- 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+r~
 
