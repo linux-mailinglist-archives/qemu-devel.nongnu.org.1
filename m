@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDB792C92C
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 05:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B98F92C931
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 05:30:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRO0f-0001IO-4k; Tue, 09 Jul 2024 23:28:50 -0400
+	id 1sRO0f-0001HP-2J; Tue, 09 Jul 2024 23:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sRO0b-00014R-EP
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:28:45 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1sRO0c-00019S-Jz
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:28:47 -0400
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sRO0L-0003ol-TR
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:28:45 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-70b0e7f6f8bso4156659b3a.3
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 20:28:28 -0700 (PDT)
+ id 1sRO0M-0003ox-Lv
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:28:46 -0400
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-3811d62a668so21952625ab.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 20:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1720582108; x=1721186908; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yqp8Kca9jeo/K5Zxv4t0koVy6btVrx9+gEVO+dirNNk=;
- b=ItpXi5GcTSNEhRfM53Q2CZ0BTaxz3ptTHLXXWOBRIPm3VEnaizEKkn/tFyvlMHhs5a
- /JY15flXpxsARig0Luor5ijed+XqmqWs1PDDW+dU2kq3/xuWlYFbteL0HwXbZZHTMPBC
- Q5cCt/12r4WHUrknyXSshd9kOVnDRTzYEqB9N1VUGGe7GlrEO+c+cJB+nslr05oCGIHI
- S86EWwuPixrd2t/w0E5GJKsBnzQuH8Dz4qxWbx0mRR8p4l3tudMBeRAMbGJpIJMLCZgO
- UnJ9OJpewvbd8xY1JdTEkx+1teB32wUVWomo3aoafiRQVNK5GXk+ZMXoYn6HKXubeAV6
- lp6g==
+ bh=9235SwuPYciaNgHcgxJSqCnrZAaLdfCzJnWaiSnsh94=;
+ b=rWdcLaCzYHfCuM9S3ZmqerFqaLOjyp/8lAWKqBwrDI6bVok5aPrIw9L0gY6G9FhTvW
+ dFwtul5yQRz0vy2/qODHI21XuramSUJrj8vFOjRPtGkCbSr85G07IwZjrGtrqqUJAey1
+ 0xHlya1ZxceIWchxZdjk0oqUQo4OSV4jGXPJ1bqIPXIOuwg0zDGHxOp9v1hRVcsrHOHD
+ Og+OdCR+K+SSj4qfgmXF5YKfDH7MnXfntt8UKAAK9VjtJospAcrkZ1JEXerlTZMZxIL+
+ 4Z4jIiKWBIHjoumlqaue5Hb5PUVuc7PZoc8fnANrQD3Ub/6djBuY40+i6Stgx49ZoHDz
+ IZ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1720582108; x=1721186908;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yqp8Kca9jeo/K5Zxv4t0koVy6btVrx9+gEVO+dirNNk=;
- b=n/FMK5DwZBFdB7FfinhyOv0pyckxmB6keE1zX3/EJWtybMWtaKEaNa7Z8lt3/0Lc7A
- TxzyW0QxEsjZm5baSy4lXNQpRmVyOpLgkffLEtPrJe3qWZ63fuO8PNzGjGzsnpeCXqne
- /zBbUGbfotO6MqYY7vcXsN6r2Xk3Y5zUnW/GsDgO54TbX8fnQSx0M8l+w4i9vgQ1eU0Z
- P0ElVcC6oWwFRtLGhKRsTLPYPJK4M6PI16qhTML24zgPtB7/JBWWg5Qu0zHODdPCGZ1X
- MLuQ54GbGwAYPJuiN9CwMinFZEmobPnGRRvlKRYfdndYcZh1eilu8ZcMDNG8kr/d6QsS
- Vo4Q==
-X-Gm-Message-State: AOJu0YzdtM+vwCXDRq0b0ZneHN4bIGosPb64InVqoyQnISjDLmw/QZHs
- q7BpGlIfkiJyxJVPpmFJHORacQzmni6SK4+Z3P60lLHBEt+F0/7abou8WX+qbi+aKFXAv4OLDBk
- DGGo=
-X-Google-Smtp-Source: AGHT+IFLUD29yffT5cJpGs88RJlDRYYC8+Gqtr8VqtBz17Z69M0QP0ygTr1Qt78KEuGtJ9QNw+Fnvw==
-X-Received: by 2002:a05:6a00:21cd:b0:70a:f38c:74ba with SMTP id
- d2e1a72fcca58-70b435eaa3fmr5320187b3a.22.1720582107678; 
- Tue, 09 Jul 2024 20:28:27 -0700 (PDT)
+ bh=9235SwuPYciaNgHcgxJSqCnrZAaLdfCzJnWaiSnsh94=;
+ b=U+Fym31OY62tzkUIfpaDDc6+au+Ev2htiYlBlmIrqPtPKDGtgABxMGJxQwEOePaHK3
+ YlXLaGlx264O0T8KmQM+ngfbcfyCwwDlATBzTFgQOHjWYvRQtjYWGkupn+lB7OzJrlZ9
+ 5AWm812GUJ1J27ENtCdS5MdmB7xrLU0bV10ZJDT3ghYZTQnYDPC0wFXAU2VWMuLHSPNl
+ AT1YWFndv0KWPdEeFf5HK8Ehn9voq+nrotbKEKhiJbbo9IvybX4g7jmXIo9h8iDC4tfL
+ PfpA0MMf3XzkWN+5ACuo78DFTJKbs0Z0gb0C7Qxa9RJQXAzRE5K9Fl6ynTW+1HlbcfsH
+ ZvSw==
+X-Gm-Message-State: AOJu0YwYIssE3FQ8qpyVP7R6ExdK+hjUz5GCHeOyaw812nARZPlUHzHQ
+ h23piftEDQgvO+aWMRYdFmrEIwqt6jDD/x7tWk4Bb81ZTrByt1tByeeLeBUN50d97z0nzsjG+T9
+ qAME=
+X-Google-Smtp-Source: AGHT+IGnfygNzFSwUDSv6fpwaba1gaMHpFGBuorQz08w2rloejJqbnmlC0qVSX+Mu3x0gLm8y6aWkw==
+X-Received: by 2002:a05:6e02:1585:b0:374:9a3f:d197 with SMTP id
+ e9e14a558f8ab-38a57fb18a1mr43418875ab.15.1720582108481; 
+ Tue, 09 Jul 2024 20:28:28 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b438f5679sm2687280b3a.90.2024.07.09.20.28.26
+ d2e1a72fcca58-70b438f5679sm2687280b3a.90.2024.07.09.20.28.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jul 2024 20:28:27 -0700 (PDT)
+ Tue, 09 Jul 2024 20:28:28 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongu.org, qemu-s390x@nongnu.org,
  qemu-riscv@nongnu.org, balaton@eik.bme.hu, max.chou@sifive.com
-Subject: [PATCH v2 12/13] target/s390x: Use set/clear_helper_retaddr in
- mem_helper.c
-Date: Tue,  9 Jul 2024 20:28:13 -0700
-Message-ID: <20240710032814.104643-13-richard.henderson@linaro.org>
+Subject: [PATCH v2 13/13] target/riscv: Simplify probing in vext_ldff
+Date: Tue,  9 Jul 2024 20:28:14 -0700
+Message-ID: <20240710032814.104643-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240710032814.104643-1-richard.henderson@linaro.org>
 References: <20240710032814.104643-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x133.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -94,219 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid a race condition with munmap in another thread.
-For access_memset and access_memmove, manage the value
-within the helper.  For uses of access_{get,set}_byte,
-manage the value across the for loops.
+The current pairing of tlb_vaddr_to_host with extra is either
+inefficient (user-only, with page_check_range) or incorrect
+(system, with probe_pages).
+
+For proper non-fault behaviour, use probe_access_flags with
+its nonfault parameter set to true.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/mem_helper.c | 43 ++++++++++++++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 6 deletions(-)
+ target/riscv/vector_helper.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index a76eb6182f..eb1f8880cd 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -238,14 +238,14 @@ static void do_access_memset(CPUS390XState *env, vaddr vaddr, char *haddr,
- static void access_memset(CPUS390XState *env, S390Access *desta,
-                           uint8_t byte, uintptr_t ra)
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 1b4d5a8e37..4d72eb74d3 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -474,7 +474,6 @@ vext_ldff(void *vd, void *v0, target_ulong base,
+           vext_ldst_elem_fn *ldst_elem,
+           uint32_t log2_esz, uintptr_t ra)
  {
--
-+    set_helper_retaddr(ra);
-     do_access_memset(env, desta->vaddr1, desta->haddr1, byte, desta->size1,
-                      desta->mmu_idx, ra);
--    if (likely(!desta->size2)) {
--        return;
-+    if (unlikely(desta->size2)) {
-+        do_access_memset(env, desta->vaddr2, desta->haddr2, byte,
-+                         desta->size2, desta->mmu_idx, ra);
-     }
--    do_access_memset(env, desta->vaddr2, desta->haddr2, byte, desta->size2,
--                     desta->mmu_idx, ra);
-+    clear_helper_retaddr();
- }
- 
- static uint8_t access_get_byte(CPUS390XState *env, S390Access *access,
-@@ -366,6 +366,8 @@ static uint32_t do_helper_nc(CPUS390XState *env, uint32_t l, uint64_t dest,
-     access_prepare(&srca1, env, src, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&srca2, env, dest, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, dest, l, MMU_DATA_STORE, mmu_idx, ra);
-+    set_helper_retaddr(ra);
-+
-     for (i = 0; i < l; i++) {
-         const uint8_t x = access_get_byte(env, &srca1, i, ra) &
-                           access_get_byte(env, &srca2, i, ra);
-@@ -373,6 +375,8 @@ static uint32_t do_helper_nc(CPUS390XState *env, uint32_t l, uint64_t dest,
-         c |= x;
-         access_set_byte(env, &desta, i, x, ra);
-     }
-+
-+    clear_helper_retaddr();
-     return c != 0;
- }
- 
-@@ -407,6 +411,7 @@ static uint32_t do_helper_xc(CPUS390XState *env, uint32_t l, uint64_t dest,
-         return 0;
-     }
- 
-+    set_helper_retaddr(ra);
-     for (i = 0; i < l; i++) {
-         const uint8_t x = access_get_byte(env, &srca1, i, ra) ^
-                           access_get_byte(env, &srca2, i, ra);
-@@ -414,6 +419,7 @@ static uint32_t do_helper_xc(CPUS390XState *env, uint32_t l, uint64_t dest,
-         c |= x;
-         access_set_byte(env, &desta, i, x, ra);
-     }
-+    clear_helper_retaddr();
-     return c != 0;
- }
- 
-@@ -441,6 +447,8 @@ static uint32_t do_helper_oc(CPUS390XState *env, uint32_t l, uint64_t dest,
-     access_prepare(&srca1, env, src, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&srca2, env, dest, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, dest, l, MMU_DATA_STORE, mmu_idx, ra);
-+    set_helper_retaddr(ra);
-+
-     for (i = 0; i < l; i++) {
-         const uint8_t x = access_get_byte(env, &srca1, i, ra) |
-                           access_get_byte(env, &srca2, i, ra);
-@@ -448,6 +456,8 @@ static uint32_t do_helper_oc(CPUS390XState *env, uint32_t l, uint64_t dest,
-         c |= x;
-         access_set_byte(env, &desta, i, x, ra);
-     }
-+
-+    clear_helper_retaddr();
-     return c != 0;
- }
- 
-@@ -484,11 +494,13 @@ static uint32_t do_helper_mvc(CPUS390XState *env, uint32_t l, uint64_t dest,
-     } else if (!is_destructive_overlap(env, dest, src, l)) {
-         access_memmove(env, &desta, &srca, ra);
-     } else {
-+        set_helper_retaddr(ra);
-         for (i = 0; i < l; i++) {
-             uint8_t byte = access_get_byte(env, &srca, i, ra);
- 
-             access_set_byte(env, &desta, i, byte, ra);
+-    void *host;
+     uint32_t i, k, vl = 0;
+     uint32_t nf = vext_nf(desc);
+     uint32_t vm = vext_vm(desc);
+@@ -493,27 +492,31 @@ vext_ldff(void *vd, void *v0, target_ulong base,
          }
-+        clear_helper_retaddr();
-     }
- 
-     return env->cc_op;
-@@ -514,10 +526,12 @@ void HELPER(mvcrl)(CPUS390XState *env, uint64_t l, uint64_t dest, uint64_t src)
-     access_prepare(&srca, env, src, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, dest, l, MMU_DATA_STORE, mmu_idx, ra);
- 
-+    set_helper_retaddr(ra);
-     for (i = l - 1; i >= 0; i--) {
-         uint8_t byte = access_get_byte(env, &srca, i, ra);
-         access_set_byte(env, &desta, i, byte, ra);
-     }
-+    clear_helper_retaddr();
- }
- 
- /* move inverse  */
-@@ -534,11 +548,13 @@ void HELPER(mvcin)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
-     src = wrap_address(env, src - l + 1);
-     access_prepare(&srca, env, src, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, dest, l, MMU_DATA_STORE, mmu_idx, ra);
+         addr = adjust_addr(env, base + i * (nf << log2_esz));
+         if (i == 0) {
++            /* Allow fault on first element. */
+             probe_pages(env, addr, nf << log2_esz, ra, MMU_DATA_LOAD);
+         } else {
+-            /* if it triggers an exception, no need to check watchpoint */
+             remain = nf << log2_esz;
+             while (remain > 0) {
++                void *host;
++                int flags;
 +
-+    set_helper_retaddr(ra);
-     for (i = 0; i < l; i++) {
-         const uint8_t x = access_get_byte(env, &srca, l - i - 1, ra);
--
-         access_set_byte(env, &desta, i, x, ra);
-     }
-+    clear_helper_retaddr();
- }
- 
- /* move numerics  */
-@@ -555,12 +571,15 @@ void HELPER(mvn)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
-     access_prepare(&srca1, env, src, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&srca2, env, dest, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, dest, l, MMU_DATA_STORE, mmu_idx, ra);
+                 offset = -(addr | TARGET_PAGE_MASK);
+-                host = tlb_vaddr_to_host(env, addr, MMU_DATA_LOAD, mmu_index);
+-                if (host) {
+-#ifdef CONFIG_USER_ONLY
+-                    if (!page_check_range(addr, offset, PAGE_READ)) {
+-                        vl = i;
+-                        goto ProbeSuccess;
+-                    }
+-#else
+-                    probe_pages(env, addr, offset, ra, MMU_DATA_LOAD);
+-#endif
+-                } else {
 +
-+    set_helper_retaddr(ra);
-     for (i = 0; i < l; i++) {
-         const uint8_t x = (access_get_byte(env, &srca1, i, ra) & 0x0f) |
-                           (access_get_byte(env, &srca2, i, ra) & 0xf0);
- 
-         access_set_byte(env, &desta, i, x, ra);
-     }
-+    clear_helper_retaddr();
- }
- 
- /* move with offset  */
-@@ -580,6 +599,8 @@ void HELPER(mvo)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
- 
-     /* Handle rightmost byte */
-     byte_dest = cpu_ldub_data_ra(env, dest + len_dest - 1, ra);
-+
-+    set_helper_retaddr(ra);
-     byte_src = access_get_byte(env, &srca, len_src - 1, ra);
-     byte_dest = (byte_dest & 0x0f) | (byte_src << 4);
-     access_set_byte(env, &desta, len_dest - 1, byte_dest, ra);
-@@ -595,6 +616,7 @@ void HELPER(mvo)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
-         byte_dest |= byte_src << 4;
-         access_set_byte(env, &desta, i, byte_dest, ra);
-     }
-+    clear_helper_retaddr();
- }
- 
- /* move zones  */
-@@ -611,12 +633,15 @@ void HELPER(mvz)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
-     access_prepare(&srca1, env, src, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&srca2, env, dest, l, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, dest, l, MMU_DATA_STORE, mmu_idx, ra);
-+
-+    set_helper_retaddr(ra);
-     for (i = 0; i < l; i++) {
-         const uint8_t x = (access_get_byte(env, &srca1, i, ra) & 0xf0) |
-                           (access_get_byte(env, &srca2, i, ra) & 0x0f);
- 
-         access_set_byte(env, &desta, i, x, ra);
-     }
-+    clear_helper_retaddr();
- }
- 
- /* compare unsigned byte arrays */
-@@ -961,15 +986,19 @@ uint32_t HELPER(mvst)(CPUS390XState *env, uint32_t r1, uint32_t r2)
-      */
-     access_prepare(&srca, env, s, len, MMU_DATA_LOAD, mmu_idx, ra);
-     access_prepare(&desta, env, d, len, MMU_DATA_STORE, mmu_idx, ra);
-+
-+    set_helper_retaddr(ra);
-     for (i = 0; i < len; i++) {
-         const uint8_t v = access_get_byte(env, &srca, i, ra);
- 
-         access_set_byte(env, &desta, i, v, ra);
-         if (v == c) {
-+            clear_helper_retaddr();
-             set_address_zero(env, r1, d + i);
-             return 1;
-         }
-     }
-+    clear_helper_retaddr();
-     set_address_zero(env, r1, d + len);
-     set_address_zero(env, r2, s + len);
-     return 3;
-@@ -1060,6 +1089,7 @@ static inline uint32_t do_mvcl(CPUS390XState *env,
-         *dest = wrap_address(env, *dest + len);
-     } else {
-         access_prepare(&desta, env, *dest, len, MMU_DATA_STORE, mmu_idx, ra);
-+        set_helper_retaddr(ra);
- 
-         /* The remaining length selects the padding byte. */
-         for (i = 0; i < len; (*destlen)--, i++) {
-@@ -1069,6 +1099,7 @@ static inline uint32_t do_mvcl(CPUS390XState *env,
-                 access_set_byte(env, &desta, i, pad >> 8, ra);
++                /* Probe nonfault on subsequent elements. */
++                flags = probe_access_flags(env, addr, offset, MMU_DATA_LOAD,
++                                           mmu_index, true, &host, 0);
++                if (flags) {
++                    /*
++                     * Stop any flag bit set:
++                     *   invalid (unmapped)
++                     *   mmio (transaction failed)
++                     *   watchpoint (debug)
++                     * In all cases, handle as the first load next time.
++                     */
+                     vl = i;
+-                    goto ProbeSuccess;
++                    break;
+                 }
+-                if (remain <=  offset) {
++                if (remain <= offset) {
+                     break;
+                 }
+                 remain -= offset;
+@@ -521,7 +524,6 @@ vext_ldff(void *vd, void *v0, target_ulong base,
              }
          }
-+        clear_helper_retaddr();
-         *dest = wrap_address(env, *dest + len);
      }
- 
+-ProbeSuccess:
+     /* load bytes from guest memory */
+     if (vl != 0) {
+         env->vl = vl;
 -- 
 2.43.0
 
