@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D541A92D20C
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 14:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2623092D217
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 14:59:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRWrU-0001G3-IF; Wed, 10 Jul 2024 08:55:56 -0400
+	id 1sRWua-0008Gm-30; Wed, 10 Jul 2024 08:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1sRWrP-00013x-L8; Wed, 10 Jul 2024 08:55:51 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1sRWuY-0008Bc-9Z
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 08:59:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1sRWrN-0005gX-R8; Wed, 10 Jul 2024 08:55:51 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46A7fXL3004054;
- Wed, 10 Jul 2024 12:55:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-type:content-transfer-encoding; s=
- corp-2023-11-20; bh=bsqEjqyR0BT21tKJefg4nDwwrqKjeNi0WHZSmOMwhgQ=; b=
- Y6zzBMxQSZervsdcAxoiLx/kjv3sSjA+Fv9d0PLB61Iuo5unH24pjmQkCUbVVtcq
- s0VSDiO+kJyvJQ3bFssRYqeX03KvXAfDPQDp0h19iJezzACQ2QwOUYBWT+bZQGxO
- XY53+yOHK2wpTYvNqdBB3ElKaAN5cASe3M2dBqLuaqHhBSbmiVdhakdEmOW6LbeZ
- t5pfo8lF7GzDiMJ+F7Js2Diu1PfpzfQituew67zkXVD4uNJA08VmdSQ7A8Mm4Q8p
- aRZWahKG4XMeE9og0OuCSZpkupdR+684fBt9cCJilEhc+IXH19MSUEmZacvlupuT
- B0VBxyGjmZ1+rfQ6f684jA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406xfsq6da-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jul 2024 12:55:38 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46ABbjXt007488; Wed, 10 Jul 2024 12:55:33 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 407tu4r0jv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jul 2024 12:55:32 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46ACtQtc015847;
- Wed, 10 Jul 2024 12:55:32 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-65-182-124.vpn.oracle.com
- [10.65.182.124])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 407tu4r0e4-7; Wed, 10 Jul 2024 12:55:32 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
- jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
- eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
- schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
- si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [PATCH v4 6/6] virtio: Add VIRTIO_F_IN_ORDER property definition
-Date: Wed, 10 Jul 2024 08:55:19 -0400
-Message-ID: <20240710125522.4168043-7-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20240710125522.4168043-1-jonah.palmer@oracle.com>
-References: <20240710125522.4168043-1-jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1sRWuW-0006FF-DX
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 08:59:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720616343;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ysuLCmGjsFZT8+9ub+Q9FmxdzGJAJ0Rcfny6+fjikq0=;
+ b=I/LehbnY3yCPTi/1tKWR2rYpk21IlpGu3e9JLo6qeMbovSo+59ptJ/GFD7tbo4bq/9ca+y
+ XKS9nsvQt9VCxQKRnAW6A0EsdmWnBPaXUQHipp1pOY3ZmbPUfXh0IqNmClXZ/FksISX00a
+ qpkP7Mhlzhv67JnQ5iFuQwZteXMvzZU=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-X55AxVklM9GqwZ17IWmEQA-1; Wed, 10 Jul 2024 08:59:01 -0400
+X-MC-Unique: X55AxVklM9GqwZ17IWmEQA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ee8f22ef7cso60521981fa.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 05:59:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720616340; x=1721221140;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ysuLCmGjsFZT8+9ub+Q9FmxdzGJAJ0Rcfny6+fjikq0=;
+ b=olh/LMI+cM7fOeYejvufCoCBlP0Iqeh+kobvvk1esowpaJeBl9rHj72rhVr9WLMJkZ
+ i+FsY6qo2Xwg6DUq0Xu9X8zo1wGzO8GevdvJzlJjKlnCdpkKgBc6lem+EYgMJkpg0rVC
+ 7ScfRab4csRfYtGHmoIz+kZ8W4ROIVtQ2Yq56dHmV8md+Wa8s3v218Hfmql2GyfBplnC
+ wrfh53UY5Ita3EMLv9C3q/meOGzxtTo6z1CjLc36v/DFUNOgf5YMJkrv6mygTc6QCZyc
+ 1rVrJQkVYFzsTE3smUvvFAQuiIl5qakXJfOtMARC1LfnXfgkKMTaq8cGPCtlyQCXpRVT
+ ePxw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWrmVxO/NVzQxnK7idlryYl1OrGsNR49JVoIlhWWEt766NFo9rqdj8HXEPKNyBgm7ksZPFbXjcc00KgNfd1kPOAnI7B1O4=
+X-Gm-Message-State: AOJu0Yyc54KrmHzyqAwJV4d7HWWnkVb+Wu5kj5fhSGJyk3UfYPukmMGO
+ Y6xfaXXhLDESGNaWh5Ean7o+PIJKQxWZw5ZNJuUS4dNjHfrVDD99jTfXzhODuS8VtF2iAuLuel0
+ FftHPAvC8fdKWCEeIJ5KzhvRLNYZwIw5nzkq1cOMlBZDwl3EWyysc
+X-Received: by 2002:a05:651c:21c:b0:2ee:bc94:6854 with SMTP id
+ 38308e7fff4ca-2eebc94692fmr17015201fa.13.1720616340451; 
+ Wed, 10 Jul 2024 05:59:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYxKSP1mRZowSIgMktQzzVRMtQuSXaUxjgMmTVKtONMfbH18Gc0ctsaY0V/b7BjwqrxbIAFA==
+X-Received: by 2002:a05:651c:21c:b0:2ee:bc94:6854 with SMTP id
+ 38308e7fff4ca-2eebc94692fmr17015061fa.13.1720616339673; 
+ Wed, 10 Jul 2024 05:58:59 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d74b:1ce0:c033:e72e:9d5f:f8c4?
+ (p200300cfd74b1ce0c033e72e9d5ff8c4.dip0.t-ipconnect.de.
+ [2003:cf:d74b:1ce0:c033:e72e:9d5f:f8c4])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-367cdfab7d4sm5233878f8f.113.2024.07.10.05.58.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Jul 2024 05:58:58 -0700 (PDT)
+Message-ID: <80a77456-da98-4346-aa56-a7389934cdcf@redhat.com>
+Date: Wed, 10 Jul 2024 14:58:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] qcow2: handle discard-no-unref in measure
+To: Jean-Louis Dupond <jean-louis@dupond.be>, qemu-devel@nongnu.org,
+ kwolf@redhat.com, andrey.drobyshev@virtuozzo.com
+References: <20240605132539.3668497-2-jean-louis@dupond.be>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20240605132539.3668497-2-jean-louis@dupond.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-10_08,2024-07-10_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxlogscore=999
- mlxscore=0 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2406180000 definitions=main-2407100089
-X-Proofpoint-ORIG-GUID: 50FXEpDSXjaIjezBVeOs1s89Ue0uP9gO
-X-Proofpoint-GUID: 50FXEpDSXjaIjezBVeOs1s89Ue0uP9gO
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,34 +102,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend the virtio device property definitions to include the
-VIRTIO_F_IN_ORDER feature.
+On 05.06.24 15:25, Jean-Louis Dupond wrote:
+> When doing a measure on an image with a backing file and
+> discard-no-unref is enabled, the code should take this into account.
 
-The default state of this feature is disabled, allowing it to be
-explicitly enabled where it's supported.
+That doesn’t make sense to me.  As far as I understand, 'measure' is 
+supposed to report how much space you need for a given image, i.e. if 
+you were to convert it to a new image.  discard-no-unref doesn’t factor 
+into that, because for a 'convert' target (a new image), nothing can be 
+discarded.
 
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- include/hw/virtio/virtio.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Reading the issue, I understand that oVirt uses measure to determine the 
+size of the target of a 'commit' operation.  Seems a bit like abuse to 
+me, precisely because of the issue you’re facing.  More specifically, a 
+'commit' operation is a complex thing with a lot of variables, so the 
+outcome depends on a lot.
 
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index fdc827f82e..d2a1938757 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -373,7 +373,9 @@ typedef struct VirtIORNGConf VirtIORNGConf;
-     DEFINE_PROP_BIT64("packed", _state, _field, \
-                       VIRTIO_F_RING_PACKED, false), \
-     DEFINE_PROP_BIT64("queue_reset", _state, _field, \
--                      VIRTIO_F_RING_RESET, true)
-+                      VIRTIO_F_RING_RESET, true), \
-+    DEFINE_PROP_BIT64("in_order", _state, _field, \
-+                      VIRTIO_F_IN_ORDER, false)
- 
- hwaddr virtio_queue_get_desc_addr(VirtIODevice *vdev, int n);
- bool virtio_queue_enabled_legacy(VirtIODevice *vdev, int n);
--- 
-2.43.5
+For example, this patch just checks the discard-no-unref setting on the 
+top image.  But AFAIU it doesn’t matter what the setting on the top 
+image is, it matters what the setting on the commit target is. 'measure' 
+can’t know this because it doesn’t know what the commit target is.  As 
+far as I can see, this patch actually assumes the commit target is the 
+first backing image (it specifically checks in the image whether a block 
+is allocated) – why?
+
+So to me that means if 'measure' is supposed to give reliable data on 
+the commit case, it needs to be extended.  Best thing I can come up with 
+off the top of my head would be to add an option e.g. 
+'commit=<target-node-name>', so we (A) that we’re looking at a commit 
+and not a convert, and (B) we know what data will be collapsed into 
+which image and where we need to check for discard-no-unref.
+
+Hanna
+
+> If for example you have a snapshot image with a base, and you do a
+> discard within the snapshot, it will be ZERO and ALLOCATED, but without
+> host offset.
+> Now if we commit this snapshot, and the clusters in the base image have
+> a host offset, the clusters will only be set to ZERO, but the host offset
+> will not be cleared.
+> Therefor non-data clusters in the top image need to check the
+> base to see if space will be freed or not, to have a correct measure
+> output.
+>
+> Bug-Url: https://gitlab.com/qemu-project/qemu/-/issues/2369
+> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+> ---
+>   block/qcow2.c | 32 +++++++++++++++++++++++++++++---
+>   1 file changed, 29 insertions(+), 3 deletions(-)
+>
+> diff --git a/block/qcow2.c b/block/qcow2.c
+> index 956128b409..50354e5b98 100644
+> --- a/block/qcow2.c
+> +++ b/block/qcow2.c
+> @@ -5163,9 +5163,16 @@ static BlockMeasureInfo *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
+>           } else {
+>               int64_t offset;
+>               int64_t pnum = 0;
+> +            BlockDriverState *parent = bdrv_filter_or_cow_bs(in_bs);
+> +            BDRVQcow2State *s = NULL;
+> +
+> +            if (parent) {
+> +                s = parent->opaque;
+> +            }
+>   
+>               for (offset = 0; offset < ssize; offset += pnum) {
+>                   int ret;
+> +                int retp = 0;
+>   
+>                   ret = bdrv_block_status_above(in_bs, NULL, offset,
+>                                                 ssize - offset, &pnum, NULL,
+> @@ -5176,10 +5183,29 @@ static BlockMeasureInfo *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
+>                       goto err;
+>                   }
+>   
+> -                if (ret & BDRV_BLOCK_ZERO) {
+> +                /* If we have a parent in the chain and the current block is not data,
+> +                 * then we want to check the allocation state of the parent block.
+> +                 * If it has a valid offset, then we want to include it into
+> +                 * the calculation, cause blocks with an offset will not be freed when
+> +                 * committing the top into base with discard-no-unref enabled.
+> +                 */
+> +                if (parent && s->discard_no_unref && !(ret & BDRV_BLOCK_DATA)) {
+> +                        int64_t pnum_parent = 0;
+> +                        retp = bdrv_block_status_above(parent, NULL, offset,
+> +                                              ssize - offset, &pnum_parent, NULL,
+> +                                              NULL);
+> +                        /* If the parent continuous block is smaller, use that pnum,
+> +                         * so the next iteration starts with the smallest offset.
+> +                         */
+> +                        if (pnum_parent < pnum) {
+> +                            pnum = pnum_parent;
+> +                        }
+> +                }
+> +                if (ret & BDRV_BLOCK_ZERO && !parent && !(parent && s->discard_no_unref)) {
+>                       /* Skip zero regions (safe with no backing file) */
+> -                } else if ((ret & (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) ==
+> -                           (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) {
+> +                } else if (((ret & (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) ==
+> +                            (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) ||
+> +                           (retp & BDRV_BLOCK_OFFSET_VALID)) {
+>                       /* Extend pnum to end of cluster for next iteration */
+>                       pnum = ROUND_UP(offset + pnum, cluster_size) - offset;
+>   
 
 
