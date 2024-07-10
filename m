@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1999092D407
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 16:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C170092D408
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 16:17:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRY7C-0005Xy-As; Wed, 10 Jul 2024 10:16:14 -0400
+	id 1sRY8F-0003ox-9C; Wed, 10 Jul 2024 10:17:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRY6m-0002DQ-GT
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:15:49 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRY6W-0004Ek-AM
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:15:48 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-36798e62aeeso4244983f8f.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 07:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720620926; x=1721225726; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E592VUjNM/e32MWHdD7KwMvGh3P49D6D0LHQIn1oaLY=;
- b=f+gtcbBtKrwwRBjIxCkoZUpe7GC7ZnimP78p8wUbldvdcJsZSlfJ1lfeuv5Fv7csd7
- j1tnaooeo9r4NdmIY1rG1Hbfvn0voNLrW+wh2x7ymSjrSHE/vQmVfScFUmBVgITWd6qW
- 5Rl9ZTWOPVHyXzMnDdJG509cPB15xafckqg6DXWxd/6VPORYdCQeO50NW6XJTh37nI1B
- 0Rts45t/NjSp3RByiQrNs+W5BmwsMzo4/jSFFvj+0RZmi0vXkvpjy34BzNirYi8mCn7r
- IaJdySSbu0dZQ8GPQQY09Tq1Qujthdp+L9tRsD0GNmWD5y1hj3uAmvSEhJSpJzk8Y6uX
- avMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720620926; x=1721225726;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E592VUjNM/e32MWHdD7KwMvGh3P49D6D0LHQIn1oaLY=;
- b=tJObPlczPsaMIllKBPui7i3PsddqvfIuHss3VLru01kJSNTsvmtBrphPd1FypZ6RMM
- 2RUTAdUReRqKwq7mQgaw14fL6WCRwUv9bceBm0mwYxposZO+BLds2KPfjon98H33dLCg
- wht7SMrAzEAtNMQQNlZwau/iP/flHwXyhLozsG1WKfSWfVNKS7JTY4tbTlsrCFHTF9OI
- 0WbR8Ov0iFIDw+8TwURhvwXD6fsgnyM9B8mnns8pSNOOvUXnsjPfl0VnK/kzMUYU0tnq
- yo2pqMZ5AbcVJZSlJX/24riuEobPz8eBCzOg/onABM+jWqdQ7uK28zN/HL9HK0mFpi0x
- pfWw==
-X-Gm-Message-State: AOJu0Yz6ne2LamtLVdAn4FQRAPGWuDTLlyPEO0ljAdCkTlOiyNch72w2
- Yh6kg8dx1TwqC+834Z/uAPIb2xAsKnTkczQe9GMc+LZoLHBA9IsAPyTRbW3YOoREaylGDK/U0xX
- h
-X-Google-Smtp-Source: AGHT+IGzmVXduSvpxciVazkyRa9xURlFZEQnmCrmjjc4MZ1v5Y4aPM1pbwcjxC5QJC2ArB1pamsWWQ==
-X-Received: by 2002:adf:fdc3:0:b0:367:8a2f:a6dc with SMTP id
- ffacd0b85a97d-367cead15b8mr3771606f8f.44.1720620926710; 
- Wed, 10 Jul 2024 07:15:26 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.167.117])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-367cdfab161sm5414331f8f.91.2024.07.10.07.15.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 10 Jul 2024 07:15:26 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Bin Meng <bmeng.cn@gmail.com>, Steven Lee <steven_lee@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>, Luc Michel <luc.michel@amd.com>,
- qemu-arm@nongnu.org, qemu-block@nongnu.org, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v48 12/12] hw/sd/sdcard: Support boot area in emmc image
-Date: Wed, 10 Jul 2024 16:14:08 +0200
-Message-ID: <20240710141408.69275-13-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240710141408.69275-1-philmd@linaro.org>
-References: <20240710141408.69275-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sRY7z-0002rI-BE
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:17:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sRY7v-0004UG-IE
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:17:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720621018;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pEwMH4aUe0S8Koyu1Ux31ZzcoB926u5SAT1zJIr7HA0=;
+ b=gggRfFVAETdMf9rIn3ViGfCxcjFo4YlTDYkZTJ7d3vSuv3VH8RxLWsdjw1qRY28JvtASqr
+ SxTG5ekaoVjY9GmW6vzMnFVGgGSFl+t7xMg4TVbfWUfuQgKMNOITdEKrn/Uk0e4sz7wX9r
+ bTQgQcOT3+1Y0pr0rrVp0E/H3Vs+ut4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-tof68BT0PAikbi-RUeoATw-1; Wed,
+ 10 Jul 2024 10:16:55 -0400
+X-MC-Unique: tof68BT0PAikbi-RUeoATw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E326E19560A3; Wed, 10 Jul 2024 14:16:52 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.46])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A69801955F40; Wed, 10 Jul 2024 14:16:48 +0000 (UTC)
+Date: Wed, 10 Jul 2024 15:16:45 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 4/4] virtio-net: Remove fallback from ebpf-rss-fds
+Message-ID: <Zo6XzRyoXsp6FUWu@redhat.com>
+References: <20240708-auto-v2-0-f4908b953f05@daynix.com>
+ <20240708-auto-v2-4-f4908b953f05@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20240708-auto-v2-4-f4908b953f05@daynix.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,102 +90,117 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+On Mon, Jul 08, 2024 at 04:38:09PM +0900, Akihiko Odaki wrote:
+> If ebpf-rss-fds is specified but we fail to use, we should not fall
+> back to loading eBPF programs by ourselves as such makes the situation
+> complicated.
+> 
+> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  hw/net/virtio-net.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index e779ba2df428..075c91f037d1 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -1396,15 +1396,9 @@ exit:
+>  
+>  static bool virtio_net_load_ebpf(VirtIONet *n)
+>  {
+> -    bool ret = false;
+> -
+> -    if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
+> -        if (!(n->ebpf_rss_fds && virtio_net_load_ebpf_fds(n))) {
+> -            ret = ebpf_rss_load(&n->ebpf_rss);
+> -        }
+> -    }
+> -
+> -    return ret;
+> +    return virtio_net_attach_ebpf_to_backend(n->nic, -1) &&
+> +           (n->ebpf_rss_fds ? virtio_net_load_ebpf_fds(n) :
+> +                              ebpf_rss_load(&n->ebpf_rss));
+>  }
+>  
+>  static void virtio_net_unload_ebpf(VirtIONet *n)
 
-This assumes a specially constructed image:
+The eventual caller has an Error object that needs to be filled with
+error details, not warn_report().
 
-  dd if=/dev/zero of=mmc-bootarea.img count=2 bs=1M
-  dd if=u-boot-spl.bin of=mmc-bootarea.img conv=notrunc
-  dd if=u-boot.bin of=mmc-bootarea.img conv=notrunc count=64 bs=1K
-  cat mmc-bootarea.img obmc-phosphor-image.wic > mmc.img
-  truncate --size 16GB mmc.img
+IMHO this patch needs to look like this:
 
-For now this still requires a mtd image to load the SPL:
 
-  qemu-system-arm -M tacoma-bmc -nographic \
-   -global driver=sd-card,property=emmc,value=true \
-   -drive file=mmc.img,if=sd,index=2,format=raw
-
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/sd/sd.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 86b857d414..8c68494b8b 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -774,6 +774,40 @@ static uint32_t sd_blk_len(SDState *sd)
-     return sd->blk_len;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 9c7e85caea..c7fd52bbe9 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1314,21 +1314,21 @@ static void virtio_net_disable_rss(VirtIONet *n)
+     virtio_net_commit_rss_config(n);
  }
  
-+/*
-+ * This requires a disk image that has two boot partitions inserted at the
-+ * beginning of it. The size of the boot partitions is the "boot-size"
-+ * property.
-+ */
-+static uint32_t sd_bootpart_offset(SDState *sd)
-+{
-+    bool partitions_enabled;
-+    unsigned partition_access;
-+
-+    if (!sd->boot_part_size || !sd_is_emmc(sd)) {
-+        return 0;
-+    }
-+
-+    partitions_enabled = sd->ext_csd[EXT_CSD_PART_CONFIG]
-+                                   & EXT_CSD_PART_CONFIG_EN_MASK;
-+    if (!partitions_enabled) {
-+        return 0;
-+    }
-+
-+    partition_access = sd->ext_csd[EXT_CSD_PART_CONFIG]
-+                                 & EXT_CSD_PART_CONFIG_ACC_MASK;
-+    switch (partition_access) {
-+    case EXT_CSD_PART_CONFIG_ACC_DEFAULT:
-+        return sd->boot_part_size * 2;
-+    case EXT_CSD_PART_CONFIG_ACC_BOOT0:
-+        return 0;
-+    case EXT_CSD_PART_CONFIG_ACC_BOOT0 + 1:
-+        return sd->boot_part_size * 1;
-+    default:
-+         g_assert_not_reached();
-+    }
-+}
-+
- static uint64_t sd_req_get_address(SDState *sd, SDRequest req)
+-static bool virtio_net_load_ebpf_fds(VirtIONet *n)
++static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
  {
-     uint64_t addr;
-@@ -806,6 +840,7 @@ static void sd_reset(DeviceState *dev)
-         sect = 0;
-     }
-     size = sect << HWBLOCK_SHIFT;
-+    size -= sd_bootpart_offset(sd);
+     int fds[EBPF_RSS_MAX_FDS] = { [0 ... EBPF_RSS_MAX_FDS - 1] = -1};
+     int ret = true;
+     int i = 0;
  
-     sect = sd_addr_to_wpnum(size) + 1;
+     if (n->nr_ebpf_rss_fds != EBPF_RSS_MAX_FDS) {
+-        warn_report("Expected %d file descriptors but got %d",
+-                    EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
+-       return false;
+-   }
++        error_setg(errp, "Expected %d file descriptors but got %d",
++                   EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
++        return false;
++    }
  
-@@ -1029,6 +1064,7 @@ void sd_set_cb(SDState *sd, qemu_irq readonly, qemu_irq insert)
- static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
+     for (i = 0; i < n->nr_ebpf_rss_fds; i++) {
+         fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i],
+-                                  &error_warn);
++                                  errp);
+         if (fds[i] < 0) {
+             ret = false;
+             goto exit;
+@@ -1347,14 +1347,15 @@ exit:
+     return ret;
+ }
+ 
+-static bool virtio_net_load_ebpf(VirtIONet *n)
++static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
  {
-     trace_sdcard_read_block(addr, len);
-+    addr += sd_bootpart_offset(sd);
-     if (!sd->blk || blk_pread(sd->blk, addr, len, sd->data, 0) < 0) {
-         fprintf(stderr, "sd_blk_read: read error on host side\n");
+     bool ret = false;
+ 
+     if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
+-        if (!(n->ebpf_rss_fds && virtio_net_load_ebpf_fds(n))) {
++        if (n->ebpf_rss_fds)
++            ret = virtio_net_load_ebpf_fds(n, errp);
++        else
+             ret = ebpf_rss_load(&n->ebpf_rss);
+-        }
      }
-@@ -1037,6 +1073,7 @@ static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
- static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
- {
-     trace_sdcard_write_block(addr, len);
-+    addr += sd_bootpart_offset(sd);
-     if (!sd->blk || blk_pwrite(sd->blk, addr, len, sd->data, 0) < 0) {
-         fprintf(stderr, "sd_blk_write: write error on host side\n");
+ 
+     return ret;
+@@ -3750,7 +3751,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     net_rx_pkt_init(&n->rx_pkt);
+ 
+     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
+-        virtio_net_load_ebpf(n);
++        virtio_net_load_ebpf(n, errp);
      }
+ }
+ 
+
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
