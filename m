@@ -2,100 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8C492D4A6
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 17:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4A192D483
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 16:48:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRYpg-0000zV-2R; Wed, 10 Jul 2024 11:02:12 -0400
+	id 1sRYc2-0000xk-Bu; Wed, 10 Jul 2024 10:48:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRYpe-0000y8-8X
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 11:02:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sRYbp-0000ky-6L
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:47:53 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRYpc-0004RK-J3
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 11:02:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720623725;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RKQSs8FWr7Zn5l+H828xnzTIT8nIZAPC2TEWmBUKCkQ=;
- b=aUz3KWWR+qJw2EouE4DGmMR0VsU5v+IakFpIWaehdWQ5FaMxi9hFT3BPBfAQaECEgFqtnR
- AHH3NrZClcYr4K2CW5xzysnDTexnnuVwXfXcBTJGSSriJSoOp5JJZjC0IOty98WXrLecPy
- jXhSz3PIrU+O2dZGTWv2i/CZ5a2GUZ4=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-HrJ6cgBlM42jLKRghP8DJA-1; Wed, 10 Jul 2024 11:02:03 -0400
-X-MC-Unique: HrJ6cgBlM42jLKRghP8DJA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-79f1b638b6bso4632485a.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 08:02:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720623723; x=1721228523;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RKQSs8FWr7Zn5l+H828xnzTIT8nIZAPC2TEWmBUKCkQ=;
- b=nteRyh+KHifIe12EzebyXOqU0H3h1mgtWybGwx2odqwFx+EP4V1FXYJgy2Nv3N2cLk
- 8ZbGFWxpYcHCnRtAk5EAucDrrwm2CqD3V2NqrHzERLJuT1CmzGF+fWW2zlz6dX+oPxjK
- hLjn89iCPMTOblMEH1ulmoptZQrteMV0C7oRb6UJCI1x7rYcgOT/LGkEd6WhUeST6Owr
- yl6A7Z87Q6srhCMxlJ0t9s+jQPNHHl7u16AkGEDCdWrVEbAyrwX7uoi2nlEskWMTdMwX
- 5y0cw+tTe4DNMzqwGMGKniy64QMa7r90+DmyQIqPDacmy3nF3nCOCx8MwURVZ4Cs2vmu
- oMFw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW+KOtprLgLOAo7lfDFtvvRO1dBMCRlGwibiHXiDMU06yKD+nu+bIh3J9p3pRm2LXHGI3EpBrpl/0zlbZxMZJm9VvOqtJw=
-X-Gm-Message-State: AOJu0YzJZGLQFG/cKGjMjvrdJTsik5Yozr4aYiQwetKSjpC8J4K+QfIm
- zmC3v/ilbSU51giExAbEn3i9/sV4WIM8h+7yoWllGLByY8MR8z1kQIHk/KfBHRQBB1/lknYwM1M
- 42qASSmvh35E/GDOhpNkxHkHZCCRke2S9/G3wQD/8LCPbgY074C5j
-X-Received: by 2002:a05:620a:1a94:b0:79f:b3c:8fc3 with SMTP id
- af79cd13be357-79f19bee0d0mr649671285a.6.1720623723061; 
- Wed, 10 Jul 2024 08:02:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFSzhl0Khbx3PFBWwojh+YkQYtRW+LPaY9KzNilVVBCoiCKCtaRDbKW3+kR1MyemMVyU08VDA==
-X-Received: by 2002:a05:620a:1a94:b0:79f:b3c:8fc3 with SMTP id
- af79cd13be357-79f19bee0d0mr649666885a.6.1720623722685; 
- Wed, 10 Jul 2024 08:02:02 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-79f190103e1sm202838085a.42.2024.07.10.08.02.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Jul 2024 08:02:01 -0700 (PDT)
-Date: Wed, 10 Jul 2024 11:01:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>,
- Tyrone Ting <kfting@nuvoton.com>, Bin Meng <bmeng.cn@gmail.com>,
- Hao Wu <wuhaotsh@google.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- qemu-arm@nongnu.org, Joel Stanley <joel@jms.id.au>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>, devel@lists.libvirt.org,
- Luc Michel <luc.michel@amd.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Subject: Re: [PATCH v3 06/17] hw/sd/sdcard: Do not store vendor data on block
- drive (CMD56)
-Message-ID: <Zo6iZjc8YpI1_9dW@x1n>
-References: <20240627162232.80428-1-philmd@linaro.org>
- <20240627162232.80428-7-philmd@linaro.org> <87cynmfggx.fsf@suse.de>
- <Zo2lLLAwcZ8bBvO2@x1n> <87a5ipfigb.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sRYbl-0001hD-D8
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 10:47:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1720622869; x=1752158869;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=fD/d8ERF6hOd2bet4lSLB8gCVKV90IUi3IgfNiUuxIQ=;
+ b=h+KtKTD+nG+hEKAIQaaNEsZneU+RUqc8UsivO0ynutx2OLes2OF+JL2P
+ 1nYZDc3I4PvnViiaPTWoD2NjnxpOJNaJMrYNsrX3s/FucT7jlynaMap9y
+ r1hJx5G32ShNn455kTMbdLKmxqOTfL9AOihg+Mf8Uah0taY6BfHN8oUJF
+ XGrs9d8KMd3tEl4cqbhurqRBzaNQtMbNR5lOiGpcpnIW+t2PC5zPRslUj
+ 98otPpbGMmN7kc4G17XC70qztpPg/x80AyE77NP6WxGdJxK55sPpnna7X
+ +r5lG+o8wN94pAb2Liq1JaxT1TiC0T8RCcrmbb4XekuxDgkDZzcRdY0W7 g==;
+X-CSE-ConnectionGUID: CUzAV2ynQzeTsFg/1JRWcg==
+X-CSE-MsgGUID: Wg/JSIUmTUWwkRRI7DC+LQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="17768692"
+X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; d="scan'208";a="17768692"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2024 07:47:45 -0700
+X-CSE-ConnectionGUID: TgH4nn8HTyOYbu/ilIcFOQ==
+X-CSE-MsgGUID: 2PF/y5IEQcKuRd39o+H8+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; d="scan'208";a="53045164"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 10 Jul 2024 07:47:40 -0700
+Date: Wed, 10 Jul 2024 23:03:20 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
+ Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Subject: Re: [RFC PATCH v4 2/7] rust: add bindgen step as a meson dependency
+Message-ID: <Zo6iuEfo7o+7SIoY@intel.com>
+References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
+ <4ce5a7330f594c6c94c8cc3aabceb061095bb855.1720094395.git.manos.pitsidianakis@linaro.org>
+ <87msmqsunu.fsf@draig.linaro.org>
+ <CAFEAcA9X0564R7V=EsN2qxj51FNNkot3Pfev6mMgUbr35WYFZw@mail.gmail.com>
+ <CABgObfbBqHoy4M78NR8EAQ-PV+X86qEK6_ra=tS0_bgqpAt1dw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87a5ipfigb.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+In-Reply-To: <CABgObfbBqHoy4M78NR8EAQ-PV+X86qEK6_ra=tS0_bgqpAt1dw@mail.gmail.com>
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,49 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 10, 2024 at 11:08:20AM -0300, Fabiano Rosas wrote:
-> >> I think it's ok:
-> >> 
-> >> {
-> >>   "field": "unused",
-> >>   "version_id": 1,
-> >>   "field_exists": false,
-> >>   "size": 512
-> >> },
-> >> 
-> >> vs.
-> >> 
-> >> {
-> >>   "field": "vendor_data",
-> >>   "version_id": 0,
-> >>   "field_exists": false,
-> >>   "num": 512,
-> >>   "size": 1
-> >> },
-> >> 
-> >> The unused field was introduced in 2016 so there's no chance of
-> >> migrating a QEMU that old to/from 9.1.
-> >
-> > What happens if an old qemu 9.0 sends rubbish here to a new QEMU, while the
-> > new QEMU would consider it meaningful data?
+On Tue, Jul 09, 2024 at 02:28:38PM +0200, Paolo Bonzini wrote:
 > 
-> It will send zeros, no? The code will have to cope with that. The
-> alternative is to put the vendor_data in a subsection and the code will
-> also have to cope with the lack of data when the old QEMU doesn't send
-> it.
+> Here are the stopping points that I found over the last couple weeks:
+> 
+> 1.56.0: 2021 edition
+> 1.59.0: const CStr::from_bytes_with_nul_unchecked (needed by cstr
+> crate, see below)
+> 1.64.0: std::ffi::c_char
+> 1.65.0: Generic Associated Types
+> 1.74.0: Clippy can be configured in Cargo.toml
+> 1.77.0: C string literals, offset_of!
+> 
+> I think 1.59.0 is pretty much the lower bound. Not having offset_of!
+> will be a bit painful, but it can be worked around (and pretty much
+> has to be, because 1.77.0 is really new).
+>
 
-Ah indeed, that "static const uint8_t buf[1024]" is there at least since
-2017.  So yes, probably always sending zeros.
+An additional question: does our minimum rust version requirement
+indicate that users with this rust version can compile other
+dependencies that satisfy QEMU requirements, such as bindgen?
 
-Nothing I can think of otherwise indeed, if we want to trust that nothing
-will migrate before 2016.  It's just that we may want to know how that
-"2016" is justified to be safe if we would like to allow that in the
-future.
+Because I find 1.59.0 can only go to compile bindgen 0.63.0 [1].
 
-One thing _could_ be that "rule of thumb" is we plan to obsolete machines
-with 6 years, so anything "UNUSED" older than 6 years can be over-written?
+[1]: bindgen 0.63.0 MSRV: https://github.com/rust-lang/rust-bindgen/tree/v0.63.0?tab=readme-ov-file#msrv
 
--- 
-Peter Xu
+-Zhao
 
 
