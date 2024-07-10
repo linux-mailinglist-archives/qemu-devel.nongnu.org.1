@@ -2,138 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B14292C90A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 05:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8448E92C92D
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 05:30:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRNnq-0002i5-Kn; Tue, 09 Jul 2024 23:15:34 -0400
+	id 1sRO0N-0008Om-55; Tue, 09 Jul 2024 23:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sRNnn-0002ha-LR
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:15:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sRNnh-0001sG-UK
- for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:15:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720581322;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=TK3JJW5BzyUQ+bDihznlgYyxLET6t/6FQENHsaUxxfs=;
- b=f2ZoivPK5XN/i/chQg2/lSFsqTGicp+mZ+OROidJQqXpqbKIH8pqKvvoZTIBmeV+AiZUlD
- cGafjurW4qnxMxiKG6YS7xlAMqEF56iJIpHEmkACqio8QwXB4xSBF4y0k/kMM32YIMYetm
- W/gswjtru1IXncLfP6UxB4woZWNZLXY=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-ajWQlqzIP-GPlQkbUYGqLA-1; Tue, 09 Jul 2024 23:15:21 -0400
-X-MC-Unique: ajWQlqzIP-GPlQkbUYGqLA-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-2c97ff21741so4374782a91.1
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 20:15:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sRO0G-0008BN-Ra
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:28:24 -0400
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sRO0A-0003gU-Vp
+ for qemu-devel@nongnu.org; Tue, 09 Jul 2024 23:28:24 -0400
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-704473c0698so390856a34.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 20:28:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720582096; x=1721186896; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jw2xHSdX8g/vw1Uzi7zPGtzp+K/GoiaBqk6O2xkkOJQ=;
+ b=EcwVgpfnF5JGd0ngl9mrK3Qgk3lXpx9tIy4MaK+5xxb3o5M1vaWDsfG1EU8GZvTp+P
+ FJlgGhTpEJb+uJz2ExMA/7bguLA/vUWUc2SLr3SM0yUDuxNZajsOiSbYO8uxnZnjLA06
+ iIBMzQztMfohIjUiEVIYgvZfbv+vQSZ93nlnwIoAz8UubctLZOsqRh24uD8F02a/NVQT
+ jakL/2mabOlB5aMmI4W8cvue158iy8d4OGJAqdXiJisIhhvI5EOhIFk8fYaKhDd4D6d9
+ BqGMPtK/pUmvTrHhY6efnYwn+RON8zwsohCRX27eHHbjMA9GEKHSugTa+RweqOLGUEnz
+ Tuzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720581320; x=1721186120;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TK3JJW5BzyUQ+bDihznlgYyxLET6t/6FQENHsaUxxfs=;
- b=c92CaRN27Z7FRgdlSYG7/52aBsXhliKTeBd2Bxhg+UN9niH32BVBCCoLl29XhWq9ta
- UXPedxLKKX0226Q0QQeuVjtPC26k8103e0hV2X/Blawr6bKfKZu/KcwrwYEXQECoUBSD
- NlPro6K7u++w9+pyMafNfnLantCWhyNl3lKjiOrugOeObD8MYchj7oUMH1h+apv88Zcq
- Sh/jctnK1sbnIoXaC5HbOxY0yofz+8pJzdhsR1xAfwSjMuFZ6VA4vPlfo9j22CPJ3MnE
- 2Fl28OOHNX8U6QDXR1fjL4fTrsLpmgOHumxGmSHCkAdjceKFPeKRgsbMDpDW9oTf8v0k
- WIHQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUWi7L869ITfKoaql5yifL9KUHFwkEdJfkRZDj1QU4/9anjM5s2oKED78No9gN73l88ArGhkY1mrSv1go7IH4p6QX4hy44=
-X-Gm-Message-State: AOJu0YzGgMJ75RGC/V3jEppMdUl7MhN0FiiQdGWDCDmwq7rAZMlTOJJn
- prt7gqVwE3u6l8tmU7T6Ph1kyqm/rAqpka4sEH/1YwzQbBJW0swPRXr8wVbwGJoleR13lJSnzq+
- bGqhGYE6KSv3zXDT/xDiyTQbxsQu2RBdCGkd/Sw/XyIriuWj3BH+E
-X-Received: by 2002:a17:90a:c590:b0:2c7:ab29:a751 with SMTP id
- 98e67ed59e1d1-2ca35c78f02mr3642512a91.29.1720581320002; 
- Tue, 09 Jul 2024 20:15:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHufQ8MxDo8T6SLgux9h4RBJVmq7z1vV6aNzQgqPKvKp454HNQrzKY7CgGcRzJzUOoCwlcX7w==
-X-Received: by 2002:a17:90a:c590:b0:2c7:ab29:a751 with SMTP id
- 98e67ed59e1d1-2ca35c78f02mr3642503a91.29.1720581319534; 
- Tue, 09 Jul 2024 20:15:19 -0700 (PDT)
-Received: from [172.20.2.228] ([4.28.11.157]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c99aa8d106sm10824662a91.50.2024.07.09.20.15.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Jul 2024 20:15:19 -0700 (PDT)
-Message-ID: <6f99d0dc-8cad-435c-ad58-ffa69f44b2c0@redhat.com>
-Date: Wed, 10 Jul 2024 05:15:18 +0200
+ d=1e100.net; s=20230601; t=1720582096; x=1721186896;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jw2xHSdX8g/vw1Uzi7zPGtzp+K/GoiaBqk6O2xkkOJQ=;
+ b=rs1SR9pgOQZnJDwyYvxD27iYhCaqkQCimEX817eEC8ZO+YY9CMHewzKgzfqvSwjk0w
+ B5kV5ZxnxZXEJzrHW8QErSVsxximn0cHSCH6VUHq5CG1BdNepJdN6W++kthoLonrgwKh
+ kOQXQlZVolDd+vyulpgADFYzCuUhfw3Yv5uYO61Ieq3UWxz8pB1dJlvaE/PrH0us4HIu
+ PVSJmOJbnHu36fr+f58eluO1HM2v/hArI7qeBlP7YPPpeHuTKSbkXldXS/xAGyPXv6rp
+ Ocw1kS8zep6kMlvkFcugcXagXh0RAed6xMJm/0KsyZh2CbtrNqOeKr1moyaqy+Ym/Vqa
+ W+MQ==
+X-Gm-Message-State: AOJu0Yz3wRimNp+TGzKUEHpbvvvV2Ph2yPTSwtXeJtmDu6sfY0HNdW5b
+ etCT0YacbJ+UyUElJp7dP84sCvpo+MMI9+6DjDMtUMKKNk8vtwwIIRMUbdmLXHac4UAtiyt776v
+ FZTo=
+X-Google-Smtp-Source: AGHT+IE9/zuPBY1pwUrfybYe6eD8MPrGf9/ESBHr5i/GvDjQcLtYMO0f0cYzPXNQoRzsaCr/b78xog==
+X-Received: by 2002:a05:6830:1b73:b0:703:5ba3:5806 with SMTP id
+ 46e09a7af769-70375a131d8mr4441182a34.22.1720582096380; 
+ Tue, 09 Jul 2024 20:28:16 -0700 (PDT)
+Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70b438f5679sm2687280b3a.90.2024.07.09.20.28.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Jul 2024 20:28:15 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongu.org, qemu-s390x@nongnu.org,
+ qemu-riscv@nongnu.org, balaton@eik.bme.hu, max.chou@sifive.com
+Subject: [PATCH v2 00/13] Fixes for user-only munmap races
+Date: Tue,  9 Jul 2024 20:28:01 -0700
+Message-ID: <20240710032814.104643-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] virtio-balloon: make it spec compliant
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-References: <8de2d4a6407d796d4d793975fc88e2f929f6025d.1720128585.git.mst@redhat.com>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <8de2d4a6407d796d4d793975fc88e2f929f6025d.1720128585.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,40 +90,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.07.24 23:30, Michael S. Tsirkin wrote:
-> Currently, if VIRTIO_BALLOON_F_FREE_PAGE_HINT is off but
-> VIRTIO_BALLOON_F_REPORTING is on, then the reporting vq
-> gets number 3 while spec says it's number 4.
-> It happens to work because the linux virtio pci driver
-> is *also* out of spec.
-> 
-> To fix:
-> 1. add vq4 as per spec
-> 2. to help out the buggy Linux driver, in the above configuration,
->     also create vq3, and handle it exactly as we do vq4.
-> 
-> I think that some clever hack is doable to address the issue
-> for existing machine types (which would get it in user's hands
-> sooner), but I'm not 100% sure what, exactly.
-> 
-> This is a simpler, straight-forward approach.
-> 
-> Reported-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
-> 
-> I don't think I'll stop here, I want to fix exiting machine types,
-> but sending this here for comparison.
-> I'll send a Linux patch later.
+Supercedes: 20240702234155.2106399-1-richard.henderson@linaro.org
+("[PATCH 0/2] target/arm: Fix unwind from dc zva and FEAT_MOPS")
+Supercedes: 20240702234659.2106870-1-richard.henderson@linaro.org
+("[PATCH 0/4] target/ppc: Cleanups for dcbz")
 
-The downside is that new machine types will stop working with mainline 
-Linux / major distros in that feature combination, right?
+After looking at the first dc zva patch set again, I can see no
+difference between the memset used by dc dva and the plain memory
+accesses used by SVE and SME.  In all cases it's a host memory
+access that might fault even after probe_access, due to a race.
 
-What's the approach that you are thinking of?
+So I've dropped memset_ra and memmove_ra, and instead expose the
+basic set/clear_helper_retaddr interface.  This allows one set/clear
+to cover entire loops, instead of trebling the overhead of each
+individual access.
+
+I've included the ppc dcbz cleanups, so that the final improvement
+applies cleanly.
+
+I've updated s390x, though it isn't as clean as I would like.
+
+I've tidied the riscv use of tlb_vaddr_to_host, which Peter noticed.
+The usage was incorrect in general.  There is no race condition
+here because it still uses cpu_ld*_data_ra in the end and not a
+bare host memory access.  But the ongoing work to improve riscv
+vector memory instructions should take note.
+
+
+r~
+
+
+BALATON Zoltan (1):
+  target/ppc/mem_helper.c: Remove a conditional from dcbz_common()
+
+Richard Henderson (12):
+  accel/tcg: Move {set,clear}_helper_retaddr to cpu_ldst.h
+  target/arm: Use cpu_env in cpu_untagged_addr
+  target/arm: Use set/clear_helper_retaddr in helper-a64.c
+  target/arm: Use set/clear_helper_retaddr in SVE and SME helpers
+  target/ppc: Hoist dcbz_size out of dcbz_common
+  target/ppc: Split out helper_dbczl for 970
+  target/ppc: Merge helper_{dcbz,dcbzep}
+  target/ppc: Improve helper_dcbz for user-only
+  target/s390x: Use user_or_likely in do_access_memset
+  target/s390x: Use user_or_likely in access_memmove
+  target/s390x: Use set/clear_helper_retaddr in mem_helper.c
+  target/riscv: Simplify probing in vext_ldff
+
+ accel/tcg/user-retaddr.h      |  28 ---------
+ include/exec/cpu_ldst.h       |  34 +++++++++++
+ target/arm/cpu.h              |   4 +-
+ target/ppc/helper.h           |   6 +-
+ accel/tcg/cpu-exec.c          |   3 -
+ accel/tcg/user-exec.c         |   1 -
+ target/arm/tcg/helper-a64.c   |  14 ++++-
+ target/arm/tcg/sme_helper.c   |  16 ++++++
+ target/arm/tcg/sve_helper.c   |  26 +++++++++
+ target/ppc/mem_helper.c       |  51 +++++++++--------
+ target/ppc/translate.c        |  24 ++++----
+ target/riscv/vector_helper.c  |  34 +++++------
+ target/s390x/tcg/mem_helper.c | 103 +++++++++++++++++++++-------------
+ 13 files changed, 219 insertions(+), 125 deletions(-)
+ delete mode 100644 accel/tcg/user-retaddr.h
 
 -- 
-Cheers,
-
-David / dhildenb
+2.43.0
 
 
