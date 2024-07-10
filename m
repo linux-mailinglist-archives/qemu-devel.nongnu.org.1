@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360DE92D208
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 14:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABFA92D20E
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 14:56:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRWpg-0005Bj-TT; Wed, 10 Jul 2024 08:54:04 -0400
+	id 1sRWrV-0001HT-4Q; Wed, 10 Jul 2024 08:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1sRWpf-0005AP-2l
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 08:54:03 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1sRWpd-0005Mc-25
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 08:54:02 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-6e7e23b42c3so3350831a12.1
- for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 05:54:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1720616039; x=1721220839; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xcI3G78QRRbAdulHX3Cxc4DSj45wRt18Z4TKgO4B1E4=;
- b=XI+vk60R257pUfEIDymhhLxg9qYgcTy2p2dxL4LFcsB4mgWyxyf/NsvZmJ77aqLquD
- 8Icks58yeByt9f/MsCBwaYhyX1Il22Na/HA06QRzYr4QLaRzO6JxyO/9rBc3/Ow+V892
- dUAAX0hzoKXtBNXmkj0Dnldy/jWBUv614kJ/o/ifMID0Q/GbhL8oGovw8tAFy7EFI+za
- jG9Nod9j3K8dXyUVEiQUKYBPhCM53HPgpfRP++9Ghe2mHu9q8/y+b/h2CSjUOJqV2/gC
- ub4D5bv77VkPxIC44iGKFGBe9+eMdNQMtmgnYZyaSUKQfZNreP9SYOF+PtrXClcWT2fv
- I2Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720616039; x=1721220839;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xcI3G78QRRbAdulHX3Cxc4DSj45wRt18Z4TKgO4B1E4=;
- b=iqKP8fzJp5m/5lOJdQUwa4OUXRlQoh9rAJMR3mdlN4ruHvoK/tAgiNNCdvbEgYLYqr
- 7WbQpJW94LX7NW6C4LC1VzmI4IJPIe+QBqrvjq+Na84SSugV491dwQ2io+Sx3mem7clm
- 8o4Kc0XygvrrbB25q41j7FegHhhs8BcXfw+xal3PkVxo8Qk4Ly5EInHfTbc0mQ+qM+4l
- 2AJci7NhyfXh7nKmpCFioH0rysRXmmvErby94Tq4tUQJTBPeVX9vepr7U6iGaga0wUdB
- lITU6nhftQnJ3aVowNeSQV1kXwP6oJ59+duhAM8GR+PQ5y/wvhiIJm76b/RHVIfag6VU
- 0kmg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUdA5xiPXIET6hycyzwGU0yMT3kedLrY5yWf7smieumylmoChXGnQn9tlAIcn2cX3FVUgL+Z9WWwT0ZGiRGrkBWn6pWuYo=
-X-Gm-Message-State: AOJu0Yz92IlXNljarxieIRQAAReOZtwF1ULaX1gNsB+5ujgKSOwEUC2E
- WwQAKpBvXU78he5c+kgRCD760Kp/vOB4zBWDM8m3SnHjl5qB5aqN1X9r6VcnobhOJKtqHIWDVeS
- 5Ij/rjtwP+O6pMD/FynqB0kLh2+GyO4FVEofR
-X-Google-Smtp-Source: AGHT+IE4K9WIUD7ehTvB+tCIng4AdsxqmLsMFKAE8DIO3YdwCB0qx9jrZp40AJCcn7+dC1ZMizthfn2SpW5QFze9Iow=
-X-Received: by 2002:a05:6a20:1e44:b0:1bd:23c7:ebfb with SMTP id
- adf61e73a8af0-1c2984e11e5mr4076797637.62.1720616039181; Wed, 10 Jul 2024
- 05:53:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1sRWrR-00019o-9S; Wed, 10 Jul 2024 08:55:54 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1sRWrO-0005gg-G6; Wed, 10 Jul 2024 08:55:53 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46A7flY4019840;
+ Wed, 10 Jul 2024 12:55:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+ from:to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=corp-2023-11-20; bh=Dpc8EAcQmF17Xv
+ QbL9I1afl2rJAABoP+mFOTTv5lIiU=; b=hCqsEKLyaZrADZ3YtpPJ58s3z4XHdb
+ dAVkxVNzZ0c84+niDW83JQzEacnfAqecqHwKLIFS+SLiaypk9l21orCq1YktOZqE
+ Q9148FxKwjKT24mzAjTY3avufxN1YILyn4BWQ4r1QzCgV3CF0nzBq4/8snzqENba
+ rNXYyR3JPafIS8AnKMZ253ttXbXfQuEIJVCKdXkYyP3x4Qc+wd2Vps+aoAUksH8W
+ vdDUqYn/Ck6TKENbxDNQtO8qhw8wZ9KE/D88EQs7vkzinTDEf97Z0CgDYUJ9vJBh
+ YRbw2Bhsz0zCF4npJfc1eYK4hn+XRzBg4zyVkX4JnKxJUvMZMtvI7zdA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406wky77u1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 10 Jul 2024 12:55:40 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 46AC1Mde007576; Wed, 10 Jul 2024 12:55:26 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 407tu4r0eu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 10 Jul 2024 12:55:26 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46ACtQtQ015847;
+ Wed, 10 Jul 2024 12:55:26 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-65-182-124.vpn.oracle.com
+ [10.65.182.124])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 407tu4r0e4-1; Wed, 10 Jul 2024 12:55:26 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
+ jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [PATCH v4 0/6] virtio,vhost: Add VIRTIO_F_IN_ORDER support
+Date: Wed, 10 Jul 2024 08:55:13 -0400
+Message-ID: <20240710125522.4168043-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-References: <20240608083415.2769160-1-pbonzini@redhat.com>
- <20240608083415.2769160-14-pbonzini@redhat.com>
- <CAJ307EhO9MEk7=w62CGjYn9J3YGOPk0e7gRKMUGk57Wh0y75rg@mail.gmail.com>
- <0a94f7e1-611f-42bd-8fea-d3c940a26647@redhat.com>
-In-Reply-To: <0a94f7e1-611f-42bd-8fea-d3c940a26647@redhat.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Wed, 10 Jul 2024 14:53:47 +0200
-Message-ID: <CAJ307Ei0bUW8bJebOXswkvvJrFVbE_wqHNAK4stohViaJpREtQ@mail.gmail.com>
-Subject: Re: [PULL 13/42] target/i386: use gen_writeback() within gen_POP()
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=chigot@adacore.com; helo=mail-pg1-x52f.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-10_08,2024-07-10_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ mlxlogscore=999
+ mlxscore=0 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2406180000 definitions=main-2407100089
+X-Proofpoint-ORIG-GUID: 3zGY0WiWutCxMMLv2hPPXBgQv46s3lMj
+X-Proofpoint-GUID: 3zGY0WiWutCxMMLv2hPPXBgQv46s3lMj
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,112 +98,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 10, 2024 at 12:43=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
->
-> On 7/10/24 11:42, Cl=C3=A9ment Chigot wrote:
-> > Hi Mark,
-> >
-> > This patch introduces regressions in our x86_64 VxWorks kernels
-> > running over qemu. Some page faults are triggered randomly.
-> >
-> > Earlier to this patch, the MemOp `ot` passed to `gen_op_st_v` was the
-> > `gen_pop_T0` created a few lines above.
-> > Now, this is `op->ot` which comes from elsewhere.
-> >
-> > Adding `op->ot =3D ot` just before calling `gen_writeback` fixes my
-> > regressions. But I'm wondering if there could be some unexpected
-> > fallbacks, `op->ot` possibly being used afterwards.
->
-> Mark's patch is correct and the (previously latent) mistake is in
-> the decoding table.
->
-> The manual correctly says that POP has "default 64-bit" operand;
-> that is, it is 64-bit even without a REX.W prefix.  It must be
-> marked as "d64" rather than "v".
->
-> Can you test this patch?
+The goal of these patches is to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
+indicates that all buffers are used by the device in the same order in
+which they were made available by the driver.
 
-Yes, it does work. Thanks a lot for it !
+These patches attempt to implement a generalized, non-device-specific
+solution to support this feature.
 
-> diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-ne=
-w.c.inc
-> index 0d846c32c22..d2da1d396d5 100644
-> --- a/target/i386/tcg/decode-new.c.inc
-> +++ b/target/i386/tcg/decode-new.c.inc
-> @@ -1717,7 +1717,7 @@ static const X86OpEntry opcodes_root[256] =3D {
->       [0x8C] =3D X86_OP_ENTRYwr(MOV, E,v, S,w, op0_Mw),
->       [0x8D] =3D X86_OP_ENTRYwr(LEA, G,v, M,v, nolea),
->       [0x8E] =3D X86_OP_ENTRYwr(MOV, S,w, E,w),
-> -    [0x8F] =3D X86_OP_GROUPw(group1A, E,v),
-> +    [0x8F] =3D X86_OP_GROUPw(group1A, E,d64),
->
->       [0x98] =3D X86_OP_ENTRY1(CBW,    0,v), /* rAX */
->       [0x99] =3D X86_OP_ENTRYwr(CWD,   2,v, 0,v), /* rDX, rAX */
-> diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-> index fc7477833bc..36bb308e449 100644
-> --- a/target/i386/tcg/emit.c.inc
-> +++ b/target/i386/tcg/emit.c.inc
-> @@ -2788,6 +2788,8 @@ static void gen_POP(DisasContext *s, X86DecodedInsn=
- *decode)
->       X86DecodedOp *op =3D &decode->op[0];
->       MemOp ot =3D gen_pop_T0(s);
->
-> +    /* Only 16/32-bit access in 32-bit mode, 16/64-bit access in long mo=
-de.  */
-> +    assert(ot =3D=3D op->ot);
->       if (op->has_ea || op->unit =3D=3D X86_OP_SEG) {
->           /* NOTE: order is important for MMU exceptions */
->           gen_writeback(s, decode, 0, s->T0);
->
-> Thanks (and it's reassuring that everything else has worked fine
-> for you!),
->
-> Paolo
->
-> > Thanks,
-> > Cl=C3=A9ment
-> >
-> > On Sat, Jun 8, 2024 at 10:36=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.=
-com> wrote:
-> >>
-> >> From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> >>
-> >> Instead of directly implementing the writeback using gen_op_st_v(), us=
-e the
-> >> existing gen_writeback() function.
-> >>
-> >> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> >> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> >> Message-ID: <20240606095319.229650-3-mark.cave-ayland@ilande.co.uk>
-> >> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> >> ---
-> >>   target/i386/tcg/emit.c.inc | 4 ++--
-> >>   1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-> >> index ca78504b6e4..6123235c000 100644
-> >> --- a/target/i386/tcg/emit.c.inc
-> >> +++ b/target/i386/tcg/emit.c.inc
-> >> @@ -2580,9 +2580,9 @@ static void gen_POP(DisasContext *s, CPUX86State=
- *env, X86DecodedInsn *decode)
-> >>
-> >>       if (op->has_ea) {
-> >>           /* NOTE: order is important for MMU exceptions */
-> >> -        gen_op_st_v(s, ot, s->T0, s->A0);
-> >> -        op->unit =3D X86_OP_SKIP;
-> >> +        gen_writeback(s, decode, 0, s->T0);
-> >>       }
-> >> +
-> >>       /* NOTE: writing back registers after update is important for po=
-p %sp */
-> >>       gen_pop_update(s, ot);
-> >>   }
-> >> --
-> >> 2.45.1
-> >>
-> >>
-> >
-> >
->
+The core feature behind this solution is a buffer mechanism in the form
+of a VirtQueue's used_elems VirtQueueElement array. This allows devices
+who always use buffers in-order by default to have a minimal overhead
+impact. Devices that may not always use buffers in-order likely will
+experience a performance hit. How large that performance hit is will
+depend on how frequently elements are completed out-of-order.
+
+A VirtQueue whose device uses this feature will use its used_elems
+VirtQueueElement array to hold used VirtQueueElements. The index that
+used elements are placed in used_elems is the same index on the
+used/descriptor ring that would satisfy the in-order requirement. In
+other words, used elements are placed in their in-order locations on
+used_elems and are only written to the used/descriptor ring once the
+elements on used_elems are able to continue their expected order.
+
+To differentiate between a "used" and "unused" element on the used_elems
+array (a "used" element being an element that has returned from
+processing and an "unused" element being an element that has not yet
+been processed), we added a boolean 'in_order_filled' member to the
+VirtQueueElement struct. This flag is set to true when the element comes
+back from processing (virtqueue_ordered_fill) and then set back to false
+once it's been written to the used/descriptor ring
+(virtqueue_ordered_flush).
+
+Testing:
+========
+
+Testing was done using the dpdk-testpmd application on the guest under
+the following configurations. A bridge and two TAP devices were
+configured on the host to create a loopback environment where packets
+transmitted from one interface can be received on the other, and vice
+versa. After starting the dpdk-testpmd application on the guest, the
+testpmd command 'start tx_first' was executed to begin network traffic.
+Traffic was simulated for 30s before executing the 'stop' command.
+
+Relevant Qemu args:
+-------------------
+Note: both 'packed=true' and 'packed=false' were tested.
+
+-netdev tap,id=net1,vhost=off,ifname=tap1
+-netdev tap,id=net2,vhost=off,ifname=tap2
+-device virtio-net-pci,in_order=true,packed=true,netdev=net1,addr=0x2
+-device virtio-net-pci,in_order=true,packed=true,netdev=net2,addr=0x3
+
+Loopback environment on host:
+-----------------------------
+BRIDGE=virbrDPDK
+ip link add name $BRIDGE type bridge
+ip link set dev $BRIDGE up
+ip link add dev tap1 type tap
+ip link set dev tap1 up
+ip link set dev tap1 master $BRIDGE
+ip link add dev tap2 type tap
+ip link set dev tap2 up
+ip link set dev tap2 master $BRIDGE
+
+dpdk-testpmd command (guest):
+-----------------------------
+dpdk-testpmd -l 0-3 -n 4 -a 0000:00:02.0 -a 0000:00:03.0 -- -i
+--port-topology=chained --forward-mode=io --stats-period 1 --burst=1
+
+Results:
+--------
+After running 'start tx_first' and then 'stop' after 30 seconds in
+the testpmd commandline:
+
+split-VQ in-order:
+
+---------------------- Forward statistics for port 0  ---------------
+RX-packets: 408154         RX-dropped: 0             RX-total: 408154
+TX-packets: 408174         TX-dropped: 0             TX-total: 408174
+---------------------------------------------------------------------
+
+---------------------- Forward statistics for port 1  ---------------
+RX-packets: 408173         RX-dropped: 0             RX-total: 408173
+TX-packets: 408155         TX-dropped: 0             TX-total: 408155
+---------------------------------------------------------------------
+
++++++++++++++++ Accumulated forward statistics for all ports+++++++++
+RX-packets: 816327         RX-dropped: 0             RX-total: 816327
+TX-packets: 816329         TX-dropped: 0             TX-total: 816329
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+packed-VQ in-order:
+
+---------------------- Forward statistics for port 0  ---------------
+RX-packets: 414808         RX-dropped: 0             RX-total: 414808
+TX-packets: 414822         TX-dropped: 0             TX-total: 414822
+---------------------------------------------------------------------
+
+---------------------- Forward statistics for port 1  ---------------
+RX-packets: 414821         RX-dropped: 0             RX-total: 414821
+TX-packets: 414809         TX-dropped: 0             TX-total: 414809
+---------------------------------------------------------------------
+
++++++++++++++++ Accumulated forward statistics for all ports+++++++++
+RX-packets: 829629         RX-dropped: 0             RX-total: 829629
+TX-packets: 829631         TX-dropped: 0             TX-total: 829631
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+---
+v4: Prevent used_elems overflow in virtqueue_split_pop.
+    Don't keep used_idx bound between 0 and vring.num-1 for split VQs.
+    Fix incrementing used_elems index 'i' in virtqueue_ordered_flush.
+    Ensure all previous write ops to buffers are completed before
+    updating the used_idx (via smp_wmb()).
+    Use virtio-net instead of vhost-user devices for testing.
+
+v3: Drop Tested-by tags until patches are re-tested.
+    Replace 'prev_avail_idx' with 'vq->last_avail_idx - 1' in
+    virtqueue_split_pop.
+    Remove redundant '+vq->vring.num' in 'max_steps' calculation in
+    virtqueue_ordered_fill.
+    Add test results to CV.
+
+v2: Make 'in_order_filled' more descriptive.
+    Change 'j' to more descriptive var name in virtqueue_split_pop.
+    Use more definitive search conditional in virtqueue_ordered_fill.
+    Avoid code duplication in virtqueue_ordered_flush.
+
+v1: Move series from RFC to PATCH for submission.
+
+Jonah Palmer (6):
+  virtio: Add bool to VirtQueueElement
+  virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER support
+  vhost,vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+  virtio: Add VIRTIO_F_IN_ORDER property definition
+
+ hw/block/vhost-user-blk.c    |   1 +
+ hw/net/vhost_net.c           |   2 +
+ hw/scsi/vhost-scsi.c         |   1 +
+ hw/scsi/vhost-user-scsi.c    |   1 +
+ hw/virtio/vhost-user-fs.c    |   1 +
+ hw/virtio/vhost-user-vsock.c |   1 +
+ hw/virtio/virtio.c           | 130 ++++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio.h   |   6 +-
+ net/vhost-vdpa.c             |   1 +
+ 9 files changed, 140 insertions(+), 4 deletions(-)
+
+-- 
+2.43.5
+
 
