@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE9F92CB1B
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 08:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374F092CB1F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 08:31:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRQps-0000OD-JT; Wed, 10 Jul 2024 02:29:52 -0400
+	id 1sRQpt-0000Vu-HA; Wed, 10 Jul 2024 02:29:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sRQpp-0000Df-Fn
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:29:49 -0400
+ id 1sRQpq-0000KG-Ux
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:29:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sRQpn-0000vF-Ng
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:29:49 -0400
+ id 1sRQpp-0000vM-JW
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 02:29:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720592987;
+ s=mimecast20190719; t=1720592989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vEGqfwScZxwmUn4DuepxdsFQZ9X1/s8dk2WV3PWSmng=;
- b=Y/LVyNTj/sE3s12XXQkr/2Rg+cnjEokyera0hQyu9qxvi3F7rk1b2zsdlG5eVDcqFZVH9a
- wShrX/b+IQ+wy/Zt/aX2XpR/jMG8BW79z0S9LRuJWlP6TmLN3gwi12DxisJqHvgE3nbZJP
- fBMbLCW5aFXkZ8Tnxt3SS2ZPDLL8HDc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8+uzj3RGp8F8f+unwaA1jvsqz4v1x4mS4inV4L7PkF0=;
+ b=HCTgqwIaGFLtcOIDh9gCskI1JWVvJHlukNBkQ69XvN698B3clJaRJzeF6SQj8wooxHaCdX
+ nKUwD1J5kwL9bQCjpdLe2J+rwmcgZRUT3RUZLw2FonQp8QEqANTe0iqAbM7E5Ip/lvhy/P
+ ViBCyll0+xO7epCobjd/D/MOWbtpmb8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-aLYBiFpeMHCjyPsNotU8fg-1; Wed, 10 Jul 2024 02:29:44 -0400
-X-MC-Unique: aLYBiFpeMHCjyPsNotU8fg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a77b2b1d344so401342466b.2
- for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 23:29:44 -0700 (PDT)
+ us-mta-526-GUkfe6KZOseVRCJ6P12jDg-1; Wed, 10 Jul 2024 02:29:46 -0400
+X-MC-Unique: GUkfe6KZOseVRCJ6P12jDg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42671a6fb9dso9605625e9.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Jul 2024 23:29:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720592982; x=1721197782;
+ d=1e100.net; s=20230601; t=1720592985; x=1721197785;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vEGqfwScZxwmUn4DuepxdsFQZ9X1/s8dk2WV3PWSmng=;
- b=N6EOvQMj02B0/u+7GdRGBiiWS4Fo27XpZ4jjwnIR8z/S/T5KKyuDsov8hrEk8UgRXF
- IKWIjqeV7RNigYpMotSD/b3rTrXayKI0M3qe0JzQCEKYxKCFm/Kn53Y8wspaytbP9/My
- KpC4NG3AgqizBtBZklnCUSLy3kA82ix6LzM76FvYQBKJHVmQGJtLNXVNEXqIzMo1iabv
- 4iLPqumJdEa25MpZPVUOmbBpLfKeVnuECy4CDevHu0AgKd037vvFXhYRMkiXnptIMwVF
- RsZ9lp/vACUqHHjSEkN62kOkNeqY1MFfnxBFiFfE0yr9UYHUQaLnvazRQKTUV9P5RRPT
- FPeQ==
-X-Gm-Message-State: AOJu0YwJCzzH2Dx1DumTvqKtakaeaPcJz/tHZrDS5LOa6lNqkhLnhet5
- hRB2VdzxOSQ37zbKCXOk2x4ikDoUD7B52+IHLxY3ic8Y1kP0YH9eQDG3G2OIGWjXpzhYbpJgx5t
- KJBV6EbtUss0vhjcm48OeS3ijRsKdgnOPfRlqQKaGDy8GLvFrCSKFHM8RV/Zg/c7Eex7Ay7BxKz
- tiQBUa+PQNVAtQepm2bbOF3b8Z8NOLf4Dqllcj
-X-Received: by 2002:a17:906:3396:b0:a77:e2b2:8ef with SMTP id
- a640c23a62f3a-a780b89f41dmr253505666b.70.1720592982499; 
- Tue, 09 Jul 2024 23:29:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYLd9jG9VYw4d7gAqJJB7JZYu+1dtWyLQcl9kChBpcSsnVuiSbONFF+SXez1K/7lCm4vX4/w==
-X-Received: by 2002:a17:906:3396:b0:a77:e2b2:8ef with SMTP id
- a640c23a62f3a-a780b89f41dmr253503766b.70.1720592982021; 
- Tue, 09 Jul 2024 23:29:42 -0700 (PDT)
+ bh=8+uzj3RGp8F8f+unwaA1jvsqz4v1x4mS4inV4L7PkF0=;
+ b=qerqICDIyxCxgRnzIyPlIVt/pPJ+qfj4olbUYh9ZvpnUAbyUDtTf2Ygp/hCUuYss3E
+ O7o13ha3W2CYUms437ASW8sAji2E5jPrfl8hLlNEizmiOHV6+5uRKLF3dfCVEjFBcpW5
+ 8LQoo9a3mLNesJB59WwFu7JAkhAhZhjPhMVZuchEErt1BvYjDuqQbt2lFwReom78vB8A
+ QUjz0UYzzZLTmiLMXTwBFw6+KCJU/eFyjKyqbHNEeqOe/OEzAo1g8nMwWx/7+mChnHdT
+ ODJWVnh2kM87D7phgz+rYmqOpqpI8jwR05JMqSTeBrTLQAHYgNy74hF6D0y29QfUJ1uA
+ EIBw==
+X-Gm-Message-State: AOJu0Yw+3OZbpYtVWUgpVqwFgFjnlRGUTmq+YQQz85LvqaPwSqxcBbvK
+ 3ro66YtQ37ZRA016cvKAw7E1Ht2HHnpu2cNf9Ywjei6xrWIU8Kcmsbi10AsE6Q2H4hOD5oJtGt8
+ hXOhsxpJBiySSDdDq5zmLZdKv/V8FNi/uzTBgPHKlB0q3r2rwNqpFqamNSvEra+JqAma7Q5qBPk
+ zhpQ05+ZFqWWCiUyBCDSTal6TaZxjtq+Rv1Ms+
+X-Received: by 2002:a05:600c:206:b0:426:5c36:207c with SMTP id
+ 5b1f17b1804b1-426708f1d6emr35744985e9.25.1720592985155; 
+ Tue, 09 Jul 2024 23:29:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbX2XXQ6mm5vIvZT9TxC4xvapGezrW0Jpf6T36H7Ejbr/P5qLxKVM/1tTOSMG47P/yRQvbHg==
+X-Received: by 2002:a05:600c:206:b0:426:5c36:207c with SMTP id
+ 5b1f17b1804b1-426708f1d6emr35744855e9.25.1720592984849; 
+ Tue, 09 Jul 2024 23:29:44 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-367cde89108sm4361663f8f.55.2024.07.09.23.29.40
+ ffacd0b85a97d-367cdfb22aasm4373995f8f.117.2024.07.09.23.29.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jul 2024 23:29:40 -0700 (PDT)
+ Tue, 09 Jul 2024 23:29:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: rrh.henry@gmail.com,
 	richard.henderson@linaro.org
-Subject: [PATCH 07/10] target/i386/tcg: Use DPL-level accesses for interrupts
- and call gates
-Date: Wed, 10 Jul 2024 08:29:17 +0200
-Message-ID: <20240710062920.73063-8-pbonzini@redhat.com>
+Subject: [PATCH 08/10] target/i386/tcg: check for correct busy state before
+ switching to a new task
+Date: Wed, 10 Jul 2024 08:29:18 +0200
+Message-ID: <20240710062920.73063-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240710062920.73063-1-pbonzini@redhat.com>
 References: <20240710062920.73063-1-pbonzini@redhat.com>
@@ -102,89 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes a bug wherein i386/tcg assumed an interrupt return using
-the CALL or JMP instructions were always going from kernel or user mode to
-kernel mode, when using a call gate. This assumption is violated if
-the call gate has a DPL that is greater than 0.
+This step is listed in the Intel manual: "Checks that the new task is available
+(call, jump, exception, or interrupt) or busy (IRET return)".
 
-In addition, the stack accesses should count as explicit, not implicit
-("kernel" in QEMU code), so that SMAP is not applied if DPL=3.
+The AMD manual lists the same operation under the "Preventing recursion"
+paragraph of "12.3.4 Nesting Tasks", though it is not clear if the processor
+checks the busy bit in the IRET case.
 
-Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/249
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/seg_helper.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ target/i386/tcg/seg_helper.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 07e3667639a..1430f477c43 100644
+index 1430f477c43..25af9d4a4ec 100644
 --- a/target/i386/tcg/seg_helper.c
 +++ b/target/i386/tcg/seg_helper.c
-@@ -678,7 +678,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
- 
-     sa.env = env;
-     sa.ra = 0;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
- 
-     if (type == 5) {
-         /* task gate */
-@@ -984,7 +984,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
- 
-     sa.env = env;
-     sa.ra = 0;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
-     sa.sp_mask = -1;
-     sa.ss_base = 0;
-     if (dpl < cpl || ist != 0) {
-@@ -1119,7 +1119,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
-     sa.sp = env->regs[R_ESP];
-     sa.sp_mask = 0xffff;
-     sa.ss_base = env->segs[R_SS].base;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, 0);
- 
-     if (is_int) {
-         old_eip = next_eip;
-@@ -1583,7 +1583,7 @@ void helper_lcall_real(CPUX86State *env, uint32_t new_cs, uint32_t new_eip,
-     sa.sp = env->regs[R_ESP];
-     sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
-     sa.ss_base = env->segs[R_SS].base;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, 0);
- 
-     if (shift) {
-         pushl(&sa, env->segs[R_CS].selector);
-@@ -1619,17 +1619,17 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-         raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, GETPC());
+@@ -306,6 +306,11 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
+         old_tss_limit_max = 43;
      }
-     cpl = env->hflags & HF_CPL_MASK;
-+    dpl = (e2 >> DESC_DPL_SHIFT) & 3;
-     LOG_PCALL("desc=%08x:%08x\n", e1, e2);
  
-     sa.env = env;
-     sa.ra = GETPC();
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
- 
-     if (e2 & DESC_S_MASK) {
-         if (!(e2 & DESC_CS_MASK)) {
-             raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, GETPC());
-         }
--        dpl = (e2 >> DESC_DPL_SHIFT) & 3;
-         if (e2 & DESC_C_MASK) {
-             /* conforming code segment */
-             if (dpl > cpl) {
-@@ -1691,7 +1691,6 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-     } else {
-         /* check gate type */
-         type = (e2 >> DESC_TYPE_SHIFT) & 0x1f;
--        dpl = (e2 >> DESC_DPL_SHIFT) & 3;
-         rpl = new_cs & 3;
- 
- #ifdef TARGET_X86_64
++    /* new TSS must be busy iff the source is an IRET instruction  */
++    if (!!(e2 & DESC_TSS_BUSY_MASK) != (source == SWITCH_TSS_IRET)) {
++        raise_exception_err_ra(env, EXCP0A_TSS, tss_selector & 0xfffc, retaddr);
++    }
++
+     /* read all the registers from the new TSS */
+     if (type & 8) {
+         /* 32 bit */
 -- 
 2.45.2
 
