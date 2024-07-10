@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AD792D210
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 14:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DD792D20F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Jul 2024 14:56:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRWrW-0001MK-R6; Wed, 10 Jul 2024 08:55:58 -0400
+	id 1sRWrW-0001Ne-Qo; Wed, 10 Jul 2024 08:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1sRWrP-00014B-Me; Wed, 10 Jul 2024 08:55:51 -0400
+ id 1sRWrS-0001CB-3f; Wed, 10 Jul 2024 08:55:54 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1sRWrN-0005gP-NT; Wed, 10 Jul 2024 08:55:51 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46A7fU0x003976;
- Wed, 10 Jul 2024 12:55:39 GMT
+ id 1sRWrQ-0005gt-7e; Wed, 10 Jul 2024 08:55:53 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46A7faAd013754;
+ Wed, 10 Jul 2024 12:55:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-type:content-transfer-encoding; s=
- corp-2023-11-20; bh=4B0ZLeT+O0j62jwB+bn8Y9mfVjebkJnVE/Qt647hnFs=; b=
- Wbml9bzTbAlY8KP27pR1u+aCLDuOg9sfnSv8cy5IxcKBzMB5nyMhp0v4ED6UbkKA
- +WXe/k4TsHLi4HLQCV5wwpxseK3uYIkwMw/sr3TJXPsCxYEvNv5xDirZ+dlK3GS4
- C+A8xrYTfKel479QzqOCh9y60lOx34htoa3SiyA2EnaZt51xUO19i+e1/whgbrb5
- 7dJYgRPJJ+0lfNPi+Ji5lHd+3Oh+2fZEKLaDYdubx2VgA2wZbiv/QDmToiqlOy+g
- MOqsUe2vDIZZMzzW6vpDM0SP0BiUlaC08AZrFxCdVclN6R3Q+iaGWcXNns9hfFvj
- 9IQZuwhwwfv1zo97CIpRSA==
+ corp-2023-11-20; bh=Oiq11mGh+Mzdtg5MVR+DI1rFF6HJbZ0b+4unxk7eRBU=; b=
+ NUuG0itDOecGmw/0OIT6S0jtlMhV+uR1VXi9jf/vuN8RHOI0rkfsOoKv14DtKPbu
+ J29ws7qV5kFirTvBVIHwWc0xxFaPl/jQ5kJhjRSOAfCl5ytJtYkw96wf8xzT/oKg
+ fxG1vxNWu+gllLUYMK4I/2fmF99TLnEIp64kOnZUq8Cv7GmNRX2Cj6wa6ShqKBOW
+ 6FxGmCVleAag/v8ACKGviyTxTgvBiGuFMlPbDa9A1J5NIUm2UCUrE2nyMNHj66Y+
+ Tbw+/w2WH8kCPy8F0j0E/yli5dNgZS5CL8T8vjD8aNs11rRctSuIUTfdvTxrEerw
+ INYr74MQf+FqzT+h+/Iguw==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406xfsq6d7-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406wt8f3te-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jul 2024 12:55:39 +0000 (GMT)
+ Wed, 10 Jul 2024 12:55:44 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46ABUSpG007882; Wed, 10 Jul 2024 12:55:28 GMT
+ with ESMTP id 46ACSGmB007435; Wed, 10 Jul 2024 12:55:29 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 407tu4r0g1-1
+ 407tu4r0gj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jul 2024 12:55:28 +0000
+ Wed, 10 Jul 2024 12:55:29 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46ACtQtU015847;
- Wed, 10 Jul 2024 12:55:28 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46ACtQtW015847;
+ Wed, 10 Jul 2024 12:55:29 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-65-182-124.vpn.oracle.com
  [10.65.182.124])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 407tu4r0e4-3; Wed, 10 Jul 2024 12:55:28 +0000
+ 407tu4r0e4-4; Wed, 10 Jul 2024 12:55:29 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
@@ -58,9 +58,10 @@ Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
  eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
  schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
  si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [PATCH v4 2/6] virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
-Date: Wed, 10 Jul 2024 08:55:15 -0400
-Message-ID: <20240710125522.4168043-3-jonah.palmer@oracle.com>
+Subject: [PATCH v4 3/6] virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER
+ support
+Date: Wed, 10 Jul 2024 08:55:16 -0400
+Message-ID: <20240710125522.4168043-4-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20240710125522.4168043-1-jonah.palmer@oracle.com>
 References: <20240710125522.4168043-1-jonah.palmer@oracle.com>
@@ -75,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  mlxscore=0 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2406180000 definitions=main-2407100089
-X-Proofpoint-ORIG-GUID: HGtkVSppUvPiLra5Ak29BJcRZXm34QMi
-X-Proofpoint-GUID: HGtkVSppUvPiLra5Ak29BJcRZXm34QMi
+X-Proofpoint-GUID: TyggrZPggYAxiOiqLF_pHJiuu4VxttDS
+X-Proofpoint-ORIG-GUID: TyggrZPggYAxiOiqLF_pHJiuu4VxttDS
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -101,68 +102,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add VIRTIO_F_IN_ORDER feature support in virtqueue_split_pop and
-virtqueue_packed_pop.
+Add VIRTIO_F_IN_ORDER feature support for the virtqueue_fill operation.
 
-VirtQueueElements popped from the available/descritpor ring are added to
-the VirtQueue's used_elems array in-order and in the same fashion as
-they would be added the used and descriptor rings, respectively.
+The goal of the virtqueue_ordered_fill operation when the
+VIRTIO_F_IN_ORDER feature has been negotiated is to search for this
+now-used element, set its length, and mark the element as filled in
+the VirtQueue's used_elems array.
 
-This will allow us to keep track of the current order, what elements
-have been written, as well as an element's essential data after being
-processed.
+By marking the element as filled, it will indicate that this element has
+been processed and is ready to be flushed, so long as the element is
+in-order.
 
 Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
-last_avail_idx can grow well beyond vring.num, so for this reason we
-need to keep the index bound between 0 and vring.num-1 for the split VQ
-case.
-
- hw/virtio/virtio.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ hw/virtio/virtio.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
 diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 583a224163..98eb601b09 100644
+index 98eb601b09..0000a7b41c 100644
 --- a/hw/virtio/virtio.c
 +++ b/hw/virtio/virtio.c
-@@ -1505,7 +1505,7 @@ static void *virtqueue_alloc_element(size_t sz, unsigned out_num, unsigned in_nu
+@@ -872,6 +872,46 @@ static void virtqueue_packed_fill(VirtQueue *vq, const VirtQueueElement *elem,
+     vq->used_elems[idx].ndescs = elem->ndescs;
+ }
  
- static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
- {
--    unsigned int i, head, max;
-+    unsigned int i, head, max, idx;
-     VRingMemoryRegionCaches *caches;
-     MemoryRegionCache indirect_desc_cache;
-     MemoryRegionCache *desc_cache;
-@@ -1629,6 +1629,13 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-         elem->in_sg[i] = iov[out_num + i];
++static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
++                                   unsigned int len)
++{
++    unsigned int i, steps, max_steps;
++
++    i = vq->used_idx % vq->vring.num;
++    steps = 0;
++    /*
++     * We shouldn't need to increase 'i' by more than the distance
++     * between used_idx and last_avail_idx.
++     */
++    max_steps = (vq->last_avail_idx - vq->used_idx) % vq->vring.num;
++
++    /* Search for element in vq->used_elems */
++    while (steps <= max_steps) {
++        /* Found element, set length and mark as filled */
++        if (vq->used_elems[i].index == elem->index) {
++            vq->used_elems[i].len = len;
++            vq->used_elems[i].in_order_filled = true;
++            break;
++        }
++
++        i += vq->used_elems[i].ndescs;
++        steps += vq->used_elems[i].ndescs;
++
++        if (i >= vq->vring.num) {
++            i -= vq->vring.num;
++        }
++    }
++
++    /*
++     * We should be able to find a matching VirtQueueElement in
++     * used_elems. If we don't, this is an error.
++     */
++    if (steps >= max_steps) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s cannot fill buffer id %u\n",
++                      __func__, vq->vdev->name, elem->index);
++    }
++}
++
+ static void virtqueue_packed_fill_desc(VirtQueue *vq,
+                                        const VirtQueueElement *elem,
+                                        unsigned int idx,
+@@ -922,7 +962,9 @@ void virtqueue_fill(VirtQueue *vq, const VirtQueueElement *elem,
+         return;
      }
  
-+    if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-+        idx = (vq->last_avail_idx - 1) % vq->vring.num;
-+        vq->used_elems[idx].index = elem->index;
-+        vq->used_elems[idx].len = elem->len;
-+        vq->used_elems[idx].ndescs = elem->ndescs;
-+    }
-+
-     vq->inuse++;
- 
-     trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
-@@ -1762,6 +1769,13 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
- 
-     elem->index = id;
-     elem->ndescs = (desc_cache == &indirect_desc_cache) ? 1 : elem_entries;
-+
-+    if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-+        vq->used_elems[vq->last_avail_idx].index = elem->index;
-+        vq->used_elems[vq->last_avail_idx].len = elem->len;
-+        vq->used_elems[vq->last_avail_idx].ndescs = elem->ndescs;
-+    }
-+
-     vq->last_avail_idx += elem->ndescs;
-     vq->inuse += elem->ndescs;
- 
+-    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
++    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_IN_ORDER)) {
++        virtqueue_ordered_fill(vq, elem, len);
++    } else if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
+         virtqueue_packed_fill(vq, elem, len, idx);
+     } else {
+         virtqueue_split_fill(vq, elem, len, idx);
 -- 
 2.43.5
 
