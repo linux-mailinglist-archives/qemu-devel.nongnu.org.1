@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA4492F20B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 00:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 648DD92F1FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 00:33:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sS2KE-0000ER-1H; Thu, 11 Jul 2024 18:31:42 -0400
+	id 1sS2KF-0000Me-Ky; Thu, 11 Jul 2024 18:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1sS2K9-0008To-RM
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:37 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1sS2KB-00007k-Bn
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:39 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1sS2K6-0001Yu-Mw
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:37 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1fbcf71d543so10745335ad.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 15:31:34 -0700 (PDT)
+ id 1sS2K9-0001ZJ-Gc
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:39 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1fb19ca5273so9716585ad.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 15:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720737093; x=1721341893;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720737095; x=1721341895;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=f8QHwF44NvxQcnjRolSS0dOFflbNqvfMMklGCqgsPP0=;
- b=cJzfKVBSTAUN2OW8Z1wC/Ot8ddbKl8T5KVzBT7OZjVZP+bHbLTuHu0Tcryb9gk22oi
- w+vOymwa6BR3TZU2nl7RUXbICR+vFhcSJEH++0VtJBBO/dVCp6h/fBR9aAk5AZEIR1nh
- wDXoWAsicCrB4QYkG4iRFIDtxyTeJ2RpCjz49BaY13I0luB+0N5nZWO4lhjtQdf3bRfU
- G1Fz/cgeSQRM/77tHOllu65w+tlK8T14og947pRoA9B4oGq7b1S67QCbcCalRPbseA8y
- EgVyp9vW0hKcHKQExuvqif3Q63AKYiXnTJIzMdxjt78q5Ao6yx1rQnB9rUV4g9XpZPZj
- 24AQ==
+ :reply-to; bh=her5EAPO1IPqX9VrTf46ZxZu9jmSV9v3DRrDQ/OenVY=;
+ b=HCHfiT9GRpGpMxFb0LG/vTi+BhdXnhRiBXu2bX9mS5ImZ22IXwnwCubk204tWGggxR
+ kD0Ow0K1zM7Y3cOFdzP9gjsQolCI+ZFfiVqCqG4069jjpnhfBOnnRpcy767+2mWZHGjT
+ 7cIgPJJH1JH3Oieyz1enz4JqwJGKEHlZd0IyVXIR6GQXZ481bmB5Hpzub2ik+F21eYpG
+ QhkbogDGXd7OCXRTtBoargNlxNM1a8JX7M86dovxxcnpICPE5DjqsVGGhPQdrHAjQopF
+ 76WpTj2TmxQ4iYOqrElXeUQW8LOYhZF4hvc3/pSEZpSdwlkGAFChF8iV8TOFDCZNxDvR
+ t33g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720737093; x=1721341893;
+ d=1e100.net; s=20230601; t=1720737095; x=1721341895;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f8QHwF44NvxQcnjRolSS0dOFflbNqvfMMklGCqgsPP0=;
- b=uqlsYTTmN94W2mCdyVXKR5yruPGUByFaOVwh4bxckGLRVk1aQxsp4nAYY6h1OUecF4
- +qbL3UB49QG1FtQ6nnnjcPfp4gPshPzGElngqnWOcCQtSY9Yn4U9TtUJ/ww6VYzl71Wo
- VfXAMLmReymNDKNkMcgtJ3EG9QC7a7ZoYVJbViNkLjFB43eq8jJoDB0xyqTYU+ySPvlR
- OGX0K6NNcMaCXnUFv5UMMAJYhT8gH8aSCnKelfwiqa7LuM/i+bEtbnt8+QZ22vPMptdY
- BC/jKzuplmpZLn3bsvQ5q0QhF07HGOqzmyg9G+pv/0VSseOXIHCrD5aNrgSZaPh5HkYq
- 9DKg==
+ bh=her5EAPO1IPqX9VrTf46ZxZu9jmSV9v3DRrDQ/OenVY=;
+ b=IIOwMT/ryMEsllMuOrhhKlF6NaxFd3jcCJwD85iFm6/Dt/f0C11+QF/m2oAj8OcoAV
+ HBI1AbN9LWzARjrnykD5N8I2xAy/3V06UyZ1XFgc7+GDfxnICjLt94IlHzJmzofCgqi0
+ 5WmBViniSHDlM5a+0HOMuqFpCLKkL1yvsw0kfEFa75EhF9fxlKj1HVhxBbqElcFZVGPv
+ lCDJbQ2lZaKOL40idx+ZWxvcQylnJKNpKIiJqZqs22fmHxxRipbbmG+HXiRui3QONOSO
+ RxjvyVg6BAgmx94D97U4uyHaXNR9hs3JfJwaJ+ejdpzYrbTfC1l4qsY+HKsqK5x27I/6
+ 6w6Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXETdm3/L5qyzTLlt8k2DGMAbze/QY80iFVHGBr3aaS+i9VzufLf+yru0t3juOkUNFYBpN02ALF8Y5zsKpHdBwMqdjhvGs=
-X-Gm-Message-State: AOJu0YwlqTwAgGQGkymdx+TFWQCZ03jAqaZuSjBHvIEzhLMTfFX+fyOK
- X8wSxHTE/q9PESbNbv7cxEEuNFc39OUGZdby/m7IrilC5mtgESG++taG+q4AVxM=
-X-Google-Smtp-Source: AGHT+IHxc825754wmtmEFTXYjtGfYwPdZ5jKu1/R3sQNPmVIv72V6tlg2avirzNcZB1kmhxb0Q6vOA==
-X-Received: by 2002:a17:902:dacd:b0:1fb:d335:b0bf with SMTP id
- d9443c01a7336-1fbd335bc88mr50793445ad.25.1720737093326; 
- Thu, 11 Jul 2024 15:31:33 -0700 (PDT)
+ AJvYcCXxcf+7uWib7VGcyU4NSwzI3F5UEUOuetDK5yeSx4dgDVNHX0I7f1ci0AkEqEJk7Vh9SGfcz1xScip3tYpATIEXRNlhlf4=
+X-Gm-Message-State: AOJu0YyUYyKNMU0JZcv9IBop9p4B4Hgl8UrVE443vUH058UVYjvTa+PH
+ FF1AZhwMFlBAhtOAs8uQFlGiiodDZbL7NK8oORU7/y+9aF2w7N87KVlcJQ/DPAs=
+X-Google-Smtp-Source: AGHT+IHsBJk8qM+U/qH7tC4q4EYjQGUeHTnhgmyAaCRaDz8b2wS9pzILyHsUgh0pce2JfpsyHWrmjw==
+X-Received: by 2002:a17:902:e5cb:b0:1fb:9471:84b5 with SMTP id
+ d9443c01a7336-1fbb6d4df2cmr77549705ad.37.1720737095072; 
+ Thu, 11 Jul 2024 15:31:35 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fbb6b34ca2sm55161565ad.53.2024.07.11.15.31.31
+ d9443c01a7336-1fbb6b34ca2sm55161565ad.53.2024.07.11.15.31.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 15:31:32 -0700 (PDT)
+ Thu, 11 Jul 2024 15:31:34 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
-Date: Thu, 11 Jul 2024 15:31:06 -0700
-Subject: [PATCH v8 03/13] target/riscv: Add cycle & instret privilege mode
- filtering properties
+Date: Thu, 11 Jul 2024 15:31:07 -0700
+Subject: [PATCH v8 04/13] target/riscv: Add cycle & instret privilege mode
+ filtering definitions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240711-smcntrpmf_v7-v8-3-b7c38ae7b263@rivosinc.com>
+Message-Id: <20240711-smcntrpmf_v7-v8-4-b7c38ae7b263@rivosinc.com>
 References: <20240711-smcntrpmf_v7-v8-0-b7c38ae7b263@rivosinc.com>
 In-Reply-To: <20240711-smcntrpmf_v7-v8-0-b7c38ae7b263@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
  bin.meng@windriver.com, dbarboza@ventanamicro.com, alistair.francis@wdc.com
 X-Mailer: b4 0.15-dev-13183
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=atishp@rivosinc.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,41 +97,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kaiwen Xue <kaiwenx@rivosinc.com>
 
-This adds the properties for ISA extension smcntrpmf. Patches
-implementing it will follow.
+This adds the definitions for ISA extension smcntrpmf.
 
 Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- target/riscv/cpu.c     | 1 +
- target/riscv/cpu_cfg.h | 1 +
- 2 files changed, 2 insertions(+)
+ target/riscv/cpu.h      |  6 ++++++
+ target/riscv/cpu_bits.h | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4760cb2cc17f..63f553c92b00 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -178,6 +178,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-+    ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index fb7eebde523b..b1376beb1dab 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -74,6 +74,7 @@ struct RISCVCPUConfig {
-     bool ext_ztso;
-     bool ext_smstateen;
-     bool ext_sstc;
-+    bool ext_smcntrpmf;
-     bool ext_svadu;
-     bool ext_svinval;
-     bool ext_svnapot;
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 46faefd24e09..c5d289e5f4b9 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -339,6 +339,12 @@ struct CPUArchState {
+ 
+     uint32_t mcountinhibit;
+ 
++    /* PMU cycle & instret privilege mode filtering */
++    target_ulong mcyclecfg;
++    target_ulong mcyclecfgh;
++    target_ulong minstretcfg;
++    target_ulong minstretcfgh;
++
+     /* PMU counter state */
+     PMUCTRState pmu_ctrs[RV_MAX_MHPMCOUNTERS];
+ 
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index c257c5ed7dc9..5faa817453bb 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -397,6 +397,10 @@
+ /* Machine counter-inhibit register */
+ #define CSR_MCOUNTINHIBIT   0x320
+ 
++/* Machine counter configuration registers */
++#define CSR_MCYCLECFG       0x321
++#define CSR_MINSTRETCFG     0x322
++
+ #define CSR_MHPMEVENT3      0x323
+ #define CSR_MHPMEVENT4      0x324
+ #define CSR_MHPMEVENT5      0x325
+@@ -427,6 +431,9 @@
+ #define CSR_MHPMEVENT30     0x33e
+ #define CSR_MHPMEVENT31     0x33f
+ 
++#define CSR_MCYCLECFGH      0x721
++#define CSR_MINSTRETCFGH    0x722
++
+ #define CSR_MHPMEVENT3H     0x723
+ #define CSR_MHPMEVENT4H     0x724
+ #define CSR_MHPMEVENT5H     0x725
+@@ -884,6 +891,28 @@ typedef enum RISCVException {
+ /* PMU related bits */
+ #define MIE_LCOFIE                         (1 << IRQ_PMU_OVF)
+ 
++#define MCYCLECFG_BIT_MINH                 BIT_ULL(62)
++#define MCYCLECFGH_BIT_MINH                BIT(30)
++#define MCYCLECFG_BIT_SINH                 BIT_ULL(61)
++#define MCYCLECFGH_BIT_SINH                BIT(29)
++#define MCYCLECFG_BIT_UINH                 BIT_ULL(60)
++#define MCYCLECFGH_BIT_UINH                BIT(28)
++#define MCYCLECFG_BIT_VSINH                BIT_ULL(59)
++#define MCYCLECFGH_BIT_VSINH               BIT(27)
++#define MCYCLECFG_BIT_VUINH                BIT_ULL(58)
++#define MCYCLECFGH_BIT_VUINH               BIT(26)
++
++#define MINSTRETCFG_BIT_MINH               BIT_ULL(62)
++#define MINSTRETCFGH_BIT_MINH              BIT(30)
++#define MINSTRETCFG_BIT_SINH               BIT_ULL(61)
++#define MINSTRETCFGH_BIT_SINH              BIT(29)
++#define MINSTRETCFG_BIT_UINH               BIT_ULL(60)
++#define MINSTRETCFGH_BIT_UINH              BIT(28)
++#define MINSTRETCFG_BIT_VSINH              BIT_ULL(59)
++#define MINSTRETCFGH_BIT_VSINH             BIT(27)
++#define MINSTRETCFG_BIT_VUINH              BIT_ULL(58)
++#define MINSTRETCFGH_BIT_VUINH             BIT(26)
++
+ #define MHPMEVENT_BIT_OF                   BIT_ULL(63)
+ #define MHPMEVENTH_BIT_OF                  BIT(31)
+ #define MHPMEVENT_BIT_MINH                 BIT_ULL(62)
 
 -- 
 2.34.1
