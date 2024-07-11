@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0214792E936
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206EA92E95E
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:24:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRthE-0001R9-A5; Thu, 11 Jul 2024 09:18:52 -0400
+	id 1sRthK-0001lj-1r; Thu, 11 Jul 2024 09:18:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth6-00016P-M8
+ id 1sRth6-00016U-BJ
  for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:44 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRtgp-00062h-14
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:30 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4266dc7591fso6451005e9.0
+ id 1sRtgp-00062i-EA
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:41 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4266ea6a488so6708565e9.1
  for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1720703905; x=1721308705; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=mAaJI9+YIrHZHiEn9RZkFf7aj+sIYU/1nFOU2CD0DEc=;
- b=bgK4jvUCPHe3kLFyaCBMTR+F49FjR+sGtYFXzSXT1zLHKeXbveHZuNjnikBi38mPeo
- xa3JPem5eFdFUwAGQf6kDLCU70nXhjNm+m5ieJTl3d8OhxT85UDXrUQFh45pRpJClvTx
- BnxF5lVK24L09sBq11s0m0KCVdnTE3zZNlGLr8oCv1qRxBCFymJGvzmNVbX8PBrgUfol
- vjeniGFdNT64TGW1LuG7+AbXyk5Sa7Hk/DhAnu11bc1J2u9ZMP27RfNueTkS/spTdaJR
- LlDPpzEDzGLb+EyIJgn83O+MsoixukFQaayuw7BYZRyIlgvYV4J/YmsSAUDyqzcT+7f1
- /gNw==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=/AM2evHCBZ+zQstkZ8Yl2d6atBhqWRDl1W7bKsTVmZ8=;
+ b=fLfuagobILgHgD6adpdamXR9ls9BhSOtEPAOR376kXcbyYk5CoQCWIT4k80Ree9YFM
+ Rd9VuqiMySy7zy4gDGYbt2wtWC4p9vasc4jiD1KNN8eGqU+OP2D8cLE3bU4gHG3wNq9F
+ 6eHj4CsWgVsrcAs8xwtyBlP+tkQhYq2fE6d2GW9oRm33rOa93h6MWq1z1T4W5QNqoeRD
+ cCC+z5LSsMRti1XlEAaZqWHuqKGr1W6QehoO3TzTmr3eLQQ1QHUX+w56wajDQ2uk1PS6
+ wrHQmFqzHDL7bgxCseEUsFOOb04avEgGTe2XbqWPoUtnlPAmlqRSt9WaQGRIYvTTw1rw
+ oP0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1720703905; x=1721308705;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mAaJI9+YIrHZHiEn9RZkFf7aj+sIYU/1nFOU2CD0DEc=;
- b=VwBDs/Yfc/Sugy4qUUZoVa9Ar5sgwhe+4yU2Z1/FnsN6NZ0gIaTLq1XqN2Jg+wbNK9
- MM5jli3hrC8kJC7q2ofg3CYI6rcY9o0SG0YlM25jQtX0lMAjd2uh/1uhdwWPS/bkJAlV
- 3UqxcWquVNigrlurvAspGitQ4GqvSNXvLhUyLZ2/mon0V/i8LPKJurqFe2CrhIYxoXqs
- iR/GYzOnzF7K9yq9C+cTASUZaVqn4T4Z2xGeS6JErcUSxUyl3LnjsySpB87nIk+YAr3b
- OPwipN/QHZp/SrdVbS2+O8qD5wv7dcT7WIGIMmNh4QrWAhF05xPMawcGZ8Gj1Bf3XElh
- z1qg==
-X-Gm-Message-State: AOJu0Yz57oB+OzvCJU1nZht5+zYhFwOhpVhDaSLAJTa84xnsVFikRut0
- XjjP9QHdTO2E4mnBgvXFr5hiirwUFZZ8Art0tNbZ8RtBdHb10Vbx2apcaZ3/jMrECyEC7b5S04x
- e39Y=
-X-Google-Smtp-Source: AGHT+IE2i0FsE4i6wOtdMtYifkQr62iCwCfnC93QA9j2e3Jue6EdpxKMV6u98o0iYcxz9klTnU6kkg==
-X-Received: by 2002:a05:600c:4655:b0:426:58ca:9ef4 with SMTP id
- 5b1f17b1804b1-426708f102amr54123265e9.40.1720703904705; 
- Thu, 11 Jul 2024 06:18:24 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/AM2evHCBZ+zQstkZ8Yl2d6atBhqWRDl1W7bKsTVmZ8=;
+ b=dfFfCOp4OTyxOre5xKCWv3epW2z6jFOj3ldYqaVgon9XQ4csRy1WirAkPENAql3O7d
+ 2Yym6isyuyD8RNmQqW1Ao8n63uHCkE3naKzfjk8JnWsblBy/xV6y+g2nUqfptqK6Z7gI
+ yLOiVsmqAz76z03+PwTzFV8+j+VAbpUILMG/qq9zuV5Eq+SI9M2YrvePfIdw6R7hf0jr
+ 1FgHtFEYAPLqTzR+YxOfzYZirVByntAz25nHvzUS/gVTnMLH5xktkVRxtO2kIfZyL+kQ
+ 6DQiYVKT5ZUK+SWtAL0NtqvPyMC0dIooTizPx0t9ChV9h9d/SO/pNs7oJvUaE1IbvF8a
+ 8uaw==
+X-Gm-Message-State: AOJu0Yx9v5QSdyp7o4G6oj+9IHSZugKYjBHJvhbCIYrZPHDumR7QMx6E
+ X45DGTpbtYzmThDv14WKVlVM/0A9GSyJgHUARS9Rx3mQrRWoJfgzheKXf4yO+jC5rFdUV+MnYAq
+ yeuc=
+X-Google-Smtp-Source: AGHT+IG2wlNMlAjFeg1WXJ2k+awc13TiC2UcOumpGau6kEmELm6Piv6eXT4S82yFGkiKYsvP1yMGPg==
+X-Received: by 2002:a05:600c:4850:b0:426:62c5:4731 with SMTP id
+ 5b1f17b1804b1-426707f8563mr70542125e9.29.1720703905209; 
+ Thu, 11 Jul 2024 06:18:25 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.24
@@ -58,21 +59,21 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jul 2024 06:18:24 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/24] target-arm queue
-Date: Thu, 11 Jul 2024 14:17:58 +0100
-Message-Id: <20240711131822.3909903-1-peter.maydell@linaro.org>
+Subject: [PULL 01/24] target/arm: Correct comments about M-profile FPSCR
+Date: Thu, 11 Jul 2024 14:17:59 +0100
+Message-Id: <20240711131822.3909903-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
+References: <20240711131822.3909903-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,100 +90,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 59084feb256c617063e0dbe7e64821ae8852d7cf:
+The M-profile FPSCR LTPSIZE is bits [18:16]; this is the same
+field as A-profile FPSCR Len, not Stride. Correct the comment
+in vfp_get_fpscr().
 
-  Merge tag 'pull-aspeed-20240709' of https://github.com/legoater/qemu into staging (2024-07-09 07:13:55 -0700)
+We also implemented M-profile FPSCR.QC, but forgot to delete
+a TODO comment from vfp_set_fpscr(); remove it now.
 
-are available in the Git repository at:
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240628142347.1283015-2-peter.maydell@linaro.org
+---
+ target/arm/vfp_helper.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240711
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index 50d7042fa9e..e1686005558 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -176,8 +176,8 @@ uint32_t HELPER(vfp_get_fpscr)(CPUARMState *env)
+             | (env->vfp.vec_stride << 20);
+ 
+     /*
+-     * M-profile LTPSIZE overlaps A-profile Stride; whichever of the
+-     * two is not applicable to this CPU will always be zero.
++     * M-profile LTPSIZE is the same bits [18:16] as A-profile Len; whichever
++     * of the two is not applicable to this CPU will always be zero.
+      */
+     fpscr |= env->v7m.ltpsize << 16;
+ 
+@@ -226,7 +226,6 @@ void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
+         /*
+          * The bit we set within fpscr_q is arbitrary; the register as a
+          * whole being zero/non-zero is what counts.
+-         * TODO: M-profile MVE also has a QC bit.
+          */
+         env->vfp.qc[0] = val & FPCR_QC;
+         env->vfp.qc[1] = 0;
+-- 
+2.34.1
 
-for you to fetch changes up to 7f49089158a4db644fcbadfa90cd3d30a4868735:
-
-  target/arm: Convert PMULL to decodetree (2024-07-11 11:41:34 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * Refactor FPCR/FPSR handling in preparation for FEAT_AFP
- * More decodetree conversions
- * target/arm: Use cpu_env in cpu_untagged_addr
- * target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to arm_cpu_exec_halt()
- * hw/char/pl011: Avoid division-by-zero in pl011_get_baudrate()
- * hw/misc/bcm2835_thermal: Fix access size handling in bcm2835_thermal_ops
- * accel/tcg: Make TCGCPUOps::cpu_exec_halt mandatory
- * STM32L4x5: Handle USART interrupts correctly
-
-----------------------------------------------------------------
-Inès Varhol (3):
-      hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
-      hw/misc: In STM32L4x5 EXTI, handle direct interrupts
-      hw/arm: In STM32L4x5 SOC, connect USART devices to EXTI
-
-Peter Maydell (12):
-      target/arm: Correct comments about M-profile FPSCR
-      target/arm: Make vfp_get_fpscr() call vfp_get_{fpcr, fpsr}
-      target/arm: Make vfp_set_fpscr() call vfp_set_{fpcr, fpsr}
-      target/arm: Support migration when FPSR/FPCR won't fit in the FPSCR
-      target/arm: Implement store_cpu_field_low32() macro
-      target/arm: Store FPSR and FPCR in separate CPU state fields
-      target/arm: Rename FPCR_ QC, NZCV macros to FPSR_
-      target/arm: Rename FPSR_MASK and FPCR_MASK and define them symbolically
-      target/arm: Allow FPCR bits that aren't in FPSCR
-      target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to arm_cpu_exec_halt()
-      target: Set TCGCPUOps::cpu_exec_halt to target's has_work implementation
-      accel/tcg: Make TCGCPUOps::cpu_exec_halt mandatory
-
-Richard Henderson (7):
-      target/arm: Use cpu_env in cpu_untagged_addr
-      target/arm: Convert SMULL, UMULL, SMLAL, UMLAL, SMLSL, UMLSL to decodetree
-      target/arm: Convert SADDL, SSUBL, SABDL, SABAL, and unsigned to decodetree
-      target/arm: Convert SQDMULL, SQDMLAL, SQDMLSL to decodetree
-      target/arm: Convert SADDW, SSUBW, UADDW, USUBW to decodetree
-      target/arm: Convert ADDHN, SUBHN, RADDHN, RSUBHN to decodetree
-      target/arm: Convert PMULL to decodetree
-
-Zheyu Ma (2):
-      hw/char/pl011: Avoid division-by-zero in pl011_get_baudrate()
-      hw/misc/bcm2835_thermal: Fix access size handling in bcm2835_thermal_ops
-
- include/hw/core/tcg-cpu-ops.h     |    9 +-
- include/hw/misc/stm32l4x5_exti.h  |    4 +-
- target/arm/cpu.h                  |  113 ++--
- target/arm/internals.h            |    3 +
- target/arm/tcg/translate-a32.h    |    7 +
- target/arm/tcg/translate.h        |    3 +-
- target/riscv/internals.h          |    3 +
- target/arm/tcg/a64.decode         |   77 +++
- accel/tcg/cpu-exec.c              |   11 +-
- hw/arm/stm32l4x5_soc.c            |   24 +-
- hw/char/pl011.c                   |   13 +-
- hw/misc/bcm2835_thermal.c         |    2 +
- hw/misc/stm32l4x5_exti.c          |   13 +-
- target/alpha/cpu.c                |    1 +
- target/arm/cpu.c                  |    2 +-
- target/arm/machine.c              |  135 ++++-
- target/arm/tcg/cpu-v7m.c          |    1 +
- target/arm/tcg/mve_helper.c       |   12 +-
- target/arm/tcg/translate-a64.c    | 1155 ++++++++++++-------------------------
- target/arm/tcg/translate-m-nocp.c |   22 +-
- target/arm/tcg/translate-vfp.c    |    4 +-
- target/arm/vfp_helper.c           |  187 +++---
- target/avr/cpu.c                  |    1 +
- target/cris/cpu.c                 |    2 +
- target/hppa/cpu.c                 |    1 +
- target/loongarch/cpu.c            |    1 +
- target/m68k/cpu.c                 |    1 +
- target/microblaze/cpu.c           |    1 +
- target/mips/cpu.c                 |    1 +
- target/openrisc/cpu.c             |    1 +
- target/ppc/cpu_init.c             |    2 +
- target/riscv/cpu.c                |    2 +-
- target/riscv/tcg/tcg-cpu.c        |    2 +
- target/rx/cpu.c                   |    1 +
- target/s390x/cpu.c                |    1 +
- target/sh4/cpu.c                  |    1 +
- target/sparc/cpu.c                |    1 +
- target/tricore/cpu.c              |    1 +
- target/xtensa/cpu.c               |    1 +
- 39 files changed, 893 insertions(+), 929 deletions(-)
 
