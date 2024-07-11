@@ -2,87 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2044A92EBD2
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6C792EBD3
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 17:40:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRvsf-00038S-1s; Thu, 11 Jul 2024 11:38:49 -0400
+	id 1sRvtC-0003du-23; Thu, 11 Jul 2024 11:39:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRvsc-00037x-Qc
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 11:38:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sRvt7-0003c9-Ri
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 11:39:18 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRvsa-0004x7-U6
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 11:38:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720712323;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qoGaGfB2xUiHkUePcLBSQuhXjT1w3kY94K41qa+eHv0=;
- b=BJ0H05mqUuP5+hAeSGoLwjl4dtb9hVq4Oe7IwtREH9K6Ypnn/I3UMQCperBAiwk0j0dRwq
- xitoeuerM/RYsxwZACW8hkEkuj+Wifb3zhWMOJapF/Kt5N57mqpWC30M4/PTtCOb+2HFPe
- 3601rZnaIS88qMcoEI/8LONQd3O9tbk=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-opbbuesTM26ncmUF6EzoQQ-1; Thu, 11 Jul 2024 11:38:41 -0400
-X-MC-Unique: opbbuesTM26ncmUF6EzoQQ-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-44a731cb5baso2542481cf.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 08:38:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720712321; x=1721317121;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qoGaGfB2xUiHkUePcLBSQuhXjT1w3kY94K41qa+eHv0=;
- b=mwn0Nb7+MaVX846LgrE1M4nsOE5EyKvCVCtw4ytqBFyORrKnlvvTFZ+C8uQ0xH1FR+
- Bui5MV/fJJCRHhILM9PGoaddX6v8tsICg5IIzxQ/3PA3t/MX5AT5yxNb0Ub0VrHkZemx
- SsW2cev9Hpp2G4HNN4hc2Jo4ow8hlu7NFcgyzffBhjXViWqP2WmRwxAF6V2Tj4wfbiBz
- Dc7AAFCf/r4O3lR8sFZN9jo8i3VOaxJP9FOYteCdnOl14J+8A8hQYW9e7GQONd01VEO0
- B7naG6+bY735K63SE5bCdc+oK/tbpHEyeMu0fS91meQhJ1Hea+YzJKosQxJz/vSg8OWn
- 9L1w==
-X-Gm-Message-State: AOJu0Yz+TNCkjn9kuA40tuH35se33qvT9uVgbdcpTTRkMOeJYniypDH9
- X5ctQ8kpvqzpHVvxH9GBgNFWOYpQv1RTWpbxFX5iYdkMhIuT4sbdqh3kl7uDQg4DbAd+e+1Gd8J
- fSxe1qVXpy3NwnyXJ5bokoNIMB7mI7uMeIdAgqfpol7MO4QCWvxH8
-X-Received: by 2002:a0c:edd0:0:b0:6b5:600:acc8 with SMTP id
- 6a1803df08f44-6b74b1610c6mr29617216d6.1.1720712321173; 
- Thu, 11 Jul 2024 08:38:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuNXXs0VcfB3vRKVHv5xitnvMijsqQCPEy30yBAxlQLnoVEz9ewP3C+samVeNnC2F+49AyEg==
-X-Received: by 2002:a0c:edd0:0:b0:6b5:600:acc8 with SMTP id
- 6a1803df08f44-6b74b1610c6mr29617056d6.1.1720712320868; 
- Thu, 11 Jul 2024 08:38:40 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b61ba74bdcsm26565426d6.97.2024.07.11.08.38.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 08:38:40 -0700 (PDT)
-Date: Thu, 11 Jul 2024 11:38:38 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Jason Wang <jasowang@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, mcoqueli@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH 0/2] Postcopy migration and vhost-user errors
-Message-ID: <Zo_8fpKH8oBA8WV1@x1n>
-References: <20240711131424.181615-1-ppandit@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sRvsz-0004yp-D9
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 11:39:17 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WKf3M3f8Dz67y8R;
+ Thu, 11 Jul 2024 23:36:47 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 0D2C91400D3;
+ Thu, 11 Jul 2024 23:38:53 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Jul
+ 2024 16:38:52 +0100
+Date: Thu, 11 Jul 2024 16:38:51 +0100
+To: Igor Mammedov <imammedo@redhat.com>
+CC: <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ <qemu-devel@nongnu.org>, <ankita@nvidia.com>, <marcel.apfelbaum@gmail.com>,
+ <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
+ <linuxarm@huawei.com>, Dave Jiang <dave.jiang@intel.com>, Huang Ying
+ <ying.huang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ <eduardo@habkost.net>, <linux-cxl@vger.kernel.org>, Michael Roth
+ <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH v4 06/13] acpi/pci: Move Generic Initiator object
+ handling into acpi/pci.*
+Message-ID: <20240711163851.00002f93@Huawei.com>
+In-Reply-To: <20240711141240.0ec77fd2@imammedo.users.ipa.redhat.com>
+References: <20240702131428.664859-1-Jonathan.Cameron@huawei.com>
+ <20240702131428.664859-7-Jonathan.Cameron@huawei.com>
+ <20240711141240.0ec77fd2@imammedo.users.ipa.redhat.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240711131424.181615-1-ppandit@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.174.77]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,94 +71,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 11, 2024 at 06:44:22PM +0530, Prasad Pandit wrote:
-> From: Prasad Pandit <pjp@fedoraproject.org>
-> 
-> Hello,
-> 
-> * virsh(1) offers multiple options to initiate Postcopy migration:
-> 
->     1) virsh migrate --postcopy --postcopy-after-precopy
->     2) virsh migrate --postcopy + virsh migrate-postcopy
->     3) virsh migrate --postcopy --timeout <N> --timeout-postcopy
-> 
-> When Postcopy migration is invoked via method (2) or (3) above,
-> the guest on the destination host seems to hang or get stuck sometimes.
-> 
-> * During Postcopy migration, multiple threads are spawned on the destination
-> host to start the guest and setup devices. One such thread starts vhost
-> device via vhost_dev_start() function and another called fault_thread handles
 
-Hmm, I thought it was one of the vcpu threads that invoked
-vhost_dev_start(), rather than any migration thread?
+> > diff --git a/hw/acpi/pci.c b/hw/acpi/pci.c
+> > index 20b70dcd81..174b490e5f 100644
+> > --- a/hw/acpi/pci.c
+> > +++ b/hw/acpi/pci.c
+> > @@ -24,8 +24,12 @@
+> >   */
+> >  
+> >  #include "qemu/osdep.h"
+> > +#include "qemu/error-report.h"  
+> 
+> > +#include "qapi/error.h"  
+> is this necessary? 
+> it seems to be compiling just fine without it.
+The error_fatal extern is in there.
 
-> page faults in user space using kernel's userfaultfd(2) system.
-> 
-> When fault_thread exits upon completion of Postcopy migration, it sends a
-> 'postcopy_end' message to the vhost-user device. But sometimes 'postcopy_end'
-> message is sent while vhost device is being setup via vhost_dev_start().
-> 
->      Thread-1                                  Thread-2
-> 
-> vhost_dev_start                        postcopy_ram_incoming_cleanup
->  vhost_device_iotlb_miss                postcopy_notify
->   vhost_backend_update_device_iotlb      vhost_user_postcopy_notifier
->    vhost_user_send_device_iotlb_msg       vhost_user_postcopy_end
->     process_message_reply                  process_message_reply
->      vhost_user_read                        vhost_user_read
->       vhost_user_read_header                 vhost_user_read_header
->        "Fail to update device iotlb"          "Failed to receive reply to postcopy_end"
-> 
-> This creates confusion when vhost device receives 'postcopy_end' message while
-> it is still trying to update IOTLB entries.
-> 
-> This seems to leave the guest in a stranded/hung state because fault_thread
-> has exited saying Postcopy migration has ended, but vhost-device is probably
-> still expecting updates. QEMU logs following errors on the destination host
-> ===
-> ...
-> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
-> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
-> qemu-kvm: vhost_user_postcopy_end: 700871,700900: Failed to receive reply to postcopy_end
-> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
-> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
-> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x8 instead of 0x5.
-> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
-> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x16 instead of 0x5.
-> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
-> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
-> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
-> ===
-> 
-> * Couple of patches here help to fix/handle these errors.
+I guess there is a non obvious path via which that's getting included
+anyway. is in there and it's not obvious how it is included I'd rather
+keep it as an explicit include to reduce fragility if the chain of
+includes involved gets changed.
 
-I remember after you added the rwlock, there's still a hang issue.
-
-Did you investigated that?  Or do you mean this series will fix all the
-problems?
-
-Thanks,
 
 > 
-> Thank you.
-> ---
-> Prasad Pandit (2):
->   vhost-user: add a write-read lock
->   vhost: fail device start if iotlb update fails
-> 
->  hw/virtio/vhost-user.c         | 423 +++++++++++++++++++--------------
->  hw/virtio/vhost.c              |   6 +-
->  include/hw/virtio/vhost-user.h |   3 +
->  3 files changed, 259 insertions(+), 173 deletions(-)
-> 
-> --
-> 2.45.2
-> 
-
--- 
-Peter Xu
-
+> > +#include "hw/boards.h"
+> >  #include "hw/acpi/aml-build.h"
+> >  #include "hw/acpi/pci.h"
+> > +#include "hw/pci/pci_device.h"
+> >  #include "hw/pci/pcie_host.h"
+> >  
 
