@@ -2,73 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F8192E1D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AC992E1F2
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRoyZ-0008Kq-Gq; Thu, 11 Jul 2024 04:16:29 -0400
+	id 1sRp1g-00054r-VH; Thu, 11 Jul 2024 04:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sRoyK-00088f-5O
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:16:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sRoyG-0007m1-7y
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:16:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720685765;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=J0MLmWGsC6TVNoDwUvTT7I37s/y+f9HjO5i4IcMCM6k=;
- b=ZUi+QhaUiaZbmZ+ykmUBTLkdMwkKYxc8dF4JywV35CpHxQpAhKhZmiX5nNDaPdOjjVMF9m
- lMcIokghnMuQhSnsDTq58ijglwgA22AirwKvFJ5ikyaUV6NqWkcwvwVuID6HgQS13tDwmE
- 4BSpECN2s5AaQ9oShuN0bD2LuBrPRrU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-ouZU4ZpHNxGWMHfsVadZLA-1; Thu,
- 11 Jul 2024 04:15:58 -0400
-X-MC-Unique: ouZU4ZpHNxGWMHfsVadZLA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2C6DA1955BC7; Thu, 11 Jul 2024 08:15:56 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.113])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0290819560AA; Thu, 11 Jul 2024 08:15:54 +0000 (UTC)
-Date: Thu, 11 Jul 2024 10:15:53 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, jasowang@redhat.com, david@redhat.com,
- slp@redhat.com, Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [RFC PATCH v2 2/5] vhost_user: Add frontend command for shmem
- config
-Message-ID: <20240711081553.GA572069@dynamic-pd01.res.v6.highway.a1.net>
-References: <20240628145710.1516121-1-aesteve@redhat.com>
- <20240628145710.1516121-3-aesteve@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRp1a-0004oe-H0
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:19:35 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sRp1Y-00087n-E9
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:19:34 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a77abe5c709so76068166b.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 01:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720685970; x=1721290770; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ea5Op6ysHo6KPTidjpLEO40hv2IOq8vsoA7M44HqG7U=;
+ b=UpIIltXmST+u/3Pu5WRrp0lt59HEyGvr2vjFHVEHhgd+V1oXV5oHbWnsqEz7YVsQ23
+ yQyuKY6P5t+11qfZHH5u900BaN2rvmIP2AK6H8bJIncsKZf8fTC46Y8nHwucv4SLkpHM
+ 8ErB3eUeuNKpErKwyeX1CDsTE2AOvmDDuwXqYsd1Ll3C8PYs2k7ZFEAeVQPAWHGQzfgZ
+ 0VxBwvhEniJbF2ofjBiJgDO5Ajq5GNOusUJPIc6yFyrZMsno/A1KC8yC1cr8R3uvtbCz
+ 0LA7LWlNjIOfOte9k74qzt11eAwkwDPAtExGiuYh3JIlBUV7EFWVVoNj17PMC1t8fqWr
+ O2vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720685970; x=1721290770;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ea5Op6ysHo6KPTidjpLEO40hv2IOq8vsoA7M44HqG7U=;
+ b=i06eBinfZsaNI/GXdzfI9wgtDPJoA15RCZjlroMX+xbARhWmP+wHqxgHngEt10hFzl
+ /wGgxMrkXr8BmyN1NYKJBmsUefA6yUMTpKNWCFi0JvXk1X5Mb3xLDfY5fi5EWHmw9nP/
+ nkF0QswqlV1CctGjY1goICrrGqxzZouSRr4SHtXRx7VN1XIa2TuhXkC3iaC+sb/hv7O/
+ 6cTi6Ae91/uPMy3n/EbjuNXJeRjpxe/93OQKaaYNqtFtbtMF99EvOyaYVQRCAAo770w2
+ rdmra5fv+ziie5+FE2ZU1CprTiXZh3N1b1mHyemk4cXX325g0dfOvzpiLEj1fgLa2ohD
+ U5BQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVgcOIltq5nn1GJ1VOo+05aSAiqY79n7MhFtCYzc16lxT8ib1hGvSMIn7PVI39ezFIvkS9OxXgPqmDDhZ7t3wyt9Vg7Sl4=
+X-Gm-Message-State: AOJu0YwZyRKxJ2sQ2tGro3hUn8k3yBz/SNn36NzVzP8gAYmc0fhwKuBR
+ ZqCjQGQRKcths93f1FHQ9kr5jffjG+FSisEBxvdO8R6Vbu+hQva149pFCbNycTQ=
+X-Google-Smtp-Source: AGHT+IH7Hg38SpweX70oAp9OYU/WtNdmqrgQUIrNYhUTZH50Kw2QDhlyZadpVo4v5RqvgNHtR8SBww==
+X-Received: by 2002:a17:906:c141:b0:a77:c26c:a56f with SMTP id
+ a640c23a62f3a-a780b68832fmr634201366b.3.1720685970442; 
+ Thu, 11 Jul 2024 01:19:30 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.207.127])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a780a86f620sm233028166b.209.2024.07.11.01.19.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Jul 2024 01:19:29 -0700 (PDT)
+Message-ID: <d921c3d3-71a9-49e4-9f28-1ff3f19b9c48@linaro.org>
+Date: Thu, 11 Jul 2024 10:19:27 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="A+seTadtYhm8vzwx"
-Content-Disposition: inline
-In-Reply-To: <20240628145710.1516121-3-aesteve@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] smbios: make memory device size configurable per Machine
+To: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, mst@redhat.com, wangyanan55@huawei.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org, anisinha@redhat.com,
+ qemu-arm@nongnu.org
+References: <20240711074822.3384344-1-imammedo@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240711074822.3384344-1-imammedo@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,116 +95,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Igor,
 
---A+seTadtYhm8vzwx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jun 28, 2024 at 04:57:07PM +0200, Albert Esteve wrote:
-> The frontend can use this command to retrieve
-> VIRTIO Shared Memory Regions configuration from
-> the backend. The response contains the number of
-> shared memory regions, their size, and shmid.
->=20
-> This is useful when the frontend is unaware of
-> specific backend type and configuration,
-> for example, in the `vhost-user-device` case.
->=20
-> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+On 11/7/24 09:48, Igor Mammedov wrote:
+> Currently SMBIOS maximum memory device chunk is capped at 16Gb,
+> which is fine for the most cases (QEMU uses it to describe initial
+> RAM (type 17 SMBIOS table entries)).
+> However when starting guest with terabytes of RAM this leads to
+> too many memory device structures, which eventually upsets linux
+> kernel as it reserves only 64K for these entries and when that
+> border is crossed out it runs out of reserved memory.
+> 
+> Instead of partitioning initial RAM on 16Gb chunks, use maximum
+> possible chunk size that SMBIOS spec allows[1]. Which lets
+> encode RAM in Mb units in uint32_t-1 field (upto 2047Tb).
+> As result initial RAM will generate only one type 17 structure
+> until host/guest reach ability to use more RAM in the future.
+> 
+> Compat changes:
+> We can't unconditionally change chunk size as it will break
+> QEMU<->guest ABI (and migration). Thus introduce a new machine class
+> field that would let older versioned machines to use 16Gb chunks
+> while new machine type could use maximum possible chunk size.
+> 
+> While it might seem to be risky to rise max entry size this much
+> (much beyond of what current physical RAM modules support),
+> I'd not expect it causing much issues, modulo uncovering bugs
+> in software running within guest. And those should be fixed
+> on guest side to handle SMBIOS spec properly, especially if
+> guest is expected to support so huge RAM configs.
+> In worst case, QEMU can reduce chunk size later if we would
+> care enough about introducing a workaround for some 'unfixable'
+> guest OS, either by fixing up the next machine type or
+> giving users a CLI option to customize it.
+> 
+> 1) SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
+> 
+> PS:
+> * tested on 8Tb host with RHEL6 guest, which seems to parse
+>    type 17 SMBIOS table entries correctly (according to 'dmidecode').
+> 
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 > ---
->  docs/interop/vhost-user.rst       | 31 +++++++++++++++++++++++
->  hw/virtio/vhost-user.c            | 42 +++++++++++++++++++++++++++++++
->  include/hw/virtio/vhost-backend.h |  6 +++++
->  include/hw/virtio/vhost-user.h    |  1 +
->  4 files changed, 80 insertions(+)
->=20
-> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> index d52ba719d5..51f01d1d84 100644
-> --- a/docs/interop/vhost-user.rst
-> +++ b/docs/interop/vhost-user.rst
-> @@ -348,6 +348,19 @@ Device state transfer parameters
->    In the future, additional phases might be added e.g. to allow
->    iterative migration while the device is running.
-> =20
-> +VIRTIO Shared Memory Region configuration
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> ++-------------+---------+------------+----+------------+
-> +| num regions | padding | mem size 0 | .. | mem size 7 |
-> ++-------------+---------+------------+----+------------+
-> +
-> +:num regions: a 32-bit number of regions
-> +
-> +:padding: 32-bit
-> +
-> +:mem size: 64-bit size of VIRTIO Shared Memory Region
-> +
->  C structure
->  -----------
-> =20
-> @@ -369,6 +382,10 @@ In QEMU the vhost-user message is implemented with t=
-he following struct:
->            VhostUserConfig config;
->            VhostUserVringArea area;
->            VhostUserInflight inflight;
-> +          VhostUserShared object;
-> +          VhostUserTransferDeviceState transfer_state;
-> +          VhostUserMMap mmap;
-> +          VhostUserShMemConfig shmem;
->        };
->    } QEMU_PACKED VhostUserMsg;
-> =20
-> @@ -1051,6 +1068,7 @@ Protocol features
->    #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
->    #define VHOST_USER_PROTOCOL_F_SHARED_OBJECT        18
->    #define VHOST_USER_PROTOCOL_F_DEVICE_STATE         19
-> +  #define VHOST_USER_PROTOCOL_F_SHMEM                20
-> =20
->  Front-end message types
->  -----------------------
-> @@ -1725,6 +1743,19 @@ Front-end message types
->    Using this function requires prior negotiation of the
->    ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
-> =20
-> +``VHOST_USER_GET_SHMEM_CONFIG``
-> +  :id: 44
-> +  :equivalent ioctl: N/A
-> +  :request payload: N/A
-> +  :reply payload: ``struct VhostUserShMemConfig``
-> +
-> +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-> +  successfully negotiated, this message can be submitted by the front-end
-> +  to gather the VIRTIO Shared Memory Region configuration. Back-end will=
- respond
-> +  with the number of VIRTIO Shared Memory Regions it requires, and each =
-shared memory
-> +  region size in an array. The shared memory IDs are represented by the =
-index
-> +  of the array.
+>   include/hw/boards.h |  4 ++++
+>   hw/arm/virt.c       |  1 +
+>   hw/core/machine.c   |  1 +
+>   hw/i386/pc_piix.c   |  1 +
+>   hw/i386/pc_q35.c    |  1 +
+>   hw/smbios/smbios.c  | 11 ++++++-----
+>   6 files changed, 14 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/hw/boards.h b/include/hw/boards.h
+> index ef6f18f2c1..48ff6d8b93 100644
+> --- a/include/hw/boards.h
+> +++ b/include/hw/boards.h
+> @@ -237,6 +237,9 @@ typedef struct {
+>    *    purposes only.
+>    *    Applies only to default memory backend, i.e., explicit memory backend
+>    *    wasn't used.
+> + * @smbios_memory_device_size:
+> + *    Default size of memory device,
+> + *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
+>    */
+>   struct MachineClass {
+>       /*< private >*/
+> @@ -304,6 +307,7 @@ struct MachineClass {
+>       const CPUArchIdList *(*possible_cpu_arch_ids)(MachineState *machine);
+>       int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
+>       ram_addr_t (*fixup_ram_size)(ram_addr_t size);
+> +    uint64_t smbios_memory_device_size;
 
-Please add:
-- The Shared Memory Region size must be a multiple of the page size support=
-ed by mmap(2).
-- The size may be 0 if the region is unused. This can happen when the
-  device does not support an optional feature but does support a feature
-  that uses a higher shmid.
+Quick notes since I'm on holidays (not meant to block this patch):
 
---A+seTadtYhm8vzwx
-Content-Type: application/pgp-signature; name="signature.asc"
+- How will evolve this machine class property in the context of
+   a heterogeneous machine (i.e. x86_64 cores and 1 riscv32 one)?
 
------BEGIN PGP SIGNATURE-----
+- Should this become a SmbiosProviderInterface later?
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaPlLkACgkQnKSrs4Gr
-c8i5Ngf/dDMyT8Er1XkTzi7yEWRZmUi4fpFaiO81+xKSk6HNyeVv2p0ONDFSp+Fu
-MNkfWlyz8FhF+QQ1lvb0rxWz63Sry9FvESpV7+1ixpP3Jmx4v9oaDa/91b2ssF9c
-d6R/YHJVuctx+oYY0ru4kSOMYxdxlOIjvlKSMVMtBJoFketz+j0RUSi7QoIR2vdR
-8HRRcsWGd/buCMN1FjHGG10gFwyi/oJyXi9p/jzLt0zz9iKXINXLdTMBX+RpPk3h
-A6IVXp9oYmv3/Jqn6IluOjJIy/yA2WoJxTclvnonzcC4+uy96l3x6J93BUggS49u
-uc7tSGdmHxLDpuuMBs+0y557rsI17Q==
-=ZDSo
------END PGP SIGNATURE-----
+>   };
+>   
+>   /**
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index b0c68d66a3..719e83e6a1 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -3308,6 +3308,7 @@ DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
+>   static void virt_machine_9_0_options(MachineClass *mc)
+>   {
+>       virt_machine_9_1_options(mc);
+> +    mc->smbios_memory_device_size = 16 * GiB;
+>       compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
+>   }
+>   DEFINE_VIRT_MACHINE(9, 0)
 
---A+seTadtYhm8vzwx--
-
+[...]
 
