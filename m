@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0475292E189
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A051892E181
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:07:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRoop-0008Ug-3M; Thu, 11 Jul 2024 04:06:23 -0400
+	id 1sRoom-0008Os-9T; Thu, 11 Jul 2024 04:06:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sRooe-000828-0x
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:13 -0400
+ id 1sRooV-0007xK-4A
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:04 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sRooQ-0001uP-TU
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:11 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1sRooQ-0001uS-Vf
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:02 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxPOtiko9muS4DAA--.9368S3;
+ by gateway (Coremail) with SMTP id _____8CxJepiko9muy4DAA--.347S3;
  Thu, 11 Jul 2024 16:05:54 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxNMVfko9mXttDAA--.13828S3; 
- Thu, 11 Jul 2024 16:05:53 +0800 (CST)
+ AQAAf8DxNMVfko9mXttDAA--.13828S4; 
+ Thu, 11 Jul 2024 16:05:54 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
-	Dmitry Frolov <frolov@swemel.ru>
-Subject: [PULL 1/9] hw/loongarch/boot.c: fix out-of-bound reading
-Date: Thu, 11 Jul 2024 15:48:21 +0800
-Message-Id: <20240711074829.3338879-2-gaosong@loongson.cn>
+	Xianglai Li <lixianglai@loongson.cn>
+Subject: [PULL 2/9] hw/loongarch: Change the tpm support by default
+Date: Thu, 11 Jul 2024 15:48:22 +0800
+Message-Id: <20240711074829.3338879-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240711074829.3338879-1-gaosong@loongson.cn>
 References: <20240711074829.3338879-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxNMVfko9mXttDAA--.13828S3
+X-CM-TRANSID: AQAAf8DxNMVfko9mXttDAA--.13828S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,34 +63,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dmitry Frolov <frolov@swemel.ru>
+From: Xianglai Li <lixianglai@loongson.cn>
 
-memcpy() is trying to READ 512 bytes from memory,
-pointed by info->kernel_cmdline,
-which was (presumable) allocated by g_strdup("");
-Found with ASAN, making check with enabled sanitizers.
+Add devices that support tpm by default,
+Fixed incomplete tpm acpi table information.
 
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240628123910.577740-1-frolov@swemel.ru>
+Message-Id: <20240624032300.999157-1-lixianglai@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/boot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/loongarch/Kconfig      | 1 +
+ hw/loongarch/acpi-build.c | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index b8e1aa18d5..cb668703bd 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -163,7 +163,7 @@ static void init_cmdline(struct loongarch_boot_info *info, void *p, void *start)
-     info->a0 = 1;
-     info->a1 = cmdline_addr;
+diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+index 90a0dba9d5..89be737726 100644
+--- a/hw/loongarch/Kconfig
++++ b/hw/loongarch/Kconfig
+@@ -8,6 +8,7 @@ config LOONGARCH_VIRT
+     imply VIRTIO_VGA
+     imply PCI_DEVICES
+     imply NVDIMM
++    imply TPM_TIS_SYSBUS
+     select SERIAL
+     select VIRTIO_PCI
+     select PLATFORM_BUS
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index af45ce526d..72bfc35ae6 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -646,6 +646,9 @@ void loongarch_acpi_setup(LoongArchVirtMachineState *lvms)
+                                              build_state, tables.rsdp,
+                                              ACPI_BUILD_RSDP_FILE);
  
--    memcpy(p, info->kernel_cmdline, COMMAND_LINE_SIZE);
-+    g_strlcpy(p, info->kernel_cmdline, COMMAND_LINE_SIZE);
- }
- 
- static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
++    fw_cfg_add_file(lvms->fw_cfg, ACPI_BUILD_TPMLOG_FILE, tables.tcpalog->data,
++                    acpi_data_len(tables.tcpalog));
++
+     qemu_register_reset(acpi_build_reset, build_state);
+     acpi_build_reset(build_state);
+     vmstate_register(NULL, 0, &vmstate_acpi_build, build_state);
 -- 
 2.34.1
 
