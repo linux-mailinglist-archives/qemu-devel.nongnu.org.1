@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E11C92E183
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0475292E189
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:07:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRoog-0007yV-8C; Thu, 11 Jul 2024 04:06:14 -0400
+	id 1sRoop-0008Ug-3M; Thu, 11 Jul 2024 04:06:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sRooT-0007wO-R4
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:02 -0400
+ id 1sRooe-000828-0x
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:13 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sRooQ-0001uO-UL
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:01 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1sRooQ-0001uP-TU
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:11 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cx5Olgko9mty4DAA--.320S3;
- Thu, 11 Jul 2024 16:05:52 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxPOtiko9muS4DAA--.9368S3;
+ Thu, 11 Jul 2024 16:05:54 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxNMVfko9mXttDAA--.13828S2; 
- Thu, 11 Jul 2024 16:05:51 +0800 (CST)
+ AQAAf8DxNMVfko9mXttDAA--.13828S3; 
+ Thu, 11 Jul 2024 16:05:53 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 0/9] loongarch-to-apply queue
-Date: Thu, 11 Jul 2024 15:48:20 +0800
-Message-Id: <20240711074829.3338879-1-gaosong@loongson.cn>
+Cc: richard.henderson@linaro.org,
+	Dmitry Frolov <frolov@swemel.ru>
+Subject: [PULL 1/9] hw/loongarch/boot.c: fix out-of-bound reading
+Date: Thu, 11 Jul 2024 15:48:21 +0800
+Message-Id: <20240711074829.3338879-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240711074829.3338879-1-gaosong@loongson.cn>
+References: <20240711074829.3338879-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxNMVfko9mXttDAA--.13828S2
+X-CM-TRANSID: AQAAf8DxNMVfko9mXttDAA--.13828S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,53 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 59084feb256c617063e0dbe7e64821ae8852d7cf:
+From: Dmitry Frolov <frolov@swemel.ru>
 
-  Merge tag 'pull-aspeed-20240709' of https://github.com/legoater/qemu into staging (2024-07-09 07:13:55 -0700)
+memcpy() is trying to READ 512 bytes from memory,
+pointed by info->kernel_cmdline,
+which was (presumable) allocated by g_strdup("");
+Found with ASAN, making check with enabled sanitizers.
 
-are available in the Git repository at:
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240628123910.577740-1-frolov@swemel.ru>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/loongarch/boot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240711
-
-for you to fetch changes up to 78341408e705e1b8dc92eaae2071ae0023d586b0:
-
-  target/loongarch: Fix cpu_reset set wrong CSR_CRMD (2024-07-11 15:56:50 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20240711
-
-----------------------------------------------------------------
-Bibo Mao (2):
-      hw/loongarch/virt: Remove unused assignment
-      target/loongarch/kvm: Add software breakpoint support
-
-Dmitry Frolov (1):
-      hw/loongarch/boot.c: fix out-of-bound reading
-
-Feiyang Chen (1):
-      target/loongarch: Remove avail_64 in trans_srai_w() and simplify it
-
-Jiaxun Yang (1):
-      MAINTAINERS: Add myself as a reviewer of LoongArch virt machine
-
-Song Gao (2):
-      target/loongarch: Set CSR_PRCFG1 and CSR_PRCFG2 values
-      target/loongarch: Fix cpu_reset set wrong CSR_CRMD
-
-Xianglai Li (2):
-      hw/loongarch: Change the tpm support by default
-      hw/loongarch: Modify flash block size to 256K
-
- MAINTAINERS                                       |  1 +
- configs/targets/loongarch64-softmmu.mak           |  1 +
- hw/loongarch/Kconfig                              |  1 +
- hw/loongarch/acpi-build.c                         |  3 +
- hw/loongarch/boot.c                               |  2 +-
- hw/loongarch/virt.c                               | 15 +++--
- include/hw/loongarch/virt.h                       |  2 +-
- target/loongarch/cpu.c                            | 23 ++++---
- target/loongarch/kvm/kvm.c                        | 76 +++++++++++++++++++++++
- target/loongarch/tcg/insn_trans/trans_shift.c.inc | 15 +----
- 10 files changed, 109 insertions(+), 30 deletions(-)
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index b8e1aa18d5..cb668703bd 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -163,7 +163,7 @@ static void init_cmdline(struct loongarch_boot_info *info, void *p, void *start)
+     info->a0 = 1;
+     info->a1 = cmdline_addr;
+ 
+-    memcpy(p, info->kernel_cmdline, COMMAND_LINE_SIZE);
++    g_strlcpy(p, info->kernel_cmdline, COMMAND_LINE_SIZE);
+ }
+ 
+ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+-- 
+2.34.1
 
 
