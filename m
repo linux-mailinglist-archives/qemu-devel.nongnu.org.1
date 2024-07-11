@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEBB92E19C
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F8192E1D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:16:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRot9-0004LF-AU; Thu, 11 Jul 2024 04:10:51 -0400
+	id 1sRoyZ-0008Kq-Gq; Thu, 11 Jul 2024 04:16:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sRot7-0004GR-L4
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:10:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sRoyK-00088f-5O
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:16:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sRot4-0003Hp-NT
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:10:49 -0400
+ id 1sRoyG-0007m1-7y
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:16:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720685445;
+ s=mimecast20190719; t=1720685765;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=BfM8i/RVIKZAVXEjxV7ooO1ORu1Fs6L5Q+zIos5MOjE=;
- b=USYCQzO4NmAdbYinANvum/dv7jC3qybKZS7g1L3Z0osd7I0/kO8GHKy9ZmR4u6XymyBesr
- qx6Qf0kOWj5mfQtRvq9u4x5L2tge2C9heGimPygOuOYmtqoUEVHEGNySCH54KXQN7ECCi6
- gAov6A0rLeAih0QwpyyExOcIC35+/aw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=J0MLmWGsC6TVNoDwUvTT7I37s/y+f9HjO5i4IcMCM6k=;
+ b=ZUi+QhaUiaZbmZ+ykmUBTLkdMwkKYxc8dF4JywV35CpHxQpAhKhZmiX5nNDaPdOjjVMF9m
+ lMcIokghnMuQhSnsDTq58ijglwgA22AirwKvFJ5ikyaUV6NqWkcwvwVuID6HgQS13tDwmE
+ 4BSpECN2s5AaQ9oShuN0bD2LuBrPRrU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-DxaGoiOSPoOQog2Ve9Ya5g-1; Thu,
- 11 Jul 2024 04:10:40 -0400
-X-MC-Unique: DxaGoiOSPoOQog2Ve9Ya5g-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-ouZU4ZpHNxGWMHfsVadZLA-1; Thu,
+ 11 Jul 2024 04:15:58 -0400
+X-MC-Unique: ouZU4ZpHNxGWMHfsVadZLA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 848C519361AC; Thu, 11 Jul 2024 08:10:39 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C6DA1955BC7; Thu, 11 Jul 2024 08:15:56 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.113])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F166A1956046; Thu, 11 Jul 2024 08:10:37 +0000 (UTC)
-Date: Thu, 11 Jul 2024 10:10:36 +0200
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0290819560AA; Thu, 11 Jul 2024 08:15:54 +0000 (UTC)
+Date: Thu, 11 Jul 2024 10:15:53 +0200
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Albert Esteve <aesteve@redhat.com>
 Cc: qemu-devel@nongnu.org, jasowang@redhat.com, david@redhat.com,
@@ -51,16 +51,16 @@ Cc: qemu-devel@nongnu.org, jasowang@redhat.com, david@redhat.com,
  "Michael S. Tsirkin" <mst@redhat.com>
 Subject: Re: [RFC PATCH v2 2/5] vhost_user: Add frontend command for shmem
  config
-Message-ID: <20240711081036.GD563880@dynamic-pd01.res.v6.highway.a1.net>
+Message-ID: <20240711081553.GA572069@dynamic-pd01.res.v6.highway.a1.net>
 References: <20240628145710.1516121-1-aesteve@redhat.com>
  <20240628145710.1516121-3-aesteve@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="QWvl0FTyJBUg9ZbD"
+ protocol="application/pgp-signature"; boundary="A+seTadtYhm8vzwx"
 Content-Disposition: inline
 In-Reply-To: <20240628145710.1516121-3-aesteve@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -85,7 +85,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---QWvl0FTyJBUg9ZbD
+--A+seTadtYhm8vzwx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -122,15 +122,6 @@ On Fri, Jun 28, 2024 at 04:57:07PM +0200, Albert Esteve wrote:
 > ++-------------+---------+------------+----+------------+
 > +| num regions | padding | mem size 0 | .. | mem size 7 |
 > ++-------------+---------+------------+----+------------+
-
-8 regions may not be enough. The max according to the VIRTIO spec is
-256 because virtio-pci uses an 8-bit cap.id field for the shmid. I think
-the maximum number should be 256 here.
-
-(I haven't checked the QEMU vhost-user code to see whether it's
-reasonable to hardcode to 256 or some logic if needed to dynamically
-size the buffer depending on the "num regions" field.)
-
 > +
 > +:num regions: a 32-bit number of regions
 > +
@@ -149,10 +140,6 @@ he following struct:
 > +          VhostUserShared object;
 > +          VhostUserTransferDeviceState transfer_state;
 > +          VhostUserMMap mmap;
-
-Why are these added by this patch? Please add them in the same patch
-where they are introduced.
-
 > +          VhostUserShMemConfig shmem;
 >        };
 >    } QEMU_PACKED VhostUserMsg;
@@ -185,163 +172,28 @@ shared memory
 index
 > +  of the array.
 
-Is the information returned by SHMEM_CONFIG valid and unchanged for the
-entire lifetime of the vhost-user connection?
+Please add:
+- The Shared Memory Region size must be a multiple of the page size support=
+ed by mmap(2).
+- The size may be 0 if the region is unused. This can happen when the
+  device does not support an optional feature but does support a feature
+  that uses a higher shmid.
 
-I think the answer is yes because the enumeration that virtio-pci and
-virtio-mmio transports support is basically a one-time operation at
-driver startup and it is static (Shared Memory Regions do not appear or
-go away at runtime). Please be explicit how VHOST_USER_GET_SHMEM_CONFIG
-is intended to be used.
-
-> +
->  Back-end message types
->  ----------------------
-> =20
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 7ee8a472c6..57406dc8b4 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -104,6 +104,7 @@ typedef enum VhostUserRequest {
->      VHOST_USER_GET_SHARED_OBJECT =3D 41,
->      VHOST_USER_SET_DEVICE_STATE_FD =3D 42,
->      VHOST_USER_CHECK_DEVICE_STATE =3D 43,
-> +    VHOST_USER_GET_SHMEM_CONFIG =3D 44,
->      VHOST_USER_MAX
->  } VhostUserRequest;
-> =20
-> @@ -138,6 +139,12 @@ typedef struct VhostUserMemRegMsg {
->      VhostUserMemoryRegion region;
->  } VhostUserMemRegMsg;
-> =20
-> +typedef struct VhostUserShMemConfig {
-> +    uint32_t nregions;
-> +    uint32_t padding;
-> +    uint64_t memory_sizes[VHOST_MEMORY_BASELINE_NREGIONS];
-> +} VhostUserShMemConfig;
-> +
->  typedef struct VhostUserLog {
->      uint64_t mmap_size;
->      uint64_t mmap_offset;
-> @@ -245,6 +252,7 @@ typedef union {
->          VhostUserShared object;
->          VhostUserTransferDeviceState transfer_state;
->          VhostUserMMap mmap;
-> +        VhostUserShMemConfig shmem;
->  } VhostUserPayload;
-> =20
->  typedef struct VhostUserMsg {
-> @@ -3136,6 +3144,39 @@ static int vhost_user_check_device_state(struct vh=
-ost_dev *dev, Error **errp)
->      return 0;
->  }
-> =20
-> +static int vhost_user_get_shmem_config(struct vhost_dev *dev,
-> +                                       int *nregions,
-> +                                       uint64_t *memory_sizes,
-> +                                       Error **errp)
-> +{
-> +    int ret;
-> +    VhostUserMsg msg =3D {
-> +        .hdr.request =3D VHOST_USER_GET_SHMEM_CONFIG,
-> +        .hdr.flags =3D VHOST_USER_VERSION,
-> +    };
-> +
-> +    if (!virtio_has_feature(dev->protocol_features,
-> +                            VHOST_USER_PROTOCOL_F_SHMEM)) {
-> +        return 0;
-> +    }
-> +
-> +    ret =3D vhost_user_write(dev, &msg, NULL, 0);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    ret =3D vhost_user_read(dev, &msg);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    *nregions =3D msg.payload.shmem.nregions;
-
-Missing input validation from the untrusted vhost-user backend. nregions
-may be out of range.
-
-> +    memcpy(memory_sizes,
-> +           &msg.payload.shmem.memory_sizes,
-> +           sizeof(uint64_t) * VHOST_MEMORY_BASELINE_NREGIONS);
-> +    return 0;
-> +}
-> +
->  const VhostOps user_ops =3D {
->          .backend_type =3D VHOST_BACKEND_TYPE_USER,
->          .vhost_backend_init =3D vhost_user_backend_init,
-> @@ -3174,4 +3215,5 @@ const VhostOps user_ops =3D {
->          .vhost_supports_device_state =3D vhost_user_supports_device_stat=
-e,
->          .vhost_set_device_state_fd =3D vhost_user_set_device_state_fd,
->          .vhost_check_device_state =3D vhost_user_check_device_state,
-> +        .vhost_get_shmem_config =3D vhost_user_get_shmem_config,
->  };
-> diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-=
-backend.h
-> index 70c2e8ffee..f9c2955420 100644
-> --- a/include/hw/virtio/vhost-backend.h
-> +++ b/include/hw/virtio/vhost-backend.h
-> @@ -159,6 +159,11 @@ typedef int (*vhost_set_device_state_fd_op)(struct v=
-host_dev *dev,
->                                              int *reply_fd,
->                                              Error **errp);
->  typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, Error =
-**errp);
-> +typedef int (*vhost_get_shmem_config_op)(struct vhost_dev *dev,
-> +                                         int *nregions,
-> +                                         uint64_t *memory_sizes,
-> +                                         Error **errp);
-> +
-> =20
->  typedef struct VhostOps {
->      VhostBackendType backend_type;
-> @@ -214,6 +219,7 @@ typedef struct VhostOps {
->      vhost_supports_device_state_op vhost_supports_device_state;
->      vhost_set_device_state_fd_op vhost_set_device_state_fd;
->      vhost_check_device_state_op vhost_check_device_state;
-> +    vhost_get_shmem_config_op vhost_get_shmem_config;
->  } VhostOps;
-> =20
->  int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
-> diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-use=
-r.h
-> index d7c09ffd34..e1b587a908 100644
-> --- a/include/hw/virtio/vhost-user.h
-> +++ b/include/hw/virtio/vhost-user.h
-> @@ -32,6 +32,7 @@ enum VhostUserProtocolFeature {
->      /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
->      VHOST_USER_PROTOCOL_F_SHARED_OBJECT =3D 18,
->      VHOST_USER_PROTOCOL_F_DEVICE_STATE =3D 19,
-> +    VHOST_USER_PROTOCOL_F_SHMEM =3D 20,
->      VHOST_USER_PROTOCOL_F_MAX
->  };
-> =20
-> --=20
-> 2.45.2
->=20
-
---QWvl0FTyJBUg9ZbD
+--A+seTadtYhm8vzwx
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaPk3wACgkQnKSrs4Gr
-c8h4eQgAw+FV/mkyYHxhyni8w0p7APFRiJaVXBGoQQv4vHKN7dQmEsQkP/vY2Sfy
-c23+WdqodYseEsMjYXaTORQlbQBJ6WB6eDAPCa8hc+pp+baKSAiITd+YKXOH0ATC
-3BcHT6cNIgP5afUcm5k1/V803m+2zZVnnEtJvuAmtVpRnpgCYoldeH6v4sXDeWsO
-Wa+j/CBZaq/q5anDmLDjBsFGLd0iDMjBrsmeLxGZcfFTtkdnlVB14Pcl52SDm7hG
-sjDCh0NNA5jAnwe7I7N21/8Rt4XSNQ2GegKVQOczl5IvwtMS5S3k13Du3nKrKfmA
-8/5whJC01zgTq0q+Ezqb/e/bi1GiiA==
-=qCQv
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaPlLkACgkQnKSrs4Gr
+c8i5Ngf/dDMyT8Er1XkTzi7yEWRZmUi4fpFaiO81+xKSk6HNyeVv2p0ONDFSp+Fu
+MNkfWlyz8FhF+QQ1lvb0rxWz63Sry9FvESpV7+1ixpP3Jmx4v9oaDa/91b2ssF9c
+d6R/YHJVuctx+oYY0ru4kSOMYxdxlOIjvlKSMVMtBJoFketz+j0RUSi7QoIR2vdR
+8HRRcsWGd/buCMN1FjHGG10gFwyi/oJyXi9p/jzLt0zz9iKXINXLdTMBX+RpPk3h
+A6IVXp9oYmv3/Jqn6IluOjJIy/yA2WoJxTclvnonzcC4+uy96l3x6J93BUggS49u
+uc7tSGdmHxLDpuuMBs+0y557rsI17Q==
+=ZDSo
 -----END PGP SIGNATURE-----
 
---QWvl0FTyJBUg9ZbD--
+--A+seTadtYhm8vzwx--
 
 
