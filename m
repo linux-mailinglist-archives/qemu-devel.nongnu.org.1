@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5382A92EE4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 20:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D942692EE47
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 20:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRyAE-0007Iw-Ey; Thu, 11 Jul 2024 14:05:06 -0400
+	id 1sRyAQ-0007Mt-3u; Thu, 11 Jul 2024 14:05:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sRyA4-0006yj-7B; Thu, 11 Jul 2024 14:04:56 -0400
+ id 1sRyA6-00075l-GC; Thu, 11 Jul 2024 14:05:00 -0400
 Received: from fhigh5-smtp.messagingengine.com ([103.168.172.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sRyA1-0003wj-32; Thu, 11 Jul 2024 14:04:54 -0400
+ id 1sRyA4-0003x1-P8; Thu, 11 Jul 2024 14:04:58 -0400
 Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id 5222F11406A8;
- Thu, 11 Jul 2024 14:04:52 -0400 (EDT)
+ by mailfhigh.nyi.internal (Postfix) with ESMTP id 8091D1140395;
+ Thu, 11 Jul 2024 14:04:55 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute3.internal (MEProxy); Thu, 11 Jul 2024 14:04:52 -0400
+ by compute3.internal (MEProxy); Thu, 11 Jul 2024 14:04:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1720721092; x=
- 1720807492; bh=4HASoSfZRxPdg/HZsQNUQDHZWGxP6Kj4aXho5mhlYEo=; b=F
- BI0+5UGkx+eYnP/vmUZIlEd/YZiJBF2gtw4IbL1bO5SG6TMGaQQox0Sd2NJ4wkzY
- 1yxKqB8X/FoIdTpXcq+jWs1Xr50zAJ4StIyF0DJy4ZS5XA3Y+cOTCgrB5/F7IUYG
- rJteg8nCBO0CrLC+z6KOL9gLax1yUZ+ss1bS8WP//rvlOOXlm2BmmRPv9XjMgy34
- O/uwRGvizcvk6m9Qt8TM9QsoD+NH/7JXrBHSOzgUvZT1IuYKVloZ9f48arNtmGMn
- 9sXNhO0Wrn0oHgxBESD6mI3QCf4Mg984j6dhvXmUoXuc99NXEUo7CGwTtRpWvJQT
- NSQexcP5KCKoYh59giy1A==
+ :reply-to:subject:subject:to:to; s=fm1; t=1720721095; x=
+ 1720807495; bh=fU0R5yFm01ORA9K//V//NlC8z2SUntdN8U1tV783OlM=; b=I
+ 3hcItcKwDfVkO8U2XZYnzKK2s/kesvma/BsXzX5IJ2ulfukxaeffvvaneKY8t9KC
+ KIUW6aO0zGklWvmgQT2HtNMMxJLycVct7oiVplFH6sVghRFkeH4s0yoIkFhbw6Lc
+ b1F22tfzHLvng61koP8Z7Wru1PBLV6zmNPNxkbh7RteopbCAvWWbb7iO7Ff3Ut1d
+ hFLSn1qy3NE8nanlZ7BZO0tVDJwFxI95KpehYNA1+2DxTy1whQmaS3hAvoYJ+rK9
+ ZnEbdeAnaE9K+LXFKylfzHC5/7VWjMmE3E0FUcv3LDI0hJXSo/OuNZ1gOXpOjV/y
+ toC1yAFCrbYkoGwOR74YA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1720721092; x=
- 1720807492; bh=4HASoSfZRxPdg/HZsQNUQDHZWGxP6Kj4aXho5mhlYEo=; b=Z
- PXtczCd7qVmNQTiiApBcXjEh+BJzSt9P8n90LoCphJ9NTsl6yfXMtu5D97jImp/s
- M7a/cZYtRWGAHYspcWO0qAPjdAcY0kwEhtCwHJ+HFLlV+VwTYu1EAZI8TGhjTKvD
- 26eUCuFgadBdJF0YBvn5X5WfiboUWmNkbPCuljhiqxV8zYjFfeQhl3ncppeKZWq2
- t1HG3dtNMoWQkCtKcHtVNiSmdqBPWuW14Ixksh8mybEZOwYbibGc5+a8Jh96VwM0
- 5zNpTOa/xa4QDHZMHbXQOYuSv6FWlO4NkvlUhxesSueXevwJIyOFu9gIi3/LN9ZZ
- otGfPQ0ghoezdl4ZRq12A==
-X-ME-Sender: <xms:wx6QZmyo_nGptHZbrj6q_hMnBZ6C0zMLxPchZodWCa9tylrASNZD4g>
- <xme:wx6QZiTaRIhz5LGqnYvGW662DZZIYynVIC22DqIkK8qVxzZ4tC8sfPxUIxwxj1q3T
- IbiWsWcjFpfY3BJcfc>
-X-ME-Received: <xmr:wx6QZoWR3SlSSOTiuWuVsX1uPMjvwDz1qpiMwKjPNFN-IawNBAYmhonurAXoWy1EGc_FehgG7Q>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1720721095; x=
+ 1720807495; bh=fU0R5yFm01ORA9K//V//NlC8z2SUntdN8U1tV783OlM=; b=t
+ ddzMYDh9i/oR0o74aSJDdeld9cg4Yztw0VHESVvoGpuU/4bq5lS5blpk2WP+WsPz
+ p7eACwl1jLj2+4JLJtPnTieKZvgSzVOfExIktg950j64t2R6J8XE/hs2YVijLikh
+ vHpOwwYto2MVBgL/il6CCJnpz9lD1TzB+QTIJS445mk2pof+IWNvuM7mKUDBeLjI
+ nNSh3rKofjJkxjjaY4nVxYzB8yoPesDLhi2SKdWaCBc39uJDTkaoiaUz8Lk0rOvW
+ f+5btSzthMvIHjlKADyrv3Sv7lXwACjcQq5NhP3VdFSYSaRYhl9sJVp6oVsH6Bzr
+ r7VPtlU7WzYfDjak6xUJQ==
+X-ME-Sender: <xms:xh6QZsZEDp1_ndn_BWryP5EjJqnQUl-qngsHjtAtxoC-InRSN2aKpA>
+ <xme:xh6QZnZIWxO7n1XLdrgvGmUDoPGLMPWRabgA-werByC5PMQw_1oFQdMbjsqwrwg9G
+ VNxXWqYGeVX-JGupSE>
+X-ME-Received: <xmr:xh6QZm82IFkKUZ9_BJzxCNeyZIwDkkx3lOjXE83EbLuuLiIXnQpoiiyP5oiMUP_klXNm_gewZQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfeeggdduvdduucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -57,14 +57,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfeeggdduvdduucetufdoteggod
  htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
  udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
  htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:wx6QZsjfk6XR5_ksOcPBEE1VPZx5UxXPRaXJtOQS7fDIJocMRFAKiQ>
- <xmx:wx6QZoC8p1Ng2nxWNFDKqrt3Sig9fEhoZkDryLas0Mh9t6VLyKwd9Q>
- <xmx:wx6QZtLerJjLuLsfcosIMTtDmnwE1RXIir1ne3Q8vDHqfl7TULgWZQ>
- <xmx:wx6QZvAcAUpj10iERP7_0ZD74H7pClkB4k-4ClN9NQCbWAfraMnq_w>
- <xmx:xB6QZsz1MzIJHdxa5a5K2MuDm_ka6KHPUP0RQSWbgT8LpLB2H7caX8RE>
+X-ME-Proxy: <xmx:xh6QZmpT1pjfSNklOh_rh9kwT87at2BF2BQPm9dg2JZ_38p7wy2qLA>
+ <xmx:xh6QZnqELrBXS47F0RRL_Ne5lMA_nAryG1-YqpD6ozA9JmC8QHx8mA>
+ <xmx:xh6QZkSgMjygYYmdu2BDJS9wWbqxdJCjSzqEzhG4Y1Nqm4j_6fMSVQ>
+ <xmx:xh6QZnrm2EZrx7cNr40Kph1wK_1K5dwiCy6hFrOmH5EzS8ALJw16lg>
+ <xmx:xx6QZg42kSTcaq_n-kIZgab9vk2ETTeIqvdRxIw2RcJhGx3dPdIETMrO>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Jul 2024 14:04:49 -0400 (EDT)
+ 11 Jul 2024 14:04:52 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -74,22 +74,22 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Jesper Devantier <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
  Minwoo Im <minwoo.im@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 3/7] hw/nvme: fix BAR size mismatch of SR-IOV VF
-Date: Thu, 11 Jul 2024 20:04:40 +0200
-Message-ID: <20240711180436.8532-12-its@irrelevant.dk>
+Subject: [PULL 4/7] hw/nvme: add Identify Endurance Group List
+Date: Thu, 11 Jul 2024 20:04:41 +0200
+Message-ID: <20240711180436.8532-13-its@irrelevant.dk>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240711180436.8532-9-its@irrelevant.dk>
 References: <20240711180436.8532-9-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3605; i=k.jensen@samsung.com;
- h=from:subject; bh=ywvt19DaycrPLQkuZuEEUyxvLK5gVPKhT1LHVJGcO7E=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGaQHrVsA41B5SgfmIxk0DTZY68fp1c4Y3W9B
- sGFKD/4N86spIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJmkB61AAoJEE3hrzFt
- Tw3pOyEH/1zYW5Xl9xW2BWdhcZruugVIjhwj848zZ1vGdF0wItcCE1FIu8wM2WarG0dhGmly0Pp
- loo1nYrQPr3kKYMl8SKLsIEup2V+pntajoV11oeArKUaNA2wv8X4YUdouvjTgXmiXfJronHMi6W
- wH8goCoPdGfX8S61y4AXhJMUJIUOh3RSIOxPMeYDvgyTvzfVvmusbi7sh2fX1LO1MbrMddPbvaJ
- vDg3/R7yQaLVD3c9iYTBJ38NWJX2OLQjdmJhie5aEVgALtI8y7/aiNJMQ3g4VYumUI77/3qRnMw
- ICRHq+0LwljIC8yvJQXQj5vIq1iceFeYuWd1UZolCETkjioP+JsI1qSl
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2675; i=k.jensen@samsung.com;
+ h=from:subject; bh=bLLqYH+xpFPc6bj1dQ4f6vAV7JLMQj/+ItiUpoYuPOA=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGaQHrU8bZRr6zIgFxItj9xrzxUI9CElqs2CU
+ CUAnZF7nVMpwYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJmkB61AAoJEE3hrzFt
+ Tw3pXEwH/0wPzyvsHQ1QZHI7kShq8cgvnoXGtheuhaxQk370jOv5Ulvna4iaJpYk9W8MovYp3S+
+ lF/XGz1goxNsqkO2s0nwdtzk0kBvP8G1+8ZT24Bc8fo4ELx+DEFRWfVhh0OTtNEiFFu+UJRdYVF
+ Us0xwhZCN8kWbMLoDDBiWXi2Lqm+sE8FSWapz7nEsD6w/BK/4Nca6z0iLEN1cIUKjkXcqt4jQ9W
+ uiIODdwdoB8EQ+vkWK24aiZPYjLcDoLeOiDRwMFBmycW9RsEizvew1FKL0OefPMqMZ08BE83G5M
+ QblLBznpIeCjkjfG6KT3Q4jcnyr0qjqZebzZo7BDW3QOIkeafjUMdaLR
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -119,89 +119,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Minwoo Im <minwoo.im@samsung.com>
 
-PF initializes SR-IOV VF BAR0 region in nvme_init_sriov() with bar_size
-calcaulted by Primary Controller Capability such as VQFRSM and VIFRSM
-rather than `max_ioqpairs` and `msix_qsize` which is for PF only.
+Commit 73064edfb864 ("hw/nvme: flexible data placement emulation")
+intorudced NVMe FDP feature to nvme-subsys and nvme-ctrl with a
+single endurance group #1 supported.  This means that controller should
+return proper identify data to host with Identify Endurance Group List
+(CNS 19h).  But, yes, only just for the endurance group #1.  This patch
+allows host applications to ask for which endurance group is available
+and utilize FDP through that endurance group.
 
-In this case, the bar size reported in nvme_init_sriov() by PF and
-nvme_init_pci() by VF might differ especially with large number of
-sriov_max_vfs (e.g., 127 which is curret maximum number of VFs).  And
-this reports invalid BAR0 address of VFs to the host operating system
-so that MMIO access will not be caught properly and, of course, NVMe
-driver initialization is failed.
-
-For example, if we give the following options, BAR size will be
-initialized by PF with 4K, but VF will try to allocate 8K BAR0 size in
-nvme_init_pci().
-
-	#!/bin/bash
-
-	nr_vf=$((127))
-	nr_vq=$(($nr_vf * 2 + 2))
-	nr_vi=$(($nr_vq / 2 + 1))
-	nr_ioq=$(($nr_vq + 2))
-
-	...
-
-	-device nvme,serial=foo,id=nvme0,bus=rp2,subsys=subsys0,mdts=9,msix_qsize=$nr_ioq,max_ioqpairs=$nr_ioq,sriov_max_vfs=$nr_vf,sriov_vq_flexible=$nr_vq,sriov_vi_flexible=$nr_vi \
-
-To fix this issue, this patch modifies the calculation of BAR size in
-the PF and VF initialization by using different elements:
-
-	PF: `max_ioqpairs + 1` with `msix_qsize`
-	VF: VQFRSM with VIFRSM
-
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ hw/nvme/ctrl.c       | 22 ++++++++++++++++++++++
+ include/block/nvme.h |  1 +
+ 2 files changed, 23 insertions(+)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 231e1127cec8..f3ae54896f6d 100644
+index f3ae54896f6d..50f8cc90b038 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8104,6 +8104,7 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-     uint8_t *pci_conf = pci_dev->config;
-     uint64_t bar_size;
-     unsigned msix_table_offset = 0, msix_pba_offset = 0;
-+    unsigned nr_vectors;
-     int ret;
+@@ -5629,6 +5629,26 @@ static uint16_t nvme_identify_nslist_csi(NvmeCtrl *n, NvmeRequest *req,
+     return nvme_c2h(n, list, data_len, req);
+ }
  
-     pci_conf[PCI_INTERRUPT_PIN] = 1;
-@@ -8136,9 +8137,19 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-         assert(n->params.msix_qsize >= 1);
- 
-         /* add one to max_ioqpairs to account for the admin queue pair */
--        bar_size = nvme_mbar_size(n->params.max_ioqpairs + 1,
--                                  n->params.msix_qsize, &msix_table_offset,
--                                  &msix_pba_offset);
-+        if (!pci_is_vf(pci_dev)) {
-+            nr_vectors = n->params.msix_qsize;
-+            bar_size = nvme_mbar_size(n->params.max_ioqpairs + 1,
-+                                      nr_vectors, &msix_table_offset,
-+                                      &msix_pba_offset);
-+        } else {
-+            NvmeCtrl *pn = NVME(pcie_sriov_get_pf(pci_dev));
-+            NvmePriCtrlCap *cap = &pn->pri_ctrl_cap;
++static uint16_t nvme_endurance_group_list(NvmeCtrl *n, NvmeRequest *req)
++{
++    uint16_t list[NVME_CONTROLLER_LIST_SIZE] = {};
++    uint16_t *nr_ids = &list[0];
++    uint16_t *ids = &list[1];
++    uint16_t endgid = le32_to_cpu(req->cmd.cdw11) & 0xffff;
 +
-+            nr_vectors = le16_to_cpu(cap->vifrsm);
-+            bar_size = nvme_mbar_size(le16_to_cpu(cap->vqfrsm), nr_vectors,
-+                                      &msix_table_offset, &msix_pba_offset);
-+        }
- 
-         memory_region_init(&n->bar0, OBJECT(n), "nvme-bar0", bar_size);
-         memory_region_init_io(&n->iomem, OBJECT(n), &nvme_mmio_ops, n, "nvme",
-@@ -8152,7 +8163,7 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-                              PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
-         }
- 
--        ret = msix_init(pci_dev, n->params.msix_qsize,
-+        ret = msix_init(pci_dev, nr_vectors,
-                         &n->bar0, 0, msix_table_offset,
-                         &n->bar0, 0, msix_pba_offset, 0, errp);
-     }
++    /*
++     * The current nvme-subsys only supports Endurance Group #1.
++     */
++    if (!endgid) {
++        *nr_ids = 1;
++        ids[0] = 1;
++    } else {
++        *nr_ids = 0;
++    }
++
++    return nvme_c2h(n, list, sizeof(list), req);
++}
++
+ static uint16_t nvme_identify_ns_descr_list(NvmeCtrl *n, NvmeRequest *req)
+ {
+     NvmeNamespace *ns;
+@@ -5744,6 +5764,8 @@ static uint16_t nvme_identify(NvmeCtrl *n, NvmeRequest *req)
+         return nvme_identify_nslist(n, req, false);
+     case NVME_ID_CNS_CS_NS_ACTIVE_LIST:
+         return nvme_identify_nslist_csi(n, req, true);
++    case NVME_ID_CNS_ENDURANCE_GROUP_LIST:
++        return nvme_endurance_group_list(n, req);
+     case NVME_ID_CNS_CS_NS_PRESENT_LIST:
+         return nvme_identify_nslist_csi(n, req, false);
+     case NVME_ID_CNS_NS_DESCR_LIST:
+diff --git a/include/block/nvme.h b/include/block/nvme.h
+index bb231d0b9ad0..7c77d38174a7 100644
+--- a/include/block/nvme.h
++++ b/include/block/nvme.h
+@@ -1074,6 +1074,7 @@ enum NvmeIdCns {
+     NVME_ID_CNS_CTRL_LIST             = 0x13,
+     NVME_ID_CNS_PRIMARY_CTRL_CAP      = 0x14,
+     NVME_ID_CNS_SECONDARY_CTRL_LIST   = 0x15,
++    NVME_ID_CNS_ENDURANCE_GROUP_LIST  = 0x19,
+     NVME_ID_CNS_CS_NS_PRESENT_LIST    = 0x1a,
+     NVME_ID_CNS_CS_NS_PRESENT         = 0x1b,
+     NVME_ID_CNS_IO_COMMAND_SET        = 0x1c,
 -- 
 2.44.0
 
