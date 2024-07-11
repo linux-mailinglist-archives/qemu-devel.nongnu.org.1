@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D5792EA92
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 16:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3384192EA81
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 16:19:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRudh-00030j-NQ; Thu, 11 Jul 2024 10:19:17 -0400
+	id 1sRudj-00037o-Kh; Thu, 11 Jul 2024 10:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sRudf-0002ss-4z; Thu, 11 Jul 2024 10:19:15 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sRudh-00030W-8J; Thu, 11 Jul 2024 10:19:17 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sRudd-0005Rd-Jb; Thu, 11 Jul 2024 10:19:14 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-70b6003c3d2so633769b3a.0; 
- Thu, 11 Jul 2024 07:19:11 -0700 (PDT)
+ id 1sRudf-0005Rz-Pu; Thu, 11 Jul 2024 10:19:16 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-70af3d9169bso860182b3a.1; 
+ Thu, 11 Jul 2024 07:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720707550; x=1721312350; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720707553; x=1721312353; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0DgZsKqI5Qui8xJrG3nYJqRYaaUiPlIWM1v7RfXcJUQ=;
- b=HzUBqwLPr9vArabkZWIizULY7uwz/vFZFgQRhL1a/ULPwF8MMmLRqMsrCz/9Xx+q8l
- tXUl4UxjJPD15q/4lBqYJpEzSiJ4STezkpNaCC5Z9Z9dROv2b5LuoXUUUJEGU2+Mb6wZ
- ibxnewmpoHLmjoD3CxoiDvtLTcGdSXTqNUUZBWo6qmhOWZs6KMwqs24B6WZSi3Muq0nZ
- jPTLbMGs3SLr22/ASjY5cze0C2K9/RwvblgLdvN42zTYcCIhvLRy8D5SVKbKFL/sB/N7
- gcBZE8qI3dYooUXrHrS+pagPXsy66ClEI7XQqn5yc6G9GxCJQ3+K4isSJqEnfqV+znW2
- pEXw==
+ bh=k/0JQNiQg7zbx/VBkr1CcWf+JFBJuc5tZvRHhkhIoiY=;
+ b=FM8c7SRBfQVrREweoXnTMOLORhgolGp/Qi1BpomHqmnCN0JDp6GnZ+5bHqlz6jyre8
+ eeFDtBHl111MT4ivwQBB4C4c8VjsP/g94BgRlDno8Ux4ysdG+lZd2KknWmh33Eibt/IP
+ 6qF5Jbv8Y6x5OTfTeUOpQt+HlMYVu7zO/R+0EETpBK+Qa5Bq6yDC41SFP6tNhki+VOwF
+ KibDQx3h5Sw4pGxq+v2FjRcwaml674kNYg3IqZxzW706TY04qMM/ord+kfiO24oJfWBE
+ pgEzNZOqVUq57AHB0uBnVsBUlpg5kBJktwCLqwTiFxVnyxPFEDxp5MRCvJAXdeeSn6aP
+ 5gtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720707550; x=1721312350;
+ d=1e100.net; s=20230601; t=1720707553; x=1721312353;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0DgZsKqI5Qui8xJrG3nYJqRYaaUiPlIWM1v7RfXcJUQ=;
- b=MSf5pjbyyPRMlRfwUyQh/zMFQFP/xhU3YVliDkwdWL6GA3f9dgrT5PXDq7b017A1MF
- g4JDR4TwIKNhGk2sFkvYOAVANtz6DA5ys5ESQisWG7u8O/jzoOWSQET57lz9FFCOC+MP
- 6YNNGfL1I93ucT0/tBJSWkGWtGKEZR4hl6wXCOm+yorGIu/zTJNpoRnUMeoU4GeyRcQ2
- +5hh/DTVKWbm6GzRPxrMhNTa66yQzjveeC/kL5v8KRCvY2o+wDklwsJeA99MsJYbWGKK
- OqZPasmn0Pc51R078/haKsy1k/8CoPp2HSphWTzeK8bUqdWLZgPnINQn/BVT5HQSrSl/
- Pc3g==
+ bh=k/0JQNiQg7zbx/VBkr1CcWf+JFBJuc5tZvRHhkhIoiY=;
+ b=Mb5gHIgSlsP7RYbygeaz9TSsq04lKe9/+jdC5tg1wJfm+d68oCpbCc27KE2g+iPYFC
+ +fqzpxyU6L6HdC3jCDlPSWP+L1XUahj53Cv39uAK/+GP2dytiXtizXGD0NQ1ZxC4CgjI
+ f4L+quxxGYzYhAQ0j4gxYE+2NCXCW2YOJCiMNQje6OrZX/n+JP0FeBAY6+zSz1bXygT6
+ I9LPJ63uFriqm1WMxZ6usobX8GALNjkMlBv+wntd2eYB8X67aOf2n5vVj4kTqqYsfOeC
+ 11f/6N4IHDg5i6U6xdCwtkjMzF9JU48a8jdUl7kMp5ZbLtXY7GfFK0jsLhS/+ovP9k2m
+ ebIg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWV0IyUMSh1DVCaBl8fC7FiYKeKobq8ud1qaL2TrhEo9/2wXOF2+HRPaox3eD21vWqrQDSXn1X8mfBP/BLBEE7uWBYeq2A=
-X-Gm-Message-State: AOJu0YzBmo1q4fuGT9zD+mwasyPsMBmxqyaDEX4r1gl7tL9Uu9Qm96oT
- ULV8ax+up3DlaVLibKm7iTshVm8/z5PtyY/6iVFejDjIfaNwX6R1y4Bo4L3j
-X-Google-Smtp-Source: AGHT+IEklDeaqTNY8/incWvI8MIqhlhhVgYrQDVIMhozgbGm3pC2G7+pFNCAW/iJDtJAJ3zCpdRmiQ==
-X-Received: by 2002:a05:6a00:1ca2:b0:70b:17df:cbc1 with SMTP id
- d2e1a72fcca58-70b4361b82amr9217369b3a.30.1720707549695; 
- Thu, 11 Jul 2024 07:19:09 -0700 (PDT)
+ AJvYcCVUfoiB0ubF48/RUV8DP27veDdpRWWjpMmG2dv4HCw45+z8Xrpn754LE78ARz1j9dj19jlTxITHJXdWTGcAempNC27je9U=
+X-Gm-Message-State: AOJu0Yz5mgVCk4zvU79PE3dxHpJu3EQLwDLdYt7Lobcsh7bK/jnajPXP
+ eLrch+DOQF0SA+i16jbaFzLwoDDITG4mnrCQWWv34K0fPhNTFNQSqZnoCfRj
+X-Google-Smtp-Source: AGHT+IEHK9hFKCMVXA2i3/XqteYTJn1Byq7QkglNbkLE0opkdHddDU6L82lJ+qFWl4tigtF5IZkzlQ==
+X-Received: by 2002:a05:6a00:a27:b0:704:2bdd:82fe with SMTP id
+ d2e1a72fcca58-70b4356c534mr9166117b3a.15.1720707553286; 
+ Thu, 11 Jul 2024 07:19:13 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b54ec730fsm3308904b3a.173.2024.07.11.07.19.03
+ d2e1a72fcca58-70b54ec730fsm3308904b3a.173.2024.07.11.07.19.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 07:19:07 -0700 (PDT)
+ Thu, 11 Jul 2024 07:19:12 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 02/18] ppc/pnv: Add pointer from PnvCPUState to PnvCore
-Date: Fri, 12 Jul 2024 00:18:34 +1000
-Message-ID: <20240711141851.406677-3-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Subject: [PATCH 03/18] ppc/pnv: Add a pointer from PnvChip to PnvMachineState
+Date: Fri, 12 Jul 2024 00:18:35 +1000
+Message-ID: <20240711141851.406677-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240711141851.406677-1-npiggin@gmail.com>
 References: <20240711141851.406677-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,49 +94,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This helps move core state from CPU to core structures.
+This helps avoid qdev_get_machine() calls.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv_core.h | 1 +
- hw/ppc/pnv_core.c         | 3 +++
- 2 files changed, 4 insertions(+)
+ include/hw/ppc/pnv_chip.h | 2 ++
+ hw/ppc/pnv.c              | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index c6d62fd145..29cab9dfd9 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -54,6 +54,7 @@ struct PnvCoreClass {
- #define PNV_CORE_TYPE_NAME(cpu_model) cpu_model PNV_CORE_TYPE_SUFFIX
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 4eaa7d3999..decfbc0ff7 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -23,6 +23,8 @@ struct PnvChip {
+     SysBusDevice parent_obj;
  
- typedef struct PnvCPUState {
-+    PnvCore *pnv_core;
-     Object *intc;
- } PnvCPUState;
- 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index f40ab721d6..2da271ffb6 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -278,6 +278,7 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
-     pc->threads = g_new(PowerPCCPU *, cc->nr_threads);
-     for (i = 0; i < cc->nr_threads; i++) {
-         PowerPCCPU *cpu;
-+        PnvCPUState *pnv_cpu;
- 
-         obj = object_new(typename);
-         cpu = POWERPC_CPU(obj);
-@@ -288,6 +289,8 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
-         object_property_add_child(OBJECT(pc), name, obj);
- 
-         cpu->machine_data = g_new0(PnvCPUState, 1);
-+        pnv_cpu = pnv_cpu_state(cpu);
-+        pnv_cpu->pnv_core = pc;
- 
-         object_unref(obj);
+     /*< public >*/
++    PnvMachineState *pnv_machine;
++
+     uint32_t     chip_id;
+     uint64_t     ram_start;
+     uint64_t     ram_size;
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 7878fed43c..3bcf11984c 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2202,6 +2202,7 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
+         return;
      }
+ 
++    chip->pnv_machine = pnv;
+     chip->cores = g_new0(PnvCore *, chip->nr_cores);
+ 
+     for (i = 0, core_hwid = 0; (core_hwid < sizeof(chip->cores_mask) * 8)
+@@ -2614,7 +2615,7 @@ static void pnv_cpu_do_nmi(PnvChip *chip, PowerPCCPU *cpu, void *opaque)
+ 
+ static void pnv_nmi(NMIState *n, int cpu_index, Error **errp)
+ {
+-    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
++    PnvMachineState *pnv = PNV_MACHINE(n);
+     int i;
+ 
+     for (i = 0; i < pnv->num_chips; i++) {
 -- 
 2.45.1
 
