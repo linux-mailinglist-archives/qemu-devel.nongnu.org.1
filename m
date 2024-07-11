@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E94D92E18B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A247392E185
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 10:07:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRook-0008Ce-7A; Thu, 11 Jul 2024 04:06:18 -0400
+	id 1sRooh-00081a-C0; Thu, 11 Jul 2024 04:06:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sRooW-0007xN-5c
+ id 1sRooV-0007xL-44
  for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:04 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sRooR-0001uQ-1F
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:03 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1sRooR-0001uR-0K
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 04:06:02 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bxl+piko9mvi4DAA--.324S3;
+ by gateway (Coremail) with SMTP id _____8Cx7+tjko9mwC4DAA--.9430S3;
  Thu, 11 Jul 2024 16:05:55 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxNMVfko9mXttDAA--.13828S5; 
- Thu, 11 Jul 2024 16:05:54 +0800 (CST)
+ AQAAf8DxNMVfko9mXttDAA--.13828S6; 
+ Thu, 11 Jul 2024 16:05:55 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
-	Xianglai Li <lixianglai@loongson.cn>
-Subject: [PULL 3/9] hw/loongarch: Modify flash block size to 256K
-Date: Thu, 11 Jul 2024 15:48:23 +0800
-Message-Id: <20240711074829.3338879-4-gaosong@loongson.cn>
+	Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 4/9] hw/loongarch/virt: Remove unused assignment
+Date: Thu, 11 Jul 2024 15:48:24 +0800
+Message-Id: <20240711074829.3338879-5-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240711074829.3338879-1-gaosong@loongson.cn>
 References: <20240711074829.3338879-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxNMVfko9mXttDAA--.13828S5
+X-CM-TRANSID: AQAAf8DxNMVfko9mXttDAA--.13828S6
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,34 +63,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xianglai Li <lixianglai@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
 
-loongarch added a common library for edk2 to
-parse flash base addresses through fdt.
-For compatibility with other architectures,
-the flash block size in qemu is now changed to 256k.
+There is abuse usage about local variable gap. Remove
+duplicated assignment and solve Coverity reported error.
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Resolves: Coverity CID 1546441
+Fixes: 3cc451cbce ("hw/loongarch: Refine fwcfg memory map")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240624033319.999631-1-lixianglai@loongson.cn>
+Message-Id: <20240612033637.167787-1-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- include/hw/loongarch/virt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/loongarch/virt.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 8fdfacf268..603c1cebdb 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -20,7 +20,7 @@
- #define VIRT_FWCFG_BASE         0x1e020000UL
- #define VIRT_BIOS_BASE          0x1c000000UL
- #define VIRT_BIOS_SIZE          (16 * MiB)
--#define VIRT_FLASH_SECTOR_SIZE  (128 * KiB)
-+#define VIRT_FLASH_SECTOR_SIZE  (256 * KiB)
- #define VIRT_FLASH0_BASE        VIRT_BIOS_BASE
- #define VIRT_FLASH0_SIZE        VIRT_BIOS_SIZE
- #define VIRT_FLASH1_BASE        0x1d000000UL
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 8be2d2ff6a..e592b1b6b7 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1054,7 +1054,6 @@ static void fw_cfg_add_memory(MachineState *ms)
+         memmap_add_entry(base, gap, 1);
+         size -= gap;
+         base = VIRT_HIGHMEM_BASE;
+-        gap = ram_size - VIRT_LOWMEM_SIZE;
+     }
+ 
+     if (size) {
+@@ -1067,17 +1066,17 @@ static void fw_cfg_add_memory(MachineState *ms)
+     }
+ 
+     /* add fw_cfg memory map of other nodes */
+-    size = ram_size - numa_info[0].node_mem;
+-    gap  = VIRT_LOWMEM_BASE + VIRT_LOWMEM_SIZE;
+-    if (base < gap && (base + size) > gap) {
++    if (numa_info[0].node_mem < gap && ram_size > gap) {
+         /*
+          * memory map for the maining nodes splited into two part
+-         *   lowram:  [base, +(gap - base))
+-         *   highram: [VIRT_HIGHMEM_BASE, +(size - (gap - base)))
++         * lowram:  [base, +(gap - numa_info[0].node_mem))
++         * highram: [VIRT_HIGHMEM_BASE, +(ram_size - gap))
+          */
+-        memmap_add_entry(base, gap - base, 1);
+-        size -= gap - base;
++        memmap_add_entry(base, gap - numa_info[0].node_mem, 1);
++        size = ram_size - gap;
+         base = VIRT_HIGHMEM_BASE;
++    } else {
++        size = ram_size - numa_info[0].node_mem;
+     }
+ 
+    if (size)
 -- 
 2.34.1
 
