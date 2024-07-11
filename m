@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4642992E92A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D975792E94A
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRthF-0001a0-1d; Thu, 11 Jul 2024 09:18:53 -0400
+	id 1sRtkJ-0001Gj-Nu; Thu, 11 Jul 2024 09:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth8-0001Dp-8B
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:46 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth6-00064p-3B
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:45 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4266dc7591fso6452445e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720703917; x=1721308717; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7VPW1UeLCXEWdRQjfp4peTB8sA1ZpWxPWCz/9Bk2dBY=;
- b=zkQrZ3sTp5phqBrKl4mp7ioV97LEzXcKW6nzl76fi8vonUBjb/RfgUmLaWZrv4JfN2
- LIbipdhBdzipbzIL3XrLmQT9HExfYDHm4RvvsOnen50KNMIiGolb15Iupo8HcY+ZwzyJ
- jN5j40+A43X0UtFeZu6VjiEHqRPSDKvtdsI4lSFRlKIrgyF6uPDZqQdoTY96uZAeWRIB
- pjgh6VM4qMqOggSzDCTB9hQijPb2aVDb5pK1rjI22p1n3+PK78LAoRVWwEE/nFUtxpKP
- oSbVUhsJqVaRHLhlSaCLc8V9sJm16mz6kL6wfJqqXAaoQkBO4IX5eweZ1Md6jFRije5/
- ElOA==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sRtk4-0000gk-5R
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:21:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sRtk2-0006j1-6F
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:21:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720704105;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mN0sRZ3bdsO54hnVlLYkoH6g7lrAo+ChghkMqg7jdgg=;
+ b=R6tNkvBrlKWRzioAYzN62ankJGoznZQQN6JciX2Dvq7GBDE3MzAMj0Bns5h/vtPn1zIjzO
+ cv7MZqR818N0UgYj2h36edITbt1FqdH/BorwvtO0+4mfKxEp0Co37YZaP/KB8+ZIRiLv6M
+ piaV2uizCGS+DDZIXtiKhJGm+zAdQ+M=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-572-ijAxXFzZPGSMXzERhPvdpA-1; Thu, 11 Jul 2024 09:21:43 -0400
+X-MC-Unique: ijAxXFzZPGSMXzERhPvdpA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-367991a0a64so431918f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:21:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720703917; x=1721308717;
+ d=1e100.net; s=20230601; t=1720704102; x=1721308902;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7VPW1UeLCXEWdRQjfp4peTB8sA1ZpWxPWCz/9Bk2dBY=;
- b=RaYceEJeFp/TuHcQ4Htg3WwSXo/pYMsjfOfAYQVYdBROBwBlW51Zqml8Vns2lrIy4B
- 2Rwf+1Y7ef8199oBfME7mVvznT7n/RhDp8zKp8kITgAiHrVYsZWr1fTCoJjf++BSGLWV
- HCAlXoS3QGMPRgzmzNd8MrXge5ZyiaLhxa2lFnINVukaBlJWk4HrqYpszvksuk8FR6m6
- cmYhEUxSOPN7xiW7OfXsWOfY/romNbKtZwKF985thVdK37MWJ2A6dS6T0RS74tfmIjFr
- SVhaqmzY0rwvvS+jrw+L3Wbn7Pn0wzKhBiIcVgo0FAhQGlWHwNmOEolXL3zJ90LW6s6T
- E7hg==
-X-Gm-Message-State: AOJu0Yyxl8DjfiDgk9L9cZYEf290yuyAWLs7Qjt/SHy0aVaKIP7IPCnH
- BkRxkDtLlryxp5UFKDW03lPh1hsZGHL6ZCGxRybo12TgPik3X2xIGpKrsXFzwOvGiBYTRIUetos
- rl4E=
-X-Google-Smtp-Source: AGHT+IH5RfC/m56KL11Ez2ObyxEON/llvK4mqm686zxh1GcqmoKmPot8zSkKVSEyCaiiNBOqtpEsMA==
-X-Received: by 2002:a05:600c:4d88:b0:426:6320:7ddf with SMTP id
- 5b1f17b1804b1-426708f0e31mr56904095e9.35.1720703916764; 
- Thu, 11 Jul 2024 06:18:36 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.36
- for <qemu-devel@nongnu.org>
+ bh=mN0sRZ3bdsO54hnVlLYkoH6g7lrAo+ChghkMqg7jdgg=;
+ b=EuGQYChH4JzpjWUXg2lSRX2p8FxJNh+hxa7pQpoD3Dy+ooV+6KZxBjWYZqnwxdZCJt
+ tGloL2HzFtLng9ahq3kAyBV/cJfvpNrQd0ALbs4mWbzbdAI6Hcbgu9drofZr/mFeaz0c
+ gvll0UFQAa4vj0ldHOeb2ypbJjDY7EePkS+esoDO3Nvlt7A2gPsF/OWDzv/g06V1Kktz
+ L/MtUy8fg2FvC+/Or+8SDp3hwiqzbadqRKqUGW2EWOfTlxIpz6TZdOV49Nq/6qehaNbg
+ onQLM7vD5/LZe3kowZttg4gt1DpmaXoplyvVkOZWBQOVhBwLUMRmLDraR1Ut9ZtoT0xi
+ 2X1Q==
+X-Gm-Message-State: AOJu0YwqaY7kJQojSuKUl/bSTlBAbNd+3YoAi+OtO1xLVCuvFfuJMXao
+ U8dMapZLt6PPqAneQu5QkfAvSnLfiv6eMzKexZfYAPp/dKkyH8ANHdskx0CJtAvJcHGLx0fEEIj
+ yEROZEr0I+b6d++AdLSOn0MVepPqMjZmoTlKBR2pwPoQbu+FPYIDc
+X-Received: by 2002:a05:6000:c6:b0:367:963b:ab81 with SMTP id
+ ffacd0b85a97d-367ceacaa90mr5688410f8f.46.1720704102661; 
+ Thu, 11 Jul 2024 06:21:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEM+q02fComieQSyE7QIb0XjvJJ4i3vmG8SrqxyvMG5hmF6IoBW7pWtouX48NWKFK/PIGPXBA==
+X-Received: by 2002:a05:6000:c6:b0:367:963b:ab81 with SMTP id
+ ffacd0b85a97d-367ceacaa90mr5688387f8f.46.1720704102274; 
+ Thu, 11 Jul 2024 06:21:42 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-367cde890bdsm7787326f8f.50.2024.07.11.06.21.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 06:18:36 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 24/24] target/arm: Convert PMULL to decodetree
-Date: Thu, 11 Jul 2024 14:18:22 +0100
-Message-Id: <20240711131822.3909903-25-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
-References: <20240711131822.3909903-1-peter.maydell@linaro.org>
+ Thu, 11 Jul 2024 06:21:41 -0700 (PDT)
+Date: Thu, 11 Jul 2024 15:21:41 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin Meng
+ <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, Daniel Henrique
+ Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, "Michael S . Tsirkin" <mst@redhat.com>, Ani
+ Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH v2 1/9] hw/riscv/virt-acpi-build.c: Add namespace
+ devices for PLIC and APLIC
+Message-ID: <20240711152141.741d5bc5@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240708114741.3499585-2-sunilvl@ventanamicro.com>
+References: <20240708114741.3499585-1-sunilvl@ventanamicro.com>
+ <20240708114741.3499585-2-sunilvl@ventanamicro.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,152 +106,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On Mon,  8 Jul 2024 17:17:33 +0530
+Sunil V L <sunilvl@ventanamicro.com> wrote:
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240709000610.382391-7-richard.henderson@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/a64.decode      |  3 ++
- target/arm/tcg/translate-a64.c | 94 +++++-----------------------------
- 2 files changed, 15 insertions(+), 82 deletions(-)
+> PLIC and APLIC should be in namespace as well. So, add them using the
+> defined HID.
+> 
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  hw/riscv/virt-acpi-build.c | 47 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+> 
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index 0925528160..87fe882af0 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -141,6 +141,52 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+>      }
+>  }
+>  
+> +static void acpi_dsdt_add_plic_aplic(Aml *scope, RISCVVirtState *s)
+> +{
+> +    MachineState *ms = MACHINE(s);
+> +    uint64_t plic_aplic_addr;
+> +    uint32_t gsi_base;
+> +    uint8_t  socket;
+> +
+> +    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
+> +        /* PLICs */
+> +        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index afb34a8fd43..2922de700ca 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1003,6 +1003,9 @@ RADDHN          0.10 1110 ..1 ..... 01000 0 ..... ..... @qrrr_e
- SUBHN           0.00 1110 ..1 ..... 01100 0 ..... ..... @qrrr_e
- RSUBHN          0.10 1110 ..1 ..... 01100 0 ..... ..... @qrrr_e
- 
-+PMULL_p8        0.00 1110 001 ..... 11100 0 ..... ..... @qrrr_b
-+PMULL_p64       0.00 1110 111 ..... 11100 0 ..... ..... @qrrr_b
-+
- ### Advanced SIMD scalar x indexed element
- 
- FMUL_si         0101 1111 00 .. .... 1001 . 0 ..... .....   @rrx_h
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 3e0dacdd63c..559a6cd799d 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -6003,6 +6003,18 @@ TRANS(SUBHN, do_addsub_highnarrow, a, true, false)
- TRANS(RADDHN, do_addsub_highnarrow, a, false, true)
- TRANS(RSUBHN, do_addsub_highnarrow, a, true, true)
- 
-+static bool do_pmull(DisasContext *s, arg_qrrr_e *a, gen_helper_gvec_3 *fn)
-+{
-+    if (fp_access_check(s)) {
-+        /* The Q field specifies lo/hi half input for these insns.  */
-+        gen_gvec_op3_ool(s, true, a->rd, a->rn, a->rm, a->q, fn);
-+    }
-+    return true;
-+}
-+
-+TRANS(PMULL_p8, do_pmull, a, gen_helper_neon_pmull_h)
-+TRANS_FEAT(PMULL_p64, aa64_pmull, do_pmull, a, gen_helper_gvec_pmull_q)
-+
- /*
-  * Advanced SIMD scalar/vector x indexed element
-  */
-@@ -10867,87 +10879,6 @@ static void disas_simd_shift_imm(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* AdvSIMD three different
-- *   31  30  29 28       24 23  22  21 20  16 15    12 11 10 9    5 4    0
-- * +---+---+---+-----------+------+---+------+--------+-----+------+------+
-- * | 0 | Q | U | 0 1 1 1 0 | size | 1 |  Rm  | opcode | 0 0 |  Rn  |  Rd  |
-- * +---+---+---+-----------+------+---+------+--------+-----+------+------+
-- */
--static void disas_simd_three_reg_diff(DisasContext *s, uint32_t insn)
--{
--    /* Instructions in this group fall into three basic classes
--     * (in each case with the operation working on each element in
--     * the input vectors):
--     * (1) widening 64 x 64 -> 128 (with possibly Vd as an extra
--     *     128 bit input)
--     * (2) wide 64 x 128 -> 128
--     * (3) narrowing 128 x 128 -> 64
--     * Here we do initial decode, catch unallocated cases and
--     * dispatch to separate functions for each class.
--     */
--    int is_q = extract32(insn, 30, 1);
--    int is_u = extract32(insn, 29, 1);
--    int size = extract32(insn, 22, 2);
--    int opcode = extract32(insn, 12, 4);
--    int rm = extract32(insn, 16, 5);
--    int rn = extract32(insn, 5, 5);
--    int rd = extract32(insn, 0, 5);
--
--    switch (opcode) {
--    case 14: /* PMULL, PMULL2 */
--        if (is_u) {
--            unallocated_encoding(s);
--            return;
--        }
--        switch (size) {
--        case 0: /* PMULL.P8 */
--            if (!fp_access_check(s)) {
--                return;
--            }
--            /* The Q field specifies lo/hi half input for this insn.  */
--            gen_gvec_op3_ool(s, true, rd, rn, rm, is_q,
--                             gen_helper_neon_pmull_h);
--            break;
--
--        case 3: /* PMULL.P64 */
--            if (!dc_isar_feature(aa64_pmull, s)) {
--                unallocated_encoding(s);
--                return;
--            }
--            if (!fp_access_check(s)) {
--                return;
--            }
--            /* The Q field specifies lo/hi half input for this insn.  */
--            gen_gvec_op3_ool(s, true, rd, rn, rm, is_q,
--                             gen_helper_gvec_pmull_q);
--            break;
--
--        default:
--            unallocated_encoding(s);
--            break;
--        }
--        return;
--    default:
--    case 0: /* SADDL, SADDL2, UADDL, UADDL2 */
--    case 1: /* SADDW, SADDW2, UADDW, UADDW2 */
--    case 2: /* SSUBL, SSUBL2, USUBL, USUBL2 */
--    case 3: /* SSUBW, SSUBW2, USUBW, USUBW2 */
--    case 4: /* ADDHN, ADDHN2, RADDHN, RADDHN2 */
--    case 5: /* SABAL, SABAL2, UABAL, UABAL2 */
--    case 6: /* SUBHN, SUBHN2, RSUBHN, RSUBHN2 */
--    case 7: /* SABDL, SABDL2, UABDL, UABDL2 */
--    case 8: /* SMLAL, SMLAL2, UMLAL, UMLAL2 */
--    case 9: /* SQDMLAL, SQDMLAL2 */
--    case 10: /* SMLSL, SMLSL2, UMLSL, UMLSL2 */
--    case 11: /* SQDMLSL, SQDMLSL2 */
--    case 12: /* SMULL, SMULL2, UMULL, UMULL2 */
--    case 13: /* SQDMULL, SQDMULL2 */
--        /* opcode 15 not allocated */
--        unallocated_encoding(s);
--        break;
--    }
--}
--
- static void handle_2misc_widening(DisasContext *s, int opcode, bool is_q,
-                                   int size, int rn, int rd)
- {
-@@ -11897,7 +11828,6 @@ static void disas_simd_two_reg_misc_fp16(DisasContext *s, uint32_t insn)
-  */
- static const AArch64DecodeTable data_proc_simd[] = {
-     /* pattern  ,  mask     ,  fn                        */
--    { 0x0e200000, 0x9f200c00, disas_simd_three_reg_diff },
-     { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
-     { 0x0e300800, 0x9f3e0c00, disas_simd_across_lanes },
-     /* simd_mod_imm decode is a subset of simd_shift_imm, so must precede it */
--- 
-2.34.1
+you have socket_count in caller already, pass it as argument and
+drop  MachineState *ms = MACHINE(s) above.
+
+
+> +            plic_aplic_addr = s->memmap[VIRT_PLIC].base +
+> +                         s->memmap[VIRT_PLIC].size * socket;
+> +            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
+> +            Aml *dev = aml_device("IC%.02X", socket);
+> +            aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0001")));
+> +            aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
+> +            aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
+> +
+> +            Aml *crs = aml_resource_template();
+> +            aml_append(crs, aml_memory32_fixed(plic_aplic_addr,
+> +                                               s->memmap[VIRT_PLIC].size,
+> +                                               AML_READ_WRITE));
+> +            aml_append(dev, aml_name_decl("_CRS", crs));
+> +            aml_append(scope, dev);
+> +        }
+> +    } else {
+> +        /* APLICs */
+> +        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
+> +            plic_aplic_addr = s->memmap[VIRT_APLIC_S].base +
+> +                             s->memmap[VIRT_APLIC_S].size * socket;
+> +            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
+> +            Aml *dev = aml_device("IC%.02X", socket);
+> +            aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0002")));
+> +            aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
+> +            aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
+> +
+> +            Aml *crs = aml_resource_template();
+> +            aml_append(crs, aml_memory32_fixed(plic_aplic_addr,
+> +                                               s->memmap[VIRT_APLIC_S].size,
+> +                                               AML_READ_WRITE));
+> +            aml_append(dev, aml_name_decl("_CRS", crs));
+> +            aml_append(scope, dev);
+> +        }
+> +    }
+> +}
+> +
+>  static void
+>  acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+>                      uint32_t uart_irq)
+> @@ -411,6 +457,7 @@ static void build_dsdt(GArray *table_data,
+>  
+>      socket_count = riscv_socket_count(ms);
+>  
+> +    acpi_dsdt_add_plic_aplic(scope, s);
+Perhaps do the same for memmap/RISCVVirtState vvvv
+
+>      acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
+
+
+>  
+>      if (socket_count == 1) {
 
 
