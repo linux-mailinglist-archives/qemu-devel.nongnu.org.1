@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2431292F158
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 23:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0023C92F160
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 23:54:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sS1is-0004Ek-LY; Thu, 11 Jul 2024 17:53:06 -0400
+	id 1sS1iu-0004MB-Kv; Thu, 11 Jul 2024 17:53:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sS1iq-0004Ag-WD
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:53:05 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1sS1is-0004HG-PZ
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:53:06 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sS1io-0005Zh-Mp
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:53:04 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-70368b53cc0so662244a34.1
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 14:53:01 -0700 (PDT)
+ id 1sS1iq-0005a1-GT
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:53:06 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-703ba2477bdso641050a34.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 14:53:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1720734780; x=1721339580; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1720734783; x=1721339583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lAClVOPjaYmAqeHOJnomznCPk2DbCytJlAbJtT0EBcU=;
- b=XCJ961Jxo5Q9tgv5PF01oPBtPyCBkYhApIjoMErVBb0r/d1WuHE7i/W0hXpK2/fWpp
- doFfqowKum1tDy6K71BwFVuEcwPi7lwXrZSciStwepMP7rv6VNz7YI5JaM0nEPNQ2ETL
- TMlADwDCiR/moYcexdg15GceN0QKeOWJlGNpUpnVRycJ5n4Eys4ILZK8n8JzXSkpl//X
- gYnYCRaWimN6w1LDixru6dxxoQ1qUvu1RcK3X+Wf20QNxEs+YgYN3NQFFeZVzpbBq59S
- Vt/sanZ1zUxa5EoR0dbNDjnjo+9dRA1tLZWpBwMAAdR2Qs9ZmIc5DgCUrhXCtO2qRsjL
- pAJw==
+ bh=7ksX8+D+3HSKg/c07IUgWYwiC42rzANbtLF+jp56qHU=;
+ b=KdQHeebORG91L4nM4R/IM1zSkaBx6yQR8g/2JMI9DPmPGWvI935iY+dMKrARUZ0YD8
+ H7XSM19ODKFyFOSIyuqpb7k4V0urdydqPmFQpNpNcmYaUzOb0I5zjyJe3jOyLE7knJeX
+ KyttoXuhkhYqKMttzA1qUJpt6RwQq6Cn6jFU90pKpvJ7aELmNNfbu+Cnwo+fwdmOnpAW
+ r1xZlWhJfTTzGGjsPlmim0hQbJLtXP09FUhRLaiN5rm6qdZ3gvjVcy6dsYjtaUOP6MwR
+ V6+2L416Yc9m1bwhVu10VwosMAlG0hpsvCeiDSQQ3xHvmx65eZ+EzXTLKmS1lN1XFqlj
+ 5zfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720734780; x=1721339580;
+ d=1e100.net; s=20230601; t=1720734783; x=1721339583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lAClVOPjaYmAqeHOJnomznCPk2DbCytJlAbJtT0EBcU=;
- b=ntu0jfRlf9104CMJYuKTjkWMuVtSbiwj1Zeg/SjjVDIn9VliCsqtavjVz0icO3nr1w
- yXee1y/2YcTIxctefxCLH96uQna6VvHQCxGssw2fohXmOCaHUNlbjMv0ZWbc2o0fGA90
- VfWDd2vOfPJmAMWwukYOAYXK0JUc4bhzRPOgAlBqI9q+Pzuf4Ce/TA/Ym1PFZMzOPX4j
- AVpcoBjM4OOm5Hsva68Q6F3H067pjpnIxv+YoXu9DC7oL0JxN6aSxI1bhDxdUXcHSkWY
- ENZUO11g4h2oiSAmHHaL6KW0KlIB2OvGAI+sOsFTFa1vfle2Tc8SYMCH/Jp8fUfDDhOo
- Bm6A==
+ bh=7ksX8+D+3HSKg/c07IUgWYwiC42rzANbtLF+jp56qHU=;
+ b=NQ+eM0OddoFIndr/6nprKAaulpO09Dm2VtaA4ggyTIaLRy1eh446AwQPEyGQWicuL3
+ kJn/oZwaFzxGnfKccu2w0B/d1YoPrwD6oiXS7VeccLy3w9GhVCKIC/uG5JBEE568hWdV
+ /qqq1U8C3+FksPKllnbUy2+lz7om09iWv/dDo+7Lk0uRZoocCg4nKtdb/5JC9GJaq24P
+ 4SHRYeJwYMlF8dyuzGF1/dLj+YebvYadXcZ6tvulS+mRmYeqjAe6BFAoDPHMeYCE6ruu
+ 64ykVXR4SZUVM3QoWuSNKqZLU2y5zlVAIVDutS3yNWkowibbslewr5vmm97meQWxQk9f
+ Gw9Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXr89t9XPHTzSa0QpOfyWPT0az8rGdGHQPhn5cQOeTL/awJhN9Cm8UyrOgDWITXl3S1g2/86X6uVHefrW5o2VAmsAP8pUo=
-X-Gm-Message-State: AOJu0YzZEzNs8dDdRvh04xPbknY1SaCN46D7A9vnz0lVwRFWJ5MYSUnl
- YHOGEaRaQJMx6qtQKYOOuyglE/uSEYQ1cRVUdly/lHL0iFMsUOWVikEHD4F6Z/I=
-X-Google-Smtp-Source: AGHT+IHhGaHZPvsOOFoJBlZC6j7jksJpDnEgjxRqPRRvjpMOSkZgwavxCc6jUd++pCbDbuTy3E32aQ==
-X-Received: by 2002:a05:6830:3b84:b0:703:7051:4018 with SMTP id
- 46e09a7af769-70375a4634dmr10897638a34.28.1720734780412; 
- Thu, 11 Jul 2024 14:53:00 -0700 (PDT)
+ AJvYcCVEF5kcLEMprxeoc22E2ncmO4q2lDOnykiIA7nI2XHoR+rwPlPHtX37pfvDHwUoOobmbWxXXXun3hOUWQu2dd3FBHaljM4=
+X-Gm-Message-State: AOJu0YwnfXjUd+Xzhy4RX7zbUxcMf9sLHLykDdbMJ6I22AYUVRd+FSdy
+ F38X8MwgsgINpHo4wpkxAgh7lTQwNwIe7HZx8Ps9RQfAUtpV5iyFXgvzzl1y/Kc=
+X-Google-Smtp-Source: AGHT+IEVIUXjXQowbbH6rLfMkmeq3YWA3T2pIBuIw7E1mjvhPBgcZHOrcMVzN4BnTmpgo1P4fITLjg==
+X-Received: by 2002:a9d:5912:0:b0:703:5f9f:82f2 with SMTP id
+ 46e09a7af769-70375a0baccmr11210651a34.18.1720734783029; 
+ Thu, 11 Jul 2024 14:53:03 -0700 (PDT)
 Received: from DY4X0N7X05.bytedance.net ([208.184.112.130])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-7044ac2876dsm713125a34.2.2024.07.11.14.52.57
+ 46e09a7af769-7044ac2876dsm713125a34.2.2024.07.11.14.53.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Jul 2024 14:53:00 -0700 (PDT)
+ Thu, 11 Jul 2024 14:53:02 -0700 (PDT)
 From: Yichen Wang <yichen.wang@bytedance.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -71,18 +71,18 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
  "Shivam Kumar" <shivam.kumar1@nutanix.com>,
  "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>
-Subject: [PATCH v5 05/13] util/dsa: Implement DSA task asynchronous completion
- thread model.
-Date: Thu, 11 Jul 2024 14:52:40 -0700
-Message-Id: <20240711215244.19237-6-yichen.wang@bytedance.com>
+ "Yichen Wang" <yichen.wang@bytedance.com>,
+ Bryan Zhang <bryan.zhang@bytedance.com>
+Subject: [PATCH v5 06/13] util/dsa: Implement zero page checking in DSA task.
+Date: Thu, 11 Jul 2024 14:52:41 -0700
+Message-Id: <20240711215244.19237-7-yichen.wang@bytedance.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240711215244.19237-1-yichen.wang@bytedance.com>
 References: <20240711215244.19237-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=yichen.wang@bytedance.com; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,352 +107,358 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Xiang <hao.xiang@linux.dev>
 
-* Create a dedicated thread for DSA task completion.
-* DSA completion thread runs a loop and poll for completed tasks.
-* Start and stop DSA completion thread during DSA device start stop.
-
-User space application can directly submit task to Intel DSA
-accelerator by writing to DSA's device memory (mapped in user space).
-Once a task is submitted, the device starts processing it and write
-the completion status back to the task. A user space application can
-poll the task's completion status to check for completion. This change
-uses a dedicated thread to perform DSA task completion checking.
+Create DSA task with operation code DSA_OPCODE_COMPVAL.
+Here we create two types of DSA tasks, a single DSA task and
+a batch DSA task. Batch DSA task reduces task submission overhead
+and hence should be the default option. However, due to the way DSA
+hardware works, a DSA batch task must contain at least two individual
+tasks. There are times we need to submit a single task and hence a
+single DSA task submission is also required.
 
 Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
 Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
 ---
- include/qemu/dsa.h |   1 +
- util/dsa.c         | 274 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 274 insertions(+), 1 deletion(-)
+ include/qemu/dsa.h |  18 ++++
+ util/dsa.c         | 247 +++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 244 insertions(+), 21 deletions(-)
 
 diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
-index 9cc836b64c..d46a9f42a5 100644
+index d46a9f42a5..1b4baf1c80 100644
 --- a/include/qemu/dsa.h
 +++ b/include/qemu/dsa.h
-@@ -69,6 +69,7 @@ typedef struct QemuDsaBatchTask {
-     QemuDsaTaskType task_type;
-     QemuDsaTaskStatus status;
-     int batch_size;
-+    bool *results;
-     QSIMPLEQ_ENTRY(QemuDsaBatchTask) entry;
- } QemuDsaBatchTask;
+@@ -105,6 +105,24 @@ void qemu_dsa_cleanup(void);
+  */
+ bool qemu_dsa_is_running(void);
  
++/**
++ * @brief Initializes a buffer zero batch task.
++ *
++ * @param task A pointer to the batch task to initialize.
++ * @param results A pointer to an array of zero page checking results.
++ * @param batch_size The number of DSA tasks in the batch.
++ */
++void
++buffer_zero_batch_task_init(QemuDsaBatchTask *task,
++                            bool *results, int batch_size);
++
++/**
++ * @brief Performs the proper cleanup on a DSA batch task.
++ *
++ * @param task A pointer to the batch task to cleanup.
++ */
++void buffer_zero_batch_task_destroy(QemuDsaBatchTask *task);
++
+ #else
+ 
+ static inline bool qemu_dsa_is_running(void)
 diff --git a/util/dsa.c b/util/dsa.c
-index 43280b31cd..1eb85f37f1 100644
+index 1eb85f37f1..f0d8cce210 100644
 --- a/util/dsa.c
 +++ b/util/dsa.c
-@@ -33,9 +33,20 @@
- #define DSA_WQ_PORTAL_SIZE 4096
- #define DSA_WQ_DEPTH 128
- #define MAX_DSA_DEVICES 16
-+#define DSA_COMPLETION_THREAD "qemu_dsa_completion"
-+
-+typedef struct {
-+    bool stopping;
-+    bool running;
-+    QemuThread thread;
-+    int thread_id;
-+    QemuSemaphore sem_init_done;
-+    QemuDsaDeviceGroup *group;
-+} QemuDsaCompletionThread;
- 
- uint32_t max_retry_count;
+@@ -48,6 +48,7 @@ uint32_t max_retry_count;
  static QemuDsaDeviceGroup dsa_group;
-+static QemuDsaCompletionThread completion_thread;
+ static QemuDsaCompletionThread completion_thread;
  
++static void buffer_zero_dsa_completion(void *context);
  
  /**
-@@ -409,6 +420,265 @@ submit_batch_wi_async(QemuDsaBatchTask *batch_task)
-     return dsa_task_enqueue(device_group, batch_task);
+  * @brief This function opens a DSA device's work queue and
+@@ -180,7 +181,6 @@ dsa_device_group_start(QemuDsaDeviceGroup *group)
+  *
+  * @param group A pointer to the DSA device group.
+  */
+-__attribute__((unused))
+ static void
+ dsa_device_group_stop(QemuDsaDeviceGroup *group)
+ {
+@@ -216,7 +216,6 @@ dsa_device_group_cleanup(QemuDsaDeviceGroup *group)
+  * @return struct QemuDsaDevice* A pointer to the next available DSA device
+  *         in the group.
+  */
+-__attribute__((unused))
+ static QemuDsaDevice *
+ dsa_device_group_get_next_device(QemuDsaDeviceGroup *group)
+ {
+@@ -289,7 +288,6 @@ dsa_task_enqueue(QemuDsaDeviceGroup *group,
+  * @param group A pointer to the DSA device group.
+  * @return QemuDsaBatchTask* The DSA task being dequeued.
+  */
+-__attribute__((unused))
+ static QemuDsaBatchTask *
+ dsa_task_dequeue(QemuDsaDeviceGroup *group)
+ {
+@@ -344,22 +342,6 @@ submit_wi_int(void *wq, struct dsa_hw_desc *descriptor)
+     return 0;
+ }
+ 
+-/**
+- * @brief Synchronously submits a DSA work item to the
+- *        device work queue.
+- *
+- * @param wq A pointer to the DSA work queue's device memory.
+- * @param descriptor A pointer to the DSA work item descriptor.
+- *
+- * @return int Zero if successful, non-zero otherwise.
+- */
+-__attribute__((unused))
+-static int
+-submit_wi(void *wq, struct dsa_hw_desc *descriptor)
+-{
+-    return submit_wi_int(wq, descriptor);
+-}
+-
+ /**
+  * @brief Asynchronously submits a DSA work item to the
+  *        device work queue.
+@@ -368,7 +350,6 @@ submit_wi(void *wq, struct dsa_hw_desc *descriptor)
+  *
+  * @return int Zero if successful, non-zero otherwise.
+  */
+-__attribute__((unused))
+ static int
+ submit_wi_async(QemuDsaBatchTask *task)
+ {
+@@ -397,7 +378,6 @@ submit_wi_async(QemuDsaBatchTask *task)
+  *
+  * @return int Zero if successful, non-zero otherwise.
+  */
+-__attribute__((unused))
+ static int
+ submit_batch_wi_async(QemuDsaBatchTask *batch_task)
+ {
+@@ -679,6 +659,231 @@ static void dsa_completion_thread_stop(void *opaque)
+     qemu_sem_destroy(&thread_context->sem_init_done);
  }
  
 +/**
-+ * @brief Poll for the DSA work item completion.
++ * @brief Initializes a buffer zero comparison DSA task.
 + *
-+ * @param completion A pointer to the DSA work item completion record.
-+ * @param opcode The DSA opcode.
-+ *
-+ * @return Zero if successful, non-zero otherwise.
++ * @param descriptor A pointer to the DSA task descriptor.
++ * @param completion A pointer to the DSA task completion record.
 + */
-+static int
-+poll_completion(struct dsa_completion_record *completion,
-+                enum dsa_opcode opcode)
++static void
++buffer_zero_task_init_int(struct dsa_hw_desc *descriptor,
++                          struct dsa_completion_record *completion)
 +{
-+    uint8_t status;
-+    uint64_t retry = 0;
-+
-+    while (true) {
-+        /* The DSA operation completes successfully or fails. */
-+        status = completion->status;
-+        if (status == DSA_COMP_SUCCESS ||
-+            status == DSA_COMP_PAGE_FAULT_NOBOF ||
-+            status == DSA_COMP_BATCH_PAGE_FAULT ||
-+            status == DSA_COMP_BATCH_FAIL) {
-+            break;
-+        } else if (status != DSA_COMP_NONE) {
-+            error_report("DSA opcode %d failed with status = %d.",
-+                    opcode, status);
-+            return 1;
-+        }
-+        retry++;
-+        if (retry > max_retry_count) {
-+            error_report("DSA wait for completion retry %lu times.", retry);
-+            return 1;
-+        }
-+        _mm_pause();
-+    }
-+
-+    return 0;
++    descriptor->opcode = DSA_OPCODE_COMPVAL;
++    descriptor->flags = IDXD_OP_FLAG_RCR | IDXD_OP_FLAG_CRAV;
++    descriptor->comp_pattern = (uint64_t)0;
++    descriptor->completion_addr = (uint64_t)completion;
 +}
 +
 +/**
-+ * @brief Complete a single DSA task in the batch task.
++ * @brief Initializes a buffer zero batch task.
++ *
++ * @param task A pointer to the batch task to initialize.
++ * @param results A pointer to an array of zero page checking results.
++ * @param batch_size The number of DSA tasks in the batch.
++ */
++void
++buffer_zero_batch_task_init(QemuDsaBatchTask *task,
++                            bool *results, int batch_size)
++{
++    int descriptors_size = sizeof(*task->descriptors) * batch_size;
++    memset(task, 0, sizeof(*task));
++
++    task->descriptors =
++        (struct dsa_hw_desc *)qemu_memalign(64, descriptors_size);
++    memset(task->descriptors, 0, descriptors_size);
++    task->completions = (struct dsa_completion_record *)qemu_memalign(
++        32, sizeof(*task->completions) * batch_size);
++    task->results = results;
++    task->batch_size = batch_size;
++
++    task->batch_completion.status = DSA_COMP_NONE;
++    task->batch_descriptor.completion_addr = (uint64_t)&task->batch_completion;
++    /* TODO: Ensure that we never send a batch with count <= 1 */
++    task->batch_descriptor.desc_count = 0;
++    task->batch_descriptor.opcode = DSA_OPCODE_BATCH;
++    task->batch_descriptor.flags = IDXD_OP_FLAG_RCR | IDXD_OP_FLAG_CRAV;
++    task->batch_descriptor.desc_list_addr = (uintptr_t)task->descriptors;
++    task->status = QEMU_DSA_TASK_READY;
++    task->group = &dsa_group;
++    task->device = dsa_device_group_get_next_device(&dsa_group);
++
++    for (int i = 0; i < task->batch_size; i++) {
++        buffer_zero_task_init_int(&task->descriptors[i],
++                                  &task->completions[i]);
++    }
++
++    qemu_sem_init(&task->sem_task_complete, 0);
++    task->completion_callback = buffer_zero_dsa_completion;
++}
++
++/**
++ * @brief Performs the proper cleanup on a DSA batch task.
++ *
++ * @param task A pointer to the batch task to cleanup.
++ */
++void
++buffer_zero_batch_task_destroy(QemuDsaBatchTask *task)
++{
++    qemu_vfree(task->descriptors);
++    qemu_vfree(task->completions);
++    task->results = NULL;
++
++    qemu_sem_destroy(&task->sem_task_complete);
++}
++
++/**
++ * @brief Resets a buffer zero comparison DSA batch task.
++ *
++ * @param task A pointer to the batch task.
++ * @param count The number of DSA tasks this batch task will contain.
++ */
++static void
++buffer_zero_batch_task_reset(QemuDsaBatchTask *task, size_t count)
++{
++    task->batch_completion.status = DSA_COMP_NONE;
++    task->batch_descriptor.desc_count = count;
++    task->task_type = QEMU_DSA_BATCH_TASK;
++    task->status = QEMU_DSA_TASK_READY;
++}
++
++/**
++ * @brief Sets a buffer zero comparison DSA task.
++ *
++ * @param descriptor A pointer to the DSA task descriptor.
++ * @param buf A pointer to the memory buffer.
++ * @param len The length of the buffer.
++ */
++static void
++buffer_zero_task_set_int(struct dsa_hw_desc *descriptor,
++                         const void *buf,
++                         size_t len)
++{
++    struct dsa_completion_record *completion =
++        (struct dsa_completion_record *)descriptor->completion_addr;
++
++    descriptor->xfer_size = len;
++    descriptor->src_addr = (uintptr_t)buf;
++    completion->status = 0;
++    completion->result = 0;
++}
++
++/**
++ * @brief Resets a buffer zero comparison DSA batch task.
++ *
++ * @param task A pointer to the DSA batch task.
++ */
++static void
++buffer_zero_task_reset(QemuDsaBatchTask *task)
++{
++    task->completions[0].status = DSA_COMP_NONE;
++    task->task_type = QEMU_DSA_TASK;
++    task->status = QEMU_DSA_TASK_READY;
++}
++
++/**
++ * @brief Sets a buffer zero comparison DSA task.
++ *
++ * @param task A pointer to the DSA task.
++ * @param buf A pointer to the memory buffer.
++ * @param len The buffer length.
++ */
++static void
++buffer_zero_task_set(QemuDsaBatchTask *task,
++                     const void *buf,
++                     size_t len)
++{
++    buffer_zero_task_reset(task);
++    buffer_zero_task_set_int(&task->descriptors[0], buf, len);
++}
++
++/**
++ * @brief Sets a buffer zero comparison batch task.
++ *
++ * @param batch_task A pointer to the batch task.
++ * @param buf An array of memory buffers.
++ * @param count The number of buffers in the array.
++ * @param len The length of the buffers.
++ */
++static void
++buffer_zero_batch_task_set(QemuDsaBatchTask *batch_task,
++                           const void **buf, size_t count, size_t len)
++{
++    assert(count > 0);
++    assert(count <= batch_task->batch_size);
++
++    buffer_zero_batch_task_reset(batch_task, count);
++    for (int i = 0; i < count; i++) {
++        buffer_zero_task_set_int(&batch_task->descriptors[i], buf[i], len);
++    }
++}
++
++/**
++ * @brief Asychronously perform a buffer zero DSA operation.
 + *
 + * @param task A pointer to the batch task structure.
++ * @param buf A pointer to the memory buffer.
++ * @param len The length of the memory buffer.
 + *
-+ * @return Zero if successful, otherwise non-zero.
++ * @return int Zero if successful, otherwise an appropriate error code.
 + */
++__attribute__((unused))
 +static int
-+poll_task_completion(QemuDsaBatchTask *task)
++buffer_zero_dsa_async(QemuDsaBatchTask *task,
++                      const void *buf, size_t len)
 +{
-+    assert(task->task_type == QEMU_DSA_TASK);
++    buffer_zero_task_set(task, buf, len);
 +
-+    struct dsa_completion_record *completion = &task->completions[0];
-+    uint8_t status;
-+    int ret;
-+
-+    ret = poll_completion(completion, task->descriptors[0].opcode);
-+    if (ret != 0) {
-+        goto exit;
-+    }
-+
-+    status = completion->status;
-+    if (status == DSA_COMP_SUCCESS) {
-+        task->results[0] = (completion->result == 0);
-+        goto exit;
-+    }
-+
-+    assert(status == DSA_COMP_PAGE_FAULT_NOBOF);
-+
-+exit:
-+    return ret;
++    return submit_wi_async(task);
 +}
 +
 +/**
-+ * @brief Poll a batch task status until it completes. If DSA task doesn't
-+ *        complete properly, use CPU to complete the task.
++ * @brief Sends a memory comparison batch task to a DSA device and wait
++ *        for completion.
 + *
-+ * @param batch_task A pointer to the DSA batch task.
-+ *
-+ * @return Zero if successful, otherwise non-zero.
++ * @param batch_task The batch task to be submitted to DSA device.
++ * @param buf An array of memory buffers to check for zero.
++ * @param count The number of buffers.
++ * @param len The buffer length.
 + */
++__attribute__((unused))
 +static int
-+poll_batch_task_completion(QemuDsaBatchTask *batch_task)
++buffer_zero_dsa_batch_async(QemuDsaBatchTask *batch_task,
++                            const void **buf, size_t count, size_t len)
 +{
-+    struct dsa_completion_record *batch_completion =
-+        &batch_task->batch_completion;
-+    struct dsa_completion_record *completion;
-+    uint8_t batch_status;
-+    uint8_t status;
-+    bool *results = batch_task->results;
-+    uint32_t count = batch_task->batch_descriptor.desc_count;
-+    int ret;
++    assert(count <= batch_task->batch_size);
++    buffer_zero_batch_task_set(batch_task, buf, count, len);
 +
-+    ret = poll_completion(batch_completion,
-+                          batch_task->batch_descriptor.opcode);
-+    if (ret != 0) {
-+        goto exit;
-+    }
-+
-+    batch_status = batch_completion->status;
-+
-+    if (batch_status == DSA_COMP_SUCCESS) {
-+        if (batch_completion->bytes_completed == count) {
-+            /*
-+             * Let's skip checking for each descriptors' completion status
-+             * if the batch descriptor says all succedded.
-+             */
-+            for (int i = 0; i < count; i++) {
-+                assert(batch_task->completions[i].status == DSA_COMP_SUCCESS);
-+                results[i] = (batch_task->completions[i].result == 0);
-+            }
-+            goto exit;
-+        }
-+    } else {
-+        assert(batch_status == DSA_COMP_BATCH_FAIL ||
-+            batch_status == DSA_COMP_BATCH_PAGE_FAULT);
-+    }
-+
-+    for (int i = 0; i < count; i++) {
-+
-+        completion = &batch_task->completions[i];
-+        status = completion->status;
-+
-+        if (status == DSA_COMP_SUCCESS) {
-+            results[i] = (completion->result == 0);
-+            continue;
-+        }
-+
-+        assert(status == DSA_COMP_PAGE_FAULT_NOBOF);
-+
-+        if (status != DSA_COMP_PAGE_FAULT_NOBOF) {
-+            error_report("Unexpected DSA completion status = %u.", status);
-+            ret = 1;
-+            goto exit;
-+        }
-+    }
-+
-+exit:
-+    return ret;
++    return submit_batch_wi_async(batch_task);
 +}
 +
 +/**
-+ * @brief Handles an asynchronous DSA batch task completion.
++ * @brief The completion callback function for buffer zero
++ *        comparison DSA task completion.
 + *
-+ * @param task A pointer to the batch buffer zero task structure.
++ * @param context A pointer to the callback context.
 + */
 +static void
-+dsa_batch_task_complete(QemuDsaBatchTask *batch_task)
++buffer_zero_dsa_completion(void *context)
 +{
-+    batch_task->status = QEMU_DSA_TASK_COMPLETION;
-+    batch_task->completion_callback(batch_task);
++    assert(context != NULL);
++
++    QemuDsaBatchTask *task = (QemuDsaBatchTask *)context;
++    qemu_sem_post(&task->sem_task_complete);
 +}
 +
 +/**
-+ * @brief The function entry point called by a dedicated DSA
-+ *        work item completion thread.
++ * @brief Wait for the asynchronous DSA task to complete.
 + *
-+ * @param opaque A pointer to the thread context.
-+ *
-+ * @return void* Not used.
++ * @param batch_task A pointer to the buffer zero comparison batch task.
 + */
-+static void *
-+dsa_completion_loop(void *opaque)
-+{
-+    QemuDsaCompletionThread *thread_context =
-+        (QemuDsaCompletionThread *)opaque;
-+    QemuDsaBatchTask *batch_task;
-+    QemuDsaDeviceGroup *group = thread_context->group;
-+    int ret;
-+
-+    rcu_register_thread();
-+
-+    thread_context->thread_id = qemu_get_thread_id();
-+    qemu_sem_post(&thread_context->sem_init_done);
-+
-+    while (thread_context->running) {
-+        batch_task = dsa_task_dequeue(group);
-+        assert(batch_task != NULL || !group->running);
-+        if (!group->running) {
-+            assert(!thread_context->running);
-+            break;
-+        }
-+        if (batch_task->task_type == QEMU_DSA_TASK) {
-+            ret = poll_task_completion(batch_task);
-+        } else {
-+            assert(batch_task->task_type == QEMU_DSA_BATCH_TASK);
-+            ret = poll_batch_task_completion(batch_task);
-+        }
-+
-+        if (ret != 0) {
-+            goto exit;
-+        }
-+
-+        dsa_batch_task_complete(batch_task);
-+    }
-+
-+exit:
-+    if (ret != 0) {
-+        error_report("DSA completion thread exited due to internal error.");
-+    }
-+    rcu_unregister_thread();
-+    return NULL;
-+}
-+
-+/**
-+ * @brief Initializes a DSA completion thread.
-+ *
-+ * @param completion_thread A pointer to the completion thread context.
-+ * @param group A pointer to the DSA device group.
-+ */
++__attribute__((unused))
 +static void
-+dsa_completion_thread_init(
-+    QemuDsaCompletionThread *completion_thread,
-+    QemuDsaDeviceGroup *group)
++buffer_zero_dsa_wait(QemuDsaBatchTask *batch_task)
 +{
-+    completion_thread->stopping = false;
-+    completion_thread->running = true;
-+    completion_thread->thread_id = -1;
-+    qemu_sem_init(&completion_thread->sem_init_done, 0);
-+    completion_thread->group = group;
-+
-+    qemu_thread_create(&completion_thread->thread,
-+                       DSA_COMPLETION_THREAD,
-+                       dsa_completion_loop,
-+                       completion_thread,
-+                       QEMU_THREAD_JOINABLE);
-+
-+    /* Wait for initialization to complete */
-+    qemu_sem_wait(&completion_thread->sem_init_done);
-+}
-+
-+/**
-+ * @brief Stops the completion thread (and implicitly, the device group).
-+ *
-+ * @param opaque A pointer to the completion thread.
-+ */
-+static void dsa_completion_thread_stop(void *opaque)
-+{
-+    QemuDsaCompletionThread *thread_context =
-+        (QemuDsaCompletionThread *)opaque;
-+
-+    QemuDsaDeviceGroup *group = thread_context->group;
-+
-+    qemu_mutex_lock(&group->task_queue_lock);
-+
-+    thread_context->stopping = true;
-+    thread_context->running = false;
-+
-+    /* Prevent the compiler from setting group->running first. */
-+    barrier();
-+    dsa_device_group_stop(group);
-+
-+    qemu_cond_signal(&group->task_queue_cond);
-+    qemu_mutex_unlock(&group->task_queue_lock);
-+
-+    qemu_thread_join(&thread_context->thread);
-+
-+    qemu_sem_destroy(&thread_context->sem_init_done);
++    qemu_sem_wait(&batch_task->sem_task_complete);
 +}
 +
  /**
   * @brief Check if DSA is running.
   *
-@@ -416,7 +686,7 @@ submit_batch_wi_async(QemuDsaBatchTask *batch_task)
-  */
- bool qemu_dsa_is_running(void)
- {
--    return false;
-+    return completion_thread.running;
- }
- 
- static void
-@@ -452,6 +722,7 @@ void qemu_dsa_start(void)
-         return;
-     }
-     dsa_device_group_start(&dsa_group);
-+    dsa_completion_thread_init(&completion_thread, &dsa_group);
- }
- 
- /**
-@@ -466,6 +737,7 @@ void qemu_dsa_stop(void)
-         return;
-     }
- 
-+    dsa_completion_thread_stop(&completion_thread);
-     dsa_empty_task_queue(group);
- }
- 
 -- 
 Yichen Wang
 
