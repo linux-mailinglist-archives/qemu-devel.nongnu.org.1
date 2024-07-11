@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A3E92E92F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6AA92E939
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:21:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRthX-0002IS-BN; Thu, 11 Jul 2024 09:19:11 -0400
+	id 1sRthL-0001pY-PC; Thu, 11 Jul 2024 09:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRthH-0001mm-HX
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:55 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ id 1sRthA-0001Lj-BZ
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:48 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth7-00063j-8m
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:55 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2ee9b098bd5so11973221fa.0
+ id 1sRth6-00063m-3X
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:47 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4279ca8af51so1041125e9.3
  for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1720703911; x=1721308711; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ypv6DeqQN8aPqPXZjj+x08m0qdLCJxHNVeV3KulHgUo=;
- b=bMmSzzbWEs0GuTwetUC+pQmT5yMA0vczJrFi3tq8e6fPnK759nxkfD2p8L9M1SMwkY
- Cuu1Yg8WK5VMd5zGW1aIlSB8NFrYMlEoybT4SsKDOJ3b18eWIgLD9CXyYe8CBPs/bI3y
- n68ZPn3CPSmFQ9zi5ssjNphaodr17kHbR6ll3OLBWHbg6n3vUoT92NpA6iEqLd3sxx9o
- Fxj4oX3laSaIz1NuINHXfkGtZEbrCioiNf4MkykiDxW/MGB2XNnEsw34yxP05kq4Fpgt
- l82HHAwQ5RZdnisCWlkRBbI0/OZWqpepsdkckmirW4S/KZ/PBBF9W5/XrIPV7eSoD5qT
- L+bA==
+ :reply-to; bh=VVa76nH1IWBVck2wf/ZIatCGXOnyq0MCOhW9do/s3zQ=;
+ b=HlIUHNXWjaQ7cXw7CNZtkCTkRhg9OdpXvP/nPhPiQopooIJ7OhlRaHgCgtaZvemBkI
+ ztdRPOFbtARy/rXkeFA5Mnt19DndJni3ZZzfUuKFnvYfIbcgLut47NourG6XsmRdri+E
+ O5UqNUWRIGQakCRaiGbSNp1yIKpQ8C/0Z3nyOuRuzEt27ZQDyeKElYrq7gMfofdpfV4B
+ Xz4RMpuqAQpX/tzT5KR1fzkVmgBlP06PZnuoTNgBUQ5WEr15xvvCQMb+RAHB4zAqDuT0
+ 40T06V9ZsWWLFqkarXOhH6vXZQsqI6Yjpaonk3g7r+qLWC6s3md1oIGHRlR6C3oQAPmk
+ ttvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1720703911; x=1721308711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ypv6DeqQN8aPqPXZjj+x08m0qdLCJxHNVeV3KulHgUo=;
- b=QcTnt3WlUlyfGD3mDegxTUAXprTb+kIL5GRSh9G9djT31DpZoYTE5OQ5Je2tzkEhaf
- KG43ODNCAadmCesRmHuBBAYqdIPz5C3mPGHz2TAmGXI/BlQoKQaEPixIo2z+z0Euag5T
- BbwF8fhInKKTnOEycYwkPKkfTPFfyBjqzZpOgD/aDTWSJlf3lnKL5GfPR+bIrXVpk4Gz
- C95YVWplsIrqVyt6F/Yv23jpQ410IlNhpW8cICb0EDW6X71zOwHK98FyVNkcFTJQGH3l
- wmP+0k1CWRLPJJFD1sGVVSAy9lYWp0CRarB5rps9H8XyEQIzHCJGJ35ORuoExL5+SYOt
- hn5A==
-X-Gm-Message-State: AOJu0YyxkfoZm0g6CGQ3ANGvXUcOeLv5zuSOhIUW73H1iYpI50MkN0bZ
- 1zlUg3u6XzxKC6VdB07syKZ4466ude+kOv1f2lIR0/f6a4lA2iunBNVGaCtwXEppjRRLDWvIjwI
- /gTg=
-X-Google-Smtp-Source: AGHT+IFjfHgou9FbBSRVIMw+7rJXa/nByzr6fVzzp2We+ViEMhWsPRR6hGyB/URDH+eJvvZ7Aunmxw==
-X-Received: by 2002:a2e:8297:0:b0:2ee:8aed:ddba with SMTP id
- 38308e7fff4ca-2eeb30b8ae7mr67114591fa.4.1720703910814; 
- Thu, 11 Jul 2024 06:18:30 -0700 (PDT)
+ bh=VVa76nH1IWBVck2wf/ZIatCGXOnyq0MCOhW9do/s3zQ=;
+ b=AJwA1lFKHXtMcYJcLnC3sq7HY5Vt46L1FxiTQ//0XFvAqL1PnLasW8t4wQT9UWKFBy
+ Qt+YTnvPjIIAvvcu2ageBRnB1eiNucQQnbC/gj7PAVtrEh+q1Bv7cHvZ1ikmeHtEGPli
+ umBC9fvOhKPJlQLdyF/sTK1GTxkSWIDP/4aE3YpGtno6xnLbLwkDnhVnXL/aXGqCJh/g
+ tlQDu8RIrBi4vbIpA9pbqsv4IRvmxyoNPPgcHROyiPVcTjYp3aCp+jjNOHWuxsHtCYUn
+ zT2GGgETMzRfcdsKp+YGxSsYw0P2MLxLkuqn9dYkRCmldy2rEz9YRddF6OWu9L4UeNuQ
+ aCtw==
+X-Gm-Message-State: AOJu0YybTG+RuRmXscvCgHnU4oDXIoeyOOmprkhCCfpTPk7lNWIUsjmf
+ 6hKn0l6QKw1ZJIG2+o6a5ue69Leq/WXsd6NxpqB8i9QRuUEIakqCGzB/6DrhH4Zo9JY6VU9zhQa
+ oV1g=
+X-Google-Smtp-Source: AGHT+IFCEPKXeUaSxasnSqdSyP47gISMj1UXbyhySDKRmXA4igv4YVycuxKze6wERg0QZrAxJadG6w==
+X-Received: by 2002:a05:600c:1c9f:b0:426:591d:adb6 with SMTP id
+ 5b1f17b1804b1-426708fa8efmr54662335e9.35.1720703911274; 
+ Thu, 11 Jul 2024 06:18:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 06:18:30 -0700 (PDT)
+ Thu, 11 Jul 2024 06:18:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/24] target/arm: Use cpu_env in cpu_untagged_addr
-Date: Thu, 11 Jul 2024 14:18:10 +0100
-Message-Id: <20240711131822.3909903-13-peter.maydell@linaro.org>
+Subject: [PULL 13/24] target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to
+ arm_cpu_exec_halt()
+Date: Thu, 11 Jul 2024 14:18:11 +0100
+Message-Id: <20240711131822.3909903-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
 References: <20240711131822.3909903-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,35 +93,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+In commit a96edb687e76 we set the cpu_exec_halt field of the
+TCGCPUOps arm_tcg_ops to arm_cpu_exec_halt(), but we left the
+arm_v7m_tcg_ops struct unchanged.  That isn't wrong, because for
+M-profile FEAT_WFxT doesn't exist and the default handling for "no
+cpu_exec_halt method" is correct, but it's perhaps a little
+confusing.  We would also like to make setting the cpu_exec_halt
+method mandatory.
 
-In a completely artifical memset benchmark object_dynamic_cast_assert
-dominates the profile, even above guest address resolution and
-the underlying host memset.
+Initialize arm_v7m_tcg_ops cpu_exec_halt to the same function we use
+for A-profile.  (On M-profile we never set up the wfxt timer so there
+is no change in behaviour here.)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240702154911.1667418-1-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/internals.h   | 3 +++
+ target/arm/cpu.c         | 2 +-
+ target/arm/tcg/cpu-v7m.c | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 4c656bdbb76..a12859fc533 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3354,8 +3354,8 @@ extern const uint64_t pred_esz_masks[5];
-  */
- static inline target_ulong cpu_untagged_addr(CPUState *cs, target_ulong x)
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index e1aa1a63b90..da22d041217 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -368,6 +368,9 @@ void arm_restore_state_to_opc(CPUState *cs,
+ 
+ #ifdef CONFIG_TCG
+ void arm_cpu_synchronize_from_tb(CPUState *cs, const TranslationBlock *tb);
++
++/* Our implementation of TCGCPUOps::cpu_exec_halt */
++bool arm_cpu_exec_halt(CPUState *cs);
+ #endif /* CONFIG_TCG */
+ 
+ typedef enum ARMFPRounding {
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 14d4eca1274..19191c23918 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1133,7 +1133,7 @@ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
+ }
+ 
+ #ifdef CONFIG_TCG
+-static bool arm_cpu_exec_halt(CPUState *cs)
++bool arm_cpu_exec_halt(CPUState *cs)
  {
--    ARMCPU *cpu = ARM_CPU(cs);
--    if (cpu->env.tagged_addr_enable) {
-+    CPUARMState *env = cpu_env(cs);
-+    if (env->tagged_addr_enable) {
-         /*
-          * TBI is enabled for userspace but not kernelspace addresses.
-          * Only clear the tag if bit 55 is clear.
+     bool leave_halt = cpu_has_work(cs);
+ 
+diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
+index c059c681e94..5496f14dc16 100644
+--- a/target/arm/tcg/cpu-v7m.c
++++ b/target/arm/tcg/cpu-v7m.c
+@@ -244,6 +244,7 @@ static const TCGCPUOps arm_v7m_tcg_ops = {
+ #else
+     .tlb_fill = arm_cpu_tlb_fill,
+     .cpu_exec_interrupt = arm_v7m_cpu_exec_interrupt,
++    .cpu_exec_halt = arm_cpu_exec_halt,
+     .do_interrupt = arm_v7m_cpu_do_interrupt,
+     .do_transaction_failed = arm_cpu_do_transaction_failed,
+     .do_unaligned_access = arm_cpu_do_unaligned_access,
 -- 
 2.34.1
 
