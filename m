@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F2A92E969
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 451F792E95D
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRthO-0001vY-CF; Thu, 11 Jul 2024 09:19:02 -0400
+	id 1sRthH-0001hK-E8; Thu, 11 Jul 2024 09:18:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRthD-0001VO-0r
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:51 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1sRth7-0001Ca-Ta
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:46 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth7-000640-At
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:50 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-42795086628so5716135e9.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:33 -0700 (PDT)
+ id 1sRth6-000642-32
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:45 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-42122ac2f38so5480515e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720703912; x=1721308712; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720703913; x=1721308713; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/AMAtOWB0ZxCL+R8J/gNQR8gsTJMYguGEneUen0fd3I=;
- b=Zym+GDJI7yfeUIBQgQmTSha6b3BTo9kV3IshCoSMLHGpqD1twLJx4S8Fz4veygtgGd
- dQ6WDtKPYXeDJLrFrrW2+BcZZQ27ZogP3WFcShHFwp+4jc2Lqc3A7NHdwnBKICVKHBzm
- jpm9eVmFN1Omb+QwgqZhmy1btrWxRHYsrtqkFief3Xi+TBswppzmgWGsgsp1fs5dt2+s
- ID5Mq/O9C0NnlzkZHyjLzQ0oFSchp8vWghjv2aEsn+3RmW84vBzyzB+LD5EbvosPXgKW
- Jhvw8xuKGKF4S2T6t0RDRkHxKWcRBn75jvKgKQWAc9860ZkeVcQMsdxuQy3jXyCRVk44
- RJbQ==
+ :reply-to; bh=QR2NXELLGLvw8JsL5lqZLeeutghLd/fRnYWQHU0+2J4=;
+ b=Z7PjmKNGkm427d83zFkxUnWOp02sJRTfdsRY8Q8RbkgkyVbPPCw6zS/iFZZAz5vgxh
+ jKh6LRgRzudbA3z8JYCArbszXM979p7wIFaG6vEsYtORk2t37qgxFA6LLFTYRo9vcqXf
+ b9JMTMibbOFdwG5vLjGNZZLBu9C6ymuZ2UhjIxoLo32KzwFDxX1qhGwava5rTihRzCWQ
+ 6oqQeB7hnsQwrbOCXUbOeuUszhk9ft1QgSPhD+9b6MQgwK6jaQNZUrgKPxjGat8Zbl1z
+ sXLcR/1Y12JRzWIRqK13dgZ8pzqquwS6BMCiNCzMrKXD2yPBJmylzAejtI/lgRSIndbC
+ 8BNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720703912; x=1721308712;
+ d=1e100.net; s=20230601; t=1720703913; x=1721308713;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/AMAtOWB0ZxCL+R8J/gNQR8gsTJMYguGEneUen0fd3I=;
- b=MQJvzRLtXxL+iaYR4zDsf/bE2FRHnEXBD8ryytjROryl8w/Gn/5iTQ0GlTglm3eFBV
- mSSIFm8FtXAUG6Hz0xnuWCerfNWdnqEWSF2VQWMaEpeSqfDcZ7VXvHsK5khuTZ3KmwCs
- TwXf7VLnHN1ag4AF8JFH4oKiKwOgoTI15+DWIWrHb18CFRwRGhDxoUQGKSBYBTUu4JZL
- AaI75vdE1/VzvxQckjpfP0GLT7nQgsE/PxAL8ETiGlGcN8Ng+pSl+0W0QEsRrAcCu4rZ
- hmOvnMXFN6B2FfyXVLc9piBmNvfHeoZpogaZpbLhLxmHPJfPsvynEaD7VHEdoYEYtDNn
- Y07A==
-X-Gm-Message-State: AOJu0Yw99PFIZTSrjaFn03Z2ubeIwqcX/aUCEsyFfmTftmJpoxUCJhsX
- TOcH0Tp2Z7scRaMtKv5E7GbY1CsNWgtBQ0VcaCg+SsAICptBBoNvUCqJz0ImpmTysdyKGM0zxb6
- Ya18=
-X-Google-Smtp-Source: AGHT+IFClvo835ukzmEAx4gE2nIA4BKRCj9E+zcj/l3UwEtvoU3DqmFzwS1+IZ96CvAr4/4MLtNvFg==
-X-Received: by 2002:a05:600c:6d8:b0:426:6389:94c4 with SMTP id
- 5b1f17b1804b1-426708f9d84mr54498885e9.37.1720703912647; 
- Thu, 11 Jul 2024 06:18:32 -0700 (PDT)
+ bh=QR2NXELLGLvw8JsL5lqZLeeutghLd/fRnYWQHU0+2J4=;
+ b=H0Pio1d/xKKEjHAStvY5BKU9gazYdhEkQ7aFZ9a/VFVJMJiL5TqJtwo3bQrc8KhClC
+ z01Kz6+YSWkMkHltKpYWxcBluQMFFdF8YXPWxTQaaYobU4cywTm+/i3QGKasTn+UrQKk
+ bIv9ptZ88E8ptVCz5SsS4g9mG2Lb3U+3Tp6nlT2bvbyJcRzNthPp/7r7tyYGn8yiXa2i
+ spXTq125Lw1ps7lIX9onb5kxhakpUT2VZCbWwVUSm12UCyXneY0BKJo1vkTUBiRmUOpb
+ h1794Z3RCrI2OASt6UqTjCnpX3AyV0hHqxRK+RhaNAClM556TOeJfe5CnLcVN6dU3cjj
+ +rjw==
+X-Gm-Message-State: AOJu0YxAAA4X1SUaFeWhUczcCHpBr9KclAOrIQh80Q7U2Yw80GTGmNwo
+ YRKS9wGtho8IM5bEDZr8/Kf4kZKf7KYtTEM6ve8HQ9uLX0stWz1XDmjJjZms59bGzh3MwacTJKD
+ 9kMs=
+X-Google-Smtp-Source: AGHT+IGdaIIvkGyrIbpDccFeeWR0e+pKOZHY2qeh+IFQy7WabksA8OKWVNsG7wvdxCi9/VWFyKX9ig==
+X-Received: by 2002:a05:600c:1d24:b0:426:698b:791f with SMTP id
+ 5b1f17b1804b1-427981b2287mr23138165e9.3.1720703913021; 
+ Thu, 11 Jul 2024 06:18:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.32
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 11 Jul 2024 06:18:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/24] hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
-Date: Thu, 11 Jul 2024 14:18:14 +0100
-Message-Id: <20240711131822.3909903-17-peter.maydell@linaro.org>
+Subject: [PULL 17/24] hw/misc: In STM32L4x5 EXTI, handle direct interrupts
+Date: Thu, 11 Jul 2024 14:18:15 +0100
+Message-Id: <20240711131822.3909903-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
 References: <20240711131822.3909903-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,76 +94,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-Up until now, the EXTI implementation had 16 inbound GPIOs connected to
-the 16 outbound GPIOs of STM32L4x5 SYSCFG.
-The EXTI actually handles 40 lines (namely 5 from STM32L4x5 USART
-devices which are already implemented in QEMU).
-In order to connect USART devices to EXTI, this commit consolidates
-constants `EXTI_NUM_INTERRUPT_OUT_LINES` (40) and
-`EXTI_NUM_GPIO_EVENT_IN_LINES` (16) into `EXTI_NUM_LINES` (40).
+The previous implementation for EXTI interrupts only handled
+"configurable" interrupts, like those originating from STM32L4x5 SYSCFG
+(the only device currently connected to the EXTI up until now).
+
+In order to connect STM32L4x5 USART to the EXTI, this commit adds
+handling for direct interrupts (interrupts without configurable edge).
 
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Message-id: 20240707085927.122867-3-ines.varhol@telecom-paris.fr
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240707085927.122867-2-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/misc/stm32l4x5_exti.h | 4 ++--
- hw/misc/stm32l4x5_exti.c         | 6 ++----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ hw/misc/stm32l4x5_exti.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5_exti.h
-index 55f763fa376..62f79362f28 100644
---- a/include/hw/misc/stm32l4x5_exti.h
-+++ b/include/hw/misc/stm32l4x5_exti.h
-@@ -30,7 +30,7 @@
- #define TYPE_STM32L4X5_EXTI "stm32l4x5-exti"
- OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5ExtiState, STM32L4X5_EXTI)
- 
--#define EXTI_NUM_INTERRUPT_OUT_LINES 40
-+#define EXTI_NUM_LINES 40
- #define EXTI_NUM_REGISTER 2
- 
- struct Stm32l4x5ExtiState {
-@@ -47,7 +47,7 @@ struct Stm32l4x5ExtiState {
- 
-     /* used for edge detection */
-     uint32_t irq_levels[EXTI_NUM_REGISTER];
--    qemu_irq irq[EXTI_NUM_INTERRUPT_OUT_LINES];
-+    qemu_irq irq[EXTI_NUM_LINES];
- };
- 
- #endif
 diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
-index 6a2ec62d785..b9a69a69f60 100644
+index b9a69a69f60..e281841dcf4 100644
 --- a/hw/misc/stm32l4x5_exti.c
 +++ b/hw/misc/stm32l4x5_exti.c
-@@ -42,7 +42,6 @@
- #define EXTI_SWIER2 0x30
- #define EXTI_PR2    0x34
- 
--#define EXTI_NUM_GPIO_EVENT_IN_LINES 16
- #define EXTI_MAX_IRQ_PER_BANK 32
- #define EXTI_IRQS_BANK0  32
- #define EXTI_IRQS_BANK1  8
-@@ -238,7 +237,7 @@ static void stm32l4x5_exti_init(Object *obj)
- {
-     Stm32l4x5ExtiState *s = STM32L4X5_EXTI(obj);
- 
--    for (size_t i = 0; i < EXTI_NUM_INTERRUPT_OUT_LINES; i++) {
-+    for (size_t i = 0; i < EXTI_NUM_LINES; i++) {
-         sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq[i]);
+@@ -113,6 +113,13 @@ static void stm32l4x5_exti_set_irq(void *opaque, int irq, int level)
+         return;
      }
  
-@@ -246,8 +245,7 @@ static void stm32l4x5_exti_init(Object *obj)
-                           TYPE_STM32L4X5_EXTI, 0x400);
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++    /* In case of a direct line interrupt */
++    if (extract32(exti_romask[bank], irq, 1)) {
++        qemu_set_irq(s->irq[oirq], level);
++        return;
++    }
++
++    /* In case of a configurable interrupt */
+     if ((level && extract32(s->rtsr[bank], irq, 1)) ||
+         (!level && extract32(s->ftsr[bank], irq, 1))) {
  
--    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq,
--                      EXTI_NUM_GPIO_EVENT_IN_LINES);
-+    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq, EXTI_NUM_LINES);
- }
- 
- static const VMStateDescription vmstate_stm32l4x5_exti = {
 -- 
 2.34.1
 
