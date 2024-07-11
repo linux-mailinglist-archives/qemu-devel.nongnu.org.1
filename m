@@ -2,83 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E3B92EAA8
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 16:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E9C92EAAD
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 16:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRueq-0000rr-Gu; Thu, 11 Jul 2024 10:20:28 -0400
+	id 1sRuhg-000477-9Q; Thu, 11 Jul 2024 10:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sRuek-0000Dv-7C; Thu, 11 Jul 2024 10:20:23 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sRued-0005lV-UO; Thu, 11 Jul 2024 10:20:21 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-70af8128081so779324b3a.1; 
- Thu, 11 Jul 2024 07:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720707609; x=1721312409; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NvM5PCjcgATmFDUmIdzZ0Y+Hp3eStA1GkIR3w102lcM=;
- b=C3nVSqHaNssCktb3BR4T9iz/6B65XCatLT/v4rn+26UHfqaD6BMVlyy3GcJblX80Ku
- 0ddsTJLioHvplXg7c1ELutCtB1tlTNQXhn2AoeoN07iBgbFjzbUEe/Gf0RA2pGPlAd8y
- poUEfkrMb+ds40E+KR68+3ej0IbyD+SAY00QlazidJLfE3RqjbSF5xQ8yS3oMg5PaFqy
- ZWLukY+SiEpnjbN8A3IjmHcB2I09GqiIlBRj8BFdPCx0N0fQdQPcDXbLquXhpFWvvc57
- X1Adn9vZzfdU8sqHMqXsi01ZNDZHE4buQSUYf1/pW0b0waPDGyiT5wO2RrtpkyPz0Vui
- vh6w==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRuhe-0003r8-0w
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 10:23:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sRuhb-0006h5-SE
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 10:23:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720707798;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tfhQtPg6E6lDKVRXDjGIPN+hZwD6fzoHj8AYeuDMm9w=;
+ b=f5ZCN6XKRyKoJtE3xCQcbUt4q5kDBoVc1EFh+CHvvWYtachAHjSGSOgcL1DW0a36FyRIAN
+ ClsMkPGJiSmZnWaXEzI8dHgfHCV3GgQa3ke7u1f2xigXmkk2J5/6mxwRuHBphgEa/9n9C9
+ u4bywULZYXR27zWuAxLXk2LobIbRg/4=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-lTp0ZwRgON-oeZoGJ74Efg-1; Thu, 11 Jul 2024 10:23:16 -0400
+X-MC-Unique: lTp0ZwRgON-oeZoGJ74Efg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6b60b5b85deso2056186d6.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 07:23:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720707609; x=1721312409;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NvM5PCjcgATmFDUmIdzZ0Y+Hp3eStA1GkIR3w102lcM=;
- b=hk07JcFlVSTl7cta0eZUrgc2wzKmUFOQl124vKKx6SmhQxcdN8K9MleMi/LP0ltIR9
- 1f2Q02sQPxLQmFzYBD6ueBDZ+J4YFgNTujkNTF9HgDYJZmdpPrqPE22Bpow8fmcGeZ/0
- M54Vxy1Pxdrwk2oL379+HF/XD1zY+B1UKWcFHnbUoNb16aF2FiHQOe67Sd0Fvbb2GLFU
- kh33JEI4OAcV9hVEMRJsyc+0XUF3ADakv1SzXJ4ag9TgKrzaqh9Mm7ay/wijedcfuzwe
- BTAHEc/DBH70KT/UFcosKEldASBpS74OkJIilHnc+BZd7mJlqUH/09/ziwUxVdEDFJkl
- 9/8A==
+ d=1e100.net; s=20230601; t=1720707796; x=1721312596;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tfhQtPg6E6lDKVRXDjGIPN+hZwD6fzoHj8AYeuDMm9w=;
+ b=u8xjIJz56qiG4vrNUfK58CLN/R6D/FLttH3Nr6mjcrTgpMTi6zpQUvTFuWDNDazpZi
+ Zit8nMaRi2z8hGpqsEBEO6rghQm/eEbOly4we7h1fXl4WG9w5myQ/+YwOIf6EMlhxx1u
+ 5f8IsnlPvoYU0tTzUPnq2Vsvg6JUeoyaxFhsRVWNOHPHUD9TGUwaB5xl61V8Jlnrrr0v
+ fhd5slYC3LMAfI3gKPPtGJ6NgSSRF+tZicJPOapSMZ3s7vx7EKmo4lY5W6481nK/u11b
+ mvS+9QdxRVmAep1vN2sP80ayV6jGKN5hglsbQW+0ugui1umGnGLVM6nxF3MLlTchHg3A
+ uqPQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVdhoK6SvGbH+N5nJ5bq06bRuNlFXEPLPA9/GoSX4Fvnio5Om2FttvMAY67djqIPZUcrEjuAlIMpzH8TJCR4mn8LW8dOWU=
-X-Gm-Message-State: AOJu0YxQOfBkUYfugmPJCRYV9RvJ4NhIXc5xQgpgJ+uUtSWT4+XlytBw
- GFjmbj4sQb2TKXzN1QHsbKOBnlb/t7hvhueb3oeNWVIs0CVrni18Zg+yPgTm
-X-Google-Smtp-Source: AGHT+IEdldM24IEBTKRKSN3sY0sFO+87U4USLJzbltP3QxeKmp/M/l8hEveLq1FndLGYeiZG12ZTnw==
-X-Received: by 2002:a05:6a20:729a:b0:1c0:f2a5:c8dc with SMTP id
- adf61e73a8af0-1c2984cfa6bmr9702789637.50.1720707609057; 
- Thu, 11 Jul 2024 07:20:09 -0700 (PDT)
-Received: from wheely.local0.net ([203.220.44.216])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b54ec730fsm3308904b3a.173.2024.07.11.07.20.05
+ AJvYcCXOMRoQg8LNeXJBCPDLuAQeHGAl2QVEoXbz5Nhlk0Jw3MN8jXpzZmdXkYGd0CUxakCOuoPKlQRrhns9qI4AGqp/bORpmWE=
+X-Gm-Message-State: AOJu0Yx6ECyNRH6K+auvU3Kd7WTNVFXukNQFtl49Eg8+gB0eQcxZ7+lk
+ UA01M3URlPbBHm+NpEfEx/NvbS2zeL+CUrUOdyfMjLNzffsA1wXlvQcmXTaF2QY20QJFiwCMfcc
+ 3xAdTV7Fmwmq+6SgPYHzE6YlaWlHobpywvjMaT0aMU371Fq9wKyBk
+X-Received: by 2002:a05:6214:1188:b0:6b0:6370:28d4 with SMTP id
+ 6a1803df08f44-6b74b23aae0mr27163746d6.6.1720707796258; 
+ Thu, 11 Jul 2024 07:23:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCoMtyse9UyFiewn/OEe27YMu2lHJT7PcrINi97SAtWWa5Z28vq3uOZc0w/tAJMB2mt2lxCQ==
+X-Received: by 2002:a05:6214:1188:b0:6b0:6370:28d4 with SMTP id
+ 6a1803df08f44-6b74b23aae0mr27163486d6.6.1720707795898; 
+ Thu, 11 Jul 2024 07:23:15 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6b61ba74bdcsm25980796d6.97.2024.07.11.07.23.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 07:20:08 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH 18/18] ppc/pnv: Add an LPAR per core machine option
-Date: Fri, 12 Jul 2024 00:18:50 +1000
-Message-ID: <20240711141851.406677-19-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240711141851.406677-1-npiggin@gmail.com>
-References: <20240711141851.406677-1-npiggin@gmail.com>
+ Thu, 11 Jul 2024 07:23:15 -0700 (PDT)
+Date: Thu, 11 Jul 2024 10:23:13 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Yichen Wang <yichen.wang@bytedance.com>
+Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org,
+ Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ Bryan Zhang <bryan.zhang@bytedance.com>
+Subject: Re: [PATCH v5 5/5] tests/migration: Add integration test for
+ 'qatzip' compression method
+Message-ID: <Zo_q0UKEwEi3KWsJ@x1n>
+References: <20240711025229.66260-1-yichen.wang@bytedance.com>
+ <20240711025229.66260-6-yichen.wang@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240711025229.66260-6-yichen.wang@bytedance.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,163 +110,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recent POWER CPUs can operate in "LPAR per core" or "LPAR per thread"
-modes. In per-core mode, some SPRs and IPI doorbells are shared between
-threads in a core. In per-thread mode, supervisor and user state is
-not shared between threads.
+On Wed, Jul 10, 2024 at 07:52:29PM -0700, Yichen Wang wrote:
+> From: Bryan Zhang <bryan.zhang@bytedance.com>
+> 
+> Adds an integration test for 'qatzip'.
+> 
+> Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+> Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+> Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
+> ---
+>  tests/qtest/migration-test.c | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+> 
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index 70b606b888..b796dd21cb 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -32,6 +32,10 @@
+>  # endif /* CONFIG_TASN1 */
+>  #endif /* CONFIG_GNUTLS */
+>  
+> +#ifdef CONFIG_QATZIP
+> +#include <qatzip.h>
+> +#endif /* CONFIG_QATZIP */
+> +
+>  /* For dirty ring test; so far only x86_64 is supported */
+>  #if defined(__linux__) && defined(HOST_X86_64)
+>  #include "linux/kvm.h"
+> @@ -2992,6 +2996,22 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
+>  }
+>  #endif /* CONFIG_ZSTD */
+>  
+> +#ifdef CONFIG_QATZIP
+> +static void *
+> +test_migrate_precopy_tcp_multifd_qatzip_start(QTestState *from,
+> +                                              QTestState *to)
+> +{
+> +    migrate_set_parameter_int(from, "multifd-qatzip-level", 2);
+> +    migrate_set_parameter_int(to, "multifd-qatzip-level", 2);
+> +
+> +    /* SW fallback is disabled by default, so enable it for testing. */
+> +    migrate_set_parameter_bool(from, "multifd-qatzip-sw-fallback", true);
+> +    migrate_set_parameter_bool(to, "multifd-qatzip-sw-fallback", true);
 
-OpenPOWER systems after POWER8 use LPAR per thread mode, and it is
-required for KVM. Enterprise systems use LPAR per core mode, as they
-partition the machine by core.
+Shouldn't this already crash when without the parameter?
 
-Implement a lpar-per-core machine option for powernv machines. This
-is fixed true for POWER8 machines, and defaults off for P9 and P10.
+> +
+> +    return test_migrate_precopy_tcp_multifd_start_common(from, to, "qatzip");
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_QPL
+>  static void *
+>  test_migrate_precopy_tcp_multifd_qpl_start(QTestState *from,
+> @@ -3089,6 +3109,17 @@ static void test_multifd_tcp_zstd(void)
+>  }
+>  #endif
+>  
+> +#ifdef CONFIG_QATZIP
+> +static void test_multifd_tcp_qatzip(void)
+> +{
+> +    MigrateCommon args = {
+> +        .listen_uri = "defer",
+> +        .start_hook = test_migrate_precopy_tcp_multifd_qatzip_start,
+> +    };
+> +    test_precopy_common(&args);
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_QPL
+>  static void test_multifd_tcp_qpl(void)
+>  {
+> @@ -3992,6 +4023,10 @@ int main(int argc, char **argv)
+>      migration_test_add("/migration/multifd/tcp/plain/zstd",
+>                         test_multifd_tcp_zstd);
+>  #endif
+> +#ifdef CONFIG_QATZIP
+> +    migration_test_add("/migration/multifd/tcp/plain/qatzip",
+> +                test_multifd_tcp_qatzip);
+> +#endif
+>  #ifdef CONFIG_QPL
+>      migration_test_add("/migration/multifd/tcp/plain/qpl",
+>                         test_multifd_tcp_qpl);
+> -- 
+> Yichen Wang
+> 
 
-With this change, powernv8 SMT now works sufficiently to run Linux,
-including KVM.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- include/hw/ppc/pnv.h      |  1 +
- include/hw/ppc/pnv_core.h |  1 +
- hw/ppc/pnv.c              | 29 +++++++++++++++++++++++++++++
- hw/ppc/pnv_core.c         |  8 ++++++++
- target/ppc/cpu_init.c     |  3 ++-
- 5 files changed, 41 insertions(+), 1 deletion(-)
-
-diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
-index b7858d310d..73f0d72f55 100644
---- a/include/hw/ppc/pnv.h
-+++ b/include/hw/ppc/pnv.h
-@@ -104,6 +104,7 @@ struct PnvMachineState {
-     hwaddr       fw_load_addr;
- 
-     bool         big_core;
-+    bool         lpar_per_core;
- };
- 
- PnvChip *pnv_get_chip(PnvMachineState *pnv, uint32_t chip_id);
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index 1de79a818e..d8afb4f95f 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -57,6 +57,7 @@ struct PnvCore {
-     /*< public >*/
-     PowerPCCPU **threads;
-     bool big_core;
-+    bool lpar_per_core;
-     uint32_t pir;
-     uint32_t hwid;
-     uint64_t hrmor;
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 71b2b3806c..f9a05fa0ff 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1026,6 +1026,11 @@ static void pnv_init(MachineState *machine)
-         exit(1);
-     }
- 
-+    if (!object_property_find(OBJECT(pnv), "lpar-per-core")) {
-+        /* POWER8 is always in lpar-per-core mode */
-+        pnv->lpar_per_core = true;
-+    }
-+
-     pnv->num_chips =
-         machine->smp.max_cpus / (machine->smp.cores * machine->smp.threads);
- 
-@@ -2589,6 +2594,18 @@ static void pnv_machine_set_big_core(Object *obj, bool value, Error **errp)
-     pnv->big_core = value;
- }
- 
-+static bool pnv_machine_get_1lpar(Object *obj, Error **errp)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(obj);
-+    return pnv->lpar_per_core;
-+}
-+
-+static void pnv_machine_set_1lpar(Object *obj, bool value, Error **errp)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(obj);
-+    pnv->lpar_per_core = value;
-+}
-+
- static bool pnv_machine_get_hb(Object *obj, Error **errp)
- {
-     PnvMachineState *pnv = PNV_MACHINE(obj);
-@@ -2662,6 +2679,12 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
-                                    pnv_machine_set_big_core);
-     object_class_property_set_description(oc, "big-core",
-                               "Use big-core (aka fused-core) mode");
-+
-+    object_class_property_add_bool(oc, "lpar-per-core",
-+                                   pnv_machine_get_1lpar,
-+                                   pnv_machine_set_1lpar);
-+    object_class_property_set_description(oc, "lpar-per-core",
-+                              "Use 1 LPAR per core mode");
- }
- 
- static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
-@@ -2709,6 +2732,12 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-                                    pnv_machine_set_big_core);
-     object_class_property_set_description(oc, "big-core",
-                               "Use big-core (aka fused-core) mode");
-+
-+    object_class_property_add_bool(oc, "lpar-per-core",
-+                                   pnv_machine_get_1lpar,
-+                                   pnv_machine_set_1lpar);
-+    object_class_property_set_description(oc, "lpar-per-core",
-+                              "Use 1 LPAR per core mode");
- }
- 
- static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index a685a5dc1b..5a6fcb6edc 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -208,6 +208,9 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
-                 val |= PPC_BIT(56 + i);
-             }
-         }
-+        if (pc->lpar_per_core) {
-+            val |= PPC_BIT(62);
-+        }
-         break;
-     case PNV10_XSCOM_EC_CORE_THREAD_INFO:
-         break;
-@@ -320,6 +323,10 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-         env->core_index = core_hwid;
-     }
- 
-+    if (pc->lpar_per_core) {
-+        cpu_ppc_set_1lpar(cpu);
-+    }
-+
-     /* Set time-base frequency to 512 MHz */
-     cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
- }
-@@ -352,6 +359,7 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
- 
-     pc->big_core = pnv->big_core;
-     pc->tod_state.big_core_quirk = pmc->quirk_tb_big_core;
-+    pc->lpar_per_core = pc->chip->pnv_machine->lpar_per_core;
- 
-     pc->threads = g_new(PowerPCCPU *, cc->nr_threads);
-     for (i = 0; i < cc->nr_threads; i++) {
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 9349001b76..0fc83d5cc2 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6785,7 +6785,8 @@ void cpu_ppc_set_1lpar(PowerPCCPU *cpu)
- 
-     /*
-      * pseries SMT means "LPAR per core" mode, e.g., msgsndp is usable
--     * between threads.
-+     * between threads. powernv be in either mode, and it mostly affects
-+     * supervisor visible registers and instructions.
-      */
-     if (env->flags & POWERPC_FLAG_SMT) {
-         env->flags |= POWERPC_FLAG_SMT_1LPAR;
 -- 
-2.45.1
+Peter Xu
 
 
