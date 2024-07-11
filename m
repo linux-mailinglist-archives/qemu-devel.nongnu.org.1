@@ -2,99 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF5592F116
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 23:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AC692F12C
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 23:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sS1Gj-0006uQ-Vf; Thu, 11 Jul 2024 17:24:01 -0400
+	id 1sS1PD-0000Li-Nj; Thu, 11 Jul 2024 17:32:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sS1Gi-0006tw-3o
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:24:00 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sS1P9-0000L1-VC
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:32:44 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sS1Gg-00012C-Dh
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:23:59 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fb05ac6b77so9663245ad.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 14:23:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sS1P4-0005er-5g
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 17:32:43 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1fb53bfb6easo10275865ad.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 14:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720733036; x=1721337836; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720733554; x=1721338354; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lQT5fCKa8lnBO+12cnB5rIunQwN0+veeBL3rURPgahY=;
- b=b2C6wOUGDF5JXB63u5IhNw8ZKou6GCBBr4xGaew2yO2VpSrvOc/KmamXSRRkznZFjS
- w5iTln3h/J4H3mpD7ekiHrD7dy4U1oqZLQz72KjHcZ/qAk/J1pYt1JcRLDIkS4cVctDx
- 8A0e4dv73zCI+5LcibkTADwxcf4nty8uVkcrLpgAId/QFMxj3PPec8E+z1Xzgc7xKF0w
- rVaUT3E1cfDI3PM1qiVa0MahKIDWVnw7WlcHEwdyIbe9PVWWtzGdksa42+KazpXAp+Qc
- 6oG9SxTXXX/M1g8LSjtSsQYcAfnwUTvvBOwuVWBz26Rdo5XeyMetr6yTfBD3ix92JY95
- 9UkA==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=00ogbnRPoirmBDe4vWDZhDoh2C9/ODS/D5DUIy7wYQk=;
+ b=OwIkEG6uZLDHzOCVgOmCLwOJ+i2wa/cxO/jOdWKjurNy1OzqficjtOPUaW0ceynDKL
+ rgnjAf6fAfjd+zlpoyefDWzdSaNfmhgT9dJqAkpJZYJmkK/erQjFKe++GxVD7CIPvo7e
+ 8YxWGEC7aoHdsVq1HS09SSclTvJdteejOAe4vC0gHM9J7Vs/HsINEY64sLzkqsU8p92M
+ ctWoGTTyO4cAFDX+SkflSQFoqOzXRMUMJaYcG7awhb6JdZNEvAxc2tVaK6If7fsoZp0S
+ HQsI5iJ9FXJ9RjjXqwJAzm/QANPi2b9m8zEmP3ZSBlYZs7ho6KY73qVx+VBFUGic0zQB
+ hgXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720733036; x=1721337836;
+ d=1e100.net; s=20230601; t=1720733554; x=1721338354;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lQT5fCKa8lnBO+12cnB5rIunQwN0+veeBL3rURPgahY=;
- b=EYIKcK7BOr8lEc3s1+vEqlIZ62Lm39nSwheuDeDJ3h66qJXD4w9w2SxL/VCy2C22cO
- OfwBMtywuaNaQt7qNydUrSmzl0nUHmoRVFYR9mhxkiQdHvp5HmaGku006+Y/SnksQgOq
- IdFPzBHBcwfDFZrwhIOcj0+WsS1RM7nCnTUCLTbqSMnmBOZtK1uiBvostZKZDFPgUF6L
- cRLDJ970sGmZKLZ/mafTVhVmkUvpWUl7yeQ4lUcWOAcJvGeABEl7GkOmjcEFTrhHaB4g
- rK9WHbYAIaROMBr0pgGlfjR1C5TIWXLAm9buH0mgA6pOkbxgy2sy1W8POCncQ4FScQdZ
- N+qQ==
+ bh=00ogbnRPoirmBDe4vWDZhDoh2C9/ODS/D5DUIy7wYQk=;
+ b=wQcEwbm0lx72tgKUFtIkBwocuM2SpWHXJriaSdWciCb2PyIxwNwdc7nZGEju5WrV7a
+ Egc0YasOMf3eL+QZCNmSBH6iyBgIHs8ZZKhdMEqwpyIlPsjuHck2IzYKejJPzEI+vEK2
+ Wi2LWOfCXjOel6LtFethfbRRfYRItn8R/hs256diPXP2VTy7ivkEh8VP79Lte1uXqvsU
+ /6hhsp+tSsJzlgPOUxtxEAIQgVNs3Ik0YczTFGKO5oaKNtucdrqhgpcBgG6ecWT1L998
+ mrOt3ldckkGWobK6QXpkyzMKhEMDDrEWpI2ivK/x4tBZ/bp/CQh1LQC5zFNxyduBm6BE
+ ic5Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWYEzjQPu57CFPI8n81+EqGPi/Uf6n+268cU/p0ta0kjwFqJH6aVRzoQjnHp7ckW6jQVwy8Nk4G9BA3mIY+sFAttMnI5Fk=
-X-Gm-Message-State: AOJu0YwHV8Ulla3t5MiVsPuP8Zhz6B1YGKROZKZbKzHr06+yYtYaEGns
- pCyGmZ1gcT5FyAOgGtbdtS6wzQSlGY6mZgyAEUj7iMyPEU9AMuZzlwklLvUtsss=
-X-Google-Smtp-Source: AGHT+IFBygD1ssyXUz97EztUf/3XVLIzyyWMbQP7sfagym/83SJLM8qzO2VW+cyKn3cT2KI+DYqE6w==
-X-Received: by 2002:a17:902:f688:b0:1fa:643:f434 with SMTP id
- d9443c01a7336-1fbb6f0de9dmr80044785ad.66.1720733035964; 
- Thu, 11 Jul 2024 14:23:55 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::bfd3? ([2604:3d08:9384:1d00::bfd3])
+ AJvYcCWavXlgs8zs0TmG7QTQAZdy7NJp7s+CNG5jk4apTXwMaH81fIen8Dx0i5qW1R12fWgcjElpcDTTuacgkoUcrf8yS9IHZaw=
+X-Gm-Message-State: AOJu0YyJVEgxGvafm+/upsQmO6nDvyhPbE5VZfDgd+4EM5nBjlFwx1t+
+ U2J/25Wvs6Dk44gebMjdk+ovKe62+6oT3H8AS2wikjeaIVamLu5WyOq0Qin3Bo0kgnUkBumT3ze
+ LN4Q=
+X-Google-Smtp-Source: AGHT+IEpJzjyA+LhIuF3+bY7VdfuNI4TCQq0eT2PvpC5Ft/JS8s/+fXP8A1fE/fpZl0GyQwtXbv4VQ==
+X-Received: by 2002:a17:902:b202:b0:1f9:b9ed:e84e with SMTP id
+ d9443c01a7336-1fbb6eb22a3mr62088455ad.58.1720733553678; 
+ Thu, 11 Jul 2024 14:32:33 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fbb6a0fbfbsm54955125ad.49.2024.07.11.14.23.54
+ d9443c01a7336-1fbb6a0fc38sm55190425ad.17.2024.07.11.14.32.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Jul 2024 14:23:55 -0700 (PDT)
-Message-ID: <641f264e-81ff-40fa-880d-bda18339ac57@linaro.org>
-Date: Thu, 11 Jul 2024 14:23:54 -0700
+ Thu, 11 Jul 2024 14:32:33 -0700 (PDT)
+Message-ID: <48e00278-957b-4e02-9034-8f314736098e@linaro.org>
+Date: Thu, 11 Jul 2024 14:32:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 2/7] rust: add bindgen step as a meson dependency
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- rowan.hart@intel.com, Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
- <4ce5a7330f594c6c94c8cc3aabceb061095bb855.1720094395.git.manos.pitsidianakis@linaro.org>
- <87msmqsunu.fsf@draig.linaro.org>
- <CAFEAcA9X0564R7V=EsN2qxj51FNNkot3Pfev6mMgUbr35WYFZw@mail.gmail.com>
- <CABgObfbBqHoy4M78NR8EAQ-PV+X86qEK6_ra=tS0_bgqpAt1dw@mail.gmail.com>
- <Zo00iKKtRRDTTslY@redhat.com>
+Subject: Re: [PULL 00/24] target-arm queue
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20240711131822.3909903-1-peter.maydell@linaro.org>
 Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <Zo00iKKtRRDTTslY@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,41 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gNy85LzI0IDA2OjAwLCBEYW5pZWwgUC4gQmVycmFuZ8OpIHdyb3RlOg0KPiBPbiBUdWUs
-IEp1bCAwOSwgMjAyNCBhdCAwMjoyODozOFBNICswMjAwLCBQYW9sbyBCb256aW5pIHdyb3Rl
-Og0KPj4gT24gVHVlLCBKdWwgOSwgMjAyNCBhdCAyOjA54oCvUE0gUGV0ZXIgTWF5ZGVsbCA8
-cGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnPiB3cm90ZToNCj4+PiAgICogd2hhdCBpcyB0aGUg
-YWN0dWFsIGJhc2VsaW5lIHJlcXVpcmVtZW50PyBXZSBkZWZpbml0ZWx5IHdhbnQNCj4+PiAg
-ICAgdG8gc3VwcG9ydCAidXNpbmcgcnVzdHVwIG9uIGFuIG9sZGVyIHN5c3RlbSIgKHNob3Vs
-ZCBiZSBubw0KPj4+ICAgICBwcm9ibGVtKSBhbmQgImN1cnJlbnQgZGlzdHJvIGJ1aWxkaW5n
-IFFFTVUgdXNpbmcgdGhlIGRpc3RybydzDQo+Pj4gICAgIHJ1c3QiLCBJIGFzc3VtZS4gSXQg
-d291bGQgY2VydGFpbmx5IGJlIG5pY2UgdG8gaGF2ZSAiYnVpbGRpbmcNCj4+PiAgICAgUUVN
-VSBvbiB0aGUgb2xkZXItYnV0LXN0aWxsLWluLW91ci1zdXBwb3J0LWxpc3QgZGlzdHJvIHJl
-bGVhc2VzDQo+Pj4gICAgIHdpdGggdGhhdCBkaXN0cm8ncyBydXN0IiwgYnV0IHRoaXMgcHJv
-YmFibHkgaW1wbGllcyBub3QganVzdA0KPj4+ICAgICBhIG1pbmltdW0gcnVzdCB2ZXJzaW9u
-IGJ1dCBhbHNvIGEgbGltaXRlZCBzZXQgb2YgY3JhdGVzLg0KPj4NCj4+IEkgZG9uJ3QgdGhp
-bmsgbGltaXRpbmcgb3Vyc2VsdmVzIHRvIHRoZSBzZXQgb2YgY3JhdGVzIGluIHRoZSBkaXN0
-cm8gaXMNCj4+IGZlYXNpYmxlLiBJdCdzIG5vdCB0aGUgd2F5IHRoZSBsYW5ndWFnZSB3b3Jr
-cywgZm9yIGV4YW1wbGUgSSB0cmllZA0KPj4gY2hlY2tpbmcgaWYgdGhlICJjc3RyIiBjcmF0
-ZSBleGlzdHMgYW5kIEkgZGlkbid0IGZpbmQgaXQgaW4gRGViaWFuLg0KPiANCj4gWWVwLCBS
-dXN0IGlzIG5ldyBlbm91Z2ggdGhhdCBpdCBpcyBoaWdobHkgbGlrZWx5IHRoYXQgY3JhdGVz
-IHdpbGwgYmUNCj4gbWlzc2luZyBpbiBtdWx0aXBsZSBkaXN0cm9zLg0KPiANCj4gRm9yIG9y
-ZGluYXJ5IHVzZXJzLCBjYXJnbyB3aWxsIGhhcHBpbHkgZG93bmxvYWQgdGhlIG1pc3Npbmcg
-cGllY2VzDQo+IHNvIGl0cyBub3QgYW4gaXNzdWUuDQo+IA0KPiBGb3IgZGlzdHJvIHBhY2th
-Z2VycywgdGhleSdsbCBqdXN0IGhhdmUgdG8gZWl0aGVyIHBhY2thZ2UgdXAgdGhlIGNyYXRl
-cywNCj4gb3IgYnVuZGxlIHRoZW0gaW4gdGhlaXIgUUVNVSBidWlsZC4gQ2FyZ28gbWFrZXMg
-dGhlIGxhdHRlciBlYXN5IGF0DQo+IGxlYXN0LiBJZiBkaXN0cm9zIGRvbid0IHdhbnQgYnVu
-ZGxpbmcsIHRoZXknbGwgbmVlZCB0byBnbyB0aGUgbW9yZQ0KPiBpbnZvbHZlZCByb3V0ZSBv
-ZiBwYWNrYWdpbmcgZGVwcy4NCj4gDQo+IElPVywgZnJvbSBhIGRpc3RybyBQT1YsIElNSE8s
-IHdlIHNob3VsZCBmb2N1cyBvbiB0aGUgUnVzdCB0b29sY2hhaW4NCj4gdmVyc2lvbnMgd2Ug
-bmVlZCBhcyB0aGUgbWluaW11bSBiYXIuDQo+IA0KPiBXaXRoIHJlZ2FyZHMsDQo+IERhbmll
-bA0KDQpJIHdvdWxkIGxpa2UgdG8gYWRkIHRoYXQsIGNvbnRyYXJ5IHRvIHBpcCBwYWNrYWdl
-cyBmb3IgcHl0aG9uLCBpdCBjYW4gYmUgDQoqdHJ1c3RlZCogdGhhdCBSdXN0IGNyYXRlcy5p
-byB3aWxsIGtlZXAgcGFja2FnZXMgYW5kIHRoZWlyIGRpZmZlcmVudCANCnZlcnNpb25zLCBh
-cyBpdCB3YXMgZGVzaWduZWQgdG8gYmUgYW4gaW1tdXRhYmxlIHJlZ2lzdHJ5Lg0KDQpJbmRl
-ZWQsIHVzZXJzIGNhbid0IHJlbW92ZSB0aGVpciBwYWNrYWdlLCBleGNlcHQgZm9yIHN0cm9u
-ZyBzZWN1cml0eSANCmlzc3VlcywgdG8gdGhlIG9wcG9zaXRlIG9mIHBpcC4NCg0KQmVzaWRl
-cyBvZmZsaW5lIGNvbXBpbGF0aW9uIHNjZW5hcmlvLCBhcmUgdGhlcmUgYW55IG90aGVyIHJl
-YXNvbiBmb3IgDQp3YW50aW5nIHRvIHVzZSBkaXN0cm8gcGFja2FnZXMgaW5zdGVhZCBvZiBs
-ZXR0aW5nIGNhcmdvIGRvIHRoZSB3b3JrPw0K
+On 7/11/24 06:17, Peter Maydell wrote:
+> The following changes since commit 59084feb256c617063e0dbe7e64821ae8852d7cf:
+> 
+>    Merge tag 'pull-aspeed-20240709' ofhttps://github.com/legoater/qemu  into staging (2024-07-09 07:13:55 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://git.linaro.org/people/pmaydell/qemu-arm.git  tags/pull-target-arm-20240711
+> 
+> for you to fetch changes up to 7f49089158a4db644fcbadfa90cd3d30a4868735:
+> 
+>    target/arm: Convert PMULL to decodetree (2024-07-11 11:41:34 +0100)
+> 
+> ----------------------------------------------------------------
+> target-arm queue:
+>   * Refactor FPCR/FPSR handling in preparation for FEAT_AFP
+>   * More decodetree conversions
+>   * target/arm: Use cpu_env in cpu_untagged_addr
+>   * target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to arm_cpu_exec_halt()
+>   * hw/char/pl011: Avoid division-by-zero in pl011_get_baudrate()
+>   * hw/misc/bcm2835_thermal: Fix access size handling in bcm2835_thermal_ops
+>   * accel/tcg: MakeTCGCPUOps::cpu_exec_halt  mandatory
+>   * STM32L4x5: Handle USART interrupts correctly
+
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+
+r~
 
