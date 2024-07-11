@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A1E92E929
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 593A892E95B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:24:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRthQ-0002Bn-1L; Thu, 11 Jul 2024 09:19:04 -0400
+	id 1sRthG-0001ds-HB; Thu, 11 Jul 2024 09:18:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRthD-0001WI-93
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:51 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1sRthA-0001Lo-Ce
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:48 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth7-00063Q-B3
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:50 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4266182a9d7so5441345e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:30 -0700 (PDT)
+ id 1sRth6-00063a-3O
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:47 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4257d5fc9b7so6646585e9.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720703909; x=1721308709; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720703910; x=1721308710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nFYyrjsNrLUd84ygFglfo4UEH7zDocaQimrRcj1rdrk=;
- b=j9BzpUSA38kTZVnZ30oIa01V10Zvxk1NLMBqQZLgjevKYcGCaKw/nXIcrXHcVUbly+
- BETVa9PPdQL/wskZERc5o2I147PyF8PUCGrTkbgtorDyMA1M8cHjHzZ0pMlCHfLw6HMz
- Vy575bPYiMvyHBzh0hVpIeWvD/7NDPr1M3EjitVBXpmx4Qg+Om5IyLxgYVa6fVjIUAFR
- SccwFqifvsoBVeTtMtCV+lFCy6hHhR1DPAEMZuXr1N0suSVTnINX1fdxgEgod9hVrZfc
- x7HLys9zIv5SP5X3Nm2/I1cQNfJhV6pEuR3FuREuYmJXNlnZf3W8jyDh3DKNJhjFBBf/
- iOVA==
+ :reply-to; bh=0oHQIPs0GoYkvLkiU1uUeK4MNvDVeEKdzAv+RB+FavI=;
+ b=Ien7Zo6S8sm9u7Su35IAt/O21haHiyEKY60UnuFLuwJybJxlFIJpF+LpF2XBQlzIe7
+ T5ST+qt6RkQlr5PjJL7tCWwQyiwHeH95xf/VGkohxFdb6UA4lAWaKcQlQVdGBezSJpVM
+ n2q46xqaFMq8iwYolC8eW4JkgolYpHB0dFxJ3qKOoH1fZJDMroESd5cG+VUNYZzJ2iA8
+ WFDI9fUXVokU2idgvGYAhN8RCh/3SfTHsWpqJ2V4EGQcevzxnifkASZFDIyciXqPRp7Z
+ BnAEmTGvEVq+/bSmepxxiSFAwdIR3aGmzVboun4Qb4EZGcksZuKjYmc39sc3z6rQecVO
+ 0o6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720703909; x=1721308709;
+ d=1e100.net; s=20230601; t=1720703910; x=1721308710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nFYyrjsNrLUd84ygFglfo4UEH7zDocaQimrRcj1rdrk=;
- b=W+iFFfDpoWIiPMt2fP4omOD5qdS5usr1hTzP1wV/akvHYoT4AtaTyiCHIjxIc+lu3Z
- G81+9aHlIBufHPxc9sAmnQIymxhHGUI4GNcXig2RPN7h0Ooi5kPMBfLEDH6FLVk9EfOR
- 4i5j80olquejg38cqu3hfDHKxf3gFFYQaVxs/3rJbBqpJAUXMHQdy0/viYGcvAATqzs+
- +50izIGx9aHj3YOAVqecglNMPeS1xQs6yIzAlik36XQczTUKmPhr3OB86tXc9HRYZP3p
- VxiYMm0Ydt12EXu0wf4rK11iTZqbT6VmEiKL8mK90B4b+5MGXb2U8LOzY8J1QpIHcDRE
- gdvQ==
-X-Gm-Message-State: AOJu0YzPfX/MDNnmU/qXpdqGldL5N3k0dSgEBeCHoL2un5oWc2k7yXLx
- lR2qEczufxJk0bS6rbbWVhWIOAkygHNNYtMiYZLX+CyuTLMG5WhGsr6fkoRh9fEQfCwUEJQsBWE
- mG1k=
-X-Google-Smtp-Source: AGHT+IFDt5fPKTsd7j/Jd0ZGDHV2qARJrV8KuvqPDIaItvgJZrgvI2p7FXYDZcckLhnnnNddHvJYVA==
-X-Received: by 2002:a05:600c:4a98:b0:426:6ea0:d5b8 with SMTP id
- 5b1f17b1804b1-426708f2012mr55968125e9.29.1720703909314; 
+ bh=0oHQIPs0GoYkvLkiU1uUeK4MNvDVeEKdzAv+RB+FavI=;
+ b=NBNBVLcOBOpVlGFZs56WWpR4yz0hAsINSRZ6FEXVQHBXi3QO1YbplqS4dJOSFuK8uN
+ cD5hPii6xUrr8VHOBqQz+IqOhzbkgcYDoNb2RwSd7fXWWJN8yqEdVrIPWtImNYAjhc+1
+ Kr2aQpfQcxmLD1Mh6qtRT6KgoU9EV37dXms+TdDmzbwAVd+1nXErEPkV49mgWG0/PH0/
+ FaGSmJuMR1E6Rjru1Rskti5w4JXX0dHh5o5eCsjLc/1smwZJxZ4w6izZFdQh9nY6AOrm
+ hrKXHGCQjl13/TEAfbEaRd40edD5CsclPXeXXuegRd2eAMGnEbaWH1KovFBAzVIHWdGy
+ irHA==
+X-Gm-Message-State: AOJu0YzJDWMPMTl1caTRu0FkoZ9KiTXgIJ6iyDGTGuJkQo6Lv8Ea+Z7C
+ QZptdg6NDmtB7ud6CEGc/ockhRKsnzThEfHRsLPJvzSjAlK1z0htBbSQxn7qWVUdN87Zm3iIv9V
+ Taz8=
+X-Google-Smtp-Source: AGHT+IGfEfphXPc3TFG1Bko+XSYlMwECv4zyRp0JKqLxopDBAsLMnIPaHpsSRP8rT1vE0WOZI3YiQQ==
+X-Received: by 2002:a05:600c:48a5:b0:426:59fe:ac27 with SMTP id
+ 5b1f17b1804b1-426707f83d7mr66077115e9.26.1720703909834; 
  Thu, 11 Jul 2024 06:18:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.28
+ 5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 11 Jul 2024 06:18:29 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/24] target/arm: Allow FPCR bits that aren't in FPSCR
-Date: Thu, 11 Jul 2024 14:18:07 +0100
-Message-Id: <20240711131822.3909903-10-peter.maydell@linaro.org>
+Subject: [PULL 10/24] hw/char/pl011: Avoid division-by-zero in
+ pl011_get_baudrate()
+Date: Thu, 11 Jul 2024 14:18:08 +0100
+Message-Id: <20240711131822.3909903-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
 References: <20240711131822.3909903-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,125 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to allow FPCR bits that aren't in the FPSCR (like the new
-bits that are defined for FEAT_AFP), we need to make sure that writes
-to the FPSCR only write to the bits of FPCR that are architecturally
-mapped, and not the others.
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-Implement this with a new function vfp_set_fpcr_masked() which
-takes a mask of which bits to update.
+In pl011_get_baudrate(), when we calculate the baudrate we can
+accidentally divide by zero. This happens because although (as the
+specification requires) we treat UARTIBRD = 0 as invalid, we aren't
+correctly limiting UARTIBRD and UARTFBRD values to the 16-bit and 6-bit
+ranges the hardware allows, and so some non-zero values of UARTIBRD can
+result in a zero divisor.
 
-(We could do the same for FPSR, but we leave that until we actually
-are likely to need it.)
+Enforce the correct register field widths on guest writes and on inbound
+migration to avoid the division by zero.
 
+ASAN log:
+==2973125==ERROR: AddressSanitizer: FPE on unknown address 0x55f72629b348
+(pc 0x55f72629b348 bp 0x7fffa24d0e00 sp 0x7fffa24d0d60 T0)
+     #0 0x55f72629b348 in pl011_get_baudrate hw/char/pl011.c:255:17
+     #1 0x55f726298d94 in pl011_trace_baudrate_change hw/char/pl011.c:260:33
+     #2 0x55f726296fc8 in pl011_write hw/char/pl011.c:378:9
+
+Reproducer:
+cat << EOF | qemu-system-aarch64 -display \
+none -machine accel=qtest, -m 512M -machine realview-pb-a8 -qtest stdio
+writeq 0x1000b024 0xf8000000
+EOF
+
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240702155752.3022007-1-zheyuma97@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240628142347.1283015-10-peter.maydell@linaro.org
 ---
- target/arm/vfp_helper.c | 54 ++++++++++++++++++++++++++---------------
- 1 file changed, 34 insertions(+), 20 deletions(-)
+ hw/char/pl011.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index cbe69ae3fe3..b3698da8ca7 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -113,11 +113,12 @@ static void vfp_set_fpsr_to_host(CPUARMState *env, uint32_t val)
-     set_float_exception_flags(0, &env->vfp.standard_fp_status_f16);
- }
+diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+index 8753b84a842..f8078aa216d 100644
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -87,6 +87,12 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+ #define CR_DTR      (1 << 10)
+ #define CR_LBE      (1 << 7)
  
--static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val)
-+static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask)
- {
-     uint64_t changed = env->vfp.fpcr;
- 
-     changed ^= val;
-+    changed &= mask;
-     if (changed & (3 << 22)) {
-         int i = (val >> 22) & 3;
-         switch (i) {
-@@ -167,7 +168,7 @@ static void vfp_set_fpsr_to_host(CPUARMState *env, uint32_t val)
- {
- }
- 
--static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val)
-+static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask)
- {
- }
- 
-@@ -239,8 +240,13 @@ void vfp_set_fpsr(CPUARMState *env, uint32_t val)
-     env->vfp.fpsr = val;
- }
- 
--void vfp_set_fpcr(CPUARMState *env, uint32_t val)
-+static void vfp_set_fpcr_masked(CPUARMState *env, uint32_t val, uint32_t mask)
- {
-+    /*
-+     * We only set FPCR bits defined by mask, and leave the others alone.
-+     * We assume the mask is sensible (e.g. doesn't try to set only
-+     * part of a field)
-+     */
-     ARMCPU *cpu = env_archcpu(env);
- 
-     /* When ARMv8.2-FP16 is not supported, FZ16 is RES0.  */
-@@ -248,22 +254,24 @@ void vfp_set_fpcr(CPUARMState *env, uint32_t val)
-         val &= ~FPCR_FZ16;
-     }
- 
--    vfp_set_fpcr_to_host(env, val);
-+    vfp_set_fpcr_to_host(env, val, mask);
- 
--    if (!arm_feature(env, ARM_FEATURE_M)) {
--        /*
--         * Short-vector length and stride; on M-profile these bits
--         * are used for different purposes.
--         * We can't make this conditional be "if MVFR0.FPShVec != 0",
--         * because in v7A no-short-vector-support cores still had to
--         * allow Stride/Len to be written with the only effect that
--         * some insns are required to UNDEF if the guest sets them.
--         */
--        env->vfp.vec_len = extract32(val, 16, 3);
--        env->vfp.vec_stride = extract32(val, 20, 2);
--    } else if (cpu_isar_feature(aa32_mve, cpu)) {
--        env->v7m.ltpsize = extract32(val, FPCR_LTPSIZE_SHIFT,
--                                     FPCR_LTPSIZE_LENGTH);
-+    if (mask & (FPCR_LEN_MASK | FPCR_STRIDE_MASK)) {
-+        if (!arm_feature(env, ARM_FEATURE_M)) {
-+            /*
-+             * Short-vector length and stride; on M-profile these bits
-+             * are used for different purposes.
-+             * We can't make this conditional be "if MVFR0.FPShVec != 0",
-+             * because in v7A no-short-vector-support cores still had to
-+             * allow Stride/Len to be written with the only effect that
-+             * some insns are required to UNDEF if the guest sets them.
-+             */
-+            env->vfp.vec_len = extract32(val, 16, 3);
-+            env->vfp.vec_stride = extract32(val, 20, 2);
-+        } else if (cpu_isar_feature(aa32_mve, cpu)) {
-+            env->v7m.ltpsize = extract32(val, FPCR_LTPSIZE_SHIFT,
-+                                         FPCR_LTPSIZE_LENGTH);
-+        }
-     }
- 
-     /*
-@@ -276,12 +284,18 @@ void vfp_set_fpcr(CPUARMState *env, uint32_t val)
-      * bits.
-      */
-     val &= FPCR_AHP | FPCR_DN | FPCR_FZ | FPCR_RMODE_MASK | FPCR_FZ16;
--    env->vfp.fpcr = val;
-+    env->vfp.fpcr &= ~mask;
-+    env->vfp.fpcr |= val;
-+}
++/* Integer Baud Rate Divider, UARTIBRD */
++#define IBRD_MASK 0x3f
 +
-+void vfp_set_fpcr(CPUARMState *env, uint32_t val)
-+{
-+    vfp_set_fpcr_masked(env, val, MAKE_64BIT_MASK(0, 32));
- }
++/* Fractional Baud Rate Divider, UARTFBRD */
++#define FBRD_MASK 0xffff
++
+ static const unsigned char pl011_id_arm[8] =
+   { 0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1 };
+ static const unsigned char pl011_id_luminary[8] =
+@@ -374,11 +380,11 @@ static void pl011_write(void *opaque, hwaddr offset,
+         s->ilpr = value;
+         break;
+     case 9: /* UARTIBRD */
+-        s->ibrd = value;
++        s->ibrd = value & IBRD_MASK;
+         pl011_trace_baudrate_change(s);
+         break;
+     case 10: /* UARTFBRD */
+-        s->fbrd = value;
++        s->fbrd = value & FBRD_MASK;
+         pl011_trace_baudrate_change(s);
+         break;
+     case 11: /* UARTLCR_H */
+@@ -531,6 +537,9 @@ static int pl011_post_load(void *opaque, int version_id)
+         s->read_pos = 0;
+     }
  
- void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
- {
--    vfp_set_fpcr(env, val & FPSCR_FPCR_MASK);
-+    vfp_set_fpcr_masked(env, val, FPSCR_FPCR_MASK);
-     vfp_set_fpsr(env, val & FPSCR_FPSR_MASK);
++    s->ibrd &= IBRD_MASK;
++    s->fbrd &= FBRD_MASK;
++
+     return 0;
  }
  
 -- 
