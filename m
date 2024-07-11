@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6353892F206
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 00:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F062392F208
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 00:34:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sS2KP-00011I-Vt; Thu, 11 Jul 2024 18:31:54 -0400
+	id 1sS2KR-00013B-DV; Thu, 11 Jul 2024 18:31:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1sS2KO-0000xY-8N
+ id 1sS2KO-0000wZ-0X
  for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:52 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1sS2KL-0001eb-OV
+ id 1sS2KL-0001f1-Ty
  for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:51 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fbc0a1494dso9817805ad.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 15:31:48 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1fb3cf78fbdso9714845ad.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 15:31:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720737107; x=1721341907;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720737108; x=1721341908;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kD00JMr9p5V5CiUPCOgTYfk1sFKx7ToS26FZRkZhj3g=;
- b=wmyxR22e6XT/QuNZ0DzJSC9dv1LAPlDaJnnqneMd5HPp/omPYYFWFasHNy+99GNNdu
- tuYg+qNg89e06v8QhLhmo/AjBZes5/unXBBzUZxYSPxNrD1VrYI830B/OQ2jWYgs1VJn
- S1poePa2eMF/B1Pa53xdT8sygJeF3VQtnJj6BRk39mY1nXTuCuSJxBhTWAQ5pvGfKhwd
- NbHht4fgl0aOeT35NYNs2YBagURb/ScBBwBGXZptob7hNNBEHS6tF0Kj5u9/XX3xKexO
- FFHzFhqPNuVcOkeg4cJvsExBJlErWXM2lj6Qu7UYRZrZeKk4o0/0vwzuHFZOhy0FEBnu
- IvGg==
+ :reply-to; bh=fPS11BBBq2Nn4RJ2JAWB0GCizp88P/htp+YkSfYLhzE=;
+ b=ll1Jquh/SzqAUaxaPuW/H75yUA4YErk7ut+723IVQZjQ3+binf/HPxTFdQWW0mB2HN
+ KwfX9GJFOrLvg6pRt7C4QSJlhw0kYp9y/UhJSJxhzRlLKr1UAV15xT6T6izAxDCQoTWh
+ F81l/1acv/QKS5jwJmu4HpLS1Gjg+ZXqwsgNFv3umKQOIl9hAghzKiaTjn85TE64iWF1
+ mruQJWrhCXisCQAu4HHA3+Mr4ajAnH40eTxxsnDKOF33ecMA1FAOfKFtS3Cv95glrkGh
+ Djxxd5nTTHXofBrsPKgQnggKI6peLigGPlxc/I4vQpIXhzoJHH0DuWqqSEVkezafdemH
+ ZIiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720737107; x=1721341907;
+ d=1e100.net; s=20230601; t=1720737108; x=1721341908;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kD00JMr9p5V5CiUPCOgTYfk1sFKx7ToS26FZRkZhj3g=;
- b=S/Aml8L7afZIw2zohz7QxstZxEgsoHUjQjz8tS611EQiVF1hcQmLsFSguTW8JfT3UO
- HKjCAqkNABUPdxDjavkff2SmrjzxWUfwAhOwF2qMZDaErnSb50xIDWFk1OYSPyxbdy3w
- 5sQxXEClr3sGdqEK2q0MFbpw6wPrGsBhE1pO47v+JIlPplyZlHQIrHJUxmVLPans4TYn
- CbX5e+3JxCRLmOpVYLHhvcN+rbuuil6pyEnxh9EdBE5ZGSmpwoNaB+OYnKN9Kv63wwjs
- j3vveBMfV6hX4nzRXCM+2s3Vo3U94OqwolhXmOccd49AYlYZmLgoqmWa8M0+VDqlsImB
- NbHA==
+ bh=fPS11BBBq2Nn4RJ2JAWB0GCizp88P/htp+YkSfYLhzE=;
+ b=LRbcjLK0fsz9M7H8OVXk3t8QKQngnEgUXYsvmk/PELkMeKqL+ZVKnw0rcWzjnSS/r3
+ Yjhr3ZLO9G+B0VcZPsWgW0vvsdMBT2omSqKLdbz5i5n6OSgb442R9fMUjE0Ls+DjfdLy
+ aq7IVWAWHB4ukJhq/hQNJ12yK8oy/nRN1fUbTNFoydyAEzaMNRDEUneoJdnTnqe2hAFm
+ Zbyx0EtfLG+iRfXtL94yo1eOFleHaxSjUeAQKnEjP4450VIPgZVysr7GZZ3FIs8BVD6h
+ GzvGJ2SLmuuyNQiHb4mcFWEupZ1Bmcegzq0cPPCAPi0QWFeNdT9Ek7WN7yqfUa02Nfni
+ rW/g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2FyxElYEZpQ43vtFfb6wI37wgcGJjjAXaL9u6jrlfB7cca+t0ssz/dHPshHoa1YEr1dofFCqN3tXthbovZ/cOTyXWF3Q=
-X-Gm-Message-State: AOJu0YzdeDSPgr+pvJ4Y5jLeJgL3OWB4pktAoFoVH2X0Fa/UAvKHIMJ4
- quLIfp/vmh9vq5vYajA/AY1ljD0dixhRRgkSAW38jEpjyGP2V8eHwR42vosCuVqLd6tmygZ6zod
- M
-X-Google-Smtp-Source: AGHT+IGU0Rd6P28qya8ELyK9SzT+ELBr3EtvicfzcIPj8vbHVO3yOZtILiQjynyVqePRn8hy2nUB/w==
-X-Received: by 2002:a17:902:c40e:b0:1fb:7c7f:6458 with SMTP id
- d9443c01a7336-1fbb6d2a41bmr73764325ad.32.1720737107266; 
- Thu, 11 Jul 2024 15:31:47 -0700 (PDT)
+ AJvYcCVVzzQ0cleavc4i5F/7S8CZCJhSQl9MAX07vD8keTRWf/6abrSDMRGdNXLBE8wAFB3bLMPV9HTPfU+2J45Jo3ih19srM2w=
+X-Gm-Message-State: AOJu0YxLIrWgDLMvmj8jEadiRu0OMrruP5Bh9Wp+IO5ipOMLlZvI7qRP
+ Rk1Xaw+LdjH/W+6ce3abpzYMPUX8hWqJoZBAzJnlDEIc46k+ou7TYp95nRi1Mn0=
+X-Google-Smtp-Source: AGHT+IHbrIsqx1w/2VoacGalx9V8z1VIGvenzCaqA2OmOGNusj6q1D2VXdqrJu6lKO8jEeJkmEhmeQ==
+X-Received: by 2002:a17:902:e806:b0:1fb:a38b:c5a0 with SMTP id
+ d9443c01a7336-1fbb6d0855bmr86588575ad.31.1720737108429; 
+ Thu, 11 Jul 2024 15:31:48 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fbb6b34ca2sm55161565ad.53.2024.07.11.15.31.46
+ d9443c01a7336-1fbb6b34ca2sm55161565ad.53.2024.07.11.15.31.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 15:31:46 -0700 (PDT)
+ Thu, 11 Jul 2024 15:31:48 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
-Date: Thu, 11 Jul 2024 15:31:14 -0700
-Subject: [PATCH v8 11/13] target/riscv: More accurately model priv mode
- filtering.
+Date: Thu, 11 Jul 2024 15:31:15 -0700
+Subject: [PATCH v8 12/13] target/riscv: Do not setup pmu timer if OF is
+ disabled
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240711-smcntrpmf_v7-v8-11-b7c38ae7b263@rivosinc.com>
+Message-Id: <20240711-smcntrpmf_v7-v8-12-b7c38ae7b263@rivosinc.com>
 References: <20240711-smcntrpmf_v7-v8-0-b7c38ae7b263@rivosinc.com>
 In-Reply-To: <20240711-smcntrpmf_v7-v8-0-b7c38ae7b263@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
  bin.meng@windriver.com, dbarboza@ventanamicro.com, alistair.francis@wdc.com
 X-Mailer: b4 0.15-dev-13183
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=atishp@rivosinc.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,141 +95,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rajnesh Kanwal <rkanwal@rivosinc.com>
+The timer is setup function is invoked in both hpmcounter
+write and mcountinhibit write path. If the OF bit set, the
+LCOFI interrupt is disabled. There is no benefitting in
+setting up the qemu timer until LCOFI is cleared to indicate
+that interrupts can be fired again.
 
-In case of programmable counters configured to count inst/cycles
-we often end-up with counter not incrementing at all from kernel's
-perspective.
-
-For example:
-- Kernel configures hpm3 to count instructions and sets hpmcounter
-  to -10000 and all modes except U mode are inhibited.
-- In QEMU we configure a timer to expire after ~10000 instructions.
-- Problem is, it's often the case that kernel might not even schedule
-  Umode task and we hit the timer callback in QEMU.
-- In the timer callback we inject the interrupt into kernel, kernel
-  runs the handler and reads hpmcounter3 value.
-- Given QEMU maintains individual counters to count for each privilege
-  mode, and given umode never ran, the umode counter didn't increment
-  and QEMU returns same value as was programmed by the kernel when
-  starting the counter.
-- Kernel checks for overflow using previous and current value of the
-  counter and reprograms the counter given there wasn't an overflow
-  as per the counter value. (Which itself is a problem. We have QEMU
-  telling kernel that counter3 overflowed but the counter value
-  returned by QEMU doesn't seem to reflect that.).
-
-This change makes sure that timer is reprogrammed from the handler
-if the counter didn't overflow based on the counter value.
-
-Second, this change makes sure that whenever the counter is read,
-it's value is updated to reflect the latest count.
-
-Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- target/riscv/csr.c |  5 ++++-
- target/riscv/pmu.c | 30 +++++++++++++++++++++++++++---
- target/riscv/pmu.h |  2 ++
- 3 files changed, 33 insertions(+), 4 deletions(-)
+ target/riscv/pmu.c | 56 ++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 44 insertions(+), 12 deletions(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index ff06276192dd..8690a7c4c472 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1039,6 +1039,9 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
-         goto done;
-     }
- 
-+    /* Update counter before reading. */
-+    riscv_pmu_update_fixed_ctrs(env, env->priv, env->virt_enabled);
-+
-     if (!(cfg_val & MCYCLECFG_BIT_MINH)) {
-         curr_val += counter_arr[PRV_M];
-     }
-@@ -1122,7 +1125,7 @@ static RISCVException write_mhpmcounterh(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
--static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-+RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-                                          bool upper_half, uint32_t ctr_idx)
- {
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
 diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 63420d9f3679..a4729f6c53bb 100644
+index a4729f6c53bb..3cc0b3648cad 100644
 --- a/target/riscv/pmu.c
 +++ b/target/riscv/pmu.c
-@@ -425,6 +425,8 @@ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
-     target_ulong *mhpmevent_val;
-     uint64_t of_bit_mask;
-     int64_t irq_trigger_at;
-+    uint64_t curr_ctr_val, curr_ctrh_val;
-+    uint64_t ctr_val;
+@@ -416,14 +416,49 @@ int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
+     return 0;
+ }
  
-     if (evt_idx != RISCV_PMU_EVENT_HW_CPU_CYCLES &&
-         evt_idx != RISCV_PMU_EVENT_HW_INSTRUCTIONS) {
-@@ -454,6 +456,26 @@ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
++static bool pmu_hpmevent_is_of_set(CPURISCVState *env, uint32_t ctr_idx)
++{
++    target_ulong mhpmevent_val;
++    uint64_t of_bit_mask;
++
++    if (riscv_cpu_mxl(env) == MXL_RV32) {
++        mhpmevent_val = env->mhpmeventh_val[ctr_idx];
++        of_bit_mask = MHPMEVENTH_BIT_OF;
++     } else {
++        mhpmevent_val = env->mhpmevent_val[ctr_idx];
++        of_bit_mask = MHPMEVENT_BIT_OF;
++    }
++
++    return get_field(mhpmevent_val, of_bit_mask);
++}
++
++static bool pmu_hpmevent_set_of_if_clear(CPURISCVState *env, uint32_t ctr_idx)
++{
++    target_ulong *mhpmevent_val;
++    uint64_t of_bit_mask;
++
++    if (riscv_cpu_mxl(env) == MXL_RV32) {
++        mhpmevent_val = &env->mhpmeventh_val[ctr_idx];
++        of_bit_mask = MHPMEVENTH_BIT_OF;
++     } else {
++        mhpmevent_val = &env->mhpmevent_val[ctr_idx];
++        of_bit_mask = MHPMEVENT_BIT_OF;
++    }
++
++    if (!get_field(*mhpmevent_val, of_bit_mask)) {
++        *mhpmevent_val |= of_bit_mask;
++        return true;
++    }
++
++    return false;
++}
++
+ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
+                                   enum riscv_pmu_event_idx evt_idx)
+ {
+     uint32_t ctr_idx;
+     CPURISCVState *env = &cpu->env;
+     PMUCTRState *counter;
+-    target_ulong *mhpmevent_val;
+-    uint64_t of_bit_mask;
+     int64_t irq_trigger_at;
+     uint64_t curr_ctr_val, curr_ctrh_val;
+     uint64_t ctr_val;
+@@ -439,12 +474,9 @@ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
          return;
      }
  
-+    riscv_pmu_read_ctr(env, (target_ulong *)&curr_ctr_val, false, ctr_idx);
-+    ctr_val = counter->mhpmcounter_val;
-+    if (riscv_cpu_mxl(env) == MXL_RV32) {
-+        riscv_pmu_read_ctr(env, (target_ulong *)&curr_ctrh_val, true, ctr_idx);
-+        curr_ctr_val = curr_ctr_val | (curr_ctrh_val << 32);
-+        ctr_val = ctr_val |
-+                ((uint64_t)counter->mhpmcounterh_val << 32);
-+    }
-+
-+    /*
-+     * We can not accommodate for inhibited modes when setting up timer. Check
-+     * if the counter has actually overflowed or not by comparing current
-+     * counter value (accommodated for inhibited modes) with software written
-+     * counter value.
-+     */
-+    if (curr_ctr_val >= ctr_val) {
-+        riscv_pmu_setup_timer(env, curr_ctr_val, ctr_idx);
+-    if (riscv_cpu_mxl(env) == MXL_RV32) {
+-        mhpmevent_val = &env->mhpmeventh_val[ctr_idx];
+-        of_bit_mask = MHPMEVENTH_BIT_OF;
+-     } else {
+-        mhpmevent_val = &env->mhpmevent_val[ctr_idx];
+-        of_bit_mask = MHPMEVENT_BIT_OF;
++    /* Generate interrupt only if OF bit is clear */
++    if (pmu_hpmevent_is_of_set(env, ctr_idx)) {
 +        return;
-+    }
-+
-     if (cpu->pmu_avail_ctrs & BIT(ctr_idx)) {
-         /* Generate interrupt only if OF bit is clear */
-         if (!(*mhpmevent_val & of_bit_mask)) {
-@@ -475,7 +497,7 @@ void riscv_pmu_timer_cb(void *priv)
+     }
  
- int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
- {
--    uint64_t overflow_delta, overflow_at;
-+    uint64_t overflow_delta, overflow_at, curr_ns;
-     int64_t overflow_ns, overflow_left = 0;
+     counter = &env->pmu_ctrs[ctr_idx];
+@@ -477,9 +509,7 @@ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
+     }
+ 
+     if (cpu->pmu_avail_ctrs & BIT(ctr_idx)) {
+-        /* Generate interrupt only if OF bit is clear */
+-        if (!(*mhpmevent_val & of_bit_mask)) {
+-            *mhpmevent_val |= of_bit_mask;
++        if (pmu_hpmevent_set_of_if_clear(env, ctr_idx)) {
+             riscv_cpu_update_mip(env, MIP_LCOFIP, BOOL_TO_MASK(1));
+         }
+     }
+@@ -502,7 +532,9 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
      RISCVCPU *cpu = env_archcpu(env);
      PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
-@@ -506,8 +528,10 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
-     } else {
+ 
+-    if (!riscv_pmu_counter_valid(cpu, ctr_idx) || !cpu->cfg.ext_sscofpmf) {
++    /* No need to setup a timer if LCOFI is disabled when OF is set */
++    if (!riscv_pmu_counter_valid(cpu, ctr_idx) || !cpu->cfg.ext_sscofpmf ||
++        pmu_hpmevent_is_of_set(env, ctr_idx)) {
          return -1;
      }
--    overflow_at = (uint64_t)qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
--                  overflow_ns;
-+    curr_ns = (uint64_t)qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    overflow_at =  curr_ns + overflow_ns;
-+    if (overflow_at <= curr_ns)
-+        overflow_at = UINT64_MAX;
  
-     if (overflow_at > INT64_MAX) {
-         overflow_left += overflow_at - INT64_MAX;
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index ca40cfeed647..3853d0e2629e 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -36,5 +36,7 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
-                           uint32_t ctr_idx);
- void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
-                                  bool new_virt);
-+RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-+                                  bool upper_half, uint32_t ctr_idx);
- 
- #endif /* RISCV_PMU_H */
 
 -- 
 2.34.1
