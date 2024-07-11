@@ -2,83 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A72C92F20A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 00:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 759EF92F247
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 00:51:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sS2KT-0001EX-86; Thu, 11 Jul 2024 18:31:57 -0400
+	id 1sS2bh-00019N-VP; Thu, 11 Jul 2024 18:49:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1sS2KP-00010v-5w
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:53 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1sS2KN-0001fW-Fe
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:31:52 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1fb8781ef1bso12129405ad.3
- for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 15:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720737110; x=1721341910;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rqjlcgIgmq16A+DWwfByj87bRnzwHK8etosGH79pS4o=;
- b=KDois6StV03Q8UlgIbdUnhODv1sGxOcyCeFBGDnag2Ry1DfHDh6QOnHclbrfHURD4e
- xnkCZApVIJCqgCuPj0Gq/OgFAd+mlz2NxCfPh+GHqWwGkhdpir/xzXEwoIllndGEgQrS
- Z28q2fsKv9JYunmFU/tRXQ/aJNS3aHYXBc1fN3V55F6kVYvn2VZKaNYNdodsdyPVd6J1
- bPjpVMqgOdkLfEC793A//Y1eTcq0iI9sPA6uDndd2MMVASOSr/LpquCNNS/AWseVXSfl
- HtJY7YXiRh/sgXPHzmE7OyPPghFYmzFeN+Yq1x6qYa967Ix1bKYGHCh84QHmovh+AojV
- v6ng==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sS2bf-00018s-PO
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:49:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sS2bd-000631-Nf
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 18:49:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720738179;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Y738lNqBcRkfsnLk3tFCnr8supLZRBSaBLCvUGVRgaw=;
+ b=bk1QqbVPDbcxxNxBpQwnRZ/EfwRWSgFnzGLJuvzn5x7Te6/aUxoZIv1lxi38g8bENquBwu
+ TBVtuJTHfS4yMFznIX3SqDn9j7NT9/9cOtX+yT8pjzh0L/XhLp7MdhmSwlBrRkeC01MW0b
+ yZwnh23LW9N+fgj9x1wqoHEg76rC35k=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-417-ql5mrTrBOe-HEFx1jxrPDA-1; Thu, 11 Jul 2024 18:49:37 -0400
+X-MC-Unique: ql5mrTrBOe-HEFx1jxrPDA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-426724679f0so12389835e9.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 15:49:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720737110; x=1721341910;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rqjlcgIgmq16A+DWwfByj87bRnzwHK8etosGH79pS4o=;
- b=fcv8ftaFJ0O47HwyWgcCBZ4Uq+osQ6zkSgrbBMBCC6DIVOt7znfrimT4fqh+2As/Fn
- 8DsUM5NvA8tnRe89lp3HNEffV/0H2JFMslNWbKAMsoOOoLhMj6YSuiqjMoZwuAqPb9Ti
- v/6WpLbXn0bJOYM3rquPYqZX4REIY6y2kgpboIRRhzDrrx1017bxHTgxUTMKtgh845LV
- hDsTdXKsLcbGWPI+hT8MgTzPIH553kNbCNF2K8+nO0WqTziG+n0GhmnyZXvpguOMO5jx
- BP4GC5oC+UJiSxL4kSwFxAAHSFT6O35K6p/QMRTAzzBEgZtydu2tngWhc4zXV7Cj85wO
- ye+g==
+ d=1e100.net; s=20230601; t=1720738176; x=1721342976;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y738lNqBcRkfsnLk3tFCnr8supLZRBSaBLCvUGVRgaw=;
+ b=xESDz1D0Z9f7wVOmRB1W3vw7uKYn97tWAXNFKi0IzwsA2aBwlvCRUG0EYtbMrRmivV
+ uKtEBr9jNvmaHgYt5y4Sok2PzxJJOXsQWf/pfv4RcqBLzOZ87O07OF4YjoGq+mnEl+T8
+ YXKBl9ZySYZ7bX7KRsWNjGHg0oTrAWMdppFEWxSvkYM+Pd5vpbWf3ciuEt+oqN1xcvfK
+ JSuUYbQSdv11mko+t+JMGgkrNCRT4iRuKkcho/SHM7eTwL0F9Lq3x51Rhh3UgGZ0S/gR
+ fUXzbg8GhuSF/pj/1GfiZFkgxXi7P4DgpuwOC1PrUosSK6QBrxEPa9W7nemFI8zVvXyY
+ Shdw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVxDnggV+/3aiuWZQprMJpclnN0mrVuO8/Qto4E/p8VxSFHzr5FrFXYWRnTKsi8ZgCNNfpgpB0vAkAx6xlGL5xYRa6BhJQ=
-X-Gm-Message-State: AOJu0Yz5pEIXGfGd6o6dfc5nwViIzRrhpBonuAso7AgN7+yEY/yuZ9w2
- 48/0ZQm3Y5zntaMbbN543kSdhPyH+Fq8QYEDHZpYB9/Bm+W2G5UBx9exDtj7GxE=
-X-Google-Smtp-Source: AGHT+IHicJpJHv6P8ExOwUd2AuxjdQfvUpY5FOT0r1dXGuV6ImK+4MuoBztapO0yrd06Lr2TjzXGkg==
-X-Received: by 2002:a17:902:e745:b0:1fb:696a:47b3 with SMTP id
- d9443c01a7336-1fbb6cda899mr89884775ad.7.1720737110269; 
- Thu, 11 Jul 2024 15:31:50 -0700 (PDT)
-Received: from atishp.ba.rivosinc.com ([64.71.180.162])
+ AJvYcCWw8VlMCDZzGorXFYl0EnrHpjSKSSmbOELRQ8/jPY88Ftyl6VoD+PgO/QwkiVE1j6OgsBtnvWH7DNLJMgquER+WZa1Edno=
+X-Gm-Message-State: AOJu0Yz+tpd4juf1k+5mDAv3ezF7nqPRBuwgpmsg1uAKb6KPppwiP4Z9
+ jH9/RPGsSGARqsOUgX5ORWcsI/FePBVicpeWwW51I80QNZzeCY3wIQNYk6whD22WM4uYFeX9tro
+ 9KY4uI/xA5NmCsSo7+Yta3ebSEmMLflW7x6TviFzKQ5JFd3u5OdDY
+X-Received: by 2002:a05:600c:4f49:b0:424:aa83:ef27 with SMTP id
+ 5b1f17b1804b1-4279d9f289emr8630845e9.1.1720738176114; 
+ Thu, 11 Jul 2024 15:49:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESwKR3fcxTB8hhovkxnpTwz7Rfyh3EJ5CWJBSYmhLGxng/DlHyc4RJdV1a+a/3oZmVxXGkYQ==
+X-Received: by 2002:a05:600c:4f49:b0:424:aa83:ef27 with SMTP id
+ 5b1f17b1804b1-4279d9f289emr8630605e9.1.1720738175593; 
+ Thu, 11 Jul 2024 15:49:35 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:173:2166:83a4:d566:a055:a5a3])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fbb6b34ca2sm55161565ad.53.2024.07.11.15.31.48
+ 5b1f17b1804b1-4279f2679b1sm2894615e9.15.2024.07.11.15.49.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Jul 2024 15:31:49 -0700 (PDT)
-From: Atish Patra <atishp@rivosinc.com>
-Date: Thu, 11 Jul 2024 15:31:16 -0700
-Subject: [PATCH v8 13/13] target/riscv: Expose the Smcntrpmf config
+ Thu, 11 Jul 2024 15:49:35 -0700 (PDT)
+Date: Thu, 11 Jul 2024 18:49:27 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Yichen Wang <yichen.wang@bytedance.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, qemu-devel@nongnu.org,
+ Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
+ Shivam Kumar <shivam.kumar1@nutanix.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Subject: Re: [PATCH v5 00/13] WIP: Use Intel DSA accelerator to offload zero
+ page checking in multifd live migration.
+Message-ID: <20240711184131-mutt-send-email-mst@kernel.org>
+References: <20240711215244.19237-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240711-smcntrpmf_v7-v8-13-b7c38ae7b263@rivosinc.com>
-References: <20240711-smcntrpmf_v7-v8-0-b7c38ae7b263@rivosinc.com>
-In-Reply-To: <20240711-smcntrpmf_v7-v8-0-b7c38ae7b263@rivosinc.com>
-To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- bin.meng@windriver.com, dbarboza@ventanamicro.com, alistair.francis@wdc.com
-X-Mailer: b4 0.15-dev-13183
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=atishp@rivosinc.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240711215244.19237-1-yichen.wang@bytedance.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,28 +108,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a new config for Smcntrpmf extension so that it can be enabled/
-disabled from the qemu commandline.
+On Thu, Jul 11, 2024 at 02:52:35PM -0700, Yichen Wang wrote:
+> * Performance:
+> 
+> We use two Intel 4th generation Xeon servers for testing.
+> 
+> Architecture:        x86_64
+> CPU(s):              192
+> Thread(s) per core:  2
+> Core(s) per socket:  48
+> Socket(s):           2
+> NUMA node(s):        2
+> Vendor ID:           GenuineIntel
+> CPU family:          6
+> Model:               143
+> Model name:          Intel(R) Xeon(R) Platinum 8457C
+> Stepping:            8
+> CPU MHz:             2538.624
+> CPU max MHz:         3800.0000
+> CPU min MHz:         800.0000
+> 
+> We perform multifd live migration with below setup:
+> 1. VM has 100GB memory. 
+> 2. Use the new migration option multifd-set-normal-page-ratio to control the total
+> size of the payload sent over the network.
+> 3. Use 8 multifd channels.
+> 4. Use tcp for live migration.
+> 4. Use CPU to perform zero page checking as the baseline.
+> 5. Use one DSA device to offload zero page checking to compare with the baseline.
+> 6. Use "perf sched record" and "perf sched timehist" to analyze CPU usage.
+> 
+> A) Scenario 1: 50% (50GB) normal pages on an 100GB vm.
+> 
+> 	CPU usage
+> 
+> 	|---------------|---------------|---------------|---------------|
+> 	|		|comm		|runtime(msec)	|totaltime(msec)|
+> 	|---------------|---------------|---------------|---------------|
+> 	|Baseline	|live_migration	|5657.58	|		|
+> 	|		|multifdsend_0	|3931.563	|		|
+> 	|		|multifdsend_1	|4405.273	|		|
+> 	|		|multifdsend_2	|3941.968	|		|
+> 	|		|multifdsend_3	|5032.975	|		|
+> 	|		|multifdsend_4	|4533.865	|		|
+> 	|		|multifdsend_5	|4530.461	|		|
+> 	|		|multifdsend_6	|5171.916	|		|
+> 	|		|multifdsend_7	|4722.769	|41922		|
+> 	|---------------|---------------|---------------|---------------|
+> 	|DSA		|live_migration	|6129.168	|		|
+> 	|		|multifdsend_0	|2954.717	|		|
+> 	|		|multifdsend_1	|2766.359	|		|
+> 	|		|multifdsend_2	|2853.519	|		|
+> 	|		|multifdsend_3	|2740.717	|		|
+> 	|		|multifdsend_4	|2824.169	|		|
+> 	|		|multifdsend_5	|2966.908	|		|
+> 	|		|multifdsend_6	|2611.137	|		|
+> 	|		|multifdsend_7	|3114.732	|		|
+> 	|		|dsa_completion	|3612.564	|32568		|
+> 	|---------------|---------------|---------------|---------------|
+> 
+> Baseline total runtime is calculated by adding up all multifdsend_X
+> and live_migration threads runtime. DSA offloading total runtime is
+> calculated by adding up all multifdsend_X, live_migration and
+> dsa_completion threads runtime. 41922 msec VS 32568 msec runtime and
+> that is 23% total CPU usage savings.
 
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
----
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 63f553c92b00..ef50130a91e7 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1468,6 +1468,7 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
- const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Defaults for standard extensions */
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-+    MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
-     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
-     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
-     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+Here the DSA was mostly idle.
+
+Sounds good but a question: what if several qemu instances are
+migrated in parallel?
+
+Some accelerators tend to basically stall if several tasks
+are trying to use them at the same time.
+
+Where is the boundary here?
+
+
+
 
 -- 
-2.34.1
+MST
 
 
