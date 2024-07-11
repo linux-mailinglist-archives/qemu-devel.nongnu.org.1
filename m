@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60BB92E960
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F2A92E969
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 15:25:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRthV-0002G3-Kl; Thu, 11 Jul 2024 09:19:09 -0400
+	id 1sRthO-0001vY-CF; Thu, 11 Jul 2024 09:19:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRthD-0001YH-RB
+ id 1sRthD-0001VO-0r
  for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:51 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sRth7-00063u-B7
+ id 1sRth7-000640-At
  for qemu-devel@nongnu.org; Thu, 11 Jul 2024 09:18:50 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42795086628so5716065e9.3
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42795086628so5716135e9.3
  for <qemu-devel@nongnu.org>; Thu, 11 Jul 2024 06:18:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1720703912; x=1721308712; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vyZll+1B9ZVexjTDYnpEmOSbqEikHHbpXaR8VQUCSuc=;
- b=Axun5N3lsVTSBvNjJdw4ZscloJod/qmZj8XSd4Hnoz4jsCOfMOotZhvylSPjqnhhaL
- NEf2fBQj37LgSyn8SoEcWlrW4XZlg02BLNGrtU3r2A8Da6hEQeA4Le9XK8Fwt0ncZOQP
- 6s2ctIaVstZjdfN7uJH1DQr6syO0DFGw+j3LZmodbMwT675cOPaQQ+7WBORh1EgvsGym
- LQ6Bk4G6Zb7hoOtIAQtCdXiO9psmUY/HfWWGSGhOKIrIvGOUebzUsBm+31txIXIAtzts
- 2Dm+3kX42jDiruhAqJGw082Jd838ZSxaNbg6oAaRmjQkHAnODOHP7VRtaTyA705zb76n
- DSHA==
+ :reply-to; bh=/AMAtOWB0ZxCL+R8J/gNQR8gsTJMYguGEneUen0fd3I=;
+ b=Zym+GDJI7yfeUIBQgQmTSha6b3BTo9kV3IshCoSMLHGpqD1twLJx4S8Fz4veygtgGd
+ dQ6WDtKPYXeDJLrFrrW2+BcZZQ27ZogP3WFcShHFwp+4jc2Lqc3A7NHdwnBKICVKHBzm
+ jpm9eVmFN1Omb+QwgqZhmy1btrWxRHYsrtqkFief3Xi+TBswppzmgWGsgsp1fs5dt2+s
+ ID5Mq/O9C0NnlzkZHyjLzQ0oFSchp8vWghjv2aEsn+3RmW84vBzyzB+LD5EbvosPXgKW
+ Jhvw8xuKGKF4S2T6t0RDRkHxKWcRBn75jvKgKQWAc9860ZkeVcQMsdxuQy3jXyCRVk44
+ RJbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1720703912; x=1721308712;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vyZll+1B9ZVexjTDYnpEmOSbqEikHHbpXaR8VQUCSuc=;
- b=RC+KpzY9SvbWL0kzsmWMpaCzSjLl8D7r/ARJLT1cetB2HneNtaLebZ87KO+cQPxXxC
- USdInO6prD/mnKhPrAY7EI3jq7UBdEZ/ZSMLQvf488y/UXd3n1b7l2Zn5B/rfVkqQMcv
- 3pMRtxFBUI2oy+5UgNgbxEHB31tCVoOSlR2HRcLzHo36X9Vktlyi0xdbEg8EgzdSFGBT
- Bm+nsKTki70ubMR3e5Qgqc8a7pTOk2gxaBx4kMuHIVmPiRBq3xM64a9RzQTGb8VVoCiY
- hLWBWjSraRvOa+lr+wrskjQ6RleXhM9Og2Cj2Cwf01Xl2YfA6fY5skAC+GCfJUBUkIDA
- 5Gnw==
-X-Gm-Message-State: AOJu0YxRWlpKM8uq2NYgtNABWYAzA8ms9PCSyR8r8iYoa5j/KFHE9ysq
- b/1tfvYhynCCyTGDv0VB/FlAf1TW8hkL+PFzBBb687GbpqLpA6dzD+HJSVP+1CQjuGQTImPSr2O
- B81I=
-X-Google-Smtp-Source: AGHT+IH4EX55+tBx04YC1QOZ1hPRouUg8cPAGiH9UPisC2mIV0qCJ7qsBVEFc/mt+If7F7fmyt2PQA==
-X-Received: by 2002:a05:600c:5345:b0:426:602d:a243 with SMTP id
- 5b1f17b1804b1-426707d8a90mr60422765e9.16.1720703912231; 
+ bh=/AMAtOWB0ZxCL+R8J/gNQR8gsTJMYguGEneUen0fd3I=;
+ b=MQJvzRLtXxL+iaYR4zDsf/bE2FRHnEXBD8ryytjROryl8w/Gn/5iTQ0GlTglm3eFBV
+ mSSIFm8FtXAUG6Hz0xnuWCerfNWdnqEWSF2VQWMaEpeSqfDcZ7VXvHsK5khuTZ3KmwCs
+ TwXf7VLnHN1ag4AF8JFH4oKiKwOgoTI15+DWIWrHb18CFRwRGhDxoUQGKSBYBTUu4JZL
+ AaI75vdE1/VzvxQckjpfP0GLT7nQgsE/PxAL8ETiGlGcN8Ng+pSl+0W0QEsRrAcCu4rZ
+ hmOvnMXFN6B2FfyXVLc9piBmNvfHeoZpogaZpbLhLxmHPJfPsvynEaD7VHEdoYEYtDNn
+ Y07A==
+X-Gm-Message-State: AOJu0Yw99PFIZTSrjaFn03Z2ubeIwqcX/aUCEsyFfmTftmJpoxUCJhsX
+ TOcH0Tp2Z7scRaMtKv5E7GbY1CsNWgtBQ0VcaCg+SsAICptBBoNvUCqJz0ImpmTysdyKGM0zxb6
+ Ya18=
+X-Google-Smtp-Source: AGHT+IFClvo835ukzmEAx4gE2nIA4BKRCj9E+zcj/l3UwEtvoU3DqmFzwS1+IZ96CvAr4/4MLtNvFg==
+X-Received: by 2002:a05:600c:6d8:b0:426:6389:94c4 with SMTP id
+ 5b1f17b1804b1-426708f9d84mr54498885e9.37.1720703912647; 
  Thu, 11 Jul 2024 06:18:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.31
+ 5b1f17b1804b1-4266f736939sm119412025e9.37.2024.07.11.06.18.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 11 Jul 2024 06:18:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/24] accel/tcg: Make TCGCPUOps::cpu_exec_halt mandatory
-Date: Thu, 11 Jul 2024 14:18:13 +0100
-Message-Id: <20240711131822.3909903-16-peter.maydell@linaro.org>
+Subject: [PULL 16/24] hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
+Date: Thu, 11 Jul 2024 14:18:14 +0100
+Message-Id: <20240711131822.3909903-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711131822.3909903-1-peter.maydell@linaro.org>
 References: <20240711131822.3909903-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,67 +92,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all targets set TCGCPUOps::cpu_exec_halt, we can make it
-mandatory and remove the fallback handling that calls cpu_has_work.
+From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
+Up until now, the EXTI implementation had 16 inbound GPIOs connected to
+the 16 outbound GPIOs of STM32L4x5 SYSCFG.
+The EXTI actually handles 40 lines (namely 5 from STM32L4x5 USART
+devices which are already implemented in QEMU).
+In order to connect USART devices to EXTI, this commit consolidates
+constants `EXTI_NUM_INTERRUPT_OUT_LINES` (40) and
+`EXTI_NUM_GPIO_EVENT_IN_LINES` (16) into `EXTI_NUM_LINES` (40).
+
+Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20240707085927.122867-2-ines.varhol@telecom-paris.fr
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/tcg-cpu-ops.h |  9 ++++++---
- accel/tcg/cpu-exec.c          | 11 +++++------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ include/hw/misc/stm32l4x5_exti.h | 4 ++--
+ hw/misc/stm32l4x5_exti.c         | 6 ++----
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index 099de3375e3..34318cf0e60 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -122,10 +122,13 @@ struct TCGCPUOps {
-      * to do when the CPU is in the halted state.
-      *
-      * Return true to indicate that the CPU should now leave halt, false
--     * if it should remain in the halted state.
-+     * if it should remain in the halted state. (This should generally
-+     * be the same value that cpu_has_work() would return.)
-      *
--     * If this method is not provided, the default is to do nothing, and
--     * to leave halt if cpu_has_work() returns true.
-+     * This method must be provided. If the target does not need to
-+     * do anything special for halt, the same function used for its
-+     * CPUClass::has_work method can be used here, as they have the
-+     * same function signature.
-      */
-     bool (*cpu_exec_halt)(CPUState *cpu);
-     /**
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 6711b58e0b2..245fd6327da 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -682,13 +682,8 @@ static inline bool cpu_handle_halt(CPUState *cpu)
- #ifndef CONFIG_USER_ONLY
-     if (cpu->halted) {
-         const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
--        bool leave_halt;
-+        bool leave_halt = tcg_ops->cpu_exec_halt(cpu);
+diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5_exti.h
+index 55f763fa376..62f79362f28 100644
+--- a/include/hw/misc/stm32l4x5_exti.h
++++ b/include/hw/misc/stm32l4x5_exti.h
+@@ -30,7 +30,7 @@
+ #define TYPE_STM32L4X5_EXTI "stm32l4x5-exti"
+ OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5ExtiState, STM32L4X5_EXTI)
  
--        if (tcg_ops->cpu_exec_halt) {
--            leave_halt = tcg_ops->cpu_exec_halt(cpu);
--        } else {
--            leave_halt = cpu_has_work(cpu);
--        }
-         if (!leave_halt) {
-             return true;
-         }
-@@ -1082,6 +1077,10 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
-     static bool tcg_target_initialized;
+-#define EXTI_NUM_INTERRUPT_OUT_LINES 40
++#define EXTI_NUM_LINES 40
+ #define EXTI_NUM_REGISTER 2
  
-     if (!tcg_target_initialized) {
-+        /* Check mandatory TCGCPUOps handlers */
-+#ifndef CONFIG_USER_ONLY
-+        assert(cpu->cc->tcg_ops->cpu_exec_halt);
-+#endif /* !CONFIG_USER_ONLY */
-         cpu->cc->tcg_ops->initialize();
-         tcg_target_initialized = true;
+ struct Stm32l4x5ExtiState {
+@@ -47,7 +47,7 @@ struct Stm32l4x5ExtiState {
+ 
+     /* used for edge detection */
+     uint32_t irq_levels[EXTI_NUM_REGISTER];
+-    qemu_irq irq[EXTI_NUM_INTERRUPT_OUT_LINES];
++    qemu_irq irq[EXTI_NUM_LINES];
+ };
+ 
+ #endif
+diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
+index 6a2ec62d785..b9a69a69f60 100644
+--- a/hw/misc/stm32l4x5_exti.c
++++ b/hw/misc/stm32l4x5_exti.c
+@@ -42,7 +42,6 @@
+ #define EXTI_SWIER2 0x30
+ #define EXTI_PR2    0x34
+ 
+-#define EXTI_NUM_GPIO_EVENT_IN_LINES 16
+ #define EXTI_MAX_IRQ_PER_BANK 32
+ #define EXTI_IRQS_BANK0  32
+ #define EXTI_IRQS_BANK1  8
+@@ -238,7 +237,7 @@ static void stm32l4x5_exti_init(Object *obj)
+ {
+     Stm32l4x5ExtiState *s = STM32L4X5_EXTI(obj);
+ 
+-    for (size_t i = 0; i < EXTI_NUM_INTERRUPT_OUT_LINES; i++) {
++    for (size_t i = 0; i < EXTI_NUM_LINES; i++) {
+         sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq[i]);
      }
+ 
+@@ -246,8 +245,7 @@ static void stm32l4x5_exti_init(Object *obj)
+                           TYPE_STM32L4X5_EXTI, 0x400);
+     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
+ 
+-    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq,
+-                      EXTI_NUM_GPIO_EVENT_IN_LINES);
++    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq, EXTI_NUM_LINES);
+ }
+ 
+ static const VMStateDescription vmstate_stm32l4x5_exti = {
 -- 
 2.34.1
 
