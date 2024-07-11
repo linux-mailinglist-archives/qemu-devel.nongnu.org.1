@@ -2,94 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D1C92DEA6
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 04:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD63992DEB5
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Jul 2024 05:06:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sRjvO-0003vg-PE; Wed, 10 Jul 2024 22:52:50 -0400
+	id 1sRk8A-00066j-Pm; Wed, 10 Jul 2024 23:06:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sRjvM-0003oe-Bt
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 22:52:48 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sRjvJ-0007sT-LK
- for qemu-devel@nongnu.org; Wed, 10 Jul 2024 22:52:48 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3c9cc681ee0so246072b6e.0
- for <qemu-devel@nongnu.org>; Wed, 10 Jul 2024 19:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1720666364; x=1721271164; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cApDvkpHgcDvEBUZlaSazyrta9dSUlvo1AUuexPKHyE=;
- b=J/9Qb5utnTsJEzweD4GsJ7f9zxwDWSN+jExcspMXxmf2NRaZSA1R8g+yYHdSQ9d+LX
- ddrdCBcL+Bf0JtTzm47D7lWwlMMmoblF1hV6Sp/CVeSdQel2QYxEJo+ZmOZOr8KiotdT
- 5oswnmthMIf/02b26QquaaBdTb3e26VlHdp173VOMJsIm79aVksDLnNw/8UBp1delRNc
- l2V5aB+buWuqBK3SnyrQQ3SLxjgm0p7ceg3fuu9wJGwG3leACSVqfyoDu2FhM3jQkuXO
- QwPMYhFsyz0HFkI9k7u39IuVz3PDT49K1JhwcI8TgwAKYC4bXbeyl+plHkBB3CBmFFEP
- DAaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720666364; x=1721271164;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cApDvkpHgcDvEBUZlaSazyrta9dSUlvo1AUuexPKHyE=;
- b=pKN3/PApgpyI1zoIYwjJRDc+E4DzXbWB+gC4R+trzmn2Nke/MzyLiA1uBOel48jo5a
- vO3c86BZVBX+vQzqY4nUva9mtb6g6kHjkHK1ovEMy7aFFB2GOIWdmPbWlCsAOxkvs47y
- 4LfPzy354iCWOBoSEkIwxlhFJg65yneloQdYucotx2cb7VR+iGEq0b0YdLBI/lHJRF8E
- LHFWZuv9Kmn0WzMcLAvWWRvE6vQPbVBIOn2RQsW7+RAWITsmN1mPW+Icm180MzHQ0LX2
- st6cA4Yt2PK9G82iKM7XGVupRg2A2iS8JwVltL9H+6bvv4Ut1JvPl/iygfnHLo1X2dTT
- vrbw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOe0weEbgL/BEMm8z2PEcbcKfr8sQf9hGf2OXZgyhN9FIFQIcVeVPmZx/tT32JR6gPZBc91l16inw0/LO4f3+gZaFARZg=
-X-Gm-Message-State: AOJu0YzmIEFWN4BdmwZJcrBLuakuIiOzCU76lXNyAzUk0BeyOjPCwfhV
- din4r5TnJo3R96okQ4rgfHX90TAQiwqGO0HNhy0Uq/qBh7CpQZqR+uNNCNjFa48=
-X-Google-Smtp-Source: AGHT+IE/h/MdfIYVRq4e/+LOOcGb11ueLZ7gK1IFWztEhXtnnM7ZF2ogj6FebcLruoTEDnFX+IwwdQ==
-X-Received: by 2002:a05:6808:8e4:b0:3da:a279:ac1 with SMTP id
- 5614622812f47-3daa2793766mr566510b6e.52.1720666364359; 
- Wed, 10 Jul 2024 19:52:44 -0700 (PDT)
-Received: from DY4X0N7X05.bytedance.net ([208.184.112.130])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3daa12f4f7csm117827b6e.41.2024.07.10.19.52.42
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 10 Jul 2024 19:52:44 -0700 (PDT)
-From: Yichen Wang <yichen.wang@bytedance.com>
-To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
- "Zou, Nanhai" <nanhai.zou@intel.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>,
- Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: [PATCH v5 5/5] tests/migration: Add integration test for 'qatzip'
- compression method
-Date: Wed, 10 Jul 2024 19:52:29 -0700
-Message-Id: <20240711025229.66260-6-yichen.wang@bytedance.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20240711025229.66260-1-yichen.wang@bytedance.com>
-References: <20240711025229.66260-1-yichen.wang@bytedance.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sRk88-00066F-M5
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 23:06:00 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1sRk85-00049M-Ry
+ for qemu-devel@nongnu.org; Wed, 10 Jul 2024 23:06:00 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxXesSTI9mnhkDAA--.9290S3;
+ Thu, 11 Jul 2024 11:05:54 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cx68YQTI9m03pDAA--.23059S3; 
+ Thu, 11 Jul 2024 11:05:54 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch: Change the tpm support by default
+To: Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
+Cc: Bibo Mao <maobibo@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20240624032300.999157-1-lixianglai@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <5420e0aa-14e3-ed57-ff49-7d7e4fccc45b@loongson.cn>
+Date: Thu, 11 Jul 2024 11:06:03 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240624032300.999157-1-lixianglai@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=yichen.wang@bytedance.com; helo=mail-oi1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Cx68YQTI9m03pDAA--.23059S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJr1DAw15Cry7Zw1DGw15trc_yoW8XrWkpa
+ srZ3Wq9r1DXrsrt3y7t34DuF9xXrn7Gw17uF4ft348KF90gwn5ur40yrZFvFZrZ3yrJFWk
+ uw1rGa48ua1UJrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
+ 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8I3
+ 8UUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.148, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,87 +80,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bryan Zhang <bryan.zhang@bytedance.com>
+ÔÚ 2024/6/24 ÉÏÎç11:23, Xianglai Li Ð´µÀ:
+> Add devices that support tpm by default,
+> Fixed incomplete tpm acpi table information.
+>
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> ---
+> Cc: Bibo Mao <maobibo@loongson.cn>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Adds an integration test for 'qatzip'.
-
-Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
-Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
----
- tests/qtest/migration-test.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 70b606b888..b796dd21cb 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -32,6 +32,10 @@
- # endif /* CONFIG_TASN1 */
- #endif /* CONFIG_GNUTLS */
- 
-+#ifdef CONFIG_QATZIP
-+#include <qatzip.h>
-+#endif /* CONFIG_QATZIP */
-+
- /* For dirty ring test; so far only x86_64 is supported */
- #if defined(__linux__) && defined(HOST_X86_64)
- #include "linux/kvm.h"
-@@ -2992,6 +2996,22 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
- }
- #endif /* CONFIG_ZSTD */
- 
-+#ifdef CONFIG_QATZIP
-+static void *
-+test_migrate_precopy_tcp_multifd_qatzip_start(QTestState *from,
-+                                              QTestState *to)
-+{
-+    migrate_set_parameter_int(from, "multifd-qatzip-level", 2);
-+    migrate_set_parameter_int(to, "multifd-qatzip-level", 2);
-+
-+    /* SW fallback is disabled by default, so enable it for testing. */
-+    migrate_set_parameter_bool(from, "multifd-qatzip-sw-fallback", true);
-+    migrate_set_parameter_bool(to, "multifd-qatzip-sw-fallback", true);
-+
-+    return test_migrate_precopy_tcp_multifd_start_common(from, to, "qatzip");
-+}
-+#endif
-+
- #ifdef CONFIG_QPL
- static void *
- test_migrate_precopy_tcp_multifd_qpl_start(QTestState *from,
-@@ -3089,6 +3109,17 @@ static void test_multifd_tcp_zstd(void)
- }
- #endif
- 
-+#ifdef CONFIG_QATZIP
-+static void test_multifd_tcp_qatzip(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_qatzip_start,
-+    };
-+    test_precopy_common(&args);
-+}
-+#endif
-+
- #ifdef CONFIG_QPL
- static void test_multifd_tcp_qpl(void)
- {
-@@ -3992,6 +4023,10 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/multifd/tcp/plain/zstd",
-                        test_multifd_tcp_zstd);
- #endif
-+#ifdef CONFIG_QATZIP
-+    migration_test_add("/migration/multifd/tcp/plain/qatzip",
-+                test_multifd_tcp_qatzip);
-+#endif
- #ifdef CONFIG_QPL
-     migration_test_add("/migration/multifd/tcp/plain/qpl",
-                        test_multifd_tcp_qpl);
--- 
-Yichen Wang
+Thanks.
+Song Gao
+>   hw/loongarch/Kconfig      | 1 +
+>   hw/loongarch/acpi-build.c | 3 +++
+>   2 files changed, 4 insertions(+)
+>
+> diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+> index 90a0dba9d5..89be737726 100644
+> --- a/hw/loongarch/Kconfig
+> +++ b/hw/loongarch/Kconfig
+> @@ -8,6 +8,7 @@ config LOONGARCH_VIRT
+>       imply VIRTIO_VGA
+>       imply PCI_DEVICES
+>       imply NVDIMM
+> +    imply TPM_TIS_SYSBUS
+>       select SERIAL
+>       select VIRTIO_PCI
+>       select PLATFORM_BUS
+> diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+> index af45ce526d..72bfc35ae6 100644
+> --- a/hw/loongarch/acpi-build.c
+> +++ b/hw/loongarch/acpi-build.c
+> @@ -646,6 +646,9 @@ void loongarch_acpi_setup(LoongArchVirtMachineState *lvms)
+>                                                build_state, tables.rsdp,
+>                                                ACPI_BUILD_RSDP_FILE);
+>   
+> +    fw_cfg_add_file(lvms->fw_cfg, ACPI_BUILD_TPMLOG_FILE, tables.tcpalog->data,
+> +                    acpi_data_len(tables.tcpalog));
+> +
+>       qemu_register_reset(acpi_build_reset, build_state);
+>       acpi_build_reset(build_state);
+>       vmstate_register(NULL, 0, &vmstate_acpi_build, build_state);
 
 
