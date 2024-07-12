@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30D792F9F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7308592F9F9
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:07:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSF1F-0003mA-Eq; Fri, 12 Jul 2024 08:04:57 -0400
+	id 1sSF1I-0004QV-De; Fri, 12 Jul 2024 08:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSF17-0003Lh-Sh; Fri, 12 Jul 2024 08:04:49 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1sSF18-0003Vq-TC; Fri, 12 Jul 2024 08:04:51 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSF15-0005tv-Mb; Fri, 12 Jul 2024 08:04:49 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-706a1711ee5so1522023b3a.0; 
- Fri, 12 Jul 2024 05:04:42 -0700 (PDT)
+ id 1sSF16-0005ud-ME; Fri, 12 Jul 2024 08:04:50 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-70b48dfd6a2so1621319b3a.1; 
+ Fri, 12 Jul 2024 05:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720785881; x=1721390681; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720785885; x=1721390685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VSdEx+3/IO385nx55P7iJ1IKkfoDSyJ7uSRZgpIc/C0=;
- b=X15w63TPxn7ypbykiyfKEqdkftaQGUb3mjJF8OMgP/cyAUMxM6OcY4ZOBEO1VmcE5Z
- 4YxqiulnGvrB3a8JCnVvmUsOCFj19jjLItrlv2eTncgfDIZDSsGWU9rs1NuGG3txJlJs
- JCs+zDiEGw4p9ms8jndNmBlk22s4YRc3qRpbwliuqgCFl8uL7OdsfSFXuzA9iwDJkb2P
- ON6oIYdgw5XstZLdz8b9x2wmAwETZS43OVyvQPLBXhSRUA4UrLJfHgBH1/WWTOEaa5bp
- +rfODnO7LX+D399T2EmJNcgQxPA1OyVP1HAJnNF1WYt3Qcm8z+q/BH/hm8d92vBUx8oR
- rV8w==
+ bh=SXdn44hAbdq5BulP9IKwZ6DBrTC0S7IcN1mxi7E3K6g=;
+ b=AlyhGtOmhgtWNYwj/fvMQO4v0S+JRwTCTmyoyApAxGAE2/FRkDIGuN4HdwwspI1IeX
+ 6folbOlKHX7BdgFnaJE08OAdkmEKmlBv++XF6qQuTXPdm/uFLczgV7+5iX0ZTU1QE3us
+ mNNT+vXyhYGz9SWnfrabcpCVp6KFpYKdNOJ55L8tHM9eLfSb8xf87X2FCpSQHWLXH6tI
+ pKNXuwNRAhQZG6c58h6/Uuk/V864R28+aBtShJHMH1R3TsEiSlyt12Vgp5AXeglbdgSZ
+ QLq1wDWErpFoV0Ez5YfeXveuHrQJxeYuffNmiWO+cecZ7KaeFn4l4LHJMrjK5+i6cVd6
+ KEJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720785881; x=1721390681;
+ d=1e100.net; s=20230601; t=1720785885; x=1721390685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VSdEx+3/IO385nx55P7iJ1IKkfoDSyJ7uSRZgpIc/C0=;
- b=caLZ0EE9f8BeOph8TUITFAPDCw3RlrbCrTQlFigLOX3x/GjmSHliabUtTVBMroGU7C
- ArTrAEPtsRSZTK26aeYHL4dN4fynAsj/i9blxQget8zJ0a/XSOaoCcZ6INtt0zSEjSmb
- /lpwXoe98boucWjGw9oUPInL1BDCkiTVhReqBaWiTpA/0lL2XqF6drod0sSMntiY3w5H
- TVA2cbPKvw+zpADSVctPIK8ydXrbTdqTNfR5TEg9ZWp96ZSN6gX3OLX+o70BGOJHvWKb
- cL/MspA/0c0sqchzarsBE+nIEXE6VGR711QDDAbTwlZjU/3e1r8V/wkYZJlTtPblG7n7
- /yxw==
+ bh=SXdn44hAbdq5BulP9IKwZ6DBrTC0S7IcN1mxi7E3K6g=;
+ b=K4FZ+LXth4zCpd0ybMVbUzKm99rfnLKAwLdBQjiDo78DvR7FksY6FTZ/qz89DFI6Pm
+ SmIDSQc3mZcdE0pQbu5P6ym9Yt2BFM1tUzqLpR0VKY7njVuxLGqUGGzDNOBPMb7Zld9S
+ R7evdgM7myEfgYXFQAtEOzW+iyXn3c55oUKOiuLUnCB6vXxyFTeBcWyaFpTAyhASTYSy
+ n3u200025SDXgJc+isKkeXLa0JEvzzciNnAy2SS3t/Cxc3O/ZsqpjesmAk65a/f80K90
+ 7tLdx7LaawSuN90j8A9lBoTHXtU9Xjmd8JZNPLTJVYoJ+WJP8NqIbYmW4G7ul4y4bGtH
+ 8lNg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXsZv+F74Mxxtd739vZoy08exw+rw6ZO4qzAB5Bc3u4YYR9+cel16mSCcPxE6z2Zg+cHQu2ixKiHRckF4QOCC0HLAtMmeI=
-X-Gm-Message-State: AOJu0Yx1Mtvjm4FkQlOVO0bvwesJA9j911GFCT3o1RNzUYqQqyqgnfMN
- G/bT/lBTP+uIlv5/yLNQW5tXRWbha4ULUtwpmgqyh8+2uO1gNKHDkUBwrA==
-X-Google-Smtp-Source: AGHT+IELspR74/6dYvT9ljitdMkm0/xOp5sVLkZomCv0/PRjAL7glY62JVPwyRYqcjlPGjigN+ld4Q==
-X-Received: by 2002:a05:6a21:33a7:b0:1c2:8cf4:7656 with SMTP id
- adf61e73a8af0-1c29820ed84mr13632265637.10.1720785881466; 
- Fri, 12 Jul 2024 05:04:41 -0700 (PDT)
+ AJvYcCWwaxETHT1Za0XyOl44ZO4xvzw+d1CAtsWukr4BTpXZgRk1V+4TAnlnm8YGOuIUqVj7v4sCdsZkIsDyCiD41iVbLjgcb4I=
+X-Gm-Message-State: AOJu0Yy/5UhU/FCPOm5WKal0QxzqQL3ItadBA1AaTcC5q5Qrt1ijn4Fv
+ lQggrgDB8lUWJMF5v5Z2GPTLz6tfBSgc5nAJWS2oUv1wWLEKOgt7O+CWkg==
+X-Google-Smtp-Source: AGHT+IHdnfp8DpkdxhiX1YTZJQ488E3ZtEerYClUb/ad4IYNbUzBpYjEDUy280v+XSkXkQh/23HIMg==
+X-Received: by 2002:a05:6a20:918d:b0:1be:c5ab:7388 with SMTP id
+ adf61e73a8af0-1c298220a18mr13139010637.25.1720785885280; 
+ Fri, 12 Jul 2024 05:04:45 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.04.38
+ d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.04.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jul 2024 05:04:41 -0700 (PDT)
+ Fri, 12 Jul 2024 05:04:44 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 18/19] ppc/pnv: Implement POWER10 PC xscom registers for
- direct controls
-Date: Fri, 12 Jul 2024 22:02:45 +1000
-Message-ID: <20240712120247.477133-19-npiggin@gmail.com>
+Subject: [PATCH v2 19/19] ppc/pnv: Add an LPAR per core machine option
+Date: Fri, 12 Jul 2024 22:02:46 +1000
+Message-ID: <20240712120247.477133-20-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240712120247.477133-1-npiggin@gmail.com>
 References: <20240712120247.477133-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,179 +94,217 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PC unit in the processor core contains xscom registers that provide
-low level status and control of the CPU.
+Recent POWER CPUs can operate in "LPAR per core" or "LPAR per thread"
+modes. In per-core mode, some SPRs and IPI doorbells are shared between
+threads in a core. In per-thread mode, supervisor and user state is
+not shared between threads.
 
-This implements "direct controls", sufficient for skiboot firmware,
-which uses it to send NMI IPIs between CPUs.
+OpenPOWER systems after POWER8 use LPAR per thread mode, and it is
+required for KVM. Enterprise systems use LPAR per core mode, as they
+partition the machine by core.
 
-POWER10 is sufficiently different from POWER9 (particularly with respect
-to QME and special wakeup) that it is not trivial to implement POWER9
-support by reusing the code.
+Implement a lpar-per-core machine option for powernv machines. This
+is fixed true for POWER8 machines, and defaults off for P9 and P10.
+
+With this change, powernv8 SMT now works sufficiently to run Linux,
+with a single socket. Multi-threaded KVM guests still have problems,
+as does multi-socket Linux boot.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv_core.h |  3 ++
- hw/ppc/pnv_core.c         | 89 ++++++++++++++++++++++++++++++++++++---
- 2 files changed, 87 insertions(+), 5 deletions(-)
+ include/hw/ppc/pnv.h      |  2 ++
+ include/hw/ppc/pnv_chip.h |  1 +
+ include/hw/ppc/pnv_core.h |  1 +
+ hw/ppc/pnv.c              | 35 +++++++++++++++++++++++++++++++++++
+ hw/ppc/pnv_core.c         |  7 +++++++
+ target/ppc/cpu_init.c     |  3 ++-
+ 6 files changed, 48 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+index b7858d310d..fcb6699150 100644
+--- a/include/hw/ppc/pnv.h
++++ b/include/hw/ppc/pnv.h
+@@ -77,6 +77,7 @@ struct PnvMachineClass {
+     const char *compat;
+     int compat_size;
+     int max_smt_threads;
++    bool has_lpar_per_thread;
+     bool quirk_tb_big_core;
+ 
+     void (*dt_power_mgt)(PnvMachineState *pnv, void *fdt);
+@@ -104,6 +105,7 @@ struct PnvMachineState {
+     hwaddr       fw_load_addr;
+ 
+     bool         big_core;
++    bool         lpar_per_core;
+ };
+ 
+ PnvChip *pnv_get_chip(PnvMachineState *pnv, uint32_t chip_id);
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 69d8273efe..ee1649babc 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -28,6 +28,7 @@ struct PnvChip {
+     uint64_t     ram_size;
+ 
+     bool         big_core;
++    bool         lpar_per_core;
+     uint32_t     nr_cores;
+     uint32_t     nr_threads;
+     uint64_t     cores_mask;
 diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index c8784777a4..1de79a818e 100644
+index 1de79a818e..d8afb4f95f 100644
 --- a/include/hw/ppc/pnv_core.h
 +++ b/include/hw/ppc/pnv_core.h
-@@ -109,6 +109,9 @@ OBJECT_DECLARE_TYPE(PnvQuad, PnvQuadClass, PNV_QUAD)
- struct PnvQuad {
-     DeviceState parent_obj;
+@@ -57,6 +57,7 @@ struct PnvCore {
+     /*< public >*/
+     PowerPCCPU **threads;
+     bool big_core;
++    bool lpar_per_core;
+     uint32_t pir;
+     uint32_t hwid;
+     uint64_t hrmor;
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index cd96cde6c9..be1a48d2cb 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1026,6 +1026,11 @@ static void pnv_init(MachineState *machine)
+         exit(1);
+     }
  
-+    bool special_wakeup_done;
-+    bool special_wakeup[4];
++    /* Set lpar-per-core mode if lpar-per-thread is not supported */
++    if (!pmc->has_lpar_per_thread) {
++        pnv->lpar_per_core = true;
++    }
 +
-     uint32_t quad_id;
-     MemoryRegion xscom_regs;
-     MemoryRegion xscom_qme_regs;
+     pnv->num_chips =
+         machine->smp.max_cpus / (machine->smp.cores * machine->smp.threads);
+ 
+@@ -2308,6 +2313,7 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
+     }
+ 
+     chip->big_core = pnv->big_core;
++    chip->lpar_per_core = pnv->lpar_per_core;
+ 
+     chip->cores = g_new0(PnvCore *, chip->nr_cores);
+ 
+@@ -2339,6 +2345,7 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
+ 
+         pnv_core->tod_state.big_core_quirk = pmc->quirk_tb_big_core;
+         pnv_core->big_core = chip->big_core;
++        pnv_core->lpar_per_core = chip->lpar_per_core;
+ 
+         qdev_realize(DEVICE(pnv_core), NULL, &error_fatal);
+ 
+@@ -2591,6 +2598,18 @@ static void pnv_machine_set_big_core(Object *obj, bool value, Error **errp)
+     pnv->big_core = value;
+ }
+ 
++static bool pnv_machine_get_lpar_per_core(Object *obj, Error **errp)
++{
++    PnvMachineState *pnv = PNV_MACHINE(obj);
++    return pnv->lpar_per_core;
++}
++
++static void pnv_machine_set_lpar_per_core(Object *obj, bool value, Error **errp)
++{
++    PnvMachineState *pnv = PNV_MACHINE(obj);
++    pnv->lpar_per_core = value;
++}
++
+ static bool pnv_machine_get_hb(Object *obj, Error **errp)
+ {
+     PnvMachineState *pnv = PNV_MACHINE(obj);
+@@ -2630,6 +2649,8 @@ static void pnv_machine_power8_class_init(ObjectClass *oc, void *data)
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->max_smt_threads = 8;
++    /* POWER8 is always lpar-per-core mode */
++    pmc->has_lpar_per_thread = false;
+ 
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+ }
+@@ -2655,6 +2676,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->max_smt_threads = 4;
++    pmc->has_lpar_per_thread = true;
+     pmc->dt_power_mgt = pnv_dt_power_mgt;
+ 
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+@@ -2664,6 +2686,12 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+                                    pnv_machine_set_big_core);
+     object_class_property_set_description(oc, "big-core",
+                               "Use big-core (aka fused-core) mode");
++
++    object_class_property_add_bool(oc, "lpar-per-core",
++                                   pnv_machine_get_lpar_per_core,
++                                   pnv_machine_set_lpar_per_core);
++    object_class_property_set_description(oc, "lpar-per-core",
++                              "Use 1 LPAR per core mode");
+ }
+ 
+ static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+@@ -2686,6 +2714,7 @@ static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->max_smt_threads = 4;
++    pmc->has_lpar_per_thread = true;
+     pmc->quirk_tb_big_core = true;
+     pmc->dt_power_mgt = pnv_dt_power_mgt;
+ 
+@@ -2711,6 +2740,12 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+                                    pnv_machine_set_big_core);
+     object_class_property_set_description(oc, "big-core",
+                               "Use big-core (aka fused-core) mode");
++
++    object_class_property_add_bool(oc, "lpar-per-core",
++                                   pnv_machine_get_lpar_per_core,
++                                   pnv_machine_set_lpar_per_core);
++    object_class_property_set_description(oc, "lpar-per-core",
++                              "Use 1 LPAR per core mode");
+ }
+ 
+ static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
 diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 238a4cd4ab..b32bdb79ff 100644
+index b32bdb79ff..d59da16ce4 100644
 --- a/hw/ppc/pnv_core.c
 +++ b/hw/ppc/pnv_core.c
-@@ -185,16 +185,40 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
-  */
- 
- #define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
-+#define PNV10_XSCOM_EC_CORE_THREAD_INFO     0x413
-+#define PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS 0x449
-+#define PNV10_XSCOM_EC_CORE_RAS_STATUS      0x454
- 
- static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
-                                            unsigned int width)
- {
-+    PnvCore *pc = PNV_CORE(opaque);
-+    int nr_threads = CPU_CORE(pc)->nr_threads;
-+    int i;
-     uint32_t offset = addr >> 3;
-     uint64_t val = 0;
- 
-     switch (offset) {
-     case PNV10_XSCOM_EC_CORE_THREAD_STATE:
--        val = 0;
-+        for (i = 0; i < nr_threads; i++) {
-+            PowerPCCPU *cpu = pc->threads[i];
-+            CPUState *cs = CPU(cpu);
-+
-+            if (cs->halted) {
-+                val |= PPC_BIT(56 + i);
-+            }
-+        }
-+        break;
-+    case PNV10_XSCOM_EC_CORE_THREAD_INFO:
-+        break;
-+    case PNV10_XSCOM_EC_CORE_RAS_STATUS:
-+        for (i = 0; i < nr_threads; i++) {
-+            PowerPCCPU *cpu = pc->threads[i];
-+            CPUState *cs = CPU(cpu);
-+            if (cs->stopped) {
-+                val |= PPC_BIT(0 + 8 * i) | PPC_BIT(1 + 8 * i);
-+            }
+@@ -208,6 +208,9 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+                 val |= PPC_BIT(56 + i);
+             }
+         }
++        if (pc->lpar_per_core) {
++            val |= PPC_BIT(62);
 +        }
          break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-@@ -207,9 +231,46 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
- static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
-                                          uint64_t val, unsigned int width)
- {
-+    PnvCore *pc = PNV_CORE(opaque);
-+    int nr_threads = CPU_CORE(pc)->nr_threads;
-+    int i;
-     uint32_t offset = addr >> 3;
+     case PNV10_XSCOM_EC_CORE_THREAD_INFO:
+         break;
+@@ -321,6 +324,10 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
+         env->core_index = core_hwid;
+     }
  
-     switch (offset) {
-+    case PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS:
-+        for (i = 0; i < nr_threads; i++) {
-+            PowerPCCPU *cpu = pc->threads[i];
-+            CPUState *cs = CPU(cpu);
++    if (pc->lpar_per_core) {
++        cpu_ppc_set_1lpar(cpu);
++    }
 +
-+            if (val & PPC_BIT(7 + 8 * i)) { /* stop */
-+                val &= ~PPC_BIT(7 + 8 * i);
-+                cpu_pause(cs);
-+            }
-+            if (val & PPC_BIT(6 + 8 * i)) { /* start */
-+                val &= ~PPC_BIT(6 + 8 * i);
-+                cpu_resume(cs);
-+            }
-+            if (val & PPC_BIT(4 + 8 * i)) { /* sreset */
-+                val &= ~PPC_BIT(4 + 8 * i);
-+                pnv_cpu_do_nmi_resume(cs);
-+            }
-+            if (val & PPC_BIT(3 + 8 * i)) { /* clear maint */
-+                /*
-+                 * Hardware has very particular cases for where clear maint
-+                 * must be used and where start must be used to resume a
-+                 * thread. These are not modelled exactly, just treat
-+                 * this and start the same.
-+                 */
-+                val &= ~PPC_BIT(3 + 8 * i);
-+                cpu_resume(cs);
-+            }
-+        }
-+        if (val) {
-+            qemu_log_mask(LOG_UNIMP, "%s: unimp bits in DIRECT_CONTROLS "
-+                                     "0x%016lx\n", __func__, val);
-+        }
-+        break;
-+
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-                       offset);
-@@ -523,6 +584,7 @@ static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
- static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
-                                             unsigned int width)
- {
-+    PnvQuad *eq = PNV_QUAD(opaque);
-     uint32_t offset = addr >> 3;
-     uint64_t val = -1;
+     /* Set time-base frequency to 512 MHz */
+     cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
+ }
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 81dd4e1a7a..4ba7f54510 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6803,7 +6803,8 @@ void cpu_ppc_set_1lpar(PowerPCCPU *cpu)
  
-@@ -530,10 +592,14 @@ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
-      * Forth nibble selects the core within a quad, mask it to process read
-      * for any core.
+     /*
+      * pseries SMT means "LPAR per core" mode, e.g., msgsndp is usable
+-     * between threads.
++     * between threads. powernv be in either mode, and it mostly affects
++     * supervisor visible registers and instructions.
       */
--    switch (offset & ~0xf000) {
--    case P10_QME_SPWU_HYP:
-+    switch (offset & ~PPC_BITMASK32(16, 19)) {
-     case P10_QME_SSH_HYP:
--        return 0;
-+        val = 0;
-+        if (eq->special_wakeup_done) {
-+            val |= PPC_BIT(1); /* SPWU DONE */
-+            val |= PPC_BIT(4); /* SSH SPWU DONE */
-+        }
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-                       offset);
-@@ -545,9 +611,22 @@ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
- static void pnv_qme_power10_xscom_write(void *opaque, hwaddr addr,
-                                          uint64_t val, unsigned int width)
- {
-+    PnvQuad *eq = PNV_QUAD(opaque);
-     uint32_t offset = addr >> 3;
-+    bool set;
-+    int i;
- 
--    switch (offset) {
-+    switch (offset & ~PPC_BITMASK32(16, 19)) {
-+    case P10_QME_SPWU_HYP:
-+        set = !!(val & PPC_BIT(0));
-+        eq->special_wakeup_done = set;
-+        for (i = 0; i < 4; i++) {
-+            /* These bits select cores in the quad */
-+            if (offset & PPC_BIT32(16 + i)) {
-+                eq->special_wakeup[i] = set;
-+            }
-+        }
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-                       offset);
+     if (env->flags & POWERPC_FLAG_SMT) {
+         env->flags |= POWERPC_FLAG_SMT_1LPAR;
 -- 
 2.45.1
 
