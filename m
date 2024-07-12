@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59AD992FA4C
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F5392FA41
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:27:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSEow-0003CK-3p; Fri, 12 Jul 2024 07:52:14 -0400
+	id 1sSEra-0005TP-Cf; Fri, 12 Jul 2024 07:54:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sSEot-00037B-UW
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:52:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sSErY-0005OB-1D
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:54:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sSEor-0002V4-VN
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:52:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sSErV-0002nS-T0
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:54:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720785129;
+ s=mimecast20190719; t=1720785291;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=QD/T5AiTtirQNRRpwBtNYVPckntg4yM0Bk+X+fTXiOY=;
- b=ZAk/y2u6QjXVCsJkBxuuBfBy9Aw3Y6sVcxTpIDQmpiY2hV+FB8lYWXjgWmuAmBj7Ios1yt
- LT5J/u3mfen2YwZ12mukNr6w22ctVcZ4QO26IlZ6dsUlUt5G9Y25ZuPRx2S1SjVJBRHBQ7
- /Ov9l3r6n71aA5E+FnaZHbNHA69TANw=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Q2qmOZfxAxxDYrz+rHR5z48qHO6nTJscaLnOX1iuQUw=;
+ b=M6H3k2CMySPliZYI8XgPEU3MHqnQ4FP6/xlqqkF3q6BGF9QxdjSqZ9BFsyiEy8xht0tF44
+ tB69rSbWORv37qe5MMWR2MgsJg29dGq7MMg2Rw+p/b86uSZfWzIKpWejYwqsJXZXVoI2BD
+ dfXOCCK72EiEqXf3g9ObmDhArCSkGL0=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-D-_3b77ZPbW8hMDUbuzkGw-1; Fri, 12 Jul 2024 07:52:07 -0400
-X-MC-Unique: D-_3b77ZPbW8hMDUbuzkGw-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52e969d34a9so2172763e87.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 04:52:07 -0700 (PDT)
+ us-mta-490-Uf8aVqfANU6DGbAzOpx_dw-1; Fri, 12 Jul 2024 07:54:50 -0400
+X-MC-Unique: Uf8aVqfANU6DGbAzOpx_dw-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-52e969d34a9so2174930e87.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 04:54:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720785126; x=1721389926;
+ d=1e100.net; s=20230601; t=1720785288; x=1721390088;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QD/T5AiTtirQNRRpwBtNYVPckntg4yM0Bk+X+fTXiOY=;
- b=MCQwHwroIFtoQl7Pmuxk3lcWXq2wKHCB9iEDbRg0va4bcZymGmkZWXY4O2/HEzA+wC
- ze6P0z/IFkbNinC2pHyLIXFsBia/4kzQpg1ltRDpHtiUHWCEWvy4Lqh1JArLLmgt3F/Y
- 2p6lIVNTYJ68yy9xtbKQ0WI7KX296VwM9g6SodskrBFUNi20LqkpTUIRa+9uEuEfG7cR
- Bypc5+oHC5B3Mts5v1ODMuTIPtTppP8S6a09YTCtUoZDK/FbGQnWGsRrcFWpG707mPJn
- O0TMpocKGxFqccADpg4iiFe09EexCnODWtvfh9GMRJnQ4zie+mEk6z0I/m6RMDqAutZO
- WZ3Q==
+ bh=Q2qmOZfxAxxDYrz+rHR5z48qHO6nTJscaLnOX1iuQUw=;
+ b=WXqITFSv+lAS9gl8Vl7oyv/PrjJrGyoPNUS+gDMbrRdQt6p+aBZBXNms9wtEbvjFy7
+ Se4XZrMHWAWpjtZyqT9NO8ek+SRQDopMRbgxPXOhbFF2YXF78xtWYNA3BP75GRCMGzXy
+ QXIg/X/c3x5fWUvhW+NAw66uUsIpyff/37aGTzuFGwFA5WuFQ6DUFqxeRw/DY1yFjH/2
+ barMlrS9JljWtzs3mXrw2LjG0I8EMoC3eWPmEF42KXZPTHu/tw621J0uYvvhYRXaAres
+ p4Tru3icm6BwL9FmADvwd95TuIIsiKvdaf5eHRwuMjyRVSo3WRGlE4LhfYmJADTODgfI
+ BK8w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU+hzhIXoSVbD/oLqE6Iyn6JlT7/ICb404AszvNNyGPN5Z9Mdni86/QNhYEwz1NodsTtQGT1W1e4IVZil17vDkU7dOUQt0=
-X-Gm-Message-State: AOJu0YxUnsPRjXQxrZmxcVhL/x41D2lv5uvgsnEuVqZ6F2NgJrU/1nwj
- ydNkLatgBDQ6dB8gtuUgaOOhcX2rtiieo9jLDZIpjbKU4eOb56JAQozgxDBlf+1EX5omhGZARIo
- mfIvQZLFQgOMUH02bXYixo66uDFUMfm0p/b/Od7sNAmRTUjlfJNze
-X-Received: by 2002:a05:6512:10ce:b0:52c:e091:66e4 with SMTP id
- 2adb3069b0e04-52eb99d2898mr10263306e87.44.1720785126198; 
- Fri, 12 Jul 2024 04:52:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9C9gbJGtnMPnZ+g8VChJGMHKNvlH/4EPBe3gmeB8REQXeq0JrgC+SYuGagmUjyivWIb7gNA==
-X-Received: by 2002:a05:6512:10ce:b0:52c:e091:66e4 with SMTP id
- 2adb3069b0e04-52eb99d2898mr10263284e87.44.1720785125800; 
- Fri, 12 Jul 2024 04:52:05 -0700 (PDT)
+ AJvYcCWZ3K90jXvq8hLGrmRX7tXqkFk+xD8lNSQ+NXFENTa+onAAlth0dYtA7IAoM7fp1t4b5N1MP8hbyjF/BsJXvj0pV6Rwu54=
+X-Gm-Message-State: AOJu0YwLqfrxyPh7cNpR2yGzMmwEYRrEuzAwlEGzFEmTI0ZaiKYtrf25
+ p6oJpkra32QTxfogPjUDbqCmwcX50SwN/McJHnEkbg6F9M/SWbeXNhSLwOUbCsE7I17FTTFElvI
+ 4c1k4s5sZAQP7d+8vgsRt0WujRQnIsLZwcUo3NZyUTBV82j3YKoCV
+X-Received: by 2002:a05:6512:3b9d:b0:52b:be6b:d16a with SMTP id
+ 2adb3069b0e04-52eb99a3526mr10457079e87.31.1720785288596; 
+ Fri, 12 Jul 2024 04:54:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF406HUX/of2C+YxWESGExkuNE4fbs5nyWQS4P2NqUlSHJVI18WPK3yLFUhI4ijVwCQrbFXSA==
+X-Received: by 2002:a05:6512:3b9d:b0:52b:be6b:d16a with SMTP id
+ 2adb3069b0e04-52eb99a3526mr10457064e87.31.1720785288136; 
+ Fri, 12 Jul 2024 04:54:48 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-50-229.web.vodafone.de.
  [109.43.50.229]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a780a7ff243sm340691766b.128.2024.07.12.04.52.04
+ a640c23a62f3a-a780a6bcc97sm337755566b.35.2024.07.12.04.54.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Jul 2024 04:52:05 -0700 (PDT)
-Message-ID: <04471abc-34c3-4e49-89ea-1a61f828c535@redhat.com>
-Date: Fri, 12 Jul 2024 13:52:03 +0200
+ Fri, 12 Jul 2024 04:54:47 -0700 (PDT)
+Message-ID: <b3c2838e-0122-4244-8fab-6d955d869d2e@redhat.com>
+Date: Fri, 12 Jul 2024 13:54:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 7/8] tests/pytest: Add a function for extracting files
- from an archive
+Subject: Re: [RFC PATCH 4/8] tests/pytest: add pytest to the meson build system
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
@@ -77,7 +76,9 @@ Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
 References: <20240711115546.40859-1-thuth@redhat.com>
- <20240711115546.40859-8-thuth@redhat.com> <ZpDz20mo-OWVOjI3@redhat.com>
+ <20240711115546.40859-5-thuth@redhat.com> <ZpDw0CiRvN_DvJqe@redhat.com>
+ <154a3249-b99e-4f93-bc45-0f34d08c1c6a@redhat.com>
+ <ZpEE3Cs7gpw631Iw@redhat.com>
 Content-Language: en-US
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -122,10 +123,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <ZpDz20mo-OWVOjI3@redhat.com>
+In-Reply-To: <ZpEE3Cs7gpw631Iw@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -149,60 +150,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/07/2024 11.14, Daniel P. Berrangé wrote:
-> On Thu, Jul 11, 2024 at 01:55:45PM +0200, Thomas Huth wrote:
->> Some Avocado-based tests use the "archive" module from avocado.utils
->> to extract files from an archive. To be able to use these tests
->> without Avocado, we have to provide our own function for extracting
->> files. Fortunately, there is already the tarfile module that will
->> provide us with this functionality, so let's just add a nice wrapper
->> function around that.
+On 12/07/2024 12.26, Daniel P. Berrangé wrote:
+> On Fri, Jul 12, 2024 at 12:14:45PM +0200, Thomas Huth wrote:
+>> On 12/07/2024 11.01, Daniel P. Berrangé wrote:
+>>> On Thu, Jul 11, 2024 at 01:55:42PM +0200, Thomas Huth wrote:
+>>>> From: Ani Sinha <ani@anisinha.ca>
+>>>>
+>>>> Integrate the pytest framework with the meson build system. This
+>>>> will make meson run all the pytests under the pytest directory.
+>>>
+>>> Lets add a note about the compelling benefit of this new approach
+>>>
+>>>     With this change, each functional test becomes subject
+>>>     to an individual execution timeout, defaulting to 60
+>>>     seconds, but overridable per-test.
 >>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   tests/pytest/qemu_pytest/utils.py | 21 +++++++++++++++++++++
->>   1 file changed, 21 insertions(+)
->>   create mode 100644 tests/pytest/qemu_pytest/utils.py
->>
->> diff --git a/tests/pytest/qemu_pytest/utils.py b/tests/pytest/qemu_pytest/utils.py
->> new file mode 100644
->> index 0000000000..4eb5e5d5e5
->> --- /dev/null
->> +++ b/tests/pytest/qemu_pytest/utils.py
->> @@ -0,0 +1,21 @@
->> +# Utilities for python-based QEMU tests
->> +#
->> +# Copyright 2024 Red Hat, Inc.
->> +#
->> +# Authors:
->> +#  Thomas Huth <thuth@redhat.com>
->> +#
->> +# This work is licensed under the terms of the GNU GPL, version 2 or
->> +# later.  See the COPYING file in the top-level directory.
->> +
->> +import tarfile
->> +
->> +def archive_extract(archive, dest_dir, member=None):
->> +    with tarfile.open(archive) as tf:
->> +        if hasattr(tarfile, 'data_filter'):
+>> The avocado runner uses timeouts, too, so it's not really an additional
+>> benefit that we get here.
 > 
-> Not convinced this is still needed. The python docs don't say anything
-> about 'data_filter' being introduced after 3.0, so can likely
-> assume it always exists.
+> At the meson level though, we can't put an overall cap on
+> the execution time, as there's only 1 huge test visible,
+> and thus the meson timeout multiplier also won't get
+> honoured IIUC.
+> 
+>>
+>>> For CI purposes we'll need to add 'python3-pytest' to
+>>> tests/lcitool/projects/qemu.yml, and re-generate the
+>>> the dockerfiles. Some of the other non-gitlab CI
+>>> integrations probably need manual additions of pytest
+>>> packages.
+>>
+>> I'm currently rather looking into getting rid of pytest and to use pycotap
+>> instead: Using the TAP protocol for running the tests, you get a much nicer
+>> output from the meson test runner, which can then count the subtests and
+>> properly report SKIPs for tests that have not been run.
+>>
+>>>> diff --git a/tests/Makefile.include b/tests/Makefile.include
+>>>> index d39d5dd6a4..68151717d7 100644
+>>>> --- a/tests/Makefile.include
+>>>> +++ b/tests/Makefile.include
+>>>> @@ -3,12 +3,14 @@
+>>>>    .PHONY: check-help
+>>>>    check-help:
+>>>>    	@echo "Regression testing targets:"
+>>>> -	@echo " $(MAKE) check                  Run block, qapi-schema, unit, softfloat, qtest and decodetree tests"
+>>>> +	@echo " $(MAKE) check                  Run block, qapi-schema, unit, softfloat, qtest, pytest and decodetree tests"
+>>>>    	@echo " $(MAKE) bench                  Run speed tests"
+>>>>    	@echo
+>>>>    	@echo "Individual test suites:"
+>>>>    	@echo " $(MAKE) check-qtest-TARGET     Run qtest tests for given target"
+>>>>    	@echo " $(MAKE) check-qtest            Run qtest tests"
+>>>> +	@echo " $(MAKE) check-pytest           Run pytest tests"
+>>>> +	@echo " $(MAKE) check-pytest-TARGET    Run pytest for a given target"
+>>>
+>>> Or name it after the type of test rather than harness ?
+>>>
+>>>    eg  check-functional / check-functional-TARGET
+>>>
+>>> For that matter perhaps also for the dir name ?
+>>>
+>>>      tests/functional/*.py
+>>
+>> I almost expected that discussion again ... (see
+>> https://lists.gnu.org/archive/html/qemu-devel/2021-05/msg06553.html ) ...
+>> last time we couldn't really agree on such a name and decided to go with the
+>> name of the framework...
+>>
+>> I agree that "pytest" is likely not the best name here, especially if
+>> switching to the pycotap test runner instead of using the "pytest" program,
+>> but "functional" might trigger the same discussion again as last time ...
+>> should it rather be "functional" or "validation" or "integration" etc.?
+> 
+> IMHO you can just make an executive decision and pick one of those
+> three. None of them are terrible, any would be a valid choice.
 
-According to https://docs.python.org/3/library/tarfile.html :
-
-"Extraction filters were added to Python 3.12, but may be backported to 
-older versions as security updates. To check whether the feature is 
-available, use e.g. hasattr(tarfile, 'data_filter') rather than checking the 
-Python version."
-
-And it seems to be missing in Python 3.7, indeed:
-
-  https://docs.python.org/3.7/library/tarfile.html
-
-So as long as we still support this old version, I think I've got to keep 
-this check.
+Ok, I think I'll go with "functional" since that still seems to be the best 
+fit to me.
 
   Thomas
 
