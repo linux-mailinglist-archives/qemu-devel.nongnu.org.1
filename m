@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7238E92F3D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 03:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB45892F3D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 03:55:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sS5UE-00031U-VE; Thu, 11 Jul 2024 21:54:14 -0400
+	id 1sS5UA-0002hl-NY; Thu, 11 Jul 2024 21:54:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sS5UC-0002tb-M0
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 21:54:12 -0400
+ id 1sS5U8-0002gB-0E
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 21:54:08 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sS5U4-0007ET-6u
- for qemu-devel@nongnu.org; Thu, 11 Jul 2024 21:54:12 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1sS5U4-0007Em-8s
+ for qemu-devel@nongnu.org; Thu, 11 Jul 2024 21:54:06 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxDvG2jJBmi4QDAA--.10373S3;
- Fri, 12 Jul 2024 09:53:58 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxrfC5jJBmjoQDAA--.10146S3;
+ Fri, 12 Jul 2024 09:54:01 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxnsezjJBmVSdFAA--.27574S2; 
- Fri, 12 Jul 2024 09:53:55 +0800 (CST)
+ AQAAf8BxnsezjJBmVSdFAA--.27574S3; 
+ Fri, 12 Jul 2024 09:54:01 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL v2 0/8] loongarch-to-apply queue
-Date: Fri, 12 Jul 2024 09:36:24 +0800
-Message-Id: <20240712013632.3464731-1-gaosong@loongson.cn>
+Cc: richard.henderson@linaro.org,
+	Dmitry Frolov <frolov@swemel.ru>
+Subject: [PULL v2 1/8] hw/loongarch/boot.c: fix out-of-bound reading
+Date: Fri, 12 Jul 2024 09:36:25 +0800
+Message-Id: <20240712013632.3464731-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240712013632.3464731-1-gaosong@loongson.cn>
+References: <20240712013632.3464731-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxnsezjJBmVSdFAA--.27574S2
+X-CM-TRANSID: AQAAf8BxnsezjJBmVSdFAA--.27574S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,53 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 23901b2b721c0576007ab7580da8aa855d6042a9:
+From: Dmitry Frolov <frolov@swemel.ru>
 
-  Merge tag 'pull-target-arm-20240711' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-07-11 12:00:00 -0700)
+memcpy() is trying to READ 512 bytes from memory,
+pointed by info->kernel_cmdline,
+which was (presumable) allocated by g_strdup("");
+Found with ASAN, making check with enabled sanitizers.
 
-are available in the Git repository at:
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240628123910.577740-1-frolov@swemel.ru>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/loongarch/boot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240712
-
-for you to fetch changes up to 3ef4b21a5c767ff0b15047e709762abef490ad07:
-
-  target/loongarch: Fix cpu_reset set wrong CSR_CRMD (2024-07-12 09:41:18 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20240712
-
-v2: drop patch 'hw/loongarch: Modify flash block size to 256K'.
-
-----------------------------------------------------------------
-Bibo Mao (2):
-      hw/loongarch/virt: Remove unused assignment
-      target/loongarch/kvm: Add software breakpoint support
-
-Dmitry Frolov (1):
-      hw/loongarch/boot.c: fix out-of-bound reading
-
-Feiyang Chen (1):
-      target/loongarch: Remove avail_64 in trans_srai_w() and simplify it
-
-Jiaxun Yang (1):
-      MAINTAINERS: Add myself as a reviewer of LoongArch virt machine
-
-Song Gao (2):
-      target/loongarch: Set CSR_PRCFG1 and CSR_PRCFG2 values
-      target/loongarch: Fix cpu_reset set wrong CSR_CRMD
-
-Xianglai Li (1):
-      hw/loongarch: Change the tpm support by default
-
- MAINTAINERS                                       |  1 +
- configs/targets/loongarch64-softmmu.mak           |  1 +
- hw/loongarch/Kconfig                              |  1 +
- hw/loongarch/acpi-build.c                         |  3 +
- hw/loongarch/boot.c                               |  2 +-
- hw/loongarch/virt.c                               | 15 +++--
- target/loongarch/cpu.c                            | 23 ++++---
- target/loongarch/kvm/kvm.c                        | 76 +++++++++++++++++++++++
- target/loongarch/tcg/insn_trans/trans_shift.c.inc | 15 +----
- 9 files changed, 108 insertions(+), 29 deletions(-)
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index b8e1aa18d5..cb668703bd 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -163,7 +163,7 @@ static void init_cmdline(struct loongarch_boot_info *info, void *p, void *start)
+     info->a0 = 1;
+     info->a1 = cmdline_addr;
+ 
+-    memcpy(p, info->kernel_cmdline, COMMAND_LINE_SIZE);
++    g_strlcpy(p, info->kernel_cmdline, COMMAND_LINE_SIZE);
+ }
+ 
+ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+-- 
+2.34.1
 
 
