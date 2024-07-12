@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D0992F795
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 11:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6379292F7A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 11:10:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSCGX-0003vz-5c; Fri, 12 Jul 2024 05:08:33 -0400
+	id 1sSCHx-0001FP-R2; Fri, 12 Jul 2024 05:10:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sSCGO-0003O5-Fz
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:08:24 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sSCGK-0000Q2-2X
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:08:22 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-52ea79e689eso2427708e87.1
- for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 02:08:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1720775298; x=1721380098; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hoi5Ljthle/R6Uu59pU98XoPZerV++ElxTvv045jQFg=;
- b=l4KzkVneOPC05GQVDXtHDW5J19EG3DKkBBLV3bAL1icqbX2MNtKxXhpKErdCeHMMr5
- jWzZyJwATHo/6JTemV5AI93mudeV++7H+v3CLzeXI4Cqlrl6CxdqBGUlbTRZ4ggQMUZW
- xHCrC+iO4S3JHHxgzNr47fiD5f7JYlfHOTH/J9y3/efJEnEr/EVAaBiogLBOT6aQhRKJ
- 6vBbKmHVVwO0dGBAQVco+FmyyBdIiWk5X9njTMRm5guxFNimOO5ZdJcrvwYlVx6kEWWg
- LtwvQt9fxwLCuWIXIPuJWHNR3Frclkho9rMdk6l6rK1Vi/vnL7hjYH+h3yyPZKenMDKh
- QtDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720775298; x=1721380098;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Hoi5Ljthle/R6Uu59pU98XoPZerV++ElxTvv045jQFg=;
- b=FwD5pwpr2FiNEaC+Bfda+9Lo7ue8LzwqtWfQDcYYcedr1HMXky9iLpR2Gn2zfdHLP8
- Mhl2ORM2HMRn3YXn1KkYZscEjmvM96Asasbczu4uLE737x8gi6QzTYUSchUtR+Scz0zt
- bP2NCElgh9nzbLOFdHc0MPuqbpzyc42Z/iJOlIzdV4rcpJ2JEjS29QbWvFKAsUd7KGoG
- y+PmSqPjE+r4/on/DMRMTOrRKTPPdy3BranHqok1nk39YZMa1anLXn3Ur/6lT3WPKXKC
- HyabIMQiw7iwyq3EyviE/CKRChJMhILGwyfsLPONz+6gi6ofPtov8rg3AY5Eh9b5/JTT
- lDLg==
-X-Gm-Message-State: AOJu0Yw8UQL0wLLqXjsktZL4nLY2o2GNOSFUftGRNyCBroWQjQLw6IL4
- dvk1O0cfS6wWmd8W5tfixdGXYF7LbYTzc+8tEEawBz7HR+GYXrGPmLUUOp7B+Mh9cqj2sMVWvfM
- 1KZ0OgKEID8VTE8d+I+5A9aka3cQrh1r64NsbAA==
-X-Google-Smtp-Source: AGHT+IF7TyTyCwMn1NkhNPH3Vt2X0Q24QuSmo8xQWWRDMmztVcxxI6vVqKVEiW5xcK7RhPDaZqfwpKC/K1OjxvVfeYI=
-X-Received: by 2002:a05:6512:39cc:b0:52e:96d7:2f38 with SMTP id
- 2adb3069b0e04-52eb99d6840mr10486832e87.62.1720775297954; Fri, 12 Jul 2024
- 02:08:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSCHm-0000ne-8r
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:09:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSCHj-0000dt-Sp
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:09:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720775384;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=I50DrznIePTUVYH+PHGL7ToEEJBraFOSccEufIAd9cY=;
+ b=Leyvoxvoy+ufkd4i0Oue+yI0bSggI7aRGDSLVT0p0LYYZVh7AK8hpjtVADRQBvArRf/OKN
+ fUG1Jv9PXoXRLGLW/1E/w3ZO4eON7BKNdpURJgNw5iZ1u1HWGHFsRRY0oKhzvfyuTQfv8b
+ VvHoSU91TmU/Igsn/Fj7g/+cPFmSR2o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-mjR8V0Z-NVu4ZSG6eUPBhQ-1; Fri,
+ 12 Jul 2024 05:09:39 -0400
+X-MC-Unique: mjR8V0Z-NVu4ZSG6eUPBhQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E24A719560A3; Fri, 12 Jul 2024 09:09:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.56])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BDC5F1955F40; Fri, 12 Jul 2024 09:09:35 +0000 (UTC)
+Date: Fri, 12 Jul 2024 10:09:31 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
+Subject: Re: [RFC PATCH 5/8] tests_pytest: Implement fetch_asset() method for
+ downloading assets
+Message-ID: <ZpDyy6JAqhvPgx5M@redhat.com>
+References: <20240711115546.40859-1-thuth@redhat.com>
+ <20240711115546.40859-6-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20240709113652.1239-1-zhiwei_liu@linux.alibaba.com>
- <20240709113652.1239-5-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20240709113652.1239-5-zhiwei_liu@linux.alibaba.com>
-From: Jim Shu <jim.shu@sifive.com>
-Date: Fri, 12 Jul 2024 17:08:06 +0800
-Message-ID: <CALw707qPBsfAAo52q4o9nDYgaZf-M=JbKC+x0Njx9XnQrmGJdQ@mail.gmail.com>
-Subject: Re: [PATCH v4 04/11] disas/riscv: Support zcmop disassemble
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com, 
- bmeng.cn@gmail.com, Deepak Gupta <debug@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=jim.shu@sifive.com; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240711115546.40859-6-thuth@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,23 +84,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 9, 2024 at 7:41=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibaba=
-.com> wrote:
->
-> Although in QEMU disassemble, we usually lift compressed instruction
-> to an normal format when display the instruction name. For C.MOP.n,
-> it is more reasonable to directly display its compressed name, because
-> its behavior can be redefined by later extension.
->
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> Reviewed-by: Deepak Gupta <debug@rivosinc.com>
+On Thu, Jul 11, 2024 at 01:55:43PM +0200, Thomas Huth wrote:
+> In the pytests, we cannot use the fetch_asset() function from Avocado
+> anymore, so we have to provide our own implementation now instead.
+> Thus add such a function based on the _download_with_cache() function
+> from tests/vm/basevm.py for this purpose.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  disas/riscv.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
+>  tests/pytest/qemu_pytest/__init__.py | 40 ++++++++++++++++++++--------
+>  1 file changed, 29 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/pytest/qemu_pytest/__init__.py b/tests/pytest/qemu_pytest/__init__.py
+> index e3ed32e3de..73d80b3828 100644
+> --- a/tests/pytest/qemu_pytest/__init__.py
+> +++ b/tests/pytest/qemu_pytest/__init__.py
+> @@ -11,6 +11,7 @@
+>  # This work is licensed under the terms of the GNU GPL, version 2 or
+>  # later.  See the COPYING file in the top-level directory.
+>  
+> +import hashlib
+>  import logging
+>  import os
+>  import shutil
+> @@ -201,17 +202,34 @@ def setUp(self, bin_prefix):
+>          self.assertIsNotNone(SOURCE_DIR,'PYTEST_SOURCE_ROOT must be set')
+>          self.assertIsNotNone(self.qemu_bin, 'PYTEST_QEMU_BINARY must be set')
+>  
+> -    def fetch_asset(self, name,
+> -                    asset_hash, algorithm=None,
+> -                    locations=None, expire=None,
+> -                    find_only=False, cancel_on_missing=True):
+> -        return super().fetch_asset(name,
+> -                        asset_hash=asset_hash,
+> -                        algorithm=algorithm,
+> -                        locations=locations,
+> -                        expire=expire,
+> -                        find_only=find_only,
+> -                        cancel_on_missing=cancel_on_missing)
+> +    def check_hash(self, file_name, expected_hash):
+> +        if not expected_hash:
+> +            return True
+> +        if len(expected_hash) == 32:
+> +            sum_prog = 'md5sum'
+> +        elif len(expected_hash) == 40:
+> +            sum_prog = 'sha1sum'
+> +        elif len(expected_hash) == 64:
+> +            sum_prog = 'sha256sum'
+> +        elif len(expected_hash) == 128:
+> +            sum_prog = 'sha512sum'
+> +        else:
+> +            raise Exception("unknown hash type")
 
-Reviewed-by: Jim Shu <jim.shu@sifive.com>
+Why shouldn't we just standardize on sha256 as we convert each test
+to pytest ? sha512 is overkill, and md5/sha1 shouldn't really be used
+anymore.
+
+> +        checksum = subprocess.check_output([sum_prog, file_name]).split()[0]
+> +        return expected_hash == checksum.decode("utf-8")
+> +
+> +    def fetch_asset(self, url, asset_hash):
+> +        cache_dir = os.path.expanduser("~/.cache/qemu/download")
+> +        if not os.path.exists(cache_dir):
+> +            os.makedirs(cache_dir)
+> +        fname = os.path.join(cache_dir,
+> +                             hashlib.sha1(url.encode("utf-8")).hexdigest())
+> +        if os.path.exists(fname) and self.check_hash(fname, asset_hash):
+> +            return fname
+> +        logging.debug("Downloading %s to %s...", url, fname)
+> +        subprocess.check_call(["wget", "-c", url, "-O", fname + ".download"])
+> +        os.rename(fname + ".download", fname)
+> +        return fname
+
+To avoid a dep on an external command that may not be installed,
+I think we could replace wget with native python code:
+
+ import urllib
+ from shutil import copyfileobj
+ 
+ with urllib.request.urlopen(url) as src:
+    with open(fname + ".download", "w+") as dst
+       copyfileobj(src, dst)
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
