@@ -2,137 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF3892FB66
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 15:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1D392FAAE
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:52:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSGJd-0002hI-8f; Fri, 12 Jul 2024 09:28:02 -0400
+	id 1sSEkI-0005M4-Aa; Fri, 12 Jul 2024 07:47:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ravi.bangoria@amd.com>)
- id 1sSD28-0001au-LA
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:57:44 -0400
-Received: from mail-mw2nam12on2069.outbound.protection.outlook.com
- ([40.107.244.69] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1sSEkD-0005LB-4i
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:47:21 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ravi.bangoria@amd.com>)
- id 1sSD23-0006JS-Bm
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:57:44 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e1ujTzTmz8kKVJEvCp87FqDsndi14le0jgePpDT0NehK4gqsUBEGw3ILhevOUA1Eue8viGct6oKAipWb7iHd1PC+uL2GqHPj05EQjIZefwU+Cgd1Ls5aK5oeCmf0GwgcotzWFw6r/Zh9dcgl3wU8U4bTalhecV5xm1UtL83t7oPgLjUpvc9+5iO/kDFPdz7845KlGLLiyvZlK+y/lYJR+MQycRATODW+YnOwxGNn79FfKQwjcRl1J4OhQeU8Z1s66MLXNxYl3EYSh2Fl8uPlTWR/eHPLh3Cri8mqs/EuNQwFbmkRhqrSMbTRgqvawY/9/zjojjuRrF4f0wKrhabbxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zeneaU6QgdAdcz2+hJHty8meWkeWbcB7d91HIK26Vq0=;
- b=GYDR9DkTP01AXzglTQWplxVSotjmXYeeQvNg5k1WwOPR530WKK/+vuKP200VWhGIq3Qe296I3O7WqUK22d5QiLmGc2PSgLoACoFGAmsrc9LIwVGZ2lYqVo2HO4gn3hWKYvZ50nMsiTwL2QvZVChBGSWWxxXEL6pEK2E/Ds9YIKCXfCl4Di7mLN/ydIGkGi6ZWxyIwbJnqdiGkC5FmsZ+VhizPQc2AZKJ2+KN9kx4dyWFOEM6VPRxmgE9OLh+SSAVhIb2OW1dqNT1LYXk0nakO2SUCu13NoGCQ6k6KeTNqFRLLpN+wTcYvb5AIFKjnbkSynhuUDOXwegRAluFRFUH2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zeneaU6QgdAdcz2+hJHty8meWkeWbcB7d91HIK26Vq0=;
- b=MlScBCZVFvtArETV/0tXaBZ8zo8EIroytTpPnzLDdZRbpVCBUp3Rr45Io0DGq0iQ1HBZDezIspc1o+gHy/pm2ss3Eqmk6fKhZIxCX/Efnj6uVmhSgqNj/ceKAPyvH/PFw/suK/mMvqKP9yae5hJS4Wx9YnrukV4Q477cJRvKfh8=
-Received: from SA9PR03CA0026.namprd03.prod.outlook.com (2603:10b6:806:20::31)
- by SA1PR12MB6995.namprd12.prod.outlook.com (2603:10b6:806:24e::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Fri, 12 Jul
- 2024 09:52:29 +0000
-Received: from SN1PEPF00036F3E.namprd05.prod.outlook.com
- (2603:10b6:806:20:cafe::e) by SA9PR03CA0026.outlook.office365.com
- (2603:10b6:806:20::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23 via Frontend
- Transport; Fri, 12 Jul 2024 09:52:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF00036F3E.mail.protection.outlook.com (10.167.248.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7762.17 via Frontend Transport; Fri, 12 Jul 2024 09:52:28 +0000
-Received: from BLR-L-RBANGORI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 12 Jul
- 2024 04:52:23 -0500
-From: Ravi Bangoria <ravi.bangoria@amd.com>
-To: <seanjc@google.com>, <pbonzini@redhat.com>, <thomas.lendacky@amd.com>,
- <mtosatti@redhat.com>
-CC: <ravi.bangoria@amd.com>, <michael.roth@amd.com>,
- <nikunj.dadhania@amd.com>, <babu.moger@amd.com>, <kvm@vger.kernel.org>,
- <qemu-devel@nongnu.org>, <santosh.shukla@amd.com>, <ananth.narayan@amd.com>,
- <sandipan.das@amd.com>, <manali.shukla@amd.com>, <jmattson@google.com>
-Subject: [PATCH] target/i386: Add Bus Lock Detect support
-Date: Fri, 12 Jul 2024 09:52:08 +0000
-Message-ID: <20240712095208.1553-1-ravi.bangoria@amd.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1sSEkA-0007bm-Ga
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:47:20 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CAWYBn003651;
+ Fri, 12 Jul 2024 11:47:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+ from:to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=corp-2023-11-20; bh=RTKdAXV9HtWVdw
+ POqIxTTzfO0jvhX6Aqs+QNLA6grKc=; b=cLSZInuVCG8ZzQRaL5sUYvOMZ578M/
+ F3KXcHbofmUax8yyr3r47SV6qa589QagadVTcuNqj+3XQC/a/HdtodyxD/Dk5yI1
+ DhfmLDG8pwIv/VmXLMCfWa1kP25MDkYtm9md/PngoubNRMo3/HB/lT6aUVXtlW6q
+ IKKdpZB7s9Zkz5UDZ0ZekooYi3nDwzxfn/I8bgc64sf7H8zZtzVih51FhKxSGDFv
+ d7au4YVIsBJnS/r6qvOegCvff9nx39IQ4IMhHDP4CZO3yt/FWyTJL9dZQ08Ikrym
+ 7PJ889dxduMU1QM0pglhfb2dCfPhlKyKQBQwkgPOkMvkez1GGOOGn/PA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406xfsut6y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jul 2024 11:47:14 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 46CB9sch022104; Fri, 12 Jul 2024 11:47:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 409vv3ppyh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jul 2024 11:47:13 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46CBlCCS008041;
+ Fri, 12 Jul 2024 11:47:12 GMT
+Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-0-59.vpn.oracle.com
+ [10.175.0.59])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 409vv3ppxv-1; Fri, 12 Jul 2024 11:47:12 +0000
+From: Joao Martins <joao.m.martins@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
+Subject: [PATCH v4 00/12] hw/iommufd: IOMMUFD Dirty Tracking
+Date: Fri, 12 Jul 2024 12:46:52 +0100
+Message-Id: <20240712114704.8708-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3E:EE_|SA1PR12MB6995:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dec7d2e-dbf4-4d16-6fd9-08dca258577e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?VADzJ2Vc8IFWCs+tDiuqJ3iIlpRUoEdzdu95EwPxjElQ33jd/6TEihQteS/R?=
- =?us-ascii?Q?EZAKyb7Lj6EkkNINCodEgiZrK83mEbgwGbdcOJ1nGpuuBOEitWceIZwnc9Vn?=
- =?us-ascii?Q?PMoCp4l099a5qdBsKiX4gqiguVGicexw1ePBXXWYrf2Tcq079Zfe4AwpdNPP?=
- =?us-ascii?Q?Q8iACb4GPTNQ0GxC/O+1VEXgAzNxD0wm0nofXYlTBAPTD05FTLQFrnJtjylm?=
- =?us-ascii?Q?6wV0ZLV/0CtCfMlWBCs5IDfXQiY9pXnF5luOqDa8o77xLNraUH+L8C10Wdlg?=
- =?us-ascii?Q?QB8ZKWPGXskH7MYD51MRh9fZiO13rk5BrdfsV/xsqMXgXIoYuksVYfa0VdUQ?=
- =?us-ascii?Q?zj+8Qwj9bOAi2PrDYXHChZaO7TMZ6CKBDFRaIx3u3Bvjla3g0ziSXAGbctSe?=
- =?us-ascii?Q?3KPTK398lYkaRCwQ/Vd3vcF0lrScEL5/QfJKBnmRawC4CaxphX9oUk5C72FX?=
- =?us-ascii?Q?2/e7DrWYOiX54uQ+ff+nYSXXLSvfUPnH4Iky69TDEupO8Og1c1sKvKhtBCX1?=
- =?us-ascii?Q?Ymm55eC8qicIw8Gm04Duid8uDGlRgXkbal57dPUISBYqUZJ6aJD0CGA6qViR?=
- =?us-ascii?Q?nUHTc9anUUrSKZ1lGPHGT/6fKFFbm87iCjMx2Dbgh2rXHgAKeMsBoAySQBbi?=
- =?us-ascii?Q?wF1Cu9W2lwJ7o6HmAGfaO75XP9vJdEuWjZrV7Jdng8ACYd7evPewlH6zO4WN?=
- =?us-ascii?Q?UQlS7c2vhHuTl+a10X6J/umaV3NK0w2s2JKVYYDvE/BIM4hJqRKaAK90Hn8t?=
- =?us-ascii?Q?xn/IUZgQKHvhSSKphZeSqPrfkwrI/crLXiqxvesoQFf9RQy8awii32sVcp5o?=
- =?us-ascii?Q?+8nXe8QyOcvFNn3OV4oMQbJV7oGxGoyhOVc5I2pRCKwQp6t8ZH66hE1HpA8f?=
- =?us-ascii?Q?9tJKGVJiof+P/9pcc2c63tSlooPeznkh3Z8q0dsqt0C6iWKrJ/1hNRdwjFh7?=
- =?us-ascii?Q?elcXF6HU7NV5DtGqa9OoaQ53vrCJ3Xomr2isAYnG9FRL22wHWTKddyyxqUri?=
- =?us-ascii?Q?T5GyiQ+7O4qYkqI11iECSaUlvxLu8/CuBnirKoVdg8cNe8+dbXTfmyweEMvD?=
- =?us-ascii?Q?w8g7J94u/nYjeRNwDKz1ayZ8QApKtAJqvxHkuqA1udDaQcM6NlDFIEOMbjty?=
- =?us-ascii?Q?gaAupKbU8JfA9qLh6+h5DZB3i/s38zoP3QJKIyifVDzMTwJi9kD1GgWnyHd9?=
- =?us-ascii?Q?E7T7RV0/6ABSBWSiNSwsR42s99oPnQFzGizgKwUDycIEG87laPGjgy7qkxDc?=
- =?us-ascii?Q?GAALkKBZFeq8n8bgTVGHvCSypPe4lFpnv6ZEceVKYFqiclA7nIcsA6R63Akp?=
- =?us-ascii?Q?FtxJhcV465VMlYuHUTpAKfkpgkyYXUSagkGKPxPdnW5SqvfyN8VWBynrP59v?=
- =?us-ascii?Q?XYjSVm059grvpIuUkY26dwiHgjcRLi4Wy/afgRSJI1/jN5DHvw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 09:52:28.7556 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dec7d2e-dbf4-4d16-6fd9-08dca258577e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF00036F3E.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6995
-Received-SPF: permerror client-ip=40.107.244.69;
- envelope-from=ravi.bangoria@amd.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-12_08,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ phishscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2406180000
+ definitions=main-2407120080
+X-Proofpoint-ORIG-GUID: uqBYEiYif_ZggWmQbp8th86L8q8i0XDn
+X-Proofpoint-GUID: uqBYEiYif_ZggWmQbp8th86L8q8i0XDn
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 12 Jul 2024 09:27:44 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,69 +99,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Upcoming AMD uarch will support Bus Lock Detect (called Bus Lock Trap
-in AMD docs). Bus Lock Detect is enumerated with cpuid Fn0000_0007_ECX_x0
-bit [24 / BUSLOCKTRAP]. It can be enabled through MSR_IA32_DEBUGCTLMSR.
-When enabled, hardware clears DR6[11] and raises a #DB exception on
-occurrence of Bus Lock if CPL > 0. More detail about the feature can be
-found in AMD APM[1].
+This small series adds support for IOMMU dirty tracking support via the
+IOMMUFD backend. The hardware capability is available on most recent x86
+hardware. The series is divided organized as follows:
 
-Qemu supports remote debugging through host gdb (the "gdbstub" facility)
-where some of the remote debugging features like instruction and data
-breakpoints relies on the same hardware infrastructure (#DB, DR6 etc.)
-that Bus Lock Detect also uses. Instead of handling internally, KVM
-forwards #DB to Qemu when remote debugging is ON and #DB is being
-intercepted. It's Qemu's responsibility to re-inject the exception to
-guest when some of the exception source bits (in DR6) are not being
-handled by Qemu remote debug handler. Bus Lock Detect is one such case.
+* Patch 1-2: Fixes a regression into mdev support with IOMMUFD. This
+             one is independent of the series but happened to cross it
+             while testing mdev with this series
 
-[1]: AMD64 Architecture Programmer's Manual Pub. 40332, Rev. 4.07 - June
-     2023, Vol 2, 13.1.3.6 Bus Lock Trap
-     https://bugzilla.kernel.org/attachment.cgi?id=304653
+* Patch 3: Adds a support to iommufd_get_device_info() for capabilities
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
----
-Kernel and KVM patches:
-  https://lore.kernel.org/r/20240712093943.1288-1-ravi.bangoria@amd.com
+* Patches 4 - 10: IOMMUFD backend support for dirty tracking;
 
- target/i386/cpu.h     | 1 +
- target/i386/kvm/kvm.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+Introduce auto domains -- Patch 5 goes into more detail, but the gist is that
+we will find and attach a device to a compatible IOMMU domain, or allocate a new
+hardware pagetable *or* rely on kernel IOAS attach (for mdevs). Afterwards the
+workflow is relatively simple:
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c64ef0c1a2..89bcff2fa3 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -271,6 +271,7 @@ typedef enum X86Seg {
-                 | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
-                 | CR4_LAM_SUP_MASK))
- 
-+#define DR6_BLD         (1 << 11)
- #define DR6_BD          (1 << 13)
- #define DR6_BS          (1 << 14)
- #define DR6_BT          (1 << 15)
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6c864e4611..d128d4e5ca 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5141,14 +5141,14 @@ static int kvm_handle_debug(X86CPU *cpu,
-     } else if (kvm_find_sw_breakpoint(cs, arch_info->pc)) {
-         ret = EXCP_DEBUG;
-     }
--    if (ret == 0) {
-+    if (ret == 0 || !(arch_info->dr6 & DR6_BLD)) {
-         cpu_synchronize_state(cs);
-         assert(env->exception_nr == -1);
- 
-         /* pass to guest */
-         kvm_queue_exception(env, arch_info->exception,
-                             arch_info->exception == EXCP01_DB,
--                            arch_info->dr6);
-+                            ret == 0 ? arch_info->dr6 ^ DR6_BLD : DR6_BLD);
-         env->has_error_code = 0;
-     }
- 
+1) Probe device and allow dirty tracking in the HWPT
+2) Toggling dirty tracking on/off
+3) Read-and-clear of Dirty IOVAs
+
+The heuristics selected for (1) were to always request the HWPT for
+dirty tracking if supported, or rely on device dirty page tracking. This
+is a little simplistic and we aren't necessarily utilizing IOMMU dirty
+tracking even if we ask during hwpt allocation.
+
+The unmap case is deferred until further vIOMMU support with migration
+is added[3] which will then introduce the usage of
+IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR in GET_DIRTY_BITMAP ioctl in the
+dma unmap bitmap flow.
+
+* Patches 11-12: Don't block live migration where there's no VF dirty
+tracker, considering that we have IOMMU dirty tracking.
+
+Comments and feedback appreciated. Thanks for all the review thus far!
+
+Cheers,
+    Joao
+
+P.S. Suggest linux-next (or future v6.11) as hypervisor kernel as there's
+some bugs fixed there with regards to IOMMU hugepage dirty tracking.
+
+Changes since v3[5]:
+* Skip HostIOMMUDevice::realize for mdev, and introduce a helper to check if the VFIO
+  device is mdev. (Zhenzhong)
+* Skip setting IOMMU device for mdev (Zhenzhong)
+* Add Zhenzhong review tag in patch 3
+* Utilize vbasedev::bcontainer::dirty_pages_supported instead of introducing
+  a new HostIOMMUDevice capability and thus remove the cap patch from the series (Zhenzhong)
+* Move the HostIOMMUDevice::realize() to be part of VFIODevice initialization in attach_device()
+while skipping it all together for mdev. (Cedric)
+* Due to the previous item, had to remove aw_bits because it depends on device attach being
+finished, instead defer it to when get_cap() gets called.
+* Skip auto domains for mdev instead of purposedly erroring out (Zhenzhong)
+* Pass errp in all cases, and instead just free the error in case of -EINVAL
+  in most of all patches, and also pass Error* in iommufd_backend_alloc_hwpt() amd
+  set/query dirty. This is made better thanks in part to skipping auto domains for mdev (Cedric)
+
+Changes since RFCv2[4]:
+* Always allocate hwpt with IOMMU_HWPT_ALLOC_DIRTY_TRACKING even if
+we end up not actually toggling dirty tracking. (Avihai)
+* Fix error handling widely in auto domains logic and all patches (Avihai)
+* Reuse iommufd_backend_get_device_info() for capabilities (Zhenzhong)
+* New patches 1 and 2 taking into consideration previous comments.
+* Store hwpt::flags to know if we have dirty tracking (Avihai)
+* New patch 8, that allows to query dirty tracking support after
+provisioning. This is a cleaner way to check IOMMU dirty tracking support
+when vfio::migration is iniitalized, as opposed to RFCv2 via device caps.
+device caps way is still used because at vfio attach we aren't yet with
+a fully initialized migration state.
+* Adopt error propagation in query,set dirty tracking
+* Misc improvements overall broadly and Avihai
+* Drop hugepages as it's a bit unrelated; I can pursue that patch
+* separately. The main motivation is to provide a way to test
+without hugepages similar to what vfio_type1_iommu.disable_hugepages=1
+does.
+
+Changes since RFCv1[2]:
+* Remove intel/amd dirty tracking emulation enabling
+* Remove the dirtyrate improvement for VF/IOMMU dirty tracking
+[Will pursue these two in separate series]
+* Introduce auto domains support
+* Enforce dirty tracking following the IOMMUFD UAPI for this
+* Add support for toggling hugepages in IOMMUFD
+* Auto enable support when VF supports migration to use IOMMU
+when it doesn't have VF dirty tracking
+* Add a parameter to toggle VF dirty tracking
+
+[0] https://lore.kernel.org/qemu-devel/20240201072818.327930-1-zhenzhong.duan@intel.com/
+[1] https://lore.kernel.org/qemu-devel/20240201072818.327930-10-zhenzhong.duan@intel.com/
+[2] https://lore.kernel.org/qemu-devel/20220428211351.3897-1-joao.m.martins@oracle.com/
+[3] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
+[4] https://lore.kernel.org/qemu-devel/20240212135643.5858-1-joao.m.martins@oracle.com/
+[5] https://lore.kernel.org/qemu-devel/20240708143420.16953-1-joao.m.martins@oracle.com/
+
+Joao Martins (12):
+  vfio/pci: Extract mdev check into an helper
+  vfio/iommufd: Don't initialize nor set a HOST_IOMMU_DEVICE with mdev
+  backends/iommufd: Extend iommufd_backend_get_device_info() to fetch HW
+    capabilities
+  vfio/iommufd: Return errno in iommufd_cdev_attach_ioas_hwpt()
+  vfio/iommufd: Introduce auto domain creation
+  vfio/{iommufd,container}: Remove caps::aw_bits
+  vfio/{iommufd,container}: Initialize HostIOMMUDeviceCaps during
+    attach_device()
+  vfio/iommufd: Probe and request hwpt dirty tracking capability
+  vfio/iommufd: Implement VFIOIOMMUClass::set_dirty_tracking support
+  vfio/iommufd: Implement VFIOIOMMUClass::query_dirty_bitmap support
+  vfio/migration: Don't block migration device dirty tracking is
+    unsupported
+  vfio/common: Allow disabling device dirty page tracking
+
+ include/hw/vfio/vfio-common.h      |  13 +++
+ include/sysemu/host_iommu_device.h |   2 +-
+ include/sysemu/iommufd.h           |  14 ++-
+ backends/iommufd.c                 |  89 ++++++++++++++-
+ hw/vfio/common.c                   |  17 +--
+ hw/vfio/container.c                |  11 +-
+ hw/vfio/helpers.c                  |  18 +++
+ hw/vfio/iommufd.c                  | 178 ++++++++++++++++++++++++++++-
+ hw/vfio/migration.c                |   4 +-
+ hw/vfio/pci.c                      |  22 ++--
+ backends/trace-events              |   3 +
+ 11 files changed, 339 insertions(+), 32 deletions(-)
+
 -- 
-2.34.1
+2.17.2
 
 
