@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD3092F9ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB8092F9EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:04:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSF0b-0007lg-8L; Fri, 12 Jul 2024 08:04:18 -0400
+	id 1sSF0d-0008Lc-Qk; Fri, 12 Jul 2024 08:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSF0P-0007Ek-8j; Fri, 12 Jul 2024 08:04:05 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1sSF0P-0007G4-DH; Fri, 12 Jul 2024 08:04:05 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSF0I-0005lC-VX; Fri, 12 Jul 2024 08:04:04 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-706524adf91so1638025b3a.2; 
- Fri, 12 Jul 2024 05:03:56 -0700 (PDT)
+ id 1sSF0L-0005lc-Bb; Fri, 12 Jul 2024 08:04:05 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-70b1207bc22so1630405b3a.3; 
+ Fri, 12 Jul 2024 05:04:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720785834; x=1721390634; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720785838; x=1721390638; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sqrzDK8wkTq/L5krI5RVW4u/qudiQvRHJA8S9u6V2LU=;
- b=A4P72KGkuf/O7SggZeWWCzf7wQT3KtjZJ7sc027E+kz39zbjCmdBsakTok6eY9LMmj
- e0IaB5rBGq6gNWDRrhdzVukwO0AlHmNJgl+4RDgLftZlH+RkCXL8YLURtIJ881RXVmxk
- OBLd8lVcBiFY6+K+VQJuMDdkEHlEqpj20E57LOAKTDEdAMTeMmBGTRuheT+HPfsS1A8N
- Wf1eYKmRcUFayIVWILrndzpnuF8oHhQv+cz8XjfEsPdhiWrPV8T/Af+7ZF2I2zKLq2Dj
- Vh0t1IxENuSElsUroisvLRQQEToA/Qq39q+8yQLw8k0Tga5IVEo10W7vc8psrKEThlMu
- EYBA==
+ bh=P/jaJY+EjT/k2aXL1glM+yk4w079Fmr/WkbzC5YoxgU=;
+ b=QDgylEeoL96pMEdGZhTgbakEOZCnO2Cryj/Aeo9CeYDkhjVDV6e52WpYxJGV0XBLky
+ N78n0xCC6W0TEDl9JFQZEEY7Pp0eP2foaurVKSNcuPUrVco0TfgBhvVQOFNTKNqIXzGg
+ K6VvGn3ACKi7CcpXgxxIdW+2QLG1is+1XpOZPXfaXITkMgNGmXNng+IpSKHUGNan3poS
+ eQofK7jwTdjxVtzLFivqwyErPWzPyBj3vaOt6nwSTmDQ6alWAV/VMza6n46ZH7e3g0dn
+ cK9+/OOR8fnt74zEATo6aB5o6MrqAjLoCUT0fsnQTnkLZrItNRnWv2Y0mDln2xaPDCxn
+ 70fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720785834; x=1721390634;
+ d=1e100.net; s=20230601; t=1720785838; x=1721390638;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sqrzDK8wkTq/L5krI5RVW4u/qudiQvRHJA8S9u6V2LU=;
- b=nN+sXaPa4smd6C2qKxFrHzHr5/Cuh84kZ9Sd1eLcQCh1cihL+vfPYOcdlDEfNMv4UB
- Hm3DRvWKGOeNRE1EWnBl+tKbrZzIGULj/QEUySTt9hH/xXbhp5ser1cuO/DResdcoF9C
- nO7aYyPyVV1GWVqMTyBzZd6Nf1YqwoMXqy1UFhAa/21vGXHs9TEA9NA5ytawfmc0Cz3d
- ZX6pgsjEvAyfVikj+22hoNwDb1DZ4asJ1wxJBVgsppwLopDMeX0fT5wWP3WbZE2Wyu21
- NvFmJK+D8zlWDsjdc9JPg53fQxoz9xDSH5T4ZHPIwqrQxI+KgUO7yUmY0Ydm3nzYKKT4
- uxDQ==
+ bh=P/jaJY+EjT/k2aXL1glM+yk4w079Fmr/WkbzC5YoxgU=;
+ b=ZaC0xJWyrKlWuCACxouf/jV6bQ1l6GmBZnxrKRgEDDbkbJdHU9knZz8iS97XojwJBO
+ Q5ben7uqToS4a12Cm7sTM/kEAfhIhfXASm/6QZjxnijKak/VlUWfYhoWhe7sXJPw8sm7
+ M7QAG6shzA3Fi/A6FggIE+RqT3n06L33Oo+VU5iBII1hWi2MXmuNl3BEocB8beRtrDmT
+ BOEjLwGKu+E/11dffi5YKRiTEkB6hErbpwEAa28xGMI55L6VpZuQgZ17Vnso4vtAlVF6
+ 25I7714dvArkveHJpf0M52/REP0MyxozQG28AenlgO6w5vIz8YPTIDph+Fhg0IpVaUhK
+ c2jA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU43tl+6xDI2ERPndOGLEHODg1+pz8SAKs5EF+gv5H8sEGGvimowRmQCz7JdqHdtTkAog/BrPFd1zmc8vFaNnmuA9QStYQ=
-X-Gm-Message-State: AOJu0Yy89wu1S28wcFUOYQ4dIYvzYdcbZIOexyewMFGaIVHnW7WxUv/C
- 1g9Z4V2TKc7i0yFr2VePLYQ2N9lk7OeeyfgEM3q8kfL1jtV/x39N3RJogA==
-X-Google-Smtp-Source: AGHT+IGUb3+4YNWxw8JvuNUFHAX23Ml9NK3YwZYylQ9KoDvfRJ8OinGvAtGKWafxS8lJkG8PBmYrDQ==
-X-Received: by 2002:a05:6a21:3393:b0:1be:c2af:5626 with SMTP id
- adf61e73a8af0-1c298209096mr13417390637.4.1720785834472; 
- Fri, 12 Jul 2024 05:03:54 -0700 (PDT)
+ AJvYcCUK3I/QxuX71aH2FshVFwjzEUojLTyS7wwkLvfo8RuxQ+h8zYNVHLffqrBlthATCeZ5Fsa1VVbBWAuljMphiYnCnFZgNts=
+X-Gm-Message-State: AOJu0YzwErl3uyEnmOd4EC6PvvrPGbX7ReOmp3vSj2v0iNpjQ9wH06AJ
+ tEFUEd9QncKOeGQqA9CkUI1W9rkhzG0pJKgW9/4Uu5z3pH1donvwqcu9QA==
+X-Google-Smtp-Source: AGHT+IGQjSu3XRfk4XkJff6pUJcl1gtHELi53tVS1flhrOij5QtviBjuI9zKdiRglOje2IrxTIU9qw==
+X-Received: by 2002:a05:6a20:748d:b0:1c0:f267:11ad with SMTP id
+ adf61e73a8af0-1c29821d031mr15918382637.19.1720785838056; 
+ Fri, 12 Jul 2024 05:03:58 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.03.51
+ d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.03.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jul 2024 05:03:54 -0700 (PDT)
+ Fri, 12 Jul 2024 05:03:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 07/19] ppc: Add a core_index to CPUPPCState for SMT vCPUs
-Date: Fri, 12 Jul 2024 22:02:34 +1000
-Message-ID: <20240712120247.477133-8-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Subject: [PATCH v2 08/19] target/ppc: Add helpers to check for SMT sibling
+ threads
+Date: Fri, 12 Jul 2024 22:02:35 +1000
+Message-ID: <20240712120247.477133-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240712120247.477133-1-npiggin@gmail.com>
 References: <20240712120247.477133-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,90 +95,238 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The way SMT thread siblings are matched is clunky, using hard-coded
-logic that checks the PIR SPR.
+Add helpers for TCG code to determine if there are SMT siblings
+sharing per-core and per-lpar registers. This simplifies the
+callers and makes SMT register topology simpler to modify with
+later changes.
 
-Change that to use a new core_index variable in the CPUPPCState,
-where all siblings have the same core_index. CPU realize routines have
-flexibility in setting core/sibling topology.
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h        | 9 +++++----
- hw/ppc/pnv_core.c       | 2 ++
- hw/ppc/spapr_cpu_core.c | 4 ++++
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ target/ppc/cpu.h             | 11 +++++++++++
+ target/ppc/cpu_init.c        |  2 +-
+ target/ppc/excp_helper.c     | 17 +++++------------
+ target/ppc/misc_helper.c     | 27 ++++++---------------------
+ target/ppc/timebase_helper.c | 20 +++++++-------------
+ 5 files changed, 30 insertions(+), 47 deletions(-)
 
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 95ba9e7590..7b52a9bb18 100644
+index 7b52a9bb18..417b284318 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -1247,6 +1247,9 @@ struct CPUArchState {
-     /* when a memory exception occurs, the access type is stored here */
-     int access_type;
- 
-+    /* For SMT processors */
-+    int core_index;
-+
- #if !defined(CONFIG_USER_ONLY)
-     /* MMU context, only relevant for full system emulation */
- #if defined(TARGET_PPC64)
-@@ -1402,12 +1405,10 @@ struct CPUArchState {
-     uint64_t pmu_base_time;
+@@ -1512,6 +1512,17 @@ struct PowerPCCPUClass {
+     int  (*check_attn)(CPUPPCState *env);
  };
  
--#define _CORE_ID(cs)                                            \
--    (POWERPC_CPU(cs)->env.spr_cb[SPR_PIR].default_value & ~(cs->nr_threads - 1))
--
- #define THREAD_SIBLING_FOREACH(cs, cs_sibling)                  \
-     CPU_FOREACH(cs_sibling)                                     \
--        if (_CORE_ID(cs) == _CORE_ID(cs_sibling))
-+        if (POWERPC_CPU(cs)->env.core_index ==                  \
-+            POWERPC_CPU(cs_sibling)->env.core_index)
- 
- #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
- do {                                            \
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 28ca61926d..7bda29b9c7 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -249,6 +249,8 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-     pir_spr->default_value = pir;
-     tir_spr->default_value = tir;
- 
-+    env->core_index = core_hwid;
++static inline bool ppc_cpu_core_single_threaded(CPUState *cs)
++{
++    return cs->nr_threads == 1;
++}
 +
-     /* Set time-base frequency to 512 MHz */
-     cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
- }
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index 21920ea054..4e13e6993a 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -302,11 +302,13 @@ static PowerPCCPU *spapr_create_vcpu(SpaprCpuCore *sc, int i, Error **errp)
-     g_autofree char *id = NULL;
-     CPUState *cs;
-     PowerPCCPU *cpu;
-+    CPUPPCState *env;
++static inline bool ppc_cpu_lpar_single_threaded(CPUState *cs)
++{
++    return !(POWERPC_CPU(cs)->env.flags & POWERPC_FLAG_SMT_1LPAR) ||
++           ppc_cpu_core_single_threaded(cs);
++}
++
+ ObjectClass *ppc_cpu_class_by_name(const char *name);
+ PowerPCCPUClass *ppc_cpu_class_by_pvr(uint32_t pvr);
+ PowerPCCPUClass *ppc_cpu_class_by_pvr_mask(uint32_t pvr);
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 164bb62e63..81dd4e1a7a 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6993,7 +6993,7 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
  
-     obj = object_new(scc->cpu_type);
+     pcc->parent_realize(dev, errp);
  
-     cs = CPU(obj);
-     cpu = POWERPC_CPU(obj);
-+    env = &cpu->env;
-     /*
-      * All CPUs start halted. CPU0 is unhalted from the machine level reset code
-      * and the rest are explicitly started up by the guest using an RTAS call.
-@@ -317,6 +319,8 @@ static PowerPCCPU *spapr_create_vcpu(SpaprCpuCore *sc, int i, Error **errp)
-         return NULL;
+-    if (env_cpu(env)->nr_threads > 1) {
++    if (!ppc_cpu_core_single_threaded(cs)) {
+         env->flags |= POWERPC_FLAG_SMT;
      }
  
-+    env->core_index = cc->core_id;
-+
-     cpu->node_id = sc->node_id;
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 5368bf2ff3..5ecd662f9e 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -3014,18 +3014,11 @@ static void msgsnd_core_tir(CPUPPCState *env, uint32_t target_tir, int irq)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+     CPUState *cs = env_cpu(env);
+-    uint32_t nr_threads = cs->nr_threads;
  
-     id = g_strdup_printf("thread[%d]", i);
+-    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+-        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
+-    }
+-
+-    if (target_tir >= nr_threads) {
+-        return;
+-    }
+-
+-    if (nr_threads == 1) {
+-        ppc_set_irq(cpu, irq, 1);
++    if (ppc_cpu_lpar_single_threaded(cs)) {
++        if (target_tir == 0) {
++            ppc_set_irq(cpu, irq, 1);
++        }
+     } else {
+         CPUState *ccs;
+ 
+@@ -3080,7 +3073,7 @@ void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
+         brdcast = true;
+     }
+ 
+-    if (cs->nr_threads == 1 || !brdcast) {
++    if (ppc_cpu_core_single_threaded(cs) || !brdcast) {
+         ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
+         return;
+     }
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index 4d3c1bddd9..692e48e6bc 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -49,9 +49,8 @@ void helper_spr_core_write_generic(CPUPPCState *env, uint32_t sprn,
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1) {
++    if (ppc_cpu_core_single_threaded(cs)) {
+         env->spr[sprn] = val;
+         return;
+     }
+@@ -196,7 +195,7 @@ void helper_store_ptcr(CPUPPCState *env, target_ulong val)
+             return;
+         }
+ 
+-        if (cs->nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++        if (ppc_cpu_lpar_single_threaded(cs)) {
+             env->spr[SPR_PTCR] = val;
+             tlb_flush(cs);
+         } else {
+@@ -243,16 +242,12 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+     target_ulong dpdes = 0;
+ 
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
+ 
+-    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+-        nr_threads = 1; /* DPDES behaves as 1-thread in LPAR-per-thread mode */
+-    }
+-
+-    if (nr_threads == 1) {
++    /* DPDES behaves as 1-thread in LPAR-per-thread mode */
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+             dpdes = 1;
+         }
+@@ -279,21 +274,11 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+     PowerPCCPU *cpu = env_archcpu(env);
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
+ 
+-    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+-        nr_threads = 1; /* DPDES behaves as 1-thread in LPAR-per-thread mode */
+-    }
+-
+-    if (val & ~(nr_threads - 1)) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
+-                      TARGET_FMT_lx"\n", val);
+-        val &= (nr_threads - 1); /* Ignore the invalid bits */
+-    }
+-
+-    if (nr_threads == 1) {
++    /* DPDES behaves as 1-thread in LPAR-per-thread mode */
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+         return;
+     }
+diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
+index 52f9e6669c..44cacf065e 100644
+--- a/target/ppc/timebase_helper.c
++++ b/target/ppc/timebase_helper.c
+@@ -63,9 +63,8 @@ void helper_store_purr(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         cpu_ppc_store_purr(env, val);
+         return;
+     }
+@@ -82,9 +81,8 @@ void helper_store_tbl(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         cpu_ppc_store_tbl(env, val);
+         return;
+     }
+@@ -99,9 +97,8 @@ void helper_store_tbu(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         cpu_ppc_store_tbu(env, val);
+         return;
+     }
+@@ -141,9 +138,8 @@ void helper_store_hdecr(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         cpu_ppc_store_hdecr(env, val);
+         return;
+     }
+@@ -158,9 +154,8 @@ void helper_store_vtb(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         cpu_ppc_store_vtb(env, val);
+         return;
+     }
+@@ -175,9 +170,8 @@ void helper_store_tbu40(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+     CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+ 
+-    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++    if (ppc_cpu_lpar_single_threaded(cs)) {
+         cpu_ppc_store_tbu40(env, val);
+         return;
+     }
+@@ -288,7 +282,7 @@ static void write_tfmr(CPUPPCState *env, target_ulong val)
+ {
+     CPUState *cs = env_cpu(env);
+ 
+-    if (cs->nr_threads == 1) {
++    if (ppc_cpu_core_single_threaded(cs)) {
+         env->spr[SPR_TFMR] = val;
+     } else {
+         CPUState *ccs;
 -- 
 2.45.1
 
