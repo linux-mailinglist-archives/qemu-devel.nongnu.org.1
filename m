@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413D192FB46
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 15:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDEE92FB43
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 15:26:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSGGx-0001Gr-8H; Fri, 12 Jul 2024 09:25:15 -0400
+	id 1sSGH3-0001fk-SM; Fri, 12 Jul 2024 09:25:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sSGGt-0001AT-Lq
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:25:11 -0400
+ id 1sSGH0-0001aB-Vr
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:25:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sSGGq-0003if-R7
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:25:11 -0400
+ id 1sSGGu-0003j6-Ol
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:25:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720790707;
+ s=mimecast20190719; t=1720790711;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=7kQW+zbmzPtbJpIZ28hiYI3SnjnoVQpst4GbVNOp3WU=;
- b=bCidklPRfCkv0tdCsPeGUan89lRPtnsScdqkPxRtoeGMh0Iay0iCISbyXUSYUQcqnaoDZT
- 1jnSe+kCtr9DXpVAqFyDIufxqhjsu2rvJED+LLoVHLRJkLZ1ul+4FbRdxR7YHKHAOXK/Ln
- Aq9fV+VYYWt/upz+HNhhYMVsFKgUvvA=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=v8nD6iuCbHPgF9mhe63uSEXaCcXMYEjvJ4HdJ2BdZQ0=;
+ b=UdVWDgSa2Yincm77cIybAgtf7hgl3YWs6xPuL9G2wcM9g8ZLUEzFWsPNMOGo0D2FgabJTn
+ Yd4GK11Fgvtc2KQe7CxzAOkxlRVvgq8ridElzOHWwU+8SB22rEyAKHKtHhOPW7dK4H/gS/
+ Nunon8+AXHcImOHDqjQeUCKNno0iurk=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-683--1RwHkUUPlKb62VOrhGLZQ-1; Fri,
- 12 Jul 2024 09:25:06 -0400
-X-MC-Unique: -1RwHkUUPlKb62VOrhGLZQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-y_Kd6Ll1PH6g_IfVsnjw3w-1; Fri,
+ 12 Jul 2024 09:25:10 -0400
+X-MC-Unique: y_Kd6Ll1PH6g_IfVsnjw3w-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 397AC1954B0C; Fri, 12 Jul 2024 13:25:04 +0000 (UTC)
+ id B4E331955F45; Fri, 12 Jul 2024 13:25:08 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.56])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E88A91955F40; Fri, 12 Jul 2024 13:25:00 +0000 (UTC)
+ id 638281955E70; Fri, 12 Jul 2024 13:25:04 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -51,13 +52,16 @@ Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>
-Subject: [PATCH v3 00/22] qga: clean up command source locations and
- conditionals
-Date: Fri, 12 Jul 2024 14:24:37 +0100
-Message-ID: <20240712132459.3974109-1-berrange@redhat.com>
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH v3 01/22] qga: drop blocking of guest-get-memory-block-size
+ command
+Date: Fri, 12 Jul 2024 14:24:38 +0100
+Message-ID: <20240712132459.3974109-2-berrange@redhat.com>
+In-Reply-To: <20240712132459.3974109-1-berrange@redhat.com>
+References: <20240712132459.3974109-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -84,101 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is a side effect of other work I started, to attempt to
-make the QGA safe to use in confidential VMs by automatically
-restricting the permitted commands. Since this cleanup stands on
-its own, I'm sending it now.
+This command has never existed in tree, since it was renamed to
+guest-get-memory-block-info before being merged.
 
-The QGA codebase has a very complicated maze of #ifdefs to create
-stubs for the various commands that cannot be implemented on certain
-platforms. It then has further logic to dynamically disable the stub
-commands at runtime, except this is not consistently applied, so
-some commands remain enabled despite being merely stubs.
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ qga/commands-posix.c | 2 +-
+ qga/commands-win32.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-The resulting code is hard to follow, when trying to understand exactly
-what commands are available under what circumstances, and when changing
-impls it is easy to get the #ifdefs wrong, resulting in stubs getting
-missed on platforms without a real impl. In some cases, we have multiple
-stubs for the same command, due to the maze of #ifdefs.
-
-The QAPI schema language has support for many years for expressing
-conditions against commands when declaring them. This results in the
-QAPI code generator omitting their implementation entirely at build
-time. This has mutliple benefits
-
- * The unsupported commands are guaranteed to not exist at runtime
- * No stubs need ever be defined in the code
- * The generated QAPI reference manual documents the build conditions
-
-This series is broadly split into three parts
-
- * Moving tonnes of Linux only commands out of commands-posix.c
-   into commands-linux.c to remove many #ifdefs.
- * Adding 'if' conditions in the QAPI schema to reflect the
-   build conditions, removing many more #ifdefs
- * Sanitizing the logic for disabling/enabling commands at
-   runtime to guarantee consistency
-
-Changed in v3:
-
- - Fix missing --help output for new -c / --config arg
- - Fix typos
- - Avoid repeated qmp_command_is_enabled call
-
-Changed in v2:
-
- - Make FSFreeze error reporting distinguish inability to enable
-   VSS from user config choice
-
- - Fully remove ga_command_init_blockedrpcs() methods. No more
-   special case disabling of commands. Either they're disabled
-   at build time, or disabled by user config, or by well defined
-   rule ie not permitted during FS freeze.
-
- - Apply rules later in startup to avoid crash from NULL config
-   pointer
-
- - Document changed error messages in commit messages
-
- - Add -c / --config command line parameter
-
- - Fix mistaken enabling of fsfreeze hooks on win32
-
-Daniel P. Berrangé (22):
-  qga: drop blocking of guest-get-memory-block-size command
-  qga: move linux vcpu command impls to commands-linux.c
-  qga: move linux suspend command impls to commands-linux.c
-  qga: move linux fs/disk command impls to commands-linux.c
-  qga: move linux disk/cpu stats command impls to commands-linux.c
-  qga: move linux memory block command impls to commands-linux.c
-  qga: move CONFIG_FSFREEZE/TRIM to be meson defined options
-  qga: conditionalize schema for commands unsupported on Windows
-  qga: conditionalize schema for commands unsupported on non-Linux POSIX
-  qga: conditionalize schema for commands requiring getifaddrs
-  qga: conditionalize schema for commands requiring linux/win32
-  qga: conditionalize schema for commands only supported on Windows
-  qga: conditionalize schema for commands requiring fsfreeze
-  qga: conditionalize schema for commands requiring fstrim
-  qga: conditionalize schema for commands requiring libudev
-  qga: conditionalize schema for commands requiring utmpx
-  qga: conditionalize schema for commands not supported on other UNIX
-  qga: don't disable fsfreeze commands if vss_init fails
-  qga: move declare of QGAConfig struct to top of file
-  qga: remove pointless 'blockrpcs_key' variable
-  qga: allow configuration file path via the cli
-  qga: centralize logic for disabling/enabling commands
-
- docs/interop/qemu-ga.rst |   19 +
- meson.build              |   16 +
- qga/commands-bsd.c       |   24 -
- qga/commands-common.h    |    9 -
- qga/commands-linux.c     | 1805 +++++++++++++++++++++++++++++
- qga/commands-posix.c     | 2373 +++-----------------------------------
- qga/commands-win32.c     |   78 +-
- qga/main.c               |  224 ++--
- qga/qapi-schema.json     |  153 ++-
- 9 files changed, 2240 insertions(+), 2461 deletions(-)
-
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index 7f05996495..76af98ba32 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -3099,7 +3099,7 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+             "guest-suspend-disk", "guest-suspend-ram",
+             "guest-suspend-hybrid", "guest-get-vcpus", "guest-set-vcpus",
+             "guest-get-memory-blocks", "guest-set-memory-blocks",
+-            "guest-get-memory-block-size", "guest-get-memory-block-info",
++            "guest-get-memory-block-info",
+             NULL};
+         char **p = (char **)list;
+ 
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 0d1b836e87..9fe670d5b4 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -1995,7 +1995,7 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+         "guest-suspend-hybrid",
+         "guest-set-vcpus",
+         "guest-get-memory-blocks", "guest-set-memory-blocks",
+-        "guest-get-memory-block-size", "guest-get-memory-block-info",
++        "guest-get-memory-block-info",
+         NULL};
+     char **p = (char **)list_unsupported;
+ 
 -- 
 2.45.1
 
