@@ -2,88 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE8892F810
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 11:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E4892F84A
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 11:48:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSCfC-0004H8-9L; Fri, 12 Jul 2024 05:34:02 -0400
+	id 1sSCrW-0002d0-Og; Fri, 12 Jul 2024 05:46:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sSCf9-0004GI-FM
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:33:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1sSCrF-0002JO-4o; Fri, 12 Jul 2024 05:46:37 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sSCf7-0007dn-7I
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 05:33:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720776834;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EPMIPqRt+NO1utoJ9LZWfos/cfn8dF8tCoYKToSpJY8=;
- b=MVChQZG0AgE2r6WeGTYO0WLrkH+YG/CkQB0tMJSfpbox38yqbjQDV0a3rl8rt+k/wxKF5u
- 4Bq6UqkUZwN0xbngWK8FtfwQ9nCdQZtCpjtGFhpN0V29NkqVuR0ToI1jsHxr/ApWdPAjOv
- IufQyPpJysls8MQ0/Id8HA+e7TLz0xQ=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-O1Au8WQoP7SycdEcuKHQtw-1; Fri, 12 Jul 2024 05:33:50 -0400
-X-MC-Unique: O1Au8WQoP7SycdEcuKHQtw-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-e03a544b9c8so2987099276.2
- for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 02:33:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720776830; x=1721381630;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EPMIPqRt+NO1utoJ9LZWfos/cfn8dF8tCoYKToSpJY8=;
- b=NIqXyY3vu9tGkPIu2XI9rmpObxls3HuKiAG9WTKlI1v21yHsqQrkI7lsAbtJbzQneT
- 3+CP8A8cmvubNq40D4thxY5SCZOGN8gamCr5YSUUSg3P5+pE9mYv/2lG1ykxJMCDt8nf
- iivZ7v8wRA9Q98FaqivzGPmeixk9wYsqCjbrMz/Q3BYJ4/W1VA+Hhj6g02myBZWiln3r
- sYpqxcnvMd5ZsfJEWg0rndKWpbjntJ3EZGsXx/J0yjk9ZPNfI5CrfgwSF1z6Eecm9S/F
- cPjpWC8LlfcVNO1mUpDA9mztPYuRWWDIEkqnH3ejfVj+71QWJq/BiY9glwESLQNpy/d5
- pxdA==
-X-Gm-Message-State: AOJu0Ywl68lLKtn8Hv6j9VWGFmQAEWzdmCop2YGbzscot1rgrvfVc91L
- 8JPVYVBiSjDq9zK2yHMFCL1fm0y+NT567ShG9vbvhGhLLGRjBAVKGO9yWqzdcQcOt4/fk8nqCS5
- //a6uLAaHsGJMt7KC5RVIyYELDylLoJceZY6ILzEjRNj3GyCvtOKrvns5zMO0sR6j8yPOUyZnyp
- FZYujxUFchj8idYiuC+75qV3qGuPU=
-X-Received: by 2002:a25:bfc9:0:b0:e02:b7d6:c97 with SMTP id
- 3f1490d57ef6-e041b03d1b1mr13192055276.8.1720776830187; 
- Fri, 12 Jul 2024 02:33:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFtinr4Y4VGNCP+RD1URafqpB7vJLOuVm8BhnvxCv5mYWUSjrKjHNBtCl5NRaFKIRVY0LUJyroL3zdWeA5DAo=
-X-Received: by 2002:a25:bfc9:0:b0:e02:b7d6:c97 with SMTP id
- 3f1490d57ef6-e041b03d1b1mr13192042276.8.1720776829887; Fri, 12 Jul 2024
- 02:33:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1sSCrC-0001Y6-MJ; Fri, 12 Jul 2024 05:46:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
+ Content-Type; bh=LDdBUoqebPVHFuRAOp0wgoqPM6CEWFS92+GkInQpzvo=; b=thsFQTmz31tx
+ SbCNgDx7+HOVg5xB65V9ZqTyjeK3pXtILrzjjARati76yUr+7Q0d/uGlEH87Vu23D+/kW6xaVVIuA
+ roWWSxBRxJHEHXTCk4kD7KlytcIBh6sYPUrh1kIx3lx2X0Qa1P9PzwZBTXLNaGi/6fX4vmBLSNRx0
+ zjpZ0Cq2klcRDZJpN/lTx4ypQ24oGpixJ1nU0+igQLu05Cw8KrDb6jwVfJt+0Ij4GFte8MsKjgZi4
+ bYybS/btxY28HA5i1ke+qNl7pInaKZbG/wx2rxlGW46gEK+Xl8dSiRp4hdzTOHNo/K0QRL0BonDb2
+ LVLu6/1Eev9zmch/JpNhJQ==;
+Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1sSCqO-00Ceua-2P;
+ Fri, 12 Jul 2024 11:46:17 +0200
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ vsementsov@yandex-team.ru, pbonzini@redhat.com, eesposit@redhat.com,
+ andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
+Subject: [PATCH v2 0/2] Fix data corruption within preallocation
+Date: Fri, 12 Jul 2024 12:46:15 +0300
+Message-Id: <20240712094617.565237-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20240613150127.1361931-1-berrange@redhat.com>
- <20240613150127.1361931-2-berrange@redhat.com>
-In-Reply-To: <20240613150127.1361931-2-berrange@redhat.com>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Fri, 12 Jul 2024 12:33:39 +0300
-Message-ID: <CAPMcbCoiPJHqurkhMraOodUu8Ks8srGG1yJR33wbDAKbOVGHzA@mail.gmail.com>
-Subject: Re: [PATCH v2 01/22] qga: drop blocking of guest-get-memory-block-size
- command
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000aefad6061d099357"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,124 +63,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000aefad6061d099357
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+v1 -> v2:
 
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+ * Patch 1/2: get rid of the lock. Instead, simply update the file_end
+   field before the write_zeroes operation.
 
-On Thu, Jun 13, 2024 at 6:01=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com>
-wrote:
+This patch implements a much simpler logic w/o the locking compared to
+v1, and the problem seems to go away.  However there still might be
+potential issues with the operations performed in other coroutines (e.g.
+truncate) and outside of the coroutine context (preallocate_set_perm() /
+preallocate_child_perm()).  So the comments on this are most welcome.
 
-> This command has never existed in tree, since it was renamed to
-> guest-get-memory-block-info before being merged.
->
-> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  qga/commands-posix.c | 2 +-
->  qga/commands-win32.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-> index 7f05996495..76af98ba32 100644
-> --- a/qga/commands-posix.c
-> +++ b/qga/commands-posix.c
-> @@ -3099,7 +3099,7 @@ GList *ga_command_init_blockedrpcs(GList
-> *blockedrpcs)
->              "guest-suspend-disk", "guest-suspend-ram",
->              "guest-suspend-hybrid", "guest-get-vcpus", "guest-set-vcpus"=
-,
->              "guest-get-memory-blocks", "guest-set-memory-blocks",
-> -            "guest-get-memory-block-size", "guest-get-memory-block-info"=
-,
-> +            "guest-get-memory-block-info",
->              NULL};
->          char **p =3D (char **)list;
->
-> diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-> index 0d1b836e87..9fe670d5b4 100644
-> --- a/qga/commands-win32.c
-> +++ b/qga/commands-win32.c
-> @@ -1995,7 +1995,7 @@ GList *ga_command_init_blockedrpcs(GList
-> *blockedrpcs)
->          "guest-suspend-hybrid",
->          "guest-set-vcpus",
->          "guest-get-memory-blocks", "guest-set-memory-blocks",
-> -        "guest-get-memory-block-size", "guest-get-memory-block-info",
-> +        "guest-get-memory-block-info",
->          NULL};
->      char **p =3D (char **)list_unsupported;
->
-> --
-> 2.45.1
->
->
+v1: https://lists.nongnu.org/archive/html/qemu-block/2024-07/msg00384.html
 
---000000000000aefad6061d099357
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Andrey Drobyshev (1):
+  iotests/298: add testcase for async writes with preallocation filter
 
-<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
-tiuk@redhat.com">kkostiuk@redhat.com</a>&gt;</div><br><div class=3D"gmail_q=
-uote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 13, 2024 at 6:01=E2=
-=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com"=
->berrange@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
-);padding-left:1ex">This command has never existed in tree, since it was re=
-named to<br>
-guest-get-memory-block-info before being merged.<br>
-<br>
-Reviewed-by: Manos Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@=
-linaro.org" target=3D"_blank">manos.pitsidianakis@linaro.org</a>&gt;<br>
-Signed-off-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redha=
-t.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br>
----<br>
-=C2=A0qga/commands-posix.c | 2 +-<br>
-=C2=A0qga/commands-win32.c | 2 +-<br>
-=C2=A02 files changed, 2 insertions(+), 2 deletions(-)<br>
-<br>
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c<br>
-index 7f05996495..76af98ba32 100644<br>
---- a/qga/commands-posix.c<br>
-+++ b/qga/commands-posix.c<br>
-@@ -3099,7 +3099,7 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs=
-)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;guest-suspend-disk&qu=
-ot;, &quot;guest-suspend-ram&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;guest-suspend-hybrid&=
-quot;, &quot;guest-get-vcpus&quot;, &quot;guest-set-vcpus&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;guest-get-memory-bloc=
-ks&quot;, &quot;guest-set-memory-blocks&quot;,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;guest-get-memory-block-siz=
-e&quot;, &quot;guest-get-memory-block-info&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;guest-get-memory-block-inf=
-o&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0NULL};<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0char **p =3D (char **)list;<br>
-<br>
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c<br>
-index 0d1b836e87..9fe670d5b4 100644<br>
---- a/qga/commands-win32.c<br>
-+++ b/qga/commands-win32.c<br>
-@@ -1995,7 +1995,7 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs=
-)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;guest-suspend-hybrid&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;guest-set-vcpus&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;guest-get-memory-blocks&quot;, &quo=
-t;guest-set-memory-blocks&quot;,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;guest-get-memory-block-size&quot;, &quot=
-;guest-get-memory-block-info&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;guest-get-memory-block-info&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0NULL};<br>
-=C2=A0 =C2=A0 =C2=A0char **p =3D (char **)list_unsupported;<br>
-<br>
--- <br>
-2.45.1<br>
-<br>
-</blockquote></div>
+Denis V. Lunev (1):
+  block: zero data data corruption using prealloc-filter
 
---000000000000aefad6061d099357--
+ block/preallocate.c        |  8 +++++++-
+ tests/qemu-iotests/298     | 34 ++++++++++++++++++++++++++++++++++
+ tests/qemu-iotests/298.out |  4 ++--
+ 3 files changed, 43 insertions(+), 3 deletions(-)
+
+-- 
+2.39.3
 
 
