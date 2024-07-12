@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7711892FE8B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 18:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14FB92FE9B
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 18:32:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSJ8O-0006ge-LR; Fri, 12 Jul 2024 12:28:36 -0400
+	id 1sSJC5-0000Es-6x; Fri, 12 Jul 2024 12:32:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSJ8I-0006N1-Pf
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 12:28:30 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSJBx-0008US-5y
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 12:32:17 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSJ8F-00023Z-TI
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 12:28:30 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-36796bbf687so1184398f8f.0
- for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 09:28:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSJBv-0002nX-8n
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 12:32:16 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42795086628so14666445e9.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 09:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720801706; x=1721406506; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=glf0Dg5n4+P+FxR4zbHuZCiafWvUhX2krPIpxd4tsFI=;
- b=gx8HRFj4AKvCh3bX8Lywn0cV1Ve5HR4D/fyH9ekckM60ZaUYZBqDfHSpfLJSwWucqA
- llegillcgVh9kpBT/XStGUD8GZ+cO1f12LaUF9nKwYU3gUccWxTfYurOdQHioOoX85e8
- Cwgw6C/aWE9c8T90z0FdAr/B4uDDqJyhYXJlyvuoQyL6aAfXLOfW7bINLfWpJrcOS347
- ZSljksdTAqqAeEfs6S4DUKM06S7lYoFwXmzHgmj9wxcINPRIS3pEwQpEP8AvhYBvfeqM
- 4LvPbSB0OAVMp0zgFJcllaSK7FBtImZFN1hR848hp6nO9fD50H5XceTuyNQu3Q67i3io
- HItw==
+ d=linaro.org; s=google; t=1720801933; x=1721406733; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eE/q1N+8qvVh72cX8o24mKis3t9CAY0ic804Ljq/N6M=;
+ b=MM3buJKl4BAtKs3HDLyS0xqXntBPIEyAJfRezYS33g3tQ2Mi4cVepML3hxro8+6xky
+ oK37iY9hXhRY0/bhtAkBxTW2CQ0JPfnP6XooRE7EP7SP6WTH3sdSnPwRAnb3K2jUyIi1
+ cOuTiBVuje2HBw/pYdg8RTtR1CnxOOfpDJdBDANvbDKHRrIjDBWxLtPUhcUb4xeW8Ytb
+ 5cTW1iIi3TsUQHKwn1784iNhDK15zesByRCIxA2KwxrRh+MpIt2zsK7y4ArDvgH4LIe6
+ wkZ7oqNTGIXx3b32z2rEwCP9P0XUbZKxSbznNUXsNXBaUrAO9V2s/FQJdZWv46nXijyb
+ ixDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720801706; x=1721406506;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=glf0Dg5n4+P+FxR4zbHuZCiafWvUhX2krPIpxd4tsFI=;
- b=vaSfs2cUQZ1A4jvDfs49UyredMgfYGXc7sbaYpKMPScybW2NxIA+4w4Kj1VstTI2tt
- QjVJO9FqAct9GkfDk7ydZpkrI7cFTpdkmI8+C+tRl2onzYMhKO5vS5ftq7HMuId8Xfsi
- c+1f7aqvJgdORB/sTtR3AFF3zfGTckMaHEE8vxp8293ZLMmzLQQRakLJXy8Q275PMHns
- M2X7QPh68uQakZ4EVhhTuFMtt/5wPeQ+qVrS5EdnzZWDnFQgftyOyMFiq8/CR5mku+Qj
- B5X/SfhPlFqHfhZ70OywnLsd3KaU4SoP0mq/feNjZfIQXXcqKmwuJZjWzfH7C3mr3fPx
- eqOQ==
-X-Gm-Message-State: AOJu0YwkDE7fd5V1kgpSy7L5CROt0yJFjpK0+r5aY1PS3S7Qc8GXnNBf
- maFm0ThcasLGzUT2DZb8XQoemTY9+Y1wUZ/JjNtxUCQwSCf5jg1xxeu41Ajabi2yef4fPUELviA
- N
-X-Google-Smtp-Source: AGHT+IEVleA7iO0HwT2JQMWJ49/9qtmd7qM+Vf8YYGGQBgQzvkgSjScFXLX/8o+QceClUCG0OTjmJw==
-X-Received: by 2002:a05:6000:ac9:b0:367:8a6f:8c0e with SMTP id
- ffacd0b85a97d-367cea67f4dmr8065002f8f.21.1720801706106; 
- Fri, 12 Jul 2024 09:28:26 -0700 (PDT)
-Received: from localhost.localdomain
- (nsg93-h02-176-184-54-152.dsl.sta.abo.bbox.fr. [176.184.54.152])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-367cde89113sm10473168f8f.56.2024.07.12.09.28.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 12 Jul 2024 09:28:25 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v49 11/11] hw/sd/sdcard: Support boot area in emmc image
-Date: Fri, 12 Jul 2024 18:27:19 +0200
-Message-ID: <20240712162719.88165-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240712162719.88165-1-philmd@linaro.org>
-References: <20240712162719.88165-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1720801933; x=1721406733;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eE/q1N+8qvVh72cX8o24mKis3t9CAY0ic804Ljq/N6M=;
+ b=lbZhCosyr3OvkRG00yS4Mkeq5PkaYAo4GCNgu8ryZxPS5To8xXSZdc46GBbTtfkMSF
+ rMJ7Ma2G7AsZJVBq6RoVK85+jiMKWdb480oVDF8WC78NsPXl3CbgQUeElxctczgN/eSU
+ /q5/rplwlsJro6jGvxvQt3Jw2xCobAAZqmFgg9QTrP70REQIq2gzJDyQ2UEWSv888O6b
+ SihyFVzueis8SkHmaH0+hyTQctp0T349s4ENb5cM7bM1Q/QY7LVV0NbPhu5lQejDEnHh
+ 4DYUk17HajnRPEO62E7mnw3ipG031Vthd4++NRo6/sbK7lNe5yHGXc1w9VjmQtigmbPx
+ u+hg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5w8wcRXHAUHR2d3BSwB6UZhei8Z6IPtlGdcYz2zAf6J1icAO0usNP/qzUu1q3BaD/iktgXGV+NkG+LClmplxtzAe7tsw=
+X-Gm-Message-State: AOJu0YwvPIbZ0qskbyLIFOUsUNzti2sOVpt/6ItZ3rbalAUa+QMlYdsj
+ K2UD1J/Y2MpxDdjfd85aq/xihrs6NF7d15T37CghrZPs8ShXPE9ao59nk1+rihM=
+X-Google-Smtp-Source: AGHT+IF3N0JPt1h9OZE1DQioTI3Gq9+pKTwQ1oHd99jhPc6imtGKcb6OADBjVO3Snkuh7/ACST6mHw==
+X-Received: by 2002:a05:600c:358f:b0:426:8ee5:5d24 with SMTP id
+ 5b1f17b1804b1-4268ef4a0b6mr67256475e9.20.1720801933427; 
+ Fri, 12 Jul 2024 09:32:13 -0700 (PDT)
+Received: from [192.168.69.100] (nsg93-h02-176-184-54-152.dsl.sta.abo.bbox.fr.
+ [176.184.54.152]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4279f2c1e07sm27893795e9.45.2024.07.12.09.32.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 12 Jul 2024 09:32:12 -0700 (PDT)
+Message-ID: <939a96a0-c49a-42b8-a050-fec93ee934f4@linaro.org>
+Date: Fri, 12 Jul 2024 18:32:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] include/hw/qdev-core.h: Correct and clarify gpio doc
+ comments
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: BALATON Zoltan <balaton@eik.bme.hu>
+References: <20240708153312.3109380-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240708153312.3109380-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,125 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+On 8/7/24 17:33, Peter Maydell wrote:
+> The doc comments for the functions for named GPIO inputs and
+> outputs had a couple of problems:
+>   * some copy-and-paste errors meant the qdev_connect_gpio_out_named()
+>     doc comment had references to input GPIOs that should be to
+>     output GPIOs
+>   * it wasn't very clear that named GPIOs are arrays and so the
+>     connect functions specify a single GPIO line by giving both
+>     the name of the array and the index within that array
+> 
+> Fix the copy-and-paste errors and slightly expand the text
+> to say that functions are connecting one line in a named GPIO
+> array, not a single named GPIO line.
+> 
+> Reported-by: BALATON Zoltan <balaton@eik.bme.hu>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> Does this help? I wrote the text and know what the functions do
+> to start with so it's a bit tricky for me to see where the docs
+> don't state things as clearly as they ought to do...
+> ---
+>   include/hw/qdev-core.h | 17 +++++++++--------
+>   1 file changed, 9 insertions(+), 8 deletions(-)
 
-This assumes a specially constructed image:
 
-  dd if=/dev/zero of=mmc-bootarea.img count=2 bs=1M
-  dd if=u-boot-spl.bin of=mmc-bootarea.img conv=notrunc
-  dd if=u-boot.bin of=mmc-bootarea.img conv=notrunc count=64 bs=1K
-  cat mmc-bootarea.img obmc-phosphor-image.wic > mmc.img
-  truncate --size 16GB mmc.img
+> - * This function connects an anonymous output GPIO line on a device
+> - * up to an arbitrary qemu_irq, so that when the device asserts that
+> - * output GPIO line, the qemu_irq's callback is invoked.
+> + * This function connects a single GPIO output in a named array of output
+> + * GPIO lines on a device up to an arbitrary qemu_irq, so that when the
+> + * device asserts that output GPIO line, the qemu_irq's callback is invoked.
+>    * The @name string must correspond to an output GPIO array which exists on
+>    * the device, and the index @n of the GPIO line must be valid (i.e.
+> - * be at least 0 and less than the total number of input GPIOs in that
+> + * be at least 0 and less than the total number of output GPIOs in that
 
-For now this still requires a mtd image to load the SPL:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  qemu-system-arm -M tacoma-bmc -nographic \
-   -global driver=sd-card,property=emmc,value=true \
-   -drive file=mmc.img,if=sd,index=2,format=raw
-
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/sd/sd.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
-
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 1f16c16fd1..07cb97d88c 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -137,6 +137,7 @@ struct SDState {
-     uint8_t spec_version;
-     uint64_t boot_part_size;
-     BlockBackend *blk;
-+    uint8_t boot_config;
- 
-     const SDProto *proto;
- 
-@@ -513,6 +514,9 @@ static void emmc_set_ext_csd(SDState *sd, uint64_t size)
-     sd->ext_csd[EXT_CSD_CARD_TYPE] = 0b11;
-     sd->ext_csd[EXT_CSD_STRUCTURE] = 2;
-     sd->ext_csd[EXT_CSD_REV] = 3;
-+
-+    /* Mode segment (RW) */
-+    sd->ext_csd[EXT_CSD_PART_CONFIG] = sd->boot_config;
- }
- 
- static void emmc_set_csd(SDState *sd, uint64_t size)
-@@ -763,6 +767,40 @@ static uint32_t sd_blk_len(SDState *sd)
-     return sd->blk_len;
- }
- 
-+/*
-+ * This requires a disk image that has two boot partitions inserted at the
-+ * beginning of it. The size of the boot partitions is the "boot-size"
-+ * property.
-+ */
-+static uint32_t sd_bootpart_offset(SDState *sd)
-+{
-+    bool partitions_enabled;
-+    unsigned partition_access;
-+
-+    if (!sd->boot_part_size || !sd_is_emmc(sd)) {
-+        return 0;
-+    }
-+
-+    partitions_enabled = sd->ext_csd[EXT_CSD_PART_CONFIG]
-+                                   & EXT_CSD_PART_CONFIG_EN_MASK;
-+    if (!partitions_enabled) {
-+        return 0;
-+    }
-+
-+    partition_access = sd->ext_csd[EXT_CSD_PART_CONFIG]
-+                                 & EXT_CSD_PART_CONFIG_ACC_MASK;
-+    switch (partition_access) {
-+    case EXT_CSD_PART_CONFIG_ACC_DEFAULT:
-+        return sd->boot_part_size * 2;
-+    case EXT_CSD_PART_CONFIG_ACC_BOOT0:
-+        return 0;
-+    case EXT_CSD_PART_CONFIG_ACC_BOOT0 + 1:
-+        return sd->boot_part_size * 1;
-+    default:
-+         g_assert_not_reached();
-+    }
-+}
-+
- static uint64_t sd_req_get_address(SDState *sd, SDRequest req)
- {
-     uint64_t addr;
-@@ -795,6 +833,7 @@ static void sd_reset(DeviceState *dev)
-         sect = 0;
-     }
-     size = sect << HWBLOCK_SHIFT;
-+    size -= sd_bootpart_offset(sd);
- 
-     sect = sd_addr_to_wpnum(size) + 1;
- 
-@@ -1003,6 +1042,7 @@ void sd_set_cb(SDState *sd, qemu_irq readonly, qemu_irq insert)
- static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
- {
-     trace_sdcard_read_block(addr, len);
-+    addr += sd_bootpart_offset(sd);
-     if (!sd->blk || blk_pread(sd->blk, addr, len, sd->data, 0) < 0) {
-         fprintf(stderr, "sd_blk_read: read error on host side\n");
-     }
-@@ -1011,6 +1051,7 @@ static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
- static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
- {
-     trace_sdcard_write_block(addr, len);
-+    addr += sd_bootpart_offset(sd);
-     if (!sd->blk || blk_pwrite(sd->blk, addr, len, sd->data, 0) < 0) {
-         fprintf(stderr, "sd_blk_write: write error on host side\n");
-     }
-@@ -2763,6 +2804,7 @@ static Property sd_properties[] = {
- 
- static Property emmc_properties[] = {
-     DEFINE_PROP_UINT64("boot-partition-size", SDState, boot_part_size, 0),
-+    DEFINE_PROP_UINT8("boot-config", SDState, boot_config, 0x0),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
--- 
-2.41.0
-
+And queued, thanks!
 
