@@ -2,58 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564A492FA42
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A116C92FA5A
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:34:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSFN0-0006Ee-Lw; Fri, 12 Jul 2024 08:27:26 -0400
+	id 1sSFTF-00061p-7y; Fri, 12 Jul 2024 08:33:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sSFMw-000664-Os
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:27:22 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sSFT7-0005dR-Bt; Fri, 12 Jul 2024 08:33:46 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sSFMv-0003Mk-5M
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:27:22 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WL9mV6L1lz6K6RV;
- Fri, 12 Jul 2024 20:25:46 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id C7A1C1400D9;
- Fri, 12 Jul 2024 20:27:18 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 12 Jul 2024 13:27:18 +0100
-To: <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- <qemu-devel@nongnu.org>
-CC: <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>,
- <marcel.apfelbaum@gmail.com>, Dave Jiang <dave.jiang@intel.com>, Huang Ying
- <ying.huang@intel.com>, Michael Roth <michael.roth@amd.com>,
- <fan.ni@samsung.com>
-Subject: [RFC qemu 6/6] hw/pci-bridge/cxl-upstream: Add properties to control
- link speed and width
-Date: Fri, 12 Jul 2024 13:24:14 +0100
-Message-ID: <20240712122414.1448284-7-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240712122414.1448284-1-Jonathan.Cameron@huawei.com>
-References: <20240712122414.1448284-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sSFSz-0005L2-AS; Fri, 12 Jul 2024 08:33:42 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:a52d:0:640:f75d:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D234361252;
+ Fri, 12 Jul 2024 15:33:29 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:0:419:5fb9:9623:463f:792c] (unknown
+ [2a02:6b8:0:419:5fb9:9623:463f:792c])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id SXf9xZ0Vo8c0-OJ68x16W; Fri, 12 Jul 2024 15:33:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1720787609;
+ bh=Dg1XIYi12rYLAeHhglWpQVXh9MGLESu19zeLSS3dBHs=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=FP/O92hMJnmXPKh/L2gXESHiXaRzhXEPF9zG2Zp4K8phIZR2AFU1f3KkSyKpZXwNz
+ IAcoFtcgEXIfhhHHrixedQ4jFfbk/saDMDvDrg44GnpoCerieo5lecOk+tR3JjPXzY
+ bZ9RHiaFaCCYP3B05ouuaUo+Gg5HuiYn8q+s37kE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <c41a8353-229b-4dd6-b268-cb9713faaed1@yandex-team.ru>
+Date: Fri, 12 Jul 2024 15:33:28 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block/copy-before-write: wait for conflicts when read
+ locking to avoid assertion failure
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org, hreitz@redhat.com,
+ kwolf@redhat.com, jsnow@redhat.com
+References: <20240711133652.589770-1-f.ebner@proxmox.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20240711133652.589770-1-f.ebner@proxmox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,69 +72,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To establish performance characteristics of a CXL device when used via a
-particular CXL topology (root ports, switches, end points) it is necessary
-to set the appropriate link speed and width in the PCI Express capability
-structure.  Provide x-speed and x-link properties for this.
+On 11.07.24 16:36, Fiona Ebner wrote:
+> There is no protection against two callers of cbw_snapshot_read_lock()
+> calling reqlist_init_req() with overlapping ranges, and
+> reqlist_init_req() asserts that there are no conflicting requests.
+> 
+> In particular, two cbw_co_snapshot_block_status() callers can race,
+> with the second calling reqlist_init_req() before the first one
+> finishes and removes its conflicting request, leading to an assertion
+> failure.
+> 
+> Reproducer script [0] and backtrace [1] are attached below.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- include/hw/pci-bridge/cxl_upstream_port.h | 4 ++++
- hw/pci-bridge/cxl_upstream.c              | 6 ++++++
- 2 files changed, 10 insertions(+)
 
-diff --git a/include/hw/pci-bridge/cxl_upstream_port.h b/include/hw/pci-bridge/cxl_upstream_port.h
-index 12635139f6..f208397ffe 100644
---- a/include/hw/pci-bridge/cxl_upstream_port.h
-+++ b/include/hw/pci-bridge/cxl_upstream_port.h
-@@ -12,6 +12,10 @@ typedef struct CXLUpstreamPort {
-     /*< public >*/
-     CXLComponentState cxl_cstate;
-     CXLCCI swcci;
-+
-+    PCIExpLinkSpeed speed;
-+    PCIExpLinkWidth width;
-+
-     DOECap doe_cdat;
-     uint64_t sn;
- } CXLUpstreamPort;
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-index e51221a5f3..e673d69220 100644
---- a/hw/pci-bridge/cxl_upstream.c
-+++ b/hw/pci-bridge/cxl_upstream.c
-@@ -11,6 +11,7 @@
- #include "qemu/osdep.h"
- #include "qemu/log.h"
- #include "hw/qdev-properties.h"
-+#include "hw/qdev-properties-system.h"
- #include "hw/pci/msi.h"
- #include "hw/pci/pcie.h"
- #include "hw/pci/pcie_port.h"
-@@ -100,6 +101,7 @@ static void cxl_usp_reset(DeviceState *qdev)
- 
-     pci_bridge_reset(qdev);
-     pcie_cap_deverr_reset(d);
-+    pcie_cap_fill_link_ep_usp(d, usp->width, usp->speed);
-     latch_registers(usp);
- }
- 
-@@ -363,6 +365,10 @@ static void cxl_usp_exitfn(PCIDevice *d)
- static Property cxl_upstream_props[] = {
-     DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
-     DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.filename),
-+    DEFINE_PROP_PCIE_LINK_SPEED("x-speed", CXLUpstreamPort,
-+                                speed, PCIE_LINK_SPEED_32),
-+    DEFINE_PROP_PCIE_LINK_WIDTH("x-width", CXLUpstreamPort,
-+                                width, PCIE_LINK_WIDTH_16),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
+Understand. But seems in case of CBW read-lock, nothing bad in intersecting read requests?
+
+reqlist is shared with backup, where we care to avoid intersecting requests in the list. What about just move the assertion to block_copy_task_create() ? And add comment somewhere that we support intersecting reads in frozen_read_reqs.
+
+
+> 
+> [0]:
+> 
+>> #!/bin/bash -e
+>> dd if=/dev/urandom of=/tmp/disk.raw bs=1M count=1024
+>> ./qemu-img create /tmp/fleecing.raw -f raw 1G
+>> (
+>> ./qemu-system-x86_64 --qmp stdio \
+>> --blockdev raw,node-name=node0,file.driver=file,file.filename=/tmp/disk.raw \
+>> --blockdev raw,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.raw \
+>> <<EOF
+>> {"execute": "qmp_capabilities"}
+>> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
+>> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
+>> {"execute": "nbd-server-start", "arguments": {"addr": { "type": "unix", "data": { "path": "/tmp/nbd.socket" } } } }
+>> {"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "snap0", "type": "nbd", "name": "exp0"}}
+>> EOF
+>> ) &
+>> sleep 5
+>> while true; do
+>> ./qemu-nbd -d /dev/nbd0
+>> ./qemu-nbd -c /dev/nbd0 nbd:unix:/tmp/nbd.socket:exportname=exp0 -f raw -r
+>> nbdinfo --map 'nbd+unix:///exp0?socket=/tmp/nbd.socket'
+>> done
+> 
+> [1]:
+> 
+>> #5  0x000071e5f0088eb2 in __GI___assert_fail (...) at ./assert/assert.c:101
+>> #6  0x0000615285438017 in reqlist_init_req (...) at ../block/reqlist.c:23
+>> #7  0x00006152853e2d98 in cbw_snapshot_read_lock (...) at ../block/copy-before-write.c:237
+>> #8  0x00006152853e3068 in cbw_co_snapshot_block_status (...) at ../block/copy-before-write.c:304
+>> #9  0x00006152853f4d22 in bdrv_co_snapshot_block_status (...) at ../block/io.c:3726
+>> #10 0x000061528543a63e in snapshot_access_co_block_status (...) at ../block/snapshot-access.c:48
+>> #11 0x00006152853f1a0a in bdrv_co_do_block_status (...) at ../block/io.c:2474
+>> #12 0x00006152853f2016 in bdrv_co_common_block_status_above (...) at ../block/io.c:2652
+>> #13 0x00006152853f22cf in bdrv_co_block_status_above (...) at ../block/io.c:2732
+>> #14 0x00006152853d9a86 in blk_co_block_status_above (...) at ../block/block-backend.c:1473
+>> #15 0x000061528538da6c in blockstatus_to_extents (...) at ../nbd/server.c:2374
+>> #16 0x000061528538deb1 in nbd_co_send_block_status (...) at ../nbd/server.c:2481
+>> #17 0x000061528538f424 in nbd_handle_request (...) at ../nbd/server.c:2978
+>> #18 0x000061528538f906 in nbd_trip (...) at ../nbd/server.c:3121
+>> #19 0x00006152855a7caf in coroutine_trampoline (...) at ../util/coroutine-ucontext.c:175
+> 
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>   block/copy-before-write.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+> index 853e01a1eb..376ff3f3e1 100644
+> --- a/block/copy-before-write.c
+> +++ b/block/copy-before-write.c
+> @@ -234,6 +234,7 @@ cbw_snapshot_read_lock(BlockDriverState *bs, int64_t offset, int64_t bytes,
+>           *req = (BlockReq) {.offset = -1, .bytes = -1};
+>           *file = s->target;
+>       } else {
+> +        reqlist_wait_all(&s->frozen_read_reqs, offset, bytes, &s->lock);
+>           reqlist_init_req(&s->frozen_read_reqs, req, offset, bytes);
+>           *file = bs->file;
+>       }
+
 -- 
-2.43.0
+Best regards,
+Vladimir
 
 
