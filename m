@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E69E92FA3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C2192F9E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:04:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSEzQ-0003LI-J9; Fri, 12 Jul 2024 08:03:04 -0400
+	id 1sSF0G-0006ND-GK; Fri, 12 Jul 2024 08:03:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSEzN-0003Ce-9G; Fri, 12 Jul 2024 08:03:01 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1sSEzV-0003pV-H9; Fri, 12 Jul 2024 08:03:17 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSEzL-0005Iu-6s; Fri, 12 Jul 2024 08:03:00 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-70b703eda27so334134b3a.3; 
- Fri, 12 Jul 2024 05:02:58 -0700 (PDT)
+ id 1sSEzR-0005Pw-M6; Fri, 12 Jul 2024 08:03:08 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-70b13791a5eso1645280b3a.1; 
+ Fri, 12 Jul 2024 05:03:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720785777; x=1721390577; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=WB7MLAdG0ItGWTgR3PSauNpTsxPnaD06YYrEKfLw9v4=;
- b=RaD4bJJFx/N63H5OV3VmB64y4ZO5IA0IwrZYEF5FN5SuoF3bJX6tTY9jV6C+Spg8t0
- 75ijmrpRryi6peRxn9VrdGuC5h4Ijm3t/r0DU5dff7i4qgeV6eGwTMGn2Gp0H/0kp53o
- P0miGIyIl+mAV0aOPwLZsx9Tz29+qqQ72WquRVsv/OPF9fGlPuYFMAabASSDmstU30bS
- ZIqTXeiL80vHmOwZFQxCGfC0zN05JWabvrJmu4/+MRlrTcUvodakNb6mC4YaMQ7gFO2w
- 4GR9dw/9aXS+u9tjXsu8wNKYbvXSOwNrGYKlmrWvE/uPyD4ROXmK9j8LY4OkmiJ+gUCy
- UtAw==
+ d=gmail.com; s=20230601; t=1720785781; x=1721390581; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k5y4TKaDDHvMsX8pNSb4QjcSx4fOTcaEPBO+qYDjTJY=;
+ b=WoR4dy7BQKu8ouHzjI4/M7wJsfUzqiu0H2MF6w5lGdFDZ+X5SWg+jT6pBokvUH955K
+ 4NamA/JDk3EUhNfkGUJhqo0zA1JOdC9bkKnDOeIkqCcNPwDdfNsczMI7fUdyl86TeCRX
+ xGG8gA0i5yZl+ivFsXBJFWBGs143d2v8qrkQws7e4+1Ep8qgkKY6gZXGwRCXVwN1Ov2U
+ 6NhOg2JIQYuGWp8Bxf0Vbm8uB5n9gb5okxdwneWFXKYX8UfU0NJbHS5vB26NdmKQv/ag
+ 9DFhwmTjY3Fqxxk0h1kgyIzgqp2a2FvkH5moNEZBo2iG9wniryoIvTjApPnb80au+V32
+ LTKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720785777; x=1721390577;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WB7MLAdG0ItGWTgR3PSauNpTsxPnaD06YYrEKfLw9v4=;
- b=HCL87y/HKLEWhZE8Tw0WxPCO/aVqZbAyZGTjaVKEDwjdWZ5LNAuW9b+vdB3fBZ5PED
- Y6eCxJxZP9D1MKlbHZCYTOwstJk8lIhbwrtCUpXHru4NQAruMCqlg83hewxaMRVfAvqe
- p6GcG3wU+fTnOKHYwss7AP1EG9ezHA+7P+imVonRfBdOtqBRqR+MDcbyb3VCQY0HqdlK
- IAlEb4QaswmPEmN5yH0QHHoEsleul5vZ65UC6EGPR4tryLHQfcLiMQ0clUTGMSTpixvc
- jhfkt7aecQd3mOp2GM0mCfYfy8wxJkQ0G2tcjO1V1qs68gY2xvGjo6XYoW5bXLrkQpNM
- cAEw==
+ d=1e100.net; s=20230601; t=1720785781; x=1721390581;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=k5y4TKaDDHvMsX8pNSb4QjcSx4fOTcaEPBO+qYDjTJY=;
+ b=porAnHctY9Yufivp68WNUt5g4x3VOW5lqlmGWL+TMuXkkzUfEs9fM/gi4QDO4er/bx
+ MCg5Zgl6iotOTIzPvoy+F86/KmB7koxr61ZmrwGBQl0MUqCRZuRTde3YXRWh1ghekJpT
+ /jseDf26qPET++DVQBlrpvOPGFdbqFofJtYn4ONs1pvryHLqgXz81I4/EMMVrpQlzjK3
+ N/KNwOjj0uqDXORf7V0HrwB/TmTsX929v0gW6vIs7cdkkhMrdbGYJ7sIp08fHx9htqwQ
+ koh5xB/1a/5A9j41RwsE4ByVJ0TbfrlcMV8iqpYqFpcmAsG4g6qA+vNEkq4ZszLGbqWQ
+ B14A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVOtW4mDVMwEJnu2YsqlCb8wWVoEc42Xg8BHgW5SyRlGrSbzcjqmo+LIChcg/Os4O8xVKiqn0Dcrbq1v1ycZnmesUMAk2Q=
-X-Gm-Message-State: AOJu0YyjHBv9qOScFvI05h/LnG3+1K82KRUmYm9C934byvpS8QB7tskP
- XtwEmK/iyGqaq26lN83hKG3mAknMn35PKWSa6Ug64r85PUXUxCPzGHNFTA==
-X-Google-Smtp-Source: AGHT+IGFdxg1bNuJGlwhS+4wbHc+D4/ihdJahGzGmmuBcgS4a9ch1b/ejGwNutK3nWH9YH1bHfJ0GA==
-X-Received: by 2002:a05:6a20:734b:b0:1c0:f675:ed08 with SMTP id
- adf61e73a8af0-1c29820b27bmr14047019637.6.1720785776569; 
- Fri, 12 Jul 2024 05:02:56 -0700 (PDT)
+ AJvYcCWOkOHtIQR9gk6G08n+ndGj5Kd8zphyIlPHjYFO0MXrlLBr3O07O08SyNFhv3x14fJ/x1r6VQpUX/GKbR8KQSduQFSQzY0=
+X-Gm-Message-State: AOJu0Yx1c/YhjA9vDK8WPNwWjLpJmdBWoYvZaMX2H3qFSOK/S2N57jKk
+ Q8yXYB7ErhkYoI+4hboXtuHIlCPOAAttlThDfCCvvP7Dh7focM4j/W2WgQ==
+X-Google-Smtp-Source: AGHT+IEUD8WdJRMjWSCBr5swBEJWeXVdnX6fpN3tn4GfB6QbIWkXrEX8ZLSXiPJR+KunESwpOk49Sg==
+X-Received: by 2002:a05:6a00:2e04:b0:702:6f45:effc with SMTP id
+ d2e1a72fcca58-70b4357d653mr14660357b3a.20.1720785780533; 
+ Fri, 12 Jul 2024 05:03:00 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.02.52
+ d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.02.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jul 2024 05:02:55 -0700 (PDT)
+ Fri, 12 Jul 2024 05:03:00 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 00/19] ppc/pnv: Better big-core model, lpar-per-core,
- PC unit
-Date: Fri, 12 Jul 2024 22:02:27 +1000
-Message-ID: <20240712120247.477133-1-npiggin@gmail.com>
+Subject: [PATCH v2 01/19] target/ppc: Fix msgsnd for POWER8
+Date: Fri, 12 Jul 2024 22:02:28 +1000
+Message-ID: <20240712120247.477133-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240712120247.477133-1-npiggin@gmail.com>
+References: <20240712120247.477133-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,87 +94,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Primary motivation for this series is to improve big-core support.
+POWER8 (ISA v2.07S) introduced the doorbell facility, the msgsnd
+instruction behaved mostly like msgsndp, it was addressed by TIR
+and could only send interrupts between threads on the core.
 
-This also fixes POWER8 SMT running Linux with the msgsnd fix and
-setting lpar-per-core mode (which is always true on POWER8).
+ISA v3.0 changed msgsnd to be addressed by PIR and can interrupt
+any thread in the system.
 
-Since v1:
-- Remove chip->pnv_machine pointer addition.
-- Split cpu_pause() function into its own patch.
-- Remove the _CORE_ID macro.
-- Add has_lpar_per_thread machine class attribute to
-  initialize the lpar mode to per-core on POWER8 machines
-  instead of testing presence of machine state property.
+msgsnd only implements the v3.0 semantics, which can make
+multi-threaded POWER8 hang when booting Linux (due to IPIs
+failing). This change adds v2.07 semantics.
 
-Since rfc:
-- Fixed POWER8 SMT so it doesn't have to be disabled.
-- Fixed inadvertent spapr SMT bug.
-- Renamed PnvCPUState.core pointer to pnv_core. (Harsh)
-- Moved where it is initialised (clg)
-- Avoided most qdev_get_machine() calls by adding a PnvMachineState
-  pointer from PnvChip, new patch 3 (clg).
-- Rename TB state to use camel case (Harsh and clg)
-- Add comment to explain SPRC/SPRD is only accessed with powernv.
-- Use mc->desc for error messages and avoid splitting machine init
-  handlers (Harsh).
-- Add max_smt_threads class attribute to avoid duplicating checks (clg)
-- Rename processor_id() class method to get_pir_tir (Harsh and clg)
-- Add a comment for get_pir_tir() (clg)
-- Allow get_pir_tir() to be passed NULL pointers to avoid dummy
-  pir/tir variables (Harsh)
-- Move the PPC_CPU_HAS_CORE_SIBLINGS macros to inline functions (clg)
-- Invert them (test for single-thread rather than for siblings)
-  because the callers read a little better that way (Harsh).
-- Propagate lpar and big-core options down to chip and core
-  levels rather than having to test machine (clg)
-- Significantly split the big-core patch (clg).
-- Rework big-core device-tree handling to simplify it (clg).
-- Make new has_smt_siblings property bool (Harsh)
-- Make the big-core timebase tod quirk a machine class property
-  rather than machine state (Harsh).
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ target/ppc/excp_helper.c | 74 ++++++++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 30 deletions(-)
 
-Thanks,
-Nick
-
-Nicholas Piggin (19):
-  target/ppc: Fix msgsnd for POWER8
-  ppc/pnv: Add pointer from PnvCPUState to PnvCore
-  ppc/pnv: Move timebase state into PnvCore
-  target/ppc: Move SPR indirect registers into PnvCore
-  ppc/pnv: use class attribute to limit SMT threads for different
-    machines
-  ppc/pnv: Extend chip_pir class method to TIR as well
-  ppc: Add a core_index to CPUPPCState for SMT vCPUs
-  target/ppc: Add helpers to check for SMT sibling threads
-  ppc: Add has_smt_siblings property to CPUPPCState
-  ppc/pnv: Add a big-core mode that joins two regular cores
-  ppc/pnv: Add allow for big-core differences in DT generation
-  ppc/pnv: Implement big-core PVR for Power9/10
-  ppc/pnv: Implement Power9 CPU core thread state indirect register
-  ppc/pnv: Add POWER10 ChipTOD quirk for big-core
-  ppc/pnv: Add big-core machine property
-  system/cpus: Add cpu_pause() function
-  ppc/pnv: Add a CPU nmi and resume function
-  ppc/pnv: Implement POWER10 PC xscom registers for direct controls
-  ppc/pnv: Add an LPAR per core machine option
-
- include/hw/core/cpu.h        |   8 +
- include/hw/ppc/pnv.h         |   8 +
- include/hw/ppc/pnv_chip.h    |   6 +-
- include/hw/ppc/pnv_core.h    |  31 ++++
- target/ppc/cpu.h             |  45 ++----
- hw/ppc/pnv.c                 | 305 ++++++++++++++++++++++++++++-------
- hw/ppc/pnv_chiptod.c         |   7 +-
- hw/ppc/pnv_core.c            | 125 ++++++++++++--
- hw/ppc/spapr_cpu_core.c      |  16 +-
- system/cpus.c                |  30 ++--
- target/ppc/cpu_init.c        |  26 +--
- target/ppc/excp_helper.c     |  69 ++++----
- target/ppc/misc_helper.c     | 104 ++++++------
- target/ppc/timebase_helper.c |  82 +++++-----
- 14 files changed, 612 insertions(+), 250 deletions(-)
-
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 0a9e8539a4..5368bf2ff3 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -3007,6 +3007,41 @@ static inline bool dbell_bcast_subproc(target_ulong rb)
+     return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
+ }
+ 
++/*
++ * Send an interrupt to a thread in the same core as env).
++ */
++static void msgsnd_core_tir(CPUPPCState *env, uint32_t target_tir, int irq)
++{
++    PowerPCCPU *cpu = env_archcpu(env);
++    CPUState *cs = env_cpu(env);
++    uint32_t nr_threads = cs->nr_threads;
++
++    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
++    }
++
++    if (target_tir >= nr_threads) {
++        return;
++    }
++
++    if (nr_threads == 1) {
++        ppc_set_irq(cpu, irq, 1);
++    } else {
++        CPUState *ccs;
++
++        /* Does iothread need to be locked for walking CPU list? */
++        bql_lock();
++        THREAD_SIBLING_FOREACH(cs, ccs) {
++            PowerPCCPU *ccpu = POWERPC_CPU(ccs);
++            if (target_tir == ppc_cpu_tir(ccpu)) {
++                ppc_set_irq(ccpu, irq, 1);
++                break;
++            }
++        }
++        bql_unlock();
++    }
++}
++
+ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
+ {
+     if (!dbell_type_server(rb)) {
+@@ -3027,6 +3062,13 @@ void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
+         return;
+     }
+ 
++    /* POWER8 msgsnd is like msgsndp (targets a thread within core) */
++    if (!(env->insns_flags2 & PPC2_ISA300)) {
++        msgsnd_core_tir(env, rb & PPC_BITMASK(57, 63), PPC_INTERRUPT_HDOORBELL);
++        return;
++    }
++
++    /* POWER9 and later msgsnd is a global (targets any thread) */
+     cpu = ppc_get_vcpu_by_pir(pir);
+     if (!cpu) {
+         return;
+@@ -3073,41 +3115,13 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+  */
+ void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+ {
+-    CPUState *cs = env_cpu(env);
+-    PowerPCCPU *cpu = env_archcpu(env);
+-    CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+-    int ttir = rb & PPC_BITMASK(57, 63);
+-
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
+ 
+-    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+-        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
+-    }
+-
+-    if (!dbell_type_server(rb) || ttir >= nr_threads) {
+-        return;
+-    }
+-
+-    if (nr_threads == 1) {
+-        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
++    if (!dbell_type_server(rb)) {
+         return;
+     }
+ 
+-    /* Does iothread need to be locked for walking CPU list? */
+-    bql_lock();
+-    THREAD_SIBLING_FOREACH(cs, ccs) {
+-        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+-        uint32_t thread_id = ppc_cpu_tir(ccpu);
+-
+-        if (ttir == thread_id) {
+-            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
+-            bql_unlock();
+-            return;
+-        }
+-    }
+-
+-    g_assert_not_reached();
++    msgsnd_core_tir(env, rb & PPC_BITMASK(57, 63), PPC_INTERRUPT_DOORBELL);
+ }
+ #endif /* TARGET_PPC64 */
+ 
 -- 
 2.45.1
 
