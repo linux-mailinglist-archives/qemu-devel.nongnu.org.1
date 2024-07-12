@@ -2,105 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9A092FA79
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E00ED92FA85
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:45:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSFdF-0002Up-Pq; Fri, 12 Jul 2024 08:44:13 -0400
+	id 1sSFeU-00071y-Oy; Fri, 12 Jul 2024 08:45:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sSFdD-0002P4-9d
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:44:11 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sSFdA-0000Rd-TW
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:44:10 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSFeR-0006uv-UO
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:45:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSFeQ-0000ul-0J
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:45:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720788325;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=46s7AkIhFW3EDXbPBYpvcFSbgP7f/ZUlIpyg0O5yFSk=;
+ b=VzjzvqdB+ZOC2fVbYc6pb0/VEJk6BRdAzxXYbeLW/UHsE2nexwYBKc72vlbybZQWeYrSvS
+ 39a3w2eaDBa0PULxI43UL/jsmNOmcN0x850pabfbhuG2yZlZrwanB9uPp486V8GQ0JPWhJ
+ FcMmMjF2sLpk/ZmKG6JSGJ+aJvqbMYA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-BBdzFbWuNV2xb9atv_PyFg-1; Fri,
+ 12 Jul 2024 08:45:21 -0400
+X-MC-Unique: BBdzFbWuNV2xb9atv_PyFg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6242C21A1F;
- Fri, 12 Jul 2024 12:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1720788245; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ln5H0faH2X3ItvkjD27FpT0h9R6pzu5+PtbgOiUq0KI=;
- b=Q/xLe74ihv3ygRJlcOASyU51eS9IiA5WTT7dWoitmmHKx31hVjfNgDunplS0vvSZ8ghvmD
- q8BwNRvBgpu3TZl7QGK5hpLUekyQ+oYuNjvqHtnDZ8MPOzy6LLeTjEKAz5B76sXFY1ySNJ
- i1uZ2IksMnN3Z7G+aQQ0TlwuFbqtMtM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1720788245;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ln5H0faH2X3ItvkjD27FpT0h9R6pzu5+PtbgOiUq0KI=;
- b=syt5eCXGvyDF/mBV0dwsiI1plJe2UaDdc8XgK74R5czxxMy3lZ+dXgChEj97TPFfJguvJQ
- LilE3XroW6o+CYAw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1720788245; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ln5H0faH2X3ItvkjD27FpT0h9R6pzu5+PtbgOiUq0KI=;
- b=Q/xLe74ihv3ygRJlcOASyU51eS9IiA5WTT7dWoitmmHKx31hVjfNgDunplS0vvSZ8ghvmD
- q8BwNRvBgpu3TZl7QGK5hpLUekyQ+oYuNjvqHtnDZ8MPOzy6LLeTjEKAz5B76sXFY1ySNJ
- i1uZ2IksMnN3Z7G+aQQ0TlwuFbqtMtM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1720788245;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ln5H0faH2X3ItvkjD27FpT0h9R6pzu5+PtbgOiUq0KI=;
- b=syt5eCXGvyDF/mBV0dwsiI1plJe2UaDdc8XgK74R5czxxMy3lZ+dXgChEj97TPFfJguvJQ
- LilE3XroW6o+CYAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E2AEF1373E;
- Fri, 12 Jul 2024 12:44:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aXPzKRQlkWY6WAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 12 Jul 2024 12:44:04 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: "Wang, Lei" <lei4.wang@intel.com>, qemu-devel@nongnu.org, "Maciej S .
- Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [RFC PATCH 6/7] migration/multifd: Move payload storage out of
- the channel parameters
-In-Reply-To: <ZpBXejPa8Vac6ZqG@x1n>
-References: <Zn15y693g0AkDbYD@x1n> <877cdtfcsi.fsf@suse.de>
- <Zo7cncqkxB89AUBe@x1n> <87y169dmu3.fsf@suse.de> <Zo8DaHbWlrNe3RXL@x1n>
- <87msmodnly.fsf@suse.de> <ZpAEIvbNr-ANuASV@x1n> <87bk33en41.fsf@suse.de>
- <ZpBAL3U6G46OBGEN@x1n> <878qy7eipf.fsf@suse.de> <ZpBXejPa8Vac6ZqG@x1n>
-Date: Fri, 12 Jul 2024 09:44:02 -0300
-Message-ID: <875xtaeq5p.fsf@suse.de>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89AAD19772C9; Fri, 12 Jul 2024 12:45:20 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.56])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 77DCD195606C; Fri, 12 Jul 2024 12:45:17 +0000 (UTC)
+Date: Fri, 12 Jul 2024 13:45:14 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 18/22] qga: don't disable fsfreeze commands if
+ vss_init fails
+Message-ID: <ZpElWmudo4Rx91NA@redhat.com>
+References: <20240613150127.1361931-1-berrange@redhat.com>
+ <20240613154406.1365469-1-berrange@redhat.com>
+ <20240613154406.1365469-13-berrange@redhat.com>
+ <g1m7d.30xyxwwcb8l4@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -0.30
-X-Spamd-Result: default: False [-0.30 / 50.00];
- NEURAL_HAM_SHORT(-0.20)[-0.995]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_THREE(0.00)[4]; MID_RHS_MATCH_FROM(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <g1m7d.30xyxwwcb8l4@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.138,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,138 +89,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Wed, Jul 03, 2024 at 01:21:29PM +0300, Manos Pitsidianakis wrote:
+> On Thu, 13 Jun 2024 18:44, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
+> > The fsfreeze commands are already written to report an error if
+> > vss_init() fails. Reporting a more specific error message is more
+> > helpful than a generic "command is disabled" message, which cannot
+> > beteween an admin config decision and lack of platform support.
+> 
+> s/beteween/between
+> 
+> > 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> > qga/commands-win32.c | 18 +++---------------
+> > qga/main.c           |  4 ++++
+> > 2 files changed, 7 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+> > index 2533e4c748..5866cc2e3c 100644
+> > --- a/qga/commands-win32.c
+> > +++ b/qga/commands-win32.c
+> > @@ -1203,7 +1203,7 @@ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+> > GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+> > {
+> >     if (!vss_initialized()) {
+> > -        error_setg(errp, QERR_UNSUPPORTED);
+> > +        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+> >         return 0;
+> 
+> Should this be return -1 by the way?
 
-> On Thu, Jul 11, 2024 at 06:12:44PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Jul 11, 2024 at 04:37:34PM -0300, Fabiano Rosas wrote:
->> >
->> > [...]
->> >
->> >> We also don't flush the iov at once, so f->buf seems redundant to
->> >> me. But of course, if we touch any of that we must ensure we're not
->> >> dropping any major optimization.
->> >
->> > Yes some tests over that would be more persuasive when it comes.
->> >
->> > Per my limited experience in the past few years: memcpy on chips nowadays
->> > is pretty cheap.  You'll see very soon one more example of that when you
->> > start to look at the qatzip series: that series decided to do one more
->> > memcpy for all guest pages, to make it a larger chunk of buffer instead of
->> > submitting the compression tasks in 4k chunks (while I thought 4k wasn't
->> > too small itself).
->> >
->> > That may be more involved so may not be a great example (e.g. the
->> > compression algo can be special in this case where it just likes larger
->> > buffers), but it's not uncommon that I see people trade things with memcpy,
->> > especially small buffers.
->> >
->> > [...]
->> >
->> >> Any piece of code that fills an iov with data is prone to be able to
->> >> send that data through multifd. From this perspective, multifd is just a
->> >> way to give work to an iochannel. We don't *need* to use it, but it
->> >> might be simple enough to the point that the benefit of ditching
->> >> QEMUFile can be reached without too much rework.
->> >> 
->> >> Say we provision multifd threads early and leave them waiting for any
->> >> part of the migration code to send some data. We could have n-1 threads
->> >> idle waiting for the bulk of the data and use a single thread for any
->> >> early traffic that does not need to be parallel.
->> >> 
->> >> I'm not suggesting we do any of this right away or even that this is the
->> >> correct way to go, I'm just letting you know some of my ideas and why I
->> >> think ram + device state might not be the only data we put through
->> >> multifd.
->> >
->> > We can wait and see whether that can be of any use in the future, even if
->> > so, we still have chance to add more types into the union, I think.  But
->> > again, I don't expect.
->> >
->> > My gut feeling: we shouldn't bother putting any (1) non-huge-chunk, or (2)
->> > non-IO, data onto multifd.  Again, I would ask "why not the main channel",
->> > otherwise.
->> >
->> > [...]
->> >
->> >> Just to be clear, do you want a thread-pool to replace multifd? Or would
->> >> that be only used for concurrency on the producer side?
->> >
->> > Not replace multifd.  It's just that I was imagining multifd threads only
->> > manage IO stuff, nothing else.
->> >
->> > I was indeed thinking whether we can reuse multifd threads, but then I
->> > found there's risk mangling these two concepts, as: when we do more than IO
->> > in multifd threads (e.g., talking to VFIO kernel fetching data which can
->> > block), we have risk of blocking IO even if we can push more so the NICs
->> > can be idle again.  There's also the complexity where the job fetches data
->> > from VFIO kernel and want to enqueue again, it means an multifd task can
->> > enqueue to itself, and circular enqueue can be challenging: imagine 8
->> > concurrent tasks (with a total of 8 multifd threads) trying to enqueue at
->> > the same time; they hunger themselves to death.  Things like that.  Then I
->> > figured the rest jobs are really fn(void*) type of things; they should
->> > deserve their own pool of threads.
->> >
->> > So the VFIO threads (used to be per-device) becomes migration worker
->> > threads, we need them for both src/dst: on dst there's still pending work
->> > to apply the continuous VFIO data back to the kernel driver, and that can't
->> > be done by multifd thread too due to similar same reason.  Then those dest
->> > side worker threads can also do load() not only for VFIO but also other
->> > device states if we can add more.
->> >
->> > So to summary, we'll have:
->> >
->> >   - 1 main thread (send / recv)
->> >   - N multifd threads (IOs only)
->> >   - M worker threads (jobs only)
->> >
->> > Of course, postcopy not involved..  How's that sound?
->> 
->> Looks good. There's a better divide between producer and consumer this
->> way. I think it will help when designing new features.
->> 
->> One observation is that we'll still have two different entities doing IO
->> (multifd threads and the migration thread), which I would prefer were
->> using a common code at a higher level than the iochannel.
->
-> At least for the main channel probably yes.  I think Dan has had the idea
-> of adding the buffering layer over iochannels, then replace qemufiles with
-> that.  Multifd channels looks ok so far to use as raw channels.
->
->> 
->> One thing that I tried to look into for mapped-ram was whether we could
->> set up iouring in the migration code, but got entirely discouraged by
->> the migration thread doing IO at random points. And of course, you've
->> seen what we had to do with direct-io. That was in part due to having
->> the migration thread in parallel doing it's small writes at undetermined
->> points in time.
->
-> On the locked_vm part: probably yes, we'd better try to avoid using page
-> pinning if possible. It just looks like it becomes a more important
-> scenario nowadays to put VMs into containers, it means then such feature
-> may not be always usable there.
->
-> For the rest: I really don't know much on iouring, but I remember it can be
-> fast normally only in a poll model with interrupt-less context?
+This method has to return GuestFsfreezeStatus and
+-1 isn't valid. Not a problem though, as the
+QAPI code will check for *errp != NULL and not
+consider the return value for error detection.
 
-I'm not sure. I mainly thought about using it to save syscalls on the
-write side. But as I said, I didn't look further into it.
 
-> Not sure
-> whether it suites here for us, as I guess we should avoid consuming cpu
-> resourcess with no good reason, and polling for perf falls into that
-> category, I think.  Even without it, kubevirt now already has issue on
-> multifd eating cpus, and people observe multifd threads causing vcpu
-> threads to be throttled, interrupting guest workloads; they're currently
-> put in the same container.  I also not sure how much it'll help comparing
-> to when we have the multi-threading ready.  I suspect not that much.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Do you have a reference for that kubevirt issue I could look at? It
-maybe interesting to investigate further. Where's the throttling coming
-from? And doesn't less vcpu time imply less dirtying and therefore
-faster convergence?
 
