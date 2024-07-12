@@ -2,53 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3D092FE06
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 17:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2A192FE83
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 18:28:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSIfB-0000mO-Td; Fri, 12 Jul 2024 11:58:25 -0400
+	id 1sSJ7N-0004Pm-Jv; Fri, 12 Jul 2024 12:27:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Ecin=OM=kaod.org=clg@ozlabs.org>)
- id 1sSIf8-0000lu-6T
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 11:58:22 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Ecin=OM=kaod.org=clg@ozlabs.org>)
- id 1sSIf5-00005r-PA
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 11:58:21 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WLGTf0JRjz4x0t;
- Sat, 13 Jul 2024 01:58:14 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WLGTc5jtbz4wc1;
- Sat, 13 Jul 2024 01:58:12 +1000 (AEST)
-Message-ID: <42c0b904-c0f4-40eb-8c5d-3f1011509964@kaod.org>
-Date: Fri, 12 Jul 2024 17:58:10 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSJ7L-0004OO-5h
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 12:27:31 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSJ7F-0001vr-6I
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 12:27:28 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4272738eb9eso16026345e9.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 09:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720801643; x=1721406443; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gBU2fNmBz7RqNPgCycc5xf7wFhsPLyphN1A0VUFUC8o=;
+ b=Ce7LowijCgu4RtSANQkyUQndVioJPMYgx7mmzfkMdXcOyo9B4epqDCPsvJTwqqwFCl
+ ZHnh7JUJZ1RSU1IdQkKl5nhJUcSBJnE60hYQ7T/G7t/Bfb8309wzVcpVXE+s6SCTkXz2
+ 7nGhL55kPbJV/oAAYW9vAzfQ0aI5m6zV5l3fgYQwaB46pjArCf69xYTGgbsTf0pmcuUl
+ sVzgV6RONjJKpqOUw363ygOcC2DSS7ooqMu5SIyf+/xO37Zmvt5JgtkMzQR7JyyE6sbw
+ uqML9g7lJq/2WwINfmSSooAH94bbk7tHt/mYLntenUVeEpAaYoiUHlyD4xYZK00x7ml0
+ ggBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720801643; x=1721406443;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gBU2fNmBz7RqNPgCycc5xf7wFhsPLyphN1A0VUFUC8o=;
+ b=NSnnPAsbbIuwQuFZUFX8TmEOEx+1xkMnADIA4Zkt/puEt3Kg1KO41Y99Yy5X9D/0k8
+ 7AyQoIuVnMABpmc7iswjWYc8KAJlGB+cH3zixrILfuufWfWCI8PZi4Rqc385U6AIhxXq
+ kw6AyaIGqZXWrBgMUmOtJAPVz6NcIAj98Yk6Ba8Ul6JeMzuzlfOx/lNXDMRoLiTtrGwg
+ h2ZDgjEAxvn0EWetilCy3KAeY5RxRdp9enUaYt5ams/jTnUqIXlQjyCytuBMriE8uZtb
+ C9d3Hazf8YeFvpLcBFCRjM7ZUS4TxknI8pKSAdVHzI6Hspnu9xmatfsT+Swb0ELvfLr6
+ Mv6Q==
+X-Gm-Message-State: AOJu0Yz2FDqd9QuTsS3QynxTynuOnR0KhueVRTlXNpIoRW7nd0hfJKG4
+ 1lemyOWx/9SPqY2XWGmSiexxwNCvwLP67SpZ4pA/RM2p18ty9wazIqUtO49SDBf7iIZFW2q7k+J
+ S
+X-Google-Smtp-Source: AGHT+IGPeyCSooX4+obt52pn7PCEKkd+P9CEpwjj6IDZee8NRGPlhY5AxQTnBJyNiPQrD/+cioF62w==
+X-Received: by 2002:a05:600c:188d:b0:426:5f7d:addc with SMTP id
+ 5b1f17b1804b1-426708f18e2mr74423245e9.37.1720801643049; 
+ Fri, 12 Jul 2024 09:27:23 -0700 (PDT)
+Received: from localhost.localdomain
+ (nsg93-h02-176-184-54-152.dsl.sta.abo.bbox.fr. [176.184.54.152])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4279f2c1e07sm27763615e9.45.2024.07.12.09.27.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 12 Jul 2024 09:27:22 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v49 00/11] hw/sd/sdcard: Add eMMC support
+Date: Fri, 12 Jul 2024 18:27:08 +0200
+Message-ID: <20240712162719.88165-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 06/12] aspeed/smc: Add DMA calibration settings
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20190913154952.27724-1-peter.maydell@linaro.org>
- <20190913154952.27724-7-peter.maydell@linaro.org>
- <CAFEAcA9Bj5k_1kaqtmR4KfshGeDXomo5udFdWLW1cwySG4S=fQ@mail.gmail.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CAFEAcA9Bj5k_1kaqtmR4KfshGeDXomo5udFdWLW1cwySG4S=fQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=Ecin=OM=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,74 +90,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/12/24 16:39, Peter Maydell wrote:
-> On Fri, 13 Sept 2019 at 16:50, Peter Maydell <peter.maydell@linaro.org> wrote:
->>
->> From: Cédric Le Goater <clg@kaod.org>
->>
->> When doing calibration, the SPI clock rate in the CE0 Control Register
->> and the read delay cycles in the Read Timing Compensation Register are
->> set using bit[11:4] of the DMA Control Register.
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> Acked-by: Joel Stanley <joel@jms.id.au>
->> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
->> Message-id: 20190904070506.1052-7-clg@kaod.org
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> 
-> Hi; this is an old patch, but Coverity has suddenly decided
-> it doesn't like it (CID 1547822):
-> 
->> +static uint8_t aspeed_smc_hclk_divisor(uint8_t hclk_mask)
->> +{
->> +    /* HCLK/1 .. HCLK/16 */
->> +    const uint8_t hclk_divisors[] = {
->> +        15, 7, 14, 6, 13, 5, 12, 4, 11, 3, 10, 2, 9, 1, 8, 0
->> +    };
->> +    int i;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(hclk_divisors); i++) {
->> +        if (hclk_mask == hclk_divisors[i]) {
->> +            return i + 1;
->> +        }
->> +    }
->> +
->> +    qemu_log_mask(LOG_GUEST_ERROR, "invalid HCLK mask %x", hclk_mask);
->> +    return 0;
->> +}
->> +
->> +/*
->> + * When doing calibration, the SPI clock rate in the CE0 Control
->> + * Register and the read delay cycles in the Read Timing Compensation
->> + * Register are set using bit[11:4] of the DMA Control Register.
->> + */
->> +static void aspeed_smc_dma_calibration(AspeedSMCState *s)
->> +{
->> +    uint8_t delay =
->> +        (s->regs[R_DMA_CTRL] >> DMA_CTRL_DELAY_SHIFT) & DMA_CTRL_DELAY_MASK;
->> +    uint8_t hclk_mask =
->> +        (s->regs[R_DMA_CTRL] >> DMA_CTRL_FREQ_SHIFT) & DMA_CTRL_FREQ_MASK;
->> +    uint8_t hclk_div = aspeed_smc_hclk_divisor(hclk_mask);
->> +    uint32_t hclk_shift = (hclk_div - 1) << 2;
-> 
-> The code of aspeeed_smc_hclk_divisor() has a codepath where it
-> can return 0, and this callsite doesn't check for 0, and so
-> Coverity thinks that we might end up shifting -1 by 2 to get
-> the hclk_shift here, which means we overflow the value, which
-> it thinks is probably not what we meant to do.
-> 
-> In fact this can't happen, because we always pass aspeed_smc_hclk_divisor()
-> a value between 0 and 15, and if we do that then we always get back
-> a value between 1 and 16. So I think the right fix would be
-> to change the qemu_log_mask()/return 0 to be g_assert_not_reached().
+Tag to test Aspeed tree:
+  https://gitlab.com/philmd/qemu/-/tags/aspeed_emmc-v9
 
-I was wondering how to fix it. Thanks for the suggestion. Will do in
-the 9.1 cycle.
+Since v48:
+- Dropped "Implement 'boot-mode' reset timing" patch
+- Re-introduce Joel "Support boot area in emmc image" patch
+- Comment magic CSD values
 
-C.
+Cédric Le Goater (2):
+  hw/sd/sdcard: Add emmc_cmd_SET_RELATIVE_ADDR handler (CMD3)
+  hw/sd/sdcard: Fix SET_BLOCK_COUNT command argument on eMMC (CMD23)
 
-> 
-> thanks
-> -- PMM
+Joel Stanley (1):
+  hw/sd/sdcard: Support boot area in emmc image
+
+Luc Michel (1):
+  hw/sd/sdcard: Implement eMMC sleep state (CMD5)
+
+Philippe Mathieu-Daudé (5):
+  hw/sd/sdcard: Basis for eMMC support
+  hw/sd/sdcard: Register generic command handlers
+  hw/sd/sdcard: Register unimplemented command handlers
+  hw/sd/sdcard: Add emmc_cmd_PROGRAM_CID handler (CMD26)
+  hw/sd/sdcard: Add eMMC 'boot-partition-size' property
+
+Sai Pavan Boddu (1):
+  hw/sd/sdcard: Add mmc SWITCH function support (CMD6)
+
+Vincent Palatin (1):
+  hw/sd/sdcard: Add emmc_cmd_SEND_EXT_CSD handler (CMD8)
+
+ include/hw/sd/sd.h |   3 +
+ hw/sd/sd.c         | 385 ++++++++++++++++++++++++++++++++++++++++++++-
+ hw/sd/trace-events |   2 +
+ 3 files changed, 384 insertions(+), 6 deletions(-)
+
+-- 
+2.41.0
 
 
