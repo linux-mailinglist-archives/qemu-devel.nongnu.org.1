@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976EC92FAA5
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E6B92FADE
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 15:04:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSEkp-0006Gv-61; Fri, 12 Jul 2024 07:47:59 -0400
+	id 1sSElJ-0008KI-4V; Fri, 12 Jul 2024 07:48:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sSEkl-00066X-SM
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:47:55 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSElB-00087D-Vj
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:48:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sSEkk-0007zd-6z
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:47:55 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46C1BY8U020921;
- Fri, 12 Jul 2024 11:47:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=W
- RoDhdlVzy9B2opOIDS3AcTB0O/W51Ruwc1+9204k1M=; b=bedHL7TLMhYHl/wzi
- MQ8gIlrllxOctpKS8bnT2wRyOKUZXKm5Z8QOEI0hJsXU1fbBE1x45G1RJiBYMSYU
- ywKo8dVgZVJ95/Sy0+pUOCSN4Q4D4DYmiNB9Atia6zwKFMv9XxfgKz0SWmpKZpZh
- P53ElPZMwxvY11LUVUN+tPv7C7qGwHKezXTionoPLpqidIMm8FX026AfyiKKHNNf
- +DcpymGZSC1Wyc45+CupA1a6Ea6QxM23XIB9LdXULZ7en0sfK0Fp8XZpcRPt+keB
- wdLN8J3vcp7YUHhUROC2fYWpi/GM8mG7H+FZ2OJV9o+wOO1b03YR64ukqYZCfPXH
- /0WMw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 407emt30b2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Jul 2024 11:47:47 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46CBMAQh022638; Fri, 12 Jul 2024 11:47:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 409vv3pqc9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Jul 2024 11:47:46 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46CBlCCq008041;
- Fri, 12 Jul 2024 11:47:45 GMT
-Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-0-59.vpn.oracle.com
- [10.175.0.59])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 409vv3ppxv-13; Fri, 12 Jul 2024 11:47:45 +0000
-From: Joao Martins <joao.m.martins@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v4 12/12] vfio/common: Allow disabling device dirty page
- tracking
-Date: Fri, 12 Jul 2024 12:47:04 +0100
-Message-Id: <20240712114704.8708-13-joao.m.martins@oracle.com>
-In-Reply-To: <20240712114704.8708-1-joao.m.martins@oracle.com>
-References: <20240712114704.8708-1-joao.m.martins@oracle.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSEl2-00088h-A9
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 07:48:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720784888;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jVZgy3pOxSWpddguKCwoPdV59HT6yV4tr25+emgHKPw=;
+ b=eRVP6KnlOBEmaawANzeJYZl47ZDRkKDyskC5aW4JB3q8avVTJMqwEKKsXZr9eEK8CspQIN
+ /SG9DQE+/W2lq+HGl5uoTszBElCH7shIWOVy3jog9AwTuGlyVegefiOB53eVBapS1sk23p
+ 62OEJ/CPxST2Dj2LWWh+OO6bhrJONP8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-GKMZ3ymNPGWfoIZZq5ha3A-1; Fri,
+ 12 Jul 2024 07:48:07 -0400
+X-MC-Unique: GKMZ3ymNPGWfoIZZq5ha3A-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C6463192DE3E; Fri, 12 Jul 2024 11:48:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.56])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 603FF19560AE; Fri, 12 Jul 2024 11:48:02 +0000 (UTC)
+Date: Fri, 12 Jul 2024 12:47:58 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
+Subject: Re: [RFC PATCH 4/8] tests/pytest: add pytest to the meson build system
+Message-ID: <ZpEX7sMLODBuiMBk@redhat.com>
+References: <20240711115546.40859-1-thuth@redhat.com>
+ <20240711115546.40859-5-thuth@redhat.com>
+ <ZpDw0CiRvN_DvJqe@redhat.com>
+ <154a3249-b99e-4f93-bc45-0f34d08c1c6a@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-12_08,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- phishscore=0 mlxscore=0
- mlxlogscore=989 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2406180000
- definitions=main-2407120080
-X-Proofpoint-GUID: ukL3BwipKXXPxQVkJv7RQAkgrGmj0Gqv
-X-Proofpoint-ORIG-GUID: ukL3BwipKXXPxQVkJv7RQAkgrGmj0Gqv
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <154a3249-b99e-4f93-bc45-0f34d08c1c6a@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.138,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,81 +87,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The property 'x-pre-copy-dirty-page-tracking' allows disabling the whole
-tracking of VF pre-copy phase of dirty page tracking, though it means
-that it will only be used at the start of the switchover phase.
+On Fri, Jul 12, 2024 at 12:14:45PM +0200, Thomas Huth wrote:
+> On 12/07/2024 11.01, Daniel P. Berrangé wrote:
+> > On Thu, Jul 11, 2024 at 01:55:42PM +0200, Thomas Huth wrote:
+> > > From: Ani Sinha <ani@anisinha.ca>
+> > > 
+> > > Integrate the pytest framework with the meson build system. This
+> > > will make meson run all the pytests under the pytest directory.
+> > 
+> > Lets add a note about the compelling benefit of this new approach
+> > 
+> >    With this change, each functional test becomes subject
+> >    to an individual execution timeout, defaulting to 60
+> >    seconds, but overridable per-test.
+> 
+> The avocado runner uses timeouts, too, so it's not really an additional
+> benefit that we get here.
+> 
+> > For CI purposes we'll need to add 'python3-pytest' to
+> > tests/lcitool/projects/qemu.yml, and re-generate the
+> > the dockerfiles. Some of the other non-gitlab CI
+> > integrations probably need manual additions of pytest
+> > packages.
+> 
+> I'm currently rather looking into getting rid of pytest and to use pycotap
+> instead: Using the TAP protocol for running the tests, you get a much nicer
+> output from the meson test runner, which can then count the subtests and
+> properly report SKIPs for tests that have not been run.
 
-Add an option that disables the VF dirty page tracking, and fall
-back into container-based dirty page tracking. This also allows to
-use IOMMU dirty tracking even on VFs with their own dirty
-tracker scheme.
+I've just looked at pycotap and IIUC, there's no command line
+tool equivalent to '/usr/bin/pytest' at all. Each test case
+is expected to provide a stub for "__main__" to invoke the
+tests. As such each individual test is directly executable.
+This meshes nicely with what I'd suggested as changes in
+patch 1, and eliminating the intermediate runner process is
+a nice further simplification. So I'll be interested to see
+your next version using pycotap.
 
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
----
- include/hw/vfio/vfio-common.h | 1 +
- hw/vfio/common.c              | 3 +++
- hw/vfio/migration.c           | 3 ++-
- hw/vfio/pci.c                 | 3 +++
- 4 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 760f31d84ac8..0ed4ebfb4696 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -138,6 +138,7 @@ typedef struct VFIODevice {
-     VFIOMigration *migration;
-     Error *migration_blocker;
-     OnOffAuto pre_copy_dirty_page_tracking;
-+    OnOffAuto device_dirty_page_tracking;
-     bool dirty_pages_supported;
-     bool dirty_tracking;
-     HostIOMMUDevice *hiod;
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index cc14f0e3fe24..070a4a2df020 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -199,6 +199,9 @@ bool vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer)
-     VFIODevice *vbasedev;
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
-+        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
-+            return false;
-+        }
-         if (!vbasedev->dirty_pages_supported) {
-             return false;
-         }
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index ce3d1b6e9a25..9b41db367629 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1036,7 +1036,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
--    if (!vbasedev->dirty_pages_supported &&
-+    if ((!vbasedev->dirty_pages_supported ||
-+         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-         !vbasedev->bcontainer->dirty_pages_supported) {
-         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
-             error_setg(&err,
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 3fc72e898a25..5794d72bd3ab 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3361,6 +3361,9 @@ static Property vfio_pci_dev_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
-                             vbasedev.pre_copy_dirty_page_tracking,
-                             ON_OFF_AUTO_ON),
-+    DEFINE_PROP_ON_OFF_AUTO("x-device-dirty-page-tracking", VFIOPCIDevice,
-+                            vbasedev.device_dirty_page_tracking,
-+                            ON_OFF_AUTO_ON),
-     DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
-                             display, ON_OFF_AUTO_OFF),
-     DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
+With regards,
+Daniel
 -- 
-2.17.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
