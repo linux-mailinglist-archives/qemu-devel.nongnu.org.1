@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136B692FA3E
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564A492FA42
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:27:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSFMd-0004BS-Ii; Fri, 12 Jul 2024 08:27:03 -0400
+	id 1sSFN0-0006Ee-Lw; Fri, 12 Jul 2024 08:27:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sSFMS-0003iF-Fs
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:26:54 -0400
+ id 1sSFMw-000664-Os
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:27:22 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sSFMQ-0003Kg-KE
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:26:52 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WL9lv67Qbz6K6N8;
- Fri, 12 Jul 2024 20:25:15 +0800 (CST)
+ id 1sSFMv-0003Mk-5M
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:27:22 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WL9mV6L1lz6K6RV;
+ Fri, 12 Jul 2024 20:25:46 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id C2F35140B63;
- Fri, 12 Jul 2024 20:26:47 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C7A1C1400D9;
+ Fri, 12 Jul 2024 20:27:18 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 12 Jul 2024 13:26:47 +0100
+ 15.1.2507.39; Fri, 12 Jul 2024 13:27:18 +0100
 To: <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  <qemu-devel@nongnu.org>
 CC: <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>,
  <marcel.apfelbaum@gmail.com>, Dave Jiang <dave.jiang@intel.com>, Huang Ying
  <ying.huang@intel.com>, Michael Roth <michael.roth@amd.com>,
  <fan.ni@samsung.com>
-Subject: [RFC qemu 5/6] hw/mem/cxl-type3: Add properties to control link speed
- and width
-Date: Fri, 12 Jul 2024 13:24:13 +0100
-Message-ID: <20240712122414.1448284-6-Jonathan.Cameron@huawei.com>
+Subject: [RFC qemu 6/6] hw/pci-bridge/cxl-upstream: Add properties to control
+ link speed and width
+Date: Fri, 12 Jul 2024 13:24:14 +0100
+Message-ID: <20240712122414.1448284-7-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240712122414.1448284-1-Jonathan.Cameron@huawei.com>
 References: <20240712122414.1448284-1-Jonathan.Cameron@huawei.com>
@@ -79,54 +79,54 @@ structure.  Provide x-speed and x-link properties for this.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/hw/cxl/cxl_device.h | 4 ++++
- hw/mem/cxl_type3.c          | 6 ++++++
+ include/hw/pci-bridge/cxl_upstream_port.h | 4 ++++
+ hw/pci-bridge/cxl_upstream.c              | 6 ++++++
  2 files changed, 10 insertions(+)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index fdd0f4e62b..e14e56ae4b 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -549,6 +549,10 @@ struct CXLType3Dev {
-     CXLCCI vdm_fm_owned_ld_mctp_cci;
-     CXLCCI ld0_cci;
- 
-+    /* PCIe link characteristics */
+diff --git a/include/hw/pci-bridge/cxl_upstream_port.h b/include/hw/pci-bridge/cxl_upstream_port.h
+index 12635139f6..f208397ffe 100644
+--- a/include/hw/pci-bridge/cxl_upstream_port.h
++++ b/include/hw/pci-bridge/cxl_upstream_port.h
+@@ -12,6 +12,10 @@ typedef struct CXLUpstreamPort {
+     /*< public >*/
+     CXLComponentState cxl_cstate;
+     CXLCCI swcci;
++
 +    PCIExpLinkSpeed speed;
 +    PCIExpLinkWidth width;
 +
-     /* DOE */
      DOECap doe_cdat;
- 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index b3a401bc6d..adfcc28a6e 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -17,6 +17,7 @@
- #include "hw/mem/pc-dimm.h"
- #include "hw/pci/pci.h"
+     uint64_t sn;
+ } CXLUpstreamPort;
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index e51221a5f3..e673d69220 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -11,6 +11,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
  #include "hw/qdev-properties.h"
 +#include "hw/qdev-properties-system.h"
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-@@ -1200,6 +1201,7 @@ static void ct3d_reset(DeviceState *dev)
-     uint32_t *reg_state = ct3d->cxl_cstate.crb.cache_mem_registers;
-     uint32_t *write_msk = ct3d->cxl_cstate.crb.cache_mem_regs_write_mask;
+ #include "hw/pci/msi.h"
+ #include "hw/pci/pcie.h"
+ #include "hw/pci/pcie_port.h"
+@@ -100,6 +101,7 @@ static void cxl_usp_reset(DeviceState *qdev)
  
-+    pcie_cap_fill_link_ep_usp(PCI_DEVICE(dev), ct3d->width, ct3d->speed);
-     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
-     cxl_device_register_init_t3(ct3d);
+     pci_bridge_reset(qdev);
+     pcie_cap_deverr_reset(d);
++    pcie_cap_fill_link_ep_usp(d, usp->width, usp->speed);
+     latch_registers(usp);
+ }
  
-@@ -1229,6 +1231,10 @@ static Property ct3_props[] = {
-     DEFINE_PROP_UINT8("num-dc-regions", CXLType3Dev, dc.num_regions, 0),
-     DEFINE_PROP_LINK("volatile-dc-memdev", CXLType3Dev, dc.host_dc,
-                      TYPE_MEMORY_BACKEND, HostMemoryBackend *),
-+    DEFINE_PROP_PCIE_LINK_SPEED("x-speed", CXLType3Dev,
+@@ -363,6 +365,10 @@ static void cxl_usp_exitfn(PCIDevice *d)
+ static Property cxl_upstream_props[] = {
+     DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
+     DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.filename),
++    DEFINE_PROP_PCIE_LINK_SPEED("x-speed", CXLUpstreamPort,
 +                                speed, PCIE_LINK_SPEED_32),
-+    DEFINE_PROP_PCIE_LINK_WIDTH("x-width", CXLType3Dev,
++    DEFINE_PROP_PCIE_LINK_WIDTH("x-width", CXLUpstreamPort,
 +                                width, PCIE_LINK_WIDTH_16),
-     DEFINE_PROP_END_OF_LIST(),
+     DEFINE_PROP_END_OF_LIST()
  };
  
 -- 
