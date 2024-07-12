@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4950A92FB4F
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 15:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A25392FB98
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 15:41:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSGIR-0000Wx-Co; Fri, 12 Jul 2024 09:26:47 -0400
+	id 1sSGUz-0001Gd-1T; Fri, 12 Jul 2024 09:39:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sSGIC-0007Qa-O5
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:26:32 -0400
+ id 1sSGUw-00017V-Ei
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:39:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sSGIA-0004BF-Ce
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:26:32 -0400
+ id 1sSGUt-0000SQ-75
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 09:39:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720790788;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1720791576;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IxwMPr18DwYtTlNkl5hng7w3xTEyRUqI/jLVnfYZ18c=;
- b=X+sLy4nFP3FW3bfxPT4bDub38dj7Y3xvPL5EEFhdepjr2EHnVdkbHv5dL3MthWCAKzw7o1
- Y6PU5Ez8dh7oCXC7PHz8El/O6WAXBeXwCDcmL1z0bHpe+NqYAWycY/5HN1wOHCtLeWwfLp
- wefrVz3AXtUdDq15uoG+eNgjaHYjNHE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Qhiafc0n/aHKsK3+/E4evBoBO1Ro70y/lQUVyFjpcws=;
+ b=RJUFPvJS9JUacqWneUMm9nvAnU0ryJ24wBnFuCxTy2sfm2ZIp8VjueHgMt2fmF+P7N1yH4
+ N0iMTOqED0iZBcmLOhyroAn+k7vcezzD5SyKHBv7PAmY+D5oPkIUHQOOOf/hf70FZQogXe
+ R0lS62TKgz8OmC4b8vYMsBScZsZr2Qc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-obPOXoqsNEiaY81ff3d3jQ-1; Fri,
- 12 Jul 2024 09:26:25 -0400
-X-MC-Unique: obPOXoqsNEiaY81ff3d3jQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-Pf5zDevFO7ihs-HPMDdubw-1; Fri,
+ 12 Jul 2024 09:39:34 -0400
+X-MC-Unique: Pf5zDevFO7ihs-HPMDdubw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 994721955F2B; Fri, 12 Jul 2024 13:26:24 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.56])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BBE2F1955F40; Fri, 12 Jul 2024 13:26:21 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>
-Subject: [PATCH v3 22/22] qga: centralize logic for disabling/enabling commands
-Date: Fri, 12 Jul 2024 14:24:59 +0100
-Message-ID: <20240712132459.3974109-23-berrange@redhat.com>
-In-Reply-To: <20240712132459.3974109-1-berrange@redhat.com>
-References: <20240712132459.3974109-1-berrange@redhat.com>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BA97196E08E; Fri, 12 Jul 2024 13:39:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.56])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 752953000181; Fri, 12 Jul 2024 13:39:29 +0000 (UTC)
+Date: Fri, 12 Jul 2024 14:39:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Hyman Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH] docs/devel: Add introduction to LUKS volume with
+ detached header
+Message-ID: <ZpEyDiffBIcWoGZU@redhat.com>
+References: <c2049499aa05758b4cf18dcec942694ed454a980.1708358310.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <c2049499aa05758b4cf18dcec942694ed454a980.1708358310.git.yong.huang@smartx.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -83,337 +83,187 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is confusing having many different pieces of code enabling and
-disabling commands, and it is not clear that they all have the same
-semantics, especially wrt prioritization of the block/allow lists.
-The code attempted to prevent the user from setting both the block
-and allow lists concurrently, however, the logic was flawed as it
-checked settings in the configuration file  separately from the
-command line arguments. Thus it was possible to set a block list
-in the config file and an allow list via a command line argument.
-The --dump-conf option also creates a configuration file with both
-keys present, even if unset, which means it is creating a config
-that cannot actually be loaded again.
+On Tue, Feb 20, 2024 at 12:04:42AM +0800, Hyman Huang wrote:
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> ---
+>  MAINTAINERS                         |   1 +
+>  docs/devel/luks-detached-header.rst | 182 ++++++++++++++++++++++++++++
+>  2 files changed, 183 insertions(+)
+>  create mode 100644 docs/devel/luks-detached-header.rst
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a24c2b51b6..e8b03032ab 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3422,6 +3422,7 @@ Detached LUKS header
+>  M: Hyman Huang <yong.huang@smartx.com>
+>  S: Maintained
+>  F: tests/qemu-iotests/tests/luks-detached-header
+> +F: docs/devel/luks-detached-header.rst
+>  
+>  D-Bus
+>  M: Marc-André Lureau <marcandre.lureau@redhat.com>
+> diff --git a/docs/devel/luks-detached-header.rst b/docs/devel/luks-detached-header.rst
+> new file mode 100644
+> index 0000000000..15e9ccde1d
+> --- /dev/null
+> +++ b/docs/devel/luks-detached-header.rst
 
-Centralizing the code in a single method "ga_apply_command_filters"
-will provide a strong guarantee of consistency and clarify the
-intended behaviour. With this there is no compelling technical
-reason to prevent concurrent setting of both the allow and block
-lists, so this flawed restriction is removed.
+The new file neeeds adding to an index. We don't have anywhere for crypto
+yet, so I'm starting a crypto section thus:
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/interop/qemu-ga.rst |  14 +++++
- qga/commands-posix.c     |   6 --
- qga/commands-win32.c     |   6 --
- qga/main.c               | 128 +++++++++++++++++----------------------
- 4 files changed, 70 insertions(+), 84 deletions(-)
+    diff --git a/docs/devel/crypto.rst b/docs/devel/crypto.rst
+    new file mode 100644
+    index 0000000000..39b1c910e7
+    --- /dev/null
+    +++ b/docs/devel/crypto.rst
+    @@ -0,0 +1,10 @@
+    +.. _crypto-ref:
+    +
+    +====================
+    +Cryptography in QEMU
+    +====================
+    +
+    +.. toctree::
+    +   :maxdepth: 2
+    +
+    +   luks-detached-header
+    diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
+    index 5636e9cf1d..4ac7725d72 100644
+    --- a/docs/devel/index-internals.rst
+    +++ b/docs/devel/index-internals.rst
+    @@ -20,3 +20,4 @@ Details about QEMU's various subsystems including how to add features to them.
+        vfio-iommufd
+        writing-monitor-commands
+        virtio-backends
+    +   crypto
 
-diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
-index e42b370319..fb75cfd8d4 100644
---- a/docs/interop/qemu-ga.rst
-+++ b/docs/interop/qemu-ga.rst
-@@ -28,6 +28,20 @@ configuration options on the command line. For the same key, the last
- option wins, but the lists accumulate (see below for configuration
- file format).
- 
-+If an allowed RPCs list is defined in the configuration, then all
-+RPCs will be blocked by default, except for the allowed list.
-+
-+If a blocked RPCs list is defined in the configuration, then all
-+RPCs will be allowed by default, except for the blocked list.
-+
-+If both allowed and blocked RPCs lists are defined in the configuration,
-+then all RPCs will be blocked by default, then the allowed list will
-+be applied, followed by the blocked list.
-+
-+While filesystems are frozen, all except for a designated safe set
-+of RPCs will blocked, regardless of what the general configuration
-+declares.
-+
- Options
- -------
- 
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index f4104f2760..578d29f228 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -1136,12 +1136,6 @@ error:
- 
- #endif /* HAVE_GETIFADDRS */
- 
--/* add unsupported commands to the list of blocked RPCs */
--GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
--{
--    return blockedrpcs;
--}
--
- /* register init/cleanup routines for stateful command groups */
- void ga_command_state_init(GAState *s, GACommandState *cs)
- {
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index 5866cc2e3c..61b36da469 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -1958,12 +1958,6 @@ done:
-     g_free(rawpasswddata);
- }
- 
--/* add unsupported commands to the list of blocked RPCs */
--GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
--{
--    return blockedrpcs;
--}
--
- /* register init/cleanup routines for stateful command groups */
- void ga_command_state_init(GAState *s, GACommandState *cs)
- {
-diff --git a/qga/main.c b/qga/main.c
-index 6ae911eb15..b8f7b1e4a3 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -423,60 +423,79 @@ static gint ga_strcmp(gconstpointer str1, gconstpointer str2)
-     return strcmp(str1, str2);
- }
- 
--/* disable commands that aren't safe for fsfreeze */
--static void ga_disable_not_allowed_freeze(const QmpCommand *cmd, void *opaque)
-+static bool ga_command_is_allowed(const QmpCommand *cmd, GAState *state)
- {
--    bool allowed = false;
-     int i = 0;
-+    GAConfig *config = state->config;
-     const char *name = qmp_command_name(cmd);
-+    /* Fallback policy is allow everything */
-+    bool allowed = true;
- 
--    while (ga_freeze_allowlist[i] != NULL) {
--        if (strcmp(name, ga_freeze_allowlist[i]) == 0) {
-+    if (config->allowedrpcs) {
-+        /*
-+         * If an allow-list is given, this changes the fallback
-+         * policy to deny everything
-+         */
-+        allowed = false;
-+
-+        if (g_list_find_custom(config->allowedrpcs, name, ga_strcmp) != NULL) {
-             allowed = true;
-         }
--        i++;
-     }
--    if (!allowed) {
--        g_debug("disabling command: %s", name);
--        qmp_disable_command(&ga_commands, name, "the agent is in frozen state");
--    }
--}
- 
--/* [re-]enable all commands, except those explicitly blocked by user */
--static void ga_enable_non_blocked(const QmpCommand *cmd, void *opaque)
--{
--    GAState *s = opaque;
--    GList *blockedrpcs = s->blockedrpcs;
--    GList *allowedrpcs = s->allowedrpcs;
--    const char *name = qmp_command_name(cmd);
--
--    if (g_list_find_custom(blockedrpcs, name, ga_strcmp) == NULL) {
--        if (qmp_command_is_enabled(cmd)) {
--            return;
-+    /*
-+     * If both allowedrpcs and blockedrpcs are set, the blocked
-+     * list will take priority
-+     */
-+    if (config->blockedrpcs) {
-+        if (g_list_find_custom(config->blockedrpcs, name, ga_strcmp) != NULL) {
-+            allowed = false;
-         }
-+    }
- 
--        if (allowedrpcs &&
--            g_list_find_custom(allowedrpcs, name, ga_strcmp) == NULL) {
--            return;
--        }
-+    /*
-+     * If frozen, this filtering must take priority over
-+     * absolutely everything
-+     */
-+    if (state->frozen) {
-+        allowed = false;
- 
--        g_debug("enabling command: %s", name);
--        qmp_enable_command(&ga_commands, name);
-+        while (ga_freeze_allowlist[i] != NULL) {
-+            if (strcmp(name, ga_freeze_allowlist[i]) == 0) {
-+                allowed = true;
-+            }
-+            i++;
-+        }
-     }
-+
-+    return allowed;
- }
- 
--/* disable commands that aren't allowed */
--static void ga_disable_not_allowed(const QmpCommand *cmd, void *opaque)
-+static void ga_apply_command_filters_iter(const QmpCommand *cmd, void *opaque)
- {
--    GList *allowedrpcs = opaque;
-+    GAState *state = opaque;
-+    bool want = ga_command_is_allowed(cmd, state);
-+    bool have = qmp_command_is_enabled(cmd);
-     const char *name = qmp_command_name(cmd);
- 
--    if (g_list_find_custom(allowedrpcs, name, ga_strcmp) == NULL) {
-+    if (want == have) {
-+        return;
-+    }
-+
-+    if (have) {
-         g_debug("disabling command: %s", name);
-         qmp_disable_command(&ga_commands, name, "the command is not allowed");
-+    } else {
-+        g_debug("enabling command: %s", name);
-+        qmp_enable_command(&ga_commands, name);
-     }
- }
- 
-+static void ga_apply_command_filters(GAState *state)
-+{
-+    qmp_for_each_command(&ga_commands, ga_apply_command_filters_iter, state);
-+}
-+
- static bool ga_create_file(const char *path)
- {
-     int fd = open(path, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
-@@ -509,15 +528,14 @@ void ga_set_frozen(GAState *s)
-     if (ga_is_frozen(s)) {
-         return;
-     }
--    /* disable all forbidden (for frozen state) commands */
--    qmp_for_each_command(&ga_commands, ga_disable_not_allowed_freeze, NULL);
-     g_warning("disabling logging due to filesystem freeze");
--    ga_disable_logging(s);
-     s->frozen = true;
-     if (!ga_create_file(s->state_filepath_isfrozen)) {
-         g_warning("unable to create %s, fsfreeze may not function properly",
-                   s->state_filepath_isfrozen);
-     }
-+    ga_apply_command_filters(s);
-+    ga_disable_logging(s);
- }
- 
- void ga_unset_frozen(GAState *s)
-@@ -549,12 +567,12 @@ void ga_unset_frozen(GAState *s)
-     }
- 
-     /* enable all disabled, non-blocked and allowed commands */
--    qmp_for_each_command(&ga_commands, ga_enable_non_blocked, s);
-     s->frozen = false;
-     if (!ga_delete_file(s->state_filepath_isfrozen)) {
-         g_warning("unable to delete %s, fsfreeze may not function properly",
-                   s->state_filepath_isfrozen);
-     }
-+    ga_apply_command_filters(s);
- }
- 
- #ifdef CONFIG_FSFREEZE
-@@ -1086,13 +1104,6 @@ static void config_load(GAConfig *config, const char *confpath, bool required)
-                                           split_list(config->aliststr, ","));
-     }
- 
--    if (g_key_file_has_key(keyfile, "general", "block-rpcs", NULL) &&
--        g_key_file_has_key(keyfile, "general", "allow-rpcs", NULL)) {
--        g_critical("wrong config, using 'block-rpcs' and 'allow-rpcs' keys at"
--                   " the same time is not allowed");
--        exit(EXIT_FAILURE);
--    }
--
- end:
-     g_key_file_free(keyfile);
-     if (gerr && (required ||
-@@ -1172,7 +1183,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
- {
-     const char *sopt = "hVvdc:m:p:l:f:F::b:a:s:t:Dr";
-     int opt_ind = 0, ch;
--    bool block_rpcs = false, allow_rpcs = false;
-     const struct option lopt[] = {
-         { "help", 0, NULL, 'h' },
-         { "version", 0, NULL, 'V' },
-@@ -1268,7 +1278,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
-             }
-             config->blockedrpcs = g_list_concat(config->blockedrpcs,
-                                                 split_list(optarg, ","));
--            block_rpcs = true;
-             break;
-         }
-         case 'a': {
-@@ -1278,7 +1287,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
-             }
-             config->allowedrpcs = g_list_concat(config->allowedrpcs,
-                                                 split_list(optarg, ","));
--            allow_rpcs = true;
-             break;
-         }
- #ifdef _WIN32
-@@ -1319,12 +1327,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
-             exit(EXIT_FAILURE);
-         }
-     }
--
--    if (block_rpcs && allow_rpcs) {
--        g_critical("wrong commandline, using --block-rpcs and --allow-rpcs at the"
--                   " same time is not allowed");
--        exit(EXIT_FAILURE);
--    }
- }
- 
- static void config_free(GAConfig *config)
-@@ -1435,7 +1437,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-             s->deferred_options.log_filepath = config->log_filepath;
-         }
-         ga_disable_logging(s);
--        qmp_for_each_command(&ga_commands, ga_disable_not_allowed_freeze, NULL);
-     } else {
-         if (config->daemonize) {
-             become_daemon(config->pid_filepath);
-@@ -1459,25 +1460,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-         return NULL;
-     }
- 
--    if (config->allowedrpcs) {
--        qmp_for_each_command(&ga_commands, ga_disable_not_allowed, config->allowedrpcs);
--        s->allowedrpcs = config->allowedrpcs;
--    }
--
--    /*
--     * Some commands can be blocked due to system limitation.
--     * Initialize blockedrpcs list even if allowedrpcs specified.
--     */
--    config->blockedrpcs = ga_command_init_blockedrpcs(config->blockedrpcs);
--    if (config->blockedrpcs) {
--        GList *l = config->blockedrpcs;
--        s->blockedrpcs = config->blockedrpcs;
--        do {
--            g_debug("disabling command: %s", (char *)l->data);
--            qmp_disable_command(&ga_commands, l->data, NULL);
--            l = g_list_next(l);
--        } while (l);
--    }
-     s->command_state = ga_command_state_new();
-     ga_command_state_init(s, s->command_state);
-     ga_command_state_init_all(s->command_state);
-@@ -1503,6 +1485,8 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-     }
- #endif
- 
-+    ga_apply_command_filters(s);
-+
-     ga_state = s;
-     return s;
- }
+
+> @@ -0,0 +1,182 @@
+> +================================
+> +LUKS volume with detached header
+> +================================
+> +
+> +Introduction
+> +============
+> +
+> +This document gives an overview of the design of LUKS volume with detached
+> +header and how to use it.
+> +
+> +Background
+> +==========
+> +
+> +The LUKS format has ability to store the header in a separate volume from
+> +the payload. We could extend the LUKS driver in QEMU to support this use
+> +case.
+> +
+> +Normally a LUKS volume has a layout:
+> +
+> +::
+> +
+> +         +-----------------------------------------------+
+> +         |         |                |                    |
+> + disk    | header  |  key material  |  disk payload data |
+> +         |         |                |                    |
+> +         +-----------------------------------------------+
+> +
+> +With a detached LUKS header, you need 2 disks so getting:
+> +
+> +::
+> +
+> +         +--------------------------+
+> + disk1   |   header  | key material |
+> +         +--------------------------+
+> +         +---------------------+
+> + disk2   |  disk payload data  |
+> +         +---------------------+
+> +
+> +There are a variety of benefits to doing this:
+> +
+> + * Secrecy - the disk2 cannot be identified as containing LUKS
+> +             volume since there's no header
+> + * Control - if access to the disk1 is restricted, then even
+> +             if someone has access to disk2 they can't unlock
+> +             it. Might be useful if you have disks on NFS but
+> +             want to restrict which host can launch a VM
+> +             instance from it, by dynamically providing access
+> +             to the header to a designated host
+> + * Flexibility - your application data volume may be a given
+> +                 size and it is inconvenient to resize it to
+> +                 add encryption.You can store the LUKS header
+> +                 separately and use the existing storage
+> +                 volume for payload
+> + * Recovery - corruption of a bit in the header may make the
+> +              entire payload inaccessible. It might be
+> +              convenient to take backups of the header. If
+> +              your primary disk header becomes corrupt, you
+> +              can unlock the data still by pointing to the
+> +              backup detached header
+> +
+> +Architecture
+> +============
+> +
+> +Take the qcow2 encryption, for example. The architecture of the
+> +LUKS volume with detached header is shown in the diagram below.
+> +
+> +There are two children of the root node: a file and a header.
+> +Data from the disk payload is stored in the file node. The
+> +LUKS header and key material are located in the header node,
+> +as previously mentioned.
+> +
+> +::
+> +
+> +                       +-----------------------------+
+> +  Root node            |          foo[luks]          |
+> +                       +-----------------------------+
+> +                          |                       |
+> +                     file |                header |
+> +                          |                       |
+> +               +---------------------+    +------------------+
+> +  Child node   |payload-format[qcow2]|    |header-format[raw]|
+> +               +---------------------+    +------------------+
+> +                          |                       |
+> +                     file |                 file  |
+> +                          |                       |
+> +               +----------------------+  +---------------------+
+> +  Child node   |payload-protocol[file]|  |header-protocol[file]|
+> +               +----------------------+  +---------------------+
+> +                          |                       |
+> +                          |                       |
+> +                          |                       |
+> +                     Host storage            Host storage
+> +
+> +Usage
+> +=====
+> +
+> +Create a LUKS disk with a detached header using qemu-img
+> +--------------------------------------------------------
+> +
+> +Shell commandline::
+> +
+> +# qemu-img create --object secret,id=sec0,data=abc123 -f luks \
+> +> -o cipher-alg=aes-256,cipher-mode=xts -o key-secret=sec0 \
+> +> -o detached-header=true test-header.img
+> +# qemu-img create -f qcow2 test-payload.qcow2 200G
+> +# qemu-img info 'json:{"driver":"luks","file":{"filename": \
+> +> "test-payload.img"},"header":{"filename":"test-header.img"}}'
+
+This needs indentation by 2 spaces, and the ">" can be dropped.
+The same for all examples that follow.
+
+I'm going to make those changes and queue this patch, since
+they're trivial.
+
+
+With regards,
+Daniel
 -- 
-2.45.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
