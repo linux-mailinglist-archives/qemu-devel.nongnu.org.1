@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D2A92F6B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 10:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A6F92F6C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 10:13:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSBK0-0007ji-9Q; Fri, 12 Jul 2024 04:08:04 -0400
+	id 1sSBP7-0007z9-KP; Fri, 12 Jul 2024 04:13:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sSBJo-0007dX-7U
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 04:07:52 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSBP2-0007yb-L5
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 04:13:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sSBJj-0008GI-HK
- for qemu-devel@nongnu.org; Fri, 12 Jul 2024 04:07:50 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sSBP0-0001uq-Jc
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 04:13:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720771662;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1720771991;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h2Ea2/A9VWMACddcFx3S0ZRQ1GD5aBkN8u7dZqTUVW8=;
- b=Xv1S2YLXrudq4OFrPCMpW+g0qOdFjxTfpJ1+eFLUfPHSpk1xLfdTPv2amvj4OI3AWY6si8
- +vAYKwxBXU1jNcapYG0NvSnk1c2zmhBeXK+JNXQNQuVs1PttPS0q6p5JAYTA0e77Kx3Yw4
- 5kR/bJ/v6fNTRzxa3V7/6SXXiQQjkIo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=KdY4rHnNa3Gybb1KTxgIrMl6Q9u1JfXmSlKRyPb9kbc=;
+ b=A3BFgYKtR8scdlewvJ3rJOfcxrbvVLpJwLVlCB0pWWdgIFzNAz0TdN8inf/INSEGRbk4kH
+ Dnq9HLPe1W8HoRSZzZiyxeflKouA21n1oB/M9d8d6q6dk68vPBK6lVu8Tu6tJiimylHVPm
+ iN9GIrwGR8mVk71xetioS+e8Ipvlmeg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-kSQc62e_NASUYYQgDpPu3Q-1; Fri,
- 12 Jul 2024 04:07:38 -0400
-X-MC-Unique: kSQc62e_NASUYYQgDpPu3Q-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-bBxfKlPNMAOz3F6kXgSk5Q-1; Fri,
+ 12 Jul 2024 04:13:06 -0400
+X-MC-Unique: bBxfKlPNMAOz3F6kXgSk5Q-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F34F61956088; Fri, 12 Jul 2024 08:07:36 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.4])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7D56B1955E70; Fri, 12 Jul 2024 08:07:36 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8462B21E668F; Fri, 12 Jul 2024 10:07:34 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Konstantin
- Kostiuk <kkostiuk@redhat.com>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 990401955F44; Fri, 12 Jul 2024 08:13:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.56])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 194C01956066; Fri, 12 Jul 2024 08:13:02 +0000 (UTC)
+Date: Fri, 12 Jul 2024 09:12:59 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
 Subject: Re: [PATCH 04/14] qapi: add a 'command-features' pragma
-In-Reply-To: <20240604153242.251334-5-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Tue, 4 Jun 2024 16:32:32
- +0100")
+Message-ID: <ZpDlizzbaXk4pa0U@redhat.com>
 References: <20240604153242.251334-1-berrange@redhat.com>
  <20240604153242.251334-5-berrange@redhat.com>
-Date: Fri, 12 Jul 2024 10:07:34 +0200
-Message-ID: <87r0bzuj7d.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ <87r0bzuj7d.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87r0bzuj7d.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,56 +83,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On Fri, Jul 12, 2024 at 10:07:34AM +0200, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > The 'command-features' pragma allows for defining additional
+> > special features that are unique to a particular QAPI schema
+> > instance and its implementation.
+> 
+> So far, we have special features (predefined, known to the generator and
+> treated specially), and normal features (user-defined, not known to the
+> generator).  You create a new kind in between: user-defined, not known
+> to the generator, yet treated specially (I guess?).  Hmm.
+> 
+> Could you at least hint at indented use here?  What special treatment do
+> you have in mind?
 
-> The 'command-features' pragma allows for defining additional
-> special features that are unique to a particular QAPI schema
-> instance and its implementation.
+Essentially, these features are a way to attach metadata to commands that
+the server side impl can later query. This eliminates the need to hardcode
+lists of commands, such as in QGA which hardcodes a list of commands which
+are safe to use when filesystems are frozen. This is illustrated later in
+this series.
 
-So far, we have special features (predefined, known to the generator and
-treated specially), and normal features (user-defined, not known to the
-generator).  You create a new kind in between: user-defined, not known
-to the generator, yet treated specially (I guess?).  Hmm.
+> 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  scripts/qapi/parser.py | 2 ++
+> >  scripts/qapi/source.py | 2 ++
+> >  2 files changed, 4 insertions(+)
+> >
+> > diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> > index 7b13a583ac..36a9046243 100644
+> > --- a/scripts/qapi/parser.py
+> > +++ b/scripts/qapi/parser.py
+> > @@ -243,6 +243,8 @@ def check_list_str(name: str, value: object) -> List[str]:
+> >              pragma.documentation_exceptions = check_list_str(name, value)
+> >          elif name == 'member-name-exceptions':
+> >              pragma.member_name_exceptions = check_list_str(name, value)
+> > +        elif name == 'command-features':
+> > +            pragma.command_features = check_list_str(name, value)
+> >          else:
+> >              raise QAPISemError(info, "unknown pragma '%s'" % name)
+> >  
+> > diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
+> > index 7b379fdc92..07c2958ac4 100644
+> > --- a/scripts/qapi/source.py
+> > +++ b/scripts/qapi/source.py
+> > @@ -28,6 +28,8 @@ def __init__(self) -> None:
+> >          self.documentation_exceptions: List[str] = []
+> >          # Types whose member names may violate case conventions
+> >          self.member_name_exceptions: List[str] = []
+> > +        # Arbitrary extra features recorded against commands
+> > +        self.command_features: List[str] = []
+> >  
+> >  
+> >  class QAPISourceInfo:
+> 
 
-Could you at least hint at indented use here?  What special treatment do
-you have in mind?
-
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  scripts/qapi/parser.py | 2 ++
->  scripts/qapi/source.py | 2 ++
->  2 files changed, 4 insertions(+)
->
-> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-> index 7b13a583ac..36a9046243 100644
-> --- a/scripts/qapi/parser.py
-> +++ b/scripts/qapi/parser.py
-> @@ -243,6 +243,8 @@ def check_list_str(name: str, value: object) -> List[=
-str]:
->              pragma.documentation_exceptions =3D check_list_str(name, val=
-ue)
->          elif name =3D=3D 'member-name-exceptions':
->              pragma.member_name_exceptions =3D check_list_str(name, value)
-> +        elif name =3D=3D 'command-features':
-> +            pragma.command_features =3D check_list_str(name, value)
->          else:
->              raise QAPISemError(info, "unknown pragma '%s'" % name)
->=20=20
-> diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
-> index 7b379fdc92..07c2958ac4 100644
-> --- a/scripts/qapi/source.py
-> +++ b/scripts/qapi/source.py
-> @@ -28,6 +28,8 @@ def __init__(self) -> None:
->          self.documentation_exceptions: List[str] =3D []
->          # Types whose member names may violate case conventions
->          self.member_name_exceptions: List[str] =3D []
-> +        # Arbitrary extra features recorded against commands
-> +        self.command_features: List[str] =3D []
->=20=20
->=20=20
->  class QAPISourceInfo:
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
