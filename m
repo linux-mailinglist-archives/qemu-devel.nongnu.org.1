@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D5E92F9EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B30D792F9F5
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:06:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSF16-0002ps-KC; Fri, 12 Jul 2024 08:04:48 -0400
+	id 1sSF1F-0003mA-Eq; Fri, 12 Jul 2024 08:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSF0z-0002dE-PX; Fri, 12 Jul 2024 08:04:41 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1sSF17-0003Lh-Sh; Fri, 12 Jul 2024 08:04:49 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sSF0x-0005tX-U5; Fri, 12 Jul 2024 08:04:41 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-70b702be5e4so334679b3a.0; 
- Fri, 12 Jul 2024 05:04:39 -0700 (PDT)
+ id 1sSF15-0005tv-Mb; Fri, 12 Jul 2024 08:04:49 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-706a1711ee5so1522023b3a.0; 
+ Fri, 12 Jul 2024 05:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720785878; x=1721390678; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720785881; x=1721390681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rvugC+PXW9/SGH9OMmAAj3pNBhyER7y8a5VmvcnVk/U=;
- b=Yi7K7CXr7Cvjx1kgpNyVOI1JqtWuamBb4h9lUqP7HJx58ks0WqDcndctLQnN8C+KMG
- SLzqz2qZf34MrArhI4koLF17VzRf2D/h0MfnaBh/il3or3OlfmTmD9lsnBtuhuKbI5dI
- lFPSXVWA9wj+QaBtL+NHMqN6h7TQFJy20EYm4tB365BIqQ/UensMlWoH+HXHdpwa/hLf
- ZXIdb9rDzL38+RvdW+CpDdUcWHeF+4jM5Y+RUgfmcC/kI+qbxNaJij1aNfDFlHYv6Y59
- II+QNHJpwTNOHWLOeoEeHJElK/r/71W0HQ889j7R3LgTVQ+9snR06Egjj8bw5eMqu1Vk
- 6wLg==
+ bh=VSdEx+3/IO385nx55P7iJ1IKkfoDSyJ7uSRZgpIc/C0=;
+ b=X15w63TPxn7ypbykiyfKEqdkftaQGUb3mjJF8OMgP/cyAUMxM6OcY4ZOBEO1VmcE5Z
+ 4YxqiulnGvrB3a8JCnVvmUsOCFj19jjLItrlv2eTncgfDIZDSsGWU9rs1NuGG3txJlJs
+ JCs+zDiEGw4p9ms8jndNmBlk22s4YRc3qRpbwliuqgCFl8uL7OdsfSFXuzA9iwDJkb2P
+ ON6oIYdgw5XstZLdz8b9x2wmAwETZS43OVyvQPLBXhSRUA4UrLJfHgBH1/WWTOEaa5bp
+ +rfODnO7LX+D399T2EmJNcgQxPA1OyVP1HAJnNF1WYt3Qcm8z+q/BH/hm8d92vBUx8oR
+ rV8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720785878; x=1721390678;
+ d=1e100.net; s=20230601; t=1720785881; x=1721390681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rvugC+PXW9/SGH9OMmAAj3pNBhyER7y8a5VmvcnVk/U=;
- b=n2U3tVldFgNvHPxt5UZududQ5cqO1G5dhd4BxlbGwE2wAF25GPrIu7MZzKDvflRBB2
- CsOqsLhsn6lYIbkANrXJ8budLQLV4xNt+Q6y8AJHmFZKN548qE7OBwgKDLvgz7B7vnj6
- WlCunxz9ksP1yg2T+iyVmc/VUuh0w4IL6436s0s3BofrEJU+KXxumtAz8qvU5sZFN92r
- Q1kclRzz4Dl7S17u/0XvX4IkGZ+y7kybJ+XdYTu9kz9BPzqfLQD652m1xSjIyPzQqq6M
- yjJLjsT/ifYQrEJRAy8QK361+LFqRBLzX+tXGY5RkGj4M2bDZGYkPU7atcK/BOirOLQn
- b++A==
+ bh=VSdEx+3/IO385nx55P7iJ1IKkfoDSyJ7uSRZgpIc/C0=;
+ b=caLZ0EE9f8BeOph8TUITFAPDCw3RlrbCrTQlFigLOX3x/GjmSHliabUtTVBMroGU7C
+ ArTrAEPtsRSZTK26aeYHL4dN4fynAsj/i9blxQget8zJ0a/XSOaoCcZ6INtt0zSEjSmb
+ /lpwXoe98boucWjGw9oUPInL1BDCkiTVhReqBaWiTpA/0lL2XqF6drod0sSMntiY3w5H
+ TVA2cbPKvw+zpADSVctPIK8ydXrbTdqTNfR5TEg9ZWp96ZSN6gX3OLX+o70BGOJHvWKb
+ cL/MspA/0c0sqchzarsBE+nIEXE6VGR711QDDAbTwlZjU/3e1r8V/wkYZJlTtPblG7n7
+ /yxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUqFXRFmdSfTCz81OJ1AG89qzD1R3MCu1T9eaV11p5dE79LjZdUYvPa09jUwVjCxEDextfX1QkMwAl/iG1S1JDf5YTaTqk=
-X-Gm-Message-State: AOJu0Yyw2P7XWXoztVkffgY3MHGU+kNloYZWp9lUhJhtcbDIOkmR2UCc
- ESqkjy7kZ6nK7qjk/qV15crurErFYHJam51aPoHpbZV1l1W95ndy9qJ0tA==
-X-Google-Smtp-Source: AGHT+IGXakIlgwxW4ufbgqrF+m7wat1y2+yfd1cXnUIdYukAVCKolgcyLuDABEGkZQ7nUsqESRxlsA==
-X-Received: by 2002:a05:6a00:21cd:b0:70a:f38c:74ba with SMTP id
- d2e1a72fcca58-70b435eaa3fmr13720110b3a.22.1720785877737; 
- Fri, 12 Jul 2024 05:04:37 -0700 (PDT)
+ AJvYcCXsZv+F74Mxxtd739vZoy08exw+rw6ZO4qzAB5Bc3u4YYR9+cel16mSCcPxE6z2Zg+cHQu2ixKiHRckF4QOCC0HLAtMmeI=
+X-Gm-Message-State: AOJu0Yx1Mtvjm4FkQlOVO0bvwesJA9j911GFCT3o1RNzUYqQqyqgnfMN
+ G/bT/lBTP+uIlv5/yLNQW5tXRWbha4ULUtwpmgqyh8+2uO1gNKHDkUBwrA==
+X-Google-Smtp-Source: AGHT+IELspR74/6dYvT9ljitdMkm0/xOp5sVLkZomCv0/PRjAL7glY62JVPwyRYqcjlPGjigN+ld4Q==
+X-Received: by 2002:a05:6a21:33a7:b0:1c2:8cf4:7656 with SMTP id
+ adf61e73a8af0-1c29820ed84mr13632265637.10.1720785881466; 
+ Fri, 12 Jul 2024 05:04:41 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.04.34
+ d2e1a72fcca58-70b438c0a1csm7308967b3a.63.2024.07.12.05.04.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Jul 2024 05:04:37 -0700 (PDT)
+ Fri, 12 Jul 2024 05:04:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 17/19] ppc/pnv: Add a CPU nmi and resume function
-Date: Fri, 12 Jul 2024 22:02:44 +1000
-Message-ID: <20240712120247.477133-18-npiggin@gmail.com>
+Subject: [PATCH v2 18/19] ppc/pnv: Implement POWER10 PC xscom registers for
+ direct controls
+Date: Fri, 12 Jul 2024 22:02:45 +1000
+Message-ID: <20240712120247.477133-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240712120247.477133-1-npiggin@gmail.com>
 References: <20240712120247.477133-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,59 +95,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Power CPUs have an execution control facility that can pause, resume,
-and cause NMIs, among other things. Add a function that will nmi a CPU
-and resume it if it was paused, in preparation for implementing the
-control facility.
+The PC unit in the processor core contains xscom registers that provide
+low level status and control of the CPU.
+
+This implements "direct controls", sufficient for skiboot firmware,
+which uses it to send NMI IPIs between CPUs.
+
+POWER10 is sufficiently different from POWER9 (particularly with respect
+to QME and special wakeup) that it is not trivial to implement POWER9
+support by reusing the code.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv.h |  2 ++
- hw/ppc/pnv.c         | 14 +++++++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ include/hw/ppc/pnv_core.h |  3 ++
+ hw/ppc/pnv_core.c         | 89 ++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 87 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
-index c56d152889..b7858d310d 100644
---- a/include/hw/ppc/pnv.h
-+++ b/include/hw/ppc/pnv.h
-@@ -112,6 +112,8 @@ PnvChip *pnv_chip_add_phb(PnvChip *chip, PnvPHB *phb);
- #define PNV_FDT_ADDR          0x01000000
- #define PNV_TIMEBASE_FREQ     512000000ULL
+diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
+index c8784777a4..1de79a818e 100644
+--- a/include/hw/ppc/pnv_core.h
++++ b/include/hw/ppc/pnv_core.h
+@@ -109,6 +109,9 @@ OBJECT_DECLARE_TYPE(PnvQuad, PnvQuadClass, PNV_QUAD)
+ struct PnvQuad {
+     DeviceState parent_obj;
  
-+void pnv_cpu_do_nmi_resume(CPUState *cs);
++    bool special_wakeup_done;
++    bool special_wakeup[4];
 +
- /*
-  * BMC helpers
+     uint32_t quad_id;
+     MemoryRegion xscom_regs;
+     MemoryRegion xscom_qme_regs;
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index 238a4cd4ab..b32bdb79ff 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -185,16 +185,40 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
   */
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index e405d416ff..cd96cde6c9 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -2749,11 +2749,23 @@ static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, run_on_cpu_data arg)
-          */
-         env->spr[SPR_SRR1] |= SRR1_WAKESCOM;
-     }
-+    if (arg.host_int == 1) {
-+        cpu_resume(cs);
-+    }
-+}
-+
-+/*
-+ * Send a SRESET (NMI) interrupt to the CPU, and resume execution if it was
-+ * paused.
-+ */
-+void pnv_cpu_do_nmi_resume(CPUState *cs)
-+{
-+    async_run_on_cpu(cs, pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_HOST_INT(1));
- }
  
- static void pnv_cpu_do_nmi(PnvChip *chip, PowerPCCPU *cpu, void *opaque)
+ #define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
++#define PNV10_XSCOM_EC_CORE_THREAD_INFO     0x413
++#define PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS 0x449
++#define PNV10_XSCOM_EC_CORE_RAS_STATUS      0x454
+ 
+ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+                                            unsigned int width)
  {
--    async_run_on_cpu(CPU(cpu), pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_NULL);
-+    async_run_on_cpu(CPU(cpu), pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_HOST_INT(0));
- }
++    PnvCore *pc = PNV_CORE(opaque);
++    int nr_threads = CPU_CORE(pc)->nr_threads;
++    int i;
+     uint32_t offset = addr >> 3;
+     uint64_t val = 0;
  
- static void pnv_nmi(NMIState *n, int cpu_index, Error **errp)
+     switch (offset) {
+     case PNV10_XSCOM_EC_CORE_THREAD_STATE:
+-        val = 0;
++        for (i = 0; i < nr_threads; i++) {
++            PowerPCCPU *cpu = pc->threads[i];
++            CPUState *cs = CPU(cpu);
++
++            if (cs->halted) {
++                val |= PPC_BIT(56 + i);
++            }
++        }
++        break;
++    case PNV10_XSCOM_EC_CORE_THREAD_INFO:
++        break;
++    case PNV10_XSCOM_EC_CORE_RAS_STATUS:
++        for (i = 0; i < nr_threads; i++) {
++            PowerPCCPU *cpu = pc->threads[i];
++            CPUState *cs = CPU(cpu);
++            if (cs->stopped) {
++                val |= PPC_BIT(0 + 8 * i) | PPC_BIT(1 + 8 * i);
++            }
++        }
+         break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+@@ -207,9 +231,46 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
+                                          uint64_t val, unsigned int width)
+ {
++    PnvCore *pc = PNV_CORE(opaque);
++    int nr_threads = CPU_CORE(pc)->nr_threads;
++    int i;
+     uint32_t offset = addr >> 3;
+ 
+     switch (offset) {
++    case PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS:
++        for (i = 0; i < nr_threads; i++) {
++            PowerPCCPU *cpu = pc->threads[i];
++            CPUState *cs = CPU(cpu);
++
++            if (val & PPC_BIT(7 + 8 * i)) { /* stop */
++                val &= ~PPC_BIT(7 + 8 * i);
++                cpu_pause(cs);
++            }
++            if (val & PPC_BIT(6 + 8 * i)) { /* start */
++                val &= ~PPC_BIT(6 + 8 * i);
++                cpu_resume(cs);
++            }
++            if (val & PPC_BIT(4 + 8 * i)) { /* sreset */
++                val &= ~PPC_BIT(4 + 8 * i);
++                pnv_cpu_do_nmi_resume(cs);
++            }
++            if (val & PPC_BIT(3 + 8 * i)) { /* clear maint */
++                /*
++                 * Hardware has very particular cases for where clear maint
++                 * must be used and where start must be used to resume a
++                 * thread. These are not modelled exactly, just treat
++                 * this and start the same.
++                 */
++                val &= ~PPC_BIT(3 + 8 * i);
++                cpu_resume(cs);
++            }
++        }
++        if (val) {
++            qemu_log_mask(LOG_UNIMP, "%s: unimp bits in DIRECT_CONTROLS "
++                                     "0x%016lx\n", __func__, val);
++        }
++        break;
++
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+                       offset);
+@@ -523,6 +584,7 @@ static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
+ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
+                                             unsigned int width)
+ {
++    PnvQuad *eq = PNV_QUAD(opaque);
+     uint32_t offset = addr >> 3;
+     uint64_t val = -1;
+ 
+@@ -530,10 +592,14 @@ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
+      * Forth nibble selects the core within a quad, mask it to process read
+      * for any core.
+      */
+-    switch (offset & ~0xf000) {
+-    case P10_QME_SPWU_HYP:
++    switch (offset & ~PPC_BITMASK32(16, 19)) {
+     case P10_QME_SSH_HYP:
+-        return 0;
++        val = 0;
++        if (eq->special_wakeup_done) {
++            val |= PPC_BIT(1); /* SPWU DONE */
++            val |= PPC_BIT(4); /* SSH SPWU DONE */
++        }
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+                       offset);
+@@ -545,9 +611,22 @@ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
+ static void pnv_qme_power10_xscom_write(void *opaque, hwaddr addr,
+                                          uint64_t val, unsigned int width)
+ {
++    PnvQuad *eq = PNV_QUAD(opaque);
+     uint32_t offset = addr >> 3;
++    bool set;
++    int i;
+ 
+-    switch (offset) {
++    switch (offset & ~PPC_BITMASK32(16, 19)) {
++    case P10_QME_SPWU_HYP:
++        set = !!(val & PPC_BIT(0));
++        eq->special_wakeup_done = set;
++        for (i = 0; i < 4; i++) {
++            /* These bits select cores in the quad */
++            if (offset & PPC_BIT32(16 + i)) {
++                eq->special_wakeup[i] = set;
++            }
++        }
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+                       offset);
 -- 
 2.45.1
 
