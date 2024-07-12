@@ -2,64 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A116C92FA5A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECFB92FA78
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Jul 2024 14:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSFTF-00061p-7y; Fri, 12 Jul 2024 08:33:53 -0400
+	id 1sSFcx-0001iI-3R; Fri, 12 Jul 2024 08:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sSFT7-0005dR-Bt; Fri, 12 Jul 2024 08:33:46 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sSFcn-0001de-7P
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:43:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sSFSz-0005L2-AS; Fri, 12 Jul 2024 08:33:42 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:a52d:0:640:f75d:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D234361252;
- Fri, 12 Jul 2024 15:33:29 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:0:419:5fb9:9623:463f:792c] (unknown
- [2a02:6b8:0:419:5fb9:9623:463f:792c])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id SXf9xZ0Vo8c0-OJ68x16W; Fri, 12 Jul 2024 15:33:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1720787609;
- bh=Dg1XIYi12rYLAeHhglWpQVXh9MGLESu19zeLSS3dBHs=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=FP/O92hMJnmXPKh/L2gXESHiXaRzhXEPF9zG2Zp4K8phIZR2AFU1f3KkSyKpZXwNz
- IAcoFtcgEXIfhhHHrixedQ4jFfbk/saDMDvDrg44GnpoCerieo5lecOk+tR3JjPXzY
- bZ9RHiaFaCCYP3B05ouuaUo+Gg5HuiYn8q+s37kE=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <c41a8353-229b-4dd6-b268-cb9713faaed1@yandex-team.ru>
-Date: Fri, 12 Jul 2024 15:33:28 +0300
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sSFcV-0000GP-7t
+ for qemu-devel@nongnu.org; Fri, 12 Jul 2024 08:43:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720788204;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=C1OlqYp3prCTYsg4T2pRkw+AIIXE1wLWyasdZ+NgxOo=;
+ b=Mj5nIXiD6eoD65IJ4xVsk7lkkAB7SdMBMGa2I4pz5rZf9xE6unpr6JfaOtlJae3eyCyolV
+ bf+GgUz9n096SJ4R+eAh1PNRJTt7VEIDhfJdL2aKTpg17I1yZvNHxqRwoq7NsyB5vik+nB
+ k5sv54aM/6mCDrFuKC372fQ93CRNrjQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-RhxkVUfxNquqj7u3OtjyXA-1; Fri, 12 Jul 2024 08:43:22 -0400
+X-MC-Unique: RhxkVUfxNquqj7u3OtjyXA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4265d3bf59dso15247235e9.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Jul 2024 05:43:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720788201; x=1721393001;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=C1OlqYp3prCTYsg4T2pRkw+AIIXE1wLWyasdZ+NgxOo=;
+ b=lUXlDYv2FXf66odJZSnQWTuHibbsE3pYyzT6hHP11fTx4t003+d1NRKSr0/WbkhfA+
+ GUyYgwGyueaSyQXFLHSCdnKoNrTl0P19qsFdn27SDtp50uYefn0JbUIpN6qQyeyaOwlX
+ 9Z9jUothu9tlOeMQa9rvRJR/Fje1NYJJCh6XvZf9BLM/BQflk2shtwedZc52DmFeH0uF
+ hU2UjoYRleQ4xkV6CqYT8q6C2AEmDJMi/6ckI8rh7p2VzXxgpLeMfGrMERnlnYuOB7qf
+ iveySFTi4bP722glugCvQbAbI5PQyuvZ7ArLB81NtMldrfP3TSTdyA5PYX1tkIWlXo/8
+ thGw==
+X-Gm-Message-State: AOJu0Yz2Qy5zoUb3qP4x0co+D4xEffESHQfGSm6tnBFoRIo7E+jHpBNc
+ 2qgNfeliQV0SnCy31ELY4TXexvJXgiAs1c/WL1evC8k6svEkBE2QfRG/9kCLYWqOt+XiwrZ6+yq
+ IHtSjNNpXIvVWuCok27Cv33P/mCJhxj/9UNsIMxaLJZXgty2YXN2N
+X-Received: by 2002:a05:600c:894:b0:426:5e1c:1ad0 with SMTP id
+ 5b1f17b1804b1-426708f202cmr69327435e9.37.1720788200873; 
+ Fri, 12 Jul 2024 05:43:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrlO+RIL0juXBskpDuCr6RMgmGMVeP8KgpYNOp91l4h4dZGORfy3ZKLuNpYLbYXtBC3tZerw==
+X-Received: by 2002:a05:600c:894:b0:426:5e1c:1ad0 with SMTP id
+ 5b1f17b1804b1-426708f202cmr69327305e9.37.1720788200460; 
+ Fri, 12 Jul 2024 05:43:20 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-367cde847bdsm10093738f8f.41.2024.07.12.05.43.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Jul 2024 05:43:20 -0700 (PDT)
+Date: Fri, 12 Jul 2024 14:43:19 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin Meng
+ <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, Daniel Henrique
+ Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, "Michael S . Tsirkin" <mst@redhat.com>, Ani
+ Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH v2 0/9] RISC-V: ACPI: Namespace updates
+Message-ID: <20240712144319.233c19a7@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240708114741.3499585-1-sunilvl@ventanamicro.com>
+References: <20240708114741.3499585-1-sunilvl@ventanamicro.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block/copy-before-write: wait for conflicts when read
- locking to avoid assertion failure
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org, hreitz@redhat.com,
- kwolf@redhat.com, jsnow@redhat.com
-References: <20240711133652.589770-1-f.ebner@proxmox.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240711133652.589770-1-f.ebner@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.138,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,87 +104,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.07.24 16:36, Fiona Ebner wrote:
-> There is no protection against two callers of cbw_snapshot_read_lock()
-> calling reqlist_init_req() with overlapping ranges, and
-> reqlist_init_req() asserts that there are no conflicting requests.
+On Mon,  8 Jul 2024 17:17:32 +0530
+Sunil V L <sunilvl@ventanamicro.com> wrote:
+
+> This series adds few updates to RISC-V ACPI namespace for virt platform.
+> Additionally, it has patches to enable ACPI table testing for RISC-V.
 > 
-> In particular, two cbw_co_snapshot_block_status() callers can race,
-> with the second calling reqlist_init_req() before the first one
-> finishes and removes its conflicting request, leading to an assertion
-> failure.
+> 1) PCI Link devices need to be created outside the scope of the PCI root
+> complex to ensure correct probe ordering by the OS. This matches the
+> example given in ACPI spec as well.
 > 
-> Reproducer script [0] and backtrace [1] are attached below.
+> 2) Add PLIC and APLIC as platform devices as well to ensure probing
+> order as per BRS spec [1] requirement.
+> 
+> 3) BRS spec requires RISC-V to use new ACPI ID for the generic UART. So,
+> update the HID of the UART.
+> 
+> 4) Enabled ACPI tables tests for RISC-V which were originally part of
+> [2] but couldn't get merged due to updates required in the expected AML
+> files. I think combining those patches with this series makes it easier
+> to merge since expected AML files are updated.
+> 
+> [1] - https://github.com/riscv-non-isa/riscv-brs
+> [2] - https://lists.gnu.org/archive/html/qemu-devel/2024-06/msg04734.html
+
+btw: CI is not happy about series, see:
+ https://gitlab.com/imammedo/qemu/-/pipelines/1371119552
+also 'cross-i686-tci' job routinely timeouts on bios-tables-test
+but we still keep adding more tests to it.
+We should either bump timeout to account for slowness or
+disable bios-tables-test for that job.
 
 
-Understand. But seems in case of CBW read-lock, nothing bad in intersecting read requests?
-
-reqlist is shared with backup, where we care to avoid intersecting requests in the list. What about just move the assertion to block_copy_task_create() ? And add comment somewhere that we support intersecting reads in frozen_read_reqs.
-
-
+> Changes since v1:
+> 	1) Made changes in gpex-acpi.c generic as per feedback from
+> 	   Michael. This changes the DSDT for aarch64/virt and microvm
+> 	   machines. Hence, few patches are added to update the expected
+> 	   DSDT files for those machine so that CI tests don't fail.
+> 	2) Added patches to enable ACPI tables tests for RISC-V
+> 	   including a patch to remove the fallback path to
+> 	   search for expected AML files.
+> 	3) Rebased and added tags.
 > 
-> [0]:
+> Sunil V L (9):
+>   hw/riscv/virt-acpi-build.c: Add namespace devices for PLIC and APLIC
+>   hw/riscv/virt-acpi-build.c: Update the HID of RISC-V UART
+>   tests/acpi: Allow DSDT acpi table changes for aarch64
+>   acpi/gpex: Create PCI link devices outside PCI root bridge
+>   tests/acpi: update expected DSDT blob for aarch64 and  microvm
+>   tests/qtest/bios-tables-test.c: Remove the fall back path
+>   tests/acpi: Add empty ACPI data files for RISC-V
+>   tests/qtest/bios-tables-test.c: Enable basic testing for RISC-V
+>   tests/acpi: Add expected ACPI AML files for RISC-V
 > 
->> #!/bin/bash -e
->> dd if=/dev/urandom of=/tmp/disk.raw bs=1M count=1024
->> ./qemu-img create /tmp/fleecing.raw -f raw 1G
->> (
->> ./qemu-system-x86_64 --qmp stdio \
->> --blockdev raw,node-name=node0,file.driver=file,file.filename=/tmp/disk.raw \
->> --blockdev raw,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.raw \
->> <<EOF
->> {"execute": "qmp_capabilities"}
->> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
->> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
->> {"execute": "nbd-server-start", "arguments": {"addr": { "type": "unix", "data": { "path": "/tmp/nbd.socket" } } } }
->> {"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "snap0", "type": "nbd", "name": "exp0"}}
->> EOF
->> ) &
->> sleep 5
->> while true; do
->> ./qemu-nbd -d /dev/nbd0
->> ./qemu-nbd -c /dev/nbd0 nbd:unix:/tmp/nbd.socket:exportname=exp0 -f raw -r
->> nbdinfo --map 'nbd+unix:///exp0?socket=/tmp/nbd.socket'
->> done
+>  hw/pci-host/gpex-acpi.c                       |  13 ++---
+>  hw/riscv/virt-acpi-build.c                    |  49 +++++++++++++++++-
+>  tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5196 bytes
+>  .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5282 bytes
+>  tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6557 bytes
+>  tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7679 bytes
+>  tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5398 bytes
+>  tests/data/acpi/riscv64/virt/APIC             | Bin 0 -> 116 bytes
+>  tests/data/acpi/riscv64/virt/DSDT             | Bin 0 -> 3576 bytes
+>  tests/data/acpi/riscv64/virt/FACP             | Bin 0 -> 276 bytes
+>  tests/data/acpi/riscv64/virt/MCFG             | Bin 0 -> 60 bytes
+>  tests/data/acpi/riscv64/virt/RHCT             | Bin 0 -> 332 bytes
+>  tests/data/acpi/riscv64/virt/SPCR             | Bin 0 -> 80 bytes
+>  tests/data/acpi/x86/microvm/DSDT.pcie         | Bin 3023 -> 3023 bytes
+>  tests/qtest/bios-tables-test.c                |  40 +++++++++-----
+>  15 files changed, 81 insertions(+), 21 deletions(-)
+>  create mode 100644 tests/data/acpi/riscv64/virt/APIC
+>  create mode 100644 tests/data/acpi/riscv64/virt/DSDT
+>  create mode 100644 tests/data/acpi/riscv64/virt/FACP
+>  create mode 100644 tests/data/acpi/riscv64/virt/MCFG
+>  create mode 100644 tests/data/acpi/riscv64/virt/RHCT
+>  create mode 100644 tests/data/acpi/riscv64/virt/SPCR
 > 
-> [1]:
-> 
->> #5  0x000071e5f0088eb2 in __GI___assert_fail (...) at ./assert/assert.c:101
->> #6  0x0000615285438017 in reqlist_init_req (...) at ../block/reqlist.c:23
->> #7  0x00006152853e2d98 in cbw_snapshot_read_lock (...) at ../block/copy-before-write.c:237
->> #8  0x00006152853e3068 in cbw_co_snapshot_block_status (...) at ../block/copy-before-write.c:304
->> #9  0x00006152853f4d22 in bdrv_co_snapshot_block_status (...) at ../block/io.c:3726
->> #10 0x000061528543a63e in snapshot_access_co_block_status (...) at ../block/snapshot-access.c:48
->> #11 0x00006152853f1a0a in bdrv_co_do_block_status (...) at ../block/io.c:2474
->> #12 0x00006152853f2016 in bdrv_co_common_block_status_above (...) at ../block/io.c:2652
->> #13 0x00006152853f22cf in bdrv_co_block_status_above (...) at ../block/io.c:2732
->> #14 0x00006152853d9a86 in blk_co_block_status_above (...) at ../block/block-backend.c:1473
->> #15 0x000061528538da6c in blockstatus_to_extents (...) at ../nbd/server.c:2374
->> #16 0x000061528538deb1 in nbd_co_send_block_status (...) at ../nbd/server.c:2481
->> #17 0x000061528538f424 in nbd_handle_request (...) at ../nbd/server.c:2978
->> #18 0x000061528538f906 in nbd_trip (...) at ../nbd/server.c:3121
->> #19 0x00006152855a7caf in coroutine_trampoline (...) at ../util/coroutine-ucontext.c:175
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
->   block/copy-before-write.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-> index 853e01a1eb..376ff3f3e1 100644
-> --- a/block/copy-before-write.c
-> +++ b/block/copy-before-write.c
-> @@ -234,6 +234,7 @@ cbw_snapshot_read_lock(BlockDriverState *bs, int64_t offset, int64_t bytes,
->           *req = (BlockReq) {.offset = -1, .bytes = -1};
->           *file = s->target;
->       } else {
-> +        reqlist_wait_all(&s->frozen_read_reqs, offset, bytes, &s->lock);
->           reqlist_init_req(&s->frozen_read_reqs, req, offset, bytes);
->           *file = bs->file;
->       }
-
--- 
-Best regards,
-Vladimir
 
 
