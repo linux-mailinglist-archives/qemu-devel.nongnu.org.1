@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5849307A7
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 00:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8644E9307D7
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 00:44:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSkn2-0003En-6U; Sat, 13 Jul 2024 18:00:24 -0400
+	id 1sSlSM-0006lq-AE; Sat, 13 Jul 2024 18:43:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
- id 1sSkma-0002nA-NC; Sat, 13 Jul 2024 17:59:56 -0400
-Received: from icts-p-cavuit-1.kulnet.kuleuven.be ([2a02:2c40:0:c0::25:132])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sSlSJ-0006kU-0o
+ for qemu-devel@nongnu.org; Sat, 13 Jul 2024 18:43:03 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
- id 1sSkmV-00078B-06; Sat, 13 Jul 2024 17:59:56 -0400
-X-KULeuven-Envelope-From: libvirt-e6954efa@volkihar.be
-X-KULeuven-Scanned: Found to be clean
-X-KULeuven-ID: 62DC120072.A067F
-X-KULeuven-Information: Katholieke Universiteit Leuven
-Received: from icts-p-ceifnet-smtps-1.kuleuven.be
- (icts-p-ceifnet-smtps.service.icts.svcd
- [IPv6:2a02:2c40:0:51:131:242:ac11:48])
- by icts-p-cavuit-1.kulnet.kuleuven.be (Postfix) with ESMTP id 62DC120072;
- Sat, 13 Jul 2024 23:59:39 +0200 (CEST)
-BCmilterd-Mark-Subject: no
-BCmilterd-Errors: 
-BCmilterd-Report: 
-X-CAV-Cluster: smtps
-Received: from flutterbat.volkihar.be (236.58-240-81.adsl-dyn.isp.belgacom.be
- [81.240.58.236])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by icts-p-ceifnet-smtps-1.kuleuven.be (Postfix) with ESMTPSA id 3EE44D4EC062F; 
- Sat, 13 Jul 2024 23:59:39 +0200 (CEST)
-Received: by flutterbat.volkihar.be (Postfix, from userid 1000)
- id 0A9DE71CC46; Sat, 13 Jul 2024 23:59:39 +0200 (CEST)
-X-Kuleuven: This mail passed the K.U.Leuven mailcluster
-From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>,
- Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
-Subject: [PATCH v2 4/4] block: add test non-active commit with zeroed data
-Date: Sat, 13 Jul 2024 23:56:44 +0200
-Message-ID: <20240713215644.742244-5-libvirt-e6954efa@volkihar.be>
-X-Mailer: git-send-email 2.44.1
-In-Reply-To: <20240713215644.742244-1-libvirt-e6954efa@volkihar.be>
-References: <20240713215644.742244-1-libvirt-e6954efa@volkihar.be>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sSlSH-0006nd-C1
+ for qemu-devel@nongnu.org; Sat, 13 Jul 2024 18:43:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=Cpa8qJudHsTSWsZv6cMwLiWU9CQw9vUQkcWj+M1oYoA=; b=EyVWzrzERtDNruiYY0XxjN5rYK
+ BnmLOPCvcR1cYSiGL/MzWfI4dd48NTy22iq8CuHpQeJSqA2pVKA8e0nwGVVV+N1x3rqDs2VQtXKE/
+ O0vRcgo6jFVQ5dqO51LRgli3iOKQuID/6UcD/hOceBSQkL0e02TepZzTVa/st1VbX0W7Wzh6uk0nU
+ Aa2Wh9qxYkk0QCfmhd+zOa1ZHQbLZ/dV54rzL7F2JQiirE81/M81/V+y33u+mflGRjmX33lbhkSnC
+ PSUECUzxc5gLc4QFWTfFz/ny7YqKbb9ByutX/U6Qtktk76ehPJL5VSuQbQVm7Zz3MVXFzfXP6WdE/
+ YOkPdw+Oruku9nY5Yy4G+zhdocUlC/2yCai5ZHWXYKlBCTYSwRKo4F0PINX40kYf9QFFpBy20BTdI
+ zYU3z1ey0plCQRpzGRV9PFuTtSovwJkKAZaOky66TfVbNhDuqgqcFSR/24i83PLRtiwj99+4fPILe
+ TEtoCmt6yBfDXcgiirl/8c5QdiBaNjEfSH/2PaUJVWXdSmn0ISxjws8Gj6T8FGs08CxbLUHAQExkX
+ YmTldYkW2wvKDlZKAsUSxTn/BydWgh/qvSA3Zcs3hj3GzqnmqJmxbmyiV001aIQSX10tT3hLAVmcs
+ 0MXVD6dV8FxqBSIka25FJmI/K3XX1unl5JiLioEgM=;
+Received: from [2a00:23c4:8bb4:4000:dd76:681a:1698:b27a]
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sSlQj-000AL0-BI; Sat, 13 Jul 2024 23:41:29 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: qemu-devel@nongnu.org,
+	pbonzini@redhat.com,
+	fam@euphon.net
+Date: Sat, 13 Jul 2024 23:42:49 +0100
+Message-Id: <20240713224249.468084-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:2c40:0:c0::25:132;
- envelope-from=libvirt-e6954efa@volkihar.be;
- helo=icts-p-cavuit-1.kulnet.kuleuven.be
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:dd76:681a:1698:b27a
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH] esp.c: remove transfer size check from DMA DATA IN and DATA
+ OUT transfers
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,176 +76,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
----
- tests/qemu-iotests/315     | 95 ++++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/315.out | 54 ++++++++++++++++++++++
- 2 files changed, 149 insertions(+)
- create mode 100755 tests/qemu-iotests/315
- create mode 100644 tests/qemu-iotests/315.out
+The transfer size check was originally added to prevent consecutive DMA TI
+commands from causing an assert() due to an existing SCSI request being in
+progress, but since the last set of updates this is no longer required.
 
-diff --git a/tests/qemu-iotests/315 b/tests/qemu-iotests/315
-new file mode 100755
-index 0000000000..84865f8001
---- /dev/null
-+++ b/tests/qemu-iotests/315
-@@ -0,0 +1,95 @@
-+#!/usr/bin/env bash
-+# group: rw quick
-+#
-+# Test for commit of discarded blocks
-+#
-+# This tests committing a live snapshot where some of the blocks that
-+# are present in the base image are discarded in the intermediate image.
-+# This intends to check that these blocks are also discarded in the base
-+# image after the commit.
-+#
-+# Copyright (C) 2024 Vincent Vanlaer.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+# creator
-+owner=libvirt-e6954efa@volkihar.be
-+
-+seq=`basename $0`
-+echo "QA output created by $seq"
-+
-+status=1	# failure is the default!
-+
-+_cleanup()
-+{
-+    _cleanup_qemu
-+    _rm_test_img "${TEST_IMG}.base"
-+    _rm_test_img "${TEST_IMG}.mid"
-+    _cleanup_test_img
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ./common.rc
-+. ./common.filter
-+. ./common.qemu
-+
-+_supported_fmt qcow2
-+_supported_proto file
-+
-+size="1M"
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $size
-+TEST_IMG="$TEST_IMG.mid" _make_test_img -b "$TEST_IMG.base" -F $IMGFMT $size
-+_make_test_img -b "${TEST_IMG}.mid" -F $IMGFMT $size
-+
-+$QEMU_IO -c "write -P 0x01 64k 128k" "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "discard 64k 64k" "$TEST_IMG.mid" | _filter_qemu_io
-+
-+echo
-+echo "=== Base image info before commit ==="
-+TEST_IMG="${TEST_IMG}.base" _img_info | _filter_img_info
-+$QEMU_IMG map --output=json "$TEST_IMG.base" | _filter_qemu_img_map
-+
-+echo
-+echo "=== Middle image info before commit ==="
-+TEST_IMG="${TEST_IMG}.mid" _img_info | _filter_img_info
-+$QEMU_IMG map --output=json "$TEST_IMG.mid" | _filter_qemu_img_map
-+
-+echo
-+echo === Running QEMU Live Commit Test ===
-+echo
-+
-+qemu_comm_method="qmp"
-+_launch_qemu -drive file="${TEST_IMG}",if=virtio,id=test
-+h=$QEMU_HANDLE
-+
-+_send_qemu_cmd $h "{ 'execute': 'qmp_capabilities' }" "return"
-+
-+_send_qemu_cmd $h "{ 'execute': 'block-commit',
-+                                 'arguments': { 'device': 'test',
-+                                 'top': '"${TEST_IMG}.mid"',
-+                                 'base': '"${TEST_IMG}.base"'} }" '"status": "null"'
-+
-+_cleanup_qemu
-+
-+echo
-+echo "=== Base image info after commit ==="
-+TEST_IMG="${TEST_IMG}.base" _img_info | _filter_img_info
-+$QEMU_IMG map --output=json "$TEST_IMG.base" | _filter_qemu_img_map
-+
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/315.out b/tests/qemu-iotests/315.out
-new file mode 100644
-index 0000000000..146ec117fb
---- /dev/null
-+++ b/tests/qemu-iotests/315.out
-@@ -0,0 +1,54 @@
-+QA output created by 315
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=1048576
-+Formatting 'TEST_DIR/t.IMGFMT.mid', fmt=IMGFMT size=1048576 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=1048576 backing_file=TEST_DIR/t.IMGFMT.mid backing_fmt=IMGFMT
-+wrote 131072/131072 bytes at offset 65536
-+128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+discard 65536/65536 bytes at offset 65536
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+=== Base image info before commit ===
-+image: TEST_DIR/t.IMGFMT.base
-+file format: IMGFMT
-+virtual size: 1 MiB (1048576 bytes)
-+[{ "start": 0, "length": 65536, "depth": 0, "present": false, "zero": true, "data": false, "compressed": false},
-+{ "start": 65536, "length": 131072, "depth": 0, "present": true, "zero": false, "data": true, "compressed": false, "offset": OFFSET},
-+{ "start": 196608, "length": 851968, "depth": 0, "present": false, "zero": true, "data": false, "compressed": false}]
-+
-+=== Middle image info before commit ===
-+image: TEST_DIR/t.IMGFMT.mid
-+file format: IMGFMT
-+virtual size: 1 MiB (1048576 bytes)
-+backing file: TEST_DIR/t.IMGFMT.base
-+backing file format: IMGFMT
-+[{ "start": 0, "length": 65536, "depth": 1, "present": false, "zero": true, "data": false, "compressed": false},
-+{ "start": 65536, "length": 65536, "depth": 0, "present": true, "zero": true, "data": false, "compressed": false},
-+{ "start": 131072, "length": 65536, "depth": 1, "present": true, "zero": false, "data": true, "compressed": false, "offset": OFFSET},
-+{ "start": 196608, "length": 851968, "depth": 1, "present": false, "zero": true, "data": false, "compressed": false}]
-+
-+=== Running QEMU Live Commit Test ===
-+
-+{ 'execute': 'qmp_capabilities' }
-+{"return": {}}
-+{ 'execute': 'block-commit',
-+                                 'arguments': { 'device': 'test',
-+                                 'top': 'TEST_DIR/t.IMGFMT.mid',
-+                                 'base': 'TEST_DIR/t.IMGFMT.base'} }
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "test"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "test"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "test"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "test"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "test", "len": 1048576, "offset": 1048576, "speed": 0, "type": "commit"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "test"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "test"}}
-+
-+=== Base image info after commit ===
-+image: TEST_DIR/t.IMGFMT.base
-+file format: IMGFMT
-+virtual size: 1 MiB (1048576 bytes)
-+[{ "start": 0, "length": 65536, "depth": 0, "present": false, "zero": true, "data": false, "compressed": false},
-+{ "start": 65536, "length": 65536, "depth": 0, "present": true, "zero": true, "data": false, "compressed": false},
-+{ "start": 131072, "length": 65536, "depth": 0, "present": true, "zero": false, "data": true, "compressed": false, "offset": OFFSET},
-+{ "start": 196608, "length": 851968, "depth": 0, "present": false, "zero": true, "data": false, "compressed": false}]
-+*** done
+Remove the transfer size check from DMA DATA IN and DATA OUT transfers so
+that issuing a DMA TI command when there is no data left to transfer does
+not cause an assert() due to an existing SCSI request being in progress.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2415
+---
+ hw/scsi/esp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index 5d9b52632e..8504dd30a0 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -594,7 +594,7 @@ static void esp_do_dma(ESPState *s)
+         if (!s->current_req) {
+             return;
+         }
+-        if (s->async_len == 0 && esp_get_tc(s) && s->ti_size) {
++        if (s->async_len == 0 && esp_get_tc(s)) {
+             /* Defer until data is available.  */
+             return;
+         }
+@@ -647,7 +647,7 @@ static void esp_do_dma(ESPState *s)
+         if (!s->current_req) {
+             return;
+         }
+-        if (s->async_len == 0 && esp_get_tc(s) && s->ti_size) {
++        if (s->async_len == 0 && esp_get_tc(s)) {
+             /* Defer until data is available.  */
+             return;
+         }
 -- 
-2.44.1
+2.39.2
 
 
