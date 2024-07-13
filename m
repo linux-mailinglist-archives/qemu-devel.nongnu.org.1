@@ -2,83 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F911930754
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Jul 2024 23:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC459307A3
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 00:01:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSjzD-0008UV-Mp; Sat, 13 Jul 2024 17:08:55 -0400
+	id 1sSkmo-0002xv-0x; Sat, 13 Jul 2024 18:00:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSjzB-0008TE-6l
- for qemu-devel@nongnu.org; Sat, 13 Jul 2024 17:08:53 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sSjz9-0004ab-Gr
- for qemu-devel@nongnu.org; Sat, 13 Jul 2024 17:08:52 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1fb3b7d0d3aso19416065ad.2
- for <qemu-devel@nongnu.org>; Sat, 13 Jul 2024 14:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720904930; x=1721509730; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Xn496lNfN+tjORBu0zJyIt7OHIqjOOBmYg4cfigffiY=;
- b=KXqDa/zyrMfqW6lQF6SVduSrPYyorubkcLcvL0VltdmGU5GaG+8/Bv4HZunV07IRV5
- mwrklMRO7g6D0jOruTEqzJvSsvFP99Yixu3CzKfDIs3BvDRaAibotamDM53jfS7kDfPj
- aW/+BeRnIiojObjwvnmZGzBC2tprInQXSN/6ymVsDq0sLKGl47Zs7+PZYbVaOtHGsz9S
- QvBlRHR54rqcAJPGQK+G7feodzEB+9w1w0e5tJT9q+w+JLMGKcLHGduiwK0+ujyUy3RZ
- PBKvuwePMBOw0Dou2qxPf80tTLf86P5BSWK3nTZ2I25dTXZo5rp+ksulFPLw4nFXqySr
- szBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720904930; x=1721509730;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xn496lNfN+tjORBu0zJyIt7OHIqjOOBmYg4cfigffiY=;
- b=tJSwaQewB9V8PryiBZFoVwW8TLxiG5EzsQ02uPGdPYvFJII8UcT/TwQq1UaSs/ZY/S
- fOIsUjxkiR0HQ56So6ymrNbG8+qsFoDsoIctypLpUz4TE/P8iAl//hhI8UQl+wIMVzqP
- efb/qKVhDPyf7V1DhQd0HrICkGk5Er90ePqQmdC01BnNyF3gf0R0G8pV9jU9wAnEGCZO
- dBFzoZFKQUfo+Ll6Ntl1rk6gMRtFr6SgxYSCD/irbdlDNYkAkizGmzcW3hUIyh1n9vCg
- Nbrd9jtkkRrT/9f0cLBeZsh9qJfPSsflqt0/GvxM7u/hss062TYk86FrAvjINKkFc80l
- 4o9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXR4ThlJ4mDhNdZyg0xEJtk0sViqGjY8ne0yGZasdjUHzZ5ULswCFY3wGQ4Qpj9hbMjUNrpftF12ob/OWxbJkGKdW+hI6s=
-X-Gm-Message-State: AOJu0YxWD7GRx5S+BySXjnHSIS73VJnFabbEskHo/59OpQEzqUARU+Mz
- qtIxAsMtV7+u1lASEU0a+4Ldg2P3fVB7YvuGSHxXmDBVeJslQprzl4bPURJCeJ0=
-X-Google-Smtp-Source: AGHT+IF4PN1YN7TVV73R1E/KQ23keuh/o7oYVoBgdMsRREfaGcyHrGIoZuH2mNiO/644HhskMNdGJw==
-X-Received: by 2002:a17:902:d490:b0:1fb:4f91:6728 with SMTP id
- d9443c01a7336-1fbb6d5fee1mr139785165ad.42.1720904929989; 
- Sat, 13 Jul 2024 14:08:49 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.169.129])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bc509e8sm14109325ad.284.2024.07.13.14.08.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 13 Jul 2024 14:08:49 -0700 (PDT)
-Message-ID: <bf42c103-2328-4278-98a0-0df732515aa3@linaro.org>
-Date: Sat, 13 Jul 2024 23:08:45 +0200
+ (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
+ id 1sSkma-0002n9-N2; Sat, 13 Jul 2024 17:59:56 -0400
+Received: from icts-p-cavuit-2.kulnet.kuleuven.be ([2a02:2c40:0:c0::25:131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
+ id 1sSkmV-00077V-09; Sat, 13 Jul 2024 17:59:56 -0400
+X-KULeuven-Envelope-From: libvirt-e6954efa@volkihar.be
+X-KULeuven-Scanned: Found to be clean
+X-KULeuven-ID: 206022006D.AC52C
+X-KULeuven-Information: Katholieke Universiteit Leuven
+Received: from icts-p-ceifnet-smtps-1.kuleuven.be
+ (icts-p-ceifnet-smtps.service.icts.svcd
+ [IPv6:2a02:2c40:0:51:131:242:ac11:48])
+ by icts-p-cavuit-2.kulnet.kuleuven.be (Postfix) with ESMTP id 206022006D;
+ Sat, 13 Jul 2024 23:59:39 +0200 (CEST)
+BCmilterd-Mark-Subject: no
+BCmilterd-Errors: 
+BCmilterd-Report: 
+X-CAV-Cluster: smtps
+Received: from flutterbat.volkihar.be (unknown
+ [IPv6:2a02:a03f:8ada:7900:82c7:e67a:7d31:6a56])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by icts-p-ceifnet-smtps-1.kuleuven.be (Postfix) with ESMTPSA id F326CD4EDEA16; 
+ Sat, 13 Jul 2024 23:59:38 +0200 (CEST)
+Received: by flutterbat.volkihar.be (Postfix, from userid 1000)
+ id B018671CCB8; Sat, 13 Jul 2024 23:59:38 +0200 (CEST)
+X-Kuleuven: This mail passed the K.U.Leuven mailcluster
+From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>,
+ Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+Subject: [PATCH v2 0/4] block: allow commit to unmap zero blocks
+Date: Sat, 13 Jul 2024 23:56:40 +0200
+Message-ID: <20240713215644.742244-1-libvirt-e6954efa@volkihar.be>
+X-Mailer: git-send-email 2.44.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/display/bcm2835_fb: fix fb_use_offsets condition
-To: SamJakob <me@samjakob.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- "open list:Raspberry Pi" <qemu-arm@nongnu.org>
-References: <20240713155656.59431-1-me@samjakob.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240713155656.59431-1-me@samjakob.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a02:2c40:0:c0::25:131;
+ envelope-from=libvirt-e6954efa@volkihar.be;
+ helo=icts-p-cavuit-2.kulnet.kuleuven.be
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,43 +75,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/7/24 17:56, SamJakob wrote:
-> 	It is common practice when implementing double-buffering
-> 	on VideoCore to do so by multiplying the height of the
-> 	virtual buffer by the number of virtual screens desired
-> 	(i.e., two - in the case of double-bufferring).
-> 
-> 	At present, this won't work in QEMU because the logic in
-> 	fb_use_offsets require that both the virtual width and
-> 	height exceed their physical counterparts.
-> 
-> 	This appears to be unintentional/a typo and indeed the
-> 	comment states; "Experimentally, the hardware seems to
-> 	do this only if the viewport size is larger than the
-> 	physical screen". The viewport/virtual size would be
-> 	larger than the physical size if either virtual dimension
-> 	were larger than their physical counterparts and not
-> 	necessarily both.
-> 
-> Signed-off-by: SamJakob <me@samjakob.com>
-> ---
->   hw/display/bcm2835_fb.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/display/bcm2835_fb.c b/hw/display/bcm2835_fb.c
-> index e40ed2d2e1..650db3da82 100644
-> --- a/hw/display/bcm2835_fb.c
-> +++ b/hw/display/bcm2835_fb.c
-> @@ -145,7 +145,7 @@ static bool fb_use_offsets(BCM2835FBConfig *config)
->        * viewport size is larger than the physical screen. (It doesn't
->        * prevent the guest setting this silly viewport setting, though...)
->        */
-> -    return config->xres_virtual > config->xres &&
-> +    return config->xres_virtual > config->xres ||
->           config->yres_virtual > config->yres;
->   }
->   
+This patch series adds support for zero blocks in non-active commits.
+The first three patches in the series contains the actual changes to the
+commit code, the last patch adds a test for the new functionality.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+
+Changes since v1:
+- split up the implementation in three separate commits
+- removed accidentally left over includes from testing
+
+Vincent Vanlaer (4):
+  block: get type of block allocation in commit_run
+  block: refactor commit_run for multiple write types
+  block: allow commit to unmap zero blocks
+  block: add test non-active commit with zeroed data
+
+ block/commit.c             | 68 +++++++++++++++++++++------
+ tests/qemu-iotests/315     | 95 ++++++++++++++++++++++++++++++++++++++
+ tests/qemu-iotests/315.out | 54 ++++++++++++++++++++++
+ 3 files changed, 204 insertions(+), 13 deletions(-)
+ create mode 100755 tests/qemu-iotests/315
+ create mode 100644 tests/qemu-iotests/315.out
+
+-- 
+2.44.1
 
 
