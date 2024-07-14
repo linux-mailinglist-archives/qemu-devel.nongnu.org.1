@@ -2,97 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2B59308E6
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 09:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A25159308E7
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 09:49:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sStwa-0008H0-Su; Sun, 14 Jul 2024 03:46:52 -0400
+	id 1sStyd-0004cC-TK; Sun, 14 Jul 2024 03:48:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sStwZ-0008Fz-Dp
- for qemu-devel@nongnu.org; Sun, 14 Jul 2024 03:46:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sStwX-0005me-C5
- for qemu-devel@nongnu.org; Sun, 14 Jul 2024 03:46:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720943207;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/WHD3oTajkUFk9t4DLQ9JCWDvoQfv3i/z/ncx3CwhAk=;
- b=Wes56DD58v/Z5nBmE0rtAxvwMONyQc6EYdbMPFk28pcvPUQZRZN8xCX1Hidc2XVeFHwabp
- Zj5adImwj1Uzvtk/XQ9KARw1HnumvW3p4rUHJGfPnS1h+/R2n64NVzypoabkszYoRAc0vy
- aGJE5UJWp7y91k2NmS1k2JrfW82EggY=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-495-aWS-jzthOYuD8pTFhkswyg-1; Sun, 14 Jul 2024 03:46:45 -0400
-X-MC-Unique: aWS-jzthOYuD8pTFhkswyg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2ee8ceb0852so31026841fa.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 00:46:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sStyc-0004bG-EP
+ for qemu-devel@nongnu.org; Sun, 14 Jul 2024 03:48:58 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sStya-0007dp-CI
+ for qemu-devel@nongnu.org; Sun, 14 Jul 2024 03:48:58 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1fb72eb3143so23147535ad.1
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 00:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1720943335; x=1721548135;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=X5FUtXIcbYuqhhbKSIbFGBgSs5sSyYULIHHQFKwoLKI=;
+ b=GIWcjZf/irWhsHH4unp/UAa3p/4YeY24DXC8nRLg8EtMZQDXlDCsKxFYYukygByI8F
+ 8XZP0nw9gkrrLvKFerOM4YXbMV2FnyKGhKcdvU/vUsH0TFcg7mz7e3jhL2/yrQM7q+Dm
+ 7TRu7uBvxcjaI7KKeH25PinlSCTvqk3kxXkwXLnJmVM5BRjYfzSkZ3B8s55MghlyZRsZ
+ GwrDiuIl5PrORsYmgxg90+h2Ln+iruSNtA+ENJmp0l7j76jT88W6efPxx3Y61S91rXwe
+ pi7/VeOjdw5EsSTTVbV5nHZfnKHBRZQaWreuoXFm1RMA285WRIoMF9ZXltYNUbVI1NV7
+ 0pgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720943204; x=1721548004;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/WHD3oTajkUFk9t4DLQ9JCWDvoQfv3i/z/ncx3CwhAk=;
- b=ZkwOwaKjCUh97jjbRZizHsQzlp5DY0i44EY/h3BBNzX1LEFghrnllNiXTfI8BlSiYJ
- YRE7uLxZenH3+4fqMoFIwjUAgCcntAHx336kcCPZF4EhQeCVKIv8ckSq30Nof2D6XbD2
- 5SiwOAXoKM4BxU4qeYCldqz+i3jUqDuvYEOFfppn2UFPUaRgPVu3x/fFkrtDGxHtdoA8
- BkGml1VFSLPiNlwoz9zi23dchvorP+XyBsXbXr20dM3eHoF+sBsXzI0o7Phk2wra1cBf
- sG7IFmGjL/QxVq4/zmKnCO5AbaXrDo/3X8jlwHKbA+TWUoFyy7TnPCB6Ugc3NdBitm/4
- sQfA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWXZz+6XinzWkuwLUZqwTZXIYXR8H29gnMUyHNIO12J/V9AqwdJdXRDzM2iHqk6uBIszbIquQ5Xmrre8D3UJTqKxJs3NOQ=
-X-Gm-Message-State: AOJu0YyQU5A690EITRieeGT8HFhcCcFfr82GX/iImdT7RhHMTAL0Fndw
- OyZVcM9FxGnLqIHZnFhkP07UejArHVFsNKAVZ7kR0vA82havK6P1UCbFwyi1qf0KFfT+IrD2NnJ
- ixC1b6L0UMm5i8mdDALPWbqw53SMZygDASacavbnSmGsrZBdVnrS/
-X-Received: by 2002:a05:6512:3ca4:b0:52c:859c:91dd with SMTP id
- 2adb3069b0e04-52eb998e6aemr12911364e87.5.1720943204239; 
- Sun, 14 Jul 2024 00:46:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF9Zjyqo7KkW28tMLk2o5m/EjC3XgCNWJhOzoE1SXdZTSA0ib155F8cHkIO3U/hyZIJbPmiQ==
-X-Received: by 2002:a05:6512:3ca4:b0:52c:859c:91dd with SMTP id
- 2adb3069b0e04-52eb998e6aemr12911308e87.5.1720943202492; 
- Sun, 14 Jul 2024 00:46:42 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc7:240:5146:27c:20a3:47d4:904])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f276c52sm78255915e9.22.2024.07.14.00.46.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jul 2024 00:46:41 -0700 (PDT)
-Date: Sun, 14 Jul 2024 03:46:36 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH v2 0/9] RISC-V: ACPI: Namespace updates
-Message-ID: <20240714034105-mutt-send-email-mst@kernel.org>
-References: <20240708114741.3499585-1-sunilvl@ventanamicro.com>
- <20240712144319.233c19a7@imammedo.users.ipa.redhat.com>
- <ZpEmuB6xyh2K77Ic@redhat.com>
- <20240712155010.3756bb82@imammedo.users.ipa.redhat.com>
+ d=1e100.net; s=20230601; t=1720943335; x=1721548135;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=X5FUtXIcbYuqhhbKSIbFGBgSs5sSyYULIHHQFKwoLKI=;
+ b=UW7lNa/eUZwqqRw+nRlzNCIJ/OVZljaWpHGTr9NdBJU9+xH8faZLtf1pbtUEZYM6lj
+ euzooPYgT58+3zXT6w7rfq8+Bda16+6Q+gt9CDFsu8wGuo+EIQWOmwrYoKmZGgQCKJf6
+ Sd7yNdTCl1LrukBbGezdfvARhkTEeq2/kUp+I+g+p8nC675KN8wb2EX9E1GQXLzsEh6z
+ v5qzGZvLWZHPzZUrZJKNCoCSYOuhW6YX4HcrKrlfBEbdFCRnPHUeR9hp9Iij76p28yp2
+ hcqJRApcEb6qb7L9oQJaHG1APwsvbALPFJGBeBPqoB6R9N4chXbVVd7pPZzXd2ccLh4I
+ c2Cg==
+X-Gm-Message-State: AOJu0YzdaBYDdCNnzmTxHNtHI84L2hf2mZ/E3XqwImeidkKtRzVAwdWR
+ vW69zxsHNWzd5ZcW5Zabbu/wBzDtbwDWggCf65r2YpxLZkWmyq5KelKRgNjToXI=
+X-Google-Smtp-Source: AGHT+IGi0VEF7yn4DaaSdffWqNwEgAbHlL/YJGrc9scdpmZQhMtnnxgBqRjdW2lSgDUyMNP56hNR6A==
+X-Received: by 2002:a17:902:fc45:b0:1fb:58e3:717d with SMTP id
+ d9443c01a7336-1fc0b510e64mr54939735ad.12.1720943334918; 
+ Sun, 14 Jul 2024 00:48:54 -0700 (PDT)
+Received: from localhost ([157.82.204.135])
+ by smtp.gmail.com with UTF8SMTPSA id
+ d9443c01a7336-1fc0bb9c4d8sm19933995ad.77.2024.07.14.00.48.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 14 Jul 2024 00:48:54 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 0/4] hw/pci: Convert rom_bar into OnOffAuto
+Date: Sun, 14 Jul 2024 16:48:30 +0900
+Message-Id: <20240714-rombar-v2-0-af1504ef55de@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240712155010.3756bb82@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAM6Ck2YC/zXMQQqDMBCF4avIrJsyCcHarnqP4mJMxjoLTUlKU
+ CR3byq4/B+Pb4fEUTjBo9khcpYkYalhLg24iZY3K/G1waCxeEOrYpgHikqTHch0d/Stg3r+RB5
+ lPaBXX3uS9A1xO9ys/+tJtCeRtULVofHEoyF2+ulpW2S9ujBDX0r5AX1k9o2dAAAA
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,67 +103,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 12, 2024 at 03:50:10PM +0200, Igor Mammedov wrote:
-> On Fri, 12 Jul 2024 13:51:04 +0100
-> Daniel P. Berrangé <berrange@redhat.com> wrote:
-> 
-> > On Fri, Jul 12, 2024 at 02:43:19PM +0200, Igor Mammedov wrote:
-> > > On Mon,  8 Jul 2024 17:17:32 +0530
-> > > Sunil V L <sunilvl@ventanamicro.com> wrote:
-> > >   
-> > > > This series adds few updates to RISC-V ACPI namespace for virt platform.
-> > > > Additionally, it has patches to enable ACPI table testing for RISC-V.
-> > > > 
-> > > > 1) PCI Link devices need to be created outside the scope of the PCI root
-> > > > complex to ensure correct probe ordering by the OS. This matches the
-> > > > example given in ACPI spec as well.
-> > > > 
-> > > > 2) Add PLIC and APLIC as platform devices as well to ensure probing
-> > > > order as per BRS spec [1] requirement.
-> > > > 
-> > > > 3) BRS spec requires RISC-V to use new ACPI ID for the generic UART. So,
-> > > > update the HID of the UART.
-> > > > 
-> > > > 4) Enabled ACPI tables tests for RISC-V which were originally part of
-> > > > [2] but couldn't get merged due to updates required in the expected AML
-> > > > files. I think combining those patches with this series makes it easier
-> > > > to merge since expected AML files are updated.
-> > > > 
-> > > > [1] - https://github.com/riscv-non-isa/riscv-brs
-> > > > [2] - https://lists.gnu.org/archive/html/qemu-devel/2024-06/msg04734.html  
-> > > 
-> > > btw: CI is not happy about series, see:
-> > >  https://gitlab.com/imammedo/qemu/-/pipelines/1371119552
-> > > also 'cross-i686-tci' job routinely timeouts on bios-tables-test
-> > > but we still keep adding more tests to it.
-> > > We should either bump timeout to account for slowness or
-> > > disable bios-tables-test for that job.  
-> > 
-> > Asumming the test is functionally correct, and not hanging, then bumping
-> > the timeout is the right answer. You can do this in the meson.build
-> > file
-> 
-> I think test is fine, since once in a while it passes (I guess it depends on runner host/load)
-> 
-> Overal job timeout is 1h, but that's not what fails.
-> What I see is, the test aborts after 10min timeout.
-> it's likely we hit boot_sector_test()/acpi_find_rsdp_address_uefi() timeout.
-> That's what we should try to bump.
-> 
-> PS:
-> I've just started the job with 5min bump, lets see if it is enough.
+rom_bar is tristate but was defined as uint32_t so convert it into
+OnOffAuto to clarify that. For compatibility, a uint32 value set via
+QOM will be converted into OnOffAuto.
 
-Because we should wait for 5min CPU time, not wall time.
-Why don't we do that?
-Something like getrusage should work I think.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v2:
+- Documented in docs/about/deprecated.rst (Daniel P. BerrangÃ©)
+- Link to v1: https://lore.kernel.org/r/20240706-rombar-v1-0-802daef2aec1@daynix.com
 
+---
+Akihiko Odaki (4):
+      qapi: Add visit_type_str_preserving()
+      qapi: Do not consume a value when visit_type_enum() fails
+      hw/pci: Convert rom_bar into OnOffAuto
+      hw/qdev: Remove opts member
 
+ docs/about/deprecated.rst         |  7 +++++
+ docs/igd-assign.txt               |  2 +-
+ include/hw/pci/pci_device.h       |  2 +-
+ include/hw/qdev-core.h            |  4 ---
+ include/qapi/visitor-impl.h       |  3 ++-
+ include/qapi/visitor.h            | 25 +++++++++++++----
+ hw/core/qdev.c                    |  1 -
+ hw/pci/pci.c                      | 57 +++++++++++++++++++++++++++++++++++++--
+ hw/vfio/pci-quirks.c              |  2 +-
+ hw/vfio/pci.c                     | 11 ++++----
+ hw/xen/xen_pt_load_rom.c          |  4 +--
+ qapi/opts-visitor.c               | 12 ++++-----
+ qapi/qapi-clone-visitor.c         |  2 +-
+ qapi/qapi-dealloc-visitor.c       |  4 +--
+ qapi/qapi-forward-visitor.c       |  4 ++-
+ qapi/qapi-visit-core.c            | 21 ++++++++++++---
+ qapi/qobject-input-visitor.c      | 23 ++++++++--------
+ qapi/qobject-output-visitor.c     |  2 +-
+ qapi/string-input-visitor.c       |  2 +-
+ qapi/string-output-visitor.c      |  2 +-
+ system/qdev-monitor.c             | 12 +++++----
+ tests/qtest/virtio-net-failover.c | 32 +++++++++++-----------
+ 22 files changed, 161 insertions(+), 73 deletions(-)
+---
+base-commit: f2cb4026fccfe073f84a4b440e41d3ed0c3134f6
+change-id: 20240704-rombar-1a4ba2890d6c
 
-> > We should never disable tests only in CI, because non-CI users
-> > are just as likely to hit timeouts.
-> > 
-> > 
-> > With regards,
-> > Daniel
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
