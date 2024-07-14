@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4649309A5
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 13:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 044869309A9
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 13:13:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSx8M-0005Gm-Ke; Sun, 14 Jul 2024 07:11:14 -0400
+	id 1sSx8R-0005Ph-Ue; Sun, 14 Jul 2024 07:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sSx8G-0004vz-OP
- for qemu-devel@nongnu.org; Sun, 14 Jul 2024 07:11:08 -0400
+ id 1sSx8L-0005FM-Re
+ for qemu-devel@nongnu.org; Sun, 14 Jul 2024 07:11:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sSx8F-000267-2u
- for qemu-devel@nongnu.org; Sun, 14 Jul 2024 07:11:08 -0400
+ id 1sSx8J-000285-Nz
+ for qemu-devel@nongnu.org; Sun, 14 Jul 2024 07:11:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720955466;
+ s=mimecast20190719; t=1720955470;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yKHaLhM9UAuURgVWP4GssGjRnYIMl9btSsv/NKhFweE=;
- b=EJhyAf9BESePSVimDoTLSq++zGYaoeUznQ/pgKIWxa3mMDaoD9C5fSiSKKaVJGT7LcBL9W
- unDv3Sgz1/4gz5OHLiXa3JDiIDPV0F0SMPuC3S46y5Kxbea5XqDiaiwNeZ/gqPrykr6Ckk
- tQPC/V3gM6xJXEDNrD+ArH4dDp/4w78=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TSrKWshh3GKRJaKaC48z20K8ZcvddsFT5215e+ccso8=;
+ b=FLgYKSY1esF+Pl/Rk3rFjgaYL2XW6GebNX3c7SQmKY8c9zO0hjriUnHwsIhexyw69oz9/Y
+ Q7MekHgMmPkxJgsafMl92C10J+YirMquSG/s8SkEJbuMfsVI1SKJ1qbMjD7M7vcgNHep3D
+ 0xCncDXibSKSHkNeYzQZPU9/8HuBl+M=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-BndHyV1NO-O52A9cIjjzig-1; Sun, 14 Jul 2024 07:11:04 -0400
-X-MC-Unique: BndHyV1NO-O52A9cIjjzig-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42725ec6d8dso32402465e9.2
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 04:11:04 -0700 (PDT)
+ us-mta-445-_cwdFf_IOZyPN2hohE1laQ-1; Sun, 14 Jul 2024 07:11:07 -0400
+X-MC-Unique: _cwdFf_IOZyPN2hohE1laQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52e9cc6a99eso3682070e87.3
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 04:11:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720955462; x=1721560262;
+ d=1e100.net; s=20230601; t=1720955466; x=1721560266;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yKHaLhM9UAuURgVWP4GssGjRnYIMl9btSsv/NKhFweE=;
- b=wVNpe42fPe80nLzqbR8V9ussptBuE05eTF5JpX659Nr85QLs3AjKtGb+gOBaErAj81
- nxb/XJoCLpztjSKQsM+u4z6oKWWFq3O6ELyfJA8WsCCHVh8NRUJpax0lQaH/0vwJLfP0
- 9/kMTc5MIo2ym1X2zzWLPvNZSRoNVRFE2Qgsvy1Q3NHVzCqLjm5W6KE1mb5hqKlIfjgs
- F6xPz84MT4tRwAS7j0Um9Tz1l3yytLnfUfVMIjmgaKGb8c//ArDZitY7rm4w2A4KLnIM
- csKlDx1vyh7mrnjYvCGxXjkX3rQtyvSxODsdtHcOcI7aHg2/DA/U9kKEGu1dydDbvskE
- ZBAg==
-X-Gm-Message-State: AOJu0Yzu1xpH9ok8pnn5x9w41c8hvw5NEHHMn17htmbTHhhIWsLe+7it
- HjnTDIUKoLdj1xsVJOIm6zx8E4qAm35S2UDq0QqhJ8mn54AYaY9W3AquOjFv1Pk+SqkHRhIjcGZ
- x49ozRb2yDp1VNa/69h3lof1a6uLDsNPhIEv/+xYEmCW7B/VylamD7sj8TtKbgl66THsmeKiCP3
- 0lztoeqRSyUAGmx9YPEzJNNWDThC6vjKJTyhsf
-X-Received: by 2002:a05:600c:3013:b0:426:63f1:9a1b with SMTP id
- 5b1f17b1804b1-426708f1c97mr124836835e9.33.1720955462575; 
- Sun, 14 Jul 2024 04:11:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEuPa39c4EJJD5ZK6UOrT5ikByoKhQFw7f4dyQfg1x4TLynriXEpI4aWGeeO69Mpt2rUawZsA==
-X-Received: by 2002:a05:600c:3013:b0:426:63f1:9a1b with SMTP id
- 5b1f17b1804b1-426708f1c97mr124836735e9.33.1720955462222; 
- Sun, 14 Jul 2024 04:11:02 -0700 (PDT)
+ bh=TSrKWshh3GKRJaKaC48z20K8ZcvddsFT5215e+ccso8=;
+ b=vGljkQ/JaUbWGJjlx+k/ckdecHPNNStQ63X+lMGkKb4Fzv3kgwbKs3Sz9rsDhwPd/q
+ 5nxxYLtda7+dtF2kFoQl9r7gHTfg3e5nks0oEuT79OxchVLdKIuiTrwaxxsBGwfbt7zP
+ JROwmVLf0yUMwql4idw/pIBeryxk9k3HnVkNkxGrMv81QTSwqQVA0wrgS4oVZqtpCBLw
+ 5r+JU9vLfx8+WlQ5cb0XLe4w6GSWG/RNgNIXt8tVNFW/wzA1TE9QMMA6TtnKfA/jk33c
+ nq6UfvzaXfHYc/d4nZm+evNqU6zjy4bRQ+dkMS0TPHy+Lz33HuVJcx0/L3sowZ1DCIK4
+ GFgw==
+X-Gm-Message-State: AOJu0YztX35mdwVg4ztUnLBj9OrPseeMV+sDvBLKdHMgVrvXAkamRrKh
+ 33JQt1bmyCvKDOomi7NhB+gLnW8+Vfh/V6Gs0cnZ46D4ElaysZ6JZRoA7FZ5h5xug647cX7TW+1
+ G6l3qf1BRI714nV4w95gprnKRPORCnt6PtKhIA0SMqSe0wRQpgFMmIMNgTbUJijo5V1C2GIrLvR
+ us6G0/4YF8zV97iSdFUiVH5BIdR1KsyFFYgk5E
+X-Received: by 2002:a05:6512:2350:b0:52c:987f:b355 with SMTP id
+ 2adb3069b0e04-52eb99cc6abmr11898937e87.42.1720955465625; 
+ Sun, 14 Jul 2024 04:11:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEpf+h8gZreDBO6VscnfqTTsEQIe0mSAMI6xX0bC/DIgT15TtqGO2J0okjdeQ/kwActLdyuCw==
+X-Received: by 2002:a05:6512:2350:b0:52c:987f:b355 with SMTP id
+ 2adb3069b0e04-52eb99cc6abmr11898919e87.42.1720955465155; 
+ Sun, 14 Jul 2024 04:11:05 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f25ac47sm83415875e9.18.2024.07.14.04.11.00
+ ffacd0b85a97d-3680dafbe9esm3583681f8f.78.2024.07.14.04.11.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jul 2024 04:11:00 -0700 (PDT)
+ Sun, 14 Jul 2024 04:11:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 06/13] target/i386/tcg: Introduce x86_mmu_index_{kernel_,}pl
-Date: Sun, 14 Jul 2024 13:10:36 +0200
-Message-ID: <20240714111043.14132-7-pbonzini@redhat.com>
+Subject: [PULL 07/13] target/i386/tcg: Compute MMU index once
+Date: Sun, 14 Jul 2024 13:10:37 +0200
+Message-ID: <20240714111043.14132-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240714111043.14132-1-pbonzini@redhat.com>
 References: <20240714111043.14132-1-pbonzini@redhat.com>
@@ -100,88 +100,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+Add the MMU index to the StackAccess struct, so that it can be cached
+or (in the next patch) computed from information that is not in
+CPUX86State.
 
-Disconnect mmu index computation from the current pl
-as stored in env->hflags.
-
+Co-developed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240617161210.4639-2-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 11 ++---------
- target/i386/cpu.c | 27 ++++++++++++++++++++++++---
- 2 files changed, 26 insertions(+), 12 deletions(-)
+ target/i386/tcg/seg_helper.c | 35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c43ac01c794..1e121acef54 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2445,15 +2445,8 @@ static inline bool is_mmu_index_32(int mmu_index)
-     return mmu_index & 1;
- }
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index b6902ca3fba..8a6d92b3583 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -56,36 +56,37 @@ typedef struct StackAccess
+     target_ulong ss_base;
+     target_ulong sp;
+     target_ulong sp_mask;
++    int mmu_index;
+ } StackAccess;
  
--static inline int cpu_mmu_index_kernel(CPUX86State *env)
--{
--    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
--    int mmu_index_base =
--        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
--        ((env->hflags & HF_CPL_MASK) < 3 && (env->eflags & AC_MASK)) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
--
--    return mmu_index_base + mmu_index_32;
--}
-+int x86_mmu_index_pl(CPUX86State *env, unsigned pl);
-+int cpu_mmu_index_kernel(CPUX86State *env);
- 
- #define CC_DST  (env->cc_dst)
- #define CC_SRC  (env->cc_src)
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c05765eeafc..4688d140c2d 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8122,18 +8122,39 @@ static bool x86_cpu_has_work(CPUState *cs)
-     return x86_cpu_pending_interrupt(cs, cs->interrupt_request) != 0;
- }
- 
--static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
-+int x86_mmu_index_pl(CPUX86State *env, unsigned pl)
+ static void pushw(StackAccess *sa, uint16_t val)
  {
--    CPUX86State *env = cpu_env(cs);
-     int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 0 : 1;
-     int mmu_index_base =
--        (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER64_IDX :
-+        pl == 3 ? MMU_USER64_IDX :
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-         (env->eflags & AC_MASK) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
- 
-     return mmu_index_base + mmu_index_32;
+     sa->sp -= 2;
+-    cpu_stw_kernel_ra(sa->env, sa->ss_base + (sa->sp & sa->sp_mask),
+-                      val, sa->ra);
++    cpu_stw_mmuidx_ra(sa->env, sa->ss_base + (sa->sp & sa->sp_mask),
++                      val, sa->mmu_index, sa->ra);
  }
  
-+static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
-+{
-+    CPUX86State *env = cpu_env(cs);
-+    return x86_mmu_index_pl(env, env->hflags & HF_CPL_MASK);
-+}
-+
-+static int x86_mmu_index_kernel_pl(CPUX86State *env, unsigned pl)
-+{
-+    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
-+    int mmu_index_base =
-+        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-+        (pl < 3 && (env->eflags & AC_MASK)
-+         ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX);
-+
-+    return mmu_index_base + mmu_index_32;
-+}
-+
-+int cpu_mmu_index_kernel(CPUX86State *env)
-+{
-+    return x86_mmu_index_kernel_pl(env, env->hflags & HF_CPL_MASK);
-+}
-+
- static void x86_disas_set_info(CPUState *cs, disassemble_info *info)
+ static void pushl(StackAccess *sa, uint32_t val)
  {
-     X86CPU *cpu = X86_CPU(cs);
+     sa->sp -= 4;
+-    cpu_stl_kernel_ra(sa->env, sa->ss_base + (sa->sp & sa->sp_mask),
+-                      val, sa->ra);
++    cpu_stl_mmuidx_ra(sa->env, sa->ss_base + (sa->sp & sa->sp_mask),
++                      val, sa->mmu_index, sa->ra);
+ }
+ 
+ static uint16_t popw(StackAccess *sa)
+ {
+-    uint16_t ret = cpu_lduw_data_ra(sa->env,
+-                                    sa->ss_base + (sa->sp & sa->sp_mask),
+-                                    sa->ra);
++    uint16_t ret = cpu_lduw_mmuidx_ra(sa->env,
++                                      sa->ss_base + (sa->sp & sa->sp_mask),
++                                      sa->mmu_index, sa->ra);
+     sa->sp += 2;
+     return ret;
+ }
+ 
+ static uint32_t popl(StackAccess *sa)
+ {
+-    uint32_t ret = cpu_ldl_data_ra(sa->env,
+-                                   sa->ss_base + (sa->sp & sa->sp_mask),
+-                                   sa->ra);
++    uint32_t ret = cpu_ldl_mmuidx_ra(sa->env,
++                                     sa->ss_base + (sa->sp & sa->sp_mask),
++                                     sa->mmu_index, sa->ra);
+     sa->sp += 4;
+     return ret;
+ }
+@@ -677,6 +678,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+ 
+     sa.env = env;
+     sa.ra = 0;
++    sa.mmu_index = cpu_mmu_index_kernel(env);
+ 
+     if (type == 5) {
+         /* task gate */
+@@ -858,12 +860,12 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+ static void pushq(StackAccess *sa, uint64_t val)
+ {
+     sa->sp -= 8;
+-    cpu_stq_kernel_ra(sa->env, sa->sp, val, sa->ra);
++    cpu_stq_mmuidx_ra(sa->env, sa->sp, val, sa->mmu_index, sa->ra);
+ }
+ 
+ static uint64_t popq(StackAccess *sa)
+ {
+-    uint64_t ret = cpu_ldq_data_ra(sa->env, sa->sp, sa->ra);
++    uint64_t ret = cpu_ldq_mmuidx_ra(sa->env, sa->sp, sa->mmu_index, sa->ra);
+     sa->sp += 8;
+     return ret;
+ }
+@@ -982,6 +984,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
+ 
+     sa.env = env;
+     sa.ra = 0;
++    sa.mmu_index = cpu_mmu_index_kernel(env);
+     sa.sp_mask = -1;
+     sa.ss_base = 0;
+     if (dpl < cpl || ist != 0) {
+@@ -1116,6 +1119,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
+     sa.sp = env->regs[R_ESP];
+     sa.sp_mask = 0xffff;
+     sa.ss_base = env->segs[R_SS].base;
++    sa.mmu_index = cpu_mmu_index_kernel(env);
+ 
+     if (is_int) {
+         old_eip = next_eip;
+@@ -1579,6 +1583,7 @@ void helper_lcall_real(CPUX86State *env, uint32_t new_cs, uint32_t new_eip,
+     sa.sp = env->regs[R_ESP];
+     sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+     sa.ss_base = env->segs[R_SS].base;
++    sa.mmu_index = cpu_mmu_index_kernel(env);
+ 
+     if (shift) {
+         pushl(&sa, env->segs[R_CS].selector);
+@@ -1618,6 +1623,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
+ 
+     sa.env = env;
+     sa.ra = GETPC();
++    sa.mmu_index = cpu_mmu_index_kernel(env);
+ 
+     if (e2 & DESC_S_MASK) {
+         if (!(e2 & DESC_CS_MASK)) {
+@@ -1905,6 +1911,7 @@ void helper_iret_real(CPUX86State *env, int shift)
+ 
+     sa.env = env;
+     sa.ra = GETPC();
++    sa.mmu_index = x86_mmu_index_pl(env, 0);
+     sa.sp_mask = 0xffff; /* XXXX: use SS segment size? */
+     sa.sp = env->regs[R_ESP];
+     sa.ss_base = env->segs[R_SS].base;
+@@ -1976,8 +1983,11 @@ static inline void helper_ret_protected(CPUX86State *env, int shift,
+     target_ulong new_eip, new_esp;
+     StackAccess sa;
+ 
++    cpl = env->hflags & HF_CPL_MASK;
++
+     sa.env = env;
+     sa.ra = retaddr;
++    sa.mmu_index = x86_mmu_index_pl(env, cpl);
+ 
+ #ifdef TARGET_X86_64
+     if (shift == 2) {
+@@ -2032,7 +2042,6 @@ static inline void helper_ret_protected(CPUX86State *env, int shift,
+         !(e2 & DESC_CS_MASK)) {
+         raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, retaddr);
+     }
+-    cpl = env->hflags & HF_CPL_MASK;
+     rpl = new_cs & 3;
+     if (rpl < cpl) {
+         raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, retaddr);
 -- 
 2.45.2
 
