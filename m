@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F32930996
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 12:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E548F9309A2
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Jul 2024 13:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sSwlM-0005S5-IW; Sun, 14 Jul 2024 06:47:28 -0400
+	id 1sSx8D-0004ZW-1j; Sun, 14 Jul 2024 07:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sSwkx-0005Qd-03
- for qemu-devel@nongnu.org; Sun, 14 Jul 2024 06:47:07 -0400
-Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sSwku-0002EL-U3
- for qemu-devel@nongnu.org; Sun, 14 Jul 2024 06:47:02 -0400
-Received: by mail-oi1-x22f.google.com with SMTP id
- 5614622812f47-3c9cc681ee4so1903256b6e.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 03:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1720954019; x=1721558819;
- darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TJ61kCrC/rs23cmc0FgYb0iNb708I3WzZcj94T88GYw=;
- b=OLlaUDLAUVa+yCcbtOvRsVY7uUfnVA0wFj0DUbdjUnthcxF3JiT4ldq3sH68PhQ6Uc
- X8zPrtJZtysvrgy5p4bKeOikIA8/0tDYSLy+BLcGVgI6cbtjNXgqoT2zpNBPMaQw/Aat
- hXvEIAn++QGlFht/UxXX6OwUhqPmMhoihT8obLd1wP4SnoU0HatFr/2F0JLUN93Dptep
- hqaysBbrqj2s09tlgEjBhqRlGdhcLYnSNUYOv3h7kc54x/twPtH34aLO4TPLq07kEYo9
- 2wL9Wwi5fUfoaVq+CgmqVsJcEj1D7QZnLZ3iX4O+oCQQiXkqZtmquXLwdUFB04vreGHs
- vZdA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sSx88-0004Vp-QH
+ for qemu-devel@nongnu.org; Sun, 14 Jul 2024 07:11:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sSx85-00022M-0D
+ for qemu-devel@nongnu.org; Sun, 14 Jul 2024 07:11:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720955450;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5JX5ELR1NtHHCLybeAN9sOd7BdgMYgtwGtyVuWSLGQ0=;
+ b=S15ZZX6l7Zv+vKnFBkDhVYUB6QoSXZ5T31skZRCc4xrteh+PmA3QjbP9AB8G/zRIg2NK+w
+ VFiNe3fI0VikJkxiIssSPDtriDm6UHtOZI6Ifh18hXFwCUlWTo0nRUD3Acvwe53DXHvneg
+ DV8x54Gg7iCpACxn1nfMZtkAmMrB1eQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-114-ZLcm6ijQN8ibVreJLgSUtw-1; Sun, 14 Jul 2024 07:10:48 -0400
+X-MC-Unique: ZLcm6ijQN8ibVreJLgSUtw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-426724679f0so23471835e9.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 04:10:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720954019; x=1721558819;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TJ61kCrC/rs23cmc0FgYb0iNb708I3WzZcj94T88GYw=;
- b=A8LpfDhdOkiGZXHCW8PojQs50u3zFy9w2PhC1kpDn05WJEE+Vv+igoQsx1J7e+3HKf
- 8yXJTchFPFQJDLjeihwnjMQC8fOhqgBAHqIHLSku3CKsB6PrN2clXWzH7Ku+d8k1EEBX
- AjQJOLgMSSvNK1xEr5cBzq7pjbkYlYqUsvhSnDCI967u2uiXzxKnjX9/orZW5JHiGxjh
- ZVnTuyLhuafiND27nI70B2A+IS5L6bJtvdq7q+x5PQym3PSGb+ZKc070MklzWQ6twQkk
- 1+Hfayz/gUuzNFvQtSE2bOtM5VpEe6/qPrWuI7Nk6k4TyU9+7t4SjQZHe53eec8/bynN
- LLlw==
-X-Gm-Message-State: AOJu0YyM9pUwcy3FXScvLwDVHdX/SIswLy48DA7D4gM/dq/PDU5vztWD
- 44SmGSVK/q0mJpKiXgUhLbsYd+YCM21qbLvRcY0Z65Y1AO+uRD1gJAGbcok3pxg=
-X-Google-Smtp-Source: AGHT+IEfk0845Dpb6BGhgdFwDNBnpvt7325QFpH6CuS6ZWTAwZYCClTJly2aQ58uMvf4X0ZxGWj+6g==
-X-Received: by 2002:a05:6808:159e:b0:3d6:4eb3:3c54 with SMTP id
- 5614622812f47-3d93bee94eemr20350834b6e.11.1720954019587; 
- Sun, 14 Jul 2024 03:46:59 -0700 (PDT)
-Received: from localhost ([157.82.204.135])
- by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1fc0bb6fedesm21941075ad.15.2024.07.14.03.46.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 14 Jul 2024 03:46:59 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 14 Jul 2024 19:46:52 +0900
-Subject: [PATCH] cpu: Free queued CPU work
+ d=1e100.net; s=20230601; t=1720955446; x=1721560246;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5JX5ELR1NtHHCLybeAN9sOd7BdgMYgtwGtyVuWSLGQ0=;
+ b=v1h533G0gyyPm8zMciT3jCRlSP4ZJL0graEPtfrgo8mUIY0LoSg7qUFLxMmF/uaOMF
+ xPKS6NKcDXWDuzjiEwAJaW08j4L/myiHRxugBoKKDxY8E1BoCIGehry2Pc3RUxcZg5cq
+ bfJGIEIjCyOxCTLX0HXFbgCbpQb7LBu6ihRcBqksTRiIq80eZx7FdI1hjA1DcTB/zcL7
+ nkE3xHLPGtM7eVxUUHZvC3sWmpG5YGX12o72E3XCFU1gtnxUZuVvfLHoOMNJlz2LyQoT
+ egZn5vCuaR+wwlmWBnZm9QUg/CsMdnFGAkKfcXrAGI5Q+STC166T0je1YisewibsYFLW
+ yUoA==
+X-Gm-Message-State: AOJu0YzB3yJolDYtGxipWsZxIJ5HIAb8fh0qOxTFRAYCbBN9b7g3oN7q
+ pv/ZaCkPbX+qHYOvoOt8SlfUDxufWHu9hbKqxEg9/0yJJQ5ugtHifeH9D6cGw//vTf0UqZJaAhv
+ L1vkVHWGI5nV7HTjMHCP7N8WmXV1AHaJW8Lqe3CMTfGevMQb4y0FzHnU1MQ8sHxxmmStNag0oyu
+ Ca6iU5+JZrdctRocWq5aIgt/VQ9KcUmdZ5RhFk
+X-Received: by 2002:a05:600c:4883:b0:424:8743:86b4 with SMTP id
+ 5b1f17b1804b1-4279da0240dmr62950795e9.6.1720955446595; 
+ Sun, 14 Jul 2024 04:10:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcM3QOrpdfxv+Z22nj5P2uV7FXiAOngELHtJlca4a0hIFg55bw12haLBsPcriCp9BWOlMRrQ==
+X-Received: by 2002:a05:600c:4883:b0:424:8743:86b4 with SMTP id
+ 5b1f17b1804b1-4279da0240dmr62950685e9.6.1720955446094; 
+ Sun, 14 Jul 2024 04:10:46 -0700 (PDT)
+Received: from avogadro.local ([151.95.101.29])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4279f2397easm83771595e9.6.2024.07.14.04.10.44
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 14 Jul 2024 04:10:45 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/13] target/i386 changes for 2024-07-12
+Date: Sun, 14 Jul 2024 13:10:30 +0200
+Message-ID: <20240714111043.14132-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240714-cpu-v1-1-19c2f8de2055@daynix.com>
-X-B4-Tracking: v=1; b=H4sIAJusk2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDc0MT3eSCUt1kkxQjCwsj4ySTZCMloMqCotS0zAqwKdGxtbUA79O781U
- AAAA=
-To: Richard Henderson <richard.henderson@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::22f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,75 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Running qemu-system-aarch64 -M virt -nographic and terminating it will
-result in a LeakSanitizer error due to remaining queued CPU work so
-free it.
+The following changes since commit 23901b2b721c0576007ab7580da8aa855d6042a9:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/core/cpu.h |  6 ++++++
- cpu-common.c          | 11 +++++++++++
- hw/core/cpu-common.c  |  1 +
- 3 files changed, 18 insertions(+)
+  Merge tag 'pull-target-arm-20240711' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-07-11 12:00:00 -0700)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index a2c8536943f7..8e6466c1ddab 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1000,6 +1000,12 @@ void cpu_resume(CPUState *cpu);
-  */
- void cpu_remove_sync(CPUState *cpu);
- 
-+/**
-+ * free_queued_cpu_work() - free all items on CPU work queue
-+ * @cpu: The CPU which work queue to free.
-+ */
-+void free_queued_cpu_work(CPUState *cpu);
-+
- /**
-  * process_queued_cpu_work() - process all items on CPU work queue
-  * @cpu: The CPU which work queue to process.
-diff --git a/cpu-common.c b/cpu-common.c
-index ce78273af597..7ae136f98ca7 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -331,6 +331,17 @@ void async_safe_run_on_cpu(CPUState *cpu, run_on_cpu_func func,
-     queue_work_on_cpu(cpu, wi);
- }
- 
-+void free_queued_cpu_work(CPUState *cpu)
-+{
-+    while (!QSIMPLEQ_EMPTY(&cpu->work_list)) {
-+        struct qemu_work_item *wi = QSIMPLEQ_FIRST(&cpu->work_list);
-+        QSIMPLEQ_REMOVE_HEAD(&cpu->work_list, node);
-+        if (wi->free) {
-+            g_free(wi);
-+        }
-+    }
-+}
-+
- void process_queued_cpu_work(CPUState *cpu)
- {
-     struct qemu_work_item *wi;
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index b19e1fdacf22..d2e3e4570ab7 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -281,6 +281,7 @@ static void cpu_common_finalize(Object *obj)
-         g_free(cpu->plugin_state);
-     }
- #endif
-+    free_queued_cpu_work(cpu);
-     g_array_free(cpu->gdb_regs, TRUE);
-     qemu_lockcnt_destroy(&cpu->in_ioctl_lock);
-     qemu_mutex_destroy(&cpu->work_mutex);
+are available in the Git repository at:
 
----
-base-commit: f2cb4026fccfe073f84a4b440e41d3ed0c3134f6
-change-id: 20240714-cpu-c4d28823b4c2
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream-i386
 
-Best regards,
+for you to fetch changes up to cdcadf9ee9efef96323e0b88fccff589f06fc0ee:
+
+  i386/sev: Don't allow automatic fallback to legacy KVM_SEV*_INIT (2024-07-12 15:35:54 +0200)
+
+----------------------------------------------------------------
+* target/i386/tcg: fixes for seg_helper.c
+* SEV: Don't allow automatic fallback to legacy KVM_SEV_INIT,
+  but also don't use it by default
+
+----------------------------------------------------------------
+Michael Roth (1):
+      i386/sev: Don't allow automatic fallback to legacy KVM_SEV*_INIT
+
+Paolo Bonzini (8):
+      target/i386/tcg: fix POP to memory in long mode
+      target/i386/tcg: Allow IRET from user mode to user mode with SMAP
+      target/i386/tcg: use PUSHL/PUSHW for error code
+      target/i386/tcg: Compute MMU index once
+      target/i386/tcg: Use DPL-level accesses for interrupts and call gates
+      target/i386/tcg: check for correct busy state before switching to a new task
+      target/i386/tcg: use X86Access for TSS access
+      target/i386/tcg: save current task state before loading new one
+
+Richard Henderson (3):
+      target/i386/tcg: Remove SEG_ADDL
+      target/i386/tcg: Reorg push/pop within seg_helper.c
+      target/i386/tcg: Introduce x86_mmu_index_{kernel_,}pl
+
+ qapi/qom.json                    |  18 +-
+ target/i386/cpu.h                |  11 +-
+ hw/i386/pc.c                     |   2 +-
+ target/i386/cpu.c                |  27 +-
+ target/i386/sev.c                |  87 ++++-
+ target/i386/tcg/seg_helper.c     | 665 +++++++++++++++++++++------------------
+ target/i386/tcg/decode-new.c.inc |   2 +-
+ target/i386/tcg/emit.c.inc       |   1 +
+ 8 files changed, 472 insertions(+), 341 deletions(-)
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.2
 
 
