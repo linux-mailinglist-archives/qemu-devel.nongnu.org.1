@@ -2,95 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3316F931D0D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 00:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC81931D1A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 00:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTTws-0005sV-Ch; Mon, 15 Jul 2024 18:13:34 -0400
+	id 1sTU1a-0000sG-5Y; Mon, 15 Jul 2024 18:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sTTwX-00052e-Tg
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 18:13:14 -0400
-Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1sTTwW-0006Jy-Aj
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 18:13:13 -0400
-Received: by mail-qv1-xf2d.google.com with SMTP id
- 6a1803df08f44-6b5dfa44f24so26610686d6.3
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 15:13:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1721081591; x=1721686391; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=n/pLSkEkVMQ2EG9E68S2CQhpC5K2Hr/bhI+bVnZfMKI=;
- b=JjhbKBOjMfjhYCuIeZ/z0jtMtKAGhhhpIUauA22g3NqENkY9TzT0sjHn2sCe6dBC5z
- dpOuwpEtqjQ7RM21H69GggX2ZIVN5oezYCAWI2F8IZu9Nsdt2NJyiI/3I2HF/DNl8HFr
- LRmRSIqpyI92Noh/SoTcx+78SGsUn0GpJenwqBgnu0O7TEweA+7GEekSGdpJAkFFjAA9
- mIa77CEYR3Hj1XhGfrvywvqXjj4Pe39ggWXi9F7xu7lIzseQytEeQCIZoN94277UpqmY
- 8gO5x6LS66cKFEOHM4k92D/VeuIX3q9RkoQRzBNC4M4+tHThBnm1vVEqTS3EEiq8T3kn
- x+xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721081591; x=1721686391;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n/pLSkEkVMQ2EG9E68S2CQhpC5K2Hr/bhI+bVnZfMKI=;
- b=X0nQxvZEuGNT/ckG+M+5KBuzStjC5bniOw9b67faHpXwaOpMJJ1sKSMZ1WTTWYJquH
- 02F9zMDl1K3HzhLtkvSGjMiaXb0GWfl61pnYSSxdW7NkvwyzKGTAhLLZoY+2ck3Kt0LR
- d24VkUAS+oNIc+fdee/6P7gqoPa2Ox8E55u9uQActVxTualOTmw2VcZdkT5to3ynlPht
- /8s27UyGhrR0QytFkqrxePNtVoY7hDB4b57vvGhfQH18eFt75TyA6203QRA+4B//zCAX
- vvtgEVTpd1U4FO4A17fxK3p/95uhlcd+cYLwd/ihtzslNSZbO1UMS115Zp6uGy2LTR/Y
- gItQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUDCA9ieWgVv+tN/IVkbGo8hf5BK90LwA04PsNI+gQa4YkyLxnyDy/AZ328LZuDHGkMEy0jhiuNDKB/pSsuqTbvh18vjq4=
-X-Gm-Message-State: AOJu0YyeCVtXflLHCA0bBoXzYW7VD1frZnlN1NNpHkeCASiR+Na4nNKy
- zS38+L12bbugg1VnA0JOQvOrCUobebeyDWAxcaaqm9OrEcRGNSQ9ipI4ga3Cv0E=
-X-Google-Smtp-Source: AGHT+IEcAQJV4HFi+QnPk5O8ti203cBdLdrgyoq50Cf7vB2f0qQpx0859LP8Qhk4r5W6mQtlcl+E8w==
-X-Received: by 2002:ad4:5cab:0:b0:6b5:6c27:642e with SMTP id
- 6a1803df08f44-6b77f4dbcfbmr7858916d6.14.1721081591273; 
- Mon, 15 Jul 2024 15:13:11 -0700 (PDT)
-Received: from DY4X0N7X05.bytedance.net
- (ec2-52-8-182-0.us-west-1.compute.amazonaws.com. [52.8.182.0])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b76198aca3sm25398326d6.51.2024.07.15.15.13.09
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 15 Jul 2024 15:13:11 -0700 (PDT)
-From: Yichen Wang <yichen.wang@bytedance.com>
-To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
- "Zou, Nanhai" <nanhai.zou@intel.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>,
- Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: [PATCH v6 5/5] tests/migration: Add integration test for 'qatzip'
- compression method
-Date: Mon, 15 Jul 2024 15:12:45 -0700
-Message-Id: <20240715221245.12435-6-yichen.wang@bytedance.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20240715221245.12435-1-yichen.wang@bytedance.com>
-References: <20240715221245.12435-1-yichen.wang@bytedance.com>
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1sTU1M-00008m-T8
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 18:18:13 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1sTU1L-0007Nv-4h
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 18:18:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721081891; x=1752617891;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=2YgFoHODqt4L+Pm9WlXpmTOMLOXM6RHzyurXphg1p8Y=;
+ b=c0iEBSCVX7eoHFtl3lYFnV706mIDJfNDAW/BrNA7z1v9iTCicjm4kwha
+ aDNaK+2Ge+ukQEntzaMzSF5trKJ6BJjYY0/+oMnejMSLDwLDejKq8t3Vo
+ W1K8cND3o1dUZtc5WY+C7kde2DdP4tggN1vIz1Y8rv1DTP9J+HSijwCm9
+ 0+sjOzxfBdN5zwJId9P76SdUlDNwPRFrNGAy/YdbSxR/8e2Q3iHpPVBoS
+ iCh3H1d78c1u2cgEzjIBCfaUAgOZ78JaHnWZeuIce62e9S2r5EIHF7b4w
+ lcXOQyI428MjQn9XjTXFC+7NWzOhgXnNOukbZIqiBqiV6YjEJzI2FGB59 g==;
+X-CSE-ConnectionGUID: u0YAd0QsTaGzhQq/jI0KQw==
+X-CSE-MsgGUID: 2tEO/eeJQdKPx6q0RPSChg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="18683579"
+X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; d="scan'208";a="18683579"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 15:18:07 -0700
+X-CSE-ConnectionGUID: Mas0uYIbTQyIrIQyyRq/3g==
+X-CSE-MsgGUID: 8W8PHA3NSL6zfuM+4XgHKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; d="scan'208";a="54313872"
+Received: from unknown (HELO [10.124.109.200]) ([10.124.109.200])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 15:18:06 -0700
+Message-ID: <f8f2cfb9-1128-4e1f-a152-3f88587927a1@intel.com>
+Date: Mon, 15 Jul 2024 15:18:07 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
- envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/8] target/i386/kvm: Clean up return values of MSR
+ filter related functions
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20240715044955.3954304-1-zhao1.liu@intel.com>
+ <20240715044955.3954304-8-zhao1.liu@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20240715044955.3954304-8-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zide.chen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,82 +88,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bryan Zhang <bryan.zhang@bytedance.com>
 
-Adds an integration test for 'qatzip'.
 
-Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
-Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration-test.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+On 7/14/2024 9:49 PM, Zhao Liu wrote:
+> @@ -5274,13 +5272,13 @@ void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg)
+>      }
+>  }
+>  
+> -static bool kvm_install_msr_filters(KVMState *s)
+> +static int kvm_install_msr_filters(KVMState *s)
+>  {
+>      uint64_t zero = 0;
+>      struct kvm_msr_filter filter = {
+>          .flags = KVM_MSR_FILTER_DEFAULT_ALLOW,
+>      };
+> -    int r, i, j = 0;
+> +    int ret, i, j = 0;
+>  
+>      for (i = 0; i < KVM_MSR_FILTER_MAX_RANGES; i++) {
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 70b606b888..98f60d58a7 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -32,6 +32,10 @@
- # endif /* CONFIG_TASN1 */
- #endif /* CONFIG_GNUTLS */
- 
-+#ifdef CONFIG_QATZIP
-+#include <qatzip.h>
-+#endif /* CONFIG_QATZIP */
-+
- /* For dirty ring test; so far only x86_64 is supported */
- #if defined(__linux__) && defined(HOST_X86_64)
- #include "linux/kvm.h"
-@@ -2992,6 +2996,18 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
- }
- #endif /* CONFIG_ZSTD */
- 
-+#ifdef CONFIG_QATZIP
-+static void *
-+test_migrate_precopy_tcp_multifd_qatzip_start(QTestState *from,
-+                                              QTestState *to)
-+{
-+    migrate_set_parameter_int(from, "multifd-qatzip-level", 2);
-+    migrate_set_parameter_int(to, "multifd-qatzip-level", 2);
-+
-+    return test_migrate_precopy_tcp_multifd_start_common(from, to, "qatzip");
-+}
-+#endif
-+
- #ifdef CONFIG_QPL
- static void *
- test_migrate_precopy_tcp_multifd_qpl_start(QTestState *from,
-@@ -3089,6 +3105,17 @@ static void test_multifd_tcp_zstd(void)
- }
- #endif
- 
-+#ifdef CONFIG_QATZIP
-+static void test_multifd_tcp_qatzip(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_qatzip_start,
-+    };
-+    test_precopy_common(&args);
-+}
-+#endif
-+
- #ifdef CONFIG_QPL
- static void test_multifd_tcp_qpl(void)
- {
-@@ -3992,6 +4019,10 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/multifd/tcp/plain/zstd",
-                        test_multifd_tcp_zstd);
- #endif
-+#ifdef CONFIG_QATZIP
-+    migration_test_add("/migration/multifd/tcp/plain/qatzip",
-+                test_multifd_tcp_qatzip);
-+#endif
- #ifdef CONFIG_QPL
-     migration_test_add("/migration/multifd/tcp/plain/qpl",
-                        test_multifd_tcp_qpl);
--- 
-Yichen Wang
+Nit: Since it's a clean up patch, how about replace
+KVM_MSR_FILTER_MAX_RANGES with ARRAY_SIZE(msr_handlers), to make the
+code consistent in other places to refer to the array size of
+msr_handlers[].
 
+>          KVMMSRHandlers *handler = &msr_handlers[i];
+> @@ -5304,18 +5302,18 @@ static bool kvm_install_msr_filters(KVMState *s)
+>          }
+>      }
+>  
+> -    r = kvm_vm_ioctl(s, KVM_X86_SET_MSR_FILTER, &filter);
+> -    if (r) {
+> -        return false;
+> +    ret = kvm_vm_ioctl(s, KVM_X86_SET_MSR_FILTER, &filter);
+> +    if (ret) {
+> +        return ret;
+>      }
+>  
+> -    return true;
+> +    return 0;
+>  }
+
+Nit: Seems ret is not needed here, and can directly return kvm_vm_ioctl();
 
