@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DEC933BB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA1A933BB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2TP-0005Mt-Sn; Wed, 17 Jul 2024 07:05:27 -0400
+	id 1sU2TF-0004Bn-D8; Wed, 17 Jul 2024 07:05:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@intel-mbp.local>)
- id 1sU2Sb-0001MV-H9
+ id 1sU2Sb-0001Ke-2g
  for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:38 -0400
 Received: from 89-104-8-17.customer.bnet.at ([89.104.8.17]
  helo=intel-mbp.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <phil@intel-mbp.local>) id 1sU2SY-0006zL-Oz
+ (envelope-from <phil@intel-mbp.local>) id 1sU2SZ-00072Y-0i
  for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:36 -0400
 Received: by intel-mbp.local (Postfix, from userid 501)
- id 547DB379643; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
+ id 5B102379645; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de,
  graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org,
  akihiko.odaki@daynix.com, phil@philjordan.eu, lists@philjordan.eu
-Subject: [PATCH 19/26] ui/cocoa: Adds non-app runloop on main thread mode
-Date: Mon, 15 Jul 2024 23:06:58 +0200
-Message-Id: <20240715210705.32365-20-phil@philjordan.eu>
+Subject: [PATCH 20/26] hw/display/apple-gfx: Fixes cursor hotspot handling
+Date: Mon, 15 Jul 2024 23:06:59 +0200
+Message-Id: <20240715210705.32365-21-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240715210705.32365-1-phil@philjordan.eu>
 References: <20240715210705.32365-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=89.104.8.17; envelope-from=phil@intel-mbp.local;
  helo=intel-mbp.local
@@ -57,108 +56,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Various system frameworks on macOS and other Apple platforms
-require a main runloop to be processing events on the process’s
-main thread. The Cocoa UI’s requirement to run the process as a
-Cocoa application automatically enables this runloop, but it
-can be useful to have the runloop handling events even without
-the Cocoa UI active.
+The ParavirtualizedGraphics framework provides the cursor's
+hotspot, this change actually passes that information through to
+Qemu's cursor handling.
 
-This change adds a non-app runloop mode to the cocoa_main
-function. This can be requested by other code, while the Cocoa UI
-additionally enables app mode. This arrangement ensures there is
-only one qemu_main function switcheroo, and the Cocoa UI’s app
-mode requirement and other subsystems’ runloop requests don’t
-conflict with each other.
-
-The main runloop is required for the AppleGFX PV graphics device,
-so the runloop request call has been added to its initialisation.
+This change also seizes the opportunity to make other cursor
+related code conform to coding standards.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/display/apple-gfx.m |  3 +++
- include/qemu-main.h    |  2 ++
- ui/cocoa.m             | 15 +++++++++++++--
- 3 files changed, 18 insertions(+), 2 deletions(-)
+ hw/display/apple-gfx.m | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 5855d1d7f5..437294d0fb 100644
+index 437294d0fb..bc9722b420 100644
 --- a/hw/display/apple-gfx.m
 +++ b/hw/display/apple-gfx.m
-@@ -14,6 +14,7 @@
+@@ -223,7 +223,8 @@ static void apple_gfx_fb_update_display(void *opaque)
  
- #include "apple-gfx.h"
- #include "trace.h"
-+#include "qemu-main.h"
- #include "qemu/main-loop.h"
- #include "ui/console.h"
- #include "monitor/monitor.h"
-@@ -309,6 +310,8 @@ void apple_gfx_common_init(Object *obj, AppleGFXState *s, const char* obj_name)
-             error_report_err(local_err);
+ static void update_cursor(AppleGFXState *s)
+ {
+-    dpy_mouse_set(s->con, s->pgdisp.cursorPosition.x, s->pgdisp.cursorPosition.y, s->cursor_show);
++    dpy_mouse_set(s->con, s->pgdisp.cursorPosition.x,
++                  s->pgdisp.cursorPosition.y, s->cursor_show);
+ 
+     /* Need to render manually if cursor is not natively supported */
+     if (!dpy_cursor_define_supported(s->con)) {
+@@ -423,7 +424,8 @@ static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
+         trace_apple_gfx_mode_change(sizeInPixels.x, sizeInPixels.y);
+         set_mode(s, sizeInPixels.x, sizeInPixels.y);
+     };
+-    disp_desc.cursorGlyphHandler = ^(NSBitmapImageRep *glyph, PGDisplayCoord_t hotSpot) {
++    disp_desc.cursorGlyphHandler = ^(NSBitmapImageRep *glyph,
++                                     PGDisplayCoord_t hotSpot) {
+         uint32_t bpp = glyph.bitsPerPixel;
+         uint64_t width = glyph.pixelsWide;
+         uint64_t height = glyph.pixelsHigh;
+@@ -434,6 +436,8 @@ static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
+             cursor_unref(s->cursor);
          }
-     }
-+
-+    cocoa_enable_runloop_on_main_thread();
- }
+         s->cursor = cursor_alloc(width, height);
++        s->cursor->hot_x = hotSpot.x;
++        s->cursor->hot_y = hotSpot.y;
  
- static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
-diff --git a/include/qemu-main.h b/include/qemu-main.h
-index 940960a7db..da4516e69e 100644
---- a/include/qemu-main.h
-+++ b/include/qemu-main.h
-@@ -8,4 +8,6 @@
- int qemu_default_main(void);
- extern int (*qemu_main)(void);
- 
-+void cocoa_enable_runloop_on_main_thread(void);
-+
- #endif /* QEMU_MAIN_H */
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 2935247cdd..ccef2aa93c 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -1941,6 +1941,7 @@ static void cocoa_clipboard_request(QemuClipboardInfo *info,
-     exit(status);
- }
- 
-+static bool run_as_cocoa_app = false;
- static int cocoa_main(void)
- {
-     QemuThread thread;
-@@ -1953,7 +1954,11 @@ static int cocoa_main(void)
- 
-     // Start the main event loop
-     COCOA_DEBUG("Main thread: entering OSX run loop\n");
--    [NSApp run];
-+    if (run_as_cocoa_app) {
-+        [NSApp run];
-+    } else {
-+        CFRunLoopRun();
-+    }
-     COCOA_DEBUG("Main thread: left OSX run loop, which should never happen\n");
- 
-     abort();
-@@ -2012,13 +2017,19 @@ static void cocoa_refresh(DisplayChangeListener *dcl)
-     [pool release];
- }
- 
-+void cocoa_enable_runloop_on_main_thread(void)
-+{
-+    qemu_main = cocoa_main;
-+}
-+
- static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
- {
-     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
- 
-     COCOA_DEBUG("qemu_cocoa: cocoa_display_init\n");
- 
--    qemu_main = cocoa_main;
-+    run_as_cocoa_app = true;
-+    cocoa_enable_runloop_on_main_thread();
- 
-     // Pull this console process up to being a fully-fledged graphical
-     // app with a menubar and Dock icon
+         /* TODO handle different bpp */
+         if (bpp == 32) {
 -- 
 2.39.3 (Apple Git-146)
 
