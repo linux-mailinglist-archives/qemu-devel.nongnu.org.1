@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1801931367
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 13:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7644B931513
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTKCB-0003GM-Sd; Mon, 15 Jul 2024 07:48:44 -0400
+	id 1sTLF9-0003NB-3c; Mon, 15 Jul 2024 08:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sTKBm-0003Fp-K1
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 07:48:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <bfu@redhat.com>) id 1sTINH-0000hw-Nz
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:52:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sTKBk-0005bA-Vz
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 07:48:18 -0400
+ (Exim 4.90_1) (envelope-from <bfu@redhat.com>) id 1sTINF-0007Bk-Mm
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:52:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721044096;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=tYekTA26gQQA62j2Rn0eDag+WcmU0N3zS30Rj1P5Uyc=;
- b=ZvgolmdeauwK+WWwCMTSKHndrOJwDSjV5Kpt1qPVH6h9AUZRa+qpems15dTn/XehdDkDoS
- ARgBAz9Y/T6HXLhA1PweF1PSqyrARuAN3T46ScbrS2bxD0HbQ4Yu47r8+C21iOx/ol2svF
- Gw7ZlkrtgyxUbwWKKzha5nQ/Zf67teI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-kGVINVxePI2jADz8xLlVDg-1; Mon,
- 15 Jul 2024 07:48:11 -0400
-X-MC-Unique: kGVINVxePI2jADz8xLlVDg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D2DCC1955D4A; Mon, 15 Jul 2024 11:48:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.18])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 591C51955D42; Mon, 15 Jul 2024 11:48:01 +0000 (UTC)
-Date: Mon, 15 Jul 2024 12:47:57 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Jason Wang <jasowang@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>,
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
- Vincenzo Maffione <v.maffione@gmail.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 2/5] qdev-properties: Add
- DEFINE_PROP_ON_OFF_AUTO_BIT64()
-Message-ID: <ZpUMbdszCwd3bFUd@redhat.com>
-References: <20240714-auto-v3-0-e27401aabab3@daynix.com>
- <20240714-auto-v3-2-e27401aabab3@daynix.com>
+ s=mimecast20190719; t=1721037120;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=gWnaerq4VqejhtI3J8AaIYemLKLE4tyDuanVqba84gI=;
+ b=WuqhW8pjOB+WBGCNemHLwS23mTeOjX4DNlufCkTM55otJaiinxgSWL0VMNDIuOmUZy5l6n
+ GN87IzGVVRHVbsMhlbovGvDtNmhnRNZa1O37zbRrrFi4s1RrWmWLYUHq5/kn0D2ZPJyBgl
+ BWS16eIUDvWLtpFA6UbY9Cd+l9GsHRk=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-456-H91ii6S0PZy851mZPf0B1A-1; Mon, 15 Jul 2024 05:50:34 -0400
+X-MC-Unique: H91ii6S0PZy851mZPf0B1A-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2c9f6677d8eso4489168a91.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 02:50:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721037032; x=1721641832;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gWnaerq4VqejhtI3J8AaIYemLKLE4tyDuanVqba84gI=;
+ b=cuSQTdl4CCkH1nR5CmYI2I4KP/aZHsxcxHqLvPDj6lEhfQWo1QuB2+a9yoh3spvPgU
+ Gmopwj3oC5WN3Ni5CALB2YNp1OccQn2OUPbU1of6PO8tVpVKHXLAldgqf2cyeYhW53nr
+ uGBajZLa7Z9K96og3o4f2VZ7eQfkneGKoz5njAvRRw6vt8+tpKuD7ksnWTIfdtBdMQxN
+ /F7jAdvCEWfGMmCH8voXYq/WPBv8OF7lA9gj6WSiRFM1flh/3LBGTlkdG3rtO2j2heoS
+ GJQtSPkWUr7bfaFp9+0SdVIHNy0Lt0HjAwpsb40JPS0bJB3wyrT5IH7c7ydwSXqslP3y
+ /WNg==
+X-Gm-Message-State: AOJu0YyPHpdc6k6yR/DGL2zg8lHDHYWXCkLCA9f5iEhdPS7b+m8dz+ko
+ pHGpzKzL8dfWiEdfOm8Vc06I1jK3uZTe49Xgw2C+BK4iHs2eryc39bInvs06RAVhquK6Lb1n2PI
+ T2igD2IAQum9OLspABe4c7Aly6Jgs/nSquE7S3iXICoGKLSA5HGYONDBZ3mCbcAEXXM/0V4JAWr
+ kwuFosYwSDpQG21H9J3FCWX/kyRq1NmX4MkkTCFcFx
+X-Received: by 2002:a17:90a:43c6:b0:2c8:660d:cc2 with SMTP id
+ 98e67ed59e1d1-2ca35be1c8dmr15646111a91.4.1721037032514; 
+ Mon, 15 Jul 2024 02:50:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8ergCTm9xuzsqmpTL5Iplp1c0LNwcKfBkoT1V9+j11zXfBG/3hgqXql7Z/bzwekZbpehDIdOfu63AEJhmfAk=
+X-Received: by 2002:a17:90a:43c6:b0:2c8:660d:cc2 with SMTP id
+ 98e67ed59e1d1-2ca35be1c8dmr15646105a91.4.1721037032196; Mon, 15 Jul 2024
+ 02:50:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240714-auto-v3-2-e27401aabab3@daynix.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+From: Boqiao Fu <bfu@redhat.com>
+Date: Mon, 15 Jul 2024 17:50:21 +0800
+Message-ID: <CAFRHJ6J9uMk+HMZL+W+KE1yoRCOLPgbPUVVDku55sdXYiGXXHg@mail.gmail.com>
+Subject: [PATCH] Manpage: Update description of 'user=username' for '-run-with'
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000f31df1061d4628d4"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=bfu@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 15 Jul 2024 08:55:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,27 +85,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jul 14, 2024 at 02:11:02PM +0900, Akihiko Odaki wrote:
-> DEFINE_PROP_ON_OFF_AUTO_BIT64() corresponds to DEFINE_PROP_ON_OFF_AUTO()
-> as DEFINE_PROP_BIT64() corresponds to DEFINE_PROP_BOOL(). The difference
-> is that DEFINE_PROP_ON_OFF_AUTO_BIT64() exposes OnOffAuto instead of
-> bool.
+--000000000000f31df1061d4628d4
+Content-Type: text/plain; charset="UTF-8"
 
-IMHO this shouldn't be implemented in terms of On/Off auto,
-as it is misleadingly accepting much more than PROP_ON_OFF
-accepts. Rather it should be just DEFINE_PROP_AUTO_BIT64,
-implemented in terms of 'bool', with an extra 'auto' value.
+From: Boqiao Fu <bfu@redhat.com>
+Date: Mon, 15 Jul 2024 17:04:32 +0800
+Subject: [PATCH] Manpage: Update description of 'user=username' for
+ '-run-with'
 
+Manpage: the description of '-runs' didn't show this parameter will use
+setuid, so the customer might get confused when 'elevateprivileges=deny' is
+used. Since '-runas' is going to be deprecated and replaced by this
+parameter in the coming qemu9.1, add the message here.
 
-With regards,
-Daniel
+Signed-off-by: Boqiao Fu <bfu@redhat.com>
+---
+ qemu-options.hx | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/qemu-options.hx b/qemu-options.hx
+index ad6521ef5e..264525ed16 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -5025,7 +5025,8 @@ SRST
+
+     ``user=username`` or ``user=uid:gid`` can be used to drop root
+privileges
+     by switching to the specified user (via username) or user and group
+-    (via uid:gid) immediately before starting guest execution.
++    (via uid:gid) immediately before starting guest execution. Effectively
++    uses the setuid system call to switch to another user id.
+ ERST
+ #endif
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
+
+--000000000000f31df1061d4628d4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>From: Boqiao Fu &lt;<a href=3D"mailto:bfu@redhat.com"=
+>bfu@redhat.com</a>&gt;<br>Date: Mon, 15 Jul 2024 17:04:32 +0800<br>Subject=
+: [PATCH] Manpage: Update description of &#39;user=3Dusername&#39; for<br>=
+=C2=A0&#39;-run-with&#39;<br><br>Manpage: the description of &#39;-runs&#39=
+; didn&#39;t show this parameter will use<br>setuid, so the customer might =
+get confused when &#39;elevateprivileges=3Ddeny&#39; is<br>used. Since &#39=
+;-runas&#39; is going to be deprecated and replaced by this<br>parameter in=
+ the coming qemu9.1, add the message here.<br><br>Signed-off-by: Boqiao Fu =
+&lt;<a href=3D"mailto:bfu@redhat.com">bfu@redhat.com</a>&gt;<br>---<br>=C2=
+=A0qemu-options.hx | 3 ++-<br>=C2=A01 file changed, 2 insertions(+), 1 dele=
+tion(-)<br><br>diff --git a/qemu-options.hx b/qemu-options.hx<br>index ad65=
+21ef5e..264525ed16 100644<br>--- a/qemu-options.hx<br>+++ b/qemu-options.hx=
+<br>@@ -5025,7 +5025,8 @@ SRST<br>=C2=A0<br>=C2=A0 =C2=A0 =C2=A0``user=3Dus=
+ername`` or ``user=3Duid:gid`` can be used to drop root privileges<br>=C2=
+=A0 =C2=A0 =C2=A0by switching to the specified user (via username) or user =
+and group<br>- =C2=A0 =C2=A0(via uid:gid) immediately before starting guest=
+ execution.<br>+ =C2=A0 =C2=A0(via uid:gid) immediately before starting gue=
+st execution. Effectively<br>+ =C2=A0 =C2=A0uses the setuid system call to =
+switch to another user id.<br>=C2=A0ERST<br>=C2=A0#endif<br>=C2=A0<br>-- <b=
+r>2.43.0<br></div></div>
+
+--000000000000f31df1061d4628d4--
 
 
