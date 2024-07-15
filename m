@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9C3930DC4
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DA5930DC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 08:02:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTEjT-0005Co-4Y; Mon, 15 Jul 2024 01:58:43 -0400
+	id 1sTEn1-0004MS-EZ; Mon, 15 Jul 2024 02:02:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTEjQ-00054O-Pj
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:58:40 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1sTEmz-0004G7-8C
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 02:02:21 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTEjO-0008VG-UJ
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:58:40 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2ca4649ad49so2423112a91.1
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:58:38 -0700 (PDT)
+ id 1sTEmx-0001Gh-JG
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 02:02:21 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1fb19ca5273so20586555ad.3
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 23:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721023117; x=1721627917; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JeM+PyZIgZuwJtOyeBwiQLcZE1Nzm+KGAI4nD2vg1aw=;
- b=PIizPCKQmIeN0doaiFJvzde2dR5ZhX2i2Epib/lJk6xHjczJqux+drG1YoyTSQzo0R
- tt6kY6/YWTpX4eDAmYhoXf7ojY62HqHSTDHFcokjCPCiBlg5VBX7n/cXBxaH11KSxcvX
- Ki7Cz6mURM1j2JjSm4mEU6i6X1YYkJflnmVVlA302NyNcbaFnof9CSOrYWNdLZpQrWrI
- 3T0iYM8Fz3RZ5rMbRu+bfszog0DcMRf/vJ/v5EjqJlCFGxXJiyo0ZU2J73vW98nBjwCj
- uYAOLAKMEfXA+I0KmRwRimFI/YRz45xggTzqTcWkIS9/x+E4+SjO6jqVX87/37Y2zYaM
- OrOw==
+ d=linaro.org; s=google; t=1721023338; x=1721628138; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=PhK3uSw6+hnYNcdL6etCmPwutYwcHaSrYEaMaiWGi3E=;
+ b=CQa7yLrDAV4bXg2QnOpAsgmttWK6lyrP9uP1AD789gGFO2sO1PjqTs43tSU+vtkFE4
+ O1t1wX593GDcUWPakOd4Y7j2Z5PoIvLhS3q01FoRZdu/P0j3N1JItl8Qd+jfisfRZ1je
+ WvXvkgu6UsTv6b7Xcxt1VhA18m1txa4Xxro9J+PooycezLn9aeXD5OfgPmk2lSOD2RGu
+ 5wDSebnD7OlJTNZUkyeKq0lmHDNqzF5dOKIPq31b4POhXCD9LOZqLfeXVx1VaiI4tyyP
+ PWpgV2/CQyF6wJ4eP7HtLIe2xpPcU2/S1DPXyXaEIM54e6VKJZgOmwu9OCdaaJ/FSoeE
+ rM7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721023117; x=1721627917;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JeM+PyZIgZuwJtOyeBwiQLcZE1Nzm+KGAI4nD2vg1aw=;
- b=ODoTbYtKfAWC0zamLZkEQudRX72BO2knM3wdH0VpAczEmWWseZIQIEhwM80zGBEJiT
- ZyyYKjFTEjBzOL8uCjkt8H3fzD6Xk63owSYUtvKhaLdgDnHQK0Ro9hq4EuCaAQ3dmeyD
- uawQRlTYWICws/XHFpV5yj0wAJX403jwaQARDsKnHbxCeKhHVUTY7sjWnSYDSZGcgMkm
- JttWfQRFXwsXh9+9sHbqOqQFYLI6Jx7968NMy+syEJYflF/mDlQJ9UaR1tbqQDEexG85
- KXe0HvDSGfNIer075o1BegbgudzOOurs2do+jVyYrrbwDL0TzIHJjKvtZ++NlPCZu4Om
- 6huw==
-X-Gm-Message-State: AOJu0YwYQu6cGrIbX4yiYpTwRQ1wKpK+WRdWQDAmKNwEjcl0Xlq/IQrI
- Gkw7VJ3RkWvvEF+qOSqShKtj4dpu+k2xLIekZ5oZLLo6BAH39tWYRDHljpwdiSEWYR4MkWARTyy
- pkHnWRg==
-X-Google-Smtp-Source: AGHT+IHx1hOpKlv/sKh63LvXVfxvqzsbg6YmdsEYFqjze+rw1LrGDUeJwAnTUVfXkaF9CZ7kxlTppA==
-X-Received: by 2002:a17:90a:c684:b0:2c9:616a:6a46 with SMTP id
- 98e67ed59e1d1-2ca35c29460mr11836719a91.17.1721023117255; 
- Sun, 14 Jul 2024 22:58:37 -0700 (PDT)
-Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cacd419af7sm5463589a91.25.2024.07.14.22.58.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jul 2024 22:58:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721023338; x=1721628138;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PhK3uSw6+hnYNcdL6etCmPwutYwcHaSrYEaMaiWGi3E=;
+ b=r9aVHS+Mh1EHoO1fI2kY9VHoG9qpZtoeVcum1evnHfKjowEa5RybO25mUe2DZgcQtZ
+ nDGuwUu/5P6yIDbxv/G1ENlLquQvcQOZpaSkyDzo+hzMHP4XraGzpEIZtBEuVuNoXdJq
+ HmJchXj++DZgnZb7MSAhXB7pSrVwqtiKFq7s4dcLIDg1xcf6/rq5n+3fT1I4Id5Bgl3K
+ 1BbGTe+pZL8yeOAVZ3njs0F2IJQiSnhW4FR0K1hjsJlZYpPqZa62RuEaITiu6P9U1S1U
+ YZ417L1cC4+S18TgAnBYXdGNtVYU+9B0bgl2d71nSbTT+JLsHDw/7voVqDldepB1HJa0
+ QdYA==
+X-Gm-Message-State: AOJu0YyPnjjsZCJK8HfkmrmIbAuNYD+zBKxVyw6jFauwkxrRUM/VB7u6
+ uAfqQEE8A5GhEe3xV3VxjZ+ReoWSKG42KYwzhr9n2dhzXyFUyDPpkHMc5VxI8e+mmUs7QTAFTUQ
+ 0jszdaQ==
+X-Google-Smtp-Source: AGHT+IG3SPmBmXRPok0ov/A9xaDX1tCSeVuiSZpQtKsx4qZ4Hc00My40qc5nY/SP259J8eTSdiON9Q==
+X-Received: by 2002:a17:903:32d1:b0:1fc:2b3b:5cbe with SMTP id
+ d9443c01a7336-1fc2b3b5d22mr8215895ad.9.1721023337837; 
+ Sun, 14 Jul 2024 23:02:17 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fc0bbc68absm32044475ad.118.2024.07.14.23.02.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 14 Jul 2024 23:02:17 -0700 (PDT)
+Message-ID: <7a360b2d-4321-4fb5-b873-79a004071c85@linaro.org>
+Date: Mon, 15 Jul 2024 16:02:11 +1000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] target/arm: Use FPST_F16 for SME FMOPA (widening)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: danikhan632@git.sr.ht, qemu-arm@nongnu.org,
+Cc: danikhan632@git.sr.ht, qemu-arm@nongnu.org, qemu-stable@nongnu.org,
  Daniyal Khan <danikhan632@gmail.com>
-Subject: [PATCH 3/3] tests/tcg/aarch64: Add test cases for SME FMOPA (widening)
-Date: Mon, 15 Jul 2024 15:58:20 +1000
-Message-ID: <20240715055820.319035-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240715055820.319035-1-richard.henderson@linaro.org>
 References: <20240715055820.319035-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+ <20240715055820.319035-3-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20240715055820.319035-3-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,229 +96,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniyal Khan <danikhan632@gmail.com>
+On 7/15/24 22:58, Richard Henderson wrote:
+> This operation has float16 inputs and thus must use
+> the FZ16 control not the FZ control.
+> 
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Daniyal Khan <danikhan632@gmail.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2374
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/arm/tcg/translate-sme.c | 12 ++++++++----
+>   1 file changed, 8 insertions(+), 4 deletions(-)
 
-Signed-off-by: Daniyal Khan <danikhan632@gmail.com>
-Message-Id: 172090222034.13953.16888708708822922098-1@git.sr.ht
-[rth: Split test cases to separate patch, tidy assembly.]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/tcg/aarch64/sme-fmopa-1.c   | 63 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/sme-fmopa-2.c   | 51 +++++++++++++++++++++++++
- tests/tcg/aarch64/sme-fmopa-3.c   | 58 ++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  5 ++-
- 4 files changed, 175 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/aarch64/sme-fmopa-1.c
- create mode 100644 tests/tcg/aarch64/sme-fmopa-2.c
- create mode 100644 tests/tcg/aarch64/sme-fmopa-3.c
+Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
 
-diff --git a/tests/tcg/aarch64/sme-fmopa-1.c b/tests/tcg/aarch64/sme-fmopa-1.c
-new file mode 100644
-index 0000000000..652c4ea090
---- /dev/null
-+++ b/tests/tcg/aarch64/sme-fmopa-1.c
-@@ -0,0 +1,63 @@
-+/*
-+ * SME outer product, 1 x 1.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <stdio.h>
-+
-+static void foo(float *dst)
-+{
-+    asm(".arch_extension sme\n\t"
-+        "smstart\n\t"
-+        "ptrue p0.s, vl4\n\t"
-+        "fmov z0.s, #1.0\n\t"
-+        /*
-+         * An outer product of a vector of 1.0 by itself should be a matrix of 1.0.
-+         * Note that we are using tile 1 here (za1.s) rather than tile 0.
-+         */
-+        "zero {za}\n\t"
-+        "fmopa za1.s, p0/m, p0/m, z0.s, z0.s\n\t"
-+        /*
-+         * Read the first 4x4 sub-matrix of elements from tile 1:
-+         * Note that za1h should be interchangeable here.
-+         */
-+        "mov w12, #0\n\t"
-+        "mova z0.s, p0/m, za1v.s[w12, #0]\n\t"
-+        "mova z1.s, p0/m, za1v.s[w12, #1]\n\t"
-+        "mova z2.s, p0/m, za1v.s[w12, #2]\n\t"
-+        "mova z3.s, p0/m, za1v.s[w12, #3]\n\t"
-+        /*
-+         * And store them to the input pointer (dst in the C code):
-+         */
-+        "st1w {z0.s}, p0, [%0]\n\t"
-+        "add x0, x0, #16\n\t"
-+        "st1w {z1.s}, p0, [x0]\n\t"
-+        "add x0, x0, #16\n\t"
-+        "st1w {z2.s}, p0, [x0]\n\t"
-+        "add x0, x0, #16\n\t"
-+        "st1w {z3.s}, p0, [x0]\n\t"
-+        "smstop"
-+        : : "r"(dst)
-+        : "x12", "d0", "d1", "d2", "d3", "memory");
-+}
-+
-+int main()
-+{
-+    float dst[16] = { };
-+
-+    foo(dst);
-+
-+    for (int i = 0; i < 16; i++) {
-+        if (dst[i] != 1.0f) {
-+            goto failure;
-+        }
-+    }
-+    /* success */
-+    return 0;
-+
-+ failure:
-+    for (int i = 0; i < 16; i++) {
-+        printf("%f%c", dst[i], i % 4 == 3 ? '\n' : ' ');
-+    }
-+    return 1;
-+}
-diff --git a/tests/tcg/aarch64/sme-fmopa-2.c b/tests/tcg/aarch64/sme-fmopa-2.c
-new file mode 100644
-index 0000000000..198cc31528
---- /dev/null
-+++ b/tests/tcg/aarch64/sme-fmopa-2.c
-@@ -0,0 +1,51 @@
-+#include <stdint.h>
-+#include <stdio.h>
-+
-+static void test_fmopa(uint32_t *result)
-+{
-+    asm(".arch_extension sme\n\t"
-+        "smstart\n\t"               /* Z*, P* and ZArray cleared */
-+        "ptrue p2.b, vl16\n\t"      /* Limit vector length to 16 */
-+        "ptrue p5.b, vl16\n\t"
-+        "movi d0, #0x00ff\n\t"      /* fp16 denormal */
-+        "movi d16, #0x00ff\n\t"
-+        "mov w15, #0x0001000000\n\t" /* FZ=1, FZ16=0 */
-+        "msr fpcr, x15\n\t"
-+        "fmopa za3.s, p2/m, p5/m, z16.h, z0.h\n\t"
-+        "mov w15, #0\n\t"
-+        "st1w {za3h.s[w15, 0]}, p2, [%0]\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w {za3h.s[w15, 1]}, p2, [%0]\n\t"
-+        "mov w15, #2\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w {za3h.s[w15, 0]}, p2, [%0]\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w {za3h.s[w15, 1]}, p2, [%0]\n\t"
-+        "smstop"
-+        : "+r"(result) :
-+        : "x15", "x16", "p2", "p5", "d0", "d16", "memory");
-+}
-+
-+int main(void)
-+{
-+    uint32_t result[4 * 4] = { };
-+
-+    test_fmopa(result);
-+
-+    if (result[0] != 0x2f7e0100) {
-+        printf("Test failed: Incorrect output in first 4 bytes\n"
-+               "Expected: %08x\n"
-+               "Got:      %08x\n",
-+               0x2f7e0100, result[0]);
-+        return 1;
-+    }
-+
-+    for (int i = 1; i < 16; ++i) {
-+        if (result[i] != 0) {
-+            printf("Test failed: Non-zero word at position %d\n", i);
-+            return 1;
-+        }
-+    }
-+
-+    return 0;
-+}
-diff --git a/tests/tcg/aarch64/sme-fmopa-3.c b/tests/tcg/aarch64/sme-fmopa-3.c
-new file mode 100644
-index 0000000000..6617355c9d
---- /dev/null
-+++ b/tests/tcg/aarch64/sme-fmopa-3.c
-@@ -0,0 +1,58 @@
-+#include <stdio.h>
-+#include <stdint.h>
-+#include <string.h>
-+#include <math.h>
-+
-+static const float i_1234[4] = {
-+    1.0f, 2.0f, 3.0f, 4.0f
-+};
-+
-+static const float expected[4] = {
-+    4.515625f, 5.750000f, 6.984375f, 8.218750f
-+};
-+
-+static void test_fmopa(float *result)
-+{
-+    asm(".arch_extension sme\n\t"
-+        "smstart\n\t"               /* ZArray cleared */
-+        "ptrue p2.b, vl16\n\t"      /* Limit vector length to 16 */
-+        "ld1w {z0.s}, p2/z, [%1]\n\t"
-+        "mov w15, #0\n\t"
-+        "mov za3h.s[w15, 0], p2/m, z0.s\n\t"
-+        "mov za3h.s[w15, 1], p2/m, z0.s\n\t"
-+        "mov w15, #2\n\t"
-+        "mov za3h.s[w15, 0], p2/m, z0.s\n\t"
-+        "mov za3h.s[w15, 1], p2/m, z0.s\n\t"
-+        "msr fpcr, xzr\n\t"
-+        "fmopa za3.s, p2/m, p2/m, z0.h, z0.h\n\t"
-+        "mov w15, #0\n\t"
-+        "st1w {za3h.s[w15, 0]}, p2, [%0]\n"
-+        "add %0, %0, #16\n\t"
-+        "st1w {za3h.s[w15, 1]}, p2, [%0]\n\t"
-+        "mov w15, #2\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w {za3h.s[w15, 0]}, p2, [%0]\n\t"
-+        "add %0, %0, #16\n\t"
-+        "st1w {za3h.s[w15, 1]}, p2, [%0]\n\t"
-+        "smstop"
-+        : "+r"(result) : "r"(i_1234)
-+        : "x15", "x16", "p2", "d0", "memory");
-+}
-+
-+int main(void)
-+{
-+    float result[4 * 4] = { };
-+    int ret = 0;
-+
-+    test_fmopa(result);
-+
-+    for (int i = 0; i < 4; i++) {
-+        float actual = result[i];
-+        if (fabsf(actual - expected[i]) > 0.001f) {
-+            printf("Test failed at element %d: Expected %f, got %f\n",
-+                   i, expected[i], actual);
-+            ret = 1;
-+        }
-+    }
-+    return ret;
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index b53218e115..8cc62eb456 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -70,8 +70,9 @@ endif
- 
- # SME Tests
- ifneq ($(CROSS_AS_HAS_ARMV9_SME),)
--AARCH64_TESTS += sme-outprod1 sme-smopa-1 sme-smopa-2
--sme-outprod1 sme-smopa-1 sme-smopa-2: CFLAGS += $(CROSS_AS_HAS_ARMV9_SME)
-+SME_TESTS = sme-outprod1 sme-smopa-1 sme-smopa-2 sme-fmopa-1 sme-fmopa-2 sme-fmopa-3
-+AARCH64_TESTS += $(SME_TESTS)
-+$(SME_TESTS): CFLAGS += $(CROSS_AS_HAS_ARMV9_SME)
- endif
- 
- # System Registers Tests
--- 
-2.43.0
 
+r~
 
