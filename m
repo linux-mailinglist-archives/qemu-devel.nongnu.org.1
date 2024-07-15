@@ -2,31 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA1A933BB8
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99620933BD9
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:09:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2TF-0004Bn-D8; Wed, 17 Jul 2024 07:05:17 -0400
+	id 1sU2SG-0008No-7v; Wed, 17 Jul 2024 07:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@intel-mbp.local>)
- id 1sU2Sb-0001Ke-2g
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:38 -0400
+ id 1sU2SD-0008Fu-Hi
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:13 -0400
 Received: from 89-104-8-17.customer.bnet.at ([89.104.8.17]
  helo=intel-mbp.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <phil@intel-mbp.local>) id 1sU2SZ-00072Y-0i
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:36 -0400
+ (envelope-from <phil@intel-mbp.local>) id 1sU2SB-0006yq-D4
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:13 -0400
 Received: by intel-mbp.local (Postfix, from userid 501)
- id 5B102379645; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
+ id 61F2F379647; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de,
  graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org,
  akihiko.odaki@daynix.com, phil@philjordan.eu, lists@philjordan.eu
-Subject: [PATCH 20/26] hw/display/apple-gfx: Fixes cursor hotspot handling
-Date: Mon, 15 Jul 2024 23:06:59 +0200
-Message-Id: <20240715210705.32365-21-phil@philjordan.eu>
+Subject: [PATCH 21/26] hw/display/apple-gfx: Implements texture syncing for
+ non-UMA GPUs
+Date: Mon, 15 Jul 2024 23:07:00 +0200
+Message-Id: <20240715210705.32365-22-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240715210705.32365-1-phil@philjordan.eu>
 References: <20240715210705.32365-1-phil@philjordan.eu>
@@ -56,51 +57,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ParavirtualizedGraphics framework provides the cursor's
-hotspot, this change actually passes that information through to
-Qemu's cursor handling.
+Renderable Metal textures are handled differently depending on
+whether the GPU uses a unified memory architecture (no physical
+distinction between VRAM and system RAM, CPU and GPU share the
+memory bus) or not. (Traditional discrete GPU with its own VRAM)
 
-This change also seizes the opportunity to make other cursor
-related code conform to coding standards.
+In the discrete GPU case, textures must be explicitly
+synchronised to the CPU or the GPU before use after being
+modified by the other. In this case, we sync after the PV
+graphics framework has rendered the next frame into the
+texture using the GPU so that we can read out its contents using
+the CPU. This fixes the issue where the guest screen stayed
+black on AMD Radeon GPUs.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/display/apple-gfx.m | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ hw/display/apple-gfx.h |  1 +
+ hw/display/apple-gfx.m | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
+diff --git a/hw/display/apple-gfx.h b/hw/display/apple-gfx.h
+index 9d6d40795e..995ecf7f4a 100644
+--- a/hw/display/apple-gfx.h
++++ b/hw/display/apple-gfx.h
+@@ -43,6 +43,7 @@ struct AppleGFXState {
+     /* The following fields should only be accessed from render_queue: */
+     bool gfx_update_requested;
+     bool new_frame_ready;
++    bool using_managed_texture_storage;
+     int32_t pending_frames;
+     void *vram;
+     DisplaySurface *surface;
 diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 437294d0fb..bc9722b420 100644
+index bc9722b420..801ae4ad51 100644
 --- a/hw/display/apple-gfx.m
 +++ b/hw/display/apple-gfx.m
-@@ -223,7 +223,8 @@ static void apple_gfx_fb_update_display(void *opaque)
+@@ -125,7 +125,12 @@ static void apple_gfx_render_new_frame(AppleGFXState *s)
+         return;
+     }
+     [texture retain];
+-
++    if (s->using_managed_texture_storage) {
++        /* "Managed" textures exist in both VRAM and RAM and must be synced. */
++        id<MTLBlitCommandEncoder> blit = [command_buffer blitCommandEncoder];
++        [blit synchronizeResource:texture];
++        [blit endEncoding];
++    }
+     [command_buffer retain];
+     [command_buffer addCompletedHandler:
+         ^(id<MTLCommandBuffer> cb)
+@@ -268,6 +273,9 @@ static void set_mode(AppleGFXState *s, uint32_t width, uint32_t height)
+         texture = [s->mtl newTextureWithDescriptor:textureDescriptor];
+     }
  
- static void update_cursor(AppleGFXState *s)
- {
--    dpy_mouse_set(s->con, s->pgdisp.cursorPosition.x, s->pgdisp.cursorPosition.y, s->cursor_show);
-+    dpy_mouse_set(s->con, s->pgdisp.cursorPosition.x,
-+                  s->pgdisp.cursorPosition.y, s->cursor_show);
- 
-     /* Need to render manually if cursor is not natively supported */
-     if (!dpy_cursor_define_supported(s->con)) {
-@@ -423,7 +424,8 @@ static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
-         trace_apple_gfx_mode_change(sizeInPixels.x, sizeInPixels.y);
-         set_mode(s, sizeInPixels.x, sizeInPixels.y);
-     };
--    disp_desc.cursorGlyphHandler = ^(NSBitmapImageRep *glyph, PGDisplayCoord_t hotSpot) {
-+    disp_desc.cursorGlyphHandler = ^(NSBitmapImageRep *glyph,
-+                                     PGDisplayCoord_t hotSpot) {
-         uint32_t bpp = glyph.bitsPerPixel;
-         uint64_t width = glyph.pixelsWide;
-         uint64_t height = glyph.pixelsHigh;
-@@ -434,6 +436,8 @@ static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
-             cursor_unref(s->cursor);
-         }
-         s->cursor = cursor_alloc(width, height);
-+        s->cursor->hot_x = hotSpot.x;
-+        s->cursor->hot_y = hotSpot.y;
- 
-         /* TODO handle different bpp */
-         if (bpp == 32) {
++    s->using_managed_texture_storage =
++        (texture.storageMode == MTLStorageModeManaged);
++
+     dispatch_sync(s->render_queue,
+         ^{
+             id<MTLTexture> old_texture = nil;
 -- 
 2.39.3 (Apple Git-146)
 
