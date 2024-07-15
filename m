@@ -2,32 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34111933BB7
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC92933BB0
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2T4-0001xQ-9F; Wed, 17 Jul 2024 07:05:06 -0400
+	id 1sU2SG-0008OB-6x; Wed, 17 Jul 2024 07:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@intel-mbp.local>)
- id 1sU2SR-0000iA-Ce
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:29 -0400
+ id 1sU2SC-0008AZ-8P
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:12 -0400
 Received: from 89-104-8-17.customer.bnet.at ([89.104.8.17]
  helo=intel-mbp.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <phil@intel-mbp.local>) id 1sU2SO-0006zP-OG
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:27 -0400
+ (envelope-from <phil@intel-mbp.local>) id 1sU2S9-0006yE-Oa
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:11 -0400
 Received: by intel-mbp.local (Postfix, from userid 501)
- id EECB8379617; Mon, 15 Jul 2024 23:07:37 +0200 (CEST)
+ id 01223379619; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de,
  graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org,
  akihiko.odaki@daynix.com, phil@philjordan.eu, lists@philjordan.eu
-Subject: [PATCH 07/26] hw/display/apple-gfx: Makes set_mode thread & memory
- safe
-Date: Mon, 15 Jul 2024 23:06:46 +0200
-Message-Id: <20240715210705.32365-8-phil@philjordan.eu>
+Subject: [PATCH 08/26] hw/display/apple-gfx: Adds migration blocker
+Date: Mon, 15 Jul 2024 23:06:47 +0200
+Message-Id: <20240715210705.32365-9-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240715210705.32365-1-phil@philjordan.eu>
 References: <20240715210705.32365-1-phil@philjordan.eu>
@@ -57,96 +56,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the set_mode callback was invoked outside of the BQL, there
-could be a race condition swapping out the resized render target
-texture and VRAM. set_mode may be called inside or out of the
-BQL depending on context (reentrant from a MMIO write or not)
-so we need to check locking state first.
+Although the underlying ParavirtualizedGraphics.framework does support
+state (de-)serialisation, this is currently not yet integrated. We
+therefore add a migration blocker for now.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/display/apple-gfx.m | 54 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 14 deletions(-)
+ hw/display/apple-gfx.m | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index b10c060d9a..39aba8d143 100644
+index 39aba8d143..c97bd40cb5 100644
 --- a/hw/display/apple-gfx.m
 +++ b/hw/display/apple-gfx.m
-@@ -290,34 +290,60 @@ static void update_cursor(AppleGFXState *s)
+@@ -24,6 +24,8 @@
+ #include "sysemu/cpus.h"
+ #include "ui/console.h"
+ #include "monitor/monitor.h"
++#include "qapi/error.h"
++#include "migration/blocker.h"
+ #import <ParavirtualizedGraphics/ParavirtualizedGraphics.h>
  
- static void set_mode(AppleGFXState *s, uint32_t width, uint32_t height)
+ #define TYPE_APPLE_GFX          "apple-gfx"
+@@ -109,6 +111,8 @@ -(void)mmioWriteAtOffset:(size_t) offset value:(uint32_t)value;
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(AppleGFXState, APPLE_GFX)
+ 
++static Error *apple_gfx_mig_blocker;
++
+ static AppleGFXTask *apple_gfx_new_task(AppleGFXState *s, uint64_t len)
  {
--    void *vram = g_malloc0(width * height * 4);
-+    void *vram = NULL;
-     void *old_vram = s->vram;
-     DisplaySurface *surface;
-     MTLTextureDescriptor *textureDescriptor;
--    id<MTLTexture> old_texture = s->texture;
-+    id<MTLTexture> old_texture = nil;
-+    id<MTLTexture> texture = nil;
-+    bool locking_required = false;
+     void *base = APPLE_GFX_BASE_VA;
+@@ -362,6 +366,8 @@ static void apple_gfx_reset(DeviceState *d)
+ static void apple_gfx_init(Object *obj)
+ {
+     AppleGFXState *s = APPLE_GFX(obj);
++    Error *local_err = NULL;
++    int r;
  
-+    locking_required = !bql_locked();
-+    if (locking_required) {
-+        bql_lock();
-+    }
-     if (s->surface &&
-         width == surface_width(s->surface) &&
-         height == surface_height(s->surface)) {
-+        if (locking_required) {
-+            bql_unlock();
+     memory_region_init_io(&s->iomem_gfx, obj, &apple_gfx_ops, s, TYPE_APPLE_GFX, 0x4000);
+     memory_region_init_io(&s->iomem_iosfc, obj, &apple_iosfc_ops, s, TYPE_APPLE_GFX, 0x10000);
+@@ -369,6 +375,16 @@ static void apple_gfx_init(Object *obj)
+     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem_iosfc);
+     sysbus_init_irq(SYS_BUS_DEVICE(s), &s->irq_gfx);
+     sysbus_init_irq(SYS_BUS_DEVICE(s), &s->irq_iosfc);
++
++    /* TODO: PVG framework supports serialising device state: integrate it! */
++    if (apple_gfx_mig_blocker == NULL) {
++        error_setg(&apple_gfx_mig_blocker,
++                  "Migration state blocked by apple-gfx display device");
++        r = migrate_add_blocker(&apple_gfx_mig_blocker, &local_err);
++        if (r < 0) {
++            error_report_err(local_err);
 +        }
-         return;
-     }
-+    if (locking_required) {
-+        bql_unlock();
 +    }
-+
-+    vram = g_malloc0(width * height * 4);
-     surface = qemu_create_displaysurface_from(width, height, PIXMAN_LE_a8r8g8b8,
-                                               width * 4, vram);
--    s->surface = surface;
--    dpy_gfx_replace_surface(s->con, surface);
--    s->vram = vram;
--    g_free(old_vram);
- 
--    textureDescriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm
--                                              width:width
--                                              height:height
--                                              mipmapped:NO];
--    textureDescriptor.usage = s->pgdisp.minimumTextureUsage;
--    s->texture = [s->mtl newTextureWithDescriptor:textureDescriptor];
-+    @autoreleasepool {
-+        textureDescriptor =
-+            [MTLTextureDescriptor
-+                texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm
-+                                             width:width
-+                                            height:height
-+                                         mipmapped:NO];
-+        textureDescriptor.usage = s->pgdisp.minimumTextureUsage;
-+        texture = [s->mtl newTextureWithDescriptor:textureDescriptor];
-+    }
- 
--    if (old_texture) {
--        [old_texture release];
-+    if (locking_required) {
-+        bql_lock();
-+    }
-+    old_vram = s->vram;
-+    s->vram = vram;
-+    s->surface = surface;
-+    dpy_gfx_replace_surface(s->con, surface);
-+    old_texture = s->texture;
-+    s->texture = texture;
-+    if (locking_required) {
-+        bql_unlock();
-     }
-+
-+    g_free(old_vram);
-+    [old_texture release];
  }
  
- static void create_fb(AppleGFXState *s)
+ static void apple_gfx_realize(DeviceState *dev, Error **errp)
 -- 
 2.39.3 (Apple Git-146)
 
