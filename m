@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD8293143B
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 078099314A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:48:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTKpe-0004GE-2J; Mon, 15 Jul 2024 08:29:30 -0400
+	id 1sTL7n-00087f-38; Mon, 15 Jul 2024 08:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTKpR-0004Do-Fj; Mon, 15 Jul 2024 08:29:18 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sTL7g-00084s-LB
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:48:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTKpP-0000lx-BE; Mon, 15 Jul 2024 08:29:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721046555; x=1752582555;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=miQmptctDvyLsHlxDcDl05oZOCrd2/ChwcgEgwkHaSY=;
- b=I/4dK68YkTGmP7zhJIcPi2FdtJaZplGBQQ6VwEwSCm/cOP4HOz2vAWST
- 14E6eKItVlvibgxkUAw0cjHaoXNYIfzGSkIJX5OeJIaHGkMc0fUjDyAJK
- CZyBHlcNvOXB85spEFZT4+vyqmhIISg1FFpuLxefein4frU3cVypWhbGv
- KpSEdA4t2KB8XNTmroUAxTmd8wAyOcoBsWNZZERwNVoOlx9F2eXjuL9Ql
- shM5myXzRsmdE/lCVDc+qbq80HMbXFrQLcpgNZE6l15Ahx3AEtV6KlamS
- 8MSs23Eer6vaKRvJZ0zDs4W9HmdgsLbXPlA6xWfkUd+Eqt+puCfrRwb9a A==;
-X-CSE-ConnectionGUID: XMEfipIBRvaY2QTPig5oXw==
-X-CSE-MsgGUID: fPibITHZRf2WHu7gYAJkTw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="29101237"
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="29101237"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2024 05:29:10 -0700
-X-CSE-ConnectionGUID: 4FassazaS6CBTnaC9ALH8A==
-X-CSE-MsgGUID: d5R9Ej9kRfCkJTP2osMhWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="54533618"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 15 Jul 2024 05:29:08 -0700
-Date: Mon, 15 Jul 2024 20:44:49 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, qemu-trivial@nongnu.org,
- qemu-devel@nongnu.org, Amit Shah <amit@kernel.org>
-Subject: Re: [PATCH 7/7] backends/rng-random: Get rid of qemu_open_old()
-Message-ID: <ZpUZwfH7OWvlXj08@intel.com>
-References: <20240715082155.28771-1-zhao1.liu@intel.com>
- <20240715082155.28771-8-zhao1.liu@intel.com>
- <01245850-b5df-4bf6-9a22-775d12fc07a0@linaro.org>
- <ZpT1iy5NPqwjqaLB@intel.com>
- <487ea08d-d374-4591-bb68-b29e50013864@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sTL7e-0005Ad-Ih
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:48:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721047682;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Pfu6O8lg34RbDkDfXlGkHEP1e9e4uZMaHydNy/7oGns=;
+ b=fsmN9YzkpX6yneJ1+aems7w0Yhqja5tSLqk/qkoDoGd3ivk3UBT542eMgcq2rN2UOxitvM
+ iHieOzRabHLqolZO8ALk+ZyidmoaxkDSHKfiD0Fl3G5wn6EUS38WKzDpgXYX66JSIstnHN
+ qcyBuVMXt/A4BMfHF4zPVS2dZTrmO/M=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-E-zgKDX4MBuglY45-7PhHw-1; Mon,
+ 15 Jul 2024 08:47:59 -0400
+X-MC-Unique: E-zgKDX4MBuglY45-7PhHw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C3E41955D5B; Mon, 15 Jul 2024 12:47:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.18])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 53A061955F40; Mon, 15 Jul 2024 12:47:54 +0000 (UTC)
+Date: Mon, 15 Jul 2024 13:47:51 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Subject: Re: [PATCH] meson: Update meson-buildoptions.sh
+Message-ID: <ZpUad0qRK2xBAnV5@redhat.com>
+References: <20240705054903.2100562-1-zhao1.liu@intel.com>
+ <Zoe625Z3JxlB4G5D@redhat.com> <ZpUdgyNb2lFga9PU@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <487ea08d-d374-4591-bb68-b29e50013864@tls.msk.ru>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZpUdgyNb2lFga9PU@intel.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,23 +85,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 15, 2024 at 02:07:00PM +0300, Michael Tokarev wrote:
-> Date: Mon, 15 Jul 2024 14:07:00 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [PATCH 7/7] backends/rng-random: Get rid of qemu_open_old()
+CC qemu-trivial
+
+On Mon, Jul 15, 2024 at 09:00:51PM +0800, Zhao Liu wrote:
+> Hi Daniel,
 > 
-> 15.07.2024 13:10, Zhao Liu wrote:
-> ...
-> > Thanks Philippe! I'll wait patch 1's comment, after that I can post a
-> > new version with the change you mentioned.
+> On Fri, Jul 05, 2024 at 10:20:27AM +0100, Daniel P. Berrangé wrote:
+> > Date: Fri, 5 Jul 2024 10:20:27 +0100
+> > From: "Daniel P. Berrangé" <berrange@redhat.com>
+> > Subject: Re: [PATCH] meson: Update meson-buildoptions.sh
+> > 
+> > On Fri, Jul 05, 2024 at 01:49:03PM +0800, Zhao Liu wrote:
+> > > Update meson-buildoptions.sh to stay in sync with meson_options.txt.
+> > > 
+> > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > > ---
+> > >  scripts/meson-buildoptions.sh | 14 +++++++-------
+> > >  1 file changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> > 
 > 
-> I don't think either of this is necessary.  Patch 1 LGTM, and I'll
-> drop the comment while applying.
+> Thanks!
+> 
+> BTW, could you please help merge this change? Because recently this
+> script has been "polluting" my git staging workspace during
+> development.
+> 
+> Regards,
+> Zhao
 > 
 
-Many thanks!
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
