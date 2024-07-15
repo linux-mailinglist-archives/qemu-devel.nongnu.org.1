@@ -2,104 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B044931512
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 451CB93149B
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:46:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTLF4-0003D9-7J; Mon, 15 Jul 2024 08:55:46 -0400
+	id 1sTL5F-0001uf-DQ; Mon, 15 Jul 2024 08:45:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sTLF1-00039Q-F5
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:55:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTL4z-0001cM-GK
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:45:23 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sTLEz-0006uI-Mw
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:55:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721048140;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iXhi9NpfTXWHgY2dNzLAaqkM6ZDMZMLVgAna//bNgsM=;
- b=bcL5geH5egfaRohoHdpevmYgxb8OiAYjc1k0yUA2yDnWiv+x4ENEA0vOGVEtRU0Q/W4d4q
- GQ7P/WKEn5YxRDpn3Mq+1Buza9B0AHfH7Ux8e9Kdexjo9SZBuVCg+fKTtllLpCMDJGT+qA
- 2De0sMl5g4romLHKxpkGTZzaC8gDo00=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-VzO5CJdKPgiR2EW-b0yl8Q-1; Mon, 15 Jul 2024 08:55:38 -0400
-X-MC-Unique: VzO5CJdKPgiR2EW-b0yl8Q-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2ee8eaccb7aso42135371fa.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 05:55:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721048137; x=1721652937;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iXhi9NpfTXWHgY2dNzLAaqkM6ZDMZMLVgAna//bNgsM=;
- b=YppaELFoeIzDlEexyx6SUbF+KdGT///b1H0qpKM338mSHVIMiAn5IdTnVzZlYNrUrP
- RxuZMpmRg7OeoafD1ApW/6ufP0OKpPq9Gnj+fX5uiWajNbq7N+t6vqq6JESFvcz9sBBO
- nfSNxP2CfyEx8H3YC4kuJIHMVZFuCMDdGacNGTG8tiF5ASufY2ZeFlfYhBj0PLTQo05w
- EbkyQxgTKsE+JRy5tfiEta/NRTt8To+PYSpa8kEQo8XaqzF2813TWyWCGpiOuj6GHeRY
- KTtaBfdGF9ZTWz0xOyLFATmXWhJgO1YK2dTeOMSAQJu1qw00rITW3ydH3w2XXW3apaqV
- DWkA==
-X-Gm-Message-State: AOJu0YzpGF6+RC4oC+O7QBhmkl6MB8xW1Ed/TvEvna6lpKvcENR75/FA
- df1739efCokr54Hcf91R826n2aVoODIPNJXOHmWHjFgVV8orI6Bw754a10RAqnc/6+8qfEHpI9w
- XVKqtKRsZ0R4WNnmTVDrzByaQNKNrXyqNGWg2yIl9l++oFBgjn/pU
-X-Received: by 2002:a2e:984b:0:b0:2ec:42db:96a2 with SMTP id
- 38308e7fff4ca-2eeb30feb61mr121242391fa.29.1721048137447; 
- Mon, 15 Jul 2024 05:55:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5t69s/oQdGoCvU0838QHjVWHc6yjxcwmeZbfhYKuuQesKJylhqkLb1Maqumo5giGTAMDiaA==
-X-Received: by 2002:a2e:984b:0:b0:2ec:42db:96a2 with SMTP id
- 38308e7fff4ca-2eeb30feb61mr121241981fa.29.1721048136979; 
- Mon, 15 Jul 2024 05:55:36 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f25a957sm120311775e9.13.2024.07.15.05.55.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jul 2024 05:55:36 -0700 (PDT)
-Date: Mon, 15 Jul 2024 14:55:35 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
- <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
- <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
- <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
- <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
- <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
- <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
- <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
- <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
- <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
- <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
- <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
- <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
- <lixianglai@loongson.cn>, <npiggin@gmail.com>, <harshpb@linux.ibm.com>,
- <linuxarm@huawei.com>, Shaoqin Huang <shahuang@redhat.com>, Zhao Liu
- <zhao1.liu@intel.com>
-Subject: Re: [PATCH V15 4/7] hw/acpi: Update GED _EVT method AML with CPU scan
-Message-ID: <20240715145535.0626527e@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240713182516.1457-5-salil.mehta@huawei.com>
-References: <20240713182516.1457-1-salil.mehta@huawei.com>
- <20240713182516.1457-5-salil.mehta@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTL4u-0004tB-2B
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:45:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721047516; x=1752583516;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=HgCxm632MKI+ageSXo76+sPRdrBooforP1/ih5wmQEE=;
+ b=j6aHo24mASlkGbVPlUgGYXD43+VrdVz/c4aMwyRFsR9X4LkM/YldMp47
+ slqPrhOZvKI3sHqomKFgV/c8ueQlvTq3Rz2PrLDU/khFvarDid9BOjVH7
+ rR2tREM7qu18ePfL+YmXZUnjWUV0IEfXpBMA9+Gs5VsOhiAMBv+q9Q+qG
+ m6TbWrbjSeD3EXS93Ij9b5TuQW0hhsx78jWAkpsSB/dM/8BB9WRrlNe8y
+ JBwa73SoiIDshcG6rLA5uwb43CXqYq/XVZ2ui7iEFHEC2xiYtXe8lfVMN
+ i3no7pOCU92waVR9Iz0LheVb5a3VIxUAWv8+u99eSYpE85hy24/NIIdL5 Q==;
+X-CSE-ConnectionGUID: tBU/AjaqQHO4AUBmmAdfpw==
+X-CSE-MsgGUID: tqbs83CPQ06xfZZYj+bKyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="18377068"
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="18377068"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 05:45:12 -0700
+X-CSE-ConnectionGUID: NgNQpvSES92NzU9mYNTslw==
+X-CSE-MsgGUID: 3VcObhf5Tai7eUqEKlc8eQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="87119060"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa001.jf.intel.com with ESMTP; 15 Jul 2024 05:45:11 -0700
+Date: Mon, 15 Jul 2024 21:00:51 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] meson: Update meson-buildoptions.sh
+Message-ID: <ZpUdgyNb2lFga9PU@intel.com>
+References: <20240705054903.2100562-1-zhao1.liu@intel.com>
+ <Zoe625Z3JxlB4G5D@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zoe625Z3JxlB4G5D@redhat.com>
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,65 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 13 Jul 2024 19:25:13 +0100
-Salil Mehta <salil.mehta@huawei.com> wrote:
+Hi Daniel,
 
-> OSPM evaluates _EVT method to map the event. The CPU hotplug event eventually
-> results in start of the CPU scan. Scan figures out the CPU and the kind of
-> event(plug/unplug) and notifies it back to the guest. Update the GED AML _EVT
-> method with the call to method \\_SB.CPUS.CSCN (via \\_SB.GED.CSCN)
+On Fri, Jul 05, 2024 at 10:20:27AM +0100, Daniel P. Berrangé wrote:
+> Date: Fri, 5 Jul 2024 10:20:27 +0100
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PATCH] meson: Update meson-buildoptions.sh
 > 
-> Architecture specific code [1] might initialize its CPUs AML code by calling
-> common function build_cpus_aml() like below for ARM:
+> On Fri, Jul 05, 2024 at 01:49:03PM +0800, Zhao Liu wrote:
+> > Update meson-buildoptions.sh to stay in sync with meson_options.txt.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >  scripts/meson-buildoptions.sh | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> build_cpus_aml(scope, ms, opts, xx_madt_cpu_entry, memmap[VIRT_CPUHP_ACPI].base,
->                "\\_SB", "\\_SB.GED.CSCN", AML_SYSTEM_MEMORY);
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> [1] https://lore.kernel.org/qemu-devel/20240613233639.202896-13-salil.mehta@huawei.com/
-> 
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Xianglai Li <lixianglai@loongson.cn>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-> Tested-by: Zhao Liu <zhao1.liu@intel.com>
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Thanks!
 
-> ---
->  hw/acpi/generic_event_device.c         | 3 +++
->  include/hw/acpi/generic_event_device.h | 1 +
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-> index 1b31d633ba..15ffa12cb2 100644
-> --- a/hw/acpi/generic_event_device.c
-> +++ b/hw/acpi/generic_event_device.c
-> @@ -108,6 +108,9 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
->                  aml_append(if_ctx, aml_call0(MEMORY_DEVICES_CONTAINER "."
->                                               MEMORY_SLOT_SCAN_METHOD));
->                  break;
-> +            case ACPI_GED_CPU_HOTPLUG_EVT:
-> +                aml_append(if_ctx, aml_call0(AML_GED_EVT_CPU_SCAN_METHOD));
-> +                break;
->              case ACPI_GED_PWR_DOWN_EVT:
->                  aml_append(if_ctx,
->                             aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
-> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-> index e091ac2108..40af3550b5 100644
-> --- a/include/hw/acpi/generic_event_device.h
-> +++ b/include/hw/acpi/generic_event_device.h
-> @@ -87,6 +87,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
->  #define GED_DEVICE      "GED"
->  #define AML_GED_EVT_REG "EREG"
->  #define AML_GED_EVT_SEL "ESEL"
-> +#define AML_GED_EVT_CPU_SCAN_METHOD "\\_SB.GED.CSCN"
->  
->  /*
->   * Platforms need to specify the GED event bitmap
+BTW, could you please help merge this change? Because recently this
+script has been "polluting" my git staging workspace during
+development.
+
+Regards,
+Zhao
 
 
