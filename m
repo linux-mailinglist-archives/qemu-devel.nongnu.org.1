@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A1D93105F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 10:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF83931070
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 10:48:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTHLB-0004i3-In; Mon, 15 Jul 2024 04:45:49 -0400
+	id 1sTHLD-0004sW-UZ; Mon, 15 Jul 2024 04:45:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3uOGUZggKCgs3xz34lqlrzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--smostafa.bounces.google.com>)
- id 1sTHL9-0004c7-Cq
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 04:45:47 -0400
-Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
+ <3uuGUZggKCg05z156nsnt11tyr.p1z3rz7-qr8ry010t07.14t@flex--smostafa.bounces.google.com>)
+ id 1sTHLC-0004nE-4b
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 04:45:50 -0400
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3uOGUZggKCgs3xz34lqlrzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--smostafa.bounces.google.com>)
- id 1sTHL7-00043h-Uq
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 04:45:47 -0400
-Received: by mail-yw1-x1149.google.com with SMTP id
- 00721157ae682-65f94703b89so36715987b3.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 01:45:44 -0700 (PDT)
+ <3uuGUZggKCg05z156nsnt11tyr.p1z3rz7-qr8ry010t07.14t@flex--smostafa.bounces.google.com>)
+ id 1sTHLA-000449-3I
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 04:45:49 -0400
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-e03641334e0so6246333276.3
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 01:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1721033144; x=1721637944; darn=nongnu.org;
+ d=google.com; s=20230601; t=1721033146; x=1721637946; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=WmRB0IiiVcJoW8Guf+AR/DDBZ7QNZLi0NBcwnWdsC5U=;
- b=VZYDARWtGBtV8/tIXFBOzsfw8i7pdAbf21D0xQogVh78Rq2Ul5a4wHl5K/0pJsGp9r
- 9s+wEn5H+g5cmeTBbC3Y+Jnbd/svq3mMK8TtIuN4IVB09R6+2SSK3QiN3+x9Ah74cB2Q
- GVf1L+R0x0urWcGB9QUmeitPs1DBiNXFJsxumxthAI50BQ9Urt9MVVc3vGy7LvLU3z+s
- x70K7Xtv9dWF9Ir5sipjsB2Vn8GkXDu4jQdej8/+XbvyA9/F3A7mJZ9Qr8XAS0W/Zazm
- Woel/WvqEbK7jb8XHPTHieGP5EKm4vf35BFxa/abCfss19xlx+tzu8Aov1gQaRFig4Dv
- SeaQ==
+ bh=wxZxNfjRZUpwmvOtz4Wu2qv05YP33LsxLrkQpvYzqVE=;
+ b=3BeebQM8lAbo8LvOHpIkt0lnl3ONQ4/IopZ9/fezmHQhrFbTkWzf8bCr9gQVAl929p
+ g/AOvstYd1bC24QOX77ewN1K5N39TJfc87Fm0az8H0CHu6xn1jN6ALsnUavrdt/Gr92H
+ b6qv5GtsX5MOtPCqOgQqN3vlzoqZNAYX803Sdcx6V4ZEBSKLl1IjhF2qh0gQ0mslr/1Y
+ 24AVVitWo/ndshxIhfvGoiccJEe4Ysr6zNUC/uElsB8Go2ai4E0oL8wO1iU+uqBD9x2W
+ fjqRAHmjlFznTCKpjK5v+/yZeRBh+mBsKmzEnkta064zcLlj2n8tes6wb56datADgvZI
+ cNFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721033144; x=1721637944;
+ d=1e100.net; s=20230601; t=1721033146; x=1721637946;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WmRB0IiiVcJoW8Guf+AR/DDBZ7QNZLi0NBcwnWdsC5U=;
- b=d619RY0sVLBBu/fQaNAhKH8mmw6rdZyEyBzwd0jDGXkCUQ5YkmvXNOKQqN1KrzdYn9
- lvoHxDJ3nMKa/du+gc1i4cUTpaLeE87GEgxGudFcqcFyANFq+lJQIxJVMKx3mCs64ctm
- hcHDipTE0yQBOTcL71aK2JWO+fPUesRfw8VzWAEklB7XVSC1+KUZg+0AP4rCvgJ8AIf0
- 9T98QqZRJzwQ4A1JPRWyvI3EA28Q7aZCPNPmeYwH1d8JcalMGeYvgieSs5FOsryQ23LC
- +U87wAoi5+IMZ9VgLbr5g8A5YgdWWBH0zuwhofWOjbImZJm4SV9K5pDChhE2XQgOi2LB
- 6YjA==
+ bh=wxZxNfjRZUpwmvOtz4Wu2qv05YP33LsxLrkQpvYzqVE=;
+ b=gUUi2/zHHDgfqfzc/cB/kfm4oKBbuk9S/SyKiPbecwEsFu9VUih/rmTmXeq8wrP7iz
+ Zh91APVCBAKrMZSz9cH+yi7sCUnzYbrEs0VNaSMfQ7IeHlvVnF8LrkU/gQ3UnleaT0/E
+ yfYutct9QJCAqQxcVTqHIJHk+kiE04e2pXN6oVR3Hiaev6PiKFEwVji8lpLvbBmCi4b1
+ uw6m7YgbTN6x0sHm5WsnOa/4HjqQtLrW/Ia8LuQsUBVO1+WaJvWMXIf1Lva6hxPPkxsE
+ 17Ekh9Uw43gSG9Ml+fAhHFFlR4cKxAVBvUpaUn3TRGONkxDBugZU6dmZ3RYeuJWbRhZ6
+ 2m1g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUwnmYZ6vyJ162WcQGl4abpg6ZDGe7hy0wxz7PTwo2apW5WGMScMOLjf8PpeP3e4+/xS0MMYpWf1WJQJdCMnMTozi4+KJ0=
-X-Gm-Message-State: AOJu0YxIX6FS0emsQZmITOHPBYmsrOyLAExVdHkW3qAaGY9MicL1UOpY
- 1FL+pfIpndCF8qdEMvOAOMJPcpCnRA1eiL09sz2xgGC82lbKrjtZ44+vqGi9s1UZaaTCT7sRbj2
- UG1+cWKGDPA==
-X-Google-Smtp-Source: AGHT+IHkY4joZxpPBoOYPle6hjTkrZ50f80+fxDiFkYAo99eo4IbOOArX65KLgtOhVNn4L0NzOkMFVrx0fwQvg==
+ AJvYcCWO6ydfzEwKLJBkNQZM2xIK5RsqUweD+PEGkHmQWT6RKmsBXoLrINWxpN2dEAEHevqGVpPioClAsqkzer5Yz1XcnUxFuA8=
+X-Gm-Message-State: AOJu0Ywr9XilZDKWJqw0AKZP89OZ+JBBzghYJkLGwzbcsOJiGw/AB4vU
+ 4QAMQVEz8vb/DcvaZ9jM3AW49soHdJYMwle1k3KqRuXQq3z6mdwMW3cZZuBTnB44Ulzd33S9M/I
+ Dat6xMCRzyA==
+X-Google-Smtp-Source: AGHT+IHLZdGm1ekUbHw2StSDaICeaBacbRqo+Oq98G2yGaBQ/q7OP6DFpHlHEDSEPupzjbFbuGcKeyMPUsMfEA==
 X-Received: from mostafa.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:a05:690c:64c1:b0:62c:ff73:83f with SMTP
- id 00721157ae682-658f04e8ddcmr2119357b3.8.1721033144191; Mon, 15 Jul 2024
- 01:45:44 -0700 (PDT)
-Date: Mon, 15 Jul 2024 08:45:07 +0000
+ (user=smostafa job=sendgmr) by 2002:a05:6902:2b0d:b0:dda:d7cf:5c2c with SMTP
+ id 3f1490d57ef6-e041b17798cmr35697276.13.1721033146319; Mon, 15 Jul 2024
+ 01:45:46 -0700 (PDT)
+Date: Mon, 15 Jul 2024 08:45:08 +0000
 In-Reply-To: <20240715084519.1189624-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20240715084519.1189624-1-smostafa@google.com>
 X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
-Message-ID: <20240715084519.1189624-8-smostafa@google.com>
-Subject: [PATCH v5 07/18] hw/arm/smmu: Introduce CACHED_ENTRY_TO_ADDR
+Message-ID: <20240715084519.1189624-9-smostafa@google.com>
+Subject: [PATCH v5 08/18] hw/arm/smmuv3: Translate CD and TT using stage-2
+ table
 From: Mostafa Saleh <smostafa@google.com>
 To: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
  qemu-devel@nongnu.org
@@ -70,16 +71,16 @@ Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
  nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org, 
  marcin.juszkiewicz@linaro.org, Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
- envelope-from=3uOGUZggKCgs3xz34lqlrzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--smostafa.bounces.google.com;
- helo=mail-yw1-x1149.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=3uuGUZggKCg05z156nsnt11tyr.p1z3rz7-qr8ry010t07.14t@flex--smostafa.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,45 +96,298 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Soon, smmuv3_do_translate() will be used to translate the CD and the
-TTBx, instead of re-writting the same logic to convert the returned
-cached entry to an address, add a new macro CACHED_ENTRY_TO_ADDR.
+According to ARM SMMU architecture specification (ARM IHI 0070 F.b),
+In "5.2 Stream Table Entry":
+ [51:6] S1ContextPtr
+ If Config[1] == 1 (stage 2 enabled), this pointer is an IPA translated by
+ stage 2 and the programmed value must be within the range of the IAS.
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+In "5.4.1 CD notes":
+ The translation table walks performed from TTB0 or TTB1 are always performed
+ in IPA space if stage 2 translations are enabled.
+
+This patch implements translation of the S1 context descriptor pointer and
+TTBx base addresses through the S2 stage (IPA -> PA)
+
+smmuv3_do_translate() is updated to have one arg which is translation
+class, this is useful to:
+ - Decide wether a translation is stage-2 only or use the STE config.
+ - Populate the class in case of faults, WALK_EABT is left unchanged
+   for stage-1 as it is always IN, while stage-2 would match the
+   used class (TT, IN, CD), this will change slightly when the ptw
+   supports nested translation as it can also issue TT event with
+   class IN.
+
+In case for stage-2 only translation, used in the context of nested
+translation, the stage and asid are saved and restored before and
+after calling smmu_translate().
+
+Translating CD or TTBx can fail for the following reasons:
+1) Large address size: This is described in
+   (3.4.3 Address sizes of SMMU-originated accesses)
+   - For CD ptr larger than IAS, for SMMUv3.1, it can trigger either
+     C_BAD_STE or Translation fault, we implement the latter as it
+     requires no extra code.
+   - For TTBx, if larger than the effective stage 1 output address size, it
+     triggers C_BAD_CD.
+
+2) Faults from PTWs (7.3 Event records)
+   - F_ADDR_SIZE: large address size after first level causes stage 2 Address
+     Size fault (Also in 3.4.3 Address sizes of SMMU-originated accesses)
+   - F_PERMISSION: Same as an address translation. However, when
+     CLASS == CD, the access is implicitly Data and a read.
+   - F_ACCESS: Same as an address translation.
+   - F_TRANSLATION: Same as an address translation.
+   - F_WALK_EABT: Same as an address translation.
+  These are already implemented in the PTW logic, so no extra handling
+  required.
+
+As in CD and TTBx translation context, the iova is not known, setting
+the InputAddr was removed from "smmuv3_do_translate" and set after
+from "smmuv3_translate" with the new function "smmuv3_fixup_event"
+
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- hw/arm/smmuv3.c              | 3 +--
- include/hw/arm/smmu-common.h | 3 +++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ hw/arm/smmuv3.c | 120 +++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 103 insertions(+), 17 deletions(-)
 
 diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 11cd12e32f..3f2dfada44 100644
+index 3f2dfada44..73d5a25705 100644
 --- a/hw/arm/smmuv3.c
 +++ b/hw/arm/smmuv3.c
-@@ -951,8 +951,7 @@ epilogue:
-     switch (status) {
-     case SMMU_TRANS_SUCCESS:
-         entry.perm = cached_entry->entry.perm;
--        entry.translated_addr = cached_entry->entry.translated_addr +
--                                    (addr & cached_entry->entry.addr_mask);
-+        entry.translated_addr = CACHED_ENTRY_TO_ADDR(cached_entry, addr);
-         entry.addr_mask = cached_entry->entry.addr_mask;
-         trace_smmuv3_translate_success(mr->parent_obj.name, sid, addr,
-                                        entry.translated_addr, entry.perm,
-diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
-index 96eb017e50..eecbebaaac 100644
---- a/include/hw/arm/smmu-common.h
-+++ b/include/hw/arm/smmu-common.h
-@@ -37,6 +37,9 @@
- #define VMSA_IDXMSK(isz, strd, lvl)         ((1ULL << \
-                                              VMSA_BIT_LVL(isz, strd, lvl)) - 1)
+@@ -337,14 +337,35 @@ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
  
-+#define CACHED_ENTRY_TO_ADDR(ent, addr)      ((ent)->entry.translated_addr + \
-+                                             ((addr) & (ent)->entry.addr_mask))
+ }
+ 
++static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
++                                                 SMMUTransCfg *cfg,
++                                                 SMMUEventInfo *event,
++                                                 IOMMUAccessFlags flag,
++                                                 SMMUTLBEntry **out_entry,
++                                                 SMMUTranslationClass class);
+ /* @ssid > 0 not supported yet */
+-static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+-                       CD *buf, SMMUEventInfo *event)
++static int smmu_get_cd(SMMUv3State *s, STE *ste, SMMUTransCfg *cfg,
++                       uint32_t ssid, CD *buf, SMMUEventInfo *event)
+ {
+     dma_addr_t addr = STE_CTXPTR(ste);
+     int ret, i;
++    SMMUTranslationStatus status;
++    SMMUTLBEntry *entry;
+ 
+     trace_smmuv3_get_cd(addr);
 +
- /*
-  * Page table walk error types
-  */
++    if (cfg->stage == SMMU_NESTED) {
++        status = smmuv3_do_translate(s, addr, cfg, event,
++                                     IOMMU_RO, &entry, SMMU_CLASS_CD);
++
++        /* Same PTW faults are reported but with CLASS = CD. */
++        if (status != SMMU_TRANS_SUCCESS) {
++            return -EINVAL;
++        }
++
++        addr = CACHED_ENTRY_TO_ADDR(entry, addr);
++    }
++
+     /* TODO: guarantee 64-bit single-copy atomicity */
+     ret = dma_memory_read(&address_space_memory, addr, buf, sizeof(*buf),
+                           MEMTXATTRS_UNSPECIFIED);
+@@ -659,10 +680,13 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+     return 0;
+ }
+ 
+-static int decode_cd(SMMUTransCfg *cfg, CD *cd, SMMUEventInfo *event)
++static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
++                     CD *cd, SMMUEventInfo *event)
+ {
+     int ret = -EINVAL;
+     int i;
++    SMMUTranslationStatus status;
++    SMMUTLBEntry *entry;
+ 
+     if (!CD_VALID(cd) || !CD_AARCH64(cd)) {
+         goto bad_cd;
+@@ -713,9 +737,26 @@ static int decode_cd(SMMUTransCfg *cfg, CD *cd, SMMUEventInfo *event)
+ 
+         tt->tsz = tsz;
+         tt->ttb = CD_TTB(cd, i);
++
+         if (tt->ttb & ~(MAKE_64BIT_MASK(0, cfg->oas))) {
+             goto bad_cd;
+         }
++
++        /* Translate the TTBx, from IPA to PA if nesting is enabled. */
++        if (cfg->stage == SMMU_NESTED) {
++            status = smmuv3_do_translate(s, tt->ttb, cfg, event, IOMMU_RO,
++                                         &entry, SMMU_CLASS_TT);
++            /*
++             * Same PTW faults are reported but with CLASS = TT.
++             * If TTBx is larger than the effective stage 1 output addres
++             * size, it reports C_BAD_CD, which is handled by the above case.
++             */
++            if (status != SMMU_TRANS_SUCCESS) {
++                return -EINVAL;
++            }
++            tt->ttb = CACHED_ENTRY_TO_ADDR(entry, tt->ttb);
++        }
++
+         tt->had = CD_HAD(cd, i);
+         trace_smmuv3_decode_cd_tt(i, tt->tsz, tt->ttb, tt->granule_sz, tt->had);
+     }
+@@ -767,12 +808,12 @@ static int smmuv3_decode_config(IOMMUMemoryRegion *mr, SMMUTransCfg *cfg,
+         return 0;
+     }
+ 
+-    ret = smmu_get_cd(s, &ste, 0 /* ssid */, &cd, event);
++    ret = smmu_get_cd(s, &ste, cfg, 0 /* ssid */, &cd, event);
+     if (ret) {
+         return ret;
+     }
+ 
+-    return decode_cd(cfg, &cd, event);
++    return decode_cd(s, cfg, &cd, event);
+ }
+ 
+ /**
+@@ -832,58 +873,80 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+                                                  SMMUTransCfg *cfg,
+                                                  SMMUEventInfo *event,
+                                                  IOMMUAccessFlags flag,
+-                                                 SMMUTLBEntry **out_entry)
++                                                 SMMUTLBEntry **out_entry,
++                                                 SMMUTranslationClass class)
+ {
+     SMMUPTWEventInfo ptw_info = {};
+     SMMUState *bs = ARM_SMMU(s);
+     SMMUTLBEntry *cached_entry = NULL;
++    int asid, stage;
++    bool desc_s2_translation = class != SMMU_CLASS_IN;
++
++    /*
++     * The function uses the argument class to identify which stage is used:
++     * - CLASS = IN: Means an input translation, determine the stage from STE.
++     * - CLASS = CD: Means the addr is an IPA of the CD, and it would be
++     *   translated using the stage-2.
++     * - CLASS = TT: Means the addr is an IPA of the stage-1 translation table
++     *   and it would be translated using the stage-2.
++     * For the last 2 cases instead of having intrusive changes in the common
++     * logic, we modify the cfg to be a stage-2 translation only in case of
++     * nested, and then restore it after.
++     */
++    if (desc_s2_translation) {
++        asid = cfg->asid;
++        stage = cfg->stage;
++        cfg->asid = -1;
++        cfg->stage = SMMU_STAGE_2;
++    }
+ 
+     cached_entry = smmu_translate(bs, cfg, addr, flag, &ptw_info);
++
++    if (desc_s2_translation) {
++        cfg->asid = asid;
++        cfg->stage = stage;
++    }
++
+     if (!cached_entry) {
+         /* All faults from PTW has S2 field. */
+         event->u.f_walk_eabt.s2 = (ptw_info.stage == SMMU_STAGE_2);
+         switch (ptw_info.type) {
+         case SMMU_PTW_ERR_WALK_EABT:
+             event->type = SMMU_EVT_F_WALK_EABT;
+-            event->u.f_walk_eabt.addr = addr;
+             event->u.f_walk_eabt.rnw = flag & 0x1;
+             event->u.f_walk_eabt.class = (ptw_info.stage == SMMU_STAGE_2) ?
+-                                          SMMU_CLASS_IN : SMMU_CLASS_TT;
++                                          class : SMMU_CLASS_TT;
+             event->u.f_walk_eabt.addr2 = ptw_info.addr;
+             break;
+         case SMMU_PTW_ERR_TRANSLATION:
+             if (PTW_RECORD_FAULT(cfg)) {
+                 event->type = SMMU_EVT_F_TRANSLATION;
+-                event->u.f_translation.addr = addr;
+                 event->u.f_translation.addr2 = ptw_info.addr;
+-                event->u.f_translation.class = SMMU_CLASS_IN;
++                event->u.f_translation.class = class;
+                 event->u.f_translation.rnw = flag & 0x1;
+             }
+             break;
+         case SMMU_PTW_ERR_ADDR_SIZE:
+             if (PTW_RECORD_FAULT(cfg)) {
+                 event->type = SMMU_EVT_F_ADDR_SIZE;
+-                event->u.f_addr_size.addr = addr;
+                 event->u.f_addr_size.addr2 = ptw_info.addr;
+-                event->u.f_addr_size.class = SMMU_CLASS_IN;
++                event->u.f_addr_size.class = class;
+                 event->u.f_addr_size.rnw = flag & 0x1;
+             }
+             break;
+         case SMMU_PTW_ERR_ACCESS:
+             if (PTW_RECORD_FAULT(cfg)) {
+                 event->type = SMMU_EVT_F_ACCESS;
+-                event->u.f_access.addr = addr;
+                 event->u.f_access.addr2 = ptw_info.addr;
+-                event->u.f_access.class = SMMU_CLASS_IN;
++                event->u.f_access.class = class;
+                 event->u.f_access.rnw = flag & 0x1;
+             }
+             break;
+         case SMMU_PTW_ERR_PERMISSION:
+             if (PTW_RECORD_FAULT(cfg)) {
+                 event->type = SMMU_EVT_F_PERMISSION;
+-                event->u.f_permission.addr = addr;
+                 event->u.f_permission.addr2 = ptw_info.addr;
+-                event->u.f_permission.class = SMMU_CLASS_IN;
++                event->u.f_permission.class = class;
+                 event->u.f_permission.rnw = flag & 0x1;
+             }
+             break;
+@@ -896,6 +959,27 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+     return SMMU_TRANS_SUCCESS;
+ }
+ 
++/*
++ * Sets the InputAddr for an SMMU_TRANS_ERROR, as it can't be
++ * set from all contexts, as smmuv3_get_config() can return
++ * translation faults in case of nested translation (for CD
++ * and TTBx). But in that case the iova is not known.
++ */
++static void smmuv3_fixup_event(SMMUEventInfo *event, hwaddr iova)
++{
++    switch (event->type) {
++    case SMMU_EVT_F_WALK_EABT:
++    case SMMU_EVT_F_TRANSLATION:
++    case SMMU_EVT_F_ADDR_SIZE:
++    case SMMU_EVT_F_ACCESS:
++    case SMMU_EVT_F_PERMISSION:
++        event->u.f_walk_eabt.addr = iova;
++        break;
++    default:
++        break;
++    }
++}
++
+ /* Entry point to SMMU, does everything. */
+ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+                                       IOMMUAccessFlags flag, int iommu_idx)
+@@ -944,7 +1028,8 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+         goto epilogue;
+     }
+ 
+-    status = smmuv3_do_translate(s, addr, cfg, &event, flag, &cached_entry);
++    status = smmuv3_do_translate(s, addr, cfg, &event, flag,
++                                 &cached_entry, SMMU_CLASS_IN);
+ 
+ epilogue:
+     qemu_mutex_unlock(&s->mutex);
+@@ -975,6 +1060,7 @@ epilogue:
+                                      entry.perm);
+         break;
+     case SMMU_TRANS_ERROR:
++        smmuv3_fixup_event(&event, addr);
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "%s translation failed for iova=0x%"PRIx64" (%s)\n",
+                       mr->parent_obj.name, addr, smmu_event_string(event.type));
 -- 
 2.45.2.993.g49e7a77208-goog
 
