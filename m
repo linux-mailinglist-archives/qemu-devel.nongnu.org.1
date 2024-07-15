@@ -2,32 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AAF933C01
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296FB933BD3
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:08:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2TO-00058l-6M; Wed, 17 Jul 2024 07:05:26 -0400
+	id 1sU2SH-0008TQ-FU; Wed, 17 Jul 2024 07:04:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@intel-mbp.local>)
- id 1sU2SP-0000bd-Mb
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:29 -0400
+ id 1sU2SD-0008Fq-HT
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:13 -0400
 Received: from 89-104-8-17.customer.bnet.at ([89.104.8.17]
  helo=intel-mbp.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <phil@intel-mbp.local>) id 1sU2SM-0006zK-RU
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:25 -0400
+ (envelope-from <phil@intel-mbp.local>) id 1sU2SB-0006yr-Cj
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:13 -0400
 Received: by intel-mbp.local (Postfix, from userid 501)
- id 683FB37964B; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
+ id 6EAE537964D; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de,
  graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org,
  akihiko.odaki@daynix.com, phil@philjordan.eu, lists@philjordan.eu
-Subject: [PATCH 22/26] hw/display/apple-gfx: Replaces magic number with
- queried MMIO length
-Date: Mon, 15 Jul 2024 23:07:01 +0200
-Message-Id: <20240715210705.32365-23-phil@philjordan.eu>
+Subject: [PATCH 23/26] hw/display/apple-gfx: Host GPU picking improvements
+Date: Mon, 15 Jul 2024 23:07:02 +0200
+Message-Id: <20240715210705.32365-24-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240715210705.32365-1-phil@philjordan.eu>
 References: <20240715210705.32365-1-phil@philjordan.eu>
@@ -57,62 +56,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than specifying the length of the device's MMIO range as an
-unnamed literal constant (which is at least documented as a comment in
-the framework headers), we query the PVG framework's API for the
-recommended value. This also avoids problems in future, in case the
-currently documented value for the default changes.
+During startup of the PV graphics device, we need to specify the
+host GPU to use for PV acceleration of the guest's graphics
+operations.
+
+On a host system, this is trivial: pick the only one. The
+MTLCreateSystemDefaultDevice() function will do the right thing
+in this case.
+
+It gets a little more complicated on systems with more than one
+GPU; first and foremost, this applies to x86-64 MacBook Pros
+with 15/16" displays. However, with eGPUs, in theory any x86-64
+Mac can gain one or more additional GPUs. In these cases, the
+default is often not ideal - usually, discrete GPUs are selected.
+In my tests, performance tends to be best with iGPUs, however,
+and they are usually also best in terms of energy consumption.
+
+Ideally, we will want to allow the user to manually select a GPU
+if they so choose. In this patch, I am interested in picking a
+sensible default. Instead of the built-in default logic, it is
+now:
+
+ 1. Select a GPU with unified memory (iGPU)
+ 2. If (1) fails, select a GPU that is built-in, not an eGPU.
+ 3. If (2) fails, fall back to system default.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/display/apple-gfx.m  | 16 +++++++++++++++-
- hw/display/trace-events |  1 +
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ hw/display/apple-gfx.m | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 801ae4ad51..cbcbaf0006 100644
+index cbcbaf0006..6c92f2579b 100644
 --- a/hw/display/apple-gfx.m
 +++ b/hw/display/apple-gfx.m
-@@ -303,12 +303,26 @@ static void create_fb(AppleGFXState *s)
-     s->cursor_show = true;
+@@ -502,6 +502,32 @@ static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
+     return mode_array;
  }
  
-+static size_t apple_gfx_get_default_mmio_range_size(void)
++static id<MTLDevice> copy_suitable_metal_device(void)
 +{
-+    size_t mmio_range_size;
-+    @autoreleasepool {
-+        PGDeviceDescriptor *desc = [PGDeviceDescriptor new];
-+        mmio_range_size = desc.mmioLength;
-+        [desc release];
++    id<MTLDevice> dev = nil;
++    NSArray<id<MTLDevice>> *devs = MTLCopyAllDevices();
++
++    /* Prefer a unified memory GPU. Failing that, pick a non-removable GPU. */
++    for (size_t i = 0; i < devs.count; ++i) {
++        if (devs[i].hasUnifiedMemory) {
++            dev = devs[i];
++            break;
++        }
++        if (!devs[i].removable) {
++            dev = devs[i];
++        }
 +    }
-+    return mmio_range_size;
++
++    if (dev != nil) {
++        [dev retain];
++    } else {
++        dev = MTLCreateSystemDefaultDevice();
++    }
++    [devs release];
++
++    return dev;
 +}
 +
- void apple_gfx_common_init(Object *obj, AppleGFXState *s, const char* obj_name)
+ void apple_gfx_common_realize(AppleGFXState *s, PGDeviceDescriptor *desc)
  {
-     Error *local_err = NULL;
-     int r;
-+    size_t mmio_range_size = apple_gfx_get_default_mmio_range_size();
+     PGDisplayDescriptor *disp_desc = nil;
+@@ -509,7 +535,7 @@ void apple_gfx_common_realize(AppleGFXState *s, PGDeviceDescriptor *desc)
+     QTAILQ_INIT(&s->tasks);
+     s->render_queue = dispatch_queue_create("apple-gfx.render",
+                                             DISPATCH_QUEUE_SERIAL);
+-    s->mtl = MTLCreateSystemDefaultDevice();
++    s->mtl = copy_suitable_metal_device();
+     s->mtl_queue = [s->mtl newCommandQueue];
  
--    memory_region_init_io(&s->iomem_gfx, obj, &apple_gfx_ops, s, obj_name, 0x4000);
-+    trace_apple_gfx_common_init(obj_name, mmio_range_size);
-+    memory_region_init_io(&s->iomem_gfx, obj, &apple_gfx_ops, s, obj_name,
-+                          mmio_range_size);
- 
-     /* TODO: PVG framework supports serialising device state: integrate it! */
-     if (apple_gfx_mig_blocker == NULL) {
-diff --git a/hw/display/trace-events b/hw/display/trace-events
-index e35582d659..1809a358e3 100644
---- a/hw/display/trace-events
-+++ b/hw/display/trace-events
-@@ -208,6 +208,7 @@ apple_gfx_mode_change(uint64_t x, uint64_t y) "x=%"PRId64" y=%"PRId64
- apple_gfx_cursor_set(uint32_t bpp, uint64_t width, uint64_t height) "bpp=%d width=%"PRId64" height=0x%"PRId64
- apple_gfx_cursor_show(uint32_t show) "show=%d"
- apple_gfx_cursor_move(void) ""
-+apple_gfx_common_init(const char *device_name, size_t mmio_size) "device: %s; MMIO size: %zu bytes"
- 
- # apple-gfx-vmapple.m
- apple_iosfc_read(uint64_t offset, uint64_t res) "offset=0x%"PRIx64" res=0x%"PRIx64
+     desc.device = s->mtl;
 -- 
 2.39.3 (Apple Git-146)
 
