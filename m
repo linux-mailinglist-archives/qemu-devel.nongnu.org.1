@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D636930D4A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 06:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD570930D46
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 06:35:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTDPy-0008LG-Pk; Mon, 15 Jul 2024 00:34:30 -0400
+	id 1sTDQ0-0008Rt-Fj; Mon, 15 Jul 2024 00:34:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTDPw-0008EU-Lv
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 00:34:28 -0400
+ id 1sTDPy-0008MY-L3
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 00:34:30 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTDPv-0004FI-1h
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 00:34:28 -0400
+ id 1sTDPx-0004FI-1J
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 00:34:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721018068; x=1752554068;
+ t=1721018070; x=1752554070;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ORQtPOUjRaH7fq192/3Uf+CcJuvKVSUruZo9xOxKbJw=;
- b=U7cfQYPuFla3FoEfXEZIKA2F66OU+vB/OBJefMFRgiD3rmlJm+STD+FH
- joSRccbG8H2PQZvf7nVbeJdBQrjts6GEZegCXX7G6Qe6hjZp2veCSBReU
- ojv6uYKuL7mQhdmM/HS8V6ZaJQA9hBdrXUo85TcYaBmSTyvo9nEkAX7HL
- kt8/T61EBPap0JNdY9DEPDYKlRaBqx3DPbZ86feGAwf/Zc0ftNmLnvUvB
- 7/rjVOPVTnZYq65K7mmwdLidDGgHZbAIu87izsec+f7GAa/JOy9tURLm3
- iZ7kuE8obNcphffGddB9Y1PxDOzQkWxdIe6JUIArzH7bxE21t1jDVZzsl A==;
-X-CSE-ConnectionGUID: vNxBxKNuTIeQ/BZBhZzyPw==
-X-CSE-MsgGUID: gYCamMGxSkCjN7BEajVJAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="35809816"
-X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="35809816"
+ bh=tKr89zQ0Ud3Nsxehy7urxxT9zgviuntFd5ByL5dN0Dg=;
+ b=lUt2b5b1ICKpMrpB8P2FcdNt86YdQf1oWHnoP41BtilYfO4ILVBUuKY8
+ 24rWQdBI0DGR+mI6bHwfod1tVK1jBsT2nhAbDsTiGpK9Mc+adZkJjEZ9X
+ ICxOZrtkZ85F2Gbu74gdfS1A49F1MKAqkgMKnDWgIpOOlB/1n6hexx0ir
+ 23Hv2sTn59fgXYxeYb3yNh83bEef8eqvFebb5/YMI0Z5ARxhGMKdGl380
+ x8qZ7AUPIPtBhqNEr1gj3Qg6VNQi4ZRs5depbEAJ24zB1uZdxoq3MB10q
+ 7p1eJ2sfcdRjzR2XlxTsOB8c/MhGxWQ7oCOYveqe58/hwPS3jGFw3tt3t Q==;
+X-CSE-ConnectionGUID: r6JyMEQoQ1OHb6As3mRvZA==
+X-CSE-MsgGUID: UHo/i+WNSXmmGc4TqgBGTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="35809829"
+X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="35809829"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2024 21:34:26 -0700
-X-CSE-ConnectionGUID: 1TK6ChxeSL2fX8CDCR/HwQ==
-X-CSE-MsgGUID: 4lGA0LgxTMmECm7U3JD7IQ==
+ 14 Jul 2024 21:34:28 -0700
+X-CSE-ConnectionGUID: d46rdVzSQbq2gUIPsr/NmA==
+X-CSE-MsgGUID: Bdj/zOvLSmGvktFde+KVAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="54043046"
+X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="54043070"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 14 Jul 2024 21:34:22 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 14 Jul 2024 21:34:25 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
  Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 2/8] target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
- MSR_KVM_SYSTEM_TIME definitions
-Date: Mon, 15 Jul 2024 12:49:49 +0800
-Message-Id: <20240715044955.3954304-3-zhao1.liu@intel.com>
+Subject: [PATCH v3 3/8] target/i386/kvm: Only save/load kvmclock MSRs when
+ kvmclock enabled
+Date: Mon, 15 Jul 2024 12:49:50 +0800
+Message-Id: <20240715044955.3954304-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240715044955.3954304-1-zhao1.liu@intel.com>
 References: <20240715044955.3954304-1-zhao1.liu@intel.com>
@@ -86,31 +86,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These 2 MSRs have been already defined in kvm_para.h (standard-headers/
-asm-x86/kvm_para.h).
+MSR_KVM_SYSTEM_TIME and MSR_KVM_WALL_CLOCK are attached with the (old)
+kvmclock feature (KVM_FEATURE_CLOCKSOURCE).
 
-Remove QEMU local definitions to avoid duplication.
+So, just save/load them only when kvmclock (KVM_FEATURE_CLOCKSOURCE) is
+enabled.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/kvm/kvm.c | 3 ---
- 1 file changed, 3 deletions(-)
+ target/i386/kvm/kvm.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 86e42beb78bf..6ad5a7dbf1fd 100644
+index 6ad5a7dbf1fd..ac434e83b64c 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -81,9 +81,6 @@
- #define KVM_APIC_BUS_CYCLE_NS       1
- #define KVM_APIC_BUS_FREQUENCY      (1000000000ULL / KVM_APIC_BUS_CYCLE_NS)
- 
--#define MSR_KVM_WALL_CLOCK  0x11
--#define MSR_KVM_SYSTEM_TIME 0x12
--
- /* A 4096-byte buffer can hold the 8-byte kvm_msrs header, plus
-  * 255 kvm_msr_entry structs */
- #define MSR_BUF_SIZE 4096
+@@ -3419,8 +3419,10 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+      */
+     if (level >= KVM_PUT_RESET_STATE) {
+         kvm_msr_entry_add(cpu, MSR_IA32_TSC, env->tsc);
+-        kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, env->system_time_msr);
+-        kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, env->wall_clock_msr);
++        if (env->features[FEAT_KVM] & CPUID_KVM_CLOCK) {
++            kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, env->system_time_msr);
++            kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, env->wall_clock_msr);
++        }
+         if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF_INT) {
+             kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_INT, env->async_pf_int_msr);
+         }
+@@ -3895,8 +3897,10 @@ static int kvm_get_msrs(X86CPU *cpu)
+         }
+     }
+ #endif
+-    kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, 0);
+-    kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, 0);
++    if (env->features[FEAT_KVM] & CPUID_KVM_CLOCK) {
++        kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, 0);
++        kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, 0);
++    }
+     if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF_INT) {
+         kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_INT, 0);
+     }
 -- 
 2.34.1
 
