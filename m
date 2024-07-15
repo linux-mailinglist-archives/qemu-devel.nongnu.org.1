@@ -2,106 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA1879318DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 18:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 688C5931904
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:13:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTOwu-0005k0-Tx; Mon, 15 Jul 2024 12:53:17 -0400
+	id 1sTPEm-0004hH-46; Mon, 15 Jul 2024 13:11:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1sTOwr-0005g4-Dk; Mon, 15 Jul 2024 12:53:13 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1sTOwp-0003F8-9J; Mon, 15 Jul 2024 12:53:13 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46FGRNBf004180;
- Mon, 15 Jul 2024 16:52:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:date:mime-version:subject:to:cc:references:from
- :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=f
- aRKaGXgd3qZ/h/bjJPGVs0hqBQZIg+h9d6s69fyXP8=; b=H7EcMiOUznQKEuEuw
- Q0D0BgC5D1/VMj72bxkMLydKQwqxQITQmnR6Q3+o1ICTpBCarXJVGbLDq4ncjDBQ
- A0XqkB+q9yR/CCSnpKNo3wYS17rhryEwQqADyD7Ug1RkHEafV4oloXQkMtnszaAX
- eWKHGBm786IKPx5bFQlhYS34WaRJE21MurysIFDgFHfMNom7nfbGW0Ma/BQ3AWhV
- jbk7K9U0KPwPyBZdR47KEC+XS/v8NQ/HKDRleQd/qm+MYMCvs9udj0DBCMKiwGBa
- Lt8yMaI5MelTPeckdvnFCG7DSllaVKlAVIN5k6RVrFxOPK0ug9SnRwmU65tk6SbT
- 2ClaQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40d4p9ggfh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 16:52:59 +0000 (GMT)
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46FGqw38008243;
- Mon, 15 Jul 2024 16:52:59 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40d4p9ggfe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 16:52:58 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46FDc3dl021975; Mon, 15 Jul 2024 16:52:58 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40c5dnqrtu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 16:52:58 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46FGqteg44696268
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Mon, 15 Jul 2024 16:52:57 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 75C8E58063;
- Mon, 15 Jul 2024 16:52:55 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEF355803F;
- Mon, 15 Jul 2024 16:52:54 +0000 (GMT)
-Received: from [9.12.68.85] (unknown [9.12.68.85])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 15 Jul 2024 16:52:54 +0000 (GMT)
-Message-ID: <141e7b65-2e72-4216-acb7-10899adaf372@linux.ibm.com>
-Date: Mon, 15 Jul 2024 12:52:54 -0400
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1sTPEh-0004ec-Ui
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:11:40 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1sTPEg-00072a-4r
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:11:39 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-24c0dbd2866so2434116fac.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 10:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1721063496; x=1721668296; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3b9zgldxquse9HLyjalgcEYR7BU6o4YG8KsqpF1CMxg=;
+ b=HK1LTk2chcbBiHaz3547Sl1KJNVh5jI0Twz2r3XwrHEG7SxB+a9luD/3H8jQFkhv0R
+ xkKzoFJHIzVsnbkQPt/88QM3ZAbbcAWgXylD+wTKjO4tjRZwYropmZM8Plr9CeRedPtw
+ 0fuRwRT/YC7S+8Wnrg5up2hX9YjtFj+3jlt24PEFVkacjIJOx5ykhfQ0k0I72DYomg+S
+ MTxcGRT/9LUDyv/60shWPyDTlZZ8cMrDMQ9hTMfW2P6LQ54JBA7nrDjbkVguyZsCJFP/
+ HKmswSLSyK8NAGopBYu9KlAJ5AsEuH945zg/DH0MhESryWazH3r9bL7q/owA5HEPQGzi
+ MUow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721063496; x=1721668296;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3b9zgldxquse9HLyjalgcEYR7BU6o4YG8KsqpF1CMxg=;
+ b=a0d+x1WHeUXTt36dQMKCpkqCQv/JLvFD8Z6Xfizga1QykhMTLKA3KAXmmWNbx9HDyo
+ b0eFBzpL13wtSyyWD4w3I2IZNo4CkzOfNd50STfj4+ekl9n2XiSQaNnwyAx2wQiMxAcw
+ d4ul0Jp+wwMg3FKrNDpwMdPtZtKYp9uJNX+dAhbh4yp2fp5clVQdxOcOavt6zhpb3WDn
+ kTCiTOQhEEFJQwXbQH2/8HM1vWTaizk9fAKEu3JBUnoPS49Axb601YnzUCDTAXsNAzp5
+ L2YOVrZUDzpLcTZmZqOHiU/F7PgvJulhgIVNMcVY857UmjE9KcjraaKk6HiJqGERAERO
+ MVJg==
+X-Gm-Message-State: AOJu0YyJMoKtfHo673zAA34KEufIn6gEpb5eqZC0pFYBxB+Cs3tY5NHF
+ QZ2v4nQO5PqzXcWGBrEZPZ1fsPwe4Jgzp7rWANAQ+6sGsMSspR66BLhjZipn6tzna6R8oZcizih
+ rQIs=
+X-Google-Smtp-Source: AGHT+IHHzyUFRF74iC7GjyNwENTF2yWQR9mg0tcTaPDgWcnmJk09XbHrGtYOlz88WfT1NJ04pma+gw==
+X-Received: by 2002:a05:6871:73a2:b0:254:9501:db80 with SMTP id
+ 586e51a60fabf-25eae7cd504mr18087625fac.14.1721063495814; 
+ Mon, 15 Jul 2024 10:11:35 -0700 (PDT)
+Received: from sunil-pc.tail07344b.ts.net ([106.51.187.237])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70b7eca85ccsm4752618b3a.178.2024.07.15.10.11.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jul 2024 10:11:35 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v3 0/9] RISC-V: ACPI: Namespace updates
+Date: Mon, 15 Jul 2024 22:41:20 +0530
+Message-ID: <20240715171129.1168896-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] target/s390x: filter deprecated features based on
- model expansion type
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, thuth@redhat.com,
- david@redhat.com, wangyanan55@huawei.com, philmd@linaro.org,
- marcel.apfelbaum@gmail.com, eduardo@habkost.net,
- Jiri Denemark <jdenemar@redhat.com>
-References: <20240711203254.49018-1-walling@linux.ibm.com>
- <87h6cvxjxg.fsf@pond.sub.org>
-Content-Language: en-US
-From: Collin Walling <walling@linux.ibm.com>
-In-Reply-To: <87h6cvxjxg.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HxeTdhM7y967lKOSlgycAtnfCyxwcr9A
-X-Proofpoint-GUID: FnYK8jTp7-Io49r1aaE3SrfVlLPON2S7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_11,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0 mlxscore=0
- adultscore=0 spamscore=0 bulkscore=0 clxscore=1015 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407150133
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=walling@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-oa1-x2a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,59 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/12/24 1:23 AM, Markus Armbruster wrote:
-> Collin Walling <walling@linux.ibm.com> writes:
-> 
->> It is beneficial to provide an interface to retrieve *all* deprecated
->> features in one go. Management applications will need this information
->> to determine which features need to be disabled regardless of the
->> host-model's capabilities.
->>
->> To remedy this, deprecated features are only filtered during a static
->> expansion. All deperecated features are reported on a full expansion.
->>
->> Suggested-by: Jiri Denemark <jdenemar@redhat.com>
->> Signed-off-by: Collin Walling <walling@linux.ibm.com>
-> 
-> Which command(s) exactly are affected?
->
+This series adds few updates to RISC-V ACPI namespace for virt platform.
+Additionally, it has patches to enable ACPI table testing for RISC-V.
 
-The query-cpu-model-expansion result will now report all deprecated
-features when a user requests a full expansion.  The inputs are not
-affects, but the output is modified.  I will make this more concise on
-the v2 commit message.
+1) PCI Link devices need to be created outside the scope of the PCI root
+complex to ensure correct probe ordering by the OS. This matches the
+example given in ACPI spec as well.
 
-> Do they need a doc update?
-> 
+2) Add PLIC and APLIC as platform devices as well to ensure probing
+order as per BRS spec [1] requirement.
 
-Yes, I forgot to add this.  This is what is currently documented:
+3) BRS spec requires RISC-V to use new ACPI ID for the generic UART. So,
+update the HID of the UART.
 
-##
-# @CpuModelInfo:
-#
-...
-#
-# @deprecated-props: a list of properties that are flagged as deprecated
-#     by the CPU vendor.  These props are a subset of the full model's
-#     definition list of properties. (since 9.1)
-#
+4) Enabled ACPI tables tests for RISC-V which were originally part of
+[2] but couldn't get merged due to updates required in the expected AML
+files. I think combining those patches with this series makes it easier
+to merge since expected AML files are updated.
 
-I will change to:
+[1] - https://github.com/riscv-non-isa/riscv-brs/blob/main/acpi.adoc
+[2] - https://lists.gnu.org/archive/html/qemu-devel/2024-06/msg04734.html
 
-#
-# @deprecated-props: a list of properties that are flagged as deprecated
-#     by the CPU vendor. These are a subset of the reported @props.
-#     (since 9.1)
-#
+Changes since v2:
+	1) Updated commit message with exact requirement in the BRS.
+	2) Addressed Igor's comments.
+	3) Rebased and updated tags.
 
-(I will also the correct typo in my commit message).
+Changes since v1:
+	1) Made changes in gpex-acpi.c generic as per feedback from
+	   Michael. This changes the DSDT for aarch64/virt and microvm
+	   machines. Hence, few patches are added to update the expected
+	   DSDT files for those machine so that CI tests don't fail.
+	2) Added patches to enable ACPI tables tests for RISC-V
+	   including a patch to remove the fallback path to
+	   search for expected AML files.
+	3) Rebased and added tags.
 
-[...]
+Sunil V L (9):
+  hw/riscv/virt-acpi-build.c: Add namespace devices for PLIC and APLIC
+  hw/riscv/virt-acpi-build.c: Update the HID of RISC-V UART
+  tests/acpi: Allow DSDT acpi table changes for aarch64
+  acpi/gpex: Create PCI link devices outside PCI root bridge
+  tests/acpi: update expected DSDT blob for aarch64 and  microvm
+  tests/qtest/bios-tables-test.c: Remove the fall back path
+  tests/acpi: Add empty ACPI data files for RISC-V
+  tests/qtest/bios-tables-test.c: Enable basic testing for RISC-V
+  tests/acpi: Add expected ACPI AML files for RISC-V
 
-Thanks!
+ hw/pci-host/gpex-acpi.c                       |  13 +++---
+ hw/riscv/virt-acpi-build.c                    |  34 ++++++++++++++-
+ tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5196 bytes
+ .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5282 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6557 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7679 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5398 bytes
+ tests/data/acpi/riscv64/virt/APIC             | Bin 0 -> 116 bytes
+ tests/data/acpi/riscv64/virt/DSDT             | Bin 0 -> 3576 bytes
+ tests/data/acpi/riscv64/virt/FACP             | Bin 0 -> 276 bytes
+ tests/data/acpi/riscv64/virt/MCFG             | Bin 0 -> 60 bytes
+ tests/data/acpi/riscv64/virt/RHCT             | Bin 0 -> 332 bytes
+ tests/data/acpi/riscv64/virt/SPCR             | Bin 0 -> 80 bytes
+ tests/data/acpi/x86/microvm/DSDT.pcie         | Bin 3023 -> 3023 bytes
+ tests/qtest/bios-tables-test.c                |  40 ++++++++++++------
+ 15 files changed, 66 insertions(+), 21 deletions(-)
+ create mode 100644 tests/data/acpi/riscv64/virt/APIC
+ create mode 100644 tests/data/acpi/riscv64/virt/DSDT
+ create mode 100644 tests/data/acpi/riscv64/virt/FACP
+ create mode 100644 tests/data/acpi/riscv64/virt/MCFG
+ create mode 100644 tests/data/acpi/riscv64/virt/RHCT
+ create mode 100644 tests/data/acpi/riscv64/virt/SPCR
 
 -- 
-Regards,
-  Collin
+2.43.0
 
 
