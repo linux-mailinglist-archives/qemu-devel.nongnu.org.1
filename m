@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E15933BBC
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8BD933C0D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:15:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2TH-0004KE-N0; Wed, 17 Jul 2024 07:05:19 -0400
+	id 1sU2TO-000579-9X; Wed, 17 Jul 2024 07:05:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@intel-mbp.local>)
- id 1sU2SS-0000mw-Li
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:33 -0400
+ id 1sU2SR-0000h8-3J
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:29 -0400
 Received: from 89-104-8-17.customer.bnet.at ([89.104.8.17]
  helo=intel-mbp.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <phil@intel-mbp.local>) id 1sU2SP-00070G-4t
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:28 -0400
+ (envelope-from <phil@intel-mbp.local>) id 1sU2SN-0006yr-Sk
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:26 -0400
 Received: by intel-mbp.local (Postfix, from userid 501)
- id 471CE37963C; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
+ id 4D97437963E; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de,
  graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org,
  akihiko.odaki@daynix.com, phil@philjordan.eu, lists@philjordan.eu
-Subject: [PATCH 17/26] hw/display/apple-gfx: Asynchronous rendering and
- graphics update
-Date: Mon, 15 Jul 2024 23:06:56 +0200
-Message-Id: <20240715210705.32365-18-phil@philjordan.eu>
+Subject: [PATCH 18/26] hw/display/apple-gfx: Adds PCI implementation
+Date: Mon, 15 Jul 2024 23:06:57 +0200
+Message-Id: <20240715210705.32365-19-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240715210705.32365-1-phil@philjordan.eu>
 References: <20240715210705.32365-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=89.104.8.17; envelope-from=phil@intel-mbp.local;
  helo=intel-mbp.local
@@ -58,326 +56,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change avoids doing expensive rendering while holding the BQL.
-Rendering with the lock held is not only inefficient, it can also
-cause deadlocks when the PV Graphics framework’s encode... method
-causes a (synchronous) call to a callback, which in turn tries to
-acquire the BQL.
+This change wires up the PCI variant of the paravirtualised
+graphics device, mainly useful for x86-64 macOS guests, implemented
+by macOS's ParavirtualizedGraphics.framework. It builds on the shared
+code previously split from the vmapple MMIO variant of the device.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/display/apple-gfx.h |  15 +++-
- hw/display/apple-gfx.m | 193 +++++++++++++++++++++++++++--------------
- 2 files changed, 138 insertions(+), 70 deletions(-)
+ hw/display/Kconfig         |   5 ++
+ hw/display/apple-gfx-pci.m | 125 +++++++++++++++++++++++++++++++++++++
+ hw/display/meson.build     |   1 +
+ 3 files changed, 131 insertions(+)
+ create mode 100644 hw/display/apple-gfx-pci.m
 
-diff --git a/hw/display/apple-gfx.h b/hw/display/apple-gfx.h
-index fa7fea6368..9d6d40795e 100644
---- a/hw/display/apple-gfx.h
-+++ b/hw/display/apple-gfx.h
-@@ -15,12 +15,14 @@ void apple_gfx_common_init(Object *obj, AppleGFXState *s, const char* obj_name);
- #include "qemu/osdep.h"
- #include "exec/memory.h"
- #include "ui/surface.h"
-+#include <dispatch/dispatch.h>
- 
- @class PGDeviceDescriptor;
- @protocol PGDevice;
- @protocol PGDisplay;
- @protocol MTLDevice;
- @protocol MTLTexture;
-+@protocol MTLCommandQueue;
- 
- typedef QTAILQ_HEAD(, PGTask_s) AppleGFXTaskList;
- 
-@@ -30,14 +32,21 @@ struct AppleGFXState {
-     id<PGDisplay> pgdisp;
-     AppleGFXTaskList tasks;
-     QemuConsole *con;
--    void *vram;
-     id<MTLDevice> mtl;
--    id<MTLTexture> texture;
-+    id<MTLCommandQueue> mtl_queue;
-     bool handles_frames;
-     bool new_frame;
-     bool cursor_show;
--    DisplaySurface *surface;
-     QEMUCursor *cursor;
+diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+index e3d10bf6ff..8a78a60670 100644
+--- a/hw/display/Kconfig
++++ b/hw/display/Kconfig
+@@ -151,3 +151,8 @@ config MAC_PVG
+ config MAC_PVG_VMAPPLE
+     bool
+     depends on MAC_PVG
 +
-+    dispatch_queue_t render_queue;
-+    /* The following fields should only be accessed from render_queue: */
-+    bool gfx_update_requested;
-+    bool new_frame_ready;
-+    int32_t pending_frames;
-+    void *vram;
-+    DisplaySurface *surface;
-+    id<MTLTexture> texture;
- };
- 
- void apple_gfx_common_realize(AppleGFXState *s, PGDeviceDescriptor *desc);
-diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 48463e5a1f..5855d1d7f5 100644
---- a/hw/display/apple-gfx.m
-+++ b/hw/display/apple-gfx.m
-@@ -35,6 +35,9 @@
- 
- static Error *apple_gfx_mig_blocker;
- 
-+static void apple_gfx_render_frame_completed(AppleGFXState *s, void *vram,
-+                                             id<MTLTexture> texture);
++config MAC_PVG_PCI
++    bool
++    depends on MAC_PVG && PCI
++    default y if PCI_DEVICES
+diff --git a/hw/display/apple-gfx-pci.m b/hw/display/apple-gfx-pci.m
+new file mode 100644
+index 0000000000..bdbab35eed
+--- /dev/null
++++ b/hw/display/apple-gfx-pci.m
+@@ -0,0 +1,125 @@
++#include "apple-gfx.h"
++#include "hw/pci/pci_device.h"
++#include "hw/pci/msi.h"
++#include "qapi/error.h"
++#include "trace.h"
++#import <ParavirtualizedGraphics/ParavirtualizedGraphics.h>
 +
- static AppleGFXTask *apple_gfx_new_task(AppleGFXState *s, uint64_t len)
- {
-     mach_vm_address_t task_mem;
-@@ -105,41 +108,63 @@ static void apple_gfx_write(void *opaque, hwaddr offset, uint64_t val,
-     },
- };
- 
--static void apple_gfx_fb_update_display(void *opaque)
-+static void apple_gfx_render_new_frame(AppleGFXState *s)
- {
--    AppleGFXState *s = opaque;
--
--    if (!s->new_frame || !s->handles_frames) {
-+    BOOL r;
-+    void *vram = s->vram;
-+    uint32_t width = surface_width(s->surface);
-+    uint32_t height = surface_height(s->surface);
-+    MTLRegion region = MTLRegionMake2D(0, 0, width, height);
-+    id<MTLCommandBuffer> command_buffer = [s->mtl_queue commandBuffer];
-+    id<MTLTexture> texture = s->texture;
-+    r = [s->pgdisp encodeCurrentFrameToCommandBuffer:command_buffer
-+                                             texture:texture
-+                                              region:region];
-+    if (!r) {
-         return;
-     }
-+    [texture retain];
++typedef struct AppleGFXPCIState {
++    PCIDevice parent_obj;
 +
-+    [command_buffer retain];
-+    [command_buffer addCompletedHandler:
-+        ^(id<MTLCommandBuffer> cb)
-+        {
-+            dispatch_async(s->render_queue, ^{
-+                apple_gfx_render_frame_completed(s, vram, texture);
-+                [texture release];
-+            });
-+            [command_buffer release];
-+        }];
-+    [command_buffer commit];
-+}
- 
--    @autoreleasepool {
--        s->new_frame = false;
--
--        BOOL r;
--        uint32_t width = surface_width(s->surface);
--        uint32_t height = surface_height(s->surface);
--        MTLRegion region = MTLRegionMake2D(0, 0, width, height);
--        id<MTLCommandQueue> commandQueue = [s->mtl newCommandQueue];
--        id<MTLCommandBuffer> mipmapCommandBuffer = [commandQueue commandBuffer];
--
--        r = [s->pgdisp encodeCurrentFrameToCommandBuffer:mipmapCommandBuffer
--                                                 texture:s->texture
--                                                  region:region];
-+static void copy_mtl_texture_to_surface_mem(id<MTLTexture> texture, void *vram)
++    AppleGFXState common;
++} AppleGFXPCIState;
++
++OBJECT_DECLARE_SIMPLE_TYPE(AppleGFXPCIState, APPLE_GFX_PCI)
++
++static const char* apple_gfx_pci_option_rom_path = NULL;
++
++static void apple_gfx_init_option_rom_path(void)
 +{
-+    /* TODO: Skip this entirely on a pure Metal or headless/guest-only
-+     * rendering path, else use a blit command encoder? Needs careful
-+     * (double?) buffering design. */
-+    size_t width = texture.width, height = texture.height;
-+    MTLRegion region = MTLRegionMake2D(0, 0, width, height);
-+    [texture getBytes:vram
-+          bytesPerRow:(width * 4)
-+        bytesPerImage:(width * height * 4)
-+           fromRegion:region
-+          mipmapLevel:0
-+                slice:0];
-+}
- 
--        if (r != YES) {
--            return;
--        }
-+static void apple_gfx_render_frame_completed(AppleGFXState *s, void *vram,
-+                                             id<MTLTexture> texture)
-+{
-+    --s->pending_frames;
-+    assert(s->pending_frames >= 0);
- 
--        id<MTLBlitCommandEncoder> blitCommandEncoder = [mipmapCommandBuffer blitCommandEncoder];
--        [blitCommandEncoder endEncoding];
--        [mipmapCommandBuffer commit];
--        [mipmapCommandBuffer waitUntilCompleted];
--        [s->texture getBytes:s->vram bytesPerRow:(width * 4)
--                                     bytesPerImage: (width * height * 4)
--                                     fromRegion: region
--                                     mipmapLevel: 0
--                                     slice: 0];
-+    if (vram != s->vram) {
-+        /* Display mode has changed, drop this old frame. */
-+        assert(texture != s->texture);
-+        g_free(vram);
-+    } else {
-+        copy_mtl_texture_to_surface_mem(texture, vram);
- 
-         /* Need to render cursor manually if not supported by backend */
-         if (!dpy_cursor_define_supported(s->con) && s->cursor && s->cursor_show) {
-@@ -159,14 +184,40 @@ static void apple_gfx_fb_update_display(void *opaque)
-             pixman_image_unref(image);
-         }
- 
--        dpy_gfx_update_full(s->con);
--
--        [commandQueue release];
-+        if (s->gfx_update_requested) {
-+            s->gfx_update_requested = false;
-+            dpy_gfx_update_full(s->con);
-+            graphic_hw_update_done(s->con);
-+            s->new_frame_ready = false;
-+        } else {
-+            s->new_frame_ready = true;
-+        }
++    NSURL *option_rom_url = PGCopyOptionROMURL();
++    const char *option_rom_path = option_rom_url.fileSystemRepresentation;
++    if (option_rom_url.fileURL && option_rom_path != NULL) {
++        apple_gfx_pci_option_rom_path = g_strdup(option_rom_path);
 +    }
-+    if (s->pending_frames > 0) {
-+        apple_gfx_render_new_frame(s);
-     }
- }
- 
-+static void apple_gfx_fb_update_display(void *opaque)
-+{
-+    AppleGFXState *s = opaque;
-+
-+    dispatch_async(s->render_queue, ^{
-+        if (s->pending_frames > 0) {
-+            s->gfx_update_requested = true;
-+        } else {
-+            if (s->new_frame_ready) {
-+                dpy_gfx_update_full(s->con);
-+                s->new_frame_ready = false;
-+            }
-+            graphic_hw_update_done(s->con);
-+        }
-+    });
++    [option_rom_url release];
 +}
 +
- static const GraphicHwOps apple_gfx_fb_ops = {
-     .gfx_update = apple_gfx_fb_update_display,
-+    .gfx_update_async = true,
- };
- 
- static void update_cursor(AppleGFXState *s)
-@@ -182,28 +233,23 @@ static void update_cursor(AppleGFXState *s)
- static void set_mode(AppleGFXState *s, uint32_t width, uint32_t height)
- {
-     void *vram = NULL;
--    void *old_vram = s->vram;
-     DisplaySurface *surface;
-     MTLTextureDescriptor *textureDescriptor;
--    id<MTLTexture> old_texture = nil;
-     id<MTLTexture> texture = nil;
--    bool locking_required = false;
--
--    locking_required = !bql_locked();
--    if (locking_required) {
--        bql_lock();
--    }
--    if (s->surface &&
--        width == surface_width(s->surface) &&
--        height == surface_height(s->surface)) {
--        if (locking_required) {
--            bql_unlock();
--        }
-+    __block bool no_change = false;
++static void apple_gfx_pci_init(Object *obj)
++{
++    AppleGFXPCIState *s = APPLE_GFX_PCI(obj);
 +
-+    dispatch_sync(s->render_queue,
-+        ^{
-+            if (s->surface &&
-+                width == surface_width(s->surface) &&
-+                height == surface_height(s->surface)) {
-+                no_change = true;
-+            }
-+        });
++    if (!apple_gfx_pci_option_rom_path) {
++        /* Done on device not class init to avoid -daemonize ObjC fork crash */
++        PCIDeviceClass *pci = PCI_DEVICE_CLASS(object_get_class(obj));
++        apple_gfx_init_option_rom_path();
++        pci->romfile = apple_gfx_pci_option_rom_path;
++    }
 +
-+    if (no_change) {
-         return;
-     }
--    if (locking_required) {
--        bql_unlock();
--    }
- 
-     vram = g_malloc0(width * height * 4);
-     surface = qemu_create_displaysurface_from(width, height, PIXMAN_LE_a8r8g8b8,
-@@ -220,21 +266,23 @@ static void set_mode(AppleGFXState *s, uint32_t width, uint32_t height)
-         texture = [s->mtl newTextureWithDescriptor:textureDescriptor];
-     }
- 
--    if (locking_required) {
--        bql_lock();
--    }
--    old_vram = s->vram;
--    s->vram = vram;
--    s->surface = surface;
--    dpy_gfx_replace_surface(s->con, surface);
--    old_texture = s->texture;
--    s->texture = texture;
--    if (locking_required) {
--        bql_unlock();
--    }
-+    dispatch_sync(s->render_queue,
-+        ^{
-+            id<MTLTexture> old_texture = nil;
-+            void *old_vram = s->vram;
-+            s->vram = vram;
-+            s->surface = surface;
- 
--    g_free(old_vram);
--    [old_texture release];
-+            dpy_gfx_replace_surface(s->con, surface);
++    apple_gfx_common_init(obj, &s->common, TYPE_APPLE_GFX_PCI);
++}
 +
-+            old_texture = s->texture;
-+            s->texture = texture;
-+            [old_texture release];
++static void apple_gfx_pci_interrupt(PCIDevice *dev, AppleGFXPCIState *s,
++                                    uint32_t vector)
++{
++    bool msi_ok;
++    trace_apple_gfx_raise_irq(vector);
 +
-+            if (s->pending_frames == 0) {
-+                g_free(old_vram);
-+            }
-+        });
- }
++    msi_ok = msi_enabled(dev);
++    if (msi_ok) {
++        msi_notify(dev, vector);
++    }
++}
++
++static void apple_gfx_pci_realize(PCIDevice *dev, Error **errp)
++{
++    AppleGFXPCIState *s = APPLE_GFX_PCI(dev);
++    Error *err = NULL;
++    int ret;
++
++    pci_register_bar(dev, PG_PCI_BAR_MMIO,
++                     PCI_BASE_ADDRESS_SPACE_MEMORY, &s->common.iomem_gfx);
++
++    ret = msi_init(dev, 0x0 /* config offset; 0 = find space */,
++                   PG_PCI_MAX_MSI_VECTORS, true /* msi64bit */,
++                   false /*msi_per_vector_mask*/, &err);
++    if (ret != 0) {
++        error_propagate(errp, err);
++        return;
++    }
++
++    @autoreleasepool {
++        PGDeviceDescriptor *desc = [PGDeviceDescriptor new];
++        desc.raiseInterrupt = ^(uint32_t vector) {
++            apple_gfx_pci_interrupt(dev, s, vector);
++        };
++
++        apple_gfx_common_realize(&s->common, desc);
++        [desc release];
++        desc = nil;
++    }
++}
++
++static void apple_gfx_pci_reset(DeviceState *dev)
++{
++    AppleGFXPCIState *s = APPLE_GFX_PCI(dev);
++    if (@available(macOS 12,*)) {
++        [s->common.pgdev reset];
++    } else {
++        // TODO: tear down and bring back up
++    }
++}
++
++static void apple_gfx_pci_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    PCIDeviceClass *pci = PCI_DEVICE_CLASS(klass);
++
++    dc->reset = apple_gfx_pci_reset;
++    dc->desc = "macOS Paravirtualized Graphics PCI Display Controller";
++    dc->hotpluggable = false;
++    set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
++
++    pci->vendor_id = PG_PCI_VENDOR_ID;
++    pci->device_id = PG_PCI_DEVICE_ID;
++    pci->class_id = PCI_CLASS_DISPLAY_OTHER;
++    pci->realize = apple_gfx_pci_realize;
++
++    // TODO: Property for setting mode list
++}
++
++static TypeInfo apple_gfx_pci_types[] = {
++    {
++        .name          = TYPE_APPLE_GFX_PCI,
++        .parent        = TYPE_PCI_DEVICE,
++        .instance_size = sizeof(AppleGFXPCIState),
++        .class_init    = apple_gfx_pci_class_init,
++        .instance_init = apple_gfx_pci_init,
++        .interfaces = (InterfaceInfo[]) {
++            { INTERFACE_PCIE_DEVICE },
++            { },
++        },
++    }
++};
++DEFINE_TYPES(apple_gfx_pci_types)
++
+diff --git a/hw/display/meson.build b/hw/display/meson.build
+index 70d855749c..ceb7bb0761 100644
+--- a/hw/display/meson.build
++++ b/hw/display/meson.build
+@@ -67,6 +67,7 @@ system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_
  
- static void create_fb(AppleGFXState *s)
-@@ -354,10 +402,18 @@ static void apple_gfx_register_task_mapping_handlers(AppleGFXState *s,
-     disp_desc.queue = dispatch_get_main_queue();
-     disp_desc.newFrameEventHandler = ^(void) {
-         trace_apple_gfx_new_frame();
--
--        /* Tell QEMU gfx stack that a new frame arrived */
--        s->handles_frames = true;
--        s->new_frame = true;
-+        dispatch_async(s->render_queue, ^{
-+            /* Drop frames if we get too far ahead. */
-+            if (s->pending_frames >= 2)
-+                return;
-+            ++s->pending_frames;
-+            if (s->pending_frames > 1) {
-+                return;
-+            }
-+            @autoreleasepool {
-+                apple_gfx_render_new_frame(s);
-+            }
-+        });
-     };
-     disp_desc.modeChangeHandler = ^(PGDisplayCoord_t sizeInPixels,
-                                     OSType pixelFormat) {
-@@ -422,7 +478,10 @@ void apple_gfx_common_realize(AppleGFXState *s, PGDeviceDescriptor *desc)
-     PGDisplayDescriptor *disp_desc = nil;
+ system_ss.add(when: 'CONFIG_MAC_PVG',         if_true: [files('apple-gfx.m'), pvg, metal])
+ system_ss.add(when: 'CONFIG_MAC_PVG_VMAPPLE', if_true: [files('apple-gfx-vmapple.m'), pvg, metal])
++system_ss.add(when: 'CONFIG_MAC_PVG_PCI',     if_true: [files('apple-gfx-pci.m'), pvg, metal])
  
-     QTAILQ_INIT(&s->tasks);
-+    s->render_queue = dispatch_queue_create("apple-gfx.render",
-+                                            DISPATCH_QUEUE_SERIAL);
-     s->mtl = MTLCreateSystemDefaultDevice();
-+    s->mtl_queue = [s->mtl newCommandQueue];
- 
-     desc.device = s->mtl;
- 
+ if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
+   virtio_gpu_ss = ss.source_set()
 -- 
 2.39.3 (Apple Git-146)
 
