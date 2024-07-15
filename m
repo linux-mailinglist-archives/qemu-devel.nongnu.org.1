@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744B29311CD
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A3C9311E5
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:59:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTISP-0005Mf-BU; Mon, 15 Jul 2024 05:57:21 -0400
+	id 1sTIUb-0007yg-TR; Mon, 15 Jul 2024 05:59:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTISM-0005IP-M0
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:57:18 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTIUZ-0007su-MB
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:59:35 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTISK-00007u-Oj
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:57:18 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4257d5fc9b7so31401555e9.2
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 02:57:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTIUX-0000J2-Um
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:59:35 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-367a3d1a378so3654702f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 02:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721037434; x=1721642234; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721037571; x=1721642371; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9fq/ix6OT2tXwL94/8kdg9s1x8WQDE9G1JkkFziTutA=;
- b=b3Hc/pnrJqhexCvKzqXzKEVtunYoBSRW/GDQDUJ1yX0GuxKtWUSvs+eEzuEkcaFu2H
- nUmR2/ShEXORdOTyi8y0A7PyWejMkhO7T7455XfZHgxozsa7MOqKgS2mL/3uKdEesq5x
- d/vToyxO6kiWfxFG6aNMadVnJHTe4yl8t/r5bxwKaRrJidq9rxvo4MRnqt35S9aanFqV
- 9TaSpTXEwun9re/DeLm5RLkH/Z0FGJ6JkrXdvhgJ6AF6/LsXAUy3sws//m6Us7912Z91
- D3W7vxPqo3yJlm8TVzSNJ7w9XT5+tABNeJ9HdcMwCT+1lTcpIG28sSOpNZzZ+uvHw9/F
- 0wZg==
+ bh=pcaVBXPpmlyTHvYtq2LxI+nkD/SmHzorQzN90/YZHjs=;
+ b=YPla4KyU7+D+BuaY9w0Fvu1Oc7Gctt+lGzoeRgLYGfLlFT9XdoefN0DIvhquWcvf0P
+ GcEd/fzi8i7FRm3LP25eLlCFuesue/ycEZ+q/A1VQuiP3A8MyJywaDZ8YcP/8cfYdGwD
+ 7v3C51us061lXfz3NGL7LYgYMD2VJsGCX5DpULsa6UDkdBjCkY22sH2MnHp6+UZGybIq
+ yc+BGxMs2Qc+SEk5+iYz3fXWVGuUQWZoZTwwS/raQDR44e6CA0xacecpRtDyGR1m1mmh
+ 0diFV4oaKo2zEenAv42e2fvGZjTwvf0kcElPtGOSDoAhZPaH0WNKtnU+2PDsYd76RE39
+ 2e6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721037434; x=1721642234;
+ d=1e100.net; s=20230601; t=1721037571; x=1721642371;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9fq/ix6OT2tXwL94/8kdg9s1x8WQDE9G1JkkFziTutA=;
- b=o7I4I8Tk5inRy2Y2+Wev/2lo1hU6QzdMXjdkQ+CuRfoS+Msqu2vpDs1O+L6jjXswiD
- 186bMdu/HtS6LADHQxID8BWcYt8IifphplvGIrjfWtFdZFifSRdBhDKAZEssDAI+X7qt
- QKDTT11mgN0ZkGyBkykpwfhB5iohLIoVIVxWbjPXRH084xMEuckFY85fbfKgePKkeIow
- +V1V4KKOoydWx6r3hXSlMloO/lT5VkN8PpGdNZejZOpBqSBDAC5uFjEkgTtIsQU+I6Rg
- 20K22XcUoVOFvuY3fkfyoSgsZ48IQnYP1X1+IGmsr5r4faoC5a6v15YROATTbt+oUqMw
- xWOQ==
-X-Gm-Message-State: AOJu0YwX8a1yVrcmvCEykCh713gnIe+WJLgSaExKXNdcmv4ikAvLXuuF
- 4zvRoYYKEFX6bdPA44KqOrKZB1/ktH0VNNMvPvbPW/IYKgwuy5zKWotlVvhPSIxYKtcYpWgpdqY
- aQjo=
-X-Google-Smtp-Source: AGHT+IEfT3I4/7zhWueWxuxJPqFiQFGATOKIIHCQHqcLQ5RiYsxNE2pJT+dHk1UB/VtAb0fV4L3JIQ==
-X-Received: by 2002:a05:600c:2206:b0:426:6822:5aa8 with SMTP id
- 5b1f17b1804b1-426707da4eemr151508415e9.18.1721037434433; 
- Mon, 15 Jul 2024 02:57:14 -0700 (PDT)
+ bh=pcaVBXPpmlyTHvYtq2LxI+nkD/SmHzorQzN90/YZHjs=;
+ b=PNBRGC4nRkLtCjUrEU5JfD84TOmLBVkZlfEXNQ2Af0zY9vYb991jFzM0fBPbUjQha5
+ KWIYmFEp7bIKfUWja01yWv65q3xQ6JmzdoSDj5m8bdyB1b6Oy1vLnG/AA2hFBu+NSmdZ
+ AMFC7iW8KdoL/2t+VDCEI0QokC3FwHoHC0OlobxyNgEcWftc/rDPrvNlF6I6Ff9wq9QP
+ RVHRMJhCob0J+zX4dr4Nh5wXHwHg4aRBSKGHQF/80EvS/NtahQ1urmPRvKj/yESMLKHe
+ c+i+8C1/XhdflU8ACAhgRKoAHrGccHBct86ja0vzOGaYJGuihQtEsLnR79xEJFdREBx3
+ /MQA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5AIFWMVC+jZmKTdMCoMK7duEiLZ8cBlmR04lTN3Y7bpeXJdnsprFeaO+O/l+T/cupGlDVfaDP44Yph2GmvOboUcFxebU=
+X-Gm-Message-State: AOJu0YzG6cKxCfCMAREwCGVk9oct/mOTsF/njRER6/ET2pVSANLRF7mG
+ ibCfvIcr+XeTCb5AROuSTKrVuvoPiO0odO1f2yZNgYCP/3XR/s4ngyQA4g8GHEU=
+X-Google-Smtp-Source: AGHT+IHqF/FfqfscOwMu5LwnE/vYRuUEnewuLdTEeN1trADJsLlNFmbWwxfX0cHNAR646BIljB5Gsg==
+X-Received: by 2002:a05:6000:1848:b0:367:890e:838e with SMTP id
+ ffacd0b85a97d-367cea96272mr19558253f8f.40.1721037571347; 
+ Mon, 15 Jul 2024 02:59:31 -0700 (PDT)
 Received: from [192.168.121.175] (91.red-95-127-43.staticip.rima-tde.net.
  [95.127.43.91]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427a5e77b0bsm79545605e9.1.2024.07.15.02.57.13
+ 5b1f17b1804b1-427a5ef44a9sm79475865e9.40.2024.07.15.02.59.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Jul 2024 02:57:13 -0700 (PDT)
-Message-ID: <05b70832-b1a6-4a6b-87f6-373f02fbbb4e@linaro.org>
-Date: Mon, 15 Jul 2024 11:57:11 +0200
+ Mon, 15 Jul 2024 02:59:30 -0700 (PDT)
+Message-ID: <1cf2b5cc-0837-4725-bf41-95bffd5a9b80@linaro.org>
+Date: Mon, 15 Jul 2024 11:59:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/1] hw/intc/loongson_ipi: Fix for LoongArch
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>,
- maobibo <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
-References: <20240627125819.62779-1-philmd@linaro.org>
+Subject: Re: [PATCH] qga/commands-posix: Make ga_wait_child() return boolean
+To: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+References: <20240715095939.72492-1-zhao1.liu@intel.com>
+ <20240715095939.72492-3-zhao1.liu@intel.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240627125819.62779-1-philmd@linaro.org>
+In-Reply-To: <20240715095939.72492-3-zhao1.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,18 +95,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/6/24 14:58, Philippe Mathieu-Daudé wrote:
-> v2:
-> - Only skip mmio-related code in loongson_ipi_realize()
+On 15/7/24 11:59, Zhao Liu wrote:
+> As the comment in qapi/error, dereferencing @errp requires
+> ERRP_GUARD():
 > 
-> Jiaxun Yang (1):
->    hw/intc/loongson_ipi: Gate MMIO regions creation with property
+> * = Why, when and how to use ERRP_GUARD() =
+> *
+> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> * - It must not be dereferenced, because it may be null.
+> ...
+> * ERRP_GUARD() lifts these restrictions.
+> *
+> * To use ERRP_GUARD(), add it right at the beginning of the function.
+> * @errp can then be used without worrying about the argument being
+> * NULL or &error_fatal.
+> *
+> * Using it when it's not needed is safe, but please avoid cluttering
+> * the source with useless code.
 > 
->   include/hw/intc/loongson_ipi.h |  1 +
->   hw/intc/loongson_ipi.c         | 16 ++++++++++------
->   hw/mips/loongson3_virt.c       |  1 +
->   3 files changed, 12 insertions(+), 6 deletions(-)
+> Though currently ga_run_command() only gets &local_err instead of NULL
+> @errp, it's still better to follow the requirement to add the
+> ERRP_GUARD().
 > 
+> But as error.h suggested, the best practice for callee is to return
+> something to indicate success / failure.
+> 
+> So make ga_wait_child() return boolean and check the returned boolean in
+> ga_run_command() instead of dereferencing @errp, which eliminates the
+> need of ERRP_GUARD().
 
-ping?
+I'd avoid mentioning ERRP_GUARD and just describe:
+
+   Make ga_wait_child() return boolean and check the returned boolean
+   in ga_run_command() instead of dereferencing @errp.
+
+For the code change:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Cc: Michael Roth <michael.roth@amd.com>
+> Cc: Konstantin Kostiuk <kkostiuk@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   qga/commands-posix.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+> index 7f05996495a2..64bb0be94479 100644
+> --- a/qga/commands-posix.c
+> +++ b/qga/commands-posix.c
+> @@ -59,7 +59,7 @@
+>   #endif
+>   #endif
+>   
+> -static void ga_wait_child(pid_t pid, int *status, Error **errp)
+> +static bool ga_wait_child(pid_t pid, int *status, Error **errp)
+>   {
+>       pid_t rpid;
+>   
+> @@ -70,10 +70,11 @@ static void ga_wait_child(pid_t pid, int *status, Error **errp)
+>       if (rpid == -1) {
+>           error_setg_errno(errp, errno, "failed to wait for child (pid: %d)",
+>                            pid);
+> -        return;
+> +        return false;
+>       }
+>   
+>       g_assert(rpid == pid);
+> +    return true;
+>   }
+>   
+>   static ssize_t ga_pipe_read_str(int fd[2], char **str)
+> @@ -178,8 +179,7 @@ static int ga_run_command(const char *argv[], const char *in_str,
+>           goto out;
+>       }
+>   
+> -    ga_wait_child(pid, &status, errp);
+> -    if (*errp) {
+> +    if (!ga_wait_child(pid, &status, errp)) {
+>           goto out;
+>       }
+>   
+
 
