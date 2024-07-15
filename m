@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F139311D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FC59311D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTISu-0006Yf-0m; Mon, 15 Jul 2024 05:57:52 -0400
+	id 1sTISw-0006hF-KJ; Mon, 15 Jul 2024 05:57:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1sTISo-0006BO-Ez; Mon, 15 Jul 2024 05:57:46 -0400
+ id 1sTISt-0006YZ-Ek; Mon, 15 Jul 2024 05:57:51 -0400
 Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
  helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1sTISm-000097-E8; Mon, 15 Jul 2024 05:57:46 -0400
+ id 1sTISr-00009i-4D; Mon, 15 Jul 2024 05:57:50 -0400
 Received: from mail.andestech.com (ATCPCS34.andestech.com [10.0.1.134])
- by Atcsqr.andestech.com with ESMTPS id 46F9vE0G072662
+ by Atcsqr.andestech.com with ESMTPS id 46F9vE0H072662
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
- Mon, 15 Jul 2024 17:57:15 +0800 (+08)
+ Mon, 15 Jul 2024 17:57:16 +0800 (+08)
  (envelope-from ethan84@andestech.com)
 Received: from atcpcw16.andestech.com (10.0.1.106) by ATCPCS34.andestech.com
  (10.0.1.134) with Microsoft SMTP Server (version=TLS1_2,
@@ -33,10 +33,9 @@ CC: <richard.henderson@linaro.org>, <pbonzini@redhat.com>, <peterx@redhat.com>,
  <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
  <zhiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>, Ethan Chen
  <ethan84@andestech.com>
-Subject: [PATCH v8 2/8] system/physmem: Support IOMMU granularity smaller than
- TARGET_PAGE size
-Date: Mon, 15 Jul 2024 17:56:56 +0800
-Message-ID: <20240715095702.1222213-3-ethan84@andestech.com>
+Subject: [PATCH v8 3/8] target/riscv: Add support for IOPMP
+Date: Mon, 15 Jul 2024 17:56:57 +0800
+Message-ID: <20240715095702.1222213-4-ethan84@andestech.com>
 X-Mailer: git-send-email 2.42.0.345.gaab89be2eb.dirty
 In-Reply-To: <20240715095702.1222213-1-ethan84@andestech.com>
 References: <20240715095702.1222213-1-ethan84@andestech.com>
@@ -48,7 +47,7 @@ X-ClientProxiedBy: ATCPCS33.andestech.com (10.0.1.100) To
  ATCPCS34.andestech.com (10.0.1.134)
 X-DNSRBL: 
 X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 46F9vE0G072662
+X-MAIL: Atcsqr.andestech.com 46F9vE0H072662
 Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
  helo=Atcsqr.andestech.com
 X-Spam_score_int: -8
@@ -74,74 +73,54 @@ From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the IOMMU granularity is smaller than the TARGET_PAGE size, there may be
- multiple entries within the same page. To obtain the correct result, pass
-the original address to the IOMMU.
-
-Similar to the RISC-V PMP solution, the TLB_INVALID_MASK will be set when
-there are multiple entries in the same page, ensuring that the IOMMU is
-checked on every access.
-
 Signed-off-by: Ethan Chen <ethan84@andestech.com>
 ---
- accel/tcg/cputlb.c | 20 ++++++++++++++++----
- system/physmem.c   |  4 ++++
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ target/riscv/cpu_cfg.h    |  2 ++
+ target/riscv/cpu_helper.c | 18 +++++++++++++++---
+ 2 files changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index edb3715017..7df106fea3 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1062,8 +1062,23 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index fb7eebde52..2946fec20c 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -164,6 +164,8 @@ struct RISCVCPUConfig {
+     bool pmp;
+     bool debug;
+     bool misa_w;
++    bool iopmp;
++    uint32_t iopmp_rrid;
  
-     prot = full->prot;
-     asidx = cpu_asidx_from_attrs(cpu, full->attrs);
--    section = address_space_translate_for_iotlb(cpu, asidx, paddr_page,
-+    section = address_space_translate_for_iotlb(cpu, asidx, full->phys_addr,
-                                                 &xlat, &sz, full->attrs, &prot);
-+    /* Update page size */
-+    full->lg_page_size = ctz64(sz);
-+    if (full->lg_page_size > TARGET_PAGE_BITS) {
-+        full->lg_page_size = TARGET_PAGE_BITS;
-+    } else {
-+        sz = TARGET_PAGE_SIZE;
-+    }
-+
-+    is_ram = memory_region_is_ram(section->mr);
-+    is_romd = memory_region_is_romd(section->mr);
-+    /* If the translated mr is ram/rom, make xlat align the TARGET_PAGE */
-+    if (is_ram || is_romd) {
-+        xlat &= TARGET_PAGE_MASK;
-+    }
-+
-     assert(sz >= TARGET_PAGE_SIZE);
+     bool short_isa_string;
  
-     tlb_debug("vaddr=%016" VADDR_PRIx " paddr=0x" HWADDR_FMT_plx
-@@ -1076,9 +1091,6 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
-         read_flags |= TLB_INVALID_MASK;
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 6709622dd3..c2d6a874da 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1418,9 +1418,21 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
      }
  
--    is_ram = memory_region_is_ram(section->mr);
--    is_romd = memory_region_is_romd(section->mr);
--
-     if (is_ram || is_romd) {
-         /* RAM and ROMD both have associated host memory. */
-         addend = (uintptr_t)memory_region_get_ram_ptr(section->mr) + xlat;
-diff --git a/system/physmem.c b/system/physmem.c
-index 2154432cb6..346b015447 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -702,6 +702,10 @@ address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr orig_addr,
-         iotlb = imrc->translate(iommu_mr, addr, IOMMU_NONE, iommu_idx);
-         addr = ((iotlb.translated_addr & ~iotlb.addr_mask)
-                 | (addr & iotlb.addr_mask));
-+        /* Update size */
-+        if (iotlb.addr_mask != -1 && *plen > iotlb.addr_mask + 1) {
-+            *plen = iotlb.addr_mask + 1;
+     if (ret == TRANSLATE_SUCCESS) {
+-        tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
+-                     prot, mmu_idx, tlb_size);
+-        return true;
++        if (cpu->cfg.iopmp) {
++            /*
++             * Do not align address on early stage because IOPMP needs origin
++             * address for permission check.
++             */
++            tlb_set_page_with_attrs(cs, address, pa,
++                                    (MemTxAttrs)
++                                        {
++                                          .requester_id = cpu->cfg.iopmp_rrid,
++                                        },
++                                    prot, mmu_idx, tlb_size);
++        } else {
++            tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
++                         prot, mmu_idx, tlb_size);
 +        }
-         /* Update the caller's prot bits to remove permissions the IOMMU
-          * is giving us a failure response for. If we get down to no
-          * permissions left at all we can give up now.
+     } else if (probe) {
+         return false;
+     } else {
 -- 
 2.34.1
 
