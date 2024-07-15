@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E904931901
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFA4931909
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTPEv-0004vK-QY; Mon, 15 Jul 2024 13:11:53 -0400
+	id 1sTPEx-00051o-8a; Mon, 15 Jul 2024 13:11:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sTPEn-0004qR-4Q
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:11:45 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1sTPEq-0004w4-F9
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:11:50 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sTPEl-00078s-An
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:11:44 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-70af8062039so3002097b3a.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 10:11:42 -0700 (PDT)
+ id 1sTPEn-0007Em-L6
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:11:47 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-70b03ffbb3aso3614975b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 10:11:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1721063500; x=1721668300; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1721063503; x=1721668303; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mGZr15x0eRAM5JYBeNcxfmFVRpj6MMcjWS0cU8CYrYQ=;
- b=lRZgMpZyOjuhmPBMQfkpZ4nieiVD8DC18skRjMNS+MEQRDTeTvtkv4ibykx9IhISdL
- kgFE/l9A1DTOJxdBjDVVhRqjjCO7z+oJ7uU+NwnzLggXOMv+gdjPBKVExSDQeTf1pCub
- PUd4T6orQP+QJHmAWnflu+ca2dLgRPtjvdRI3EXvG58KQmLqcQkll6TxzJ2JFEFEMAFx
- 7mmAjLOKtJ8HNG838/gDmFBi8CerBRZL2/wUSfYPzU5wqDCDtJXtSVWY/2KqifS32bBK
- DkIm2r4nOMj9PCsYvNcaPvSJROLEQ5IYUEiauVEyGZQm3o71f6HfAu9WBrLxdbveS4QR
- 6GgQ==
+ bh=OnHpblZbVd3FRfJ45qGiQCVGtJlN2GB4v5fdYVeQ9C0=;
+ b=cp6g9yMm3OGhMUQKBt8eWoskYZcfZQAE/2nxsQc2xLHn3dqXvlN9xqn2YVjhTQgBO2
+ sNKKOx4e8Z72Lc8R4DqIPHi9AeJEDiU6VQhZaz5P4o1o6EzfZNfdw5hFkEjQgM5iMynh
+ bRxb9Ky5K7V8K4o+18zItVmIeXBi3OQEYK0Gf3CrzPnTaryP3HH899glSGY833Cne/wt
+ LA6jxgD5uuE2ai+CEsNwNc2TzpoWjlxgJcKjOFumq7Jh2JflrosXDddeR1mb938h3dwU
+ 2msM1Ol0YjZQoVOGCVuZWPlhShAb6LJOg77DvPZVnLPOQmAhZQHzu5cp/HJbaL8SjRxt
+ xmMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721063500; x=1721668300;
+ d=1e100.net; s=20230601; t=1721063503; x=1721668303;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mGZr15x0eRAM5JYBeNcxfmFVRpj6MMcjWS0cU8CYrYQ=;
- b=P/DLrrFoG09GDspuSG4u4Vafbir2RNisbSnQuLGYMyxWupA8ph0+Tg8/WZBWG7p12k
- EvZlOOFVFEo1TMyR0OjvNYD6PaxWM6FEgcdnICje/Ls1c4/nNwlP4SFfglEXbhmVpLUA
- W5+Eqmhzzp3AAQy4LVxHK7qKaD1dVoIWa4VimnitDT9LKZa2jU3eSQ81K90P6UD7pCe9
- HYKCVaJ4uOYN4E5t/Ai74bfNUH5RaHPomdKmSyVbZ5OHSsVcqzOniQLminqUo7Lk0KWd
- iVl8gEJwECyFW5hlRsaYHX/008A0nRzJgkAt3N4zFblRd0eL2xnCDwB6ABv3slbZDoW4
- rK5A==
-X-Gm-Message-State: AOJu0Yxrp4XDQCIMGRCK0fMZ+WMl7tRq7jDDXCAE86bRUTpQT2szkXrG
- g+or9pGL8mGcHeilcam3zmZHaX/r1cnTn/gIdlbimIGpE0W33U9hMLqXPMm6DfPgucMFLwE6xXA
- mwyw=
-X-Google-Smtp-Source: AGHT+IGxYYaRmXTYc10KEUUk0yn+1pRB5m2cSkUgr7mVxhVkKfQ7V4xE91RWDHLTtMXAcJdFIiMuGA==
-X-Received: by 2002:a05:6a00:c89:b0:706:b10c:548a with SMTP id
- d2e1a72fcca58-70ba48c701cmr343513b3a.22.1721063499603; 
- Mon, 15 Jul 2024 10:11:39 -0700 (PDT)
+ bh=OnHpblZbVd3FRfJ45qGiQCVGtJlN2GB4v5fdYVeQ9C0=;
+ b=A8YSkEVOmR82mgd9KFCxD5kYMtOs/zn5KmeKif1FGrv6hCy8H46qIgX8omcgbo2fvw
+ dELlhcJVqWrvLbcvdhw/KtTzVMtkwonTHbFiorBThSOwkgL7DAIdHR+fyB3tq1vhqcQs
+ LFX5sYZtincP0aWjE6nBMvLKOm8POR2SPf1+hni6rFU1tatqFSzQhr1qlnmhQi9ea7vw
+ q2/IxCVWHPqIdCSIxFDJpTmX44t5n1THY/yk7AxaTKX61sjGIRF1jyTD1NawrCy5Xxp4
+ aleCT2LThmAXSxJPA2CpbXg5OteZw6Px33TdgOiG+5cF0bXJDIaZUKgv58M5lnTehCpN
+ 3scw==
+X-Gm-Message-State: AOJu0YwdOJTzto9NBNaF8ewhiBUxU5jacPPPyqIf1017bmLKga2lR9vM
+ C5cKQmYD4uWQeJ2/vNCwPbk+EYeBc1s+gNcb8DiFg5EjzJHCaXTNSdQiMKtkUBs2YZ6Zob/s/nv
+ JR84=
+X-Google-Smtp-Source: AGHT+IEZvzfAzfb26V65Qnelq7TR1JaOpHc8pEN0webbBfMjmZwc5mEwUqAhkW3GvT2MZX35yCowjA==
+X-Received: by 2002:a05:6a20:430c:b0:1c0:f267:11ad with SMTP id
+ adf61e73a8af0-1c3ee4d120emr747976637.19.1721063503459; 
+ Mon, 15 Jul 2024 10:11:43 -0700 (PDT)
 Received: from sunil-pc.tail07344b.ts.net ([106.51.187.237])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca85ccsm4752618b3a.178.2024.07.15.10.11.36
+ d2e1a72fcca58-70b7eca85ccsm4752618b3a.178.2024.07.15.10.11.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jul 2024 10:11:39 -0700 (PDT)
+ Mon, 15 Jul 2024 10:11:42 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -68,24 +68,24 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v3 1/9] hw/riscv/virt-acpi-build.c: Add namespace devices for
- PLIC and APLIC
-Date: Mon, 15 Jul 2024 22:41:21 +0530
-Message-ID: <20240715171129.1168896-2-sunilvl@ventanamicro.com>
+Subject: [PATCH v3 2/9] hw/riscv/virt-acpi-build.c: Update the HID of RISC-V
+ UART
+Date: Mon, 15 Jul 2024 22:41:22 +0530
+Message-ID: <20240715171129.1168896-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240715171129.1168896-1-sunilvl@ventanamicro.com>
 References: <20240715171129.1168896-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,69 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per the requirement ACPI_080 in the RISC-V Boot and Runtime Services
-(BRS) specification [1],  PLIC and APLIC should be in namespace as well.
-So, add them using the defined HID.
+The requirement ACPI_060 in the RISC-V BRS specification [1], requires
+NS16550 compatible UART to have the HID RSCV0003. So, update the HID for
+the UART.
 
-[1] - https://github.com/riscv-non-isa/riscv-brs/blob/main/acpi.adoc
-      (commit : 241575b3189c5d9e60b5e55e78cf0443092713bf)
+[1] - https://github.com/riscv-non-isa/riscv-brs/commits/main/acpi.adoc
+      (commit: 7bfa87e86ad5658283731207dbfc8ab3744d3265)
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt-acpi-build.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ hw/riscv/virt-acpi-build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 0925528160..5f5082a35b 100644
+index 5f5082a35b..36d6a3a412 100644
 --- a/hw/riscv/virt-acpi-build.c
 +++ b/hw/riscv/virt-acpi-build.c
-@@ -141,6 +141,30 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
-     }
- }
- 
-+static void acpi_dsdt_add_plic_aplic(Aml *scope, uint8_t socket_count,
-+                                     uint64_t mmio_base, uint64_t mmio_size,
-+                                     const char *hid)
-+{
-+    uint64_t plic_aplic_addr;
-+    uint32_t gsi_base;
-+    uint8_t  socket;
-+
-+    for (socket = 0; socket < socket_count; socket++) {
-+        plic_aplic_addr = mmio_base + mmio_size * socket;
-+        gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
-+        Aml *dev = aml_device("IC%.02X", socket);
-+        aml_append(dev, aml_name_decl("_HID", aml_string("%s", hid)));
-+        aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
-+        aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
-+
-+        Aml *crs = aml_resource_template();
-+        aml_append(crs, aml_memory32_fixed(plic_aplic_addr, mmio_size,
-+                                           AML_READ_WRITE));
-+        aml_append(dev, aml_name_decl("_CRS", crs));
-+        aml_append(scope, dev);
-+    }
-+}
-+
- static void
- acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+@@ -170,7 +170,7 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
                      uint32_t uart_irq)
-@@ -411,6 +435,14 @@ static void build_dsdt(GArray *table_data,
+ {
+     Aml *dev = aml_device("COM0");
+-    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0501")));
++    aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0003")));
+     aml_append(dev, aml_name_decl("_UID", aml_int(0)));
  
-     socket_count = riscv_socket_count(ms);
- 
-+    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-+        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_PLIC].base,
-+                                 memmap[VIRT_PLIC].size, "RSCV0001");
-+    } else {
-+        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_APLIC_S].base,
-+                                 memmap[VIRT_APLIC_S].size, "RSCV0002");
-+    }
-+
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
- 
-     if (socket_count == 1) {
+     Aml *crs = aml_resource_template();
 -- 
 2.43.0
 
