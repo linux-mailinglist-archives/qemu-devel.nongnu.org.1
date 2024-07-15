@@ -2,41 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A03930F19
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 09:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5919930F13
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 09:48:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTGQS-0004d9-2f; Mon, 15 Jul 2024 03:47:12 -0400
+	id 1sTGQT-0004rR-CY; Mon, 15 Jul 2024 03:47:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sTGQM-0004VC-SR; Mon, 15 Jul 2024 03:47:07 -0400
+ id 1sTGQQ-0004iB-11; Mon, 15 Jul 2024 03:47:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sTGQL-0007jL-2m; Mon, 15 Jul 2024 03:47:06 -0400
+ id 1sTGQO-0007jp-8N; Mon, 15 Jul 2024 03:47:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C26A57A4ED;
+ by isrv.corpit.ru (Postfix) with ESMTP id D5D857A4EE;
  Mon, 15 Jul 2024 10:46:59 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E765A108BA5;
- Mon, 15 Jul 2024 10:47:00 +0300 (MSK)
-Received: (nullmailer pid 567671 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 02CCA108BA6;
+ Mon, 15 Jul 2024 10:47:01 +0300 (MSK)
+Received: (nullmailer pid 567674 invoked by uid 1000);
  Mon, 15 Jul 2024 07:47:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Cindy Lu <lulu@redhat.com>,
+Cc: qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
+ jasowang@redhat.com, Xoykie <xoykie@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.6 19/23] virtio-pci: Fix the failure process in
- kvm_virtio_pci_vector_use_one()
-Date: Mon, 15 Jul 2024 10:46:55 +0300
-Message-Id: <20240715074700.567643-1-mjt@tls.msk.ru>
+Subject: [Stable-8.2.6 20/23] virtio: remove virtio_tswap16s() call in
+ vring_packed_event_read()
+Date: Mon, 15 Jul 2024 10:46:56 +0300
+Message-Id: <20240715074700.567643-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.6-20240715074957@cover.tls.msk.ru>
 References: <qemu-stable-8.2.6-20240715074957@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,63 +63,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cindy Lu <lulu@redhat.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-In function kvm_virtio_pci_vector_use_one(), the function will only use
-the irqfd/vector for itself. Therefore, in the undo label, the failing
-process is incorrect.
-To fix this, we can just remove this label.
+Commit d152cdd6f6 ("virtio: use virtio accessor to access packed event")
+switched using of address_space_read_cached() to virito_lduw_phys_cached()
+to access packed descriptor event.
 
-Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
+When we used address_space_read_cached(), we needed to call
+virtio_tswap16s() to handle the endianess of the field, but
+virito_lduw_phys_cached() already handles it internally, so we no longer
+need to call virtio_tswap16s() (as the commit had done for `off_wrap`,
+but forgot for `flags`).
+
+Fixes: d152cdd6f6 ("virtio: use virtio accessor to access packed event")
+Cc: jasowang@redhat.com
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Cindy Lu <lulu@redhat.com>
-Message-Id: <20240528084840.194538-1-lulu@redhat.com>
+Reported-by: Xoykie <xoykie@gmail.com>
+Link: https://lore.kernel.org/qemu-devel/CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--Tjr49F_eX32ZBc5o2zQ@mail.gmail.com
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20240701075208.19634-1-sgarzare@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit a113d041e8d0b152d72a7c2bf47dd09aabf9ade2)
+(cherry picked from commit 7aa6492401e95fb296dec7cda81e67d91f6037d7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 08faefe29a..453861605e 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -892,7 +892,7 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPCIProxy *proxy, int queue_no)
-     }
-     ret = kvm_virtio_pci_vq_vector_use(proxy, vector);
-     if (ret < 0) {
--        goto undo;
-+        return ret;
-     }
-     /*
-      * If guest supports masking, set up irqfd now.
-@@ -902,25 +902,11 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPCIProxy *proxy, int queue_no)
-         ret = kvm_virtio_pci_irqfd_use(proxy, n, vector);
-         if (ret < 0) {
-             kvm_virtio_pci_vq_vector_release(proxy, vector);
--            goto undo;
-+            return ret;
-         }
-     }
- 
-     return 0;
--undo:
--
--    vector = virtio_queue_vector(vdev, queue_no);
--    if (vector >= msix_nr_vectors_allocated(dev)) {
--        return ret;
--    }
--    if (vdev->use_guest_notifier_mask && k->guest_notifier_mask) {
--        ret = virtio_pci_get_notifier(proxy, queue_no, &n, &vector);
--        if (ret < 0) {
--            return ret;
--        }
--        kvm_virtio_pci_irqfd_release(proxy, n, vector);
--    }
--    return ret;
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index c177c31ca0..157567912e 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -322,7 +322,6 @@ static void vring_packed_event_read(VirtIODevice *vdev,
+     /* Make sure flags is seen before off_wrap */
+     smp_rmb();
+     e->off_wrap = virtio_lduw_phys_cached(vdev, cache, off_off);
+-    virtio_tswap16s(vdev, &e->flags);
  }
- static int kvm_virtio_pci_vector_vq_use(VirtIOPCIProxy *proxy, int nvqs)
- {
+ 
+ static void vring_packed_off_wrap_write(VirtIODevice *vdev,
 -- 
 2.39.2
 
