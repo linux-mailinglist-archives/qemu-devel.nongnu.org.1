@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1581930F5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 10:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC457930F56
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 10:08:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTGk0-0003Uq-PG; Mon, 15 Jul 2024 04:07:25 -0400
+	id 1sTGjy-0003KH-Kg; Mon, 15 Jul 2024 04:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTGjs-0002zz-0Q; Mon, 15 Jul 2024 04:07:16 -0400
+ id 1sTGju-0003AU-6p; Mon, 15 Jul 2024 04:07:18 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTGjf-00048k-7H; Mon, 15 Jul 2024 04:07:15 -0400
+ id 1sTGjr-000480-Aw; Mon, 15 Jul 2024 04:07:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721030823; x=1752566823;
+ t=1721030835; x=1752566835;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YCLpBmWyjqRhCjA5if9DiWPaQGLwQuPCOoB+ZMle+lg=;
- b=eUiwbEVkEttximvioDk5HKPZ181bDzrQy9u9XiA+WFyk8ZMMyJ/MKmJc
- fizEYwsoGrW7WApDE7tpE2CJ7hLmWwmsLt2t+xab4abwhMThxgy8pxhYW
- sKXMANU+qTw1qQcg2qNKSYYtkZ3lTwrQCvPZrs5ydy2OL64lbwbqoCjvj
- JjmzYWtk3uQCqW+wdRevuf3bNiuNIjrgABvQal1FfpN8FotlENu3QTGB1
- x35G2MQbFkQrV9APVdH69drHqw1KTAn1t6BkRu3Bf6UVsL95vnp2TEgkz
- mOwjJyXN2NBaFBOrX7gMFyg/Ph8AhUp8BHNeU72mzxaX+sMJ4A561ObaD A==;
-X-CSE-ConnectionGUID: 7FIRPCbBRKGHK0FUk60cyQ==
-X-CSE-MsgGUID: lewdhUpdQAmWexGF2y0ZnA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="35935677"
-X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="35935677"
+ bh=ZVM8m5lTvskYcDVaIB47aX485qUonoxl/4+eSxCJAec=;
+ b=WkGlAoSjdA3J+kRXcgzhy3X8DGEhLRjtBiUOEQhUXwsIMmeCDXIHJb+4
+ +M/ea4Ek4Q7SILRWizz6rc8qAsk4BYLJ/ec+D3vXtJ6Ee83rzK6omNpBI
+ yUES8USsLFsjWxtz6xI0pZYDXpGey8mMKYm+jlfci+gn+IJEI/YH7aUUx
+ s+n4dkHvl/4TFmNIz/Kl3WQA156KWSxUrMjSMWFcekCmv82neF3UayYik
+ sJ3+VkqLDx8mqdbHKxsDNMi2EFkIm0LZPfvqvCuv8z4vhxkexrmALsx6W
+ cP8jentPrURFUGFfFUT/X+KPXbFevJkFy7WzY6ynRgiGUT9f1phFgspIO w==;
+X-CSE-ConnectionGUID: tX4jCJXvRKSqI8kVraRB+g==
+X-CSE-MsgGUID: 65SU5QyLREWZph4bv/EyHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="35935684"
+X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="35935684"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2024 01:06:43 -0700
-X-CSE-ConnectionGUID: 8UsliN5GRZm4uaQMhPB0zQ==
-X-CSE-MsgGUID: UZm0wjTYSNCAuQKMMZKugw==
+ 15 Jul 2024 01:06:46 -0700
+X-CSE-ConnectionGUID: YlH62MMRRxiJ14Hvk5ZgqA==
+X-CSE-MsgGUID: esDv1OQKSPW76zLsMkw5Fw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="49512591"
+X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; d="scan'208";a="49512596"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa009.fm.intel.com with ESMTP; 15 Jul 2024 01:06:40 -0700
+ by fmviesa009.fm.intel.com with ESMTP; 15 Jul 2024 01:06:43 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Michael Tokarev <mjt@tls.msk.ru>,
 	Laurent Vivier <laurent@vivier.eu>
@@ -48,11 +48,12 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH 5/7] backends/hostmem-epc: Get rid of qemu_open_old()
-Date: Mon, 15 Jul 2024 16:21:53 +0800
-Message-Id: <20240715082155.28771-6-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 6/7] backends/iommufd: Get rid of qemu_open_old()
+Date: Mon, 15 Jul 2024 16:21:54 +0800
+Message-Id: <20240715082155.28771-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240715082155.28771-1-zhao1.liu@intel.com>
 References: <20240715082155.28771-1-zhao1.liu@intel.com>
@@ -89,29 +90,29 @@ For qemu_open_old(), osdep.h said:
 
 So replace qemu_open_old() with qemu_open().
 
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Yi Liu <yi.l.liu@intel.com>
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- backends/hostmem-epc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ backends/iommufd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/backends/hostmem-epc.c b/backends/hostmem-epc.c
-index f58fcf00a10b..6c024d6217d2 100644
---- a/backends/hostmem-epc.c
-+++ b/backends/hostmem-epc.c
-@@ -29,10 +29,8 @@ sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-         return false;
-     }
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 84fefbc9ee7a..cabd1b50025d 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -77,9 +77,8 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
+     int fd;
  
--    fd = qemu_open_old("/dev/sgx_vepc", O_RDWR);
-+    fd = qemu_open("/dev/sgx_vepc", O_RDWR, errp);
-     if (fd < 0) {
--        error_setg_errno(errp, errno,
--                         "failed to open /dev/sgx_vepc to alloc SGX EPC");
-         return false;
-     }
- 
+     if (be->owned && !be->users) {
+-        fd = qemu_open_old("/dev/iommu", O_RDWR);
++        fd = qemu_open("/dev/iommu", O_RDWR, errp);
+         if (fd < 0) {
+-            error_setg_errno(errp, errno, "/dev/iommu opening failed");
+             return false;
+         }
+         be->fd = fd;
 -- 
 2.34.1
 
