@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F309314BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B044931512
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTL9g-0005jd-D5; Mon, 15 Jul 2024 08:50:12 -0400
+	id 1sTLF4-0003D9-7J; Mon, 15 Jul 2024 08:55:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sTL9e-0005eW-Cb
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:50:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sTLF1-00039Q-F5
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:55:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sTL9b-0005a6-Ux
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:50:10 -0400
+ id 1sTLEz-0006uI-Mw
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:55:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721047806;
+ s=mimecast20190719; t=1721048140;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lu2dlxaAnoyG8M5dAWM8Rq5ps2y5YNbk/Nphh1M5u8c=;
- b=SBJn+pqP6aIDlw2NUDabL65R+nrp5Pb761V+ZRORpx51t1y2TR7H1+76KGKoLwnaWTnlcQ
- 7CZkrdfM4AxXdsmc/1UikCUu/CrDLoV/OChaHaTH5YCkXdJq/Sd0M8WI1GT3oVyovkJvGY
- f0YeBNN0G1D9AcWypStSgRZl+uDPhaY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iXhi9NpfTXWHgY2dNzLAaqkM6ZDMZMLVgAna//bNgsM=;
+ b=bcL5geH5egfaRohoHdpevmYgxb8OiAYjc1k0yUA2yDnWiv+x4ENEA0vOGVEtRU0Q/W4d4q
+ GQ7P/WKEn5YxRDpn3Mq+1Buza9B0AHfH7Ux8e9Kdexjo9SZBuVCg+fKTtllLpCMDJGT+qA
+ 2De0sMl5g4romLHKxpkGTZzaC8gDo00=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-chPYR-kEP5urBAa7fcEmAw-1; Mon, 15 Jul 2024 08:50:05 -0400
-X-MC-Unique: chPYR-kEP5urBAa7fcEmAw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-42668699453so40417585e9.3
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 05:50:04 -0700 (PDT)
+ us-mta-263-VzO5CJdKPgiR2EW-b0yl8Q-1; Mon, 15 Jul 2024 08:55:38 -0400
+X-MC-Unique: VzO5CJdKPgiR2EW-b0yl8Q-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ee8eaccb7aso42135371fa.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 05:55:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721047804; x=1721652604;
+ d=1e100.net; s=20230601; t=1721048137; x=1721652937;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lu2dlxaAnoyG8M5dAWM8Rq5ps2y5YNbk/Nphh1M5u8c=;
- b=fFr/zWLxM9YDbA34Jq1KQBydxSsZAkCvJaMDFFrC0fmzq77IYD6Q7tPwFXs4Ktkq+0
- yOqrNwwWX4hzXYtJnxMbx75lYHRz4ODct+H8vDN9X2Pre/qAw9H2XbH5DYrbLMrERYRl
- 0bxiZlBRVuzSoCFCgdNKeKiBux1KSN1Vi6/gntdDYKMhS8Z4FBgy9irihpZdfaDsRaHf
- LesjJo6zedkhaEgERioGey3TINFz7dUzJ2KwDBffCIxle7bkaSJbOOhaUU5NPcxQ1e1O
- tmdr9q0U3mqlpI0kzx1N2inQ+NLi9mOTopEKfE4F5o6v6MQ4Bzv39lOT6VrlOCWqOUyV
- Y3Zw==
-X-Gm-Message-State: AOJu0YxKG4L6aKkkkAqNRGghm1g6w9Agy2/88f4oomHXPnGCkp00hq4R
- NdkGzwGkmJFhYfxeqvByuvgL/yTinrdbBSWiVGMWLd5434ajIKXsib70vD14lXAGvAC4nPuGHfa
- neFKaxSCjs58GLSDFO6FuRb5ZMULp6RKAaXn+BrzDjYMvAiG+KSB5
-X-Received: by 2002:a5d:47a7:0:b0:360:75b1:77fb with SMTP id
- ffacd0b85a97d-367cea46438mr20868810f8f.8.1721047803986; 
- Mon, 15 Jul 2024 05:50:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBOMAr/JGL1SERF6gkJMDOcFpMynDA+km7rRqTPDZnhcaIdZCRfWhNWGy0t91+VeOqz/AT7w==
-X-Received: by 2002:a5d:47a7:0:b0:360:75b1:77fb with SMTP id
- ffacd0b85a97d-367cea46438mr20868788f8f.8.1721047803690; 
- Mon, 15 Jul 2024 05:50:03 -0700 (PDT)
+ bh=iXhi9NpfTXWHgY2dNzLAaqkM6ZDMZMLVgAna//bNgsM=;
+ b=YppaELFoeIzDlEexyx6SUbF+KdGT///b1H0qpKM338mSHVIMiAn5IdTnVzZlYNrUrP
+ RxuZMpmRg7OeoafD1ApW/6ufP0OKpPq9Gnj+fX5uiWajNbq7N+t6vqq6JESFvcz9sBBO
+ nfSNxP2CfyEx8H3YC4kuJIHMVZFuCMDdGacNGTG8tiF5ASufY2ZeFlfYhBj0PLTQo05w
+ EbkyQxgTKsE+JRy5tfiEta/NRTt8To+PYSpa8kEQo8XaqzF2813TWyWCGpiOuj6GHeRY
+ KTtaBfdGF9ZTWz0xOyLFATmXWhJgO1YK2dTeOMSAQJu1qw00rITW3ydH3w2XXW3apaqV
+ DWkA==
+X-Gm-Message-State: AOJu0YzpGF6+RC4oC+O7QBhmkl6MB8xW1Ed/TvEvna6lpKvcENR75/FA
+ df1739efCokr54Hcf91R826n2aVoODIPNJXOHmWHjFgVV8orI6Bw754a10RAqnc/6+8qfEHpI9w
+ XVKqtKRsZ0R4WNnmTVDrzByaQNKNrXyqNGWg2yIl9l++oFBgjn/pU
+X-Received: by 2002:a2e:984b:0:b0:2ec:42db:96a2 with SMTP id
+ 38308e7fff4ca-2eeb30feb61mr121242391fa.29.1721048137447; 
+ Mon, 15 Jul 2024 05:55:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5t69s/oQdGoCvU0838QHjVWHc6yjxcwmeZbfhYKuuQesKJylhqkLb1Maqumo5giGTAMDiaA==
+X-Received: by 2002:a2e:984b:0:b0:2ec:42db:96a2 with SMTP id
+ 38308e7fff4ca-2eeb30feb61mr121241981fa.29.1721048136979; 
+ Mon, 15 Jul 2024 05:55:36 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3680dabf151sm6303913f8f.29.2024.07.15.05.50.02
+ 5b1f17b1804b1-4279f25a957sm120311775e9.13.2024.07.15.05.55.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jul 2024 05:50:03 -0700 (PDT)
-Date: Mon, 15 Jul 2024 14:50:02 +0200
+ Mon, 15 Jul 2024 05:55:36 -0700 (PDT)
+Date: Mon, 15 Jul 2024 14:55:35 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Salil Mehta <salil.mehta@huawei.com>
 Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
@@ -82,24 +82,23 @@ Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
  <lixianglai@loongson.cn>, <npiggin@gmail.com>, <harshpb@linux.ibm.com>,
  <linuxarm@huawei.com>, Shaoqin Huang <shahuang@redhat.com>, Zhao Liu
  <zhao1.liu@intel.com>
-Subject: Re: [PATCH V15 2/7] hw/acpi: Move CPU ctrl-dev MMIO region len
- macro to common header file
-Message-ID: <20240715145002.0cedd39d@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240713182516.1457-3-salil.mehta@huawei.com>
+Subject: Re: [PATCH V15 4/7] hw/acpi: Update GED _EVT method AML with CPU scan
+Message-ID: <20240715145535.0626527e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240713182516.1457-5-salil.mehta@huawei.com>
 References: <20240713182516.1457-1-salil.mehta@huawei.com>
- <20240713182516.1457-3-salil.mehta@huawei.com>
+ <20240713182516.1457-5-salil.mehta@huawei.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,57 +115,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 13 Jul 2024 19:25:11 +0100
+On Sat, 13 Jul 2024 19:25:13 +0100
 Salil Mehta <salil.mehta@huawei.com> wrote:
 
-> CPU ctrl-dev MMIO region length could be used in ACPI GED and various oth=
-er
-> architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to more
-> appropriate common header file.
->=20
+> OSPM evaluates _EVT method to map the event. The CPU hotplug event eventually
+> results in start of the CPU scan. Scan figures out the CPU and the kind of
+> event(plug/unplug) and notifies it back to the guest. Update the GED AML _EVT
+> method with the call to method \\_SB.CPUS.CSCN (via \\_SB.GED.CSCN)
+> 
+> Architecture specific code [1] might initialize its CPUs AML code by calling
+> common function build_cpus_aml() like below for ARM:
+> 
+> build_cpus_aml(scope, ms, opts, xx_madt_cpu_entry, memmap[VIRT_CPUHP_ACPI].base,
+>                "\\_SB", "\\_SB.GED.CSCN", AML_SYSTEM_MEMORY);
+> 
+> [1] https://lore.kernel.org/qemu-devel/20240613233639.202896-13-salil.mehta@huawei.com/
+> 
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
 > Tested-by: Xianglai Li <lixianglai@loongson.cn>
 > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 > Tested-by: Zhao Liu <zhao1.liu@intel.com>
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
 > ---
->  hw/acpi/cpu.c         | 1 -
->  include/hw/acpi/cpu.h | 2 ++
->  2 files changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index 2d81c1e790..cf5e9183e4 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -7,7 +7,6 @@
->  #include "trace.h"
->  #include "sysemu/numa.h"
-> =20
-> -#define ACPI_CPU_HOTPLUG_REG_LEN 12
->  #define ACPI_CPU_SELECTOR_OFFSET_WR 0
->  #define ACPI_CPU_FLAGS_OFFSET_RW 4
->  #define ACPI_CPU_CMD_OFFSET_WR 5
-> diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-> index e6e1a9ef59..df87b15997 100644
-> --- a/include/hw/acpi/cpu.h
-> +++ b/include/hw/acpi/cpu.h
-> @@ -19,6 +19,8 @@
->  #include "hw/boards.h"
->  #include "hw/hotplug.h"
-> =20
-> +#define ACPI_CPU_HOTPLUG_REG_LEN 12
-> +
->  typedef struct AcpiCpuStatus {
->      CPUState *cpu;
->      uint64_t arch_id;
+>  hw/acpi/generic_event_device.c         | 3 +++
+>  include/hw/acpi/generic_event_device.h | 1 +
+>  2 files changed, 4 insertions(+)
+> 
+> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+> index 1b31d633ba..15ffa12cb2 100644
+> --- a/hw/acpi/generic_event_device.c
+> +++ b/hw/acpi/generic_event_device.c
+> @@ -108,6 +108,9 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
+>                  aml_append(if_ctx, aml_call0(MEMORY_DEVICES_CONTAINER "."
+>                                               MEMORY_SLOT_SCAN_METHOD));
+>                  break;
+> +            case ACPI_GED_CPU_HOTPLUG_EVT:
+> +                aml_append(if_ctx, aml_call0(AML_GED_EVT_CPU_SCAN_METHOD));
+> +                break;
+>              case ACPI_GED_PWR_DOWN_EVT:
+>                  aml_append(if_ctx,
+>                             aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
+> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+> index e091ac2108..40af3550b5 100644
+> --- a/include/hw/acpi/generic_event_device.h
+> +++ b/include/hw/acpi/generic_event_device.h
+> @@ -87,6 +87,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>  #define GED_DEVICE      "GED"
+>  #define AML_GED_EVT_REG "EREG"
+>  #define AML_GED_EVT_SEL "ESEL"
+> +#define AML_GED_EVT_CPU_SCAN_METHOD "\\_SB.GED.CSCN"
+>  
+>  /*
+>   * Platforms need to specify the GED event bitmap
 
 
