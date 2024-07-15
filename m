@@ -2,69 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E13931549
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 15:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24449315AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 15:22:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTLJM-0005QV-0q; Mon, 15 Jul 2024 09:00:12 -0400
+	id 1sTLeV-0001XP-4O; Mon, 15 Jul 2024 09:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTLJJ-0005NA-1A
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 09:00:09 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTLJD-000841-Pw
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 09:00:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721048404; x=1752584404;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=msFGL9O2FG1ZiIjc/Rz/0KRBRpv3Wzr7X0GIM0OyuUk=;
- b=aXqm/TTij4MxscmQpZWJZv2zLi6f2nNQLMJ6luwpZDhZ54j6ZQn07fmZ
- sLp2ttYyJYPbiSIFKlxZjMf6wAYiicDl7pNDCdlun88ThXgl09CXrdhMz
- 6fYsck8hCF+z+JsT1a+MT8yJ/jAhh7Y+SVzi+tVyQdP3oZQt6orR3aQ1q
- dvh0usP2l0GXdIkcN6C0ySA/yIRny1XPSlV9HJUU8dLVuG1J5TVNww7mk
- c6XJ/kFX1IwmfHhhnnZY+AqZi9z2I70DfMRsVDh7Rmf25VTNX/kYvEne3
- cXD5RwpvmEmkOszi9tYe32bDfS/3WNskfQGhgOOjAjqYVClUKBllKCxxA w==;
-X-CSE-ConnectionGUID: re7N7gQFRYWYgmwQQVCJow==
-X-CSE-MsgGUID: zvkFt7IkR+KUUGvUQUZ2IA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="18378834"
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="18378834"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2024 05:59:59 -0700
-X-CSE-ConnectionGUID: NRovJIe8RciP8MhJ/qAoCw==
-X-CSE-MsgGUID: nikLPMm5QPWghVjg2TScEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="87121177"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 15 Jul 2024 05:59:58 -0700
-Date: Mon, 15 Jul 2024 21:15:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- zhao1.liu@intel.com
-Subject: Re: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
-Message-ID: <ZpUg+7vqXCZEk6Sc@intel.com>
-References: <20240619144215.3273989-1-zhao1.liu@intel.com>
- <ZotNnot6LmB5og1T@intel.com>
+ (Exim 4.90_1) (envelope-from <ziyao@disroot.org>) id 1sTLeR-0001Wd-6Y
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 09:21:59 -0400
+Received: from layka.disroot.org ([178.21.23.139])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ziyao@disroot.org>) id 1sTLeO-0003sR-7t
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 09:21:58 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by disroot.org (Postfix) with ESMTP id 8303E4145F;
+ Mon, 15 Jul 2024 15:21:52 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id anx3OCLEccJR; Mon, 15 Jul 2024 15:21:51 +0200 (CEST)
+Date: Mon, 15 Jul 2024 21:21:25 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+ t=1721049711; bh=vGR01nL2OTl0N0bc+FRDWfJQUaZ/KoF928QoociNh1I=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=iSRxHLuAOYPWSh4PGI8kSH4ytH4f9uEW5D5jGag8UnFJTIAOBpkIW6z0WIOt5Mq8n
+ txURZxQHtDj2Kai0lZWI5+ozGfngzmvNu3M3rhdsNIUaqupSns1Q2Q7esb6HU1epkK
+ 89CKmKtRKQBYpsp5pFys5tVA5LsO478OeLlr895j4E6jHYIXqSaplng9X8LOfb55LE
+ bhjnvKTE/5futIGyL5ryhNhqjCubh9HbiA6tT0iiXjvVV771yTdQ6AXv7/lU0eg0ZV
+ lZv3JevaGf9fzIFNH7DoLmHsB8gFpKDKAlULOsRj/tfDYjv7z7UioMh7s+tM57PWmb
+ VfdBbOwTiuXrA==
+From: Yao Zi <ziyao@disroot.org>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] meson.build: fix libgcrypt detection on system without
+ libgcrypt-config
+Message-ID: <ZpUiVe4wTHm7lmpP@ziyaolaptop.my.domain>
+References: <20240706201226.46089-1-ziyao@disroot.org>
+ <ZpE1ApH6sWuRdf-L@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZotNnot6LmB5og1T@intel.com>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZpE1ApH6sWuRdf-L@redhat.com>
+Received-SPF: pass client-ip=178.21.23.139; envelope-from=ziyao@disroot.org;
+ helo=layka.disroot.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,74 +73,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+On Fri, Jul 12, 2024 at 02:52:02PM +0100, Daniel P. Berrangé wrote:
+> On Sat, Jul 06, 2024 at 08:12:26PM +0000, Yao Zi wrote:
+> > libgcrypt starts providing correct pkg-config configuration and dropping
+> > libgcrypt-config since 1.11.0. So use auto method for detection of
+> > libgcrypt, in which meson will try both pkg-config and libgcrypt-config.
+> 
+> The pkg-config file seems to be provided since 1.9 in fact.
+> 
+> Where do you see that ligcrypt-config is dropped ?
 
-Just a friendly ping :-)
+Commit 2db5b5e9
+("build: When no gpg-error-config, not install libgcrypt-config")[1] in
+libgcrypt says that
 
-May I ask if you are satisfied with the clarification in this series?
+> When system will migrate use of gpgrt-config and removal of
+> gpg-error-config, libgcrypt-config will not be installed
 
-Thanks,
-Zhao
+1.11.0 is the first release containing this commit.
 
-On Mon, Jul 08, 2024 at 10:23:26AM +0800, Zhao Liu wrote:
-> Date: Mon, 8 Jul 2024 10:23:26 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
-> 
-> Hi Igor,
-> 
-> Just a gentle poke and what do you think about this minor series?
-> 
-> Thanks,
-> Zhao
-> 
-> On Wed, Jun 19, 2024 at 10:42:12PM +0800, Zhao Liu wrote:
-> > Date: Wed, 19 Jun 2024 22:42:12 +0800
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > Subject: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
-> > X-Mailer: git-send-email 2.34.1
-> > 
-> > Hi,
-> > 
-> > This series is mainly to addresss Igor's comment about if one check in
-> > host-cache-info could be removed [1], i.e., whether Guest's cache
-> > topology should be self-consistent (able to correspond to Guest's CPU
-> > topology level, as we currently do with the Guest cache topo).
-> > 
-> > I originally thought (in the mail thread with Igor) that host-cache-info
-> > should allow Guest and Host to have the same topology level information,
-> > e.g. if Host shares cache on core level, then via host-cache-info, Guest
-> > should also share on core level.
-> > 
-> > But in practice, I gave up on this idea, because in the cache info
-> > passthrough case, it should be possible for Guest to get the original
-> > Host cache info (including the original threads sharing cache) without
-> > further modifying the info to Guest.
-> > 
-> > Therefore, I simply added the comment in PATCH 3 to hopefully illustrate
-> > the need for such a check.
-> > 
-> > Hope my explanation is clear enough so that my poor English doesn't
-> > bother you!
-> > 
-> > [1]: https://lore.kernel.org/qemu-devel/20240527170317.14520a2f@imammedo.users.ipa.redhat.com/
-> > 
-> > Thanks and Best Regards,
-> > Zhao
-> > ---
-> > Zhao Liu (3):
-> >   target/i386/cpu: Use hex mask to check for valid cache CPUID leaf
-> >   target/i386/cpu: Check guest_thread_ids_per_pkg for host-cache-info
-> >     case
-> >   target/i386/cpu: Add comment about adjusting the Guest cache topo for
-> >     host-cache-info
-> > 
-> >  target/i386/cpu.c | 24 +++++++++++++++++++-----
-> >  1 file changed, 19 insertions(+), 5 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
-> > 
-> 
+> It still
+> exists in the gcrypt  git repo and in Fedora 1.11.0 packages.
+
+It does not on Arch Linux. For Fedora, I have no idea.
+
+[1]: https://github.com/gpg/libgcrypt/commit/2db5b5e995c21c5bd9cd193c2ed1109ba9b1a440
+[2]: https://archlinux.org/packages/core/x86_64/libgcrypt/
+
+Best regards,
+Yao Zi
 
