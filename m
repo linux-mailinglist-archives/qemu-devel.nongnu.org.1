@@ -2,40 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEBF931580
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 15:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E13931549
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 15:01:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTLXV-00045c-J8; Mon, 15 Jul 2024 09:14:49 -0400
+	id 1sTLJM-0005QV-0q; Mon, 15 Jul 2024 09:00:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sTLXR-00044P-VH; Mon, 15 Jul 2024 09:14:45 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTLJJ-0005NA-1A
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 09:00:09 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sTLXN-0002Of-UD; Mon, 15 Jul 2024 09:14:45 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id B50DF47504;
- Mon, 15 Jul 2024 15:14:26 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, fam@euphon.net, pbonzini@redhat.com,
- svens@stackframe.org, peter.maydell@linaro.org
-Subject: [PATCH] hw/scsi/lsi53c895a: bump instruction limit in scripts
- processing to fix regression
-Date: Mon, 15 Jul 2024 15:14:03 +0200
-Message-Id: <20240715131403.223239-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTLJD-000841-Pw
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 09:00:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721048404; x=1752584404;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=msFGL9O2FG1ZiIjc/Rz/0KRBRpv3Wzr7X0GIM0OyuUk=;
+ b=aXqm/TTij4MxscmQpZWJZv2zLi6f2nNQLMJ6luwpZDhZ54j6ZQn07fmZ
+ sLp2ttYyJYPbiSIFKlxZjMf6wAYiicDl7pNDCdlun88ThXgl09CXrdhMz
+ 6fYsck8hCF+z+JsT1a+MT8yJ/jAhh7Y+SVzi+tVyQdP3oZQt6orR3aQ1q
+ dvh0usP2l0GXdIkcN6C0ySA/yIRny1XPSlV9HJUU8dLVuG1J5TVNww7mk
+ c6XJ/kFX1IwmfHhhnnZY+AqZi9z2I70DfMRsVDh7Rmf25VTNX/kYvEne3
+ cXD5RwpvmEmkOszi9tYe32bDfS/3WNskfQGhgOOjAjqYVClUKBllKCxxA w==;
+X-CSE-ConnectionGUID: re7N7gQFRYWYgmwQQVCJow==
+X-CSE-MsgGUID: zvkFt7IkR+KUUGvUQUZ2IA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="18378834"
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="18378834"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 05:59:59 -0700
+X-CSE-ConnectionGUID: NRovJIe8RciP8MhJ/qAoCw==
+X-CSE-MsgGUID: nikLPMm5QPWghVjg2TScEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="87121177"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa001.jf.intel.com with ESMTP; 15 Jul 2024 05:59:58 -0700
+Date: Mon, 15 Jul 2024 21:15:39 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ zhao1.liu@intel.com
+Subject: Re: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
+Message-ID: <ZpUg+7vqXCZEk6Sc@intel.com>
+References: <20240619144215.3273989-1-zhao1.liu@intel.com>
+ <ZotNnot6LmB5og1T@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZotNnot6LmB5og1T@intel.com>
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -52,45 +81,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 9876359990 ("hw/scsi/lsi53c895a: add timer to scripts
-processing") reduced the maximum allowed instruction count by
-a factor of 100 all the way down to 100.
+Hi Igor,
 
-This causes the "Check Point R81.20 Gaia" appliance [0] to fail to
-boot after fully finishing the installation via the appliance's web
-interface (there is already one reboot before that).
+Just a friendly ping :-)
 
-With a limit of 150, the appliance still fails to boot, while with a
-limit of 200, it works. Bump to 500 to fix the regression and be on
-the safe side.
+May I ask if you are satisfied with the clarification in this series?
 
-Originally reported in the Proxmox community forum[1].
+Thanks,
+Zhao
 
-[0]: https://support.checkpoint.com/results/download/124397
-[1]: https://forum.proxmox.com/threads/149772/post-683459
-
-Cc: qemu-stable@nongnu.org
-Fixes: 9876359990 ("hw/scsi/lsi53c895a: add timer to scripts processing")
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- hw/scsi/lsi53c895a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index eb9828dd5e..f1935e5328 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -188,7 +188,7 @@ static const char *names[] = {
- #define LSI_TAG_VALID     (1 << 16)
- 
- /* Maximum instructions to process. */
--#define LSI_MAX_INSN    100
-+#define LSI_MAX_INSN    500
- 
- typedef struct lsi_request {
-     SCSIRequest *req;
--- 
-2.39.2
-
-
+On Mon, Jul 08, 2024 at 10:23:26AM +0800, Zhao Liu wrote:
+> Date: Mon, 8 Jul 2024 10:23:26 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: Re: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
+> 
+> Hi Igor,
+> 
+> Just a gentle poke and what do you think about this minor series?
+> 
+> Thanks,
+> Zhao
+> 
+> On Wed, Jun 19, 2024 at 10:42:12PM +0800, Zhao Liu wrote:
+> > Date: Wed, 19 Jun 2024 22:42:12 +0800
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > Subject: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
+> > X-Mailer: git-send-email 2.34.1
+> > 
+> > Hi,
+> > 
+> > This series is mainly to addresss Igor's comment about if one check in
+> > host-cache-info could be removed [1], i.e., whether Guest's cache
+> > topology should be self-consistent (able to correspond to Guest's CPU
+> > topology level, as we currently do with the Guest cache topo).
+> > 
+> > I originally thought (in the mail thread with Igor) that host-cache-info
+> > should allow Guest and Host to have the same topology level information,
+> > e.g. if Host shares cache on core level, then via host-cache-info, Guest
+> > should also share on core level.
+> > 
+> > But in practice, I gave up on this idea, because in the cache info
+> > passthrough case, it should be possible for Guest to get the original
+> > Host cache info (including the original threads sharing cache) without
+> > further modifying the info to Guest.
+> > 
+> > Therefore, I simply added the comment in PATCH 3 to hopefully illustrate
+> > the need for such a check.
+> > 
+> > Hope my explanation is clear enough so that my poor English doesn't
+> > bother you!
+> > 
+> > [1]: https://lore.kernel.org/qemu-devel/20240527170317.14520a2f@imammedo.users.ipa.redhat.com/
+> > 
+> > Thanks and Best Regards,
+> > Zhao
+> > ---
+> > Zhao Liu (3):
+> >   target/i386/cpu: Use hex mask to check for valid cache CPUID leaf
+> >   target/i386/cpu: Check guest_thread_ids_per_pkg for host-cache-info
+> >     case
+> >   target/i386/cpu: Add comment about adjusting the Guest cache topo for
+> >     host-cache-info
+> > 
+> >  target/i386/cpu.c | 24 +++++++++++++++++++-----
+> >  1 file changed, 19 insertions(+), 5 deletions(-)
+> > 
+> > -- 
+> > 2.34.1
+> > 
+> > 
+> 
 
