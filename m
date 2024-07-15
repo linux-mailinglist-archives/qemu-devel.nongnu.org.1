@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C489311EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 12:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDF09311C2
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:55:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTIYb-0007ep-IY; Mon, 15 Jul 2024 06:03:45 -0400
+	id 1sTIPx-00043f-Mm; Mon, 15 Jul 2024 05:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sTIYY-0007WU-RC
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 06:03:42 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sTIYT-0001Sa-5m
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 06:03:42 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a77c1658c68so450345966b.0
- for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 03:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721037815; x=1721642615; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wJMyMUb2GJDpZ4jTaypVaqOfXXHMdeFa01idvOE1Qu8=;
- b=p+K/+XT0UG1Q2B6iGz16C5WNCSwOYmU8pVy3mXrqB6TFlE093bOzL7d8fqswqKIFMQ
- sOsqsq2qO1PaNoZr9Bn2shufMCBYDhgM/Ot+hCQh0+fkfBcwegGnnoSBtozsh7gJ73Ke
- jL8s3+4bBdxDZR1erOw+Wmmnq882r1Wmnwwrem8ElRsVCPr1Pp/KVSm+yeNeebHKPxbh
- zI3UB5nki9rNMQhopzIPLtQfjZt2gpdqLEXEebCZOOECPUwvTxvBHdEzECGCYhw6AV7D
- cIw/Fqf6Ea29RdZHFf2rmo4T72svIBjFocGoJ0ytlC8L1xdRrddt4ygCltyw3/XFiBWL
- DZTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721037815; x=1721642615;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wJMyMUb2GJDpZ4jTaypVaqOfXXHMdeFa01idvOE1Qu8=;
- b=k938m/Sa0RS10NQODWfDX/tElvD98hx9Bi5sDUIfgzaFGw9dDbHtXeoJQnNyOmI95k
- l8K26gLdEXnbn/G/8fTThs8omxb3/6JGQQAnHz3v4gpGcfHkU8+sxpNaIO2/QrDejzSA
- QVks8q2X69PXF1gvtEKpFdMyxBEkFh8wsaYKuK9wC1ENOTJZXo1xICl2hMAsLkYM3PGC
- MAb7v8aNhdnS7T8kuccoeIgtf5kLa3sgtldq6txDJjrUV81BuddRKG5rnDoCSDHA47x3
- Nr2+8FDB5ejDO66mxkXKLvScFSwsujiDOT+d3FqE9ykX3oE90SWT4EqqFgC3csnh9aAq
- Kotw==
-X-Gm-Message-State: AOJu0YzQcEf1qYccHKr8kZEQ/fKV3UfybnAP8udH06uLB3PPX9pzqx52
- irEDotmFBawhZDKIO7wKnpxttTCVM2MZxQYmMpwaXm+0H8mz1rrXwiYLGqtCh2Q=
-X-Google-Smtp-Source: AGHT+IElNC8w9udhGB/uILC9jLCpV5Yvn29vwyPM5nKj6ISbi61SKaqVG5rNBsltMj4oQoU78ZbOZw==
-X-Received: by 2002:a17:906:3c04:b0:a6f:2206:99ae with SMTP id
- a640c23a62f3a-a780b705382mr1082820866b.41.1721037815071; 
- Mon, 15 Jul 2024 03:03:35 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a79bc5b7e79sm195185766b.88.2024.07.15.03.03.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jul 2024 03:03:34 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 86FBB5F8CC;
- Mon, 15 Jul 2024 11:03:33 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  danikhan632@git.sr.ht,  qemu-arm@nongnu.org,
- qemu-stable@nongnu.org,  Daniyal Khan <danikhan632@gmail.com>
-Subject: Re: [PATCH 2/3] target/arm: Use FPST_F16 for SME FMOPA (widening)
-In-Reply-To: <20240715055820.319035-3-richard.henderson@linaro.org> (Richard
- Henderson's message of "Mon, 15 Jul 2024 15:58:19 +1000")
-References: <20240715055820.319035-1-richard.henderson@linaro.org>
- <20240715055820.319035-3-richard.henderson@linaro.org>
-Date: Mon, 15 Jul 2024 11:03:33 +0100
-Message-ID: <87sewbhszu.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTIPu-0003xD-Qh; Mon, 15 Jul 2024 05:54:46 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTIPs-00081A-UM; Mon, 15 Jul 2024 05:54:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721037285; x=1752573285;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=LapDANChhrEqCXMS7GYF4vmGDux79W3PxBHvfqK5iZo=;
+ b=VKbR+Zed2b9XuzXdUGIzFQrG1v+Wdh1UE32jhg7QnMjs9GaHoA1WhsoX
+ k4OINx7SvrgJDyp8aktILQOglDTHl4fzTucNrxGv8L07+7CsP35O6r7KF
+ UFanIP2eeyYgTOi+XS7TuwWbvKARGFlACVKrq0/RwD+zW4ZVAca8JlEL+
+ L2Vdehgsct9O3mOmIgeDppcp3BphqTwP0mTB6d6doIZHXw5pvqhdhgpoL
+ wd1UXBnIAY8n19zRoi2FVCTt0LxOeRPJm50nl/cWAqIUcSu4efHBLo39J
+ RL+qoPUI2utev73HnQ5kbA55Djn+REyBYmH2aztIERDvjXCQ8Ia7AE2EY A==;
+X-CSE-ConnectionGUID: exmnF7G9TvKuvCM3LIrMBg==
+X-CSE-MsgGUID: y3O1eufAQHq1ErL3gdqIpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="18219405"
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="18219405"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 02:54:41 -0700
+X-CSE-ConnectionGUID: /vG4t8zoS/2CedoHMhkKKg==
+X-CSE-MsgGUID: 8nvzbuioRyGaHXmbpnUg0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="54743486"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa004.jf.intel.com with ESMTP; 15 Jul 2024 02:54:38 -0700
+Date: Mon, 15 Jul 2024 18:10:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, qemu-trivial@nongnu.org,
+ qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Amit Shah <amit@kernel.org>
+Subject: Re: [PATCH 7/7] backends/rng-random: Get rid of qemu_open_old()
+Message-ID: <ZpT1iy5NPqwjqaLB@intel.com>
+References: <20240715082155.28771-1-zhao1.liu@intel.com>
+ <20240715082155.28771-8-zhao1.liu@intel.com>
+ <01245850-b5df-4bf6-9a22-775d12fc07a0@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <01245850-b5df-4bf6-9a22-775d12fc07a0@linaro.org>
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,19 +85,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
-
-> This operation has float16 inputs and thus must use
-> the FZ16 control not the FZ control.
+On Mon, Jul 15, 2024 at 11:46:54AM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 15 Jul 2024 11:46:54 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH 7/7] backends/rng-random: Get rid of qemu_open_old()
+> 
+> On 15/7/24 10:21, Zhao Liu wrote:
+> > For qemu_open_old(), osdep.h said:
+> > 
+> > > Don't introduce new usage of this function, prefer the following
+> > > qemu_open/qemu_create that take an "Error **errp".
+> > 
+> > So replace qemu_open_old() with qemu_open(). And considering
+> > rng_random_opened() will lose its obvious error handling case after
+> > removing error_setg_file_open(), add comment to remind here.
+> > 
+> > Cc: Laurent Vivier <lvivier@redhat.com>
+> > Cc: Amit Shah <amit@kernel.org>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >   backends/rng-random.c | 9 +++++----
+> >   1 file changed, 5 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/backends/rng-random.c b/backends/rng-random.c
+> > index 80eb5be138ce..3cdb982533b5 100644
+> > --- a/backends/rng-random.c
+> > +++ b/backends/rng-random.c
+> > @@ -75,10 +75,11 @@ static void rng_random_opened(RngBackend *b, Error **errp)
+> >           error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+> >                      "filename", "a valid filename");
+> >       } else {
+> > -        s->fd = qemu_open_old(s->filename, O_RDONLY | O_NONBLOCK);
+> > -        if (s->fd == -1) {
+> > -            error_setg_file_open(errp, errno, s->filename);
+> > -        }
+> > +        /*
+> > +         * Once the open fails, the error message is integrated into
+> > +         * the *errp object by qemu_open().
+> > +         */
+> 
+> IMHO this comment is superfluous, I'd drop it, otherwise:
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Daniyal Khan <danikhan632@gmail.com>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2374
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Thanks Philippe! I'll wait patch 1's comment, after that I can post a
+new version with the change you mentioned.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+
 
