@@ -2,99 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BDA931A61
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 20:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A63931C55
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 23:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTQX9-0007Xe-2d; Mon, 15 Jul 2024 14:34:47 -0400
+	id 1sTSpr-0003Vn-6j; Mon, 15 Jul 2024 17:02:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.vnet.ibm.com>)
- id 1sTQX6-0007QH-Qj; Mon, 15 Jul 2024 14:34:44 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1sTSpo-0003Uo-Su
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 17:02:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.vnet.ibm.com>)
- id 1sTQX4-0007Hc-Vm; Mon, 15 Jul 2024 14:34:44 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46FIU9db018344;
- Mon, 15 Jul 2024 18:34:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=gBm+mytZrG6dh
- 39dchTlXy0VSdNgcYlmVkPwj6AabxM=; b=mczF8a1JvEXW7/UgvWnscV/SjYs5U
- CHKzayyYzOZ17JkMBZPeavK4PisAbYVKLTuB4k5isVuI2Lj5Vj+Z1EVhKfgy9tZ2
- G+52DiBWmgNLUeLxEmxE6fcdhQOOuBJ+wri5eZjrhhahDOBRsuHcBk9dnLQgCQVB
- uuir+3rq6QJ6eMOKLfGlQ/YWcQW4paNg2HFnpJL1i4eF125dBmYFfGg4GDNh1e7x
- QxEZZd/pICzCjVzzFWZoXq6S2E8favN6Dx1fOmvn4Gr64YhAmJYfhpoQTi5a+fCX
- /7FSN8imiglV7FJZjGWn+DT4Vip4gXA0u/8S6xemlF6rWtD1wodBagUQQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40d92xg0ag-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 18:34:40 +0000 (GMT)
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46FIYd4Y025910;
- Mon, 15 Jul 2024 18:34:39 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40d92xg0ad-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 18:34:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46FH5M06015025; Mon, 15 Jul 2024 18:34:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40c4wp8aa9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 18:34:39 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46FIYXOD50987470
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jul 2024 18:34:35 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A7A72004B;
- Mon, 15 Jul 2024 18:34:33 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A1CB20040;
- Mon, 15 Jul 2024 18:34:32 +0000 (GMT)
-Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 15 Jul 2024 18:34:32 +0000 (GMT)
-From: Michael Kowal <kowal@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
- npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v2 9/9] pnv/xive2: Move xive2_nvp_pic_print_info() to xive2.c
-Date: Mon, 15 Jul 2024 13:33:32 -0500
-Message-Id: <20240715183332.27287-10-kowal@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240715183332.27287-1-kowal@linux.vnet.ibm.com>
-References: <20240715183332.27287-1-kowal@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1sTSpn-0001lv-9W
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 17:02:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721077328;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XflZLiy2DaOqa39FdhV5jZ5vMUsd9tXXjQ59cHjafvA=;
+ b=ZNoqRaNpG6fY001cRTrejRjZTJLDsRnKEMAm+G/JgyxJlXCHP5qx4FZ7FZgvFePVsFruNb
+ Z8yK4wyZbsH3IviTawytrKaMej3jC2+fxaal/zmHx1phao8nqMZS9DX+EOgrrW7KdVC02v
+ BwBJuDvMXYDjxQMEZvg/A2Va4Oi+AY4=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-0xKcQm9ePcuhmSVywwHkvQ-1; Mon, 15 Jul 2024 17:02:05 -0400
+X-MC-Unique: 0xKcQm9ePcuhmSVywwHkvQ-1
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-64b9800b377so76019627b3.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Jul 2024 14:02:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721077324; x=1721682124;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XflZLiy2DaOqa39FdhV5jZ5vMUsd9tXXjQ59cHjafvA=;
+ b=b787DW9/oLi/LSxnmp+34IhTI3wkjxTx31XPk05S6huQ4grzcpbsFfJa4FiEmjZZUR
+ iAiY9eIs9Bi5Af7lEzSRW6ewp9WI4rfROk/tih7vvwZMvY+y1n8mkkV2I4YMaAlNszae
+ ij6upFodZ2gd7Hd/DN7hWQKyfoFsdvyBLaQr2eTKVSXStlG7oueae7Y30XFGjC/2HgYF
+ i/uIMbiH2f9s8rfQvwfonzV/3ynV37LcmeErMnBg+9ez5XA8x6J39ri66M+rFvgob5FU
+ Prnb4gXIQq64mC/pnfIZk7xAJBiYX4EbS75SEHgne/8pSlPXF2HkA0uuLREhVEkcLxCW
+ zX5A==
+X-Gm-Message-State: AOJu0YzgB7DT14/olpsw0WYWwoflb7C5NUFGyDfAIFxD520xnfbgmeqC
+ BBWiudcGQQ5pSYZjbRICUn11jaFPhXZfU31bpe6kbQg6hp4tavUtHOybmh7flXwUyRpv6swAIym
+ DKdkRPTVBunr/lD6LkfbSDCZetM1Qsi6ndrMmndeBRnBdeDvJuz0YMBMCIKNtcMT/ldhLxdjNB4
+ RBgefb6ZaKWtbwAqHj79q1lVJEvTU=
+X-Received: by 2002:a0d:ea13:0:b0:650:92da:a987 with SMTP id
+ 00721157ae682-663890c217amr670567b3.16.1721077324552; 
+ Mon, 15 Jul 2024 14:02:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG23kAQGhFSUFz9LhXvmxxFtCLrx4wNMOrGA+TTRUXc1dg7e7yHD1+J2AgZhCeJzDLhrxSUOz4zHMp35kAKd/Q=
+X-Received: by 2002:a0d:ea13:0:b0:650:92da:a987 with SMTP id
+ 00721157ae682-663890c217amr670387b3.16.1721077324304; Mon, 15 Jul 2024
+ 14:02:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HMLwN7N_fWkzJNsVIOtPdwjbcX-Gb-sC
-X-Proofpoint-ORIG-GUID: dFv3Zedw7xPGwPTF0St79sqOZ58cJca9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_12,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
- malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=806 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407150143
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=kowal@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20240715095939.72492-1-zhao1.liu@intel.com>
+ <20240715095939.72492-2-zhao1.liu@intel.com>
+In-Reply-To: <20240715095939.72492-2-zhao1.liu@intel.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 15 Jul 2024 23:01:08 +0200
+Message-ID: <CAJaqyWcRv53hNYXT31tZ9M317OTBsxSgQ5bJvo1y-E=VoVS24g@mail.gmail.com>
+Subject: Re: [PATCH] hw/virtio/vdpa-dev: Check returned value instead of
+ dereferencing @errp
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,202 +97,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+On Mon, Jul 15, 2024 at 11:45=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com> wro=
+te:
+>
+> As the comment in qapi/error, dereferencing @errp requires
+> ERRP_GUARD():
+>
+> * =3D Why, when and how to use ERRP_GUARD() =3D
+> *
+> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> * - It must not be dereferenced, because it may be null.
+> ...
+> * ERRP_GUARD() lifts these restrictions.
+> *
+> * To use ERRP_GUARD(), add it right at the beginning of the function.
+> * @errp can then be used without worrying about the argument being
+> * NULL or &error_fatal.
+> *
+> * Using it when it's not needed is safe, but please avoid cluttering
+> * the source with useless code.
+>
+> Though vhost_vdpa_device_realize() is called at DeviceClass.realize()
+> context and won't get NULL @errp, it's still better to follow the
+> requirement to add the ERRP_GUARD().
+>
+> But qemu_open() and vhost_vdpa_device_get_u32()'s return values can
+> distinguish between successful and unsuccessful calls, so check the
+> return values directly without dereferencing @errp, which eliminates
+> the need of ERRP_GUARD().
+>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: "Eugenio P=C3=A9rez" <eperezma@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  hw/virtio/vdpa-dev.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+> index 64b96b226c39..7b439efdc1d3 100644
+> --- a/hw/virtio/vdpa-dev.c
+> +++ b/hw/virtio/vdpa-dev.c
+> @@ -50,6 +50,7 @@ vhost_vdpa_device_get_u32(int fd, unsigned long int cmd=
+, Error **errp)
+>
+>  static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+>  {
+> +    ERRP_GUARD();
 
-Moving xive2_nvp_pic_print_info() align with the other "pic_print_info"
-functions and allows us to call functions internal to xive2.c.
+Good catch, thank you! But removing the err dereferencing eliminates
+the need for ERRP_GUARD(), doesn't it?
 
-In XIVE Gen 2 there were some minor changes to the TIMA header that were
-updated when printed.
+Thanks!
 
-Additional END state 'info pic' information as added.  The 'ignore',
-'crowd' and 'precluded escalation control' bits of an Event Notification
-Descriptor are all used when delivering an interrupt targeting a VP-group
-or crowd.
-
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
----
- include/hw/ppc/xive2_regs.h |  9 +++++++++
- hw/intc/pnv_xive2.c         | 27 ---------------------------
- hw/intc/xive.c              | 12 +++++++++---
- hw/intc/xive2.c             | 33 +++++++++++++++++++++++++++++++--
- 4 files changed, 49 insertions(+), 32 deletions(-)
-
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index 4e5e17cd89..4349d009d0 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -97,6 +97,7 @@ typedef struct Xive2End {
-         uint32_t       w6;
- #define END2_W6_FORMAT_BIT         PPC_BIT32(0)
- #define END2_W6_IGNORE             PPC_BIT32(1)
-+#define END2_W6_CROWD              PPC_BIT32(2)
- #define END2_W6_VP_BLOCK           PPC_BITMASK32(4, 7)
- #define END2_W6_VP_OFFSET          PPC_BITMASK32(8, 31)
- #define END2_W6_VP_OFFSET_GEN1     PPC_BITMASK32(13, 31)
-@@ -111,6 +112,8 @@ typedef struct Xive2End {
- #define xive2_end_is_notify(end)                \
-     (be32_to_cpu((end)->w0) & END2_W0_UCOND_NOTIFY)
- #define xive2_end_is_backlog(end)  (be32_to_cpu((end)->w0) & END2_W0_BACKLOG)
-+#define xive2_end_is_precluded_escalation(end)          \
-+    (be32_to_cpu((end)->w0) & END2_W0_PRECL_ESC_CTL)
- #define xive2_end_is_escalate(end)                      \
-     (be32_to_cpu((end)->w0) & END2_W0_ESCALATE_CTL)
- #define xive2_end_is_uncond_escalation(end)              \
-@@ -123,6 +126,10 @@ typedef struct Xive2End {
-     (be32_to_cpu((end)->w0) & END2_W0_FIRMWARE1)
- #define xive2_end_is_firmware2(end)              \
-     (be32_to_cpu((end)->w0) & END2_W0_FIRMWARE2)
-+#define xive2_end_is_ignore(end)                \
-+    (be32_to_cpu((end)->w6) & END2_W6_IGNORE)
-+#define xive2_end_is_crowd(end)                 \
-+    (be32_to_cpu((end)->w6) & END2_W6_CROWD)
- 
- static inline uint64_t xive2_end_qaddr(Xive2End *end)
- {
-@@ -194,6 +201,8 @@ static inline uint32_t xive2_nvp_blk(uint32_t cam_line)
-     return (cam_line >> XIVE2_NVP_SHIFT) & 0xf;
- }
- 
-+void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf);
-+
- /*
-  * Notification Virtual Group or Crowd (NVG/NVC)
-  */
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index ad0d6f45e4..7846f2ef33 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -2433,33 +2433,6 @@ static void pnv_xive2_register_types(void)
- 
- type_init(pnv_xive2_register_types)
- 
--static void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx,
--                                     GString *buf)
--{
--    uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
--    uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
--
--    if (!xive2_nvp_is_valid(nvp)) {
--        return;
--    }
--
--    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
--                           nvp_idx, eq_blk, eq_idx,
--                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
--    /*
--     * When the NVP is HW controlled, more fields are updated
--     */
--    if (xive2_nvp_is_hw(nvp)) {
--        g_string_append_printf(buf, " CPPR:%02x",
--                               xive_get_field32(NVP2_W2_CPPR, nvp->w2));
--        if (xive2_nvp_is_co(nvp)) {
--            g_string_append_printf(buf, " CO:%04x",
--                                   xive_get_field32(NVP2_W1_CO_THRID, nvp->w1));
--        }
--    }
--    g_string_append_c(buf, '\n');
--}
--
- /*
-  * If the table is direct, we can compute the number of PQ entries
-  * provisioned by FW.
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 70f11f993b..5a02dd8e02 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -692,9 +692,15 @@ void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf)
-         }
-     }
- 
--    g_string_append_printf(buf, "CPU[%04x]:   "
--                           "QW   NSR CPPR IPB LSMFB ACK# INC AGE PIPR  W2\n",
--                           cpu_index);
-+    if (xive_presenter_get_config(tctx->xptr) & XIVE_PRESENTER_GEN1_TIMA_OS) {
-+        g_string_append_printf(buf, "CPU[%04x]:   "
-+                               "QW   NSR CPPR IPB LSMFB ACK# INC AGE PIPR"
-+                               "  W2\n", cpu_index);
-+    } else {
-+        g_string_append_printf(buf, "CPU[%04x]:   "
-+                               "QW   NSR CPPR IPB LSMFB   -  LGS  T  PIPR"
-+                               "  W2\n", cpu_index);
-+    }
- 
-     for (i = 0; i < XIVE_TM_RING_COUNT; i++) {
-         char *s = xive_tctx_ring_print(&tctx->regs[i * XIVE_TM_RING_SIZE]);
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 3e7238c663..1f150685bf 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -89,7 +89,7 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-     pq = xive_get_field32(END2_W1_ESn, end->w1);
- 
-     g_string_append_printf(buf,
--                           "  %08x %c%c %c%c%c%c%c%c%c%c%c%c "
-+                           "  %08x %c%c %c%c%c%c%c%c%c%c%c%c%c %c%c "
-                            "prio:%d nvp:%02x/%04x",
-                            end_idx,
-                            pq & XIVE_ESB_VAL_P ? 'P' : '-',
-@@ -98,12 +98,15 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-                            xive2_end_is_enqueue(end)  ? 'q' : '-',
-                            xive2_end_is_notify(end)   ? 'n' : '-',
-                            xive2_end_is_backlog(end)  ? 'b' : '-',
-+                           xive2_end_is_precluded_escalation(end) ? 'p' : '-',
-                            xive2_end_is_escalate(end) ? 'e' : '-',
-                            xive2_end_is_escalate_end(end) ? 'N' : '-',
-                            xive2_end_is_uncond_escalation(end)   ? 'u' : '-',
-                            xive2_end_is_silent_escalation(end)   ? 's' : '-',
-                            xive2_end_is_firmware1(end)   ? 'f' : '-',
-                            xive2_end_is_firmware2(end)   ? 'F' : '-',
-+                           xive2_end_is_ignore(end) ? 'i' : '-',
-+                           xive2_end_is_crowd(end)  ? 'c' : '-',
-                            priority, nvp_blk, nvp_idx);
- 
-     if (qaddr_base) {
-@@ -137,6 +140,32 @@ void xive2_end_eas_pic_print_info(Xive2End *end, uint32_t end_idx,
-                            (uint32_t) xive_get_field64(EAS2_END_DATA, eas->w));
- }
- 
-+void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
-+{
-+    uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
-+    uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
-+
-+    if (!xive2_nvp_is_valid(nvp)) {
-+        return;
-+    }
-+
-+    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
-+                           nvp_idx, eq_blk, eq_idx,
-+                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
-+    /*
-+     * When the NVP is HW controlled, more fields are updated
-+     */
-+    if (xive2_nvp_is_hw(nvp)) {
-+        g_string_append_printf(buf, " CPPR:%02x",
-+                               xive_get_field32(NVP2_W2_CPPR, nvp->w2));
-+        if (xive2_nvp_is_co(nvp)) {
-+            g_string_append_printf(buf, " CO:%04x",
-+                                   xive_get_field32(NVP2_W1_CO_THRID, nvp->w1));
-+        }
-+    }
-+    g_string_append_c(buf, '\n');
-+}
-+
- static void xive2_end_enqueue(Xive2End *end, uint32_t data)
- {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
-@@ -650,7 +679,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-     }
- 
-     found = xive_presenter_notify(xrtr->xfb, format, nvp_blk, nvp_idx,
--                          xive_get_field32(END2_W6_IGNORE, end.w7),
-+                          xive2_end_is_ignore(&end),
-                           priority,
-                           xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7));
- 
--- 
-2.43.0
+>      VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+>      VhostVdpaDevice *v =3D VHOST_VDPA_DEVICE(vdev);
+>      struct vhost_vdpa_iova_range iova_range;
+> @@ -63,19 +64,19 @@ static void vhost_vdpa_device_realize(DeviceState *de=
+v, Error **errp)
+>      }
+>
+>      v->vhostfd =3D qemu_open(v->vhostdev, O_RDWR, errp);
+> -    if (*errp) {
+> +    if (v->vhostfd < 0) {
+>          return;
+>      }
+>
+>      v->vdev_id =3D vhost_vdpa_device_get_u32(v->vhostfd,
+>                                             VHOST_VDPA_GET_DEVICE_ID, err=
+p);
+> -    if (*errp) {
+> +    if (v->vdev_id < 0) {
+>          goto out;
+>      }
+>
+>      max_queue_size =3D vhost_vdpa_device_get_u32(v->vhostfd,
+>                                                 VHOST_VDPA_GET_VRING_NUM,=
+ errp);
+> -    if (*errp) {
+> +    if (max_queue_size < 0) {
+>          goto out;
+>      }
+>
+> @@ -89,7 +90,7 @@ static void vhost_vdpa_device_realize(DeviceState *dev,=
+ Error **errp)
+>
+>      v->num_queues =3D vhost_vdpa_device_get_u32(v->vhostfd,
+>                                                VHOST_VDPA_GET_VQS_COUNT, =
+errp);
+> -    if (*errp) {
+> +    if (v->num_queues < 0) {
+>          goto out;
+>      }
+>
+> @@ -127,7 +128,7 @@ static void vhost_vdpa_device_realize(DeviceState *de=
+v, Error **errp)
+>      v->config_size =3D vhost_vdpa_device_get_u32(v->vhostfd,
+>                                                 VHOST_VDPA_GET_CONFIG_SIZ=
+E,
+>                                                 errp);
+> -    if (*errp) {
+> +    if (v->config_size < 0) {
+>          goto vhost_cleanup;
+>      }
+>
+> --
+> 2.34.1
+>
 
 
