@@ -2,90 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8F29319BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C20B79319D6
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:53:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTPiS-0007gk-6O; Mon, 15 Jul 2024 13:42:24 -0400
+	id 1sTPrx-0004mV-0V; Mon, 15 Jul 2024 13:52:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1sTPiL-0007Ys-3g; Mon, 15 Jul 2024 13:42:17 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1sTPiJ-0004nj-Ao; Mon, 15 Jul 2024 13:42:16 -0400
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46FH8g6L029986;
- Mon, 15 Jul 2024 17:42:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- pQjUjO9WFwohyShxbYRl1OcsQjkvGfi2P5LWo7su1e8=; b=ePlxZkrfJEMi2YTQ
- RfWCEPQgwV365JcxhVux7pCv7RMPTLHEqQZJLWsy8cELbCf6Nix5Zgzl+eB3BMmP
- X4+nIwdh9f40CX1PZlEKZ8+nm1oEcXNpkNAUKV33m9jLaH4YMkc8g6O+wxS5sNEL
- k9iUL5NLAG4SwQPcXIPJDT3/eQQMAyBXR2tdIp7eqJAWvQ0zh0T4Gslc0BpoUNyK
- yVzpZ1wvEziVU4HPUCrKh8c8iU8/qX1vhdp/2iBnnD2ebuhgfghAR9bDxMk+ytQK
- wIiwsiesxr8hEXhWa3PF9BDiBHCqweiofSBRidO+WKR/VfkoWIUMWDA1QaejkfZL
- 4ncanA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40bf9ed47e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 17:42:09 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id
- 46FHg8kG024324
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jul 2024 17:42:08 GMT
-Received: from [10.110.103.187] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 15 Jul
- 2024 10:42:07 -0700
-Message-ID: <a1839140-181a-4547-993f-3a672c889eea@quicinc.com>
-Date: Mon, 15 Jul 2024 12:42:02 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sTPrv-0004lu-1Y
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:52:11 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sTPrt-0006ge-I2
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:52:10 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 705D91F833;
+ Mon, 15 Jul 2024 17:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1721065927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gvv6QsC05O0yRUOL9IwASKdXg5sghzQCpN10VgcYfRY=;
+ b=KCX4prKkJEs/4g3A7trba/HEPnJMtZB1G40nTffRDHbxoAk7lbaQfLfQGThBaopDb0OGgr
+ 2ACe52zIaOJsUWmtNZfNscG/8Z4oVTvrkkehvmWp5LGHJ7o/gN+8aFDHCEqS7Y6PL2f/bv
+ B+WoxXtmklh/bjiJC0sUNSUOTcArvVY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1721065927;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gvv6QsC05O0yRUOL9IwASKdXg5sghzQCpN10VgcYfRY=;
+ b=ZcwbjmkJVNxZXUkgX5Y+v0kVGvxxSpT4sBtaqffBuiULS0XHseoTtDcECuq0b275A5CM2f
+ V38+qW0r4OtZHnBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1721065926; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gvv6QsC05O0yRUOL9IwASKdXg5sghzQCpN10VgcYfRY=;
+ b=bLWbYwY5zYOFMwBdT7AHFGo58QQUjgoeALUaKDKxUp3GcFCQZ/KARJG2nnwGSFHmQVSM+j
+ j+ukoCogEK/2lMarDZjDhwQfeYAkK/D99NLM1HFt/wjZxllo61l+onRslpVlsP8U97+X3J
+ 2ICEEq8f/9jPVgEUBf1epl5ZHw441O8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1721065926;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gvv6QsC05O0yRUOL9IwASKdXg5sghzQCpN10VgcYfRY=;
+ b=UalqbPFt/ctrgDUV83OA36Whsz39NECTX0mFXSVfEmpwv2Sf8qDmBmu6ZEm0MChiTyRBzY
+ Mv/t5FLtRckjLBAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E9AD6137EB;
+ Mon, 15 Jul 2024 17:52:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id V8BnK8VhlWZnKgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Jul 2024 17:52:05 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Philippe Mathieu-Daude <philmd@linaro.org>, Paolo
+ Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Steve Sistare
+ <steven.sistare@oracle.com>
+Subject: Re: [PATCH V2 01/11] machine: alloc-anon option
+In-Reply-To: <1719776434-435013-2-git-send-email-steven.sistare@oracle.com>
+References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
+ <1719776434-435013-2-git-send-email-steven.sistare@oracle.com>
+Date: Mon, 15 Jul 2024 14:52:03 -0300
+Message-ID: <87r0buczlo.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] target/hexagon/imported/mmvec: Fix superfluous
- trailing semicolon
-To: Michael Tokarev <mjt@tls.msk.ru>, Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-CC: <qemu-trivial@nongnu.org>, <qemu-devel@nongnu.org>
-References: <20240704084759.1824420-1-zhao1.liu@intel.com>
- <20240704084759.1824420-5-zhao1.liu@intel.com>
- <82dc0f6f-a00a-4013-84f7-8c6522062965@quicinc.com>
- <d72fe736-2b6c-4c98-90d7-c613f21a2547@tls.msk.ru>
-Content-Language: en-US
-From: Brian Cain <quic_bcain@quicinc.com>
-In-Reply-To: <d72fe736-2b6c-4c98-90d7-c613f21a2547@tls.msk.ru>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: 2nB6anqruvKVbCyfQEw9cChflbd3gHuC
-X-Proofpoint-GUID: 2nB6anqruvKVbCyfQEw9cChflbd3gHuC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_12,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
- impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=792 mlxscore=0
- adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2407150138
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_bcain@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-1.60 / 50.00]; BAYES_HAM(-1.80)[93.81%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; TAGGED_RCPT(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MISSING_XM_UA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCPT_COUNT_SEVEN(0.00)[11];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,gmail.com,habkost.net,linaro.org,oracle.com];
+ TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, oracle.com:email,
+ suse.de:email]
+X-Spam-Score: -1.60
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,51 +122,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Steve Sistare <steven.sistare@oracle.com> writes:
 
-On 7/15/2024 4:59 AM, Michael Tokarev wrote:
-> 06.07.2024 00:50, Brian Cain wrote:
->>
->> On 7/4/2024 3:47 AM, Zhao Liu wrote:
->>> Fix the superfluous trailing semicolon in 
->>> target/hexagon/imported/mmvec/
->>> ext.idef.
->>>
->>> Cc: Brian Cain <bcain@quicinc.com>
->>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
->>
->> Reviewed-by: Brian Cain <bcain@quicinc.com>
+> Allocate anonymous memory using mmap MAP_ANON or memfd_create depending
+> on the value of the anon-alloc machine property.  This affects
+> memory-backend-ram objects, guest RAM created with the global -m option
+> but without an associated memory-backend object and without the -mem-path
+> option, and various memory regions such as ROMs that are allocated when
+> devices are created.  This option does not affect memory-backend-file,
+> memory-backend-memfd, or memory-backend-epc objects.
 >
-> Brian, is it okay to fix this in something "imported" ?
-> I realize you added your R-b, but do you realize it's "imported"?
+> The memfd option is intended to support new migration modes, in which the
+> memory region can be transferred in place to a new QEMU process, by sending
+> the memfd file descriptor to the process.  Memory contents are preserved,
+> and if the mode also transfers device descriptors, then pages that are
+> locked in memory for DMA remain locked.  This behavior is a pre-requisite
+> for supporting vfio, vdpa, and iommufd devices with the new modes.
 >
-Sure, it's fine - I'll just have to take extra care not to re-introduce 
-issues like these when making updates.  I can try and work with the 
-original sources to make sure it's addressed there.
+> To access the same memory in the old and new QEMU processes, the memory
+> must be mapped shared.  Therefore, the implementation always sets
+> RAM_SHARED if alloc-anon=memfd, except for memory-backend-ram, where the
+> user must explicitly specify the share option.  In lieu of defining a new
+> RAM flag, at the lowest level the implementation uses RAM_SHARED with fd=-1
+> as the condition for calling memfd_create.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
+The commit message is inconsistent with alloc-anon, anon-alloc.
 
-> Thanks,
->
-> /mjt
->
->>> ---
->>>   target/hexagon/imported/mmvec/ext.idef | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/target/hexagon/imported/mmvec/ext.idef 
->>> b/target/hexagon/imported/mmvec/ext.idef
->>> index 98daabfb07c4..03d31f6181d7 100644
->>> --- a/target/hexagon/imported/mmvec/ext.idef
->>> +++ b/target/hexagon/imported/mmvec/ext.idef
->>> @@ -2855,7 +2855,7 @@ EXTINSN(V6_vscattermhw_add, 
->>> "vscatter(Rt32,Mu2,Vvv32.w).h+=Vw32", ATTRIBS(A_EXT
->>>       fVALIGN(RtV, element_size);
->>>       fVFOREACH(32, i) {
->>>           for(j = 0; j < 2; j++) {
->>> -             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);;
->>> +             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);
->>> fVLOG_VTCM_HALFWORD_INCREMENT_DV(EA,VvvV.v[j].uw[i],VwV,(2*i+j),i,j,ALIGNMENT,MuV);
->>>           }
->>>       }
->>
->
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
