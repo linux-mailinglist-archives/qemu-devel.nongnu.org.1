@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443A5930D93
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E278930DAC
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:47:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTEER-0003Wz-19; Mon, 15 Jul 2024 01:26:39 -0400
+	id 1sTEX3-0005XB-Aa; Mon, 15 Jul 2024 01:45:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTEEM-0003MN-2K
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:26:34 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1sTEX1-0005W1-1b
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:45:51 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTEE8-0000gA-Hx
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:26:33 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-78cc22902dcso731858a12.0
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:26:20 -0700 (PDT)
+ id 1sTEWy-0005hT-UQ
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:45:50 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-75e7e110e89so2089893a12.3
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:45:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721021179; x=1721625979;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721022347; x=1721627147;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=A5DQvwhNUSdfuiyr6xdA4cBcty39lESgP6o5nYgfKFY=;
- b=jzA9XsY45Lav5cpWrR8OB1v5DY8cEjsFMSvX//hRdRHg8qLI637+f7yAyDKYRz1VSX
- zhiZREyMQOvM/yDoiQDIs3vdTOrDX4TK/klXHYowVuj9qdfoUqLvp9Ts0I1C918aARFU
- bN+yQTUKAN/2LXLHc1Y6adQHS5L99Ybw2q79pN+YKKoPA0Klx1wcVqP9bddiqllRWFEe
- F8xU8bFeuP+128zQ4U3CrpY2peSfLfgHj19sTtA6mY41pm4ZZ1FI2cFH06jj6IEiVNxV
- gKw6MtxbXNy8RxHyE35UCLeXiAwcINVBydJZNEqvGEmpqm6yZpKP5y/vNN1hgxr1mRFl
- KeLA==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fJ0CdL+PtiKVqbnuQj7qHH9Vx9h9q/Bc0tYx3a9MMek=;
+ b=0c6RKJuNpYAEwNqjqrlSdOTID64SI+LepvTtkR53NywO95ZQmmJDqi4q+XTh3KYjKZ
+ p9OFA1qlmU+TFIyQ092JdHTtboW2GQyD7EZsjlPL+9P9ZKtBC68coi8wenLPQRClhGYv
+ 4iGavJiOVkFRh3zAbvKwBhLNcDAokNBONW9ub+mpdePDF6yG5M+i0hj3n/YzTHaAbSCQ
+ 6Jgt9V5/MWD7s8WGX+gc4cRW/oBQzF8MUGQ9HvVw0+MdugJHdKs7hS6pyCA/RwNWFmzI
+ M1dgmZoPoLyclC/utWBS42cFvh9/NVQvUjI3g18hcnKqxc3Kl/5rBJLL8Y5pSBF/zg2G
+ YOww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721021179; x=1721625979;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A5DQvwhNUSdfuiyr6xdA4cBcty39lESgP6o5nYgfKFY=;
- b=uHf8Mgsqy34yLv02qW0KP2gcR1ujgTrMBOHZNOKA94FB/NKHg++bekKkTyqm6DEFpW
- zIOqcY1NEHGyleBPCT16Ms3Snzsf+tUh6aoPQnJT+h3BxO6pzRnNBK21ZTra4UvbzNI4
- 3a5tQw8HxKQyw5T0MetNEQdrWbJzZsb1D5jjiB4FkD3TmeFi3v/bN9QthkkelKFG8eme
- C/E1mXGD6MMdeZ6655SHMF6LjIiPbekTCmTimirnF43rxIis0FcsGzBBi+UykneiAswW
- Wn9xKQLAT9r3FwETbNKNq/wHBVQlPTFLMhWcOCF8A/2douOlpu9lWnp7238QZFDeIZtu
- k32A==
-X-Gm-Message-State: AOJu0Yxm33bnw4CLmudo6JytlPlTtwj/EhISrryCS5hS+z7Xvqd0/3yB
- c06kLt4tM/r1AghE7iaME/gwLjtNfzHEh5y/PowSRUsSCJBCJahnLlLu1ocgW4hELfUc/eLGVdU
- sFw8=
-X-Google-Smtp-Source: AGHT+IG6ZTJyiWSpAJyCixANZSAj85vvDwMcslX2xfCRjN5x4MOMWqxorowMIRKWniFs7t2fkNIKtQ==
-X-Received: by 2002:a05:6a20:4328:b0:1c3:3436:a225 with SMTP id
- adf61e73a8af0-1c33436aef4mr14010262637.21.1721021179097; 
- Sun, 14 Jul 2024 22:26:19 -0700 (PDT)
-Received: from localhost ([157.82.204.135])
- by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2caedcac045sm3370440a91.57.2024.07.14.22.26.16
+ d=1e100.net; s=20230601; t=1721022347; x=1721627147;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fJ0CdL+PtiKVqbnuQj7qHH9Vx9h9q/Bc0tYx3a9MMek=;
+ b=kS4wjJQi5xTKM5HsReId3iNQQGmG4MbJfVcitd5dcTOUw+0wZDpFP2Miba+r1Z+Xew
+ fYS+ylsiKatb4RovgXL3/GnLV+ovb7IcyBP5AEZlyfiC3nI6vIHtdlR18YRKHz+O7BaE
+ g9zrhizZvdOPSfRXKcpRcY3y4fKaUMDbfEh+9osVK+VquwDaT7rwotwcNAzBuh0CE9Ik
+ JeV1bUKaLjkzakb+K/0rBxFF5P3DOKd2Ju+AetqiEI1fP/FikcVQSA/o5GYIi8T7eM2v
+ AXq1PSI97R7290hF6tl+ZHuw0tiTJGDjX+VtJyJy0cTE0MmURv4I4tkya4LgG5E4/qL+
+ Ty6w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVvXqZrYiXmY3TWRuBDiE5IK30G4JD+/IHdsWiXH1ROF5Ma1nYZ6Y1512rcaZPdmy2m/4hsMK2OMuAR/anGAj/aMV68Y1U=
+X-Gm-Message-State: AOJu0YyJLoXToPNPz4Z2cH7bMpzrsA74VK2vz74UBwFcZ2oPtZOGYWvA
+ UVWQjQ+JeN8GqKBzx+2pDzwx9KzOXP9uWyWmX3MMjbT0J29s6LUMA6tTHQxqny4=
+X-Google-Smtp-Source: AGHT+IEO4J0U2KiRSv1O+uMtbF05ikcqx22f4XyyYZ2QW0h9ltoHn5y8Xm3xITaXACLgV39r1HCvHg==
+X-Received: by 2002:a05:6a20:6a05:b0:1bd:28b9:6f88 with SMTP id
+ adf61e73a8af0-1c29821accamr20308421637.24.1721022347363; 
+ Sun, 14 Jul 2024 22:45:47 -0700 (PDT)
+Received: from [157.82.204.135] ([157.82.204.135])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fc0bb73ea1sm31824795ad.34.2024.07.14.22.45.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 14 Jul 2024 22:26:18 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 15 Jul 2024 14:25:45 +0900
-Subject: [PATCH v3 4/4] ui/console: Remove dpy_cursor_define_supported()
+ Sun, 14 Jul 2024 22:45:47 -0700 (PDT)
+Message-ID: <f8b2badd-c0c0-452a-a1cf-0a85467013ee@daynix.com>
+Date: Mon, 15 Jul 2024 14:45:44 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240715-cursor-v3-4-afa5b9492dbf@daynix.com>
-References: <20240715-cursor-v3-0-afa5b9492dbf@daynix.com>
-In-Reply-To: <20240715-cursor-v3-0-afa5b9492dbf@daynix.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>, 
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
- Phil Dennis-Jordan <phil@philjordan.eu>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] ui/cocoa: Wraps CGImage creation in helper function
+To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, philmd@linaro.org, marcandre.lureau@redhat.com, 
+ lists@philjordan.eu
+References: <20240706204345.99392-1-phil@philjordan.eu>
+ <20240706204345.99392-4-phil@philjordan.eu>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240706204345.99392-4-phil@philjordan.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,107 +97,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove dpy_cursor_define_supported() as it brings no benefit today and
-it has a few inherent problems.
+On 2024/07/07 5:43, Phil Dennis-Jordan wrote:
+> This reduces the incidental complexity of the screen update draw and
+> cursor conversion functions and minimally reduces overall code size.
+> 
+> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> ---
+>   ui/cocoa.m | 85 +++++++++++++++++++++++++++---------------------------
+>   1 file changed, 43 insertions(+), 42 deletions(-)
+> 
+> diff --git a/ui/cocoa.m b/ui/cocoa.m
+> index 309d1320d7..36abb679d0 100644
+> --- a/ui/cocoa.m
+> +++ b/ui/cocoa.m
+> @@ -292,6 +292,39 @@ static void handleAnyDeviceErrors(Error * err)
+>       }
+>   }
+>   
+> +static CGImageRef create_cg_image(void *data, unsigned width, unsigned height,
+> +                                  size_t stride, unsigned bpp, unsigned bpc,
+> +                                  bool use_alpha, CGColorSpaceRef colorspace)
 
-All graphical displays except egl-headless support cursor composition
-without DMA-BUF, and egl-headless is meant to be used in conjunction
-with another graphical display, so dpy_cursor_define_supported()
-always returns true and meaningless.
+The choice of parameters looks arbitrary. The number of bytes per pixel 
+(4ul) and CGBitmapInfo are hardcoded while the other parameters are not. 
+Having a function that simply hardcodes some parameters of another 
+function while passing through the others makes little sense; such a 
+function will be no use once some parameters change.
 
-Even if we add a new display without cursor composition in the future,
-dpy_cursor_define_supported() will be problematic as a cursor display
-fix for it because some display devices like virtio-gpu cannot tell the
-lack of cursor composition capability to the guest and are unable to
-utilize the value the function returns. Therefore, all non-headless
-graphical displays must actually implement cursor composition for
-correct cursor display.
+However I do see some benefit in extracting the pair of 
+CGDataProviderCreateWithData() and CGDataProviderRelease() into a 
+function. A better design of this function would be to pass through 
+parameters of CGImageCreate() while deriving the parameters of 
+CGDataProviderCreateWithData() from them.
 
-Another problem with dpy_cursor_define_supported() is that it returns
-true even if only some of the display listeners support cursor
-composition, which is wrong unless all display listeners that lack
-cursor composition is headless.
+I also suggest moving this function into QemuCocoaView. QemuCocoaView 
+has its colorspace defined so its method can assume that defined colorspace.
 
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/ui/console.h    |  1 -
- hw/display/qxl-render.c |  4 ----
- hw/display/vmware_vga.c |  6 ++----
- ui/console.c            | 13 -------------
- 4 files changed, 2 insertions(+), 22 deletions(-)
+Regards,
+Akihiko Odaki
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 82b573e68082..fa986ab97e3b 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -324,7 +324,6 @@ void dpy_text_update(QemuConsole *con, int x, int y, int w, int h);
- void dpy_text_resize(QemuConsole *con, int w, int h);
- void dpy_mouse_set(QemuConsole *con, int x, int y, bool on);
- void dpy_cursor_define(QemuConsole *con, QEMUCursor *cursor);
--bool dpy_cursor_define_supported(QemuConsole *con);
- bool dpy_gfx_check_format(QemuConsole *con,
-                           pixman_format_code_t format);
- 
-diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
-index ec99ec887a6e..837d2446cd52 100644
---- a/hw/display/qxl-render.c
-+++ b/hw/display/qxl-render.c
-@@ -307,10 +307,6 @@ int qxl_render_cursor(PCIQXLDevice *qxl, QXLCommandExt *ext)
-         return 1;
-     }
- 
--    if (!dpy_cursor_define_supported(qxl->vga.con)) {
--        return 0;
--    }
--
-     if (qxl->debug > 1 && cmd->type != QXL_CURSOR_MOVE) {
-         fprintf(stderr, "%s", __func__);
-         qxl_log_cmd_cursor(qxl, cmd, ext->group_id);
-diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
-index 512f224b9f58..3db3ff98f763 100644
---- a/hw/display/vmware_vga.c
-+++ b/hw/display/vmware_vga.c
-@@ -904,10 +904,8 @@ static uint32_t vmsvga_value_read(void *opaque, uint32_t address)
-         caps |= SVGA_CAP_RECT_FILL;
- #endif
- #ifdef HW_MOUSE_ACCEL
--        if (dpy_cursor_define_supported(s->vga.con)) {
--            caps |= SVGA_CAP_CURSOR | SVGA_CAP_CURSOR_BYPASS_2 |
--                    SVGA_CAP_CURSOR_BYPASS;
--        }
-+        caps |= SVGA_CAP_CURSOR | SVGA_CAP_CURSOR_BYPASS_2 |
-+                SVGA_CAP_CURSOR_BYPASS;
- #endif
-         ret = caps;
-         break;
-diff --git a/ui/console.c b/ui/console.c
-index 0ec70cb50ce6..33976446425e 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1001,19 +1001,6 @@ void dpy_cursor_define(QemuConsole *c, QEMUCursor *cursor)
-     }
- }
- 
--bool dpy_cursor_define_supported(QemuConsole *con)
--{
--    DisplayState *s = con->ds;
--    DisplayChangeListener *dcl;
--
--    QLIST_FOREACH(dcl, &s->listeners, next) {
--        if (dcl->ops->dpy_cursor_define) {
--            return true;
--        }
--    }
--    return false;
--}
--
- QEMUGLContext dpy_gl_ctx_create(QemuConsole *con,
-                                 struct QEMUGLParams *qparams)
- {
-
--- 
-2.45.2
-
+> +{
+> +    CGImageRef image;
+> +    CGDataProviderRef provider;
+> +    CGBitmapInfo bitmap_info = kCGBitmapByteOrder32Little
+> +        | (use_alpha ? kCGImageAlphaFirst : kCGImageAlphaNoneSkipFirst);
+> +
+> +    provider = CGDataProviderCreateWithData(
+> +        NULL,
+> +        data,
+> +        4ul * width * height,
+> +        NULL
+> +    );
+> +    image = CGImageCreate(
+> +        width, //width
+> +        height, //height
+> +        bpc, //bitsPerComponent
+> +        bpp, //bitsPerPixel
+> +        width * 4ul, //bytesPerRow
+> +        colorspace, //colorspace
+> +        bitmap_info, //bitmapInfo
+> +        provider, //provider
+> +        NULL, //decode
+> +        0, //interpolate
+> +        kCGRenderingIntentDefault //intent
+> +    );
+> +
+> +    CGDataProviderRelease(provider);
+> +    return image;
+> +}
+> +
+>   /*
+>    ------------------------------------------------------
+>       QemuCocoaView
+> @@ -464,7 +497,6 @@ - (void)setMouseX:(int)x y:(int)y on:(bool)on
+>   
+>   - (void)setCursor:(QEMUCursor *)given_cursor
+>   {
+> -    CGDataProviderRef provider;
+>       CGImageRef image;
+>       CGRect bounds = CGRectZero;
+>   
+> @@ -480,28 +512,12 @@ - (void)setCursor:(QEMUCursor *)given_cursor
+>       bounds.size.width = cursor->width;
+>       bounds.size.height = cursor->height;
+>   
+> -    provider = CGDataProviderCreateWithData(
+> -        NULL,
+> -        cursor->data,
+> -        cursor->width * cursor->height * 4,
+> -        NULL
+> -    );
+> +    image = create_cg_image(
+> +        cursor->data, cursor->width, cursor->height,
+> +        cursor->width * 4 /* bytes per row */,
+> +        32 /* bits/pixel */, 8 /* bits/component */, true /* alpha */,
+> +        colorspace);
+>   
+> -    image = CGImageCreate(
+> -        cursor->width, //width
+> -        cursor->height, //height
+> -        8, //bitsPerComponent
+> -        32, //bitsPerPixel
+> -        cursor->width * 4, //bytesPerRow
+> -        colorspace, //colorspace
+> -        kCGBitmapByteOrder32Little | kCGImageAlphaFirst, //bitmapInfo
+> -        provider, //provider
+> -        NULL, //decode
+> -        0, //interpolate
+> -        kCGRenderingIntentDefault //intent
+> -    );
+> -
+> -    CGDataProviderRelease(provider);
+>       [CATransaction begin];
+>       [CATransaction setDisableActions:YES];
+>       [cursorLayer setBounds:bounds];
+> @@ -533,25 +549,11 @@ - (void) drawRect:(NSRect) rect
+>           int bitsPerPixel = PIXMAN_FORMAT_BPP(format);
+>           int bitsPerComponent = PIXMAN_FORMAT_R(format);
+>           int stride = pixman_image_get_stride(pixman_image);
+> -        CGDataProviderRef dataProviderRef = CGDataProviderCreateWithData(
+> -            NULL,
+> -            pixman_image_get_data(pixman_image),
+> -            stride * h,
+> -            NULL
+> -        );
+> -        CGImageRef imageRef = CGImageCreate(
+> -            w, //width
+> -            h, //height
+> -            bitsPerComponent, //bitsPerComponent
+> -            bitsPerPixel, //bitsPerPixel
+> -            stride, //bytesPerRow
+> -            colorspace, //colorspace
+> -            kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst, //bitmapInfo
+> -            dataProviderRef, //provider
+> -            NULL, //decode
+> -            0, //interpolate
+> -            kCGRenderingIntentDefault //intent
+> -        );
+> +
+> +        CGImageRef imageRef = create_cg_image(
+> +            pixman_image_get_data(pixman_image), w, h, stride,
+> +            bitsPerPixel, bitsPerComponent, false /* no alpha */, colorspace);
+> +
+>           // selective drawing code (draws only dirty rectangles) (OS X >= 10.4)
+>           const NSRect *rectList;
+>           NSInteger rectCount;
+> @@ -571,7 +573,6 @@ - (void) drawRect:(NSRect) rect
+>               CGImageRelease (clipImageRef);
+>           }
+>           CGImageRelease (imageRef);
+> -        CGDataProviderRelease(dataProviderRef);
+>       }
+>   }
+>   
 
