@@ -2,87 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158069319A2
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8F29319BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 19:43:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTPbH-0008Nr-0h; Mon, 15 Jul 2024 13:34:59 -0400
+	id 1sTPiS-0007gk-6O; Mon, 15 Jul 2024 13:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTPa2-0005KU-4X
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:33:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sTPiL-0007Ys-3g; Mon, 15 Jul 2024 13:42:17 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTPZz-0002in-LN
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 13:33:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721064819;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UlN8lY5PJP7S659eIzOujYC9eIjixnVgiMPk4Up1ekI=;
- b=Nj+xL7tutSiMRZ0zzGHnppmqWRjM5uBoZpzkAf3TB0F5iEVRL5VrrVIifIcOuEVNtHr4mH
- 226ltgMG3yjipTxfs3v2YK0hJ+9XrV1ypV6RGhSzdQaheUpgegRpQn7T4cxxHkW80aGG4x
- nXpL456WKePABftZy2aE4ona5XyRS2M=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-QISIgKC9M2y7kXz5XtfgTg-1; Mon,
- 15 Jul 2024 13:33:33 -0400
-X-MC-Unique: QISIgKC9M2y7kXz5XtfgTg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 84D511955F42; Mon, 15 Jul 2024 17:33:30 +0000 (UTC)
-Received: from scv.localdomain (unknown [10.22.65.127])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 25EF91955D44; Mon, 15 Jul 2024 17:33:24 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Leonardo Bras <leobras@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
- Cleber Rosa <crosa@redhat.com>, qemu-arm@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
- qemu-s390x@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- John Snow <jsnow@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Michael Roth <michael.roth@amd.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Andrew Jeffery <andrew@aj.id.au>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Peter Xu <peterx@redhat.com>
-Subject: [PULL 6/6] docs: remove Sphinx 1.x compatibility code
-Date: Mon, 15 Jul 2024 13:32:41 -0400
-Message-ID: <20240715173241.572048-7-jsnow@redhat.com>
-In-Reply-To: <20240715173241.572048-1-jsnow@redhat.com>
-References: <20240715173241.572048-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sTPiJ-0004nj-Ao; Mon, 15 Jul 2024 13:42:16 -0400
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46FH8g6L029986;
+ Mon, 15 Jul 2024 17:42:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ pQjUjO9WFwohyShxbYRl1OcsQjkvGfi2P5LWo7su1e8=; b=ePlxZkrfJEMi2YTQ
+ RfWCEPQgwV365JcxhVux7pCv7RMPTLHEqQZJLWsy8cELbCf6Nix5Zgzl+eB3BMmP
+ X4+nIwdh9f40CX1PZlEKZ8+nm1oEcXNpkNAUKV33m9jLaH4YMkc8g6O+wxS5sNEL
+ k9iUL5NLAG4SwQPcXIPJDT3/eQQMAyBXR2tdIp7eqJAWvQ0zh0T4Gslc0BpoUNyK
+ yVzpZ1wvEziVU4HPUCrKh8c8iU8/qX1vhdp/2iBnnD2ebuhgfghAR9bDxMk+ytQK
+ wIiwsiesxr8hEXhWa3PF9BDiBHCqweiofSBRidO+WKR/VfkoWIUMWDA1QaejkfZL
+ 4ncanA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40bf9ed47e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jul 2024 17:42:09 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id
+ 46FHg8kG024324
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jul 2024 17:42:08 GMT
+Received: from [10.110.103.187] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 15 Jul
+ 2024 10:42:07 -0700
+Message-ID: <a1839140-181a-4547-993f-3a672c889eea@quicinc.com>
+Date: Mon, 15 Jul 2024 12:42:02 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] target/hexagon/imported/mmvec: Fix superfluous
+ trailing semicolon
+To: Michael Tokarev <mjt@tls.msk.ru>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-trivial@nongnu.org>, <qemu-devel@nongnu.org>
+References: <20240704084759.1824420-1-zhao1.liu@intel.com>
+ <20240704084759.1824420-5-zhao1.liu@intel.com>
+ <82dc0f6f-a00a-4013-84f7-8c6522062965@quicinc.com>
+ <d72fe736-2b6c-4c98-90d7-c613f21a2547@tls.msk.ru>
+Content-Language: en-US
+From: Brian Cain <quic_bcain@quicinc.com>
+In-Reply-To: <d72fe736-2b6c-4c98-90d7-c613f21a2547@tls.msk.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: 2nB6anqruvKVbCyfQEw9cChflbd3gHuC
+X-Proofpoint-GUID: 2nB6anqruvKVbCyfQEw9cChflbd3gHuC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-15_12,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=792 mlxscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2406140001 definitions=main-2407150138
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_bcain@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,233 +102,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In general, the Use_SSI workaround is no longer needed, and neither is
-the pre-1.6 logging shim for kerneldoc.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240703175235.239004-3-jsnow@redhat.com
-[rebased on top of origin/master. --js]
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- docs/sphinx/hxtool.py    | 21 ++++-----------------
- docs/sphinx/kerneldoc.py | 38 ++++++++++++--------------------------
- docs/sphinx/kernellog.py | 28 ----------------------------
- docs/sphinx/qapidoc.py   | 33 +++------------------------------
- 4 files changed, 19 insertions(+), 101 deletions(-)
- delete mode 100644 docs/sphinx/kernellog.py
+On 7/15/2024 4:59 AM, Michael Tokarev wrote:
+> 06.07.2024 00:50, Brian Cain wrote:
+>>
+>> On 7/4/2024 3:47 AM, Zhao Liu wrote:
+>>> Fix the superfluous trailing semicolon in 
+>>> target/hexagon/imported/mmvec/
+>>> ext.idef.
+>>>
+>>> Cc: Brian Cain <bcain@quicinc.com>
+>>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+>>
+>> Reviewed-by: Brian Cain <bcain@quicinc.com>
+>
+> Brian, is it okay to fix this in something "imported" ?
+> I realize you added your R-b, but do you realize it's "imported"?
+>
+Sure, it's fine - I'll just have to take extra care not to re-introduce 
+issues like these when making updates.  I can try and work with the 
+original sources to make sure it's addressed there.
 
-diff --git a/docs/sphinx/hxtool.py b/docs/sphinx/hxtool.py
-index 3729084a36c..a84723be19e 100644
---- a/docs/sphinx/hxtool.py
-+++ b/docs/sphinx/hxtool.py
-@@ -24,16 +24,10 @@
- from docutils.statemachine import ViewList
- from docutils.parsers.rst import directives, Directive
- from sphinx.errors import ExtensionError
-+from sphinx.util.docutils import switch_source_input
- from sphinx.util.nodes import nested_parse_with_titles
- import sphinx
- 
--# Sphinx up to 1.6 uses AutodocReporter; 1.7 and later
--# use switch_source_input. Check borrowed from kerneldoc.py.
--Use_SSI = sphinx.__version__[:3] >= '1.7'
--if Use_SSI:
--    from sphinx.util.docutils import switch_source_input
--else:
--    from sphinx.ext.autodoc import AutodocReporter
- 
- __version__ = '1.0'
- 
-@@ -185,16 +179,9 @@ def run(self):
-     # of title_styles and section_level that kerneldoc.py does,
-     # because nested_parse_with_titles() does that for us.
-     def do_parse(self, result, node):
--        if Use_SSI:
--            with switch_source_input(self.state, result):
--                nested_parse_with_titles(self.state, result, node)
--        else:
--            save = self.state.memo.reporter
--            self.state.memo.reporter = AutodocReporter(result, self.state.memo.reporter)
--            try:
--                nested_parse_with_titles(self.state, result, node)
--            finally:
--                self.state.memo.reporter = save
-+        with switch_source_input(self.state, result):
-+            nested_parse_with_titles(self.state, result, node)
-+
- 
- def setup(app):
-     """ Register hxtool-doc directive with Sphinx"""
-diff --git a/docs/sphinx/kerneldoc.py b/docs/sphinx/kerneldoc.py
-index 72c403a7379..3aa972f2e89 100644
---- a/docs/sphinx/kerneldoc.py
-+++ b/docs/sphinx/kerneldoc.py
-@@ -38,20 +38,14 @@
- from docutils.statemachine import ViewList
- from docutils.parsers.rst import directives, Directive
- 
--#
--# AutodocReporter is only good up to Sphinx 1.7
--#
- import sphinx
-+from sphinx.util import logging
-+from sphinx.util.docutils import switch_source_input
- 
--Use_SSI = sphinx.__version__[:3] >= '1.7'
--if Use_SSI:
--    from sphinx.util.docutils import switch_source_input
--else:
--    from sphinx.ext.autodoc import AutodocReporter
--
--import kernellog
- 
- __version__  = '1.0'
-+logger = logging.getLogger('kerneldoc')
-+
- 
- class KernelDocDirective(Directive):
-     """Extract kernel-doc comments from the specified file"""
-@@ -111,8 +105,7 @@ def run(self):
-         cmd += [filename]
- 
-         try:
--            kernellog.verbose(env.app,
--                              'calling kernel-doc \'%s\'' % (" ".join(cmd)))
-+            logger.verbose('calling kernel-doc \'%s\'' % (" ".join(cmd)))
- 
-             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-             out, err = p.communicate()
-@@ -122,8 +115,10 @@ def run(self):
-             if p.returncode != 0:
-                 sys.stderr.write(err)
- 
--                kernellog.warn(env.app,
--                               'kernel-doc \'%s\' failed with return code %d' % (" ".join(cmd), p.returncode))
-+                logger.warning(
-+                    'kernel-doc \'%s\' failed with return code %d' %
-+                    (" ".join(cmd), p.returncode)
-+                )
-                 return [nodes.error(None, nodes.paragraph(text = "kernel-doc missing"))]
-             elif env.config.kerneldoc_verbosity > 0:
-                 sys.stderr.write(err)
-@@ -149,22 +144,13 @@ def run(self):
-             return node.children
- 
-         except Exception as e:  # pylint: disable=W0703
--            kernellog.warn(env.app, 'kernel-doc \'%s\' processing failed with: %s' %
-+            logger.warning('kernel-doc \'%s\' processing failed with: %s' %
-                            (" ".join(cmd), str(e)))
-             return [nodes.error(None, nodes.paragraph(text = "kernel-doc missing"))]
- 
-     def do_parse(self, result, node):
--        if Use_SSI:
--            with switch_source_input(self.state, result):
--                self.state.nested_parse(result, 0, node, match_titles=1)
--        else:
--            save = self.state.memo.title_styles, self.state.memo.section_level, self.state.memo.reporter
--            self.state.memo.reporter = AutodocReporter(result, self.state.memo.reporter)
--            self.state.memo.title_styles, self.state.memo.section_level = [], 0
--            try:
--                self.state.nested_parse(result, 0, node, match_titles=1)
--            finally:
--                self.state.memo.title_styles, self.state.memo.section_level, self.state.memo.reporter = save
-+        with switch_source_input(self.state, result):
-+            self.state.nested_parse(result, 0, node, match_titles=1)
- 
- 
- def setup(app):
-diff --git a/docs/sphinx/kernellog.py b/docs/sphinx/kernellog.py
-deleted file mode 100644
-index af924f51a7d..00000000000
---- a/docs/sphinx/kernellog.py
-+++ /dev/null
-@@ -1,28 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0
--#
--# Sphinx has deprecated its older logging interface, but the replacement
--# only goes back to 1.6.  So here's a wrapper layer to keep around for
--# as long as we support 1.4.
--#
--import sphinx
--
--if sphinx.__version__[:3] >= '1.6':
--    UseLogging = True
--    from sphinx.util import logging
--    logger = logging.getLogger('kerneldoc')
--else:
--    UseLogging = False
--
--def warn(app, message):
--    if UseLogging:
--        logger.warning(message)
--    else:
--        app.warn(message)
--
--def verbose(app, message):
--    if UseLogging:
--        logger.verbose(message)
--    else:
--        app.verbose(message)
--
--
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 2b06750a3cd..62b39833ca0 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -35,22 +35,11 @@
- from qapi.gen import QAPISchemaVisitor
- from qapi.schema import QAPISchema
- 
--import sphinx
- from sphinx.errors import ExtensionError
-+from sphinx.util.docutils import switch_source_input
- from sphinx.util.nodes import nested_parse_with_titles
- 
- 
--# Sphinx up to 1.6 uses AutodocReporter; 1.7 and later
--# use switch_source_input. Check borrowed from kerneldoc.py.
--USE_SSI = sphinx.__version__[:3] >= "1.7"
--if USE_SSI:
--    from sphinx.util.docutils import switch_source_input
--else:
--    from sphinx.ext.autodoc import (  # pylint: disable=no-name-in-module
--        AutodocReporter,
--    )
--
--
- __version__ = "1.0"
- 
- 
-@@ -539,24 +528,8 @@ def do_parse(self, rstlist, node):
-         subheadings (titles) without confusing the rendering of
-         anything else.
-         """
--        # This is from kerneldoc.py -- it works around an API change in
--        # Sphinx between 1.6 and 1.7. Unlike kerneldoc.py, we use
--        # sphinx.util.nodes.nested_parse_with_titles() rather than the
--        # plain self.state.nested_parse(), and so we can drop the saving
--        # of title_styles and section_level that kerneldoc.py does,
--        # because nested_parse_with_titles() does that for us.
--        if USE_SSI:
--            with switch_source_input(self.state, rstlist):
--                nested_parse_with_titles(self.state, rstlist, node)
--        else:
--            save = self.state.memo.reporter
--            self.state.memo.reporter = AutodocReporter(
--                rstlist, self.state.memo.reporter
--            )
--            try:
--                nested_parse_with_titles(self.state, rstlist, node)
--            finally:
--                self.state.memo.reporter = save
-+        with switch_source_input(self.state, rstlist):
-+            nested_parse_with_titles(self.state, rstlist, node)
- 
- 
- def setup(app):
--- 
-2.45.0
 
+> Thanks,
+>
+> /mjt
+>
+>>> ---
+>>>   target/hexagon/imported/mmvec/ext.idef | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/target/hexagon/imported/mmvec/ext.idef 
+>>> b/target/hexagon/imported/mmvec/ext.idef
+>>> index 98daabfb07c4..03d31f6181d7 100644
+>>> --- a/target/hexagon/imported/mmvec/ext.idef
+>>> +++ b/target/hexagon/imported/mmvec/ext.idef
+>>> @@ -2855,7 +2855,7 @@ EXTINSN(V6_vscattermhw_add, 
+>>> "vscatter(Rt32,Mu2,Vvv32.w).h+=Vw32", ATTRIBS(A_EXT
+>>>       fVALIGN(RtV, element_size);
+>>>       fVFOREACH(32, i) {
+>>>           for(j = 0; j < 2; j++) {
+>>> -             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);;
+>>> +             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);
+>>> fVLOG_VTCM_HALFWORD_INCREMENT_DV(EA,VvvV.v[j].uw[i],VwV,(2*i+j),i,j,ALIGNMENT,MuV);
+>>>           }
+>>>       }
+>>
+>
 
