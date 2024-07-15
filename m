@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDBA931187
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14249311E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:59:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTIFu-0002k1-9q; Mon, 15 Jul 2024 05:44:26 -0400
+	id 1sTIUl-00005w-Mi; Mon, 15 Jul 2024 05:59:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTIFs-0002gu-Qd
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:44:24 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sTIUj-0008Ut-Jm; Mon, 15 Jul 2024 05:59:45 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTIFr-0005Pt-7I
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 05:44:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721036663; x=1752572663;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=aEt9NUuwJ/0VTGg32MzuEEaTFlLR/CAGW8RGmGngYGA=;
- b=EtJ/OEmF2q23sjkLtqqJTMnYmyNTIJ1XmLhiVDIiikHb6xoP83R8pWIf
- e+wJryULyM6cGwJ6vJzzuHws2pmIOy/Fz0kSFLf1eZmXlkEbu87XDJl/g
- lmH7WR6NJdquLC7Fp0E/RAA2ByEXO/aoF9dDMlpYelM13l/TTqD2EZl2W
- 5pty9IgMNds67SYbYWlm99xcj0leWGT8evlBOXgzLctzQfk0+NUfeRSnZ
- 6qYowKNLKd4BRG9ep8NNBk/v5Jl5MV/N8pJrmSVAOIe/4F3fLYNZcSe8j
- 9HUIjzJplmTmJoWwgTjAmBwcByhg+i8yjfkydw+VfIJkCqr1T40vdZKqB g==;
-X-CSE-ConnectionGUID: b+6awR79Qran8JJyicb3nA==
-X-CSE-MsgGUID: PbTrWlJRSGqJt0KB+JaUBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="35837080"
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="35837080"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2024 02:44:22 -0700
-X-CSE-ConnectionGUID: G+lYKG51TdeS73unNOr37Q==
-X-CSE-MsgGUID: PDmVSPx4STywGl14/CU/HA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="53854615"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 15 Jul 2024 02:44:21 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>
-Subject: [PATCH] qga/commands-posix: Make ga_wait_child() return boolean
-Date: Mon, 15 Jul 2024 17:59:39 +0800
-Message-Id: <20240715095939.72492-3-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240715095939.72492-1-zhao1.liu@intel.com>
-References: <20240715095939.72492-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sTIUh-0000Ma-SU; Mon, 15 Jul 2024 05:59:45 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3E9B97A5C9;
+ Mon, 15 Jul 2024 12:59:40 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8277D108D68;
+ Mon, 15 Jul 2024 12:59:41 +0300 (MSK)
+Message-ID: <d72fe736-2b6c-4c98-90d7-c613f21a2547@tls.msk.ru>
+Date: Mon, 15 Jul 2024 12:59:41 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] target/hexagon/imported/mmvec: Fix superfluous
+ trailing semicolon
+To: Brian Cain <quic_bcain@quicinc.com>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+References: <20240704084759.1824420-1-zhao1.liu@intel.com>
+ <20240704084759.1824420-5-zhao1.liu@intel.com>
+ <82dc0f6f-a00a-4013-84f7-8c6522062965@quicinc.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <82dc0f6f-a00a-4013-84f7-8c6522062965@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,78 +85,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As the comment in qapi/error, dereferencing @errp requires
-ERRP_GUARD():
+06.07.2024 00:50, Brian Cain wrote:
+> 
+> On 7/4/2024 3:47 AM, Zhao Liu wrote:
+>> Fix the superfluous trailing semicolon in target/hexagon/imported/mmvec/
+>> ext.idef.
+>>
+>> Cc: Brian Cain <bcain@quicinc.com>
+>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Reviewed-by: Brian Cain <bcain@quicinc.com>
 
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-* - It must not be dereferenced, because it may be null.
-...
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
-*
-* Using it when it's not needed is safe, but please avoid cluttering
-* the source with useless code.
+Brian, is it okay to fix this in something "imported" ?
+I realize you added your R-b, but do you realize it's "imported"?
 
-Though currently ga_run_command() only gets &local_err instead of NULL
-@errp, it's still better to follow the requirement to add the
-ERRP_GUARD().
+Thanks,
 
-But as error.h suggested, the best practice for callee is to return
-something to indicate success / failure.
+/mjt
 
-So make ga_wait_child() return boolean and check the returned boolean in
-ga_run_command() instead of dereferencing @errp, which eliminates the
-need of ERRP_GUARD().
-
-Cc: Michael Roth <michael.roth@amd.com>
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- qga/commands-posix.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 7f05996495a2..64bb0be94479 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -59,7 +59,7 @@
- #endif
- #endif
- 
--static void ga_wait_child(pid_t pid, int *status, Error **errp)
-+static bool ga_wait_child(pid_t pid, int *status, Error **errp)
- {
-     pid_t rpid;
- 
-@@ -70,10 +70,11 @@ static void ga_wait_child(pid_t pid, int *status, Error **errp)
-     if (rpid == -1) {
-         error_setg_errno(errp, errno, "failed to wait for child (pid: %d)",
-                          pid);
--        return;
-+        return false;
-     }
- 
-     g_assert(rpid == pid);
-+    return true;
- }
- 
- static ssize_t ga_pipe_read_str(int fd[2], char **str)
-@@ -178,8 +179,7 @@ static int ga_run_command(const char *argv[], const char *in_str,
-         goto out;
-     }
- 
--    ga_wait_child(pid, &status, errp);
--    if (*errp) {
-+    if (!ga_wait_child(pid, &status, errp)) {
-         goto out;
-     }
- 
--- 
-2.34.1
+>> ---
+>>   target/hexagon/imported/mmvec/ext.idef | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/target/hexagon/imported/mmvec/ext.idef b/target/hexagon/imported/mmvec/ext.idef
+>> index 98daabfb07c4..03d31f6181d7 100644
+>> --- a/target/hexagon/imported/mmvec/ext.idef
+>> +++ b/target/hexagon/imported/mmvec/ext.idef
+>> @@ -2855,7 +2855,7 @@ EXTINSN(V6_vscattermhw_add,  "vscatter(Rt32,Mu2,Vvv32.w).h+=Vw32", ATTRIBS(A_EXT
+>>       fVALIGN(RtV, element_size);
+>>       fVFOREACH(32, i) {
+>>           for(j = 0; j < 2; j++) {
+>> -             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);;
+>> +             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);
+>>                fVLOG_VTCM_HALFWORD_INCREMENT_DV(EA,VvvV.v[j].uw[i],VwV,(2*i+j),i,j,ALIGNMENT,MuV);
+>>           }
+>>       }
+> 
 
 
