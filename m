@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A21930DC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB096930DC5
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:59:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTEjM-0004ke-Q3; Mon, 15 Jul 2024 01:58:36 -0400
+	id 1sTEjQ-00050m-Cw; Mon, 15 Jul 2024 01:58:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTEjK-0004cD-Rk
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:58:34 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1sTEjO-0004wH-WC
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:58:39 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTEjI-0008Sb-L1
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:58:34 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2c9baecc80fso2495748a91.1
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:58:32 -0700 (PDT)
+ id 1sTEjL-0008TI-W7
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:58:38 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2c8517aab46so3165118a91.1
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:58:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721023111; x=1721627911; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721023114; x=1721627914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=69RYijPlse3JbUzx+du3ou9M98Z9jhFYXn2Bml2d90w=;
- b=o123e5h+nYYMG/q0WlAenQ3hD8fGclL/ME00ECx1OAKwvGdNlY4PHEnfM64wab7gnL
- +509QAQLHiVh629/zl/pw4QMuB89QV0w3RDnojUXtHCqp6Nve+/1//2ykppOILBshpGT
- Ya3rLi6aPe5j9VwRCFg5EJ3GyGDdQ9UeBKT0fzkxGD2BTCWrzc2bEsX9WoWX5U3G3TGk
- PuAJI47+8oS91yh+acYBKTYUb4tNn5tmjMnDvWImShBqCfWZ2DRM0hVijSLKNlFwjx0r
- tYoIb01Z4gf9WWFCp1m9sc0l/aXhDETh3nbaHKTlinX92zANP/t27BnRKECElHD2PfPs
- c9yA==
+ bh=bo/AQ8LDzk/AOqWq7VGMP1dwGD9Dmy3wpy1bY1Rsljs=;
+ b=Vvn3SVcxf53+Z3MHgiNQ8grXR8g3kafkpD215q2n3iPwukg//Fx4nL3BIsr4cxxgfo
+ vQqCCANYkrhcNWtEx5N874voAGWJ+1EbHVJCOhdKrhpRbZvW5P8PAQ/TXjZ4yC5nVTDG
+ oxZx+OeOrGWj6DyBW2oQtmP+fmA3YuJ6bGmFiT3HG5fNelcup/H1RKw59tHl3IuxD19M
+ WJZiuq0CWHcNHbdx3yepB6ewFewmgrHzGjXaR3MdvaUmdQ+wlUrvBAb3Y0f+jqx/SKdR
+ gpEWpx/svQemta7f/NdU0JCL5XeM/bf+nnJIBJg1zfi44E9LE8Cvw7tfjZdlRZYnZp0D
+ ZSbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721023111; x=1721627911;
+ d=1e100.net; s=20230601; t=1721023114; x=1721627914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=69RYijPlse3JbUzx+du3ou9M98Z9jhFYXn2Bml2d90w=;
- b=VtjZW39fZss2V/5lOIuzyp3U1Dy2HsM7JQIcUIRXia5vlhrwjNFiW6vhXYenpFtxSc
- jbD/fG/koMUeZNVcHQAnBqjolBal484ImSA7Eqm7ERyYY702xxioDMEcD+JWw3ouHLsq
- HXAFiMF6oN3iDLRf5U6jm5+WGFa5lT/2/C+a+xSRlSHF2o68cVtr6dutZGmQYNr3W95O
- xK/ySA5eLuIr++Lxml2GcXyGHry6UkSv19HfZJ3MKjrqKHAiMFpi1H+qCB0oBkSiAj4/
- 5PQ90qI39Y8KevHoNqsQOL2VeALK6sEMNotW56mi0kbCUwU88z+rdCiSb4CM8EjczLBX
- Majw==
-X-Gm-Message-State: AOJu0YwioTVjisXYrwYprnOYqI9xddxunTWMxbHDq6/ygn4D+XSw8kiQ
- t9Qc1sx0g49AoZjHuOo/bRZcrlvram1ojCBs8vzEd+oRslMoAnNQh4MwMFraYqchJ2cHNpJbdRl
- kaG19kg==
-X-Google-Smtp-Source: AGHT+IHyHSU+lUat6lk6n6Z0QGkMITJO0G4E5uMhDy6vnIz982YQLPpKz2Qr0ihhTQQv67uMEI4sXQ==
-X-Received: by 2002:a17:90a:db4c:b0:2ca:7e7c:83ec with SMTP id
- 98e67ed59e1d1-2ca7e7c8890mr9278627a91.20.1721023110671; 
- Sun, 14 Jul 2024 22:58:30 -0700 (PDT)
+ bh=bo/AQ8LDzk/AOqWq7VGMP1dwGD9Dmy3wpy1bY1Rsljs=;
+ b=eOjaNwSS5y5hh4FGFQ5aXhoSUbHv2nHGIOfHFhsmwQJ1qlyUU0fNZ1Tt3TwNTF/ImI
+ ps+X/1zbzTYVHjmDuPLtHvz5tn2+B0JxaR6CdDt66LcrictOTINCufoeQ1lifvg38nHm
+ grvCRwRC7pUllqwN2/Fwagu//rCWznA7cCQe6nv79zOh7c67g0dR7JynNFX+2Sl0R195
+ jpLN/jpIsc/xq0bANm7rGv70U09mVROXkiZzDXE7j2R/oFyAXPPclfgeaA/+ksrBnMaX
+ JBhy0s61sAmGLdl6KrGW2TvJONvGwtxasCCoZ2/KBxce8sAi6Wv0c6p5FFgzL7SxYL8i
+ eHDA==
+X-Gm-Message-State: AOJu0YyQzBNZvamkeG0+gGBMyR1P4RQgtq+wjaC0rjfFh/Iz0K15YGv+
+ qfMDLNeafiULu1x/9MD7V7hy5MjsIPtd/0prX6pr4blesMUCW5MYayFzEzINjHNxPgMjNTczv9C
+ duhJ5yw==
+X-Google-Smtp-Source: AGHT+IE7Wrs6Be0q71OdWzgH0apo8uC9ZNEhm7xoeVQ4JpqRXJFbJ6zhaRWK/tu0BsBBjMai6yEAIA==
+X-Received: by 2002:a17:90a:ca87:b0:2c9:7ae1:8f62 with SMTP id
+ 98e67ed59e1d1-2ca35d599e0mr13652395a91.46.1721023114241; 
+ Sun, 14 Jul 2024 22:58:34 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cacd419af7sm5463589a91.25.2024.07.14.22.58.27
+ 98e67ed59e1d1-2cacd419af7sm5463589a91.25.2024.07.14.22.58.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jul 2024 22:58:30 -0700 (PDT)
+ Sun, 14 Jul 2024 22:58:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: danikhan632@git.sr.ht, qemu-arm@nongnu.org,
- Daniyal Khan <danikhan632@gmail.com>, qemu-stable@nongnu.org
-Subject: [PATCH 1/3] target/arm: Use float_status copy in sme_fmopa_s
-Date: Mon, 15 Jul 2024 15:58:18 +1000
-Message-ID: <20240715055820.319035-2-richard.henderson@linaro.org>
+Cc: danikhan632@git.sr.ht, qemu-arm@nongnu.org, qemu-stable@nongnu.org,
+ Daniyal Khan <danikhan632@gmail.com>
+Subject: [PATCH 2/3] target/arm: Use FPST_F16 for SME FMOPA (widening)
+Date: Mon, 15 Jul 2024 15:58:19 +1000
+Message-ID: <20240715055820.319035-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240715055820.319035-1-richard.henderson@linaro.org>
 References: <20240715055820.319035-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,34 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniyal Khan <danikhan632@gmail.com>
-
-We made a copy above because the fp exception flags
-are not propagated back to the FPST register, but
-then failed to use the copy.
+This operation has float16 inputs and thus must use
+the FZ16 control not the FZ control.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 558e956c719 ("target/arm: Implement FMOPA, FMOPS (non-widening)")
-Signed-off-by: Daniyal Khan <danikhan632@gmail.com>
-[rth: Split from a larger patch]
+Reported-by: Daniyal Khan <danikhan632@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2374
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sme_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/tcg/translate-sme.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index e2e0575039..5a6dd76489 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -916,7 +916,7 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
-                         if (pb & 1) {
-                             uint32_t *a = vza_row + H1_4(col);
-                             uint32_t *m = vzm + H1_4(col);
--                            *a = float32_muladd(n, *m, *a, 0, vst);
-+                            *a = float32_muladd(n, *m, *a, 0, &fpst);
-                         }
-                         col += 4;
-                         pb >>= 4;
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index 46c7fce8b4..185a8a917b 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -304,6 +304,7 @@ static bool do_outprod(DisasContext *s, arg_op *a, MemOp esz,
+ }
+ 
+ static bool do_outprod_fpst(DisasContext *s, arg_op *a, MemOp esz,
++                            ARMFPStatusFlavour e_fpst,
+                             gen_helper_gvec_5_ptr *fn)
+ {
+     int svl = streaming_vec_reg_size(s);
+@@ -319,15 +320,18 @@ static bool do_outprod_fpst(DisasContext *s, arg_op *a, MemOp esz,
+     zm = vec_full_reg_ptr(s, a->zm);
+     pn = pred_full_reg_ptr(s, a->pn);
+     pm = pred_full_reg_ptr(s, a->pm);
+-    fpst = fpstatus_ptr(FPST_FPCR);
++    fpst = fpstatus_ptr(e_fpst);
+ 
+     fn(za, zn, zm, pn, pm, fpst, tcg_constant_i32(desc));
+     return true;
+ }
+ 
+-TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_fpst, a, MO_32, gen_helper_sme_fmopa_h)
+-TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a, MO_32, gen_helper_sme_fmopa_s)
+-TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a, MO_64, gen_helper_sme_fmopa_d)
++TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_fpst, a,
++           MO_32, FPST_FPCR_F16, gen_helper_sme_fmopa_h)
++TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
++           MO_32, FPST_FPCR, gen_helper_sme_fmopa_s)
++TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
++           MO_64, FPST_FPCR, gen_helper_sme_fmopa_d)
+ 
+ /* TODO: FEAT_EBF16 */
+ TRANS_FEAT(BFMOPA, aa64_sme, do_outprod, a, MO_32, gen_helper_sme_bfmopa)
 -- 
 2.43.0
 
