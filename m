@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C68993114F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4A7931153
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 11:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTI75-0003sF-O0; Mon, 15 Jul 2024 05:35:19 -0400
+	id 1sTI75-0003fQ-6b; Mon, 15 Jul 2024 05:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sTI6X-0002yV-GV; Mon, 15 Jul 2024 05:34:47 -0400
+ id 1sTI6W-0002xn-Sx; Mon, 15 Jul 2024 05:34:45 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sTI6V-0003wk-0R; Mon, 15 Jul 2024 05:34:45 -0400
+ id 1sTI6U-0003wl-QH; Mon, 15 Jul 2024 05:34:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 86B8B7A590;
+ by isrv.corpit.ru (Postfix) with ESMTP id 95C1B7A591;
  Mon, 15 Jul 2024 12:34:34 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C399E108CFA;
+ by tsrv.corpit.ru (Postfix) with SMTP id D7C92108CFB;
  Mon, 15 Jul 2024 12:34:35 +0300 (MSK)
-Received: (nullmailer pid 571752 invoked by uid 1000);
+Received: (nullmailer pid 571755 invoked by uid 1000);
  Mon, 15 Jul 2024 09:34:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
- jasowang@redhat.com, Xoykie <xoykie@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.2 24/27] virtio: remove virtio_tswap16s() call in
- vring_packed_event_read()
-Date: Mon, 15 Jul 2024 12:34:31 +0300
-Message-Id: <20240715093435.571721-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Maxim Mikityanskiy <maxtram95@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.2 25/27] char-stdio: Restore blocking mode of stdout on
+ exit
+Date: Mon, 15 Jul 2024 12:34:32 +0300
+Message-Id: <20240715093435.571721-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.2-20240715075000@cover.tls.msk.ru>
 References: <qemu-stable-9.0.2-20240715075000@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,45 +59,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-Commit d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-switched using of address_space_read_cached() to virito_lduw_phys_cached()
-to access packed descriptor event.
+qemu_chr_open_fd() sets stdout into non-blocking mode. Restore the old
+fd flags on exit to avoid breaking unsuspecting applications that run on
+the same terminal after qemu and don't expect to get EAGAIN.
 
-When we used address_space_read_cached(), we needed to call
-virtio_tswap16s() to handle the endianess of the field, but
-virito_lduw_phys_cached() already handles it internally, so we no longer
-need to call virtio_tswap16s() (as the commit had done for `off_wrap`,
-but forgot for `flags`).
+While at at, also ensure term_exit is called once (at the moment it's
+called both from char_stdio_finalize() and as the atexit() hook.
 
-Fixes: d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-Cc: jasowang@redhat.com
-Cc: qemu-stable@nongnu.org
-Reported-by: Xoykie <xoykie@gmail.com>
-Link: https://lore.kernel.org/qemu-devel/CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--Tjr49F_eX32ZBc5o2zQ@mail.gmail.com
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240701075208.19634-1-sgarzare@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 7aa6492401e95fb296dec7cda81e67d91f6037d7)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2423
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://lore.kernel.org/r/20240703190812.3459514-1-maxtram95@gmail.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit a0124e333e2176640f233e5ea57a2f413985d9b5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 871674f9be..fd2dfe3a6b 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -322,7 +322,6 @@ static void vring_packed_event_read(VirtIODevice *vdev,
-     /* Make sure flags is seen before off_wrap */
-     smp_rmb();
-     e->off_wrap = virtio_lduw_phys_cached(vdev, cache, off_off);
--    virtio_tswap16s(vdev, &e->flags);
+diff --git a/chardev/char-stdio.c b/chardev/char-stdio.c
+index 3c648678ab..b960ddd4e4 100644
+--- a/chardev/char-stdio.c
++++ b/chardev/char-stdio.c
+@@ -41,6 +41,7 @@
+ /* init terminal so that we can grab keys */
+ static struct termios oldtty;
+ static int old_fd0_flags;
++static int old_fd1_flags;
+ static bool stdio_in_use;
+ static bool stdio_allow_signal;
+ static bool stdio_echo_state;
+@@ -50,6 +51,8 @@ static void term_exit(void)
+     if (stdio_in_use) {
+         tcsetattr(0, TCSANOW, &oldtty);
+         fcntl(0, F_SETFL, old_fd0_flags);
++        fcntl(1, F_SETFL, old_fd1_flags);
++        stdio_in_use = false;
+     }
  }
  
- static void vring_packed_off_wrap_write(VirtIODevice *vdev,
+@@ -102,6 +105,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
+ 
+     stdio_in_use = true;
+     old_fd0_flags = fcntl(0, F_GETFL);
++    old_fd1_flags = fcntl(1, F_GETFL);
+     tcgetattr(0, &oldtty);
+     if (!g_unix_set_fd_nonblocking(0, true, NULL)) {
+         error_setg_errno(errp, errno, "Failed to set FD nonblocking");
 -- 
 2.39.2
 
