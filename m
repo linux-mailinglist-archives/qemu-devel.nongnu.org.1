@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F56F933BAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967E8933BF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2SF-0008M9-Or; Wed, 17 Jul 2024 07:04:15 -0400
+	id 1sU2TP-0005Ij-3M; Wed, 17 Jul 2024 07:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@intel-mbp.local>)
- id 1sU2SC-0008AW-7l
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:12 -0400
+ id 1sU2SV-0000xV-EP
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:36 -0400
 Received: from 89-104-8-17.customer.bnet.at ([89.104.8.17]
  helo=intel-mbp.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <phil@intel-mbp.local>) id 1sU2S8-0006yB-QZ
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:11 -0400
+ (envelope-from <phil@intel-mbp.local>) id 1sU2SR-00071K-DJ
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:04:30 -0400
 Received: by intel-mbp.local (Postfix, from userid 501)
- id 0E13837961F; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
+ id 207E1379625; Mon, 15 Jul 2024 23:07:38 +0200 (CEST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de,
  graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org,
  akihiko.odaki@daynix.com, phil@philjordan.eu, lists@philjordan.eu
-Subject: [PATCH 10/26] hw/display/apple-gfx: Fixes ObjC new/init misuse,
- plugs leaks
-Date: Mon, 15 Jul 2024 23:06:49 +0200
-Message-Id: <20240715210705.32365-11-phil@philjordan.eu>
+Subject: [PATCH 11/26] hw/display/apple-gfx: Uses ObjC category extension for
+ private property
+Date: Mon, 15 Jul 2024 23:06:50 +0200
+Message-Id: <20240715210705.32365-12-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240715210705.32365-1-phil@philjordan.eu>
 References: <20240715210705.32365-1-phil@philjordan.eu>
@@ -57,85 +57,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The creation of Objective-C objects is split between 'alloc' and
-'init...' methods. The single 'new' method is shorthand for alloc+init.
-Calling 'new' then 'init...' is therefore redundant. The instances of
-new + initWith... are replaced with the alloc/initWith... pattern and
-the zero-argument 'init' call is removed from instances of the
-new + init pattern.
-
-'new' and alloc+init return an object with a retain count of 1. The
-change therefore also inserts release calls for temporary objects
-created in this way to prevent them leaking.
+The vmapple mmio implementation of the PG device uses an IOService
+mapper for sharing video memory between host and guest. This is only
+exposed via a private property on the PGDeviceDescriptor class. The
+code has so far declared this in a dummy derived class; the idiomatic
+Objective-C way of exposing private APIs on a class is via a category
+extension. This change does exactly that; this also avoids the extra
+cast to access the property.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/display/apple-gfx.m | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ hw/display/apple-gfx.m | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 7f0a231d26..073741ede5 100644
+index 073741ede5..6537e32806 100644
 --- a/hw/display/apple-gfx.m
 +++ b/hw/display/apple-gfx.m
-@@ -63,7 +63,7 @@ -(PGIOSurfaceHostDeviceDescriptor *)init;
+@@ -51,7 +51,7 @@
+ typedef bool(^IOSFCUnmapMemory)(void *a, void *b, void *c, void *d, void *e, void *f);
+ typedef bool(^IOSFCMapMemory)(uint64_t phys, uint64_t len, bool ro, void **va, void *e, void *f);
+ 
+-@interface PGDeviceDescriptorExt : PGDeviceDescriptor
++@interface PGDeviceDescriptor (IOSurfaceMapper)
+ @property (readwrite, nonatomic) bool usingIOSurfaceMapper;
  @end
  
- @interface PGIOSurfaceHostDevice : NSObject
---(void)initWithDescriptor:(PGIOSurfaceHostDeviceDescriptor *) desc;
-+-(instancetype)initWithDescriptor:(PGIOSurfaceHostDeviceDescriptor *) desc;
- -(uint32_t)mmioReadAtOffset:(size_t) offset;
- -(void)mmioWriteAtOffset:(size_t) offset value:(uint32_t)value;
- @end
-@@ -401,8 +401,8 @@ static void apple_gfx_realize(DeviceState *dev, Error **errp)
+@@ -396,7 +396,6 @@ static void apple_gfx_realize(DeviceState *dev, Error **errp)
+     PGDeviceDescriptor *desc = [PGDeviceDescriptor new];
+     PGDisplayDescriptor *disp_desc = [PGDisplayDescriptor new];
+     PGIOSurfaceHostDeviceDescriptor *iosfc_desc = [PGIOSurfaceHostDeviceDescriptor new];
+-    PGDeviceDescriptorExt *desc_ext = (PGDeviceDescriptorExt *)desc;
+     PGDisplayMode *modes[ARRAY_SIZE(apple_gfx_modes)];
      int i;
  
-     for (i = 0; i < ARRAY_SIZE(apple_gfx_modes); i++) {
--        modes[i] = [PGDisplayMode new];
--        [modes[i] initWithSizeInPixels:apple_gfx_modes[i] refreshRateInHz:60.];
-+        modes[i] =
-+            [[PGDisplayMode alloc] initWithSizeInPixels:apple_gfx_modes[i] refreshRateInHz:60.];
-     }
- 
+@@ -408,7 +407,7 @@ static void apple_gfx_realize(DeviceState *dev, Error **errp)
      s->mtl = MTLCreateSystemDefaultDevice();
-@@ -499,8 +499,9 @@ static void apple_gfx_realize(DeviceState *dev, Error **errp)
-     };
  
-     s->pgdev = PGNewDeviceWithDescriptor(desc);
-+    [desc release];
-+    desc = nil;
+     desc.device = s->mtl;
+-    desc_ext.usingIOSurfaceMapper = true;
++    desc.usingIOSurfaceMapper = true;
  
--    [disp_desc init];
-     disp_desc.name = @"QEMU display";
-     disp_desc.sizeInMillimeters = NSMakeSize(400., 300.); /* A 20" display */
-     disp_desc.queue = dispatch_get_main_queue();
-@@ -545,9 +546,14 @@ static void apple_gfx_realize(DeviceState *dev, Error **errp)
-     };
- 
-     s->pgdisp = [s->pgdev newDisplayWithDescriptor:disp_desc port:0 serialNum:1234];
-+    [disp_desc release];
-     s->pgdisp.modeList = [NSArray arrayWithObjects:modes count:ARRAY_SIZE(apple_gfx_modes)];
- 
--    [iosfc_desc init];
-+    for (i = 0; i < ARRAY_SIZE(apple_gfx_modes); i++) {
-+        [modes[i] release];
-+        modes[i] = nil;
-+    }
-+
-     iosfc_desc.mapMemory = ^(uint64_t phys, uint64_t len, bool ro, void **va, void *e, void *f) {
-         trace_apple_iosfc_map_memory(phys, len, ro, va, e, f);
-         MemoryRegion *tmp_mr;
-@@ -573,8 +579,9 @@ static void apple_gfx_realize(DeviceState *dev, Error **errp)
-         return (bool)true;
-     };
- 
--    s->pgiosfc = [PGIOSurfaceHostDevice new];
--    [s->pgiosfc initWithDescriptor:iosfc_desc];
-+    s->pgiosfc =
-+        [[PGIOSurfaceHostDevice alloc] initWithDescriptor:iosfc_desc];
-+    [iosfc_desc release];
- 
-     QTAILQ_INIT(&s->mrs);
-     QTAILQ_INIT(&s->tasks);
+     desc.createTask = ^(uint64_t vmSize, void * _Nullable * _Nonnull baseAddress) {
+         AppleGFXTask *task = apple_gfx_new_task(s, vmSize);
 -- 
 2.39.3 (Apple Git-146)
 
