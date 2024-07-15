@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA23D930D82
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DA6930D85
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 07:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTE8Q-0000Pn-OH; Mon, 15 Jul 2024 01:20:26 -0400
+	id 1sTE8W-0001K7-AZ; Mon, 15 Jul 2024 01:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTE87-0008Ll-N5
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:20:08 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1sTE8Q-0000gJ-DL
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:20:26 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTE7y-0007RS-8Y
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:20:07 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3d9e13ef9aaso2515037b6e.1
- for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:19:48 -0700 (PDT)
+ id 1sTE7y-0007Rw-8R
+ for qemu-devel@nongnu.org; Mon, 15 Jul 2024 01:20:10 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-70b07bdbfbcso3599032b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Jul 2024 22:19:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721020788; x=1721625588;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721020793; x=1721625593;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YW/hY5XCH9ysRbsD3Qw09WbyPo+KgPIedwlSdOeEQ/I=;
- b=VzZmLZmr7q2xwEIUbv44GKi5Vl6mvNijx/Ig0yyaCubVFmuaMXQZcbuZfSM5WCchTJ
- Kx9DOo8z9RODFOcTNuBfdeJ09an6OetkDNqwkL+wJUFEeHrEpdBuTPE3YTQi3oHyMj4S
- HFM6KB+giuBLPSbEMK+V2U/DNFhvzHeG4sLovs4I8O6/LmrbHCbVQaJfOGSuAheQRiqq
- KGqsj+su2FXawj4IBCrC5HPTGu+zlK/zcbndHDuPdxg0wEgmQq63TyfnN4rCqP30x2IQ
- ZboAFhPL0U9d1ASAs+g92qoOyLqOrpxBgHzPL4TDRnxNL4YYtIBkWEQiHUYWvxW0GJ8Q
- 1esw==
+ :reply-to; bh=ZZGRu8v6oxuF32W/xrA/69BjX55/YFUQg7PXZsmlE7o=;
+ b=Ak4EJU3VSqk1eCVWAUb0+PbMC+ctopGi9UG+dTE0YWMpwdVHFLnlfC2w1mSPB/muIc
+ zcYrSV2TAyLC0dpFHTvAnrHbSsZbsziJfENZJ0OmMxFxmM4ecp+z16BN8gJCroJKr2bA
+ 02LTDoVZjqJ1J2tJ2e2baQ2ZCpR5YxNf26QRf5FoCrlgoKT1tNVqPXmaw3EBuH8PppGy
+ tZdi3T8/FIkmyBolzREeptdG3LCZrVHN0s2xAlodNcE/n5mSSs4Z24H5BY/Rfs9MUPT8
+ ysi8N4WOatshT/uZU6PeTDv44rL0HS0agx/tsMzjJQq0L7NiqGEXFro4WvYYYGmtiW0y
+ fz4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721020788; x=1721625588;
+ d=1e100.net; s=20230601; t=1721020793; x=1721625593;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YW/hY5XCH9ysRbsD3Qw09WbyPo+KgPIedwlSdOeEQ/I=;
- b=klkMom2N37dAEGNZ9uRvclaqJHqpomgyp8qP4yUNzB4JrNRB+Z5yr4VAKAh1sAp6ca
- RThFI1CfIR/ZNAQXzon3En18xIyTWfsiLp4QgH8ohm0aEagQy1IDDhYUYQGuIx2DT7H+
- 0pV7pSVDa5BEtq2WE/zfnyGFP7k/nie0zFZf7knXyPB4rclrufiDY9/IZekKv0cl24YS
- Qep/IReVTKn76ws5cteE2/yoMVenTsr+hbJdlSAmYsTyowKZkgUMRMWWxuyVfDnj++o9
- RPMup+hp/jO1MTpR56k7ZpS4tqYWUyM5CqG326TscthDGwLT0FY8Pq58rtyYx4n23LwS
- O4ZQ==
-X-Gm-Message-State: AOJu0YxZqUF7LTc1PIRKtWjI1p04uCCeE15d6gMRrKndcTNKiseg1qm0
- Ekatpa2fxZA94xUgAoF+jCtDFkWcQymFzQnebTU9UGmwjxSuID/TVpoigIX8MLw=
-X-Google-Smtp-Source: AGHT+IFN2JQLdponyCJBZ1jucvrPQlDscMYYstuf9XCTzad79EXooRWCe+QA57JVUTSx+igDfVwE5g==
-X-Received: by 2002:a05:6870:82a4:b0:255:1819:b444 with SMTP id
- 586e51a60fabf-25eae75ec76mr15200830fac.7.1721020788160; 
- Sun, 14 Jul 2024 22:19:48 -0700 (PDT)
+ bh=ZZGRu8v6oxuF32W/xrA/69BjX55/YFUQg7PXZsmlE7o=;
+ b=lGe5tmhlbV8KtefONo+v460mdQ52ZDaHPF/5UUICkKRkEXALcLGFVanOj47nhG7vCe
+ l22mbbbWTV3CrWS99C+6yfHBW1LEE67VRiTyAkBM8iIixIQKaKHEKbGULWSaouhQD3z1
+ ZaK5ryWdIwiE7U1Vnbw5s8Sq9h24V+rcN127hKY472eD6S7ZOFn4QH89PWr/Dp1ki69Y
+ BDg+tAfm1rD5aw/c/nRBPNQGjxpE2ydHZsZX8+eozqT+SmCheHJpKr8glSrkGR9FVlHk
+ Lo5EJ+5gsReT0TApIxlwgaiu4NjHUD0Ii9SjzPrt/DMZ/a3DKwqeU9ika8NISvyENwNo
+ xraA==
+X-Gm-Message-State: AOJu0YwlnszXhyqSTeN7arfWWEVDBoXzJW1Cx0mpqRG7Wp1XHCRRHsRY
+ r7CFZilVMweJwtKrwTTK+DLC1QQ/ySgJ2s1ZL0T7NG32uBE6iAfsa0dfgX395r8=
+X-Google-Smtp-Source: AGHT+IG4YjG0ntIffx9f8EzYgy5fvK5gEa4orev9+ojliP35f+0nuEj+8HiWLZO6H79kpdfZStR7vA==
+X-Received: by 2002:a05:6a20:cfa9:b0:1c2:8d1b:2776 with SMTP id
+ adf61e73a8af0-1c3bed16a76mr12920506637.20.1721020793302; 
+ Sun, 14 Jul 2024 22:19:53 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-70b7ecd301csm3437136b3a.220.2024.07.14.22.19.44
+ d2e1a72fcca58-70b7ecd362dsm3394705b3a.215.2024.07.14.22.19.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 14 Jul 2024 22:19:47 -0700 (PDT)
+ Sun, 14 Jul 2024 22:19:53 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 15 Jul 2024 14:19:08 +0900
-Subject: [PATCH v5 2/8] hw/pci: Fix SR-IOV VF number calculation
+Date: Mon, 15 Jul 2024 14:19:09 +0900
+Subject: [PATCH v5 3/8] pcie_sriov: Ensure PF and VF are mutually exclusive
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240715-sriov-v5-2-3f5539093ffc@daynix.com>
+Message-Id: <20240715-sriov-v5-3-3f5539093ffc@daynix.com>
 References: <20240715-sriov-v5-0-3f5539093ffc@daynix.com>
 In-Reply-To: <20240715-sriov-v5-0-3f5539093ffc@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -78,8 +78,8 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::22d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,34 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci_config_get_bar_addr() had a division by vf_stride. vf_stride needs
-to be non-zero when there are multiple VFs, but the specification does
-not prohibit to make it zero when there is only one VF.
-
-Do not perform the division for the first VF to avoid division by zero.
+A device cannot be a SR-IOV PF and a VF at the same time.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/pci/pci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ hw/pci/pcie_sriov.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 497a057b79f9..ae7137d70579 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1490,7 +1490,11 @@ static pcibus_t pci_config_get_bar_addr(PCIDevice *d, int reg,
-             pci_get_word(pf->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
-         uint16_t vf_stride =
-             pci_get_word(pf->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
--        uint32_t vf_num = (d->devfn - (pf->devfn + vf_offset)) / vf_stride;
-+        uint32_t vf_num = d->devfn - (pf->devfn + vf_offset);
-+
-+        if (vf_num) {
-+            vf_num /= vf_stride;
-+        }
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index 56523ab4e833..ec8fc0757b92 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -42,6 +42,11 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+     uint8_t *cfg = dev->config + offset;
+     uint8_t *wmask;
  
-         if (type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
-             new_addr = pci_get_quad(pf->config + bar);
++    if (pci_is_vf(dev)) {
++        error_setg(errp, "a device cannot be a SR-IOV PF and a VF at the same time");
++        return false;
++    }
++
+     if (total_vfs) {
+         uint16_t ari_cap = pcie_find_capability(dev, PCI_EXT_CAP_ID_ARI);
+         uint16_t first_vf_devfn = dev->devfn + vf_offset;
 
 -- 
 2.45.2
