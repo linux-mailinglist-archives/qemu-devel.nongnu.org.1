@@ -2,69 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D95F931427
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF62593147B
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Jul 2024 14:37:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTKkt-0000e6-6Y; Mon, 15 Jul 2024 08:24:35 -0400
+	id 1sTKwl-0001ai-Oe; Mon, 15 Jul 2024 08:36:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sTKkq-0000dP-Fq
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:24:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1sTKwg-0001XC-Gr; Mon, 15 Jul 2024 08:36:46 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sTKkn-00089F-Br
- for qemu-devel@nongnu.org; Mon, 15 Jul 2024 08:24:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721046267;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=qZfMtSsSKRnHYwMRYZ6pPalGfv3zPch0BPlXlsB8SvM=;
- b=G4i+ISy1I5u+gU9vyX3e3/7T3lHeh8ox6zEZWuGakXr2w3xQdOpCpx9QzUWfinz72WlfVb
- cusPeUJmGTJmCVg/0nIWEsjWngaC3D2VGCmlfN7fvWiXX0sy7IboPRTHotml9SdiDGQOUR
- XC0UvSyzRVVqojtiifDGDgDCwFvfaR0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-270-r3n4o8VYPdGZKTWamoY4aQ-1; Mon,
- 15 Jul 2024 08:24:24 -0400
-X-MC-Unique: r3n4o8VYPdGZKTWamoY4aQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2515C19560A2; Mon, 15 Jul 2024 12:24:23 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com
- (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 214AE1955D42; Mon, 15 Jul 2024 12:24:19 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org, mst@redhat.com,
- wangyanan55@huawei.com, pbonzini@redhat.com, richard.henderson@linaro.org,
- anisinha@redhat.com, qemu-arm@nongnu.org
-Subject: [PATCH v2] smbios: make memory device size configurable per Machine
-Date: Mon, 15 Jul 2024 14:24:17 +0200
-Message-ID: <20240715122417.4059293-1-imammedo@redhat.com>
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1sTKwd-0002X0-GJ; Mon, 15 Jul 2024 08:36:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
+ Content-Type; bh=Sw82UZxyldCsryWuHDMLPvXTfZcc5DZM9+qg13v3L14=; b=ktUA7jpDY/uB
+ O89+tUGL6mOtPpdvIIsrgUVgQZalVpIvq9yIEyWpAwY2BT7XZkLGGCDJUfRY8VEmhCfbMWui+wl/S
+ pywnZEW/JZpYLKx2ddi5ZZZBPPVzlkPkqv/SwDfHaKMI2699f9XIFHHont6eM56ORSq9cspjNjwnU
+ ++qXMBlXf15lcsX+/XHXlDUzsl4OToEVBNHJ2OFOemAm/KRDLHbtne4Nw0KloXEPIYkYArbA7sRpg
+ jd88qh3qNYGY/9n3wagq3UwRMFiwVwjrjyBLDio5YviEiTi2gqXZaIFGyYo2fiCLLUmPHBdk/KPi1
+ vuy4VIzcyyLDGyqIZvSTPQ==;
+Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1sTKvk-00CsrT-1j;
+ Mon, 15 Jul 2024 14:36:29 +0200
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ vsementsov@yandex-team.ru, pbonzini@redhat.com, eesposit@redhat.com,
+ andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
+Subject: [PATCH v2 3/2] scripts: add filev2p.py script for mapping virtual
+ file offsets mapping
+Date: Mon, 15 Jul 2024 15:36:36 +0300
+Message-Id: <20240715123636.619714-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240712094617.565237-1-andrey.drobyshev@virtuozzo.com>
+References: <20240712094617.565237-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,171 +66,348 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently QEMU describes initial[1] RAM* in SMBIOS as a series of
-virtual DIMMs (capped at 16Gb max) using type 17 structure entries.
+The script is basically a wrapper around "filefrag" utility.  This might
+be used to map virtual offsets within the file to the underlying block
+device offsets.  In addition, a chunk size might be specified, in which
+case a list of such mappings will be obtained:
 
-Which is fine for the most cases.  However when starting guest
-with terabytes of RAM this leads to too many memory device
-structures, which eventually upsets linux kernel as it reserves
-only 64K for these entries and when that border is crossed out
-it runs out of reserved memory.
+$ scripts/filev2p.py -s 100M /sparsefile 1768M
+1853882368..1895825407 (file)  ->  16332619776..16374562815 (/dev/sda4)  ->  84492156928..84534099967 (/dev/sda)
+1895825408..1958739967 (file)  ->  17213591552..17276506111 (/dev/sda4)  ->  85373128704..85436043263 (/dev/sda)
 
-Instead of partitioning initial RAM on 16Gb DIMMs, use maximum
-possible chunk size that SMBIOS spec allows[2]. Which lets
-encode RAM in lower 31 bits of 32bit field (which amounts upto
-2047Tb per DIMM).
-As result initial RAM will generate only one type 17 structure
-until host/guest reach ability to use more RAM in the future.
+This could come in handy when we need to map a certain piece of data
+within a file inside VM to the same data within the image on the host
+(e.g. physical offset on VM's /dev/sda would be the virtual offset
+within QCOW2 image).
 
-Compat changes:
-We can't unconditionally change chunk size as it will break
-QEMU<->guest ABI (and migration). Thus introduce a new machine
-class field that would let older versioned machines to use
-legacy 16Gb chunks, while new(er) machine type[s] use maximum
-possible chunk size.
+Note: as of now the script only works with the files located on plain
+partitions, i.e. it doesn't work with partitions built on top of LVM.
+Partitions on LVM would require another level of mapping.
 
-PS:
-While it might seem to be risky to rise max entry size this large
-(much beyond of what current physical RAM modules support),
-I'd not expect it causing much issues, modulo uncovering bugs
-in software running within guest. And those should be fixed
-on guest side to handle SMBIOS spec properly, especially if
-guest is expected to support so huge RAM configs.
-
-In worst case, QEMU can reduce chunk size later if we would
-care enough about introducing a workaround for some 'unfixable'
-guest OS, either by fixing up the next machine type or
-giving users a CLI option to customize it.
-
-1) Initial RAM - is RAM configured with help '-m SIZE' CLI option/
-   implicitly defined by machine. It doesn't include memory
-   configured with help of '-device' option[s] (pcdimm,nvdimm,...)
-2) SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
-
-PS:
-* tested on 8Tb host with RHEL6 guest, which seems to parse
-  type 17 SMBIOS table entries correctly (according to 'dmidecode').
-
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
-v2:
-  * add comment in the code describing where 2047Tb comes from (mst)
-  * rephrase commit message a bit and clarify what RAM it applies.
----
- include/hw/boards.h |  4 ++++
- hw/arm/virt.c       |  1 +
- hw/core/machine.c   |  6 ++++++
- hw/i386/pc_piix.c   |  1 +
- hw/i386/pc_q35.c    |  1 +
- hw/smbios/smbios.c  | 11 ++++++-----
- 6 files changed, 19 insertions(+), 5 deletions(-)
+ scripts/filev2p.py | 311 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 311 insertions(+)
+ create mode 100755 scripts/filev2p.py
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index ef6f18f2c1..48ff6d8b93 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -237,6 +237,9 @@ typedef struct {
-  *    purposes only.
-  *    Applies only to default memory backend, i.e., explicit memory backend
-  *    wasn't used.
-+ * @smbios_memory_device_size:
-+ *    Default size of memory device,
-+ *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
-  */
- struct MachineClass {
-     /*< private >*/
-@@ -304,6 +307,7 @@ struct MachineClass {
-     const CPUArchIdList *(*possible_cpu_arch_ids)(MachineState *machine);
-     int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
-     ram_addr_t (*fixup_ram_size)(ram_addr_t size);
-+    uint64_t smbios_memory_device_size;
- };
- 
- /**
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index b0c68d66a3..719e83e6a1 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3308,6 +3308,7 @@ DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
- static void virt_machine_9_0_options(MachineClass *mc)
- {
-     virt_machine_9_1_options(mc);
-+    mc->smbios_memory_device_size = 16 * GiB;
-     compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
- }
- DEFINE_VIRT_MACHINE(9, 0)
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index bc38cad7f2..ac30544e7f 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1004,6 +1004,12 @@ static void machine_class_init(ObjectClass *oc, void *data)
-     /* Default 128 MB as guest ram size */
-     mc->default_ram_size = 128 * MiB;
-     mc->rom_file_has_mr = true;
-+    /*
-+     * SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
-+     * use max possible value that could be encoded into
-+     * 'Extended Size' field (2047Tb).
-+     */
-+    mc->smbios_memory_device_size = 2047 * TiB;
- 
-     /* numa node memory size aligned on 8MB by default.
-      * On Linux, each node's border has to be 8MB aligned
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 9445b07b4f..d9e69243b4 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -495,6 +495,7 @@ static void pc_i440fx_machine_9_0_options(MachineClass *m)
-     pc_i440fx_machine_9_1_options(m);
-     m->alias = NULL;
-     m->is_default = false;
-+    m->smbios_memory_device_size = 16 * GiB;
- 
-     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 71d3c6d122..9d108b194e 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -374,6 +374,7 @@ static void pc_q35_machine_9_0_options(MachineClass *m)
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     pc_q35_machine_9_1_options(m);
-     m->alias = NULL;
-+    m->smbios_memory_device_size = 16 * GiB;
-     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-     pcmc->isa_bios_alias = false;
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 3b7703489d..a394514264 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -1093,6 +1093,7 @@ static bool smbios_get_tables_ep(MachineState *ms,
-                        Error **errp)
- {
-     unsigned i, dimm_cnt, offset;
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-     ERRP_GUARD();
- 
-     assert(ep_type == SMBIOS_ENTRY_POINT_TYPE_32 ||
-@@ -1123,12 +1124,12 @@ static bool smbios_get_tables_ep(MachineState *ms,
-     smbios_build_type_9_table(errp);
-     smbios_build_type_11_table();
- 
--#define MAX_DIMM_SZ (16 * GiB)
--#define GET_DIMM_SZ ((i < dimm_cnt - 1) ? MAX_DIMM_SZ \
--                                        : ((current_machine->ram_size - 1) % MAX_DIMM_SZ) + 1)
-+#define GET_DIMM_SZ ((i < dimm_cnt - 1) ? mc->smbios_memory_device_size \
-+    : ((current_machine->ram_size - 1) % mc->smbios_memory_device_size) + 1)
- 
--    dimm_cnt = QEMU_ALIGN_UP(current_machine->ram_size, MAX_DIMM_SZ) /
--               MAX_DIMM_SZ;
-+    dimm_cnt = QEMU_ALIGN_UP(current_machine->ram_size,
-+                             mc->smbios_memory_device_size) /
-+               mc->smbios_memory_device_size;
- 
-     /*
-      * The offset determines if we need to keep additional space between
+diff --git a/scripts/filev2p.py b/scripts/filev2p.py
+new file mode 100755
+index 0000000000..3bd7d18b5e
+--- /dev/null
++++ b/scripts/filev2p.py
+@@ -0,0 +1,311 @@
++#!/usr/bin/env python3
++#
++# Map file virtual offset to the offset on the underlying block device.
++# Works by parsing 'filefrag' output.
++#
++# Copyright (c) 2024 Virtuozzo International GmbH.
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++#
++
++import argparse
++import os
++import subprocess
++import re
++import sys
++
++from bisect import bisect_right
++from collections import namedtuple
++from dataclasses import dataclass
++from shutil import which
++from stat import S_ISBLK
++
++
++Partition = namedtuple('Partition', ['partpath', 'diskpath', 'part_offt'])
++
++
++@dataclass
++class Extent:
++    '''Class representing an individual file extent.
++
++    This is basically a piece of data within the file which is located
++    consecutively (i.e. not sparsely) on the underlying block device.
++    '''
++
++    log_start:  int
++    log_end:    int
++    phys_start: int
++    phys_end:   int
++    length:     int
++    partition:  Partition
++
++    @property
++    def disk_start(self):
++        'Number of the first byte of this extent on the whole disk (/dev/sda)'
++        return self.partition.part_offt + self.phys_start
++
++    @property
++    def disk_end(self):
++        'Number of the last byte of this extent on the whole disk (/dev/sda)'
++        return self.partition.part_offt + self.phys_end
++
++    def __str__(self):
++        ischunk = self.log_end > self.log_start
++        maybe_end = lambda s: f'..{s}' if ischunk else ''
++        return '%s%s (file)  ->  %s%s (%s)  ->  %s%s (%s)' % (
++            self.log_start, maybe_end(self.log_end),
++            self.phys_start, maybe_end(self.phys_end), self.partition.partpath,
++            self.disk_start, maybe_end(self.disk_end), self.partition.diskpath
++        )
++
++    @classmethod
++    def ext_slice(cls, bigger_ext, start, end):
++        '''Constructor for the Extent class from a bigger extent.
++
++        Return Extent instance which is a slice of @bigger_ext contained
++        within the range [start, end].
++        '''
++
++        assert start >= bigger_ext.log_start
++        assert end <= bigger_ext.log_end
++
++        if start == bigger_ext.log_start and end == bigger_ext.log_end:
++            return bigger_ext
++
++        phys_start = bigger_ext.phys_start + (start - bigger_ext.log_start)
++        phys_end = bigger_ext.phys_end - (bigger_ext.log_end - end)
++        length = end - start + 1
++
++        return cls(start, end, phys_start, phys_end, length,
++                   bigger_ext.partition)
++
++
++def run_cmd(cmd: str) -> str:
++    '''Wrapper around subprocess.run.
++
++    Returns stdout in case of success, emits en error and exits in case
++    of failure.
++    '''
++
++    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                          check=False, shell=True)
++    if proc.stderr is not None:
++        stderr = f'\n{proc.stderr.decode().strip()}'
++    else:
++        stderr = ''
++
++    if proc.returncode:
++        sys.exit(f'Error: Command "{cmd}" returned {proc.returncode}:{stderr}')
++
++    return proc.stdout.decode().strip()
++
++
++def parse_size(offset: str) -> int:
++    'Convert human readable size to bytes'
++
++    suffixes = {
++        **dict.fromkeys(['k', 'K', 'Kb', 'KB', 'KiB'], 2 ** 10),
++        **dict.fromkeys(['m', 'M', 'Mb', 'MB', 'MiB'], 2 ** 20),
++        **dict.fromkeys(['g', 'G', 'Gb', 'GB', 'GiB'], 2 ** 30),
++        **dict.fromkeys(     ['T', 'Tb', 'TB', 'TiB'], 2 ** 40),
++        **dict.fromkeys([''],                          1)
++    }
++
++    sizematch = re.match(r'^([0-9]+)\s*([a-zA-Z]*)$', offset)
++    if not bool(sizematch):
++        sys.exit(f'Error: Couldn\'t parse size "{offset}". Pass offset '
++                  'either in bytes or in format 1K, 2M, 3G')
++
++    num, suff = sizematch.groups()
++    num = int(num)
++
++    mult = suffixes.get(suff)
++    if mult is None:
++        sys.exit(f'Error: Couldn\'t parse size "{offset}": '
++                 f'unknown suffix {suff}')
++
++    return num * mult
++
++
++def fpath2part(filename: str) -> str:
++    'Get partition on which @filename is located (i.e. /dev/sda1).'
++
++    partpath = run_cmd(f'df --output=source {filename} | tail -n+2')
++    if not os.path.exists(partpath) or not S_ISBLK(os.stat(partpath).st_mode):
++        sys.exit(f'Error: file {filename} is located on {partpath} which '
++                 'isn\'t a block device')
++    return partpath
++
++
++def part2dev(partpath: str, filename: str) -> str:
++    'Get block device on which @partpath is located (i.e. /dev/sda).'
++    dev = run_cmd(f'lsblk -no PKNAME {partpath}')
++    diskpath = f'/dev/{dev}'
++    if not os.path.exists(diskpath) or not S_ISBLK(os.stat(diskpath).st_mode):
++        sys.exit(f'Error: file {filename} is located on {diskpath} which '
++                 'isn\'t a block device')
++    return diskpath
++
++
++def part2disktype(partpath: str) -> str:
++    'Parse /proc/devices and get block device type for @partpath'
++
++    major = os.major(os.stat(partpath).st_rdev)
++    assert major
++    with open('/proc/devices', encoding='utf-8') as devf:
++        for line in reversed(list(devf)):
++            # Our major cannot be absent among block devs
++            if line.startswith('Block'):
++                break
++            devmajor, devtype = line.strip().split()
++            if int(devmajor) == major:
++                return devtype
++
++    sys.exit('Error: We haven\'t found major {major} in /proc/devices, '
++             'and that can\'t be')
++
++
++def get_part_offset(part: str, disk: str) -> int:
++    'Get offset in bytes of the partition @part on the block device @disk.'
++
++    lines = run_cmd(f'fdisk -l {disk} | egrep "^(Units|{part})"').splitlines()
++
++    unitmatch = re.match('^.* = ([0-9]+) bytes$', lines[0])
++    if not bool(unitmatch):
++        sys.exit(f'Error: Couldn\'t parse "fdisk -l" output:\n{lines[0]}')
++    secsize = int(unitmatch.group(1))
++
++    part_offt = int(lines[1].split()[1])
++    return part_offt * secsize
++
++
++def parse_frag_line(line: str, partition: Partition) -> Extent:
++    'Construct Extent instance from a "filefrag" output line.'
++
++    nums = [int(n) for n in re.findall(r'[0-9]+', line)]
++
++    log_start  = nums[1]
++    log_end    = nums[2]
++    phys_start = nums[3]
++    phys_end   = nums[4]
++    length     = nums[5]
++
++    assert log_start < log_end
++    assert phys_start < phys_end
++    assert (log_end - log_start + 1) == (phys_end - phys_start + 1) == length
++
++    return Extent(log_start, log_end, phys_start, phys_end, length, partition)
++
++
++def preliminary_checks(args: argparse.Namespace) -> None:
++    'A bunch of checks to emit an error and exit at the earlier stage.'
++
++    if which('filefrag') is None:
++        sys.exit('Error: Program "filefrag" doesn\'t exist')
++
++    if not os.path.exists(args.filename):
++        sys.exit(f'Error: File {args.filename} doesn\'t exist')
++
++    args.filesize = os.path.getsize(args.filename)
++    if args.offset >= args.filesize:
++        sys.exit(f'Error: Specified offset {args.offset} exceeds '
++                 f'file size {args.filesize}')
++    if args.size and (args.offset + args.size > args.filesize):
++        sys.exit(f'Error: Chunk of size {args.size} at offset '
++                 f'{args.offset} exceeds file size {args.filesize}')
++
++    args.partpath = fpath2part(args.filename)
++    args.disktype = part2disktype(args.partpath)
++    if args.disktype not in ('sd', 'virtblk'):
++        sys.exit(f'Error: Cannot analyze files on {args.disktype} disks')
++    args.diskpath = part2dev(args.partpath, args.filename)
++    args.part_offt = get_part_offset(args.partpath, args.diskpath)
++
++
++def get_extent_maps(args: argparse.Namespace) -> list[Extent]:
++    'Run "filefrag", parse its output and return a list of Extent instances.'
++
++    lines = run_cmd(f'filefrag -b1 -v {args.filename}').splitlines()
++
++    ffinfo_re = re.compile('.* is ([0-9]+) .*of ([0-9]+) bytes')
++    ff_size, ff_block = re.match(ffinfo_re, lines[1]).groups()
++
++    # Paranoia checks
++    if int(ff_size) != args.filesize:
++        sys.exit('Error: filefrag and os.path.getsize() report different '
++                 f'sizes: {ff_size} and {args.filesize}')
++    if int(ff_block) != 1:
++        sys.exit(f'Error: "filefrag -b1" invoked, but block size is {ff_block}')
++
++    partition = Partition(args.partpath, args.diskpath, args.part_offt)
++
++    # Fill extents list from the output
++    extents = []
++    for line in lines:
++        if not re.match(r'^\s*[0-9]+:', line):
++            continue
++        extents += [parse_frag_line(line, partition)]
++
++    chunk_start = args.offset
++    chunk_end = args.offset + args.size - 1
++    ext_offsets = [ext.log_start for ext in extents]
++    start_ind = bisect_right(ext_offsets, chunk_start) - 1
++    end_ind = bisect_right(ext_offsets, chunk_end) - 1
++
++    res_extents = extents[start_ind : end_ind + 1]
++    for i, ext in enumerate(res_extents):
++        start = max(chunk_start, ext.log_start)
++        end = min(chunk_end, ext.log_end)
++        res_extents[i] = Extent.ext_slice(ext, start, end)
++
++    return res_extents
++
++
++def parse_args() -> argparse.Namespace:
++    'Define program arguments and parse user input.'
++
++    parser = argparse.ArgumentParser(description='''
++Map file offset to physical offset on the block device
++
++With --size provided get a list of mappings for the chunk''',
++    formatter_class=argparse.RawTextHelpFormatter)
++
++    parser.add_argument('filename', type=str, help='filename to process')
++    parser.add_argument('offset', type=str,
++                        help='logical offset inside the file')
++    parser.add_argument('-s', '--size', required=False, type=str,
++                        help='size of the file chunk to get offsets for')
++    args = parser.parse_args()
++
++    args.offset = parse_size(args.offset)
++    if args.size:
++        args.size = parse_size(args.size)
++    else:
++        # When no chunk size is provided (only offset), it's equivalent to
++        # chunk size == 1
++        args.size = 1
++
++    return args
++
++
++def main() -> int:
++    args = parse_args()
++    preliminary_checks(args)
++    extents = get_extent_maps(args)
++    for ext in extents:
++        print(ext)
++
++
++if __name__ == '__main__':
++    sys.exit(main())
 -- 
-2.43.0
+2.39.3
 
 
