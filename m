@@ -2,99 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69353933287
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 21:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7BC9332B4
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 22:12:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sToIj-0005YA-D4; Tue, 16 Jul 2024 15:57:29 -0400
+	id 1sToVg-0000lO-JI; Tue, 16 Jul 2024 16:10:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.vnet.ibm.com>)
- id 1sToId-0005HS-6d; Tue, 16 Jul 2024 15:57:23 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1sToVZ-0000kt-8m
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 16:10:45 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.vnet.ibm.com>)
- id 1sToIb-0006Bx-9r; Tue, 16 Jul 2024 15:57:22 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46GIZRQo026493;
- Tue, 16 Jul 2024 19:57:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=J+9z+3py7KEGj
- ittR+klVIldPtZ7x8HEa1+06oINOhw=; b=SOZkOkL87P09ZxCIH+6Rt042UcTxy
- EtWXF89InxEBCYBd8u1rTOWz87AfuaRRSz6fb70Y5X9lQszMOFMl6QWIo6Q/PdAT
- LtPjwwgQBBIG8cV2oTpD0nYrzcMdxYcfSm1C2432B0SOaRi5ol4Pa4ihYG34ulTh
- Yxh646KwSp3oEDKNJuLggzZdfgvbEBC/8VhLNDQ0af34gHEgXI7t/siMCD9MZw9k
- fMTn/14/MeOyc1wSsTiLEkXKscQRstMnWhGhX/rqaaUQryia3vfhn0mh90KAGZBq
- t9a1eFTkGmkmewp188dkw574r8kRjeGjzN4URcFpVYsT5nT3xbu6fZAEg==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40dwnvg7rs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Jul 2024 19:57:06 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46GJv6iW014508;
- Tue, 16 Jul 2024 19:57:06 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40dwnvg7rr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Jul 2024 19:57:06 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46GHmveT029216; Tue, 16 Jul 2024 19:57:05 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40dwkj0ghc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Jul 2024 19:57:05 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46GJuxa057278812
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Jul 2024 19:57:01 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9FBC920040;
- Tue, 16 Jul 2024 19:56:59 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 80CFD20043;
- Tue, 16 Jul 2024 19:56:58 +0000 (GMT)
-Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 Jul 2024 19:56:58 +0000 (GMT)
-From: Michael Kowal <kowal@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
- npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v3 9/9] pnv/xive2: Move xive2_nvp_pic_print_info() to xive2.c
-Date: Tue, 16 Jul 2024 14:56:33 -0500
-Message-Id: <20240716195633.12679-10-kowal@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240716195633.12679-1-kowal@linux.vnet.ibm.com>
-References: <20240716195633.12679-1-kowal@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1sToVU-00008E-2b
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 16:10:45 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1sToV7-0000tB-J4; Tue, 16 Jul 2024 22:10:17 +0200
+Message-ID: <35969f33-f6f3-4c34-8b9d-8c1ebac3305e@maciej.szmigiero.name>
+Date: Tue, 16 Jul 2024 22:10:12 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cqaB4kKgl1g9K4VJFqVm52y6fh9M17Yi
-X-Proofpoint-ORIG-GUID: 0_2vATg0mzufKhrXg5yKkQB4ve26wwC2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_19,2024-07-16_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- phishscore=0 mlxlogscore=806 mlxscore=0 lowpriorityscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407160144
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=kowal@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v1_00/13=5D_Multifd_=F0=9F=94=80_device_st?=
+ =?UTF-8?Q?ate_transfer_support_with_VFIO_consumer?=
+To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <cover.1718717584.git.maciej.szmigiero@oracle.com>
+ <ZniFH14DT6ycjbrL@x1n>
+ <b0dc8bc4-742b-474b-a4c4-4e190fd6af37@maciej.szmigiero.name>
+ <Znr9mOo_t0DkkLbD@x1n>
+ <9e85016e-ac72-4207-8e69-8cba054cefb7@maciej.szmigiero.name>
+ <Znt0FQHJEtGxcLxj@x1n>
+ <2066bb2e-ccb3-45b8-aaf7-c39303e7f993@maciej.szmigiero.name>
+ <ZnxAZDcjlZ5oerq-@x1n>
+ <73630858-3b65-4fc5-8f5f-a1f494c5c111@maciej.szmigiero.name>
+ <Zn19kaeFiYuwwc4B@x1n>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <Zn19kaeFiYuwwc4B@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,202 +113,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+On 27.06.2024 16:56, Peter Xu wrote:
+> On Thu, Jun 27, 2024 at 11:14:28AM +0200, Maciej S. Szmigiero wrote:
+>> On 26.06.2024 18:23, Peter Xu wrote:
+>>> On Wed, Jun 26, 2024 at 05:47:34PM +0200, Maciej S. Szmigiero wrote:
+>>>> On 26.06.2024 03:51, Peter Xu wrote:
+>>>>> On Wed, Jun 26, 2024 at 12:44:29AM +0200, Maciej S. Szmigiero wrote:
+>>>>>> On 25.06.2024 19:25, Peter Xu wrote:
+>>>>>>> On Mon, Jun 24, 2024 at 09:51:18PM +0200, Maciej S. Szmigiero wrote:
+>>>>>>>> Hi Peter,
+>>>>>>>
+>>>>>>> Hi, Maciej,
+>>>>>>>
+>>>>>>>>
+>>>>>>>> On 23.06.2024 22:27, Peter Xu wrote:
+>>>>>>>>> On Tue, Jun 18, 2024 at 06:12:18PM +0200, Maciej S. Szmigiero wrote:
+>>>>>>>>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>>>>>>>>
+>>>>>>>>>> This is an updated v1 patch series of the RFC (v0) series located here:
+>>>>>>>>>> https://lore.kernel.org/qemu-devel/cover.1713269378.git.maciej.szmigiero@oracle.com/
+>>>>>>>>>
+>>>>>>>>> OK I took some hours thinking about this today, and here's some high level
+>>>>>>>>> comments for this series.  I'll start with which are more relevant to what
+>>>>>>>>> Fabiano has already suggested in the other thread, then I'll add some more.
+>>>>>>>>>
+>>>>>>>>> https://lore.kernel.org/r/20240620212111.29319-1-farosas@suse.de
+>>>>>>>>
+>>>>>>>> That's a long list, thanks for these comments.
+>>>>>>>>
+>>>>>>>> I have responded to them inline below.
+>>>>>>>>(..)
+>>>>>>
+>>>>>> 2) Submit this operation to the thread pool and wait for it to complete,
+>>>>>
+>>>>> VFIO doesn't need to have its own code waiting.  If this pool is for
+>>>>> migration purpose in general, qemu migration framework will need to wait at
+>>>>> some point for all jobs to finish before moving on.  Perhaps it should be
+>>>>> at the end of the non-iterative session.
+>>>>
+>>>> So essentially, instead of calling save_live_complete_precopy_end handlers
+>>>> from the migration code you would like to hard-code its current VFIO
+>>>> implementation of calling vfio_save_complete_precopy_async_thread_thread_terminate().
+>>>>
+>>>> Only it wouldn't be then called VFIO precopy async thread terminate but some
+>>>> generic device state async precopy thread terminate function.
+>>>
+>>> I don't understand what did you mean by "hard code".
+>>
+>> "Hard code" wasn't maybe the best expression here.
+>>
+>> I meant the move of the functionality that's provided by
+>> vfio_save_complete_precopy_async_thread_thread_terminate() in this patch set
+>> to the common migration code.
+> 
+> I see.  That function only does a thread_join() so far.
+> 
+> So can I understand it as below [1] should work for us, and it'll be clean
+> too (with nothing to hard-code)?
 
-Moving xive2_nvp_pic_print_info() align with the other "pic_print_info"
-functions and allows us to call functions internal to xive2.c.
+It will need some signal to the worker threads pool to terminate before
+waiting for them to finish (as the code in [1] just waits).
 
-In XIVE Gen 2 there were some minor changes to the TIMA header that were
-updated when printed.
+In the case of current vfio_save_complete_precopy_async_thread() implementation,
+this signal isn't necessary as this thread simply terminates when it has read
+all the date it needs from the device.
 
-Additional END state 'info pic' information as added.  The 'ignore',
-'crowd' and 'precluded escalation control' bits of an Event Notification
-Descriptor are all used when delivering an interrupt targeting a VP-group
-or crowd.
+In a worker threads pool case there will be some threads waiting for
+jobs to be queued to them and so they will need to be somehow signaled
+to exit.
 
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
----
- include/hw/ppc/xive2_regs.h |  9 +++++++++
- hw/intc/pnv_xive2.c         | 27 ---------------------------
- hw/intc/xive.c              | 12 +++++++++---
- hw/intc/xive2.c             | 33 +++++++++++++++++++++++++++++++--
- 4 files changed, 49 insertions(+), 32 deletions(-)
+> The time to join() the worker threads can be even later, until
+> migrate_fd_cleanup() on sender side.  You may have a better idea on when
+> would be the best place to do it when start working on it.
+> 
+>>
+>>> What I was saying is if we target the worker thread pool to be used for
+>>> "concurrently dump vmstates", then it'll make sense to make sure all the
+>>> jobs there were flushed after qemu dumps all non-iterables (because this
+>>> should be the last step of the switchover).
+>>>
+>>> I expect it looks like this:
+>>>
+>>>     while (pool->active_threads) {
+>>>         qemu_sem_wait(&pool->job_done);
+>>>     }
+> 
+> [1]
+> 
+(..)
+>> I think that with this thread pool introduction we'll unfortunately almost certainly
+>> need to target this patch set at 9.2, since these overall changes (and Fabiano
+>> patches too) will need good testing, might uncover some performance regressions
+>> (for example related to the number of buffers limit or Fabiano multifd changes),
+>> bring some review comments from other people, etc.
+>>
+>> In addition to that, we are in the middle of holiday season and a lot of people
+>> aren't available - like Fabiano said he will be available only in a few weeks.
+> 
+> Right, that's unfortunate.  Let's see, but still I really hope we can also
+> get some feedback from Fabiano before it lands, even with that we have
+> chance for 9.1 but it's just challenging, it's the same condition I
+> mentioned since the 1st email.  And before Fabiano's back (he's the active
+> maintainer for this release), I'm personally happy if you can propose
+> something that can land earlier in this release partly.  E.g., if you want
+> we can at least upstream Fabiano's idea first, or some more on top.
+> 
+> For that, also feel to have a look at my comment today:
+> 
+> https://lore.kernel.org/r/Zn15y693g0AkDbYD@x1n
+> 
+> Feel free to comment there too.  There's a tiny uncertainty there so far on
+> specifying "max size for a device state" if do what I suggested, as multifd
+> setup will need to allocate an enum buffer suitable for both ram + device.
+> But I think that's not an issue and you'll tackle that properly when
+> working on it.  It's more about whether you agree on what I said as a
+> general concept.
+> 
 
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index 4e5e17cd89..4349d009d0 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -97,6 +97,7 @@ typedef struct Xive2End {
-         uint32_t       w6;
- #define END2_W6_FORMAT_BIT         PPC_BIT32(0)
- #define END2_W6_IGNORE             PPC_BIT32(1)
-+#define END2_W6_CROWD              PPC_BIT32(2)
- #define END2_W6_VP_BLOCK           PPC_BITMASK32(4, 7)
- #define END2_W6_VP_OFFSET          PPC_BITMASK32(8, 31)
- #define END2_W6_VP_OFFSET_GEN1     PPC_BITMASK32(13, 31)
-@@ -111,6 +112,8 @@ typedef struct Xive2End {
- #define xive2_end_is_notify(end)                \
-     (be32_to_cpu((end)->w0) & END2_W0_UCOND_NOTIFY)
- #define xive2_end_is_backlog(end)  (be32_to_cpu((end)->w0) & END2_W0_BACKLOG)
-+#define xive2_end_is_precluded_escalation(end)          \
-+    (be32_to_cpu((end)->w0) & END2_W0_PRECL_ESC_CTL)
- #define xive2_end_is_escalate(end)                      \
-     (be32_to_cpu((end)->w0) & END2_W0_ESCALATE_CTL)
- #define xive2_end_is_uncond_escalation(end)              \
-@@ -123,6 +126,10 @@ typedef struct Xive2End {
-     (be32_to_cpu((end)->w0) & END2_W0_FIRMWARE1)
- #define xive2_end_is_firmware2(end)              \
-     (be32_to_cpu((end)->w0) & END2_W0_FIRMWARE2)
-+#define xive2_end_is_ignore(end)                \
-+    (be32_to_cpu((end)->w6) & END2_W6_IGNORE)
-+#define xive2_end_is_crowd(end)                 \
-+    (be32_to_cpu((end)->w6) & END2_W6_CROWD)
- 
- static inline uint64_t xive2_end_qaddr(Xive2End *end)
- {
-@@ -194,6 +201,8 @@ static inline uint32_t xive2_nvp_blk(uint32_t cam_line)
-     return (cam_line >> XIVE2_NVP_SHIFT) & 0xf;
- }
- 
-+void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf);
-+
- /*
-  * Notification Virtual Group or Crowd (NVG/NVC)
-  */
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 9fe3ec9a67..4740c56347 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -2436,33 +2436,6 @@ static void pnv_xive2_register_types(void)
- 
- type_init(pnv_xive2_register_types)
- 
--static void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx,
--                                     GString *buf)
--{
--    uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
--    uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
--
--    if (!xive2_nvp_is_valid(nvp)) {
--        return;
--    }
--
--    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
--                           nvp_idx, eq_blk, eq_idx,
--                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
--    /*
--     * When the NVP is HW controlled, more fields are updated
--     */
--    if (xive2_nvp_is_hw(nvp)) {
--        g_string_append_printf(buf, " CPPR:%02x",
--                               xive_get_field32(NVP2_W2_CPPR, nvp->w2));
--        if (xive2_nvp_is_co(nvp)) {
--            g_string_append_printf(buf, " CO:%04x",
--                                   xive_get_field32(NVP2_W1_CO_THRID, nvp->w1));
--        }
--    }
--    g_string_append_c(buf, '\n');
--}
--
- /*
-  * If the table is direct, we can compute the number of PQ entries
-  * provisioned by FW.
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 70f11f993b..5a02dd8e02 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -692,9 +692,15 @@ void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf)
-         }
-     }
- 
--    g_string_append_printf(buf, "CPU[%04x]:   "
--                           "QW   NSR CPPR IPB LSMFB ACK# INC AGE PIPR  W2\n",
--                           cpu_index);
-+    if (xive_presenter_get_config(tctx->xptr) & XIVE_PRESENTER_GEN1_TIMA_OS) {
-+        g_string_append_printf(buf, "CPU[%04x]:   "
-+                               "QW   NSR CPPR IPB LSMFB ACK# INC AGE PIPR"
-+                               "  W2\n", cpu_index);
-+    } else {
-+        g_string_append_printf(buf, "CPU[%04x]:   "
-+                               "QW   NSR CPPR IPB LSMFB   -  LGS  T  PIPR"
-+                               "  W2\n", cpu_index);
-+    }
- 
-     for (i = 0; i < XIVE_TM_RING_COUNT; i++) {
-         char *s = xive_tctx_ring_print(&tctx->regs[i * XIVE_TM_RING_SIZE]);
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 3e7238c663..1f150685bf 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -89,7 +89,7 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-     pq = xive_get_field32(END2_W1_ESn, end->w1);
- 
-     g_string_append_printf(buf,
--                           "  %08x %c%c %c%c%c%c%c%c%c%c%c%c "
-+                           "  %08x %c%c %c%c%c%c%c%c%c%c%c%c%c %c%c "
-                            "prio:%d nvp:%02x/%04x",
-                            end_idx,
-                            pq & XIVE_ESB_VAL_P ? 'P' : '-',
-@@ -98,12 +98,15 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-                            xive2_end_is_enqueue(end)  ? 'q' : '-',
-                            xive2_end_is_notify(end)   ? 'n' : '-',
-                            xive2_end_is_backlog(end)  ? 'b' : '-',
-+                           xive2_end_is_precluded_escalation(end) ? 'p' : '-',
-                            xive2_end_is_escalate(end) ? 'e' : '-',
-                            xive2_end_is_escalate_end(end) ? 'N' : '-',
-                            xive2_end_is_uncond_escalation(end)   ? 'u' : '-',
-                            xive2_end_is_silent_escalation(end)   ? 's' : '-',
-                            xive2_end_is_firmware1(end)   ? 'f' : '-',
-                            xive2_end_is_firmware2(end)   ? 'F' : '-',
-+                           xive2_end_is_ignore(end) ? 'i' : '-',
-+                           xive2_end_is_crowd(end)  ? 'c' : '-',
-                            priority, nvp_blk, nvp_idx);
- 
-     if (qaddr_base) {
-@@ -137,6 +140,32 @@ void xive2_end_eas_pic_print_info(Xive2End *end, uint32_t end_idx,
-                            (uint32_t) xive_get_field64(EAS2_END_DATA, eas->w));
- }
- 
-+void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
-+{
-+    uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
-+    uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
-+
-+    if (!xive2_nvp_is_valid(nvp)) {
-+        return;
-+    }
-+
-+    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
-+                           nvp_idx, eq_blk, eq_idx,
-+                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
-+    /*
-+     * When the NVP is HW controlled, more fields are updated
-+     */
-+    if (xive2_nvp_is_hw(nvp)) {
-+        g_string_append_printf(buf, " CPPR:%02x",
-+                               xive_get_field32(NVP2_W2_CPPR, nvp->w2));
-+        if (xive2_nvp_is_co(nvp)) {
-+            g_string_append_printf(buf, " CO:%04x",
-+                                   xive_get_field32(NVP2_W1_CO_THRID, nvp->w1));
-+        }
-+    }
-+    g_string_append_c(buf, '\n');
-+}
-+
- static void xive2_end_enqueue(Xive2End *end, uint32_t data)
- {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
-@@ -650,7 +679,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-     }
- 
-     found = xive_presenter_notify(xrtr->xfb, format, nvp_blk, nvp_idx,
--                          xive_get_field32(END2_W6_IGNORE, end.w7),
-+                          xive2_end_is_ignore(&end),
-                           priority,
-                           xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7));
- 
--- 
-2.43.0
+Since it seems that the discussion on Fabiano's patch set has subsided I think
+I will start by basing my updated patch set on top of his RFC and then if
+Fabiano wants to submit v1/v2 of his patch set then I will rebase mine on top
+of it.
+
+Otherwise, you can wait until I have a v2 ready and then we can work with that.
+
+Thanks,
+Maciej
 
 
