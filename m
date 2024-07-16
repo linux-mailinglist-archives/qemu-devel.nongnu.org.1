@@ -2,80 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A126F932EE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 19:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D7A932F23
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 19:34:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTleg-0003Ft-GH; Tue, 16 Jul 2024 13:07:58 -0400
+	id 1sTm3b-00068q-AM; Tue, 16 Jul 2024 13:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sTlee-0003Cf-H1; Tue, 16 Jul 2024 13:07:56 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sTlec-0006Dh-Py; Tue, 16 Jul 2024 13:07:56 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2eabd22d3f4so67091471fa.1; 
- Tue, 16 Jul 2024 10:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721149672; x=1721754472; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=0sZXiP77/IQJ9B0rN8BeQyebchZs9/AdU41jvq1J+8M=;
- b=cCuYYwGc+Ty3AKLDH7Lbhie6o3yYsHECBm5tITcBNhJ5/xkAzCygjm2htvl7XodrWy
- ZRk/Vumbw03yp9/zk+OCzy7/DWDsR3kfnkyB49r06fBQhr2F1bVB9UKId1XFFY7frJi2
- uK72WEvvHhui0NnQ0x/QIoaaAXgEl7ie4GeyxOwQHnIqdykXpdj+augVuYOp62yuStSR
- ugVlCyJFfwR0n89I2D57I/O1apTkkjIbvkbVHPt5V3mdyGoMyOJ8ny++vm4Mo9CvnGQd
- FWqesYPio8gjmQ5N5lc84ySMD0dZPsErxeg4AYredVRUFQmfvlwO8cZpqGo2kmFcyk01
- 84Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721149672; x=1721754472;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0sZXiP77/IQJ9B0rN8BeQyebchZs9/AdU41jvq1J+8M=;
- b=e+BkrRtwf/Ki+LjBxaolH9IPCfSjmc4dtHQ4A2DJbwOU2aZKorVTlx+CwKfn87Ppx9
- /ZvLlzugeN5rI7Sh0KhmtMJZTadY7nur8M/Tz3KgA7rnll09mz3CbOSXJKuoBgOcXP6t
- ndlucVIETanMdJHRNqO5nXN9znc8igVHSwQQ24iCmqJiSMyzOg3sYfMk5NJxlCDQ0uTd
- nluIMw140dBa0b0u+udvo87N5VpXqdlx6bMKTyFVtXO+1d+rRhc59Cz5KkKg6Le1a3+e
- RCkzkjo6H4NXmL1jeoH4PF/YuZeJDFnpknZv+lT82G5xaKO06Xg7zZTb5q+w7KrxjyBP
- fgTw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU74P8ZmcRYY/dqoLjtcHlMKyC+fvuwdA0Hxdh7h+cRkldjQBRV6rpf5w2DEmn8fMfn1d61iDrfGE3KrTqe0YHH6PHG
-X-Gm-Message-State: AOJu0Yxg1PQYEIVZ0htohst6QFmSroaAWx3BPMARMPl9fL3prRfPSQ5F
- 1S8dg5Jh9pQjhc2qTvbZE0L63ncpyL+85ANVP5+7qpx+B6ya67Su
-X-Google-Smtp-Source: AGHT+IHEw2hYWfj/lRdxVC7glYucRcB8RDHH4U2r49WTEYO1OfX0/GYkYftyLarwHs4WwktAAYtI5w==
-X-Received: by 2002:a2e:9e99:0:b0:2ee:d8db:5bcc with SMTP id
- 38308e7fff4ca-2eef41921e1mr20555541fa.29.1721149671473; 
- Tue, 16 Jul 2024 10:07:51 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
- by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2eee18bf03dsm11805421fa.65.2024.07.16.10.07.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 10:07:50 -0700 (PDT)
-Date: Tue, 16 Jul 2024 19:07:50 +0200
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH 0/2] Consolidate embedded PPC initial mappung functions
-Message-ID: <Zpao5gD727ww3Uji@zapote>
-References: <cover.1721131193.git.balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sTm3O-00065l-36; Tue, 16 Jul 2024 13:33:30 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sTm3L-0002r4-Fj; Tue, 16 Jul 2024 13:33:29 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46GGx3WD027107;
+ Tue, 16 Jul 2024 17:33:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=CyXkRjxt2L5UTAQ3Qjd074WqZr
+ qtT3JqJAy5WiL3wgk=; b=X7iWMSoeGWfoGpYSsGfJoGffPhZBfHMpC95aT4ckP5
+ xDX9jY9BFLAxtRsRgJa8TKtNplkQssulfMZ6nuGe5ES+q9LCP/4JMNCdlAoR4grG
+ DAHSmwArF561OVQ2n0nxU+jYJhGAuWNdyya4eaue0tdyenMkYnoK34JPjOpudy2n
+ fUzjg+rjzIpV3WLBh/bQCzF/p4EWIEIBVJ7aQ1+HH6oivo4Qe86ZxWv5BvPAaWLr
+ 7hXl3Sp+iZI9TzAXfW/vQun5gJ5/sJcwagnUob3v26eD5mTDoJ6x60dM1BpInptY
+ vvzKZ0zNo4vnOVzd+qF4xlX6UCIUrarOdrZIiZWaTjMQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40dvupr2j5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jul 2024 17:33:15 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46GHVgEl008115;
+ Tue, 16 Jul 2024 17:33:15 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40dvupr2hy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jul 2024 17:33:15 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46GGu41s030523; Tue, 16 Jul 2024 17:33:13 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40c4a0namx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jul 2024 17:33:13 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46GHXBQ564422172
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Jul 2024 17:33:13 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F64C5806D;
+ Tue, 16 Jul 2024 17:33:11 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76D1A5805D;
+ Tue, 16 Jul 2024 17:33:10 +0000 (GMT)
+Received: from li-d664314c-3171-11b2-a85c-fa8047ef35bd.pok.ibm.com (unknown
+ [9.12.68.85]) by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 16 Jul 2024 17:33:10 +0000 (GMT)
+From: Collin Walling <walling@linux.ibm.com>
+To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Cc: thuth@redhat.com, david@redhat.com, wangyanan55@huawei.com,
+ philmd@linaro.org, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
+ armbru@redhat.com, Jiri Denemark <jdenemar@redhat.com>
+Subject: [PATCH v2] target/s390x: filter deprecated properties based on model
+ expansion type
+Date: Tue, 16 Jul 2024 13:32:53 -0400
+Message-ID: <20240716173253.28533-1-walling@linux.ibm.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1721131193.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PKPI-_0YAJmn66XKkltmsz5dFjN6wC2Z
+X-Proofpoint-ORIG-GUID: skxeCEK7bzUCKg2Q99t3QLMqU8hTbLEG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-15_19,2024-07-16_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0
+ spamscore=0 mlxscore=0 impostorscore=0 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407160127
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=walling@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,40 +110,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 16, 2024 at 02:07:56PM +0200, BALATON Zoltan wrote:
-> Embedded PPC has always enabled MMU so it needs initial mappings to
-> start. This code is duplicated within machines which this small series
-> aims to consolidate into helper functions to reduce duplicated code
-> and make the board code simpler.
-> 
-> Regards,
-> BALATON Zoltan
+As s390 CPU models progress and deprecated properties are dropped
+outright, it will be cumbersome for management apps to query the host
+for a comprehensive list of deprecated properties that will need to be
+disabled on older models. To remedy this, the query-cpu-model-expansion
+output now behaves by filtering deprecated properties based on the
+expansion type instead of filtering based off of the model's full set
+of features:
 
-I tested this with my virtex-ml507 images:
+When reporting a static CPU model, only show deprecated properties that
+are a subset of the model's enabled features.
 
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Tested-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+When reporting a full CPU model, show the entire list of deprecated
+properties regardless if they are supported on the model.
 
-Cheers,
-Edgar
+Suggested-by: Jiri Denemark <jdenemar@redhat.com>
+Signed-off-by: Collin Walling <walling@linux.ibm.com>
+---
 
+Changelog:
 
-> 
-> BALATON Zoltan (2):
->   hw/ppc: Consolidate e500 initial mapping creation functions
->   hw/ppc: Consolidate ppc440 initial mapping creation functions
-> 
->  hw/ppc/e500.c          | 41 ++++++++++++++++++--------------------
->  hw/ppc/e500.h          |  2 --
->  hw/ppc/ppc440_bamboo.c | 28 +++-----------------------
->  hw/ppc/ppc_booke.c     | 10 ++++++++++
->  hw/ppc/ppce500_spin.c  | 30 +++++++++-------------------
->  hw/ppc/sam460ex.c      | 45 ++++++++++--------------------------------
->  hw/ppc/virtex_ml507.c  | 28 +++-----------------------
->  include/hw/ppc/ppc.h   |  7 +++++++
->  8 files changed, 61 insertions(+), 130 deletions(-)
-> 
-> -- 
-> 2.30.9
-> 
+    v2
+    - Changed commit message
+    - Added documentation reflecting this change
+    - Made code changes that more accurately filter the deprecated
+        properties based on expansion type.  This change makes it
+        so that the deprecated-properties reported for a static model
+        expansion are a subset of the model's properties instead of
+        the model's full-definition properties.
+
+        For example:
+
+        Previously, the z900 static model would report 'bpb' in the
+        list of deprecated-properties.  However, this prop is *not*
+        a part of the model's feature set, leading to some inaccuracy
+        (albeit harmless).
+
+        Now, this feature will not show during a static expansion.
+        It will, however, show up in a full expansion (along with
+        the rest of the list: 'csske', 'te', 'cte').
+
+@David, I've elected to respectully forgo adding your ack-by on this
+iteration since I have changed the code (and therefore the behavior)
+between this version and the previous in case you do not agree with
+these adjustments.
+
+---
+ qapi/machine-target.json         |  8 ++++++--
+ target/s390x/cpu_models_sysemu.c | 16 +++++++++-------
+ 2 files changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index a8d9ec87f5..d151504f25 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -21,8 +21,12 @@
+ # @props: a dictionary of QOM properties to be applied
+ #
+ # @deprecated-props: a list of properties that are flagged as deprecated
+-#     by the CPU vendor.  These props are a subset of the full model's
+-#     definition list of properties. (since 9.1)
++#     by the CPU vendor.  (since 9.1).
++#
++# .. note:: Since 9.1, the list of deprecated props were always a subset
++#    of the model's full-definition list of properites. Now, this list is
++#    populated with the model's enabled property set when delta changes
++#    are applied. All deprecated properties are reported otherwise.
+ #
+ # Since: 2.8
+ ##
+diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+index 977fbc6522..e28ecf7ab9 100644
+--- a/target/s390x/cpu_models_sysemu.c
++++ b/target/s390x/cpu_models_sysemu.c
+@@ -174,11 +174,15 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+                                 bool delta_changes)
+ {
+     QDict *qdict = qdict_new();
+-    S390FeatBitmap bitmap;
++    S390FeatBitmap bitmap, deprecated;
+ 
+     /* always fallback to the static base model */
+     info->name = g_strdup_printf("%s-base", model->def->name);
+ 
++    /* features flagged as deprecated */
++    bitmap_zero(deprecated, S390_FEAT_MAX);
++    s390_get_deprecated_features(deprecated);
++
+     if (delta_changes) {
+         /* features deleted from the base feature set */
+         bitmap_andnot(bitmap, model->def->base_feat, model->features,
+@@ -193,6 +197,9 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+         if (!bitmap_empty(bitmap, S390_FEAT_MAX)) {
+             s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_enabled_feat);
+         }
++
++        /* deprecated features that are a subset of the model's features */
++        bitmap_and(deprecated, deprecated, model->features, S390_FEAT_MAX);
+     } else {
+         /* expand all features */
+         s390_feat_bitmap_to_ascii(model->features, qdict,
+@@ -207,12 +214,7 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+         info->props = QOBJECT(qdict);
+     }
+ 
+-    /* features flagged as deprecated */
+-    bitmap_zero(bitmap, S390_FEAT_MAX);
+-    s390_get_deprecated_features(bitmap);
+-
+-    bitmap_and(bitmap, bitmap, model->def->full_feat, S390_FEAT_MAX);
+-    s390_feat_bitmap_to_ascii(bitmap, &info->deprecated_props, list_add_feat);
++    s390_feat_bitmap_to_ascii(deprecated, &info->deprecated_props, list_add_feat);
+     info->has_deprecated_props = !!info->deprecated_props;
+ }
+ 
+-- 
+2.45.1
+
 
