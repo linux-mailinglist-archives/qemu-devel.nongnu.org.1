@@ -2,88 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81ECE932D5D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE735932C92
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 17:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTke3-0003ic-6i; Tue, 16 Jul 2024 12:03:15 -0400
+	id 1sTkWk-0000fP-Rh; Tue, 16 Jul 2024 11:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1sTkdw-0003UX-Ou
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:03:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTkWN-000065-8j
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:24 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1sTkdr-0000WA-VE
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:03:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721145781;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yB4AxlEEPuHJDRDMcxc71g4V/TGK3tF7rWkhub3hXRo=;
- b=DxecuAs1KtbREytgegA9lRfQv3jrch1sA1JRqilPcyXgsulqTMj/MPtvzTHWQpo4Cxt8JX
- yBMseZCWHhQxrLq50+6kyEnVIASHgr42ypgtKiFUC759k6PWiMbbW3TyavyX3mqE4x9CQg
- WU6W/buNcWs+EN4120dUvvznS0GQHas=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-lf-xQHAMPKGPeDFvFwROjQ-1; Tue, 16 Jul 2024 12:02:59 -0400
-X-MC-Unique: lf-xQHAMPKGPeDFvFwROjQ-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-e03b3f48c65so10152713276.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 09:02:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721145778; x=1721750578;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yB4AxlEEPuHJDRDMcxc71g4V/TGK3tF7rWkhub3hXRo=;
- b=Mh7pJ/nmCq9VkTeena2HcByhWb/I6RhPyE5hlZI4yJaJvT1PXlwxSILuGwzcgdKYBS
- ViIXSRS/kjVfkhzu5Ggma6EC9fkE9A3UpytSPGzx/eFzJmJr9Qsa5rnFgtRBMPoWPDn7
- Gc6RS7VOQ3LZokgOXYiDDH4Diahxsww5/sfOLGRuLfWXz40o9KfX4+wqW9USgoHo0OkZ
- 5Ayo8aWoqIanuS7BkH/GWJfLZotIH2Dy1CvkgyZqPS43R/5xS2i8iDv0an7MuW/EFL+Q
- qUoVpSNo8eiA+MBGvj4SU8DVQj8dSJMg9KzJdXisx97kwG7GRkJgH3S/b+01GGZBA6To
- dTlg==
-X-Gm-Message-State: AOJu0YxfokOxYlTy1FiubNiXUw8Awb7SfJLJvCmzhdB7JEIt1C1VDppm
- UPaZVQ71pPK5lrHhz/9pE9G9UIEuz5y5FKDNtFfMvQNPgOo8L9g7Tf7KHSTUFB8cdIRr45c42PI
- p+OE0bf/6uIlDTZ8egHukA6TyiFDLpyF7SdlCdU8p+nbsxIYOe6zlhAwYuyk6g/fe4aX7ZFoCi8
- bQiy/ZJsCfEUJaB+PcW0hfZOdL8k8=
-X-Received: by 2002:a05:6902:102f:b0:e03:2bfc:b1f0 with SMTP id
- 3f1490d57ef6-e05d56b75e7mr2975067276.16.1721145778516; 
- Tue, 16 Jul 2024 09:02:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3Iq1Ws3ktvWKMo5AAm81KxwgMZNuwhzhVsP1bQYUODiB7PA4K3PT+b8zGPFbXD7YJrO8C8x3VZcfbWBdxQOo=
-X-Received: by 2002:a05:6902:102f:b0:e03:2bfc:b1f0 with SMTP id
- 3f1490d57ef6-e05d56b75e7mr2975029276.16.1721145778053; Tue, 16 Jul 2024
- 09:02:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTkWH-0007Rv-Tf
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721145314; x=1752681314;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tpsLMKJIQFAky+/kJ60UZVyG/3DdjHMTPZcVXZFK/To=;
+ b=l63A95u0SzgjmZmAOGvWHNdk+lFf8R24+BQygEy6L01AW9F+WCsbA4dj
+ 2zYSeHfCAgAtBUUqi0XhcqBZTVnzf3BXbe+9AL2FmUJ7KWsEKPpyve6vM
+ Y6MpsrzbtsTA2VLeuFh6xl9H99e1mmn3Mff/q+WEqIMa3evn1uO+7nd5C
+ mWK9oIX/wNKTfJjkawYLBl/5efe0clDwWqAqik6P06ZAgYybWOuBfcsuy
+ fpBQKUpVytyVNsS5gkwpmfTGwg3rVWlRFRa2lcJ9KWpolgxh9exu+yH65
+ Z0y1gCmpQVgPeic2pIdfS4mY1mndLW8D85ALgLWSTmqKmTj7JOhH2Mv5D g==;
+X-CSE-ConnectionGUID: GTpenIX2RnGJPq8XGFITww==
+X-CSE-MsgGUID: PoKjGV3XTM+lzme1mSMuQQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18743668"
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="18743668"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2024 08:54:46 -0700
+X-CSE-ConnectionGUID: 7RqqBhFbRve3yyEmcDLvqg==
+X-CSE-MsgGUID: qmpv3ti6TzalfhsW7l2GoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="50788236"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orviesa008.jf.intel.com with ESMTP; 16 Jul 2024 08:54:43 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v4 0/9] target/i386: Misc cleanup on KVM PV defs,
+ outdated comments and error handling
+Date: Wed, 17 Jul 2024 00:10:06 +0800
+Message-Id: <20240716161015.263031-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240715095939.72492-1-zhao1.liu@intel.com>
- <20240715095939.72492-2-zhao1.liu@intel.com>
- <CAJaqyWcRv53hNYXT31tZ9M317OTBsxSgQ5bJvo1y-E=VoVS24g@mail.gmail.com>
- <ZpXnKCoz/7hRJZ6+@intel.com>
-In-Reply-To: <ZpXnKCoz/7hRJZ6+@intel.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 16 Jul 2024 18:02:22 +0200
-Message-ID: <CAJaqyWdP_xuU6q_cLeq1tHx5Hjd=5VJ85Rq8mT7DRpm=Q1EKiw@mail.gmail.com>
-Subject: Re: [PATCH] hw/virtio/vdpa-dev: Check returned value instead of
- dereferencing @errp
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,78 +84,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 16, 2024 at 5:05=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com> wrot=
-e:
->
-> On Mon, Jul 15, 2024 at 11:01:08PM +0200, Eugenio Perez Martin wrote:
-> > Date: Mon, 15 Jul 2024 23:01:08 +0200
-> > From: Eugenio Perez Martin <eperezma@redhat.com>
-> > Subject: Re: [PATCH] hw/virtio/vdpa-dev: Check returned value instead o=
-f
-> >  dereferencing @errp
-> >
-> > On Mon, Jul 15, 2024 at 11:45=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com>=
- wrote:
-> > >
-> > > As the comment in qapi/error, dereferencing @errp requires
-> > > ERRP_GUARD():
-> > >
-> > > * =3D Why, when and how to use ERRP_GUARD() =3D
-> > > *
-> > > * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-> > > * - It must not be dereferenced, because it may be null.
-> > > ...
-> > > * ERRP_GUARD() lifts these restrictions.
-> > > *
-> > > * To use ERRP_GUARD(), add it right at the beginning of the function.
-> > > * @errp can then be used without worrying about the argument being
-> > > * NULL or &error_fatal.
-> > > *
-> > > * Using it when it's not needed is safe, but please avoid cluttering
-> > > * the source with useless code.
-> > >
-> > > Though vhost_vdpa_device_realize() is called at DeviceClass.realize()
-> > > context and won't get NULL @errp, it's still better to follow the
-> > > requirement to add the ERRP_GUARD().
-> > >
-> > > But qemu_open() and vhost_vdpa_device_get_u32()'s return values can
-> > > distinguish between successful and unsuccessful calls, so check the
-> > > return values directly without dereferencing @errp, which eliminates
-> > > the need of ERRP_GUARD().
-> > >
-> > > Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> > > Cc: "Eugenio P=C3=A9rez" <eperezma@redhat.com>
-> > > Cc: Jason Wang <jasowang@redhat.com>
-> > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > > ---
-> > >  hw/virtio/vdpa-dev.c | 11 ++++++-----
-> > >  1 file changed, 6 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-> > > index 64b96b226c39..7b439efdc1d3 100644
-> > > --- a/hw/virtio/vdpa-dev.c
-> > > +++ b/hw/virtio/vdpa-dev.c
-> > > @@ -50,6 +50,7 @@ vhost_vdpa_device_get_u32(int fd, unsigned long int=
- cmd, Error **errp)
-> > >
-> > >  static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp=
-)
-> > >  {
-> > > +    ERRP_GUARD();
-> >
-> > Good catch, thank you! But removing the err dereferencing eliminates
-> > the need for ERRP_GUARD(), doesn't it?
-> >
->
-> Thanks Eugenio! You're right and I forgot to delete it. I'll post a new
-> version.
->
->
+Hi,
 
-Good! With that removed,
+This is my v4 cleanup series. Compared with v3 [1],
+ * Returned kvm_vm_ioctl() directly in kvm_install_msr_filters().
+ * Added a patch (patch 9) to clean up ARRAY_SIZE(msr_handlers).
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-Thanks!
+Background and Introduction
+===========================
+
+This series picks cleanup from my previous kvmclock [2] (as other
+renaming attempts were temporarily put on hold).
+
+In addition, this series also include the cleanup on a historically
+workaround, recent comment of coco interface [3] and error handling
+corner cases in kvm_arch_init().
+
+Avoiding the fragmentation of these misc cleanups, I consolidated them
+all in one series and was able to tackle them in one go!
+
+[1]: https://lore.kernel.org/qemu-devel/20240715044955.3954304-1-zhao1.liu@intel.com/T/
+[2]: https://lore.kernel.org/qemu-devel/20240329101954.3954987-1-zhao1.liu@linux.intel.com/
+[3]: https://lore.kernel.org/qemu-devel/2815f0f1-9e20-4985-849c-d74c6cdc94ae@intel.com/
+
+Thanks and Best Regards,
+Zhao
+---
+Zhao Liu (9):
+  target/i386/kvm: Add feature bit definitions for KVM CPUID
+  target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
+    MSR_KVM_SYSTEM_TIME definitions
+  target/i386/kvm: Only save/load kvmclock MSRs when kvmclock enabled
+  target/i386/kvm: Save/load MSRs of kvmclock2
+    (KVM_FEATURE_CLOCKSOURCE2)
+  target/i386/kvm: Drop workaround for KVM_X86_DISABLE_EXITS_HTL typo
+  target/i386/confidential-guest: Fix comment of
+    x86_confidential_guest_kvm_type()
+  target/i386/kvm: Clean up return values of MSR filter related
+    functions
+  target/i386/kvm: Clean up error handling in kvm_arch_init()
+  target/i386/kvm: Replace ARRAY_SIZE(msr_handlers) with
+    KVM_MSR_FILTER_MAX_RANGES
+
+ hw/i386/kvm/clock.c              |   5 +-
+ target/i386/confidential-guest.h |   2 +-
+ target/i386/cpu.h                |  25 +++++++
+ target/i386/kvm/kvm.c            | 113 +++++++++++++++++--------------
+ target/i386/kvm/kvm_i386.h       |   4 +-
+ 5 files changed, 92 insertions(+), 57 deletions(-)
+
+-- 
+2.34.1
 
 
