@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E72932FBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA00932FCA
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:12:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTmcv-0007AD-BE; Tue, 16 Jul 2024 14:10:13 -0400
+	id 1sTmcy-0007UF-VO; Tue, 16 Jul 2024 14:10:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcs-00074l-08
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:10 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcx-0007Q5-DR
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:15 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcq-00011q-1C
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:09 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4257d5fc9b7so46452065e9.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcv-00018Y-FF
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:15 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4267300145eso46440675e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721153406; x=1721758206; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721153411; x=1721758211; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5NkIaFDVC7mCONUcx74ZzxY6giGkJtU3xAyO2Vz6jhE=;
- b=SlCuDIqTNSAU0XZafHImW+vkQTc8KerUAgv2Xtw88DZPaacCDZbO+KP/WeThltH4/+
- gFQxOz6C2Ph8npnKpYlLEqgexKsP2hSnGfrTuZ/ynshfnK5JEb7t+eLpNYmM/a6MbM0f
- xeWB2cYtnLaDoHzHeOryWmy+NkKWKfFrQ8vRUwVsMpxbZKi9Hmdsa8D3Jmqf7eWfpaIR
- QoQ84Elzz4r03nYLx9w42HS0/u+VxVp2RnDw+lb/ZYcqhilPAWPLBlsjHeRZoKVtpnxy
- Z67OHs5UImoZ5ljMHdDN7+N8RcfA/klrBT4HBXu2oYe6MsA4PEjyg1b+JK07cUbmuj61
- 1EdQ==
+ bh=fhnQiVznBi2Zvr4gz5/6RuKKxU2+0PGgb84J5GpHddM=;
+ b=Nr059V3YPWAL576zT/ugBT3wpUfKI4c1vfxR30jvp2+OA5dil/PFbmfsVb5P2l631d
+ 5YxUt0RmYV7mPQFBK3eZAT3lH0iYlSRcNUyZ7XGGUmlUGfMCTC6IYvyIeCXcMc6COf2U
+ uM38KSJw0i4DOXc0yzJl0BbAUDOADWeRWS8qH5ezVOazhQdHfINDZ+kO3XDgz9ZRzW7A
+ WYp/a9ErQ7/J9T3nl7mfYaX0n6+UqrWwJvjr0g6buRXmLNvU+Y5KJR4dZQC1LSRnok+7
+ 8wGC9fdpDBKys6cEs9uoB2odbnzbkyO4Avo00PTciF+iyW9i8ckDTge9RT68kauixm4t
+ y22A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721153406; x=1721758206;
+ d=1e100.net; s=20230601; t=1721153411; x=1721758211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5NkIaFDVC7mCONUcx74ZzxY6giGkJtU3xAyO2Vz6jhE=;
- b=osFJ5dQAp/snQNpz+Ylw1JrJuFYO4NEU4ZJUR7JLF1FcoJiri5YgjKYQbDv3FIwje5
- HC3RJOO9FU515SfVBVw8wI6sNQ1BLHtBywgkKwlRQpvbUDuwm7EYngW20/KDI0G7QMxz
- igpBcf7GBxBFiyZnTrotKGSkaovKei5ES+KfOYvwKLTCinrhetZkgeiySlNsRbH8Lka6
- r/cEQGeY44RW3Zeej1qxZy0QjMxxr3Fkmk1eejKFjKdHD3ld33FKgVqITAfsm+Wmzb91
- wxlObYjkQ1i+uZOy5I0UPFJPInUaioCF6beliE1m/2SDprOWNJUZugzuE+t2XAGLYY3M
- kwEw==
-X-Gm-Message-State: AOJu0Yx09P4MDmbE3mIOIX94NxabFFmI1/A4iW6L7mhEidi1UU2tnyov
- PmzlbqDwGhcQMt6KcqMRWGHZCE+67BwJccvHdAAQzbxwx9tP5hIcOuf8RtYAxkKz/6T7Qhis5B5
- PoRw1cw==
-X-Google-Smtp-Source: AGHT+IHdodhoA0epDnnbqGTqdUBk0g1Gjnb+TH1mQmnHijHygTUmTo6CrO2Zqrh09qatHzq0zS4aBA==
-X-Received: by 2002:a05:600c:1f90:b0:426:6b14:1839 with SMTP id
- 5b1f17b1804b1-427ba47ab0amr26929585e9.0.1721153406167; 
- Tue, 16 Jul 2024 11:10:06 -0700 (PDT)
+ bh=fhnQiVznBi2Zvr4gz5/6RuKKxU2+0PGgb84J5GpHddM=;
+ b=dY/1b21erS90oYvwzRoHVb4XQcFduvIYIzbJg52Wh+GAxDNVZJawDQvcaipA4ghI6X
+ poRnY1r9+e5DyrDlkjuJ7qYr64KEIqm8+9K0krA/lxCn5n8b5BHlYC/4L8zJa/vZMGoI
+ FZxZuBESvqJxzL6WzxxqX2ajrRD2LpdRK/4C9+pWxzzE/J5L6DjreY0WBLtBTteyj3xV
+ tXWfEM0wPSuqKbrqeVAYN8wt9bkSRzK/vEjy4F2MmndlnG1f49JDDV6uY6Tdj9M23fu4
+ ychzTlGMFB9ZaIsKl01vNuJBgeCkmgtmZCaN8LGNhF2uKtoDX8p2f5QOzm+cuXbgItVI
+ eLCg==
+X-Gm-Message-State: AOJu0YwRhDtvVX4RrKS1Q/+relo1b82zmMjOfbDu5wJlYYe4TEjEQG5s
+ jr3OhcOjgtU87fd0GKfx2SnbEPNIS9UWIKHT2WBJxm2VXF8IzWmg4bSWKR7lRm9d0Q58pCISxlu
+ wYSEG9A==
+X-Google-Smtp-Source: AGHT+IHuaSKGAxkkhcc+BX8GYIpzsfDHUx19p+2EsFnI5Q9kTQ1kcf7jaOLGlTjANzhZBPHKs9WCBQ==
+X-Received: by 2002:a05:600c:3548:b0:426:6f87:65fc with SMTP id
+ 5b1f17b1804b1-427ba6872f1mr28007535e9.17.1721153411661; 
+ Tue, 16 Jul 2024 11:10:11 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.209.82])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3680dabefa6sm9664487f8f.44.2024.07.16.11.10.05
+ 5b1f17b1804b1-427a5edb50fsm138130745e9.38.2024.07.16.11.10.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Jul 2024 11:10:05 -0700 (PDT)
+ Tue, 16 Jul 2024 11:10:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/13] loader: remove load_image_gzipped function as its not
- used anywhere
-Date: Tue, 16 Jul 2024 20:09:31 +0200
-Message-ID: <20240716180941.40211-5-philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 05/13] accel/tcg: Make cpu_exec_interrupt hook mandatory
+Date: Tue, 16 Jul 2024 20:09:32 +0200
+Message-ID: <20240716180941.40211-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240716180941.40211-1-philmd@linaro.org>
 References: <20240716180941.40211-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,65 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-load_image_gzipped() does not seem to be used anywhere. Remove it.
+The TCGCPUOps::cpu_exec_interrupt hook is currently not mandatory; if
+it is left NULL then we treat it as if it had returned false. However
+since pretty much every architecture needs to handle interrupts,
+almost every target we have provides the hook. The one exception is
+Tricore, which doesn't currently implement the architectural
+interrupt handling.
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Add a "do nothing" implementation of cpu_exec_hook for Tricore,
+assert on startup that the CPU does provide the hook, and remove
+the runtime NULL check before calling it.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240711072448.32673-1-anisinha@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240712113949.4146855-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/loader.h |  4 +---
- hw/core/loader.c    | 13 -------------
- 2 files changed, 1 insertion(+), 16 deletions(-)
+ accel/tcg/cpu-exec.c | 4 ++--
+ target/tricore/cpu.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/loader.h b/include/hw/loader.h
-index 9844c5e3cf..7f6d06b956 100644
---- a/include/hw/loader.h
-+++ b/include/hw/loader.h
-@@ -77,15 +77,13 @@ ssize_t load_image_targphys(const char *filename, hwaddr,
- ssize_t load_image_mr(const char *filename, MemoryRegion *mr);
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 245fd6327d..9010dad073 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -857,8 +857,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+         else {
+             const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
  
- /* This is the limit on the maximum uncompressed image size that
-- * load_image_gzipped_buffer() and load_image_gzipped() will read. It prevents
-+ * load_image_gzipped_buffer() will read. It prevents
-  * g_malloc() in those functions from allocating a huge amount of memory.
-  */
- #define LOAD_IMAGE_MAX_GUNZIP_BYTES (256 << 20)
- 
- ssize_t load_image_gzipped_buffer(const char *filename, uint64_t max_sz,
-                                   uint8_t **buffer);
--ssize_t load_image_gzipped(const char *filename, hwaddr addr, uint64_t max_sz);
--
- /**
-  * unpack_efi_zboot_image:
-  * @buffer: pointer to a variable holding the address of a buffer containing the
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 39bd8f9e4d..31593a1171 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -845,19 +845,6 @@ ssize_t load_image_gzipped_buffer(const char *filename, uint64_t max_sz,
-     return ret;
+-            if (tcg_ops->cpu_exec_interrupt &&
+-                tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
++            if (tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
+                 if (!tcg_ops->need_replay_interrupt ||
+                     tcg_ops->need_replay_interrupt(interrupt_request)) {
+                     replay_interrupt();
+@@ -1080,6 +1079,7 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
+         /* Check mandatory TCGCPUOps handlers */
+ #ifndef CONFIG_USER_ONLY
+         assert(cpu->cc->tcg_ops->cpu_exec_halt);
++        assert(cpu->cc->tcg_ops->cpu_exec_interrupt);
+ #endif /* !CONFIG_USER_ONLY */
+         cpu->cc->tcg_ops->initialize();
+         tcg_target_initialized = true;
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 4d9c0368f2..1a26171590 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -155,6 +155,11 @@ static void tc37x_initfn(Object *obj)
+     set_feature(&cpu->env, TRICORE_FEATURE_162);
  }
  
--/* Load a gzip-compressed kernel. */
--ssize_t load_image_gzipped(const char *filename, hwaddr addr, uint64_t max_sz)
--{
--    ssize_t bytes;
--    uint8_t *data;
--
--    bytes = load_image_gzipped_buffer(filename, max_sz, &data);
--    if (bytes != -1) {
--        rom_add_blob_fixed(filename, data, bytes, addr);
--        g_free(data);
--    }
--    return bytes;
--}
++static bool tricore_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
++{
++    /* Interrupts are not implemented */
++    return false;
++}
  
- /* The PE/COFF MS-DOS stub magic number */
- #define EFI_PE_MSDOS_MAGIC        "MZ"
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
+@@ -169,6 +174,7 @@ static const TCGCPUOps tricore_tcg_ops = {
+     .synchronize_from_tb = tricore_cpu_synchronize_from_tb,
+     .restore_state_to_opc = tricore_restore_state_to_opc,
+     .tlb_fill = tricore_cpu_tlb_fill,
++    .cpu_exec_interrupt = tricore_cpu_exec_interrupt,
+     .cpu_exec_halt = tricore_cpu_has_work,
+ };
+ 
 -- 
 2.41.0
 
