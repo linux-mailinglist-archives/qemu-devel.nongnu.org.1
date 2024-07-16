@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2552932FC2
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E72932FBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:10:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTmcp-0006oo-6O; Tue, 16 Jul 2024 14:10:07 -0400
+	id 1sTmcv-0007AD-BE; Tue, 16 Jul 2024 14:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcm-0006i6-Sp
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:04 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcs-00074l-08
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:10 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcl-0000ur-22
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:04 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3678aa359b7so5749f8f.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcq-00011q-1C
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:09 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4257d5fc9b7so46452065e9.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721153401; x=1721758201; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721153406; x=1721758206; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+f/7N8GJRq8hKRVda+Tlkh41f3Qt1aALkfzBVC63ub4=;
- b=V7Ct9ZN03/DkPtULc0Y+htfBvdw1OfHV7TWTWk7XIeyTZKd0bXgm2NCmloWnQACBaA
- 4NFL8lszHMpLT3nvE2Q84L0XGWqKqkLfvKjvMRKQ5NWvFT+0duRN8CSie5a6Yc/pLF2X
- xjeK5a9QrUV4JU25RtnJykxKBUZUCOhIAxbBpUs5Xo9LjZ0eWW+prRhnJlv6rzBDiYHB
- pi5FpjzUEarIz4hZ4KmFzKMv4m6B9SPBW+p9IQaaH+gC40E9zDy2KpKFckQx/Pe9ea4V
- 6KRhjiOfg6R6uHGv7KV67lx/2DsPJNkfrqaMlPYg2RtZcEKxlpebcmSeWEWMZ3pCpfg6
- PPMg==
+ bh=5NkIaFDVC7mCONUcx74ZzxY6giGkJtU3xAyO2Vz6jhE=;
+ b=SlCuDIqTNSAU0XZafHImW+vkQTc8KerUAgv2Xtw88DZPaacCDZbO+KP/WeThltH4/+
+ gFQxOz6C2Ph8npnKpYlLEqgexKsP2hSnGfrTuZ/ynshfnK5JEb7t+eLpNYmM/a6MbM0f
+ xeWB2cYtnLaDoHzHeOryWmy+NkKWKfFrQ8vRUwVsMpxbZKi9Hmdsa8D3Jmqf7eWfpaIR
+ QoQ84Elzz4r03nYLx9w42HS0/u+VxVp2RnDw+lb/ZYcqhilPAWPLBlsjHeRZoKVtpnxy
+ Z67OHs5UImoZ5ljMHdDN7+N8RcfA/klrBT4HBXu2oYe6MsA4PEjyg1b+JK07cUbmuj61
+ 1EdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721153401; x=1721758201;
+ d=1e100.net; s=20230601; t=1721153406; x=1721758206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+f/7N8GJRq8hKRVda+Tlkh41f3Qt1aALkfzBVC63ub4=;
- b=SmzD/M0LRiIIAWR2WdyDU8bwpdSZkqWsR3ihJf9SW0/1gxVfEpZhEbjDB9hrGZEFxN
- rgEshtlIRK++9hG4cLuhozutHNiHDDAd4DyQI+jmQy3YEZ4t+2sVJmDZczFXRvfNC08e
- 9CkpReVK6jDte2Fo3jtC/MNpCGVNkeT915C6F3snJhguh0HukigX5/SwxdBGpiwAfx2D
- Va86Lom+MEux5IIYSK3HYSgrXGQkxF/Zrl9B0KT2zK6DrXCA9wnewk2t+pPHge7h54RT
- K7phR4bdZC8lovSs9OcXIyMDHF7U0PEYJ4CK/UkRpoHmKB0L+TDfjG1pUet20ku+TQOp
- m21Q==
-X-Gm-Message-State: AOJu0Yznp3krq1e8vd1Kck9cXI2nIHZQpnjHMcQ4UBa621HhQdpMS8NN
- i9Fhdtp4qOXz6r8xEd4g9sgG1+j7Mm77+1DjNftjVp+q2AKxE4FT6fVqCKrnzJLMm8b/xefMber
- j+OsG7w==
-X-Google-Smtp-Source: AGHT+IEg7ym5iqLUHL73R2Cl4lUWDkJMUjemVYHWCt4e2ED0JWyoShqoZhzNTCFCK4J4PBIPGkhh+g==
-X-Received: by 2002:adf:ef86:0:b0:367:8e57:8 with SMTP id
- ffacd0b85a97d-36827432f95mr2270756f8f.19.1721153400814; 
- Tue, 16 Jul 2024 11:10:00 -0700 (PDT)
+ bh=5NkIaFDVC7mCONUcx74ZzxY6giGkJtU3xAyO2Vz6jhE=;
+ b=osFJ5dQAp/snQNpz+Ylw1JrJuFYO4NEU4ZJUR7JLF1FcoJiri5YgjKYQbDv3FIwje5
+ HC3RJOO9FU515SfVBVw8wI6sNQ1BLHtBywgkKwlRQpvbUDuwm7EYngW20/KDI0G7QMxz
+ igpBcf7GBxBFiyZnTrotKGSkaovKei5ES+KfOYvwKLTCinrhetZkgeiySlNsRbH8Lka6
+ r/cEQGeY44RW3Zeej1qxZy0QjMxxr3Fkmk1eejKFjKdHD3ld33FKgVqITAfsm+Wmzb91
+ wxlObYjkQ1i+uZOy5I0UPFJPInUaioCF6beliE1m/2SDprOWNJUZugzuE+t2XAGLYY3M
+ kwEw==
+X-Gm-Message-State: AOJu0Yx09P4MDmbE3mIOIX94NxabFFmI1/A4iW6L7mhEidi1UU2tnyov
+ PmzlbqDwGhcQMt6KcqMRWGHZCE+67BwJccvHdAAQzbxwx9tP5hIcOuf8RtYAxkKz/6T7Qhis5B5
+ PoRw1cw==
+X-Google-Smtp-Source: AGHT+IHdodhoA0epDnnbqGTqdUBk0g1Gjnb+TH1mQmnHijHygTUmTo6CrO2Zqrh09qatHzq0zS4aBA==
+X-Received: by 2002:a05:600c:1f90:b0:426:6b14:1839 with SMTP id
+ 5b1f17b1804b1-427ba47ab0amr26929585e9.0.1721153406167; 
+ Tue, 16 Jul 2024 11:10:06 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.209.82])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3680dafb939sm9701924f8f.89.2024.07.16.11.09.59
+ ffacd0b85a97d-3680dabefa6sm9664487f8f.44.2024.07.16.11.10.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Jul 2024 11:10:00 -0700 (PDT)
+ Tue, 16 Jul 2024 11:10:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>,
+Cc: Ani Sinha <anisinha@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/13] include/hw/qdev-core.h: Correct and clarify gpio doc
- comments
-Date: Tue, 16 Jul 2024 20:09:30 +0200
-Message-ID: <20240716180941.40211-4-philmd@linaro.org>
+Subject: [PULL 04/13] loader: remove load_image_gzipped function as its not
+ used anywhere
+Date: Tue, 16 Jul 2024 20:09:31 +0200
+Message-ID: <20240716180941.40211-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240716180941.40211-1-philmd@linaro.org>
 References: <20240716180941.40211-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,76 +93,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Ani Sinha <anisinha@redhat.com>
 
-The doc comments for the functions for named GPIO inputs and
-outputs had a couple of problems:
- * some copy-and-paste errors meant the qdev_connect_gpio_out_named()
-   doc comment had references to input GPIOs that should be to
-   output GPIOs
- * it wasn't very clear that named GPIOs are arrays and so the
-   connect functions specify a single GPIO line by giving both
-   the name of the array and the index within that array
+load_image_gzipped() does not seem to be used anywhere. Remove it.
 
-Fix the copy-and-paste errors and slightly expand the text
-to say that functions are connecting one line in a named GPIO
-array, not a single named GPIO line.
-
-Reported-by: BALATON Zoltan <balaton@eik.bme.hu>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240708153312.3109380-1-peter.maydell@linaro.org>
+Message-ID: <20240711072448.32673-1-anisinha@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/qdev-core.h | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ include/hw/loader.h |  4 +---
+ hw/core/loader.c    | 13 -------------
+ 2 files changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 5336728a23..77bfcbdf73 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -624,8 +624,9 @@ qemu_irq qdev_get_gpio_in(DeviceState *dev, int n);
-  * @name: Name of the input GPIO array
-  * @n: Number of the GPIO line in that array (which must be in range)
-  *
-- * Returns the qemu_irq corresponding to a named input GPIO line
-- * (which the device has set up with qdev_init_gpio_in_named()).
-+ * Returns the qemu_irq corresponding to a single input GPIO line
-+ * in a named array of input GPIO lines on a device (which the device
-+ * has set up with qdev_init_gpio_in_named()).
-  * The @name string must correspond to an input GPIO array which exists on
-  * the device, and the index @n of the GPIO line must be valid (i.e.
-  * be at least 0 and less than the total number of input GPIOs in that
-@@ -673,15 +674,15 @@ void qdev_connect_gpio_out(DeviceState *dev, int n, qemu_irq pin);
-  *                              GPIO lines
-  * @dev: Device whose GPIO to connect
-  * @name: Name of the output GPIO array
-- * @n: Number of the anonymous output GPIO line (which must be in range)
-+ * @n: Number of the output GPIO line within that array (which must be in range)
-  * @input_pin: qemu_irq to connect the output line to
-  *
-- * This function connects an anonymous output GPIO line on a device
-- * up to an arbitrary qemu_irq, so that when the device asserts that
-- * output GPIO line, the qemu_irq's callback is invoked.
-+ * This function connects a single GPIO output in a named array of output
-+ * GPIO lines on a device up to an arbitrary qemu_irq, so that when the
-+ * device asserts that output GPIO line, the qemu_irq's callback is invoked.
-  * The @name string must correspond to an output GPIO array which exists on
-  * the device, and the index @n of the GPIO line must be valid (i.e.
-- * be at least 0 and less than the total number of input GPIOs in that
-+ * be at least 0 and less than the total number of output GPIOs in that
-  * array); this function will assert() if passed an invalid name or index.
-  *
-  * Outbound GPIO lines can be connected to any qemu_irq, but the common
-@@ -796,7 +797,7 @@ void qdev_init_gpio_out(DeviceState *dev, qemu_irq *pins, int n);
-  * @dev: Device to create output GPIOs for
-  * @pins: Pointer to qemu_irq or qemu_irq array for the GPIO lines
-  * @name: Name to give this array of GPIO lines
-- * @n: Number of GPIO lines to create
-+ * @n: Number of GPIO lines to create in this array
-  *
-  * Like qdev_init_gpio_out(), but creates an array of GPIO output lines
-  * with a name. Code using the device can then connect these GPIO lines
+diff --git a/include/hw/loader.h b/include/hw/loader.h
+index 9844c5e3cf..7f6d06b956 100644
+--- a/include/hw/loader.h
++++ b/include/hw/loader.h
+@@ -77,15 +77,13 @@ ssize_t load_image_targphys(const char *filename, hwaddr,
+ ssize_t load_image_mr(const char *filename, MemoryRegion *mr);
+ 
+ /* This is the limit on the maximum uncompressed image size that
+- * load_image_gzipped_buffer() and load_image_gzipped() will read. It prevents
++ * load_image_gzipped_buffer() will read. It prevents
+  * g_malloc() in those functions from allocating a huge amount of memory.
+  */
+ #define LOAD_IMAGE_MAX_GUNZIP_BYTES (256 << 20)
+ 
+ ssize_t load_image_gzipped_buffer(const char *filename, uint64_t max_sz,
+                                   uint8_t **buffer);
+-ssize_t load_image_gzipped(const char *filename, hwaddr addr, uint64_t max_sz);
+-
+ /**
+  * unpack_efi_zboot_image:
+  * @buffer: pointer to a variable holding the address of a buffer containing the
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 39bd8f9e4d..31593a1171 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -845,19 +845,6 @@ ssize_t load_image_gzipped_buffer(const char *filename, uint64_t max_sz,
+     return ret;
+ }
+ 
+-/* Load a gzip-compressed kernel. */
+-ssize_t load_image_gzipped(const char *filename, hwaddr addr, uint64_t max_sz)
+-{
+-    ssize_t bytes;
+-    uint8_t *data;
+-
+-    bytes = load_image_gzipped_buffer(filename, max_sz, &data);
+-    if (bytes != -1) {
+-        rom_add_blob_fixed(filename, data, bytes, addr);
+-        g_free(data);
+-    }
+-    return bytes;
+-}
+ 
+ /* The PE/COFF MS-DOS stub magic number */
+ #define EFI_PE_MSDOS_MAGIC        "MZ"
 -- 
 2.41.0
 
