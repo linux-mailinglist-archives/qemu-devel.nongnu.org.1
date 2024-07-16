@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06AC932E5B
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93022932E4C
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:28:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl2T-000389-B1; Tue, 16 Jul 2024 12:28:29 -0400
+	id 1sTl2Z-0004MC-3o; Tue, 16 Jul 2024 12:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1f-0007RV-Mi; Tue, 16 Jul 2024 12:27:40 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sTl1f-0007RU-Ml; Tue, 16 Jul 2024 12:27:40 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1b-0006dX-Bs; Tue, 16 Jul 2024 12:27:39 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-70cdc91b227so449691b3a.2; 
- Tue, 16 Jul 2024 09:27:22 -0700 (PDT)
+ id 1sTl1b-0006dq-Cz; Tue, 16 Jul 2024 12:27:39 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-70af8128081so3885564b3a.1; 
+ Tue, 16 Jul 2024 09:27:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147241; x=1721752041; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721147245; x=1721752045; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CFw001e7GD8WEMem20VntnHs8lxAIjbQ2/80VeZWCz4=;
- b=XV9Qs9ZO0Q/3TLIqOwU01tSWA25uWYR+LRXMy/gQQAUUesgI0XB73TaDMITS4pbgw8
- AP/9yjAQgKvCPzsH1SD2e3frCyAtMpRlA+gu9I6eNof7NstTTWIog09q5zlAmHl8A8C+
- /+nbgAVfLHC/cies8NjHLiwf6Eu8xh2q99wWCobnhZYSe80JyvZkZkJ8OZ890peElNcn
- pA3uYq5SNF/a0IJ31Vb5ud19ScpXJmqjNMBuLWVURBs+F3reNYe54SeX4EopiLfPZe9C
- CVkocLE6zEAbF9b/v5HFmxjJZclPimFOr5sMUWfjepeSy6OdyVUhnj66n1bPr0HWY5qv
- 4QYQ==
+ bh=jbl1GeXwoz46Altpg40xcQTbbbBXwRHlgtS1l83HdP8=;
+ b=QXZwGBtaT+45R4VKUAZ0xVb+skyDG+1Y8xuoGxS4MtuQDNeiQONvNl6gFhKYmohJ+9
+ uJFDpAKLt1Cc/sAy7wLHmzRTFMX7yXZH6/WstcALUmxpbcIbq0+MrdVsgHegt/mZIx/r
+ Dyu9sJNOA1Bep7FC+QM7bTonKtyDqAIrw3serSD+X/ym+EE1nOUj1Vic5A1Bb20nVwXP
+ KxEk8dCBqCTSrIqDwH0A/K/8Re0zFKE4RA5/f50T4bd9hUU/8V+KhBJQ7zs+J31QoWZa
+ XGCd++n0Au024uR97KZzfEoQBWRZB5qI1fUCEkrJ/5FjholgE2aggWRHzMs9N0c6WkBp
+ BysQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147241; x=1721752041;
+ d=1e100.net; s=20230601; t=1721147245; x=1721752045;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CFw001e7GD8WEMem20VntnHs8lxAIjbQ2/80VeZWCz4=;
- b=V4CriB0G/toYN4q5KUsywCvgwRrKiSzURoyZwYWH9uWjaNvN9ahGUxhQezHnR//pJL
- eR8Ubc9XyqUdjQUQzX9L/BNRTKup758od1xau+ZKzu2I6auQZk0cxezGrekaT0wcvYml
- BD+CioFzJYsGi4P+E6QvmbWUDyJ0WpOtSX2jHLx68+VrAzpg1QOyXRWy6etQSH+Yx4lw
- z5nKp3Visf4qEGGnIC3WUG9g9rMasJzgMDscKeIrGSTM1/s9IIUyu0EMzLDhWcsvLW+3
- Zs+Fh+G6gXau2tV7VjxGpr/0LNlza8EzPsFPq4fc7eZz9QOu3Uo+c2I+CU+l0BGjJal4
- zJNg==
+ bh=jbl1GeXwoz46Altpg40xcQTbbbBXwRHlgtS1l83HdP8=;
+ b=tvIwMR2+eL77VvhwFtXuqUOwo6CGzu41cd3J14CfGSQ2OR1ummoRu+jKrHTGwx+e0E
+ wpCXPOL7bVrTaJmfMVFHPmSRs1Nv+a9mXuGUB1sHvgKodAZSJYNmeweDfbyawmageb1f
+ +3Sg4vzGvDbSHzx+i0XF7W/7KPtk3emdAR2hjnwpFlFYbZj5VMvS8PaAyoQSz+f7a1a/
+ jJdD6oTW8h+AxaO7BIbSA4ws8n/grWXY4xtK0it/az3PlkTwOcEHKDuNsjI52v8taVl0
+ A3R6biUjjYUoADhFfjSECVzuWsGZsyCTj5Rib3O4QQRT+Cx8s9EQWEWinem2UtiSD4hM
+ +QlA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUOl/wFP+eHj2GobBi7pfIZUHTEO49GylcJQ52T9ZANkRdInNQwtZUyG/tFaS77b0BD2uVzkdY4fGs5Sy0P5VIjB62MjWE=
-X-Gm-Message-State: AOJu0Yx3/lJpwkrrhc4IVdZfhSL7/8mgLBU3/fW/EhzlWQBk/hs3lZA6
- qvu4/nOu9nq5HGrIWEmkGgagarSrHQtbRM08qbPlhG8Y+bdR35USYkkUjw==
-X-Google-Smtp-Source: AGHT+IHJ8Lgkvexh+kbDIxR+lTp85v4LVe9wJZMycbu3OE/wnfLFbFqjH+GdRrkBHFOFirJ3MvBJYw==
-X-Received: by 2002:a05:6a00:10c5:b0:706:4889:960d with SMTP id
- d2e1a72fcca58-70c1fbdef6cmr4240437b3a.16.1721147240939; 
- Tue, 16 Jul 2024 09:27:20 -0700 (PDT)
+ AJvYcCXsFkxyqBbEQ3jqldymsoexXm1cw3z/v0liMJ2EKpkF4ric7TskuPhAvDmCGFPvVELCxttiR7ydutpm3wTYgvbSo9jf2+8=
+X-Gm-Message-State: AOJu0YwNkZPE4WVqpVoBeJy6wtjOh8nJU9411O3KSA7I17rXlYJLFUG4
+ bNSl3GWiQ3stphXofpzB1sFx3W2+U17bTp9mcRVSFEhpr5zYHaEbQMMilA==
+X-Google-Smtp-Source: AGHT+IER5tSaxQNurxyWXwAWjSOCzVkPwWUzt6g/jxQBh+Ck87c7L3XoiXqzOCadJSPWSmaUa6DPJA==
+X-Received: by 2002:a05:6a00:3916:b0:706:6af8:e088 with SMTP id
+ d2e1a72fcca58-70c1fb4a270mr3396133b3a.3.1721147245053; 
+ Tue, 16 Jul 2024 09:27:25 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.27.18
+ d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.27.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:27:20 -0700 (PDT)
+ Tue, 16 Jul 2024 09:27:24 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 15/19] ppc/pnv: Add big-core machine property
-Date: Wed, 17 Jul 2024 02:26:11 +1000
-Message-ID: <20240716162617.32161-16-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH v3 16/19] system/cpus: Add cpu_pause() function
+Date: Wed, 17 Jul 2024 02:26:12 +1000
+Message-ID: <20240716162617.32161-17-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
 References: <20240716162617.32161-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,108 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Big-core implementation is complete, so expose it as a machine
-property that may be set with big-core=on option on powernv9 and
-powernv10 machines.
+This factors the CPU pause function from pause_all_vcpus() into a
+new cpu_pause() function, similarly to cpu_resume(). cpu_resume()
+is moved to keep it next to cpu_pause().
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c | 61 ++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 45 insertions(+), 16 deletions(-)
+ include/hw/core/cpu.h |  8 ++++++++
+ system/cpus.c         | 30 +++++++++++++++++-------------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 322ab9073b..08aaac359b 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -2581,6 +2581,34 @@ static int pnv10_xive_match_nvt(XiveFabric *xfb, uint8_t format,
-     return total_count;
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index a2c8536943..e6acfcb59a 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -984,6 +984,14 @@ void cpu_reset_interrupt(CPUState *cpu, int mask);
+  */
+ void cpu_exit(CPUState *cpu);
+ 
++/**
++ * cpu_pause:
++ * @cpu: The CPU to pause.
++ *
++ * Pauses CPU, i.e. puts CPU into stopped state.
++ */
++void cpu_pause(CPUState *cpu);
++
+ /**
+  * cpu_resume:
+  * @cpu: The CPU to resume.
+diff --git a/system/cpus.c b/system/cpus.c
+index d3640c9503..5e3a988a0a 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -568,6 +568,22 @@ void cpu_thread_signal_destroyed(CPUState *cpu)
+     qemu_cond_signal(&qemu_cpu_cond);
  }
  
-+static bool pnv_machine_get_big_core(Object *obj, Error **errp)
++void cpu_pause(CPUState *cpu)
 +{
-+    PnvMachineState *pnv = PNV_MACHINE(obj);
-+    return pnv->big_core;
-+}
-+
-+static void pnv_machine_set_big_core(Object *obj, bool value, Error **errp)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(obj);
-+    pnv->big_core = value;
-+}
-+
-+static bool pnv_machine_get_hb(Object *obj, Error **errp)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(obj);
-+
-+    return !!pnv->fw_load_addr;
-+}
-+
-+static void pnv_machine_set_hb(Object *obj, bool value, Error **errp)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(obj);
-+
-+    if (value) {
-+        pnv->fw_load_addr = 0x8000000;
++    if (qemu_cpu_is_self(cpu)) {
++        qemu_cpu_stop(cpu, true);
++    } else {
++        cpu->stop = true;
++        qemu_cpu_kick(cpu);
 +    }
 +}
 +
- static void pnv_machine_power8_class_init(ObjectClass *oc, void *data)
++void cpu_resume(CPUState *cpu)
++{
++    cpu->stop = false;
++    cpu->stopped = false;
++    qemu_cpu_kick(cpu);
++}
+ 
+ static bool all_vcpus_paused(void)
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -2632,6 +2660,12 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
-     pmc->dt_power_mgt = pnv_dt_power_mgt;
+@@ -588,12 +604,7 @@ void pause_all_vcpus(void)
  
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-+
-+    object_class_property_add_bool(oc, "big-core",
-+                                   pnv_machine_get_big_core,
-+                                   pnv_machine_set_big_core);
-+    object_class_property_set_description(oc, "big-core",
-+                              "Use big-core (aka fused-core) mode");
+     qemu_clock_enable(QEMU_CLOCK_VIRTUAL, false);
+     CPU_FOREACH(cpu) {
+-        if (qemu_cpu_is_self(cpu)) {
+-            qemu_cpu_stop(cpu, true);
+-        } else {
+-            cpu->stop = true;
+-            qemu_cpu_kick(cpu);
+-        }
++        cpu_pause(cpu);
+     }
+ 
+     /* We need to drop the replay_lock so any vCPU threads woken up
+@@ -613,13 +624,6 @@ void pause_all_vcpus(void)
+     bql_lock();
  }
  
- static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
-@@ -2668,6 +2702,17 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
- 
-     pnv_machine_p10_common_class_init(oc, data);
-     mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-+
-+    /*
-+     * This is the parent of POWER10 Rainier class, so properies go here
-+     * rather than common init (which would add them to both parent and
-+     * child which is invalid).
-+     */
-+    object_class_property_add_bool(oc, "big-core",
-+                                   pnv_machine_get_big_core,
-+                                   pnv_machine_set_big_core);
-+    object_class_property_set_description(oc, "big-core",
-+                              "Use big-core (aka fused-core) mode");
- }
- 
- static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
-@@ -2680,22 +2725,6 @@ static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
-     pmc->i2c_init = pnv_rainier_i2c_init;
- }
- 
--static bool pnv_machine_get_hb(Object *obj, Error **errp)
+-void cpu_resume(CPUState *cpu)
 -{
--    PnvMachineState *pnv = PNV_MACHINE(obj);
--
--    return !!pnv->fw_load_addr;
+-    cpu->stop = false;
+-    cpu->stopped = false;
+-    qemu_cpu_kick(cpu);
 -}
 -
--static void pnv_machine_set_hb(Object *obj, bool value, Error **errp)
--{
--    PnvMachineState *pnv = PNV_MACHINE(obj);
--
--    if (value) {
--        pnv->fw_load_addr = 0x8000000;
--    }
--}
--
- static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, run_on_cpu_data arg)
+ void resume_all_vcpus(void)
  {
-     CPUPPCState *env = cpu_env(cs);
+     CPUState *cpu;
 -- 
 2.45.1
 
