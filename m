@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839729325A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95809325AF
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:33:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTgN2-0001nc-7y; Tue, 16 Jul 2024 07:29:24 -0400
+	id 1sTgQS-0000MX-45; Tue, 16 Jul 2024 07:32:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sTgMx-0001Ug-TG
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:29:20 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1sTgQI-0008Nh-Se
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:32:48 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sTgMk-0003s5-5q
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:29:19 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-58ba3e38028so6955464a12.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 04:29:05 -0700 (PDT)
+ id 1sTgQF-0004ak-Ou
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:32:46 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-58b0dddab63so8316987a12.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 04:32:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721129344; x=1721734144; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721129562; x=1721734362; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=noVFkfv9hSGerHgQRa8ex8s8rIJyLdiXzsYUcNYuafY=;
- b=y+/4vU65xBJaMtOjW0HmjYL1fpaEChGzf3VwLrusvehm5qh0SmVfGLB7ecnUqzbuur
- 0uV+i2bH3/TIMNvISfsZCXnMa3XlWYw8GwEqL6WJRPpxlf/JHm7Q8XpKI3Lz1JV77HlP
- oPP1Nz9FGSqmdlXr8KlQmf1POcRy+SoO2VRAmTwfr/uyi9iqcGhr4JBU6D69oBbwM3iF
- OpKnEOxnMk0j2kwvtPZTj2pqjaZUuxF+7Q1OFCPHfTYgr3evDUTo0RCr5qBvb+ZycYlN
- 0beWJuM5smSMeDekYmLYSqlDsQcLSr4Zl3kyZCdNmzAw52DxQ2oVlZODQKR93IupoP6o
- BrJQ==
+ bh=v+UbT74xhk+b2SVYVJW8InGMelgItyrvL9jYPz+CIMg=;
+ b=ZGCX6w4UNta3DoSqlOJSRjjLxdSOQzRlKtfM3UqjAdEkOUuUyR/PwCCQJwDluEOLsX
+ N0OJTh3WHoNaXwHDHZphppdCHSjg6kORwM6c/77Bp1gDWJubcmis/ZY92EMhRHU/qD8c
+ d1bNL1NAZUXL6RRJgB01+LaTtCycu4WSge1Y5c1vLf6Kr3EH5Z4E3h90i/aL4krkbuZs
+ 5Yuu3ELTa5tBq7QPbcP0zmIjNaNUScurIKwXEkQQ+cHcfepebZxGCgxxdfS0hfrwJYpu
+ FAF2gNtDAw/VuBpLamZ1yJ1o0lIK2gT/KT+spZ/oX9msnXIVvkDPN/6msKpeCj/EW67y
+ IQJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721129344; x=1721734144;
+ d=1e100.net; s=20230601; t=1721129562; x=1721734362;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=noVFkfv9hSGerHgQRa8ex8s8rIJyLdiXzsYUcNYuafY=;
- b=K80+OU6V78a5XtImi2qHFyGCy7c+L2VD38tPSZL4W4Y/MJEJ2yGU2Vuc/ecbanyDR8
- 58jmLV/9/nAeDVi9S2L7YVte+1cejjYYwlGvdcuZjJxgTjIpWTKPufFYdZ+phPJ1JKcY
- FnDur2IR2s2ZNQnENFNPyA6kI9M69fhzNGawyOWih3ez1j+Q/fwBw+ZQzH7Uo9VCgbFl
- AJ10ryb90zQqvj2mF7mFqSeNj+JjGqJ2A7Pr+SCuq8hkxQJtI1RE+ZbXAHjBw8a9bH5C
- 44IFXoPjNvo3uB7a6rAmQsFb6JPUs/v+DBS9yom7u6aiMhzFoPaTFUxtRnMy3mMbuT0J
- 6iFA==
+ bh=v+UbT74xhk+b2SVYVJW8InGMelgItyrvL9jYPz+CIMg=;
+ b=w4aLy464mOErRDf/nbF7jsO5c2M+1/joYbb/5yjjL/dJN5RZPMWG40Nxgs7h62tngE
+ WNUNfE++20lA4c3UMIOzNGGMn81ujhU3dXJmwLHth5vl50bTzbCogMLAHfP0iYRgWCtx
+ qvaMvVVRZESSO1V1vdO6LImpDA5ql/viDW4BEwcNcBAsw576OQPrUNbRd0d58oRqVQbV
+ ullAGoT1RQGIo2mIpp51Eux2aDzsnqi9liVovu4mW6hO9Q4VyKLnz9OHK2K73k438EYt
+ aqu+9Mbuf9ZwDUNTzIGt1t8JYlRGhfkDKQ4I4Wrr0BMW9TOp6+2hUHBFQRbvPo6A0O/2
+ 2PSA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7jZuvdeCdCTvRAgah01vUDb4Ib2SVILVvCCmM/luN25YcIAi7pmgTqj/gVai1jY5m96bWplBnxYjRe1X8z/rhAGy2S9c=
-X-Gm-Message-State: AOJu0YzKB7SD0aQ5wr0mSyLiwmjJApkMkF+0cAoKaPxP2/P5KFRzMdnK
- SY4VaonD3EkI+3V39Y0vTqgwZBKe9N8czjT+hQtnzHodAni+2Hztni4SEACyHZtsA4bHv2Xv9VW
- 28nWh1NrSKlWyGSmljIp1rTJhXWf658WsVvn1SA==
-X-Google-Smtp-Source: AGHT+IGPOAxJmAk5wg1MK+6VsfmkOIqu1xy7VK6Jb4SiocFk0kazzWOCso+3VlU3RwvJPqRRCse/E5nW4XauBiYPMfc=
-X-Received: by 2002:a05:6402:4316:b0:59c:2254:fcea with SMTP id
- 4fb4d7f45d1cf-59eee14a85bmr1379462a12.1.1721129344113; Tue, 16 Jul 2024
- 04:29:04 -0700 (PDT)
+ AJvYcCUQAyWadT4V1bDKTo1+300kn9bpyBLtB9nRcvPFEXCfeiOqAu8LTpngYr0lNWVBpE6LJXWbtnbeqiBjFRCvnsEhdUdt9EU=
+X-Gm-Message-State: AOJu0YzjhOskz6vMZXp8QGoA5bUeILuX7CA32bghlXvYNm6P7YuQnSoJ
+ aL54p/PEgcLS6KSdhnQ/gFwR0KU8AQmtCTUef5n29KN+TahefpXejLoHDgvy5w6Y1+5J/usCP0o
+ 32jUuGNZOPcBlfTX8oFZKqhpocO3QIr2Dvd7Ivw==
+X-Google-Smtp-Source: AGHT+IE+O8dqUI/OG0kgY2BNmik8WSmu7vBcnDW2s3w9tfiJgcv6WUep5/b41oRdvvBiFsk2mgfhVG4zmvbSX7UPnZI=
+X-Received: by 2002:a05:6402:3582:b0:58d:ebf9:4e2d with SMTP id
+ 4fb4d7f45d1cf-59eee833de0mr1345309a12.2.1721129561829; Tue, 16 Jul 2024
+ 04:32:41 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240716-pmu-v2-0-f3e3e4b2d3d5@daynix.com>
- <20240716-pmu-v2-3-f3e3e4b2d3d5@daynix.com>
-In-Reply-To: <20240716-pmu-v2-3-f3e3e4b2d3d5@daynix.com>
+ <20240716-pmu-v2-4-f3e3e4b2d3d5@daynix.com>
+In-Reply-To: <20240716-pmu-v2-4-f3e3e4b2d3d5@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Jul 2024 12:28:52 +0100
-Message-ID: <CAFEAcA-uGXSvv1-+jjwtxEg3oD2a6umqtsNqnLvnkJ-RGnTL4Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] target/arm: Do not allow setting 'pmu' for hvf
+Date: Tue, 16 Jul 2024 12:32:31 +0100
+Message-ID: <CAFEAcA9trFnYaZbVehHhxET68QF=+X6GRsEh+zcavL-1DxDB4w@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] target/arm: Always add pmu property
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
  kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,31 +92,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue, 16 Jul 2024 at 09:28, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >
-> hvf currently does not support PMU.
+> kvm-steal-time and sve properties are added for KVM even if the
+> corresponding features are not available. Always add pmu property too.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  target/arm/cpu.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  target/arm/cpu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
 > diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 8c180c679ce2..9e1d15701468 100644
+> index 9e1d15701468..32508644aee7 100644
 > --- a/target/arm/cpu.c
 > +++ b/target/arm/cpu.c
-> @@ -1603,6 +1603,10 @@ static void arm_set_pmu(Object *obj, bool value, Error **errp)
+> @@ -1781,9 +1781,10 @@ void arm_cpu_post_init(Object *obj)
+>
+>      if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
+>          cpu->has_pmu = true;
+> -        object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
 >      }
 >
->      if (value) {
-> +        if (hvf_enabled()) {
-> +            error_setg(errp, "'pmu' feature not suported by hvf");
-> +            return;
-> +        }
->          if (kvm_enabled() && !kvm_arm_pmu_supported()) {
->              error_setg(errp, "'pmu' feature not supported by KVM on this host");
->              return;
+> +    object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
+> +
+>      /*
+>       * Allow user to turn off VFP and Neon support, but only for TCG --
+>       * KVM does not currently allow us to lie to the guest about its
 
-Typo (should be "supported") but otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Before we do this we need to do something to forbid setting
+the pmu property to true on CPUs which don't have it. That is:
+
+ * for CPUs which do have a PMU, we should default to present, and
+   allow the user to turn it on and off with pmu=on/off
+ * for CPUs which do not have a PMU, we should not let the user
+   turn it on and off (either by not providing the property, or
+   else by making the property-set method raise an error, or by
+   having realize detect the discrepancy and raise an error)
 
 thanks
 -- PMM
