@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A355932E59
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0495932E55
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl2Q-0002J7-6Q; Tue, 16 Jul 2024 12:28:26 -0400
+	id 1sTl2Q-0002bw-Ih; Tue, 16 Jul 2024 12:28:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1F-0006V5-KH; Tue, 16 Jul 2024 12:27:17 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1sTl1C-0006PN-Qb; Tue, 16 Jul 2024 12:27:13 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1A-0006WV-1f; Tue, 16 Jul 2024 12:27:10 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-70af8128081so3885119b3a.1; 
- Tue, 16 Jul 2024 09:27:04 -0700 (PDT)
+ id 1sTl1A-0006aP-CE; Tue, 16 Jul 2024 12:27:10 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-25e0c0df558so2369974fac.0; 
+ Tue, 16 Jul 2024 09:27:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147223; x=1721752023; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721147226; x=1721752026; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z2WZMohObGeDSAqehCGzt7eT5JqWsK9VYJvFmu0NkFE=;
- b=MDM0WPhxDLS63STlovLvVrFHaM6LgMXnFUib7sPDYdZDnqTOiiDaJx7y8Dv5HQbfEY
- 67SKDctHMvr755IFo+0cr8a8X9Y0/YQekc3/eYJCewSfFgCm6F2rW60onyj6Wt1HH9gY
- ZQ8bJ2oZKecn+av0Py0zvbUhWxJSJHWv25PuTyv0I+v+BWmkVtE+Fd3ldvms1EKFUCxJ
- iu4OMYUWaJFtDG4rBUsakGd0FhXrltpb03n+JsK33Zt7BKsNpH1B9ubhEBQZ7Qn8RIea
- m3vYYhwD5ThYfA0ZMaQn+QznTPp3wMunfA6LL766OR9kHcSrwxiP1eSbQQCmUM86Xstt
- xZnQ==
+ bh=sqArnmvQ/vJDjlGwKA+4gw/JcAXFrp1FmAC8/CBrsWI=;
+ b=aOmrYoP1pMZq7Z8YwSSLE/PZjtyeNNOe+sF4uhQSium2Sqgy4RLoMuqBd6NeC0Yl07
+ IUtzMh2TwV5ATBBPnKKf0OLvCg0QfqpbtRE5VwnztBS2GOcmlIv9HnmyGruTPrt2r/6/
+ rOojpzaPEEb5Y8U2RdCLemexEisZt3vgX47FbQDmLhKp3jZvoSFz7ss8odaLYkqCzPRY
+ bfQqfAMcBgNq2ESjV9cDWrsbvIqf1FaZc7zoOLc9yDDjJmefNBBUAY7Pmvb8d7OV8q2X
+ jG55Vs1hZ2EMbiaZXg7RLW1Jal6i/ooC9FckFTNlEqTUKQipLI/Xg0jVXAvo8zi1VAxN
+ C2Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147223; x=1721752023;
+ d=1e100.net; s=20230601; t=1721147226; x=1721752026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z2WZMohObGeDSAqehCGzt7eT5JqWsK9VYJvFmu0NkFE=;
- b=NxrnMZgx54lFgIb2qP25PUN9QDo6ITmSVFwg04ZZQP4JIk6k6YysN2mFaKfabkm5KU
- 9lQqFw34es4MVIOF1vm7s++41eR/cj8m6kpxtV0zq619smhTzSerl1Hpd+RAKlsz++Xe
- phGtgAc4VagQu75PBeO1/bdKM8QDTtvZ/3Iy+w78GEVUl953InQ3/D9VA0Vvrc5CW0dY
- FyBE0TO/bf3YngPN7C/Csmt3dwwHkSg+8YddhknpnM2Pb6tw5QfkdRD2hG9o7m+WPBmC
- qORmWToalFECaqRNE6zO3S68MxHinoohaQNoCbkQnkNk6SqQ6f12ltdPMldYTCP8BUtZ
- Uv7Q==
+ bh=sqArnmvQ/vJDjlGwKA+4gw/JcAXFrp1FmAC8/CBrsWI=;
+ b=SB2S2OIPHEV/7aLqzahyUyJ4Hg0lrPilBvKx8e14yBN+rsAct3xGiTkx6Pucb51XE+
+ u4OnL+EU/JnTrm7GuGF1GI7dgtlPCqBrXdqJ6reaGWZ4/JTr44lLccd62/amse/hii3Q
+ 3gHziLAnsKUd/J0Gy1pBw63NFbwhm+YOZdF40tM+0tShKViMueC0cyvkG49bjmE72G1i
+ MjSK2dTIWy4DCzN3ectVs8ayhvmKYFUATrDXHcUZcG4t/HBM09y/UNFbblyt1uP3z1TR
+ GbLn/lQF4OCsHIvpRi1JB4V90ncItRRRC6SKGEQifCi6lg9fuuLVf/GJg9NboPqZgkNI
+ kZxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvdnzqjdu3pLyydkNXhYw4XKVJfpr0PTfhcvGZUapGiCAs8gvQ5SGjUPs8sViKHdXxKFnPtqrVpSnhlE0gPuT3QXO9R9c=
-X-Gm-Message-State: AOJu0YzUpgbC7b7p72vmJ+Jcncu1SM1noNUN6PL9xbT84cbpiUJfnaO+
- pfqGQXRf640jzT7r3C0YaOQSklgkMumITodbid/WbWUNVUbijZ+8SKeDQg==
-X-Google-Smtp-Source: AGHT+IH6RRHSntN7spo7FOEur483LC6RDgdAPvfD/gWl92jx0FjY58XHXHERBXhq7m9lDhp2b+FCFw==
-X-Received: by 2002:a05:6a21:3213:b0:1c0:bf35:ef4c with SMTP id
- adf61e73a8af0-1c3f11f1618mr3025033637.11.1721147223054; 
- Tue, 16 Jul 2024 09:27:03 -0700 (PDT)
+ AJvYcCWxdwhUvn9fbSjfZpd6ArWt0H6+orC9tHzZ6Oz9B4hFevQfvRic2P+NU7C+TCsWWbczW6acZn694PNTcC4g379j1RyjTkk=
+X-Gm-Message-State: AOJu0Yx7jaLNxYNvzVoFdgvn8EIOiNE6z0oFsq45vT/iRJ2s4u8HOMTK
+ mE6XpchNa90r+07dQyMFj3bdMgiM9i+gkRwRJ4w7xcN4HEM5F1dRJROIAQ==
+X-Google-Smtp-Source: AGHT+IG9i9FrA/O+kBq2GYmeyMWeyu5koMxf3KYBVUtV1AgtQLkemKmITO++YGiSN96A4zEaystvBA==
+X-Received: by 2002:a05:6870:8992:b0:25e:b825:94db with SMTP id
+ 586e51a60fabf-260bdfefa7dmr2215686fac.48.1721147226542; 
+ Tue, 16 Jul 2024 09:27:06 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.59
+ d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.27.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:27:02 -0700 (PDT)
+ Tue, 16 Jul 2024 09:27:06 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 10/19] ppc/pnv: Add a big-core mode that joins two regular
- cores
-Date: Wed, 17 Jul 2024 02:26:06 +1000
-Message-ID: <20240716162617.32161-11-npiggin@gmail.com>
+Subject: [PATCH v3 11/19] ppc/pnv: Add allow for big-core differences in DT
+ generation
+Date: Wed, 17 Jul 2024 02:26:07 +1000
+Message-ID: <20240716162617.32161-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
 References: <20240716162617.32161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=npiggin@gmail.com; helo=mail-oa1-x33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,250 +95,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER9 and POWER10 machines come in two variants, big-core and
-small-core. Big-core machines are SMT8 from software's point of view,
-but the low level platform topology ("xscom registers and pervasive
-addressing"), these look more like a pair of small cores ganged
-together.
-
-Presently the way this is modelled is to create one SMT8 PnvCore and add
-special cases to xscom and pervasive for big-core mode that tries to
-split this into two small cores, but this is becoming too complicated to
-manage.
-
-A better approach is to create 2 core structures and ganging them
-together to look like an SMT8 core in TCG. Then the xscom and pervasive
-models mostly do not need to differentiate big and small core modes.
-
-This change adds initial mode bits and QEMU topology handling to
-split SMT8 cores into 2xSMT4 cores.
+device-tree building needs to account for big-core mode, because it is
+driven by qemu cores (small cores). Every second core should be skipped,
+and every core should describe threads for both small-cores that make
+up the big core.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv.h      |  2 +
- include/hw/ppc/pnv_chip.h |  1 +
- include/hw/ppc/pnv_core.h |  1 +
- hw/ppc/pnv.c              | 80 ++++++++++++++++++++++++++++++++-------
- hw/ppc/pnv_core.c         |  8 +++-
- 5 files changed, 78 insertions(+), 14 deletions(-)
+ hw/ppc/pnv.c | 43 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
-index 1993dededf..283ddd50e7 100644
---- a/include/hw/ppc/pnv.h
-+++ b/include/hw/ppc/pnv.h
-@@ -101,6 +101,8 @@ struct PnvMachineState {
-     PnvPnor      *pnor;
- 
-     hwaddr       fw_load_addr;
-+
-+    bool         big_core;
- };
- 
- PnvChip *pnv_get_chip(PnvMachineState *pnv, uint32_t chip_id);
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 7d5d08bcdc..69d8273efe 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -27,6 +27,7 @@ struct PnvChip {
-     uint64_t     ram_start;
-     uint64_t     ram_size;
- 
-+    bool         big_core;
-     uint32_t     nr_cores;
-     uint32_t     nr_threads;
-     uint64_t     cores_mask;
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index 693acb189b..50164e9e1f 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -49,6 +49,7 @@ struct PnvCore {
- 
-     /*< public >*/
-     PowerPCCPU **threads;
-+    bool big_core;
-     uint32_t pir;
-     uint32_t hwid;
-     uint64_t hrmor;
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index eee34ca926..d902860ecd 100644
+index d902860ecd..1d08176b75 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -1002,14 +1002,39 @@ static void pnv_init(MachineState *machine)
-     pnv->num_chips =
-         machine->smp.max_cpus / (machine->smp.cores * machine->smp.threads);
+@@ -141,9 +141,9 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+     CPUPPCState *env = &cpu->env;
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
+     PnvChipClass *pnv_cc = PNV_CHIP_GET_CLASS(chip);
+-    g_autofree uint32_t *servers_prop = g_new(uint32_t, smt_threads);
++    uint32_t *servers_prop;
+     int i;
+-    uint32_t pir;
++    uint32_t pir, tir;
+     uint32_t segs[] = {cpu_to_be32(28), cpu_to_be32(40),
+                        0xffffffff, 0xffffffff};
+     uint32_t tbfreq = PNV_TIMEBASE_FREQ;
+@@ -154,7 +154,10 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+     char *nodename;
+     int cpus_offset = get_cpus_node(fdt);
  
-+    if (pnv->big_core) {
-+        if (machine->smp.threads % 2 == 1) {
-+            error_report("Cannot support %d threads with big-core option "
-+                         "because it must be an even number",
-+                         machine->smp.threads);
-+            exit(1);
-+        }
-+        max_smt_threads *= 2;
-+    }
+-    pnv_cc->get_pir_tir(chip, pc->hwid, 0, &pir, NULL);
++    pnv_cc->get_pir_tir(chip, pc->hwid, 0, &pir, &tir);
 +
-     if (machine->smp.threads > max_smt_threads) {
-         error_report("Cannot support more than %d threads/core "
-                      "on %s machine", max_smt_threads, mc->desc);
-+        if (pmc->max_smt_threads == 4) {
-+            error_report("(use big-core=on for 8 threads per core)");
-+        }
-         exit(1);
++    /* Only one DT node per (big) core */
++    g_assert(tir == 0);
+ 
+     nodename = g_strdup_printf("%s@%x", dc->fw_name, pir);
+     offset = fdt_add_subnode(fdt, cpus_offset, nodename);
+@@ -235,12 +238,28 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
      }
  
-+    if (pnv->big_core) {
-+        /*
-+         * powernv models PnvCore as a SMT4 core. Big-core requires 2xPnvCore
-+         * per core, so adjust topology here. pnv_dt_core() processor
-+         * device-tree and TCG SMT code make the 2 cores appear as one big core
-+         * from software point of view. pnv pervasive models and xscoms tend to
-+         * see the big core as 2 small core halves.
-+         */
-+        machine->smp.cores *= 2;
-+        machine->smp.threads /= 2;
-+    }
-+
-     if (!is_power_of_2(machine->smp.threads)) {
--        error_report("Cannot support %d threads/core on a powernv"
-+        error_report("Cannot support %d threads/core on a powernv "
-                      "machine because it must be a power of 2",
-                      machine->smp.threads);
-         exit(1);
-@@ -1048,6 +1073,8 @@ static void pnv_init(MachineState *machine)
-                                 &error_fatal);
-         object_property_set_int(chip, "nr-threads", machine->smp.threads,
-                                 &error_fatal);
-+        object_property_set_bool(chip, "big-core", pnv->big_core,
-+                                &error_fatal);
-         /*
-          * The POWER8 machine use the XICS interrupt interface.
-          * Propagate the XICS fabric to the chip and its controllers.
-@@ -1175,11 +1202,17 @@ static void pnv_get_pir_tir_p9(PnvChip *chip,
-                                 uint32_t core_id, uint32_t thread_id,
-                                 uint32_t *pir, uint32_t *tir)
- {
--    if (pir) {
--        if (chip->nr_threads == 8) {
--            *pir = (chip->chip_id << 8) | ((thread_id & 1) << 2) |
--                   (core_id << 3) | (thread_id >> 1);
--        } else {
-+    if (chip->big_core) {
-+        /* Big-core interleaves thread ID between small-cores */
-+        thread_id <<= 1;
-+        thread_id |= core_id & 1;
-+        core_id >>= 1;
-+
-+        if (pir) {
-+            *pir = (chip->chip_id << 8) | (core_id << 3) | thread_id;
-+        }
-+    } else {
-+        if (pir) {
-             *pir = (chip->chip_id << 8) | (core_id << 2) | thread_id;
-         }
-     }
-@@ -1203,11 +1236,17 @@ static void pnv_get_pir_tir_p10(PnvChip *chip,
-                                 uint32_t core_id, uint32_t thread_id,
-                                 uint32_t *pir, uint32_t *tir)
- {
--    if (pir) {
--        if (chip->nr_threads == 8) {
--            *pir = (chip->chip_id << 8) | ((core_id / 4) << 4) |
--                    ((core_id % 2) << 3) | thread_id;
--        } else {
-+    if (chip->big_core) {
-+        /* Big-core interleaves thread ID between small-cores */
-+        thread_id <<= 1;
-+        thread_id |= core_id & 1;
-+        core_id >>= 1;
-+
-+        if (pir) {
-+            *pir = (chip->chip_id << 8) | (core_id << 3) | thread_id;
-+        }
-+    } else {
-+        if (pir) {
-             *pir = (chip->chip_id << 8) | (core_id << 2) | thread_id;
-         }
-     }
-@@ -2180,7 +2219,8 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
-                                     &k->parent_realize);
- }
- 
--static void pnv_chip_core_sanitize(PnvChip *chip, Error **errp)
-+static void pnv_chip_core_sanitize(PnvMachineState *pnv, PnvChip *chip,
-+                                   Error **errp)
- {
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
-     int cores_max;
-@@ -2201,6 +2241,17 @@ static void pnv_chip_core_sanitize(PnvChip *chip, Error **errp)
-     }
-     chip->cores_mask &= pcc->cores_mask;
- 
-+    /* Ensure small-cores a paired up in big-core mode */
-+    if (pnv->big_core) {
-+        uint64_t even_cores = chip->cores_mask & 0x5555555555555555ULL;
-+        uint64_t odd_cores = chip->cores_mask & 0xaaaaaaaaaaaaaaaaULL;
-+
-+        if (even_cores ^ (odd_cores >> 1)) {
-+            error_setg(errp, "warning: unpaired cores in big-core mode !");
-+            return;
-+        }
-+    }
-+
-     /* now that we have a sane layout, let check the number of cores */
-     cores_max = ctpop64(chip->cores_mask);
-     if (chip->nr_cores > cores_max) {
-@@ -2224,7 +2275,7 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
-     }
- 
-     /* Cores */
--    pnv_chip_core_sanitize(chip, &error);
-+    pnv_chip_core_sanitize(pnv, chip, &error);
-     if (error) {
-         error_propagate(errp, error);
-         return;
-@@ -2255,6 +2306,8 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
-                                 &error_fatal);
-         object_property_set_int(OBJECT(pnv_core), "hrmor", pnv->fw_load_addr,
-                                 &error_fatal);
-+        object_property_set_bool(OBJECT(pnv_core), "big-core", chip->big_core,
-+                                &error_fatal);
-         object_property_set_link(OBJECT(pnv_core), "chip", OBJECT(chip),
-                                  &error_abort);
-         qdev_realize(DEVICE(pnv_core), NULL, &error_fatal);
-@@ -2288,6 +2341,7 @@ static Property pnv_chip_properties[] = {
-     DEFINE_PROP_UINT32("nr-cores", PnvChip, nr_cores, 1),
-     DEFINE_PROP_UINT64("cores-mask", PnvChip, cores_mask, 0x0),
-     DEFINE_PROP_UINT32("nr-threads", PnvChip, nr_threads, 1),
-+    DEFINE_PROP_BOOL("big-core", PnvChip, big_core, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 8cfa94fbfa..6dc05534d7 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -249,7 +249,12 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-     pir_spr->default_value = pir;
-     tir_spr->default_value = tir;
- 
--    env->core_index = core_hwid;
+     /* Build interrupt servers properties */
+-    for (i = 0; i < smt_threads; i++) {
+-        pnv_cc->get_pir_tir(chip, pc->hwid, i, &pir, NULL);
+-        servers_prop[i] = cpu_to_be32(pir);
 +    if (pc->big_core) {
-+        /* 2 "small cores" get the same core index for SMT operations */
-+        env->core_index = core_hwid >> 1;
++        servers_prop = g_new(uint32_t, smt_threads * 2);
++        for (i = 0; i < smt_threads; i++) {
++            pnv_cc->get_pir_tir(chip, pc->hwid, i, &pir, NULL);
++            servers_prop[i * 2] = cpu_to_be32(pir);
++
++            pnv_cc->get_pir_tir(chip, pc->hwid + 1, i, &pir, NULL);
++            servers_prop[i * 2 + 1] = cpu_to_be32(pir);
++        }
++        _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
++                          servers_prop, sizeof(*servers_prop) * smt_threads
++                                        * 2)));
 +    } else {
-+        env->core_index = core_hwid;
-+    }
++        servers_prop = g_new(uint32_t, smt_threads);
++        for (i = 0; i < smt_threads; i++) {
++            pnv_cc->get_pir_tir(chip, pc->hwid, i, &pir, NULL);
++            servers_prop[i] = cpu_to_be32(pir);
++        }
++        _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
++                          servers_prop, sizeof(*servers_prop) * smt_threads)));
+     }
+-    _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
+-                       servers_prop, sizeof(*servers_prop) * smt_threads)));
++    g_free(servers_prop);
  
-     /* Set time-base frequency to 512 MHz */
-     cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
-@@ -354,6 +359,7 @@ static void pnv_core_unrealize(DeviceState *dev)
- static Property pnv_core_properties[] = {
-     DEFINE_PROP_UINT32("hwid", PnvCore, hwid, 0),
-     DEFINE_PROP_UINT64("hrmor", PnvCore, hrmor, 0),
-+    DEFINE_PROP_BOOL("big-core", PnvCore, big_core, false),
-     DEFINE_PROP_LINK("chip", PnvCore, chip, TYPE_PNV_CHIP, PnvChip *),
-     DEFINE_PROP_END_OF_LIST(),
- };
+     return offset;
+ }
+@@ -389,6 +408,10 @@ static void pnv_chip_power9_dt_populate(PnvChip *chip, void *fdt)
+ 
+         _FDT((fdt_setprop(fdt, offset, "ibm,pa-features",
+                            pa_features_300, sizeof(pa_features_300))));
++
++        if (pnv_core->big_core) {
++            i++; /* Big-core groups two QEMU cores */
++        }
+     }
+ 
+     if (chip->ram_size) {
+@@ -450,6 +473,10 @@ static void pnv_chip_power10_dt_populate(PnvChip *chip, void *fdt)
+ 
+         _FDT((fdt_setprop(fdt, offset, "ibm,pa-features",
+                            pa_features_31, sizeof(pa_features_31))));
++
++        if (pnv_core->big_core) {
++            i++; /* Big-core groups two QEMU cores */
++        }
+     }
+ 
+     if (chip->ram_size) {
 -- 
 2.45.1
 
