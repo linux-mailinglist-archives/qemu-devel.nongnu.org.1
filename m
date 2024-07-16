@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A561593296A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 16:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DFE932960
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 16:43:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTjOv-0004LU-E3; Tue, 16 Jul 2024 10:43:33 -0400
+	id 1sTjP0-0004eb-3t; Tue, 16 Jul 2024 10:43:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sTjOt-0004Fh-CQ
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 10:43:31 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1sTjOy-0004ZM-A7
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 10:43:36 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sTjOr-00030k-MK
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 10:43:31 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1fb53bfb6easo37295055ad.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 07:43:28 -0700 (PDT)
+ id 1sTjOv-00031L-Ck
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 10:43:36 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2c965efab0fso3746361a91.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 07:43:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1721141007; x=1721745807; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1721141011; x=1721745811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UDXZelutsce9cIB9fGIii64fwelO+gsXLon0gJsxJ+4=;
- b=ZMM2y9KMqabtnrUqtpkiVLRlaY20xQ4TnYK6UtHuNtpt8AedSf8GQJ8t60S9wr81+/
- yMfxsLPvlumuKTYt3xDw5kBZVs4y/gbNpQuEm4ur2igcxohvaPCO4frzyplUsFH+R4UK
- M7nyvRTqB6VKjweHcgFOBHDVVqIWlm5ewjejAj0vVYt/93r5WZOaJzEP7w4KWMIqDI65
- 01WPyUOlut4P+pNQgCrvqEiLRljvwnF/3VbrsWcoMmSv8eop9gmDuf175b4EZgcqyvYV
- CyvBAWcrRlttPoMGDnL9TmbtGZ8aDDlURP0LhPUcrjgNwDuOUk1PkT53Sa3cWVHtohbD
- whQQ==
+ bh=JaZ8kohlacrwgSAZfsaoX707cOD/zF89IUM4ZLVsfAE=;
+ b=c0hbW2uKdz2Obaz0P42GZiYKxEoCcvCcK/jOj9uudhdWmRD67C8kDZSnvqWx4cQfI/
+ zJvw+QBdfbQ9uq3bjRocls2L9ctFOyw9N2yGxE3v//y2H3xFvZjdE8yP1Ze+uCdS5+bB
+ 1kStgye195LPWOhE8hRdTk3xPp9WOmcrl6uTqeEgG6IKfQ2hXONFhCGgi721qBC4SeBF
+ VwDStkKgVHQAAvYPRxNJocZWk4IgsXppg/iapW9o4q0ap5THiJJrO4VjzkgBicesW6+L
+ QHTxIhC50Jh1JvelgVPPcuspZGXd45WaMJ/rCpYBC0ms+SMEvPuLsa6li+vRojNJcg9a
+ eTpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721141007; x=1721745807;
+ d=1e100.net; s=20230601; t=1721141011; x=1721745811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UDXZelutsce9cIB9fGIii64fwelO+gsXLon0gJsxJ+4=;
- b=mDWv1RviPAtw87ci62TyyPshI/fv8RjQ1JvT/5OBH4+ODDAzy8UEDoY/KFzZdiviMJ
- lH/Ei74vzkxOnya5s6rybZAMK7n1m5QjB9SyMeYdY1ATvHtetTrCA4gOFnBTt6c825MW
- msH7pYJriUWoiGbmvOiQ5OISCrXTM12BE6fc/a3RnTwppc14aDvrpLNBjDwuLRUVolJK
- JXJyENrIfvPLW2Hcw6V6vtWUshiQZI2JbwurD9dpw34zsCEJ5kZAScbLHStRkS1Q7mw6
- XCN5OJfVCcT/w7TbRE0IVjTMj7nHbJHJT7i+OwxsSOC9nRGttw4v7LN7PcCgonAGuyjN
- JkUw==
-X-Gm-Message-State: AOJu0Yxw5K5MO//3Jj/W3h+BSyTzu+C9brhMQgO+KpFsrRKoWsbCjFgj
- HKJxlB5Y3FppgODp0G7RWeNUjyNDFTgIBaPHgMG+XYVeSoxKMTHbQjDKK6yNX14llwrU0biLedm
- Typ0=
-X-Google-Smtp-Source: AGHT+IFcty9g8lbLOQ4dE32RnwkVpQXphfFixBbgeIevudOfss6B7AaJvV42U7MMZyToCIpfDUcsHw==
-X-Received: by 2002:a17:90a:ad8a:b0:2c9:75fd:298a with SMTP id
- 98e67ed59e1d1-2cb36e51603mr1802699a91.42.1721141007318; 
- Tue, 16 Jul 2024 07:43:27 -0700 (PDT)
+ bh=JaZ8kohlacrwgSAZfsaoX707cOD/zF89IUM4ZLVsfAE=;
+ b=QHYM4th8dKwRbFC5iicyX8iVdLKC6/U2Tx72YAeE5SF6NCs3fZbi0CuoV0yxHbsaTh
+ jGKY4ow4wAGRm4fOe3MHu7/n4/Q2Jp4x2MgGi8/d8+SREK0dZry0NS6pQv13TXD/qDyI
+ Duxz4KCU6SDOdSR49S6me6fqfPn/+On54XU4LmH3vHT2+JjyUZsgROCdlWtS5qL7CfO3
+ IR72AwXtWUzol6udGlO6zZ0Zrrm2wKFVERO+QLdowaB2Mouh43YJLdWYBpOUWZ5zirE8
+ LyA0J+4HI4sstMviUWYISvX7Bw7j3y1YiDyJYBI2YBH+vUjrTIB7T1El9NRN+fHoAgZS
+ UL8w==
+X-Gm-Message-State: AOJu0YwMTejVK1yma/yDqVxSPzEA2GLZZlL79PcVY7Y3eUHLgcyujKuT
+ Xa85YinqIDNSux5ziGKMvxigOhSGBQuvht4mE5zu7wf2Yh2JmNZ2t3l/yDmMxiiTJEERWfUNfch
+ Y2r4=
+X-Google-Smtp-Source: AGHT+IE2/awNDIImD5i5Mm29yuImlImQIKSJOSyIDbasxycfDUnaqTK+0KQ/k0C2onrkcCZS3Dgqgg==
+X-Received: by 2002:a17:90a:f3d2:b0:2bf:7eb7:373b with SMTP id
+ 98e67ed59e1d1-2cb37475043mr1725510a91.33.1721141011049; 
+ Tue, 16 Jul 2024 07:43:31 -0700 (PDT)
 Received: from sunil-pc.tail07344b.ts.net ([106.51.187.237])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2caf480d61bsm6084782a91.18.2024.07.16.07.43.23
+ 98e67ed59e1d1-2caf480d61bsm6084782a91.18.2024.07.16.07.43.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 07:43:26 -0700 (PDT)
+ Tue, 16 Jul 2024 07:43:30 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -68,17 +68,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v4 2/9] hw/riscv/virt-acpi-build.c: Update the HID of RISC-V
- UART
-Date: Tue, 16 Jul 2024 20:12:59 +0530
-Message-ID: <20240716144306.2432257-3-sunilvl@ventanamicro.com>
+Subject: [PATCH v4 3/9] tests/acpi: Allow DSDT acpi table changes for aarch64
+Date: Tue, 16 Jul 2024 20:13:00 +0530
+Message-ID: <20240716144306.2432257-4-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716144306.2432257-1-sunilvl@ventanamicro.com>
 References: <20240716144306.2432257-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,33 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The requirement ACPI_060 in the RISC-V BRS specification [1], requires
-NS16550 compatible UART to have the HID RSCV0003. So, update the HID for
-the UART.
-
-[1] -  https://github.com/riscv-non-isa/riscv-brs/releases/download/v0.0.2/riscv-brs-spec.pdf
-       (Chapter 6)
+so that CI tests don't fail when those ACPI tables are updated in the
+next patch. This is as per the documentation in bios-tables-tests.c.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/riscv/virt-acpi-build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 5f5082a35b..36d6a3a412 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -170,7 +170,7 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
-                     uint32_t uart_irq)
- {
-     Aml *dev = aml_device("COM0");
--    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0501")));
-+    aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0003")));
-     aml_append(dev, aml_name_decl("_UID", aml_int(0)));
- 
-     Aml *crs = aml_resource_template();
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..9282ea0fb2 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,7 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/x86/microvm/DSDT.pcie",
 -- 
 2.43.0
 
