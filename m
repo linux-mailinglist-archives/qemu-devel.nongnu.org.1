@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D589326E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 14:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4ED9326EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 14:52:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sThe9-0003Kg-QZ; Tue, 16 Jul 2024 08:51:10 -0400
+	id 1sTheu-0005fj-5x; Tue, 16 Jul 2024 08:51:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sThe7-0003Df-M4
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 08:51:07 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sThep-0005TE-0c
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 08:51:51 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sThe5-0004wO-G9
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 08:51:07 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1fb4a807708so48533575ad.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 05:51:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sThed-0004yX-1P
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 08:51:50 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-58b966b41fbso6912806a12.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 05:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721134264; x=1721739064;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WEJblyW6Ds1TMF7KFQ+gDmurIfGkUROkVQ8nHbOWOsc=;
- b=wIBIlEE6zIuVsLG300I0vs8UpN3cKwfhFvkNTc7E7pu4P1Th5wvButz6VOlyYuQlI7
- 7xTezJfOFQT7FyAgF7WZeXGJ9p7J3IlerZFLHcVBw9rj0cCo0ZjwUl5mtrQHe2ADnClO
- 5rJsjUQzEyxMkYUH1JNAN5lo0v0oN2r+HRfHbHR/QiBi0Ttec9Ihry4u7CduJ1F7lIRx
- 4pnhOpKX4dkkfkXd6ESbJmSk6Y5pCQj8YvpY+1wQ9fNQgvgixK2gjh3+dQhLtiGoLiP7
- 1ZBbZn4hb14xNuWhvWHgxWMJEMGzh3Jl22WKAOLC0zWr+yG/pSGJX5U51Du0AgBo41jD
- pl7w==
+ d=linaro.org; s=google; t=1721134297; x=1721739097; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=oWcgzWITsOqD4WKF97xGTXXfFC5HM8S11DOTymOReL4=;
+ b=pgulFg2jKq/Lxj6Zkgtjqzk9PXwFFeZeDm1Fxxn8uy4hSTTTuqrHUUzidw5R4E/oOY
+ DKqVcHMA9kDNB89px9ylqxCHLkwXqPaYgF//RxXV9CLWblL1nDvsMiNtL4Y4HY9EfwNX
+ KfTlV1lrPbZd1lwwnZiwFGW9pnlkWRt2sU4fWAX1Oli3gEQx6QRWFGCVKvSsAvVXWthR
+ ehqeVe5FdZiQJQjW8Z1SKurvAnVWuti9/1zG0VHYmcBodMiJMxWCzlfNi+d/xgMKVSAA
+ QwXs8S6XM4IcO0zvnV5tdEAUOzQF9DJVrBL9k1ZgGv6M1ICP+rAlTuPGGuQVtJ35TubV
+ v7ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721134264; x=1721739064;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1721134297; x=1721739097;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WEJblyW6Ds1TMF7KFQ+gDmurIfGkUROkVQ8nHbOWOsc=;
- b=h5U9/TvbpF+oSL9ijrd5d2HiHqxf3HkR8bMRGOKpMwixPVp68aLW/kJlcwA1IpQN0m
- y6Ji/+VrOZMVYHOUYFnJuO7TeledF7iV3eW9Qg3/Fe+KX0hrFGs7jOVKjXQCvUBVltvm
- zExdauMjg0vj1OSmc9fLD7p7a90EyvLfbBZIyCWoqB/XoEWwkLrODc/tI1V4FUIGbR+0
- v7ke2pEh+Q5115uni/0cJCwCmTsiNBdISuHN1/xmX5D1htiUu6h2TTCrbN9597qtG3UX
- BMQHNiu9CiFt1PCRfjdsOJSUb55XVVNcbgomt9cEQO/W+sYEp4QlZ2nrF3oEmbqaewwN
- Gc2A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUEfSkfr7KceRs2vAq41cIqgUenWXEAscvMWFcKjBhjSCnU6+Whx6Orug02t1fN5vldRXs/z9MuSkQWcXzl+Hjuj9en230=
-X-Gm-Message-State: AOJu0YzGquljI9NnmUVF5I+jl+OjutPKzqr5hUkokExU2bzAvraYCgPc
- 5mliOoCGUGbxHDKYI6AuOOKyzoen1VE8rknDMRQBccoOHnNNmruzzsG9V+gt3uDFNQngo0ttYDW
- P
-X-Google-Smtp-Source: AGHT+IHLl6OhxYtFa4Hu9G+eXwmzB422zbJLkf8LJk3FIsLRsVJ+05Y25EPMKfYbsu8hkTzkg2XY7A==
-X-Received: by 2002:a17:902:fc8d:b0:1fc:2c53:80a0 with SMTP id
- d9443c01a7336-1fc3d93959cmr16756835ad.14.1721134263928; 
- Tue, 16 Jul 2024 05:51:03 -0700 (PDT)
-Received: from localhost ([157.82.202.230])
- by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1fc0bc2634fsm57640325ad.127.2024.07.16.05.51.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jul 2024 05:51:03 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 16 Jul 2024 21:50:34 +0900
-Subject: [PATCH v3 5/5] hvf: arm: Properly disable PMU
+ bh=oWcgzWITsOqD4WKF97xGTXXfFC5HM8S11DOTymOReL4=;
+ b=cruLeHYLhwO8zFhvSzCrzM7d46W47IpTgXeS0d8YsWiDpq6cnhrnfpkR/18+8b8eeJ
+ c386YY/poklI7YfDQ5aSYu2EORAH2szMdTiiuRNk6t5Uuc6m2mDjLQjXn0zb8Fpz7Pu5
+ hSfUjgredzevZR3ySQbQzJL2GUo3sWLwtS5uYsrnXdhAEcFfcNsMdEgCFL714+IWb6ZN
+ Lk6W65RxiizV8y8/HzdcoulFvoA9+VxhPsMhI4ldQ5k1MAI84E2ZEhuzJpMdwqNTKoXz
+ wf90cWVwPN9D8wjW7weR46Na0lndCr7AvQdk43lC0OX+bLDL7nj19xCHLHogA6uIYwV5
+ LEUw==
+X-Gm-Message-State: AOJu0YwlxSn7tlotLeomADLwa24KwF6AheGO6SlJbVtNUVjLnNUqCQs0
+ BYy8dM1n7nstvm1U9sqzoxZKQSgg3rlxC/bd3z5Zk7Cy/hI72U0hK7xYZ5vd2oA=
+X-Google-Smtp-Source: AGHT+IHDx1i3ZgdrhjvqsCr68U2wHIcEQInq0Hnp88u+q4XvhdaX/54K+T4VFWcMJF9gdq7XjQInSA==
+X-Received: by 2002:a05:6402:2687:b0:58d:249c:5ded with SMTP id
+ 4fb4d7f45d1cf-59eee640486mr1230492a12.4.1721134296895; 
+ Tue, 16 Jul 2024 05:51:36 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-59b24a770dbsm4919625a12.4.2024.07.16.05.51.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jul 2024 05:51:36 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 8E8555F7A0;
+ Tue, 16 Jul 2024 13:51:35 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Simon Hamelin <simon.hamelin@grenoble-inp.org>
+Cc: qemu-devel@nongnu.org,  Alexandre Iooss <erdnaxe@crans.org>,  Mahmoud
+ Mandour <ma.mandourr@gmail.com>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4] plugins/stoptrigger: TCG plugin to stop execution
+ under conditions
+In-Reply-To: <20240715081521.19122-2-simon.hamelin@grenoble-inp.org> (Simon
+ Hamelin's message of "Mon, 15 Jul 2024 10:15:22 +0200")
+References: <20240715081521.19122-2-simon.hamelin@grenoble-inp.org>
+Date: Tue, 16 Jul 2024 13:51:35 +0100
+Message-ID: <87ttgph548.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240716-pmu-v3-5-8c7c1858a227@daynix.com>
-References: <20240716-pmu-v3-0-8c7c1858a227@daynix.com>
-In-Reply-To: <20240716-pmu-v3-0-8c7c1858a227@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,449 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Setting pmu property used to have no effect for hvf so fix it.
+Simon Hamelin <simon.hamelin@grenoble-inp.org> writes:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- target/arm/hvf/hvf.c | 317 ++++++++++++++++++++++++++-------------------------
- 1 file changed, 163 insertions(+), 154 deletions(-)
+> This new plugin allows to stop emulation using conditions on the
+> emulation state. By setting this plugin arguments, it is possible
+> to set an instruction count limit and/or trigger address(es) to stop at.
+> The code returned at emulation exit can be customized.
+>
+> This plugin demonstrates how someone could stop QEMU execution.
+> It could be used for research purposes to launch some code and
+> deterministically stop it and understand where its execution flow went.
+>
+> Co-authored-by: Alexandre Iooss <erdnaxe@crans.org>
+> Signed-off-by: Simon Hamelin <simon.hamelin@grenoble-inp.org>
+> Signed-off-by: Alexandre Iooss <erdnaxe@crans.org>
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index eb090e67a2f8..7c593c2d93de 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1199,57 +1199,23 @@ static bool hvf_sysreg_read_cp(CPUState *cpu, uint32_t reg, uint64_t *val)
-     return false;
- }
- 
--static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-+static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt,
-+                           uint64_t *val)
- {
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-     CPUARMState *env = &arm_cpu->env;
--    uint64_t val = 0;
- 
-     switch (reg) {
-     case SYSREG_CNTPCT_EL0:
--        val = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) /
--              gt_cntfrq_period_ns(arm_cpu);
--        break;
--    case SYSREG_PMCR_EL0:
--        val = env->cp15.c9_pmcr;
--        break;
--    case SYSREG_PMCCNTR_EL0:
--        pmu_op_start(env);
--        val = env->cp15.c15_ccnt;
--        pmu_op_finish(env);
--        break;
--    case SYSREG_PMCNTENCLR_EL0:
--        val = env->cp15.c9_pmcnten;
--        break;
--    case SYSREG_PMOVSCLR_EL0:
--        val = env->cp15.c9_pmovsr;
--        break;
--    case SYSREG_PMSELR_EL0:
--        val = env->cp15.c9_pmselr;
--        break;
--    case SYSREG_PMINTENCLR_EL1:
--        val = env->cp15.c9_pminten;
--        break;
--    case SYSREG_PMCCFILTR_EL0:
--        val = env->cp15.pmccfiltr_el0;
--        break;
--    case SYSREG_PMCNTENSET_EL0:
--        val = env->cp15.c9_pmcnten;
--        break;
--    case SYSREG_PMUSERENR_EL0:
--        val = env->cp15.c9_pmuserenr;
--        break;
--    case SYSREG_PMCEID0_EL0:
--    case SYSREG_PMCEID1_EL0:
--        /* We can't really count anything yet, declare all events invalid */
--        val = 0;
--        break;
-+        *val = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) /
-+               gt_cntfrq_period_ns(arm_cpu);
-+        return 0;
-     case SYSREG_OSLSR_EL1:
--        val = env->cp15.oslsr_el1;
--        break;
-+        *val = env->cp15.oslsr_el1;
-+        return 0;
-     case SYSREG_OSDLR_EL1:
-         /* Dummy register */
--        break;
-+        return 0;
-     case SYSREG_ICC_AP0R0_EL1:
-     case SYSREG_ICC_AP0R1_EL1:
-     case SYSREG_ICC_AP0R2_EL1:
-@@ -1276,11 +1242,11 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-     case SYSREG_ICC_SRE_EL1:
-     case SYSREG_ICC_CTLR_EL1:
-         /* Call the TCG sysreg handler. This is only safe for GICv3 regs. */
--        if (!hvf_sysreg_read_cp(cpu, reg, &val)) {
-+        if (!hvf_sysreg_read_cp(cpu, reg, val)) {
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-             return 1;
-         }
--        break;
-+        return 0;
-     case SYSREG_DBGBVR0_EL1:
-     case SYSREG_DBGBVR1_EL1:
-     case SYSREG_DBGBVR2_EL1:
-@@ -1297,8 +1263,8 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-     case SYSREG_DBGBVR13_EL1:
-     case SYSREG_DBGBVR14_EL1:
-     case SYSREG_DBGBVR15_EL1:
--        val = env->cp15.dbgbvr[SYSREG_CRM(reg)];
--        break;
-+        *val = env->cp15.dbgbvr[SYSREG_CRM(reg)];
-+        return 0;
-     case SYSREG_DBGBCR0_EL1:
-     case SYSREG_DBGBCR1_EL1:
-     case SYSREG_DBGBCR2_EL1:
-@@ -1315,8 +1281,8 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-     case SYSREG_DBGBCR13_EL1:
-     case SYSREG_DBGBCR14_EL1:
-     case SYSREG_DBGBCR15_EL1:
--        val = env->cp15.dbgbcr[SYSREG_CRM(reg)];
--        break;
-+        *val = env->cp15.dbgbcr[SYSREG_CRM(reg)];
-+        return 0;
-     case SYSREG_DBGWVR0_EL1:
-     case SYSREG_DBGWVR1_EL1:
-     case SYSREG_DBGWVR2_EL1:
-@@ -1333,8 +1299,8 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-     case SYSREG_DBGWVR13_EL1:
-     case SYSREG_DBGWVR14_EL1:
-     case SYSREG_DBGWVR15_EL1:
--        val = env->cp15.dbgwvr[SYSREG_CRM(reg)];
--        break;
-+        *val = env->cp15.dbgwvr[SYSREG_CRM(reg)];
-+        return 0;
-     case SYSREG_DBGWCR0_EL1:
-     case SYSREG_DBGWCR1_EL1:
-     case SYSREG_DBGWCR2_EL1:
-@@ -1351,35 +1317,64 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-     case SYSREG_DBGWCR13_EL1:
-     case SYSREG_DBGWCR14_EL1:
-     case SYSREG_DBGWCR15_EL1:
--        val = env->cp15.dbgwcr[SYSREG_CRM(reg)];
--        break;
--    default:
--        if (is_id_sysreg(reg)) {
--            /* ID system registers read as RES0 */
--            val = 0;
--            break;
-+        *val = env->cp15.dbgwcr[SYSREG_CRM(reg)];
-+        return 0;
-+    }
-+
-+    if (arm_feature(env, ARM_FEATURE_PMU)) {
-+        switch (reg) {
-+        case SYSREG_PMCR_EL0:
-+            *val = env->cp15.c9_pmcr;
-+            return 0;
-+        case SYSREG_PMCCNTR_EL0:
-+            pmu_op_start(env);
-+            *val = env->cp15.c15_ccnt;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMCNTENCLR_EL0:
-+            *val = env->cp15.c9_pmcnten;
-+            return 0;
-+        case SYSREG_PMOVSCLR_EL0:
-+            *val = env->cp15.c9_pmovsr;
-+            return 0;
-+        case SYSREG_PMSELR_EL0:
-+            *val = env->cp15.c9_pmselr;
-+            return 0;
-+        case SYSREG_PMINTENCLR_EL1:
-+            *val = env->cp15.c9_pminten;
-+            return 0;
-+        case SYSREG_PMCCFILTR_EL0:
-+            *val = env->cp15.pmccfiltr_el0;
-+            return 0;
-+        case SYSREG_PMCNTENSET_EL0:
-+            *val = env->cp15.c9_pmcnten;
-+            return 0;
-+        case SYSREG_PMUSERENR_EL0:
-+            *val = env->cp15.c9_pmuserenr;
-+            return 0;
-+        case SYSREG_PMCEID0_EL0:
-+        case SYSREG_PMCEID1_EL0:
-+            /* We can't really count anything yet, declare all events invalid */
-+            *val = 0;
-+            return 0;
-         }
--        cpu_synchronize_state(cpu);
--        trace_hvf_unhandled_sysreg_read(env->pc, reg,
--                                        SYSREG_OP0(reg),
--                                        SYSREG_OP1(reg),
--                                        SYSREG_CRN(reg),
--                                        SYSREG_CRM(reg),
--                                        SYSREG_OP2(reg));
--        hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
--        return 1;
--    }
--
--    trace_hvf_sysreg_read(reg,
--                          SYSREG_OP0(reg),
--                          SYSREG_OP1(reg),
--                          SYSREG_CRN(reg),
--                          SYSREG_CRM(reg),
--                          SYSREG_OP2(reg),
--                          val);
--    hvf_set_reg(cpu, rt, val);
-+    }
- 
--    return 0;
-+    if (is_id_sysreg(reg)) {
-+        /* ID system registers read as RES0 */
-+        *val = 0;
-+        return 0;
-+    }
-+
-+    cpu_synchronize_state(cpu);
-+    trace_hvf_unhandled_sysreg_read(env->pc, reg,
-+                                    SYSREG_OP0(reg),
-+                                    SYSREG_OP1(reg),
-+                                    SYSREG_CRN(reg),
-+                                    SYSREG_CRM(reg),
-+                                    SYSREG_OP2(reg));
-+    hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-+    return 1;
- }
- 
- static void pmu_update_irq(CPUARMState *env)
-@@ -1499,69 +1494,12 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-                            val);
- 
-     switch (reg) {
--    case SYSREG_PMCCNTR_EL0:
--        pmu_op_start(env);
--        env->cp15.c15_ccnt = val;
--        pmu_op_finish(env);
--        break;
--    case SYSREG_PMCR_EL0:
--        pmu_op_start(env);
--
--        if (val & PMCRC) {
--            /* The counter has been reset */
--            env->cp15.c15_ccnt = 0;
--        }
--
--        if (val & PMCRP) {
--            unsigned int i;
--            for (i = 0; i < pmu_num_counters(env); i++) {
--                env->cp15.c14_pmevcntr[i] = 0;
--            }
--        }
--
--        env->cp15.c9_pmcr &= ~PMCR_WRITABLE_MASK;
--        env->cp15.c9_pmcr |= (val & PMCR_WRITABLE_MASK);
--
--        pmu_op_finish(env);
--        break;
--    case SYSREG_PMUSERENR_EL0:
--        env->cp15.c9_pmuserenr = val & 0xf;
--        break;
--    case SYSREG_PMCNTENSET_EL0:
--        env->cp15.c9_pmcnten |= (val & pmu_counter_mask(env));
--        break;
--    case SYSREG_PMCNTENCLR_EL0:
--        env->cp15.c9_pmcnten &= ~(val & pmu_counter_mask(env));
--        break;
--    case SYSREG_PMINTENCLR_EL1:
--        pmu_op_start(env);
--        env->cp15.c9_pminten |= val;
--        pmu_op_finish(env);
--        break;
--    case SYSREG_PMOVSCLR_EL0:
--        pmu_op_start(env);
--        env->cp15.c9_pmovsr &= ~val;
--        pmu_op_finish(env);
--        break;
--    case SYSREG_PMSWINC_EL0:
--        pmu_op_start(env);
--        pmswinc_write(env, val);
--        pmu_op_finish(env);
--        break;
--    case SYSREG_PMSELR_EL0:
--        env->cp15.c9_pmselr = val & 0x1f;
--        break;
--    case SYSREG_PMCCFILTR_EL0:
--        pmu_op_start(env);
--        env->cp15.pmccfiltr_el0 = val & PMCCFILTR_EL0;
--        pmu_op_finish(env);
--        break;
-     case SYSREG_OSLAR_EL1:
-         env->cp15.oslsr_el1 = val & 1;
--        break;
-+        return 0;
-     case SYSREG_OSDLR_EL1:
-         /* Dummy register */
--        break;
-+        return 0;
-     case SYSREG_ICC_AP0R0_EL1:
-     case SYSREG_ICC_AP0R1_EL1:
-     case SYSREG_ICC_AP0R2_EL1:
-@@ -1591,10 +1529,10 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-         if (!hvf_sysreg_write_cp(cpu, reg, val)) {
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-         }
--        break;
-+        return 0;
-     case SYSREG_MDSCR_EL1:
-         env->cp15.mdscr_el1 = val;
--        break;
-+        return 0;
-     case SYSREG_DBGBVR0_EL1:
-     case SYSREG_DBGBVR1_EL1:
-     case SYSREG_DBGBVR2_EL1:
-@@ -1612,7 +1550,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_DBGBVR14_EL1:
-     case SYSREG_DBGBVR15_EL1:
-         env->cp15.dbgbvr[SYSREG_CRM(reg)] = val;
--        break;
-+        return 0;
-     case SYSREG_DBGBCR0_EL1:
-     case SYSREG_DBGBCR1_EL1:
-     case SYSREG_DBGBCR2_EL1:
-@@ -1630,7 +1568,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_DBGBCR14_EL1:
-     case SYSREG_DBGBCR15_EL1:
-         env->cp15.dbgbcr[SYSREG_CRM(reg)] = val;
--        break;
-+        return 0;
-     case SYSREG_DBGWVR0_EL1:
-     case SYSREG_DBGWVR1_EL1:
-     case SYSREG_DBGWVR2_EL1:
-@@ -1648,7 +1586,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_DBGWVR14_EL1:
-     case SYSREG_DBGWVR15_EL1:
-         env->cp15.dbgwvr[SYSREG_CRM(reg)] = val;
--        break;
-+        return 0;
-     case SYSREG_DBGWCR0_EL1:
-     case SYSREG_DBGWCR1_EL1:
-     case SYSREG_DBGWCR2_EL1:
-@@ -1666,20 +1604,80 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_DBGWCR14_EL1:
-     case SYSREG_DBGWCR15_EL1:
-         env->cp15.dbgwcr[SYSREG_CRM(reg)] = val;
--        break;
--    default:
--        cpu_synchronize_state(cpu);
--        trace_hvf_unhandled_sysreg_write(env->pc, reg,
--                                         SYSREG_OP0(reg),
--                                         SYSREG_OP1(reg),
--                                         SYSREG_CRN(reg),
--                                         SYSREG_CRM(reg),
--                                         SYSREG_OP2(reg));
--        hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
--        return 1;
-+        return 0;
-     }
- 
--    return 0;
-+    if (arm_feature(env, ARM_FEATURE_PMU)) {
-+        switch (reg) {
-+        case SYSREG_PMCCNTR_EL0:
-+            pmu_op_start(env);
-+            env->cp15.c15_ccnt = val;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMCR_EL0:
-+            pmu_op_start(env);
-+
-+            if (val & PMCRC) {
-+                /* The counter has been reset */
-+                env->cp15.c15_ccnt = 0;
-+            }
-+
-+            if (val & PMCRP) {
-+                unsigned int i;
-+                for (i = 0; i < pmu_num_counters(env); i++) {
-+                    env->cp15.c14_pmevcntr[i] = 0;
-+                }
-+            }
-+
-+            env->cp15.c9_pmcr &= ~PMCR_WRITABLE_MASK;
-+            env->cp15.c9_pmcr |= (val & PMCR_WRITABLE_MASK);
-+
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMUSERENR_EL0:
-+            env->cp15.c9_pmuserenr = val & 0xf;
-+            return 0;
-+        case SYSREG_PMCNTENSET_EL0:
-+            env->cp15.c9_pmcnten |= (val & pmu_counter_mask(env));
-+            return 0;
-+        case SYSREG_PMCNTENCLR_EL0:
-+            env->cp15.c9_pmcnten &= ~(val & pmu_counter_mask(env));
-+            return 0;
-+        case SYSREG_PMINTENCLR_EL1:
-+            pmu_op_start(env);
-+            env->cp15.c9_pminten |= val;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMOVSCLR_EL0:
-+            pmu_op_start(env);
-+            env->cp15.c9_pmovsr &= ~val;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMSWINC_EL0:
-+            pmu_op_start(env);
-+            pmswinc_write(env, val);
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMSELR_EL0:
-+            env->cp15.c9_pmselr = val & 0x1f;
-+            return 0;
-+        case SYSREG_PMCCFILTR_EL0:
-+            pmu_op_start(env);
-+            env->cp15.pmccfiltr_el0 = val & PMCCFILTR_EL0;
-+            pmu_op_finish(env);
-+            return 0;
-+        }
-+    }
-+
-+    cpu_synchronize_state(cpu);
-+    trace_hvf_unhandled_sysreg_write(env->pc, reg,
-+                                     SYSREG_OP0(reg),
-+                                     SYSREG_OP1(reg),
-+                                     SYSREG_CRN(reg),
-+                                     SYSREG_CRM(reg),
-+                                     SYSREG_OP2(reg));
-+    hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-+    return 1;
- }
- 
- static int hvf_inject_interrupts(CPUState *cpu)
-@@ -1944,7 +1942,18 @@ int hvf_vcpu_exec(CPUState *cpu)
-         int sysreg_ret = 0;
- 
-         if (isread) {
--            sysreg_ret = hvf_sysreg_read(cpu, reg, rt);
-+            sysreg_ret = hvf_sysreg_read(cpu, reg, rt, &val);
-+
-+            if (!sysreg_ret) {
-+                trace_hvf_sysreg_read(reg,
-+                                      SYSREG_OP0(reg),
-+                                      SYSREG_OP1(reg),
-+                                      SYSREG_CRN(reg),
-+                                      SYSREG_CRM(reg),
-+                                      SYSREG_OP2(reg),
-+                                      val);
-+                hvf_set_reg(cpu, rt, val);
-+            }
-         } else {
-             val = hvf_get_reg(cpu, rt);
-             sysreg_ret = hvf_sysreg_write(cpu, reg, val);
+Queued to plugins/next, thanks.
 
--- 
-2.45.2
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
