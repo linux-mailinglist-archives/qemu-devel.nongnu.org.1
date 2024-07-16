@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E045932DB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E7E932DD9
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:09:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTkiN-0005D2-7i; Tue, 16 Jul 2024 12:07:43 -0400
+	id 1sTkk8-0003zx-38; Tue, 16 Jul 2024 12:09:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTkiE-0004oB-Pd
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:07:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTkjs-0003WV-99
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:09:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTkiA-00027T-2q
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:07:33 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTkjo-0002MN-4b
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:09:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721146048;
+ s=mimecast20190719; t=1721146150;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=zOcHz3RLFBS6q02plrZ2zcfz1xOB1yAGTa16NUYQd0c=;
- b=IeoQZLAelkBCtPmBhDiYJZ8TqvxqhBBvLSQYxUpjGqiB2h5mYAb1v71VF510wUsvt0lbis
- MDu/ZTO+ta3zrIosmgJs5euf4POd+67ayc5GtVWS2RqyJsTIeVvTdFVWj17me2lnjnRixb
- 2Bz0cHMeU7BAF1Zx7KeAgVsO/H0bZe8=
+ bh=LecRcGY9GuLupOCQZH+4gCgRYmLod7Sz5h+UvWv2CjQ=;
+ b=V8twKhWqeuL2/PkAP0zUF8DQRnboelQjGEFQHdfiRWvRHwuSEzI6Q6c1xb8VeYmRRWLfBy
+ q2Jr2lLFqhPmxV6Vy1rXpm7eNGEPtn6yZwDPd/qrPdH4Wq/eqdhMq4wua4S2t4tGjujYgA
+ zbxge53cURxFc4bJ8WhLBU0ABLjQnHk=
 Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
  [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-2qkVGXiSOxup-HMez11asw-1; Tue, 16 Jul 2024 12:07:27 -0400
-X-MC-Unique: 2qkVGXiSOxup-HMez11asw-1
+ us-mta-342-urEZOKYkNiuukCiNO6ttIA-1; Tue, 16 Jul 2024 12:09:07 -0400
+X-MC-Unique: urEZOKYkNiuukCiNO6ttIA-1
 Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-7876e1a04faso3713352a12.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 09:07:27 -0700 (PDT)
+ 41be03b00d2f7-78e08ce33d0so2298425a12.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 09:09:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721146046; x=1721750846;
+ d=1e100.net; s=20230601; t=1721146146; x=1721750946;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zOcHz3RLFBS6q02plrZ2zcfz1xOB1yAGTa16NUYQd0c=;
- b=Y0Bm/2b6c07JtkceXOCfApzBT8VcMFMMAo8G82cAJshqyo15fQE3EQgPY3YBnfO5z8
- dRl6Uyv8uj7Nnio5evGQlLDUcUtTOL0wv3h7wuNG14SgZOBKG3Alx5dMX9neLEc0E4jq
- LM5v2es0fe4H+hWnVoc1z7f6mwnzRHplhC4cN/dqwDYbQBNSkEQoXKXw3yxsxsOYnlsW
- Gndbm+aoWznh734kLKDnWRym7e35dk+gziCTi+e+3wq8uh1PRy78Mprv3D6hFWUB2a97
- /fDqDxYqg39v062ZIA3tDq2hYNe38aEaW5wa3rEazSMk949LHXqNxerRmjEcVD8ZdOxS
- QOqw==
-X-Gm-Message-State: AOJu0YyBj46Pey66N/hVzjM0sPFTLCNqMs660TU/3gTOGrHh9ZIIVElk
- /fUdNcvx5gU0CFd+AYy66dDKkhUyYYB9dEEls4jieNSA7qht4DWw3frGkY438Z0uhp+qvDkDeFC
- bJ9WZvdWqKgK5/hRAhZdGj4HWv4U6tggFNV/2EC5VhO/CCpSoYcaBZNbKvtue0wCf59Yizvz9eD
- be5sqgWAqCH2dKj0MK21Y7xFjo5b0=
-X-Received: by 2002:a05:6a21:7898:b0:1c0:e5d1:619e with SMTP id
- adf61e73a8af0-1c3f1220134mr3240523637.18.1721146046186; 
- Tue, 16 Jul 2024 09:07:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1r3+lJWDL7Xs6x5PQBbEDAyb8Ti5rDD2y4YazMWqBb3Elbc7qTkytH8wk2km8fO5ACYe2xLwwyq89N7dBFwo=
-X-Received: by 2002:a05:6a21:7898:b0:1c0:e5d1:619e with SMTP id
- adf61e73a8af0-1c3f1220134mr3240484637.18.1721146045821; Tue, 16 Jul 2024
- 09:07:25 -0700 (PDT)
+ bh=LecRcGY9GuLupOCQZH+4gCgRYmLod7Sz5h+UvWv2CjQ=;
+ b=MpVJT7JjSH9U+9PoFBXota8GEKVa7CiFkOBXwBWn9eNZcCHy9ZTULkezMW+tKA0My6
+ 5hCIsJMRXyUQ6VfxRebdpVH8SBNfYkluyBfeezm49e8uQS+yZVpT8HdeEx8sIk6iSsq2
+ KETQwELfZ7089PBQjUpH6NAhpYamldnvlqL4AJsGTq3F1QWuMYMohPYkQreePwrFmREE
+ 1scyH6yCLpAa1E+vm91+6tN5fNHgyP0Cu4tlFHz1PVHaAGe8KEIUqioPxs0dnCxkMa6w
+ dRp5rhav9GMd6CBuQ7bQSs4zLbFBSJzyrqQeX0LA3vUYrkrpwsjG6cooKpDYaSJ2Rc3L
+ WbGw==
+X-Gm-Message-State: AOJu0Yxrq4ENrRTY4o0NSn3fqWUxLpCNV/5o6aXq1GSh09oRZonyxQqb
+ 6lCIG0mbsjrafZkO2Pm59yu3x9PvA7gdAQ5RGWpexIp3OPBgfXTq8tHqeDb5ZYSt3/IRHileai8
+ SiBc3BbNp65WEuidtYZomD/UJNKZatUaVjULD+cTGt11w3DwbDSaUrcLy73wqnvaI44//x6OcFk
+ su+emAhALiZWSQd9OmIKt3LuFeRwM=
+X-Received: by 2002:a17:90a:f490:b0:2c9:a3ca:cc98 with SMTP id
+ 98e67ed59e1d1-2cb373fffc0mr1867776a91.7.1721146146282; 
+ Tue, 16 Jul 2024 09:09:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhVs1h4j328WbOb1qZuOjO+gUW403PT1nCeeeZmPoZcxfznLPDVi49zF9S0TwBKgtKDNrwAD84quwUXT9/yxk=
+X-Received: by 2002:a17:90a:f490:b0:2c9:a3ca:cc98 with SMTP id
+ 98e67ed59e1d1-2cb373fffc0mr1867757a91.7.1721146145905; Tue, 16 Jul 2024
+ 09:09:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240711112228.2140606-1-armbru@redhat.com>
- <20240711112228.2140606-2-armbru@redhat.com>
-In-Reply-To: <20240711112228.2140606-2-armbru@redhat.com>
+ <20240711112228.2140606-3-armbru@redhat.com>
+In-Reply-To: <20240711112228.2140606-3-armbru@redhat.com>
 From: John Snow <jsnow@redhat.com>
-Date: Tue, 16 Jul 2024 12:07:13 -0400
-Message-ID: <CAFn=p-bRkqOeuLTD5MhPyuFYur2GUCs=NWat6Qs-6eRt_g88iA@mail.gmail.com>
-Subject: Re: [PATCH 1/5] qapi/pci: Clean up documentation around PciDeviceClass
+Date: Tue, 16 Jul 2024 12:08:54 -0400
+Message-ID: <CAFn=p-Y9E=QyaNa_okNpdzLVonp-TBuK+w57i1Jicy-JyZO-Ug@mail.gmail.com>
+Subject: Re: [PATCH 2/5] qapi/machine: Clean up documentation around
+ CpuInstanceProperties
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>, 
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -72,15 +73,15 @@ Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
  Michael Tsirkin <mst@redhat.com>, Daniel Berrange <berrange@redhat.com>, 
  =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
  Igor Mammedov <imammedo@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000ab1269061d5f8abb"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Content-Type: multipart/alternative; boundary="000000000000a23eda061d5f90aa"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,16 +99,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ab1269061d5f8abb
+--000000000000a23eda061d5f90aa
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 11, 2024, 7:24=E2=80=AFAM Markus Armbruster <armbru@redhat.com>=
+On Thu, Jul 11, 2024, 7:22=E2=80=AFAM Markus Armbruster <armbru@redhat.com>=
  wrote:
 
-> PciDeviceInfo's doc comment has a note on PciDeviceClass member @desc.
-> Since the note applies always, not just within PciDeviceInfo, merge it
-> into PciDeviceClass's description of member @desc.
+> CpuInstanceProperties' doc comment describes its members as properties
+> to be passed to device_add when hot-plugging a CPU.
+>
+> This was in fact the initial use of this type, with
+> query-hotpluggable-cpus: letting management applications find out what
+> properties need to be passed with device_add to hot-plug a CPU.
+>
+> We've since added other uses: set-numa-node (commit 419fcdec3c1 and
+> f3be67812c2), and query-cpus-fast (commit ce74ee3dea6).  These are not
+> about device-add.
+>
+> query-hotpluggable-cpus uses CpuInstanceProperties within
+> HotpluggableCPU.  Lift the documentation related to device-add from
+> CpuInstanceProperties to HotpluggableCPU.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 >
@@ -115,51 +127,84 @@ On Thu, Jul 11, 2024, 7:24=E2=80=AFAM Markus Armbruster <armbru@redhat.com>=
 Reviewed-by: John Snow <jsnow@redhat.com>
 
 ---
->  qapi/pci.json | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  qapi/machine.json | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
 >
-> diff --git a/qapi/pci.json b/qapi/pci.json
-> index 8287d15dd0..97179920fb 100644
-> --- a/qapi/pci.json
-> +++ b/qapi/pci.json
-> @@ -93,7 +93,8 @@
->  #
->  # Information about the Class of a PCI device
->  #
-> -# @desc: a string description of the device's class
-> +# @desc: a string description of the device's class (not stable, and
-> +#     should only be treated as informational)
->  #
->  # @class: the class code of the device
->  #
-> @@ -146,9 +147,6 @@
->  #
->  # @regions: a list of the PCI I/O regions associated with the device
->  #
-> -# .. note:: The contents of @class_info.desc are not stable and should
-> -#    only be treated as informational.
-> -#
->  # Since: 0.14
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index f15ad1b43e..50ff102d56 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -960,9 +960,7 @@
 >  ##
->  { 'struct': 'PciDeviceInfo',
+>  # @CpuInstanceProperties:
+>  #
+> -# List of properties to be used for hotplugging a CPU instance, it
+> -# should be passed by management with device_add command when a CPU is
+> -# being hotplugged.
+> +# Properties identifying a CPU.
+>  #
+>  # Which members are optional and which mandatory depends on the
+>  # architecture and board.
+> @@ -996,9 +994,6 @@
+>  #
+>  # @thread-id: thread number within the core the CPU  belongs to
+>  #
+> -# .. note:: Management should be prepared to pass through additional
+> -#    properties with device_add.
+> -#
+>  # Since: 2.7
+>  ##
+>  { 'struct': 'CpuInstanceProperties',
+> @@ -1020,7 +1015,8 @@
+>  #
+>  # @type: CPU object type for usage with device_add command
+>  #
+> -# @props: list of properties to be used for hotplugging CPU
+> +# @props: list of properties to pass for hotplugging a CPU with
+> +#     device_add
+>  #
+>  # @vcpus-count: number of logical VCPU threads @HotpluggableCPU
+>  #     provides
+> @@ -1028,6 +1024,9 @@
+>  # @qom-path: link to existing CPU object if CPU is present or omitted
+>  #     if CPU is not present.
+>  #
+> +# .. note:: Management should be prepared to pass through additional
+> +#    properties with device_add.
+> +#
+>  # Since: 2.7
+>  ##
+>  { 'struct': 'HotpluggableCPU',
 > --
 > 2.45.0
 >
 >
->
 
---000000000000ab1269061d5f8abb
+--000000000000a23eda061d5f90aa
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Thu, Jul 11, 2024, 7:24=E2=80=AFAM Markus Armbruste=
+class=3D"gmail_attr">On Thu, Jul 11, 2024, 7:22=E2=80=AFAM Markus Armbruste=
 r &lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:=
 <br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bord=
-er-left:1px #ccc solid;padding-left:1ex">PciDeviceInfo&#39;s doc comment ha=
-s a note on PciDeviceClass member @desc.<br>
-Since the note applies always, not just within PciDeviceInfo, merge it<br>
-into PciDeviceClass&#39;s description of member @desc.<br>
+er-left:1px #ccc solid;padding-left:1ex">CpuInstanceProperties&#39; doc com=
+ment describes its members as properties<br>
+to be passed to device_add when hot-plugging a CPU.<br>
+<br>
+This was in fact the initial use of this type, with<br>
+query-hotpluggable-cpus: letting management applications find out what<br>
+properties need to be passed with device_add to hot-plug a CPU.<br>
+<br>
+We&#39;ve since added other uses: set-numa-node (commit 419fcdec3c1 and<br>
+f3be67812c2), and query-cpus-fast (commit ce74ee3dea6).=C2=A0 These are not=
+<br>
+about device-add.<br>
+<br>
+query-hotpluggable-cpus uses CpuInstanceProperties within<br>
+HotpluggableCPU.=C2=A0 Lift the documentation related to device-add from<br=
+>
+CpuInstanceProperties to HotpluggableCPU.<br>
 <br>
 Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
 arget=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt;<br></blockquo=
@@ -169,41 +214,61 @@ div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote=
 "><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
 1px #ccc solid;padding-left:1ex">
 ---<br>
-=C2=A0qapi/pci.json | 6 ++----<br>
-=C2=A01 file changed, 2 insertions(+), 4 deletions(-)<br>
+=C2=A0qapi/machine.json | 13 ++++++-------<br>
+=C2=A01 file changed, 6 insertions(+), 7 deletions(-)<br>
 <br>
-diff --git a/qapi/pci.json b/qapi/pci.json<br>
-index 8287d15dd0..97179920fb 100644<br>
---- a/qapi/pci.json<br>
-+++ b/qapi/pci.json<br>
-@@ -93,7 +93,8 @@<br>
+diff --git a/qapi/machine.json b/qapi/machine.json<br>
+index f15ad1b43e..50ff102d56 100644<br>
+--- a/qapi/machine.json<br>
++++ b/qapi/machine.json<br>
+@@ -960,9 +960,7 @@<br>
+=C2=A0##<br>
+=C2=A0# @CpuInstanceProperties:<br>
 =C2=A0#<br>
-=C2=A0# Information about the Class of a PCI device<br>
+-# List of properties to be used for hotplugging a CPU instance, it<br>
+-# should be passed by management with device_add command when a CPU is<br>
+-# being hotplugged.<br>
++# Properties identifying a CPU.<br>
 =C2=A0#<br>
--# @desc: a string description of the device&#39;s class<br>
-+# @desc: a string description of the device&#39;s class (not stable, and<b=
-r>
-+#=C2=A0 =C2=A0 =C2=A0should only be treated as informational)<br>
+=C2=A0# Which members are optional and which mandatory depends on the<br>
+=C2=A0# architecture and board.<br>
+@@ -996,9 +994,6 @@<br>
 =C2=A0#<br>
-=C2=A0# @class: the class code of the device<br>
-=C2=A0#<br>
-@@ -146,9 +147,6 @@<br>
-=C2=A0#<br>
-=C2=A0# @regions: a list of the PCI I/O regions associated with the device<=
+=C2=A0# @thread-id: thread number within the core the CPU=C2=A0 belongs to<=
 br>
 =C2=A0#<br>
--# .. note:: The contents of @class_info.desc are not stable and should<br>
--#=C2=A0 =C2=A0 only be treated as informational.<br>
+-# .. note:: Management should be prepared to pass through additional<br>
+-#=C2=A0 =C2=A0 properties with device_add.<br>
 -#<br>
-=C2=A0# Since: 0.14<br>
+=C2=A0# Since: 2.7<br>
 =C2=A0##<br>
-=C2=A0{ &#39;struct&#39;: &#39;PciDeviceInfo&#39;,<br>
+=C2=A0{ &#39;struct&#39;: &#39;CpuInstanceProperties&#39;,<br>
+@@ -1020,7 +1015,8 @@<br>
+=C2=A0#<br>
+=C2=A0# @type: CPU object type for usage with device_add command<br>
+=C2=A0#<br>
+-# @props: list of properties to be used for hotplugging CPU<br>
++# @props: list of properties to pass for hotplugging a CPU with<br>
++#=C2=A0 =C2=A0 =C2=A0device_add<br>
+=C2=A0#<br>
+=C2=A0# @vcpus-count: number of logical VCPU threads @HotpluggableCPU<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0provides<br>
+@@ -1028,6 +1024,9 @@<br>
+=C2=A0# @qom-path: link to existing CPU object if CPU is present or omitted=
+<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0if CPU is not present.<br>
+=C2=A0#<br>
++# .. note:: Management should be prepared to pass through additional<br>
++#=C2=A0 =C2=A0 properties with device_add.<br>
++#<br>
+=C2=A0# Since: 2.7<br>
+=C2=A0##<br>
+=C2=A0{ &#39;struct&#39;: &#39;HotpluggableCPU&#39;,<br>
 -- <br>
 2.45.0<br>
 <br>
-<br>
 </blockquote></div></div></div>
 
---000000000000ab1269061d5f8abb--
+--000000000000a23eda061d5f90aa--
 
 
