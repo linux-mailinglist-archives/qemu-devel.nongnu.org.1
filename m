@@ -2,91 +2,198 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93AB9325DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC4A9325FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:56:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTgaR-0006gK-0j; Tue, 16 Jul 2024 07:43:15 -0400
+	id 1sTglf-0001Qc-MV; Tue, 16 Jul 2024 07:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sTgaL-0006Wg-6m
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:43:10 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <peter.hilber@opensynergy.com>)
+ id 1sTglb-0001Pc-TM
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:54:47 -0400
+Received: from repost01.tmes.trendmicro.eu ([18.185.115.123])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sTgaG-0006Up-NQ
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:43:08 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WNcbs4n4Wz6JBDY;
- Tue, 16 Jul 2024 19:41:45 +0800 (CST)
-Received: from lhrpeml500003.china.huawei.com (unknown [7.191.162.67])
- by mail.maildlp.com (Postfix) with ESMTPS id 1A4611400D9;
- Tue, 16 Jul 2024 19:43:01 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 16 Jul 2024 12:43:00 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
- Tue, 16 Jul 2024 12:43:00 +0100
-To: Igor Mammedov <imammedo@redhat.com>, Salil Mehta <salil.mehta@opnsrc.net>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "maz@kernel.org"
- <maz@kernel.org>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
- <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
- <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "will@kernel.org" <will@kernel.org>, "gshan@redhat.com"
- <gshan@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- "npiggin@gmail.com" <npiggin@gmail.com>, "harshpb@linux.ibm.com"
- <harshpb@linux.ibm.com>, Linuxarm <linuxarm@huawei.com>, "peterx@redhat.com"
- <peterx@redhat.com>
-Subject: RE: [PATCH V15 0/7] Add architecture agnostic code to support vCPU
- Hotplug
-Thread-Topic: [PATCH V15 0/7] Add architecture agnostic code to support vCPU
- Hotplug
-Thread-Index: AQHa1VIYzbBqk8ub30G0ZXbYzNwFGLH3waYAgAASi1CAAAR3IP///pcAgADQmICAAGhoAIAAKp3A
-Date: Tue, 16 Jul 2024 11:43:00 +0000
-Message-ID: <b8ec039d53534d48b8389aedd1f959f6@huawei.com>
-References: <20240713182516.1457-1-salil.mehta@huawei.com>
- <20240715155436.577d34c5@imammedo.users.ipa.redhat.com>
- <b93b570158794e28bf8c00a949afa8b4@huawei.com>
- <3848723ea2584b9b813c3d76e1e6dd59@huawei.com>
- <20240715171154.2667d187@imammedo.users.ipa.redhat.com>
- <4b829bf1-d31c-49eb-b18f-6d87e08c5c04@opnsrc.net>
- <20240716115210.08ca24ba@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240716115210.08ca24ba@imammedo.users.ipa.redhat.com>
-Accept-Language: en-US
+ (Exim 4.90_1) (envelope-from <peter.hilber@opensynergy.com>)
+ id 1sTglZ-0000OV-3O
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:54:47 -0400
+Received: from 40.93.78.51_.trendmicro.com (unknown [172.21.193.255])
+ by repost01.tmes.trendmicro.eu (Postfix) with SMTP id 4506F10000F67;
+ Tue, 16 Jul 2024 11:54:40 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1721130879.059000
+X-TM-MAIL-UUID: 07f8d397-e31e-491a-8391-53e46d32ddfb
+Received: from FR5P281CU006.outbound.protection.outlook.com (unknown
+ [40.93.78.51])
+ by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id
+ 0E8BD100058F1; Tue, 16 Jul 2024 11:54:39 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uMJ9888jVmLWxtmZh9PBv+TUyNpkLebU379TlpOgcZIrLzuvT13pwSDt6Ad+QXrdavkek5WMRsOtjSWpARPsqKVn2jtbuXZ92tsBG/QrIC8RMW23qfmmVj1iDxsxaJU6iyZf2JxT5ldQ3bM8VcBWP+N8VwQu6UkTuuW6o45dnQv44HydZcYspudAzBlDQ2zZAhQ3UTYu5Y8N8iHuHu8hdJyv3BGTiGye9njlOjFXrgYejgywIdfRq6aB0I4OY9NYahB2xj1F29Sfmowwlz7WJgT8V8BD6TGuOZnFrwvBTIk4eoCcfeTgapLwlIICMen0NgHzhjLGoywi3vs8RGgsdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fLOO5tFGuCicnglknhsanGILZD+I6faSsGVhzkfgeM8=;
+ b=W3XG5t9UZgakNgEZiBfMsFnpn18SHESkpn2LC0S+SblPp5tJTFRzEJRAdkO1cCfGkMGIR6DwZNmcHcHcyM+yH6dJL+idSfVHdqh9MIDb3Htr0R9NJ/nGY0LET+fUZ9W7Y1wcVKDy8T1qPodnq8WdPEhAlJWVv/W1wKO1oxTBwmuNPWgJAd7oQYGAqRjtvJKALZmhtZ1U3A0VV8hbGZWt0OXGYYsKyT6TKB1bu8rtoCPB31f2N1JUMuVHG+re79nC9/a4tZblUafaa4F7pNMESYhu4B0CvuDf/bz/JFa00RtaS3/DVbCmNVyjbQ3DLETz83STHFxuhQHxFoTqs6m82w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=opensynergy.com; dmarc=pass action=none
+ header.from=opensynergy.com; dkim=pass header.d=opensynergy.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=opensynergy.com;
+Message-ID: <2e875592-f6e7-4694-8f51-655d0b9a2988@opensynergy.com>
+Date: Tue, 16 Jul 2024 13:54:36 +0200
+Subject: Re: [RFC PATCH v4] ptp: Add vDSO-style vmclock support
+To: David Woodhouse <dwmw2@infradead.org>, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-rtc@vger.kernel.org, "Ridoux, Julien" <ridouxj@amazon.com>,
+ virtio-dev@lists.linux.dev, "Luu, Ryan" <rluu@amazon.com>,
+ "Chashper, David" <chashper@amazon.com>
+Cc: "Christopher S . Hall" <christopher.s.hall@intel.com>,
+ Jason Wang <jasowang@redhat.com>, John Stultz <jstultz@google.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org,
+ Richard Cochran <richardcochran@gmail.com>, Stephen Boyd <sboyd@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Alessandro Zummo <a.zummo@towertech.it>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ qemu-devel <qemu-devel@nongnu.org>, Simon Horman <horms@kernel.org>
+References: <20240708092924.1473461-1-dwmw2@infradead.org>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.170.92]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240708092924.1473461-1-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BE1P281CA0179.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:66::7) To BE1P281MB1906.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:3d::8)
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BE1P281MB1906:EE_|BE1P281MB2579:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c8a8bc9-004c-429f-2567-08dca58e110e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|7416014|1800799024|366016|921020; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SDJIT3Fwc3FIWEg4VlZ6Q05TN1ZjcGNsVHJvZEozcUVuRTlHZmcwb0hyclJp?=
+ =?utf-8?B?T2tIUTVuMDgzZWhzZUpWbWhXRHFhUCs4aDI4RUJ6VXV6VkF1STFHcHRMTlJy?=
+ =?utf-8?B?QjRGWFRPcEtSamdxT0lhQiszK1YxcG9BZGsxbHNVQWhmNnR3OEhmZ0NSRHhr?=
+ =?utf-8?B?dS9XL1VURk9tS1ozVy9LMjVLSEowaXBDWmlzOW10SUlIS05zQ0FhRDMxWUow?=
+ =?utf-8?B?a3ZwNWpYUXJISVN1eCs0WDdNcjkrNldGR2JoWjRmQWFZZ1hZRWVCeitnOERZ?=
+ =?utf-8?B?WjVWVitySUxZT042bU5iQXZkdW1EWDNxaFpNYkxocWdldThTMjFyRDdVbmNT?=
+ =?utf-8?B?eFJ1bExjaTcxemE3REVUalVKQnNRVG5QcDNqVTZLZnlOTWllQy9jdVNPSmhu?=
+ =?utf-8?B?WnlNVnhNSVFNNVpXRVZmOE4vTEducURmZ3VYV2NmNXRULzBGTGo4cUR2c3VZ?=
+ =?utf-8?B?bTl2ZGFvcml0cTZPK1RNdFFmbzVJMXp6cEwvUVM3SThNUElKanRaL0d2NlJX?=
+ =?utf-8?B?R1RoTUJBS21Xb2xTQWY2NHlTNzU5T0pFWTFRa3FuUnV5RnlvNjdZNmViNXdz?=
+ =?utf-8?B?SGV1NE0xUnZYcXRHK1UvS24zRFBTOEtJNDYzbjNVOFA4aVJ2UjRkbkM0cSta?=
+ =?utf-8?B?V0VmYjBmLzVzMjFvYXlXNnZsaVVlUE5weHlTb0ZZaHZDaFU5Nk1mdXM0N0NJ?=
+ =?utf-8?B?bVdrS0F1M3FRNFpBYUpsMERxWmNCc2xZZktqYTY1V0dZUVZzaUxDSzZKb2t2?=
+ =?utf-8?B?YVRpb3NndDNFZG82TmlablhYVkJ4ai9GaFYyWjFQdmJXUGdBVnh4ckdsVFhT?=
+ =?utf-8?B?NXFiRkU1UE1wMlpHOVovU0xOY1l0am5rTVZ4MWpyK2pXOUROYVhkMXJWaEhT?=
+ =?utf-8?B?MGxzZWtaTnRvdnJudWZjdENYQXFieTVTbmtmeXJ2eGFpQlpDYmJSUG9EV0Rp?=
+ =?utf-8?B?ZXdCSjhSUFNUVEpZV3hoSWNCdnpTN3RwOU1WWlBGaEc3djM3dlNjTVZxeU1w?=
+ =?utf-8?B?T1BJYlhnS04zWWR0c3l1U05lQXdRZkxtbTIvMjRFdlI4SFoxUDNVN2Z1NDFt?=
+ =?utf-8?B?MnpvM0lGUEEreVRzazdvWjNXdVRxb0k4aDMyc0R6MTJWUGIzU3F2UmsxUDVT?=
+ =?utf-8?B?eEE4cGcxRXJaY1NzYk9XSWhLSEZMK3ZlMXlwaHVpazZ1QitIRG1VSm5LaVM3?=
+ =?utf-8?B?eWFUdjMrOGlqM0VSWStzbGJraVB0a2lXbmRwTkFKOW5qRk81OGxleStDNk9o?=
+ =?utf-8?B?dVd5OGJpZmMwd3UvS2FXQ0Y2SVlKUnhMTFF6Y3F4T2F1cGxzNFUrMW5NaE9k?=
+ =?utf-8?B?bmZTUWpqNEszcGhWZS9XeHlXaUNSdEdFelhVdVJ4My9kNDNUemVORzlZOStz?=
+ =?utf-8?B?b3NSLzlzN1o3a2ozYSswL1RGWEFXVkRrVitoMGlrUjE1SlhTdWFac2VkYnBk?=
+ =?utf-8?B?TUFVVS9kdkZsNGo4bFVCd0E3WTd2UUM2WjdOYnVtRStQL3FLZTh5NzdneldV?=
+ =?utf-8?B?am1CVVdmelpvWE53THJocW9IWStyaEtKMUhGWGZ2d05oK0FOZUJjeGEvYVI2?=
+ =?utf-8?B?dURuaXlMcHpFdm1NcE0yeVorUWVDNDE5VXVkcjRDT09zN1RyM1M4NVRMNHoy?=
+ =?utf-8?B?Zm4wQ3dPTXBQOXNhQmxic3pXeDRYRzBoUWVSK0t3ZkIyY0x2YUZwd3Erb0Z1?=
+ =?utf-8?B?UG1Ua1BhZXdkSE9NZUY3QzIxYXhqaDdHSHRPMDZOL2dvTkpXNE5FUXlsVVRI?=
+ =?utf-8?B?U0hKZ05aNWp4WUhyMGRRRTVLcHA0MVJ5MTM3MTRjTE5ycEtXdnh5ZkJxVml0?=
+ =?utf-8?B?dFlJL2hXVFl6V3J4cVlnZlpuNUhKVUMvdlpUWlMyTU9nbjZwM1RvSmI1QVdq?=
+ =?utf-8?Q?D91KTkVFbyhnk?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BE1P281MB1906.DEUP281.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020); DIR:OUT; SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bnpaem01VWlLaXVLd3dTYnFSc0VJYTdndXJoZm93Smpmb0d2VVkrWnBEVmdo?=
+ =?utf-8?B?TkxuYms5MWo4cmg1d041RHVZYzU5Rm5KRkFzdFlMNWhaVU11WHhETkkxL01Z?=
+ =?utf-8?B?UkhVeEJjalJwRWlzNDRZRlRLd1pJdFpUZ1ZpN01tTGU2ZGtlNzVOZ1YrcUI4?=
+ =?utf-8?B?WW91UUVnd3F2YmUySUZnbFUvbFdLZXA4ZkIrbk1CUFo1cXR1czZmR3BGbmQy?=
+ =?utf-8?B?cUprNnk0ZmVrR0pyUVpQWXBDWWhyWDdJTWFwOHovaHJQY0F1ZnBKTUQyNE05?=
+ =?utf-8?B?ZE1QUndKOEgxRVRWUlVCd21WdTRkcHJLMnY0U281Vml2LzkybFd1dWxUeXQr?=
+ =?utf-8?B?d2UveW4wS0FxM1JxNUNDcmd3R0R5Z0pLOGN5ZkNucm95bnNXNEllRFE1d1FW?=
+ =?utf-8?B?bXNKdkFDYjBzQlQveFh2MEtNN2VrT2RJQ1o1QVRqWGpBOUV4TVcxSEJJc2M0?=
+ =?utf-8?B?N29tNDJyZG1UTTFPdTFYeXdESldHZEZ0SWNobEJnS0VJKy9wRTlCVXJ0N2Jp?=
+ =?utf-8?B?TDgxYXhYOXU3cTAraXZOUEdOMnJZOXFTZHFXeExhSDNGRHcxVmgwZk0yNXpN?=
+ =?utf-8?B?Wkh2dWtSMk14QmpseXVLeHZ2d2djZGYzSWNhc28zNVgwNUJKV2UyWVFIVXdl?=
+ =?utf-8?B?d2RjcUxXZjY1d0pkQ3lmVitmSm1pYUJ5ZEVxS2VlYlNCdEtwWmRRWGNPUkhR?=
+ =?utf-8?B?RjNUUml3MjRlNHhHbXdENHZvV2NSdnpGc0hqUWRvYTdCTS84eExhUk0wOGhj?=
+ =?utf-8?B?dERYR1JQYzA0dHplbXVnOTRqWlVRc1Uzd3F0aU9xNWZySnlvYks4VUJITEVD?=
+ =?utf-8?B?UFVVb1REbWkrUGhnM0xPWWZNeDNOdkNibkV0VEJOVFlidU5ibkRNSUc2M2Iy?=
+ =?utf-8?B?cWZqZXljTVc3cjUraDMzYW4yakI2aG90ajl3Kyt1bElCejdNcDkzbWFnenky?=
+ =?utf-8?B?VnVvQXdnWUZCcW4zNTRGRm5Mc3RqK3E4cHZKZlRNUUs5K0VwTTVLdWJBSW9Y?=
+ =?utf-8?B?UTZkQytjcDYrV0JMTHFNSHRSWWFLLzVoNkpLV2s1elg5S2FiaTFZYUl2RHVR?=
+ =?utf-8?B?b2FOaVZ0eTZ5d3Q0dmlpc1YzbFlveklIdEFjSFpacFVoeG1wdjZjeHFuSUJx?=
+ =?utf-8?B?NVNUR254eXZtb05oSW5tcUNrZmg1OGpnMUxhSDd3V1BYeG1LaURlb0Z2Wjd6?=
+ =?utf-8?B?TDNaeHFIU1RaSHMrNlJHYkxKaGdCNlJCTkw4SG90emdXTGNzVHZQRzVxK05o?=
+ =?utf-8?B?ODA3eTU3T2tEcU5KWFJDSWRlKzFvTlRrM1Y1MkVicVBvUW9TNFRoSUd6UGZ6?=
+ =?utf-8?B?U2hLRzBnT3RYNlRSaFNzNVF5ZmpPS2hJYnVqVk5QWUtBVVRQMmxpZUVBNmFB?=
+ =?utf-8?B?UENWLzI2TFZPc0Q2RW5OUXVhZS9QN29YQjVIZjEwaERSSWRLQ0w4anBzNis2?=
+ =?utf-8?B?bXMrcUpJRFVHWnd6aGMrd0RXbTJxZHVRS0g4TmdTTVR2aUE1eTl5UyttOThy?=
+ =?utf-8?B?Q3BuL0kyR2ZkOERqNjN4RWNtZlZpZ0NkaEIveTJYd2lxMTFydTQzVWlkS1pG?=
+ =?utf-8?B?Y3UyQW93YWh3UkNOcC8wRUh6cFFZb1dYRWw2dWRpZWJKa2dOSTc0RlNoZ0Jm?=
+ =?utf-8?B?dHhiMVEyejQvcHRiVEtTYnYrdHVFOUtpMWZFZE4rU1cxM3NlazRVdWY2VDBN?=
+ =?utf-8?B?ajBEUnFDTjh0YUFsa01hbkdFcHFDeFBwT1FCck5wWThsVHVqSWdZdGpncytw?=
+ =?utf-8?B?WUx1RytQKzFTbXBmSVpkS1dxdXF2aE5LRHV4MHJnNjVLR0N0dStrS2xycTBM?=
+ =?utf-8?B?Q1UrdDdHWFVJMW45TFBqVW1CTXN6WitrcjN4THNyTFUvQS9WUG4zU1JBYXpJ?=
+ =?utf-8?B?Z3NEcTNBQU04a1QvRU45dGs1T3pVODIzbnY5L3Y3UzltM3dVMWdoampxcTJV?=
+ =?utf-8?B?WUZKSGVaaG9YUXVIc2hHYlVGdXQwajVycHpXZnJONWNadUJpcHExckFjaUE5?=
+ =?utf-8?B?TjY0SksyN2laWUE5N1daSG0vOStHSE5BVkVhZ1lWVHNHanJoWG1jN2kxa2hF?=
+ =?utf-8?B?Rm5ad1JlaFZEWmhUc0dwdi9qdjRqaDZRSWVQS2N6TkpOMHhBZDh2dXFvcEZI?=
+ =?utf-8?B?K3czRE9NOGl1NGtJaDBDQVZjSEFuaVRmZis4MDQ1K2tTZWpGbWxTWFhrV1BH?=
+ =?utf-8?Q?vluIYIlcS1OZZ5kgRVacAlbjo/3fUWA/nfmsvoJXlp5+?=
+X-OriginatorOrg: opensynergy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c8a8bc9-004c-429f-2567-08dca58e110e
+X-MS-Exchange-CrossTenant-AuthSource: BE1P281MB1906.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2024 11:54:37.1668 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RuRYGgWWHsaF0Ejt8+Rxl2yF09Qkr6p+8sWfIs4Prf0gF+fFC79EMPW6Re5h3VO9vlBT+Zb0G/TuMt6o8TV8HQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BE1P281MB2579
+X-TM-AS-ERS: 40.93.78.51-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1026-28532.005
+X-TMASE-Result: 10--3.262000-4.000000
+X-TMASE-MatchedRID: +c13yJDs9035ETspAEX/ngw4DIWv1jSVbU+XbFYs1xL+teBvtXSx+MN0
+ ttU53zjBnL8fU/fu1hTxEXPBUZeoEui1lkUvOtVfawJUqbmGPB3aPuPIIqmcJ/p4OuSy0UFxr54
+ JIx46I6RsGRtqiNjgbNWDK+ZtBYu5J3n9e/k5m875IMfcfKKBtPxcvA3b4B4wOwBXM346/+zno9
+ 6w7u5Z9S3CfmATSj/USUiCGruO9KvzKEA3aTy2ixhuNHkFvYwX
+X-TMASE-XGENCLOUD: c4dd0b7a-6166-480e-9140-bbba4e759555-0-0-200-0
+X-TM-Deliver-Signature: 689296F135A6F3DFCE2FF4DC86D46286
+X-TM-Addin-Auth: CctZJ005x7gWrbPs7hK8I9s9/Ac8KgX7OpCaIyE1d9ogMOhFRldcd1V6Iia
+ s1v9aAoLKnXmyjDYqLUD624/rUBf+dBvg+GHYLz2umoGfsy8eN3EH1Je9tD8pfxM/cXaKtGxT/l
+ 7Nyxh/CLi+T3Jn6dwbLF5LTw7n412EZU482GmQYgoQwZ9JqyDD5jIdEMvPhiTtGdQzu92fvvhCk
+ d7XLI+90qgwFhysELxktHdNYhgKkuVrTt9ti2kAzpPDE2HZTSl7ZL9FiJKbBVG9Cx8J3151bZus
+ 6hOsT9h/btrTQjI=.GRvUgDOFl0+jM12lvosh7xmt6J8QxSgzPyNkavxE3Uvlu1/SVQ1k/nuQlq
+ mCF+blR9A4EE2JQwLXXHQwIIJlAstmVK/WmBg566Mp4aDK7GylY/rnYOHJhv5c2rHCT3yLWmzV1
+ o7KPPoXXCdt7+3hlFOrbntX8hmhFW6tf1gRpOrXI5YvtAjwKxhwSFH3ogxu+X2PzTwKC6OahX4x
+ oZExG3dO+oQqqkAzIux5oJssLtkW8BhWzGXz4D6XkhZ/sz1JD/N3PhfclvusZCC7pJlKDLFRK5Z
+ vRssKwyxgknOUYxJ8f/KPEb2tTIeqYzt3KouH1kV+2IY+d+Nll1j/t3hQcg==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=opensynergy.com;
+ s=TM-DKIM-20210503141657; t=1721130880;
+ bh=NBUnKggH2eN8Xxe9CsqKHNMLJTF1hB7t8r1yElnZknk=; l=378;
+ h=Date:From:To;
+ b=CKambLYg0UNpIxULNVEAfraPqC/ETAkhRf3617fKsAa+JeLdcFKF2KkELVWxel3MN
+ RHTBFByJpf+F1fu4H/xEtTURUK7rd9j28VX74xqq9VXRFs6QlCsB2rV+t83R70G0ex
+ hSDUq2mYaunhx+0CKNZW9ez6Prq8Tjp+05P7ooe/Oo3lrbgM4j9zBsna1xjwG/tddU
+ lApHyEBCcHGdpkPomv4JQHUvQYszEQ5OdKLXrr8ZRoAXkZUjmHinFvDkD3ZeOHG7oc
+ A+jzxAxdPHNv5eUlU3/03rPP+24LifIZKfSjwj9CCbFFm3wmuUkaSWuqLxZX/iQz9u
+ 7l3lSRCD90jHg==
+Received-SPF: pass client-ip=18.185.115.123;
+ envelope-from=peter.hilber@opensynergy.com; helo=repost01.tmes.trendmicro.eu
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,250 +207,20 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
+Reply-to:  Peter Hilber <peter.hilber@opensynergy.com>
+From:  Peter Hilber via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+On 08.07.24 11:27, David Woodhouse wrote:
+> +
+> +	/*
+> +	 * Time according to time_type field above.
+> +	 */
+> +	uint64_t time_sec;		/* Seconds since time_type epoch */
+> +	uint64_t time_frac_sec;		/* (seconds >> 64) */
+> +	uint64_t time_esterror_picosec;	/* (± picoseconds) */
+> +	uint64_t time_maxerror_picosec;	/* (± picoseconds) */
 
->  From: Igor Mammedov <imammedo@redhat.com>
->  Sent: Tuesday, July 16, 2024 10:52 AM
->  To: Salil Mehta <salil.mehta@opnsrc.net>
-> =20
->  On Tue, 16 Jul 2024 03:38:29 +0000
->  Salil Mehta <salil.mehta@opnsrc.net> wrote:
-> =20
->  > Hi Igor,
->  >
->  > On 15/07/2024 15:11, Igor Mammedov wrote:
->  > > On Mon, 15 Jul 2024 14:19:12 +0000
->  > > Salil Mehta <salil.mehta@huawei.com> wrote:
->  > >
->  > >>>   From: qemu-arm-bounces+salil.mehta=3Dhuawei.com@nongnu.org  <qem=
-u-
->  > >>>   arm-bounces+salil.mehta=3Dhuawei.com@nongnu.org> On Behalf Of  S=
-alil
->  > >>>   Mehta via
->  > >>>   Sent: Monday, July 15, 2024 3:14 PM
->  > >>>   To: Igor Mammedov <imammedo@redhat.com>
->  > >>>
->  > >>>   Hi Igor,
->  > >>>
->  > >>>   >  From: Igor Mammedov <imammedo@redhat.com>
->  > >>>   >  Sent: Monday, July 15, 2024 2:55 PM
->  > >>>   >  To: Salil Mehta <salil.mehta@huawei.com>
->  > >>>   >
->  > >>>   >  On Sat, 13 Jul 2024 19:25:09 +0100
->  > >>>   >  Salil Mehta <salil.mehta@huawei.com> wrote:
->  > >>>   >
->  > >>>   >  > [Note: References are present at the last after the revisio=
-n
->  > >>>   > history]  >  > Virtual CPU hotplug support is being added acro=
-ss
->  > >>>   > various architectures  [1][3].
->  > >>>   >  > This series adds various code bits common across all archit=
-ectures:
->  > >>>   >  >
->  > >>>   >  > 1. vCPU creation and Parking code refactor [Patch 1] 2. Upd=
-ate ACPI
->  > >>>   > > GED framework to support vCPU Hotplug [Patch 2,3] 3. ACPI CP=
-Us AML
->  > >>>   > > code change [Patch 4,5] 4. Helper functions to support unrea=
-lization
->  > >>>   > > of CPU objects [Patch 6,7]
->  > >>>   >
->  > >>>   >  with patch 1 and 3 fixed should be good to go.
->  > >>>   >
->  > >>>   >  Salil,
->  > >>>   >  Can you remind me what happened to migration part of this?
->  > >>>   >  Ideally it should be a part of of this series as it should be=
- common
->  > >>>   > for  everything that uses GED and should be a conditional part=
- of
->  > >>>   > GED's  VMSTATE.
->  > >>>   >
->  > >>>   >  If this series is just a common base and no actual hotplug on=
- top of
->  > >>>   > it is  merged in this release (provided patch 13 is fixed), I'=
-m fine
->  > >>>   > with migration  bits being a separate series on top.
->  > >>>   >
->  > >>>   >  However if some machine would be introducing cpu hotplug in t=
-he same
->  > >>>   > release, then the migration part should be merged before it or=
- be a
->  > >>>   > part  that cpu hotplug series.
->  > >>>
->  > >>>   We have tested Live/Pseudo Migration and it seem to work with th=
-e
->  > >>>   changes part of the architecture specific patch-set.
->  > >
->  > > have you tested, migration from new QEMU to an older one (that doesn=
-'t have cpuhotplug builtin)?
->  >
->  >
->  > Just curious, how can we detect at source Qemu what version of the
->  > Qemu destination is running. We require some sort of compatibility
->  > check but then this is a problem not specific to CPU Hotplug?
-> =20
->  it's usually managed by version machine types + compat settings for
->  machine/device.
-
-Ok. it looks to be a static checking at the source. I'm sure there must be
-a way to dynamically do the same by negotiating the features i.e. only
-enabling the common subset at the destination. I quickly skimmed the
-migration code and I cannot find any thing like this being done as of now.
-And this problem looks to be a pandoras box to me.=20
-
-> =20
->  > We  are not initializing CPU Hotplug VMSD in this patch-set. I was
->  > wondering then how can a new machine attempt to migrate VMSD state
->  > from new Qemu to older Qemu.
-> =20
->  If I'm not mistaken without VMSD it shouldn't explode, since CPUHP code
->  shouldn't create memory-regions that are migrated.
->  (If I recall correctly, mmio regions aren't going into migration stream)
-
-Correct.
-
-> =20
->  > ARM vCPU Hotplug patches will be on top of this later in next Qemu cyc=
-le.
->  then it's fine to introduce VMSD later on, just make sure others who add=
-ing
->  cpu hotplug elsewhere also aware of it and pickup the same patch.
-
-
-Yes, thanks.
-
-
->  > >>>
->  > >>>   Ampere: https://lore.kernel.org/all/e17e28ac-28c7-496f-b212-
->  > >>>   2c9b552dbf63@amperemail.onmicrosoft.com/
->  > >>>   Oracle: https://lore.kernel.org/all/46D74D30-EE54-4AD2-8F0E-
->  > >>>   BA5627FAA63E@oracle.com/
->  > >>>
->  > >>>
->  > >>>   For ARM, please check below patch part of RFC V3 for changes rel=
-ated to
->  > >>>   migration:
->  > >>>   https://lore.kernel.org/qemu-devel/20240613233639.202896-15-
->  > >>>   salil.mehta@huawei.com/
->  > >>
->  > >>
->  > >> Do you wish to move below change into this path-set and make it
->  > >> common to all instead?
->  > >
->  > > it would be the best to include this with here.
->  > >
->  > >>
->  > >>
->  > >> diff --git a/hw/acpi/generic_event_device.c
->  > >> b/hw/acpi/generic_event_device.c index 63226b0040..e92ce07955
->  > >> 100644
->  > >> --- a/hw/acpi/generic_event_device.c
->  > >> +++ b/hw/acpi/generic_event_device.c
->  > >> @@ -333,6 +333,16 @@ static const VMStateDescription
->  vmstate_memhp_state =3D {
->  > >>       }
->  > >>   };
->  > >>
->  > >> +static const VMStateDescription vmstate_cpuhp_state =3D {
->  > >> +    .name =3D "acpi-ged/cpuhp",
->  > >> +    .version_id =3D 1,
->  > >> +    .minimum_version_id =3D 1,
->  > >> +    .fields      =3D (VMStateField[]) {
->  > >> +        VMSTATE_CPU_HOTPLUG(cpuhp_state, AcpiGedState),
->  > >> +        VMSTATE_END_OF_LIST()
->  > >> +    }
->  > >> +};
->  > >> +
->  > >>   static const VMStateDescription vmstate_ged_state =3D {
->  > >>       .name =3D "acpi-ged-state",
->  > >>       .version_id =3D 1,
->  > >> @@ -381,6 +391,7 @@ static const VMStateDescription
->  vmstate_acpi_ged =3D {
->  > >>       },
->  > >>       .subsections =3D (const VMStateDescription * const []) {
->  > >>           &vmstate_memhp_state,
->  > >> +        &vmstate_cpuhp_state,
->  > >
->  > > I'm not migration guru but I believe this should be conditional to
->  > > avoid breaking cross-version migration.
->  > > See 679dd1a957d '.needed =3D vmstate_test_use_cpuhp. part
->  >
->  >
->  > Sure, thanks for this. As I can see, the needed() function is used at
->  > the source to decide if the state corresponding to a particular device
->  > can be forwarded to the destination QEMU/VM. But how can this be used
->  > to check for cross-version migration?
-> =20
->  what I'd do is to make sure that older machine types to not have cpu
->  hotplug enabled in supported events, and only machine that has full
->  support for hotplug enabled the bit. And then machine_init depending on
->  that would manage actual 'ged-event'
->  property.
-> =20
->  Then later VMSD.needed would check ged-event to decide if section should
->  be used or omitted.
-
-I understand this part, as discussed above this is not relevant to this pat=
-ch-set
-as we are not adding CPU Hotplug specific VMSD. But yes, I take your point =
-and
-will add above suggested change in the following patches in the next Qemu C=
-ycle.
-
-
->  > BTW, I've prepared V16. May I request a quick peek at:
->  >
->  > https://github.com/salil-mehta/qemu/commits/virt-cpuhp-armv8/rfc-
->  v3.ar
->  > ch.agnostic.v16/
-> =20
->  looked at
->     hw/acpi: Update ACPI GED framework to support vCPU Hotplug
-> =20
->  I get that ged_event loop in realize was copy-pasted from _EVT handler, =
-but
->  that looks a bit complicated (though I won't object, it's matter of tast=
-e)
-
-Yes, I did that intentionally to increase the code reuse which usually is e=
-ncouraged.
-This reduces the amount of re-testing required. But yes, there is a con sid=
-e as
-well to this approach if not done properly i.e. any issues in the older cod=
-e also
-get propagated in the newer code.
-
-Generally we bank upon FFS function to get the next bit and use bit shiftin=
-g to
-deal with this kind of logic efficiently.=20
-
-> =20
->  I'd prefer simpler condition than for() {} loop, and just use simpler 'i=
-f'
-> =20
->  if (enabled_events & ACPI_GED_CPU_HOTPLUG_EVT) {
->      init cpu hp code
->  }
-> =20
->  PS:
->  if you keep for loop, I'd replace  error_report() + abort() with 'error_=
-abort'
-
-Maybe I should have looked a this earlier. I've  missed to address this in =
-V16.
-Do you mean error_setg(&error_abort,....) kind of logic? it has been discou=
-raged
-in favor of assert() I think?
-
-Can we live with this for now or do you want me to send V17 for this change=
-?
-
-
-Thanks
-Salil.
+Is this unsigned or signed?
 
