@@ -2,87 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E7E932DD9
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62581932DFC
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTkk8-0003zx-38; Tue, 16 Jul 2024 12:09:32 -0400
+	id 1sTkli-0002C1-6v; Tue, 16 Jul 2024 12:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTkjs-0003WV-99
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:09:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <me@samjakob.com>) id 1sTklU-0001zL-Em
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:10:56 -0400
+Received: from qs51p00im-qukt01071701.me.com ([17.57.155.6])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTkjo-0002MN-4b
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:09:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721146150;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=LecRcGY9GuLupOCQZH+4gCgRYmLod7Sz5h+UvWv2CjQ=;
- b=V8twKhWqeuL2/PkAP0zUF8DQRnboelQjGEFQHdfiRWvRHwuSEzI6Q6c1xb8VeYmRRWLfBy
- q2Jr2lLFqhPmxV6Vy1rXpm7eNGEPtn6yZwDPd/qrPdH4Wq/eqdhMq4wua4S2t4tGjujYgA
- zbxge53cURxFc4bJ8WhLBU0ABLjQnHk=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-urEZOKYkNiuukCiNO6ttIA-1; Tue, 16 Jul 2024 12:09:07 -0400
-X-MC-Unique: urEZOKYkNiuukCiNO6ttIA-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-78e08ce33d0so2298425a12.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 09:09:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721146146; x=1721750946;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LecRcGY9GuLupOCQZH+4gCgRYmLod7Sz5h+UvWv2CjQ=;
- b=MpVJT7JjSH9U+9PoFBXota8GEKVa7CiFkOBXwBWn9eNZcCHy9ZTULkezMW+tKA0My6
- 5hCIsJMRXyUQ6VfxRebdpVH8SBNfYkluyBfeezm49e8uQS+yZVpT8HdeEx8sIk6iSsq2
- KETQwELfZ7089PBQjUpH6NAhpYamldnvlqL4AJsGTq3F1QWuMYMohPYkQreePwrFmREE
- 1scyH6yCLpAa1E+vm91+6tN5fNHgyP0Cu4tlFHz1PVHaAGe8KEIUqioPxs0dnCxkMa6w
- dRp5rhav9GMd6CBuQ7bQSs4zLbFBSJzyrqQeX0LA3vUYrkrpwsjG6cooKpDYaSJ2Rc3L
- WbGw==
-X-Gm-Message-State: AOJu0Yxrq4ENrRTY4o0NSn3fqWUxLpCNV/5o6aXq1GSh09oRZonyxQqb
- 6lCIG0mbsjrafZkO2Pm59yu3x9PvA7gdAQ5RGWpexIp3OPBgfXTq8tHqeDb5ZYSt3/IRHileai8
- SiBc3BbNp65WEuidtYZomD/UJNKZatUaVjULD+cTGt11w3DwbDSaUrcLy73wqnvaI44//x6OcFk
- su+emAhALiZWSQd9OmIKt3LuFeRwM=
-X-Received: by 2002:a17:90a:f490:b0:2c9:a3ca:cc98 with SMTP id
- 98e67ed59e1d1-2cb373fffc0mr1867776a91.7.1721146146282; 
- Tue, 16 Jul 2024 09:09:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhVs1h4j328WbOb1qZuOjO+gUW403PT1nCeeeZmPoZcxfznLPDVi49zF9S0TwBKgtKDNrwAD84quwUXT9/yxk=
-X-Received: by 2002:a17:90a:f490:b0:2c9:a3ca:cc98 with SMTP id
- 98e67ed59e1d1-2cb373fffc0mr1867757a91.7.1721146145905; Tue, 16 Jul 2024
- 09:09:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240711112228.2140606-1-armbru@redhat.com>
- <20240711112228.2140606-3-armbru@redhat.com>
-In-Reply-To: <20240711112228.2140606-3-armbru@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 16 Jul 2024 12:08:54 -0400
-Message-ID: <CAFn=p-Y9E=QyaNa_okNpdzLVonp-TBuK+w57i1Jicy-JyZO-Ug@mail.gmail.com>
-Subject: Re: [PATCH 2/5] qapi/machine: Clean up documentation around
- CpuInstanceProperties
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>, 
- Michael Tsirkin <mst@redhat.com>, Daniel Berrange <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000a23eda061d5f90aa"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ (Exim 4.90_1) (envelope-from <me@samjakob.com>) id 1sTklS-0002wc-Gn
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:10:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samjakob.com;
+ s=sig1; t=1721146250;
+ bh=KjtVo/OCWQ0RNtoc5VyV2ztYRA6Jh4iaDgpmRDZu1JU=;
+ h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To;
+ b=q4/Q+C4uORALVY4z5Knema+XWUBSyoJgswV/fnr0z3ljmoU9fzCmBF+HX1e9MEK9l
+ 0d65XXt/1uhl/wyVjuyLmAS0hrNlE3AoAXQ12/3auPrBBd40wO/TM2GTA83ywAMwNI
+ SEIJzTT22fO4dTBmCWQ9K0a/sNV/j2lk/S7tgj9H0ALiG8lO5wzvEGg3vFNS4Djlx0
+ MKQRe3xImAwsfdB/EGKC8dO3lEWxYpEulRfKr6VgW7HLiTNgVWZxtkNvP27IOX4Pfl
+ TMIFYXsjIgSFGBaIdIyx5buYF3MgUWVCyBGh+sm9hRpPP0xWLf2Xa99UjugYbp3qu/
+ pQXwe7uDLGyBA==
+Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com
+ [17.57.155.28])
+ by qs51p00im-qukt01071701.me.com (Postfix) with ESMTPSA id 0BA474D003C5;
+ Tue, 16 Jul 2024 16:10:47 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: "Sam M." <me@samjakob.com>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] hw/display/bcm2835_fb: fix fb_use_offsets condition
+Date: Tue, 16 Jul 2024 17:10:35 +0100
+Message-Id: <2CF81837-4459-4C1D-9CFA-3E689A9F7AB6@samjakob.com>
+References: <CAFEAcA_jA9BnBRYZK8b15ibp7SFw0PNKb7H=-xs4p=ttOesahg@mail.gmail.com>
+Cc: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, "open list:Raspberry Pi" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+In-Reply-To: <CAFEAcA_jA9BnBRYZK8b15ibp7SFw0PNKb7H=-xs4p=ttOesahg@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: iPhone Mail (21F90)
+X-Proofpoint-ORIG-GUID: K5L0EAUgy5I-1nrINYMwqh3PZaFa305y
+X-Proofpoint-GUID: K5L0EAUgy5I-1nrINYMwqh3PZaFa305y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-15_19,2024-07-16_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0
+ mlxlogscore=999 suspectscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ clxscore=1030 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2407160119
+Received-SPF: pass client-ip=17.57.155.6; envelope-from=me@samjakob.com;
+ helo=qs51p00im-qukt01071701.me.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,176 +78,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a23eda061d5f90aa
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you!
 
-On Thu, Jul 11, 2024, 7:22=E2=80=AFAM Markus Armbruster <armbru@redhat.com>=
- wrote:
+My apologies for the duplicates and alignment - it=E2=80=99s my first time u=
+sing a mailing list!
 
-> CpuInstanceProperties' doc comment describes its members as properties
-> to be passed to device_add when hot-plugging a CPU.
->
-> This was in fact the initial use of this type, with
-> query-hotpluggable-cpus: letting management applications find out what
-> properties need to be passed with device_add to hot-plug a CPU.
->
-> We've since added other uses: set-numa-node (commit 419fcdec3c1 and
-> f3be67812c2), and query-cpus-fast (commit ce74ee3dea6).  These are not
-> about device-add.
->
-> query-hotpluggable-cpus uses CpuInstanceProperties within
-> HotpluggableCPU.  Lift the documentation related to device-add from
-> CpuInstanceProperties to HotpluggableCPU.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->
-
-Reviewed-by: John Snow <jsnow@redhat.com>
-
----
->  qapi/machine.json | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index f15ad1b43e..50ff102d56 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -960,9 +960,7 @@
->  ##
->  # @CpuInstanceProperties:
->  #
-> -# List of properties to be used for hotplugging a CPU instance, it
-> -# should be passed by management with device_add command when a CPU is
-> -# being hotplugged.
-> +# Properties identifying a CPU.
->  #
->  # Which members are optional and which mandatory depends on the
->  # architecture and board.
-> @@ -996,9 +994,6 @@
->  #
->  # @thread-id: thread number within the core the CPU  belongs to
->  #
-> -# .. note:: Management should be prepared to pass through additional
-> -#    properties with device_add.
-> -#
->  # Since: 2.7
->  ##
->  { 'struct': 'CpuInstanceProperties',
-> @@ -1020,7 +1015,8 @@
->  #
->  # @type: CPU object type for usage with device_add command
->  #
-> -# @props: list of properties to be used for hotplugging CPU
-> +# @props: list of properties to pass for hotplugging a CPU with
-> +#     device_add
->  #
->  # @vcpus-count: number of logical VCPU threads @HotpluggableCPU
->  #     provides
-> @@ -1028,6 +1024,9 @@
->  # @qom-path: link to existing CPU object if CPU is present or omitted
->  #     if CPU is not present.
->  #
-> +# .. note:: Management should be prepared to pass through additional
-> +#    properties with device_add.
-> +#
->  # Since: 2.7
->  ##
->  { 'struct': 'HotpluggableCPU',
-> --
-> 2.45.0
->
->
-
---000000000000a23eda061d5f90aa
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Thu, Jul 11, 2024, 7:22=E2=80=AFAM Markus Armbruste=
-r &lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:=
-<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bord=
-er-left:1px #ccc solid;padding-left:1ex">CpuInstanceProperties&#39; doc com=
-ment describes its members as properties<br>
-to be passed to device_add when hot-plugging a CPU.<br>
-<br>
-This was in fact the initial use of this type, with<br>
-query-hotpluggable-cpus: letting management applications find out what<br>
-properties need to be passed with device_add to hot-plug a CPU.<br>
-<br>
-We&#39;ve since added other uses: set-numa-node (commit 419fcdec3c1 and<br>
-f3be67812c2), and query-cpus-fast (commit ce74ee3dea6).=C2=A0 These are not=
-<br>
-about device-add.<br>
-<br>
-query-hotpluggable-cpus uses CpuInstanceProperties within<br>
-HotpluggableCPU.=C2=A0 Lift the documentation related to device-add from<br=
->
-CpuInstanceProperties to HotpluggableCPU.<br>
-<br>
-Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
-arget=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt;<br></blockquo=
-te></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Reviewed-by: J=
-ohn Snow &lt;<a href=3D"mailto:jsnow@redhat.com">jsnow@redhat.com</a>&gt;</=
-div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote=
-"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
-1px #ccc solid;padding-left:1ex">
----<br>
-=C2=A0qapi/machine.json | 13 ++++++-------<br>
-=C2=A01 file changed, 6 insertions(+), 7 deletions(-)<br>
-<br>
-diff --git a/qapi/machine.json b/qapi/machine.json<br>
-index f15ad1b43e..50ff102d56 100644<br>
---- a/qapi/machine.json<br>
-+++ b/qapi/machine.json<br>
-@@ -960,9 +960,7 @@<br>
-=C2=A0##<br>
-=C2=A0# @CpuInstanceProperties:<br>
-=C2=A0#<br>
--# List of properties to be used for hotplugging a CPU instance, it<br>
--# should be passed by management with device_add command when a CPU is<br>
--# being hotplugged.<br>
-+# Properties identifying a CPU.<br>
-=C2=A0#<br>
-=C2=A0# Which members are optional and which mandatory depends on the<br>
-=C2=A0# architecture and board.<br>
-@@ -996,9 +994,6 @@<br>
-=C2=A0#<br>
-=C2=A0# @thread-id: thread number within the core the CPU=C2=A0 belongs to<=
-br>
-=C2=A0#<br>
--# .. note:: Management should be prepared to pass through additional<br>
--#=C2=A0 =C2=A0 properties with device_add.<br>
--#<br>
-=C2=A0# Since: 2.7<br>
-=C2=A0##<br>
-=C2=A0{ &#39;struct&#39;: &#39;CpuInstanceProperties&#39;,<br>
-@@ -1020,7 +1015,8 @@<br>
-=C2=A0#<br>
-=C2=A0# @type: CPU object type for usage with device_add command<br>
-=C2=A0#<br>
--# @props: list of properties to be used for hotplugging CPU<br>
-+# @props: list of properties to pass for hotplugging a CPU with<br>
-+#=C2=A0 =C2=A0 =C2=A0device_add<br>
-=C2=A0#<br>
-=C2=A0# @vcpus-count: number of logical VCPU threads @HotpluggableCPU<br>
-=C2=A0#=C2=A0 =C2=A0 =C2=A0provides<br>
-@@ -1028,6 +1024,9 @@<br>
-=C2=A0# @qom-path: link to existing CPU object if CPU is present or omitted=
-<br>
-=C2=A0#=C2=A0 =C2=A0 =C2=A0if CPU is not present.<br>
-=C2=A0#<br>
-+# .. note:: Management should be prepared to pass through additional<br>
-+#=C2=A0 =C2=A0 properties with device_add.<br>
-+#<br>
-=C2=A0# Since: 2.7<br>
-=C2=A0##<br>
-=C2=A0{ &#39;struct&#39;: &#39;HotpluggableCPU&#39;,<br>
--- <br>
-2.45.0<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000a23eda061d5f90aa--
-
+> On Jul 16, 2024, at 3:44=E2=80=AFPM, Peter Maydell <peter.maydell@linaro.o=
+rg> wrote:
+>=20
+> =EF=BB=BFOn Tue, 16 Jul 2024 at 15:37, Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org> wrote:
+>>=20
+>>> On 16/7/24 12:35, Peter Maydell wrote:
+>>> On Sat, 13 Jul 2024 at 17:04, SamJakob <me@samjakob.com> wrote:
+>>>>=20
+>>>>         It is common practice when implementing double-buffering
+>>>>         on VideoCore to do so by multiplying the height of the
+>>>>         virtual buffer by the number of virtual screens desired
+>>>>         (i.e., two - in the case of double-bufferring).
+>>>>=20
+>>>>         At present, this won't work in QEMU because the logic in
+>>>>         fb_use_offsets require that both the virtual width and
+>>>>         height exceed their physical counterparts.
+>>>>=20
+>>>>         This appears to be unintentional/a typo and indeed the
+>>>>         comment states; "Experimentally, the hardware seems to
+>>>>         do this only if the viewport size is larger than the
+>>>>         physical screen". The viewport/virtual size would be
+>>>>         larger than the physical size if either virtual dimension
+>>>>         were larger than their physical counterparts and not
+>>>>         necessarily both.
+>>>>=20
+>>>> Signed-off-by: SamJakob <me@samjakob.com>
+>>>=20
+>>> Thanks for this bugfix; I've applied it to my target-arm.next
+>>> queue and it should get upstream within a week or so.
+>>=20
+>> Since I'm seeing 2 times the same patch, adding R-b again on
+>> this one:
+>>=20
+>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>>=20
+>> (BTW Peter the commit description is mis-aligned, if you
+>> don't mind, correcting it while applying would be appreciated!)
+>=20
+> Yep, I already picked up your r-by and rewrapped the commit
+> message.
+>=20
+> -- PMM
 
