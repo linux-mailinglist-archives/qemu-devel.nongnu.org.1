@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8254B932FB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2C3932FB9
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:10:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTmbk-0003w4-AB; Tue, 16 Jul 2024 14:09:00 -0400
+	id 1sTmcZ-0005kH-6w; Tue, 16 Jul 2024 14:09:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sTmbd-0003v4-EU
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:08:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sTmbb-0000qV-4d
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:08:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721153329;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S0gY8URaC0Mwg1ffVjwFSWfNuCX7CpVNHVAGyVMnwk4=;
- b=IVtXsSh/FIgif8yR06hyAB3juVCXQ0ZH5VxKsAuVQ32QEKsPj8jEfhn0zZOf26rH1cUWcb
- 2COY0fPeaX7YBRI23RR0+3a936tBBcOgYHP5Cb/yl+HRR8JwHEPTRjTAdPDUEcIIrvYd5p
- Qtyia0L8TkdvO6NHSL1TiN8Amu6KQqQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-rfDo3FzwPKCC5jEXn1YCKA-1; Tue,
- 16 Jul 2024 14:08:47 -0400
-X-MC-Unique: rfDo3FzwPKCC5jEXn1YCKA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 54BDC1955D45; Tue, 16 Jul 2024 18:08:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0BCC719560B2; Tue, 16 Jul 2024 18:08:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C214321E668B; Tue, 16 Jul 2024 20:08:42 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Konstantin
- Kostiuk <kkostiuk@redhat.com>
-Subject: Re: [PATCH 04/14] qapi: add a 'command-features' pragma
-In-Reply-To: <ZpD0k8taHT00jZpX@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Fri, 12 Jul 2024 10:17:07 +0100")
-References: <20240604153242.251334-1-berrange@redhat.com>
- <20240604153242.251334-5-berrange@redhat.com>
- <87r0bzuj7d.fsf@pond.sub.org> <ZpDlizzbaXk4pa0U@redhat.com>
- <87a5inuh75.fsf@pond.sub.org> <ZpD0k8taHT00jZpX@redhat.com>
-Date: Tue, 16 Jul 2024 20:08:42 +0200
-Message-ID: <87bk2xjjkl.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcW-0005bV-2q
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:09:48 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcU-0000tR-4u
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:09:47 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4265b7514fcso45015e9.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721153384; x=1721758184; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SaiD9U9AwP/1bByOyja0Uxov4Ba81ZpHCardor2uqFY=;
+ b=uT1GU/nymVRWTg1jZG8mz2ULrusAkoP81bvrczqMDo0axZw2xvXdCxefKOZv++6369
+ zhiyTeSXU9y3U65UY8dgHRbzzO7Ia9qcMIFRMD1De+U2+g7XiWhH0Z8aKEUxU58oThon
+ uBsfkXh74BAcJMh4K2EvH355MXwpvKj/gm+bagWdPnFxIxwgju5lDL4pm+RiO7PWL6Va
+ AGCcSYdbLRSDMJcG/3zsuaWYraoRIOhuohKhVMQQbUa3gHt5zTkzI5KMacgZ7nFjt2R/
+ PL86Q8JLjl8yNiaImshAZ0JC3AoNLT9Izz8SCvRyYVQwFGyQMkD2TAi81FnuRJq1Y4mH
+ Vbrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721153384; x=1721758184;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SaiD9U9AwP/1bByOyja0Uxov4Ba81ZpHCardor2uqFY=;
+ b=Cyat26W89Nn0TSOIEA9n9NNK60mvlA9GrGInYzRZaf4YupXI+13jrAWKVZ+exdZpty
+ DhzunylTjlDs4wEkor/apCpFz5pztpcyM+UQReIP1/eG+Dw2sVF+37YOxbWpEH5wD7P6
+ pKYaZZry46Ho4ENGgHPhp8VR7CttU40nnxYM+/0iAYptJvKQAyjpOnAaHwxKrvHzQk+/
+ efFMv6ZY5wBFV9GXEx0xoRtirxypf26ifWAGAkc5HlTWHfHW9k8udfRxpLNcdwPRKBGY
+ SG2Bg+fBpJvbPmF9wZ0T4q0hFG3ZQBKCny6Wls05NvUSTLHIfzi+VNT/uMqwnEbHvNuI
+ iDDg==
+X-Gm-Message-State: AOJu0YyXs8M2DXGw/SgSNr6LffXitNId7m98XSUWdw6OgXdwl4IQwZhB
+ YPVifZzdasNTCuMri+vAb1KCFyOO0JQxMDaR2oKhE93N5MzUkWztd86HawBnh5lY8a3CR13yYw4
+ aScnqOQ==
+X-Google-Smtp-Source: AGHT+IGdZ8J1MEZFUCNw/TZ4hZJ4Bw4pdQzeIQfp/m1ouXl0MCN6qIvDvPzG4hAS0q0pgJadRt9hsQ==
+X-Received: by 2002:a5d:6612:0:b0:360:866f:5083 with SMTP id
+ ffacd0b85a97d-368274eb83cmr1973074f8f.32.1721153384049; 
+ Tue, 16 Jul 2024 11:09:44 -0700 (PDT)
+Received: from localhost.localdomain ([176.187.209.82])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3680daccdffsm9762862f8f.54.2024.07.16.11.09.43
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 16 Jul 2024 11:09:43 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/13] Misc HW/UI patches for 2024-07-16
+Date: Tue, 16 Jul 2024 20:09:27 +0200
+Message-ID: <20240716180941.40211-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,126 +88,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry for the delay; too many distractions, and I needed a good think.
+The following changes since commit 959269e910944c03bc13f300d65bf08b060d5d0f:
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+  Merge tag 'python-pull-request' of https://gitlab.com/jsnow/qemu into staging (2024-07-16 06:45:23 +1000)
 
-> On Fri, Jul 12, 2024 at 10:50:54AM +0200, Markus Armbruster wrote:
->> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->>=20
->> > On Fri, Jul 12, 2024 at 10:07:34AM +0200, Markus Armbruster wrote:
->> >> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->> >>=20
->> >> > The 'command-features' pragma allows for defining additional
->> >> > special features that are unique to a particular QAPI schema
->> >> > instance and its implementation.
->> >>=20
->> >> So far, we have special features (predefined, known to the generator =
-and
->> >> treated specially), and normal features (user-defined, not known to t=
-he
->> >> generator).  You create a new kind in between: user-defined, not known
->> >> to the generator, yet treated specially (I guess?).  Hmm.
->> >>=20
->> >> Could you at least hint at indented use here?  What special treatment=
- do
->> >> you have in mind?
->> >
->> > Essentially, these features are a way to attach metadata to commands t=
-hat
->> > the server side impl can later query. This eliminates the need to hard=
-code
->> > lists of commands, such as in QGA which hardcodes a list of commands w=
-hich
->> > are safe to use when filesystems are frozen. This is illustrated later=
- in
->> > this series.
->>=20
->> Please update docs/devel/qapi-code-gen.rst section "Pragma directives",
->> and maybe section "Features".
+are available in the Git repository at:
 
-Second thoughts; see below.
+  https://github.com/philmd/qemu.git tags/hw-misc-20240716
 
->> I'm not sure conflating the new kind of feature with existing special
->> features is a good idea.  I need to review more of the series before I
->> can make up my mind.
->
-> I originally implemented a completely separate 'tags' concept in the
-> QAPI parser, before deciding I was just re-inventing 'features' for
-> no obvious benefit.
->
-> The other nice thing about using features is that these are exposed
-> in the schema and docs. With the 'fsfreeze' restriction in code,
-> there's no formal docs of what commands are allowed when frozen, and
-> this is also not exposed in QAPI schema to apps. Using 'features'
-> we get all that as standard.
+for you to fetch changes up to 644a52778a90581dbda909f38b9eaf71501fd9cd:
 
-When you need to tack a mark to one or more things for whatever purpose
-*and* expose it to QMP clients, then features make sense.  This is the
-case here.
+  system/physmem: use return value of ram_block_discard_require() as errno (2024-07-16 20:04:08 +0200)
 
-Initially, features were strictly an external interface annotation, and
-were not meant to be used within QEMU.  All features were user-defined.
+Ignored checkpatch error:
 
-This changed when I created configurable policy for deprecated and
-unstable management interfaces: the policy engine needs to check for
-features 'deprecated' and 'unstable'.  Since the policy engine is partly
-implemented in generated code, these two features need to be baked into
-the generator.  This makes them special.
+  WARNING: line over 80 characters
+  #30: FILE: system/vl.c:1004:
+  +    if (!ti->class_names[0] || module_object_class_by_name(ti->class_names[0])) {
 
-You need less than that: a predicate "does <command> have <feature>" for
-certain features, ideally without baking them into the generator.
+Ignored CI failures:
 
-The command registry already tracks each command's special features for
-use by the policy engine.  Obvious idea: also track the features you
-want to pass to the predicate.
+ - bios-tables-test on cross-i686-tci
+ - qtest-sparc on msys2-64bit
 
-Your series adds tracking for exactly the features you need:
+----------------------------------------------------------------
+Misc HW & UI patches queue
 
-* Enumerate them in the schema with new pragma command-features
+- Allow loading safely ROMs larger than 4GiB (Gregor)
+- Convert vt82c686 IRQ as named 'intr' (Bernhard)
+- Clarify QDev GPIO API (Peter)
+- Drop unused load_image_gzipped function (Ani)
+- Make TCGCPUOps::cpu_exec_interrupt handler mandatory (Peter)
+- Factor cpu_pause() out (Nicholas)
+- Remove transfer size check from ESP DMA DATA IN / OUT transfers (Mark)
+- Add accelerated cursor composition to Cocoa UI (Akihiko)
+- Fix '-vga help' CLI (Marc-André)
+- Fix displayed errno in ram_block_add (Zhenzhong)
 
-  Missing: documentation for the pragma.
+----------------------------------------------------------------
 
-* Generate an extension QapiSpecialFeatureCustom of existing enum
-  QapiSpecialFeature, which is not generated.  The latter is in
-  qapi/util.h, the former in ${prefix}qapi-init-commands.h.
+Akihiko Odaki (4):
+  ui/cocoa: Release CGColorSpace
+  ui/console: Convert mouse visibility parameter into bool
+  ui/cocoa: Add cursor composition
+  ui/console: Remove dpy_cursor_define_supported()
 
-* Mark these features special for commands only, so existing registry
-  machinery tracks them.  Do *not* make them special elsewhere, because
-  that would break things.
+Ani Sinha (1):
+  loader: remove load_image_gzipped function as its not used anywhere
 
-  Feels like a hack.  Minor trap: if you use the same feature in
-  multiple schemas, multiple generated headers will define the same enum
-  constant, possibly with different values.  If you manage to include
-  the wrong header *and* the value differs there, you'll likely lose
-  hair.
+Bernhard Beschow (1):
+  hw/isa/vt82c686: Turn "intr" irq into a named gpio
 
-* Missing: tests.
+Gregor Haas (1):
+  hw/core/loader: allow loading larger ROMs
 
-I think we can avoid supplying most of the missing bits.  The main QAPI
-schema uses five features: deprecated, unstable,
-allow-write-only-overlay, dynamic-auto-read-only, fdset.  The QGA QAPI
-schema uses four, namely the four you add in this series.  Why not track
-all features, and dispense with the pragma?  Like this:
+Marc-André Lureau (1):
+  vl: fix "type is NULL" in -vga help
 
-* Change type of feature bitsets to uint64_t (it's unsigned now).
+Mark Cave-Ayland (1):
+  esp: remove transfer size check from DMA DATA IN and DATA OUT
+    transfers
 
-* Error out if a schema has more than 64 features.
+Nicholas Piggin (1):
+  system/cpus: Add cpu_pause() function
 
-* Move enum QapiSpecialFeature into a new generated header.
+Peter Maydell (2):
+  include/hw/qdev-core.h: Correct and clarify gpio doc comments
+  accel/tcg: Make cpu_exec_interrupt hook mandatory
 
-* Generate a member for each feature, not just the two predefined ones.
+Zhenzhong Duan (1):
+  system/physmem: use return value of ram_block_discard_require() as
+    errno
 
-* Pass all command features to the registry, not just the special ones.
+ meson.build             |   3 +-
+ include/hw/core/cpu.h   |   8 ++++
+ include/hw/loader.h     |   4 +-
+ include/hw/qdev-core.h  |  17 +++----
+ include/ui/console.h    |   5 +-
+ accel/tcg/cpu-exec.c    |   4 +-
+ hw/core/loader.c        |  45 +++--------------
+ hw/display/ati.c        |   2 +-
+ hw/display/qxl-render.c |   4 --
+ hw/display/virtio-gpu.c |   3 +-
+ hw/display/vmware_vga.c |   8 ++--
+ hw/isa/vt82c686.c       |   2 +-
+ hw/mips/fuloong2e.c     |   2 +-
+ hw/ppc/amigaone.c       |   5 +-
+ hw/ppc/pegasos2.c       |   4 +-
+ hw/scsi/esp.c           |   4 +-
+ system/cpus.c           |  30 +++++++-----
+ system/physmem.c        |   7 ++-
+ system/vl.c             |  13 +++--
+ target/tricore/cpu.c    |   6 +++
+ ui/console.c            |  18 ++-----
+ ui/dbus-listener.c      |   2 +-
+ ui/gtk.c                |   2 +-
+ ui/sdl2.c               |   4 +-
+ ui/spice-display.c      |  11 +++--
+ ui/vnc.c                |   2 +-
+ ui/cocoa.m              | 104 +++++++++++++++++++++++++++++++++++++++-
+ 27 files changed, 200 insertions(+), 119 deletions(-)
 
-* Recommended: do the same elsewhere, i.e. replace
-  gen_special_features() by gen_features().
-
-Thoughts?
-
-
-PS: I think I spotted a number of additional minor issues in your
-series, but I won't describe them here, as I hope the simplification
-will make most of them go away.
+-- 
+2.41.0
 
 
