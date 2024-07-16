@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4806C932F24
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 19:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405A8932F46
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 19:42:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTm39-0005tq-II; Tue, 16 Jul 2024 13:33:15 -0400
+	id 1sTmAj-0008C5-SQ; Tue, 16 Jul 2024 13:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sTm32-0005sh-R3
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 13:33:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sTmAa-0008Ab-Qv
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 13:40:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sTm2z-0002jm-Qb
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 13:33:08 -0400
+ id 1sTmAU-000439-L1
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 13:40:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721151184;
+ s=mimecast20190719; t=1721151648;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9sAeVMGxzszvGlwUn7eDBk6DJqL6ARJ05MC3AxNa3HI=;
- b=dSzBOc0J9SdLnAOCTHS9uind0VGHXaWNzymRns2cadx4ZHc1KZ3x2GK5fLBmhCpie6zgjL
- Ws/BNelbScXyxr7s8jPydUwbk3h2KD/b8SFlB9eiAN23vuZKBOmMmksXkifKXZLSK0HpDJ
- p4zkG7H+NYzRgLc+uvCetdyuEdA+9GY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PHiqoCl323aqZPUSxM4kA48IRRNUeQ2nvta0Ggt1GDo=;
+ b=DoSBXnoV4Z7TnBRhXqqivyjptYBCTJlNtdM4Twr/yUdS1u2ubT1J/AYTvlRz2oAtXRu+ob
+ KRebquMJ+jMUCu6AJJSodSY9XnC+xzcL2ddFq8Es7CYKcgD0ooQpQ26YpgCt/FAOQi8okN
+ xUu/8La78y6ESkSn1v5k5UIZNAZrTGY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-oY4VecuFOiar1DqOC_w61w-1; Tue, 16 Jul 2024 13:33:02 -0400
-X-MC-Unique: oY4VecuFOiar1DqOC_w61w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-427b7a2052bso15601075e9.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 10:33:02 -0700 (PDT)
+ us-mta-311-02jS2VTcNUST7QlayoA7xQ-1; Tue, 16 Jul 2024 13:40:47 -0400
+X-MC-Unique: 02jS2VTcNUST7QlayoA7xQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3678fd1edf8so3289907f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 10:40:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721151181; x=1721755981;
+ d=1e100.net; s=20230601; t=1721151646; x=1721756446;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=9sAeVMGxzszvGlwUn7eDBk6DJqL6ARJ05MC3AxNa3HI=;
- b=uBFgloAKSNqGRWrpyBIZYOvyKJ0NsUxrrpc87Tv2mDgUBPM2UWSWkOm7Ff57SkFkOR
- UupuIKk0H/LgHEpEA0Zq82SQALGUMujhyuOFiIHzj3itEZTb8HzwzVgMrk66RQ4HalLF
- 5traBjyedwFrPkbIeMzxt0CBtbM8Zo+up0d6Wxe7E3vFx5b5WXf2cwJs0Or2o5N6u7/o
- 0K45v/yp87NJFgCBPD6qVsZeGP/N46VlykEoef+zH2Wp0jR2vNwbqJTxBavPVemZOYZy
- /58AHPHPF4BWOPaJTJk2FVPhJOrz3ug+8z+8pUD/1v5HE43XCLFdu6gzf+KgS3Pik/NL
- ZO+Q==
+ bh=PHiqoCl323aqZPUSxM4kA48IRRNUeQ2nvta0Ggt1GDo=;
+ b=sAIJR/NVpw7+8wOFy8aDJApiVfr1pQBtlA3Q+RMLzZD/KSvuGq7m86wvh1hBhBGjxA
+ vIM6Z3B3DumIQv2Dj/n6oLU5Ors/faQINmgIms8R7sp0ESzMioT89X8KADDxn/lJIB6j
+ 37fA0UnGLGwskK9jXrWDPfHGWuv37R6XrKaFXblqnrY8RFopME9rq8NuX+jWFzQ+IDrW
+ 0YCMMU/B1LOtuS82ia0WsBoLRisyO1GLmmQH6DBT9Ro+iBWKbw79b1EZA29d8CbA4V8l
+ C6k4IDrnCenicQkSys4EiQHxFBSdIp3Jf4tLs0A29ekb3DvgEVA2HdgSoeWppASp4ACT
+ +Lvw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVRKq74gsXF8bM4UCHWCdyY4NMxjJ6kmx9YnCDINVSOKRfrfLHTgdrAH9JDoRpbOju7Pby0vkYGpZpcgyQT4nMWbAfo06Y=
-X-Gm-Message-State: AOJu0YwJuz6Xd5mk/vHcaxaUcf81l5Np8A7zkRL2/1ew60InQ3IlNAQu
- 0qyBgjDhhTNAf2XUK+lCur55gXzh7bwKdGsUvTKXj7XyvAjLYpHQvNmhOK5/rrCtLx1c3Ojre4S
- SfHqf90RSPMcHZf+Av3sgrxcCa20nSJDqTbLW1/GUtwMo558ZOgJEu6GjTUue
-X-Received: by 2002:a05:600c:4591:b0:426:593c:9359 with SMTP id
- 5b1f17b1804b1-427ba718de3mr26485715e9.32.1721151180854; 
- Tue, 16 Jul 2024 10:33:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEOjnwgQEtyHlcbHiSI/IdCEJta9BK5bTsUhxatrSZxx5MGU8QmPvXHsTDi/AgEpbX0aQ0/5A==
-X-Received: by 2002:a05:600c:4591:b0:426:593c:9359 with SMTP id
- 5b1f17b1804b1-427ba718de3mr26484265e9.32.1721151176861; 
- Tue, 16 Jul 2024 10:32:56 -0700 (PDT)
+ AJvYcCUzRMDN3QCsz3gWraMeRblUMLGO1J82P74QLhlG7hWx5zSMl0xG0yIvFoMxKlH//40rkXEu4hpUv6jF3pZTLyyTaqm7n8Q=
+X-Gm-Message-State: AOJu0YxhUGEtviP2nueZp+meajKMbiIIMguadabatRrgpaf5LFY5cYsN
+ lkJJWWzMDBz4rViMCAMJZ9XQ77ZZZ5syL1ZddRpArk9w0woqh7wX9ssz6D9QjcnZlSiRVSdTtgM
+ NXtAkVU9z6igUPTYtxnCHSRRfH3Ku01gTUK342+XHSwv6YdBNTgoL
+X-Received: by 2002:a5d:5582:0:b0:361:94d9:1e9f with SMTP id
+ ffacd0b85a97d-3682734828dmr1797863f8f.7.1721151646089; 
+ Tue, 16 Jul 2024 10:40:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNG20euGOoSq4tdUGY7h9qrT/UGYpUMWEMyqYq/KDNlg1Y+LQwAVzqMhzMfFBvbCoYnNZ+Eg==
+X-Received: by 2002:a5d:5582:0:b0:361:94d9:1e9f with SMTP id
+ ffacd0b85a97d-3682734828dmr1797853f8f.7.1721151645630; 
+ Tue, 16 Jul 2024 10:40:45 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427a5ef44b4sm138278325e9.42.2024.07.16.10.32.55
+ 5b1f17b1804b1-4279f25a962sm170036915e9.12.2024.07.16.10.40.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jul 2024 10:32:56 -0700 (PDT)
-Message-ID: <b8cc72f6-1748-4638-8c01-cb6b969b7027@redhat.com>
-Date: Tue, 16 Jul 2024 19:32:54 +0200
+ Tue, 16 Jul 2024 10:40:45 -0700 (PDT)
+Message-ID: <903e6f5a-76fc-4f8c-b83e-d7d2a0f45d7c@redhat.com>
+Date: Tue, 16 Jul 2024 19:40:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/12] vfio/iommufd: Introduce auto domain creation
+Subject: Re: [PATCH v4 06/12] vfio/{iommufd,container}: Remove caps::aw_bits
 Content-Language: en-US
 To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
@@ -80,22 +80,20 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Avihai Horon <avihaih@nvidia.com>
 References: <20240712114704.8708-1-joao.m.martins@oracle.com>
- <20240712114704.8708-6-joao.m.martins@oracle.com>
- <f98463ba-32d1-4d9c-876c-715d0ca6ae3c@redhat.com>
- <befcbcfb-2ec4-4ec7-bd14-504c9363b3ca@oracle.com>
+ <20240712114704.8708-7-joao.m.martins@oracle.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <befcbcfb-2ec4-4ec7-bd14-504c9363b3ca@oracle.com>
+In-Reply-To: <20240712114704.8708-7-joao.m.martins@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,323 +110,101 @@ Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Joao,
 
+On 7/12/24 13:46, Joao Martins wrote:
+> In preparation to moving HostIOMMUDevice realize() being able to called
+> early during attach_device(), remove properties that rely on container
+> being initialized.
+It is difficult to parse the above sentence. Would deserve some rephrasing.
 
-On 7/16/24 18:44, Joao Martins wrote:
-> On 16/07/2024 17:04, Eric Auger wrote:
->> Hi Joao,
->>
->> On 7/12/24 13:46, Joao Martins wrote:
->>> There's generally two modes of operation for IOMMUFD:
->>>
->>> * The simple user API which intends to perform relatively simple things
->>> with IOMMUs e.g. DPDK. It generally creates an IOAS and attach to VFIO
->> It generally creates? can you explicit what is "it"
->>
-> 'It' here refers to the process/API-user
-OK
+Also properties have a different meaning in qemu.
 >
->> I am confused by this automatic terminology again (not your fault). the doc says:
->> "
->>
->>   *
->>
->>     Automatic domain - refers to an iommu domain created automatically
->>     when attaching a device to an IOAS object. This is compatible to the
->>     semantics of VFIO type1.
->>
->>   *
->>
->>     Manual domain - refers to an iommu domain designated by the user as
->>     the target pagetable to be attached to by a device. Though currently
->>     there are no uAPIs to directly create such domain, the datastructure
->>     and algorithms are ready for handling that use case.
->>
->> "
->>
->>
->> in 1) the device is attached to the ioas id (using the auto domain if I am not wrong)
->> Here you attach to an hwpt id. Isn't it a manual domain?
->>
-> Correct.
+> This means removing caps::aw_bits which requires the
+> bcontainer::iova_ranges to be inititalized after device is actually
+initialized
+> attached. Instead defer that to .get_cap() and call
+> vfio_device_get_aw_bits() directly.
 >
-> The 'auto domains' generally refers to the kernel-equivalent own automatic
-> attaching to a new pagetable.
+> Suggested-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> ---
+>  include/sysemu/host_iommu_device.h | 1 -
+>  backends/iommufd.c                 | 3 ++-
+>  hw/vfio/container.c                | 5 +----
+>  hw/vfio/iommufd.c                  | 1 -
+>  4 files changed, 3 insertions(+), 7 deletions(-)
 >
-> Here I call 'auto domains' in the userspace version too because we are doing the
-> exact same but from userspace, using the manual API in IOMMUFD.
-OK
->
->>> and mainly performs IOAS_MAP and UNMAP.
->>>
->>> * The native IOMMUFD API where you have fine grained control of the
->>> IOMMU domain and model it accordingly. This is where most new feature
->>> are being steered to.
->>>
->>> For dirty tracking 2) is required, as it needs to ensure that
->>> the stage-2/parent IOMMU domain will only attach devices
->>> that support dirty tracking (so far it is all homogeneous in x86, likely
->>> not the case for smmuv3). Such invariant on dirty tracking provides a
->>> useful guarantee to VMMs that will refuse incompatible device
->>> attachments for IOMMU domains.
->>>
->>> Dirty tracking insurance is enforced via HWPT_ALLOC, which is
->>> responsible for creating an IOMMU domain. This is contrast to the
->>> 'simple API' where the IOMMU domain is created by IOMMUFD automatically
->>> when it attaches to VFIO (usually referred as autodomains) but it has
->>> the needed handling for mdevs.
->>>
->>> To support dirty tracking with the advanced IOMMUFD API, it needs
->>> similar logic, where IOMMU domains are created and devices attached to
->>> compatible domains. Essentially mimmicing kernel
->>> iommufd_device_auto_get_domain(). With mdevs given there's no IOMMU domain
->>> it falls back to IOAS attach.
->>>
->>> The auto domain logic allows different IOMMU domains to be created when
->>> DMA dirty tracking is not desired (and VF can provide it), and others where
->>> it is. Here is not used in this way here given how VFIODevice migration
->> Here is not used in this way here ?
->>
-> I meant, 'Here it is not used in this way given (...)'
-OK
->
->>> state is initialized after the device attachment. But such mixed mode of
->>> IOMMU dirty tracking + device dirty tracking is an improvement that can
->>> be added on. Keep the 'all of nothing' of type1 approach that we have
->>> been using so far between container vs device dirty tracking.
->>>
->>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->>> ---
->>>  include/hw/vfio/vfio-common.h |  9 ++++
->>>  include/sysemu/iommufd.h      |  5 +++
->>>  backends/iommufd.c            | 30 +++++++++++++
->>>  hw/vfio/iommufd.c             | 82 +++++++++++++++++++++++++++++++++++
->>>  backends/trace-events         |  1 +
->>>  5 files changed, 127 insertions(+)
->>>
->>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->>> index 7419466bca92..2dd468ce3c02 100644
->>> --- a/include/hw/vfio/vfio-common.h
->>> +++ b/include/hw/vfio/vfio-common.h
->>> @@ -95,10 +95,17 @@ typedef struct VFIOHostDMAWindow {
->>>  
->>>  typedef struct IOMMUFDBackend IOMMUFDBackend;
->>>  
->>> +typedef struct VFIOIOASHwpt {
->>> +    uint32_t hwpt_id;
->>> +    QLIST_HEAD(, VFIODevice) device_list;
->>> +    QLIST_ENTRY(VFIOIOASHwpt) next;
->>> +} VFIOIOASHwpt;
->>> +
->>>  typedef struct VFIOIOMMUFDContainer {
->>>      VFIOContainerBase bcontainer;
->>>      IOMMUFDBackend *be;
->>>      uint32_t ioas_id;
->>> +    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
->>>  } VFIOIOMMUFDContainer;
->>>  
->>>  OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer, VFIO_IOMMU_IOMMUFD);
->>> @@ -135,6 +142,8 @@ typedef struct VFIODevice {
->>>      HostIOMMUDevice *hiod;
->>>      int devid;
->>>      IOMMUFDBackend *iommufd;
->>> +    VFIOIOASHwpt *hwpt;
->>> +    QLIST_ENTRY(VFIODevice) hwpt_next;
->>>  } VFIODevice;
->>>  
->>>  struct VFIODeviceOps {
->>> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
->>> index 57d502a1c79a..e917e7591d05 100644
->>> --- a/include/sysemu/iommufd.h
->>> +++ b/include/sysemu/iommufd.h
->>> @@ -50,6 +50,11 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->>>  bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
->>>                                       uint32_t *type, void *data, uint32_t len,
->>>                                       uint64_t *caps, Error **errp);
->>> +bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
->>> +                                uint32_t pt_id, uint32_t flags,
->>> +                                uint32_t data_type, uint32_t data_len,
->>> +                                void *data_ptr, uint32_t *out_hwpt,
->>> +                                Error **errp);
->>>  
->>>  #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
->>>  #endif
->>> diff --git a/backends/iommufd.c b/backends/iommufd.c
->>> index 2b3d51af26d2..5d3dfa917415 100644
->>> --- a/backends/iommufd.c
->>> +++ b/backends/iommufd.c
->>> @@ -208,6 +208,36 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->>>      return ret;
->>>  }
->>>  
->>> +bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
->>> +                                uint32_t pt_id, uint32_t flags,
->>> +                                uint32_t data_type, uint32_t data_len,
->>> +                                void *data_ptr, uint32_t *out_hwpt,
->>> +                                Error **errp)
->>> +{
->>> +    int ret, fd = be->fd;
->>> +    struct iommu_hwpt_alloc alloc_hwpt = {
->>> +        .size = sizeof(struct iommu_hwpt_alloc),
->>> +        .flags = flags,
->>> +        .dev_id = dev_id,
->>> +        .pt_id = pt_id,
->>> +        .data_type = data_type,
->>> +        .data_len = data_len,
->>> +        .data_uptr = (uint64_t)data_ptr,
->>> +    };
->>> +
->>> +    ret = ioctl(fd, IOMMU_HWPT_ALLOC, &alloc_hwpt);
->>> +    trace_iommufd_backend_alloc_hwpt(fd, dev_id, pt_id, flags, data_type,
->>> +                                     data_len, (uint64_t)data_ptr,
->>> +                                     alloc_hwpt.out_hwpt_id, ret);
->>> +    if (ret) {
->>> +        error_setg_errno(errp, errno, "Failed to allocate hwpt");
->>> +        return false;
->>> +    }
->>> +
->>> +    *out_hwpt = alloc_hwpt.out_hwpt_id;
->>> +    return true;
->>> +}
->>> +
->>>  bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
->>>                                       uint32_t *type, void *data, uint32_t len,
->>>                                       uint64_t *caps, Error **errp)
->>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->>> index 077dea8f1b64..325c7598d5a1 100644
->>> --- a/hw/vfio/iommufd.c
->>> +++ b/hw/vfio/iommufd.c
->>> @@ -212,10 +212,86 @@ static bool iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, Error **errp)
->>>      return true;
->>>  }
->>>  
->>> +static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->>> +                                         VFIOIOMMUFDContainer *container,
->>> +                                         Error **errp)
->>> +{
->>> +    IOMMUFDBackend *iommufd = vbasedev->iommufd;
->>> +    uint32_t flags = 0;
->>> +    VFIOIOASHwpt *hwpt;
->>> +    uint32_t hwpt_id;
->>> +    int ret;
->>> +
->>> +    /* Try to find a domain */
->>> +    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
->>> +        ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
->>> +        if (ret) {
->>> +            /* -EINVAL means the domain is incompatible with the device. */
->>> +            if (ret == -EINVAL) {
->>> +                /*
->>> +                 * It is an expected failure and it just means we will try
->>> +                 * another domain, or create one if no existing compatible
->>> +                 * domain is found. Hence why the error is discarded below.
->>> +                 */
->>> +                error_free(*errp);
->>> +                *errp = NULL;
->>> +                continue;
->>> +            }
->>> +
->>> +            return false;
->>> +        } else {
->>> +            vbasedev->hwpt = hwpt;
->>> +            QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
->>> +            return true;
->>> +        }
->>> +    }
->>> +
->>> +    if (!iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
->>> +                                    container->ioas_id, flags,
->>> +                                    IOMMU_HWPT_DATA_NONE, 0, NULL,
->>> +                                    &hwpt_id, errp)) {
->>> +        return false;
->>> +    }
->>> +
->>> +    hwpt = g_malloc0(sizeof(*hwpt));
->>> +    hwpt->hwpt_id = hwpt_id;
->>> +    QLIST_INIT(&hwpt->device_list);
->>> +
->>> +    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
->>> +    if (ret) {
->>> +        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
->>> +        g_free(hwpt);
->>> +        return false;
->>> +    }
->>> +
->>> +    vbasedev->hwpt = hwpt;
->>> +    QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
->>> +    QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
->>> +    return true;
->>> +}
->>> +
->>> +static void iommufd_cdev_autodomains_put(VFIODevice *vbasedev,
->>> +                                         VFIOIOMMUFDContainer *container)
->>> +{
->>> +    VFIOIOASHwpt *hwpt = vbasedev->hwpt;
->>> +
->>> +    QLIST_REMOVE(vbasedev, hwpt_next);
->> don't you want to reset vbasedev->hwpt = NULL too?
->>
-> Yeap, Thanks for catching that
->
->>> +    if (QLIST_EMPTY(&hwpt->device_list)) {
->>> +        QLIST_REMOVE(hwpt, next);
->>> +        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
->>> +        g_free(hwpt);
->>> +    }
->>> +}
->>> +
->>>  static bool iommufd_cdev_attach_container(VFIODevice *vbasedev,
->>>                                            VFIOIOMMUFDContainer *container,
->>>                                            Error **errp)
->>>  {
->>> +    /* mdevs aren't physical devices and will fail with auto domains */
->>> +    if (!vbasedev->mdev) {
->>> +        return iommufd_cdev_autodomains_get(vbasedev, container, errp);
->>> +    }
->>> +
->>>      return !iommufd_cdev_attach_ioas_hwpt(vbasedev, container->ioas_id, errp);
->>>  }
->>>  
->>> @@ -224,6 +300,11 @@ static void iommufd_cdev_detach_container(VFIODevice *vbasedev,
->>>  {
->>>      Error *err = NULL;
->>>  
->>> +    if (vbasedev->hwpt) {
->>> +        iommufd_cdev_autodomains_put(vbasedev, container);
->>> +        return;
->> Where do we detach the device from the hwpt?
->>
-> In iommufd_backend_free_id() for auto domains
-Hum I see iommufd_backend_free_id frees the object. I guess the detach
-then is done on kernel side...
-
-Eric
->
->> Thanks
->>
->> Eric
->>> +    }
->>> +
->>>      if (!iommufd_cdev_detach_ioas_hwpt(vbasedev, &err)) {
->>>          error_report_err(err);
->>>      }
->>> @@ -354,6 +435,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
->>>      container = VFIO_IOMMU_IOMMUFD(object_new(TYPE_VFIO_IOMMU_IOMMUFD));
->>>      container->be = vbasedev->iommufd;
->>>      container->ioas_id = ioas_id;
->>> +    QLIST_INIT(&container->hwpt_list);
->>>  
->>>      bcontainer = &container->bcontainer;
->>>      vfio_address_space_insert(space, bcontainer);
->>> diff --git a/backends/trace-events b/backends/trace-events
->>> index 211e6f374adc..4d8ac02fe7d6 100644
->>> --- a/backends/trace-events
->>> +++ b/backends/trace-events
->>> @@ -14,4 +14,5 @@ iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size
->>>  iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
->>>  iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
->>>  iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
->>> +iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
->>>  iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
+> diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
+> index ee6c813c8b22..20e77cf54568 100644
+> --- a/include/sysemu/host_iommu_device.h
+> +++ b/include/sysemu/host_iommu_device.h
+> @@ -24,7 +24,6 @@
+>   */
+>  typedef struct HostIOMMUDeviceCaps {
+>      uint32_t type;
+> -    uint8_t aw_bits;
+the doc comment needs to be updated accordingly.
+>  } HostIOMMUDeviceCaps;
+>  
+>  #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
+> diff --git a/backends/iommufd.c b/backends/iommufd.c
+> index 5d3dfa917415..41a9dec3b2c5 100644
+> --- a/backends/iommufd.c
+> +++ b/backends/iommufd.c
+> @@ -18,6 +18,7 @@
+>  #include "qemu/error-report.h"
+>  #include "monitor/monitor.h"
+>  #include "trace.h"
+> +#include "hw/vfio/vfio-common.h"
+>  #include <sys/ioctl.h>
+>  #include <linux/iommufd.h>
+>  
+> @@ -270,7 +271,7 @@ static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+>      case HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE:
+>          return caps->type;
+>      case HOST_IOMMU_DEVICE_CAP_AW_BITS:
+> -        return caps->aw_bits;
+> +        return vfio_device_get_aw_bits(hiod->agent);
+>      default:
+>          error_setg(errp, "%s: unsupported capability %x", hiod->name, cap);
+>          return -EINVAL;
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 88ede913d6f7..c27f448ba26e 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -1144,7 +1144,6 @@ static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+>      VFIODevice *vdev = opaque;
+>  
+>      hiod->name = g_strdup(vdev->name);
+> -    hiod->caps.aw_bits = vfio_device_get_aw_bits(vdev);
+>      hiod->agent = opaque;
+>  
+>      return true;
+> @@ -1153,11 +1152,9 @@ static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+>  static int hiod_legacy_vfio_get_cap(HostIOMMUDevice *hiod, int cap,
+>                                      Error **errp)
+>  {
+> -    HostIOMMUDeviceCaps *caps = &hiod->caps;
+> -
+>      switch (cap) {
+>      case HOST_IOMMU_DEVICE_CAP_AW_BITS:
+> -        return caps->aw_bits;
+> +        return vfio_device_get_aw_bits(hiod->agent);
+>      default:
+>          error_setg(errp, "%s: unsupported capability %x", hiod->name, cap);
+>          return -EINVAL;
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 325c7598d5a1..873c919e319c 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -722,7 +722,6 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+>  
+>      hiod->name = g_strdup(vdev->name);
+>      caps->type = type;
+> -    caps->aw_bits = vfio_device_get_aw_bits(vdev);
+>  
+>      return true;
+>  }
 
 
