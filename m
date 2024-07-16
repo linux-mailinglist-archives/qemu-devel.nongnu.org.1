@@ -2,90 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8230F932F87
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 19:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10C49331C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 21:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTmQp-0007SG-BN; Tue, 16 Jul 2024 13:57:43 -0400
+	id 1sTnjp-0004P0-AO; Tue, 16 Jul 2024 15:21:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTmQk-0007K6-M9
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 13:57:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <arun.kka@samsung.com>)
+ id 1sTnjh-0004Nl-EJ
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 15:21:17 -0400
+Received: from mailout2.samsung.com ([203.254.224.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTmQg-0006hV-0h
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 13:57:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721152651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2bpiGsCmzvpnVpDv1m7d71cf7RS3IoARvHxbSKrHbRg=;
- b=hycHdH6oDcQbhWXNqgGkOocaeFVIa0wrGFHSHQyJkMTbobSMSVUNxzAxerI6OnZi3KTIPb
- Ab7e7BmsH3f4V87zi3HVsZwS5oNIF5fA0kEWJZ8NS//PTS2k9MauQGqsQzu7ahr/L+4Bii
- I1HdUPTpIPduDwYBDbFDTMN4EWNS6LI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-qYmyHUU_Ob2hVEWrqCszpQ-1; Tue, 16 Jul 2024 13:57:30 -0400
-X-MC-Unique: qYmyHUU_Ob2hVEWrqCszpQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-36805bfd95aso2960375f8f.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 10:57:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721152649; x=1721757449;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2bpiGsCmzvpnVpDv1m7d71cf7RS3IoARvHxbSKrHbRg=;
- b=B2g/nn1uZtwEAbCd+sFsJXvAYk5VipyBOxAvRYiSH85C4E9QbZ8C+rwJdhMEHL8/zc
- XtnO5LyfPS+IzcVr36XzV2HQooh6KsiNP6uxnGW5p5Uldn8O7PFb6TGBqjhas7tJoqru
- 4OWJ8/kdXjNRt6JkNUo63h4JK9nVzJWv7nK+cznWeeS7whDMiCa6WCEM0M00DRo6NQ7k
- m4vfZ3l5tkPfKgKNp8W/ai9nR6SpPV5LzFiIMX6tW5zbFp295f1kvgkOGhrLqCgQbjne
- i7CeZFJvUZR1Gj9Kaf6Y1zJC6SLsLucYhA2cL/NgTenODZ3SKAFCeQwnGig1gb62ncY2
- aNwA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUb8IpK9Nm0KYELC08pt/2dgGz365CpzTFmX2W3xQS3xSpB4YTG4p9M6T+Q1FQwxyj7wko0tXhMhe+hPhmdtfw72fiAE8A=
-X-Gm-Message-State: AOJu0YyfeA7QCxzwn6UvYvcZ0xnjlTq7Py/Qun2VXlXbSeYgRv3YgU2A
- vY3x1yQhYZZqW6fxAbs9AkHKQbjVRdfLeF/TLPht1EO24j/HL3KZjuZOMlBwQBm6ZUjiHkJK2uj
- 0Nzl1p8esOHjHwFEcSCmYJnWcbsRVeK+QDOYPHF2ctWO3RmqFKseLCvWvn1cmcJwHHWnqGjobSf
- 2zFDLlFGBQW54+jZo+Rvsn9PtOIqM=
-X-Received: by 2002:adf:e8cb:0:b0:367:9803:bfe7 with SMTP id
- ffacd0b85a97d-3682635cff4mr1763125f8f.53.1721152648941; 
- Tue, 16 Jul 2024 10:57:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEff5sU2Mt6eK4HqED/AYDxtBAqH50w8kKluPRnpER27Ze/e7J1V5J56PUa/MCGt1Bu7Fub6RSOF5bfA3ERC4c=
-X-Received: by 2002:adf:e8cb:0:b0:367:9803:bfe7 with SMTP id
- ffacd0b85a97d-3682635cff4mr1763121f8f.53.1721152648585; Tue, 16 Jul 2024
- 10:57:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <arun.kka@samsung.com>)
+ id 1sTnja-0007eu-0j
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 15:21:17 -0400
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+ by mailout2.samsung.com (KnoxPortal) with ESMTP id
+ 20240716192053epoutp02e6f346efcca15454ca53c2e06aaff128~ix8RklaOW3133331333epoutp02C
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 19:20:53 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
+ 20240716192053epoutp02e6f346efcca15454ca53c2e06aaff128~ix8RklaOW3133331333epoutp02C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1721157653;
+ bh=KFBmnMpZBrj+uUx188rYlSukkAuhe+fKjlkUF5hSvBI=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=Ijo1zW4X7F6Msf4fuLHlcq9c+zoJa3sRL93YRnALkBniWFnZx17sGNAuEKhMKNMlb
+ kI4FS4bqR4rZKiTQbEH6NxOTUwn+lwVYjvLHW8n63UQOLMb+cKAxXFVnvZftsqc3Db
+ OtG8IDAVbSUu3BbN6mTEiIYpkGLt9pmwrdYOM6as=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+ 20240716192052epcas5p4c47b9e13848762a76a8a04fcc448a779~ix8P9A3n20256402564epcas5p4G;
+ Tue, 16 Jul 2024 19:20:52 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.175]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4WNpnb024Mz4x9Pp; Tue, 16 Jul
+ 2024 19:20:51 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+ epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ B0.18.09989.218C6966; Wed, 17 Jul 2024 04:20:50 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20240716132257epcas5p2528015d52067d84cedd62fb32bef797a~itDwTHzrQ1368713687epcas5p26;
+ Tue, 16 Jul 2024 13:22:57 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20240716132257epsmtrp22c4c7a5b88858475e5df9753e92a4cad~itDwSewgT0776907769epsmtrp2P;
+ Tue, 16 Jul 2024 13:22:57 +0000 (GMT)
+X-AuditID: b6c32a4a-e57f970000002705-e3-6696c812f18d
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+ epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 71.DC.19057.13476966; Tue, 16 Jul 2024 22:22:57 +0900 (KST)
+Received: from localhost.sa.corp.samsungelectronics.net (unknown
+ [107.99.41.223]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20240716132256epsmtip21a24675f4aecdd64ad6cb5c67c4c7117~itDvcL0os0791507915epsmtip21;
+ Tue, 16 Jul 2024 13:22:56 +0000 (GMT)
+From: Arun Kumar <arun.kka@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, Arun Kumar
+ <arun.kka@samsung.com>
+Subject: [PATCH] hw/nvme: MDTS Enhancement
+Date: Tue, 16 Jul 2024 13:23:34 +0530
+Message-ID: <20240716075334.2932985-1-arun.kka@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240716112614.1755692-1-thuth@redhat.com>
-In-Reply-To: <20240716112614.1755692-1-thuth@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 16 Jul 2024 19:57:15 +0200
-Message-ID: <CABgObfYV+oRp=AhuJmqrjbRR+pRmLKdd9VPjCh4mNLMeaAMW0A@mail.gmail.com>
-Subject: Re: [PATCH v1 00/11] Convert avocado tests to normal Python unittests
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Fabiano Rosas <farosas@suse.de>
-Content-Type: multipart/alternative; boundary="000000000000394afa061d611443"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOKsWRmVeSWpSXmKPExsWy7bCmlq7QiWlpBo8PmFnMuW9hcWJKmMX+
+ g99YLSYdusZocbx3B4sDq8eUadfYPc7tOM/usWlVJ5vHk2ubmTz6tqxiDGCNyrbJSE1MSS1S
+ SM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMAdqtpFCWmFMKFApILC5W
+ 0rezKcovLUlVyMgvLrFVSi1IySkwKdArTswtLs1L18tLLbEyNDAwMgUqTMjO+N97lbXgkFTF
+ w+XzWBoYV4p0MXJySAiYSCz+cZ+9i5GLQ0hgN6PEmokzGCGcT4wS19b9Y4NwvjFKLD61lgWm
+ 5cuPtVAtexklPi+9BFXVxiQxe/t+NpAqNgF1ibUzdzCB2CICkhK/u04zg9jMAvES3xYtBZrE
+ wSEsoCWx/I8BSJhFQFXiyYRVjCA2r4C1xOIZv6CWyUss3rGcGSIuKHFy5hMWiDHyEs1bZzOD
+ 7JUQ2Mcu8efDVVaIBheJ7kufmCBsYYlXx7ewQ9hSEp/f7WWDsOslzszcA1XTwSjx9DtUjb3E
+ xT1/mUBuYxbQlFi/Sx8iLCsx9dQ6Joi9fBK9v59AtfJK7JgHYytJ3Nv6E2qMhMScK98ZQcZI
+ CHhIzOxIBQkLCcRKzDv3gmUCo/wsJN/MQvLNLITFCxiZVzFKphYU56anFpsWGOWllsPjNTk/
+ dxMjOAVqee1gfPjgg94hRiYOxkOMEhzMSiK8ExinpQnxpiRWVqUW5ccXleakFh9iNAUG8URm
+ KdHkfGASziuJNzSxNDAxMzMzsTQ2M1QS533dOjdFSCA9sSQ1OzW1ILUIpo+Jg1OqgWndJkHP
+ 5ZO/aGzYtU9HKPvC1Wrt5/JpOx46nGVIi1p0g2vydz+paxI/QufOu+552rf13hIPqdnTPb6s
+ W/bbRXH3RZWZc73TOHa7TeW6+Ft10y6jqfn8V84yvRDff3DhHpmA/C1rZmz7m99ygVc17bPS
+ a0uVbjnmRTvPzlFctOQyK3MDf1hsuJBeYJ3JwtNsTc8Y9TU+ad6tduj9I2b8dMqEZ4GsM04e
+ sLZc6Hd5b1LzQYffrVd0moU0o/S67rH1fV1++0Ash3qHskTidvP2IMvohx8nsi1xtvlfljJJ
+ 4ai4xtzgjQ9nz+erWnj846o3i9Urs4JvnsyS3/um/tP5poyQ1gWP576YMivX7F/pDYsKJZbi
+ jERDLeai4kQAqrorSQoEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrELMWRmVeSWpSXmKPExsWy7bCSvK5hybQ0g1c71Czm3LewODElzGL/
+ wW+sFpMOXWO0ON67g8WB1WPKtGvsHud2nGf32LSqk83jybXNTB59W1YxBrBGcdmkpOZklqUW
+ 6dslcGX8773KWnBIquLh8nksDYwrRboYOTkkBEwkvvxYy97FyMUhJLCbUeLs3QXsEAkJiR9f
+ vjFC2MISK/89hypqYZI4s34mE0iCTUBdYu3MHWC2iICkxO+u08xdjBwczALJEq9/+IKYwgJa
+ Esv/GIBUsAioSjyZsApsJK+AtcTiGb9YIMbLSyzesZwZIi4ocXLmE7A4M1C8eets5gmMfLOQ
+ pGYhSS1gZFrFKJlaUJybnltsWGCUl1quV5yYW1yal66XnJ+7iREcjFpaOxj3rPqgd4iRiYPx
+ EKMEB7OSCO8ExmlpQrwpiZVVqUX58UWlOanFhxilOViUxHm/ve5NERJITyxJzU5NLUgtgsky
+ cXBKNTBdZZ+s5aB107Lu1d0e2b2z3ml4as8tdQpIeFfWLxP2t8tU/WHzX9ZKbW2pSdXcHDtO
+ mPnK+WYFr19zP/ha79fcN3J7JpretDrfuWVu5y1vjZtX4g4G2nKwXSi422WkJ/jyjUvmg/O/
+ dSpmLVgW+vKn9v/NnR7q3glLW5j2J3DeO3dl7np2y+7N17uaeG408zY59i+Zvj7bykaT1ejh
+ XY2C7zu32L1bPbPSUGLTtn3qIeuSTlxuki7+FnvAO3xGfK3IpHWPY941WcTGurxxa/7wxiFt
+ 6iWW6By9KtU+T7tj7psvlF1tyDRhy78ZP8X6rtSHkm2GGYvOOm8S4Z0TV7WJT5Flfn/SnLDF
+ 8w7mflJiKc5INNRiLipOBAC00j3otQIAAA==
+X-CMS-MailID: 20240716132257epcas5p2528015d52067d84cedd62fb32bef797a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240716132257epcas5p2528015d52067d84cedd62fb32bef797a
+References: <CGME20240716132257epcas5p2528015d52067d84cedd62fb32bef797a@epcas5p2.samsung.com>
+Received-SPF: pass client-ip=203.254.224.25; envelope-from=arun.kka@samsung.com;
+ helo=mailout2.samsung.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,448 +131,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000394afa061d611443
-Content-Type: text/plain; charset="UTF-8"
+Updated mdts field to only include interleaved metadata if metadata is
+interleaved and MEM bit is cleared to 0
 
-Il mar 16 lug 2024, 13:26 Thomas Huth <thuth@redhat.com> ha scritto:
+Signed-off-by: Arun Kumar <arun.kka@samsung.com>
+---
+ hw/nvme/ctrl.c       | 19 ++++++++++++++-----
+ include/block/nvme.h |  3 +++
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-> The Avocado v88 that we use in QEMU is already on a life support
-> system: It is not supported by upstream anymore, and with the latest
-> versions of Python, it won't work anymore since it depends on the
-> "imp" module that has been removed in Python 3.12.
->
-> There have been several attempts to update the test suite in QEMU
-> to a newer version of Avocado, but so far no attempt has successfully
-> been merged yet.
->
-
-I think we should take another look at that. Avocado 92 should work, though
-I am not sure if it's also depending on "imp", and if I recall correctly
-the problem with more recent version was more that it conflicted with
-distros that didn't have it packaged. That should also not be a problem
-anymore with the pythondeps.toml mechanism.
-
-Additionally, the whole "make check" test suite in QEMU is using the
-> meson test runner nowadays, so running the python-based tests via the
-> Avocodo test runner looks and feels quite like an oddball, requiring
-> the users to deal with the knowledge of multiple test runners in
-> parallel (e.g. the timeout settings work completely differently).
->
-
-This is true.
-
-Paolo
-
-
-> So instead of trying to update the python-based test suite in QEMU
-> to a newer version of Avocado, we should maybe try to better integrate
-> it with the meson test runner instead. Indeed most tests work quite
-> nicely without the Avocado framework already, as you can see with
-> this patch series - it does not convert all tests, just a subset so
-> far, but this already proves that many tests only need small modifi-
-> cations to work without Avocado.
->
-> Only tests that use the LinuxTest / LinuxDistro and LinuxSSHMixIn
-> classes (e.g. based on cloud-init images or using SSH) really depend
-> on the Avocado framework, so we'd need a solution for those if we
-> want to continue using them. One solution might be to simply use the
-> required functions from avocado.utils for these tests, and still run
-> them via the meson test runner instead, but that needs some further
-> investigation that will be done later.
->
->
-> Now if you want to try out these patches: Apply the patches, then
-> recompile and then run:
->
->  make check-functional
->
-> You can also run single targets e.g. with:
->
->  make check-functional-ppc
->
-> You can also run the tests without any test runner now by
-> setting the PYTHONPATH environment variable to the "python" folder
-> of your source tree, and by specifying the build directory via
-> QEMU_BUILD_ROOT (if autodetection fails) and by specifying the
-> QEMU binary via QEMU_TEST_QEMU_BINARY. For example:
->
->  export PYTHONPATH=$HOME/qemu/python
->  export QEMU_TEST_QEMU_BINARY=qemu-system-x86_64
->  export PYTHONPATH=$HOME/qemu/build
->  ~/qemu/tests/functional/test_virtio_version.py
->
-> The logs of the tests can be found in the build directory under
-> tests/functional/<testname> - console log and general logs will
-> be put in separate files there.
->
-> Still to be done: Update the documentation for this new test framework.
->
-> RFC -> v1:
-> - Now using pycotap for running the tests instead of "pytest"
-> - Change the name from "tests/pytest" to "tests/functional" accordingly
-> - Make it possible to run the tests directly
-> - Use Python's urllib instead of wget for downloading
-> - Lots of makefile / meson integration improvements
-> - Converted more tests
-> - Update MAINTAINERS file accordingly
-> - Added a patch to run check-functional in the gitlab-CI
-> - ... lots of other changes I forgot about ... in fact, I changed so
->   many things that I also did not dare to pick up the Reviewed-bys
->   from the RFC
->
-> Thomas Huth (11):
->   tests/functional: Add base classes for the upcoming pytest-based tests
->   tests/functional: Convert simple avocado tests into standalone python
->     tests
->   tests/functional: Convert avocado tests that just need a small
->     adjustment
->   tests/functional: Add python-based tests to the meson build system
->   tests/functional: Implement fetch_asset() method for downloading
->     assets
->   tests/functional: Convert some tests that download files via
->     fetch_asset()
->   tests/functional: Add a function for extracting files from an archive
->   tests/functional: Convert some avocado tests that needed
->     avocado.utils.archive
->   tests/functional: Set up logging
->   tests/functional: Convert the s390x avocado tests into standalone
->     tests
->   gitlab-ci: Add "check-functional" to the build tests
->
->  MAINTAINERS                                   |  22 +-
->  .gitlab-ci.d/buildtest-template.yml           |   3 +-
->  .gitlab-ci.d/buildtest.yml                    |  60 +--
->  pythondeps.toml                               |   3 +-
->  tests/Makefile.include                        |  18 +-
->  tests/functional/meson.build                  | 112 +++++
->  tests/functional/qemu_test/__init__.py        | 384 ++++++++++++++++++
->  tests/functional/qemu_test/utils.py           |  28 ++
->  .../test_arm_canona1100.py}                   |  21 +-
->  .../test_arm_n8x0.py}                         |  25 +-
->  .../test_avr_mega2560.py}                     |  11 +-
->  .../test_cpu_queries.py}                      |   7 +-
->  .../test_empty_cpu_model.py}                  |   7 +-
->  .../test_info_usernet.py}                     |  11 +-
->  .../test_loongarch64_virt.py}                 |  16 +-
->  .../test_mem_addr_space.py}                   |  53 +--
->  .../test_mips64el_loongson3v.py}              |  26 +-
->  .../test_netdev_ethtool.py}                   |  32 +-
->  .../test_pc_cpu_hotplug_props.py}             |  11 +-
->  .../ppc_405.py => functional/test_ppc_405.py} |  19 +-
->  .../test_ppc_74xx.py}                         |  74 ++--
->  .../test_ppc_bamboo.py}                       |  23 +-
->  .../test_s390x_ccw_virtio.py}                 |  32 +-
->  .../test_s390x_topology.py}                   |  70 ++--
->  .../test_sparc64_sun4u.py}                    |  25 +-
->  .../version.py => functional/test_version.py} |  13 +-
->  .../test_virtio_version.py}                   |   8 +-
->  tests/meson.build                             |   1 +
->  28 files changed, 795 insertions(+), 320 deletions(-)
->  create mode 100644 tests/functional/meson.build
->  create mode 100644 tests/functional/qemu_test/__init__.py
->  create mode 100644 tests/functional/qemu_test/utils.py
->  rename tests/{avocado/machine_arm_canona1100.py =>
-> functional/test_arm_canona1100.py} (71%)
->  mode change 100644 => 100755
->  rename tests/{avocado/machine_arm_n8x0.py => functional/test_arm_n8x0.py}
-> (71%)
->  mode change 100644 => 100755
->  rename tests/{avocado/machine_avr6.py => functional/test_avr_mega2560.py}
-> (90%)
->  mode change 100644 => 100755
->  rename tests/{avocado/cpu_queries.py => functional/test_cpu_queries.py}
-> (89%)
->  mode change 100644 => 100755
->  rename tests/{avocado/empty_cpu_model.py =>
-> functional/test_empty_cpu_model.py} (84%)
->  mode change 100644 => 100755
->  rename tests/{avocado/info_usernet.py => functional/test_info_usernet.py}
-> (87%)
->  mode change 100644 => 100755
->  rename tests/{avocado/machine_loongarch.py =>
-> functional/test_loongarch64_virt.py} (89%)
->  mode change 100644 => 100755
->  rename tests/{avocado/mem-addr-space-check.py =>
-> functional/test_mem_addr_space.py} (92%)
->  mode change 100644 => 100755
->  rename tests/{avocado/machine_mips_loongson3v.py =>
-> functional/test_mips64el_loongson3v.py} (55%)
->  mode change 100644 => 100755
->  rename tests/{avocado/netdev-ethtool.py =>
-> functional/test_netdev_ethtool.py} (81%)
->  mode change 100644 => 100755
->  rename tests/{avocado/pc_cpu_hotplug_props.py =>
-> functional/test_pc_cpu_hotplug_props.py} (90%)
->  mode change 100644 => 100755
->  rename tests/{avocado/ppc_405.py => functional/test_ppc_405.py} (73%)
->  mode change 100644 => 100755
->  rename tests/{avocado/ppc_74xx.py => functional/test_ppc_74xx.py} (74%)
->  mode change 100644 => 100755
->  rename tests/{avocado/ppc_bamboo.py => functional/test_ppc_bamboo.py}
-> (75%)
->  mode change 100644 => 100755
->  rename tests/{avocado/machine_s390_ccw_virtio.py =>
-> functional/test_s390x_ccw_virtio.py} (95%)
->  mode change 100644 => 100755
->  rename tests/{avocado/s390_topology.py =>
-> functional/test_s390x_topology.py} (90%)
->  mode change 100644 => 100755
->  rename tests/{avocado/machine_sparc64_sun4u.py =>
-> functional/test_sparc64_sun4u.py} (60%)
->  mode change 100644 => 100755
->  rename tests/{avocado/version.py => functional/test_version.py} (78%)
->  mode change 100644 => 100755
->  rename tests/{avocado/virtio_version.py =>
-> functional/test_virtio_version.py} (98%)
->  mode change 100644 => 100755
->
-> --
-> 2.45.2
->
->
-
---000000000000394afa061d611443
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mar 16 lug 2024, 13:26 Thomas Huth &lt;<a href=3D"m=
-ailto:thuth@redhat.com">thuth@redhat.com</a>&gt; ha scritto:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">The Avocado v88 that we use in=
- QEMU is already on a life support<br>
-system: It is not supported by upstream anymore, and with the latest<br>
-versions of Python, it won&#39;t work anymore since it depends on the<br>
-&quot;imp&quot; module that has been removed in Python 3.12.<br>
-<br>
-There have been several attempts to update the test suite in QEMU<br>
-to a newer version of Avocado, but so far no attempt has successfully<br>
-been merged yet.<br></blockquote></div></div><div dir=3D"auto"><br></div><d=
-iv dir=3D"auto">I think we should take another look at that. Avocado 92 sho=
-uld work, though I am not sure if it&#39;s also depending on &quot;imp&quot=
-;, and if I recall correctly the problem with more recent version was more =
-that it conflicted with distros that didn&#39;t have it packaged. That shou=
-ld also not be a problem anymore with the pythondeps.toml mechanism.</div><=
-div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
-t:1px solid rgb(204,204,204);padding-left:1ex">
-Additionally, the whole &quot;make check&quot; test suite in QEMU is using =
-the<br>
-meson test runner nowadays, so running the python-based tests via the<br>
-Avocodo test runner looks and feels quite like an oddball, requiring<br>
-the users to deal with the knowledge of multiple test runners in<br>
-parallel (e.g. the timeout settings work completely differently).<br></bloc=
-kquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">This is tr=
-ue.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo=C2=A0</div><di=
-v dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-So instead of trying to update the python-based test suite in QEMU<br>
-to a newer version of Avocado, we should maybe try to better integrate<br>
-it with the meson test runner instead. Indeed most tests work quite<br>
-nicely without the Avocado framework already, as you can see with<br>
-this patch series - it does not convert all tests, just a subset so<br>
-far, but this already proves that many tests only need small modifi-<br>
-cations to work without Avocado.<br>
-<br>
-Only tests that use the LinuxTest / LinuxDistro and LinuxSSHMixIn<br>
-classes (e.g. based on cloud-init images or using SSH) really depend<br>
-on the Avocado framework, so we&#39;d need a solution for those if we<br>
-want to continue using them. One solution might be to simply use the<br>
-required functions from avocado.utils for these tests, and still run<br>
-them via the meson test runner instead, but that needs some further<br>
-investigation that will be done later.<br>
-<br>
-<br>
-Now if you want to try out these patches: Apply the patches, then<br>
-recompile and then run:<br>
-<br>
-=C2=A0make check-functional<br>
-<br>
-You can also run single targets e.g. with:<br>
-<br>
-=C2=A0make check-functional-ppc<br>
-<br>
-You can also run the tests without any test runner now by<br>
-setting the PYTHONPATH environment variable to the &quot;python&quot; folde=
-r<br>
-of your source tree, and by specifying the build directory via<br>
-QEMU_BUILD_ROOT (if autodetection fails) and by specifying the<br>
-QEMU binary via QEMU_TEST_QEMU_BINARY. For example:<br>
-<br>
-=C2=A0export PYTHONPATH=3D$HOME/qemu/python<br>
-=C2=A0export QEMU_TEST_QEMU_BINARY=3Dqemu-system-x86_64<br>
-=C2=A0export PYTHONPATH=3D$HOME/qemu/build<br>
-=C2=A0~/qemu/tests/functional/test_virtio_version.py<br>
-<br>
-The logs of the tests can be found in the build directory under<br>
-tests/functional/&lt;testname&gt; - console log and general logs will<br>
-be put in separate files there.<br>
-<br>
-Still to be done: Update the documentation for this new test framework.<br>
-<br>
-RFC -&gt; v1:<br>
-- Now using pycotap for running the tests instead of &quot;pytest&quot;<br>
-- Change the name from &quot;tests/pytest&quot; to &quot;tests/functional&q=
-uot; accordingly<br>
-- Make it possible to run the tests directly<br>
-- Use Python&#39;s urllib instead of wget for downloading<br>
-- Lots of makefile / meson integration improvements<br>
-- Converted more tests<br>
-- Update MAINTAINERS file accordingly<br>
-- Added a patch to run check-functional in the gitlab-CI<br>
-- ... lots of other changes I forgot about ... in fact, I changed so<br>
-=C2=A0 many things that I also did not dare to pick up the Reviewed-bys<br>
-=C2=A0 from the RFC<br>
-<br>
-Thomas Huth (11):<br>
-=C2=A0 tests/functional: Add base classes for the upcoming pytest-based tes=
-ts<br>
-=C2=A0 tests/functional: Convert simple avocado tests into standalone pytho=
-n<br>
-=C2=A0 =C2=A0 tests<br>
-=C2=A0 tests/functional: Convert avocado tests that just need a small<br>
-=C2=A0 =C2=A0 adjustment<br>
-=C2=A0 tests/functional: Add python-based tests to the meson build system<b=
-r>
-=C2=A0 tests/functional: Implement fetch_asset() method for downloading<br>
-=C2=A0 =C2=A0 assets<br>
-=C2=A0 tests/functional: Convert some tests that download files via<br>
-=C2=A0 =C2=A0 fetch_asset()<br>
-=C2=A0 tests/functional: Add a function for extracting files from an archiv=
-e<br>
-=C2=A0 tests/functional: Convert some avocado tests that needed<br>
-=C2=A0 =C2=A0 avocado.utils.archive<br>
-=C2=A0 tests/functional: Set up logging<br>
-=C2=A0 tests/functional: Convert the s390x avocado tests into standalone<br=
->
-=C2=A0 =C2=A0 tests<br>
-=C2=A0 gitlab-ci: Add &quot;check-functional&quot; to the build tests<br>
-<br>
-=C2=A0MAINTAINERS=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
-=A0 22 +-<br>
-=C2=A0.gitlab-ci.d/buildtest-template.yml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0|=C2=A0 =C2=A03 +-<br>
-=C2=A0.gitlab-ci.d/buildtest.yml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 60 +--<br>
-=C2=A0pythondeps.toml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A03 =
-+-<br>
-=C2=A0tests/Makefile.include=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 18 +-<br>
-=C2=A0tests/functional/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 | 112 +++++<br>
-=C2=A0tests/functional/qemu_test/__init__.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 3=
-84 ++++++++++++++++++<br>
-=C2=A0tests/functional/qemu_test/utils.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0|=C2=A0 28 ++<br>
-=C2=A0.../test_arm_canona1100.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 21 +-<br>
-=C2=A0.../test_arm_n8x0.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 25 +-<br>
-=C2=A0.../test_avr_mega2560.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 11 +-<br>
-=C2=A0.../test_cpu_queries.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A07 +-<br>
-=C2=A0.../test_empty_cpu_model.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A07 +-<br>
-=C2=A0.../test_info_usernet.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 11 +-<br>
-=C2=A0.../test_loongarch64_virt.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 16 +-<br>
-=C2=A0.../test_mem_addr_space.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 53 +--<br>
-=C2=A0.../test_mips64el_loongson3v.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 26 +-<br>
-=C2=A0.../test_netdev_ethtool.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 32 +-<br>
-=C2=A0.../test_pc_cpu_hotplug_props.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0|=C2=A0 11 +-<br>
-=C2=A0.../ppc_405.py =3D&gt; functional/test_ppc_405.py} |=C2=A0 19 +-<br>
-=C2=A0.../test_ppc_74xx.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 74 ++--<br>
-=C2=A0.../test_ppc_bamboo.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 23 +-<br>
-=C2=A0.../test_s390x_ccw_virtio.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 32 +-<br>
-=C2=A0.../test_s390x_topology.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 70 ++--<br>
-=C2=A0.../test_sparc64_sun4u.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 25 +-<br>
-=C2=A0.../version.py =3D&gt; functional/test_version.py} |=C2=A0 13 +-<br>
-=C2=A0.../test_virtio_version.py}=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A08 +-<br>
-=C2=A0tests/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A01 +<br>
-=C2=A028 files changed, 795 insertions(+), 320 deletions(-)<br>
-=C2=A0create mode 100644 tests/functional/meson.build<br>
-=C2=A0create mode 100644 tests/functional/qemu_test/__init__.py<br>
-=C2=A0create mode 100644 tests/functional/qemu_test/utils.py<br>
-=C2=A0rename tests/{avocado/machine_arm_canona1100.py =3D&gt; functional/te=
-st_arm_canona1100.py} (71%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/machine_arm_n8x0.py =3D&gt; functional/test_arm=
-_n8x0.py} (71%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/machine_avr6.py =3D&gt; functional/test_avr_meg=
-a2560.py} (90%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/cpu_queries.py =3D&gt; functional/test_cpu_quer=
-ies.py} (89%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/empty_cpu_model.py =3D&gt; functional/test_empt=
-y_cpu_model.py} (84%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/info_usernet.py =3D&gt; functional/test_info_us=
-ernet.py} (87%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/machine_loongarch.py =3D&gt; functional/test_lo=
-ongarch64_virt.py} (89%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/mem-addr-space-check.py =3D&gt; functional/test=
-_mem_addr_space.py} (92%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/machine_mips_loongson3v.py =3D&gt; functional/t=
-est_mips64el_loongson3v.py} (55%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/netdev-ethtool.py =3D&gt; functional/test_netde=
-v_ethtool.py} (81%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/pc_cpu_hotplug_props.py =3D&gt; functional/test=
-_pc_cpu_hotplug_props.py} (90%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/ppc_405.py =3D&gt; functional/test_ppc_405.py} =
-(73%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/ppc_74xx.py =3D&gt; functional/test_ppc_74xx.py=
-} (74%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/ppc_bamboo.py =3D&gt; functional/test_ppc_bambo=
-o.py} (75%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/machine_s390_ccw_virtio.py =3D&gt; functional/t=
-est_s390x_ccw_virtio.py} (95%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/s390_topology.py =3D&gt; functional/test_s390x_=
-topology.py} (90%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/machine_sparc64_sun4u.py =3D&gt; functional/tes=
-t_sparc64_sun4u.py} (60%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/version.py =3D&gt; functional/test_version.py} =
-(78%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-=C2=A0rename tests/{avocado/virtio_version.py =3D&gt; functional/test_virti=
-o_version.py} (98%)<br>
-=C2=A0mode change 100644 =3D&gt; 100755<br>
-<br>
--- <br>
-2.45.2<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000394afa061d611443--
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 127c3d2383..2cf95051ff 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -2641,6 +2641,7 @@ static uint16_t nvme_verify(NvmeCtrl *n, NvmeRequest *req)
+     uint64_t slba = le64_to_cpu(rw->slba);
+     uint32_t nlb = le16_to_cpu(rw->nlb) + 1;
+     size_t len = nvme_l2b(ns, nlb);
++    size_t data_len = len;
+     int64_t offset = nvme_l2b(ns, slba);
+     uint8_t prinfo = NVME_RW_PRINFO(le16_to_cpu(rw->control));
+     uint32_t reftag = le32_to_cpu(rw->reftag);
+@@ -2660,7 +2661,11 @@ static uint16_t nvme_verify(NvmeCtrl *n, NvmeRequest *req)
+         }
+     }
+ 
+-    if (len > n->page_size << n->params.vsl) {
++    if (nvme_ns_ext(ns) && !(NVME_ID_CTRL_CTRATT_MEM(n->id_ctrl.ctratt))) {
++        data_len += nvme_m2b(ns, nlb);
++    }
++
++    if (data_len > (n->page_size << n->params.vsl)) {
+         return NVME_INVALID_FIELD | NVME_DNR;
+     }
+ 
+@@ -3233,7 +3238,11 @@ static uint16_t nvme_compare(NvmeCtrl *n, NvmeRequest *req)
+         len += nvme_m2b(ns, nlb);
+     }
+ 
+-    status = nvme_check_mdts(n, len);
++    if (NVME_ID_CTRL_CTRATT_MEM(n->id_ctrl.ctratt)) {
++        status = nvme_check_mdts(n, data_len);
++    } else {
++        status = nvme_check_mdts(n, len);
++    }
+     if (status) {
+         return status;
+     }
+@@ -3410,7 +3419,7 @@ static uint16_t nvme_read(NvmeCtrl *n, NvmeRequest *req)
+     BlockBackend *blk = ns->blkconf.blk;
+     uint16_t status;
+ 
+-    if (nvme_ns_ext(ns)) {
++    if (nvme_ns_ext(ns) && !(NVME_ID_CTRL_CTRATT_MEM(n->id_ctrl.ctratt))) {
+         mapped_size += nvme_m2b(ns, nlb);
+ 
+         if (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
+@@ -3522,7 +3531,7 @@ static uint16_t nvme_do_write(NvmeCtrl *n, NvmeRequest *req, bool append,
+     BlockBackend *blk = ns->blkconf.blk;
+     uint16_t status;
+ 
+-    if (nvme_ns_ext(ns)) {
++    if (nvme_ns_ext(ns) && !(NVME_ID_CTRL_CTRATT_MEM(n->id_ctrl.ctratt))) {
+         mapped_size += nvme_m2b(ns, nlb);
+ 
+         if (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
+@@ -8202,7 +8211,7 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
+     id->cntlid = cpu_to_le16(n->cntlid);
+ 
+     id->oaes = cpu_to_le32(NVME_OAES_NS_ATTR);
+-    ctratt = NVME_CTRATT_ELBAS;
++    ctratt = NVME_CTRATT_ELBAS | NVME_CTRATT_MEM;
+ 
+     id->rab = 6;
+ 
+diff --git a/include/block/nvme.h b/include/block/nvme.h
+index bb231d0b9a..4ba565241e 100644
+--- a/include/block/nvme.h
++++ b/include/block/nvme.h
+@@ -1172,6 +1172,7 @@ enum NvmeIdCtrlOaes {
+ enum NvmeIdCtrlCtratt {
+     NVME_CTRATT_ENDGRPS = 1 <<  4,
+     NVME_CTRATT_ELBAS   = 1 << 15,
++    NVME_CTRATT_MEM     = 1 << 16,
+     NVME_CTRATT_FDPS    = 1 << 19,
+ };
+ 
+@@ -1271,6 +1272,8 @@ enum NvmeNsAttachmentOperation {
+ #define NVME_ERR_REC_TLER(err_rec)  (err_rec & 0xffff)
+ #define NVME_ERR_REC_DULBE(err_rec) (err_rec & 0x10000)
+ 
++#define NVME_ID_CTRL_CTRATT_MEM(ctratt) (ctratt & NVME_CTRATT_MEM)
++
+ enum NvmeFeatureIds {
+     NVME_ARBITRATION                = 0x1,
+     NVME_POWER_MANAGEMENT           = 0x2,
+-- 
+2.43.0
 
 
