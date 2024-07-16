@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDDA932E44
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D5B932E47
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl1Q-0006DQ-7D; Tue, 16 Jul 2024 12:27:25 -0400
+	id 1sTl2F-0008TV-VA; Tue, 16 Jul 2024 12:28:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl0f-0005rz-CG; Tue, 16 Jul 2024 12:26:38 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ id 1sTl0j-0005ve-I3; Tue, 16 Jul 2024 12:26:43 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl0a-0006FP-G8; Tue, 16 Jul 2024 12:26:37 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-25e076f79d5so2781190fac.2; 
- Tue, 16 Jul 2024 09:26:31 -0700 (PDT)
+ id 1sTl0e-0006Gt-3p; Tue, 16 Jul 2024 12:26:40 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-70b0ebd1ef9so3770988b3a.2; 
+ Tue, 16 Jul 2024 09:26:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147190; x=1721751990; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721147193; x=1721751993; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k5y4TKaDDHvMsX8pNSb4QjcSx4fOTcaEPBO+qYDjTJY=;
- b=RD3ZFyuKvDlRFYef+Mn/zBkdvonkqGM0awJ6crQQ71fuR8RmW7QpbbnKUVMFOhMPb7
- jQumXnQh7UueZnxB1ByPZNJ2GxjXwyf0cxk6jwplR9bG91Q19wkpovkA2yKPp+qzpQ5X
- RMJvlT/KVwLA/7SOzRYdJfg4pIilQHTGi4oDf6jEMFA51XeuSVXhCQPBHnaXn+xTIq6p
- 1PoLV+6rY+vqd1REh6koQAO5Ga8Kw5ZbthBGxyNFLWkM63WFJ8saNdTH6T5Is/Kl741X
- eTeBam6wFrp6iV0QjrNBWWNNiiqvGQY985ge3DUsh+CgcOh1Gypnm+8zETOw7Ka2wiTN
- YZjg==
+ bh=0DgZsKqI5Qui8xJrG3nYJqRYaaUiPlIWM1v7RfXcJUQ=;
+ b=nhxZQ7/rbr+njicxKKOhiof+WFNl2/V0NLwFRcyEb4LcB5I9tM9MEWsoIUr3lOD/bM
+ czcGcOdaM9fXZDHmnf20AF5twMutVfXhYDA0UhgwDUG9yKJc6P1iGYlNo/dbNO+Zicl+
+ oAT4X/NsHfJdwg9iooepPDiyBZ2tZlKxeqxgD1CG34KOJaGE8+Y47yitiRcodRNLJbNo
+ w/tVD+7+3VE0yFsYRAavsjFYIKh/s6vOR7klxJI3Wg0+kIQV6rP40qqcdEeLKpvhKzqc
+ sPGh6rkioz0ELsU2/bsUa9ugVbsDktsm+F2KGqJb9VPdSFYqhfpLdBvIulyph9KTa1/C
+ b8KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147190; x=1721751990;
+ d=1e100.net; s=20230601; t=1721147193; x=1721751993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k5y4TKaDDHvMsX8pNSb4QjcSx4fOTcaEPBO+qYDjTJY=;
- b=Bkb8ulTweBWFC4O9485Xri/d4EGifIrMPF4eA87upRa2ORK8GM5OD8DP3CHWg/zBHn
- 5rUAsF7asCU9uQTYSj2d88CIHxmZ2unGuUf4HeZ3y3bdGkpRR8fgzhjgnGSxS+ouAYWW
- cwxnE1FDF3AQ6YUM0s7xfXB+h30bCyMeG2k9OU4OEMoNcKP6+mlBayerz2flQCb+2EUX
- sD+quXOnHebw9q8RNaOgdkJvdHO2CCqhrMT46L/EpC0ALG5EgclZjxJLngjJztYTsRf6
- bHuZqIbizfUXmvfhbE4q7keWNpBYqkH5FOvyGzmw6atMAqT1E/KH1Zm7xGbfSbBs6OTc
- 0UuA==
+ bh=0DgZsKqI5Qui8xJrG3nYJqRYaaUiPlIWM1v7RfXcJUQ=;
+ b=iwXMYFzcwz3HCeEvDklzO+w//6OHbM502NsjS9lXhqTljxr8nadqCRMo5iKm6uj+ZZ
+ fhHaIHTwRvezybDJ3hryGnsc0YnW0NRsRwbuI+F2O3rIUM9BjqSyCnPKgCU/FMeO4psZ
+ X9wVrlnyhmA+awpNk6FsgxeMgrFN9hDyHvbalPPwwaeGvSe/UhB2+qvUN6pd++JdMNUK
+ kVEIQ41eKqYoBUSsdn6jWFAH7qoMtvtBUSgpHaEDt+KS1cPJZhs83BOCUBiSIWuGbEgp
+ oz/XaMKqrYaaUkrffSumZRm7RwdYtA9rZ1owbhnuyNJuhoygrlDTxEYc53g3QCkjavzJ
+ K12w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDhq+pTMGB884A3WxqVDWL/c7g4B4gpwXsH1Djt6v95ILZvUAKHLV8c412LFCNjXfQ8e6X8cFP2zR0LAET7CUYGgDko30=
-X-Gm-Message-State: AOJu0YyW6Tw98tVSk6u5QYafCSWvVfj9Jmjyisub8U5g2HvAAxqnJb4S
- Uw4T812vX+eRWQt1A7aHRp4fayCIobNRQvu5JiiDG3os/GWe/WoNDPGMVg==
-X-Google-Smtp-Source: AGHT+IEmdV6pxq49/eBFovU3BVZllefi3rIf7h6Ct84ZQxNwQmPJhQRXPrOOVfgnK/cQEwpfTnXFxw==
-X-Received: by 2002:a05:6870:c6a1:b0:25d:efdb:ae23 with SMTP id
- 586e51a60fabf-260bddd9905mr2117907fac.27.1721147189865; 
- Tue, 16 Jul 2024 09:26:29 -0700 (PDT)
+ AJvYcCV9WBtVl++ckSGMbld59PJqms+7LTCoDkXtgbU4FRua721HiOzIvq5sYamQuDv2aLvk0kmZrHI60qsXuty7Jd3kHobZHhw=
+X-Gm-Message-State: AOJu0YwjXeZJRRVfgtECeYi7JVfFuw0K3O0/e+n5a2SfxQbISKEM4DK4
+ TNPVttvkrl8uBS6Rb9Z9/KgePsD8jDynTA7woaBxgIuaFom27M0gsIsFyw==
+X-Google-Smtp-Source: AGHT+IFQkw43f03d51sDbI8D2NSH4QU3UQGqOY90NaITd8eMjiRBa5H/qykOAJuLIfnRRjD/kAVm9A==
+X-Received: by 2002:a05:6a00:2384:b0:706:aab7:655 with SMTP id
+ d2e1a72fcca58-70c2e9bb1ecmr3393091b3a.26.1721147193467; 
+ Tue, 16 Jul 2024 09:26:33 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.26
+ d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:26:29 -0700 (PDT)
+ Tue, 16 Jul 2024 09:26:33 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 01/19] target/ppc: Fix msgsnd for POWER8
-Date: Wed, 17 Jul 2024 02:25:57 +1000
-Message-ID: <20240716162617.32161-2-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 02/19] ppc/pnv: Add pointer from PnvCPUState to PnvCore
+Date: Wed, 17 Jul 2024 02:25:58 +1000
+Message-ID: <20240716162617.32161-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
 References: <20240716162617.32161-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=npiggin@gmail.com; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,126 +96,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER8 (ISA v2.07S) introduced the doorbell facility, the msgsnd
-instruction behaved mostly like msgsndp, it was addressed by TIR
-and could only send interrupts between threads on the core.
+This helps move core state from CPU to core structures.
 
-ISA v3.0 changed msgsnd to be addressed by PIR and can interrupt
-any thread in the system.
-
-msgsnd only implements the v3.0 semantics, which can make
-multi-threaded POWER8 hang when booting Linux (due to IPIs
-failing). This change adds v2.07 semantics.
-
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 74 ++++++++++++++++++++++++----------------
- 1 file changed, 44 insertions(+), 30 deletions(-)
+ include/hw/ppc/pnv_core.h | 1 +
+ hw/ppc/pnv_core.c         | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 0a9e8539a4..5368bf2ff3 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -3007,6 +3007,41 @@ static inline bool dbell_bcast_subproc(target_ulong rb)
-     return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
- }
+diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
+index c6d62fd145..29cab9dfd9 100644
+--- a/include/hw/ppc/pnv_core.h
++++ b/include/hw/ppc/pnv_core.h
+@@ -54,6 +54,7 @@ struct PnvCoreClass {
+ #define PNV_CORE_TYPE_NAME(cpu_model) cpu_model PNV_CORE_TYPE_SUFFIX
  
-+/*
-+ * Send an interrupt to a thread in the same core as env).
-+ */
-+static void msgsnd_core_tir(CPUPPCState *env, uint32_t target_tir, int irq)
-+{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    CPUState *cs = env_cpu(env);
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
-+    }
-+
-+    if (target_tir >= nr_threads) {
-+        return;
-+    }
-+
-+    if (nr_threads == 1) {
-+        ppc_set_irq(cpu, irq, 1);
-+    } else {
-+        CPUState *ccs;
-+
-+        /* Does iothread need to be locked for walking CPU list? */
-+        bql_lock();
-+        THREAD_SIBLING_FOREACH(cs, ccs) {
-+            PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-+            if (target_tir == ppc_cpu_tir(ccpu)) {
-+                ppc_set_irq(ccpu, irq, 1);
-+                break;
-+            }
-+        }
-+        bql_unlock();
-+    }
-+}
-+
- void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
- {
-     if (!dbell_type_server(rb)) {
-@@ -3027,6 +3062,13 @@ void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
-         return;
+ typedef struct PnvCPUState {
++    PnvCore *pnv_core;
+     Object *intc;
+ } PnvCPUState;
+ 
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index f40ab721d6..2da271ffb6 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -278,6 +278,7 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
+     pc->threads = g_new(PowerPCCPU *, cc->nr_threads);
+     for (i = 0; i < cc->nr_threads; i++) {
+         PowerPCCPU *cpu;
++        PnvCPUState *pnv_cpu;
+ 
+         obj = object_new(typename);
+         cpu = POWERPC_CPU(obj);
+@@ -288,6 +289,8 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
+         object_property_add_child(OBJECT(pc), name, obj);
+ 
+         cpu->machine_data = g_new0(PnvCPUState, 1);
++        pnv_cpu = pnv_cpu_state(cpu);
++        pnv_cpu->pnv_core = pc;
+ 
+         object_unref(obj);
      }
- 
-+    /* POWER8 msgsnd is like msgsndp (targets a thread within core) */
-+    if (!(env->insns_flags2 & PPC2_ISA300)) {
-+        msgsnd_core_tir(env, rb & PPC_BITMASK(57, 63), PPC_INTERRUPT_HDOORBELL);
-+        return;
-+    }
-+
-+    /* POWER9 and later msgsnd is a global (targets any thread) */
-     cpu = ppc_get_vcpu_by_pir(pir);
-     if (!cpu) {
-         return;
-@@ -3073,41 +3115,13 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
-  */
- void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
- {
--    CPUState *cs = env_cpu(env);
--    PowerPCCPU *cpu = env_archcpu(env);
--    CPUState *ccs;
--    uint32_t nr_threads = cs->nr_threads;
--    int ttir = rb & PPC_BITMASK(57, 63);
--
-     helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
- 
--    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
--        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
--    }
--
--    if (!dbell_type_server(rb) || ttir >= nr_threads) {
--        return;
--    }
--
--    if (nr_threads == 1) {
--        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
-+    if (!dbell_type_server(rb)) {
-         return;
-     }
- 
--    /* Does iothread need to be locked for walking CPU list? */
--    bql_lock();
--    THREAD_SIBLING_FOREACH(cs, ccs) {
--        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
--        uint32_t thread_id = ppc_cpu_tir(ccpu);
--
--        if (ttir == thread_id) {
--            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
--            bql_unlock();
--            return;
--        }
--    }
--
--    g_assert_not_reached();
-+    msgsnd_core_tir(env, rb & PPC_BITMASK(57, 63), PPC_INTERRUPT_DOORBELL);
- }
- #endif /* TARGET_PPC64 */
- 
 -- 
 2.45.1
 
