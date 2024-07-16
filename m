@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A83F932E4E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13841932E58
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:30:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl2N-00021D-UB; Tue, 16 Jul 2024 12:28:24 -0400
+	id 1sTl2T-000303-UL; Tue, 16 Jul 2024 12:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1J-0006VV-K0; Tue, 16 Jul 2024 12:27:19 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ id 1sTl1K-0006XA-1z; Tue, 16 Jul 2024 12:27:19 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1F-0006bt-RL; Tue, 16 Jul 2024 12:27:16 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-25e134abf00so2810986fac.1; 
- Tue, 16 Jul 2024 09:27:12 -0700 (PDT)
+ id 1sTl1I-0006cN-7E; Tue, 16 Jul 2024 12:27:17 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-25e00f348e6so3141107fac.1; 
+ Tue, 16 Jul 2024 09:27:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147230; x=1721752030; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721147234; x=1721752034; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RNZWaeAaQd+FgPrD7L1WMdXukzJbPCdt43L1w3ipbZg=;
- b=mE71lWa1v1qDE/6ErfLgBoIRWJs9b8rb2OMtKuUiO0Xx3TegYRuy6zUPDSoL+zVgL3
- tkL4ROMzKlGPN9Ga+NfLbnP2AyTHAxtkQ+egjBuF7AIFqsZSdwUgISihnpA0sR9JvRbI
- 1yn6MAPG1ichwo0WK1P6/qg0GuVY2MZfI5xwETqycvC65gBSJNHdpZvvJcuE6464g/hE
- +hnJlv0QY6tGDt7C1PxuG6aAkD8Y0ARa/gPC9KJt/sD8nsy95G4uTocp0lKgZoFERLoQ
- Nylv430tdWhJP5b18FpxYvcbmhAWiJuEe+Y6AfUKdBYLTQ/qonMc7ysPU0qEU2k3FIbj
- znAw==
+ bh=tyPOIb2VK3dD8F4THz9rJokTRHuUTmaR6trLMdHrvl0=;
+ b=iUlodgZ488qDY1iBEs5cF2EZeeopKbXggh7GaEPzM6OITVfrF0tOAmnBZPWPyF+ciK
+ eZG94lHILxALY3MXAUy56erTK8m6kxbfQZetagvu2djWgw6v2HlE+5Bat7g+iPyna0+v
+ uPlCe9YZePx+VDl0GPez2Y1DKQzSnZbIsd5WxkVqxR2dTVvV+KS/lv/IxsFrcKiFQFe7
+ NuWlSEW8LU4Rd0EPgGZBmmyq382HKicrhbPZ3mZB21AKmpjbfEHiJWCuwIWAhXJXJ9LP
+ cGQVZ/R1le1u904IB6TnfLXk58lve0jkSqlM2vBlwy2QUvBaDYsobQ/MPFcyXelqfTyc
+ CRnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147230; x=1721752030;
+ d=1e100.net; s=20230601; t=1721147234; x=1721752034;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RNZWaeAaQd+FgPrD7L1WMdXukzJbPCdt43L1w3ipbZg=;
- b=wXM0yXuD3V/VJtzZmXEy8qq4F/p0rf76oazzPsBpCzZnw9iQwm5K9/XZTDrHioTDeq
- /pAoxaKlt2o2rp4EDzuj6tfN5orp+ccw7OuuQiQPVVZNRYOJn77v/u8m8gXF7CoM9TIA
- ukv02RheXyM3GSQgbUpVJNjM2awo9Kc0KJolzWAgLbE6B36OzaLAe2pt4CYqIcKPJp4V
- 388sS5L+nMIU4OYb+2H9YXRkhRXKmC2P4JDb91bCf2Dcbdp5nbAnIEHjLTAC0OsryMGz
- lOVZjE8XdEt92Ar09/idDbNnK7UWwe4nKhs9ico0TLUYMUHbHh/DRaKROznda5ISQL+M
- 1EHw==
+ bh=tyPOIb2VK3dD8F4THz9rJokTRHuUTmaR6trLMdHrvl0=;
+ b=VaBQRX6I6lxLZTeFB5xWnjaioGn4Rne78EpCHdp/UKbHAtoWvUlor86wXpJXafzIiY
+ hb8baPnRA6uPOe8Zxf9UdZWZ5fXVnzOS1j06Y4jyzUhU8urMm9kU0+b2k/f2wjK2ea4u
+ FCoqhkHrG0GJar2R/1YaBjNpRfN5PIOEff45toyXHBzFM7sxlcovY1G0Z99bavBf0LUN
+ o+Y4YAcwelYXVTxWMviJIKbtpzKKRqVRUDzHyn9KEW+pK+65ea0aaEmxPudvRSU+632p
+ lTqOgPA0hknIbN/xCKtlyy1zW9aOiPCIh4onmOkH/p/BgJTgiceCefAGzLcUi4IY56Bs
+ 7Ktg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUVBCzZ2zSFjmN9piSosrsSZGwj7DOVt2ZcjRDcMP3z9uJTls1ikW0FImLUht7KbXqu9jkbqhvQlsSr3vEuJUnps06P35E=
-X-Gm-Message-State: AOJu0Yzu1ef3tH3+iCtVW9atZYMcnYFiuf5smVCvxT+M91clWmR8FolA
- mGboFvNj3CgNAXgf5L0kAH16J0OSIRV8bP4jWa7b39VGjvIdJD7j6KBOZA==
-X-Google-Smtp-Source: AGHT+IEyiUUhnKUIXWWM3ddqsHvRndyuL9HtRyw0F+VlNDRYkFMvZgafga3Tg50dngvSzIuvG/1Pwg==
-X-Received: by 2002:a05:6870:6489:b0:23d:a1d0:7334 with SMTP id
- 586e51a60fabf-260bd5bdb07mr2051825fac.17.1721147230428; 
- Tue, 16 Jul 2024 09:27:10 -0700 (PDT)
+ AJvYcCXrfpuw/CMQ87jLR/b79/8os+Njgk2PatoM5jSO5nAphwQwVK4fKgkVBfcryyvsWwfCliL0HKpZsNPR/Lz8CZjNNI3REoM=
+X-Gm-Message-State: AOJu0YxA1lU0lvZInPv5x0JH5CBvEPG7FspL/e/hqH9Hvah2hyIkc7lQ
+ ZfUBi0W+fATNk1AITWgk/lJo0VHJNgXf9Kx1kjltEuZL3AWysrAnk7ngeQ==
+X-Google-Smtp-Source: AGHT+IH1G7haDJ80o4RXttZ9v+RvaZNkthlUOhSX+Njl8qCD5Ag07eiR83L7fH89xKeCjBAX1Tw6Fw==
+X-Received: by 2002:a05:6870:d189:b0:25e:b999:d24 with SMTP id
+ 586e51a60fabf-260bd9cfee0mr1972510fac.0.1721147234009; 
+ Tue, 16 Jul 2024 09:27:14 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.27.07
+ d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.27.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:27:10 -0700 (PDT)
+ Tue, 16 Jul 2024 09:27:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 12/19] ppc/pnv: Implement big-core PVR for Power9/10
-Date: Wed, 17 Jul 2024 02:26:08 +1000
-Message-ID: <20240716162617.32161-13-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Subject: [PATCH v3 13/19] ppc/pnv: Implement Power9 CPU core thread state
+ indirect register
+Date: Wed, 17 Jul 2024 02:26:09 +1000
+Message-ID: <20240716162617.32161-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
 References: <20240716162617.32161-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=npiggin@gmail.com; helo=mail-oa1-x32.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=npiggin@gmail.com; helo=mail-oa1-x2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,34 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Power9/10 CPUs have PVR[51] set in small-core mode and clear in big-core
-mode. This is used by skiboot firmware.
+Power9 CPUs have a core thread state register accessible via SPRC/SPRD
+indirect registers. This register includes a bit for big-core mode,
+which skiboot requires.
 
-PVR is not hypervisor-privileged but it is not so important that spapr
-to implement this because it's generally masked out of PVR matching code
-in kernels, and only used by firmware.
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/ppc/misc_helper.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 6dc05534d7..43cfeaa2d4 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -58,6 +58,10 @@ static void pnv_core_cpu_reset(PnvCore *pc, PowerPCCPU *cpu)
-     env->nip = 0x10;
-     env->msr |= MSR_HVB; /* Hypervisor mode */
-     env->spr[SPR_HRMOR] = pc->hrmor;
-+    if (pc->big_core) {
-+        /* Clear "small core" bit on Power9/10 (this is set in default PVR) */
-+        env->spr[SPR_PVR] &= ~PPC_BIT(51);
-+    }
-     hreg_compute_hflags(env);
-     ppc_maybe_interrupt(env);
- 
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index 692e48e6bc..e69236d2de 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -319,6 +319,23 @@ target_ulong helper_load_sprd(CPUPPCState *env)
+     case 0: /* SCRATCH0-3 */
+     case 1: /* SCRATCH4-7 */
+         return pc->scratch[(sprc >> 3) & 0x7];
++
++    case 0x1e0: /* core thread state */
++        if (env->excp_model == POWERPC_EXCP_POWER9) {
++            /*
++             * Only implement for POWER9 because skiboot uses it to check
++             * big-core mode. Other bits are unimplemented so we would
++             * prefer to get unimplemented message on POWER10 if it were
++             * used anywhere.
++             */
++            if (pc->big_core) {
++                return PPC_BIT(63);
++            } else {
++                return 0;
++            }
++        }
++        /* fallthru */
++
+     default:
+         qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
+                                   TARGET_FMT_lx"\n", sprc);
 -- 
 2.45.1
 
