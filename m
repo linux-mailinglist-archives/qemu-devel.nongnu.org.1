@@ -2,83 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12023932E5C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89151932DFF
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:11:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl2W-0003mg-W0; Tue, 16 Jul 2024 12:28:33 -0400
+	id 1sTklj-0002PF-Ta; Tue, 16 Jul 2024 12:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1f-0007RW-Np; Tue, 16 Jul 2024 12:27:40 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl1b-0006eY-CI; Tue, 16 Jul 2024 12:27:38 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-75c3acf90f0so3940938a12.2; 
- Tue, 16 Jul 2024 09:27:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147252; x=1721752052; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=z5TYVL1+Yc8WK0n0GdjxRRRAt3lrb2JlCgvlJVpBsBY=;
- b=U/rewGvIOEhlfKwKcCgwqkRsEAJGFWCKX+Wk3VpLs9CQ5vxg+L/wuDipI7a2ze+wXH
- GUENzLdrfUdTg26AJ/cAIrypJfV6+0UONxXUk8fcbOxy2uWkUUm/EBsNCHE94/BzUDD2
- oq3Y3GOTjV2Bw6isZBuZV1RZfdpqE7NjFvJwbB6MESqGAjea/6uUOtyOawquZcKpsu01
- avQfvoSSzWgEq5+jUUFSZF2jaCbuCbDRlYmGTCa2MUfVc51eFjKm0GGyx73UyZIXp03O
- Re2JLBe4bfRuj1KY3KNSh5e1h8HFEzAnyq4nKzem4PL79t4ZPCLtwhBKKpyHyxcoPxk/
- bHFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147252; x=1721752052;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=z5TYVL1+Yc8WK0n0GdjxRRRAt3lrb2JlCgvlJVpBsBY=;
- b=Dhk9vLuoBRvVShi91Lzu3QRdEtzIrXHaeqGaDgNh1GOVrEk6yMAZZNsxjMaTiYVR3P
- qMWBPDbN0hYn0z1NUDClvXIl+1DkjUMzT1woER5gNAMsPtsbwTTgdQIsBZAMaySV+nJk
- VVYE4P7sQXdWxv71/Ff4W4l37fr5ogMdA1hKNwPvFyrTFT+nqq7iz5bjkquZOXEvm/vn
- ya6knwkvzDhuIg/L5+9yB50GILppNIJbp3HmwJv7xDihf0oeLB7YQeNEtf2EIi1Mxoqe
- 8RMVQfLfrz9Ifp0CDRXTYoeGeeYvFCE4mkCj8N393gurdtWP8Cvb7OnocSA5HGgH7gdR
- O7Hw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXPVzj4Zco5zVTiMEEddWO8RpUE3WPs1d1bLAGQINyVPI1x2KwrODZOtgT54FQqENgkTtW1bxhYECDUrmqQfvCMu+SN/SU=
-X-Gm-Message-State: AOJu0YxILT8Q2Z/mcWY+VvnLbBqfis8HUcp8D6JK5K5DwxrOlPpfy8Ov
- ha3bIH/atdBHnwGLeT0Gez7Snqb1R8OZGT9pNESmzjvQbOAEqev+S9yNMQ==
-X-Google-Smtp-Source: AGHT+IEkZ9iFMbJ5PJ8j5nwresaxAmpwusHF6DXjVs1/uFzea2fWFOoGmx/SZG0oN8soxJDHUQmi8g==
-X-Received: by 2002:a05:6a21:3947:b0:1c0:e9dd:11b8 with SMTP id
- adf61e73a8af0-1c3f12399e1mr2999752637.28.1721147252358; 
- Tue, 16 Jul 2024 09:27:32 -0700 (PDT)
-Received: from wheely.local0.net ([203.220.44.216])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.27.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:27:32 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 18/19] ppc/pnv: Implement POWER10 PC xscom registers for
- direct controls
-Date: Wed, 17 Jul 2024 02:26:14 +1000
-Message-ID: <20240716162617.32161-19-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
-References: <20240716162617.32161-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTklS-0001sf-ON
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:10:56 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTklQ-0002wx-Mx
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 12:10:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721146252; x=1752682252;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Xz4aX8dBW2vbxRdbOQqpj1yin6IORC1tzbkn3pSN2EE=;
+ b=OKhMw1ZtSH2jlgIaJPmdnhfE7KNovWxGYmRpiYVu2jSP/wpbMDlBqf1b
+ +r42cR1+9lqmO9dbkcPZPE5RTAKWsdPbWzSpvz79dcYz7cElRQ8vkslgQ
+ F4kxNRqot17WzDSEFS+D34+hswTMQQAEvJlPVXT87UfS/BDhPhQDgl57z
+ 4g/mBdzxQKEo71bAgi6i0RuzpvRs/ljWCdBO45Jzd26y1JEQfik+fCK44
+ E7WkKOqJ0DwH5VPRy6oYF49qLpocfOP5Z+qBSEO6vj9D85AYnNDCwnZ8E
+ 0ztGysuSQeQesXZrp7iJUUrrYoEZ/L542FVN+EnSCXUeqOwmWmcvoSnnx Q==;
+X-CSE-ConnectionGUID: WAVyj2XpSIGrvFyK9cK5Bw==
+X-CSE-MsgGUID: vwAkZaHhR9yAssQ6c6tIPQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="22410115"
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="22410115"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2024 09:10:51 -0700
+X-CSE-ConnectionGUID: xDl6QyBIRiCHGF6s/4TjFw==
+X-CSE-MsgGUID: K7hEYVqHR46B6UVcjecPTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="49940499"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orviesa010.jf.intel.com with ESMTP; 16 Jul 2024 09:10:50 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PATCH v2] hw/virtio/vdpa-dev: Check returned value instead of
+ dereferencing @errp
+Date: Wed, 17 Jul 2024 00:26:15 +0800
+Message-Id: <20240716162615.271010-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,180 +80,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PC unit in the processor core contains xscom registers that provide
-low level status and control of the CPU.
+As the comment in qapi/error, dereferencing @errp requires
+ERRP_GUARD():
 
-This implements "direct controls", sufficient for skiboot firmware,
-which uses it to send NMI IPIs between CPUs.
+* = Why, when and how to use ERRP_GUARD() =
+*
+* Without ERRP_GUARD(), use of the @errp parameter is restricted:
+* - It must not be dereferenced, because it may be null.
+...
+* ERRP_GUARD() lifts these restrictions.
+*
+* To use ERRP_GUARD(), add it right at the beginning of the function.
+* @errp can then be used without worrying about the argument being
+* NULL or &error_fatal.
+*
+* Using it when it's not needed is safe, but please avoid cluttering
+* the source with useless code.
 
-POWER10 is sufficiently different from POWER9 (particularly with respect
-to QME and special wakeup) that it is not trivial to implement POWER9
-support by reusing the code.
+Though vhost_vdpa_device_realize() is called at DeviceClass.realize()
+context and won't get NULL @errp, it's still better to follow the
+requirement to add the ERRP_GUARD().
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+But qemu_open() and vhost_vdpa_device_get_u32()'s return values can
+distinguish between successful and unsuccessful calls, so check the
+return values directly without dereferencing @errp, which eliminates
+the need of ERRP_GUARD().
+
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/ppc/pnv_core.h |  3 ++
- hw/ppc/pnv_core.c         | 89 ++++++++++++++++++++++++++++++++++++---
- 2 files changed, 87 insertions(+), 5 deletions(-)
+v2:
+ * Added a/b from Eugenio.
+ * Deleted unnecessary ERRP_GUARD(). (Eugenio)
+---
+ hw/virtio/vdpa-dev.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index c8784777a4..1de79a818e 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -109,6 +109,9 @@ OBJECT_DECLARE_TYPE(PnvQuad, PnvQuadClass, PNV_QUAD)
- struct PnvQuad {
-     DeviceState parent_obj;
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index 64b96b226c39..8a1e16fce3de 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -63,19 +63,19 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+     }
  
-+    bool special_wakeup_done;
-+    bool special_wakeup[4];
-+
-     uint32_t quad_id;
-     MemoryRegion xscom_regs;
-     MemoryRegion xscom_qme_regs;
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 1783795b23..8ed1cfe8a2 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -185,16 +185,40 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
-  */
+     v->vhostfd = qemu_open(v->vhostdev, O_RDWR, errp);
+-    if (*errp) {
++    if (v->vhostfd < 0) {
+         return;
+     }
  
- #define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
-+#define PNV10_XSCOM_EC_CORE_THREAD_INFO     0x413
-+#define PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS 0x449
-+#define PNV10_XSCOM_EC_CORE_RAS_STATUS      0x454
+     v->vdev_id = vhost_vdpa_device_get_u32(v->vhostfd,
+                                            VHOST_VDPA_GET_DEVICE_ID, errp);
+-    if (*errp) {
++    if (v->vdev_id < 0) {
+         goto out;
+     }
  
- static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
-                                            unsigned int width)
- {
-+    PnvCore *pc = PNV_CORE(opaque);
-+    int nr_threads = CPU_CORE(pc)->nr_threads;
-+    int i;
-     uint32_t offset = addr >> 3;
-     uint64_t val = 0;
+     max_queue_size = vhost_vdpa_device_get_u32(v->vhostfd,
+                                                VHOST_VDPA_GET_VRING_NUM, errp);
+-    if (*errp) {
++    if (max_queue_size < 0) {
+         goto out;
+     }
  
-     switch (offset) {
-     case PNV10_XSCOM_EC_CORE_THREAD_STATE:
--        val = 0;
-+        for (i = 0; i < nr_threads; i++) {
-+            PowerPCCPU *cpu = pc->threads[i];
-+            CPUState *cs = CPU(cpu);
-+
-+            if (cs->halted) {
-+                val |= PPC_BIT(56 + i);
-+            }
-+        }
-+        break;
-+    case PNV10_XSCOM_EC_CORE_THREAD_INFO:
-+        break;
-+    case PNV10_XSCOM_EC_CORE_RAS_STATUS:
-+        for (i = 0; i < nr_threads; i++) {
-+            PowerPCCPU *cpu = pc->threads[i];
-+            CPUState *cs = CPU(cpu);
-+            if (cs->stopped) {
-+                val |= PPC_BIT(0 + 8 * i) | PPC_BIT(1 + 8 * i);
-+            }
-+        }
-         break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-@@ -207,9 +231,46 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
- static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
-                                          uint64_t val, unsigned int width)
- {
-+    PnvCore *pc = PNV_CORE(opaque);
-+    int nr_threads = CPU_CORE(pc)->nr_threads;
-+    int i;
-     uint32_t offset = addr >> 3;
+@@ -89,7 +89,7 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
  
-     switch (offset) {
-+    case PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS:
-+        for (i = 0; i < nr_threads; i++) {
-+            PowerPCCPU *cpu = pc->threads[i];
-+            CPUState *cs = CPU(cpu);
-+
-+            if (val & PPC_BIT(7 + 8 * i)) { /* stop */
-+                val &= ~PPC_BIT(7 + 8 * i);
-+                cpu_pause(cs);
-+            }
-+            if (val & PPC_BIT(6 + 8 * i)) { /* start */
-+                val &= ~PPC_BIT(6 + 8 * i);
-+                cpu_resume(cs);
-+            }
-+            if (val & PPC_BIT(4 + 8 * i)) { /* sreset */
-+                val &= ~PPC_BIT(4 + 8 * i);
-+                pnv_cpu_do_nmi_resume(cs);
-+            }
-+            if (val & PPC_BIT(3 + 8 * i)) { /* clear maint */
-+                /*
-+                 * Hardware has very particular cases for where clear maint
-+                 * must be used and where start must be used to resume a
-+                 * thread. These are not modelled exactly, just treat
-+                 * this and start the same.
-+                 */
-+                val &= ~PPC_BIT(3 + 8 * i);
-+                cpu_resume(cs);
-+            }
-+        }
-+        if (val) {
-+            qemu_log_mask(LOG_UNIMP, "%s: unimp bits in DIRECT_CONTROLS "
-+                                     "0x%016lx\n", __func__, val);
-+        }
-+        break;
-+
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-                       offset);
-@@ -526,6 +587,7 @@ static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
- static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
-                                             unsigned int width)
- {
-+    PnvQuad *eq = PNV_QUAD(opaque);
-     uint32_t offset = addr >> 3;
-     uint64_t val = -1;
+     v->num_queues = vhost_vdpa_device_get_u32(v->vhostfd,
+                                               VHOST_VDPA_GET_VQS_COUNT, errp);
+-    if (*errp) {
++    if (v->num_queues < 0) {
+         goto out;
+     }
  
-@@ -533,10 +595,14 @@ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
-      * Forth nibble selects the core within a quad, mask it to process read
-      * for any core.
-      */
--    switch (offset & ~0xf000) {
--    case P10_QME_SPWU_HYP:
-+    switch (offset & ~PPC_BITMASK32(16, 19)) {
-     case P10_QME_SSH_HYP:
--        return 0;
-+        val = 0;
-+        if (eq->special_wakeup_done) {
-+            val |= PPC_BIT(1); /* SPWU DONE */
-+            val |= PPC_BIT(4); /* SSH SPWU DONE */
-+        }
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-                       offset);
-@@ -548,9 +614,22 @@ static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
- static void pnv_qme_power10_xscom_write(void *opaque, hwaddr addr,
-                                          uint64_t val, unsigned int width)
- {
-+    PnvQuad *eq = PNV_QUAD(opaque);
-     uint32_t offset = addr >> 3;
-+    bool set;
-+    int i;
+@@ -127,7 +127,7 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+     v->config_size = vhost_vdpa_device_get_u32(v->vhostfd,
+                                                VHOST_VDPA_GET_CONFIG_SIZE,
+                                                errp);
+-    if (*errp) {
++    if (v->config_size < 0) {
+         goto vhost_cleanup;
+     }
  
--    switch (offset) {
-+    switch (offset & ~PPC_BITMASK32(16, 19)) {
-+    case P10_QME_SPWU_HYP:
-+        set = !!(val & PPC_BIT(0));
-+        eq->special_wakeup_done = set;
-+        for (i = 0; i < 4; i++) {
-+            /* These bits select cores in the quad */
-+            if (offset & PPC_BIT32(16 + i)) {
-+                eq->special_wakeup[i] = set;
-+            }
-+        }
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-                       offset);
 -- 
-2.45.1
+2.34.1
 
 
