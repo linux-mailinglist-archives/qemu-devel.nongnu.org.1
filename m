@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8B2932137
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 09:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 502A9932134
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 09:29:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTcbq-0005Zl-Bp; Tue, 16 Jul 2024 03:28:26 -0400
+	id 1sTcbs-0005ld-Ry; Tue, 16 Jul 2024 03:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTcbo-0005RS-43
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:24 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1sTcbp-0005W4-8b
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:25 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTcbm-0006U5-Hp
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:23 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-25d6dd59170so2313453fac.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 00:28:20 -0700 (PDT)
+ id 1sTcbn-0006Ux-Jv
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:25 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1fc2a194750so17460355ad.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 00:28:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721114898; x=1721719698;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721114902; x=1721719702;
  darn=nongnu.org; 
  h=to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=w42/OqwS4II2qccuVnDqy8/Gc/+eGYKSCH7VXQRvu8k=;
- b=RZjd9wzOCaYgAUqCDPHgD9wPnvCLel0ipzvtBndFLlrL6bLKVuex9DyfiOI1nHWeW/
- ZCjnu8nSi2ZwmKEl3o3Z2lrAxHkURCCrb8dwSBv6qRETMYoVeOGlm/Fm9T8Jnt1bVKet
- B2fdKVq1GNEaAMN5va4mUd/YMF5UXtfXEVSl98NSUouMW7fttKwb08JPv60RBiRlLX9c
- uKTfPj+4q+wNxoBlgpFPjuA5+oT86XDiGE10EvFeNvgWGjr3uKeGR7W/JQyjMAkN41+j
- 9B0WX3tfAJ3Ur6Fih5cFZQnK2HdTi6iVATvLjFmBtaUAIAO80GIm22tSm7ZOkhJZzT5R
- apIw==
+ :reply-to; bh=nndFPbveVHvyo+1OtPZPhuGcG+moLsZf8i7KbP3IDpQ=;
+ b=GMoFgHI5HIZzLQ8kNbg//5h4gEezZOaEFSEdKu/O+PQ2O6ZNvho1xCu1g36MBR5XP1
+ X47RiZuYoSHLKQt4JTXFX94yHItJCnQs0sP8xnU1jDVSDza6/NOiYg1CLqI8qCBjMdp8
+ /1+vo4QNh4/hOXOhuD+6FywXA5vyjAXUMED5lvfSb+hGoYqkeno0KEH5wysFgDWlnOCr
+ f3EGdSiNaI1GLzm+4zK+huNhEnhaLeePIn0An5X8UIlDZLW8mfJf6NYX0B0RTt4c/dMO
+ h5p2bJvBApeIN+knpV4n9jM/lkQEHvKz70wbsqHXrq/DSTklbYP1SFLiDengbgkt1awz
+ W3dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721114898; x=1721719698;
+ d=1e100.net; s=20230601; t=1721114902; x=1721719702;
  h=to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w42/OqwS4II2qccuVnDqy8/Gc/+eGYKSCH7VXQRvu8k=;
- b=NATYTMx9W9qSCbKHsxIZfojZWjMwHUNfpQnVBmBAe+73OOljsQ/tNNEfHjTfs4nSwA
- udO6wpwN/of5sqG8NSkKdAf6BObLXA9neDM3cSTU5YM9ROUeUvx5agT6Jmr+YOWcdwF/
- DqK9OBo/5suYH2trp6zJzJP063x1KTupJjcYB595ZCddQ0cREYhcJBlsWjVXtMK2hzPn
- Et/OHlvQ107xSzafli509ZqXqiyDmiUA9ZIs5/2xMEwDz+bbjcv9tQOBEIdZzXaR+Pv9
- 3GX5pd0j3T5IwRw8EHHi1bE8PPZFMVA/70rRED57yevBhtnXtdBYwKypbKiC/e3pDRPG
- c+mA==
-X-Gm-Message-State: AOJu0YzhljmdMiJNmSmGfNVoixJPICAsuCAc6QA4LdHorw+oszO4YRKb
- oBN4zjlY6LA9Ki6BlSFG+RFFZDWn0IgmmBG0iXxg3Vh6i2mJMw0ze/nNI8Yl97c=
-X-Google-Smtp-Source: AGHT+IFhfAECFQdPaCsZAOGXvHTpLNQ5Pol3qhCLg+VHy1L4OL/vgcxjMptxzv8PM87gQ1j4x//6aA==
-X-Received: by 2002:a05:6870:d184:b0:24c:b654:c17a with SMTP id
- 586e51a60fabf-260bdf97ce1mr909542fac.45.1721114897545; 
- Tue, 16 Jul 2024 00:28:17 -0700 (PDT)
+ bh=nndFPbveVHvyo+1OtPZPhuGcG+moLsZf8i7KbP3IDpQ=;
+ b=s3qfv6ZtHLN4ctoA94oaCar0eq0TYPrjao3icHyuij+GjHXe/AtLQEcxnTISZIOBtf
+ SKrXSWB/mx9KirIy7XVehTwQouOHyaD+UPF/DS7QZ64uVf3XKAFeoe5o7/EdM/DBu61t
+ XSieFYRko3FZDZsbfHGkb0wDuu9mPBKDhprm5f5maPgeAvtYXHLzZzxsQYA85/C5NRKo
+ v8FTExglBe3i9qhqg6nQZ3iiBqaCdOb4w3S6nKFDIXJsXbuy0WoQ0Te4tV5ulgNFGzrT
+ DjD1UxGBV2OUjqD09Hk0DoUsykQ4/dEEq5JG/mUG2DbqcjKclg268Bz3nX5iYe3wCz37
+ f2iQ==
+X-Gm-Message-State: AOJu0YwGkAdfJ9ct8KlCo+y+w5tv6Vpn6o9jfcRyvWfpwTh/t21U0syA
+ KIEaLrzGtitt+rsogHzwHVboHSPTtMT9Dybw5veXD9KJqJ3+XQBBWUkSKq9v01A=
+X-Google-Smtp-Source: AGHT+IEf2tPScxuna9eeRgCVz8lF9FQkuOGJaZHKNKsE6KIk6bW1YyYbxUrsKAwx2smxtMUX6fvvGA==
+X-Received: by 2002:a17:903:41cd:b0:1fa:2e45:bcb8 with SMTP id
+ d9443c01a7336-1fc3d921be3mr10484155ad.2.1721114902296; 
+ Tue, 16 Jul 2024 00:28:22 -0700 (PDT)
 Received: from localhost ([157.82.128.7]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-70b7ec7da24sm5586892b3a.113.2024.07.16.00.28.14
+ d9443c01a7336-1fc0bc45017sm52075555ad.242.2024.07.16.00.28.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jul 2024 00:28:17 -0700 (PDT)
+ Tue, 16 Jul 2024 00:28:21 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 16 Jul 2024 16:27:34 +0900
-Subject: [PATCH v4 4/7] scsi: Use qemu_get_runtime_dir()
+Date: Tue, 16 Jul 2024 16:27:35 +0900
+Subject: [PATCH v4 5/7] module: Use qemu_get_runtime_dir()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240716-run-v4-4-5f7a29631168@daynix.com>
+Message-Id: <20240716-run-v4-5-5f7a29631168@daynix.com>
 References: <20240716-run-v4-0-5f7a29631168@daynix.com>
 In-Reply-To: <20240716-run-v4-0-5f7a29631168@daynix.com>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com, 
@@ -74,14 +74,14 @@ To: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
  Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2001:4860:4864:20::29;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x29.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,32 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_get_runtime_dir() is used to construct the default paths.
+qemu_get_runtime_dir() is used to construct the path to module upgrades.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230921075425.16738-6-akihiko.odaki@daynix.com>
+Message-Id: <20230921075425.16738-7-akihiko.odaki@daynix.com>
 ---
- scsi/qemu-pr-helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ util/module.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scsi/qemu-pr-helper.c b/scsi/qemu-pr-helper.c
-index c6c6347e9b6a..507f23357f6b 100644
---- a/scsi/qemu-pr-helper.c
-+++ b/scsi/qemu-pr-helper.c
-@@ -77,10 +77,10 @@ static int gid = -1;
- 
- static void compute_default_paths(void)
- {
--    g_autofree char *state = qemu_get_local_state_dir();
+diff --git a/util/module.c b/util/module.c
+index 32e263163c75..580658edf486 100644
+--- a/util/module.c
++++ b/util/module.c
+@@ -242,7 +242,8 @@ int module_load(const char *prefix, const char *name, Error **errp)
+     version_dir = g_strcanon(g_strdup(QEMU_PKGVERSION),
+                              G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "+-.~",
+                              '_');
+-    dirs[n_dirs++] = g_strdup_printf("/var/run/qemu/%s", version_dir);
 +    g_autofree char *run = qemu_get_runtime_dir();
++    dirs[n_dirs++] = g_build_filename(run, "qemu", version_dir, NULL);
+ #endif
+     assert(n_dirs <= ARRAY_SIZE(dirs));
  
--    socket_path = g_build_filename(state, "run", "qemu-pr-helper.sock", NULL);
--    pidfile = g_build_filename(state, "run", "qemu-pr-helper.pid", NULL);
-+    socket_path = g_build_filename(run, "qemu-pr-helper.sock", NULL);
-+    pidfile = g_build_filename(run, "qemu-pr-helper.pid", NULL);
- }
- 
- static void usage(const char *name)
 
 -- 
 2.45.2
