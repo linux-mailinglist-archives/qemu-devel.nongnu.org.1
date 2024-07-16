@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6536932CA0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 17:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E55932C7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 17:56:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTkWl-0000ju-S4; Tue, 16 Jul 2024 11:55:43 -0400
+	id 1sTkWh-0000Pk-Iv; Tue, 16 Jul 2024 11:55:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTkWc-0000BK-Ay
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:35 -0400
+ id 1sTkWc-0000BM-BS
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:36 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTkWV-0007SW-G1
+ id 1sTkWV-0007SD-G9
  for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1721145328; x=1752681328;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=o17ZIKIksTITRMcAguc7dJOs/NSuZsgFkBWTlPrKm8w=;
- b=YKOajdTYThucNjGmATYyFoQaKLnGidbMDok7XqsGRUjFeH0QlJB1i5lX
- XTCnRFmUwx3b72mZQnnMlQq2PU+lyABQpYl7+TDDyXSdDS3nzXqvqg5Jf
- dBM4B6/BTAoI0Rbx6iPJ7FemIP/tsskG8UvpEpaQUx7fUaQqsNBWph7ER
- WUMBp89hiYonyzq1XetDyRkiJ9PXXQAAxQQdbZPMXDjjE2xHGOHoIKvr4
- oHilhyU/2rMvzTVmDRwdzyItRGCOCIpYiIGPOAvb+kPZBDwQNV5uShSWN
- mvkGUONwm08PVqVI6v1askHNnUOoBwfwaHm5TzoZOFYYBY3q9HCwf9z2+ A==;
-X-CSE-ConnectionGUID: NO2B+Lv+StiUbzFRMZkrIA==
-X-CSE-MsgGUID: sUSHpqiaTWWAbcZNMNdIRw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18743770"
-X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="18743770"
+ bh=vTmyNpbDyAccpoxjesc1nPYTdmEkK+BCLqrSMM8iBwc=;
+ b=lBzjOenqNzeGQx1pbNAklWInOr8GicgCSYkumxK/Zwphti0NsPtXbnRe
+ sgpNliwQeGNlbFYDb19L0Gh1s++bakJI4ALb46Hj4vP/rmvRaNVE+XdeN
+ 4TAHqL97FxKTz7EuN3sxx1dSaekfqo0jvgHVnfq/hvFhC71NOj2veZywP
+ 4CEpj344gUZfe732IX2GggQtXckKCncaOvosPg8FACea1CvNGzB3Juwx4
+ WvdaRaIafVWocukYhYiSCDH+mhcH7lhDrvftwJTwqeF+5PnBu/LehFYlh
+ 62NvQ4fox+s14VqPn/4RjwPLVpKo6bH7LdoLOq1twMPV0VdG+GSdYf4rv w==;
+X-CSE-ConnectionGUID: hzogeEAJRMiKUvwndOWygw==
+X-CSE-MsgGUID: oUCTECAPTwCk+u1yxNs/0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18743785"
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="18743785"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2024 08:55:07 -0700
-X-CSE-ConnectionGUID: s2dEqft1QrKII9T29SAtSg==
-X-CSE-MsgGUID: MX4+2bZTRHqNYc+Y7yZYCQ==
+ 16 Jul 2024 08:55:10 -0700
+X-CSE-ConnectionGUID: EyfZj4RlTmiRaGugfiETwg==
+X-CSE-MsgGUID: Wo36Cj7EQ5S5E4YUst8iYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="50788416"
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="50788450"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 16 Jul 2024 08:55:04 -0700
+ by orviesa008.jf.intel.com with ESMTP; 16 Jul 2024 08:55:07 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
  Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 7/9] target/i386/kvm: Clean up return values of MSR filter
- related functions
-Date: Wed, 17 Jul 2024 00:10:13 +0800
-Message-Id: <20240716161015.263031-8-zhao1.liu@intel.com>
+Subject: [PATCH v4 8/9] target/i386/kvm: Clean up error handling in
+ kvm_arch_init()
+Date: Wed, 17 Jul 2024 00:10:14 +0800
+Message-Id: <20240716161015.263031-9-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240716161015.263031-1-zhao1.liu@intel.com>
 References: <20240716161015.263031-1-zhao1.liu@intel.com>
@@ -86,126 +86,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At present, the error code of MSR filter enablement attempts to print in
-error_report().
+Currently, there're following incorrect error handling cases in
+kvm_arch_init():
+* Missed to handle failure of kvm_get_supported_feature_msrs().
+* Missed to return when KVM_CAP_X86_DISABLE_EXITS enabling fails.
+* MSR filter related cases called exit() directly instead of returning
+  to kvm_init().
 
-Unfortunately, this behavior doesn't work because the MSR filter-related
-functions return the boolean and current error_report() use the wrong
-return value.
-
-So fix this by making MSR filter related functions return int type and
-printing such returned value in error_report().
+Fix the above cases.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-v4: Returned kvm_vm_ioctl() directly. (Zide)
 v3: new commit.
 ---
- target/i386/kvm/kvm.c      | 34 ++++++++++++++--------------------
- target/i386/kvm/kvm_i386.h |  4 ++--
- 2 files changed, 16 insertions(+), 22 deletions(-)
+ target/i386/kvm/kvm.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4aae4ffc9ccd..f68be68eb411 100644
+index f68be68eb411..d47476e96813 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -2780,8 +2780,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-             }
+@@ -2682,7 +2682,10 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         return ret;
      }
-     if (kvm_vm_check_extension(s, KVM_CAP_X86_USER_SPACE_MSR)) {
--        bool r;
--
-         ret = kvm_vm_enable_cap(s, KVM_CAP_X86_USER_SPACE_MSR, 0,
-                                 KVM_MSR_EXIT_REASON_FILTER);
+ 
+-    kvm_get_supported_feature_msrs(s);
++    ret = kvm_get_supported_feature_msrs(s);
++    if (ret < 0) {
++        return ret;
++    }
+ 
+     uname(&utsname);
+     lm_capable_kernel = strcmp(utsname.machine, "x86_64") == 0;
+@@ -2740,6 +2743,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         if (ret < 0) {
+             error_report("kvm: guest stopping CPU not supported: %s",
+                          strerror(-ret));
++            return ret;
+         }
+     }
+ 
+@@ -2785,7 +2789,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
          if (ret) {
-@@ -2790,9 +2788,9 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-             exit(1);
+             error_report("Could not enable user space MSRs: %s",
+                          strerror(-ret));
+-            exit(1);
++            return ret;
          }
  
--        r = kvm_filter_msr(s, MSR_CORE_THREAD_COUNT,
--                           kvm_rdmsr_core_thread_count, NULL);
--        if (!r) {
-+        ret = kvm_filter_msr(s, MSR_CORE_THREAD_COUNT,
-+                             kvm_rdmsr_core_thread_count, NULL);
-+        if (ret) {
+         ret = kvm_filter_msr(s, MSR_CORE_THREAD_COUNT,
+@@ -2793,7 +2797,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         if (ret) {
              error_report("Could not install MSR_CORE_THREAD_COUNT handler: %s",
                           strerror(-ret));
-             exit(1);
-@@ -5274,13 +5272,13 @@ void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg)
-     }
- }
- 
--static bool kvm_install_msr_filters(KVMState *s)
-+static int kvm_install_msr_filters(KVMState *s)
- {
-     uint64_t zero = 0;
-     struct kvm_msr_filter filter = {
-         .flags = KVM_MSR_FILTER_DEFAULT_ALLOW,
-     };
--    int r, i, j = 0;
-+    int i, j = 0;
- 
-     for (i = 0; i < KVM_MSR_FILTER_MAX_RANGES; i++) {
-         KVMMSRHandlers *handler = &msr_handlers[i];
-@@ -5304,18 +5302,13 @@ static bool kvm_install_msr_filters(KVMState *s)
+-            exit(1);
++            return ret;
          }
      }
- 
--    r = kvm_vm_ioctl(s, KVM_X86_SET_MSR_FILTER, &filter);
--    if (r) {
--        return false;
--    }
--
--    return true;
-+    return kvm_vm_ioctl(s, KVM_X86_SET_MSR_FILTER, &filter);
- }
- 
--bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
--                    QEMUWRMSRHandler *wrmsr)
-+int kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-+                   QEMUWRMSRHandler *wrmsr)
- {
--    int i;
-+    int i, ret;
- 
-     for (i = 0; i < ARRAY_SIZE(msr_handlers); i++) {
-         if (!msr_handlers[i].msr) {
-@@ -5325,16 +5318,17 @@ bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-                 .wrmsr = wrmsr,
-             };
- 
--            if (!kvm_install_msr_filters(s)) {
-+            ret = kvm_install_msr_filters(s);
-+            if (ret) {
-                 msr_handlers[i] = (KVMMSRHandlers) { };
--                return false;
-+                return ret;
-             }
- 
--            return true;
-+            return 0;
-         }
-     }
- 
--    return false;
-+    return 0;
- }
- 
- static int kvm_handle_rdmsr(X86CPU *cpu, struct kvm_run *run)
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 34fc60774b86..91c2d6e69163 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -74,8 +74,8 @@ typedef struct kvm_msr_handlers {
-     QEMUWRMSRHandler *wrmsr;
- } KVMMSRHandlers;
- 
--bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
--                    QEMUWRMSRHandler *wrmsr);
-+int kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-+                   QEMUWRMSRHandler *wrmsr);
- 
- #endif /* CONFIG_KVM */
  
 -- 
 2.34.1
