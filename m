@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134CA932E48
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 912ED932E5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:31:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl2F-0008KY-9x; Tue, 16 Jul 2024 12:28:15 -0400
+	id 1sTl2W-0003hw-Ic; Tue, 16 Jul 2024 12:28:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl0j-0005vf-Si; Tue, 16 Jul 2024 12:26:43 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ id 1sTl0n-0005xw-Nb; Tue, 16 Jul 2024 12:26:48 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl0h-0006I7-Ne; Tue, 16 Jul 2024 12:26:41 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-5c791729c36so3150827eaf.3; 
- Tue, 16 Jul 2024 09:26:38 -0700 (PDT)
+ id 1sTl0k-0006L6-Te; Tue, 16 Jul 2024 12:26:45 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5cce7626c87so1821139eaf.2; 
+ Tue, 16 Jul 2024 09:26:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147197; x=1721751997; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721147201; x=1721752001; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JXcN7rc21Iq6Bcn9S0KBwtXpswBbDILgo+A0ACNS488=;
- b=I1l6dCuM0ffQqlC5jVS+6UsASXQWt7Vdic67h4PnrNZgI9PMR4PJ2q//QLrhDV14fN
- RGGS0z9C0bJ5tGObCIQkri6gd7ABpJ0HnoBNnWziqos5DdO3OyGCZJArV03nX8IIK7sz
- XolDd8EL/89zx4aLqAxjEdn97WabCGGNFDB1bI68JiYP0Awf3+a3tvSywR+ypXIoP1GP
- r0LH9b+yHRlWN7kdVwm9wCHikZQttokrW30q64QzRfBL+KPAlhbn8c4R1LbD7Obv11Nc
- FyKknuP/qSspe9Amt4B7DgPbD0TykkO8kSARkxwwsJtvLZwnDtcGm5nD5eUWqzAZOZtJ
- t7yQ==
+ bh=SyhirM3GRw4vaEFR7fdPD23qctfXv4t8r+16JQT6sG0=;
+ b=P6pmAKKSNNsk4E2vvpl3Tmhggnk8Cj9Yf8HfFcHutaz5YRgoZ5Nf4RyBc6Q0+pMlMx
+ cmvAFNEWDVPsy1rmEen3zKNwayoDc3ey3+BmoIzsC2bJHiurPOUlYsXjvtzXwKmO/4X8
+ w39pgp193SVMVZvjlR2qkForu9R4PDpv03RI6pmWQO+WnR+nYr6fE7/KbHWa5XMJqEsL
+ sNlpFrd2Pn/OO+aGK20gA64nu7NyRLhvMPi3n5iPCDLMMRgpQJZ3J90iFXEkHubAaVzM
+ BRAp/Xtn1ME4f3E4xs3J8tTWE54/jSlQwTWaeF5HsUjKhgP3Y0VL7t5pkyrt0EfMNNNO
+ ubLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147197; x=1721751997;
+ d=1e100.net; s=20230601; t=1721147201; x=1721752001;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JXcN7rc21Iq6Bcn9S0KBwtXpswBbDILgo+A0ACNS488=;
- b=rsdIOi5yVgi87Z2qYVFkurL8jHxN0rUR1G2FDJpoXtzg4cMo0jAxqmjQdyWEk/HI+2
- HTOlkLZJf7F+7DAZN2QTVdJbKWzj5/8YYBca50ijEeW5Pj2bxRGait3uiwVozjh8Wzor
- 92YOOHgdMWzXysvGhWMKZmgDOMRdo6HWdxYeK0MJQ3RuCVStgcFUXCwBnmGDCSnNKOgK
- nNTqnN7xGgTFZuWZzyywQpuGBlKchTQnHW1mHO4IkJq7Nl1Aixm9kPVraCWXylBmkYLW
- a/39ek++nADJlMjGpg3ULal+yQxIHYOINiypGgV0MxvWNJOH0Qg5/77OA9Px/vCvnBpY
- OyVg==
+ bh=SyhirM3GRw4vaEFR7fdPD23qctfXv4t8r+16JQT6sG0=;
+ b=uC0Mh4qQ+PpMgm1KhnZQwH8MdtRVfdx2A35OGOlsgL3/kIj7gSp8HYtPCAqEjj0hlX
+ 4EBI6vGL2I88PHg+8rLOQedNIm43X0mKa3ExpXQI9tvW8D5ZvcEB5oLTb4DTe3vjSZhi
+ l+TORggVhEMeCiJWxNB202Ua0nEX9N6IXh6fJ4cOiENnzAJlKfIlRymOGH2AWgDhc2BA
+ O35xjtsGuo4LBj0Mppn66whHBEHdXR7JRFezdk1un8xQpH7/tLkqkfrkAtubJUMRBwMr
+ 9cz0prjaSg0eeJigbPhuarJeDVTUnzu9sra+bhPvAJscv2mf87RyQh7a+UmygpowEaNr
+ jzzA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUPo4aAozkfVlV1caF2lFw81DHb4QjqnMftrM6WvS7dmoVMMUVi8T/MKkWf7aThpdVKck3XPMWT2Tfl8Ga0/dj2txNeBw=
-X-Gm-Message-State: AOJu0YzqtcLeHnfdmkdTG/sGRwnU9rP/Oje/qAu0jPJiVc6y1MuFmXXg
- H+90WIXh63j6jcnglAYGS9DPI85kZVz1kkUvXkYm8e3oRd2Q9NXvYnYm5A==
-X-Google-Smtp-Source: AGHT+IF8fK6LegX6ZMXXvJcYusNTLZs0GAOPufEQNnuHSu4Zjbw6ZdKhzoZGDsQV99Qfbn+l8yaJnQ==
-X-Received: by 2002:a05:6870:ac14:b0:24c:ac7e:8a5c with SMTP id
- 586e51a60fabf-260bddbaab4mr2111072fac.21.1721147196859; 
- Tue, 16 Jul 2024 09:26:36 -0700 (PDT)
+ AJvYcCXneEQxVDWFexREytI0AeYXwOgFty0+xqTsDgpXW09WhS2hF6PBFYBZWLEDIo2KY4Vfh64zW3WBcUd4th0U5lXXlHQBrh8=
+X-Gm-Message-State: AOJu0YyiBKrmeLtP+lpnxVDZQFSqqR0IsfLsXGJE8QGvWN8y2hJOq9SW
+ ZetqA05Ofl29uPRzXYBB3E5tFzrikCzVujgiI8cxA/AydgT7LJs9LqqkFQ==
+X-Google-Smtp-Source: AGHT+IEuPNCrQtiixPNowUbictzK3rNDu2r+99ZW1Y0beUXoqfG9FkBltyngmkpQ0RAokqluZ/jA9w==
+X-Received: by 2002:a05:6870:b52b:b0:25e:27a4:4e51 with SMTP id
+ 586e51a60fabf-260bdd82c79mr2131619fac.20.1721147200653; 
+ Tue, 16 Jul 2024 09:26:40 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.33
+ d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:26:36 -0700 (PDT)
+ Tue, 16 Jul 2024 09:26:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 03/19] ppc/pnv: Move timebase state into PnvCore
-Date: Wed, 17 Jul 2024 02:25:59 +1000
-Message-ID: <20240716162617.32161-4-npiggin@gmail.com>
+Subject: [PATCH v3 04/19] target/ppc: Move SPR indirect registers into PnvCore
+Date: Wed, 17 Jul 2024 02:26:00 +1000
+Message-ID: <20240716162617.32161-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
 References: <20240716162617.32161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=npiggin@gmail.com; helo=mail-oo1-xc2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=npiggin@gmail.com; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,267 +94,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The timebase state machine is per per-core state and can be driven
-by any thread in the core. It is currently implemented as a hack
-where the state is in a CPU structure and only thread 0's state is
-accessed by the chiptod, which limits programming the timebase
-side of the state machine to thread 0 of a core.
+SPRC/SPRD were recently added to all BookS CPUs supported, but
+they are only tested on POWER9 and POWER10, so restrict them to
+those CPUs.
 
-Move the state out into PnvCore and share it among all threads.
+SPR indirect scratch registers presently replicated per-CPU like
+SMT SPRs, but the PnvCore is a better place for them since they
+are restricted to P9/P10.
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Also add SPR indirect read access to core thread state for POWER9
+since skiboot accesses that when booting to check for big-core
+mode.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv_core.h    | 17 ++++++++++++
- target/ppc/cpu.h             | 21 --------------
- hw/ppc/pnv_chiptod.c         |  7 ++---
- target/ppc/timebase_helper.c | 53 ++++++++++++++++++++----------------
- 4 files changed, 49 insertions(+), 49 deletions(-)
+ include/hw/ppc/pnv_core.h |  1 +
+ target/ppc/cpu.h          |  3 --
+ target/ppc/cpu_init.c     | 21 +++++++-------
+ target/ppc/misc_helper.c  | 60 ++++++++++++++++++---------------------
+ 4 files changed, 39 insertions(+), 46 deletions(-)
 
 diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index 29cab9dfd9..ffec8516ae 100644
+index ffec8516ae..693acb189b 100644
 --- a/include/hw/ppc/pnv_core.h
 +++ b/include/hw/ppc/pnv_core.h
-@@ -25,6 +25,20 @@
- #include "hw/ppc/pnv.h"
- #include "qom/object.h"
- 
-+/* Per-core ChipTOD / TimeBase state */
-+typedef struct PnvCoreTODState {
-+    int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
-+    int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
-+
-+    /*
-+     * "Timers" for async TBST events are simulated by mfTFAC because TFAC
-+     * is polled for such events. These are just used to ensure firmware
-+     * performs the polling at least a few times.
-+     */
-+    int tb_state_timer;
-+    int tb_sync_pulse_timer;
-+} PnvCoreTODState;
-+
- #define TYPE_PNV_CORE "powernv-cpu-core"
- OBJECT_DECLARE_TYPE(PnvCore, PnvCoreClass,
-                     PNV_CORE)
-@@ -38,6 +52,9 @@ struct PnvCore {
-     uint32_t pir;
+@@ -53,6 +53,7 @@ struct PnvCore {
      uint32_t hwid;
      uint64_t hrmor;
-+
-+    PnvCoreTODState tod_state;
-+
-     PnvChip *chip;
  
-     MemoryRegion xscom_regs;
++    target_ulong scratch[8]; /* SPRC/SPRD indirect SCRATCH registers */
+     PnvCoreTODState tod_state;
+ 
+     PnvChip *chip;
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 2015e603d4..c78d6ca91a 100644
+index c78d6ca91a..95ba9e7590 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -1196,21 +1196,6 @@ DEXCR_ASPECT(SRAPD, 4)
- DEXCR_ASPECT(NPHIE, 5)
- DEXCR_ASPECT(PHIE, 6)
- 
--/*****************************************************************************/
--/* PowerNV ChipTOD and TimeBase State Machine */
--struct pnv_tod_tbst {
--    int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
--    int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
+@@ -1253,9 +1253,6 @@ struct CPUArchState {
+     ppc_slb_t slb[MAX_SLB_ENTRIES]; /* PowerPC 64 SLB area */
+     struct CPUBreakpoint *ciabr_breakpoint;
+     struct CPUWatchpoint *dawr0_watchpoint;
 -
--    /*
--     * "Timers" for async TBST events are simulated by mfTFAC because TFAC
--     * is polled for such events. These are just used to ensure firmware
--     * performs the polling at least a few times.
--     */
--    int tb_state_timer;
--    int tb_sync_pulse_timer;
--};
--
- /*****************************************************************************/
- /* The whole PowerPC CPU context */
- 
-@@ -1291,12 +1276,6 @@ struct CPUArchState {
-     uint32_t tlb_need_flush; /* Delayed flush needed */
- #define TLB_NEED_LOCAL_FLUSH   0x1
- #define TLB_NEED_GLOBAL_FLUSH  0x2
--
--#if defined(TARGET_PPC64)
--    /* PowerNV chiptod / timebase facility state. */
--    /* Would be nice to put these into PnvCore */
--    struct pnv_tod_tbst pnv_tod_tbst;
--#endif
+-    /* POWER CPU regs/state */
+-    target_ulong scratch[8]; /* SCRATCH registers (shared across core) */
  #endif
- 
-     /* Other registers */
-diff --git a/hw/ppc/pnv_chiptod.c b/hw/ppc/pnv_chiptod.c
-index 3831a72101..1e41fe557a 100644
---- a/hw/ppc/pnv_chiptod.c
-+++ b/hw/ppc/pnv_chiptod.c
-@@ -364,8 +364,7 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
-             qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-                           " TOD_MOVE_TOD_TO_TB_REG with no slave target\n");
-         } else {
--            PowerPCCPU *cpu = chiptod->slave_pc_target->threads[0];
--            CPUPPCState *env = &cpu->env;
-+            PnvCore *pc = chiptod->slave_pc_target;
- 
-             /*
-              * Moving TOD to TB will set the TB of all threads in a
-@@ -377,8 +376,8 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
-              * thread 0.
-              */
- 
--            if (env->pnv_tod_tbst.tb_ready_for_tod) {
--                env->pnv_tod_tbst.tod_sent_to_tb = 1;
-+            if (pc->tod_state.tb_ready_for_tod) {
-+                pc->tod_state.tod_sent_to_tb = 1;
-             } else {
-                 qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-                               " TOD_MOVE_TOD_TO_TB_REG with TB not ready to"
-diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
-index 39d397416e..52f9e6669c 100644
---- a/target/ppc/timebase_helper.c
-+++ b/target/ppc/timebase_helper.c
-@@ -19,6 +19,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "hw/ppc/ppc.h"
-+#include "hw/ppc/pnv_core.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
- #include "qemu/log.h"
-@@ -298,8 +299,17 @@ static void write_tfmr(CPUPPCState *env, target_ulong val)
-     }
+     target_ulong sr[32];   /* segment registers */
+     uint32_t nb_BATs;      /* number of BATs */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index e38f62b08d..164bb62e63 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5777,16 +5777,6 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  &spr_read_generic, &spr_core_write_generic,
+                  0x00000000);
+-    spr_register_hv(env, SPR_POWER_SPRC, "SPRC",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_sprc,
+-                 0x00000000);
+-    spr_register_hv(env, SPR_POWER_SPRD, "SPRD",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_sprd, &spr_write_sprd,
+-                 0x00000000);
+ #endif
  }
  
-+static PnvCoreTODState *cpu_get_tbst(PowerPCCPU *cpu)
-+{
+@@ -5799,6 +5789,17 @@ static void register_power9_book4_sprs(CPUPPCState *env)
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, &spr_write_generic,
+                      KVM_REG_PPC_WORT, 0);
++    /* SPRC/SPRD exist in earlier CPUs but only tested on POWER9/10 */
++    spr_register_hv(env, SPR_POWER_SPRC, "SPRC",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_read_generic, &spr_write_sprc,
++                 0x00000000);
++    spr_register_hv(env, SPR_POWER_SPRD, "SPRD",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_read_sprd, &spr_write_sprd,
++                 0x00000000);
+ #endif
+ }
+ 
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index fa47be2298..4d3c1bddd9 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -26,6 +26,7 @@
+ #include "qemu/main-loop.h"
+ #include "mmu-book3s-v3.h"
+ #include "hw/ppc/ppc.h"
++#include "hw/ppc/pnv_core.h"
+ 
+ #include "helper_regs.h"
+ 
+@@ -321,11 +322,18 @@ void helper_store_sprc(CPUPPCState *env, target_ulong val)
+ 
+ target_ulong helper_load_sprd(CPUPPCState *env)
+ {
++    /*
++     * SPRD is a HV-only register for Power CPUs, so this will only be
++     * accessed by powernv machines.
++     */
++    PowerPCCPU *cpu = env_archcpu(env);
++    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
+     target_ulong sprc = env->spr[SPR_POWER_SPRC];
+ 
+-    switch (sprc & 0x3c0) {
+-    case 0: /* SCRATCH0-7 */
+-        return env->scratch[(sprc >> 3) & 0x7];
++    switch (sprc & 0x3e0) {
++    case 0: /* SCRATCH0-3 */
++    case 1: /* SCRATCH4-7 */
++        return pc->scratch[(sprc >> 3) & 0x7];
+     default:
+         qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
+                                   TARGET_FMT_lx"\n", sprc);
+@@ -334,41 +342,27 @@ target_ulong helper_load_sprd(CPUPPCState *env)
+     return 0;
+ }
+ 
+-static void do_store_scratch(CPUPPCState *env, int nr, target_ulong val)
+-{
+-    CPUState *cs = env_cpu(env);
+-    CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+-
+-    /*
+-     * Log stores to SCRATCH, because some firmware uses these for debugging
+-     * and logging, but they would normally be read by the BMC, which is
+-     * not implemented in QEMU yet. This gives a way to get at the information.
+-     * Could also dump these upon checkstop.
+-     */
+-    qemu_log("SPRD write 0x" TARGET_FMT_lx " to SCRATCH%d\n", val, nr);
+-
+-    if (nr_threads == 1) {
+-        env->scratch[nr] = val;
+-        return;
+-    }
+-
+-    THREAD_SIBLING_FOREACH(cs, ccs) {
+-        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+-        cenv->scratch[nr] = val;
+-    }
+-}
+-
+ void helper_store_sprd(CPUPPCState *env, target_ulong val)
+ {
+     target_ulong sprc = env->spr[SPR_POWER_SPRC];
+-
+-    switch (sprc & 0x3c0) {
+-    case 0: /* SCRATCH0-7 */
+-        do_store_scratch(env, (sprc >> 3) & 0x7, val);
++    PowerPCCPU *cpu = env_archcpu(env);
 +    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
 +
-+    return &pc->tod_state;
-+}
-+
- static void tb_state_machine_step(CPUPPCState *env)
- {
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    PnvCoreTODState *tod_state = cpu_get_tbst(cpu);
-     uint64_t tfmr = env->spr[SPR_TFMR];
-     unsigned int tbst = tfmr_get_tb_state(tfmr);
- 
-@@ -307,15 +317,15 @@ static void tb_state_machine_step(CPUPPCState *env)
-         return;
++    switch (sprc & 0x3e0) {
++    case 0: /* SCRATCH0-3 */
++    case 1: /* SCRATCH4-7 */
++        /*
++         * Log stores to SCRATCH, because some firmware uses these for
++         * debugging and logging, but they would normally be read by the BMC,
++         * which is not implemented in QEMU yet. This gives a way to get at the
++         * information. Could also dump these upon checkstop.
++         */
++        int nr = (sprc >> 3) & 0x7;
++        qemu_log("SPRD write 0x" TARGET_FMT_lx " to SCRATCH%d\n", val, nr);
++        pc->scratch[nr] = val;
+         break;
+     default:
+-        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
++        qemu_log_mask(LOG_UNIMP, "mtSPRD: Unimplemented SPRC:0x"
+                                   TARGET_FMT_lx"\n", sprc);
+         break;
      }
- 
--    if (env->pnv_tod_tbst.tb_sync_pulse_timer) {
--        env->pnv_tod_tbst.tb_sync_pulse_timer--;
-+    if (tod_state->tb_sync_pulse_timer) {
-+        tod_state->tb_sync_pulse_timer--;
-     } else {
-         tfmr |= TFMR_TB_SYNC_OCCURED;
-         write_tfmr(env, tfmr);
-     }
- 
--    if (env->pnv_tod_tbst.tb_state_timer) {
--        env->pnv_tod_tbst.tb_state_timer--;
-+    if (tod_state->tb_state_timer) {
-+        tod_state->tb_state_timer--;
-         return;
-     }
- 
-@@ -332,20 +342,20 @@ static void tb_state_machine_step(CPUPPCState *env)
-     } else if (tfmr & TFMR_MOVE_CHIP_TOD_TO_TB) {
-         if (tbst == TBST_SYNC_WAIT) {
-             tfmr = tfmr_new_tb_state(tfmr, TBST_GET_TOD);
--            env->pnv_tod_tbst.tb_state_timer = 3;
-+            tod_state->tb_state_timer = 3;
-         } else if (tbst == TBST_GET_TOD) {
--            if (env->pnv_tod_tbst.tod_sent_to_tb) {
-+            if (tod_state->tod_sent_to_tb) {
-                 tfmr = tfmr_new_tb_state(tfmr, TBST_TB_RUNNING);
-                 tfmr &= ~TFMR_MOVE_CHIP_TOD_TO_TB;
--                env->pnv_tod_tbst.tb_ready_for_tod = 0;
--                env->pnv_tod_tbst.tod_sent_to_tb = 0;
-+                tod_state->tb_ready_for_tod = 0;
-+                tod_state->tod_sent_to_tb = 0;
-             }
-         } else {
-             qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: MOVE_CHIP_TOD_TO_TB "
-                           "state machine in invalid state 0x%x\n", tbst);
-             tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-             tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
--            env->pnv_tod_tbst.tb_ready_for_tod = 0;
-+            tod_state->tb_ready_for_tod = 0;
-         }
-     }
- 
-@@ -361,6 +371,8 @@ target_ulong helper_load_tfmr(CPUPPCState *env)
- 
- void helper_store_tfmr(CPUPPCState *env, target_ulong val)
- {
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    PnvCoreTODState *tod_state = cpu_get_tbst(cpu);
-     uint64_t tfmr = env->spr[SPR_TFMR];
-     uint64_t clear_on_write;
-     unsigned int tbst = tfmr_get_tb_state(tfmr);
-@@ -384,14 +396,7 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
-      * after the second mfspr.
-      */
-     tfmr &= ~TFMR_TB_SYNC_OCCURED;
--    env->pnv_tod_tbst.tb_sync_pulse_timer = 1;
--
--    if (ppc_cpu_tir(env_archcpu(env)) != 0 &&
--        (val & (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB))) {
--        qemu_log_mask(LOG_UNIMP, "TFMR timebase state machine can only be "
--                                 "driven by thread 0\n");
--        goto out;
--    }
-+    tod_state->tb_sync_pulse_timer = 1;
- 
-     if (((tfmr | val) & (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB)) ==
-                         (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB)) {
-@@ -399,7 +404,7 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
-                                        "MOVE_CHIP_TOD_TO_TB both set\n");
-         tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-         tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
--        env->pnv_tod_tbst.tb_ready_for_tod = 0;
-+        tod_state->tb_ready_for_tod = 0;
-         goto out;
-     }
- 
-@@ -413,8 +418,8 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
-         tfmr &= ~TFMR_LOAD_TOD_MOD;
-         tfmr &= ~TFMR_MOVE_CHIP_TOD_TO_TB;
-         tfmr &= ~TFMR_FIRMWARE_CONTROL_ERROR; /* XXX: should this be cleared? */
--        env->pnv_tod_tbst.tb_ready_for_tod = 0;
--        env->pnv_tod_tbst.tod_sent_to_tb = 0;
-+        tod_state->tb_ready_for_tod = 0;
-+        tod_state->tod_sent_to_tb = 0;
-         goto out;
-     }
- 
-@@ -427,19 +432,19 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
- 
-     if (tfmr & TFMR_LOAD_TOD_MOD) {
-         /* Wait for an arbitrary 3 mfspr until the next state transition. */
--        env->pnv_tod_tbst.tb_state_timer = 3;
-+        tod_state->tb_state_timer = 3;
-     } else if (tfmr & TFMR_MOVE_CHIP_TOD_TO_TB) {
-         if (tbst == TBST_NOT_SET) {
-             tfmr = tfmr_new_tb_state(tfmr, TBST_SYNC_WAIT);
--            env->pnv_tod_tbst.tb_ready_for_tod = 1;
--            env->pnv_tod_tbst.tb_state_timer = 3; /* arbitrary */
-+            tod_state->tb_ready_for_tod = 1;
-+            tod_state->tb_state_timer = 3; /* arbitrary */
-         } else {
-             qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: MOVE_CHIP_TOD_TO_TB "
-                                            "not in TB not set state 0x%x\n",
-                                            tbst);
-             tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-             tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
--            env->pnv_tod_tbst.tb_ready_for_tod = 0;
-+            tod_state->tb_ready_for_tod = 0;
-         }
-     }
- 
 -- 
 2.45.1
 
