@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F08E932CA2
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 17:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6536932CA0
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 17:57:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTkWl-0000iZ-QX; Tue, 16 Jul 2024 11:55:43 -0400
+	id 1sTkWl-0000ju-S4; Tue, 16 Jul 2024 11:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTkWY-00009y-GR
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:32 -0400
+ id 1sTkWc-0000BK-Ay
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:35 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sTkWT-0007Rv-OX
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:28 -0400
+ id 1sTkWV-0007SW-G1
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 11:55:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721145326; x=1752681326;
+ t=1721145328; x=1752681328;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=u1cSsKiZS4LgVHWKLVbqsnZaR8V7g5t3vC4cMVukk+s=;
- b=DID1LkcuDGnLueL+Qcl8T8vZryA+hq95nmfOAFaPk9t79uycX6ZHF5tF
- qfXiXKf8+Eu6tmdGzpb1hQAW97IPcyPzBZdCQ2p3hW4snWcJOYrwcNNKW
- 8KVU33F88T78poXIC1psRiV9g75taqo0EbEdvfqlBZJAWOEDlMiWt3hIW
- kJuyIKvgJvjQ6pGgrdOaMq1qKrdi5nb6q3WCE7X4U0HqEZLNrjTei9EpW
- QmtqIFeWsXSGP9uss70WlM0guDW/GyydQ+/misb1H4alK4ykc0NlrdOPV
- ofJuoRbpEJ4MwiKTqRXeRYeb51braK879rX8rcKXbRcYgeg30NX0I2vnY A==;
-X-CSE-ConnectionGUID: jNcrg3AlTo6zvTB8Ig1Q7A==
-X-CSE-MsgGUID: S012HEDCT7GxRLgRND1S5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18743751"
-X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="18743751"
+ bh=o17ZIKIksTITRMcAguc7dJOs/NSuZsgFkBWTlPrKm8w=;
+ b=YKOajdTYThucNjGmATYyFoQaKLnGidbMDok7XqsGRUjFeH0QlJB1i5lX
+ XTCnRFmUwx3b72mZQnnMlQq2PU+lyABQpYl7+TDDyXSdDS3nzXqvqg5Jf
+ dBM4B6/BTAoI0Rbx6iPJ7FemIP/tsskG8UvpEpaQUx7fUaQqsNBWph7ER
+ WUMBp89hiYonyzq1XetDyRkiJ9PXXQAAxQQdbZPMXDjjE2xHGOHoIKvr4
+ oHilhyU/2rMvzTVmDRwdzyItRGCOCIpYiIGPOAvb+kPZBDwQNV5uShSWN
+ mvkGUONwm08PVqVI6v1askHNnUOoBwfwaHm5TzoZOFYYBY3q9HCwf9z2+ A==;
+X-CSE-ConnectionGUID: NO2B+Lv+StiUbzFRMZkrIA==
+X-CSE-MsgGUID: sUSHpqiaTWWAbcZNMNdIRw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18743770"
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="18743770"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2024 08:55:04 -0700
-X-CSE-ConnectionGUID: AvJVzMyPQc68UJx2aqmsgg==
-X-CSE-MsgGUID: L5VZ5PCHQ5u211w+4a4pKQ==
+ 16 Jul 2024 08:55:07 -0700
+X-CSE-ConnectionGUID: s2dEqft1QrKII9T29SAtSg==
+X-CSE-MsgGUID: MX4+2bZTRHqNYc+Y7yZYCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="50788394"
+X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; d="scan'208";a="50788416"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 16 Jul 2024 08:55:01 -0700
+ by orviesa008.jf.intel.com with ESMTP; 16 Jul 2024 08:55:04 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
  Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 6/9] target/i386/confidential-guest: Fix comment of
- x86_confidential_guest_kvm_type()
-Date: Wed, 17 Jul 2024 00:10:12 +0800
-Message-Id: <20240716161015.263031-7-zhao1.liu@intel.com>
+Subject: [PATCH v4 7/9] target/i386/kvm: Clean up return values of MSR filter
+ related functions
+Date: Wed, 17 Jul 2024 00:10:13 +0800
+Message-Id: <20240716161015.263031-8-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240716161015.263031-1-zhao1.liu@intel.com>
 References: <20240716161015.263031-1-zhao1.liu@intel.com>
@@ -67,10 +67,10 @@ Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,29 +86,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the comment to match the X86ConfidentialGuestClass
-implementation.
+At present, the error code of MSR filter enablement attempts to print in
+error_report().
 
-Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Unfortunately, this behavior doesn't work because the MSR filter-related
+functions return the boolean and current error_report() use the wrong
+return value.
+
+So fix this by making MSR filter related functions return int type and
+printing such returned value in error_report().
+
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 ---
- target/i386/confidential-guest.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v4: Returned kvm_vm_ioctl() directly. (Zide)
+v3: new commit.
+---
+ target/i386/kvm/kvm.c      | 34 ++++++++++++++--------------------
+ target/i386/kvm/kvm_i386.h |  4 ++--
+ 2 files changed, 16 insertions(+), 22 deletions(-)
 
-diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
-index 7342d2843aa5..c90a59bac41a 100644
---- a/target/i386/confidential-guest.h
-+++ b/target/i386/confidential-guest.h
-@@ -46,7 +46,7 @@ struct X86ConfidentialGuestClass {
- /**
-  * x86_confidential_guest_kvm_type:
-  *
-- * Calls #X86ConfidentialGuestClass.unplug callback of @plug_handler.
-+ * Calls #X86ConfidentialGuestClass.kvm_type() callback.
-  */
- static inline int x86_confidential_guest_kvm_type(X86ConfidentialGuest *cg)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 4aae4ffc9ccd..f68be68eb411 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2780,8 +2780,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+             }
+     }
+     if (kvm_vm_check_extension(s, KVM_CAP_X86_USER_SPACE_MSR)) {
+-        bool r;
+-
+         ret = kvm_vm_enable_cap(s, KVM_CAP_X86_USER_SPACE_MSR, 0,
+                                 KVM_MSR_EXIT_REASON_FILTER);
+         if (ret) {
+@@ -2790,9 +2788,9 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+             exit(1);
+         }
+ 
+-        r = kvm_filter_msr(s, MSR_CORE_THREAD_COUNT,
+-                           kvm_rdmsr_core_thread_count, NULL);
+-        if (!r) {
++        ret = kvm_filter_msr(s, MSR_CORE_THREAD_COUNT,
++                             kvm_rdmsr_core_thread_count, NULL);
++        if (ret) {
+             error_report("Could not install MSR_CORE_THREAD_COUNT handler: %s",
+                          strerror(-ret));
+             exit(1);
+@@ -5274,13 +5272,13 @@ void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg)
+     }
+ }
+ 
+-static bool kvm_install_msr_filters(KVMState *s)
++static int kvm_install_msr_filters(KVMState *s)
  {
+     uint64_t zero = 0;
+     struct kvm_msr_filter filter = {
+         .flags = KVM_MSR_FILTER_DEFAULT_ALLOW,
+     };
+-    int r, i, j = 0;
++    int i, j = 0;
+ 
+     for (i = 0; i < KVM_MSR_FILTER_MAX_RANGES; i++) {
+         KVMMSRHandlers *handler = &msr_handlers[i];
+@@ -5304,18 +5302,13 @@ static bool kvm_install_msr_filters(KVMState *s)
+         }
+     }
+ 
+-    r = kvm_vm_ioctl(s, KVM_X86_SET_MSR_FILTER, &filter);
+-    if (r) {
+-        return false;
+-    }
+-
+-    return true;
++    return kvm_vm_ioctl(s, KVM_X86_SET_MSR_FILTER, &filter);
+ }
+ 
+-bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
+-                    QEMUWRMSRHandler *wrmsr)
++int kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
++                   QEMUWRMSRHandler *wrmsr)
+ {
+-    int i;
++    int i, ret;
+ 
+     for (i = 0; i < ARRAY_SIZE(msr_handlers); i++) {
+         if (!msr_handlers[i].msr) {
+@@ -5325,16 +5318,17 @@ bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
+                 .wrmsr = wrmsr,
+             };
+ 
+-            if (!kvm_install_msr_filters(s)) {
++            ret = kvm_install_msr_filters(s);
++            if (ret) {
+                 msr_handlers[i] = (KVMMSRHandlers) { };
+-                return false;
++                return ret;
+             }
+ 
+-            return true;
++            return 0;
+         }
+     }
+ 
+-    return false;
++    return 0;
+ }
+ 
+ static int kvm_handle_rdmsr(X86CPU *cpu, struct kvm_run *run)
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index 34fc60774b86..91c2d6e69163 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -74,8 +74,8 @@ typedef struct kvm_msr_handlers {
+     QEMUWRMSRHandler *wrmsr;
+ } KVMMSRHandlers;
+ 
+-bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
+-                    QEMUWRMSRHandler *wrmsr);
++int kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
++                   QEMUWRMSRHandler *wrmsr);
+ 
+ #endif /* CONFIG_KVM */
+ 
 -- 
 2.34.1
 
