@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37998932FC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6017932FC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:12:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTme6-0004zS-Ku; Tue, 16 Jul 2024 14:11:26 -0400
+	id 1sTmeB-0005ix-0g; Tue, 16 Jul 2024 14:11:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmdZ-0002OD-8U
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:56 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmdo-0003Uy-Qf
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:11:11 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmdX-0001KC-Kk
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:53 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4265b7514fcso51435e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmdc-0001Ke-Qs
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:11:01 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-426717a2d12so133635e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721153449; x=1721758249; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721153455; x=1721758255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VrGZmaUNm2C+uivQuRjRJj4n0srykunZLqWSf7H3M6M=;
- b=UVqfVx5Zg6JYYbRebn4ohEijgCGxs5yB9k2K8PL4rCDqdC3n9p74bB0sKCM9zudST8
- viJsVAlHC+Jo8S6ozM4Sc8jfrvdc961X2hzOdY8ppPN/aTFgCLe6DuoVTPY7p4vVh4JK
- X6Ujdvln6bIlpsmIaYOX1vHCeI3/6Ac310eOgC6zhPYWTcv5231gVwqElDq1WgZNPS7b
- ZhiNgtldmsQLuKUGjpzpGXV4IzWhGINto6Pfq27S63V79oBbCIsnewx4wBvEvjEJnxYX
- PIblKPIIMYqHZfwDckRkJNe7dkRUzpHTtXLe3P0Ziw2WcSLQ3beJ2/0MnEqsFdzsbbn/
- xpsw==
+ bh=AsnfcUgakDS94yBAG2Ho01nyvEXdce5IphgHAtL+bDo=;
+ b=jQ/J/e57ZkWb2u+iznDsi7Hwza7A0P1ONiJoEL4NOXtEdv+/RkhgUoKndP43vRNjwY
+ club/9CJGHVfZ+O0tTU9LMG6MaCI8RGLbGsr6NH07j3IqR57eAprqelv5mzEB3hhK7vX
+ wkcVRkfC+s2Tbh8/y4uHvjfF9CNHyCYtU3rBvSpkfFYzkLo0+j0Ab/+CLI09PWLiup+/
+ bjJLcKRXrBBDASxSVctJOKOsann/2uubKWc9GULJ2dc2D3h8V9Dl3nKUs7sjcR5Lx84E
+ 9eR5R0vKo/GJ0iDpoo74/CSARMFzoBJ3XsqKB8xFK7+zYVtJ7SljGYynI/HWPRIQdOUw
+ J9RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721153449; x=1721758249;
+ d=1e100.net; s=20230601; t=1721153455; x=1721758255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VrGZmaUNm2C+uivQuRjRJj4n0srykunZLqWSf7H3M6M=;
- b=eQ6jFrfQtuKoS5gvyJvIx77cqZe1/ZgGBYDw2JuBsXDPXAs4LH759XczivNdTv0gyr
- QdQoSa8JPLeVTPDP4/WmrrscE8n2RcZGwlAEkj059zxpSbRdcF+fqaKtl8tzIcjKaoHq
- XxFr8LLvs7vQjh8gMppwh9TrQvzVK4VtgzSXlPF5iZ4/tREYnd0Q8la/PwhZgTnAhFdu
- NP+swPkcs97ncHM5HtYrJcrpSRKktHKHS0y9iTlsfcy7qbBrHvaWWroblhfUXQBdzope
- Ngmn9eqWutyJEFzXjW/WWqfh2gLyBFzT/ZzeQGmpqpkbkZHfKIJRUYfwCc0MNQ5WC6KZ
- Fg6g==
-X-Gm-Message-State: AOJu0YwQv/ZxHljAFt5ZzUy8s6tE6lsTRMLBXkWnxfIh2O+BIE/Q3q0w
- yBEihhA9j2VMnmFWYLFiJC8Or5C9xa9LF8XHBH3rNoOSp71d1j6doGijyB946wFRW+gSMsQ4ppE
- 776TjmA==
-X-Google-Smtp-Source: AGHT+IE4QT7PUFjdL7pi9Ig7YhVybjygWiS4Kug16Kte6eHA03IZGN7Lr2QhdKXedaDUjkza0lb6wQ==
-X-Received: by 2002:a05:600c:310c:b0:426:5cc7:82f with SMTP id
- 5b1f17b1804b1-427bb8c4cebmr20400235e9.13.1721153449549; 
- Tue, 16 Jul 2024 11:10:49 -0700 (PDT)
+ bh=AsnfcUgakDS94yBAG2Ho01nyvEXdce5IphgHAtL+bDo=;
+ b=Fb1HlIovQVlcwTYshwgh+nGQzfWWYmDUmnnMss1238Lrio+4St0UQuVTsKIZM497WW
+ mkV4ce8su3u6lbRwePazw0syzfSLBUz9zEXnJvMtzFauavVHS/WSHhwhWDvmuJsVigG6
+ AKoTjjhPf0JJkrqPy3BMNW0R7BuslyeQkBYpck5YE79G4ar21l7Kr45eZ9f0VOvzSNhJ
+ SAD86+O40fdbHAJf4qc8FcoSh5phYxIsvC2BB1sYNOCnEGgtvl3aSer7SkkOw27R1eb9
+ SpcdQ8P2XamQewevenKTobzZVb4bB/boOmMvso1egEzpB61/E651nyiRnDMuL4Ksqyvb
+ zIfQ==
+X-Gm-Message-State: AOJu0Yzl+dImQxdzDGPNyzm8YDvCWZaHUV1fwhnJTpK4P61GyYl7G8xb
+ VrmP/IlH+QJCLkf0uH5HHE9wDsG+Sei0cf3GQHTt3uwuPi6Bx3UwWsiyuJ4KSmTgGlE5idB5L+Q
+ FAokV/g==
+X-Google-Smtp-Source: AGHT+IGsWjI4bffQMS8jcbjj/iNJDtSZUvrxC6RhdJvMS4SRpvdIV8AbAr1WGK6/uZSOCWmlmNRP9w==
+X-Received: by 2002:a05:600c:444c:b0:426:5c36:f57a with SMTP id
+ 5b1f17b1804b1-427bb8c508dmr20281685e9.14.1721153454921; 
+ Tue, 16 Jul 2024 11:10:54 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.209.82])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3680dabf15dsm9745401f8f.32.2024.07.16.11.10.48
+ 5b1f17b1804b1-427a5edb489sm137531985e9.37.2024.07.16.11.10.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Jul 2024 11:10:49 -0700 (PDT)
+ Tue, 16 Jul 2024 11:10:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/13] vl: fix "type is NULL" in -vga help
-Date: Tue, 16 Jul 2024 20:09:39 +0200
-Message-ID: <20240716180941.40211-13-philmd@linaro.org>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 13/13] system/physmem: use return value of
+ ram_block_discard_require() as errno
+Date: Tue, 16 Jul 2024 20:09:40 +0200
+Message-ID: <20240716180941.40211-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240716180941.40211-1-philmd@linaro.org>
 References: <20240716180941.40211-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,43 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Don't pass NULL to module_object_class_by_name(), when the interface is
-unavailable.
+When ram_block_discard_require() fails, errno is passed to error_setg_errno().
+It's a stale value or 0 which is unrelated to ram_block_discard_require().
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+As ram_block_discard_require() already returns -EBUSY in failure case,
+use it as errno for error_setg_errno().
+
+Fixes: 852f0048f3ea ("make guest_memfd require uncoordinated discard")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240715114420.2062870-1-marcandre.lureau@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Message-ID: <20240716064213.290696-1-zhenzhong.duan@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/vl.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ system/physmem.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index bdd2f6ecf6..9e8f16f155 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1000,9 +1000,16 @@ static bool vga_interface_available(VGAInterfaceType t)
-     const VGAInterfaceInfo *ti = &vga_interfaces[t];
+diff --git a/system/physmem.c b/system/physmem.c
+index 2154432cb6..9a3b3a7636 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1845,11 +1845,14 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+     }
  
-     assert(t < VGA_TYPE_MAX);
--    return !ti->class_names[0] ||
--           module_object_class_by_name(ti->class_names[0]) ||
--           module_object_class_by_name(ti->class_names[1]);
+     if (new_block->flags & RAM_GUEST_MEMFD) {
++        int ret;
 +
-+    if (!ti->class_names[0] || module_object_class_by_name(ti->class_names[0])) {
-+        return true;
-+    }
-+
-+    if (ti->class_names[1] && module_object_class_by_name(ti->class_names[1])) {
-+        return true;
-+    }
-+
-+    return false;
- }
+         assert(kvm_enabled());
+         assert(new_block->guest_memfd < 0);
  
- static const char *
+-        if (ram_block_discard_require(true) < 0) {
+-            error_setg_errno(errp, errno,
++        ret = ram_block_discard_require(true);
++        if (ret < 0) {
++            error_setg_errno(errp, -ret,
+                              "cannot set up private guest memory: discard currently blocked");
+             error_append_hint(errp, "Are you using assigned devices?\n");
+             goto out_free;
 -- 
 2.41.0
 
