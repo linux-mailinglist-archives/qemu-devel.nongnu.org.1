@@ -2,67 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34C493251D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7995B932594
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:27:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTgBw-0007It-R7; Tue, 16 Jul 2024 07:17:56 -0400
+	id 1sTgKJ-0008K3-Af; Tue, 16 Jul 2024 07:26:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sTgBv-0007Ex-CY; Tue, 16 Jul 2024 07:17:55 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTgKH-0008JS-8z
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:26:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sTgBm-0001sA-SK; Tue, 16 Jul 2024 07:17:55 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WNc282wfnz6K66M;
- Tue, 16 Jul 2024 19:16:00 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (unknown [7.191.163.213])
- by mail.maildlp.com (Postfix) with ESMTPS id C7191140119;
- Tue, 16 Jul 2024 19:17:44 +0800 (CST)
-Received: from 00293818-MRGF.huawei.com (10.126.170.92) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 16 Jul 2024 12:17:26 +0100
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
- <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
- <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
- <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
- <philmd@linaro.org>, <eric.auger@redhat.com>, <oliver.upton@linux.dev>,
- <pbonzini@redhat.com>, <mst@redhat.com>, <will@kernel.org>,
- <gshan@redhat.com>, <rafael@kernel.org>, <alex.bennee@linaro.org>,
- <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
- <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
- <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
- <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
- <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
- <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
- <npiggin@gmail.com>, <harshpb@linux.ibm.com>, <linuxarm@huawei.com>, Shaoqin
- Huang <shahuang@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH V16 7/7] gdbstub: Add helper function to unregister GDB
- register space
-Date: Tue, 16 Jul 2024 12:15:02 +0100
-Message-ID: <20240716111502.202344-8-salil.mehta@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240716111502.202344-1-salil.mehta@huawei.com>
-References: <20240716111502.202344-1-salil.mehta@huawei.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTgKE-0003dF-4G
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:26:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721129188;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=C2NtiMdUDU8O1ji3B/Ts/+/4JAn9++G4TPFLaHbBtew=;
+ b=PzR6ktZo7QQJEwPQQx/jX6mF4PNpZOpnY4DIusrgr6Lqw9MAVXj5pm6gyn3LZkqJn1EWOR
+ r23NFuB+8RwyFDl7jlbkS6dRZD9zkrL2aWKdNDt1hxk+IzFLQ7ZQAQW8RfxtYZG/ezWNtw
+ ZOgjeDlFZycnobC/nj71CQ6bb4sztog=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-FXIrBKIdNSKoo09s4TrRnA-1; Tue,
+ 16 Jul 2024 07:26:26 -0400
+X-MC-Unique: FXIrBKIdNSKoo09s4TrRnA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9ED691944AA6; Tue, 16 Jul 2024 11:26:25 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.154])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id CE6411955E7F; Tue, 16 Jul 2024 11:26:15 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v1 00/11] Convert avocado tests to normal Python unittests
+Date: Tue, 16 Jul 2024 13:26:03 +0200
+Message-ID: <20240716112614.1755692-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.126.170.92]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- lhrpeml500001.china.huawei.com (7.191.163.213)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,92 +79,171 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add common function to help unregister the GDB register space. This shall be
-done in context to the CPU unrealization.
+The Avocado v88 that we use in QEMU is already on a life support
+system: It is not supported by upstream anymore, and with the latest
+versions of Python, it won't work anymore since it depends on the
+"imp" module that has been removed in Python 3.12.
 
-Note: These are common functions exported to arch specific code. For example,
-for ARM this code is being referred in associated arch specific patch-set:
+There have been several attempts to update the test suite in QEMU
+to a newer version of Avocado, but so far no attempt has successfully
+been merged yet.
 
-Link: https://lore.kernel.org/qemu-devel/20230926103654.34424-1-salil.mehta@huawei.com/
+Additionally, the whole "make check" test suite in QEMU is using the
+meson test runner nowadays, so running the python-based tests via the
+Avocodo test runner looks and feels quite like an oddball, requiring
+the users to deal with the knowledge of multiple test runners in
+parallel (e.g. the timeout settings work completely differently).
 
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Xianglai Li <lixianglai@loongson.cn>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-Reviewed-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
----
- gdbstub/gdbstub.c      | 13 +++++++++++++
- hw/core/cpu-common.c   |  5 ++++-
- include/exec/gdbstub.h |  6 ++++++
- 3 files changed, 23 insertions(+), 1 deletion(-)
+So instead of trying to update the python-based test suite in QEMU
+to a newer version of Avocado, we should maybe try to better integrate
+it with the meson test runner instead. Indeed most tests work quite
+nicely without the Avocado framework already, as you can see with
+this patch series - it does not convert all tests, just a subset so
+far, but this already proves that many tests only need small modifi-
+cations to work without Avocado.
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index b9ad0a063e..5da17d6530 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -618,6 +618,19 @@ void gdb_register_coprocessor(CPUState *cpu,
-     }
- }
- 
-+void gdb_unregister_coprocessor_all(CPUState *cpu)
-+{
-+    /*
-+     * Safe to nuke everything. GDBRegisterState::xml is static const char so
-+     * it won't be freed
-+     */
-+    g_array_free(cpu->gdb_regs, true);
-+
-+    cpu->gdb_regs = NULL;
-+    cpu->gdb_num_regs = 0;
-+    cpu->gdb_num_g_regs = 0;
-+}
-+
- static void gdb_process_breakpoint_remove_all(GDBProcess *p)
- {
-     CPUState *cpu = gdb_get_first_cpu_in_process(p);
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index b19e1fdacf..f6d62df34f 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -281,7 +281,10 @@ static void cpu_common_finalize(Object *obj)
-         g_free(cpu->plugin_state);
-     }
- #endif
--    g_array_free(cpu->gdb_regs, TRUE);
-+    /* If cleanup didn't happen in context to gdb_unregister_coprocessor_all */
-+    if (cpu->gdb_regs) {
-+        g_array_free(cpu->gdb_regs, TRUE);
-+    }
-     qemu_lockcnt_destroy(&cpu->in_ioctl_lock);
-     qemu_mutex_destroy(&cpu->work_mutex);
-     qemu_cond_destroy(cpu->halt_cond);
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 1bd2c4ec2a..d73f424f56 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -40,6 +40,12 @@ void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               const GDBFeature *feature, int g_pos);
- 
-+/**
-+ * gdb_unregister_coprocessor_all() - unregisters supplemental set of registers
-+ * @cpu - the CPU associated with registers
-+ */
-+void gdb_unregister_coprocessor_all(CPUState *cpu);
-+
- /**
-  * gdbserver_start: start the gdb server
-  * @port_or_device: connection spec for gdb
+Only tests that use the LinuxTest / LinuxDistro and LinuxSSHMixIn
+classes (e.g. based on cloud-init images or using SSH) really depend
+on the Avocado framework, so we'd need a solution for those if we
+want to continue using them. One solution might be to simply use the
+required functions from avocado.utils for these tests, and still run
+them via the meson test runner instead, but that needs some further
+investigation that will be done later.
+
+
+Now if you want to try out these patches: Apply the patches, then
+recompile and then run:
+
+ make check-functional
+
+You can also run single targets e.g. with:
+
+ make check-functional-ppc
+
+You can also run the tests without any test runner now by
+setting the PYTHONPATH environment variable to the "python" folder
+of your source tree, and by specifying the build directory via
+QEMU_BUILD_ROOT (if autodetection fails) and by specifying the
+QEMU binary via QEMU_TEST_QEMU_BINARY. For example:
+
+ export PYTHONPATH=$HOME/qemu/python
+ export QEMU_TEST_QEMU_BINARY=qemu-system-x86_64
+ export PYTHONPATH=$HOME/qemu/build
+ ~/qemu/tests/functional/test_virtio_version.py
+
+The logs of the tests can be found in the build directory under
+tests/functional/<testname> - console log and general logs will
+be put in separate files there.
+
+Still to be done: Update the documentation for this new test framework.
+
+RFC -> v1:
+- Now using pycotap for running the tests instead of "pytest"
+- Change the name from "tests/pytest" to "tests/functional" accordingly
+- Make it possible to run the tests directly
+- Use Python's urllib instead of wget for downloading
+- Lots of makefile / meson integration improvements
+- Converted more tests
+- Update MAINTAINERS file accordingly
+- Added a patch to run check-functional in the gitlab-CI
+- ... lots of other changes I forgot about ... in fact, I changed so
+  many things that I also did not dare to pick up the Reviewed-bys
+  from the RFC
+
+Thomas Huth (11):
+  tests/functional: Add base classes for the upcoming pytest-based tests
+  tests/functional: Convert simple avocado tests into standalone python
+    tests
+  tests/functional: Convert avocado tests that just need a small
+    adjustment
+  tests/functional: Add python-based tests to the meson build system
+  tests/functional: Implement fetch_asset() method for downloading
+    assets
+  tests/functional: Convert some tests that download files via
+    fetch_asset()
+  tests/functional: Add a function for extracting files from an archive
+  tests/functional: Convert some avocado tests that needed
+    avocado.utils.archive
+  tests/functional: Set up logging
+  tests/functional: Convert the s390x avocado tests into standalone
+    tests
+  gitlab-ci: Add "check-functional" to the build tests
+
+ MAINTAINERS                                   |  22 +-
+ .gitlab-ci.d/buildtest-template.yml           |   3 +-
+ .gitlab-ci.d/buildtest.yml                    |  60 +--
+ pythondeps.toml                               |   3 +-
+ tests/Makefile.include                        |  18 +-
+ tests/functional/meson.build                  | 112 +++++
+ tests/functional/qemu_test/__init__.py        | 384 ++++++++++++++++++
+ tests/functional/qemu_test/utils.py           |  28 ++
+ .../test_arm_canona1100.py}                   |  21 +-
+ .../test_arm_n8x0.py}                         |  25 +-
+ .../test_avr_mega2560.py}                     |  11 +-
+ .../test_cpu_queries.py}                      |   7 +-
+ .../test_empty_cpu_model.py}                  |   7 +-
+ .../test_info_usernet.py}                     |  11 +-
+ .../test_loongarch64_virt.py}                 |  16 +-
+ .../test_mem_addr_space.py}                   |  53 +--
+ .../test_mips64el_loongson3v.py}              |  26 +-
+ .../test_netdev_ethtool.py}                   |  32 +-
+ .../test_pc_cpu_hotplug_props.py}             |  11 +-
+ .../ppc_405.py => functional/test_ppc_405.py} |  19 +-
+ .../test_ppc_74xx.py}                         |  74 ++--
+ .../test_ppc_bamboo.py}                       |  23 +-
+ .../test_s390x_ccw_virtio.py}                 |  32 +-
+ .../test_s390x_topology.py}                   |  70 ++--
+ .../test_sparc64_sun4u.py}                    |  25 +-
+ .../version.py => functional/test_version.py} |  13 +-
+ .../test_virtio_version.py}                   |   8 +-
+ tests/meson.build                             |   1 +
+ 28 files changed, 795 insertions(+), 320 deletions(-)
+ create mode 100644 tests/functional/meson.build
+ create mode 100644 tests/functional/qemu_test/__init__.py
+ create mode 100644 tests/functional/qemu_test/utils.py
+ rename tests/{avocado/machine_arm_canona1100.py => functional/test_arm_canona1100.py} (71%)
+ mode change 100644 => 100755
+ rename tests/{avocado/machine_arm_n8x0.py => functional/test_arm_n8x0.py} (71%)
+ mode change 100644 => 100755
+ rename tests/{avocado/machine_avr6.py => functional/test_avr_mega2560.py} (90%)
+ mode change 100644 => 100755
+ rename tests/{avocado/cpu_queries.py => functional/test_cpu_queries.py} (89%)
+ mode change 100644 => 100755
+ rename tests/{avocado/empty_cpu_model.py => functional/test_empty_cpu_model.py} (84%)
+ mode change 100644 => 100755
+ rename tests/{avocado/info_usernet.py => functional/test_info_usernet.py} (87%)
+ mode change 100644 => 100755
+ rename tests/{avocado/machine_loongarch.py => functional/test_loongarch64_virt.py} (89%)
+ mode change 100644 => 100755
+ rename tests/{avocado/mem-addr-space-check.py => functional/test_mem_addr_space.py} (92%)
+ mode change 100644 => 100755
+ rename tests/{avocado/machine_mips_loongson3v.py => functional/test_mips64el_loongson3v.py} (55%)
+ mode change 100644 => 100755
+ rename tests/{avocado/netdev-ethtool.py => functional/test_netdev_ethtool.py} (81%)
+ mode change 100644 => 100755
+ rename tests/{avocado/pc_cpu_hotplug_props.py => functional/test_pc_cpu_hotplug_props.py} (90%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_405.py => functional/test_ppc_405.py} (73%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_74xx.py => functional/test_ppc_74xx.py} (74%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_bamboo.py => functional/test_ppc_bamboo.py} (75%)
+ mode change 100644 => 100755
+ rename tests/{avocado/machine_s390_ccw_virtio.py => functional/test_s390x_ccw_virtio.py} (95%)
+ mode change 100644 => 100755
+ rename tests/{avocado/s390_topology.py => functional/test_s390x_topology.py} (90%)
+ mode change 100644 => 100755
+ rename tests/{avocado/machine_sparc64_sun4u.py => functional/test_sparc64_sun4u.py} (60%)
+ mode change 100644 => 100755
+ rename tests/{avocado/version.py => functional/test_version.py} (78%)
+ mode change 100644 => 100755
+ rename tests/{avocado/virtio_version.py => functional/test_virtio_version.py} (98%)
+ mode change 100644 => 100755
+
 -- 
-2.34.1
+2.45.2
 
 
