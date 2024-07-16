@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A7F932139
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 09:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8B2932137
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 09:30:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTcbu-0005uW-Sr; Tue, 16 Jul 2024 03:28:30 -0400
+	id 1sTcbq-0005Zl-Bp; Tue, 16 Jul 2024 03:28:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTcbs-0005kF-3g
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:29 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1sTcbo-0005RS-43
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:24 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sTcbf-0006T5-Ts
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:27 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-70847d0cb1fso2856702a34.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 00:28:13 -0700 (PDT)
+ id 1sTcbm-0006U5-Hp
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 03:28:23 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-25d6dd59170so2313453fac.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 00:28:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721114893; x=1721719693;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721114898; x=1721719698;
  darn=nongnu.org; 
  h=to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jnVBgXlsSgyb7y1XOm3dq34QzfGRm0o7Ff/hpdF16J0=;
- b=QXnppr9lz8/5+suwzwNl+y5+hsFmBsroRgb8D/8Br+6+fwQVlLjEIhApEP46VpX/H3
- Bgy6icK+eRkmV6NI1t3b68Sh6q6hfkHRX0eYmW/53IV1rbeWhAs+Ealakfw47WvVY8lp
- vI29u6cr3THcH7uwnCHXcadVH6y05NLray4JEyBuxwaI53JwKgLH/K+Bx5Jpj+1rsJHf
- njIFf8memrmol0X/zNrY6rzmUA5jUgPSUgAbbJsgf4TPf3LsZ17hgmF2uLzomefUTaA0
- lhkF7NMh4uDiu1tozFEe9N6i8wImPLRPtjrgIX99r4l8xl5xW7BqPLxv0YWzYVTC4t84
- 85rA==
+ :reply-to; bh=w42/OqwS4II2qccuVnDqy8/Gc/+eGYKSCH7VXQRvu8k=;
+ b=RZjd9wzOCaYgAUqCDPHgD9wPnvCLel0ipzvtBndFLlrL6bLKVuex9DyfiOI1nHWeW/
+ ZCjnu8nSi2ZwmKEl3o3Z2lrAxHkURCCrb8dwSBv6qRETMYoVeOGlm/Fm9T8Jnt1bVKet
+ B2fdKVq1GNEaAMN5va4mUd/YMF5UXtfXEVSl98NSUouMW7fttKwb08JPv60RBiRlLX9c
+ uKTfPj+4q+wNxoBlgpFPjuA5+oT86XDiGE10EvFeNvgWGjr3uKeGR7W/JQyjMAkN41+j
+ 9B0WX3tfAJ3Ur6Fih5cFZQnK2HdTi6iVATvLjFmBtaUAIAO80GIm22tSm7ZOkhJZzT5R
+ apIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721114893; x=1721719693;
+ d=1e100.net; s=20230601; t=1721114898; x=1721719698;
  h=to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jnVBgXlsSgyb7y1XOm3dq34QzfGRm0o7Ff/hpdF16J0=;
- b=tQBPEkf5dn5pVNTcf8Ge4Uk/VqNUFQMLBGE19W/jhWAjWYC2/qsRRLSVkvxQqXWaWD
- FuvVd26ZRdU0EV2GnUesLkItmnBy7ZdgbM3G4WI3/UY4z6sVR2Wb6kh/VupC4hT7kOtK
- Ir/xHtNZEGFlQYmcO7f+PZ95wy3a54+4h6FWCHuKhKVBvSjujUjM3u9oPO070M7omSFF
- TCcMQPpXzG9TkKZIEUo8VliLyFFAso5fZ9jazLv0h70+cNLoeA8XIUZRvsKg75xNJ9gY
- pNNzo/ZEUgITrQqgJBsAxceqOjkfgB8QZ6jGy1E6DRNJ7+IaC8GHsWgbHVf/3jBLynd/
- 9U0A==
-X-Gm-Message-State: AOJu0Ywn1uTvYu23FYTfrmX4KcO9XFbEYJcHsXcbPAqS1W2oIMqYDYmh
- oSTgm+FGmgnIES9SnrEFiKBYZ/Lii5CTo48u7GNAbzsSvJ7NMCxYFV/xmoAUEbw=
-X-Google-Smtp-Source: AGHT+IHW1fxpD7iS5EiceIdlR+QbMGGGRt3QLC9qgdLLAe9827VTS3pptlwm3plRMMRY7flf/OHYow==
-X-Received: by 2002:a05:6830:6d16:b0:708:d84d:f628 with SMTP id
- 46e09a7af769-708d99bc4cbmr1778311a34.31.1721114892924; 
- Tue, 16 Jul 2024 00:28:12 -0700 (PDT)
+ bh=w42/OqwS4II2qccuVnDqy8/Gc/+eGYKSCH7VXQRvu8k=;
+ b=NATYTMx9W9qSCbKHsxIZfojZWjMwHUNfpQnVBmBAe+73OOljsQ/tNNEfHjTfs4nSwA
+ udO6wpwN/of5sqG8NSkKdAf6BObLXA9neDM3cSTU5YM9ROUeUvx5agT6Jmr+YOWcdwF/
+ DqK9OBo/5suYH2trp6zJzJP063x1KTupJjcYB595ZCddQ0cREYhcJBlsWjVXtMK2hzPn
+ Et/OHlvQ107xSzafli509ZqXqiyDmiUA9ZIs5/2xMEwDz+bbjcv9tQOBEIdZzXaR+Pv9
+ 3GX5pd0j3T5IwRw8EHHi1bE8PPZFMVA/70rRED57yevBhtnXtdBYwKypbKiC/e3pDRPG
+ c+mA==
+X-Gm-Message-State: AOJu0YzhljmdMiJNmSmGfNVoixJPICAsuCAc6QA4LdHorw+oszO4YRKb
+ oBN4zjlY6LA9Ki6BlSFG+RFFZDWn0IgmmBG0iXxg3Vh6i2mJMw0ze/nNI8Yl97c=
+X-Google-Smtp-Source: AGHT+IFhfAECFQdPaCsZAOGXvHTpLNQ5Pol3qhCLg+VHy1L4OL/vgcxjMptxzv8PM87gQ1j4x//6aA==
+X-Received: by 2002:a05:6870:d184:b0:24c:b654:c17a with SMTP id
+ 586e51a60fabf-260bdf97ce1mr909542fac.45.1721114897545; 
+ Tue, 16 Jul 2024 00:28:17 -0700 (PDT)
 Received: from localhost ([157.82.128.7]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-70b7ec7c5b9sm5628994b3a.120.2024.07.16.00.28.09
+ d2e1a72fcca58-70b7ec7da24sm5586892b3a.113.2024.07.16.00.28.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jul 2024 00:28:12 -0700 (PDT)
+ Tue, 16 Jul 2024 00:28:17 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 16 Jul 2024 16:27:33 +0900
-Subject: [PATCH v4 3/7] qga: Use qemu_get_runtime_dir()
+Date: Tue, 16 Jul 2024 16:27:34 +0900
+Subject: [PATCH v4 4/7] scsi: Use qemu_get_runtime_dir()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240716-run-v4-3-5f7a29631168@daynix.com>
+Message-Id: <20240716-run-v4-4-5f7a29631168@daynix.com>
 References: <20240716-run-v4-0-5f7a29631168@daynix.com>
 In-Reply-To: <20240716-run-v4-0-5f7a29631168@daynix.com>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com, 
@@ -74,13 +74,13 @@ To: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
  Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::32c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32c.google.com
+Received-SPF: none client-ip=2001:4860:4864:20::29;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,48 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_get_runtime_dir() is used to construct the default state directory.
+qemu_get_runtime_dir() is used to construct the default paths.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230921075425.16738-5-akihiko.odaki@daynix.com>
+Message-Id: <20230921075425.16738-6-akihiko.odaki@daynix.com>
 ---
- qga/main.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ scsi/qemu-pr-helper.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/qga/main.c b/qga/main.c
-index f4d5f15bb3d5..4bb6f7e27b66 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -45,12 +45,11 @@
- #define QGA_VIRTIO_PATH_DEFAULT "/dev/virtio-ports/org.qemu.guest_agent.0"
- #endif /* CONFIG_BSD */
- #define QGA_SERIAL_PATH_DEFAULT "/dev/ttyS0"
--#define QGA_STATE_RELATIVE_DIR  "run"
- #else
- #define QGA_VIRTIO_PATH_DEFAULT "\\\\.\\Global\\org.qemu.guest_agent.0"
--#define QGA_STATE_RELATIVE_DIR  "qemu-ga"
- #define QGA_SERIAL_PATH_DEFAULT "COM1"
- #endif
-+#define QGA_STATE_RELATIVE_DIR  "qemu-ga"
- #ifdef CONFIG_FSFREEZE
- #define QGA_FSFREEZE_HOOK_DEFAULT CONFIG_QEMU_CONFDIR "/fsfreeze-hook"
- #endif
-@@ -129,12 +128,12 @@ static void stop_agent(GAState *s, bool requested);
- static void
- init_dfl_pathnames(void)
+diff --git a/scsi/qemu-pr-helper.c b/scsi/qemu-pr-helper.c
+index c6c6347e9b6a..507f23357f6b 100644
+--- a/scsi/qemu-pr-helper.c
++++ b/scsi/qemu-pr-helper.c
+@@ -77,10 +77,10 @@ static int gid = -1;
+ 
+ static void compute_default_paths(void)
  {
 -    g_autofree char *state = qemu_get_local_state_dir();
 +    g_autofree char *run = qemu_get_runtime_dir();
  
-     g_assert(dfl_pathnames.state_dir == NULL);
-     g_assert(dfl_pathnames.pidfile == NULL);
--    dfl_pathnames.state_dir = g_build_filename(state, QGA_STATE_RELATIVE_DIR, NULL);
--    dfl_pathnames.pidfile = g_build_filename(state, QGA_STATE_RELATIVE_DIR, "qemu-ga.pid", NULL);
-+    dfl_pathnames.state_dir = g_build_filename(run, QGA_STATE_RELATIVE_DIR, NULL);
-+    dfl_pathnames.pidfile = g_build_filename(run, QGA_STATE_RELATIVE_DIR, "qemu-ga.pid", NULL);
+-    socket_path = g_build_filename(state, "run", "qemu-pr-helper.sock", NULL);
+-    pidfile = g_build_filename(state, "run", "qemu-pr-helper.pid", NULL);
++    socket_path = g_build_filename(run, "qemu-pr-helper.sock", NULL);
++    pidfile = g_build_filename(run, "qemu-pr-helper.pid", NULL);
  }
  
- static void quit_handler(int sig)
+ static void usage(const char *name)
 
 -- 
 2.45.2
