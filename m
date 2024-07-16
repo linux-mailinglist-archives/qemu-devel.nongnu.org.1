@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA00932FCA
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAAA932FBD
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 20:10:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTmcy-0007UF-VO; Tue, 16 Jul 2024 14:10:16 -0400
+	id 1sTmdB-0008DD-G7; Tue, 16 Jul 2024 14:10:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcx-0007Q5-DR
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:15 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmd2-0007ys-Na
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:20 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmcv-00018Y-FF
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:15 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4267300145eso46440675e9.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sTmd0-0001AY-U9
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 14:10:20 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4257d5fc9b7so46453835e9.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 11:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721153411; x=1721758211; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721153417; x=1721758217; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fhnQiVznBi2Zvr4gz5/6RuKKxU2+0PGgb84J5GpHddM=;
- b=Nr059V3YPWAL576zT/ugBT3wpUfKI4c1vfxR30jvp2+OA5dil/PFbmfsVb5P2l631d
- 5YxUt0RmYV7mPQFBK3eZAT3lH0iYlSRcNUyZ7XGGUmlUGfMCTC6IYvyIeCXcMc6COf2U
- uM38KSJw0i4DOXc0yzJl0BbAUDOADWeRWS8qH5ezVOazhQdHfINDZ+kO3XDgz9ZRzW7A
- WYp/a9ErQ7/J9T3nl7mfYaX0n6+UqrWwJvjr0g6buRXmLNvU+Y5KJR4dZQC1LSRnok+7
- 8wGC9fdpDBKys6cEs9uoB2odbnzbkyO4Avo00PTciF+iyW9i8ckDTge9RT68kauixm4t
- y22A==
+ bh=J/fWelIsDk94bV5CUZ155GFV3Kb2G+dluPKM584VupM=;
+ b=I2n9uXesiILmZMw4DqEKU37v8iPPPG90TR2n/IPhfnEEeYO64uPxQVO/T89VR7HoI2
+ FpLIvBycJhuMrBlInrhGOxcHuIiu/iqULdm9Sb3IZLVTtHWGxEWSp9O4eoqpOuRzs+9U
+ 3ataOTTFWMgkbin+GQmtH//MzMPL8craq9cArUwYMgUpxw75yfn0bXBpV2ywZe4OaU5m
+ A6nZd14cr9T6qkJgJC2jW05Y1uM8SQCXJy6GYw2eQ3Fsq6mkU2T/bZBzy4rwlts0bKJn
+ 2lVb4sJoihBZvW3F2vLs0D1uHMSLbpYBCqh2xqnR5m1dfU6zo61Qjkl2ualZKQTqSs3m
+ Fgzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721153411; x=1721758211;
+ d=1e100.net; s=20230601; t=1721153417; x=1721758217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fhnQiVznBi2Zvr4gz5/6RuKKxU2+0PGgb84J5GpHddM=;
- b=dY/1b21erS90oYvwzRoHVb4XQcFduvIYIzbJg52Wh+GAxDNVZJawDQvcaipA4ghI6X
- poRnY1r9+e5DyrDlkjuJ7qYr64KEIqm8+9K0krA/lxCn5n8b5BHlYC/4L8zJa/vZMGoI
- FZxZuBESvqJxzL6WzxxqX2ajrRD2LpdRK/4C9+pWxzzE/J5L6DjreY0WBLtBTteyj3xV
- tXWfEM0wPSuqKbrqeVAYN8wt9bkSRzK/vEjy4F2MmndlnG1f49JDDV6uY6Tdj9M23fu4
- ychzTlGMFB9ZaIsKl01vNuJBgeCkmgtmZCaN8LGNhF2uKtoDX8p2f5QOzm+cuXbgItVI
- eLCg==
-X-Gm-Message-State: AOJu0YwRhDtvVX4RrKS1Q/+relo1b82zmMjOfbDu5wJlYYe4TEjEQG5s
- jr3OhcOjgtU87fd0GKfx2SnbEPNIS9UWIKHT2WBJxm2VXF8IzWmg4bSWKR7lRm9d0Q58pCISxlu
- wYSEG9A==
-X-Google-Smtp-Source: AGHT+IHuaSKGAxkkhcc+BX8GYIpzsfDHUx19p+2EsFnI5Q9kTQ1kcf7jaOLGlTjANzhZBPHKs9WCBQ==
-X-Received: by 2002:a05:600c:3548:b0:426:6f87:65fc with SMTP id
- 5b1f17b1804b1-427ba6872f1mr28007535e9.17.1721153411661; 
- Tue, 16 Jul 2024 11:10:11 -0700 (PDT)
+ bh=J/fWelIsDk94bV5CUZ155GFV3Kb2G+dluPKM584VupM=;
+ b=wutjvGfOZt1ZLWiCIsiJE4Lv/Tdsyf39fEoHo4xEhmYq2/GwcbIH9LCSZaaQ8/qyXC
+ 0YQvkjcM5iG4Tsm/fOFO/lV7skx1Q20ir/3fdOHzVCFTZLdTs2ed/VHm091g4A7Qp2iD
+ RD9bWQoSYe5mjw31ByPWaVaIysPVWZz4tIB7GG0/dCdEpj73LGtqEv8ba9CN8hInPmnH
+ M13HEy3nt9qneJ6lBoBC59ur+UVmnYI/9sQBg9kemiBbV8QT+Vdf6uZsNDGAqg+uzByN
+ 8at0lHXWa1MjTCi7svCTA6IRzGuM2WWqoVUtRxlpXghdI8KLVJgH+NikrhXhJEJlq95k
+ D9Gw==
+X-Gm-Message-State: AOJu0YwAi6lgzinvWvqyaZjSG6yeBOdcA+v2QGTdipxsZ73usx8Pk8jW
+ AVg7aHOfQGRMfZFNBdX+0WE+hAAjskG0BkiD1FzQEuqyiviHR/ewuNUuz4T9HVU9uLEgyV86cR1
+ 9zItL2g==
+X-Google-Smtp-Source: AGHT+IG7hb9GySRVSkBP7ow1KqrpAE8f5R/t8WpXPajvnPY9tJMGGUSQlUMbV4rgB+uDvn+Jj1GhYw==
+X-Received: by 2002:a05:600c:198e:b0:426:52a5:1ca4 with SMTP id
+ 5b1f17b1804b1-427ba69ae4emr23743705e9.21.1721153417039; 
+ Tue, 16 Jul 2024 11:10:17 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.209.82])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427a5edb50fsm138130745e9.38.2024.07.16.11.10.10
+ ffacd0b85a97d-3680dabf133sm9532426f8f.37.2024.07.16.11.10.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Jul 2024 11:10:11 -0700 (PDT)
+ Tue, 16 Jul 2024 11:10:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
+Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/13] accel/tcg: Make cpu_exec_interrupt hook mandatory
-Date: Tue, 16 Jul 2024 20:09:32 +0200
-Message-ID: <20240716180941.40211-6-philmd@linaro.org>
+Subject: [PULL 06/13] system/cpus: Add cpu_pause() function
+Date: Tue, 16 Jul 2024 20:09:33 +0200
+Message-ID: <20240716180941.40211-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240716180941.40211-1-philmd@linaro.org>
 References: <20240716180941.40211-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,76 +94,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-The TCGCPUOps::cpu_exec_interrupt hook is currently not mandatory; if
-it is left NULL then we treat it as if it had returned false. However
-since pretty much every architecture needs to handle interrupts,
-almost every target we have provides the hook. The one exception is
-Tricore, which doesn't currently implement the architectural
-interrupt handling.
+This factors the CPU pause function from pause_all_vcpus() into a
+new cpu_pause() function, similarly to cpu_resume(). cpu_resume()
+is moved to keep it next to cpu_pause().
 
-Add a "do nothing" implementation of cpu_exec_hook for Tricore,
-assert on startup that the CPU does provide the hook, and remove
-the runtime NULL check before calling it.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240712113949.4146855-1-peter.maydell@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20240712120247.477133-17-npiggin@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 4 ++--
- target/tricore/cpu.c | 6 ++++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ include/hw/core/cpu.h |  8 ++++++++
+ system/cpus.c         | 30 +++++++++++++++++-------------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 245fd6327d..9010dad073 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -857,8 +857,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-         else {
-             const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index a2c8536943..e6acfcb59a 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -984,6 +984,14 @@ void cpu_reset_interrupt(CPUState *cpu, int mask);
+  */
+ void cpu_exit(CPUState *cpu);
  
--            if (tcg_ops->cpu_exec_interrupt &&
--                tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
-+            if (tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
-                 if (!tcg_ops->need_replay_interrupt ||
-                     tcg_ops->need_replay_interrupt(interrupt_request)) {
-                     replay_interrupt();
-@@ -1080,6 +1079,7 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
-         /* Check mandatory TCGCPUOps handlers */
- #ifndef CONFIG_USER_ONLY
-         assert(cpu->cc->tcg_ops->cpu_exec_halt);
-+        assert(cpu->cc->tcg_ops->cpu_exec_interrupt);
- #endif /* !CONFIG_USER_ONLY */
-         cpu->cc->tcg_ops->initialize();
-         tcg_target_initialized = true;
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index 4d9c0368f2..1a26171590 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -155,6 +155,11 @@ static void tc37x_initfn(Object *obj)
-     set_feature(&cpu->env, TRICORE_FEATURE_162);
++/**
++ * cpu_pause:
++ * @cpu: The CPU to pause.
++ *
++ * Pauses CPU, i.e. puts CPU into stopped state.
++ */
++void cpu_pause(CPUState *cpu);
++
+ /**
+  * cpu_resume:
+  * @cpu: The CPU to resume.
+diff --git a/system/cpus.c b/system/cpus.c
+index d3640c9503..5e3a988a0a 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -568,6 +568,22 @@ void cpu_thread_signal_destroyed(CPUState *cpu)
+     qemu_cond_signal(&qemu_cpu_cond);
  }
  
-+static bool tricore_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
++void cpu_pause(CPUState *cpu)
 +{
-+    /* Interrupts are not implemented */
-+    return false;
++    if (qemu_cpu_is_self(cpu)) {
++        qemu_cpu_stop(cpu, true);
++    } else {
++        cpu->stop = true;
++        qemu_cpu_kick(cpu);
++    }
++}
++
++void cpu_resume(CPUState *cpu)
++{
++    cpu->stop = false;
++    cpu->stopped = false;
++    qemu_cpu_kick(cpu);
 +}
  
- #include "hw/core/sysemu-cpu-ops.h"
+ static bool all_vcpus_paused(void)
+ {
+@@ -588,12 +604,7 @@ void pause_all_vcpus(void)
  
-@@ -169,6 +174,7 @@ static const TCGCPUOps tricore_tcg_ops = {
-     .synchronize_from_tb = tricore_cpu_synchronize_from_tb,
-     .restore_state_to_opc = tricore_restore_state_to_opc,
-     .tlb_fill = tricore_cpu_tlb_fill,
-+    .cpu_exec_interrupt = tricore_cpu_exec_interrupt,
-     .cpu_exec_halt = tricore_cpu_has_work,
- };
+     qemu_clock_enable(QEMU_CLOCK_VIRTUAL, false);
+     CPU_FOREACH(cpu) {
+-        if (qemu_cpu_is_self(cpu)) {
+-            qemu_cpu_stop(cpu, true);
+-        } else {
+-            cpu->stop = true;
+-            qemu_cpu_kick(cpu);
+-        }
++        cpu_pause(cpu);
+     }
  
+     /* We need to drop the replay_lock so any vCPU threads woken up
+@@ -613,13 +624,6 @@ void pause_all_vcpus(void)
+     bql_lock();
+ }
+ 
+-void cpu_resume(CPUState *cpu)
+-{
+-    cpu->stop = false;
+-    cpu->stopped = false;
+-    qemu_cpu_kick(cpu);
+-}
+-
+ void resume_all_vcpus(void)
+ {
+     CPUState *cpu;
 -- 
 2.41.0
 
