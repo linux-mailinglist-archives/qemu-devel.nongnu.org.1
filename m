@@ -2,74 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63F89325A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B7693259D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 13:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTgLg-0002hN-Vj; Tue, 16 Jul 2024 07:28:01 -0400
+	id 1sTgLy-0003Ii-6J; Tue, 16 Jul 2024 07:28:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTgKw-00012S-2d
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:27:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTgKr-0003hg-GK
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:27:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721129228;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PkB61+6tDH/3jxHpJUmWndWzqnh9iRnjS743PT395Dw=;
- b=Nd725xUgaN6XFosY13dS9KqIXuZNgQJbecSNwy3dzAa4U2ckRM9P2c1FZAFFTA4AZfgwfZ
- eRX1UXmXsXO/dsGlPUQy5UbG9tHuPYcbCPKo5ZT8/+ItlHKr9SSAipzEhkfotjXybQwzXB
- 9sia0JYCeUPJWwgEPnMnadhYEQYbcFY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-J3x5kLa-MWCMDHYAwQfZ0g-1; Tue,
- 16 Jul 2024 07:27:04 -0400
-X-MC-Unique: J3x5kLa-MWCMDHYAwQfZ0g-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 303381944AB5; Tue, 16 Jul 2024 11:27:03 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.154])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BE0231955F40; Tue, 16 Jul 2024 11:26:59 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 11/11] gitlab-ci: Add "check-functional" to the build tests
-Date: Tue, 16 Jul 2024 13:26:14 +0200
-Message-ID: <20240716112614.1755692-12-thuth@redhat.com>
-In-Reply-To: <20240716112614.1755692-1-thuth@redhat.com>
-References: <20240716112614.1755692-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sTgLV-0002na-5G
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:27:49 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sTgLR-0003m1-U7
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 07:27:48 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-70368b53cc0so2749403a34.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 04:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721129264; x=1721734064;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bPVucKPJWt4W6yJCP3srg8CWMuE+MlMZIZcqQhpW4Rg=;
+ b=1GD79LIbTVxyxfFDmKfxRsHivmzJs32eu8StoDowVAP9aGvLPK2FjQOLbN3sDvCWip
+ 2xWbP5Kc8UvZR6D73NSe+5CGkZYBOWFCPPZLkgF0PbSiJA279l1JLMA3adyfwPCsW4a6
+ oQgZfE1ZMPxDrzFWAuDfHQqeu8P2mHmFoFoHGuxlw6qxwcrugPOtHzpqDXV5HMTUPPJm
+ vHQmUcx5z0Jeam4gCuyMNMM+8FPEJ9nTzfAOYQh6kKurti+ZAlYuaZm4K7YFiYXb/t3Z
+ HrxaX2nqUVymbuOotR7uUjXg+D6xw206rrYCYKkA5ahPzKQGV0TCZjFjxG9T6JjmewSB
+ jb1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721129264; x=1721734064;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bPVucKPJWt4W6yJCP3srg8CWMuE+MlMZIZcqQhpW4Rg=;
+ b=nfsTRtFJbnz6f26WxVxDVJTtrbgpdh/rYrLnHc6mJEVTFun/UmonO1R9YzqoPhKb7X
+ 7i93Wu3MjsQ4Y6g/x8wNVDRWnG7MP3JqwxI//xT0YQM9EWPBy2/JNhoyABopkpFB459N
+ xMiqB+vh+cmJaqTznkPfVXWd4X7LAsnRGwIwslDKZR/FxLMJWwAiEsaRAnQQuSlsCkNz
+ 6DIdq89V6FeIToAFUkr7yRv1KJfen1P8vOR+gh0S5RLdtwEWVB4pJ7x0Yb4bTibUArXg
+ p2ucTSWSRdi2A9PZITn0F1bGnkO9k/f86Zbc5myzl8vf1muKSVA/Yax+zp8wGnLCGW+y
+ JaJw==
+X-Gm-Message-State: AOJu0YxjQir5ZWXe9i73nmoXiL3wXbsWgWzxQpZugWQruZmAf37i7G8j
+ 6v3z4ujgCGHKrz3MvNPQRxc0VddMdYFP5ZtwKhWsHrM1MtyF9lSUOsrArZYzMtY=
+X-Google-Smtp-Source: AGHT+IEN7GIHwCeTtc3AYf9mmChN4qoeVpb8ZYeLLHe+WbF8H2+zTtuTV9eiuD8P4JxSdHnEcGmmpA==
+X-Received: by 2002:a05:6870:9694:b0:25d:f8fa:b538 with SMTP id
+ 586e51a60fabf-260bdddbb0dmr1309185fac.29.1721129263807; 
+ Tue, 16 Jul 2024 04:27:43 -0700 (PDT)
+Received: from [157.82.202.230] ([157.82.202.230])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70b7ecabadasm6010338b3a.181.2024.07.16.04.27.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jul 2024 04:27:43 -0700 (PDT)
+Message-ID: <7bee9c26-d75e-4d83-bc2a-c97b06416080@daynix.com>
+Date: Tue, 16 Jul 2024 20:27:39 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/7] util: Introduce qemu_get_runtime_dir()
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>
+References: <20240716-run-v4-0-5f7a29631168@daynix.com>
+ <20240716-run-v4-1-5f7a29631168@daynix.com> <ZpZC8AaUJH9WW6uF@redhat.com>
+ <087e1eee-e7e3-4147-9c8c-882d458c1abd@daynix.com>
+ <ZpZRYyW74wfqR6Zr@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <ZpZRYyW74wfqR6Zr@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::329;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x329.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,223 +103,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we converted many tests from the "check-avocado" test suite
-to the "check-functional" test suite, we should make sure that these
-also get tested in the CI.
+On 2024/07/16 19:54, Daniel P. Berrangé wrote:
+> On Tue, Jul 16, 2024 at 07:52:00PM +0900, Akihiko Odaki wrote:
+>> On 2024/07/16 18:53, Daniel P. Berrangé wrote:
+>>> On Tue, Jul 16, 2024 at 04:27:31PM +0900, Akihiko Odaki wrote:
+>>>> qemu_get_runtime_dir() returns a dynamically allocated directory path
+>>>> that is appropriate for storing runtime files. It corresponds to "run"
+>>>> directory in Unix.
+>>>>
+>>>> With a tree-wide search, it was found that there are several cases
+>>>> where such a functionality is implemented so let's have one as a common
+>>>> utlity function.
+>>>>
+>>>> A notable feature of qemu_get_runtime_dir() is that it uses
+>>>> $XDG_RUNTIME_DIR if available. While the function is often called by
+>>>> executables which requires root privileges, it is still possible that
+>>>> they are called from a user without privilege to write the system
+>>>> runtime directory. In fact, I decided to write this patch when I ran
+>>>> virtiofsd in a Linux namespace created by a normal user and realized
+>>>> it tries to write the system runtime directory, not writable in this
+>>>> case. $XDG_RUNTIME_DIR should provide a writable directory in such
+>>>> cases.
+>>>>
+>>>> This function does not use qemu_get_local_state_dir() or its logic
+>>>> for Windows. Actually the implementation of qemu_get_local_state_dir()
+>>>> for Windows seems not right as it calls g_get_system_data_dirs(),
+>>>> which refers to $XDG_DATA_DIRS. In Unix terminology, it is basically
+>>>> "/usr/share", not "/var", which qemu_get_local_state_dir() is intended
+>>>> to provide. Instead, this function try to use the following in order:
+>>>> - $XDG_RUNTIME_DIR
+>>>> - LocalAppData folder
+>>>> - get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run")
+>>>>
+>>>> This function does not use g_get_user_runtime_dir() either as it
+>>>> falls back to g_get_user_cache_dir() when $XDG_DATA_DIRS is not
+>>>> available. In the case, we rather use:
+>>>> get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run")
+>>>>
+>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> Message-Id: <20230921075425.16738-2-akihiko.odaki@daynix.com>
+>>>> ---
+>>>>    include/qemu/osdep.h | 12 ++++++++++++
+>>>>    util/oslib-posix.c   | 11 +++++++++++
+>>>>    util/oslib-win32.c   | 26 ++++++++++++++++++++++++++
+>>>>    3 files changed, 49 insertions(+)
+>>>>
+>>>> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+>>>> index 191916f38e6d..fe8609fc1375 100644
+>>>> --- a/include/qemu/osdep.h
+>>>> +++ b/include/qemu/osdep.h
+>>>> @@ -670,6 +670,18 @@ void qemu_set_cloexec(int fd);
+>>>>     */
+>>>>    char *qemu_get_local_state_dir(void);
+>>>> +/**
+>>>> + * qemu_get_runtime_dir:
+>>>> + *
+>>>> + * Return a dynamically allocated directory path that is appropriate for storing
+>>>> + * runtime files. It corresponds to "run" directory in Unix, and uses
+>>>> + * $XDG_RUNTIME_DIR if available.
+>>>> + *
+>>>> + * The caller is responsible for releasing the value returned with g_free()
+>>>> + * after use.
+>>>> + */
+>>>> +char *qemu_get_runtime_dir(void);
+>>>> +
+>>>>    /**
+>>>>     * qemu_getauxval:
+>>>>     * @type: the auxiliary vector key to lookup
+>>>> diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+>>>> index e76441695bdc..9599509a9aa7 100644
+>>>> --- a/util/oslib-posix.c
+>>>> +++ b/util/oslib-posix.c
+>>>> @@ -278,6 +278,17 @@ qemu_get_local_state_dir(void)
+>>>>        return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR);
+>>>>    }
+>>>> +char *
+>>>> +qemu_get_runtime_dir(void)
+>>>> +{
+>>>> +    char *env = getenv("XDG_RUNTIME_DIR");
+>>>> +    if (env) {
+>>>> +        return g_strdup(env);
+>>>> +    }
+>>>> +
+>>>> +    return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run");
+>>>> +}
+>>>
+>>> I'm not convinced this is the correct logic to be following.
+>>>
+>>> In the cover letter you mention not using g_get_user_runtime_dir()
+>>> because it falls back to XDG_CACHE_HOME, and we need to fallback
+>>> to LOCALSTATEDIR/run. This is not right for normal users though,
+>>> where falling back to LOCALSTATEDIR/run is always wrong, as it
+>>> won't be writable - the g_get_user_runtime_dir() fallback is
+>>> desirable for non-root users.
+>>
+>> It also checks LocalAppData, which should be usually available.
+>>
+>> g_get_user_runtime_dir() is not a proper fallback in case neither of
+>> XDG_RUNTIME_DIR and LocalAppData are available. g_get_user_cache_dir(),
+>> which gets called by g_get_user_runtime_dir(), internally uses:
+>> - XDG_CACHE_HOME or
+>> - FOLDERID_InternetCache
+>>
+>> g_get_user_cache_dir() just returns NULL if neither of them is available.
+>>
+>> We can't expect XDG_CACHE_HOME is present when XDG_RUNTIME_DIR is missing.
+>> FOLDERID_InternetCache points to %LOCALAPPDATA%\Microsoft\Windows\Temporary
+>> Internet Files, according to:
+>> https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
+>>
+>> So we can't expect FOLDERID_InternetCache is available when LocalAppData is
+>> missing.
+> 
+> XDG_CACHE_HOME isn't required to be present. Glib will use a fallback
+> location if XDG_CACHE_HOME isn't set, and it will mkdir() the location
+> if it doesn't exist.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- .gitlab-ci.d/buildtest-template.yml |  3 +-
- .gitlab-ci.d/buildtest.yml          | 60 ++++++++++++++---------------
- 2 files changed, 32 insertions(+), 31 deletions(-)
+The fallback location is FOLDERID_InternetCache, which is not better 
+than looking at LocalAppData.
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 8f7ebfaed8..54cae74a8e 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -71,7 +71,7 @@
-     reports:
-       junit: build/meson-logs/testlog.junit.xml
- 
--.avocado_test_job_template:
-+.functional_test_job_template:
-   extends: .common_test_job_template
-   cache:
-     key: "${CI_JOB_NAME}-cache"
-@@ -98,6 +98,7 @@
-         du -chs ${CI_PROJECT_DIR}/avocado-cache ;
-       fi
-     - export AVOCADO_ALLOW_UNTRUSTED_CODE=1
-+    - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-   after_script:
-     - cd build
-     - du -chs ${CI_PROJECT_DIR}/avocado-cache
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index e3a0758bd9..8b1d61911c 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -22,14 +22,14 @@ check-system-alpine:
-     IMAGE: alpine
-     MAKE_CHECK_ARGS: check-unit check-qtest
- 
--avocado-system-alpine:
--  extends: .avocado_test_job_template
-+functional-system-alpine:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-alpine
-       artifacts: true
-   variables:
-     IMAGE: alpine
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
- 
- build-system-ubuntu:
-@@ -53,14 +53,14 @@ check-system-ubuntu:
-     IMAGE: ubuntu2204
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-ubuntu:
--  extends: .avocado_test_job_template
-+functional-system-ubuntu:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-ubuntu
-       artifacts: true
-   variables:
-     IMAGE: ubuntu2204
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
- 
- build-system-debian:
-@@ -85,14 +85,14 @@ check-system-debian:
-     IMAGE: debian
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-debian:
--  extends: .avocado_test_job_template
-+functional-system-debian:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-debian
-       artifacts: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
- 
- crash-test-debian:
-@@ -129,14 +129,14 @@ check-system-fedora:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-fedora:
--  extends: .avocado_test_job_template
-+functional-system-fedora:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-fedora
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
-       arch:riscv32 arch:ppc arch:sparc64
- 
-@@ -243,14 +243,14 @@ check-system-centos:
-     IMAGE: centos9
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-centos:
--  extends: .avocado_test_job_template
-+functional-system-centos:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-centos
-       artifacts: true
-   variables:
-     IMAGE: centos9
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
-       arch:sh4
- 
-@@ -274,14 +274,14 @@ check-system-opensuse:
-     IMAGE: opensuse-leap
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-opensuse:
--  extends: .avocado_test_job_template
-+functional-system-opensuse:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-opensuse
-       artifacts: true
-   variables:
-     IMAGE: opensuse-leap
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
- 
- #
-@@ -302,15 +302,15 @@ build-system-flaky:
-       ppc64-softmmu rx-softmmu s390x-softmmu sh4-softmmu x86_64-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
--avocado-system-flaky:
--  extends: .avocado_test_job_template
-+functional-system-flaky:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-flaky
-       artifacts: true
-   allow_failure: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     QEMU_JOB_OPTIONAL: 1
-     QEMU_TEST_FLAKY_TESTS: 1
-     AVOCADO_TAGS: flaky
-@@ -484,14 +484,14 @@ check-cfi-aarch64:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-aarch64:
--  extends: .avocado_test_job_template
-+functional-cfi-aarch64:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-aarch64
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- build-cfi-ppc64-s390x:
-   extends:
-@@ -522,14 +522,14 @@ check-cfi-ppc64-s390x:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-ppc64-s390x:
--  extends: .avocado_test_job_template
-+functional-cfi-ppc64-s390x:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-ppc64-s390x
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- build-cfi-x86_64:
-   extends:
-@@ -556,14 +556,14 @@ check-cfi-x86_64:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-x86_64:
--  extends: .avocado_test_job_template
-+functional-cfi-x86_64:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-x86_64
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- tsan-build:
-   extends: .native_build_job_template
--- 
-2.45.2
-
+Regards,
+Akihiko Odaki
 
