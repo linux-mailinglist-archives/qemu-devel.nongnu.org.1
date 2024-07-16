@@ -2,95 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FFC89327BB
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 15:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303F89327CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 15:49:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTiSx-0004dW-40; Tue, 16 Jul 2024 09:43:39 -0400
+	id 1sTiXW-00074E-Vi; Tue, 16 Jul 2024 09:48:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTiSn-00045k-FC
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 09:43:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTiSZ-0007Wo-TH
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 09:43:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721137394;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9psGEOlrWJb8OW0jgIXVgsqkq1DsnpX2JGAGsNa2T1s=;
- b=PCofHf8Zx+Fcb8fwAoDjtHK53G4ylftcEN/WmW/f3uowvmwInJ1nsTsyG3OSs/a85aLXn3
- LP/Z6Axd1PNXJyvNPIxRvcWMHFA2q63CUvRdfTSa+UL4ZxnUSkBvvA3H3fq490SW6YakGq
- XbkS88W40q1wWZhHv80mvpPlk3u9pYA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-msENWES_MdueX2s1JuJDlQ-1; Tue, 16 Jul 2024 09:43:13 -0400
-X-MC-Unique: msENWES_MdueX2s1JuJDlQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42796140873so35859985e9.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 06:43:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sTiXT-0006wR-VT
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 09:48:20 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sTiXI-00087U-LE
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 09:48:19 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a77dc08db60so629469366b.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 06:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721137687; x=1721742487; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=DFbtaXOt+AgoITdsTk0gpy944acM9SxO1ygQwDDoKQg=;
+ b=leWQwEQDDVUOMTa9WX3p06hOI3VFVLWmC192Jwrma66QfLh5U57+xbM1NBeTg8QIsn
+ iaDqY/vTf3DZLQF035evcYceh9NTOzwPIdWurnhyzYs3RKCFB/B2Th7e20p6eVEAEOdM
+ a+kBcUmxek4Q0vA9yiuGG4It+BK97jrB6NH0Gvv/nB50KTRSTE3SJjN/E3YGfirIXmnH
+ uagMrmI0pjaeeYPnz9ZwwLl7J5qjxbjEbfT1ks7Id2+cCsObeMxuxebMAEETFJ0jOD8+
+ q/u7F6buq1HKGIlLD9RM0r0K/YzQSA106kloBUMRpwzWiFg32aDG0bheGds5E2J7phG6
+ XOXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721137392; x=1721742192;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9psGEOlrWJb8OW0jgIXVgsqkq1DsnpX2JGAGsNa2T1s=;
- b=Iizc05KuEQHEff7UERuZ4z4aX7lqdCpyqGATZf0qDG8JhihydhHA4AOz9j/gNE7rXT
- eD/qR/72t83MKDI6AUHC65wL29ZB3IhAF7roh2NqZyG2TKAh89moqQSIAs3qeMGctpA3
- NT+1NyD0XaNWIqtkXQS4euKxPjG5X7NYbGRFwPR1oN4NXzbR8w0B6sby8uUtEhZa+eo0
- csn0d7yrtNpYgm5uU9BqE9HlHfEWDh+EQ/99RUJnjVfRaSqk70QnXWwQcr/pTdMVf9cv
- d92qq2xD5w862hsC7j2AE0G9iCSAm2teRxUd9J9sXOi79TBb2dBraC/Tgi1b1TPPfyF1
- mFYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXT5Hw15Fk2FP9OZ+QE1eXCkSyS2/mUIDPtC3sU9k9KO1KoEjsoq40vNpSxWvXIwb8FEbS5QvPeiVjMSO3JgORor0BY26w=
-X-Gm-Message-State: AOJu0Yxqk9rZSHjRI32u9el+xAHEQxIqnyoxVPYPwfCmsqrbWVt65mSR
- WwmGxMuWXOrmq0XI/nnZdIkdhkYfBn1DoHGvRnNOEUct4U6iK67zpadp4W8uPpPTpPkU1D0GQg6
- BEp4WjIrStZmyMIuM2cAaCBLWm98chpyHKTHkYQs9e/c37SaLHoZr
-X-Received: by 2002:a05:600c:3d8a:b0:425:7884:6b29 with SMTP id
- 5b1f17b1804b1-427ba6991f7mr14098865e9.19.1721137392110; 
- Tue, 16 Jul 2024 06:43:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsAfXGkMJ8zQpegoBENwNU3dtdua0gCXiFZ4oaGgwkLCQX3A0lW2zz+6wOkOS69MIZ+RCa/g==
-X-Received: by 2002:a05:600c:3d8a:b0:425:7884:6b29 with SMTP id
- 5b1f17b1804b1-427ba6991f7mr14098715e9.19.1721137391675; 
- Tue, 16 Jul 2024 06:43:11 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:26c5:842:8baa:576b?
- ([2a01:e0a:9e2:9000:26c5:842:8baa:576b])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f2397f7sm164158875e9.9.2024.07.16.06.43.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Jul 2024 06:43:11 -0700 (PDT)
-Message-ID: <7a3108f2-6ef4-4fde-8b99-5714bc70ecd5@redhat.com>
-Date: Tue, 16 Jul 2024 15:43:09 +0200
+ d=1e100.net; s=20230601; t=1721137687; x=1721742487;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DFbtaXOt+AgoITdsTk0gpy944acM9SxO1ygQwDDoKQg=;
+ b=tvQmBw+Rls21i6kD6mZux9D2z3On9LFZOjF2JL/jyKSfF673gom49cvra+Hh8k7bb9
+ UJtsrI54K9CTh1WKKkLxBqvq1Jy8Cs4ToqKKwPx54uDhGY+9VbNGFpyNkG2O/tqb/BE0
+ J9XSnL5wW9gBJW9ZBw8o3aoTZMmxNiSlKC4mb9hd/YUWv1EznU7+mb18Ugq7sx2IQTY6
+ LyjhiupeMTvZjvNDQMq5uWcH0xlU2lOK9wnDeAbkst0+lbiPKWWS6EQn+hH7kQo+Xq7V
+ So6ygDnIXOlUfOYHbn9rqPCrAR2DuSg0WCSU0eP3JV+KtVkxXWzv/bq0wr/eAPyhqV/K
+ tYAg==
+X-Gm-Message-State: AOJu0YzzXHjjhaeyLCnVWEFbe9lPyauTHSQKPl0Ke9Q3kDtNUZXGNEm0
+ oEGp/jIL0QsRYry9JYOad2Qu+M//SIlzUd4W3c4r14OBSBVMSv0cfAXEnl9NqurvJlbRWw6QMEK
+ Z
+X-Google-Smtp-Source: AGHT+IHstbTALyIvicDhJLQByNIt/XcdmwdBoHSbzleZ8bg7QTMgBFTmsR+tf6APxViEOTp2CQ6Sfw==
+X-Received: by 2002:a17:906:468a:b0:a72:a05a:6601 with SMTP id
+ a640c23a62f3a-a79ea3defdamr167981566b.14.1721137686468; 
+ Tue, 16 Jul 2024 06:48:06 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a79bc5a3a93sm319615066b.6.2024.07.16.06.48.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jul 2024 06:48:05 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B160D5F7A0;
+ Tue, 16 Jul 2024 14:48:04 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org,  Akihiko Odaki <akihiko.odaki@daynix.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>,  "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Subject: Re: [RFC PATCH] gdbstub: Re-factor gdb command extensions
+In-Reply-To: <b9690162-170e-1f74-f148-0642a8503002@linaro.org> (Gustavo
+ Romero's message of "Tue, 16 Jul 2024 09:42:51 -0300")
+References: <20240716114229.329355-1-alex.bennee@linaro.org>
+ <b9690162-170e-1f74-f148-0642a8503002@linaro.org>
+Date: Tue, 16 Jul 2024 14:48:04 +0100
+Message-ID: <87plrdh2i3.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] hw/vfio/container: Get rid of qemu_open_old()
-To: Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>
-References: <20240715082155.28771-1-zhao1.liu@intel.com>
- <20240715082155.28771-5-zhao1.liu@intel.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240715082155.28771-5-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,55 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/15/24 10:21, Zhao Liu wrote:
-> For qemu_open_old(), osdep.h said:
-> 
->> Don't introduce new usage of this function, prefer the following
->> qemu_open/qemu_create that take an "Error **errp".
-> 
-> So replace qemu_open_old() with qemu_open().
-> 
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Cc: "Cédric Le Goater" <clg@redhat.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Gustavo Romero <gustavo.romero@linaro.org> writes:
 
+> Hi Alex,
+>
+> On 7/16/24 8:42 AM, Alex Benn=C3=A9e wrote:
+>> Coverity reported a memory leak (CID 1549757) in this code and its
+>> admittedly rather clumsy handling of extending the command table.
+>> Instead of handing over a full array of the commands lets use the
+>> lighter weight GPtrArray and simply test for the presence of each
+>> entry as we go. This avoids complications of transferring ownership of
+>> arrays and keeps the final command entries as static entries in the
+>> target code.
+> How did you run Coverity to find the leak? I'm wondering what's the
+> quickest way to check it next time.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Coverity is only run in the cloud on the released build. There is a
+container somewhere but I don't know how its used.
 
-Thanks,
+I did test on a build with --enable-sanitizers though.
 
-C.
+>
+>
+>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>
+>> Cc: Peter Maydell <peter.maydell@linaro.org>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>
+> Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+>
+>
+> Cheers,
+> Gustavo
 
-
-> ---
->   hw/vfio/container.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 425db1a14c07..38a9df34964a 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -600,9 +600,8 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->           }
->       }
->   
-> -    fd = qemu_open_old("/dev/vfio/vfio", O_RDWR);
-> +    fd = qemu_open("/dev/vfio/vfio", O_RDWR, errp);
->       if (fd < 0) {
-> -        error_setg_errno(errp, errno, "failed to open /dev/vfio/vfio");
->           goto put_space_exit;
->       }
->   
-> @@ -743,9 +742,8 @@ static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
->       group = g_malloc0(sizeof(*group));
->   
->       snprintf(path, sizeof(path), "/dev/vfio/%d", groupid);
-> -    group->fd = qemu_open_old(path, O_RDWR);
-> +    group->fd = qemu_open(path, O_RDWR, errp);
->       if (group->fd < 0) {
-> -        error_setg_errno(errp, errno, "failed to open %s", path);
->           goto free_group_exit;
->       }
->   
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
