@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFEA932E54
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E36932E4F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Jul 2024 18:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTl2K-0001V9-FQ; Tue, 16 Jul 2024 12:28:20 -0400
+	id 1sTl2P-0002M2-82; Tue, 16 Jul 2024 12:28:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl0r-00062s-NR; Tue, 16 Jul 2024 12:26:53 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1sTl1A-0006Nz-4h; Tue, 16 Jul 2024 12:27:12 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sTl0p-0006Mq-CT; Tue, 16 Jul 2024 12:26:49 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-25dfb580d1fso3071433fac.2; 
- Tue, 16 Jul 2024 09:26:46 -0700 (PDT)
+ id 1sTl0s-0006QR-Q6; Tue, 16 Jul 2024 12:27:07 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7515437ff16so4135853a12.2; 
+ Tue, 16 Jul 2024 09:26:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721147204; x=1721752004; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721147208; x=1721752008; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7AyDGj3ZDezl1UlUVAm1qZ38iB6LaQ9Gbtb/xnqxjfY=;
- b=WOF5SNd+FZg40pnHHW/3cCRGKZfWsRo1dHSsrI967tgzOWGc76nHIcXV9/WvBNKNrv
- eUkCa8nprkKDyeF11aeFvMW+pkqHkmHu41K0fueyrYiSaC0MyBmbmoljxAWWFHANXI0c
- pMdp9D1M18Buu8zfcSq+RVnPm1vAzSUUfxaI2JjMtf6YU9S2Hsd6ElAA8pe616Fvnn8p
- THn3cVLD8p5juywADndeC7bdZ1x4uCDfX4Hhi+Jw4NXwVon318R+O3n9fej/Q4/bSo01
- bSb3JVYOHsz+MwCGvdNGkglzyuF4/j+jhLq6MjXQR6DWr0agFU/HYvQN2be6Ov9hMIhn
- i0fg==
+ bh=5li3telX6sK1Lhm0cQR+KDeo6fDP+MxgfWC2oPVkLoI=;
+ b=CzLo5DuTcZ0N5dnLm1Wp78weKlNQAnOgZTjMa+fUHai/rgxKt58NuZX574AvNFoDdK
+ F1kfy7mq1n9WZs1VUhwh7AmHO6w9alVX6BHUS3yhpJTfmMnuH/iic61Tk6KTFyhg6h/U
+ UIIIAgSFRIbKmv3B9KoNcdnngvYVIVOIZgZkYtIOKN2/a80yNzZNyAhYZ7DVPvkDoFEM
+ zVaTQHeKiK/VCgB9GzFvovtGhkdFJKYoJ97jvLYGbwinX4HUNbRN3SjvhqbCkHnHNuCM
+ hOmjlkJIiuDivoheL2Pl5pIc88LBGTnkoY3LIAfgHrInS5pQ8uLiiNDXPUXnaAodt4ua
+ 9JFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721147204; x=1721752004;
+ d=1e100.net; s=20230601; t=1721147208; x=1721752008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7AyDGj3ZDezl1UlUVAm1qZ38iB6LaQ9Gbtb/xnqxjfY=;
- b=gasDmIMDkxV0i51EZX1sb39QaWIRGojej527YdXI+22Tpm3WS+lxwaelrn5W/zlX6U
- HE9yBTpcT1Ia1b+HKeAeiE0M+mqfEZ+mYkSSAeTMj+XBcZLuDOaV5eJUgga/a56lqqdk
- 9MLeoV6lT0WhQhSAk+SwrYUqmP1X0GauwDlkc+Z4ypvErVZ7pbrK8H4IfdRl+kYrBXMo
- mkXrkraFS9wPE26sa1QlSJyO4dRnP2slW0qbSFMdzcljlctlKVo4WCHemf4Gt8bAUNJw
- P9lRpEFy+MQlkWUybJ1juMagYNoinVvpEJ16kxPnSML9cXYbSiMesHQsRLlpJnGjLNnS
- HlIg==
+ bh=5li3telX6sK1Lhm0cQR+KDeo6fDP+MxgfWC2oPVkLoI=;
+ b=ZR9rGif2VI8Sci+d7+vkspMMqz/OVvv0tLvaMJIa6fp+g49a3ztE09/zMeYQBfaUFR
+ N5IfiATGWpDnyrrw4rKjXi2ToljGZ5aTM0SrBaTUbwad/l0m2v1+eBXyoJj1gHDLuz5q
+ hfkBIssErqULGy4q832B5a5tfLSnjNnKtxtiuXB8Xn9LxTliHV1uePUmR67AwFAZwVbo
+ kOHllUke40CeKJD4UwcUb6bLdjPHC5yacrRjuLcUVeGQVKoM0XsmiHtcZ7ZBCWurP5ZU
+ irUH7q/573WPjl8TMYl2/W+uYdAJijrXwUqhOrW69DdlXI0rMl5tHwVONkItSGKnyHJ7
+ oQ7A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvxC9+yBztbEkR2hxg2Q7r2lBkIjBAu3JL2YXXRXygM2cT4B7w+0aDa8szseBe0A9QJ8i1g1AH0AlYwTS/fw484PJAhjs=
-X-Gm-Message-State: AOJu0YzgIVMA5VNtgyIACChkx28xyH9jjCWNRCmFf9cnbadF4VHp+LCE
- D+ptSwnL/DTt1vyIanbOSf2Ssd6eFCdCwSOYf+VQ21cNDndhWj9Sq3V0aQ==
-X-Google-Smtp-Source: AGHT+IGnap7OHpkqVia1tEBlVJieU3uxsgWn4oXVuk9UAbsxckqLafHvp8PgAkrO7VBQuN6hNAOOkQ==
-X-Received: by 2002:a05:6870:c1d2:b0:259:88b4:976 with SMTP id
- 586e51a60fabf-260bd9a5652mr2211686fac.43.1721147204414; 
- Tue, 16 Jul 2024 09:26:44 -0700 (PDT)
+ AJvYcCUt+RugyDZQmJDcRsgpRHVpG/pN2fARO10AkFyXZlyp79uFCWFg/yyJeMOhaIsFxTfOHvb9qSg1zh+UGdjLCs9eYoRnOdA=
+X-Gm-Message-State: AOJu0YykcSF/LQcP8uLI6E+F2GXkoBwDLthKF5Jg+S+bNguYd4yzGxVT
+ PN3BJUVjLHjtZGuUznhSR1xZz3DFoH1cJbl29rHAc1qf3t8QmtUbNC/Xxw==
+X-Google-Smtp-Source: AGHT+IGCPdrY7YUnVOA5GmUnxRqNFR+9j6cQcBjOlkpyKLcw4p1vKTpsqlg1/0ljRK5waBRHBEjdNA==
+X-Received: by 2002:a05:6a20:3946:b0:1c3:7405:80d0 with SMTP id
+ adf61e73a8af0-1c3f1211cfdmr3284521637.18.1721147208306; 
+ Tue, 16 Jul 2024 09:26:48 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.41
+ d2e1a72fcca58-70b7eca86d6sm6722161b3a.179.2024.07.16.09.26.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 09:26:44 -0700 (PDT)
+ Tue, 16 Jul 2024 09:26:47 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -63,18 +63,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 05/19] ppc/pnv: use class attribute to limit SMT threads
- for different machines
-Date: Wed, 17 Jul 2024 02:26:01 +1000
-Message-ID: <20240716162617.32161-6-npiggin@gmail.com>
+Subject: [PATCH v3 06/19] ppc/pnv: Extend chip_pir class method to TIR as well
+Date: Wed, 17 Jul 2024 02:26:02 +1000
+Message-ID: <20240716162617.32161-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240716162617.32161-1-npiggin@gmail.com>
 References: <20240716162617.32161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=npiggin@gmail.com; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,88 +96,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use a class attribute to specify the number of SMT threads per core
-permitted for different machines, 8 for powernv8 and 4 for powernv9/10.
+The chip_pir chip class method allows the platform to set the PIR
+processor identification register. Extend this to a more general
+ID function which also allows the TIR to be set. This is in
+preparation for "big core", which is a more complicated topology
+of cores and threads.
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv.h |  1 +
- hw/ppc/pnv.c         | 12 +++++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ include/hw/ppc/pnv_chip.h |  4 +-
+ hw/ppc/pnv.c              | 85 +++++++++++++++++++++++++--------------
+ hw/ppc/pnv_core.c         | 10 +++--
+ 3 files changed, 64 insertions(+), 35 deletions(-)
 
-diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
-index 476b136146..1993dededf 100644
---- a/include/hw/ppc/pnv.h
-+++ b/include/hw/ppc/pnv.h
-@@ -76,6 +76,7 @@ struct PnvMachineClass {
-     /*< public >*/
-     const char *compat;
-     int compat_size;
-+    int max_smt_threads;
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 4eaa7d3999..7d5d08bcdc 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -150,7 +150,9 @@ struct PnvChipClass {
  
-     void (*dt_power_mgt)(PnvMachineState *pnv, void *fdt);
-     void (*i2c_init)(PnvMachineState *pnv);
+     DeviceRealize parent_realize;
+ 
+-    uint32_t (*chip_pir)(PnvChip *chip, uint32_t core_id, uint32_t thread_id);
++    /* Get PIR and TIR values for a CPU thread identified by core/thread id */
++    void (*get_pir_tir)(PnvChip *chip, uint32_t core_id, uint32_t thread_id,
++                         uint32_t *pir, uint32_t *tir);
+     void (*intc_create)(PnvChip *chip, PowerPCCPU *cpu, Error **errp);
+     void (*intc_reset)(PnvChip *chip, PowerPCCPU *cpu);
+     void (*intc_destroy)(PnvChip *chip, PowerPCCPU *cpu);
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 7878fed43c..fde51ca946 100644
+index fde51ca946..eee34ca926 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -899,6 +899,7 @@ static void pnv_init(MachineState *machine)
-     PnvMachineState *pnv = PNV_MACHINE(machine);
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     PnvMachineClass *pmc = PNV_MACHINE_GET_CLASS(machine);
-+    int max_smt_threads = pmc->max_smt_threads;
-     char *fw_filename;
-     long fw_size;
-     uint64_t chip_ram_start = 0;
-@@ -997,17 +998,19 @@ static void pnv_init(MachineState *machine)
-     pnv->num_chips =
-         machine->smp.max_cpus / (machine->smp.cores * machine->smp.threads);
+@@ -154,7 +154,7 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+     char *nodename;
+     int cpus_offset = get_cpus_node(fdt);
  
--    if (machine->smp.threads > 8) {
--        error_report("Cannot support more than 8 threads/core "
--                     "on a powernv machine");
-+    if (machine->smp.threads > max_smt_threads) {
-+        error_report("Cannot support more than %d threads/core "
-+                     "on %s machine", max_smt_threads, mc->desc);
-         exit(1);
+-    pir = pnv_cc->chip_pir(chip, pc->hwid, 0);
++    pnv_cc->get_pir_tir(chip, pc->hwid, 0, &pir, NULL);
+ 
+     nodename = g_strdup_printf("%s@%x", dc->fw_name, pir);
+     offset = fdt_add_subnode(fdt, cpus_offset, nodename);
+@@ -236,7 +236,8 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+ 
+     /* Build interrupt servers properties */
+     for (i = 0; i < smt_threads; i++) {
+-        servers_prop[i] = cpu_to_be32(pnv_cc->chip_pir(chip, pc->hwid, i));
++        pnv_cc->get_pir_tir(chip, pc->hwid, i, &pir, NULL);
++        servers_prop[i] = cpu_to_be32(pir);
      }
-+
-     if (!is_power_of_2(machine->smp.threads)) {
-         error_report("Cannot support %d threads/core on a powernv"
-                      "machine because it must be a power of 2",
-                      machine->smp.threads);
-         exit(1);
-     }
-+
-     /*
-      * TODO: should we decide on how many chips we can create based
-      * on #cores and Venice vs. Murano vs. Naples chip type etc...,
-@@ -2490,6 +2493,7 @@ static void pnv_machine_power8_class_init(ObjectClass *oc, void *data)
+     _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
+                        servers_prop, sizeof(*servers_prop) * smt_threads)));
+@@ -248,14 +249,17 @@ static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t hwid,
+                        uint32_t nr_threads)
+ {
+     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
+-    uint32_t pir = pcc->chip_pir(chip, hwid, 0);
+-    uint64_t addr = PNV_ICP_BASE(chip) | (pir << 12);
++    uint32_t pir;
++    uint64_t addr;
+     char *name;
+     const char compat[] = "IBM,power8-icp\0IBM,ppc-xicp";
+     uint32_t irange[2], i, rsize;
+     uint64_t *reg;
+     int offset;
  
-     pmc->compat = compat;
-     pmc->compat_size = sizeof(compat);
-+    pmc->max_smt_threads = 8;
++    pcc->get_pir_tir(chip, hwid, 0, &pir, NULL);
++    addr = PNV_ICP_BASE(chip) | (pir << 12);
++
+     irange[0] = cpu_to_be32(pir);
+     irange[1] = cpu_to_be32(nr_threads);
  
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+@@ -1106,10 +1110,16 @@ static void pnv_init(MachineState *machine)
+  *   25:28  Core number
+  *   29:31  Thread ID
+  */
+-static uint32_t pnv_chip_pir_p8(PnvChip *chip, uint32_t core_id,
+-                                uint32_t thread_id)
++static void pnv_get_pir_tir_p8(PnvChip *chip,
++                                uint32_t core_id, uint32_t thread_id,
++                                uint32_t *pir, uint32_t *tir)
+ {
+-    return (chip->chip_id << 7) | (core_id << 3) | thread_id;
++    if (pir) {
++        *pir = (chip->chip_id << 7) | (core_id << 3) | thread_id;
++    }
++    if (tir) {
++        *tir = thread_id;
++    }
  }
-@@ -2514,6 +2518,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
  
-     pmc->compat = compat;
-     pmc->compat_size = sizeof(compat);
-+    pmc->max_smt_threads = 4;
-     pmc->dt_power_mgt = pnv_dt_power_mgt;
+ static void pnv_chip_power8_intc_create(PnvChip *chip, PowerPCCPU *cpu,
+@@ -1161,14 +1171,20 @@ static void pnv_chip_power8_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+  *
+  * We only care about the lower bits. uint32_t is fine for the moment.
+  */
+-static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
+-                                uint32_t thread_id)
+-{
+-    if (chip->nr_threads == 8) {
+-        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
+-               (thread_id >> 1);
+-    } else {
+-        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
++static void pnv_get_pir_tir_p9(PnvChip *chip,
++                                uint32_t core_id, uint32_t thread_id,
++                                uint32_t *pir, uint32_t *tir)
++{
++    if (pir) {
++        if (chip->nr_threads == 8) {
++            *pir = (chip->chip_id << 8) | ((thread_id & 1) << 2) |
++                   (core_id << 3) | (thread_id >> 1);
++        } else {
++            *pir = (chip->chip_id << 8) | (core_id << 2) | thread_id;
++        }
++    }
++    if (tir) {
++        *tir = thread_id;
+     }
+ }
  
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-@@ -2538,6 +2543,7 @@ static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+@@ -1183,14 +1199,20 @@ static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
+  *
+  * We only care about the lower bits. uint32_t is fine for the moment.
+  */
+-static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
+-                                 uint32_t thread_id)
+-{
+-    if (chip->nr_threads == 8) {
+-        return (chip->chip_id << 8) | ((core_id / 4) << 4) |
+-               ((core_id % 2) << 3) | thread_id;
+-    } else {
+-        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
++static void pnv_get_pir_tir_p10(PnvChip *chip,
++                                uint32_t core_id, uint32_t thread_id,
++                                uint32_t *pir, uint32_t *tir)
++{
++    if (pir) {
++        if (chip->nr_threads == 8) {
++            *pir = (chip->chip_id << 8) | ((core_id / 4) << 4) |
++                    ((core_id % 2) << 3) | thread_id;
++        } else {
++            *pir = (chip->chip_id << 8) | (core_id << 2) | thread_id;
++        }
++    }
++    if (tir) {
++        *tir = thread_id;
+     }
+ }
  
-     pmc->compat = compat;
-     pmc->compat_size = sizeof(compat);
-+    pmc->max_smt_threads = 4;
-     pmc->dt_power_mgt = pnv_dt_power_mgt;
+@@ -1370,8 +1392,11 @@ static void pnv_chip_icp_realize(Pnv8Chip *chip8, Error **errp)
+         int core_hwid = CPU_CORE(pnv_core)->core_id;
  
-     xfc->match_nvt = pnv10_xive_match_nvt;
+         for (j = 0; j < CPU_CORE(pnv_core)->nr_threads; j++) {
+-            uint32_t pir = pcc->chip_pir(chip, core_hwid, j);
+-            PnvICPState *icp = PNV_ICP(xics_icp_get(chip8->xics, pir));
++            uint32_t pir;
++            PnvICPState *icp;
++
++            pcc->get_pir_tir(chip, core_hwid, j, &pir, NULL);
++            icp = PNV_ICP(xics_icp_get(chip8->xics, pir));
+ 
+             memory_region_add_subregion(&chip8->icp_mmio, pir << 12,
+                                         &icp->mmio);
+@@ -1483,7 +1508,7 @@ static void pnv_chip_power8e_class_init(ObjectClass *klass, void *data)
+     k->chip_cfam_id = 0x221ef04980000000ull;  /* P8 Murano DD2.1 */
+     k->cores_mask = POWER8E_CORE_MASK;
+     k->num_phbs = 3;
+-    k->chip_pir = pnv_chip_pir_p8;
++    k->get_pir_tir = pnv_get_pir_tir_p8;
+     k->intc_create = pnv_chip_power8_intc_create;
+     k->intc_reset = pnv_chip_power8_intc_reset;
+     k->intc_destroy = pnv_chip_power8_intc_destroy;
+@@ -1507,7 +1532,7 @@ static void pnv_chip_power8_class_init(ObjectClass *klass, void *data)
+     k->chip_cfam_id = 0x220ea04980000000ull; /* P8 Venice DD2.0 */
+     k->cores_mask = POWER8_CORE_MASK;
+     k->num_phbs = 3;
+-    k->chip_pir = pnv_chip_pir_p8;
++    k->get_pir_tir = pnv_get_pir_tir_p8;
+     k->intc_create = pnv_chip_power8_intc_create;
+     k->intc_reset = pnv_chip_power8_intc_reset;
+     k->intc_destroy = pnv_chip_power8_intc_destroy;
+@@ -1531,7 +1556,7 @@ static void pnv_chip_power8nvl_class_init(ObjectClass *klass, void *data)
+     k->chip_cfam_id = 0x120d304980000000ull;  /* P8 Naples DD1.0 */
+     k->cores_mask = POWER8_CORE_MASK;
+     k->num_phbs = 4;
+-    k->chip_pir = pnv_chip_pir_p8;
++    k->get_pir_tir = pnv_get_pir_tir_p8;
+     k->intc_create = pnv_chip_power8_intc_create;
+     k->intc_reset = pnv_chip_power8_intc_reset;
+     k->intc_destroy = pnv_chip_power8_intc_destroy;
+@@ -1814,7 +1839,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+ 
+     k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
+     k->cores_mask = POWER9_CORE_MASK;
+-    k->chip_pir = pnv_chip_pir_p9;
++    k->get_pir_tir = pnv_get_pir_tir_p9;
+     k->intc_create = pnv_chip_power9_intc_create;
+     k->intc_reset = pnv_chip_power9_intc_reset;
+     k->intc_destroy = pnv_chip_power9_intc_destroy;
+@@ -2136,7 +2161,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
+ 
+     k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
+     k->cores_mask = POWER10_CORE_MASK;
+-    k->chip_pir = pnv_chip_pir_p10;
++    k->get_pir_tir = pnv_get_pir_tir_p10;
+     k->intc_create = pnv_chip_power10_intc_create;
+     k->intc_reset = pnv_chip_power10_intc_reset;
+     k->intc_destroy = pnv_chip_power10_intc_destroy;
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index 2da271ffb6..28ca61926d 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -227,8 +227,9 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
+ {
+     CPUPPCState *env = &cpu->env;
+     int core_hwid;
+-    ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
+-    ppc_spr_t *tir = &env->spr_cb[SPR_TIR];
++    ppc_spr_t *pir_spr = &env->spr_cb[SPR_PIR];
++    ppc_spr_t *tir_spr = &env->spr_cb[SPR_TIR];
++    uint32_t pir, tir;
+     Error *local_err = NULL;
+     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(pc->chip);
+ 
+@@ -244,8 +245,9 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
+ 
+     core_hwid = object_property_get_uint(OBJECT(pc), "hwid", &error_abort);
+ 
+-    tir->default_value = thread_index;
+-    pir->default_value = pcc->chip_pir(pc->chip, core_hwid, thread_index);
++    pcc->get_pir_tir(pc->chip, core_hwid, thread_index, &pir, &tir);
++    pir_spr->default_value = pir;
++    tir_spr->default_value = tir;
+ 
+     /* Set time-base frequency to 512 MHz */
+     cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
 -- 
 2.45.1
 
