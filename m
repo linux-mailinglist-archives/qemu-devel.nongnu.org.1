@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D70933C05
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C607933C11
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:16:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2Xx-00062y-88; Wed, 17 Jul 2024 07:10:09 -0400
+	id 1sU2au-0003cj-IX; Wed, 17 Jul 2024 07:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sU2XB-00030Y-W4
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:09:22 -0400
-Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
+ id 1sU2aZ-0002sq-IO
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:12:51 -0400
+Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sU2X9-0000NY-Ij
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:09:21 -0400
-Received: by mail-vk1-xa2e.google.com with SMTP id
- 71dfb90a1353d-4f2ec49e067so487042e0c.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 04:09:18 -0700 (PDT)
+ id 1sU2aJ-00035w-TB
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:12:51 -0400
+Received: by mail-vk1-xa33.google.com with SMTP id
+ 71dfb90a1353d-4f2c8e99c0fso519754e0c.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 04:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1721214558; x=1721819358;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1721214753; x=1721819553;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=f2xDtOSNBE5x+Th0TEVDyh8j7f0OFYS8aIeQ5Rl1BMo=;
- b=0BO4FdQO3UWJ08fa7COO2wOO1bTswwBf48lj7F9z5yX6PB1Pbi5XazQNEqtHyRzd+F
- NKtY6zQFBaWrxlLeGXOe6OoNQKEsg22menQREXj2WkPe5avn5Qv5Mi/IGLkFS3qIe15I
- zGXWA3Y64kB4cy7nAjrX0eOdvuReoksmi19tnhifw2v9+ylX+SmgRIOi0+dGZFKK1rJG
- EieByQGbCAzqOSxtiW2gda5OkRHNCtzKODA8tpcA2JV48H9Uf2JzJzPo43r+OybBmkBi
- U0YwuypYctZazCeb2zgKeNW2FlPuFoZxCjQY51kUdJdMsBbyZKa0TsK+AltbJ1I41w85
- RePg==
+ bh=eUiCpw6FOC3LTxm8Tr0fPAgbCAVN5AsSVaku3idwslA=;
+ b=UHWTvj3vO4+LCZIM7cjk+YsEr8QDGc4yor1I9TGsFkOJFle4+7preDt7TWSJndXftW
+ FOs7hsSr4CD9L+7Sk2leBNKZ5rlTvYasBxFI7wkP2KptrD7DX/4u9c6Wb3NA7lxPvfV+
+ oeCeUCdJpcHFBsflFmWhVCARYoutvpq7PjBm39xdpCEyKMfYr1z3WfJg23I84zA/uLOD
+ M+PIWUFmoZXkbF/WvjFVJ8HsaA1/5typEPxreB8eN638IcUOHp9FVDNp5JPf1O5F/PSW
+ NdEdx+MsGPMKKrRAFymHPbSlQNfsHnGwhcgFdzEAc9RuoB2UGXn9a7Xlf77/Bp+zq/3H
+ rvdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721214558; x=1721819358;
+ d=1e100.net; s=20230601; t=1721214753; x=1721819553;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=f2xDtOSNBE5x+Th0TEVDyh8j7f0OFYS8aIeQ5Rl1BMo=;
- b=XE/lC2Z9/PHFFqGlNJgDpXngWKjS3MbnRTGEe3y7g2zbAJBQh/4rhaSL6zzuhQcd4z
- nHOhuCSspVh6u0vZ99TSditYg6HyKu9Q/h4bEpnYvofXG+pv6qy+PvVZZijo+N8hj8dN
- wSBZ7ZBUlQWEVwEG6xJ780ZG4wMKwotNU/DaW/WaPpfeya02FDnxU7I8saXxSOf1RA+u
- jGbwkN4LljdPsWeSGndYFVAGXQtYcWLLk9TxKxnbCzP/Jdr1DUGfKl7PFd2ChJzHL75d
- YxOcoE2SwIM3gFNjKI81J6U4BN8Zzz5wGULaLasbXcRyltmgu8jMCAO9An6Q67cc3pVM
- HDuQ==
+ bh=eUiCpw6FOC3LTxm8Tr0fPAgbCAVN5AsSVaku3idwslA=;
+ b=HGn+h2A6aorNEP4EVsr8FG8tbqrALRra9WlcS/rIewctxrv6oAlJ11/+znHatXFSsr
+ hWUmcqIzpZuOnxMfTHWQtXPCEQKg2YPzfpjVy76xdMVpUNrrZDwmDBu6yksTE04GOrbh
+ IO+9JUZiTrYuTTzEv7JpVGPNX1IiLILgCwOEMN6JUnOZNdcK0srA9SEUEBMqq6tVbv1W
+ lV4YdCdZuP88q1CBey6XB17TLdoW96y5Im2cCYVXo9dXBcvcL4bksoIQd9HeYxqEbKm5
+ D63DTcta56bQ48YmiPsGCGgpCxraQ+nATf5jJ4GMH0xsuIwVLn3uKEeB2hwCwls+KII3
+ aLgQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVo9TjL/k1/8SxcB4c86f3DLtbzy5wA9lESmTisWzW3wmLnKORWtkRr/QDNsxMxBIjK76l0E1DQ8LfsRAysSTiSVlgpT0M=
-X-Gm-Message-State: AOJu0YybkPVg77HfKpsOeMaiPnJzDQE9QrN+5wL/MF+64hE8Rto9NRbC
- Vv5z3WQ4/+VlBSA+4/c2tO4Hslr/qdAZhBi8ShFlK9wvW/cA6MSQcfj+3tg4+WmyzgirRqa5XsF
- 4MWy7uv4aAIhFtT2VmnXV2IhsI6YRlwz4iZFy
-X-Google-Smtp-Source: AGHT+IH0scdGD9QoDcGnGDcUbQQ6gq/H9/IOnUaxBVij+RO1TAQP9PyVRzjGTfwUjFHuG7zX0SHA5lIT174zT205HkE=
-X-Received: by 2002:a05:6122:30a8:b0:4f2:f057:eaf4 with SMTP id
- 71dfb90a1353d-4f4df6d9a44mr1752700e0c.7.1721214558078; Wed, 17 Jul 2024
- 04:09:18 -0700 (PDT)
+ AJvYcCVXuakm6652YtZqK4ivhbJXfhujHtIeB6UWhlpsKHRuoFtM1HeGeJpQEME70YRfHodK8yog5O27Yxl7+2BfdUOSiKTPCks=
+X-Gm-Message-State: AOJu0Yxkm9Ma/PlSeEyheTfFg+aRMUTgVoTaYflKdDzgVZSykcnkcPp0
+ Zv6c1EXW1+F2ZogkJjcVlpemK0wQzGWMIKd0sgtvmBh19NL5DswEMUjbGOXMiaofLoSNbtCIUMe
+ JBIsuGeEMFt8OFZv1y9TVDMz1ZTlhaVrNMogn
+X-Google-Smtp-Source: AGHT+IHX7gOBsZW72JWEVYUQpSouB2UXmlgjyiu4UTm0wPc9KFKkmdJ9FM1OPEbcZMLkmUkpXk26J49XMMzY7TUuSU0=
+X-Received: by 2002:a05:6122:912:b0:4ef:5e6b:6ccc with SMTP id
+ 71dfb90a1353d-4f4df6da32dmr1809663e0c.7.1721214752597; Wed, 17 Jul 2024
+ 04:12:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240715210705.32365-1-phil@philjordan.eu>
- <20240715210705.32365-17-phil@philjordan.eu>
- <28a35035-840a-4c70-aaba-4192f7cd8ef3@linaro.org>
- <CAAibmn1zEFWVt-K3LkucStVxL-jyj=EWThwwtewwyKbKodQ0Sw@mail.gmail.com>
- <94d3d008-4793-1b61-7704-860ac6b4ba90@eik.bme.hu>
-In-Reply-To: <94d3d008-4793-1b61-7704-860ac6b4ba90@eik.bme.hu>
+ <eca02ec3-e2f2-4994-baf5-b86908fa0418@daynix.com>
+ <a7087230-9fc6-4ab4-b35c-d3df032d16df@linaro.org>
+ <6c65537d-ee67-4e0f-9f76-3da2b2ef8c71@daynix.com>
+In-Reply-To: <6c65537d-ee67-4e0f-9f76-3da2b2ef8c71@daynix.com>
 From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Wed, 17 Jul 2024 13:09:07 +0200
-Message-ID: <CAAibmn0LYAzZdEH-BwS8xLD9tQLtvUhwJFdvTU25Kd4=MrvJFw@mail.gmail.com>
-Subject: Re: [PATCH 16/26] hw/display/apple-gfx: Asynchronous MMIO writes on
- x86-64
-To: BALATON Zoltan <balaton@eik.bme.hu>
+Date: Wed, 17 Jul 2024 13:12:22 +0200
+Message-ID: <CAAibmn2kPFxXH8sdTW8_-Z4_ZDQ6FvJ_An=J=mLXFnP2HZW2iQ@mail.gmail.com>
+Subject: Re: hw/display/apple-gfx
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de, graf@amazon.com, 
  marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com, 
- peter.maydell@linaro.org, akihiko.odaki@daynix.com, lists@philjordan.eu
-Content-Type: multipart/alternative; boundary="000000000000512542061d6f7e39"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::a2e;
- envelope-from=phil@philjordan.eu; helo=mail-vk1-xa2e.google.com
+ peter.maydell@linaro.org, lists@philjordan.eu
+Content-Type: multipart/alternative; boundary="000000000000e94c9a061d6f898f"
+Received-SPF: neutral client-ip=2607:f8b0:4864:20::a33;
+ envelope-from=phil@philjordan.eu; helo=mail-vk1-xa33.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -95,49 +93,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000512542061d6f7e39
+--000000000000e94c9a061d6f898f
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 16 Jul 2024 at 16:48, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+On Tue, 16 Jul 2024 at 08:48, Akihiko Odaki <akihiko.odaki@daynix.com>
+wrote:
 
-> Only a guess but I think ARM like POWER has weak memory consistency so
-> maybe some sync ops are needed between writes somewhere whereas it would
-> work on X86_64 that has strong guarantees so no such explicit sync is
-> needed? I may completely wrong though, it's just what this reminded me of.
+> The cover letter says:
+>
+>  > 04-13: These patches address issues identified during code review in
+>  > the original e-mail threads as well as my own review.
+>
+> So these patches are certainly to be squashed. There are other patches
+> titled "fixes" or "refactoring", which should also be squashed. I expect
+> squashing them will reduce the number of patches (and code to review)
+> drastically.
 >
 
-I didn't think this should matter for MMIO, which causes a VM exit instead
-of a memory write.
+I've just resubmitted the patch set after squashing most of the commits
+into the original one. (and rebasing on latest upstream) Squashing is easy,
+pulling the individual changes back out is hard, so I figured I'd rather
+send it as too many patches first time around in case anyone wanted to see
+the individual changes I made.
 
-The x86-64 and aarch64 binaries of Apple's PVG framework clearly diverge in
-a number of ways. (For one, the x86-64 binary completely lacks the
-IOSurface mapper sub-device used by Virtualization.framework and the
-vmapple variant of the code here.) So I think the reason is more likely
-down to implementation details in Apple's framework.
+Thanks for taking a look!
 
---000000000000512542061d6f7e39
+--000000000000e94c9a061d6f898f
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
-mail_attr">On Tue, 16 Jul 2024 at 16:48, BALATON Zoltan &lt;<a href=3D"mail=
-to:balaton@eik.bme.hu">balaton@eik.bme.hu</a>&gt; wrote:<br></div><blockquo=
-te class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px =
-solid rgb(204,204,204);padding-left:1ex">
-Only a guess but I think ARM like POWER has weak memory consistency so <br>
-maybe some sync ops are needed between writes somewhere whereas it would <b=
-r>
-work on X86_64 that has strong guarantees so no such explicit sync is <br>
-needed? I may completely wrong though, it&#39;s just what this reminded me =
-of.<br>
-</blockquote><div><br></div><div>I didn&#39;t think this should matter for =
-MMIO, which causes a VM exit instead of a memory write.</div><div><br></div=
-><div>The x86-64 and aarch64 binaries of Apple&#39;s PVG framework clearly =
-diverge in a number of ways. (For one, the x86-64 binary completely lacks t=
-he IOSurface mapper sub-device used by Virtualization.framework and the vma=
-pple variant of the code here.) So I think the reason is more likely down t=
-o implementation details in Apple&#39;s framework.</div><div><br></div></di=
-v></div>
+mail_attr">On Tue, 16 Jul 2024 at 08:48, Akihiko Odaki &lt;<a href=3D"mailt=
+o:akihiko.odaki@daynix.com">akihiko.odaki@daynix.com</a>&gt; wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
+r-left:1px solid rgb(204,204,204);padding-left:1ex">
+The cover letter says:<br>
+<br>
+=C2=A0&gt; 04-13: These patches address issues identified during code revie=
+w in<br>
+=C2=A0&gt; the original e-mail threads as well as my own review.<br>
+<br>
+So these patches are certainly to be squashed. There are other patches <br>
+titled &quot;fixes&quot; or &quot;refactoring&quot;, which should also be s=
+quashed. I expect <br>
+squashing them will reduce the number of patches (and code to review) <br>
+drastically.<br></blockquote><div><br></div><div>I&#39;ve just resubmitted =
+the patch set after squashing most of the commits into the original one. (a=
+nd rebasing on latest upstream) Squashing is easy, pulling the individual c=
+hanges back out is hard, so I figured I&#39;d rather send it as too many pa=
+tches first time around in case anyone wanted to see the individual changes=
+ I made.</div><div><br></div><div>Thanks for taking a look!<br></div></div>=
+</div>
 
---000000000000512542061d6f7e39--
+--000000000000e94c9a061d6f898f--
 
