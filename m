@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE4C933629
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF0493363F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTwpf-00013n-CH; Wed, 17 Jul 2024 01:04:03 -0400
+	id 1sTwpv-0001fp-Ha; Wed, 17 Jul 2024 01:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpZ-0000q2-P4
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:03:57 -0400
+ id 1sTwpj-0001Td-Fn
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpY-0001yp-9i
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:03:57 -0400
+ id 1sTwpg-0001zn-Ao
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721192635;
+ s=mimecast20190719; t=1721192642;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tYdvr4qiEpyG2gw0AyoyI4aNLrC174pqQVM5gsiHlBw=;
- b=IzruuN2XXRGFx0eOePFm1ijSGCWa9KfJPP5WaFrA4VgMKl8Z5XO4HNSSO9v37fo5b7cZxv
- CVvwXnTYf7BTjX64JNM0yAg/qN7px9SENXigPBGbcfeqxVZVe2xod8znf8v02tB/vSFPWR
- P32G1V/DQPvBs0B9h4C6zIE4BMrra/M=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6FjeY3lbHr8W1TqtDdS/6AWEH+6oPWgu9f9eGwYiFZw=;
+ b=jISuEmpQ0xxM2EUuAAtYnuhOR8Hl1xywGtkqDpPY3oChNYY/A+EY6Z62FFVhVMQ7wpCb4c
+ OEIZTba12dUpG/7ZeLTlUXJWJPILrsjR/1aVjbTY4bvdOm4EWprROsvhdI1xidZ8wdRguG
+ RuTHbhFHseBrGibJ92Oio182gphbGxs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-DboOiFK8NV28eycv0kemmQ-1; Wed, 17 Jul 2024 01:03:53 -0400
-X-MC-Unique: DboOiFK8NV28eycv0kemmQ-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ee97349a5fso63506931fa.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:03:53 -0700 (PDT)
+ us-mta-370--pp0sM_KMd2b-DFSkHgHdA-1; Wed, 17 Jul 2024 01:03:55 -0400
+X-MC-Unique: -pp0sM_KMd2b-DFSkHgHdA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42667cc80e8so45300295e9.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:03:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721192632; x=1721797432;
+ d=1e100.net; s=20230601; t=1721192633; x=1721797433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tYdvr4qiEpyG2gw0AyoyI4aNLrC174pqQVM5gsiHlBw=;
- b=Y/x0keQbNDqFxHfs4ScYvxeFjhl7qPjUkzpRi3zP6qc5M+kQxNJIIz8FswScdC7Lhc
- MpM0VOiDcOL3vewCeWvGpMDUIb8ILCjG9FXOIJZ0lvAo87EcboAshamZfueWt9f8Fu14
- FWcJBTcxg7In2lZsUC+0qgRTlRhaZEwQ82AbfCg62L5QWp1aCu8LstopJYLzGi0JnJK3
- u2ksDTKGkKiVwz37/D/t0Nl1kXYKN5M+zYr3W7w420MYzHlK9rqxAA9NYlhNkhMzevNv
- ceI6h6pECEFr+BrQHm4imwl/bXXfhT3jKGzSRrVmX7Xu3dKO8NZyGIwZCKIpRWxYs9bc
- 90Tg==
-X-Gm-Message-State: AOJu0YzLt1Htru1jQldXx6iIjQwhfjuAy5O/ALnbpxEVNZU6ogw8cZE0
- rd7pGCGJlg3QUDLTeahopVIhYz8PfOP0lDHYJ+NMwwoo8x2GAbez0+FSvwPYwo/dYDk4XuDQXpN
- oyDeFcEFRAHh47EzWSf+nyn74Ru95HXIBgqvaopnCAezLOuF+j6UVmystiHK6FsXFHY1pPw3FN6
- 1QJ9k4LgKGp8GyMks0UaXBVXzL41ttwkI3dp13
-X-Received: by 2002:a05:651c:1992:b0:2ec:565f:ef56 with SMTP id
- 38308e7fff4ca-2eefd04f491mr4406211fa.7.1721192631907; 
- Tue, 16 Jul 2024 22:03:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFt/L5LAd88TY+69Z6aGmfcWsh8wIg3ukTbGNyw2A1QQPbyF0tR7GM1b7TQzBXdozVqmIDa9Q==
-X-Received: by 2002:a05:651c:1992:b0:2ec:565f:ef56 with SMTP id
- 38308e7fff4ca-2eefd04f491mr4406081fa.7.1721192631433; 
- Tue, 16 Jul 2024 22:03:51 -0700 (PDT)
+ bh=6FjeY3lbHr8W1TqtDdS/6AWEH+6oPWgu9f9eGwYiFZw=;
+ b=AUlOklkiqUY1lXawuXC0yq2SPZiylVhxgGiquihSDtQAKUsHrxFBv06Za0GF5n7Nv7
+ 8fnaYM3Zz6ujCEYVLEEnZeH+foEnowbJTLYal4j+OexgH7zlTfyjmr7W0b6kFuoZvlSj
+ Vc6UUpwn6/UGap9N/r7CFtJx0dmLgGJuZSu2LNnSKhU94SjfvNNbbT210Be4vJigFqY/
+ dwnX4b9PfsrE/NZ7QVdY3rtZmToxX5H4zr75csNoNQ8TAXElZEhfdvSlagoffopKIghW
+ ZmP693iOFtqQdW12OGg25vJk0OzWTe6XlVrRRJD03YzWDf9BevgRruTDbnjh/HFTetNA
+ 3MUA==
+X-Gm-Message-State: AOJu0YxOCwVoPSFMQ2Xk747hPKg+N0CUQsdhqvnb6KI8SSkUsMV11uMy
+ qTktqGDDKrrmTr6nbfSEt7wE3yBeNkTCvWmrlbiyjAWmw7bfvz/HokfceqdvW1pBqWftE+hMm/k
+ NbZ09nRCzmv+MiNcKqCQIwGTp4fa1BauohqOD6NT++64MhrgV3PQN8bk2Ep4RhtJBOaowH81D2f
+ BId1Oo3KyYbEzQM6fHKxV/8crwA8HU4uK9Gbqc
+X-Received: by 2002:a05:600c:1e83:b0:426:5dd0:a1ee with SMTP id
+ 5b1f17b1804b1-427c2ca7be4mr3055295e9.2.1721192633515; 
+ Tue, 16 Jul 2024 22:03:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvgbbMCEY6VL70OiL+pHbqocOx/rqpql070/K80aimw8zTVxTKG7nqY/nje/0wmGowlQTXOg==
+X-Received: by 2002:a05:600c:1e83:b0:426:5dd0:a1ee with SMTP id
+ 5b1f17b1804b1-427c2ca7be4mr3055155e9.2.1721192633152; 
+ Tue, 16 Jul 2024 22:03:53 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427a5edb525sm153463965e9.34.2024.07.16.22.03.48
+ ffacd0b85a97d-3680db047c4sm10715755f8f.108.2024.07.16.22.03.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 22:03:48 -0700 (PDT)
+ Tue, 16 Jul 2024 22:03:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>
-Subject: [PULL 07/20] qemu/timer: Add host ticks function for LoongArch
-Date: Wed, 17 Jul 2024 07:03:17 +0200
-Message-ID: <20240717050331.295371-8-pbonzini@redhat.com>
+Cc: Boqiao Fu <bfu@redhat.com>
+Subject: [PULL 08/20] docs: Update description of 'user=username' for
+ '-run-with'
+Date: Wed, 17 Jul 2024 07:03:18 +0200
+Message-ID: <20240717050331.295371-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240717050331.295371-1-pbonzini@redhat.com>
 References: <20240717050331.295371-1-pbonzini@redhat.com>
@@ -100,35 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Song Gao <gaosong@loongson.cn>
+From: Boqiao Fu <bfu@redhat.com>
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Link: https://lore.kernel.org/r/20240716031500.4193498-1-gaosong@loongson.cn
+The description of '-runas' and '-run-with' didn't explain that QEMU
+will use setuid/setgid to implement the option, so the user might get
+confused if using 'elevateprivileges=deny' as well.
+
+Since '-runas' is going to be deprecated and replaced by '-run-with'
+in the coming qemu9.1, add the message there.
+
+Signed-off-by: Boqiao Fu <bfu@redhat.com>
+Link: https://lore.kernel.org/r/CAFRHJ6J9uMk+HMZL+W+KE1yoRCOLPgbPUVVDku55sdXYiGXXHg@mail.gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/timer.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ qemu-options.hx | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-index 5ce83c79112..fa56ec9481d 100644
---- a/include/qemu/timer.h
-+++ b/include/qemu/timer.h
-@@ -1016,6 +1016,15 @@ static inline int64_t cpu_get_host_ticks(void)
-     return val;
- }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index ad6521ef5e7..694fa37f284 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -5024,8 +5024,11 @@ SRST
+     in combination with -runas.
  
-+#elif defined(__loongarch64)
-+static inline int64_t cpu_get_host_ticks(void)
-+{
-+    uint64_t val;
-+
-+    asm volatile("rdtime.d %0, $zero" : "=r"(val));
-+    return val;
-+}
-+
- #else
- /* The host CPU doesn't have an easily accessible cycle counter.
-    Just return a monotonically increasing value.  This will be
+     ``user=username`` or ``user=uid:gid`` can be used to drop root privileges
+-    by switching to the specified user (via username) or user and group
+-    (via uid:gid) immediately before starting guest execution.
++    before starting guest execution. QEMU will use the ``setuid`` and ``setgid``
++    system calls to switch to the specified identity.  Note that the
++    ``user=username`` syntax will also apply the full set of supplementary
++    groups for the user, whereas the ``user=uid:gid`` will use only the
++    ``gid`` group.
+ ERST
+ #endif
+ 
 -- 
 2.45.2
 
