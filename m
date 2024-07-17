@@ -2,208 +2,205 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695DB9339A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 11:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 380579339B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 11:16:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU0fv-0003I5-HP; Wed, 17 Jul 2024 05:10:15 -0400
+	id 1sU0l1-0005C5-LC; Wed, 17 Jul 2024 05:15:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sU0ft-0003Gq-0x
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:10:13 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1sU0kp-0005BS-U3
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:15:20 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sU0fq-0000N1-KJ
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:10:12 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46H95oCA010156;
- Wed, 17 Jul 2024 09:10:08 GMT
+ id 1sU0kk-0003Pm-PI
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:15:19 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46H95dNc019791;
+ Wed, 17 Jul 2024 09:15:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  message-id:date:subject:to:cc:references:from:in-reply-to
  :content-type:content-transfer-encoding:mime-version; s=
- corp-2023-11-20; bh=iJMJNjfecN2SmyqLo5cBLZ2RQA96Wc+U9xXl0xk0tA8=; b=
- l2FdVIM09XhjfFU5j9y+FpREH2Mo2+KKgV71Y4N4Lf8+y0MmiZakp0aPIPgGZBDT
- X41VB2+96WIDr7l/8+kr2V4Bwpkz/0eIUdeWrMROA7YNQQX+JFABWsYe6NMGpPPx
- Ktut668h+cMaIaEp4tSikU/722nL/pnL+JLOygICzFIYBzmSy5NOC+dM2ZuZX4XK
- IAbq5qEq8j13lD27MYkPqYTguBwK5xUrCp0aUImIuckrojEslSXAGkYCggG2AZ38
- Rbf/WjgPPu0tvxLqUnAmsqhhBAmsCD+4NB2TqP/Qh0M0RixELwmdb3j1P5nc6R9/
- W1NKk2Hwq2DQU6RQGI7OLA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40eb11807a-1
+ corp-2023-11-20; bh=sg4EwNGDm/uJkJ6x6GgxCCoFAx7+Wn1MOS7tfZvf9rM=; b=
+ iinD3zSMxrD/T/7vj4aTFnOVHh9J6LA/2vqsd8feB0JC3HhUm0+RvrSUgH8Xvw6M
+ KDasV9KfKp4tDJXSlW6jCGydXmPOQ1k59XaRdbvci3I9WpstJnl9NDRWGN1qHD8w
+ qdtgmLDH1dfHxdA/bNTvdDGbeYpDCr/LCOOScn1OG2rfTHRzljNIi9Q1uLo2xX4D
+ MjLS8YMJufMyVb0MNtLmhzsq1qPgpfpiUgO8GXsz8WPiMkSB7Pkny2COkVWMNHqI
+ m+g5iuROSjRr1AVx/vFJ3GPGwTEWKk3T0sm+MsSEwa0W3OA2d1dQPBVGKLZ9/DqT
+ XXpC/yHJoXwKFP9DXUFmWg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40eb10014f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jul 2024 09:10:08 +0000 (GMT)
+ Wed, 17 Jul 2024 09:15:07 +0000 (GMT)
 Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46H8KD94019520; Wed, 17 Jul 2024 09:10:06 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2049.outbound.protection.outlook.com [104.47.55.49])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40dwext613-1
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 46H827rH003630; Wed, 17 Jul 2024 09:15:06 GMT
+Received: from nam04-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04lp2040.outbound.protection.outlook.com [104.47.73.40])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 40dwextcpw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jul 2024 09:10:06 +0000
+ Wed, 17 Jul 2024 09:15:06 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kBVMxrY4dfQLj02BycUNwswOG5GD+wD3CNKVoe19eafX54gf0lzwiGUPFFVn7xFWql3NQFZzkWCrU0VoWi70zP2NQnmOu9vMClZVOBF/DzW+RTsB6x7uMOvfnoYuINc4C7f6J+w7NagkgEsNCkLVbefmyk0wma1jRemUqS7h4aMhPmTrM2jtCSDmnuVDDVV2O32EzG19qDXHu9T2StIaWYP8l2FA9MCPX+pWdxsT/UP+9EFhYhJPOFvuzOzwWeaUlvzRcuKcSjsh3SdANBqjYvhQ11sV8t66vDuNkD+KXn3tucfsFiezFaBg+j0Krh/SdJiTmnPO0h1fMDXySfeTvQ==
+ b=Yx+/Pid9YnTUsIyFBFsZG1nh5qe8ZoJ+nOFtUYjUSRfrq1M4T2OTroYLAYU5tgd8fIsZUp7qj8sPWB5ziR24WiRfb8Z9PNd3fZoAIlZn90THXG3M7aG7SMt/rD5KBlqSU5R7p94G1S4+BbNvixFnrZg4wOiGI6nLLqjTPqEdc8elDChRdvhJQbIbq3RV5Hd3xl3U+b8+hIyZE3CafmC4q3+xdk2waag+WCqpZvmQRiu3klRNsRB7+f94nBsJXtKyjW05QZTAniGghajwPpE3kBonDyp3ekksDM+KdnQ6Alfmq56OABgLJB1e71jUzQCM9NwHk/bS3iRqFlja0uFssw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iJMJNjfecN2SmyqLo5cBLZ2RQA96Wc+U9xXl0xk0tA8=;
- b=i0hx6SOYbHlJoNpy7DMCKPBj8P8XpZy4LSBuNVAvIg1NSaWPG0ueT3YSUXXrU1Hd0DEWwmQrCCVYGOtgEAfKeGQwwyluyA5DVTxV/6iMqb8NCJpgIymnbJOi0ORhtNBE2SAA+FT0F/G8uRnAHyV4JgGFludLjQbzqm80hyVP+9aljmP++UqpOOGz2dmJkRlXBGF9giS1441M/+hTVGHFNnCh1l30j8bfPbZa4OapZ3cXsmUPM5uKGQhWVsykLLOKlUxmiox5KBVaw6KVw8Oy/wtsHvVArG9Z+zFElkkljpBQUl/HP+rbTJHJ/jy0iX43bIldI5CpsgZLipp7KLpn2w==
+ bh=sg4EwNGDm/uJkJ6x6GgxCCoFAx7+Wn1MOS7tfZvf9rM=;
+ b=q5Q08r946LQf8dZ7qVzRP6o0FDDfmcYOW3Hwy9KOtS3dVhKBGhDAAbfdykctWfd0BlXp5XqooZQnAiuQy+YAevLuYQtCKMlf2PLt2N7AlxQJqGy9rZMzmaAt+CvLdCY2bSYmU5e4pl4BHNcDAzS0lL5Us/Okscn2y+FA7X1HO6HKOP+YPEWQawWEUaFQ3Fy73NVSoUrUfNcEKd3GogZrbYeguwi02mX4z1mIsfqi13XwaKuGT6xQmaRBYUMEYszkgnso1HqVR5O316CHMzH5s2z/CMavzRbZLPgYjvR05QAZlICWzNSa/VCxpuoBdr3TwOIrH6IKShCECCeULsLBiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iJMJNjfecN2SmyqLo5cBLZ2RQA96Wc+U9xXl0xk0tA8=;
- b=Fft12SysU0EWBKerSt6vGiLwgzFkGr1fZdXZwyJg7DKccO7x4MEKItoWFhAgFeToaWeb7afcX371UCbTD0yOlxDLRVlUOipF3zDpyNxuBH7IFkIqkvtwd67em2TYtYC5gL49bLK7AlbrEpLfooOwqEC1puSUybJROWW+uxNBYEU=
+ bh=sg4EwNGDm/uJkJ6x6GgxCCoFAx7+Wn1MOS7tfZvf9rM=;
+ b=B81Eo35iRzqslNuON6WxX4xvtaRyDUVyIpebS6+NWdP1NkG+DB6MZa5j7nb9qyGYqGHODg43Ac8kd8pt3awXiRJsLOPY4uixgn5OaxO044KpIOIZpIbYX7Pz1z4soBGqzgkqcjRzYQWPRy9/m5owqPGMmbOt1xbFGhcshDuvftI=
 Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
- by SA6PR10MB8109.namprd10.prod.outlook.com (2603:10b6:806:436::19)
+ by SN7PR10MB7075.namprd10.prod.outlook.com (2603:10b6:806:34f::11)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.14; Wed, 17 Jul
- 2024 09:10:04 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23; Wed, 17 Jul
+ 2024 09:15:04 +0000
 Received: from PH0PR10MB5893.namprd10.prod.outlook.com
  ([fe80::79f1:d24f:94ea:2b53]) by PH0PR10MB5893.namprd10.prod.outlook.com
  ([fe80::79f1:d24f:94ea:2b53%3]) with mapi id 15.20.7762.025; Wed, 17 Jul 2024
- 09:10:04 +0000
-Message-ID: <6ce29c92-d9f8-413d-92f3-8a30e937f746@oracle.com>
-Date: Wed, 17 Jul 2024 10:09:56 +0100
-Subject: Re: [PATCH v4 05/12] vfio/iommufd: Introduce auto domain creation
+ 09:15:04 +0000
+Message-ID: <84cbe922-a03a-4ea1-a1a3-90a4d4e449a1@oracle.com>
+Date: Wed, 17 Jul 2024 10:14:56 +0100
+Subject: Re: [PATCH v4 09/12] vfio/iommufd: Implement
+ VFIOIOMMUClass::set_dirty_tracking support
 To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>
-Cc: "Liu, Yi L" <yi.l.liu@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "Liu, Yi L" <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Avihai Horon <avihaih@nvidia.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+ Avihai Horon <avihaih@nvidia.com>
 References: <20240712114704.8708-1-joao.m.martins@oracle.com>
- <20240712114704.8708-6-joao.m.martins@oracle.com>
- <f98463ba-32d1-4d9c-876c-715d0ca6ae3c@redhat.com>
- <befcbcfb-2ec4-4ec7-bd14-504c9363b3ca@oracle.com>
- <a67edbc5-68ce-4967-b8b9-a440904ed1b1@oracle.com>
- <SJ0PR11MB674475CA28136228FE93072A92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20240712114704.8708-10-joao.m.martins@oracle.com>
+ <SJ0PR11MB6744B9EA05FE77ED2FA9C96C92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
 Content-Language: en-US
 From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <SJ0PR11MB674475CA28136228FE93072A92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
+In-Reply-To: <SJ0PR11MB6744B9EA05FE77ED2FA9C96C92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0276.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:195::11) To PH0PR10MB5893.namprd10.prod.outlook.com
+X-ClientProxiedBy: LO4P123CA0077.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:190::10) To PH0PR10MB5893.namprd10.prod.outlook.com
  (2603:10b6:510:149::11)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|SA6PR10MB8109:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88c2bfe1-e245-4438-a1e5-08dca6403e9f
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|SN7PR10MB7075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9dd1e03a-9e8a-4471-2158-08dca640f1b7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UkRwbzMyZ0lCY3o3b3MwVjdVSy9NZkxwUXJBNzBPN2pPekVNc2FTcTZlMnZI?=
- =?utf-8?B?TTVuaDBUcmRNdmg3S0VraWlPSzlRSEM3eGRTeTZTYjFCVEJFcFNuQ1JweGVV?=
- =?utf-8?B?em5QYjNjT3VidEl0QlNWdjRSZWM3a1FzdEdPNDFYYU43dExFZmJaa2pLb2k1?=
- =?utf-8?B?NmJFN1o1NHd0bjZUMWZjUW0vRXp6eUExMEZCTmZ3c1hXbWxCWjZuZUZWZHBp?=
- =?utf-8?B?dXRkQTlDR2RkSlpKRzV0cUdqYlVac0M4UU9TQytsZHhHQzhGQit6R2FHWnoy?=
- =?utf-8?B?TVl2dGhBRFJSZlZlMVBsK1lYVjZ3Z1AzSTVmYzB3WThQaW9zWDJwRnJ1Y2p5?=
- =?utf-8?B?dzhDTWNTZDBjTVl3d3Z0QzRPdEFlMDdxRHQyWmJPcXM3Nlk0VmIyWlV3Qmoy?=
- =?utf-8?B?QnF0WnFBamM1SXFTcmc2RHFFSmJxUlNCeC9BMHVIUzJ6cHhUSXVmZHI5d3Fo?=
- =?utf-8?B?RlB0SG02cE5GaGxrNW50WDd4VUd2bU85ZUo0ZnJENDdjN2c2U2svNUlyTEZ2?=
- =?utf-8?B?c0dMRlVDc2xyVUxCTi94dDFDR1ByMmxPWWhSTGYzM2htd0NDRmZyUWZkTGdR?=
- =?utf-8?B?a2QzSk5TcjIwWjY5VThqcnJtUVFTNWJoVmRkL3NudS9hOXVXMTdDVDFkWTZ4?=
- =?utf-8?B?Q3A1ZFN0VVdHclYzZ3Vtb2paYVpVcnFwbXRtREUrYzJvRnhodllIUm03QlJw?=
- =?utf-8?B?Zk5PaDJYMDV4d0xRaGNOcFlZeFVISHJjOG1jVDhYYy9Cc0J3Vk4zdkNvZVo2?=
- =?utf-8?B?MTBIUkYvWWZyTk0wYU5nbS9BL2YvNTl0M05KOGdQYWZKZjdJSGpTN1VWaGRG?=
- =?utf-8?B?NE1Yc2xHcUxCb1hiSXBFSzZBbzhMTDJEMjNsbk1sQWFnUlpqQ3JUOU4xTk1m?=
- =?utf-8?B?eHV0VWlidDQ4dlVhcEYxZ1lEZjVsdTV0QkhETUxEcVI3ZTVyM2pXMEpMVGVp?=
- =?utf-8?B?QXNiMFZmcDJrM1lWRFRMUDlVb1owUlpzZkFJOTFqMUROMVFRNkhJdUczYlhF?=
- =?utf-8?B?NXN1ZHo1cnNaVjRHaithd1pvZFVXbjFNQkRtUUdqTGZYT2VEQXEwTEx1RFBL?=
- =?utf-8?B?L2pFaVZTTmNjOUtMcHY5aVpRcUI1Sk9HVUZHVDNRbGpTNkFIdnFCVU9EVUpJ?=
- =?utf-8?B?aXZBbXpVVC90YmE1eDdYRHBQS2hwQVFzckJGQlFXQVhvT1djL0RkaHYxQXFm?=
- =?utf-8?B?MG4zUGovOXZiMy82OFJIcUJNZlJ0NVF2TjB1ZEk2RnNPN3JHSTdqa3RPK205?=
- =?utf-8?B?eGtJcjMvb3BqcWtLaWFVbEhLR3BBZ3VjbnJ3YTlvMkpkUFRlbGlOeTI4THlG?=
- =?utf-8?B?UFNBSEowbWNaeFVtQ2Zzd2lYYnRMWTQ1WFpsSis0dUNKQ0t3eGxVQzBkKzV5?=
- =?utf-8?B?VEtidEdKUTh5NGp4dWpQVWhtNUI1RTBsN0dJN3ZxNEk1bHA1MkxRTzJobDha?=
- =?utf-8?B?d0tiQ1hCbVdSdGpQZ1EzWU5WSG5NQytUWVdrU2tKR2NSQ1RZLzByNDZtQ3Fl?=
- =?utf-8?B?SUtkbG9WYzJNbmtpQWRkUEFGM1ZKZ3M3YjR0ZmV5MU5BbHBLaTNWS1FGSURR?=
- =?utf-8?B?RmFmYWx2Zk1LT29OSjhaUExLcDlGczNKV3N0TE16TXdUYzVlbGg2bjl6YkRE?=
- =?utf-8?B?bWV2TXFiZ1FubHVIS1lTWDZQYjcvZjZTS21QNlVZTHFHVHBha3QySExKbzhM?=
- =?utf-8?B?ajJwcEFnUk1Da2k5MVpaaU52dmtyK0hDMmU2YVZOOVFTc1ZsUXdQVnowbXlJ?=
- =?utf-8?B?Uiswd3FaNmU2OVBMTHBLUzZJOXo1d1N2RDloZHB5eXc2dDJvY3ZyK0FWUkZM?=
- =?utf-8?B?S3c2SEJBMmExdXJzKzdNQT09?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eWRNazRRellJSHN3aWxjV0VTZVBkdzAwbUlZZGdHc3lDQmJZL0Y4TGdiYWpa?=
+ =?utf-8?B?SEFiRDgxTlNCdXJGWXZOZHFpUVVBZ20vQ1RqVk9NNFpZMkVVVzFjR1U5cTRZ?=
+ =?utf-8?B?Z0xHb0VQbVFKdXd0S1pSMVNzY200SmpUUDllYktjVHg4M2dZSk0rUkVDSFV1?=
+ =?utf-8?B?NHl4VG1Zblc5WGsyNldIVFJtcTFIZjVqeFlPWG5JV3VGNjFJUzdSUHd6QVBt?=
+ =?utf-8?B?ZjdYU1Frbm5Vc3NkL24ycGkyaVZ0RTIxMENqazhyL3hUYk5TT3Vjb0JvSC92?=
+ =?utf-8?B?dWh5ZnN4TUVlVTJwaXdSMEJ6QllyVDRRL3ZtTzBRMkxrY283d2ZxamplUkJL?=
+ =?utf-8?B?R3FYQkRwdlJIRzBzT2VCaVlBaThsOS92YXdrS1hJYUpWcERaOGZ1VnczRGto?=
+ =?utf-8?B?bW5ha0RzMXUybmViSVo0MldwWDZhMzl6bjFxbTVwUUdYMHVsZmg2dUlvcVJJ?=
+ =?utf-8?B?bFJ1ZFV2Q1VISFk0ejdzeTVYcklPRDJxY2xOZ09SbU1KUUhBM1BQQkZDOU5U?=
+ =?utf-8?B?MFAwSDBJWmJDa1BldFI5VzJsK01JYXFkc0ZyK2ZnSlI3ZXJWVXkvWGZPWnJa?=
+ =?utf-8?B?eFVKd2JVTkpwa2FCRWVvaGpFajlrYUM3Z04ycUV6R2hPTmVtT29uZ0dhT2JO?=
+ =?utf-8?B?Z0FKcndWcFJVc0VvVW5PNWZTRGxHOG5DWFZRdjkrU2h6QndhSVEzYm94c1U0?=
+ =?utf-8?B?YmNYdEpoQXV1WUtQY0NyRlBySncwdkxRc1paVit6OE8rNjV0UlR1cEc0Tk1B?=
+ =?utf-8?B?bzNmUllyTUhLVFloRlBQQ05qTXIxVTZ4eVBGVmdCNDllMlVCMnBvZWdsWEow?=
+ =?utf-8?B?K2RRSytNckZGV1BENlFTSUJ5NHZ5YThCb3E2UFZCS29zR3BCNHV2RVpmWjlt?=
+ =?utf-8?B?eHV6Qm0rU1JGcVdmaW9rT3k2cjk5Rmd6NU42Z1RJbFAyUlVDcXpiMzhWM2Nv?=
+ =?utf-8?B?OWUzV21UblltbTMzSVNLSlY5T0VTMFRWUWFTY3lkK3dsbm1ZVG41cEdkakF1?=
+ =?utf-8?B?N0lxdVE0R2sraTJpUjBmdDIyVEJDSVgybFdLVXBydVVjdTlDbnZURS9rU05C?=
+ =?utf-8?B?aDJYcVJKUjJldytDOUp1dzRocEpMcWlIM0dVc3BJK3AyeW82VmVoM2RCNHdE?=
+ =?utf-8?B?a2tVMU9KakRFUFpHczlTVjZpWDRhTVdnSVYxTzgzdkgyK09BMWhUUGo3azhz?=
+ =?utf-8?B?OHQ3Q0hGaDdWSDloVWRTSENQRkNEWVVEZ0R6U0c0SEVoM09POVM2ZnZoN2V5?=
+ =?utf-8?B?dldwTGlac2p6bE14SnBLSmxaYjIxcVZFbWhBNi9QVkhXc2JhYzZSbFRRblJp?=
+ =?utf-8?B?a1dwRTRFN01nNXE0QU9jMnJwSVFlZ0RuY3pERFdLSlVjWm1qSCtqVGlDQzNW?=
+ =?utf-8?B?c2J3YTB6ZTVPY043L1lRdWtRQ2oxOG4xWXV6Y3MxeW9IQzQyaGw5NkhMaTdD?=
+ =?utf-8?B?UkZBR3hCaWpjdkdTMFVsS21zaVNkRVB4MG5haFVYVFZXWERQM2lvUVlTKzRq?=
+ =?utf-8?B?MkdPSUlLaVc4eTdIR0d1UkJwMXBHMFlmUjFTbnovaC9TbURnTHJKYkc4anRO?=
+ =?utf-8?B?a3VVLzRKMHBBMEk5MTlkbDR5UE5mU3YzUEQ2VklLd096YjZJTmFwc1g0U2kr?=
+ =?utf-8?B?bldIZVhqbDRlVUhnNjMzR0xYUnBnYVIxb0p3eEpkRzV3d0lMRFdBamJVYWlS?=
+ =?utf-8?B?TGFtOHc4cHY0LytqcDkweVpFalVhakdLd0t5TVprNkx2YURsSnI1bCtsaUc0?=
+ =?utf-8?B?YUhrbENScmpwaEVzQ1pGNzFubS9kR3lKZUVpSnFVZHMvUUYvQTR6KzJQSzha?=
+ =?utf-8?B?Uk92ekNXYTJKcTVHOGIwZz09?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U04xNW8vMHB0dGk1VEZRZ3pmUUlvSHhpUVJuZ0NrYlpqUFdCanB1NzZiM1ZU?=
- =?utf-8?B?VFc5NXQ4S1M3c2dOd25hTi9KbUlXOGJ2bkxIeEJwMmg4elNWdDVLR0RuMmh6?=
- =?utf-8?B?UGxjNmh2amlQa0hvS29JR3p4TEhwWU1Yamt2KzVmZ0RraWkxcEtxT1U3NzVx?=
- =?utf-8?B?dHpKNVA1NTNINTRyZXZkK2xvU252aFBSekFKa1ZmQjBQajRZZGVLYVUvWVJ2?=
- =?utf-8?B?OEMrekxiTzhlbWJTUDRuVUEwcjQ3T0dSTUVUb3RqS0ExUUF6QldiL0h3ek1l?=
- =?utf-8?B?bUQra25WTHdmN3dFK2d3SVhTS0crVWNXcUZ0MCtXVGg2bGp0WlFnamRsQmVw?=
- =?utf-8?B?c3FRSnFiayswc1BzY3crbldZVVlhWnZTck5Wa1l1NUhnRVl6MnkwYk4vUStW?=
- =?utf-8?B?OVlwUEVsbG1hQ3BoVmhVdy85WStnREZMaGVRR1djdit0dFMzRTNOZ1dmZGk1?=
- =?utf-8?B?V295ZW1ybHFBU2JCbU5ZNk5NMHpvVy9MNXZNcy93RkxaL05Oc0lreGxLQXc3?=
- =?utf-8?B?NEl3a21KKzBCSUlmeWpxeVBqdllZNzIrckpJM00xOHZUNHRRdm1EWk5hdnFC?=
- =?utf-8?B?dUszVkJ5dFhuMHA2KzVXb0UzUC9laG1oSWN1ZjRFR2IydzNxWXdaVUN0dzlv?=
- =?utf-8?B?aGJiRFhPRU9JYTc3a1g5WjVYWnZNenlETXBtL2c4VGtsRUlRZFcxNkl5QmtL?=
- =?utf-8?B?WUZnQVhETkxDM00zTm83ZE5tQUNqYVdCbEs0MENscVE2MzV5Qk5rUGh1S0lu?=
- =?utf-8?B?TGFaK0RUREJWS3pyZ1gvVnpEekhKdnpFczNvU1IxcTVYMTNZM0tDZUF6eTB1?=
- =?utf-8?B?cVMyU0ZIdHRCVld5ZVZzOURYbmJmYUVuV1JnQldJTFdkVWduRHZUN1R0c2VG?=
- =?utf-8?B?UDlDYWc3NzhyV29oNHBmMDZBZC80eXVqR1BYZ1FqNW5QaENoNkM4NE12VENh?=
- =?utf-8?B?RVdaaU9RTWVSUVhBNkVjTWo0bHVUcTBZYlRZZ0M2K3BteUE1OHZaSW9qL2Zz?=
- =?utf-8?B?c0hLdE1NSytBK3RjU2RyZDZlWHhGZnEzVmx3TU1kbTkwMGYxSVZETXhSeUMy?=
- =?utf-8?B?Q0JGVWkyaXN2MVMvT0daUzlVRjh0TmZrY0FEaVozazFYb21iamQ2L2x0d3Bh?=
- =?utf-8?B?VGQ2ZFphVmZzWFB6T2VSL0pJaFlnZDgrODVUck04bjIzYzZLbDRlRlp3N3Bv?=
- =?utf-8?B?V1ZFSU9xNldmdmpxbGE0d1BRQ0FKd3ZrYmJYcStSVUtUQWQvTjlZd1dTcFVR?=
- =?utf-8?B?dU9SS3BOSmxHVkN4K2ZLNEtLdkNydjNOYit6R3RFWXZtVmhaeXl4cEhSZ3V5?=
- =?utf-8?B?U29oMDZ4aFdpUVJaUXVqSytVUVBnQ05GS01PdWFrZFF1TFJiVVVDdDFxWVk2?=
- =?utf-8?B?ek9KSVdCTU1pODVxTHNGamRtK1JSZFNJS1o5eXR3dlluRHZnb2R2K2NVMWlS?=
- =?utf-8?B?ZmRtWXdnQzlYMG9XOTI1NDZHNVJTazRrdDh5cmNncXJaR3RCRmIvVmxzVzR5?=
- =?utf-8?B?NHhEVjJuVDlWZ1N0VndRQ2dtYVZCNTFDWDBBWnlBS2M3MnFoQUFKTi9oeWhl?=
- =?utf-8?B?M09kRUs4VzRZSEFLeHZNd3VDY2lFZ2Flald3TG1LTG1wc1BmS1dBbU1VK1Nx?=
- =?utf-8?B?dkZKTXBKK0gyS2lmcThBVFNXcUVzLytsUG0vNDF4MHVUSS83SlpORWlUM0xT?=
- =?utf-8?B?cVlkWG5hRW1Pa2gySjhqUTg4YUMwdHpCcXJ0aE9rbXZqU0NZK09MMzZsM2NI?=
- =?utf-8?B?Z3lISTJ5ckdwL1FpSHJQdWpycU9aUDU1YnNMSkwyaG1FN2l6WDFRSk8xNHcy?=
- =?utf-8?B?dHdrWm95UUlZaHlXcHpPMldibCt6aCtJaFVhUktTK3dGTFVtd2Eva0ZrQTAr?=
- =?utf-8?B?SDkyd1hvUVgxS0hNOGg0cWJyRk40YUdsa01kek9UTEtLT1I0emdkSjdGa2xO?=
- =?utf-8?B?MTJCa3dBNnA1VjB5aEdHajRZNUxMOFNqYlpHRWFWQzBYa2JNblBnaEJsSEUy?=
- =?utf-8?B?R01hMGd6VVB6V1FuRkpqMW94dElDUkNsS3A5NEZHczhmUTczNnV0V0xpK2lw?=
- =?utf-8?B?WU10Ti9WUUJTS2ZUVUdvRHVnQkNDS0FUcWxaS0duNGlnV3ljNmFudGRYbWdx?=
- =?utf-8?B?Zjl4UWlHWmxMVnpjSmdGMExFS0h2NVNiTVlTWkxrdFNyd0ZFc3kxQUkxSUxY?=
- =?utf-8?B?UEE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Nm04WnhDcnhwYitGVTJQem1RVmVHTlB5QnRTQ2dQbG1pcjFFTVZnV1F5V1Q3?=
+ =?utf-8?B?ZlNoZmFUZDRYK3FwNzBheEZJREZsVWdQMCsvZGlackNuRXZFMEdCdXV4VTgx?=
+ =?utf-8?B?bDhMY2JnbWkvc3BReU14WG9yTG1Ud0tpR21CU1dCMzh3eFRMYm5EV0d2VWJK?=
+ =?utf-8?B?OFdiOFd2bVhNR3I1ZE5OWEpvOVpsV1RaYUJTaFZ2QUh1Y0wzdzA2VU1ibU01?=
+ =?utf-8?B?b1FFRDBpODhyZUEvVEtTb09ZSVh6MUVZd3gzZ3hzYTVFZTZzQ3c5QzhiVHFl?=
+ =?utf-8?B?QkZoMXU0ZnhsZHd3RUUvS3c3czNYMXFBQWNLeXJ5M3A3bS9OdmhRZmMxMktG?=
+ =?utf-8?B?ZU5QZ3QxK0dlcjhMNC9ROHNLZEx4L08xV2FGL3RpSE9nRjNDbzVwcXJQNHB4?=
+ =?utf-8?B?bFJFeHk1UGJQaEg4TDNMMzloOVIzQlJSNkllMS9mUDlJYjJHTGd0WHF6a3hV?=
+ =?utf-8?B?SDBTZGtuM0Vnbk4zRlhBRlF5K284bHFHT0NQTG56V1VwRzVHaWUzaFk4bWhX?=
+ =?utf-8?B?aUxqSXB0Zi9nSjRxWnNicFBDclkrWDVxdkZsV3VIaDVqTk9maktyeEFpZHla?=
+ =?utf-8?B?R0N5Ky85WkxWZlFJSXFvVnp0N0U0MlJ2SWlYU0V3VFdjTDZLbTNoNnBSaDkz?=
+ =?utf-8?B?NTh3Z3JmaFRSazZ5RzRNcFFrSEdQWlpHY3NWRDZqZkFXQ1Fkckd3UC9NL0Nu?=
+ =?utf-8?B?Yk0vMEZLWWd2UVM1ZS9JaUJFTXQ1ZnZGZUNhN1RxRFV1NDQ1QkVkdVdvakNm?=
+ =?utf-8?B?aW1IQWVEUW9HVEhWcDlnc042eHN6UTAxK1luUG9CNExuRjZrMXFkQVRPekpr?=
+ =?utf-8?B?a3FYczdidTRYR094VFBhVW4yS3hKdERydWJjSEVsZUM4cnJ1ek93V1hYTi9l?=
+ =?utf-8?B?bWd6eWNDcUlvUGRQU083SFpmbmhoRVpZL2tNQkMzYzR0K3hZZHdsVDUvVzFw?=
+ =?utf-8?B?bVR0MVhaOGV0YS9sVk81Rk1PSGNncFZlRFlRbGoxUTRHL3FUOEZHbzRzYUMz?=
+ =?utf-8?B?QnhDclhJalhCR1pXNmNKaG5jc2NWNmRhQWk0dVNFbzVEWUFNWTlWZzBaajZz?=
+ =?utf-8?B?UUNwMlo4N1BTNk90blM4M0RraHpOeEVuMGpxTm1WWjZhd2hsZ05JZ1Q4amNC?=
+ =?utf-8?B?VksvbnBNWDNGd2ZDRUNZMjAwNE9GZ0dZVTY4V0dzUEZiRWJ5K1k5T0NvcGNX?=
+ =?utf-8?B?NytXT3ZFajM5UmFHbXNuU3BGWWFFYjVuWW15cGdkbHBQc1hmVitOTmQ2NURl?=
+ =?utf-8?B?cUpuTEN4UXJCcXNINjZaTTdtQ3IrNW9pUkl1djZncnpQSGhHMXdwaG0rck5R?=
+ =?utf-8?B?T00zT1lFcEZzc25KNVNEV0R4dGFFREwyeXRJNDRFUGlTcDFraGZNVzJjaXZU?=
+ =?utf-8?B?V2V1Rit6c3I4bE5uLzNKZ25DMnNoQUM5ODJDeUYyRmprOHE2Ykllc3Vnb0ZU?=
+ =?utf-8?B?Nm1CR0k5Z2swcytER2RqNTZJL1B2WW8rdHFpSzFaRkVjZFdQZzZWRjhJRkhp?=
+ =?utf-8?B?cmM2TUJlSFVrZmRKSEtXVDgxTVBQLzRORG4zTWFTSU5EVHRvNXBveXlmNzcx?=
+ =?utf-8?B?UThORmw4OWtlN0dkcjNZMk1hdVJiL09iMm40ZldpakpUMzhLeHg2ZlNsbTZV?=
+ =?utf-8?B?cnFJTzBodlpraVBiRXl0cWFHb04raHE0SzY2ajYvZjU2Y3RmdEVPenJ1R2Vz?=
+ =?utf-8?B?ZkczOE1HZnNrN2FDMDJJcXNabUlNK2I0b2ttNlhTdURmenBsbzdEd0dpbEk3?=
+ =?utf-8?B?MEZZZHU1L3JHVXVaem9tKzhsaFpNdjN6amIyV0xsOWdCc0JKVjZNd2JPUkw4?=
+ =?utf-8?B?a2wzSVlIWmJvSUhUYW1qRGFXSnpDTUV4SEJ3MWJtanlQaVhaUHJiNFVFaURy?=
+ =?utf-8?B?amVoaGdoYmNsOXhtY0cwZ2VlbmdiOENXWFRPQlpIeTlVTGttR0YwRUpMY0w1?=
+ =?utf-8?B?cHlVM2s5eEREaTV4ZUsvekpvdUQwd3VkeTJZY01uWCtMb0oxUlZ5d0FLTnQv?=
+ =?utf-8?B?bGtLeEVTV0ExS2xpNlpHZ3hrWndjanhJSnAwQUJZaXBGWXRGN29Ta01rSVpx?=
+ =?utf-8?B?bEw1QzFlM09pWFA0L2REWks4OVBQYWFYTXlHS3dHZkFnWmN5Z3pQOHlqWWYr?=
+ =?utf-8?B?N1ZnWU83WWhvK3ZSMCtuVml2M0lrZWJDN1BPSmpwVktyN1JjYXVXbEJqZWRJ?=
+ =?utf-8?B?bHc9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: cStvWHE89vXlXNkQhQ98raqdREplKZcO5vtJyk03aPN7GsuefH7dNo3KRHgf13JvqgbicfTdl7UUHdrjmewLNzqM0j9iFj5mncRaA/Yh4iN82llslbBJTq3VpVJlfhQvgaDl7T8OL8YiyRQN2lEqBBI94QLGlEk+hHpxm0PzH+C6S5Sb/LIfZAIM+S6i8WeVmihPIoxDb51IfUqLfHcDc2X3H5PKqX6x8XiJ9+SVkfVq17dOYUoh2bcNvQ8twTWv7sFL8VnUClNUCCzL+Jr57GJJI9kmfP8T0PeGpeDHpeJzZke5H+HdFSxNISmn64O1JtAeTrnMBNhY2UFqs5vPHxYHaV7NN5ZtDtyNwCEsIrNRdFUz6eCzbDsNT7H0uMJMuxHXmEhut+vSFgCQniHhXcgQYZL0xax3T2b6Q8aPXbJ6J6IVdjhl5RetF0kP6EEJEXqs/0pYfFF0Z94l9rQH9EVzfUoBfcWlDxsTk+VtYK4eyZA3dM6JVp6uJy6NlBb/KgNqTa1MJq1gM4w5Lz8Jx6WrycMqK4NTKxZeQvfiI6SWx0vVsGeE40LfjXK5XE2Bu2bBTmrpZf/8M3BuK+JoOT3OdixXrzW+C/uWPRfdqDU=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: At/jXK+uO+kzW/gbbHX15amzCrdHnEJmWWbZQEtp7c5fSGzF39XNigwpNyXihgYfCmc5wxphmke9SiOBCJCQcSuLp47MW05W9FoSqRFa3INN8gaX9/ytGEKbZPEMqiX14gSYeamOZduEhS2PO7jKTiIOnvpQPLLnqTOjMUJXfz5S2nnsOJP1GH/R82X8ebuUge394Yimy0JwbCiQgos+4VF9tq/v6DUEbSM1i0WqoDQDMPHAbCYmMZWxdyb+KXweSmWunOK9VQnHhYpOf+EvUWdewhhWGSWgFK/SOdwZ4vJPhcpOCQWAa3HrtNyw9WZFPd65+OPJk3/2gMt7uMHpaukt+8tz02Yl+wySRtWcqXHALOOJv7kzdkY7MD/saVOA40YxbtUK0p10CXsWk2NUxY2Ll8Mi0ziRSaL5eT7BBBs24jZn0JJ8+MdBbhQLafOV/Z+gXt/5F4TfV07tH0z6+RXOofbUcwB8LQTAvRM0dL3LV8K+BzbcE1wSmOTW3T86lSfJNwaF6AH/yJnLzSZjz6AweSHqsXyFu8REN8WCTgXCctl3j5jHffNl/a1QGDG3xNE+a6GF9Ej4CmVKmd/5lg1sSqeANgbTF7vZJYNGjOg=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88c2bfe1-e245-4438-a1e5-08dca6403e9f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9dd1e03a-9e8a-4471-2158-08dca640f1b7
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2024 09:10:04.0875 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2024 09:15:04.5346 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fG2F/GFE7220wLrRDvGFs9N2oDcRH0l1d1lHcnDkdwkVAlm2gIAqDziBXZBvqNhADpAxl4LQ/lH3OTDCkDwvVAVO/9soGhBVTCNEesr3oQk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR10MB8109
+X-MS-Exchange-CrossTenant-UserPrincipalName: nmdv9aTo/+oAAOP5GTWdcY+ZYAJenjgmRaErHg4DdJaguuWKVU2dUmoQk0J3EYhJSX9I7ePD21N095AlKuBtEToBKNPiMmH/aTzlGxG2M40=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB7075
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-17_05,2024-07-16_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 phishscore=0 malwarescore=0 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 phishscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2407170070
-X-Proofpoint-GUID: YIMC9Bj7OsrhY9l8SlqaQOJ4B51TmXTf
-X-Proofpoint-ORIG-GUID: YIMC9Bj7OsrhY9l8SlqaQOJ4B51TmXTf
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-GUID: mYArQqaaxVtGX8NpcSGo0OQXmyAtfaVt
+X-Proofpoint-ORIG-GUID: mYArQqaaxVtGX8NpcSGo0OQXmyAtfaVt
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -219,355 +216,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/07/2024 03:52, Duan, Zhenzhong wrote:
+On 17/07/2024 03:24, Duan, Zhenzhong wrote:
 > 
 > 
 >> -----Original Message-----
 >> From: Joao Martins <joao.m.martins@oracle.com>
->> Subject: Re: [PATCH v4 05/12] vfio/iommufd: Introduce auto domain
->> creation
+>> Subject: [PATCH v4 09/12] vfio/iommufd: Implement
+>> VFIOIOMMUClass::set_dirty_tracking support
 >>
->> On 16/07/2024 17:44, Joao Martins wrote:
->>> On 16/07/2024 17:04, Eric Auger wrote:
->>>> Hi Joao,
->>>>
->>>> On 7/12/24 13:46, Joao Martins wrote:
->>>>> There's generally two modes of operation for IOMMUFD:
->>>>>
->>>>> * The simple user API which intends to perform relatively simple things
->>>>> with IOMMUs e.g. DPDK. It generally creates an IOAS and attach to VFIO
->>>>
->>>> It generally creates? can you explicit what is "it"
->>>>
->>> 'It' here refers to the process/API-user
->>>
->>>> I am confused by this automatic terminology again (not your fault). the
->> doc says:
->>>> "
->>>>
->>>>   *
->>>>
->>>>     Automatic domain - refers to an iommu domain created automatically
->>>>     when attaching a device to an IOAS object. This is compatible to the
->>>>     semantics of VFIO type1.
->>>>
->>>>   *
->>>>
->>>>     Manual domain - refers to an iommu domain designated by the user as
->>>>     the target pagetable to be attached to by a device. Though currently
->>>>     there are no uAPIs to directly create such domain, the datastructure
->>>>     and algorithms are ready for handling that use case.
->>>>
->>>> "
->>>>
->>>>
->>>> in 1) the device is attached to the ioas id (using the auto domain if I am
->> not wrong)
->>>> Here you attach to an hwpt id. Isn't it a manual domain?
->>>>
->>>
->>> Correct.
->>>
->>> The 'auto domains' generally refers to the kernel-equivalent own
->> automatic
->>> attaching to a new pagetable.
->>>
->>> Here I call 'auto domains' in the userspace version too because we are
->> doing the
->>> exact same but from userspace, using the manual API in IOMMUFD.
->>>
->>>>> and mainly performs IOAS_MAP and UNMAP.
->>>>>
->>>>> * The native IOMMUFD API where you have fine grained control of the
->>>>> IOMMU domain and model it accordingly. This is where most new
->> feature
->>>>> are being steered to.
->>>>>
->>>>> For dirty tracking 2) is required, as it needs to ensure that
->>>>> the stage-2/parent IOMMU domain will only attach devices
->>>>> that support dirty tracking (so far it is all homogeneous in x86, likely
->>>>> not the case for smmuv3). Such invariant on dirty tracking provides a
->>>>> useful guarantee to VMMs that will refuse incompatible device
->>>>> attachments for IOMMU domains.
->>>>>
->>>>> Dirty tracking insurance is enforced via HWPT_ALLOC, which is
->>>>> responsible for creating an IOMMU domain. This is contrast to the
->>>>> 'simple API' where the IOMMU domain is created by IOMMUFD
->> automatically
->>>>> when it attaches to VFIO (usually referred as autodomains) but it has
->>>>> the needed handling for mdevs.
->>>>>
->>>>> To support dirty tracking with the advanced IOMMUFD API, it needs
->>>>> similar logic, where IOMMU domains are created and devices attached
->> to
->>>>> compatible domains. Essentially mimmicing kernel
->>>>> iommufd_device_auto_get_domain(). With mdevs given there's no
->> IOMMU domain
->>>>> it falls back to IOAS attach.
->>>>>
->>>>> The auto domain logic allows different IOMMU domains to be created
->> when
->>>>> DMA dirty tracking is not desired (and VF can provide it), and others
->> where
->>>>> it is. Here is not used in this way here given how VFIODevice migration
->>>>
->>>> Here is not used in this way here ?
->>>>
->>>
->>> I meant, 'Here it is not used in this way given (...)'
->>>
->>>>> state is initialized after the device attachment. But such mixed mode of
->>>>> IOMMU dirty tracking + device dirty tracking is an improvement that
->> can
->>>>> be added on. Keep the 'all of nothing' of type1 approach that we have
->>>>> been using so far between container vs device dirty tracking.
->>>>>
->>>>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->>>>> ---
->>>>>  include/hw/vfio/vfio-common.h |  9 ++++
->>>>>  include/sysemu/iommufd.h      |  5 +++
->>>>>  backends/iommufd.c            | 30 +++++++++++++
->>>>>  hw/vfio/iommufd.c             | 82
->> +++++++++++++++++++++++++++++++++++
->>>>>  backends/trace-events         |  1 +
->>>>>  5 files changed, 127 insertions(+)
->>>>>
->>>>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-
->> common.h
->>>>> index 7419466bca92..2dd468ce3c02 100644
->>>>> --- a/include/hw/vfio/vfio-common.h
->>>>> +++ b/include/hw/vfio/vfio-common.h
->>>>> @@ -95,10 +95,17 @@ typedef struct VFIOHostDMAWindow {
->>>>>
->>>>>  typedef struct IOMMUFDBackend IOMMUFDBackend;
->>>>>
->>>>> +typedef struct VFIOIOASHwpt {
->>>>> +    uint32_t hwpt_id;
->>>>> +    QLIST_HEAD(, VFIODevice) device_list;
->>>>> +    QLIST_ENTRY(VFIOIOASHwpt) next;
->>>>> +} VFIOIOASHwpt;
->>>>> +
->>>>>  typedef struct VFIOIOMMUFDContainer {
->>>>>      VFIOContainerBase bcontainer;
->>>>>      IOMMUFDBackend *be;
->>>>>      uint32_t ioas_id;
->>>>> +    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
->>>>>  } VFIOIOMMUFDContainer;
->>>>>
->>>>>  OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer,
->> VFIO_IOMMU_IOMMUFD);
->>>>> @@ -135,6 +142,8 @@ typedef struct VFIODevice {
->>>>>      HostIOMMUDevice *hiod;
->>>>>      int devid;
->>>>>      IOMMUFDBackend *iommufd;
->>>>> +    VFIOIOASHwpt *hwpt;
->>>>> +    QLIST_ENTRY(VFIODevice) hwpt_next;
->>>>>  } VFIODevice;
->>>>>
->>>>>  struct VFIODeviceOps {
->>>>> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
->>>>> index 57d502a1c79a..e917e7591d05 100644
->>>>> --- a/include/sysemu/iommufd.h
->>>>> +++ b/include/sysemu/iommufd.h
->>>>> @@ -50,6 +50,11 @@ int
->> iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->>>>>  bool iommufd_backend_get_device_info(IOMMUFDBackend *be,
->> uint32_t devid,
->>>>>                                       uint32_t *type, void *data, uint32_t len,
->>>>>                                       uint64_t *caps, Error **errp);
->>>>> +bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t
->> dev_id,
->>>>> +                                uint32_t pt_id, uint32_t flags,
->>>>> +                                uint32_t data_type, uint32_t data_len,
->>>>> +                                void *data_ptr, uint32_t *out_hwpt,
->>>>> +                                Error **errp);
->>>>>
->>>>>  #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+>> ioctl(iommufd, IOMMU_HWPT_SET_DIRTY_TRACKING, arg) is the UAPI that
+>> enables or disables dirty page tracking. It is used if the hwpt
+>> has been created with dirty tracking supported domain (stored in
+>> hwpt::flags) and it is called on the whole list of iommu domains
+>> it is are tracking. On failure it rolls it back.
+>>
+>> The checking of hwpt::flags is introduced here as a second user
+>> and thus consolidate such check into a helper function
+>> iommufd_hwpt_dirty_tracking().
+>>
+>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+>> ---
+>> include/sysemu/iommufd.h |  3 +++
+>> backends/iommufd.c       | 23 +++++++++++++++++++++++
+>> hw/vfio/iommufd.c        | 39
+>> ++++++++++++++++++++++++++++++++++++++-
+>> backends/trace-events    |  1 +
+>> 4 files changed, 65 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+>> index e917e7591d05..7416d9219703 100644
+>> --- a/include/sysemu/iommufd.h
+>> +++ b/include/sysemu/iommufd.h
+>> @@ -55,6 +55,9 @@ bool
+>> iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
+>>                                 uint32_t data_type, uint32_t data_len,
+>>                                 void *data_ptr, uint32_t *out_hwpt,
+>>                                 Error **errp);
+>> +bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be,
+>> uint32_t hwpt_id,
+>> +                                        bool start, Error **errp);
+>>
+>> #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD
 >> TYPE_HOST_IOMMU_DEVICE "-iommufd"
->>>>>  #endif
->>>>> diff --git a/backends/iommufd.c b/backends/iommufd.c
->>>>> index 2b3d51af26d2..5d3dfa917415 100644
->>>>> --- a/backends/iommufd.c
->>>>> +++ b/backends/iommufd.c
->>>>> @@ -208,6 +208,36 @@ int
->> iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->>>>>      return ret;
->>>>>  }
->>>>>
->>>>> +bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t
->> dev_id,
->>>>> +                                uint32_t pt_id, uint32_t flags,
->>>>> +                                uint32_t data_type, uint32_t data_len,
->>>>> +                                void *data_ptr, uint32_t *out_hwpt,
->>>>> +                                Error **errp)
->>>>> +{
->>>>> +    int ret, fd = be->fd;
->>>>> +    struct iommu_hwpt_alloc alloc_hwpt = {
->>>>> +        .size = sizeof(struct iommu_hwpt_alloc),
->>>>> +        .flags = flags,
->>>>> +        .dev_id = dev_id,
->>>>> +        .pt_id = pt_id,
->>>>> +        .data_type = data_type,
->>>>> +        .data_len = data_len,
->>>>> +        .data_uptr = (uint64_t)data_ptr,
->>>>> +    };
->>>>> +
->>>>> +    ret = ioctl(fd, IOMMU_HWPT_ALLOC, &alloc_hwpt);
->>>>> +    trace_iommufd_backend_alloc_hwpt(fd, dev_id, pt_id, flags,
->> data_type,
->>>>> +                                     data_len, (uint64_t)data_ptr,
->>>>> +                                     alloc_hwpt.out_hwpt_id, ret);
->>>>> +    if (ret) {
->>>>> +        error_setg_errno(errp, errno, "Failed to allocate hwpt");
->>>>> +        return false;
->>>>> +    }
->>>>> +
->>>>> +    *out_hwpt = alloc_hwpt.out_hwpt_id;
->>>>> +    return true;
->>>>> +}
->>>>> +
->>>>>  bool iommufd_backend_get_device_info(IOMMUFDBackend *be,
->> uint32_t devid,
->>>>>                                       uint32_t *type, void *data, uint32_t len,
->>>>>                                       uint64_t *caps, Error **errp)
->>>>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->>>>> index 077dea8f1b64..325c7598d5a1 100644
->>>>> --- a/hw/vfio/iommufd.c
->>>>> +++ b/hw/vfio/iommufd.c
->>>>> @@ -212,10 +212,86 @@ static bool
->> iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, Error **errp)
->>>>>      return true;
->>>>>  }
->>>>>
->>>>> +static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->>>>> +                                         VFIOIOMMUFDContainer *container,
->>>>> +                                         Error **errp)
->>>>> +{
->>>>> +    IOMMUFDBackend *iommufd = vbasedev->iommufd;
->>>>> +    uint32_t flags = 0;
->>>>> +    VFIOIOASHwpt *hwpt;
->>>>> +    uint32_t hwpt_id;
->>>>> +    int ret;
->>>>> +
->>>>> +    /* Try to find a domain */
->>>>> +    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
->>>>> +        ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id,
->> errp);
->>>>> +        if (ret) {
->>>>> +            /* -EINVAL means the domain is incompatible with the device.
->> */
->>>>> +            if (ret == -EINVAL) {
->>>>> +                /*
->>>>> +                 * It is an expected failure and it just means we will try
->>>>> +                 * another domain, or create one if no existing compatible
->>>>> +                 * domain is found. Hence why the error is discarded below.
->>>>> +                 */
->>>>> +                error_free(*errp);
->>>>> +                *errp = NULL;
->>>>> +                continue;
->>>>> +            }
->>>>> +
->>>>> +            return false;
->>>>> +        } else {
->>>>> +            vbasedev->hwpt = hwpt;
->>>>> +            QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
->>>>> +            return true;
->>>>> +        }
->>>>> +    }
->>>>> +
->>>>> +    if (!iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
->>>>> +                                    container->ioas_id, flags,
->>>>> +                                    IOMMU_HWPT_DATA_NONE, 0, NULL,
->>>>> +                                    &hwpt_id, errp)) {
->>>>> +        return false;
->>>>> +    }
->>>>> +
->>>>> +    hwpt = g_malloc0(sizeof(*hwpt));
->>>>> +    hwpt->hwpt_id = hwpt_id;
->>>>> +    QLIST_INIT(&hwpt->device_list);
->>>>> +
->>>>> +    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id,
->> errp);
->>>>> +    if (ret) {
->>>>> +        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
->>>>> +        g_free(hwpt);
->>>>> +        return false;
->>>>> +    }
->>>>> +
->>>>> +    vbasedev->hwpt = hwpt;
->>>>> +    QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
->>>>> +    QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
->>>>> +    return true;
->>>>> +}
->>>>> +
->>>>> +static void iommufd_cdev_autodomains_put(VFIODevice *vbasedev,
->>>>> +                                         VFIOIOMMUFDContainer *container)
->>>>> +{
->>>>> +    VFIOIOASHwpt *hwpt = vbasedev->hwpt;
->>>>> +
->>>>> +    QLIST_REMOVE(vbasedev, hwpt_next);
->>>> don't you want to reset vbasedev->hwpt = NULL too?
->>>>
->>> Yeap, Thanks for catching that
->>>
->>>>
->>>>> +    if (QLIST_EMPTY(&hwpt->device_list)) {
->>>>> +        QLIST_REMOVE(hwpt, next);
->>>>> +        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
->>>>> +        g_free(hwpt);
->>>>> +    }
->>>>> +}
->>>>> +
->>>>>  static bool iommufd_cdev_attach_container(VFIODevice *vbasedev,
->>>>>                                            VFIOIOMMUFDContainer *container,
->>>>>                                            Error **errp)
->>>>>  {
->>>>> +    /* mdevs aren't physical devices and will fail with auto domains */
->>>>> +    if (!vbasedev->mdev) {
->>>>> +        return iommufd_cdev_autodomains_get(vbasedev, container,
->> errp);
->>>>> +    }
->>>>> +
->>>>>      return !iommufd_cdev_attach_ioas_hwpt(vbasedev, container-
->>> ioas_id, errp);
->>>>>  }
->>>>>
->>>>> @@ -224,6 +300,11 @@ static void
->> iommufd_cdev_detach_container(VFIODevice *vbasedev,
->>>>>  {
->>>>>      Error *err = NULL;
->>>>>
->>>>> +    if (vbasedev->hwpt) {
->>>>> +        iommufd_cdev_autodomains_put(vbasedev, container);
->>>>> +        return;
->>>> Where do we detach the device from the hwpt?
->>>>
->>> In iommufd_backend_free_id() for auto domains
->>>
+>> +
+>> #endif
+>> diff --git a/backends/iommufd.c b/backends/iommufd.c
+>> index 41a9dec3b2c5..239f0976e0ad 100644
+>> --- a/backends/iommufd.c
+>> +++ b/backends/iommufd.c
+>> @@ -239,6 +239,29 @@ bool
+>> iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
+>>     return true;
+>> }
 >>
->> to clarify here I meant *userspace* auto domains
+>> +bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be,
+>> +                                        uint32_t hwpt_id, bool start,
+>> +                                        Error **errp)
+>> +{
+>> +    int ret;
+>> +    struct iommu_hwpt_set_dirty_tracking set_dirty = {
+>> +            .size = sizeof(set_dirty),
+>> +            .hwpt_id = hwpt_id,
+>> +            .flags = !start ? 0 : IOMMU_HWPT_DIRTY_TRACKING_ENABLE,
+>> +    };
+>> +
+>> +    ret = ioctl(be->fd, IOMMU_HWPT_SET_DIRTY_TRACKING, &set_dirty);
+>> +    trace_iommufd_backend_set_dirty(be->fd, hwpt_id, start, ret ? errno :
+>> 0);
+>> +    if (ret) {
+>> +        error_setg_errno(errp, errno,
+>> +                         "IOMMU_HWPT_SET_DIRTY_TRACKING(hwpt_id %u) failed",
+>> +                         hwpt_id);
+>> +        return false;
+>> +    }
+>> +
+>> +    return true;
+>> +}
+>> +
+>> bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t
+>> devid,
+>>                                      uint32_t *type, void *data, uint32_t len,
+>>                                      uint64_t *caps, Error **errp)
+>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+>> index edc8f97d8f3d..da678315faeb 100644
+>> --- a/hw/vfio/iommufd.c
+>> +++ b/hw/vfio/iommufd.c
+>> @@ -110,6 +110,42 @@ static void
+>> iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
+>>     iommufd_backend_disconnect(vbasedev->iommufd);
+>> }
 >>
->> *kernel* auto domains (mdev) goes via DETACH_IOMMUFD_PT
+>> +static bool iommufd_hwpt_dirty_tracking(VFIOIOASHwpt *hwpt)
+>> +{
+>> +    return hwpt->hwpt_flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+>> +}
+>> +
+>> +static int iommufd_set_dirty_page_tracking(const VFIOContainerBase
+>> *bcontainer,
+>> +                                           bool start, Error **errp)
+>> +{
+>> +    const VFIOIOMMUFDContainer *container =
+>> +        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
+>> +    VFIOIOASHwpt *hwpt;
+>> +
+>> +    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
+>> +        if (!iommufd_hwpt_dirty_tracking(hwpt)) {
+>> +            continue;
+>> +        }
 > 
-> If the device is still attached to the hwpt, will iommufd_backend_free_id() succeed?
-> Have you tried the hot unplug?
+> So the devices under an hwpt that doesn't support dirty tracking are bypassed.
+> Then how to track dirty pages coming from those devices?
 > 
 
-I have but I didn't see any errors. But I will check again for v5 as it could
-also be my oversight.
+We don't support 'mixed mode' dirty tracking right now even before this series.
+I plan on lifting that restriction as a follow up. So far I was thinking that to
+make sure migration is blocked if neither VF nor IOMMU VF dirty tracking are
+supported.
 
-I was thinking about Eric's remark overnight and I think what I am doing is not
-correct regardless of the above.
-
-I should be calling DETACH_IOMMUFD_PT pairing with ATTACH_IOMMUFD_PT, and the
-iommufd_backend_free_id() is to drop the final reference pairing with
-alloc_hwpt() when the device list is empty i.e. when there's no more devices in
-that vdev::hwpt.
-
-DETACH_IOMMUFD_PT decrement the hwpt refcount and it doesn't differentiate
-between auto domains vs manual domains.
-
-The code is already there anyhow it just has the order of
-iommufd_cdev_autodomains_put vs detach invocation reversed; I'll fix that for
-next version.
+The reason is that the migration initialization of the VFIODevice needs to be
+adjusted to be able to understand all the constraints that the IOMMU dirty
+tracking is not requested when VF dirty tracking is in use, and vice-versa. Thus
+making this check a lot more representative of the features it is using.
 
