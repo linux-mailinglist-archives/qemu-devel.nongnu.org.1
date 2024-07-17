@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE7F933BED
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC649933BF3
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:12:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2XC-0002Hb-Ms; Wed, 17 Jul 2024 07:09:22 -0400
+	id 1sU2Xg-0005Nz-9l; Wed, 17 Jul 2024 07:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sU2VD-0001uU-Aj; Wed, 17 Jul 2024 07:07:19 -0400
+ id 1sU2Va-0003Sf-D0; Wed, 17 Jul 2024 07:07:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sU2VB-0007XQ-D7; Wed, 17 Jul 2024 07:07:19 -0400
+ id 1sU2VX-0007Xe-Cf; Wed, 17 Jul 2024 07:07:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8F4DC7B37E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9F47C7B37F;
  Wed, 17 Jul 2024 14:06:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 01BD310B293;
+ by tsrv.corpit.ru (Postfix) with SMTP id 116F910B294;
  Wed, 17 Jul 2024 14:06:41 +0300 (MSK)
-Received: (nullmailer pid 844419 invoked by uid 1000);
+Received: (nullmailer pid 844422 invoked by uid 1000);
  Wed, 17 Jul 2024 11:06:40 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-trivial@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 12/16] hw/vfio/container: Get rid of qemu_open_old()
-Date: Wed, 17 Jul 2024 14:06:36 +0300
-Message-Id: <20240717110640.844335-13-mjt@tls.msk.ru>
+Subject: [PULL 13/16] backends/hostmem-epc: Get rid of qemu_open_old()
+Date: Wed, 17 Jul 2024 14:06:37 +0300
+Message-Id: <20240717110640.844335-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240717110640.844335-1-mjt@tls.msk.ru>
 References: <20240717110640.844335-1-mjt@tls.msk.ru>
@@ -70,41 +69,31 @@ For qemu_open_old(), osdep.h said:
 
 So replace qemu_open_old() with qemu_open().
 
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: "Cédric Le Goater" <clg@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/vfio/container.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ backends/hostmem-epc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 425db1a14c..38a9df3496 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -600,9 +600,8 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-         }
+diff --git a/backends/hostmem-epc.c b/backends/hostmem-epc.c
+index f58fcf00a1..6c024d6217 100644
+--- a/backends/hostmem-epc.c
++++ b/backends/hostmem-epc.c
+@@ -29,10 +29,8 @@ sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+         return false;
      }
  
--    fd = qemu_open_old("/dev/vfio/vfio", O_RDWR);
-+    fd = qemu_open("/dev/vfio/vfio", O_RDWR, errp);
+-    fd = qemu_open_old("/dev/sgx_vepc", O_RDWR);
++    fd = qemu_open("/dev/sgx_vepc", O_RDWR, errp);
      if (fd < 0) {
--        error_setg_errno(errp, errno, "failed to open /dev/vfio/vfio");
-         goto put_space_exit;
-     }
- 
-@@ -743,9 +742,8 @@ static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
-     group = g_malloc0(sizeof(*group));
- 
-     snprintf(path, sizeof(path), "/dev/vfio/%d", groupid);
--    group->fd = qemu_open_old(path, O_RDWR);
-+    group->fd = qemu_open(path, O_RDWR, errp);
-     if (group->fd < 0) {
--        error_setg_errno(errp, errno, "failed to open %s", path);
-         goto free_group_exit;
+-        error_setg_errno(errp, errno,
+-                         "failed to open /dev/sgx_vepc to alloc SGX EPC");
+         return false;
      }
  
 -- 
