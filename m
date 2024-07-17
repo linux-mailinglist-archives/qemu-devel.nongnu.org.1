@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EF793362A
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE4C933629
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:05:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTwpb-0000sv-L8; Wed, 17 Jul 2024 01:04:00 -0400
+	id 1sTwpf-00013n-CH; Wed, 17 Jul 2024 01:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpY-0000jE-2D
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:03:56 -0400
+ id 1sTwpZ-0000q2-P4
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:03:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpW-0001yS-EC
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:03:55 -0400
+ id 1sTwpY-0001yp-9i
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:03:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721192633;
+ s=mimecast20190719; t=1721192635;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GbnyQIMsldrG9/GwANRlbJs0iH4w8UnSheZCAFBdDoE=;
- b=CBU4h3dzFF7cqhW6f6t0CvKKGAv3JywHizmwgUyrOe2H/9K3sy9AlGti0Cp06YYidxgKjY
- 0sWRp2hrNJ8t/zPACDspvgXULy3PpviqkdUpORigmKi/l3eJqY4uQnGGTd2b26be4Uqh31
- xwCD/YlvLmXCasQmKY7TAB9HyLOW4L0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tYdvr4qiEpyG2gw0AyoyI4aNLrC174pqQVM5gsiHlBw=;
+ b=IzruuN2XXRGFx0eOePFm1ijSGCWa9KfJPP5WaFrA4VgMKl8Z5XO4HNSSO9v37fo5b7cZxv
+ CVvwXnTYf7BTjX64JNM0yAg/qN7px9SENXigPBGbcfeqxVZVe2xod8znf8v02tB/vSFPWR
+ P32G1V/DQPvBs0B9h4C6zIE4BMrra/M=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-ET2ZLuOsM1y5ttd8r602Yg-1; Wed, 17 Jul 2024 01:03:50 -0400
-X-MC-Unique: ET2ZLuOsM1y5ttd8r602Yg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4279418eb2bso41747965e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:03:50 -0700 (PDT)
+ us-mta-152-DboOiFK8NV28eycv0kemmQ-1; Wed, 17 Jul 2024 01:03:53 -0400
+X-MC-Unique: DboOiFK8NV28eycv0kemmQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2ee97349a5fso63506931fa.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:03:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721192627; x=1721797427;
+ d=1e100.net; s=20230601; t=1721192632; x=1721797432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GbnyQIMsldrG9/GwANRlbJs0iH4w8UnSheZCAFBdDoE=;
- b=I+WwMfECV7APbjJu0pYHU5Nhec0I3q9iHd4boAr6uW4B9eCAF5LetVRkUzG4NH7LnO
- 2SmUmRODYDzreplxXq4Pf2HQk7oSPXRSKT339kQlHcxtMDuffkBJzn3lRyVfIQml3hYv
- MIdM74zjwvy+B/Vc/dJfjkkm2vMR7LFq/IyIFiGn6GayQHqAvqPdA9SA/zeQVyl1ib8A
- ImTYiSWWebMIzEobeAWiDQPetE23JKZd3xo7IQ+Skmsds8yIR4fzzRV2sCzPS81mzy3/
- WXA3AWuEDsXRaTNnDb28gOSl9Rzn3K2C52EBfxt+7dbnpF/dVxSUMDsfneFUyegN8vlQ
- GT2Q==
-X-Gm-Message-State: AOJu0YxH1XmJDd7zHRwfk1qvMyv3Ezx7ZNIN0i8vIXbbhTe7vJ9BNmLA
- XqHiwsLEnxCccOIJOOaw2qiJS3NQc0MW6KgeNKjIQaN/7dWxJhjP6JtRqabyGr2ViZEIOBhGjqL
- pDwNxFpdTqoN65HbfLgj/gG4Rav8vLuQISjyT3dsYPxbZ6oPK4pkWFgYGPTJlZh8ve0nLMRCVZ/
- 74qxWlzB630BU3+BOieUgV9feNLRdCqkpgEKi3
-X-Received: by 2002:a05:600c:3152:b0:426:6e86:f82 with SMTP id
- 5b1f17b1804b1-427c2ce7bedmr3008375e9.22.1721192627752; 
- Tue, 16 Jul 2024 22:03:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErtDjsDt+sQrMXLLCQrLyGSe7EhKYsVbJMS7Ry+HQOCsJue6vDfyNpDRVB3jeSKfYXVC6/4w==
-X-Received: by 2002:a05:600c:3152:b0:426:6e86:f82 with SMTP id
- 5b1f17b1804b1-427c2ce7bedmr3008215e9.22.1721192627391; 
- Tue, 16 Jul 2024 22:03:47 -0700 (PDT)
+ bh=tYdvr4qiEpyG2gw0AyoyI4aNLrC174pqQVM5gsiHlBw=;
+ b=Y/x0keQbNDqFxHfs4ScYvxeFjhl7qPjUkzpRi3zP6qc5M+kQxNJIIz8FswScdC7Lhc
+ MpM0VOiDcOL3vewCeWvGpMDUIb8ILCjG9FXOIJZ0lvAo87EcboAshamZfueWt9f8Fu14
+ FWcJBTcxg7In2lZsUC+0qgRTlRhaZEwQ82AbfCg62L5QWp1aCu8LstopJYLzGi0JnJK3
+ u2ksDTKGkKiVwz37/D/t0Nl1kXYKN5M+zYr3W7w420MYzHlK9rqxAA9NYlhNkhMzevNv
+ ceI6h6pECEFr+BrQHm4imwl/bXXfhT3jKGzSRrVmX7Xu3dKO8NZyGIwZCKIpRWxYs9bc
+ 90Tg==
+X-Gm-Message-State: AOJu0YzLt1Htru1jQldXx6iIjQwhfjuAy5O/ALnbpxEVNZU6ogw8cZE0
+ rd7pGCGJlg3QUDLTeahopVIhYz8PfOP0lDHYJ+NMwwoo8x2GAbez0+FSvwPYwo/dYDk4XuDQXpN
+ oyDeFcEFRAHh47EzWSf+nyn74Ru95HXIBgqvaopnCAezLOuF+j6UVmystiHK6FsXFHY1pPw3FN6
+ 1QJ9k4LgKGp8GyMks0UaXBVXzL41ttwkI3dp13
+X-Received: by 2002:a05:651c:1992:b0:2ec:565f:ef56 with SMTP id
+ 38308e7fff4ca-2eefd04f491mr4406211fa.7.1721192631907; 
+ Tue, 16 Jul 2024 22:03:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFt/L5LAd88TY+69Z6aGmfcWsh8wIg3ukTbGNyw2A1QQPbyF0tR7GM1b7TQzBXdozVqmIDa9Q==
+X-Received: by 2002:a05:651c:1992:b0:2ec:565f:ef56 with SMTP id
+ 38308e7fff4ca-2eefd04f491mr4406081fa.7.1721192631433; 
+ Tue, 16 Jul 2024 22:03:51 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3680db03900sm10649195f8f.92.2024.07.16.22.03.45
+ 5b1f17b1804b1-427a5edb525sm153463965e9.34.2024.07.16.22.03.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 22:03:45 -0700 (PDT)
+ Tue, 16 Jul 2024 22:03:48 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Fiona Ebner <f.ebner@proxmox.com>, qemu-stable@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PULL 06/20] scsi: fix regression and honor bootindex again for
- legacy drives
-Date: Wed, 17 Jul 2024 07:03:16 +0200
-Message-ID: <20240717050331.295371-7-pbonzini@redhat.com>
+Cc: Song Gao <gaosong@loongson.cn>
+Subject: [PULL 07/20] qemu/timer: Add host ticks function for LoongArch
+Date: Wed, 17 Jul 2024 07:03:17 +0200
+Message-ID: <20240717050331.295371-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240717050331.295371-1-pbonzini@redhat.com>
 References: <20240717050331.295371-1-pbonzini@redhat.com>
@@ -86,7 +84,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,60 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Song Gao <gaosong@loongson.cn>
 
-Commit 3089637461 ("scsi: Don't ignore most usb-storage properties")
-removed the call to object_property_set_int() and thus the 'set'
-method for the bootindex property was also not called anymore. Here
-that method is device_set_bootindex() (as configured by
-scsi_dev_instance_init() -> device_add_bootindex_property()) which as
-a side effect registers the device via add_boot_device_path().
-
-As reported by a downstream user [0], the bootindex property did not
-have the desired effect anymore for legacy drives. Fix the regression
-by explicitly calling the add_boot_device_path() function after
-checking that the bootindex is not yet used (to avoid
-add_boot_device_path() calling exit()).
-
-[0]: https://forum.proxmox.com/threads/149772/post-679433
-
-Cc: qemu-stable@nongnu.org
-Fixes: 3089637461 ("scsi: Don't ignore most usb-storage properties")
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Link: https://lore.kernel.org/r/20240710152529.1737407-1-f.ebner@proxmox.com
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Link: https://lore.kernel.org/r/20240716031500.4193498-1-gaosong@loongson.cn
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/scsi/scsi-bus.c | 9 +++++++++
+ include/qemu/timer.h | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 9e40b0c920b..53eff5dd3d6 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -384,6 +384,7 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
-     DeviceState *dev;
-     SCSIDevice *s;
-     DriveInfo *dinfo;
-+    Error *local_err = NULL;
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index 5ce83c79112..fa56ec9481d 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -1016,6 +1016,15 @@ static inline int64_t cpu_get_host_ticks(void)
+     return val;
+ }
  
-     if (blk_is_sg(blk)) {
-         driver = "scsi-generic";
-@@ -403,6 +404,14 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
-     s = SCSI_DEVICE(dev);
-     s->conf = *conf;
- 
-+    check_boot_index(conf->bootindex, &local_err);
-+    if (local_err) {
-+        object_unparent(OBJECT(dev));
-+        error_propagate(errp, local_err);
-+        return NULL;
-+    }
-+    add_boot_device_path(conf->bootindex, dev, NULL);
++#elif defined(__loongarch64)
++static inline int64_t cpu_get_host_ticks(void)
++{
++    uint64_t val;
 +
-     qdev_prop_set_uint32(dev, "scsi-id", unit);
-     if (object_property_find(OBJECT(dev), "removable")) {
-         qdev_prop_set_bit(dev, "removable", removable);
++    asm volatile("rdtime.d %0, $zero" : "=r"(val));
++    return val;
++}
++
+ #else
+ /* The host CPU doesn't have an easily accessible cycle counter.
+    Just return a monotonically increasing value.  This will be
 -- 
 2.45.2
 
