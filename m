@@ -2,204 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0377933A01
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 11:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8C49339C1
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 11:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU14X-0003pL-1m; Wed, 17 Jul 2024 05:35:41 -0400
+	id 1sU0pz-0000P6-LV; Wed, 17 Jul 2024 05:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sU14T-0003oR-FX
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:35:37 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sU0pv-0000HM-7x
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:20:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sU14E-0003M7-E3
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:35:36 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46H9UjtQ005693;
- Wed, 17 Jul 2024 09:35:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- corp-2023-11-20; bh=gHfvCje5nRHgAM2F50hjQPVWPod9iQOB2yoN6XJKc/0=; b=
- cE7Aq5Vqq9y/N1vu1lPoJalw/dcD1ruk9NELwT3qGM9jqyR+7NkbP9qbnP7dNYJT
- LpcxmgteSxBWLCY60NwWhYueYnHqxXRk4uhklW0ZNXe5QZQjV3DMYSRG7G4ranno
- HqKSGl4zDTcP2OsKNMpg5SX+mNYXyF3Zln5KArBCs6bg2SbPLXDhP7pPYmHmg22P
- Qv3XPJJ7fwQ1mm8H/OJ+B+3U6rrfxL3y8Ofuk0A6KNGjknOIyFuVgQcXSIOnJ8OW
- TTQG992AeTio7gc5x0ppiv6Dy8pl49Gj3prlfhy+O6zTipZWsEKwK3qAUq98DaMc
- ox3DVnxSbZoYyXz6IAoarQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40ebcp808x-3
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jul 2024 09:35:17 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46H8Ri8I021599; Wed, 17 Jul 2024 09:20:14 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam12lp2176.outbound.protection.outlook.com [104.47.55.176])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 40dwet21dx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jul 2024 09:20:14 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dlFxh43T7DwhTOVe+Fdgw+1MJ0T7zkMZVClFiwH5t7k4BlPNXoYNZ5Pp0ZF78u/bo9/XeTuk3uEOnoISYeSxtyzYUK/hZP0UPJTcN+NBQXTsFQhEVmXgGN7UMOqx9JLUdwEoF0bKtYNmT7NUcvoc53TwsX5/CLJ+z96U4/gJRDkRpFtaIOH7jUOnP92qVpzIq74eYGxlN/Lf+WBwxKOATakBPZt5TNXyAV3nEWj/S9Zo+TWLZ8apLvO8xK7ANqI9vJDLHbfpoR+Gxx2WMYBrX9OMSw6DjApN0ZLTYtaIl9MXbCKSJwcu9RBoPSRW9rSd40MrV6kZCsjF3jZA7GCYLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gHfvCje5nRHgAM2F50hjQPVWPod9iQOB2yoN6XJKc/0=;
- b=rw7KCOTGmpkft5EhO0Td3PCg3A1KZa9zKy58ByC5qq9S4ch/uAGven28lNSK9Xqi8Xo+2DhCtrtePzrJyMG30+fuEbH6qHZYHJwX3WzeAgAe97/vb4xFy0yS4xT1OficeYp9KGs5xaGUGkiU9zH/1F+RGI/M3ZYsHLYGW2DaPrR9NEXfziV04HJtUeCMn2s3Ph0Cqqf8jSy+WM7brNUzVk1Rilk2ACq2q1uqlM+9dIA6P1FfMLDPwmbknEN7iK5FZtGnZU/6nVGUX4vNk00Xy2rqfoShsylwzCiI2GwX68LwSTFXgiatKj3lbtS4U6BHNkIeFlIwKJd3ZlGlfpet3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gHfvCje5nRHgAM2F50hjQPVWPod9iQOB2yoN6XJKc/0=;
- b=ZNAJonLaFbljgaVoy9JvD/8PtiPwgSKEvUauKjtVmpt7qharbsl1K3Kxz6vox6WIImCO3kXzfY39N63MQHq2xjY7PqCGUoCtkr6llV4WSing+INuUgZFfBWDFpNp6wFkC4GChU6n7F3oXMZK9GnjW3VTSBeTWk1b59m+n8jW2EU=
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
- by SN7PR10MB7075.namprd10.prod.outlook.com (2603:10b6:806:34f::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23; Wed, 17 Jul
- 2024 09:20:11 +0000
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::79f1:d24f:94ea:2b53]) by PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::79f1:d24f:94ea:2b53%3]) with mapi id 15.20.7762.025; Wed, 17 Jul 2024
- 09:20:11 +0000
-Message-ID: <da65c43a-ddca-4d47-bfbf-274e8062c56b@oracle.com>
-Date: Wed, 17 Jul 2024 10:20:06 +0100
-Subject: Re: [PATCH v4 11/12] vfio/migration: Don't block migration device
- dirty tracking is unsupported
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "Liu, Yi L" <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Avihai Horon <avihaih@nvidia.com>
-References: <20240712114704.8708-1-joao.m.martins@oracle.com>
- <20240712114704.8708-12-joao.m.martins@oracle.com>
- <SJ0PR11MB674456F8871EAC781732D0CD92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <SJ0PR11MB674456F8871EAC781732D0CD92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO6P123CA0045.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2fe::14) To PH0PR10MB5893.namprd10.prod.outlook.com
- (2603:10b6:510:149::11)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sU0ps-0004UH-SO
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 05:20:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721208027;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=LRd7uCMg/RUJTa07ZmClJ2/xZu/wAcCV4+C9kLTULy0=;
+ b=MrjOnZhFqHbpa6IIw1iwc1l6OT2g97Jr9adCwLLxA/XWxqcDCAXzTVxNzYCwt1l6x3CUMl
+ rmdd3HkzdYp0ywR1ClvEhewuMl0nkjJKYDWL8+Fc+C727hk1ThGybEc2+rb0BHQGfJtBDd
+ e0sy7ZPD1wG0brM/y/9qkbQlua/8960=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-135-Z41DDm2vOSqdlfsWLEo9Tg-1; Wed, 17 Jul 2024 05:20:25 -0400
+X-MC-Unique: Z41DDm2vOSqdlfsWLEo9Tg-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ee9f58c858so63333821fa.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 02:20:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721208023; x=1721812823;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LRd7uCMg/RUJTa07ZmClJ2/xZu/wAcCV4+C9kLTULy0=;
+ b=cmfhecJ0HpidXbHOyfGRxBrXd1xSwiq4ec7Iavs8+TKkxifKapeZqHncmItbwv35d2
+ aQTL7CZ7ezQsFM6rdTZvXOjkGICS4n+rxjX6fQohh8mf6iU+oOTYa6SrHpmFmBzCYUus
+ 3WILocb0T6z0T9YJzGHOlEedRbmHLdlbP0efW7+bDOwXLlOtf8dip8lAjplMUyuavNl+
+ ph/j/1zEWBfU5soI99dj0KIAp66u8NqitLcJwpOvZRTQpXES/3JAgy7JHbq39zZnF9ap
+ Kw4QgUDTf8ENjMNEI+ROWTpaAiFodcx6FbPQkr3pUUm5+PzeM+5yt518LXndjL9igHo+
+ DGiA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUnagkQna5qePYcZ2PYarRqSDoUPLx1j+jMG9vMEpHvwdggr3Vr0fzY2Wa/BSBayxbgeeSwcWt+phQTPyTs387MGa52YQo=
+X-Gm-Message-State: AOJu0Yy5yl+uTzZmmMu9vuFSPwQ+OCGLchdUTv7yem/1CEr/aQWLdbZ4
+ uOZCPGGHvqGGMbmsZ6C3zMZw6SD5sHifunORpVl4Z0+RRErE3J1VkDzm5SSKLRyQALzkiiICoyj
+ XN4aXgq2VMQRRAx1KvFS3cAu5EqtiXObzqeCYgUN3s+Rb0gRshZ8+
+X-Received: by 2002:a2e:3614:0:b0:2ee:7a92:610 with SMTP id
+ 38308e7fff4ca-2eefd1521bamr7484601fa.39.1721208023226; 
+ Wed, 17 Jul 2024 02:20:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuLzh+eyWuCcNJf1XAyrGJ8f89N5RdYt7EOndJUfjY4DXtD9YfDpZtQWrwQjxaxTSabxX2PQ==
+X-Received: by 2002:a2e:3614:0:b0:2ee:7a92:610 with SMTP id
+ 38308e7fff4ca-2eefd1521bamr7484101fa.39.1721208021284; 
+ Wed, 17 Jul 2024 02:20:21 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-177-101.web.vodafone.de.
+ [109.43.177.101]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4279f23984fsm198883295e9.7.2024.07.17.02.20.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jul 2024 02:20:20 -0700 (PDT)
+Message-ID: <0da0a686-1331-4411-b19b-bc337f8f33a9@redhat.com>
+Date: Wed, 17 Jul 2024 11:20:19 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|SN7PR10MB7075:EE_
-X-MS-Office365-Filtering-Correlation-Id: 873c76b0-8dc3-4295-9ac4-08dca641a8dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eEM0cGx4NEVqT3lHVHgwWHdicFJ6d285VkJmV3BqaUNMUE5GR0F4T3YwZW82?=
- =?utf-8?B?aldyQ0VBYXNuRHdMMThGdWlUNmozTHJEUk1wOE9BVUlSb1Z3TjZ6M2VyK3hC?=
- =?utf-8?B?YkpSeUFGTExyQldVam5tRHhLelF6bmdtUStYdFYzOUdCZGlVOFNaVWJ4NGhB?=
- =?utf-8?B?MUF6RERCYlRONE9UUXdvZjFXblhmV0RMVVVaRnl5S01GbW92YklST0lxZHly?=
- =?utf-8?B?SnlCd2duOHpxV3RNWW13dk05M0JGbXQ1a0ROTnk4UmR0RW5RdW54dHRsc2tS?=
- =?utf-8?B?MThvek1scCtKamgxcTBwTkdxd09JdFMzblV2a1F0TVIzeDVtMUlPR1FmdDJi?=
- =?utf-8?B?RllMajR4UzFPTmlabGtTQk9zVmpVd0J1QzhpbkRFWXh1S1Budnh3SkplRjlM?=
- =?utf-8?B?VEo2cFpIZmJyOUxkYncrOWQ0N0hBK1hGT202Q1hWUUl5SHpvelUxclpQSUg0?=
- =?utf-8?B?MlU4MlJLNk5OTkRaSW5DZUhyT01kUEgxcHFvOHUraktkNXlMbnY2Vkdoem51?=
- =?utf-8?B?ZG1tWC9Yd3hPRXl6Z2w3bjNUcmpVMVdCd3AzWUpuQjZFM0hoandRSkhtOWVk?=
- =?utf-8?B?eHAwc2VzNHl1OUZCZnNUa0lUQ3VqcWwyTHVzSXlBWjd2MDZvS3dVRjJCNHph?=
- =?utf-8?B?UGJtM3RXRU9KV0diaXNSM2xaZWpPaVNYeGY3dTZYU3ZHVGlzbTVhbGt6YkI0?=
- =?utf-8?B?SGlmcTZtVDF4ajZrWmVFSlZYejN3Mk4zcFQzRTJUZEk3T0NlY3JJQml2Q2N2?=
- =?utf-8?B?YStXQTRqRGVSUlNTNmRMQVhvT1RhVk5CRXpXRndYRFdFdlpDRjR5UVY1bjJY?=
- =?utf-8?B?bVZualJjSTRTcGNlamNCTTZZU1pKTHhyeFo4eFphd0JQME5rRnFGWGxOdW9B?=
- =?utf-8?B?VUJIRVVyOENLTDNKUDF2WnNyTzZlMUVEVDQwRktZNU9leS9XYVpQdk9rdVda?=
- =?utf-8?B?WGEvOUovMzZ6NzBKZC9vVnB1cWRtcTk4RUQxWTBGbGgzTkQzV2VVNmFOZktJ?=
- =?utf-8?B?YldyQUkyblFmcC80TDBJWVNnc3k2M2VUbXpiQ1hEaFYza1R0MXpoMWR6dXk5?=
- =?utf-8?B?NUNoNk5IdzYya0RXeS9jSWZZNnlZbCt2Mkh5YWUrQVppK2RFclFyZ3lpMXZr?=
- =?utf-8?B?WU1mYjlaWjNzWEM3ZG9ZWmdwVG45aDlwMUQxRXYxOHEvZ0NsY09wc25JZ1NC?=
- =?utf-8?B?QnEwMHAxZ3hRcE1kMXFpT0JZcENLY1lIQ2tBVUJCWFNXaXRQRU12bCtuQ0hP?=
- =?utf-8?B?NzAwVkVvNEdGaGdsV056QkhVc0E4dGlGSUEwTmJ0S1hkcUlSdVlIY3lsQm5Q?=
- =?utf-8?B?aGFIMHcweVMrWjFXbUdvSURDUFhpbkVnd21BQkFJYW92WFh2OWhtV3JzUk1M?=
- =?utf-8?B?MUtuaGtrNkVOQzMxcnRnNU9DblA5WEpOeC9UOWNxS0NjU3d3TkdMMkIyZXBQ?=
- =?utf-8?B?K2FWOWlGSHJQeE1NbHh3NnkzQ2xQMXN5OFFUV0ZMTjJISjlaYXRaTTFPREJs?=
- =?utf-8?B?Mi82amhDYWlHV2hvTXZtQkFqM1NXeXB4YjhGRmZLRzZ6MDFNb1ltU3JPb1VO?=
- =?utf-8?B?RnFvNG9pV0U3dkJ6bnQxcGorVGlCeHlRQ0MrbVFKTzI2b2dSQVM5U1M5d2xw?=
- =?utf-8?B?OXo0Z3dLWnlpbjF2cWU2Z251Ui9iT3VwM3p6K2VqUkJRU1MzNmtnVzd6TXdQ?=
- =?utf-8?B?MDdXclduZWlNRm5CUUZQUlVDVW1xNEdDQk9hNkZLQkFkSUdoTE5SZHFqZnlJ?=
- =?utf-8?B?NWcwMXhxYTlmelhvU0dzQ2lnQWJJSEZ1eVhMQmNxU3FMZDNqZEFBd2liRFU3?=
- =?utf-8?B?UDF1Z0xTNTJLc0NlRVJnQT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Lzl0Vkh1ZlRrT1JjU1ZwWjlBajVQWnZzQjdmUU5xdnVKUVZ4Wkd6N3p0dWlJ?=
- =?utf-8?B?bkV0aDBwQ3FVL0tIYS9OR244ZVNYTlF4bDBUOXR5SHU0VmRodUVrU3EvOVI0?=
- =?utf-8?B?aWFRWXdNQUhFeEdmYThVcUxTYzc5L1RLYTdTeEsvSjYveGR0a3RVVno0eGJy?=
- =?utf-8?B?V0dXem5MWlB1cTBoS1YzUzkzN1Roa1k2eWpLVzU0NkFWRk85eTRVWHczMjhy?=
- =?utf-8?B?ZXVHVUpnTnA0ZjRZVkFGbGVJb1BFLy84blR3YU1FVUs0Y0NzMzc4UERlTUZ3?=
- =?utf-8?B?YU1URU5SWXFaWW5Qc0tEK2IrZG45YjRpbUwyankvdkxTUlM3TWt0Q1BURlVp?=
- =?utf-8?B?L0NxdUozZGhmZGdiMDZCTzNQa1pyTUx2M3pmZlBGVEpBTEdXNWFTTENSd1lO?=
- =?utf-8?B?THlhZ29QenhrUDd3bEZodzJDWThWQWtnbHp4Z3pnWm5KOFRwVXNNQ3h0Mlha?=
- =?utf-8?B?ZUd2TkEvVGYvQXBsaTZaTmxFZ0plZWtkTHhtUDQ0WlEweVN3dlhHZ2dKdktY?=
- =?utf-8?B?dUJGTE5YTWZzRk5lK2JJdXNwRlEvRFpQcDh6dC96TWdmRUd6cUp2ZTlRaWkr?=
- =?utf-8?B?d3IyOFpMLzhDZEh3WTlrdFhwaUxmNlhrK2czcDB0Y3Q2QUNjUWFkb0d5SnFr?=
- =?utf-8?B?T0xudnV5OEZCc3dDQWlkeExtNzcrcTJjNjBVWTIwT2xXVktwUTRFQTFkZENH?=
- =?utf-8?B?SERrYy9UNG8ycEpiRGZpYXJzMUYvOWprWCtvVGV3eFhNSTRxNFdnN3ZpdXhW?=
- =?utf-8?B?SWtMWndSeXhxWmo2V0lKUThNMXRtdmFRbUp2Nk4zSEpXOC9wSUQ2bTdTZ2F0?=
- =?utf-8?B?bElScjBnZEgyakF1R1JMcGNabkNMeEQ1VjN4Mk90OHNKakpLTTVFNUZpNG84?=
- =?utf-8?B?UHpQb0tKa21DMHBEemttWFk0eHpoeFZwOEdFZWphc0JxN0JLaHZlck1zUjZE?=
- =?utf-8?B?S24reGZiL3RzaEcwNlAxZ3pnMVYxUEJIMkdGbXc4NFhjTUxMUnJQaE83VUJp?=
- =?utf-8?B?K2h6ZG9nRlZTUTRtWjloL2FKZkNTMks0bVVKbklEMkk0TmFNTDNna2o5RWl3?=
- =?utf-8?B?bzEwcUNPYXhBanhWV0JxOVdaM0RQdjhnYVlzckRaaDZzQTFUNEhWczFjTy9N?=
- =?utf-8?B?TnkvV2JhMWMrMml3MnZSVjZ4VjA5dDRMNDBpeFFwMEk0eEdWcnR5RUU0SlpI?=
- =?utf-8?B?NFJmNWhWZWJQaXZtUlNGd0llajNSeENLNW9uZ1R6VHJLV0JtNm9heEthNXl6?=
- =?utf-8?B?aUdTUlRMMWZSRXB1U3d5NFdZcWMya2wycW1hdUlhZGJheitFSFUvaEdyOHBz?=
- =?utf-8?B?MFBYNmZjeE5xQzlJM1poZEhqN1VvYjlwbnFlRkFiZWZmR1FQdEowblVnSDJr?=
- =?utf-8?B?alI5UlF0T241dGZxdHpEdjllL05YMGpsQ3RIUzV3dDN6YXRRMmI1YnJMSVVW?=
- =?utf-8?B?ZVZ4S0k5VWtndEZ4NWdBMFA4QXUzYUt2Z0NuUHpIS0p4VlF2NVVoZlZSRDdj?=
- =?utf-8?B?TExUWmNQMFBqd2t3NitBM21JUkFtQXRZRWZVM09uSjdGaytDbWN4eUF3VXlN?=
- =?utf-8?B?MlNDQXBsM3NTbFlDcU90eStVblFFZThmR0RwQ09tbGgwRTZRcEp1VCtmN24w?=
- =?utf-8?B?S3BYTEF0LzFneW9OVmFpdXUzQlJkQUJmTFd5ZkhIK3RQRXFObWpKbG42ZDFi?=
- =?utf-8?B?VkFVT0kxdnpjRFp6ZTB1a3U0b2lKRU9lcUlCVEZSc3J0cEtMWEc3c0p1Y2Yv?=
- =?utf-8?B?ZjEyM3pWKzd6ZDdYQldNb3FEbWI2b2hvbUJndW5rLzZLYTg5NzZ0LytscGF3?=
- =?utf-8?B?Yk54a0IxYmxCVWx4THozSEdGYWNTREdUNE5VNGdXbUFnQkRObkFlRmJQVzNt?=
- =?utf-8?B?dEdEMVk4Ylh0b0R3MGprSTRDcUhtMTBpSm9iU2hZNWdiMHVHckhZZEFMUDRx?=
- =?utf-8?B?KzJ3eDBESms2YjZZdE9ocXhXc2Q1akpQMXVLTmNyTFNsSG9EY2F0aEpBaWpy?=
- =?utf-8?B?YmFneEU5L0U4eTViTmJPN2dIRFhSLy9xQXA4STE4WE93VjhWb3duT3lQTklG?=
- =?utf-8?B?QlN4cm5OcmMyaUQyMzhKMUl3Z1RMcVg0Vi9Cd0lmVUQ3YllGR1FRRjRRMEVH?=
- =?utf-8?B?VnJ6L1Q5cGpIOE5rV0dBdFJtbHpEbWE1NlJ1d21ybW9LTGI5UjVpUG80VlND?=
- =?utf-8?B?cVE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: yX+uIqIBijaYUSLEhLUdz4UdZ4R0m7FS+C8x52zoyg6SfodLBXtP6h7C7QTDctxYgX+AGLIjqjlBxCLZ9dgru7abrEl9ioLJhg5PWpYAMJuyKkPnMc5uQrl/sN8HMlEz3HbR2rcOHlQNqNc51a6IXgPFEXx/Z0PpEWOwbWD5gWQlX+1NFBCbW79/eiaO8fs1iUiCOLwXjNgo1YcvvPmOUJ5/na6p6FrSbrkhojY8bSVVKIz2+LD3tuHGUD4vEA0MJD9lzdq4q1Wcg1tu99WORJ1ko3i1dwRIg/5ICQTqsy7AMrLs2KjXTqP4hasUy4wdbGPN9Q6JuqdkoE4Va+u8ohpUi1lYM9PSwIbFTVnRZnhlyrNrhGM+S4DQkIfngI5QqX5dwZ9LPrVgIwCd1knfm6H3/5rPtrcJQmPZ7gMhf3VnZ+OKX4GDiFs+W1D4TfHo48C9Z+DtQeWXdn1V5S20EhbYAlOi0Mo71idmEWVH26aubEonoKefHdcStHNSjkddoUaD22XYjpm+L3ZPR8C8q3+7fNruh+hqctl4+LYoLjmvDM7EtCwsVWNVunM6E8JZtlVXRGxrvq0G/mXnU0Nm2SfSd3cr9GhJZQqxuYs0BI4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 873c76b0-8dc3-4295-9ac4-08dca641a8dd
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2024 09:20:11.8357 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cygvK6+5kIoG7+QgvAiZizbS9CrSS8ljIdNApMc6gir1VQTcDGVvtrYfNrGvc1PszxTVlAvMPYWNH4tTKaK8P4fUFJJaXFUoHbWumtj/reM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB7075
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-17_06,2024-07-16_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 bulkscore=0
- mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
- definitions=main-2407170071
-X-Proofpoint-GUID: o5W67uEHAzx1dCmJMTm6oyXOnHDK2JHr
-X-Proofpoint-ORIG-GUID: o5W67uEHAzx1dCmJMTm6oyXOnHDK2JHr
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/11] tests/functional: Add python-based tests to the
+ meson build system
+To: Fabiano Rosas <farosas@suse.de>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+References: <20240716112614.1755692-1-thuth@redhat.com>
+ <20240716112614.1755692-5-thuth@redhat.com> <87o76xcqrl.fsf@suse.de>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <87o76xcqrl.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -215,59 +151,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/07/2024 03:38, Duan, Zhenzhong wrote:
+On 16/07/2024 17.15, Fabiano Rosas wrote:
+> Thomas Huth <thuth@redhat.com> writes:
 > 
+>> Integrate the new python-based test framework with the meson build
+>> system. Since these tests now require the pycotap module, make
+>> sure that it gets installed in the venv.
+>>
+>> The changes to the meson.build files are partly based on an earlier
+>> patch by Ani Sinha (but heavily modified by Thomas Huth e.g. to use
+>> pycotap for running the tests instead).
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > 
->> -----Original Message-----
->> From: Joao Martins <joao.m.martins@oracle.com>
->> Subject: [PATCH v4 11/12] vfio/migration: Don't block migration device dirty
->> tracking is unsupported
->>
->> By default VFIO migration is set to auto, which will support live
->> migration if the migration capability is set *and* also dirty page
->> tracking is supported.
->>
->> For testing purposes one can force enable without dirty page tracking
->> via enable-migration=on, but that option is generally left for testing
->> purposes.
->>
->> So starting with IOMMU dirty tracking it can use to acomodate the lack of
->> VF dirty page tracking allowing us to minimize the VF requirements for
->> migration and thus enabling migration by default for those too.
->>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> Just one touch-up below.
+> 
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> 
 >> ---
->> hw/vfio/migration.c | 3 ++-
->> 1 file changed, 2 insertions(+), 1 deletion(-)
+>>   pythondeps.toml              |  3 +-
+>>   tests/Makefile.include       | 18 ++++++++-
+>>   tests/functional/meson.build | 75 ++++++++++++++++++++++++++++++++++++
+>>   tests/meson.build            |  1 +
+>>   4 files changed, 95 insertions(+), 2 deletions(-)
+>>   create mode 100644 tests/functional/meson.build
 >>
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index 34d4be2ce1b1..ce3d1b6e9a25 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -1036,7 +1036,8 @@ bool vfio_migration_realize(VFIODevice
->> *vbasedev, Error **errp)
->>         return !vfio_block_migration(vbasedev, err, errp);
->>     }
->>
->> -    if (!vbasedev->dirty_pages_supported) {
->> +    if (!vbasedev->dirty_pages_supported &&
->> +        !vbasedev->bcontainer->dirty_pages_supported) {
->>         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
->>             error_setg(&err,
->>                        "%s: VFIO device doesn't support device dirty tracking",
+>> diff --git a/pythondeps.toml b/pythondeps.toml
+>> index f6e590fdd8..c018b4d74a 100644
+>> --- a/pythondeps.toml
+>> +++ b/pythondeps.toml
+>> @@ -26,9 +26,10 @@ meson = { accepted = ">=1.1.0", installed = "1.2.3", canary = "meson" }
+>>   sphinx = { accepted = ">=3.4.3", installed = "5.3.0", canary = "sphinx-build" }
+>>   sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
+>>   
+>> -[avocado]
+>> +[tests]
+>>   # Note that qemu.git/python/ is always implicitly installed.
+>>   # Prefer an LTS version when updating the accepted versions of
+>>   # avocado-framework, for example right now the limit is 92.x.
+>>   avocado-framework = { accepted = "(>=88.1, <93.0)", installed = "88.1", canary = "avocado" }
+>>   pycdlib = { accepted = ">=1.11.0" }
+>> +pycotap = { accepted = ">=1.1.0" }
+>> diff --git a/tests/Makefile.include b/tests/Makefile.include
+>> index d39d5dd6a4..2bdf607977 100644
+>> --- a/tests/Makefile.include
+>> +++ b/tests/Makefile.include
+>> @@ -9,6 +9,8 @@ check-help:
+>>   	@echo "Individual test suites:"
+>>   	@echo " $(MAKE) check-qtest-TARGET     Run qtest tests for given target"
+>>   	@echo " $(MAKE) check-qtest            Run qtest tests"
+>> +	@echo " $(MAKE) check-functional       Run python-based functional tests"
+>> +	@echo " $(MAKE) check-functional-TARG  Run functional tests for
+>> a given target"
+>>   	@echo " $(MAKE) check-unit             Run qobject tests"
+>>   	@echo " $(MAKE) check-qapi-schema      Run QAPI schema tests"
+>>   	@echo " $(MAKE) check-block            Run block tests"
+>> @@ -111,7 +113,7 @@ quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
+>>   
+>>   $(TESTS_VENV_TOKEN): $(SRC_PATH)/pythondeps.toml
+>>   	$(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
+>> -	$(MKVENV_ENSUREGROUP) $< avocado
+>> +	$(MKVENV_ENSUREGROUP) $< tests
+>>   	$(call quiet-command, touch $@)
+>>   
+>>   $(TESTS_RESULTS_DIR):
+>> @@ -152,6 +154,20 @@ check-acceptance-deprecated-warning:
+>>   
+>>   check-acceptance: check-acceptance-deprecated-warning | check-avocado
+>>   
+>> +# Make sure that pycotap is installed before running any functional tests:
+>> +ifneq ($(filter check-func%,$(MAKECMDGOALS))$(filter check,$(MAKECMDGOALS)),)
+>> +do-meson-check: check-venv
+>> +endif
+>> +
+>> +FUNCTIONAL_TARGETS=$(patsubst %-softmmu,check-functional-%, $(filter %-softmmu,$(TARGETS)))
+>> +.PHONY: $(FUNCTIONAL_TARGETS)
+>> +$(FUNCTIONAL_TARGETS):
+>> +	@make SPEED=thorough $(subst -functional,-func,$@)
+>> +
+>> +.PHONY: check-functional
+>> +check-functional:
+>> +	@make SPEED=thorough check-func check-func-quick
 > 
-> I'm not sure if this message needs to be updated, " VFIO device doesn't support device and IOMMU dirty tracking"
+> I think these^ two should use $(MAKE) instead:
 > 
-> Same for the below:
-> 
-> warn_report("%s: VFIO device doesn't support device dirty tracking"
+> make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent
+> make rule.
 
+Right, thanks! I'll change it in the next version.
 
-Ah yes, good catch. Additionally I think I should check device hwpt rather than
-container::dirty_pages_supported i.e.
+  Thomas
 
-if (!vbasedev->dirty_pages_supported &&
-    (vbasedev->hwpt && !iommufd_hwpt_dirty_tracking(vbasedev->hwpt)))
-
-This makes sure that migration is blocked with more accuracy
 
