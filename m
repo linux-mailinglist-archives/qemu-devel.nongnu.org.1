@@ -2,89 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D39933DC4
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 15:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7082D933DC8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 15:41:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU4t7-00012a-2K; Wed, 17 Jul 2024 09:40:09 -0400
+	id 1sU4tv-0002zH-18; Wed, 17 Jul 2024 09:41:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sU4t2-0000sw-UD
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 09:40:05 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sU4t1-0007Tv-0G
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 09:40:04 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-793a3a79a83so2210438a12.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 06:40:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1721223600; x=1721828400; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YXRnQrR7vltoXSYXHi7IhAgNjpxq9maTne8vi5kmaO0=;
- b=TobRxArKJEkOB3Lwmfv4UXNmkO92uBIZqpXywTZcjWz0iscPFK2liWi0jQpPy3IEiD
- n5eJVwsMYreTdVi9RVHfq2llzTkAHfT9TIYeADWV+VEAXZFhtpYakBh4cwsEFoXCF8HR
- vMcsJLfeJi+IjlGmWJtGhMLQ4rdT69iVknW6HPUNuEKuS8uzV9q7zo0DjC1He5CE5FwM
- 2IifLDb3qyL/ORGcK5QjsbhdfGQdrCj/SvqRl0RIkr5P83pONRphsA/JIMAJd6J1tJBD
- ed9glj/W189Ipu/OPVwsGcY6liXvELIofNTscHYufyHp6ipqpkPLlgmqXwQ/DcjMp4+J
- eooQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sU4tQ-0002DC-Ts
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 09:40:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sU4tG-0007hd-VP
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 09:40:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721223614;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CzZAVSpZPQcFIvxweomh2gEZAR3iEyJ7BXFBbs1oiIQ=;
+ b=e6TjO2L8dB1UhpW2KbDepSKFRG7Ij7gxhyTA1Cv8HYUDS1Thcy06lmVBAgJQHt5awlNDt0
+ PkML1Oa++HVpbz0VenmFAEAyzjYYA4+Jy+rUfxPKSWv9e/VPkWk30oFZwxtemNCIBjDA3G
+ ZiJqx0y3MB+Q1Bo1D0Ll7lzPlF5U9D0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-321-2e_BvJisMiudvHSbCafmwg-1; Wed, 17 Jul 2024 09:40:12 -0400
+X-MC-Unique: 2e_BvJisMiudvHSbCafmwg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4279c75c44dso44117265e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 06:40:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721223600; x=1721828400;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YXRnQrR7vltoXSYXHi7IhAgNjpxq9maTne8vi5kmaO0=;
- b=bB+b4bztB8GP2wABTHoQFqQSHf4qYZzp9V9WtGmOJf/1bDequlzuavI6Rq+vWS177I
- soS8GiMGy2RulHzaFJsx7nNSyZ2e80FYviVDw8jqavbta56VOMYBhddAXfT20MHbUJGD
- Slf+Y9akjJQX6IErmcYXYeFhsp3x4nfL8yrIDWMDQ9we8WBg930V5EQ/qqYacREEzheg
- mPdEpAHZ+FYEbclO1788jYI3uKfz+Dj8XaxYciFjSvo4GdTqxFU3dNS4NWPTDvoDjWq/
- MRgZkPrzx66CY2f+jxnClmfEHGRlAb1Oxs13eQUOzZY/m+F1Biq684q4QXZk0PspxxnY
- kViw==
-X-Gm-Message-State: AOJu0YwDmCTxS6P8aPNmLZkpe77yU8I9eom1aBbhZ4j7sLxOcby1E8R/
- tFyCIqvlIfYC9napnTbTtVzllzMZStdMJ+sVCT5X9IuTFhVnEt22iLpoHAp2wBhrIBWpvTf3Vd2
- j+pYrUk85Y6HY1zGGPCarV5SApKFIoDhrm6N2Hpalof/mMMRkFBcKR68uvDZJCIOzi+tIR0Rg+V
- h1Xy41139b4yYVZ6ku9i7owtDlZpAIpn7ZgNiwag==
-X-Google-Smtp-Source: AGHT+IEhFYiPKAJcmMHCQiAv/RxC9Qf0bgVvf4GhEV0jMHuHpRo9DU2lJ6A2ptelZafr7Wr+zeOkaA==
-X-Received: by 2002:a05:6a21:6e4b:b0:1c0:dd3d:ef3a with SMTP id
- adf61e73a8af0-1c3fdcd0ac1mr1943388637.29.1721223599905; 
- Wed, 17 Jul 2024 06:39:59 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bc5aa6esm74903495ad.299.2024.07.17.06.39.58
+ d=1e100.net; s=20230601; t=1721223610; x=1721828410;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CzZAVSpZPQcFIvxweomh2gEZAR3iEyJ7BXFBbs1oiIQ=;
+ b=UtJjs76bepFOZ98FplInTGrEpwq27o0m8IcfXeWOsDzsZUEy1w9UyJYcQVipcstQka
+ mzYP4+lhaDRLzT6SL0HEi2TjL6E2mBnPwLbSqkZkHpTxzFir9KAz2XNvgxQAmwLMXSqS
+ nOGIkuQyjKD+qwo13rMIXJKbkrPORNeDlKmuirfZkBepJJpKqctCarbQzjG92y5eTYJW
+ jZTk6rfSM5mtTTyKHJzsPbyBRYiu/BuDTZbPfmpWCacPIGuCzox0nRSSI6RtTzemsnLV
+ IyOCqI4Wk4zWHcpbvE+eXuNUoj6Zu03Ml5m+KMS88/fyFyROK6/4szDmqLDsqx8TWIfN
+ ukKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU/5ekmRzQCnC2Ph9VfV28JnzL96/iC1owmiBwzAfW+HPSrW7iFB5Gord63EkgpJsMVv5VHvFZjbGFTX6hPxXpvd2B+zEk=
+X-Gm-Message-State: AOJu0YzxX1TCm3LkUijZsYIahOgipEo+TS7Kg+gkxTVpN65xdZfQSAtX
+ NZlfZPpx1MskxMasyYbfE4Dd74xjG14XJjGMFSm1ww+PvRiVz5CQHDsMd8QlQCKv0NX1hSAWXq4
+ hi9iHkbXLaD75JNbuPZyB6aZXlgXtSpTii+rKKeqs56WQW0rotAA3
+X-Received: by 2002:a7b:c451:0:b0:426:63b4:73b0 with SMTP id
+ 5b1f17b1804b1-427c2cff435mr12977805e9.34.1721223610718; 
+ Wed, 17 Jul 2024 06:40:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLXATnoN705YurMt3X8E1LNazLqoK2EKs7hAjBKGsJpr31inWc/GQibwJgsMQn1tPF076A7g==
+X-Received: by 2002:a7b:c451:0:b0:426:63b4:73b0 with SMTP id
+ 5b1f17b1804b1-427c2cff435mr12977525e9.34.1721223610100; 
+ Wed, 17 Jul 2024 06:40:10 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f2:c194:849d:f1e:3618:dc03])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427b9956088sm74095245e9.30.2024.07.17.06.40.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jul 2024 06:39:59 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
- Max Chou <max.chou@sifive.com>
-Subject: [RFC PATCH v5 5/5] target/riscv: Inline unit-stride ld/st and
- corresponding functions for performance
-Date: Wed, 17 Jul 2024 21:39:36 +0800
-Message-Id: <20240717133936.713642-6-max.chou@sifive.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240717133936.713642-1-max.chou@sifive.com>
-References: <20240717133936.713642-1-max.chou@sifive.com>
+ Wed, 17 Jul 2024 06:40:09 -0700 (PDT)
+Date: Wed, 17 Jul 2024 09:40:06 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>, Jason Wang <jasowang@redhat.com>,
+ mcoqueli@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH 0/2] Postcopy migration and vhost-user errors
+Message-ID: <20240717093911-mutt-send-email-mst@kernel.org>
+References: <20240711131424.181615-1-ppandit@redhat.com> <Zo_8fpKH8oBA8WV1@x1n>
+ <CAE8KmOzsGaPtTFsjcRkyd8n_fPzXeFd+c38Eb=aLG0_MdO+yKw@mail.gmail.com>
+ <ZpUmrTrEnx0RcO2y@x1n>
+ <CAE8KmOxY_LQ9vNjvmPyRgk_dcnEZFG6_M1q14473NQoBUSM4ow@mail.gmail.com>
+ <ZpbuChi9QMIogmuS@x1n>
+ <20240717045335-mutt-send-email-mst@kernel.org>
+ <ZpfIDUwS9vawpzT5@x1n>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=max.chou@sifive.com; helo=mail-pg1-x530.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZpfIDUwS9vawpzT5@x1n>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,106 +105,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the vector unit-stride load/store helper functions. the vext_ldst_us
-& vext_ldst_whole functions corresponding most of the execution time.
-Inline the functions can avoid the function call overhead to improve the
-helper function performance.
+On Wed, Jul 17, 2024 at 09:33:01AM -0400, Peter Xu wrote:
+> Hi, Michael,
+> 
+> On Wed, Jul 17, 2024 at 04:55:52AM -0400, Michael S. Tsirkin wrote:
+> > I just want to understand how we managed to have two threads
+> > talking in parallel. BQL is normally enough, which path
+> > manages to invoke vhost-user with BQL not taken?
+> > Just check BQL taken on each vhost user invocation and
+> > you will figure it out.
+> 
+> Prasad mentioned how the race happened in the cover letter:
+> 
+> https://lore.kernel.org/r/20240711131424.181615-1-ppandit@redhat.com
+> 
+>      Thread-1                                  Thread-2
+> 
+> vhost_dev_start                        postcopy_ram_incoming_cleanup
+>  vhost_device_iotlb_miss                postcopy_notify
+>   vhost_backend_update_device_iotlb      vhost_user_postcopy_notifier
+>    vhost_user_send_device_iotlb_msg       vhost_user_postcopy_end
+>     process_message_reply                  process_message_reply
+>      vhost_user_read                        vhost_user_read
+>       vhost_user_read_header                 vhost_user_read_header
+>        "Fail to update device iotlb"          "Failed to receive reply to postcopy_end"
+> 
+> The normal case should be that thread-2 is postcopy_ram_listen_thread(),
+> and this happens when postcopy migration is close to the end.
+> 
+> Thanks,
+> 
+> -- 
+> Peter Xu
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/riscv/vector_helper.c | 56 +++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 2e675b4220c..95394c425ed 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -150,18 +150,20 @@ typedef void vext_ldst_elem_fn_tlb(CPURISCVState *env, abi_ptr addr,
-                                    uint32_t idx, void *vd, uintptr_t retaddr);
- typedef void vext_ldst_elem_fn_host(void *vd, uint32_t idx, void *host);
- 
--#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)                         \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,                \
--                       uint32_t byte_off, void *vd, uintptr_t retaddr)  \
--{                                                                       \
--    ETYPE *cur = vd + byte_off;                                         \
--    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);                   \
--}                                                                       \
--                                                                        \
--static void NAME##_host(void *vd, uint32_t byte_off, void *host)        \
--{                                                                       \
--    ETYPE val = LDSUF##_p(host);                                        \
--    *(ETYPE *)(vd + byte_off) = val;                                    \
-+#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)                 \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,               \
-+                uint32_t byte_off, void *vd, uintptr_t retaddr) \
-+{                                                               \
-+    ETYPE *cur = vd + byte_off;                                 \
-+    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);           \
-+}                                                               \
-+                                                                \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_host(void *vd, uint32_t byte_off, void *host)       \
-+{                                                               \
-+    ETYPE val = LDSUF##_p(host);                                \
-+    *(ETYPE *)(vd + byte_off) = val;                            \
- }
- 
- GEN_VEXT_LD_ELEM(lde_b, uint8_t,  H1, ldub)
-@@ -169,18 +171,20 @@ GEN_VEXT_LD_ELEM(lde_h, uint16_t, H2, lduw)
- GEN_VEXT_LD_ELEM(lde_w, uint32_t, H4, ldl)
- GEN_VEXT_LD_ELEM(lde_d, uint64_t, H8, ldq)
- 
--#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)                         \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,                \
--                       uint32_t byte_off, void *vd, uintptr_t retaddr)  \
--{                                                                       \
--    ETYPE data = *(ETYPE *)(vd + byte_off);                             \
--    cpu_##STSUF##_data_ra(env, addr, data, retaddr);                    \
--}                                                                       \
--                                                                        \
--static void NAME##_host(void *vd, uint32_t byte_off, void *host)        \
--{                                                                       \
--    ETYPE val = *(ETYPE *)(vd + byte_off);                              \
--    STSUF##_p(host, val);                                               \
-+#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)                 \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,               \
-+                uint32_t byte_off, void *vd, uintptr_t retaddr) \
-+{                                                               \
-+    ETYPE data = *(ETYPE *)(vd + byte_off);                     \
-+    cpu_##STSUF##_data_ra(env, addr, data, retaddr);            \
-+}                                                               \
-+                                                                \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_host(void *vd, uint32_t byte_off, void *host)       \
-+{                                                               \
-+    ETYPE val = *(ETYPE *)(vd + byte_off);                      \
-+    STSUF##_p(host, val);                                       \
- }
- 
- GEN_VEXT_ST_ELEM(ste_b, uint8_t,  H1, stb)
-@@ -366,7 +370,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-     }
- }
- 
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              vext_ldst_elem_fn_tlb *ldst_tlb,
-              vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
-@@ -695,7 +699,7 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb)
- /*
-  * load and store whole register instructions
-  */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-                 vext_ldst_elem_fn_tlb *ldst_tlb,
-                 vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
+OK, so postcopy_ram_ things run without the BQL?
+
 -- 
-2.34.1
+MST
 
 
