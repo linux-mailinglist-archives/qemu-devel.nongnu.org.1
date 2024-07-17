@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246519336AD
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3819336AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:11:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTxrp-0006cx-NH; Wed, 17 Jul 2024 02:10:21 -0400
+	id 1sTxs0-0008L5-K8; Wed, 17 Jul 2024 02:10:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxrJ-0005Lt-SV
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:49 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1sTxrN-0005bu-Jr
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:53 -0400
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxrF-00035O-Q2
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:49 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-78964fd9f2dso4003451a12.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:09:44 -0700 (PDT)
+ id 1sTxrJ-00035z-J2
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:52 -0400
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-5ce74defe42so352255eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721196583; x=1721801383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721196586; x=1721801386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6XuY01gcGNghIOOf5X8qApquvihmysZWPJ2xnop5Jqo=;
- b=R9KKfeNECve2q7WUzksTcnEHUiEzWuiBg8H4HMIaKQ5PXjdXOfMI9h1zUAXV5LHXQN
- CYZpD5zP/aHy5X7XtlVKCFrirPoV843adgSs4DcaVnoK230czhsfQtAG+btebkUyEOvH
- ymDjg74r93BA2U385wbDFz4h29bj0lYNozZhtOmyHHhTudqiJfYAFu20HUapPiRThPlA
- TVw+ZdgbLtbjnqAD23QfLEz/O7cGp6p2V+FZ8zTsNEyfW7CMx7j7RpoaCdlxyRrSszC8
- KrGHLtBvDJg0eez9HubO1MlJmKs3mes0bq4kuIePHYfF4A0N4lC8QfNnhsNTGBdTjyqH
- PkOw==
+ bh=57DdanWVRLYnAUN5YF1Z/JUbHmS65EczfEpSlC06YmA=;
+ b=wePVVf0ygEbl+zb75+wpb/7Mu5abD1ywmETe5t9ODIr4VkOu6FTDHluTQyE1bFDhqa
+ cbPPrG8iGTGPEv1qP/q/eqOjrlktHsCAQIgH+WQfB4lzLEIrNrbHmBZfjpru1Anq3tVl
+ llN4ccI9Ei5hJyTWU5On6W/LA4nFgYwRbDp/iX4ts5L0jDMnsxACiMTRIq7uV+aMoSuR
+ UbsTufu56BO6/S6eNIrAUZc0LQE11EYfa1BiUTA32hEaHKPTSBUIa0ZTh4/sPl2sEHrq
+ MRAmYOlME1izLMANpAYBDzOh5BSdDK2MdI+6NWGvA0RuvhknXXk4viNcZP0mlryA0xLw
+ FMNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721196583; x=1721801383;
+ d=1e100.net; s=20230601; t=1721196586; x=1721801386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6XuY01gcGNghIOOf5X8qApquvihmysZWPJ2xnop5Jqo=;
- b=o6/grKUOZcLA8BAM8leaDJj1mJZsXV5ovHzVpItmA5pFY94+od4N0fA3cODZMZ+bmD
- cTYjoK/JUOJy8aRXMlnDxf6n9euGQmGKgpb4MMNvXW+28gQ7gxAKXiL6bue05y+fKzHH
- WO3uUvE07CPOToYg4N4L7Hqn5ETpMMFwSmfW9SzN/0vNnj1UwBk8HWfqWIZ4TLZ4cFjw
- guImXE6D15DFoXpGS0EIejsPrvjaSg4quj68ZROmvnuMrsD0Cc1CuH9lp4fYCh5FB/XV
- KbWRnkB3xm2UbkzhZNBx1GnT/OiJIih0dkIUUFVFi/eONbmrfSgkUzbkdhsWpjGzKc2X
- 2yZA==
-X-Gm-Message-State: AOJu0YyLNsMJwQMS35Rz/hQGCdCv7jIfgTjgSRG5HxZ8DiKLw1kV2fWd
- /7IP2U28Hn3vd0eam2JRRQS+pgOeVK9HwEtzh/rQzJqdQBEoTlHR36GC28pVE9u/vYXXr8HAtde
- NLlY=
-X-Google-Smtp-Source: AGHT+IE70b6i36S3WST98ZZdog9bLcXMAOV3X+X632dUm4VQkKZOi1/iqr1cKU1v0DxyfKY/tx/cAw==
-X-Received: by 2002:a05:6a21:458a:b0:1c2:8b78:880 with SMTP id
- adf61e73a8af0-1c3fddc9683mr856533637.41.1721196583135; 
- Tue, 16 Jul 2024 23:09:43 -0700 (PDT)
+ bh=57DdanWVRLYnAUN5YF1Z/JUbHmS65EczfEpSlC06YmA=;
+ b=ZRYGfXk4raiIr+FDnE2bJ8JhaPipD6iUVdESBgnKffEZUqJtoQJd6j94DIyh2WpHyA
+ G+ZbmMLkWxMwL4jbopt9PT9s0EWr9UMJz+lAT3rjPwln6tKabyYq4TpyHsQ9z3yb6jr/
+ 9pMr7ICuaMF5CG1cxbxEDSAMtuJHcbcIRQGN/iPJiIW4+H8fXNaJKM3cdNr3ZpR52Csa
+ ZZGNaZjEqoncSewTBarTbKYsRWGxrcNVEaVOXycuj9VydGZQEMQZIBXCaLhYDP97pXgP
+ 9/cwJXcLbvtkOJBGneWyok6kFHidgmEXPF7gtjTkEmL3ChrW6D/ifQiidODRpK+eSh6V
+ AQkQ==
+X-Gm-Message-State: AOJu0Yx7A4oqYQGeOHUqVte/gEgYcUxR6A0BPEkEzvoLGQBc5InbHA49
+ 31499Ppfi/ovZcTU4Nci67ocBpZUbrQsq6ucKRleNfOE1eD/YbvuMyMcQP4IPemkw2lBFbK8d3n
+ VtiE=
+X-Google-Smtp-Source: AGHT+IHGO1Pf2nQiQ2rZdrnL2yJ5uvyVx/nwpxmtfjRkvheiJea/oI8PrztwSpvhg6JrF1aYstaucQ==
+X-Received: by 2002:a05:6871:79a:b0:24f:d873:9f32 with SMTP id
+ 586e51a60fabf-260d9222ad5mr578504fac.26.1721196585830; 
+ Tue, 16 Jul 2024 23:09:45 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7ecd603bsm7330404b3a.219.2024.07.16.23.09.41
+ d2e1a72fcca58-70b7ecd603bsm7330404b3a.219.2024.07.16.23.09.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 23:09:42 -0700 (PDT)
+ Tue, 16 Jul 2024 23:09:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH 13/17] target/arm: Convet handle_vec_simd_shli to decodetree
-Date: Wed, 17 Jul 2024 16:08:59 +1000
-Message-ID: <20240717060903.205098-14-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH 14/17] target/arm: Clear high SVE elements in
+ handle_vec_simd_wshli
+Date: Wed, 17 Jul 2024 16:09:00 +1000
+Message-ID: <20240717060903.205098-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240717060903.205098-1-richard.henderson@linaro.org>
 References: <20240717060903.205098-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -91,119 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This includes SHL and SLI.
+AdvSIMD instructions are supposed to zero bits beyond 128.
+Affects SSHLL, USHLL, SSHLL2, USHLL2.
 
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 40 +++++++++-------------------------
- target/arm/tcg/a64.decode      |  6 +++++
- 2 files changed, 16 insertions(+), 30 deletions(-)
+ target/arm/tcg/translate-a64.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 1e482477c5..fd90752dee 100644
+index fd90752dee..d0ad6c90bc 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -84,6 +84,13 @@ static int rcount_immhb(DisasContext *s, int x)
-     return (16 << size) - x;
+@@ -10471,6 +10471,7 @@ static void handle_vec_simd_wshli(DisasContext *s, bool is_q, bool is_u,
+         tcg_gen_shli_i64(tcg_rd, tcg_rd, shift);
+         write_vec_element(s, tcg_rd, rd, i, size + 1);
+     }
++    clear_vec_high(s, true, rd);
  }
  
-+/* For Advanced SIMD shift by immediate, left shift count. */
-+static int lcount_immhb(DisasContext *s, int x)
-+{
-+    int size = esz_immh(s, x >> 3);
-+    return x - (8 << size);
-+}
-+
- /*
-  * Include the generated decoders.
-  */
-@@ -6962,6 +6969,8 @@ TRANS(URSHR_v, do_vec_shift_imm, a, gen_gvec_urshr)
- TRANS(SRSRA_v, do_vec_shift_imm, a, gen_gvec_srsra)
- TRANS(URSRA_v, do_vec_shift_imm, a, gen_gvec_ursra)
- TRANS(SRI_v, do_vec_shift_imm, a, gen_gvec_sri)
-+TRANS(SHL_v, do_vec_shift_imm, a, tcg_gen_gvec_shli)
-+TRANS(SLI_v, do_vec_shift_imm, a, gen_gvec_sli);
- 
- /* Shift a TCGv src by TCGv shift_amount, put result in dst.
-  * Note that it is the caller's responsibility to ensure that the
-@@ -10427,33 +10436,6 @@ static void disas_simd_scalar_two_reg_misc(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* SHL/SLI - Vector shift left */
--static void handle_vec_simd_shli(DisasContext *s, bool is_q, bool insert,
--                                 int immh, int immb, int opcode, int rn, int rd)
--{
--    int size = 32 - clz32(immh) - 1;
--    int immhb = immh << 3 | immb;
--    int shift = immhb - (8 << size);
--
--    /* Range of size is limited by decode: immh is a non-zero 4 bit field */
--    assert(size >= 0 && size <= 3);
--
--    if (extract32(immh, 3, 1) && !is_q) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    if (insert) {
--        gen_gvec_fn2i(s, is_q, rd, rn, shift, gen_gvec_sli, size);
--    } else {
--        gen_gvec_fn2i(s, is_q, rd, rn, shift, tcg_gen_gvec_shli, size);
--    }
--}
--
- /* USHLL/SHLL - Vector shift left with widening */
- static void handle_vec_simd_wshli(DisasContext *s, bool is_q, bool is_u,
-                                  int immh, int immb, int opcode, int rn, int rd)
-@@ -10566,9 +10548,6 @@ static void disas_simd_shift_imm(DisasContext *s, uint32_t insn)
-     }
- 
-     switch (opcode) {
--    case 0x0a: /* SHL / SLI */
--        handle_vec_simd_shli(s, is_q, is_u, immh, immb, opcode, rn, rd);
--        break;
-     case 0x10: /* SHRN */
-     case 0x11: /* RSHRN / SQRSHRUN */
-         if (is_u) {
-@@ -10609,6 +10588,7 @@ static void disas_simd_shift_imm(DisasContext *s, uint32_t insn)
-     case 0x04: /* SRSHR / URSHR (rounding) */
-     case 0x06: /* SRSRA / URSRA (accum + rounding) */
-     case 0x08: /* SRI */
-+    case 0x0a: /* SHL / SLI */
-         unallocated_encoding(s);
-         return;
-     }
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index c525f5fc35..6aa8a18240 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1191,9 +1191,12 @@ FMOVI_s         0001 1110 .. 1 imm:8 100 00000 rd:5         esz=%esz_hsd
- %abcdefgh       16:3 5:5
- %esz_immh       19:4 !function=esz_immh
- %rcount_immhb   16:7 !function=rcount_immhb
-+%lcount_immhb   16:7 !function=lcount_immhb
- 
- @qrshifti       . q:1 .. ..... .... ... ..... . rn:5 rd:5   \
-                 &qrri_e esz=%esz_immh imm=%rcount_immhb
-+@qlshifti       . q:1 .. ..... .... ... ..... . rn:5 rd:5   \
-+                &qrri_e esz=%esz_immh imm=%lcount_immhb
- 
- FMOVI_v_h       0 q:1 00 1111 00000 ... 1111 11 ..... rd:5  %abcdefgh
- 
-@@ -1212,5 +1215,8 @@ FMOVI_v_h       0 q:1 00 1111 00000 ... 1111 11 ..... rd:5  %abcdefgh
-     SRSRA_v     0.00 11110 .... ... 00110 1 ..... .....     @qrshifti
-     URSRA_v     0.10 11110 .... ... 00110 1 ..... .....     @qrshifti
-     SRI_v       0.10 11110 .... ... 01000 1 ..... .....     @qrshifti
-+
-+    SHL_v       0.00 11110 .... ... 01010 1 ..... .....     @qlshifti
-+    SLI_v       0.10 11110 .... ... 01010 1 ..... .....     @qlshifti
-   ]
- }
+ /* SHRN/RSHRN - Shift right with narrowing (and potential rounding) */
 -- 
 2.43.0
 
