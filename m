@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58163933559
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 04:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BEA93355D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 04:15:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTuB3-0008O1-6e; Tue, 16 Jul 2024 22:13:57 -0400
+	id 1sTuB1-0008Fd-TU; Tue, 16 Jul 2024 22:13:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAr-0007yG-8Z
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:47 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAu-0007yU-3T
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAn-0003TN-SG
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:44 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAs-0003Uv-Co
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721182420;
+ s=mimecast20190719; t=1721182424;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A4ZOkrbsQN9ez6VBR7bjQWVS5Di9egbzq9bM/SobSXk=;
- b=UxZEqFYsSmH6R8ql9J+OSrPsLfef3Y+6DdXY4YtqNh/ayOpCliwrfSV41JrH+OQsl5nUjA
- MK9FgbzOaU8W/3fD9uQReLNQfnGRuuhFgrkO5G02oPyCOVqqWaH46SZbjOcot1i0xYdN07
- 4ziA4zOkzjsytYLteIMoAdzs2qza/Y8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=cK72dcimvSi3Yg3WciBVNzlipHpTmUZFliZYoEMaEOY=;
+ b=gEfsi5fIQBYMZ2grfMHq28yl+0XxfQ1LPjL0gXyT0L+5dp779UAA/M9Bfm19VFtDeMT/s6
+ kMi+Tv+3yDN5Wjx98OZ9EbiAqVfXxIZ6QxGcVOzB51TjU3E2XYB84KTUiXPbbXvQmJD9Qz
+ 6ECrMTD9jb6hMog3zSlFawa4IjPi6dA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-RJOKYjf6OI-tLnjj7dxPKA-1; Tue,
- 16 Jul 2024 22:13:34 -0400
-X-MC-Unique: RJOKYjf6OI-tLnjj7dxPKA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-_JumL3G1O0yKIGgnaowjww-1; Tue,
+ 16 Jul 2024 22:13:41 -0400
+X-MC-Unique: _JumL3G1O0yKIGgnaowjww-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F2FBD19560AD; Wed, 17 Jul 2024 02:13:31 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 98C441955D45; Wed, 17 Jul 2024 02:13:38 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.65.127])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0384B1955F40; Wed, 17 Jul 2024 02:13:26 +0000 (UTC)
+ id 33DD01955E80; Wed, 17 Jul 2024 02:13:32 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
@@ -64,9 +64,9 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 2/9] docs/qapidoc: factor out do_parse()
-Date: Tue, 16 Jul 2024 22:13:04 -0400
-Message-ID: <20240717021312.606116-3-jsnow@redhat.com>
+Subject: [PATCH v2 3/9] docs/qapidoc: create qmp-example directive
+Date: Tue, 16 Jul 2024 22:13:05 -0400
+Message-ID: <20240717021312.606116-4-jsnow@redhat.com>
 In-Reply-To: <20240717021312.606116-1-jsnow@redhat.com>
 References: <20240717021312.606116-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -97,65 +97,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor out the compatibility parser helper into a base class, so it can
-be shared by other directives.
+This is a directive that creates a syntactic sugar for creating
+"Example" boxes very similar to the ones already used in the bitmaps.rst
+document, please see e.g.
+https://www.qemu.org/docs/master/interop/bitmaps.html#creation-block-dirty-bitmap-add
+
+In its simplest form, when a custom title is not needed or wanted, and
+the example body is *solely* a QMP example:
+
+```
+.. qmp-example::
+
+   {body}
+```
+
+is syntactic sugar for:
+
+```
+.. admonition:: Example:
+
+   .. code-block:: QMP
+
+      {body}
+```
+
+When a custom, plaintext title that describes the example is desired,
+this form:
+
+```
+.. qmp-example::
+   :title: Defrobnification
+
+   {body}
+```
+
+Is syntactic sugar for:
+
+```
+.. admonition:: Example: Defrobnification
+
+   .. code-block:: QMP
+
+      {body}
+```
+
+Lastly, when Examples are multi-step processes that require non-QMP
+exposition, have lengthy titles, or otherwise involve prose with rST
+markup (lists, cross-references, etc), the most complex form:
+
+```
+.. qmp-example::
+   :annotated:
+
+   This example shows how to use `foo-command`::
+
+     {body}
+
+   For more information, please see `frobnozz`.
+```
+
+Is desugared to:
+
+```
+.. admonition:: Example:
+
+   This example shows how to use `foo-command`::
+
+     {body}
+
+   For more information, please see `frobnozz`.
+```
+
+Note that :annotated: and :title: options can be combined together, if
+desired.
+
+The primary benefit here being documentation source consistently using
+the same directive for all forms of examples to ensure consistent visual
+styling, and ensuring all relevant prose is visually grouped alongside
+the code literal block.
+
+Note that as of this commit, the code-block rST syntax "::" does not
+apply QMP highlighting; you would need to use ".. code-block:: QMP". The
+very next commit changes this behavior to assume all "::" code blocks
+within this directive are QMP blocks.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ docs/sphinx/qapidoc.py | 55 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 62b39833ca0..b3be82998a8 100644
+index b3be82998a8..11defcfa3f6 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -481,7 +481,25 @@ def visit_module(self, name):
-         super().visit_module(name)
+@@ -27,6 +27,7 @@
+ import os
+ import re
+ import textwrap
++from typing import List
  
+ from docutils import nodes
+ from docutils.parsers.rst import Directive, directives
+@@ -35,6 +36,7 @@
+ from qapi.gen import QAPISchemaVisitor
+ from qapi.schema import QAPISchema
  
--class QAPIDocDirective(Directive):
-+class NestedDirective(Directive):
-+    def run(self):
-+        raise NotImplementedError
-+
-+    def do_parse(self, rstlist, node):
-+        """
-+        Parse rST source lines and add them to the specified node
-+
-+        Take the list of rST source lines rstlist, parse them as
-+        rST, and add the resulting docutils nodes as children of node.
-+        The nodes are parsed in a way that allows them to include
-+        subheadings (titles) without confusing the rendering of
-+        anything else.
-+        """
-+        with switch_source_input(self.state, rstlist):
-+            nested_parse_with_titles(self.state, rstlist, node)
-+
-+
-+class QAPIDocDirective(NestedDirective):
-     """Extract documentation from the specified QAPI .json file"""
- 
-     required_argument = 1
-@@ -519,18 +537,6 @@ def run(self):
-             # so they are displayed nicely to the user
++from sphinx.directives.code import CodeBlock
+ from sphinx.errors import ExtensionError
+ from sphinx.util.docutils import switch_source_input
+ from sphinx.util.nodes import nested_parse_with_titles
+@@ -538,10 +540,63 @@ def run(self):
              raise ExtensionError(str(err)) from err
  
--    def do_parse(self, rstlist, node):
--        """Parse rST source lines and add them to the specified node
--
--        Take the list of rST source lines rstlist, parse them as
--        rST, and add the resulting docutils nodes as children of node.
--        The nodes are parsed in a way that allows them to include
--        subheadings (titles) without confusing the rendering of
--        anything else.
--        """
--        with switch_source_input(self.state, rstlist):
--            nested_parse_with_titles(self.state, rstlist, node)
--
  
++class QMPExample(CodeBlock, NestedDirective):
++    """
++    Custom admonition for QMP code examples.
++
++    When the :annotated: option is present, the body of this directive
++    is parsed as normal rST instead. Code blocks must be explicitly
++    written by the user, but this allows for intermingling explanatory
++    paragraphs with arbitrary rST syntax and code blocks for more
++    involved examples.
++
++    When :annotated: is absent, the directive body is treated as a
++    simple standalone QMP code block literal.
++    """
++
++    required_argument = 0
++    optional_arguments = 0
++    has_content = True
++    option_spec = {
++        "annotated": directives.flag,
++        "title": directives.unchanged,
++    }
++
++    def admonition_wrap(self, *content) -> List[nodes.Node]:
++        title = "Example:"
++        if "title" in self.options:
++            title = f"{title} {self.options['title']}"
++
++        admon = nodes.admonition(
++            "",
++            nodes.title("", title),
++            *content,
++            classes=["admonition", "admonition-example"],
++        )
++        return [admon]
++
++    def run_annotated(self) -> List[nodes.Node]:
++        content_node: nodes.Element = nodes.section()
++        self.do_parse(self.content, content_node)
++        return content_node.children
++
++    def run(self) -> List[nodes.Node]:
++        annotated = "annotated" in self.options
++
++        if annotated:
++            content_nodes = self.run_annotated()
++        else:
++            self.arguments = ["QMP"]
++            content_nodes = super().run()
++
++        return self.admonition_wrap(*content_nodes)
++
++
  def setup(app):
      """Register qapi-doc directive with Sphinx"""
+     app.add_config_value("qapidoc_srctree", None, "env")
+     app.add_directive("qapi-doc", QAPIDocDirective)
++    app.add_directive("qmp-example", QMPExample)
+ 
+     return {
+         "version": __version__,
 -- 
 2.45.0
 
