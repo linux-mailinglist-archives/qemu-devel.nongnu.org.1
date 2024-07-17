@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71313933C15
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E638933C30
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:25:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2eO-00077r-Lr; Wed, 17 Jul 2024 07:16:49 -0400
+	id 1sU2lK-0000MA-Cc; Wed, 17 Jul 2024 07:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sU2e9-00063z-I4
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:16:36 -0400
-Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sU2lH-0000Bh-Lv; Wed, 17 Jul 2024 07:23:55 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sU2e6-0004RJ-PR
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:16:33 -0400
-Received: by mail-ua1-x932.google.com with SMTP id
- a1e0cc1a2514c-810177d1760so410339241.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 04:16:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sU2lF-0006p5-Rf; Wed, 17 Jul 2024 07:23:55 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-5b53bb4bebaso376372eaf.0; 
+ Wed, 17 Jul 2024 04:23:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1721214989; x=1721819789;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FfUWHKWL6TaVEhUts6Kr5b/CvgFJnQYLsQV/A+VemvU=;
- b=F+cR9VjjIbM+pO5McmL+b/paWrLmVc223y5hrcvDY2WjjXAMC5Gp1/Fq/PTpGJIqSj
- xE5KxyEkZ+LqbxkPifcoUSOUluOta03v+uP6w9TOV6Dy8BGU+IDgphb7s3qAiglEqPTI
- ESojFgFZYKg1BKNQzxDKjg+AK3C9LGXPjGxSNieAENR+ppGacCz+wve7C3PvSP1WVMaz
- prRQ05ETmUdnd1VnKYVeegp4Dn+DmgUJ1UlHjRAOxSIfMBhM0UPWyNoV1VQVNvyxKbl4
- VBp1b77krQbzkL9lDtABgys3e0JWPgWzno0sLHhm4/h0JrO0WfHisbENjvGcN0AmYycN
- jKQg==
+ d=gmail.com; s=20230601; t=1721215431; x=1721820231; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wwI/SRj99yjPQr9rGqVr8fbwxRLWj9jJISoN9/IKrm4=;
+ b=gX4M84MQ1YiXixcTa1oouU0UlP/q5dMHwLd1g23+l2hVTz2i9XgfwJI1jsdFGDHlV3
+ fgQ0B/KgLTtD63oRNdFagVW/MsvpnN/LFVUjlrYYzIUfjLPC/hgaTdDnWIQMvio2iJcw
+ TAaIl0I7snIZb3qw706GWz5q2Tpq6VapgPjnGvD8dXKRlUMkWpz6BhNzF6Wc7B6kPBvZ
+ MahZPgAHSagI09tUcP95LJfzNg+cW8VJ+tAzNbUFMEVWM9i358+1n4DtBl8P6ud+9BMc
+ q2Qo+Blh334fxMNig2C9nsfKsYTRVbXlWiGO7p61+JPnaxhUagIHi8Jnz+ovuGZlRSvx
+ IUOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721214989; x=1721819789;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FfUWHKWL6TaVEhUts6Kr5b/CvgFJnQYLsQV/A+VemvU=;
- b=cr2NvSztPg03BybmXLjUP4OdLmgwoKdhlWvzjD4FrtHHG+YiKPsxjUEzRJ1CWXVLiA
- pjqUc569EoSRP1M6R03LJ4xFgdlPEz7F8ggjWo4xkk1j2ov2q0ZvLe8G9EWkz6daN+dg
- qgX0J4lh2cs+jTqupSGW/CiIFsXaRdnV1Cqvht9/cYbQWp5/gPEy1/dPukSf5EMG/piS
- GtGBASzIp3xyDD/Zam1L4wkrPoBavXQVEoA5I0IboneDZVouAVNvUe53GM8IaGijcfib
- e3li4mxP0EX2oEIVghych6R+rAyi+7YD5/O2XZX6s6kXexiFi5aZXGqSyluWbWm3T881
- prmQ==
-X-Gm-Message-State: AOJu0Yyg4QiQw/0bwvAdaN+g+L/zG0m3ABdiF45QS627scE6ze2INlV2
- XHuDrZKL+p8CekaPgIsB9O9kQP0JXi5ivFs0RR3ABf4UlxZG2JOvJrdyGtq8RZAlLI0ZmI2Mk6q
- JxbPD95cRY2XvS22cxM/+xamFQ3CqG4fvYtD6
-X-Google-Smtp-Source: AGHT+IFPvZWG7t+3hi9b5Gr8n6zMJbXbQNQoQdDGWH6nnjd3b0WhmyEE5BiJ9Z+07SJNe2EbGhxD0FAsbMLOoJfuX3Q=
-X-Received: by 2002:a05:6102:2c8b:b0:48f:3e7d:7f74 with SMTP id
- ada2fe7eead31-4915990e50bmr1813118137.20.1721214989546; Wed, 17 Jul 2024
- 04:16:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240715210705.32365-1-phil@philjordan.eu>
- <eca02ec3-e2f2-4994-baf5-b86908fa0418@daynix.com>
-In-Reply-To: <eca02ec3-e2f2-4994-baf5-b86908fa0418@daynix.com>
-From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Wed, 17 Jul 2024 13:16:18 +0200
-Message-ID: <CAAibmn2h_L=i5GetsEr0jRQXs3ifY5DGwZf7vs1JDwQMkK1TSg@mail.gmail.com>
-Subject: Re:
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de, 
- graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com, 
- thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org, 
- lists@philjordan.eu
-Content-Type: multipart/alternative; boundary="00000000000008d16d061d6f98fc"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::932;
- envelope-from=phil@philjordan.eu; helo=mail-ua1-x932.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+ d=1e100.net; s=20230601; t=1721215431; x=1721820231;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=wwI/SRj99yjPQr9rGqVr8fbwxRLWj9jJISoN9/IKrm4=;
+ b=TtXdPxyNFjoB02062GMLiDMrzmxFSp4KWHNa/Qwa+I0H4Br/XhbMYWY+2WjBW82Cq2
+ 5zyMlXvrUhiQ3Oa373SHcu8s2NwWOoUG4ZWBoj/n+VCfMfQoVkr5j3vD7c07gNC2nfrV
+ SiJGCghYqmNDX/7zgSe8ijRkj+NLN7fev5RU8oftrZ60YsCVzs9osGLRcAvOyL8Oz9zl
+ 5PozAjuKc2yf71xMoSgAfoYMiacZU4WR/PzTAkC8TyySkG5Gpe+LL++4ZW+aRe6QwZHW
+ 0yNeHmexksLHLkIiRoKZu58su8hRMdeEGwo2s6q0RHXYEBNnLjRzMPQdSQT1r8+Z3nAQ
+ nfwg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUYQkxaoM5FcxVUfWnHwxUYbUa3mcB2Tx/hJXsZDkewYZlAeK6xJLg5/F4m/lOAnVpr1orvVZNmHSnZq6XJTfc5BnRhXB4=
+X-Gm-Message-State: AOJu0Yz5/mZY8Cd9DPTOoUeig0e+vn+LAd9LVecDD/65qDOpMg0Hpuzh
+ N3SVp7Hs8DtnVU9wWK4Bb5QtXLIkSofr3ZFlKXxRPtreME4A+Zq0
+X-Google-Smtp-Source: AGHT+IFtj4GewuV+D8emF9p27hbz/OzL6JyENLwnYgrqeFn3Epf7EkuTomUdSZPvRtS/L92LxjUAgw==
+X-Received: by 2002:a05:6870:9a25:b0:254:9501:db80 with SMTP id
+ 586e51a60fabf-260d91e0b99mr1186129fac.14.1721215430717; 
+ Wed, 17 Jul 2024 04:23:50 -0700 (PDT)
+Received: from localhost ([1.146.100.214]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70b7ecc9165sm7917982b3a.188.2024.07.17.04.23.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jul 2024 04:23:50 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Jul 2024 21:23:45 +1000
+Message-Id: <D2RRY2BN4FC0.2LGCOTO2JZVFY@gmail.com>
+Cc: <qemu-ppc@nongnu.org>, <balaton@eik.bme.hu>
+Subject: Re: [PATCH 2/4] target/ppc: Hoist dcbz_size out of dcbz_common
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <20240702234659.2106870-1-richard.henderson@linaro.org>
+ <20240702234659.2106870-3-richard.henderson@linaro.org>
+In-Reply-To: <20240702234659.2106870-3-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=npiggin@gmail.com; helo=mail-oo1-xc36.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,54 +92,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000008d16d061d6f98fc
-Content-Type: text/plain; charset="UTF-8"
-
-On Tue, 16 Jul 2024 at 08:07, Akihiko Odaki <akihiko.odaki@daynix.com>
-wrote:
-
-> Hi,
+On Wed Jul 3, 2024 at 9:46 AM AEST, Richard Henderson wrote:
+> The 970 logic does not apply to dcbzep, which is an e500 insn.
 >
-> Thanks for continuing his effort.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> ---
+>  target/ppc/mem_helper.c | 30 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
 >
-> Please submit a patch series that includes his patches. Please also
-> merge fixes for his patches into them. This saves the effort to review
-> the obsolete code and keeps git bisect working.
->
->
-Sorry about that - it looks like (a) my edits to the cover letter messed
-something up and (b) patch 1 got email-filtered somewhere along the way for
-having the "wrong" From: address. I've submitted v2 with most patches
-squashed into patch 1, whose authorship I've also changed to myself (with
-Co-authored-by tag for the original code) so hopefully this time around it
-shows up OK.
+> diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
+> index 361fd72226..5067919ff8 100644
+> --- a/target/ppc/mem_helper.c
+> +++ b/target/ppc/mem_helper.c
+> @@ -271,22 +271,12 @@ void helper_stsw(CPUPPCState *env, target_ulong add=
+r, uint32_t nb,
+>  }
+> =20
+>  static void dcbz_common(CPUPPCState *env, target_ulong addr,
+> -                        uint32_t opcode, int mmu_idx, uintptr_t retaddr)
+> +                        int dcbz_size, int mmu_idx, uintptr_t retaddr)
+>  {
+> -    target_ulong mask, dcbz_size =3D env->dcache_line_size;
+> -    uint32_t i;
+> +    target_ulong mask =3D ~(target_ulong)(dcbz_size - 1);
+>      void *haddr;
+> =20
+> -#if defined(TARGET_PPC64)
+> -    /* Check for dcbz vs dcbzl on 970 */
+> -    if (env->excp_model =3D=3D POWERPC_EXCP_970 &&
+> -        !(opcode & 0x00200000) && ((env->spr[SPR_970_HID5] >> 7) & 0x3) =
+=3D=3D 1) {
+> -        dcbz_size =3D 32;
+> -    }
+> -#endif
+> -
+>      /* Align address */
+> -    mask =3D ~(dcbz_size - 1);
+>      addr &=3D mask;
+> =20
+>      /* Check reservation */
+> @@ -300,7 +290,7 @@ static void dcbz_common(CPUPPCState *env, target_ulon=
+g addr,
+>          memset(haddr, 0, dcbz_size);
+>      } else {
+>          /* Slow path */
+> -        for (i =3D 0; i < dcbz_size; i +=3D 8) {
+> +        for (int i =3D 0; i < dcbz_size; i +=3D 8) {
+>              cpu_stq_mmuidx_ra(env, addr + i, 0, mmu_idx, retaddr);
+>          }
+>      }
+> @@ -308,12 +298,22 @@ static void dcbz_common(CPUPPCState *env, target_ul=
+ong addr,
+> =20
+>  void helper_dcbz(CPUPPCState *env, target_ulong addr, uint32_t opcode)
+>  {
+> -    dcbz_common(env, addr, opcode, ppc_env_mmu_index(env, false), GETPC(=
+));
+> +    int dcbz_size =3D env->dcache_line_size;
+> +
+> +#if defined(TARGET_PPC64)
+> +    /* Check for dcbz vs dcbzl on 970 */
+> +    if (env->excp_model =3D=3D POWERPC_EXCP_970 &&
+> +        !(opcode & 0x00200000) && ((env->spr[SPR_970_HID5] >> 7) & 0x3) =
+=3D=3D 1) {
+> +        dcbz_size =3D 32;
+> +    }
+> +#endif
+> +
+> +    dcbz_common(env, addr, dcbz_size, ppc_env_mmu_index(env, false), GET=
+PC());
+>  }
+> =20
+>  void helper_dcbzep(CPUPPCState *env, target_ulong addr, uint32_t opcode)
+>  {
+> -    dcbz_common(env, addr, opcode, PPC_TLB_EPID_STORE, GETPC());
+> +    dcbz_common(env, addr, env->dcache_line_size, PPC_TLB_EPID_STORE, GE=
+TPC());
+>  }
+> =20
+>  void helper_icbi(CPUPPCState *env, target_ulong addr)
 
-Thanks,
-Phil
-
---00000000000008d16d061d6f98fc
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
-mail_attr">On Tue, 16 Jul 2024 at 08:07, Akihiko Odaki &lt;<a href=3D"mailt=
-o:akihiko.odaki@daynix.com">akihiko.odaki@daynix.com</a>&gt; wrote:<br></di=
-v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
-r-left:1px solid rgb(204,204,204);padding-left:1ex">
-Hi,<br>
-<br>
-Thanks for continuing his effort.<br>
-<br>
-Please submit a patch series that includes his patches. Please also <br>
-merge fixes for his patches into them. This saves the effort to review <br>
-the obsolete code and keeps git bisect working.<br>
-<br></blockquote><div><br></div><div>Sorry about that - it looks like (a) m=
-y edits to the cover letter messed something up and (b) patch 1 got email-f=
-iltered somewhere along the way for having the &quot;wrong&quot; From: addr=
-ess. I&#39;ve submitted v2 with most patches squashed into patch 1, whose a=
-uthorship I&#39;ve also changed to myself (with Co-authored-by tag for the =
-original code) so hopefully this time around it shows up OK.</div><div><br>=
-</div><div>Thanks,</div><div>Phil</div><div><br></div></div></div>
-
---00000000000008d16d061d6f98fc--
 
