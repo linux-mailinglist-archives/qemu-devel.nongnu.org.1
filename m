@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E58933BF5
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E171D933C5F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2aD-0005xl-DX; Wed, 17 Jul 2024 07:12:29 -0400
+	id 1sU2ua-0004QB-Jn; Wed, 17 Jul 2024 07:33:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sU2Zi-0005Np-IY
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:12:03 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sU2Ze-000321-NL
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:11:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721214714; x=1752750714;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=OfSdfKwVT7TCXUf75AnKcWA+A254vwD/M0yrWJKuCO8=;
- b=Pr1uq8JyZYgBH5r6M0FcWMxiT01LW8QQ5juIx0/RU20noXNERmtDXIQd
- kiPCiyPmRZpy/Ij+L9g2503fu3ugZyfs3lW6F1kU6sw8RwnWFvdtC3ibb
- 7Gq4VLA1QfMOdjd0ab6/j21FpC1hrsXV5oUfv9jhCCooH07wZ4ecFlNJR
- QdYFiTfMnNbv88wdvn0cRIuRqmYk4mLLR4dxJsdfUZjepLis3P6jZtb79
- 3z/3Qjk5kWyKFOAE+YpRn39l+JeC27XP6IJabF2Ki/z0wVg5kqawPySeX
- IxXcBBUFjPSzaYOv11Kw0VIqcOaSjEiX3Mp9PB/vLLLTS46LEnzRp+hQl Q==;
-X-CSE-ConnectionGUID: u0hBMhzaQT2OHVVqAN66BQ==
-X-CSE-MsgGUID: cZkiPayHSFeUweugSNTtzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18847867"
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="18847867"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2024 04:11:48 -0700
-X-CSE-ConnectionGUID: NVc2gc/RQwCBEIOQI5JZHQ==
-X-CSE-MsgGUID: k1Bl7Ub2Spu0ycWscuyG7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="55492145"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 17 Jul 2024 04:11:47 -0700
-Date: Wed, 17 Jul 2024 19:27:29 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD() in
- nubus_virtio_mmio_realize()
-Message-ID: <ZpeqoZC02URH4847@intel.com>
-References: <20240715095939.72492-1-zhao1.liu@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240715095939.72492-1-zhao1.liu@intel.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sU2uY-0004J1-7j; Wed, 17 Jul 2024 07:33:30 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sU2uW-0003xB-88; Wed, 17 Jul 2024 07:33:29 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-78964fd9f2dso4163795a12.3; 
+ Wed, 17 Jul 2024 04:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1721216006; x=1721820806; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yvBypB4KdX9VPg48aEI4vYTZQhSSmRiDphqCzsM2wRE=;
+ b=XSzCsXDZTmjfijEyHtae1ZT9R2uaXio+VO/x6FDshzup8xqeNrSTd7wRl2k4v9IVi3
+ eFDJuL75WQGDKlAfaG6ZGC5kvRvZ4HyGwvPV7EHNOQCa61btJGPkUCW1R18Z4K2wA7uG
+ m/CxUcee4i0fT+JFjyTT2vrXhPqI/GWuJuAEEdySqUZjYGqxpRjjz+dp2D2+DqEalBfH
+ /pJteTs6hYYfGIifBFY62tcxJeHiGVrVFH1c5MQ+GcC2mfoyZyuhVuEJcJ0FiM1mNok+
+ 370sKZmnjE3k/sYVNSVO768pjBFQ79eIB/CCQhPVkpk2b7bx5DjCTRwg4qww56NRXTq/
+ YWEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721216006; x=1721820806;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=yvBypB4KdX9VPg48aEI4vYTZQhSSmRiDphqCzsM2wRE=;
+ b=Tabgc3jzuWGNhVu3AhHIpASQTc1E4YHMzM9HFNwXVZs4FjM3raNS0IyuNel7WmBOOS
+ Q784kqmkSaXfx7s/Zdjh4X8fXLjCwEjX3Zm/1h66WItLAwFkS6jRNTQu3pZK3EmyFKQt
+ oHVPm+0ozGPorlRUNH0Sk/nwjEjz7OlSr3oEwrInqtA0dCisx5XxaXcCC86q7qZxCbt4
+ o/OhPkGtuQKJ35JxsI+Q4im2GvN79qQzog24s+S0nlwoxF5kDtj6fOqZnc1Te/kkY4Vp
+ lbzUimhk9oeyd0FshccCPTw2EAIFOld53bMN0rrB7RNGZAKTe2xjmlbdObgiZQdGhkhp
+ bzsA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWDuvtgrqpmRfKh5zYnFIyP7nR5vx54Yzd2jtQwthWjGqiXuoB1jZFzP/4tt3EQczaAkEY4KfpCFsxVisB/MV0DT1+DLw4=
+X-Gm-Message-State: AOJu0YxwpARPAUnTF0K20Rfj6efO9bZ+pjoTV547GRpemLMHDwb8OuQ5
+ NwYxBFtP+pnimiefbW5u04t/4bNjrxwfeQM0xxjXnq/e8L4/lYzj
+X-Google-Smtp-Source: AGHT+IFb9SUzzTmDrCURhGGUhryXy8/X78A4X+cxQHRIyndpvzHiEXZT/hUsEigtQ2oakuy62b+pXg==
+X-Received: by 2002:a05:6a20:1582:b0:1c0:f323:1b9d with SMTP id
+ adf61e73a8af0-1c3fdcff646mr1655560637.20.1721216006005; 
+ Wed, 17 Jul 2024 04:33:26 -0700 (PDT)
+Received: from localhost ([1.146.100.214]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fc0bc50b59sm73260525ad.285.2024.07.17.04.33.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jul 2024 04:33:25 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Jul 2024 21:33:20 +1000
+Message-Id: <D2RS5EPS7RZF.25PF4KRH25PH6@gmail.com>
+Cc: <qemu-ppc@nongnu.org>, <balaton@eik.bme.hu>
+Subject: Re: [PATCH 3/4] target/ppc: Split out helper_dbczl for 970
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <20240702234659.2106870-1-richard.henderson@linaro.org>
+ <20240702234659.2106870-4-richard.henderson@linaro.org>
+In-Reply-To: <20240702234659.2106870-4-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,66 +92,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+On Wed Jul 3, 2024 at 9:46 AM AEST, Richard Henderson wrote:
+> We can determine at translation time whether the insn is or
+> is not dbczl.  We must retain a runtime check against the
+> HID5 register, but we can move that to a separate function
+> that never affects other ppc models.
 
-If possible, can this one catch a ride with your PULL too?
+Looks right I think. You could go one further and have the
+HID bit on 970 a hflag, but that might be overkill without
+numbers...
 
-Many thanks!
-Zhao
-
-On Mon, Jul 15, 2024 at 05:59:37PM +0800, Zhao Liu wrote:
-> Date: Mon, 15 Jul 2024 17:59:37 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: [PATCH] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD() in
->  nubus_virtio_mmio_realize()
-> X-Mailer: git-send-email 2.34.1
-> 
-> As the comment in qapi/error, dereferencing @errp requires
-> ERRP_GUARD():
-> 
-> * = Why, when and how to use ERRP_GUARD() =
-> *
-> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-> * - It must not be dereferenced, because it may be null.
-> ...
-> * ERRP_GUARD() lifts these restrictions.
-> *
-> * To use ERRP_GUARD(), add it right at the beginning of the function.
-> * @errp can then be used without worrying about the argument being
-> * NULL or &error_fatal.
-> *
-> * Using it when it's not needed is safe, but please avoid cluttering
-> * the source with useless code.
-> 
-> But in nubus_virtio_mmio_realize(), @errp is dereferenced without
-> ERRP_GUARD().
-> 
-> Although nubus_virtio_mmio_realize() - as a DeviceClass.realize()
-> method - doesn't get the NULL @errp parameter, it hasn't triggered the
-> bug that dereferencing the NULL @errp. It's still necessary to follow
-> the requirement of @errp, so add missing ERRP_GUARD() in
-> nubus_virtio_mmio_realize().
-> 
-> Cc: Laurent Vivier <laurent@vivier.eu>
-> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  hw/nubus/nubus-virtio-mmio.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/nubus/nubus-virtio-mmio.c b/hw/nubus/nubus-virtio-mmio.c
-> index 58a63c84d0be..a5558d3ec28b 100644
-> --- a/hw/nubus/nubus-virtio-mmio.c
-> +++ b/hw/nubus/nubus-virtio-mmio.c
-> @@ -23,6 +23,7 @@ static void nubus_virtio_mmio_set_input_irq(void *opaque, int n, int level)
->  
->  static void nubus_virtio_mmio_realize(DeviceState *dev, Error **errp)
+>  target/ppc/helper.h     |  7 +++++--
+>  target/ppc/mem_helper.c | 34 +++++++++++++++++++++-------------
+>  target/ppc/translate.c  | 24 ++++++++++++++----------
+>  3 files changed, 40 insertions(+), 25 deletions(-)
+>
+> diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+> index 76b8f25c77..afc56855ff 100644
+> --- a/target/ppc/helper.h
+> +++ b/target/ppc/helper.h
+> @@ -46,8 +46,11 @@ DEF_HELPER_FLAGS_3(stmw, TCG_CALL_NO_WG, void, env, tl=
+, i32)
+>  DEF_HELPER_4(lsw, void, env, tl, i32, i32)
+>  DEF_HELPER_5(lswx, void, env, tl, i32, i32, i32)
+>  DEF_HELPER_FLAGS_4(stsw, TCG_CALL_NO_WG, void, env, tl, i32, i32)
+> -DEF_HELPER_FLAGS_3(dcbz, TCG_CALL_NO_WG, void, env, tl, i32)
+> -DEF_HELPER_FLAGS_3(dcbzep, TCG_CALL_NO_WG, void, env, tl, i32)
+> +DEF_HELPER_FLAGS_2(dcbz, TCG_CALL_NO_WG, void, env, tl)
+> +DEF_HELPER_FLAGS_2(dcbzep, TCG_CALL_NO_WG, void, env, tl)
+> +#ifdef TARGET_PPC64
+> +DEF_HELPER_FLAGS_2(dcbzl, TCG_CALL_NO_WG, void, env, tl)
+> +#endif
+>  DEF_HELPER_FLAGS_2(icbi, TCG_CALL_NO_WG, void, env, tl)
+>  DEF_HELPER_FLAGS_2(icbiep, TCG_CALL_NO_WG, void, env, tl)
+>  DEF_HELPER_5(lscbx, tl, env, tl, i32, i32, i32)
+> diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
+> index 5067919ff8..d4957efd6e 100644
+> --- a/target/ppc/mem_helper.c
+> +++ b/target/ppc/mem_helper.c
+> @@ -296,26 +296,34 @@ static void dcbz_common(CPUPPCState *env, target_ul=
+ong addr,
+>      }
+>  }
+> =20
+> -void helper_dcbz(CPUPPCState *env, target_ulong addr, uint32_t opcode)
+> +void helper_dcbz(CPUPPCState *env, target_ulong addr)
 >  {
-> +    ERRP_GUARD();
->      NubusVirtioMMIODeviceClass *nvmdc = NUBUS_VIRTIO_MMIO_GET_CLASS(dev);
->      NubusVirtioMMIO *s = NUBUS_VIRTIO_MMIO(dev);
->      NubusDevice *nd = NUBUS_DEVICE(dev);
-> -- 
-> 2.34.1
-> 
+> -    int dcbz_size =3D env->dcache_line_size;
+> -
+> -#if defined(TARGET_PPC64)
+> -    /* Check for dcbz vs dcbzl on 970 */
+> -    if (env->excp_model =3D=3D POWERPC_EXCP_970 &&
+> -        !(opcode & 0x00200000) && ((env->spr[SPR_970_HID5] >> 7) & 0x3) =
+=3D=3D 1) {
+> -        dcbz_size =3D 32;
+> -    }
+> -#endif
+> -
+> -    dcbz_common(env, addr, dcbz_size, ppc_env_mmu_index(env, false), GET=
+PC());
+> +    dcbz_common(env, addr, env->dcache_line_size,
+> +                ppc_env_mmu_index(env, false), GETPC());
+>  }
+> =20
+> -void helper_dcbzep(CPUPPCState *env, target_ulong addr, uint32_t opcode)
+> +void helper_dcbzep(CPUPPCState *env, target_ulong addr)
+>  {
+>      dcbz_common(env, addr, env->dcache_line_size, PPC_TLB_EPID_STORE, GE=
+TPC());
+>  }
+> =20
+> +#ifdef TARGET_PPC64
+> +void helper_dcbzl(CPUPPCState *env, target_ulong addr)
+> +{
+> +    int dcbz_size =3D env->dcache_line_size;
+> +
+> +    /*
+> +     * The translator checked for POWERPC_EXCP_970.
+> +     * All that's left is to check HID5.
+> +     */
+> +    if (((env->spr[SPR_970_HID5] >> 7) & 0x3) =3D=3D 1) {
+> +        dcbz_size =3D 32;
+> +    }
+> +
+> +    dcbz_common(env, addr, dcbz_size, ppc_env_mmu_index(env, false), GET=
+PC());
+> +}
+> +#endif
+> +
+>  void helper_icbi(CPUPPCState *env, target_ulong addr)
+>  {
+>      addr &=3D ~(env->dcache_line_size - 1);
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 0bc16d7251..2664c94522 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -200,6 +200,7 @@ struct DisasContext {
+>      uint32_t flags;
+>      uint64_t insns_flags;
+>      uint64_t insns_flags2;
+> +    powerpc_excp_t excp_model;
+
+Should we make this TARGET_PPC64 only? I think so, I can check
+it an fold that in.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks,
+Nick
+
+>  };
+> =20
+>  #define DISAS_EXIT         DISAS_TARGET_0  /* exit to main loop, pc upda=
+ted */
+> @@ -4445,27 +4446,29 @@ static void gen_dcblc(DisasContext *ctx)
+>  /* dcbz */
+>  static void gen_dcbz(DisasContext *ctx)
+>  {
+> -    TCGv tcgv_addr;
+> -    TCGv_i32 tcgv_op;
+> +    TCGv tcgv_addr =3D tcg_temp_new();
+> =20
+>      gen_set_access_type(ctx, ACCESS_CACHE);
+> -    tcgv_addr =3D tcg_temp_new();
+> -    tcgv_op =3D tcg_constant_i32(ctx->opcode & 0x03FF000);
+>      gen_addr_reg_index(ctx, tcgv_addr);
+> -    gen_helper_dcbz(tcg_env, tcgv_addr, tcgv_op);
+> +
+> +#ifdef TARGET_PPC64
+> +    if (ctx->excp_model =3D=3D POWERPC_EXCP_970 && !(ctx->opcode & 0x002=
+00000)) {
+> +        gen_helper_dcbzl(tcg_env, tcgv_addr);
+> +        return;
+> +    }
+> +#endif
+> +
+> +    gen_helper_dcbz(tcg_env, tcgv_addr);
+>  }
+> =20
+>  /* dcbzep */
+>  static void gen_dcbzep(DisasContext *ctx)
+>  {
+> -    TCGv tcgv_addr;
+> -    TCGv_i32 tcgv_op;
+> +    TCGv tcgv_addr =3D tcg_temp_new();
+> =20
+>      gen_set_access_type(ctx, ACCESS_CACHE);
+> -    tcgv_addr =3D tcg_temp_new();
+> -    tcgv_op =3D tcg_constant_i32(ctx->opcode & 0x03FF000);
+>      gen_addr_reg_index(ctx, tcgv_addr);
+> -    gen_helper_dcbzep(tcg_env, tcgv_addr, tcgv_op);
+> +    gen_helper_dcbzep(tcg_env, tcgv_addr);
+>  }
+> =20
+>  /* dst / dstt */
+> @@ -6480,6 +6483,7 @@ static void ppc_tr_init_disas_context(DisasContextB=
+ase *dcbase, CPUState *cs)
+>      ctx->hv =3D (hflags >> HFLAGS_HV) & 1;
+>      ctx->insns_flags =3D env->insns_flags;
+>      ctx->insns_flags2 =3D env->insns_flags2;
+> +    ctx->excp_model =3D env->excp_model;
+>      ctx->access_type =3D -1;
+>      ctx->need_access_type =3D !mmu_is_64bit(env->mmu_model);
+>      ctx->le_mode =3D (hflags >> HFLAGS_LE) & 1;
+
 
