@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA149933638
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DD593363B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTwq1-00027Y-Lv; Wed, 17 Jul 2024 01:04:25 -0400
+	id 1sTwpy-0001zM-72; Wed, 17 Jul 2024 01:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpm-0001e6-35
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:10 -0400
+ id 1sTwpo-0001mS-7D
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpj-00021f-Vi
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:09 -0400
+ id 1sTwpm-00022W-Mv
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721192647;
+ s=mimecast20190719; t=1721192650;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GX5s7D3GnRktYpy0eRl8MIaqx1kf57JyUnrHen/Omzg=;
- b=CIx52k2oCrS3r52uudJ+aaFP+TpyDZPz70TvEyFlYK16jfqPnX+l78YPk1lN04eYhWsLYk
- Mq+2jBo9YSLn5+x6E/GhyAj04nhhh3JGKJs/x3pn5DgfAwDglafo3SGMYJfE8ADT7KomjQ
- QaR9kOyr7VH2dnw5amhQg+fi4Y0D3lo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NHF1gm359CBBwWB+U+NepPClCcmLSyfmhAFVt5pGW6Y=;
+ b=a+a6X/RBWIikZdpYHuwJ9eSSSS69Gr+ynK3x8MFDwS90+rG3W6DXty8oKvSCDPIAz8ZlXX
+ vmhP1GRZ7ZGTGdLg8YZcJdECgB51vDE1BrTXFJCPQB6UGBy3nTYlWUPKycvFdTlupF5a8o
+ fl/KxlO2RstQLOrdULHdAbNWw9inMpI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-427-5wznoTtOOySEvflGssw6Wg-1; Wed, 17 Jul 2024 01:04:05 -0400
-X-MC-Unique: 5wznoTtOOySEvflGssw6Wg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-42490ae735dso59278175e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:04:05 -0700 (PDT)
+ us-mta-227-5eqt7j0INRW4H9xh6ct6kA-1; Wed, 17 Jul 2024 01:04:07 -0400
+X-MC-Unique: 5eqt7j0INRW4H9xh6ct6kA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-426724679f0so1650625e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:04:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721192644; x=1721797444;
+ d=1e100.net; s=20230601; t=1721192645; x=1721797445;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GX5s7D3GnRktYpy0eRl8MIaqx1kf57JyUnrHen/Omzg=;
- b=DgAkjMeV4qeNJesCgzMbStULMcZCIXn9UC3UlKoADCmOiZjV2gdRg4diy18fRdx2Il
- nbUxGWiLjwoCNO48Tz0PwotLgZa00tzQtqXrNfy/l1ZOWmaV+e3VAUZWBs7pIjOVVg9Z
- vN16LyM3fnoujL0M0rDXLygVdJSdfDk4tWU/QJCdyvgBvPnS6Fj4EioFf7Jky3Hg6zkx
- 8Pjpagq6MULdgpPwpEjK/CVuiZS1w+X6Oj4DP9zC9j/quMc6rFoujTV9AUn3/Rd+C8FR
- FnvbomPU3DxENdzaAzpTzViuiE+6Wrmow6bjr/HA26RiCcSF75cjMsgDsAkgSBWrFBbx
- BbAg==
-X-Gm-Message-State: AOJu0YzRe2Vp+sF2pSmLheIR5ZlpOTBbTUuaQoACVcYecH1reFwhoceQ
- KTO8uQyiZNrFyNie7JNorXmBAA68Shz76GeZTpWGAg+7edtGcp4W3EKzFKCLJIQKElLfp4di+4S
- TCCjvMK7T89PL7cEGQ9xi/t5FffOIPAo+d91uhY6MrcqKUHqJDC5TbwnK1WUW77BC2u+vaCMSfT
- oZaNFBitWQFpGBzTtczRCUKSzrQlXFj65ob7KY
-X-Received: by 2002:a05:600c:1d20:b0:426:6ed5:fcb with SMTP id
- 5b1f17b1804b1-427c2cad3c2mr4127345e9.4.1721192643737; 
- Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBneeN4Xl3hCfzOthJMiVTLnL0lOX5y+PHTBpnSrSZd0JkW0Nlg+W5wuB3v758h+2MSjUQZQ==
-X-Received: by 2002:a05:600c:1d20:b0:426:6ed5:fcb with SMTP id
- 5b1f17b1804b1-427c2cad3c2mr4127225e9.4.1721192643400; 
- Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
+ bh=NHF1gm359CBBwWB+U+NepPClCcmLSyfmhAFVt5pGW6Y=;
+ b=l/7/iuA4E05NIsOifZOcoozlGNl2j5dzAj4JfCbXmTI1oymo7EW60qKh1MufusJKfU
+ DWwfrP5cCCAB2NJ3/eTI25PjrxAnKEtpsKrJyAu1RCJGlxFhYXDT90yYfswcwDIgGZod
+ +O+hRZiGx959woJyd+3AA84XDmbOmti+tDmTSuF5OtoIY0J2LIa+lnxjuI5m+dzTRI/Q
+ h7Gyf3s+lHTYN21bt11zwbPdTJp3GjcatzLvcaTIIYR7aD4sB+r+RmHvMhF2kXQa3ouP
+ GOhXvn4gRttBG375INl0NSFgr1WGFEVAi3JiP0BkKDKSEgEZCkkwQBkhTXpegrvuG7RK
+ 9PnQ==
+X-Gm-Message-State: AOJu0Yy1PuoFbI6bj/ZHZljzOwZFSdg8I9ZpyUujcQ9LLxHfmCPXgjjh
+ hKlcKYr7Kd6+k1gYN6tW9JyCHzC6Z12EW5UVed5e2rL90jEF2GxXKL3md30WxANx4EfJaOzwd/h
+ 0KdgVPXpupQujC0aC4ViIL1jDD41vFbe8ce9A7qggKGPkjq4HnIcjNG1mn2taZFGMAxD1cMNxQ2
+ JpOqY7y1OgtDWtgZKlm2XsPjrvar31Rj+2vzqW
+X-Received: by 2002:a05:600c:3501:b0:426:6252:61d9 with SMTP id
+ 5b1f17b1804b1-427bb6c3468mr25812915e9.11.1721192645699; 
+ Tue, 16 Jul 2024 22:04:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbxkbEvd4RtiGQkzRN+KjisgQ8KAV5NOWS34YQPAuPO7RBm6Pp8zYYZ3gfbsW5eTQmnyLgpQ==
+X-Received: by 2002:a05:600c:3501:b0:426:6252:61d9 with SMTP id
+ 5b1f17b1804b1-427bb6c3468mr25812825e9.11.1721192645386; 
+ Tue, 16 Jul 2024 22:04:05 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f239883sm191011495e9.10.2024.07.16.22.04.02
+ ffacd0b85a97d-3680dafbe7csm10688685f8f.83.2024.07.16.22.04.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
+ Tue, 16 Jul 2024 22:04:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Robert R . Henry" <rrh.henry@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/20] target/i386/tcg: Allow IRET from user mode to user mode
- with SMAP
-Date: Wed, 17 Jul 2024 07:03:23 +0200
-Message-ID: <20240717050331.295371-14-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 14/20] target/i386/tcg: use PUSHL/PUSHW for error code
+Date: Wed, 17 Jul 2024 07:03:24 +0200
+Message-ID: <20240717050331.295371-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240717050331.295371-1-pbonzini@redhat.com>
 References: <20240717050331.295371-1-pbonzini@redhat.com>
@@ -102,82 +100,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes a bug wherein i386/tcg assumed an interrupt return using
-the IRET instruction was always returning from kernel mode to either
-kernel mode or user mode. This assumption is violated when IRET is used
-as a clever way to restore thread state, as for example in the dotnet
-runtime. There, IRET returns from user mode to user mode.
+Do not pre-decrement esp, let the macros subtract the appropriate
+operand size.
 
-This bug is that stack accesses from IRET and RETF, as well as accesses
-to the parameters in a call gate, are normal data accesses using the
-current CPL.  This manifested itself as a page fault in the guest Linux
-kernel due to SMAP preventing the access.
-
-This bug appears to have been in QEMU since the beginning.
-
-Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
-Co-developed-by: Robert R. Henry <rrh.henry@gmail.com>
-Signed-off-by: Robert R. Henry <rrh.henry@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/seg_helper.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/i386/tcg/seg_helper.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 19d6b41a589..224e73e9ed0 100644
+index 224e73e9ed0..b985382d704 100644
 --- a/target/i386/tcg/seg_helper.c
 +++ b/target/i386/tcg/seg_helper.c
-@@ -594,13 +594,13 @@ int exception_has_error_code(int intno)
- 
- #define POPW_RA(ssp, sp, sp_mask, val, ra)                       \
-     {                                                            \
--        val = cpu_lduw_kernel_ra(env, (ssp) + (sp & (sp_mask)), ra); \
-+        val = cpu_lduw_data_ra(env, (ssp) + (sp & (sp_mask)), ra); \
-         sp += 2;                                                 \
-     }
- 
- #define POPL_RA(ssp, sp, sp_mask, val, ra)                              \
-     {                                                                   \
--        val = (uint32_t)cpu_ldl_kernel_ra(env, (ssp) + (sp & (sp_mask)), ra); \
-+        val = (uint32_t)cpu_ldl_data_ra(env, (ssp) + (sp & (sp_mask)), ra); \
-         sp += 4;                                                        \
-     }
- 
-@@ -847,7 +847,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
- 
- #define POPQ_RA(sp, val, ra)                    \
-     {                                           \
--        val = cpu_ldq_kernel_ra(env, sp, ra);   \
-+        val = cpu_ldq_data_ra(env, sp, ra);   \
-         sp += 8;                                \
-     }
- 
-@@ -1797,18 +1797,18 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-                 PUSHL_RA(ssp, sp, sp_mask, env->segs[R_SS].selector, GETPC());
-                 PUSHL_RA(ssp, sp, sp_mask, env->regs[R_ESP], GETPC());
-                 for (i = param_count - 1; i >= 0; i--) {
--                    val = cpu_ldl_kernel_ra(env, old_ssp +
--                                            ((env->regs[R_ESP] + i * 4) &
--                                             old_sp_mask), GETPC());
-+                    val = cpu_ldl_data_ra(env,
-+                                          old_ssp + ((env->regs[R_ESP] + i * 4) & old_sp_mask),
-+                                          GETPC());
-                     PUSHL_RA(ssp, sp, sp_mask, val, GETPC());
-                 }
+@@ -670,22 +670,20 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+         }
+         shift = switch_tss(env, intno * 8, e1, e2, SWITCH_TSS_CALL, old_eip);
+         if (has_error_code) {
+-            uint32_t mask;
+-
+             /* push the error code */
+             if (env->segs[R_SS].flags & DESC_B_MASK) {
+-                mask = 0xffffffff;
++                sp_mask = 0xffffffff;
              } else {
-                 PUSHW_RA(ssp, sp, sp_mask, env->segs[R_SS].selector, GETPC());
-                 PUSHW_RA(ssp, sp, sp_mask, env->regs[R_ESP], GETPC());
-                 for (i = param_count - 1; i >= 0; i--) {
--                    val = cpu_lduw_kernel_ra(env, old_ssp +
--                                             ((env->regs[R_ESP] + i * 2) &
--                                              old_sp_mask), GETPC());
-+                    val = cpu_lduw_data_ra(env,
-+                                           old_ssp + ((env->regs[R_ESP] + i * 2) & old_sp_mask),
-+                                           GETPC());
-                     PUSHW_RA(ssp, sp, sp_mask, val, GETPC());
-                 }
+-                mask = 0xffff;
++                sp_mask = 0xffff;
              }
+-            esp = (env->regs[R_ESP] - (2 << shift)) & mask;
+-            ssp = env->segs[R_SS].base + esp;
++            esp = env->regs[R_ESP];
++            ssp = env->segs[R_SS].base;
+             if (shift) {
+-                cpu_stl_kernel(env, ssp, error_code);
++                PUSHL(ssp, esp, sp_mask, error_code);
+             } else {
+-                cpu_stw_kernel(env, ssp, error_code);
++                PUSHW(ssp, esp, sp_mask, error_code);
+             }
+-            SET_ESP(esp, mask);
++            SET_ESP(esp, sp_mask);
+         }
+         return;
+     }
 -- 
 2.45.2
 
