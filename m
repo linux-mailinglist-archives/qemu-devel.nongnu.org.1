@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8982B933BFB
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D98933C02
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:14:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2Uz-0000Xz-1w; Wed, 17 Jul 2024 07:07:05 -0400
+	id 1sU2Uz-0000Z8-2m; Wed, 17 Jul 2024 07:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sU2Ug-0007tz-61; Wed, 17 Jul 2024 07:06:48 -0400
+ id 1sU2Ug-0007th-36; Wed, 17 Jul 2024 07:06:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sU2Ud-0007R5-J4; Wed, 17 Jul 2024 07:06:45 -0400
+ id 1sU2Ud-0007R4-IF; Wed, 17 Jul 2024 07:06:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DCB337B372;
+ by isrv.corpit.ru (Postfix) with ESMTP id E54B37B373;
  Wed, 17 Jul 2024 14:06:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4FF3D10B287;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5B74210B288;
  Wed, 17 Jul 2024 14:06:40 +0300 (MSK)
-Received: (nullmailer pid 844381 invoked by uid 1000);
+Received: (nullmailer pid 844385 invoked by uid 1000);
  Wed, 17 Jul 2024 11:06:40 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 00/16] Trivial patches for 2024-07-17
-Date: Wed, 17 Jul 2024 14:06:24 +0300
-Message-Id: <20240717110640.844335-1-mjt@tls.msk.ru>
+Subject: [PULL 01/16] block/curl: rewrite http header parsing function
+Date: Wed, 17 Jul 2024 14:06:25 +0300
+Message-Id: <20240717110640.844335-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240717110640.844335-1-mjt@tls.msk.ru>
+References: <20240717110640.844335-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -56,62 +57,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e2f346aa98646e84eabe0256f89d08e89b1837cf:
+Existing code was long, unclear and twisty.
 
-  Merge tag 'sdmmc-20240716' of https://github.com/philmd/qemu into staging (2024-07-17 07:59:31 +1000)
+This also relaxes the rules a tiny bit: allows to have
+whitespace before header name and colon and makes the
+header value match to be case-insensitive.
 
-are available in the Git repository at:
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ block/curl.c | 44 ++++++++++++++++++--------------------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+diff --git a/block/curl.c b/block/curl.c
+index ef5252d00b..0fdb6d39ac 100644
+--- a/block/curl.c
++++ b/block/curl.c
+@@ -210,37 +210,29 @@ static size_t curl_header_cb(void *ptr, size_t size, size_t nmemb, void *opaque)
+ {
+     BDRVCURLState *s = opaque;
+     size_t realsize = size * nmemb;
+-    const char *header = (char *)ptr;
+-    const char *end = header + realsize;
+-    const char *accept_ranges = "accept-ranges:";
+-    const char *bytes = "bytes";
++    const char *p = ptr;
++    const char *end = p + realsize;
++    const char *t = "accept-ranges : bytes "; /* A lowercase template */
+ 
+-    if (realsize >= strlen(accept_ranges)
+-        && g_ascii_strncasecmp(header, accept_ranges,
+-                               strlen(accept_ranges)) == 0) {
+-
+-        char *p = strchr(header, ':') + 1;
+-
+-        /* Skip whitespace between the header name and value. */
+-        while (p < end && *p && g_ascii_isspace(*p)) {
+-            p++;
+-        }
+-
+-        if (end - p >= strlen(bytes)
+-            && strncmp(p, bytes, strlen(bytes)) == 0) {
+-
+-            /* Check that there is nothing but whitespace after the value. */
+-            p += strlen(bytes);
+-            while (p < end && *p && g_ascii_isspace(*p)) {
+-                p++;
+-            }
+-
+-            if (p == end || !*p) {
+-                s->accept_range = true;
++    /* check if header matches the "t" template */
++    for (;;) {
++        if (*t == ' ') { /* space in t matches any amount of isspace in p */
++            if (p < end && g_ascii_isspace(*p)) {
++                ++p;
++            } else {
++                ++t;
+             }
++        } else if (*t && p < end && *t == g_ascii_tolower(*p)) {
++            ++p, ++t;
++        } else {
++            break;
+         }
+     }
+ 
++    if (!*t && p == end) { /* if we managed to reach ends of both strings */
++        s->accept_range = true;
++    }
++
+     return realsize;
+ }
+ 
+-- 
+2.39.2
 
-for you to fetch changes up to 66a8de9889ceb929e2abe7fb0e424f45210d9dda:
-
-  meson: Update meson-buildoptions.sh (2024-07-17 14:04:15 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2024-07-17
-
-----------------------------------------------------------------
-Michael Tokarev (1):
-      block/curl: rewrite http header parsing function
-
-Thomas Huth (1):
-      tests/avocado: Remove the non-working virtio_check_params test
-
-Zhao Liu (13):
-      accel/kvm/kvm-all: Fix superfluous trailing semicolon
-      hw/i386/x86: Fix superfluous trailing semicolon
-      util/oslib-posix: Fix superfluous trailing semicolon
-      target/hexagon/imported/mmvec: Fix superfluous trailing semicolon
-      doc/net/l2tpv3: Update boolean fields' description to avoid short-form use
-      hw/i386/sgx: Get rid of qemu_open_old()
-      hw/usb/host-libusb: Get rid of qemu_open_old()
-      hw/usb/u2f-passthru: Get rid of qemu_open_old()
-      hw/vfio/container: Get rid of qemu_open_old()
-      backends/hostmem-epc: Get rid of qemu_open_old()
-      backends/iommufd: Get rid of qemu_open_old()
-      backends/rng-random: Get rid of qemu_open_old()
-      meson: Update meson-buildoptions.sh
-
-Zhihai Dong (1):
-      README.rst: add the missing punctuations
-
- README.rst                             |   6 +-
- accel/kvm/kvm-all.c                    |   2 +-
- backends/hostmem-epc.c                 |   4 +-
- backends/iommufd.c                     |   3 +-
- backends/rng-random.c                  |   5 +-
- block/curl.c                           |  44 +++++-----
- hw/i386/sgx.c                          |   6 +-
- hw/i386/x86.c                          |   2 +-
- hw/usb/host-libusb.c                   |   3 +-
- hw/usb/u2f-passthru.c                  |   4 +-
- hw/vfio/container.c                    |   6 +-
- qemu-options.hx                        |  10 +--
- scripts/meson-buildoptions.sh          |  14 ++--
- target/hexagon/imported/mmvec/ext.idef |   2 +-
- tests/avocado/virtio_check_params.py   | 143 ---------------------------------
- util/oslib-posix.c                     |   2 +-
- 16 files changed, 48 insertions(+), 208 deletions(-)
- delete mode 100644 tests/avocado/virtio_check_params.py
 
