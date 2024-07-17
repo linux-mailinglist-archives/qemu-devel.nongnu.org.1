@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7A1933636
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1DD933631
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTwps-0001aT-8X; Wed, 17 Jul 2024 01:04:16 -0400
+	id 1sTwq1-000213-Ki; Wed, 17 Jul 2024 01:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpe-00018C-61
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:03 -0400
+ id 1sTwpl-0001bX-Da
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpc-0001za-IZ
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:01 -0400
+ id 1sTwph-000203-EG
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721192639;
+ s=mimecast20190719; t=1721192644;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aPrZh1EXv7kaFvhhCibNvYsmIuHRfgJwPxgiKZ4HtGI=;
- b=QdhLYf3BsTX8oN40LPCLZXlYgrajJz7yyKq9NOKztPy2eJZA9hSLnmW0IMMdlVRkyL9C3G
- cu5WKFtZ7bb8HU2w6xTbOlXgvzggjExx6F0V7TAPZm9uF872fNavKijTut8UUe54DwPgCX
- LF6mCB8W2uyfMw/uffUwEkrzCxUvgOw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nJbrLLVXpXeNx7wVIlep8y3RawRslaxRsonV5x8RR/g=;
+ b=P9swUp7Onu1NqBd3tOUchahvvBVWpFbr31VsJOI1pbrtHVpgtfRhVP70IyNQLLR/6ELlBb
+ Zujv6Hxd7naCEZCn6kNRtWP09MTRhqsFmP9iexJgar1oyLBnVluY1+YfMTkb+KgCIVHlCK
+ KUlcE+x97MahsS92IPRoQa4MGDaPSeE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-UUp-bLDJMx-2aD_3J_BOTQ-1; Wed, 17 Jul 2024 01:03:57 -0400
-X-MC-Unique: UUp-bLDJMx-2aD_3J_BOTQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-367987e6ebcso4587321f8f.2
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:03:56 -0700 (PDT)
+ us-mta-192-RV15qMSdPlWajIrIVpAPWQ-1; Wed, 17 Jul 2024 01:03:59 -0400
+X-MC-Unique: RV15qMSdPlWajIrIVpAPWQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-36832c7023bso130419f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:03:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721192635; x=1721797435;
+ d=1e100.net; s=20230601; t=1721192637; x=1721797437;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aPrZh1EXv7kaFvhhCibNvYsmIuHRfgJwPxgiKZ4HtGI=;
- b=gdHJX5Uf3QSGTPUDTTc2BqWzrblQH4p39DgVTo0R8s9y64FpE25GCPnSTpzeCgjFRw
- muD/ZQhj/o7D5tR1PWi9Vjb+qZv3c9/Uu9jmpYAxALGB74dp9IW84Od6JX8PBh/SAtfv
- wy5beZFc78i4G8R47NDQirr0vR4Jxt7EtYKR4xOOBG8VvkQNPPVty/HhBwITq4D4nw4g
- x8cXmdsPhSHgsVfwxwIKoDkapyTLk6XlHnSiF6D+X3sUuX/IvkL3xRSor5kQ0phgoEY2
- vpeUSE8CPF5vSlYuKU2MAfeXDKtxyatAKYSIxuOpqc6YxJy7blB/ZTh2L6UwifKbn6+i
- ajGw==
-X-Gm-Message-State: AOJu0YymQfWhY8Fituui4HxHAtd3dShAWQ1EStHawQY+Tt+3KDez50ys
- tgnh2E4RYXH5RE3xx/j7qqESWeoAo/ivRNGLB2eJP9Tjj2GPCEmI5nu50+GOhGuBy+47Q9Glv7W
- VgBPLFMIe9+13/FNJp1abAgAV07aunrH/Z7FIkm0K1OYQrpSGH+iSmmq3vpo4gHg9LjDLXB9Nd/
- fqPjlXO0gIzFbu9usmN83/TuCLAYRz/X7hqGfn
-X-Received: by 2002:a05:6000:1fa6:b0:368:38af:9a2e with SMTP id
- ffacd0b85a97d-36838af9ceemr2342f8f.21.1721192635670; 
- Tue, 16 Jul 2024 22:03:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IELBO43EGmalceKyhDuved+qHLFLgyogTGar+IdSl0yXUQv8ul3MlkHmVKkw7Ql2Ew5KYw0Xw==
-X-Received: by 2002:a05:6000:1fa6:b0:368:38af:9a2e with SMTP id
- ffacd0b85a97d-36838af9ceemr2331f8f.21.1721192635299; 
- Tue, 16 Jul 2024 22:03:55 -0700 (PDT)
+ bh=nJbrLLVXpXeNx7wVIlep8y3RawRslaxRsonV5x8RR/g=;
+ b=aKD+/Qm7dV4UxUuNuROcf7hJGAfzuqYULW7xaYosqvrW9ieUurYzMOYZ6mimVaUoH5
+ rQb1dNldzBZ5VpNaEOQBCZ50BII1oX18yS3MwHq79/KbNs6L/yR5ycdLP++V0+qF5Jrd
+ YXBOuje7CEcTf/jwo2rpVkOMdsmQwvCLIm+/3h1vbz0feWnanAbLPtqXSzy2CwUYXuto
+ 01cD/kySzgBjiuE8QldakRo2qYGXp9IqaU4sB9a7jNcjqpri6UAg9ZMdh7C+Y/imIt1B
+ 4h5ynmYh5Zu4HOXtphW3VEpPfM74eAjp2rY1fPhVtYpKO1pBiRivwtsAYKN8o+mrIixt
+ feTg==
+X-Gm-Message-State: AOJu0Yx3nuVEibx06vqo4hVgMNFr6GFgehegOEBvGAwa2FMpPKXDTN5d
+ JOIroKVNvvzhXBnRu2J4Mwb5heOF5rbCCOzIIH21UljBQDtyA3QZ7zzTDarpgbQWNmfw42FXAEA
+ aDT5OIyZ2JcPlzwXwD0IPX9XsVSFT89Ht5JzNXjGe/5W//Q3GNrrFmnLaTdISxkdxZt0sZf/T2K
+ /ZB+qxzFieVHZphGbHsbbt3zJfUd/6fE7KCv55
+X-Received: by 2002:adf:ef4a:0:b0:368:12ef:92cf with SMTP id
+ ffacd0b85a97d-3683171149cmr675477f8f.48.1721192637149; 
+ Tue, 16 Jul 2024 22:03:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOrqoHXNIOgCEmK6hCnrcXIGxKeV0K33RFTLIDL6PngL/fnn8Zg+dEUelp61bnd2U3kl0Lpg==
+X-Received: by 2002:adf:ef4a:0:b0:368:12ef:92cf with SMTP id
+ ffacd0b85a97d-3683171149cmr675458f8f.48.1721192636873; 
+ Tue, 16 Jul 2024 22:03:56 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3680daccc86sm10682437f8f.61.2024.07.16.22.03.53
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-4279f2cc229sm191252725e9.38.2024.07.16.22.03.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 22:03:53 -0700 (PDT)
+ Tue, 16 Jul 2024 22:03:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/20] hpet: fix clamping of period
-Date: Wed, 17 Jul 2024 07:03:19 +0200
-Message-ID: <20240717050331.295371-10-pbonzini@redhat.com>
+Cc: TaiseiIto <taisei1212@outlook.jp>
+Subject: [PULL 10/20] hpet: fix HPET_TN_SETVAL for high 32-bits of the
+ comparator
+Date: Wed, 17 Jul 2024 07:03:20 +0200
+Message-ID: <20240717050331.295371-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240717050331.295371-1-pbonzini@redhat.com>
 References: <20240717050331.295371-1-pbonzini@redhat.com>
@@ -100,40 +101,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When writing a new period, the clamping should use a maximum value
-rather tyhan a bit mask.  Also, when writing the high bits new_val
-is shifted right by 32, so the maximum allowed period should also
-be shifted right.
+Commit 3787324101b ("hpet: Fix emulation of HPET_TN_SETVAL (Jan Kiszka)",
+2009-04-17) applied the fix only to the low 32-bits of the comparator, but
+it should be done for the high bits as well.  Otherwise, the high 32-bits
+of the comparator cannot be written and they remain fixed to 0xffffffff.
 
+Co-developed-by: TaiseiIto <taisei1212@outlook.jp>
+Signed-off-by: TaiseiIto <taisei1212@outlook.jp>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ hw/timer/hpet.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 01efe4885db..ad881448bf3 100644
+index ad881448bf3..4cb5393c0b5 100644
 --- a/hw/timer/hpet.c
 +++ b/hw/timer/hpet.c
-@@ -548,7 +548,9 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-                  * FIXME: Clamp period to reasonable min value?
-                  * Clamp period to reasonable max value
-                  */
--                new_val &= (timer->config & HPET_TN_32BIT ? ~0u : ~0ull) >> 1;
-+                if (timer->config & HPET_TN_32BIT) {
-+                    new_val = MIN(new_val, ~0u >> 1);
-+                }
+@@ -554,6 +554,10 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
                  timer->period =
                      (timer->period & 0xffffffff00000000ULL) | new_val;
              }
-@@ -567,7 +569,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
++            /*
++             * FIXME: on a 64-bit write, HPET_TN_SETVAL should apply to the
++             * high bits part as well.
++             */
+             timer->config &= ~HPET_TN_SETVAL;
+             if (hpet_enabled(s)) {
+                 hpet_set_timer(timer);
+@@ -564,7 +568,8 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+             if (!timer_is_periodic(timer)
+                 || (timer->config & HPET_TN_SETVAL)) {
+                 timer->cmp = (timer->cmp & 0xffffffffULL) | new_val << 32;
+-            } else {
++            }
++            if (timer_is_periodic(timer)) {
+                 /*
                   * FIXME: Clamp period to reasonable min value?
                   * Clamp period to reasonable max value
-                  */
--                new_val &= (timer->config & HPET_TN_32BIT ? ~0u : ~0ull) >> 1;
-+                new_val = MIN(new_val, ~0u >> 1);
+@@ -572,12 +577,12 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+                 new_val = MIN(new_val, ~0u >> 1);
                  timer->period =
                      (timer->period & 0xffffffffULL) | new_val << 32;
-                 }
+-                }
+-                timer->config &= ~HPET_TN_SETVAL;
+-                if (hpet_enabled(s)) {
+-                    hpet_set_timer(timer);
+-                }
+-                break;
++            }
++            timer->config &= ~HPET_TN_SETVAL;
++            if (hpet_enabled(s)) {
++                hpet_set_timer(timer);
++            }
++            break;
+         case HPET_TN_ROUTE:
+             timer->fsb = (timer->fsb & 0xffffffff00000000ULL) | new_val;
+             break;
 -- 
 2.45.2
 
