@@ -2,64 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64B2933FD4
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 17:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 869F3934018
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 17:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU6lo-00012d-JS; Wed, 17 Jul 2024 11:40:44 -0400
+	id 1sU730-0005yT-Hk; Wed, 17 Jul 2024 11:58:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sU6lm-000122-6N
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:40:42 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sU6lk-00014L-Db
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:40:41 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WPKqP1Jtlz6D8XN;
- Wed, 17 Jul 2024 23:39:13 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id DD731140B30;
- Wed, 17 Jul 2024 23:40:31 +0800 (CST)
-Received: from localhost (10.122.19.247) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 17 Jul
- 2024 16:40:31 +0100
-Date: Wed, 17 Jul 2024 16:40:30 +0100
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: Igor Mammedov <imammedo@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, <qemu-devel@nongnu.org>, <ankita@nvidia.com>,
- <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>,
- <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>, "Dave Jiang" <dave.jiang@intel.com>, Huang
- Ying <ying.huang@intel.com>, "Paolo Bonzini" <pbonzini@redhat.com>,
- <eduardo@habkost.net>, Michael Roth <michael.roth@amd.com>, Ani Sinha
- <anisinha@redhat.com>
-Subject: Re: [PATCH v5 10/13] hw/acpi: Generic Port Affinity Structure support
-Message-ID: <20240717164030.000013fe@huawei.com>
-In-Reply-To: <20240717110827-mutt-send-email-mst@kernel.org>
-References: <20240712110837.1439736-1-Jonathan.Cameron@huawei.com>
- <20240712110837.1439736-11-Jonathan.Cameron@huawei.com>
- <20240715164841.1979fdea@imammedo.users.ipa.redhat.com>
- <20240717160258.00006893@huawei.com>
- <20240717110827-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1sU72w-0005td-U0
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:58:26 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1sU72u-0004HR-AV
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:58:26 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4266fd39527so52707755e9.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 08:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721231902; x=1721836702; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=zouCLbYmcFgjAK4qv2JS6bT2SWhM3WRMe4azkl1Evik=;
+ b=FvUaBEMtuHkr7XbsRKc4vzzCusIhWNeVDkJxYXhQhnZLy2Udz5Q9jwAVLCL+YKEwum
+ LzE3hIB3pPFHlPUlCGjfSJsQxxRRLn8qoMGJ2hWYHrF71qhGmzJOrrqrL2NWyzGmaleI
+ kpDGmyBWDVYZgu8rEqV18nPGJ1ST9b44F0eWBxG3Q83/bMlYx8zsRMGf8Hvmp/RG8t8p
+ qXHH2xiZLBhRASug5c28o8rvYn3rHG75p+B3loOrvcnXaTrl/wFG2y/aT8OlQNTrMQ7o
+ q/QANvRn+8x8tacqiMRM/5QzfbGJHmoBoVKwi6YzNSzZPBJkZc6F/dL+8YDb94GGV2k4
+ XC5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721231902; x=1721836702;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zouCLbYmcFgjAK4qv2JS6bT2SWhM3WRMe4azkl1Evik=;
+ b=sInBkES5HVuCLTQ4mI4a4w8s0fHgWRrAqy1iVpEF2Lnj1b1zZVJ+RD39jk+F4PSS7N
+ /mykttAo8T5eN7mZ3PaeBht72zv3p2g+NPHKPnxHRkDmop6T+tdLOwl8mxJSNHkfD15J
+ u36nwEO9ksoPuwzG0vLTB8Z+SDwMoz3bd/Mi5hty1nJAzwsc+hc2SSrTw66/kO+dBpgy
+ ZT2OmZFqXxzi0sUvGd870MjTryFdguXPQe5JY8SirElgEgMM3MRer1siD+DsqVxG1XwX
+ GKhjrkhC2kSbExLGXnpbyJ7VwHSsvwei5CMkoop8G7T7pl8Gg+aS1Qb5iaf/wM485Jct
+ DHPg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUSU6WAbZpiNrYuiA+UMGw9eT0mD39aIPMkPVVBXx7inkLRwfoq/8WVdjzzOIBCvdB/R4ytpFpy9uiDOUKMOcsLAzBBvfM=
+X-Gm-Message-State: AOJu0Yxu9w2fAxBTYAQ0xc4M+mqwlrgNvgLhcllLnzM1bfkDwKDz2lgh
+ yX0JgoY5azexuUIRh0G4TZYpSgK9pyTT8wVettuI8hgjSez3rqJt/pl0Jc/keIo=
+X-Google-Smtp-Source: AGHT+IH+Y/IUuU8cJdZrUYcb1gvil/YDFOURR7qNRgqSIEyxRxH6Yz0egIuyQtufE2EoYSpGtJGilg==
+X-Received: by 2002:a05:600c:450f:b0:426:5cef:ee41 with SMTP id
+ 5b1f17b1804b1-427c2d109bemr15220915e9.38.1721231902398; 
+ Wed, 17 Jul 2024 08:58:22 -0700 (PDT)
+Received: from myrica ([2.221.137.100]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427c77b0300sm2801635e9.12.2024.07.17.08.58.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jul 2024 08:58:21 -0700 (PDT)
+Date: Wed, 17 Jul 2024 16:58:38 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: Mostafa Saleh <smostafa@google.com>, qemu-arm@nongnu.org,
+ peter.maydell@linaro.org, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org, maz@kernel.org, nicolinc@nvidia.com,
+ julien@xen.org, richard.henderson@linaro.org, marcin.juszkiewicz@linaro.org
+Subject: Re: [PATCH v5 03/18] hw/arm/smmuv3: Fix encoding of CLASS in events
+Message-ID: <20240717155838.GA4073279@myrica>
+References: <20240715084519.1189624-1-smostafa@google.com>
+ <20240715084519.1189624-4-smostafa@google.com>
+ <cb687788-4bf4-4bc1-94e1-5f023b731b9c@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cb687788-4bf4-4bc1-94e1-5f023b731b9c@redhat.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,59 +95,131 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 Jul 2024 11:11:06 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Hi Eric,
 
-> On Wed, Jul 17, 2024 at 04:02:58PM +0100, Jonathan Cameron wrote:
-> > On Mon, 15 Jul 2024 16:48:41 +0200
-> > Igor Mammedov <imammedo@redhat.com> wrote:
-> >   
-> > > On Fri, 12 Jul 2024 12:08:14 +0100
-> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> > >   
-> > > > These are very similar to the recently added Generic Initiators
-> > > > but instead of representing an initiator of memory traffic they
-> > > > represent an edge point beyond which may lie either targets or
-> > > > initiators.  Here we add these ports such that they may
-> > > > be targets of hmat_lb records to describe the latency and
-> > > > bandwidth from host side initiators to the port.  A discoverable
-> > > > mechanism such as UEFI CDAT read from CXL devices and switches
-> > > > is used to discover the remainder of the path, and the OS can build
-> > > > up full latency and bandwidth numbers as need for work and data
-> > > > placement decisions.
-> > > > 
-> > > > Acked-by: Markus Armbruster <armbru@redhat.com>
-> > > > Tested-by: "Huang, Ying" <ying.huang@intel.com>
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>    
-> > > 
-> > > ACPI tables generation LGTM
-> > > As for the rest my review is perfunctory mostly.  
-> > 
-> > The node type points and missing descriptor applying equally to generic
-> > initiators. I'll add a couple of patches cleaning that up as well as 
-> > fixing them up for generic ports.
-> > 
-> > For the exit(1) that was copying other similar locations. I don't
-> > mind changing it though if something else is preferred.
-> > 
-> > Given tight timescales (and I was away for a few days which didn't
-> > help), I'll send out a v6 with changes as below.
-> > 
-> > Jonathan
-> >   
+On Wed, Jul 17, 2024 at 05:07:57PM +0200, Eric Auger wrote:
+> Hi Jean,
 > 
-> I'm working on a pull and going offline for a week guys, what's not in
-> will be in the next release.  Sorry.
+> On 7/15/24 10:45, Mostafa Saleh wrote:
+> > The SMMUv3 spec (ARM IHI 0070 F.b - 7.3 Event records) defines the
+> > class of events faults as:
+> >
+> > CLASS: The class of the operation that caused the fault:
+> > - 0b00: CD, CD fetch.
+> > - 0b01: TTD, Stage 1 translation table fetch.
+> > - 0b10: IN, Input address
+> >
+> > However, this value was not set and left as 0 which means CD and not
+> > IN (0b10).
+> >
+> > Another problem was that stage-2 class is considered IN not TT for
+> > EABT, according to the spec:
+> >     Translation of an IPA after successful stage 1 translation (or,
+> >     in stage 2-only configuration, an input IPA)
+> >     - S2 == 1 (stage 2), CLASS == IN (Input to stage)
+> >
+> > This would change soon when nested translations are supported.
+> >
+> > While at it, add an enum for class as it would be used for nesting.
+> > However, at the moment stage-1 and stage-2 use the same class values,
+> > except for EABT.
+> >
+> > Fixes: 9bde7f0674 “hw/arm/smmuv3: Implement translate callback”
+> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> > ---
+> >  hw/arm/smmuv3-internal.h | 6 ++++++
+> >  hw/arm/smmuv3.c          | 8 +++++++-
+> >  2 files changed, 13 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> > index e4dd11e1e6..0f3ecec804 100644
+> > --- a/hw/arm/smmuv3-internal.h
+> > +++ b/hw/arm/smmuv3-internal.h
+> > @@ -32,6 +32,12 @@ typedef enum SMMUTranslationStatus {
+> >      SMMU_TRANS_SUCCESS,
+> >  } SMMUTranslationStatus;
+> >  
+> > +typedef enum SMMUTranslationClass {
+> > +    SMMU_CLASS_CD,
+> > +    SMMU_CLASS_TT,
+> > +    SMMU_CLASS_IN,
+> > +} SMMUTranslationClass;
+> > +
+> >  /* MMIO Registers */
+> >  
+> >  REG32(IDR0,                0x0)
+> > diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> > index 9dd3ea48e4..3d214c9f57 100644
+> > --- a/hw/arm/smmuv3.c
+> > +++ b/hw/arm/smmuv3.c
+> > @@ -942,7 +942,9 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+> >              event.type = SMMU_EVT_F_WALK_EABT;
+> >              event.u.f_walk_eabt.addr = addr;
+> >              event.u.f_walk_eabt.rnw = flag & 0x1;
+> > -            event.u.f_walk_eabt.class = 0x1;
+> > +            /* Stage-2 (only) is class IN while stage-1 is class TT */
+> > +            event.u.f_walk_eabt.class = (ptw_info.stage == 2) ?
+> > +                                         SMMU_CLASS_IN : SMMU_CLASS_TT;
+> does it match your expectations. While reading your previous comment I
+> have the impression what you had in mind was more complicated than that
+> 
+> * s2 walk that encounters EABT on S2 descriptor while translating
+>   non-descriptor IPA is reported as class=IN, even when doing s2-only.
 
-No problem. Thanks for letting us know!
+At this point we only support single-stage, so I believe this is correct:
+	"A stage 1-only table walk that encounters EABT ... CLASS == TT"
+	"translation of ... in stage 2-only configuration, an input IPA...
+	 CLASS == IN"
 
-In that case I'll sit on v6 for a while and hopefully we can get it
-lined up early next cycle without too much bios-tables test churn pain.
+Later in the series this code changes in order to support nesting, but I
+think it's still correct, because the EABT class works similarly to
+translation errors, except for stage-1 faults which have CLASS==TT
 
-Jonathan
+Thanks,
+Jean
+
+> 
+> Thanks
+> 
+> Eric
+> 
+> >              event.u.f_walk_eabt.addr2 = ptw_info.addr;
+> >              break;
+> >          case SMMU_PTW_ERR_TRANSLATION:
+> > @@ -950,6 +952,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+> >                  event.type = SMMU_EVT_F_TRANSLATION;
+> >                  event.u.f_translation.addr = addr;
+> >                  event.u.f_translation.addr2 = ptw_info.addr;
+> > +                event.u.f_translation.class = SMMU_CLASS_IN;
+> >                  event.u.f_translation.rnw = flag & 0x1;
+> >              }
+> >              break;
+> > @@ -958,6 +961,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+> >                  event.type = SMMU_EVT_F_ADDR_SIZE;
+> >                  event.u.f_addr_size.addr = addr;
+> >                  event.u.f_addr_size.addr2 = ptw_info.addr;
+> > +                event.u.f_translation.class = SMMU_CLASS_IN;
+> >                  event.u.f_addr_size.rnw = flag & 0x1;
+> >              }
+> >              break;
+> > @@ -966,6 +970,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+> >                  event.type = SMMU_EVT_F_ACCESS;
+> >                  event.u.f_access.addr = addr;
+> >                  event.u.f_access.addr2 = ptw_info.addr;
+> > +                event.u.f_translation.class = SMMU_CLASS_IN;
+> >                  event.u.f_access.rnw = flag & 0x1;
+> >              }
+> >              break;
+> > @@ -974,6 +979,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+> >                  event.type = SMMU_EVT_F_PERMISSION;
+> >                  event.u.f_permission.addr = addr;
+> >                  event.u.f_permission.addr2 = ptw_info.addr;
+> > +                event.u.f_translation.class = SMMU_CLASS_IN;
+> >                  event.u.f_permission.rnw = flag & 0x1;
+> >              }
+> >              break;
+> 
 
