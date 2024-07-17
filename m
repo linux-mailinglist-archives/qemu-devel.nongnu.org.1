@@ -2,80 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C841D9336B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 085719336E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:23:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTxs4-0000lP-KM; Wed, 17 Jul 2024 02:10:36 -0400
+	id 1sTy3L-0004TC-GX; Wed, 17 Jul 2024 02:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxrS-0005xz-Kw
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:58 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxrO-00037a-7z
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:56 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-70b1207bc22so5367647b3a.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:09:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721196593; x=1721801393; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k+oYXE4L2h80inyKqiRmXD3B0YphDkaBHXm+psrg+vQ=;
- b=g+tOtrZ92V2PZNTfVH9aMsS1c+c57ujzHlicbRQL6+1OpzAx8uAOYcv0IKWP40R/Gk
- cHp7X49nZMgyWotKIThb3WVr/I85subfbf7eNZB79l010fineqt7q6bNxrxRbxXvOX1g
- VvaRjnT6GG5bT/SESqd5cYclB8ugU4ds9kPNZNSYIaYv/Fef7i9vzIMt70vcXH7Gqzrz
- 2v9JCX35au7b/OVhGSdXKo4lDaZ3fiYV/4BgVXXl4n4XbcKSX7aQ19EAdSu4/gG7N9b/
- D7vGHGe7bTV2zw+8VBDmQg2UNULuqvOvN+0uk48S6SneBhQGJnCNRyKaVUUjk7HOnPD3
- Tqjg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTy2w-0003u6-Hm
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:21:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTy2s-0008Ui-Os
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:21:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721197304;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=SIobQkcNtH8oJernFOFUl4iP8rEQRWKxbXGxLNm8Xxc=;
+ b=EPtRJ+ipkuL1KeKKv+bvZt9Ivk1iXArIhiDNP/RD/aWy6IQZnaBSCDYTDrqiZfO2mIzU0U
+ 4IvDuKkbKEVAkYi+7LJtB0O61CBJW61A4dfVsVXxF9A8YBdkUU6aSQ9GxFDVNu1vm+LiTF
+ ekIgpgqIYCyUXB9XNzqxzSxzbgAN2bI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-414-nPJq8SOoOlqmfMPKLOd_sA-1; Wed, 17 Jul 2024 02:21:40 -0400
+X-MC-Unique: nPJq8SOoOlqmfMPKLOd_sA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42725d3ae3eso47137545e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:21:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721196593; x=1721801393;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=k+oYXE4L2h80inyKqiRmXD3B0YphDkaBHXm+psrg+vQ=;
- b=rEUYoNZugQXkF6/8F7TcH18kxFe1nqveo0aumMhmgeV85wSOt92SdaWprWsW8P2Xa6
- dNaY6EvUgcqYKqcTFGzZGvhZR8rzNUzyTCpldDi5mEeYD8Kxgb+SC00MdkhSWUq2fNRw
- ZlsvJ2iXYPxfMDNJ0Tc9WBHpuxwi4Y0+dHhdlfB8Hs207hKmW7AbbxUmdKA+atP3WFbY
- AgSfr9dU46uaGgAIYxCL9La62DrwilGsUw8ZEsOIer1jU9iGAeXW2z/jfWKPAQBvkseZ
- nmcpp0miFBovU6KH+95r2ykq7e0IrABg46f1ZpkP9W6s0WfKlts+NB0a8VMz6Hrjgq8G
- W9OQ==
-X-Gm-Message-State: AOJu0YyUuQjVFbvS1BAAe/laHofYQ4UxhkcvLccd8/q/NdOjBiYreUpC
- 9xAw50/okq8+F2pV2RI66WurHfOLWiGPlNjVnY/ByA/X+ZeeGUULHbccwPwM1EgqHz4O2+pzonv
- 2Hqg=
-X-Google-Smtp-Source: AGHT+IFTBloKj339jIs5AnaKm6VZAqt2eUYTkBp6m4mHHhwTz2e90UcJ4kfqJ03uQujE8p121Cc/Zw==
-X-Received: by 2002:a05:6a00:1743:b0:706:62b6:cbd3 with SMTP id
- d2e1a72fcca58-70ce4fff799mr1028138b3a.26.1721196592847; 
- Tue, 16 Jul 2024 23:09:52 -0700 (PDT)
-Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7ecd603bsm7330404b3a.219.2024.07.16.23.09.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 23:09:52 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH 17/17] target/arm: Push tcg_rnd into handle_shri_with_rndacc
-Date: Wed, 17 Jul 2024 16:09:03 +1000
-Message-ID: <20240717060903.205098-18-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240717060903.205098-1-richard.henderson@linaro.org>
-References: <20240717060903.205098-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1721197299; x=1721802099;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SIobQkcNtH8oJernFOFUl4iP8rEQRWKxbXGxLNm8Xxc=;
+ b=wDQz8WncL63uj14fL8UqTbZgm31hYm0G1qwyOJCKjl2RFVsg86lblWByk/Ltlve8Vo
+ HsqGgfvx3z5V1r4FzZwpBXqYhQiGfM7X4Dt+m5o62/eP9u/7X3Cg3PNF7LaKTVoiC+kZ
+ 4jOpSPruQTnOsS1Fe1nHNIOsEHrUHnzsg25oR7uvc0TduqEEHVPoaFeyYthJl9Yc7Ouq
+ cUi8Y1O6jD1N4xF5f+H7wyLPzjonGwQRItffEosLpas0Xxf1lE2mixqjGk2p8QjMTjm5
+ 5d820Aq4y6aekHoVnlMtybgPlDEf4a+JlTya1FvUJrUY6YaJTTfEvWEAAdgiqxuzqD0j
+ vIEA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX1ri7w0+rZm1bSRODJrMmFs2XjXR1a3FEso7kZgg1oTT7vL1/fKTNnSEhIS6IyJ2hWxUAtlE6sz3ynD3mWqwTwuMCzUuI=
+X-Gm-Message-State: AOJu0YyoHCcUNnp8qY4nrU+2EEtroQ4WetZa5dZgntpQzM6nuiLTFUmH
+ /td9ZjwDPIa6JblRKpBdqZzxYhh9whGXyxXqqusXTwBKeERCEeR/2qBB4bilL/ymjmI8IZWjabT
+ fYjqLr8dX+dxukP2S78Hf5zMe1ZiIKWF4l+ELdqvKY9QA6pLo+4Zg
+X-Received: by 2002:a05:600c:46d0:b0:426:5b22:4d61 with SMTP id
+ 5b1f17b1804b1-427c2cd0f32mr3709275e9.22.1721197299303; 
+ Tue, 16 Jul 2024 23:21:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+02qaofCRkz48fi6p0OLmyZMclQ+DULac9JWRInJl1/XQvT5uMh+2ZCC32PDKB6kb/w1xIw==
+X-Received: by 2002:a05:600c:46d0:b0:426:5b22:4d61 with SMTP id
+ 5b1f17b1804b1-427c2cd0f32mr3709185e9.22.1721197298885; 
+ Tue, 16 Jul 2024 23:21:38 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-177-101.web.vodafone.de.
+ [109.43.177.101]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3680daccdffsm10879420f8f.54.2024.07.16.23.21.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jul 2024 23:21:38 -0700 (PDT)
+Message-ID: <2caf3193-52da-4bb2-955a-a44191fbd97e@redhat.com>
+Date: Wed, 17 Jul 2024 08:21:36 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/8] Convert avocado tests to normal Python unittests
+To: John Snow <jsnow@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>
+References: <20240711115546.40859-1-thuth@redhat.com>
+ <CAFn=p-bMXm9qCD0hWiikyOmagFRryCZWrTx8xne9+x5j0QeNYQ@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAFn=p-bMXm9qCD0hWiikyOmagFRryCZWrTx8xne9+x5j0QeNYQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,121 +150,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We always pass the same value for round; compute it
-within common code.
+On 16/07/2024 18.45, John Snow wrote:
+> On Thu, Jul 11, 2024, 7:55 AM Thomas Huth <thuth@redhat.com 
+> <mailto:thuth@redhat.com>> wrote:
+...
+>     - I haven't looked into logging yet ... this still needs some work
+>        so that you could e.g. inspect the console output of the guests
+>        somewhere
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-a64.c | 32 ++++++--------------------------
- 1 file changed, 6 insertions(+), 26 deletions(-)
+FWIW: This is now done in the next version of the patch series:
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 2a9cb3fbe0..f4ff698257 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -9197,11 +9197,10 @@ static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
-  * the vector and scalar code.
-  */
- static void handle_shri_with_rndacc(TCGv_i64 tcg_res, TCGv_i64 tcg_src,
--                                    TCGv_i64 tcg_rnd, bool accumulate,
-+                                    bool round, bool accumulate,
-                                     bool is_u, int size, int shift)
- {
-     bool extended_result = false;
--    bool round = tcg_rnd != NULL;
-     int ext_lshift = 0;
-     TCGv_i64 tcg_src_hi;
- 
-@@ -9219,6 +9218,7 @@ static void handle_shri_with_rndacc(TCGv_i64 tcg_res, TCGv_i64 tcg_src,
- 
-     /* Deal with the rounding step */
-     if (round) {
-+        TCGv_i64 tcg_rnd = tcg_constant_i64(1ull << (shift - 1));
-         if (extended_result) {
-             TCGv_i64 tcg_zero = tcg_constant_i64(0);
-             if (!is_u) {
-@@ -9286,7 +9286,6 @@ static void handle_scalar_simd_shri(DisasContext *s,
-     bool insert = false;
-     TCGv_i64 tcg_rn;
-     TCGv_i64 tcg_rd;
--    TCGv_i64 tcg_round;
- 
-     if (!extract32(immh, 3, 1)) {
-         unallocated_encoding(s);
-@@ -9312,12 +9311,6 @@ static void handle_scalar_simd_shri(DisasContext *s,
-         break;
-     }
- 
--    if (round) {
--        tcg_round = tcg_constant_i64(1ULL << (shift - 1));
--    } else {
--        tcg_round = NULL;
--    }
--
-     tcg_rn = read_fp_dreg(s, rn);
-     tcg_rd = (accumulate || insert) ? read_fp_dreg(s, rd) : tcg_temp_new_i64();
- 
-@@ -9331,7 +9324,7 @@ static void handle_scalar_simd_shri(DisasContext *s,
-             tcg_gen_deposit_i64(tcg_rd, tcg_rd, tcg_rn, 0, esize - shift);
-         }
-     } else {
--        handle_shri_with_rndacc(tcg_rd, tcg_rn, tcg_round,
-+        handle_shri_with_rndacc(tcg_rd, tcg_rn, round,
-                                 accumulate, is_u, size, shift);
-     }
- 
-@@ -9384,7 +9377,7 @@ static void handle_vec_simd_sqshrn(DisasContext *s, bool is_scalar, bool is_q,
-     int elements = is_scalar ? 1 : (64 / esize);
-     bool round = extract32(opcode, 0, 1);
-     MemOp ldop = (size + 1) | (is_u_shift ? 0 : MO_SIGN);
--    TCGv_i64 tcg_rn, tcg_rd, tcg_round;
-+    TCGv_i64 tcg_rn, tcg_rd;
-     TCGv_i32 tcg_rd_narrowed;
-     TCGv_i64 tcg_final;
- 
-@@ -9429,15 +9422,9 @@ static void handle_vec_simd_sqshrn(DisasContext *s, bool is_scalar, bool is_q,
-     tcg_rd_narrowed = tcg_temp_new_i32();
-     tcg_final = tcg_temp_new_i64();
- 
--    if (round) {
--        tcg_round = tcg_constant_i64(1ULL << (shift - 1));
--    } else {
--        tcg_round = NULL;
--    }
--
-     for (i = 0; i < elements; i++) {
-         read_vec_element(s, tcg_rn, rn, i, ldop);
--        handle_shri_with_rndacc(tcg_rd, tcg_rn, tcg_round,
-+        handle_shri_with_rndacc(tcg_rd, tcg_rn, round,
-                                 false, is_u_shift, size+1, shift);
-         narrowfn(tcg_rd_narrowed, tcg_env, tcg_rd);
-         tcg_gen_extu_i32_i64(tcg_rd, tcg_rd_narrowed);
-@@ -10487,7 +10474,6 @@ static void handle_vec_simd_shrn(DisasContext *s, bool is_q,
-     int shift = (2 * esize) - immhb;
-     bool round = extract32(opcode, 0, 1);
-     TCGv_i64 tcg_rn, tcg_rd, tcg_final;
--    TCGv_i64 tcg_round;
-     int i;
- 
-     if (extract32(immh, 3, 1)) {
-@@ -10504,15 +10490,9 @@ static void handle_vec_simd_shrn(DisasContext *s, bool is_q,
-     tcg_final = tcg_temp_new_i64();
-     read_vec_element(s, tcg_final, rd, is_q ? 1 : 0, MO_64);
- 
--    if (round) {
--        tcg_round = tcg_constant_i64(1ULL << (shift - 1));
--    } else {
--        tcg_round = NULL;
--    }
--
-     for (i = 0; i < elements; i++) {
-         read_vec_element(s, tcg_rn, rn, i, size+1);
--        handle_shri_with_rndacc(tcg_rd, tcg_rn, tcg_round,
-+        handle_shri_with_rndacc(tcg_rd, tcg_rn, round,
-                                 false, true, size+1, shift);
- 
-         tcg_gen_deposit_i64(tcg_final, tcg_final, tcg_rd, esize * i, esize);
--- 
-2.43.0
+  https://lore.kernel.org/qemu-devel/20240716112614.1755692-10-thuth@redhat.com/
+
+> This has spilled the most developer blood of any other problem with the 
+> Python-based tests. Be very careful here.
+
+Apart from 1:1 copying the functions from one __init__.py file to the other, 
+and from setting up the logger so that it writes its output to a file, I 
+didn't have to change anything. It currently simply seems to work.
+
+> I still have a prototype for replacing QMPMachine with an asyncio variant 
+> that should have more robust logging features, but I put it on the back-burner.
+> 
+> Avocado tests are the primary user of the QMP Machine interface I hate the 
+> very most, a multi-threaded buffer-reader that works only by the grace of 
+> god. If you do go down this path, I may want to take the opportunity to 
+> abolish that interface once and for all.
+>
+ > I think simplifying the console buffering will help ease debuggability.
+
+Feel free to do improvements on top! I think it should be easier now when 
+there are no more complicated mixtures with the avocado test runner.
+
+>     What's your thoughts? Is it worth to continue with this approach?
+>     Or shall I rather forget about it and wait for the Avocado version
+>     update?
+> 
+> 
+> I'm personally ambivalent on avocado; I use it for the python self-tests as 
+> dogfooding but I can likely switch back over to plain pytest if that's the 
+> direction we head. I don't think I use any crazy features except some 
+> asyncio helpers i advocated for. I'm not sure what pytest's asyncio support 
+> looks like, but I have to imagine as the premier testing framework that it 
+> has *something* for me to use.
+
+There's no more pytest harness in the next iteration of the patch series, 
+just the need for pycotap for TAP output. Console logging is completely 
+independent of the test runner, I'll simply do normal logging to files there.
+
+> My only ask is that we keep the tests running in the custom venv environment 
+> we set up at build time. We have some funky post-hoc initialization of 
+> avocado that allows us to use internet packages post-config for testing 
+> purposes. If we move to pytest, it's possible we can eliminate that 
+> funkiness, which would be a win.
+
+I still need a way for making sure that pycotap is installed, though, so the 
+venv is still there.
+
+> I'm also not so sure about recreating all of the framework that pulls vm 
+> images on demand, that sounds like it'd be a lot of work, but maybe I'm 
+> wrong about that.
+
+It likely does not make sense to rewrite the tests that use these cloud-init 
+images (i.e. the ones that depend on the LinuxTest class). But we could 
+likely simply continue to use avocado.utils for these, without using the 
+avocado test runner.
+
+> Tacit ACK from me on this project in general, provided we are still using 
+> the configure venv.
+
+  Thanks,
+   Thomas
 
 
