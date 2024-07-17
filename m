@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3878D93371D
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAE59336BF
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTyC8-00085D-L0; Wed, 17 Jul 2024 02:31:20 -0400
+	id 1sTxxO-0005zx-2b; Wed, 17 Jul 2024 02:16:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyC5-0007kp-7e
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:31:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTxxF-0005dC-LI; Wed, 17 Jul 2024 02:15:58 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyC3-00032V-H5
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:31:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721197874;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t7SchGpbHIGXvEUC0Jr//SmRY8gjbq3nFK63X4vHCrs=;
- b=UfqpMHkLnS/+uriSmauubIS/zN6cX4wFDq0Iwu5bDcbe7vizblZiiR1memnERvXplDi7Fg
- 3p9gJe15VdOEekOqVwTOmBYqB2KkeOuhT86J02ggzjHlha/nGo/6btE5X2z8hXN0wtU/TQ
- 4lu3rVJ7mG/rwLUVIfahHLFcGLnvYj0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-RxEGbl_dNFi2QCZmb4ljDQ-1; Wed,
- 17 Jul 2024 02:31:12 -0400
-X-MC-Unique: RxEGbl_dNFi2QCZmb4ljDQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9563E1956095; Wed, 17 Jul 2024 06:31:10 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.88])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B21D219560B2; Wed, 17 Jul 2024 06:31:07 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Steven Lee <steven_lee@aspeedtech.com>,
- Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 8/8] aspeed: Introduce a 'boot-emmc' machine option
-Date: Wed, 17 Jul 2024 08:30:22 +0200
-Message-ID: <20240717063022.549849-9-clg@redhat.com>
-In-Reply-To: <20240717063022.549849-1-clg@redhat.com>
-References: <20240717063022.549849-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sTxxC-0007YN-Sk; Wed, 17 Jul 2024 02:15:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721196955; x=1752732955;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=lxVTDdL+S0Cn0Lj0YQLBnh1gWlr2LWb/YRUTiBXoNuw=;
+ b=UYN/cS1ZLrQHndV6afKVZFlLuSwyvPrMil/nj9xiTN+lr4EBQ/AyZNzs
+ 4HzSGkJEzPyo/x42f+Zv2xymGWrp0PXrr5fFR6Bptebv07Qr03ZiCiSJb
+ ogBKJ/EKum0TblJRooIPSdPmk6cBAPu64on9X7mKYq/d5CWImubo4uDfg
+ Rqw3K8+hDXePBY9uF9SFqg6CHkqKtf8CoV7UlGwYiT8NGoo2eratDY47R
+ WpyMd1OsYZeQFt5TZODxD4nytVIdcbjo8e36gn1dq4cnCykx7Rd0/2e0s
+ IlYuDCWmr7I396oe/HtDHRYDduZUq0MbREiKFSx34OvsNrNatsgMNdfaF Q==;
+X-CSE-ConnectionGUID: B3Xt47jRTXeFD84gdK8OfQ==
+X-CSE-MsgGUID: nGLi1FLHQ6uyLA8MrGXTUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="12582827"
+X-IronPort-AV: E=Sophos;i="6.09,213,1716274800"; d="scan'208";a="12582827"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2024 23:15:48 -0700
+X-CSE-ConnectionGUID: oYAqu01kQJuznZcfCRHKog==
+X-CSE-MsgGUID: 4nIPCdO/TTSTEXc+WvZw8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,213,1716274800"; d="scan'208";a="51009713"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa008.jf.intel.com with ESMTP; 16 Jul 2024 23:15:46 -0700
+Date: Wed, 17 Jul 2024 14:31:28 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] doc/net/l2tpv3: Update boolean fields' description to
+ avoid short-form use
+Message-ID: <ZpdlQDIjGp4wR8aR@intel.com>
+References: <20240708092630.2596945-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240708092630.2596945-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,93 +79,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@kaod.org>
+Hi Jason,
 
-The default behavior of some Aspeed machines is to boot from the eMMC
-device, like the rainier-bmc. Others like ast2600-evb could also boot
-from eMMC if the HW strapping boot-from-eMMC bit was set. Add a
-property to set or unset this bit. This is useful to test boot images.
+Just a kind ping. Does this update satisfy you?
+Since the original example generates the warning.
 
-For now, only activate this property on the ast2600-evb and rainier-bmc
-machines for which eMMC images are available or can be built.
+Thanks,
+Zhao
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
----
- docs/system/arm/aspeed.rst |  2 ++
- hw/arm/aspeed.c            | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
-
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index cd9559e3e291..6733ffd2b941 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -123,6 +123,8 @@ To boot the machine from the flash image, use an MTD drive :
- 
- Options specific to Aspeed machines are :
- 
-+ * ``boot-emmc`` to set or unset boot from eMMC (AST2600).
-+
-  * ``execute-in-place`` which emulates the boot from the CE0 flash
-    device by using the FMC controller to load the instructions, and
-    not simply from RAM. This takes a little longer.
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 9939559f6dd0..5cdef873a5fc 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1178,6 +1178,34 @@ static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
-     mc->valid_cpu_types = sc->valid_cpu_types;
- }
- 
-+static bool aspeed_machine_ast2600_get_boot_from_emmc(Object *obj, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+
-+    return !!(bmc->hw_strap1 & SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC);
-+}
-+
-+static void aspeed_machine_ast2600_set_boot_from_emmc(Object *obj, bool value,
-+                                                      Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+
-+    if (value) {
-+        bmc->hw_strap1 |= SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC;
-+    } else {
-+        bmc->hw_strap1 &= ~SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC;
-+    }
-+}
-+
-+static void aspeed_machine_ast2600_class_emmc_init(ObjectClass *oc)
-+{
-+    object_class_property_add_bool(oc, "boot-emmc",
-+                                   aspeed_machine_ast2600_get_boot_from_emmc,
-+                                   aspeed_machine_ast2600_set_boot_from_emmc);
-+    object_class_property_set_description(oc, "boot-emmc",
-+                                          "Set or unset boot from EMMC");
-+}
-+
- static void aspeed_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -1377,6 +1405,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-     amc->i2c_init  = ast2600_evb_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
-+    aspeed_machine_ast2600_class_emmc_init(oc);
- };
- 
- static void aspeed_machine_tacoma_class_init(ObjectClass *oc, void *data)
-@@ -1449,6 +1478,7 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
-     amc->i2c_init  = rainier_bmc_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
-+    aspeed_machine_ast2600_class_emmc_init(oc);
- };
- 
- #define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
--- 
-2.45.2
-
+On Mon, Jul 08, 2024 at 05:26:30PM +0800, Zhao Liu wrote:
+> Date: Mon, 8 Jul 2024 17:26:30 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH] doc/net/l2tpv3: Update boolean fields' description to
+>  avoid short-form use
+> X-Mailer: git-send-email 2.34.1
+> 
+> The short-form boolean options has been deprecated since v6.0 (refer
+> to docs/about/deprecated.rst).
+> 
+> Update the description and example of boolean fields in l2tpv3 option to
+> avoid deprecation warning.
+> 
+> Cc: Jason Wang <jasowang@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  qemu-options.hx | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index ad6521ef5e7e..edeaefe2c79a 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -3353,7 +3353,7 @@ SRST
+>                           -device e1000,netdev=n1,mac=52:54:00:12:34:56 \\
+>                           -netdev socket,id=n1,mcast=239.192.168.1:1102,localaddr=1.2.3.4
+>  
+> -``-netdev l2tpv3,id=id,src=srcaddr,dst=dstaddr[,srcport=srcport][,dstport=dstport],txsession=txsession[,rxsession=rxsession][,ipv6=on|off][,udp=on|off][,cookie64][,counter][,pincounter][,txcookie=txcookie][,rxcookie=rxcookie][,offset=offset]``
+> +``-netdev l2tpv3,id=id,src=srcaddr,dst=dstaddr[,srcport=srcport][,dstport=dstport],txsession=txsession[,rxsession=rxsession][,ipv6=on|off][,udp=on|off][,cookie64=on|off][,counter=on|off][,pincounter=on|off][,txcookie=txcookie][,rxcookie=rxcookie][,offset=offset]``
+>      Configure a L2TPv3 pseudowire host network backend. L2TPv3 (RFC3931)
+>      is a popular protocol to transport Ethernet (and other Layer 2) data
+>      frames between two systems. It is present in routers, firewalls and
+> @@ -3368,7 +3368,7 @@ SRST
+>      ``dst=dstaddr``
+>          destination address (mandatory)
+>  
+> -    ``udp``
+> +    ``udp=on``
+>          select udp encapsulation (default is ip).
+>  
+>      ``srcport=srcport``
+> @@ -3377,7 +3377,7 @@ SRST
+>      ``dstport=dstport``
+>          destination udp port.
+>  
+> -    ``ipv6``
+> +    ``ipv6=on``
+>          force v6, otherwise defaults to v4.
+>  
+>      ``rxcookie=rxcookie``; \ ``txcookie=txcookie``
+> @@ -3385,7 +3385,7 @@ SRST
+>          Their function is mostly to prevent misconfiguration. By default
+>          they are 32 bit.
+>  
+> -    ``cookie64``
+> +    ``cookie64=on``
+>          Set cookie size to 64 bit instead of the default 32
+>  
+>      ``counter=off``
+> @@ -3419,7 +3419,7 @@ SRST
+>          # launch QEMU instance - if your network has reorder or is very lossy add ,pincounter
+>  
+>          |qemu_system| linux.img -device e1000,netdev=n1 \\
+> -            -netdev l2tpv3,id=n1,src=4.2.3.1,dst=1.2.3.4,udp,srcport=16384,dstport=16384,rxsession=0xffffffff,txsession=0xffffffff,counter
+> +            -netdev l2tpv3,id=n1,src=4.2.3.1,dst=1.2.3.4,udp=on,srcport=16384,dstport=16384,rxsession=0xffffffff,txsession=0xffffffff,counter=on
+>  
+>  ``-netdev vde,id=id[,sock=socketpath][,port=n][,group=groupname][,mode=octalmode]``
+>      Configure VDE backend to connect to PORT n of a vde switch running
+> -- 
+> 2.34.1
+> 
 
