@@ -2,88 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38C0933B77
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 12:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36688933B6F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 12:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2Dj-0003Yb-8w; Wed, 17 Jul 2024 06:49:15 -0400
+	id 1sU2Dp-0003xo-J5; Wed, 17 Jul 2024 06:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sU2Dg-0003PX-JY
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:49:12 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sU2De-0001Ss-RX
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:49:12 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3678f36f154so3981932f8f.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 03:49:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721213349; x=1721818149; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cev8W6CWSvjm9UdOgs7HnfWmh1qJUbjyYUjNfDWB29Y=;
- b=YpHNr3IAqBOIurVKbXmhP+8vpoWlIQCJ9dfT4M+yIt6s5AzyNE+cMCi6pYm/JKfBiy
- +D0hu39quNvlM+sYmaz/iNRufJi6OQPobRUBBZzzrccss4HH1h1BjEi9Sygq5GZPsJBx
- dd66MBsc2lHc4lcEAkRHpUsxkAkXRFBIjfEL3RDBLXSbqBdO2bQ6OJ/tzdoZKq43a/iT
- a/SBAm4dfJrr7GOjdur5QxhiMxHjCvYUSxlNg/bpgWxrUKuET0cetyK0G4SXRx/uh7+1
- 8KT42P3jM99BSfeamd1YPnLyAWLCjdR30iH6Vuck1ver+wehCyTJkfT+eXwVlqgymVCG
- tU7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721213349; x=1721818149;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cev8W6CWSvjm9UdOgs7HnfWmh1qJUbjyYUjNfDWB29Y=;
- b=TpRhdn2fVCiGtr2Uly5LpBLY+JHj2iks3Bv8qQ2J5bnKguON8POZ7a5JCRQctA7kzJ
- 5Cfs3DiczKr0B1l5rfPlW5scStU2gZwv6TlImAeoEm5oFvjS6GjrCBNN0YyKHlAWEkha
- A2KtmjAfs/hKAIOHq0HHIwctzmvoTFDwmzb4rozTD5V81b4hNqWx8mYFTDude+ZLwd4p
- qYiRzDTkXZLVp7UFQmu3vXBuIhYl0EFxIQiVoHIcSoJFleHTKefrzVzC4SZsHkSqhHc8
- sRxdpemHqeTKxHw4Zq6Nfzkq9vyPao0L0WbKjotU2v2ndNz7EnIcG38aHvsnIKRS5Nih
- ZiKQ==
-X-Gm-Message-State: AOJu0YzYAf7wqugyqQRsv37eIx/Q1AFlhSwfyFlGT4evbqvHeF/26ECB
- LfZwP3VoblSvKHQxFpQX0ewpKaiY8Uw25NDFxvTYQoGo9FoHl1oj5dCcumO+xMU=
-X-Google-Smtp-Source: AGHT+IF0hHDKdMOwjmU86b2nY+5bijcS+F576XWabFe4OLoDZIwh9cFZvl925mHLQfhx3H1lReVT/g==
-X-Received: by 2002:a05:6000:dc2:b0:367:97b9:d5ed with SMTP id
- ffacd0b85a97d-368315e7717mr1114178f8f.9.1721213349125; 
- Wed, 17 Jul 2024 03:49:09 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.208.21])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368312a761esm1187625f8f.73.2024.07.17.03.49.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jul 2024 03:49:08 -0700 (PDT)
-Message-ID: <0c51907b-f9c5-4ae4-b153-9e575d0083cd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sU2Dn-0003sN-Nt
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:49:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sU2Dl-0001Ut-IC
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:49:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721213357;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kJ/VlnGQtn/pnIpdZSjtl/PnZJ44+CapLDPGdCiuvIk=;
+ b=aBq+dRNGkgBDpSrJfTDJq9zjWvZAkRyKsH4tt22K5CFfOXjFPJllLjy22b7It4LdjIKAKv
+ yvIEq+fiz/lhfAvDFiAXb9RTNLiWgMpBYZ1Ui2AtWy9DY0hBIJElPzx7IOOXt5VIDiKKj1
+ JWy7EyUsKsNX516MvI76DeGTpsx6Ovk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-6wD4uvAuNymFrLo7hm1o5Q-1; Wed,
+ 17 Jul 2024 06:49:15 -0400
+X-MC-Unique: 6wD4uvAuNymFrLo7hm1o5Q-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 28B0D1956064; Wed, 17 Jul 2024 10:49:14 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 66816195605A; Wed, 17 Jul 2024 10:49:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E35BC21F4B94; Wed, 17 Jul 2024 12:49:07 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+	John Snow <jsnow@redhat.com>
+Subject: [PULL 14/14] qapi: remove "Example" doc section
 Date: Wed, 17 Jul 2024 12:49:07 +0200
+Message-ID: <20240717104907.2962784-15-armbru@redhat.com>
+In-Reply-To: <20240717104907.2962784-1-armbru@redhat.com>
+References: <20240717104907.2962784-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] semihosting: Restrict to TCG
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Anton Johansson <anjo@rev.ng>
-References: <20240529155548.5878-1-philmd@linaro.org>
- <20240529155548.5878-4-philmd@linaro.org>
- <CABgObfYmuvMq80Xz0ZBZQiHmKgoiSTVVqio8FmmpttT8rg64kA@mail.gmail.com>
- <7ce86375-779d-43d6-9871-7f9587c95ba6@linaro.org>
- <CABgObfbvjG9bBgCwM-kL+YhjhMw1qLnQdQToCEkKW+V3trskoA@mail.gmail.com>
- <d2b81c56-a57c-4fbe-a65e-86e9755e7c48@linaro.org>
- <5c913504-d917-4fd1-86d5-85d3bc293623@linaro.org>
- <CABgObfZ_V+K6mShNVpb3KXG_uyNJatk=0btY8grcpMvoo=seYA@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfZ_V+K6mShNVpb3KXG_uyNJatk=0btY8grcpMvoo=seYA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,35 +82,334 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/6/24 09:49, Paolo Bonzini wrote:
-> On Wed, Jun 12, 2024 at 3:13 PM Philippe Mathieu-Daudé
-> <philmd@linaro.org> wrote:
->> Building qemu-system-mips configured with --without-default-devices:
->>
->> Undefined symbols for architecture arm64:
->>     "_qemu_semihosting_console_write", referenced from:
->>         _mips_semihosting in target_mips_tcg_sysemu_mips-semi.c.o
->>     "_semihost_sys_close", referenced from:
->>         _mips_semihosting in target_mips_tcg_sysemu_mips-semi.c.o
->>     "_uaccess_strlen_user", referenced from:
->>         _mips_semihosting in target_mips_tcg_sysemu_mips-semi.c.o
->>     ...
->>
->> So this one has to use "select".
->>
->> Similarly m68k:
->>
->> Undefined symbols for architecture arm64:
->>     "_semihost_sys_close", referenced from:
->>         _do_m68k_semihosting in target_m68k_m68k-semi.c.o
->>     ...
-> 
+From: John Snow <jsnow@redhat.com>
 
-> The file to be stubbed would have
-> to be target/m68k/m68k-semi.c (for do_m68k_semihosting) and
-> target/mips/tcg/sysemu/mips-semi.c (for mips_semihosting), not the
-> common code.
+Fully eliminate the "Example" sections in QAPI doc blocks now that they
+have all been converted to arbitrary rST syntax using the
+".. qmp-example::" directive. Update tests to match.
 
-Yes! Thank you, I'm was to blind to realize that...
+Migrating to the new syntax
+---------------------------
+
+The old "Example:" or "Examples:" section syntax is now caught as an
+error, but "Example::" is stil permitted as explicit rST syntax for an
+un-lexed, generic preformatted text block.
+
+('Example' is not special in this case, any sentence that ends with "::"
+will start an indented code block in rST.)
+
+Arbitrary rST for Examples is now possible, but it's strongly
+recommended that documentation authors use the ".. qmp-example::"
+directive for consistent visual formatting in rendered HTML docs. The
+":title:" directive option may be used to add extra information into the
+title bar for the example. The ":annotated:" option can be used to write
+arbitrary rST instead, with nested "::" blocks applying QMP formatting
+where desired.
+
+Other choices available are ".. code-block:: QMP" which will not create
+an "Example:" box, or the short-form "::" code-block syntax which will
+not apply QMP highlighting when used outside of the qmp-example
+directive.
+
+Why?
+----
+
+This patch has several benefits:
+
+1. Example sections can now be written more arbitrarily, mixing
+   explanatory paragraphs and code blocks however desired.
+
+2. Example sections can now use fully arbitrary rST.
+
+3. All code blocks are now lexed and validated as QMP; increasing
+   usability of the docs and ensuring validity of example snippets.
+
+   (To some extent - This patch only gaurantees it lexes correctly, not
+   that it's valid under the JSON or QMP grammars. It will catch most
+   small mistakes, however.)
+
+4. Each qmp-example can be titled or annotated independently without
+   bypassing the QMP lexer/validator.
+
+   (i.e. code blocks are now for *code* only, so we don't have to
+   sacrifice exposition for having lexically valid examples.)
+
+NOTE: As with the "Notes" conversion (d461c279737), this patch (and the
+      three preceding) may change the rendering order for Examples in
+      the current generator. The forthcoming qapidoc rewrite will fix
+      this by always generating documentation in source order.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20240717021312.606116-10-jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ docs/devel/qapi-code-gen.rst    | 58 ++++++++++++++++++++++++++++-----
+ scripts/qapi/parser.py          | 10 +++++-
+ tests/qapi-schema/doc-good.json | 19 +++++++----
+ tests/qapi-schema/doc-good.out  | 26 ++++++++++-----
+ tests/qapi-schema/doc-good.txt  | 23 ++++++-------
+ 5 files changed, 98 insertions(+), 38 deletions(-)
+
+diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
+index ae97b335cb..583207a8ec 100644
+--- a/docs/devel/qapi-code-gen.rst
++++ b/docs/devel/qapi-code-gen.rst
+@@ -899,7 +899,7 @@ Documentation markup
+ ~~~~~~~~~~~~~~~~~~~~
+ 
+ Documentation comments can use most rST markup.  In particular,
+-a ``::`` literal block can be used for examples::
++a ``::`` literal block can be used for pre-formatted text::
+ 
+     # ::
+     #
+@@ -995,8 +995,8 @@ line "Features:", like this::
+   # @feature: Description text
+ 
+ A tagged section begins with a paragraph that starts with one of the
+-following words: "Since:", "Example:"/"Examples:", "Returns:",
+-"Errors:", "TODO:".  It ends with the start of a new section.
++following words: "Since:", "Returns:", "Errors:", "TODO:".  It ends with
++the start of a new section.
+ 
+ The second and subsequent lines of tagged sections must be indented
+ like this::
+@@ -1020,13 +1020,53 @@ detailing a relevant error condition. For example::
+ A "Since: x.y.z" tagged section lists the release that introduced the
+ definition.
+ 
+-An "Example" or "Examples" section is rendered entirely
+-as literal fixed-width text.  "TODO" sections are not rendered at all
+-(they are for developers, not users of QMP).  In other sections, the
+-text is formatted, and rST markup can be used.
++"TODO" sections are not rendered (they are for developers, not users of
++QMP).  In other sections, the text is formatted, and rST markup can be
++used.
++
++QMP Examples can be added by using the ``.. qmp-example::``
++directive. In its simplest form, this can be used to contain a single
++QMP code block which accepts standard JSON syntax with additional server
++directionality indicators (``->`` and ``<-``), and elisions (``...``).
++
++Optionally, a plaintext title may be provided by using the ``:title:``
++directive option. If the title is omitted, the example title will
++default to "Example:".
++
++A simple QMP example::
++
++  # .. qmp-example::
++  #    :title: Using query-block
++  #
++  #    -> { "execute": "query-block" }
++  #    <- { ... }
++
++More complex or multi-step examples where exposition is needed before or
++between QMP code blocks can be created by using the ``:annotated:``
++directive option. When using this option, nested QMP code blocks must be
++entered explicitly with rST's ``::`` syntax.
++
++Highlighting in non-QMP languages can be accomplished by using the
++``.. code-block:: lang`` directive, and non-highlighted text can be
++achieved by omitting the language argument.
+ 
+ For example::
+ 
++  # .. qmp-example::
++  #    :annotated:
++  #    :title: A more complex demonstration
++  #
++  #    This is a more complex example that can use
++  #    ``arbitrary rST syntax`` in its exposition::
++  #
++  #      -> { "execute": "query-block" }
++  #      <- { ... }
++  #
++  #    Above, lengthy output has been omitted for brevity.
++
++
++Examples of complete definition documentation::
++
+  ##
+  # @BlockStats:
+  #
+@@ -1058,11 +1098,11 @@ For example::
+  #
+  # Since: 0.14
+  #
+- # Example:
++ # .. qmp-example::
+  #
+  #     -> { "execute": "query-blockstats" }
+  #     <- {
+- #          ... lots of output ...
++ #          ...
+  #        }
+  ##
+  { 'command': 'query-blockstats',
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 6ad5663e54..adc85b5b39 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -553,7 +553,7 @@ def get_doc(self) -> 'QAPIDoc':
+                     # Note: "sections" with two colons are left alone as
+                     # rST markup and not interpreted as a section heading.
+ 
+-                    # TODO: Remove this error sometime in 2025 or so
++                    # TODO: Remove these errors sometime in 2025 or so
+                     # after we've fully transitioned to the new qapidoc
+                     # generator.
+ 
+@@ -567,6 +567,14 @@ def get_doc(self) -> 'QAPIDoc':
+                         )
+                         raise QAPIParseError(self, emsg)
+ 
++                    if 'Example' in match.group(1):
++                        emsg = (
++                            f"The '{match.group(1)}' section is no longer "
++                            "supported. Please use the '.. qmp-example::' "
++                            "directive, or other suitable markup instead."
++                        )
++                        raise QAPIParseError(self, emsg)
++
+                     doc.new_tagged_section(self.info, match.group(1))
+                     text = line[match.end():]
+                     if text:
+diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
+index b565895858..f64bf38d85 100644
+--- a/tests/qapi-schema/doc-good.json
++++ b/tests/qapi-schema/doc-good.json
+@@ -172,12 +172,17 @@
+ #
+ #  Duis aute irure dolor
+ #
+-# Example:
++# .. qmp-example::
++#    :title: Ideal fast-food burger situation
+ #
+-#  -> in
+-#  <- out
++#    -> "in"
++#    <- "out"
+ #
+-# Examples:
++# Examples::
++#
++#  - Not a QMP code block
++#  - Merely a preformatted code block literal
++#  It isn't even an rST list.
+ #  - *verbatim*
+ #  - {braces}
+ #
+@@ -199,11 +204,11 @@
+ # @cmd-feat1: a feature
+ # @cmd-feat2: another feature
+ #
+-# Example:
++# .. qmp-example::
+ #
+-#  -> in
++#    -> "this example"
+ #
+-#  <- out
++#    <- "has no title"
+ ##
+ { 'command': 'cmd-boxed', 'boxed': true,
+   'data': 'Object',
+diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
+index a8e9456f60..6d24f1127b 100644
+--- a/tests/qapi-schema/doc-good.out
++++ b/tests/qapi-schema/doc-good.out
+@@ -184,13 +184,21 @@ frobnicate
+  - Ut enim ad minim veniam
+ 
+  Duis aute irure dolor
+-    section=Example
+- -> in
+- <- out
+-    section=Examples
++
++.. qmp-example::
++   :title: Ideal fast-food burger situation
++
++   -> "in"
++   <- "out"
++
++Examples::
++
++ - Not a QMP code block
++ - Merely a preformatted code block literal
++ It isn't even an rST list.
+  - *verbatim*
+  - {braces}
+-    section=None
++
+ Note::
+     Ceci n'est pas une note
+     section=Since
+@@ -202,10 +210,12 @@ If you're bored enough to read this, go see a video of boxed cats
+ a feature
+     feature=cmd-feat2
+ another feature
+-    section=Example
+- -> in
++    section=None
++.. qmp-example::
+ 
+- <- out
++   -> "this example"
++
++   <- "has no title"
+ doc symbol=EVT_BOXED
+     body=
+ 
+diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
+index 30d457e548..cb37db606a 100644
+--- a/tests/qapi-schema/doc-good.txt
++++ b/tests/qapi-schema/doc-good.txt
+@@ -217,17 +217,16 @@ Notes:
+ 
+ Duis aute irure dolor
+ 
++Example: Ideal fast-food burger situation:
+ 
+-Example
+-~~~~~~~
++   -> "in"
++   <- "out"
+ 
+-   -> in
+-   <- out
+-
+-
+-Examples
+-~~~~~~~~
++Examples:
+ 
++   - Not a QMP code block
++   - Merely a preformatted code block literal
++   It isn't even an rST list.
+    - *verbatim*
+    - {braces}
+ 
+@@ -261,13 +260,11 @@ Features
+ "cmd-feat2"
+    another feature
+ 
++Example::
+ 
+-Example
+-~~~~~~~
++   -> "this example"
+ 
+-   -> in
+-
+-   <- out
++   <- "has no title"
+ 
+ 
+ "EVT_BOXED" (Event)
+-- 
+2.45.0
 
 
