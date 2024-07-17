@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CF493371E
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B593933720
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTyC2-0007JR-Bv; Wed, 17 Jul 2024 02:31:14 -0400
+	id 1sTyC3-0007Vx-JV; Wed, 17 Jul 2024 02:31:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyC0-000797-BV
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:31:12 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyC1-0007Im-JS
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:31:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyBy-00031G-Hl
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:31:12 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyBz-00031Y-GX
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:31:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721197869;
+ s=mimecast20190719; t=1721197870;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tg878PEggQ9yjP8hwvC2hflD3G9fDs60xIb0uRWaszE=;
- b=SSf3v7rXpQetKATst6ab8ta/JksW6f0b/bexKhimBvWH02yD8YhwUQNw/l+8bwubzmqFzI
- Zd+QFN+pkpWLR8w1X2FiYFRj4ALiOzQNqUO/PurtL782cJHyTooFXIZFt3Q5y2QE034VXQ
- kGRI3Mn4bkx7hZ45s1A3BSJEpdV1m9c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=qOexB7WyGxqggp5qNy9755iGleCM0mUr9kIsaPy50JQ=;
+ b=bcIFeXE2eNPwjaxsyIed+hKStdfkcwhjUbSTQDqcI0T6JwHC0O1aSPAkEvUWTc2Rpwhs8i
+ 1jVXNDTlo55d9+Z+ccW57l2KNKW6kpAPzV565e5u8XjeXoZMcgX+czCVWUvJl2mbOCSahJ
+ +joVY54dMu6slfQJwL3Vh76w0+jqLbo=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-387-mw6U6T1XOF2aY5gZCE7FXA-1; Wed,
- 17 Jul 2024 02:31:02 -0400
-X-MC-Unique: mw6U6T1XOF2aY5gZCE7FXA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-2jPDjp8pPEOkwvNFTvkI3A-1; Wed,
+ 17 Jul 2024 02:31:05 -0400
+X-MC-Unique: 2jPDjp8pPEOkwvNFTvkI3A-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B4DD019560B6; Wed, 17 Jul 2024 06:31:00 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 285471955D45; Wed, 17 Jul 2024 06:31:04 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.88])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0092F19560B2; Wed, 17 Jul 2024 06:30:57 +0000 (UTC)
+ id 1F6141955F65; Wed, 17 Jul 2024 06:31:00 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -51,10 +51,10 @@ Cc: Andrew Jeffery <andrew@codeconstruct.com.au>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 5/8] aspeed: Tune eMMC device properties to reflect HW
- strapping
-Date: Wed, 17 Jul 2024 08:30:19 +0200
-Message-ID: <20240717063022.549849-6-clg@redhat.com>
+Subject: [PATCH v2 6/8] aspeed: Add boot-from-eMMC HW strapping bit to
+ rainier-bmc machine
+Date: Wed, 17 Jul 2024 08:30:20 +0200
+Message-ID: <20240717063022.549849-7-clg@redhat.com>
 In-Reply-To: <20240717063022.549849-1-clg@redhat.com>
 References: <20240717063022.549849-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -88,77 +88,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@kaod.org>
 
-When the boot-from-eMMC HW strapping bit is set, use the 'boot-config'
-property to set the boot config register to boot from the first boot
-area partition of the eMMC device. Also set the boot partition size
-of the device.
+This value is taken from a running Rainier machine.
 
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 ---
- hw/arm/aspeed.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ hw/arm/aspeed.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 756deb91efd1..bc4ca1754213 100644
+index bc4ca1754213..a8f5c14ae535 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -327,7 +327,8 @@ void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
-     }
- }
+@@ -189,7 +189,7 @@ struct AspeedMachineState {
+ #define TACOMA_BMC_HW_STRAP2  0x00000040
  
--static void sdhci_attach_drive(SDHCIState *sdhci, DriveInfo *dinfo, bool emmc)
-+static void sdhci_attach_drive(SDHCIState *sdhci, DriveInfo *dinfo, bool emmc,
-+                               bool boot_emmc)
- {
-         DeviceState *card;
+ /* Rainier hardware value: (QEMU prototype) */
+-#define RAINIER_BMC_HW_STRAP1 0x00422016
++#define RAINIER_BMC_HW_STRAP1 (0x00422016 | SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC)
+ #define RAINIER_BMC_HW_STRAP2 0x80000848
  
-@@ -335,6 +336,11 @@ static void sdhci_attach_drive(SDHCIState *sdhci, DriveInfo *dinfo, bool emmc)
-             return;
-         }
-         card = qdev_new(emmc ? TYPE_EMMC : TYPE_SD_CARD);
-+        if (emmc) {
-+            qdev_prop_set_uint64(card, "boot-partition-size", 1 * MiB);
-+            qdev_prop_set_uint8(card, "boot-config",
-+                                boot_emmc ? 0x1 << 3 : 0x0);
-+        }
-         qdev_prop_set_drive_err(card, "drive", blk_by_legacy_dinfo(dinfo),
-                                 &error_fatal);
-         qdev_realize_and_unref(card,
-@@ -365,6 +371,7 @@ static void aspeed_machine_init(MachineState *machine)
-     AspeedSoCClass *sc;
-     int i;
-     DriveInfo *emmc0 = NULL;
-+    bool boot_emmc;
- 
-     bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
-     object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
-@@ -437,19 +444,21 @@ static void aspeed_machine_init(MachineState *machine)
- 
-     for (i = 0; i < bmc->soc->sdhci.num_slots; i++) {
-         sdhci_attach_drive(&bmc->soc->sdhci.slots[i],
--                           drive_get(IF_SD, 0, i), false);
-+                           drive_get(IF_SD, 0, i), false, false);
-     }
- 
-+    boot_emmc = sc->boot_from_emmc(bmc->soc);
-+
-     if (bmc->soc->emmc.num_slots) {
-         emmc0 = drive_get(IF_SD, 0, bmc->soc->sdhci.num_slots);
--        sdhci_attach_drive(&bmc->soc->emmc.slots[0], emmc0, true);
-+        sdhci_attach_drive(&bmc->soc->emmc.slots[0], emmc0, true, boot_emmc);
-     }
- 
-     if (!bmc->mmio_exec) {
-         DeviceState *dev = ssi_get_cs(bmc->soc->fmc.spi, 0);
-         BlockBackend *fmc0 = dev ? m25p80_get_blk(dev) : NULL;
- 
--        if (fmc0) {
-+        if (fmc0 && !boot_emmc) {
-             uint64_t rom_size = memory_region_size(&bmc->soc->spi_boot);
-             aspeed_install_boot_rom(bmc, fmc0, rom_size);
-         } else if (emmc0) {
+ /* Fuji hardware value */
 -- 
 2.45.2
 
