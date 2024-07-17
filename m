@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFAD93414A
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D517934149
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 19:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU8GA-0001Xq-BP; Wed, 17 Jul 2024 13:16:10 -0400
+	id 1sU8GE-0001ed-QC; Wed, 17 Jul 2024 13:16:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sU8G6-0001W1-1t
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 13:16:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sU8G7-0001XJ-B9
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 13:16:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sU8G4-0003ED-IF
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 13:16:05 -0400
+ id 1sU8G5-0003EO-9k
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 13:16:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721236562;
+ s=mimecast20190719; t=1721236564;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OR+6eFi0pWdTNZfRtWQZxDv6aiaz25syJLz3AozDCiE=;
- b=H4Dc8dyPsc2kd0mekKx9FNHL5BakBYRTJcgSd96nGsuDocqszFu2d6KOkggwNp2Z/LB+iM
- vQFb0GegEyingT0a9yfdvS3b3IrIqZc1Bd0BofJ8j7XgYmJmjTjj9VSGAEFMXgagS8IjHh
- LI6patmRebZID5Sb2JXGLsShwYAo11U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=dkrpErPEsycDE4jj8oa6vQ88btMLDBnOnO5pTIecg7s=;
+ b=ER6G+6uWuM5qqC9/X983/DO1B6Su5R93mjhOi0iTxjnhIjDmOnj9cFUCzHNNeva7M/f4fz
+ X5B+oAns1xuU7k1VK9oPN2yZKTQxqhFNFDeDqSjDLPTdM557jvNHy/eC2Jet/JGl/90RjY
+ nM6ZIp4/N9WcgrCJbJWFbQz1Nyr1jvI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-5nTJUWm7P-qIlbr3T-Wlpw-1; Wed,
- 17 Jul 2024 13:15:58 -0400
-X-MC-Unique: 5nTJUWm7P-qIlbr3T-Wlpw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-OJZI4XVtNc-XuylERvBsnw-1; Wed,
+ 17 Jul 2024 13:16:03 -0400
+X-MC-Unique: OJZI4XVtNc-XuylERvBsnw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 793151955D44; Wed, 17 Jul 2024 17:15:57 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 156AF1955D55; Wed, 17 Jul 2024 17:16:02 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.20])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 311D51955D47; Wed, 17 Jul 2024 17:15:55 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A94C519560AA; Wed, 17 Jul 2024 17:16:00 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -52,16 +52,16 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 2/4] ui/vdagent: improve vdagent_fe_open() trace
-Date: Wed, 17 Jul 2024 21:15:38 +0400
-Message-ID: <20240717171541.201525-3-marcandre.lureau@redhat.com>
+Subject: [PATCH 3/4] ui/vdagent: notify clipboard peers of serial reset
+Date: Wed, 17 Jul 2024 21:15:39 +0400
+Message-ID: <20240717171541.201525-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20240717171541.201525-1-marcandre.lureau@redhat.com>
 References: <20240717171541.201525-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
@@ -69,7 +69,7 @@ X-Spam_score: 1.2
 X-Spam_bar: +
 X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -89,48 +89,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Place the trace when the function enters, with arg value.
+Since we reset the serial counters, peers should also be reset to be sync.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/vdagent.c    | 3 ++-
- ui/trace-events | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ ui/clipboard.c  | 2 ++
+ ui/vdagent.c    | 2 ++
+ ui/trace-events | 1 +
+ 3 files changed, 5 insertions(+)
 
+diff --git a/ui/clipboard.c b/ui/clipboard.c
+index 4264884a6c..132086eb13 100644
+--- a/ui/clipboard.c
++++ b/ui/clipboard.c
+@@ -155,6 +155,8 @@ void qemu_clipboard_reset_serial(void)
+     QemuClipboardNotify notify = { .type = QEMU_CLIPBOARD_RESET_SERIAL };
+     int i;
+ 
++    trace_clipboard_reset_serial();
++
+     for (i = 0; i < QEMU_CLIPBOARD_SELECTION__COUNT; i++) {
+         QemuClipboardInfo *info = qemu_clipboard_info(i);
+         if (info) {
 diff --git a/ui/vdagent.c b/ui/vdagent.c
-index 64d7ab245a..cb74739bc4 100644
+index cb74739bc4..2a4b3574b1 100644
 --- a/ui/vdagent.c
 +++ b/ui/vdagent.c
-@@ -872,6 +872,8 @@ static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
- {
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(chr);
+@@ -720,6 +720,8 @@ static void vdagent_chr_recv_caps(VDAgentChardev *vd, VDAgentMessage *msg)
+     memset(vd->last_serial, 0, sizeof(vd->last_serial));
  
-+    trace_vdagent_fe_open(fe_open);
+     if (have_clipboard(vd) && vd->cbpeer.notifier.notify == NULL) {
++        qemu_clipboard_reset_serial();
 +
-     if (!fe_open) {
-         trace_vdagent_close();
-         vdagent_disconnect(vd);
-@@ -881,7 +883,6 @@ static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
-         return;
-     }
- 
--    trace_vdagent_open();
- }
- 
- static void vdagent_chr_parse(QemuOpts *opts, ChardevBackend *backend,
+         vd->cbpeer.name = "vdagent";
+         vd->cbpeer.notifier.notify = vdagent_clipboard_notify;
+         vd->cbpeer.request = vdagent_clipboard_request;
 diff --git a/ui/trace-events b/ui/trace-events
-index 07eb494246..f5faa149d2 100644
+index f5faa149d2..fb253c1666 100644
 --- a/ui/trace-events
 +++ b/ui/trace-events
-@@ -132,7 +132,7 @@ xkeymap_keymap(const char *name) "keymap '%s'"
+@@ -130,6 +130,7 @@ xkeymap_keymap(const char *name) "keymap '%s'"
+ 
+ # clipboard.c
  clipboard_check_serial(int cur, int recv, bool ok) "cur:%d recv:%d %d"
++clipboard_reset_serial(void) ""
  
  # vdagent.c
--vdagent_open(void) ""
-+vdagent_fe_open(bool fe_open) "fe_open=%d"
- vdagent_close(void) ""
- vdagent_disconnect(void) ""
- vdagent_send(const char *name) "msg %s"
+ vdagent_fe_open(bool fe_open) "fe_open=%d"
 -- 
 2.45.2.827.g557ae147e6
 
