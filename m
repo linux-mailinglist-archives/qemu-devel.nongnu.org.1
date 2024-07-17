@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C607933C11
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71313933C15
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:16:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2au-0003cj-IX; Wed, 17 Jul 2024 07:13:12 -0400
+	id 1sU2eO-00077r-Lr; Wed, 17 Jul 2024 07:16:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sU2aZ-0002sq-IO
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:12:51 -0400
-Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
+ id 1sU2e9-00063z-I4
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:16:36 -0400
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sU2aJ-00035w-TB
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:12:51 -0400
-Received: by mail-vk1-xa33.google.com with SMTP id
- 71dfb90a1353d-4f2c8e99c0fso519754e0c.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 04:12:34 -0700 (PDT)
+ id 1sU2e6-0004RJ-PR
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 07:16:33 -0400
+Received: by mail-ua1-x932.google.com with SMTP id
+ a1e0cc1a2514c-810177d1760so410339241.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 04:16:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1721214753; x=1721819553;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1721214989; x=1721819789;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eUiCpw6FOC3LTxm8Tr0fPAgbCAVN5AsSVaku3idwslA=;
- b=UHWTvj3vO4+LCZIM7cjk+YsEr8QDGc4yor1I9TGsFkOJFle4+7preDt7TWSJndXftW
- FOs7hsSr4CD9L+7Sk2leBNKZ5rlTvYasBxFI7wkP2KptrD7DX/4u9c6Wb3NA7lxPvfV+
- oeCeUCdJpcHFBsflFmWhVCARYoutvpq7PjBm39xdpCEyKMfYr1z3WfJg23I84zA/uLOD
- M+PIWUFmoZXkbF/WvjFVJ8HsaA1/5typEPxreB8eN638IcUOHp9FVDNp5JPf1O5F/PSW
- NdEdx+MsGPMKKrRAFymHPbSlQNfsHnGwhcgFdzEAc9RuoB2UGXn9a7Xlf77/Bp+zq/3H
- rvdQ==
+ bh=FfUWHKWL6TaVEhUts6Kr5b/CvgFJnQYLsQV/A+VemvU=;
+ b=F+cR9VjjIbM+pO5McmL+b/paWrLmVc223y5hrcvDY2WjjXAMC5Gp1/Fq/PTpGJIqSj
+ xE5KxyEkZ+LqbxkPifcoUSOUluOta03v+uP6w9TOV6Dy8BGU+IDgphb7s3qAiglEqPTI
+ ESojFgFZYKg1BKNQzxDKjg+AK3C9LGXPjGxSNieAENR+ppGacCz+wve7C3PvSP1WVMaz
+ prRQ05ETmUdnd1VnKYVeegp4Dn+DmgUJ1UlHjRAOxSIfMBhM0UPWyNoV1VQVNvyxKbl4
+ VBp1b77krQbzkL9lDtABgys3e0JWPgWzno0sLHhm4/h0JrO0WfHisbENjvGcN0AmYycN
+ jKQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721214753; x=1721819553;
+ d=1e100.net; s=20230601; t=1721214989; x=1721819789;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=eUiCpw6FOC3LTxm8Tr0fPAgbCAVN5AsSVaku3idwslA=;
- b=HGn+h2A6aorNEP4EVsr8FG8tbqrALRra9WlcS/rIewctxrv6oAlJ11/+znHatXFSsr
- hWUmcqIzpZuOnxMfTHWQtXPCEQKg2YPzfpjVy76xdMVpUNrrZDwmDBu6yksTE04GOrbh
- IO+9JUZiTrYuTTzEv7JpVGPNX1IiLILgCwOEMN6JUnOZNdcK0srA9SEUEBMqq6tVbv1W
- lV4YdCdZuP88q1CBey6XB17TLdoW96y5Im2cCYVXo9dXBcvcL4bksoIQd9HeYxqEbKm5
- D63DTcta56bQ48YmiPsGCGgpCxraQ+nATf5jJ4GMH0xsuIwVLn3uKEeB2hwCwls+KII3
- aLgQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVXuakm6652YtZqK4ivhbJXfhujHtIeB6UWhlpsKHRuoFtM1HeGeJpQEME70YRfHodK8yog5O27Yxl7+2BfdUOSiKTPCks=
-X-Gm-Message-State: AOJu0Yxkm9Ma/PlSeEyheTfFg+aRMUTgVoTaYflKdDzgVZSykcnkcPp0
- Zv6c1EXW1+F2ZogkJjcVlpemK0wQzGWMIKd0sgtvmBh19NL5DswEMUjbGOXMiaofLoSNbtCIUMe
- JBIsuGeEMFt8OFZv1y9TVDMz1ZTlhaVrNMogn
-X-Google-Smtp-Source: AGHT+IHX7gOBsZW72JWEVYUQpSouB2UXmlgjyiu4UTm0wPc9KFKkmdJ9FM1OPEbcZMLkmUkpXk26J49XMMzY7TUuSU0=
-X-Received: by 2002:a05:6122:912:b0:4ef:5e6b:6ccc with SMTP id
- 71dfb90a1353d-4f4df6da32dmr1809663e0c.7.1721214752597; Wed, 17 Jul 2024
- 04:12:32 -0700 (PDT)
+ bh=FfUWHKWL6TaVEhUts6Kr5b/CvgFJnQYLsQV/A+VemvU=;
+ b=cr2NvSztPg03BybmXLjUP4OdLmgwoKdhlWvzjD4FrtHHG+YiKPsxjUEzRJ1CWXVLiA
+ pjqUc569EoSRP1M6R03LJ4xFgdlPEz7F8ggjWo4xkk1j2ov2q0ZvLe8G9EWkz6daN+dg
+ qgX0J4lh2cs+jTqupSGW/CiIFsXaRdnV1Cqvht9/cYbQWp5/gPEy1/dPukSf5EMG/piS
+ GtGBASzIp3xyDD/Zam1L4wkrPoBavXQVEoA5I0IboneDZVouAVNvUe53GM8IaGijcfib
+ e3li4mxP0EX2oEIVghych6R+rAyi+7YD5/O2XZX6s6kXexiFi5aZXGqSyluWbWm3T881
+ prmQ==
+X-Gm-Message-State: AOJu0Yyg4QiQw/0bwvAdaN+g+L/zG0m3ABdiF45QS627scE6ze2INlV2
+ XHuDrZKL+p8CekaPgIsB9O9kQP0JXi5ivFs0RR3ABf4UlxZG2JOvJrdyGtq8RZAlLI0ZmI2Mk6q
+ JxbPD95cRY2XvS22cxM/+xamFQ3CqG4fvYtD6
+X-Google-Smtp-Source: AGHT+IFPvZWG7t+3hi9b5Gr8n6zMJbXbQNQoQdDGWH6nnjd3b0WhmyEE5BiJ9Z+07SJNe2EbGhxD0FAsbMLOoJfuX3Q=
+X-Received: by 2002:a05:6102:2c8b:b0:48f:3e7d:7f74 with SMTP id
+ ada2fe7eead31-4915990e50bmr1813118137.20.1721214989546; Wed, 17 Jul 2024
+ 04:16:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240715210705.32365-1-phil@philjordan.eu>
  <eca02ec3-e2f2-4994-baf5-b86908fa0418@daynix.com>
- <a7087230-9fc6-4ab4-b35c-d3df032d16df@linaro.org>
- <6c65537d-ee67-4e0f-9f76-3da2b2ef8c71@daynix.com>
-In-Reply-To: <6c65537d-ee67-4e0f-9f76-3da2b2ef8c71@daynix.com>
+In-Reply-To: <eca02ec3-e2f2-4994-baf5-b86908fa0418@daynix.com>
 From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Wed, 17 Jul 2024 13:12:22 +0200
-Message-ID: <CAAibmn2kPFxXH8sdTW8_-Z4_ZDQ6FvJ_An=J=mLXFnP2HZW2iQ@mail.gmail.com>
-Subject: Re: hw/display/apple-gfx
+Date: Wed, 17 Jul 2024 13:16:18 +0200
+Message-ID: <CAAibmn2h_L=i5GetsEr0jRQXs3ifY5DGwZf7vs1JDwQMkK1TSg@mail.gmail.com>
+Subject: Re:
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de, graf@amazon.com, 
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com, 
- peter.maydell@linaro.org, lists@philjordan.eu
-Content-Type: multipart/alternative; boundary="000000000000e94c9a061d6f898f"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::a33;
- envelope-from=phil@philjordan.eu; helo=mail-vk1-xa33.google.com
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, agraf@csgraf.de, 
+ graf@amazon.com, marcandre.lureau@redhat.com, berrange@redhat.com, 
+ thuth@redhat.com, philmd@linaro.org, peter.maydell@linaro.org, 
+ lists@philjordan.eu
+Content-Type: multipart/alternative; boundary="00000000000008d16d061d6f98fc"
+Received-SPF: neutral client-ip=2607:f8b0:4864:20::932;
+ envelope-from=phil@philjordan.eu; helo=mail-ua1-x932.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -93,57 +89,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e94c9a061d6f898f
+--00000000000008d16d061d6f98fc
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 16 Jul 2024 at 08:48, Akihiko Odaki <akihiko.odaki@daynix.com>
+On Tue, 16 Jul 2024 at 08:07, Akihiko Odaki <akihiko.odaki@daynix.com>
 wrote:
 
-> The cover letter says:
+> Hi,
 >
->  > 04-13: These patches address issues identified during code review in
->  > the original e-mail threads as well as my own review.
+> Thanks for continuing his effort.
 >
-> So these patches are certainly to be squashed. There are other patches
-> titled "fixes" or "refactoring", which should also be squashed. I expect
-> squashing them will reduce the number of patches (and code to review)
-> drastically.
+> Please submit a patch series that includes his patches. Please also
+> merge fixes for his patches into them. This saves the effort to review
+> the obsolete code and keeps git bisect working.
 >
+>
+Sorry about that - it looks like (a) my edits to the cover letter messed
+something up and (b) patch 1 got email-filtered somewhere along the way for
+having the "wrong" From: address. I've submitted v2 with most patches
+squashed into patch 1, whose authorship I've also changed to myself (with
+Co-authored-by tag for the original code) so hopefully this time around it
+shows up OK.
 
-I've just resubmitted the patch set after squashing most of the commits
-into the original one. (and rebasing on latest upstream) Squashing is easy,
-pulling the individual changes back out is hard, so I figured I'd rather
-send it as too many patches first time around in case anyone wanted to see
-the individual changes I made.
+Thanks,
+Phil
 
-Thanks for taking a look!
-
---000000000000e94c9a061d6f898f
+--00000000000008d16d061d6f98fc
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
-mail_attr">On Tue, 16 Jul 2024 at 08:48, Akihiko Odaki &lt;<a href=3D"mailt=
+mail_attr">On Tue, 16 Jul 2024 at 08:07, Akihiko Odaki &lt;<a href=3D"mailt=
 o:akihiko.odaki@daynix.com">akihiko.odaki@daynix.com</a>&gt; wrote:<br></di=
 v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
 r-left:1px solid rgb(204,204,204);padding-left:1ex">
-The cover letter says:<br>
+Hi,<br>
 <br>
-=C2=A0&gt; 04-13: These patches address issues identified during code revie=
-w in<br>
-=C2=A0&gt; the original e-mail threads as well as my own review.<br>
+Thanks for continuing his effort.<br>
 <br>
-So these patches are certainly to be squashed. There are other patches <br>
-titled &quot;fixes&quot; or &quot;refactoring&quot;, which should also be s=
-quashed. I expect <br>
-squashing them will reduce the number of patches (and code to review) <br>
-drastically.<br></blockquote><div><br></div><div>I&#39;ve just resubmitted =
-the patch set after squashing most of the commits into the original one. (a=
-nd rebasing on latest upstream) Squashing is easy, pulling the individual c=
-hanges back out is hard, so I figured I&#39;d rather send it as too many pa=
-tches first time around in case anyone wanted to see the individual changes=
- I made.</div><div><br></div><div>Thanks for taking a look!<br></div></div>=
-</div>
+Please submit a patch series that includes his patches. Please also <br>
+merge fixes for his patches into them. This saves the effort to review <br>
+the obsolete code and keeps git bisect working.<br>
+<br></blockquote><div><br></div><div>Sorry about that - it looks like (a) m=
+y edits to the cover letter messed something up and (b) patch 1 got email-f=
+iltered somewhere along the way for having the &quot;wrong&quot; From: addr=
+ess. I&#39;ve submitted v2 with most patches squashed into patch 1, whose a=
+uthorship I&#39;ve also changed to myself (with Co-authored-by tag for the =
+original code) so hopefully this time around it shows up OK.</div><div><br>=
+</div><div>Thanks,</div><div>Phil</div><div><br></div></div></div>
 
---000000000000e94c9a061d6f898f--
+--00000000000008d16d061d6f98fc--
 
