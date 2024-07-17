@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3AA9336B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDEF9336A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:10:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTxr5-0003xQ-Fh; Wed, 17 Jul 2024 02:09:35 -0400
+	id 1sTxrC-0004XG-ES; Wed, 17 Jul 2024 02:09:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxqs-0003gb-1I
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:22 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ id 1sTxqu-0003nh-Hw
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:25 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxqq-00030z-B5
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:21 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-7039e4a4a03so3787649a34.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:09:19 -0700 (PDT)
+ id 1sTxqs-00031V-It
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:09:24 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-70b0d0a7a56so4836768b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:09:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721196559; x=1721801359; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721196561; x=1721801361; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L50cMFgY8xp9UNkN7NVIRy+rY10HarTYUNyP2m/NWeU=;
- b=IsQp/wZDpu8zLgwZAb0SbFhmaMOsmMnQ4UKFX3/VppMXOjkux3SW+KDFI2N/Bp6+8F
- ASz2BDceSrwj4mD3ucP4rL9+nLKJTkVDj8Q9zRFwMI+EJ8/CbzG6FD+kXjggrbZVabzo
- fo322R/pORCFszttDv/1jBG8CO7ckXGFJKxOFdPTEy7rd4siYhCrm7kvnVUqvbC277PI
- N4sB5dJRhAMfP9/QkAaflm3J8pketNVs7IIPQIG7Q3G9WAknPlSKpf+49sqjvcQaY2bj
- DTmm3UYmjvDWlADzKiNNtBYuLHGoCDwkKf6MbHlQzEhf1TnPvc5DQuOBXQtKG3QdFxgn
- 0nXQ==
+ bh=x2uOrGaVn9GiD8dOMFplEIoJVLJP1krEvohvtVj4ays=;
+ b=ll3pN3EAcUZVZhm3XlvWQo7o6RCT/WOoEbNmdkIOfsVkhd+R8stQXjoZ85QnYs8uj/
+ CGe2m15VmdRCfr01c59hZX68+5cMo+9xcmzwJGjUs3JkCbXIylxf9zNV0fY/1O7LXmxS
+ cWRBPUxw9GwOCvMkz7LNZyLubH1izZ6tSdTqFMptDPGPBmKCgz/Ou2ABxphbOFARgR72
+ YL1WAB1BeDqFqN5ce7PFiwoplGMT5DkYxkMjB9zugNACB32Z23aWKFihvu0dyNk8/Cd1
+ OnFzJJuL3C/NSvEyK12ldaDz6mHf4Hvg/nHxmiEzqWeNTeLEvOABeW0W6c5GcufJjRgz
+ 0evg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721196559; x=1721801359;
+ d=1e100.net; s=20230601; t=1721196561; x=1721801361;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L50cMFgY8xp9UNkN7NVIRy+rY10HarTYUNyP2m/NWeU=;
- b=Y0IUojmIO8tPJpKgTtSWCnQdv7PaoXVL0YfdjmdxBCkLUYlbrAMOWrPPYfHt8LSwuR
- EfCbUqc/qSiLnpSR18aSSFJxljV6QMjBaIgvRKRx0IInKPiyPPScNceviqacAikrx4Ii
- JxcZ4Z1H+XmPCXLkunPgMFU812a2YW23OEj2+Ez/L3uASteh06Nq7NBK9F5WCcuCk/fI
- oJsI2u8Tw74gFuBnNPqkwVV8cQtyjWSX71z2GT3yF0SaWT+A3Y4RHW+pRfy7o8f8Yqtc
- K/XU6DfqQ9DOD/y6PXtN/IWGnm0FuMfG1aOAoFHVymJylOw0GR9chM3Gf4KFTPlUMqwF
- clMQ==
-X-Gm-Message-State: AOJu0Yz3b98uWiL6MpOHBQAZTT93qF4F5mleAalCBdycihH7DmGUphTf
- ux0NI6Rg0q6e3uuhvuUjkuTpusK5R2ab9ULJyidVK8RVWHSSFScgjUiQ3Q2THvulKBvc6Um7vj4
- CzDQ=
-X-Google-Smtp-Source: AGHT+IG7+VplK6yo0DmCdIg8IbahZjpS0D/QCL0K1cA3rpOPTn8ABDO8yWL2iFwj4GkDkpiXKru5aQ==
-X-Received: by 2002:a05:6830:4181:b0:703:ba24:7320 with SMTP id
- 46e09a7af769-708e378942fmr913594a34.10.1721196558470; 
- Tue, 16 Jul 2024 23:09:18 -0700 (PDT)
+ bh=x2uOrGaVn9GiD8dOMFplEIoJVLJP1krEvohvtVj4ays=;
+ b=KNLYbaAWLI1/0vRre3q6HOE7BI2C1nq6ae2dskhJFJRxVUl2AFh9oHD4+aIWOdAKgX
+ ZikAkeAvldceeG7OxKYO6Synj4kBsfaUN5ToKqnRArQkOCI//lDWbKTv7EQoAsJW+umD
+ CZWAzqeMwh6DZCQDr7nbBekcnLtmqjeNsv8JgiU29txPb/wxsCoLLwFXGWG4aDKYyV3+
+ Bglr3K3kTIf/RpAzus7ekt+9IwS6cjdJCawOsAnQ90hXwmo4RRXUXy06rbdGuSa4/Gne
+ aq2HQV8GVGeMirmoQvjZUXIWIpD8rReymHSfmi9qQkkjKPeRrMO+Ey/3bIqlOEjHDLcJ
+ 43pw==
+X-Gm-Message-State: AOJu0YxbCNFvNrzJ+OcJ5rfk1dc5ElGzSHx2OdYIGbqPW9uVaBLJz8N3
+ Nj1TfLP4ZPR3VEmlWTu7iwZ3iqlyiMx+Tssr9FxTrxPW7hkHGZgWN2IonAF07L7v92P6WN6+/h5
+ rCCo=
+X-Google-Smtp-Source: AGHT+IE+4Ne+0TGibxZXpuEd8tSrbloHlOSBZ0bv+QYXG11LxF20foz2V+NGh4L5c6VlhFYnGKT5WA==
+X-Received: by 2002:a05:6a00:3d0a:b0:706:6bdc:4de5 with SMTP id
+ d2e1a72fcca58-70ce4f74756mr748481b3a.7.1721196561051; 
+ Tue, 16 Jul 2024 23:09:21 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70b7ecd603bsm7330404b3a.219.2024.07.16.23.09.16
+ d2e1a72fcca58-70b7ecd603bsm7330404b3a.219.2024.07.16.23.09.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 23:09:18 -0700 (PDT)
+ Tue, 16 Jul 2024 23:09:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 03/17] target/arm: Convert TBL, TBX to decodetree
-Date: Wed, 17 Jul 2024 16:08:49 +1000
-Message-ID: <20240717060903.205098-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/17] target/arm: Convert UZP, TRN, ZIP to decodetree
+Date: Wed, 17 Jul 2024 16:08:50 +1000
+Message-ID: <20240717060903.205098-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240717060903.205098-1-richard.henderson@linaro.org>
 References: <20240717060903.205098-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -93,56 +93,118 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 47 ++++++++++------------------------
- target/arm/tcg/a64.decode      |  4 +++
- 2 files changed, 18 insertions(+), 33 deletions(-)
+ target/arm/tcg/translate-a64.c | 158 ++++++++++++++-------------------
+ target/arm/tcg/a64.decode      |   9 ++
+ 2 files changed, 77 insertions(+), 90 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 6ca24d9842..7e3bde93fe 100644
+index 7e3bde93fe..e0314a1253 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -4657,6 +4657,20 @@ static bool trans_EXTR(DisasContext *s, arg_extract *a)
+@@ -4671,6 +4671,74 @@ static bool trans_TBL_TBX(DisasContext *s, arg_TBL_TBX *a)
      return true;
  }
  
-+static bool trans_TBL_TBX(DisasContext *s, arg_TBL_TBX *a)
-+{
-+    if (fp_access_check(s)) {
-+        int len = (a->len + 1) * 16;
++typedef int simd_permute_idx_fn(int i, int part, int elements);
 +
-+        tcg_gen_gvec_2_ptr(vec_full_reg_offset(s, a->rd),
-+                           vec_full_reg_offset(s, a->rm), tcg_env,
-+                           a->q ? 16 : 8, vec_full_reg_size(s),
-+                           (len << 6) | (a->tbx << 5) | a->rn,
-+                           gen_helper_simd_tblx);
++static bool do_simd_permute(DisasContext *s, arg_qrrr_e *a,
++                            simd_permute_idx_fn *fn, int part)
++{
++    MemOp esz = a->esz;
++    int datasize = a->q ? 16 : 8;
++    int elements = datasize >> esz;
++    TCGv_i64 tcg_res[2], tcg_ele;
++
++    if (esz == MO_64 && !a->q) {
++        return false;
 +    }
++    if (!fp_access_check(s)) {
++        return true;
++    }
++
++    tcg_res[0] = tcg_temp_new_i64();
++    tcg_res[1] = a->q ? tcg_temp_new_i64() : NULL;
++    tcg_ele = tcg_temp_new_i64();
++
++    for (int i = 0; i < elements; i++) {
++        int o, w, idx;
++
++        idx = fn(i, part, elements);
++        read_vec_element(s, tcg_ele, (idx & elements ? a->rm : a->rn),
++                         idx & (elements - 1), esz);
++
++        w = (i << (esz + 3)) / 64;
++        o = (i << (esz + 3)) % 64;
++        if (o == 0) {
++            tcg_gen_mov_i64(tcg_res[w], tcg_ele);
++        } else {
++            tcg_gen_deposit_i64(tcg_res[w], tcg_res[w], tcg_ele, o, 8 << esz);
++        }
++    }
++
++    for (int i = a->q; i >= 0; --i) {
++        write_vec_element(s, tcg_res[i], a->rd, i, MO_64);
++    }
++    clear_vec_high(s, a->q, a->rd);
 +    return true;
 +}
++
++static int permute_load_uzp(int i, int part, int elements)
++{
++    return 2 * i + part;
++}
++
++TRANS(UZP1, do_simd_permute, a, permute_load_uzp, 0)
++TRANS(UZP2, do_simd_permute, a, permute_load_uzp, 1)
++
++static int permute_load_trn(int i, int part, int elements)
++{
++    return (i & 1) * elements + (i & ~1) + part;
++}
++
++TRANS(TRN1, do_simd_permute, a, permute_load_trn, 0)
++TRANS(TRN2, do_simd_permute, a, permute_load_trn, 1)
++
++static int permute_load_zip(int i, int part, int elements)
++{
++    return (i & 1) * elements + ((part * elements + i) >> 1);
++}
++
++TRANS(ZIP1, do_simd_permute, a, permute_load_zip, 0)
++TRANS(ZIP2, do_simd_permute, a, permute_load_zip, 1)
 +
  /*
   * Cryptographic AES, SHA, SHA512
   */
-@@ -8897,38 +8911,6 @@ static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
+@@ -8911,95 +8979,6 @@ static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
      }
  }
  
--/* TBL/TBX
-- *   31  30 29         24 23 22  21 20  16 15  14 13  12  11 10 9    5 4    0
-- * +---+---+-------------+-----+---+------+---+-----+----+-----+------+------+
-- * | 0 | Q | 0 0 1 1 1 0 | op2 | 0 |  Rm  | 0 | len | op | 0 0 |  Rn  |  Rd  |
-- * +---+---+-------------+-----+---+------+---+-----+----+-----+------+------+
+-/* ZIP/UZP/TRN
+- *   31  30 29         24 23  22  21 20   16 15 14 12 11 10 9    5 4    0
+- * +---+---+-------------+------+---+------+---+------------------+------+
+- * | 0 | Q | 0 0 1 1 1 0 | size | 0 |  Rm  | 0 | opc | 1 0 |  Rn  |  Rd  |
+- * +---+---+-------------+------+---+------+---+------------------+------+
 - */
--static void disas_simd_tb(DisasContext *s, uint32_t insn)
+-static void disas_simd_zip_trn(DisasContext *s, uint32_t insn)
 -{
--    int op2 = extract32(insn, 22, 2);
--    int is_q = extract32(insn, 30, 1);
--    int rm = extract32(insn, 16, 5);
--    int rn = extract32(insn, 5, 5);
 -    int rd = extract32(insn, 0, 5);
--    int is_tbx = extract32(insn, 12, 1);
--    int len = (extract32(insn, 13, 2) + 1) * 16;
+-    int rn = extract32(insn, 5, 5);
+-    int rm = extract32(insn, 16, 5);
+-    int size = extract32(insn, 22, 2);
+-    /* opc field bits [1:0] indicate ZIP/UZP/TRN;
+-     * bit 2 indicates 1 vs 2 variant of the insn.
+-     */
+-    int opcode = extract32(insn, 12, 2);
+-    bool part = extract32(insn, 14, 1);
+-    bool is_q = extract32(insn, 30, 1);
+-    int esize = 8 << size;
+-    int i;
+-    int datasize = is_q ? 128 : 64;
+-    int elements = datasize / esize;
+-    TCGv_i64 tcg_res[2], tcg_ele;
 -
--    if (op2 != 0) {
+-    if (opcode == 0 || (size == 3 && !is_q)) {
 -        unallocated_encoding(s);
 -        return;
 -    }
@@ -151,36 +213,90 @@ index 6ca24d9842..7e3bde93fe 100644
 -        return;
 -    }
 -
--    tcg_gen_gvec_2_ptr(vec_full_reg_offset(s, rd),
--                       vec_full_reg_offset(s, rm), tcg_env,
--                       is_q ? 16 : 8, vec_full_reg_size(s),
--                       (len << 6) | (is_tbx << 5) | rn,
--                       gen_helper_simd_tblx);
+-    tcg_res[0] = tcg_temp_new_i64();
+-    tcg_res[1] = is_q ? tcg_temp_new_i64() : NULL;
+-    tcg_ele = tcg_temp_new_i64();
+-
+-    for (i = 0; i < elements; i++) {
+-        int o, w;
+-
+-        switch (opcode) {
+-        case 1: /* UZP1/2 */
+-        {
+-            int midpoint = elements / 2;
+-            if (i < midpoint) {
+-                read_vec_element(s, tcg_ele, rn, 2 * i + part, size);
+-            } else {
+-                read_vec_element(s, tcg_ele, rm,
+-                                 2 * (i - midpoint) + part, size);
+-            }
+-            break;
+-        }
+-        case 2: /* TRN1/2 */
+-            if (i & 1) {
+-                read_vec_element(s, tcg_ele, rm, (i & ~1) + part, size);
+-            } else {
+-                read_vec_element(s, tcg_ele, rn, (i & ~1) + part, size);
+-            }
+-            break;
+-        case 3: /* ZIP1/2 */
+-        {
+-            int base = part * elements / 2;
+-            if (i & 1) {
+-                read_vec_element(s, tcg_ele, rm, base + (i >> 1), size);
+-            } else {
+-                read_vec_element(s, tcg_ele, rn, base + (i >> 1), size);
+-            }
+-            break;
+-        }
+-        default:
+-            g_assert_not_reached();
+-        }
+-
+-        w = (i * esize) / 64;
+-        o = (i * esize) % 64;
+-        if (o == 0) {
+-            tcg_gen_mov_i64(tcg_res[w], tcg_ele);
+-        } else {
+-            tcg_gen_shli_i64(tcg_ele, tcg_ele, o);
+-            tcg_gen_or_i64(tcg_res[w], tcg_res[w], tcg_ele);
+-        }
+-    }
+-
+-    for (i = 0; i <= is_q; ++i) {
+-        write_vec_element(s, tcg_res[i], rd, i, MO_64);
+-    }
+-    clear_vec_high(s, is_q, rd);
 -}
 -
- /* ZIP/UZP/TRN
-  *   31  30 29         24 23  22  21 20   16 15 14 12 11 10 9    5 4    0
-  * +---+---+-------------+------+---+------+---+------------------+------+
-@@ -11792,7 +11774,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
+ /*
+  * do_reduction_op helper
+  *
+@@ -11774,7 +11753,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
      /* simd_mod_imm decode is a subset of simd_shift_imm, so must precede it */
      { 0x0f000400, 0x9ff80400, disas_simd_mod_imm },
      { 0x0f000400, 0x9f800400, disas_simd_shift_imm },
--    { 0x0e000000, 0xbf208c00, disas_simd_tb },
-     { 0x0e000800, 0xbf208c00, disas_simd_zip_trn },
+-    { 0x0e000800, 0xbf208c00, disas_simd_zip_trn },
      { 0x5e200800, 0xdf3e0c00, disas_simd_scalar_two_reg_misc },
      { 0x5f000400, 0xdf800400, disas_simd_scalar_shift_imm },
+     { 0x0e780800, 0x8f7e0c00, disas_simd_two_reg_misc_fp16 },
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 05927fade6..45896902d5 100644
+index 45896902d5..5bd5603cd0 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -1141,3 +1141,7 @@ FNMSUB          0001 1111 .. 1 ..... 1 ..... ..... .....    @rrrr_hsd
+@@ -1145,3 +1145,12 @@ EXT_q           0110 1110 00 0 rm:5 0  imm:4 0 rn:5 rd:5
+ # Advanced SIMD Table Lookup
  
- EXT_d           0010 1110 00 0 rm:5 00 imm:3 0 rn:5 rd:5
- EXT_q           0110 1110 00 0 rm:5 0  imm:4 0 rn:5 rd:5
+ TBL_TBX         0 q:1 00 1110 000 rm:5 0 len:2 tbx:1 00 rn:5 rd:5
 +
-+# Advanced SIMD Table Lookup
++# Advanced SIMD Permute
 +
-+TBL_TBX         0 q:1 00 1110 000 rm:5 0 len:2 tbx:1 00 rn:5 rd:5
++UZP1            0.00 1110 .. 0 ..... 0 001 10 ..... .....   @qrrr_e
++UZP2            0.00 1110 .. 0 ..... 0 101 10 ..... .....   @qrrr_e
++TRN1            0.00 1110 .. 0 ..... 0 010 10 ..... .....   @qrrr_e
++TRN2            0.00 1110 .. 0 ..... 0 110 10 ..... .....   @qrrr_e
++ZIP1            0.00 1110 .. 0 ..... 0 011 10 ..... .....   @qrrr_e
++ZIP2            0.00 1110 .. 0 ..... 0 111 10 ..... .....   @qrrr_e
 -- 
 2.43.0
 
