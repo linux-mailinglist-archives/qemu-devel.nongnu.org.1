@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A683D93362F
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA149933638
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTwqE-00030J-LD; Wed, 17 Jul 2024 01:04:38 -0400
+	id 1sTwq1-00027Y-Lv; Wed, 17 Jul 2024 01:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpm-0001ha-UO
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:13 -0400
+ id 1sTwpm-0001e6-35
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwpj-00020b-8A
+ id 1sTwpj-00021f-Vi
  for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721192645;
+ s=mimecast20190719; t=1721192647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zysmERLOD7LqFn2JG/XTo8hRSGrS1y0PB/cgSbGIed8=;
- b=FxTUQAjZNwVigzM7Vxu6NRxzxhHbwtl3CpiZJVrLg4xMUD84hGEoLClvHLd6CXJjauYezr
- Y6QdVD1dfmrdXrNuWy3TmZSoWvlF01KTSMMStWnr2pZG5ZGi63jAGWEroqBlZhiiyobiIj
- 6pTldE5BEZ7IG/Vem9HaZH+heSAeQQg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GX5s7D3GnRktYpy0eRl8MIaqx1kf57JyUnrHen/Omzg=;
+ b=CIx52k2oCrS3r52uudJ+aaFP+TpyDZPz70TvEyFlYK16jfqPnX+l78YPk1lN04eYhWsLYk
+ Mq+2jBo9YSLn5+x6E/GhyAj04nhhh3JGKJs/x3pn5DgfAwDglafo3SGMYJfE8ADT7KomjQ
+ QaR9kOyr7VH2dnw5amhQg+fi4Y0D3lo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-197-sZJdK71PNhGR5_K67R6Pbw-1; Wed, 17 Jul 2024 01:04:03 -0400
-X-MC-Unique: sZJdK71PNhGR5_K67R6Pbw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-426d0bead0aso46484945e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
+ us-mta-427-5wznoTtOOySEvflGssw6Wg-1; Wed, 17 Jul 2024 01:04:05 -0400
+X-MC-Unique: 5wznoTtOOySEvflGssw6Wg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42490ae735dso59278175e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:04:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721192642; x=1721797442;
+ d=1e100.net; s=20230601; t=1721192644; x=1721797444;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zysmERLOD7LqFn2JG/XTo8hRSGrS1y0PB/cgSbGIed8=;
- b=ghUCFQNlZUqxFbi7YQw1pEYT8KE0Kk7b5F1l6WepDjS4VGPSUMkRmu/pg9g74UzwVu
- GhQZNWe5ItV3B3YuIt58vv1xkt77oaTmq/U2v7JNftvkjFva2vQxDf5Fqmd8Lg5YhJJp
- gxcVJdwxQUBHZX370zaXHYjnnNBCXzC/oCEz5Foq99JrytvOcCaG1xFAjVDK+nRoRt1F
- E/0piJ/darAAKsgf8BqW1sBvPOtNoQ0Xy4NY/xLF1GRbwWajlUC7EVdJmrFNrq5WNSTg
- dSjCYMoXV0TAp22ZLtMH/QO9KtRvQsa+aOpXAcliZIXV2BkEHkOV0nQu2WPYqbjdcFm3
- Ko+A==
-X-Gm-Message-State: AOJu0YzeBgCTKYqX5PSSgOWgrmTrpZfLp32NJfJ7nlCbkKW6+Rc8MWKk
- EHgmFuRYslJ/5+CphwS4NzfhCom+wVzdU7ouNYoorgDQFFD2urIFqaRPT5akbTmFsyMOrm8R0WW
- mNZhSbgjGJ6IorcAkQedpSnJQgPpmjyzzXA2AIpXoqzRPt8tXQRMBgSDrn5xHiVK2Q6YFtUSWKg
- Z4tHT88EW7Dabrkdys6rVArdF4++LkrK74onpC
-X-Received: by 2002:a05:600c:b8e:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-427c2cb563bmr2989595e9.19.1721192642354; 
- Tue, 16 Jul 2024 22:04:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG8M2wlTqxVCxVolKnlhAe9gOdS0ZCl7n9PZPaMlm8ykk7/w7WhcFj4y4iCaR4irQpTJHZRgA==
-X-Received: by 2002:a05:600c:b8e:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-427c2cb563bmr2989395e9.19.1721192641979; 
- Tue, 16 Jul 2024 22:04:01 -0700 (PDT)
+ bh=GX5s7D3GnRktYpy0eRl8MIaqx1kf57JyUnrHen/Omzg=;
+ b=DgAkjMeV4qeNJesCgzMbStULMcZCIXn9UC3UlKoADCmOiZjV2gdRg4diy18fRdx2Il
+ nbUxGWiLjwoCNO48Tz0PwotLgZa00tzQtqXrNfy/l1ZOWmaV+e3VAUZWBs7pIjOVVg9Z
+ vN16LyM3fnoujL0M0rDXLygVdJSdfDk4tWU/QJCdyvgBvPnS6Fj4EioFf7Jky3Hg6zkx
+ 8Pjpagq6MULdgpPwpEjK/CVuiZS1w+X6Oj4DP9zC9j/quMc6rFoujTV9AUn3/Rd+C8FR
+ FnvbomPU3DxENdzaAzpTzViuiE+6Wrmow6bjr/HA26RiCcSF75cjMsgDsAkgSBWrFBbx
+ BbAg==
+X-Gm-Message-State: AOJu0YzRe2Vp+sF2pSmLheIR5ZlpOTBbTUuaQoACVcYecH1reFwhoceQ
+ KTO8uQyiZNrFyNie7JNorXmBAA68Shz76GeZTpWGAg+7edtGcp4W3EKzFKCLJIQKElLfp4di+4S
+ TCCjvMK7T89PL7cEGQ9xi/t5FffOIPAo+d91uhY6MrcqKUHqJDC5TbwnK1WUW77BC2u+vaCMSfT
+ oZaNFBitWQFpGBzTtczRCUKSzrQlXFj65ob7KY
+X-Received: by 2002:a05:600c:1d20:b0:426:6ed5:fcb with SMTP id
+ 5b1f17b1804b1-427c2cad3c2mr4127345e9.4.1721192643737; 
+ Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBneeN4Xl3hCfzOthJMiVTLnL0lOX5y+PHTBpnSrSZd0JkW0Nlg+W5wuB3v758h+2MSjUQZQ==
+X-Received: by 2002:a05:600c:1d20:b0:426:6ed5:fcb with SMTP id
+ 5b1f17b1804b1-427c2cad3c2mr4127225e9.4.1721192643400; 
+ Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427bb99a23dsm37140505e9.1.2024.07.16.22.04.00
+ 5b1f17b1804b1-4279f239883sm191011495e9.10.2024.07.16.22.04.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 22:04:00 -0700 (PDT)
+ Tue, 16 Jul 2024 22:04:03 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/20] target/i386/tcg: Remove SEG_ADDL
-Date: Wed, 17 Jul 2024 07:03:22 +0200
-Message-ID: <20240717050331.295371-13-pbonzini@redhat.com>
+Cc: "Robert R . Henry" <rrh.henry@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 13/20] target/i386/tcg: Allow IRET from user mode to user mode
+ with SMAP
+Date: Wed, 17 Jul 2024 07:03:23 +0200
+Message-ID: <20240717050331.295371-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240717050331.295371-1-pbonzini@redhat.com>
 References: <20240717050331.295371-1-pbonzini@redhat.com>
@@ -100,53 +102,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+This fixes a bug wherein i386/tcg assumed an interrupt return using
+the IRET instruction was always returning from kernel mode to either
+kernel mode or user mode. This assumption is violated when IRET is used
+as a clever way to restore thread state, as for example in the dotnet
+runtime. There, IRET returns from user mode to user mode.
 
-This truncation is now handled by MMU_*32_IDX.  The introduction of
-MMU_*32_IDX in fact applied correct 32-bit wraparound to 16-bit accesses
-with a high segment base (e.g.  big real mode or vm86 mode), which did
-not use SEG_ADDL.
+This bug is that stack accesses from IRET and RETF, as well as accesses
+to the parameters in a call gate, are normal data accesses using the
+current CPL.  This manifested itself as a page fault in the guest Linux
+kernel due to SMAP preventing the access.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240617161210.4639-3-richard.henderson@linaro.org
+This bug appears to have been in QEMU since the beginning.
+
+Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
+Co-developed-by: Robert R. Henry <rrh.henry@gmail.com>
+Signed-off-by: Robert R. Henry <rrh.henry@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/seg_helper.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ target/i386/tcg/seg_helper.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index aee3d19f29b..19d6b41a589 100644
+index 19d6b41a589..224e73e9ed0 100644
 --- a/target/i386/tcg/seg_helper.c
 +++ b/target/i386/tcg/seg_helper.c
-@@ -579,10 +579,6 @@ int exception_has_error_code(int intno)
-     } while (0)
- #endif
- 
--/* in 64-bit machines, this can overflow. So this segment addition macro
-- * can be used to trim the value to 32-bit whenever needed */
--#define SEG_ADDL(ssp, sp, sp_mask) ((uint32_t)((ssp) + (sp & (sp_mask))))
--
- /* XXX: add a is_user flag to have proper security support */
- #define PUSHW_RA(ssp, sp, sp_mask, val, ra)                      \
-     {                                                            \
-@@ -593,7 +589,7 @@ int exception_has_error_code(int intno)
- #define PUSHL_RA(ssp, sp, sp_mask, val, ra)                             \
-     {                                                                   \
-         sp -= 4;                                                        \
--        cpu_stl_kernel_ra(env, SEG_ADDL(ssp, sp, sp_mask), (uint32_t)(val), ra); \
-+        cpu_stl_kernel_ra(env, (ssp) + (sp & (sp_mask)), (val), ra); \
-     }
+@@ -594,13 +594,13 @@ int exception_has_error_code(int intno)
  
  #define POPW_RA(ssp, sp, sp_mask, val, ra)                       \
-@@ -604,7 +600,7 @@ int exception_has_error_code(int intno)
+     {                                                            \
+-        val = cpu_lduw_kernel_ra(env, (ssp) + (sp & (sp_mask)), ra); \
++        val = cpu_lduw_data_ra(env, (ssp) + (sp & (sp_mask)), ra); \
+         sp += 2;                                                 \
+     }
  
  #define POPL_RA(ssp, sp, sp_mask, val, ra)                              \
      {                                                                   \
--        val = (uint32_t)cpu_ldl_kernel_ra(env, SEG_ADDL(ssp, sp, sp_mask), ra); \
-+        val = (uint32_t)cpu_ldl_kernel_ra(env, (ssp) + (sp & (sp_mask)), ra); \
+-        val = (uint32_t)cpu_ldl_kernel_ra(env, (ssp) + (sp & (sp_mask)), ra); \
++        val = (uint32_t)cpu_ldl_data_ra(env, (ssp) + (sp & (sp_mask)), ra); \
          sp += 4;                                                        \
      }
  
+@@ -847,7 +847,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+ 
+ #define POPQ_RA(sp, val, ra)                    \
+     {                                           \
+-        val = cpu_ldq_kernel_ra(env, sp, ra);   \
++        val = cpu_ldq_data_ra(env, sp, ra);   \
+         sp += 8;                                \
+     }
+ 
+@@ -1797,18 +1797,18 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
+                 PUSHL_RA(ssp, sp, sp_mask, env->segs[R_SS].selector, GETPC());
+                 PUSHL_RA(ssp, sp, sp_mask, env->regs[R_ESP], GETPC());
+                 for (i = param_count - 1; i >= 0; i--) {
+-                    val = cpu_ldl_kernel_ra(env, old_ssp +
+-                                            ((env->regs[R_ESP] + i * 4) &
+-                                             old_sp_mask), GETPC());
++                    val = cpu_ldl_data_ra(env,
++                                          old_ssp + ((env->regs[R_ESP] + i * 4) & old_sp_mask),
++                                          GETPC());
+                     PUSHL_RA(ssp, sp, sp_mask, val, GETPC());
+                 }
+             } else {
+                 PUSHW_RA(ssp, sp, sp_mask, env->segs[R_SS].selector, GETPC());
+                 PUSHW_RA(ssp, sp, sp_mask, env->regs[R_ESP], GETPC());
+                 for (i = param_count - 1; i >= 0; i--) {
+-                    val = cpu_lduw_kernel_ra(env, old_ssp +
+-                                             ((env->regs[R_ESP] + i * 2) &
+-                                              old_sp_mask), GETPC());
++                    val = cpu_lduw_data_ra(env,
++                                           old_ssp + ((env->regs[R_ESP] + i * 2) & old_sp_mask),
++                                           GETPC());
+                     PUSHW_RA(ssp, sp, sp_mask, val, GETPC());
+                 }
+             }
 -- 
 2.45.2
 
