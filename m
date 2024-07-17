@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FF5933B99
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 12:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16648933B91
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 12:58:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2Lu-0002ji-9H; Wed, 17 Jul 2024 06:57:42 -0400
+	id 1sU2Lw-0002r8-S7; Wed, 17 Jul 2024 06:57:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sU2Ls-0002ec-Fx
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:57:40 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sU2Lt-0002js-Oh
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:57:41 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sU2Lq-0005cA-Ue
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:57:40 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-368313809a4so275675f8f.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 03:57:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sU2Lr-0005ch-1H
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 06:57:41 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-36786081ac8so3870398f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 03:57:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721213851; x=1721818651; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721213856; x=1721818656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=anM9EOpDNnsAeOw8+e0Zh8fKDzaQ6DzWrkazNPeEQ8s=;
- b=u05j5Ay9z5riM9nRuuFpszVbqPt2OUksQTs0aRagCUeBrPlC6nKbg5PjYcYcjG2riC
- Z/gqDTG6id7tlDpXpQRY3npDJrXinh7zXn1LNjP9RhmmaZpInOsPg7NViONvsAYBwn8u
- 4fAShowAK/mnHkkns+F3tw/qxnk+FEGkkACKATS2np0CVgZiv0JlohILFVi273awNKMQ
- yyMkYOzbDqwIoymGyqGpISRM0iq92eJZZj8UTobsk7ZInZxMdceb9pSX1kU64cSBXTai
- cBaTRdVdWzMrOF36p/M27wm8Got0Ux6kFitRDLPuKdjNB4fYypKgiGW373afM/or7gGz
- Q/1g==
+ bh=+H84pjhZV03SKMSQm8z6X2LsGjCdphEi5b/GpyyBaBI=;
+ b=YX0/ei4IO5avpFUjb2X8cxCPqhzKx7IHG0QWtCai+iZyeRtTzzGwqgz2WDzdeaQi1T
+ yDs6ZZxY2RngWFGMG9aVCbEtuKlYQFgVa4yVTR73nXzToI+okPDSBF/oTHHfiEqB7FNZ
+ j6d/deoq24DngNyDNAehRp2H2BGUTt+nTNYjOyKB/oNFSfobgp7dJLgXZ08H+B0zd8pe
+ XZvBPGI6PtLehbT4VhcCcNV0jedAbOP0dfv2ZKXtqG3orfdD1ZKzAC75uHtoQD3tTVR8
+ aiYFaomcYElcuZVnZY0v/PrwauQPSwL/MyBdrHTlEGpEdAufzRqPYiJn5PLDxWwh1AFD
+ hg8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721213851; x=1721818651;
+ d=1e100.net; s=20230601; t=1721213856; x=1721818656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=anM9EOpDNnsAeOw8+e0Zh8fKDzaQ6DzWrkazNPeEQ8s=;
- b=DxeoXvpO7yFI0cUIVCy5dq1bV4jsMBj7XE45ocWizeZug+7PmSwsmlyikR3cwI9UQn
- kz/j/8Gxvx3OWtVRapQu5rNKgE25LeMOaiBOYvbjbYljw6lhKPuXC2RQCecCmJTv7yrM
- YAZ0XxoLcONPfiJq7mrDdDu0csEUSyD452Mx+DFpKi/oEIBNd3gCtaTlwL3XydezVPhm
- xU3D3w0Ccp9BwCiF4WpKNG9XtU2MVSnal2U2FD6EVbcYimEiYmfaQ2m+SYsXSHojP+1q
- /q8CMY7VSFI8eL5uadSbQkB7iweaaB3sH0VTcyrrc5rP0omXK2NAuDh7eHl+HZoro3l4
- s5kw==
-X-Gm-Message-State: AOJu0Yzu27B3o2bSao/F5K/Unmf2v2rFoKu106siQzHPh1A3e9N8a4uP
- dz2bJldLa3LTxtZeaVvTBNdc490Nr9NtyWxj9jYn492+sLv1SAPJaH8YKdIHeSVjXcru/QOwJfP
- LziB+FQ==
-X-Google-Smtp-Source: AGHT+IEwovGhsY+bkb3/ZgiiCZom4FZB/H059O8NbmDHkvZVSmIHXKHRLHAXx9EkW43q3IwzdRR4pg==
-X-Received: by 2002:a5d:4583:0:b0:368:377a:e8bb with SMTP id
- ffacd0b85a97d-368377aea6bmr808541f8f.28.1721213851197; 
- Wed, 17 Jul 2024 03:57:31 -0700 (PDT)
+ bh=+H84pjhZV03SKMSQm8z6X2LsGjCdphEi5b/GpyyBaBI=;
+ b=nxr2iRNGx8/EuNdKfx2wmxeroewvzmZt3v+0mSJ2A5MBw800ANECXS62t6iwMQ/OGE
+ 6kKwHxneRL3bDuxp2k9AXS+DH2WEo5R2kJ68mD5qWZZJtJvCXWPMur+vOCWNfFXFXwgV
+ wWoYVumLvCqqO1n9U+NZwO4hm7U9y4Dpck0UPIebjJJ7tUfZum67Ab14EwN4o7ynkC/N
+ n8wqcwSKYNi6VtMi+IeFsQKc7AYxj+CsyIbpCrJIbDjR4kqO/8CpuyKQqSAWewyk8bTd
+ kGUgThOqOmfgDyHwI/zG7e3NFk5vx0/zYE3RG6J/YQ+hhpURqaYgkv01ai7iqRVeOEpy
+ 6vbg==
+X-Gm-Message-State: AOJu0YxF7zKn2Cx/WjcymU6MbDU7mTUg2UFJrfFK+IOrzrsXSjORASuS
+ CvSJMchrPmWhlii8T6XiwBgipNiiX1YH0a8s+QFjX58FspCznTsz8Qdqt6RPXWeAnZoK7IZpmu+
+ anTAYWA==
+X-Google-Smtp-Source: AGHT+IHF7SYa4V+5+rhqqd9d5bFweCnycR06dMue3MnLt4LjRHWPqbuWZRDdeYrEnTChWqhACkXXOQ==
+X-Received: by 2002:adf:eb45:0:b0:367:958e:9832 with SMTP id
+ ffacd0b85a97d-36831600277mr1197662f8f.14.1721213856573; 
+ Wed, 17 Jul 2024 03:57:36 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.208.21])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f25abf0sm204165295e9.14.2024.07.17.03.57.30
+ ffacd0b85a97d-3680dabefa6sm11330056f8f.44.2024.07.17.03.57.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Jul 2024 03:57:30 -0700 (PDT)
+ Wed, 17 Jul 2024 03:57:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -62,18 +62,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>, qemu-riscv@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 1/8] semihosting: Include missing 'gdbstub/syscalls.h'
- header
-Date: Wed, 17 Jul 2024 12:57:16 +0200
-Message-ID: <20240717105723.58965-2-philmd@linaro.org>
+Subject: [PATCH v4 2/8] target/m68k: Add semihosting stub
+Date: Wed, 17 Jul 2024 12:57:17 +0200
+Message-ID: <20240717105723.58965-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240717105723.58965-1-philmd@linaro.org>
 References: <20240717105723.58965-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"semihosting/syscalls.h" requires definitions from
-"gdbstub/syscalls.h", include it in order to avoid:
+Since the SEMIHOSTING feature is optional, we need
+a stub to link when it is disabled.
 
-  include/semihosting/syscalls.h:23:38: error: unknown type name 'gdb_syscall_complete_cb'
-  void semihost_sys_open(CPUState *cs, gdb_syscall_complete_cb complete,
-                                       ^
-
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/semihosting/syscalls.h | 2 ++
- 1 file changed, 2 insertions(+)
+ target/m68k/semihosting-stub.c | 15 +++++++++++++++
+ target/m68k/meson.build        |  5 ++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
+ create mode 100644 target/m68k/semihosting-stub.c
 
-diff --git a/include/semihosting/syscalls.h b/include/semihosting/syscalls.h
-index 3a5ec229eb..b5937c619a 100644
---- a/include/semihosting/syscalls.h
-+++ b/include/semihosting/syscalls.h
-@@ -9,6 +9,8 @@
- #ifndef SEMIHOSTING_SYSCALLS_H
- #define SEMIHOSTING_SYSCALLS_H
- 
-+#include "gdbstub/syscalls.h"
+diff --git a/target/m68k/semihosting-stub.c b/target/m68k/semihosting-stub.c
+new file mode 100644
+index 0000000000..d6a5965e29
+--- /dev/null
++++ b/target/m68k/semihosting-stub.c
+@@ -0,0 +1,15 @@
++/*
++ *  m68k/ColdFire semihosting stub
++ *
++ * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
++ * SPDX-FileCopyrightText: 2024 Linaro Ltd.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
- /*
-  * Argument loading from the guest is performed by the caller;
-  * results are returned via the 'complete' callback.
++#include "qemu/osdep.h"
++#include "cpu.h"
++
++void do_m68k_semihosting(CPUM68KState *env, int nr)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/m68k/meson.build b/target/m68k/meson.build
+index 8d3f9ce288..4d213daaf6 100644
+--- a/target/m68k/meson.build
++++ b/target/m68k/meson.build
+@@ -11,9 +11,12 @@ m68k_ss.add(files(
+ 
+ m68k_system_ss = ss.source_set()
+ m68k_system_ss.add(files(
+-  'm68k-semi.c',
+   'monitor.c'
+ ))
++m68k_system_ss.add(when: ['CONFIG_SEMIHOSTING'],
++  if_true: files('m68k-semi.c'),
++  if_false: files('semihosting-stub.c')
++)
+ 
+ target_arch += {'m68k': m68k_ss}
+ target_system_arch += {'m68k': m68k_system_ss}
 -- 
 2.41.0
 
