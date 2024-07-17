@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2012B934430
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 23:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE79593442D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 23:49:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUCWU-0007R0-4j; Wed, 17 Jul 2024 17:49:18 -0400
+	id 1sUCWZ-00080k-0s; Wed, 17 Jul 2024 17:49:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUCWO-00072M-Nv
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 17:49:14 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUCWV-0007ei-EO
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 17:49:20 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUCWM-0002RD-9y
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 17:49:12 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4279c10a40eso957245e9.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 14:49:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUCWT-0002S8-RR
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 17:49:19 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4257d5fc9b7so1149565e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 14:49:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721252949; x=1721857749; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721252956; x=1721857756; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XbJOgH6dYyPN3e3bCfJ4gl/53nu9HSazmUaIUNR0ln4=;
- b=g/1HISjRkhBFXh6jwS0SvadnUGsEmLdQYbe1zXBB1NmmgtwzCFypg09Q38Cr2WhuQK
- 0WM3eyjXUey1DkNFTtHexhe+6S0aZ32wMMUKbn8eHVoHX5DGJgQyXIux5AcXmgJTPTQU
- ZJ0LMPbCFDiCN0FWfewnJa0DGNQ4JGqLgImze+j6EuEFYz2cCatauqbkt/ushLC49L2X
- V7FGiScYe39tlDmSepmz48xGbtCVScDT+GblA5e8PRkkTCOJqjm89C/c4Osh64O4eSYZ
- r+4EfjUeiCISPKYvhnngiV1hBGYJfZZdIK5V4Pa6d3w8T8GTCy5aNZhnR6rhumbVPVI9
- RC3Q==
+ bh=b63oTaOp3REQziAQ8nukVjNE16sAzixcuu6r9oQJNfs=;
+ b=AOdEzIOv8HPnvdhOSYbHy6uHv1fmszwlnH8PPNwqHhl3OgdWsjScz9nNAhKwUXzo1Q
+ RlGqhp6PEenNWF8+96e0gY/3p7VhidA6Y7wth+gTEib3t02+9+ulzy1ca2w1NMX3vmAn
+ KR07a9cLtuDePLga8AE43DUWMVe+m1UNYTIYl8JCA3F5Zi4s0zWFa0fR6SbAZLvujwz2
+ DUVu5ABlEBbPj3HahZjrMQxI2skSX9MJkOO0Bj8lDpEHHhtEVZM9IjUpXNsrTu+J6P62
+ VpVE/uq/eo04djfL4fRag+v2hjo/wobWlTvvjnE+EwkPGhrdRaRd7kEVJfMz/TEfQQo1
+ CBPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721252949; x=1721857749;
+ d=1e100.net; s=20230601; t=1721252956; x=1721857756;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XbJOgH6dYyPN3e3bCfJ4gl/53nu9HSazmUaIUNR0ln4=;
- b=RnxtmU9EYjPKvCRjZ3vUbfbasxJ7x/ZYvPTj732fJ2bi3DHnYvEGrR35r3UKbYUzpN
- BU+YyqhU0qfqalBnt+HfPX1nkFe4WJxnVTeyghMg/N9k4gjUlNDmLeSAbGR7Q9BKw/m7
- z+VYJXirM/WtMOsZLFRjGTodHeghWxcmS23aQSqRsi+gP1+li15FGPqTnUDL1xLhwuzl
- hYpLCmXQy3/KIj2n5HU8xI7ExZ7ZJUOK3p5YrfyPNkg4xE5x+2FsQ4IW7EpXh49453P3
- V6rT0P6XuqLQaVqDYJZMquKNTpCw26Pg/8UBTysjVA0YPO6s2PGgaZKeFVechHVCtMVw
- sy6g==
+ bh=b63oTaOp3REQziAQ8nukVjNE16sAzixcuu6r9oQJNfs=;
+ b=pZ1H2XEiSN6eh2cOlzpiGmrDoXuVTD0GDutLdxHGUz7fiBVueMdZTi5TkPLzBarMTC
+ nFHkuwecgGIfiXAcOIpTeIh9xtko6anV7rXeS89wRbpGAE1jETP07pPwS7SMRtPtxMEc
+ zbeffoTvh+F4EjrFSnMgkc+py2b4ZA26d/n3Eigp3b3zMzeqY48XdqhMZj+uJ9TJOody
+ 0BkeqYDk9J8oiYnVmC1Sl43d8mo07W9H7DB6tskSzTYCzDf21efkQx8zvsbpuFjQH7l3
+ ycZjJ6XE2G69tBsJ4aZ7n3orCwUzmjYmdiqyIydiSNjxgDwMeLJU1LaUWM/dwc8JrUD8
+ POgA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX8dhB/JPtEV9FR/bKJQU31PaCBsFN3gC1P7LjJgCQXYIm18X6jy0A0Tr8W2NFsBklWwuZ6gGM94W6MrkGMdZ2YU182OGk=
-X-Gm-Message-State: AOJu0YzKMO5l2P+AHFIrvi4mKyu8ccd2wjxLKm6AaEnxM6xdxoGpxgCG
- n32Sa8OAa/3S1D2K0HwJWM6zVp0d+req6MtKfRUIdeYwVhgNIhCHjEHxyq70SMA=
-X-Google-Smtp-Source: AGHT+IE8B5oGnr8gHzyYusdO/sceXJAjUNVfQ2wPS/1gD1grtl09uG1l+wCnthQzfK0pDimpm56Jcw==
-X-Received: by 2002:a05:600c:1e1b:b0:425:80d5:b8b2 with SMTP id
- 5b1f17b1804b1-427c2ca9d9fmr21226885e9.16.1721252949077; 
- Wed, 17 Jul 2024 14:49:09 -0700 (PDT)
+ AJvYcCW2Hc42WmsmY4PI1Cgxn7eVtqoQVLQMgorOpthuhrFziuVPpFZVmlgi0QUHmXzMAuCnXGwbTI+/Q2a/WcDiORxwPuukaks=
+X-Gm-Message-State: AOJu0YylyxqP0zKRaNHs8EfxjZaR3/TAhtsuIXffB7KyfyDC8tQEDVvv
+ 6XWIGnKObXwI8wNR3Zrp+45wJwv/tufUQ5F9AIHV2JkppupxhODadH91VCpDQ4c=
+X-Google-Smtp-Source: AGHT+IFW34rtx4rjqsSq3YSmP0Jo41E0XLqdF6pzf2WopqDI08NHn6On57tYgSbBs8LFGhZC5RzJjQ==
+X-Received: by 2002:a05:600c:3411:b0:427:9dae:2768 with SMTP id
+ 5b1f17b1804b1-427c2d119d7mr25250505e9.38.1721252956487; 
+ Wed, 17 Jul 2024 14:49:16 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.208.21])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427c78154f8sm11487405e9.43.2024.07.17.14.49.07
+ 5b1f17b1804b1-427c779847asm11834755e9.8.2024.07.17.14.49.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Jul 2024 14:49:08 -0700 (PDT)
+ Wed, 17 Jul 2024 14:49:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  qemu-devel@nongnu.org
@@ -64,17 +64,17 @@ Cc: Xianglai Li <lixianglai@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Song Gao <gaosong@loongson.cn>
-Subject: [PATCH v3 16/17] hw/intc/loongson_ipi: Restrict to MIPS
-Date: Wed, 17 Jul 2024 23:47:07 +0200
-Message-ID: <20240717214708.78403-17-philmd@linaro.org>
+Subject: [PATCH v3 17/17] hw/intc/loongson_ipi: Remove unused headers
+Date: Wed, 17 Jul 2024 23:47:08 +0200
+Message-ID: <20240717214708.78403-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240717214708.78403-1-philmd@linaro.org>
 References: <20240717214708.78403-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,53 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
-
-Now than LoongArch target can use the TYPE_LOONGARCH_IPI
-model, restrict TYPE_LOONGSON_IPI to MIPS.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-[PMD: Extracted from bigger commit, added commit description]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/intc/loongson_ipi.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ hw/intc/loongson_ipi.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index 464bb6b580..61375d89ff 100644
+index 61375d89ff..6dd08aa9cb 100644
 --- a/hw/intc/loongson_ipi.c
 +++ b/hw/intc/loongson_ipi.c
-@@ -16,22 +16,9 @@
- #include "exec/address-spaces.h"
- #include "exec/memory.h"
- #include "migration/vmstate.h"
--#ifdef TARGET_LOONGARCH64
--#include "target/loongarch/cpu.h"
--#endif
--#ifdef TARGET_MIPS
- #include "target/mips/cpu.h"
--#endif
- #include "trace.h"
+@@ -6,18 +6,9 @@
+  */
  
--#ifdef TARGET_LOONGARCH64
--static AddressSpace *get_iocsr_as(CPUState *cpu)
--{
--    return LOONGARCH_CPU(cpu)->env.address_space_iocsr;
--}
--#endif
--
--#ifdef TARGET_MIPS
+ #include "qemu/osdep.h"
+-#include "hw/boards.h"
+-#include "hw/sysbus.h"
+ #include "hw/intc/loongson_ipi.h"
+-#include "hw/irq.h"
+-#include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+-#include "qemu/log.h"
+-#include "exec/address-spaces.h"
+-#include "exec/memory.h"
+-#include "migration/vmstate.h"
+ #include "target/mips/cpu.h"
+-#include "trace.h"
+ 
  static AddressSpace *get_iocsr_as(CPUState *cpu)
  {
-     if (ase_lcsr_available(&MIPS_CPU(cpu)->env)) {
-@@ -40,7 +27,6 @@ static AddressSpace *get_iocsr_as(CPUState *cpu)
- 
-     return NULL;
- }
--#endif
- 
- static const MemoryRegionOps loongson_ipi_core_ops = {
-     .read_with_attrs = loongson_ipi_core_readl,
 -- 
 2.41.0
 
