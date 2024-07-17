@@ -2,71 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D993933696
+	by mail.lfdr.de (Postfix) with ESMTPS id 571B3933697
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTxk0-0004si-Q8; Wed, 17 Jul 2024 02:02:16 -0400
+	id 1sTxk1-00051Y-Hv; Wed, 17 Jul 2024 02:02:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxjs-0004rJ-T0
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:02:08 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1sTxjy-0004v4-2O
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:02:14 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sTxjl-0001Ek-3p
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:02:03 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-70b7a528331so2568524b3a.1
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:02:00 -0700 (PDT)
+ id 1sTxjs-0001F8-K3
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:02:12 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-70b1207bc22so5362680b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 23:02:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721196119; x=1721800919; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OG5tWqvD7v5D7eW6eQiZf6y3nPVRndjEp8rarTrxMPg=;
- b=zIdExSEqI6uIq5jW3qJTgJnlpeK+zdARBoTQmQKC2FMtjGONjAD9O3CEuItdaPBrL1
- o3gDiK0QVRnkvWwqDtUdWcS5Q0DXangpnS3SNmofUerA+9jFRTdUFcKbZSxz5REEWVUi
- 7uim2sK35hxICGRx6rnX1fJs7Eyy3YnuoPJeQjEPdO0oTz2YydNlnbHQq47X1a0wpPA1
- AIcfiRGoK6l8DqR4RWlANWR2dvXxgb3hFcF/5nlzttdWUAWnLgGK5GFFDSeH0attfcwW
- A7SZAe2bWFwqaNspybeocCpbEd0vezKXLHpAE5dK//Gn87znCovFZTsfu1pGdI9kf+aS
- MpuA==
+ d=linaro.org; s=google; t=1721196122; x=1721800922; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZMf5aA84rLqw++9CAhqa8G+mFDeuLcUiCA683ccZn6Q=;
+ b=UPaobX3T9cqZsaLk/G/eK00FiUS5aipmG6R5aXP8yydURnLfvIRUJhZEnHrdyCVYWg
+ UJh43Tw8dopZwVY9n2b2yZHbGRc1A2QL2PQQ/arCEfQ8SRLrYEm1vvL8yHn0BCKXTAAy
+ 6vt4luwKvChQxYxqcLzuqPhWS/gxS22qvQHR7GoMMriS8cRCOZ1fwJx0iUYUzW4DAn75
+ d0lRzdfX9cRANoYLM2M9CMMf2SoVLRJhbkaQQhZ9AkllEbrS1iGr5sf7D6YmTq8FjVY7
+ vS06zml+uRenNDeu6pRatGMnqqxO6vfjhpxhEKOhMzZK2o8NwyEP9J8nGylW8hvD+Rxp
+ +MrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721196119; x=1721800919;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OG5tWqvD7v5D7eW6eQiZf6y3nPVRndjEp8rarTrxMPg=;
- b=hylWDcJnp4w2+uRjmDGjHwbBKd/GunwrKMBtL49pUUzOpV8iv8feSOMq0XMNo4QQWv
- 58sr/jsM/YOMbbrHldUeb5Jv/dLuAqte3X28TErZoakc5vA5anbO4wK+aPXTqNCoB7Xd
- 2BISwp/GJZZJ+1FALcvLuoR7HFHe08tVL+s97aFFVsP38Nan+5zUmibvYE/Xt4s8OdHB
- wivIawmYBRw/rSVLjN9c9bu6hcOjwCyPkomERQqzanWUdUqo+U0gg/JYWVuJ0/YQ7Yal
- MO+575GHAdeGiZ1jedioOSqlSFn1aueGSpv6V74TfJS7xg5cL++CbFEe0jnWIG+sdUsw
- ZJlQ==
-X-Gm-Message-State: AOJu0YxUBBV8XiieS40UMkp1cYAJVefqFa06H6+aGHy9Av9nQg7S3M28
- tuUq87GRlkusR9yR3Pf2qV8psM8hYiRogmRely1m7nDByKSmXlLFPdYSBZIlmN3hTlZhyLTOS2K
- XwSg=
-X-Google-Smtp-Source: AGHT+IEQHqRkPUBMvPq+WJqJHYOkyaWR2z1UYreRjWi09JYPBRXRoYr8+3JHeodzDnQ58Jxv2wTceg==
-X-Received: by 2002:a05:6a20:12ca:b0:1c2:8cc4:908f with SMTP id
- adf61e73a8af0-1c3fdd5338fmr822946637.48.1721196118657; 
- Tue, 16 Jul 2024 23:01:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721196122; x=1721800922;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZMf5aA84rLqw++9CAhqa8G+mFDeuLcUiCA683ccZn6Q=;
+ b=cTmrkVc8mDvI7iGYHwABUf9vrLkGno0gAFQJOp647yAzBaJTGRbAOPa1TL41FjWsbn
+ UDqkCsGeaLQYP+DZCw2k/hI0eWjuTebf9pbaSPpEG2zxveM3mFMha4clwbqsnBR50KSl
+ ajccwJtUafRb+AAL1gzQrcg97VV6qN1S1DncFKI5CmP6lML8msBk3iG4W/IowNUaTIfR
+ KaXAp5wiCKbj6Y1QFb9HsLB//cvuWAV2fWPfR5WpQwWmz/P+kMYzblKEkElGkF+HK7OE
+ X5495d1WXI3ormDz8Q9Y0mpBLLLxvImGbPL1O2TefYs/PAe7rIhuqujeka12QZUMjeow
+ 91dA==
+X-Gm-Message-State: AOJu0YydcoN6LAreliBsAMbnlboF5ANcZh7+Ueaa1f0O9Dd5FXG9Duw8
+ 1hJUE1oelCWi+EKOMWEdVZwGCY3tiWko2X7uUZ38ZoZU3kJYfwCYNM7wpo9x0d0xnmsobF8Se+l
+ oNxg=
+X-Google-Smtp-Source: AGHT+IFMwG44JiaRsp7aB3LErrrLsfSpwGrps9gnE1ekF3g46cheDEXccnT+qT28qEzuHlw5KBrQ9A==
+X-Received: by 2002:a05:6a20:7348:b0:1c0:f759:9544 with SMTP id
+ adf61e73a8af0-1c3fdcd50demr1239258637.11.1721196122385; 
+ Tue, 16 Jul 2024 23:02:02 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bc27383sm68131575ad.140.2024.07.16.23.01.56
+ d9443c01a7336-1fc0bc27383sm68131575ad.140.2024.07.16.23.01.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 23:01:58 -0700 (PDT)
+ Tue, 16 Jul 2024 23:02:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 0/3] target/arm: Fixes for SME FMOPA (#2373)
-Date: Wed, 17 Jul 2024 16:01:46 +1000
-Message-ID: <20240717060149.204788-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, Daniyal Khan <danikhan632@gmail.com>,
+ qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 1/3] target/arm: Use float_status copy in sme_fmopa_s
+Date: Wed, 17 Jul 2024 16:01:47 +1000
+Message-ID: <20240717060149.204788-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240717060149.204788-1-richard.henderson@linaro.org>
+References: <20240717060149.204788-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -89,30 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes for v2:
-  - Apply r-b.
-  - Add license headers to two test cases.
+From: Daniyal Khan <danikhan632@gmail.com>
 
-r~
+We made a copy above because the fp exception flags
+are not propagated back to the FPST register, but
+then failed to use the copy.
 
-Daniyal Khan (2):
-  target/arm: Use float_status copy in sme_fmopa_s
-  tests/tcg/aarch64: Add test cases for SME FMOPA (widening)
+Cc: qemu-stable@nongnu.org
+Fixes: 558e956c719 ("target/arm: Implement FMOPA, FMOPS (non-widening)")
+Signed-off-by: Daniyal Khan <danikhan632@gmail.com>
+[rth: Split from a larger patch]
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ target/arm/tcg/sme_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Richard Henderson (1):
-  target/arm: Use FPST_F16 for SME FMOPA (widening)
-
- target/arm/tcg/sme_helper.c       |  2 +-
- target/arm/tcg/translate-sme.c    | 12 ++++--
- tests/tcg/aarch64/sme-fmopa-1.c   | 63 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/sme-fmopa-2.c   | 56 +++++++++++++++++++++++++++
- tests/tcg/aarch64/sme-fmopa-3.c   | 63 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  5 ++-
- 6 files changed, 194 insertions(+), 7 deletions(-)
- create mode 100644 tests/tcg/aarch64/sme-fmopa-1.c
- create mode 100644 tests/tcg/aarch64/sme-fmopa-2.c
- create mode 100644 tests/tcg/aarch64/sme-fmopa-3.c
-
+diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
+index e2e0575039..5a6dd76489 100644
+--- a/target/arm/tcg/sme_helper.c
++++ b/target/arm/tcg/sme_helper.c
+@@ -916,7 +916,7 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+                         if (pb & 1) {
+                             uint32_t *a = vza_row + H1_4(col);
+                             uint32_t *m = vzm + H1_4(col);
+-                            *a = float32_muladd(n, *m, *a, 0, vst);
++                            *a = float32_muladd(n, *m, *a, 0, &fpst);
+                         }
+                         col += 4;
+                         pb >>= 4;
 -- 
 2.43.0
 
