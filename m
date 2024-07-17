@@ -2,44 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EA8933712
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929F6933716
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 08:31:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTy9a-0004wC-K1; Wed, 17 Jul 2024 02:28:42 -0400
+	id 1sTyBd-00058m-LP; Wed, 17 Jul 2024 02:30:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sTy9Q-0004eK-OQ; Wed, 17 Jul 2024 02:28:34 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyBX-00051B-24
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:30:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sTy9N-0002T0-0D; Wed, 17 Jul 2024 02:28:30 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9933E7B13D;
- Wed, 17 Jul 2024 09:28:21 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BA17010B09D;
- Wed, 17 Jul 2024 09:28:25 +0300 (MSK)
-Received: (nullmailer pid 827663 invoked by uid 1000);
- Wed, 17 Jul 2024 06:28:25 -0000
-Subject: [ANNOUNCE] QEMU 7.2.13 Stable released
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sTyBU-0002vX-O4
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 02:30:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721197838;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=XCrYT2DWLbPKiuwikeICvix1QZ+k8mWPg9CvAuJyt64=;
+ b=R3j27hySNOPY5JIIaIl9q/56wrJ1NyX4QBxE8fFfLqeXiqbj8p15LtnuhzNfZQ/4jzMaV5
+ CYP3CsYzWTXMT8uB/L29PAFpD8g45fK8T5a04waSvmvddLe405bsGhMP8yS38excq8QHUK
+ jTgMll+Brgz1LPG0EAogGT6ahIIMSOg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-NUZvyxuMOoCCm3YIu0LoQw-1; Wed,
+ 17 Jul 2024 02:30:35 -0400
+X-MC-Unique: NUZvyxuMOoCCm3YIu0LoQw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A6CBA19560AD; Wed, 17 Jul 2024 06:30:30 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.88])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8014F1955F68; Wed, 17 Jul 2024 06:30:24 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Steven Lee <steven_lee@aspeedtech.com>,
+ Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v2 0/8] aspeed: Add boot from eMMC support (AST2600)
+Date: Wed, 17 Jul 2024 08:30:14 +0200
+Message-ID: <20240717063022.549849-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 17 Jul 2024 09:28:25 +0300
-Message-Id: <1721197705.716677.827662.nullmailer@tls.msk.ru>
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,86 +82,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Hello,
 
-Hi everyone,
+This series enables boot from eMMC on the rainier-bmc machine, which
+is the default behavior and also on the AST2600 EVB using a machine
+option to change the default.
 
-The QEMU v7.2.13 stable release is now available.
+First 6 patches adjust the machine setup and HW strapping to boot from
+eMMC, the last 2 are for the AST2600 EVB and are optional.
 
-You can grab the tarball from our download page here:
+Thanks,
 
-  https://www.qemu.org/download/#source
+C.
 
-  https://download.qemu.org/qemu-7.2.13.tar.xz
-  https://download.qemu.org/qemu-7.2.13.tar.xz.sig (signature)
+Changes since v1:
 
-v7.2.13 is now tagged in the official qemu.git repository, and the
-stable-7.2 branch has been updated accordingly:
+ - Rebased on upstream, now that the eMMC device model is available
+ - Rephrased commit logs
+ - Fixed SCU prefix of bit definitions
+ - Tuned 'boot-config' and 'boot-partition-size' eMMC properties
 
-  https://gitlab.com/qemu-project/qemu/-/commits/stable-7.2
+Cédric Le Goater (8):
+  aspeed: Change type of eMMC device
+  aspeed: Load eMMC first boot area as a boot rom
+  aspeed/scu: Add boot-from-eMMC HW strapping bit for AST2600 SoC
+  aspeed: Introduce a AspeedSoCClass 'boot_from_emmc' handler
+  aspeed: Tune eMMC device properties to reflect HW strapping
+  aspeed: Add boot-from-eMMC HW strapping bit to rainier-bmc machine
+  aspeed: Introduce a 'hw_strap1' machine attribute
+  aspeed: Introduce a 'boot-emmc' machine option
 
-There are 19 changes since the previous v7.2.12 release, including
-a fix for CVE-2024-4467 (qemu-img info command lack of input validation).
+ docs/system/arm/aspeed.rst   |  2 ++
+ include/hw/arm/aspeed_soc.h  |  1 +
+ include/hw/misc/aspeed_scu.h |  4 +++
+ hw/arm/aspeed.c              | 62 +++++++++++++++++++++++++++++++-----
+ hw/arm/aspeed_ast2600.c      |  8 +++++
+ hw/arm/aspeed_soc_common.c   |  7 ++++
+ 6 files changed, 76 insertions(+), 8 deletions(-)
 
-Thank you everyone who has been involved and helped with the stable series!
+-- 
+2.45.2
 
-/mjt
-
-Changelog (stable-7.2-hash master-hash Author Name: Commmit-Subject):
-
-ee29e78fce Michael Tokarev:
- Update version for 7.2.13 release
-6807403eed a0124e333e Maxim Mikityanskiy:
- char-stdio: Restore blocking mode of stdout on exit
-f0654b8d91 7aa6492401 Stefano Garzarella:
- virtio: remove virtio_tswap16s() call in vring_packed_event_read()
-0408443ecb 7ead946998 Kevin Wolf:
- block: Parse filenames only when explicitly requested
-35eb3e49a7 7e1110664e Kevin Wolf:
- iotests/270: Don't store data-file with json: prefix in image
-7e3a2a0ee6 2eb42a728d Kevin Wolf:
- iotests/244: Don't store data-file with protocol in image
-149bc216f2 bd385a5298 Kevin Wolf:
- qcow2: Don't open data_file with BDRV_O_NO_IO
-df3768b1a4 76bccf3cb9 Richard Henderson:
- target/arm: Fix VCMLA Dd, Dn, Dm[idx]
-9804d797b9 903916f0a0 Chuang Xu:
- i386/cpu: fixup number of addressable IDs for processor cores in the physi=
-=3D
-cal package
-3d7fa1b3e2 f51f90c65e Thomas Huth:
- gitlab-ci: Disable the riscv64-debian-cross-container by default
-0b27d262d1 7c7d369b33 Alex Benn=3DC3=3DA9e:
- tests: don't run benchmarks for the tsan build
-ece3cc28df 641b1efe01 Thomas Huth:
- tests: Update our CI to use CentOS Stream 9 instead of 8
-c57fe3ac66 d639cf7978 Paolo Bonzini:
- ci, docker: update CentOS and OpenSUSE Python to non-EOL versions
-e4213c3dcb 0054dc8bde Marc-Andr=3DC3=3DA9 Lureau:
- Update lcitool and fedora to 37
-bd650df6f7 e030d08c2f Thomas Huth:
- gitlab-ci.d/buildtest: Merge the --without-default-* jobs
-ca5d7bb952 521d7fb3eb Richard Henderson:
- tcg/loongarch64: Fix tcg_out_movi vs some pcrel pointers
-b07ff6d447 54b2792102 Ilya Leoshkevich:
- linux-user: Make TARGET_NR_setgroups affect only the current thread
-c53db9c66d b1cf266c82 Gerd Hoffmann:
- stdvga: fix screen blanking
-6ce9033339 2c3e4e2de6 Alexey Dobriyan:
- virtio-net: drop too short packets early
-afb890bf17 3973615e7f Mark Cave-Ayland:
- target/i386: fix size of EBP writeback in gen_enter()
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmaWRxAACgkQcBtPaxpp
-PllFYwf+Nszvl1tugCYBSNGu01fnfFTSs//KIeueF5go3U5AaOXLXJaZpycAhQbL
-TURBqlPxEkX4eQL0ivTNA4vyg/YBTz8J/SrF9A+BnLAcbA5RWxdgyC61TNBxIo6N
-EeG7PwzMZLUidzUz3MN8ZPpxnIyzV01nLx2hx80OhBkak7I3PMlx8lh3OM0KcSY0
-K0vuxGHfyeO+qIAsltG2BykRHRlDKVIYfGBNy7M4lFbnL8u5w2JiYQI3KgJsK1Lg
-MqNkbK++kiF7w2sCutJgPLhhFqD2n8EZiGmoBtpMm4pp1Ai9T+HGbabp/R6NDdjb
-bO43NLeyQeUGaISUYN3uKpzGRdbMVA=3D=3D
-=3DA4oy
------END PGP SIGNATURE-----
 
