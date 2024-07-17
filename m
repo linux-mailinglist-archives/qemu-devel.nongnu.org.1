@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAAB693362E
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5421933675
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 07:43:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTwq9-0002u2-HA; Wed, 17 Jul 2024 01:04:33 -0400
+	id 1sTxQW-0001Fi-95; Wed, 17 Jul 2024 01:42:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwq3-0002U0-GD
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sTwq0-00023z-Hh
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:04:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721192663;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wgJ+cIl6ZeRPyItJ8FIMr9ODJcaa5ZrbsqamH1sXMi8=;
- b=RwArKBSJYCYNEK8E+i3M3hohdkCjCU+Ao9c8Xw7sL9qwC2ReUL5uC2kkuMbhB6Ary0pu71
- 26eaSpVIUdLODKwAVUUesJ1nQh64/f5IoxArRoYcEVjnqv8NlzOrNyNOROuWGN6TflC6bv
- vFOyhux3Nexhey5ZDqLt2UrIZXRqVjE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225-bQCrSoO4Op-vt-YBFoEeWA-1; Wed, 17 Jul 2024 01:04:21 -0400
-X-MC-Unique: bQCrSoO4Op-vt-YBFoEeWA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42671a6fb9dso41256465e9.3
- for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:04:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sTxQP-0001F5-3R
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:42:01 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sTxQM-0006yb-Pq
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 01:42:00 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1fc4fcbb131so1471805ad.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Jul 2024 22:41:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721194917; x=1721799717; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4t1irZa0ILJmmArTSl3A6BefMGlrRXmzzXKJoYigLaQ=;
+ b=CB/ryyvNk0hG8scdXC4BDG3fJvNIdkImm7y0UFSv1qoGV6MjEMIuOaXeVwhC/x3FHF
+ QOY1WJHKIdsKH78vdKj6Gvx1Mg0PvZykWBr98GLun8BkPCY1iLEkvAByOjSN2RRg9IAP
+ 51RAuuZOvdO76MyzqqmD2QlqNuuDjBee0wcqf5kRSOBIwQq4na4tlJTYFCePnX+Tj9tP
+ TZebywYjLfaAvwnUpOi4SXq1WNkay2W7Av3QE6LKFUxSlJE8kcYErXcwUeyPZcdJ7del
+ 0twKtxwwW9wrR+/tQp78986949vaKx9TBqOSIiiSk9l2qjdDu9sX6NhyD8dN/2nWXU0q
+ JKMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721192660; x=1721797460;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wgJ+cIl6ZeRPyItJ8FIMr9ODJcaa5ZrbsqamH1sXMi8=;
- b=iISydYKPLJuVHwY4fXTd+0v7nDpYD94acVjvoDqtQu3sBEl8zsXOtCNJ6SHfKFCJ9D
- qqIIlQm4gSMiakYy935EPqkq4PSo91a3lzRSriSCGr46QK0fqjWDzYJn5OxhJAkrxBRK
- H8NWtoA3mCXDQQ4vxDOvXSJ+Gasa0S/G5Jtze2Sp2ziT+cSaavcvfLy571/cQVEh3ccM
- YjOzWYVnDp9wP6QBiXd1C7E0YNugg+3jsVn1hpfIybRz5f6EyGxbu/D7g4gdvtSQSWT7
- BomUedOJ1HIVqBxOm/KJzvzTPyHmI3ojG7N3YYS1RJm/Y+JW45Kii9lqdOR/FQD31HIa
- LDYg==
-X-Gm-Message-State: AOJu0YziX+xCfum37SdTF1eCfI3DQ+LHxt6IXUgzOBp/wO5e481Lt5DT
- Rrf3r8r1E7dGZECWrriQRhTqeSOF/nEhUzdwsuZ5Q3tM4Sc0EK11tW3Q8bpoYv6S5uG4Q5dfd2d
- kMetEmNQyXNJozucqcQdkXC8Tl2AUoQoMezw3ENtsw07nryYPtjifqtizRKftBNbPP1c8lZu4RS
- pgDuY5K+dzo3nJPkWTH6LRpv4ChReH65Iwt/lh
-X-Received: by 2002:a05:600c:3b8c:b0:427:abf6:f0e6 with SMTP id
- 5b1f17b1804b1-427c2cb0878mr4119435e9.9.1721192660134; 
- Tue, 16 Jul 2024 22:04:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmfcSjEEkPlnqy9uIl5p2L+59w904DAu2aVTVUd2t6WJ4fh6R7CQbyEVL67ez/HeLUG2VjDg==
-X-Received: by 2002:a05:600c:3b8c:b0:427:abf6:f0e6 with SMTP id
- 5b1f17b1804b1-427c2cb0878mr4119255e9.9.1721192659730; 
- Tue, 16 Jul 2024 22:04:19 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
+ d=1e100.net; s=20230601; t=1721194917; x=1721799717;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4t1irZa0ILJmmArTSl3A6BefMGlrRXmzzXKJoYigLaQ=;
+ b=P7lyjsYdzdDd7b36GklVkzdBPY/sZB/RxYp8xba8sA8Oa9liPtMhiK/qdx75DYl10N
+ kI6Ybg4nRMWt2fmH7OIFtzfVWYsd6FUhIMgZG0+wZgg25QoJgJYbkklcZ5FMnYgeZ6Io
+ JarcmjJqEG9kNzm7W6DSGQNxCcJauqz35e9t1I/Q37ikBRAkcAvGjuVlKak2P+TuhzTS
+ mx5wY3rq/yQAKYhdg6rnaoIs1ik1bHFE48olArVexklhVx3syif/fSh0eDadVdLcUARo
+ /Kqiye7g4d/8QVic5YDTQ/sgo4pDobNgKf+p/oHy+Fux4THeopjwvBEYyj/UCPwVjG3k
+ lUkw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWIGhGHSXsTduGBdpfAZ2uVTStv8JXGasSeVhpjz1SdQGWHpadGxlycRc92fDnhAQe4Dl7RlgyRHYE8Y6xV5tN5ewkqJvc=
+X-Gm-Message-State: AOJu0YyhpRODA4jSEnnwlFDuAZLOem1YCHB/ImclG/uHkGels7thVSHG
+ XxoLfRGKMtpH+K2hEHEQvvPja13ouNsgDABldbgcijKtB1BAgrg6ro/+GpgIC1M=
+X-Google-Smtp-Source: AGHT+IGZWcnBLkQxsv8J6/t3VHYsY5wxlhb00O16Vlf4ch0Gb/SdnHqnQuPHlkrfe8hRHO9JQ3i+7g==
+X-Received: by 2002:a17:902:e552:b0:1fb:8e98:4452 with SMTP id
+ d9443c01a7336-1fc4e1692ffmr5028795ad.15.1721194916906; 
+ Tue, 16 Jul 2024 22:41:56 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4279f276c52sm190639715e9.22.2024.07.16.22.04.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jul 2024 22:04:18 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 20/20] target/i386/tcg: save current task state before loading
- new one
-Date: Wed, 17 Jul 2024 07:03:30 +0200
-Message-ID: <20240717050331.295371-21-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240717050331.295371-1-pbonzini@redhat.com>
-References: <20240717050331.295371-1-pbonzini@redhat.com>
+ d9443c01a7336-1fc0bc285c5sm67614825ad.132.2024.07.16.22.41.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Jul 2024 22:41:55 -0700 (PDT)
+Message-ID: <86262cff-3518-447c-9553-3f213ff74637@linaro.org>
+Date: Wed, 17 Jul 2024 15:41:49 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/13] Misc HW/UI patches for 2024-07-16
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20240716180941.40211-1-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240716180941.40211-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,130 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is how the steps are ordered in the manual.  EFLAGS.NT is
-overwritten after the fact in the saved image.
+On 7/17/24 04:09, Philippe Mathieu-Daudé wrote:
+> The following changes since commit 959269e910944c03bc13f300d65bf08b060d5d0f:
+> 
+>    Merge tag 'python-pull-request' ofhttps://gitlab.com/jsnow/qemu into staging (2024-07-16 06:45:23 +1000)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/philmd/qemu.git tags/hw-misc-20240716
+> 
+> for you to fetch changes up to 644a52778a90581dbda909f38b9eaf71501fd9cd:
+> 
+>    system/physmem: use return value of ram_block_discard_require() as errno (2024-07-16 20:04:08 +0200)
+> 
+> Ignored checkpatch error:
+> 
+>    WARNING: line over 80 characters
+>    #30: FILE: system/vl.c:1004:
+>    +    if (!ti->class_names[0] || module_object_class_by_name(ti->class_names[0])) {
+> 
+> Ignored CI failures:
+> 
+>   - bios-tables-test on cross-i686-tci
+>   - qtest-sparc on msys2-64bit
+> 
+> ----------------------------------------------------------------
+> Misc HW & UI patches queue
+> 
+> - Allow loading safely ROMs larger than 4GiB (Gregor)
+> - Convert vt82c686 IRQ as named 'intr' (Bernhard)
+> - Clarify QDev GPIO API (Peter)
+> - Drop unused load_image_gzipped function (Ani)
+> - MakeTCGCPUOps::cpu_exec_interrupt handler mandatory (Peter)
+> - Factor cpu_pause() out (Nicholas)
+> - Remove transfer size check from ESP DMA DATA IN / OUT transfers (Mark)
+> - Add accelerated cursor composition to Cocoa UI (Akihiko)
+> - Fix '-vga help' CLI (Marc-André)
+> - Fix displayed errno in ram_block_add (Zhenzhong)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/tcg/seg_helper.c | 85 +++++++++++++++++++-----------------
- 1 file changed, 45 insertions(+), 40 deletions(-)
+Applied, thanks.
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 36d2f089cae..aac092a356b 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -389,6 +389,42 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
-     access_prepare_mmu(&new, env, tss_base, tss_limit,
-                        MMU_DATA_LOAD, mmu_index, retaddr);
- 
-+    /* save the current state in the old TSS */
-+    old_eflags = cpu_compute_eflags(env);
-+    if (old_type & 8) {
-+        /* 32 bit */
-+        access_stl(&old, env->tr.base + 0x20, next_eip);
-+        access_stl(&old, env->tr.base + 0x24, old_eflags);
-+        access_stl(&old, env->tr.base + (0x28 + 0 * 4), env->regs[R_EAX]);
-+        access_stl(&old, env->tr.base + (0x28 + 1 * 4), env->regs[R_ECX]);
-+        access_stl(&old, env->tr.base + (0x28 + 2 * 4), env->regs[R_EDX]);
-+        access_stl(&old, env->tr.base + (0x28 + 3 * 4), env->regs[R_EBX]);
-+        access_stl(&old, env->tr.base + (0x28 + 4 * 4), env->regs[R_ESP]);
-+        access_stl(&old, env->tr.base + (0x28 + 5 * 4), env->regs[R_EBP]);
-+        access_stl(&old, env->tr.base + (0x28 + 6 * 4), env->regs[R_ESI]);
-+        access_stl(&old, env->tr.base + (0x28 + 7 * 4), env->regs[R_EDI]);
-+        for (i = 0; i < 6; i++) {
-+            access_stw(&old, env->tr.base + (0x48 + i * 4),
-+                       env->segs[i].selector);
-+        }
-+    } else {
-+        /* 16 bit */
-+        access_stw(&old, env->tr.base + 0x0e, next_eip);
-+        access_stw(&old, env->tr.base + 0x10, old_eflags);
-+        access_stw(&old, env->tr.base + (0x12 + 0 * 2), env->regs[R_EAX]);
-+        access_stw(&old, env->tr.base + (0x12 + 1 * 2), env->regs[R_ECX]);
-+        access_stw(&old, env->tr.base + (0x12 + 2 * 2), env->regs[R_EDX]);
-+        access_stw(&old, env->tr.base + (0x12 + 3 * 2), env->regs[R_EBX]);
-+        access_stw(&old, env->tr.base + (0x12 + 4 * 2), env->regs[R_ESP]);
-+        access_stw(&old, env->tr.base + (0x12 + 5 * 2), env->regs[R_EBP]);
-+        access_stw(&old, env->tr.base + (0x12 + 6 * 2), env->regs[R_ESI]);
-+        access_stw(&old, env->tr.base + (0x12 + 7 * 2), env->regs[R_EDI]);
-+        for (i = 0; i < 4; i++) {
-+            access_stw(&old, env->tr.base + (0x22 + i * 2),
-+                       env->segs[i].selector);
-+        }
-+    }
-+
-     /* read all the registers from the new TSS */
-     if (type & 8) {
-         /* 32 bit */
-@@ -428,49 +464,16 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
-     if (source == SWITCH_TSS_JMP || source == SWITCH_TSS_IRET) {
-         tss_set_busy(env, env->tr.selector, 0, retaddr);
-     }
--    old_eflags = cpu_compute_eflags(env);
-+
-     if (source == SWITCH_TSS_IRET) {
-         old_eflags &= ~NT_MASK;
-+        if (old_type & 8) {
-+            access_stl(&old, env->tr.base + 0x24, old_eflags);
-+        } else {
-+            access_stw(&old, env->tr.base + 0x10, old_eflags);
-+	}
-     }
- 
--    /* save the current state in the old TSS */
--    if (old_type & 8) {
--        /* 32 bit */
--        access_stl(&old, env->tr.base + 0x20, next_eip);
--        access_stl(&old, env->tr.base + 0x24, old_eflags);
--        access_stl(&old, env->tr.base + (0x28 + 0 * 4), env->regs[R_EAX]);
--        access_stl(&old, env->tr.base + (0x28 + 1 * 4), env->regs[R_ECX]);
--        access_stl(&old, env->tr.base + (0x28 + 2 * 4), env->regs[R_EDX]);
--        access_stl(&old, env->tr.base + (0x28 + 3 * 4), env->regs[R_EBX]);
--        access_stl(&old, env->tr.base + (0x28 + 4 * 4), env->regs[R_ESP]);
--        access_stl(&old, env->tr.base + (0x28 + 5 * 4), env->regs[R_EBP]);
--        access_stl(&old, env->tr.base + (0x28 + 6 * 4), env->regs[R_ESI]);
--        access_stl(&old, env->tr.base + (0x28 + 7 * 4), env->regs[R_EDI]);
--        for (i = 0; i < 6; i++) {
--            access_stw(&old, env->tr.base + (0x48 + i * 4),
--                       env->segs[i].selector);
--        }
--    } else {
--        /* 16 bit */
--        access_stw(&old, env->tr.base + 0x0e, next_eip);
--        access_stw(&old, env->tr.base + 0x10, old_eflags);
--        access_stw(&old, env->tr.base + (0x12 + 0 * 2), env->regs[R_EAX]);
--        access_stw(&old, env->tr.base + (0x12 + 1 * 2), env->regs[R_ECX]);
--        access_stw(&old, env->tr.base + (0x12 + 2 * 2), env->regs[R_EDX]);
--        access_stw(&old, env->tr.base + (0x12 + 3 * 2), env->regs[R_EBX]);
--        access_stw(&old, env->tr.base + (0x12 + 4 * 2), env->regs[R_ESP]);
--        access_stw(&old, env->tr.base + (0x12 + 5 * 2), env->regs[R_EBP]);
--        access_stw(&old, env->tr.base + (0x12 + 6 * 2), env->regs[R_ESI]);
--        access_stw(&old, env->tr.base + (0x12 + 7 * 2), env->regs[R_EDI]);
--        for (i = 0; i < 4; i++) {
--            access_stw(&old, env->tr.base + (0x22 + i * 2),
--                       env->segs[i].selector);
--        }
--    }
--
--    /* now if an exception occurs, it will occurs in the next task
--       context */
--
-     if (source == SWITCH_TSS_CALL) {
-         /*
-          * Thanks to the probe_access above, we know the first two
-@@ -486,7 +489,9 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
-     }
- 
-     /* set the new CPU state */
--    /* from this point, any exception which occurs can give problems */
-+
-+    /* now if an exception occurs, it will occur in the next task context */
-+
-     env->cr[0] |= CR0_TS_MASK;
-     env->hflags |= HF_TS_MASK;
-     env->tr.selector = tss_selector;
--- 
-2.45.2
-
+r~
 
