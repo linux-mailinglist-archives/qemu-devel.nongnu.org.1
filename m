@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DE6933558
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 04:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC1F933554
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 04:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTuAx-0007vD-98; Tue, 16 Jul 2024 22:13:51 -0400
+	id 1sTuAz-0008A8-P8; Tue, 16 Jul 2024 22:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAj-0007uI-QX
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:37 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAq-0007xD-8q
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAg-0003Ok-E3
- for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:35 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sTuAj-0003Pe-Ti
+ for qemu-devel@nongnu.org; Tue, 16 Jul 2024 22:13:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721182412;
+ s=mimecast20190719; t=1721182416;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=fpRV929kmfNC8JJGtecvN9j+uR69f4Qs7o0Dmezllb8=;
- b=VRjeezgxPAdJpJ/FAlMcmLYr/oTq+Pk0xswzx/ODJ1jMUuNHuVQcj8TNmhGA2m4J3Pky55
- 7xXQemcVFey8mrvY6dvwIMyjRTWmuEmQGkISPDDkcDZILKP1UEzbpj0wZxYutOr/SdaXyK
- dcN25hal2Zh06w8JYrAMBJiHrJp4Vvo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=m3l8ASEjsy7nsu8L2gv+DbCir13iYXn5KlDrkyhXOHk=;
+ b=hkOcM4QLyIX+cTd3ix+QhpESHQSOnMCpxOm7AF/J2+SucXzbVdu0NaxhmL1KALnNoP9Wrl
+ ojt0Vj+24YbnCEM1Y8tygTQbg0pT0tqEEe2E42pQbf/YKKFAyvyn8c3R3EVKFykBX3/1KA
+ 1S3tDFOCIQPOlVf+TFpxNPykxbVAqIg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-36-EILglWi4M9m7-vapnmKiIQ-1; Tue,
- 16 Jul 2024 22:13:25 -0400
-X-MC-Unique: EILglWi4M9m7-vapnmKiIQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-m3XhqqTkPx26H6P4vR4gLQ-1; Tue,
+ 16 Jul 2024 22:13:31 -0400
+X-MC-Unique: m3XhqqTkPx26H6P4vR4gLQ-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 92C241956046; Wed, 17 Jul 2024 02:13:21 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C18031955D45; Wed, 17 Jul 2024 02:13:26 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.65.127])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1F99D1955F40; Wed, 17 Jul 2024 02:13:12 +0000 (UTC)
+ id 923741955F3B; Wed, 17 Jul 2024 02:13:21 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
@@ -63,13 +64,13 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 0/9] qapi: convert example sections to qmp-example rST
- directives
-Date: Tue, 16 Jul 2024 22:13:02 -0400
-Message-ID: <20240717021312.606116-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v2 1/9] [DO-NOT-MERGE]: Add some ad-hoc linting helpers.
+Date: Tue, 16 Jul 2024 22:13:03 -0400
+Message-ID: <20240717021312.606116-2-jsnow@redhat.com>
+In-Reply-To: <20240717021312.606116-1-jsnow@redhat.com>
+References: <20240717021312.606116-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -96,76 +97,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset focuses on converting example sections to rST directives=0D
-using a new `.. qmp-example::` directive.=0D
-=0D
-V2:=0D
- - Rebased on origin/master; converted one more example=0D
- - Fixed (most?) minor nits from last review=0D
- - Didn't address lack of newline in text mode or enhanced lexer (yet)=0D
-=0D
-Changes since this was split out from the prior series:=0D
-=0D
-- Harmonie updated the CSS for the example block section.=0D
-  I think it's really tidy now! Thanks Harmonie!=0D
-- Dependence on SphinxDirective was removed, but it will likely=0D
-  re-appear in the next series anyway.=0D
-- qapi-code-gen.rst was updated with a section on how to write examples.=0D
-- Various minor tweaks to comments, commit messages, docs, etc.=0D
-=0D
-Harmonie Snow (1):=0D
-  docs/sphinx: add CSS styling for qmp-example directive=0D
-=0D
-John Snow (8):=0D
-  [DO-NOT-MERGE]: Add some ad-hoc linting helpers.=0D
-  docs/qapidoc: factor out do_parse()=0D
-  docs/qapidoc: create qmp-example directive=0D
-  docs/qapidoc: add QMP highlighting to annotated qmp-example blocks=0D
-  qapi: convert "Example" sections without titles=0D
-  qapi: convert "Example" sections with titles=0D
-  qapi: convert "Example" sections with longer prose=0D
-  qapi: remove "Example" doc section=0D
-=0D
- docs/devel/qapi-code-gen.rst           |  58 +++++++++--=0D
- docs/sphinx-static/theme_overrides.css |  49 ++++++++++=0D
- docs/sphinx/qapidoc.py                 | 130 ++++++++++++++++++++++---=0D
- qapi/acpi.json                         |   4 +-=0D
- qapi/block-core.json                   |  88 +++++++++--------=0D
- qapi/block.json                        |  57 ++++++-----=0D
- qapi/char.json                         |  24 +++--=0D
- qapi/control.json                      |   8 +-=0D
- qapi/dump.json                         |   8 +-=0D
- qapi/machine-target.json               |   2 +-=0D
- qapi/machine.json                      |  68 +++++++------=0D
- qapi/migration.json                    |  90 +++++++++--------=0D
- qapi/misc-target.json                  |  22 ++---=0D
- qapi/misc.json                         |  32 +++---=0D
- qapi/net.json                          |  22 +++--=0D
- qapi/pci.json                          |   2 +-=0D
- qapi/qdev.json                         |  10 +-=0D
- qapi/qom.json                          |  16 +--=0D
- qapi/replay.json                       |   8 +-=0D
- qapi/rocker.json                       |   8 +-=0D
- qapi/run-state.json                    |  32 +++---=0D
- qapi/tpm.json                          |   6 +-=0D
- qapi/trace.json                        |   4 +-=0D
- qapi/transaction.json                  |   2 +-=0D
- qapi/ui.json                           |  45 ++++-----=0D
- qapi/vfio.json                         |   2 +-=0D
- qapi/virtio.json                       |  45 ++++++---=0D
- qapi/yank.json                         |   4 +-=0D
- scripts/qapi-lint.sh                   |  61 ++++++++++++=0D
- scripts/qapi/Makefile                  |   5 +=0D
- scripts/qapi/parser.py                 |  10 +-=0D
- tests/qapi-schema/doc-good.json        |  19 ++--=0D
- tests/qapi-schema/doc-good.out         |  26 +++--=0D
- tests/qapi-schema/doc-good.txt         |  23 ++---=0D
- 34 files changed, 662 insertions(+), 328 deletions(-)=0D
- create mode 100755 scripts/qapi-lint.sh=0D
- create mode 100644 scripts/qapi/Makefile=0D
-=0D
--- =0D
-2.45.0=0D
-=0D
+These aren't ready for upstream inclusion, because they do not properly
+manage version dependencies, execution environment and so on. These are
+just the tools I use in my Own Special Environment :tm: for testing and
+debugging.
+
+They've been tested only on Fedora 38 for right now, which means:
+
+Python 3.11.4-1.fc38
+pylint 2.17.4-2.fc38
+mypy 1.4.0-1.fc38
+isort 5.12.0-1.fc38
+flake8 5.0.3-2.fc38
+
+"Soon" :tm: I'll move the qapi generator code under the python/
+directory to take advantage of the more robust linting infrastructure
+there, but that's going to happen after this series. Sorry about that!
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ scripts/qapi-lint.sh  | 61 +++++++++++++++++++++++++++++++++++++++++++
+ scripts/qapi/Makefile |  5 ++++
+ 2 files changed, 66 insertions(+)
+ create mode 100755 scripts/qapi-lint.sh
+ create mode 100644 scripts/qapi/Makefile
+
+diff --git a/scripts/qapi-lint.sh b/scripts/qapi-lint.sh
+new file mode 100755
+index 00000000000..732716f2444
+--- /dev/null
++++ b/scripts/qapi-lint.sh
+@@ -0,0 +1,61 @@
++#!/usr/bin/env bash
++set -e
++
++if [[ -f qapi/.flake8 ]]; then
++    echo "flake8 --config=qapi/.flake8 qapi/"
++    flake8 --config=qapi/.flake8 qapi/
++fi
++if [[ -f qapi/pylintrc ]]; then
++    echo "pylint --rcfile=qapi/pylintrc qapi/"
++    pylint --rcfile=qapi/pylintrc qapi/
++fi
++if [[ -f qapi/mypy.ini ]]; then
++    echo "mypy --config-file=qapi/mypy.ini qapi/"
++    mypy --config-file=qapi/mypy.ini qapi/
++fi
++
++if [[ -f qapi/.isort.cfg ]]; then
++    pushd qapi
++    echo "isort -c ."
++    isort -c .
++    popd
++fi
++
++if [[ -f ../docs/sphinx/qapi-domain.py ]]; then
++    pushd ../docs/sphinx
++
++    echo "mypy --strict qapi-domain.py"
++    mypy --strict qapi-domain.py
++    echo "flake8 qapi-domain.py --max-line-length=99"
++    flake8 qapi-domain.py --max-line-length=99
++    echo "isort qapi-domain.py"
++    isort qapi-domain.py
++    echo "black --check qapi-domain.py"
++    black --check qapi-domain.py
++
++    popd
++fi
++
++if [[ -f ../docs/sphinx/qapidoc.py ]]; then
++    pushd ../docs/sphinx
++
++    echo "pylint --rc-file ../../scripts/qapi/pylintrc qapidoc.py"
++    PYTHONPATH=../scripts/ pylint \
++                         --rc-file ../../scripts/qapi/pylintrc \
++                         qapidoc.py
++    echo "flake8 qapidoc.py --max-line-length=80"
++    flake8 qapidoc.py --max-line-length=80
++    echo "isort qapidoc.py"
++    isort qapidoc.py
++    echo "black --line-length 80 --check qapidoc.py"
++    black --line-length 80 --check qapidoc.py
++
++    popd
++fi
++
++pushd ../build
++make -j13
++make check-qapi-schema
++make docs
++make sphinxdocs
++popd
+diff --git a/scripts/qapi/Makefile b/scripts/qapi/Makefile
+new file mode 100644
+index 00000000000..314e8a5505e
+--- /dev/null
++++ b/scripts/qapi/Makefile
+@@ -0,0 +1,5 @@
++check:
++	isort -c .
++	flake8 .
++	cd .. && pylint --rcfile=qapi/pylintrc qapi
++	cd .. && mypy -p qapi --config-file=qapi/mypy.ini
+-- 
+2.45.0
 
 
