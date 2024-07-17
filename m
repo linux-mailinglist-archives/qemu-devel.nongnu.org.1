@@ -2,88 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE6A934002
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 17:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3249E933FB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 17:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU6sp-0006VX-Jf; Wed, 17 Jul 2024 11:47:59 -0400
+	id 1sU6dO-00005F-FU; Wed, 17 Jul 2024 11:32:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1sU6ft-0004el-8b
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:34:37 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1sU6fr-0004pg-G5
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:34:37 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-367ab76d5e1so2394815f8f.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 08:34:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1721230473; x=1721835273; darn=nongnu.org;
- h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
- :cc:subject:date:message-id:reply-to;
- bh=5oDIohgS1ZQJBzOA3AwPKCN3EDp3pXKXOb8IfIED3xI=;
- b=V8Qi0DBhE/nGuNBqLFTQa8I+y4LD35lMV+syScbLgpcF8ALaPndkRF7Rf3yeITkGUa
- RRzgmyIfY2nvCRY2OHPSThJDcMQqJn/9u8xCoOicTHA7aK4ek+VFLewvDNmOspPlbcdG
- DN0HKbgirl28m9ka4zqQHAyAY/3cz/XVVuYhS5pVLhfwQEk2bmOQGeKjtGuGCW47krLJ
- bn2z6+ouODqQ4ZjguZk7BBqzEy6y2HQMhjVfMEn68JyoEKuEW0cdQkN2nWjpqYX1bZgZ
- oum+2kuz8hbkvKCGxU0Qfw7FeaDWAsHMxABDUjveZjFgbceYeoGncUpysHjpAmZvjNUx
- FqLg==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sU6cr-0008OQ-RB
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:31:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sU6cq-0003wu-07
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 11:31:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721230287;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=c4ZHdx1No2slFPya5wMVWYTJpX1xJhqZkiTzk46H+D0=;
+ b=OQk95jC8etRGC5Ruwxlag/6FVF5OP8lviFkIx45UivoX53Xcxv9ryB8IKqT4/XVq1zFUOt
+ yPhG+D8UKsdywMGUCoa0hXOkD6Fv78Ev57U9tWUkFwqbW0oFFx4vlAYzbk2pjX7KlbUfxc
+ xFKhdAbNcpg9LWCYTxSDH6hcjWBqkKo=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-606-59QxLsKdPheUx4NpqOHeBQ-1; Wed, 17 Jul 2024 11:31:25 -0400
+X-MC-Unique: 59QxLsKdPheUx4NpqOHeBQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-79f06a617a4so183221685a.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 08:31:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721230473; x=1721835273;
- h=references:in-reply-to:message-id:date:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5oDIohgS1ZQJBzOA3AwPKCN3EDp3pXKXOb8IfIED3xI=;
- b=Dvq606F0FpyGOYm6yPgmCtnAvB5r0y6DiRn7gG/is9Y2enwmsqV2PJJZ3nBs826AzT
- okk+snPQuItmKpy0AEqrbLbl2yo4WKGz/Z4x9gRLcqSFsQgwqyADS+C5mj2L+nWTtPTY
- XqqcuGTu9GObBjvcWvi166kNfAdgDwrvCifI0Vm+mNIG2wLI347xNnVHvgueLQ9C3oTj
- eBCaft1UEdHo0sXu3MbRQYkwXtymi9bAPRRS20bjyCvKV0RWvGAgVMKTc6/pmecwos3Z
- p28/pT9An4b/R55/tKPjmaj05bounugJ46ANuWcJB3guJnIr9vwj3iLj7Tzfnu9MybX/
- rJzQ==
-X-Gm-Message-State: AOJu0YxklT9ad6f7oPC6WfPCh1lfq2JKvzOiZx06k/UHEAU2LY1bUG/g
- FJXMzLcO63Nx6J9XMsYqpaQfpJtGG35dCBQ+/fbOH3fJ7ruKSFOdS6gKSJZzxPE9PyqX51q+wzU
- llIEeDw==
-X-Google-Smtp-Source: AGHT+IEUQ6X29LhVbfvTrgKe7YyeB/eRPNwrRdLiZPVgpXpZtfAFV+yMb2SRMJWJ0AjQ/Y9JhCilzw==
-X-Received: by 2002:a5d:4bc4:0:b0:366:efa2:f2f7 with SMTP id
- ffacd0b85a97d-36831600b19mr1598385f8f.1.1721230473321; 
- Wed, 17 Jul 2024 08:34:33 -0700 (PDT)
-Received: from paolo-ThinkPad-T490.sou.embecosm-corp.com ([212.69.42.53])
+ d=1e100.net; s=20230601; t=1721230285; x=1721835085;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=c4ZHdx1No2slFPya5wMVWYTJpX1xJhqZkiTzk46H+D0=;
+ b=oeXaCL0eW+ab3Idizs+0pfPZp99KWCT6Kf3Jd7yA6qnqrmciT8N/9Eo/y5yGVsKuJc
+ trttUAjPIhmKQuxZciqF2BX/zUOs+l3wW5dlsyU0vzKp17BHli6/UknYeJzmb6oLenDQ
+ 1FUGa+8ZzV+o+S3C9a4nIe95aWyOyYMeznLZqnPG++k3VDsaYFniBzcCB18udCBnYisr
+ n7s3yGEyRmfCEe5YElKnwgxCNC4spc8dIrdZmTUoXWqljhmvf6x7M3VxY9P48o++tgFP
+ UhqtaXVMQ9IMIM+gNyjjN/soj1VGFaWUn4qRy1vaXyBEiKe7gwSqipNztP+KrUMbf6ZO
+ oIGw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVteyl+W31iXLDq6K9tSIz4Ym+/23C7Q71vMXJ6Jnv2HfF7WkqWK2vn8uzx9EV681ie9X0bMHjdI7SjNOTjKOiMbWbQgxA=
+X-Gm-Message-State: AOJu0YyxSD0zkNqVOcSR0oEqwgZw5yi/nU4OvZt19b1RYl3uYCmvWL21
+ xcArK+DL7k3EypzSm7mN4kvrgign1JQGwlXEged9P5RIGJa5mBl9HALwZwxnN7+cU4jbT0r46WT
+ IfYbIdrT6GioDzLwTuvRsBeJ+wsFjfDKgnfsapo4p4sXL1L9QG1wn
+X-Received: by 2002:a05:620a:f03:b0:79d:7893:1cc with SMTP id
+ af79cd13be357-7a18da82ce5mr2742985a.12.1721230285106; 
+ Wed, 17 Jul 2024 08:31:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPcvxy56CwJX9lYyvgVDqLc9DXu3mi0bFReMVtpQxIYc+NVdb8anStfNIn711SxCDHRH0lHQ==
+X-Received: by 2002:a05:620a:f03:b0:79d:7893:1cc with SMTP id
+ af79cd13be357-7a18da82ce5mr2735185a.12.1721230284481; 
+ Wed, 17 Jul 2024 08:31:24 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427c779839bsm2369475e9.7.2024.07.17.08.34.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jul 2024 08:34:32 -0700 (PDT)
-From: Paolo Savini <paolo.savini@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Paolo Savini <paolo.savini@embecosm.com>,
- Richard Handerson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Max Chou <max.chou@sifive.com>
-Subject: [RFC 2/2] target/riscv: rvv: improve performance of RISC-V vector
- loads and stores on large amounts of data.
-Date: Wed, 17 Jul 2024 16:30:40 +0100
-Message-Id: <20240717153040.11073-3-paolo.savini@embecosm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240717153040.11073-1-paolo.savini@embecosm.com>
-References: <20240717153040.11073-1-paolo.savini@embecosm.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=paolo.savini@embecosm.com; helo=mail-wr1-x435.google.com
+ af79cd13be357-7a160b92ba7sm414925685a.27.2024.07.17.08.31.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Jul 2024 08:31:24 -0700 (PDT)
+Message-ID: <81699528-a000-4c0f-bd72-006bdb460f9b@redhat.com>
+Date: Wed, 17 Jul 2024 17:31:21 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 16/18] hw/arm/smmuv3: Handle translation faults
+ according to SMMUPTWEventInfo
+Content-Language: en-US
+To: Mostafa Saleh <smostafa@google.com>, qemu-arm@nongnu.org,
+ peter.maydell@linaro.org, qemu-devel@nongnu.org
+Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org,
+ marcin.juszkiewicz@linaro.org
+References: <20240715084519.1189624-1-smostafa@google.com>
+ <20240715084519.1189624-17-smostafa@google.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240715084519.1189624-17-smostafa@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 17 Jul 2024 11:47:57 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,50 +107,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch optimizes the emulation of unit-stride load/store RVV instructions
-when the data being loaded/stored per iteration amounts to 64 bytes or more.
-The optimization consists of calling __builtin_memcpy on chunks of data of 128
-and 256 bytes between the memory address of the simulated vector register and
-the destination memory address and vice versa.
-This is done only if we have direct access to the RAM of the host machine.
 
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
----
- target/riscv/vector_helper.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4b444c6bc5..7674972784 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -486,7 +486,22 @@ vext_group_ldst_host(CPURISCVState *env, void *vd, uint32_t byte_end,
-     }
- 
-     fn = fns[is_load][group_size];
--    fn(vd, byte_offset, host + byte_offset);
-+
-+    if (byte_offset + 32 < byte_end) {
-+      group_size = MO_256;
-+      if (is_load)
-+        __builtin_memcpy((uint8_t *)(vd + byte_offset), (uint8_t *)(host + byte_offset), 32);
-+      else
-+        __builtin_memcpy((uint8_t *)(host + byte_offset), (uint8_t *)(vd + byte_offset), 32);
-+    } else if (byte_offset + 16 < byte_end) {
-+      group_size = MO_128;
-+      if (is_load)
-+        __builtin_memcpy((uint8_t *)(vd + byte_offset), (uint8_t *)(host + byte_offset), 16);
-+      else
-+        __builtin_memcpy((uint8_t *)(host + byte_offset), (uint8_t *)(vd + byte_offset), 16);
-+    } else {
-+      fn(vd, byte_offset, host + byte_offset);
-+    }
- 
-     return 1 << group_size;
- }
--- 
-2.17.1
+On 7/15/24 10:45, Mostafa Saleh wrote:
+> Previously, to check if faults are enabled, it was sufficient to check
+> the current stage of translation and check the corresponding
+> record_faults flag.
+>
+> However, with nesting, it is possible for stage-1 (nested) translation
+> to trigger a stage-2 fault, so we check SMMUPTWEventInfo as it would
+> have the correct stage set from the page table walk.
+>
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+> ---
+>  hw/arm/smmuv3.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+>
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 84cd314b33..d052a2ba24 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -34,9 +34,10 @@
+>  #include "smmuv3-internal.h"
+>  #include "smmu-internal.h"
+>  
+> -#define PTW_RECORD_FAULT(cfg)   (((cfg)->stage == SMMU_STAGE_1) ? \
+> -                                 (cfg)->record_faults : \
+> -                                 (cfg)->s2cfg.record_faults)
+> +#define PTW_RECORD_FAULT(ptw_info, cfg) (((ptw_info).stage == SMMU_STAGE_1 && \
+> +                                        (cfg)->record_faults) || \
+> +                                        ((ptw_info).stage == SMMU_STAGE_2 && \
+> +                                        (cfg)->s2cfg.record_faults))
+>  
+>  /**
+>   * smmuv3_trigger_irq - pulse @irq if enabled and update
+> @@ -933,7 +934,7 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+>              event->u.f_walk_eabt.addr2 = ptw_info.addr;
+>              break;
+>          case SMMU_PTW_ERR_TRANSLATION:
+> -            if (PTW_RECORD_FAULT(cfg)) {
+> +            if (PTW_RECORD_FAULT(ptw_info, cfg)) {
+>                  event->type = SMMU_EVT_F_TRANSLATION;
+>                  event->u.f_translation.addr2 = ptw_info.addr;
+>                  event->u.f_translation.class = class;
+> @@ -941,7 +942,7 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+>              }
+>              break;
+>          case SMMU_PTW_ERR_ADDR_SIZE:
+> -            if (PTW_RECORD_FAULT(cfg)) {
+> +            if (PTW_RECORD_FAULT(ptw_info, cfg)) {
+>                  event->type = SMMU_EVT_F_ADDR_SIZE;
+>                  event->u.f_addr_size.addr2 = ptw_info.addr;
+>                  event->u.f_addr_size.class = class;
+> @@ -949,7 +950,7 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+>              }
+>              break;
+>          case SMMU_PTW_ERR_ACCESS:
+> -            if (PTW_RECORD_FAULT(cfg)) {
+> +            if (PTW_RECORD_FAULT(ptw_info, cfg)) {
+>                  event->type = SMMU_EVT_F_ACCESS;
+>                  event->u.f_access.addr2 = ptw_info.addr;
+>                  event->u.f_access.class = class;
+> @@ -957,7 +958,7 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+>              }
+>              break;
+>          case SMMU_PTW_ERR_PERMISSION:
+> -            if (PTW_RECORD_FAULT(cfg)) {
+> +            if (PTW_RECORD_FAULT(ptw_info, cfg)) {
+>                  event->type = SMMU_EVT_F_PERMISSION;
+>                  event->u.f_permission.addr2 = ptw_info.addr;
+>                  event->u.f_permission.class = class;
 
 
