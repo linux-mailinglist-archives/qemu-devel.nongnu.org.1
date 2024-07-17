@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A126933C14
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C31D933C16
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 13:16:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sU2Xn-0005f5-KV; Wed, 17 Jul 2024 07:09:59 -0400
+	id 1sU2XA-0002AZ-Ky; Wed, 17 Jul 2024 07:09:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sU2Va-0003Sz-Fj; Wed, 17 Jul 2024 07:07:47 -0400
+ id 1sU2Vg-0003rS-6S; Wed, 17 Jul 2024 07:07:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sU2VY-0007Xs-RK; Wed, 17 Jul 2024 07:07:42 -0400
+ id 1sU2Vc-0007Zl-SW; Wed, 17 Jul 2024 07:07:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B02727B380;
+ by isrv.corpit.ru (Postfix) with ESMTP id BF8737B381;
  Wed, 17 Jul 2024 14:06:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 20FBD10B295;
+ by tsrv.corpit.ru (Postfix) with SMTP id 31DEC10B296;
  Wed, 17 Jul 2024 14:06:41 +0300 (MSK)
-Received: (nullmailer pid 844425 invoked by uid 1000);
+Received: (nullmailer pid 844428 invoked by uid 1000);
  Wed, 17 Jul 2024 11:06:40 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-trivial@nongnu.org,
- Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 14/16] backends/iommufd: Get rid of qemu_open_old()
-Date: Wed, 17 Jul 2024 14:06:38 +0300
-Message-Id: <20240717110640.844335-15-mjt@tls.msk.ru>
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 15/16] backends/rng-random: Get rid of qemu_open_old()
+Date: Wed, 17 Jul 2024 14:06:39 +0300
+Message-Id: <20240717110640.844335-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240717110640.844335-1-mjt@tls.msk.ru>
 References: <20240717110640.844335-1-mjt@tls.msk.ru>
@@ -67,35 +67,37 @@ For qemu_open_old(), osdep.h said:
 > Don't introduce new usage of this function, prefer the following
 > qemu_open/qemu_create that take an "Error **errp".
 
-So replace qemu_open_old() with qemu_open().
+So replace qemu_open_old() with qemu_open(). And considering
+rng_random_opened() will lose its obvious error handling case after
+removing error_setg_file_open(), add comment to remind here.
 
-Cc: Yi Liu <yi.l.liu@intel.com>
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: Laurent Vivier <lvivier@redhat.com>
+Cc: Amit Shah <amit@kernel.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+(mjt: drop superfluous commit as suggested by philmd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- backends/iommufd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ backends/rng-random.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 84fefbc9ee..cabd1b5002 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -77,9 +77,8 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
-     int fd;
+diff --git a/backends/rng-random.c b/backends/rng-random.c
+index 80eb5be138..489c0917f0 100644
+--- a/backends/rng-random.c
++++ b/backends/rng-random.c
+@@ -75,10 +75,7 @@ static void rng_random_opened(RngBackend *b, Error **errp)
+         error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+                    "filename", "a valid filename");
+     } else {
+-        s->fd = qemu_open_old(s->filename, O_RDONLY | O_NONBLOCK);
+-        if (s->fd == -1) {
+-            error_setg_file_open(errp, errno, s->filename);
+-        }
++        s->fd = qemu_open(s->filename, O_RDONLY | O_NONBLOCK, errp);
+     }
+ }
  
-     if (be->owned && !be->users) {
--        fd = qemu_open_old("/dev/iommu", O_RDWR);
-+        fd = qemu_open("/dev/iommu", O_RDWR, errp);
-         if (fd < 0) {
--            error_setg_errno(errp, errno, "/dev/iommu opening failed");
-             return false;
-         }
-         be->fd = fd;
 -- 
 2.39.2
 
