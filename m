@@ -2,132 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F7193380F
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 09:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5D9933826
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Jul 2024 09:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sTz9P-0007xI-Pg; Wed, 17 Jul 2024 03:32:36 -0400
+	id 1sTzHh-0005Mc-FT; Wed, 17 Jul 2024 03:41:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTz9G-0007tM-M9
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 03:32:27 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sTzHd-0005L4-Gn
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 03:41:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sTz9E-0005O3-Bg
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 03:32:26 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sTzHb-0001Lj-HW
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 03:41:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721201540;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1721202060;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=2HapaAQSQTyDTjvwhbRfy0uabK+/9TTtih3fbP4Byx8=;
- b=JbJXI88mzQyr+KENyAQSyCbi/nase2aToYyLya2uh8l5TKsio3j76styNIjYXvlJkAx/V3
- 4ZqaRmJLw1/ZSnuYl6fz9fslBoVW+RJoYYsln4XVomIyLRwy2yzdijmKKkwEXFpPCWiDB7
- NsMRcn+DJiUdgqhtd4UHLV+0fNc+22Q=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=ErqzU+MeAVMUCGlNRiooH+sSNWTmSjcZqa73vQYikEk=;
+ b=jF40poeiTLO30gXrIApbKh/q9bxo4ehpZ/mXEDlR/iRteKf2m4JUybI/30FL9NTT04H2r1
+ pVwjkuGyPFJPMqK/R3nDwB2jAQMMQ1ql64/3B7bqEUPxoTIaSZQgEWULRVM3N+srigQ7ok
+ A+QoKoaa0Dve6bmxXHSG/2EajEdqV2A=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-X7NX3k-vM_2F6-_iuKSiHw-1; Wed, 17 Jul 2024 03:32:17 -0400
-X-MC-Unique: X7NX3k-vM_2F6-_iuKSiHw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57c93227bbeso5759765a12.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 00:32:16 -0700 (PDT)
+ us-mta-546-bze6QmJqNeOdqzzBg8Bp2g-1; Wed, 17 Jul 2024 03:40:59 -0400
+X-MC-Unique: bze6QmJqNeOdqzzBg8Bp2g-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42725ef39e2so47538485e9.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 00:40:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721201536; x=1721806336;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2HapaAQSQTyDTjvwhbRfy0uabK+/9TTtih3fbP4Byx8=;
- b=JpVnCvMoLXFlobDTK8fR3ISeoa0iPtIreG92mlTfH0Gp8FF2YX7/265+xz8S+rKNMq
- 5pS77bo/85fP9cPAsUzvKfA4xAVtOHq+MgLGDZlTshfDtUrMD22pa821jEYnCZG4xqnN
- hIww8VMCAL0Blb7KlVCEUaDw2B5v+NkYUWJcCbBlRddJRi06N/IuWUl+ZzFNxfXv4jc0
- HFKGxwSu3NailsASHhsg2RM4H0xF55+fak8/G/c8LQRPGpDZZFa+itrMFcDXo0RDq9dY
- WRNT568krKBsuPMSbkMw8gUURiKEFu4PgSyJfqZO2gn2b8/muq2acHD7vYaYA7hee82r
- BGLQ==
+ d=1e100.net; s=20230601; t=1721202058; x=1721806858;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ErqzU+MeAVMUCGlNRiooH+sSNWTmSjcZqa73vQYikEk=;
+ b=LuOXG2zU02x4P+1hQY0/tu8J/p9KD+PoQ9oSJBq5XI9ECt08IfIcdHHMx4i3fvmgqZ
+ wGJs4dWHWLty4/LAIlTTYvgKrVTqlzESH9C6UjAX5SGO4Qyc3eiiX4dEUlsJdRwvsNem
+ RY3TpfkYQGg8bRcIDxIAsmSLsZjmpAY1z2rq1NGCYx6nUTeN4r74BuTzgBRYJYKuJrKU
+ c2kgb8rUyV10RTPSnx7hrWuopfz2Cv1UFRtzhOih3j+XUbnp5THcbvnaXjmP+y5Ot09O
+ qDo7jWhYtp2MF4NjxQLKFo6eC2+nN1UiBA1DtRuB2r0zFTzBFiM66DX1yxJ/yl+jVd9I
+ gPlw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXCAxsGY+BwLrVGCAP4naaaqG8ZmSG38bupIxyCj7QGLEa1xq9HTnpL+XVklFsHFZG6tFsI6los4pmMdMtp/keQPo8CVOo=
-X-Gm-Message-State: AOJu0YzHuavd39nGeEd5vyLEjirQ+Q6O+Zq/TvPmiYdlzH3SQd1HUZCO
- bT2jdXnSGOpzpjJKlPl23rCuA2S/ez7vorpk8gLL1yNX9TRO8RCDNNIh8xOTw/3Cd21VCTVhtCZ
- IY2gUMm5oJWUlvaVOa702AChpUDSX67ktfYH3LeT+K9w7uo3ibjYZ
-X-Received: by 2002:a50:d683:0:b0:58e:2f0a:d5c8 with SMTP id
- 4fb4d7f45d1cf-5a05d5c74demr603503a12.38.1721201535835; 
- Wed, 17 Jul 2024 00:32:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFsnFGlw4LlwZ8hs7eytHiOSbYGr327KcU6AQ4BIeHQXPa6nOy0TlO4JRORSpz2iRC4uAOnmA==
-X-Received: by 2002:a50:d683:0:b0:58e:2f0a:d5c8 with SMTP id
- 4fb4d7f45d1cf-5a05d5c74demr603483a12.38.1721201535393; 
- Wed, 17 Jul 2024 00:32:15 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-43-177-101.web.vodafone.de.
- [109.43.177.101]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-59f6787bf00sm2183122a12.91.2024.07.17.00.32.14
+ AJvYcCWAQRW0HXfrSbqgSnrNA+tHKgIaoTOelw+mKMY9zVkb0IV32MJdFHhqqfI9UaqF8mrWEgKrY5D7fHK2HGIFzCraJnrk3yo=
+X-Gm-Message-State: AOJu0Yx6CfDzwT9UXVgZnQBoO6Ap4LidFyBFCWXvfGflGDRdjZwu++nh
+ NZEf2hu43KxI6BRE4RnWX/Xbtl0Cu320tjdpT2HQsTqaCDoMWaR099XutukdKeTVot+zPVP6cDK
+ MRwwiWC+uFNZRzDvyyvwpDlFf93VxCkwxhZKcKRa0vNCR4t/21zIg
+X-Received: by 2002:a05:600c:3513:b0:426:6308:e2f0 with SMTP id
+ 5b1f17b1804b1-427c2ce8cecmr5186645e9.26.1721202057953; 
+ Wed, 17 Jul 2024 00:40:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5C14RJhOf7GWVFcNm7qW6BsRzs1EZqD0qJwXXqUAofXhUgMu7lZZ6dEOvYUqUdTbzl5N5WA==
+X-Received: by 2002:a05:600c:3513:b0:426:6308:e2f0 with SMTP id
+ 5b1f17b1804b1-427c2ce8cecmr5186465e9.26.1721202057537; 
+ Wed, 17 Jul 2024 00:40:57 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4279f2d7c9csm194753435e9.48.2024.07.17.00.40.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jul 2024 00:32:14 -0700 (PDT)
-Message-ID: <9a58a934-75c2-4f9d-89a6-3c38e9fae747@redhat.com>
-Date: Wed, 17 Jul 2024 09:32:13 +0200
+ Wed, 17 Jul 2024 00:40:57 -0700 (PDT)
+Message-ID: <d31d814e-ba00-4a2c-b905-d01022883b95@redhat.com>
+Date: Wed, 17 Jul 2024 09:40:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/8] Convert avocado tests to normal Python unittests
-To: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Daniel P . Berrange" <berrange@redhat.com>
-References: <20240711115546.40859-1-thuth@redhat.com>
- <CAFn=p-bMXm9qCD0hWiikyOmagFRryCZWrTx8xne9+x5j0QeNYQ@mail.gmail.com>
- <CABgObfbVdSDiJxNzv5TdUfOLLB=dLCkB0KgFQOxAcnG02gpDLA@mail.gmail.com>
+Subject: Re: [PATCH 3/6] virtio-iommu: Free [host_]resv_ranges on
+ unset_iommu_devices
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <CABgObfbVdSDiJxNzv5TdUfOLLB=dLCkB0KgFQOxAcnG02gpDLA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "mst@redhat.com"
+ <mst@redhat.com>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "clg@redhat.com" <clg@redhat.com>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>
+Cc: "yanghliu@redhat.com" <yanghliu@redhat.com>
+References: <20240716094619.1713905-1-eric.auger@redhat.com>
+ <20240716094619.1713905-4-eric.auger@redhat.com>
+ <SJ0PR11MB6744D54C9B81BD1AD2BE5E1A92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <SJ0PR11MB6744D54C9B81BD1AD2BE5E1A92A32@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -147,59 +113,154 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/07/2024 20.03, Paolo Bonzini wrote:
-> 
-> 
-> Il mar 16 lug 2024, 18:45 John Snow <jsnow@redhat.com 
-> <mailto:jsnow@redhat.com>> ha scritto:
-> 
->     My only ask is that we keep the tests running in the custom venv
->     environment we set up at build time
-> 
-> 
-> Yes, they do, however pytest should also be added to pythondeps.toml if we 
-> go this way.
-> 
->     If we move to pytest, it's possible we can eliminate that funkiness,
->     which would be a win.
-> 
-> 
-> There is the pycotap dependency to produce TAP from pytest, but that's 
-> probably something small enough to be vendored.
+Hi Zhenzhong,
 
-The next version is only depending on pycotap now. I'm installing it in the 
-venv there that we also install when running the old avocado tests. Not sure 
-whether that's the best solution, though. Would it be OK to have it in 
-python/wheels/ instead?
+On 7/17/24 05:06, Duan, Zhenzhong wrote:
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Subject: [PATCH 3/6] virtio-iommu: Free [host_]resv_ranges on
+>> unset_iommu_devices
+>>
+>> We are currently missing the deallocation of the [host_]resv_regions
+>> in case of hot unplug. Also to make things more simple let's rule
+>> out the case where multiple HostIOMMUDevices would be aliased and
+>> attached to the same IOMMUDevice. This allows to remove the handling
+>> of conflicting Host reserved regions. Anyway this is not properly
+>> supported at guest kernel level. On hotunplug the reserved regions
+>> are reset to the ones set by virtio-iommu property.
+>>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>> ---
+>> hw/virtio/virtio-iommu.c | 62 ++++++++++++++++++----------------------
+>> 1 file changed, 28 insertions(+), 34 deletions(-)
+>>
+>> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+>> index 2c54c0d976..2de41ab412 100644
+>> --- a/hw/virtio/virtio-iommu.c
+>> +++ b/hw/virtio/virtio-iommu.c
+>> @@ -538,8 +538,6 @@ static int
+>> virtio_iommu_set_host_iova_ranges(VirtIOIOMMU *s, PCIBus *bus,
+>> {
+>>     IOMMUPciBus *sbus = g_hash_table_lookup(s->as_by_busptr, bus);
+>>     IOMMUDevice *sdev;
+>> -    GList *current_ranges;
+>> -    GList *l, *tmp, *new_ranges = NULL;
+>>     int ret = -EINVAL;
+>>
+>>     if (!sbus) {
+>> @@ -553,33 +551,10 @@ static int
+>> virtio_iommu_set_host_iova_ranges(VirtIOIOMMU *s, PCIBus *bus,
+>>         return ret;
+>>     }
+>>
+>> -    current_ranges = sdev->host_resv_ranges;
+>> -
+>> -    /* check that each new resv region is included in an existing one */
+>>     if (sdev->host_resv_ranges) {
+>> -        range_inverse_array(iova_ranges,
+>> -                            &new_ranges,
+>> -                            0, UINT64_MAX);
+>> -
+>> -        for (tmp = new_ranges; tmp; tmp = tmp->next) {
+>> -            Range *newr = (Range *)tmp->data;
+>> -            bool included = false;
+>> -
+>> -            for (l = current_ranges; l; l = l->next) {
+>> -                Range * r = (Range *)l->data;
+>> -
+>> -                if (range_contains_range(r, newr)) {
+>> -                    included = true;
+>> -                    break;
+>> -                }
+>> -            }
+>> -            if (!included) {
+>> -                goto error;
+>> -            }
+>> -        }
+>> -        /* all new reserved ranges are included in existing ones */
+>> -        ret = 0;
+>> -        goto out;
+>> +        error_setg(errp, "%s virtio-iommu does not support aliased BDF",
+>> +                   __func__);
+>> +        return ret;
+>>     }
+>>
+>>     range_inverse_array(iova_ranges,
+>> @@ -588,14 +563,31 @@ static int
+>> virtio_iommu_set_host_iova_ranges(VirtIOIOMMU *s, PCIBus *bus,
+>>     rebuild_resv_regions(sdev);
+>>
+>>     return 0;
+>> -error:
+>> -    error_setg(errp, "%s Conflicting host reserved ranges set!",
+>> -               __func__);
+>> -out:
+>> -    g_list_free_full(new_ranges, g_free);
+>> -    return ret;
+>> }
+>>
+>> +static void virtio_iommu_unset_host_iova_ranges(VirtIOIOMMU *s,
+>> PCIBus *bus,
+>> +                                                int devfn)
+>> +{
+>> +    IOMMUPciBus *sbus = g_hash_table_lookup(s->as_by_busptr, bus);
+>> +    IOMMUDevice *sdev;
+>> +
+>> +    if (!sbus) {
+>> +        return;
+>> +    }
+>> +
+>> +    sdev = sbus->pbdev[devfn];
+>> +    if (!sdev) {
+>> +        return;
+>> +    }
+>> +
+>> +    g_list_free_full(g_steal_pointer(&sdev->host_resv_ranges), g_free);
+>> +    g_list_free_full(sdev->resv_regions, g_free);
+>> +    sdev->host_resv_ranges = NULL;
+>> +    sdev->resv_regions = NULL;
+>> +    add_prop_resv_regions(sdev);
+> Is this necessary? rebuild_resv_regions() will do that again.
+My goal was to reset the state that existed before the
 
-> And also it depends on what 
-> the dependencies would be for the assets framework.
- >
->     I'm also not so sure about recreating all of the framework that pulls vm
->     images on demand, that sounds like it'd be a lot of work, but maybe I'm
->     wrong about that.
-> 
-> 
-> Yep, that's the part that I am a bit more doubtful about.
+virtio_iommu_set_host_iova_ranges() was called. prop resv regions were originally added in virtio_iommu_find_add_as. 
+The next device to be hotplugged at this aliased bdf is not necessarily a VFIO device (may be a virtio one), in which case we would miss the prop resv regions.
 
-As I'm mentioned elsewhere, the tests that really have a hard dependency on 
-the Avocado framework are only the tests that use the cloud-init images via 
-the LinuxTest class. That's currently onle these files:
+>
+> Other than that, for the whole series,
+>
+> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-- boot_linux.py
-- hotplug_blk.py
-- hotplug_cpu.py
-- intel_iommu.py
-- replay_linux.py
-- smmu.py
+Thanks!
 
-I assume we could continue using avocado.utils for the cloud-init stuff 
-there, and just run them via the meson test runner, too. I'll give it a try 
-when I get some spare time.
-
-  Thomas
+Eric
+>
+> Thanks
+> Zhenzhong
+>
+>> +}
+>> +
+>> +
+>> static bool check_page_size_mask(VirtIOIOMMU *viommu, uint64_t
+>> new_mask,
+>>                                  Error **errp)
+>> {
+>> @@ -704,6 +696,8 @@ virtio_iommu_unset_iommu_device(PCIBus *bus,
+>> void *opaque, int devfn)
+>>     if (!hiod) {
+>>         return;
+>>     }
+>> +    virtio_iommu_unset_host_iova_ranges(viommu, hiod->aliased_bus,
+>> +                                        hiod->aliased_devfn);
+>>
+>>     g_hash_table_remove(viommu->host_iommu_devices, &key);
+>> }
+>> --
+>> 2.41.0
 
 
