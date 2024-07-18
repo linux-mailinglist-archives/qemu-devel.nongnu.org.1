@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9521B934B1F
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA58934B2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:48:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUNhq-00048z-7j; Thu, 18 Jul 2024 05:45:46 -0400
+	id 1sUNhs-0004I8-HM; Thu, 18 Jul 2024 05:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sUNhl-0003pC-B4
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:41 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ id 1sUNhn-0003wU-1n
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:43 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sUNhg-0007fI-1i
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:41 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2eecb63de15so7914661fa.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 02:45:35 -0700 (PDT)
+ id 1sUNhg-0007fn-K8
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:42 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52e97e5a84bso163593e87.2
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 02:45:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721295934; x=1721900734; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721295935; x=1721900735; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w/7VI3SrH+zYbARBw7BAZJVT4QrnBg3//kUdSkwSc88=;
- b=lvhCLR/kr5rUecCPJAWbY3Y4wSN4I9Dw6jIxwj2mfokY4BgFH8jjMftF2q3DgNNqu8
- qXvsANQXcEhx+V3X+LL/jdxcWwdSf1L0+kEnfle45uvsaaLgghktDZtpWCa2Ztzbt066
- byJjLmlXKLu4CGIU2EEUbk++7lR87PtutAm69crsLOyO+299ChyOMgZj6W6D8oBZrJ4E
- ZtC/vlFhyFhKWX1oCnavhSaRPo9DCbukfd4irdhlYrUKHHZd0VsCN+iet7MxDD6uRETQ
- kUeMXIpwjHijsq7APK9RlAPZYuX5lDICNvYolZgxT/rkfvUZb5BnBznhYTRioiGKmPCq
- 3ILw==
+ bh=zvJgiNwmcThWcFCTBkYzV1Mv+ko91ZQ+foVJXf+2J8s=;
+ b=yKZ7xzVVA3zz+w0bz3Kq6b6nvV7swgD/M7uETtYxSRWz5maB8D4tN9R9AuOGeTa8Gh
+ EksKpUKOJKFWVUx1HYfd6yh19KFG2M8X27bbl7gSBeRd9PlKouWcrsnSc7GoS/DGdBZn
+ KD1ppXsfTkalRGclOwX0NFdpZIJLJOIQptML4S5mUrhdh9fLPk+0HK/vI2Fx5CJPnRvR
+ FQfO88e8f096mxrurl7jLYMgCDRG4m3aTlmy+1hljc4Xy4VFJcbriAAn8hLCCUmOj069
+ kRaQ/mlXI0OiBKb2WoyEjU8rrhXoxRHj+qHgIOzQaOfzw4Z6jB9HEtGfCXsQ2mhZ+mu4
+ 7eMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721295934; x=1721900734;
+ d=1e100.net; s=20230601; t=1721295935; x=1721900735;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w/7VI3SrH+zYbARBw7BAZJVT4QrnBg3//kUdSkwSc88=;
- b=rdS6jyv1WAAehLCosg/w1PI6Nop3WZRHqpEQegge0OEYX1SXFHQlSqUS7z5XyYXQw1
- 2vb+4IZmP6rm2brIxXmYThHh9DHHhmb6HcJLnqr6kwPtkutw+UbI9Gz+7nFtLuApJi5g
- jQ8Jia+GCGE5+JWedLU9y6M79qe5N1QzN51P17tybPDAUuhGaUsgnPbd7/gJ767WOLzw
- TuXMMkPvCgC8gULufcUwLLoaoNA8P5sPJACz2q7wWXnk31OKG2Uyq4LJm0Z+UF0xkcKw
- 7YRckHbxjpVvoz/npOvNR9dNv9+0aI2E6b/EoiBBOUFxYmkNy6N1yHkciAmNhgsPea9w
- z0sA==
-X-Gm-Message-State: AOJu0Yy0+ZWgqO4qR956TZOiSYPcHQ58fuKabg0vBRGqYESMGT1HM+yP
- n+9li2hZOGwoQIVGyFbsBb9w848Wvry5K6ytzDjZ+QnRdEA5Ed/kw7F27St/1kM=
-X-Google-Smtp-Source: AGHT+IH7mkm50t7cPihnPA+Mtp7c1MaBPZ88YW30rwtZtUvq/IeLelvANvv5qyYv9a3slQ04XnZLtw==
-X-Received: by 2002:a2e:9b54:0:b0:2ee:8d07:3d51 with SMTP id
- 38308e7fff4ca-2ef05d73becmr12317431fa.49.1721295933810; 
- Thu, 18 Jul 2024 02:45:33 -0700 (PDT)
+ bh=zvJgiNwmcThWcFCTBkYzV1Mv+ko91ZQ+foVJXf+2J8s=;
+ b=AlD27aZhAwt302L7mowj4RtUydQvqhZ7Vh4xH1T0zWfWQAhQSMn4s7FJaV+ogbextM
+ +h8HRdUk2RUzv6zMjSBG9ixREjXVUypnGuZU1nqDtxJblV5YggdntCeefFvhXL2j8f8w
+ AtSVpz/LjpO7Txoe3U15xfJNsb5Fc+L/L4/ihOA38ISfEoC9m3+VyfwUtGVAxYCtPXbb
+ kqkFdGtqSELlpPpR1PIWGrFK1ej8OHKk9WvAlkBbLuRBm83o+7KNsz1KjOhgFWUXru4j
+ maufS13K+8aLy7H0hnw+CmVlC7yMVTimMjHn8KaWCfVLejAXDEl4P43vxNjIbBieyUKS
+ nR8A==
+X-Gm-Message-State: AOJu0YyXfDCODQuv0iUjbaAZbDnex8LSuF6IfN/oKN/APefWkjdVR397
+ K9BlGgyCX1187wo4aLxv93MSg/bgnRvi1SnfV0ryzjZc14c/y3TbzlwP+Pf/fos=
+X-Google-Smtp-Source: AGHT+IGkDnpofRCqEyh9TQ1ep1d6k+xGyj6O5wmjWpiYgxWieKAmCW2Ju6zOzJf897q1BkALLYh68w==
+X-Received: by 2002:ac2:4e0b:0:b0:52e:d0f8:2d43 with SMTP id
+ 2adb3069b0e04-52ee53b6f01mr3409785e87.17.1721295934626; 
+ Thu, 18 Jul 2024 02:45:34 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-59b24a76f02sm8189084a12.2.2024.07.18.02.45.27
+ a640c23a62f3a-a79bc5a38d9sm541521566b.25.2024.07.18.02.45.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 18 Jul 2024 02:45:28 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 15DCD5FBD9;
+ by draig.lan (Postfix) with ESMTP id 2DF765FC6F;
  Thu, 18 Jul 2024 10:45:25 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Max Filippov <jcmvbkbc@gmail.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 11/15] target/m68k: Restrict semihosting to TCG
-Date: Thu, 18 Jul 2024 10:45:19 +0100
-Message-Id: <20240718094523.1198645-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/15] target/mips: Restrict semihosting to TCG
+Date: Thu, 18 Jul 2024 10:45:20 +0100
+Message-Id: <20240718094523.1198645-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240718094523.1198645-1-alex.bennee@linaro.org>
 References: <20240718094523.1198645-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,28 +115,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The semihosting feature depends on TCG (due to the probe_access
-API access). Although TCG is the single accelerator currently
-available for the m68k target, use the Kconfig "imply" directive
-which is more correct (if we were to support a different accel).
+Semihosting currently uses the TCG probe_access API. To prepare for
+encoding the TCG dependency in Kconfig, do not enable it unless TCG
+is available.
 
-Reported-by: Anton Johansson <anjo@rev.ng>
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240717105723.58965-5-philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-Id: <20240717105723.58965-6-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/m68k/Kconfig | 2 +-
+ target/mips/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/m68k/Kconfig b/target/m68k/Kconfig
-index 9eae71486f..23aae24ebe 100644
---- a/target/m68k/Kconfig
-+++ b/target/m68k/Kconfig
-@@ -1,3 +1,3 @@
- config M68K
+diff --git a/target/mips/Kconfig b/target/mips/Kconfig
+index eb19c94c7d..876048b150 100644
+--- a/target/mips/Kconfig
++++ b/target/mips/Kconfig
+@@ -1,6 +1,6 @@
+ config MIPS
      bool
 -    select SEMIHOSTING
 +    imply SEMIHOSTING if TCG
+ 
+ config MIPS64
+     bool
 -- 
 2.39.2
 
