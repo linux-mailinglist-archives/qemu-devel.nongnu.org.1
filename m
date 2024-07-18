@@ -2,74 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CAA9347EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 08:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77761934856
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 08:52:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUKQE-00039D-7H; Thu, 18 Jul 2024 02:15:22 -0400
+	id 1sUKxp-0004gF-TF; Thu, 18 Jul 2024 02:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUKQ8-000367-68
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 02:15:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1sUKxn-0004fC-8S; Thu, 18 Jul 2024 02:50:03 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUKQ4-0004Mo-3q
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 02:15:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721283311;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZEVVQJSTY9HCtSlr1Q/xug+Em8nngDWrelzkU8eS0Bs=;
- b=NXxTiifHtBTWbAwe5KrKl3UAuA7Rhs6GqW5QAsHUxsexSTsON/De6rFK7Z09cH1Z9NAA2/
- eCFlYoKZZDGa07ms84OS7bqQzSbMFUmcmBV/dtAFEY+uz2ZKw/sm4gjkx+dO8TNcviJpzb
- GOmCmuO/DA9MaUuSSGFM7GqfR1pJRBM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-rXTqjqB4Op-Y_rEaULqDvw-1; Thu,
- 18 Jul 2024 02:15:05 -0400
-X-MC-Unique: rXTqjqB4Op-Y_rEaULqDvw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9E7561955D52; Thu, 18 Jul 2024 06:15:04 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A354D19560AA; Thu, 18 Jul 2024 06:15:03 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5A85E21E668A; Thu, 18 Jul 2024 08:15:01 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Octavian Purdila <tavip@google.com>
-Cc: qemu-devel@nongnu.org,  marcandre.lureau@redhat.com,  eblake@redhat.com,
- armbru@redhat.com,  peter.maydell@linaro.org,  berrange@redhat.com,
- Paulo Neves <ptsneves@gmail.com>
-Subject: Re: [PATCH v3] chardev: add path option for pty backend
-In-Reply-To: <20240605185050.1678102-1-tavip@google.com> (Octavian Purdila's
- message of "Wed, 5 Jun 2024 11:50:50 -0700")
-References: <20240605185050.1678102-1-tavip@google.com>
-Date: Thu, 18 Jul 2024 08:15:01 +0200
-Message-ID: <87r0br8bve.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1sUKxk-00047C-PI; Thu, 18 Jul 2024 02:50:02 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 18 Jul
+ 2024 14:49:25 +0800
+Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Thu, 18 Jul 2024 14:49:25 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>, "open
+ list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <yunlin.tang@aspeedtech.com>
+Subject: [PATCH v1 00/15] support ADC and I2C for AST2700
+Date: Thu, 18 Jul 2024 14:49:10 +0800
+Message-ID: <20240718064925.1846074-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_FAIL=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,281 +57,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Looks like this one fell through the cracks.
+v1: 
+1. support ADC for AST2700
+2. support I2C for AST2700
 
-Octavian Purdila <tavip@google.com> writes:
+Jamin Lin (15):
+  aspeed/adc: Add AST2700 support
+  aspeed/soc: support ADC for AST2700
+  hw/i2c/aspeed: support to set the different memory size
+  hw/i2c/aspeed: support discontinuous register memory region of I2C bus
+  hw/i2c/aspeed: rename the I2C class pool attribute to share_pool
+  hw/i2c/aspeed: introduce a new bus pool buffer attribute in
+    AspeedI2Cbus
+  hw/i2c/aspeed: support discontinuous poll buffer memory region of I2C
+    bus
+  hw/i2c/aspeed: introduce a new dma_dram_offset attribute in
+    AspeedI2Cbus
+  hw/i2c/aspeed: Add AST2700 support
+  hw/i2c/aspeed: support Tx/Rx buffer 64 bits address
+  hw/i2c/aspeed: support high part dram offset for DMA 64 bits
+  aspeed/soc: introduce a new API to get the INTC orgate information
+  aspeed/soc: support I2C for AST2700
+  aspeed: fix coding style
+  aspeed: add tmp105 in i2c bus 0 for AST2700
 
-> Add path option to the pty char backend which will create a symbolic
-> link to the given path that points to the allocated PTY.
->
-> This avoids having to make QMP or HMP monitor queries to find out what
-> the new PTY device path is.
+ hw/adc/aspeed_adc.c         |  16 ++
+ hw/arm/aspeed.c             |  31 +++-
+ hw/arm/aspeed_ast27x0.c     |  65 +++++++
+ hw/i2c/aspeed_i2c.c         | 340 ++++++++++++++++++++++++++++++------
+ include/hw/adc/aspeed_adc.h |   1 +
+ include/hw/i2c/aspeed_i2c.h |  34 ++--
+ 6 files changed, 418 insertions(+), 69 deletions(-)
 
-QMP commands chardev-add and chardev-change return the information you
-want:
-
-    # @pty: name of the slave pseudoterminal device, present if and only
-    #     if a chardev of type 'pty' was created
-
-So does HMP command chardev-add.  HMP chardev apparently doesn't, but
-that could be fixed.
-
-So, the use case is basically the command line, right?
-
-> Based on patch from Paulo Neves:
->
-> https://patchew.org/QEMU/1548509635-15776-1-git-send-email-ptsneves@gmail=
-.com/
->
-> Tested with the following invocations that the link is created and
-> removed when qemu stops:
->
->   qemu-system-x86_64 -nodefaults -mon chardev=3Dcompat_monitor \
->   -chardev pty,path=3Dtest,id=3Dcompat_monitor0
->
->   qemu-system-x86_64 -nodefaults -monitor pty:test
->
-> Also tested that when a link path is not passed invocations still work, e=
-.g.:
->
->   qemu-system-x86_64 -monitor pty
->
-> Co-authored-by: Paulo Neves <ptsneves@gmail.com>
-> Signed-off-by: Paulo Neves <ptsneves@gmail.com>
-> [OP: rebase and address original patch review comments]
-> Signed-off-by: Octavian Purdila <tavip@google.com>
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
-> Changes since v2:
->
->  * remove NULL path check, g_strdup() allows NULL inputs=20=20
->
-> Changes since v1:
->
->  * Keep the original Signed-off-by from Paulo and add one line
->     description with further changes
->
->  * Update commit message with justification for why the new
->     functionality is useful
->
->  * Don't close master_fd when symlink creation fails to avoid double
->     close
->
->  * Update documentation for clarity
->
-> chardev/char-pty.c | 33 +++++++++++++++++++++++++++++++++
->  chardev/char.c     |  5 +++++
->  qapi/char.json     |  4 ++--
->  qemu-options.hx    | 24 ++++++++++++++++++------
->  4 files changed, 58 insertions(+), 8 deletions(-)
->
-> diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-> index cc2f7617fe..5c6172ddba 100644
-> --- a/chardev/char-pty.c
-> +++ b/chardev/char-pty.c
-> @@ -29,6 +29,7 @@
->  #include "qemu/sockets.h"
->  #include "qemu/error-report.h"
->  #include "qemu/module.h"
-> +#include "qemu/option.h"
->  #include "qemu/qemu-print.h"
->=20=20
->  #include "chardev/char-io.h"
-> @@ -41,6 +42,7 @@ struct PtyChardev {
->=20=20
->      int connected;
->      GSource *timer_src;
-> +    char *symlink_path;
->  };
->  typedef struct PtyChardev PtyChardev;
->=20=20
-> @@ -204,6 +206,12 @@ static void char_pty_finalize(Object *obj)
->      Chardev *chr =3D CHARDEV(obj);
->      PtyChardev *s =3D PTY_CHARDEV(obj);
->=20=20
-> +    /* unlink symlink */
-> +    if (s->symlink_path) {
-> +        unlink(s->symlink_path);
-> +        g_free(s->symlink_path);
-> +    }
-
-Runs when the chardev object is finalized.
-
-Doesn't run when QEMU crashes.  Stale symlink left behind then.  Can't
-see how you could avoid that at reasonable cost.  Troublesome all the
-same.
-
-> +
->      pty_chr_state(chr, 0);
->      object_unref(OBJECT(s->ioc));
->      pty_chr_timer_cancel(s);
-> @@ -330,6 +338,7 @@ static void char_pty_open(Chardev *chr,
->      int master_fd, slave_fd;
->      char pty_name[PATH_MAX];
->      char *name;
-> +    char *symlink_path =3D backend->u.pty.data->device;
->=20=20
->      master_fd =3D qemu_openpty_raw(&slave_fd, pty_name);
->      if (master_fd < 0) {
-> @@ -354,12 +363,36 @@ static void char_pty_open(Chardev *chr,
->      g_free(name);
->      s->timer_src =3D NULL;
->      *be_opened =3D false;
-> +
-> +    /* create symbolic link */
-> +    if (symlink_path) {
-> +        int res =3D symlink(pty_name, symlink_path);
-> +
-> +        if (res !=3D 0) {
-> +            error_setg_errno(errp, errno, "Failed to create PTY symlink"=
-);
-> +        } else {
-> +            s->symlink_path =3D g_strdup(symlink_path);
-> +        }
-> +    }
-> +}
-> +
-> +static void char_pty_parse(QemuOpts *opts, ChardevBackend *backend,
-> +                           Error **errp)
-> +{
-> +    const char *path =3D qemu_opt_get(opts, "path");
-> +    ChardevHostdev *dev;
-> +
-> +    backend->type =3D CHARDEV_BACKEND_KIND_PTY;
-> +    dev =3D backend->u.pty.data =3D g_new0(ChardevHostdev, 1);
-> +    qemu_chr_parse_common(opts, qapi_ChardevHostdev_base(dev));
-> +    dev->device =3D g_strdup(path);
-
-Put a pin into this line.
-
->  }
->=20=20
->  static void char_pty_class_init(ObjectClass *oc, void *data)
->  {
->      ChardevClass *cc =3D CHARDEV_CLASS(oc);
->=20=20
-> +    cc->parse =3D char_pty_parse;
->      cc->open =3D char_pty_open;
->      cc->chr_write =3D char_pty_chr_write;
->      cc->chr_update_read_handler =3D pty_chr_update_read_handler;
-> diff --git a/chardev/char.c b/chardev/char.c
-> index 3c43fb1278..404c6b8a4f 100644
-> --- a/chardev/char.c
-> +++ b/chardev/char.c
-> @@ -428,6 +428,11 @@ QemuOpts *qemu_chr_parse_compat(const char *label, c=
-onst char *filename,
->          qemu_opt_set(opts, "path", p, &error_abort);
->          return opts;
->      }
-> +    if (strstart(filename, "pty:", &p)) {
-> +        qemu_opt_set(opts, "backend", "pty", &error_abort);
-> +        qemu_opt_set(opts, "path", p, &error_abort);
-> +        return opts;
-> +    }
->      if (strstart(filename, "tcp:", &p) ||
->          strstart(filename, "telnet:", &p) ||
->          strstart(filename, "tn3270:", &p) ||
-> diff --git a/qapi/char.json b/qapi/char.json
-> index 777dde55d9..4c74bfc437 100644
-> --- a/qapi/char.json
-> +++ b/qapi/char.json
-> @@ -509,7 +509,7 @@
->  ##
->  # @ChardevHostdevWrapper:
->  #
-> -# @data: Configuration info for device and pipe chardevs
-> +# @data: Configuration info for device, pty and pipe chardevs
->  #
->  # Since: 1.4
->  ##
-   { 'struct': 'ChardevHostdev',
-     'data': { 'device': 'str' },
-     'base': 'ChardevCommon' }
-> @@ -650,7 +650,7 @@
->              'pipe': 'ChardevHostdevWrapper',
->              'socket': 'ChardevSocketWrapper',
->              'udp': 'ChardevUdpWrapper',
-> -            'pty': 'ChardevCommonWrapper',
-> +            'pty': 'ChardevHostdevWrapper',
-
-This adds member @device.
-
-The fact that @device is since 9.1 remains undocumented.
-
-In HMP and CLI, the new option is called "path".
-
-In QMP, it's called "device".  Not only is this inconsistent (see the
-pin above), it's misleading: it's not a device name, it's the name of a
-symbolic link pointing to a slave PTY device file.
-
->              'null': 'ChardevCommonWrapper',
->              'mux': 'ChardevMuxWrapper',
->              'msmouse': 'ChardevCommonWrapper',
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 8ca7f34ef0..94ffb1a605 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -3569,7 +3569,7 @@ DEF("chardev", HAS_ARG, QEMU_OPTION_chardev,
->      "-chardev console,id=3Did[,mux=3Don|off][,logfile=3DPATH][,logappend=
-=3Don|off]\n"
->      "-chardev serial,id=3Did,path=3Dpath[,mux=3Don|off][,logfile=3DPATH]=
-[,logappend=3Don|off]\n"
->  #else
-> -    "-chardev pty,id=3Did[,mux=3Don|off][,logfile=3DPATH][,logappend=3Do=
-n|off]\n"
-> +    "-chardev pty,id=3Did[,path=3Dpath][,mux=3Don|off][,logfile=3DPATH][=
-,logappend=3Don|off]\n"
->      "-chardev stdio,id=3Did[,mux=3Don|off][,signal=3Don|off][,logfile=3D=
-PATH][,logappend=3Don|off]\n"
->  #endif
->  #ifdef CONFIG_BRLAPI
-> @@ -3808,12 +3808,18 @@ The available backends are:
->=20=20
->      ``path`` specifies the name of the serial device to open.
->=20=20
-> -``-chardev pty,id=3Did``
-> -    Create a new pseudo-terminal on the host and connect to it. ``pty``
-> -    does not take any options.
-> +``-chardev pty,id=3Did[,path=3Dpath]``
-> +    Create a new pseudo-terminal on the host and connect to it.
->=20=20
->      ``pty`` is not available on Windows hosts.
->=20=20
-> +    If ``path`` is specified, QEMU will create a symbolic link at
-> +    that location which points to the new PTY device.
-> +
-> +    This avoids having to make QMP or HMP monitor queries to find out
-> +    what the new PTY device path is.
-> +
-> +
->  ``-chardev stdio,id=3Did[,signal=3Don|off]``
->      Connect to standard input and standard output of the QEMU process.
->=20=20
-> @@ -4171,8 +4177,14 @@ SRST
->=20=20
->              vc:80Cx24C
->=20=20
-> -    ``pty``
-> -        [Linux only] Pseudo TTY (a new PTY is automatically allocated)
-> +    ``pty[:path]``
-> +        [Linux only] Pseudo TTY (a new PTY is automatically allocated).
-> +
-> +        If ``path`` is specified, QEMU will create a symbolic link at
-> +        that location which points to the new PTY device.
-> +
-> +        This avoids having to make QMP or HMP monitor queries to find
-> +        out what the new PTY device path is.
->=20=20
->      ``none``
->          No device is allocated. Note that for machine types which
-
-Sure we want to extend the old-style syntax?  I vaguely recall we
-already have certain configuration knobs that are unavailable there.
-
-
-The feature feels rather doubtful to me, to be honest.
+-- 
+2.34.1
 
 
