@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB04D934A05
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 10:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EC1934A09
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 10:40:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUMfE-0001Ju-00; Thu, 18 Jul 2024 04:39:00 -0400
+	id 1sUMfN-0001sz-KY; Thu, 18 Jul 2024 04:39:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUMfC-0001DH-9D
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:38:58 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUMfK-0001kW-IS
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:39:06 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUMfA-0004gQ-LA
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:38:58 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4266fd395eeso420005e9.3
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 01:38:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUMfI-0004gq-VO
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:39:06 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-42726d6eca5so438475e9.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 01:39:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721291934; x=1721896734; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721291943; x=1721896743; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9ZkYqvJBN+Ms+VQxfxYaIWgzMBdCSAtS0DZxHKASYzs=;
- b=Vb8YuQkVa34ngOnrdB+7Gng8mXDOdjQfkcZBxz4uMIhAVrf+aYuY7um68nZgCQlAS+
- cIGq+fuxTiKoGq4OrwOZs4F6/uc+XG3z8qtRfjBGdPzXsMknwgJNjyRh3IX52Kgang8M
- R7NRSlm7qTMHEBC5BK406IZecKnmv61QpdD5gbb7ytaNpIOnFAGENEUvUiU+bNHI/NvV
- oMdPR+8xrA22qCiIfunUUrYihWIRTpC8PG3JdldB8zGwBVavhZox4bUxiYRGTNJZACpA
- wOiQ7Yld1NEYozwghKCUSADWIL6NTEU/DXdQmJTZs9OUaEYLnHgFqPK0B52PZp065QSa
- rCMA==
+ bh=f3KoNavigW3dLA5bJeMlYDVs2sTflgXH0yz8/6ddF9M=;
+ b=jJ6NRMEL9aN438Oyl77lWeKfJ4wY2w85qHurhCkqTr1aOFcpbH+O/uDPfAzz0qLc6/
+ /IldDQr6LhgDQUg3JFIdYETEzL0dcKDgP8uKeFsMAkmT4whyJ5jbKL3e5LW+r+pZBMp9
+ FXMunO26OVKZBsrrDFCT3dwk9uB+DUZvXv5I1UrvGWlsBfauw0DW3+Lf95QHNF6nE3Rj
+ pdZdQO1aXRDGs7ldG6JYvYkLOrkgZaLHKMbswGDI9FCgTga3kD/9pZ228P/eszaq+oXT
+ KB+Dl6o6fd2e1Mr+IxAQbWl8NjgkVuuTDviSoj61k1xqSw2IoI5Cq+5eEA1KjXzEqBh8
+ 3KVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721291934; x=1721896734;
+ d=1e100.net; s=20230601; t=1721291943; x=1721896743;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9ZkYqvJBN+Ms+VQxfxYaIWgzMBdCSAtS0DZxHKASYzs=;
- b=PjDrCzJID5zc9p5WsOhEvRciYwRY1uxK0k9wmP0hsifFXhmcP6Ljoz5aI08hC2xGzb
- mDfKut6ZFFUlpws1Xfup2/3QoCeISGjG3v0AytFW/9ekYqatDB929S/UXhwQSqKftuXx
- SG662jDgZntTIcKw8jjW30msSHzhlyML44kZ5p8MmY2ZaPaPhg1AXk6nj6b0zNYyZraa
- wma/zgRvx/SYPdIAEqGwrFAzrsRk99/3wLEu09ZfDubChv3yxiMacsnFInV/3OzbZu5r
- zh98oVf+kaCnwH7dlbhyAvDEXeggyWOMYYFrJhLYsQmQZhneUzAk5tuneKhwTz3Ma7/0
- sIYQ==
-X-Gm-Message-State: AOJu0YwajY+Rzvrhj4lpFjndaFWiv7CEkWtSb7VcD+QYJPwtjjVw48Ms
- QF6QTEFqtKhUZeYXoYiwSzF3bQV+PWZUTrl3jIjbChx+/L8HysYc0OaQsViF/y38YTI2myZcHcW
- 6m8xkWA==
-X-Google-Smtp-Source: AGHT+IFFsWB7ZicHUXOkWBByVQOlb+zv7h0sxpKHpUc7DrACrma/tZnH7n4Q5ZMjRlXMEYZ++ftcEA==
-X-Received: by 2002:a05:6000:2c8:b0:367:9639:66d3 with SMTP id
- ffacd0b85a97d-368315f3344mr3042164f8f.5.1721291934679; 
- Thu, 18 Jul 2024 01:38:54 -0700 (PDT)
+ bh=f3KoNavigW3dLA5bJeMlYDVs2sTflgXH0yz8/6ddF9M=;
+ b=Q7b7koxh4ZoZzGBrBxWKiBzux/JzwIbOfYLYrIAV3ppiitR/iMJKSIy/VP8+Ji6JAr
+ BtizeFz2AixM/JYhDkZ7Tp2DI3Q4LcdewGDh0WrQXAXTlhNKY5QLwgZvqNz+XcXiV8pH
+ tFWRN4S6BqQZjUUEVtZ1nJItEPthCVfegaNxik/RPVu1zL/pKMxmQjkpUMvfVT/ykysm
+ QgW0sA40qSfguS+mv/xA45TSKLCxlfziG+9orRv87T0Rw5wG3E3xMDbDLa8uf6PZH7wO
+ Hf8XA/WeEsmsBLPEweQzrkv+2V2/rXP+T+ZHm3vNqciOdnEUKXslAWmpZtt7LkwEZCjQ
+ aqOA==
+X-Gm-Message-State: AOJu0Yxm6YgU+tYGkzv9sz0TihMSSfVRTd3OfpxddW5fXaMxJIQaqMGA
+ 1puAQCQE8fmxLd7e806Gm4PAxAscnoOr4mv6SC0iXxs8k9zkIUB1b1Zwm6NImGeYc6i0HJ/EoL7
+ qGqc=
+X-Google-Smtp-Source: AGHT+IEqxbTsbtb80tXDcnG9f/121c3zAda2XNgdiJ4avRfM/suARUbLdSTV4sk6aK8t8iOrLLiAdg==
+X-Received: by 2002:a05:600c:45d2:b0:426:6241:5eb9 with SMTP id
+ 5b1f17b1804b1-427c2d00746mr27220735e9.39.1721291942972; 
+ Thu, 18 Jul 2024 01:39:02 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.208.21])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36853e239cfsm954342f8f.56.2024.07.18.01.38.52
+ ffacd0b85a97d-3680dafb9aasm13592658f8f.67.2024.07.18.01.39.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Jul 2024 01:38:54 -0700 (PDT)
+ Thu, 18 Jul 2024 01:39:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
@@ -63,18 +63,17 @@ Cc: Song Gao <gaosong@loongson.cn>, Xianglai Li <lixianglai@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 01/18] hw/intc/loongson_ipi: Declare QOM types using
- DEFINE_TYPES() macro
-Date: Thu, 18 Jul 2024 10:38:25 +0200
-Message-ID: <20240718083842.81199-2-philmd@linaro.org>
+Subject: [PATCH v4 02/18] hw/intc/loongson_ipi: Access memory in little endian
+Date: Thu, 18 Jul 2024 10:38:26 +0200
+Message-ID: <20240718083842.81199-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240718083842.81199-1-philmd@linaro.org>
 References: <20240718083842.81199-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,46 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When multiple QOM types are registered in the same file,
-it is simpler to use the the DEFINE_TYPES() macro. Replace
-the type_init() / type_register_static() combination.
+From: Bibo Mao <maobibo@loongson.cn>
 
+Loongson IPI is only available in little-endian,
+so use that to access the guest memory (in case
+we run on a big-endian host).
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Fixes: f6783e3438 ("hw/loongarch: Add LoongArch ipi interrupt support")
+[PMD: Extracted from bigger commit, added commit description]
+Co-Developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Tested-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/intc/loongson_ipi.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ hw/intc/loongson_ipi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index e6a7142480..dc82caea0d 100644
+index dc82caea0d..d315f6f303 100644
 --- a/hw/intc/loongson_ipi.c
 +++ b/hw/intc/loongson_ipi.c
-@@ -363,17 +363,14 @@ static void loongson_ipi_finalize(Object *obj)
-     g_free(s->cpu);
+@@ -14,6 +14,7 @@
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+ #include "exec/address-spaces.h"
++#include "exec/memory.h"
+ #include "migration/vmstate.h"
+ #ifdef TARGET_LOONGARCH64
+ #include "target/loongarch/cpu.h"
+@@ -102,7 +103,7 @@ static MemTxResult send_ipi_data(CPUState *cpu, uint64_t val, hwaddr addr,
+      * if the mask is 0, we need not to do anything.
+      */
+     if ((val >> 27) & 0xf) {
+-        data = address_space_ldl(iocsr_as, addr, attrs, NULL);
++        data = address_space_ldl_le(iocsr_as, addr, attrs, NULL);
+         for (i = 0; i < 4; i++) {
+             /* get mask for byte writing */
+             if (val & (0x1 << (27 + i))) {
+@@ -113,7 +114,7 @@ static MemTxResult send_ipi_data(CPUState *cpu, uint64_t val, hwaddr addr,
+ 
+     data &= mask;
+     data |= (val >> 32) & ~mask;
+-    address_space_stl(iocsr_as, addr, data, attrs, NULL);
++    address_space_stl_le(iocsr_as, addr, data, attrs, NULL);
+ 
+     return MEMTX_OK;
  }
- 
--static const TypeInfo loongson_ipi_info = {
--    .name          = TYPE_LOONGSON_IPI,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(LoongsonIPI),
--    .class_init    = loongson_ipi_class_init,
--    .instance_finalize = loongson_ipi_finalize,
-+static const TypeInfo loongson_ipi_types[] = {
-+    {
-+        .name               = TYPE_LOONGSON_IPI,
-+        .parent             = TYPE_SYS_BUS_DEVICE,
-+        .instance_size      = sizeof(LoongsonIPI),
-+        .class_init         = loongson_ipi_class_init,
-+        .instance_finalize  = loongson_ipi_finalize,
-+    }
- };
- 
--static void loongson_ipi_register_types(void)
--{
--    type_register_static(&loongson_ipi_info);
--}
--
--type_init(loongson_ipi_register_types)
-+DEFINE_TYPES(loongson_ipi_types)
 -- 
 2.41.0
 
