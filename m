@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64CD934DF3
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB38B934E0A
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:24:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUR3o-0007u5-NI; Thu, 18 Jul 2024 09:20:40 -0400
+	id 1sUR45-0001HY-Hz; Thu, 18 Jul 2024 09:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sUR3j-0007mk-If
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:35 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1sUR3l-0007uJ-AW
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:38 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sUR3h-0004Si-AC
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:35 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4266f344091so2727815e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:20:31 -0700 (PDT)
+ id 1sUR3i-0004Sn-NR
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:37 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-52e9b9fb3dcso355547e87.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721308830; x=1721913630; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=iipzl/hVMG0pJW257EYsJCRNzadAUx3jZRMag1Eukug=;
- b=BgBIkhi/KIF77azVuB4XQJgQ9HHrhig3SLTDRNgF9wgJUYeDZBtoLRvKfS4McOX4fY
- AAfw4EowZOtt6Hyaw1K7URCZE02qSak/TQjp1En0XCCAlw0ceoYEJlb54/I44o25VYPt
- cPwmK1P0QPCeBKDUGqIH4fSQCZJy8Q52OwBUUBP4HaNxTmiK0STFFjX6gg9mflMSp7T+
- 4867T/xpOY5/IuJYDwmVuTNeesJ+6w/s5NAGGPOBzVRq/EMwVgo7ZqvPbUNoJ2rkt6M0
- EHFEISTHb5PnJwADIwEykBO2Gl16283eHDXy5kRGCFWkipyCSJ6yM/u7d0REXswgcG8+
- vplg==
+ d=linaro.org; s=google; t=1721308831; x=1721913631; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=cAG6/a6hlbAJcA7xle3K3QGG4JF+dWFlZQV04eIRpCY=;
+ b=AMTTUvm8pG3gLFeld2bBPH5xJ89aBp0IfHgHL6o7YnfiFsa6npqYqE1CVZ4Ejg9HUq
+ tDLK2RWkVrD/WSOr7kgoKZjitXAiiuACijQh/Xocwu/+lApAaudwqgKwL2jD4brTL4oj
+ nLdgWLJgUMtRIWtA4P7caWkScr8GBpfPVxVpvqzNeLP46LidX+Himo9o3m/vdRExT+US
+ 5LCVxYCP6ivkHS1i0omdoklQpU48K60qxPO9gR2cxPuHvZ8c4V3WwzPqIzXZJkEqzjK+
+ PWInuLwiCwH2V5ibukU+xtftmIzUx++8XtHYH43NMAmUY7ixedTgtLWi7/rjV7ESs1Ol
+ eP6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721308830; x=1721913630;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iipzl/hVMG0pJW257EYsJCRNzadAUx3jZRMag1Eukug=;
- b=jCAuYVAQhF6MHUzNtH7BO4qpisoxwYtUOa1PhRrZvorCD/2+y1T2lZtyiWkp+ltJXN
- l6UnCxZgOV2gF+ZWbKnGvbmQ6aYkdBxcXkmnHdN28mCjg7RqqV4DH/YnQxmkA1tb9bnh
- ba0xhbTAKx8wGC3nTJDnuyrhszRHYimudcki466n7tW+XqBC5PxGqaSeWRd0W2WIK6iA
- 1yA/QAtq+7hUIuK4xuVfQkDmBcbE3VQVsmTJM8AsEGBGT4x95ZDYIYgWKDDrB1Qd76Gt
- fQVx6uk4PPlYas7I+30zm8qFvJDZJoF8W4PbWJZr/XPpKX51IRK/YFF7MOfc9iXpkobj
- Ck5Q==
-X-Gm-Message-State: AOJu0Yx5F4ARh3vcq6tVgNT8IWNsw0fgd1TcVKcK1M78YwoMQYHu3kXO
- uoho04CaqydGrJEMTzyYtbr6yKImCSbFlLhym8387F2Q18bakFOZTCK7dwV2YVAtR7KbRVpELG2
- p
-X-Google-Smtp-Source: AGHT+IHFu2LBnfoKZ7MMkenxZ43e9kKvHLbY/z726/Xi/2i+Unj4KCUIRZZ1M7N71/LNMQ9sm4Al8g==
-X-Received: by 2002:a05:600c:b8e:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-427c2cb563bmr34354145e9.19.1721308830143; 
+ d=1e100.net; s=20230601; t=1721308831; x=1721913631;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cAG6/a6hlbAJcA7xle3K3QGG4JF+dWFlZQV04eIRpCY=;
+ b=u/cBPtM2Rvg8ckmBmmYpb4DTUeMtqeR94P6Faw2mp4LK/EMKgYG1WKXOSiczPj5Y7W
+ D0x+JEQOxpB5YSwEKlBBvy7ucw49+sXuHHDR5jHb/FmFvMh8eJ3nptIKZpn3ekz5J6wZ
+ Y1MehVyxRYvA66Pd2ipgxd1whHIcMXWe78AHyf2LPue5agNv0Bg91h+GsBdBG9KAbLYo
+ NOCZ5w2yr1wm6txqIotQifFT2LnA5EngZ075VyAZf8vc3bCLrI80AKErxzj7n9AqRSgZ
+ yxrTZxSs25KQKk9UAtsf2ZFquCV1Uy84DTfhPL+PK3Cimrye2EB1qPt5y7LhfuDmlksG
+ i6bw==
+X-Gm-Message-State: AOJu0Yz2X0/Py6zS52zN93qq2GfgvuHEFVH9BYjXGiAeS8YxfLjtHFat
+ hfg2lJhZULVL2zqq2KbJ6FjHz1kYMhuh2hlHHOcmh4A7PGXzz5SCyQYCQb4Q5BumJtLm7zNdr2J
+ Z
+X-Google-Smtp-Source: AGHT+IHPu7ekE2nyYfgEmF/OkvZpQ8Ph2ltGOjy1OwXyVq5rzjmsNmhfDVtWo2ITL5uXWlV95qzYVQ==
+X-Received: by 2002:a05:6512:1281:b0:52b:bf8e:ffea with SMTP id
+ 2adb3069b0e04-52ee54113d0mr3636635e87.40.1721308830611; 
  Thu, 18 Jul 2024 06:20:30 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a8e420sm14059315e9.35.2024.07.18.06.20.29
+ 5b1f17b1804b1-427d2a8e420sm14059315e9.35.2024.07.18.06.20.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jul 2024 06:20:29 -0700 (PDT)
+ Thu, 18 Jul 2024 06:20:30 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/26] target-arm queue
-Date: Thu, 18 Jul 2024 14:20:02 +0100
-Message-Id: <20240718132028.697927-1-peter.maydell@linaro.org>
+Subject: [PULL 01/26] target/arm: Fix handling of LDAPR/STLR with negative
+ offset
+Date: Thu, 18 Jul 2024 14:20:03 +0100
+Message-Id: <20240718132028.697927-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240718132028.697927-1-peter.maydell@linaro.org>
+References: <20240718132028.697927-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,94 +93,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; hopefully this is the last arm pullreq before softfreeze.
-There's a handful of miscellaneous bug fixes here, but the
-bulk of the pullreq is Mostafa's implementation of 2-stage
-translation in the SMMUv3.
+When we converted the LDAPR/STLR instructions to decodetree we
+accidentally introduced a regression where the offset is negative.
+The 9-bit immediate field is signed, and the old hand decoder
+correctly used sextract32() to get it out of the insn word,
+but the ldapr_stlr_i pattern in the decode file used "imm:9"
+instead of "imm:s9", so it treated the field as unsigned.
 
-thanks
--- PMM
+Fix the pattern to treat the field as a signed immediate.
 
-The following changes since commit d74ec4d7dda6322bcc51d1b13ccbd993d3574795:
+Cc: qemu-stable@nongnu.org
+Fixes: 2521b6073b7 ("target/arm: Convert LDAPR/STLR (imm) to decodetree")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2419
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240709134504.3500007-2-peter.maydell@linaro.org
+---
+ target/arm/tcg/a64.decode | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-07-18 10:07:23 +1000)
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 2922de700ca..62df4c4ceb4 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -520,7 +520,7 @@ LDAPR           sz:2 111 0 00 1 0 1 11111 1100 00 rn:5 rt:5
+ LDRA            11 111 0 00 m:1 . 1 ......... w:1 1 rn:5 rt:5 imm=%ldra_imm
+ 
+ &ldapr_stlr_i   rn rt imm sz sign ext
+-@ldapr_stlr_i   .. ...... .. . imm:9 .. rn:5 rt:5 &ldapr_stlr_i
++@ldapr_stlr_i   .. ...... .. . imm:s9 .. rn:5 rt:5 &ldapr_stlr_i
+ STLR_i          sz:2 011001 00 0 ......... 00 ..... ..... @ldapr_stlr_i sign=0 ext=0
+ LDAPR_i         sz:2 011001 01 0 ......... 00 ..... ..... @ldapr_stlr_i sign=0 ext=0
+ LDAPR_i         00 011001 10 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext=0 sz=0
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240718
-
-for you to fetch changes up to 30a1690f2402e6c1582d5b3ebcf7940bfe2fad4b:
-
-  hvf: arm: Do not advance PC when raising an exception (2024-07-18 13:49:30 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * Fix handling of LDAPR/STLR with negative offset
- * LDAPR should honour SCTLR_ELx.nAA
- * Use float_status copy in sme_fmopa_s
- * hw/display/bcm2835_fb: fix fb_use_offsets condition
- * hw/arm/smmuv3: Support and advertise nesting
- * Use FPST_F16 for SME FMOPA (widening)
- * tests/arm-cpu-features: Do not assume PMU availability
- * hvf: arm: Do not advance PC when raising an exception
-
-----------------------------------------------------------------
-Akihiko Odaki (2):
-      tests/arm-cpu-features: Do not assume PMU availability
-      hvf: arm: Do not advance PC when raising an exception
-
-Daniyal Khan (2):
-      target/arm: Use float_status copy in sme_fmopa_s
-      tests/tcg/aarch64: Add test cases for SME FMOPA (widening)
-
-Mostafa Saleh (18):
-      hw/arm/smmu-common: Add missing size check for stage-1
-      hw/arm/smmu: Fix IPA for stage-2 events
-      hw/arm/smmuv3: Fix encoding of CLASS in events
-      hw/arm/smmu: Use enum for SMMU stage
-      hw/arm/smmu: Split smmuv3_translate()
-      hw/arm/smmu: Consolidate ASID and VMID types
-      hw/arm/smmu: Introduce CACHED_ENTRY_TO_ADDR
-      hw/arm/smmuv3: Translate CD and TT using stage-2 table
-      hw/arm/smmu-common: Rework TLB lookup for nesting
-      hw/arm/smmu-common: Add support for nested TLB
-      hw/arm/smmu-common: Support nested translation
-      hw/arm/smmu: Support nesting in smmuv3_range_inval()
-      hw/arm/smmu: Introduce smmu_iotlb_inv_asid_vmid
-      hw/arm/smmu: Support nesting in the rest of commands
-      hw/arm/smmuv3: Support nested SMMUs in smmuv3_notify_iova()
-      hw/arm/smmuv3: Handle translation faults according to SMMUPTWEventInfo
-      hw/arm/smmuv3: Support and advertise nesting
-      hw/arm/smmu: Refactor SMMU OAS
-
-Peter Maydell (2):
-      target/arm: Fix handling of LDAPR/STLR with negative offset
-      target/arm: LDAPR should honour SCTLR_ELx.nAA
-
-Richard Henderson (1):
-      target/arm: Use FPST_F16 for SME FMOPA (widening)
-
-SamJakob (1):
-      hw/display/bcm2835_fb: fix fb_use_offsets condition
-
- hw/arm/smmuv3-internal.h          |  19 +-
- include/hw/arm/smmu-common.h      |  46 +++-
- target/arm/tcg/a64.decode         |   2 +-
- hw/arm/smmu-common.c              | 312 ++++++++++++++++++++++---
- hw/arm/smmuv3.c                   | 467 +++++++++++++++++++++++++-------------
- hw/display/bcm2835_fb.c           |   2 +-
- target/arm/hvf/hvf.c              |   1 +
- target/arm/tcg/sme_helper.c       |   2 +-
- target/arm/tcg/translate-a64.c    |   2 +-
- target/arm/tcg/translate-sme.c    |  12 +-
- tests/qtest/arm-cpu-features.c    |  13 +-
- tests/tcg/aarch64/sme-fmopa-1.c   |  63 +++++
- tests/tcg/aarch64/sme-fmopa-2.c   |  56 +++++
- tests/tcg/aarch64/sme-fmopa-3.c   |  63 +++++
- hw/arm/trace-events               |  26 ++-
- tests/tcg/aarch64/Makefile.target |   5 +-
- 16 files changed, 846 insertions(+), 245 deletions(-)
- create mode 100644 tests/tcg/aarch64/sme-fmopa-1.c
- create mode 100644 tests/tcg/aarch64/sme-fmopa-2.c
- create mode 100644 tests/tcg/aarch64/sme-fmopa-3.c
 
