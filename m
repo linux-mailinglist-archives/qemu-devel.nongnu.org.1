@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56AB934B21
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D69934B20
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUNhn-0003wR-L3; Thu, 18 Jul 2024 05:45:43 -0400
+	id 1sUNhs-0004Je-QP; Thu, 18 Jul 2024 05:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sUNhh-0003Wk-82
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:37 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1sUNhj-0003h1-DA
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:39 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sUNhb-0007dA-Ko
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:37 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a77c1658c68so62453066b.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 02:45:31 -0700 (PDT)
+ id 1sUNhd-0007dp-J5
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:39 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-52ea5dc3c66so216187e87.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 02:45:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721295930; x=1721900730; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721295932; x=1721900732; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2cfYyhSqeU6lh61PrlYddSdndv7Xezjj0qPHaR6Sb3o=;
- b=dMAHTH8xBY2EHU2pf2H0Y3UDAFhH+mmoc4LWBCoD5uaIX2u82EerR+l2OLNW7a7PzD
- XNz7XPSvfTuF5GEzbkFamRjon/rBu0tsnhbFszqN1O+BKsT+E5iz6pdqiPd16J+RjgS6
- u8XUHhQo8fEzFpj6Be2M7PBu3BabKF2Y2fJrdz/Y0vHgxpbGytRdBii0PL2p2FGpXPrk
- RTO9zEBn7G7ozP6rHb5A5l+M48/vw/Yoyv4v4HqjYs7zTYsyQ5+LU23aPHoFJhCDycFn
- rTOE/uLSFzjXlJUUGIZZF2+4VUCGXfyIZaHG/pU0VjTXJ1L/P5jZZzFyzbMWQp9uJpLO
- eMdg==
+ bh=TIv8kXkJQxNuIpW4TekgSCMbtMULcZSn0Uoke+OjUOE=;
+ b=x7MWVlMRa0NaNFOWDd5dG7KUvwoGDJfrQ+bETitL8SCIunChPQX/e4JbkLsZtTQ2RZ
+ CWSc1clwrk/c+xF5m6OUhgEcUFSKoNIqyOuxyDw/qtl3EtXZoAHYL598TWZ3qSWH3+2c
+ zP8fFEr+ZlRAM6XdsLqYc8qM+/GDCxnAs6rE7caKtLnXVAUSNLYG3OhplAU7+vYgXQHO
+ 12grYzKZGtMpckF8Ha5ds9+XW7x1loTlGHoNH6Lo3DRBsZW8A+RCocW6q9Tj+98144tz
+ IrS+4mcr1BXjmKkVyrcL77wUfuZ2T3E2ttGa3R1dGfR+aAlSMXxF3vrWHawPrxGrcro9
+ ubAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721295930; x=1721900730;
+ d=1e100.net; s=20230601; t=1721295932; x=1721900732;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2cfYyhSqeU6lh61PrlYddSdndv7Xezjj0qPHaR6Sb3o=;
- b=ZLcQWS7h8esotnh3WVM6Q5IPymf7C879Rj3bCnk+lOvcPS/MOu+0x1C+vPSTD1+6FO
- 5zfQlfDbRXcN6vsFkvhsBd0SFSjRGBNVsi0Ng2+oLDAeh6zUvJVxyEUEZn6siwVYbrcF
- N1BzDWpYTPsxXyy9o0POZeZG4YRj1ycb2fFyuoyhQqYskKrAvh0bUwR5CUuuvXSBlKLP
- axiEJUOJARVVUKX7lgmfQqGidXgdp6PGMgBKezlXiyr71N4vMHiE0hD3m+pgbY6jtFVl
- j0LUdTjUru0j/QqG77gY0lJZ3zpM5f/qyskv++kZKPmFYuB6QCjecy9zzsARbzcs9VZE
- B8Zg==
-X-Gm-Message-State: AOJu0Yz4THDfUqJrgTaol2cbsLpPDMWpXrNgK44yBf74LatG0pvkDmrI
- 1sDtbfBni8gbBJQWJGugBVItYUG3dB8ZPyLZxxA+tT+qYiRih3CxFc1mQqrtgK8=
-X-Google-Smtp-Source: AGHT+IEz+wd0NIA66sJzZOQgn+jHutMe3W/oA0yxyNS/fVUDbi7YoClWPrtzZCWXVj50rxlTpbhQhw==
-X-Received: by 2002:a17:906:fd8b:b0:a77:a630:cf89 with SMTP id
- a640c23a62f3a-a7a00ef47a6mr364181766b.0.1721295929671; 
- Thu, 18 Jul 2024 02:45:29 -0700 (PDT)
+ bh=TIv8kXkJQxNuIpW4TekgSCMbtMULcZSn0Uoke+OjUOE=;
+ b=ZZjiiVZE5eNAaygwLFmHXZEuWPXNpzZOefzd3EXotfrLbx0Txj7+s7qvUkoE4IDgDp
+ u2W01c84ov3J94tgjMJKjKNEiBNmBioMSPPtw84UdruVcHBWtAZKgOkfnpY6qZf3K59I
+ Ic6fWUjWP5xwLokVcRRyAumVc01047IbZgjIhugYslwc6TsBVdDcnHMYejsSSwYwELXB
+ NuPe8griSMd0gMsyE1VtY/nbTxtBZzW8AN80I8d4HZg9JF6Ivc9CSTL+3ffNTOwBFydy
+ S4rdaXr2hG6abSEyu6+kbQKooCoki7fttTgeeotpk/8v9CWSg5bkm2zNDfKCoN659D0W
+ CQYg==
+X-Gm-Message-State: AOJu0YzOc0+gXvxXRvhkmRVPCLBuFbbZVkxDpclmbkGQSTBIAlpgPuIK
+ tJZXYbMHAaZonsZlkp9Eu84Z7q8o39xi+uY/w4SpascL3cEivU57eH0CtzNwM74=
+X-Google-Smtp-Source: AGHT+IGp3dN7qhJXUtVzrL7rq1oB9YMtgrO102/BpwWX6muKcame7yTrvld/T24kNxIFrNNo4i4Niw==
+X-Received: by 2002:a05:6512:12d4:b0:52c:e091:66e4 with SMTP id
+ 2adb3069b0e04-52ee5433cd3mr3475108e87.44.1721295931330; 
+ Thu, 18 Jul 2024 02:45:31 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a79bc5b7e50sm537503566b.69.2024.07.18.02.45.26
+ a640c23a62f3a-a79bc820e32sm540039566b.204.2024.07.18.02.45.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 18 Jul 2024 02:45:28 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AB4EC5FA3B;
+ by draig.lan (Postfix) with ESMTP id C24075FA3D;
  Thu, 18 Jul 2024 10:45:24 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -78,27 +78,25 @@ Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Max Filippov <jcmvbkbc@gmail.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20P=C3=A9trot?=
- <frederic.petrot@univ-grenoble-alpes.fr>
-Subject: [PATCH 07/15] plugins/execlog.c: correct dump of registers values
-Date: Thu, 18 Jul 2024 10:45:15 +0100
-Message-Id: <20240718094523.1198645-8-alex.bennee@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH 08/15] semihosting: Include missing 'gdbstub/syscalls.h' header
+Date: Thu, 18 Jul 2024 10:45:16 +0100
+Message-Id: <20240718094523.1198645-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240718094523.1198645-1-alex.bennee@linaro.org>
 References: <20240718094523.1198645-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,32 +112,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frédéric Pétrot <frederic.petrot@univ-grenoble-alpes.fr>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Register values are dumped as 'sz' chunks of two nibbles in the execlog
-plugin, sz was 1 too big.
+"semihosting/syscalls.h" requires definitions from
+"gdbstub/syscalls.h", include it in order to avoid:
 
-Signed-off-by: Frédéric Pétrot <frederic.petrot@univ-grenoble-alpes.fr>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240620083805.73603-1-frederic.petrot@univ-grenoble-alpes.fr>
+  include/semihosting/syscalls.h:23:38: error: unknown type name 'gdb_syscall_complete_cb'
+  void semihost_sys_open(CPUState *cs, gdb_syscall_complete_cb complete,
+                                       ^
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240717105723.58965-2-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/execlog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/semihosting/syscalls.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 371db97eb1..1c1601cc0b 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -101,7 +101,7 @@ static void insn_check_regs(CPU *cpu)
-             GByteArray *temp = reg->last;
-             g_string_append_printf(cpu->last_exec, ", %s -> 0x", reg->name);
-             /* TODO: handle BE properly */
--            for (int i = sz; i >= 0; i--) {
-+            for (int i = sz - 1; i >= 0; i--) {
-                 g_string_append_printf(cpu->last_exec, "%02x",
-                                        reg->new->data[i]);
-             }
+diff --git a/include/semihosting/syscalls.h b/include/semihosting/syscalls.h
+index 3a5ec229eb..b5937c619a 100644
+--- a/include/semihosting/syscalls.h
++++ b/include/semihosting/syscalls.h
+@@ -9,6 +9,8 @@
+ #ifndef SEMIHOSTING_SYSCALLS_H
+ #define SEMIHOSTING_SYSCALLS_H
+ 
++#include "gdbstub/syscalls.h"
++
+ /*
+  * Argument loading from the guest is performed by the caller;
+  * results are returned via the 'complete' callback.
 -- 
 2.39.2
 
