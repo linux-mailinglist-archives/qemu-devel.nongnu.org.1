@@ -2,53 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF75934D03
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 14:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37119934D09
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 14:15:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUQ0z-0007YY-7v; Thu, 18 Jul 2024 08:13:41 -0400
+	id 1sUQ1E-00082i-GU; Thu, 18 Jul 2024 08:13:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhrica@redhat.com>) id 1sUQ0v-0007Xx-JE
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 08:13:37 -0400
+ (Exim 4.90_1) (envelope-from <mhrica@redhat.com>) id 1sUQ1A-0007wi-KA
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 08:13:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhrica@redhat.com>) id 1sUQ0t-00011V-2g
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 08:13:37 -0400
+ (Exim 4.90_1) (envelope-from <mhrica@redhat.com>) id 1sUQ18-00013h-4q
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 08:13:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721304813;
+ s=mimecast20190719; t=1721304828;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Bgji5YSREoHrEnwZ3YkdoW+Izz5eva1pZN/e8Bppvlo=;
- b=CGzg9ZjXKGyjHUujlOJ73wY4m68gCV1LlpsDAJm289U3FiqwOpp+O4URXTsmXFI47DsPCm
- 0V2sIp4SQgwCuvwcgZS57pMWj7BoOmYhxgn5BllEGfwXRDOcPhj9M/r3+TpPFda91O58oE
- AGyTNEaKHeinHXmMSaKKgiBvDIONjyE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=n4S4lHex2sv4HdAai4U1J0JqRHbZAZJuivl1Rp1CucQ=;
+ b=YcEMTu0URPs8/6EkksnO9LyW0H7NpMKEa2u9ZVGXasBnkpJaFd2uFHQcASI5G4TggzcyI7
+ 1gpT9Geqk/iq9Z36kODcyRAJpd9fpuVxBq8wZFW/MF2XLXXQOmhfrbeCSZrGS/Z32Wgrhp
+ ALY+5JyXh21JnIi7tSmFigLhwhJrKBQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-BPF-3F84OnashS-I6a8r-w-1; Thu,
- 18 Jul 2024 08:13:32 -0400
-X-MC-Unique: BPF-3F84OnashS-I6a8r-w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-IA96ULi6NMS5Igetr_EJsw-1; Thu,
+ 18 Jul 2024 08:13:47 -0400
+X-MC-Unique: IA96ULi6NMS5Igetr_EJsw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 977931955D44
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 12:13:31 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 68DFA1955D42
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 12:13:46 +0000 (UTC)
 Received: from m-rh-lap.brq.redhat.com (unknown [10.43.17.39])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 37C20195605F; Thu, 18 Jul 2024 12:13:28 +0000 (UTC)
+ id 548FA19560AA; Thu, 18 Jul 2024 12:13:44 +0000 (UTC)
 From: Matej Hrica <mhrica@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com, dbassey@redhat.com, aesteve@redhat.com,
  slp@redhat.com, Matej Hrica <mhrica@redhat.com>
-Subject: [RFC PATCH 0/2] vhost-user-gpu: Add support for blob resources
-Date: Thu, 18 Jul 2024 14:12:45 +0200
-Message-ID: <20240718121247.181510-1-mhrica@redhat.com>
+Subject: [RFC PATCH 1/2] vhost-user-gpu: Forward RESOURCE_BLOB and
+ CONTEXT_INIT flags
+Date: Thu, 18 Jul 2024 14:12:46 +0200
+Message-ID: <20240718121247.181510-2-mhrica@redhat.com>
+In-Reply-To: <20240718121247.181510-1-mhrica@redhat.com>
+References: <20240718121247.181510-1-mhrica@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
@@ -77,30 +81,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-these patches enable a backend vhost user gpu implementation to support blob
-resources.
-The first patch simply forwards required feature flags. The second patch
-registers a shared memory region for mapping the blob resources in the guest
-memory.
+Forward VIRTIO_GPU_F_RESOURCE_BLOB and VIRTIO_GPU_F_CONTEXT_INIT recieved from
+a vhost backend to expose it to the guest.
 
-I am not sure about the shared memory region creation in the second patch.
-Is it fine to rely on the parent object to create the shared memory region?
-The parent object should be either virtio-gpu-pci or virtio-vga, though I am
-not really sure about the class hierarchy.
+Signed-off-by: Matej Hrica <mhrica@redhat.com>
+---
+ hw/display/vhost-user-gpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-These patches are based on this RFC: 
-[RFC PATCH v2 0/5] vhost-user: Add SHMEM_MAP/UNMAP requests.
-
-Since this relies on an RFC patch, I am also sending this as an RFC too.
-
-Matej Hrica (2):
-  vhost-user-gpu: Forward RESOURCE_BLOB and CONTEXT_INIT flags
-  vhost-user-gpu: Add shared memory region support
-
- hw/display/vhost-user-gpu.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
-
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 63c64ddde6..0ebc2218b9 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -631,6 +631,12 @@ vhost_user_gpu_device_realize(DeviceState *qdev, Error **errp)
+         error_report("EDID requested but the backend doesn't support it.");
+         g->parent_obj.conf.flags &= ~(1 << VIRTIO_GPU_FLAG_EDID_ENABLED);
+     }
++    if (virtio_has_feature(g->vhost->dev.features, VIRTIO_GPU_F_RESOURCE_BLOB)) {
++        g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_BLOB_ENABLED;
++    }
++    if (virtio_has_feature(g->vhost->dev.features, VIRTIO_GPU_F_CONTEXT_INIT)) {
++        g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED;
++    }
+ 
+     if (!virtio_gpu_base_device_realize(qdev, NULL, NULL, errp)) {
+         return;
 -- 
 2.45.2
 
