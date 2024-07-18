@@ -2,79 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B7F934DF9
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8549934E21
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUR4C-00022T-17; Thu, 18 Jul 2024 09:21:04 -0400
+	id 1sUR93-0007vo-15; Thu, 18 Jul 2024 09:26:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sUR3t-00009q-V4
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:46 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sUR3s-0004XF-5q
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:45 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3684e8220f9so398649f8f.1
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721308842; x=1721913642; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=79yCY4ObJ0UJwhXu8mzRzCS0V2zPCSrYq+jeYyYlXHs=;
- b=Dxt2Kyh3FZG1zc8IuuyQ7T1RYfsysRAJaIded8TsEn3Qdg+CQR1lGmv4lRWEPKgjOn
- W/JRBpZ6RXpSVDHalJMkZFdYwkEWPq7nhKOu8OHmpKzjJoDTkid4zDFQBg2Wa3jWtzvb
- 3rKNTCl8J7ogM61aiT6GANoRP9Rp1l1QuChZWbR+LJsq/WyeoYMTQfBrUoFu0znOT1Sr
- Rw/YVGfQOS1CoQU4a+1H6srC7glAX3v4lj7dm7lwYgK74N1HNVRgx+0j9/UnC4JAtamM
- adr+bu6bqtF9J4vn5PYqvfz2Jc3wovYMnJ6/Uex7Ba2vt2sCPnmzhOxCq0T7k0tSt/y8
- RNfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721308842; x=1721913642;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=79yCY4ObJ0UJwhXu8mzRzCS0V2zPCSrYq+jeYyYlXHs=;
- b=YB4qSO1lZT2pM4WBKxRpNV/QVNLMUtfRIOaK+osxyhVoFVbQE1vmC81DIHGsu1wXZU
- GlfsMbC1UHIG4llORcDhtVVZRMzNZy6srzDeiTiXIfnskeoafV7VXhf+xPbZIbSrBcNV
- 9gZJ1TccoIcVdh+mCIOwCoJMFs90VoBpvgthQhbs1/IqGQjR44UK+LG7jzyaPvVmk8fY
- 5ays9aZ6rICaGRdfrkE5uBs8v849oUvtHF3hGY1+/MWm/FMhtyWfcM1L6FyZeiEWSDoe
- HE+HvOXBOTOEa+Y+7La59xoRdOYJRnEOqMhn1Eeu/cxRxuP2y3ByZFml96Swbi9Unb/D
- hwpA==
-X-Gm-Message-State: AOJu0Yy3i2voq8NlHwwy9UEzi0DPU7U6MllGQDxp6gD173cZdj1TB+68
- 0ysGIHPiP7A6oN+agJTUyoKvFNkwP8UiaYWNhSxF7eEZSvKZ+1sWzGoVGv35/krqCEABh6tiS/M
- y
-X-Google-Smtp-Source: AGHT+IEiuB71/4W1eCZIUp/EuIk3SDnoj+ndXnhXyNhBT2VQujocRzhOQNOafpSvtxZ5mu9z+XzDRQ==
-X-Received: by 2002:adf:a11b:0:b0:368:37aa:50b3 with SMTP id
- ffacd0b85a97d-3684b3e3543mr2156357f8f.24.1721308842720; 
- Thu, 18 Jul 2024 06:20:42 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a8e420sm14059315e9.35.2024.07.18.06.20.42
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jul 2024 06:20:42 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 26/26] hvf: arm: Do not advance PC when raising an exception
-Date: Thu, 18 Jul 2024 14:20:28 +0100
-Message-Id: <20240718132028.697927-27-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240718132028.697927-1-peter.maydell@linaro.org>
-References: <20240718132028.697927-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
+ id 1sUR8z-0007ld-KK
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:26:01 -0400
+Received: from galois.linutronix.de ([2a0a:51c0:0:12e:550::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
+ id 1sUR8x-0006Xw-Dd
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:26:01 -0400
+Date: Thu, 18 Jul 2024 15:25:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1721309155;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=v5ceFkFkkwilixkfLDr31gEl4Wvdmh9vOg+PAZ+h8K0=;
+ b=k6XtSWyVhZIlVrTd049IBDmzXoxkIwnFLiy7de726uodyHnNfb+pM/1Wg6orZaHYNuSrSL
+ Tvl7SCtldXNqEzU4dpCF0b2Qj7aOs4csrNip6aByEqv4DpjKQCrcfDPkp2x7kRoQsHQBn/
+ BEHie0883vSmo37A2G/YPrJFWMCMOBlQx8XorjN+FUB4SuhVq0eKvKu5T8R5Eytuy1Uu/q
+ dxdMEfYIHiU+XjRz+MnN+JJToaSxR0Ypzq8sJutmVAQWM24awyADXVORMmAeS3Qg/NZ5xh
+ BU9t2kK9f1J3QgYORgDFXLBXmpvBYQPT/dO8sTtePB1JqT6FMF0lQaG0Kmbtew==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1721309155;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=v5ceFkFkkwilixkfLDr31gEl4Wvdmh9vOg+PAZ+h8K0=;
+ b=4Sj1KgYOB0IwL1WUjV5mcdEKdqr/EnK9W7xbYk4D2i24XoyCczXdZAYmc8IiOvY+qNw8pA
+ xCzgGc5zlwXh04Dw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <t-8ch@linutronix.de>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Kashyap Chamarthy <kchamart@redhat.com>, qemu-devel@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
+Subject: Re: [PATCH v5 1/4] docs/interop/firmware.json: add new enum
+ FirmwareFormat
+Message-ID: <20240718152306-277d9707-6fb4-4707-ae1c-78927fa42a4f@linutronix.de>
+References: <20240718-qapi-firmware-json-v5-0-0dba12d7aaf5@linutronix.de>
+ <20240718-qapi-firmware-json-v5-1-0dba12d7aaf5@linutronix.de>
+ <877cdionhq.fsf@pond.sub.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <877cdionhq.fsf@pond.sub.org>
+Received-SPF: pass client-ip=2a0a:51c0:0:12e:550::1;
+ envelope-from=t-8ch@linutronix.de; helo=galois.linutronix.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,35 +81,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+On Thu, Jul 18, 2024 at 03:09:37PM GMT, Markus Armbruster wrote:
+> Thomas Weißschuh <thomas.weissschuh@linutronix.de> writes:
+> 
+> > Only a small subset of all blockdev drivers make sense for firmware
+> > images. Introduce and use a new enum to represent this.
+> >
+> > This also reduces the dependency on firmware.json from the global qapi
+> > definitions.
+> >
+> > Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> > ---
+> >  docs/interop/firmware.json | 17 +++++++++++++++--
+> >  1 file changed, 15 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+> > index 54a1fc6c1041..a26fe81bf2fe 100644
+> > --- a/docs/interop/firmware.json
+> > +++ b/docs/interop/firmware.json
+> > @@ -15,7 +15,6 @@
+> >  ##
+> >  
+> >  { 'include' : 'machine.json' }
+> > -{ 'include' : 'block-core.json' }
+> >  
+> >  ##
+> >  # @FirmwareOSInterface:
+> > @@ -200,6 +199,20 @@
+> >               'enrolled-keys', 'requires-smm', 'secure-boot',
+> >               'verbose-dynamic', 'verbose-static' ] }
+> >  
+> > +##
+> > +# @FirmwareFormat:
+> > +#
+> > +# Formats that are supported for firmware images.
+> > +#
+> > +# @raw: Raw disk image format.
+> > +#
+> > +# @qcow2: QEMU image format.
+> 
+> It's not the only QEMU image format...  Maybe "The QCOW2 image format."
+> Almost tautological, but I don't have better ideas.
 
-hvf did not advance PC when raising an exception for most unhandled
-system registers, but it mistakenly advanced PC when raising an
-exception for GICv3 registers.
+I used the wording from qemu-img(1).
+If you prefer "The QCOW2 image format", I'll switch to that.
 
-Cc: qemu-stable@nongnu.org
-Fixes: a2260983c655 ("hvf: arm: Add support for GICv3")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20240716-pmu-v3-4-8c7c1858a227@daynix.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/hvf/hvf.c | 1 +
- 1 file changed, 1 insertion(+)
+> > +#
+> > +# Since: 9.1
+> 
+> The enum type is indeed since 9.1, but its two members are since 3.0,
+> and that's what matters.
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index ef9bc42738d..eb090e67a2f 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1278,6 +1278,7 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint32_t rt)
-         /* Call the TCG sysreg handler. This is only safe for GICv3 regs. */
-         if (!hvf_sysreg_read_cp(cpu, reg, &val)) {
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-+            return 1;
-         }
-         break;
-     case SYSREG_DBGBVR0_EL1:
--- 
-2.34.1
+Ack.
 
+So I change the Since: of the whole enum?
+And not on the individual members?
+
+> > +##
+> > +{ 'enum': 'FirmwareFormat',
+> > +  'data': [ 'raw', 'qcow2' ] }
+> > +
+> >  ##
+> >  # @FirmwareFlashFile:
+> >  #
+> > @@ -219,7 +232,7 @@
+> >  ##
+> >  { 'struct' : 'FirmwareFlashFile',
+> >    'data'   : { 'filename' : 'str',
+> > -               'format'   : 'BlockdevDriver' } }
+> > +               'format'   : 'FirmwareFormat' } }
+> >  
+> >  
+> >  ##
+> 
 
