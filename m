@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21C4934610
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9A2934621
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:16:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUGbs-0006Me-N3; Wed, 17 Jul 2024 22:11:08 -0400
+	id 1sUGbu-0006Uj-T0; Wed, 17 Jul 2024 22:11:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGbq-0006GK-GG
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:06 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1sUGbs-0006NI-7f
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:08 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGbo-0003Sv-Fx
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:05 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-75cda3719efso147107a12.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:11:04 -0700 (PDT)
+ id 1sUGbq-0003TP-MR
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:08 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1fa9ecfb321so2835215ad.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:11:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721268662; x=1721873462; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721268665; x=1721873465; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W2m+czU4JRjBz43qF9mO7kaQHS4v+U0MLfaQ9CySHtM=;
- b=QMwIj1Q/Gj5PNV+XX/WtVmV2z2saTP4dAondmpZXlE/m9WYXgT64Ckw7QpSvAtBC01
- 0w3UUGxtdKVXEVUsA53ZBi+cDJn0BlxZagiqyLwQ5z+jvadYhzzRiJf6c07qkBK1w9+O
- zMpit6K+flUL+WuSnuQ01+ouRNca200xJ+VSnb4qqgakD9cXlBO7e5VwLh+umILbtgmV
- waSIIMKgu19Ha352dvrTkycDXt6LUHOcFno6aYdzhm2apx+NyCMOg76/R/Dcur5q5UlP
- iTbsIMMEjaLmgbVJbQmzLs1YkK0QGXhcctMtuv6LoRebmeXxIrjJmlqduOi8k/SJd91C
- qL4g==
+ bh=RBhEbZgxKwN8imJwjPHV7O09WyPrbNNlfJ4u8IYDLqE=;
+ b=Z5tlFzUmOaVqk9JeL8/Mn/aNShAAit2TsOlHKf1g8rNrFNmsvSs0fEEt+j1ZJlwCxZ
+ Q9Gt7KlyFqJyp8f+xQfKBxVKHPOYBApOI4tP7cw39QaZcgg9bEgfttSyRX6jlV9X1gjW
+ LRABBqiC4atbQ+1k+rZMsaZJq+itvCj7IFxedSper3YiGjkaVqoK5X9Dr81cD9uW4Dtm
+ JTUmx+H2rMRs8Q5pLo/KKgabitrsZGEfLtvyH1njMnZy18aBM2fHbjzTOE32uVm9jdFw
+ 2rLHZSCyOhBL4YhuMaJxXE1fx/iDCI8dU0rJ8yhtig9LprNarCBesFI7Qv4YeHjDUliW
+ 8vCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721268662; x=1721873462;
+ d=1e100.net; s=20230601; t=1721268665; x=1721873465;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W2m+czU4JRjBz43qF9mO7kaQHS4v+U0MLfaQ9CySHtM=;
- b=Zf4zxN/VP6QNrDaNwlwn5wWLxVEjTJbceVpbl6t0zXjM/LWwtFER398w7vHIsOxraJ
- jfQKPYWzBY59BeCYAOptyKxH/jmISndjOjgO2Ju4tR8TAjGs235okICetJNKitXaNbL6
- /dooRNWlrWfVCee0O49lMQErDu6uH3+1/pWyhuiKPa41k+Dg1HfB/rivWViHr86r8tHJ
- pYvzq0UbeoVjPZyuFntEYbIuCfouxuMAlP/Upw9d4eMethnylnr9UgnC5CvtMLey8WXB
- XpRD76ipQmwxvNPCyWfIxG9MNcju1V1aCjlRsTlhyf+ItM4CDCq1WXeyHdxDnoDKYVj+
- hbJA==
-X-Gm-Message-State: AOJu0Yx218/oYl0xn1K/hzlxRZJ5zwIilqbxzYvsCaHor6BvTxOao1Lf
- YWn1EZki9gdERgdGoOUcip+c6NyLPh9xXm45mbVYI3IcM748217+27p4Gdqk
-X-Google-Smtp-Source: AGHT+IFrcyD3a5Piu4BrPRs/gSENPdgmDVzcUgWUNgy46behLyjTw5jfbvxPyH5aQuUMTqfky749HQ==
-X-Received: by 2002:a05:6a20:1584:b0:1c0:f23c:28a7 with SMTP id
- adf61e73a8af0-1c3fdd3bde8mr4326293637.44.1721268662358; 
- Wed, 17 Jul 2024 19:11:02 -0700 (PDT)
+ bh=RBhEbZgxKwN8imJwjPHV7O09WyPrbNNlfJ4u8IYDLqE=;
+ b=Rnc6O6M22Cr1RyJi6Vtl5SSN1WNy7NcnrNiDl6ihkRZf+rHB94z0WG8xlAXXO4DJGk
+ nKwp02UGe0hoWm2ToYbxgNl3w783a5claVsnQo2VTBMZDSlTRiQWoEyhITV4Ib/Pf7Pd
+ m9cm8WS09dyVGVi8w4ALqv9dtiljAEs7ds/nxv3tfP5jKQWMENbovxyEvbB28q3UIp3g
+ ftbu/2+2iZaAtXp4qZ0a6vyNht7m4kcdtIAaIl74biBdXFz+Tm00E3NA7BK03Ki2c2Sv
+ 64HTTdudAnQpdkbowFedNJjXHHVsX3WXPibkjsP7uFZALRuTki0WO59Ki7ID2OjErKz5
+ /pEA==
+X-Gm-Message-State: AOJu0Yw+yRZ5PhozSmIAIkyFDASiquQmBR7I/Bx5SoZ+oSiW/4PGeIHI
+ fJeLfbw338bJCJTdY2hULCdzHCRettyBaP9NQKpg8KA11NuzudrSV28gtub7
+X-Google-Smtp-Source: AGHT+IHRBLjNjqOQaML08vVWXOu9h5Q/Vs2KXksyZrHplOcwGQq2vnIGduP6oPxTsWRWQj6i2OR86g==
+X-Received: by 2002:a17:902:c406:b0:1f7:3d0d:4cd with SMTP id
+ d9443c01a7336-1fc4e17bf10mr30771115ad.24.1721268665142; 
+ Wed, 17 Jul 2024 19:11:05 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.10.59
+ d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.11.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jul 2024 19:11:01 -0700 (PDT)
+ Wed, 17 Jul 2024 19:11:04 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Balaji Ravikumar <bravikumar@rivosinc.com>,
- Rob Bradford <rbradford@rivosinc.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 13/30] disas/riscv: Add decode for Zawrs extension
-Date: Thu, 18 Jul 2024 12:09:55 +1000
-Message-ID: <20240718021012.2057986-14-alistair.francis@wdc.com>
+Subject: [PULL 14/30] target/riscv/kvm: update KVM regs to Linux 6.10-rc5
+Date: Thu, 18 Jul 2024 12:09:56 +1000
+Message-ID: <20240718021012.2057986-15-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240718021012.2057986-1-alistair.francis@wdc.com>
 References: <20240718021012.2057986-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,53 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Balaji Ravikumar <bravikumar@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Add disassembly support for these instructions from Zawrs:
+Two new regs added: ztso and zacas.
 
-* wrs.sto
-* wrs.nto
-
-Signed-off-by: Balaji Ravikumar <bravikumar@rivosinc.com>
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240705165316.127494-1-rbradford@rivosinc.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240709085431.455541-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/riscv/kvm/kvm-cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index c8364c2b07..5965574d87 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -974,6 +974,8 @@ typedef enum {
-     rv_op_amomaxu_h = 943,
-     rv_op_amocas_b  = 944,
-     rv_op_amocas_h  = 945,
-+    rv_op_wrs_sto = 946,
-+    rv_op_wrs_nto = 947,
- } rv_op;
- 
- /* register names */
-@@ -2232,6 +2234,8 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "amomaxu.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "amocas.b", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "amocas.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "wrs.sto", rv_codec_none, rv_fmt_none, NULL, 0, 0, 0 },
-+    { "wrs.nto", rv_codec_none, rv_fmt_none, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -3980,6 +3984,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                     case 0: op = rv_op_ecall; break;
-                     case 32: op = rv_op_ebreak; break;
-                     case 64: op = rv_op_uret; break;
-+                    case 416: op = rv_op_wrs_nto; break;
-+                    case 928: op = rv_op_wrs_sto; break;
-                     }
-                     break;
-                 case 256:
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 1047961fed..f6e3156b8d 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -281,6 +281,7 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zihintntl", ext_zihintntl, KVM_RISCV_ISA_EXT_ZIHINTNTL),
+     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+     KVM_EXT_CFG("zihpm", ext_zihpm, KVM_RISCV_ISA_EXT_ZIHPM),
++    KVM_EXT_CFG("zacas", ext_zacas, KVM_RISCV_ISA_EXT_ZACAS),
+     KVM_EXT_CFG("zfa", ext_zfa, KVM_RISCV_ISA_EXT_ZFA),
+     KVM_EXT_CFG("zfh", ext_zfh, KVM_RISCV_ISA_EXT_ZFH),
+     KVM_EXT_CFG("zfhmin", ext_zfhmin, KVM_RISCV_ISA_EXT_ZFHMIN),
+@@ -298,6 +299,7 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zksed", ext_zksed, KVM_RISCV_ISA_EXT_ZKSED),
+     KVM_EXT_CFG("zksh", ext_zksh, KVM_RISCV_ISA_EXT_ZKSH),
+     KVM_EXT_CFG("zkt", ext_zkt, KVM_RISCV_ISA_EXT_ZKT),
++    KVM_EXT_CFG("ztso", ext_ztso, KVM_RISCV_ISA_EXT_ZTSO),
+     KVM_EXT_CFG("zvbb", ext_zvbb, KVM_RISCV_ISA_EXT_ZVBB),
+     KVM_EXT_CFG("zvbc", ext_zvbc, KVM_RISCV_ISA_EXT_ZVBC),
+     KVM_EXT_CFG("zvfh", ext_zvfh, KVM_RISCV_ISA_EXT_ZVFH),
 -- 
 2.45.2
 
