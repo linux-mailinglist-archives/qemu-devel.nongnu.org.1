@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496C7934E3A
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDBC934E38
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:34:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sURGe-00058m-Uw; Thu, 18 Jul 2024 09:33:57 -0400
+	id 1sURGj-0005cv-9s; Thu, 18 Jul 2024 09:34:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURGa-0004xn-Mk
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:33:52 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURGh-0005W4-1B
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:33:59 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURGY-0008SV-Or
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:33:52 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-42793fc0a6dso2788775e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:33:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURGe-0008Sv-Tw
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:33:58 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2eecb63de15so10877271fa.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721309629; x=1721914429; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721309635; x=1721914435; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oPF3lpjwa8azmyfI5pemrpn1QlX/iiaQsFcCFwFBaHY=;
- b=e8TBg+MVcvUiduJw5Y0f1yAJ57mFu8KvQgyfVET8LS/hCnCBjXSQXj5l2yCG67yPT+
- FoWDeNCCzpbOwt9vGxoiJf9kjIPtlhO0Wql1S5kLR/Tsp54lTPJzYHgig+HF9vgYKRgv
- uXnR9uXTAovk/OdNTP2/XIOz4iJF4+YXxj2EagQNG2zPdk7LjQOaZKTCRHCVrApFKzw/
- kooCPicvxgsiTCRVe9IujGOp6o5gbiAAv10dyv3ZVURkfOWJPQfD49z2hUqoff+O9hV3
- WnEGanx+HkcTj5/XTXNRD8MCWSpSEt7w0Ff7vGqLYVHCJrD/gvCG2+jJUquyrQ162513
- bkRw==
+ bh=HLONTvRjf34a+Vyw93TpcK5Od4YkptKH5NfsXVNFERI=;
+ b=BMAQOIB/VbuWg0ktnT/anuPnQzGMz125WTUGSX0dtFrXd7uTWEtzG8QJhqgTcCR774
+ OoS5kBwFbdoW4/Plf4EJU6kyJRtGi0/E/BsmAZ68N+DaYHMAs9WBDINBlKnSkSSqwqq4
+ K/Fz1Um/lzWk/VY1quB6jAHgUuKLypSigNxfAzbyi/gFVdSoNYb0iycxWS+1FKU5rNgm
+ /Y7cQeRBqM9oH292dnbYSTsqRdVTzxYr68hBb7FO2t4y97UJYFGpcymvhYtTacqtT6QK
+ h7F/yw9SQbmn8/QXiOn4sA6PFK4pYzAJhNcpxk9jGWcgGCO1rL7PqJ16Y5dB87dYTBHI
+ mRZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721309629; x=1721914429;
+ d=1e100.net; s=20230601; t=1721309635; x=1721914435;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oPF3lpjwa8azmyfI5pemrpn1QlX/iiaQsFcCFwFBaHY=;
- b=pQJxX4Q1nR/homEJrNOBi6hqPa+JqkEJrVUguJ+oorhInWYCqMEvbPuSRF9dnKL4Kw
- zOTpceBEdVz4mEojG2CqFnQ09vpSKvMtadnLP2ZcFHIW6xdD2CGfU+TAUpWEEXywgIKP
- QnnXm1j/vcqAo82BdpUkQCk+/RrHWn3nMI+PcuU4LQgpRMpaleSbBgA2xaVU2raHpuPl
- YHFnLuTvy3GJNOZPCJhZguiq1NkLoGMzC6rC72r0r7sFnRBEyUb2M9XPT+a3ENO5xjYO
- AuKbDA/5R8mNrQIUvYTUbS5EB01bRIw5b27qFJ+Y7u/j5/wZXfla9ctb9DnHevnKm0gJ
- aI8g==
+ bh=HLONTvRjf34a+Vyw93TpcK5Od4YkptKH5NfsXVNFERI=;
+ b=Z4I3DACPXlUmObVm8crGTQqOI52Bs32L8HnWTveQlGq9gFEpWSBQSu+r2kCCA14XUf
+ DKdEukit/fUPwafjgNC1/XoJbeSrA99Y7gtsfrfKXW/PPYMCpx9uX04MEbOSkTVCmxrs
+ 82Fhp0rtLOAld1pHBvS8yE5EMT5qCQDffz4BuSTz1MH/0McsbgdyMxFOVMzW1c2rII0O
+ YEQMZ4oa9hmLs2qYTMWGizY1nPREqU6eR0GY49q0jNzOkCE0xKl7Du6FQRHA+IifaY/k
+ E2QaKJ2lkpme5yZtiDu0pFjeyiiwPKF+NuyWE4enpLtcPWNvfBVdI49Fox81t/Lu7LbV
+ kUOA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU1U1tRBQzMIhesUkTfhtxvTwTcQAVAminP5dKC9ugFQxYUyMuFHiMlVByIN6Kn2LBKNl1Q4NiwBccUffInZc6b9FT9+Vs=
-X-Gm-Message-State: AOJu0YyLbZDtpoRgjQFqJdAsFhQ4EVvCT0XYsMeUbvQC7CBfC2oIu7Bz
- sLRMc1POysB9GILzwL0yJDQ2nIRWF8Jx93dqewSBCSKbdN/lAhRxOgsCJdyiuds0urLm6GBy4GP
- k
-X-Google-Smtp-Source: AGHT+IEj5CzScrBTQovLFp4etjVNrKURaE7+4t/BD7q58OVuLbiSAP9Cuyc1MMbAOoqSL+4kGsA/0A==
-X-Received: by 2002:a05:600c:4ec8:b0:426:58ca:5a3 with SMTP id
- 5b1f17b1804b1-427c2cf5ce6mr35548545e9.30.1721309629358; 
- Thu, 18 Jul 2024 06:33:49 -0700 (PDT)
+ AJvYcCXW1Yze52EmHnCtImoEO5LVmD5xBzx7OuK0i7iNeP/7hgRw85ESpww5B+pY+tM02qrBO3caNIvkKy+2e4PjkYr893kl9mM=
+X-Gm-Message-State: AOJu0YxKUINHD70HNq8MMGlq8mRLmaL1D2B97ngll3HhU7QABSuzShG4
+ SVmmGDTO1VUMGonnTa4QpGzWNhnGeRADphN263br08mw/0Wfu57lXMtGPNmjIAQ=
+X-Google-Smtp-Source: AGHT+IH38+zBuiOzBvvIueq0MxhBXTDAI80PiRkk+TGy1jaldcfMvUqfxoSvSPJcirfGlrRf8Ouqjw==
+X-Received: by 2002:a2e:90d5:0:b0:2ec:1cf1:b74c with SMTP id
+ 38308e7fff4ca-2ef05d32f7bmr16817141fa.32.1721309635203; 
+ Thu, 18 Jul 2024 06:33:55 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.173.113])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2b13375sm13505625e9.7.2024.07.18.06.33.47
+ ffacd0b85a97d-3680daccacdsm14337586f8f.62.2024.07.18.06.33.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Jul 2024 06:33:48 -0700 (PDT)
+ Thu, 18 Jul 2024 06:33:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
@@ -65,18 +64,18 @@ Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Xianglai Li <lixianglai@loongson.cn>
-Subject: [PATCH v5 06/19] hw/intc/loongson_ipi: Add TYPE_LOONGSON_IPI_COMMON
- stub
-Date: Thu, 18 Jul 2024 15:32:58 +0200
-Message-ID: <20240718133312.10324-7-philmd@linaro.org>
+Subject: [PATCH v5 07/19] hw/intc/loongson_ipi: Move common definitions to
+ loongson_ipi_common.h
+Date: Thu, 18 Jul 2024 15:32:59 +0200
+Message-ID: <20240718133312.10324-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240718133312.10324-1-philmd@linaro.org>
 References: <20240718133312.10324-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,8 +100,6 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Introduce LOONGSON_IPI_COMMON stubs, QDev parent of LOONGSON_IPI.
-
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 [PMD: Extracted from bigger commit, added commit description]
 Co-Developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
@@ -111,200 +108,67 @@ Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 Tested-by: Bibo Mao <maobibo@loongson.cn>
 Acked-by: Song Gao <gaosong@loongson.cn>
 ---
- MAINTAINERS                           |  4 ++++
- include/hw/intc/loongson_ipi.h        | 13 +++++++++++--
- include/hw/intc/loongson_ipi_common.h | 26 ++++++++++++++++++++++++++
- hw/intc/loongson_ipi.c                |  7 ++++---
- hw/intc/loongson_ipi_common.c         | 22 ++++++++++++++++++++++
- hw/intc/Kconfig                       |  4 ++++
- hw/intc/meson.build                   |  1 +
- 7 files changed, 72 insertions(+), 5 deletions(-)
- create mode 100644 include/hw/intc/loongson_ipi_common.h
- create mode 100644 hw/intc/loongson_ipi_common.c
+ include/hw/intc/loongson_ipi.h        | 18 ------------------
+ include/hw/intc/loongson_ipi_common.h | 19 +++++++++++++++++++
+ 2 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7d9811458c..a670c8ee67 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1249,8 +1249,10 @@ F: configs/devices/loongarch64-softmmu/default.mak
- F: hw/loongarch/
- F: include/hw/loongarch/virt.h
- F: include/hw/intc/loongarch_*.h
-+F: include/hw/intc/loongson_ipi_common.h
- F: include/hw/intc/loongson_ipi.h
- F: hw/intc/loongarch_*.c
-+F: hw/intc/loongson_ipi_common.c
- F: hw/intc/loongson_ipi.c
- F: include/hw/pci-host/ls7a.h
- F: hw/rtc/ls7a_rtc.c
-@@ -1385,11 +1387,13 @@ Loongson-3 virtual platforms
- M: Huacai Chen <chenhuacai@kernel.org>
- R: Jiaxun Yang <jiaxun.yang@flygoat.com>
- S: Maintained
-+F: hw/intc/loongson_ipi_common.c
- F: hw/intc/loongson_ipi.c
- F: hw/intc/loongson_liointc.c
- F: hw/mips/loongson3_bootp.c
- F: hw/mips/loongson3_bootp.h
- F: hw/mips/loongson3_virt.c
-+F: include/hw/intc/loongson_ipi_common.h
- F: include/hw/intc/loongson_ipi.h
- F: include/hw/intc/loongson_liointc.h
- F: tests/avocado/machine_mips_loongson3v.py
 diff --git a/include/hw/intc/loongson_ipi.h b/include/hw/intc/loongson_ipi.h
-index efb772f384..82cb64ca40 100644
+index 82cb64ca40..d53bd5dcfe 100644
 --- a/include/hw/intc/loongson_ipi.h
 +++ b/include/hw/intc/loongson_ipi.h
-@@ -8,6 +8,8 @@
- #ifndef HW_LOONGSON_IPI_H
- #define HW_LOONGSON_IPI_H
- 
-+#include "qom/object.h"
-+#include "hw/intc/loongson_ipi_common.h"
+@@ -12,24 +12,6 @@
+ #include "hw/intc/loongson_ipi_common.h"
  #include "hw/sysbus.h"
  
- /* Mainy used by iocsr read and write */
-@@ -31,7 +33,7 @@
+-/* Mainy used by iocsr read and write */
+-#define SMP_IPI_MAILBOX      0x1000ULL
+-#define CORE_STATUS_OFF       0x0
+-#define CORE_EN_OFF           0x4
+-#define CORE_SET_OFF          0x8
+-#define CORE_CLEAR_OFF        0xc
+-#define CORE_BUF_20           0x20
+-#define CORE_BUF_28           0x28
+-#define CORE_BUF_30           0x30
+-#define CORE_BUF_38           0x38
+-#define IOCSR_IPI_SEND        0x40
+-#define IOCSR_MAIL_SEND       0x48
+-#define IOCSR_ANY_SEND        0x158
+-
+-#define MAIL_SEND_ADDR        (SMP_IPI_MAILBOX + IOCSR_MAIL_SEND)
+-#define MAIL_SEND_OFFSET      0
+-#define ANY_SEND_OFFSET       (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
+-
  #define IPI_MBX_NUM           4
  
  #define TYPE_LOONGSON_IPI "loongson_ipi"
--OBJECT_DECLARE_SIMPLE_TYPE(LoongsonIPIState, LOONGSON_IPI)
-+OBJECT_DECLARE_TYPE(LoongsonIPIState, LoongsonIPIClass, LOONGSON_IPI)
- 
- typedef struct IPICore {
-     LoongsonIPIState *ipi;
-@@ -45,8 +47,15 @@ typedef struct IPICore {
-     qemu_irq irq;
- } IPICore;
- 
-+struct LoongsonIPIClass {
-+    LoongsonIPICommonClass parent_class;
-+
-+    DeviceRealize parent_realize;
-+};
-+
- struct LoongsonIPIState {
--    SysBusDevice parent_obj;
-+    LoongsonIPICommonState parent_obj;
-+
-     MemoryRegion ipi_iocsr_mem;
-     MemoryRegion ipi64_iocsr_mem;
-     uint32_t num_cpu;
 diff --git a/include/hw/intc/loongson_ipi_common.h b/include/hw/intc/loongson_ipi_common.h
-new file mode 100644
-index 0000000000..70ac69d0ba
---- /dev/null
+index 70ac69d0ba..b43b77bda6 100644
+--- a/include/hw/intc/loongson_ipi_common.h
 +++ b/include/hw/intc/loongson_ipi_common.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Loongson ipi interrupt header files
-+ *
-+ * Copyright (C) 2021 Loongson Technology Corporation Limited
-+ */
-+
-+#ifndef HW_LOONGSON_IPI_COMMON_H
-+#define HW_LOONGSON_IPI_COMMON_H
-+
-+#include "qom/object.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_LOONGSON_IPI_COMMON "loongson_ipi_common"
-+OBJECT_DECLARE_TYPE(LoongsonIPICommonState,
-+                    LoongsonIPICommonClass, LOONGSON_IPI_COMMON)
-+
-+struct LoongsonIPICommonState {
-+    SysBusDevice parent_obj;
-+};
-+
-+struct LoongsonIPICommonClass {
-+    SysBusDeviceClass parent_class;
-+};
-+
-+#endif
-diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index bab4d8816b..20f3f6bd3f 100644
---- a/hw/intc/loongson_ipi.c
-+++ b/hw/intc/loongson_ipi.c
-@@ -362,8 +362,10 @@ static Property ipi_properties[] = {
- static void loongson_ipi_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    LoongsonIPIClass *lic = LOONGSON_IPI_CLASS(klass);
+@@ -23,4 +23,23 @@ struct LoongsonIPICommonClass {
+     SysBusDeviceClass parent_class;
+ };
  
--    dc->realize = loongson_ipi_realize;
-+    device_class_set_parent_realize(dc, loongson_ipi_realize,
-+                                    &lic->parent_realize);
-     device_class_set_props(dc, ipi_properties);
-     dc->vmsd = &vmstate_loongson_ipi;
- }
-@@ -383,8 +385,7 @@ static void loongson_ipi_finalize(Object *obj)
- static const TypeInfo loongson_ipi_types[] = {
-     {
-         .name               = TYPE_LOONGSON_IPI,
--        .parent             = TYPE_SYS_BUS_DEVICE,
--        .instance_size      = sizeof(LoongsonIPIState),
-+        .parent             = TYPE_LOONGSON_IPI_COMMON,
-         .class_init         = loongson_ipi_class_init,
-         .instance_finalize  = loongson_ipi_finalize,
-     }
-diff --git a/hw/intc/loongson_ipi_common.c b/hw/intc/loongson_ipi_common.c
-new file mode 100644
-index 0000000000..970525c242
---- /dev/null
-+++ b/hw/intc/loongson_ipi_common.c
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Loongson IPI interrupt common support
-+ *
-+ * Copyright (C) 2021 Loongson Technology Corporation Limited
-+ */
++/* Mainy used by iocsr read and write */
++#define SMP_IPI_MAILBOX         0x1000ULL
 +
-+#include "qemu/osdep.h"
-+#include "hw/sysbus.h"
-+#include "hw/intc/loongson_ipi_common.h"
++#define CORE_STATUS_OFF         0x0
++#define CORE_EN_OFF             0x4
++#define CORE_SET_OFF            0x8
++#define CORE_CLEAR_OFF          0xc
++#define CORE_BUF_20             0x20
++#define CORE_BUF_28             0x28
++#define CORE_BUF_30             0x30
++#define CORE_BUF_38             0x38
++#define IOCSR_IPI_SEND          0x40
++#define IOCSR_MAIL_SEND         0x48
++#define IOCSR_ANY_SEND          0x158
 +
-+static const TypeInfo loongarch_ipi_types[] = {
-+    {
-+        .name               = TYPE_LOONGSON_IPI_COMMON,
-+        .parent             = TYPE_SYS_BUS_DEVICE,
-+        .instance_size      = sizeof(LoongsonIPICommonState),
-+        .class_size         = sizeof(LoongsonIPICommonClass),
-+        .abstract           = true,
-+    }
-+};
++#define MAIL_SEND_ADDR          (SMP_IPI_MAILBOX + IOCSR_MAIL_SEND)
++#define MAIL_SEND_OFFSET        0
++#define ANY_SEND_OFFSET         (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
 +
-+DEFINE_TYPES(loongarch_ipi_types)
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 58b6d3a710..a2a0fdca85 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -87,8 +87,12 @@ config GOLDFISH_PIC
- config M68K_IRQC
-     bool
- 
-+config LOONGSON_IPI_COMMON
-+    bool
-+
- config LOONGSON_IPI
-     bool
-+    select LOONGSON_IPI_COMMON
- 
- config LOONGARCH_PCH_PIC
-     bool
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index afd1aa51ee..a09a527207 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -69,6 +69,7 @@ specific_ss.add(when: 'CONFIG_XIVE', if_true: files('xive.c'))
- specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_XIVE'],
- 		if_true: files('spapr_xive_kvm.c'))
- specific_ss.add(when: 'CONFIG_M68K_IRQC', if_true: files('m68k_irqc.c'))
-+specific_ss.add(when: 'CONFIG_LOONGSON_IPI_COMMON', if_true: files('loongson_ipi_common.c'))
- specific_ss.add(when: 'CONFIG_LOONGSON_IPI', if_true: files('loongson_ipi.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_PIC', if_true: files('loongarch_pch_pic.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_MSI', if_true: files('loongarch_pch_msi.c'))
+ #endif
 -- 
 2.41.0
 
