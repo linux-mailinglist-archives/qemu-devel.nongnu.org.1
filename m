@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644439349C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 10:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F3B9349DF
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 10:28:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUMNF-0000PZ-Le; Thu, 18 Jul 2024 04:20:25 -0400
+	id 1sUMU4-0002hP-I6; Thu, 18 Jul 2024 04:27:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1sUMND-0000MB-7c
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:20:23 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1sUMN9-0008Ut-KL
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:20:22 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8DxTeg40Jhm6YEAAA--.1961S3;
- Thu, 18 Jul 2024 16:20:09 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxWcY10JhmK49NAA--.42795S3; 
- Thu, 18 Jul 2024 16:20:08 +0800 (CST)
-Subject: Re: [PATCH] hw/loongarch: Remove unimplemented extioi INT_encode mode
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, jiaxun.yang@flygoat.com
-References: <20240718072557.724242-1-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <43ab5a4e-32b6-9068-7be7-0de3ca6d0dfe@loongson.cn>
-Date: Thu, 18 Jul 2024 16:20:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUMU2-0002dd-PG
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:27:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUMU0-0002Qc-LA
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:27:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721291242;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Csfv8UKwQNZgTU8Pypj1wPiCCQtN74A3k50hOXF1azE=;
+ b=O8v6mJa6iOQ9swiNmm6fYTFRXQPUBp4+e8MiE4v20WMMm0f/gU/os4EninndNlP42RUPb+
+ Nh6BcTHjdEC4dMMCE/A72SUZwXY1/vYuRCoLdJVsESPRUEbaGhOYBanai8mqaM3SzH/qAq
+ uAZPTQhOVSC+qafMJ9XuAyOxS61Vylk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-413-oTKwWBhwNrOPBT9g9iprlg-1; Thu,
+ 18 Jul 2024 04:27:20 -0400
+X-MC-Unique: oTKwWBhwNrOPBT9g9iprlg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F3391955D4D; Thu, 18 Jul 2024 08:27:17 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ACC2C1955F40; Thu, 18 Jul 2024 08:27:14 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3E52321E668A; Thu, 18 Jul 2024 10:27:12 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org,  raphael@enfabrica.net,  mst@redhat.com,
+ qemu-devel@nongnu.org,  eblake@redhat.com,  eduardo@habkost.net,
+ berrange@redhat.com,  pbonzini@redhat.com,  hreitz@redhat.com,
+ kwolf@redhat.com,  yc-core@yandex-team.ru
+Subject: Re: [PATCH v5 3/3] qapi: introduce device-sync-config
+In-Reply-To: <20240625121843.120035-4-vsementsov@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Tue, 25 Jun 2024 15:18:43 +0300")
+References: <20240625121843.120035-1-vsementsov@yandex-team.ru>
+ <20240625121843.120035-4-vsementsov@yandex-team.ru>
+Date: Thu, 18 Jul 2024 10:27:12 +0200
+Message-ID: <87cynbm7fj.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-In-Reply-To: <20240718072557.724242-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxWcY10JhmK49NAA--.42795S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJrW7JrWUAw4rCw1ktF1DJwc_yoW8CF1kpF
- nrCa4rGa1UKrWUCw4vg3sxXrnrGr93Wry2gF42gFy8JFn3Z34UZw15tas3JFWDA3ykK39a
- qFyfua45Xa1qvrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1QV
- y3UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.124,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,60 +85,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
+> Add command to sync config from vhost-user backend to the device. It
+> may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
+> triggered interrupt to the guest or just not available (not supported
+> by vhost-user server).
+>
+> Command result is racy if allow it during migration. Let's allow the
+> sync only in RUNNING state.
 
-On 2024/7/18 下午3:25, Song Gao wrote:
-> Remove extioi INT_encode encode mode, because we don't emulate it.
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   hw/loongarch/virt.c                | 6 ------
->   include/hw/intc/loongarch_extioi.h | 1 -
->   2 files changed, 7 deletions(-)
-> 
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index e592b1b6b7..2103a1069f 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -951,9 +951,6 @@ static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
->           if (val & BIT_ULL(IOCSRM_EXTIOI_EN)) {
->               features |= BIT(EXTIOI_ENABLE);
->           }
-> -        if (val & BIT_ULL(IOCSRM_EXTIOI_INT_ENCODE)) {
-> -            features |= BIT(EXTIOI_ENABLE_INT_ENCODE);
-> -        }
-I do not think this modification is necessary.
+Is this still accurate?  The runstate_is_running() check is gone in
+v4, the migration_is_running() check remains.
 
->   
->           address_space_stl(&lvms->as_iocsr,
->                             EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
-> @@ -1002,9 +999,6 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
->           if (features & BIT(EXTIOI_ENABLE)) {
->               ret |= BIT_ULL(IOCSRM_EXTIOI_EN);
->           }
-> -        if (features & BIT(EXTIOI_ENABLE_INT_ENCODE)) {
-> -            ret |= BIT_ULL(IOCSRM_EXTIOI_INT_ENCODE);
-> -        }
-Ditto, I do not think this modification is necessary also.
->           break;
->       default:
->           g_assert_not_reached();
-> diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
-> index eccc2e0d18..626a37dfa1 100644
-> --- a/include/hw/intc/loongarch_extioi.h
-> +++ b/include/hw/intc/loongarch_extioi.h
-> @@ -50,7 +50,6 @@
->   #define  EXTIOI_HAS_CPU_ENCODE       (3)
->   #define  EXTIOI_VIRT_HAS_FEATURES    (BIT(EXTIOI_HAS_VIRT_EXTENSION)  \
->                                         | BIT(EXTIOI_HAS_ENABLE_OPTION) \
-> -                                      | BIT(EXTIOI_HAS_INT_ENCODE)    \
->                                         | BIT(EXTIOI_HAS_CPU_ENCODE))
-Only this modification will be ok.
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Regards
-Bibo Mao
->   #define EXTIOI_VIRT_CONFIG           (0x4)
->   #define  EXTIOI_ENABLE               (1)
-> 
+QAPI schema and QMP part:
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
 
