@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A220F934DF5
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765E4934DFB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUR3x-0008F5-Vn; Thu, 18 Jul 2024 09:20:50 -0400
+	id 1sUR43-00011e-HA; Thu, 18 Jul 2024 09:20:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sUR3l-0007td-4l
+ id 1sUR3l-0007tZ-4i
  for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:38 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sUR3i-0004Sw-O2
+ id 1sUR3h-0004Sz-JD
  for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:20:36 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2eefc3d707dso10106351fa.0
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4266ea6a412so2811195e9.1
  for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1721308832; x=1721913632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yCmmBscXHr7DP5v15ZBTuTVPUGJ3/3t6QvO+9hat3Zg=;
- b=ZXzWSJwmIXu4ps812/7Zlkt10i+g9PzqVVi66timp6scgeqeoEAARK14HUg1o5aMme
- 2DmLEJ/ekfpXmsJNPtWMx5TXQhfStM9bjlgNO8y6Bigox4NRH12Mrmlquejv7+N2NZgu
- KAvebyV02Cg0+49/YiJNDz/KgiTbLo9lNPWTIpbeOEbTIfkR3NCTBQwNEBmbLdbgbCOu
- gOsKOW3MKQSnauVVn2iXdESSS2ApziWYakhwCx1Bb+btmYeG3SAw+mWF5UDlHWI7IEwV
- lCPXoL0tEH0IUizLdxmV4OMPN9HXzcbzImqmQloMvxo2K6KH/iNp/uDUygLfJlY99bQH
- Rv8g==
+ :reply-to; bh=pRKxvd6QDFtj0h8zygsVf3aO3dQYQl8x7QbADWP6Qss=;
+ b=EuGQ7zxgEZvNmgRmQi9XtzdcytVB1aVVs2j8fM4J7pzjrsp6EkOlQV+S22guKOWnOw
+ nt9BKtsC+Cfh1eKb9CYM71i3RYcmm8eTP2+5uxQkoS+7obYY8z16j5W3W/nGO8JR+2DZ
+ sFnRpW25odVfclcyWD/I+WNpm1LBnFr9EjEwlOn3ANG+R0l/bKRztzhUUXmNdOQOGgJJ
+ YlfOQt8GbGIcmJMz82qPBEXLsMvUBySAeGnrFH8SHyW7rRKuu90ZlCdfV3TklLXIa1nV
+ Dot02H06OWZROauNNORtNjwkMrA8JlUYPzIC7L2A+3JMtf4lbaEEmsHf4KlqUYk3/FhK
+ Jpkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1721308832; x=1721913632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yCmmBscXHr7DP5v15ZBTuTVPUGJ3/3t6QvO+9hat3Zg=;
- b=Lg3pYg4zqSxGO0/EPLdJ7uOG6dKZTXaEHdYBlP3j0psp/2PAwKdIEMoDxKMJS2zvzs
- ntytLZO9+7ui6omTxTjdAvBiOhX+iYq2JEr5BN9qLCwTvISb3BIZOD8v+etq/m8hb2Jt
- kzC12XhURQ7dGQvBIYtUCLboH88v/SRglXP9KrEE0ylLxCAbQOqhzFKnfmEoP3qyWolo
- MQG7QPvXiOxCvZW60uPFFxU6mDzG6rGWgSzyV20svRQiGW7aGT7nJKV/M2JbVAdSMnry
- h7/xDOX4OQw2vnok47NYl66zYfi1lxIjF3efj4avTQyq/6dn7jfiJrNutZMl2lSuRL7J
- odbA==
-X-Gm-Message-State: AOJu0YwyitLTObNa0EeFNAsa7tm4pYn7xRpg5K3m2FXoAQJXNDeUFIVG
- n5XGskD7Wu+a5rCPLgAA+QSydJl7zPg17RcQLYKHO6qLsjAC3apnW1ObNg8eHmdtuyIMqhdDu1L
- C
-X-Google-Smtp-Source: AGHT+IGXHxxehFhsnAbj/v7cuJHva1NVc/GuH2A/0X/pXU8X7lqr4E6BEnfn0LdDAA/p5t0ytO/+/A==
-X-Received: by 2002:a2e:7314:0:b0:2ee:bd1b:84c with SMTP id
- 38308e7fff4ca-2ef05996013mr16963951fa.0.1721308831557; 
- Thu, 18 Jul 2024 06:20:31 -0700 (PDT)
+ bh=pRKxvd6QDFtj0h8zygsVf3aO3dQYQl8x7QbADWP6Qss=;
+ b=mK6Hx49XzOY5GpqSDDXOKBOofa2QOmBRtXp8ccz9DYwzRdo4eqUpNLI1Zwn94u+0hr
+ nhsRJuGadTt1enARDNPSwu5iHlhPkpJKOZJqURGXnHGJo1sbj23gs4oHgZA2BdzgN5dB
+ x1LCIspO5gs9pqWvxTjtV6UfRI+a0AVcnLLCd9EYffjHjfccuhnuSfgojphDK4AQbYnL
+ dtY13qNTaahA7v4g2YfnI/+na82fCFT0d6D7JZUVeKYaFJvxtF0AON0F/bhot2qqFfiG
+ Vnbvj25WHDWzb9vbKwizw6h6DQwsUTLQ9idd6Y9OF4c85vMPbmBrPupcCtYobScWlINg
+ kflA==
+X-Gm-Message-State: AOJu0YwXAEmCGa+SwHp7rdOkFJSeDY0enz12hthJT30UKHc3BoUntbcB
+ H6KXcpIcBvdGF5ccjS0Sw3tqFuYOkxXuUw5XlG0LHTeec9dCqODYK9IHTzRNe9d9AqdXUD4o7Fe
+ S
+X-Google-Smtp-Source: AGHT+IFK/uLh2Il3j2JaBwRdA+EgpU9JpU3GDyx9GRGTeteoYsJlyyydbdllWNGQpXceIfGKewqbKQ==
+X-Received: by 2002:a05:600c:34d0:b0:426:54c9:dfe5 with SMTP id
+ 5b1f17b1804b1-427c2cb8c45mr35891495e9.10.1721308832049; 
+ Thu, 18 Jul 2024 06:20:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-427d2a8e420sm14059315e9.35.2024.07.18.06.20.31
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 18 Jul 2024 06:20:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/26] hw/display/bcm2835_fb: fix fb_use_offsets condition
-Date: Thu, 18 Jul 2024 14:20:05 +0100
-Message-Id: <20240718132028.697927-4-peter.maydell@linaro.org>
+Subject: [PULL 04/26] hw/arm/smmu-common: Add missing size check for stage-1
+Date: Thu, 18 Jul 2024 14:20:06 +0100
+Message-Id: <20240718132028.697927-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240718132028.697927-1-peter.maydell@linaro.org>
 References: <20240718132028.697927-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,45 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: SamJakob <me@samjakob.com>
+From: Mostafa Saleh <smostafa@google.com>
 
-It is common practice when implementing double-buffering on VideoCore
-to do so by multiplying the height of the virtual buffer by the
-number of virtual screens desired (i.e., two - in the case of
-double-bufferring).
+According to the SMMU architecture specification (ARM IHI 0070 F.b),
+in “3.4 Address sizes”
+    The address output from the translation causes a stage 1 Address Size
+    fault if it exceeds the range of the effective IPA size for the given CD.
 
-At present, this won't work in QEMU because the logic in
-fb_use_offsets require that both the virtual width and height exceed
-their physical counterparts.
+However, this check was missing.
 
-This appears to be unintentional/a typo and indeed the comment
-states; "Experimentally, the hardware seems to do this only if the
-viewport size is larger than the physical screen".  The
-viewport/virtual size would be larger than the physical size if
-either virtual dimension were larger than their physical counterparts
-and not necessarily both.
+There is already a similar check for stage-2 against effective PA.
 
-Signed-off-by: SamJakob <me@samjakob.com>
-Message-id: 20240713160353.62410-1-me@samjakob.com
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Message-id: 20240715084519.1189624-2-smostafa@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/display/bcm2835_fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/smmu-common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/hw/display/bcm2835_fb.c b/hw/display/bcm2835_fb.c
-index e40ed2d2e18..650db3da82c 100644
---- a/hw/display/bcm2835_fb.c
-+++ b/hw/display/bcm2835_fb.c
-@@ -145,7 +145,7 @@ static bool fb_use_offsets(BCM2835FBConfig *config)
-      * viewport size is larger than the physical screen. (It doesn't
-      * prevent the guest setting this silly viewport setting, though...)
-      */
--    return config->xres_virtual > config->xres &&
-+    return config->xres_virtual > config->xres ||
-         config->yres_virtual > config->yres;
- }
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index b6601cc102e..e81b684d06c 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -381,6 +381,16 @@ static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
+             goto error;
+         }
  
++        /*
++         * The address output from the translation causes a stage 1 Address
++         * Size fault if it exceeds the range of the effective IPA size for
++         * the given CD.
++         */
++        if (gpa >= (1ULL << cfg->oas)) {
++            info->type = SMMU_PTW_ERR_ADDR_SIZE;
++            goto error;
++        }
++
+         tlbe->entry.translated_addr = gpa;
+         tlbe->entry.iova = iova & ~mask;
+         tlbe->entry.addr_mask = mask;
 -- 
 2.34.1
 
