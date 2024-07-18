@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526FF934E48
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE2D934E68
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:39:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sURI2-0006Ba-VN; Thu, 18 Jul 2024 09:35:23 -0400
+	id 1sURM9-0002Z0-Jd; Thu, 18 Jul 2024 09:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURHo-00054s-2H
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:35:08 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURHm-0000Ko-Dh
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:35:07 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4266fd395eeso2872425e9.3
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721309705; x=1721914505; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f+aYS0CmzIbyjKGvExYGEZFqxw8XdQ+/CcKYqmT4dqY=;
- b=oXflXLyhSJgYocxDAZKKQTcFcC8vdvri+sXFYDuwraTt/NLci8+YUY/OPrLSSTJXmk
- huXE/U26MqqiqIrkvUrsDkOAa+ubp4lv/e+wZ3BPN+w5PX6L3tMnoqMIH3N6dBT1brxV
- zJonY4FQYRo0/drftzdtDOW7USWDmV1pqj9efuRjHcNPagCfwoyvE4Bq7kFoQYfbGpYZ
- jEzoCw23TqYZVhRjV1YiSJyXIxamdEErJm0hC9r+5oJ6lseoCOimHtS1feUpFmqnGyOY
- ZcPt/zI98KE5vdA6chD895bG/b4AAECMD7m3IrbcpL96PT/XRN2GxZeZh5Vpb7QtrhNl
- kZVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721309705; x=1721914505;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=f+aYS0CmzIbyjKGvExYGEZFqxw8XdQ+/CcKYqmT4dqY=;
- b=ekYUw6ViQ83gEYg0BxbJ43Tt2clN+2anKAarevMA5W/+vQr8MdDUewnwROTCf5eZ11
- Y8WxpblVISKWi0fJ+LHEBNHzuANiHWi6pQrAs75ovDKIqKX4P8ceZ5kn7O6LccAuYy59
- hFWX4VTKbkxjVf4BZvmlDcOOyLeZIvuv0NpK8qFH36Khjzqcb64LcxKaxLxdj7xWrtsF
- VlUV7yI+MIFcnU3yvWRmlPBQSYLJUljBAB+bieh5tSf/0u05APtprB3nr551qebr9apJ
- 9KrkveFjrYUVzTM3yRVXzFsEb1TJRt/+x9Y0zcWS9hlUfkkG9q/c85HyQ2cR7SvB46QS
- x3JA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVkYtLlLYUTjTVnygBZ4pubk70t49snyyvoTgYw6ctR8LGCG7fzLxijod6JZ9coTYpx/6CnudzgsZVbFmzjU07E1dNUo7U=
-X-Gm-Message-State: AOJu0YwlZajddHBPQDEwnVu4jx3koMYf2NB5FQLs7H5tzoRAV+qX1M6z
- vq9ZBigCOfJnHkhB2XwGGi1QfTl/3M9j63jf+/+aI3B/twft/cK0eRYo2JiN5Vk=
-X-Google-Smtp-Source: AGHT+IFAzrwFp5dERG2h81V/RI7HAd+FW2b4vo/XQ9++1CoTFl4ScJ3jg6nYyd3k5dZaxayJGLMCbQ==
-X-Received: by 2002:a05:600c:450c:b0:426:6416:aa7a with SMTP id
- 5b1f17b1804b1-427c2d12992mr37507605e9.34.1721309704958; 
- Thu, 18 Jul 2024 06:35:04 -0700 (PDT)
-Received: from localhost.localdomain ([176.176.173.113])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2b2a11asm14390595e9.40.2024.07.18.06.35.03
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Jul 2024 06:35:04 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Xianglai Li <lixianglai@loongson.cn>
-Subject: [PATCH v5 19/19] docs: Correct Loongarch -> LoongArch
-Date: Thu, 18 Jul 2024 15:33:11 +0200
-Message-ID: <20240718133312.10324-20-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240718133312.10324-1-philmd@linaro.org>
-References: <20240718133312.10324-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sURLw-00027g-Uj
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:39:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sURLu-0001RH-NP
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:39:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721309961;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kXsZ2XI3G/9gnTN11BE0k8Msh8UF6H5GpffLH2q/kaI=;
+ b=blFtKlDudQ/ZoIdXupTxebZ8vtueCboqFoRB67Am0biW5A2HwWwtJL0+vbchcsGiV8EQ1C
+ 0oRDTkivvBU6+SVlOnVIIgkV/MNFJ8z/UM4ir5RjUMAieCaQc5VjWrxGSD7542yKSXi7ED
+ UqI9Nn3sTk76ebg9LQ5oMmrW/w3+Mtg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-TbzhWe9sOt6vNMGV0AifcQ-1; Thu,
+ 18 Jul 2024 09:39:18 -0400
+X-MC-Unique: TbzhWe9sOt6vNMGV0AifcQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1C1011955D48; Thu, 18 Jul 2024 13:39:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5CC0B195605A; Thu, 18 Jul 2024 13:39:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1779A21E66A3; Thu, 18 Jul 2024 15:39:13 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Collin Walling <walling@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org,  qemu-devel@nongnu.org,  thuth@redhat.com,
+ david@redhat.com,  wangyanan55@huawei.com,  philmd@linaro.org,
+ marcel.apfelbaum@gmail.com,  eduardo@habkost.net,  Jiri Denemark
+ <jdenemar@redhat.com>
+Subject: Re: [PATCH v2] target/s390x: filter deprecated properties based on
+ model expansion type
+In-Reply-To: <20240716173253.28533-1-walling@linux.ibm.com> (Collin Walling's
+ message of "Tue, 16 Jul 2024 13:32:53 -0400")
+References: <20240716173253.28533-1-walling@linux.ibm.com>
+Date: Thu, 18 Jul 2024 15:39:13 +0200
+Message-ID: <87le1yn7jy.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,38 +85,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/about/emulation.rst | 2 +-
- hw/rtc/ls7a_rtc.c        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Collin Walling <walling@linux.ibm.com> writes:
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index b5ff9c5f69..3bfe8cc14a 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -42,7 +42,7 @@ depending on the guest architecture.
-     - :ref:`Yes<QEMU-PC-System-emulator>`
-     - Yes
-     - The ubiquitous desktop PC CPU architecture, 32 and 64 bit.
--  * - Loongarch
-+  * - LoongArch
-     - Yes
-     - Yes
-     - A MIPS-like 64bit RISC architecture developed in China
-diff --git a/hw/rtc/ls7a_rtc.c b/hw/rtc/ls7a_rtc.c
-index 052201c2cd..3226b6105e 100644
---- a/hw/rtc/ls7a_rtc.c
-+++ b/hw/rtc/ls7a_rtc.c
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- /*
-- * Loongarch LS7A Real Time Clock emulation
-+ * LoongArch LS7A Real Time Clock emulation
-  *
-  * Copyright (C) 2021 Loongson Technology Corporation Limited
-  */
--- 
-2.41.0
+> As s390 CPU models progress and deprecated properties are dropped
+> outright, it will be cumbersome for management apps to query the host
+> for a comprehensive list of deprecated properties that will need to be
+> disabled on older models. To remedy this, the query-cpu-model-expansion
+> output now behaves by filtering deprecated properties based on the
+> expansion type instead of filtering based off of the model's full set
+> of features:
+>
+> When reporting a static CPU model, only show deprecated properties that
+> are a subset of the model's enabled features.
+>
+> When reporting a full CPU model, show the entire list of deprecated
+> properties regardless if they are supported on the model.
+>
+> Suggested-by: Jiri Denemark <jdenemar@redhat.com>
+> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+> ---
+>
+> Changelog:
+>
+>     v2
+>     - Changed commit message
+>     - Added documentation reflecting this change
+>     - Made code changes that more accurately filter the deprecated
+>         properties based on expansion type.  This change makes it
+>         so that the deprecated-properties reported for a static model
+>         expansion are a subset of the model's properties instead of
+>         the model's full-definition properties.
+>
+>         For example:
+>
+>         Previously, the z900 static model would report 'bpb' in the
+>         list of deprecated-properties.  However, this prop is *not*
+>         a part of the model's feature set, leading to some inaccuracy
+>         (albeit harmless).
+>
+>         Now, this feature will not show during a static expansion.
+>         It will, however, show up in a full expansion (along with
+>         the rest of the list: 'csske', 'te', 'cte').
+>
+> @David, I've elected to respectully forgo adding your ack-by on this
+> iteration since I have changed the code (and therefore the behavior)
+> between this version and the previous in case you do not agree with
+> these adjustments.
+>
+> ---
+>  qapi/machine-target.json         |  8 ++++++--
+>  target/s390x/cpu_models_sysemu.c | 16 +++++++++-------
+>  2 files changed, 15 insertions(+), 9 deletions(-)
+>
+> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+> index a8d9ec87f5..d151504f25 100644
+> --- a/qapi/machine-target.json
+> +++ b/qapi/machine-target.json
+> @@ -21,8 +21,12 @@
+>  # @props: a dictionary of QOM properties to be applied
+>  #
+>  # @deprecated-props: a list of properties that are flagged as deprecated
+> -#     by the CPU vendor.  These props are a subset of the full model's
+> -#     definition list of properties. (since 9.1)
+> +#     by the CPU vendor.  (since 9.1).
+> +#
+> +# .. note:: Since 9.1, the list of deprecated props were always a subset
+> +#    of the model's full-definition list of properites. Now, this list is
+> +#    populated with the model's enabled property set when delta changes
+> +#    are applied. All deprecated properties are reported otherwise.
+
+I'm confused.
+
+"Since 9.1, the list of deprecated props were ..." and "Now, this list
+is" sounds like you're explaining behavior before and after a change.
+What change?  Since only released behavior matters, and
+@deprecated-props is new, there is no old behavior to document, isn't
+it?
+
+docs/devel/qapi-code-gen.rst section "Documentation markup":
+
+    For legibility, wrap text paragraphs so every line is at most 70
+    characters long.
+
+    Separate sentences with two spaces.
+
+>  #
+>  # Since: 2.8
+>  ##
+
+[...]
 
 
