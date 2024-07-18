@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F67A93485A
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 08:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EC5934855
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 08:51:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUKyy-00008c-P8; Thu, 18 Jul 2024 02:51:16 -0400
+	id 1sUKzB-0001k3-Ir; Thu, 18 Jul 2024 02:51:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sUKym-0007Vb-E6; Thu, 18 Jul 2024 02:51:05 -0400
+ id 1sUKz9-0001OS-3z; Thu, 18 Jul 2024 02:51:27 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sUKyk-0004VA-NN; Thu, 18 Jul 2024 02:51:04 -0400
+ id 1sUKz7-0004VA-Fx; Thu, 18 Jul 2024 02:51:26 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 18 Jul
@@ -31,9 +31,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 14/15] aspeed: fix coding style
-Date: Thu, 18 Jul 2024 14:49:24 +0800
-Message-ID: <20240718064925.1846074-15-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 15/15] aspeed: add tmp105 in i2c bus 0 for AST2700
+Date: Thu, 18 Jul 2024 14:49:25 +0800
+Message-ID: <20240718064925.1846074-16-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240718064925.1846074-1-jamin_lin@aspeedtech.com>
 References: <20240718064925.1846074-1-jamin_lin@aspeedtech.com>
@@ -64,69 +64,45 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix coding style issues from checkpatch.pl
+ASPEED SDK add lm75 in i2c bus 0 for AST2700.
+LM75 is compatible with TMP105 driver.
 
-Test command:
-./scripts/checkpatch.pl --no-tree -f hw/arm/aspeed.c
+Introduce a new i2c init function and
+add tmp105 device model in i2c bus 0.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ hw/arm/aspeed.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 53a4f665d0..f8766ea462 100644
+index f8766ea462..ed98758708 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -265,7 +265,8 @@ static void write_boot_rom(BlockBackend *blk, hwaddr addr, size_t rom_size,
-     g_autofree void *storage = NULL;
-     int64_t size;
- 
--    /* The block backend size should have already been 'validated' by
-+    /*
-+     * The block backend size should have already been 'validated' by
-      * the creation of the m25p80 object.
-      */
-     size = blk_getlength(blk);
-@@ -463,8 +464,10 @@ static void palmetto_bmc_i2c_init(AspeedMachineState *bmc)
-     DeviceState *dev;
-     uint8_t *eeprom_buf = g_malloc0(32 * 1024);
- 
--    /* The palmetto platform expects a ds3231 RTC but a ds1338 is
--     * enough to provide basic RTC features. Alarms will be missing */
-+    /*
-+     * The palmetto platform expects a ds3231 RTC but a ds1338 is
-+     * enough to provide basic RTC features. Alarms will be missing
-+     */
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 0), "ds1338", 0x68);
- 
-     smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 0), 0x50,
-@@ -555,8 +558,10 @@ static void romulus_bmc_i2c_init(AspeedMachineState *bmc)
- {
-     AspeedSoCState *soc = bmc->soc;
- 
--    /* The romulus board expects Epson RX8900 I2C RTC but a ds1338 is
--     * good enough */
-+    /*
-+     * The romulus board expects Epson RX8900 I2C RTC but a ds1338 is
-+     * good enough
-+     */
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
+@@ -1604,6 +1604,15 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
  }
  
-@@ -664,8 +669,10 @@ static void witherspoon_bmc_i2c_init(AspeedMachineState *bmc)
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), TYPE_TMP105,
-                      0x4a);
- 
--    /* The witherspoon board expects Epson RX8900 I2C RTC but a ds1338 is
--     * good enough */
-+    /*
-+     * The witherspoon board expects Epson RX8900 I2C RTC but a ds1338 is
-+     * good enough
-+     */
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
- 
-     smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 11), 0x51,
+ #ifdef TARGET_AARCH64
++static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
++{
++    AspeedSoCState *soc = bmc->soc;
++
++    /* LM75 is compatible with TMP105 driver */
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 0),
++                            TYPE_TMP105, 0x4d);
++}
++
+ static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -1618,6 +1627,7 @@ static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
+     amc->num_cs    = 2;
+     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
+     amc->uart_default = ASPEED_DEV_UART12;
++    amc->i2c_init  = ast2700_evb_i2c_init;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
 -- 
 2.34.1
 
