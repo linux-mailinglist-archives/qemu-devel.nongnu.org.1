@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E6A934850
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3FD934852
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 08:51:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUKy9-00059u-Dy; Thu, 18 Jul 2024 02:50:25 -0400
+	id 1sUKyB-0005IQ-FH; Thu, 18 Jul 2024 02:50:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sUKy7-00053E-9I; Thu, 18 Jul 2024 02:50:23 -0400
+ id 1sUKy9-0005Cr-KI; Thu, 18 Jul 2024 02:50:25 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sUKy5-0004L5-Q1; Thu, 18 Jul 2024 02:50:23 -0400
+ id 1sUKy8-0004L5-3a; Thu, 18 Jul 2024 02:50:25 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 18 Jul
@@ -31,9 +31,10 @@ To: Alistair Francis <alistair@alistair23.me>, Peter Maydell
  list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 02/15] aspeed/soc: support ADC for AST2700
-Date: Thu, 18 Jul 2024 14:49:12 +0800
-Message-ID: <20240718064925.1846074-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 03/15] hw/i2c/aspeed: support to set the different memory
+ size
+Date: Thu, 18 Jul 2024 14:49:13 +0800
+Message-ID: <20240718064925.1846074-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240718064925.1846074-1-jamin_lin@aspeedtech.com>
 References: <20240718064925.1846074-1-jamin_lin@aspeedtech.com>
@@ -64,54 +65,81 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add ADC model for AST2700 ADC support.
-The ADC controller registers base address is start at
-0x14C0_0000 and its address space is 0x1000.
-The ADC controller interrupt is connected to
-GICINT130_INTC group at bit 16. The GIC IRQ is 130.
+According to the datasheet of ASPEED SOCs,
+an I2C controller owns 8KB of register space for AST2700,
+owns 4KB of register space for AST2600, AST2500 and AST2400,
+and owns 64KB of register space for AST1030.
+
+It set the memory region size 4KB by default and it does not compatible
+register space for AST2700.
+
+Introduce a new class attribute to set the I2C controller memory size
+for different ASPEED SOCs.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/i2c/aspeed_i2c.c         | 6 +++++-
+ include/hw/i2c/aspeed_i2c.h | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index a9fb0d4b88..4257b5e8af 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -60,6 +60,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_SLIIO]     =  0x14C1E000,
-     [ASPEED_GIC_DIST]      =  0x12200000,
-     [ASPEED_GIC_REDIST]    =  0x12280000,
-+    [ASPEED_DEV_ADC]       =  0x14C00000,
- };
+diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+index b43afd250d..7d5a53c4c0 100644
+--- a/hw/i2c/aspeed_i2c.c
++++ b/hw/i2c/aspeed_i2c.c
+@@ -1014,7 +1014,7 @@ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
  
- #define AST2700_MAX_IRQ 288
-@@ -344,6 +345,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
-     object_initialize_child(obj, "sli", &s->sli, TYPE_ASPEED_2700_SLI);
-     object_initialize_child(obj, "sliio", &s->sliio, TYPE_ASPEED_2700_SLIIO);
-     object_initialize_child(obj, "intc", &a->intc, TYPE_ASPEED_2700_INTC);
-+
-+    snprintf(typename, sizeof(typename), "aspeed.adc-%s", socname);
-+    object_initialize_child(obj, "adc", &s->adc, typename);
+     sysbus_init_irq(sbd, &s->irq);
+     memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_i2c_ctrl_ops, s,
+-                          "aspeed.i2c", 0x1000);
++                          "aspeed.i2c", aic->mem_size);
+     sysbus_init_mmio(sbd, &s->iomem);
+ 
+     for (i = 0; i < aic->num_busses; i++) {
+@@ -1286,6 +1286,7 @@ static void aspeed_2400_i2c_class_init(ObjectClass *klass, void *data)
+     aic->pool_size = 0x800;
+     aic->pool_base = 0x800;
+     aic->bus_pool_base = aspeed_2400_i2c_bus_pool_base;
++    aic->mem_size = 0x1000;
  }
  
- /*
-@@ -601,6 +605,14 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sliio), 0,
-                     sc->memmap[ASPEED_DEV_SLIIO]);
+ static const TypeInfo aspeed_2400_i2c_info = {
+@@ -1320,6 +1321,7 @@ static void aspeed_2500_i2c_class_init(ObjectClass *klass, void *data)
+     aic->bus_pool_base = aspeed_2500_i2c_bus_pool_base;
+     aic->check_sram = true;
+     aic->has_dma = true;
++    aic->mem_size = 0x1000;
+ }
  
-+    /* ADC */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->adc), errp)) {
-+        return;
-+    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->adc), 0, sc->memmap[ASPEED_DEV_ADC]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
-+
-     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
-     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
-     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
+ static const TypeInfo aspeed_2500_i2c_info = {
+@@ -1353,6 +1355,7 @@ static void aspeed_2600_i2c_class_init(ObjectClass *klass, void *data)
+     aic->pool_base = 0xC00;
+     aic->bus_pool_base = aspeed_2600_i2c_bus_pool_base;
+     aic->has_dma = true;
++    aic->mem_size = 0x1000;
+ }
+ 
+ static const TypeInfo aspeed_2600_i2c_info = {
+@@ -1376,6 +1379,7 @@ static void aspeed_1030_i2c_class_init(ObjectClass *klass, void *data)
+     aic->pool_base = 0xC00;
+     aic->bus_pool_base = aspeed_2600_i2c_bus_pool_base;
+     aic->has_dma = true;
++    aic->mem_size = 0x10000;
+ }
+ 
+ static const TypeInfo aspeed_1030_i2c_info = {
+diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
+index a064479e59..065b636d29 100644
+--- a/include/hw/i2c/aspeed_i2c.h
++++ b/include/hw/i2c/aspeed_i2c.h
+@@ -283,7 +283,7 @@ struct AspeedI2CClass {
+     uint8_t *(*bus_pool_base)(AspeedI2CBus *);
+     bool check_sram;
+     bool has_dma;
+-
++    uint64_t mem_size;
+ };
+ 
+ static inline bool aspeed_i2c_is_new_mode(AspeedI2CState *s)
 -- 
 2.34.1
 
