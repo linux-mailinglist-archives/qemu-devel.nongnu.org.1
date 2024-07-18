@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430D693461B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C732D93461F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:13:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUGd8-0004O6-Bf; Wed, 17 Jul 2024 22:12:26 -0400
+	id 1sUGd6-000422-67; Wed, 17 Jul 2024 22:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGcc-0001Vd-BH
+ id 1sUGcc-0001WE-I1
  for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:55 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGcY-0003fg-Nr
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:53 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fbc3a9d23bso2490445ad.1
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:11:48 -0700 (PDT)
+ id 1sUGca-0003gB-KL
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:54 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1fbda48631cso10510785ad.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:11:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721268708; x=1721873508; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721268711; x=1721873511; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pAgirqH2Ot9O6D3Yz4SqckgbcQJk1Uq7k4mObStrXEM=;
- b=KkZ2kKZmexEEr0Apy1+DIekjzYF6x3Pao63zgScd6Zjw5LSMz1/KchZ+srF6iefcFV
- JMLeEpLEhK+h/dFqDradjKpU9tCt9DPiRCgexz1BNWgvh6Uo06CoLw4apEDR2urmMzea
- iIGHB0mPj+7LE3L304qLsAfzUpaiL8o1KPkBJGqr3p/5ngMxD6yZ6eeYhkUDkFl4CNXz
- XuK1rBpgGd4B/rvjCVxm0M2JnNaiB/P13rWgP41LAjh7B5D0U/6d/1UmDNgtFv0OgCuD
- eHcSoGNweN/0NWCq3XR7lNorxtWCHQEksIgLVA6J2VK6e/OH2o1kCek5lzTOGnHZglh6
- mZmw==
+ bh=qlNSgnVZ4HEEVn2121aI1NCT2/j02sjH6kZ9iFY5oL4=;
+ b=QwNdppPEzT/HqzGzxrZKzt85MurMwGi0djYwaU5NVKJXb4p5rAAgUCp5aMJyhl3GcH
+ zV0d6yWAxQsQO8QkQ2rJxGaAO9AJaG/XD98UfWb38i5RDYQUw1APs2uJWJWKKD+X7Uls
+ DqIDbGIVBZx7OgE3tHqzPEmRvLpeuxCyKOo4cv7kPGFDFhcYqYc4Albv0YZIV98wl674
+ bdD59yYfHtt0XSOHoRiegFbCFIi1aGTpQT+8I1mvrl32869DZ09Nl639ODdRprNg8ArU
+ wEW+MpwwWig002dVecbJWaPI/wt95YoAsl4ecwrdjjBOE+Ndzq8q9nU6AFYxsFDkrfPE
+ glOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721268708; x=1721873508;
+ d=1e100.net; s=20230601; t=1721268711; x=1721873511;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pAgirqH2Ot9O6D3Yz4SqckgbcQJk1Uq7k4mObStrXEM=;
- b=KCV0NEUbriGjJDNRigl7uZhMLM11iHSGKp9mutHd2rbua4OeGdBQ9fcnpzzM8Bo+bV
- D/P/XZxzuJuMEqe6NifNqW8zp/N467OayUkbMR0meqjkehtJzc+2ZIZimNNHnFggimqR
- lu+KHdY+SsoSCw5n6ihx1wDqi9fSv/iRi5TAySOQ+BHk6JoKXshPrxaZ8cVKFYB5b95v
- utmeUK6TLxfKV1tOfGiflrUMvaUcdZb3SV+I0D+5RF6o6zsi2A5G5fPvKCbQC+xhJUyH
- qwbi493Z6hU/oWMDysuGqpFZXiwTfLGyXA4uRaXQUgm31FimtyhmM5HT7D+xhgV+ydQ/
- utAQ==
-X-Gm-Message-State: AOJu0Yx5oCQaz8i6vgXEXs119TwTR8txaqRHEgXo3hlEmuxs7lP0YMYg
- QPLyJQ/J8tNavr7XIMFjdfpToCkk9ZMEQYmkM7jzV/RvZmyT2Awy/SNNzTy4
-X-Google-Smtp-Source: AGHT+IHFrcc/nip3JPuvUYqLiqX8ceMXpcYcPcSjcHJUNYereqBFz9jjFnEY7FIvD0rQXGUQep413Q==
-X-Received: by 2002:a17:902:ecd0:b0:1fb:64da:b135 with SMTP id
- d9443c01a7336-1fc4e67c521mr32525255ad.42.1721268707582; 
- Wed, 17 Jul 2024 19:11:47 -0700 (PDT)
+ bh=qlNSgnVZ4HEEVn2121aI1NCT2/j02sjH6kZ9iFY5oL4=;
+ b=BYTlOBwLROgFXVaJL0pNeu/ga0GRw3phq8Axc7lrHG8Oi5pjEOeaCjNyPmMd7u4aAH
+ k2yhBmA6n4a4NE+4TE43Mg4ff0VMvz0+ClSxoZAnJznZiK1CDB9EjARrAdLZ4RuNH97f
+ dF5x39E7TBJmeHG0uvnIuCivX6o59hgV87gcWZ7KN0Ga7WoFGhs+hZ2UnImaoT6b5lev
+ 7XSXxTY1Fc6QVZAkkLGGX4s7zkasUTpBUMaH+XxOEJEjagIZGx4aBtuNQWefBWA2U6MZ
+ DZ3y3waLM0Vf1wiWJwjDXMJtPJQuYC4MwwuZqEy8OIOO11/RqpbCQjkq7e1CMnlT+uei
+ 6TVw==
+X-Gm-Message-State: AOJu0YxdM6RypaU4CbOS8EtUFK8ucncmR3h2KTzc1ZnGhy01233TDavz
+ ojBnF1HHnvYRWnQFwQRkzirUSoKsNtvjXJUP2LkyHRfXmgRO08ul/taadTJc
+X-Google-Smtp-Source: AGHT+IHJyN/ElwxSILR/gr97mjo2ja2gSSkpsotPzAWT/AfeFvN7U+KLTrNSmEbxjj9E3XXO7qMyww==
+X-Received: by 2002:a17:902:cec2:b0:1fb:24ea:fe29 with SMTP id
+ d9443c01a7336-1fc5b62125emr23484105ad.15.1721268710800; 
+ Wed, 17 Jul 2024 19:11:50 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.11.44
+ d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.11.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jul 2024 19:11:46 -0700 (PDT)
+ Wed, 17 Jul 2024 19:11:50 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Yu-Ming Chang <yumin686@andestech.com>,
- Alvin Chang <alvinga@andestech.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Conor Dooley <conor@kernel.org>, Anup Patel <apatel@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 28/30] target/riscv: raise an exception when CSRRS/CSRRC writes
- a read-only CSR
-Date: Thu, 18 Jul 2024 12:10:10 +1000
-Message-ID: <20240718021012.2057986-29-alistair.francis@wdc.com>
+Subject: [PULL 29/30] hw/riscv/virt.c: re-insert and deprecate 'riscv,
+ delegate'
+Date: Thu, 18 Jul 2024 12:10:11 +1000
+Message-ID: <20240718021012.2057986-30-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240718021012.2057986-1-alistair.francis@wdc.com>
 References: <20240718021012.2057986-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,180 +98,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yu-Ming Chang <yumin686@andestech.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Both CSRRS and CSRRC always read the addressed CSR and cause any read side
-effects regardless of rs1 and rd fields. Note that if rs1 specifies a register
-holding a zero value other than x0, the instruction will still attempt to write
-the unmodified value back to the CSR and will cause any attendant side effects.
+Commit b1f1e9dcfa renamed 'riscv,delegate' to 'riscv,delegation' since
+it is the correct name as per dt-bindings, and the absence of the
+correct name will result in validation fails when dumping the dtb and
+using dt-validate.
 
-So if CSRRS or CSRRC tries to write a read-only CSR with rs1 which specifies
-a register holding a zero value, an illegal instruction exception should be
-raised.
+But this change has a side-effect: every other firmware available that
+is AIA capable is using 'riscv,delegate', and it will fault/misbehave if
+this property isn't present. The property was added back in QEMU 7.0,
+meaning we have 2 years of firmware development using the wrong
+property.
 
-Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
-Signed-off-by: Alvin Chang <alvinga@andestech.com>
+Re-introducing 'riscv,delegate' while keeping 'riscv,delegation' allows
+older firmwares to keep booting with the 'virt' machine.
+'riscv,delegate' is then marked for future deprecation with its use
+being discouraged from now on.
+
+Cc: Conor Dooley <conor@kernel.org>
+Cc: Anup Patel <apatel@ventanamicro.com>
+Fixes: b1f1e9dcfa ("hw/riscv/virt.c: aplic DT: rename prop to 'riscv, delegation'")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <172100444279.18077.6893072378718059541-0@git.sr.ht>
+Message-ID: <20240715090455.145888-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h       |  4 +++
- target/riscv/csr.c       | 57 ++++++++++++++++++++++++++++++++++++----
- target/riscv/op_helper.c |  6 ++---
- 3 files changed, 58 insertions(+), 9 deletions(-)
+ docs/about/deprecated.rst | 11 +++++++++++
+ hw/riscv/virt.c           |  9 +++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 093c86b8b9..1619c3acb6 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -751,6 +751,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
- void riscv_cpu_update_mask(CPURISCVState *env);
- bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 20b7a17cf0..88f0f03786 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -479,6 +479,17 @@ versions, aliases will point to newer CPU model versions
+ depending on the machine type, so management software must
+ resolve CPU model aliases before starting a virtual machine.
  
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                          target_ulong *ret_value);
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask);
-@@ -783,6 +785,8 @@ typedef RISCVException (*riscv_csr_op_fn)(CPURISCVState *env, int csrno,
-                                           target_ulong new_value,
-                                           target_ulong write_mask);
++RISC-V "virt" board "riscv,delegate" DT property (since 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++The "riscv,delegate" DT property was added in QEMU 7.0 as part of
++the AIA APLIC support.  The property changed name during the review
++process in Linux and the correct name ended up being
++"riscv,delegation".  Changing the DT property name will break all
++available firmwares that are using the current (wrong) name.  The
++property is kept as is in 9.1, together with "riscv,delegation", to
++give more time for firmware developers to change their code.
++
+ Migration
+ ---------
  
-+RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
-+                               Int128 *ret_value);
- RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
-                                 Int128 *ret_value,
-                                 Int128 new_value, Int128 write_mask);
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 781ef27eba..ea3560342c 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -4624,7 +4624,7 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
- 
- static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-                                                int csrno,
--                                               bool write_mask)
-+                                               bool write)
- {
-     /* check privileges and return RISCV_EXCP_ILLEGAL_INST if check fails */
-     bool read_only = get_field(csrno, 0xC00) == 3;
-@@ -4646,7 +4646,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index bc0893e087..9981e0f6c9 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -651,6 +651,15 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
+         qemu_fdt_setprop_cells(ms->fdt, aplic_name, "riscv,delegation",
+                                aplic_child_phandle, 0x1,
+                                VIRT_IRQCHIP_NUM_SOURCES);
++        /*
++         * DEPRECATED_9.1: Compat property kept temporarily
++         * to allow old firmwares to work with AIA. Do *not*
++         * use 'riscv,delegate' in new code: use
++         * 'riscv,delegation' instead.
++         */
++        qemu_fdt_setprop_cells(ms->fdt, aplic_name, "riscv,delegate",
++                               aplic_child_phandle, 0x1,
++                               VIRT_IRQCHIP_NUM_SOURCES);
      }
  
-     /* read / write check */
--    if (write_mask && read_only) {
-+    if (write && read_only) {
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-@@ -4733,11 +4733,22 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                           target_ulong *ret_value)
-+{
-+    RISCVException ret = riscv_csrrw_check(env, csrno, false);
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    return riscv_csrrw_do64(env, csrno, ret_value, 0, 0);
-+}
-+
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask)
- {
--    RISCVException ret = riscv_csrrw_check(env, csrno, write_mask);
-+    RISCVException ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-@@ -4785,13 +4796,45 @@ static RISCVException riscv_csrrw_do128(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
-+                               Int128 *ret_value)
-+{
-+    RISCVException ret;
-+
-+    ret = riscv_csrrw_check(env, csrno, false);
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    if (csr_ops[csrno].read128) {
-+        return riscv_csrrw_do128(env, csrno, ret_value,
-+                                 int128_zero(), int128_zero());
-+    }
-+
-+    /*
-+     * Fall back to 64-bit version for now, if the 128-bit alternative isn't
-+     * at all defined.
-+     * Note, some CSRs don't need to extend to MXLEN (64 upper bits non
-+     * significant), for those, this fallback is correctly handling the
-+     * accesses
-+     */
-+    target_ulong old_value;
-+    ret = riscv_csrrw_do64(env, csrno, &old_value,
-+                           (target_ulong)0,
-+                           (target_ulong)0);
-+    if (ret == RISCV_EXCP_NONE && ret_value) {
-+        *ret_value = int128_make64(old_value);
-+    }
-+    return ret;
-+}
-+
- RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
-                                 Int128 *ret_value,
-                                 Int128 new_value, Int128 write_mask)
- {
-     RISCVException ret;
- 
--    ret = riscv_csrrw_check(env, csrno, int128_nz(write_mask));
-+    ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-@@ -4830,7 +4873,11 @@ RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
- #if !defined(CONFIG_USER_ONLY)
-     env->debugger = true;
- #endif
--    ret = riscv_csrrw(env, csrno, ret_value, new_value, write_mask);
-+    if (!write_mask) {
-+        ret = riscv_csrr(env, csrno, ret_value);
-+    } else {
-+        ret = riscv_csrrw(env, csrno, ret_value, new_value, write_mask);
-+    }
- #if !defined(CONFIG_USER_ONLY)
-     env->debugger = false;
- #endif
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index ec1408ba0f..25a5263573 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -51,7 +51,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
-     }
- 
-     target_ulong val = 0;
--    RISCVException ret = riscv_csrrw(env, csr, &val, 0, 0);
-+    RISCVException ret = riscv_csrr(env, csr, &val);
- 
-     if (ret != RISCV_EXCP_NONE) {
-         riscv_raise_exception(env, ret, GETPC());
-@@ -84,9 +84,7 @@ target_ulong helper_csrrw(CPURISCVState *env, int csr,
- target_ulong helper_csrr_i128(CPURISCVState *env, int csr)
- {
-     Int128 rv = int128_zero();
--    RISCVException ret = riscv_csrrw_i128(env, csr, &rv,
--                                          int128_zero(),
--                                          int128_zero());
-+    RISCVException ret = riscv_csrr_i128(env, csr, &rv);
- 
-     if (ret != RISCV_EXCP_NONE) {
-         riscv_raise_exception(env, ret, GETPC());
+     riscv_socket_fdt_write_id(ms, aplic_name, socket);
 -- 
 2.45.2
 
