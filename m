@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B46E934B29
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC47934B3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:52:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUNjq-0001GW-J0; Thu, 18 Jul 2024 05:47:50 -0400
+	id 1sUNoD-0005Ji-1C; Thu, 18 Jul 2024 05:52:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUNjm-0000xT-LC
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:47:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUNjk-00085p-PJ
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:47:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721296063;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OWWassaQ73WAKM6GqTPCeT4OCBvw4yb5ViE+TlnzC6c=;
- b=cE19XLWvZFI0WIQ9OVX/Nuk19q8c4/pnotUSblrm3sypeOoFSY4mkaTbI2To2XA3xHaVwC
- qnZNMNyhD0K6BDSdFpvA+wiWJCoJFFfmh6xV/Msqhd+Sa4l09Im223a9St4Il1HZjMqDyH
- 0nR/rfqbEuS6Niy6LgBMrhUCsEOzBnQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-lgT-mHjcNY-NPyTyX1D4Ag-1; Thu,
- 18 Jul 2024 05:47:36 -0400
-X-MC-Unique: lgT-mHjcNY-NPyTyX1D4Ag-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A92B41944A83; Thu, 18 Jul 2024 09:47:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 05B9F3000188; Thu, 18 Jul 2024 09:47:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E53BD21E668E; Thu, 18 Jul 2024 11:47:32 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Octavian Purdila <tavip@google.com>,  qemu-devel@nongnu.org,
- marcandre.lureau@redhat.com,  eblake@redhat.com,  berrange@redhat.com,
- Paulo Neves <ptsneves@gmail.com>
-Subject: Re: [PATCH v3] chardev: add path option for pty backend
-In-Reply-To: <CAFEAcA8nFz_4M3s4NoWpfhJZ=pxRc92shSKfoL6iN=_Oqmc-tw@mail.gmail.com>
- (Peter Maydell's message of "Thu, 18 Jul 2024 10:22:01 +0100")
-References: <20240605185050.1678102-1-tavip@google.com>
- <87r0br8bve.fsf@pond.sub.org>
- <CAFEAcA8nFz_4M3s4NoWpfhJZ=pxRc92shSKfoL6iN=_Oqmc-tw@mail.gmail.com>
-Date: Thu, 18 Jul 2024 11:47:32 +0200
-Message-ID: <87msmfkp57.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sUNnv-00056Z-92
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:52:04 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1sUNnq-00026H-WB
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:52:01 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8DxDeu55Zhmq4kAAA--.2982S3;
+ Thu, 18 Jul 2024 17:51:53 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxMMS25ZhmsaZNAA--.6703S3; 
+ Thu, 18 Jul 2024 17:51:52 +0800 (CST)
+Subject: Re: [PATCH v4 15/18] hw/intc/loongarch_ipi: Add loongarch IPI support
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Xianglai Li <lixianglai@loongson.cn>, Huacai Chen
+ <chenhuacai@kernel.org>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20240718083842.81199-1-philmd@linaro.org>
+ <20240718083842.81199-16-philmd@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <9b9fe347-dec1-b813-8df7-e04cbc72134a@loongson.cn>
+Date: Thu, 18 Jul 2024 17:52:03 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20240718083842.81199-16-philmd@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8DxMMS25ZhmsaZNAA--.6703S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3GryUKryfJrykGw48Aw47GFX_yoW7XFWxpF
+ y7ur4YgF4kJF47JwsxJ3ZxXFnxJrs3ua429FyS9ry8ArsxJ34rXw1kKrZrXFW3t3yDXw1F
+ vFsak3WjgF1Ut3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1Ek
+ sDUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.124,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,51 +84,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
-
-> On Thu, 18 Jul 2024 at 07:15, Markus Armbruster <armbru@redhat.com> wrote:
->>
->> Looks like this one fell through the cracks.
->>
->> Octavian Purdila <tavip@google.com> writes:
->>
->> > Add path option to the pty char backend which will create a symbolic
->> > link to the given path that points to the allocated PTY.
->> >
->> > This avoids having to make QMP or HMP monitor queries to find out what
->> > the new PTY device path is.
->>
->> QMP commands chardev-add and chardev-change return the information you
->> want:
->>
->>     # @pty: name of the slave pseudoterminal device, present if and only
->>     #     if a chardev of type 'pty' was created
->>
->> So does HMP command chardev-add.  HMP chardev apparently doesn't, but
->> that could be fixed.
->>
->> So, the use case is basically the command line, right?
+在 2024/7/18 下午4:38, Philippe Mathieu-Daudé 写道:
+> From: Bibo Mao <maobibo@loongson.cn>
 >
->> The feature feels rather doubtful to me, to be honest.
+> Loongarch IPI is added here, it inherits from class
+> TYPE_LOONGSON_IPI_COMMON, and two interfaces get_iocsr_as() and
+> cpu_by_arch_id() are added for Loongarch 3A5000 machine. It can
+> be used when ipi is emulated in userspace with KVM mode.
 >
-> The command line is an important use-case, though. Not every
-> user of QEMU is libvirt with a QMP/HMP connection readily
-> to hand that they would prefer to use for all configuration...
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> [PMD: Rebased and simplified]
+> Co-Developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+> Tested-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   include/hw/intc/loongarch_ipi.h | 25 ++++++++++++
+>   hw/intc/loongarch_ipi.c         | 68 +++++++++++++++++++++++++++++++++
+>   hw/intc/Kconfig                 |  4 ++
+>   hw/intc/meson.build             |  1 +
+>   4 files changed, 98 insertions(+)
+>   create mode 100644 include/hw/intc/loongarch_ipi.h
+>   create mode 100644 hw/intc/loongarch_ipi.c
+>
+> diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
+> new file mode 100644
+> index 0000000000..d134c9d0c7
+> --- /dev/null
+> +++ b/include/hw/intc/loongarch_ipi.h
+> @@ -0,0 +1,25 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Loongarch ipi interrupt header files
+> + *
+> + * Copyright (C) 2024 Loongson Technology Corporation Limited
+> + */
+> +
+> +#ifndef HW_LOONGARCH_IPI_H
+> +#define HW_LOONGARCH_IPI_H
+> +
+> +#include "qom/object.h"
+> +#include "hw/intc/loongson_ipi_common.h"
+> +
+> +#define TYPE_LOONGARCH_IPI  "loongarch_ipi"
+> +OBJECT_DECLARE_TYPE(LoongarchIPIState, LoongarchIPIClass, LOONGARCH_IPI)
+> +
+> +struct LoongarchIPIState {
+> +    LoongsonIPICommonState parent_obj;
+> +};
+> +
+> +struct LoongarchIPIClass {
+> +    LoongsonIPICommonClass parent_class;
+> +};
+> +
+> +#endif
+> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+> new file mode 100644
+> index 0000000000..ccbfad07b7
+> --- /dev/null
+> +++ b/hw/intc/loongarch_ipi.c
+> @@ -0,0 +1,68 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Loongarch ipi interrupt support
+> + *
+> + * Copyright (C) 2024 Loongson Technology Corporation Limited
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/boards.h"
+> +#include "hw/intc/loongarch_ipi.h"
+> +#include "target/loongarch/cpu.h"
+> +
+> +static AddressSpace *get_iocsr_as(CPUState *cpu)
+> +{
+> +    return LOONGARCH_CPU(cpu)->env.address_space_iocsr;
+> +}
+> +
+> +static int archid_cmp(const void *a, const void *b)
+> +{
+> +   CPUArchId *archid_a = (CPUArchId *)a;
+> +   CPUArchId *archid_b = (CPUArchId *)b;
+> +
+> +   return archid_a->arch_id - archid_b->arch_id;
+> +}
+> +
+> +static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
+> +{
+> +    CPUArchId apic_id, *found_cpu;
+> +
+> +    apic_id.arch_id = id;
+> +    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
+> +                        ms->possible_cpus->len,
+> +                        sizeof(*ms->possible_cpus->cpus),
+> +                        archid_cmp);
+> +
+> +    return found_cpu;
+> +}
+> +
+> +static CPUState *loongarch_cpu_by_arch_id(int64_t arch_id)
+> +{
+> +    MachineState *machine = MACHINE(qdev_get_machine());
+> +    CPUArchId *archid;
+> +
+> +    archid = find_cpu_by_archid(machine, arch_id);
+> +    if (archid) {
+> +        return CPU(archid->cpu);
+> +    }
+> +
+> +    return NULL;
+> +}
+> +
+> +static void loongarch_ipi_class_init(ObjectClass *klass, void *data)
+> +{
+> +    LoongsonIPICommonClass *licc = LOONGSON_IPI_COMMON_CLASS(klass);
+> +
+> +    licc->get_iocsr_as = get_iocsr_as;
+> +    licc->cpu_by_arch_id = loongarch_cpu_by_arch_id;
+> +}
+> +
+> +static const TypeInfo loongarch_ipi_types[] = {
+> +    {
+> +        .name               = TYPE_LOONGARCH_IPI,
+> +        .parent             = TYPE_LOONGSON_IPI_COMMON,
+> +        .class_init         = loongson_ipi_class_init,
+loongarch_ipi_class_init.
 
-In general yes.  But what are the use cases for this one?
-
-To me, specifying path=/mumble/symlink plus the bother of cleaning up
-stale ones doesn't feel like much of an improvement over reading the pty
-name from "info chardev".  I guess I'm missing something.  Tell me!
-
-If we decide we want this, then the QMP interface needs to be fixed:
-Call the argument @path for consistency, and document it properly.
-Actually straightforward, just create a new struct instead of pressing
-ChardevHostdev into service.
-
-Some advice on robust use of @path could be useful, in particular on
-guarding against QEMU leaving stale links behind.
-
-Additional decision: whether to extend the old-style syntax.
+Thanks.
+Song Gao
+> +    }
+> +};
+> +
+> +DEFINE_TYPES(loongarch_ipi_types)
+> diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+> index a2a0fdca85..dd405bdb5d 100644
+> --- a/hw/intc/Kconfig
+> +++ b/hw/intc/Kconfig
+> @@ -94,6 +94,10 @@ config LOONGSON_IPI
+>       bool
+>       select LOONGSON_IPI_COMMON
+>   
+> +config LOONGARCH_IPI
+> +    bool
+> +    select LOONGSON_IPI_COMMON
+> +
+>   config LOONGARCH_PCH_PIC
+>       bool
+>       select UNIMP
+> diff --git a/hw/intc/meson.build b/hw/intc/meson.build
+> index a09a527207..f4d81eb8e4 100644
+> --- a/hw/intc/meson.build
+> +++ b/hw/intc/meson.build
+> @@ -71,6 +71,7 @@ specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_XIVE'],
+>   specific_ss.add(when: 'CONFIG_M68K_IRQC', if_true: files('m68k_irqc.c'))
+>   specific_ss.add(when: 'CONFIG_LOONGSON_IPI_COMMON', if_true: files('loongson_ipi_common.c'))
+>   specific_ss.add(when: 'CONFIG_LOONGSON_IPI', if_true: files('loongson_ipi.c'))
+> +specific_ss.add(when: 'CONFIG_LOONGARCH_IPI', if_true: files('loongarch_ipi.c'))
+>   specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_PIC', if_true: files('loongarch_pch_pic.c'))
+>   specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_MSI', if_true: files('loongarch_pch_msi.c'))
+>   specific_ss.add(when: 'CONFIG_LOONGARCH_EXTIOI', if_true: files('loongarch_extioi.c'))
 
 
