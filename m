@@ -2,85 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802F993462F
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE52C93461D
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:13:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUGdA-0004j8-Bm; Wed, 17 Jul 2024 22:12:28 -0400
+	id 1sUGd3-00032b-1c; Wed, 17 Jul 2024 22:12:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGcf-0001ky-Gk
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:57 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGcd-0003gh-7O
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:57 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fc5296e214so2824985ad.0
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:11:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721268714; x=1721873514; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LTnaaC2sXirvbn1f957lm3joN6tdDiaSgYgNswn/YhQ=;
- b=Sr/ka+d7uBMHDl67UEAg49On5yF8QMj+F0Dljd2F7hgumB0DGhS6Ev1chlAff0WQi4
- /HlmMnBvmkjubLw9Q9p3DFNGia0VOE8ylVDft/y6MJyGZmGUAQSDrmggRmEIm/gSpvhT
- i6uj0wP94Nz/OFBqsqXNy5qmfSvNhRc7yXhIy0NqfbuPGk1nB3ruyONRIa7s2pElDuRe
- piY6ZlAf1i79bb1vuGjs6T+nvU693zScDauK8x+OrGhWu0Cwc9KjoKE1WBFvU9ySVX+X
- 4s3Yd4zLAU5qoc77rMdRTwLROMgvMTAyc/QIlnkHyeCc9Xz/NLsuDDZJmUNg9jpqWt5f
- HCRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721268714; x=1721873514;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LTnaaC2sXirvbn1f957lm3joN6tdDiaSgYgNswn/YhQ=;
- b=pDygTSbeDrzT9dI9+axChpBRDqdjCmD3vO3B+VqOthyBSvm6GuDsxpwzKbEDdeqzBm
- w+5JZG48YmncxRrVzMl9lqs3MP6eFtod+/AF1lMlXzt+ng5y91FTNz9fLDvtUkMxhYIA
- GAebTuDzUcCJGkEUTevO6lXSTeTeFfZSCkmOtd6ql5IqHpJx4YoBHw03UZ/JKLe5HKd8
- G6wjgbeOIgwnlAiCBQ0TusmHJJP131ZPDAc8p78TSkNY7TCPwmE4XoLvhcdlRdrevAYl
- Cbvh46VWujU2dSN7/dk2nOe0laRs6tarl7WB8RRQXI/cAEw5WEGcqTwPUedsaoSZvJ2R
- mHQA==
-X-Gm-Message-State: AOJu0YwyXVjlOwhb5QPSLImag3Vva2iK7s+AGEOmVpz+NR+PNm/C7fQ9
- mAidvHOzRnymHlRnDxwrzTE160HKrnD/lR/Gt9mRUtmHZaJowA99f7pWEAWc
-X-Google-Smtp-Source: AGHT+IH/vnIZnA4lWjbNVFvhRMKxCZ4uTFkYsDma/x6cxdX+wR+4fmrHmz4ezbEbHx4hGxPbaB27ng==
-X-Received: by 2002:a17:902:f682:b0:1fc:58fc:caf7 with SMTP id
- d9443c01a7336-1fc58fccce2mr21301235ad.14.1721268713538; 
- Wed, 17 Jul 2024 19:11:53 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.11.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jul 2024 19:11:53 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 30/30] roms/opensbi: Update to v1.5
-Date: Thu, 18 Jul 2024 12:10:12 +1000
-Message-ID: <20240718021012.2057986-31-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240718021012.2057986-1-alistair.francis@wdc.com>
-References: <20240718021012.2057986-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1sUGcb-0001O4-5R
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:55 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1sUGcX-0003fE-N8
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:11:52 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8DxzOrfeZhmfGYAAA--.2258S3;
+ Thu, 18 Jul 2024 10:11:43 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxLMfceZhm3jFNAA--.43210S3; 
+ Thu, 18 Jul 2024 10:11:42 +0800 (CST)
+Subject: Re: [PATCH v3 04/17] hw/intc/loongson_ipi: Extract
+ loongson_ipi_common_realize()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Xianglai Li <lixianglai@loongson.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
+References: <20240717214708.78403-1-philmd@linaro.org>
+ <20240717214708.78403-5-philmd@linaro.org>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <94592136-8e6b-0b99-07f3-e98ea0c4d658@loongson.cn>
+Date: Thu, 18 Jul 2024 10:11:40 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240717214708.78403-5-philmd@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8CxLMfceZhm3jFNAA--.43210S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxArWkGF4DJw4rKrWDGryDArc_yoW5XF47pF
+ 4akan0gF1rXFyDAws3GF9rKFy5Zwn5Jw17WFsFka4rKr9xWw1vvw18K3Wakw17uFyFva1Y
+ vF90kFW3Ka1UCrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.124,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,172 +84,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Update OpenSBI and the pre-built opensbi32 and opensbi64 images to
-v1.5.
 
-The following commits were included in v1.5:
+On 2024/7/18 上午5:46, Philippe Mathieu-Daudé wrote:
+> From: Bibo Mao <maobibo@loongson.cn>
+> 
+> In preparation to extract common IPI code in few commits,
+> extract loongson_ipi_common_realize().
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> [PMD: Extracted from bigger commit, added commit description]
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/intc/loongson_ipi.c | 25 ++++++++++++++++++-------
+>   1 file changed, 18 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
+> index 3b3481c43e..40ac769aad 100644
+> --- a/hw/intc/loongson_ipi.c
+> +++ b/hw/intc/loongson_ipi.c
+> @@ -275,7 +275,7 @@ static const MemoryRegionOps loongson_ipi64_ops = {
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+>   
+> -static void loongson_ipi_realize(DeviceState *dev, Error **errp)
+> +static void loongson_ipi_common_realize(DeviceState *dev, Error **errp)
+>   {
+>       LoongsonIPIState *s = LOONGSON_IPI(dev);
+>       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+> @@ -301,20 +301,31 @@ static void loongson_ipi_realize(DeviceState *dev, Error **errp)
+>       sysbus_init_mmio(sbd, &s->ipi64_iocsr_mem);
+>   
+>       s->cpu = g_new0(IPICore, s->num_cpu);
+> -    if (s->cpu == NULL) {
+> -        error_setg(errp, "Memory allocation for IPICore faile");
+Philippe,
 
-455de67 include: Bump-up version to 1.5
-23b7bad lib: sbi: check incoming dbtr shmem address
-0e45b63 docs: Fix wrong filename
-caae2f7 lib: sbi: fwft: return SBI_EINVAL rather than SBI_ERR_INVALID_PARAM
-e8717d1 lib: sbi: fwft: check feature value to be exactly 1 or 0
-ecef14d lib: sbi: implement SBI FWFT extension
-e9ee967 lib: sbi: fwft: add support for SBI_FWFT_PTE_AD_HW_UPDATING
-c97a1d5 lib: sbi: fwft: add support for SBI_FWFT_MISALIGNED_EXC_DELEG
-aa5a859 lib: sbi: add support for firmware features extension
-53844c9 lib: sbi: Add support for Svade and Svadu extensions
-52dcf35 platform: generic: andes: Add support for RV32 to set up PMA
-f09f164 platform: generic: andes: Refine Andes PMA related code
-7830e98 lib: serial: fix RX path in litex-uart
-62e178a lib: utils/reset: Try initializing all reset devices in dt
-3a94a32 sbi: sbi_domain_context: Fix trap context for domain context switching
-a73ff04 lib: utils/reset: Fix fdt_reset to search for more dt nodes
-b5c984b lib: utils/reset: Skip initialize reset when dt is not enabled
-86bbe6c lib: utils/serial: Fix fdt_serial to match more dt nodes
-179e00a lib: utils/serial: Skip initialize serial when dt is not enabled
-b1c7c75 lib: utils/irqchip: Skip initialize irqchip when dt is not enabled
-5e3ad7d lib: utils/timer: Skip initialize timer when dt is not enabled
-c5be0e1 lib: utils/ipi: Skip initialize ipi when dt is not enabled
-df3db6a lib: utils/fdt: Fix DT property for APLIC delegation
-d962db2 lib: utils/gpio: respect flag GPIO_FLAG_ACTIVE_LOW
-ae5ef18 lib: sbi: sse: handle missing writable attributes
-858754a lib: utils/irqchip: Add sanity checks in imsic_get_data() and imsic_get_target_file()
-96f0a2e firmware: Bring back FW_TEXT_START as an optional parameter
-e3a30a2 lib: utils/irqchip: Check before initializing imsic
-2bed4c1 platform: generic: thead: add Sophgo CV18XX/SG200X series
-533067d lib: sbi: Put event after use in sbi_sse_exit() loop
-ea9cf6a utils/reset: Add SG2042 hwmon MCU support.
-1cb792d lib: sbi: simplify inline function in sbi_dtbr.c
-7b37da3 lib: sbi: fix return type of sbi_dbtr_shmem_disabled
-e065c3c lib: sbi: Fixed memory permission check in sbi_dbtr_setup_shmem
-7f54527 lib: sbi: fix DBTR_SHMEM_MAKE_PHYS for RV64
-744f495 lib: sbi: Removal unnecessary check dbtr_thishart_state_ptr
-4953bd7 lib: sbi: fix hart_shmem_base
-019a8e6 platform: generic: thead: add Canaan Kendryte K230
-33e21c9 platform: generic: thead: separate T-Head PMU Errata
-2b93ce0 platform: andes: Change all occurrences of andes45 to andes
-f68b3ae platform: andes: Rename files with the prefix andes45
-17e8291 sbi: sbi_domain_context: Add spinlock for updating domain assigned_harts
-1d89a9d lib: sbi: Refine the settings for switching to Virtual Supervisor Mode.
-033104d lib: sbi: sse: check handler entry to belong to supervisor mode
-bd00765 lib: sbi: sse: use PRV_S instead of hardcoded value for mode
-ce3c82c lib: sbi: sse: call enable callback before sending IPI
-d528dbf lib: sbi: sse: remove superfluous sbi_list_empty() check
-22ff750 lib: sbi: sse: simplify 32bits overflow check
-7aa80ea lib: sbi: sse: rename sse_hart_unlock() to sse_enabled_event_unlock()
-c21c99d lib: sbi: sse: fix typos, comments and spacing errors
-7b1ed96 lib: tests: Add test for spinlocks
-7bdf41a lib: tests: Add test for atomic_t
-f6243d9 lib: tests: Add test suite init function
-d4d2582 firmware: remove FW_TEXT_START
-73344d4 lib: utils: check correct value in fdt_node_offset_by_compatible
-37e1544 lib: sbi: sse_event_get() may return NULL
-68bc031 lib: sbi: Add missing sscrind and sscfg extensions in sbi_hart_ext[]
-a7c5c2c Makefile: Remove unnecessary dependencies
-268feab Makefile: Respect manual changes to .config
-29ecda9 sbi: sbi_domain_context: Check privilege spec version before accessing S-mode CSRs
-7862c24 lib: sbi: Wakeup non-coldboot HARTs early in the coldboot path
-beb0cd1 lib: sbi: Simplify wait_for_coldboot() implementation
-f5375bc platform: generic: allwinner: Optimize current hart scratch access
-b94396c lib: utils/timer: Optimize current hart scratch access
-5c9a735 include: sbi: Support byteorder macros in assembly
-06fc453 lib: sbi: Add SSE support for PMU events
-09ad214 lib: sbi: Implement SBI SSE extension
-c8cdf01 lib: sbi: Add support for Supervisor Software Events extension
-76d7e9b firmware: remove copy-base relocation
-5186da6 platform: generic: allwinner: sun20i-d1: Remove duplicated CSR definitions
-3b2f89e docs: writing_tests: Make docs correspond the latest changes
-f7d0050 lib: sbi: Extend sbi_trap_error() to dump state in a nested trap
-5b11f16 lib: sbi: Pass trap context pointer to sbi_ecall_handler()
-43d346c lib: sbi: Remove regs parameter from trap irq handling functions
-d84e7eb lib: sbi: Remove regs paramter of sbi_irqchip_process()
-f414cf9 lib: sbi: Simplify parameters of sbi_illegal_insn_handler()
-fea33a9 lib: sbi: Simplify parameters of misaligned and access fault handlers
-abea949 lib: sbi: Introduce trap context
-60ffc15 include: sbi: Add trap_context pointer in struct sbi_scratch
-ebb697a lib: sbi: Remove sbi_trap_exit() and related code
-2e85178 lib: sbi: Remove epc from struct sbi_trap_info
-86224ec docs/writing_tests: Update tests paths
-5c992a1 lib: tests: Move tests to a separate directory
-81e3ba7 lib: sbi: call platform load/store emulators
-ddf3b64 include: sbi: add emulate_load/store handler to platform ops
-4c11265 lib: sbi: abstract out insn decoding to unify mem fault handlers
-9221fe5 lib: sbi: change prototype of sbi_misaligned_load/store_handler
-a17600c lib: sbi: change prototype of sbi_trap_redirect
-2471cf2 include: sbi: rename sbi_misaligned_ldst.h to sbi_trap_ldst.h
-c0a6320 lib: sbi: rename sbi_misaligned_ldst.c to sbi_trap_ldst.c
-e11025c lib: sbi: Add initial domain context management support
-87d8fe7 lib: tests: Add sbi_console test
-e5f53fd lib: tests: Add a test for sbi_bitmap
-874fcef lib: Add SBIUnit testing macros and functions
-b9e4de0 docs: Add documentation about tests and SBIUnit
-526b9ce firmware: fw_base.S: fix _reset_regs
-8151105 firmware: fw_base.S: Remove _relocate_lottery
-187397f firmware: fw_dynamic.S: Remove _bad_dynamic_info
-b27b7c6 firmware: fw_base: Simplified setup trap handler
-fdf5589 firmware: fw_base.S: Simplify address get
-748bef1 lib: sbi_misaligned_ldst: Add handling of C.LHU/C.LH and C.SH
-bc36678 platform: andes: Drop andes_pmu_setup()
-6bb6b61 lib: sbi: Add support for smcsrind and smcdeleg
-322b598 lib: sbi_hsm: Restor hart state to stop when fails to start
-96a35db docs/firmware: document new options for jump and payload firmwares
-2cff7f3 platform: Apply relocatable address
-f056939 firmware: Add relocatable FW_PAYLOAD_FDT_ADDR
-7227cdd firmware: Add relocatable FW_JUMP_ADDR and FW_JUMP_FDT_ADDR
-741e941 platform: starfive: call starfive_jh7110_inst_init() in pm_reset_init()
-3edf044 platform: starfive: return error if needed devices are not present
-80ae046 platform: starfive: rename "stf,axp15060-regulator" -> "x-powers,axp15060"
-5335340 platform: starfive: remove redundant compatibility check in pmic_ops
-4d8569d platform: starfive: get I2C offset address from clocks property
-034af1f platform: starfive: correct system clock device tree node
-88273fe lib: sbi_pmu: Before using we should ensure PMU init done
-46c8c65 docs: move documentation of system suspend test.
-8df836d platform: generic: Parse system suspend test from config node.
-23e7e48 docs: Add OpenSBI DT configuration guide.
-67ce5a7 platform: generic: Add support for specify coldboot harts in DT
-9c8b18e firmware: fw_base.S: remove _runtime_offset
-4c6b7cb firmware: fw_base.S: Improve loading u32
-92e8aff firmware: always create dynsym section
-d1dad07 Makefile: check for --exclude-libs
-4a76f79 Makefile: don't pass -mstrict-align if not supported
-21caaa3 fw_base.S: Fix comment errors
-1ec353d lib: sbi: Use mask to check the free bit during trigger allocation
-bb90a9e lib: sbi: Print number of debug triggers found
-76a2a15 lib: sbi: Implement SBI debug trigger extension
-fa87ec9 include: sbi: Add SBI debug trigger extension related defines
-97f234f lib: sbi: Introduce the SBI debug triggers extension support
-40dac6b lib: sbi: Detect support of debug triggers
-2499769 include: sbi: Introduce debug trigger register encodings
-20ca19a include: sbi: Add TINFO debug trigger CSR
-b752099 include: sbi: Introduce common endianess conversion macro
+Thanks for the whole series, it looks to me. It is split into small 
+patches and adds new option CONFIG_LOONGSON_IPI_COMMON, it is easier to 
+review and compile for multiple targets.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240715171521.179517-1-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- .../opensbi-riscv32-generic-fw_dynamic.bin    | Bin 267416 -> 268312 bytes
- .../opensbi-riscv64-generic-fw_dynamic.bin    | Bin 270808 -> 272504 bytes
- roms/opensbi                                  |   2 +-
- 3 files changed, 1 insertion(+), 1 deletion(-)
+One small nit, do we need keep checking sentence for if (s->cpu == NULL)?
 
-diff --git a/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin b/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
-index 60ca1165c8..7ec260ff40 100644
-Binary files a/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin and b/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin differ
-diff --git a/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin b/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin
-index bae158d457..090c0cf6ac 100644
-Binary files a/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin and b/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin differ
-diff --git a/roms/opensbi b/roms/opensbi
-index a2b255b889..455de672dd 160000
---- a/roms/opensbi
-+++ b/roms/opensbi
-@@ -1 +1 @@
--Subproject commit a2b255b88918715173942f2c5e1f97ac9e90c877
-+Subproject commit 455de672dd7c2aa1992df54dfb08dc11abbc1b1a
--- 
-2.45.2
+Overall, for the whole series it is ok for me and works well on 
+LoongArch machine.
+
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Tested-by: Bibo Mao <maobibo@loongson.cn>
+
+> +    for (i = 0; i < s->num_cpu; i++) {
+> +        s->cpu[i].ipi = s;
+> +
+> +        qdev_init_gpio_out(dev, &s->cpu[i].irq, 1);
+> +    }
+> +}
+> +
+> +static void loongson_ipi_realize(DeviceState *dev, Error **errp)
+> +{
+> +    LoongsonIPIState *s = LOONGSON_IPI(dev);
+> +    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+> +    Error *local_err = NULL;
+> +
+> +    loongson_ipi_common_realize(dev, &local_err);
+> +    if (local_err) {
+> +        error_propagate(errp, local_err);
+>           return;
+>       }
+>   
+> -    for (i = 0; i < s->num_cpu; i++) {
+> -        s->cpu[i].ipi = s;
+> +    for (unsigned i = 0; i < s->num_cpu; i++) {
+>           s->cpu[i].ipi_mmio_mem = g_new0(MemoryRegion, 1);
+>           g_autofree char *name = g_strdup_printf("loongson_ipi_cpu%d_mmio", i);
+>           memory_region_init_io(s->cpu[i].ipi_mmio_mem, OBJECT(dev),
+>                                 &loongson_ipi_core_ops, &s->cpu[i], name, 0x48);
+>           sysbus_init_mmio(sbd, s->cpu[i].ipi_mmio_mem);
+> -
+> -        qdev_init_gpio_out(dev, &s->cpu[i].irq, 1);
+>       }
+>   }
+>   
+> 
 
 
