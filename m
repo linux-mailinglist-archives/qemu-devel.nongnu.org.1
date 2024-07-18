@@ -2,101 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1573B934B2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B46E934B29
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 11:48:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUNhu-0004Ur-4L; Thu, 18 Jul 2024 05:45:50 -0400
+	id 1sUNjq-0001GW-J0; Thu, 18 Jul 2024 05:47:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sUNhp-00046n-39
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:45 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sUNhj-0007hG-FM
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:45:44 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-52ea929ea56so253290e87.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 02:45:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721295937; x=1721900737; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ylkt+dork9PKLTjjXHJbOq2whhnT3rDmt5DUEGl1o4o=;
- b=ipfBhn7cBlC500LwXpTMDBzFYLz/lG0mLuRRqk3rxLWPaIR9M0ioHd4jjsqIBAk4o9
- hQwuTI2XZway+WXMNTOwTMQI/WOmP4YpKkE6NAd14XEMrIBgDuC/61ce2omVk9YXhMsJ
- 6n/1kxjTi9pntef73FcGKSKmq/smY7XTnnw5jW40yUsikV82kSauibqrXarg+hV5pH5d
- dnsQktlelQjZl6HWtt9ARFuBrjHnG8AKcQVtfALCO1vQe4T37mR355AePJRYctYCdD07
- 611Gze+KXMqueQ+uKCaJ0MS2x228Xuc+X0K2wR+11hf5tPn2xmLQDvXX+79C3QHXxhvz
- JCRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721295937; x=1721900737;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ylkt+dork9PKLTjjXHJbOq2whhnT3rDmt5DUEGl1o4o=;
- b=gDkRlvvZvU5jqFuq90jfKNvWDmHsdurfTQoBxFvy0QfqEtAcf62u5KlTp7HoYaoJi0
- FWStn4kaAF5Y5ja5CO3BDf1RH22pEv7GPf1wzQlDS8ORcZZA6ur0kKXvVdRJZg5h3200
- 4w0IFz9Splwrrs9QY/MphjceYKGJQg5vpEB0KAlSGnYRXB/U3rRdNbVUHIgmZWC8/qJB
- Y7j+6I67G67XBuZ8h9kC7sBy+i0tICeeI941W0qy7SsoEk+QVP69qWwsHvRq1WanOYhg
- NMRVAhe7UERAzvtP5B7K7bJaz/jHeaGaMf/mojnr1gSRhemKMS6nOSSpWf8lYv1caQhS
- NZSQ==
-X-Gm-Message-State: AOJu0YyBtKpsKsEh5dHgvD+LkaECF6ja9i0sKDYnVpwXIWpPQYDeOWCV
- T/HJvhaD3y/leZzC+Bw/jpbw8EP2mryGraezyo8i7na4HeqbPWkGTwlnPFa2zKs=
-X-Google-Smtp-Source: AGHT+IFYR7suPnUMmr6prBjb756y5egUzEjTRbRx/2xnnFB+/+Zbmh1gGUfvplTvIoD5cVL2krCpIQ==
-X-Received: by 2002:a05:6512:a8d:b0:52c:d5ac:d42 with SMTP id
- 2adb3069b0e04-52ee53a76a1mr4011463e87.9.1721295937215; 
- Thu, 18 Jul 2024 02:45:37 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a79bc5a3584sm539375166b.45.2024.07.18.02.45.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jul 2024 02:45:34 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6D0865FDDA;
- Thu, 18 Jul 2024 10:45:25 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Thomas Huth <thuth@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org, Bin Meng <bmeng.cn@gmail.com>, qemu-riscv@nongnu.org,
- Aleksandar Rikalo <arikalo@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Beraldo Leal <bleal@redhat.com>,
- Li-Wen Hsu <lwhsu@freebsd.org>, Ed Maste <emaste@freebsd.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Weiwei Li <liwei1518@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 15/15] semihosting: Restrict to TCG
-Date: Thu, 18 Jul 2024 10:45:23 +0100
-Message-Id: <20240718094523.1198645-16-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240718094523.1198645-1-alex.bennee@linaro.org>
-References: <20240718094523.1198645-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUNjm-0000xT-LC
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:47:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUNjk-00085p-PJ
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 05:47:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721296063;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=OWWassaQ73WAKM6GqTPCeT4OCBvw4yb5ViE+TlnzC6c=;
+ b=cE19XLWvZFI0WIQ9OVX/Nuk19q8c4/pnotUSblrm3sypeOoFSY4mkaTbI2To2XA3xHaVwC
+ qnZNMNyhD0K6BDSdFpvA+wiWJCoJFFfmh6xV/Msqhd+Sa4l09Im223a9St4Il1HZjMqDyH
+ 0nR/rfqbEuS6Niy6LgBMrhUCsEOzBnQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-lgT-mHjcNY-NPyTyX1D4Ag-1; Thu,
+ 18 Jul 2024 05:47:36 -0400
+X-MC-Unique: lgT-mHjcNY-NPyTyX1D4Ag-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A92B41944A83; Thu, 18 Jul 2024 09:47:35 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 05B9F3000188; Thu, 18 Jul 2024 09:47:35 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E53BD21E668E; Thu, 18 Jul 2024 11:47:32 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Octavian Purdila <tavip@google.com>,  qemu-devel@nongnu.org,
+ marcandre.lureau@redhat.com,  eblake@redhat.com,  berrange@redhat.com,
+ Paulo Neves <ptsneves@gmail.com>
+Subject: Re: [PATCH v3] chardev: add path option for pty backend
+In-Reply-To: <CAFEAcA8nFz_4M3s4NoWpfhJZ=pxRc92shSKfoL6iN=_Oqmc-tw@mail.gmail.com>
+ (Peter Maydell's message of "Thu, 18 Jul 2024 10:22:01 +0100")
+References: <20240605185050.1678102-1-tavip@google.com>
+ <87r0br8bve.fsf@pond.sub.org>
+ <CAFEAcA8nFz_4M3s4NoWpfhJZ=pxRc92shSKfoL6iN=_Oqmc-tw@mail.gmail.com>
+Date: Thu, 18 Jul 2024 11:47:32 +0200
+Message-ID: <87msmfkp57.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,32 +85,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Semihosting currently uses the TCG probe_access API.
-It is pointless to have it in the binary when TCG isn't.
+> On Thu, 18 Jul 2024 at 07:15, Markus Armbruster <armbru@redhat.com> wrote:
+>>
+>> Looks like this one fell through the cracks.
+>>
+>> Octavian Purdila <tavip@google.com> writes:
+>>
+>> > Add path option to the pty char backend which will create a symbolic
+>> > link to the given path that points to the allocated PTY.
+>> >
+>> > This avoids having to make QMP or HMP monitor queries to find out what
+>> > the new PTY device path is.
+>>
+>> QMP commands chardev-add and chardev-change return the information you
+>> want:
+>>
+>>     # @pty: name of the slave pseudoterminal device, present if and only
+>>     #     if a chardev of type 'pty' was created
+>>
+>> So does HMP command chardev-add.  HMP chardev apparently doesn't, but
+>> that could be fixed.
+>>
+>> So, the use case is basically the command line, right?
+>
+>> The feature feels rather doubtful to me, to be honest.
+>
+> The command line is an important use-case, though. Not every
+> user of QEMU is libvirt with a QMP/HMP connection readily
+> to hand that they would prefer to use for all configuration...
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240717105723.58965-9-philmd@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- semihosting/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+In general yes.  But what are the use cases for this one?
 
-diff --git a/semihosting/Kconfig b/semihosting/Kconfig
-index eaf3a20ef5..fbe6ac87f9 100644
---- a/semihosting/Kconfig
-+++ b/semihosting/Kconfig
-@@ -1,6 +1,7 @@
- 
- config SEMIHOSTING
-        bool
-+       depends on TCG
- 
- config ARM_COMPATIBLE_SEMIHOSTING
-        bool
--- 
-2.39.2
+To me, specifying path=/mumble/symlink plus the bother of cleaning up
+stale ones doesn't feel like much of an improvement over reading the pty
+name from "info chardev".  I guess I'm missing something.  Tell me!
+
+If we decide we want this, then the QMP interface needs to be fixed:
+Call the argument @path for consistency, and document it properly.
+Actually straightforward, just create a new struct instead of pressing
+ChardevHostdev into service.
+
+Some advice on robust use of @path could be useful, in particular on
+guarding against QEMU leaving stale links behind.
+
+Additional decision: whether to extend the old-style syntax.
 
 
