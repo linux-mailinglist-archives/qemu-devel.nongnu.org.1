@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA38934E2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10267934E36
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 15:33:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sURCA-0003wL-33; Thu, 18 Jul 2024 09:29:18 -0400
+	id 1sURG5-0002oO-OQ; Thu, 18 Jul 2024 09:33:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1sURC8-0003rd-7A
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:29:16 -0400
-Received: from galois.linutronix.de ([2a0a:51c0:0:12e:550::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1sURC6-0007Su-Jn
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:29:15 -0400
-Date: Thu, 18 Jul 2024 15:29:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1721309353;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ol+Df5K4LMiilY/gQaQS91liFd6iUChEl6uHcyLw7YU=;
- b=YCQR6ydDXYVx0RUaNhXsQPllffgSK2xcdlmSABDAOkJdGiBacCH9NrO8qBgyClP9NaOr3H
- mcAyYn6h/wxNaItB/RzPcUM4Ne/6TzYcQxk0e1zZuu4/1NdbTE1QTKCiFC8VsJkeKlcGrp
- gQ3jxykH1ZifZYs+ZKs90TgCIlpbZJA4PL7/XaX6xIMl9OE6Skm92aXiMKs+/Ea0vHgzoR
- wyhF892CuiPAkrlWrVJ2c77qlW2uXG3XBDVIkRfXBUAVfKyqjGjOV4hQpV1ARj9Hru/jOC
- 1naZv6c56tfnhETcqOBalawtaTeBf0HGq7/aWyS4rKEv32hUFG/lnaXAdDIMDQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1721309353;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ol+Df5K4LMiilY/gQaQS91liFd6iUChEl6uHcyLw7YU=;
- b=ULVSuA136S7ytPCKce8kaz0cCUpuZHoKsPfY1rFSbn+YOvSsz6y0bo1tGRWlOVEzWAuDpr
- QOlIxynuAE1I8MBA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <t-8ch@linutronix.de>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Kashyap Chamarthy <kchamart@redhat.com>, qemu-devel@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
-Subject: Re: [PATCH v5 2/4] docs/interop/firmware.json: add new enum
- FirmwareArchitecture
-Message-ID: <20240718152757-ea83949a-2ef8-4bf8-aeff-c1412baa753c@linutronix.de>
-References: <20240718-qapi-firmware-json-v5-0-0dba12d7aaf5@linutronix.de>
- <20240718-qapi-firmware-json-v5-2-0dba12d7aaf5@linutronix.de>
- <871q3qon3k.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURG2-0002ei-Pd
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:33:18 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sURG0-0008Os-SO
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 09:33:18 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4267300145eso3174555e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Jul 2024 06:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721309595; x=1721914395; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jB3mtKONLKfvyrmi/JZWiHst5BTxmflq/YkBdDFq/4o=;
+ b=TOEKOWKdxqgmCoYmb9KxNDFgL8tm1HTxxKUqqMrWzeHgL7vvYloRS9VxXVh4LtcAZ8
+ t6iyINQRx9jfbTISgrojTUtQi3NBVO8lv76tUpnKqVrRP0GahAi2ZMXrbjCYQ/4cEbJG
+ gQUZjhpqxtbVjPien+P82Awt9G3BBccXCYT/CG3A7RB8oc46Zi9hnmQUNhNEW8//X5hy
+ 8Y8OqwidXtCGCMt6q+qqElcOdeNWX0/zF3l/kAGlBoyPCPFOf0cVr4s3y/knN1SuNfYT
+ 1ezc86KhVnAkj5bKp6Y+VKwjMVG+eoHW6ESY+hYlMg/PoGETSSiu0Zutjo7Tv/knAh3H
+ j8LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721309595; x=1721914395;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jB3mtKONLKfvyrmi/JZWiHst5BTxmflq/YkBdDFq/4o=;
+ b=tjvtNYwxvmYGjSuL2deVa8khcVKBrYRo+Iyb1wsSHzGlDrJwp/JTAJ3WK012vFk6zJ
+ akG+kGb1w4VPH2JErYFweZ14Vem8M8OefSQJPuSnKV39/IfgeV0BS7iQAuc7QXlWilVG
+ 8dBPRajY1gBTzqXDhy63ytIMuLBZbfMaTznmNu1ocNPnaU1LYoKwMoicn9Ttc/O7Ryx1
+ nvjYsWPPHuEr9RCUk7NAekabBvZuDCRASJwP+gAKwQ05hC2V9r3oEbavpeOkwJTeiz8n
+ s3u4JnsxvhmsemXlB+50WYS5HE1Niy352iF266ZXwhG4ub8aEo+JnYBy/upqAVtmPnuV
+ oe6g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUoruUzQwW37o+lAIjzQws5/B4377b3I+6GnAzVGQMbjYvoxAonA7BGuBazjUjqZHS7bAIge7MeGwFkOGwAwdveOI9Qu7o=
+X-Gm-Message-State: AOJu0Yz6oLxxWjg/4U411vT3ZvbyTDYMOPg2+VtlTIt35Ci9BKUjvHjl
+ Mbyi8SJhaQ6OrsSnVkF7uAnlaH/gXvOX4xBUP4f3TRcA73gP8MsgVtc9JPGIC1Y=
+X-Google-Smtp-Source: AGHT+IF73AEpdxRhuinlFnhoa3aTsuWNcvdd6geUFoqnWga9d+uicS6S8lQIBp7fZ0sdme5XCvsyDQ==
+X-Received: by 2002:a05:600c:1988:b0:426:5e8e:aa48 with SMTP id
+ 5b1f17b1804b1-427c2cc9904mr40750745e9.22.1721309595050; 
+ Thu, 18 Jul 2024 06:33:15 -0700 (PDT)
+Received: from localhost.localdomain ([176.176.173.113])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d2a95099sm14163295e9.48.2024.07.18.06.33.13
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 18 Jul 2024 06:33:14 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Xianglai Li <lixianglai@loongson.cn>
+Subject: [PATCH v5 00/19] Reconstruct loongson ipi driver
+Date: Thu, 18 Jul 2024 15:32:52 +0200
+Message-ID: <20240718133312.10324-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <871q3qon3k.fsf@pond.sub.org>
-Received-SPF: pass client-ip=2a0a:51c0:0:12e:550::1;
- envelope-from=t-8ch@linutronix.de; helo=galois.linutronix.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,105 +94,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 18, 2024 at 03:18:07PM GMT, Markus Armbruster wrote:
-> Thomas Weißschuh <thomas.weissschuh@linutronix.de> writes:
-> 
-> > Only a small subset of all architectures supported by qemu make use of
-> > firmware files. Introduce and use a new enum to represent this.
-> >
-> > This also removes the dependency to machine.json from the global qapi
-> > definitions.
-> >
-> > Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> >  docs/interop/firmware.json | 29 +++++++++++++++++++++++++++--
-> >  1 file changed, 27 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-> > index a26fe81bf2fe..2eb0be11d595 100644
-> > --- a/docs/interop/firmware.json
-> > +++ b/docs/interop/firmware.json
-> > @@ -14,7 +14,10 @@
-> >  # = Firmware
-> >  ##
-> >  
-> > -{ 'include' : 'machine.json' }
-> > +{ 'pragma': {
-> > +    'member-name-exceptions': [
-> > +        'FirmwareArchitecture' # x86_64
-> > +    ] } }
-> >  
-> >  ##
-> >  # @FirmwareOSInterface:
-> > @@ -59,6 +62,28 @@
-> >  { 'enum' : 'FirmwareDevice',
-> >    'data' : [ 'flash', 'kernel', 'memory' ] }
-> >  
-> > +##
-> > +# @FirmwareArchitecture:
-> > +#
-> > +# Enumerations of architectures for which Qemu uses additional firmware files.
-> 
-> docs/devel/qapi-code-gen.rst section "Documentation markup":
-> 
->     For legibility, wrap text paragraphs so every line is at most 70
->     characters long.
-> 
-> > +# The values are a subset of the enum SysEmuTarget.
+Since v4:
+- Fix build failure due to rebase (Song)
+- Loongarch -> LoongArch (Song)
+- Added Song's tags
 
-Ack.
+Since v3:
+- Use DEFINE_TYPES() macro (unreviewed patch #1)
+- Update MAINTAINERS
+- Added Bibo's tags
 
-> Will consumers of firmware.json care for this?
+Thanks,
 
-Most probably not.
+Phil.
 
-> Or is it just a reminder for developers to keep the two enums in sync?
+Bibo Mao (16):
+  hw/intc/loongson_ipi: Access memory in little endian
+  hw/intc/loongson_ipi: Rename LoongsonIPI -> LoongsonIPIState
+  hw/intc/loongson_ipi: Extract loongson_ipi_common_finalize()
+  hw/intc/loongson_ipi: Extract loongson_ipi_common_realize()
+  hw/intc/loongson_ipi: Add TYPE_LOONGSON_IPI_COMMON stub
+  hw/intc/loongson_ipi: Move common definitions to loongson_ipi_common.h
+  hw/intc/loongson_ipi: Move IPICore::mmio_mem to LoongsonIPIState
+  hw/intc/loongson_ipi: Move IPICore structure to loongson_ipi_common.h
+  hw/intc/loongson_ipi: Pass LoongsonIPICommonState to send_ipi_data()
+  hw/intc/loongson_ipi: Add LoongsonIPICommonClass::get_iocsr_as handler
+  hw/intc/loongson_ipi: Add LoongsonIPICommonClass::cpu_by_arch_id
+    handler
+  hw/intc/loongson_ipi: Expose loongson_ipi_core_read/write helpers
+  hw/intc/loongson_ipi: Move common code to loongson_ipi_common.c
+  hw/intc/loongarch_ipi: Add loongarch IPI support
+  hw/loongarch/virt: Replace Loongson IPI with LoongArch IPI
+  hw/intc/loongson_ipi: Restrict to MIPS
 
-I guess so.
-Should I drop it?
+Philippe Mathieu-DaudÃ© (3):
+  hw/intc/loongson_ipi: Declare QOM types using DEFINE_TYPES() macro
+  hw/intc/loongson_ipi: Remove unused headers
+  docs: Correct Loongarch -> LoongArch
 
-> 
-> > +#
-> > +# @aarch64: 64-bit Arm.
-> > +#
-> > +# @arm: 32-bit Arm.
-> > +#
-> > +# @i386: 32-bit x86.
-> > +#
-> > +# @loongarch64: 64-bit LoongArch.
-> > +#
-> > +# @x86_64: 64-bit x86.
-> > +#
-> > +# Since: 9.1
-> 
-> The enum type is indeed since 9.1, but its members are since 3.0, and
-> that's what matters.  Except for @loongarch, which is since 7.1.0 (not
-> documented in qapi/machine.json; I'll fix that).
-> 
-> > +##
-> > +{ 'enum' : 'FirmwareArchitecture',
-> > +  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'x86_64' ] }
-> > +
-> > +
-> 
-> Drop one blank line, please.
+ MAINTAINERS                           |   6 +-
+ docs/about/emulation.rst              |   2 +-
+ include/hw/intc/loongarch_ipi.h       |  25 ++
+ include/hw/intc/loongson_ipi.h        |  50 +---
+ include/hw/intc/loongson_ipi_common.h |  72 ++++++
+ include/hw/loongarch/virt.h           |   1 -
+ hw/intc/loongarch_ipi.c               |  68 +++++
+ hw/intc/loongson_ipi.c                | 355 +++-----------------------
+ hw/intc/loongson_ipi_common.c         | 344 +++++++++++++++++++++++++
+ hw/loongarch/virt.c                   |   4 +-
+ hw/rtc/ls7a_rtc.c                     |   2 +-
+ hw/intc/Kconfig                       |   8 +
+ hw/intc/meson.build                   |   2 +
+ hw/loongarch/Kconfig                  |   2 +-
+ 14 files changed, 570 insertions(+), 371 deletions(-)
+ create mode 100644 include/hw/intc/loongarch_ipi.h
+ create mode 100644 include/hw/intc/loongson_ipi_common.h
+ create mode 100644 hw/intc/loongarch_ipi.c
+ create mode 100644 hw/intc/loongson_ipi_common.c
 
-Ack.
+-- 
+2.41.0
 
-> 
-> >  ##
-> >  # @FirmwareTarget:
-> >  #
-> > @@ -80,7 +105,7 @@
-> >  # Since: 3.0
-> >  ##
-> >  { 'struct' : 'FirmwareTarget',
-> > -  'data'   : { 'architecture' : 'SysEmuTarget',
-> > +  'data'   : { 'architecture' : 'FirmwareArchitecture',
-> >                 'machines'     : [ 'str' ] } }
-> >  
-> >  ##
-> 
 
