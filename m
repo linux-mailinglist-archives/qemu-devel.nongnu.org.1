@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E484C934627
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF3A934624
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 04:16:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUGbj-0005ia-5N; Wed, 17 Jul 2024 22:10:59 -0400
+	id 1sUGbi-0005gF-HB; Wed, 17 Jul 2024 22:10:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGbb-0005Vw-Hk
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:10:53 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sUGbe-0005Xc-D2
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:10:55 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sUGbZ-0003PZ-TO
- for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:10:51 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1fb0d88fdc8so2066675ad.2
- for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:10:49 -0700 (PDT)
+ id 1sUGbc-0003Q1-Pn
+ for qemu-devel@nongnu.org; Wed, 17 Jul 2024 22:10:54 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1fc5239faebso2876975ad.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Jul 2024 19:10:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721268648; x=1721873448; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721268651; x=1721873451; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VkUhjdCMVR9iGt2QFAMwHKiejIZAdYuuJCQxNaY/YDY=;
- b=KJuOTVcr3Z8bccsJifKz+SXx7xbfruzreKNbZxUcdV/OZtdHRr/AootvrR1EOe1q7q
- NhqJDfsqi3JXjoiuU1uII59qKwwxTjbMmyl5M/FN5rXv4bOPfkwpsLzwlvImqBE0/ljp
- V6QNG4H/wMsOlFxx3fKOUnU5JhwkfJEJWqQzlX9/n6dBpRzuXsiyRdJvkKBtA14QU/CR
- Mgw7a9H3H/sUL0KtCHAIjkaDwkiIAdcyVdb5cIa+zxhyIuC9dLl3Jc6tgy60XEu49Er7
- cmyjXcmky6hYbt5+Cg5y5rxv+kNX4rxmY++tyafDntfnzi+YuwMtiJQI+tHv70uPDUb0
- tYxg==
+ bh=fXFqzJq5stYikqRA/h94ZxAeb2H3VZp1GZE0eqO7ouA=;
+ b=XccpcEFILGchVR2GQtXbhe0Y/HJ++k1wPjyN2CBiyMt6bRkyiVNbiv/XzMSNrz4mcC
+ gemMVmyEIJLEWh18cYRt7pdr8JVV8ykANRVQCVq9ERHtyXWcD4bJHmrFtIFeLE0EcHzk
+ i3CMn/l6WOWpncjSQuKGWCSEqT3iEpeg4unnhpKhStdGIBRBwlc5DqjxYjO3kdLpnl6+
+ bk2w15NLDsVRr9JcL7GxG4AZnCFcIOX+KFqMUa3D29LEyscjGxYchvnahOHpsWwd/YX2
+ q9saqzgUg0vIwwBnlQWdXdpDMOPzWCtuj5gMDrrdqaZYB8A3kOajMxL1F3HiSf3p6RL0
+ y6Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721268648; x=1721873448;
+ d=1e100.net; s=20230601; t=1721268651; x=1721873451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VkUhjdCMVR9iGt2QFAMwHKiejIZAdYuuJCQxNaY/YDY=;
- b=LL9ga2PxDnVNApkZK5PeT+1hMUOOcPJ+OvqatKuJLUpkGglUkbySgvmSTi4x/vKJYV
- owsTk//lBnQRlji6m1yomcrKVvaGq4P2FX5yE6/Ny/SW2OLzGVgEB4N+oNPqh3VdQiS6
- l/1tTeiCdLjAulKZcGGOHxXUDpVBGjifmsAUsrcwhzGplhlfdH4sSH3jEGqDyzpwzMB+
- BTvqHBPJJv+r68uWMK96Jh3SaJvRDzanAlCBnV69ykidqaJv9DWslL8XGAONcx3Eg9r0
- Qk5Wte8Fl4PP1nnbbtrI3CIpWpuw90dE5ZxVk9SwdT0MPQxvkjbK9iDxSxSPrnUwCozG
- +nuQ==
-X-Gm-Message-State: AOJu0YyG/UR+FSAMDuE8njRcG3Ok5Nq6VIkHsicV73A0rTSJUjafGNlT
- 0rVDTctZhT9pZKBPsQMJz8EZkgLxZj88Hd5ZoVaWll1T75a7nMUuu+StoLW/
-X-Google-Smtp-Source: AGHT+IGDMsjA49BbaSClE+hGFa56vUJiU5J8V/cjI91rk5ni4z5xzbeYKXqXY3b0lAGio0mCsRL/Rg==
-X-Received: by 2002:a17:902:dacc:b0:1fb:de19:fefc with SMTP id
- d9443c01a7336-1fc4e5667dbmr32989145ad.30.1721268648356; 
- Wed, 17 Jul 2024 19:10:48 -0700 (PDT)
+ bh=fXFqzJq5stYikqRA/h94ZxAeb2H3VZp1GZE0eqO7ouA=;
+ b=EzSC0yHxTl/vEbYPekJgdIgp9X3rn34OxiViWbclED3EFZxBvICIuZAZiWpyRaX0Z5
+ UrlVUlLLKtrGoVH31WpIHkvsMald6dorxGGGNKWKd2ECBQjR3jF2nYWI0bwWbOfunfm8
+ p7IKohSQHK6keUjXkWFLCfMiUHKZGYGcwbRF7rT09Nvn6ptk/4mZuqnE/cVu5mx/c+Mv
+ rU0TiHQkREM/5ysM6Qul5yXmVol2SG+EjX3ERp8nCXIh1lt0yO8ZQfrFWk3CjpcuBzqg
+ mvTGZlIzC0q9lkJCaZ+QLjHbu2qSZ/JQBB0kzjxz35gMcOAjHK4/lxfAYMFq4q+Wdsg+
+ 6vlA==
+X-Gm-Message-State: AOJu0Yw9822zXJds6Nzs9/aT86YzQu0a/GHEDmz36bxH96qspkMYQsHE
+ RUuxhMKipC7kcOWT3HSymaoL9m92XTVLZkyuA6bCi/mymik+tdQm4qSt7dHi
+X-Google-Smtp-Source: AGHT+IGYwkMAMIJoyCqjHStDY+A5ewrcjwBidCHzCEq+uvyuJc9yE06DvaJEpS8dlgUcEWSzoQdKZA==
+X-Received: by 2002:a17:902:ec8d:b0:1fb:7c7f:6458 with SMTP id
+ d9443c01a7336-1fc4e15a81bmr30839805ad.32.1721268651051; 
+ Wed, 17 Jul 2024 19:10:51 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.10.45
+ d9443c01a7336-1fc0bba949bsm81999385ad.69.2024.07.17.19.10.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jul 2024 19:10:47 -0700 (PDT)
+ Wed, 17 Jul 2024 19:10:50 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 08/30] target/riscv: Move gen_cmpxchg before adding amocas.[b|h]
-Date: Thu, 18 Jul 2024 12:09:50 +1000
-Message-ID: <20240718021012.2057986-9-alistair.francis@wdc.com>
+Subject: [PULL 09/30] target/riscv: Add amocas.[b|h] for Zabha
+Date: Thu, 18 Jul 2024 12:09:51 +1000
+Message-ID: <20240718021012.2057986-10-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240718021012.2057986-1-alistair.francis@wdc.com>
 References: <20240718021012.2057986-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,62 +99,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
 Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240709113652.1239-9-zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240709113652.1239-10-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/translate.c                    | 13 +++++++++++++
- target/riscv/insn_trans/trans_rvzacas.c.inc | 13 -------------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ target/riscv/insn32.decode                  |  2 ++
+ target/riscv/insn_trans/trans_rvzabha.c.inc | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 4a3e786560..acba90f170 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1099,6 +1099,19 @@ static bool gen_amo(DisasContext *ctx, arg_atomic *a,
-     return true;
+diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+index 3bad6372f2..c45b8fa1d8 100644
+--- a/target/riscv/insn32.decode
++++ b/target/riscv/insn32.decode
+@@ -1041,3 +1041,5 @@ amomin_h   10000 . . ..... ..... 001 ..... 0101111 @atom_st
+ amomax_h   10100 . . ..... ..... 001 ..... 0101111 @atom_st
+ amominu_h  11000 . . ..... ..... 001 ..... 0101111 @atom_st
+ amomaxu_h  11100 . . ..... ..... 001 ..... 0101111 @atom_st
++amocas_b    00101 . . ..... ..... 000 ..... 0101111 @atom_st
++amocas_h    00101 . . ..... ..... 001 ..... 0101111 @atom_st
+diff --git a/target/riscv/insn_trans/trans_rvzabha.c.inc b/target/riscv/insn_trans/trans_rvzabha.c.inc
+index 9093a1cfc1..ce8edcba62 100644
+--- a/target/riscv/insn_trans/trans_rvzabha.c.inc
++++ b/target/riscv/insn_trans/trans_rvzabha.c.inc
+@@ -129,3 +129,17 @@ static bool trans_amomaxu_h(DisasContext *ctx, arg_amomaxu_h *a)
+     REQUIRE_ZABHA(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, MO_TESW);
  }
- 
-+static bool gen_cmpxchg(DisasContext *ctx, arg_atomic *a, MemOp mop)
++
++static bool trans_amocas_b(DisasContext *ctx, arg_amocas_b *a)
 +{
-+    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
-+    TCGv src1 = get_address(ctx, a->rs1, 0);
-+    TCGv src2 = get_gpr(ctx, a->rs2, EXT_NONE);
-+
-+    decode_save_opc(ctx);
-+    tcg_gen_atomic_cmpxchg_tl(dest, src1, dest, src2, ctx->mem_idx, mop);
-+
-+    gen_set_gpr(ctx, a->rd, dest);
-+    return true;
++    REQUIRE_ZACAS(ctx);
++    REQUIRE_ZABHA(ctx);
++    return gen_cmpxchg(ctx, a, MO_SB);
 +}
 +
- static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc b/target/riscv/insn_trans/trans_rvzacas.c.inc
-index 5d274d4c08..fcced99fc7 100644
---- a/target/riscv/insn_trans/trans_rvzacas.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
-@@ -22,19 +22,6 @@
-     }                                     \
- } while (0)
- 
--static bool gen_cmpxchg(DisasContext *ctx, arg_atomic *a, MemOp mop)
--{
--    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
--    TCGv src1 = get_address(ctx, a->rs1, 0);
--    TCGv src2 = get_gpr(ctx, a->rs2, EXT_NONE);
--
--    decode_save_opc(ctx);
--    tcg_gen_atomic_cmpxchg_tl(dest, src1, dest, src2, ctx->mem_idx, mop);
--
--    gen_set_gpr(ctx, a->rd, dest);
--    return true;
--}
--
- static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
- {
-     REQUIRE_ZACAS(ctx);
++static bool trans_amocas_h(DisasContext *ctx, arg_amocas_h *a)
++{
++    REQUIRE_ZACAS(ctx);
++    REQUIRE_ZABHA(ctx);
++    return gen_cmpxchg(ctx, a, MO_ALIGN | MO_TESW);
++}
 -- 
 2.45.2
 
