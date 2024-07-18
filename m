@@ -2,64 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472E99349C2
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2C19349C4
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jul 2024 10:21:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUMNV-0002Nq-BH; Thu, 18 Jul 2024 04:20:41 -0400
+	id 1sUMNW-0002S5-8N; Thu, 18 Jul 2024 04:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sUMNS-000284-QX
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:20:38 -0400
+ id 1sUMNU-0002KE-8N
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:20:40 -0400
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sUMNN-000083-LH
- for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:20:38 -0400
+ id 1sUMNS-0000CX-1N
+ for qemu-devel@nongnu.org; Thu, 18 Jul 2024 04:20:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721290834; x=1752826834;
+ t=1721290838; x=1752826838;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Ea9w0E1SFOmJEvDucd0WLrDduqllD5j3200E39hZKMk=;
- b=hrAAppd/h9KCwbRyB08gWb/lWT+P2+MJ3RxBo4Twv6g20LJmMW3S685s
- EPD18ev4f601lFw7Rw7vgEf9APesqtYIUDaghQkFANaSfdCT3U65EDwLq
- 7lEyB2SwCNiCpgTMTNW57xyc/Z2HtRiPiaSKeD95Hi6EjNCIXwg6udhu8
- ijhZyYJrduO8aL9J02o1Vy2qPTp+CQyiZqQ4IznjCeFp+GKfEHWOsxun0
- erDGK2fVj0XaU9TdL32N2xZJCh4gQsyTVQxCZJKl6l35TPMnwG8FF02+b
- OR2EJ6CTvP1NFTwpJLAcBPFCy4qwG7z8n9aRHBCLlBrod4kqGwrWSdOPM Q==;
-X-CSE-ConnectionGUID: EM0s9o07Qpa1LJJ0B90/5Q==
-X-CSE-MsgGUID: SQec3n24SR2s57yf4QvdLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="29996422"
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="29996422"
+ bh=AoLX8HFE3w/BD0OMdXc1OoNCpqFuQPd3XHk/vD1Hxt8=;
+ b=EuQY0yUTjCTEm0D3lYw3745UCtrJ5vlWmw0MXo3JY7WX/GnGKzdvlB0c
+ Ke1U2/LH/RtmAlgEsQ5vNYkGcGZK9XKdpaAkrZLvMWal1WiYCHuisHUsu
+ wtvJAPcKKJKxgcIsrsUEriFmpdpgytwICYL+HkZXpjl1MfDWLXbm88rtu
+ GqdAdp6b7XVcp0DTKtTmsnXbyyxVjz4Io23qSe+Y8t7H7KkqwDVEWYI1P
+ 7RFveFrjfrOSJ9+MgIHj3uRzDbhs80wQo9NAlk7v4D4fDVWfxee6FrLrt
+ /Awc04NsVcDyf+Z7Z8tcCyyslM8dvhJQVHXMvijM0VL+8ZJs3YGkrkvli A==;
+X-CSE-ConnectionGUID: H0oO9eh4S/aT1fiQR75dog==
+X-CSE-MsgGUID: yJhZBMvrQu2TSIVxcHiXug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="29996430"
+X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="29996430"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 01:20:32 -0700
-X-CSE-ConnectionGUID: KjMlPidAQNCTIH9SaPtHZQ==
-X-CSE-MsgGUID: 7T+hyVsLT1KkE5wJmhVJcw==
+ 18 Jul 2024 01:20:37 -0700
+X-CSE-ConnectionGUID: m90X9qSMTCGkhDvmJxNxVA==
+X-CSE-MsgGUID: 98aWQuVbRZOM9R2AyuKvGQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="81717591"
+X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="81717620"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 01:20:27 -0700
+ 18 Jul 2024 01:20:32 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v1 16/17] intel_iommu: Modify x-scalable-mode to be string
- option
-Date: Thu, 18 Jul 2024 16:16:35 +0800
-Message-Id: <20240718081636.879544-17-zhenzhong.duan@intel.com>
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v1 17/17] tests/qtest: Add intel-iommu test
+Date: Thu, 18 Jul 2024 16:16:36 +0800
+Message-Id: <20240718081636.879544-18-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240718081636.879544-1-zhenzhong.duan@intel.com>
 References: <20240718081636.879544-1-zhenzhong.duan@intel.com>
@@ -89,84 +86,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yi Liu <yi.l.liu@intel.com>
+Add the framework to test the intel-iommu device.
 
-Intel VT-d 3.0 introduces scalable mode, and it has a bunch of capabilities
-related to scalable mode translation, thus there are multiple combinations.
-While this vIOMMU implementation wants to simplify it for user by providing
-typical combinations. User could config it by "x-scalable-mode" option. The
-usage is as below:
+Currently only tested cap/ecap bits correctness in scalable
+modern mode. Also tested cap/ecap bits consistency before
+and after system reset.
 
-"-device intel-iommu,x-scalable-mode=["legacy"|"modern"|"off"]"
-
- - "legacy": gives support for stage-2 page table
- - "modern": gives support for stage-1 page table
- - "off": no scalable mode support
- -  if not configured, means no scalable mode support, if not proper
-    configured, will throw error
-
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/i386/intel_iommu.h |  1 +
- hw/i386/intel_iommu.c         | 24 +++++++++++++++++++++++-
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ MAINTAINERS                    |  1 +
+ include/hw/i386/intel_iommu.h  |  1 +
+ tests/qtest/intel-iommu-test.c | 71 ++++++++++++++++++++++++++++++++++
+ tests/qtest/meson.build        |  1 +
+ 4 files changed, 74 insertions(+)
+ create mode 100644 tests/qtest/intel-iommu-test.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7d9811458c..ec765bf3d3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3662,6 +3662,7 @@ S: Supported
+ F: hw/i386/intel_iommu.c
+ F: hw/i386/intel_iommu_internal.h
+ F: include/hw/i386/intel_iommu.h
++F: tests/qtest/intel-iommu-test.c
+ 
+ AMD-Vi Emulation
+ S: Orphan
 diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 48134bda11..650641544c 100644
+index 650641544c..b1848dbec6 100644
 --- a/include/hw/i386/intel_iommu.h
 +++ b/include/hw/i386/intel_iommu.h
-@@ -263,6 +263,7 @@ struct IntelIOMMUState {
+@@ -47,6 +47,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
+ #define VTD_HOST_AW_48BIT           48
+ #define VTD_HOST_AW_AUTO            0xff
+ #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
++#define VTD_MGAW_FROM_CAP(cap)      ((cap >> 16) & 0x3fULL)
  
-     bool caching_mode;              /* RO - is cap CM enabled? */
-     bool scalable_mode;             /* RO - is Scalable Mode supported? */
-+    char *scalable_mode_str;        /* RO - admin's Scalable Mode config */
-     bool scalable_modern;           /* RO - is modern SM supported? */
-     bool snoop_control;             /* RO - is SNP filed supported? */
+ #define DMAR_REPORT_F_INTR          (1)
  
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 2804c3628a..14d05fce1d 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3770,7 +3770,7 @@ static Property vtd_properties[] = {
-     DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
-                       VTD_HOST_AW_AUTO),
-     DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALSE),
--    DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, FALSE),
-+    DEFINE_PROP_STRING("x-scalable-mode", IntelIOMMUState, scalable_mode_str),
-     DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, false),
-     DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
-     DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
-@@ -4686,6 +4686,28 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-         }
-     }
- 
-+    if (s->scalable_mode_str &&
-+        (strcmp(s->scalable_mode_str, "off") &&
-+         strcmp(s->scalable_mode_str, "modern") &&
-+         strcmp(s->scalable_mode_str, "legacy"))) {
-+        error_setg(errp, "Invalid x-scalable-mode config,"
-+                         "Please use \"modern\", \"legacy\" or \"off\"");
-+        return false;
-+    }
+diff --git a/tests/qtest/intel-iommu-test.c b/tests/qtest/intel-iommu-test.c
+new file mode 100644
+index 0000000000..8e07034f6f
+--- /dev/null
++++ b/tests/qtest/intel-iommu-test.c
+@@ -0,0 +1,71 @@
++/*
++ * QTest testcase for intel-iommu
++ *
++ * Copyright (c) 2024 Intel, Inc.
++ *
++ * Author: Zhenzhong Duan <zhenzhong.duan@intel.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+    if (s->scalable_mode_str &&
-+        !strcmp(s->scalable_mode_str, "legacy")) {
-+        s->scalable_mode = true;
-+        s->scalable_modern = false;
-+    } else if (s->scalable_mode_str &&
-+        !strcmp(s->scalable_mode_str, "modern")) {
-+        s->scalable_mode = true;
-+        s->scalable_modern = true;
-+    } else {
-+        s->scalable_mode = false;
-+        s->scalable_modern = false;
-+    }
++#include "qemu/osdep.h"
++#include "libqtest.h"
++#include "hw/i386/intel_iommu_internal.h"
 +
-     if (s->aw_bits == VTD_HOST_AW_AUTO) {
-         if (s->scalable_modern) {
-             s->aw_bits = VTD_HOST_AW_48BIT;
++#define CAP_MODERN_FIXED1    (VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | \
++                              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS)
++#define ECAP_MODERN_FIXED1   (VTD_ECAP_QI |  VTD_ECAP_IRO | VTD_ECAP_MHMV | \
++                              VTD_ECAP_SMTS | VTD_ECAP_FLTS)
++
++static inline uint32_t vtd_reg_readl(QTestState *s, uint64_t offset)
++{
++    return qtest_readl(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
++}
++
++static inline uint64_t vtd_reg_readq(QTestState *s, uint64_t offset)
++{
++    return qtest_readq(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
++}
++
++static void test_intel_iommu_modern(void)
++{
++    uint8_t init_csr[DMAR_REG_SIZE];     /* register values */
++    uint8_t post_reset_csr[DMAR_REG_SIZE];     /* register values */
++    uint64_t cap, ecap, tmp;
++    QTestState *s;
++
++    s = qtest_init("-M q35 -device intel-iommu,x-scalable-mode=modern");
++
++    cap = vtd_reg_readq(s, DMAR_CAP_REG);
++    g_assert((cap & CAP_MODERN_FIXED1) == CAP_MODERN_FIXED1);
++
++    tmp = cap & VTD_CAP_SAGAW_MASK;
++    g_assert(tmp == (VTD_CAP_SAGAW_39bit | VTD_CAP_SAGAW_48bit));
++
++    tmp = VTD_MGAW_FROM_CAP(cap);
++    g_assert(tmp == VTD_HOST_AW_48BIT - 1);
++
++    ecap = vtd_reg_readq(s, DMAR_ECAP_REG);
++    g_assert((ecap & ECAP_MODERN_FIXED1) == ECAP_MODERN_FIXED1);
++    g_assert(ecap & VTD_ECAP_IR);
++
++    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, init_csr, DMAR_REG_SIZE);
++
++    qobject_unref(qtest_qmp(s, "{ 'execute': 'system_reset' }"));
++    qtest_qmp_eventwait(s, "RESET");
++
++    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, post_reset_csr, DMAR_REG_SIZE);
++    /* Ensure registers are consistent after hard reset */
++    g_assert(!memcmp(init_csr, post_reset_csr, DMAR_REG_SIZE));
++
++    qtest_quit(s);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++    qtest_add_func("/q35/intel-iommu/modern", test_intel_iommu_modern);
++
++    return g_test_run();
++}
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 6508bfb1a2..20d05d471b 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -79,6 +79,7 @@ qtests_i386 = \
+   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
+   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
+   (config_all_devices.has_key('CONFIG_ESP_PCI') ? ['am53c974-test'] : []) +                 \
++  (config_all_devices.has_key('CONFIG_VTD') ? ['intel-iommu-test'] : []) +                 \
+   (host_os != 'windows' and                                                                \
+    config_all_devices.has_key('CONFIG_ACPI_ERST') ? ['erst-test'] : []) +                   \
+   (config_all_devices.has_key('CONFIG_PCIE_PORT') and                                       \
 -- 
 2.34.1
 
