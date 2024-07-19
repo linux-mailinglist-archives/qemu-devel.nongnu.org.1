@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C6D937B00
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 18:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA752937B9E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUqT2-0007xK-4L; Fri, 19 Jul 2024 12:28:24 -0400
+	id 1sUrVO-0003zT-Hx; Fri, 19 Jul 2024 13:34:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sUqSz-0007wV-Uf
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:28:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sUqSx-0002ds-JE
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:28:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721406497;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9UuX42X/yKsA5znO4k3OK1xGFvZoJshl5haW9XBx7iQ=;
- b=DWe8zYlyhtgx+EZ0YRhjO37lURNaOD3aU/luCOrMj5/9mQJvCXfSqxPOmwfqc6TRcNitlN
- VSDSrHj+Ftd36m1X7t2I20lwDwULNt971NLaSl6U5ZPuoMUnOuv2TAO2gr9cMhiEpbwI1C
- 5+sjK3lvZ+9I3Jx+s9un0bXtjzA7J3o=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-343-48LfaK06NwyVdOeoFctUDw-1; Fri, 19 Jul 2024 12:28:12 -0400
-X-MC-Unique: 48LfaK06NwyVdOeoFctUDw-1
-Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-8064498eb84so29261839f.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:28:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <3bpSaZggKCj0vgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com>)
+ id 1sUqUH-0002Hn-1X
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:41 -0400
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3bpSaZggKCj0vgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com>)
+ id 1sUqUE-000477-Ig
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:40 -0400
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-6688b5b40faso48852437b3.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1721406575; x=1722011375; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:from:subject:message-id
+ :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=EaJqw2mJRSkYe7MyJyOAWeV6rAh6lGabGEXsQDwDp2E=;
+ b=r+RqHDYMU/ZxW+pnQvV06ShPHQLvdMqbCBDy04eDHetGTPIonlfiSH3shbNR9aIOdp
+ 9T4HmWhGBqDqxddr/cFADOij50fJcpvEEgz8qQ6EFs4sPG6IU0t3SsNoeNgFSHIuiphX
+ ErgNN8pOtfreQFoZWrpBa3ApTKVKxPl5AkN3LUPnHzkEshPgqG+rQJZknXmCbo2cVfis
+ mpBb5i01hkxviugBgy2zBhMKafoZ9XeZg2KaMjyxD+YcN0D1SbMfAjXXynv2soHVRg0a
+ nL6LWldpZK8ovEKIqLyjL9bEK3yaYbQ7/Cg/0KxpCVLMcTDLTnBRhrKY4HxFaHpI+cqU
+ NFIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721406492; x=1722011292;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1721406575; x=1722011375;
+ h=content-transfer-encoding:cc:to:from:subject:message-id
+ :mime-version:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9UuX42X/yKsA5znO4k3OK1xGFvZoJshl5haW9XBx7iQ=;
- b=Bq/fL9spgAGRpmnYi5iVVEvdcZmuCP3DDrwMJrC9RnY7jVw+80Pe8hYaFlcB+ykFOm
- ylGnxChN47Svkmf27tcIoZGUBWjpaD/EyIrYYx1ntngUV38vEESEC0XNnyQetmUsjupU
- KoQJm4B38nH4gTNUg+EzIZ6kivQ8OUy3uVOkWecib+1nlbsj5kf+BMd3kSzXP5MyxWmI
- 1NRarOhebOF2ktbgFMabGwHwNpzGyLa4KBebgKG7YAG9ClJbwwo8tWtY1v+4lUbdiyAi
- RdZnZ+RO843657Q50WGTwM8jjCHbcF0ad2FAkhkm+4XnOXjEUmOLnnNM1uQgV9CvTaVF
- zFaQ==
-X-Gm-Message-State: AOJu0YxTbKvcU+q5EJvjtNNVXqgusUSHUo3Uz6nEJlf86DmchFIO+v/k
- xqMbVdKxzpeyjytLjIMujIfrlwWkOEV9yyuXCbJFBCXevJ0Z4pXMbpbi5JFHnfAnf2zhpme1HZ/
- /KfR3L85IYiaJnVJ3pevEL/rLbr8kPd15xKIf9Qt0hJ2XTCGr9Wu7
-X-Received: by 2002:a05:6602:304a:b0:7f9:3fd9:cbb with SMTP id
- ca18e2360f4ac-81aa4bd5cd5mr29559839f.1.1721406491984; 
- Fri, 19 Jul 2024 09:28:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkwogKD9mmrsCtsJNwFtA5+x+w7doEbErwVU8cygMPAigT1iyGptwxtC74tQeumw3gTVeGPQ==
-X-Received: by 2002:a05:6602:304a:b0:7f9:3fd9:cbb with SMTP id
- ca18e2360f4ac-81aa4bd5cd5mr29558539f.1.1721406491616; 
- Fri, 19 Jul 2024 09:28:11 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c234407d49sm379734173.179.2024.07.19.09.28.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jul 2024 09:28:11 -0700 (PDT)
-Date: Fri, 19 Jul 2024 12:28:09 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2 06/11] migration: fix mismatched GPAs during cpr
-Message-ID: <ZpqUGYclrONQEuc7@x1n>
-References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
- <1719776434-435013-7-git-send-email-steven.sistare@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1719776434-435013-7-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ bh=EaJqw2mJRSkYe7MyJyOAWeV6rAh6lGabGEXsQDwDp2E=;
+ b=SsB25rnU9fVQjxm8sNfC/N+NB2+EOZI42hYyeKEEZuuX8xoEnIzGhGREKTujLRHAyu
+ dWKnJ10esZ2caRRgs3X2aiR/Pfmh7MhF9+tfyHnhF9rP0YjNVHpiLahAstxeY/iH/4En
+ bYXLFrm8azq7iTCIkG0tn3vOK9DjRhsWwyJbIbMrywnw6oSh9N6hgdIWc4Vc4St+PElI
+ 2EqV67Sf2S1P1qMRP+z6tA2+UEbta6V2UEm8jFcblTTmuDLKGfEzXA9DPhh2gWRw0EAn
+ jARR4zxbPHyKV0LY4p9THKtIVpaOXhygLD4ke7A5uh+ACf/hFd0xWHcOv7EhdgdX+6/B
+ tEDA==
+X-Gm-Message-State: AOJu0YwJBJCWVXpAUbOzPVz9guSDRuMkVDSkupihgaNzVz3vWgHORO2y
+ jQsa8CwbjnjGDgK+9kuIHH53srgOhti48GLIGQXXGwdetMghHryqSrvqee6Eq0EBH7QnU4wkkUX
+ 5LLON7uDyvbMF0el+4616NcrqFfjdmZSwCp0Kgr2E8K73B+ZCYm1jHdIAoPgGTC7gZOOQv+xXDf
+ Rf8AC2g/m7Hq/UCtlYqRpLTrVI+xhKcOaDce0/TCSeKA==
+X-Google-Smtp-Source: AGHT+IEExF9VHEpqkn+TXNjRAu8yv4NeugenWosKZDwMXaCa9Hhf+Jv8wg+Ww4ydxzb15VDBHCUs/cskYGuFyA==
+X-Received: from whendrik-specialist-workstation.c.googlers.com
+ ([fda3:e722:ac3:cc00:28:9cb1:c0a8:967]) (user=whendrik job=sendgmr) by
+ 2002:a05:6902:1003:b0:e03:a22c:df5 with SMTP id
+ 3f1490d57ef6-e087042cc79mr864276.7.1721406574746; 
+ Fri, 19 Jul 2024 09:29:34 -0700 (PDT)
+Date: Fri, 19 Jul 2024 16:29:20 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
+Message-ID: <20240719162929.1197154-1-whendrik@google.com>
+Subject: [PATCH v1 0/9] target:386/ Emulate Intel RDT features needed to mount
+ ResCtrl in Linux
+From: Hendrik Wuethrich <whendrik@google.com>
+To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
+ marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com
+Cc: peternewman@google.com, 
+ "=?UTF-8?q?Hendrik=20W=C3=BCthrich?=" <whendrik@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3bpSaZggKCj0vgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 19 Jul 2024 13:34:47 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,30 +95,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jun 30, 2024 at 12:40:29PM -0700, Steve Sistare wrote:
-> For new cpr modes, ramblock_is_ignored will always be true, because the
-> memory is preserved in place rather than copied.  However, for an ignored
-> block, parse_ramblock currently requires that the received address of the
-> block must match the address of the statically initialized region on the
-> target.  This fails for a PCI rom block, because the memory region address
-> is set when the guest writes to a BAR on the source, which does not occur
-> on the target, causing a "Mismatched GPAs" error during cpr migration.
+From: Hendrik W=C3=BCthrich <whendrik@google.com>
 
-Is this a common fix with/without cpr mode?
+The aim of this patch series is to emulate Intel RDT features in order
+to make testing of the linux Resctrl subsystem possible with Qemu.
 
-It looks to me mr->addr (for these ROMs) should only be set in PCI config
-region updates as you mentioned.  But then I didn't figure out when they're
-updated on dest in live migration: the ramblock info was sent at the
-beginning of migration, so it doesn't even have PCI config space migrated;
-I thought the real mr->addr should be in there.
+A branch with the patches applied can be found at:
+https://github.com/Gray-Colors/Intel_RDT_patches_applied
 
-I also failed to understand yet on why the mr->addr check needs to be done
-by ignore-shared only.  Some explanation would be greatly helpful around
-this area..
+The changes made introduce the following features:
 
-Thanks,
+* Feature enumeration for Intel RDT allocation.
+* Feature enumeration for Intel RDT monitoring.
+* Intel RDT monitoring system interface.
+* Intel RDT allocation system interface.
 
--- 
-Peter Xu
+By adding these features, a barebones implementation most of the RDT
+state and MSRs is introduced, which can be enabled through qemu
+command line flags.
+The features missing for a faithful recreation of RDT are CDP and
+non-linear MBA throttle, as well as the possibility to configure
+various values through the command line, as some properties can be
+different across different machines. For increased ease of use, the
+correct features should be automatically enabled on machines that
+support RDT functionality.
+The missing features mentioned above will be implemented in the
+following order:
+
+* Expand feature set for RDT allocation to include CDP and non-linear
+ MBA throttle
+* Allow for command line configuration of some values, such as the L3
+ CBM length
+* Automatically enable RDT on machines that officially support it.
+
+Will NOT be implemented
+* Tests to simulate interaction with the host by the guest
+
+Command line examples assuming entire patch series is applied (This
+requires a kernel with Resctrl enabled):
+
+To emulate Intel RDT features:
+
+Currently, it is necessary to force the RDT options on in qemu, as it is
+not automatically enabled for any machines. An example would be the
+following:
+- Skylake-Server,+l3-cmt,+rdt-m,+rdt-a,+mba,+l3-cat,+l2-cat
+
+Just enabling RDT in qemu won't really help, though. The following
+option allows resctrl in the kernel:
+- Kernel options: rdt=3Dmbmlocal,mbmtotal,cmt,mba,l2cat,l3cat
+
+To use Resctrl in the Qemu, please refer to:
+https://docs.kernel.org/arch/x86/resctrl.html
+
+=E2=80=AAHendrik W=C3=BCthrich (9):
+  Add Intel RDT device to config.
+  Add state for RDT device.
+  Add init and realize funciontality for RDT device.
+  Add RDT functionality
+  Add RDT device interface through MSRs
+  Add CPUID enumeration for RDT
+  Add RDT feature flags.
+  Adjust CPUID level for RDT features
+  Adjust level for RDT on full_cpuid_auto_level
+
+ hw/i386/Kconfig                      |   4 +
+ hw/i386/meson.build                  |   1 +
+ hw/i386/rdt.c                        | 271 +++++++++++++++++++++++++++
+ include/hw/i386/rdt.h                |  60 ++++++
+ target/i386/cpu.c                    | 134 ++++++++++++-
+ target/i386/cpu.h                    |  26 +++
+ target/i386/tcg/sysemu/misc_helper.c |  80 ++++++++
+ 7 files changed, 574 insertions(+), 2 deletions(-)
+ create mode 100644 hw/i386/rdt.c
+ create mode 100644 include/hw/i386/rdt.h
+
+--=20
+2.45.2.1089.g2a221341d9-goog
 
 
