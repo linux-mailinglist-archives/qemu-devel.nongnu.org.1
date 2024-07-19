@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA752937B9E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C402937B9F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:35:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUrVO-0003zT-Hx; Fri, 19 Jul 2024 13:34:54 -0400
+	id 1sUrVS-0004Aj-N8; Fri, 19 Jul 2024 13:34:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3bpSaZggKCj0vgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com>)
- id 1sUqUH-0002Hn-1X
+ <3cJSaZggKCj8xifoesjlhpphmf.dpnrfnv-efwfmopohov.psh@flex--whendrik.bounces.google.com>)
+ id 1sUqUH-0002LG-VA
  for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:41 -0400
-Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
+Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3bpSaZggKCj0vgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com>)
- id 1sUqUE-000477-Ig
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:40 -0400
-Received: by mail-yw1-x1149.google.com with SMTP id
- 00721157ae682-6688b5b40faso48852437b3.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:36 -0700 (PDT)
+ <3cJSaZggKCj8xifoesjlhpphmf.dpnrfnv-efwfmopohov.psh@flex--whendrik.bounces.google.com>)
+ id 1sUqUF-0004CP-0M
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:41 -0400
+Received: by mail-wm1-x349.google.com with SMTP id
+ 5b1f17b1804b1-427a7a65e7dso7655685e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1721406575; x=1722011375; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:from:subject:message-id
- :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
- bh=EaJqw2mJRSkYe7MyJyOAWeV6rAh6lGabGEXsQDwDp2E=;
- b=r+RqHDYMU/ZxW+pnQvV06ShPHQLvdMqbCBDy04eDHetGTPIonlfiSH3shbNR9aIOdp
- 9T4HmWhGBqDqxddr/cFADOij50fJcpvEEgz8qQ6EFs4sPG6IU0t3SsNoeNgFSHIuiphX
- ErgNN8pOtfreQFoZWrpBa3ApTKVKxPl5AkN3LUPnHzkEshPgqG+rQJZknXmCbo2cVfis
- mpBb5i01hkxviugBgy2zBhMKafoZ9XeZg2KaMjyxD+YcN0D1SbMfAjXXynv2soHVRg0a
- nL6LWldpZK8ovEKIqLyjL9bEK3yaYbQ7/Cg/0KxpCVLMcTDLTnBRhrKY4HxFaHpI+cqU
- NFIg==
+ d=google.com; s=20230601; t=1721406577; x=1722011377; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:from:subject:message-id:references
+ :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+ :reply-to; bh=EuegESfmjtOPOYVDWqUdcW99Kxin32wkde1axwvFNOQ=;
+ b=0ltkSNuraYIwg7A0L4pjawWGo/7/5zZaMCRNk456a1vjufscT/YsPOw+0zG6OPGLNM
+ cyuKZaBj09PB7LsaBXS+cImRnxkqmTwjvQurByYboycCuswKnxkL4qCjyKet6dZ+6dz/
+ /qk3sGKXC+Wh8CCd1qcMp6SoALxsXZtVxVsM7B7FjR60/R3W6LEIkwZCX0eUFC9xrem0
+ 3RJxi9OOoh7/jdBVV7Fa44kLh75igd+xyXz1ZkOUdeUUnNfo9Lb7BvPRLDAOfBLXJ+7L
+ usLT0pehaFBsWEKGMjrXgRqbzAMmjtyWUMSXD9M/b17zI4SrjJK4fV83AyJXvdKBrwYZ
+ Bubw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721406575; x=1722011375;
- h=content-transfer-encoding:cc:to:from:subject:message-id
- :mime-version:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EaJqw2mJRSkYe7MyJyOAWeV6rAh6lGabGEXsQDwDp2E=;
- b=SsB25rnU9fVQjxm8sNfC/N+NB2+EOZI42hYyeKEEZuuX8xoEnIzGhGREKTujLRHAyu
- dWKnJ10esZ2caRRgs3X2aiR/Pfmh7MhF9+tfyHnhF9rP0YjNVHpiLahAstxeY/iH/4En
- bYXLFrm8azq7iTCIkG0tn3vOK9DjRhsWwyJbIbMrywnw6oSh9N6hgdIWc4Vc4St+PElI
- 2EqV67Sf2S1P1qMRP+z6tA2+UEbta6V2UEm8jFcblTTmuDLKGfEzXA9DPhh2gWRw0EAn
- jARR4zxbPHyKV0LY4p9THKtIVpaOXhygLD4ke7A5uh+ACf/hFd0xWHcOv7EhdgdX+6/B
- tEDA==
-X-Gm-Message-State: AOJu0YwJBJCWVXpAUbOzPVz9guSDRuMkVDSkupihgaNzVz3vWgHORO2y
- jQsa8CwbjnjGDgK+9kuIHH53srgOhti48GLIGQXXGwdetMghHryqSrvqee6Eq0EBH7QnU4wkkUX
- 5LLON7uDyvbMF0el+4616NcrqFfjdmZSwCp0Kgr2E8K73B+ZCYm1jHdIAoPgGTC7gZOOQv+xXDf
- Rf8AC2g/m7Hq/UCtlYqRpLTrVI+xhKcOaDce0/TCSeKA==
-X-Google-Smtp-Source: AGHT+IEExF9VHEpqkn+TXNjRAu8yv4NeugenWosKZDwMXaCa9Hhf+Jv8wg+Ww4ydxzb15VDBHCUs/cskYGuFyA==
+ d=1e100.net; s=20230601; t=1721406577; x=1722011377;
+ h=content-transfer-encoding:cc:to:from:subject:message-id:references
+ :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=EuegESfmjtOPOYVDWqUdcW99Kxin32wkde1axwvFNOQ=;
+ b=AqhGlN/KfC04y94vaG76HuXZXIk1xJ60/N4eivbr3Nz6gAgIEonwsKOOyXuCh0MnHh
+ 78FPUZ2CRHWmq+zwnuJUP2hg1Z3Wr1P+8gcGGD0ITqMN8IWx8o7rKyqKf6AU85XmZ1wT
+ 2pRa+dK+8a5s3erjPC+UJifRqeKT1AYSEGxuXwapl6f0fCwH2FjAmlQD2+ifw+MxLWV2
+ 13o/hclXMIEizX6lSMJPm03b2IYzmjz64d2lOVrACtJmCrlXlDjDsxm1TEAwRyEQiXZ7
+ U4rUUDbRTPY7+pAuP3qvXxcivXEy+1ZeK6uBNxm5kv8fQ0Cu1W3Kr0XUNULuQ8vViZBV
+ 0cww==
+X-Gm-Message-State: AOJu0YzcLinjCdzNFV/4MmLdha/xDzKF8hLxg/HMxbvHLb2qAS79XlEq
+ yj3MrnQDzftP5VBXmn0VCy2qZLkJqrpF+zdpCNkh1qQhZmcnaCwyzVRIaR/IGIkblZCgWkl7U6Z
+ zjfOOw8SPigMkKB+D+Q0Cos79tbN9cj8Ygqrg15TlpQz9jM2nBhZ6K0e5E9EN50R3vEm3OK+ZQS
+ 5XTPIijit/Jza4iXsopxJCQqOaLilhkVNn+JSQUM0Cvw==
+X-Google-Smtp-Source: AGHT+IFv0AX1gUZXag6niCN+z/eeMcO9hLQ0PBPZwp13D1t/x/HZxPTHu7Fi/4o0Et9+KaOV4SYRmubJNz4xFw==
 X-Received: from whendrik-specialist-workstation.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:967]) (user=whendrik job=sendgmr) by
- 2002:a05:6902:1003:b0:e03:a22c:df5 with SMTP id
- 3f1490d57ef6-e087042cc79mr864276.7.1721406574746; 
- Fri, 19 Jul 2024 09:29:34 -0700 (PDT)
-Date: Fri, 19 Jul 2024 16:29:20 +0000
+ 2002:a05:600c:1c1d:b0:426:6761:2fea with SMTP id
+ 5b1f17b1804b1-427d2ac80c1mr636785e9.3.1721406576860; 
+ Fri, 19 Jul 2024 09:29:36 -0700 (PDT)
+Date: Fri, 19 Jul 2024 16:29:21 +0000
+In-Reply-To: <20240719162929.1197154-1-whendrik@google.com>
 Mime-Version: 1.0
+References: <20240719162929.1197154-1-whendrik@google.com>
 X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
-Message-ID: <20240719162929.1197154-1-whendrik@google.com>
-Subject: [PATCH v1 0/9] target:386/ Emulate Intel RDT features needed to mount
- ResCtrl in Linux
+Message-ID: <20240719162929.1197154-2-whendrik@google.com>
+Subject: [PATCH v1 1/9] Add Intel RDT device to config.
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
  marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com
 Cc: peternewman@google.com, 
- "=?UTF-8?q?Hendrik=20W=C3=BCthrich?=" <whendrik@google.com>
+ "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
- envelope-from=3bpSaZggKCj0vgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com;
- helo=mail-yw1-x1149.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::349;
+ envelope-from=3cJSaZggKCj8xifoesjlhpphmf.dpnrfnv-efwfmopohov.psh@flex--whendrik.bounces.google.com;
+ helo=mail-wm1-x349.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -80,7 +81,7 @@ X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 19 Jul 2024 13:34:47 -0400
+X-Mailman-Approved-At: Fri, 19 Jul 2024 13:34:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,81 +96,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hendrik W=C3=BCthrich <whendrik@google.com>
+From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-The aim of this patch series is to emulate Intel RDT features in order
-to make testing of the linux Resctrl subsystem possible with Qemu.
+Change config to show RDT, add minimal code to the rdt.c module to make
+sure things still compile.
 
-A branch with the patches applied can be found at:
-https://github.com/Gray-Colors/Intel_RDT_patches_applied
-
-The changes made introduce the following features:
-
-* Feature enumeration for Intel RDT allocation.
-* Feature enumeration for Intel RDT monitoring.
-* Intel RDT monitoring system interface.
-* Intel RDT allocation system interface.
-
-By adding these features, a barebones implementation most of the RDT
-state and MSRs is introduced, which can be enabled through qemu
-command line flags.
-The features missing for a faithful recreation of RDT are CDP and
-non-linear MBA throttle, as well as the possibility to configure
-various values through the command line, as some properties can be
-different across different machines. For increased ease of use, the
-correct features should be automatically enabled on machines that
-support RDT functionality.
-The missing features mentioned above will be implemented in the
-following order:
-
-* Expand feature set for RDT allocation to include CDP and non-linear
- MBA throttle
-* Allow for command line configuration of some values, such as the L3
- CBM length
-* Automatically enable RDT on machines that officially support it.
-
-Will NOT be implemented
-* Tests to simulate interaction with the host by the guest
-
-Command line examples assuming entire patch series is applied (This
-requires a kernel with Resctrl enabled):
-
-To emulate Intel RDT features:
-
-Currently, it is necessary to force the RDT options on in qemu, as it is
-not automatically enabled for any machines. An example would be the
-following:
-- Skylake-Server,+l3-cmt,+rdt-m,+rdt-a,+mba,+l3-cat,+l2-cat
-
-Just enabling RDT in qemu won't really help, though. The following
-option allows resctrl in the kernel:
-- Kernel options: rdt=3Dmbmlocal,mbmtotal,cmt,mba,l2cat,l3cat
-
-To use Resctrl in the Qemu, please refer to:
-https://docs.kernel.org/arch/x86/resctrl.html
-
-=E2=80=AAHendrik W=C3=BCthrich (9):
-  Add Intel RDT device to config.
-  Add state for RDT device.
-  Add init and realize funciontality for RDT device.
-  Add RDT functionality
-  Add RDT device interface through MSRs
-  Add CPUID enumeration for RDT
-  Add RDT feature flags.
-  Adjust CPUID level for RDT features
-  Adjust level for RDT on full_cpuid_auto_level
-
- hw/i386/Kconfig                      |   4 +
- hw/i386/meson.build                  |   1 +
- hw/i386/rdt.c                        | 271 +++++++++++++++++++++++++++
- include/hw/i386/rdt.h                |  60 ++++++
- target/i386/cpu.c                    | 134 ++++++++++++-
- target/i386/cpu.h                    |  26 +++
- target/i386/tcg/sysemu/misc_helper.c |  80 ++++++++
- 7 files changed, 574 insertions(+), 2 deletions(-)
+Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
+---
+ hw/i386/Kconfig       |  4 ++++
+ hw/i386/meson.build   |  1 +
+ hw/i386/rdt.c         | 49 +++++++++++++++++++++++++++++++++++++++++++
+ include/hw/i386/rdt.h | 12 +++++++++++
+ 4 files changed, 66 insertions(+)
  create mode 100644 hw/i386/rdt.c
  create mode 100644 include/hw/i386/rdt.h
 
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index f4a33b6c08..4dd05ed6f2 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -10,6 +10,9 @@ config SGX
+     bool
+     depends on KVM
+=20
++config RDT
++    bool
++
+ config PC
+     bool
+     imply APPLESMC
+@@ -26,6 +29,7 @@ config PC
+     imply QXL
+     imply SEV
+     imply SGX
++    imply RDT
+     imply TEST_DEVICES
+     imply TPM_CRB
+     imply TPM_TIS_ISA
+diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+index 03aad10df7..fdbf5962b5 100644
+--- a/hw/i386/meson.build
++++ b/hw/i386/meson.build
+@@ -21,6 +21,7 @@ i386_ss.add(when: 'CONFIG_VMPORT', if_true: files('vmport=
+.c'))
+ i386_ss.add(when: 'CONFIG_VTD', if_true: files('intel_iommu.c'))
+ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
+                                 if_false: files('sgx-stub.c'))
++i386_ss.add(when: 'CONFIG_RDT', if_true: files('rdt.c'))
+=20
+ i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+ i386_ss.add(when: 'CONFIG_PC', if_true: files(
+diff --git a/hw/i386/rdt.c b/hw/i386/rdt.c
+new file mode 100644
+index 0000000000..0a5e95606b
+--- /dev/null
++++ b/hw/i386/rdt.c
+@@ -0,0 +1,49 @@
++#include "qemu/osdep.h"
++#include "hw/i386/rdt.h"
++#include <stdint.h>
++#include "hw/qdev-properties.h"
++#include "qemu/typedefs.h"
++#include "qom/object.h"
++#include "target/i386/cpu.h"
++#include "hw/isa/isa.h"
++
++#define TYPE_RDT "rdt"
++
++OBJECT_DECLARE_TYPE(RDTState, RDTStateClass, RDT);
++
++struct RDTState {
++    ISADevice parent;
++};
++
++struct RDTStateClass { };
++
++OBJECT_DEFINE_TYPE(RDTState, rdt, RDT, ISA_DEVICE);
++
++static Property rdt_properties[] =3D {
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void rdt_init(Object *obj)
++{
++}
++
++static void rdt_realize(DeviceState *dev, Error **errp)
++{
++}
++
++static void rdt_finalize(Object *obj)
++{
++}
++
++static void rdt_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc =3D DEVICE_CLASS(klass);
++
++    dc->hotpluggable =3D false;
++    dc->desc =3D "RDT";
++    dc->user_creatable =3D true;
++    dc->realize =3D rdt_realize;
++
++    device_class_set_props(dc, rdt_properties);
++}
++
+diff --git a/include/hw/i386/rdt.h b/include/hw/i386/rdt.h
+new file mode 100644
+index 0000000000..45e34d3103
+--- /dev/null
++++ b/include/hw/i386/rdt.h
+@@ -0,0 +1,12 @@
++#ifndef HW_RDT_H
++#define HW_RDT_H
++
++#include <stdbool.h>
++#include <stdint.h>
++
++typedef struct RDTState RDTState;
++typedef struct RDTStateInstance RDTStateInstance;
++typedef struct RDTMonitor RDTMonitor;
++typedef struct RDTAllocation RDTAllocation;
++
++#endif
 --=20
 2.45.2.1089.g2a221341d9-goog
 
