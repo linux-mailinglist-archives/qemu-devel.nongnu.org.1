@@ -2,89 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0B2937456
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 09:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EA9937441
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 09:17:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUhvw-0008Gx-B9; Fri, 19 Jul 2024 03:21:41 -0400
+	id 1sUhs0-0005Q3-DU; Fri, 19 Jul 2024 03:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sUhvm-0008F7-KQ
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 03:21:30 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sUhvk-0006AW-Is
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 03:21:30 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1fc60c3ead4so13158905ad.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 00:21:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721373687; x=1721978487;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l+InLfvy3Wi5yP9doSp4CIHfQTGOwoe0asCqSW+LgII=;
- b=hMoUXmNDX3wVZ0ZX2IRhT51TURtfOniJ4nDo3sR7bR1TjgnAwfzWDUceK0qELB6YmL
- eZM1rencnVzVyYLBtUc8Sw7RdrfSVHFTKSE0LfCWIOonvXhS2jiaMgKmEnZucMlMjDNH
- xScPPcIp6m+X+qlOlxw5+FhjqQMJh2l7wN//6d7DkhknojSs6rN18P05L/+8LGPHzLW0
- PHIG0G3BQp7VkzYZxIeerXgRK9GadWDFCcK2mTrGFuBS6bfYay8p8tvFmRMuXrVbfVne
- +Qmkqnc+1vPOkpVpqJvoP9cEUa0CkM/hbKFiHfQRrNs8ZrmMVBirUbwuMLvbAXwbIzdg
- buQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721373687; x=1721978487;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l+InLfvy3Wi5yP9doSp4CIHfQTGOwoe0asCqSW+LgII=;
- b=IU8V4OZ0Ar5HL6U7/HZOckY6GFPTqLSqJ7kE+u1uLdUlEQ64Tt8Yq3dJcf7IG8uBkV
- 8kpJ3ZqbHdwQ5PE5118M8y+RO6vwwsF+GbY13Q3kIIEsCVk3/nxdcZ+BU7f4qNgh5Db2
- B8ngQfF720UAeiCVdCkaZSR9rSH2F3KS/SRf10SPSCbaDLt+RV8b9/qhgz8larinkZNW
- TvlOd66qzySUdZZFgeGIMoEOkhFOFLzRbLNPClrfctBwgxszzatwV2sdez26/jawippA
- Mobn4akt92lcGuNzQh6JdnvbK0ywJHVPtV45yRTiME1GhPcwsKt2KPLQEb8XBpfmzy+J
- CUow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWzF79DwGDIF6BO0yS8n+khSPk7bhDR5Gax462b9nwZFn0+eU7eQPxfXaCb6VTXAeKEWEmIs1Xcr2yb2luCxkjmn9b3ndE=
-X-Gm-Message-State: AOJu0YznEB0V2m1gecsehxdjejEdPNCURom0icF5uqtBi7xdCecmjEsK
- X0gCAJ+c7OOuUw76SqMI0rKki5HC2U6ofBR2YywfgCMNuBwbObTzwtznxpCq4eK243YGsJvaMNd
- ngu0=
-X-Google-Smtp-Source: AGHT+IG7pRZucV2pX7tEVeC3k9EOYe78N/rINrMJ7dbtG9GdYk8KtIyq0X7XFRJmyzfRif5BJbm9rw==
-X-Received: by 2002:a17:902:c948:b0:1fb:8a0e:76f9 with SMTP id
- d9443c01a7336-1fc4e17ec73mr57478355ad.39.1721373686807; 
- Fri, 19 Jul 2024 00:21:26 -0700 (PDT)
-Received: from [133.11.54.222] (h222.csg.ci.i.u-tokyo.ac.jp. [133.11.54.222])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fd64d0703bsm7344875ad.155.2024.07.19.00.21.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jul 2024 00:21:26 -0700 (PDT)
-Message-ID: <f9cf0616-34df-42c3-a753-4dec8e2d25b5@daynix.com>
-Date: Fri, 19 Jul 2024 16:21:22 +0900
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sUhrx-0005I0-I0
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 03:17:33 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sUhru-0003vO-BU
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 03:17:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721373450; x=1752909450;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/Ae4pVdiaD09KGVgieXvdPqUBGKYgjSMpkA2r7YyLfc=;
+ b=nN3x/7Yj2oON1KwSfIccDJO6xpdE7pBe3vdJ0st5ZabeamrjUx2uS+Rn
+ bEcudVLuwOzAa0GcSrs1jNDFrYVo6Ys/pr+25ein8xnyaXknUJn1J8QIW
+ fJ5ypBFdI2QgLXYUEX9gnOv3q4H5/VTwYL3uHoBYGuJKWeNWuizfS9F47
+ VKgYFREdyiMmfmI8P0oVbw8jZWBgKcnDJvRnvKbwdTxhtBMsP7oQekEOp
+ uC9inD26qbSH40ratRZxcWSY9l3k3dsZq25JqcexiLSasiFX9EDotdkIK
+ yKgW7Bjqj2NBOr0oQ698Es7UzOcUFYCYMzax5MXrCkgYzxg02Gx3Jou+Q w==;
+X-CSE-ConnectionGUID: 0+OMJAtSTnGFcbfmsniI/w==
+X-CSE-MsgGUID: hRIJE1RST9+NCkbGkMeC/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11137"; a="19117540"
+X-IronPort-AV: E=Sophos;i="6.09,220,1716274800"; d="scan'208";a="19117540"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jul 2024 00:17:26 -0700
+X-CSE-ConnectionGUID: NtdUO1JbQY2uoMG3BCuV5Q==
+X-CSE-MsgGUID: GLBunO7fRq22CtIt7PUkSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,220,1716274800"; d="scan'208";a="51300064"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa006.jf.intel.com with ESMTP; 19 Jul 2024 00:17:24 -0700
+Date: Fri, 19 Jul 2024 15:33:06 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Manish Mishra <manish.mishra@nutanix.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ John Levon <john.levon@nutanix.com>,
+ Prerna Saxena <prerna.saxena@nutanix.com>, Bob Ball <bob.ball@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: Windows 10 and 11 VMs fails to boot with SapphireRapids CPU
+ definition
+Message-ID: <ZpoWskY4XE/98jss@intel.com>
+References: <PH0PR02MB738410511BF51B12DB09BE6CF6AC2@PH0PR02MB7384.namprd02.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] target/arm/kvm: Fix PMU feature bit early
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20240716-pmu-v3-0-8c7c1858a227@daynix.com>
- <20240716-pmu-v3-2-8c7c1858a227@daynix.com>
- <CAFEAcA8tFtdpCQobU9ytzxvf3_y3DiA1TwNq8fWgFUtCUYT4hQ@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAFEAcA8tFtdpCQobU9ytzxvf3_y3DiA1TwNq8fWgFUtCUYT4hQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PH0PR02MB738410511BF51B12DB09BE6CF6AC2@PH0PR02MB7384.namprd02.prod.outlook.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,63 +85,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/07/18 21:07, Peter Maydell wrote:
-> On Tue, 16 Jul 2024 at 13:50, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> kvm_arm_get_host_cpu_features() used to add the PMU feature
->> unconditionally, and kvm_arch_init_vcpu() removed it when it is actually
->> not available. Conditionally add the PMU feature in
->> kvm_arm_get_host_cpu_features() to save code.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   target/arm/kvm.c | 7 +------
->>   1 file changed, 1 insertion(+), 6 deletions(-)
->>
->> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
->> index 70f79eda33cd..849e2e21b304 100644
->> --- a/target/arm/kvm.c
->> +++ b/target/arm/kvm.c
->> @@ -280,6 +280,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
->>       if (kvm_arm_pmu_supported()) {
->>           init.features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
->>           pmu_supported = true;
->> +        features |= 1ULL << ARM_FEATURE_PMU;
->>       }
->>
->>       if (!kvm_arm_create_scratch_host_vcpu(cpus_to_try, fdarray, &init)) {
->> @@ -448,7 +449,6 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
->>       features |= 1ULL << ARM_FEATURE_V8;
->>       features |= 1ULL << ARM_FEATURE_NEON;
->>       features |= 1ULL << ARM_FEATURE_AARCH64;
->> -    features |= 1ULL << ARM_FEATURE_PMU;
->>       features |= 1ULL << ARM_FEATURE_GENERIC_TIMER;
->>
->>       ahcf->features = features;
->> @@ -1888,13 +1888,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
->>       if (!arm_feature(env, ARM_FEATURE_AARCH64)) {
->>           cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_EL1_32BIT;
->>       }
->> -    if (!kvm_check_extension(cs->kvm_state, KVM_CAP_ARM_PMU_V3)) {
->> -        cpu->has_pmu = false;
->> -    }
->>       if (cpu->has_pmu) {
->>           cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
->> -    } else {
->> -        env->features &= ~(1ULL << ARM_FEATURE_PMU);
->>       }
->>       if (cpu_isar_feature(aa64_sve, cpu)) {
->>           assert(kvm_arm_sve_supported());
+Hi Manish,
+
+(+Paolo and Daniel)
+
+On Thu, Jul 18, 2024 at 11:44:28AM +0000, Manish Mishra wrote:
+> Date: Thu, 18 Jul 2024 11:44:28 +0000
+> From: Manish Mishra <manish.mishra@nutanix.com>
+> Subject: Windows 10 and 11 VMs fails to boot with SapphireRapids CPU
+>  definition
 > 
-> Not every KVM CPU is necessarily the "host" CPU type.
-> The "cortex-a57" and "cortex-a53" CPU types will work if you
-> happen to be on a host of that CPU type, and they don't go
-> through kvm_arm_get_host_cpu_features().
+> Hi Everyone,
+> 
+> We are facing issues booting windows VMs with SapphireRapids CPU definition. This is happening in case we have multiple cores per vcpu set and the VM is a UEFI, secure boot and credential guard enabled. Till now we have observed this issue on windows 10 and 11.
+> 
+> 
+> 
+> We did some triaging around this. SapphireRapids CPU definition has raised cpuid_level to 0x20. This includes leaf V2 extended topology (0x1f). QEMU returns all zeros in case !x86_has_extended_topo()<https://github.com/qemu/qemu/blob/58ee924b97d1c0898555647a31820c5a20d55a73/target/i386/kvm/kvm.c#L1834>. As per expectation(also mentioned in https://cdrdv2-public.intel.com/775917/intel-64-architecture-processor-topology-enumeration.pdf) if guests see this it should fallback to 0x1b. Somehow windows 10 and windows 11 does not work well with this assumption and panics on boot.
+> 
+> 
+> 
+> We checked on one of the SapphireRapids node with no multi-die topology; this is how CPUID output looks like. 0x1f output is the same as 0xb.
 
-kvm_arm_vcpu_init() will emit an error in such a situation and I think 
-it's better than silently removing a feature that the requested CPU type 
-has. A user can still disable the feature if desired.
+[snip]
 
-Regards,
-Akihiko Odaki
+> We tried a workaround having 0x1f output same as 0xb in case !x86_has_extended_topo(), instead of setting all zeros. This seems to work fine. Our understanding is that current QEMU behaviour is not incorrect but still does the above mentioned workaround makes sense? 
+
+The 0x1f was introduced from cascadelake-AP (2nd xeon) with multiple
+dies, but cascadelake-SP doesn't has the 0x1f since it has only 1 die.
+
+So from that time, QEMU's 0x1f checks for extended topology level to
+determine whether to populate the 0x1f. HMM, currently, for this
+all-zero 0x1f, it's valid because x86 (SDM) said "if a value entered
+for CPUID.EAX is less than or equal to the maximum input value and the
+leaf is not supported on that processor then 0 is returned in all the
+registers."
+
+So yes you're right, and it's actually a Windows issue, which should
+check 0xb.
+
+And you proposed to populate 0x1f by default even without die/module
+should work:
+ * older software still checks 0xb by default, then the newly added 0x1f
+   doesn't break anything.
+ * And software that follow the SDM recommendation to check 0x1f first
+   by default will also benefit.
+
+No one else has reported problems for old CPUs yet, but CPUs older than
+cascadelake should disable configuration of extended topology levels to
+avoid 0x1f creating compatibility issues. Of course, the current
+workaround doesn't need to take that into account.
+
+> And if we look it is the same as bare-metal so it should not be unreasonable. If so will be happy to send a patch for same.
+
+I think it's worth doing, and I'll help you review.
+
+You may refer to "cpuid-0xb" implementation and add the compat setting
+pc_compat_9_0.
+
+Thanks,
+Zhao
+
 
