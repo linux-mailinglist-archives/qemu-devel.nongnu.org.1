@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA2E937BA3
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12920937BA4
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUrVX-0004R1-KW; Fri, 19 Jul 2024 13:35:03 -0400
+	id 1sUrVU-0004KZ-8C; Fri, 19 Jul 2024 13:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3fZSaZggKCkwAvs1r5wyu22uzs.q204s08-rs9sz121u18.25u@flex--whendrik.bounces.google.com>)
- id 1sUqUd-0003RB-7x
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:30:03 -0400
-Received: from mail-wm1-x34a.google.com ([2a00:1450:4864:20::34a])
+ <3gJSaZggKCk8Dyv4u8z1x55x2v.t537v3B-uvCv2454x4B.58x@flex--whendrik.bounces.google.com>)
+ id 1sUqUf-0003bD-4Q
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:30:05 -0400
+Received: from mail-wr1-x449.google.com ([2a00:1450:4864:20::449])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3fZSaZggKCkwAvs1r5wyu22uzs.q204s08-rs9sz121u18.25u@flex--whendrik.bounces.google.com>)
- id 1sUqUX-0004ZV-R3
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:30:00 -0400
-Received: by mail-wm1-x34a.google.com with SMTP id
- 5b1f17b1804b1-42725d3ae3eso13917935e9.3
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:51 -0700 (PDT)
+ <3gJSaZggKCk8Dyv4u8z1x55x2v.t537v3B-uvCv2454x4B.58x@flex--whendrik.bounces.google.com>)
+ id 1sUqUa-0004b0-TJ
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:30:04 -0400
+Received: by mail-wr1-x449.google.com with SMTP id
+ ffacd0b85a97d-36878581685so649744f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1721406590; x=1722011390; darn=nongnu.org;
+ d=google.com; s=20230601; t=1721406592; x=1722011392; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=IoNUsPYmgHKzmPR7JWJUwxpa2sExJSFmT0g3Tjq5GOc=;
- b=ztoUa8lBCPaV01bKW3MHNVZ7DO/eLfpXaf9MW0JaorvjoJOOWuoqypakuB5Ik3h6JZ
- /liQjGIkO5Dz1jgK+2KKO7vyHPfaHzYPrPB4AE3Hfbo6ePkkM/VlWvs2X+aCgVU6MSiv
- euzg0FfDlqCPIPUiTeLWVzoccPyqJ+F2EEkejjSmkxc6mXHkREyIRMUr2r1aPjqa8wGc
- Te67LrsgloBbQfM+v//vgV82fShBtRil79+c4kkwGKOuJ6ND/PtW5z3GnECbAWqiUg8b
- sST3X37AxaXAjp5AfivMCmy7d/Srtxa6m+WJHeuYgFmFU+QO+S4OVM16CV76iJkagDX8
- 6Iuw==
+ :reply-to; bh=ojXTO+gqQjO+YFItkBY171VxHM34+l/GDY7MCVJj9s0=;
+ b=ePmxGedKkOiTeAYqJcDtD9WiV7dxItX7Jd/rd//k8TcMTsdAEFvxqSV4apvCJ3FixP
+ gTLcrp41ZH8fCRDM8f6NwwCgMIZLw7xwLYimjij/Kcj5A1j1vuN9qNiADNLpHTuNsPrE
+ oXAZxURqzY/eW1GsPMCEtuc6nFEAcClu0R4fJXR5jZ8uoK7ZLBFGLuOuSC96Xv1CeMlf
+ acF33BhsRrN5IKuROsXUVEFq6oVKsUb/CDi1DBqfkw1m6N5SP07QqG281aqaZqmYEoG0
+ hzRNUo9W/XoUUANfLqKBbBTr2UAIzmcstDqASBFAZ7ZIYAH6rfS38yTTavlvEBkBQyIP
+ +BYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721406590; x=1722011390;
+ d=1e100.net; s=20230601; t=1721406592; x=1722011392;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=IoNUsPYmgHKzmPR7JWJUwxpa2sExJSFmT0g3Tjq5GOc=;
- b=f2/8/+cqmBRPqqphVIERSDNJ6y2fifgoTUJZ42y+bu3IdXE98bwBZcK0nxCHmHcIPM
- 3nGxzEwm1jDWk2T4eIRQZXYVGOnM/n5juLZpsLKRSWlKvAgVRy0hu/mDve0i37Dr22lE
- AtiwPfyIb3h7m8SuzrSvfUFyoxVqnIbbihtX/L744mh8XsCV1SSjGzIZsFtfVC7p8438
- UG2GLyj+S5Y0MX/azzjFQyx5jv9F2idII4+sYIZ6QtjI4OEIuqCBSNcu6HRpxVz5tzx8
- BqMvpRCXzrA/1I/Yd7W/BEXcLmZUEWmZCwRfryU1nb123iCGm90+z09dQekdsv+ffHfW
- w7ug==
-X-Gm-Message-State: AOJu0Yw+OBBGzrE3ocMtRB9k+CkGlu/FtBeQDScHcwi5+MP99IK1sbb9
- dEikti3WWrB99pC0edO2cKCZ4DIsWb75/g+gqfISz812OK8lPh7cd2msZR/71ZO5RNMGRSeLpfb
- NveITVMFih5vpKb0eZkoXoSU2X/jI5FSsYlGxnw+oYnCoChKMMKmHORwhL4ym8Dm7BjVjHG83aD
- omfKOa3jamQoIXwNKeWJ0g8ZoL1nqhSblCdUOyfnhqlw==
-X-Google-Smtp-Source: AGHT+IEcAWmxhWNNuP9Js5a/LU2TuakOKOVQv2oo0CgQUIQ4sbrPFZLKWsEQnzZLpJM665bSO8N8UwnBV2FMQw==
+ bh=ojXTO+gqQjO+YFItkBY171VxHM34+l/GDY7MCVJj9s0=;
+ b=PJTcQulUX1WobL5HdI3WHHSueF6Kz64EfyfNVaf3DiX/22AiZpuGzTjrtDrfQG+A+q
+ aINzqwJHa9r9Edp01cEeGEzEtpKLVz6ztyYZKTQPMiZJ97h/3ruJGqMpJiYwhp76Od2a
+ 9sNXrZ6WZ5u2PmWBWZJPULp4F0/XYq9Nln96SxBET1/KEaHo5IeqYAQggD+8AUB86YnM
+ jlUPO1oRQ96uSk4VCAncVI+IaoSR5XcA1pF7YdpFmqrIX+VSPmjhlcrjav/eCRqAj9xB
+ TXpJup6C/E2dD4bmmdNxk9VuQQym2u4wylXG5RbCfW91qRM7OoarBt1iIBxBtSKYREYs
+ 3ejQ==
+X-Gm-Message-State: AOJu0YwdbA1sDsXtELboL7HxUvCDEsWJ+9aqmSDbwzrg+nSiY50IQpFm
+ 17EnQEtx73+9o6pFuihAGfHUPr6ZQGem7PekulvNAADgqDF+ein9ED244skRvwjfrcPrdmp9MjF
+ C66zkzcwKQbBIDuf0P5SVFjJ3cPpmFJyTaAtYts2QOCkQBzScW6qAE02gmb+sjT4GqJkBlWmc2P
+ kbfz+uY6q78hYVKdPoBqGMdg24TGr4kzu7CK3jGfWREQ==
+X-Google-Smtp-Source: AGHT+IFp5gGxwdfse0K3H/gM+iZmanS258DPiFCNv3JKrx0NW64k6R9ieMSz1dSPNceUxVn1IgDfId0NEogI/Q==
 X-Received: from whendrik-specialist-workstation.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:967]) (user=whendrik job=sendgmr) by
- 2002:a05:600c:1592:b0:427:d8f1:e29e with SMTP id
- 5b1f17b1804b1-427daa67d64mr335e9.8.1721406589675; 
- Fri, 19 Jul 2024 09:29:49 -0700 (PDT)
-Date: Fri, 19 Jul 2024 16:29:27 +0000
+ 2002:a5d:460c:0:b0:361:fa84:60bc with SMTP id
+ ffacd0b85a97d-369b67a35c5mr103f8f.12.1721406592281; 
+ Fri, 19 Jul 2024 09:29:52 -0700 (PDT)
+Date: Fri, 19 Jul 2024 16:29:28 +0000
 In-Reply-To: <20240719162929.1197154-1-whendrik@google.com>
 Mime-Version: 1.0
 References: <20240719162929.1197154-1-whendrik@google.com>
 X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
-Message-ID: <20240719162929.1197154-8-whendrik@google.com>
-Subject: [PATCH v1 7/9] Add RDT feature flags.
+Message-ID: <20240719162929.1197154-9-whendrik@google.com>
+Subject: [PATCH v1 8/9] Adjust CPUID level for RDT features
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
  marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com
@@ -70,9 +70,9 @@ Cc: peternewman@google.com,
  "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::34a;
- envelope-from=3fZSaZggKCkwAvs1r5wyu22uzs.q204s08-rs9sz121u18.25u@flex--whendrik.bounces.google.com;
- helo=mail-wm1-x34a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::449;
+ envelope-from=3gJSaZggKCk8Dyv4u8z1x55x2v.t537v3B-uvCv2454x4B.58x@flex--whendrik.bounces.google.com;
+ helo=mail-wr1-x449.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -81,7 +81,7 @@ X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 19 Jul 2024 13:34:50 -0400
+X-Mailman-Approved-At: Fri, 19 Jul 2024 13:34:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,96 +98,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-Add RDT features to feature word / TCG.
+Adjust minimum CPUID level if RDT monitoring or allocation features are
+enabled to ensure that CPUID will return them.
 
 Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
 ---
- target/i386/cpu.c | 30 ++++++++++++++++++++++++++++--
- target/i386/cpu.h |  2 ++
- 2 files changed, 30 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c61981bf82..1cf5e5d5ff 100644
+index 1cf5e5d5ff..482f980a1f 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -864,7 +864,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
-r1,
-           CPUID_7_0_EBX_CLFLUSHOPT |            \
-           CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE =
-| \
-           CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_RDSEED |=
- \
--          CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES)
-+          CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES | \
-+          CPUID_7_0_EBX_PQM | CPUID_7_0_EBX_PQE)
-           /* missing:
-           CPUID_7_0_EBX_HLE
-           CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
-@@ -900,6 +901,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
-r1,
- #define TCG_SGX_12_0_EAX_FEATURES 0
- #define TCG_SGX_12_0_EBX_FEATURES 0
- #define TCG_SGX_12_1_EAX_FEATURES 0
-+#define TCG_RDT_15_0_EDX_FEATURES CPUID_15_0_EDX_L3
-=20
- #if defined CONFIG_USER_ONLY
- #define CPUID_8000_0008_EBX_KERNEL_FEATURES (CPUID_8000_0008_EBX_IBPB | \
-@@ -1057,7 +1059,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] =3D =
-{
-             "fsgsbase", "tsc-adjust", "sgx", "bmi1",
-             "hle", "avx2", NULL, "smep",
-             "bmi2", "erms", "invpcid", "rtm",
--            NULL, NULL, "mpx", NULL,
-+            "rdt-m", NULL, "mpx", "rdt-a",
-             "avx512f", "avx512dq", "rdseed", "adx",
-             "smap", "avx512ifma", "pcommit", "clflushopt",
-             "clwb", "intel-pt", "avx512pf", "avx512er",
-@@ -1607,6 +1609,30 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] =3D=
- {
-         },
-         .tcg_features =3D TCG_SGX_12_1_EAX_FEATURES,
-     },
+@@ -7590,6 +7590,16 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **er=
+rp)
+         if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
+             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
+         }
 +
-+    [FEAT_RDT_10_0_EBX] =3D {
-+        .type =3D CPUID_FEATURE_WORD,
-+        .feat_names =3D {
-+            NULL, "l3-cat", "l2-cat", "mba"
-+        },
-+        .cpuid =3D {
-+            .eax =3D 0x10,
-+            .needs_ecx =3D true, .ecx =3D 0,
-+            .reg =3D R_EBX,
++        /* RDT monitoring requires CPUID[0xF] */
++        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQM) {
++            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0xF);
 +        }
-+    },
-+    [FEAT_RDT_15_0_EDX] =3D {
-+        .type =3D CPUID_FEATURE_WORD,
-+        .feat_names =3D {
-+            [1] =3D "l3-cmt"
-+        },
-+        .cpuid =3D {
-+            .eax =3D 0xf,
-+            .needs_ecx =3D true, .ecx =3D 0,
-+            .reg =3D R_EDX,
-+        },
-+        .tcg_features =3D TCG_RDT_15_0_EDX_FEATURES,
-+    },
- };
++
++        /* RDT allocation requires CPUID[0x10] */
++        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQE) {
++            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x10);
++        }
+     }
 =20
- typedef struct FeatureMask {
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 12a4b989af..bf2f3c07a7 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -673,7 +673,9 @@ typedef enum FeatureWord {
-     FEAT_XSAVE_XSS_HI,     /* CPUID[EAX=3D0xd,ECX=3D1].EDX */
-     FEAT_7_1_EDX,       /* CPUID[EAX=3D7,ECX=3D1].EDX */
-     FEAT_7_2_EDX,       /* CPUID[EAX=3D7,ECX=3D2].EDX */
-+    FEAT_RDT_15_0_EBX,  /* CPUID[EAX=3D0xf,ECX=3D0].EBX (RDT CMT/MBM) */
-     FEAT_RDT_15_0_EDX,  /* CPUID[EAX=3D0xf,ECX=3D0].EDX (RDT CMT/MBM) */
-+    FEAT_RDT_10_0_EBX,  /* CPUID[EAX=3D0x10,ECX=3D0].EBX (RDT CAT/MBA) */
-     FEATURE_WORDS,
- } FeatureWord;
-=20
+     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set =
+*/
 --=20
 2.45.2.1089.g2a221341d9-goog
 
