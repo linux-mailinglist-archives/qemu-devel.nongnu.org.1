@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F739379BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 17:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3927D9379C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 17:17:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUpLd-0006m7-NP; Fri, 19 Jul 2024 11:16:41 -0400
+	id 1sUpLe-0006px-RK; Fri, 19 Jul 2024 11:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUpLX-0006kp-JB
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 11:16:38 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUpLc-0006lM-9e
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 11:16:40 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUpLV-0005tg-SP
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 11:16:35 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2eee1384e0aso27241231fa.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 08:16:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUpLa-0005vG-NA
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 11:16:40 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4266fcb311cso13872325e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 08:16:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721402191; x=1722006991; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=juUywzcruZeR8Sw6FIIM6mtEtRuZk97PZ7ZGojKT+QY=;
- b=SJ2TyNRregccXeYkb/Ij/ZKq+Qe0LX8NfIXiguiqtwymprWsOTSYQhBd2BWShztKX1
- wX8iUNM8F5gL9YzJbiY95wIK5AuYuVDKrQSBhssvAuzt5SYlkTki3BwJusj/S5UfW8C/
- c5QXtIumDGNmkySPgNEo/ZK6JUj0zPjYPo2gtPdjrsy/NrQMfobtCeuc3sSVD6MR6KAo
- YTCdfQvAWloBGnpncnZlXbkxh0rfaYpfPiMHi+ED+TCzBYb6JhJN4PNvuwD/LTAGhWw2
- Izz7bpQv1P+5Sy2pfnOyml3CPHbfuwCa0sohbDCKov+Oiw69x1VHX7/560L325Acbizp
- Glzw==
+ d=linaro.org; s=google; t=1721402197; x=1722006997; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=x85t1oRdkXPj1jKJlZTxTgRAxr541dTWHBTkbfm0IzE=;
+ b=JMU6qQBjtX1bJDbNDxBDtxT95y2760ZkAE5G1JQQ71gS331uJroiWIGrVarorZL6AC
+ hN5KKHzQq3HtwIcnzlcO5oRb7Ek5ZerxVVlRr4MNuP+Yx4WEtvTq90pYijcfkp9prcte
+ RXPn26zNhiV64wI8gjJ8nRI64lp1VQNiG1IZiJDvoEIKIjxlL73B+FEJzzFmJwwMVcsL
+ JaS30co2TSVgqXHoAZIA+C3n5+jvQ0rQ1E6fSXL0FVKB1wFM3NZfHsMgQmAT0SeWTULI
+ QiJk0q+ixhQaFoV7p3EAZMUEzsMSCXdan6i7aWbVleCbAlOC4JM3hFDmx5d02UTFfCxf
+ mrrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721402191; x=1722006991;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=juUywzcruZeR8Sw6FIIM6mtEtRuZk97PZ7ZGojKT+QY=;
- b=oS/F7HbNourHmpl5eSIe+rsc8Kw6eRjoYmZBLalEaksA/erRXQlaLcjTAjE3cOSy0O
- hi7F14IBI5ucsktgTYKlQ05a6zsdfuNsKiSegrsPCgDyXjxk1bq3bFhIT1ZD436SWQAK
- c3a1ThrXeRkdM8q74xHotpwcGP2UHpSJo4jONJ3Ey2J5ItOJu9xBnJcHR/OlGFsg0S0Q
- bEbLeLM/QpIek0HmfKjODm2TAeOR1MwcmA4ox3rVe8TO8dIbXtZng532f+jGTFdnKkZM
- JJtz+hO5L1QxOlBRgsw/sZmWI0FpvEa0YP0++b7a3692/a5/2TMWmzx9kHWNkWWftOlo
- 2glQ==
-X-Gm-Message-State: AOJu0YwZTHES3y63L+CjvONaNH+VOJ8P7o3bLRBS/3/dkP6NAWogmHUl
- VzXBjGP0I8P+AoY/esxoIShXr/u4FNEtcS6upTLqnOuGLVJWRh4VUrQ8pbUlCkPaEtZrJrTlzOs
- +
-X-Google-Smtp-Source: AGHT+IEP7NQmik8JaLLZ4WU3veGPcgx/lsq/knNLivx/xmUk0iaz7j8XCdvGyw6HlgrQmdaV5KZbVQ==
-X-Received: by 2002:a2e:9bd5:0:b0:2ee:699b:466 with SMTP id
- 38308e7fff4ca-2ef1681bac5mr508201fa.36.1721402191269; 
- Fri, 19 Jul 2024 08:16:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721402197; x=1722006997;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=x85t1oRdkXPj1jKJlZTxTgRAxr541dTWHBTkbfm0IzE=;
+ b=ImJs9ImN0Eex90MqTT7bVljoVjDwiCcsTFaJgTUs616WjDA0hADcY4KdkczHPjR324
+ Dfe+3dxvqnsoIq4oPmGmhc5alvP1ql2q0S4YzJqi+xNmftVU7eKwVjoDgmfK0Harl8bS
+ ZaSYNS4KnFeqwrQzu0D3VjEeI0Pxt3w4wsihG9/tTfP/qUgA4z4+HezFbFyN0nTPmnXy
+ 7fIWxm9HSm50EqDlrTzO6a8gXcXvmHZXvV/wT9WbO+Aq7eINJbs+K4wob1N/vdFf4Sd4
+ OorEtMqqvFeLqYHCSj47hHRvG6HNJMM4R3bhAVo4UHT9jJatNdtDLwIeNg2ILzvkg/iC
+ tevw==
+X-Gm-Message-State: AOJu0YyN5r//M4n4QR+YPsZqpb+eLTnRvUgqY3Zn7cX/b5u3dEUt6TgG
+ 3bx3MVbwcpDi5Gp4fIMWA6p0vaKAl9DM3ZHmTJ35JcHq9C+b+qHVe9SK8igAccpIcM0+dWtWzkP
+ v
+X-Google-Smtp-Source: AGHT+IHbK9hmdDf8RGHcAP63tiXMoRkoYAndVMLXnvWKHZlFEVwvxfKDsURUnfo2CiMyjASJAnu9Rw==
+X-Received: by 2002:adf:ed43:0:b0:368:4def:921f with SMTP id
+ ffacd0b85a97d-3684def929emr3705972f8f.11.1721402196934; 
+ Fri, 19 Jul 2024 08:16:36 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a3c159sm56237465e9.8.2024.07.19.08.16.29
+ ffacd0b85a97d-368786848basm1873766f8f.15.2024.07.19.08.16.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jul 2024 08:16:30 -0700 (PDT)
+ Fri, 19 Jul 2024 08:16:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/3] util/fifo8: Introduce fifo8_change_capacity()
-Date: Fri, 19 Jul 2024 17:16:25 +0200
-Message-ID: <20240719151628.46253-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 1/3] chardev/char-fe: Document returned value on error
+Date: Fri, 19 Jul 2024 17:16:26 +0200
+Message-ID: <20240719151628.46253-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240719151628.46253-1-philmd@linaro.org>
+References: <20240719151628.46253-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,20 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Preliminary series to PL011 FIFO work:
-- Clarify doc in qemu_chr_fe_*
-- Introduce fifo8_change_capacity()
+qemu_chr_fe_add_watch() and qemu_chr_fe_write[_all]()
+return -1 on error. Mention it in the documentation.
 
-Philippe Mathieu-Daudé (3):
-  chardev/char-fe: Document returned value on error
-  util/fifo8: Use fifo8_reset() in fifo8_create()
-  util/fifo8: Introduce fifo8_change_capacity()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/chardev/char-fe.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
- include/chardev/char-fe.h |  3 +++
- include/qemu/fifo8.h      | 10 ++++++++++
- util/fifo8.c              | 22 ++++++++++++++--------
- 3 files changed, 27 insertions(+), 8 deletions(-)
-
+diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
+index ecef182835..3310449eaf 100644
+--- a/include/chardev/char-fe.h
++++ b/include/chardev/char-fe.h
+@@ -228,6 +228,7 @@ guint qemu_chr_fe_add_watch(CharBackend *be, GIOCondition cond,
+  * is thread-safe.
+  *
+  * Returns: the number of bytes consumed (0 if no associated Chardev)
++ *          or -1 on error.
+  */
+ int qemu_chr_fe_write(CharBackend *be, const uint8_t *buf, int len);
+ 
+@@ -242,6 +243,7 @@ int qemu_chr_fe_write(CharBackend *be, const uint8_t *buf, int len);
+  * attempted to be written.  This function is thread-safe.
+  *
+  * Returns: the number of bytes consumed (0 if no associated Chardev)
++ *          or -1 on error.
+  */
+ int qemu_chr_fe_write_all(CharBackend *be, const uint8_t *buf, int len);
+ 
+@@ -253,6 +255,7 @@ int qemu_chr_fe_write_all(CharBackend *be, const uint8_t *buf, int len);
+  * Read data to a buffer from the back end.
+  *
+  * Returns: the number of bytes read (0 if no associated Chardev)
++ *          or -1 on error.
+  */
+ int qemu_chr_fe_read_all(CharBackend *be, uint8_t *buf, int len);
+ 
 -- 
 2.41.0
 
