@@ -2,58 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FF6937577
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 11:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5E5937585
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 11:09:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUjXf-0007Dr-UV; Fri, 19 Jul 2024 05:04:43 -0400
+	id 1sUjcT-0001Kz-Hv; Fri, 19 Jul 2024 05:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vGMz=OT=kaod.org=clg@ozlabs.org>)
- id 1sUjXT-00076r-Hg; Fri, 19 Jul 2024 05:04:31 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUjcR-0001Hx-6Y
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 05:09:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vGMz=OT=kaod.org=clg@ozlabs.org>)
- id 1sUjXR-0001NF-Cj; Fri, 19 Jul 2024 05:04:31 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WQNyz0bZyz4x3p;
- Fri, 19 Jul 2024 19:04:27 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sUjcO-0004st-R3
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 05:09:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721380175;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2PUJk/0MkZcaZCDrEgB01nwWkVPstR0jttRuGV8mw84=;
+ b=OZ4CYdRh0DS6QwSknsBs8VaYphcPhn0w5DWOapHIiRi5OPYl20w9gmWIKvfsw0v4qk9w2F
+ d1fck7JjrOEvmEnkY58ltF+LppOIjOcACfOwN6xUj763w/b+hP6Y7XEmxW9X7FHRpxltL9
+ 5EY6lB6XATXuhHEWeGPPbFdb1tKxPu8=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-uCDvJZCYP-elC5V1ogGT-A-1; Fri,
+ 19 Jul 2024 05:09:29 -0400
+X-MC-Unique: uCDvJZCYP-elC5V1ogGT-A-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WQNyv0kX9z4wym;
- Fri, 19 Jul 2024 19:04:22 +1000 (AEST)
-Message-ID: <04be07a0-286b-4189-99f9-a74eff075fae@kaod.org>
-Date: Fri, 19 Jul 2024 11:04:14 +0200
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7BF081955D4F; Fri, 19 Jul 2024 09:09:27 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7B3BF195605A; Fri, 19 Jul 2024 09:09:26 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6349E21E668A; Fri, 19 Jul 2024 11:09:24 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org,  qemu-devel@nongnu.org,  eblake@redhat.com,
+ hreitz@redhat.com,  zeil@yandex-team.ru,  yc-core@yandex-team.ru,
+ dave@treblig.org,  Leonid Kaplan <xeor@yandex-team.ru>
+Subject: Re: [PATCH v2] block-backend: per-device throttling of
+ BLOCK_IO_ERROR reports
+In-Reply-To: <ZpogyBq9yKoQOoLW@redhat.com> (Kevin Wolf's message of "Fri, 19
+ Jul 2024 10:16:08 +0200")
+References: <20240109131308.455371-1-vsementsov@yandex-team.ru>
+ <Zplo5VsG-q-e643H@redhat.com> <87ikx2j81u.fsf@pond.sub.org>
+ <ZpogyBq9yKoQOoLW@redhat.com>
+Date: Fri, 19 Jul 2024 11:09:24 +0200
+Message-ID: <87cyn9vjcr.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 11/15] hw/i2c/aspeed: support high part dram offset for
- DMA 64 bits
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
-References: <20240718064925.1846074-1-jamin_lin@aspeedtech.com>
- <20240718064925.1846074-12-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240718064925.1846074-12-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=vGMz=OT=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,84 +86,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/24 08:49, Jamin Lin wrote:
-> ASPEED AST2700 SOC is a 64 bits quad core CPUs (Cortex-a35)
-> And the base address of dram is "0x4 00000000" which
-> is 64bits address.
-> 
-> The AST2700 support the maximum DRAM size is 8 GB.
-> The DRAM physical address range is from "0x4_0000_0000" to
-> "0x5_FFFF_FFFF".
-> 
-> The DRAM offset range is from "0x0_0000_0000" to
-> "0x1_FFFF_FFFF" and it is enough to use bits [33:0]
-> saving the dram offset.
-> 
-> Therefore, save the high part physical address bit[1:0]
-> of Tx/Rx buffer address as dma_dram_offset bit[33:32].
-> It does not need to decrease the dram physical
-> high part address for DMA operation.
-> (high part physical address bit[7:0] – 4)
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Kevin Wolf <kwolf@redhat.com> writes:
 
+> Am 19.07.2024 um 06:54 hat Markus Armbruster geschrieben:
+>> Kevin Wolf <kwolf@redhat.com> writes:
+>> 
+>> > Am 09.01.2024 um 14:13 hat Vladimir Sementsov-Ogievskiy geschrieben:
+>> >> From: Leonid Kaplan <xeor@yandex-team.ru>
+>> >> 
+>> >> BLOCK_IO_ERROR events comes from guest, so we must throttle them.
+>> >> We still want per-device throttling, so let's use device id as a key.
+>> >> 
+>> >> Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
+>> >> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> >> ---
+>> >> 
+>> >> v2: add Note: to QAPI doc
+>> >> 
+>> >>  monitor/monitor.c    | 10 ++++++++++
+>> >>  qapi/block-core.json |  2 ++
+>> >>  2 files changed, 12 insertions(+)
+>> >> 
+>> >> diff --git a/monitor/monitor.c b/monitor/monitor.c
+>> >> index 01ede1babd..ad0243e9d7 100644
+>> >> --- a/monitor/monitor.c
+>> >> +++ b/monitor/monitor.c
+>> >> @@ -309,6 +309,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
+>> >>  static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+>> >>      /* Limit guest-triggerable events to 1 per second */
+>> >>      [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
+>> >> +    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
+>> >>      [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
+>> >>      [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
+>> >>      [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
+>> >> @@ -498,6 +499,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
+>> >>          hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
+>> >>      }
+>> >>  
+>> >> +    if (evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
+>> >> +        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
+>> >> +    }
+>> >
+>> > Using "device" only works with -drive, i.e. when the BlockBackend
+>> > actually has a name. In modern configurations with a -blockdev
+>> > referenced by -device, the BlockBackend doesn't have a name any more.
+>> >
+>> > Maybe we should be using the qdev id (or more generally, QOM path) here,
+>> > but that's something the event doesn't even contain yet.
+>> 
+>> Uh, does the event reliably identify the I/O error's node or not?  If
+>> not, then that's a serious design defect.
+>> 
+>> There's @node-name.  Several commands use "either @device or @node-name"
+>> to identify a node.  Is that sufficient here?
+>
+> Possibly. The QAPI event is sent by a device, not by the backend, and
+> the commit message claims per-device throttling. That's what made me
+> think that we should base it on the device id.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+This is an argument for having the event point at the device.  Events
+that already point at the device carry a mandatory @qom-path, and some
+also carry an optional qdev @id for backward compatibility.
 
-Thanks,
+As far as I can tell, not all devices implement this event.  If that's
+true, then documentation should spell it out.
 
-C.
+> But it's true that the error does originate in the backend (and it's
+> unlikely that two devices are attached to the same node anyway), so the
+> node-name could be good enough if we don't have a BlockBackend name. We
+> should claim per-block-node rather then per-device throttling then.
 
-
-> ---
->   hw/i2c/aspeed_i2c.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-> index b48f250e08..e28deadcfc 100644
-> --- a/hw/i2c/aspeed_i2c.c
-> +++ b/hw/i2c/aspeed_i2c.c
-> @@ -743,6 +743,14 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
->                         __func__);
->           break;
->   
-> +    /*
-> +     * The AST2700 support the maximum DRAM size is 8 GB.
-> +     * The DRAM offset range is from 0x0_0000_0000 to
-> +     * 0x1_FFFF_FFFF and it is enough to use bits [33:0]
-> +     * saving the dram offset.
-> +     * Therefore, save the high part physical address bit[1:0]
-> +     * of Tx/Rx buffer address as dma_dram_offset bit[33:32].
-> +     */
->       case A_I2CM_DMA_TX_ADDR_HI:
->           if (!aic->has_dma64) {
->               qemu_log_mask(LOG_GUEST_ERROR, "%s: No DMA 64 bits support\n",
-> @@ -752,6 +760,8 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
->           bus->regs[R_I2CM_DMA_TX_ADDR_HI] = FIELD_EX32(value,
->                                                         I2CM_DMA_TX_ADDR_HI,
->                                                         ADDR_HI);
-> +        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 32, 32,
-> +                                         extract32(value, 0, 2));
->           break;
->       case A_I2CM_DMA_RX_ADDR_HI:
->           if (!aic->has_dma64) {
-> @@ -762,6 +772,8 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
->           bus->regs[R_I2CM_DMA_RX_ADDR_HI] = FIELD_EX32(value,
->                                                         I2CM_DMA_RX_ADDR_HI,
->                                                         ADDR_HI);
-> +        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 32, 32,
-> +                                         extract32(value, 0, 2));
->           break;
->       case A_I2CS_DMA_TX_ADDR_HI:
->           qemu_log_mask(LOG_UNIMP,
-> @@ -777,6 +789,8 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
->           bus->regs[R_I2CS_DMA_RX_ADDR_HI] = FIELD_EX32(value,
->                                                         I2CS_DMA_RX_ADDR_HI,
->                                                         ADDR_HI);
-> +        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 32, 32,
-> +                                         extract32(value, 0, 2));
->           break;
->       default:
->           qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+Yes.
 
 
