@@ -2,83 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1689379C2
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 17:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84849379C6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 17:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUpLo-0007NV-Hx; Fri, 19 Jul 2024 11:16:52 -0400
+	id 1sUpNn-0008F7-17; Fri, 19 Jul 2024 11:18:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUpLn-0007KG-59
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 11:16:51 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUpLl-0005x2-G9
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 11:16:50 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4257d5fc9b7so14736175e9.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 08:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721402208; x=1722007008; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=i62jBV6Wd55qPAZwjTal/ze4o9fjzCulHJqhfykkTds=;
- b=dfvdO26DReFXZr4UPuNmazfJHBaKFJPBA4WQDsG9Ge3mFy/8TPjZpQQUgrfNZjuDSG
- jL5IaytnC/rfNtbDihbfvHw+MXq6iu2M6Qu3EoG62G3H1rtWEHi3ywYMu3Id2ZFva0T+
- 1myk2XTn4cYat63znf3HGbXNFzhyMut1pjTHOyhnd6lNAALG02Vpho335aMumAvh+xVJ
- kOt/jCNHZjFZcMtJ2NgRygvB1KQ+07GU1Elhm3M+HERqDWuvq/etGv6TPoeQifLnI/sA
- 1iH+v6kl0fvzQH8gn0d4QP+VIuyXeSg8uTmDVbTa5DOpxw8eRQyL1TJr9JrlUa1HKW8r
- agqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721402208; x=1722007008;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=i62jBV6Wd55qPAZwjTal/ze4o9fjzCulHJqhfykkTds=;
- b=ADHAQLzQSjDhuxIFQ6leqNDh/Tpoyfs4rFcxurHCyYtKbBjL7tDX99YhOHQ6TfHrji
- U8DqI5uN0Ko6x4o/ZHCLWgmWty4KbmEOAvoQxpmk5sS2u7j6aRe3g+qswxTzDwdDfcnR
- 0BhEC1KFjyE4TTLZS7nyyy3aIvVppALYxwPyqfv5+fa57LZAXs4jrMwzXVMXcV+HuEMs
- 2itkej9CNL/fcSo3NFcumcgWPhesuKhXJotr2yoK9nTFNUgokDMzPWbDvLHHOujIMaEz
- gU/kGmZTsRlkpBDGGQBuCS4Vv1xNyoGS3HM+dWhnz/162zsdQXtCwshebI9+jejmRxPZ
- BxJw==
-X-Gm-Message-State: AOJu0YwEYqrfPCashFeTyNZ5ZBIcSB7uXpPkwqgYwNU0BhryN5Od+onM
- Gp2gBd+y8h8bwrVdBQ/0lz7Gvq493nWoVJVUJ3wdp7/glHBY7na9yTN3RlME1OqDx1I31UEa52m
- M
-X-Google-Smtp-Source: AGHT+IHmFBeYZWO165sVEDlQH/Y+8AS5DDH4d8ObfmnLoUCR25KysZgysm3bd43NVgkkd5kxNHNQkg==
-X-Received: by 2002:a05:6000:9:b0:368:7f53:6b57 with SMTP id
- ffacd0b85a97d-3687f536bd8mr1363963f8f.18.1721402207833; 
- Fri, 19 Jul 2024 08:16:47 -0700 (PDT)
-Received: from localhost.localdomain ([176.187.209.227])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36878684204sm1857670f8f.2.2024.07.19.08.16.46
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jul 2024 08:16:47 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] util/fifo8: Introduce fifo8_change_capacity()
-Date: Fri, 19 Jul 2024 17:16:28 +0200
-Message-ID: <20240719151628.46253-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240719151628.46253-1-philmd@linaro.org>
-References: <20240719151628.46253-1-philmd@linaro.org>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sUpNk-00087M-B7; Fri, 19 Jul 2024 11:18:52 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sUpNi-0000KE-CJ; Fri, 19 Jul 2024 11:18:52 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46JEtueh007403;
+ Fri, 19 Jul 2024 15:18:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:subject:to:cc:references:from:in-reply-to
+ :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+ rtZOglzEb8AJpAGEGEJ65MBfjcscqVfIGrKMF2UepNs=; b=f4lz8CA9dIIxFcB9
+ 5E44LOfxubJzzkrNGjRvJ1A8TfGsqN+KQ/8K/HpNOf3bQx9N0LF281xdi3Cses3S
+ MF21LZU+7OiZT33fLkTJBM4saOsosz2JGB003cUIop+9OSWAT2CCLeq05dFcPN1v
+ 1tEKuBhixBSN3uscoBze2rRsd7bJMH6/Dp+ImPJAKaWjuk3eg85+KWQn9HUQ6xA7
+ qlWWhesWReciT4mDKjoYjM82ghBPNAxNAxnPJqApjnfSCrauud/LPt85pQq2Gg4F
+ cjNLSWGaBdPIa26+g3WpSJQtxwhu7iGdx2Cu4GVaLT6O0gQY9hWgiTQCLggZTK6N
+ inmaFQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40fsxdr3xp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jul 2024 15:18:35 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46JFF5gZ004108;
+ Fri, 19 Jul 2024 15:18:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40fsxdr3xk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jul 2024 15:18:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46JCDIrM006020; Fri, 19 Jul 2024 15:18:34 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 40dwknfr4k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jul 2024 15:18:34 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46JFIWTe14484012
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 19 Jul 2024 15:18:34 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2188358078;
+ Fri, 19 Jul 2024 15:18:32 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82BC75806A;
+ Fri, 19 Jul 2024 15:18:31 +0000 (GMT)
+Received: from [9.67.171.109] (unknown [9.67.171.109])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Fri, 19 Jul 2024 15:18:31 +0000 (GMT)
+Message-ID: <6cdaa2eb-03bd-40b6-b87b-8cfc075083f3@linux.ibm.com>
+Date: Fri, 19 Jul 2024 11:18:31 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] target/s390x: filter deprecated properties based on
+ model expansion type
+To: Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, david@redhat.com,
+ wangyanan55@huawei.com, philmd@linaro.org, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net, Jiri Denemark <jdenemar@redhat.com>
+References: <20240716173253.28533-1-walling@linux.ibm.com>
+ <87le1yn7jy.fsf@pond.sub.org>
+ <32379d4f-9b6f-4673-9b87-1db4a8ada649@linux.ibm.com>
+ <16c9703c-79b9-4e52-bc40-2857c0c06672@redhat.com>
+ <87wmlhtz4k.fsf@pond.sub.org>
+Content-Language: en-US
+From: Collin Walling <walling@linux.ibm.com>
+In-Reply-To: <87wmlhtz4k.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -DnXJYLRq5lSQSqKCr34qu-yxLA7yW85
+X-Proofpoint-GUID: K44S7gF0RnZmR7ZRy4jXDXKR2S3jB1Js
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-19_06,2024-07-18_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ impostorscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 bulkscore=0 suspectscore=0
+ clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407190113
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=walling@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,56 +120,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FIFOs can be resized at runtime. Introduce the
-fifo8_change_capacity() method to do that.
-When capacity is changed, the FIFO must be reset.
+On 7/19/24 7:11 AM, Markus Armbruster wrote:
+> Thomas Huth <thuth@redhat.com> writes:
+> 
+>> On 18/07/2024 20.22, Collin Walling wrote:
+>>> On 7/18/24 9:39 AM, Markus Armbruster wrote:
+>>>> Collin Walling <walling@linux.ibm.com> writes:
+>>>>
+>>>>> As s390 CPU models progress and deprecated properties are dropped
+>>>>> outright, it will be cumbersome for management apps to query the host
+>>>>> for a comprehensive list of deprecated properties that will need to be
+>>>>> disabled on older models. To remedy this, the query-cpu-model-expansion
+>>>>> output now behaves by filtering deprecated properties based on the
+>>>>> expansion type instead of filtering based off of the model's full set
+>>>>> of features:
+>>>>>
+>>>>> When reporting a static CPU model, only show deprecated properties that
+>>>>> are a subset of the model's enabled features.
+>>>>>
+>>>>> When reporting a full CPU model, show the entire list of deprecated
+>>>>> properties regardless if they are supported on the model.
+>>>>>
+>>>>> Suggested-by: Jiri Denemark <jdenemar@redhat.com>
+>>>>> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+> 
+> [...]
+> 
+>>>>> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+>>>>> index a8d9ec87f5..d151504f25 100644
+>>>>> --- a/qapi/machine-target.json
+>>>>> +++ b/qapi/machine-target.json
+>>>>> @@ -21,8 +21,12 @@
+>>>>>   # @props: a dictionary of QOM properties to be applied
+>>>>>   #
+>>>>>   # @deprecated-props: a list of properties that are flagged as deprecated
+>>>>> -#     by the CPU vendor.  These props are a subset of the full model's
+>>>>> -#     definition list of properties. (since 9.1)
+>>>>> +#     by the CPU vendor.  (since 9.1).
+>>>>> +#
+>>>>> +# .. note:: Since 9.1, the list of deprecated props were always a subset
+>>>>> +#    of the model's full-definition list of properites. Now, this list is
+>>>>> +#    populated with the model's enabled property set when delta changes
+>>>>> +#    are applied. All deprecated properties are reported otherwise.
+>>>>
+>>>> I'm confused.
+>>>>
+>>>> "Since 9.1, the list of deprecated props were ..." and "Now, this list
+>>>> is" sounds like you're explaining behavior before and after a change.
+>>>> What change?  Since only released behavior matters, and
+>>>> @deprecated-props is new, there is no old behavior to document, isn't
+>>>> it?
+>>>
+>>> I admittedly had some difficulty articulating the change introduced by
+>>> this patch.  The @deprecated-props array, as well as a way for s390x to
+>>> populate it, was introduced in release 9.1.  Prior to this patch, the
+>>> deprecated-props list was filtered by the CPU model's full feature set.
+>>> I attempted to explain this with:
+>>> "Since 9.1, the list of deprecated props were always a subset of the
+>>> model's full-definition list of properties."
+>>
+>> Version 9.1 has not been released yet (see https://wiki.qemu.org/Planning/9.1), so I agree with Markus, this sounds confusing/wrong to me, too.
+> 
+> User-visible changes between releases need to be documented in release
+> notes and the manual.  Don't for changes within a release, instead
+> update documentation to reflect the new state of things.
+> 
+> Regardless, do explain the change in the commit message.
+> 
+> Specifics are more helpful than such generalities, so let me try despite
+> my relative ignorance of the subject matter.
+> 
+> 1. Update the description of @deprecated-props to match the new code.
+> Ask yourself what people need to know to use this interface.
+> 
+> 2. Explain in the commit message how semantics of @deprecated-props
+> change in this patch.
+> 
+> 
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/qemu/fifo8.h | 10 ++++++++++
- util/fifo8.c         |  7 +++++++
- 2 files changed, 17 insertions(+)
+Understood, thank you.  As per Thomas' comment, I did not do my due
+diligence to check the QEMU release schedule.  My comment does not make
+sense anyway, since 9.1 is not even released.  I will remove it `note`
+entirely.
 
-diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
-index c6295c6ff0..9fe0555a24 100644
---- a/include/qemu/fifo8.h
-+++ b/include/qemu/fifo8.h
-@@ -31,6 +31,16 @@ void fifo8_create(Fifo8 *fifo, uint32_t capacity);
- 
- void fifo8_destroy(Fifo8 *fifo);
- 
-+/**
-+ * fifo8_change_capacity:
-+ * @fifo: struct Fifo8 to change the capacity
-+ * @capacity: new capacity of the FIFO
-+ *
-+ * Change a FIFO capacity to the specified size. The FIFO is reset.
-+ */
-+
-+void fifo8_change_capacity(Fifo8 *fifo, uint32_t capacity);
-+
- /**
-  * fifo8_push:
-  * @fifo: FIFO to push to
-diff --git a/util/fifo8.c b/util/fifo8.c
-index 2925fe5611..c453afd774 100644
---- a/util/fifo8.c
-+++ b/util/fifo8.c
-@@ -34,6 +34,13 @@ void fifo8_destroy(Fifo8 *fifo)
-     g_free(fifo->data);
- }
- 
-+void fifo8_change_capacity(Fifo8 *fifo, uint32_t capacity)
-+{
-+    fifo->data = g_renew(uint8_t, fifo->data, capacity);
-+    fifo->capacity = capacity;
-+    fifo8_reset(fifo);
-+}
-+
- void fifo8_push(Fifo8 *fifo, uint8_t data)
- {
-     assert(fifo->num < fifo->capacity);
+Apologies for all of this confusion, and I appreciate your patience.
+
+I will post v3 with the appropriate corrections.
+
 -- 
-2.41.0
+Regards,
+  Collin
 
 
