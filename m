@@ -2,78 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CAB937A53
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 18:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85811937BA2
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUq6T-0005nw-VI; Fri, 19 Jul 2024 12:05:05 -0400
+	id 1sUrVQ-00042X-JI; Fri, 19 Jul 2024 13:34:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
- id 1sUq6S-0005n7-9p
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:05:04 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <git@dprinz.de>) id 1sUkjy-0006Wb-FC
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 06:21:30 -0400
+Received: from mail.dprinz.de ([178.254.36.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
- id 1sUq6O-0005g7-O1
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:05:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721405101; x=1752941101;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=kYt4UDBdOF6BsVwzu2b5IEEajWkfjXkFEJSvTAgkhSA=;
- b=hiL8lm3zxeBAWXF7sHHrzL+VF9uhTblx2E39yW08UrJZkw41KPk3qOHb
- /xuuUxKDZERKb2FQIlJSaQUn+cZk1OtnBVYBTg0UYQoZLNJi3wRtyBgme
- KZLXrmdxozUFKrnv1PN0olC6V63U3nWDnPQFi44n8CtPba8KY5cbvh55L
- Yu3adGteEF5MX1P3B3cR5cVIiPwCmWw/9JrOET72OCCkTuE0ygCbZWOiH
- F7PBHzGhsLEfo1c7uNgzF2zTLq27VtqWREtoBWEie5tkx5sw64RS+oPuf
- XuOOd3DV0rOcmYeogkC5VIqWub8/WgW+xxy2HpG9QQHtzQLx2LU94pu84 w==;
-X-CSE-ConnectionGUID: l2xBwSOcRvW6lB/utiU7Ag==
-X-CSE-MsgGUID: ovm0AKqjQSumDo75PVH6RQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11138"; a="41548714"
-X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="41548714"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jul 2024 09:04:52 -0700
-X-CSE-ConnectionGUID: 67IU+5wqQlK14ipapRYxvg==
-X-CSE-MsgGUID: xaZ7BVu5TseJHcJomKBn4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="50896205"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.125.109.46])
- ([10.125.109.46])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jul 2024 09:04:51 -0700
-Message-ID: <ec0f2e8d-e783-4211-8d41-2b9a6df67049@intel.com>
-Date: Fri, 19 Jul 2024 09:04:50 -0700
+ (Exim 4.90_1) (envelope-from <git@dprinz.de>) id 1sUkjw-0004wr-Ct
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 06:21:30 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id BA92D53F5E; Fri, 19 Jul 2024 12:20:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dprinz.de; s=dkim;
+ t=1721384470; h=from:subject:date:message-id:to:cc:mime-version:
+ content-transfer-encoding; bh=Zj+NsUuippeeV5laSyD2Ag/Bok9UvAdnb8j6RDSAy9I=;
+ b=VzPisevMon4Aflw2zhk4n4P9iEewQ1UAWUDuZ4BU1p9GER2us6DTVprlaYN16HcJNWveRl
+ aHtUqu4tkUUaYS6lmMM8wQOcu4LLTzYcfzTTWg/2pS9lw93Wcb7anIRoIimZ7ZeBuuskol
+ 2nPanfUixYWusxEGwWBqVpuvpo6LeuFI1Xg51O5eEiIduqw05byNzLwbUiC/GbfKH/2+Fn
+ 2PNVhcbK9pkq9HfO1SrdUZynj3F/Eb8ImmyoHb/WtZYWSoaqXpU4Vx0s3qJQSN3cOxXK0L
+ KG2hnxPijbme62L/GtgfvpWa0kpjWS1rVSHevtEqvqvNiN8/uNJcn4UJWSy7eQ==
+From: Dominic Prinz <git@dprinz.de>
+To: qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Dominic Prinz <git@dprinz.de>
+Subject: [PATCH] hw/acpi/ich9: Add periodic and swsmi timer
+Date: Fri, 19 Jul 2024 12:20:53 +0200
+Message-Id: <20240719102053.316744-1-git@dprinz.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] cxl: avoid duplicating report from MCE & device
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>,
- Dan Williams <dan.j.williams@intel.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org
-Cc: jonathan.cameron@huawei.com, dave@stgolabs.net, ira.weiny@intel.com,
- alison.schofield@intel.com, vishal.l.verma@intel.com
-References: <20240618165310.877974-1-ruansy.fnst@fujitsu.com>
- <6675bd86ea005_57ac29411@dwillia2-xfh.jf.intel.com.notmuch>
- <965e2c27-6147-4237-b4b6-6aaf74363aa2@fujitsu.com>
- <1fab087b-eb6c-485e-a2ed-f86e8dfacc5d@fujitsu.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <1fab087b-eb6c-485e-a2ed-f86e8dfacc5d@fujitsu.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=dave.jiang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-Last-TLS-Session-Version: TLSv1.3
+Received-SPF: pass client-ip=178.254.36.89; envelope-from=git@dprinz.de;
+ helo=mail.dprinz.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 19 Jul 2024 13:34:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,157 +62,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch implements the periodic and the swsmi ICH9 chipset timer. They are
+especially useful when prototyping UEFI firmware (e.g. with EDK2's OVMF)
+with QEMU.
 
+This includes that writes to the SMI_STS register are enabled for the
+corresponding two bits.
 
-On 7/1/24 7:12 PM, Shiyang Ruan wrote:
-> 
-> 
-> 在 2024/6/25 21:56, Shiyang Ruan 写道:
->>
->>
->> 在 2024/6/22 1:51, Dan Williams 写道:
->>> Shiyang Ruan wrote:
->>>> Background:
->>>> Since CXL device is a memory device, while CPU consumes a poison page of
->>>> CXL device, it always triggers a MCE by interrupt (INT18), no matter
->>>> which-First path is configured.  This is the first report.  Then
->>>> currently, in FW-First path, the poison event is transferred according
->>>> to the following process: CXL device -> firmware -> OS:ACPI->APEI->GHES
->>>>   -> CPER -> trace report.  This is the second one.  These two reports
->>>> are indicating the same poisoning page, which is the so-called "duplicate
->>>> report"[1].  And the memory_failure() handling I'm trying to add in
->>>> OS-First path could also be another duplicate report.
->>>>
->>>> Hope the flow below could make it easier to understand:
->>>> CPU accesses bad memory on CXL device, then
->>>>   -> MCE (INT18), *always* report (1)
->>>>   -> * FW-First (implemented now)
->>>>        -> CXL device -> FW
->>>>           -> OS:ACPI->APEI->GHES->CPER -> trace report (2.a)
->>>>      * OS-First (not implemented yet, I'm working on it)
->>>>        -> CXL device -> MSI
->>>>           -> OS:CXL driver -> memory_failure() (2.b)
->>>> so, the (1) and (2.a/b) are duplicated.
->>>>
->>>> (I didn't get response in my reply for [1] while I have to make patch to
->>>> solve this problem, so please correct me if my understanding is wrong.)
->>>
->>> The CPU MCE may not be in the loop. Consider the case of patrol scrub,
->>> or device-DMA accessing poison. In that case the device will signal a
->>> component event and the CPU may never issue the MCE.
->>
->> My other patch: "cxl/core: add poison creation event handler", adds calling memory_failure() when an event is received form device, which checks the poison record (insert if not exists) to make sure poison would be reported/handled, but not twice, no matter CPU issues the MCE later or earlier.  And the lock of poison record makes sure that it's fine even in race condition.
->>
->>>
->>> What is missing for me from this description is *why* does the duplicate
->>> report matter in practice? If all that happens is that the kernel
->>> repeats the lookup to offline the page and set the HWPoison bit, is that
->>> duplicated work worth adding more tracking?
->>
->> Besides setting the HWPoison bit for the poison page, memory_failure() also finds and notifies those processes who are accessing the poison page, and tries to recovery the page.  And there seems no lock to prevent the 2nd memory_failure() and clearing poison operation from being called in race, then the HWPoison bit could be unsure.  I think that's the problem.
->>
->>  > So, I think all CXL poison notification events should trigger an
->>  > action optional memory_failure(). I expect this needs to make sure
->>  > that duplicates re not a problem. I.e. in the case of CPU consumption
->>  > of CXL poison, that causes a synchronous MF_ACTION_REQUIRED event via
->>  > the MCE path *and* it may trigger the device to send an error record
->>  > for the same page. As far as I can see, duplicate reports (MCE + CXL
->>  > device) are unavoidable.
->>
->> As you mentioned in my other patch, this problem should be solved at first.  My patch adds the poison record (tracking, which might not become very large) to prevent duplicating report.
-> 
-> Ping~
-> 
-> And I had some problems when using xarray, please see below.
-> 
->>
->>>
->>>> This patch adds a new notifier_block and MCE_PRIO_CXL, for CXL memdev
->>>> to check whether the current poison page has been reported (if yes,
->>>> stop the notifier chain, won't call the following memory_failure()
->>>> to report), into `x86_mce_decoder_chain`.  In this way, if the poison
->>>> page already handled(recorded and reported) in (1) or (2), the other one
->>>> won't duplicate the report.  The record could be clear when
->>>> cxl_clear_poison() is called.
->>>>
->>>> [1] https://lore.kernel.org/linux-cxl/664d948fb86f0_e8be294f8@dwillia2-mobl3.amr.corp.intel.com.notmuch/
->>>>
->>>> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
->>>> ---
->>>>   arch/x86/include/asm/mce.h |   1 +
->>>>   drivers/cxl/core/mbox.c    | 130 +++++++++++++++++++++++++++++++++++++
->>>>   drivers/cxl/core/memdev.c  |   6 +-
->>>>   drivers/cxl/cxlmem.h       |   3 +
->>>>   4 files changed, 139 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
->>>> index dfd2e9699bd7..d8109c48e7d9 100644
->>>> --- a/arch/x86/include/asm/mce.h
->>>> +++ b/arch/x86/include/asm/mce.h
->>>> @@ -182,6 +182,7 @@ enum mce_notifier_prios {
->>>>       MCE_PRIO_NFIT,
->>>>       MCE_PRIO_EXTLOG,
->>>>       MCE_PRIO_UC,
->>>> +    MCE_PRIO_CXL,
->>>>       MCE_PRIO_EARLY,
->>>>       MCE_PRIO_CEC,
->>>>       MCE_PRIO_HIGHEST = MCE_PRIO_CEC
->>>> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
->>>> index 2626f3fff201..0eb3c5401e81 100644
->>>> --- a/drivers/cxl/core/mbox.c
->>>> +++ b/drivers/cxl/core/mbox.c
->>>> @@ -4,6 +4,8 @@
->>>>   #include <linux/debugfs.h>
->>>>   #include <linux/ktime.h>
->>>>   #include <linux/mutex.h>
->>>> +#include <linux/notifier.h>
->>>> +#include <asm/mce.h>
->>>>   #include <asm/unaligned.h>
->>>>   #include <cxlpci.h>
->>>>   #include <cxlmem.h>
->>>> @@ -880,6 +882,9 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->>>>           if (cxlr)
->>>>               hpa = cxl_trace_hpa(cxlr, cxlmd, dpa);
->>>> +        if (hpa != ULLONG_MAX && cxl_mce_recorded(hpa))
->>>> +            return;
->>>> +
->>>>           if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
->>>>               trace_cxl_general_media(cxlmd, type, cxlr, hpa,
->>>>                           &evt->gen_media);
->>>> @@ -1408,6 +1413,127 @@ int cxl_poison_state_init(struct cxl_memdev_state *mds)
->>>>   }
->>>>   EXPORT_SYMBOL_NS_GPL(cxl_poison_state_init, CXL);
->>>> +struct cxl_mce_record {
->>>> +    struct list_head node;
->>>> +    u64 hpa;
->>>> +};
->>>> +LIST_HEAD(cxl_mce_records);
->>>> +DEFINE_MUTEX(cxl_mce_mutex);
->>>
->>> I would recommend an xarray for this use case as that already has its
->>> own internal locking and efficient memory allocation for new nodes.
->>>
->>> However, the "why" question needs to be answered first.
->>
->> xarray does look better.  I didn't think of it befre.  Thanks for suggestion.
-> 
-> I'm trying using xarray but but I'm running into two problems.
-> 
-> The first one is: xarray stores an entry with a specified index, but here we only need to store the PFN.  I'm not sure how to specific an index for a PFN.  So I think xarray might not suitable for my case.
-> The second one: because we only need to store/search PFN, the list node only contains a list_head and a PFN. But xarray seems to require more memory for each node, which causes more overhead.
+Signed-off-by: Dominic Prinz <git@dprinz.de>
+---
+ hw/acpi/ich9.c                | 15 +++++++
+ hw/acpi/ich9_timer.c          | 79 +++++++++++++++++++++++++++++++++++
+ hw/acpi/meson.build           |  2 +-
+ hw/isa/lpc_ich9.c             |  6 +++
+ include/hw/acpi/ich9.h        |  3 ++
+ include/hw/acpi/ich9_timer.h  | 23 ++++++++++
+ include/hw/southbridge/ich9.h |  4 ++
+ 7 files changed, 131 insertions(+), 1 deletion(-)
+ create mode 100644 hw/acpi/ich9_timer.c
+ create mode 100644 include/hw/acpi/ich9_timer.h
 
-Use PFN as the index of the xarray since it's unique. And that makes finding the entry easy with xarray because you just pass in the PFN as the key. You can store an xarray entry with no data. At this point you are just detecting whether the entry has been stored (valid) or not. Hope that helps.  
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 02d8546bd3..97d645b750 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -35,6 +35,7 @@
+ #include "sysemu/runstate.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ich9_tco.h"
++#include "hw/acpi/ich9_timer.h"
+ 
+ #include "hw/southbridge/ich9.h"
+ #include "hw/mem/pc-dimm.h"
+@@ -108,6 +109,16 @@ static void ich9_smi_writel(void *opaque, hwaddr addr, uint64_t val,
+         }
+         pm->smi_en &= ~pm->smi_en_wmask;
+         pm->smi_en |= (val & pm->smi_en_wmask);
++        ich9_pm_update_swsmi_timer(pm, pm->smi_en &
++                                           ICH9_PMIO_SMI_EN_SWSMI_EN);
++        ich9_pm_update_periodic_timer(pm, pm->smi_en &
++                                              ICH9_PMIO_SMI_EN_PERIODIC_EN);
++        break;
++    case 4:
++        pm->smi_sts &= ~(ICH9_PMIO_SMI_STS_SWSMI_STS |
++                         ICH9_PMIO_SMI_STS_PERIODIC_STS);
++        pm->smi_sts |= val & (ICH9_PMIO_SMI_STS_SWSMI_STS |
++                              ICH9_PMIO_SMI_STS_PERIODIC_STS);
+         break;
+     }
+ }
+@@ -305,6 +316,10 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+                           "acpi-smi", 8);
+     memory_region_add_subregion(&pm->io, ICH9_PMIO_SMI_EN, &pm->io_smi);
+ 
++    pm->swsmi_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, ich9_swsmi_timer, pm);
++
++    pm->periodic_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, ich9_periodic_timer, pm);
++
+     if (pm->enable_tco) {
+         acpi_pm_tco_init(&pm->tco_regs, &pm->io);
+     }
+diff --git a/hw/acpi/ich9_timer.c b/hw/acpi/ich9_timer.c
+new file mode 100644
+index 0000000000..2e6b68f0fb
+--- /dev/null
++++ b/hw/acpi/ich9_timer.c
+@@ -0,0 +1,79 @@
++/*
++ * QEMU ICH9 Timer emulation
++ *
++ * Copyright (c) 2024 Dominic Prinz <git@dprinz.de>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/core/cpu.h"
++#include "hw/pci/pci.h"
++#include "hw/southbridge/ich9.h"
++#include "qemu/timer.h"
++
++#include "hw/acpi/ich9_timer.h"
++
++void ich9_pm_update_swsmi_timer(ICH9LPCPMRegs *pm, bool enable)
++{
++    uint16_t swsmi_rate_sel;
++    int64_t expire_time;
++    ICH9LPCState *lpc;
++
++    if (enable) {
++        lpc = container_of(pm, ICH9LPCState, pm);
++        swsmi_rate_sel =
++            (pci_get_word(lpc->d.config + ICH9_LPC_GEN_PMCON_3) & 0xc0) >> 6;
++
++        if (swsmi_rate_sel == 0) {
++            expire_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + 1500000LL;
++        } else {
++            expire_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
++                          8 * (1 << swsmi_rate_sel) * 1000000LL;
++        }
++
++        timer_mod(pm->swsmi_timer, expire_time);
++    } else {
++        timer_del(pm->swsmi_timer);
++    }
++}
++
++void ich9_swsmi_timer(void *opaque)
++{
++    ICH9LPCPMRegs *pm = opaque;
++
++    pm->smi_sts |= ICH9_PMIO_SMI_STS_SWSMI_STS;
++    ich9_generate_smi();
++
++    ich9_pm_update_swsmi_timer(pm, pm->smi_en & ICH9_PMIO_SMI_EN_SWSMI_EN);
++}
++
++void ich9_pm_update_periodic_timer(ICH9LPCPMRegs *pm, bool enable)
++{
++    uint16_t per_smi_sel;
++    int64_t expire_time;
++    ICH9LPCState *lpc;
++
++    if (enable) {
++        lpc = container_of(pm, ICH9LPCState, pm);
++        per_smi_sel = pci_get_word(lpc->d.config + ICH9_LPC_GEN_PMCON_1) & 3;
++        expire_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
++                      8 * (1 << (3 - per_smi_sel)) * NANOSECONDS_PER_SECOND;
++
++        timer_mod(pm->periodic_timer, expire_time);
++    } else {
++        timer_del(pm->periodic_timer);
++    }
++}
++
++void ich9_periodic_timer(void *opaque)
++{
++    ICH9LPCPMRegs *pm = opaque;
++
++    pm->smi_sts = ICH9_PMIO_SMI_STS_PERIODIC_STS;
++    ich9_generate_smi();
++
++    ich9_pm_update_periodic_timer(pm,
++                                  pm->smi_en & ICH9_PMIO_SMI_EN_PERIODIC_EN);
++}
+diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
+index fa5c07db90..7f8ccc9b7a 100644
+--- a/hw/acpi/meson.build
++++ b/hw/acpi/meson.build
+@@ -24,7 +24,7 @@ acpi_ss.add(when: 'CONFIG_ACPI_PCI_BRIDGE', if_true: files('pci-bridge.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_PCIHP', if_true: files('pcihp.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_PCIHP', if_false: files('acpi-pci-hotplug-stub.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_VIOT', if_true: files('viot.c'))
+-acpi_ss.add(when: 'CONFIG_ACPI_ICH9', if_true: files('ich9.c', 'ich9_tco.c'))
++acpi_ss.add(when: 'CONFIG_ACPI_ICH9', if_true: files('ich9.c', 'ich9_tco.c', 'ich9_timer.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_ERST', if_true: files('erst.c'))
+ acpi_ss.add(when: 'CONFIG_IPMI', if_true: files('ipmi.c'), if_false: files('ipmi-stub.c'))
+ acpi_ss.add(when: 'CONFIG_PC', if_false: files('acpi-x86-stub.c'))
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index bd727b2320..56daeeedbf 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -43,6 +43,7 @@
+ #include "hw/southbridge/ich9.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ich9.h"
++#include "hw/acpi/ich9_timer.h"
+ #include "hw/pci/pci_bus.h"
+ #include "hw/qdev-properties.h"
+ #include "sysemu/runstate.h"
+@@ -531,6 +532,11 @@ ich9_lpc_pmcon_update(ICH9LPCState *lpc)
+     uint16_t gen_pmcon_1 = pci_get_word(lpc->d.config + ICH9_LPC_GEN_PMCON_1);
+     uint16_t wmask;
+ 
++    ich9_pm_update_swsmi_timer(&lpc->pm, lpc->pm.smi_en &
++                                             ICH9_PMIO_SMI_EN_SWSMI_EN);
++    ich9_pm_update_periodic_timer(&lpc->pm, lpc->pm.smi_en &
++                                                ICH9_PMIO_SMI_EN_PERIODIC_EN);
++
+     if (gen_pmcon_1 & ICH9_LPC_GEN_PMCON_1_SMI_LOCK) {
+         wmask = pci_get_word(lpc->d.wmask + ICH9_LPC_GEN_PMCON_1);
+         wmask &= ~ICH9_LPC_GEN_PMCON_1_SMI_LOCK;
+diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
+index 2faf7f0cae..940a3d795f 100644
+--- a/include/hw/acpi/ich9.h
++++ b/include/hw/acpi/ich9.h
+@@ -68,6 +68,9 @@ typedef struct ICH9LPCPMRegs {
+     bool smm_compat;
+     bool enable_tco;
+     TCOIORegs tco_regs;
++
++    QEMUTimer *swsmi_timer;
++    QEMUTimer *periodic_timer;
+ } ICH9LPCPMRegs;
+ 
+ #define ACPI_PM_PROP_TCO_ENABLED "enable_tco"
+diff --git a/include/hw/acpi/ich9_timer.h b/include/hw/acpi/ich9_timer.h
+new file mode 100644
+index 0000000000..e48f9918d8
+--- /dev/null
++++ b/include/hw/acpi/ich9_timer.h
+@@ -0,0 +1,23 @@
++/*
++ * QEMU ICH9 Timer emulation
++ *
++ * Copyright (c) 2024 Dominic Prinz <git@dprinz.de>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#ifndef HW_ACPI_ICH9_TIMER_H
++#define HW_ACPI_ICH9_TIMER_H
++
++#include "hw/acpi/ich9.h"
++
++void ich9_pm_update_swsmi_timer(ICH9LPCPMRegs *pm, bool enable);
++
++void ich9_swsmi_timer(void *opaque);
++
++void ich9_pm_update_periodic_timer(ICH9LPCPMRegs *pm, bool enable);
++
++void ich9_periodic_timer(void *opaque);
++
++#endif
+diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
+index fd01649d04..6c60017024 100644
+--- a/include/hw/southbridge/ich9.h
++++ b/include/hw/southbridge/ich9.h
+@@ -196,8 +196,12 @@ struct ICH9LPCState {
+ #define ICH9_PMIO_GPE0_LEN                      16
+ #define ICH9_PMIO_SMI_EN                        0x30
+ #define ICH9_PMIO_SMI_EN_APMC_EN                (1 << 5)
++#define ICH9_PMIO_SMI_EN_SWSMI_EN               (1 << 6)
+ #define ICH9_PMIO_SMI_EN_TCO_EN                 (1 << 13)
++#define ICH9_PMIO_SMI_EN_PERIODIC_EN            (1 << 14)
+ #define ICH9_PMIO_SMI_STS                       0x34
++#define ICH9_PMIO_SMI_STS_SWSMI_STS             (1 << 6)
++#define ICH9_PMIO_SMI_STS_PERIODIC_STS          (1 << 14)
+ #define ICH9_PMIO_TCO_RLD                       0x60
+ #define ICH9_PMIO_TCO_LEN                       32
+ 
+-- 
+2.34.1
 
-> 
-> Maybe I'm overthinking this?
-> 
-> 
-> -- 
-> Thanks
-> Ruan.
-> 
->>
->> -- 
->> Thanks
->> Ruan.
 
