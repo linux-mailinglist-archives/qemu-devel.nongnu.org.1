@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D48A937792
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 14:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8F49377A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 14:13:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUmRX-0001o2-AZ; Fri, 19 Jul 2024 08:10:35 -0400
+	id 1sUmUN-0006NW-L1; Fri, 19 Jul 2024 08:13:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sUmRN-0001J1-63
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 08:10:26 -0400
+ id 1sUmUK-00062u-3W
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 08:13:28 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sUmRL-0007UO-Bg
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 08:10:24 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46JC5X0X024683;
- Fri, 19 Jul 2024 12:10:21 GMT
+ id 1sUmU6-00005Y-10
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 08:13:18 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46JC52vE014906;
+ Fri, 19 Jul 2024 12:13:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=/
- LFxmvwv7vuHhJK2tagye6IGULM/ax2W4PVw648ofXE=; b=FOnmqulPPRyeZBxlC
- 3xcTyU6Li0vvLYE9fm0mcKyUljO53CF9tkMR209S7Ca/7FcKeZ9uhNCkuf6gDAyg
- bcTdEoFOqwNHVTM1Uyo9gta0K29WsGsz+5g8D4JCj1nD2Le7wRJgk4kWdmfFQPJ0
- Km65j8aCmYUlkG6Lxhh35F8KbbsfC2my/2TuqSuOd8HA/eb5jAnkJftdaGapC4W4
- 0g7T4x7Riidqlar7DHy4xkUUYZyI9hm1DjOawLxKFnzn9pidepSUGUgDpInGEQdH
- zPuOE+RMvz4DzlipraAeH4FUOuJRMkV5VJaTHaLyoEqx1NJOWvFCgPseOsp6JsCR
- uX8Vw==
+ :mime-version:content-type:content-transfer-encoding; s=
+ corp-2023-11-20; bh=mqXMdPQcuEhyNMXNLRi9dqOSuOP695cwGbnfLDNeRDs=; b=
+ YkmZ5hMAmhmc62DHZvkn+/SIvEq+/xmaxsfAb35FT8RqL5RRc+tYElfE6GgPpD4u
+ aRtvq4rZbrmBdadWgGCgf0l2ZuybYwk1U+q2eyZ3TTO3ipj36RI5eHt/pdIXNIWT
+ 8vG4jJfBK5O7XoDhuRQsj9gE3bH3/tA+w7h8jIFFhruzeveJM+FAtouA60Uqs0L7
+ 7z1iosYAtGis/LXPphVIxX8fm8QSB4zG73vo91QM9cWuEnLYtfVYMB/hCoZiMYTk
+ EyZHULZArVLnICVBfmaURPzzqAWUlmePbiOFmemRcrjzqceaHJpS91Br8+D4bf+i
+ yqCVJ66Q89HLUi3Y8csTnQ==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40fqub80my-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40fquag0tc-7
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jul 2024 12:10:21 +0000 (GMT)
+ Fri, 19 Jul 2024 12:13:10 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46JAPYHx039605; Fri, 19 Jul 2024 12:05:20 GMT
+ with ESMTP id 46JAiKxF039623; Fri, 19 Jul 2024 12:05:22 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 40dwexk3af-1
+ 40dwexk3c5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jul 2024 12:05:20 +0000
+ Fri, 19 Jul 2024 12:05:22 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46JC5DMF011010;
- Fri, 19 Jul 2024 12:05:19 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46JC5DMH011010;
+ Fri, 19 Jul 2024 12:05:22 GMT
 Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-12-11.vpn.oracle.com
  [10.175.12.11])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 40dwexk34j-3; Fri, 19 Jul 2024 12:05:19 +0000
+ 40dwexk34j-4; Fri, 19 Jul 2024 12:05:21 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -60,24 +60,25 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v5 02/13] vfio/iommufd: Don't initialize nor set a
- HOST_IOMMU_DEVICE with mdev
-Date: Fri, 19 Jul 2024 13:04:50 +0100
-Message-Id: <20240719120501.81279-3-joao.m.martins@oracle.com>
+Subject: [PATCH v5 03/13] backends/iommufd: Extend
+ iommufd_backend_get_device_info() to fetch HW capabilities
+Date: Fri, 19 Jul 2024 13:04:51 +0100
+Message-Id: <20240719120501.81279-4-joao.m.martins@oracle.com>
 In-Reply-To: <20240719120501.81279-1-joao.m.martins@oracle.com>
 References: <20240719120501.81279-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-19_06,2024-07-18_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=732
  malwarescore=0
  suspectscore=0 spamscore=0 bulkscore=0 mlxscore=0 adultscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2407110000 definitions=main-2407190093
-X-Proofpoint-ORIG-GUID: MOOrL-TIcx-zgLJBwDNaKzW-nCTA-xTs
-X-Proofpoint-GUID: MOOrL-TIcx-zgLJBwDNaKzW-nCTA-xTs
+X-Proofpoint-GUID: hEpqJkA9ZKWz5i3dEKo06UOINi1ShhVw
+X-Proofpoint-ORIG-GUID: hEpqJkA9ZKWz5i3dEKo06UOINi1ShhVw
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,72 +103,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mdevs aren't "physical" devices and when asking for backing IOMMU info, it
-fails the entire provisioning of the guest. Fix that by skipping
-HostIOMMUDevice initialization in the presence of mdevs, and skip setting
-an iommu device when it is known to be an mdev.
+The helper will be able to fetch vendor agnostic IOMMU capabilities
+supported both by hardware and software. Right now it is only iommu dirty
+tracking.
 
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Fixes: 930589520128 ("vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler")
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/vfio/common.c |  4 ++++
- hw/vfio/pci.c    | 11 ++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ include/sysemu/iommufd.h | 2 +-
+ backends/iommufd.c       | 4 +++-
+ hw/vfio/iommufd.c        | 4 +++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 7cdb969fd396..b0beed44116e 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1556,6 +1556,10 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+index 9edfec604595..57d502a1c79a 100644
+--- a/include/sysemu/iommufd.h
++++ b/include/sysemu/iommufd.h
+@@ -49,7 +49,7 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+                               hwaddr iova, ram_addr_t size);
+ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+                                      uint32_t *type, void *data, uint32_t len,
+-                                     Error **errp);
++                                     uint64_t *caps, Error **errp);
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
+ #endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 84fefbc9ee7a..2b3d51af26d2 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -210,7 +210,7 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+ 
+ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+                                      uint32_t *type, void *data, uint32_t len,
+-                                     Error **errp)
++                                     uint64_t *caps, Error **errp)
+ {
+     struct iommu_hw_info info = {
+         .size = sizeof(info),
+@@ -226,6 +226,8 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+ 
+     g_assert(type);
+     *type = info.out_data_type;
++    g_assert(caps);
++    *caps = info.out_capabilities;
+ 
+     return true;
+ }
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index c2f158e60386..604eaa4d9a5d 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -628,11 +628,13 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+     union {
+         struct iommu_hw_info_vtd vtd;
+     } data;
++    uint64_t hw_caps;
+ 
+     hiod->agent = opaque;
+ 
+     if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
+-                                         &type, &data, sizeof(data), errp)) {
++                                         &type, &data, sizeof(data),
++                                         &hw_caps, errp)) {
          return false;
      }
  
-+    if (vbasedev->mdev) {
-+        return true;
-+    }
-+
-     hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
-     if (!HOST_IOMMU_DEVICE_GET_CLASS(hiod)->realize(hiod, vbasedev, errp)) {
-         object_unref(hiod);
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index b34e91468a53..265d3cb82ffc 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3115,7 +3115,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
- 
-     vfio_bars_register(vdev);
- 
--    if (!pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
-+    if (!vbasedev->mdev &&
-+        !pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
-         error_prepend(errp, "Failed to set iommu_device: ");
-         goto out_teardown;
-     }
-@@ -3238,7 +3239,9 @@ out_deregister:
-         timer_free(vdev->intx.mmap_timer);
-     }
- out_unset_idev:
--    pci_device_unset_iommu_device(pdev);
-+    if (!vbasedev->mdev) {
-+        pci_device_unset_iommu_device(pdev);
-+    }
- out_teardown:
-     vfio_teardown_msi(vdev);
-     vfio_bars_exit(vdev);
-@@ -3283,7 +3286,9 @@ static void vfio_exitfn(PCIDevice *pdev)
-     vfio_pci_disable_rp_atomics(vdev);
-     vfio_bars_exit(vdev);
-     vfio_migration_exit(vbasedev);
--    pci_device_unset_iommu_device(pdev);
-+    if (!vbasedev->mdev) {
-+        pci_device_unset_iommu_device(pdev);
-+    }
- }
- 
- static void vfio_pci_reset(DeviceState *dev)
 -- 
 2.17.2
 
