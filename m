@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E24937C41
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 20:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3488937C35
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 20:13:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUs6Q-0002vg-36; Fri, 19 Jul 2024 14:13:10 -0400
+	id 1sUs6S-0003VL-Du; Fri, 19 Jul 2024 14:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUs5g-0006o1-37
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 14:12:30 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUs5m-0007Bn-I4
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 14:12:32 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUs5e-00042p-CD
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 14:12:23 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4266f344091so14865695e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 11:12:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sUs5j-00043c-H1
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 14:12:30 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4266edee10cso13012035e9.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 11:12:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721412740; x=1722017540; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721412746; x=1722017546; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/3cF/tU//YplS5nRyz5oLLMVLav+V+FPLOKof/J5MTo=;
- b=JuiUZf/2vEba1fg7Xw+gSyXcl3g/LCwHZise8u3g/cBs3rDGnUr1c5lpVCBBuOAstt
- v5B0/SRBcTokOTxIU9PaJTTDipO2IYtpZrEfoTHP2OBtq52N47BvauF5T1ck9BH2kLeZ
- p9Kv/oWIqDHzCqFJY7y+yBFQ+T7fR9/X3Oj0vJu5uH6mIt2f6lQ/rB3ER4ZhZpm5mf/C
- vrpimojRHiiaK3KxBPBgMmw4sov5WaoMvWHDcExRTIwx16Dketpu1x9OmUYD6NrIOGr+
- /PLxfjK5WZVuiuSaniLJWnX/OmqQQdTODUbBcf+6gbb3rkhhNGlqm822abjSzo34YpYG
- e3lg==
+ bh=e/ZQe/yHYS+wM7PLPDCR+wv5t4w+2k62yQLSsqaNg4w=;
+ b=Ema5H3bBaCIiunby+hOcZuy9QZbFih2im+s00sAymMZBarnlQUsYk9SiucY/XCdMRS
+ J3dW6jgBzRQprroy9tNv3/gilmIhvX6LlNKuST6cvZeGdzGdIKmVa4UvYlqMjiuTeZsZ
+ 6YaXebypWCXWe5Fw+QtQZQ9CF46JzNgPBdKme00q43FeYylJYaPUYDG9GgJ/Vvp6FzJj
+ K9mtqJ7XyPPYuW0wdT3HCEReYaV0wMpUU2AzMnJ5e7CuJR5mgCk3rtiWpwUfRj3So7gl
+ lEbOlXdrUP36gBd1OYjiTM393qlRT3LEFM3WEQDrkIZFcpR1+X7o/htSb88mQaHJ25zi
+ PKAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721412740; x=1722017540;
+ d=1e100.net; s=20230601; t=1721412746; x=1722017546;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/3cF/tU//YplS5nRyz5oLLMVLav+V+FPLOKof/J5MTo=;
- b=smzQrysEOj95zXeUTTRblPuulxjwTV2xS6J3WEmNBsCq48kNgvaGA6ge5J92/RPkDI
- xwNUH/xQPvUSw3ZrhmFE3UOUoMW8pINTGilu+VWQBxGkX13FzR8Q4AD6IHVwsEHFb9VL
- TKlXPyyxwjz7Yk4wkXqOGY5S6mlE8uozlEc9S9aJIxAyZkbJ/dytWWcdxDjGMfzHW/Un
- spyg3T8Bc+YV5VLkgLLWTrUgXCtSdf88WvRtCWTiFl4dQBtOk2rLJGUAgl5gi0SV4rJL
- oV2ZrnWmwT5lPhc4G9pFHUNKW5F9yJw3qmy31zJiaqbrmBJavrumzxlSh6kEfqjmZekv
- nj9A==
-X-Gm-Message-State: AOJu0Yzh4ortMJmrpvXul620tIFU68LTP17PKG3UQSqnxaKyPYG5QFcv
- DzBqLv+4B+6U15Xk20Xmk0113MkXpJdnRRNg5VpGi46qv7mlx54Wqvg1On4bCV1FRFKE4LVev0D
- v
-X-Google-Smtp-Source: AGHT+IGQkwbVcp4D8oKxdRtPoLQiC3jGXnrExIerD6OV6FKZNbP9aUTq/C3jX1Ze1T2q/jqwmQXFDQ==
-X-Received: by 2002:a05:600c:c09:b0:426:640b:73d9 with SMTP id
- 5b1f17b1804b1-427c2ca9070mr63116805e9.10.1721412739853; 
- Fri, 19 Jul 2024 11:12:19 -0700 (PDT)
+ bh=e/ZQe/yHYS+wM7PLPDCR+wv5t4w+2k62yQLSsqaNg4w=;
+ b=bFuYEtVyw6bRhOoN0UvFyJMTbBj49yDY3tI5YWsdJrvuEpaXNagct49BlJS6Kz7i7I
+ V7b/DiHgUfMq9NraxzAyoXNMvzcr7devv6AXmnc5CI/3ShRwtNUQgcwBAgVGdP1IVP6b
+ v5oo1Dw4yV59cIwB3gFa+ThHEbVgY2LWLYjhsjv92Mbt89eg2UvoyYUhwmhMt+6YAe6g
+ NpOhuuN9JQshudidORMQjWTm1M2irJWnut1gM9Lmhhdroqdzm+HtV9QahhTdIEGDcBOB
+ pC1f5LwK1u42qbh9ULgfLLTta1iM76l7UPWzJ7gOv5Px9GzJLM4J2WevKvAI2kcYyqev
+ UztQ==
+X-Gm-Message-State: AOJu0Ywbrxgew6tELksbjQf9WrZm69f8FIaFT9W4sLvxCUAbCdGNvFqw
+ 7c5PWFNeGd2Lfr4xsbanwoRUcKqvxMbjX+0W+F/w15nvJUDX2ywIv4YHzxN1T9ACHCnqx9Tdtp/
+ f
+X-Google-Smtp-Source: AGHT+IEka99OAZtI0h2En3VRTvDYiJuupj8PiTozQteCkvzdFJ54IYUgWSRstsrhskAVbkyoUotZwg==
+X-Received: by 2002:a05:600c:19cd:b0:427:dac4:d36 with SMTP id
+ 5b1f17b1804b1-427dac4132fmr1307245e9.7.1721412745794; 
+ Fri, 19 Jul 2024 11:12:25 -0700 (PDT)
 Received: from localhost.localdomain (52.170.88.92.rev.sfr.net. [92.88.170.52])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d68fa0a6sm33549825e9.9.2024.07.19.11.12.18
+ 5b1f17b1804b1-427d6929976sm33385325e9.29.2024.07.19.11.12.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jul 2024 11:12:19 -0700 (PDT)
+ Fri, 19 Jul 2024 11:12:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -63,26 +63,26 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Tong Ho <tong.ho@amd.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 15/16] hw/char/pl011: Drain TX FIFO when no backend
- connected
-Date: Fri, 19 Jul 2024 20:10:40 +0200
-Message-ID: <20240719181041.49545-16-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mikko Rapeli <mikko.rapeli@linaro.org>
+Subject: [RFC PATCH v5 16/16] hw/char/pl011: Implement TX FIFO
+Date: Fri, 19 Jul 2024 20:10:41 +0200
+Message-ID: <20240719181041.49545-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240719181041.49545-1-philmd@linaro.org>
 References: <20240719181041.49545-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,58 +98,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When no character backend is connected, the PL011 frontend
-just drains the FIFO.
+If the UART back-end chardev doesn't drain data as fast as stdout
+does or blocks, buffer in the TX FIFO to try again later.
 
+This avoids having the IO-thread busy waiting on chardev back-ends,
+reported recently when testing the Trusted Reference Stack and
+using the socket backend.
+
+Implement registering a front-end 'watch' callback on back-end
+events, so we can resume transmitting when the back-end is writable
+again, not blocking the main loop.
+
+Similarly to the RX FIFO path, FIFO level selection is not
+implemented (interrupt is triggered when a single byte is available
+in the FIFO).
+
+Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Suggested-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/pl011.c      | 13 +++++++++++++
+RFC: Something is still broken, some characters are emitted async...
+---
+ hw/char/pl011.c      | 60 ++++++++++++++++++++++++++++++++++++--------
  hw/char/trace-events |  1 +
- 2 files changed, 14 insertions(+)
+ 2 files changed, 51 insertions(+), 10 deletions(-)
 
 diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index b8cde03f98..cfa3fd3da4 100644
+index cfa3fd3da4..9f72b6a765 100644
 --- a/hw/char/pl011.c
 +++ b/hw/char/pl011.c
-@@ -229,6 +229,13 @@ static void pl011_loopback_tx(PL011State *s, uint32_t value)
-     pl011_fifo_rx_put(s, value);
- }
- 
-+static void pl011_drain_tx(PL011State *s)
-+{
-+    trace_pl011_fifo_tx_drain(fifo8_num_used(&s->xmit_fifo));
-+    pl011_reset_tx_fifo(s);
-+    s->rsr &= ~RSR_OE;
-+}
-+
- static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *opaque)
+@@ -240,7 +240,9 @@ static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *opaque)
  {
      PL011State *s = opaque;
-@@ -242,6 +249,12 @@ static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *opaque)
+     int bytes_consumed;
+-    uint8_t data;
++    const uint8_t *buf;
++    uint32_t buflen;
++    uint32_t count;
+ 
+     if (!(s->cr & CR_UARTEN)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "PL011 data written to disabled UART\n");
+@@ -249,25 +251,40 @@ static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *opaque)
          qemu_log_mask(LOG_GUEST_ERROR, "PL011 data written to disabled TX UART\n");
      }
  
-+    if (!qemu_chr_fe_backend_connected(&s->chr)) {
-+        /* Instant drain the fifo when there's no back-end. */
++    count = fifo8_num_used(&s->xmit_fifo);
++    if (count < 1) {
++        /* FIFO empty */
++        return G_SOURCE_REMOVE;
++    }
++
+     if (!qemu_chr_fe_backend_connected(&s->chr)) {
+         /* Instant drain the fifo when there's no back-end. */
+         pl011_drain_tx(s);
+         return G_SOURCE_REMOVE;
+     }
+ 
+-    data = fifo8_pop(&s->xmit_fifo);
+-    bytes_consumed = 1;
++    buf = fifo8_peek_buf(&s->xmit_fifo, count, &buflen);
+ 
+-    /*
+-     * XXX this blocks entire thread. Rewrite to use
+-     * qemu_chr_fe_write and background I/O callbacks
+-     */
+-    qemu_chr_fe_write_all(&s->chr, &data, bytes_consumed);
++    /* Transmit as much data as we can. */
++    bytes_consumed = qemu_chr_fe_write(&s->chr, buf, buflen);
+     trace_pl011_fifo_tx_xmit(bytes_consumed);
++    if (bytes_consumed < 0) {
++        /* Error in back-end: drain the fifo. */
 +        pl011_drain_tx(s);
 +        return G_SOURCE_REMOVE;
 +    }
 +
-     data = fifo8_pop(&s->xmit_fifo);
-     bytes_consumed = 1;
++    /* Pop the data we could transmit. */
++    fifo8_pop_buf(&s->xmit_fifo, bytes_consumed, NULL);
+     s->int_level |= INT_TX;
+ 
+     pl011_update(s);
+ 
++    if (!fifo8_is_empty(&s->xmit_fifo)) {
++        /* Reschedule another transmission if we couldn't transmit all. */
++        return G_SOURCE_CONTINUE;
++    }
++
+     return G_SOURCE_REMOVE;
+ }
+ 
+@@ -290,6 +307,10 @@ static void pl011_write_txdata(PL011State *s, uint8_t data)
+     trace_pl011_fifo_tx_put(data);
+     pl011_loopback_tx(s, data);
+     fifo8_push(&s->xmit_fifo, data);
++    if (fifo8_is_full(&s->xmit_fifo)) {
++        s->flags |= PL011_FLAG_TXFF;
++    }
++
+     pl011_xmit(NULL, G_IO_OUT, s);
+ }
+ 
+@@ -488,10 +509,24 @@ static void pl011_write(void *opaque, hwaddr offset,
+         pl011_trace_baudrate_change(s);
+         break;
+     case 11: /* UARTLCR_H */
+-        /* Reset the FIFO state on FIFO enable or disable */
+         if ((s->lcr ^ value) & LCR_FEN) {
+-            pl011_reset_rx_fifo(s);
++            bool fifo_enabled = value & LCR_FEN;
++
++            trace_pl011_fifo_enable(fifo_enabled);
++            if (fifo_enabled) {
++                /* Transmit and receive FIFO buffers are enabled (FIFO mode). */
++                fifo8_change_capacity(&s->xmit_fifo, PL011_FIFO_DEPTH);
++            } else {
++                /*
++                 * FIFOs are disabled (character mode) that is, the FIFOs
++                 * become 1-byte-deep holding registers.
++                 */
++                pl011_drain_tx(s);
++                fifo8_change_capacity(&s->xmit_fifo, 1);
++            }
++            /* Reset the FIFO state on FIFO enable or disable */
+             pl011_reset_tx_fifo(s);
++            pl011_reset_rx_fifo(s);
+         }
+         if ((s->lcr ^ value) & LCR_BRK) {
+             int break_enable = value & LCR_BRK;
+@@ -636,6 +671,11 @@ static int pl011_post_load(void *opaque, int version_id)
+         s->read_pos = 0;
+     }
+ 
++    if (!fifo8_is_empty(&s->xmit_fifo)) {
++        /* Reschedule another transmission */
++        qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP, pl011_xmit, s);
++    }
++
+     s->ibrd &= IBRD_MASK;
+     s->fbrd &= FBRD_MASK;
  
 diff --git a/hw/char/trace-events b/hw/char/trace-events
-index 4a9c0bd271..bf586ba664 100644
+index bf586ba664..2405819812 100644
 --- a/hw/char/trace-events
 +++ b/hw/char/trace-events
-@@ -63,6 +63,7 @@ pl011_fifo_rx_full(void) "RX FIFO now full, RXFF set"
+@@ -58,6 +58,7 @@ pl011_read(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x valu
+ pl011_read_fifo(int read_count) "FIFO read, read_count now %d"
+ pl011_write(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x value 0x%08x reg %s"
+ pl011_can_receive(uint32_t lcr, int read_count, int r) "LCR 0x%08x read_count %d returning %d"
++pl011_fifo_enable(bool enable) "enable:%u"
+ pl011_fifo_rx_put(uint32_t c, int read_count) "new char 0x%02x read_count now %d"
+ pl011_fifo_rx_full(void) "RX FIFO now full, RXFF set"
  pl011_fifo_tx_put(uint8_t byte) "TX FIFO push char [0x%02x]"
- pl011_fifo_tx_xmit(int count) "TX FIFO pop %d chars"
- pl011_fifo_tx_overrun(void) "TX FIFO overrun"
-+pl011_fifo_tx_drain(unsigned drained) "TX FIFO draining %u chars"
- pl011_baudrate_change(unsigned int baudrate, uint64_t clock, uint32_t ibrd, uint32_t fbrd) "new baudrate %u (clk: %" PRIu64 "hz, ibrd: %" PRIu32 ", fbrd: %" PRIu32 ")"
- 
- # cmsdk-apb-uart.c
 -- 
 2.41.0
 
