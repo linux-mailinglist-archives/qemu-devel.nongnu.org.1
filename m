@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419C2937BA0
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3521F937BA6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jul 2024 19:36:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sUrVS-00048l-3S; Fri, 19 Jul 2024 13:34:58 -0400
+	id 1sUrVT-0004Fs-4t; Fri, 19 Jul 2024 13:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3d5SaZggKCkY4pmvlzqsowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--whendrik.bounces.google.com>)
- id 1sUqUO-0002lT-Jf
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:48 -0400
-Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
+ <3eZSaZggKCkg6roxn1suqyyqvo.myw0ow4-no5ovxyxqx4.y1q@flex--whendrik.bounces.google.com>)
+ id 1sUqUR-0002xy-1j
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:57 -0400
+Received: from mail-wm1-x34a.google.com ([2a00:1450:4864:20::34a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3d5SaZggKCkY4pmvlzqsowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--whendrik.bounces.google.com>)
- id 1sUqUL-0004PE-UW
- for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:48 -0400
-Received: by mail-yw1-x1149.google.com with SMTP id
- 00721157ae682-664ccf0659cso56061607b3.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:44 -0700 (PDT)
+ <3eZSaZggKCkg6roxn1suqyyqvo.myw0ow4-no5ovxyxqx4.y1q@flex--whendrik.bounces.google.com>)
+ id 1sUqUO-0004UB-AQ
+ for qemu-devel@nongnu.org; Fri, 19 Jul 2024 12:29:50 -0400
+Received: by mail-wm1-x34a.google.com with SMTP id
+ 5b1f17b1804b1-4265464ddc9so8431185e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jul 2024 09:29:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1721406584; x=1722011384; darn=nongnu.org;
+ d=google.com; s=20230601; t=1721406586; x=1722011386; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=eL5RLnzpAzf7TFLl1U6rQzX+YN9nJj6N45FXkDozc0Q=;
- b=JFmrCX8f296oNAcNMkNBnmXJVTXLbgoU9oZvHtzDVh0mK4Gf+uQC84ChaR29Uisr7U
- 9L5cw9HkjM0LE76ufmjNShxGYfr0hmjcm1Xxh+AAp8Qd/NHnrqyEfmWnnq+cudpjOv95
- De9/6euNw1NXK0pSQeICzOTBigqCMKz2QfOevsi35eowkSOdwN1H9dbIysrFsfn5oOJr
- YyThPs080KioDxHZ9nO9uRbts/ioHBcY9OHytRLpvudldG3E+yG9nhgTEwpRWqVlRIEZ
- b4Rn4HOIXNpSLie98b3vQPXnMGDJ4MBrFJGigsE/lpNHyD14mhPM5xMbEMjc4BwzjnSr
- C7FQ==
+ :reply-to; bh=Trplm99Z1aULDWhzH5q5aD7aoAQd1PPsWcyH21okhHs=;
+ b=aScLeyn4ICl3wlvBAFqhLpcg8SHpdqlNixLFhreL22M+5rc/f98c1RN1yuTOraMJWy
+ ZwBDuEwrMFf1ci/cw9XF/TnJ/crPd7yAUU5buw8r8Z7fS0yvTMlnV2LPmUht8Mdqmeqp
+ RbxZASzRywbU6BnWR7jYGp5a9BEW1uaer4mEW7z1rIgW6HXot2Lh9QGK7ZiOpcuqiRr8
+ +lwd5PZSxJDRjqOQdT/wbDhpXd2M+MjZEUdTOIDTcjqlBlnmGX0Yj2QBYhTjqSLsWmuU
+ KFJmxNNQgCeJxVRr0pBSt/UqG1QXuSWG3GNCNGaUH7NuOZoZqAcdTpWvfeTguDc2v8Lq
+ kMSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721406584; x=1722011384;
+ d=1e100.net; s=20230601; t=1721406586; x=1722011386;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=eL5RLnzpAzf7TFLl1U6rQzX+YN9nJj6N45FXkDozc0Q=;
- b=UTWm11Sqge7RCAn0l6ZQnFXG2QFFfgP0aWHha0eR0jx4ZKGhDk2slVfxv0Ui4H7lMC
- vZVf0U/URuP1FQ54TG3vjqfpxFY4V00RTf00qGXSB8i8sBHBAdLN3g73QfqV1HIXZuU9
- jGt0TRPXWK1WAVFPusQLtsY+nI3pZ6mxtbMZpKO0NPRV9sK0hmYJzpfDUXN5yEjXcJNW
- KsVNtFY0kap7gHfSP+Z3AzRD142z17d/yodWh9fcRQCyzlv3FDJj3GajrsyQxfHHrLEW
- ApoYQ9HeOd+h7uG737+hbxkFA9pMKDDD80JCdZrM7yW8EX3JMU5IwD6N7mhmet74rSiW
- azyg==
-X-Gm-Message-State: AOJu0Yw/JuD9B7OahJb3KrxOHhtHiJqguc0M7c05cEcO2afab5eIfU2d
- k9qLpM2ARJRiPdRK1vJhWLbmFLYoNqjcg3Hl/lTDAQh3UmoVS0ZT9rg64j77tI15JCodTwjDLhI
- Hkj4hT4AqEVTE3eVz4mUGVM2zrt8DX6ApLPy2bBNVehXxMcIKwnPw/SEpPEG+7jzhvAwvXltkJB
- t4IpxsayBbICSS63jPvV/Oqx6nWvaikiV6l+CytTRqjg==
-X-Google-Smtp-Source: AGHT+IHHKg6j1+AEXWGqsFZwMZ13q4eDMIJ4oL7BiD6+1uRsdihxgaIIK8LxEHmDDBbHFzd3iR8BzLF/sFNH2A==
+ bh=Trplm99Z1aULDWhzH5q5aD7aoAQd1PPsWcyH21okhHs=;
+ b=W8tKBmtNjipPugpjXkr/GaOmWYE19QmSDq4GtZmTpnmYwIFKpdKupAzljKIvAtRgwA
+ yU5h/OU4BDfXi9XY9rU+8bPkVm65zmWhmp37MArWi4b64j/fiLIT8UxHTsHJ9hu1WyDW
+ aSGWCS824km/j51iBw+iOXa6zeXcHaCoGNxY1B+D8u60gVVg4u51Qcn853x2I1HgTOs5
+ +WZ3W9SWu5vSroAXwnd4VhYKj3TEt0kmHHFSUCZtulzxNh1xQ+14QtaD116FvRSReaNs
+ trH8fyAZ3nFLBkY4DsGwCAbE1pAPSOxbI7ng0/ndykmMYG9A4gDISEfQQGNjukR2d/FV
+ kMpw==
+X-Gm-Message-State: AOJu0YxYE+3l+abFs7G86DrKLpAFuSZKCxaJBT87wQ+5/D/wHRGC/bjS
+ v8fxsqnkP1TJlAKeedau4bEAGytOl09Hx6mKGksiN47xnTUjGn2ilBK494JklSOKbIFLk2Xcofb
+ T/hkfjs9Ccx2AaHWcPyhP78dPG3a2QwPzorPxB9lB+sbX/aAGmPzf6D9pEQg3nzG6VtXDZCD2Qj
+ U2TQKtOobkTtFr0PcoerY8hDLedaqdHf8XyhDZ6HuQww==
+X-Google-Smtp-Source: AGHT+IFCv+YVMM4ND7PfSuzkzJpeNK4OFi4OY06S8sH/6TRIjE5ggmufRHZWg5wMkZBhKdOa0TS4MoQv7HHRCw==
 X-Received: from whendrik-specialist-workstation.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:967]) (user=whendrik job=sendgmr) by
- 2002:a05:690c:f14:b0:62c:ea0b:a44c with SMTP id
- 00721157ae682-66a6654ba97mr90457b3.2.1721406583914; 
- Fri, 19 Jul 2024 09:29:43 -0700 (PDT)
-Date: Fri, 19 Jul 2024 16:29:24 +0000
+ 2002:a05:600c:1e2a:b0:426:6771:f768 with SMTP id
+ 5b1f17b1804b1-427da8b0fbdmr3605e9.2.1721406585797; 
+ Fri, 19 Jul 2024 09:29:45 -0700 (PDT)
+Date: Fri, 19 Jul 2024 16:29:25 +0000
 In-Reply-To: <20240719162929.1197154-1-whendrik@google.com>
 Mime-Version: 1.0
 References: <20240719162929.1197154-1-whendrik@google.com>
 X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
-Message-ID: <20240719162929.1197154-5-whendrik@google.com>
-Subject: [PATCH v1 4/9] Add RDT functionality
+Message-ID: <20240719162929.1197154-6-whendrik@google.com>
+Subject: [PATCH v1 5/9] Add RDT device interface through MSRs
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
  marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com
@@ -70,9 +70,9 @@ Cc: peternewman@google.com,
  "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
- envelope-from=3d5SaZggKCkY4pmvlzqsowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--whendrik.bounces.google.com;
- helo=mail-yw1-x1149.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::34a;
+ envelope-from=3eZSaZggKCkg6roxn1suqyyqvo.myw0ow4-no5ovxyxqx4.y1q@flex--whendrik.bounces.google.com;
+ helo=mail-wm1-x34a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -98,194 +98,232 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-Add RDT code to Associate CLOSID with RMID / set RMID for monitoring,
-write COS, and read monitoring data. This patch does not add code for
-the guest to interact through these things with MSRs, only the actual
-ability for the RDT device to do them.
+Implement rdmsr and wrmsr for the following MSRs:
+* MSR_IA32_PQR_ASSOC
+* MSR_IA32_QM_EVTSEL
+* MSR_IA32_QM_CTR
+* IA32_L3_QOS_Mask_n
+* IA32_L2_QOS_Mask_n
+* IA32_L2_QoS_Ext_BW_Thrtl_n
+
+This allows for the guest to call RDT-internal functions to
+associate an RMID with a CLOSID / set an active RMID for
+monitoring, read monitoring data, and set classes of service.
 
 Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
 ---
- hw/i386/rdt.c         | 124 ++++++++++++++++++++++++++++++++++++++++++
- include/hw/i386/rdt.h |  13 +++++
- 2 files changed, 137 insertions(+)
+ hw/i386/rdt.c                        |  8 +++
+ include/hw/i386/rdt.h                |  8 ++-
+ target/i386/cpu.h                    | 14 +++++
+ target/i386/tcg/sysemu/misc_helper.c | 80 ++++++++++++++++++++++++++++
+ 4 files changed, 109 insertions(+), 1 deletion(-)
 
 diff --git a/hw/i386/rdt.c b/hw/i386/rdt.c
-index 259dafc963..77b7b4f2d4 100644
+index 77b7b4f2d4..0d0e5751fc 100644
 --- a/hw/i386/rdt.c
 +++ b/hw/i386/rdt.c
-@@ -7,6 +7,11 @@
- #include "target/i386/cpu.h"
- #include "hw/isa/isa.h"
-=20
-+/* RDT Monitoring Event Codes */
-+#define RDT_EVENT_L3_OCCUPANCY 1
-+#define RDT_EVENT_L3_REMOTE_BW 2
-+#define RDT_EVENT_L3_LOCAL_BW 3
-+
- /* Max counts for allocation masks or CBMs. In other words, the size of re=
-spective MSRs*/
- #define MAX_L3_MASK_COUNT      128
+@@ -17,6 +17,10 @@
  #define MAX_L2_MASK_COUNT      48
-@@ -15,6 +20,9 @@
+ #define MAX_MBA_THRTL_COUNT    31
+=20
++#define CPUID_10_1_EDX_COS_MAX          MAX_L3_MASK_COUNT
++#define CPUID_10_2_EDX_COS_MAX          MAX_L2_MASK_COUNT
++#define CPUID_10_3_EDX_COS_MAX          MAX_MBA_THRTL_COUNT
++
  #define TYPE_RDT "rdt"
  #define RDT_NUM_RMID_PROP "rmids"
 =20
-+#define QM_CTR_Error        (1ULL << 63)
-+#define QM_CTR_Unavailable  (1ULL << 62)
-+
- OBJECT_DECLARE_TYPE(RDTState, RDTStateClass, RDT);
-=20
- struct RDTMonitor {
-@@ -49,6 +57,122 @@ struct RDTState {
+@@ -57,6 +61,10 @@ struct RDTState {
 =20
  struct RDTStateClass { };
 =20
-+bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc) {
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+    RDTAllocation *alloc;
++uint32_t rdt_get_cpuid_10_1_edx_cos_max(void) { return CPUID_10_1_EDX_COS_=
+MAX; }
++uint32_t rdt_get_cpuid_10_2_edx_cos_max(void) { return CPUID_10_2_EDX_COS_=
+MAX; }
++uint32_t rdt_get_cpuid_10_3_edx_cos_max(void) { return CPUID_10_3_EDX_COS_=
+MAX; }
 +
-+    uint32_t cos_id =3D (msr_ia32_pqr_assoc & 0xffff0000) >> 16;
-+    uint32_t rmid =3D msr_ia32_pqr_assoc & 0xffff;
-+
-+    if (cos_id > MAX_L3_MASK_COUNT || cos_id > MAX_L2_MASK_COUNT ||
-+    cos_id > MAX_MBA_THRTL_COUNT || rmid > rdt_max_rmid(rdt)) {
-+        return false;
-+    }
-+
-+    rdt->active_rmid =3D rmid;
-+
-+    alloc =3D &g_array_index(rdt->rdtstate->allocations, RDTAllocation, rm=
-id);
-+
-+    alloc->active_cos =3D cos_id;
-+
-+    return true;
-+}
-+
-+uint32_t rdt_read_l3_mask(uint32_t pos)
-+{
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+
-+    uint32_t val =3D rdt->rdtstate->msr_L3_ia32_mask_n[pos];
-+    return val;
-+}
-+
-+uint32_t rdt_read_l2_mask(uint32_t pos)
-+{
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+
-+    uint32_t val =3D rdt->rdtstate->msr_L2_ia32_mask_n[pos];
-+    return val;
-+}
-+
-+uint32_t rdt_read_mba_thrtl(uint32_t pos)
-+{
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+
-+    uint32_t val =3D rdt->rdtstate->ia32_L2_qos_ext_bw_thrtl_n[pos];
-+    return val;
-+}
-+
-+void rdt_write_msr_l3_mask(uint32_t pos, uint32_t val) {
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+
-+    rdt->rdtstate->msr_L3_ia32_mask_n[pos] =3D val;
-+}
-+
-+void rdt_write_msr_l2_mask(uint32_t pos, uint32_t val) {
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+
-+    rdt->rdtstate->msr_L2_ia32_mask_n[pos] =3D val;
-+}
-+
-+void rdt_write_mba_thrtl(uint32_t pos, uint32_t val) {
-+    X86CPU *cpu =3D X86_CPU(current_cpu);
-+    RDTStateInstance *rdt =3D cpu->rdt;
-+
-+    rdt->rdtstate->ia32_L2_qos_ext_bw_thrtl_n[pos] =3D val;
-+}
-+
-+uint32_t rdt_max_rmid(RDTStateInstance *rdt)
-+{
-+    RDTState *rdtdev =3D rdt->rdtstate;
-+    return rdtdev->rmids - 1;
-+}
-+
-+uint64_t rdt_read_event_count(RDTStateInstance *rdtInstance, uint32_t rmid=
-, uint32_t event_id)
-+{
-+    CPUState *cs;
-+    RDTMonitor *mon;
-+    RDTState *rdt =3D rdtInstance->rdtstate;
-+
-+    uint32_t count_l3 =3D 0;
-+    uint32_t count_local=3D 0;
-+    uint32_t count_remote =3D 0;
-+
-+    if (!rdt) {
-+        return 0;
-+    }
-+
-+    CPU_FOREACH(cs) {
-+        rdtInstance =3D &g_array_index(rdt->rdtInstances, RDTStateInstance=
-, cs->cpu_index);
-+        if (rmid >=3D rdtInstance->monitors->len) {
-+            return QM_CTR_Error;
-+        }
-+        mon =3D &g_array_index(rdtInstance->monitors, RDTMonitor, rmid);
-+        count_l3 +=3D mon->count_l3;
-+        count_local +=3D mon->count_local;
-+        count_remote +=3D mon->count_remote;
-+    }
-+
-+    switch (event_id) {
-+        case RDT_EVENT_L3_OCCUPANCY:
-+            return count_l3 =3D=3D 0 ? QM_CTR_Unavailable : count_l3;
-+            break;
-+        case RDT_EVENT_L3_REMOTE_BW:
-+            return count_remote =3D=3D 0 ? QM_CTR_Unavailable : count_remo=
-te;
-+            break;
-+        case RDT_EVENT_L3_LOCAL_BW:
-+            return count_local =3D=3D 0 ? QM_CTR_Unavailable : count_local=
-;
-+            break;
-+        default:
-+            return QM_CTR_Error;
-+    }
-+}
-+
- OBJECT_DEFINE_TYPE(RDTState, rdt, RDT, ISA_DEVICE);
-=20
- static Property rdt_properties[] =3D {
+ bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc) {
+     X86CPU *cpu =3D X86_CPU(current_cpu);
+     RDTStateInstance *rdt =3D cpu->rdt;
 diff --git a/include/hw/i386/rdt.h b/include/hw/i386/rdt.h
-index 45e34d3103..8092c5f290 100644
+index 8092c5f290..51d36822f0 100644
 --- a/include/hw/i386/rdt.h
 +++ b/include/hw/i386/rdt.h
-@@ -10,3 +10,16 @@ typedef struct RDTMonitor RDTMonitor;
+@@ -9,7 +9,12 @@ typedef struct RDTStateInstance RDTStateInstance;
+ typedef struct RDTMonitor RDTMonitor;
  typedef struct RDTAllocation RDTAllocation;
 =20
- #endif
-+bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc);
+-#endif
++uint32_t rdt_get_cpuid_10_1_edx_cos_max(void);
 +
-+void rdt_write_msr_l3_mask(uint32_t pos, uint32_t val);
-+void rdt_write_msr_l2_mask(uint32_t pos, uint32_t val);
-+void rdt_write_mba_thrtl(uint32_t pos, uint32_t val);
++uint32_t rdt_get_cpuid_10_2_edx_cos_max(void);
 +
-+uint32_t rdt_read_l3_mask(uint32_t pos);
-+uint32_t rdt_read_l2_mask(uint32_t pos);
-+uint32_t rdt_read_mba_thrtl(uint32_t pos);
++uint32_t rdt_get_cpuid_10_3_edx_cos_max(void);
 +
-+uint64_t rdt_read_event_count(RDTStateInstance *rdt, uint32_t rmid, uint32=
+ bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc);
+=20
+ void rdt_write_msr_l3_mask(uint32_t pos, uint32_t val);
+@@ -23,3 +28,4 @@ uint32_t rdt_read_mba_thrtl(uint32_t pos);
+ uint64_t rdt_read_event_count(RDTStateInstance *rdt, uint32_t rmid, uint32=
 _t event_id);
-+uint32_t rdt_max_rmid(RDTStateInstance *rdt);
+ uint32_t rdt_max_rmid(RDTStateInstance *rdt);
+=20
++#endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index bd0bbb75f2..0b3aca2d02 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -574,6 +574,17 @@ typedef enum X86Seg {
+ #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
+ #define MSR_IA32_VMX_VMFUNC             0x00000491
+=20
++#define MSR_IA32_QM_EVTSEL                  0x0c8d
++#define MSR_IA32_QM_CTR                     0x0c8e
++#define MSR_IA32_PQR_ASSOC                  0x0c8f
 +
++#define MSR_IA32_L3_CBM_BASE                0x0c90
++#define MSR_IA32_L3_MASKS_END               0x0d0f
++#define MSR_IA32_L2_CBM_BASE                0x0d10
++#define MSR_IA32_L2_CBM_END                 0x0d4f
++#define MSR_IA32_L2_QOS_Ext_BW_Thrtl_BASE   0xd50
++#define MSR_IA32_L2_QOS_Ext_BW_Thrtl_END    0xd80
++
+ #define MSR_APIC_START                  0x00000800
+ #define MSR_APIC_END                    0x000008ff
+=20
+@@ -1778,6 +1789,9 @@ typedef struct CPUArchState {
+     uint64_t msr_ia32_feature_control;
+     uint64_t msr_ia32_sgxlepubkeyhash[4];
+=20
++    uint64_t msr_ia32_qm_evtsel;
++    uint64_t msr_ia32_pqr_assoc;
++
+     uint64_t msr_fixed_ctr_ctrl;
+     uint64_t msr_global_ctrl;
+     uint64_t msr_global_status;
+diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/=
+misc_helper.c
+index 094aa56a20..e48e6b0da1 100644
+--- a/target/i386/tcg/sysemu/misc_helper.c
++++ b/target/i386/tcg/sysemu/misc_helper.c
+@@ -25,6 +25,7 @@
+ #include "exec/address-spaces.h"
+ #include "exec/exec-all.h"
+ #include "tcg/helper-tcg.h"
++#include "hw/i386/rdt.h"
+ #include "hw/i386/apic.h"
+=20
+ void helper_outb(CPUX86State *env, uint32_t port, uint32_t data)
+@@ -293,6 +294,44 @@ void helper_wrmsr(CPUX86State *env)
+         env->msr_bndcfgs =3D val;
+         cpu_sync_bndcs_hflags(env);
+         break;
++    case MSR_IA32_QM_EVTSEL:
++        env->msr_ia32_qm_evtsel =3D val;
++        break;
++    case MSR_IA32_PQR_ASSOC:
++    {
++        env->msr_ia32_pqr_assoc =3D val;
++        bool res =3D rdt_associate_rmid_cos(val);
++        if (!res)
++            goto error;
++        break;
++    }
++    case MSR_IA32_L3_CBM_BASE ... MSR_IA32_L3_MASKS_END:
++    {
++        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L3_CBM_BASE=
+;
++        if (pos >=3D rdt_get_cpuid_10_1_edx_cos_max()) {
++            goto error;
++        }
++        rdt_write_msr_l3_mask(pos, val);
++        break;
++    }
++    case MSR_IA32_L2_CBM_BASE ... MSR_IA32_L2_CBM_END:
++    {
++        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_CBM_BASE=
+;
++        if (pos >=3D rdt_get_cpuid_10_2_edx_cos_max()) {
++            goto error;
++        }
++        rdt_write_msr_l2_mask(pos, val);
++        break;
++    }
++    case MSR_IA32_L2_QOS_Ext_BW_Thrtl_BASE ... MSR_IA32_L2_QOS_Ext_BW_Thrt=
+l_END:
++    {
++        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_QOS_Ext_=
+BW_Thrtl_BASE;
++        if (pos >=3D rdt_get_cpuid_10_3_edx_cos_max()) {
++            goto error;
++        }
++        rdt_write_mba_thrtl(pos, val);
++        break;
++    }
+     case MSR_APIC_START ... MSR_APIC_END: {
+         int ret;
+         int index =3D (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
+@@ -472,6 +511,44 @@ void helper_rdmsr(CPUX86State *env)
+         val =3D (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
+         break;
+     }
++    case MSR_IA32_QM_CTR:
++        val =3D rdt_read_event_count(x86_cpu->rdt,
++                                   (env->msr_ia32_qm_evtsel >> 32) & 0xff,
++                                   env->msr_ia32_qm_evtsel & 0xff);
++        break;
++    case MSR_IA32_QM_EVTSEL:
++        val =3D env->msr_ia32_qm_evtsel;
++        break;
++    case MSR_IA32_PQR_ASSOC:
++        val =3D env->msr_ia32_pqr_assoc;
++        break;
++    case MSR_IA32_L3_CBM_BASE ... MSR_IA32_L3_MASKS_END:
++    {
++        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L3_CBM_BASE=
+;
++        if (pos >=3D rdt_get_cpuid_10_1_edx_cos_max()) {
++            goto error;
++        }
++        val =3D rdt_read_l3_mask(pos);
++        break;
++    }
++    case MSR_IA32_L2_CBM_BASE ... MSR_IA32_L2_CBM_END:
++    {
++        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_CBM_BASE=
+;
++        if (pos >=3D rdt_get_cpuid_10_2_edx_cos_max()) {
++            goto error;
++        }
++        val =3D rdt_read_l2_mask(pos);
++        break;
++    }
++    case MSR_IA32_L2_QOS_Ext_BW_Thrtl_BASE ... MSR_IA32_L2_QOS_Ext_BW_Thrt=
+l_END:
++    {
++        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_QOS_Ext_=
+BW_Thrtl_BASE;
++        if (pos >=3D rdt_get_cpuid_10_3_edx_cos_max()) {
++            goto error;
++        }
++        val =3D rdt_read_mba_thrtl(pos);
++        break;
++    }
+     case MSR_APIC_START ... MSR_APIC_END: {
+         int ret;
+         int index =3D (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
+@@ -499,6 +576,9 @@ void helper_rdmsr(CPUX86State *env)
+     }
+     env->regs[R_EAX] =3D (uint32_t)(val);
+     env->regs[R_EDX] =3D (uint32_t)(val >> 32);
++return;
++error:
++    raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
+ }
+=20
+ void helper_flush_page(CPUX86State *env, target_ulong addr)
 --=20
 2.45.2.1089.g2a221341d9-goog
 
