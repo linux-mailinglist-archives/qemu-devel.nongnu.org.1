@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F829382B9
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 593989382BA
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:41:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVFsV-000132-Aj; Sat, 20 Jul 2024 15:36:23 -0400
+	id 1sVFxM-0007eG-8T; Sat, 20 Jul 2024 15:41:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVFsT-00010P-Je
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:36:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVFxK-0007di-8y
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:41:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVFsQ-0005EB-NM
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:36:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVFxH-00068T-9q
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:41:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721504177;
+ s=mimecast20190719; t=1721504477;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2H9rFRRHangcd0R9YgNmNx4Ng1crSl6EtNkQw9Ia9Ps=;
- b=TmBkK+xJ8r83MKIUPJzKGb3Mt2i6K8vNzX7m9bLmL/7v8pnpH5BcfNg6EZrm5I0+5S6JUz
- 4Io0ZrTm7zbca1qpK+zMJYft6ilzShnt2ixuNH6E5oKx1uWylOOsSdgFg70wd7R7yI2pu1
- ihy/G3n/FcTw6dlWBoNIURYr93K3bE8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BoliB3h+pqblyP6r70Nx8jlP03G3Dti1Ar3o7zBeBQs=;
+ b=bdSejKCM94Owo9VCp3wO+lutemGgXCG4cVUhruNQXJy1pKq4jnvH6+b7N32TMrlUXidPLy
+ QgTpXjfG+p+aynOYNrJE0ljBKzFUj9KN7NhhVxiS9sjSuuhmA6ydmUMIuF24SmAf8xvGQ2
+ u2NhHIAjEG9Hb05nbdkkDeKaKCFt7dw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-STBDarkRMKSTKAtbTJc4FQ-1; Sat, 20 Jul 2024 15:36:16 -0400
-X-MC-Unique: STBDarkRMKSTKAtbTJc4FQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36857dd6913so1270694f8f.2
- for <qemu-devel@nongnu.org>; Sat, 20 Jul 2024 12:36:15 -0700 (PDT)
+ us-mta-655-OjE5kT0GPc2cStEXhDEZng-1; Sat, 20 Jul 2024 15:41:13 -0400
+X-MC-Unique: OjE5kT0GPc2cStEXhDEZng-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42668699453so28885185e9.3
+ for <qemu-devel@nongnu.org>; Sat, 20 Jul 2024 12:41:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721504175; x=1722108975;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2H9rFRRHangcd0R9YgNmNx4Ng1crSl6EtNkQw9Ia9Ps=;
- b=nTEdfXf4sxQ/LA1C3EbFu0jf9dXVZw1OSOt0e3O9B7KxTpsZdX5Gr7p313GcnKfdKD
- 7QPJGq4sFqYys2FB9CSB/EqDr6udvmUmy539MG8QQ+fEm4ewKG+qkA3xxtS7MXh+VG1z
- boscteR/mXZwZbqRwvBzRclHp4oDh0nUCtVNp8T6fE1+XOdSKwEfn+tanZOG8Kf+CBKt
- fhjY5Od3TBC7Zur7ekxgwnU2djoF4IdeK6S8pA2krOVmOsq9Y+MlyVLyGckfuwh12605
- EPLoaQ2xbXv/n9WtQH70lgIvudo7RoMTgnRJisCxPfb58JeHAoxGdl4OQhmaIRyLTfLt
- W9EA==
-X-Gm-Message-State: AOJu0YwRh/oOLQirJuXytltdMu3/EUI6ig9Ck0/BIECFJxoK5cWbiWbD
- IGES+9nJfaCSePIDredT6ycUWDYi6EzFoIvvvWm2401IouBTuIvfO30wNfDqWS/D4Z6m05vvujy
- c3MNSOoSkgPiT5MUfLB+qlHWKNVBSrZDPaegKMCJ898BbYKLw+0Pn
-X-Received: by 2002:adf:f6c8:0:b0:367:bb20:b3e1 with SMTP id
- ffacd0b85a97d-3683171f8bemr7468696f8f.51.1721504174723; 
- Sat, 20 Jul 2024 12:36:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbpzg2rj6k/1VqP/ypZskJ30zjQtU+wvImzMGtU4onrFk0BB59EdLdo0bvUatXh699j8l84g==
-X-Received: by 2002:adf:f6c8:0:b0:367:bb20:b3e1 with SMTP id
- ffacd0b85a97d-3683171f8bemr7468687f8f.51.1721504174085; 
- Sat, 20 Jul 2024 12:36:14 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721504472; x=1722109272;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BoliB3h+pqblyP6r70Nx8jlP03G3Dti1Ar3o7zBeBQs=;
+ b=OmvWC8dYk580ZFtlcpICLLgINnupTdp3uBHutbOgS/1R/19of5YWy5m/0cBYn9OCfZ
+ 3VbDGO7jsuIw6sI/RIX5BnadI6glfv2oRyMLnykPRYppSbRN8/adLbyKaWdKjo0rUr3g
+ Fz6qfIzA3kkjkkQBW4M/HJR/cmh/nZpVM0WnjgJMnwstuBnbJzVQTYmMCtb3WdOLR9lE
+ bv2TrEhQRh1mxhUKLBnSWHWaW3SFst5ZdA91vvV0h7uvQh9pCgvX58Cbwd5+XkmY3WyK
+ KLhwOOZAugY1HWPyYa9brBpT4Y8MHnkALwaH9MxYOJDTp7RTfnlESXzOUaWRDKk7q8mv
+ OcsA==
+X-Gm-Message-State: AOJu0Yw40M7/Zc4yLm8EeJynxYFkwz+y1Sz/fADXRWyT6RGBt+pqIUW1
+ O1IxPRPQp9HHOPNg8RZMeMRaXwwENkIi9eiAmSdhWyF9/l+gd8euvhNbOi2+VIKjJE+yjBdbVa7
+ aBAZsEqP5B2h5wQFX2miFFYNb4IISAF5V+0ETJnLGJnQM98vuOsgo
+X-Received: by 2002:a05:600c:470d:b0:426:5e8e:aa48 with SMTP id
+ 5b1f17b1804b1-427dc52910amr19596525e9.22.1721504472530; 
+ Sat, 20 Jul 2024 12:41:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjzSacnSKseK0IpnYEKMKR9UZJBZp8jekYIXxympRROUT5VaoECWebrHT4X/3eKfO+ZRKedA==
+X-Received: by 2002:a05:600c:470d:b0:426:5e8e:aa48 with SMTP id
+ 5b1f17b1804b1-427dc52910amr19596285e9.22.1721504471697; 
+ Sat, 20 Jul 2024 12:41:11 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368787ced28sm4457561f8f.88.2024.07.20.12.36.12
+ 5b1f17b1804b1-427d2a5c564sm93074355e9.14.2024.07.20.12.41.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Jul 2024 12:36:13 -0700 (PDT)
-Date: Sat, 20 Jul 2024 15:36:10 -0400
+ Sat, 20 Jul 2024 12:41:11 -0700 (PDT)
+Date: Sat, 20 Jul 2024 15:41:08 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org,
- wangyanan55@huawei.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, anisinha@redhat.com, qemu-arm@nongnu.org
-Subject: Re: [PATCH] smbios: make memory device size configurable per Machine
-Message-ID: <20240720153521-mutt-send-email-mst@kernel.org>
-References: <20240711074822.3384344-1-imammedo@redhat.com>
- <20240711071054-mutt-send-email-mst@kernel.org>
- <20240711150511.3a8f9013@imammedo.users.ipa.redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Jason Wang <jasowang@redhat.com>,
+ mcoqueli@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH 1/2] vhost-user: add a write-read lock
+Message-ID: <20240720153808-mutt-send-email-mst@kernel.org>
+References: <20240711131424.181615-1-ppandit@redhat.com>
+ <20240711131424.181615-2-ppandit@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240711150511.3a8f9013@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20240711131424.181615-2-ppandit@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,193 +98,804 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 11, 2024 at 03:05:11PM +0200, Igor Mammedov wrote:
-> On Thu, 11 Jul 2024 07:13:27 -0400
-> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+On Thu, Jul 11, 2024 at 06:44:23PM +0530, Prasad Pandit wrote:
+> From: Prasad Pandit <pjp@fedoraproject.org>
 > 
-> > On Thu, Jul 11, 2024 at 09:48:22AM +0200, Igor Mammedov wrote:
-> > > Currently SMBIOS maximum memory device chunk is capped at 16Gb,
-> > > which is fine for the most cases (QEMU uses it to describe initial
-> > > RAM (type 17 SMBIOS table entries)).
-> > > However when starting guest with terabytes of RAM this leads to
-> > > too many memory device structures, which eventually upsets linux
-> > > kernel as it reserves only 64K for these entries and when that
-> > > border is crossed out it runs out of reserved memory.
-> > > 
-> > > Instead of partitioning initial RAM on 16Gb chunks, use maximum
-> > > possible chunk size that SMBIOS spec allows[1]. Which lets
-> > > encode RAM in Mb units in uint32_t-1 field (upto 2047Tb).
-> > > As result initial RAM will generate only one type 17 structure
-> > > until host/guest reach ability to use more RAM in the future.
-> > > 
-> > > Compat changes:
-> > > We can't unconditionally change chunk size as it will break
-> > > QEMU<->guest ABI (and migration). Thus introduce a new machine class
-> > > field that would let older versioned machines to use 16Gb chunks
-> > > while new machine type could use maximum possible chunk size.
-> > > 
-> > > While it might seem to be risky to rise max entry size this much
-> > > (much beyond of what current physical RAM modules support),
-> > > I'd not expect it causing much issues, modulo uncovering bugs
-> > > in software running within guest. And those should be fixed
-> > > on guest side to handle SMBIOS spec properly, especially if
-> > > guest is expected to support so huge RAM configs.
-> > > In worst case, QEMU can reduce chunk size later if we would
-> > > care enough about introducing a workaround for some 'unfixable'
-> > > guest OS, either by fixing up the next machine type or
-> > > giving users a CLI option to customize it.
-> > > 
-> > > 1) SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
-> > > 
-> > > PS:
-> > > * tested on 8Tb host with RHEL6 guest, which seems to parse
-> > >   type 17 SMBIOS table entries correctly (according to 'dmidecode').
-> > > 
-> > > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> > > ---
-> > >  include/hw/boards.h |  4 ++++
-> > >  hw/arm/virt.c       |  1 +
-> > >  hw/core/machine.c   |  1 +
-> > >  hw/i386/pc_piix.c   |  1 +
-> > >  hw/i386/pc_q35.c    |  1 +
-> > >  hw/smbios/smbios.c  | 11 ++++++-----
-> > >  6 files changed, 14 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/include/hw/boards.h b/include/hw/boards.h
-> > > index ef6f18f2c1..48ff6d8b93 100644
-> > > --- a/include/hw/boards.h
-> > > +++ b/include/hw/boards.h
-> > > @@ -237,6 +237,9 @@ typedef struct {
-> > >   *    purposes only.
-> > >   *    Applies only to default memory backend, i.e., explicit memory backend
-> > >   *    wasn't used.
-> > > + * @smbios_memory_device_size:
-> > > + *    Default size of memory device,
-> > > + *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"  
-> > 
-> > Maybe it would be better to just make this a boolean,
-> > and put the spec related logic in smbios.c ?
-> > WDYT?
+> QEMU threads use vhost_user_write/read calls to send
+> and receive messages from a vhost-user device. When multiple
+> threads communicate with the same vhost-user device, they can
+> receive each other's messages, resulting in an erroneous state.
 > 
-> Using bool here, seems awkward to me,
-> i.e. not clear semantics and compat handling would be
-> complicated as well.
+>  vhost_user_read_header:
+>   700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+>  vhost_device_iotlb_miss:
+>   700871,700871: Fail to update device iotlb
+>  vhost_user_postcopy_end:
+>   700871,700900: Failed to receive reply to postcopy_end
+>  vhost_user_read_header:
+>   700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
 > 
-> And if we have to expose it someday to users,
-> it would be logical to make it machine property.
-> Given it's used not only by x86, having it as value
-> here lets each machine to customize if necessary
-> using well established pattern (incl. compat machinery)
+> Here fault thread seems to end the postcopy migration while
+> another thread is starting the vhost-user device.
 > 
+> Add a rw lock to hold for one vhost_user_write/read cycle
+> and avoid such race conditions.
 > 
-> > >   */
-> > >  struct MachineClass {
-> > >      /*< private >*/
-> > > @@ -304,6 +307,7 @@ struct MachineClass {
-> > >      const CPUArchIdList *(*possible_cpu_arch_ids)(MachineState *machine);
-> > >      int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
-> > >      ram_addr_t (*fixup_ram_size)(ram_addr_t size);
-> > > +    uint64_t smbios_memory_device_size;
-> > >  };
-> > >  
-> > >  /**
-> > > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> > > index b0c68d66a3..719e83e6a1 100644
-> > > --- a/hw/arm/virt.c
-> > > +++ b/hw/arm/virt.c
-> > > @@ -3308,6 +3308,7 @@ DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
-> > >  static void virt_machine_9_0_options(MachineClass *mc)
-> > >  {
-> > >      virt_machine_9_1_options(mc);
-> > > +    mc->smbios_memory_device_size = 16 * GiB;
-> > >      compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-> > >  }
-> > >  DEFINE_VIRT_MACHINE(9, 0)
-> > > diff --git a/hw/core/machine.c b/hw/core/machine.c
-> > > index bc38cad7f2..3cfdaec65d 100644
-> > > --- a/hw/core/machine.c
-> > > +++ b/hw/core/machine.c
-> > > @@ -1004,6 +1004,7 @@ static void machine_class_init(ObjectClass *oc, void *data)
-> > >      /* Default 128 MB as guest ram size */
-> > >      mc->default_ram_size = 128 * MiB;
-> > >      mc->rom_file_has_mr = true;
-> > > +    mc->smbios_memory_device_size = 2047 * TiB;
-> > >  
-> > >      /* numa node memory size aligned on 8MB by default.
-> > >       * On Linux, each node's border has to be 8MB aligned  
-> > 
-> > 
-> > 
-> > All these values really should be documented.
-> It's in commit message, but right I'll document value here
-> on respin so it would be easier for reader to see where it
-> comes from.
+> Suggested-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+> ---
+>  hw/virtio/vhost-user.c         | 423 +++++++++++++++++++--------------
+>  include/hw/virtio/vhost-user.h |   3 +
+>  2 files changed, 254 insertions(+), 172 deletions(-)
 > 
-> > And I feel 
-> ???
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index 00561daa06..99881c487f 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -24,6 +24,7 @@
+>  #include "qemu/main-loop.h"
+>  #include "qemu/uuid.h"
+>  #include "qemu/sockets.h"
+> +#include "qemu/lockable.h"
+>  #include "sysemu/runstate.h"
+>  #include "sysemu/cryptodev.h"
+>  #include "migration/postcopy-ram.h"
+> @@ -433,6 +434,8 @@ int vhost_user_gpu_set_socket(struct vhost_dev *dev, int fd)
+>  static int vhost_user_set_log_base(struct vhost_dev *dev, uint64_t base,
+>                                     struct vhost_log *log)
+>  {
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      int fds[VHOST_USER_MAX_RAM_SLOTS];
+>      size_t fd_num = 0;
+>      bool shmfd = virtio_has_feature(dev->protocol_features,
+> @@ -455,23 +458,25 @@ static int vhost_user_set_log_base(struct vhost_dev *dev, uint64_t base,
+>          fds[fd_num++] = log->fd;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, fds, fd_num);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> -
+> -    if (shmfd) {
+> -        msg.hdr.size = 0;
+> -        ret = vhost_user_read(dev, &msg);
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, fds, fd_num);
+>          if (ret < 0) {
+>              return ret;
+>          }
+>  
+> -        if (msg.hdr.request != VHOST_USER_SET_LOG_BASE) {
+> -            error_report("Received unexpected msg type. "
+> -                         "Expected %d received %d",
+> -                         VHOST_USER_SET_LOG_BASE, msg.hdr.request);
+> -            return -EPROTO;
+> +        if (shmfd) {
+> +            msg.hdr.size = 0;
+> +            ret = vhost_user_read(dev, &msg);
+> +            if (ret < 0) {
+> +                return ret;
+> +            }
+> +
+> +            if (msg.hdr.request != VHOST_USER_SET_LOG_BASE) {
+> +                error_report("Received unexpected msg type. "
+> +                             "Expected %d received %d",
+> +                             VHOST_USER_SET_LOG_BASE, msg.hdr.request);
+> +                return -EPROTO;
+> +            }
+>          }
+>      }
+>  
+> @@ -664,6 +669,7 @@ static int send_remove_regions(struct vhost_dev *dev,
+>                                 bool reply_supported)
+>  {
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      struct vhost_memory_region *shadow_reg;
+>      int i, fd, shadow_reg_idx, ret;
+>      ram_addr_t offset;
+> @@ -685,16 +691,18 @@ static int send_remove_regions(struct vhost_dev *dev,
+>              vhost_user_fill_msg_region(&region_buffer, shadow_reg, 0);
+>              msg->payload.mem_reg.region = region_buffer;
+>  
+> -            ret = vhost_user_write(dev, msg, NULL, 0);
+> -            if (ret < 0) {
+> -                return ret;
+> -            }
+> -
+> -            if (reply_supported) {
+> -                ret = process_message_reply(dev, msg);
+> -                if (ret) {
+> +            WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +                ret = vhost_user_write(dev, msg, NULL, 0);
+> +                if (ret < 0) {
+>                      return ret;
+>                  }
+> +
+> +                if (reply_supported) {
+> +                    ret = process_message_reply(dev, msg);
+> +                    if (ret) {
+> +                        return ret;
+> +                    }
+> +                }
+>              }
+>          }
+>  
+> @@ -725,6 +733,9 @@ static int send_add_regions(struct vhost_dev *dev,
+>      VhostUserMsg msg_reply;
+>      VhostUserMemoryRegion region_buffer;
+>  
+> +    struct VhostUserState *us = u->user;
+> +    QEMU_LOCK_GUARD(&us->vhost_user_rw_lock);
+> +
+>      for (i = 0; i < nr_add_reg; i++) {
+>          reg = add_reg[i].region;
+>          reg_idx = add_reg[i].reg_idx;
+> @@ -893,6 +904,7 @@ static int vhost_user_set_mem_table_postcopy(struct vhost_dev *dev,
+>                                               bool config_mem_slots)
+>  {
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      int fds[VHOST_MEMORY_BASELINE_NREGIONS];
+>      size_t fd_num = 0;
+>      VhostUserMsg msg_reply;
+> @@ -926,14 +938,16 @@ static int vhost_user_set_mem_table_postcopy(struct vhost_dev *dev,
+>              return ret;
+>          }
+>  
+> -        ret = vhost_user_write(dev, &msg, fds, fd_num);
+> -        if (ret < 0) {
+> -            return ret;
+> -        }
+> +        WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +            ret = vhost_user_write(dev, &msg, fds, fd_num);
+> +            if (ret < 0) {
+> +                return ret;
+> +            }
+>  
+> -        ret = vhost_user_read(dev, &msg_reply);
+> -        if (ret < 0) {
+> -            return ret;
+> +            ret = vhost_user_read(dev, &msg_reply);
+> +            if (ret < 0) {
+> +                return ret;
+> +            }
+>          }
+>  
+>          if (msg_reply.hdr.request != VHOST_USER_SET_MEM_TABLE) {
+> @@ -1005,6 +1019,7 @@ static int vhost_user_set_mem_table(struct vhost_dev *dev,
+>                                      struct vhost_memory *mem)
+>  {
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      int fds[VHOST_MEMORY_BASELINE_NREGIONS];
+>      size_t fd_num = 0;
+>      bool do_postcopy = u->postcopy_listen && u->postcopy_fd.handler;
+> @@ -1044,13 +1059,15 @@ static int vhost_user_set_mem_table(struct vhost_dev *dev,
+>              return ret;
+>          }
+>  
+> -        ret = vhost_user_write(dev, &msg, fds, fd_num);
+> -        if (ret < 0) {
+> -            return ret;
+> -        }
+> +        WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +            ret = vhost_user_write(dev, &msg, fds, fd_num);
+> +            if (ret < 0) {
+> +                return ret;
+> +            }
+>  
+> -        if (reply_supported) {
+> -            return process_message_reply(dev, &msg);
+> +            if (reply_supported) {
+> +                return process_message_reply(dev, &msg);
+> +            }
+>          }
+>      }
+>  
+> @@ -1080,6 +1097,8 @@ static int vhost_user_set_vring_endian(struct vhost_dev *dev,
+>  static int vhost_user_get_u64(struct vhost_dev *dev, int request, uint64_t *u64)
+>  {
+>      int ret;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      VhostUserMsg msg = {
+>          .hdr.request = request,
+>          .hdr.flags = VHOST_USER_VERSION,
+> @@ -1089,14 +1108,16 @@ static int vhost_user_get_u64(struct vhost_dev *dev, int request, uint64_t *u64)
+>          return 0;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != request) {
+> @@ -1129,6 +1150,8 @@ static int vhost_user_write_sync(struct vhost_dev *dev, VhostUserMsg *msg,
+>                                   bool wait_for_reply)
+>  {
+>      int ret;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>  
+>      if (wait_for_reply) {
+>          bool reply_supported = virtio_has_feature(dev->protocol_features,
+> @@ -1138,25 +1161,27 @@ static int vhost_user_write_sync(struct vhost_dev *dev, VhostUserMsg *msg,
+>          }
+>      }
+>  
+> -    ret = vhost_user_write(dev, msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    if (wait_for_reply) {
+> -        uint64_t dummy;
+> +        if (wait_for_reply) {
+> +            uint64_t dummy;
+>  
+> -        if (msg->hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
+> -            return process_message_reply(dev, msg);
+> -        }
+> +            if (msg->hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
+> +                return process_message_reply(dev, msg);
+> +            }
+>  
+> -       /*
+> -        * We need to wait for a reply but the backend does not
+> -        * support replies for the command we just sent.
+> -        * Send VHOST_USER_GET_FEATURES which makes all backends
+> -        * send a reply.
+> -        */
+> -        return vhost_user_get_features(dev, &dummy);
+> +           /*
+> +            * We need to wait for a reply but the backend does not
+> +            * support replies for the command we just sent.
+> +            * Send VHOST_USER_GET_FEATURES which makes all backends
+> +            * send a reply.
+> +            */
+> +            return vhost_user_get_features(dev, &dummy);
+> +        }
+>      }
+>  
+>      return 0;
+> @@ -1277,20 +1302,23 @@ static int vhost_user_get_vring_base(struct vhost_dev *dev,
+>          .hdr.size = sizeof(msg.payload.state),
+>      };
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>  
+>      VhostUserHostNotifier *n = fetch_notifier(u->user, ring->index);
+>      if (n) {
+>          vhost_user_host_notifier_remove(n, dev->vdev);
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_GET_VRING_BASE) {
+> @@ -1661,6 +1689,7 @@ int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
+>                                   int *dmabuf_fd)
+>  {
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      CharBackend *chr = u->user->chr;
+>      int ret;
+>      VhostUserMsg msg = {
+> @@ -1669,14 +1698,16 @@ int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
+>      };
+>      memcpy(msg.payload.object.uuid, uuid, sizeof(msg.payload.object.uuid));
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_GET_SHARED_OBJECT) {
+> @@ -1858,6 +1889,7 @@ static int vhost_setup_backend_channel(struct vhost_dev *dev)
+>          .hdr.flags = VHOST_USER_VERSION,
+>      };
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      int sv[2], ret = 0;
+>      bool reply_supported = virtio_has_feature(dev->protocol_features,
+>                                                VHOST_USER_PROTOCOL_F_REPLY_ACK);
+> @@ -1889,15 +1921,16 @@ static int vhost_setup_backend_channel(struct vhost_dev *dev)
+>          msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, &sv[1], 1);
+> -    if (ret) {
+> -        goto out;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, &sv[1], 1);
+> +        if (ret) {
+> +            goto out;
+> +        }
+>  
+> -    if (reply_supported) {
+> -        ret = process_message_reply(dev, &msg);
+> +        if (reply_supported) {
+> +            ret = process_message_reply(dev, &msg);
+> +        }
+>      }
+> -
+>  out:
+>      close(sv[1]);
+>      if (ret) {
+> @@ -1985,6 +2018,7 @@ static int vhost_user_postcopy_advise(struct vhost_dev *dev, Error **errp)
+>  {
+>  #ifdef CONFIG_LINUX
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      CharBackend *chr = u->user->chr;
+>      int ufd;
+>      int ret;
+> @@ -1993,16 +2027,18 @@ static int vhost_user_postcopy_advise(struct vhost_dev *dev, Error **errp)
+>          .hdr.flags = VHOST_USER_VERSION,
+>      };
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        error_setg(errp, "Failed to send postcopy_advise to vhost");
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to send postcopy_advise to vhost");
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        error_setg(errp, "Failed to get postcopy_advise reply from vhost");
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to get postcopy_advise reply from vhost");
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_POSTCOPY_ADVISE) {
+> @@ -2051,16 +2087,19 @@ static int vhost_user_postcopy_listen(struct vhost_dev *dev, Error **errp)
+>  
+>      trace_vhost_user_postcopy_listen();
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        error_setg(errp, "Failed to send postcopy_listen to vhost");
+> -        return ret;
+> -    }
+> +    struct VhostUserState *us = u->user;
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to send postcopy_listen to vhost");
+> +            return ret;
+> +        }
+>  
+> -    ret = process_message_reply(dev, &msg);
+> -    if (ret) {
+> -        error_setg(errp, "Failed to receive reply to postcopy_listen");
+> -        return ret;
+> +        ret = process_message_reply(dev, &msg);
+> +        if (ret) {
+> +            error_setg(errp, "Failed to receive reply to postcopy_listen");
+> +            return ret;
+> +        }
+>      }
+>  
+>      return 0;
+> @@ -2077,19 +2116,22 @@ static int vhost_user_postcopy_end(struct vhost_dev *dev, Error **errp)
+>      };
+>      int ret;
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>  
+>      trace_vhost_user_postcopy_end_entry();
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        error_setg(errp, "Failed to send postcopy_end to vhost");
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to send postcopy_end to vhost");
+> +            return ret;
+> +        }
+>  
+> -    ret = process_message_reply(dev, &msg);
+> -    if (ret) {
+> -        error_setg(errp, "Failed to receive reply to postcopy_end");
+> -        return ret;
+> +        ret = process_message_reply(dev, &msg);
+> +        if (ret) {
+> +            error_setg(errp, "Failed to receive reply to postcopy_end");
+> +            return ret;
+> +        }
+>      }
+>      postcopy_unregister_shared_ufd(&u->postcopy_fd);
+>      close(u->postcopy_fd.fd);
+> @@ -2359,6 +2401,8 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
+>      bool reply_supported = virtio_has_feature(dev->protocol_features,
+>                                                VHOST_USER_PROTOCOL_F_REPLY_ACK);
+>      int ret;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>  
+>      if (!(dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_NET_MTU))) {
+>          return 0;
+> @@ -2372,14 +2416,16 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
+>          msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    /* If reply_ack supported, backend has to ack specified MTU is valid */
+> -    if (reply_supported) {
+> -        return process_message_reply(dev, &msg);
+> +        /* If reply_ack supported, backend has to ack specified MTU is valid */
+> +        if (reply_supported) {
+> +            return process_message_reply(dev, &msg);
+> +        }
+>      }
+>  
+>      return 0;
+> @@ -2396,12 +2442,19 @@ static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
+>          .payload.iotlb = *imsg,
+>      };
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+> +
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+> +
+> +        ret = process_message_reply(dev, &msg);
+>      }
+>  
+> -    return process_message_reply(dev, &msg);
+> +    return ret;
+>  }
+>  
+>  
+> @@ -2414,6 +2467,8 @@ static int vhost_user_get_config(struct vhost_dev *dev, uint8_t *config,
+>                                   uint32_t config_len, Error **errp)
+>  {
+>      int ret;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      VhostUserMsg msg = {
+>          .hdr.request = VHOST_USER_GET_CONFIG,
+>          .hdr.flags = VHOST_USER_VERSION,
+> @@ -2430,16 +2485,19 @@ static int vhost_user_get_config(struct vhost_dev *dev, uint8_t *config,
+>  
+>      msg.payload.config.offset = 0;
+>      msg.payload.config.size = config_len;
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        error_setg_errno(errp, -ret, "vhost_get_config failed");
+> -        return ret;
+> -    }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        error_setg_errno(errp, -ret, "vhost_get_config failed");
+> -        return ret;
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            error_setg_errno(errp, -ret, "vhost_get_config failed");
+> +            return ret;
+> +        }
+> +
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            error_setg_errno(errp, -ret, "vhost_get_config failed");
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_GET_CONFIG) {
+> @@ -2464,6 +2522,8 @@ static int vhost_user_set_config(struct vhost_dev *dev, const uint8_t *data,
+>  {
+>      int ret;
+>      uint8_t *p;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      bool reply_supported = virtio_has_feature(dev->protocol_features,
+>                                                VHOST_USER_PROTOCOL_F_REPLY_ACK);
+>  
+> @@ -2492,13 +2552,15 @@ static int vhost_user_set_config(struct vhost_dev *dev, const uint8_t *data,
+>      p = msg.payload.config.region;
+>      memcpy(p, data, size);
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    if (reply_supported) {
+> -        return process_message_reply(dev, &msg);
+> +        if (reply_supported) {
+> +            return process_message_reply(dev, &msg);
+> +        }
+>      }
+>  
+>      return 0;
+> @@ -2509,6 +2571,8 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
+>                                              uint64_t *session_id)
+>  {
+>      int ret;
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      bool crypto_session = virtio_has_feature(dev->protocol_features,
+>                                         VHOST_USER_PROTOCOL_F_CRYPTO_SESSION);
+>      CryptoDevBackendSessionInfo *backend_info = session_info;
+> @@ -2572,18 +2636,21 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
+>  
+>      msg.payload.session.op_code = backend_info->op_code;
+>      msg.payload.session.session_id = backend_info->session_id;
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        error_report("vhost_user_write() return %d, create session failed",
+> -                     ret);
+> -        return ret;
+> -    }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        error_report("vhost_user_read() return %d, create session failed",
+> -                     ret);
+> -        return ret;
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            error_report("vhost_user_write() return %d, create session failed",
+> +                         ret);
+> +            return ret;
+> +        }
+> +
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            error_report("vhost_user_read() return %d, create session failed",
+> +                         ret);
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_CREATE_CRYPTO_SESSION) {
+> @@ -2648,6 +2715,7 @@ static int vhost_user_get_inflight_fd(struct vhost_dev *dev,
+>      int fd;
+>      int ret;
+>      struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      CharBackend *chr = u->user->chr;
+>      VhostUserMsg msg = {
+>          .hdr.request = VHOST_USER_GET_INFLIGHT_FD,
+> @@ -2662,14 +2730,16 @@ static int vhost_user_get_inflight_fd(struct vhost_dev *dev,
+>          return 0;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_GET_INFLIGHT_FD) {
+> @@ -2757,6 +2827,7 @@ bool vhost_user_init(VhostUserState *user, CharBackend *chr, Error **errp)
+>      user->memory_slots = 0;
+>      user->notifiers = g_ptr_array_new_full(VIRTIO_QUEUE_MAX / 4,
+>                                             &vhost_user_state_destroy);
+> +    qemu_mutex_init(&user->vhost_user_rw_lock);
+>      return true;
+>  }
+>  
+> @@ -2769,6 +2840,7 @@ void vhost_user_cleanup(VhostUserState *user)
+>      user->notifiers = (GPtrArray *) g_ptr_array_free(user->notifiers, true);
+>      memory_region_transaction_commit();
+>      user->chr = NULL;
+> +    qemu_mutex_destroy(&user->vhost_user_rw_lock);
+>  }
+>  
+>  
+> @@ -2882,6 +2954,7 @@ static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
+>  {
+>      int ret;
+>      struct vhost_user *vu = dev->opaque;
+> +    struct VhostUserState *us = vu->user;
+>      VhostUserMsg msg = {
+>          .hdr = {
+>              .request = VHOST_USER_SET_DEVICE_STATE_FD,
+> @@ -2902,19 +2975,21 @@ static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
+>          return -ENOTSUP;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, &fd, 1);
+> -    close(fd);
+> -    if (ret < 0) {
+> -        error_setg_errno(errp, -ret,
+> -                         "Failed to send SET_DEVICE_STATE_FD message");
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, &fd, 1);
+> +        close(fd);
+> +        if (ret < 0) {
+> +            error_setg_errno(errp, -ret,
+> +                             "Failed to send SET_DEVICE_STATE_FD message");
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        error_setg_errno(errp, -ret,
+> -                         "Failed to receive SET_DEVICE_STATE_FD reply");
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            error_setg_errno(errp, -ret,
+> +                             "Failed to receive SET_DEVICE_STATE_FD reply");
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_SET_DEVICE_STATE_FD) {
+> @@ -2951,6 +3026,8 @@ static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
+>  
+>  static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
+>  {
+> +    struct vhost_user *u = dev->opaque;
+> +    struct VhostUserState *us = u->user;
+>      int ret;
+>      VhostUserMsg msg = {
+>          .hdr = {
+> @@ -2965,18 +3042,20 @@ static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
+>          return -ENOTSUP;
+>      }
+>  
+> -    ret = vhost_user_write(dev, &msg, NULL, 0);
+> -    if (ret < 0) {
+> -        error_setg_errno(errp, -ret,
+> -                         "Failed to send CHECK_DEVICE_STATE message");
+> -        return ret;
+> -    }
+> +    WITH_QEMU_LOCK_GUARD(&us->vhost_user_rw_lock) {
+> +        ret = vhost_user_write(dev, &msg, NULL, 0);
+> +        if (ret < 0) {
+> +            error_setg_errno(errp, -ret,
+> +                             "Failed to send CHECK_DEVICE_STATE message");
+> +            return ret;
+> +        }
+>  
+> -    ret = vhost_user_read(dev, &msg);
+> -    if (ret < 0) {
+> -        error_setg_errno(errp, -ret,
+> -                         "Failed to receive CHECK_DEVICE_STATE reply");
+> -        return ret;
+> +        ret = vhost_user_read(dev, &msg);
+> +        if (ret < 0) {
+> +            error_setg_errno(errp, -ret,
+> +                             "Failed to receive CHECK_DEVICE_STATE reply");
+> +            return ret;
+> +        }
+>      }
+>  
+>      if (msg.hdr.request != VHOST_USER_CHECK_DEVICE_STATE) {
+> diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+> index 324cd8663a..387ab6da2e 100644
+> --- a/include/hw/virtio/vhost-user.h
+> +++ b/include/hw/virtio/vhost-user.h
+> @@ -67,6 +67,9 @@ typedef struct VhostUserState {
+>      GPtrArray *notifiers;
+>      int memory_slots;
+>      bool supports_config;
+> +
+> +    /* Hold lock for vhost_user_write/read cycle */
+> +    QemuMutex vhost_user_rw_lock;
+>  } VhostUserState;
 
-sorry. what I said above. can we find some place where it is
-not awkward to quote spec?
+So it's not a rw lock. It's just a mutex.
+Lock should be named after what they protect, not
+after where they are held.
+In this case, this ensures only 1 request is
+outstanding at a time.
+So vhost_user_request_reply_lock
 
-> > 
-> > 
-> > 
-> > > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> > > index 9445b07b4f..d9e69243b4 100644
-> > > --- a/hw/i386/pc_piix.c
-> > > +++ b/hw/i386/pc_piix.c
-> > > @@ -495,6 +495,7 @@ static void pc_i440fx_machine_9_0_options(MachineClass *m)
-> > >      pc_i440fx_machine_9_1_options(m);
-> > >      m->alias = NULL;
-> > >      m->is_default = false;
-> > > +    m->smbios_memory_device_size = 16 * GiB;
-> > >  
-> > >      compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-> > >      compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-> > > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> > > index 71d3c6d122..9d108b194e 100644
-> > > --- a/hw/i386/pc_q35.c
-> > > +++ b/hw/i386/pc_q35.c
-> > > @@ -374,6 +374,7 @@ static void pc_q35_machine_9_0_options(MachineClass *m)
-> > >      PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-> > >      pc_q35_machine_9_1_options(m);
-> > >      m->alias = NULL;
-> > > +    m->smbios_memory_device_size = 16 * GiB;
-> > >      compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-> > >      compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-> > >      pcmc->isa_bios_alias = false;
-> > > diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> > > index 3b7703489d..a394514264 100644
-> > > --- a/hw/smbios/smbios.c
-> > > +++ b/hw/smbios/smbios.c
-> > > @@ -1093,6 +1093,7 @@ static bool smbios_get_tables_ep(MachineState *ms,
-> > >                         Error **errp)
-> > >  {
-> > >      unsigned i, dimm_cnt, offset;
-> > > +    MachineClass *mc = MACHINE_GET_CLASS(ms);
-> > >      ERRP_GUARD();
-> > >  
-> > >      assert(ep_type == SMBIOS_ENTRY_POINT_TYPE_32 ||
-> > > @@ -1123,12 +1124,12 @@ static bool smbios_get_tables_ep(MachineState *ms,
-> > >      smbios_build_type_9_table(errp);
-> > >      smbios_build_type_11_table();
-> > >  
-> > > -#define MAX_DIMM_SZ (16 * GiB)
-> > > -#define GET_DIMM_SZ ((i < dimm_cnt - 1) ? MAX_DIMM_SZ \
-> > > -                                        : ((current_machine->ram_size - 1) % MAX_DIMM_SZ) + 1)
-> > > +#define GET_DIMM_SZ ((i < dimm_cnt - 1) ? mc->smbios_memory_device_size \
-> > > +    : ((current_machine->ram_size - 1) % mc->smbios_memory_device_size) + 1)
-> > >  
-> > > -    dimm_cnt = QEMU_ALIGN_UP(current_machine->ram_size, MAX_DIMM_SZ) /
-> > > -               MAX_DIMM_SZ;
-> > > +    dimm_cnt = QEMU_ALIGN_UP(current_machine->ram_size,
-> > > +                             mc->smbios_memory_device_size) /
-> > > +               mc->smbios_memory_device_size;
-> > >  
-> > >      /*
-> > >       * The offset determines if we need to keep additional space between
-> > > -- 
-> > > 2.43.0  
-> > 
+
+>  
+>  /**
+> -- 
+> 2.45.2
 
 
