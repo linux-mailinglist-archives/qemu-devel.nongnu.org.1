@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82AD938081
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 11:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B8938083
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 11:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sV6Qv-00087a-M7; Sat, 20 Jul 2024 05:31:17 -0400
+	id 1sV6Qx-0008Gv-PS; Sat, 20 Jul 2024 05:31:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sV6Qs-00085f-MK
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 05:31:14 -0400
-Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
+ id 1sV6Qv-0008Au-Rd
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 05:31:17 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sV6Qq-0006rN-52
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 05:31:14 -0400
-Received: by mail-io1-xd32.google.com with SMTP id
- ca18e2360f4ac-80557928673so112563639f.2
- for <qemu-devel@nongnu.org>; Sat, 20 Jul 2024 02:31:11 -0700 (PDT)
+ id 1sV6Qu-0006vY-62
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 05:31:17 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2cb5243766dso1518458a91.0
+ for <qemu-devel@nongnu.org>; Sat, 20 Jul 2024 02:31:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721467871; x=1722072671;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721467874; x=1722072674;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LDU2Zt8gZBQKmgVee2JKdgi66cDuvrO7hSjjib8H/lk=;
- b=gDLxedGJRL2mp0zXQyMrOKjo209VOlpagT4KGP/XikVCQfaOdubnSrJYxFb/4QbKlo
- LycQHosjSk+oybFMQwDBnU+HUozaTY2/4GbQkpNdZ0OdTO+lagoy59Phu7bMJYoCmOZO
- XuxdTWPSDOF7RGudknS4k5AEIUbromOVPZlUgjB6bf75QTHaaXNGAvcyTvta0NfdLsDI
- JBG1qZZ1CASeEgbrtFOKRDCN2dgY9ujh5BHv7aoDe1BQvzlXlp7IKpzq4kmHKqiR5g7H
- gYKNCdTsH12qFbXn7vmL8EAp/tyWaXwJGL1b+X/vw1Z6DRHX+aLCsmJCDd5Zq+VTH7Zz
- 84yw==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=5yjuBamw9n461E4jaC/9ANa+4rItgiwUD6BgGhyaSGo=;
+ b=FXE/MnpFIugeUtEmU+tFf0y2XxjCd0TxBo/kREaBCQBF+93rU2oeFBmYKtDh3Xv+Iw
+ K1SNW37PmZzl4rPMnFasKSYkNzYN908s8vRTS9BbjU5v9zVIhyoIVWROHZu0MeNh3W5h
+ EhkZ83T287C4jgidRxDwq66dh3iyDqXNGJ2VppYh53xHV+6zxZ1WY0gqv70aHn5p2hBh
+ EJ11Lz/kjGlhd8PcvkAfNHGmYgy8XmOBP95fHxfSPh3TpDCeUvjn5tMvvqonbHJ9tH/t
+ c7Cmc2su+kd6YdX7QV6HPnvJI/UINZnO1ZVkyV36DdWjZanCVF6vn3Ky4dQfl2Gd7W74
+ lKfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721467871; x=1722072671;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LDU2Zt8gZBQKmgVee2JKdgi66cDuvrO7hSjjib8H/lk=;
- b=NayZpw/2ffWqjGu097oSyzXdz1vl1azKgDiLXX6pcxp0Y1k4u8uh0ySLFCCZezMGiY
- fCrCaL4EqDlccJOTuLOayVtaNYkiU5z2T/4nGX8PtbdlBfJKC3ViOwCTwGtL77kOSApe
- NOSc0Va25NpQpQuZrkuO59KMgchkcobvM/wr9i+uKe1B++91/6e/WWSmZzO34aRbD4mF
- nTGSUka5kYoAyLZkMpz/4OeIZtVPeVQWIPHRrlhybYNeOQZus9qWpPynKVnuGNtz8t7L
- 5rNX8A0J3egufcvpfFMtU4VblW2qW3sGxtTIf02zXZWrB0j0QYSZ2tBhy0OuJDlPatuV
- S49g==
+ d=1e100.net; s=20230601; t=1721467874; x=1722072674;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5yjuBamw9n461E4jaC/9ANa+4rItgiwUD6BgGhyaSGo=;
+ b=LEUlGmTCYlqdwqXfOTygbZPrkFtuOzC9Fo/wLYAAIifse5EF43LmkAK5eanS3w0t7C
+ hOejtN19DPFhroxj7M+6MGcZcb5blDFUxUdfc4On4/UYACr1r9baZCCoq+Gny9FTClb4
+ O/QDKbGQB7O/a4A0fpH+hTFYit+wi05Rkkz1G5BqjSnkQLUX2BZqUxP/ILK6/wYkponn
+ rBBCR1Wj50nwqf/Jvyr8DdxoGUDLiO8Hk6XEjlyGTvQfsGmotcRgBRbhbTAzJZYKaCWq
+ F6eFGfGfypEfrXS4UctF+WXD33wDJVGeqD5rQYELSVKRrup95EvWqMabojARBTeofn/h
+ GjGw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWSQvLGWIwAcjcMPxx/ja3/kFRZdHsuSKmBlZit4hs3CSSoRLy/zT800kk7S4O/C+Z98Hb3cFd7F5ab5y2T84Sm9tGcmwU=
-X-Gm-Message-State: AOJu0YwSR8qn0xmb199bTIl2QR8Q0VKHTwS0nM/dc7bqoDSnH5zhu7Jn
- zkQefvG5ARTlkdtIjvi4vyUUGkf8o5aU0b7IFsrOS4klPbyn3mGObhxMWUwUCtHfRomp55zcB12
- gD1s=
-X-Google-Smtp-Source: AGHT+IHVPm8t/2gzpEDM1KgANQdKw0h2OLMQUsUVee8JWg0S2UQKWLWHEfSx+ctre7NQWEHi+VEghg==
-X-Received: by 2002:a05:6e02:180e:b0:397:584d:9b73 with SMTP id
- e9e14a558f8ab-398e47ef554mr27226765ab.7.1721467870772; 
- Sat, 20 Jul 2024 02:31:10 -0700 (PDT)
+ AJvYcCWqp7kFccmZHscMr8VZytXGkMwMz9wCKJFgCZKZ5LdBs2Mxkh7Cjl8s1u17pBM73I9FuuFUG7oOz2P+b/+KdCSqwypJINk=
+X-Gm-Message-State: AOJu0YzTr47SfZYNMZbr2VtrZ455oCR+HhQeEEq8E2Tz9cKHIp/tmBmD
+ SKDTqljcUFrPYcVGccJJjccTRhuplkiB3PfQbMJhXwxOUvsKQQf45hH9grHfVA8HRYs1sMnuzVt
+ Ky08=
+X-Google-Smtp-Source: AGHT+IHR+NQTRhR3a2TfSAWIUHqlrVOnxn0GDTljibq5mmgHHmG24+/gEcCQ+grdVEK0g9Y/FvpQug==
+X-Received: by 2002:a17:90b:518e:b0:2c9:8891:e128 with SMTP id
+ 98e67ed59e1d1-2cd1603776amr2182284a91.4.1721467874472; 
+ Sat, 20 Jul 2024 02:31:14 -0700 (PDT)
 Received: from localhost ([157.82.204.122])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-70d0fa125acsm538989b3a.190.2024.07.20.02.31.08
+ 98e67ed59e1d1-2ccf808f08esm3099636a91.36.2024.07.20.02.31.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 20 Jul 2024 02:31:10 -0700 (PDT)
+ Sat, 20 Jul 2024 02:31:14 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 0/6] target/arm/kvm: Report PMU unavailability
-Date: Sat, 20 Jul 2024 18:30:48 +0900
-Message-Id: <20240720-pmu-v4-0-2a2b28f6b08f@daynix.com>
+Date: Sat, 20 Jul 2024 18:30:49 +0900
+Subject: [PATCH v4 1/6] target/arm/kvm: Set PMU for host only when
+ available
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMiDm2YC/23MSw6DIBSF4a0YxqWBizzsqPtoOkDAysBHoCUa4
- 96LdtCYdnhu7vcvKLrgXUSXYkHBJR/90OdRngpkWt0/HPY2bwQESiKgwmP3wtryRkgHhluC8uc
- YXOOnvXK75936+BzCvEcT3a5HnygmWIKoKLBaKV1erZ57P53N0KEtkOCLJBUfBBk1zDFX1mCZ5
- T+I/UEsI2WkoYorDSAPaF3XNzZ7TOABAQAA
+Message-Id: <20240720-pmu-v4-1-2a2b28f6b08f@daynix.com>
+References: <20240720-pmu-v4-0-2a2b28f6b08f@daynix.com>
+In-Reply-To: <20240720-pmu-v4-0-2a2b28f6b08f@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Cornelia Huck <cohuck@redhat.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::d32;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-io1-xd32.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,60 +98,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-target/arm/kvm.c checked PMU availability but claimed PMU is
-available even if it is not. In fact, Asahi Linux supports KVM but lacks
-PMU support. Only advertise PMU availability only when it is really
-available.
-
-Fixes: dc40d45ebd8e ("target/arm/kvm: Move kvm_arm_get_host_cpu_features and unexport")
+target/arm/kvm.c checked PMU availability but unconditionally set the
+PMU feature flag for the host CPU model, which is confusing. Set the
+feature flag only when available.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v4:
-- Split patch "target/arm/kvm: Fix PMU feature bit early" into
-  "target/arm/kvm: Set PMU for host only when available" and
-  "target/arm/kvm: Do not silently remove PMU".
-- Changed to define PMU also for Armv7.
-- Changed not to define PMU for M.
-- Extracted patch "hvf: arm: Raise an exception for sysreg by default"
-  from "hvf: arm: Properly disable PMU".
-- Rebased.
-- Link to v3: https://lore.kernel.org/r/20240716-pmu-v3-0-8c7c1858a227@daynix.com
+ target/arm/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v3:
-- Dropped patch "target/arm: Do not allow setting 'pmu' for hvf".
-- Dropped patch "target/arm: Allow setting 'pmu' only for host and max".
-- Dropped patch "target/arm/kvm: Report PMU unavailability".
-- Added patch "target/arm/kvm: Fix PMU feature bit early".
-- Added patch "hvf: arm: Do not advance PC when raising an exception".
-- Added patch "hvf: arm: Properly disable PMU".
-- Changed to check for Armv8 before adding PMU property.
-- Link to v2: https://lore.kernel.org/r/20240716-pmu-v2-0-f3e3e4b2d3d5@daynix.com
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 70f79eda33cd..b20a35052f41 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -280,6 +280,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     if (kvm_arm_pmu_supported()) {
+         init.features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
+         pmu_supported = true;
++        features |= 1ULL << ARM_FEATURE_PMU;
+     }
+ 
+     if (!kvm_arm_create_scratch_host_vcpu(cpus_to_try, fdarray, &init)) {
+@@ -448,7 +449,6 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     features |= 1ULL << ARM_FEATURE_V8;
+     features |= 1ULL << ARM_FEATURE_NEON;
+     features |= 1ULL << ARM_FEATURE_AARCH64;
+-    features |= 1ULL << ARM_FEATURE_PMU;
+     features |= 1ULL << ARM_FEATURE_GENERIC_TIMER;
+ 
+     ahcf->features = features;
 
-Changes in v2:
-- Restricted writes to 'pmu' to host and max.
-- Prohibited writes to 'pmu' for hvf.
-- Link to v1: https://lore.kernel.org/r/20240629-pmu-v1-0-7269123b88a4@daynix.com
-
----
-Akihiko Odaki (6):
-      target/arm/kvm: Set PMU for host only when available
-      target/arm/kvm: Do not silently remove PMU
-      target/arm: Always add pmu property for Armv7-A/R+
-      hvf: arm: Raise an exception for sysreg by default
-      hvf: arm: Properly disable PMU
-      hvf: arm: Do not advance PC when raising an exception
-
- target/arm/cpu.c     |   5 +-
- target/arm/hvf/hvf.c | 302 ++++++++++++++++++++++++++-------------------------
- target/arm/kvm.c     |   7 +-
- 3 files changed, 159 insertions(+), 155 deletions(-)
----
-base-commit: a87a7c449e532130d4fa8faa391ff7e1f04ed660
-change-id: 20240629-pmu-ad5f67e2c5d0
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.2
 
 
