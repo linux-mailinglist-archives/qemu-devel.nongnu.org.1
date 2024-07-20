@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DCC9382A8
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC4E9382A9
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:17:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVFZ9-00074N-Q4; Sat, 20 Jul 2024 15:16:23 -0400
+	id 1sVFZG-0007Qs-7H; Sat, 20 Jul 2024 15:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFYz-0006qE-FQ
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:15 -0400
+ id 1sVFZ5-0006vb-Bw
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:21 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFYv-0000rZ-3P
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:12 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJAUWm021897;
- Sat, 20 Jul 2024 19:15:54 GMT
+ id 1sVFZ1-0000rd-Ai
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:18 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJA1iN020362;
+ Sat, 20 Jul 2024 19:15:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=KEtu+Nxv6EH7Q/6YhuuppatukClo9brblJ9w6R7zxOU=; b=
- JubR34CvCUj+4G4NyrI5TXEht4YWjiiHsdxcLLBrGN/tlgTeXOYkRZ2H3BKIiL6Q
- H6B93N36aVJy1nrDf7+JQbP1tVrgpSy1kUwRiA2XEtTPp50/KNrraU8LsPJ4W7/6
- cngv0s6zJglnHRPUxXKm/dRU6wbf4OfgC1JYhmdhhzEtvQJktPAkA/0cT+2X+OEp
- 8vN0y7Ci76TQph7XBlABwZq3wjxXXzns/KM54IzNKCVq0YvaGTHXeiB16dJCveTM
- gEORix8Gxg33dSuJi4AgrpJ+qRTtJcw+5owYFEY4EkO8UmZrk6dd9QiJXJgsh0Z0
- NKx5wgRkqYuNLRHOC8+YzQ==
+ corp-2023-11-20; bh=OdD3Vh8VrBj3S8FDaAY/ddgO1Ru7HGoZ8kU+j7nwgqM=; b=
+ MkGw3BT8JObh76hShs77BNb2yezr3TSl+Ix0Ox8vLM4MnuvKS+AeuEjRLHk/Q9lS
+ PF49nCSodj1HFXx1FHElJc/7dbC9dOxJcWhfio8Po4foLa5vzWTCrtRlUzaqFQJb
+ eqgSKguaEIyvw/cEs+gFRs9xWQX4ECKOS2wRB5dWZx7IMVXcV9cCOS20G/CL9aGE
+ XHFTrWtDvORNhOxFYK6J/PjFILbz0JMLX9u0Cn7LAUwVJBtgFoxOqNTvDAx7HXef
+ 9VR6wyEBwBDEeqq3/aLZBfKHqZO8q+/6rgZr+RViXLWHopXX5RFiYlCjjWeyuID6
+ zze6xXnQJLAeSgTNWKvycQ==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5jr04j-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5gr05c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:54 +0000 (GMT)
+ Sat, 20 Jul 2024 19:15:55 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46KIfsYt027542; Sat, 20 Jul 2024 19:15:53 GMT
+ with ESMTP id 46KI0Q70027478; Sat, 20 Jul 2024 19:15:55 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40g3p5puwa-1
+ 40g3p5puwh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:53 +0000
+ Sat, 20 Jul 2024 19:15:55 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdfL028365;
- Sat, 20 Jul 2024 19:15:53 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdfN028365;
+ Sat, 20 Jul 2024 19:15:54 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 40g3p5pusv-11; Sat, 20 Jul 2024 19:15:53 +0000
+ ESMTP id 40g3p5pusv-12; Sat, 20 Jul 2024 19:15:54 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -62,9 +62,9 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 10/12] migration/ram: old host address
-Date: Sat, 20 Jul 2024 12:15:35 -0700
-Message-Id: <1721502937-87102-11-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 11/12] iommufd: update DMA virtual addresses
+Date: Sat, 20 Jul 2024 12:15:36 -0700
+Message-Id: <1721502937-87102-12-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
 References: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2407200140
-X-Proofpoint-GUID: iEqILvLT-oYpMT69ERvnhgoX8cj0UfEh
-X-Proofpoint-ORIG-GUID: iEqILvLT-oYpMT69ERvnhgoX8cj0UfEh
+X-Proofpoint-GUID: ZoasZSdLt6aXDvSLHjc8bEeQB4d9So3o
+X-Proofpoint-ORIG-GUID: ZoasZSdLt6aXDvSLHjc8bEeQB4d9So3o
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,99 +102,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remember the RAMBlock host address as host_old during migration, for use
-by CPR.  The iommufd interface to update the virtual address of DMA
-mappings requires it.
+Register a vmstate post_load handler to call IOMMU_IOAS_CHANGE_PROCESS and
+update the virtual address of all DMA mappings after CPR.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/core/machine.c       | 6 ++++++
- include/exec/ramblock.h | 1 +
- migration/migration.h   | 2 ++
- migration/options.c     | 2 ++
- migration/ram.c         | 7 +++++++
- 5 files changed, 18 insertions(+)
+ backends/iommufd.c | 81 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 80 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 9676953..0ac16b8 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -35,6 +35,12 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 86fd9db..2e72b6f 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -17,7 +17,9 @@
+ #include "qom/object_interfaces.h"
+ #include "qemu/error-report.h"
+ #include "migration/cpr.h"
++#include "migration/vmstate.h"
+ #include "monitor/monitor.h"
++#include "exec/ramblock.h"
+ #include "trace.h"
+ #include <sys/ioctl.h>
+ #include <linux/iommufd.h>
+@@ -81,6 +83,83 @@ bool iommufd_change_process_capable(IOMMUFDBackend *be)
+     return (errno != ENOTTY);
+ }
  
-+/* TBD: register hw_compat_9_1 with machines */
-+GlobalProperty hw_compat_9_1[] = {
-+    { "migration", "send-host-old", "off"},
-+};
-+const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
++static int iommufd_change_process(IOMMUFDBackend *be,
++                                 struct iommu_ioas_change_process *args)
++{
++    int ret, fd = be->fd;
 +
- GlobalProperty hw_compat_9_0[] = {
-     {"arm-cpu", "backcompat-cntfrq", "true" },
-     {"scsi-disk-base", "migrate-emulated-scsi-request", "false" },
-diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-index 64484cd..8f1c535 100644
---- a/include/exec/ramblock.h
-+++ b/include/exec/ramblock.h
-@@ -28,6 +28,7 @@ struct RAMBlock {
-     struct rcu_head rcu;
-     struct MemoryRegion *mr;
-     uint8_t *host;
-+    uint64_t host_old;
-     uint8_t *colo_cache; /* For colo, VM's ram cache */
-     ram_addr_t offset;
-     ram_addr_t used_length;
-diff --git a/migration/migration.h b/migration/migration.h
-index 38aa140..b5e3151 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -442,6 +442,8 @@ struct MigrationState {
-      */
-     uint8_t clear_bitmap_shift;
- 
-+    bool send_host_old;
-+
-     /*
-      * This save hostname when out-going migration starts
-      */
-diff --git a/migration/options.c b/migration/options.c
-index 7526f9f..197cb86 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -92,6 +92,8 @@ Property migration_properties[] = {
-                       clear_bitmap_shift, CLEAR_BITMAP_SHIFT_DEFAULT),
-     DEFINE_PROP_BOOL("x-preempt-pre-7-2", MigrationState,
-                      preempt_pre_7_2, false),
-+    DEFINE_PROP_BOOL("send-host-old", MigrationState,
-+                     send_host_old, true),
- 
-     /* Migration parameters */
-     DEFINE_PROP_UINT8("x-throttle-trigger-threshold", MigrationState,
-diff --git a/migration/ram.c b/migration/ram.c
-index 1e1e05e..8644917 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3030,6 +3030,9 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
-             qemu_put_byte(f, strlen(block->idstr));
-             qemu_put_buffer(f, (uint8_t *)block->idstr, strlen(block->idstr));
-             qemu_put_be64(f, block->used_length);
-+            if (migrate_get_current()->send_host_old) {
-+                qemu_put_be64(f, (uint64_t)block->host);
-+            }
-             if (migrate_postcopy_ram() &&
-                 block->page_size != max_hg_page_size) {
-                 qemu_put_be64(f, block->page_size);
-@@ -4021,6 +4024,10 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
- 
-     assert(block);
- 
-+    if (migrate_get_current()->send_host_old) {
-+        block->host_old = qemu_get_be64(f);
++    ret = ioctl(fd, IOMMU_IOAS_CHANGE_PROCESS, args);
++    if (ret) {
++        ret = -errno;
++        error_report("IOMMU_IOAS_CHANGE_PROCESS failed: %m");
 +    }
++    return ret;
++}
 +
-     if (migrate_mapped_ram()) {
-         parse_ramblock_mapped_ram(f, block, length, &local_err);
-         if (local_err) {
++static int count_umap(RAMBlock *rb, void *opaque)
++{
++    if (qemu_ram_is_migratable(rb)) {
++        (*(int *)opaque)++;
++    }
++    return 0;
++}
++
++static int fill_umap(RAMBlock *rb, void *opaque)
++{
++    if (qemu_ram_is_migratable(rb)) {
++        struct iommu_ioas_change_process *args = opaque;
++        struct iommu_ioas_userspace_map *umap = (void *)args->umap;
++        int i = args->n_umap++;
++
++        assert(rb->host_old && rb->host);
++        umap[i].addr_old = (__u64)rb->host_old;
++        umap[i].addr_new = (__u64)rb->host;
++        umap[i].size = rb->max_length;
++    }
++    return 0;
++}
++
++static int cmp_umap(const void *elem1, const void *elem2)
++{
++    const struct iommu_ioas_userspace_map *e1 = elem1;
++    const struct iommu_ioas_userspace_map *e2 = elem2;
++
++    return (e1->addr_old < e2->addr_old) ? -1 :
++           (e1->addr_old > e2->addr_old);
++}
++
++static int iommufd_cpr_post_load(void *opaque, int version_id)
++{
++    IOMMUFDBackend *be = opaque;
++    struct iommu_ioas_change_process args = {
++        .size = sizeof(args),
++        .flags = 0,
++        .n_umap = 0,
++        .umap = 0,
++    };
++    int n = 0;
++    g_autofree struct iommu_ioas_userspace_map *umap = NULL;
++
++    RCU_READ_LOCK_GUARD();
++    qemu_ram_foreach_block(count_umap, &n);
++    umap = g_malloc_n(n, sizeof(*umap));
++    args.umap = (__u64)umap;
++    qemu_ram_foreach_block(fill_umap, &args);
++    qsort(umap, args.n_umap, sizeof(*umap), cmp_umap);
++    return iommufd_change_process(be, &args);
++}
++
++static const VMStateDescription iommufd_cpr_vmstate = {
++    .name = "iommufd",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .post_load = iommufd_cpr_post_load,
++    .needed = cpr_needed_for_reuse,
++    .fields = (VMStateField[]) {
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
+ {
+     int fd;
+@@ -100,7 +179,7 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
+         be->fd = fd;
+     }
+     be->users++;
+-
++    vmstate_register(NULL, -1, &iommufd_cpr_vmstate, be);
+     trace_iommufd_backend_connect(be->fd, be->owned, be->users);
+     return true;
+ }
 -- 
 1.8.3.1
 
