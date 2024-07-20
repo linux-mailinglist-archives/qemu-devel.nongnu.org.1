@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC4E9382A9
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D409382AE
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:18:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVFZG-0007Qs-7H; Sat, 20 Jul 2024 15:16:30 -0400
+	id 1sVFZE-0007Jj-4r; Sat, 20 Jul 2024 15:16:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFZ5-0006vb-Bw
+ id 1sVFZ5-0006vc-Bu
  for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:21 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFZ1-0000rd-Ai
+ id 1sVFZ2-0000ri-4T
  for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:18 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJA1iN020362;
- Sat, 20 Jul 2024 19:15:56 GMT
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJF2Il016270;
+ Sat, 20 Jul 2024 19:15:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=OdD3Vh8VrBj3S8FDaAY/ddgO1Ru7HGoZ8kU+j7nwgqM=; b=
- MkGw3BT8JObh76hShs77BNb2yezr3TSl+Ix0Ox8vLM4MnuvKS+AeuEjRLHk/Q9lS
- PF49nCSodj1HFXx1FHElJc/7dbC9dOxJcWhfio8Po4foLa5vzWTCrtRlUzaqFQJb
- eqgSKguaEIyvw/cEs+gFRs9xWQX4ECKOS2wRB5dWZx7IMVXcV9cCOS20G/CL9aGE
- XHFTrWtDvORNhOxFYK6J/PjFILbz0JMLX9u0Cn7LAUwVJBtgFoxOqNTvDAx7HXef
- 9VR6wyEBwBDEeqq3/aLZBfKHqZO8q+/6rgZr+RViXLWHopXX5RFiYlCjjWeyuID6
- zze6xXnQJLAeSgTNWKvycQ==
+ corp-2023-11-20; bh=PrZpKjn22NnTRu3L/ZRkY8HK9ZTK3ILIUp25NlJXXPY=; b=
+ RyXbMPMglk9zbN+z45Qpfr+qZJBsRw1tylEZFJE9BIifzQ81A6vxvtnm98VFY2KW
+ il1QPw4Ni+LRDHDU5Pg/Vp8PJliTQt8mJ3sYITUelAepT2MZ89QO4WWpSOsR/p/M
+ dLh5ip4FiMpQPzhLhsnAQxBmG5sggLlrwnpJGrFfaJpGPVl9wUK1k2C8SQz+h3mc
+ yZmKcyTp+7z4SGng/7sU5uub+BfNpobjOc6mMsRT+nVl7RuByWwq5tf2rkpddJxI
+ Ik0FTIiIPIPiQ9zv7huBnnNaeIlg6X4WBESJilouReI+OVX1M4dUi+1XRqICr7sD
+ 3sLMNdwWPm8bIIx9xFvneA==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5gr05c-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk7w000g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:55 +0000 (GMT)
+ Sat, 20 Jul 2024 19:15:57 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46KI0Q70027478; Sat, 20 Jul 2024 19:15:55 GMT
+ with ESMTP id 46KI06tt027423; Sat, 20 Jul 2024 19:15:56 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40g3p5puwh-1
+ 40g3p5pux3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:55 +0000
+ Sat, 20 Jul 2024 19:15:56 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdfN028365;
- Sat, 20 Jul 2024 19:15:54 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdfP028365;
+ Sat, 20 Jul 2024 19:15:56 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 40g3p5pusv-12; Sat, 20 Jul 2024 19:15:54 +0000
+ ESMTP id 40g3p5pusv-13; Sat, 20 Jul 2024 19:15:55 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -62,9 +62,9 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 11/12] iommufd: update DMA virtual addresses
-Date: Sat, 20 Jul 2024 12:15:36 -0700
-Message-Id: <1721502937-87102-12-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 12/12] vfio: mdev blocker
+Date: Sat, 20 Jul 2024 12:15:37 -0700
+Message-Id: <1721502937-87102-13-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
 References: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2407200140
-X-Proofpoint-GUID: ZoasZSdLt6aXDvSLHjc8bEeQB4d9So3o
-X-Proofpoint-ORIG-GUID: ZoasZSdLt6aXDvSLHjc8bEeQB4d9So3o
+X-Proofpoint-ORIG-GUID: rF5Tpq8KAvljSnaTMrZxdy-CV-FxPcgV
+X-Proofpoint-GUID: rF5Tpq8KAvljSnaTMrZxdy-CV-FxPcgV
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,121 +102,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Register a vmstate post_load handler to call IOMMU_IOAS_CHANGE_PROCESS and
-update the virtual address of all DMA mappings after CPR.
+Block CPR if the container has any mdevs (mediated devices).  CPR is not
+supported for legacy containers and mdevs.  It will be supported for iommufd
+containers with mdevs in a future patch.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- backends/iommufd.c | 81 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 80 insertions(+), 1 deletion(-)
+ hw/vfio/pci.c                         | 10 ++++++++++
+ include/hw/vfio/vfio-common.h         |  1 +
+ include/hw/vfio/vfio-container-base.h |  2 ++
+ 3 files changed, 13 insertions(+)
 
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 86fd9db..2e72b6f 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -17,7 +17,9 @@
- #include "qom/object_interfaces.h"
- #include "qemu/error-report.h"
- #include "migration/cpr.h"
-+#include "migration/vmstate.h"
- #include "monitor/monitor.h"
-+#include "exec/ramblock.h"
- #include "trace.h"
- #include <sys/ioctl.h>
- #include <linux/iommufd.h>
-@@ -81,6 +83,83 @@ bool iommufd_change_process_capable(IOMMUFDBackend *be)
-     return (errno != ENOTTY);
- }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index b5e7592..872b07c 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3100,6 +3100,13 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     is_mdev = subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
+     free(subsys);
  
-+static int iommufd_change_process(IOMMUFDBackend *be,
-+                                 struct iommu_ioas_change_process *args)
-+{
-+    int ret, fd = be->fd;
-+
-+    ret = ioctl(fd, IOMMU_IOAS_CHANGE_PROCESS, args);
-+    if (ret) {
-+        ret = -errno;
-+        error_report("IOMMU_IOAS_CHANGE_PROCESS failed: %m");
++    vbasedev->is_mdev = is_mdev;
++    if (is_mdev && !vbasedev->bcontainer->n_mdev++) {
++        error_setg(&vbasedev->bcontainer->cpr_mdev_blocker,
++                   "CPR does not support vfio mdev");
++        migrate_add_blocker_modes(&vbasedev->bcontainer->cpr_mdev_blocker,
++                                  &error_fatal, MIG_MODE_CPR_EXEC, -1);
 +    }
-+    return ret;
-+}
-+
-+static int count_umap(RAMBlock *rb, void *opaque)
-+{
-+    if (qemu_ram_is_migratable(rb)) {
-+        (*(int *)opaque)++;
+     trace_vfio_mdev(vbasedev->name, is_mdev);
+ 
+     if (vbasedev->ram_block_discard_allowed && !is_mdev) {
+@@ -3387,6 +3394,9 @@ static void vfio_exitfn(PCIDevice *pdev)
+     vfio_teardown_msi(vdev);
+     vfio_pci_disable_rp_atomics(vdev);
+     vfio_bars_exit(vdev);
++    if (vbasedev->is_mdev && !--vbasedev->bcontainer->n_mdev) {
++        migrate_del_blocker(&vbasedev->bcontainer->cpr_mdev_blocker);
 +    }
-+    return 0;
-+}
-+
-+static int fill_umap(RAMBlock *rb, void *opaque)
-+{
-+    if (qemu_ram_is_migratable(rb)) {
-+        struct iommu_ioas_change_process *args = opaque;
-+        struct iommu_ioas_userspace_map *umap = (void *)args->umap;
-+        int i = args->n_umap++;
-+
-+        assert(rb->host_old && rb->host);
-+        umap[i].addr_old = (__u64)rb->host_old;
-+        umap[i].addr_new = (__u64)rb->host;
-+        umap[i].size = rb->max_length;
-+    }
-+    return 0;
-+}
-+
-+static int cmp_umap(const void *elem1, const void *elem2)
-+{
-+    const struct iommu_ioas_userspace_map *e1 = elem1;
-+    const struct iommu_ioas_userspace_map *e2 = elem2;
-+
-+    return (e1->addr_old < e2->addr_old) ? -1 :
-+           (e1->addr_old > e2->addr_old);
-+}
-+
-+static int iommufd_cpr_post_load(void *opaque, int version_id)
-+{
-+    IOMMUFDBackend *be = opaque;
-+    struct iommu_ioas_change_process args = {
-+        .size = sizeof(args),
-+        .flags = 0,
-+        .n_umap = 0,
-+        .umap = 0,
-+    };
-+    int n = 0;
-+    g_autofree struct iommu_ioas_userspace_map *umap = NULL;
-+
-+    RCU_READ_LOCK_GUARD();
-+    qemu_ram_foreach_block(count_umap, &n);
-+    umap = g_malloc_n(n, sizeof(*umap));
-+    args.umap = (__u64)umap;
-+    qemu_ram_foreach_block(fill_umap, &args);
-+    qsort(umap, args.n_umap, sizeof(*umap), cmp_umap);
-+    return iommufd_change_process(be, &args);
-+}
-+
-+static const VMStateDescription iommufd_cpr_vmstate = {
-+    .name = "iommufd",
-+    .version_id = 0,
-+    .minimum_version_id = 0,
-+    .post_load = iommufd_cpr_post_load,
-+    .needed = cpr_needed_for_reuse,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
- {
-     int fd;
-@@ -100,7 +179,7 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
-         be->fd = fd;
-     }
-     be->users++;
--
-+    vmstate_register(NULL, -1, &iommufd_cpr_vmstate, be);
-     trace_iommufd_backend_connect(be->fd, be->owned, be->users);
-     return true;
+     vfio_migration_exit(vbasedev);
+     pci_device_unset_iommu_device(pdev);
  }
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 8aa02d4..342c40f 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -133,6 +133,7 @@ typedef struct VFIODevice {
+     OnOffAuto pre_copy_dirty_page_tracking;
+     bool dirty_pages_supported;
+     bool dirty_tracking;
++    bool is_mdev;
+     HostIOMMUDevice *hiod;
+     int devid;
+     IOMMUFDBackend *iommufd;
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index f8b7b26..e29cbb8 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -45,6 +45,7 @@ typedef struct VFIOContainerBase {
+     uint64_t max_dirty_bitmap_size;
+     unsigned long pgsizes;
+     unsigned int dma_max_mappings;
++    unsigned int n_mdev;
+     bool dirty_pages_supported;
+     QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+     QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
+@@ -54,6 +55,7 @@ typedef struct VFIOContainerBase {
+     NotifierWithReturn cpr_reboot_notifier;
+     NotifierWithReturn cpr_exec_notifier;
+     Error *cpr_blocker;
++    Error *cpr_mdev_blocker;
+ } VFIOContainerBase;
+ 
+ typedef struct VFIOGuestIOMMU {
 -- 
 1.8.3.1
 
