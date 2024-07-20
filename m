@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF459382A6
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039FF9382AA
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:17:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVFZB-0007Di-Um; Sat, 20 Jul 2024 15:16:25 -0400
+	id 1sVFZE-0007MK-Bk; Sat, 20 Jul 2024 15:16:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFYx-0006q6-JO
+ id 1sVFYt-0006pu-CI
  for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:14 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFYk-0000pY-Sj
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:06 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJFiNO017251;
- Sat, 20 Jul 2024 19:15:44 GMT
+ id 1sVFYk-0000pc-Se
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:03 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJAbUS021307;
+ Sat, 20 Jul 2024 19:15:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=gpAaa9HSbr+6w0SO4zYiChdvbrFszVDHKwG0Gs2gAnA=; b=
- om6GkSBV9fU0KTC/X/UlR3e+eCZdqHvRuIJyoHTtEUB0FduZPd91RRU13EZSDYu1
- 9JG+bocvhOWX5KZnTe+t+yPb75h/YDGxYZsA5Rv+CC77LEtpOyWl/WsMIoysJT8X
- P9DFwBsPEa1S+82UxJwATTVPch3nbetUeokQyD5oBqGhD4YdnFynL3rZ1R5oPiBF
- rbAouQwiineI+vpcPnhSoMeNLTht27Wu8wWYir1yss1Sar7lWdPN7flY6nkxPvsu
- NKa+dIZ+pAZpVM13Qy1EXrpp5pKLOFbiKBRFSum6FCv71VH4kMPgnAXw2BWCQuEF
- ZA4vuPdqCGiN3jMliNK1nQ==
+ corp-2023-11-20; bh=7tzmnxKwo2znaMzLs9b303Ot3KrE0JHiqIjx0pM+AQk=; b=
+ ReYqZCap+RNHb9xFUGrG0UVQyVuwu7d2uV0XUDpgJ6vk2BSt/iEsKg7199C53pTH
+ uF/lWvpYIUOKqrUhJ5+EAXviDcpBiPBcg9mXNHjDdarzVTEKq3YAjDbwITJk1Jcf
+ IUMmKxL/qvYtofAUJ0hmarhZAHtKG33SezIoy1+7KthoFWmW/gBEG5SnbXnna5qW
+ gSxburRD758PHOgXfZ4fC95OhgUiuXka7Vm5CoFMAVd0wlvTlq//VESt9GpUJdF2
+ CaAoQPng+2NQePrurcOTzM9nO+itf9M7ANT631RM5EpB/Aoznwi4rMIdQqOdVTcK
+ aRUS52idNMbKc4vPEd0Ajg==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk7w000a-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5gr055-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:44 +0000 (GMT)
+ Sat, 20 Jul 2024 19:15:45 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46KH5ckn027509; Sat, 20 Jul 2024 19:15:44 GMT
+ with ESMTP id 46KIF8QN027510; Sat, 20 Jul 2024 19:15:45 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40g3p5putv-1
+ 40g3p5puty-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:43 +0000
+ Sat, 20 Jul 2024 19:15:45 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdf7028365;
- Sat, 20 Jul 2024 19:15:43 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdf9028365;
+ Sat, 20 Jul 2024 19:15:44 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 40g3p5pusv-4; Sat, 20 Jul 2024 19:15:43 +0000
+ ESMTP id 40g3p5pusv-5; Sat, 20 Jul 2024 19:15:44 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -62,9 +62,9 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 03/12] iommufd: pass name to connect
-Date: Sat, 20 Jul 2024 12:15:28 -0700
-Message-Id: <1721502937-87102-4-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 04/12] migration: cpr_find_fd_any
+Date: Sat, 20 Jul 2024 12:15:29 -0700
+Message-Id: <1721502937-87102-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
 References: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2407200140
-X-Proofpoint-ORIG-GUID: jshvbBiRpXkyEkfobyOr4P5ltYtE2vGk
-X-Proofpoint-GUID: jshvbBiRpXkyEkfobyOr4P5ltYtE2vGk
+X-Proofpoint-GUID: z0rzYnRqnXyymF91NvI1MsEyXCNYAXdG
+X-Proofpoint-ORIG-GUID: z0rzYnRqnXyymF91NvI1MsEyXCNYAXdG
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,85 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass device name to iommufd_backend_connect and iommufd_backend_disconnect,
-for use by CPR in a subsequent patch.  No functional change.
+Add a function for finding a CPR fd by name, for any value of id, and
+return the id.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- backends/iommufd.c       | 4 ++--
- hw/vfio/iommufd.c        | 6 +++---
- include/sysemu/iommufd.h | 5 +++--
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ include/migration/cpr.h |  1 +
+ migration/cpr.c         | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 84fefbc..fc37386 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -72,7 +72,7 @@ static void iommufd_backend_class_init(ObjectClass *oc, void *data)
-     object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+index bfd9864..c9e6111 100644
+--- a/include/migration/cpr.h
++++ b/include/migration/cpr.h
+@@ -19,6 +19,7 @@ typedef int (*cpr_walk_fd_cb)(int fd);
+ void cpr_save_fd(const char *name, int id, int fd);
+ void cpr_delete_fd(const char *name, int id);
+ int cpr_find_fd(const char *name, int id);
++int cpr_find_fd_any(const char *name, int *id_p);
+ int cpr_walk_fd(cpr_walk_fd_cb cb);
+ void cpr_resave_fd(const char *name, int id, int fd);
+ 
+diff --git a/migration/cpr.c b/migration/cpr.c
+index 853d3a1..096e8d8 100644
+--- a/migration/cpr.c
++++ b/migration/cpr.c
+@@ -109,6 +109,21 @@ int cpr_find_fd(const char *name, int id)
+     return fd;
  }
  
--bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
-+bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
++int cpr_find_fd_any(const char *name, int *id_p)
++{
++    CprFd *elem;
++
++    QLIST_FOREACH(elem, &cpr_state.fds, next) {
++        if (!strcmp(elem->name, name)) {
++            trace_cpr_find_fd(name, elem->id, elem->fd);
++            *id_p = elem->id;
++            return elem->fd;
++        }
++    }
++    trace_cpr_find_fd(name, -1, -1);
++    return -1;
++}
++
+ int cpr_walk_fd(cpr_walk_fd_cb cb)
  {
-     int fd;
- 
-@@ -90,7 +90,7 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
-     return true;
- }
- 
--void iommufd_backend_disconnect(IOMMUFDBackend *be)
-+void iommufd_backend_disconnect(IOMMUFDBackend *be, const char *name)
- {
-     if (!be->users) {
-         goto out;
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index c2f158e..255966a 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -71,7 +71,7 @@ static bool iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
-         .flags = 0,
-     };
- 
--    if (!iommufd_backend_connect(iommufd, errp)) {
-+    if (!iommufd_backend_connect(iommufd, vbasedev->name, errp)) {
-         return false;
-     }
- 
-@@ -99,7 +99,7 @@ static bool iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
- err_bind:
-     iommufd_cdev_kvm_device_del(vbasedev);
- err_kvm_device_add:
--    iommufd_backend_disconnect(iommufd);
-+    iommufd_backend_disconnect(iommufd, vbasedev->name);
-     return false;
- }
- 
-@@ -107,7 +107,7 @@ static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
- {
-     /* Unbind is automatically conducted when device fd is closed */
-     iommufd_cdev_kvm_device_del(vbasedev);
--    iommufd_backend_disconnect(vbasedev->iommufd);
-+    iommufd_backend_disconnect(vbasedev->iommufd, vbasedev->name);
- }
- 
- static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
-diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-index 9edfec6..aa195d1 100644
---- a/include/sysemu/iommufd.h
-+++ b/include/sysemu/iommufd.h
-@@ -37,8 +37,9 @@ struct IOMMUFDBackend {
-     /*< public >*/
- };
- 
--bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
--void iommufd_backend_disconnect(IOMMUFDBackend *be);
-+bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name,
-+                             Error **errp);
-+void iommufd_backend_disconnect(IOMMUFDBackend *be, const char *name);
- 
- bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-                                 Error **errp);
+     CprFd *elem;
 -- 
 1.8.3.1
 
