@@ -2,82 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134E29380A4
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 12:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 768FE9380BE
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 12:34:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sV76K-0002Aj-Po; Sat, 20 Jul 2024 06:14:04 -0400
+	id 1sV7OU-0007oD-8h; Sat, 20 Jul 2024 06:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1sV76I-000249-LF; Sat, 20 Jul 2024 06:14:02 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1sV76E-0007Ti-Gt; Sat, 20 Jul 2024 06:14:02 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2c964f5a037so1517235a91.0; 
- Sat, 20 Jul 2024 03:13:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721470436; x=1722075236; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=C0BBV5nuncJnOTjO2WBAoROuWAORFmcild+shMcgOHg=;
- b=Hp61c1OML+ZBmtjQt4UERUrhewA4kYBs4UqWW821s7ZtDavwmxHXTLc5JdjCLKBIm2
- NmHvHO8yCYO6pfBLkSEty8e8CL4FRa5ZvhVI5xKNnrlZGlZHKE4sV2UlTKT2Fr1qsbQN
- OCBlILPj8aWS3e/UsSmFZCR4rtPqAZ2LrE+4Hp0Y8Hfq5b0z/0XX81obbyA5peTgDgpr
- a0Dm3iqAGYTuI6jlteyHPOWYZF2bKTrBbMII/wKW81sGyszVSOeHCjweJYVYPabsk14U
- 0IxSShgqLLws3b6uaPA+3ZOUkKyi3x5VZg/GJ9krVgXm7/ItzTnK0Hug3Q8wcD/QgLB6
- n6Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721470436; x=1722075236;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=C0BBV5nuncJnOTjO2WBAoROuWAORFmcild+shMcgOHg=;
- b=Ugcx89ZosN6qg7GCTrFKveTluyWKzhNdjNeERCTiVZDQ3VTP/GW1TXAklCwh0r3dF+
- euJXWvYqCByyBnkrCZaIb9FJ0Io8xVm2i/ABlwu69IseB0+bm+Qdeqn/rwciYCQ6Zx8Y
- rkA/ddWzUc2MpKgO6WNnJ2t/GLJlM5MRaoLSYGODucIG3ebgYKRghIwZZJPl4I9M5zOc
- zHz7adeaGk2mukD9xCTBDMIOMwKOnhIU5o9cPRz2s88Gwb2sWd/922K1XbIm1dRwh5aL
- 04MMEoE3bv32qs+X7CFGehyFyoVY9ekDj271jfyQFzTPBakrZRwf3Kvy1Q5V5yHMs95o
- JJpA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUAl19VlR9nQQ57zbxeNKaqhK3ok4FmcKuCGRMT4rWStn4ZPp5TOCxIIDMUaDAGY2zQUTk/AfXUhtM0cMT1frjb1y16D4U=
-X-Gm-Message-State: AOJu0YwmKN7QsGGRs9VS17QWxXmZh3wUTid9X4NCtRrzxas5UpnrjouT
- so5v2ogV1gkM0HY0cLQxTA4PhEj4CBMlrF2xf0Uzq7AMnM/xdgw+nTrRss6HAHExcA==
-X-Google-Smtp-Source: AGHT+IFV0bqn1aeULL6rEYh7Gyfw2XYTDiRBZhifKgHCOIQsU+vOv1zgn6sM6xh1vAIX0vjI9SlY+A==
-X-Received: by 2002:a05:6a21:670d:b0:1c2:8d2f:65f4 with SMTP id
- adf61e73a8af0-1c4229a42fbmr2131254637.44.1721470435191; 
- Sat, 20 Jul 2024 03:13:55 -0700 (PDT)
-Received: from amjad-pc.. ([202.185.212.207]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cb76a5fc6csm4411208a91.0.2024.07.20.03.13.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Jul 2024 03:13:54 -0700 (PDT)
-From: Amjad Alsharafi <amjadsharafi10@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- "open list:vvfat" <qemu-block@nongnu.org>,
- Amjad Alsharafi <amjadsharafi10@gmail.com>
-Subject: [PATCH v6 5/5] iotests: Add `vvfat` tests
-Date: Sat, 20 Jul 2024 18:13:34 +0800
-Message-ID: <bb8149c945301aefbdf470a0924c07f69f9c087d.1721470238.git.amjadsharafi10@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1721470238.git.amjadsharafi10@gmail.com>
-References: <cover.1721470238.git.amjadsharafi10@gmail.com>
+ (Exim 4.90_1) (envelope-from <taisei1212@outlook.jp>)
+ id 1sV7OS-0007m1-GF
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 06:32:48 -0400
+Received: from mail-sgaapc01acsn20806.outbound.protection.outlook.com
+ ([2a01:111:f400:feab::806]
+ helo=APC01-SG2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <taisei1212@outlook.jp>)
+ id 1sV7OP-0002aJ-8M
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 06:32:48 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eqECLAaFXlmfHMnpplzQDQnmD1LHeeJElaE2fCYLmRnPm29JAnaB4GnFvEBn/+MnYU0xl/J9NHgzFSHNBQbLrqlvfKWoSyNerZ0Gq+RVAjc1n3Yeex/o2Af5tg9vn1hffVZTDCmftReLuM/4/jPt41OTrO3ECL7SO34um5KH9/VTMTPYIYKtOzr1UJiwGgd+uo0voPojIek7r27kbl2uK/G6cCfyna/12P8yZvwAlKpNbyAZPCPZN1LHwxwjN+ul7/kBCB9WqYbfjVzwzahceGkk2xV8BBwNDklE4RUXy/aYqW+x/OVEqeGLjIegSn4keQZkeVUkEk9U0wqjl5s6lQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GoYVBQp/4x/10TVLDvHFE/OPzzTvTXbemudPrvzoeVo=;
+ b=anFrg9iueLyQT8zpzyNQhOcILPXbTvzaOuUCVAS+OfrvbeA6QOHKS92RBFWO9fG6zbxvA/AvQ5hSxDLw94P2SdeujP8+3CgjcWMh0+TA3eWdumib51U2dUdZeAkfA72kFa/8kh22uHJXe3Q/l9HbII/yvBSqyGeK8+Rmy9L3M+UT1lieCh7+kEivu1bNhu0UnkaApcJSXanGUpHZwwyl1gFmTYEuaR+QHLKHNJJjDjkKnGd3ua2IxAGy7Vzn0GhscoRlZD16sTgeXeREthShockZpxn0MLVGeWR13M8Ro29ahu9nRmOX+9WNU16PsOZManm04O4sXIlzPPFE3ED6UQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=OUTLOOK.JP;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GoYVBQp/4x/10TVLDvHFE/OPzzTvTXbemudPrvzoeVo=;
+ b=nYKU36roVypopHoMjZo3GMzx9LuWHQdE3qFD1mkG1vjytA+R8ElX0RsPZ/ny7lZ1dZ/RRnbdZ4zqWcSsrZ7nVzsA0ARhOueA4bc+viuH4Y3XlDXW9YvOCVNYhKOwB+JJpaI+jX8HiJmm8cdT17VKAvmqklC2Sl5kk8NV8zN1oh1kADOK6foUMr6aQM0uWuefOy3CzofIaizXJpchLwTso2Co379G4Y8h5kQ89dmydw/jsZXG5cwj85yykH7+LB6qZ/HNmJxcuL+VKOLiEzpHGm3Uz7QAiETN7ubkNauFJlzNoKVsvdq7geJZ4G0wp+X6fCxo09fTMCV+pUcD6Fnj7w==
+Received: from TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:1b0::11) by SEYPR01MB4831.apcprd01.prod.exchangelabs.com
+ (2603:1096:101:c1::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16; Sat, 20 Jul
+ 2024 10:32:35 +0000
+Received: from TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ ([fe80::85c5:f6c5:8a81:ee35]) by
+ TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ ([fe80::85c5:f6c5:8a81:ee35%7]) with mapi id 15.20.7784.017; Sat, 20 Jul 2024
+ 10:32:35 +0000
+From: =?iso-2022-jp?B?GyRCMEtGIxsoQiAbJEJCQEA2GyhC?= <taisei1212@outlook.jp>
+To: Paolo Bonzini <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "mst@redhat.com" <mst@redhat.com>, "marcel.apfelbaum@gmail.com"
+ <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v2] hw/timer/hpet: Fix wrong HPET interrupts
+Thread-Topic: [PATCH v2] hw/timer/hpet: Fix wrong HPET interrupts
+Thread-Index: AQHa1Rtwdn1tm3IkKE2rzfA3EdJbv7H5Me+AgAZDt+U=
+Date: Sat, 20 Jul 2024 10:32:34 +0000
+Message-ID: <TY0PR0101MB4285DE1F3A47F29C5BC0018DA4AE2@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
+References: <TY0PR0101MB42852FB948F0F0E8E753E257A4A72@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
+ <acc7f06a-0a95-428b-8946-71286fbcceb1@redhat.com>
+In-Reply-To: <acc7f06a-0a95-428b-8946-71286fbcceb1@redhat.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn: [ZelysuXBJoSbK1lbN7YuDAbnSzVuEBCX]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY0PR0101MB4285:EE_|SEYPR01MB4831:EE_
+x-ms-office365-filtering-correlation-id: 9e448880-afda-4810-1d91-08dca8a744f9
+x-microsoft-antispam: BCL:0;
+ ARA:14566002|9400799024|12050799009|8060799006|461199028|19110799003|1602099012|440099028|102099032|4302099013|3412199025;
+x-microsoft-antispam-message-info: 52+YYeznf0jgLFuIF49Ca8seQYG8pMDgn/WbFbytHbyNp48zSPVG4D9qiwfDdca3vZtbaDACSQ5RxnbK4ZsE1xXF3xZim/Zz5x6LzOh9K1n6Zminqvili1fwnw2zlL639ZNkeqDNDauoRyzKrRnp1KxJi9/s38tGqIrjirw+Cn9JCBsvNWP3HzsZb6M38ZKL2NH3pp3XLUjq1sy5uo2dFT6JVWJQ13YEapipQacbwgaoBf95Cc0H8tVf2wSOHveZhkp4TQL05o5XaClMiF4TyUQZLOnLsjSwP/135iUuOx/zQPzxtXUbX+7uqZlt1K/iNFNoCo5TZjyw2XF93glvGAVyKQzD++kZKqDV9ZNRuUbR/sXc1IjcDKaRgh3pSYtUCkt63yuSqUZA/njNLAxzXh8wLb15yI+9nxCPFdLyK4avSGv8k6zOX68tZQ08GV+SPH95QkjO0Ebax8oOcBuOQzfnHkDuprcPSHXEq0KhEPKU306ua+PYXFSbDeifskVIQot0XtwH0cnVpRqR6jbPKAggE8QelgyL+EfTS+VXuYReBYFV4Zc/FcXozrZtG1eEfQzFZKhG0MJe3W2gTOMV9bjcwNH5M3U0bQdyCBED18t67OXlm5lrd9UCLaSFoHUtJ54otPUfgyVNfLP2JaZCYPqDqoi7E7+F9GkEHQflFIVmAuLcVWuVghB6HIPK1VoRYm8h5cztRRYAM25Ba81F4FUGseqVFLmCpfJRxh8TiJzK4AGu89A/DL6qg3eVvufnBMW6HKMQ4EvaXk8AIXIRRQXWjs3+Nf0GBltVTzbzYiTlPKQCexE2R7YQpes4xJT3
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-2022-jp?B?QlRGSjFnOE1JalFVcURMbjhSZDg5OXRHWUx0QzM3Uko5OWNkelB3aVN3?=
+ =?iso-2022-jp?B?SWtReitEdHU5ZHkrYURUWlRHdlZlZ0s1ZEEvQU5WY3hsK0NTWDV6SWxI?=
+ =?iso-2022-jp?B?akhiY1R6N2dsUjBHOTlFcktDclU1NVFBUWdGTUoraDZYTDlwdlNIUTNL?=
+ =?iso-2022-jp?B?M2VoUHhCQnpYaWU2S0J2TEIrNkhPQ096SFVaQllSdXpwbFJUZjFIMEVx?=
+ =?iso-2022-jp?B?V0taYmFBYkpqdGZUSnMwVFJDNmt4Sisvc0ZpM255d3lqREd0S0F1S2t1?=
+ =?iso-2022-jp?B?TTJEUmpJMWNLcHdYVk9lZ2hSUjBIZ3loc2NZblRDcWdnbll5WmpiVTdI?=
+ =?iso-2022-jp?B?em5XakIvenhzZ3pJdjNlSHA4S3hnV1BrMEtZV3JiSmpXaXg4MjN1Mmly?=
+ =?iso-2022-jp?B?SUZETnBHZ1dLWFVQMXpJQzNkMVFhVzNSYnl2MzBBa243WHNvTHQxZUpt?=
+ =?iso-2022-jp?B?blM2clp0UjdrZ3pPaUdqK01ONGhvMjNxL3NZSGtoZVNsMUNGbDRLSkYr?=
+ =?iso-2022-jp?B?WXB3U1o1TVBCUFAzd0t0Nmx4VTFGOThHWm1VOVJFM3ladGJpOGZwVmF3?=
+ =?iso-2022-jp?B?ZGFzWFFwQmY4cXRnMFJUOFlPZUYvYXY4UW5YYzJ5Y09sbDYvRmhEQjBJ?=
+ =?iso-2022-jp?B?WkFGUGI3MjhOa1pGc0FEQ2l4dG4xcGoyWGxrZEJEeVErWTVHVm8vcmxU?=
+ =?iso-2022-jp?B?b1VZamFsS25sRnhlL1piL0VxbnN2UTJCeDFNeFJmdWZqTFp4d0ZwRW9S?=
+ =?iso-2022-jp?B?aW8zZkRZZ2QvNk9vdi9lNkp4aXRRSnhmc0haek0rRnVCcXpFLy9JdTBh?=
+ =?iso-2022-jp?B?M29KOGYvVWIxM2ppSVd0TDMvM3lOeEFUbkcxemVqODd4a0FVRmx3SWhw?=
+ =?iso-2022-jp?B?V1o5emxjUFI2UE5TUEtWek1oR2lTZFRUMUllMS9wUkNtWjZwZkw0TjJK?=
+ =?iso-2022-jp?B?VmxWVVdSM29MV2ZJdzc0V21pQXNFbTRqWS9TUGlJaFFoYSt4V29ZRUJw?=
+ =?iso-2022-jp?B?M0NSRHdzSU9mbHhTZUVidVI4bXVDYzl2Mkh4ZmJ3aE5hQWdpdDdEeUph?=
+ =?iso-2022-jp?B?UmhiSXF3bUVRNjlSUUV0cmZNQkhGbkpVdUVweDhuWll5dmFIVVM1WHpq?=
+ =?iso-2022-jp?B?UnI1Q2c3dlEzc2wrSkoyVjhxVm1YZEpxNWJtTXlZc1h1QTN4bCtCVEhK?=
+ =?iso-2022-jp?B?NEwxc1QxcHNmUm4yVDVuaW1uUUVOK1RzcFpnRHlRamM4TjJremo0L29y?=
+ =?iso-2022-jp?B?RTkwV3RpMmpJN0JORkdpek56U3RtWW1KcTVUeXI1L0JYRXNCRU1XbFNZ?=
+ =?iso-2022-jp?B?UFY2MlQrREE1K0VRNDVTTC9XN05MM1pJWkViQ01Xbml5SVk3NkxJU3R2?=
+ =?iso-2022-jp?B?KzE2ZGdIbWtERy9JdTNxZlBxT0htSXBZNVNlMHE0QzBmWWx6RnFReWVJ?=
+ =?iso-2022-jp?B?eWpGOXhWbFVvQU5qa09SYXNUWjhWUzkxL2NMYmhUU1VXWjYzWEpnaU1s?=
+ =?iso-2022-jp?B?TVpsMXEwYXhmR2k4d1dZRC9WdFZCdHMvTmx3bnJxNTdNNnRNQUN5T2pY?=
+ =?iso-2022-jp?B?WVhteGxiY3RSMkF4aTF2VXV4TDhicjk2c2JTTVFRT0pVWHZxUjJGbndT?=
+ =?iso-2022-jp?B?QW5nOGtabEhiMUl4SzFjWDUxNUZrOU81TGQyOWFJT0xaK0ZwQSt2c0hL?=
+ =?iso-2022-jp?B?QUdHd3cwd0x4dnl2eDM5aTd0d1ZWRVFTMmtVbTk5M0Z1ZnErZGN1NmMx?=
+ =?iso-2022-jp?B?cExmMzdVZHVMUzF3NCtyM2ZFbnI3bmx0QTJHZXJWNkFsWjZlRlFLV0U9?=
+Content-Type: multipart/alternative;
+ boundary="_000_TY0PR0101MB4285DE1F3A47F29C5BC0018DA4AE2TY0PR0101MB4285_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=amjadsharafi10@gmail.com; helo=mail-pj1-x1031.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-d8e84.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e448880-afda-4810-1d91-08dca8a744f9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jul 2024 10:32:34.9323 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR01MB4831
+Received-SPF: pass client-ip=2a01:111:f400:feab::806;
+ envelope-from=taisei1212@outlook.jp;
+ helo=APC01-SG2-obe.outbound.protection.outlook.com
+X-Spam_score_int: 24
+X-Spam_score: 2.4
+X-Spam_bar: ++
+X-Spam_report: (2.4 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FREEMAIL_REPLY=1,
+ HTML_MESSAGE=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,1210 +140,436 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added several tests to verify the implementation of the vvfat driver.
+--_000_TY0PR0101MB4285DE1F3A47F29C5BC0018DA4AE2TY0PR0101MB4285_
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
 
-We needed a way to interact with it, so created a basic `fat16.py` driver
-that handled writing correct sectors for us.
+Thank you for preparing the hpet branch. I tried to use the branch. Your
+modification was not enough to solve my problem but I confirmed that the
+problem is completely solved by adding the following 2 patches on your hpet
+branch.
 
-Added `vvfat` to the non-generic formats, as its not a normal image format.
+https://lore.kernel.org/qemu-devel/TY0PR0101MB42850337F8917D1F514107FBA4D52=
+@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com/
+https://lore.kernel.org/qemu-devel/TY0PR0101MB4285D5A3587179A5788F3356A4AE2=
+@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com/
 
-Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Tested-by: Kevin Wolf <kwolf@redhat.com>
----
- tests/qemu-iotests/check           |   2 +-
- tests/qemu-iotests/fat16.py        | 675 +++++++++++++++++++++++++++++
- tests/qemu-iotests/testenv.py      |   2 +-
- tests/qemu-iotests/tests/vvfat     | 458 +++++++++++++++++++
- tests/qemu-iotests/tests/vvfat.out |   5 +
- 5 files changed, 1140 insertions(+), 2 deletions(-)
- create mode 100644 tests/qemu-iotests/fat16.py
- create mode 100755 tests/qemu-iotests/tests/vvfat
- create mode 100755 tests/qemu-iotests/tests/vvfat.out
+Taisei
+________________________________
+=1B$B:9=3DP?M=1B(B: Paolo Bonzini <pbonzini@redhat.com>
+=1B$BAw?.F|;~=1B(B: 2024=1B$BG/=1B(B7=1B$B7n=1B(B16=1B$BF|=1B(B 19:51
+=1B$B08@h=1B(B: TaiseiIto <taisei1212@outlook.jp>; qemu-devel@nongnu.org <q=
+emu-devel@nongnu.org>
+CC: mst@redhat.com <mst@redhat.com>; marcel.apfelbaum@gmail.com <marcel.apf=
+elbaum@gmail.com>
+=1B$B7oL>=1B(B: Re: [PATCH v2] hw/timer/hpet: Fix wrong HPET interrupts
 
-diff --git a/tests/qemu-iotests/check b/tests/qemu-iotests/check
-index 56d88ca423..545f9ec7bd 100755
---- a/tests/qemu-iotests/check
-+++ b/tests/qemu-iotests/check
-@@ -84,7 +84,7 @@ def make_argparser() -> argparse.ArgumentParser:
-     p.set_defaults(imgfmt='raw', imgproto='file')
- 
-     format_list = ['raw', 'bochs', 'cloop', 'parallels', 'qcow', 'qcow2',
--                   'qed', 'vdi', 'vpc', 'vhdx', 'vmdk', 'luks', 'dmg']
-+                   'qed', 'vdi', 'vpc', 'vhdx', 'vmdk', 'luks', 'dmg', 'vvfat']
-     g_fmt = p.add_argument_group(
-         '  image format options',
-         'The following options set the IMGFMT environment variable. '
-diff --git a/tests/qemu-iotests/fat16.py b/tests/qemu-iotests/fat16.py
-new file mode 100644
-index 0000000000..0acc987da6
---- /dev/null
-+++ b/tests/qemu-iotests/fat16.py
-@@ -0,0 +1,675 @@
-+# A simple FAT16 driver that is used to test the `vvfat` driver in QEMU.
-+#
-+# Copyright (C) 2024 Amjad Alsharafi <amjadsharafi10@gmail.com>
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+
-+from typing import List
-+import string
-+
-+SECTOR_SIZE = 512
-+DIRENTRY_SIZE = 32
-+ALLOWED_FILE_CHARS = set(
-+    "!#$%&'()-@^_`{}~" + string.digits + string.ascii_uppercase
-+)
-+
-+
-+class MBR:
-+    def __init__(self, data: bytes):
-+        assert len(data) == 512
-+        self.partition_table = []
-+        for i in range(4):
-+            partition = data[446 + i * 16 : 446 + (i + 1) * 16]
-+            self.partition_table.append(
-+                {
-+                    "status": partition[0],
-+                    "start_head": partition[1],
-+                    "start_sector": partition[2] & 0x3F,
-+                    "start_cylinder": ((partition[2] & 0xC0) << 2)
-+                                      | partition[3],
-+                    "type": partition[4],
-+                    "end_head": partition[5],
-+                    "end_sector": partition[6] & 0x3F,
-+                    "end_cylinder": ((partition[6] & 0xC0) << 2) | partition[7],
-+                    "start_lba": int.from_bytes(partition[8:12], "little"),
-+                    "size": int.from_bytes(partition[12:16], "little"),
-+                }
-+            )
-+
-+    def __str__(self):
-+        return "\n".join(
-+            [
-+                f"{i}: {partition}"
-+                for i, partition in enumerate(self.partition_table)
-+            ]
-+        )
-+
-+
-+class FatBootSector:
-+    def __init__(self, data: bytes):
-+        assert len(data) == 512
-+        self.bytes_per_sector = int.from_bytes(data[11:13], "little")
-+        self.sectors_per_cluster = data[13]
-+        self.reserved_sectors = int.from_bytes(data[14:16], "little")
-+        self.fat_count = data[16]
-+        self.root_entries = int.from_bytes(data[17:19], "little")
-+        total_sectors_16 = int.from_bytes(data[19:21], "little")
-+        self.media_descriptor = data[21]
-+        self.sectors_per_fat = int.from_bytes(data[22:24], "little")
-+        self.sectors_per_track = int.from_bytes(data[24:26], "little")
-+        self.heads = int.from_bytes(data[26:28], "little")
-+        self.hidden_sectors = int.from_bytes(data[28:32], "little")
-+        total_sectors_32 = int.from_bytes(data[32:36], "little")
-+        assert (
-+            total_sectors_16 == 0 or total_sectors_32 == 0
-+        ), "Both total sectors (16 and 32) fields are non-zero"
-+        self.total_sectors = total_sectors_16 or total_sectors_32
-+        self.drive_number = data[36]
-+        self.volume_id = int.from_bytes(data[39:43], "little")
-+        self.volume_label = data[43:54].decode("ascii").strip()
-+        self.fs_type = data[54:62].decode("ascii").strip()
-+
-+    def root_dir_start(self):
-+        """
-+        Calculate the start sector of the root directory.
-+        """
-+        return self.reserved_sectors + self.fat_count * self.sectors_per_fat
-+
-+    def root_dir_size(self):
-+        """
-+        Calculate the size of the root directory in sectors.
-+        """
-+        return (
-+            self.root_entries * DIRENTRY_SIZE + self.bytes_per_sector - 1
-+        ) // self.bytes_per_sector
-+
-+    def data_sector_start(self):
-+        """
-+        Calculate the start sector of the data region.
-+        """
-+        return self.root_dir_start() + self.root_dir_size()
-+
-+    def first_sector_of_cluster(self, cluster: int):
-+        """
-+        Calculate the first sector of the given cluster.
-+        """
-+        return (
-+            self.data_sector_start() + (cluster - 2) * self.sectors_per_cluster
-+        )
-+
-+    def cluster_bytes(self):
-+        """
-+        Calculate the number of bytes in a cluster.
-+        """
-+        return self.bytes_per_sector * self.sectors_per_cluster
-+
-+    def __str__(self):
-+        return (
-+            f"Bytes per sector: {self.bytes_per_sector}\n"
-+            f"Sectors per cluster: {self.sectors_per_cluster}\n"
-+            f"Reserved sectors: {self.reserved_sectors}\n"
-+            f"FAT count: {self.fat_count}\n"
-+            f"Root entries: {self.root_entries}\n"
-+            f"Total sectors: {self.total_sectors}\n"
-+            f"Media descriptor: {self.media_descriptor}\n"
-+            f"Sectors per FAT: {self.sectors_per_fat}\n"
-+            f"Sectors per track: {self.sectors_per_track}\n"
-+            f"Heads: {self.heads}\n"
-+            f"Hidden sectors: {self.hidden_sectors}\n"
-+            f"Drive number: {self.drive_number}\n"
-+            f"Volume ID: {self.volume_id}\n"
-+            f"Volume label: {self.volume_label}\n"
-+            f"FS type: {self.fs_type}\n"
-+        )
-+
-+
-+class FatDirectoryEntry:
-+    def __init__(self, data: bytes, sector: int, offset: int):
-+        self.name = data[0:8].decode("ascii").strip()
-+        self.ext = data[8:11].decode("ascii").strip()
-+        self.attributes = data[11]
-+        self.reserved = data[12]
-+        self.create_time_tenth = data[13]
-+        self.create_time = int.from_bytes(data[14:16], "little")
-+        self.create_date = int.from_bytes(data[16:18], "little")
-+        self.last_access_date = int.from_bytes(data[18:20], "little")
-+        high_cluster = int.from_bytes(data[20:22], "little")
-+        self.last_mod_time = int.from_bytes(data[22:24], "little")
-+        self.last_mod_date = int.from_bytes(data[24:26], "little")
-+        low_cluster = int.from_bytes(data[26:28], "little")
-+        self.cluster = (high_cluster << 16) | low_cluster
-+        self.size_bytes = int.from_bytes(data[28:32], "little")
-+
-+        # extra (to help write back to disk)
-+        self.sector = sector
-+        self.offset = offset
-+
-+    def as_bytes(self) -> bytes:
-+        return (
-+            self.name.ljust(8, " ").encode("ascii")
-+            + self.ext.ljust(3, " ").encode("ascii")
-+            + self.attributes.to_bytes(1, "little")
-+            + self.reserved.to_bytes(1, "little")
-+            + self.create_time_tenth.to_bytes(1, "little")
-+            + self.create_time.to_bytes(2, "little")
-+            + self.create_date.to_bytes(2, "little")
-+            + self.last_access_date.to_bytes(2, "little")
-+            + (self.cluster >> 16).to_bytes(2, "little")
-+            + self.last_mod_time.to_bytes(2, "little")
-+            + self.last_mod_date.to_bytes(2, "little")
-+            + (self.cluster & 0xFFFF).to_bytes(2, "little")
-+            + self.size_bytes.to_bytes(4, "little")
-+        )
-+
-+    def whole_name(self):
-+        if self.ext:
-+            return f"{self.name}.{self.ext}"
-+        else:
-+            return self.name
-+
-+    def __str__(self):
-+        return (
-+            f"Name: {self.name}\n"
-+            f"Ext: {self.ext}\n"
-+            f"Attributes: {self.attributes}\n"
-+            f"Reserved: {self.reserved}\n"
-+            f"Create time tenth: {self.create_time_tenth}\n"
-+            f"Create time: {self.create_time}\n"
-+            f"Create date: {self.create_date}\n"
-+            f"Last access date: {self.last_access_date}\n"
-+            f"Last mod time: {self.last_mod_time}\n"
-+            f"Last mod date: {self.last_mod_date}\n"
-+            f"Cluster: {self.cluster}\n"
-+            f"Size: {self.size_bytes}\n"
-+        )
-+
-+    def __repr__(self):
-+        # convert to dict
-+        return str(vars(self))
-+
-+
-+class Fat16:
-+    def __init__(
-+        self,
-+        start_sector: int,
-+        size: int,
-+        sector_reader: callable,
-+        sector_writer: callable,
-+    ):
-+        self.start_sector = start_sector
-+        self.size_in_sectors = size
-+        self.sector_reader = sector_reader
-+        self.sector_writer = sector_writer
-+
-+        self.boot_sector = FatBootSector(self.sector_reader(start_sector))
-+
-+        fat_size_in_sectors = (
-+            self.boot_sector.sectors_per_fat * self.boot_sector.fat_count
-+        )
-+        self.fats = self.read_sectors(
-+            self.boot_sector.reserved_sectors, fat_size_in_sectors
-+        )
-+        self.fats_dirty_sectors = set()
-+
-+    def read_sectors(self, start_sector: int, num_sectors: int) -> bytes:
-+        return self.sector_reader(start_sector + self.start_sector, num_sectors)
-+
-+    def write_sectors(self, start_sector: int, data: bytes):
-+        return self.sector_writer(start_sector + self.start_sector, data)
-+
-+    def directory_from_bytes(
-+        self, data: bytes, start_sector: int
-+    ) -> List[FatDirectoryEntry]:
-+        """
-+        Convert `bytes` into a list of `FatDirectoryEntry` objects.
-+        Will ignore long file names.
-+        Will stop when it encounters a 0x00 byte.
-+        """
-+
-+        entries = []
-+        for i in range(0, len(data), DIRENTRY_SIZE):
-+            entry = data[i : i + DIRENTRY_SIZE]
-+
-+            current_sector = start_sector + (i // SECTOR_SIZE)
-+            current_offset = i % SECTOR_SIZE
-+
-+            if entry[0] == 0:
-+                break
-+            elif entry[0] == 0xE5:
-+                # Deleted file
-+                continue
-+
-+            if entry[11] & 0xF == 0xF:
-+                # Long file name
-+                continue
-+
-+            entries.append(
-+                FatDirectoryEntry(entry, current_sector, current_offset)
-+            )
-+        return entries
-+
-+    def read_root_directory(self) -> List[FatDirectoryEntry]:
-+        root_dir = self.read_sectors(
-+            self.boot_sector.root_dir_start(), self.boot_sector.root_dir_size()
-+        )
-+        return self.directory_from_bytes(
-+            root_dir, self.boot_sector.root_dir_start()
-+        )
-+
-+    def read_fat_entry(self, cluster: int) -> int:
-+        """
-+        Read the FAT entry for the given cluster.
-+        """
-+        fat_offset = cluster * 2  # FAT16
-+        return int.from_bytes(self.fats[fat_offset : fat_offset + 2], "little")
-+
-+    def write_fat_entry(self, cluster: int, value: int):
-+        """
-+        Write the FAT entry for the given cluster.
-+        """
-+        fat_offset = cluster * 2
-+        self.fats = (
-+            self.fats[:fat_offset]
-+            + value.to_bytes(2, "little")
-+            + self.fats[fat_offset + 2 :]
-+        )
-+        self.fats_dirty_sectors.add(fat_offset // SECTOR_SIZE)
-+
-+    def flush_fats(self):
-+        """
-+        Write the FATs back to the disk.
-+        """
-+        for sector in self.fats_dirty_sectors:
-+            data = self.fats[sector * SECTOR_SIZE : (sector + 1) * SECTOR_SIZE]
-+            sector = self.boot_sector.reserved_sectors + sector
-+            self.write_sectors(sector, data)
-+        self.fats_dirty_sectors = set()
-+
-+    def next_cluster(self, cluster: int) -> int | None:
-+        """
-+        Get the next cluster in the chain.
-+        If its `None`, then its the last cluster.
-+        The function will crash if the next cluster
-+        is `FREE` (unexpected) or invalid entry.
-+        """
-+        fat_entry = self.read_fat_entry(cluster)
-+        if fat_entry == 0:
-+            raise Exception("Unexpected: FREE cluster")
-+        elif fat_entry == 1:
-+            raise Exception("Unexpected: RESERVED cluster")
-+        elif fat_entry >= 0xFFF8:
-+            return None
-+        elif fat_entry >= 0xFFF7:
-+            raise Exception("Invalid FAT entry")
-+        else:
-+            return fat_entry
-+
-+    def next_free_cluster(self) -> int:
-+        """
-+        Find the next free cluster.
-+        """
-+        # simple linear search
-+        for i in range(2, 0xFFFF):
-+            if self.read_fat_entry(i) == 0:
-+                return i
-+        raise Exception("No free clusters")
-+
-+    def next_free_cluster_non_continuous(self) -> int:
-+        """
-+        Find the next free cluster, but makes sure
-+        that the cluster before and after it are not allocated.
-+        """
-+        # simple linear search
-+        before = False
-+        for i in range(2, 0xFFFF):
-+            if self.read_fat_entry(i) == 0:
-+                if before and self.read_fat_entry(i + 1) == 0:
-+                    return i
-+                else:
-+                    before = True
-+            else:
-+                before = False
-+
-+        raise Exception("No free clusters")
-+
-+    def read_cluster(self, cluster: int) -> bytes:
-+        """
-+        Read the cluster at the given cluster.
-+        """
-+        return self.read_sectors(
-+            self.boot_sector.first_sector_of_cluster(cluster),
-+            self.boot_sector.sectors_per_cluster,
-+        )
-+
-+    def write_cluster(self, cluster: int, data: bytes):
-+        """
-+        Write the cluster at the given cluster.
-+        """
-+        assert len(data) == self.boot_sector.cluster_bytes()
-+        return self.write_sectors(
-+            self.boot_sector.first_sector_of_cluster(cluster),
-+            data,
-+        )
-+
-+    def read_directory(self, cluster: int) -> List[FatDirectoryEntry]:
-+        """
-+        Read the directory at the given cluster.
-+        """
-+        entries = []
-+        while cluster is not None:
-+            data = self.read_cluster(cluster)
-+            entries.extend(
-+                self.directory_from_bytes(
-+                    data, self.boot_sector.first_sector_of_cluster(cluster)
-+                )
-+            )
-+            cluster = self.next_cluster(cluster)
-+        return entries
-+
-+    def add_direntry(
-+        self, cluster: int | None, name: str, ext: str, attributes: int
-+    ):
-+        """
-+        Add a new directory entry to the given cluster.
-+        If the cluster is `None`, then it will be added to the root directory.
-+        """
-+
-+        def find_free_entry(data: bytes):
-+            for i in range(0, len(data), DIRENTRY_SIZE):
-+                entry = data[i : i + DIRENTRY_SIZE]
-+                if entry[0] == 0 or entry[0] == 0xE5:
-+                    return i
-+            return None
-+
-+        assert len(name) <= 8, "Name must be 8 characters or less"
-+        assert len(ext) <= 3, "Ext must be 3 characters or less"
-+        assert attributes % 0x15 != 0x15, "Invalid attributes"
-+
-+        # initial dummy data
-+        new_entry = FatDirectoryEntry(b"\0" * 32, 0, 0)
-+        new_entry.name = name.ljust(8, " ")
-+        new_entry.ext = ext.ljust(3, " ")
-+        new_entry.attributes = attributes
-+        new_entry.reserved = 0
-+        new_entry.create_time_tenth = 0
-+        new_entry.create_time = 0
-+        new_entry.create_date = 0
-+        new_entry.last_access_date = 0
-+        new_entry.last_mod_time = 0
-+        new_entry.last_mod_date = 0
-+        new_entry.cluster = self.next_free_cluster()
-+        new_entry.size_bytes = 0
-+
-+        # mark as EOF
-+        self.write_fat_entry(new_entry.cluster, 0xFFFF)
-+
-+        if cluster is None:
-+            for i in range(self.boot_sector.root_dir_size()):
-+                sector_data = self.read_sectors(
-+                    self.boot_sector.root_dir_start() + i, 1
-+                )
-+                offset = find_free_entry(sector_data)
-+                if offset is not None:
-+                    new_entry.sector = self.boot_sector.root_dir_start() + i
-+                    new_entry.offset = offset
-+                    self.update_direntry(new_entry)
-+                    return new_entry
-+        else:
-+            while cluster is not None:
-+                data = self.read_cluster(cluster)
-+                offset = find_free_entry(data)
-+                if offset is not None:
-+                    new_entry.sector = self.boot_sector.first_sector_of_cluster(
-+                        cluster
-+                    ) + (offset // SECTOR_SIZE)
-+                    new_entry.offset = offset % SECTOR_SIZE
-+                    self.update_direntry(new_entry)
-+                    return new_entry
-+                cluster = self.next_cluster(cluster)
-+
-+        raise Exception("No free directory entries")
-+
-+    def update_direntry(self, entry: FatDirectoryEntry):
-+        """
-+        Write the directory entry back to the disk.
-+        """
-+        sector = self.read_sectors(entry.sector, 1)
-+        sector = (
-+            sector[: entry.offset]
-+            + entry.as_bytes()
-+            + sector[entry.offset + DIRENTRY_SIZE :]
-+        )
-+        self.write_sectors(entry.sector, sector)
-+
-+    def find_direntry(self, path: str) -> FatDirectoryEntry | None:
-+        """
-+        Find the directory entry for the given path.
-+        """
-+        assert path[0] == "/", "Path must start with /"
-+
-+        path = path[1:]  # remove the leading /
-+        parts = path.split("/")
-+        directory = self.read_root_directory()
-+
-+        current_entry = None
-+
-+        for i, part in enumerate(parts):
-+            is_last = i == len(parts) - 1
-+
-+            for entry in directory:
-+                if entry.whole_name() == part:
-+                    current_entry = entry
-+                    break
-+            if current_entry is None:
-+                return None
-+
-+            if is_last:
-+                return current_entry
-+            else:
-+                if current_entry.attributes & 0x10 == 0:
-+                    raise Exception(
-+                        f"{current_entry.whole_name()} is not a directory"
-+                    )
-+                else:
-+                    directory = self.read_directory(current_entry.cluster)
-+
-+    def read_file(self, entry: FatDirectoryEntry | None) -> bytes | None:
-+        """
-+        Read the content of the file at the given path.
-+        """
-+        if entry is None:
-+            return None
-+        if entry.attributes & 0x10 != 0:
-+            raise Exception(f"{entry.whole_name()} is a directory")
-+
-+        data = b""
-+        cluster = entry.cluster
-+        while cluster is not None and len(data) <= entry.size_bytes:
-+            data += self.read_cluster(cluster)
-+            cluster = self.next_cluster(cluster)
-+        return data[: entry.size_bytes]
-+
-+    def truncate_file(
-+        self,
-+        entry: FatDirectoryEntry,
-+        new_size: int,
-+        allocate_non_continuous: bool = False,
-+    ):
-+        """
-+        Truncate the file at the given path to the new size.
-+        """
-+        if entry is None:
-+            return Exception("entry is None")
-+        if entry.attributes & 0x10 != 0:
-+            raise Exception(f"{entry.whole_name()} is a directory")
-+
-+        def clusters_from_size(size: int):
-+            return (
-+                size + self.boot_sector.cluster_bytes() - 1
-+            ) // self.boot_sector.cluster_bytes()
-+
-+        # First, allocate new FATs if we need to
-+        required_clusters = clusters_from_size(new_size)
-+        current_clusters = clusters_from_size(entry.size_bytes)
-+
-+        affected_clusters = set()
-+
-+        # Keep at least one cluster, easier to manage this way
-+        if required_clusters == 0:
-+            required_clusters = 1
-+        if current_clusters == 0:
-+            current_clusters = 1
-+
-+        if required_clusters > current_clusters:
-+            # Allocate new clusters
-+            cluster = entry.cluster
-+            to_add = required_clusters
-+            for _ in range(current_clusters - 1):
-+                to_add -= 1
-+                assert cluster is not None, "Cluster is None"
-+                affected_clusters.add(cluster)
-+                cluster = self.next_cluster(cluster)
-+            assert required_clusters > 0, "No new clusters to allocate"
-+            assert cluster is not None, "Cluster is None"
-+            assert (
-+                self.next_cluster(cluster) is None
-+            ), "Cluster is not the last cluster"
-+
-+            # Allocate new clusters
-+            for _ in range(to_add - 1):
-+                if allocate_non_continuous:
-+                    new_cluster = self.next_free_cluster_non_continuous()
-+                else:
-+                    new_cluster = self.next_free_cluster()
-+                self.write_fat_entry(cluster, new_cluster)
-+                self.write_fat_entry(new_cluster, 0xFFFF)
-+                cluster = new_cluster
-+
-+        elif required_clusters < current_clusters:
-+            # Truncate the file
-+            cluster = entry.cluster
-+            for _ in range(required_clusters - 1):
-+                assert cluster is not None, "Cluster is None"
-+                cluster = self.next_cluster(cluster)
-+            assert cluster is not None, "Cluster is None"
-+
-+            next_cluster = self.next_cluster(cluster)
-+            # mark last as EOF
-+            self.write_fat_entry(cluster, 0xFFFF)
-+            # free the rest
-+            while next_cluster is not None:
-+                cluster = next_cluster
-+                next_cluster = self.next_cluster(next_cluster)
-+                self.write_fat_entry(cluster, 0)
-+
-+        self.flush_fats()
-+
-+        # verify number of clusters
-+        cluster = entry.cluster
-+        count = 0
-+        while cluster is not None:
-+            count += 1
-+            affected_clusters.add(cluster)
-+            cluster = self.next_cluster(cluster)
-+        assert (
-+            count == required_clusters
-+        ), f"Expected {required_clusters} clusters, got {count}"
-+
-+        # update the size
-+        entry.size_bytes = new_size
-+        self.update_direntry(entry)
-+
-+        # trigger every affected cluster
-+        for cluster in affected_clusters:
-+            first_sector = self.boot_sector.first_sector_of_cluster(cluster)
-+            first_sector_data = self.read_sectors(first_sector, 1)
-+            self.write_sectors(first_sector, first_sector_data)
-+
-+    def write_file(self, entry: FatDirectoryEntry, data: bytes):
-+        """
-+        Write the content of the file at the given path.
-+        """
-+        if entry is None:
-+            return Exception("entry is None")
-+        if entry.attributes & 0x10 != 0:
-+            raise Exception(f"{entry.whole_name()} is a directory")
-+
-+        data_len = len(data)
-+
-+        self.truncate_file(entry, data_len)
-+
-+        cluster = entry.cluster
-+        while cluster is not None:
-+            data_to_write = data[: self.boot_sector.cluster_bytes()]
-+            if len(data_to_write) < self.boot_sector.cluster_bytes():
-+                old_data = self.read_cluster(cluster)
-+                data_to_write += old_data[len(data_to_write) :]
-+
-+            self.write_cluster(cluster, data_to_write)
-+            data = data[self.boot_sector.cluster_bytes() :]
-+            if len(data) == 0:
-+                break
-+            cluster = self.next_cluster(cluster)
-+
-+        assert (
-+            len(data) == 0
-+        ), "Data was not written completely, clusters missing"
-+
-+    def create_file(self, path: str):
-+        """
-+        Create a new file at the given path.
-+        """
-+        assert path[0] == "/", "Path must start with /"
-+
-+        path = path[1:]  # remove the leading /
-+
-+        parts = path.split("/")
-+
-+        directory_cluster = None
-+        directory = self.read_root_directory()
-+
-+        parts, filename = parts[:-1], parts[-1]
-+
-+        for _, part in enumerate(parts):
-+            current_entry = None
-+            for entry in directory:
-+                if entry.whole_name() == part:
-+                    current_entry = entry
-+                    break
-+            if current_entry is None:
-+                return None
-+
-+            if current_entry.attributes & 0x10 == 0:
-+                raise Exception(
-+                    f"{current_entry.whole_name()} is not a directory"
-+                )
-+            else:
-+                directory = self.read_directory(current_entry.cluster)
-+                directory_cluster = current_entry.cluster
-+
-+        # add new entry to the directory
-+
-+        filename, ext = filename.split(".")
-+
-+        if len(ext) > 3:
-+            raise Exception("Ext must be 3 characters or less")
-+        if len(filename) > 8:
-+            raise Exception("Name must be 8 characters or less")
-+
-+        for c in filename + ext:
-+
-+            if c not in ALLOWED_FILE_CHARS:
-+                raise Exception("Invalid character in filename")
-+
-+        return self.add_direntry(directory_cluster, filename, ext, 0)
-diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
-index 588f30a4f1..4053d29de4 100644
---- a/tests/qemu-iotests/testenv.py
-+++ b/tests/qemu-iotests/testenv.py
-@@ -250,7 +250,7 @@ def __init__(self, source_dir: str, build_dir: str,
-         self.qemu_img_options = os.getenv('QEMU_IMG_OPTIONS')
-         self.qemu_nbd_options = os.getenv('QEMU_NBD_OPTIONS')
- 
--        is_generic = self.imgfmt not in ['bochs', 'cloop', 'dmg']
-+        is_generic = self.imgfmt not in ['bochs', 'cloop', 'dmg', 'vvfat']
-         self.imgfmt_generic = 'true' if is_generic else 'false'
- 
-         self.qemu_io_options = f'--cache {self.cachemode} --aio {self.aiomode}'
-diff --git a/tests/qemu-iotests/tests/vvfat b/tests/qemu-iotests/tests/vvfat
-new file mode 100755
-index 0000000000..a6c536b886
---- /dev/null
-+++ b/tests/qemu-iotests/tests/vvfat
-@@ -0,0 +1,458 @@
-+#!/usr/bin/env python3
-+# group: rw vvfat
-+#
-+# Test vvfat driver implementation
-+# Here, we use a simple FAT16 implementation and check the behavior of the vvfat driver.
-+#
-+# Copyright (C) 2024 Amjad Alsharafi <amjadsharafi10@gmail.com>
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+
-+import os, shutil
-+import iotests
-+from iotests import imgfmt, QMPTestCase
-+from fat16 import MBR, Fat16, DIRENTRY_SIZE
-+
-+filesystem = os.path.join(iotests.test_dir, "filesystem")
-+
-+nbd_sock = iotests.file_path("nbd.sock", base_dir=iotests.sock_dir)
-+nbd_uri = "nbd+unix:///disk?socket=" + nbd_sock
-+
-+SECTOR_SIZE = 512
-+
-+
-+class TestVVFatDriver(QMPTestCase):
-+    def setUp(self) -> None:
-+        if os.path.exists(filesystem):
-+            if os.path.isdir(filesystem):
-+                shutil.rmtree(filesystem)
-+            else:
-+                print(f"Error: {filesystem} exists and is not a directory")
-+                exit(1)
-+        os.mkdir(filesystem)
-+
-+        # Add some text files to the filesystem
-+        for i in range(10):
-+            with open(os.path.join(filesystem, f"file{i}.txt"), "w") as f:
-+                f.write(f"Hello, world! {i}\n")
-+
-+        # Add 2 large files, above the cluster size (8KB)
-+        with open(os.path.join(filesystem, "large1.txt"), "wb") as f:
-+            # write 'A' * 1KB, 'B' * 1KB, 'C' * 1KB, ...
-+            for i in range(8 * 2):  # two clusters
-+                f.write(bytes([0x41 + i] * 1024))
-+
-+        with open(os.path.join(filesystem, "large2.txt"), "wb") as f:
-+            # write 'A' * 1KB, 'B' * 1KB, 'C' * 1KB, ...
-+            for i in range(8 * 3):  # 3 clusters
-+                f.write(bytes([0x41 + i] * 1024))
-+
-+        self.vm = iotests.VM()
-+
-+        self.vm.add_blockdev(
-+            self.vm.qmp_to_opts(
-+                {
-+                    "driver": imgfmt,
-+                    "node-name": "disk",
-+                    "rw": "true",
-+                    "fat-type": "16",
-+                    "dir": filesystem,
-+                }
-+            )
-+        )
-+
-+        self.vm.launch()
-+
-+        self.vm.qmp_log("block-dirty-bitmap-add", **{"node": "disk", "name": "bitmap0"})
-+
-+        # attach nbd server
-+        self.vm.qmp_log(
-+            "nbd-server-start",
-+            **{"addr": {"type": "unix", "data": {"path": nbd_sock}}},
-+            filters=[],
-+        )
-+
-+        self.vm.qmp_log(
-+            "nbd-server-add",
-+            **{"device": "disk", "writable": True, "bitmap": "bitmap0"},
-+        )
-+
-+        self.qio = iotests.QemuIoInteractive("-f", "raw", nbd_uri)
-+
-+    def tearDown(self) -> None:
-+        self.qio.close()
-+        self.vm.shutdown()
-+        # print(self.vm.get_log())
-+        shutil.rmtree(filesystem)
-+
-+    def read_sectors(self, sector: int, num: int = 1) -> bytes:
-+        """
-+        Read `num` sectors starting from `sector` from the `disk`.
-+        This uses `QemuIoInteractive` to read the sectors into `stdout` and then parse the output.
-+        """
-+        self.assertGreater(num, 0)
-+        # The output contains the content of the sector in hex dump format
-+        # We need to extract the content from it
-+        output = self.qio.cmd(f"read -v {sector * SECTOR_SIZE} {num * SECTOR_SIZE}")
-+        # Each row is 16 bytes long, and we are writing `num` sectors
-+        rows = num * SECTOR_SIZE // 16
-+        output_rows = output.split("\n")[:rows]
-+
-+        hex_content = "".join(
-+            [(row.split(": ")[1]).split("  ")[0] for row in output_rows]
-+        )
-+        bytes_content = bytes.fromhex(hex_content)
-+
-+        self.assertEqual(len(bytes_content), num * SECTOR_SIZE)
-+
-+        return bytes_content
-+
-+    def write_sectors(self, sector: int, data: bytes):
-+        """
-+        Write `data` to the `disk` starting from `sector`.
-+        This uses `QemuIoInteractive` to write the data into the disk.
-+        """
-+
-+        self.assertGreater(len(data), 0)
-+        self.assertEqual(len(data) % SECTOR_SIZE, 0)
-+
-+        temp_file = os.path.join(iotests.test_dir, "temp.bin")
-+        with open(temp_file, "wb") as f:
-+            f.write(data)
-+
-+        self.qio.cmd(f"write -s {temp_file} {sector * SECTOR_SIZE} {len(data)}")
-+
-+        os.remove(temp_file)
-+
-+    def init_fat16(self):
-+        mbr = MBR(self.read_sectors(0))
-+        return Fat16(
-+            mbr.partition_table[0]["start_lba"],
-+            mbr.partition_table[0]["size"],
-+            self.read_sectors,
-+            self.write_sectors,
-+        )
-+
-+    # Tests
-+
-+    def test_fat_filesystem(self):
-+        """
-+        Test that vvfat produce a valid FAT16 and MBR sectors
-+        """
-+        mbr = MBR(self.read_sectors(0))
-+
-+        self.assertEqual(mbr.partition_table[0]["status"], 0x80)
-+        self.assertEqual(mbr.partition_table[0]["type"], 6)
-+
-+        fat16 = Fat16(
-+            mbr.partition_table[0]["start_lba"],
-+            mbr.partition_table[0]["size"],
-+            self.read_sectors,
-+            self.write_sectors,
-+        )
-+        self.assertEqual(fat16.boot_sector.bytes_per_sector, 512)
-+        self.assertEqual(fat16.boot_sector.volume_label, "QEMU VVFAT")
-+
-+    def test_read_root_directory(self):
-+        """
-+        Test the content of the root directory
-+        """
-+        fat16 = self.init_fat16()
-+
-+        root_dir = fat16.read_root_directory()
-+
-+        self.assertEqual(len(root_dir), 13)  # 12 + 1 special file
-+
-+        files = {
-+            "QEMU VVF.AT": 0,  # special empty file
-+            "FILE0.TXT": 16,
-+            "FILE1.TXT": 16,
-+            "FILE2.TXT": 16,
-+            "FILE3.TXT": 16,
-+            "FILE4.TXT": 16,
-+            "FILE5.TXT": 16,
-+            "FILE6.TXT": 16,
-+            "FILE7.TXT": 16,
-+            "FILE8.TXT": 16,
-+            "FILE9.TXT": 16,
-+            "LARGE1.TXT": 0x2000 * 2,
-+            "LARGE2.TXT": 0x2000 * 3,
-+        }
-+
-+        for entry in root_dir:
-+            self.assertIn(entry.whole_name(), files)
-+            self.assertEqual(entry.size_bytes, files[entry.whole_name()])
-+
-+    def test_direntry_as_bytes(self):
-+        """
-+        Test if we can convert Direntry back to bytes, so that we can write it back to the disk safely.
-+        """
-+        fat16 = self.init_fat16()
-+
-+        root_dir = fat16.read_root_directory()
-+        first_entry_bytes = fat16.read_sectors(fat16.boot_sector.root_dir_start(), 1)
-+        # The first entry won't be deleted, so we can compare it with the first entry in the root directory
-+        self.assertEqual(root_dir[0].as_bytes(), first_entry_bytes[:DIRENTRY_SIZE])
-+
-+    def test_read_files(self):
-+        """
-+        Test reading the content of the files
-+        """
-+        fat16 = self.init_fat16()
-+
-+        for i in range(10):
-+            file = fat16.find_direntry(f"/FILE{i}.TXT")
-+            self.assertIsNotNone(file)
-+            self.assertEqual(
-+                fat16.read_file(file), f"Hello, world! {i}\n".encode("ascii")
-+            )
-+
-+        # test large files
-+        large1 = fat16.find_direntry("/LARGE1.TXT")
-+        with open(os.path.join(filesystem, "large1.txt"), "rb") as f:
-+            self.assertEqual(fat16.read_file(large1), f.read())
-+
-+        large2 = fat16.find_direntry("/LARGE2.TXT")
-+        self.assertIsNotNone(large2)
-+        with open(os.path.join(filesystem, "large2.txt"), "rb") as f:
-+            self.assertEqual(fat16.read_file(large2), f.read())
-+
-+    def test_write_file_same_content_direct(self):
-+        """
-+        Similar to `test_write_file_in_same_content`, but we write the file directly clusters
-+        and thus we don't go through the modification of direntry.
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/FILE0.TXT")
-+        self.assertIsNotNone(file)
-+
-+        data = fat16.read_cluster(file.cluster)
-+        fat16.write_cluster(file.cluster, data)
-+
-+        with open(os.path.join(filesystem, "file0.txt"), "rb") as f:
-+            self.assertEqual(fat16.read_file(file), f.read())
-+
-+    def test_write_file_in_same_content(self):
-+        """
-+        Test writing the same content to the file back to it
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/FILE0.TXT")
-+        self.assertIsNotNone(file)
-+
-+        self.assertEqual(fat16.read_file(file), b"Hello, world! 0\n")
-+
-+        fat16.write_file(file, b"Hello, world! 0\n")
-+        self.assertEqual(fat16.read_file(file), b"Hello, world! 0\n")
-+
-+        with open(os.path.join(filesystem, "file0.txt"), "rb") as f:
-+            self.assertEqual(f.read(), b"Hello, world! 0\n")
-+
-+    def test_modify_content_same_clusters(self):
-+        """
-+        Test modifying the content of the file without changing the number of clusters
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/FILE0.TXT")
-+        self.assertIsNotNone(file)
-+
-+        new_content = b"Hello, world! Modified\n"
-+        self.assertEqual(fat16.read_file(file), b"Hello, world! 0\n")
-+
-+        fat16.write_file(file, new_content)
-+        self.assertEqual(fat16.read_file(file), new_content)
-+
-+        with open(os.path.join(filesystem, "file0.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_truncate_file_same_clusters_less(self):
-+        """
-+        Test truncating the file without changing number of clusters
-+        Test decreasing the file size
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/FILE0.TXT")
-+        self.assertIsNotNone(file)
-+
-+        self.assertEqual(fat16.read_file(file), b"Hello, world! 0\n")
-+
-+        fat16.truncate_file(file, 5)
-+        new_content = fat16.read_file(file)
-+        self.assertEqual(new_content, b"Hello")
-+
-+        with open(os.path.join(filesystem, "file0.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_truncate_file_same_clusters_more(self):
-+        """
-+        Test truncating the file without changing number of clusters
-+        Test increase the file size
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/FILE0.TXT")
-+        self.assertIsNotNone(file)
-+
-+        self.assertEqual(fat16.read_file(file), b"Hello, world! 0\n")
-+
-+        fat16.truncate_file(file, 20)
-+        new_content = fat16.read_file(file)
-+        self.assertIsNotNone(new_content)
-+
-+        # random pattern will be appended to the file, and its not always the same
-+        self.assertEqual(new_content[:16], b"Hello, world! 0\n")
-+        self.assertEqual(len(new_content), 20)
-+
-+        with open(os.path.join(filesystem, "file0.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_write_large_file(self):
-+        """
-+        Test writing a large file
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/LARGE1.TXT")
-+        self.assertIsNotNone(file)
-+
-+        # The content of LARGE1 is A * 1KB, B * 1KB, C * 1KB, ..., P * 1KB
-+        # Lets change it to be Z * 1KB, Y * 1KB, X * 1KB, ..., K * 1KB
-+        # without changing the number of clusters or filesize
-+        new_content = b"".join([bytes([0x5A - i] * 1024) for i in range(16)])
-+        fat16.write_file(file, new_content)
-+        self.assertEqual(fat16.read_file(file), new_content)
-+
-+        with open(os.path.join(filesystem, "large1.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_truncate_file_change_clusters_less(self):
-+        """
-+        Test truncating a file by reducing the number of clusters
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/LARGE1.TXT")
-+        self.assertIsNotNone(file)
-+
-+        fat16.truncate_file(file, 1)
-+        self.assertEqual(fat16.read_file(file), b"A")
-+
-+        with open(os.path.join(filesystem, "large1.txt"), "rb") as f:
-+            self.assertEqual(f.read(), b"A")
-+
-+    def test_write_file_change_clusters_less(self):
-+        """
-+        Test truncating a file by reducing the number of clusters
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/LARGE2.TXT")
-+        self.assertIsNotNone(file)
-+
-+        new_content = b"X" * 8 * 1024 + b"Y" * 8 * 1024
-+        fat16.write_file(file, new_content)
-+        self.assertEqual(fat16.read_file(file), new_content)
-+
-+        with open(os.path.join(filesystem, "large2.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_write_file_change_clusters_more(self):
-+        """
-+        Test truncating a file by increasing the number of clusters
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/LARGE2.TXT")
-+        self.assertIsNotNone(file)
-+
-+        # from 3 clusters to 4 clusters
-+        new_content = (
-+            b"W" * 8 * 1024 + b"X" * 8 * 1024 + b"Y" * 8 * 1024 + b"Z" * 8 * 1024
-+        )
-+        fat16.write_file(file, new_content)
-+        self.assertEqual(fat16.read_file(file), new_content)
-+
-+        with open(os.path.join(filesystem, "large2.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_write_file_change_clusters_more_non_contiguous_2_mappings(self):
-+        """
-+        Test truncating a file by increasing the number of clusters
-+        Here we allocate the new clusters in a way that makes them non-contiguous
-+        so that we will get 2 cluster mappings for the file
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/LARGE1.TXT")
-+        self.assertIsNotNone(file)
-+
-+        # from 2 clusters to 3 clusters with non-contiguous allocation
-+        fat16.truncate_file(file, 3 * 0x2000, allocate_non_continuous=True)
-+        new_content = b"X" * 8 * 1024 + b"Y" * 8 * 1024 + b"Z" * 8 * 1024
-+        fat16.write_file(file, new_content)
-+        self.assertEqual(fat16.read_file(file), new_content)
-+
-+        with open(os.path.join(filesystem, "large1.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_write_file_change_clusters_more_non_contiguous_3_mappings(self):
-+        """
-+        Test truncating a file by increasing the number of clusters
-+        Here we allocate the new clusters in a way that makes them non-contiguous
-+        so that we will get 3 cluster mappings for the file
-+        """
-+        fat16 = self.init_fat16()
-+
-+        file = fat16.find_direntry("/LARGE1.TXT")
-+        self.assertIsNotNone(file)
-+
-+        # from 2 clusters to 4 clusters with non-contiguous allocation
-+        fat16.truncate_file(file, 4 * 0x2000, allocate_non_continuous=True)
-+        new_content = (
-+            b"W" * 8 * 1024 + b"X" * 8 * 1024 + b"Y" * 8 * 1024 + b"Z" * 8 * 1024
-+        )
-+        fat16.write_file(file, new_content)
-+        self.assertEqual(fat16.read_file(file), new_content)
-+
-+        with open(os.path.join(filesystem, "large1.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    def test_create_file(self):
-+        """
-+        Test creating a new file
-+        """
-+        fat16 = self.init_fat16()
-+
-+        new_file = fat16.create_file("/NEWFILE.TXT")
-+
-+        self.assertIsNotNone(new_file)
-+        self.assertEqual(new_file.size_bytes, 0)
-+
-+        new_content = b"Hello, world! New file\n"
-+        fat16.write_file(new_file, new_content)
-+        self.assertEqual(fat16.read_file(new_file), new_content)
-+
-+        with open(os.path.join(filesystem, "newfile.txt"), "rb") as f:
-+            self.assertEqual(f.read(), new_content)
-+
-+    # TODO: support deleting files
-+
-+
-+if __name__ == "__main__":
-+    # This is a specific test for vvfat driver
-+    iotests.main(supported_fmts=["vvfat"], supported_protocols=["file"])
-diff --git a/tests/qemu-iotests/tests/vvfat.out b/tests/qemu-iotests/tests/vvfat.out
-new file mode 100755
-index 0000000000..b6f257674e
---- /dev/null
-+++ b/tests/qemu-iotests/tests/vvfat.out
-@@ -0,0 +1,5 @@
-+................
-+----------------------------------------------------------------------
-+Ran 16 tests
-+
-+OK
--- 
-2.45.2
+On 7/13/24 13:54, TaiseiIto wrote:
+> Before this commit, there are 3 problems about HPET timer interrupts. Fir=
+st,
+> HPET periodic timers cause a too early interrupt before HPET main counter
+> value reaches a value written its comparator value register. Second,
+> disabled HPET timers whose comparator value register is not
+> 0xffffffffffffffff cause wrong interrupts. Third, enabled HPET timers who=
+se
+> comparator value register is 0xffffffffffffffff don't cause any interrupt=
+s.
+> About the first one, for example, an HPET driver writes 0x00000000aaaaaaa=
+a
+> to an HPET periodic timer comparator value register. As a result, the
+> register becomes 0xffffffffaaaaaaaa because writing to the higher 32 bits=
+ of
+> the register doesn't affect itself in periodic mode. (see
+> "case HPET_TN_CMP + 4" of "hpet_ram_write" function.) And "timer->period"
+> which means interrupt period in periodic mode becomes 0xaaaaaaaa. Next, t=
+he
+> HPET driver sets the HPET_CFG_ENABLE flag to start the main counter. The
+> comparator value register (0xffffffffaaaaaaaa) indicate the next interrup=
+t
+> time. The period (0xaaaaaaaa) is added to the comparator value register a=
+t
+> "hpet_timer" function because "hpet_time_after64" function returns true w=
+hen
+> the main counter is small. So, the first interrupt is planned when the ma=
+in
+> counter is 0x0000000055555554, but the first interrupt should occur when =
+the
+> main counter is 0x00000000aaaaaaaa. To solve this problem, I fix
+> "case HPET_TN_CMP + 4" of "hpet_ram_write" function to ensure that writin=
+gs
+> to higher 32 bits of a comparator value register reflect itself even if i=
+n
+> periodic mode. About the other two problems, it was decided by comparator
+> value whether each timer is enabled, but it should be decided by
+> "timer_enabled" function which confirm "HPET_TN_ENABLE" flag. To solve th=
+ese
+> problems, I fix the code to decide correctly whether each timer is enable=
+d.
+> After this commit, the 3 problems are solved. First, HPET periodic timers
+> cause the first interrupt when the main counter value reaches a value
+> written its comparator value register. Second, disabled HPET timers never
+> cause any interrupt. Third, enabled HPET timers cause interrupts correctl=
+y
+> even if an HPET driver writes 0xffffffffffffffff to its comparator value
+> register.
+>
+> Signed-off-by: TaiseiIto <taisei1212@outlook.jp>
+> ---
+>
+> Changes in v2:
+> - Reflect writings to higher 32 bits of a comparator value register rathe=
+r
+>    than clearing these bits.
+> - Fix wrong indents.
+> - Link to v1: https://lore.kernel.org/qemu-devel/TY0PR0101MB4285838139BC5=
+6DEC3D1CCFDA4CE2@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com/
+>
+>   hw/timer/hpet.c | 24 +++++++++++++++---------
+>   1 file changed, 15 insertions(+), 9 deletions(-)
+>
+> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+> index 01efe4885d..4b6352e257 100644
+> --- a/hw/timer/hpet.c
+> +++ b/hw/timer/hpet.c
+> @@ -552,6 +552,10 @@ static void hpet_ram_write(void *opaque, hwaddr addr=
+,
+>                   timer->period =3D
+>                       (timer->period & 0xffffffff00000000ULL) | new_val;
+>               }
+> +            /*
+> +             * FIXME: on a 64-bit write, HPET_TN_SETVAL should apply to =
+the
+> +             * high bits part as well.
+> +             */
+>               timer->config &=3D ~HPET_TN_SETVAL;
+>               if (hpet_enabled(s)) {
+>                   hpet_set_timer(timer);
+> @@ -562,20 +566,22 @@ static void hpet_ram_write(void *opaque, hwaddr add=
+r,
+>               if (!timer_is_periodic(timer)
+>                   || (timer->config & HPET_TN_SETVAL)) {
+>                   timer->cmp =3D (timer->cmp & 0xffffffffULL) | new_val <=
+< 32;
+> -            } else {
+> +            }
+> +            if (timer_is_periodic(timer)) {
+>                   /*
+>                    * FIXME: Clamp period to reasonable min value?
+>                    * Clamp period to reasonable max value
+>                    */
+> -                new_val &=3D (timer->config & HPET_TN_32BIT ? ~0u : ~0ul=
+l) >> 1;
+> +                new_val =3D MIN(new_val, ~0u >> 1);
+> +                timer->cmp =3D (timer->cmp & 0xffffffffULL) | new_val <<=
+ 32;
 
+This seems wrong to me.  The comparator must be reset using
+HPET_TN_SETVAL, otherwise it just keeps running.  From the specification:
+
+"If software wants to change the periodic rate, it should write a new
+value to the comparator value register.  At the point when the timer=1B$B!G=
+=1B(Bs
+comparator indicates a match, this new value will be added to derive the
+next matching point. So as to avoid race conditions where the new value
+is written just as a match occurs, either the main counter should be
+halted or the comparator disabled when the new periodic rate is written".
+
+The sentence "at the point when the timer=1B$B!G=1B(Bs comparator indicates=
+ a
+match" indicates that the comparator register is not written.
+
+I suspect you're hitting the other issue, and HPET_TN_SETVAL is cleared
+incorrectly by a 64-bit write.  I'll try sending out a patch to fix that.
+
+> -                    if ((&s->timer[i])->cmp !=3D ~0ULL) {
+> +                    if (hpet_enabled(s)) {
+>                           hpet_set_timer(&s->timer[i]);
+>                       }
+>                   }
+
+This is incorrect too.  "hpet_enabled(s)" is always true here; I think
+the bug is that timer_enabled() should only affect generation of
+interrupts.  Are you perhaps using level-triggered interrupts?  If so,
+it makes sense that you want the timer to be running - and then when
+setting HPET_TN_ENABLE the interrupt will fire.
+
+However, we're making progress; you're just finding more bugs.
+
+I have some ideas on what needs to be fixed next, and I placed them at a
+branch "hpet" of https://gitlab.com/bonzini/qemu.git.  Unfortunately, I
+don't have a way to test them (writing testcases is on my list but I
+don't have time right now) and as the branch proceeds things get more
+experimental; but let me know if it helps or if you can make small
+changes to the patches that fix your testcase.
+
+Paolo
+
+
+--_000_TY0PR0101MB4285DE1F3A47F29C5BC0018DA4AE2TY0PR0101MB4285_
+Content-Type: text/html; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-2022-=
+jp">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+Thank you for preparing the hpet branch. I tried to use the branch. Your</d=
+iv>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+modification was not enough to solve my problem but I confirmed that the</d=
+iv>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+problem is completely solved by adding the following 2 patches on your hpet=
+</div>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+branch.</div>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+https://lore.kernel.org/qemu-devel/TY0PR0101MB42850337F8917D1F514107FBA4D52=
+@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com/</div>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+https://lore.kernel.org/qemu-devel/TY0PR0101MB4285D5A3587179A5788F3356A4AE2=
+@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com/</div>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Meiryo, =1B$B%a%$%j%*=1B(B, &quot;Hiragino Sans&=
+quot;, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
+Taisei</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>=1B$B:9=3DP?M=1B(B:</b> Paolo B=
+onzini &lt;pbonzini@redhat.com&gt;<br>
+<b>=1B$BAw?.F|;~=1B(B:</b> 2024=1B$BG/=1B(B7=1B$B7n=1B(B16=1B$BF|=1B(B 19:5=
+1<br>
+<b>=1B$B08@h=1B(B:</b> TaiseiIto &lt;taisei1212@outlook.jp&gt;; qemu-devel@=
+nongnu.org &lt;qemu-devel@nongnu.org&gt;<br>
+<b>CC:</b> mst@redhat.com &lt;mst@redhat.com&gt;; marcel.apfelbaum@gmail.co=
+m &lt;marcel.apfelbaum@gmail.com&gt;<br>
+<b>=1B$B7oL>=1B(B:</b> Re: [PATCH v2] hw/timer/hpet: Fix wrong HPET interru=
+pts</font>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">On 7/13/24 13:54, TaiseiIto wrote:<br>
+&gt; Before this commit, there are 3 problems about HPET timer interrupts. =
+First,<br>
+&gt; HPET periodic timers cause a too early interrupt before HPET main coun=
+ter<br>
+&gt; value reaches a value written its comparator value register. Second,<b=
+r>
+&gt; disabled HPET timers whose comparator value register is not<br>
+&gt; 0xffffffffffffffff cause wrong interrupts. Third, enabled HPET timers =
+whose<br>
+&gt; comparator value register is 0xffffffffffffffff don't cause any interr=
+upts.<br>
+&gt; About the first one, for example, an HPET driver writes 0x00000000aaaa=
+aaaa<br>
+&gt; to an HPET periodic timer comparator value register. As a result, the<=
+br>
+&gt; register becomes 0xffffffffaaaaaaaa because writing to the higher 32 b=
+its of<br>
+&gt; the register doesn't affect itself in periodic mode. (see<br>
+&gt; &quot;case HPET_TN_CMP + 4&quot; of &quot;hpet_ram_write&quot; functio=
+n.) And &quot;timer-&gt;period&quot;<br>
+&gt; which means interrupt period in periodic mode becomes 0xaaaaaaaa. Next=
+, the<br>
+&gt; HPET driver sets the HPET_CFG_ENABLE flag to start the main counter. T=
+he<br>
+&gt; comparator value register (0xffffffffaaaaaaaa) indicate the next inter=
+rupt<br>
+&gt; time. The period (0xaaaaaaaa) is added to the comparator value registe=
+r at<br>
+&gt; &quot;hpet_timer&quot; function because &quot;hpet_time_after64&quot; =
+function returns true when<br>
+&gt; the main counter is small. So, the first interrupt is planned when the=
+ main<br>
+&gt; counter is 0x0000000055555554, but the first interrupt should occur wh=
+en the<br>
+&gt; main counter is 0x00000000aaaaaaaa. To solve this problem, I fix<br>
+&gt; &quot;case HPET_TN_CMP + 4&quot; of &quot;hpet_ram_write&quot; functio=
+n to ensure that writings<br>
+&gt; to higher 32 bits of a comparator value register reflect itself even i=
+f in<br>
+&gt; periodic mode. About the other two problems, it was decided by compara=
+tor<br>
+&gt; value whether each timer is enabled, but it should be decided by<br>
+&gt; &quot;timer_enabled&quot; function which confirm &quot;HPET_TN_ENABLE&=
+quot; flag. To solve these<br>
+&gt; problems, I fix the code to decide correctly whether each timer is ena=
+bled.<br>
+&gt; After this commit, the 3 problems are solved. First, HPET periodic tim=
+ers<br>
+&gt; cause the first interrupt when the main counter value reaches a value<=
+br>
+&gt; written its comparator value register. Second, disabled HPET timers ne=
+ver<br>
+&gt; cause any interrupt. Third, enabled HPET timers cause interrupts corre=
+ctly<br>
+&gt; even if an HPET driver writes 0xffffffffffffffff to its comparator val=
+ue<br>
+&gt; register.<br>
+&gt; <br>
+&gt; Signed-off-by: TaiseiIto &lt;taisei1212@outlook.jp&gt;<br>
+&gt; ---<br>
+&gt; <br>
+&gt; Changes in v2:<br>
+&gt; - Reflect writings to higher 32 bits of a comparator value register ra=
+ther<br>
+&gt;&nbsp;&nbsp;&nbsp; than clearing these bits.<br>
+&gt; - Fix wrong indents.<br>
+&gt; - Link to v1: <a href=3D"https://lore.kernel.org/qemu-devel/TY0PR0101M=
+B4285838139BC56DEC3D1CCFDA4CE2@TY0PR0101MB4285.apcprd01.prod.exchangelabs.c=
+om/">
+https://lore.kernel.org/qemu-devel/TY0PR0101MB4285838139BC56DEC3D1CCFDA4CE2=
+@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com/</a><br>
+&gt; <br>
+&gt;&nbsp;&nbsp; hw/timer/hpet.c | 24 +++++++++++++++---------<br>
+&gt;&nbsp;&nbsp; 1 file changed, 15 insertions(+), 9 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c<br>
+&gt; index 01efe4885d..4b6352e257 100644<br>
+&gt; --- a/hw/timer/hpet.c<br>
+&gt; +++ b/hw/timer/hpet.c<br>
+&gt; @@ -552,6 +552,10 @@ static void hpet_ram_write(void *opaque, hwaddr a=
+ddr,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; timer-&gt;period =3D<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (timer-&gt;pe=
+riod &amp; 0xffffffff00000000ULL) | new_val;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; }<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*=
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; * FIXME: on a 64-bit write, HPET_TN_SETVAL should apply to the<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; * high bits part as well.<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; */<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; timer-&gt;config &amp;=3D ~HPET_TN_SETVAL;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; if (hpet_enabled(s)) {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hpet_set_timer(timer);<br>
+&gt; @@ -562,20 +566,22 @@ static void hpet_ram_write(void *opaque, hwaddr =
+addr,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; if (!timer_is_periodic(timer)<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || (timer-&gt;config &amp; HPET_TN_SE=
+TVAL)) {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; timer-&gt;cmp =3D (timer-&gt;cmp &amp=
+; 0xffffffffULL) | new_val &lt;&lt; 32;<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } =
+else {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<=
+br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if=
+ (timer_is_periodic(timer)) {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * FIXME: Clamp period to reason=
+able min value?<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Clamp period to reasonable ma=
+x value<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; new_val &amp;=3D (timer-&gt;config &amp; HPET_TN_32BI=
+T ? ~0u : ~0ull) &gt;&gt; 1;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; new_val =3D MIN(new_val, ~0u &gt;&gt; 1);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; timer-&gt;cmp =3D (timer-&gt;cmp &amp; 0xffffffffULL)=
+ | new_val &lt;&lt; 32;<br>
+<br>
+This seems wrong to me.&nbsp; The comparator must be reset using <br>
+HPET_TN_SETVAL, otherwise it just keeps running.&nbsp; From the specificati=
+on:<br>
+<br>
+&quot;If software wants to change the periodic rate, it should write a new =
+<br>
+value to the comparator value register.&nbsp; At the point when the timer=
+=1B$B!G=1B(Bs <br>
+comparator indicates a match, this new value will be added to derive the <b=
+r>
+next matching point. So as to avoid race conditions where the new value <br=
+>
+is written just as a match occurs, either the main counter should be <br>
+halted or the comparator disabled when the new periodic rate is written&quo=
+t;.<br>
+<br>
+The sentence &quot;at the point when the timer=1B$B!G=1B(Bs comparator indi=
+cates a <br>
+match&quot; indicates that the comparator register is not written.<br>
+<br>
+I suspect you're hitting the other issue, and HPET_TN_SETVAL is cleared <br=
+>
+incorrectly by a 64-bit write.&nbsp; I'll try sending out a patch to fix th=
+at.<br>
+<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ((&amp;s-&gt;timer[i])-&gt=
+;cmp !=3D ~0ULL) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (hpet_enabled(s)) {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; hpet_set_timer(&amp;s-&gt;timer[i]);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+This is incorrect too.&nbsp; &quot;hpet_enabled(s)&quot; is always true her=
+e; I think <br>
+the bug is that timer_enabled() should only affect generation of <br>
+interrupts.&nbsp; Are you perhaps using level-triggered interrupts?&nbsp; I=
+f so, <br>
+it makes sense that you want the timer to be running - and then when <br>
+setting HPET_TN_ENABLE the interrupt will fire.<br>
+<br>
+However, we're making progress; you're just finding more bugs.<br>
+<br>
+I have some ideas on what needs to be fixed next, and I placed them at a <b=
+r>
+branch &quot;hpet&quot; of <a href=3D"https://gitlab.com/bonzini/qemu.git">=
+https://gitlab.com/bonzini/qemu.git</a>.&nbsp; Unfortunately, I
+<br>
+don't have a way to test them (writing testcases is on my list but I <br>
+don't have time right now) and as the branch proceeds things get more <br>
+experimental; but let me know if it helps or if you can make small <br>
+changes to the patches that fix your testcase.<br>
+<br>
+Paolo<br>
+<br>
+</div>
+</span></font></div>
+</body>
+</html>
+
+--_000_TY0PR0101MB4285DE1F3A47F29C5BC0018DA4AE2TY0PR0101MB4285_--
 
