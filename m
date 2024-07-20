@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1C39380A0
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 12:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 203BB9380A5
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 12:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sV76A-0001Sg-O4; Sat, 20 Jul 2024 06:13:54 -0400
+	id 1sV76D-0001d7-DF; Sat, 20 Jul 2024 06:13:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1sV768-0001Ld-Ip; Sat, 20 Jul 2024 06:13:52 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1sV76A-0001V1-Su; Sat, 20 Jul 2024 06:13:54 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1sV766-0007RH-Vt; Sat, 20 Jul 2024 06:13:52 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5c6924f2383so1274980eaf.2; 
- Sat, 20 Jul 2024 03:13:50 -0700 (PDT)
+ id 1sV769-0007SZ-8Y; Sat, 20 Jul 2024 06:13:54 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-7a0e8b76813so63517a12.3; 
+ Sat, 20 Jul 2024 03:13:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721470429; x=1722075229; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721470431; x=1722075231; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z0TcqHDGmq+zPmeeTD6pafWi3xRQRQCgCCjNIOd26LE=;
- b=hSsbivDy3fMpaiJsC9lWG/ovuShdG6cwIx6sNTnRhO3ECV5xT3Uuy/3S9j8SR3slRu
- HLCPPlV36MPEmcibVIOF03b+Ya5yvjtuRlXVC1wMDSA4GUwU3+7KywfxLDRa/2H2UqQ7
- 6xO1wL7/BNbkh4hqFEkXtBQTLUJz6E2+2X16T5MI0m6RUkYbwjOmaT9kR/5Vh6d0Qg1G
- m+UnjX36f8NTSucQeY4wtfNeDhOCJU6skH7ZYyqJDEBm4SAzpPi7oUt6aGKLpXDkOAr6
- ntg2cb79MKkvSIc2rKHh5Oe/tRsHDZrqXYyF/UbN3jZHPsJ1iQLkuQwQQZ2Ip5e+omId
- Ca1g==
+ bh=VZ+98M5u4oIUEUTkUVwqPpKA8S8Llpagu9lbB1G2xCw=;
+ b=Ae02YyPpxFn6s23CBK5xfHmxXHP22QliAE7RcMw2QdsOgHBx+XfuUzzuIvWopGvhhg
+ R1LBStR8B321BuePrGXZt7EYLBzjV+XiRUjO+xM8xaR58LZIQBFMlLyVDFxwVEd1m3Su
+ R2Ly0LDvNeLGGd/PboUa32osUNoobESwU4u5hl2kYd5/lBrM4y2n2rn57PxL2Wx7SGNA
+ IurbwjV8tGW91mgnbK4k542MhKc9cyk9xBHI97VyqxMjFnapqh9pf3siz315zIgnnt0a
+ 1724LngC8LgWxKPJz64Z7PXJhAo1ZEa0aFR1IKTjW90oNzHHwwktGIYdp8PLwmp1UcKi
+ Xp8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721470429; x=1722075229;
+ d=1e100.net; s=20230601; t=1721470431; x=1722075231;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z0TcqHDGmq+zPmeeTD6pafWi3xRQRQCgCCjNIOd26LE=;
- b=ZNDzBY9gxwIpMcNjMk0bFYeOueBeVS7osIAXd42lbrGjl762TvDAhoT69WUU3IQrHj
- 2NRvGqovYEQttzmXfnzQLXlP/4Y/FfubaHY7Ab3IrgK0pjUDg5lTdIUa+xSbnifXEpwv
- chp5a88fySY3fzqyZoqFdoLqLXGzdCCl0mj/3blYG/7pYRYwh7oIccTwcAMSvseeytsI
- Sz5PI6RHueBTW0LW3QTsIXjk83XIo3PJrU2aDinmxkrRvwmxqGBwBxma3kmZwQLmDDhx
- gfMy75Tf1vUaZ0oUxkgZYlDApJMoEUwA6KlQGc+8Z8e9s25AmznZ0QXEZgsGf2VFguiO
- yA+A==
+ bh=VZ+98M5u4oIUEUTkUVwqPpKA8S8Llpagu9lbB1G2xCw=;
+ b=iIlrHYn2zyBl1YhTUxVi/ktm+PpRTlSCsyJQeZYzNjqElItKlwI8d3s8eAItXiuQy+
+ L3MHWr23oUTkCcSSE2163aU2Y7yV+hCNlO0s7xwDEZB+gK/oEqYxeSA1BzhkJMoAjgJh
+ AKy3BFJOIioueW4a09ctcZp+S9dcx8SftJ+y1l+rMngVDGt3C1DZy8JEP5EU/gdidXh3
+ /ry8F1o1KHHVrnwBQP62DgWaLlHdEQxpHnoAGRPEYvXCApzwf/bfNy2hTz/FH15B5OM/
+ voGGG1Ar5natcpBfzbrmqSTK//l1fkNQEaFELnzT2B+tXKEsKHatyGs3pZlaj9clKYnZ
+ C/0Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXx8Sf2ObEMosuWlxlgH/Er1VRkbA0H1v0peMsquBCQhUtKj9xOGdu9lWo4ZOdirjiKZ1TMsXcFhB19UTIisZSHyEPW9TM=
-X-Gm-Message-State: AOJu0Ywy2f8U0MVx+bGKPh+fOeABj+FdBupCBh05K6N9weOeSWtN/U/g
- KT+h4c7Ich1deV6D3DEaA3MPKqiKXQ+SH3/kUNYPSqqoA8fO1TIeUL1X29Xem/EymQ==
-X-Google-Smtp-Source: AGHT+IEx3eZ2+QDRU3KSgCx+OV+pBNRFvlIeIxRWjJ8O0yjzM4DTtM3tHEIt/k5BZ6oeQUtPwypRXw==
-X-Received: by 2002:a05:6358:726:b0:1a5:f991:ae54 with SMTP id
- e5c5f4694b2df-1acc5c4b72cmr244477255d.20.1721470428817; 
- Sat, 20 Jul 2024 03:13:48 -0700 (PDT)
+ AJvYcCWCMbLCEQ9ScaDYZeZ6UV0ZcWIBrCrYvi6lX4ctm7+NHM8GhTEic1wxtvao2Mwn8YLX/JTAWFuhy0//lnIeWmHH6caXN5M=
+X-Gm-Message-State: AOJu0Yyg5Y+yf+ASEoJXrEiVjHe5bWNCcaNpLTzgLE48nW3m5ax16e2s
+ C7wQKO43piAA5pj/l/40ozvYcYmGsu5Jp4nwiwPr42RAKcQUqBUIlt80AfjQLDcLMg==
+X-Google-Smtp-Source: AGHT+IFzKucPvRWDzx9fRjpX16OIvXkNVcuveRHObIhj4XYIS3D9Y/Qei0m60aKVbStjks+pYadIbg==
+X-Received: by 2002:a05:6a20:7f91:b0:1c3:b61c:57cb with SMTP id
+ adf61e73a8af0-1c42869aaa0mr1096511637.53.1721470430904; 
+ Sat, 20 Jul 2024 03:13:50 -0700 (PDT)
 Received: from amjad-pc.. ([202.185.212.207]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cb76a5fc6csm4411208a91.0.2024.07.20.03.13.46
+ 98e67ed59e1d1-2cb76a5fc6csm4411208a91.0.2024.07.20.03.13.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Jul 2024 03:13:48 -0700 (PDT)
+ Sat, 20 Jul 2024 03:13:50 -0700 (PDT)
 From: Amjad Alsharafi <amjadsharafi10@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  "open list:vvfat" <qemu-block@nongnu.org>,
  Amjad Alsharafi <amjadsharafi10@gmail.com>
-Subject: [PATCH v6 2/5] vvfat: Fix usage of `info.file.offset`
-Date: Sat, 20 Jul 2024 18:13:31 +0800
-Message-ID: <72f19a7903886dda1aa78bcae0e17702ee939262.1721470238.git.amjadsharafi10@gmail.com>
+Subject: [PATCH v6 3/5] vvfat: Fix wrong checks for cluster mappings invariant
+Date: Sat, 20 Jul 2024 18:13:32 +0800
+Message-ID: <b0fbca3ee208c565885838f6a7deeaeb23f4f9c2.1721470238.git.amjadsharafi10@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1721470238.git.amjadsharafi10@gmail.com>
 References: <cover.1721470238.git.amjadsharafi10@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=amjadsharafi10@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=amjadsharafi10@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -93,52 +93,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The field is marked as "the offset in the file (in clusters)", but it
-was being used like this
-`cluster_size*(nums)+mapping->info.file.offset`, which is incorrect.
+How this `abort` was intended to check for was:
+- if the `mapping->first_mapping_index` is not the same as
+  `first_mapping_index`, which **should** happen only in one case,
+  when we are handling the first mapping, in that case
+  `mapping->first_mapping_index == -1`, in all other cases, the other
+  mappings after the first should have the condition `true`.
+- From above, we know that this is the first mapping, so if the offset
+  is not `0`, then abort, since this is an invalid state.
+
+The issue was that `first_mapping_index` is not set if we are
+checking from the middle, the variable `first_mapping_index` is
+only set if we passed through the check `cluster_was_modified` with the
+first mapping, and in the same function call we checked the other
+mappings.
+
+One approach is to go into the loop even if `cluster_was_modified`
+is not true so that we will be able to set `first_mapping_index` for the
+first mapping, but since `first_mapping_index` is only used here,
+another approach is to just check manually for the
+`mapping->first_mapping_index != -1` since we know that this is the
+value for the only entry where `offset == 0` (i.e. first mapping).
 
 Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/vvfat.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ block/vvfat.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/block/vvfat.c b/block/vvfat.c
-index 19da009a5b..247b232608 100644
+index 247b232608..b63ac5d045 100644
 --- a/block/vvfat.c
 +++ b/block/vvfat.c
-@@ -1408,7 +1408,9 @@ read_cluster_directory:
+@@ -1880,7 +1880,6 @@ get_cluster_count_for_direntry(BDRVVVFATState* s, direntry_t* direntry, const ch
  
-         assert(s->current_fd);
+     uint32_t cluster_num = begin_of_direntry(direntry);
+     uint32_t offset = 0;
+-    int first_mapping_index = -1;
+     mapping_t* mapping = NULL;
+     const char* basename2 = NULL;
  
--        offset=s->cluster_size*(cluster_num-s->current_mapping->begin)+s->current_mapping->info.file.offset;
-+        offset = s->cluster_size *
-+            ((cluster_num - s->current_mapping->begin)
-+            + s->current_mapping->info.file.offset);
-         if(lseek(s->current_fd, offset, SEEK_SET)!=offset)
-             return -3;
-         s->cluster=s->cluster_buffer;
-@@ -1929,8 +1931,9 @@ get_cluster_count_for_direntry(BDRVVVFATState* s, direntry_t* direntry, const ch
-                         (mapping->mode & MODE_DIRECTORY) == 0) {
+@@ -1942,14 +1941,9 @@ get_cluster_count_for_direntry(BDRVVVFATState* s, direntry_t* direntry, const ch
  
-                     /* was modified in qcow */
--                    if (offset != mapping->info.file.offset + s->cluster_size
--                            * (cluster_num - mapping->begin)) {
-+                    if (offset != s->cluster_size
-+                            * ((cluster_num - mapping->begin)
-+                            + mapping->info.file.offset)) {
-                         /* offset of this cluster in file chain has changed */
-                         abort();
-                         copy_it = 1;
-@@ -2404,7 +2407,7 @@ static int commit_mappings(BDRVVVFATState* s,
-                         (mapping->end - mapping->begin);
-             } else
-                 next_mapping->info.file.offset = mapping->info.file.offset +
--                        mapping->end - mapping->begin;
-+                        (mapping->end - mapping->begin);
+                         if (strcmp(basename, basename2))
+                             copy_it = 1;
+-                        first_mapping_index = array_index(&(s->mapping), mapping);
+-                    }
+-
+-                    if (mapping->first_mapping_index != first_mapping_index
+-                            && mapping->info.file.offset > 0) {
+-                        abort();
+-                        copy_it = 1;
+                     }
++                    assert(mapping->first_mapping_index == -1
++                            || mapping->info.file.offset > 0);
  
-             mapping = next_mapping;
-         }
+                     /* need to write out? */
+                     if (!was_modified && is_file(direntry)) {
 -- 
 2.45.2
 
