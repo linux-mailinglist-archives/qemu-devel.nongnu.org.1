@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039FF9382AA
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DDE9382AF
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:18:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVFZE-0007MK-Bk; Sat, 20 Jul 2024 15:16:28 -0400
+	id 1sVFZA-00077R-Cs; Sat, 20 Jul 2024 15:16:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFYt-0006pu-CI
+ id 1sVFYv-0006py-OQ
  for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:14 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sVFYk-0000pc-Se
+ id 1sVFYj-0000pi-2M
  for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:03 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJAbUS021307;
- Sat, 20 Jul 2024 19:15:46 GMT
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJC5S7024759;
+ Sat, 20 Jul 2024 19:15:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=7tzmnxKwo2znaMzLs9b303Ot3KrE0JHiqIjx0pM+AQk=; b=
- ReYqZCap+RNHb9xFUGrG0UVQyVuwu7d2uV0XUDpgJ6vk2BSt/iEsKg7199C53pTH
- uF/lWvpYIUOKqrUhJ5+EAXviDcpBiPBcg9mXNHjDdarzVTEKq3YAjDbwITJk1Jcf
- IUMmKxL/qvYtofAUJ0hmarhZAHtKG33SezIoy1+7KthoFWmW/gBEG5SnbXnna5qW
- gSxburRD758PHOgXfZ4fC95OhgUiuXka7Vm5CoFMAVd0wlvTlq//VESt9GpUJdF2
- CaAoQPng+2NQePrurcOTzM9nO+itf9M7ANT631RM5EpB/Aoznwi4rMIdQqOdVTcK
- aRUS52idNMbKc4vPEd0Ajg==
+ corp-2023-11-20; bh=qRto/pvnEyoMMJwjO7J8WazkfLwLTPRBpNgqAp8ROR8=; b=
+ PA5kzuaoH35bwTX0JBMRGQ33d5PJNrYycNTfYC+MGuzq4euCt+X1Q5Zp3+Mf6D9R
+ SGM9WXft1Hmg6jeVNETMAVqYekgr3h/KNmz2tAsZZR+ZhJPCyj64y0eZrr40GF/J
+ 4KIKZ0ytG51H3rn7bNDVCCV9rkCbQbNK8o5mIawXdAY0J+f24+3vSy4wkwRggyty
+ IKZSJPp4VqUKCnD/7NXyQ9601RJOL2Pbu1YFh+AmprfYh/p+gLPSUveupN0iZ/m8
+ 7GWUCjOk07/Z78HKUW1SqwQT7KOK+Qqo+PTEnklfRm5AEUMqm26vPqQGxpJrG9N2
+ JYFu49+qniiQxizg51ZHOQ==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5gr055-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5jr04d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:45 +0000 (GMT)
+ Sat, 20 Jul 2024 19:15:47 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46KIF8QN027510; Sat, 20 Jul 2024 19:15:45 GMT
+ with ESMTP id 46KIfsYr027542; Sat, 20 Jul 2024 19:15:46 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40g3p5puty-1
+ 40g3p5puu9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 20 Jul 2024 19:15:45 +0000
+ Sat, 20 Jul 2024 19:15:46 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdf9028365;
- Sat, 20 Jul 2024 19:15:44 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdfB028365;
+ Sat, 20 Jul 2024 19:15:46 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 40g3p5pusv-5; Sat, 20 Jul 2024 19:15:44 +0000
+ ESMTP id 40g3p5pusv-6; Sat, 20 Jul 2024 19:15:46 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -62,9 +62,9 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 04/12] migration: cpr_find_fd_any
-Date: Sat, 20 Jul 2024 12:15:29 -0700
-Message-Id: <1721502937-87102-5-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 05/12] iommufd: preserve device fd
+Date: Sat, 20 Jul 2024 12:15:30 -0700
+Message-Id: <1721502937-87102-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
 References: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2407200140
-X-Proofpoint-GUID: z0rzYnRqnXyymF91NvI1MsEyXCNYAXdG
-X-Proofpoint-ORIG-GUID: z0rzYnRqnXyymF91NvI1MsEyXCNYAXdG
+X-Proofpoint-GUID: I4keliZ8JNp44lv8SGujXGpB6lDuvuEu
+X-Proofpoint-ORIG-GUID: I4keliZ8JNp44lv8SGujXGpB6lDuvuEu
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,53 +102,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a function for finding a CPR fd by name, for any value of id, and
-return the id.
+Save the iommu and vfio device fd in CPR state when it is created, and fetch
+the fd from that state after CPR.  Save the devid as the fd id.  Remember
+that the fd was reused, for subsequent patches.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- include/migration/cpr.h |  1 +
- migration/cpr.c         | 15 +++++++++++++++
- 2 files changed, 16 insertions(+)
+ backends/iommufd.c       | 12 +++++++++++-
+ hw/vfio/iommufd.c        | 17 ++++++++++++++++-
+ include/sysemu/iommufd.h |  1 +
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index bfd9864..c9e6111 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -19,6 +19,7 @@ typedef int (*cpr_walk_fd_cb)(int fd);
- void cpr_save_fd(const char *name, int id, int fd);
- void cpr_delete_fd(const char *name, int id);
- int cpr_find_fd(const char *name, int id);
-+int cpr_find_fd_any(const char *name, int *id_p);
- int cpr_walk_fd(cpr_walk_fd_cb cb);
- void cpr_resave_fd(const char *name, int id, int fd);
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index fc37386..4bdbad2 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -16,6 +16,7 @@
+ #include "qemu/module.h"
+ #include "qom/object_interfaces.h"
+ #include "qemu/error-report.h"
++#include "migration/cpr.h"
+ #include "monitor/monitor.h"
+ #include "trace.h"
+ #include <sys/ioctl.h>
+@@ -77,11 +78,17 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
+     int fd;
  
-diff --git a/migration/cpr.c b/migration/cpr.c
-index 853d3a1..096e8d8 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -109,6 +109,21 @@ int cpr_find_fd(const char *name, int id)
-     return fd;
+     if (be->owned && !be->users) {
+-        fd = qemu_open_old("/dev/iommu", O_RDWR);
++        g_autofree char *iname = g_strdup_printf("%s_iommu", name);
++        fd = cpr_find_fd(iname, 0);
++        be->reused = (fd >= 0);
++        if (!be->reused) {
++            fd = qemu_open_old("/dev/iommu", O_RDWR);
++        }
+         if (fd < 0) {
+             error_setg_errno(errp, errno, "/dev/iommu opening failed");
+             return false;
+         }
++        cpr_resave_fd(iname, 0, fd);
+         be->fd = fd;
+     }
+     be->users++;
+@@ -92,6 +99,8 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, const char *name, Error **errp)
+ 
+ void iommufd_backend_disconnect(IOMMUFDBackend *be, const char *name)
+ {
++    g_autofree char *iname = g_strdup_printf("%s_iommu", name);
++
+     if (!be->users) {
+         goto out;
+     }
+@@ -101,6 +110,7 @@ void iommufd_backend_disconnect(IOMMUFDBackend *be, const char *name)
+         be->fd = -1;
+     }
+ out:
++    cpr_delete_fd(iname, 0);
+     trace_iommufd_backend_disconnect(be->fd, be->users);
  }
  
-+int cpr_find_fd_any(const char *name, int *id_p)
-+{
-+    CprFd *elem;
-+
-+    QLIST_FOREACH(elem, &cpr_state.fds, next) {
-+        if (!strcmp(elem->name, name)) {
-+            trace_cpr_find_fd(name, elem->id, elem->fd);
-+            *id_p = elem->id;
-+            return elem->fd;
-+        }
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 255966a..cefc9e0 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -24,6 +24,7 @@
+ #include "sysemu/reset.h"
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
++#include "migration/cpr.h"
+ #include "pci.h"
+ 
+ static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+@@ -84,6 +85,11 @@ static bool iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
+         goto err_kvm_device_add;
+     }
+ 
++    if (vbasedev->reused) {
++        /* Already bound, and devid was set in iommufd_cdev_attach */
++        goto skip_bind;
 +    }
-+    trace_cpr_find_fd(name, -1, -1);
-+    return -1;
-+}
 +
- int cpr_walk_fd(cpr_walk_fd_cb cb)
- {
-     CprFd *elem;
+     /* Bind device to iommufd */
+     bind.iommufd = iommufd->fd;
+     if (ioctl(vbasedev->fd, VFIO_DEVICE_BIND_IOMMUFD, &bind)) {
+@@ -95,6 +101,8 @@ static bool iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
+     vbasedev->devid = bind.out_devid;
+     trace_iommufd_cdev_connect_and_bind(bind.iommufd, vbasedev->name,
+                                         vbasedev->fd, vbasedev->devid);
++
++skip_bind:
+     return true;
+ err_bind:
+     iommufd_cdev_kvm_device_del(vbasedev);
+@@ -305,13 +313,18 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
+ 
+     if (vbasedev->fd < 0) {
+-        devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
++        devfd = cpr_find_fd_any(vbasedev->name, (int *)&vbasedev->devid);
++        vbasedev->reused = (devfd >= 0);
++        if (!vbasedev->reused) {
++            devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
++        }
+         if (devfd < 0) {
+             return false;
+         }
+         vbasedev->fd = devfd;
+     } else {
+         devfd = vbasedev->fd;
++        vbasedev->reused = false;
+     }
+ 
+     if (!iommufd_cdev_connect_and_bind(vbasedev, errp)) {
+@@ -413,6 +426,7 @@ found_container:
+     vbasedev->bcontainer = bcontainer;
+     QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
+     QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
++    cpr_resave_fd(vbasedev->name, vbasedev->devid, devfd);
+ 
+     trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
+                                    vbasedev->num_regions, vbasedev->flags);
+@@ -452,6 +466,7 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+     iommufd_cdev_container_destroy(container);
+     vfio_put_address_space(space);
+ 
++    cpr_delete_fd(vbasedev->name, vbasedev->devid);
+     iommufd_cdev_unbind_and_disconnect(vbasedev);
+     close(vbasedev->fd);
+ }
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+index aa195d1..6955ebd 100644
+--- a/include/sysemu/iommufd.h
++++ b/include/sysemu/iommufd.h
+@@ -32,6 +32,7 @@ struct IOMMUFDBackend {
+     /*< protected >*/
+     int fd;            /* /dev/iommu file descriptor */
+     bool owned;        /* is the /dev/iommu opened internally */
++    bool reused;       /* fd is reused after CPR */
+     uint32_t users;
+ 
+     /*< public >*/
 -- 
 1.8.3.1
 
