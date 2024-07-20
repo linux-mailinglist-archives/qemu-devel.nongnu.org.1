@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A3B9382A0
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1739382AC
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jul 2024 21:18:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVFWw-0002ll-0d; Sat, 20 Jul 2024 15:14:07 -0400
+	id 1sVFZG-0007Xz-LI; Sat, 20 Jul 2024 15:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVFWm-0002kq-Sa
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:13:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1sVFYv-0006pw-O3
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:14 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVFWl-0000YY-IU
- for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:13:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721502834;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jao95MfY9a/cb4YeucJJNMxFdgAkrK2Ta+MAO64ibeU=;
- b=UFU3iem81XqTSQc2M2N/r3LEIjdqceuAj4zXBY9gnjBbB6V2ns4Xk3lQBW/REdQcQJWNHe
- N6xTHYLV3A7Hdm/BQVOt6CRiq6Flz5Jdm7IaJ+IM0PZKiweH1jtVYv+QHrST9qcHcLKovf
- nhUPXJavnO+4V3JXPj3X2eMoTVbQXdw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-91VOzHXzMXeTRak64dRlqA-1; Sat, 20 Jul 2024 15:13:53 -0400
-X-MC-Unique: 91VOzHXzMXeTRak64dRlqA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-426624f4ce3so19569555e9.1
- for <qemu-devel@nongnu.org>; Sat, 20 Jul 2024 12:13:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721502831; x=1722107631;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jao95MfY9a/cb4YeucJJNMxFdgAkrK2Ta+MAO64ibeU=;
- b=BtHqsShhYbu/iKhWvv/rz8PzzXlCfH1ujSfbUTZ5cVCE6/aT+0StMnc53rcwTcPZwB
- ICHnUqHQsPFlxC3dcAVd3ZzosE0uzLHr+D29sUjOIK7ZMFwSrKpVLBUW+O/IkMgqIC8W
- xQg5hgVFs6ToiwXRFLze5c5vOjuToDBfcTDRGqfE/uxFsyA/yZaEFnQqH9NQ5qIAueSt
- 61R8w0tjYUV8ONM6LmpTUQEvXaZabUcEVflAXGAezIy4Hsq6Y8T7gHNGNnivBo7U9mRd
- 8gcY2EIKgbOQDy0LYXzFAUWUQxC4R5/THnZnv9AgnrTxWPt5eJqPib3rhlMhd8+K+lLt
- prgQ==
-X-Gm-Message-State: AOJu0Yy4z/+1bhcSgN2kJEpsZH6lv9tHtiN1EwnTVZsISB2rpGIGuZL+
- D2XoBP4st9ZYPmBNRcXg8smVqg82qdE7NNQXotZawWVQc8W+8aFHTgzWu5IvfDnaD7x81jKdz0N
- E5Xrrg/Aa0rv9k/UTiJf+26iq74zBzqQq5S4/LpdyFpTLZXvorl50mfMtItyVexs=
-X-Received: by 2002:a05:600c:1e11:b0:426:5b84:86d2 with SMTP id
- 5b1f17b1804b1-427dc52808cmr16469065e9.20.1721502831518; 
- Sat, 20 Jul 2024 12:13:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4ObbLgaW1BjUPl5Q75yL9od6RZkJSjhe/HakFe8TQB1/njOR75HqzWuDAZuqSO+5T8gRTcQ==
-X-Received: by 2002:a05:600c:1e11:b0:426:5b84:86d2 with SMTP id
- 5b1f17b1804b1-427dc52808cmr16468905e9.20.1721502830895; 
- Sat, 20 Jul 2024 12:13:50 -0700 (PDT)
-Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d69071c5sm66717225e9.27.2024.07.20.12.13.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Jul 2024 12:13:50 -0700 (PDT)
-Date: Sat, 20 Jul 2024 15:13:47 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: BillXiang <xiangwencheng@dayudpu.com>
-Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org
-Subject: Re: [PATCH] vhsot-user: Remove redundant judgment
-Message-ID: <20240720151228-mutt-send-email-mst@kernel.org>
-References: <20240710074041.85984-1-xiangwencheng@dayudpu.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240710074041.85984-1-xiangwencheng@dayudpu.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1sVFYj-0000pH-2N
+ for qemu-devel@nongnu.org; Sat, 20 Jul 2024 15:16:03 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46KJA1iM020362;
+ Sat, 20 Jul 2024 19:15:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+ from:to:cc:subject:date:message-id; s=corp-2023-11-20; bh=a5KHxr
+ QvTRZeUAeYqk6vluuD5Tcqe1WWbOuFrqOSbN8=; b=BVc5EPJqIhTPLBiBLHZUVk
+ ONyw4FMk341jit1+poPoL6DZqjcxn+icrIGkf01c5ysEYLWp/hcLqEBE8xsk/6YP
+ TOyKFeOE0o1+r2AUz4NJwhAIjaK/Ua9Dod9cm6SNl+hXFgoSE8fq2zUZGIWeJmqn
+ M3OdvdrP8pH+jZVZF5XeE4Q8QadS6rNmpN1hpkjDkd5cIFydV9W8cf1jO4Mjbknu
+ Vm5+wBDEx7E8fcs3iBfMaZBojEuSl8pIvGKToeDazE+lzS3O0A9lyxdDX/PMxH5S
+ UMUpR1dHvRLlMbYnvUnMB0vf8a/1GbSrhdx1wOKYjNE3sRLvmo6340l2pyeyUw+w
+ ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40gk5gr051-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 20 Jul 2024 19:15:40 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 46KI0BUG027428; Sat, 20 Jul 2024 19:15:39 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 40g3p5put4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 20 Jul 2024 19:15:39 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46KJFdf1028365;
+ Sat, 20 Jul 2024 19:15:39 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 40g3p5pusv-1; Sat, 20 Jul 2024 19:15:39 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [RFC V1 00/12] Live update: iommufd
+Date: Sat, 20 Jul 2024 12:15:25 -0700
+Message-Id: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-20_16,2024-07-18_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ bulkscore=0 phishscore=0
+ suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2407200140
+X-Proofpoint-GUID: FwVexKhvD5Nm6n6cMgLPCf6qp-SPfnJz
+X-Proofpoint-ORIG-GUID: FwVexKhvD5Nm6n6cMgLPCf6qp-SPfnJz
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,42 +100,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 10, 2024 at 03:40:41PM +0800, BillXiang wrote:
-> From: BillXiang <xiangwencheng@dayudpu.com>
-> 
-> Send only once has been supported in vhost_user_write by vhost_user_per_device_request
-> 
-> Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
+Support iommufd devices with the cpr-exec live migration mode.
+No user-visible interfaces are added.
 
-I am confused by all the patches. Is it on top of your
-other patch or instead of? Because that one added
-the vq index check.
-If we are going to check vq index it's likely cleaner to
-always check it.
+Pass the iommufd and vfio device descriptors from old to new QEMU.  In new
+QEMU, during vfio_realize, skip the ioctls that configure the device, because
+it is already configured.
 
-And again, typos do not inspire confidence. How was this tested?
+In new QEMU, call ioctl(IOMMU_IOAS_CHANGE_PROCESS) to update the mm ownership,
+locked memory accounting, and virtual address of all DMA mappings.  The old
+virtual address of each memory region is needed to identify the existing
+mapping, so pass the host address of each RAMBlock in the migration data
+stream.
 
-> ---
->  hw/virtio/vhost-user.c | 5 -----
->  1 file changed, 5 deletions(-)
-> 
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 00561daa06..04e3568b7e 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -446,11 +446,6 @@ static int vhost_user_set_log_base(struct vhost_dev *dev, uint64_t base,
->          .hdr.size = sizeof(msg.payload.log),
->      };
->  
-> -    /* Send only once with first queue pair */
-> -    if (dev->vq_index != 0) {
-> -        return 0;
-> -    }
-> -
->      if (shmfd && log->fd != -1) {
->          fds[fd_num++] = log->fd;
->      }
-> -- 
-> 2.30.0
+Block CPR if the iommufd container has any vfio mdevs (mediated devices).
+IOMMU_IOAS_CHANGE_PROCESS can be used as-is to support mdevs, but it requires
+extra work in userland at CPR time so that kernel threads have access to the
+old mappings until the mappings are updated in new QEMU.  I have prototyped
+those changes but they need more work before posting.
+
+This series depends on the following qemu series
+  [PATCH V1 00/08] Live update: vfio
+  https://lore.kernel.org/qemu-devel/1720558737-451106-1-git-send-email-steven.sistare@oracle.com/
+
+This series depends on the IOMMU_IOAS_CHANGE_PROCESS kernel interface which
+is a work in progress:
+  iommufd live update
+  https://lore.kernel.org/linux-iommu/1721501805-86928-1-git-send-email-steven.sistare@oracle.com
+
+Steve Sistare (12):
+  vfio: move cpr_exec_notifier
+  iommufd: no DMA to BARs
+  iommufd: pass name to connect
+  migration: cpr_find_fd_any
+  iommufd: preserve device fd
+  iommufd: export iommufd_cdev_get_info_iova_range
+  iommufd: change_process kernel interface
+  vfio/iommufd: register container for cpr
+  vfio/iommufd: rebuild device
+  migration/ram: old host address
+  iommufd: update DMA virtual addresses
+  vfio: mdev blocker
+
+ backends/iommufd.c                    | 113 ++++++++++++++++++++++++++++++++--
+ hw/core/machine.c                     |   6 ++
+ hw/vfio/common.c                      |   3 +-
+ hw/vfio/cpr-iommufd.c                 |  84 +++++++++++++++++++++++++
+ hw/vfio/cpr-legacy.c                  |  10 +--
+ hw/vfio/helpers.c                     |   1 +
+ hw/vfio/iommufd.c                     |  43 ++++++++++---
+ hw/vfio/meson.build                   |   1 +
+ hw/vfio/pci.c                         |  10 +++
+ include/exec/memory.h                 |   1 +
+ include/exec/ramblock.h               |   1 +
+ include/hw/vfio/vfio-common.h         |   7 ++-
+ include/hw/vfio/vfio-container-base.h |   3 +
+ include/migration/cpr.h               |   1 +
+ include/sysemu/iommufd.h              |   7 ++-
+ linux-headers/linux/iommufd.h         |  19 ++++++
+ migration/cpr.c                       |  15 +++++
+ migration/migration.h                 |   2 +
+ migration/options.c                   |   2 +
+ migration/ram.c                       |   7 +++
+ 20 files changed, 316 insertions(+), 20 deletions(-)
+ create mode 100644 hw/vfio/cpr-iommufd.c
+
+-- 
+1.8.3.1
 
 
