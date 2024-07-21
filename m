@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812319383FD
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C724A9383F3
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:16:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVRiT-0001Af-Kc; Sun, 21 Jul 2024 04:14:49 -0400
+	id 1sVRiR-0000ll-O5; Sun, 21 Jul 2024 04:14:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhx-0000hy-Q0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhw-0000ht-F6
  for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhv-0001Mb-It
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhu-0001Mo-Sx
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721549652;
+ s=mimecast20190719; t=1721549653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=1wzLzCscshtHDHvwyRkvpGP6+NyNsPtsxpc3wvfrY6I=;
- b=ABNnxBkJrOMiY1JxYt4ra4ni4DZ71zA+rD0nDMyhAmrRJlt9Xkn2pb/E1eun8UYYZcAf2e
- RYre++kFoJLfybH5wPU07wX0c4eGwHhvqk7KZCQIA7Pq5dSRanDwpAKYeBcshXojCceTE9
- LInRDT5S0fqPoadFZo49lsFIot/txuQ=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZY1yFMZpxDed399Qr48TOhVB82T6ImNnvzW360N3de4=;
+ b=Amc6tD2VImDDhGzX/DGnthrciOvCbuf9gmIbA3EwM+e0sb40OyVDs6yeUDNgth3wsqTOzO
+ wSr1aDO1M849u69vJtKpFNkJJUNTFwo5uQbKHs1mIJi4EZzcZUXAZKexfrIt80uPApxRMO
+ E0DNRiYMjfQ+fwXi3Kq+ZOrAAdqK5EU=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-7MH9mvo-OQ2H-ZvmPpALRg-1; Sun,
- 21 Jul 2024 04:14:06 -0400
-X-MC-Unique: 7MH9mvo-OQ2H-ZvmPpALRg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-2SVm6Eu9MaKlmZLti_He8w-1; Sun,
+ 21 Jul 2024 04:14:09 -0400
+X-MC-Unique: 2SVm6Eu9MaKlmZLti_He8w-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D662B19560A1; Sun, 21 Jul 2024 08:14:05 +0000 (UTC)
+ id CF1A51956080; Sun, 21 Jul 2024 08:14:07 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.37])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 222651955D47; Sun, 21 Jul 2024 08:14:03 +0000 (UTC)
+ id 40B761955D47; Sun, 21 Jul 2024 08:14:05 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/15] aspeed queue
-Date: Sun, 21 Jul 2024 10:13:46 +0200
-Message-ID: <20240721081401.425588-1-clg@redhat.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 01/15] aspeed/smc: Fix possible integer overflow
+Date: Sun, 21 Jul 2024 10:13:47 +0200
+Message-ID: <20240721081401.425588-2-clg@redhat.com>
+In-Reply-To: <20240721081401.425588-1-clg@redhat.com>
+References: <20240721081401.425588-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -60,7 +64,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,59 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a87a7c449e532130d4fa8faa391ff7e1f04ed660:
+Coverity reports a possible integer overflow because routine
+aspeeed_smc_hclk_divisor() has a codepath returning 0, which could
+lead to an integer overflow when computing variable 'hclk_shift' in
+the caller aspeed_smc_dma_calibration().
 
-  Merge tag 'pull-loongarch-20240719' of https://gitlab.com/gaosong/qemu into staging (2024-07-19 16:28:28 +1000)
+The value passed to aspeed_smc_hclk_divisor() is always between 0 and
+15 and, in this case, there is always a matching hclk divisor. Remove
+the return 0 and use g_assert_not_reached() instead.
 
-are available in the Git repository at:
+Fixes: Coverity CID 1547822
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/ssi/aspeed_smc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20240721
-
-for you to fetch changes up to 4db1c16441923fc152142ae4bcc1cba23064cb8b:
-
-  aspeed: fix coding style (2024-07-21 07:46:38 +0200)
-
-----------------------------------------------------------------
-aspeed queue:
-
-* SMC model fix (Coverity)
-* AST2600 boot for eMMC support and test
-* AST2700 ADC model
-* I2C model changes preparing AST2700 I2C support
-
-----------------------------------------------------------------
-Cédric Le Goater (10):
-      aspeed/smc: Fix possible integer overflow
-      aspeed: Change type of eMMC device
-      aspeed: Load eMMC first boot area as a boot rom
-      aspeed/scu: Add boot-from-eMMC HW strapping bit for AST2600 SoC
-      aspeed: Introduce a AspeedSoCClass 'boot_from_emmc' handler
-      aspeed: Tune eMMC device properties to reflect HW strapping
-      aspeed: Add boot-from-eMMC HW strapping bit to rainier-bmc machine
-      aspeed: Introduce a 'hw_strap1' machine attribute
-      aspeed: Introduce a 'boot-emmc' machine option
-      tests/avocado/machine_aspeed.py: Add eMMC boot tests
-
-Jamin Lin (5):
-      aspeed/adc: Add AST2700 support
-      aspeed/soc: support ADC for AST2700
-      hw/i2c/aspeed: support to set the different memory size
-      hw/i2c/aspeed: rename the I2C class pool attribute to share_pool
-      aspeed: fix coding style
-
- docs/system/arm/aspeed.rst      |  2 +
- include/hw/adc/aspeed_adc.h     |  1 +
- include/hw/arm/aspeed_soc.h     |  1 +
- include/hw/i2c/aspeed_i2c.h     |  6 +--
- include/hw/misc/aspeed_scu.h    |  4 ++
- hw/adc/aspeed_adc.c             | 16 ++++++++
- hw/arm/aspeed.c                 | 83 +++++++++++++++++++++++++++++++++--------
- hw/arm/aspeed_ast2600.c         |  8 ++++
- hw/arm/aspeed_ast27x0.c         | 12 ++++++
- hw/arm/aspeed_soc_common.c      |  7 ++++
- hw/i2c/aspeed_i2c.c             | 45 ++++++++++++----------
- hw/ssi/aspeed_smc.c             |  3 +-
- tests/avocado/machine_aspeed.py | 39 +++++++++++++++++++
- 13 files changed, 188 insertions(+), 39 deletions(-)
+diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+index 49205ab76d38..f39fb85a35e9 100644
+--- a/hw/ssi/aspeed_smc.c
++++ b/hw/ssi/aspeed_smc.c
+@@ -789,8 +789,7 @@ static uint8_t aspeed_smc_hclk_divisor(uint8_t hclk_mask)
+         }
+     }
+ 
+-    aspeed_smc_error("invalid HCLK mask %x", hclk_mask);
+-    return 0;
++    g_assert_not_reached();
+ }
+ 
+ /*
+-- 
+2.45.2
 
 
