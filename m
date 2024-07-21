@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622E99383F9
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4465A9383F4
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:16:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVRiX-0001PS-GA; Sun, 21 Jul 2024 04:14:53 -0400
+	id 1sVRiX-0001OU-AQ; Sun, 21 Jul 2024 04:14:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRiM-0000xg-M1
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRiQ-0000zx-5e
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRiK-0001W0-UE
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:42 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRiO-0001Wn-Lb
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721549680;
+ s=mimecast20190719; t=1721549683;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+LN/ynhD2DkbOUWD0h0IzbPLzWCaTcoqsrKtlRC4XCI=;
- b=Ayjp9KZ8j/vLxlQ+g78A3+ZOkiVO+WCsCY5Kh6asdtIoTCI5aNR107NzHhAqFgP/RdXflk
- MDn3cBsBOtBEWvhmKkrLgQxE80CbL3nlnsxPaKGIyaL0s3dFAv4o7hK848C6aoqrsgCc3j
- Wzarrvi5Z45H4ughK5oisEiE8bdYbMU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=S+aR5VWlIskcMFdhgKOYGffyXi++pUDYCIjMSJNpxPo=;
+ b=Xfuxv8itt8z63hp0hA/NKtIFdiSR1sCWzEhky5S8PbvE03P/Psyuj80k+qgsXKgGahx5Qd
+ +7gXinC9mm6OdlfL7/PjY+L6AaFddiRvs/qQ88NKmh7gTi2ceR44GG+1hzqSHm1LgZBngS
+ zCAanY419ZNF+e3APNhVyvngQQguED0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-fOBNBiPyNv6Ym_sLT3sWKg-1; Sun,
- 21 Jul 2024 04:14:38 -0400
-X-MC-Unique: fOBNBiPyNv6Ym_sLT3sWKg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-f9QX7qRvO2-LYNnC9Fc4_Q-1; Sun,
+ 21 Jul 2024 04:14:39 -0400
+X-MC-Unique: f9QX7qRvO2-LYNnC9Fc4_Q-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE34219560B0; Sun, 21 Jul 2024 08:14:36 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 03C0C1955F3D; Sun, 21 Jul 2024 08:14:39 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.37])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 406CA1955D4F; Sun, 21 Jul 2024 08:14:29 +0000 (UTC)
+ id 3C2741955D47; Sun, 21 Jul 2024 08:14:37 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 11/15] aspeed/adc: Add AST2700 support
-Date: Sun, 21 Jul 2024 10:13:57 +0200
-Message-ID: <20240721081401.425588-12-clg@redhat.com>
+Subject: [PULL 12/15] aspeed/soc: support ADC for AST2700
+Date: Sun, 21 Jul 2024 10:13:58 +0200
+Message-ID: <20240721081401.425588-13-clg@redhat.com>
 In-Reply-To: <20240721081401.425588-1-clg@redhat.com>
 References: <20240721081401.425588-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,69 +82,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-AST2700 and AST2600 ADC controllers are identical.
-Introduce ast2700 class and set 2 engines.
+Add ADC model for AST2700 ADC support.
+The ADC controller registers base address is start at
+0x14C0_0000 and its address space is 0x1000.
+The ADC controller interrupt is connected to
+GICINT130_INTC group at bit 16. The GIC IRQ is 130.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/adc/aspeed_adc.h |  1 +
- hw/adc/aspeed_adc.c         | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/hw/adc/aspeed_adc.h b/include/hw/adc/aspeed_adc.h
-index ff1d06ea91de..f502f197ac00 100644
---- a/include/hw/adc/aspeed_adc.h
-+++ b/include/hw/adc/aspeed_adc.h
-@@ -18,6 +18,7 @@
- #define TYPE_ASPEED_2500_ADC TYPE_ASPEED_ADC "-ast2500"
- #define TYPE_ASPEED_2600_ADC TYPE_ASPEED_ADC "-ast2600"
- #define TYPE_ASPEED_1030_ADC TYPE_ASPEED_ADC "-ast1030"
-+#define TYPE_ASPEED_2700_ADC TYPE_ASPEED_ADC "-ast2700"
- OBJECT_DECLARE_TYPE(AspeedADCState, AspeedADCClass, ASPEED_ADC)
- 
- #define TYPE_ASPEED_ADC_ENGINE "aspeed.adc.engine"
-diff --git a/hw/adc/aspeed_adc.c b/hw/adc/aspeed_adc.c
-index 68bdbc73b0e6..48328ef89194 100644
---- a/hw/adc/aspeed_adc.c
-+++ b/hw/adc/aspeed_adc.c
-@@ -398,6 +398,15 @@ static void aspeed_1030_adc_class_init(ObjectClass *klass, void *data)
-     aac->nr_engines = 2;
- }
- 
-+static void aspeed_2700_adc_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedADCClass *aac = ASPEED_ADC_CLASS(klass);
-+
-+    dc->desc = "ASPEED 2700 ADC Controller";
-+    aac->nr_engines = 2;
-+}
-+
- static const TypeInfo aspeed_adc_info = {
-     .name = TYPE_ASPEED_ADC,
-     .parent = TYPE_SYS_BUS_DEVICE,
-@@ -430,6 +439,12 @@ static const TypeInfo aspeed_1030_adc_info = {
-     .class_init = aspeed_1030_adc_class_init, /* No change since AST2600 */
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index a9fb0d4b8874..4257b5e8af82 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -60,6 +60,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_SLIIO]     =  0x14C1E000,
+     [ASPEED_GIC_DIST]      =  0x12200000,
+     [ASPEED_GIC_REDIST]    =  0x12280000,
++    [ASPEED_DEV_ADC]       =  0x14C00000,
  };
  
-+static const TypeInfo aspeed_2700_adc_info = {
-+    .name = TYPE_ASPEED_2700_ADC,
-+    .parent = TYPE_ASPEED_ADC,
-+    .class_init = aspeed_2700_adc_class_init,
-+};
+ #define AST2700_MAX_IRQ 288
+@@ -344,6 +345,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
+     object_initialize_child(obj, "sli", &s->sli, TYPE_ASPEED_2700_SLI);
+     object_initialize_child(obj, "sliio", &s->sliio, TYPE_ASPEED_2700_SLIIO);
+     object_initialize_child(obj, "intc", &a->intc, TYPE_ASPEED_2700_INTC);
 +
- static void aspeed_adc_register_types(void)
- {
-     type_register_static(&aspeed_adc_engine_info);
-@@ -438,6 +453,7 @@ static void aspeed_adc_register_types(void)
-     type_register_static(&aspeed_2500_adc_info);
-     type_register_static(&aspeed_2600_adc_info);
-     type_register_static(&aspeed_1030_adc_info);
-+    type_register_static(&aspeed_2700_adc_info);
++    snprintf(typename, sizeof(typename), "aspeed.adc-%s", socname);
++    object_initialize_child(obj, "adc", &s->adc, typename);
  }
  
- type_init(aspeed_adc_register_types);
+ /*
+@@ -601,6 +605,14 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sliio), 0,
+                     sc->memmap[ASPEED_DEV_SLIIO]);
+ 
++    /* ADC */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->adc), errp)) {
++        return;
++    }
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->adc), 0, sc->memmap[ASPEED_DEV_ADC]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
++                       aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
++
+     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
+     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
+     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
 -- 
 2.45.2
 
