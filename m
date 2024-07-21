@@ -2,47 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D0F9384B0
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 15:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2252F9384F9
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 16:33:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVWVi-0000r4-Dx; Sun, 21 Jul 2024 09:21:58 -0400
+	id 1sVXbx-0005IL-5z; Sun, 21 Jul 2024 10:32:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sVSZO-0002Gu-3J
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 05:09:30 -0400
-Received: from kuriko.dram.page ([65.108.252.55])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sVXbr-0005Gw-Tq; Sun, 21 Jul 2024 10:32:23 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sVSZM-0002QF-FP
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 05:09:29 -0400
-From: Vivian Wang <uwu@dram.page>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dram.page; s=mail;
- t=1721552966; bh=gK/jIAxVKlERV1qkgDSRBBE0fYvUoxt+qhPcUqdUVgI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=L8pqtadHCcegDS+Gd8+hfVC+G27C3rkaYxCnzUSPgQm3v86DQoKLfad96BR2q0fd6
- tGDlnebCH86vwvGEi0IaRaxPwksfPQMRKlZEOkZAJLgQsYZqr7wXeuRiCnXT3NzeGq
- yMvUBKOnmzo5Zr2EISDtK5h5jcKREvAu5hgUIbVE=
-To: qemu-devel@nongnu.org
-Cc: Vivian Wang <uwu@dram.page>, Richard Henderson <rth@twiddle.net>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 2/2] linux-user/main: Check errno when getting AT_EXECFD
-Date: Sun, 21 Jul 2024 17:08:17 +0800
-Message-ID: <20240721090817.120888-3-uwu@dram.page>
-In-Reply-To: <20240721090817.120888-1-uwu@dram.page>
-References: <20240721090817.120888-1-uwu@dram.page>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sVXbn-0005Y3-SQ; Sun, 21 Jul 2024 10:32:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721572340; x=1753108340;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=dgewjQCx6bg9+T1HWxV7ETFDVTjyCyPPpDZKxdrI17U=;
+ b=KXTcKW3N/0EP7DoBk9fW+BVBP3S1VNlUfIq0MUSkQepFyB2OaN28ks1j
+ EodW+63MmygkFLtIQaTonxeScBIC2jzqEtbUoLmr0BZYzpFihjV04340w
+ kP2l0hq0TKhAU+NP7+hmZrlrmWDIKTaLYBPLdMuYORWRYotJF1arrcjFl
+ QI43AwLzZhb1JNLCvbY3AiyiLm+rgc8ghdRmWBDMY277VBfrZzH9K5//P
+ fZR3Pv6Rpy3M/PXHmeD7L4HQqrmE6w1roI8Snyt30QH1U3G/dyVfIVOv1
+ MWemn2VRy0y5hcmP0/bdwsJ5Kxl4XsuWzWxPFeu01rJNFN3AHkkZjbbfn Q==;
+X-CSE-ConnectionGUID: TO/vSUHpRCe3UkGYnPWhJw==
+X-CSE-MsgGUID: /GQnLXMWSVKKD8pBLb/hfw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="23005198"
+X-IronPort-AV: E=Sophos;i="6.09,225,1716274800"; d="scan'208";a="23005198"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jul 2024 07:32:15 -0700
+X-CSE-ConnectionGUID: OGG2WZecSMKc+412L1Hw5A==
+X-CSE-MsgGUID: L232TfeCRwO8q+ctMQf6Qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,225,1716274800"; d="scan'208";a="82245708"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 21 Jul 2024 07:32:13 -0700
+Date: Sun, 21 Jul 2024 22:47:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/x86: add a couple of comments explaining how the
+ kernel image is parsed
+Message-ID: <Zp0fnCmGyi2L4AFX@intel.com>
+References: <20240719134937.3643-1-anisinha@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=65.108.252.55; envelope-from=uwu@dram.page;
- helo=kuriko.dram.page
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719134937.3643-1-anisinha@redhat.com>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 21 Jul 2024 09:21:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,36 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's possible for AT_EXECFD to end up with a valid value of 0. Check
-errno when using qemu_getauxval instead of return value to handle this
-case.
+On Fri, Jul 19, 2024 at 07:19:37PM +0530, Ani Sinha wrote:
+> Date: Fri, 19 Jul 2024 19:19:37 +0530
+> From: Ani Sinha <anisinha@redhat.com>
+> Subject: [PATCH] hw/x86: add a couple of comments explaining how the kernel
+>  image is parsed
+> X-Mailer: git-send-email 2.42.0
+> 
+> Cosmetic: add comments in x86_load_linux() pointing to the kernel documentation
+> so that users can better understand the code.
+> 
+> CC: qemu-trivial@nongnu.org
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  hw/i386/x86-common.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
 
-Not handling this case leads to a confusing condition where the
-executable ends up as fd 0, i.e. stdin.
-
-Signed-off-by: Vivian Wang <uwu@dram.page>
-Fixes: 0b959cf5e4cc ("linux-user: Use qemu_getauxval for AT_EXECFD")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2448
----
- linux-user/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 7d3cf45fa9..8143a0d4b0 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -755,8 +755,9 @@ int main(int argc, char **argv, char **envp)
-     /*
-      * Manage binfmt-misc open-binary flag
-      */
-+    errno = 0;
-     execfd = qemu_getauxval(AT_EXECFD);
--    if (execfd == 0) {
-+    if (errno != 0) {
-         execfd = open(exec_path, O_RDONLY);
-         if (execfd < 0) {
-             printf("Error while loading %s: %s\n", exec_path, strerror(errno));
--- 
-2.45.1
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
