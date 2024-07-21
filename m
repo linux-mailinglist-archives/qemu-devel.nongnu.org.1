@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083499383EF
+	by mail.lfdr.de (Postfix) with ESMTPS id 406189383F0
 	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:16:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVRiU-0001Cv-7s; Sun, 21 Jul 2024 04:14:50 -0400
+	id 1sVRiY-0001Tc-Gc; Sun, 21 Jul 2024 04:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi1-0000jl-UB
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:23 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi8-0000ms-7R
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi0-0001Nh-Aw
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:21 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi6-0001Oh-KI
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721549659;
+ s=mimecast20190719; t=1721549665;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zhWu2Yd5rJYdn0tTPfoY5PzEMJvKCm7HzreJ6dHu86c=;
- b=NSqUX7E90hLb/Glb0zie8Ve/wRd5NxYedeYG9gGjXlXzVW1am2yn0J98g1DbOFe3llTYC8
- Jg2HiBlW/lyvxKKG9qNaYxN0wsGBvKF4xhlFLkUNi2WxrCYVYueVAojEO2aOFXeFTLehjG
- EdRB5obEtjnp2Si1f6uOGdq4Iz5C7e8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=6a+j5V3g9hTmvqUKCI9FPfeErHidAjcSZgZGxJJbt/k=;
+ b=CFyzvVpwGjNLQPRV4j5/aD/PNs82VusjOsoG4IRb7zRRRO+FzLaAbj+nt5YOMhWFK3t6Zx
+ 69jARNB/NCzKzdPxRIejAvc/T+siGFCS3g1aoDiGZWhHyzs4bnihgHFBKGFJduu6SqodS4
+ DmuTRIdS39qpyxjZM60457Xk6cK2TAI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-JUkoZiZ2PT2J-NOvUlTIrQ-1; Sun,
- 21 Jul 2024 04:14:17 -0400
-X-MC-Unique: JUkoZiZ2PT2J-NOvUlTIrQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-LFBta79oMN2P-bXiio1jqg-1; Sun,
+ 21 Jul 2024 04:14:19 -0400
+X-MC-Unique: LFBta79oMN2P-bXiio1jqg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A842F1956080; Sun, 21 Jul 2024 08:14:15 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1DDC81955D42; Sun, 21 Jul 2024 08:14:18 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.37])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1A69B1955D47; Sun, 21 Jul 2024 08:14:12 +0000 (UTC)
+ id 11F7A1955D4D; Sun, 21 Jul 2024 08:14:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/15] aspeed/scu: Add boot-from-eMMC HW strapping bit for
- AST2600 SoC
-Date: Sun, 21 Jul 2024 10:13:50 +0200
-Message-ID: <20240721081401.425588-5-clg@redhat.com>
+Subject: [PULL 05/15] aspeed: Introduce a AspeedSoCClass 'boot_from_emmc'
+ handler
+Date: Sun, 21 Jul 2024 10:13:51 +0200
+Message-ID: <20240721081401.425588-6-clg@redhat.com>
 In-Reply-To: <20240721081401.425588-1-clg@redhat.com>
 References: <20240721081401.425588-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,35 +84,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@kaod.org>
 
-Bit SCU500[2] of the AST2600 controls the boot device of the SoC.
+Report support on the AST2600 SoC if the boot-from-eMMC HW strapping
+bit is set at the board level. AST2700 also has support but it is not
+yet ready in QEMU and others SoCs do not have support, so return false
+always for these.
 
-Future changes will configure this bit to boot from eMMC disk images
-specially built for this purpose.
-
-Signed-off-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/misc/aspeed_scu.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/hw/arm/aspeed_soc.h | 1 +
+ hw/arm/aspeed_ast2600.c     | 8 ++++++++
+ hw/arm/aspeed_soc_common.c  | 7 +++++++
+ 3 files changed, 16 insertions(+)
 
-diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
-index 58db28db45aa..356be95e4585 100644
---- a/include/hw/misc/aspeed_scu.h
-+++ b/include/hw/misc/aspeed_scu.h
-@@ -349,6 +349,10 @@ uint32_t aspeed_scu_get_apb_freq(AspeedSCUState *s);
- #define SCU_AST2600_H_PLL_BYPASS_EN                        (0x1 << 24)
- #define SCU_AST2600_H_PLL_OFF                              (0x1 << 23)
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index 849ba37f9524..624d489e0d63 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -164,6 +164,7 @@ struct AspeedSoCClass {
+     const hwaddr *memmap;
+     uint32_t num_cpus;
+     qemu_irq (*get_irq)(AspeedSoCState *s, int dev);
++    bool (*boot_from_emmc)(AspeedSoCState *s);
+ };
  
-+/* STRAP1 SCU500 */
-+#define SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC            (0x1 << 2)
-+#define SCU_AST2600_HW_STRAP_BOOT_SRC_SPI             (0x0 << 2)
+ const char *aspeed_soc_cpu_type(AspeedSoCClass *sc);
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index 31713de74a5f..be3eb70cdd77 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -646,6 +646,13 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+     }
+ }
+ 
++static bool aspeed_soc_ast2600_boot_from_emmc(AspeedSoCState *s)
++{
++    uint32_t hw_strap1 = object_property_get_uint(OBJECT(&s->scu),
++                                                  "hw-strap1", &error_abort);
++    return !!(hw_strap1 & SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC);
++}
 +
- /*
-  * SCU310   Clock Selection Register Set 4 (for Aspeed AST1030 SOC)
-  *
+ static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
+ {
+     static const char * const valid_cpu_types[] = {
+@@ -673,6 +680,7 @@ static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
+     sc->memmap       = aspeed_soc_ast2600_memmap;
+     sc->num_cpus     = 2;
+     sc->get_irq      = aspeed_soc_ast2600_get_irq;
++    sc->boot_from_emmc = aspeed_soc_ast2600_boot_from_emmc;
+ }
+ 
+ static const TypeInfo aspeed_soc_ast2600_types[] = {
+diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
+index 1e8f2558fdc2..05551461aea0 100644
+--- a/hw/arm/aspeed_soc_common.c
++++ b/hw/arm/aspeed_soc_common.c
+@@ -134,6 +134,11 @@ static void aspeed_soc_realize(DeviceState *dev, Error **errp)
+     }
+ }
+ 
++static bool aspeed_soc_boot_from_emmc(AspeedSoCState *s)
++{
++    return false;
++}
++
+ static Property aspeed_soc_properties[] = {
+     DEFINE_PROP_LINK("dram", AspeedSoCState, dram_mr, TYPE_MEMORY_REGION,
+                      MemoryRegion *),
+@@ -145,9 +150,11 @@ static Property aspeed_soc_properties[] = {
+ static void aspeed_soc_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
++    AspeedSoCClass *sc = ASPEED_SOC_CLASS(oc);
+ 
+     dc->realize = aspeed_soc_realize;
+     device_class_set_props(dc, aspeed_soc_properties);
++    sc->boot_from_emmc = aspeed_soc_boot_from_emmc;
+ }
+ 
+ static const TypeInfo aspeed_soc_types[] = {
 -- 
 2.45.2
 
