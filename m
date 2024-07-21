@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BA29383EE
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 083499383EF
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:16:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVRiS-00015B-U1; Sun, 21 Jul 2024 04:14:49 -0400
+	id 1sVRiU-0001Cv-7s; Sun, 21 Jul 2024 04:14:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi0-0000iB-AW
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi1-0000jl-UB
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhy-0001NU-RX
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRi0-0001Nh-Aw
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721549657;
+ s=mimecast20190719; t=1721549659;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lLbJP9DyMkfUAWEbUwWogewSltKiRPYyZpr9P1AUXeY=;
- b=FHkfKSKB95j+N/JpFKmgjuj8ZeeBu2AYlpJL3O+71DrBmX3lAZtLKd6vedKIl1F9zx0Usx
- YwVafVIdySJojToxmXxTCPRTzaBV4UhUg+65UtF4g3BsUxixgZgqE0gDMIViyz6JQFT+2L
- uZMtRLv8Dv34Q1LA4MuXt2qfYJaxo6w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=zhWu2Yd5rJYdn0tTPfoY5PzEMJvKCm7HzreJ6dHu86c=;
+ b=NSqUX7E90hLb/Glb0zie8Ve/wRd5NxYedeYG9gGjXlXzVW1am2yn0J98g1DbOFe3llTYC8
+ Jg2HiBlW/lyvxKKG9qNaYxN0wsGBvKF4xhlFLkUNi2WxrCYVYueVAojEO2aOFXeFTLehjG
+ EdRB5obEtjnp2Si1f6uOGdq4Iz5C7e8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-Q518qlsLPmSP4jxVwF4HnA-1; Sun,
- 21 Jul 2024 04:14:14 -0400
-X-MC-Unique: Q518qlsLPmSP4jxVwF4HnA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-JUkoZiZ2PT2J-NOvUlTIrQ-1; Sun,
+ 21 Jul 2024 04:14:17 -0400
+X-MC-Unique: JUkoZiZ2PT2J-NOvUlTIrQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC4441955D45; Sun, 21 Jul 2024 08:14:12 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A842F1956080; Sun, 21 Jul 2024 08:14:15 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.37])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C5D3D1955D4D; Sun, 21 Jul 2024 08:14:10 +0000 (UTC)
+ id 1A69B1955D47; Sun, 21 Jul 2024 08:14:12 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/15] aspeed: Load eMMC first boot area as a boot rom
-Date: Sun, 21 Jul 2024 10:13:49 +0200
-Message-ID: <20240721081401.425588-4-clg@redhat.com>
+Subject: [PULL 04/15] aspeed/scu: Add boot-from-eMMC HW strapping bit for
+ AST2600 SoC
+Date: Sun, 21 Jul 2024 10:13:50 +0200
+Message-ID: <20240721081401.425588-5-clg@redhat.com>
 In-Reply-To: <20240721081401.425588-1-clg@redhat.com>
 References: <20240721081401.425588-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,52 +85,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@kaod.org>
 
-The first boot area partition (64K) of the eMMC device should contain
-an initial boot loader (u-boot SPL). Load it as a ROM only if an eMMC
-device is available to boot from but no flash device is.
+Bit SCU500[2] of the AST2600 controls the boot device of the SoC.
 
+Future changes will configure this bit to boot from eMMC disk images
+specially built for this purpose.
+
+Signed-off-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/aspeed.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/hw/misc/aspeed_scu.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 105b990233fa..756deb91efd1 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -364,6 +364,7 @@ static void aspeed_machine_init(MachineState *machine)
-     AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(machine);
-     AspeedSoCClass *sc;
-     int i;
-+    DriveInfo *emmc0 = NULL;
+diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
+index 58db28db45aa..356be95e4585 100644
+--- a/include/hw/misc/aspeed_scu.h
++++ b/include/hw/misc/aspeed_scu.h
+@@ -349,6 +349,10 @@ uint32_t aspeed_scu_get_apb_freq(AspeedSCUState *s);
+ #define SCU_AST2600_H_PLL_BYPASS_EN                        (0x1 << 24)
+ #define SCU_AST2600_H_PLL_OFF                              (0x1 << 23)
  
-     bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
-     object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
-@@ -440,9 +441,8 @@ static void aspeed_machine_init(MachineState *machine)
-     }
- 
-     if (bmc->soc->emmc.num_slots) {
--        sdhci_attach_drive(&bmc->soc->emmc.slots[0],
--                           drive_get(IF_SD, 0, bmc->soc->sdhci.num_slots),
--                           true);
-+        emmc0 = drive_get(IF_SD, 0, bmc->soc->sdhci.num_slots);
-+        sdhci_attach_drive(&bmc->soc->emmc.slots[0], emmc0, true);
-     }
- 
-     if (!bmc->mmio_exec) {
-@@ -452,6 +452,8 @@ static void aspeed_machine_init(MachineState *machine)
-         if (fmc0) {
-             uint64_t rom_size = memory_region_size(&bmc->soc->spi_boot);
-             aspeed_install_boot_rom(bmc, fmc0, rom_size);
-+        } else if (emmc0) {
-+            aspeed_install_boot_rom(bmc, blk_by_legacy_dinfo(emmc0), 64 * KiB);
-         }
-     }
- 
++/* STRAP1 SCU500 */
++#define SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC            (0x1 << 2)
++#define SCU_AST2600_HW_STRAP_BOOT_SRC_SPI             (0x0 << 2)
++
+ /*
+  * SCU310   Clock Selection Register Set 4 (for Aspeed AST1030 SOC)
+  *
 -- 
 2.45.2
 
