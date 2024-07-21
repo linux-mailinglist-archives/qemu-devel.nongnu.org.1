@@ -2,33 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1249384AF
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 15:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 127DD9384B1
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 15:23:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVWVi-0000rt-IJ; Sun, 21 Jul 2024 09:21:58 -0400
+	id 1sVWVk-0000yI-PZ; Sun, 21 Jul 2024 09:22:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sVSZM-0002GN-MX
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 05:09:28 -0400
+ (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sVSZP-0002Ij-Jg
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 05:09:31 -0400
 Received: from kuriko.dram.page ([65.108.252.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sVSZJ-0002Pm-0m
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 05:09:27 -0400
+ (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sVSZM-0002Q7-Ex
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 05:09:31 -0400
 From: Vivian Wang <uwu@dram.page>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dram.page; s=mail;
- t=1721552959; bh=nrrvipFBAhgDnyJR+4gF1DQaIkKMnSnYaI8hLutuQJw=;
- h=From:To:Cc:Subject:Date;
- b=fLG5KiFwgl5nUYdQsp3IEU+TtoAnG3ESDxoL6xhcxCqpCQ/veqJMhc9WcO5iJeA92
- ZPsv3nC/bC/xnehNGjvM7/YKfMBpspftnAVUdGDVSSn3nBLCRjAneWma5qztiFhiwk
- yCTMruA/PsZ3sDHfXZ56VoubIsAcTLUMA4USbD2g=
+ t=1721552964; bh=NeRawDYGirUd6fjzt3B5LrPbIDPJUX8InLiktOIoU7g=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=GQpy6TW4BW/jpK02FOhBT6Hh1LeAot1xNhHK1Uia1OnTSdcGK5qg9FHux6zeFGX+e
+ nY9UpOHFzPZtcndQVKhdFzrpgH8fs2p1ewab8pMl0bZYb6q9wwiJxndrFqBSIEu5LK
+ NI7op7FENsgrtNfexpqKWPY0DceJKiiquLuV55/U=
 To: qemu-devel@nongnu.org
 Cc: Vivian Wang <uwu@dram.page>, Richard Henderson <rth@twiddle.net>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 0/2] linux-user: Fix handling when AT_EXECFD is 0
-Date: Sun, 21 Jul 2024 17:08:15 +0800
-Message-ID: <20240721090817.120888-1-uwu@dram.page>
+Subject: [PATCH 1/2] util/getauxval: Ensure setting errno if not found
+Date: Sun, 21 Jul 2024 17:08:16 +0800
+Message-ID: <20240721090817.120888-2-uwu@dram.page>
+In-Reply-To: <20240721090817.120888-1-uwu@dram.page>
+References: <20240721090817.120888-1-uwu@dram.page>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=65.108.252.55; envelope-from=uwu@dram.page;
@@ -55,23 +57,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Found when trying to build coreutils under linux-user as binfmt_misc
-interpreter with "open-binary" flag.
+Sometimes zero is a valid value for getauxval (e.g. AT_EXECFD). Make
+sure that we can distinguish between a valid zero value and a not found
+entry by setting errno.
 
-I'm unsure whether the version detection in patch 1 makes sense. Please
-advise on how to handle situations like this.
+Ignore getauxval from sys/auxv.h on glibc < 2.19 because it does not set
+errno.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2448
+Signed-off-by: Vivian Wang <uwu@dram.page>
+---
+ util/getauxval.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Vivian Wang (2):
-  util/getauxval: Ensure setting errno if not found
-  linux-user/main: Check errno when getting AT_EXECFD
-
- linux-user/main.c |  3 ++-
- util/getauxval.c  | 14 ++++++++++++--
- 2 files changed, 14 insertions(+), 3 deletions(-)
-
---
+diff --git a/util/getauxval.c b/util/getauxval.c
+index b124107d61..f1008bdc59 100644
+--- a/util/getauxval.c
++++ b/util/getauxval.c
+@@ -24,7 +24,13 @@
+ 
+ #include "qemu/osdep.h"
+ 
+-#ifdef CONFIG_GETAUXVAL
++/* If glibc < 2.19, getauxval can't be used because it does not set errno if
++   entry is not found. */
++#if defined(CONFIG_GETAUXVAL) && \
++    (!defined(__GLIBC__) \
++        || __GLIBC__ > 2 \
++        || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 19))
++
+ /* Don't inline this in qemu/osdep.h, because pulling in <sys/auxv.h> for
+    the system declaration of getauxval pulls in the system <elf.h>, which
+    conflicts with qemu's version.  */
+@@ -95,6 +101,7 @@ unsigned long qemu_getauxval(unsigned long type)
+         }
+     }
+ 
++    errno = ENOENT;
+     return 0;
+ }
+ 
+@@ -104,7 +111,9 @@ unsigned long qemu_getauxval(unsigned long type)
+ unsigned long qemu_getauxval(unsigned long type)
+ {
+     unsigned long aux = 0;
+-    elf_aux_info(type, &aux, sizeof(aux));
++    int ret = elf_aux_info(type, &aux, sizeof(aux));
++    if (ret != 0)
++        errno = ret;
+     return aux;
+ }
+ 
+@@ -112,6 +121,7 @@ unsigned long qemu_getauxval(unsigned long type)
+ 
+ unsigned long qemu_getauxval(unsigned long type)
+ {
++    errno = ENOSYS;
+     return 0;
+ }
+ 
+-- 
 2.45.1
 
 
