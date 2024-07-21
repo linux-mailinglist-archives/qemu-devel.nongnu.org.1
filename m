@@ -2,60 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4279D9383BC
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 09:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 812319383FD
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jul 2024 10:18:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVQwW-00012c-Rv; Sun, 21 Jul 2024 03:25:16 -0400
+	id 1sVRiT-0001Af-Kc; Sun, 21 Jul 2024 04:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
- id 1sVQwU-0000u3-3I
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 03:25:14 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhx-0000hy-Q0
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
- id 1sVQwS-0001Jz-9A
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 03:25:13 -0400
-Received: from mail.andestech.com (ATCPCS34.andestech.com [10.0.1.134])
- by Atcsqr.andestech.com with ESMTPS id 46L7Ovo0077185
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
- Sun, 21 Jul 2024 15:24:57 +0800 (+08)
- (envelope-from alvinga@andestech.com)
-Received: from atctrx.andestech.com (10.0.15.190) by ATCPCS34.andestech.com
- (10.0.1.134) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 21 Jul
- 2024 15:24:58 +0800
-To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
- <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
- <zhiwei_liu@linux.alibaba.com>, Alvin Chang <alvinga@andestech.com>
-Subject: [PATCH v3 2/2] target/riscv: Add textra matching condition for the
- triggers
-Date: Sun, 21 Jul 2024 15:24:22 +0800
-Message-ID: <20240721072422.1377506-3-alvinga@andestech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240721072422.1377506-1-alvinga@andestech.com>
-References: <20240721072422.1377506-1-alvinga@andestech.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sVRhv-0001Mb-It
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 04:14:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721549652;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1wzLzCscshtHDHvwyRkvpGP6+NyNsPtsxpc3wvfrY6I=;
+ b=ABNnxBkJrOMiY1JxYt4ra4ni4DZ71zA+rD0nDMyhAmrRJlt9Xkn2pb/E1eun8UYYZcAf2e
+ RYre++kFoJLfybH5wPU07wX0c4eGwHhvqk7KZCQIA7Pq5dSRanDwpAKYeBcshXojCceTE9
+ LInRDT5S0fqPoadFZo49lsFIot/txuQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-7MH9mvo-OQ2H-ZvmPpALRg-1; Sun,
+ 21 Jul 2024 04:14:06 -0400
+X-MC-Unique: 7MH9mvo-OQ2H-ZvmPpALRg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D662B19560A1; Sun, 21 Jul 2024 08:14:05 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.37])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 222651955D47; Sun, 21 Jul 2024 08:14:03 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/15] aspeed queue
+Date: Sun, 21 Jul 2024 10:13:46 +0200
+Message-ID: <20240721081401.425588-1-clg@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.15.190]
-X-ClientProxiedBy: ATCPCS33.andestech.com (10.0.1.100) To
- ATCPCS34.andestech.com (10.0.1.134)
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 46L7Ovo0077185
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,125 +73,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Alvin Chang <alvinga@andestech.com>
-From:  Alvin Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to RISC-V Debug specification, the optional textra32 and
-textra64 trigger CSRs can be used to configure additional matching
-conditions for the triggers. For example, if the textra.MHSELECT field
-is set to 4 (mcontext), this trigger will only match or fire if the low
-bits of mcontext/hcontext equal textra.MHVALUE field.
+The following changes since commit a87a7c449e532130d4fa8faa391ff7e1f04ed660:
 
-This commit adds the aforementioned matching condition as common trigger
-matching conditions. Currently, the only legal values of textra.MHSELECT
-are 0 (ignore) and 4 (mcontext). When textra.MHSELECT is 0, we pass the
-checking. When textra.MHSELECT is 4, we compare textra.MHVALUE with
-mcontext CSR. The remaining fields, such as textra.SBYTEMASK,
-textra.SVALUE, and textra.SSELECT, are hardwired to zero for now. Thus,
-we skip checking them here.
+  Merge tag 'pull-loongarch-20240719' of https://gitlab.com/gaosong/qemu into staging (2024-07-19 16:28:28 +1000)
 
-Signed-off-by: Alvin Chang <alvinga@andestech.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/debug.c | 63 +++++++++++++++++++++++++++++++++++++++++++-
- target/riscv/debug.h |  3 +++
- 2 files changed, 65 insertions(+), 1 deletion(-)
+are available in the Git repository at:
 
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index d6b4a06144..62bb758860 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -364,11 +364,72 @@ static bool trigger_priv_match(CPURISCVState *env, trigger_type_t type,
-     return false;
- }
- 
-+static bool trigger_textra_match(CPURISCVState *env, trigger_type_t type,
-+                                 int trigger_index)
-+{
-+    target_ulong textra = env->tdata3[trigger_index];
-+    target_ulong mhvalue, mhselect;
-+
-+    if (type < TRIGGER_TYPE_AD_MATCH || type > TRIGGER_TYPE_AD_MATCH6) {
-+        /* textra checking is only applicable when type is 2, 3, 4, 5, or 6 */
-+        return true;
-+    }
-+
-+    switch (riscv_cpu_mxl(env)) {
-+    case MXL_RV32:
-+        mhvalue  = get_field(textra, TEXTRA32_MHVALUE);
-+        mhselect = get_field(textra, TEXTRA32_MHSELECT);
-+        break;
-+    case MXL_RV64:
-+    case MXL_RV128:
-+        mhvalue  = get_field(textra, TEXTRA64_MHVALUE);
-+        mhselect = get_field(textra, TEXTRA64_MHSELECT);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    /* Check mhvalue and mhselect. */
-+    switch (mhselect) {
-+    case MHSELECT_IGNORE:
-+        break;
-+    case MHSELECT_MCONTEXT:
-+        /* Match or fire if the low bits of mcontext/hcontext equal mhvalue. */
-+        if (riscv_has_ext(env, RVH)) {
-+            if (mhvalue != env->mcontext) {
-+                return false;
-+            }
-+        } else {
-+            switch (riscv_cpu_mxl(env)) {
-+            case MXL_RV32:
-+                if (mhvalue != (env->mcontext & MCONTEXT32)) {
-+                    return false;
-+                }
-+                break;
-+            case MXL_RV64:
-+            case MXL_RV128:
-+                if (mhvalue != (env->mcontext & MCONTEXT64)) {
-+                    return false;
-+                }
-+                break;
-+            default:
-+                g_assert_not_reached();
-+            }
-+        }
-+        break;
-+    default:
-+        break;
-+    }
-+
-+    return true;
-+}
-+
- /* Common matching conditions for all types of the triggers. */
- static bool trigger_common_match(CPURISCVState *env, trigger_type_t type,
-                                  int trigger_index)
- {
--    return trigger_priv_match(env, type, trigger_index);
-+    return trigger_priv_match(env, type, trigger_index) &&
-+           trigger_textra_match(env, type, trigger_index);
- }
- 
- /* type 2 trigger */
-diff --git a/target/riscv/debug.h b/target/riscv/debug.h
-index c347863578..f76b8f944a 100644
---- a/target/riscv/debug.h
-+++ b/target/riscv/debug.h
-@@ -131,6 +131,9 @@ enum {
- #define ITRIGGER_VU           BIT(25)
- #define ITRIGGER_VS           BIT(26)
- 
-+#define MHSELECT_IGNORE       0
-+#define MHSELECT_MCONTEXT     4
-+
- bool tdata_available(CPURISCVState *env, int tdata_index);
- 
- target_ulong tselect_csr_read(CPURISCVState *env);
--- 
-2.34.1
+  https://github.com/legoater/qemu/ tags/pull-aspeed-20240721
+
+for you to fetch changes up to 4db1c16441923fc152142ae4bcc1cba23064cb8b:
+
+  aspeed: fix coding style (2024-07-21 07:46:38 +0200)
+
+----------------------------------------------------------------
+aspeed queue:
+
+* SMC model fix (Coverity)
+* AST2600 boot for eMMC support and test
+* AST2700 ADC model
+* I2C model changes preparing AST2700 I2C support
+
+----------------------------------------------------------------
+Cédric Le Goater (10):
+      aspeed/smc: Fix possible integer overflow
+      aspeed: Change type of eMMC device
+      aspeed: Load eMMC first boot area as a boot rom
+      aspeed/scu: Add boot-from-eMMC HW strapping bit for AST2600 SoC
+      aspeed: Introduce a AspeedSoCClass 'boot_from_emmc' handler
+      aspeed: Tune eMMC device properties to reflect HW strapping
+      aspeed: Add boot-from-eMMC HW strapping bit to rainier-bmc machine
+      aspeed: Introduce a 'hw_strap1' machine attribute
+      aspeed: Introduce a 'boot-emmc' machine option
+      tests/avocado/machine_aspeed.py: Add eMMC boot tests
+
+Jamin Lin (5):
+      aspeed/adc: Add AST2700 support
+      aspeed/soc: support ADC for AST2700
+      hw/i2c/aspeed: support to set the different memory size
+      hw/i2c/aspeed: rename the I2C class pool attribute to share_pool
+      aspeed: fix coding style
+
+ docs/system/arm/aspeed.rst      |  2 +
+ include/hw/adc/aspeed_adc.h     |  1 +
+ include/hw/arm/aspeed_soc.h     |  1 +
+ include/hw/i2c/aspeed_i2c.h     |  6 +--
+ include/hw/misc/aspeed_scu.h    |  4 ++
+ hw/adc/aspeed_adc.c             | 16 ++++++++
+ hw/arm/aspeed.c                 | 83 +++++++++++++++++++++++++++++++++--------
+ hw/arm/aspeed_ast2600.c         |  8 ++++
+ hw/arm/aspeed_ast27x0.c         | 12 ++++++
+ hw/arm/aspeed_soc_common.c      |  7 ++++
+ hw/i2c/aspeed_i2c.c             | 45 ++++++++++++----------
+ hw/ssi/aspeed_smc.c             |  3 +-
+ tests/avocado/machine_aspeed.py | 39 +++++++++++++++++++
+ 13 files changed, 188 insertions(+), 39 deletions(-)
 
 
