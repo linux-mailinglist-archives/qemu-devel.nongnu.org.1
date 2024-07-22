@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7F29396FA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 01:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6750C9396FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 01:25:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW2Nv-0003KC-PR; Mon, 22 Jul 2024 19:24:03 -0400
+	id 1sW2Od-0003ii-KA; Mon, 22 Jul 2024 19:24:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sW2Nu-0003Jc-2Z
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:02 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1sW2Oa-0003dF-TS
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:44 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sW2Nr-0005sI-Sg
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:01 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-7a0c6ab3354so1175799a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 16:23:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1sW2OY-00060h-QM
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:44 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-52fc4388a64so708847e87.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 16:24:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721690637; x=1722295437; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0+uLDbPOBc6/sa8hO77HJpmu18+6zhuVLLtb6K+hv70=;
- b=HyRql5tCb64ySPVlPA5RKzTQ4CNwXYK/mJ1hWnNoTx5qGHhO9nO4lRF2g9gBP5h7lM
- hWuuoUAqqiYprT9B4j3xAvh9TpQv/qpLEpmdrjqjpOmO5uHCa14s0mJ/Zm6Jjgp7QWpi
- 7mBB/FbgvztlE7HMRgMsh30v5HSPTvxdEAkCMQmc0Lu5WzLTFRru11TYrXmIzi5gL5tU
- BxpF4PRkI01Z66H0byYVe3aFatW7887drQyG38vPLYvTF6zBD3QVFp0ergYU/5OtoN+v
- XpndYcOPjgCqPsHo/M+9d+YWiHpiAxYSXjkIhNzxozVrqKhpxNXTvC5dOvTsm4FfiH1m
- Krag==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721690677; x=1722295477;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4rijGo3HaETYPHa30L2mqR1DEK8teFf3f2P78Lzwjek=;
+ b=NZPBmw6GfFgw2MV4THjlfU7a389rzLp/woHpS3BM6e0W0eeu/fq+288kSbq4OsEN8J
+ ZH9I1F745ijgciECpu6G5iZzjXaXWOuEGuXiKnPLVC6+ZfcojD9LwSB1A4+9ZKufui2l
+ TXHHR+thXdNImycnoe5vXyxQlKgYHfSf0Vi2GjtnPIHanlZpXwIOhQkYtbcTPSrvhxZg
+ ULGOiT5woPSXIcnFdtgL9pkkaPhSzxfdXxwzHLUJEWg047AS6TIg5aTRf3v9M4er0skF
+ z60ZgBAhHwkePL59dupDZdCZF0C/FvEB81GCh1/hLJr8hGzr7sfRVsgZtW+BVE3BUIq3
+ BPIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721690637; x=1722295437;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0+uLDbPOBc6/sa8hO77HJpmu18+6zhuVLLtb6K+hv70=;
- b=BJAZ13k5yWK4hWTGl0aSQYSKFbHM0h79pAvJkGKXjuI2CzZqydLqtAt/ixxjN78a6Z
- Hp230E0Axi8pcptBXQ1mDhyfrX7Lqp9hQbCUoPU32pu93vxmu7dpgUG8yoojANTaUamU
- TysyksSUO+xtFGi6GlIsswLqEwrIA/gnJx7wOl3kidlbXAlcV1yVVQByR3g+F/+mdsCz
- Kv5aZA6LckUxziJk3ErtARijHWdJM/82SNXyKOAoVHHBEkCEwqnkzGeQgF5BSXnSoY3L
- 8d6NMGq2mT3OJph+yrNXIzYfrhz4DOeqYKLlbjLq9uJntizOwcGCP4h3RX0ZD9cA2iHM
- hTtQ==
-X-Gm-Message-State: AOJu0YwRYXWx7ln8y+btq7zxE0PGLAFUoRUidMvOuBlBJ/LOo5SGTqSa
- 31LsjldvOsIx8n8fbN6rDoFLOY5U2FfxNfx1mQbLelFqlJ+8xfpLbYiv503NG/bFgHLHxycfhTl
- gxGc=
-X-Google-Smtp-Source: AGHT+IE7QPQCyIpPtIjkPPwzKEmd2Ewrbpcj+jRx3+OlyXJq9NLHX+/paojK2TWpPb38vSXvi1W+IA==
-X-Received: by 2002:a05:6a20:9325:b0:1c3:b1e6:d27f with SMTP id
- adf61e73a8af0-1c4229a6effmr6513777637.46.1721690637051; 
- Mon, 22 Jul 2024 16:23:57 -0700 (PDT)
-Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ccf7c723bbsm7733188a91.30.2024.07.22.16.23.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 16:23:56 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH] plugins: fix race condition with scoreboards
-Date: Mon, 22 Jul 2024 16:23:44 -0700
-Message-Id: <20240722232344.2203257-1-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ d=1e100.net; s=20230601; t=1721690677; x=1722295477;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4rijGo3HaETYPHa30L2mqR1DEK8teFf3f2P78Lzwjek=;
+ b=PsqJsJ95CW3Df3X7QvItl/BZfJ/zAulLhweG3d2+g9QW1waIzsrsfRD6z0shA49aDY
+ EL+KDk2vc9eNEfuB2RG52gdd7AxOMsF7D08p1R3n4riPCqdwf7+le9G5O+gRyqDeKNmT
+ si5zFfhLc0Ll3PkdKEsrrZzicTsggdLS459q4e6fmhdsNilFFuFJeC02NkpAvgZaCJty
+ 8dJE2zY/2VpE9p4fQS8tF8/yv4yMCQi2o6Dn6Ck+kDnVoSU6m5+KjumcDaOwhfODssvh
+ qfFwlq2smYUwoR7dZVcubtoPlfRYbdQ6Dx7P4XKLPOZmzpruf2ky0Aa6tRyukd3wB+qK
+ ogKA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXpuIkI6P/Yxu0l0mkXSlgG30OTU3fVKzfKu3z+Y95h42n2e+abU0HAPBBR+Q2SJcbjKKidfkU3+yhfk7M8TpuDDV39cnw=
+X-Gm-Message-State: AOJu0YwG/tnM+ATXB1hcEl59yQ72hAvVHI85Svq0/5Lx9Cjq6u9BNoLQ
+ 94430PrO82NdStLuXM6yAS87VKnjk0rdDKAy7ieJaOAxi//Mvm4u2JSvL8l2ayRJlETK9kKVKzB
+ j/tZAKvnsIg+MTeWtg9jIHp3ytEOLocVmEAAbeQ==
+X-Google-Smtp-Source: AGHT+IFKfc4v679rnAGo7XggcR2Jyw6mkDnxv5CnqrWBSUP7I+gxv06+8Li4inxuE/V9xaFHw+v/w/iTNSitH8DxsyQ=
+X-Received: by 2002:a05:6512:10cf:b0:52f:c24b:175f with SMTP id
+ 2adb3069b0e04-52fc4047b2bmr701334e87.20.1721690677292; Mon, 22 Jul 2024
+ 16:24:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20240718021012.2057986-1-alistair.francis@wdc.com>
+ <20240718021012.2057986-22-alistair.francis@wdc.com>
+ <CAFEAcA9dToUo9LwxQwCLSL=gVTXWs9M23BpLhm+eD1rZShnehQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA9dToUo9LwxQwCLSL=gVTXWs9M23BpLhm+eD1rZShnehQ@mail.gmail.com>
+From: Atish Kumar Patra <atishp@rivosinc.com>
+Date: Mon, 22 Jul 2024 16:24:26 -0700
+Message-ID: <CAHBxVyGQHBobpf71o4Qp51iQGXKBh0Ajup=e_a95xdLF==V_WQ@mail.gmail.com>
+Subject: Re: [PULL 21/30] target/riscv: Implement privilege mode filtering for
+ cycle/instret
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org, 
+ Rajnesh Kanwal <rkanwal@rivosinc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=atishp@rivosinc.com; helo=mail-lf1-x12c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,83 +95,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A deadlock can be created if a new vcpu (a) triggers a scoreboard
-reallocation, and another vcpu (b) wants to create a new scoreboard at
-the same time.
+On Sat, Jul 20, 2024 at 7:44=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> On Thu, 18 Jul 2024 at 03:12, Alistair Francis <alistair23@gmail.com> wro=
+te:
+> >
+> > From: Atish Patra <atishp@rivosinc.com>
+> >
+> > Privilege mode filtering can also be emulated for cycle/instret by
+> > tracking host_ticks/icount during each privilege mode switch. This
+> > patch implements that for both cycle/instret and mhpmcounters. The
+> > first one requires Smcntrpmf while the other one requires Sscofpmf
+> > to be enabled.
+> >
+> > The cycle/instret are still computed using host ticks when icount
+> > is not enabled. Otherwise, they are computed using raw icount which
+> > is more accurate in icount mode.
+>
+> Hi; Coverity points out some possible issues with this patch
+> (CID 1558459, 1558462):
+>
+>
+> > +typedef struct PMUFixedCtrState {
+> > +        /* Track cycle and icount for each privilege mode */
+> > +        uint64_t counter[4];
+> > +        uint64_t counter_prev[4];
+> > +        /* Track cycle and icount for each privilege mode when V =3D 1=
+*/
+> > +        uint64_t counter_virt[2];
+> > +        uint64_t counter_virt_prev[2];
+>
+> These two arrays are defined with size 2...
+>
+>
+> > +static void riscv_pmu_icount_update_priv(CPURISCVState *env,
+> > +                                         target_ulong newpriv, bool ne=
+w_virt)
+> > +{
+> > +    uint64_t *snapshot_prev, *snapshot_new;
+> > +    uint64_t current_icount;
+> > +    uint64_t *counter_arr;
+> > +    uint64_t delta;
+> > +
+> > +    if (icount_enabled()) {
+> > +        current_icount =3D icount_get_raw();
+> > +    } else {
+> > +        current_icount =3D cpu_get_host_ticks();
+> > +    }
+> > +
+> > +    if (env->virt_enabled) {
+> > +        counter_arr =3D env->pmu_fixed_ctrs[1].counter_virt;
+> > +        snapshot_prev =3D env->pmu_fixed_ctrs[1].counter_virt_prev;
+> > +    } else {
+> > +        counter_arr =3D env->pmu_fixed_ctrs[1].counter;
+> > +        snapshot_prev =3D env->pmu_fixed_ctrs[1].counter_prev;
+> > +    }
+> > +
+> > +    if (new_virt) {
+> > +        snapshot_new =3D env->pmu_fixed_ctrs[1].counter_virt_prev;
+> > +    } else {
+> > +        snapshot_new =3D env->pmu_fixed_ctrs[1].counter_prev;
+> > +    }
+> > +
+> > +     /*
+> > +      * new_priv can be same as env->priv. So we need to calculate
+> > +      * delta first before updating snapshot_new[new_priv].
+> > +      */
+> > +    delta =3D current_icount - snapshot_prev[env->priv];
+> > +    snapshot_new[newpriv] =3D current_icount;
+> > +
+> > +    counter_arr[env->priv] +=3D delta;
+>
+> ...and in this function we may use those counter_virt and
+> counter_virt_prev arrays with newpriv and env->priv as indexes,
+> but in the callsites like riscv_cpu_set_mode() the assertions on
+> newpriv etc are things like
+>   g_assert(newpriv <=3D PRV_M && newpriv !=3D PRV_RESERVED);
+>
+> so Coverity thinks newpriv might be PRV_M (because that's the only
+> explicit range guard it's seen) and we will overrun the array.
+>
+> If this is a "can't happen" case I think we should have asserts in the
 
-In this case, (a) holds the plugin lock, and starts an exclusive
-section, waiting for (b). But at the same time, (b) is waiting for
-plugin lock.
 
-The solution is to drop the lock before entering the exclusive section.
+Yes. Both these arrays are used when virt is enabled which can't
+happen when PRV_M.
+The separate array is required to distinguish between VS and HS mode
+where both priv is PRV_S.
 
-This bug can be easily reproduced by creating a callback for any tb
-exec, that allocates a new scoreboard. In this case, as soon as we reach
-more than 16 vcpus, the deadlock occurs.
+> functions like riscv_pmu_icount_update_priv() and riscv_pmu_cycle_update_=
+priv()
+> that might index into these arrays that the indexes can't be out of bound=
+s
+> for these smaller arrays.
+>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2344
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- plugins/core.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+Sure. I will add the asserts and send a fix patch.
 
-diff --git a/plugins/core.c b/plugins/core.c
-index 12c67b4b4eb..e31a5c1c9cc 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -214,28 +214,45 @@ CPUPluginState *qemu_plugin_create_vcpu_state(void)
- 
- static void plugin_grow_scoreboards__locked(CPUState *cpu)
- {
--    if (cpu->cpu_index < plugin.scoreboard_alloc_size) {
-+    size_t scoreboard_size = plugin.scoreboard_alloc_size;
-+    if (cpu->cpu_index < scoreboard_size) {
-         return;
-     }
- 
-     bool need_realloc = FALSE;
--    while (cpu->cpu_index >= plugin.scoreboard_alloc_size) {
--        plugin.scoreboard_alloc_size *= 2;
-+    while (cpu->cpu_index >= scoreboard_size) {
-+        scoreboard_size *= 2;
-         need_realloc = TRUE;
-     }
- 
-+    if (!need_realloc) {
-+        return;
-+    }
- 
--    if (!need_realloc || QLIST_EMPTY(&plugin.scoreboards)) {
--        /* nothing to do, we just updated sizes for future scoreboards */
-+    if (QLIST_EMPTY(&plugin.scoreboards)) {
-+        /* just update size for future scoreboards */
-+        plugin.scoreboard_alloc_size = scoreboard_size;
-         return;
-     }
- 
-+    /*
-+     * A scoreboard creation/deletion might be in progress. If a new vcpu is
-+     * initialized at the same time, we are safe, as the new
-+     * plugin.scoreboard_alloc_size was not yet written.
-+     */
-+    qemu_rec_mutex_unlock(&plugin.lock);
-+
-     /* cpus must be stopped, as tb might still use an existing scoreboard. */
-     start_exclusive();
-+    /* re-acquire lock */
-+    qemu_rec_mutex_lock(&plugin.lock);
-+    /* in case another vcpu is created between unlock and exclusive section. */
-+    scoreboard_size = MAX(scoreboard_size, plugin.scoreboard_alloc_size);
-     struct qemu_plugin_scoreboard *score;
-     QLIST_FOREACH(score, &plugin.scoreboards, entry) {
--        g_array_set_size(score->data, plugin.scoreboard_alloc_size);
-+        g_array_set_size(score->data, scoreboard_size);
-     }
-+    plugin.scoreboard_alloc_size = scoreboard_size;
-     /* force all tb to be flushed, as scoreboard pointers were changed. */
-     tb_flush(cpu);
-     end_exclusive();
--- 
-2.39.2
-
+>
+> thanks
+> -- PMM
 
