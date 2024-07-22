@@ -2,100 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A0493955A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D1193955B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0SW-0007JI-79; Mon, 22 Jul 2024 17:20:40 -0400
+	id 1sW0T3-0001N6-Ih; Mon, 22 Jul 2024 17:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sW0ST-0007Cd-3g
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:20:37 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW0T0-00017r-6o
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:21:10 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sW0SP-0007bP-C5
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:20:35 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A2C971FB81;
- Mon, 22 Jul 2024 21:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1721683231; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8X5VxOpgVcFj4Uxai2NtQuQX1VKouErEsFgdMhHmPR0=;
- b=E6meBcPbFMycwFST6POIj6pcETTYDspv7RwteQXqAW7YcxCEBArrzs6yZAGKr/xv4qM+QD
- 9SE2J7ykEymtcn1YrnPFu5B84Ahtih2HUsA8gf4Yu4Tw8HArMiXKczAvdd2ZdlUf8oRwf4
- 72fvhKbECa/Omj2GFHNaVsmF1TzaZIU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1721683231;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8X5VxOpgVcFj4Uxai2NtQuQX1VKouErEsFgdMhHmPR0=;
- b=dJx+IB0oDHWGUVRLX4j2WOF2sj1giFAlyMzRke2vD2ltizLS6Q3I+Ovw94CsCwKwWkrPv1
- uBIyKyxGsoFRSGBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1721683231; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8X5VxOpgVcFj4Uxai2NtQuQX1VKouErEsFgdMhHmPR0=;
- b=E6meBcPbFMycwFST6POIj6pcETTYDspv7RwteQXqAW7YcxCEBArrzs6yZAGKr/xv4qM+QD
- 9SE2J7ykEymtcn1YrnPFu5B84Ahtih2HUsA8gf4Yu4Tw8HArMiXKczAvdd2ZdlUf8oRwf4
- 72fvhKbECa/Omj2GFHNaVsmF1TzaZIU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1721683231;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8X5VxOpgVcFj4Uxai2NtQuQX1VKouErEsFgdMhHmPR0=;
- b=dJx+IB0oDHWGUVRLX4j2WOF2sj1giFAlyMzRke2vD2ltizLS6Q3I+Ovw94CsCwKwWkrPv1
- uBIyKyxGsoFRSGBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 27529136A9;
- Mon, 22 Jul 2024 21:20:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id XOB1Nx7NnmbTOwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 22 Jul 2024 21:20:30 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [RFC PATCH v2 0/9] migration/multifd: Remove
- multifd_send_state->pages
-In-Reply-To: <Zp7HH6-WeYKXQ-fy@x1n>
-References: <20240722175914.24022-1-farosas@suse.de> <Zp65zvb9oy9my-qY@x1n>
- <87msm9yy77.fsf@suse.de> <Zp7HH6-WeYKXQ-fy@x1n>
-Date: Mon, 22 Jul 2024 18:20:28 -0300
-Message-ID: <87a5i9yvhf.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW0Sv-0007eX-LR
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:21:09 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4266eda81c5so41352775e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:21:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721683264; x=1722288064; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=30aPkM3X7mxw2kxFZg/Kh76te2T/et6iLr23Tg+qzTw=;
+ b=ejp00cRLwMBL3lMm39cMUQ/BX7SdzrG0j6EKKOQSIWkJZa8ZH9bSRyA51z4yjm1YfE
+ 4mOMkDYaO2hf6jo/IQuQ5+/gzD9PoW6x5tfl3zvNOh61++pW3StvEDvdhqFeDilcdFx7
+ ufBlfehRIk9Qqv6xOHI1d9XZL5StCKOoLvC++OQU0jfZtASysBCXp21WGsAS5l7w5JdE
+ j8EXr7FPGvdtJJU8DC+Xt/wSCkJGzWRsA3KD5NQa93PvNPzM4lkOUa5FUe3kEiQdS5Tr
+ Dx0Qu98v0FrT5FH+8B9/eU1//r2VlFHgpoQpVSDACtY4HUknzmN1/fLkypz86aF6AdFH
+ Xj+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721683264; x=1722288064;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=30aPkM3X7mxw2kxFZg/Kh76te2T/et6iLr23Tg+qzTw=;
+ b=qCaOKoyLEFVRd9+Eoano34mcNOELwUYVTeMyyM1P1Rd/VD1LoDuLrzMvjJJXeEugho
+ o8I3VoJNzF/lPlKNSj2ecy1VR12M0aKQfGs/ltgMUWXm2eE964aQVncOXJrUEIAZ32PE
+ r/w80OtRJriyA8+MQ6kuE64tbI67DOdvGbn6Uo3s83bP4d725Cavb3ll/e3Fm+TjhsdH
+ EChyI+pyYjeHcOLgxBGPeUKs5l9edONnEodn0u/nMg7E6ecmyy3VBDf2H9oIgIBW+ups
+ wmsJoGFLEPULEfu1GsfSsoHt+mh4Wk8/Vj/G2Q/GdAxKWhZEw3dygjMu4VZcFAJNyLgQ
+ DT7g==
+X-Gm-Message-State: AOJu0Yw/K5LofpU9L08nMv1zZx+LsgCjZPFKULNmCS1iej6nDcPiNJKH
+ obzDtBGB7PZNQMIrtWOfJCgzxBtKvQX9Z2ehCaYVE+oARJCRJYm8YlpT7GA9dTEjlzBBUYTtctk
+ K
+X-Google-Smtp-Source: AGHT+IHQvyQ/oeKM21mJmszng41wVQTbyzdn0iHjnA4ixkxOsBxe68my1vWaiaAYl530U2mVbtn3Lg==
+X-Received: by 2002:a05:600c:1987:b0:426:52a5:1ca4 with SMTP id
+ 5b1f17b1804b1-427dc5292e6mr65605545e9.21.1721683263802; 
+ Mon, 22 Jul 2024 14:21:03 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.208.14])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d690152esm142117875e9.13.2024.07.22.14.21.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 14:21:03 -0700 (PDT)
+Message-ID: <b7af15a6-252b-456f-bfc9-7e69f5781b68@linaro.org>
+Date: Mon, 22 Jul 2024 23:21:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -1.10
-X-Spamd-Result: default: False [-1.10 / 50.00]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MISSING_XM_UA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- RCPT_COUNT_THREE(0.00)[3]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD() in
+ nubus_virtio_mmio_realize()
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>
+References: <20240715095939.72492-1-zhao1.liu@intel.com>
+ <ZpeqoZC02URH4847@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZpeqoZC02URH4847@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,116 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
++Markus/Eric for review
 
-> On Mon, Jul 22, 2024 at 05:21:48PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Mon, Jul 22, 2024 at 02:59:05PM -0300, Fabiano Rosas wrote:
->> >> Hi,
->> >> 
->> >> In this v2 I took Peter's suggestion of keeping the channels' pointers
->> >> and moving only the extra slot. The major changes are in patches 5 and
->> >> 9. Patch 3 introduces the structure:
->> >> 
->> >> typedef enum {
->> >>     MULTIFD_PAYLOAD_NONE,
->> >>     MULTIFD_PAYLOAD_RAM,
->> >> } MultiFDPayloadType;
->> >> 
->> >> struct MultiFDSendData {
->> >>     MultiFDPayloadType type;
->> >>     union {
->> >>         MultiFDPages_t ram;
->> >>     } u;
->> >> };
->> >> 
->> >> I added a NONE type so we can use it to tell when the channel has
->> >> finished sending a packet, since we'll need to switch types between
->> >> clients anyway. This avoids having to introduce a 'size', or 'free'
->> >> variable.
->> >
->> > This at least looks better to me, thanks.
->> >
->> >> 
->> >> WHAT'S MISSING:
->> >> 
->> >> - The support for calling multifd_send() concurrently. Maciej has this
->> >>   in his series so I didn't touch it.
->> >> 
->> >> - A way of adding methods for the new payload type. Currently, the
->> >>   compression methods are somewhat coupled with ram migration, so I'm
->> >>   not sure how to proceed.
->> >
->> > What is this one?  Why compression methods need new payload?  Aren't they
->> > ram-typed?
->> 
->> The data we transport is MultiFDPages_t, yes, but the MultiFDMethods are
->> either nocomp, or the compression-specific methods
->> (e.g. zlib_send_prepare).
->> 
->> How do we add methods for the upcoming new payload types? I don't expect
->> us to continue using nocomp and then do "if (ram)... else if
->> (device_state) ..." inside of them. I would expect us to rename
->> s/nocomp/ram/ and add a new set of MultiFDMethods for the new data type
->> (e.g. vfio_send_prepare, vmstate_send_prepare, etc).
->> 
->> multifd_nocomp_ops -> multifd_ram_ops // rename
->> multifd_zlib_ops   // existing
->> multifd_device_ops // new
->> 
->> The challenge here is that the current framework is nocomp
->> vs. compression. It needs to become ram + compression vs. other types.
->
-> IMHO we can keep multifd_ops[] only for RAM.  There's only send_prepare()
-> that device state will need, and so far it's only (referring Maciej's
-> code):
->
-> static int nocomp_send_prepare_device_state(MultiFDSendParams *p,
->                                             Error **errp)
-> {
->     multifd_send_prepare_header_device_state(p);
->
->     assert(!(p->flags & MULTIFD_FLAG_SYNC));
->
->     p->next_packet_size = p->device_state->buf_len;
->     if (p->next_packet_size > 0) {
->         p->iov[p->iovs_num].iov_base = p->device_state->buf;
->         p->iov[p->iovs_num].iov_len = p->next_packet_size;
->         p->iovs_num++;
->     }
->
->     p->flags |= MULTIFD_FLAG_NOCOMP | MULTIFD_FLAG_DEVICE_STATE;
->
->     multifd_send_fill_packet_device_state(p);
->
->     return 0;
-> }
->
-> None of other multifd_ops are used.
+On 17/7/24 13:27, Zhao Liu wrote:
+> Hi Philippe,
+> 
+> If possible, can this one catch a ride with your PULL too?
+> 
+> Many thanks!
+> Zhao
+> 
+> On Mon, Jul 15, 2024 at 05:59:37PM +0800, Zhao Liu wrote:
+>> Date: Mon, 15 Jul 2024 17:59:37 +0800
+>> From: Zhao Liu <zhao1.liu@intel.com>
+>> Subject: [PATCH] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD() in
+>>   nubus_virtio_mmio_realize()
+>> X-Mailer: git-send-email 2.34.1
+>>
+>> As the comment in qapi/error, dereferencing @errp requires
+>> ERRP_GUARD():
+>>
+>> * = Why, when and how to use ERRP_GUARD() =
+>> *
+>> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+>> * - It must not be dereferenced, because it may be null.
+>> ...
+>> * ERRP_GUARD() lifts these restrictions.
+>> *
+>> * To use ERRP_GUARD(), add it right at the beginning of the function.
+>> * @errp can then be used without worrying about the argument being
+>> * NULL or &error_fatal.
+>> *
+>> * Using it when it's not needed is safe, but please avoid cluttering
+>> * the source with useless code.
+>>
+>> But in nubus_virtio_mmio_realize(), @errp is dereferenced without
+>> ERRP_GUARD().
+>>
+>> Although nubus_virtio_mmio_realize() - as a DeviceClass.realize()
+>> method - doesn't get the NULL @errp parameter, it hasn't triggered the
+>> bug that dereferencing the NULL @errp. It's still necessary to follow
+>> the requirement of @errp, so add missing ERRP_GUARD() in
+>> nubus_virtio_mmio_realize().
+>>
+>> Cc: Laurent Vivier <laurent@vivier.eu>
+>> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+>> ---
+>>   hw/nubus/nubus-virtio-mmio.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/hw/nubus/nubus-virtio-mmio.c b/hw/nubus/nubus-virtio-mmio.c
+>> index 58a63c84d0be..a5558d3ec28b 100644
+>> --- a/hw/nubus/nubus-virtio-mmio.c
+>> +++ b/hw/nubus/nubus-virtio-mmio.c
+>> @@ -23,6 +23,7 @@ static void nubus_virtio_mmio_set_input_irq(void *opaque, int n, int level)
+>>   
+>>   static void nubus_virtio_mmio_realize(DeviceState *dev, Error **errp)
+>>   {
+>> +    ERRP_GUARD();
+>>       NubusVirtioMMIODeviceClass *nvmdc = NUBUS_VIRTIO_MMIO_GET_CLASS(dev);
+>>       NubusVirtioMMIO *s = NUBUS_VIRTIO_MMIO(dev);
+>>       NubusDevice *nd = NUBUS_DEVICE(dev);
+>> -- 
+>> 2.34.1
+>>
 
-There's also a conditional around device_state when calling
-->recv(). That could seems like it could go to a hook.
-
-https://lore.kernel.org/r/41dedaf2c9abebb5e45f88c052daa26320715a92.1718717584.git.maciej.szmigiero@oracle.com
-
->
-> I think we can directly invoke this part of device state code in
-> multifd_send_thread() for now.  So far I think it should be ok.
-
-It's not just that. There's also a check for "if (ram)" at every call to
-multifd_ops to avoid calling the ram code when doing the device
-migration. It would be way easier to just set noop functions for those.
-
-static MultiFDMethods multifd_devstate_ops = {
-    .send_setup = noop_send_setup,
-    .send_cleanup = noop_send_cleanup,
-    .send_prepare = devstate_send_prepare,
-    .recv_setup = noop_recv_setup,
-    .recv_cleanup = noop_recv_cleanup,
-    .recv = devstate_recv
-};
-
-I'm not saying this needs to be done in this series though. But I do
-think that's the correct design choice for the long term.
 
