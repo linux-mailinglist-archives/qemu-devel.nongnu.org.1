@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B19D9386D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9819386CE
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:18:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgk8-00049c-EQ; Sun, 21 Jul 2024 20:17:32 -0400
+	id 1sVgkB-0004OV-Nv; Sun, 21 Jul 2024 20:17:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk6-00044g-L2
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk9-0004JJ-P9
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk4-0005lj-Tg
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk7-0005lz-UU
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607448;
+ s=mimecast20190719; t=1721607451;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zREGtvMmaAWc2fUmFmGbArMdM6d/DlgtDgvgzTwqaes=;
- b=NkrJvr+zWpDePBJnoWnPCbBzrxT/5qEptLqK3hRCmH4+PU3yJoQDkrlkxZ1b3Gl2FNp3Rw
- Qy8uGoco14pn55lNshfkojpkZQMBLQBnbkHaW09mZSwd/9EFbr3rKIRQsAgq5vsh5iY48b
- mskTv/wtNy4Luu4wpdAPMniOCsshOjU=
+ bh=g0S4hWSM06AIIIvMLr4s6kHBfIjfxBV9+M5h/WPYNyI=;
+ b=YNP6aoaKCOK+C2Wj3Q6kfahdola9ecE+ahAOU6d5tQTqsVpLJzW06RZYxPOnl/ePAGUyiH
+ J7jneUCF8Y0Fu3zlQBw4y0FTqotInI3zpuYMZqmPPIVUcmnEiSLyez8TIZ80n6aWRwmnLu
+ 2OsBqWz1d5y7ccwNpv5v0wWU+vOkKQQ=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-uJShbmzxOB2RLQ6p_99-Tw-1; Sun, 21 Jul 2024 20:17:26 -0400
-X-MC-Unique: uJShbmzxOB2RLQ6p_99-Tw-1
+ us-mta-466-NgXSa-MrNfSg4Yeq_85D-w-1; Sun, 21 Jul 2024 20:17:28 -0400
+X-MC-Unique: NgXSa-MrNfSg4Yeq_85D-w-1
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42666ed2d5fso25930155e9.3
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:26 -0700 (PDT)
+ 5b1f17b1804b1-42660bca669so25378775e9.0
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607445; x=1722212245;
+ d=1e100.net; s=20230601; t=1721607447; x=1722212247;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zREGtvMmaAWc2fUmFmGbArMdM6d/DlgtDgvgzTwqaes=;
- b=oidGNEsuWkU7wfajMCoKAfuOJdRFwn8NPnX7yQ8LcWG6pd2TXEM+aX17YnWUk76NoD
- bnC32n6iaMmXokvBUYvZOhTL5D7EObDQws126mWo5VHQ7ZZCwCK7f//bLYKfe/SoVvOx
- 0BaPphOuyPcL5Mb/MUzzVDYYaJBGcWwB9cie7GE0PtvsNw/uhUNMRw+bjly/rupDyjMp
- kbjhnkthvvzc6Tfi/1+lglOERFHphMgGKLcUXOzUXHgnQyCm5UzYVvibScvshVOws8A0
- KHD02zNmSUky+QWbwbLhpTyOiAvBBFcOX3lbvjKpsxEOyUYm0Xd/SYJJtrO3Z6MX8jfP
- lfSQ==
-X-Gm-Message-State: AOJu0Yy6pmrTQ8F4XagefCVRv53etNeqodwprV70lyltUtm3faw37EOw
- x/D8pHBjzWieyB+Mw/1CR9rpt6Y+AeiZOS5PkPW1V0N39GSpLcX32VV8vBTTlLt7NSs/+edaiqC
- np7Bm48vFcQWKdzioD0pATN4SxDMUcP0jH/erR/KULnlon5Q+AQs3OSOEaJlH/NMTy7Vu4DzT+Y
- 3ygL/sJT4pQEJcc86bEROhAxQ9FzDUqQ==
-X-Received: by 2002:a05:600c:46c3:b0:426:5416:67d7 with SMTP id
- 5b1f17b1804b1-427dc565861mr32833425e9.27.1721607445077; 
- Sun, 21 Jul 2024 17:17:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEX+7jt/cKkCQuWa6td34PAuX1JghZUy/71bqc+4lPplwNpiM5yyty1WbRkja1b74Z//mY+7A==
-X-Received: by 2002:a05:600c:46c3:b0:426:5416:67d7 with SMTP id
- 5b1f17b1804b1-427dc565861mr32833255e9.27.1721607444382; 
- Sun, 21 Jul 2024 17:17:24 -0700 (PDT)
+ bh=g0S4hWSM06AIIIvMLr4s6kHBfIjfxBV9+M5h/WPYNyI=;
+ b=vuOFc1i96HSux8WVpXQ3gowrk4Or0NdkrwUQVAOTvJ69yg2jGpKMw42iAL6m1d0Uey
+ z3Dv8JelzVN9UHdRTyT3jsU9jA31IF4ibzRs3gbWZKBPPS8Hg4EH8Z9Cg5fVmNcbCW3w
+ 6Ybd/5OTbQhOhIbfg0U5v+IxC21jvtAtKzQreGi3uSRoDZZEdgKvtzTnCkyk9F1SjjoJ
+ sGt3VaCzh2Z0OoibJ0SAtZ/jRPBnd4zOBpM2iWSvEc/6SZnBFuT09HmPITImln46L8mK
+ zDuFv9sA0hPgzr+uVPcyyOR68tIaUhh/Pf4Qr64wRD8S1552bukOo8jMAMIYToB/lH9s
+ kIMw==
+X-Gm-Message-State: AOJu0YycUA+cEBZr+cA6cDg7yAxCkl2d8jqQTP0xRmEFib1OZQ3iTuKi
+ xAw4i4Ifui3LmDkooidNevTqbIaX4/BgMVk369YqybjBjF1u6caZpzaCxkJlMei1NLo9qBPJ8Vl
+ TLMxyAMEkmjcufceA9ld3af6NCdwgSkpspanyq8Xuh9K26d3fumnyGqNvRiEXBNlIAcJJmX2Tcr
+ EXHxHeA7RFiNQn9g2vMPfPXzK8Sj3Odw==
+X-Received: by 2002:a05:600c:190d:b0:426:66e9:b844 with SMTP id
+ 5b1f17b1804b1-427dc515427mr37324255e9.8.1721607447028; 
+ Sun, 21 Jul 2024 17:17:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvOb5riDtOVlMPVBcHkq5z28fjXS2hMV8i3Kx8UR/J/hWvBBqkXqNeuu1QvzANlYuQ03P3iA==
+X-Received: by 2002:a05:600c:190d:b0:426:66e9:b844 with SMTP id
+ 5b1f17b1804b1-427dc515427mr37324065e9.8.1721607446515; 
+ Sun, 21 Jul 2024 17:17:26 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a94c30sm134759845e9.47.2024.07.21.17.17.23
+ 5b1f17b1804b1-427d2a94380sm133711655e9.39.2024.07.21.17.17.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:17:23 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:17:22 -0400
+ Sun, 21 Jul 2024 17:17:25 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:17:24 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -70,8 +70,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zheyu Ma <zheyuma97@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 16/63] virtio-snd: add max size bounds check in input cb
-Message-ID: <98e77e3dd8dd6e7aa9a7dffa60f49c8c8a49d4e3.1721607331.git.mst@redhat.com>
+Subject: [PULL 17/63] virtio-snd: check for invalid param shift operands
+Message-ID: <9b6083465fb8311f2410615f8303a41f580a2a20.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -106,53 +106,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-When reading input audio in the virtio-snd input callback,
-virtio_snd_pcm_in_cb(), we do not check whether the iov can actually fit
-the data buffer. This is because we use the buffer->size field as a
-total-so-far accumulator instead of byte-size-left like in TX buffers.
+When setting the parameters of a PCM stream, we compute the bit flag
+with the format and rate values as shift operand to check if they are
+set in supported_formats and supported_rates.
 
-This triggers an out of bounds write if the size of the virtio queue
-element is equal to virtio_snd_pcm_status, which makes the available
-space for audio data zero. This commit adds a check for reaching the
-maximum buffer size before attempting any writes.
+If the guest provides a format/rate value which when shifting 1 results
+in a value bigger than the number of bits in
+supported_formats/supported_rates, we must report an error.
+
+Previously, this ended up triggering the not reached assertions later
+when converting to internal QEMU values.
 
 Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2427
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2416
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <virtio-snd-fuzz-2427-fix-v1-manos.pitsidianakis@linaro.org>
+Message-Id: <virtio-snd-fuzz-2416-fix-v1-manos.pitsidianakis@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/audio/virtio-snd.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/audio/virtio-snd.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index 5993f4f040..e6432ac959 100644
+index e6432ac959..e5196aa4bb 100644
 --- a/hw/audio/virtio-snd.c
 +++ b/hw/audio/virtio-snd.c
-@@ -1261,7 +1261,7 @@ static void virtio_snd_pcm_in_cb(void *data, int available)
- {
-     VirtIOSoundPCMStream *stream = data;
-     VirtIOSoundPCMBuffer *buffer;
--    size_t size;
-+    size_t size, max_size;
- 
-     WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
-         while (!QSIMPLEQ_EMPTY(&stream->queue)) {
-@@ -1275,7 +1275,12 @@ static void virtio_snd_pcm_in_cb(void *data, int available)
-                 continue;
-             }
- 
-+            max_size = iov_size(buffer->elem->in_sg, buffer->elem->in_num);
-             for (;;) {
-+                if (buffer->size >= max_size) {
-+                    return_rx_buffer(stream, buffer);
-+                    break;
-+                }
-                 size = AUD_read(stream->voice.in,
-                         buffer->data + buffer->size,
-                         MIN(available, (stream->params.period_bytes -
+@@ -282,11 +282,13 @@ uint32_t virtio_snd_set_pcm_params(VirtIOSound *s,
+         error_report("Number of channels is not supported.");
+         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+     }
+-    if (!(supported_formats & BIT(params->format))) {
++    if (BIT(params->format) > sizeof(supported_formats) ||
++        !(supported_formats & BIT(params->format))) {
+         error_report("Stream format is not supported.");
+         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+     }
+-    if (!(supported_rates & BIT(params->rate))) {
++    if (BIT(params->rate) > sizeof(supported_rates) ||
++        !(supported_rates & BIT(params->rate))) {
+         error_report("Stream rate is not supported.");
+         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+     }
 -- 
 MST
 
