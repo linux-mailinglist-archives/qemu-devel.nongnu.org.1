@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2719B9386F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19259386DE
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgkf-00072j-GQ; Sun, 21 Jul 2024 20:18:05 -0400
+	id 1sVgkh-00075M-0i; Sun, 21 Jul 2024 20:18:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkc-0006pD-2D
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:02 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkd-0006wf-Nb
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgka-0005pN-Kb
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkc-0005pb-AY
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607480;
+ s=mimecast20190719; t=1721607481;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YsjbOlvo43JAEesCygimaYMAVGDqCDgHnftdBHHCG1k=;
- b=Jame7BYmofqLV6GV69L3RedE6CjHhulOVvdR0wgaIkjyO8qqM+mOicf3X3kZJg4lrAW15k
- LiOEBk7BJfuO05vCX0Ibln2chn4a99fT50IwtPjbFMW3bixnIMUEwTFo1S1C29i6fbHzD5
- hEk0xTVwmCcACRYZAVBO9httV8+swdg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+eij6Bxq47w2bciZE/Rv+DzW/akdlQrWlADFCMstsmc=;
+ b=R2rOPGcDnMvlQE4m6kpIPBQMVCtNFZFbHv61HpLwIFSJeZ53sj39CgvFj0FnBzJWyIzIDs
+ SvKbWP0bAquMm/3EN2BhOOGscKbchSKM2Hkf2UbfzHkyadFja6V3MGBYDprlC9P4paNImK
+ KJvJDQxKk/i+r06SIIKMpTgv2yx29EY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-f4JoZPfWN3KzAKWpCl5yVA-1; Sun, 21 Jul 2024 20:17:58 -0400
-X-MC-Unique: f4JoZPfWN3KzAKWpCl5yVA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-367962f0cb0so2112121f8f.1
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:58 -0700 (PDT)
+ us-mta-519-UPG4eHjlMLegMQ8l1PYRUQ-1; Sun, 21 Jul 2024 20:18:00 -0400
+X-MC-Unique: UPG4eHjlMLegMQ8l1PYRUQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42668857c38so27734975e9.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:18:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607477; x=1722212277;
+ d=1e100.net; s=20230601; t=1721607478; x=1722212278;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YsjbOlvo43JAEesCygimaYMAVGDqCDgHnftdBHHCG1k=;
- b=aoYUySKaNmm5iVLyApRTbTwE1R+YSShC9RpyUxZIzaZ1fLstjZ2xbL8T4oMSUOersn
- H+cqxCZ6XNcVmIctBrq4/oChZ0e5VfdtS69dLsZTZrvsqZD+vOVZmD2W/APxT+IqPD/y
- GZzn8Mn2w3gXWkaCA0xGucFm+VazXWSnTDJVsc6OLEOr3LtLeQ+ugJ/Q9zXLTyFHvG0b
- 3NgVJ6mglgLclIiWEPoa2VOlFiVBsvftz3rA/FCPendYDqPj8LzlsNfFaVA2MagYURyP
- YfGQokysYKegIGzFwdWcS8nKc+9hLNUlTiXVzzW2809KOwQBIPofZvYqpe/dWygE5u/R
- 0EFg==
-X-Gm-Message-State: AOJu0Yw/9RIcryC5m34GZFwYr0pP3z53wZoHLUcFb2osvBalfD4VZwy2
- gBhoG6PAOEZrP/JZ1K8aHMljgvHU+J47mjT2/zhjQFSN/CUdn90XjpJ0FocEW9vxUNjlRwcoH73
- pDJqW41u50A7nKDF557K47hslCAY8qPXAGBE0mielY/sx/+YzaUV29h35/arGThWk8XH6Pg6Rg7
- 5s1VkP1IYwg/wCo0ZCbSLiTAViGz2L5Q==
-X-Received: by 2002:a5d:6d08:0:b0:367:8fc3:a25b with SMTP id
- ffacd0b85a97d-369bae6adcdmr3890739f8f.42.1721607476970; 
- Sun, 21 Jul 2024 17:17:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHp9fc8vx9XKKXRF9DrIWuQQZ1Rq8vZati0wdVvpF80Fnjy8lhkZuVDG8DEWdOFP6jNLoipXA==
-X-Received: by 2002:a5d:6d08:0:b0:367:8fc3:a25b with SMTP id
- ffacd0b85a97d-369bae6adcdmr3890723f8f.42.1721607476204; 
- Sun, 21 Jul 2024 17:17:56 -0700 (PDT)
+ bh=+eij6Bxq47w2bciZE/Rv+DzW/akdlQrWlADFCMstsmc=;
+ b=xMcYrEYf+tvs/anh4l9PnLcZHAu2lwQyMVzfbEHs4LFEBAGUzdDl2srYiecOfiPRf8
+ uIyZFF4L+gR6RnSEWx2wRSKGz2AECUvLy+bfxq9vfjZjwCETtyMfYtNMZVubTz/V+NEU
+ OGLsG5QyifaQM/01vJkFXj4g1y7FrOvhmWRbCoCOpA0gcKO06o9dakDfOtcI5Cns7LZe
+ pm7yPY+OoxRMYlFpwEKHsvIpeTfhl2EHJAsY03mpLV9GNjRnw3YHu90bN7g/DXycjmpk
+ 20HUOVgqBh3b/k1CVeRkxvPbcc7Ixs+pQ8E/C7jwqDdZNL6aaDcnhCGIbfybzIBE61AR
+ gdnQ==
+X-Gm-Message-State: AOJu0Yy4UyCK6dHfwzINr6hp9Nk9W/f+juEwgaPyFdPcuSA4D0XK8La7
+ 9EawFTyedHKXr2VrLfXgWcM41M79t52+SIyEdFg0UeTKqT74F5pbG+hfcJwUcIRpIX2N7LOpZgK
+ QfuVi73rePH7R0rh16vgBaYjcMKMEaG+MBuSh5iQRT4CyIOODtuzNV30zKF2dymbuDzDF9U3UXy
+ pNTCQ22N+gnCbn8crL4D5HzkkeZ5+ASg==
+X-Received: by 2002:a05:600c:3ba9:b0:426:647b:1bfc with SMTP id
+ 5b1f17b1804b1-427dc5584d8mr28430685e9.30.1721607478733; 
+ Sun, 21 Jul 2024 17:17:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfAToW3g7nzJrtU6eFvr3vVXZ/4lypIFreDDV7ozbONpqf31axrZlekR03YbUNNpmKEmaeMA==
+X-Received: by 2002:a05:600c:3ba9:b0:426:647b:1bfc with SMTP id
+ 5b1f17b1804b1-427dc5584d8mr28430535e9.30.1721607478233; 
+ Sun, 21 Jul 2024 17:17:58 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368787ceda0sm7006837f8f.87.2024.07.21.17.17.55
+ 5b1f17b1804b1-427d692998csm106210135e9.32.2024.07.21.17.17.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:17:55 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:17:54 -0400
+ Sun, 21 Jul 2024 17:17:57 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:17:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 31/63] pcie_sriov: Ensure PF and VF are mutually exclusive
-Message-ID: <22c343dd303098c9ae2e19363b3571aedb383052.1721607331.git.mst@redhat.com>
+Subject: [PULL 32/63] pcie_sriov: Check PCI Express for SR-IOV PF
+Message-ID: <fe70e4c53e4513ee5a536a84f7ccdfe64a72fef4.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,10 +102,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A device cannot be a SR-IOV PF and a VF at the same time.
+SR-IOV requires PCI Express.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240715-sriov-v5-3-3f5539093ffc@daynix.com>
+Message-Id: <20240715-sriov-v5-4-3f5539093ffc@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
@@ -113,21 +113,21 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 56523ab4e8..6c79658b4c 100644
+index 6c79658b4c..15a4aac1f4 100644
 --- a/hw/pci/pcie_sriov.c
 +++ b/hw/pci/pcie_sriov.c
 @@ -42,6 +42,11 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
      uint8_t *cfg = dev->config + offset;
      uint8_t *wmask;
  
-+    if (pci_is_vf(dev)) {
-+        error_setg(errp, "a device cannot be both an SR-IOV PF and a VF");
++    if (!pci_is_express(dev)) {
++        error_setg(errp, "PCI Express is required for SR-IOV PF");
 +        return false;
 +    }
 +
-     if (total_vfs) {
-         uint16_t ari_cap = pcie_find_capability(dev, PCI_EXT_CAP_ID_ARI);
-         uint16_t first_vf_devfn = dev->devfn + vf_offset;
+     if (pci_is_vf(dev)) {
+         error_setg(errp, "a device cannot be both an SR-IOV PF and a VF");
+         return false;
 -- 
 MST
 
