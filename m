@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55FF938DDC
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 13:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD67938DE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 13:06:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVqq6-0005Uc-A8; Mon, 22 Jul 2024 07:04:22 -0400
+	id 1sVqq8-0005dS-KG; Mon, 22 Jul 2024 07:04:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sVqq4-0005T6-0G
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:20 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1sVqq5-0005UF-HD
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:21 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sVqq2-0002RB-48
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:19 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5a15692b6f6so3395112a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 04:04:17 -0700 (PDT)
+ id 1sVqq3-0002RJ-4y
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:21 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a77e5929033so412109466b.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 04:04:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721646256; x=1722251056; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721646257; x=1722251057; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1UxZeJVXfh506tEb3223GmpHqSZOGPy9dFtloKHCAl0=;
- b=DmUZzPMYBUaXr++d7/FNchIF+2GzAONswbftFjgg2nJtyMwKspeCaVipPxBK2LbTPD
- 8KSNsvcWHqoPPuLHyW37aq7UCiTezGpu+vMnc2wuvQs1jovzeysAxi53NY52Ty/thhX7
- gm8llfSQD0t5y0Dqy2ODrBfsF5ryNyKwdcaCvrYhb4MZDZM5XTLq6QJCPfLF4DYd5KaG
- f8ntZUbPNvf4fcDMmPADSagdd5obrp/hqmOpkdIr+jA3Yn94CxtuPrQ1MP3/5ni241iS
- 9m4dV3ZmDCbnrYky0jy481ZbQ1i4FLA2r2g5M+aah3CmkogUoXbpngem7KRYAKDksplN
- xH9w==
+ bh=B/uzwaGj2Fi8+Yx5qy3aEaskQ+qw83w2a8whjBsiJBo=;
+ b=l0AFLjkxU3lP1p+y3t5/Dp16CmSqSHRt6aJl8bsPEuy9Fet+BGa97uUuFV0vw6UQIZ
+ +z+2h395kl2OaThtl45sFt98WTksSZLekX5rIz8zRLsDEhJyMIOFT79BU654nLKStEfc
+ KaAP/U3lTF2/57cjsHJ6C6g4vVuukO9EP3B3tQrjZga2eZfgRnSC8qRBIWCkXmmqmrYV
+ KpuE4llUjunNEqllB4RrwhevKMndytABWUQWGAjDlLlFf/zYiC/RrelFEJ3qgVa4SaTy
+ 9SGnP9wA6UOIiRO4uNw96K6G4njwKGa245RDHzLtoyvifT0SYwHAJ25sEdL6gIbmYY+q
+ Itmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721646256; x=1722251056;
+ d=1e100.net; s=20230601; t=1721646257; x=1722251057;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1UxZeJVXfh506tEb3223GmpHqSZOGPy9dFtloKHCAl0=;
- b=mu2UYkuojyvdy+NmEkZpDEe95sbnFHcuKmiszhlMF8jmOn9IVI1HHmTTTTdY+JN1uS
- rN5AvywOx4emm8LRCehIgxTVVvP6g2iEODYjVyHzUO47mxnFaxe/7EqMw599LD3Wm5fy
- bg+hVYRCdJDaLEX9FTU2UoMLzdOsyk54wVhM6iurJxVNjPauEpOJw6fCIVlDeK8R/3K0
- Dbfj/fjLtC0/jUTxudzEjTihsRs5pL5O6Q9QYpiHi/Mq/p8d1m5iQ4kP1c/v67LuKY95
- +z3Lr+6hRBGGUS/kEWR0koUe+r0/EbHZYldDom7ey7fHC96E/k9/zVnhGANtQk4FIanI
- duOA==
-X-Gm-Message-State: AOJu0Yxw/c+W7SU5a1QKQDfTTesnRnoWqD0G76A+EjN7WDLSutSdNhuU
- RR5w7DPInCirOwpvA4c2GoQPk6WlgN/zjQzhbERpfBJDvTQLNZ1C/QLAA0u+cqk=
-X-Google-Smtp-Source: AGHT+IHM2nvW7nHuvQE2tzGuvgDxxAdwRrtEqsHSlgPTepHdvcKBBbYQzAtfFWLT2vODC8K/iHo5pQ==
-X-Received: by 2002:a17:907:940e:b0:a72:6b08:ab24 with SMTP id
- a640c23a62f3a-a7a4bfa3dcdmr451066366b.14.1721646255614; 
- Mon, 22 Jul 2024 04:04:15 -0700 (PDT)
+ bh=B/uzwaGj2Fi8+Yx5qy3aEaskQ+qw83w2a8whjBsiJBo=;
+ b=w20uA4LzjCqL3oYYZ8uJ6TQr1Eqmk9ILMJy/3cisrjPiegalu/Q5XSJhexvlmFx/SA
+ vERNSNDj/4owIbTvkmubQhyzxk27s5Odx3e+seuGEJ6xlbr3Tb060+DcuRlH1bIfMs0D
+ uZHD/0IUmWf40j1VDim5RzIhkG7VQNoeCLkwEjbNrweVgy6E9mGbrVInMD7odJpD+a17
+ ikd34S9WxEhLpSgbVA6AkxBPiBPGBtX2JOHMgtG9Y21AsaIVG7BJzVpZNeJALuputcId
+ fdQfl13xsOKpQbzTxdC6j+ksYN0PoPMiJPtGwztCxgi+YMKsma3t1EuigS3Xomx3h7ps
+ XSSg==
+X-Gm-Message-State: AOJu0YxGl0Azu4rYoD9uBdjFK/tqCEofI6HSa4mmUVR8F1RB0ZNbIMzL
+ /FVpTNXvp1tDL7cPn0nRNsIP/ZPKJxBZ4QISxhYY8pP34Qt+VMVG1rNAkVi0ci0=
+X-Google-Smtp-Source: AGHT+IGcx6QjwgQQzfy7J4OCAwZq4UqoIFDkRKAkVR/8em8ttK8yKn4whMa/AQRIqYF6/TW30EiwWw==
+X-Received: by 2002:a17:907:2dab:b0:a72:7603:49ef with SMTP id
+ a640c23a62f3a-a7a4c1216ffmr469782566b.35.1721646257367; 
+ Mon, 22 Jul 2024 04:04:17 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7a3c95088fsm406324566b.212.2024.07.22.04.04.14
+ a640c23a62f3a-a7a81cd53d6sm2675266b.139.2024.07.22.04.04.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 22 Jul 2024 04:04:14 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A57DC5F8FC;
+ by draig.lan (Postfix) with ESMTP id BCAA05F931;
  Mon, 22 Jul 2024 12:04:13 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ed Maste <emaste@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 01/16] testing: bump to latest libvirt-ci
-Date: Mon, 22 Jul 2024 12:03:58 +0100
-Message-Id: <20240722110413.118418-2-alex.bennee@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 02/16] tests/avocado: Remove non-working sparc leon3 test
+Date: Mon, 22 Jul 2024 12:03:59 +0100
+Message-Id: <20240722110413.118418-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240722110413.118418-1-alex.bennee@linaro.org>
 References: <20240722110413.118418-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,56 +96,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This brings in the latest python mappings for the BSD updates.
+From: Thomas Huth <thuth@redhat.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The test has been marked as broken more than 4 years ago, and
+so far nobody ever cared to fix it. Thus let's simply remove it
+now ... if somebody ever needs it again, they can restore the
+file from an older version of QEMU.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Clément Chigot <chigot@adacore.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240710111755.60584-1-thuth@redhat.com>
+[AJB: fix MAINTAINERS]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240718094523.1198645-2-alex.bennee@linaro.org>
+Message-Id: <20240718094523.1198645-3-alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/cirrus/freebsd-13.vars b/.gitlab-ci.d/cirrus/freebsd-13.vars
-index 3785afca36..29ab9645f9 100644
---- a/.gitlab-ci.d/cirrus/freebsd-13.vars
-+++ b/.gitlab-ci.d/cirrus/freebsd-13.vars
-@@ -11,6 +11,6 @@ MAKE='/usr/local/bin/gmake'
- NINJA='/usr/local/bin/ninja'
- PACKAGING_COMMAND='pkg'
- PIP3='/usr/local/bin/pip-3.8'
--PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py39-numpy py39-pillow py39-pip py39-sphinx py39-sphinx_rtd_theme py39-tomli py39-yaml python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
-+PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-sphinx py311-sphinx_rtd_theme py311-tomli py311-yaml python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
- PYPI_PKGS=''
- PYTHON='/usr/local/bin/python3'
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index 0e9490cebc..789b4601bc 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit 0e9490cebc726ef772b6c9e27dac32e7ae99f9b2
-+Subproject commit 789b4601bce4e01f43fdb6ad4ce5ab4e46674440
-diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
-index 2d5895ebed..2a361cecd0 100644
---- a/tests/vm/generated/freebsd.json
-+++ b/tests/vm/generated/freebsd.json
-@@ -51,13 +51,13 @@
-     "pixman",
-     "pkgconf",
-     "png",
--    "py39-numpy",
--    "py39-pillow",
--    "py39-pip",
--    "py39-sphinx",
--    "py39-sphinx_rtd_theme",
--    "py39-tomli",
--    "py39-yaml",
-+    "py311-numpy",
-+    "py311-pillow",
-+    "py311-pip",
-+    "py311-sphinx",
-+    "py311-sphinx_rtd_theme",
-+    "py311-tomli",
-+    "py311-yaml",
-     "python3",
-     "rpm2cpio",
-     "sdl2",
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7d9811458c..d5ff6c2498 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1727,7 +1727,6 @@ S: Maintained
+ F: hw/sparc/leon3.c
+ F: hw/*/grlib*
+ F: include/hw/*/grlib*
+-F: tests/avocado/machine_sparc_leon3.py
+ 
+ S390 Machines
+ -------------
+diff --git a/tests/avocado/machine_sparc_leon3.py b/tests/avocado/machine_sparc_leon3.py
+deleted file mode 100644
+index e61b223185..0000000000
+--- a/tests/avocado/machine_sparc_leon3.py
++++ /dev/null
+@@ -1,37 +0,0 @@
+-# Functional test that boots a Leon3 machine and checks its serial console.
+-#
+-# Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
+-#
+-# This work is licensed under the terms of the GNU GPL, version 2 or
+-# later. See the COPYING file in the top-level directory.
+-
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import wait_for_console_pattern
+-from avocado import skip
+-
+-
+-class Leon3Machine(QemuSystemTest):
+-
+-    timeout = 60
+-
+-    @skip("Test currently broken")
+-    # A Window Underflow exception occurs before booting the kernel,
+-    # and QEMU exit calling cpu_abort(), which makes this test to fail.
+-    def test_leon3_helenos_uimage(self):
+-        """
+-        :avocado: tags=arch:sparc
+-        :avocado: tags=machine:leon3_generic
+-        :avocado: tags=binfmt:uimage
+-        """
+-        kernel_url = ('http://www.helenos.org/releases/'
+-                      'HelenOS-0.6.0-sparc32-leon3.bin')
+-        kernel_hash = 'a88c9cfdb8430c66650e5290a08765f9bf049a30'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-
+-        self.vm.set_console()
+-        self.vm.add_args('-kernel', kernel_path)
+-
+-        self.vm.launch()
+-
+-        wait_for_console_pattern(self, 'Copyright (c) 2001-2014 HelenOS project')
+-        wait_for_console_pattern(self, 'Booting the kernel ...')
 -- 
 2.39.2
 
