@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11639386D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AC3938704
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgkc-0006lJ-0P; Sun, 21 Jul 2024 20:18:02 -0400
+	id 1sVgka-0006b9-Rq; Sun, 21 Jul 2024 20:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkY-0006Lt-10
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkX-0006LW-Ty
  for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkW-0005ot-I5
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkW-0005ov-Hb
  for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1721607475;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RbreE3gRMg3HkdLWMl2uNhF2Or3FkZXwY0kwp8ati68=;
- b=HvwmU7w5HoDnZs42uxB2Bxiitw7mtfU73fd8T7Q8QTDgAKqEvCKZu60pHq6rHY2ked5sJs
- L3nJ77YCjmlTjPdiHHiuwoIwkFe2xKFKIzGr8gNbggsw7fplytAJFiuxa9eersW3yJNnV+
- wiqLiay3tfC8LvK5FEMF9Qes1XyRgfg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iDyrc4b0PIQEqc1nWX9kZEf6YpDLGOOzQo+gBLAOsk4=;
+ b=B2xFPQgdleBrJAEOw4tEZeu1urQDmTbaiwmTTnOF+TV42oaqhMAGbUsqXqDN8QjF84MJ1M
+ l+USvArZ1s25oJIEeyTx88U64Ot+1JjZoNrkzav57SG6z3g3maKDbyPXApEvMPImrI6Opa
+ egNs+yu2lURc416XpY2JM1jxCec0mqE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-r6xD_lWiNQCrUiv5ATiWjg-1; Sun, 21 Jul 2024 20:17:52 -0400
-X-MC-Unique: r6xD_lWiNQCrUiv5ATiWjg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-369bf135b49so665206f8f.0
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:52 -0700 (PDT)
+ us-mta-600-Bt3Re3quOYeNdzGycGvwvg-1; Sun, 21 Jul 2024 20:17:54 -0400
+X-MC-Unique: Bt3Re3quOYeNdzGycGvwvg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4279418eb2bso25991745e9.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607471; x=1722212271;
+ d=1e100.net; s=20230601; t=1721607473; x=1722212273;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RbreE3gRMg3HkdLWMl2uNhF2Or3FkZXwY0kwp8ati68=;
- b=YzoUu4GD5XIBc03Fn6MtXBdMQn3cwumd+whR7Ultap4eKiXx6FzeJdJjcmKPh49dlf
- RzNDOX1uk8aTyQP0+s3Gd8IPVlayHcxyzjNyTG0ENN43JeOcg72cAEdkcc/R7LmzstTR
- hzIv5niwvru1s0f5FQyHfcM/n9kso6lbeCFTuNDD86N7NqI/H2f0/zPjyTsH/5+hMfZ4
- 56h6PMDo5HDWiZGuQ5laPpOfI6FpxLkws4KNH7Zz7Nr93BhK+CrGkKr3XKG1qm30srTU
- Q7JYjCd96eJs7Sw5ZIzMvp2hIe5aQrIEJ8xKKnG1gFbS+B7nLFjbpscX/QwtADQxYwMJ
- dN7w==
-X-Gm-Message-State: AOJu0Yz8Pag2tP6JsGRXafxYWJ4qI/3iMrMy9bKE+kNGymXogCGfMK4J
- EtLap0/r2qi3j2zjrtWfblM7drVMKczyDPrCfPJ9R3UYja9R7TV46q9bIh+XG1xP0vT16ZDGsFv
- y+y0NGfKnv3sYyWcLrs4u7I39+neyG4rw4j7aRYbWma/LLKigB87KbZe4VeKp500ZAgh5pDtGi4
- JwnkwTPjU72U70sxkQmMdpuZV7W3ieyQ==
-X-Received: by 2002:adf:ef02:0:b0:368:35b8:129e with SMTP id
- ffacd0b85a97d-36873ed7c49mr4990094f8f.13.1721607470835; 
- Sun, 21 Jul 2024 17:17:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMr+xClpJWFy3DqUbuV6wkHl7tYSkOhCuLKOaeCVEsVlkB6uE2ZqPBS/Voc9BN0tX6PU98EA==
-X-Received: by 2002:adf:ef02:0:b0:368:35b8:129e with SMTP id
- ffacd0b85a97d-36873ed7c49mr4990079f8f.13.1721607470242; 
- Sun, 21 Jul 2024 17:17:50 -0700 (PDT)
+ bh=iDyrc4b0PIQEqc1nWX9kZEf6YpDLGOOzQo+gBLAOsk4=;
+ b=TbIiZ09nmrdw/xIMvcrMLp7zeb3fCZI3VRKmQaz4qOUBqH5uwpykQUjtubjTW+k+HH
+ xbuHD092sxSp9dEIAiRwLFh3pQ7iGkMIV8EIYWacxR2TjJtqmuPR2HiV9epdP1vA0Qkq
+ C9momPu+2AnqaCmD2FSxDDwVNmJGrr3fQkg8DayreebTuCzGmrsxZLhT3XiiG0zpSjBM
+ 450dboaMZlxoWtDRJhYCCdx27/yjt+mp3GfJlnQpE9fF+Ly6lY4vLlStjf6nxZg9opXp
+ Rwk7XU1GB8jnXIeJQO9NyyRpNguVtiRCNnMf4W1g8YmrSY8Q1P+fEdey3Fdlci91aPbE
+ QRJA==
+X-Gm-Message-State: AOJu0YxJPKyyhqBaQHurcR3+SJLm2VMqHWX30JePQ9sv5MqUrc08AfAl
+ ruVVlBsMhxccmzHfPlggA27heDx0g+VSgQX1uWocApQ0FZmn6wkDNtmMpukUPuwwxh1WmDVGqYm
+ DOdMUcPCIMgAogGw1KJYmsUxj6d6Xd8z6zApgKVfB49tlwm7yjDDcH1a/68hacuUb/pEYqcp3uJ
+ /fdDZH6Um8q5oSyJ56Glitxsik3V76og==
+X-Received: by 2002:a05:600c:3592:b0:426:689b:65b7 with SMTP id
+ 5b1f17b1804b1-427dc564cc3mr29068005e9.25.1721607473015; 
+ Sun, 21 Jul 2024 17:17:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsSEqgOYjfl9TwHoHeW1baixVS5O2dlX15A1Ba+C3DUAo4DtfREdIpP3z/OVbieWhnH7C7Vg==
+X-Received: by 2002:a05:600c:3592:b0:426:689b:65b7 with SMTP id
+ 5b1f17b1804b1-427dc564cc3mr29067875e9.25.1721607472310; 
+ Sun, 21 Jul 2024 17:17:52 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3687868bc42sm7025824f8f.46.2024.07.21.17.17.49
+ 5b1f17b1804b1-427d2a5c356sm133089805e9.18.2024.07.21.17.17.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:17:49 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:17:48 -0400
+ Sun, 21 Jul 2024 17:17:51 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:17:50 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, changpeng.liu@intel.com,
- Raphael Norwitz <raphael@enfabrica.net>
-Subject: [PULL 28/63] contrib/vhost-user-blk: fix overflowing expression
-Message-ID: <99d7c1b99a3fdb69213c09da6b7614243f877bee.1721607331.git.mst@redhat.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Yui Washizu <yui.washidu@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 29/63] hw/pci: Do not add ROM BAR for SR-IOV VF
+Message-ID: <54f3a29f08900bef796953971d2482d64ddf9969.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,14 +77,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1721607331.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,52 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Coverity reported:
+A SR-IOV VF cannot have a ROM BAR.
 
-  >>>     CID 1549454:  Integer handling issues  (OVERFLOW_BEFORE_WIDEN)
-  >>>     Potentially overflowing expression
-          "le32_to_cpu(desc->num_sectors) << 9" with type "uint32_t"
-          (32 bits, unsigned) is evaluated using 32-bit arithmetic, and
-          then used in a context that expects an expression of type
-          "uint64_t" (64 bits, unsigned).
-  199                               le32_to_cpu(desc->num_sectors) << 9 };
-
-Coverity noticed this issue after commit ab04420c3 ("contrib/vhost-user-*:
-use QEMU bswap helper functions"), but it was pre-existing and introduced
-from the beginning by commit caa1ee4313 ("vhost-user-blk: add
-discard/write zeroes features support").
-
-Explicitly cast the 32-bit value before the shift to fix this issue.
-
-Fixes: Coverity CID 1549454
-Fixes: 5ab04420c3 ("contrib/vhost-user-*: use QEMU bswap helper functions")
-Fixes: caa1ee4313 ("vhost-user-blk: add discard/write zeroes features support")
-Cc: changpeng.liu@intel.com
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240712153857.207440-1-sgarzare@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20240715-sriov-v5-1-3f5539093ffc@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- contrib/vhost-user-blk/vhost-user-blk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci/pci.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/contrib/vhost-user-blk/vhost-user-blk.c b/contrib/vhost-user-blk/vhost-user-blk.c
-index 9492146855..6cc18a1c04 100644
---- a/contrib/vhost-user-blk/vhost-user-blk.c
-+++ b/contrib/vhost-user-blk/vhost-user-blk.c
-@@ -196,7 +196,7 @@ vub_discard_write_zeroes(VubReq *req, struct iovec *iov, uint32_t iovcnt,
-     VubDev *vdev_blk = req->vdev_blk;
-     desc = buf;
-     uint64_t range[2] = { le64_to_cpu(desc->sector) << 9,
--                          le32_to_cpu(desc->num_sectors) << 9 };
-+                          (uint64_t)le32_to_cpu(desc->num_sectors) << 9 };
-     if (type == VIRTIO_BLK_T_DISCARD) {
-         if (ioctl(vdev_blk->blk_fd, BLKDISCARD, range) == 0) {
-             g_free(buf);
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 4c7be52951..bd956637bc 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2359,6 +2359,14 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
+         return;
+     }
+ 
++    if (pci_is_vf(pdev)) {
++        if (pdev->rom_bar == ON_OFF_AUTO_ON) {
++            error_setg(errp, "ROM BAR cannot be enabled for SR-IOV VF");
++        }
++
++        return;
++    }
++
+     if (load_file || pdev->romsize == UINT32_MAX) {
+         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
+         if (path == NULL) {
 -- 
 MST
 
