@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52C9938801
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 06:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF91938800
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 06:11:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVkMo-00046d-Pf; Mon, 22 Jul 2024 00:09:42 -0400
+	id 1sVkMq-0004CK-0L; Mon, 22 Jul 2024 00:09:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yaoxt.fnst@fujitsu.com>)
- id 1sVkMe-0003Rt-72
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 00:09:33 -0400
-Received: from esa12.hc1455-7.c3s2.iphmx.com ([139.138.37.100])
+ id 1sVkMf-0003ZO-Ow
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 00:09:35 -0400
+Received: from esa6.hc1455-7.c3s2.iphmx.com ([68.232.139.139])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yaoxt.fnst@fujitsu.com>)
- id 1sVkMc-0001uo-IT
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 00:09:31 -0400
+ id 1sVkMc-0001uq-UZ
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 00:09:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1721621370; x=1753157370;
+ t=1721621371; x=1753157371;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=TzS+8fbFrs/6a4tdNbLjGDjHpaHfpFFVeETZgZcEgFg=;
- b=R64l3glnXGC10kDcLcYvdkNndRevS2Mo1QOJXQmn16cClIknS8mK5zmb
- 0P925Wy5Lbw1k4PFwusha65PKY16RrzQLh/D3ROFde149+Dqr4Jzo96V5
- 11uPzCSfEweaUDWB9CAc0PrPZymUBc3M47ofRX2aUxiJXetTlpSDPq3hf
- +VGgHmxdceLsZ/k/RVzJFI1od2Wd7cRLWPgbkoVmBgKlPkWG96aldnYls
- enmoq9Rb3t0J6j7sWcYp7YRCxl0GoytkEi0h3tTCR9w7VTS8cEw8rowbT
- 7bAhKsXgpvrQg+1edeg4LrzeQ/xzH5v6ai7vCJEl/cqQDIhK8DkzZmq9h Q==;
-X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="147100670"
-X-IronPort-AV: E=Sophos;i="6.09,227,1716217200"; d="scan'208";a="147100670"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
- by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 13:09:28 +0900
-Received: from oym-m4.gw.nic.fujitsu.com (oym-nat-oym-m4.gw.nic.fujitsu.com
- [192.168.87.61])
- by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 188F1E753A
+ bh=AFWX7oe4e/py8/GcIXfzLu5/oY6d0nTsj9DRGpkoYDg=;
+ b=oxD96JM5cf8InlZ8nB5awfpdfw4gEgCUuajP/p0hK1fv/cIpDdbtqpTH
+ BKbVquF50BFiPFQAvgFFsxw5DSsL+uFTVWG2dDlf1jX2UMRz9RL7rzw/A
+ rM/cCfEw6/pYKgQ5icmuhq1IHR86l8UtWs6be+tsxfDt8DeIBrpv/yw+r
+ 7b7PE00ZXBal/2TesH2sILmRojf6AlaiHeVo1vzfppkXJqLyrUznuUvSe
+ h/fU69ww4GI7fxaw+M66AStzOasLEqTjme7J5q/IhotJtSHZ+HZqpEgp4
+ ruOyBeD0jFECXvDiP0RKMXbcEsTF2/0dVNG7GEpOR4KlePo+vcEpIDr5W Q==;
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="169998105"
+X-IronPort-AV: E=Sophos;i="6.09,227,1716217200"; d="scan'208";a="169998105"
+Received: from unknown (HELO oym-r3.gw.nic.fujitsu.com) ([210.162.30.91])
+ by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 13:09:29 +0900
+Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com
+ [192.168.87.59])
+ by oym-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id 7DA1DD64AF
  for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 13:09:26 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by oym-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id 67311D4C1C
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
+ [192.51.206.22])
+ by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id C8DD0BF3D1
  for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 13:09:25 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 004072007CAB2
+ by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 5CCBB6CB34
  for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 13:09:25 +0900 (JST)
 Received: from localhost.localdomain (unknown [10.167.225.88])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 7602D1A000C;
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id D4A201A000A;
  Mon, 22 Jul 2024 12:09:24 +0800 (CST)
-To: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Subject: [PATCH 08/13] sparc/ldst_helper: make range overlap check more
+Subject: [PATCH 09/13] system/memory_mapping: make range overlap check more
  readable
-Date: Mon, 22 Jul 2024 00:07:37 -0400
-Message-ID: <20240722040742.11513-9-yaoxt.fnst@fujitsu.com>
+Date: Mon, 22 Jul 2024 00:07:38 -0400
+Message-ID: <20240722040742.11513-10-yaoxt.fnst@fujitsu.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240722040742.11513-1-yaoxt.fnst@fujitsu.com>
 References: <20240722040742.11513-1-yaoxt.fnst@fujitsu.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28544.005
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28544.004
 X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28544.005
-X-TMASE-Result: 10--2.279800-10.000000
-X-TMASE-MatchedRID: iXIp5h8ckINrFdvBEmTnvE7nLUqYrlslFIuBIWrdOePfUZT83lbkEJCl
- VuR6WzhZ5hXzidezaCB8AX8i9OoygDcpdZ3fQiLdFEUknJ/kEl5lVdRvgpNpe/oLR4+zsDTtoub
- v1b7BWh2J22Yz0L2Is774ZOp8MSm1gMIpLIwKjjXB55t1PoDsghIJghcZKNkL4YG1k8zNzrK+Xv
- 0nAhvdkI94LsuYe6JJrSGd+JHfa+iGk+xUaqdMDwHEKwHwYevbwUSxXh+jiUgkww/gwY7hMA==
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28544.004
+X-TMASE-Result: 10-4.578200-10.000000
+X-TMASE-MatchedRID: x/wzmLbLaAVrFdvBEmTnvE7nLUqYrlslFIuBIWrdOeM3ZbGC9oP/O34O
+ FrQCV6cJPE7FMRuDJPKAMuqetGVetk6N1CbkSyKE3QfwsVk0UbvqwGfCk7KUs6TLRbQb4IgNSKe
+ N5H+uitBo6pnXeuP4iIaPtB0U19+SuFhJm7N3ILWb91fmSdHviCr4ymhFUnjPPn+4l+IOCsn2yu
+ uu62RRliHJp2UYVccqxOB8J0pRLhyJxKSZiwBX6QtRTXOqKmFVftwZ3X11IV0=
 X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=139.138.37.100;
- envelope-from=yaoxt.fnst@fujitsu.com; helo=esa12.hc1455-7.c3s2.iphmx.com
+Received-SPF: pass client-ip=68.232.139.139;
+ envelope-from=yaoxt.fnst@fujitsu.com; helo=esa6.hc1455-7.c3s2.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -102,32 +103,31 @@ the readability of the code.
 
 Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 ---
- target/sparc/ldst_helper.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ system/memory_mapping.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 2d48e98bf468..d92c9f15934e 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -19,6 +19,7 @@
+diff --git a/system/memory_mapping.c b/system/memory_mapping.c
+index 6f884c5b90c9..ca2390eb8044 100644
+--- a/system/memory_mapping.c
++++ b/system/memory_mapping.c
+@@ -12,6 +12,7 @@
+  */
  
  #include "qemu/osdep.h"
- #include "qemu/log.h"
 +#include "qemu/range.h"
- #include "cpu.h"
- #include "tcg/tcg.h"
- #include "exec/helper-proto.h"
-@@ -240,9 +241,7 @@ static void replace_tlb_1bit_lru(SparcTLBEntry *tlb,
-             if (new_ctx == ctx) {
-                 uint64_t vaddr = tlb[i].tag & ~0x1fffULL;
-                 uint64_t size = 8192ULL << 3 * TTE_PGSIZE(tlb[i].tte);
--                if (new_vaddr == vaddr
--                    || (new_vaddr < vaddr + size
--                        && vaddr < new_vaddr + new_size)) {
-+                if (ranges_overlap(new_vaddr, new_size, vaddr, size)) {
-                     DPRINTF_MMU("auto demap entry [%d] %lx->%lx\n", i, vaddr,
-                                 new_vaddr);
-                     replace_tlb_entry(&tlb[i], tlb_tag, tlb_tte, env1);
+ #include "qapi/error.h"
+ 
+ #include "sysemu/memory_mapping.h"
+@@ -353,8 +354,7 @@ void memory_mapping_filter(MemoryMappingList *list, int64_t begin,
+     MemoryMapping *cur, *next;
+ 
+     QTAILQ_FOREACH_SAFE(cur, &list->head, next, next) {
+-        if (cur->phys_addr >= begin + length ||
+-            cur->phys_addr + cur->length <= begin) {
++        if (!ranges_overlap(cur->phys_addr, cur->length, begin, length)) {
+             QTAILQ_REMOVE(&list->head, cur, next);
+             g_free(cur);
+             list->num--;
 -- 
 2.41.0
 
