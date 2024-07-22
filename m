@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7E0939257
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 18:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124D8939248
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 18:08:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVvZy-0005Z3-Lp; Mon, 22 Jul 2024 12:08:02 -0400
+	id 1sVva6-0005ym-HH; Mon, 22 Jul 2024 12:08:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVvZu-0005NJ-N3
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:07:59 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVva2-0005sO-62
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:08:06 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVvZs-0007gS-P9
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:07:58 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-367990aaef3so2359060f8f.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 09:07:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVvZz-0007hE-Ej
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:08:05 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4266edee10cso29846205e9.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 09:08:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721664474; x=1722269274; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721664480; x=1722269280; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qcm1dWrebznI1t8ebTrFn2d5NidY82tKkmYUS0FD2gQ=;
- b=NLV8eCeEiYdnLs8qvOnojSPbb3yEkQyxJY7ossDISd215Lb+4C4m9MnbsOvrR/OEkF
- njJw9aazeaFsET3BcQqW3VQ965dXapeQQzT4U6rdV7lnxdhOG3amI7IIqfqsox4OKCcK
- Po/E0iJkai2HDfh/NZJvDCFQH4ZjdfINvy/KHf2KQuCQeC5MUG08Vre37g0OxvmZfUI0
- eEjyEUGrsmqskI+bRH+JSNfY/Lk/gbzO6/EdR/FqguNRdKBLzBCJKUFl9ZNW65u1NmPm
- k2hNKG51CztPX4+lc2S4VDF/kFArQEofD84bssQP2JlQz6hltol73gZwAvAJOM8HhWZJ
- f9yQ==
+ bh=7xJItyCJvAqsvrHU7PZNhwclTP7/Jt4LLoVoT2duvA4=;
+ b=FVn1Wsq3Md3trySmqkfE6FomzYGZFvBMtvOHBrKyfhNr/9Ec6mhBiVQn529Bq8Ufv1
+ /TxSEnbyITh1B0ivq8mKT26o6wHA9I1Dhrkxv1zfWjX80+bP+hhoUSB9q3COq++BBj0x
+ bzQ+YaxYpzwa9dHlVSgtCk94dPVjxYDf/8lJz+r5tizHlFTKw8UWdzlWVeos2rjfOmWA
+ vz2ziZhmmIFZ+2ID9aQc6TD/JG5zxhp0JJiy2xHrcJ1m8OAFGm/Wq/kI4sjI65w7iMHs
+ RtsM3WZKBd7VfxqaekDPnUKMF/wdLmhOOiepWpbHSPXw2ibtxyl1VSCeyDVX50pSyDhV
+ QQLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721664474; x=1722269274;
+ d=1e100.net; s=20230601; t=1721664480; x=1722269280;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qcm1dWrebznI1t8ebTrFn2d5NidY82tKkmYUS0FD2gQ=;
- b=ecRYQKlRq1764sy8VWQ5PGnQw8tvdCto7or0v7cok5kXrcplOoWo/oJ+8XTQNEK3D5
- AR7ecRzPjg0YNtuBWcCmgxdxk1KiNvyzrgO3JG2vIgGUWKBUCq7C29bpR+LsjZ2V0ejP
- k9KVWgKQpMuEaKJcQZXixpLLFoNl3NAnhsViNzoD2ogO0zf7/EczkF3tQ2xSw73pr7HG
- pp0TN9UKjcCK9Kh7tEa2rE2k6YllGQ2YHienbzJn0eVmLLAU7QHVJjlAAis4Q+xxjmXY
- FLmU92WI5hCbrc3crpgxRJxAjMOc4d72cGMycW6skeT5ovdAPCMs72Ur0hEsvPVCxirl
- vyZw==
-X-Gm-Message-State: AOJu0YyANUqmKnX6EqIoh3FGG15GxRd3Eb1ALquC1GxWIiGhweDUWzxW
- Bx1wA/0vhP0czcDtwD8k8PH8sc5BfnWE6M0ti6x4gupQfzRyZN5Ljoa47gcMcVDxdcFmHZj2WD8
- w
-X-Google-Smtp-Source: AGHT+IHUiOdd5zhKEM8wd0wDnkyHCYq8h5McOhCLMzlh0XaA3hJKKozIc1odihHXY0dc7Ih77ZpZEQ==
-X-Received: by 2002:a5d:6b02:0:b0:368:420e:b790 with SMTP id
- ffacd0b85a97d-369debf8ba2mr218506f8f.14.1721664474403; 
- Mon, 22 Jul 2024 09:07:54 -0700 (PDT)
+ bh=7xJItyCJvAqsvrHU7PZNhwclTP7/Jt4LLoVoT2duvA4=;
+ b=tXSCm2CwhE/UdRmeA7RJdUqkMpv3cCrS4/rVsC8mUl9t1wn/I49FVfKzEf7Qaee1JD
+ j3oH+6mUKqvpMAf45bni/KDnrcAo9B06rM+6d7bliAbKBqfZw1IjTvauWKJnC8mQ/i9h
+ Z6ANP+tWXk4IIC+Ukccw63rMo/W0c8KZ7l//hAUq04BbCw0DCnTgVzfvB1x9R364/CEr
+ 9NbR94GHeVMzvJPs2m8L/yJSS9r5reN3Oy9o7Vpke8FOfVuIpbzGGjCpjQjT3bW9ANkV
+ Du808ALcjFXx2njkhkKiUtcdWnfS477O5M2Gl6M4FfTnArHJpXMDlS2B9GrymoL5lvhH
+ 1IUA==
+X-Gm-Message-State: AOJu0YyDO4SeKXLLrzZGubgV+TCRbbm63Nszv5+9PXIm9Atg5O150y9W
+ QxHkbPQKUDwpORlQvJ1oat3nfnVthJDCwS6JzWLOh+1PY9XfItKVM+RGHl7IRyRPxwp8XCZafOX
+ Y
+X-Google-Smtp-Source: AGHT+IFqArkBzzba1fN0z7xyB/r40W2L6JmFpYslhqOtrFoHGSCCadHo/zv77pYzxAPvfGOTsoCTqg==
+X-Received: by 2002:a05:600c:3c9d:b0:426:6099:6eaa with SMTP id
+ 5b1f17b1804b1-427daa61cddmr54009415e9.26.1721664480241; 
+ Mon, 22 Jul 2024 09:08:00 -0700 (PDT)
 Received: from localhost.localdomain
  (gen92-h02-176-184-20-254.dsl.sta.abo.bbox.fr. [176.184.20.254])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368787cec6bsm8920870f8f.71.2024.07.22.09.07.52
+ 5b1f17b1804b1-427d68fa394sm132786425e9.3.2024.07.22.09.07.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 22 Jul 2024 09:07:54 -0700 (PDT)
+ Mon, 22 Jul 2024 09:07:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -64,17 +64,17 @@ Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/7] chardev/char-fe: Document returned value on error
-Date: Mon, 22 Jul 2024 18:07:39 +0200
-Message-ID: <20240722160745.67904-2-philmd@linaro.org>
+Subject: [PATCH v2 2/7] util/fifo8: Fix style
+Date: Mon, 22 Jul 2024 18:07:40 +0200
+Message-ID: <20240722160745.67904-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240722160745.67904-1-philmd@linaro.org>
 References: <20240722160745.67904-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,43 +97,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_chr_fe_add_watch() and qemu_chr_fe_write[_all]()
-return -1 on error. Mention it in the documentation.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- include/chardev/char-fe.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/qemu/fifo8.h | 22 ++++++----------------
+ 1 file changed, 6 insertions(+), 16 deletions(-)
 
-diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
-index ecef182835..3310449eaf 100644
---- a/include/chardev/char-fe.h
-+++ b/include/chardev/char-fe.h
-@@ -228,6 +228,7 @@ guint qemu_chr_fe_add_watch(CharBackend *be, GIOCondition cond,
-  * is thread-safe.
+diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
+index c6295c6ff0..2692d6bfda 100644
+--- a/include/qemu/fifo8.h
++++ b/include/qemu/fifo8.h
+@@ -15,10 +15,9 @@ typedef struct {
+  * @fifo: struct Fifo8 to initialise with new FIFO
+  * @capacity: capacity of the newly created FIFO
   *
-  * Returns: the number of bytes consumed (0 if no associated Chardev)
-+ *          or -1 on error.
+- * Create a FIFO of the specified size. Clients should call fifo8_destroy()
++ * Create a FIFO of the specified capacity. Clients should call fifo8_destroy()
+  * when finished using the fifo. The FIFO is initially empty.
   */
- int qemu_chr_fe_write(CharBackend *be, const uint8_t *buf, int len);
+-
+ void fifo8_create(Fifo8 *fifo, uint32_t capacity);
  
-@@ -242,6 +243,7 @@ int qemu_chr_fe_write(CharBackend *be, const uint8_t *buf, int len);
-  * attempted to be written.  This function is thread-safe.
+ /**
+@@ -26,9 +25,8 @@ void fifo8_create(Fifo8 *fifo, uint32_t capacity);
+  * @fifo: FIFO to cleanup
   *
-  * Returns: the number of bytes consumed (0 if no associated Chardev)
-+ *          or -1 on error.
+  * Cleanup a FIFO created with fifo8_create(). Frees memory created for FIFO
+-  *storage. The FIFO is no longer usable after this has been called.
++ * storage. The FIFO is no longer usable after this has been called.
   */
- int qemu_chr_fe_write_all(CharBackend *be, const uint8_t *buf, int len);
+-
+ void fifo8_destroy(Fifo8 *fifo);
  
-@@ -253,6 +255,7 @@ int qemu_chr_fe_write_all(CharBackend *be, const uint8_t *buf, int len);
-  * Read data to a buffer from the back end.
+ /**
+@@ -39,7 +37,6 @@ void fifo8_destroy(Fifo8 *fifo);
+  * Push a data byte to the FIFO. Behaviour is undefined if the FIFO is full.
+  * Clients are responsible for checking for fullness using fifo8_is_full().
+  */
+-
+ void fifo8_push(Fifo8 *fifo, uint8_t data);
+ 
+ /**
+@@ -52,7 +49,6 @@ void fifo8_push(Fifo8 *fifo, uint8_t data);
+  * Clients are responsible for checking the space left in the FIFO using
+  * fifo8_num_free().
+  */
+-
+ void fifo8_push_all(Fifo8 *fifo, const uint8_t *data, uint32_t num);
+ 
+ /**
+@@ -64,7 +60,6 @@ void fifo8_push_all(Fifo8 *fifo, const uint8_t *data, uint32_t num);
   *
-  * Returns: the number of bytes read (0 if no associated Chardev)
-+ *          or -1 on error.
+  * Returns: The popped data byte.
   */
- int qemu_chr_fe_read_all(CharBackend *be, uint8_t *buf, int len);
+-
+ uint8_t fifo8_pop(Fifo8 *fifo);
  
+ /**
+@@ -73,7 +68,7 @@ uint8_t fifo8_pop(Fifo8 *fifo);
+  * @max: maximum number of bytes to pop
+  * @numptr: pointer filled with number of bytes returned (can be NULL)
+  *
+- * Pop a number of elements from the FIFO up to a maximum of max. The buffer
++ * Pop a number of elements from the FIFO up to a maximum of @max. The buffer
+  * containing the popped data is returned. This buffer points directly into
+  * the FIFO backing store and data is invalidated once any of the fifo8_* APIs
+  * are called on the FIFO.
+@@ -82,7 +77,7 @@ uint8_t fifo8_pop(Fifo8 *fifo);
+  * around in the ring buffer; in this case only a contiguous part of the data
+  * is returned.
+  *
+- * The number of valid bytes returned is populated in *numptr; will always
++ * The number of valid bytes returned is populated in *@numptr; will always
+  * return at least 1 byte. max must not be 0 or greater than the number of
+  * bytes in the FIFO.
+  *
+@@ -99,7 +94,7 @@ const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
+  * @max: maximum number of bytes to peek
+  * @numptr: pointer filled with number of bytes returned (can be NULL)
+  *
+- * Peek into a number of elements from the FIFO up to a maximum of max.
++ * Peek into a number of elements from the FIFO up to a maximum of @max.
+  * The buffer containing the data peeked into is returned. This buffer points
+  * directly into the FIFO backing store. Since data is invalidated once any
+  * of the fifo8_* APIs are called on the FIFO, it is the caller responsibility
+@@ -109,7 +104,7 @@ const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
+  * around in the ring buffer; in this case only a contiguous part of the data
+  * is returned.
+  *
+- * The number of valid bytes returned is populated in *numptr; will always
++ * The number of valid bytes returned is populated in *@numptr; will always
+  * return at least 1 byte. max must not be 0 or greater than the number of
+  * bytes in the FIFO.
+  *
+@@ -126,7 +121,6 @@ const uint8_t *fifo8_peek_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
+  *
+  * Reset a FIFO. All data is discarded and the FIFO is emptied.
+  */
+-
+ void fifo8_reset(Fifo8 *fifo);
+ 
+ /**
+@@ -137,7 +131,6 @@ void fifo8_reset(Fifo8 *fifo);
+  *
+  * Returns: True if the fifo is empty, false otherwise.
+  */
+-
+ bool fifo8_is_empty(Fifo8 *fifo);
+ 
+ /**
+@@ -148,7 +141,6 @@ bool fifo8_is_empty(Fifo8 *fifo);
+  *
+  * Returns: True if the fifo is full, false otherwise.
+  */
+-
+ bool fifo8_is_full(Fifo8 *fifo);
+ 
+ /**
+@@ -159,7 +151,6 @@ bool fifo8_is_full(Fifo8 *fifo);
+  *
+  * Returns: Number of free bytes.
+  */
+-
+ uint32_t fifo8_num_free(Fifo8 *fifo);
+ 
+ /**
+@@ -170,7 +161,6 @@ uint32_t fifo8_num_free(Fifo8 *fifo);
+  *
+  * Returns: Number of used bytes.
+  */
+-
+ uint32_t fifo8_num_used(Fifo8 *fifo);
+ 
+ extern const VMStateDescription vmstate_fifo8;
 -- 
 2.41.0
 
