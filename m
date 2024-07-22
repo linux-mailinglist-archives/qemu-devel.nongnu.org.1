@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BF593953F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F122D939552
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:16:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0ML-00029g-NG; Mon, 22 Jul 2024 17:14:17 -0400
+	id 1sW0OX-0006ap-2w; Mon, 22 Jul 2024 17:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sW0MI-0001x5-2a
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:14:14 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sW0MG-0006Rd-Cw
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:14:13 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46MKtWhe027864;
- Mon, 22 Jul 2024 21:14:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=Y
- C1WMdI0JndYGcGCaSMDcPAq/+OVRfSVO2R5/HJKHnc=; b=dRIhMAg4RVSFUiv23
- ZFkoy1XXxMPU/xvp1ReOKb5+4MS7JdlKPU2iEe5TR3a1p53Sf7AYgycEw+7rwNj4
- QejTf21cThtbXgf3hLHMGurkNGj2YgYa3BbBOCQuB+PrR9r11mLiBk2R2J88d6/L
- ImGIz1Hrj5RVPPFVYITvkUavG3u+G8rQLMqB7Evg521cX0xUNusVw2+PrOd5V1OC
- V0IBJKq0rd2L+W36g2/90vsWhnbV8TPjY6XAp2QZxMchxAzeh93ARa/f9byfyX0u
- fHG2GbCp1L7vry9THrqES6RI6i/QUvxeiRUX2I6hQ0TvpULddf5pYb1b71vxWYOD
- MIojQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40hgcrbmpv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jul 2024 21:14:10 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46MKYVRl010981; Mon, 22 Jul 2024 21:14:09 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40h29qa7n8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jul 2024 21:14:08 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46ML6txJ040372;
- Mon, 22 Jul 2024 21:14:08 GMT
-Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-61-12.vpn.oracle.com
- [10.175.61.12])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 40h29qa7av-10; Mon, 22 Jul 2024 21:14:08 +0000
-From: Joao Martins <joao.m.martins@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v6 9/9] vfio/common: Allow disabling device dirty page tracking
-Date: Mon, 22 Jul 2024 22:13:26 +0100
-Message-Id: <20240722211326.70162-10-joao.m.martins@oracle.com>
-In-Reply-To: <20240722211326.70162-1-joao.m.martins@oracle.com>
-References: <20240722211326.70162-1-joao.m.martins@oracle.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW0OS-00065z-Vl
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:16:29 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW0OP-0006xu-Uw
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:16:28 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42660b8dd27so33942205e9.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:16:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721682983; x=1722287783; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=NDWMQvdXIiq8x1xZYflvJfvpfEHJMEtDM+ZW2/x7pkg=;
+ b=GpYC/4BPcflDlGFc2yS8PL1CZZt4LnbS2sWOk1gqdIIPr5rCjzQnsVer0c3eRvhKF0
+ vmUMqczeDiAW4x/CUwiV9Qc0u2PIjSUW3GgbHQ2MLt+VLepjA4a0ycd/DdUaNkURwqyX
+ bHh0VzcNSf73IRp2G95BV5XnwUpQCXdedfWRJuw/bakAW4Zm6lY+uIbubrUBPnlt5iPl
+ FglfpocIDsD07JvZM1T7UzE1hDdr4Ta8z0H13lOdje8uowlm2doUu0abSQmD8Ud4ySU7
+ cIaqujyaGvWgop+A/7Zfn8vUn5t81nYMRBd4AMGhjP+iiMKOvvNbFyRKmDvCXgAYZf9q
+ QdDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721682983; x=1722287783;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NDWMQvdXIiq8x1xZYflvJfvpfEHJMEtDM+ZW2/x7pkg=;
+ b=kQBWCbSAnX2S6FwpKdoMmUmKetWlQCBOac6fZjpeT6Z3XGqEX2gXBpoDfeRo94pral
+ xjIjoKHjDzSUqnBCVHGA3WRLXvUFixCRRKmWDSgPPGrmQ2OQsG71bllcM355gVGfGerX
+ E37rqctlMuEJ3itYWVPh2ONHbEvfz59ZNHJndTcVUQvAnVhwZqydzZUV2k9lDXspQ9Zo
+ GoohKDBb6O4xhAwFntY/pDo0nmwz362maYHTis47zQcGDZZO6z1GgBwlz1114kOuWL6Z
+ 9Uvq6SIrq37I0kodvoV3RGpprYnI7y0asGT2IWuzrUxXWVo0/Eb5eLam4Hx/KWLEIUhU
+ mE1A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW3i0C58mMtvNWS2QEnADy0w/h2/9Lj6rPmJDFGfXyHZmrzsTHr5a96fOfakLCDW4SWN4OYBomExyMq8RH7tMW+mGE7wtg=
+X-Gm-Message-State: AOJu0Yw3S/FBrVC2GJ55hKp7Z/dNndJ3G/KmukpuXd8VtgQOCFIrj5mo
+ +ypOin7TA2KBjaWYinKitwMX+5euZvSbxB9dRKluZLPPKwwk5WYbtMN1vbE7Z16Z4+Fa7wflxmQ
+ 9
+X-Google-Smtp-Source: AGHT+IGJpNi8IuiOeZpYpNlNrdKrPX8xJA+DRjZ7OPUH9gxW1u9OsaLmHh8EPpWTVL8VjRvep9lmig==
+X-Received: by 2002:a05:600c:1f8f:b0:426:5fcf:5e89 with SMTP id
+ 5b1f17b1804b1-427dc5797e0mr43082645e9.33.1721682982813; 
+ Mon, 22 Jul 2024 14:16:22 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.208.14])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d2a3c0fasm172340405e9.7.2024.07.22.14.16.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 14:16:22 -0700 (PDT)
+Message-ID: <e81bcfc9-bea8-4807-86d3-c18ecab3a318@linaro.org>
+Date: Mon, 22 Jul 2024 23:16:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-22_14,2024-07-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- bulkscore=0 adultscore=0
- suspectscore=0 mlxscore=0 mlxlogscore=955 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
- definitions=main-2407220157
-X-Proofpoint-GUID: dmSpJwBQVBAk1bwbd_PWPNofHCWVYfJZ
-X-Proofpoint-ORIG-GUID: dmSpJwBQVBAk1bwbd_PWPNofHCWVYfJZ
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mips/loongson3_virt: remove useless type cast
+To: Yao Xingtao <yaoxt.fnst@fujitsu.com>, qemu-devel@nongnu.org,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20240722091728.4334-1-yaoxt.fnst@fujitsu.com>
+ <20240722091728.4334-2-yaoxt.fnst@fujitsu.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240722091728.4334-2-yaoxt.fnst@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,79 +95,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The property 'x-pre-copy-dirty-page-tracking' allows disabling the whole
-tracking of VF pre-copy phase of dirty page tracking, though it means
-that it will only be used at the start of the switchover phase.
+On 22/7/24 11:17, Yao Xingtao wrote:
+> The type of kernel_entry, kernel_low and kernel_high is uint64_t, cast
+> the pointer of this type to uint64_t* is useless.
+> 
+> Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+> ---
+>   hw/mips/loongson3_virt.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Add an option that disables the VF dirty page tracking, and fall
-back into container-based dirty page tracking. This also allows to
-use IOMMU dirty tracking even on VFs with their own dirty
-tracker scheme.
-
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
----
- include/hw/vfio/vfio-common.h | 1 +
- hw/vfio/common.c              | 3 +++
- hw/vfio/migration.c           | 4 +++-
- hw/vfio/pci.c                 | 3 +++
- 4 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 1e02c98b09ba..fed499b199f0 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -138,6 +138,7 @@ typedef struct VFIODevice {
-     VFIOMigration *migration;
-     Error *migration_blocker;
-     OnOffAuto pre_copy_dirty_page_tracking;
-+    OnOffAuto device_dirty_page_tracking;
-     bool dirty_pages_supported;
-     bool dirty_tracking;
-     bool iommu_dirty_tracking;
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index da12cbd56408..36d0cf6585b2 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -199,6 +199,9 @@ bool vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer)
-     VFIODevice *vbasedev;
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
-+        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
-+            return false;
-+        }
-         if (!vbasedev->dirty_pages_supported) {
-             return false;
-         }
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index cbfaef7afffe..262d42a46e58 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1036,7 +1036,9 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
--    if (!vbasedev->dirty_pages_supported && !vbasedev->iommu_dirty_tracking) {
-+    if ((!vbasedev->dirty_pages_supported ||
-+         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-+        !vbasedev->iommu_dirty_tracking) {
-         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
-             error_setg(&err,
-                        "%s: VFIO device doesn't support device and "
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 8c0f212a163e..a0767de54b8d 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3364,6 +3364,9 @@ static Property vfio_pci_dev_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
-                             vbasedev.pre_copy_dirty_page_tracking,
-                             ON_OFF_AUTO_ON),
-+    DEFINE_PROP_ON_OFF_AUTO("x-device-dirty-page-tracking", VFIOPCIDevice,
-+                            vbasedev.device_dirty_page_tracking,
-+                            ON_OFF_AUTO_ON),
-     DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
-                             display, ON_OFF_AUTO_OFF),
-     DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
--- 
-2.17.2
+Patch queued, thanks.
 
 
