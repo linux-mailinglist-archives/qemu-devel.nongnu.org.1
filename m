@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C189395A8
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F01279395A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0qU-0006cx-24; Mon, 22 Jul 2024 17:45:26 -0400
+	id 1sW0qW-0006yU-9A; Mon, 22 Jul 2024 17:45:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0q5-0005Lx-Vf
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:45:02 -0400
-Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0q6-0005QD-Uk
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:45:03 -0400
+Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0q3-0004Mr-TR
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:45:01 -0400
-Received: by mail-il1-x132.google.com with SMTP id
- e9e14a558f8ab-397580fa3bcso10961375ab.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:44:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0q4-0004Na-I9
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:45:02 -0400
+Received: by mail-io1-xd35.google.com with SMTP id
+ ca18e2360f4ac-81a90913cc3so123678839f.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721684698; x=1722289498;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721684699; x=1722289499;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t9VX1qTliZmCA4rGJoDFFHTihIbFxaJR/Jp9RTUGPRo=;
- b=cB9WxR23KMftJMKH8norVcvqRLOZjji8duMPUZ6WZGrVYA9/7UN70qs9h9W84V1pTD
- wAy3UbdzaSgwyX/vq3XPIN85yXB4lMMBFdS/0tlwhBOcmj6PAhEBAamCiLNuPeBmfxEd
- /7luOY7cLFpLAuEXHYSd5PuMP8w2AVc7PTKdGZiBpLdM1nDg80qzDIfnES9bclRmH1X8
- baPnPZR6s9DhZLeVPMG4T5IyGib5Rk9t92Yrug2XN5sJEjRTQpoesCJFskwiDs5dpwzp
- z/w2Yhftt5UWG5iOQTdDvXgQiepuVjY4aB1QJLhSuvoCaccaF9pOPeqYjeIzQGl1SJGa
- 9zFQ==
+ bh=x//+WoaO7Dn+k8eyr+KqgxuGF53Mml0Sq9XIPzmFBuA=;
+ b=1hRQ6M5FtQxdbEfOnQ4HYyEAwt/YZDR4d5xUArTWqT5pP6kBh3yDidcED/d9zsVnh0
+ wH8bBZH9zoI7EoDclIJ43/5yBdHN1UmIqJy6kA3e3E/1BrO/ZHcHJrkQw5bXDlLrxMXp
+ 6UWxZwmmj3FwkMCoJCTmLztvdA/mlMtxx7MBFsQVl/QtnHVt4yVEdD76JCMeqYEDXOfE
+ w2Hk9sRnKwevAGMZehQ2RZ6AS1OneZ13r0kz+lnVCehzj6Mpa9KmOX1Oi3r+x932XGYv
+ iw7ba+fEdTptdWpTV9wJZQu6o/alyTZt1V6kVhMkqD1XQIfn79WWQqm3B59nHBXC1KUw
+ K5Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721684698; x=1722289498;
+ d=1e100.net; s=20230601; t=1721684699; x=1722289499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t9VX1qTliZmCA4rGJoDFFHTihIbFxaJR/Jp9RTUGPRo=;
- b=tjWUZr6IIukagucFme1dnD1gdWosFNz7bMxOfAJihmK49Eali78NTQT4RjNkO8QrEl
- xZ1ikvFh18ECQiuK9R9zhSnJrGG4uYfR1ir3FSxIt+lS68NopwAHgaMFBr6NKyy/3jY7
- 6CyM9AnjVZNZvk+OET5nnCSd0l1t4ycV0QJntGtBhdJbHW49QIwNlr21Z27AI1KIye4y
- biNXdqIW+v3TfKGY64O8dAeOjSwtR7tokJKhYqIJl/lCIZsxb/T3PKewHjOSDlVqvLTH
- Q7YavwPKdWSShBhg505zJya7pO5IUdYrKjyOS7ii8XTaSqf3rSBev8mG/UUf5ODMSNJO
- oMKg==
-X-Gm-Message-State: AOJu0YwydiRfulYdDumQt4WiheC4IiB9FPPGesh8rH2V3a2ohPBSuqV0
- 9ACgloJ4y/wl+EAJw78HfT+i0auZ0YYGNf4GIoyLAHDyZn5eAn+j1MZwvEZNk6p/VtVloMz44tR
- /Bv4=
-X-Google-Smtp-Source: AGHT+IF+cSzMZVgs3oOl9JYy6lFyV7l46bbgP9Ut4Pb6hKdSMG8AqtiBBNDWjQFJxPZXLXxk+hjChw==
-X-Received: by 2002:a05:6e02:1a43:b0:375:a37c:14b6 with SMTP id
- e9e14a558f8ab-3993ffd5902mr114438415ab.23.1721684698096; 
- Mon, 22 Jul 2024 14:44:58 -0700 (PDT)
+ bh=x//+WoaO7Dn+k8eyr+KqgxuGF53Mml0Sq9XIPzmFBuA=;
+ b=bN2lo0OBGFAABNqqSMqxrTDBicknMA9bLRi7NXNbC320U6mSDI9mfaLfqpUCspJxxU
+ 1xC0xbm7csz/BAWdftNtyV3MHKenzAWhdldH2+65JYqiye4ZManCHB6lmaRgcH3S2Psj
+ AvpXy6UhLfHUQyUUqEdfIxeHFwjHeKWUDF74vVq/ty4/xBa28OVkXJlQxdzt+krki57A
+ sfZFsWgs2n9WTpdW3bimDmxZpVKPbUQHMoI61UXciE7EvH6ChnJ1T6wYoAvWXIqHZLwd
+ 0jcOfwM82NY/JK/WonHljwyyyu5P5An2cDn3LlSMJ3DY/jSzzq/mjtC5nw7dZ2eumF53
+ FsrA==
+X-Gm-Message-State: AOJu0Ywru6Ea4l4I20totOR0pJ1UIRF7wmF9UQa1l+I5S12U0PSXu0rW
+ n0sz0I0/Q50OrRGo6+iHKaD7Qti4byzNU+X3aVq7uwTDBBwPfRqWu2pOJA7rhIxlekArIBBfLcP
+ FGuE=
+X-Google-Smtp-Source: AGHT+IFaAOo6Sk/ZctkoR1YnXWNYBYCD6WfGAXV7paBpQmTybnbVUergi31F4i9WnVNYRWvFG9EouA==
+X-Received: by 2002:a05:6602:482:b0:7f6:1cd3:9659 with SMTP id
+ ca18e2360f4ac-81b33edfba6mr1400411139f.6.1721684699006; 
+ Mon, 22 Jul 2024 14:44:59 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c2343d2ff3sm1816830173.128.2024.07.22.14.44.57
+ 8926c6da1cb9f-4c2343d2ff3sm1816830173.128.2024.07.22.14.44.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 14:44:57 -0700 (PDT)
+ Mon, 22 Jul 2024 14:44:58 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
  Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 13/14] bsd-user: Make compile for non-linux user-mode stuff
-Date: Mon, 22 Jul 2024 15:43:12 -0600
-Message-ID: <20240722214313.89503-14-imp@bsdimp.com>
+Subject: [PATCH 14/14] bsd-user: Add aarch64 build to tree
+Date: Mon, 22 Jul 2024 15:43:13 -0600
+Message-ID: <20240722214313.89503-15-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240722214313.89503-1-imp@bsdimp.com>
 References: <20240722214313.89503-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::132;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x132.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d35;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd35.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,36 +91,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We include the files that define PR_MTE_TCF_SHIFT only on Linux, but use
-them unconditionally. Restrict its use to Linux-only.
+Add the aarch64 bsd-user fragments needed to build the new aarch64 code.
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- target/arm/gdbstub64.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ configs/targets/aarch64-bsd-user.mak | 3 +++
+ 1 file changed, 3 insertions(+)
+ create mode 100644 configs/targets/aarch64-bsd-user.mak
 
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index 2e2bc2700b8..6dc81aecb2a 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -404,6 +404,7 @@ int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
- 
- int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
- {
-+#if defined(CONFIG_LINUX)
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
- 
-@@ -425,6 +426,9 @@ int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
-     arm_set_mte_tcf0(env, tcf);
- 
-     return 1;
-+#else
-+    return 0;
-+#endif
- }
- 
- static void handle_q_memtag(GArray *params, void *user_ctx)
+diff --git a/configs/targets/aarch64-bsd-user.mak b/configs/targets/aarch64-bsd-user.mak
+new file mode 100644
+index 00000000000..8aaa5d8c802
+--- /dev/null
++++ b/configs/targets/aarch64-bsd-user.mak
+@@ -0,0 +1,3 @@
++TARGET_ARCH=aarch64
++TARGET_BASE_ARCH=arm
++TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
 -- 
 2.45.1
 
