@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8499939338
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 19:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC10939336
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 19:31:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVwrZ-0000Fk-O9; Mon, 22 Jul 2024 13:30:17 -0400
+	id 1sVwrb-0000Nm-Oj; Mon, 22 Jul 2024 13:30:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sVwrX-00006e-0i
+ id 1sVwrX-00009y-Lg
  for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:30:15 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sVwrP-0006O1-RH
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:30:13 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-427d2cc1c4eso32447365e9.1
+ id 1sVwrP-0006OK-QY
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:30:15 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4279c10a40eso33449335e9.3
  for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 10:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1721669401; x=1722274201; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sbbsiddWGomdgmf8A4MCaSQ4lYafoX1GSRn6PujArso=;
- b=vZSceE9/t1u2xvvepcrN1jjLZBO/pHm59pnHfxW4rLa2AlQlL0PdboXwD46nYylDYZ
- jNNhCXzErrTc0Ax1EogVvJA6wooY5ic/rF/+h3nG9V2FCL2YabQM3Z2TSG/98OyV6y9E
- oXmz9tA61NQ8QH4ylP5TNTGhj6t8wOY1Xdx96ebQkJpWEv+YJqqGK6hTVpfBz+bm2iaX
- Vv40FHJvihCM3fpcSX3LqliFmDl9Qa8aYA09TSUvn4bKoCH5XIwNfRwKW/7T1Oxc4fsw
- BDnqn9jcvetYUUyzZknbjSZOXHcV4GXJymyqcgk3Yw1YjSF0hUR6W9+CC1WxqvbZ5X79
- Y6Xg==
+ bh=bf7ARIytQmQRzsKfx3SaAbLzTh/grrFtr44A30HzPU4=;
+ b=SEf5FqNR1Kdi9mAFGhw0ttVr9xsmgCnV4h8F/5x2NiHuy37gME1nKEBiS1YMH+NXvh
+ LPpjXwIcOXTIzgtuG+clshOdC1WxZMs+S5/l197iPSvX2Hu73T59VDV5T4CPEhFhjbsf
+ Y/YA/IcV1tXGcK9aF/is/Gbv4D1Cdvzk+/I5+eecGcoDDWLpOPQxi61vxeVFxL9XDdI/
+ S50gbxhzcAE5HsdEcJrqMixmb8LcWYpNhmBsi9hrQKXHBnp4tO7H0rRhYUUEHIOdO/Te
+ XaNh5e8uqkLuiyfq8N+ENAw+DT9IWbYFn3pZcdOojXz/uCY2TbQz6q3RyU7et4cNzNvw
+ pePw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1721669401; x=1722274201;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sbbsiddWGomdgmf8A4MCaSQ4lYafoX1GSRn6PujArso=;
- b=cirzhwouGkVTBwIymPj48TEObHJGzTUzffggCiUj3GIR3T297MqE+O8fcOXHqR6xmT
- rKKrl2Y+v4SRWJIVk60MY6jJ4OIrNiJWutfcN667Mi8ZcDescUT4tBSK8B+BnUxVoDM0
- 0dk1Y8nyBGHrhszERBtZUanjrsZbuyfjp4y8oqWH9YnEyJIXM4Y8x5cmp3zmrvKruSNb
- wtvlyAYqvQkxwyLg7vs6dQdx6ilGUMyT2mgIg4PrRJWK8PsHdtVD/wBAoZ2OAVG0xCcR
- nzUetEthJqncxb8DXKyHbEgIbg1A39+8nd92K0tse2BamoD5pK93gJhVmAWVJwmqdttE
- muLg==
+ bh=bf7ARIytQmQRzsKfx3SaAbLzTh/grrFtr44A30HzPU4=;
+ b=DxK/kF5adz5tWvRM/DFZBqvmwvEPrLFnOvehqXJJMbR+ftxA3wXsqdHxT/cbkReEZI
+ oT3rYCk9fL3hruPT54yJTPoliNR5TTwLa9JEpLqp6ce5Wn0CyPA57YBqrOzSlY2Wjdp3
+ 3hGQh2f5O01QwRAOTk7asrS3t/MQ4GRxTXeWPdOlEShyffJFMAlpZfhIJwY3GInc0zFs
+ eopEA4NN6QKlRGRMLSG+jjsgBO+wcsi9qqguqZUgVot6iPd4Upyeuap1DCeaZunSPf0T
+ lGJBY2EWcHk4uHZ0s1BBI+GhMckYISMxZcsjP42W9O/9JrG7xVnB3ae2QWMKM2Er8UM6
+ vJUQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWvm8KyLe3cTwJaLSpLS8U231PIDKVoIKSl6jRpPs5bleJX4QfRJG1ehbpYl7I2eKrYOk6o7Ikru4bvy/uZPsYCqgfOXAY=
-X-Gm-Message-State: AOJu0YwvRYqzJCC38cPRAkL97eNAvy/Zlf/gUouiYnKmaMUF7JqWobvp
- C3X2EBUNxbLoqyEzBSAW6Q8TWdYYRItkD9TwxP1SGYR3bw/6aSjRtyF47cb5vYI=
-X-Google-Smtp-Source: AGHT+IFScLrj7a7xZGF9KbmL/b6Qap7uNZ9kv86wDB+xJY0wejgmKMu11lO4DfPa6botSdOCL4/Lww==
-X-Received: by 2002:a05:600c:4f4f:b0:427:d8fd:458a with SMTP id
- 5b1f17b1804b1-427ed001c92mr4015635e9.19.1721669400910; 
- Mon, 22 Jul 2024 10:30:00 -0700 (PDT)
+ AJvYcCW/Wnxc9XNaWee4fvy71w3FYASDkc8py3YIj5mVN0WAHRSTibxeHpUgPlezhJk7/pSbkFOaS3g4bYwJxkIwLcDoA1HjZUg=
+X-Gm-Message-State: AOJu0Yym/Dm/54rlQc4GNvd3+npV2Kdmn8SCeUUy+xD157HV4/fx7u8A
+ +Bmph64ywzNrwtSaWNFpRa/kf/KwBEI+DRearn1ZLUUTTDIy3vleLS6dnOeMtAs=
+X-Google-Smtp-Source: AGHT+IEJGKPG9kmxwX0yIMsb0H4j3BHjvqG8H/6GM2GM0LnMLqSg4fijsXE0WM9PZrlMCFWBcbl1iQ==
+X-Received: by 2002:a05:600c:1c27:b0:426:62c5:4741 with SMTP id
+ 5b1f17b1804b1-427dc515f90mr45072115e9.2.1721669401439; 
+ Mon, 22 Jul 2024 10:30:01 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d68fa493sm138035665e9.10.2024.07.22.10.30.00
+ 5b1f17b1804b1-427d68fa493sm138035665e9.10.2024.07.22.10.30.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 10:30:00 -0700 (PDT)
+ Mon, 22 Jul 2024 10:30:01 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PATCH 3/4] target/arm: Avoid shifts by -1 in tszimm_shr() and
- tszimm_shl()
-Date: Mon, 22 Jul 2024 18:29:56 +0100
-Message-Id: <20240722172957.1041231-4-peter.maydell@linaro.org>
+Subject: [PATCH 4/4] target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2
+ is not enabled
+Date: Mon, 22 Jul 2024 18:29:57 +0100
+Message-Id: <20240722172957.1041231-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240722172957.1041231-1-peter.maydell@linaro.org>
 References: <20240722172957.1041231-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,58 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function tszimm_esz() returns a shift amount, or possibly -1 in
-certain cases that correspond to unallocated encodings in the
-instruction set.  We catch these later in the trans_ functions
-(generally with an "a-esz < 0" check), but before we do the
-decodetree-generated code will also call tszimm_shr() or tszimm_sl(),
-which will use the tszimm_esz() return value as a shift count without
-checking that it is not negative, which is undefined behaviour.
+When determining the current vector length, the SMCR_EL2.LEN and
+SVCR_EL2.LEN settings should only be considered if EL2 is enabled
+(compare the pseudocode CurrentSVL and CurrentNSVL which call
+EL2Enabled()).
 
-Avoid the UB by checking the return value in tszimm_shr() and
-tszimm_shl().
+We were checking against ARM_FEATURE_EL2 rather than calling
+arm_is_el2_enabled(), which meant that we would look at
+SMCR_EL2/SVCR_EL2 when in Secure EL1 or Secure EL0 even if Secure EL2
+was not enabled.
+
+Use the correct check in sve_vqm1_for_el_sm().
 
 Cc: qemu-stable@nongnu.org
-Resolves: Coverity CID 1547617, 1547694
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-sve.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ target/arm/helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 798ab2bfb13..a72c2620960 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -50,13 +50,27 @@ static int tszimm_esz(DisasContext *s, int x)
- 
- static int tszimm_shr(DisasContext *s, int x)
- {
--    return (16 << tszimm_esz(s, x)) - x;
-+    /*
-+     * We won't use the tszimm_shr() value if tszimm_esz() returns -1 (the
-+     * trans function will check for esz < 0), so we can return any
-+     * value we like from here in that case as long as we avoid UB.
-+     */
-+    int esz = tszimm_esz(s, x);
-+    if (esz < 0) {
-+        return esz;
-+    }
-+    return (16 << esz) - x;
- }
- 
- /* See e.g. LSL (immediate, predicated).  */
- static int tszimm_shl(DisasContext *s, int x)
- {
--    return x - (8 << tszimm_esz(s, x));
-+    /* As with tszimm_shr(), value will be unused if esz < 0 */
-+    int esz = tszimm_esz(s, x);
-+    if (esz < 0) {
-+        return esz;
-+    }
-+    return x - (8 << esz);
- }
- 
- /* The SH bit is in bit 8.  Extract the low 8 and shift.  */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index ce319572354..8fb4b474e83 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -7232,7 +7232,7 @@ uint32_t sve_vqm1_for_el_sm(CPUARMState *env, int el, bool sm)
+     if (el <= 1 && !el_is_in_host(env, el)) {
+         len = MIN(len, 0xf & (uint32_t)cr[1]);
+     }
+-    if (el <= 2 && arm_feature(env, ARM_FEATURE_EL2)) {
++    if (el <= 2 && arm_is_el2_enabled(env)) {
+         len = MIN(len, 0xf & (uint32_t)cr[2]);
+     }
+     if (arm_feature(env, ARM_FEATURE_EL3)) {
 -- 
 2.34.1
 
