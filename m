@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C10938703
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 729509386F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:24:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgkZ-0006GJ-6R; Sun, 21 Jul 2024 20:17:59 -0400
+	id 1sVgkW-000613-5A; Sun, 21 Jul 2024 20:17:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkP-0005UG-Lu
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkQ-0005Z3-Vc
  for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkN-0005nP-Fm
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:49 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkP-0005nh-02
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607465;
+ s=mimecast20190719; t=1721607467;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c/XwQGLmqpOnXFp7/p1VkjvkoBY6YC9rGIfU0QombD0=;
- b=cV1EDsLfKftHtTaKRy2dS2i4t+bttodTBVImOzNYseZAZBl0bsComtMN/ePQ02+XbvX+WT
- CgDE+WdL+W4rDIEVaxpbcKk5oZ+HPTTgazEpz9rZPGvdnMryZq1khxnloegIFV0jnTyTv7
- 4PCCsifPRvXWl5x+w/SPPmeU3p75vnU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qh9R5tJPsU6nQaE9x9stYdkZI3361sYm/2KiRgpRciY=;
+ b=c54RqwRuQpaNNIXdoFJQ/SHjNekZ0ywyuU+vaZnk5tVQA56PENBz+TpNAxqS+5V/KvrKpl
+ naa71TYl4as7IwJjDLSdbEnQsQsmgari59eMhlPKQrPBiJ6w0q4mwiMMycnbYyWJc/ehWh
+ GQ+4QlrAudTadobVE1TnUw6JTa24iDw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-mkhygVVhMSGSN0DXmumMUw-1; Sun, 21 Jul 2024 20:17:44 -0400
-X-MC-Unique: mkhygVVhMSGSN0DXmumMUw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-42668857c38so27733565e9.1
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:43 -0700 (PDT)
+ us-mta-381-hVi_YfOnM_e9a_IX8GAmCw-1; Sun, 21 Jul 2024 20:17:45 -0400
+X-MC-Unique: hVi_YfOnM_e9a_IX8GAmCw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-36831873b39so1861898f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607462; x=1722212262;
+ d=1e100.net; s=20230601; t=1721607464; x=1722212264;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c/XwQGLmqpOnXFp7/p1VkjvkoBY6YC9rGIfU0QombD0=;
- b=hs6RFPuJouLjzqfpgiOX9O4q3qoB/ngPahtfDAa7yFR2Fx7wKTtmNzaKPKFtPe6HAA
- RTx2FQurx2It4kRjkXe2lFgf+07/UBSprmcBzymCjw3rZQfYBj/uL38KWNMIvn8+US4J
- LVM/+EIRDXXfh+wUqYeuu13sPII68Vd3ooqQYIpLhbe5EFhZxHJcvi2wQdwX4/QzJ1sr
- r5pXUWvGFzY288H3xpOdvNMbhwQ4wr7KbeOV2UkNSG3wSX8sTIQ3op+bBAAuj41JaJ+r
- e+EHaoNnyvsiBcyU5FGJ+ayJQicrm5CP+FrpteHAwBhidz+zu14KbgMSWoGSZxrCIjnE
- +v8A==
-X-Gm-Message-State: AOJu0YxPf94Q3gEGC4Z8mCtYYiMRATKX666J8pbxchEc1qYGuscEqNS7
- Mxi0P5z6+q5U88+8Cem2bvCuIGymZjp4lHr67pZ/P4rXRn272IcEKb4bQCtEoMa9sWmohFCKTbH
- dmoBFTi6bLOzeop6IqtUnwn3f3ukRX5GnEWEAqmjfcHnFWzg0M9nqCIBx8eOSOKzj8rr6xCtdrE
- Ba/Gbr+mjMVevitTpepYqTMODL3dEyqg==
-X-Received: by 2002:a5d:4e49:0:b0:368:4e4f:cec5 with SMTP id
- ffacd0b85a97d-369bae2512fmr3157333f8f.35.1721607462356; 
- Sun, 21 Jul 2024 17:17:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEI0hcKUSqjqAPe3LpGpBgRRLTIFf68etQr4hG7y1zIoqyZNvpLZgqNuqa9ti212/xeQtGQzw==
-X-Received: by 2002:a5d:4e49:0:b0:368:4e4f:cec5 with SMTP id
- ffacd0b85a97d-369bae2512fmr3157319f8f.35.1721607461659; 
- Sun, 21 Jul 2024 17:17:41 -0700 (PDT)
+ bh=qh9R5tJPsU6nQaE9x9stYdkZI3361sYm/2KiRgpRciY=;
+ b=cdRGnErZJBDmLBhKqb2mppWU214kABYng8PB1+IhV/Z3OIhE1coyMcbPOm01u7s38v
+ LbuQRvXpu2SOYkLyAgHZkg9ZiCDgyISVMFx4ahnOwgiOVocXgOg8tK/u6UGxKgq2tz1B
+ yLiu2Z1UK5ieoTolSFn3CRzH6/pyzM4ykgW/vR/2EofsRVRsoEGX0ylk3fENrUhqZU2u
+ m/IMT/7J77Q6C+k0cxfrPnddRas6B+FaBsxBHJzWADIYn3Eeb+itsnJGXukM8Udtdck4
+ +tkSjwHayLHfgPyt+qAflV5EOpuTEXyYjkkGeQ5Ss6NyhMAV1MIV66ng7/+A4XXgm+ws
+ OOng==
+X-Gm-Message-State: AOJu0YybcIZH1fhnXEYcR9QzGXWFZHaWdkWAkN2DF7Jjm+5CxOvqsHTi
+ woBxlKGr3iSWsRovnq3u5F3Az14VvsIYNbftrEXu5/oCGn2IFQ6WqyosQTKWo7ZVS7AUmKnLy3m
+ Dyay9lK3i9q/fL1+tj7gvVHNDMjmYytOP/XzhmofHEy9eW3y3AjNSAO00EuoLldXSMDfeYV87WS
+ Em/KkCyGa3vsLQWCfsnjyctCEV1VYTnA==
+X-Received: by 2002:a5d:5441:0:b0:368:37d5:3f2e with SMTP id
+ ffacd0b85a97d-36837d53fdcmr8248834f8f.32.1721607464433; 
+ Sun, 21 Jul 2024 17:17:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjcErND1fbND0ixpQbnVRCuRdnwW/Dwtjo26+SmsSamirHgBekXhlee7K8TbSQke9dxftQLQ==
+X-Received: by 2002:a5d:5441:0:b0:368:37d5:3f2e with SMTP id
+ ffacd0b85a97d-36837d53fdcmr8248823f8f.32.1721607463652; 
+ Sun, 21 Jul 2024 17:17:43 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368786943d3sm7034880f8f.50.2024.07.21.17.17.40
+ ffacd0b85a97d-368787ced33sm7052068f8f.86.2024.07.21.17.17.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:17:41 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:17:39 -0400
+ Sun, 21 Jul 2024 17:17:43 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:17:41 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonah Palmer <jonah.palmer@oracle.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 24/63] virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER
+Subject: [PULL 25/63] virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER
  support
-Message-ID: <b44135daa3721778f4656ca3c15bd9b3060f1176.1721607331.git.mst@redhat.com>
+Message-ID: <844619147c5110f335cbbbad51cda6a898c7ef33.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -105,88 +105,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonah Palmer <jonah.palmer@oracle.com>
 
-Add VIRTIO_F_IN_ORDER feature support for the virtqueue_fill operation.
+Add VIRTIO_F_IN_ORDER feature support for the virtqueue_flush operation.
 
-The goal of the virtqueue_ordered_fill operation when the
-VIRTIO_F_IN_ORDER feature has been negotiated is to search for this
-now-used element, set its length, and mark the element as filled in
-the VirtQueue's used_elems array.
+The goal of the virtqueue_ordered_flush operation when the
+VIRTIO_F_IN_ORDER feature has been negotiated is to write elements to
+the used/descriptor ring in-order and then update used_idx.
 
-By marking the element as filled, it will indicate that this element has
-been processed and is ready to be flushed, so long as the element is
-in-order.
+The function iterates through the VirtQueueElement used_elems array
+in-order starting at vq->used_idx. If the element is valid (filled), the
+element is written to the used/descriptor ring. This process continues
+until we find an invalid (not filled) element.
 
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+For packed VQs, the first entry (at vq->used_idx) is written to the
+descriptor ring last so the guest doesn't see any invalid descriptors.
+
+If any elements were written, the used_idx is updated.
+
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Message-Id: <20240710125522.4168043-4-jonah.palmer@oracle.com>
+Message-Id: <20240710125522.4168043-5-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- hw/virtio/virtio.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ hw/virtio/virtio.c | 71 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 98eb601b09..0000a7b41c 100644
+index 0000a7b41c..397c261c3c 100644
 --- a/hw/virtio/virtio.c
 +++ b/hw/virtio/virtio.c
-@@ -872,6 +872,46 @@ static void virtqueue_packed_fill(VirtQueue *vq, const VirtQueueElement *elem,
-     vq->used_elems[idx].ndescs = elem->ndescs;
+@@ -1023,6 +1023,73 @@ static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
+     }
  }
  
-+static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
-+                                   unsigned int len)
++static void virtqueue_ordered_flush(VirtQueue *vq)
 +{
-+    unsigned int i, steps, max_steps;
++    unsigned int i = vq->used_idx % vq->vring.num;
++    unsigned int ndescs = 0;
++    uint16_t old = vq->used_idx;
++    uint16_t new;
++    bool packed;
++    VRingUsedElem uelem;
 +
-+    i = vq->used_idx % vq->vring.num;
-+    steps = 0;
-+    /*
-+     * We shouldn't need to increase 'i' by more than the distance
-+     * between used_idx and last_avail_idx.
-+     */
-+    max_steps = (vq->last_avail_idx - vq->used_idx) % vq->vring.num;
++    packed = virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED);
 +
-+    /* Search for element in vq->used_elems */
-+    while (steps <= max_steps) {
-+        /* Found element, set length and mark as filled */
-+        if (vq->used_elems[i].index == elem->index) {
-+            vq->used_elems[i].len = len;
-+            vq->used_elems[i].in_order_filled = true;
-+            break;
++    if (packed) {
++        if (unlikely(!vq->vring.desc)) {
++            return;
++        }
++    } else if (unlikely(!vq->vring.used)) {
++        return;
++    }
++
++    /* First expected in-order element isn't ready, nothing to do */
++    if (!vq->used_elems[i].in_order_filled) {
++        return;
++    }
++
++    /* Search for filled elements in-order */
++    while (vq->used_elems[i].in_order_filled) {
++        /*
++         * First entry for packed VQs is written last so the guest
++         * doesn't see invalid descriptors.
++         */
++        if (packed && i != vq->used_idx) {
++            virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false);
++        } else if (!packed) {
++            uelem.id = vq->used_elems[i].index;
++            uelem.len = vq->used_elems[i].len;
++            vring_used_write(vq, &uelem, i);
 +        }
 +
++        vq->used_elems[i].in_order_filled = false;
++        ndescs += vq->used_elems[i].ndescs;
 +        i += vq->used_elems[i].ndescs;
-+        steps += vq->used_elems[i].ndescs;
-+
 +        if (i >= vq->vring.num) {
 +            i -= vq->vring.num;
 +        }
 +    }
 +
-+    /*
-+     * We should be able to find a matching VirtQueueElement in
-+     * used_elems. If we don't, this is an error.
-+     */
-+    if (steps >= max_steps) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s cannot fill buffer id %u\n",
-+                      __func__, vq->vdev->name, elem->index);
++    if (packed) {
++        virtqueue_packed_fill_desc(vq, &vq->used_elems[vq->used_idx], 0, true);
++        vq->used_idx += ndescs;
++        if (vq->used_idx >= vq->vring.num) {
++            vq->used_idx -= vq->vring.num;
++            vq->used_wrap_counter ^= 1;
++            vq->signalled_used_valid = false;
++        }
++    } else {
++        /* Make sure buffer is written before we update index. */
++        smp_wmb();
++        new = old + ndescs;
++        vring_used_idx_set(vq, new);
++        if (unlikely((int16_t)(new - vq->signalled_used) <
++                     (uint16_t)(new - old))) {
++            vq->signalled_used_valid = false;
++        }
 +    }
++    vq->inuse -= ndescs;
 +}
 +
- static void virtqueue_packed_fill_desc(VirtQueue *vq,
-                                        const VirtQueueElement *elem,
-                                        unsigned int idx,
-@@ -922,7 +962,9 @@ void virtqueue_fill(VirtQueue *vq, const VirtQueueElement *elem,
+ void virtqueue_flush(VirtQueue *vq, unsigned int count)
+ {
+     if (virtio_device_disabled(vq->vdev)) {
+@@ -1030,7 +1097,9 @@ void virtqueue_flush(VirtQueue *vq, unsigned int count)
          return;
      }
  
 -    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
 +    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_IN_ORDER)) {
-+        virtqueue_ordered_fill(vq, elem, len);
++        virtqueue_ordered_flush(vq);
 +    } else if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
-         virtqueue_packed_fill(vq, elem, len, idx);
+         virtqueue_packed_flush(vq, count);
      } else {
-         virtqueue_split_fill(vq, elem, len, idx);
+         virtqueue_split_flush(vq, count);
 -- 
 MST
 
