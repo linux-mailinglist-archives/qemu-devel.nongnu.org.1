@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEEF9389A5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191559389AC
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:11:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVnB1-0000XW-4u; Mon, 22 Jul 2024 03:09:43 -0400
+	id 1sVnCV-0007GI-FT; Mon, 22 Jul 2024 03:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sVnAx-0000RD-QW
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:09:39 -0400
-Received: from mail-qk1-x732.google.com ([2607:f8b0:4864:20::732])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVnBn-000439-Lh
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:10:33 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sVnAs-0007wP-D4
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:09:36 -0400
-Received: by mail-qk1-x732.google.com with SMTP id
- af79cd13be357-79f17d6be18so241493085a.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 00:09:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVnBl-0008Dp-3Q
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:10:30 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4265b7514fcso17977485e9.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 00:10:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721632171; x=1722236971; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=L/ALWNxQdZivRnUqyoCbNjh/amFjxJE1OY4FPKSYoe0=;
- b=lvjGgNUn1FVoAWgkpmvEWlLLJVj63FkhP0pz0QaI063krguSSGdtDdFGUXS5sUH4pG
- V9m33XaGYnzCkqJKzPcK0dcO0Cd6DEP5TbvuVj9+7/tYZxH69hYNDNyoUEqwA9EI/KxR
- VlRkkgoL2VO8n/yORWBWArNwgDTf0nPXzJKSQnA1kz+4/gxC4uwZoI0M3HsT7fvsUSfp
- QAqQnLQou2QNUMf9WguzSipO2NeyEKodsRkzybMrqoJgzCHpo01iJm0n3pZ70AM2eoXu
- ZwpLVmfNUFq2yq2CZ3PbYgNS72WHukW8dyrk3z1nEbcvBpuF45d0KfzTtjuYii9aSjXC
- lfBQ==
+ d=linaro.org; s=google; t=1721632226; x=1722237026; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=3C5LdFld23QJZTnpm+OZsFcLc+0U0BjbOZ/gtJ3vbyI=;
+ b=ajM7sJwrsn/R2szZhABN96yMJQT4dozC89ah2guJDKcV9sF+3ZxHgqrHvmuVMHmNcA
+ V9dZ+fIfGTCl27HMAnRIadcCUBGEvelgUZWNMFDF+TTnSo2rBMhRfHf+CYlz7gol6Y/O
+ YTn3nKz5t7G1yeNwPgkK71Aw3HyhUTY3OWu6Fv05kW2qQ75bZxzKW4ULB23fYpPDETz6
+ mhUgSO4WURQN1R7V7G63i/E0V3SmJaB0ZxlWguS6j2I4fmbrQHvAFN0wYfTxy25sqDcB
+ 8fQ8H/w2Tf0ct2FgWTtxTocmbZWtfIVuhD5qyMHHUEHb9UNjJNaw//g5k7gaIJsdz76n
+ 5tbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721632171; x=1722236971;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=L/ALWNxQdZivRnUqyoCbNjh/amFjxJE1OY4FPKSYoe0=;
- b=bY9rSxJHSKf0dU6nFTPlQbcN8oqyQHJZy+BwR5+iHVL+Rp0xJ+waUiRZ0z0+Whg2dc
- LOMdaDuki/sgLCBTHCUho1+nLzS4bTPrn6XkROsiLs5sMaZ6mX5/Q35RANb8KFlddXOP
- toBBUsJaU3IReuSQ+jKSeK8GexHSU1R20H6HMDC90GTvczylvHXexGxt5om8bQjP8vx+
- DDvo4LF73FjYFIfduWvfQhEx7WOtMaC2pZRPm3EOnbcSpH5zDPvrT0e3XRt6Y9b3M5dz
- 7xLY2pc28AU4xQy1EWoUtEOtxMTzIW60AFhlgBnzZy7c0Q1LY23UpvzbN0hj+2CcHhdT
- ZCKA==
-X-Gm-Message-State: AOJu0YwVj5W/7bdBLOATqzfZHIIvPc/GZaGK09iHxWXIw2apZTkBDz54
- pLgZIqpM4YiJsggTCT+JnesIGONCKZ21TM2aYPAW3G0fXxzez/p9b34uU44mMpsKtS5vhB4bXQc
- /8S5i0RcJvpvEewUis9MfUjEIMH4=
-X-Google-Smtp-Source: AGHT+IEu35VUd3A2wosaz7AzV90pazyuNNgxpZAaRwufTyJgH4HFoqvKgSC9libpqX4ebDgCIV6qF1CP2lq2r1kWJCs=
-X-Received: by 2002:a05:622a:353:b0:446:59ab:56a6 with SMTP id
- d75a77b69052e-44fa535e4e8mr102638121cf.47.1721632171216; Mon, 22 Jul 2024
- 00:09:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721632226; x=1722237026;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3C5LdFld23QJZTnpm+OZsFcLc+0U0BjbOZ/gtJ3vbyI=;
+ b=hCTjp1YSyVzeuu/iKZfJLInUCSrKDi7k4uTxnPiAqprk1tgb8mPmdHwL74BGa7l7Mg
+ nTZWYHqjB5aQRL2Q99is6fLLr/v75tT1diG3DLHpEp/9cLYWaQSHDuVjW1sFmyzOrv86
+ LpM3B6hOsUqjg4CB5PgqoiWwPTV4kJjOpdvRXfdd4QeoMdOVA+tUTPkwvJFtTvcCCq4a
+ 0ekPe9a87mCGeU1GUBbggwZWmIWn2XVA1yPrCkJ5ZgyDwqOrp4df96B+SHciy2oWJIbN
+ LXz3nXgVHCOrMHl7CeCgvHXWr4hQ636FXocUAoTEySnvNPL4HzsAaBngpD7oTpXBAXwW
+ O4iQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU1BmmUzSgWAs7JOyolfAF86+Ob6UnjYGMUv029cR/IHMJ4ekK/snrV6NGBn1CctsKMZ/T20OfJXNFxzuaqFu+yQI44KYk=
+X-Gm-Message-State: AOJu0YxScMAo6V9icoX8yaJEyD8urfCU6S1+TpEkdx8ZgKlF6ve6zurI
+ XeFHYrDt2l2RGpr+kibJu+W7xddag+KW+k2frSNGkr8bqXImnztLj6XJ3zAVj+0=
+X-Google-Smtp-Source: AGHT+IEgj7g3sDit3zTGeQZnXWaP9laQtl44tCzcp4hcbSVCGBllyqdrXMTtiitnFz2PWZ246ec1aA==
+X-Received: by 2002:a05:600c:1c15:b0:426:5b19:d2b3 with SMTP id
+ 5b1f17b1804b1-427d2ac0092mr75557395e9.14.1721632226390; 
+ Mon, 22 Jul 2024 00:10:26 -0700 (PDT)
+Received: from [192.168.69.100] (gen92-h02-176-184-20-254.dsl.sta.abo.bbox.fr.
+ [176.184.20.254]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d292077dsm144297855e9.0.2024.07.22.00.10.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 00:10:25 -0700 (PDT)
+Message-ID: <40355ff1-9025-4501-b552-f3e046e2533c@linaro.org>
+Date: Mon, 22 Jul 2024 09:10:23 +0200
 MIME-Version: 1.0
-References: <ME3P282MB25482B87915BEBE85CCE7E898CAF2@ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM>
-In-Reply-To: <ME3P282MB25482B87915BEBE85CCE7E898CAF2@ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 22 Jul 2024 11:09:19 +0400
-Message-ID: <CAJ+F1CJXWRSktYPucOvO5F-zC73VMaUFfxUxksxMTLKugYNB8A@mail.gmail.com>
-Subject: Re: [PATCH] chardev/char-win-stdio.c: restore old console mode
-To: songziming <s.ziming@hotmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000ffd796061dd0b98e"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::732;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x732.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/13] qtest/fuzz: make range overlap check more readable
+To: Yao Xingtao <yaoxt.fnst@fujitsu.com>, qemu-devel@nongnu.org,
+ Alexander Bulekov <alxndr@bu.edu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Darren Kenny <darren.kenny@oracle.com>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
+References: <20240722040742.11513-1-yaoxt.fnst@fujitsu.com>
+ <20240722040742.11513-8-yaoxt.fnst@fujitsu.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240722040742.11513-8-yaoxt.fnst@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,152 +97,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ffd796061dd0b98e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi
-
-On Mon, Jul 22, 2024 at 12:01=E2=80=AFAM songziming <s.ziming@hotmail.com> =
-wrote:
-
-> If I use `-serial stdio` on Windows, after QEMU exits, the terminal
-> could not handle arrow keys and tab any more. Because stdio backend
-> on Windows sets console mode to virtual terminal input when starts,
-> but does not restore the old mode when finalize.
->
-> This small patch saves the old console mode and set it back.
->
-
-Thanks, we had a similar patch from Irina Ryapolova, but it didn't save the
-old mode and she didn't update it.
-
-
-> Signed-off-by: Ziming Song <s.ziming@hotmail.com>
->
-
+On 22/7/24 06:07, Yao Xingtao via wrote:
+> use ranges_overlap() instead of open-coding the overlap check to improve
+> the readability of the code.
+> 
+> Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 > ---
->  chardev/char-win-stdio.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
-> index 1a18999..5b24893 100644
-> --- a/chardev/char-win-stdio.c
-> +++ b/chardev/char-win-stdio.c
-> @@ -33,6 +33,7 @@
->  struct WinStdioChardev {
->      Chardev parent;
->      HANDLE  hStdIn;
-> +    DWORD   dwOldMode;
->      HANDLE  hInputReadyEvent;
->      HANDLE  hInputDoneEvent;
->      HANDLE  hInputThread;
-> @@ -159,6 +160,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
->      }
->
->      is_console =3D GetConsoleMode(stdio->hStdIn, &dwMode) !=3D 0;
-> +    stdio->dwOldMode =3D dwMode;
->
->      if (is_console) {
->          if (qemu_add_wait_object(stdio->hStdIn,
-> @@ -220,6 +222,7 @@ err1:
->  static void char_win_stdio_finalize(Object *obj)
->  {
->      WinStdioChardev *stdio =3D WIN_STDIO_CHARDEV(obj);
-> +    SetConsoleMode(stdio->hStdIn, stdio->dwOldMode);
->
->
-It should not reset if the open callback was not called successfully.
+>   tests/qtest/fuzz/generic_fuzz.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-You can check if it's the case by adding a if (stdio->hStdIn !=3D
-INVALID_HANDLE_VALUE) condition.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-     if (stdio->hInputReadyEvent !=3D INVALID_HANDLE_VALUE) {
->          CloseHandle(stdio->hInputReadyEvent);
-> --
-> 2.45.1.windows.1
->
->
->
-
---=20
-Marc-Andr=C3=A9 Lureau
-
---000000000000ffd796061dd0b98e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 22, 2024 at 12:01=E2=80=
-=AFAM songziming &lt;<a href=3D"mailto:s.ziming@hotmail.com">s.ziming@hotma=
-il.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">If I use `-serial stdio` on Windows, after QEMU exits, the terminal<b=
-r>
-could not handle arrow keys and tab any more. Because stdio backend<br>
-on Windows sets console mode to virtual terminal input when starts,<br>
-but does not restore the old mode when finalize.<br>
-<br>
-This small patch saves the old console mode and set it back.<br></blockquot=
-e><div><br></div><div>Thanks, we had a similar patch from=C2=A0<span>Irina =
-Ryapolova, but it didn&#39;t save the old mode and she didn&#39;t update it=
-.</span></div><div><span><br></span> </div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">
-<br>
-Signed-off-by: Ziming Song &lt;<a href=3D"mailto:s.ziming@hotmail.com" targ=
-et=3D"_blank">s.ziming@hotmail.com</a>&gt;<br></blockquote><blockquote clas=
-s=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
-gb(204,204,204);padding-left:1ex">
-<br>
----<br>
-=C2=A0chardev/char-win-stdio.c | 3 +++<br>
-=C2=A01 file changed, 3 insertions(+)<br>
-<br>
-diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c<br>
-index 1a18999..5b24893 100644<br>
---- a/chardev/char-win-stdio.c<br>
-+++ b/chardev/char-win-stdio.c<br>
-@@ -33,6 +33,7 @@<br>
-=C2=A0struct WinStdioChardev {<br>
-=C2=A0 =C2=A0 =C2=A0Chardev parent;<br>
-=C2=A0 =C2=A0 =C2=A0HANDLE=C2=A0 hStdIn;<br>
-+=C2=A0 =C2=A0 DWORD=C2=A0 =C2=A0dwOldMode;<br>
-=C2=A0 =C2=A0 =C2=A0HANDLE=C2=A0 hInputReadyEvent;<br>
-=C2=A0 =C2=A0 =C2=A0HANDLE=C2=A0 hInputDoneEvent;<br>
-=C2=A0 =C2=A0 =C2=A0HANDLE=C2=A0 hInputThread;<br>
-@@ -159,6 +160,7 @@ static void qemu_chr_open_stdio(Chardev *chr,<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0is_console =3D GetConsoleMode(stdio-&gt;hStdIn, &amp;dw=
-Mode) !=3D 0;<br>
-+=C2=A0 =C2=A0 stdio-&gt;dwOldMode =3D dwMode;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0if (is_console) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (qemu_add_wait_object(stdio-&gt;hStdIn=
-,<br>
-@@ -220,6 +222,7 @@ err1:<br>
-=C2=A0static void char_win_stdio_finalize(Object *obj)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0WinStdioChardev *stdio =3D WIN_STDIO_CHARDEV(obj);<br>
-+=C2=A0 =C2=A0 SetConsoleMode(stdio-&gt;hStdIn, stdio-&gt;dwOldMode);<br>
-<br></blockquote><div><br></div><div>It should not reset if the open callba=
-ck was not called successfully.</div><div><br></div><div>You can check if i=
-t&#39;s the case by adding a if (stdio-&gt;hStdIn !=3D INVALID_HANDLE_VALUE=
-) condition.</div><div><br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex">
-=C2=A0 =C2=A0 =C2=A0if (stdio-&gt;hInputReadyEvent !=3D INVALID_HANDLE_VALU=
-E) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CloseHandle(stdio-&gt;hInputReadyEvent);<=
-br>
--- <br>
-2.45.1.windows.1<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---000000000000ffd796061dd0b98e--
 
