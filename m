@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3053D93898E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62961938997
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:05:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVn4B-00034w-L9; Mon, 22 Jul 2024 03:02:39 -0400
+	id 1sVn4I-0003l2-WB; Mon, 22 Jul 2024 03:02:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn43-00028F-AG
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:31 -0400
+ id 1sVn45-0002QL-U7
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn41-0006g5-JN
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:31 -0400
+ id 1sVn43-0006hG-Ou
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721631748;
+ s=mimecast20190719; t=1721631751;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HawM42my9yZBi1WA1VuBcr74tOpmDzcYHSpZSXjQ29A=;
- b=VzgtcT/F032e72LuNM1a4xuDr2yKAG/ZlKmdjD2BxtB9SsH1gsf7vlp9SuHf/jmVTa2CAU
- Gg3j/7bEfNyeQhC45IFPZlYX1dbtthOXwHBk8+NtBp1OQNj+1vD9Ce7UOH6Zd4JV8cYKGw
- 77bWYjNRZC2EjPeHvjHNJNAmdhMk/qY=
+ bh=j/aLY9j85tIKxahhbA97kPju5Ah6xdvwRuy6dBmevuM=;
+ b=MqATqIW58SlIahIypjny1NML3ifsucIXBuWPhcHNG2FQv/3MDbkGuUvR7DHXUnT0pFRIQF
+ 0xH1elkcbFVznvFrKSQ2eIXHbeWhBHVpHs01gRQqt9CyDcBQVv5Ku9fiYZpH3eqSfn/0qR
+ GFy5IjJffz+U1zrznAt6yyu99ocFfis=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-sXtmIjTXMsaNV_6rXu2ySQ-1; Mon,
- 22 Jul 2024 03:02:23 -0400
-X-MC-Unique: sXtmIjTXMsaNV_6rXu2ySQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-jrJhrMJ0PAKh-yaC3WK0IA-1; Mon,
+ 22 Jul 2024 03:02:27 -0400
+X-MC-Unique: jrJhrMJ0PAKh-yaC3WK0IA-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8942418E6E15; Mon, 22 Jul 2024 07:02:13 +0000 (UTC)
+ id 7FC8A1944B2C; Mon, 22 Jul 2024 07:02:25 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.252])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30CC1195605A; Mon, 22 Jul 2024 07:02:11 +0000 (UTC)
+ id 04EA7195605A; Mon, 22 Jul 2024 07:02:13 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 17/25] qga: conditionalize schema for commands not supported on
- other UNIX
-Date: Mon, 22 Jul 2024 10:01:14 +0300
-Message-ID: <20240722070122.27615-18-kkostiuk@redhat.com>
+Subject: [PULL 18/25] qga: don't disable fsfreeze commands if vss_init fails
+Date: Mon, 22 Jul 2024 10:01:15 +0300
+Message-ID: <20240722070122.27615-19-kkostiuk@redhat.com>
 In-Reply-To: <20240722070122.27615-1-kkostiuk@redhat.com>
 References: <20240722070122.27615-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -83,80 +82,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-Rather than creating stubs for every command that just return
-QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema  to
-fully exclude generation of the commands on other UNIX.
+The fsfreeze commands are already written to report an error if
+vss_init() fails. Reporting a more specific error message is more
+helpful than a generic "command is disabled" message, which cannot
+between an admin config decision and lack of platform support.
 
-The command will be rejected at QMP dispatch time instead,
-avoiding reimplementing rejection by blocking the stub commands.
-This changes the error message for affected commands from
-
-    {"class": "CommandNotFound", "desc": "Command FOO has been disabled"}
-
-to
-
-    {"class": "CommandNotFound", "desc": "The command FOO has not been found"}
-
-This has the additional benefit that the QGA protocol reference
-now documents what conditions enable use of the command.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20240712132459.3974109-18-berrange@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240712132459.3974109-19-berrange@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- meson.build          | 1 +
- qga/commands-posix.c | 8 --------
- qga/qapi-schema.json | 3 ++-
- 3 files changed, 3 insertions(+), 9 deletions(-)
+ qga/commands-win32.c | 18 +++---------------
+ qga/main.c           |  4 ++++
+ 2 files changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 83f9728524..23f35193ee 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2276,6 +2276,7 @@ config_host_data.set('CONFIG_ATTR', libattr.found())
- config_host_data.set('CONFIG_BDRV_WHITELIST_TOOLS', get_option('block_drv_whitelist_in_tools'))
- config_host_data.set('CONFIG_BRLAPI', brlapi.found())
- config_host_data.set('CONFIG_BSD', host_os in bsd_oses)
-+config_host_data.set('CONFIG_FREEBSD', host_os == 'freebsd')
- config_host_data.set('CONFIG_CAPSTONE', capstone.found())
- config_host_data.set('CONFIG_COCOA', cocoa.found())
- config_host_data.set('CONFIG_DARWIN', host_os == 'darwin')
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index a353f64ae6..f4104f2760 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -877,14 +877,6 @@ void qmp_guest_set_user_password(const char *username,
-         return;
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 2533e4c748..5866cc2e3c 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -1203,7 +1203,7 @@ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+ GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+ {
+     if (!vss_initialized()) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+         return 0;
      }
+ 
+@@ -1231,7 +1231,7 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
+     Error *local_err = NULL;
+ 
+     if (!vss_initialized()) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+         return 0;
+     }
+ 
+@@ -1266,7 +1266,7 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+     int i;
+ 
+     if (!vss_initialized()) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+         return 0;
+     }
+ 
+@@ -1961,18 +1961,6 @@ done:
+ /* add unsupported commands to the list of blocked RPCs */
+ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+ {
+-    if (!vss_init(true)) {
+-        g_debug("vss_init failed, vss commands are going to be disabled");
+-        const char *list[] = {
+-            "guest-get-fsinfo", "guest-fsfreeze-status",
+-            "guest-fsfreeze-freeze", "guest-fsfreeze-thaw", NULL};
+-        char **p = (char **)list;
+-
+-        while (*p) {
+-            blockedrpcs = g_list_append(blockedrpcs, g_strdup(*p++));
+-        }
+-    }
+-
+     return blockedrpcs;
  }
--#else /* __linux__ || __FreeBSD__ */
--void qmp_guest_set_user_password(const char *username,
--                                 const char *password,
--                                 bool crypted,
--                                 Error **errp)
--{
--    error_setg(errp, QERR_UNSUPPORTED);
--}
- #endif /* __linux__ || __FreeBSD__ */
  
- #ifdef HAVE_GETIFADDRS
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 0662a68c43..c763163fcd 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -1109,7 +1109,8 @@
- # Since: 2.3
- ##
- { 'command': 'guest-set-user-password',
--  'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' } }
-+  'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' },
-+  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX', 'CONFIG_FREEBSD'] } }
+diff --git a/qga/main.c b/qga/main.c
+index f4d5f15bb3..17b6ce18ac 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -1395,6 +1395,10 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+                    " '%s': %s", config->state_dir, strerror(errno));
+         return NULL;
+     }
++
++    if (!vss_init(true)) {
++        g_debug("vss_init failed, vss commands will not function");
++    }
+ #endif
  
- ##
- # @GuestMemoryBlock:
+     if (ga_is_frozen(s)) {
 -- 
 2.45.2
 
