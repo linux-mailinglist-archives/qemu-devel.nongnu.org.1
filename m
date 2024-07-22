@@ -2,72 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636C09394A2
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 22:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E42B9394A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 22:08:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVzJS-0002il-Ri; Mon, 22 Jul 2024 16:07:14 -0400
+	id 1sVzKT-0008Up-6M; Mon, 22 Jul 2024 16:08:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sVzJQ-0002dZ-FD
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:07:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sVzJM-0002H4-JX
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:07:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721678827;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bU4+sWIBG9sRX9D0e5fexHcbKMSvLifCV3wzJvrM/Hg=;
- b=dw+sX+KZW0G/ZsjRsG16pN4vyeVf5NM68XFEUKoW8YN79hiuv7HooPl7dozUtmwwVMstJz
- wFvHsRLb/Gyj2LXGPg+2FgoGJBCXJRD2wFPuoKoL0UTaC/Jp0/Xme1uH/X4caQW+2NNLS2
- 6pQDWkAQ8UVavK3qlFuUDd0BpSvYExU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-MrPYeRRIN8i01RNH3BND-A-1; Mon,
- 22 Jul 2024 16:07:02 -0400
-X-MC-Unique: MrPYeRRIN8i01RNH3BND-A-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sVzKK-0007ry-Aj
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:08:10 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sVzKH-0002LF-GO
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:08:07 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A515A1955D5A; Mon, 22 Jul 2024 20:07:01 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.9])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6B4141955D47; Mon, 22 Jul 2024 20:07:00 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, songziming <s.ziming@hotmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 8/8] chardev/char-win-stdio.c: restore old console mode
-Date: Tue, 23 Jul 2024 00:06:18 +0400
-Message-ID: <20240722200619.135163-9-marcandre.lureau@redhat.com>
-In-Reply-To: <20240722200619.135163-1-marcandre.lureau@redhat.com>
-References: <20240722200619.135163-1-marcandre.lureau@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D2ABC21AE1;
+ Mon, 22 Jul 2024 20:08:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1721678881; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cu6pGruPExKVg1q1KTuY/IiIkTxiz5Z1RUwysDqLGA4=;
+ b=Vam74ID5zle5JuaHNJI4DbR4gzPGsBSdu22i5aiE0hcM9ynFA4Ik78oe4iKuqWVX3JGZli
+ sWr4o3uG4qcyyLBgu/vi2AdGZeQbP0KI2x5LNW+RMBERruQhnal2u0TXATAzVmBQZmGS5p
+ jeVyLjrt4L1ORa7RrpB8/y/Q15BOydE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1721678881;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cu6pGruPExKVg1q1KTuY/IiIkTxiz5Z1RUwysDqLGA4=;
+ b=I325XBdAVkfSaQu9KYalVdJrB6hejA/2qDeSY07AQjX0XVGagLavicxgwjFNbEQXg/q208
+ 2rC+bttutclKwUBw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mrZgkRwR;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vuzoe3tm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1721678880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cu6pGruPExKVg1q1KTuY/IiIkTxiz5Z1RUwysDqLGA4=;
+ b=mrZgkRwR8U6VXJcjxm/uWuRBjZtq93rzXhLZDGFbcNv9qlEFQK5ltvDDNtgFB30M7SQVGa
+ yr1DrmUWhRNuFOUPDcMBYEksc61fAwlMbvQlQ+JXnS506HEucRmS6LnkCUY7sU9xWONywE
+ xbgZ+YAhqSX03cQVulMB+6/+/yX/LDI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1721678880;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cu6pGruPExKVg1q1KTuY/IiIkTxiz5Z1RUwysDqLGA4=;
+ b=vuzoe3tmpFP3Pd4JNvTDYEmbDwItiPwWhRpvUmQE03cPLHF1JapP+dlVSz35K6Cj/8wLeH
+ UMbOIFyYnh5T/GBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 589B9138A7;
+ Mon, 22 Jul 2024 20:08:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id L6xXCCC8nmYzKQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 22 Jul 2024 20:08:00 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
+Subject: Re: [RFC PATCH v2 6/9] migration/multifd: Move pages accounting
+ into multifd_send_zero_page_detect()
+In-Reply-To: <Zp6zF2oOHJMixISu@x1n>
+References: <20240722175914.24022-1-farosas@suse.de>
+ <20240722175914.24022-7-farosas@suse.de> <Zp6zF2oOHJMixISu@x1n>
+Date: Mon, 22 Jul 2024 17:07:57 -0300
+Message-ID: <87plr5yyua.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+X-Spam-Score: -2.31
+X-Spamd-Result: default: False [-2.31 / 50.00]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MISSING_XM_UA(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: D2ABC21AE1
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,53 +121,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: songziming <s.ziming@hotmail.com>
+Peter Xu <peterx@redhat.com> writes:
 
-If I use `-serial stdio` on Windows, after QEMU exits, the terminal
-could not handle arrow keys and tab any more. Because stdio backend
-on Windows sets console mode to virtual terminal input when starts,
-but does not restore the old mode when finalize.
+> On Mon, Jul 22, 2024 at 02:59:11PM -0300, Fabiano Rosas wrote:
+>> All references to pages are being removed from the multifd worker
+>> threads in order to allow multifd to deal with different payload
+>> types.
+>> 
+>> multifd_send_zero_page_detect() is called by all multifd migration
+>> paths that deal with pages and is the last spot where zero pages and
+>> normal page amounts are adjusted. Move the pages accounting into that
+>> function.
+>
+> True, but it's a bit hackish to update (especially, normal) page counters
+> in a zero page detect function.
 
-This small patch saves the old console mode and set it back.
+Hm, that's the one place in the code that actually sets
+normal_num. Seems adequate to me.
 
-Signed-off-by: Ziming Song <s.ziming@hotmail.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <ME3P282MB25488BE7C39BF0C35CD0DA5D8CA82@ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM>
----
- chardev/char-win-stdio.c | 5 +++++
- 1 file changed, 5 insertions(+)
+> I understand you want to move pages out of the thread function, that's
+> fair. How about put it in your new multifd_ram_fill_packet()?
+>
 
-diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
-index 1a18999e78..13325ca967 100644
---- a/chardev/char-win-stdio.c
-+++ b/chardev/char-win-stdio.c
-@@ -33,6 +33,7 @@
- struct WinStdioChardev {
-     Chardev parent;
-     HANDLE  hStdIn;
-+    DWORD   dwOldMode;
-     HANDLE  hInputReadyEvent;
-     HANDLE  hInputDoneEvent;
-     HANDLE  hInputThread;
-@@ -159,6 +160,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
-     }
- 
-     is_console = GetConsoleMode(stdio->hStdIn, &dwMode) != 0;
-+    stdio->dwOldMode = dwMode;
- 
-     if (is_console) {
-         if (qemu_add_wait_object(stdio->hStdIn,
-@@ -221,6 +223,9 @@ static void char_win_stdio_finalize(Object *obj)
- {
-     WinStdioChardev *stdio = WIN_STDIO_CHARDEV(obj);
- 
-+    if (stdio->hStdIn != INVALID_HANDLE_VALUE) {
-+        SetConsoleMode(stdio->hStdIn, stdio->dwOldMode);
-+    }
-     if (stdio->hInputReadyEvent != INVALID_HANDLE_VALUE) {
-         CloseHandle(stdio->hInputReadyEvent);
-     }
--- 
-2.45.2.827.g557ae147e6
+That one is skipped when mapped-ram is in use. I could move it to
+nocomp_send_prepare() after the zero_page_detect. It seems we're moving
+towards changing nocomp -> ram at some point anyway. Would that be
+better? It would duplicate the call due to the compression code.
 
 
