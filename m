@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6DD9389FF
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7FA9389F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:19:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVnPA-00023Z-Iv; Mon, 22 Jul 2024 03:24:20 -0400
+	id 1sVnJW-0003DS-Mx; Mon, 22 Jul 2024 03:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sVnP9-00021L-Ag
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:24:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sVnJG-0002hX-9f; Mon, 22 Jul 2024 03:18:15 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sVnP7-0002EO-HU
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:24:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721633056;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BcMThMO35PnzVfjRBtRLhAasaMeB19h7/noV5EO32wc=;
- b=OJnMIxwwGYxdOL00Ujmj8BIEepFv3Mr3nIfgJulhvnUOvbI+wy+0R1KuBQLeebPBi7BdiJ
- fALBAA1wAkEBCcIKUqnNUH0+eb+GDqE3AaXqoVjV1cc+7ObTHRZQwRKViHsGAgFmLRfI4h
- J/P6jtkidkQEeNeOADa01dQcTKEKOLo=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426-lrUke3sENPK9O7FkkYWFcQ-1; Mon, 22 Jul 2024 03:24:12 -0400
-X-MC-Unique: lrUke3sENPK9O7FkkYWFcQ-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5e4df21f22dso4660303a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 00:24:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721633052; x=1722237852;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BcMThMO35PnzVfjRBtRLhAasaMeB19h7/noV5EO32wc=;
- b=DrSrkIKtmrh+fnsXsButI+033OqlpibTGFebI1nVlVpM/PzcTwAmCbNs58tJTKTbvZ
- fWdUkygOupU7vp1kWCNiJkKrVFsyiMThyimZeRXsq8o+uys/dqiEJUPQx+C/CJD4eO8D
- DOjic9bmgdBJ/by6ffp2ipGyc7viWgh+15R5AswHvNC3K33pwxuKCfAPi8srXWBVovz1
- aXlqsHppZFPtt9m7u8MwBbpFo64jn3seYLMxg7aHWdDAlX3LdhZUvFytp+Ua+II3gfF8
- fWdOHgcF0Sr0hOsp0M1fdtiA4mIvPV1qNR66cKPNPfFXnetQVGw5KxWPSPj4XBbwfMEk
- ru1Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX9nqFe0xGN2lDvKM9M/2smZBUkzVeWIN2jAsd4wh7tevPtFLWaxquPe5ScFXdiCLdyshxplu661gXiSg1D5ohQjtpcGU8=
-X-Gm-Message-State: AOJu0YxvZj2nEyKCdNakWT2UV4pMbpqy9XiT+AvgbCbZX2e+wbpCa4MI
- mzd5w1H0n61gnbo/wtHwPgnvXuPA+TjrHRKrXVyKBzlFfpNidtNYvKG622wFOlnhGVHqAwQDAcE
- ddWm4B6UxcX6B0lJcOoci7nF+xaqiAZyWXxhF8RhWv/MLTjYBY6ma91FS8QM3uMnHvVjVAbvPrb
- bTYH5bBCXqns82lj755v4x0ZEeAeA=
-X-Received: by 2002:a17:90b:1d08:b0:2cb:5d90:2b9 with SMTP id
- 98e67ed59e1d1-2cd16d62831mr10885541a91.11.1721633051611; 
- Mon, 22 Jul 2024 00:24:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcYfhfqF5oUiQInVha9WC7z+6AJ97aON+MO7Pk8XuRtnEGDyMqRHnJ6ghCMFK5+Bip52AxB+j14z4xo48q+jc=
-X-Received: by 2002:a17:90b:1d08:b0:2cb:5d90:2b9 with SMTP id
- 98e67ed59e1d1-2cd16d62831mr10885512a91.11.1721633050940; Mon, 22 Jul 2024
- 00:24:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sVnJD-0001Bm-J7; Mon, 22 Jul 2024 03:18:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721632692; x=1753168692;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=PWz4Ht0qlbweAS5o60cJFbGqE0cijiCuaXDbGXRSJ3Q=;
+ b=XBx4TgKu3q8b14A+G3b43wRf6uJObklYzONohPCGvLBMJC41eiN13pPd
+ vZ2QYfCQ1GZuKszknLcWDKlDGFANou7T6j6at/EycXp7GvDL5suKcNUS0
+ jc6kUCQe2GVyT2lJtpRJbhhIKihlxZF+tJ4g2ZoJaiSVEJBfEDIcHE3Vf
+ f6ookgnogqeU0CFP4HFhcb5lqIToTKCRs/JhDwlAVgZNVdHtkPQvikrhL
+ WuhO4CU+nXYhsVbIRgWg4KlHDmdSTHC9uYH5ZLkEkPHuN+b9hPmIwYR4s
+ iiQ/KVsXVULPF/Xnz50YYZGfG6orMKrsNZBsl3869yEdOTiVZw+lwgR8l A==;
+X-CSE-ConnectionGUID: 2+it0vNZQbm3Be1s14/BBQ==
+X-CSE-MsgGUID: C1lpF1pOSnahfp5Bt1kr0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="29843695"
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="29843695"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 00:17:59 -0700
+X-CSE-ConnectionGUID: S294LoMoTdKgKC7BnmarJQ==
+X-CSE-MsgGUID: cpwVM0ovRbS97rMy+BQXAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="56350156"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 22 Jul 2024 00:17:53 -0700
+Date: Mon, 22 Jul 2024 15:33:37 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH 0/8] Introduce SMP Cache Topology
+Message-ID: <Zp4LUSXlwXqI880x@intel.com>
+References: <20240704031603.1744546-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-References: <20240719052531.926801-1-lulu@redhat.com>
-In-Reply-To: <20240719052531.926801-1-lulu@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 22 Jul 2024 15:23:59 +0800
-Message-ID: <CACGkMEtauhCfYSfFHc-GXAzvXm78fodTpDb-JcoGwfVjCD1qvw@mail.gmail.com>
-Subject: Re: [PATCH v5] virtio-pci: Fix the use of an uninitialized irqfd
-To: Cindy Lu <lulu@redhat.com>
-Cc: mst@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240704031603.1744546-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,99 +94,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cindy
+Hi Daniel and Markus,
 
-On Fri, Jul 19, 2024 at 1:25=E2=80=AFPM Cindy Lu <lulu@redhat.com> wrote:
->
-> The crash was reported in MAC OS and NixOS, here is the link for this bug
-> https://gitlab.com/qemu-project/qemu/-/issues/2334
-> https://gitlab.com/qemu-project/qemu/-/issues/2321
->
-> In this bug, they are using the virtio_input device. The guest notifier w=
-as
-> not supported for this device, The function virtio_pci_set_guest_notifier=
-s()
-> was not called, and the vector_irqfd was not initialized.
->
-> So the fix is adding the check for vector_irqfd in virtio_pci_get_notifie=
-r()
->
-> But The function virtio_pci_get_notifier(),it can also be used in all kin=
-ds of device.
-> If the vector_irqfd still didn't initial after the VIRTIO_CONFIG_S_DRIVER=
-_OK is set
-> means this device is not using guest notifier. We can let the check fail =
-here
->
-> This fix is verified in vyatta,MacOS,NixOS,fedora system.
->
-> The bt tree for this bug is:
-> Thread 6 "CPU 0/KVM" received signal SIGSEGV, Segmentation fault.
-> [Switching to Thread 0x7c817be006c0 (LWP 1269146)]
-> kvm_virtio_pci_vq_vector_use () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:8=
-17
-> 817         if (irqfd->users =3D=3D 0) {
-> (gdb) thread apply all bt
-> ...
-> Thread 6 (Thread 0x7c817be006c0 (LWP 1269146) "CPU 0/KVM"):
-> 0  kvm_virtio_pci_vq_vector_use () at ../qemu-9.0.0/hw/virtio/virtio-pci.=
-c:817
-> 1  kvm_virtio_pci_vector_use_one () at ../qemu-9.0.0/hw/virtio/virtio-pci=
-.c:893
-> 2  0x00005983657045e2 in memory_region_write_accessor () at ../qemu-9.0.0=
-/system/memory.c:497
-> 3  0x0000598365704ba6 in access_with_adjusted_size () at ../qemu-9.0.0/sy=
-stem/memory.c:573
-> 4  0x0000598365705059 in memory_region_dispatch_write () at ../qemu-9.0.0=
-/system/memory.c:1528
-> 5  0x00005983659b8e1f in flatview_write_continue_step.isra.0 () at ../qem=
-u-9.0.0/system/physmem.c:2713
-> 6  0x000059836570ba7d in flatview_write_continue () at ../qemu-9.0.0/syst=
-em/physmem.c:2743
-> 7  flatview_write () at ../qemu-9.0.0/system/physmem.c:2774
-> 8  0x000059836570bb76 in address_space_write () at ../qemu-9.0.0/system/p=
-hysmem.c:2894
-> 9  0x0000598365763afe in address_space_rw () at ../qemu-9.0.0/system/phys=
-mem.c:2904
-> 10 kvm_cpu_exec () at ../qemu-9.0.0/accel/kvm/kvm-all.c:2917
-> 11 0x000059836576656e in kvm_vcpu_thread_fn () at ../qemu-9.0.0/accel/kvm=
-/kvm-accel-ops.c:50
-> 12 0x0000598365926ca8 in qemu_thread_start () at ../qemu-9.0.0/util/qemu-=
-thread-posix.c:541
-> 13 0x00007c8185bcd1cf in ??? () at /usr/lib/libc.so.6
-> 14 0x00007c8185c4e504 in clone () at /usr/lib/libc.so.6
->
-> Fixes: 2ce6cff94d ("virtio-pci: fix use of a released vector")
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
+A gentle ping. Would you kindly have a look at this version of the API
+design? If it could meet your satisfaction, I¡¯ll continue iterating.
+
+Thanks,
+Zhao
+
+On Thu, Jul 04, 2024 at 11:15:55AM +0800, Zhao Liu wrote:
+> Date: Thu, 4 Jul 2024 11:15:55 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH 0/8] Introduce SMP Cache Topology
+> X-Mailer: git-send-email 2.34.1
+> 
+> Hi all,
+> 
+> Since the previous RFC v2, I've reimplemented smp-cache object based on
+> Daniel's comment (thanks Daniel!), which is both flexible to support
+> current cache topology requirements and extensible.
+> 
+> So, I officially convert the RFC to PATCH.
+> 
+> Background on smp cache topology can be found in the previous RFC v2
+> cover letter:
+> 
+> https://lore.kernel.org/qemu-devel/20240530101539.768484-1-zhao1.liu@intel.com/
+> 
+> The following content focuses on this series implementation of the
+> smp-cache object.
+> 
+> 
+> About smp-cache
+> ===============
+> 
+> In fact, the smp-cache object introduced in this series is a bit
+> different from Daniel's original suggestion. Instead of being integrated
+> into -smp, it is created explicitly via -object, and the smp-cache
+> property is added to -machine to link to this object.
+> 
+> An example is as follows:
+> 
+> -object '{"qom-type":"smp-cache","id":"cache0","caches":[{"name":"l1d","topo":"core"},{"name":"l1i","topo":"core"},{"name":"l2","topo":"module"},{"name":"l3","topo":"socket"}]}'
+> -machine smp-cache=cache0
+> 
+> 
+> Such the design change is based on the following 2 reasons:
+>  * Defining the cache with a JSON list is very extensible and can
+>    support more cache properties.
+> 
+>  * But -smp, as the sugar of machine property "smp", is based on keyval
+>    format, and doesn't support options with JSON format. Thus it's not
+>    possible to add a JSON format based option to -smp/-machine for now.
+> 
+> So, I decoupled the creation of the smp-cache object from the -machine
+> to make both -machine and -object happy!
+> 
+> 
+> Welcome your feedback!
+> 
+> 
+> Thanks and Best Regards,
+> Zhao
 > ---
->  hw/virtio/virtio-pci.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index 592fdaa10f..dc31a37ec0 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -860,6 +860,9 @@ static int virtio_pci_get_notifier(VirtIOPCIProxy *pr=
-oxy, int queue_no,
->      VirtIODevice *vdev =3D virtio_bus_get_device(&proxy->bus);
->      VirtQueue *vq;
->
-> +    if (!proxy->vector_irqfd && vdev->status & VIRTIO_CONFIG_S_DRIVER_OK=
-)
-> +        return -1;
-> +
-
-Did this mean !proxy->vector_irqfd && !(vdev->status &
-VIRTIO_CONFIG_S_DRIVER_OK)) is legal?
-
-Thanks
-
->      if (queue_no =3D=3D VIRTIO_CONFIG_IRQ_IDX) {
->          *n =3D virtio_config_get_guest_notifier(vdev);
->          *vector =3D vdev->config_vector;
-> --
-> 2.45.0
->
-
+> Changelog:
+> 
+> Main changes since RFC v2:
+>  * Dropped cpu-topology.h and cpu-topology.c since QAPI has the helper
+>    (CpuTopologyLevel_str) to convert enum to string. (Markus)
+>  * Fixed text format in machine.json (CpuTopologyLevel naming, 2 spaces
+>    between sentences). (Markus)
+>  * Added a new level "default" to de-compatibilize some arch-specific
+>    topo settings. (Daniel)
+>  * Moved CpuTopologyLevel to qapi/machine-common.json, at where the
+>    cache enumeration and smp-cache object would be added.
+>    - If smp-cache object is defined in qapi/machine.json, storage-daemon
+>      will complain about the qmp cmds in qapi/machine.json during
+>      compiling.
+>  * Referred to Daniel's suggestion to introduce cache JSON list, though
+>    as a standalone object since -smp/-machine can't support JSON.
+>  * Linked machine's smp_cache to smp-cache object instead of a builtin
+>    structure. This is to get around the fact that the keyval format of
+>    -machine can't support JSON.
+>  * Wrapped the cache topology level access into a helper.
+>  * Split as a separate commit to just include compatibility checking and
+>    topology checking.
+>  * Allow setting "default" topology level even though the cache
+>    isn't supported by machine. (Daniel)
+>  * Rewrote the document of smp-cache object.
+> 
+> Main changes since RFC v1:
+>  * Split CpuTopology renaimg out of this RFC.
+>  * Use QAPI to enumerate CPU topology levels.
+>  * Drop string_to_cpu_topo() since QAPI will help to parse the topo
+>    levels.
+>  * Set has_*_cache field in machine_get_smp(). (JeeHeng)
+>  * Use "*_cache=topo_level" as -smp example as the original "level"
+>    term for a cache has a totally different meaning. (Jonathan)
+> ---
+> Zhao Liu (8):
+>   hw/core: Make CPU topology enumeration arch-agnostic
+>   qapi/qom: Introduce smp-cache object
+>   hw/core: Add smp cache topology for machine
+>   hw/core: Check smp cache topology support for machine
+>   i386/cpu: Support thread and module level cache topology
+>   i386/cpu: Update cache topology with machine's configuration
+>   i386/pc: Support cache topology in -machine for PC machine
+>   qemu-options: Add the description of smp-cache object
+> 
+>  MAINTAINERS                 |   2 +
+>  hw/core/machine-smp.c       |  86 ++++++++++++++++++++++++++++++
+>  hw/core/machine.c           |  22 ++++++++
+>  hw/core/meson.build         |   1 +
+>  hw/core/smp-cache.c         | 103 ++++++++++++++++++++++++++++++++++++
+>  hw/i386/pc.c                |   4 ++
+>  include/hw/boards.h         |  11 +++-
+>  include/hw/core/smp-cache.h |  27 ++++++++++
+>  include/hw/i386/topology.h  |  18 +------
+>  qapi/machine-common.json    |  97 ++++++++++++++++++++++++++++++++-
+>  qapi/qapi-schema.json       |   4 +-
+>  qapi/qom.json               |   3 ++
+>  qemu-options.hx             |  58 ++++++++++++++++++++
+>  target/i386/cpu.c           |  83 +++++++++++++++++++++--------
+>  target/i386/cpu.h           |   4 +-
+>  15 files changed, 478 insertions(+), 45 deletions(-)
+>  create mode 100644 hw/core/smp-cache.c
+>  create mode 100644 include/hw/core/smp-cache.h
+> 
+> -- 
+> 2.34.1
+> 
 
