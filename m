@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2709938ECB
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 14:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D522938ECD
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 14:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVrnz-0000Md-9c; Mon, 22 Jul 2024 08:06:15 -0400
+	id 1sVrnw-0008SY-U5; Mon, 22 Jul 2024 08:06:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sVrnf-0007St-W5
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 08:05:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sVrni-0007bS-8C
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 08:06:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sVrnb-0007uk-Tc
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 08:05:53 -0400
+ id 1sVrnf-0007uz-OX
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 08:05:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721649951;
+ s=mimecast20190719; t=1721649952;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j4UwUK1qyFt8jfRv5O/+Xfolt2iTAQ7FuHpfmrN0EbA=;
- b=VBNqbpYSuzpxKIPnbMWhqD76UvHTjyoSJqtCmt4ghzKEyv8UosaahoVaofZ0gPHjmm58p3
- 6zyfdN0GLQX28uKAIL5jszMboHducXyypZ88yDFZHeuOyWn7nvwWIhuL54VeATdGOpwTHg
- poz/UPUQwjVb/SxfUiO7v4pPwdDREF0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=X4p0LHYIjMjvQI23Lts1WhjklTNehlg506joAY8S7dI=;
+ b=TF9ibDQWjTxLPmKwH5EmfzaSQRYOmkVrMF5b4bYHtoMswarS/+2b5oNhImLZlnORR70uxn
+ reEzPgnjrrzIGSjVTBL2HUXYXljkXjGBBypvwjsUKpf02jXWtGHHybSWbWhp4908rffHaU
+ V4IW1Yv/Yc7F7j4l+OGYaGfEUlgA/J4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-hYarwy8NMLG1VKJv20dvrQ-1; Mon, 22 Jul 2024 08:05:49 -0400
-X-MC-Unique: hYarwy8NMLG1VKJv20dvrQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-52efd629749so1736269e87.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 05:05:49 -0700 (PDT)
+ us-mta-444-rDP7vz5mNkKgKUX41xw1KQ-1; Mon, 22 Jul 2024 08:05:51 -0400
+X-MC-Unique: rDP7vz5mNkKgKUX41xw1KQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a77e59a53c4so339886266b.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 05:05:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721649947; x=1722254747;
+ d=1e100.net; s=20230601; t=1721649950; x=1722254750;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j4UwUK1qyFt8jfRv5O/+Xfolt2iTAQ7FuHpfmrN0EbA=;
- b=W8Cvl/kU3jv2p6P4OazL/iqeBCtikZsOp9KqRrVlRTgcCO9fcnZh0kmBDSndq3zV1P
- M4zDjF1rHn1V8e50kk5I+J3jp5BkAA0z4AvhWSsw7Q50Ea0j2duL7v9WbpYYXHeh4aqM
- jnAaAh7WxLZAyFEqvW+y98673j9YII5jUWXfR8mT2FW3r8oPB5KN2hUU3K2rAdzurKJC
- 5e9zPSTO6ZCt7jukvbB7FoqRs8R20+H3JDE/WiYWCPNViGWuLRhGHK61gfdg7l57rngQ
- wK5MgS1WCc1DhGEKADs4CoHILgekfJraFh8aA4OnJUd/BpwnAW84Ae6BDKfD9IvXuCR6
- 1Bug==
-X-Gm-Message-State: AOJu0YwmsmTxpPnb6zOFM8R6TpsE/iOM3RVoKbHYD7tuFe4+3sjZc6J0
- uv+V/u3hp4h6QsvWc0KeN52mIwCyVv+kr33R9jfSXOqWRKgRO0P1i7n1/JxE0ofND2XQMuCcCWK
- Jvgn+PantnD6Fg9/GdimXiycxfOD1TvRZuic8zh42LA1r+4cc1dmXjoB0xm9KGedzdnSZqEOJP+
- vuLvw/xAnUiVTRTQOBqH6EcdRUhGbCvNF0TFZw
-X-Received: by 2002:a2e:2e0d:0:b0:2ec:40cf:fa9 with SMTP id
- 38308e7fff4ca-2ef167a6c3cmr45289081fa.29.1721649947726; 
- Mon, 22 Jul 2024 05:05:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuNxi/klocEARBunzUzS/wWDPUNc4nQwSBc4BYKXU+Z5Fzqo5X2tBdfWzpLoMmI7W2xClVPA==
-X-Received: by 2002:a2e:2e0d:0:b0:2ec:40cf:fa9 with SMTP id
- 38308e7fff4ca-2ef167a6c3cmr45288941fa.29.1721649947274; 
- Mon, 22 Jul 2024 05:05:47 -0700 (PDT)
+ bh=X4p0LHYIjMjvQI23Lts1WhjklTNehlg506joAY8S7dI=;
+ b=qw2xISquWwvnVz7P6G7XSNBuFfS4oe0DRBa3GQvDOwXWnQT6t6H5xgt/rKp9+R7DEZ
+ uP9bRfOcoshXTMpH2SeA3r17NrY5qwsN89NNI9EXCS/Hg5xsqDQl6cIpzxyx5van9r6L
+ G2ibeOmtBkDp1aI+q5vZUgRciSCVMlr6nRwewcN6/hlqHHRdnyE7S32NfJ5NPBti0Qi5
+ YLL8qX0Mqjm1RbW3tttmzNfXcsu63CwYx0NN/mACMOWGHzVwiyKxwq5Ljqiw0wn5b/AF
+ WK3A+g1ByHdZqQgsXNl2hdrwOwg+KNI2TIFvsfTTcompaiUZYfUkx4GoNK5uHeviQhh2
+ a5VA==
+X-Gm-Message-State: AOJu0YyQ6dxsxQNd4+Z9HU6Eg0R+hUx19duLD2y95d2xZn6MPcc87v0Q
+ 4nJQN5bZCjqfrwl45wMYeKptPCShn8kWD8NRxAOlboHCFM6Ca9CcC9Wb4lUclsyWJvzzHAiHwBH
+ 4kUoomXtirORHE1P5MI11TY4oUUMnCnzyfauRvIB3y1fnzK2rq18vwbH6eeEQ68eGBe3HSpp3MR
+ sg8aoHXHM7Ym5SOv6621DThc1q28f9Yptafory
+X-Received: by 2002:a17:907:3e1a:b0:a75:23bb:6087 with SMTP id
+ a640c23a62f3a-a7a4c016cafmr472537566b.29.1721649949867; 
+ Mon, 22 Jul 2024 05:05:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFL9DpPt69DCrN4oscH9ziF6uIM8tcAlf8QWRNxtUJbIWNMpmLv23fuEI7m5SAgEAyUWDNzjg==
+X-Received: by 2002:a17:907:3e1a:b0:a75:23bb:6087 with SMTP id
+ a640c23a62f3a-a7a4c016cafmr472535766b.29.1721649949508; 
+ Mon, 22 Jul 2024 05:05:49 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5a3e642b647sm4913778a12.55.2024.07.22.05.05.45
+ a640c23a62f3a-a7a3c8bf32esm414269566b.134.2024.07.22.05.05.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 05:05:46 -0700 (PDT)
+ Mon, 22 Jul 2024 05:05:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 2/7] hpet: ignore high bits of comparator in 32-bit mode
-Date: Mon, 22 Jul 2024 14:05:36 +0200
-Message-ID: <20240722120541.70790-3-pbonzini@redhat.com>
+Subject: [PATCH 3/7] hpet: remove unnecessary variable "index"
+Date: Mon, 22 Jul 2024 14:05:37 +0200
+Message-ID: <20240722120541.70790-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240722120541.70790-1-pbonzini@redhat.com>
 References: <20240722120541.70790-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,37 +102,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c       | 4 ++++
- hw/timer/trace-events | 1 +
- 2 files changed, 5 insertions(+)
+ hw/timer/hpet.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 58073df02b5..bbb1e5f0897 100644
+index bbb1e5f0897..380e272fbeb 100644
 --- a/hw/timer/hpet.c
 +++ b/hw/timer/hpet.c
-@@ -585,6 +585,10 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-             }
+@@ -437,12 +437,12 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
+                               unsigned size)
+ {
+     HPETState *s = opaque;
+-    uint64_t cur_tick, index;
++    uint64_t cur_tick;
+ 
+     trace_hpet_ram_read(addr);
+-    index = addr;
++
+     /*address range of all TN regs*/
+-    if (index >= 0x100 && index <= 0x3ff) {
++    if (addr >= 0x100 && addr <= 0x3ff) {
+         uint8_t timer_id = (addr - 0x100) / 0x20;
+         HPETTimer *timer = &s->timer[timer_id];
+ 
+@@ -469,7 +469,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
              break;
-         case HPET_TN_CMP + 4: // comparator register high order
-+            if (timer->config & HPET_TN_32BIT) {
-+                trace_hpet_ram_write_invalid_tn_cmp();
-+                break;
-+            }
-             trace_hpet_ram_write_tn_cmp(4);
-             if (!timer_is_periodic(timer)
-                 || (timer->config & HPET_TN_SETVAL)) {
-diff --git a/hw/timer/trace-events b/hw/timer/trace-events
-index de769f4b716..a5fafbc6796 100644
---- a/hw/timer/trace-events
-+++ b/hw/timer/trace-events
-@@ -111,6 +111,7 @@ hpet_ram_write_timer_id(uint64_t timer_id) "hpet_ram_writel timer_id = 0x%" PRIx
- hpet_ram_write_tn_cfg(void) "hpet_ram_writel HPET_TN_CFG"
- hpet_ram_write_invalid_tn_cfg(uint8_t reg_off) "invalid HPET_TN_CFG + %" PRIu8 " write"
- hpet_ram_write_tn_cmp(uint8_t reg_off) "hpet_ram_writel HPET_TN_CMP + %" PRIu8
-+hpet_ram_write_invalid_tn_cmp(void) "invalid HPET_TN_CMP + 4 write"
- hpet_ram_write_invalid(void) "invalid hpet_ram_writel"
- hpet_ram_write_counter_write_while_enabled(void) "Writing counter while HPET enabled!"
- hpet_ram_write_counter_written(uint8_t reg_off, uint64_t value, uint64_t counter) "HPET counter + %" PRIu8 "written. crt = 0x%" PRIx64 " -> 0x%" PRIx64
+         }
+     } else {
+-        switch (index) {
++        switch (addr) {
+         case HPET_ID:
+             return s->capability;
+         case HPET_PERIOD:
+@@ -510,15 +510,14 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+ {
+     int i;
+     HPETState *s = opaque;
+-    uint64_t old_val, new_val, val, index;
++    uint64_t old_val, new_val, val;
+ 
+     trace_hpet_ram_write(addr, value);
+-    index = addr;
+     old_val = hpet_ram_read(opaque, addr, 4);
+     new_val = value;
+ 
+     /*address range of all TN regs*/
+-    if (index >= 0x100 && index <= 0x3ff) {
++    if (addr >= 0x100 && addr <= 0x3ff) {
+         uint8_t timer_id = (addr - 0x100) / 0x20;
+         HPETTimer *timer = &s->timer[timer_id];
+ 
+@@ -620,7 +619,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+         }
+         return;
+     } else {
+-        switch (index) {
++        switch (addr) {
+         case HPET_ID:
+             return;
+         case HPET_CFG:
 -- 
 2.45.2
 
