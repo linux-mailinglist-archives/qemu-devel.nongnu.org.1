@@ -2,82 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10F19390A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 16:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04EC939101
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 16:52:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVtzy-00015V-Jz; Mon, 22 Jul 2024 10:26:46 -0400
+	id 1sVuNH-00046a-Cs; Mon, 22 Jul 2024 10:50:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sVtzv-00011Q-9d; Mon, 22 Jul 2024 10:26:43 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sVuND-00045C-8w; Mon, 22 Jul 2024 10:50:47 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sVtzs-000586-76; Mon, 22 Jul 2024 10:26:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721658401; x=1753194401;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=OsrIUd37YeYaTA7dO/rYy+a/KCssuHBkjLNEx5suQu0=;
- b=hSy0PDa5l4BjzoKO+qruCPMD8eV2cxIblGpKaiZk0q8sBpx/3SCUBgX+
- e2gW6+IlgvsMscaRb8H+jPewCEuV8zvdw10wY77JamicExpNWx2Qe1YL6
- qjsxHa59Vi3pZDjBh2Gu0KEVrQ2Wy8Hy3F1upHTf8G8r7eJsEXzxxSP90
- +cK7zHqIbiT6yiJ7NMKhdzylKEUfmp6cSwC7mvNgHW35ohyL0089XCDOL
- 6Vy5pdKbkSoDjDSKixOtwgpCRkLhoDVFhw0w08czvyVOWr1hD9uk56ejE
- BHvj82WWvWUaVG9K0Px+C9vwUTXK7hnt41HeuZRm8WySQqKjX8NMSzRUO g==;
-X-CSE-ConnectionGUID: Tu7lbsH3SXqLzG1Or8lVwg==
-X-CSE-MsgGUID: MtyZea+2RhOpcy2+dXY8fg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="30617142"
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="30617142"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 07:26:37 -0700
-X-CSE-ConnectionGUID: +SEajsCAQSm91RWdetg5tQ==
-X-CSE-MsgGUID: RxjqKHH3QVySpkXovI9GSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="51555979"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 22 Jul 2024 07:26:30 -0700
-Date: Mon, 22 Jul 2024 22:42:14 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache object
-Message-ID: <Zp5vxtXWDeHAdPok@intel.com>
-References: <20240704031603.1744546-1-zhao1.liu@intel.com>
- <20240704031603.1744546-9-zhao1.liu@intel.com>
- <87r0bl35ug.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sVuNA-0001O2-Qc; Mon, 22 Jul 2024 10:50:46 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46MDpVFv004052;
+ Mon, 22 Jul 2024 14:50:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=O
+ SqlrLi3038mrMeL7628MtfKD4vx9WeZD01grs7xCSw=; b=l6CPdj6wgkN6/vVJr
+ yL/8mcOBsxZx3U/G7SLRFu26VtX/syK6ULf0wl7bbjtjVyNC7h0bNslMhwmvJ0Yx
+ geTxbJGWFceYYhPz8FS7h/EYhZfI398rt8laMNAPFZalyZy7Y854O9/bb8HpC0Zn
+ sdNLtPzOU+ch8D7LgDwdGNarthoEkqBWGzWy/bX20wF0c9EI8cyEEvD7NsxmPABs
+ yXRXQtvULy5x6KHdKHmGz7U46KDATZS7KRiIrxDye2PhCGDnsTtFH8Bkxbvpujpp
+ 9MHz2gFNy8l2qKgCNg9olFWfkrDdowTgvsekCIlbRJZt1sv4kWS5fciN2o/N9z3n
+ m1Saw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40hjmp93qq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jul 2024 14:50:31 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46MEoVud029484;
+ Mon, 22 Jul 2024 14:50:31 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40hjmp93qj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jul 2024 14:50:31 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46MCW8Fn006718; Mon, 22 Jul 2024 14:50:29 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40gxn75saa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jul 2024 14:50:29 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46MEoQ7q49742486
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Jul 2024 14:50:29 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D91E15805B;
+ Mon, 22 Jul 2024 14:50:26 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F236158067;
+ Mon, 22 Jul 2024 14:50:25 +0000 (GMT)
+Received: from [9.67.181.135] (unknown [9.67.181.135])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 22 Jul 2024 14:50:25 +0000 (GMT)
+Message-ID: <28ea8260-a411-4651-8e2a-1fcc009f5043@linux.ibm.com>
+Date: Mon, 22 Jul 2024 10:50:25 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r0bl35ug.fsf@pond.sub.org>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] target/s390x: filter deprecated properties based on
+ model expansion type
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, thuth@redhat.com,
+ david@redhat.com, wangyanan55@huawei.com, philmd@linaro.org,
+ marcel.apfelbaum@gmail.com, eduardo@habkost.net,
+ Jiri Denemark <jdenemar@redhat.com>
+References: <20240719181741.35146-1-walling@linux.ibm.com>
+ <87h6cksk4h.fsf@pond.sub.org>
+Content-Language: en-US
+From: Collin Walling <walling@linux.ibm.com>
+In-Reply-To: <87h6cksk4h.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: euFx5qDrZ0uIuoSYxFvpHDIN1DMxEI3-
+X-Proofpoint-ORIG-GUID: mfouTK2_nTcP9R5ZaRZz8BseC8RGRaoh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-22_10,2024-07-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ clxscore=1015 mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0
+ suspectscore=0 impostorscore=0 spamscore=0 mlxscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407220108
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=walling@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,122 +117,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
-
-On Mon, Jul 22, 2024 at 03:37:43PM +0200, Markus Armbruster wrote:
-> Date: Mon, 22 Jul 2024 15:37:43 +0200
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache
->  object
+On 7/20/24 1:33 AM, Markus Armbruster wrote:
+> Collin Walling <walling@linux.ibm.com> writes:
 > 
-> Zhao Liu <zhao1.liu@intel.com> writes:
+>> Currently, there is no way to execute the query-cpu-model-expansion
+>> command to retrieve a comprehenisve list of deprecated properties, as
+>> the result is dependent per-model. To enable this, the expansion output
+>> is modified as such:
+>>
+>> When reporting a "full" CPU model, show the *entire* list of deprecated
+>> properties regardless if they are supported on the model. A full
+>> expansion outputs all known CPU model properties anyway, so it makes
+>> sense to report all deprecated properties here too.
+>>
+>> This allows management apps to query a single model (e.g. host) to
+>> acquire the full list of deprecated properties.
+>>
+>> Additionally, when reporting a "static" CPU model, the command will
+>> only show deprecated properties that are a subset of the model's
+>> *enabled* properties. This is more accurate than how the query was
+>> handled before, which blindly reported deprecated properties that
+>> were never otherwise introduced for certain models.
+>>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Suggested-by: Jiri Denemark <jdenemar@redhat.com>
+>> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+>> ---
+>>
+>> Changelog:
+>>
+>>     v3
+>>     - Removed the 'note' and cleaned up documentation
+>>     - Revised commit message
+>>
+>>     v2
+>>     - Changed commit message
+>>     - Added documentation reflecting this change
+>>     - Made code changes that more accurately filter the deprecated
+>>         properties based on expansion type.  This change makes it
+>>         so that the deprecated-properties reported for a static model
+>>         expansion are a subset of the model's properties instead of
+>>         the model's full-definition properties.
+>>
+>> ---
+>>  qapi/machine-target.json         |  5 +++--
+>>  target/s390x/cpu_models_sysemu.c | 16 +++++++++-------
+>>  2 files changed, 12 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+>> index a8d9ec87f5..67086f006f 100644
+>> --- a/qapi/machine-target.json
+>> +++ b/qapi/machine-target.json
+>> @@ -21,8 +21,9 @@
+>>  # @props: a dictionary of QOM properties to be applied
+>>  #
+>>  # @deprecated-props: a list of properties that are flagged as deprecated
+>> -#     by the CPU vendor.  These props are a subset of the full model's
+>> -#     definition list of properties. (since 9.1)
+>> +#     by the CPU vendor.  These properties are either a subset of the
+>> +#     properties enabled on the CPU model, or a set of properties
+>> +#     deprecated across all models for the architecture.
 > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > 
-> This patch is just documentation.  The code got added in some previous
-> patch.  Would it make sense to squash this patch into that previous
-> patch?
-
-OK, I'll merge them.
-
-> > ---
-> > Changes since RFC v2:
-> >  * Rewrote the document of smp-cache object.
-> >
-> > Changes since RFC v1:
-> >  * Use "*_cache=topo_level" as -smp example as the original "level"
-> >    term for a cache has a totally different meaning. (Jonathan)
-> > ---
-> >  qemu-options.hx | 58 +++++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 58 insertions(+)
-> >
-> > diff --git a/qemu-options.hx b/qemu-options.hx
-> > index 8ca7f34ef0c8..4b84f4508a6e 100644
-> > --- a/qemu-options.hx
-> > +++ b/qemu-options.hx
-> > @@ -159,6 +159,15 @@ SRST
-> >          ::
-> >  
-> >              -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
-> > +
-> > +    ``smp-cache='id'``
-> > +        Allows to configure cache property (now only the cache topology level).
-> > +
-> > +        For example:
-> > +        ::
-> > +
-> > +            -object '{"qom-type":"smp-cache","id":"cache","caches":[{"name":"l1d","topo":"core"},{"name":"l1i","topo":"core"},{"name":"l2","topo":"module"},{"name":"l3","topo":"die"}]}'
-> > +            -machine smp-cache=cache
-> >  ERST
-> >  
-> >  DEF("M", HAS_ARG, QEMU_OPTION_M,
-> > @@ -5871,6 +5880,55 @@ SRST
-> >          ::
-> >  
-> >              (qemu) qom-set /objects/iothread1 poll-max-ns 100000
-> > +
-> > +    ``-object '{"qom-type":"smp-cache","id":id,"caches":[{"name":cache_name,"topo":cache_topo}]}'``
-> > +        Create an smp-cache object that configures machine's cache
-> > +        property. Currently, cache property only include cache topology
-> > +        level.
-> > +
-> > +        This option must be written in JSON format to support JSON list.
+> When is it "a subset of the properties enabled on the CPU model", and
+> when is it "a set of properties deprecated across all models for the
+> architecture"?
 > 
-> Why?
-
-I'm not familiar with this, so I hope you could educate me if I'm wrong.
-
-All I know so far is for -object that defining a list can only be done in
-JSON format and not with a numeric index like a keyval based option, like:
-
--object smp-cache,id=cache0,caches.0.name=l1i,caches.0.topo=core: Parameter 'caches' is missing
-
-the above doesn't work.
-
-Is there any other way to specify a list in command line?
-
-> > +
-> > +        The ``caches`` parameter accepts a list of cache property in JSON
-> > +        format.
-> > +
-> > +        A list element requires the cache name to be specified in the
-> > +        ``name`` parameter (currently ``l1d``, ``l1i``, ``l2`` and ``l3``
-> > +        are supported). ``topo`` parameter accepts CPU topology levels
-> > +        including ``thread``, ``core``, ``module``, ``cluster``, ``die``,
-> > +        ``socket``, ``book``, ``drawer`` and ``default``. The ``topo``
-> > +        parameter indicates CPUs winthin the same CPU topology container
-> > +        are sharing the same cache.
-> > +
-> > +        Some machines may have their own cache topology model, and this
-> > +        object may override the machine-specific cache topology setting
-> > +        by specifying smp-cache object in the -machine. When specifying
-> > +        the cache topology level of ``default``, it will honor the default
-> > +        machine-specific cache topology setting. For other topology levels,
-> > +        they will override the default setting.
-> > +
-> > +        An example list of caches to configure the cache model (l1d cache
-> > +        per core, l1i cache per core, l2 cache per module and l3 cache per
-> > +        socket) supported by PC machine might look like:
-> > +
-> > +        ::
-> > +
-> > +              {
-> > +                "caches": [
-> > +                   { "name": "l1d", "topo": "core" },
-> > +                   { "name": "l1i", "topo": "core" },
-> > +                   { "name": "l2", "topo": "module" },
-> > +                   { "name": "l3", "topo": "socket" },
-> > +                ]
-> > +              }
-> > +
-> > +        An example smp-cache object would look like:()
-> > +
-> > +        .. parsed-literal::
-> > +
-> > +             # |qemu_system| \\
-> > +                 ... \\
-> > +                 -object '{"qom-type":"smp-cache","id":id,"caches":[{"name":cache_name,"topo":cache_topo}]}' \\
-> > +                 ...
-> >  ERST
+> My guess based on the commit message: it's the former when
+> query-cpu-model-expansion's type is "static", and the latter when it's
+> "full".
 > 
+
+Correct.  I'm not confident where or how to document this dependency
+since cross-referencing commands/data structures does not seem to be the
+convention here.  My first thought is to mention how deprecated
+properties are expanded under the @CpuModelExpansionType.  Something like:
+
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index 67086f006f..3f38c5229f 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -44,11 +44,15 @@
+ #     options, and accelerator options.  Therefore, the resulting
+ #     model can be used by tooling without having to specify a
+ #     compatibility machine - e.g. when displaying the "host" model.
+-#     The @static CPU models are migration-safe.
++#     The @static CPU models are migration-safe.  Deprecated
++#     properties are a subset of the properties enabled for the
++#     expanded model.
+ #
+ # @full: Expand all properties.  The produced model is not guaranteed
+ #     to be migration-safe, but allows tooling to get an insight and
+-#     work with model details.
++#     work with model details.  Deprecated properties are a set of
++#     properties that are deprecated across all models for the
++#     architecture.
+ #
+ # .. note:: When a non-migration-safe CPU model is expanded in static
+ #    mode, some features enabled by the CPU model may be omitted,
+
+Thoughts?
+
+[...]
+
+>> +
+>> +        /* deprecated features that are a subset of the model's enabled features */
+> 
+> Recommend to wrap this line for legibility.
+> 
+
+[...]
+
+Thanks for the feedback!  Pending your response to the above, I'll post
+a v4.
+
+-- 
+Regards,
+  Collin
+
 
