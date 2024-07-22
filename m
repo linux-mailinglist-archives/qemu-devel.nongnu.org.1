@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B2793870F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819D2938700
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:26:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgmT-0008AS-D9; Sun, 21 Jul 2024 20:19:57 -0400
+	id 1sVgmu-0003Az-FD; Sun, 21 Jul 2024 20:20:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgli-0003m5-0D
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:19:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgll-0003yj-59
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:19:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgle-000611-Eh
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:19:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVglh-00061T-PO
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:19:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607545;
+ s=mimecast20190719; t=1721607548;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xoblqguLfh4EB1uVC6tsmSJ2cJoOHPB82jdCECZzwFY=;
- b=Vc1Wc5KP+kz4Uquy33cGUjPQzplaZ/gdEZAEMxEevGrTV5M33x65PSGH0GSuxYVC+m7KTj
- 9xrSMyB5Xx3rOakcmWyQ7sEm/bWPMiMvQp/irBfW1wE5hF4OArpdS/mWr08y9rtOa/sy00
- wdOuxkCfZWYVv2tz6TulkJaRIOuFxaY=
+ bh=Ents0T9O23OXsCQtfncMUcPntmQHxFloICVjUgGeuy0=;
+ b=OXWUEmDiAPkxf9RCeOgcZTVU+a83t5vNGUP2NqTG7/r6whZBbHdiePr2G5fTEUaiMi77Iq
+ Ts1S//rVMZ9U04sJUx/kKA1EHUZmTSNoN06lwtPHFxgGfsDp5inQtEmrNmktjG1Fcwuvfk
+ pqNuch8m8OD6lsSRnEodAyBzr2tkTb4=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-01EGJeJrMO6UmloePV5rkQ-1; Sun, 21 Jul 2024 20:19:04 -0400
-X-MC-Unique: 01EGJeJrMO6UmloePV5rkQ-1
+ us-mta-441-GfDVXaBsMUODlCauBJ0-gQ-1; Sun, 21 Jul 2024 20:19:06 -0400
+X-MC-Unique: GfDVXaBsMUODlCauBJ0-gQ-1
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36832c7023bso1998890f8f.2
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:19:04 -0700 (PDT)
+ ffacd0b85a97d-36873ed688dso2099376f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:19:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607543; x=1722212343;
+ d=1e100.net; s=20230601; t=1721607545; x=1722212345;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xoblqguLfh4EB1uVC6tsmSJ2cJoOHPB82jdCECZzwFY=;
- b=UfQ+PYagetyKkTvJj+jWJ2BmZz9LcTe72vT8suktNXnbJADKsdDMSN0xO2cKdKvIpW
- 4a2DgLmcn5NpmewhT5t7CGnUef6W725nkxFDLRAeVa6yA+F+YdTTbmxjd6rGB9+/M5PC
- iGsv+HjV9I26KquiZ7g/JxkQJMp5XWLCZT4RYbT3qzHe7drLGBVLB21NefyYRssxOUdk
- mXoQzhh4Z6KelWpQPVkvLOrfgifSH6GfoSr0ogyoZlMdL6mab6LcldRuAXSnuZsZcNIC
- ejEk6qYlaB/zBajVdznkwSQpje3guF7+GYhfqoxJwnPxyfgRe37mLQ7ck94zxUh7BQHt
- HY0w==
-X-Gm-Message-State: AOJu0YwpeCrKvdexXPGOEtgZDMShzMCsO8u13970yNRDzIp3qdgHYLXP
- +nACFSNDN5wEJ7BK6vx0xksI3fBTVViHmy5zzn9c24Ernl18C+KfxAVtpg+cBHd2gN+3B7oTIkF
- V/icjDdWTGFyr6yd3ldYGrfdZk3tkUqlnCHDZ/dY7TkPirLrZEYlOPTAJr/ppHj4PbEumI2/aZt
- vq9vFKlWiXPq7SAcAZ014G6MCYCN8FPw==
-X-Received: by 2002:adf:fe8a:0:b0:368:48b2:95ec with SMTP id
- ffacd0b85a97d-369bae23887mr3409469f8f.1.1721607542826; 
- Sun, 21 Jul 2024 17:19:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGnzoJ1DHoMfu5poDT9XutaBPNxillkhGLK65VisBeF6u5bvbzb5bdhWGg/gWyW8ooziszCxA==
-X-Received: by 2002:adf:fe8a:0:b0:368:48b2:95ec with SMTP id
- ffacd0b85a97d-369bae23887mr3409447f8f.1.1721607542202; 
- Sun, 21 Jul 2024 17:19:02 -0700 (PDT)
+ bh=Ents0T9O23OXsCQtfncMUcPntmQHxFloICVjUgGeuy0=;
+ b=UV4rwLuZoagl0muBDZlrgg1gytjWxBiwxJtkrnc55nQVlRCLw9I4ZJj+lEP9FwlG+I
+ eudebvbM6NI7zvLbFdf/ZylExhL5CJxGfA/tFWhTdejm/VrW0UUBTW1TQhmrHmEMgM0w
+ TKRrs2u++towVm9FhOjWFSKuYeymx2QXv7lka5XOu9IPSAbhW6iDw4yzGB5o/zu+mDCj
+ R0dKM6u9btEfcQWklubiQIecyq4y0k73X3qVVhfmh2/kZsE4DrSG+EOVxAVifbB1V95D
+ ncgFSJ9Pqu29FyhravLBya0hPQOKUQsp0iUZC14T6P1fWCQL6FCYU3FfRJzXdmPzYzqo
+ ONpw==
+X-Gm-Message-State: AOJu0Yym/qsqifaPOhG53p0tswdSczjCcW7rheb9klvLvm3DPo8FAxdE
+ +LCP0wjGXlPE8ndOMYKu3HL7AcUE+zBx0EUBS+8/zReXcukeAW+0HlovsJUtpell6ObIgFTf8lO
+ pa/00ZRVbby/R1bbPwtwQBXCoSKSTKhuZTZ4x+tECLAyuYNoL0T/2uQ+ieuoI+Vk61xr3qJhTSZ
+ mWxori4bH3VSPGI9Hi1Og3uUycFEVp1w==
+X-Received: by 2002:a5d:480e:0:b0:368:3198:5ac4 with SMTP id
+ ffacd0b85a97d-369bbbe2a91mr2555405f8f.39.1721607545151; 
+ Sun, 21 Jul 2024 17:19:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyskwU5BxNoqg+B7LLciKH9I6X03MKkeFL1oxiEh2B3M8PZAtpqeH0cvxSCL/iH/tcJQb2Sw==
+X-Received: by 2002:a5d:480e:0:b0:368:3198:5ac4 with SMTP id
+ ffacd0b85a97d-369bbbe2a91mr2555385f8f.39.1721607544584; 
+ Sun, 21 Jul 2024 17:19:04 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3687868490fsm7050853f8f.6.2024.07.21.17.19.00
+ 5b1f17b1804b1-427d2a94af6sm131775005e9.42.2024.07.21.17.19.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:19:01 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:19:00 -0400
+ Sun, 21 Jul 2024 17:19:04 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:19:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Huai-Cheng Kuo <hchkuo@avery-design.com.tw>,
- Chris Browy <cbrowy@avery-design.com>,
- Jonathan Cameron <Jonathan.cameron@huawei.com>,
  Wilfred Mallawa <wilfred.mallawa@wdc.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 61/63] backends: Initial support for SPDM socket support
-Message-ID: <ced3d47cf52caabf337aecb87ad689a19f4d4248.1721607331.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Klaus Jensen <k.jensen@samsung.com>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Huai-Cheng Kuo <hchkuo@avery-design.com.tw>,
+ Chris Browy <cbrowy@avery-design.com>, qemu-block@nongnu.org
+Subject: [PULL 62/63] hw/nvme: Add SPDM over DOE support
+Message-ID: <deffc5214deb6e35d61017aac1710c149c35ed0a.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,396 +107,338 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-SPDM enables authentication, attestation and key exchange to assist in
-providing infrastructure security enablement. It's a standard published
-by the DMTF [1].
+Setup Data Object Exchange (DOE) as an extended capability for the NVME
+controller and connect SPDM to it (CMA) to it.
 
-SPDM supports multiple transports, including PCIe DOE and MCTP.
-This patch adds support to QEMU to connect to an external SPDM
-instance.
-
-SPDM support can be added to any QEMU device by exposing a
-TCP socket to a SPDM server. The server can then implement the SPDM
-decoding/encoding support, generally using libspdm [2].
-
-This is similar to how the current TPM implementation works and means
-that the heavy lifting of setting up certificate chains, capabilities,
-measurements and complex crypto can be done outside QEMU by a well
-supported and tested library.
-
-1: https://www.dmtf.org/standards/SPDM
-2: https://github.com/DMTF/libspdm
-
-Signed-off-by: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-Signed-off-by: Chris Browy <cbrowy@avery-design.com>
-Co-developed-by: Jonathan Cameron <Jonathan.cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Changes by WM
- - Bug fixes from testing
-]
 Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-[ Changes by AF:
- - Convert to be more QEMU-ified
- - Move to backends as it isn't PCIe specific
-]
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20240703092027.644758-3-alistair.francis@wdc.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Klaus Jensen <k.jensen@samsung.com>
+Message-Id: <20240703092027.644758-4-alistair.francis@wdc.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/sysemu/spdm-socket.h |  74 ++++++++++++
- backends/spdm-socket.c       | 216 +++++++++++++++++++++++++++++++++++
- MAINTAINERS                  |   6 +
- backends/Kconfig             |   4 +
- backends/meson.build         |   2 +
- 5 files changed, 302 insertions(+)
- create mode 100644 include/sysemu/spdm-socket.h
- create mode 100644 backends/spdm-socket.c
+ include/hw/pci/pci_device.h |   7 ++
+ include/hw/pci/pcie_doe.h   |   3 +
+ hw/nvme/ctrl.c              |  62 +++++++++++++++++
+ docs/specs/index.rst        |   1 +
+ docs/specs/spdm.rst         | 134 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 207 insertions(+)
+ create mode 100644 docs/specs/spdm.rst
 
-diff --git a/include/sysemu/spdm-socket.h b/include/sysemu/spdm-socket.h
-new file mode 100644
-index 0000000000..5d8bd9aa4e
---- /dev/null
-+++ b/include/sysemu/spdm-socket.h
-@@ -0,0 +1,74 @@
-+/*
-+ * QEMU SPDM socket support
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index cefd6f7640..e7e41cb939 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -3,6 +3,7 @@
+ 
+ #include "hw/pci/pci.h"
+ #include "hw/pci/pcie.h"
++#include "hw/pci/pcie_doe.h"
+ 
+ #define TYPE_PCI_DEVICE "pci-device"
+ typedef struct PCIDeviceClass PCIDeviceClass;
+@@ -159,6 +160,12 @@ struct PCIDevice {
+     MSIVectorReleaseNotifier msix_vector_release_notifier;
+     MSIVectorPollNotifier msix_vector_poll_notifier;
+ 
++    /* SPDM */
++    uint16_t spdm_port;
 +
-+#ifndef SPDM_REQUESTER_H
-+#define SPDM_REQUESTER_H
++    /* DOE */
++    DOECap doe_spdm;
 +
-+/**
-+ * spdm_socket_connect: connect to an external SPDM socket
-+ * @port: port to connect to
-+ * @errp: error object handle
-+ *
-+ * This will connect to an external SPDM socket server. On error
-+ * it will return -1 and errp will be set. On success this function
-+ * will return the socket number.
-+ */
-+int spdm_socket_connect(uint16_t port, Error **errp);
+     /* ID of standby device in net_failover pair */
+     char *failover_pair_id;
+     uint32_t acpi_index;
+diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
+index 15d94661f9..9e1275db8a 100644
+--- a/include/hw/pci/pcie_doe.h
++++ b/include/hw/pci/pcie_doe.h
+@@ -108,6 +108,9 @@ struct DOECap {
+     /* Protocols and its callback response */
+     DOEProtocol *protocols;
+     uint16_t protocol_num;
 +
-+/**
-+ * spdm_socket_rsp: send and receive a message to a SPDM server
-+ * @socket: socket returned from spdm_socket_connect()
-+ * @transport_type: SPDM_SOCKET_TRANSPORT_TYPE_* macro
-+ * @req: request buffer
-+ * @req_len: request buffer length
-+ * @rsp: response buffer
-+ * @rsp_len: response buffer length
-+ *
-+ * Send platform data to a SPDM server on socket and then receive
-+ * a response.
-+ */
-+uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
-+                         void *req, uint32_t req_len,
-+                         void *rsp, uint32_t rsp_len);
-+
-+/**
-+ * spdm_socket_close: send a shutdown command to the server
-+ * @socket: socket returned from spdm_socket_connect()
-+ * @transport_type: SPDM_SOCKET_TRANSPORT_TYPE_* macro
-+ *
-+ * This will issue a shutdown command to the server.
-+ */
-+void spdm_socket_close(const int socket, uint32_t transport_type);
-+
-+#define SPDM_SOCKET_COMMAND_NORMAL                0x0001
-+#define SPDM_SOCKET_COMMAND_OOB_ENCAP_KEY_UPDATE  0x8001
-+#define SPDM_SOCKET_COMMAND_CONTINUE              0xFFFD
-+#define SPDM_SOCKET_COMMAND_SHUTDOWN              0xFFFE
-+#define SPDM_SOCKET_COMMAND_UNKOWN                0xFFFF
-+#define SPDM_SOCKET_COMMAND_TEST                  0xDEAD
-+
-+#define SPDM_SOCKET_TRANSPORT_TYPE_MCTP           0x01
-+#define SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE        0x02
-+
-+#define SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE       0x1200
-+
-+#endif
-diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
-new file mode 100644
-index 0000000000..d0663d696c
---- /dev/null
-+++ b/backends/spdm-socket.c
-@@ -0,0 +1,216 @@
-+/* SPDX-License-Identifier: BSD-3-Clause */
-+/*
-+ * QEMU SPDM socket support
-+ *
-+ * This is based on:
-+ * https://github.com/DMTF/spdm-emu/blob/07c0a838bcc1c6207c656ac75885c0603e344b6f/spdm_emu/spdm_emu_common/command.c
-+ * but has been re-written to match QEMU style
-+ *
-+ * Copyright (c) 2021, DMTF. All rights reserved.
-+ * Copyright (c) 2023. Western Digital Corporation or its affiliates.
-+ */
-+
-+#include "qemu/osdep.h"
++    /* Used for spdm-socket */
++    int spdm_socket;
+ };
+ 
+ void pcie_doe_init(PCIDevice *pdev, DOECap *doe_cap, uint16_t offset,
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 5b1b0cabcf..6ee72014cf 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -203,6 +203,7 @@
+ #include "sysemu/hostmem.h"
+ #include "hw/pci/msix.h"
+ #include "hw/pci/pcie_sriov.h"
 +#include "sysemu/spdm-socket.h"
-+#include "qapi/error.h"
-+
-+static bool read_bytes(const int socket, uint8_t *buffer,
-+                       size_t number_of_bytes)
+ #include "migration/vmstate.h"
+ 
+ #include "nvme.h"
+@@ -8113,6 +8114,27 @@ static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
+     return 0;
+ }
+ 
++static bool pcie_doe_spdm_rsp(DOECap *doe_cap)
 +{
-+    ssize_t number_received = 0;
-+    ssize_t result;
++    void *req = pcie_doe_get_write_mbox_ptr(doe_cap);
++    uint32_t req_len = pcie_doe_get_obj_len(req) * 4;
++    void *rsp = doe_cap->read_mbox;
++    uint32_t rsp_len = SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE;
 +
-+    while (number_received < number_of_bytes) {
-+        result = recv(socket, buffer + number_received,
-+                      number_of_bytes - number_received, 0);
-+        if (result <= 0) {
++    uint32_t recvd = spdm_socket_rsp(doe_cap->spdm_socket,
++                             SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE,
++                             req, req_len, rsp, rsp_len);
++    doe_cap->read_mbox_len += DIV_ROUND_UP(recvd, 4);
++
++    return recvd != 0;
++}
++
++static DOEProtocol doe_spdm_prot[] = {
++    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_CMA, pcie_doe_spdm_rsp },
++    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_SECURED_CMA, pcie_doe_spdm_rsp },
++    { }
++};
++
+ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+ {
+     ERRP_GUARD();
+@@ -8200,6 +8222,25 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+ 
+     nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
+ 
++    pcie_cap_deverr_init(pci_dev);
++
++    /* DOE Initialisation */
++    if (pci_dev->spdm_port) {
++        uint16_t doe_offset = n->params.sriov_max_vfs ?
++                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
++                                  : PCI_CONFIG_SPACE_SIZE;
++
++        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
++                      doe_spdm_prot, true, 0);
++
++        pci_dev->doe_spdm.spdm_socket = spdm_socket_connect(pci_dev->spdm_port,
++                                                            errp);
++
++        if (pci_dev->doe_spdm.spdm_socket < 0) {
 +            return false;
 +        }
-+        number_received += result;
 +    }
-+    return true;
-+}
 +
-+static bool read_data32(const int socket, uint32_t *data)
+     if (n->params.cmb_size_mb) {
+         nvme_init_cmb(n, pci_dev);
+     }
+@@ -8446,6 +8487,11 @@ static void nvme_exit(PCIDevice *pci_dev)
+         g_free(n->cmb.buf);
+     }
+ 
++    if (pci_dev->doe_spdm.spdm_socket > 0) {
++        spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
++                          SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE);
++    }
++
+     if (n->pmr.dev) {
+         host_memory_backend_set_mapped(n->pmr.dev, false);
+     }
+@@ -8491,6 +8537,7 @@ static Property nvme_props[] = {
+     DEFINE_PROP_BOOL("msix-exclusive-bar", NvmeCtrl, params.msix_exclusive_bar,
+                      false),
+     DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
++    DEFINE_PROP_UINT16("spdm_port", PCIDevice, spdm_port, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -8562,11 +8609,25 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
+ {
+     uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
+ 
++    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
++        pcie_doe_write_config(&dev->doe_spdm, address, val, len);
++    }
+     pci_default_write_config(dev, address, val, len);
+     pcie_cap_flr_write_config(dev, address, val, len);
+     nvme_sriov_post_write_config(dev, old_num_vfs);
+ }
+ 
++static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
 +{
-+    bool result;
-+
-+    result = read_bytes(socket, (uint8_t *)data, sizeof(uint32_t));
-+    if (!result) {
-+        return result;
-+    }
-+    *data = ntohl(*data);
-+    return true;
-+}
-+
-+static bool read_multiple_bytes(const int socket, uint8_t *buffer,
-+                                uint32_t *bytes_received,
-+                                uint32_t max_buffer_length)
-+{
-+    uint32_t length;
-+    bool result;
-+
-+    result = read_data32(socket, &length);
-+    if (!result) {
-+        return result;
-+    }
-+
-+    if (length > max_buffer_length) {
-+        return false;
-+    }
-+
-+    if (bytes_received) {
-+        *bytes_received = length;
-+    }
-+
-+    if (length == 0) {
-+        return true;
-+    }
-+
-+    return read_bytes(socket, buffer, length);
-+}
-+
-+static bool receive_platform_data(const int socket,
-+                                  uint32_t transport_type,
-+                                  uint32_t *command,
-+                                  uint8_t *receive_buffer,
-+                                  uint32_t *bytes_to_receive)
-+{
-+    bool result;
-+    uint32_t response;
-+    uint32_t bytes_received;
-+
-+    result = read_data32(socket, &response);
-+    if (!result) {
-+        return result;
-+    }
-+    *command = response;
-+
-+    result = read_data32(socket, &transport_type);
-+    if (!result) {
-+        return result;
-+    }
-+
-+    bytes_received = 0;
-+    result = read_multiple_bytes(socket, receive_buffer, &bytes_received,
-+                                 *bytes_to_receive);
-+    if (!result) {
-+        return result;
-+    }
-+    *bytes_to_receive = bytes_received;
-+
-+    return result;
-+}
-+
-+static bool write_bytes(const int socket, const uint8_t *buffer,
-+                        uint32_t number_of_bytes)
-+{
-+    ssize_t number_sent = 0;
-+    ssize_t result;
-+
-+    while (number_sent < number_of_bytes) {
-+        result = send(socket, buffer + number_sent,
-+                      number_of_bytes - number_sent, 0);
-+        if (result == -1) {
-+            return false;
++    uint32_t val;
++    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
++        if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
++            return val;
 +        }
-+        number_sent += result;
 +    }
-+    return true;
++    return pci_default_read_config(dev, address, len);
 +}
 +
-+static bool write_data32(const int socket, uint32_t data)
-+{
-+    data = htonl(data);
-+    return write_bytes(socket, (uint8_t *)&data, sizeof(uint32_t));
-+}
-+
-+static bool write_multiple_bytes(const int socket, const uint8_t *buffer,
-+                                 uint32_t bytes_to_send)
-+{
-+    bool result;
-+
-+    result = write_data32(socket, bytes_to_send);
-+    if (!result) {
-+        return result;
-+    }
-+
-+    return write_bytes(socket, buffer, bytes_to_send);
-+}
-+
-+static bool send_platform_data(const int socket,
-+                               uint32_t transport_type, uint32_t command,
-+                               const uint8_t *send_buffer, size_t bytes_to_send)
-+{
-+    bool result;
-+
-+    result = write_data32(socket, command);
-+    if (!result) {
-+        return result;
-+    }
-+
-+    result = write_data32(socket, transport_type);
-+    if (!result) {
-+        return result;
-+    }
-+
-+    return write_multiple_bytes(socket, send_buffer, bytes_to_send);
-+}
-+
-+int spdm_socket_connect(uint16_t port, Error **errp)
-+{
-+    int client_socket;
-+    struct sockaddr_in server_addr;
-+
-+    client_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-+    if (client_socket < 0) {
-+        error_setg(errp, "cannot create socket: %s", strerror(errno));
-+        return -1;
-+    }
-+
-+    memset((char *)&server_addr, 0, sizeof(server_addr));
-+    server_addr.sin_family = AF_INET;
-+    server_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-+    server_addr.sin_port = htons(port);
-+
-+
-+    if (connect(client_socket, (struct sockaddr *)&server_addr,
-+                sizeof(server_addr)) < 0) {
-+        error_setg(errp, "cannot connect: %s", strerror(errno));
-+        close(client_socket);
-+        return -1;
-+    }
-+
-+    return client_socket;
-+}
-+
-+uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
-+                         void *req, uint32_t req_len,
-+                         void *rsp, uint32_t rsp_len)
-+{
-+    uint32_t command;
-+    bool result;
-+
-+    result = send_platform_data(socket, transport_type,
-+                                SPDM_SOCKET_COMMAND_NORMAL,
-+                                req, req_len);
-+    if (!result) {
-+        return 0;
-+    }
-+
-+    result = receive_platform_data(socket, transport_type, &command,
-+                                   (uint8_t *)rsp, &rsp_len);
-+    if (!result) {
-+        return 0;
-+    }
-+
-+    assert(command != 0);
-+
-+    return rsp_len;
-+}
-+
-+void spdm_socket_close(const int socket, uint32_t transport_type)
-+{
-+    send_platform_data(socket, transport_type,
-+                       SPDM_SOCKET_COMMAND_SHUTDOWN, NULL, 0);
-+}
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 93546cfb14..d76b49a597 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3401,6 +3401,12 @@ F: tests/qtest/*tpm*
- F: docs/specs/tpm.rst
- T: git https://github.com/stefanberger/qemu-tpm.git tpm-next
+ static const VMStateDescription nvme_vmstate = {
+     .name = "nvme",
+     .unmigratable = 1,
+@@ -8579,6 +8640,7 @@ static void nvme_class_init(ObjectClass *oc, void *data)
  
-+SPDM
-+M: Alistair Francis <alistair.francis@wdc.com>
-+S: Maintained
-+F: backends/spdm-socket.c
-+F: include/sysemu/spdm-socket.h
+     pc->realize = nvme_realize;
+     pc->config_write = nvme_pci_write_config;
++    pc->config_read = nvme_pci_read_config;
+     pc->exit = nvme_exit;
+     pc->class_id = PCI_CLASS_STORAGE_EXPRESS;
+     pc->revision = 2;
+diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+index 1484e3e760..e2d907959a 100644
+--- a/docs/specs/index.rst
++++ b/docs/specs/index.rst
+@@ -29,6 +29,7 @@ guest hardware that is specific to QEMU.
+    edu
+    ivshmem-spec
+    pvpanic
++   spdm
+    standard-vga
+    virt-ctlr
+    vmcoreinfo
+diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
+new file mode 100644
+index 0000000000..f7de080ff0
+--- /dev/null
++++ b/docs/specs/spdm.rst
+@@ -0,0 +1,134 @@
++======================================================
++QEMU Security Protocols and Data Models (SPDM) Support
++======================================================
 +
- Checkpatch
- S: Odd Fixes
- F: scripts/checkpatch.pl
-diff --git a/backends/Kconfig b/backends/Kconfig
-index 2cb23f62fa..d3dbe19868 100644
---- a/backends/Kconfig
-+++ b/backends/Kconfig
-@@ -3,3 +3,7 @@ source tpm/Kconfig
- config IOMMUFD
-     bool
-     depends on VFIO
++SPDM enables authentication, attestation and key exchange to assist in
++providing infrastructure security enablement. It's a standard published
++by the `DMTF`_.
 +
-+config SPDM_SOCKET
-+    bool
-+    default y
-diff --git a/backends/meson.build b/backends/meson.build
-index 749b491f12..da714b93d1 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -33,4 +33,6 @@ endif
- system_ss.add(when: gio, if_true: files('dbus-vmstate.c'))
- system_ss.add(when: 'CONFIG_SGX', if_true: files('hostmem-epc.c'))
- 
-+system_ss.add(when: 'CONFIG_SPDM_SOCKET', if_true: files('spdm-socket.c'))
++QEMU supports connecting to a SPDM responder implementation. This allows an
++external application to emulate the SPDM responder logic for an SPDM device.
 +
- subdir('tpm')
++Setting up a SPDM server
++========================
++
++When using QEMU with SPDM devices QEMU will connect to a server which
++implements the SPDM functionality.
++
++SPDM-Utils
++----------
++
++You can use `SPDM Utils`_ to emulate a responder. This is the simplest method.
++
++SPDM-Utils is a Linux applications to manage, test and develop devices
++supporting DMTF Security Protocol and Data Model (SPDM). It is written in Rust
++and utilises libspdm.
++
++To use SPDM-Utils you will need to do the following steps. Details are included
++in the SPDM-Utils README.
++
++ 1. `Build libspdm`_
++ 2. `Build SPDM Utils`_
++ 3. `Run it as a server`_
++
++spdm-emu
++--------
++
++You can use `spdm emu`_ to model the
++SPDM responder.
++
++.. code-block:: shell
++
++    $ cd spdm-emu
++    $ git submodule init; git submodule update --recursive
++    $ mkdir build; cd build
++    $ cmake -DARCH=x64 -DTOOLCHAIN=GCC -DTARGET=Debug -DCRYPTO=openssl ..
++    $ make -j32
++    $ make copy_sample_key # Build certificates, required for SPDM authentication.
++
++It is worth noting that the certificates should be in compliance with
++PCIe r6.1 sec 6.31.3. This means you will need to add the following to
++openssl.cnf
++
++.. code-block::
++
++    subjectAltName = otherName:2.23.147;UTF8:Vendor=1b36:Device=0010:CC=010802:REV=02:SSVID=1af4:SSID=1100
++    2.23.147 = ASN1:OID:2.23.147
++
++and then manually regenerate some certificates with:
++
++.. code-block:: shell
++
++    $ openssl req -nodes -newkey ec:param.pem -keyout end_responder.key \
++        -out end_responder.req -sha384 -batch \
++        -subj "/CN=DMTF libspdm ECP384 responder cert"
++
++    $ openssl x509 -req -in end_responder.req -out end_responder.cert \
++        -CA inter.cert -CAkey inter.key -sha384 -days 3650 -set_serial 3 \
++        -extensions v3_end -extfile ../openssl.cnf
++
++    $ openssl asn1parse -in end_responder.cert -out end_responder.cert.der
++
++    $ cat ca.cert.der inter.cert.der end_responder.cert.der > bundle_responder.certchain.der
++
++You can use SPDM-Utils instead as it will generate the correct certificates
++automatically.
++
++The responder can then be launched with
++
++.. code-block:: shell
++
++    $ cd bin
++    $ ./spdm_responder_emu --trans PCI_DOE
++
++Connecting an SPDM NVMe device
++==============================
++
++Once a SPDM server is running we can start QEMU and connect to the server.
++
++For an NVMe device first let's setup a block we can use
++
++.. code-block:: shell
++
++    $ cd qemu-spdm/linux/image
++    $ dd if=/dev/zero of=blknvme bs=1M count=2096 # 2GB NNMe Drive
++
++Then you can add this to your QEMU command line:
++
++.. code-block:: shell
++
++    -drive file=blknvme,if=none,id=mynvme,format=raw \
++        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
++
++At which point QEMU will try to connect to the SPDM server.
++
++Note that if using x64-64 you will want to use the q35 machine instead
++of the default. So the entire QEMU command might look like this
++
++.. code-block:: shell
++
++    qemu-system-x86_64 -M q35 \
++        --kernel bzImage \
++        -drive file=rootfs.ext2,if=virtio,format=raw \
++        -append "root=/dev/vda console=ttyS0" \
++        -net none -nographic \
++        -drive file=blknvme,if=none,id=mynvme,format=raw \
++        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
++
++.. _DMTF:
++   https://www.dmtf.org/standards/SPDM
++
++.. _SPDM Utils:
++   https://github.com/westerndigitalcorporation/spdm-utils
++
++.. _spdm emu:
++   https://github.com/dmtf/spdm-emu
++
++.. _Build libspdm:
++   https://github.com/westerndigitalcorporation/spdm-utils?tab=readme-ov-file#build-libspdm
++
++.. _Build SPDM Utils:
++   https://github.com/westerndigitalcorporation/spdm-utils?tab=readme-ov-file#build-the-binary
++
++.. _Run it as a server:
++   https://github.com/westerndigitalcorporation/spdm-utils#qemu-spdm-device-emulation
 -- 
 MST
 
