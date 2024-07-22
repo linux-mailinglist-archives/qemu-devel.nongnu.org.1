@@ -2,87 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2DA93959B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B84C293959D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0l4-0002tp-EZ; Mon, 22 Jul 2024 17:39:50 -0400
+	id 1sW0q5-0005Bl-PL; Mon, 22 Jul 2024 17:45:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW0kz-0002hU-IT
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:39:46 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0pt-00051l-KN
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:44:50 -0400
+Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW0kw-0003WI-HA
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:39:45 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-42660b8dd27so34079725e9.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:39:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0pq-0004HB-7z
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:44:48 -0400
+Received: by mail-io1-xd31.google.com with SMTP id
+ ca18e2360f4ac-7f70a708f8aso195010239f.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:44:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721684380; x=1722289180; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dCrdl72LSWragEGP7BnhNbhzXcUtJIuMyH4LenVtq6M=;
- b=p80fEW/RskQD6OSZu3zxdg5neb5Q7x8/jU07+j++XORqxLLa8TF+7Q8qG7iV4kyrSD
- EDv2XZy5CbMVNtgjyovhzK/lI4hhKaZyMtmbzTL4myliozh4vUxgRSPYUnAVJYBwM0Wo
- NiNNNS+v/aN1WP4uBn5pteDg20zyNru2tdKe2dYoZ/eoV8yAAYzKqg9CC3nK5uu/HhFw
- GFJ+aQDoVRCtdJhlEFxQEVlEfI6HlODSwPKieV4KJHbVxnEYBm9SS15SLjWNyQMbTF3d
- Ye4rvE9kAsGT1PFA4zAjCHY/dJgjv5kZrGGHdKiOAwGciAayufTUjiEG2MfQnj4GSNI5
- 1EYA==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721684682; x=1722289482;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mcZb5YItFOMqqJrIuqjuWAfUzsfp40iXsHzNY3+LniI=;
+ b=bW39cLkuzQIbfXRB5IXR1T4ogc0+HrGeHaAptQ+Hktv2jaxz+T4S0KvXEb4yoqvPik
+ ggkpNEU77QQ8sBIooQncxyVA1ur6bmHGKZNZt2wA9ekGgHnMzIokBAoPCZVJblqHHjT5
+ J7Ws1mXXbtI5D3N1cEfzcW8W0LnAFIm5kjRP9YG7rJmS+Ove+JCB0j0GGPFub6VodLNM
+ Qo48+dZV6nJwxEk/jPahb+nWrbzIzIESm8CRwRcpOy0tzD3rHtMjGHm4fSE3K2AS0vxI
+ rlhUijMZbHgQiyNbUX2scqULlG91l0zA7+jLnOEa0gh1VSRv3TcI0uXU6UQshReU1pwH
+ UY0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721684380; x=1722289180;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dCrdl72LSWragEGP7BnhNbhzXcUtJIuMyH4LenVtq6M=;
- b=XgNehmrhiATDgbGM/mUtr1IpbD3vfCXiaa7KEbR+2sYNUE09ySHs5qgbSiaiZKcu4x
- 67neGXYTO5IK7cK/IFM7GTvYwQBDhXZCjEd8vnmVtcaeSucN/PiKrq6WDylWvtDc/IX8
- tSWvsXJbyRaNJkNeIeoIxOxMobiZf6Mycsn0oy82RFrRfWhJr35qnFGed8LuWc0bzDZe
- hHOkjzkMpnzsSUteXKSdyGhfA/kGmLuOyS6Ulg/eS05P5tMZxLB3T83ABuWm0jsBUxh5
- ou/sfusnraXMkch3ScAwz0bVxBTYcuAL9vvIWRLIlJvvw6NL/Npuu2dXVO/b0ag2PlzH
- Z3lg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX3ky92pGpqkUfml3ncrNWh6QqmjOAdV7XD4iSvKzG49jxswp2t+9+hCcJoqejQg6r+x2J8i2rFnq7zH4PSrmLsthJnQGQ=
-X-Gm-Message-State: AOJu0YzyviJyduCDHwGs6TT6dyMJTAnQ0R9g/6HAqA0hLKHhXUSolsze
- 51L704G9Y4NW01lVQ2sqiKxFHSUMLoyM46uKPuOz5kAL3D4a46xtA71HtEy3LSw=
-X-Google-Smtp-Source: AGHT+IGZscwFiaLWDTmSVk3DoLeljMoIcJHacnJhALDGrK7Km5wjNpG23V838AjCJsSD7IMP35+m0Q==
-X-Received: by 2002:adf:a3c4:0:b0:360:9bf5:1eab with SMTP id
- ffacd0b85a97d-369bae48d87mr5287913f8f.36.1721684380323; 
- Mon, 22 Jul 2024 14:39:40 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.208.14])
+ d=1e100.net; s=20230601; t=1721684682; x=1722289482;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mcZb5YItFOMqqJrIuqjuWAfUzsfp40iXsHzNY3+LniI=;
+ b=MbJFFElHEdOm62WZcb/vyPnYpYL0AFYs+Nv2e3rrhY9sHPrIzSMXzEDZA0oUA83aMU
+ nuK41uc2rdNuhs0wvzt8v2t3+G8olWqK7nJf8g8VYj35LjVMJCyeYbhkT1P6KL/q9xSP
+ 8SaLDFn+n6EwJ1ZwNbLhv4WbCULXDJYDZMGy9t8YblMLSkuk+nByq+/QuRrTdLBgIhg6
+ bH2yD+iMv6bM+OW2VeiZNf0dLZ8+yar/miBEar1yhS8K9Y353sx6oh3znoquv1WO4YGc
+ NQjKr4w1E7S63EwprOY30Yd4nZmt7g24hGQE6bJJkcCch9unsowyvGaqsFVos7BjPsUg
+ Zagw==
+X-Gm-Message-State: AOJu0YxD8k/mJWybXfuO8o6GPI5zSGnGUXEFduuX+Vr4blCfozCBnBQ8
+ a/F9dmnVIEqx1F24+9gshG7KX7uC/8rYhel11nyzFzP9evjJhyHnSVYIdQUCh9tRG2Z0kogFTMB
+ LXio=
+X-Google-Smtp-Source: AGHT+IFQBrheJxH3hpcGT94Cvgq8hrIIMBtG42ne79yKTqkBnD+2ZDNE0qhMeDrUceGG9I0q0xg9QA==
+X-Received: by 2002:a05:6602:2ccb:b0:804:b327:52d5 with SMTP id
+ ca18e2360f4ac-81ea30a2126mr148544939f.4.1721684682374; 
+ Mon, 22 Jul 2024 14:44:42 -0700 (PDT)
+Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d68fa493sm144900665e9.10.2024.07.22.14.39.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 14:39:39 -0700 (PDT)
-Message-ID: <8fcc1b96-3b8e-4d5e-9154-3abf9b6f730b@linaro.org>
-Date: Mon, 22 Jul 2024 23:39:37 +0200
+ 8926c6da1cb9f-4c2343d2ff3sm1816830173.128.2024.07.22.14.44.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jul 2024 14:44:42 -0700 (PDT)
+From: Warner Losh <imp@bsdimp.com>
+To: qemu-devel@nongnu.org
+Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
+ Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 00/14] bsd-user: Misc changes for 9.1 (I hope)
+Date: Mon, 22 Jul 2024 15:42:59 -0600
+Message-ID: <20240722214313.89503-1-imp@bsdimp.com>
+X-Mailer: git-send-email 2.45.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] util/fifo8: Expose fifo8_pop_buf()
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20240722160745.67904-1-philmd@linaro.org>
- <20240722160745.67904-7-philmd@linaro.org>
- <7e222b69-49e6-4d0c-9b44-45c42e18cfb2@ilande.co.uk>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <7e222b69-49e6-4d0c-9b44-45c42e18cfb2@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::d31;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd31.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,71 +89,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Mark,
+This patch series includes two main sets of patches. To make it simple to
+review, I've included the changes from my student which the later changes depend
+on. I've included a change from Jessica and Doug as well. I've reviewed them,
+but more eyes never hurt.
 
-On 22/7/24 23:26, Mark Cave-Ayland wrote:
-> On 22/07/2024 17:07, Philippe Mathieu-Daudé wrote:
-> 
->> Extract fifo8_pop_buf() from hw/scsi/esp.c and expose
->> it as part of the <qemu/fifo8.h> API. This function takes
->> care of non-contiguous (wrapped) FIFO buffer (which is an
->> implementation detail).
-> 
-> I wonder if it is also worth updating the comment for fifo8_pop_bufptr() 
-> indicating that it returns a pointer to the internal buffer without 
-> checking for overflow,
+I've also included a number of 'touch up' patches needed either to get the
+aarch64 building, or to implmement suggestions from prior review cycles. The
+main one is what's charitably described as a kludge: force aarch64 to use 4k
+pages. The qemu-project (and blitz branch) hasn't had the necessary changes to
+bsd-user needed to support variable page size.
 
-We document:
+Sorry this is so late... Live has conspired to delay me.
 
-  * The function may return fewer bytes than requested when the data wraps
-  * around in the ring buffer; in this case only a contiguous part of 
-the data
-  * is returned.
+Doug Rabson (1):
+  bsd-user: Simplify the implementation of execve
 
-but I'll try to reword a bit.
+Jessica Clarke (1):
+  bsd-user: Sync fork_start/fork_end with linux-user
 
-> and that in general fifo8_pop_buf() is 
-> recommended instead?
+Stacey Son (6):
+  bsd-user:Add CPU initialization and management functions
+  bsd-user:Add AArch64 register handling and related functions
+  bsd-user:Add ARM AArch64 signal handling support
+  bsd-user:Add get_mcontext function for ARM AArch64
+  bsd-user:Add set_mcontext function for ARM AArch64
+  bsd-user:Add AArch64 improvements and signal handling functions
 
-Yes, this was my first motivation but then I forgot to write it :)
+Warner Losh (6):
+  bsd-user:Add ARM AArch64 support and capabilities
+  bsd-user:Add setup_sigframe_arch function for ARM AArch64
+  bsd-user: Hard wire aarch64 to be 4k pages only
+  bsd-user: Define TARGET_SIGSTACK_ALIGN and use it to round stack
+  bsd-user: Make compile for non-linux user-mode stuff
+  bsd-user: Add aarch64 build to tree
 
-BTW I now see fifo8_pop/peek_bufptr() as dangerous API and am thinking
-of deprecating them (after release). AFAICT the difference is a pair of
-memcpy(), when I expect to not be that important performance wise.
+ bsd-user/aarch64/signal.c               | 137 +++++++++++++++++
+ bsd-user/aarch64/target_arch.h          |  29 ++++
+ bsd-user/aarch64/target_arch_cpu.c      |  31 ++++
+ bsd-user/aarch64/target_arch_cpu.h      | 189 ++++++++++++++++++++++++
+ bsd-user/aarch64/target_arch_elf.h      | 163 ++++++++++++++++++++
+ bsd-user/aarch64/target_arch_reg.h      |  56 +++++++
+ bsd-user/aarch64/target_arch_signal.h   |  82 ++++++++++
+ bsd-user/aarch64/target_arch_sigtramp.h |  48 ++++++
+ bsd-user/aarch64/target_arch_sysarch.h  |  42 ++++++
+ bsd-user/aarch64/target_arch_thread.h   |  61 ++++++++
+ bsd-user/aarch64/target_arch_vmparam.h  |  74 ++++++++++
+ bsd-user/aarch64/target_syscall.h       |  51 +++++++
+ bsd-user/arm/target_arch_signal.h       |   2 +
+ bsd-user/freebsd/os-proc.c              | 118 +--------------
+ bsd-user/i386/target_arch_signal.h      |   2 +
+ bsd-user/main.c                         |  46 ++----
+ bsd-user/qemu.h                         |   3 +
+ bsd-user/signal.c                       |   9 +-
+ bsd-user/x86_64/target_arch_signal.h    |   2 +
+ configs/targets/aarch64-bsd-user.mak    |   3 +
+ target/arm/cpu-param.h                  |   4 +
+ target/arm/gdbstub64.c                  |   4 +
+ 22 files changed, 1001 insertions(+), 155 deletions(-)
+ create mode 100644 bsd-user/aarch64/signal.c
+ create mode 100644 bsd-user/aarch64/target_arch.h
+ create mode 100644 bsd-user/aarch64/target_arch_cpu.c
+ create mode 100644 bsd-user/aarch64/target_arch_cpu.h
+ create mode 100644 bsd-user/aarch64/target_arch_elf.h
+ create mode 100644 bsd-user/aarch64/target_arch_reg.h
+ create mode 100644 bsd-user/aarch64/target_arch_signal.h
+ create mode 100644 bsd-user/aarch64/target_arch_sigtramp.h
+ create mode 100644 bsd-user/aarch64/target_arch_sysarch.h
+ create mode 100644 bsd-user/aarch64/target_arch_thread.h
+ create mode 100644 bsd-user/aarch64/target_arch_vmparam.h
+ create mode 100644 bsd-user/aarch64/target_syscall.h
+ create mode 100644 configs/targets/aarch64-bsd-user.mak
 
-> Otherwise:
-> 
-> Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+-- 
+2.45.1
 
-Thanks!
-
-BTW I'll respin this series including the fifo8_peek_buf() patch that
-I forgot and is the one I need in PL011. Preview:
-
-+uint32_t fifo8_peek_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
-+{
-+    uint32_t tail_count, head_count = 0;
-+
-+    if (destlen == 0) {
-+        return 0;
-+    }
-+
-+    destlen = MIN(destlen, fifo->num);
-+    tail_count = MIN(fifo->capacity - fifo->head, destlen);
-+
-+    if (dest) {
-+        memcpy(dest, &fifo->data[fifo->head], tail_count);
-+    }
-+
-+    /* Add FIFO wraparound if needed */
-+    destlen -= tail_count;
-+    head_count = MIN(destlen, fifo->head);
-+    if (head_count && dest) {
-+        memcpy(&dest[tail_count], &fifo->data[0], head_count);
-+    }
-+
-+    return tail_count + head_count;
-+}
-
----
 
