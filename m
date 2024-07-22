@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F662938995
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5A8938989
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVn48-0002gv-Ij; Mon, 22 Jul 2024 03:02:36 -0400
+	id 1sVn49-0002rT-Rv; Mon, 22 Jul 2024 03:02:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn3x-0001Vk-5H
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:26 -0400
+ id 1sVn46-0002Re-8M
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn3v-0006f4-GL
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:24 -0400
+ id 1sVn44-0006hW-F3
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721631742;
+ s=mimecast20190719; t=1721631751;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6930HjNXGIGQwkzxIJB4ZGOGymfGeefbFiY2GAp2X8Y=;
- b=LA4EwhDl0qJeB1n2l8TiLfNKKqi0jjWKyQ/NhQ8S5v/Zkbbf27qf+D+5rW1WKS6Fh7JUGr
- GdxvOFxCnpg8ZawNbRcv2NqtHV1CARg+5h5iJsSL7Ywon1QTtxMZFWr/dQF7uAJ/6RtjR9
- 7yG9jP/HjSKa8+I9qixItgbZD5S5M3Q=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=NE1m+6b/EcjuHgXsuhW3c0W5Ezdqh0PyXac4E9BN6HI=;
+ b=FyHFiS5OA15K0gNZESY6zKuyyg6KhFCpHd69QuEn8cKv7LzJw6IP1kKk/sfVZWubECS9qF
+ QzcUOgAObucvQOYB1c+0zU6gMceZCPqyyAhFWgwBVfFIxSR1FPPLxJe23kZU1e7eXZq9K7
+ d4vIXQaitph0Oa3XT30vLbhRIPEAVCk=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-E0bBM7IDMCeGLYuUb8hkpw-1; Mon,
- 22 Jul 2024 03:02:18 -0400
-X-MC-Unique: E0bBM7IDMCeGLYuUb8hkpw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-zJJBSoIaP0mTwK-bGZkCBg-1; Mon,
+ 22 Jul 2024 03:02:25 -0400
+X-MC-Unique: zJJBSoIaP0mTwK-bGZkCBg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9078D189B033; Mon, 22 Jul 2024 07:02:11 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D116818EB232; Mon, 22 Jul 2024 07:02:11 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.252])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 882ED196BC8B; Mon, 22 Jul 2024 07:02:08 +0000 (UTC)
+ id 5D1281944A83; Mon, 22 Jul 2024 07:02:10 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 15/25] qga: conditionalize schema for commands requiring libudev
-Date: Mon, 22 Jul 2024 10:01:12 +0300
-Message-ID: <20240722070122.27615-16-kkostiuk@redhat.com>
+Subject: [PULL 16/25] qga: conditionalize schema for commands requiring utmpx
+Date: Mon, 22 Jul 2024 10:01:13 +0300
+Message-ID: <20240722070122.27615-17-kkostiuk@redhat.com>
 In-Reply-To: <20240722070122.27615-1-kkostiuk@redhat.com>
 References: <20240722070122.27615-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -83,8 +83,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Daniel P. Berrangé <berrange@redhat.com>
 
 Rather than creating stubs for every command that just return
-QERR_UNSUPPORTED, use 'if' conditions in the schema to fully
-exclude generation of the filesystem trimming commands on POSIX
+QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema to
+fully exclude generation of the get-users command on POSIX
 platforms lacking required APIs.
 
 The command will be rejected at QMP dispatch time instead,
@@ -104,72 +104,58 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20240712132459.3974109-16-berrange@redhat.com>
+Message-ID: <20240712132459.3974109-17-berrange@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands-linux.c | 8 --------
- qga/qapi-schema.json | 8 ++++----
- 2 files changed, 4 insertions(+), 12 deletions(-)
+ qga/commands-posix.c | 10 +---------
+ qga/qapi-schema.json |  6 ++++--
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 73b13fbaf6..89bdcded01 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -1049,14 +1049,6 @@ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
-     return ret;
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index d92fa0ec87..a353f64ae6 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -1212,15 +1212,7 @@ GuestUserList *qmp_guest_get_users(Error **errp)
+     return head;
  }
  
 -#else
 -
--GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+-GuestUserList *qmp_guest_get_users(Error **errp)
 -{
 -    error_setg(errp, QERR_UNSUPPORTED);
 -    return NULL;
 -}
 -
- #endif
+-#endif
++#endif /* HAVE_UTMPX */
  
- /* Return a list of the disk device(s)' info which @mount lies on */
+ /* Replace escaped special characters with their real values. The replacement
+  * is done in place -- returned value is in the original string.
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 21c65d1806..cf1ad42519 100644
+index cf1ad42519..0662a68c43 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -986,7 +986,7 @@
-            'media-errors-hi': 'uint64',
-            'number-of-error-log-entries-lo': 'uint64',
-            'number-of-error-log-entries-hi': 'uint64' },
--  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX' ] } }
-+  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LIBUDEV' ] } }
+@@ -1414,7 +1414,8 @@
+ # Since: 2.10
+ ##
+ { 'struct': 'GuestUser',
+-  'data': { 'user': 'str', 'login-time': 'number', '*domain': 'str' } }
++  'data': { 'user': 'str', 'login-time': 'number', '*domain': 'str' },
++  'if': { 'any': ['CONFIG_WIN32', 'HAVE_UTMPX' ] } }
  
  ##
- # @GuestDiskSmart:
-@@ -1001,7 +1001,7 @@
-   'base': { 'type': 'GuestDiskBusType' },
-   'discriminator': 'type',
-   'data': { 'nvme': 'GuestNVMeSmart' },
--  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX' ] } }
-+  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LIBUDEV' ] } }
+ # @guest-get-users:
+@@ -1426,7 +1427,8 @@
+ # Since: 2.10
+ ##
+ { 'command': 'guest-get-users',
+-  'returns': ['GuestUser'] }
++  'returns': ['GuestUser'],
++  'if': { 'any': ['CONFIG_WIN32', 'HAVE_UTMPX' ] } }
  
  ##
- # @GuestDiskInfo:
-@@ -1027,7 +1027,7 @@
-   'data': {'name': 'str', 'partition': 'bool', '*dependencies': ['str'],
-            '*address': 'GuestDiskAddress', '*alias': 'str',
-            '*smart': 'GuestDiskSmart'},
--  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX' ] } }
-+  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LIBUDEV' ] } }
- 
- ##
- # @guest-get-disks:
-@@ -1041,7 +1041,7 @@
- ##
- { 'command': 'guest-get-disks',
-   'returns': ['GuestDiskInfo'],
--  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX' ] } }
-+  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LIBUDEV' ] } }
- 
- ##
- # @GuestFilesystemInfo:
+ # @GuestTimezone:
 -- 
 2.45.2
 
