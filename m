@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE369386CD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99109386EA
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:22:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgjq-0002wu-0d; Sun, 21 Jul 2024 20:17:14 -0400
+	id 1sVgjk-0002dh-Pw; Sun, 21 Jul 2024 20:17:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgjn-0002pX-Cr
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:11 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgji-0002Wc-IR
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgjl-0005jG-L7
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:11 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgjg-0005il-Ud
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607426;
+ s=mimecast20190719; t=1721607424;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=CF9wnkqMRVtlUyE0ujh6CTNBrHFoLR3JIkaPiCQ6bXA=;
- b=EyLmg3JpxqfuSaFHPmnNbtvwI8C2BXRES4COKC1oi2dhNq51cCgCP34MEwjsRnYNNeBPAP
- jZh4P4Lbrj1pAuSpo/+MphR7iedRw2slooxekOenmOYN/zEX1mgi0cTMPU1cfPfa/o/nZ9
- C8SUNNis6FNS7+q7lteNJz8GtgDJU2Q=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hdw2m0bn75zRr+MYU0d0hXAq7eMAE3t8pjHbmVXVlwk=;
+ b=I7QFFMR6BizUyx6Q72rEbsvommJ7ovAv1Bp+BXlqVfiTQV9jnqnnGi1fTDqruF7HvD3672
+ GnixfEnSSdDA6nseA6mrlpNoCRqAk0ky4Ac6F9bdc5WiEiFKRAqCRwfJ/FyFqefc0+R52t
+ pMlNqyJWujICz6e1foMfc/3McuJq/1E=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-209-avx2uitnPguTYZ8K-9beLw-1; Sun, 21 Jul 2024 20:17:02 -0400
-X-MC-Unique: avx2uitnPguTYZ8K-9beLw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42668699453so37761475e9.3
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:16:59 -0700 (PDT)
+ us-mta-279-CicUJZ8OMxeW78EOQ6s8Mg-1; Sun, 21 Jul 2024 20:17:01 -0400
+X-MC-Unique: CicUJZ8OMxeW78EOQ6s8Mg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3687529b63fso2066646f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607417; x=1722212217;
+ d=1e100.net; s=20230601; t=1721607419; x=1722212219;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CF9wnkqMRVtlUyE0ujh6CTNBrHFoLR3JIkaPiCQ6bXA=;
- b=JKQhyrJOIfhOiTxzYS+T92DjzKXJ+06LFB3EAtB8ZSGojPAnCYR/k98LNJkCZHANGJ
- YQDWfL6DG3s8GBoV7eFV/DrkL7WJMSN3cny+D+vmr1JkKMSzvXVf17+a9YP3S1e6kcRh
- ZvX7bJ8ZeqCeCrKfoFlu4mDIrClMVo8f7wHofuaSLwqIos3iSiXRhTHfQm1rppWFA4c9
- H5fSASi0dPlLyKwSthCqoJoYqU5QDBz3KNfOT6FFBMvH8jny0KmjPipCoKh0S8XBxZY/
- Z06dU7z+rlPs8+H7V9QvwerADkdWFa950iP+KZtxvt7mjqj2NnnvpzGQ/mhyRpxSGx9n
- x/Bg==
-X-Gm-Message-State: AOJu0YxN963PJ+0PO4Zpp2vwMrG6g2mlA845LXH5P/CZYq/Khea0zXmK
- RpLN1qWzcDn7KHOKaLm+CYWB6wpjFOpETSWpoYMcDfXrAwRI0OGZVKLCHYeX3rq+CHRs49kdZds
- xY5q5uoGQAsF3QcwpGNt36zmrogTODzrMI1epv9XRBMFFAX3MVjD5KXxa7Bm5KSTASwF6cHxt39
- os5jGUgZZmhfeD0PCCtOYpEbvg20dkSQ==
-X-Received: by 2002:a05:600c:45ce:b0:426:5520:b835 with SMTP id
- 5b1f17b1804b1-427dc515ce5mr41304855e9.5.1721607417691; 
- Sun, 21 Jul 2024 17:16:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZ1ZIUina0IxNB8IX3esuxwgnc83668GYDaHHrcjKhXw3xSTXpr1FAcv260bDz6VyoIzp+LQ==
-X-Received: by 2002:a05:600c:45ce:b0:426:5520:b835 with SMTP id
- 5b1f17b1804b1-427dc515ce5mr41304685e9.5.1721607416990; 
- Sun, 21 Jul 2024 17:16:56 -0700 (PDT)
+ bh=hdw2m0bn75zRr+MYU0d0hXAq7eMAE3t8pjHbmVXVlwk=;
+ b=IJS8x0Y/cWbinQwpV0pJ3dYYMzZFXu4/O1xtWmLS+tBGpmGbF/sAOQuh3THmcCpWMm
+ QCyHEletDcNFeJqcKiYl/aFDG8LGYsS4cxwuecGWQw2DrOATxPELP626RzK9WqbQSBJF
+ h8a6yplfTc73IhiTnqhwMzq3l9I3hElN6pPa4KdsHpWB2Ad+gMyNZ7RxLwNhgYPyGDX9
+ n53vdJTq6kJyQhfCFJQUmldV2Bt1I5SZkgETyMEFDSjyuz7LS8h0egcRDuHcDitWmFmD
+ IKoS3yl2nZPzc9wFNonFKPQW1YflTrhzilD1GvhOhQONVq3qKFTjVuvSGLoVWy/wECNz
+ In9A==
+X-Gm-Message-State: AOJu0Yy7GcFLUTQFJLOsZ9/uMdD2QSxqY2gwAl+kKdXyDx6j3959jxKc
+ 3QesrLQ7MabmPkkCTwzF0oPWcovC2iMkkK9ybZ4x8Z+3JAtv2NKKbkkQcaTDDFzyvhbB2M3RTOD
+ y16ZSHEybgG6cbe5CXSme90hHOjbAVNgIBEG0R5khw9/GBHvDL8c42XBZyMml8gppI3TwfgBRNY
+ KN05UODbaiTcrBCOTHTge73k+g0qSHTg==
+X-Received: by 2002:a5d:490e:0:b0:366:f041:935d with SMTP id
+ ffacd0b85a97d-369bbc91e34mr2694911f8f.60.1721607419558; 
+ Sun, 21 Jul 2024 17:16:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEdV4xbC9k1ETsh7gGyBAbNToEi3yyHBAODFbEZB/YQRsymI6klh7+Wzcn7/9PQh0uu4fyvw==
+X-Received: by 2002:a5d:490e:0:b0:366:f041:935d with SMTP id
+ ffacd0b85a97d-369bbc91e34mr2694898f8f.60.1721607419025; 
+ Sun, 21 Jul 2024 17:16:59 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36878811899sm6976742f8f.116.2024.07.21.17.16.55
+ ffacd0b85a97d-368787ed551sm7004209f8f.113.2024.07.21.17.16.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:16:56 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:16:55 -0400
+ Sun, 21 Jul 2024 17:16:58 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:16:57 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 03/63] hw/cxl/cxl-mailbox-utils: remove unneeded mailbox
- output payload space zeroing
-Message-ID: <b7dbfe4f47884e67a309c206b3eadec339a0d3b6.1721607331.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 04/63] hw/cxl: Check for multiple mappings of memory backends.
+Message-ID: <9de2049c95e1a94e27430e71a9d9ace07ec8eda6.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,83 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The whole mailbox output payload space is already zeroed after copying
-out the input payload, which happens before processing the specific mailbox
-command:
-https://elixir.bootlin.com/qemu/v8.2.1/source/hw/cxl/cxl-device-utils.c#L204
+Similar protection to that provided for -numa memdev=x
+to make sure that memory used to back a type3 device is not also mapped
+as normal RAM, or for multiple type3 devices.
 
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Link: https://lore.kernel.org/r/20240221221824.1092966-1-nifan.cxl@gmail.com
+This is an easy footgun to remove and seems multiple people have
+run into it.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240705113956.941732-3-Jonathan.Cameron@huawei.com>
+Message-Id: <20240705113956.941732-4-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 7 -------
- 1 file changed, 7 deletions(-)
+ hw/mem/cxl_type3.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 74eeb6fde7..facec42dc8 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -235,7 +235,6 @@ static CXLRetCode cmd_events_get_records(const struct cxl_cmd *cmd,
-     log_type = payload_in[0];
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 35ac59883a..e7fbbb4d51 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -737,6 +737,11 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+             error_setg(errp, "volatile memdev must have backing device");
+             return false;
+         }
++        if (host_memory_backend_is_mapped(ct3d->hostvmem)) {
++            error_setg(errp, "memory backend %s can't be used multiple times.",
++               object_get_canonical_path_component(OBJECT(ct3d->hostvmem)));
++            return false;
++        }
+         memory_region_set_nonvolatile(vmr, false);
+         memory_region_set_enabled(vmr, true);
+         host_memory_backend_set_mapped(ct3d->hostvmem, true);
+@@ -760,6 +765,11 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+             error_setg(errp, "persistent memdev must have backing device");
+             return false;
+         }
++        if (host_memory_backend_is_mapped(ct3d->hostpmem)) {
++            error_setg(errp, "memory backend %s can't be used multiple times.",
++               object_get_canonical_path_component(OBJECT(ct3d->hostpmem)));
++            return false;
++        }
+         memory_region_set_nonvolatile(pmr, true);
+         memory_region_set_enabled(pmr, true);
+         host_memory_backend_set_mapped(ct3d->hostpmem, true);
+@@ -790,6 +800,11 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+             return false;
+         }
  
-     pl = (CXLGetEventPayload *)payload_out;
--    memset(pl, 0, sizeof(*pl));
- 
-     max_recs = (cxlds->payload_size - CXL_EVENT_PAYLOAD_HDR_SIZE) /
-                 CXL_EVENT_RECORD_SIZE;
-@@ -273,7 +272,6 @@ static CXLRetCode cmd_events_get_interrupt_policy(const struct cxl_cmd *cmd,
-     CXLEventLog *log;
- 
-     policy = (CXLEventInterruptPolicy *)payload_out;
--    memset(policy, 0, sizeof(*policy));
- 
-     log = &cxlds->event_logs[CXL_EVENT_TYPE_INFO];
-     if (log->irq_enabled) {
-@@ -372,7 +370,6 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
-     QEMU_BUILD_BUG_ON(sizeof(*is_identify) != 18);
- 
-     is_identify = (void *)payload_out;
--    memset(is_identify, 0, sizeof(*is_identify));
-     is_identify->pcie_vid = class->vendor_id;
-     is_identify->pcie_did = class->device_id;
-     if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_USP)) {
-@@ -606,7 +603,6 @@ static CXLRetCode cmd_infostat_bg_op_sts(const struct cxl_cmd *cmd,
-     QEMU_BUILD_BUG_ON(sizeof(*bg_op_status) != 8);
- 
-     bg_op_status = (void *)payload_out;
--    memset(bg_op_status, 0, sizeof(*bg_op_status));
-     bg_op_status->status = cci->bg.complete_pct << 1;
-     if (cci->bg.runtime > 0) {
-         bg_op_status->status |= 1U << 0;
-@@ -647,7 +643,6 @@ static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
-     }
- 
-     fw_info = (void *)payload_out;
--    memset(fw_info, 0, sizeof(*fw_info));
- 
-     fw_info->slots_supported = 2;
-     fw_info->slot_info = BIT(0) | BIT(3);
-@@ -805,7 +800,6 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
-     }
- 
-     id = (void *)payload_out;
--    memset(id, 0, sizeof(*id));
- 
-     snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
- 
-@@ -1095,7 +1089,6 @@ static CXLRetCode cmd_media_get_poison_list(const struct cxl_cmd *cmd,
-     out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
-     assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
- 
--    memset(out, 0, out_pl_len);
-     QLIST_FOREACH(ent, poison_list, node) {
-         uint64_t start, stop;
- 
++        if (host_memory_backend_is_mapped(ct3d->dc.host_dc)) {
++            error_setg(errp, "memory backend %s can't be used multiple times.",
++               object_get_canonical_path_component(OBJECT(ct3d->dc.host_dc)));
++            return false;
++        }
+         /*
+          * Set DC regions as volatile for now, non-volatile support can
+          * be added in the future if needed.
 -- 
 MST
 
