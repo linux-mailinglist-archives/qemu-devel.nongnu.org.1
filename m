@@ -2,107 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC14938BF5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 11:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52893938BE3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 11:18:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVpFz-0001QY-OO; Mon, 22 Jul 2024 05:22:59 -0400
+	id 1sVpBe-0006ub-OD; Mon, 22 Jul 2024 05:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1sVpFs-0001Fm-TT; Mon, 22 Jul 2024 05:22:53 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <yaoxt.fnst@fujitsu.com>)
+ id 1sVpBW-0006tw-TH
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 05:18:22 -0400
+Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1sVpFm-0007dm-5w; Mon, 22 Jul 2024 05:22:48 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46M7ToCp014429;
- Mon, 22 Jul 2024 09:17:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:date:mime-version:subject:to:cc:references:from
- :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=0
- RpKGXELt3c+sfZUJmA2NCxvEbtjbFY+kiPpqg7OBbI=; b=iV1YFWI0rSslI6Snt
- jY2JxAt2clriPzaEWJsp29zwIdCpnY8VXtzGKLSq7F8Jp9lFrygiTLQYJPzR97y0
- MVCh90WXE8eIOtN8zuwdTxpmVskka4KAo4H7bnmTzb1HOeL1bRIHfBxxplJUQ++O
- GgEBk9WDjNXo2XKoftS0xZhifqODgyIaAxDFrF5N3Se4EmPM69xTe+chNO5DkXUo
- xnAHCJmmdA9e6XdxyMjVB3SHkNPFurfcecvAeW2ZG9qjYvGJtPpr6LOZ843l+zKy
- QT8oeSKOPqTV/RFKN/Gn/k0LEvn1jKHmobi/hm9o1pu3T/i/my3lQBLMbM+KWPre
- ePiVA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40hk2xg729-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jul 2024 09:17:27 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46M9HQ61007391;
- Mon, 22 Jul 2024 09:17:27 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40hk2xg725-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jul 2024 09:17:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46M8sd2e005890; Mon, 22 Jul 2024 09:17:26 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40gy2p4e76-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jul 2024 09:17:26 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46M9HKHG48693734
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jul 2024 09:17:22 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B14320043;
- Mon, 22 Jul 2024 09:17:20 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4E392004F;
- Mon, 22 Jul 2024 09:17:17 +0000 (GMT)
-Received: from [9.109.199.72] (unknown [9.109.199.72])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 22 Jul 2024 09:17:17 +0000 (GMT)
-Message-ID: <00d202a7-03dd-4cb0-8e02-3c49a025e284@linux.ibm.com>
-Date: Mon, 22 Jul 2024 14:47:16 +0530
+ (Exim 4.90_1) (envelope-from <yaoxt.fnst@fujitsu.com>)
+ id 1sVpBS-0006yS-Eb
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 05:18:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+ t=1721639898; x=1753175898;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dYuPkI1TjOMs3T81fXiJq8uS7Uou35G14/EBS9PRi7M=;
+ b=tXqe8J8bun7RSDrSv+b0KAHTMtOqtl636MR/2S/ESH9nVDhYQHjY+NSo
+ xuoDppY++SKSdB3vTT/XSGdKpuahYXwlD+uQAE6bzYQR/DjQ1/UA8I2IL
+ 2SxT3HX4ZyG7kDS+vyaXONJ4q96tNUlM4VIHQFUv5QaOn7zzgLTdIENgC
+ 0aAxdgC0X8Uc3CtW6R4dH7/M5P4TdkimKBmwfFm4c7v83A8QeATO+i0NH
+ t3cXBhxLc9DvS1Ri9vRHlI71/Q6HpvIcQAVIkz+JtoNtfIsPXaF3pNT1S
+ 2rYw491AtW0Agh9EUhtOYnMzIhS02ypZsqE0vBZkQc7ee6PXwKjQLYnE/ Q==;
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="168160644"
+X-IronPort-AV: E=Sophos;i="6.09,227,1716217200"; d="scan'208";a="168160644"
+Received: from unknown (HELO oym-r4.gw.nic.fujitsu.com) ([210.162.30.92])
+ by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 18:18:15 +0900
+Received: from oym-m3.gw.nic.fujitsu.com (oym-nat-oym-m3.gw.nic.fujitsu.com
+ [192.168.87.60])
+ by oym-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id AB540D8011
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:18:12 +0900 (JST)
+Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
+ [192.51.206.21])
+ by oym-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id EE42CD73A3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:18:11 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+ by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 8C09A20071A2A
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:18:11 +0900 (JST)
+Received: from localhost.localdomain (unknown [10.167.225.88])
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id E12101A000A;
+ Mon, 22 Jul 2024 17:18:10 +0800 (CST)
+To: qemu-devel@nongnu.org
+Cc: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Subject: [PATCH 0/2] remove useless type cast
+Date: Mon, 22 Jul 2024 05:17:26 -0400
+Message-ID: <20240722091728.4334-1-yaoxt.fnst@fujitsu.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ppc/pnv: Update Power10's cfam id to use Power10 DD2
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20240502062701.1379833-1-adityag@linux.ibm.com>
- <a1e529e9-32b2-438a-b50d-10117296d4e1@kaod.org>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <a1e529e9-32b2-438a-b50d-10117296d4e1@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8HOMncvn_sOp0bGhwK52wyX6U5iK7qO5
-X-Proofpoint-GUID: -CTkVOfcrB_F5T5hACPjeI4PZLPstVNd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-22_05,2024-07-18_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015
- adultscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
- bulkscore=0 malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2407220068
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28544.006
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28544.006
+X-TMASE-Result: 10--5.103200-10.000000
+X-TMASE-MatchedRID: kjMpX+Wkr6JRpDxTweAjCRIRh9wkXSlFw+MUH8mZTtScNvh+kFHGrbK6
+ GmKppGdq8Xo3NKXpyhdvcmY92rn2+R8TzIzimOwPO6pzAGRBlFzZs3HUcS/scCq2rl3dzGQ16+S
+ eJe1QBHwOwy2VAlwwiRCoSDJPtz8Ws+OHfZ8aRwoIcETLZoPshQ==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Received-SPF: pass client-ip=207.54.90.48; envelope-from=yaoxt.fnst@fujitsu.com;
+ helo=esa2.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,83 +87,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Yao Xingtao <yaoxt.fnst@fujitsu.com>
+From:  Yao Xingtao via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+Currently the pattern in scripts/coccinelle/typecast.cocci is used to
+remove the useless type cast.
 
-Any comments on this change ?
+Use the following command to find out the use cases and remove the
+useless type case:
+$ spatch --macro-file scripts/cocci-macro-file.h \
+         --sp-file ./scripts/coccinelle/typecast.cocci \
+         --keep-comments --in-place --use-gitgrep --dir .
 
-Though this isn't urgent and won't change behaviour much, mainly other 
-than skiboot recognising the chip as P10 DD2.
+Yao Xingtao (2):
+  mips/loongson3_virt: remove useless type cast
+  nvme/ctrl: remove useless type cast
 
+ hw/mips/loongson3_virt.c | 4 ++--
+ hw/nvme/ctrl.c           | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Thanks
+-- 
+2.41.0
 
-- Aditya Gupta
-
-
-On 02/05/24 13:51, Cédric Le Goater wrote:
-
-> On 5/2/24 08:27, Aditya Gupta wrote:
->> Power10 DD1.0 was dropped in:
->>
->>      commit 8f054d9ee825 ("ppc: Drop support for POWER9 and POWER10 
->> DD1 chips")
->>
->> Use the newer Power10 DD2 chips cfam id.
->>
->> Cc: Cédric Le Goater <clg@kaod.org>
->> Cc: David Gibson <david@gibson.dropbear.id.au>
->> Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
->> Cc: Laurent Vivier <lvivier@redhat.com>
->> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
->> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Nicholas Piggin <npiggin@gmail.com>
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Cc: Thomas Huth <thuth@redhat.com>
->> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
->
->
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
->
-> Thanks,
->
-> C.
->
->
->> ---
->>   hw/ppc/pnv.c            | 2 +-
->>   tests/qtest/pnv-xscom.h | 2 +-
->>   2 files changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
->> index 6e3a5ccdec76..06a4e4d13948 100644
->> --- a/hw/ppc/pnv.c
->> +++ b/hw/ppc/pnv.c
->> @@ -2090,7 +2090,7 @@ static void 
->> pnv_chip_power10_class_init(ObjectClass *klass, void *data)
->>       PnvChipClass *k = PNV_CHIP_CLASS(klass);
->>       static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = 
->> {14, 14, 2, 16};
->>   -    k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with 
->> NX) */
->> +    k->chip_cfam_id = 0x220da04980000000ull; /* P10 DD2.0 (with NX) */
->>       k->cores_mask = POWER10_CORE_MASK;
->>       k->chip_pir = pnv_chip_pir_p10;
->>       k->intc_create = pnv_chip_power10_intc_create;
->> diff --git a/tests/qtest/pnv-xscom.h b/tests/qtest/pnv-xscom.h
->> index 6f62941744a6..5aa1701ea768 100644
->> --- a/tests/qtest/pnv-xscom.h
->> +++ b/tests/qtest/pnv-xscom.h
->> @@ -56,7 +56,7 @@ static const PnvChip pnv_chips[] = {
->>           .chip_type  = PNV_CHIP_POWER10,
->>           .cpu_model  = "POWER10",
->>           .xscom_base = 0x000603fc00000000ull,
->> -        .cfam_id    = 0x120da04900008000ull,
->> +        .cfam_id    = 0x220da04980000000ull,
->>           .first_core = 0x0,
->>           .num_i2c    = 4,
->>       },
->
 
