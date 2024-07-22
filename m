@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D07293949E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 22:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC19B9394A4
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 22:08:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVzJ1-0001OZ-Mq; Mon, 22 Jul 2024 16:06:48 -0400
+	id 1sVzJ3-0001aM-Um; Mon, 22 Jul 2024 16:06:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sVzIv-00019D-Nq
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:06:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sVzIz-0001Os-Qu
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:06:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1sVzIt-00027x-T6
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:06:41 -0400
+ id 1sVzIx-00028Y-Hg
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 16:06:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721678797;
+ s=mimecast20190719; t=1721678801;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gAUPl9iroI7fW9Am/mwYOx28G5WwH3g2XkX9fmWJXAM=;
- b=A2TiH+RSXC6fwOsX5UzTNZTV+wc94fYjQIzksiEqyyS735Fpwk+6ldmmVFn1mc1ij3ZQSL
- sWjNLZbiXf92wskV4VFpiDQP2Ot8C1FWJVlnnOr+hgehlucxl6YPQ/GLPYbVZsWf+V1yYG
- ckR17oNk+rzMGf9wesh7lMuuOM1QxPY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=88/1GPhkmpmJqo+1fBvTPO4xBgJvZaHZw1AJlm/mYPA=;
+ b=KC8LVt+d1GGnv0KIN9VQIFB4lXtr+9NjbKJI1LgpFBDwsnOOSMOqH2rMjdd2LcDtyntRsK
+ z1SLG4M/33yfYsIm1+YTwg51W9QQ6nDl7pfS0iVZthJg8GxSltWOeiVCDyTYZrHriaWzXO
+ 80ZqzfRyCFvxsWHSpmZ1Gg8mksM7x/8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-53-zM8WBiocMfOfcS3Zh-be5g-1; Mon,
- 22 Jul 2024 16:06:34 -0400
-X-MC-Unique: zM8WBiocMfOfcS3Zh-be5g-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-txhalE9gPIq-tgoAfLfVoA-1; Mon,
+ 22 Jul 2024 16:06:39 -0400
+X-MC-Unique: txhalE9gPIq-tgoAfLfVoA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6C7E01977455; Mon, 22 Jul 2024 20:06:33 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4EA0E1955D59; Mon, 22 Jul 2024 20:06:38 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 28A1C1955F40; Mon, 22 Jul 2024 20:06:31 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0476A195605A; Mon, 22 Jul 2024 20:06:36 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 2/8] virtio-gpu-gl: declare dependency on ui-opengl
-Date: Tue, 23 Jul 2024 00:06:12 +0400
-Message-ID: <20240722200619.135163-3-marcandre.lureau@redhat.com>
+Cc: richard.henderson@linaro.org, Phil Dennis-Jordan <phil@philjordan.eu>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 3/8] Cursor: 8 -> 1 bit alpha downsampling improvement
+Date: Tue, 23 Jul 2024 00:06:13 +0400
+Message-ID: <20240722200619.135163-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20240722200619.135163-1-marcandre.lureau@redhat.com>
 References: <20240722200619.135163-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -66,7 +65,7 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,27 +82,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-Since commit e8a2db94 "virtio-gpu-virgl: teach it to get the QEMU EGL
-display", virtio-gl depends on ui-opengl symbol "qemu_egl_display".
+Mouse cursors with 8 bit alpha were downsampled to 1-bit opacity maps by
+turning alpha values of 255 into 1 and everything else into 0. This
+means that mostly-opaque pixels ended up completely invisible.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2391
-Fixes: e8a2db94 ("virtio-gpu-virgl: teach it to get the QEMU EGL display")
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+This patch changes the behaviour so that only pixels with less than 50%
+alpha (0-127) are treated as transparent when converted to 1-bit alpha.
+
+This greatly improves the subjective appearance of anti-aliased mouse
+cursors, such as those used by macOS, when using a front-end UI without
+support for alpha-blended cursors, such as some VNC clients.
+
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20240624101040.82726-1-phil@philjordan.eu>
 ---
- hw/display/virtio-gpu-gl.c | 1 +
- 1 file changed, 1 insertion(+)
+ ui/cursor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index e06be60dfb..952820a425 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -170,3 +170,4 @@ static void virtio_register_types(void)
- type_init(virtio_register_types)
- 
- module_dep("hw-display-virtio-gpu");
-+module_dep("ui-opengl");
+diff --git a/ui/cursor.c b/ui/cursor.c
+index 29717b3ecb..dd3853320d 100644
+--- a/ui/cursor.c
++++ b/ui/cursor.c
+@@ -232,7 +232,7 @@ void cursor_get_mono_mask(QEMUCursor *c, int transparent, uint8_t *mask)
+     for (y = 0; y < c->height; y++) {
+         bit = 0x80;
+         for (x = 0; x < c->width; x++, data++) {
+-            if ((*data & 0xff000000) != 0xff000000) {
++            if ((*data & 0x80000000) == 0x0) { /* Alpha < 0x80 (128) */
+                 if (transparent != 0) {
+                     mask[x/8] |= bit;
+                 }
 -- 
 2.45.2.827.g557ae147e6
 
