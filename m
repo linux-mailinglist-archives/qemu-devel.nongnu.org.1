@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92969386E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21119386D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:18:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgkr-0007z0-3I; Sun, 21 Jul 2024 20:18:17 -0400
+	id 1sVgkz-00006i-Q5; Sun, 21 Jul 2024 20:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkp-0007sr-CP
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgks-0008Cj-A4
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkn-0005sR-IE
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgkq-0005so-1P
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:18:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607492;
+ s=mimecast20190719; t=1721607495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wmqhjtW3VVd/s0tK/0z/W3SbHoTTKsvguEWbJfZllQs=;
- b=HZtJdit3TYKrjLs3HxJGgmq7jLwn2AVhFU3228L1eqgo3qCu/w0G50dFmBAlP9XN7fItNZ
- iV6fgFmL4h25y3pvJFXn9BJIlgfAYkosjtmWFRfBdDFiGjmJFb7zMqK2gUE+LZzx4ZZr7m
- SDvKy3QxjCl/mJ4Gr8Tc/67G9rSmfBw=
+ bh=gJr1WpFyP035ncVh4reYlb2V1cyFXZTXswtAGoUIz8s=;
+ b=hQRQHs1E3WIHJySdgU5CE/KhIcfDGwv+/iPvKHQprQyyvBROAkkolUVS1VTCuvuTrLdxqn
+ l4tPPITlVgm+CxEX/favgX+Fcm5VABgvALj9m30JDfQ2dDRX//Zd/YoBzuij3P578FDc+L
+ /XFJMPiD0SiWn5/Hw7DcF/HkWJAf0IQ=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-o7Bs_ihRNtONSFKEscfEmg-1; Sun, 21 Jul 2024 20:18:10 -0400
-X-MC-Unique: o7Bs_ihRNtONSFKEscfEmg-1
+ us-mta-687-mm-JpQqPPn-mX0o2sRC4qQ-1; Sun, 21 Jul 2024 20:18:13 -0400
+X-MC-Unique: mm-JpQqPPn-mX0o2sRC4qQ-1
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4272718b9b0so28091815e9.1
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:18:10 -0700 (PDT)
+ 5b1f17b1804b1-42794cb8251so27670125e9.2
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:18:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607489; x=1722212289;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wmqhjtW3VVd/s0tK/0z/W3SbHoTTKsvguEWbJfZllQs=;
- b=V4/vOmXPPAHDIWCr9XTBrEyzAgLJ0jyOs63fJfkBsUBj7TaLgEI8M3OigDuSGUOwzs
- ff+iZE9UbEdd9QRr0MzIBgdCYU28kAAZuAH5303stb6zwJa3BISmBN2EoNGsZH/911R4
- p3orgISBEnd+rLtExjPPZPeCUP9LQlmKZzoiwItcZ2D2/i57JmrFkm+acs0Z0p/X2CfH
- hiB/FpYNEkco5geqnLS3pSBR5620YM9gUDJCYK5tOIXIHparhOikNvaNVIUCvRdfQwcD
- CVDE9ml1++UFWUMD6CDUzQ0iBDO0KxiF7+3AMA3fyayIsgKsKRZd3b+Kk17WeeSP5QDa
- gnOQ==
-X-Gm-Message-State: AOJu0YyIOnpiqoe4rcXbpQMb2T+59cgtCAh6sG+QcwDm/odRRaOYfZG2
- PCfFGoPM/oVZz9vR2qJBld4ZD4Nzlh3vOxM41jzxhDK6fqZDQGw3qzvlAXrLxVmFsNfcc08Z8n3
- Gqv37BBl7PqJ/aMHbitfWe1eZHG/3B5ZqPO7vdG85xCZckvxhjQ8tG2yk6yYzumtFKIf47QUN0o
- ebLoVcgl0peP45rwi6t0cCuimypj1JOA==
-X-Received: by 2002:a05:600c:3acb:b0:427:9dad:e6ac with SMTP id
- 5b1f17b1804b1-427dc586456mr34493735e9.34.1721607489039; 
- Sun, 21 Jul 2024 17:18:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyOtAeRE+aIwMTy25tqZqKW4tLnyBG1isZ2hLUU44HXIE/i+j23w0grVM+kImYJyDExGnVHw==
-X-Received: by 2002:a05:600c:3acb:b0:427:9dad:e6ac with SMTP id
- 5b1f17b1804b1-427dc586456mr34493535e9.34.1721607488551; 
- Sun, 21 Jul 2024 17:18:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721607491; x=1722212291;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gJr1WpFyP035ncVh4reYlb2V1cyFXZTXswtAGoUIz8s=;
+ b=CzyAI0imxtqXpZGhbZ3l44HIrdxDqmvTWDTmzPOy3HkgTRMtlWDZiGDPwtUnM+dbrm
+ lNl0B0bbDrUWVPoJGRtLbNX6BAAxHggiypUpCmZvN/pvHiO0uJ5U4VUTgUC/RuWzKj82
+ DXZYc27py3wgKP+dzBOwImLMZ4iE6k9lRVsqe/D2VwYPIndsPfzT5VBqg01KaHHgCFHs
+ zP74GaEo2yFrir4sz8vdlovuP7GHUPcZyE4OISGfQDOPV+cL3PHamROtmjBmakoOtnr+
+ n7zfAC0AOAYmwdR3dV6xjBFpzIL5HEwS6Vl1SaJL1ziJ2cqFsyknzbJc6wSCkq4EBO+G
+ VOhA==
+X-Gm-Message-State: AOJu0Yw7CtVgYkyEfO9JuEV2IMHPPbRs+MhKcKPydRSOKKwG/Enec9B5
+ qaLieY9o9aRt2zpuKBLFsceObHelaWKNMwTJS6RWHjla9snz0QtxjMRvKpO1MGKz3iMBr6ycctf
+ AEs32PpTI27ZSLJsDIIPi8UOVr/pIcCwele9MqTdloi5dplF1zfetjJLX6d57GncU1SGvGbbo2V
+ 4tbG89CsaHwSsQqrM5a6jWuz8PfZIhFg==
+X-Received: by 2002:a05:600c:1c09:b0:426:8884:3781 with SMTP id
+ 5b1f17b1804b1-427daa61ca9mr38652365e9.24.1721607491639; 
+ Sun, 21 Jul 2024 17:18:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFp6+9baDwsEiyEPnA7xIaxHkcyq2LXt0iMcBVbyVGBbQ+k+uHq2tc7uERjPkGcHeAVyTHa5g==
+X-Received: by 2002:a05:600c:1c09:b0:426:8884:3781 with SMTP id
+ 5b1f17b1804b1-427daa61ca9mr38652065e9.24.1721607491075; 
+ Sun, 21 Jul 2024 17:18:11 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d6934ec6sm106853125e9.41.2024.07.21.17.18.07
+ ffacd0b85a97d-3687868b24csm6992468f8f.25.2024.07.21.17.18.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:18:08 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:18:06 -0400
+ Sun, 21 Jul 2024 17:18:10 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:18:08 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
-Subject: [PULL 37/63] smbios: make memory device size configurable per Machine
-Message-ID: <0dd7f4777d1d44fe67f3323b462bc0f0a2f686a2.1721607331.git.mst@redhat.com>
+ Salil Mehta <salil.mehta@huawei.com>, Gavin Shan <gshan@redhat.com>,
+ Vishnu Pajjuri <vishnu@os.amperecomputing.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Xianglai Li <lixianglai@loongson.cn>, Miguel Luis <miguel.luis@oracle.com>,
+ Shaoqin Huang <shahuang@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: [PULL 38/63] accel/kvm: Extract common KVM vCPU {creation,parking}
+ code
+Message-ID: <5a847065050b8bef70a8819ecc057b6103798514.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1721607331.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -90,7 +92,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,171 +108,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+From: Salil Mehta <salil.mehta@huawei.com>
 
-Currently QEMU describes initial[1] RAM* in SMBIOS as a series of
-virtual DIMMs (capped at 16Gb max) using type 17 structure entries.
+KVM vCPU creation is done once during the vCPU realization when Qemu vCPU thread
+is spawned. This is common to all the architectures as of now.
 
-Which is fine for the most cases.  However when starting guest
-with terabytes of RAM this leads to too many memory device
-structures, which eventually upsets linux kernel as it reserves
-only 64K for these entries and when that border is crossed out
-it runs out of reserved memory.
+Hot-unplug of vCPU results in destruction of the vCPU object in QOM but the
+corresponding KVM vCPU object in the Host KVM is not destroyed as KVM doesn't
+support vCPU removal. Therefore, its representative KVM vCPU object/context in
+Qemu is parked.
 
-Instead of partitioning initial RAM on 16Gb DIMMs, use maximum
-possible chunk size that SMBIOS spec allows[2]. Which lets
-encode RAM in lower 31 bits of 32bit field (which amounts upto
-2047Tb per DIMM).
-As result initial RAM will generate only one type 17 structure
-until host/guest reach ability to use more RAM in the future.
+Refactor architecture common logic so that some APIs could be reused by vCPU
+Hotplug code of some architectures likes ARM, Loongson etc. Update new/old APIs
+with trace events. New APIs qemu_{create,park,unpark}_vcpu() can be externally
+called. No functional change is intended here.
 
-Compat changes:
-We can't unconditionally change chunk size as it will break
-QEMU<->guest ABI (and migration). Thus introduce a new machine
-class field that would let older versioned machines to use
-legacy 16Gb chunks, while new(er) machine type[s] use maximum
-possible chunk size.
-
-PS:
-While it might seem to be risky to rise max entry size this large
-(much beyond of what current physical RAM modules support),
-I'd not expect it causing much issues, modulo uncovering bugs
-in software running within guest. And those should be fixed
-on guest side to handle SMBIOS spec properly, especially if
-guest is expected to support so huge RAM configs.
-
-In worst case, QEMU can reduce chunk size later if we would
-care enough about introducing a workaround for some 'unfixable'
-guest OS, either by fixing up the next machine type or
-giving users a CLI option to customize it.
-
-1) Initial RAM - is RAM configured with help '-m SIZE' CLI option/
-   implicitly defined by machine. It doesn't include memory
-   configured with help of '-device' option[s] (pcdimm,nvdimm,...)
-2) SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
-
-PS:
-* tested on 8Tb host with RHEL6 guest, which seems to parse
-  type 17 SMBIOS table entries correctly (according to 'dmidecode').
-
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240715122417.4059293-1-imammedo@redhat.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Tested-by: Xianglai Li <lixianglai@loongson.cn>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Reviewed-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20240716111502.202344-2-salil.mehta@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/boards.h |  4 ++++
- hw/arm/virt.c       |  1 +
- hw/core/machine.c   |  6 ++++++
- hw/i386/pc_piix.c   |  1 +
- hw/i386/pc_q35.c    |  1 +
- hw/smbios/smbios.c  | 11 ++++++-----
- 6 files changed, 19 insertions(+), 5 deletions(-)
+ accel/kvm/kvm-cpus.h   |  1 -
+ include/sysemu/kvm.h   | 25 +++++++++++
+ accel/kvm/kvm-all.c    | 95 ++++++++++++++++++++++++++++--------------
+ accel/kvm/trace-events |  5 ++-
+ 4 files changed, 92 insertions(+), 34 deletions(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index ef6f18f2c1..48ff6d8b93 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -237,6 +237,9 @@ typedef struct {
-  *    purposes only.
-  *    Applies only to default memory backend, i.e., explicit memory backend
-  *    wasn't used.
-+ * @smbios_memory_device_size:
-+ *    Default size of memory device,
-+ *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
+diff --git a/accel/kvm/kvm-cpus.h b/accel/kvm/kvm-cpus.h
+index ca40add32c..171b22fd29 100644
+--- a/accel/kvm/kvm-cpus.h
++++ b/accel/kvm/kvm-cpus.h
+@@ -22,5 +22,4 @@ bool kvm_supports_guest_debug(void);
+ int kvm_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len);
+ int kvm_remove_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len);
+ void kvm_remove_all_breakpoints(CPUState *cpu);
+-
+ #endif /* KVM_CPUS_H */
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index c31d9c7356..c4a914b3d8 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -313,6 +313,31 @@ int kvm_create_device(KVMState *s, uint64_t type, bool test);
   */
- struct MachineClass {
-     /*< private >*/
-@@ -304,6 +307,7 @@ struct MachineClass {
-     const CPUArchIdList *(*possible_cpu_arch_ids)(MachineState *machine);
-     int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
-     ram_addr_t (*fixup_ram_size)(ram_addr_t size);
-+    uint64_t smbios_memory_device_size;
- };
+ bool kvm_device_supported(int vmfd, uint64_t type);
  
- /**
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index b0c68d66a3..719e83e6a1 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3308,6 +3308,7 @@ DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
- static void virt_machine_9_0_options(MachineClass *mc)
- {
-     virt_machine_9_1_options(mc);
-+    mc->smbios_memory_device_size = 16 * GiB;
-     compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++/**
++ * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
++ * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
++ *
++ * @returns: 0 when success, errno (<0) when failed.
++ */
++int kvm_create_vcpu(CPUState *cpu);
++
++/**
++ * kvm_park_vcpu - Park QEMU KVM vCPU context
++ * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be parked.
++ *
++ * @returns: none
++ */
++void kvm_park_vcpu(CPUState *cpu);
++
++/**
++ * kvm_unpark_vcpu - unpark QEMU KVM vCPU context
++ * @s: KVM State
++ * @vcpu_id: Architecture vCPU ID of the parked vCPU
++ *
++ * @returns: KVM fd
++ */
++int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id);
++
+ /* Arch specific hooks */
+ 
+ extern const KVMCapabilityInfo kvm_arch_required_capabilities[];
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 64bf47a033..0f110cce3e 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -340,14 +340,71 @@ err:
+     return ret;
  }
- DEFINE_VIRT_MACHINE(9, 0)
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index bc38cad7f2..ac30544e7f 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1004,6 +1004,12 @@ static void machine_class_init(ObjectClass *oc, void *data)
-     /* Default 128 MB as guest ram size */
-     mc->default_ram_size = 128 * MiB;
-     mc->rom_file_has_mr = true;
-+    /*
-+     * SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
-+     * use max possible value that could be encoded into
-+     * 'Extended Size' field (2047Tb).
-+     */
-+    mc->smbios_memory_device_size = 2047 * TiB;
  
-     /* numa node memory size aligned on 8MB by default.
-      * On Linux, each node's border has to be 8MB aligned
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 9445b07b4f..d9e69243b4 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -495,6 +495,7 @@ static void pc_i440fx_machine_9_0_options(MachineClass *m)
-     pc_i440fx_machine_9_1_options(m);
-     m->alias = NULL;
-     m->is_default = false;
-+    m->smbios_memory_device_size = 16 * GiB;
- 
-     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 71d3c6d122..9d108b194e 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -374,6 +374,7 @@ static void pc_q35_machine_9_0_options(MachineClass *m)
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     pc_q35_machine_9_1_options(m);
-     m->alias = NULL;
-+    m->smbios_memory_device_size = 16 * GiB;
-     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-     pcmc->isa_bios_alias = false;
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 3b7703489d..a394514264 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -1093,6 +1093,7 @@ static bool smbios_get_tables_ep(MachineState *ms,
-                        Error **errp)
++void kvm_park_vcpu(CPUState *cpu)
++{
++    struct KVMParkedVcpu *vcpu;
++
++    trace_kvm_park_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
++
++    vcpu = g_malloc0(sizeof(*vcpu));
++    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
++    vcpu->kvm_fd = cpu->kvm_fd;
++    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
++}
++
++int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
++{
++    struct KVMParkedVcpu *cpu;
++    int kvm_fd = -ENOENT;
++
++    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
++        if (cpu->vcpu_id == vcpu_id) {
++            QLIST_REMOVE(cpu, node);
++            kvm_fd = cpu->kvm_fd;
++            g_free(cpu);
++        }
++    }
++
++    trace_kvm_unpark_vcpu(vcpu_id, kvm_fd > 0 ? "unparked" : "!found parked");
++
++    return kvm_fd;
++}
++
++int kvm_create_vcpu(CPUState *cpu)
++{
++    unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
++    KVMState *s = kvm_state;
++    int kvm_fd;
++
++    /* check if the KVM vCPU already exist but is parked */
++    kvm_fd = kvm_unpark_vcpu(s, vcpu_id);
++    if (kvm_fd < 0) {
++        /* vCPU not parked: create a new KVM vCPU */
++        kvm_fd = kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
++        if (kvm_fd < 0) {
++            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %lu", vcpu_id);
++            return kvm_fd;
++        }
++    }
++
++    cpu->kvm_fd = kvm_fd;
++    cpu->kvm_state = s;
++    cpu->vcpu_dirty = true;
++    cpu->dirty_pages = 0;
++    cpu->throttle_us_per_full = 0;
++
++    trace_kvm_create_vcpu(cpu->cpu_index, vcpu_id, kvm_fd);
++
++    return 0;
++}
++
+ static int do_kvm_destroy_vcpu(CPUState *cpu)
  {
-     unsigned i, dimm_cnt, offset;
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-     ERRP_GUARD();
+     KVMState *s = kvm_state;
+     long mmap_size;
+-    struct KVMParkedVcpu *vcpu = NULL;
+     int ret = 0;
  
-     assert(ep_type == SMBIOS_ENTRY_POINT_TYPE_32 ||
-@@ -1123,12 +1124,12 @@ static bool smbios_get_tables_ep(MachineState *ms,
-     smbios_build_type_9_table(errp);
-     smbios_build_type_11_table();
+-    trace_kvm_destroy_vcpu();
++    trace_kvm_destroy_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
  
--#define MAX_DIMM_SZ (16 * GiB)
--#define GET_DIMM_SZ ((i < dimm_cnt - 1) ? MAX_DIMM_SZ \
--                                        : ((current_machine->ram_size - 1) % MAX_DIMM_SZ) + 1)
-+#define GET_DIMM_SZ ((i < dimm_cnt - 1) ? mc->smbios_memory_device_size \
-+    : ((current_machine->ram_size - 1) % mc->smbios_memory_device_size) + 1)
+     ret = kvm_arch_destroy_vcpu(cpu);
+     if (ret < 0) {
+@@ -373,10 +430,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+         }
+     }
  
--    dimm_cnt = QEMU_ALIGN_UP(current_machine->ram_size, MAX_DIMM_SZ) /
--               MAX_DIMM_SZ;
-+    dimm_cnt = QEMU_ALIGN_UP(current_machine->ram_size,
-+                             mc->smbios_memory_device_size) /
-+               mc->smbios_memory_device_size;
+-    vcpu = g_malloc0(sizeof(*vcpu));
+-    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+-    vcpu->kvm_fd = cpu->kvm_fd;
+-    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
++    kvm_park_vcpu(cpu);
+ err:
+     return ret;
+ }
+@@ -389,24 +443,6 @@ void kvm_destroy_vcpu(CPUState *cpu)
+     }
+ }
  
-     /*
-      * The offset determines if we need to keep additional space between
+-static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+-{
+-    struct KVMParkedVcpu *cpu;
+-
+-    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
+-        if (cpu->vcpu_id == vcpu_id) {
+-            int kvm_fd;
+-
+-            QLIST_REMOVE(cpu, node);
+-            kvm_fd = cpu->kvm_fd;
+-            g_free(cpu);
+-            return kvm_fd;
+-        }
+-    }
+-
+-    return kvm_vm_ioctl(s, KVM_CREATE_VCPU, (void *)vcpu_id);
+-}
+-
+ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+ {
+     KVMState *s = kvm_state;
+@@ -415,19 +451,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+ 
+     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+ 
+-    ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
++    ret = kvm_create_vcpu(cpu);
+     if (ret < 0) {
+-        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
++        error_setg_errno(errp, -ret,
++                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",
+                          kvm_arch_vcpu_id(cpu));
+         goto err;
+     }
+ 
+-    cpu->kvm_fd = ret;
+-    cpu->kvm_state = s;
+-    cpu->vcpu_dirty = true;
+-    cpu->dirty_pages = 0;
+-    cpu->throttle_us_per_full = 0;
+-
+     mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+     if (mmap_size < 0) {
+         ret = mmap_size;
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+index 681ccb667d..37626c1ac5 100644
+--- a/accel/kvm/trace-events
++++ b/accel/kvm/trace-events
+@@ -9,6 +9,10 @@ kvm_device_ioctl(int fd, int type, void *arg) "dev fd %d, type 0x%x, arg %p"
+ kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+ kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to set ONEREG %" PRIu64 " to KVM: %s"
+ kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
++kvm_create_vcpu(int cpu_index, unsigned long arch_cpu_id, int kvm_fd) "index: %d, id: %lu, kvm fd: %d"
++kvm_destroy_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
++kvm_park_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
++kvm_unpark_vcpu(unsigned long arch_cpu_id, const char *msg) "id: %lu %s"
+ kvm_irqchip_commit_routes(void) ""
+ kvm_irqchip_add_msi_route(char *name, int vector, int virq) "dev %s vector %d virq %d"
+ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+@@ -25,7 +29,6 @@ kvm_dirty_ring_reaper(const char *s) "%s"
+ kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (took %"PRIi64" us)"
+ kvm_dirty_ring_reaper_kick(const char *reason) "%s"
+ kvm_dirty_ring_flush(int finished) "%d"
+-kvm_destroy_vcpu(void) ""
+ kvm_failed_get_vcpu_mmap_size(void) ""
+ kvm_cpu_exec(void) ""
+ kvm_interrupt_exit_request(void) ""
 -- 
 MST
 
