@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B10939513
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6676F93951C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:07:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0EU-0000Ym-2b; Mon, 22 Jul 2024 17:06:10 -0400
+	id 1sW0F7-0003JO-Vy; Mon, 22 Jul 2024 17:06:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sW0ES-0000V8-DK
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:06:08 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sW0EP-00055k-8Y
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:06:08 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1fd70ba6a15so16588215ad.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721682364; x=1722287164; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+BC70SQOUCj32PwE09305E5qj3WqHU1ENkN4YcT/+k0=;
- b=m9H5rUoBsZ2I4nOF9CE4P5xVwDCFWP+n/M6I8VuVq1iFbFNFYiauUapURKHDX4jwYL
- Ikcwpe+nNPje1WBf0qFwnhRhcgd7/y5wXMj0qNgIxuc4nb7NzYNuzA+ACaLB4TEiVeoN
- ZS9Th0WNzWQiuaYjXAdvtEHyJK6UUwd1wMFeSxZCwq/VPNAQvg2+ztzPKCJ0H5qJMhEp
- tHM9fUlu1gZoaWTp2wVXnYus7lZyIqHB6wGcqll/Ik5puWaD/U/If5ZaGWAZ951fCdOn
- s9f0Jwx8O45rQza+kkq69ti8xV2X9PfSSajkKYfhModEFl/7cmY0XY2uxJW0A2QsmqB9
- vRDw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sW0Es-0002Nr-E5
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:06:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sW0Ep-00058g-1u
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:06:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721682389;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=brluLAieoSdueMdK0HNd3adXTAIhhnRa0mqPjxkAap8=;
+ b=iI7xVWjWW/bm/q+G7tb5r9hgzYveijsBY4ld/sH+DQ3TBIRuDgijjd5l+2ByEr0GM/wgQd
+ 1GOTlikRbo1MJdGGvZj29FrGeYCIaqTWwcNt678LujJGqW0xJS+DRe8OyQJnZNTRmipybF
+ yQse4RQjILLNRDDp/EMyaJ5HE7WiL3E=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-kjHZw2CkNFWdngADp5Ykng-1; Mon, 22 Jul 2024 17:06:27 -0400
+X-MC-Unique: kjHZw2CkNFWdngADp5Ykng-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6b792d6fe5bso15846216d6.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:06:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721682364; x=1722287164;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+BC70SQOUCj32PwE09305E5qj3WqHU1ENkN4YcT/+k0=;
- b=tkf/Kd3iHDSdw/9VjULW2t1mKnoBJTycM7rcDklRBwxPEv1uunaDcoJy0Xokmaszkk
- x2OP7zvd5Sp1mEJC3jbRKq5K8m9gAuldTZVlMd537U1cXwOlsvvhQvvDYSoTXUtUpsdH
- HFUWlz4D35eR+esI/WeXjOZC8Otz47S9d2uKBqx/Z1am1OReGgjATRAaBE9DFBpDsbXb
- puaPfDKaczlQfZ4xzdE2In0UGJ+kKFNF1WwwfPy87NHXK1bkHnIU1efZ+Za8Tt27e1Bs
- Zk4RPukkDHkmZ4gaYneCEf5TpxOr3Wf5kuLR/CHmhZ3oeZObduF2pgd7WndfwWUT9xHo
- ln2A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU2v2aFlx/6cSQoIxV0JH323vMEb/pyGo1K/LhniaKM2kzBbgt3tUiMo7Ffu91LATeVkqUWiQKTne8z+7rR8oMbtPgT7b8=
-X-Gm-Message-State: AOJu0YzdiCWp1J6mr13YCSbz98yX3Z7uKc5sFueW2VIVj8xYhchusjpn
- ztHuGjA5wpsm4+ZidH75GCAUcl4MInvaz4xWC3FIGenI2Iw/3AU6WzKBWDhmdkY=
-X-Google-Smtp-Source: AGHT+IFWQ8EnmzSeBLlsabdH4ujh+qhOASXxd3CDyp3ZAM4WZDKML2+G0kZyk9AiPFV+1oVfZT4c4g==
-X-Received: by 2002:a17:903:2285:b0:1fd:70c4:8389 with SMTP id
- d9443c01a7336-1fd745258dbmr66793345ad.7.1721682363728; 
- Mon, 22 Jul 2024 14:06:03 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::b861? ([2604:3d08:9384:1d00::b861])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fd6f31bb8asm59780195ad.170.2024.07.22.14.06.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 14:06:03 -0700 (PDT)
-Message-ID: <46f15897-da83-461d-b3bc-b0143fb1a4b0@linaro.org>
-Date: Mon, 22 Jul 2024 14:06:02 -0700
+ d=1e100.net; s=20230601; t=1721682386; x=1722287186;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=brluLAieoSdueMdK0HNd3adXTAIhhnRa0mqPjxkAap8=;
+ b=L8MKWPveb/6kFg5JdpWOR6G8dd5KbJ1kH6zCkPsvD6H0BT5sUGmXd0agQfVXKfELtj
+ rSKLKWYiVT5R7V6JuScdL/DSUdZnbk8+fkxyXpo4l/DMGafNmwg+/JF1jVOz9efhcUTF
+ ek74gPtHSKDzK3xWml5bQF6ekaHpRSJXs8uCNU75/MLHD9IP2swek4T4Hij29gN0kb/F
+ t/9CtUH4jfRYTsk7/iXTaXTGJ28QtWy/cHUC5aNtje6KMijZmtf1Uv6P5PymcwHSKFg4
+ G2O+rkQu7cS5G5jJreIXcWdXNKL83jydFnNGViMRlgEIL41Bmx4MIoYIKoNRHnDpnx8W
+ g8Qw==
+X-Gm-Message-State: AOJu0Yxg3lYm1od/WLL5QRxhbIXLXOdp6U4ueyGvA4D9cGhbE9OzefIg
+ 7QWgFakBFL2TGXp5g/KacdgqiN1jkUUPJmj3QUvQW+m0p7pLjuFVpcA8J01Mg0K7meW5+AxPhkc
+ LDso8q6lWH3rvkkAHV8g5jYT6QbhF4DFLS8jzatH9QHp8hkwH88lpOkwGXMGp
+X-Received: by 2002:a05:6214:3907:b0:6b5:600:acc8 with SMTP id
+ 6a1803df08f44-6b94f0117a2mr64225346d6.1.1721682386603; 
+ Mon, 22 Jul 2024 14:06:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWTjY/PtNh+vVa8VVB7UxtZNk4+JDRfxHKGZRF7SksEQOMdFeFfoTRaBJBxNOql4JUvY9hZQ==
+X-Received: by 2002:a05:6214:3907:b0:6b5:600:acc8 with SMTP id
+ 6a1803df08f44-6b94f0117a2mr64225136d6.1.1721682386145; 
+ Mon, 22 Jul 2024 14:06:26 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6b7acb07fd0sm39129216d6.130.2024.07.22.14.06.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jul 2024 14:06:25 -0700 (PDT)
+Date: Mon, 22 Jul 2024 17:06:23 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
+Subject: Re: [RFC PATCH v2 7/9] migration/multifd: Isolate ram pages packet
+ data
+Message-ID: <Zp7Jz9I3jVlrg8uK@x1n>
+References: <20240722175914.24022-1-farosas@suse.de>
+ <20240722175914.24022-8-farosas@suse.de> <Zp6089I1ozCg1Eaq@x1n>
+ <87h6chyxln.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] util/fifo8: Expose fifo8_pop_buf()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20240722160745.67904-1-philmd@linaro.org>
- <20240722160745.67904-7-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240722160745.67904-7-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87h6chyxln.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,90 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gNy8yMi8yNCAwOTowNywgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IEV4
-dHJhY3QgZmlmbzhfcG9wX2J1ZigpIGZyb20gaHcvc2NzaS9lc3AuYyBhbmQgZXhwb3NlDQo+
-IGl0IGFzIHBhcnQgb2YgdGhlIDxxZW11L2ZpZm84Lmg+IEFQSS4gVGhpcyBmdW5jdGlvbiB0
-YWtlcw0KPiBjYXJlIG9mIG5vbi1jb250aWd1b3VzICh3cmFwcGVkKSBGSUZPIGJ1ZmZlciAo
-d2hpY2ggaXMgYW4NCj4gaW1wbGVtZW50YXRpb24gZGV0YWlsKS4NCj4gDQo+IFN1Z2dlc3Rl
-ZC1ieTogTWFyayBDYXZlLUF5bGFuZCA8bWFyay5jYXZlLWF5bGFuZEBpbGFuZGUuY28udWs+
-DQo+IFNpZ25lZC1vZmYtYnk6IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGlu
-YXJvLm9yZz4NCj4gLS0tDQo+ICAgaW5jbHVkZS9xZW11L2ZpZm84LmggfCAxNCArKysrKysr
-KysrKysrKw0KPiAgIGh3L3Njc2kvZXNwLmMgICAgICAgIHwgMzYgKysrLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ICAgdXRpbC9maWZvOC5jICAgICAgICAgfCAyOSAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgIDMgZmlsZXMgY2hhbmdlZCwgNDYg
-aW5zZXJ0aW9ucygrKSwgMzMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5j
-bHVkZS9xZW11L2ZpZm84LmggYi9pbmNsdWRlL3FlbXUvZmlmbzguaA0KPiBpbmRleCA2ODY5
-MThhM2E0Li4yMWM3YTIyOTM3IDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL3FlbXUvZmlmbzgu
-aA0KPiArKysgYi9pbmNsdWRlL3FlbXUvZmlmbzguaA0KPiBAQCAtNjIsNiArNjIsMjAgQEAg
-dm9pZCBmaWZvOF9wdXNoX2FsbChGaWZvOCAqZmlmbywgY29uc3QgdWludDhfdCAqZGF0YSwg
-dWludDMyX3QgbnVtKTsNCj4gICAgKi8NCj4gICB1aW50OF90IGZpZm84X3BvcChGaWZvOCAq
-Zmlmbyk7DQo+ICAgDQo+ICsvKioNCj4gKyAqIGZpZm84X3BvcF9idWY6DQo+ICsgKiBAZmlm
-bzogRklGTyB0byBwb3AgZnJvbQ0KPiArICogQGRlc3Q6IHRoZSBidWZmZXIgdG8gd3JpdGUg
-dGhlIGRhdGEgaW50byAoY2FuIGJlIE5VTEwpDQo+ICsgKiBAZGVzdGxlbjogc2l6ZSBvZiBA
-ZGVzdCBhbmQgbWF4aW11bSBudW1iZXIgb2YgYnl0ZXMgdG8gcG9wDQo+ICsgKg0KPiArICog
-UG9wIGEgbnVtYmVyIG9mIGVsZW1lbnRzIGZyb20gdGhlIEZJRk8gdXAgdG8gYSBtYXhpbXVt
-IG9mIEBkZXN0bGVuLg0KPiArICogVGhlIHBvcHBlZCBkYXRhIGlzIGNvcGllZCBpbnRvIHRo
-ZSBAZGVzdCBidWZmZXIuDQo+ICsgKiBDYXJlIGlzIHRha2VuIHdoZW4gdGhlIGRhdGEgd3Jh
-cHMgYXJvdW5kIGluIHRoZSByaW5nIGJ1ZmZlci4NCj4gKyAqDQo+ICsgKiBSZXR1cm5zOiBu
-dW1iZXIgb2YgYnl0ZXMgcG9wcGVkLg0KPiArICovDQo+ICt1aW50MzJfdCBmaWZvOF9wb3Bf
-YnVmKEZpZm84ICpmaWZvLCB1aW50OF90ICpkZXN0LCB1aW50MzJfdCBkZXN0bGVuKTsNCj4g
-Kw0KPiAgIC8qKg0KPiAgICAqIGZpZm84X3BvcF9jb25zdGJ1ZjoNCj4gICAgKiBAZmlmbzog
-RklGTyB0byBwb3AgZnJvbQ0KPiBkaWZmIC0tZ2l0IGEvaHcvc2NzaS9lc3AuYyBiL2h3L3Nj
-c2kvZXNwLmMNCj4gaW5kZXggNjQzODRmOWIwZS4uY2VjODQ3YjU0YSAxMDA2NDQNCj4gLS0t
-IGEvaHcvc2NzaS9lc3AuYw0KPiArKysgYi9ody9zY3NpL2VzcC5jDQo+IEBAIC0xOTcsMzkg
-KzE5Nyw5IEBAIHN0YXRpYyB1aW50OF90IGVzcF9maWZvX3BvcChFU1BTdGF0ZSAqcykNCj4g
-ICAgICAgcmV0dXJuIHZhbDsNCj4gICB9DQo+ICAgDQo+IC1zdGF0aWMgdWludDMyX3QgZXNw
-X2ZpZm84X3BvcF9idWYoRmlmbzggKmZpZm8sIHVpbnQ4X3QgKmRlc3QsIGludCBtYXhsZW4p
-DQo+IC17DQo+IC0gICAgY29uc3QgdWludDhfdCAqYnVmOw0KPiAtICAgIHVpbnQzMl90IG4s
-IG4yOw0KPiAtICAgIGludCBsZW47DQo+IC0NCj4gLSAgICBpZiAobWF4bGVuID09IDApIHsN
-Cj4gLSAgICAgICAgcmV0dXJuIDA7DQo+IC0gICAgfQ0KPiAtDQo+IC0gICAgbGVuID0gbWF4
-bGVuOw0KPiAtICAgIGJ1ZiA9IGZpZm84X3BvcF9jb25zdGJ1ZihmaWZvLCBsZW4sICZuKTsN
-Cj4gLSAgICBpZiAoZGVzdCkgew0KPiAtICAgICAgICBtZW1jcHkoZGVzdCwgYnVmLCBuKTsN
-Cj4gLSAgICB9DQo+IC0NCj4gLSAgICAvKiBBZGQgRklGTyB3cmFwYXJvdW5kIGlmIG5lZWRl
-ZCAqLw0KPiAtICAgIGxlbiAtPSBuOw0KPiAtICAgIGxlbiA9IE1JTihsZW4sIGZpZm84X251
-bV91c2VkKGZpZm8pKTsNCj4gLSAgICBpZiAobGVuKSB7DQo+IC0gICAgICAgIGJ1ZiA9IGZp
-Zm84X3BvcF9jb25zdGJ1ZihmaWZvLCBsZW4sICZuMik7DQo+IC0gICAgICAgIGlmIChkZXN0
-KSB7DQo+IC0gICAgICAgICAgICBtZW1jcHkoJmRlc3Rbbl0sIGJ1ZiwgbjIpOw0KPiAtICAg
-ICAgICB9DQo+IC0gICAgICAgIG4gKz0gbjI7DQo+IC0gICAgfQ0KPiAtDQo+IC0gICAgcmV0
-dXJuIG47DQo+IC19DQo+IC0NCj4gICBzdGF0aWMgdWludDMyX3QgZXNwX2ZpZm9fcG9wX2J1
-ZihFU1BTdGF0ZSAqcywgdWludDhfdCAqZGVzdCwgaW50IG1heGxlbikNCj4gICB7DQo+IC0g
-ICAgdWludDMyX3QgbGVuID0gZXNwX2ZpZm84X3BvcF9idWYoJnMtPmZpZm8sIGRlc3QsIG1h
-eGxlbik7DQo+ICsgICAgdWludDMyX3QgbGVuID0gZmlmbzhfcG9wX2J1Zigmcy0+Zmlmbywg
-ZGVzdCwgbWF4bGVuKTsNCj4gICANCj4gICAgICAgZXNwX3VwZGF0ZV9kcnEocyk7DQo+ICAg
-ICAgIHJldHVybiBsZW47DQo+IEBAIC0zMzUsNyArMzA1LDcgQEAgc3RhdGljIHZvaWQgZG9f
-Y29tbWFuZF9waGFzZShFU1BTdGF0ZSAqcykNCj4gICAgICAgaWYgKCFjbWRsZW4gfHwgIXMt
-PmN1cnJlbnRfZGV2KSB7DQo+ICAgICAgICAgICByZXR1cm47DQo+ICAgICAgIH0NCj4gLSAg
-ICBlc3BfZmlmbzhfcG9wX2J1Zigmcy0+Y21kZmlmbywgYnVmLCBjbWRsZW4pOw0KPiArICAg
-IGZpZm84X3BvcF9idWYoJnMtPmNtZGZpZm8sIGJ1ZiwgY21kbGVuKTsNCj4gICANCj4gICAg
-ICAgY3VycmVudF9sdW4gPSBzY3NpX2RldmljZV9maW5kKCZzLT5idXMsIDAsIHMtPmN1cnJl
-bnRfZGV2LT5pZCwgcy0+bHVuKTsNCj4gICAgICAgaWYgKCFjdXJyZW50X2x1bikgew0KPiBA
-QCAtMzgxLDcgKzM1MSw3IEBAIHN0YXRpYyB2b2lkIGRvX21lc3NhZ2VfcGhhc2UoRVNQU3Rh
-dGUgKnMpDQo+ICAgICAgIC8qIElnbm9yZSBleHRlbmRlZCBtZXNzYWdlcyBmb3Igbm93ICov
-DQo+ICAgICAgIGlmIChzLT5jbWRmaWZvX2NkYl9vZmZzZXQpIHsNCj4gICAgICAgICAgIGlu
-dCBsZW4gPSBNSU4ocy0+Y21kZmlmb19jZGJfb2Zmc2V0LCBmaWZvOF9udW1fdXNlZCgmcy0+
-Y21kZmlmbykpOw0KPiAtICAgICAgICBlc3BfZmlmbzhfcG9wX2J1Zigmcy0+Y21kZmlmbywg
-TlVMTCwgbGVuKTsNCj4gKyAgICAgICAgZmlmbzhfcG9wX2J1Zigmcy0+Y21kZmlmbywgTlVM
-TCwgbGVuKTsNCj4gICAgICAgICAgIHMtPmNtZGZpZm9fY2RiX29mZnNldCA9IDA7DQo+ICAg
-ICAgIH0NCj4gICB9DQo+IGRpZmYgLS1naXQgYS91dGlsL2ZpZm84LmMgYi91dGlsL2ZpZm84
-LmMNCj4gaW5kZXggMzFmMGQzNGMwYy4uNjYxMGI3OTE4MiAxMDA2NDQNCj4gLS0tIGEvdXRp
-bC9maWZvOC5jDQo+ICsrKyBiL3V0aWwvZmlmbzguYw0KPiBAQCAtMTAyLDYgKzEwMiwzNSBA
-QCBjb25zdCB1aW50OF90ICpmaWZvOF9wb3BfY29uc3RidWYoRmlmbzggKmZpZm8sIHVpbnQz
-Ml90IG1heCwgdWludDMyX3QgKm51bXB0cikNCj4gICAgICAgcmV0dXJuIGZpZm84X3BlZWtw
-b3BfYnVmKGZpZm8sIG1heCwgbnVtcHRyLCB0cnVlKTsNCj4gICB9DQo+ICAgDQo+ICt1aW50
-MzJfdCBmaWZvOF9wb3BfYnVmKEZpZm84ICpmaWZvLCB1aW50OF90ICpkZXN0LCB1aW50MzJf
-dCBkZXN0bGVuKQ0KPiArew0KPiArICAgIGNvbnN0IHVpbnQ4X3QgKmJ1ZjsNCj4gKyAgICB1
-aW50MzJfdCBuMSwgbjIgPSAwOw0KPiArICAgIHVpbnQzMl90IGxlbjsNCj4gKw0KPiArICAg
-IGlmIChkZXN0bGVuID09IDApIHsNCj4gKyAgICAgICAgcmV0dXJuIDA7DQo+ICsgICAgfQ0K
-PiArDQo+ICsgICAgbGVuID0gZGVzdGxlbjsNCj4gKyAgICBidWYgPSBmaWZvOF9wb3BfY29u
-c3RidWYoZmlmbywgbGVuLCAmbjEpOw0KPiArICAgIGlmIChkZXN0KSB7DQo+ICsgICAgICAg
-IG1lbWNweShkZXN0LCBidWYsIG4xKTsNCj4gKyAgICB9DQo+ICsNCj4gKyAgICAvKiBBZGQg
-RklGTyB3cmFwYXJvdW5kIGlmIG5lZWRlZCAqLw0KPiArICAgIGxlbiAtPSBuMTsNCj4gKyAg
-ICBsZW4gPSBNSU4obGVuLCBmaWZvOF9udW1fdXNlZChmaWZvKSk7DQo+ICsgICAgaWYgKGxl
-bikgew0KPiArICAgICAgICBidWYgPSBmaWZvOF9wb3BfY29uc3RidWYoZmlmbywgbGVuLCAm
-bjIpOw0KPiArICAgICAgICBpZiAoZGVzdCkgew0KPiArICAgICAgICAgICAgbWVtY3B5KCZk
-ZXN0W24xXSwgYnVmLCBuMik7DQo+ICsgICAgICAgIH0NCj4gKyAgICB9DQo+ICsNCj4gKyAg
-ICByZXR1cm4gbjEgKyBuMjsNCj4gK30NCj4gKw0KPiAgIGJvb2wgZmlmbzhfaXNfZW1wdHko
-RmlmbzggKmZpZm8pDQo+ICAgew0KPiAgICAgICByZXR1cm4gKGZpZm8tPm51bSA9PSAwKTsN
-Cg0KUmV2aWV3ZWQtYnk6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGlu
-YXJvLm9yZz4NCg==
+On Mon, Jul 22, 2024 at 05:34:44PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Mon, Jul 22, 2024 at 02:59:12PM -0300, Fabiano Rosas wrote:
+> >> While we cannot yet disentangle the multifd packet from page data, we
+> >> can make the code a bit cleaner by setting the page-related fields in
+> >> a separate function.
+> >> 
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >> ---
+> >>  migration/multifd.c | 97 ++++++++++++++++++++++++++++-----------------
+> >>  1 file changed, 61 insertions(+), 36 deletions(-)
+> >> 
+> >> diff --git a/migration/multifd.c b/migration/multifd.c
+> >> index fcdb12e04f..d25b8658b2 100644
+> >> --- a/migration/multifd.c
+> >> +++ b/migration/multifd.c
+> >> @@ -409,65 +409,62 @@ static int multifd_recv_initial_packet(QIOChannel *c, Error **errp)
+> >>      return msg.id;
+> >>  }
+> >>  
+> >> -void multifd_send_fill_packet(MultiFDSendParams *p)
+> >> +static void multifd_ram_fill_packet(MultiFDSendParams *p)
+> >>  {
+> >>      MultiFDPacket_t *packet = p->packet;
+> >>      MultiFDPages_t *pages = &p->data->u.ram;
+> >> -    uint64_t packet_num;
+> >>      uint32_t zero_num = pages->num - pages->normal_num;
+> >> -    int i;
+> >>  
+> >> -    packet->flags = cpu_to_be32(p->flags);
+> >>      packet->pages_alloc = cpu_to_be32(pages->allocated);
+> >>      packet->normal_pages = cpu_to_be32(pages->normal_num);
+> >>      packet->zero_pages = cpu_to_be32(zero_num);
+> >> -    packet->next_packet_size = cpu_to_be32(p->next_packet_size);
+> >
+> > Definitely good intention, but I had a feeling that this will need to be
+> > reorganized again when Maciej reworks on top, due to the fact that
+> > next_packet_size will be ram-private field, simply because it's defined
+> > after pages_alloc and normal_pages...
+> >
+> > E.g., see:
+> >
+> > https://lore.kernel.org/r/41dedaf2c9abebb5e45f88c052daa26320715a92.1718717584.git.maciej.szmigiero@oracle.com
+> >
+> > Where the new MultiFDPacketHdr_t cannot include next_packet_size (even if
+> > VFIO will need that too..).
+> 
+> Isn't it just a matter of setting next_packet_size in the other path as
+> well?
+> 
+> @Maciej, can you comment?
+> 
+> >
+> > typedef struct {
+> >     uint32_t magic;
+> >     uint32_t version;
+> >     uint32_t flags;
+> > } __attribute__((packed)) MultiFDPacketHdr_t;
+> >
+> > So _maybe_ it's easier we drop this patch and leave that part to Maciej to
+> > identify which is common and which is arm/vfio specific.  No strong
+> > opinions here.
+> >
+> 
+> I could drop it if that's preferrable. However, patch 8/9 is absolutely
+> necessary so we can remove this madness of having to clear
+> MultiFDPages_t fields at the multifd_send_thread() top level. It took me
+> a whole day to figure that one out and that bug has been manifesting
+> ever since I started working on multifd.
+> 
+> I'm not sure how we'll do that without this patch. Maybe it's better I
+> fix in this one whatever you guys think needs fixing.
+
+You can set next_packet_size only in ram path, or you can keep this patch
+as is and let Maciej rework it on top.
+
+I'm fine either way.
+
+-- 
+Peter Xu
+
 
