@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5F1938915
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 08:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2C593890C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 08:47:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVmoh-0001C6-IS; Mon, 22 Jul 2024 02:46:39 -0400
+	id 1sVmom-0001ZT-5z; Mon, 22 Jul 2024 02:46:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sVmoW-00014f-8M; Mon, 22 Jul 2024 02:46:29 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ id 1sVmoY-000166-2i; Mon, 22 Jul 2024 02:46:31 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sVmoT-0003er-PI; Mon, 22 Jul 2024 02:46:27 -0400
+ id 1sVmoU-0003f6-Vr; Mon, 22 Jul 2024 02:46:29 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 640E660203;
- Mon, 22 Jul 2024 06:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44259C4AF10;
+ by sin.source.kernel.org (Postfix) with ESMTP id E0F3ECE0AFC;
+ Mon, 22 Jul 2024 06:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E80C4AF0E;
  Mon, 22 Jul 2024 06:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1721630776;
- bh=9YH+uN2FpTDfQsql9e3P4xbbtz8E4TbY1G0zlNhC2vc=;
+ bh=8fT3iZX4Ak9UXbYdPywtW7xLXPjIWOMseP9okwfRJuM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=egl5sfP2vUcutHSmBLB0tmEwjOTSlzqbEc+dIR/c5tpPcocxInvv+A3asIbKjFOA4
- L5ai+QTaZjsqsfpy8a2H6dhdyUBmPW/bfW603ZUoUTMXaO0QO+y6XSrA/Ahhbtt+zk
- i7122QXfCj558UQboDJd/Bzxq81KUTkfymtvQOsABKy3qpYH0qcXzyVJ1P/0nqHS4h
- q/Tjk5Loax4EcnTSo8JYFTgRoRjW/tf62UI5fHgj12By0orP245M6QLVHjc2owq36N
- ErbSpua+irbPZK/+wgqluCFVTod9wnTwBYPfvmOxQhcgLi1OWEH84IpCj4e6PqITi6
- FjMP5FLf65ojw==
+ b=kNpRBZZsm9mWd6iSI9j3jYworOiHY2yeaDBzIMmsRhBVgsfyLe/BKMCa2M+a7D2j1
+ +SpV1pEFifQ4EQoqZZlS+7wlnC+o2LihdhDKyfnxCGES7DcUUQv/U3LkklCSHaq3VN
+ bxSHWYImNcUZ0+Fhcu/acfry+UH6Mh/zm/4pKfdYgyAvsfR4ajI+7xHzrN8480zpQ1
+ Qad5WxpHn/ESnwr4kp8AAz9CDY+5p3+uXBitopiQvR7pYEJnZj/MH1bA4kvbSSPj1S
+ MLzg8uEJEMoIQDJZ/6Hin+GzvTVOyp6l+ptBvWyjzDYavsA1P0YFEKoKHbm8Arrled
+ i7NDbtmtbjZnQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.97.1)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1sVmoI-00000000WQy-1GvZ; Mon, 22 Jul 2024 08:46:14 +0200
+ id 1sVmoI-00000000WR2-1NVJ; Mon, 22 Jul 2024 08:46:14 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Peter Maydell <peter.maydell@linaro.org>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v3 5/7] target/arm: preserve mpidr value
-Date: Mon, 22 Jul 2024 08:45:57 +0200
-Message-ID: <acdc77f8b53ed570aa7a59fdc83fb8ab5f79ca19.1721630625.git.mchehab+huawei@kernel.org>
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v3 6/7] acpi/ghes: update comments to point to newer ACPI specs
+Date: Mon, 22 Jul 2024 08:45:58 +0200
+Message-ID: <66c1ab4988589be99ae925c6361548f55fea58b0.1721630625.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1721630625.git.mchehab+huawei@kernel.org>
 References: <cover.1721630625.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217;
- envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,70 +74,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a logic at helper to properly fill the mpidr information.
-This is needed for ARM Processor error injection, so store the
-value inside a cpu opaque value, to allow it to be used.
+There is one reference to ACPI 4.0 and several references
+to ACPI 6.x versions.
+
+Update them to point to ACPI 6.5 whenever possible.
+
+There's one reference that was kept pointing to ACPI 6.4,
+though, with HEST revision 1.
+
+ACPI 6.5 now defines HEST revision 2, and defined a new
+way to handle source types starting from 12. According
+with ACPI 6.5 revision history:
+
+	2312 Update to the HEST table and adding new error
+	     source descriptor - Table 18.2.
+
+Yet, the spec doesn't define yet any new source
+descriptors. It just defines a different behavior when
+source type is above 11.
+
+I also double-checked GHES implementation on an open
+source project (Linux Kernel). Currently upstream
+doesn't currently handle HEST revision, ignoring such
+field.
+
+In any case, revision 2 seems to be backward-compatible
+with revison 1 when type <= 11 and just one error is
+contained on a HEST record.
+
+So, while it is probably safe to update it, there's no
+real need. So, let's keep the implementation using
+an ACPI 6.4 compatible table, e. g. HEST revision 1.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- target/arm/cpu.h    |  1 +
- target/arm/helper.c | 10 ++++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ hw/acpi/ghes.c | 48 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index a12859fc5335..d2e86f0877cc 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1033,6 +1033,7 @@ struct ArchCPU {
-         uint64_t reset_pmcr_el0;
-     } isar;
-     uint64_t midr;
-+    uint64_t mpidr;
-     uint32_t revidr;
-     uint32_t reset_fpsid;
-     uint64_t ctr;
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index ce319572354a..2432b5b09607 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -4692,7 +4692,7 @@ static uint64_t mpidr_read_val(CPUARMState *env)
-     return mpidr;
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index 6075ef5893ce..ebf1b812aaaa 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -45,9 +45,9 @@
+ #define GAS_ADDR_OFFSET 4
+ 
+ /*
+- * The total size of Generic Error Data Entry
+- * ACPI 6.1/6.2: 18.3.2.7.1 Generic Error Data,
+- * Table 18-343 Generic Error Data Entry
++ * The total size of Generic Error Data Entry before data field
++ * ACPI 6.5: 18.3.2.7.1 Generic Error Data,
++ * Table 18.12 Generic Error Data Entry
+  */
+ #define ACPI_GHES_DATA_LENGTH               72
+ 
+@@ -65,8 +65,8 @@
+ 
+ /*
+  * Total size for Generic Error Status Block except Generic Error Data Entries
+- * ACPI 6.2: 18.3.2.7.1 Generic Error Data,
+- * Table 18-380 Generic Error Status Block
++ * ACPI 6.5: 18.3.2.7.1 Generic Error Data,
++ * Table 18.11 Generic Error Status Block
+  */
+ #define ACPI_GHES_GESB_SIZE                 20
+ 
+@@ -82,7 +82,8 @@ enum AcpiGenericErrorSeverity {
+ 
+ /*
+  * Hardware Error Notification
+- * ACPI 4.0: 17.3.2.7 Hardware Error Notification
++ * ACPI 6.5: 18.3.2.9 Hardware Error Notification,
++ * Table 18.14 - Hardware Error Notification Structure
+  * Composes dummy Hardware Error Notification descriptor of specified type
+  */
+ static void build_ghes_hw_error_notification(GArray *table, const uint8_t type)
+@@ -112,7 +113,8 @@ static void build_ghes_hw_error_notification(GArray *table, const uint8_t type)
+ 
+ /*
+  * Generic Error Data Entry
+- * ACPI 6.1: 18.3.2.7.1 Generic Error Data
++ * ACPI 6.5: 18.3.2.7.1 Generic Error Data,
++ * Table 18.12 - Generic Error Data Entry
+  */
+ static void acpi_ghes_generic_error_data(GArray *table,
+                 const uint8_t *section_type, uint32_t error_severity,
+@@ -148,7 +150,8 @@ static void acpi_ghes_generic_error_data(GArray *table,
+ 
+ /*
+  * Generic Error Status Block
+- * ACPI 6.1: 18.3.2.7.1 Generic Error Data
++ * ACPI 6.5: 18.3.2.7.1 Generic Error Data,
++ * Table 18.11 - Generic Hardware Error Source Structure
+  */
+ static void acpi_ghes_generic_error_status(GArray *table, uint32_t block_status,
+                 uint32_t raw_data_offset, uint32_t raw_data_length,
+@@ -429,15 +432,18 @@ void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
+         0, sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE, 0);
  }
  
--static uint64_t mpidr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-+static uint64_t mpidr_read(CPUARMState *env)
+-/* Build Generic Hardware Error Source version 2 (GHESv2) */
++/*
++ * Build Generic Hardware Error Source version 2 (GHESv2)
++ * ACPI 6.5: 18.3.2.8 Generic Hardware Error Source version 2 (GHESv2 - Type 10),
++ * Table 18.13: Generic Hardware Error Source version 2 (GHESv2)
++ */
+ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
  {
-     unsigned int cur_el = arm_current_el(env);
+     uint64_t address_offset;
+-    /*
+-     * Type:
+-     * Generic Hardware Error Source version 2(GHESv2 - Type 10)
+-     */
++    /* Type: (GHESv2 - Type 10) */
+     build_append_int_noprefix(table_data, ACPI_GHES_SOURCE_GENERIC_ERROR_V2, 2);
++
++    /* ACPI 6.5: Table 18.10 - Generic Hardware Error Source Structure */
+     /* Source Id */
+     build_append_int_noprefix(table_data, source_id, 2);
+     /* Related Source Id */
+@@ -481,11 +487,8 @@ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
+     /* Error Status Block Length */
+     build_append_int_noprefix(table_data, ACPI_GHES_MAX_RAW_DATA_LENGTH, 4);
  
-@@ -4702,6 +4702,11 @@ static uint64_t mpidr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     return mpidr_read_val(env);
+-    /*
+-     * Read Ack Register
+-     * ACPI 6.1: 18.3.2.8 Generic Hardware Error Source
+-     * version 2 (GHESv2 - Type 10)
+-     */
++    /* ACPI 6.5: fields defined at GHESv2 table */
++    /* Read Ack Register */
+     address_offset = table_data->len;
+     build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 0x40, 0,
+                      4 /* QWord access */, 0);
+@@ -504,11 +507,16 @@ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
+     build_append_int_noprefix(table_data, 0x1, 8);
  }
  
-+static uint64_t mpidr_read_ri(CPUARMState *env, const ARMCPRegInfo *ri)
-+{
-+    return mpidr_read(env);
-+}
-+
- static const ARMCPRegInfo lpae_cp_reginfo[] = {
-     /* NOP AMAIR0/1 */
-     { .name = "AMAIR0", .state = ARM_CP_STATE_BOTH,
-@@ -9723,7 +9728,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-             { .name = "MPIDR_EL1", .state = ARM_CP_STATE_BOTH,
-               .opc0 = 3, .crn = 0, .crm = 0, .opc1 = 0, .opc2 = 5,
-               .fgt = FGT_MPIDR_EL1,
--              .access = PL1_R, .readfn = mpidr_read, .type = ARM_CP_NO_RAW },
-+              .access = PL1_R, .readfn = mpidr_read_ri, .type = ARM_CP_NO_RAW },
-         };
- #ifdef CONFIG_USER_ONLY
-         static const ARMCPRegUserSpaceInfo mpidr_user_cp_reginfo[] = {
-@@ -9733,6 +9738,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         modify_arm_cp_regs(mpidr_cp_reginfo, mpidr_user_cp_reginfo);
- #endif
-         define_arm_cp_regs(cpu, mpidr_cp_reginfo);
-+        cpu->mpidr = mpidr_read(env);
-     }
+-/* Build Hardware Error Source Table */
++/*
++ * Build Hardware Error Source Table
++ * ACPI 6.4: 18.3.2 ACPI Error Source
++ * Table 18.2: Hardware Error Source Table (HEST)
++ */
+ void acpi_build_hest(GArray *table_data, BIOSLinker *linker,
+                      const char *oem_id, const char *oem_table_id)
+ {
+-    AcpiTable table = { .sig = "HEST", .rev = 1,
++    AcpiTable table = { .sig = "HEST",
++                        .rev = 1,                   /* ACPI 4.0 to 6.4 */
+                         .oem_id = oem_id, .oem_table_id = oem_table_id };
  
-     if (arm_feature(env, ARM_FEATURE_AUXCR)) {
+     acpi_table_begin(&table, table_data);
 -- 
 2.45.2
 
