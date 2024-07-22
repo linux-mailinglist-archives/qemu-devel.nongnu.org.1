@@ -2,86 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDFE939350
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 19:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A28939370
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 20:01:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVxBP-000438-3g; Mon, 22 Jul 2024 13:50:47 -0400
+	id 1sVxJr-0002op-DU; Mon, 22 Jul 2024 13:59:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1sVxBC-0003y7-6S
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:50:35 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sVxJj-0002mw-V1
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:59:23 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1sVxB7-0001wA-HV
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:50:32 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-70d18112b60so1161432b3a.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 10:50:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1721670626; x=1722275426; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iuE2zhO94ud85q0/GlYCCByRnpO9dMwp6MJra1x8GNs=;
- b=IapvfFOkk8q7Ma+xFZ0Xj0tCkbwW7FiONLQreNcNTV29OmMwtpI6fDc5pkaCWZF/65
- UtNaqpa4s/HQoUAA/q6NcE9npy/ey5nx3jHAEXHNmgO2iZPi8YCs9UzjZa9KfCWWEp1g
- 8+4efXY2L+G54gtfDq2tcEIECNQ0ks6/ebVrrRPX+OCPt/434NUhL4IgV84usMinrQfy
- u5LbkoQv84eUqZB0icFeCq68ccOO+hGKoRVGzrQcJFPYfjDd98WpowAgGkKXVSR3BkO5
- rUpqwPbcRllbsDAH2+3I2WnAFkuG/91WBppnhAaJPvChhwr8nq3NvjVfJPQQHFrYQpPK
- 0Jqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721670626; x=1722275426;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iuE2zhO94ud85q0/GlYCCByRnpO9dMwp6MJra1x8GNs=;
- b=RUY21w7y3aOYdxcMOCFkNCub3v1oBU2pIXr+Q0sh6BBaIEXvZwbw9xPS9FKlNYxQMe
- JavZA1YiqQUSmKUCSaIKkOzpQR7edMeE/ZFy9qJROMbCqbXf8SWC/AzIBEMio+2JZFHf
- whzKdGG8vAOmLsdnTaHypfw2J62Sr9BGDzI+igjQhy3xXl5RYN0npIlvF7LedYzhkNqc
- uO2RJSOnSp8L94vqnk71EKQIScv3Qjs5yZERWSfCh6NscELf7JdgEDDBoQYXWYJRXoLe
- ttrOiSkbZjvOIwkFhYDcm1V9CQqkCnkNuCLglCsiDz9FsgdYZsEFUxjZlzE+L2ddQzV7
- 384A==
-X-Gm-Message-State: AOJu0YxRlGXZ4mknr/D5q3O7WXDMl95T3s53Q78H0qrmU9t0tg4zg1bJ
- rpcDEDVeTvkq9r8/n507HQ7o3HLahTj9dBF7Gx322Av0tMW6G60C2ZbjmEsKNOKJFmjMNjepX1i
- 2zI7Z6M5mo0t8F9w0u3Bf/4/UtYbGIVRtwLrG6Wj/tU+/O8OKjqF8J+COGoYC+K48pCVohffIkX
- pUVNJWQZAGnJ5ThC14FXBMCS1Ok2+Ws+MaqpLuO/I=
-X-Google-Smtp-Source: AGHT+IHkhWqG+hhzuFHl7wfK+y4D4eA97FM2SOOrLADgNRLgunbESvELT9hZglIr3l2zyrZ1hOOLyg==
-X-Received: by 2002:a05:6a00:851:b0:70d:2fef:2ca0 with SMTP id
- d2e1a72fcca58-70d2fef2ec1mr3436167b3a.2.1721670625496; 
- Mon, 22 Jul 2024 10:50:25 -0700 (PDT)
-Received: from hsinchu16.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70d26d98169sm2234850b3a.76.2024.07.22.10.50.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 10:50:24 -0700 (PDT)
-From: Jason Chien <jason.chien@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Jason Chien <jason.chien@sifive.com>
-Subject: [PATCH] target/riscv: Add a property to set vl to ceil(AVL/2)
-Date: Tue, 23 Jul 2024 01:50:04 +0800
-Message-ID: <20240722175004.23666-1-jason.chien@sifive.com>
-X-Mailer: git-send-email 2.43.2
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sVxJg-00034z-Dj
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 13:59:23 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A766D21AE5;
+ Mon, 22 Jul 2024 17:59:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1721671158; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YYXfV6x0e8fmkyJKyhxzcRg35uJCR1PBQcXAjXly+Ks=;
+ b=mthr2olm/3PwGQMdss8cp0rhYYwuWBGTbn0h0/z59S4IbAhEeUurE37qx+362OMMqLXaFd
+ tfZhWRG6Em9TS48DRejuUZxVbtPvxPzq8bjgdVfZNhxcIH1p+/oaNMycJMZQMai7cn4JkE
+ f86zLDJBwUYLu9sKRi0sWdYgbURmKhc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1721671158;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YYXfV6x0e8fmkyJKyhxzcRg35uJCR1PBQcXAjXly+Ks=;
+ b=CtTxIBpPZy8gO5en8Qr0w/g1bvQYCsDsD1fUC5iNhnjCdWG1gABhjkgajOlWtRr+zj4O88
+ dDvavPCJnQfhhYAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1721671158; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YYXfV6x0e8fmkyJKyhxzcRg35uJCR1PBQcXAjXly+Ks=;
+ b=mthr2olm/3PwGQMdss8cp0rhYYwuWBGTbn0h0/z59S4IbAhEeUurE37qx+362OMMqLXaFd
+ tfZhWRG6Em9TS48DRejuUZxVbtPvxPzq8bjgdVfZNhxcIH1p+/oaNMycJMZQMai7cn4JkE
+ f86zLDJBwUYLu9sKRi0sWdYgbURmKhc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1721671158;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YYXfV6x0e8fmkyJKyhxzcRg35uJCR1PBQcXAjXly+Ks=;
+ b=CtTxIBpPZy8gO5en8Qr0w/g1bvQYCsDsD1fUC5iNhnjCdWG1gABhjkgajOlWtRr+zj4O88
+ dDvavPCJnQfhhYAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6D15613996;
+ Mon, 22 Jul 2024 17:59:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 1kuCDPWdnmYnCQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 22 Jul 2024 17:59:17 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
+Subject: [RFC PATCH v2 0/9] migration/multifd: Remove multifd_send_state->pages
+Date: Mon, 22 Jul 2024 14:59:05 -0300
+Message-Id: <20240722175914.24022-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=jason.chien@sifive.com; helo=mail-pf1-x430.google.com
+X-Spam-Score: 0.40
+X-Spamd-Result: default: False [0.40 / 50.00]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ FROM_EQ_ENVFROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,imap1.dmz-prg2.suse.org:helo];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,56 +106,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RVV spec allows implementations to set vl with values within
-[ceil(AVL/2),VLMAX] when VLMAX < AVL < 2*VLMAX. This commit adds a
-property "rvv_vl_half_avl" to enable setting vl = ceil(AVL/2). This
-behavior helps identify compiler issues and bugs.
+Hi,
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
----
- target/riscv/cpu.c           | 1 +
- target/riscv/cpu_cfg.h       | 1 +
- target/riscv/vector_helper.c | 2 ++
- 3 files changed, 4 insertions(+)
+In this v2 I took Peter's suggestion of keeping the channels' pointers
+and moving only the extra slot. The major changes are in patches 5 and
+9. Patch 3 introduces the structure:
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a90808a3ba..8f21171ffa 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2687,6 +2687,7 @@ static Property riscv_cpu_properties[] = {
- 
-     DEFINE_PROP_BOOL("rvv_ta_all_1s", RISCVCPU, cfg.rvv_ta_all_1s, false),
-     DEFINE_PROP_BOOL("rvv_ma_all_1s", RISCVCPU, cfg.rvv_ma_all_1s, false),
-+    DEFINE_PROP_BOOL("rvv_vl_half_avl", RISCVCPU, cfg.rvv_vl_half_avl, false),
- 
-     /*
-      * write_misa() is marked as experimental for now so mark
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 8b272fb826..96fe26d4ea 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -127,6 +127,7 @@ struct RISCVCPUConfig {
-     bool ext_smepmp;
-     bool rvv_ta_all_1s;
-     bool rvv_ma_all_1s;
-+    bool rvv_vl_half_avl;
- 
-     uint32_t mvendorid;
-     uint64_t marchid;
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 1b4d5a8e37..825312552b 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -75,6 +75,8 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
-     vlmax = vext_get_vlmax(cpu->cfg.vlenb, vsew, lmul);
-     if (s1 <= vlmax) {
-         vl = s1;
-+    } else if (s1 < 2 * vlmax && cpu->cfg.rvv_vl_half_avl) {
-+        vl = (s1 + 1) >> 1;
-     } else {
-         vl = vlmax;
-     }
+typedef enum {
+    MULTIFD_PAYLOAD_NONE,
+    MULTIFD_PAYLOAD_RAM,
+} MultiFDPayloadType;
+
+struct MultiFDSendData {
+    MultiFDPayloadType type;
+    union {
+        MultiFDPages_t ram;
+    } u;
+};
+
+I added a NONE type so we can use it to tell when the channel has
+finished sending a packet, since we'll need to switch types between
+clients anyway. This avoids having to introduce a 'size', or 'free'
+variable.
+
+WHAT'S MISSING:
+
+- The support for calling multifd_send() concurrently. Maciej has this
+  in his series so I didn't touch it.
+
+- A way of adding methods for the new payload type. Currently, the
+  compression methods are somewhat coupled with ram migration, so I'm
+  not sure how to proceed.
+
+- Moving all the multifd ram code into multifd-ram.c after this^ is
+  sorted out.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1381005020
+
+v1:
+https://lore.kernel.org/r/20240620212111.29319-1-farosas@suse.de
+
+First of all, apologies for the roughness of the series. I'm off for
+the next couple of weeks and wanted to put something together early
+for your consideration.
+
+This series is a refactoring (based on an earlier, off-list
+attempt[0]), aimed to remove the usage of the MultiFDPages_t type in
+the multifd core. If we're going to add support for more data types to
+multifd, we first need to clean that up.
+
+This time around this work was prompted by Maciej's series[1]. I see
+you're having to add a bunch of is_device_state checks to work around
+the rigidity of the code.
+
+Aside from the VFIO work, there is also the intent (coming back from
+Juan's ideas) to make multifd the default code path for migration,
+which will have to include the vmstate migration and anything else we
+put on the stream via QEMUFile.
+
+I have long since been bothered by having 'pages' sprinkled all over
+the code, so I might be coming at this with a bit of a narrow focus,
+but I believe in order to support more types of payloads in multifd,
+we need to first allow the scheduling at multifd_send_pages() to be
+independent of MultiFDPages_t. So here it is. Let me know what you
+think.
+
+(as I said, I'll be off for a couple of weeks, so feel free to
+incorporate any of this code if it's useful. Or to ignore it
+completely).
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1340992028
+
+0- https://github.com/farosas/qemu/commits/multifd-packet-cleanups/
+1- https://lore.kernel.org/r/cover.1718717584.git.maciej.szmigiero@oracle.com
+
+Fabiano Rosas (9):
+  migration/multifd: Reduce access to p->pages
+  migration/multifd: Pass in MultiFDPages_t to file_write_ramblock_iov
+  migration/multifd: Introduce MultiFDSendData
+  migration/multifd: Make MultiFDPages_t:offset a flexible array member
+  migration/multifd: Replace p->pages with an union pointer
+  migration/multifd: Move pages accounting into
+    multifd_send_zero_page_detect()
+  migration/multifd: Isolate ram pages packet data
+  migration/multifd: Don't send ram data during SYNC
+  migration/multifd: Replace multifd_send_state->pages with client data
+
+ migration/file.c              |   3 +-
+ migration/file.h              |   2 +-
+ migration/multifd-qpl.c       |  10 +-
+ migration/multifd-uadk.c      |   9 +-
+ migration/multifd-zero-page.c |   9 +-
+ migration/multifd-zlib.c      |   4 +-
+ migration/multifd-zstd.c      |   4 +-
+ migration/multifd.c           | 239 +++++++++++++++++++++-------------
+ migration/multifd.h           |  37 ++++--
+ migration/ram.c               |   1 +
+ 10 files changed, 201 insertions(+), 117 deletions(-)
+
+
+base-commit: a7ddb48bd1363c8bcdf42776d320289c42191f01
 -- 
-2.43.2
+2.35.3
 
 
