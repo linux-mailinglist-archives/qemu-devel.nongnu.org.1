@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE009396FB
+	by mail.lfdr.de (Postfix) with ESMTPS id E487D9396FC
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 01:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW2Oa-0003YG-0j; Mon, 22 Jul 2024 19:24:44 -0400
+	id 1sW2Ol-00049N-PD; Mon, 22 Jul 2024 19:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW2OX-0003XY-Fc
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:41 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1sW2Ok-000453-A7
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:54 -0400
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW2OU-000609-Fr
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:40 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-70d333d5890so845149b3a.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 16:24:37 -0700 (PDT)
+ id 1sW2Oi-00063t-LC
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 19:24:54 -0400
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-5c661e75ff6so2280856eaf.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 16:24:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721690675; x=1722295475; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721690691; x=1722295491; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qsevfAY9GIpyUuote11CGtGX1WMHv6oHZhtvbmU0TbM=;
- b=qlOziCAxicy9P7g33u938WVae/1IBhbC4hEwv8w5F0hBaDlI+dQn74Rnq3TzMcEIWn
- CTEgWM0xDrewSeWI2BLplSMa4WKj6gqGv3nciIxG4It8J42I8Qc6I8+I1c/v84RTxA8j
- xRUWTuicn6ouPN/Lz1gvwR2phwjePlawUBLnSWZLRYQVDt0n6vynGyttXuOND/fqHApM
- apFdHM6MqyAxX0PjvPYqLGZQiyUd00ftA2jQoxvyiHuc9lNYh1U28HZ+OixfgPqUA4sf
- CgilYuqXjnoXEEd9vBb7A1Rm2KCMrmqElb8vindE8Yf7+Tm5U5SpdyDs8t6ZHqulLE52
- jF+w==
+ bh=O3zcffW/9Og8nMl7p0aEkK3Qzk1wT2SFMBnrP3P4Fwc=;
+ b=BC/ZuHll3D9lxh9KD90of+8+OUBEOqz/AAmmydMal9zHWPwu+xAu3yXraChjMa1yWs
+ VhrhHCI7Z5MmGZpZgMirQuGE2g/PEvEl48fGvzsltHly1DJhzZBI8XnW0SW5+tWISNRz
+ cXEtvlhf2j5ZES+YE/pvAPoRznjiUnPU/WI0pSmmMo1QsPcT3pSB3UUJkIjJ0m3tR5dp
+ a42VMuGD1bztCo5Nr7ym+vvi58oWDmmZnb4BmOHb35BwjsT/s0eOuAB8Z2wF5QlpeMp+
+ 2hJTxSgocH9RWi47g+rgW7RM8lZBOhA+wCQJ0wcu6g+9UJCifC2l/85svMJVOrEquMgT
+ BnmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721690675; x=1722295475;
+ d=1e100.net; s=20230601; t=1721690691; x=1722295491;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qsevfAY9GIpyUuote11CGtGX1WMHv6oHZhtvbmU0TbM=;
- b=Uf92e4adFOcguvpXNmpeR2lt1qOiTQo+j2n/LFNegGKlUX3mll/THHKJk2r7iZVP7R
- dBe4ULXGDWIPFgOHIQj6mNYG22X4gsG4aCUmLyzpdny5OSNbM2YFdpK5K0Sd75HMFxCh
- 4aMKDSTGCXqE+4HAw704EnoyXuo+6jrTK3W8u0yb0mZaGgaM6mQDikhktFGxQ7Kp4ZdI
- Oh+zzSGq9SyBgB3BFhT4uLYTOluGqMOGb7w9esC+UPTs1mBetR9ITldB4OloGg45K1Dc
- SB85D7BVoCLlU8XIpRUZsXm1dtHfS3yRSiMgPzfjCPaJQBCygMrcb6n1hPL5Yjaq4XRz
- uWpw==
+ bh=O3zcffW/9Og8nMl7p0aEkK3Qzk1wT2SFMBnrP3P4Fwc=;
+ b=IX2z0/jU8anEmcAE1LX91M9LKR0cITaXza2ZeawLyxF0bw6sWqvxHKR3FcsnQK6r6E
+ CT2oX069n9NYJmbntAgx4yMY8CbsWugKWgO3mEz4D3RCV1JqSiypKlkSFN7UB8rbYWBX
+ LLJS7pqzCvLFhmeupMnP7Kg+1Xl0aPDhHhv0dt19rDaGDMiAHA16r+w+qmSWTIaN/c6v
+ zM3py9rpA81j6KfIwfogimu9y/l/RmTAodLYruiUOQ47CS80oaaNv7l1yEV1oRKsvxX7
+ YrPPZVkC9gC6Av4bwAifHDTp+di3uUji6hZiC8+RstzbjbS4W1rSLN+ulbBjeE7t3yex
+ Yeqw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV77pggSyG0+zyUwAqozDLa07kZsRsLAKXaXDChk9j/O7vqza+EM9qsIJHIQbukoN68GnywzBXEnWjs7YNNVXwfzgL/K2w=
-X-Gm-Message-State: AOJu0YxViGCmatbvTkNRYBXhQ3lxnaqhrKB+1L2Z+1ydEKkna3pmCFIL
- Lsz1u5ADE0na5psBftrmCsixjXVFGD5yqSh3ydizeQY881qp5RLpGp8yfb5ay33/O7RbS0s29kl
- fhKS0iw==
-X-Google-Smtp-Source: AGHT+IFjbgaSlchWf1/Bs2E21pyHGqFrMPKy7eiFI8Q2zF61Fl6QYk8Xn5UU7/ZH6G9veEAioEtORg==
-X-Received: by 2002:a05:6a00:10c3:b0:70d:2892:402b with SMTP id
- d2e1a72fcca58-70d289243a2mr6541538b3a.7.1721690675375; 
- Mon, 22 Jul 2024 16:24:35 -0700 (PDT)
+ AJvYcCVM5PU/IzcLUD9PnPohkiw86CLfIfSjpR2A7ilaLBHi6qTnModLmfaEPxHxW8XlC4pOMbkJih+J73KyEJ7JWlQjqBy3bVM=
+X-Gm-Message-State: AOJu0YwiSBJE2iAkCsEr+YzMerxj/Tobz0bOXqvF5Ivwff3AG8fn+5do
+ h5EyvEeo7qUz3QR+vCygIT78GyPN60oYCFjZskahFnfXFEJsLRUU67bFZtswqtk=
+X-Google-Smtp-Source: AGHT+IEdCnDL7RSSjyPdaZ9lPKWDPWNr3FKLJfGzqomtXCUauRtssQZQtqiQlAAGg5/DVit9cLts4A==
+X-Received: by 2002:a05:6358:7e53:b0:1a5:28a5:f2b9 with SMTP id
+ e5c5f4694b2df-1acc5a781femr998006055d.2.1721690690966; 
+ Mon, 22 Jul 2024 16:24:50 -0700 (PDT)
 Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70d241803fdsm2731099b3a.220.2024.07.22.16.24.32
+ 98e67ed59e1d1-2cb77506757sm8750945a91.35.2024.07.22.16.24.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 16:24:34 -0700 (PDT)
-Message-ID: <0b27836e-88d2-475a-9cd4-bf781861298c@linaro.org>
-Date: Tue, 23 Jul 2024 09:24:29 +1000
+ Mon, 22 Jul 2024 16:24:50 -0700 (PDT)
+Message-ID: <6438c625-89d6-48e7-be02-7b77f4090c0b@linaro.org>
+Date: Tue, 23 Jul 2024 09:24:44 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] util/getauxval: Ensure setting errno if not found
+Subject: Re: [PATCH 2/2] linux-user/main: Check errno when getting AT_EXECFD
 To: Vivian Wang <uwu@dram.page>, qemu-devel@nongnu.org
 Cc: Richard Henderson <rth@twiddle.net>, Laurent Vivier <laurent@vivier.eu>
 References: <20240721090817.120888-1-uwu@dram.page>
- <20240721090817.120888-2-uwu@dram.page>
+ <20240721090817.120888-3-uwu@dram.page>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240721090817.120888-2-uwu@dram.page>
+In-Reply-To: <20240721090817.120888-3-uwu@dram.page>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,73 +97,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/21/24 19:08, Vivian Wang wrote:
-> Sometimes zero is a valid value for getauxval (e.g. AT_EXECFD). Make
-> sure that we can distinguish between a valid zero value and a not found
-> entry by setting errno.
+> It's possible for AT_EXECFD to end up with a valid value of 0. Check
+> errno when using qemu_getauxval instead of return value to handle this
+> case.
 > 
-> Ignore getauxval from sys/auxv.h on glibc < 2.19 because it does not set
-> errno.
+> Not handling this case leads to a confusing condition where the
+> executable ends up as fd 0, i.e. stdin.
 > 
 > Signed-off-by: Vivian Wang <uwu@dram.page>
+> Fixes: 0b959cf5e4cc ("linux-user: Use qemu_getauxval for AT_EXECFD")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2448
 > ---
->   util/getauxval.c | 14 ++++++++++++--
->   1 file changed, 12 insertions(+), 2 deletions(-)
+>   linux-user/main.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/util/getauxval.c b/util/getauxval.c
-> index b124107d61..f1008bdc59 100644
-> --- a/util/getauxval.c
-> +++ b/util/getauxval.c
-> @@ -24,7 +24,13 @@
->   
->   #include "qemu/osdep.h"
->   
-> -#ifdef CONFIG_GETAUXVAL
-> +/* If glibc < 2.19, getauxval can't be used because it does not set errno if
-> +   entry is not found. */
-> +#if defined(CONFIG_GETAUXVAL) && \
-> +    (!defined(__GLIBC__) \
-> +        || __GLIBC__ > 2 \
-> +        || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 19))
+> diff --git a/linux-user/main.c b/linux-user/main.c
+> index 7d3cf45fa9..8143a0d4b0 100644
+> --- a/linux-user/main.c
+> +++ b/linux-user/main.c
+> @@ -755,8 +755,9 @@ int main(int argc, char **argv, char **envp)
+>       /*
+>        * Manage binfmt-misc open-binary flag
+>        */
+> +    errno = 0;
+>       execfd = qemu_getauxval(AT_EXECFD);
+> -    if (execfd == 0) {
+> +    if (errno != 0) {
+>           execfd = open(exec_path, O_RDONLY);
+>           if (execfd < 0) {
+>               printf("Error while loading %s: %s\n", exec_path, strerror(errno));
 
-Version 2.19 is so long ago that all supported OS releases have something newer.  For 
-Alpine Linux using musl, the first commit of getauxval had the errno setting.
-
-Therefore we don't need this check.
-
-> @@ -95,6 +101,7 @@ unsigned long qemu_getauxval(unsigned long type)
->           }
->       }
->   
-> +    errno = ENOENT;
->       return 0;
->   }
-
-Ok.
-
-> @@ -104,7 +111,9 @@ unsigned long qemu_getauxval(unsigned long type)
->   unsigned long qemu_getauxval(unsigned long type)
->   {
->       unsigned long aux = 0;
-> -    elf_aux_info(type, &aux, sizeof(aux));
-> +    int ret = elf_aux_info(type, &aux, sizeof(aux));
-> +    if (ret != 0)
-> +        errno = ret;
-
-Braces required.
-
->       return aux;
->   }
->   
-> @@ -112,6 +121,7 @@ unsigned long qemu_getauxval(unsigned long type)
->   
->   unsigned long qemu_getauxval(unsigned long type)
->   {
-> +    errno = ENOSYS;
->       return 0;
->   }
-
-Ok.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
