@@ -2,140 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DB5938BCD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 11:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC14938BF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 11:23:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVp6o-0001Qv-TD; Mon, 22 Jul 2024 05:13:32 -0400
+	id 1sVpFz-0001QY-OO; Mon, 22 Jul 2024 05:22:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sVp6Z-0001Lr-4B
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 05:13:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sVpFs-0001Fm-TT; Mon, 22 Jul 2024 05:22:53 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sVp6W-0006Bz-TF
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 05:13:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721639590;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=gS5rE7Muqb645VKhj0fboJ1xv/jr2jazuHsQKeZl96c=;
- b=dwCKiQr8Hw6SMFZA/aIT0f05IjO+yAYn9ElDyvJwBT6twBdI9I+Z00Jx/tx//MB/+OyFbV
- ueb7OB8tP97wsPPVuvVRhSrDR8FSfLqGskvvvaAJAmgug06rtzJplsuGf/9C/3A0BEdx2/
- LngHszjojy1VTGP1sZQ6NAf1GNUBVGk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-e7bB-KKwP0C7YdLJeFVzzQ-1; Mon, 22 Jul 2024 05:13:05 -0400
-X-MC-Unique: e7bB-KKwP0C7YdLJeFVzzQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36835f6ebdcso2705533f8f.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 02:13:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721639584; x=1722244384;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gS5rE7Muqb645VKhj0fboJ1xv/jr2jazuHsQKeZl96c=;
- b=hdQwiTNhUGMcLqF9XeaSR4Ukjbuz7WGCl6I/JcTTJyomeqFDSBP3oPrWTE6MmFyTaj
- 7SkTF8WkAODwQrCxGS05eFZIGtHCOQiSUg061pMidtgpmcAUBIPI/cwsnWFd8k6+oPeu
- ggslJ11fVcpXaUf7Wkeg4hQgMxyFXF5Y6tUZf/UyZyk/77CthXFXJAJkaebPXX629i+V
- rmZKUFww7OCWhGr2fxNKwysYij81tzfqti6YV1JrRYH+o6de0xWCMstGzzZAoPss9+Nx
- gD6lbU5oboxgwalvhHCjiDMD/JrKasGAvuiCKpZ/t3z3mdx4agCSq0vM22KPeQXPEFU9
- OtuA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUBlZ1ZFnZ0WLAiYqY4sVSSMVjdo1NWavxu/2vy5q3A6ZJT3YmJ/CIbFQmtotfBhIEkUOKKeHxKENjJx1WibjQSAv4Biss=
-X-Gm-Message-State: AOJu0Yy5d+ouhhC0/1MjjL0lM4tLktvneQ7G1p9CVCJOhAwnt6O3vQIE
- ZG5s7PIdtau6jpKkXPu4iTQjpjAZdfI5LAsLwaNlUo3QoJWqL4Damo5H3H+2ZFHJ26OiFwtUBqV
- OnRvkd7lNmcfU3yE9lk46/GpUo0sDhJbBrS3nr8HdboeNRrvwL4ud
-X-Received: by 2002:a5d:408f:0:b0:367:8f29:f7b8 with SMTP id
- ffacd0b85a97d-369bb0a0c57mr3869677f8f.51.1721639584601; 
- Mon, 22 Jul 2024 02:13:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/zJuDB6ONIWNTiLJ+a+HBUmprkb4/HXoPxWrgXTfM9roEueLmowZ1kdX6+xQgd35xEi4BEg==
-X-Received: by 2002:a5d:408f:0:b0:367:8f29:f7b8 with SMTP id
- ffacd0b85a97d-369bb0a0c57mr3869662f8f.51.1721639584223; 
- Mon, 22 Jul 2024 02:13:04 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c727:7000:c050:e303:f8a7:6ed9?
- (p200300cbc7277000c050e303f8a76ed9.dip0.t-ipconnect.de.
- [2003:cb:c727:7000:c050:e303:f8a7:6ed9])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36878684204sm7946820f8f.2.2024.07.22.02.13.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 02:13:03 -0700 (PDT)
-Message-ID: <291f706e-670d-464e-8bdc-88b1e844df14@redhat.com>
-Date: Mon, 22 Jul 2024 11:13:02 +0200
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sVpFm-0007dm-5w; Mon, 22 Jul 2024 05:22:48 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46M7ToCp014429;
+ Mon, 22 Jul 2024 09:17:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=0
+ RpKGXELt3c+sfZUJmA2NCxvEbtjbFY+kiPpqg7OBbI=; b=iV1YFWI0rSslI6Snt
+ jY2JxAt2clriPzaEWJsp29zwIdCpnY8VXtzGKLSq7F8Jp9lFrygiTLQYJPzR97y0
+ MVCh90WXE8eIOtN8zuwdTxpmVskka4KAo4H7bnmTzb1HOeL1bRIHfBxxplJUQ++O
+ GgEBk9WDjNXo2XKoftS0xZhifqODgyIaAxDFrF5N3Se4EmPM69xTe+chNO5DkXUo
+ xnAHCJmmdA9e6XdxyMjVB3SHkNPFurfcecvAeW2ZG9qjYvGJtPpr6LOZ843l+zKy
+ QT8oeSKOPqTV/RFKN/Gn/k0LEvn1jKHmobi/hm9o1pu3T/i/my3lQBLMbM+KWPre
+ ePiVA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40hk2xg729-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jul 2024 09:17:27 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46M9HQ61007391;
+ Mon, 22 Jul 2024 09:17:27 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40hk2xg725-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jul 2024 09:17:26 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46M8sd2e005890; Mon, 22 Jul 2024 09:17:26 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40gy2p4e76-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jul 2024 09:17:26 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46M9HKHG48693734
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Jul 2024 09:17:22 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B14320043;
+ Mon, 22 Jul 2024 09:17:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4E392004F;
+ Mon, 22 Jul 2024 09:17:17 +0000 (GMT)
+Received: from [9.109.199.72] (unknown [9.109.199.72])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 22 Jul 2024 09:17:17 +0000 (GMT)
+Message-ID: <00d202a7-03dd-4cb0-8e02-3c49a025e284@linux.ibm.com>
+Date: Mon, 22 Jul 2024 14:47:16 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/13] system/memory_mapping: make range overlap check
- more readable
-To: Yao Xingtao <yaoxt.fnst@fujitsu.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240722040742.11513-1-yaoxt.fnst@fujitsu.com>
- <20240722040742.11513-10-yaoxt.fnst@fujitsu.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] ppc/pnv: Update Power10's cfam id to use Power10 DD2
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20240502062701.1379833-1-adityag@linux.ibm.com>
+ <a1e529e9-32b2-438a-b50d-10117296d4e1@kaod.org>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240722040742.11513-10-yaoxt.fnst@fujitsu.com>
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <a1e529e9-32b2-438a-b50d-10117296d4e1@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8HOMncvn_sOp0bGhwK52wyX6U5iK7qO5
+X-Proofpoint-GUID: -CTkVOfcrB_F5T5hACPjeI4PZLPstVNd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-22_05,2024-07-18_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015
+ adultscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
+ bulkscore=0 malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2407220068
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,43 +119,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.07.24 06:07, Yao Xingtao wrote:
-> use ranges_overlap() instead of open-coding the overlap check to improve
-> the readability of the code.
-> 
-> Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-> ---
->   system/memory_mapping.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/system/memory_mapping.c b/system/memory_mapping.c
-> index 6f884c5b90c9..ca2390eb8044 100644
-> --- a/system/memory_mapping.c
-> +++ b/system/memory_mapping.c
-> @@ -12,6 +12,7 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include "qemu/range.h"
->   #include "qapi/error.h"
->   
->   #include "sysemu/memory_mapping.h"
-> @@ -353,8 +354,7 @@ void memory_mapping_filter(MemoryMappingList *list, int64_t begin,
->       MemoryMapping *cur, *next;
->   
->       QTAILQ_FOREACH_SAFE(cur, &list->head, next, next) {
-> -        if (cur->phys_addr >= begin + length ||
-> -            cur->phys_addr + cur->length <= begin) {
-> +        if (!ranges_overlap(cur->phys_addr, cur->length, begin, length)) {
->               QTAILQ_REMOVE(&list->head, cur, next);
->               g_free(cur);
->               list->num--;
+Hello,
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Any comments on this change ?
 
--- 
-Cheers,
+Though this isn't urgent and won't change behaviour much, mainly other 
+than skiboot recognising the chip as P10 DD2.
 
-David / dhildenb
 
+Thanks
+
+- Aditya Gupta
+
+
+On 02/05/24 13:51, Cédric Le Goater wrote:
+
+> On 5/2/24 08:27, Aditya Gupta wrote:
+>> Power10 DD1.0 was dropped in:
+>>
+>>      commit 8f054d9ee825 ("ppc: Drop support for POWER9 and POWER10 
+>> DD1 chips")
+>>
+>> Use the newer Power10 DD2 chips cfam id.
+>>
+>> Cc: Cédric Le Goater <clg@kaod.org>
+>> Cc: David Gibson <david@gibson.dropbear.id.au>
+>> Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
+>> Cc: Laurent Vivier <lvivier@redhat.com>
+>> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: Thomas Huth <thuth@redhat.com>
+>> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+>
+>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+>
+> Thanks,
+>
+> C.
+>
+>
+>> ---
+>>   hw/ppc/pnv.c            | 2 +-
+>>   tests/qtest/pnv-xscom.h | 2 +-
+>>   2 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+>> index 6e3a5ccdec76..06a4e4d13948 100644
+>> --- a/hw/ppc/pnv.c
+>> +++ b/hw/ppc/pnv.c
+>> @@ -2090,7 +2090,7 @@ static void 
+>> pnv_chip_power10_class_init(ObjectClass *klass, void *data)
+>>       PnvChipClass *k = PNV_CHIP_CLASS(klass);
+>>       static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = 
+>> {14, 14, 2, 16};
+>>   -    k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with 
+>> NX) */
+>> +    k->chip_cfam_id = 0x220da04980000000ull; /* P10 DD2.0 (with NX) */
+>>       k->cores_mask = POWER10_CORE_MASK;
+>>       k->chip_pir = pnv_chip_pir_p10;
+>>       k->intc_create = pnv_chip_power10_intc_create;
+>> diff --git a/tests/qtest/pnv-xscom.h b/tests/qtest/pnv-xscom.h
+>> index 6f62941744a6..5aa1701ea768 100644
+>> --- a/tests/qtest/pnv-xscom.h
+>> +++ b/tests/qtest/pnv-xscom.h
+>> @@ -56,7 +56,7 @@ static const PnvChip pnv_chips[] = {
+>>           .chip_type  = PNV_CHIP_POWER10,
+>>           .cpu_model  = "POWER10",
+>>           .xscom_base = 0x000603fc00000000ull,
+>> -        .cfam_id    = 0x120da04900008000ull,
+>> +        .cfam_id    = 0x220da04980000000ull,
+>>           .first_core = 0x0,
+>>           .num_i2c    = 4,
+>>       },
+>
 
