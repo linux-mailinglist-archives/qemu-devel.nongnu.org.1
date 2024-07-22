@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567499395B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03EA9395A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:46:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0qT-0006UV-Q9; Mon, 22 Jul 2024 17:45:25 -0400
+	id 1sW0qM-0005dL-Bb; Mon, 22 Jul 2024 17:45:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0pz-00054K-VU
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0q0-00056h-DY
  for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:44:56 -0400
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+Received: from mail-io1-xd2f.google.com ([2607:f8b0:4864:20::d2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0px-0004KR-Q3
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:44:55 -0400
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-396db51d140so20196025ab.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:44:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sW0px-0004Kj-Q9
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:44:56 -0400
+Received: by mail-io1-xd2f.google.com with SMTP id
+ ca18e2360f4ac-8152f0c63c1so187726839f.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721684690; x=1722289490;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721684692; x=1722289492;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=htzmk2/K+pRyHcINVlqMN9Cf2KcnbziuOXxz3Bx5eFI=;
- b=Q7p7BXAe99KQR4PifoFNy572eoP/uNChEYLfdhfjT9M8iPyW08+kt/i5jZOJLAKVsk
- p1aAuQP9bQB6ZGWqU27oUySryDP9tzU3gXtYCU031kBzqeHfc0NVaN2MIuj4AnAtZqQh
- IaWqs5LG9FiPX1aQbumFIjN0ZbCpZ+3YtQe0oKk7sExyPT/arnBD7Qoy3BXgUuIanwq9
- 9NIlpKKclnlio3oqKy6v6pEAyo+bsTK9VbsPhJi0v+PayMHVY2/A7eoKGLoyObxp2arM
- Fj4c6iBByDqGvzz5CJ6QnlfwanDZyDt/icF/fD1EBq1ezO/tnaG2muIu4Y4gCl8Q/b+3
- Uabw==
+ bh=iERzhBKroDxEdhIs7F3pdJn/htP75xFz5hRc3MKZk4Y=;
+ b=H1cLCdtVoiqoH+MpH5b/fzvvPI3crrtcGxT85rHtUb1FpFUEDXEbl7OPBuCorRvuNT
+ 0QTRB34ivL4ffB7UMiFa7P5Ehf4ZgVt9xIT18tTRx25LsSPkM1vA+u0dtm5GHVhV0SVc
+ WZLRoDLI6RUv3z4QpXERruMkamM82YqAvBORo/5Yr5LmrniQFDAtiB3Zn635pH1JrIG7
+ /sD14vRSKE72C0QmUsZ36WLqnoVZhvX7hMCiJVW0ZEPo0kI71Z3pt0eJSZ0QaeirwsyX
+ f5CodWEOrEoGGi51xRil1Mpz7ZoDPhUeeyj12EpQLvET8DKiL/M4jVtWvI6llW9lh4pr
+ xcrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721684690; x=1722289490;
+ d=1e100.net; s=20230601; t=1721684692; x=1722289492;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=htzmk2/K+pRyHcINVlqMN9Cf2KcnbziuOXxz3Bx5eFI=;
- b=g4Q+HB7UD3+hIyKykDTvgN/JBg/qD1x6YdZ5Y/FoCtZEH/ab1fp8VL0LlOyeXvQqJm
- FHR+FVe4YvgK92guuMQrkDCqjRNQlCIS7VGQ94e2Xgc3IGemv9rC3zksWHvwH4dPA3pZ
- wb0/lqiubQEAGjwHCN8RhLG+Nks+y7A0zp7KKGyxknxmrruiRjRMrpAQRwB0HfKjjNjz
- aIvI6o9AvXWPTAiXtlaaxX1/mqwoEio49/1n7GA4prYXV8eztxeMvh0yqeTorpdnifml
- t17FF/jd3AO8A8VXetLwvsomFWkzLfuWMg+f8g82GP5+/RMl9t8fJMJB+1/XCG892ine
- sVRQ==
-X-Gm-Message-State: AOJu0YzC/8ktLB387cDJ0uWajIDQJrCoZTzItDLRkhQgj0y3+vd2dYG/
- GjOLzqczBcStTcPfItLLf80liV4li3cIPpw4THI6GQ4KrJBd9+92se3M8DnPzbEWkC7f3YNT2th
- q3aI=
-X-Google-Smtp-Source: AGHT+IExN1016SDsl3c0PDoDU6AihToztpkSgd5my0DyuLi0BgU3j+f5i53o6mDuTu8nD7qVKnOxCw==
-X-Received: by 2002:a05:6e02:1a8c:b0:383:6af0:eb08 with SMTP id
- e9e14a558f8ab-398e420f849mr117635995ab.1.1721684690581; 
- Mon, 22 Jul 2024 14:44:50 -0700 (PDT)
+ bh=iERzhBKroDxEdhIs7F3pdJn/htP75xFz5hRc3MKZk4Y=;
+ b=FtbQ1ByoNkWaeo64st1/WfiopY2xyr7sNEBHQ2woKDVMBTe4iycNgCkIYwbmaqQLwF
+ qo0wTySU7N12JWxcqjbZ4fzJAV/EMrI52xGgKfacBORyLYRSeB9vrNjtQ+yaDNZkolka
+ yZw/NLEGY0bVnk2y7MYTC3ff5bOqM8jYyN+7T6PsSd+gmDmi+5HOMIcRXoZ2njxjrNiP
+ 7CxiyrO2jkMCQyzJQvtO/c4qXfMRlk1ekAxi8nGBVnrLulAbU9B4Iyjk9zeRR9CD9ch9
+ DAx+P1Hy56TKO11VpouUY2d9E56TcjWZ9UGETV/XykRHHfoBsmgWtcflkjfupk7gIpHA
+ BVjA==
+X-Gm-Message-State: AOJu0YxPHNJEyda9Nnbs+OxvExIir88IGB1FtjCIBrwaxO3OuWk2iWkk
+ iYDoZEoAk0Ayr3aBQ6E1A05D3DrmePFm39YMBh0iLXr7CzkpyrIfHTFTEyvYp2t8iiNxeWZsMx1
+ SCus=
+X-Google-Smtp-Source: AGHT+IF+pM79W/+yxi2cfrLz8Mbnqb5WjL9O4G1JD8Yoy46NXP0enK/nJpEcF2NcjIS40X+aQ9ywnA==
+X-Received: by 2002:a05:6602:341b:b0:803:cc64:e0d4 with SMTP id
+ ca18e2360f4ac-81ea30a2dedmr155466039f.3.1721684691856; 
+ Mon, 22 Jul 2024 14:44:51 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c2343d2ff3sm1816830173.128.2024.07.22.14.44.49
+ 8926c6da1cb9f-4c2343d2ff3sm1816830173.128.2024.07.22.14.44.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 14:44:49 -0700 (PDT)
+ Mon, 22 Jul 2024 14:44:51 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
  Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 07/14] bsd-user:Add set_mcontext function for ARM AArch64
-Date: Mon, 22 Jul 2024 15:43:06 -0600
-Message-ID: <20240722214313.89503-8-imp@bsdimp.com>
+Subject: [PATCH 08/14] bsd-user:Add AArch64 improvements and signal handling
+ functions
+Date: Mon, 22 Jul 2024 15:43:07 -0600
+Message-ID: <20240722214313.89503-9-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240722214313.89503-1-imp@bsdimp.com>
 References: <20240722214313.89503-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::135;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x135.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2f;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,49 +96,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-The function copies register values from the provided target_mcontext_t
-structure to the CPUARMState registers.
-Note:FP is unfinished upstream but will be a separate commit coming soon.
+Added get_ucontext_sigreturn function to check processor state ensuring current execution mode is EL0 and no flags
+indicating interrupts or exceptions are set.
+Updated AArch64 code to use CF directly without reading/writing the entire processor state, improving efficiency.
+Changed FP data structures to use Int128 instead of __uint128_t, leveraging QEMU's generic mechanism for referencing this type.
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240707191128.10509-8-itachis@FreeBSD.org>
+Message-Id: <20240707191128.10509-9-itachis@FreeBSD.org>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/aarch64/signal.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ bsd-user/aarch64/signal.c             | 20 +++++++++++++++++++-
+ bsd-user/aarch64/target_arch_cpu.h    |  7 ++-----
+ bsd-user/aarch64/target_arch_reg.h    |  2 +-
+ bsd-user/aarch64/target_arch_signal.h |  2 +-
+ bsd-user/qemu.h                       |  3 +++
+ 5 files changed, 26 insertions(+), 8 deletions(-)
 
 diff --git a/bsd-user/aarch64/signal.c b/bsd-user/aarch64/signal.c
-index 43c886e6036..13faac8ce60 100644
+index 13faac8ce60..6bc73a798f3 100644
 --- a/bsd-user/aarch64/signal.c
 +++ b/bsd-user/aarch64/signal.c
-@@ -95,3 +95,25 @@ abi_long setup_sigframe_arch(CPUARMState *env, abi_ulong frame_addr,
-     return 0;
- }
+@@ -21,7 +21,7 @@
+ #include "qemu.h"
  
-+/*
-+ * Compare to set_mcontext() in arm64/arm64/machdep.c
-+ * Assumes that the memory is locked if frame points to user memory.
-+ */
-+abi_long set_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int srflag)
-+{
-+    int err = 0, i;
-+    const uint64_t *gr = mcp->mc_gpregs.gp_x;
+ /*
+- * Compare to sendsig() in sys/arm64/arm64/machdep.c
++ * Compare to sendsig() in sys/arm64/arm64/exec_machdep.c
+  * Assumes that target stack frame memory is locked.
+  */
+ abi_long set_sigtramp_args(CPUARMState *regs, int sig,
+@@ -117,3 +117,21 @@ abi_long set_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int srflag)
+ 
+     return err;
+ }
 +
-+    for (i = 0; i < 30; i++) {
-+        regs->xregs[i] = tswap64(gr[i]);
++/* Compare to sys_sigreturn() in  arm64/arm64/machdep.c */
++abi_long get_ucontext_sigreturn(CPUARMState *regs, abi_ulong target_sf,
++                                abi_ulong *target_uc)
++{
++    uint32_t pstate = pstate_read(regs);
++
++    *target_uc = 0;
++
++    if ((pstate & PSTATE_M) != PSTATE_MODE_EL0t  ||
++        (pstate & (PSTATE_F | PSTATE_I | PSTATE_A | PSTATE_D)) != 0) {
++        return -TARGET_EINVAL;
 +    }
 +
-+    regs->xregs[TARGET_REG_SP] = tswap64(mcp->mc_gpregs.gp_sp);
-+    regs->xregs[TARGET_REG_LR] = tswap64(mcp->mc_gpregs.gp_lr);
-+    regs->pc = mcp->mc_gpregs.gp_elr;
-+    pstate_write(regs, mcp->mc_gpregs.gp_spsr);
++    *target_uc = target_sf;
 +
-+    /* XXX FP? */
-+
-+    return err;
++    return 0;
 +}
+diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
+index 5c150bb7e9c..b288e0d069b 100644
+--- a/bsd-user/aarch64/target_arch_cpu.h
++++ b/bsd-user/aarch64/target_arch_cpu.h
+@@ -48,7 +48,6 @@ static inline void target_cpu_loop(CPUARMState *env)
+     CPUState *cs = env_cpu(env);
+     int trapnr, ec, fsc, si_code, si_signo;
+     uint64_t code, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8;
+-    uint32_t pstate;
+     abi_long ret;
+ 
+     for (;;) {
+@@ -88,18 +87,16 @@ static inline void target_cpu_loop(CPUARMState *env)
+              * The carry bit is cleared for no error; set for error.
+              * See arm64/arm64/vm_machdep.c cpu_set_syscall_retval()
+              */
+-            pstate = pstate_read(env);
+             if (ret >= 0) {
+-                pstate &= ~PSTATE_C;
++                env->CF = 0;
+                 env->xregs[0] = ret;
+             } else if (ret == -TARGET_ERESTART) {
+                 env->pc -= 4;
+                 break;
+             } else if (ret != -TARGET_EJUSTRETURN) {
+-                pstate |= PSTATE_C;
++                env->CF = 1;
+                 env->xregs[0] = -ret;
+             }
+-            pstate_write(env, pstate);
+             break;
+ 
+         case EXCP_INTERRUPT:
+diff --git a/bsd-user/aarch64/target_arch_reg.h b/bsd-user/aarch64/target_arch_reg.h
+index 5c7154f0c18..b53302e7f7a 100644
+--- a/bsd-user/aarch64/target_arch_reg.h
++++ b/bsd-user/aarch64/target_arch_reg.h
+@@ -31,7 +31,7 @@ typedef struct target_reg {
+ } target_reg_t;
+ 
+ typedef struct target_fpreg {
+-    __uint128_t     fp_q[32];
++    Int128          fp_q[32];
+     uint32_t        fp_sr;
+     uint32_t        fp_cr;
+ } target_fpreg_t;
+diff --git a/bsd-user/aarch64/target_arch_signal.h b/bsd-user/aarch64/target_arch_signal.h
+index df171733166..bff752a67ab 100644
+--- a/bsd-user/aarch64/target_arch_signal.h
++++ b/bsd-user/aarch64/target_arch_signal.h
+@@ -49,7 +49,7 @@ struct target_gpregs {
+ };
+ 
+ struct target_fpregs {
+-    __uint128_t fp_q[32];
++    Int128      fp_q[32];
+     uint32_t    fp_sr;
+     uint32_t    fp_cr;
+     uint32_t    fp_flags;
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index 9d2fc7148eb..3736c417860 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -17,6 +17,9 @@
+ #ifndef QEMU_H
+ #define QEMU_H
+ 
++#include <sys/param.h>
++
++#include "qemu/int128.h"
+ #include "cpu.h"
+ #include "qemu/units.h"
+ #include "exec/cpu_ldst.h"
 -- 
 2.45.1
 
