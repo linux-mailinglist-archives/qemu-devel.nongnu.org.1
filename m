@@ -2,135 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FC6938C76
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 11:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DCA0938D00
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 12:04:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVphN-0006Ah-QI; Mon, 22 Jul 2024 05:51:18 -0400
+	id 1sVpu5-00026T-6p; Mon, 22 Jul 2024 06:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sVphJ-0005xo-Qb
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 05:51:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <s.ziming@hotmail.com>)
+ id 1sVpu3-0001zo-00
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 06:04:23 -0400
+Received: from mail-sy4aus01olkn20801.outbound.protection.outlook.com
+ ([2a01:111:f403:2819::801]
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sVphI-0004w3-3b
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 05:51:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721641870;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=hmYhr9um/j4/dPY2KVLvq77g3ZXrbiVnPLgeC8BCCwI=;
- b=EpkvHo2tUiwAl4nsb3/zoFpIFo7066sifk1Ol5+A4sU0uk42v4cre5lgWSngDEOJS3/Lif
- yoMHDrgtTl8WSchi8Oz8e0aPrThSpLwFHiLryw/dUQEa7qZ78aAWLN7U5zdCOnH2tW2pX0
- 2JzFBW5ox9a0ZHmZCdXyORTJHlar4fU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-o41RhH8CMTy5sxR3J9hPbQ-1; Mon, 22 Jul 2024 05:51:05 -0400
-X-MC-Unique: o41RhH8CMTy5sxR3J9hPbQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3687f5a2480so2233899f8f.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 02:51:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721641864; x=1722246664;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hmYhr9um/j4/dPY2KVLvq77g3ZXrbiVnPLgeC8BCCwI=;
- b=siCu9t/xIi/wiOw+7hqQnx6MvXsG7+Q19dPBJFimzaPQymxyDxGhukUf6POWPPQPOJ
- jqA2rPhoh42XsLcoM7ube22u1ESSq3qIHvQplCqb28WHjWWK4MJpQOJ7FYCPvGfodogF
- OJG9xmXePeix1OnL1jUOgtJ18RgdxYEIoOKhy6l9Q2ig1D4/b41erP+gEyeFMQI2RO5Q
- 9yn7ltY4EAVGnkg0fr0hcCbuUu3dhdLc3jFgm+kMLzMUZrantgbv04DorJjAFLa6cVYM
- rXIVXYVzpF3Tb4RM+iNUyqyI7ZAQu25m0D06/YGhIFiNDxfvrcNdoAJCXTVcjNVkWq3F
- /sUQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV2f4dy/Mxjy9q0PaVG++w//8D1pd4lvlcUBcXWtR5GdKmjXOeRce0SE6OaDAsbNdPMig5mf5cZdKzRODwD/eldWBXiyoI=
-X-Gm-Message-State: AOJu0Yw4rP2CSGwayG5A/WUWUGnvKKKIfmlncs2DenzdayNrPOST0Byf
- bSQLHLsIAwtM2OnQ1KktdBdnVh2xkastEftXlf/P/zmJ2g/YkhZ9KALtoT8eaP6uvJ4DvWZkMTR
- clN7+UKPUUFMJy3eB5RsG2gsHYv84NYfwklj2+nhsxVdAC4AkXibg
-X-Received: by 2002:adf:fa03:0:b0:368:5d2:179 with SMTP id
- ffacd0b85a97d-36831755ea0mr9063635f8f.56.1721641864032; 
- Mon, 22 Jul 2024 02:51:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFGmOq7xrdoduH83slEnaADkb4qnscIsenmBHMbWzNQ18MTkW4813eazznFebxYA1EQuYfRGg==
-X-Received: by 2002:adf:fa03:0:b0:368:5d2:179 with SMTP id
- ffacd0b85a97d-36831755ea0mr9063311f8f.56.1721641849688; 
- Mon, 22 Jul 2024 02:50:49 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-43-177-101.web.vodafone.de.
- [109.43.177.101]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368787eced0sm7959079f8f.98.2024.07.22.02.50.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 02:50:49 -0700 (PDT)
-Message-ID: <6da1bf69-5336-44ce-9014-2fc566d2593a@redhat.com>
-Date: Mon, 22 Jul 2024 11:50:47 +0200
+ (Exim 4.90_1) (envelope-from <s.ziming@hotmail.com>)
+ id 1sVpu1-0007V7-9i
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 06:04:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XocSx7nVZqPnSQzKHOtf/HuQADvagwIEvVsSBsmnjkbGOQsn7zxONL82KkQWk7zrkVWdhQe9WcdNgjaYd+6vbfZCnQHJS+Y1bs4UnbvUcwBUP/tWbCPfdt04f8MNfXtLKdTvvlpNNlMMzFP5/dbWW5quITZ1fX5PGvNGCSibvrgDxQqSB83UtaHYNDnF3x1xkRmEaFIX6EnADrKCBWbeLCL85BQSAnG4hz/D0+SGaXAbAksudXlsAaPTYTKk7f5cOOJBfR0NPxUTjYskbfLEy5op88iUNcduMtrAac4AzwVANA9/+WCrW21hmmNeWOpAeqURBWMubuQ7mf/erhjp5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2kuiyzpBTU98dPRFNKnYqyEFsNoieKPCD/0q8YSn9lk=;
+ b=fNNrR1+lr6yc8IhzuIvZlXiHQh4HVutmgMEpX/X+USgUrawNy5T0HNvuSs0iyKqXcZjV2zMziXHItwmfFQDdIySLBEayUjACH2q6s5yFQ6U99cN8T4nSWDv+bwBSdvIx++iloE2O9xMgHedqFVvTOXz3lEvEr5HNZ20eces8IVWmU+CqiYhg6RFGdYxOftINK/FBG3XvDQR63g90WHjWIX719jJFegkv4ZkoGzNPrb0VeT0cv3Mud/KQT8SB5eb4rk+jvvUbkoR40wXudq/m8NZGitZgF+yPouYsSnVuKMBZ1xrEic6S4fk2wpUK3HH6zAV5998rQfkAdhdqCdmyTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2kuiyzpBTU98dPRFNKnYqyEFsNoieKPCD/0q8YSn9lk=;
+ b=SSJpJuzEK9oID2o5tDX9TmbaasWXBybmQfDkuRmBuoFTPndLlb6aAM83LaVK+CCZCSD6ZmJYVwvifh6bUQOhSVOTqa8TUsbq9RkP1c90o/0wlqcbzDSwGsAKeEztKNKOe5j4ebWT2wJcd8AAHM9zv3ZUwCTko2qNAJQH2jXifTaDV7U8rBNt8D8GvlFNOvdv0Xn4QDNuGVIPHYsKnKbx8ynn1DUhdQLQeriVuOPO9qYSoURPLqwj8gugEGqttN79DrKU2qROCxpBC8TJ8cvmGugy238PmMMZX0HSDa3hi66HlXr1uBB9Y+tKeLxJjjRdTVS6JNAwhXzSYzZ/LzJsWw==
+Received: from ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:10e::12)
+ by ME3P282MB0929.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:86::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.20; Mon, 22 Jul
+ 2024 10:04:15 +0000
+Received: from ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::e85:7caf:eaf4:c0fa]) by ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::e85:7caf:eaf4:c0fa%4]) with mapi id 15.20.7784.017; Mon, 22 Jul 2024
+ 10:04:15 +0000
+From: songziming <s.ziming@hotmail.com>
+To: qemu-devel@nongnu.org
+Cc: songziming <s.ziming@hotmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2] chardev/char-win-stdio.c: restore old console mode
+Date: Mon, 22 Jul 2024 17:52:55 +0800
+Message-ID: <ME3P282MB25488BE7C39BF0C35CD0DA5D8CA82@ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.34.1.windows.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [rwES6enf2NLNhNan5O0Uwp/G4P1KmBX0]
+X-ClientProxiedBy: SI2PR02CA0034.apcprd02.prod.outlook.com
+ (2603:1096:4:195::9) To ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:10e::12)
+X-Microsoft-Original-Message-ID: <20240722095254.428-1-s.ziming@hotmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 1/2] target/riscv: Add RISC-V CSR qtest support
-To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, bmeng.cn@gmail.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, lvivier@redhat.com, pbonzini@redhat.com
-References: <20240703081939.498641-1-ivan.klokov@syntacore.com>
- <20240703081939.498641-2-ivan.klokov@syntacore.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240703081939.498641-2-ivan.klokov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ME3P282MB2548:EE_|ME3P282MB0929:EE_
+X-MS-Office365-Filtering-Correlation-Id: aaab3a34-c1ef-40bf-2755-08dcaa35a489
+X-MS-Exchange-SLBlob-MailProps: WaIXnCbdHrORrPiYp+O3K2PHowtbVet0nUv2sK4iCW7hI5wYMFvFVElV5QFv4CifNCw107C2fhbOYhxhqGzB5FQ+2y+Tjo6oc3/2xJP9BlOcnt7S3LXetDDbLSzfWBeXQ3K/YJvHjtP95u6UUor4CrQQ67yZ16CajrF5sKBfGxKuOKoX5B+lKa37vs5+duAtaAltCal+C6Sy2+SeyvtcUNcgzFEA735ryvv6NYxPngzPQ1kqX5FOjHu/ftHv9cYWyjqv1eIwn5ajaasMPLJ0IWBV1WjN2upqFFHbfxk8su48NIm9N77fhqEqAIq5+Wh9ZPqzrJ8gsGjk5www7pA4U3xxLoOkd717BkyRpJ+jqP+cjLMch8QCCKj4yvccccpwOVII0eJJDyHmaoX8z95wPyTwEmwtM0Iy8QyBI7uxYCywv34gg5tsn0+5oYt1vUvHExv7A26ivu0StRbOBIbDjgMbs4Q/1yW0xwV9stO6QtmsRpMnsmbSfhGAxu6CJNlYhm43b/p6ueuuri4S0dWrsgm3xdh0wy7c8whHKXhQm5P0niz/GkgVcAKt3fB/FzcA3C3NNkIR1UrnS3e/l5mPGd2ABFUg1wrSj9K0B8QFQ/NDy5G6vxK1VtUTj/xEU896Pg6baB7GAFzWOLHLA2WUKFHucVVielf7IV7ioShal/11YkBKprHKFMOe3GMx5esQvxPUbEvzNTTIELrsezYwVhts6DKqQE5iYnOeltZVxpDHflIRZCfxSpRz7b4El3HhSql2UmZC4os=
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|461199028|19110799003|8060799006|440099028|3412199025|1710799026;
+X-Microsoft-Antispam-Message-Info: +b5cnqsCFUVRynssluRlcqSL6xc8FbtYXiBF/FMZ/zAwmA6Q4tE1QtHeXjduhdF5YMS4cWLcCP2aUvVy7naY42iqL7EtMKr5jNQtIv2Boj0Cy6YZ5+jRrulHKXrVWPNjV3+KNOh2BXB4NOjlG6DMxV6WugxCck+uQEOrRRLFAMomQwmUMserNmoZhcyvW+QSdeGR6ghLpfHsrEVBAcYxQ1bx/NYQIwJQb7cHm21ygKmJ0JF5uMVrhC7+854cqtzp+Wd6X6aISJ44jVuufpf84QjHd1L/5R21girFiZyzdYpWz2UqVEctGe0p206hyrSMy0CqSwQ3gxvKP2Q89C+Uo8RF5fwbi0PIm4NlqWN8RdgM25nCYcnNPUMQ12RunyofH8jS3b71uxUG63kAnBAXbjz5aAHEXc4wzbsWicagmchWF9A4CGbPPkmVfjzAbULTSE/lkzb9jAWqc1TgL4jxTm55fO8Tl9z5nvWY02wzTDwYw2ynlEQNr3pSZXaH9efbVsSZLst3ikwfEf26EiDntglKLmUOrhgMFQcbPH4aiuRC/Lfx87BXJfNMLpybS3ay3MaUnxIpgKOLr8kV1svJI24sG+SeRDIt+UH7ZiZHRdbkn1gfh1FSEQasP3jMcVMTTVj1LUk6yrSnGVbdNA+h5jR0UqPRUXDhEHyELl7mn48=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?a6MmrsJskXlLJC7QlHJeQdUg0lr44UfpgnrXe+wogkLjO9qg0s3/fttbDgNJ?=
+ =?us-ascii?Q?89nh1K+2pDmok85v/26ZC4xou6tzJKgcnXGRWeMBCyB6gOP1pY2wdDHI+EQG?=
+ =?us-ascii?Q?MKWkoqooQkyVq0RTXijeWCyCIRSKTUHumgQIqhI/MoVEQNNMp3YoFVJO68Fs?=
+ =?us-ascii?Q?R0ZTX2dgGqmqooUf6ZJZBwmDcDrsb756E+RcNwGXkFasb429DjP4sfcAZk/v?=
+ =?us-ascii?Q?KCX5HaYhDV9OsEDSH2VSzeTYje418hIiR1P0nQGFW4f8YZgePSfCIw9UQg3t?=
+ =?us-ascii?Q?fmWtatnmBd+gK3yYZo1PGxxzej5ptYkUdf3p4sh9RVuRMNTSzBWgHasN32sL?=
+ =?us-ascii?Q?M6hE0mNcfY9frg5bZnj7dtkkTy5mpXaLGLCqBU48X9GkaDCaJtflOF7Hkmjz?=
+ =?us-ascii?Q?B4YlHTtD2XAHICE0No6QH6UoGb/vMSN6xbSjrkaiuFS6cgYGHB4U2/wX69Yj?=
+ =?us-ascii?Q?iMlQaJu3ypO2Kksi+9pkC3H3VZZZgALyYpI0nrlyN6VhNAzLsVsFc5lxBuJ9?=
+ =?us-ascii?Q?BLE1PRwC6+Gx7fO6G+CTOIo9RtrExr6nXdmlonvWQtY8jvLKbnjUXl8KlDm/?=
+ =?us-ascii?Q?n/4QcGBnDEQdJ0gpjecvEvGDuNVS7D1x3XnbmngnFtKn10rsLA1KKE52UJXE?=
+ =?us-ascii?Q?54ng+PUF6Vh1LB+MgpfJEFfrJxU3swTu1BjpOJhfJfzEOUFJstZ5Dx+cUr24?=
+ =?us-ascii?Q?4S9U1KhuKwZ27vks4gBU8TJuStJ63yjp1DECc15soucDA3+nFTNkmEtx8yhH?=
+ =?us-ascii?Q?sN0mFbZon5YXR83veO8+UHsz8/7dmaGjtWC8zfqAvHSh1BwEg0bcfU9xHFF9?=
+ =?us-ascii?Q?4JkQ04De5LlQoQ/fubLJLggjLWLBebvKGkx4ZRI0p/SMJDu1TrUnfsk5RI72?=
+ =?us-ascii?Q?7bn5Ih4hUpOiaZL5ymLcvSz2dxqjio7AqX/ARav7PDus3QrwYQGqVdbBzqHM?=
+ =?us-ascii?Q?xfc2poen8EKwFnlgKdcdsGPHESaPfNgpHLp4i/P4YrnNMoacFJg9SAj0uz1V?=
+ =?us-ascii?Q?06p7doV8/lwUL83kLq83HqLSrH57jy+QWk5OguQI3u7Vi2Z6cTceYQznNIsf?=
+ =?us-ascii?Q?NnZqlXBaNLwbXKPV7G0ssOSbHO9ZDMJaiPJ5Q5Oz8fkSTaYeuts9JBK2R6zY?=
+ =?us-ascii?Q?i+0qD0ib2BE43HZzi88lvb3ggGWgSCnjSYmV0/rxbx0LOm7jEOFvNq5ZtFS+?=
+ =?us-ascii?Q?NuwPV+VXp0nfwcecUa+5vIQV5xAWaq1mJi+cAA0uA6PgSlkjhdMJGJsA6KI?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-722bc.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: aaab3a34-c1ef-40bf-2755-08dcaa35a489
+X-MS-Exchange-CrossTenant-AuthSource: ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2024 10:04:15.2644 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME3P282MB0929
+Received-SPF: pass client-ip=2a01:111:f403:2819::801;
+ envelope-from=s.ziming@hotmail.com;
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,182 +125,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/07/2024 10.19, Ivan Klokov wrote:
-> The RISC-V architecture supports the creation of custom
-> CSR-mapped devices. It would be convenient to test them in the same way
-> as MMIO-mapped devices. To do this, a new call has been added
-> to read/write CSR registers.
-> 
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-> ---
->   target/riscv/cpu.c     | 17 ++++++++++++++
->   target/riscv/cpu.h     |  3 +++
->   target/riscv/csr.c     | 53 +++++++++++++++++++++++++++++++++++++++++-
->   tests/qtest/libqtest.c | 27 +++++++++++++++++++++
->   tests/qtest/libqtest.h | 14 +++++++++++
->   5 files changed, 113 insertions(+), 1 deletion(-)
-...
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 6fe0d712b4..6d4bbec53c 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -32,6 +32,8 @@
->   #include "cpu_cfg.h"
->   #include "qapi/qapi-types-common.h"
->   #include "cpu-qom.h"
-> +#include "qemu/cutils.h"
-> +#include "sysemu/qtest.h"
+If I use `-serial stdio` on Windows, after QEMU exits, the terminal
+could not handle arrow keys and tab any more. Because stdio backend
+on Windows sets console mode to virtual terminal input when starts,
+but does not restore the old mode when finalize.
 
-Why do you need these include statements here?
+This small patch saves the old console mode and set it back.
 
->   typedef struct CPUArchState CPURISCVState;
->   
-> @@ -813,6 +815,7 @@ bool riscv_cpu_accelerator_compatible(RISCVCPU *cpu);
->   
->   /* CSR function table */
->   extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
-> +bool csr_qtest_callback(CharBackend *chr, gchar **words);
->   
->   extern const bool valid_vm_1_10_32[], valid_vm_1_10_64[];
->   
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 58ef7079dc..f4f5128c9c 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -29,7 +29,7 @@
->   #include "sysemu/cpu-timers.h"
->   #include "qemu/guest-random.h"
->   #include "qapi/error.h"
-> -
-> +#include "tests/qtest/libqtest.h"
+Signed-off-by: Ziming Song <s.ziming@hotmail.com>
+---
 
-Code in target/ should never include code from tests/ ... if you really need 
-this, you likely did something wrong...?
+Changes in V2: only reset mode when console handle is valid
 
-  Thomas
+---
+ chardev/char-win-stdio.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->   /* CSR function table public API */
->   void riscv_get_csr_ops(int csrno, riscv_csr_operations *ops)
-> @@ -4549,6 +4549,57 @@ static RISCVException write_jvt(CPURISCVState *env, int csrno,
->       return RISCV_EXCP_NONE;
->   }
->   
-> +#if !defined(CONFIG_USER_ONLY)
-> +static uint64_t csr_call(char *cmd, uint64_t cpu_num, int csrno,
-> +                                uint64_t *val)
-> +{
-> +    RISCVCPU *cpu = RISCV_CPU(cpu_by_arch_id(cpu_num));
-> +    CPURISCVState *env = &cpu->env;
-> +
-> +    int ret = RISCV_EXCP_NONE;
-> +    if (strcmp(cmd, "get_csr") == 0) {
-> +        ret = riscv_csrrw(env, csrno, (target_ulong *)val, 0, 0);
-> +
-> +    } else if (strcmp(cmd, "set_csr") == 0) {
-> +        ret = riscv_csrrw(env, csrno, NULL, *(target_ulong *)val, MAKE_64BIT_MASK(0, TARGET_LONG_BITS));
-> +    }
-> +
-> +    if (ret == RISCV_EXCP_NONE) {
-> +        ret = 0;
-> +    } else {
-> +        g_assert_not_reached();
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +bool csr_qtest_callback(CharBackend *chr, gchar **words)
-> +{
-> +    if (strcmp(words[0], "csr") == 0) {
-> +
-> +        uint64_t res, cpu;
-> +
-> +        uint64_t val;
-> +        int rc, csr;
-> +
-> +        rc = qemu_strtou64(words[2], NULL, 0, &cpu);
-> +        g_assert(rc == 0);
-> +        rc = qemu_strtoi(words[3], NULL, 0, &csr);
-> +        g_assert(rc == 0);
-> +        rc = qemu_strtou64(words[4], NULL, 0, &val);
-> +        g_assert(rc == 0);
-> +        res = csr_call(words[1], cpu, csr, &val);
-> +
-> +        qtest_send_prefix(chr);
-> +        qtest_sendf(chr, "OK %"PRIx64" "TARGET_FMT_lx"\n", res, (target_ulong)val);
-> +
-> +        return true;
-> +    }
-> +
-> +    return false;
-> +}
-> +#endif
-> +
->   /*
->    * Control and Status Register function table
->    * riscv_csr_operations::predicate() must be provided for an implemented CSR
-> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-> index c7f6897d78..f8c3ff15a9 100644
-> --- a/tests/qtest/libqtest.c
-> +++ b/tests/qtest/libqtest.c
-> @@ -1205,6 +1205,33 @@ uint64_t qtest_rtas_call(QTestState *s, const char *name,
->       return 0;
->   }
->   
-> +static void qtest_rsp_csr(QTestState *s, uint64_t *val)
-> +{
-> +    gchar **args;
-> +    uint64_t ret;
-> +    int rc;
-> +
-> +    args = qtest_rsp_args(s, 3);
-> +
-> +    rc = qemu_strtou64(args[1], NULL, 16, &ret);
-> +    g_assert(rc == 0);
-> +    rc = qemu_strtou64(args[2], NULL, 16, val);
-> +    g_assert(rc == 0);
-> +
-> +    g_strfreev(args);
-> +}
-> +
-> +uint64_t qtest_csr_call(QTestState *s, const char *name,
-> +                         uint64_t cpu, int csr,
-> +                         uint64_t *val)
-> +{
-> +    qtest_sendf(s, "csr %s 0x%"PRIx64" %d 0x%"PRIx64"\n",
-> +                    name, cpu, csr, *val);
-> +
-> +    qtest_rsp_csr(s, val);
-> +    return 0;
-> +}
-> +
->   void qtest_add_func(const char *str, void (*fn)(void))
->   {
->       gchar *path = g_strdup_printf("/%s/%s", qtest_get_arch(), str);
-> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-> index c261b7e0b3..7b547e5e2c 100644
-> --- a/tests/qtest/libqtest.h
-> +++ b/tests/qtest/libqtest.h
-> @@ -577,6 +577,20 @@ uint64_t qtest_rtas_call(QTestState *s, const char *name,
->                            uint32_t nargs, uint64_t args,
->                            uint32_t nret, uint64_t ret);
->   
-> +/**
-> + * qtest_csr_call:
-> + * @s: #QTestState instance to operate on.
-> + * @name: name of the command to call.
-> + * @cpu: hart number.
-> + * @csr: CSR number.
-> + * @val: Value for reading/writing.
-> + *
-> + * Call an RISC-V CSR read/write function
-> + */
-> +uint64_t qtest_csr_call(QTestState *s, const char *name,
-> +                         uint64_t cpu, int csr,
-> +                         unsigned long *val);
-> +
->   /**
->    * qtest_bufread:
->    * @s: #QTestState instance to operate on.
+diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
+index 1a18999..13325ca 100644
+--- a/chardev/char-win-stdio.c
++++ b/chardev/char-win-stdio.c
+@@ -33,6 +33,7 @@
+ struct WinStdioChardev {
+     Chardev parent;
+     HANDLE  hStdIn;
++    DWORD   dwOldMode;
+     HANDLE  hInputReadyEvent;
+     HANDLE  hInputDoneEvent;
+     HANDLE  hInputThread;
+@@ -159,6 +160,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
+     }
+ 
+     is_console = GetConsoleMode(stdio->hStdIn, &dwMode) != 0;
++    stdio->dwOldMode = dwMode;
+ 
+     if (is_console) {
+         if (qemu_add_wait_object(stdio->hStdIn,
+@@ -221,6 +223,9 @@ static void char_win_stdio_finalize(Object *obj)
+ {
+     WinStdioChardev *stdio = WIN_STDIO_CHARDEV(obj);
+ 
++    if (stdio->hStdIn != INVALID_HANDLE_VALUE) {
++        SetConsoleMode(stdio->hStdIn, stdio->dwOldMode);
++    }
+     if (stdio->hInputReadyEvent != INVALID_HANDLE_VALUE) {
+         CloseHandle(stdio->hInputReadyEvent);
+     }
+-- 
+2.34.1.windows.1
 
 
