@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73385939289
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 18:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97109392B9
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 18:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVvuT-0003A6-AR; Mon, 22 Jul 2024 12:29:13 -0400
+	id 1sVwE0-00055F-Tn; Mon, 22 Jul 2024 12:49:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sVvuP-00039I-IJ
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:29:09 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sVvuL-0003dz-Fk
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:29:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721665745; x=1753201745;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=YMKLojLNsmNohrHOq7u6Bjwj/AkU7Uy5uOBsZo5eFlI=;
- b=lQUY3pmUuTX9HKfedaecveY3+/plcmQnl1CTkmLdC757R4IQFqEJLu1q
- 4D+XlC3MvM/cU2y9ayeFJ6K9DmI59wjLi9CYg/jnNC8iBS3LRQyINQBNW
- DEB6n6H0iANyjU80plB5ncQNcSUCw85RDFfok8kBYiKt3Mc5/IQuFgWlC
- eHtY96hUxKAzuN3UfRBsIpLAoCg9VShB9kjwOstjUYh/o+ls7RXIvFJGO
- VG3b6Gp8UFJQki+QZgwNIo4nBbWP5l5V3WVODfLYCliLB77z9gCLn5n8R
- uGMAGZNtlvQ5CNwcpCkTbPesAN/L169/z+LxsN78Xidk7qaKcCVxtR8Q2 Q==;
-X-CSE-ConnectionGUID: LfUH5vE2SiO8X7z23qBa7A==
-X-CSE-MsgGUID: L2OzLC9ESiSKzvlAN1aJVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="19094217"
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="19094217"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 09:29:01 -0700
-X-CSE-ConnectionGUID: nsl/uOcuRO6HagREIue7WQ==
-X-CSE-MsgGUID: EwZZc5zXT0CDWWMyzuWeJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="51829510"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 22 Jul 2024 09:28:59 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] MAINTAINERS: Add myself as a reviewer of machine core
-Date: Tue, 23 Jul 2024 00:44:12 +0800
-Message-Id: <20240722164412.1163414-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1sVwDy-00053J-S9
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:49:22 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1sVwDw-0007LC-LA
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:49:22 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-70d2b921c48so757834b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 09:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1721666958; x=1722271758; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ojd67kYJwQNwCJ7C4DJs/GgdGhSFvQnplRWu/lP131A=;
+ b=MB1YZUnEBw/nasA+5UHIddjm3KtLCyswmXdLOPmEi5LuZsqvYhLjeJgyHC2bisfRxT
+ n1PqaoFNXlpfXkRE/keVcJDs2tCOm75aMl6y3RfbitO9NxzIUI7zPVFBfG8mMoZFmmy3
+ 7IN/xBxRSvEjRbaBnRfUbKst3+fqB+Qj8hEMGdBTScmp23I2en8VdQrgORRx4TadS+I1
+ 4n+9sTqCsYU0wujm4y4bbZjXLwwB+apveEHEMMsfgTsM73rUP94/o2H/TumT+0eFaTti
+ udFDg0X1io2vmGcDG4KDEEzK2Rwno5HzBawS/ycqJp/omKhsr+NXbMMj94IfKN8eHsf/
+ ElnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721666958; x=1722271758;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ojd67kYJwQNwCJ7C4DJs/GgdGhSFvQnplRWu/lP131A=;
+ b=DoX8O0ZfwDW8VGCxtdy1lza6tfsQmfK0I/iEIIXRlpphNHbFI7K/C2k33vZ990NE9H
+ tg2KTr9OvmCPMu1Kp0Ez6LcIAxZH+yTOKu6dhDmsp0NWyoNdkXuvdb756mce/kALVQKz
+ 6o+smUxK0+aueITnrjY3/bAM6SWbDH9kBRXy74D1b2aOWGvSpOQVfwzYwTqVWiwD1kYm
+ rQIzBlnF7VvXEnif8ieqrvAuQ0jqzNeUUuB+o9dh3ty1HDwYbBDUGd4l6ZDWEhI22yhW
+ SPSLNowuIzHkXW2yLutaj+xlVfK+Yi9p8C1CW5PV9ap5pV29AfrG9GaelQcOdsVFaZmh
+ +tdg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWL0yrBtDswu7pDXbiARFBRoKT33tRisDIX0/XVENMCnDNvF3h+Abc3wkRrzC4QQ0elR5z02ceuWRFOec9tSzIuh7TBL74=
+X-Gm-Message-State: AOJu0YywJ/7+iKjOchB9IbQo4U7AqILjZt9HQ5lhLioQ9A9i7uA9nXVV
+ IFM7uLQ5nKNd0Bs1C0mTKSlEYzgZ6OqB6saDYePmy6ilYHSTC10yTuQbNrN1lSc=
+X-Google-Smtp-Source: AGHT+IFWc15RCjb9dB08HdxgnTQQZpVJGNH8Z4+qSSdqBJ5a7WIkTpT5xXLMYfztPhOU/QCYTspaCA==
+X-Received: by 2002:a05:6a20:430e:b0:1c2:8bcc:bb09 with SMTP id
+ adf61e73a8af0-1c42857336cmr6308503637.8.1721666957556; 
+ Mon, 22 Jul 2024 09:49:17 -0700 (PDT)
+Received: from [100.64.0.1] (114-35-142-126.hinet-ip.hinet.net.
+ [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fd6f28e87esm56848115ad.66.2024.07.22.09.49.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 09:49:17 -0700 (PDT)
+Message-ID: <c96ad0e8-bb2b-4af3-b706-57cd93653f9d@sifive.com>
+Date: Tue, 23 Jul 2024 00:49:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/12] target/riscv: Simplify probing in vext_ldff
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongu.org, qemu-s390x@nongnu.org,
+ qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+References: <20240719010707.1319675-1-richard.henderson@linaro.org>
+ <20240719010707.1319675-13-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Max Chou <max.chou@sifive.com>
+In-Reply-To: <20240719010707.1319675-13-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,28 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While working on a series of CPU/cache topology work, I became
-interested in the machine core component and would like to help to
-review more related patches.
+Reviewed-by: Max Chou <max.chou@sifive.com>
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7d9811458cb0..0c55fe72611d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1879,6 +1879,7 @@ M: Eduardo Habkost <eduardo@habkost.net>
- M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Yanan Wang <wangyanan55@huawei.com>
-+R: Zhao Liu <zhao1.liu@intel.com>
- S: Supported
- F: hw/core/cpu-common.c
- F: hw/core/cpu-sysemu.c
--- 
-2.34.1
+On 2024/7/19 9:07 AM, Richard Henderson wrote:
+> The current pairing of tlb_vaddr_to_host with extra is either
+> inefficient (user-only, with page_check_range) or incorrect
+> (system, with probe_pages).
+>
+> For proper non-fault behaviour, use probe_access_flags with
+> its nonfault parameter set to true.
+>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/riscv/vector_helper.c | 31 +++++++++++++++++--------------
+>   1 file changed, 17 insertions(+), 14 deletions(-)
+>
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 1b4d5a8e37..10a52ceb5b 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -474,7 +474,6 @@ vext_ldff(void *vd, void *v0, target_ulong base,
+>             vext_ldst_elem_fn *ldst_elem,
+>             uint32_t log2_esz, uintptr_t ra)
+>   {
+> -    void *host;
+>       uint32_t i, k, vl = 0;
+>       uint32_t nf = vext_nf(desc);
+>       uint32_t vm = vext_vm(desc);
+> @@ -493,27 +492,31 @@ vext_ldff(void *vd, void *v0, target_ulong base,
+>           }
+>           addr = adjust_addr(env, base + i * (nf << log2_esz));
+>           if (i == 0) {
+> +            /* Allow fault on first element. */
+>               probe_pages(env, addr, nf << log2_esz, ra, MMU_DATA_LOAD);
+>           } else {
+> -            /* if it triggers an exception, no need to check watchpoint */
+>               remain = nf << log2_esz;
+>               while (remain > 0) {
+> +                void *host;
+> +                int flags;
+> +
+>                   offset = -(addr | TARGET_PAGE_MASK);
+> -                host = tlb_vaddr_to_host(env, addr, MMU_DATA_LOAD, mmu_index);
+> -                if (host) {
+> -#ifdef CONFIG_USER_ONLY
+> -                    if (!page_check_range(addr, offset, PAGE_READ)) {
+> -                        vl = i;
+> -                        goto ProbeSuccess;
+> -                    }
+> -#else
+> -                    probe_pages(env, addr, offset, ra, MMU_DATA_LOAD);
+> -#endif
+> -                } else {
+> +
+> +                /* Probe nonfault on subsequent elements. */
+> +                flags = probe_access_flags(env, addr, offset, MMU_DATA_LOAD,
+> +                                           mmu_index, true, &host, 0);
+> +
+> +                /*
+> +                 * Stop if invalid (unmapped) or mmio (transaction may fail).
+> +                 * Do not stop if watchpoint, as the spec says that
+> +                 * first-fault should continue to access the same
+> +                 * elements regardless of any watchpoint.
+> +                 */
+> +                if (flags & ~TLB_WATCHPOINT) {
+>                       vl = i;
+>                       goto ProbeSuccess;
+>                   }
+> -                if (remain <=  offset) {
+> +                if (remain <= offset) {
+>                       break;
+>                   }
+>                   remain -= offset;
 
 
