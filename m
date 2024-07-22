@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F6B938996
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F7793899E
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVn4L-0004A1-Bf; Mon, 22 Jul 2024 03:02:49 -0400
+	id 1sVn4L-00048J-85; Mon, 22 Jul 2024 03:02:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn4D-0003FQ-6M
+ id 1sVn4D-0003It-To
  for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn4B-0006kg-EX
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:40 -0400
+ id 1sVn4C-0006kq-Cw
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:02:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721631758;
+ s=mimecast20190719; t=1721631759;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E+4OEcfCBx1yNmRfg8InUQI1xPEQU0KY9UnlgF5lAIQ=;
- b=F1DD4Bmk3NEv09DNSYddAXaTLACSExbbqOwHqFNKUlw6KtK7XGJYCAzbEEZag7SA8Xev5a
- 6/jslxAaCgg7NbPKSm/VWebCUB4uwaYaKS2zivdj96waFnfNPDugUtHfCWuL8CW430rDyg
- pjBmCXnK25fswEhp+R6FFXl47cQxozM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tPSSyS6bfmr01ci0SFl0dV6durr2CWQnch75LoI9BkI=;
+ b=ZMGr/MvIHMsXbVDMEkDfiLpswIlnEy0uFtD1ygIivAGSMPjFfFb2XW2HtqS4J4HYa90I82
+ W403tU9noNJj7PwSivGN+yYyzsAI6ICz5ni2T8F0nvgWqqEd/cHm3w2eWy0VCe0J7X/ne6
+ yjstQog7xUpeFsCYezlNcl6ifdFH7wo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-38l6o44fMTCiWUtavkn6pw-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-315-HUIGzH6fOXa7WUDKu_IZhw-1; Mon,
  22 Jul 2024 03:02:37 -0400
-X-MC-Unique: 38l6o44fMTCiWUtavkn6pw-1
+X-MC-Unique: HUIGzH6fOXa7WUDKu_IZhw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D7DF41955D50; Mon, 22 Jul 2024 07:02:34 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8DD2A197700E; Mon, 22 Jul 2024 07:02:31 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.252])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5E0711955D52; Mon, 22 Jul 2024 07:02:28 +0000 (UTC)
+ id 32D361954128; Mon, 22 Jul 2024 07:02:29 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 23/25] qga/commands-posix: Make ga_wait_child() return boolean
-Date: Mon, 22 Jul 2024 10:01:20 +0300
-Message-ID: <20240722070122.27615-24-kkostiuk@redhat.com>
+Subject: [PULL 24/25] guest-agent: document allow-rpcs in config file section
+Date: Mon, 22 Jul 2024 10:01:21 +0300
+Message-ID: <20240722070122.27615-25-kkostiuk@redhat.com>
 In-Reply-To: <20240722070122.27615-1-kkostiuk@redhat.com>
 References: <20240722070122.27615-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
@@ -80,58 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Thomas Lamprecht <t.lamprecht@proxmox.com>
 
-Make ga_wait_child() return boolean and check the returned boolean
-in ga_run_command() instead of dereferencing @errp.
+While the `allow-rpcs` option is documented in the CLI options
+section, it was missing in the section about the configuration file
+syntax.
 
-Cc: Michael Roth <michael.roth@amd.com>
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+And while it's mentioned that "the list of keys follows the command line
+options", having `block-rpcs` there but not `allow-rpcs` seems like
+being a potential source of confusion; and as it's cheap to add let's
+just do so.
+
+Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Message-ID: <20240716162351.270095-1-zhao1.liu@intel.com>
+Message-ID: <20240718140407.444160-1-t.lamprecht@proxmox.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands-posix.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ docs/interop/qemu-ga.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 578d29f228..c2bd0b4316 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -48,7 +48,7 @@
- #endif
- #endif
+diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
+index fb75cfd8d4..9c7380896a 100644
+--- a/docs/interop/qemu-ga.rst
++++ b/docs/interop/qemu-ga.rst
+@@ -150,6 +150,7 @@ fsfreeze-hook  string
+ statedir       string
+ verbose        boolean
+ block-rpcs     string list
++allow-rpcs     string list
+ =============  ===========
  
--static void ga_wait_child(pid_t pid, int *status, Error **errp)
-+static bool ga_wait_child(pid_t pid, int *status, Error **errp)
- {
-     pid_t rpid;
- 
-@@ -59,10 +59,11 @@ static void ga_wait_child(pid_t pid, int *status, Error **errp)
-     if (rpid == -1) {
-         error_setg_errno(errp, errno, "failed to wait for child (pid: %d)",
-                          pid);
--        return;
-+        return false;
-     }
- 
-     g_assert(rpid == pid);
-+    return true;
- }
- 
- static ssize_t ga_pipe_read_str(int fd[2], char **str)
-@@ -167,8 +168,7 @@ static int ga_run_command(const char *argv[], const char *in_str,
-         goto out;
-     }
- 
--    ga_wait_child(pid, &status, errp);
--    if (*errp) {
-+    if (!ga_wait_child(pid, &status, errp)) {
-         goto out;
-     }
- 
+ See also
 -- 
 2.45.2
 
