@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6F29386E4
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F6D9386E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 02:21:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVgk2-0003l8-8B; Sun, 21 Jul 2024 20:17:26 -0400
+	id 1sVgk4-0003w2-Rv; Sun, 21 Jul 2024 20:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk0-0003hD-Lc
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk2-0003po-S8
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgjy-0005l2-Kx
- for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sVgk0-0005lF-LI
+ for qemu-devel@nongnu.org; Sun, 21 Jul 2024 20:17:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721607442;
+ s=mimecast20190719; t=1721607444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=d+b3iGPXHzRDxcu2/iYzWpqXB4BTdAoJBt36m9nCwv4=;
- b=DtPmpKdNgqbar9/UJ44calzB8d0WnXODHfTVZtCfkyntyYuDDPZSAv2vx8Dew8sLd2H6Xk
- YN+tW7D/ycdYohZVWqTvWzlvv5gzy0Byv+N9QCdcyuUhih0p59qA0FXT43O1S4e+dUARWm
- m7N/3I8sutZakxOBt62eM4WcSaG6jAM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qcwAVQlpIclpTqaGgIStn6XGFvx5TOswyNM1MDIov58=;
+ b=QB6HWg4rUMjzTBwDpgi4F4ddmsvLK/Fco0TF9vw314BQkzvZOJ0jmKKAUNihLXkJ++kLKn
+ V4hXtw+7IyptIng78ehhiZa/J+eyEQs/d54Ckmn51COyBRiN8ZYx51+ks+Q1Gm1LbURK1d
+ 3C9XTApR5dIM94PTrvIPpblqme3lNNQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683--wsJRb-3P2CP6oZrB67WRQ-1; Sun, 21 Jul 2024 20:17:20 -0400
-X-MC-Unique: -wsJRb-3P2CP6oZrB67WRQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-427d9e61ba8so15905505e9.3
- for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:20 -0700 (PDT)
+ us-mta-9-rOTwcKz7Ph-zPO7Uhsxjkg-1; Sun, 21 Jul 2024 20:17:22 -0400
+X-MC-Unique: rOTwcKz7Ph-zPO7Uhsxjkg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3686658856fso2063493f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 21 Jul 2024 17:17:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721607439; x=1722212239;
+ d=1e100.net; s=20230601; t=1721607441; x=1722212241;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d+b3iGPXHzRDxcu2/iYzWpqXB4BTdAoJBt36m9nCwv4=;
- b=aUzo81l+mGZO0ked/5CJVGu2tc0WOSRmKkl20smwAp2OmkITLkbR1KsF4k72ogpDbS
- 5x2aiCIwldBb1BlCOuuPzKOQGvSL9yEu/VMaxNmjXqgH/fc6m7TQqX7KHLSAoH4WTQCo
- Z3uYl3FIyDzzsdIlmgDBQQiHzC1t/KWgKX/ZYYTf2HQpE97ryXP7yHtiI8Mqx3MINVw8
- Rrtpbmc2wFybMqaQiYM76b4jkhT1AsVa6VfNvwbRiakLYnwX3juUAYqwnKFP8w7irc+M
- 28KpQ+pKUHyvSBaDDvaPjpe1K/kT37tIKOrYgCNKd3LRYBW23ndAbFf0b5mAzyOp7d8Y
- sI4w==
-X-Gm-Message-State: AOJu0YwLobZpcVx4f1fyt15QZaubgqun2srsgcTWcKq8FYYUAbyp3N8w
- agCGVHONeI255E8GZdDkzz/Y56I3Jm5ttpk7va8YRICA88VpH90e8HfvO+MixDgrGP/jSL0Qs9x
- kxjKOZk7HCr7O4WbdWVhKby+Clklx+5wHmHDAlvqTQmE7SCAkyGH8IsFbYCaUp6HgATZ2/nbAJM
- n+2tSMnInQWbsnqLXcaE2onR7KqhAkGw==
-X-Received: by 2002:a05:600c:4684:b0:426:61fc:fc22 with SMTP id
- 5b1f17b1804b1-427dc520b62mr30202775e9.3.1721607438750; 
- Sun, 21 Jul 2024 17:17:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFukwvOCOFPOSTgSGiyG8rAN0PI5KDpNnso5U+cBljW5HZfdQ89CqFjmar8ACeby55poyuAMw==
-X-Received: by 2002:a05:600c:4684:b0:426:61fc:fc22 with SMTP id
- 5b1f17b1804b1-427dc520b62mr30202635e9.3.1721607438176; 
- Sun, 21 Jul 2024 17:17:18 -0700 (PDT)
+ bh=qcwAVQlpIclpTqaGgIStn6XGFvx5TOswyNM1MDIov58=;
+ b=WnpJxGGRe0urFSmp5M+4Yk1brNUHCZ0keJs8DnwvpHNgSlTr2nKWFd8L9uUl6Bqr4t
+ O4+SJZWi/SX0NAqsEZmYDisz5j5psx5RYrpNT5/xeO/+fsf86pQm/+zAo3oWbl5MDkdp
+ XbSt5d0SqQQUmoWq5MWtdK/UrF/hrxAfaTi1kzPus9KH0FEgV5jISGIbiMZHdl9Wbnuo
+ se6fuC6GSjBOrAjZvNEW4Eiq+eSrvfNBi3rKKWaygdObLsNi2R4nMNMJ29BthDzHU5W/
+ 9vcnVao+U7daiLTgCTho1oA/FJv7vxsj4J+Rr9Ef/Ivwxy+H8V+87fNzDiTykM14Rqkq
+ xhYw==
+X-Gm-Message-State: AOJu0YwRKouZfWZUrQMoJ0763lV0Aug1B2i2aTVzK+W3ZyBd5RSpkoml
+ rTQbxtDUsVbTULDOb033mwiQb9OoYSQfykkOye3zTGGXbLuLJAJMdM1vAmU3mZ+82tMB5sgPNW4
+ Jdrd0Pbm6gWPkxbkzSk7a3ap/jn6rN4+4cvhiwUGUr6+A3TmJOc1Kk0EizIhPCkrz4yy9INT7tp
+ 7Zg579FYHFHSCJHkVX1yPI+D07wpg8ag==
+X-Received: by 2002:adf:f042:0:b0:368:3f60:8725 with SMTP id
+ ffacd0b85a97d-3683f608818mr8977647f8f.39.1721607440900; 
+ Sun, 21 Jul 2024 17:17:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG8W/bAnBLxFz1Tq7Rw/oQ74W8m1tRam0K9WYugH7Jbmr6PY5Jg+6S4KYwtcoWXGvcHmV6+sA==
+X-Received: by 2002:adf:f042:0:b0:368:3f60:8725 with SMTP id
+ ffacd0b85a97d-3683f608818mr8977631f8f.39.1721607440246; 
+ Sun, 21 Jul 2024 17:17:20 -0700 (PDT)
 Received: from redhat.com (mob-5-90-113-158.net.vodafone.it. [5.90.113.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d68fa9b1sm107738965e9.8.2024.07.21.17.17.16
+ ffacd0b85a97d-3687868b3d5sm7037446f8f.36.2024.07.21.17.17.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jul 2024 17:17:17 -0700 (PDT)
-Date: Sun, 21 Jul 2024 20:17:16 -0400
+ Sun, 21 Jul 2024 17:17:19 -0700 (PDT)
+Date: Sun, 21 Jul 2024 20:17:18 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Shiju Jose <shiju.jose@huawei.com>,
- Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 13/63] hw/cxl/cxl-mailbox-utils: Add device DDR5 ECS control
- feature
-Message-ID: <2d41ce38fb9af3e66f85c8b8f9c3f83148c3d549.1721607331.git.mst@redhat.com>
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 14/63] hw/cxl: Support firmware updates
+Message-ID: <3c1e1e5e240e683f0611b96cd325471639f22c6d.1721607331.git.mst@redhat.com>
 References: <cover.1721607331.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,239 +100,351 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shiju Jose <shiju.jose@huawei.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-CXL spec 3.1 section 8.2.9.9.11.2 describes the DDR5 Error Check Scrub (ECS)
-control feature.
+Implement transfer and activate functionality per 3.1 spec for
+supporting update metadata (no actual buffers). Transfer times
+are arbitrarily set to ten and two seconds for full and part
+transfers, respectively.
 
-The Error Check Scrub (ECS) is a feature defined in JEDEC DDR5 SDRAM
-Specification (JESD79-5) and allows the DRAM to internally read, correct
-single-bit errors, and write back corrected data bits to the DRAM array
-while providing transparency to error counts. The ECS control feature
-allows the request to configure ECS input configurations during system
-boot or at run-time.
+cxl update-firmware mem0 -F fw.img
 
-The ECS control allows the requester to change the log entry type, the ECS
-threshold count provided that the request is within the definition
-specified in DDR5 mode registers, change mode between codeword mode and
-row count mode, and reset the ECS counter.
+<on-going fw update>
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-Link: https://lore.kernel.org/r/20240223085902.1549-4-shiju.jose@huawei.com
+cxl update-firmware mem0
+  "memdev":"mem0",
+  "pmem_size":"1024.00 MiB (1073.74 MB)",
+  "serial":"0",
+  "host":"0000:0d:00.0",
+  "firmware":{
+    "num_slots":2,
+    "active_slot":1,
+    "online_activate_capable":true,
+    "slot_1_version":"BWFW VERSION 0",
+    "fw_update_in_progress":true,
+    "remaining_size":22400
+  }
+}
+
+<completed fw update>
+
+cxl update-firmware mem0
+{
+  "memdev":"mem0",
+  "pmem_size":"1024.00 MiB (1073.74 MB)",
+  "serial":"0",
+  "host":"0000:0d:00.0",
+  "firmware":{
+    "num_slots":2,
+    "active_slot":1,
+    "staged_slot":2,
+    "online_activate_capable":true,
+    "slot_1_version":"BWFW VERSION 0",
+    "slot_2_version":"BWFW VERSION 1",
+    "fw_update_in_progress":false
+  }
+}
+
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Link: https://lore.kernel.org/r/20240627164912.25630-1-dave@stgolabs.net
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240705123039.963781-5-Jonathan.Cameron@huawei.com>
+Message-Id: <20240705125915.991672-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_device.h | 24 +++++++++++++
- hw/cxl/cxl-mailbox-utils.c  | 71 +++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3.c          | 14 ++++++++
- 3 files changed, 109 insertions(+)
+ include/hw/cxl/cxl_device.h |  15 +++
+ hw/cxl/cxl-mailbox-utils.c  | 205 +++++++++++++++++++++++++++++++++++-
+ 2 files changed, 215 insertions(+), 5 deletions(-)
 
 diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 2c1df25453..5cae7159e6 100644
+index 5cae7159e6..fdd0f4e62b 100644
 --- a/include/hw/cxl/cxl_device.h
 +++ b/include/hw/cxl/cxl_device.h
-@@ -447,6 +447,27 @@ typedef struct CXLMemPatrolScrubWriteAttrs {
- #define CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_DEFAULT    1
- #define CXL_MEMDEV_PS_ENABLE_DEFAULT    0
- 
-+/* CXL memory device DDR5 ECS control attributes */
-+typedef struct CXLMemECSReadAttrs {
-+        uint8_t ecs_log_cap;
-+        uint8_t ecs_cap;
-+        uint16_t ecs_config;
-+        uint8_t ecs_flags;
-+} QEMU_PACKED CXLMemECSReadAttrs;
+@@ -181,6 +181,21 @@ typedef struct CXLCCI {
+         uint64_t runtime;
+         QEMUTimer *timer;
+     } bg;
 +
-+typedef struct CXLMemECSWriteAttrs {
-+   uint8_t ecs_log_cap;
-+    uint16_t ecs_config;
-+} QEMU_PACKED CXLMemECSWriteAttrs;
++    /* firmware update */
++    struct {
++        uint8_t active_slot;
++        uint8_t staged_slot;
++        bool slot[4];
++        uint8_t curr_action;
++        uint8_t curr_slot;
++        /* handle partial transfers */
++        bool transferring;
++        size_t prev_offset;
++        size_t prev_len;
++        time_t last_partxfer;
++    } fw;
 +
-+#define CXL_ECS_GET_FEATURE_VERSION    0x01
-+#define CXL_ECS_SET_FEATURE_VERSION    0x01
-+#define CXL_ECS_LOG_ENTRY_TYPE_DEFAULT    0x01
-+#define CXL_ECS_REALTIME_REPORT_CAP_DEFAULT    1
-+#define CXL_ECS_THRESHOLD_COUNT_DEFAULT    3 /* 3: 256, 4: 1024, 5: 4096 */
-+#define CXL_ECS_MODE_DEFAULT    0
-+#define CXL_ECS_NUM_MEDIA_FRUS   3 /* Default */
-+
- #define DCD_MAX_NUM_REGION 8
- 
- typedef struct CXLDCExtentRaw {
-@@ -534,6 +555,9 @@ struct CXLType3Dev {
-     /* Patrol scrub control attributes */
-     CXLMemPatrolScrubReadAttrs patrol_scrub_attrs;
-     CXLMemPatrolScrubWriteAttrs patrol_scrub_wr_attrs;
-+    /* ECS control attributes */
-+    CXLMemECSReadAttrs ecs_attrs[CXL_ECS_NUM_MEDIA_FRUS];
-+    CXLMemECSWriteAttrs ecs_wr_attrs[CXL_ECS_NUM_MEDIA_FRUS];
- 
-     struct dynamic_capacity {
-         HostMemoryBackend *host_dc;
+     size_t payload_max;
+     /* Pointer to device hosting the CCI */
+     DeviceState *d;
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 485beb9dba..0621f686f4 100644
+index 0621f686f4..b752920ec8 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -825,6 +825,7 @@ typedef struct CXLSupportedFeatureEntry {
+@@ -63,6 +63,8 @@ enum {
+         #define SET_INTERRUPT_POLICY   0x3
+     FIRMWARE_UPDATE = 0x02,
+         #define GET_INFO      0x0
++        #define TRANSFER      0x1
++        #define ACTIVATE      0x2
+     TIMESTAMP   = 0x03,
+         #define GET           0x0
+         #define SET           0x1
+@@ -622,6 +624,9 @@ static CXLRetCode cmd_infostat_bg_op_sts(const struct cxl_cmd *cmd,
+     return CXL_MBOX_SUCCESS;
+ }
  
- enum CXL_SUPPORTED_FEATURES_LIST {
-     CXL_FEATURE_PATROL_SCRUB = 0,
-+    CXL_FEATURE_ECS,
-     CXL_FEATURE_MAX
- };
- 
-@@ -877,6 +878,20 @@ typedef struct CXLMemPatrolScrubSetFeature {
-         CXLMemPatrolScrubWriteAttrs feat_data;
- } QEMU_PACKED QEMU_ALIGNED(16) CXLMemPatrolScrubSetFeature;
- 
-+/*
-+ * CXL r3.1 section 8.2.9.9.11.2:
-+ * DDR5 Error Check Scrub (ECS) Control Feature
-+ */
-+static const QemuUUID ecs_uuid = {
-+    .data = UUID(0xe5b13f22, 0x2328, 0x4a14, 0xb8, 0xba,
-+                 0xb9, 0x69, 0x1e, 0x89, 0x33, 0x86)
-+};
++#define CXL_FW_SLOTS 2
++#define CXL_FW_SIZE  0x02000000 /* 32 mb */
 +
-+typedef struct CXLMemECSSetFeature {
-+        CXLSetFeatureInHeader hdr;
-+        CXLMemECSWriteAttrs feat_data[];
-+} QEMU_PACKED QEMU_ALIGNED(16) CXLMemECSSetFeature;
+ /* CXL r3.1 Section 8.2.9.3.1: Get FW Info (Opcode 0200h) */
+ static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
+                                                uint8_t *payload_in,
+@@ -652,15 +657,192 @@ static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
+ 
+     fw_info = (void *)payload_out;
+ 
+-    fw_info->slots_supported = 2;
+-    fw_info->slot_info = BIT(0) | BIT(3);
+-    fw_info->caps = 0;
+-    pstrcpy(fw_info->fw_rev1, sizeof(fw_info->fw_rev1), "BWFW VERSION 0");
++    fw_info->slots_supported = CXL_FW_SLOTS;
++    fw_info->slot_info = (cci->fw.active_slot & 0x7) |
++            ((cci->fw.staged_slot & 0x7) << 3);
++    fw_info->caps = BIT(0);  /* online update supported */
 +
- /* CXL r3.1 section 8.2.9.6.1: Get Supported Features (Opcode 0500h) */
- static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-                                              uint8_t *payload_in,
-@@ -930,6 +945,23 @@ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-                                     CXL_FEAT_ENTRY_SFE_CEL_VALID,
-             };
-             break;
-+        case  CXL_FEATURE_ECS:
-+            /* Fill supported feature entry for device DDR5 ECS control */
-+            get_feats_out->feat_entries[entry++] =
-+                         (struct CXLSupportedFeatureEntry) {
-+                .uuid = ecs_uuid,
-+                .feat_index = index,
-+                .get_feat_size = CXL_ECS_NUM_MEDIA_FRUS *
-+                                    sizeof(CXLMemECSReadAttrs),
-+                .set_feat_size = CXL_ECS_NUM_MEDIA_FRUS *
-+                                    sizeof(CXLMemECSWriteAttrs),
-+                .attr_flags = CXL_FEAT_ENTRY_ATTR_FLAG_CHANGABLE,
-+                .get_feat_version = CXL_ECS_GET_FEATURE_VERSION,
-+                .set_feat_version = CXL_ECS_SET_FEATURE_VERSION,
-+                .set_feat_effects = CXL_FEAT_ENTRY_SFE_IMMEDIATE_CONFIG_CHANGE |
-+                                    CXL_FEAT_ENTRY_SFE_CEL_VALID,
-+            };
-+            break;
-         default:
-             __builtin_unreachable();
-         }
-@@ -989,6 +1021,18 @@ static CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
-         memcpy(payload_out,
-                (uint8_t *)&ct3d->patrol_scrub_attrs + get_feature->offset,
-                bytes_to_copy);
-+    } else if (qemu_uuid_is_equal(&get_feature->uuid, &ecs_uuid)) {
-+        if (get_feature->offset >=  CXL_ECS_NUM_MEDIA_FRUS *
-+                                sizeof(CXLMemECSReadAttrs)) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        bytes_to_copy = CXL_ECS_NUM_MEDIA_FRUS *
-+                        sizeof(CXLMemECSReadAttrs) -
-+                            get_feature->offset;
-+        bytes_to_copy = MIN(bytes_to_copy, get_feature->count);
-+        memcpy(payload_out,
-+               (uint8_t *)&ct3d->ecs_attrs + get_feature->offset,
-+               bytes_to_copy);
-     } else {
-         return CXL_MBOX_UNSUPPORTED;
-     }
-@@ -1009,10 +1053,13 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-     CXLSetFeatureInHeader *hdr = (void *)payload_in;
-     CXLMemPatrolScrubWriteAttrs *ps_write_attrs;
-     CXLMemPatrolScrubSetFeature *ps_set_feature;
-+    CXLMemECSWriteAttrs *ecs_write_attrs;
-+    CXLMemECSSetFeature *ecs_set_feature;
-     CXLSetFeatureInfo *set_feat_info;
-     uint16_t bytes_to_copy = 0;
-     uint8_t data_transfer_flag;
-     CXLType3Dev *ct3d;
-+    uint16_t count;
++    if (cci->fw.slot[0]) {
++        pstrcpy(fw_info->fw_rev1, sizeof(fw_info->fw_rev1), "BWFW VERSION 0");
++    }
++    if (cci->fw.slot[1]) {
++        pstrcpy(fw_info->fw_rev2, sizeof(fw_info->fw_rev2), "BWFW VERSION 1");
++    }
  
+     *len_out = sizeof(*fw_info);
+     return CXL_MBOX_SUCCESS;
+ }
  
-     if (!object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_TYPE3)) {
-@@ -1062,6 +1109,28 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-             ct3d->patrol_scrub_attrs.scrub_flags |=
-                           ct3d->patrol_scrub_wr_attrs.scrub_flags & 0x1;
-         }
-+    } else if (qemu_uuid_is_equal(&hdr->uuid,
-+                                  &ecs_uuid)) {
-+        if (hdr->version != CXL_ECS_SET_FEATURE_VERSION) {
-+            return CXL_MBOX_UNSUPPORTED;
-+        }
++/* CXL r3.1 section 8.2.9.3.2: Transfer FW (Opcode 0201h) */
++#define CXL_FW_XFER_ALIGNMENT   128
 +
-+        ecs_set_feature = (void *)payload_in;
-+        ecs_write_attrs = ecs_set_feature->feat_data;
-+        memcpy((uint8_t *)ct3d->ecs_wr_attrs + hdr->offset,
-+               ecs_write_attrs,
-+               bytes_to_copy);
-+        set_feat_info->data_size += bytes_to_copy;
++#define CXL_FW_XFER_ACTION_FULL     0x0
++#define CXL_FW_XFER_ACTION_INIT     0x1
++#define CXL_FW_XFER_ACTION_CONTINUE 0x2
++#define CXL_FW_XFER_ACTION_END      0x3
++#define CXL_FW_XFER_ACTION_ABORT    0x4
 +
-+        if (data_transfer_flag == CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER ||
-+            data_transfer_flag ==  CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER) {
-+            for (count = 0; count < CXL_ECS_NUM_MEDIA_FRUS; count++) {
-+                ct3d->ecs_attrs[count].ecs_log_cap =
-+                                  ct3d->ecs_wr_attrs[count].ecs_log_cap;
-+                ct3d->ecs_attrs[count].ecs_config =
-+                                  ct3d->ecs_wr_attrs[count].ecs_config & 0x1F;
-+            }
-+        }
-     } else {
-         return CXL_MBOX_UNSUPPORTED;
-     }
-@@ -1072,6 +1141,8 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-         memset(&set_feat_info->uuid, 0, sizeof(QemuUUID));
-         if (qemu_uuid_is_equal(&hdr->uuid, &patrol_scrub_uuid)) {
-             memset(&ct3d->patrol_scrub_wr_attrs, 0, set_feat_info->data_size);
-+        } else if (qemu_uuid_is_equal(&hdr->uuid, &ecs_uuid)) {
-+            memset(ct3d->ecs_wr_attrs, 0, set_feat_info->data_size);
-         }
-         set_feat_info->data_transfer_flag = 0;
-         set_feat_info->data_saved_across_reset = false;
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 7c583d80f5..d648192ab9 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -844,6 +844,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-     uint8_t *pci_conf = pci_dev->config;
-     unsigned short msix_num = 6;
-     int i, rc;
-+    uint16_t count;
- 
-     QTAILQ_INIT(&ct3d->error_list);
- 
-@@ -917,6 +918,19 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-                            (CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_DEFAULT << 8);
-     ct3d->patrol_scrub_attrs.scrub_flags = CXL_MEMDEV_PS_ENABLE_DEFAULT;
- 
-+    /* Set default value for DDR5 ECS read attributes */
-+    for (count = 0; count < CXL_ECS_NUM_MEDIA_FRUS; count++) {
-+        ct3d->ecs_attrs[count].ecs_log_cap =
-+                            CXL_ECS_LOG_ENTRY_TYPE_DEFAULT;
-+        ct3d->ecs_attrs[count].ecs_cap =
-+                            CXL_ECS_REALTIME_REPORT_CAP_DEFAULT;
-+        ct3d->ecs_attrs[count].ecs_config =
-+                            CXL_ECS_THRESHOLD_COUNT_DEFAULT |
-+                            (CXL_ECS_MODE_DEFAULT << 3);
-+        /* Reserved */
-+        ct3d->ecs_attrs[count].ecs_flags = 0;
++static CXLRetCode cmd_firmware_update_transfer(const struct cxl_cmd *cmd,
++                                               uint8_t *payload_in,
++                                               size_t len,
++                                               uint8_t *payload_out,
++                                               size_t *len_out,
++                                               CXLCCI *cci)
++{
++    struct {
++        uint8_t action;
++        uint8_t slot;
++        uint8_t rsvd1[2];
++        uint32_t offset;
++        uint8_t rsvd2[0x78];
++        uint8_t data[];
++    } QEMU_PACKED *fw_transfer = (void *)payload_in;
++    size_t offset, length;
++
++    if (fw_transfer->action == CXL_FW_XFER_ACTION_ABORT) {
++        /*
++         * At this point there aren't any on-going transfers
++         * running in the bg - this is serialized before this
++         * call altogether. Just mark the state machine and
++         * disregard any other input.
++         */
++        cci->fw.transferring = false;
++        return CXL_MBOX_SUCCESS;
 +    }
 +
-     return;
++    offset = fw_transfer->offset * CXL_FW_XFER_ALIGNMENT;
++    length = len - sizeof(*fw_transfer);
++    if (offset + length > CXL_FW_SIZE) {
++        return CXL_MBOX_INVALID_INPUT;
++    }
++
++    if (cci->fw.transferring) {
++        if (fw_transfer->action == CXL_FW_XFER_ACTION_FULL ||
++            fw_transfer->action == CXL_FW_XFER_ACTION_INIT) {
++            return CXL_MBOX_FW_XFER_IN_PROGRESS;
++        }
++        /*
++         * Abort partitioned package transfer if over 30 secs
++         * between parts. As opposed to the explicit ABORT action,
++         * semantically treat this condition as an error - as
++         * if a part action were passed without a previous INIT.
++         */
++        if (difftime(time(NULL), cci->fw.last_partxfer) > 30.0) {
++            cci->fw.transferring = false;
++            return CXL_MBOX_INVALID_INPUT;
++        }
++    } else if (fw_transfer->action == CXL_FW_XFER_ACTION_CONTINUE ||
++               fw_transfer->action == CXL_FW_XFER_ACTION_END) {
++        return CXL_MBOX_INVALID_INPUT;
++    }
++
++    /* allow back-to-back retransmission */
++    if ((offset != cci->fw.prev_offset || length != cci->fw.prev_len) &&
++        (fw_transfer->action == CXL_FW_XFER_ACTION_CONTINUE ||
++         fw_transfer->action == CXL_FW_XFER_ACTION_END)) {
++        /* verify no overlaps */
++        if (offset < cci->fw.prev_offset + cci->fw.prev_len) {
++            return CXL_MBOX_FW_XFER_OUT_OF_ORDER;
++        }
++    }
++
++    switch (fw_transfer->action) {
++    case CXL_FW_XFER_ACTION_FULL: /* ignores offset */
++    case CXL_FW_XFER_ACTION_END:
++        if (fw_transfer->slot == 0 ||
++            fw_transfer->slot == cci->fw.active_slot ||
++            fw_transfer->slot > CXL_FW_SLOTS) {
++            return CXL_MBOX_FW_INVALID_SLOT;
++        }
++
++        /* mark the slot used upon bg completion */
++        break;
++    case CXL_FW_XFER_ACTION_INIT:
++        if (offset != 0) {
++            return CXL_MBOX_INVALID_INPUT;
++        }
++
++        cci->fw.transferring = true;
++        cci->fw.prev_offset = offset;
++        cci->fw.prev_len = length;
++        break;
++    case CXL_FW_XFER_ACTION_CONTINUE:
++        cci->fw.prev_offset = offset;
++        cci->fw.prev_len = length;
++        break;
++    default:
++        return CXL_MBOX_INVALID_INPUT;
++    }
++
++    if (fw_transfer->action == CXL_FW_XFER_ACTION_FULL) {
++        cci->bg.runtime = 10 * 1000UL;
++    } else {
++        cci->bg.runtime = 2 * 1000UL;
++    }
++    /* keep relevant context for bg completion */
++    cci->fw.curr_action = fw_transfer->action;
++    cci->fw.curr_slot = fw_transfer->slot;
++    *len_out = 0;
++
++    return CXL_MBOX_BG_STARTED;
++}
++
++static void __do_firmware_xfer(CXLCCI *cci)
++{
++    switch (cci->fw.curr_action) {
++    case CXL_FW_XFER_ACTION_FULL:
++    case CXL_FW_XFER_ACTION_END:
++        cci->fw.slot[cci->fw.curr_slot - 1] = true;
++        cci->fw.transferring = false;
++        break;
++    case CXL_FW_XFER_ACTION_INIT:
++    case CXL_FW_XFER_ACTION_CONTINUE:
++        time(&cci->fw.last_partxfer);
++        break;
++    default:
++        break;
++    }
++}
++
++/* CXL r3.1 section 8.2.9.3.3: Activate FW (Opcode 0202h) */
++static CXLRetCode cmd_firmware_update_activate(const struct cxl_cmd *cmd,
++                                               uint8_t *payload_in,
++                                               size_t len,
++                                               uint8_t *payload_out,
++                                               size_t *len_out,
++                                               CXLCCI *cci)
++{
++    struct {
++        uint8_t action;
++        uint8_t slot;
++    } QEMU_PACKED *fw_activate = (void *)payload_in;
++    QEMU_BUILD_BUG_ON(sizeof(*fw_activate) != 0x2);
++
++    if (fw_activate->slot == 0 ||
++        fw_activate->slot == cci->fw.active_slot ||
++        fw_activate->slot > CXL_FW_SLOTS) {
++        return CXL_MBOX_FW_INVALID_SLOT;
++    }
++
++    /* ensure that an actual fw package is there */
++    if (!cci->fw.slot[fw_activate->slot - 1]) {
++        return CXL_MBOX_FW_INVALID_SLOT;
++    }
++
++    switch (fw_activate->action) {
++    case 0: /* online */
++        cci->fw.active_slot = fw_activate->slot;
++        break;
++    case 1: /* reset */
++        cci->fw.staged_slot = fw_activate->slot;
++        break;
++    default:
++        return CXL_MBOX_INVALID_INPUT;
++    }
++
++    return CXL_MBOX_SUCCESS;
++}
++
+ /* CXL r3.1 Section 8.2.9.4.1: Get Timestamp (Opcode 0300h) */
+ static CXLRetCode cmd_timestamp_get(const struct cxl_cmd *cmd,
+                                     uint8_t *payload_in,
+@@ -2494,6 +2676,10 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+                                       ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE },
+     [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
+         cmd_firmware_update_get_info, 0, 0 },
++    [FIRMWARE_UPDATE][TRANSFER] = { "FIRMWARE_UPDATE_TRANSFER",
++        cmd_firmware_update_transfer, ~0, CXL_MBOX_BACKGROUND_OPERATION },
++    [FIRMWARE_UPDATE][ACTIVATE] = { "FIRMWARE_UPDATE_ACTIVATE",
++        cmd_firmware_update_activate, 2, CXL_MBOX_BACKGROUND_OPERATION },
+     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+     [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set,
+                          8, CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
+@@ -2622,7 +2808,9 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+                 h == cmd_media_get_poison_list ||
+                 h == cmd_media_inject_poison ||
+                 h == cmd_media_clear_poison ||
+-                h == cmd_sanitize_overwrite) {
++                h == cmd_sanitize_overwrite ||
++                h == cmd_firmware_update_transfer ||
++                h == cmd_firmware_update_activate) {
+                 return CXL_MBOX_MEDIA_DISABLED;
+             }
+         }
+@@ -2667,6 +2855,9 @@ static void bg_timercb(void *opaque)
+         cci->bg.complete_pct = 100;
+         cci->bg.ret_code = ret;
+         switch (cci->bg.opcode) {
++        case 0x0201: /* fw transfer */
++            __do_firmware_xfer(cci);
++            break;
+         case 0x4400: /* sanitize */
+         {
+             CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+@@ -2738,6 +2929,10 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+     cci->bg.runtime = 0;
+     cci->bg.timer = timer_new_ms(QEMU_CLOCK_VIRTUAL,
+                                  bg_timercb, cci);
++
++    memset(&cci->fw, 0, sizeof(cci->fw));
++    cci->fw.active_slot = 1;
++    cci->fw.slot[cci->fw.active_slot - 1] = true;
+ }
  
- err_release_cdat:
+ static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[256])
 -- 
 MST
 
