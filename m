@@ -2,84 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55174939585
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179DA93959A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 23:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW0ef-0001ik-DO; Mon, 22 Jul 2024 17:33:13 -0400
+	id 1sW0lV-0004lk-D3; Mon, 22 Jul 2024 17:40:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW0eZ-0001Xj-V4
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:33:08 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW0eV-0002H6-JU
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 17:33:05 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1fb53bfb6easo7005ad.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 14:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721683982; x=1722288782; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wVZMA4KPmaSXH6G/Y9VnDzIKRcEXxTiiObVOhZKCO1s=;
- b=SexTfleFJb+JRSrwrJGgVb/kLGBLFFByRNsN8vF34rIyMjW8nyoyZ3LDqEzWxNsAC8
- MUq/jkeXjrtwFfWPhcfr/hPjOCxeYbrR+YBd7T9Lvp5ois+QFgBSYpgiCC+W910QaQhT
- nBcLs8KeQPv7IZmkzdHOeChSBu/MAhB8jIjpnfXOv4y/jurZRZGSKAcnLHFgHelr3p9N
- Oto0tOh5u6yn0f/maAojIPJIXJVEu+xAmxSxbZjjOvLT+xaOEEXUkvGKviTi9OBjbM7U
- OM/8WUJqndddlE4YgbtX5jvKZWZbE3TlVAYo6oYdZeqLOh+ZCpqFBIt87xVukVVDbIQi
- qdvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721683982; x=1722288782;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wVZMA4KPmaSXH6G/Y9VnDzIKRcEXxTiiObVOhZKCO1s=;
- b=sHRprHbXlb/8Ea/NioIB0+8pI2GSTdAOcdqWyydRPU79cawzWsrPe6vosDGEcUjwKC
- NaGiVJ0iuykovr3u23/gpfVER4toNvNX1VsxLfrVxWP8z1CMEnI85cIPV7yAEGnQ67lj
- +a2Or4rPBO7LqU19S9zzb3lnrlTr5krTI0gMajjvnU5LLsWz4uhqls5AeifkQnrywnyu
- Awbzyvo0/ChkFQfu2Xw5DLBpE9/1RO+iYFnTxPri9SCiWfijVYliFJrA9fz9qlRjiQzr
- EWurcHkNMwqVv/s9+Qffb0+xInnJS1cDf9kP3Acni21Zohyl4TMAcpQOoHGiKNFT6cYx
- EOnw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU4QheJkKji3N/wScf1/SIPEVDj6InLTyOyHmTLYm3dZdQUcdHfvQjlpqw/Zgdb18R1W5/nEagPKLwmpb5Mb/89qKwN9q8=
-X-Gm-Message-State: AOJu0Yz3Jk7hz20DYmVg6JpgZUdIbPrUv1QlOnFp7a+oUEtx7be+poxA
- IRsYxiAm4AWqI8WC+0dAxC/h7j7KLXPE2FWBhdxhQjFcSMHJFEAVibkv7uaiWxk=
-X-Google-Smtp-Source: AGHT+IHFOf4BkD5QZqBH0eaBaj1ZTD0GQ4TOy3kkRiUxIVdcZmhUDYH3qGIjE1BEJQZK4oNn/vewdA==
-X-Received: by 2002:a17:902:d2ca:b0:1fb:973f:87f with SMTP id
- d9443c01a7336-1fd745e5427mr55117885ad.45.1721683981773; 
- Mon, 22 Jul 2024 14:33:01 -0700 (PDT)
-Received: from [192.168.1.113] ([203.56.128.103])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fd6f28cf4bsm59679115ad.85.2024.07.22.14.32.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 14:33:01 -0700 (PDT)
-Message-ID: <438af529-ad2e-4500-9347-387317255ae0@linaro.org>
-Date: Tue, 23 Jul 2024 07:32:56 +1000
+ (Exim 4.90_1) (envelope-from <SRS0=fTEy=OW=kaod.org=clg@ozlabs.org>)
+ id 1sW0lS-0004d3-PW; Mon, 22 Jul 2024 17:40:14 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=fTEy=OW=kaod.org=clg@ozlabs.org>)
+ id 1sW0lP-0003YR-6w; Mon, 22 Jul 2024 17:40:14 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WSYbL266Lz4x0t;
+ Tue, 23 Jul 2024 07:39:58 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WSYZt6nzlz4wxs;
+ Tue, 23 Jul 2024 07:39:34 +1000 (AEST)
+Message-ID: <a16b40ee-4da9-4d41-885f-10b30ae4bcd3@kaod.org>
+Date: Mon, 22 Jul 2024 23:39:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/63] virtio,pci,pc: features,fixes
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <cover.1721607331.git.mst@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <cover.1721607331.git.mst@redhat.com>
+Subject: Re: [PATCH 2/2] hw/misc/aspeed_hace: Fix SG Accumulative hashing
+To: Alejandro Zeise <alejandro.zeise@seagate.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, berrange@redhat.com,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+References: <20240722201524.822730-1-alejandro.zeise@seagate.com>
+ <20240722201524.822730-3-alejandro.zeise@seagate.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240722201524.822730-3-alejandro.zeise@seagate.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=fTEy=OW=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,45 +65,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/22/24 10:16, Michael S. Tsirkin wrote:
-> A couple of fixes are outstanding, will merge later.
-> 
-> 
-> The following changes since commit a87a7c449e532130d4fa8faa391ff7e1f04ed660:
-> 
->    Merge tag 'pull-loongarch-20240719' ofhttps://gitlab.com/gaosong/qemu into staging (2024-07-19 16:28:28 +1000)
-> 
-> are available in the Git repository at:
-> 
->    https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-> 
-> for you to fetch changes up to 67d834362c55d6fca6504975bc34755606f17cf2:
-> 
->    virtio: Always reset vhost devices (2024-07-21 14:45:56 -0400)
-> 
-> ----------------------------------------------------------------
-> virtio,pci,pc: features,fixes
-> 
-> pci: Initial support for SPDM Responders
-> cxl: Add support for scan media, feature commands, device patrol scrub
->      control, DDR5 ECS control, firmware updates
-> virtio: in-order support
-> virtio-net: support for SR-IOV emulation (note: known issues on s390,
->                                            might get reverted if not fixed)
-> smbios: memory device size is now configurable per Machine
-> cpu: architecture agnostic code to support vCPU Hotplug
-> 
-> Fixes, cleanups all over the place.
-> 
-> Signed-off-by: Michael S. Tsirkin<mst@redhat.com>
+Hello Alejandro,
 
-Fails ubsan testing:
-
-https://gitlab.com/qemu-project/qemu/-/jobs/7397450714
-
-../publish/hw/net/virtio-net.c:3895:18: runtime error: member access within null pointer 
-of type 'struct vhost_net'
+On 7/22/24 22:15, Alejandro Zeise wrote:
+> Make the Aspeed HACE module use the new qcrypto accumulative hashing functions
+> when in scatter-gather accumulative mode. A hash context will maintain a
+> "running-hash" as each scatter-gather chunk is received.
+> 
+> Previously each scatter-gather "chunk" was cached
+> so the hash could be computed once the final chunk was received.
+> However, the cache was a shallow copy, so once the guest overwrote the
+> memory provided to HACE the final hash would not be correct.
+> 
+> Possibly related to: https://gitlab.com/qemu-project/qemu/-/issues/1121
+> Buglink: https://github.com/openbmc/qemu/issues/36
+> 
+> Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
 
 
-r~
+The associated test tests/qtest/aspeed_hace-test.c needs some care also :
+
+ERROR:../tests/qtest/aspeed_hace-test.c:428:test_sha512_accum: assertion failed (qtest_readl(s, base + HACE_STS) == 0x00000200): (0x00000000 == 0x00000200)
+
+
+Thanks,
+
+C.
+
+
+
+> ---
+>   hw/misc/aspeed_hace.c         | 91 ++++++++++++++++++-----------------
+>   include/hw/misc/aspeed_hace.h |  4 ++
+>   2 files changed, 51 insertions(+), 44 deletions(-)
+> 
+> diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
+> index c06c04ddc6..8306d8986a 100644
+> --- a/hw/misc/aspeed_hace.c
+> +++ b/hw/misc/aspeed_hace.c
+> @@ -1,6 +1,7 @@
+>   /*
+>    * ASPEED Hash and Crypto Engine
+>    *
+> + * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
+>    * Copyright (C) 2021 IBM Corp.
+>    *
+>    * Joel Stanley <joel@jms.id.au>
+> @@ -151,47 +152,15 @@ static int reconstruct_iov(AspeedHACEState *s, struct iovec *iov, int id,
+>       return iov_count;
+>   }
+>   
+> -/**
+> - * Generate iov for accumulative mode.
+> - *
+> - * @param s             aspeed hace state object
+> - * @param iov           iov of the current request
+> - * @param id            index of the current iov
+> - * @param req_len       length of the current request
+> - *
+> - * @return count of iov
+> - */
+> -static int gen_acc_mode_iov(AspeedHACEState *s, struct iovec *iov, int id,
+> -                            hwaddr *req_len)
+> -{
+> -    uint32_t pad_offset;
+> -    uint32_t total_msg_len;
+> -    s->total_req_len += *req_len;
+> -
+> -    if (has_padding(s, &iov[id], *req_len, &total_msg_len, &pad_offset)) {
+> -        if (s->iov_count) {
+> -            return reconstruct_iov(s, iov, id, &pad_offset);
+> -        }
+> -
+> -        *req_len -= s->total_req_len - total_msg_len;
+> -        s->total_req_len = 0;
+> -        iov[id].iov_len = *req_len;
+> -    } else {
+> -        s->iov_cache[s->iov_count].iov_base = iov->iov_base;
+> -        s->iov_cache[s->iov_count].iov_len = *req_len;
+> -        ++s->iov_count;
+> -    }
+> -
+> -    return id + 1;
+> -}
+> -
+>   static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+>                                 bool acc_mode)
+>   {
+>       struct iovec iov[ASPEED_HACE_MAX_SG];
+> +    uint32_t total_msg_len;
+> +    uint32_t pad_offset;
+>       g_autofree uint8_t *digest_buf = NULL;
+>       size_t digest_len = 0;
+> -    int niov = 0;
+> +    bool sg_acc_mode_final_request = false;
+>       int i;
+>       void *haddr;
+>   
+> @@ -226,8 +195,15 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+>               }
+>               iov[i].iov_base = haddr;
+>               if (acc_mode) {
+> -                niov = gen_acc_mode_iov(s, iov, i, &plen);
+> -
+> +                s->total_req_len += plen;
+> +
+> +                if (has_padding(s, &iov[i], plen, &total_msg_len, &pad_offset)) {
+> +                    /* Padding being present indicates the final request */
+> +                    sg_acc_mode_final_request = true;
+> +                    iov[i].iov_len = pad_offset;
+> +                } else {
+> +                    iov[i].iov_len = plen;
+> +                }
+>               } else {
+>                   iov[i].iov_len = plen;
+>               }
+> @@ -252,20 +228,42 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+>                * required to check whether cache is empty. If no, we should
+>                * combine cached iov and the current iov.
+>                */
+> -            uint32_t total_msg_len;
+> -            uint32_t pad_offset;
+>               s->total_req_len += len;
+>               if (has_padding(s, iov, len, &total_msg_len, &pad_offset)) {
+> -                niov = reconstruct_iov(s, iov, 0, &pad_offset);
+> +                i = reconstruct_iov(s, iov, 0, &pad_offset);
+>               }
+>           }
+>       }
+>   
+> -    if (niov) {
+> -        i = niov;
+> -    }
+> +    if (acc_mode) {
+> +        if (s->qcrypto_hash_context == NULL &&
+> +            qcrypto_hash_accumulate_new_ctx(algo, &s->qcrypto_hash_context, NULL)) {
+> +            qemu_log_mask(LOG_GUEST_ERROR,
+> +                          "%s: qcrypto failed to create hash context\n",
+> +                          __func__);
+> +            return;
+> +        }
+> +
+> +        if (qcrypto_hash_accumulate_bytesv(algo,
+> +                                           s->qcrypto_hash_context, iov, i,
+> +                                           &digest_buf,
+> +                                           &digest_len, NULL) < 0) {
+> +
+> +            qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
+> +            return;
+> +        }
+>   
+> -    if (qcrypto_hash_bytesv(algo, iov, i, &digest_buf, &digest_len, NULL) < 0) {
+> +        if (sg_acc_mode_final_request) {
+> +            if (qcrypto_hash_accumulate_free_ctx(s->qcrypto_hash_context, NULL) < 0) {
+> +                qemu_log_mask(LOG_GUEST_ERROR,
+> +                              "%s: qcrypto failed to free context\n", __func__);
+> +            }
+> +
+> +            s->qcrypto_hash_context = NULL;
+> +            s->iov_count = 0;
+> +            s->total_req_len = 0;
+> +        }
+> +    } else if (qcrypto_hash_bytesv(algo, iov, i, &digest_buf, &digest_len, NULL) < 0) {
+>           qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
+>           return;
+>       }
+> @@ -397,6 +395,11 @@ static void aspeed_hace_reset(DeviceState *dev)
+>   {
+>       struct AspeedHACEState *s = ASPEED_HACE(dev);
+>   
+> +    if (s->qcrypto_hash_context != NULL) {
+> +        qcrypto_hash_accumulate_free_ctx(s->qcrypto_hash_context, NULL);
+> +        s->qcrypto_hash_context = NULL;
+> +    }
+> +
+>       memset(s->regs, 0, sizeof(s->regs));
+>       s->iov_count = 0;
+>       s->total_req_len = 0;
+> diff --git a/include/hw/misc/aspeed_hace.h b/include/hw/misc/aspeed_hace.h
+> index ecb1b67de8..b3c2eb17b7 100644
+> --- a/include/hw/misc/aspeed_hace.h
+> +++ b/include/hw/misc/aspeed_hace.h
+> @@ -1,6 +1,7 @@
+>   /*
+>    * ASPEED Hash and Crypto Engine
+>    *
+> + * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
+>    * Copyright (C) 2021 IBM Corp.
+>    *
+>    * SPDX-License-Identifier: GPL-2.0-or-later
+> @@ -10,6 +11,7 @@
+>   #define ASPEED_HACE_H
+>   
+>   #include "hw/sysbus.h"
+> +#include "crypto/hash.h"
+>   
+>   #define TYPE_ASPEED_HACE "aspeed.hace"
+>   #define TYPE_ASPEED_AST2400_HACE TYPE_ASPEED_HACE "-ast2400"
+> @@ -35,6 +37,8 @@ struct AspeedHACEState {
+>   
+>       MemoryRegion *dram_mr;
+>       AddressSpace dram_as;
+> +
+> +    qcrypto_hash_accumulate_ctx_t *qcrypto_hash_context;
+>   };
+>   
+>   
+
 
