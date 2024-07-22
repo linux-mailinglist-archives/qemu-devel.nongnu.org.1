@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7E893897B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8888093897A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 09:02:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVn3e-0008OM-5H; Mon, 22 Jul 2024 03:02:06 -0400
+	id 1sVn3z-0000w5-6b; Mon, 22 Jul 2024 03:02:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn3J-0007xi-IF
+ id 1sVn3J-0007xp-JQ
  for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:01:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sVn3H-0006Py-65
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:01:44 -0400
+ id 1sVn3G-0006Q9-VP
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 03:01:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721631694;
+ s=mimecast20190719; t=1721631697;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K/GzOZxFCbN6eJ01B+nSFP77J4zP5nfCvO0hf3Fvfsw=;
- b=Qpv7rgg/8xVliZO1PcuJtQmKdlFXPoyqOERsrZoL7D/8aqZbHS68fCa2AkEGiMyFWegeMx
- NnlozrzVikGe6Usj6yGLvmJG7qeWHnc+Q2qob4WhBRa2CKTlO56n1p2Snl8DpWBEXPHjze
- 1gNo+EMBSlVXbNK9rECM+3bm/DO2d3o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Kkenl+qhRsmytEQ9m14nID+/OlKKx7wjEg3Z5sEzvSY=;
+ b=Od0M/+sV1OwUSnxx6ukC7TV05IHXpdfDX7AMz7IX34xovIQiH6COtVexdWy1j2ooxCHuSa
+ wqaQQ7JijI7sUxOIw+VPGSE7D7v2pD7NrPbf//r+iWP/0bFpP2KVotTozqF771Z8K1dhI+
+ ofgiTFggB6363LsDOzE+8QPJ/xtqTnI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-zZRPiDMhMDO2_2iI7wVIdQ-1; Mon,
- 22 Jul 2024 03:01:30 -0400
-X-MC-Unique: zZRPiDMhMDO2_2iI7wVIdQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-IWNEGUAkM7KfHphUe0Rn7w-1; Mon,
+ 22 Jul 2024 03:01:32 -0400
+X-MC-Unique: IWNEGUAkM7KfHphUe0Rn7w-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4ACDB1955D4A; Mon, 22 Jul 2024 07:01:29 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3639C195421B; Mon, 22 Jul 2024 07:01:31 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.252])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE2BB195605F; Mon, 22 Jul 2024 07:01:27 +0000 (UTC)
+ id AC207195605A; Mon, 22 Jul 2024 07:01:29 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 01/25] qga: drop blocking of guest-get-memory-block-size command
-Date: Mon, 22 Jul 2024 10:00:58 +0300
-Message-ID: <20240722070122.27615-2-kkostiuk@redhat.com>
+Subject: [PULL 02/25] qga: move linux vcpu command impls to commands-linux.c
+Date: Mon, 22 Jul 2024 10:00:59 +0300
+Message-ID: <20240722070122.27615-3-kkostiuk@redhat.com>
 In-Reply-To: <20240722070122.27615-1-kkostiuk@redhat.com>
 References: <20240722070122.27615-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -82,46 +82,327 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This command has never existed in tree, since it was renamed to
-guest-get-memory-block-info before being merged.
+The qmp_guest_set_vcpus and qmp_guest_get_vcpus command impls in
+commands-posix.c are surrounded by '#ifdef __linux__' so should
+instead live in commands-linux.c
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240712132459.3974109-2-berrange@redhat.com>
+Message-ID: <20240712132459.3974109-3-berrange@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands-posix.c | 2 +-
- qga/commands-win32.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ qga/commands-linux.c | 141 +++++++++++++++++++++++++++++++++++++++++++
+ qga/commands-posix.c | 139 ------------------------------------------
+ 2 files changed, 141 insertions(+), 139 deletions(-)
 
+diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+index 214e408fcd..78580ac39d 100644
+--- a/qga/commands-linux.c
++++ b/qga/commands-linux.c
+@@ -13,6 +13,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qga-qapi-commands.h"
+ #include "commands-common.h"
+ #include "cutils.h"
+ #include <mntent.h>
+@@ -284,3 +285,143 @@ int qmp_guest_fsfreeze_do_thaw(Error **errp)
+     return i;
+ }
+ #endif /* CONFIG_FSFREEZE */
++
++/* Transfer online/offline status between @vcpu and the guest system.
++ *
++ * On input either @errp or *@errp must be NULL.
++ *
++ * In system-to-@vcpu direction, the following @vcpu fields are accessed:
++ * - R: vcpu->logical_id
++ * - W: vcpu->online
++ * - W: vcpu->can_offline
++ *
++ * In @vcpu-to-system direction, the following @vcpu fields are accessed:
++ * - R: vcpu->logical_id
++ * - R: vcpu->online
++ *
++ * Written members remain unmodified on error.
++ */
++static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
++                          char *dirpath, Error **errp)
++{
++    int fd;
++    int res;
++    int dirfd;
++    static const char fn[] = "online";
++
++    dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
++    if (dirfd == -1) {
++        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
++        return;
++    }
++
++    fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
++    if (fd == -1) {
++        if (errno != ENOENT) {
++            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
++        } else if (sys2vcpu) {
++            vcpu->online = true;
++            vcpu->can_offline = false;
++        } else if (!vcpu->online) {
++            error_setg(errp, "logical processor #%" PRId64 " can't be "
++                       "offlined", vcpu->logical_id);
++        } /* otherwise pretend successful re-onlining */
++    } else {
++        unsigned char status;
++
++        res = pread(fd, &status, 1, 0);
++        if (res == -1) {
++            error_setg_errno(errp, errno, "pread(\"%s/%s\")", dirpath, fn);
++        } else if (res == 0) {
++            error_setg(errp, "pread(\"%s/%s\"): unexpected EOF", dirpath,
++                       fn);
++        } else if (sys2vcpu) {
++            vcpu->online = (status != '0');
++            vcpu->can_offline = true;
++        } else if (vcpu->online != (status != '0')) {
++            status = '0' + vcpu->online;
++            if (pwrite(fd, &status, 1, 0) == -1) {
++                error_setg_errno(errp, errno, "pwrite(\"%s/%s\")", dirpath,
++                                 fn);
++            }
++        } /* otherwise pretend successful re-(on|off)-lining */
++
++        res = close(fd);
++        g_assert(res == 0);
++    }
++
++    res = close(dirfd);
++    g_assert(res == 0);
++}
++
++GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
++{
++    GuestLogicalProcessorList *head, **tail;
++    const char *cpu_dir = "/sys/devices/system/cpu";
++    const gchar *line;
++    g_autoptr(GDir) cpu_gdir = NULL;
++    Error *local_err = NULL;
++
++    head = NULL;
++    tail = &head;
++    cpu_gdir = g_dir_open(cpu_dir, 0, NULL);
++
++    if (cpu_gdir == NULL) {
++        error_setg_errno(errp, errno, "failed to list entries: %s", cpu_dir);
++        return NULL;
++    }
++
++    while (local_err == NULL && (line = g_dir_read_name(cpu_gdir)) != NULL) {
++        GuestLogicalProcessor *vcpu;
++        int64_t id;
++        if (sscanf(line, "cpu%" PRId64, &id)) {
++            g_autofree char *path = g_strdup_printf("/sys/devices/system/cpu/"
++                                                    "cpu%" PRId64 "/", id);
++            vcpu = g_malloc0(sizeof *vcpu);
++            vcpu->logical_id = id;
++            vcpu->has_can_offline = true; /* lolspeak ftw */
++            transfer_vcpu(vcpu, true, path, &local_err);
++            QAPI_LIST_APPEND(tail, vcpu);
++        }
++    }
++
++    if (local_err == NULL) {
++        /* there's no guest with zero VCPUs */
++        g_assert(head != NULL);
++        return head;
++    }
++
++    qapi_free_GuestLogicalProcessorList(head);
++    error_propagate(errp, local_err);
++    return NULL;
++}
++
++int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
++{
++    int64_t processed;
++    Error *local_err = NULL;
++
++    processed = 0;
++    while (vcpus != NULL) {
++        char *path = g_strdup_printf("/sys/devices/system/cpu/cpu%" PRId64 "/",
++                                     vcpus->value->logical_id);
++
++        transfer_vcpu(vcpus->value, false, path, &local_err);
++        g_free(path);
++        if (local_err != NULL) {
++            break;
++        }
++        ++processed;
++        vcpus = vcpus->next;
++    }
++
++    if (local_err != NULL) {
++        if (processed == 0) {
++            error_propagate(errp, local_err);
++        } else {
++            error_free(local_err);
++        }
++    }
++
++    return processed;
++}
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 7f05996495..76af98ba32 100644
+index 76af98ba32..a8ef41f175 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -3099,7 +3099,7 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
-             "guest-suspend-disk", "guest-suspend-ram",
-             "guest-suspend-hybrid", "guest-get-vcpus", "guest-set-vcpus",
-             "guest-get-memory-blocks", "guest-set-memory-blocks",
--            "guest-get-memory-block-size", "guest-get-memory-block-info",
-+            "guest-get-memory-block-info",
-             NULL};
-         char **p = (char **)list;
+@@ -2003,145 +2003,6 @@ void qmp_guest_suspend_hybrid(Error **errp)
+     guest_suspend(SUSPEND_MODE_HYBRID, errp);
+ }
  
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index 0d1b836e87..9fe670d5b4 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -1995,7 +1995,7 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
-         "guest-suspend-hybrid",
-         "guest-set-vcpus",
-         "guest-get-memory-blocks", "guest-set-memory-blocks",
--        "guest-get-memory-block-size", "guest-get-memory-block-info",
-+        "guest-get-memory-block-info",
-         NULL};
-     char **p = (char **)list_unsupported;
+-/* Transfer online/offline status between @vcpu and the guest system.
+- *
+- * On input either @errp or *@errp must be NULL.
+- *
+- * In system-to-@vcpu direction, the following @vcpu fields are accessed:
+- * - R: vcpu->logical_id
+- * - W: vcpu->online
+- * - W: vcpu->can_offline
+- *
+- * In @vcpu-to-system direction, the following @vcpu fields are accessed:
+- * - R: vcpu->logical_id
+- * - R: vcpu->online
+- *
+- * Written members remain unmodified on error.
+- */
+-static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
+-                          char *dirpath, Error **errp)
+-{
+-    int fd;
+-    int res;
+-    int dirfd;
+-    static const char fn[] = "online";
+-
+-    dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
+-    if (dirfd == -1) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
+-        return;
+-    }
+-
+-    fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
+-    if (fd == -1) {
+-        if (errno != ENOENT) {
+-            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
+-        } else if (sys2vcpu) {
+-            vcpu->online = true;
+-            vcpu->can_offline = false;
+-        } else if (!vcpu->online) {
+-            error_setg(errp, "logical processor #%" PRId64 " can't be "
+-                       "offlined", vcpu->logical_id);
+-        } /* otherwise pretend successful re-onlining */
+-    } else {
+-        unsigned char status;
+-
+-        res = pread(fd, &status, 1, 0);
+-        if (res == -1) {
+-            error_setg_errno(errp, errno, "pread(\"%s/%s\")", dirpath, fn);
+-        } else if (res == 0) {
+-            error_setg(errp, "pread(\"%s/%s\"): unexpected EOF", dirpath,
+-                       fn);
+-        } else if (sys2vcpu) {
+-            vcpu->online = (status != '0');
+-            vcpu->can_offline = true;
+-        } else if (vcpu->online != (status != '0')) {
+-            status = '0' + vcpu->online;
+-            if (pwrite(fd, &status, 1, 0) == -1) {
+-                error_setg_errno(errp, errno, "pwrite(\"%s/%s\")", dirpath,
+-                                 fn);
+-            }
+-        } /* otherwise pretend successful re-(on|off)-lining */
+-
+-        res = close(fd);
+-        g_assert(res == 0);
+-    }
+-
+-    res = close(dirfd);
+-    g_assert(res == 0);
+-}
+-
+-GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
+-{
+-    GuestLogicalProcessorList *head, **tail;
+-    const char *cpu_dir = "/sys/devices/system/cpu";
+-    const gchar *line;
+-    g_autoptr(GDir) cpu_gdir = NULL;
+-    Error *local_err = NULL;
+-
+-    head = NULL;
+-    tail = &head;
+-    cpu_gdir = g_dir_open(cpu_dir, 0, NULL);
+-
+-    if (cpu_gdir == NULL) {
+-        error_setg_errno(errp, errno, "failed to list entries: %s", cpu_dir);
+-        return NULL;
+-    }
+-
+-    while (local_err == NULL && (line = g_dir_read_name(cpu_gdir)) != NULL) {
+-        GuestLogicalProcessor *vcpu;
+-        int64_t id;
+-        if (sscanf(line, "cpu%" PRId64, &id)) {
+-            g_autofree char *path = g_strdup_printf("/sys/devices/system/cpu/"
+-                                                    "cpu%" PRId64 "/", id);
+-            vcpu = g_malloc0(sizeof *vcpu);
+-            vcpu->logical_id = id;
+-            vcpu->has_can_offline = true; /* lolspeak ftw */
+-            transfer_vcpu(vcpu, true, path, &local_err);
+-            QAPI_LIST_APPEND(tail, vcpu);
+-        }
+-    }
+-
+-    if (local_err == NULL) {
+-        /* there's no guest with zero VCPUs */
+-        g_assert(head != NULL);
+-        return head;
+-    }
+-
+-    qapi_free_GuestLogicalProcessorList(head);
+-    error_propagate(errp, local_err);
+-    return NULL;
+-}
+-
+-int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
+-{
+-    int64_t processed;
+-    Error *local_err = NULL;
+-
+-    processed = 0;
+-    while (vcpus != NULL) {
+-        char *path = g_strdup_printf("/sys/devices/system/cpu/cpu%" PRId64 "/",
+-                                     vcpus->value->logical_id);
+-
+-        transfer_vcpu(vcpus->value, false, path, &local_err);
+-        g_free(path);
+-        if (local_err != NULL) {
+-            break;
+-        }
+-        ++processed;
+-        vcpus = vcpus->next;
+-    }
+-
+-    if (local_err != NULL) {
+-        if (processed == 0) {
+-            error_propagate(errp, local_err);
+-        } else {
+-            error_free(local_err);
+-        }
+-    }
+-
+-    return processed;
+-}
+ #endif /* __linux__ */
  
+ #if defined(__linux__) || defined(__FreeBSD__)
 -- 
 2.45.2
 
