@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70783938DEA
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 13:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4248938DEB
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 13:06:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVqqG-0006CE-VD; Mon, 22 Jul 2024 07:04:32 -0400
+	id 1sVqqI-0006JL-GB; Mon, 22 Jul 2024 07:04:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sVqqE-00063T-AV
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:30 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ id 1sVqqD-0005zM-B5
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:29 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sVqq9-0002US-9Y
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:30 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2ef2c109eabso12794611fa.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 04:04:24 -0700 (PDT)
+ id 1sVqqB-0002Uv-48
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 07:04:29 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2ebe40673d8so51617151fa.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 04:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721646263; x=1722251063; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721646265; x=1722251065; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gtiOJDs8/QqWg6V+YgjT6LO0f8xyqBg9VO+Gwatl+Ss=;
- b=Q5qWm8VJV5ntHRH4uFNWNG8NPCBeMX1bpE2GSjcsfo7yfMD9TnQaDowXdgsc/eIeRh
- c0YAteVDW1+pjT4hjgHvL1ErOyykjy/AGx5Wy4undKzhvY55/NyHebw69F4q/wnbU39z
- G3reI7F0XXQGbJx9Pj/SNZmnCRGeIWPyyuvLrma/cs9tk63vxyOeHMzpREKLb+YlcJ1m
- rfizdZB1npsN2PPjTRAONZgpoBXl4IFan6tpkJnTUGyNbjUBM8X52BVWYp9nQUwf4sCD
- eRZ44ZpViH52VSG9eDxpdbOPEbGrqghRnA3yu17waxqONoyvaLO10iOkn5/3IZVoN6Lv
- JHHQ==
+ bh=OsxJlG2O21VU9fz45mO2VxagozV0j39OOaB75wjf6W8=;
+ b=XUZL3zDxrjx/biO+Lxu2gvXLnHHvvK5qnYleovcclpmnv4HmJ1NEs/UdaA0n9NUgtK
+ SvAU2PgLERQmgtUothD6G77VqjgsLNbbiNDHsCnnIHKfkAfOqAQ0ufR8Tuif/ltsO2g0
+ /M3X+Als1upx7z39oph2O5IKl0TdIFtx29x1Enrde7kBhJyvm/n0rOp6TMvS7RF8ByM0
+ azHXbagQTtHMsRMQoer6V8TsdTpmA6r6m28GW0vxumloRLfXR2TPlZuQE8PF+UYZJCa3
+ MOg9O+ErPw4Bk94i05KSf6UviGJ5eudQHKivaf9BbdnNWwmEX/8hLTpFMZXzjW2dgvci
+ EjHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721646263; x=1722251063;
+ d=1e100.net; s=20230601; t=1721646265; x=1722251065;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gtiOJDs8/QqWg6V+YgjT6LO0f8xyqBg9VO+Gwatl+Ss=;
- b=shAoqyO9qGg5u3PgRPoVjNfLvMC7VEYZQ2d1sSALIR+o974MVyAIrDC7C3vcQa/KpI
- VstiSWbTAhOC7C3CUQ65Yhnw+w32ksDtNxSr4zIr25mlj4hq0mnmmr67Gk2JX+YrJifw
- OHyYQYQUgVFj0W/wXj/lPuOC3EeGjxjiRFX1r8GATR6CRC0uzPw/SQh3vA3bwVlGOfxy
- Ad5WErL+aheAwSw0F00mRDp2+pW1N38gEAiG02f5K8dh7o6L0gMZnl+TmCHh8xGDxKRw
- wBng0Q4uExzV0LNtT9VOoTyLOu9j8w0kslBxgMCn8mkCwr5iqah4TtjydYdysunNhihW
- qGgQ==
-X-Gm-Message-State: AOJu0YyDxW2qA8zpAOPb2zCQdTKlWvhn7Z47tftlO94nNqaTINNo2g4Y
- xEUnYglVvwfiD7zwmVswGfXIPPC/aElLXg4fyJTBTLg5G0P4+hcj6jR6Y9HhMYuBio//mMeXbSJ
- 2
-X-Google-Smtp-Source: AGHT+IGu7kmJy4457ttRk244CWe2zyQ7LB19FF/VVHSo2hM+vAlAKwByajXRM117jOC0XqI4S6uEhQ==
-X-Received: by 2002:a2e:7401:0:b0:2ef:2f37:345b with SMTP id
- 38308e7fff4ca-2ef2f37352fmr18755391fa.30.1721646262962; 
- Mon, 22 Jul 2024 04:04:22 -0700 (PDT)
+ bh=OsxJlG2O21VU9fz45mO2VxagozV0j39OOaB75wjf6W8=;
+ b=uSOMl2JzBn5Cenp0fP5RjYRwCkY5sVBt3bIWrtOKxKJVSQLMjSzT5KcFl3gscuS8ol
+ dDdVtQttgEt/iaWhfNqXg/JSdmX/zvyIq52vEmZkqmQeiLwu70rNFUVz1PutTqmji4V4
+ p60rXNaY/t6nswrQllAsist7BvecQXoUOFdQXU59teDW2mxPmRhbulMNxvtp35iFOEN+
+ LblpompQ1U1OdBRY2gJlaDadTFMimn54UmwloYD1qs6deF29xC39Pc+SfBQ7DUdO3l7q
+ taFz5w1KjMLRHZsCPf4vw1aAXgeFu3A0XEhT5l4us43caAomIp/tmUaTJ1USD5qPzHhx
+ 30mw==
+X-Gm-Message-State: AOJu0Ywv01mHTUWIqHCCJDeZoJTND5aQYi4w53g9s2lUZqOAIIZCIZZT
+ G0Oe9KNJqayWHQ88IPI1MVH0bqv98NilWhkz285lQL+qg6kEt8G8O7MpMwgpPrc=
+X-Google-Smtp-Source: AGHT+IH0oGuucvRaBmDOinGpsbkgFkoB4EnEQtWpz41SZJ22X8B7xhDK5Ntm5bH7AQxJJTPxxZZWgg==
+X-Received: by 2002:a2e:8006:0:b0:2ef:2c0f:283e with SMTP id
+ 38308e7fff4ca-2ef2c0f35cdmr24288051fa.12.1721646264920; 
+ Mon, 22 Jul 2024 04:04:24 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5a30a5ccf09sm5960051a12.10.2024.07.22.04.04.17
+ 4fb4d7f45d1cf-5a30aaa3505sm5954123a12.34.2024.07.22.04.04.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 04:04:18 -0700 (PDT)
+ Mon, 22 Jul 2024 04:04:20 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8B289620F2;
+ by draig.lan (Postfix) with ESMTP id A2365620FA;
  Mon, 22 Jul 2024 12:04:14 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PULL 10/16] target/mips: Add semihosting stub
-Date: Mon, 22 Jul 2024 12:04:07 +0100
-Message-Id: <20240722110413.118418-11-alex.bennee@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 11/16] target/m68k: Restrict semihosting to TCG
+Date: Mon, 22 Jul 2024 12:04:08 +0100
+Message-Id: <20240722110413.118418-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240722110413.118418-1-alex.bennee@linaro.org>
 References: <20240722110413.118418-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,54 +99,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since the SEMIHOSTING feature is optional, we need
-a stub to link when it is disabled.
+The semihosting feature depends on TCG (due to the probe_access
+API access). Although TCG is the single accelerator currently
+available for the m68k target, use the Kconfig "imply" directive
+which is more correct (if we were to support a different accel).
 
+Reported-by: Anton Johansson <anjo@rev.ng>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240717105723.58965-4-philmd@linaro.org>
+Message-Id: <20240717105723.58965-5-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240718094523.1198645-11-alex.bennee@linaro.org>
+Message-Id: <20240718094523.1198645-12-alex.bennee@linaro.org>
 
-diff --git a/target/mips/tcg/sysemu/semihosting-stub.c b/target/mips/tcg/sysemu/semihosting-stub.c
-new file mode 100644
-index 0000000000..7ae27d746f
---- /dev/null
-+++ b/target/mips/tcg/sysemu/semihosting-stub.c
-@@ -0,0 +1,15 @@
-+/*
-+ *  MIPS semihosting stub
-+ *
-+ * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
-+ * SPDX-FileCopyrightText: 2024 Linaro Ltd.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "internal.h"
-+
-+void mips_semihosting(CPUMIPSState *env)
-+{
-+    g_assert_not_reached();
-+}
-diff --git a/target/mips/tcg/sysemu/meson.build b/target/mips/tcg/sysemu/meson.build
-index ec665a4b1e..911341ac37 100644
---- a/target/mips/tcg/sysemu/meson.build
-+++ b/target/mips/tcg/sysemu/meson.build
-@@ -1,10 +1,12 @@
- mips_system_ss.add(files(
-   'cp0_helper.c',
--  'mips-semi.c',
-   'special_helper.c',
-   'tlb_helper.c',
- ))
--
-+mips_system_ss.add(when: ['CONFIG_SEMIHOSTING'],
-+  if_true: files('mips-semi.c'),
-+  if_false: files('semihosting-stub.c')
-+)
- mips_system_ss.add(when: 'TARGET_MIPS64', if_true: files(
-   'lcsr_helper.c',
- ))
+diff --git a/target/m68k/Kconfig b/target/m68k/Kconfig
+index 9eae71486f..23aae24ebe 100644
+--- a/target/m68k/Kconfig
++++ b/target/m68k/Kconfig
+@@ -1,3 +1,3 @@
+ config M68K
+     bool
+-    select SEMIHOSTING
++    imply SEMIHOSTING if TCG
 -- 
 2.39.2
 
