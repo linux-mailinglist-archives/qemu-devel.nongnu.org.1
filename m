@@ -2,106 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451B99392AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 18:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CB99392AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jul 2024 18:43:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sVw5o-0002Bg-GI; Mon, 22 Jul 2024 12:40:56 -0400
+	id 1sVw8T-0005SS-VC; Mon, 22 Jul 2024 12:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sVw5m-00025r-87; Mon, 22 Jul 2024 12:40:54 -0400
-Received: from fhigh8-smtp.messagingengine.com ([103.168.172.159])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sVw5k-0005yp-8Y; Mon, 22 Jul 2024 12:40:53 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id F0BC8114018E;
- Mon, 22 Jul 2024 12:40:48 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Mon, 22 Jul 2024 12:40:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1721666448; x=
- 1721752848; bh=gQ5fq+U7rvmGtIc7RTIkvxc11+PWUny77+A9bwdyj88=; b=M
- /pZ0ZE0jUaj0NJ7hK6LM/CxFbz0BdwA4UhE2BGctvhAbye431P17VkHN3LrdOdLT
- sxK2VuyNYrBRlekvRWt8XzG4n4x64aGzp3hF/mnP10G6MCPiLzWBmI5invZsdGRF
- aSHpu1aq45nQ7tY2Btt7jqdVFGeHt9ceG5JoCEi1EbINP0IDYbpe6plCqyDFo1j2
- l/FV3R37Jkx8wdfInsbxgKjOmcAtQuQnHfS9cdRrpYf3E3HxfraapfQcYrTYvN/f
- BlpuKYIDrACV+nawLvPAA9XtGZrrz3ULjyPSWakLqHjuefk0RHko8SqqJVmafpZN
- JlMYxmkwjRW56h3Y5IQ+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1721666448; x=
- 1721752848; bh=gQ5fq+U7rvmGtIc7RTIkvxc11+PWUny77+A9bwdyj88=; b=i
- f0WuUTqqwMGmerJOvdzhWEfebvfqgqV1NdVEgdu2mjpWAL4+ozsJsKcOyQm/qTEO
- MXhRBI2ha8vIAvKiehB4wDNAmziqkCwGywkplZ3mdxdKs910AdFJA6nVu7o0xXDI
- 8CuRw/xM38iEv8uzPbP5eUyxtlZ1KdcnRR6gwYnHhApJG2UQW74vqglPMQFS9FAm
- 5n9whcJychT0RkX6BS6fM6M+JT9nJ+IHGNSpi//JcQ9Ywhu085NQF9Yg2c2GcX/P
- A9AEEnJLfDxI9s2uu7yof8Tl3GKcC0sIzQCDttOadO8EaMn9FIJU1KsrMh9Pz7fQ
- wS2+y6Z7sQvy4NisahNfQ==
-X-ME-Sender: <xms:kIueZvYzcs8JmoS7Nt5tIfWItSQSWgFKF9Q7l_et4WPUTSe6h7MYOg>
- <xme:kIueZuY_DXFGfoLweRADH9nNRKof_dJ4oK6w2KFnqItxjbwEfB1wCiy5rnkf4Rm7y
- utDPSzvnTUxYFYw1mc>
-X-ME-Received: <xmr:kIueZh8xdV0amcP3Ad3pqaT-IXCbSsElopmT371pwFBjW2fVQ6Qvfcoz4d8dUubiOzdODOmg9w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrheejgddutdehucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghu
- shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
- udegnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomhepih
- htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:kIueZlowf4QVp9b_ObfcMfOjhyfttXH2ln1QK9iH3IIGCfQqpiK9Ng>
- <xmx:kIueZqo21IrqykypAM2J4r1q4cN3PP8O2mDcxXCB-dQ7pjEVhTDQDA>
- <xmx:kIueZrSeFhd53qNXphSXHoUXhlk0-bU2CVc3gs9lrCfIzLpZD--35w>
- <xmx:kIueZircxP-i_ikI1JW4GrFaXmVWxYTeu7HBONzhXVNMITrhhLilKg>
- <xmx:kIueZv7NK2vyz7fA3qLMZeCcNa_zhQvFg-fUPdlycQQVmD9nM4EJl17a>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 22 Jul 2024 12:40:44 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>, Keith Busch <kbusch@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jesper Devantier <foss@defmacro.it>, Kevin Wolf <kwolf@redhat.com>,
- Yao Xingtao <yaoxt.fnst@fujitsu.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 4/4] hw/nvme: remove useless type cast
-Date: Mon, 22 Jul 2024 18:40:31 +0200
-Message-ID: <20240722164026.61128-10-its@irrelevant.dk>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240722164026.61128-6-its@irrelevant.dk>
-References: <20240722164026.61128-6-its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVw8R-0005Lr-91
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:43:39 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sVw8P-0006RB-5D
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 12:43:38 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4266f535e82so32139475e9.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 09:43:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721666612; x=1722271412; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7TtHrl9rQrselaWy83peZcth3CnbPxV5LK1Nw2zxaDw=;
+ b=zpgZAxzun7MmHVDCsiV0OBI/A2LADi0M2yjGfe0yYgzqCm8ZvluV3oSMuVfF00pi09
+ AOwhC+eOFQXg9zeKLvMz3TNq6E/7PofXzahejiA38orwpCOOrqKuoal/fhUtq/VunZ2p
+ manic6tjm9+QJnIenVde794eYB2S2hQinFY0EMNzSmznxe5W4rurXKvHIx8kmcibZzjW
+ 6rd4lwXMG593soCRj29Q56QHqDmqjEdxXK1cifqyyWO5wSXSlWN/sdrE53ps3nhvbj5/
+ tI79xv7XnaVx4KVTGosNJ2BUo7ylJK/no+/b3To0ndWCeLUVgB70HqKCIQ76hNpIjb2t
+ ScKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721666612; x=1722271412;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7TtHrl9rQrselaWy83peZcth3CnbPxV5LK1Nw2zxaDw=;
+ b=YiW5q40l+SG++TLf67zRtnCCDdW+uzk21+xSUFygdr5T1wfTig+dP1zDFyMYUQnsd9
+ tUiJCvL8GIpCwNkTicI+hWwAVcGbKAG3wYPgnO+Fchiur/sPB6Ywdy0d46iT43Ezn0bl
+ Jn+8WksLKJBGCxY+/r3aPW4RYAhuX1L/FTEt1vu2wVGZRCmEXVkqq/KRmrs7EvhaDYmU
+ ew1fiqxN8OkExH6wpcHlsdJvgIn9LLesdsvRK/AngNuqDncMsZUakJH8hxA3zFqYBZ+z
+ ijuEVivODA+D9xMXTmToKtO6Z80DvF08y2B+YVDScia3P3p/ableAEZORhFqI4yhfcD+
+ +tTQ==
+X-Gm-Message-State: AOJu0YzFigQQVlkQMEJE0ftgSuoOwmlQszKudagC4TfKK2Rdj3ODC6bH
+ Ra+Gvs5dUn1nqbEc7q/8/UVv9W9rkS5SlMX9/utQnvZG6XFYrpKJxxVJzFxJQgM=
+X-Google-Smtp-Source: AGHT+IE3Z+VgPiNNfzLv/KHYJe6LPDVPEVwVALgyCzLrL9ZdVZ2NlrnhyNSoV0Ta9GvXxstWauoqDw==
+X-Received: by 2002:a05:600c:3d92:b0:424:a656:66b3 with SMTP id
+ 5b1f17b1804b1-427dc5292dbmr57433275e9.22.1721666612312; 
+ Mon, 22 Jul 2024 09:43:32 -0700 (PDT)
+Received: from [192.168.69.100] (gen92-h02-176-184-20-254.dsl.sta.abo.bbox.fr.
+ [176.184.20.254]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d9193350sm120374305e9.40.2024.07.22.09.43.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 09:43:31 -0700 (PDT)
+Message-ID: <a194f976-aff7-4aea-989e-0aff693d6dbd@linaro.org>
+Date: Mon, 22 Jul 2024 18:43:29 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=884; i=k.jensen@samsung.com;
- h=from:subject; bh=I7wOSlNznRhp9BIFFrOZe+eMeEqUddKkVg4XkqRvW6w=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGaei3suGOTaapKPdoenfYVZFyOHPoRkVJR/v
- ID3Mp8U218sJYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJmnot7AAoJEE3hrzFt
- Tw3pyEQH/RWb1OLc9TZ7VE2pw9QGjthzm9A33oozH5Heay/1TLni2yUgoB3U7rZDIrQu9A5X3RO
- rMmxMVFlXGjj2MKc6fvw043JkHLZjbppH31KuLsujeYwcA3KSlPVBetxPts77sEBKM5vsnix77t
- MS+9d3lDMhE7fbh9gQ+1sX9bxAhI0dH5y9v8uRVMgmhsltpXRigfl6ZMKfoAJxmbPQIipEo7Oel
- HW3RQ4apctIN2I06vvUPUtizUvsm7hHzeyFFvLLsXxCfFOZDfLzzO9HvDlrwMh9cJWYWa6MMlnC
- zaOnQBU2xYhIhFQAiQonaFXzEwQSSHPGvLdiVxzUlBM8Xby4mVBX56rO
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add myself as a reviewer of machine core
+To: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+Cc: qemu-devel@nongnu.org
+References: <20240722164412.1163414-1-zhao1.liu@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240722164412.1163414-1-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=103.168.172.159; envelope-from=its@irrelevant.dk;
- helo=fhigh8-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,32 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+On 22/7/24 18:44, Zhao Liu wrote:
+> While working on a series of CPU/cache topology work, I became
+> interested in the machine core component and would like to help to
+> review more related patches.
 
-The type of req->cmd is NvmeCmd, cast the pointer of this type to
-NvmeCmd* is useless.
+Thanks!
 
-Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 39782ddb2e76..8d25174d257b 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -4340,7 +4340,7 @@ static bool nvme_zone_matches_filter(uint32_t zafs, NvmeZone *zl)
- 
- static uint16_t nvme_zone_mgmt_recv(NvmeCtrl *n, NvmeRequest *req)
- {
--    NvmeCmd *cmd = (NvmeCmd *)&req->cmd;
-+    NvmeCmd *cmd = &req->cmd;
-     NvmeNamespace *ns = req->ns;
-     /* cdw12 is zero-based number of dwords to return. Convert to bytes */
-     uint32_t data_size = (le32_to_cpu(cmd->cdw12) + 1) << 2;
--- 
-2.45.2
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7d9811458cb0..0c55fe72611d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1879,6 +1879,7 @@ M: Eduardo Habkost <eduardo@habkost.net>
+>   M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+>   R: Philippe Mathieu-Daudé <philmd@linaro.org>
+>   R: Yanan Wang <wangyanan55@huawei.com>
+> +R: Zhao Liu <zhao1.liu@intel.com>
+>   S: Supported
+>   F: hw/core/cpu-common.c
+>   F: hw/core/cpu-sysemu.c
 
 
