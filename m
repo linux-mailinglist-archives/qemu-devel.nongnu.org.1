@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB1193A835
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 956A093A831
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMJb-0002py-3R; Tue, 23 Jul 2024 16:40:55 -0400
+	id 1sWMJc-0003Ga-WF; Tue, 23 Jul 2024 16:40:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMJU-00025I-2g
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:48 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMJa-0002u3-1r
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:54 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMJS-0004RN-DZ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:47 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4266f535e82so43047005e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:40:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMJY-0004Sr-39
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:53 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3686b285969so2782382f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:40:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767245; x=1722372045; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767250; x=1722372050; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F/yrpwbL/sETCyin9I+oHUPZfHbu6njuZ4wq9Na1o4A=;
- b=LIw6LwRbIQXe9LEuMswlNW5CY8TJEiurSyHCthK3vo/g23MfgfNSQgxwj1VVY3vRg8
- ZixBOWVgycTDuESiwgjnyz4X0Tl6dz/ptUeapRlN083+mdEo26OGGzuPza3lIlrO/qD4
- t61DQEA3Xkh1sJ9yKJvoHZxqxbVHwZybVnZuuRYorgzoHd26E17TZhdEPM4ZmkVeVnu8
- hLMiBFgnMw8k7t1E3VkwJg/hvkBye+5VPmHhFNXt5Y40FN6BD1It90FdAvcN8rv+nUbn
- 90v+i1SrAnnX7/9VmCR8uYzwJs+Wd3HnHsrVO5tAwG+szkbI9NTOJBN4z923dp2T/7l0
- 3npQ==
+ bh=EVi4ymf0JUdrFDuvhHPunTPbRwIlHUJLlhZi+FT5T80=;
+ b=zdc+VbyXDGJRJwBdwYlWWJKy7XoHXoBDDIprf6Hll5uLnmkG4osvo6naDOpCbSksp5
+ +c9iWwFdHdV6x0xD6R/AIlg+zEj9MusQyWtdUGqYAXLLNrOTu4AMGRg1RDSQn6QrXq95
+ bBRF46wO9u70W9bl1jbsmVgEF/wqKqMojFTPzAj0Euf60mOeEOw+SKLErMhKIdLxiCv1
+ sbtS5hy5Pno6dtUsd3Mzyekv4klk8YP0MBg0NybYZkvi50E7fz8dLdihGflE7zDYdfbb
+ 6f+UTzJrHFGye2T0RigJc/oqeQlszWxo6RsTwLr+++PffhVhRIPZwVNdyb+PuRZxF9F6
+ Zt1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767245; x=1722372045;
+ d=1e100.net; s=20230601; t=1721767250; x=1722372050;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F/yrpwbL/sETCyin9I+oHUPZfHbu6njuZ4wq9Na1o4A=;
- b=Z/vhoqoYAWCZ2TEG08o48qJkN86Jtt5YMd0m4pKFwGisHY32TQtyFVhv8zW0MmcbIX
- 2rSPWjFDGjQQoy44hNMoVsxUJ/a+AJRGLe2yRt+2ZnrSqUvyCHHcja+q2urFytpLzC28
- iViyaMVN6PCF8rXZGboea0s6S9H8OjMRkvw2vJsdvEtxf9C60iL2cRG42mF4rdMiQbWm
- 0GIhjvTZldPw7mAtNcXlzc9dvILJ0OhpOhP6ElSF3+Mkso4Khz24qLjMu7sKT9uLVYLV
- P82k9bWhe1S17ysF+lySu/0XbchwbNgfgF4SF9i8Dc/IsVgFnOixWfBQk64/4+vM7nGS
- 0YJg==
-X-Gm-Message-State: AOJu0Yxn7SXz7n7JQwBw6mlTgc90gs/Djsje+Fr+7WHhlPDH8kpLerse
- wR2BOaEsteWthbjPpWIn83gwXxQGzuMM/NoRXdLHeZvYzjU2Zi9aye69ZFmlDiSU126S7ePtwq8
- 9yzk=
-X-Google-Smtp-Source: AGHT+IFiBXhYHIAzVlWhXrp/TBqau1VQTshg1DAjiVcO1ZXCliV7JlF6jcOvFzaCAk5O011P7IqqCA==
-X-Received: by 2002:a05:600c:3542:b0:426:5c36:207c with SMTP id
- 5b1f17b1804b1-427dc569de8mr70546675e9.25.1721767244800; 
- Tue, 23 Jul 2024 13:40:44 -0700 (PDT)
+ bh=EVi4ymf0JUdrFDuvhHPunTPbRwIlHUJLlhZi+FT5T80=;
+ b=uo84XhpgN+5EYKYvhivKmpObOUerQfT54YJ/OPgis+p2zh7iXSsUBHburJ6tqYhbdJ
+ cyucPw12R/3U5pxmXc3K2qqKi9qbZfDMj6wBHWTiq6rF7PLycFEkBahR4/fYODrddTAo
+ A1TClSAwPTZ8QZrLho4Ptxnnw80T6qb0PXt5maDtC9ftj2OjQRqrFcxiK1S4RmfskQX3
+ X8LXQomzsvEJPQ3blJc/6Fg6Df5djXcKkO18pIbsDPqCJv2cFQX0zvZVd5LgGDhNjdko
+ qZrlxlabvTV0eRHZnM/BmT7mf7KP2RFMONrHP7km5mxOHBZkLsZsJpZIUAS3G87Z6H/p
+ 7mwQ==
+X-Gm-Message-State: AOJu0YxlSeDpSvjLA8+9zf5XxOqZaBuvvm0gLS1/IS1Bf0yWwm4bUQUS
+ wX6dUAFYz0Wypl+sJKHy/5LJPydPSueMSI46X4WwzZyP6xWicCuBHjNJOEa1C8hrycDc4+osIGh
+ BKwk=
+X-Google-Smtp-Source: AGHT+IEJA35PdPkt4JsORHnb2C8/7l7/PbA++LorrZk8MT/FzrVx6WNAtSsHXFMnUqSEERdoDjx5QA==
+X-Received: by 2002:adf:ed8d:0:b0:368:664a:d4f9 with SMTP id
+ ffacd0b85a97d-369bae3654fmr8624996f8f.28.1721767250112; 
+ Tue, 23 Jul 2024 13:40:50 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368787ed572sm12368044f8f.110.2024.07.23.13.40.43
+ ffacd0b85a97d-368787ec979sm12392870f8f.94.2024.07.23.13.40.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:40:44 -0700 (PDT)
+ Tue, 23 Jul 2024 13:40:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 19/28] hw/char/goldfish: Use DMA memory API
-Date: Tue, 23 Jul 2024 22:38:46 +0200
-Message-ID: <20240723203855.65033-20-philmd@linaro.org>
+Subject: [PULL 20/28] chardev/char-fe: Document returned value on error
+Date: Tue, 23 Jul 2024 22:38:47 +0200
+Message-ID: <20240723203855.65033-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,65 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than using address_space_rw(..., 0 or 1),
-use the simpler DMA memory API which expand to
-the same code. This allows removing a cast on
-the 'buf' variable which is really const. Since
-'buf' is only used in the CMD_READ_BUFFER case,
-we can reduce its scope.
+qemu_chr_fe_add_watch() and qemu_chr_fe_write[_all]()
+return -1 on error. Mention it in the documentation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240723181850.46000-1-philmd@linaro.org>
+Message-Id: <20240722160745.67904-2-philmd@linaro.org>
 ---
- hw/char/goldfish_tty.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/chardev/char-fe.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/char/goldfish_tty.c b/hw/char/goldfish_tty.c
-index f8ff043c396..cdff46bc13b 100644
---- a/hw/char/goldfish_tty.c
-+++ b/hw/char/goldfish_tty.c
-@@ -16,6 +16,7 @@
- #include "qemu/log.h"
- #include "trace.h"
- #include "exec/address-spaces.h"
-+#include "sysemu/dma.h"
- #include "hw/char/goldfish_tty.h"
+diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
+index ecef1828355..3310449eaf0 100644
+--- a/include/chardev/char-fe.h
++++ b/include/chardev/char-fe.h
+@@ -228,6 +228,7 @@ guint qemu_chr_fe_add_watch(CharBackend *be, GIOCondition cond,
+  * is thread-safe.
+  *
+  * Returns: the number of bytes consumed (0 if no associated Chardev)
++ *          or -1 on error.
+  */
+ int qemu_chr_fe_write(CharBackend *be, const uint8_t *buf, int len);
  
- #define GOLDFISH_TTY_VERSION 1
-@@ -69,7 +70,6 @@ static uint64_t goldfish_tty_read(void *opaque, hwaddr addr,
- static void goldfish_tty_cmd(GoldfishTTYState *s, uint32_t cmd)
- {
-     uint32_t to_copy;
--    uint8_t *buf;
-     uint8_t data_out[GOLFISH_TTY_BUFFER_SIZE];
-     int len;
-     uint64_t ptr;
-@@ -97,8 +97,8 @@ static void goldfish_tty_cmd(GoldfishTTYState *s, uint32_t cmd)
-         while (len) {
-             to_copy = MIN(GOLFISH_TTY_BUFFER_SIZE, len);
+@@ -242,6 +243,7 @@ int qemu_chr_fe_write(CharBackend *be, const uint8_t *buf, int len);
+  * attempted to be written.  This function is thread-safe.
+  *
+  * Returns: the number of bytes consumed (0 if no associated Chardev)
++ *          or -1 on error.
+  */
+ int qemu_chr_fe_write_all(CharBackend *be, const uint8_t *buf, int len);
  
--            address_space_rw(&address_space_memory, ptr,
--                             MEMTXATTRS_UNSPECIFIED, data_out, to_copy, 0);
-+            dma_memory_read_relaxed(&address_space_memory, ptr,
-+                                    data_out, to_copy);
-             qemu_chr_fe_write_all(&s->chr, data_out, to_copy);
+@@ -253,6 +255,7 @@ int qemu_chr_fe_write_all(CharBackend *be, const uint8_t *buf, int len);
+  * Read data to a buffer from the back end.
+  *
+  * Returns: the number of bytes read (0 if no associated Chardev)
++ *          or -1 on error.
+  */
+ int qemu_chr_fe_read_all(CharBackend *be, uint8_t *buf, int len);
  
-             len -= to_copy;
-@@ -109,9 +109,9 @@ static void goldfish_tty_cmd(GoldfishTTYState *s, uint32_t cmd)
-         len = s->data_len;
-         ptr = s->data_ptr;
-         while (len && !fifo8_is_empty(&s->rx_fifo)) {
--            buf = (uint8_t *)fifo8_pop_buf(&s->rx_fifo, len, &to_copy);
--            address_space_rw(&address_space_memory, ptr,
--                            MEMTXATTRS_UNSPECIFIED, buf, to_copy, 1);
-+            const uint8_t *buf = fifo8_pop_buf(&s->rx_fifo, len, &to_copy);
-+
-+            dma_memory_write_relaxed(&address_space_memory, ptr, buf, to_copy);
- 
-             len -= to_copy;
-             ptr += to_copy;
 -- 
 2.41.0
 
