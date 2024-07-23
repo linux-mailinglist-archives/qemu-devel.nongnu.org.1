@@ -2,62 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164B893A22E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E1293A263
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:16:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWG5J-00034k-5n; Tue, 23 Jul 2024 10:01:45 -0400
+	id 1sWGIe-0002Z6-6R; Tue, 23 Jul 2024 10:15:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG58-0002jO-NA
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:01:34 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sWGIb-0002OV-8S
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:15:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG56-0003mg-TQ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:01:34 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sWGIY-00072p-Vd
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:15:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721743292;
+ s=mimecast20190719; t=1721744120;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L6LWwZ8d6VyWjINBiX1CtuubsP8TwW3ib6HhJI4FC6s=;
- b=CvHujRSrZohJ51tUL7+sDXnPE/Lzxe/Ycoc3h5jpW348oM9RvDI7/mvfq/7uzIJzGDrpnH
- N4BqOpb0+svcvAhjhZy6BXL2HrwsJnIBGJ9+x5eKyT9FP8KmF0dhRfPVD0C3SowMEpi8FQ
- PWQXkd2+0WtMwwkUhBy2tWZA9H+zMZQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-6-I4wl4FNtCfYLsNybey0Q-1; Tue,
- 23 Jul 2024 10:00:57 -0400
-X-MC-Unique: 6-I4wl4FNtCfYLsNybey0Q-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F36931944B2D; Tue, 23 Jul 2024 14:00:55 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.91])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C249A195605A; Tue, 23 Jul 2024 14:00:53 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 13/16] vfio/iommufd: Implement
- VFIOIOMMUClass::set_dirty_tracking support
-Date: Tue, 23 Jul 2024 16:00:16 +0200
-Message-ID: <20240723140019.387786-14-clg@redhat.com>
-In-Reply-To: <20240723140019.387786-1-clg@redhat.com>
-References: <20240723140019.387786-1-clg@redhat.com>
+ bh=g4jqXLR0c2v5lIJARFxGMhramSLLez6ADGH7aFWb5tc=;
+ b=gD9UWyFAMcDWl5IGjxkPm5ejEE9NJONUyP9nurm883lrMi745UKcwjmcp4Mt55oD6zMPOV
+ pcqqnKh66caAnmNBpnGa+kf4vCBTqx4hha0o6JIpJavpSrjK3WpaYKmVSeq535gZpV0KXN
+ mlIG4DHqhH2p9K82pThOxgmb4MjMwPk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-79-LLI_w-FjOwG0qNXHez1GWQ-1; Tue, 23 Jul 2024 10:15:19 -0400
+X-MC-Unique: LLI_w-FjOwG0qNXHez1GWQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-36831873b39so3087134f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 07:15:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721744117; x=1722348917;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=g4jqXLR0c2v5lIJARFxGMhramSLLez6ADGH7aFWb5tc=;
+ b=sUBEPKhdi5VLQehOevCrI7dL4mN35SJ740mYH9h4m5sWq61EGwLoXv1z03gfoWr0aR
+ 9CZTbf6TxHLp/DOTocqBqc8EpAzh93yJ8HUo1XvYvuKeYd7uPvkmJ2TuECdbgHN/iZFd
+ dL1wLT5K0SupdZEgs7wbaVcnUQSUmvuChPTxSlUfbacfIXQYw81MSrDXYstLTyqUc6/1
+ VIYOVz4Q73axTORlyWR5HFxVTxg60cAcipgFauDAvTWN8oFyfD+E1DsoganXzq3baPST
+ jEkfzuvcJ5PrS5fG8cci5mTJfDrGqapK1MzEOvKs+FGlwueTf0htY73i/lOQYWO/vOLg
+ r9Qg==
+X-Gm-Message-State: AOJu0Ywk4ALxSRKV1jzAqpTgy/r+4mF1KWIkSBYGtexmVKxEhK+0A6xJ
+ 0Tf2zVoDa+dk8p1AjTjYMqV4EVqxoFv3rzB6fqnecf/tReD4K9JkNqWeHIHoXRVS4GFDR6iA7no
+ RYDM5OA7F7OFSaUVVvdWWnM7zR4PEgM3XLfqizFZahQGkPMS24e+duCijeWKVAExNft/4eiPZVI
+ WbPsYIzctzZTEkE5l8Vjasb3i1XRU=
+X-Received: by 2002:a05:6000:cc7:b0:369:c6d7:7b93 with SMTP id
+ ffacd0b85a97d-369dec0cfe1mr2425305f8f.28.1721744117552; 
+ Tue, 23 Jul 2024 07:15:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpC1y3rVv0bhNY38+FQrun0E/DQoyXi8Q6mgaS9pUX6ooO8TisuUVoj4o5FcqD/dKJ/xRZScpza6agmCECeYg=
+X-Received: by 2002:a05:6000:cc7:b0:369:c6d7:7b93 with SMTP id
+ ffacd0b85a97d-369dec0cfe1mr2425288f8f.28.1721744117176; Tue, 23 Jul 2024
+ 07:15:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+References: <TY0PR0101MB42850337F8917D1F514107FBA4D52@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
+In-Reply-To: <TY0PR0101MB42850337F8917D1F514107FBA4D52@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 23 Jul 2024 16:15:05 +0200
+Message-ID: <CABgObfahS8SsZmOGoy4XWiZ8vrtYZz6HNX7gJhgKeO=+ziUsgQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/intc/ioapic: Delete a wrong IRQ redirection on I/O APIC
+To: TaiseiIto <taisei1212@outlook.jp>
+Cc: qemu-devel@nongnu.org, mst@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -81,130 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+On Tue, Jun 25, 2024 at 2:03=E2=80=AFPM TaiseiIto <taisei1212@outlook.jp> w=
+rote:
+> Before this commit, interruptions from i8254 which should be sent to IRQ0
+> were sent to IRQ2. After this commit, these are correctly sent to IRQ0. W=
+hen
+> I had an HPET timer generate interruptions once per second to test an HPE=
+T
+> driver in my operating system on QEMU, I observed more frequent
+> interruptions than I configured on the HPET timer. I investigated the cau=
+se
+> and found that not only interruptions from HPET but also interruptions fr=
+om
+> i8254 were sent to IRQ2 because of a redirection from IRQ0 to IRQ2. This
+> redirection is added in hw/apic.c at commit
+> 16b29ae1807b024bd5052301550f5d47dae958a2 but this redirection caused wron=
+g
+> interruptions. So I deleted the redirection. Finally, I confirmed there i=
+s
+> no problem on 'make check' results and that interruptions from i8254 and
+> interruptions from HPET are correclty sent to IRQ0 and IRQ2 respectively.
 
-ioctl(iommufd, IOMMU_HWPT_SET_DIRTY_TRACKING, arg) is the UAPI that
-enables or disables dirty page tracking. The ioctl is used if the hwpt
-has been created with dirty tracking supported domain (stored in
-hwpt::flags) and it is called on the whole list of iommu domains.
+Hi, did you set the legacy replacement route bit on the HPET?
 
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
----
- include/sysemu/iommufd.h |  2 ++
- backends/iommufd.c       | 23 +++++++++++++++++++++++
- hw/vfio/iommufd.c        | 32 ++++++++++++++++++++++++++++++++
- backends/trace-events    |  1 +
- 4 files changed, 58 insertions(+)
+My understanding is that:
+- if you enable legacy-replacement routing, the HPET will take care of
+dropping all i8254 interrupts
+- if you disable legacy-replacement routing, the i8254 will still
+generate interrupts on ISA IRQ 0. If you then enable the IO-APIC and
+program the routes according to the ACPI MADT table, the interrupt
+from the i8254 (ISA IRQ 0) will be redirected to the IO-APIC's GSI2.
 
-diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-index e917e7591d050bd02945f6feb8d268e6d51d49aa..6fb412f61144e91ae02710291368ec9d577832f8 100644
---- a/include/sysemu/iommufd.h
-+++ b/include/sysemu/iommufd.h
-@@ -55,6 +55,8 @@ bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
-                                 uint32_t data_type, uint32_t data_len,
-                                 void *data_ptr, uint32_t *out_hwpt,
-                                 Error **errp);
-+bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                        bool start, Error **errp);
- 
- #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
- #endif
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 06b135111f303ca95d55dc0f71ad3bbb76211337..b9788350388481f449b1969366efa8d7766fc080 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -238,6 +238,29 @@ bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
-     return true;
- }
- 
-+bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be,
-+                                        uint32_t hwpt_id, bool start,
-+                                        Error **errp)
-+{
-+    int ret;
-+    struct iommu_hwpt_set_dirty_tracking set_dirty = {
-+            .size = sizeof(set_dirty),
-+            .hwpt_id = hwpt_id,
-+            .flags = start ? IOMMU_HWPT_DIRTY_TRACKING_ENABLE : 0,
-+    };
-+
-+    ret = ioctl(be->fd, IOMMU_HWPT_SET_DIRTY_TRACKING, &set_dirty);
-+    trace_iommufd_backend_set_dirty(be->fd, hwpt_id, start, ret ? errno : 0);
-+    if (ret) {
-+        error_setg_errno(errp, errno,
-+                         "IOMMU_HWPT_SET_DIRTY_TRACKING(hwpt_id %u) failed",
-+                         hwpt_id);
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
-                                      uint32_t *type, void *data, uint32_t len,
-                                      uint64_t *caps, Error **errp)
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 240c476eaf5b9b79090b6767c18316ade3b3b794..e39fbf4dd60a62321def4349fd727da335d82d8d 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -115,6 +115,37 @@ static bool iommufd_hwpt_dirty_tracking(VFIOIOASHwpt *hwpt)
-     return hwpt && hwpt->hwpt_flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
- }
- 
-+static int iommufd_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
-+                                           bool start, Error **errp)
-+{
-+    const VFIOIOMMUFDContainer *container =
-+        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-+    VFIOIOASHwpt *hwpt;
-+
-+    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-+        if (!iommufd_hwpt_dirty_tracking(hwpt)) {
-+            continue;
-+        }
-+
-+        if (!iommufd_backend_set_dirty_tracking(container->be,
-+                                                hwpt->hwpt_id, start, errp)) {
-+            goto err;
-+        }
-+    }
-+
-+    return 0;
-+
-+err:
-+    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-+        if (!iommufd_hwpt_dirty_tracking(hwpt)) {
-+            continue;
-+        }
-+        iommufd_backend_set_dirty_tracking(container->be,
-+                                           hwpt->hwpt_id, !start, NULL);
-+    }
-+    return -EINVAL;
-+}
-+
- static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
- {
-     ERRP_GUARD();
-@@ -739,6 +770,7 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
-     vioc->attach_device = iommufd_cdev_attach;
-     vioc->detach_device = iommufd_cdev_detach;
-     vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
-+    vioc->set_dirty_page_tracking = iommufd_set_dirty_page_tracking;
- };
- 
- static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-diff --git a/backends/trace-events b/backends/trace-events
-index 4d8ac02fe7d6c6d3780dfef48406872ee46fd4df..28aca3b859d43f35511a95d6eba196046bfda835 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -16,3 +16,4 @@ iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t si
- iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
- iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
- iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
-+iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
--- 
-2.45.2
+So the solutions would be one of the following if you use HPET timer 0:
+- disable the i8254
+- enable legacy-replacement routing
+- mask GSI2 on the IO-APIC and use a different route for the HPET
+(worse, but should also work)
+
+Thanks,
+
+Paolo
+
+
+> Signed-off-by: TaiseiIto <taisei1212@outlook.jp>
+> ---
+>  hw/intc/ioapic.c | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
+> index 716ffc8bbb..6b630b45ca 100644
+> --- a/hw/intc/ioapic.c
+> +++ b/hw/intc/ioapic.c
+> @@ -154,15 +154,8 @@ static void ioapic_set_irq(void *opaque, int vector,=
+ int level)
+>  {
+>      IOAPICCommonState *s =3D opaque;
+>
+> -    /* ISA IRQs map to GSI 1-1 except for IRQ0 which maps
+> -     * to GSI 2.  GSI maps to ioapic 1-1.  This is not
+> -     * the cleanest way of doing it but it should work. */
+> -
+>      trace_ioapic_set_irq(vector, level);
+>      ioapic_stat_update_irq(s, vector, level);
+> -    if (vector =3D=3D 0) {
+> -        vector =3D 2;
+> -    }
+>      if (vector < IOAPIC_NUM_PINS) {
+>          uint32_t mask =3D 1 << vector;
+>          uint64_t entry =3D s->ioredtbl[vector];
+> --
+> 2.34.1
+>
 
 
