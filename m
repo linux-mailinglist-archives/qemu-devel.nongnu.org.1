@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1EE993A90D
+	by mail.lfdr.de (Postfix) with ESMTPS id DA46193A90C
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 00:06:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWNci-00083t-CA; Tue, 23 Jul 2024 18:04:44 -0400
+	id 1sWNcr-0008DR-Tt; Tue, 23 Jul 2024 18:04:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sWNcg-00083A-Po
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 18:04:42 -0400
+ id 1sWNci-000880-Uf
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 18:04:45 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sWNcd-0002Cd-N3
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 18:04:42 -0400
+ id 1sWNch-0002Cd-4f
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 18:04:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721772280; x=1753308280;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2o7EpBrugvip8Wb2QdZuFTyqxUu/ox4on/OQ3lk0LKQ=;
- b=T92C1W7u+eeYPG1cvVx5K79YPwEjRSBa3Pemd/gyNxGAk/N7FX0XbEdQ
- f61RXRaBYaiq0dq3WEIsKSml/GUP2P3qCxCBEvN348+tscktii9YEAzwa
- 3z5ft4SN4CvXGMZ8DWqLolv2wwx+8TeBk7n2KKnPUxGc/RLRy4zLkjvzK
- HwzfRpyWLTUqaKIY6EaEk1FzCcWiicQy6CBwJyAKjBnz4Ae5d9KqsaWr1
- pRO/JG9wZ8eCnc3B0M4LbFGIVHrbd8N0GLBK5++2WfNeHonKYvyb0M5rL
- USvaMTcCBBPZye+NLxCAyt1OA2FpRF8/vXVCNMw1oX8GIc0Y1A5rD5TOA Q==;
-X-CSE-ConnectionGUID: DN9x6N32Q8mnH4VkxcYjtw==
-X-CSE-MsgGUID: LpFT1IzsTCaIwZtuyfPI5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="19298441"
-X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; d="scan'208";a="19298441"
+ t=1721772283; x=1753308283;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=xw+Od6uHSyed8v4SnhD/CR9QclCIv8RmGdTi85CVUps=;
+ b=gDP991h/l1vrbsTWkpLQ/YKKk2TSJQerN2XgeSaYKCAYhUMbunRKG/OU
+ jVTB31809lQ8G9jMgtyUSgPY+nYRfSNjbXw0fFOYVe399riNM7FHNkhtl
+ xN53FS/Tb7GHIKwau1+vR6PQ1yFI0BalPd20JYPuSR83q1KCFfj2dUaiv
+ SrD8O0GTMXWhPgvSy1ngxQTsWQgz5utETfBSPdF/Jg6WMkpwCg2E3J5Tc
+ PPPEbMgcVa80N5df/H2spuZThC3fb+kTVnUp1SCxKXvXHhtMgiy3Qeu/R
+ bV9f+wrULua3Xoec9fC8O4HZlp6Wp6MUnry4zfrKjVxUdlDMVMGwRdxbW A==;
+X-CSE-ConnectionGUID: 0ur9jyu4QT2xsLlLrtFG/A==
+X-CSE-MsgGUID: qEBkZYkfRPOTd7QFu/JySQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="19298442"
+X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; d="scan'208";a="19298442"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  23 Jul 2024 15:04:34 -0700
-X-CSE-ConnectionGUID: BFFibzbcTI2UZLT0IdHS7w==
-X-CSE-MsgGUID: wJQpCdDKTFuWVmxvW92dBQ==
+X-CSE-ConnectionGUID: 1HmcIXR6QEiRw1oTDDIbuQ==
+X-CSE-MsgGUID: e4HNJXgGTiWGHLVUDK2fxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; d="scan'208";a="57198645"
+X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; d="scan'208";a="57198647"
 Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
  by orviesa003.jf.intel.com with ESMTP; 23 Jul 2024 15:04:33 -0700
 From: dongwon.kim@intel.com
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 0/2] Consolidate create-sync and create-fence
-Date: Tue, 23 Jul 2024 15:02:56 -0700
-Message-Id: <20240723220258.3170957-1-dongwon.kim@intel.com>
+Subject: [PATCH v3 1/2] ui/egl-helpers: Consolidates create-sync and
+ create-fence
+Date: Tue, 23 Jul 2024 15:02:57 -0700
+Message-Id: <20240723220258.3170957-2-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240723220258.3170957-1-dongwon.kim@intel.com>
+References: <20240723220258.3170957-1-dongwon.kim@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -78,29 +81,171 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-Sync object itself is never used as is so can be removed
-from QemuDmaBuf struct. So now sync is only temporarily needed
-when creating fence for the object which means what was done in
-egl_dmabuf_create_sync can now be a part of egl_dmabuf_create_fence
-function. And egl_dmabuf_create_fence returns fence_fd so the
-better function name will be egl_dmabuf_create_fence_fd.
+There is no reason to split those two operations so combining
+two functions - egl_dmabuf_create_sync and egl_dmabuf_create_fence.
+
+v2: egl_dmabuf_create_fence -> egl_dmabuf_create_fence_fd
+    (Marc-André Lureau <marcandre.lureau@redhat.com>)
 
 v3: create fence only if current QemuDmaBuf->fence_fd = -1
     to make sure there is no fence currently bound to the
     QemuDmaBuf
 
-Dongwon Kim (2):
-  ui/egl-helpers: Consolidates create-sync and create-fence
-  ui/dmabuf: Remove 'sync' from QemuDmaBuf struct
-
- include/ui/dmabuf.h      |  2 --
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+---
  include/ui/egl-helpers.h |  3 +--
- ui/dmabuf.c              | 14 --------------
  ui/egl-helpers.c         | 24 +++++++++---------------
  ui/gtk-egl.c             | 17 ++++-------------
  ui/gtk-gl-area.c         | 12 +++---------
- 6 files changed, 17 insertions(+), 55 deletions(-)
+ 4 files changed, 17 insertions(+), 39 deletions(-)
 
+diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
+index 4b8c0d2281..221548e3c9 100644
+--- a/include/ui/egl-helpers.h
++++ b/include/ui/egl-helpers.h
+@@ -51,8 +51,7 @@ int egl_get_fd_for_texture(uint32_t tex_id, EGLint *stride, EGLint *fourcc,
+ 
+ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf);
+ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf);
+-void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf);
+-void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf);
++int egl_dmabuf_create_fence_fd(QemuDmaBuf *dmabuf);
+ 
+ #endif
+ 
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 99b2ebbe23..67c90abe18 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -371,9 +371,10 @@ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf)
+     qemu_dmabuf_set_texture(dmabuf, 0);
+ }
+ 
+-void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
++int egl_dmabuf_create_fence_fd(QemuDmaBuf *dmabuf)
+ {
+     EGLSyncKHR sync;
++    int fence_fd = -1;
+ 
+     if (epoxy_has_egl_extension(qemu_egl_display,
+                                 "EGL_KHR_fence_sync") &&
+@@ -382,23 +383,16 @@ void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
+         sync = eglCreateSyncKHR(qemu_egl_display,
+                                 EGL_SYNC_NATIVE_FENCE_ANDROID, NULL);
+         if (sync != EGL_NO_SYNC_KHR) {
+-            qemu_dmabuf_set_sync(dmabuf, sync);
++            fence_fd = eglDupNativeFenceFDANDROID(qemu_egl_display,
++                                                  sync);
++            if (fence_fd >= 0) {
++                qemu_dmabuf_set_fence_fd(dmabuf, fence_fd);
++            }
++            eglDestroySyncKHR(qemu_egl_display, sync);
+         }
+     }
+-}
+-
+-void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf)
+-{
+-    void *sync = qemu_dmabuf_get_sync(dmabuf);
+-    int fence_fd;
+ 
+-    if (sync) {
+-        fence_fd = eglDupNativeFenceFDANDROID(qemu_egl_display,
+-                                              sync);
+-        qemu_dmabuf_set_fence_fd(dmabuf, fence_fd);
+-        eglDestroySyncKHR(qemu_egl_display, sync);
+-        qemu_dmabuf_set_sync(dmabuf, NULL);
+-    }
++    return fence_fd;
+ }
+ 
+ #endif /* CONFIG_GBM */
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 9831c10e1b..9983b0423a 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -68,7 +68,6 @@ void gd_egl_draw(VirtualConsole *vc)
+     GdkWindow *window;
+ #ifdef CONFIG_GBM
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
+-    int fence_fd;
+ #endif
+     int ww, wh, ws;
+ 
+@@ -98,14 +97,13 @@ void gd_egl_draw(VirtualConsole *vc)
+ 
+         glFlush();
+ #ifdef CONFIG_GBM
+-        if (dmabuf) {
+-            egl_dmabuf_create_fence(dmabuf);
+-            fence_fd = qemu_dmabuf_get_fence_fd(dmabuf);
++        if (dmabuf && qemu_dmabuf_get_fence_fd(dmabuf) == -1) {
++            int fence_fd = egl_dmabuf_create_fence_fd(dmabuf);
+             if (fence_fd >= 0) {
+                 qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
+-                return;
++            } else {
++                graphic_hw_gl_block(vc->gfx.dcl.con, false);
+             }
+-            graphic_hw_gl_block(vc->gfx.dcl.con, false);
+         }
+ #endif
+     } else {
+@@ -364,12 +362,6 @@ void gd_egl_scanout_flush(DisplayChangeListener *dcl,
+         egl_fb_blit(&vc->gfx.win_fb, &vc->gfx.guest_fb, !vc->gfx.y0_top);
+     }
+ 
+-#ifdef CONFIG_GBM
+-    if (vc->gfx.guest_fb.dmabuf) {
+-        egl_dmabuf_create_sync(vc->gfx.guest_fb.dmabuf);
+-    }
+-#endif
+-
+     eglSwapBuffers(qemu_egl_display, vc->gfx.esurface);
+ }
+ 
+@@ -387,7 +379,6 @@ void gd_egl_flush(DisplayChangeListener *dcl,
+         gtk_widget_queue_draw_area(area, x, y, w, h);
+         return;
+     }
+-
+     gd_egl_scanout_flush(&vc->gfx.dcl, x, y, w, h);
+ }
+ 
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index b628b35451..929bb49290 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -78,16 +78,9 @@ void gd_gl_area_draw(VirtualConsole *vc)
+                           0, 0, ww, wh,
+                           GL_COLOR_BUFFER_BIT, GL_NEAREST);
+ #ifdef CONFIG_GBM
+-        if (dmabuf) {
+-            egl_dmabuf_create_sync(dmabuf);
+-        }
+-#endif
+-        glFlush();
+-#ifdef CONFIG_GBM
+-        if (dmabuf) {
++        if (dmabuf && qemu_dmabuf_get_fence_fd(dmabuf) == -1) {
+             int fence_fd;
+-            egl_dmabuf_create_fence(dmabuf);
+-            fence_fd = qemu_dmabuf_get_fence_fd(dmabuf);
++            fence_fd = egl_dmabuf_create_fence_fd(dmabuf);
+             if (fence_fd >= 0) {
+                 qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+@@ -95,6 +88,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
+             graphic_hw_gl_block(vc->gfx.dcl.con, false);
+         }
+ #endif
++        glFlush();
+     } else {
+         if (!vc->gfx.ds) {
+             return;
 -- 
 2.43.0
 
