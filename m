@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56AC93A266
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6414093A273
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWGIr-0003W4-96; Tue, 23 Jul 2024 10:15:45 -0400
+	id 1sWGIx-0003tF-8i; Tue, 23 Jul 2024 10:15:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sWGIn-0003O4-RE
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:15:42 -0400
+ id 1sWGIp-0003ZF-UH
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:15:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sWGIl-000761-CL
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:15:41 -0400
+ id 1sWGIn-00076c-J9
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:15:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721744137;
+ s=mimecast20190719; t=1721744140;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mKFZHRAaNx5SH+JoVPvMhA+txKbl3gPY3EVh/Uef8VU=;
- b=du+1IeJqsZq3ZwBaiwMGmOYRoXAALqNdc46/wq00S0IJB5cohFoa0gn/ayShXyDM1tNpJC
- kTnv2qODnDmU8GI3fk0xy7Y+xFDZDj4PY9hjVg8tb+xXg6JEHwFz4ETRBYDfQwkUIZXiHC
- UxQo4RnWvREGpT3p3wJVf29zGGG58FY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bBmdKai45m+KPRGpnPmMNJlmmK+aMNov4HIpoz9yWEc=;
+ b=K2zwHlYfgsjpeklKkqK4ADoXkjeZqLNEMwsbisL5SaCSs8XvtUcT5EP6vhGLKixxnLC96E
+ XeS7cgOdK04iy2iba/9hWvKo6hOEt3sHCuPYJ1mxoGfA0RYv271T4XEJDvBzKfWDg3cHl4
+ 8LD4uAiYX1EHdT7ZglYgMFPTWXZuuO4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-n4SHEXKOMNa2J8i0M2CyFQ-1; Tue, 23 Jul 2024 10:15:36 -0400
-X-MC-Unique: n4SHEXKOMNa2J8i0M2CyFQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3688010b3bfso3905477f8f.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 07:15:36 -0700 (PDT)
+ us-mta-373-t2-ZsSfwNtOO94jifnHmVg-1; Tue, 23 Jul 2024 10:15:38 -0400
+X-MC-Unique: t2-ZsSfwNtOO94jifnHmVg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4266d0183feso44819465e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 07:15:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721744135; x=1722348935;
+ d=1e100.net; s=20230601; t=1721744137; x=1722348937;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mKFZHRAaNx5SH+JoVPvMhA+txKbl3gPY3EVh/Uef8VU=;
- b=aJHzKpanxy9zKxxyu2mirjXqWWrBSQTlOHMHVHCuJ5RGGGb6BFcTGGfoCIgocsY3GI
- jP9jlMLglPuX396V1/uylV2HgxvkKE/1Ie7lCM1HVvUEr0+PFdYqxc5hECV9ya/dqB97
- /RsozR5vgDTpi0o3OJlCW46ypNPS8qCE0pSprmzB8f4l/JGjfOpw4KP6Yg67JEuMtdwt
- dib4xtBXYWVMFXLvNtN04V/oOzPy7HRL7/bBartzCWF2TC67xe2Wo+78n3DASfeyCrmt
- U38HNeudmGtTDKrhjvZbkbRdrHON+mIM+g2jfl+Mk5M56hoa1LiVdvxRGAGBAoZBBjlW
- Rudg==
-X-Gm-Message-State: AOJu0YzSfag8qlKYIRC9Qvziy5czcja8gWCTA3n+zG1s2Ig8vlGFWduW
- D13BzWiRq1b+phawx1lt92rEnhp3cVPItQFYN0FcyOVMdBsrQRUT6AdZlcdT9XSGhwmGrrn2IHf
- 12ivDqtM0aaHdsuFiXwMMztVrUs34lyFU2gPa6mwUDaUnux/h0mLHxiZydjmWQLxuq1b9PfCSsO
- btArPh9UK59Zi4rWPGTJYDxWqEzWVzPMudUIyi
-X-Received: by 2002:a5d:5f84:0:b0:368:3f5b:2ae7 with SMTP id
- ffacd0b85a97d-369bae4ce9bmr9044108f8f.24.1721744134648; 
- Tue, 23 Jul 2024 07:15:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHFu03skEy5KoGckN7VOYKRL7fUjzaBpx1R3byVezDDiNsStsAtQ8yP5eG2RT8Csix728vOlw==
-X-Received: by 2002:a5d:5f84:0:b0:368:3f5b:2ae7 with SMTP id
- ffacd0b85a97d-369bae4ce9bmr9044075f8f.24.1721744134200; 
- Tue, 23 Jul 2024 07:15:34 -0700 (PDT)
+ bh=bBmdKai45m+KPRGpnPmMNJlmmK+aMNov4HIpoz9yWEc=;
+ b=mYWI9MjKKtEi6Kux0oB1URBI5NGBbKjIIz6XBQPiM0rrIOBUXJXiRLfaufPBM7TM8R
+ gBn7ObCeZQZpig7BFsnE9LPFKwkfBeLhwwDajZFMO3jh7bU+UFL2FaiuyS/B8/4seM/w
+ AS0/tgRUhJSxZph6aeUSJLNXnmstHZAc25Rttgmn5f9mzBx7Ysx2BIfZkhjEXI7RVSpm
+ 9BhdciUBqnBLYSRGl3tYPjynsEs/98QKGu4Sq0zmYXPiIeJ7ACloyXKVOqAN5ENMzUuA
+ HogETTZbOAbXl0i3P7Bub0ai9Ch9506SfVOEY0l6FctFm2uh5T70dXR73F9ZauEuZtVK
+ WYTA==
+X-Gm-Message-State: AOJu0YyEJcuXYcPm8ebEMdKJgITgOuQR6VO29VLlvlB9OQPIDCoAfgFW
+ 7QEPW/RzTNPH8LxeT8m/lJAfIoAg6HpMEvm0Mw+MT674z1uTYGcib60GYLPFjuhOsLFvNhvuJbR
+ Qt6JZEprMOjhuCnmpF/xVUB4uogAhOpbE5o+EUp4KHu3X7jk49sOL7CbQbut+3Lkdy0WbVFmV4m
+ lcJc4xbcpZFdOrc7+nHpfVMp/qsD1VpiOLH86B
+X-Received: by 2002:a05:600c:3c9d:b0:426:6099:6eaa with SMTP id
+ 5b1f17b1804b1-427daa61cddmr74485865e9.26.1721744136932; 
+ Tue, 23 Jul 2024 07:15:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1WmZOVIPFr3SV8Utd6M7VXVHkmQhO8fASyQ0E1GUBvBQ5eNnRgJfZIovOMxeABpGol8Q58g==
+X-Received: by 2002:a05:600c:3c9d:b0:426:6099:6eaa with SMTP id
+ 5b1f17b1804b1-427daa61cddmr74485685e9.26.1721744136519; 
+ Tue, 23 Jul 2024 07:15:36 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3687868ac48sm11710596f8f.29.2024.07.23.07.15.33
+ 5b1f17b1804b1-427d2a5c3d4sm202265145e9.17.2024.07.23.07.15.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 07:15:33 -0700 (PDT)
+ Tue, 23 Jul 2024 07:15:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PULL 01/11] target/i386: do not crash if microvm guest uses SGX
- CPUID leaves
-Date: Tue, 23 Jul 2024 16:15:19 +0200
-Message-ID: <20240723141529.551737-2-pbonzini@redhat.com>
+Cc: Anthony Harivel <aharivel@redhat.com>
+Subject: [PULL 02/11] qio: add support for SO_PEERCRED for socket channel
+Date: Tue, 23 Jul 2024 16:15:20 +0200
+Message-ID: <20240723141529.551737-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723141529.551737-1-pbonzini@redhat.com>
 References: <20240723141529.551737-1-pbonzini@redhat.com>
@@ -101,44 +100,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sgx_epc_get_section assumes a PC platform is in use:
+From: Anthony Harivel <aharivel@redhat.com>
 
-bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size)
-{
-    PCMachineState *pcms = PC_MACHINE(qdev_get_machine());
+The function qio_channel_get_peercred() returns a pointer to the
+credentials of the peer process connected to this socket.
 
-However, sgx_epc_get_section is called by CPUID regardless of whether
-SGX state has been initialized or which platform is in use.  Check
-whether the machine has the right QOM class and if not behave as if
-there are no EPC sections.
+This credentials structure is defined in <sys/socket.h> as follows:
 
-Fixes: 1dec2e1f19f ("i386: Update SGX CPUID info according to hardware/KVM/user input", 2021-09-30)
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2142
+struct ucred {
+	pid_t pid;    /* Process ID of the sending process */
+	uid_t uid;    /* User ID of the sending process */
+	gid_t gid;    /* Group ID of the sending process */
+};
+
+The use of this function is possible only for connected AF_UNIX stream
+sockets and for AF_UNIX stream and datagram socket pairs.
+
+On platform other than Linux, the function return 0.
+
+Signed-off-by: Anthony Harivel <aharivel@redhat.com>
+Link: https://lore.kernel.org/r/20240522153453.1230389-2-aharivel@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/sgx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/io/channel.h | 21 +++++++++++++++++++++
+ io/channel-socket.c  | 28 ++++++++++++++++++++++++++++
+ io/channel.c         | 13 +++++++++++++
+ 3 files changed, 62 insertions(+)
 
-diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
-index a14a84bc6f6..849472a1286 100644
---- a/hw/i386/sgx.c
-+++ b/hw/i386/sgx.c
-@@ -268,10 +268,12 @@ void hmp_info_sgx(Monitor *mon, const QDict *qdict)
+diff --git a/include/io/channel.h b/include/io/channel.h
+index 7986c49c713..bdf0bca92ae 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -160,6 +160,9 @@ struct QIOChannelClass {
+                                   void *opaque);
+     int (*io_flush)(QIOChannel *ioc,
+                     Error **errp);
++    int (*io_peerpid)(QIOChannel *ioc,
++                       unsigned int *pid,
++                       Error **errp);
+ };
  
- bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size)
- {
--    PCMachineState *pcms = PC_MACHINE(qdev_get_machine());
-+    PCMachineState *pcms =
-+        (PCMachineState *)object_dynamic_cast(qdev_get_machine(),
-+                                              TYPE_PC_MACHINE);
-     SGXEPCDevice *epc;
+ /* General I/O handling functions */
+@@ -981,4 +984,22 @@ int coroutine_mixed_fn qio_channel_writev_full_all(QIOChannel *ioc,
+ int qio_channel_flush(QIOChannel *ioc,
+                       Error **errp);
  
--    if (pcms->sgx_epc.size == 0 || pcms->sgx_epc.nr_sections <= section_nr) {
-+    if (!pcms || pcms->sgx_epc.size == 0 || pcms->sgx_epc.nr_sections <= section_nr) {
-         return true;
++/**
++ * qio_channel_get_peercred:
++ * @ioc: the channel object
++ * @pid: pointer to pid
++ * @errp: pointer to a NULL-initialized error object
++ *
++ * Returns the pid of the peer process connected to this socket.
++ *
++ * The use of this function is possible only for connected
++ * AF_UNIX stream sockets and for AF_UNIX stream and datagram
++ * socket pairs on Linux.
++ * Return -1 on error with pid -1 for the non-Linux OS.
++ *
++ */
++int qio_channel_get_peerpid(QIOChannel *ioc,
++                             unsigned int *pid,
++                             Error **errp);
++
+ #endif /* QIO_CHANNEL_H */
+diff --git a/io/channel-socket.c b/io/channel-socket.c
+index 3a899b06085..608bcf066ec 100644
+--- a/io/channel-socket.c
++++ b/io/channel-socket.c
+@@ -841,6 +841,33 @@ qio_channel_socket_set_cork(QIOChannel *ioc,
+     socket_set_cork(sioc->fd, v);
+ }
+ 
++static int
++qio_channel_socket_get_peerpid(QIOChannel *ioc,
++                               unsigned int *pid,
++                               Error **errp)
++{
++#ifdef CONFIG_LINUX
++    QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
++    Error *err = NULL;
++    socklen_t len = sizeof(struct ucred);
++
++    struct ucred cred;
++    if (getsockopt(sioc->fd,
++               SOL_SOCKET, SO_PEERCRED,
++               &cred, &len) == -1) {
++        error_setg_errno(&err, errno, "Unable to get peer credentials");
++        error_propagate(errp, err);
++        *pid = -1;
++        return -1;
++    }
++    *pid = (unsigned int)cred.pid;
++    return 0;
++#else
++    error_setg(errp, "Unsupported feature");
++    *pid = -1;
++    return -1;
++#endif
++}
+ 
+ static int
+ qio_channel_socket_close(QIOChannel *ioc,
+@@ -938,6 +965,7 @@ static void qio_channel_socket_class_init(ObjectClass *klass,
+ #ifdef QEMU_MSG_ZEROCOPY
+     ioc_klass->io_flush = qio_channel_socket_flush;
+ #endif
++    ioc_klass->io_peerpid = qio_channel_socket_get_peerpid;
+ }
+ 
+ static const TypeInfo qio_channel_socket_info = {
+diff --git a/io/channel.c b/io/channel.c
+index a1f12f8e909..e3f17c24a00 100644
+--- a/io/channel.c
++++ b/io/channel.c
+@@ -548,6 +548,19 @@ void qio_channel_set_cork(QIOChannel *ioc,
      }
+ }
  
++int qio_channel_get_peerpid(QIOChannel *ioc,
++                             unsigned int *pid,
++                             Error **errp)
++{
++    QIOChannelClass *klass = QIO_CHANNEL_GET_CLASS(ioc);
++
++    if (!klass->io_peerpid) {
++        error_setg(errp, "Channel does not support peer pid");
++        return -1;
++    }
++    klass->io_peerpid(ioc, pid, errp);
++    return 0;
++}
+ 
+ off_t qio_channel_io_seek(QIOChannel *ioc,
+                           off_t offset,
 -- 
 2.45.2
 
