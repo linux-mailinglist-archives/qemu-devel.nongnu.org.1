@@ -2,65 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC4293A23B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D444E93A234
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:02:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWG4K-000804-Bv; Tue, 23 Jul 2024 10:00:44 -0400
+	id 1sWG4K-00081K-L6; Tue, 23 Jul 2024 10:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG49-0007uZ-TG
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG49-0007ua-TO
  for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG47-0003dP-5R
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG47-0003dM-1D
  for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1721743229;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=PS3LX1TII9sEr3/onHkgzq9UhztxYYG+k8/oE3yQ1i8=;
- b=TBsGw5c7OmOfgCtwcNOZkrPh6DRzmmnyH7Fc0nF/R25qJrhx9th/Qs/OFptEUNpIIQRKVS
- gk/bJ2t7IacZI69a82qcby3eZksWtYiP70ckLRu8hZDg7I5JvQwbADzdsA7uroJopHS9e8
- E/F9ni4ZeMCZM3Hl2lXNlSef2rN6OEI=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=esh1iTdtJx4nft1i0P1aTCOC7MXk7/MsPbP6oG1wC6s=;
+ b=JVMJTZrxD0ndxLHQdaan1mhk6S30TQC7V+qJDciKg5CO1uomARp8Ya5zjZcQ3V1hE4nO9K
+ F9Uns0HUGKj+N5gu/2dD+WdI1MdOng0/W0JAcBFzUcLIQDzOFcE8li+ogfdnPQEeef97Ag
+ PR/uOlqwn39SO9OgClfGf2b+fzwJLb4=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-42-9eO3jl__N9mgUdAOonDu5g-1; Tue,
- 23 Jul 2024 10:00:24 -0400
-X-MC-Unique: 9eO3jl__N9mgUdAOonDu5g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-zkFElvWIMDeZ87N0L59uTQ-1; Tue,
+ 23 Jul 2024 10:00:27 -0400
+X-MC-Unique: zkFElvWIMDeZ87N0L59uTQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5EE501954126
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 14:00:23 +0000 (UTC)
+ id 3850D1944A98; Tue, 23 Jul 2024 14:00:26 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.91])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A4A031955D45; Tue, 23 Jul 2024 14:00:21 +0000 (UTC)
+ id D93D6195605A; Tue, 23 Jul 2024 14:00:23 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/16] vfio queue
-Date: Tue, 23 Jul 2024 16:00:03 +0200
-Message-ID: <20240723140019.387786-1-clg@redhat.com>
+ Eric Auger <eric.auger@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PULL 01/16] hw/vfio/container: Fix SIGSEV on
+ vfio_container_instance_finalize()
+Date: Tue, 23 Jul 2024 16:00:04 +0200
+Message-ID: <20240723140019.387786-2-clg@redhat.com>
+In-Reply-To: <20240723140019.387786-1-clg@redhat.com>
+References: <20240723140019.387786-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,61 +82,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6af69d02706c821797802cfd56acdac13a7c9422:
+From: Eric Auger <eric.auger@redhat.com>
 
-  Merge tag 'nvme-next-pull-request' of https://gitlab.com/birkelund/qemu into staging (2024-07-23 13:55:45 +1000)
+In vfio_connect_container's error path, the base container is
+removed twice form the VFIOAddressSpace QLIST: first on the
+listener_release_exit label and second, on free_container_exit
+label, through object_unref(container), which calls
+vfio_container_instance_finalize().
 
-are available in the Git repository at:
+Let's remove the first instance.
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20240723
+Fixes: 938026053f4 ("vfio/container: Switch to QOM")
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ hw/vfio/container.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-for you to fetch changes up to 6ac9efe6805af60de14481fdde7d340080d38324:
-
-  vfio/common: Allow disabling device dirty page tracking (2024-07-23 11:10:10 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* IOMMUFD Dirty Tracking support
-* Fix for a possible SEGV in IOMMU type1 container
-* Dropped initialization of host IOMMU device with mdev devices
-
-----------------------------------------------------------------
-Eric Auger (1):
-      hw/vfio/container: Fix SIGSEV on vfio_container_instance_finalize()
-
-Joao Martins (13):
-      vfio/pci: Extract mdev check into an helper
-      vfio/iommufd: Don't initialize nor set a HOST_IOMMU_DEVICE with mdev
-      backends/iommufd: Extend iommufd_backend_get_device_info() to fetch HW capabilities
-      vfio/iommufd: Return errno in iommufd_cdev_attach_ioas_hwpt()
-      vfio/iommufd: Introduce auto domain creation
-      vfio/{iommufd,container}: Remove caps::aw_bits
-      vfio/iommufd: Add hw_caps field to HostIOMMUDeviceCaps
-      vfio/{iommufd, container}: Invoke HostIOMMUDevice::realize() during attach_device()
-      vfio/iommufd: Probe and request hwpt dirty tracking capability
-      vfio/iommufd: Implement VFIOIOMMUClass::set_dirty_tracking support
-      vfio/iommufd: Implement VFIOIOMMUClass::query_dirty_bitmap support
-      vfio/migration: Don't block migration device dirty tracking is unsupported
-      vfio/common: Allow disabling device dirty page tracking
-
-Zhenzhong Duan (2):
-      vfio/ap: Don't initialize HOST_IOMMU_DEVICE with mdev
-      vfio/ccw: Don't initialize HOST_IOMMU_DEVICE with mdev
-
- include/hw/vfio/vfio-common.h      |  15 +++
- include/sysemu/host_iommu_device.h |   5 +-
- include/sysemu/iommufd.h           |  13 ++-
- backends/iommufd.c                 |  89 ++++++++++++++++-
- hw/vfio/ap.c                       |   3 +
- hw/vfio/ccw.c                      |   3 +
- hw/vfio/common.c                   |  17 ++--
- hw/vfio/container.c                |  10 +-
- hw/vfio/helpers.c                  |  25 +++++
- hw/vfio/iommufd.c                  | 196 +++++++++++++++++++++++++++++++++++--
- hw/vfio/migration.c                |  12 ++-
- hw/vfio/pci.c                      |  26 ++---
- backends/trace-events              |   3 +
- 13 files changed, 377 insertions(+), 40 deletions(-)
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 38a9df34964a4e5a4d349c14d54f66585728d5ca..ce9a858e56218a9e9c803b4f5cf4c9f7cfc4edda 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -656,7 +656,6 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     return true;
+ listener_release_exit:
+     QLIST_REMOVE(group, container_next);
+-    QLIST_REMOVE(bcontainer, next);
+     vfio_kvm_device_del_group(group);
+     memory_listener_unregister(&bcontainer->listener);
+     if (vioc->release) {
+-- 
+2.45.2
 
 
