@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CCD93A825
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A083393A834
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:42:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMJJ-0000uu-SW; Tue, 23 Jul 2024 16:40:39 -0400
+	id 1sWMJJ-0000fE-41; Tue, 23 Jul 2024 16:40:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIy-0007Y6-Fi
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:18 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMJ2-00080B-Vl
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:21 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIw-0004Fh-GE
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:15 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-426526d30aaso44701285e9.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:40:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMJ0-0004GF-QC
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:20 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-369cb9f086aso2071619f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:40:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767211; x=1722372011; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767217; x=1722372017; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=efl2J6FZMNBybvIOohahy/rqbvmAN7ozlP6FIF0OQ4s=;
- b=QfZaLrxWWJ40W9K54k+09t0exDCPNjKY9S2tOAT4/qLaLQTvZDWLLgKUjttgmw2L+L
- PktN9OnMXGvhKfjhHgJ7azSYBfv9ikbZ1gZhVFoL9kGbFGaNbXU4PXmFWoqSR3U2d9gS
- UizxYFtFvRQcVGo42YHFidEjOi3+vpT7k80YPLP3yNkRqIjiD4B24DS1FNMxQo/gPFIf
- DaT8IU6W9xLo1dyeCN1MyMjI51U1iSmjjCxjUMeZDvb4UH9u2752bNU5GmsuLq1cM90k
- 2bB/dOgncAEV5cmsTrLNH96zazlZ62wSTa5dPx6yyhvtO6YjmVlzNjkkQbtr3wTyjx41
- ASoQ==
+ bh=pqhDz9jkzJVJQG2tzSqklstnX2oao7JbXMBXUDlT2s0=;
+ b=lhQpAjNpUj2d8fkr0XCwzjRhteDtmS3dEbYCxXIodEx/hN3cTer2VzlJKVr5ySllq8
+ LD5Vr+Kfy508M0YQ5UurQV7s7dAVcHEgQcNbjxz0VVpU405GWXm2/ORNpGx1ul7VBJJX
+ +zUCAUZxaxI5sS09jdC/xWIDwly+7j16orA2GBDO4H4+FNjQnr6bx7rrjecUDpvN6F5e
+ MIK+Ju0HP+wfL79k5yaSg6FpWuX7cITKTAJ8Fxg2Lp7TEaJJnJjsQPf7uURcIYLdXQwQ
+ F+JUqJAmhAZT94+oKRp+lhdICq3VQSLdZmuPAFK4E1tATlnHDGYHrb94Yv+700cl4oJq
+ Bbaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767211; x=1722372011;
+ d=1e100.net; s=20230601; t=1721767217; x=1722372017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=efl2J6FZMNBybvIOohahy/rqbvmAN7ozlP6FIF0OQ4s=;
- b=ua8OGrB7gzbdv/VwYdXQp0bEg4kdMdW1YzvALbWQvKi8DRPEef6fdGZTjbkN8eP8ZL
- gast4moUEogPyzq5kR5oIf5yUn1XCAqV8AnVdj1J8dzCjL6Woch55LljhAYSICRL2v3D
- HXMxvtrloEAGxHvejj1v1Udsj/cmITgWtj6Na3VuDxnZurs/Lq4lsuUlh18ht7CHlvf0
- ZQyHMBVxpQoqg7z5D7KnHh9jPY09Fx3FKcmocmoVQBNG6IEA5r3eztyLP2KSifJQTJwy
- iIfC6l/fogpjTTS4RcwD7BHP2qxOTivqb8LRK/xBvGfOfe5lDUhwDZvHgAivgEfgca8t
- e3QA==
-X-Gm-Message-State: AOJu0YzV9Nsf1zAssu18yuXlJ1wEsyMFHmCweO9B0iRMk8AwrhUUVU2+
- 0Bx4qJ03SVtk0q+4c0BJ0Eqr6pph7DaLHiweqvUxRVFijwgoWe50IrgBKBOShsqKt6tU1B8dx1p
- E7js=
-X-Google-Smtp-Source: AGHT+IHj6RYFqo7w48bpHyWmP4T+IUyN9ddN93a5N5am/uV5A6O9Qbklt4EqwRGAuu/LiRgiYmLbtA==
-X-Received: by 2002:a05:600c:4586:b0:426:6f0e:a60 with SMTP id
- 5b1f17b1804b1-427f955c2d4mr81865e9.17.1721767211490; 
- Tue, 23 Jul 2024 13:40:11 -0700 (PDT)
+ bh=pqhDz9jkzJVJQG2tzSqklstnX2oao7JbXMBXUDlT2s0=;
+ b=vwzMc1p+s4p8wqeRPRXE38hZ/XS5XbTBhxDapumK/BSm6StvvltAHEcEX19BuuMUCa
+ DQm9oL8tUuq3WKhTNqnrUdjPema1sGd12D6wptKL+6JCJUWGdGp/RNqm84fv3xcYmRWv
+ psfgI0WWX8iv2gm/nim7bHy5mHIJbSxYDU4Xskn1DkfSFQ57K3HKFUp7i+2BlEen0m27
+ jSP55iDfjtrqoxgo+1jbdizxLnN9PNehCxMd41lUmIsog1tdrPs+FMcSzrTDOXLTa+A9
+ FZO4uqe7vEmlacCzJGjjf1+q6OzGdafVTtx5QN9X6AGF8xroQVifdQqEL2f8DM/5AgXT
+ TYPA==
+X-Gm-Message-State: AOJu0YyxBDyy/UtRtfY0Fpm6/NYkZ+WMApb8owV9IklYqeLctf2OF+rA
+ 78BZXXNwdZSR8SR+Z4WlRIdXH7sVFRHHtN5O5gtVhgVoLtGicVMUvq5TtvGaHnkvN/ELSSInk5c
+ pZKc=
+X-Google-Smtp-Source: AGHT+IElmPSE0293WEGARsdDyOGAzPplpJCqtDI/v2lMSEwrEPj48xacn2u84oW10zp7efsHROHLvA==
+X-Received: by 2002:adf:f38c:0:b0:367:402f:805b with SMTP id
+ ffacd0b85a97d-369f5af631amr43652f8f.2.1721767217092; 
+ Tue, 23 Jul 2024 13:40:17 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f9413663sm316075e9.45.2024.07.23.13.40.10
+ 5b1f17b1804b1-427ef3f4665sm25877335e9.0.2024.07.23.13.40.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:40:10 -0700 (PDT)
+ Tue, 23 Jul 2024 13:40:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yao Xingtao <yaoxt.fnst@fujitsu.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/28] cxl/mailbox: make range overlap check more readable
-Date: Tue, 23 Jul 2024 22:38:40 +0200
-Message-ID: <20240723203855.65033-14-philmd@linaro.org>
+Subject: [PULL 14/28] sparc/ldst_helper: make range overlap check more readable
+Date: Tue, 23 Jul 2024 22:38:41 +0200
+Message-ID: <20240723203855.65033-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,39 +100,35 @@ the readability of the code.
 
 Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240722040742.11513-5-yaoxt.fnst@fujitsu.com>
+Message-ID: <20240722040742.11513-9-yaoxt.fnst@fujitsu.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/cxl/cxl-mailbox-utils.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/sparc/ldst_helper.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 74eeb6fde73..507690c0dd1 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1086,8 +1086,8 @@ static CXLRetCode cmd_media_get_poison_list(const struct cxl_cmd *cmd,
+diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+index 2d48e98bf46..d92c9f15934 100644
+--- a/target/sparc/ldst_helper.c
++++ b/target/sparc/ldst_helper.c
+@@ -19,6 +19,7 @@
  
-     QLIST_FOREACH(ent, poison_list, node) {
-         /* Check for no overlap */
--        if (ent->start >= query_start + query_length ||
--            ent->start + ent->length <= query_start) {
-+        if (!ranges_overlap(ent->start, ent->length,
-+                            query_start, query_length)) {
-             continue;
-         }
-         record_count++;
-@@ -1100,8 +1100,8 @@ static CXLRetCode cmd_media_get_poison_list(const struct cxl_cmd *cmd,
-         uint64_t start, stop;
- 
-         /* Check for no overlap */
--        if (ent->start >= query_start + query_length ||
--            ent->start + ent->length <= query_start) {
-+        if (!ranges_overlap(ent->start, ent->length,
-+                            query_start, query_length)) {
-             continue;
-         }
- 
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
++#include "qemu/range.h"
+ #include "cpu.h"
+ #include "tcg/tcg.h"
+ #include "exec/helper-proto.h"
+@@ -240,9 +241,7 @@ static void replace_tlb_1bit_lru(SparcTLBEntry *tlb,
+             if (new_ctx == ctx) {
+                 uint64_t vaddr = tlb[i].tag & ~0x1fffULL;
+                 uint64_t size = 8192ULL << 3 * TTE_PGSIZE(tlb[i].tte);
+-                if (new_vaddr == vaddr
+-                    || (new_vaddr < vaddr + size
+-                        && vaddr < new_vaddr + new_size)) {
++                if (ranges_overlap(new_vaddr, new_size, vaddr, size)) {
+                     DPRINTF_MMU("auto demap entry [%d] %lx->%lx\n", i, vaddr,
+                                 new_vaddr);
+                     replace_tlb_entry(&tlb[i], tlb_tag, tlb_tte, env1);
 -- 
 2.41.0
 
