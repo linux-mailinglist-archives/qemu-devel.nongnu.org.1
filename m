@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3776A93A82E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB7493A826
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:40:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMJC-000856-Pk; Tue, 23 Jul 2024 16:40:30 -0400
+	id 1sWMJE-0008Jn-Vu; Tue, 23 Jul 2024 16:40:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIo-0006fF-4Z
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:09 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIs-0006s0-AQ
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:10 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIl-00041o-CQ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:05 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-427edcc207cso10657395e9.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:40:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIp-0004EA-K6
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:40:10 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-427b4c621b9so40018475e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767200; x=1722372000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767205; x=1722372005; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vEOkd3+zxom1XlmbkPPQvUDNjv9xP8TI/j35/QIU7mo=;
- b=gnP0B4UrGUazyktAluHhqjQUScuI1L/OmURPCarBu/6UJWaWxRzxuxY9blIllaVcAP
- i8Db/T2cy6Ye1a+VE8VQTlv7lRfxI4KzTPf9xFKOsZAms8GJt3Thqmpxn5YqCevpmE0P
- kp63ywRojTRSBnl2krCNGmilDjaC46clZoAYmT7FHI8c8mcTxNQXyEah7WfyYAuUKRbn
- ACOaa4SZhBBNgN5JGyAGxX+/jhPjqZDKvsKkw/z4oqXi7pZthOowUAeyQlNmJpw/Ea2+
- W+/Xfxs5GYJp7SAE7sl6DJ+gKnoOJjfwKiWs02AWljAbakTeWDkHtzGpfQcam3leElrq
- 5lsg==
+ bh=rcNZQQ0nKhi9U2udqnFLIBFior9dBlBIvCxC4fyrbfU=;
+ b=MQZBDdsh+8KfLeZJK2ROecLVJs+FsUan2KWdDAwamQ0iryU4J/0x74sYbU5aMLfKPg
+ ljwiqJHpYSpC71cRUgBzCSHGsPnxmaure0A/oRAMXeJN93oAwE2Ew3vrzVXhqJixoYdE
+ K9atdKa6UAXmMKF/01eOP/ZXlG/A9XROSRBEfCLB2zf3E9YjRdusHxq2lO00VgqmNcyY
+ wz/hrW5SnBjkLfPetYl965rHFT4J1S816cVoiPrkZbXn+UlAE88mk5BNy8cdAKUfTTQx
+ SJSQB8/xA81zqIR0PBjtQJrXxze8F56un9f97Gd6sO/C92VREJgUx0Kyk8tBusF73bcU
+ rCfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767200; x=1722372000;
+ d=1e100.net; s=20230601; t=1721767205; x=1722372005;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vEOkd3+zxom1XlmbkPPQvUDNjv9xP8TI/j35/QIU7mo=;
- b=EII9ANAlmTz+ms6lPcVxf6WlqYwPzWUvoYdI9HGXDJa3aL+gVX1WNTI5x/VDA/c/Fu
- wvBA1JzQezjwkOW+y1AGz01+vDWSV//lYCV7VCGXW46UKN69ogfts4I2lcwl3GrBmY4c
- HgfTjEeP8rRvMluo5wxVJ6FJ85WONPwZQYw5YvgJYqQ5VoOIFaRgx5EKQRz7m+mVokiC
- AaPzbVBn3mBzh1FjMDUgKGQiMKPyelK0U1ijsyluwaueFDpELpoJUK42b55aR2K+vufv
- DfvyBPHcEt1ngOYt6ZyB9guqK1mQFFQ2riV5JVMGsq0GQAlrNIhwSVbySU9+56MNyJ3h
- Xuzg==
-X-Gm-Message-State: AOJu0YwAOfjzbNZr/KAHUERpPbahTZMpheA+n42pzsxB5cl1Qd5rqEQq
- gPH0L5MB7Z3gKi8iXerZq9XkQD42FHCNOQhryBH+W9xPZ4WQm3vJf34//hWwjhRuWOiAtn4mrea
- 2u+g=
-X-Google-Smtp-Source: AGHT+IG/JD7on6qkNkS7D2ufluexNdsnztjMRqzUsh2dMGW4owb5snE1Lf3MQRkUkNQ0dBB5hG9Fgg==
-X-Received: by 2002:a05:600c:19cb:b0:426:622d:9e6b with SMTP id
- 5b1f17b1804b1-427f95b0f94mr12795e9.23.1721767200235; 
- Tue, 23 Jul 2024 13:40:00 -0700 (PDT)
+ bh=rcNZQQ0nKhi9U2udqnFLIBFior9dBlBIvCxC4fyrbfU=;
+ b=vET8tUIwUC/GQTpaNrhGq7bxHvWA7T4C/WA2r/9y0zA1boYhppLr8zi4y/wvKoeO93
+ I9EFXz28QjrQxUim+kCIl9dtH3VtMJoJiKMS5LA2lu7DwUtaAs91G0MAiKKYore4PIpI
+ Y3yASJor4F/t5EKtZaRx20rU2BXaYXwr6qWLptFMrFGn2wJK8cs1t5xGgy8LYtqPDnAi
+ Ka0sqLn/SgZ27WI+8DMsw1Aaqfd4mZsEVtlRb1XE3ZajYAEhF3qMkNxfMOYIieF52YjD
+ HaBWEKDP2qQGbp6a9O868hs+Sjq7GzyEmlt4XipUnRbBXQpm1ieG70I1DVRZ72rdyhZD
+ GwGA==
+X-Gm-Message-State: AOJu0Yz2o2gUZUerRJJNx+y5YNp0Upq8xkYW3JUevd4H12PGxmoCss7p
+ bmCBs4Z8glu3b2cPQhsJsMzc1JRYa/1V7xqOwxMe+okcfo7xKvPGWY+ZRulVpMATiMRr0JoUpGc
+ 86Ok=
+X-Google-Smtp-Source: AGHT+IEr4xLEs0e1uDun0tR1343R6BLZLmCVbrCA4Yj3SaEJBFe+ubjjHSa3GykRhK+rSwdHwZIY3Q==
+X-Received: by 2002:a05:600c:4ecd:b0:426:6ee7:c05a with SMTP id
+ 5b1f17b1804b1-427f95562b9mr114755e9.15.1721767205614; 
+ Tue, 23 Jul 2024 13:40:05 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f9372e99sm532325e9.16.2024.07.23.13.39.59
+ 5b1f17b1804b1-427f93abff8sm442335e9.38.2024.07.23.13.40.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:39:59 -0700 (PDT)
+ Tue, 23 Jul 2024 13:40:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yao Xingtao <yaoxt.fnst@fujitsu.com>,
- Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/28] hw/mips/loongson3_virt: remove useless type cast
-Date: Tue, 23 Jul 2024 22:38:38 +0200
-Message-ID: <20240723203855.65033-12-philmd@linaro.org>
+Subject: [PULL 12/28] util/range: Make ranges_overlap() return bool
+Date: Tue, 23 Jul 2024 22:38:39 +0200
+Message-ID: <20240723203855.65033-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,33 +95,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 
-The type of kernel_entry, kernel_low and kernel_high is uint64_t, cast
-the pointer of this type to uint64_t* is useless.
+Just like range_overlaps_range(), use the returned bool value
+to check whether 2 given ranges overlap.
 
 Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240722091728.4334-2-yaoxt.fnst@fujitsu.com>
+Message-ID: <20240722040742.11513-2-yaoxt.fnst@fujitsu.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/loongson3_virt.c | 4 ++--
+ include/qemu/range.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 4ad36f0c5b6..408e3d7054c 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -355,8 +355,8 @@ static uint64_t load_kernel(CPUMIPSState *env)
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index 4ce694a3983..d446ad885d2 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -210,8 +210,8 @@ static inline int range_covers_byte(uint64_t offset, uint64_t len,
  
-     kernel_size = load_elf(loaderparams.kernel_filename, NULL,
-                            cpu_mips_kseg0_to_phys, NULL,
--                           (uint64_t *)&kernel_entry,
--                           (uint64_t *)&kernel_low, (uint64_t *)&kernel_high,
-+                           &kernel_entry,
-+                           &kernel_low, &kernel_high,
-                            NULL, 0, EM_MIPS, 1, 0);
-     if (kernel_size < 0) {
-         error_report("could not load kernel '%s': %s",
+ /* Check whether 2 given ranges overlap.
+  * Undefined if ranges that wrap around 0. */
+-static inline int ranges_overlap(uint64_t first1, uint64_t len1,
+-                                 uint64_t first2, uint64_t len2)
++static inline bool ranges_overlap(uint64_t first1, uint64_t len1,
++                                  uint64_t first2, uint64_t len2)
+ {
+     uint64_t last1 = range_get_last(first1, len1);
+     uint64_t last2 = range_get_last(first2, len2);
 -- 
 2.41.0
 
