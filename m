@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4277A939EB6
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2602E939EAF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:20:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWCgS-0006SL-6s; Tue, 23 Jul 2024 06:23:52 -0400
+	id 1sWCcc-0001ME-BM; Tue, 23 Jul 2024 06:19:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sWCgP-0006RF-EH
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:23:49 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWCca-0001GN-4p
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:19:52 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sWCgN-0002Wy-9x
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:23:48 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-368712acb8dso2547175f8f.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:23:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWCcY-0001fB-7q
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:19:51 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4266ea6a488so46172865e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:19:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721730225; x=1722335025; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=tuuK+ryP31133oSbBAqOaBIHpGXexOtkpqc+JniZM5o=;
- b=Csq2bRlpg3Vppv3KAwqe5L5e74rAI588G016e5S62DOTX38KRRRbmAzTexqiQGDDhd
- WWu+S0sECqj+rVm1Sk0UPfa3ZWvC922BL3nxgicUnSIIxrOWioHy5kM9qHzFyVm9H6ud
- uT1Kiitq5iA18pNAGWFiaiDExlVJVb0U/hiW1DjqttCzjNU6Zn2fF23/rFqXSyBIjbRf
- If741LQOfTDE0yk9zdIWQLzf9cWYXZTRjwlsQvOtPgaC/XoUkiaj/polXKgg/sj1EEkj
- cb1nJ6S6vIMW6PLV3lThbi/LbrUzgR+flyyqrt8wVbdkbYJVJ4rdEYN+vQC2yH/npnT0
- Lb8Q==
+ d=linaro.org; s=google; t=1721729988; x=1722334788; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=RXbM+2aBEKg5pmzO9xgk4zyjj1sLqXQjFSrW605Iy2M=;
+ b=CP+z0/+NPZkiM8gW6bfeINyUmKl8UViBZUbEpOA4tk+UPWmXh+ukZeJYe4zSHFPDl/
+ lXd/R/nPDsjnqy2aXmNYM08u0b/yQhkEcY8m+lJjTYw73lIZhF8BhsaxsCCVzS/P3PZT
+ AptIRz2yHkuMkkEhfjb+Lz30bMqyfpkoFsQdlH9MykFT+HufwfYcVCDgeOv10lJf3ciN
+ Y+297vQjI6vMT6Kn9tKtvtcBnt3JmZlyEf6mnR01TuX6BG48rU3dORUZ3Q9l3m2xonId
+ O2kkGz1yyILU8oFYljxNznAVfLFEzAODJZtSTOXH95qNepeIDKHwATyaUdZjE+SDD47J
+ z8TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721730225; x=1722335025;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tuuK+ryP31133oSbBAqOaBIHpGXexOtkpqc+JniZM5o=;
- b=NVz+l5Y7AE6vXeY19gAQ5cW8TCGZRJ08xgS98U/qL7hhgo1tPFFoqwEOKTWHIFemEv
- Ari1+kiw+L/nzX5jq6bHCV1vFw5V1WcWB5VfbZWOnOgpK6OclpmwTLpMQTCqz0rKs1F6
- 2c3hXp4dGII2ytpD6MBYCMw0iXI+523zq4Km+pQ0coyat9K1u71d+tdnuDlx48lEcYch
- qx4B4WO3/HSsLpnKRu/cnPZUx+iMFUXQeccC6Wr9cFKPyqUp0VEyUGIb6KU9CTv6NiSF
- 4THTx9FN+6rs7ZQIG9ORUUgKXX0+5gcwPbtNEYwkBmUDx5p0bjoSkG2GWXvuZ5uxmoct
- axNw==
-X-Gm-Message-State: AOJu0YwQR9QBjge0ubvKejzyldV2DGfzn8b9hmXAE7YhgO2aFF5a2lDW
- lUGyuwab575SaYhSWuUpjPu0moSAvUCxxkNtc9NKw7NAP8EqVmaMGsg+5wEwe44=
-X-Google-Smtp-Source: AGHT+IHMmuSbX3zXj7dJYXkfFZnimEXiGYl7HHoD+oj9/iK40e3Axcte/j52b5OXJadA7xN/P0G9yg==
-X-Received: by 2002:adf:a3d2:0:b0:367:91d6:e12e with SMTP id
- ffacd0b85a97d-369dee43ec5mr1686544f8f.44.1721730225413; 
- Tue, 23 Jul 2024 03:23:45 -0700 (PDT)
-Received: from meli-email.org (adsl-231.37.6.1.tellas.gr. [37.6.1.231])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-368787eceb0sm11164298f8f.99.2024.07.23.03.23.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 03:23:45 -0700 (PDT)
-Date: Tue, 23 Jul 2024 13:19:07 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [RFC PATCH v5 8/8] rust/pl011: vendor dependencies
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
- <43d9c3f65224f28f78f28d15e67b999d84a3b66f.1721648163.git.manos.pitsidianakis@linaro.org>
- <Zp9r59I4Uy655+4L@intel.com>
-In-Reply-To: <Zp9r59I4Uy655+4L@intel.com>
-Message-ID: <h2njj.c64x848hvert@linaro.org>
+ d=1e100.net; s=20230601; t=1721729988; x=1722334788;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RXbM+2aBEKg5pmzO9xgk4zyjj1sLqXQjFSrW605Iy2M=;
+ b=kRUaTc7QZp5RqV99wqEprNuc5KS8EgB4MrPPx0LMI/kzvMQl6/MABZf0BBpyeoOfeE
+ Z2cvnYrnP/qDlqGF40X9LM1TWYXRCvHsiwL3yZ/EF9OVBqjhYwWfqAQ+BaGSOVcLITg/
+ a9umlaPy8xCRfkE7FoUIm5JN2mOexMF9cgFG2tx60MvnuXgs/ahGHY7kkuv7m7nnCZ13
+ X0MoRk2GI/Ds9iVJiBrpXmjZbIRORfOz6zInK8A1NKf76hFMiZcvklknt/Hl/hg9dbaB
+ GmRcvxjcw7p97mgJCS5LxmjxE+dx+26SdfY9eRuI9xhjTbRpdix5xoIKB5m6EvIxTLfR
+ unDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXu2UmQ0pqA3ZJHPR85WsVhG5jyk9co+eZIu99hfO+hkvE3HLrYTqsdtGF4umj+7yyiq4Yj7nyoolz3eGqRb+yGLzMTxLc=
+X-Gm-Message-State: AOJu0YwWAawFOB2hwkl2Cwj9vJsbVsIhmXxeotD4T3QwcB5CIfhEO5GH
+ OLDrGdLeSBZiSPfaicEgz/4Hk09Hgw+FJP+863Rrnk7wgb2QtkEroFGNSDE+6rM=
+X-Google-Smtp-Source: AGHT+IF0rNBmIpzpyDs7u1DI9yFbQ3SgDAiMpmWGXLoMi+OYICNNGkvIMebtAw63VqGg6jpwYY5wZQ==
+X-Received: by 2002:adf:e382:0:b0:367:9d4e:8861 with SMTP id
+ ffacd0b85a97d-369bb2d475bmr6973099f8f.57.1721729988394; 
+ Tue, 23 Jul 2024 03:19:48 -0700 (PDT)
+Received: from [192.168.203.175] (5.red-95-127-46.staticip.rima-tde.net.
+ [95.127.46.5]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3687868bab0sm11141498f8f.44.2024.07.23.03.19.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jul 2024 03:19:47 -0700 (PDT)
+Message-ID: <1ca32405-41e1-423e-81e3-07e8569911c1@linaro.org>
+Date: Tue, 23 Jul 2024 12:19:45 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/19] Reconstruct loongson ipi driver
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, Bibo Mao <maobibo@loongson.cn>,
+ QEMU devel <qemu-devel@nongnu.org>
+Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, Xianglai Li <lixianglai@loongson.cn>
+References: <20240718133312.10324-1-philmd@linaro.org>
+ <c7e11721-812f-4ca5-9115-1ae060b4ff25@app.fastmail.com>
+ <7c2c14e9-d6eb-4a8d-bb87-57ec289756d4@linaro.org>
+Content-Language: en-US
+In-Reply-To: <7c2c14e9-d6eb-4a8d-bb87-57ec289756d4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,32 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 Jul 2024 11:37, Zhao Liu <zhao1.liu@intel.com> wrote:
->Hi Manos,
->
->(This patch contains too many codes so that mail list rejects to display
->it at https://lore.kernel.org/qemu-devel)
->
->Please correct me if I'm wrong...
->
->Is the reason for not using git submodules here because v5 abandoned
->compilation through Cargo, so it’s necessary to add meson.build to the
->code repository of each dependency, and consequently, all code must be
->loaded into QEMU?
->
->It looks like will be difficult to synchronize the dependency changes
->in the future.
+On 19/7/24 15:04, Philippe Mathieu-Daudé wrote:
+> On 19/7/24 14:56, Jiaxun Yang wrote:
+>>
+>>
+>> 在2024年7月18日七月 下午9:32，Philippe Mathieu-Daudé写道：
+>>> Since v4:
+>>> - Fix build failure due to rebase (Song)
+>>> - Loongarch -> LoongArch (Song)
+>>> - Added Song's tags
+>>>
+>>> Since v3:
+>>> - Use DEFINE_TYPES() macro (unreviewed patch #1)
+>>> - Update MAINTAINERS
+>>> - Added Bibo's tags
+>>
+>> For the whole series:
+>>
+>> Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> 
+> Yeah!
+> 
+>> Thanks! Tested on MIPS loongson3-virt with 2, 4 CPUs, all working fine.
+>>
+>> I'll get this covered by CI later.
+> 
+> Thanks,
+> 
+> I'm queuing this series.
 
-Yes, ideally we want meson wrap files (git submodules were removed in 
-2019cabfee). Meson support for that is a bit buggy and might require 
-bleeding edge versions, so for the time being I vendored the 
-dependencies. Otherwise I'd keep getting delayed posting a new patch 
-series and I wanted to have feedback coming in the mean time :)
+Due to pre-existing bug I have to drop this series :(
 
-Manos
-
->
->Best Regards,
->Zhao
->
+See 
+https://lore.kernel.org/qemu-devel/492e9968-a05d-44b2-b374-1d839e49b6e3@linaro.org/.
 
