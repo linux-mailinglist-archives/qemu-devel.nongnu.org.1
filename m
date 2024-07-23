@@ -2,91 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525F6939E93
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E516939E97
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:12:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWCQx-0004xU-V0; Tue, 23 Jul 2024 06:07:51 -0400
+	id 1sWCUe-0003Az-2K; Tue, 23 Jul 2024 06:11:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sWCQs-0004jx-Ff
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:07:46 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sWCQq-0007WB-DI
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:07:46 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1fb3b7d0d56so26996805ad.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721729263; x=1722334063;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0hWNd38hpN/Oe3dGKzEQXzpH/NbA1TscT1qkScfx6B4=;
- b=zkuOiTyZ2xKE68SyO+eLqgoQ6LzNxW+0C6HR1D8ZVCRmcQSL1E0XXm7sXIICZr59TJ
- kT6YGp4tvdn5rCeNwubP+kLjffky4TFHQVEUQil4niTQLX5VaqGNcjcdf9K4IS19QSyN
- OfSh8ZWVH33zS9EV9MbgYMBShFDBNDrl3TAtafedeYOjnSFv/ZwUyWMq2AZyKu0r/BCn
- 2GPNd3HPNCSGkiMEVrglirh+SQjZl+b0GgIrqqsRV2h/pk5KKfYK/SyHNhLkP6hbeDIH
- OcWaLGPPtnNdR3rMhdjXk4ynb50qxcQjp7C4yUQYnaystyeTySGrgrlVzFCv5s2kYwaz
- 2Fjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721729263; x=1722334063;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0hWNd38hpN/Oe3dGKzEQXzpH/NbA1TscT1qkScfx6B4=;
- b=sCzJLP6bYfv8dKWhAH1i4lrFdPjPCAQRTJzJTukC/I/v7K5cIUFxlFto4oM80LN5w8
- /BsF/RDJMK6R9cnW+d3OEIGmWZs0cxg2Yk3W9RWdIA61YQ///QGAKARyH/RkCG6pIvO/
- qPwAa+ZejIFExeqswmT3ySO8QwyoGt4qqqUNE0ogOR8mSQsZ2h2IpuSiDAiTdZHHgefw
- xGwUgA+zm4OThSqINg8g2gXCApnIJu0Lmf9aEDfd+TytwBaLpV6yDAlgnd+Ji7gKwPQJ
- z/WHAm8068dFiJ/DdcAyd1/Xhm17uofKlrsQv2C6GTV0IjvWHFLUZ4SUc2pPVJXndxEN
- PGEg==
-X-Gm-Message-State: AOJu0Yz1Nbhg4RJetoBx9i5q23TF4Yt3Kr+kWHEG5GS3GCy2Iw2XCA17
- Uuo0+uwFtNCmN9kcy0sMd5NkvJEMQnITPXkxY2nDD66/MGntHm4x1u1ILzfHPX4=
-X-Google-Smtp-Source: AGHT+IGlU2X6XOsS8rei3ZaUUwyxQkBc/N+uIzikQdYUWX4JIwLcB6ABqopHtRQm58DMjuhUTeB7aw==
-X-Received: by 2002:a17:903:32cf:b0:1fb:19d1:707 with SMTP id
- d9443c01a7336-1fd745735edmr70726925ad.11.1721729262808; 
- Tue, 23 Jul 2024 03:07:42 -0700 (PDT)
-Received: from [157.82.202.230] ([157.82.202.230])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fd6f473909sm70325105ad.261.2024.07.23.03.07.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jul 2024 03:07:42 -0700 (PDT)
-Message-ID: <7f34567a-cb23-40de-9d86-33b37e887360@daynix.com>
-Date: Tue, 23 Jul 2024 19:07:38 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] macos: Allow coredump generation
-To: Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Cameron Esfahani <dirty@apple.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sWCUU-00032o-5o
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:11:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sWCUR-00085b-QK
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:11:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721729485;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qSYJWyTtglHXNICBFKZrrE+vxyJvWu9KvY49PwCavcs=;
+ b=H9nEqlD2bAGRPPcpXwnSAsG5rtk1P/eQUg1Mqdbu2B8Y53sR8FgMHaT5Eo4Zgvc9Mq/mw+
+ kn/6KGyQj1DgG0UG5E+jHtSYgP7DOHt2EddektGV9qwz40caGcDIduq7Ulh8NYWvGSF9u1
+ VZMMQ4agdnNa7JmdP2as2/0zSF83AnU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-ZOFklXWSNKKlq9K17PD6nQ-1; Tue,
+ 23 Jul 2024 06:11:22 -0400
+X-MC-Unique: ZOFklXWSNKKlq9K17PD6nQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F5811956046; Tue, 23 Jul 2024 10:11:18 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.63])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4DBE73000192; Tue, 23 Jul 2024 10:11:11 +0000 (UTC)
+Date: Tue, 23 Jul 2024 11:11:08 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?B?QmVubsOp?= e <alex.bennee@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
  Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
- Roman Bolshakov <roman@roolebo.dev>, Francesco Cagnin <fcagnin@quarkslab.com>
-References: <20240723085902.98572-1-philmd@linaro.org>
- <CAAibmn1U=47wJOYhhpETHZihTu-aHcohm4eHK0JqK3epSEB8jQ@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAAibmn1U=47wJOYhhpETHZihTu-aHcohm4eHK0JqK3epSEB8jQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [RFC PATCH v5 3/8] CI: Add build-system-rust-debian job
+Message-ID: <Zp-BvLXg2yebs52-@redhat.com>
+References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
+ <ef587f7f38ad5714d5c8eeb05448d19a6130799e.1721648163.git.manos.pitsidianakis@linaro.org>
+ <Zp9sOsyefNXsgiXA@redhat.com> <h2mvx.gsw7w2v0uuew@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <h2mvx.gsw7w2v0uuew@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,59 +92,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/07/23 18:09, Phil Dennis-Jordan wrote:
-> This can certainly be useful in various situations! However, wholesale 
-> enabling get-task-allow will enable other processes on the system to 
-> inject code, connect a debugger, etc. to the Qemu process. Normally, 
-> this is only something you'd enable for builds that are specifically 
-> intended for debugging. I'm not sure users running Qemu in production 
-> environments will necessarily appreciate this - do we perhaps want to 
-> gate this behind a build configuration flag?
+On Tue, Jul 23, 2024 at 01:06:20PM +0300, Manos Pitsidianakis wrote:
+> On Tue, 23 Jul 2024 11:39, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
+> > On Mon, Jul 22, 2024 at 02:43:33PM +0300, Manos Pitsidianakis wrote:
+> > > Add job that builds with rust support enabled on debian.
+> > > 
+> > > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> > > ---
+> > >  .gitlab-ci.d/buildtest.yml | 11 +++++++++++
+> > >  1 file changed, 11 insertions(+)
+> > > 
+> > > diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+> > > index e3a0758bd9..e025e2cbf6 100644
+> > > --- a/.gitlab-ci.d/buildtest.yml
+> > > +++ b/.gitlab-ci.d/buildtest.yml
+> > > @@ -107,6 +107,17 @@ crash-test-debian:
+> > >      - make NINJA=":" check-venv
+> > >      - pyvenv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
+> > > +build-system-rust-debian:
+> > > +  extends:
+> > > +    - .native_build_job_template
+> > > +    - .native_build_artifact_template
+> > > +  needs:
+> > > +    job: amd64-debian-container
+> > > +  variables:
+> > > +    IMAGE: debian
+> > > +    CONFIGURE_ARGS: --enable-rust
+> > > +    TARGETS: aarch64-softmmu
+> > > +
+> > 
+> > Do we actually want to do this ?  With the updated lcitool containers,
+> > any of the existing build-system-XXXX jobs ought to be able to detect
+> > availability of rust and build with it. Re-using existing jobs means
+> > we burn less CI time.
+> > 
+> > With regards,
+> > Daniel
+> 
+> Hello Daniel,
+> 
+> I think we do, as long as a rust toolchain is not required to build QEMU by
+> default. The other jobs could detect availability of Rust but we don't have
+> a way to check if it works and not fallback to compiling without Rust.
+> 
+> Could we force enable Rust in one of the existing jobs?
 
-Yes, it is useful but shouldn't be enabled by default for a non-debug build.
+Yes, pick any existing job where it works.
 
-> 
-> (Related: Would it perhaps make more sense to dynamically 
-> generate/preprocess the entitlements file based on configuration flags 
-> than have a bunch of variants of the file? You'll end up with a 
-> combinatorial explosion sooner or later - I'm also thinking of 
-> com.apple.vm.networking and com.apple.vm.device-access which we can't 
-> enable by default because they require Apple to grant the entitlement 
-> but which currently require patching if you have those entitlements.)
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-I agree. It's better to generate a plist.
-
-> 
-> What do you think?
-> 
-> Phil
-> 
-> 
-> On Tue, 23 Jul 2024 at 10:59, Philippe Mathieu-Daudé <philmd@linaro.org 
-> <mailto:philmd@linaro.org>> wrote:
-> 
->     QEMU is allowed to generate coredump on other POSIX OSes,
->     bring that functionality to macOS. Admin users still need
-
-
-
->     to enable the kern.coredump sysctl manually running:
-> 
->        % sudo sysctl kern.coredump=1
-> 
->     the normal users have to enable their shell running:
-> 
->        % ulimit -c unlimited
-> 
->     Reference used:
->     https://nasa.github.io/trick/howto_guides/How-to-dump-core-file-on-MacOS.html <https://nasa.github.io/trick/howto_guides/How-to-dump-core-file-on-MacOS.html>
-
-It is better to note the implication of adding 
-com.apple.security.get-task-allow in the commit message.
-
-Regards,
-Akihiko Odaki
 
