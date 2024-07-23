@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F117F9397B9
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 03:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 096019397BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 03:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW3yd-0001hC-0m; Mon, 22 Jul 2024 21:06:03 -0400
+	id 1sW3ye-0001n8-H7; Mon, 22 Jul 2024 21:06:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3ya-0001ew-U0
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:00 -0400
-Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3yc-0001il-RH
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:02 -0400
+Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3yY-0008P4-Bg
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:00 -0400
-Received: by mail-qk1-x733.google.com with SMTP id
- af79cd13be357-7a1a6af940cso214517685a.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:05:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3ya-0008PR-PS
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:02 -0400
+Received: by mail-qk1-x734.google.com with SMTP id
+ af79cd13be357-79efbc9328bso289981585a.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cs.unc.edu; s=google; t=1721696756; x=1722301556; darn=nongnu.org;
+ d=cs.unc.edu; s=google; t=1721696758; x=1722301558; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BuI0OBU7+znySR9fck86H7yJwkkhEYX3J4q9eeUwu80=;
- b=YIDn7GxFHm7T2yQpnqBuQp30MKSobns4EoMwNc5tsLbMSj+NEPW250fXTPqgfEnd9a
- OgXaPJRwMJLAaRpVzIfKAMnuOmam/YJm+lp3d2xsYzgjh1i6/pQSAfs1tJL/w0tHI2BL
- 1ubwNo6GbaX3bjZ3a1SHGWPqKgPs+5iIpDoyFb0YURXjGAKMfmvQzd7w/A0B+no1k7We
- 4iBwUzYxNRRuRtxZOvHSLcCffEltfsabuKieNW6InLQpim622qzMSubYYKgplXJfW45+
- YPchIvu0JA623pqv35kCDIH0V4GyrUk3WQIlWTKtbUEliBmjBkT4WQXLW+5ocfQ3CoDm
- hr+Q==
+ bh=NtpcxD+hVAJHL0wI1O+3ONDgQ3GWnMejKdakkXVeoP4=;
+ b=AoiS2Vi6Bd+sgIy8kyCgkFhmpz2oYTng7rPeZDulbNj/HFtS0zHWMdRa0/J6RwN5Ex
+ pqUbP3aeBVmPvLZO5nauOxcZvT++A8zQTV+cr/6u13uNICmHpsG8ZhasAWcDmH7+GYVT
+ 4guXLzJVgEWInF6P2llkQkAvQrYdTOhW3PMzquDQ/onfUK2mu3ymxtrdlnjQjJ+hoUVl
+ 7hF/cFi5vynO198/9+Taa4FK1Wmc5NRN+zGmY1DT7cJDo3aqLR9207wMK0DGS0lWHxCB
+ G3UEWZu96BKc3F4yK5MFb3PYVdYg3IidA2EOvUiI30N9+IZ63x7A74cLjWaOohrf1Odx
+ +IbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721696756; x=1722301556;
+ d=1e100.net; s=20230601; t=1721696758; x=1722301558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BuI0OBU7+znySR9fck86H7yJwkkhEYX3J4q9eeUwu80=;
- b=LtVLWrPhp+oUeKAs/xfrdQYKLiUWEu1S5twQpSVCFctcsJQpBp9294oBlx1+dAsKv7
- 1J353ZGLQ6xBNs8N0nACfZV6dAqM/bGfhHCzPLBIxTcS5wdR7ka/28WOFu1FGhGR0fCi
- Sb2C/eNFr7AYN/XYNkDTlZKvJhEmocZZxrAOGIRogv3UXNh2SU7yVkYtkqKYqp4XOiyI
- DHzqayL+TXkNBa/IYxOBTNPSg/U68phyY4bRiZiaMTSMdQIFOAif6Xmj+Bj7Q8UDv+hd
- TcNxrCftMmhLZe21ouml+VVmfeLptJIYX1o3lY8BbTVrRBhlOQ1MX6UlnYmVPQkvq636
- szPQ==
-X-Gm-Message-State: AOJu0YyvFg7V5SW0Q3eNJZR0sCUFZRBkGy2k/dkjhl0KPhURe82tZQu5
- GX5yil0Z3ltq2dYy/dO3Eh+91Rj63T9B6fA6azx9f/gCkICUgz2u0k+amiP5Naeho+C6PkykmcL
- hDXOQD0H7fwqwvxS5tKS7pSKqPLHCEibSWv2d3D8dHzhmXYNbtlWRtffEwBU7OBXT8RFeK4KJbc
- O97bjhKEBl2c/9FR+p3z4eC06rgh9C
-X-Google-Smtp-Source: AGHT+IFw+F8IEQN74p1phVOPI1IGNKcs1wUZiYCPfugJbg0cFtziOxs9V1OFiVWNcXT7fA56dGcDLA==
-X-Received: by 2002:a05:620a:2944:b0:79d:63ec:b7df with SMTP id
- af79cd13be357-7a1c2eb955dmr99009785a.5.1721696756456; 
- Mon, 22 Jul 2024 18:05:56 -0700 (PDT)
+ bh=NtpcxD+hVAJHL0wI1O+3ONDgQ3GWnMejKdakkXVeoP4=;
+ b=QsXtE4atysKqEwmIxKd1d2sgbq7LYQwTOJekyuG25se69b4D8s/tQHx5HFaHXwvO7w
+ 3UgrafKZEMmug80R/4nHJVAF+knjtUO9BvIOgyf2Ss+cWwsoM7xVWsW+ivtnXVzVxTrS
+ kToJajNvsg8YPnliLu7Qjswpz2uYukFJcZJL8Rhxlu9OpsbL7GqnL3dGw0CQpydbO1PR
+ aKsA7p4i3Ryds932tWIMJJlwAqsiCIBdCKv60DSiz9KC3g7aELBQZCf70TSVE+fA0wtH
+ 3N8caLiZ8UELk9YTl2yCAkU4DEETshmZYnk5fgVBw+wQPXnNdEOBoaiTv7Naxr0vo+oG
+ qo1Q==
+X-Gm-Message-State: AOJu0YzC4qJg7wRBQOTuNW8AqBiFnQqeMQMufPpXkZVnUHNGe8SKQpiX
+ i2qloXxyGydyQm/3UEorGxT2JQuHpNHz8VmI6I6KxOdjBxFInI+CRJdcDQ34ey0QpBBU7swKrbv
+ /xM5RAJqgEqCOBo89Z1urECFxu3Op3v0OAjBaJx+MBz/nNA1EmYG0G5Ih7J3rWzzMisCYHFIsi1
+ i2a5AvMl8m0B3rtV0JQJcA0g1gLQP3
+X-Google-Smtp-Source: AGHT+IELTaY9CeaJzxVZdEQMmc4dnw4/2gRkZNQ/W0GtL0FGO03MqACt+lshZ+e8giBVy45L/iP3gA==
+X-Received: by 2002:a05:620a:3951:b0:79f:5d5:f03e with SMTP id
+ af79cd13be357-7a1c06bb790mr183518985a.17.1721696758195; 
+ Mon, 22 Jul 2024 18:05:58 -0700 (PDT)
 Received: from kermit.cs.unc.edu (kermit.cs.unc.edu. [152.2.133.133])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-44f9cdc0cbdsm37953601cf.92.2024.07.22.18.05.55
+ d75a77b69052e-44f9cdc0cbdsm37953601cf.92.2024.07.22.18.05.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 18:05:55 -0700 (PDT)
+ Mon, 22 Jul 2024 18:05:57 -0700 (PDT)
 From: Don Porter <porter@cs.unc.edu>
 To: qemu-devel@nongnu.org
 Cc: dave@treblig.org, peter.maydell@linaro.org, nadav.amit@gmail.com,
  richard.henderson@linaro.org, philmd@linaro.org, berrange@redhat.com,
  Don Porter <porter@cs.unc.edu>
-Subject: [PATCH v4 1/7] Code motion: expose some TCG definitions for page
- table walk consolidation.
-Date: Mon, 22 Jul 2024 21:05:39 -0400
-Message-Id: <20240723010545.3648706-2-porter@cs.unc.edu>
+Subject: [PATCH v4 2/7] Import vmcs12 definition from Linux/KVM
+Date: Mon, 22 Jul 2024 21:05:40 -0400
+Message-Id: <20240723010545.3648706-3-porter@cs.unc.edu>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240723010545.3648706-1-porter@cs.unc.edu>
 References: <20240723010545.3648706-1-porter@cs.unc.edu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
- envelope-from=porter@cs.unc.edu; helo=mail-qk1-x733.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
+ envelope-from=porter@cs.unc.edu; helo=mail-qk1-x734.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -95,257 +94,229 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Don Porter <porter@cs.unc.edu>
 ---
- include/hw/core/sysemu-cpu-ops.h     |  6 +++++
- target/i386/cpu.h                    |  5 ++--
- target/i386/helper.c                 | 36 +++++++++++++++++++++++++++
- target/i386/tcg/helper-tcg.h         | 32 ++++++++++++++++++++++++
- target/i386/tcg/seg_helper.c         | 36 ---------------------------
- target/i386/tcg/sysemu/excp_helper.c | 37 +---------------------------
- 6 files changed, 77 insertions(+), 75 deletions(-)
+ target/i386/kvm/vmcs12.h | 213 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 213 insertions(+)
+ create mode 100644 target/i386/kvm/vmcs12.h
 
-diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
-index 24d003fe04..4c94e51267 100644
---- a/include/hw/core/sysemu-cpu-ops.h
-+++ b/include/hw/core/sysemu-cpu-ops.h
-@@ -12,6 +12,12 @@
- 
- #include "hw/core/cpu.h"
- 
-+typedef enum TranslateFaultStage2 {
-+    S2_NONE,
-+    S2_GPA,
-+    S2_GPT,
-+} TranslateFaultStage2;
+diff --git a/target/i386/kvm/vmcs12.h b/target/i386/kvm/vmcs12.h
+new file mode 100644
+index 0000000000..c7b139f4db
+--- /dev/null
++++ b/target/i386/kvm/vmcs12.h
+@@ -0,0 +1,213 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef QEMU_KVM_X86_VMX_VMCS12_H
++#define QEMU_KVM_X86_VMX_VMCS12_H
 +
- /*
-  * struct SysemuCPUOps: System operations specific to a CPU class
-  */
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 1e121acef5..d899644cb8 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -21,6 +21,7 @@
- #define I386_CPU_H
- 
- #include "sysemu/tcg.h"
-+#include "hw/core/sysemu-cpu-ops.h"
- #include "cpu-qom.h"
- #include "kvm/hyperv-proto.h"
- #include "exec/cpu-defs.h"
-@@ -2362,6 +2363,7 @@ void host_cpuid(uint32_t function, uint32_t count,
- bool cpu_has_x2apic_feature(CPUX86State *env);
- 
- /* helper.c */
-+int get_pg_mode(CPUX86State *env);
- void x86_cpu_set_a20(X86CPU *cpu, int a20_state);
- void cpu_sync_avx_hflag(CPUX86State *env);
- 
-@@ -2540,9 +2542,6 @@ static inline bool cpu_vmx_maybe_enabled(CPUX86State *env)
-            ((env->cr[4] & CR4_VMXE_MASK) || (env->hflags & HF_SMM_MASK));
- }
- 
--/* excp_helper.c */
--int get_pg_mode(CPUX86State *env);
--
- /* fpu_helper.c */
- void update_fp_status(CPUX86State *env);
- void update_mxcsr_status(CPUX86State *env);
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 01a268a30b..9cb6e51426 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -721,3 +721,39 @@ void x86_stq_phys(CPUState *cs, hwaddr addr, uint64_t val)
-     address_space_stq(as, addr, val, attrs, NULL);
- }
- #endif
++#include <linux/kvm.h>
 +
-+int get_pg_mode(CPUX86State *env)
-+{
-+    int pg_mode = 0;
-+    if (!(env->cr[0] & CR0_PG_MASK)) {
-+        return 0;
-+    }
-+    if (env->cr[0] & CR0_WP_MASK) {
-+        pg_mode |= PG_MODE_WP;
-+    }
-+    if (env->cr[4] & CR4_PAE_MASK) {
-+        pg_mode |= PG_MODE_PAE;
-+        if (env->efer & MSR_EFER_NXE) {
-+            pg_mode |= PG_MODE_NXE;
-+        }
-+    }
-+    if (env->cr[4] & CR4_PSE_MASK) {
-+        pg_mode |= PG_MODE_PSE;
-+    }
-+    if (env->cr[4] & CR4_SMEP_MASK) {
-+        pg_mode |= PG_MODE_SMEP;
-+    }
-+    if (env->hflags & HF_LMA_MASK) {
-+        pg_mode |= PG_MODE_LMA;
-+        if (env->cr[4] & CR4_PKE_MASK) {
-+            pg_mode |= PG_MODE_PKE;
-+        }
-+        if (env->cr[4] & CR4_PKS_MASK) {
-+            pg_mode |= PG_MODE_PKS;
-+        }
-+        if (env->cr[4] & CR4_LA57_MASK) {
-+            pg_mode |= PG_MODE_LA57;
-+        }
-+    }
-+    return pg_mode;
-+}
-diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
-index 15d6c6f8b4..1cbeab9161 100644
---- a/target/i386/tcg/helper-tcg.h
-+++ b/target/i386/tcg/helper-tcg.h
-@@ -92,6 +92,38 @@ extern const uint8_t parity_table[256];
- /* misc_helper.c */
- void cpu_load_eflags(CPUX86State *env, int eflags, int update_mask);
- 
-+/* sysemu/excp_helper.c */
-+typedef struct TranslateFault {
-+    int exception_index;
-+    int error_code;
-+    target_ulong cr2;
-+    TranslateFaultStage2 stage2;
-+} TranslateFault;
++/* XXX: Stolen from Linux with light edits, for now */
 +
-+typedef struct PTETranslate {
-+    CPUX86State *env;
-+    TranslateFault *err;
-+    int ptw_idx;
-+    void *haddr;
-+    hwaddr gaddr;
-+} PTETranslate;
++typedef uint64_t u64;
++typedef uint32_t u32;
++typedef uint16_t u16;
 +
-+bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new);
++/*
++ * struct vmcs12 describes the state that our guest hypervisor (L1) keeps for a
++ * single nested guest (L2), hence the name vmcs12. Any VMX implementation has
++ * a VMCS structure, and vmcs12 is our emulated VMX's VMCS. This structure is
++ * stored in guest memory specified by VMPTRLD, but is opaque to the guest,
++ * which must access it using VMREAD/VMWRITE/VMCLEAR instructions.
++ * More than one of these structures may exist, if L1 runs multiple L2 guests.
++ * nested_vmx_run() will use the data here to build the vmcs02: a VMCS for the
++ * underlying hardware which will be used to run L2.
++ * This structure is packed to ensure that its layout is identical across
++ * machines (necessary for live migration).
++ *
++ * IMPORTANT: Changing the layout of existing fields in this structure
++ * will break save/restore compatibility with older kvm releases. When
++ * adding new fields, either use space in the reserved padding* arrays
++ * or add the new fields to the end of the structure.
++ */
++typedef u64 natural_width;
 +
-+static inline bool ptw_setl(const PTETranslate *in, uint32_t old, uint32_t set)
-+{
-+    if (set & ~old) {
-+        uint32_t new = old | set;
-+        if (likely(in->haddr)) {
-+            old = cpu_to_le32(old);
-+            new = cpu_to_le32(new);
-+            return qatomic_cmpxchg((uint32_t *)in->haddr, old, new) == old;
-+        }
-+        return ptw_setl_slow(in, old, new);
-+    }
-+    return true;
-+}
 +
- /* sysemu/svm_helper.c */
- #ifndef CONFIG_USER_ONLY
- G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint32_t exit_code,
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index aac092a356..90f01180d9 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -92,42 +92,6 @@ static uint32_t popl(StackAccess *sa)
-     return ret;
- }
- 
--int get_pg_mode(CPUX86State *env)
--{
--    int pg_mode = 0;
--    if (!(env->cr[0] & CR0_PG_MASK)) {
--        return 0;
--    }
--    if (env->cr[0] & CR0_WP_MASK) {
--        pg_mode |= PG_MODE_WP;
--    }
--    if (env->cr[4] & CR4_PAE_MASK) {
--        pg_mode |= PG_MODE_PAE;
--        if (env->efer & MSR_EFER_NXE) {
--            pg_mode |= PG_MODE_NXE;
--        }
--    }
--    if (env->cr[4] & CR4_PSE_MASK) {
--        pg_mode |= PG_MODE_PSE;
--    }
--    if (env->cr[4] & CR4_SMEP_MASK) {
--        pg_mode |= PG_MODE_SMEP;
--    }
--    if (env->hflags & HF_LMA_MASK) {
--        pg_mode |= PG_MODE_LMA;
--        if (env->cr[4] & CR4_PKE_MASK) {
--            pg_mode |= PG_MODE_PKE;
--        }
--        if (env->cr[4] & CR4_PKS_MASK) {
--            pg_mode |= PG_MODE_PKS;
--        }
--        if (env->cr[4] & CR4_LA57_MASK) {
--            pg_mode |= PG_MODE_LA57;
--        }
--    }
--    return pg_mode;
--}
--
- /* return non zero if error */
- static inline int load_segment_ra(CPUX86State *env, uint32_t *e1_ptr,
-                                uint32_t *e2_ptr, int selector,
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 8fb05b1f53..3ebb67d65b 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -39,27 +39,6 @@ typedef struct TranslateResult {
-     int page_size;
- } TranslateResult;
- 
--typedef enum TranslateFaultStage2 {
--    S2_NONE,
--    S2_GPA,
--    S2_GPT,
--} TranslateFaultStage2;
--
--typedef struct TranslateFault {
--    int exception_index;
--    int error_code;
--    target_ulong cr2;
--    TranslateFaultStage2 stage2;
--} TranslateFault;
--
--typedef struct PTETranslate {
--    CPUX86State *env;
--    TranslateFault *err;
--    int ptw_idx;
--    void *haddr;
--    hwaddr gaddr;
--} PTETranslate;
--
- static bool ptw_translate(PTETranslate *inout, hwaddr addr, uint64_t ra)
- {
-     CPUTLBEntryFull *full;
-@@ -104,7 +83,7 @@ static inline uint64_t ptw_ldq(const PTETranslate *in, uint64_t ra)
-  * even 64-bit ones, because PG_PRESENT_MASK, PG_ACCESSED_MASK and
-  * PG_DIRTY_MASK are all in the low 32 bits.
-  */
--static bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
-+bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
- {
-     uint32_t cmp;
- 
-@@ -118,20 +97,6 @@ static bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
-     return cmp == old;
- }
- 
--static inline bool ptw_setl(const PTETranslate *in, uint32_t old, uint32_t set)
--{
--    if (set & ~old) {
--        uint32_t new = old | set;
--        if (likely(in->haddr)) {
--            old = cpu_to_le32(old);
--            new = cpu_to_le32(new);
--            return qatomic_cmpxchg((uint32_t *)in->haddr, old, new) == old;
--        }
--        return ptw_setl_slow(in, old, new);
--    }
--    return true;
--}
--
- static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-                           TranslateResult *out, TranslateFault *err,
-                           uint64_t ra)
++struct vmcs_hdr {
++    u32 revision_id : 31;
++    u32 shadow_vmcs : 1;
++};
++
++struct __attribute__ ((__packed__)) vmcs12 {
++        /*
++         * According to the Intel spec, a VMCS region must start with the
++         * following two fields. Then follow implementation-specific data.
++         */
++        struct vmcs_hdr hdr;
++        u32 abort;
++
++        u32 launch_state; /* set to 0 by VMCLEAR, to 1 by VMLAUNCH */
++        u32 padding[7]; /* room for future expansion */
++
++        u64 io_bitmap_a;
++        u64 io_bitmap_b;
++        u64 msr_bitmap;
++        u64 vm_exit_msr_store_addr;
++        u64 vm_exit_msr_load_addr;
++        u64 vm_entry_msr_load_addr;
++        u64 tsc_offset;
++        u64 virtual_apic_page_addr;
++        u64 apic_access_addr;
++        u64 posted_intr_desc_addr;
++        u64 ept_pointer;
++        u64 eoi_exit_bitmap0;
++        u64 eoi_exit_bitmap1;
++        u64 eoi_exit_bitmap2;
++        u64 eoi_exit_bitmap3;
++        u64 xss_exit_bitmap;
++        u64 guest_physical_address;
++        u64 vmcs_link_pointer;
++        u64 guest_ia32_debugctl;
++        u64 guest_ia32_pat;
++        u64 guest_ia32_efer;
++        u64 guest_ia32_perf_global_ctrl;
++        u64 guest_pdptr0;
++        u64 guest_pdptr1;
++        u64 guest_pdptr2;
++        u64 guest_pdptr3;
++        u64 guest_bndcfgs;
++        u64 host_ia32_pat;
++        u64 host_ia32_efer;
++        u64 host_ia32_perf_global_ctrl;
++        u64 vmread_bitmap;
++        u64 vmwrite_bitmap;
++        u64 vm_function_control;
++        u64 eptp_list_address;
++        u64 pml_address;
++        u64 encls_exiting_bitmap;
++        u64 tsc_multiplier;
++        u64 padding64[1]; /* room for future expansion */
++        /*
++         * To allow migration of L1 (complete with its L2 guests) between
++         * machines of different natural widths (32 or 64 bit), we cannot have
++         * unsigned long fields with no explicit size. We use u64 (aliased
++         * natural_width) instead. Luckily, x86 is little-endian.
++         */
++        natural_width cr0_guest_host_mask;
++        natural_width cr4_guest_host_mask;
++        natural_width cr0_read_shadow;
++        natural_width cr4_read_shadow;
++        /* Last remnants of cr3_target_value[0-3]. */
++        natural_width dead_space[4];
++        natural_width exit_qualification;
++        natural_width guest_linear_address;
++        natural_width guest_cr0;
++        natural_width guest_cr3;
++        natural_width guest_cr4;
++        natural_width guest_es_base;
++        natural_width guest_cs_base;
++        natural_width guest_ss_base;
++        natural_width guest_ds_base;
++        natural_width guest_fs_base;
++        natural_width guest_gs_base;
++        natural_width guest_ldtr_base;
++        natural_width guest_tr_base;
++        natural_width guest_gdtr_base;
++        natural_width guest_idtr_base;
++        natural_width guest_dr7;
++        natural_width guest_rsp;
++        natural_width guest_rip;
++        natural_width guest_rflags;
++        natural_width guest_pending_dbg_exceptions;
++        natural_width guest_sysenter_esp;
++        natural_width guest_sysenter_eip;
++        natural_width host_cr0;
++        natural_width host_cr3;
++        natural_width host_cr4;
++        natural_width host_fs_base;
++        natural_width host_gs_base;
++        natural_width host_tr_base;
++        natural_width host_gdtr_base;
++        natural_width host_idtr_base;
++        natural_width host_ia32_sysenter_esp;
++        natural_width host_ia32_sysenter_eip;
++        natural_width host_rsp;
++        natural_width host_rip;
++        natural_width paddingl[8]; /* room for future expansion */
++        u32 pin_based_vm_exec_control;
++        u32 cpu_based_vm_exec_control;
++        u32 exception_bitmap;
++        u32 page_fault_error_code_mask;
++        u32 page_fault_error_code_match;
++        u32 cr3_target_count;
++        u32 vm_exit_controls;
++        u32 vm_exit_msr_store_count;
++        u32 vm_exit_msr_load_count;
++        u32 vm_entry_controls;
++        u32 vm_entry_msr_load_count;
++        u32 vm_entry_intr_info_field;
++        u32 vm_entry_exception_error_code;
++        u32 vm_entry_instruction_len;
++        u32 tpr_threshold;
++        u32 secondary_vm_exec_control;
++        u32 vm_instruction_error;
++        u32 vm_exit_reason;
++        u32 vm_exit_intr_info;
++        u32 vm_exit_intr_error_code;
++        u32 idt_vectoring_info_field;
++        u32 idt_vectoring_error_code;
++        u32 vm_exit_instruction_len;
++        u32 vmx_instruction_info;
++        u32 guest_es_limit;
++        u32 guest_cs_limit;
++        u32 guest_ss_limit;
++        u32 guest_ds_limit;
++        u32 guest_fs_limit;
++        u32 guest_gs_limit;
++        u32 guest_ldtr_limit;
++        u32 guest_tr_limit;
++        u32 guest_gdtr_limit;
++        u32 guest_idtr_limit;
++        u32 guest_es_ar_bytes;
++        u32 guest_cs_ar_bytes;
++        u32 guest_ss_ar_bytes;
++        u32 guest_ds_ar_bytes;
++        u32 guest_fs_ar_bytes;
++        u32 guest_gs_ar_bytes;
++        u32 guest_ldtr_ar_bytes;
++        u32 guest_tr_ar_bytes;
++        u32 guest_interruptibility_info;
++        u32 guest_activity_state;
++        u32 guest_sysenter_cs;
++        u32 host_ia32_sysenter_cs;
++        u32 vmx_preemption_timer_value;
++        u32 padding32[7]; /* room for future expansion */
++        u16 virtual_processor_id;
++        u16 posted_intr_nv;
++        u16 guest_es_selector;
++        u16 guest_cs_selector;
++        u16 guest_ss_selector;
++        u16 guest_ds_selector;
++        u16 guest_fs_selector;
++        u16 guest_gs_selector;
++        u16 guest_ldtr_selector;
++        u16 guest_tr_selector;
++        u16 guest_intr_status;
++        u16 host_es_selector;
++        u16 host_cs_selector;
++        u16 host_ss_selector;
++        u16 host_ds_selector;
++        u16 host_fs_selector;
++        u16 host_gs_selector;
++        u16 host_tr_selector;
++        u16 guest_pml_index;
++};
++
++/*
++ * VMCS12_REVISION is an arbitrary id that should be changed if the content or
++ * layout of struct vmcs12 is changed. MSR_IA32_VMX_BASIC returns this id, and
++ * VMPTRLD verifies that the VMCS region that L1 is loading contains this id.
++ *
++ * IMPORTANT: Changing this value will break save/restore compatibility with
++ * older kvm releases.
++ */
++#define VMCS12_REVISION 0x11e57ed0
++
++#endif
 -- 
 2.34.1
 
