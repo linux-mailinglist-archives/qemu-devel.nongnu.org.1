@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D673939E90
+	by mail.lfdr.de (Postfix) with ESMTPS id 15514939E8F
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:07:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWCPh-0001RA-6L; Tue, 23 Jul 2024 06:06:33 -0400
+	id 1sWCPg-0001NT-2w; Tue, 23 Jul 2024 06:06:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sWCPe-0001Lu-MM
+ (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sWCPe-0001Lt-LY
  for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:06:30 -0400
 Received: from kuriko.dram.page ([65.108.252.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sWCPX-0007Hw-HB
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:06:26 -0400
+ (Exim 4.90_1) (envelope-from <uwu@dram.page>) id 1sWCPZ-0007Jd-F2
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:06:28 -0400
 From: Vivian Wang <uwu@dram.page>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dram.page; s=mail;
- t=1721729179; bh=ArdmnQR1Llme4HvtFTBZiU27PCQzl4QNiM7wMwOD1vo=;
+ t=1721729182; bh=qMID2xczG5B6sBH1FwIwhYTdVvpjThT0Ch5GCuMOoA4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=KJ8AUxKeIiGfLW71lkfqNWw1Q8PGzXyLE/SAvb5FHjYfr7zFAaL380eX91kd6yQfR
- jKRIc276tOCifb/rBijLNAu/T461JHVwzmRef3dyBm+HkeS+oFqVHODtPZzJwogEs9
- V88/RWAJd50cKxLDfcmV7Fpc407MvT0QYmyMMi8k=
+ b=lvcrS51rhDwPrWiN0zx4MbeGIlBZVqVBM3OpORa6JzPeZzc0BsESED3mY+R4YOyf+
+ Ua/ek9bmWrxvo+gCBT2YKAmH1mFDK+87gR1tMtjB41dppwkGSxMF1U+HQDAw2JFHkh
+ e9tZ3byfKQrJ2jdImOGCFt1+fg1MQDa0+KtxDh14=
 To: qemu-devel@nongnu.org
 Cc: Vivian Wang <uwu@dram.page>, Richard Henderson <rth@twiddle.net>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v2 1/2] util/getauxval: Ensure setting errno if not found
-Date: Tue, 23 Jul 2024 18:05:44 +0800
-Message-ID: <20240723100545.405476-2-uwu@dram.page>
+ Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 2/2] linux-user/main: Check errno when getting AT_EXECFD
+Date: Tue, 23 Jul 2024 18:05:45 +0800
+Message-ID: <20240723100545.405476-3-uwu@dram.page>
 In-Reply-To: <20240723100545.405476-1-uwu@dram.page>
 References: <20240723100545.405476-1-uwu@dram.page>
 MIME-Version: 1.0
@@ -56,48 +57,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sometimes zero is a valid value for getauxval (e.g. AT_EXECFD). Make
-sure that we can distinguish between a valid zero value and a not found
-entry by setting errno.
+It's possible for AT_EXECFD to end up with a valid value of 0. Check
+errno when using qemu_getauxval instead of return value to handle this
+case.
 
-Assumes that getauxval from sys/auxv.h sets errno correctly.
+Not handling this case leads to a confusing condition where the
+executable ends up as fd 0, i.e. stdin.
 
 Signed-off-by: Vivian Wang <uwu@dram.page>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 0b959cf5e4cc ("linux-user: Use qemu_getauxval for AT_EXECFD")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2448
 ---
- util/getauxval.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ linux-user/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/util/getauxval.c b/util/getauxval.c
-index b124107d61..fad16c406e 100644
---- a/util/getauxval.c
-+++ b/util/getauxval.c
-@@ -95,6 +95,7 @@ unsigned long qemu_getauxval(unsigned long type)
-         }
-     }
- 
-+    errno = ENOENT;
-     return 0;
- }
- 
-@@ -104,7 +105,9 @@ unsigned long qemu_getauxval(unsigned long type)
- unsigned long qemu_getauxval(unsigned long type)
- {
-     unsigned long aux = 0;
--    elf_aux_info(type, &aux, sizeof(aux));
-+    int ret = elf_aux_info(type, &aux, sizeof(aux));
-+    if (ret != 0)
-+        errno = ret;
-     return aux;
- }
- 
-@@ -112,6 +115,7 @@ unsigned long qemu_getauxval(unsigned long type)
- 
- unsigned long qemu_getauxval(unsigned long type)
- {
-+    errno = ENOSYS;
-     return 0;
- }
- 
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 7d3cf45fa9..8143a0d4b0 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -755,8 +755,9 @@ int main(int argc, char **argv, char **envp)
+     /*
+      * Manage binfmt-misc open-binary flag
+      */
++    errno = 0;
+     execfd = qemu_getauxval(AT_EXECFD);
+-    if (execfd == 0) {
++    if (errno != 0) {
+         execfd = open(exec_path, O_RDONLY);
+         if (execfd < 0) {
+             printf("Error while loading %s: %s\n", exec_path, strerror(errno));
 -- 
 2.45.1
 
