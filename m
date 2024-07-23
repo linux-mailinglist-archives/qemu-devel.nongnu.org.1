@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8365939B3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E28939B45
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:01:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW9St-0005rA-5O; Tue, 23 Jul 2024 02:57:40 -0400
+	id 1sW9W8-0008Ok-CF; Tue, 23 Jul 2024 03:01:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sW9Sn-0005et-KM
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:57:33 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sW9W7-0008OH-1I
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:00:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sW9Sl-00085m-A5
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:57:33 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sW9W4-0000RV-Ql
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:00:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721717850;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1721718054;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=linC+L4m4RkX/apMfr4/6pM7+AoM5A1Mi9INTogwfP8=;
- b=gQ8KMAE/4mhkHv1FNPdORDjoj64TdMCIvsVEdipQtDTXETLFeeKzcCcCH9rF1mFOC7PeTS
- I2MeObCSL6WjiqXwes78w0H+sunYmDc7o2EdENrDqLTeusWl9Rv/3PW4KAmtid+ZIknoDz
- V2FNz5yCEglOOWA497jmtli/Yx6mHqs=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nFl3HrwLjoySraknE8EuzIsY/PKufmEFbFHCeaLFeYM=;
+ b=KHuBPdvG3eW/8TawW0LaLc1BYzTfwllxhn2J5GxY4mte9gHQ0+mjLViW0e0DePULhgjcom
+ l4oiNC1tgEM6Z5QH8h6VOBVN+4fmjPTRh59FPWM5n668jaDaMPD8vszQBPsXtpPvAcEak9
+ ITVVO49PpzLqCF7FXgi7HahOsXEsrME=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-lGoLBX1qNl6qRyfGZnD-RQ-1; Tue, 23 Jul 2024 02:57:28 -0400
-X-MC-Unique: lGoLBX1qNl6qRyfGZnD-RQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ef311ad4bcso15236431fa.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 23:57:28 -0700 (PDT)
+ us-mta-65-4tD9g351MY2Nr8m0cI7y9g-1; Tue, 23 Jul 2024 03:00:51 -0400
+X-MC-Unique: 4tD9g351MY2Nr8m0cI7y9g-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-79f19f19b11so718693585a.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 00:00:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721717847; x=1722322647;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=linC+L4m4RkX/apMfr4/6pM7+AoM5A1Mi9INTogwfP8=;
- b=A/3tMAWjuOyUlhERhclHk85fg/V86xVhiR2aT1ySP8tHr31N6WxGTdHbX42QvZeA60
- S/KnG2VSWDXeq+E3ZpXGQe8wuOlIMPhuyPDNnnzSkBh2yyHOAXZgMdAFoAqr404wefnm
- IHXRH9ssQIqX4PB6CJ36n3tcC2nSBOi812r2r8j3o3gxGr2INl2IB87d7H9Ce++nglAp
- 1LxsQdK4SoCVvgIhNBcYbfsP25z6RWcczNDZgftvzbjAuyP/wIFp+SGZ/xFWsnSQPkga
- R5C19T0CK8JrM6hPq80xPih7fZbLcj2MN8vPhzvr4pYYnSScea6+dxkcPgzUjM3/TqBN
- V8QQ==
+ d=1e100.net; s=20230601; t=1721718051; x=1722322851;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nFl3HrwLjoySraknE8EuzIsY/PKufmEFbFHCeaLFeYM=;
+ b=gg/ytc0EYlPK4cek1kOJO89K0uw475bNcmN4yW7A2hwXi+PZw0SJZBeLeGPpKWFG6M
+ 0dPUUuDDyLqk8GE1ScMar9JCvbYCZJwoAFe8NbbedZxeBS3DD8uU4iQntR5cKANVWrfA
+ PenKIuy/qWF+MGXNjd1gjvVWkHtSpyJdCj7Pcf5k2SMNo7SFwhPi/qaiF6sZEa/KFjOT
+ yIok/DEb0Gy4qhJlVwrTcDRwPwklD2E8JsNseQ+izC1mq9oLraFstAi32PCcPhEmxMea
+ 6vPLeMdlSnIoB4G7XkHsMhI0Qu7HKWsBVLi1cQNeWqYigDSA51khuC9Mhjn3iCFRki0i
+ 19kA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUI7VC1wbvRGm18NGGs9v+dJ1IvXPaJAGaay4SJmZCbwT/zYh0PhLdDK8G7E5m0qJWZvsbUkE15qrjLySpGYXuHEbVzcq4=
-X-Gm-Message-State: AOJu0YyWr1zIiDOFQ7UXlX9l2lvtQ6bPPtLwbljeIGBTArjpfwc1HHpZ
- Z1jxKB4C8FUt6nCM7v8284P01MO7snTswEOKSFmaKzHpGUJFUEANRkDtxmwi4ea5jD8PQ6h4quO
- /Iirakrx/Q57y1yHwBr3EIS5z8YGCLOkwHbGhuTerXADp9lyuG+3N
-X-Received: by 2002:a2e:8415:0:b0:2ef:24f3:fb9b with SMTP id
- 38308e7fff4ca-2ef24f3fc14mr49596181fa.7.1721717847158; 
- Mon, 22 Jul 2024 23:57:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmrU+Osh7IqZwSG6UTtmvfH2bFdU3/6SQks+GFDBTl2DyLj4wfw4fma/9TfD2IhBRLqfiAdw==
-X-Received: by 2002:a2e:8415:0:b0:2ef:24f3:fb9b with SMTP id
- 38308e7fff4ca-2ef24f3fc14mr49596091fa.7.1721717846804; 
- Mon, 22 Jul 2024 23:57:26 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:bed7:42c6:fb19:d12e?
- ([2a01:e0a:9e2:9000:bed7:42c6:fb19:d12e])
+ AJvYcCWrWNK6/IlZ0+F4v0snwEnJGtyLAbgSEG/ASgObgBvGE8QOFqK8OLj/bqeCqCeS7Z8n8GlObv/fIUiTaIrNdOfO0w5414U=
+X-Gm-Message-State: AOJu0Yx8N9GblNNF7MKUwlxxgfAp7NVIp74KfWyxQKD1W/+PqToLWI/j
+ VvwFOkISR4rnSlZ7vrOwX/my7WMBj6IeXWltwDvyKMBe3xc01/7svjyuU9bymYthynC642hhOW6
+ 6tcP2y/6Htzz/2wzIZ+lQDAlzTYtXJqq5SrjPy6wRNR6dpFf7tLvL
+X-Received: by 2002:ad4:574e:0:b0:6b7:a7b7:de9b with SMTP id
+ 6a1803df08f44-6b98192b449mr27583286d6.20.1721718050926; 
+ Tue, 23 Jul 2024 00:00:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaCh794YKi6Z3rcVVxFy13yO9HITLNgjKeS2Deve3pWLGrskD45GhL3RPqdjxhJOYod3Bd8Q==
+X-Received: by 2002:ad4:574e:0:b0:6b7:a7b7:de9b with SMTP id
+ 6a1803df08f44-6b98192b449mr27582876d6.20.1721718050472; 
+ Tue, 23 Jul 2024 00:00:50 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a947fasm184146295e9.43.2024.07.22.23.57.25
+ 6a1803df08f44-6b7ac7e9fffsm43556976d6.63.2024.07.23.00.00.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 23:57:26 -0700 (PDT)
-Message-ID: <f95fef21-0cad-4fe8-bb7d-2baa2cce54c9@redhat.com>
-Date: Tue, 23 Jul 2024 08:57:25 +0200
+ Tue, 23 Jul 2024 00:00:49 -0700 (PDT)
+Message-ID: <50cf5507-ca71-47ac-bc24-8845982b99ad@redhat.com>
+Date: Tue, 23 Jul 2024 09:00:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/9] vfio/iommufd: Introduce auto domain creation
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "Liu, Yi L" <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+Subject: Re: [PATCH v5 01/13] vfio/pci: Extract mdev check into an helper
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>
-References: <20240722211326.70162-1-joao.m.martins@oracle.com>
- <20240722211326.70162-2-joao.m.martins@oracle.com>
- <SJ0PR11MB674493DEB1E8FB2442A4E64992A92@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB674493DEB1E8FB2442A4E64992A92@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Avihai Horon <avihaih@nvidia.com>
+References: <20240719120501.81279-1-joao.m.martins@oracle.com>
+ <20240719120501.81279-2-joao.m.martins@oracle.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240719120501.81279-2-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -104,321 +106,105 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/23/24 06:38, Duan, Zhenzhong wrote:
-> 
-> 
->> -----Original Message-----
->> From: Joao Martins <joao.m.martins@oracle.com>
->> Subject: [PATCH v6 1/9] vfio/iommufd: Introduce auto domain creation
->>
->> There's generally two modes of operation for IOMMUFD:
->>
->> 1) The simple user API which intends to perform relatively simple things
->> with IOMMUs e.g. DPDK. The process generally creates an IOAS and attaches
->> to VFIO and mainly performs IOAS_MAP and UNMAP.
->>
->> 2) The native IOMMUFD API where you have fine grained control of the
->> IOMMU domain and model it accordingly. This is where most new feature
->> are being steered to.
->>
->> For dirty tracking 2) is required, as it needs to ensure that
->> the stage-2/parent IOMMU domain will only attach devices
->> that support dirty tracking (so far it is all homogeneous in x86, likely
->> not the case for smmuv3). Such invariant on dirty tracking provides a
->> useful guarantee to VMMs that will refuse incompatible device
->> attachments for IOMMU domains.
->>
->> Dirty tracking insurance is enforced via HWPT_ALLOC, which is
->> responsible for creating an IOMMU domain. This is contrast to the
->> 'simple API' where the IOMMU domain is created by IOMMUFD
->> automatically
->> when it attaches to VFIO (usually referred as autodomains) but it has
->> the needed handling for mdevs.
->>
->> To support dirty tracking with the advanced IOMMUFD API, it needs
->> similar logic, where IOMMU domains are created and devices attached to
->> compatible domains. Essentially mimicking kernel
->> iommufd_device_auto_get_domain(). With mdevs given there's no IOMMU
->> domain
->> it falls back to IOAS attach.
->>
->> The auto domain logic allows different IOMMU domains to be created when
->> DMA dirty tracking is not desired (and VF can provide it), and others where
->> it is. Here it is not used in this way given how VFIODevice migration
->> state is initialized after the device attachment. But such mixed mode of
->> IOMMU dirty tracking + device dirty tracking is an improvement that can
->> be added on. Keep the 'all of nothing' of type1 approach that we have
->> been using so far between container vs device dirty tracking.
->>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->> ---
->> include/hw/vfio/vfio-common.h |  9 ++++
->> include/sysemu/iommufd.h      |  5 +++
->> backends/iommufd.c            | 30 +++++++++++++
->> hw/vfio/iommufd.c             | 84
->> +++++++++++++++++++++++++++++++++++
->> backends/trace-events         |  1 +
->> 5 files changed, 129 insertions(+)
->>
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-
->> common.h
->> index 98acae8c1c97..1a96678f8c38 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -95,10 +95,17 @@ typedef struct VFIOHostDMAWindow {
->>
->> typedef struct IOMMUFDBackend IOMMUFDBackend;
->>
->> +typedef struct VFIOIOASHwpt {
->> +    uint32_t hwpt_id;
->> +    QLIST_HEAD(, VFIODevice) device_list;
->> +    QLIST_ENTRY(VFIOIOASHwpt) next;
->> +} VFIOIOASHwpt;
->> +
->> typedef struct VFIOIOMMUFDContainer {
->>      VFIOContainerBase bcontainer;
->>      IOMMUFDBackend *be;
->>      uint32_t ioas_id;
->> +    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
->> } VFIOIOMMUFDContainer;
->>
->> OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer,
->> VFIO_IOMMU_IOMMUFD);
->> @@ -135,6 +142,8 @@ typedef struct VFIODevice {
->>      HostIOMMUDevice *hiod;
->>      int devid;
->>      IOMMUFDBackend *iommufd;
->> +    VFIOIOASHwpt *hwpt;
->> +    QLIST_ENTRY(VFIODevice) hwpt_next;
->> } VFIODevice;
->>
->> struct VFIODeviceOps {
->> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
->> index 57d502a1c79a..e917e7591d05 100644
->> --- a/include/sysemu/iommufd.h
->> +++ b/include/sysemu/iommufd.h
->> @@ -50,6 +50,11 @@ int
->> iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->> bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t
->> devid,
->>                                       uint32_t *type, void *data, uint32_t len,
->>                                       uint64_t *caps, Error **errp);
->> +bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t
->> dev_id,
->> +                                uint32_t pt_id, uint32_t flags,
->> +                                uint32_t data_type, uint32_t data_len,
->> +                                void *data_ptr, uint32_t *out_hwpt,
->> +                                Error **errp);
->>
->> #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD
->> TYPE_HOST_IOMMU_DEVICE "-iommufd"
->> #endif
->> diff --git a/backends/iommufd.c b/backends/iommufd.c
->> index 48dfd3962474..60a3d14bfab4 100644
->> --- a/backends/iommufd.c
->> +++ b/backends/iommufd.c
->> @@ -207,6 +207,36 @@ int
->> iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->>      return ret;
->> }
->>
->> +bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t
->> dev_id,
->> +                                uint32_t pt_id, uint32_t flags,
->> +                                uint32_t data_type, uint32_t data_len,
->> +                                void *data_ptr, uint32_t *out_hwpt,
->> +                                Error **errp)
->> +{
->> +    int ret, fd = be->fd;
->> +    struct iommu_hwpt_alloc alloc_hwpt = {
->> +        .size = sizeof(struct iommu_hwpt_alloc),
->> +        .flags = flags,
->> +        .dev_id = dev_id,
->> +        .pt_id = pt_id,
->> +        .data_type = data_type,
->> +        .data_len = data_len,
->> +        .data_uptr = (uintptr_t)data_ptr,
->> +    };
->> +
->> +    ret = ioctl(fd, IOMMU_HWPT_ALLOC, &alloc_hwpt);
->> +    trace_iommufd_backend_alloc_hwpt(fd, dev_id, pt_id, flags, data_type,
->> +                                     data_len, (uintptr_t)data_ptr,
->> +                                     alloc_hwpt.out_hwpt_id, ret);
->> +    if (ret) {
->> +        error_setg_errno(errp, errno, "Failed to allocate hwpt");
->> +        return false;
->> +    }
->> +
->> +    *out_hwpt = alloc_hwpt.out_hwpt_id;
->> +    return true;
->> +}
->> +
->> bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t
->> devid,
->>                                       uint32_t *type, void *data, uint32_t len,
->>                                       uint64_t *caps, Error **errp)
->> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->> index 7390621ee927..172553b1f7f8 100644
->> --- a/hw/vfio/iommufd.c
->> +++ b/hw/vfio/iommufd.c
->> @@ -212,10 +212,88 @@ static bool
->> iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, Error **errp)
->>      return true;
->> }
->>
->> +static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->> +                                         VFIOIOMMUFDContainer *container,
->> +                                         Error **errp)
->> +{
->> +    IOMMUFDBackend *iommufd = vbasedev->iommufd;
->> +    uint32_t flags = 0;
->> +    VFIOIOASHwpt *hwpt;
->> +    uint32_t hwpt_id;
->> +    int ret;
->> +
->> +    /* Try to find a domain */
->> +    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
->> +        ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id,
->> errp);
->> +        if (ret) {
->> +            /* -EINVAL means the domain is incompatible with the device. */
->> +            if (ret == -EINVAL) {
->> +                /*
->> +                 * It is an expected failure and it just means we will try
->> +                 * another domain, or create one if no existing compatible
->> +                 * domain is found. Hence why the error is discarded below.
->> +                 */
->> +                error_free(*errp);
-> 
-> Better to have ERRP_GUARD(), other than that,
-
-Fixed on vfio-9.1.
-
-Thanks,
-
-C.
 
 
-> 
-> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> 
-> Thanks
-> Zhenzhong
-> 
->> +                *errp = NULL;
->> +                continue;
->> +            }
->> +
->> +            return false;
->> +        } else {
->> +            vbasedev->hwpt = hwpt;
->> +            QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
->> +            return true;
->> +        }
->> +    }
->> +
->> +    if (!iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
->> +                                    container->ioas_id, flags,
->> +                                    IOMMU_HWPT_DATA_NONE, 0, NULL,
->> +                                    &hwpt_id, errp)) {
->> +        return false;
->> +    }
->> +
->> +    hwpt = g_malloc0(sizeof(*hwpt));
->> +    hwpt->hwpt_id = hwpt_id;
->> +    QLIST_INIT(&hwpt->device_list);
->> +
->> +    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
->> +    if (ret) {
->> +        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
->> +        g_free(hwpt);
->> +        return false;
->> +    }
->> +
->> +    vbasedev->hwpt = hwpt;
->> +    QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
->> +    QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
->> +    return true;
->> +}
->> +
->> +static void iommufd_cdev_autodomains_put(VFIODevice *vbasedev,
->> +                                         VFIOIOMMUFDContainer *container)
->> +{
->> +    VFIOIOASHwpt *hwpt = vbasedev->hwpt;
->> +
->> +    QLIST_REMOVE(vbasedev, hwpt_next);
->> +    vbasedev->hwpt = NULL;
->> +
->> +    if (QLIST_EMPTY(&hwpt->device_list)) {
->> +        QLIST_REMOVE(hwpt, next);
->> +        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
->> +        g_free(hwpt);
->> +    }
->> +}
->> +
->> static bool iommufd_cdev_attach_container(VFIODevice *vbasedev,
->>                                            VFIOIOMMUFDContainer *container,
->>                                            Error **errp)
->> {
->> +    /* mdevs aren't physical devices and will fail with auto domains */
->> +    if (!vbasedev->mdev) {
->> +        return iommufd_cdev_autodomains_get(vbasedev, container, errp);
->> +    }
->> +
->>      return !iommufd_cdev_attach_ioas_hwpt(vbasedev, container->ioas_id,
->> errp);
->> }
->>
->> @@ -227,6 +305,11 @@ static void
->> iommufd_cdev_detach_container(VFIODevice *vbasedev,
->>      if (!iommufd_cdev_detach_ioas_hwpt(vbasedev, &err)) {
->>          error_report_err(err);
->>      }
->> +
->> +    if (vbasedev->hwpt) {
->> +        iommufd_cdev_autodomains_put(vbasedev, container);
->> +    }
->> +
->> }
->>
->> static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer
->> *container)
->> @@ -354,6 +437,7 @@ static bool iommufd_cdev_attach(const char *name,
->> VFIODevice *vbasedev,
->>      container =
->> VFIO_IOMMU_IOMMUFD(object_new(TYPE_VFIO_IOMMU_IOMMUFD));
->>      container->be = vbasedev->iommufd;
->>      container->ioas_id = ioas_id;
->> +    QLIST_INIT(&container->hwpt_list);
->>
->>      bcontainer = &container->bcontainer;
->>      vfio_address_space_insert(space, bcontainer);
->> diff --git a/backends/trace-events b/backends/trace-events
->> index 211e6f374adc..4d8ac02fe7d6 100644
->> --- a/backends/trace-events
->> +++ b/backends/trace-events
->> @@ -14,4 +14,5 @@ iommufd_backend_map_dma(int iommufd, uint32_t
->> ioas, uint64_t iova, uint64_t size
->> iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas,
->> uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping:
->> iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
->> iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova,
->> uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64"
->> size=0x%"PRIx64" (%d)"
->> iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d
->> ioas=%d"
->> +iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t
->> pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr,
->> uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u
->> flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u
->> (%d)"
->> iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d
->> id=%d (%d)"
->> --
->> 2.17.2
-> 
+On 7/19/24 14:04, Joao Martins wrote:
+> In preparation to skip initialization of the HostIOMMUDevice for mdev,
+> extract the checks that validate if a device is an mdev into helpers.
+>
+> A vfio_device_is_mdev() is created, and subsystems consult VFIODevice::mdev
+> to check if it's mdev or not.
+>
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+> ---
+>  include/hw/vfio/vfio-common.h |  2 ++
+>  hw/vfio/helpers.c             | 14 ++++++++++++++
+>  hw/vfio/pci.c                 | 12 +++---------
+>  3 files changed, 19 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index e8ddf92bb185..98acae8c1c97 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -116,6 +116,7 @@ typedef struct VFIODevice {
+>      DeviceState *dev;
+>      int fd;
+>      int type;
+> +    bool mdev;
+>      bool reset_works;
+>      bool needs_reset;
+>      bool no_mmap;
+> @@ -231,6 +232,7 @@ void vfio_region_exit(VFIORegion *region);
+>  void vfio_region_finalize(VFIORegion *region);
+>  void vfio_reset_handler(void *opaque);
+>  struct vfio_device_info *vfio_get_device_info(int fd);
+> +bool vfio_device_is_mdev(VFIODevice *vbasedev);
+>  bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+>                          AddressSpace *as, Error **errp);
+>  void vfio_detach_device(VFIODevice *vbasedev);
+> diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+> index b14edd46edc9..7e23e9080c9d 100644
+> --- a/hw/vfio/helpers.c
+> +++ b/hw/vfio/helpers.c
+> @@ -675,3 +675,17 @@ int vfio_device_get_aw_bits(VFIODevice *vdev)
+>  
+>      return HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX;
+>  }
+> +
+> +bool vfio_device_is_mdev(VFIODevice *vbasedev)
+> +{
+> +    g_autofree char *subsys = NULL;
+> +    g_autofree char *tmp = NULL;
+> +
+> +    if (!vbasedev->sysfsdev) {
+> +        return false;
+> +    }
+> +
+> +    tmp = g_strdup_printf("%s/subsystem", vbasedev->sysfsdev);
+> +    subsys = realpath(tmp, NULL);
+> +    return subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
+> +}
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index e03d9f3ba546..b34e91468a53 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2963,12 +2963,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>      ERRP_GUARD();
+>      VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+>      VFIODevice *vbasedev = &vdev->vbasedev;
+> -    char *subsys;
+>      int i, ret;
+> -    bool is_mdev;
+>      char uuid[UUID_STR_LEN];
+>      g_autofree char *name = NULL;
+> -    g_autofree char *tmp = NULL;
+>  
+>      if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
+>          if (!(~vdev->host.domain || ~vdev->host.bus ||
+> @@ -2997,14 +2994,11 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>       * stays in sync with the active working set of the guest driver.  Prevent
+>       * the x-balloon-allowed option unless this is minimally an mdev device.
+>       */
+> -    tmp = g_strdup_printf("%s/subsystem", vbasedev->sysfsdev);
+> -    subsys = realpath(tmp, NULL);
+> -    is_mdev = subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
+> -    free(subsys);
+> +    vbasedev->mdev = vfio_device_is_mdev(vbasedev);
+>  
+> -    trace_vfio_mdev(vbasedev->name, is_mdev);
+> +    trace_vfio_mdev(vbasedev->name, vbasedev->mdev);
+>  
+> -    if (vbasedev->ram_block_discard_allowed && !is_mdev) {
+> +    if (vbasedev->ram_block_discard_allowed && !vbasedev->mdev) {
+>          error_setg(errp, "x-balloon-allowed only potentially compatible "
+>                     "with mdev devices");
+>          goto error;
 
 
