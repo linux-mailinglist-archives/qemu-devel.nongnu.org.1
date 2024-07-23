@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34CD93A824
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BAC93A832
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMIe-0005Vf-Ph; Tue, 23 Jul 2024 16:39:59 -0400
+	id 1sWMIu-0006XG-UR; Tue, 23 Jul 2024 16:40:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIV-0005HW-CO
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:47 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIb-0005fK-38
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:56 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIT-000402-Jj
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:47 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4266fd39527so44948115e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIZ-00040d-H2
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:52 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4277a5ed48bso44885285e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767184; x=1722371984; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767189; x=1722371989; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o3ABXJMZuK4B1pMDKEQUPr16WMzhgKew8s6daG0+jWs=;
- b=kh7kmD0ubn5EzesGqCO9IllbKBVncUaGtCr5swW8oUW+n7PAmckkKZ6AFsCKRD3JE6
- eLRENYq2gbyu0ig2ftmOSo/iB0EpKh62xsRt7vWRVtV6pWo8pxPqfzZT9l+mr3Wwh0Kc
- OojoAaf9T2KRgtfg5GjUuams65H7rwnH+n13F1/qACvw4vN7dB97uMCpKqkossFcpz5N
- 4RDEdq9QNCRJJdvLAagmIJJEOhqi5BvDEDqJ0ql6gERAqm7Jjdq253Fi6T6ykeZ0PHYX
- 0CGR9MO9y/EFT8liibPdL9cj+z9gtv2Vd1+qHF7fbepaPR9K7mBdkvSBcdHpykxATxTL
- m6nw==
+ bh=3JNSLq3T/DO8Fim2AW30tyDDzF8z85BC5OXkOQl9TDE=;
+ b=faTz0xwKPZfA3940EgucNLTQArqTbQKKfytHgThB0DMssfffqkCFTnWNUXy9fb00Py
+ 5V138fA35RmcNBCN1PKJvRfzgQ5OoxcV6E2/oF15mFyrJqZXjRO0Yj8YCOnl4lR4ijWJ
+ yHb7EYXWvEJXhajlqM1L/eQ1Lp4rMTrHk4rCsDiR932e135/FRjxaOCu/9knpu+5Ld2R
+ zvC49vPSdV6gcnkVALb+/aXJVyKMOeg1mMU2aXFQwH+zrM8r2GWb59jfxZTjq0HsJplH
+ 3YK181nfdldFJ1c21YttbsuC7A4dhst/ScO4BZft1HHpRbeLCAfsLqxxiMH7XvDjYm5F
+ CBPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767184; x=1722371984;
+ d=1e100.net; s=20230601; t=1721767189; x=1722371989;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o3ABXJMZuK4B1pMDKEQUPr16WMzhgKew8s6daG0+jWs=;
- b=PAMXx5gSthZ/hx9rNBsuMohmHPbUgAyCeNXxON2FrALrx2W51rokyZQC/D8IbkYtCM
- hJa1Ino+yHL7R+6p/zFlL0K6c7Pw04SR/UAaMl00fOasL4Fdi/393QWpQwPEYILx2IEJ
- 6/ZZf8lOsvMShNsAcxKx0BVuXznJgaVl4jpcf1i+QcRQktc3qtW96QRxbxtQ1HTQE6jc
- KbfMi1XMJUF6MJvzJVXu2a0T2O1flngfmFRh7JCYSdyo0Z+2jDrBfwUQ7yHI8QUBc4NZ
- mhsATysS8JXkuiXfaCxgVKAPJuw6onBxu940QKC9gT0cPq18+7At/urw222K6vev02UQ
- UxjQ==
-X-Gm-Message-State: AOJu0YwxXjnByrls0Qa8y8a44FI+BQr88Jgq/khTJmITgkEVtnw/C+vN
- h4oR9uiSLmHrVJfYdHj28XafkTbTld0JRFFJYRDES59ww3EjWFs/tI+/3VqGf4ZkC3skec+UmRW
- w3g8=
-X-Google-Smtp-Source: AGHT+IFgC5CyAp4R2oa08g2Qnx/boScJWTKQWrhU/93BBIPnaF9e6TvsFZ+o2eCV9XDLs/kQdvEzrw==
-X-Received: by 2002:a05:600c:3514:b0:426:4f47:6037 with SMTP id
- 5b1f17b1804b1-427f956075dmr59895e9.19.1721767183733; 
- Tue, 23 Jul 2024 13:39:43 -0700 (PDT)
+ bh=3JNSLq3T/DO8Fim2AW30tyDDzF8z85BC5OXkOQl9TDE=;
+ b=J3dLtmc0CVlWmf+MDHGOrOpUQ4BII8ShNdD+aQyAXWm/XBtBN9TE/KUr2GnrQktQMW
+ 5QjwwWHbyF1dR0cq2smeCuJik23IgeFcRI1whulwUNK2I/Pt3ooNQqB02BxjwkGpKPOT
+ tvwoAemSKykfDupLie8Tj5vfkORD3pv/bllqJuFe1KzinLtAwYw209IjOSm3w2T6hgx+
+ PKvdOnOYiM4I7y8DVIryenqR4c0GuHyFBBJy1DrNmTh7dxA0q3MA3HiyFXGpvTfsdFtc
+ Jhb46vHiCFvlf763YAHGRrXx1XyIW4X/or1liDT8PMUYwoTiKSz7fAUboZMY/gnu9TB5
+ nBzA==
+X-Gm-Message-State: AOJu0Yyp0rMccwG+bb7Brr2ZB++OGlQorFHdE+j/QWODV900jCPtfFpk
+ cLgCqpZIQDR//gIgwHC6ZqMAHUY4IP9YjNYIsHH43FOWhkni3H2ikRv3qF0Ztvby6EmFfh3Cw17
+ GP+4=
+X-Google-Smtp-Source: AGHT+IGAGzFqxFEqdjKwZQoZWYOrGqX7dkGdleVM4L1x2Szly4d1pLFg84uaAhDyyrl70ORwMSTX0Q==
+X-Received: by 2002:adf:f250:0:b0:368:6633:c547 with SMTP id
+ ffacd0b85a97d-369f5ac3e00mr32939f8f.37.1721767189140; 
+ Tue, 23 Jul 2024 13:39:49 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f9397337sm483385e9.23.2024.07.23.13.39.42
+ 5b1f17b1804b1-427f9398497sm483755e9.25.2024.07.23.13.39.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:39:43 -0700 (PDT)
+ Tue, 23 Jul 2024 13:39:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/28] docs/interop/firmware.json: add new enum
- FirmwareArchitecture
-Date: Tue, 23 Jul 2024 22:38:35 +0200
-Message-ID: <20240723203855.65033-9-philmd@linaro.org>
+Subject: [PULL 09/28] docs/interop/firmware.json: convert "Example" section
+Date: Tue, 23 Jul 2024 22:38:36 +0200
+Message-ID: <20240723203855.65033-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,78 +96,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-Only a small subset of all architectures supported by qemu make use of
-firmware files. Introduce and use a new enum to represent this.
+Since commit 3c5f6114d9ff ("qapi: remove "Example" doc section")
+the "Example" section is not valid anymore.
+It has been replaced by the "qmp-example" directive.
 
-This also removes the dependency to machine.json from the global qapi
-definitions.
+This was not detected earlier as firmware.json was not validated.
+As this validation is about to be added, adapt firmware.json.
 
-Claim "Since: 3.0" for the new enum, because that's correct for most of
-its members, and the members are what matters in the interface.
-
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240719-qapi-firmware-json-v6-2-c2e3de390b58@linutronix.de>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Message-ID: <20240719-qapi-firmware-json-v6-3-c2e3de390b58@linutronix.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/interop/firmware.json | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ docs/interop/firmware.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index d5d4c17f230..ae417999447 100644
+index ae417999447..57f55f6c545 100644
 --- a/docs/interop/firmware.json
 +++ b/docs/interop/firmware.json
-@@ -14,7 +14,10 @@
- # = Firmware
- ##
- 
--{ 'include' : 'machine.json' }
-+{ 'pragma': {
-+    'member-name-exceptions': [
-+        'FirmwareArchitecture' # x86_64
-+    ] } }
- 
- ##
- # @FirmwareOSInterface:
-@@ -59,6 +62,27 @@
- { 'enum' : 'FirmwareDevice',
-   'data' : [ 'flash', 'kernel', 'memory' ] }
- 
-+##
-+# @FirmwareArchitecture:
-+#
-+# Enumeration of architectures for which Qemu uses additional
-+# firmware files.
-+#
-+# @aarch64: 64-bit Arm.
-+#
-+# @arm: 32-bit Arm.
-+#
-+# @i386: 32-bit x86.
-+#
-+# @loongarch64: 64-bit LoongArch. (since: 7.1)
-+#
-+# @x86_64: 64-bit x86.
-+#
-+# Since: 3.0
-+##
-+{ 'enum' : 'FirmwareArchitecture',
-+  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'x86_64' ] }
-+
- ##
- # @FirmwareTarget:
+@@ -470,7 +470,7 @@
  #
-@@ -80,7 +104,7 @@
  # Since: 3.0
- ##
- { 'struct' : 'FirmwareTarget',
--  'data'   : { 'architecture' : 'SysEmuTarget',
-+  'data'   : { 'architecture' : 'FirmwareArchitecture',
-                'machines'     : [ 'str' ] } }
- 
- ##
+ #
+-# Examples:
++# .. qmp-example::
+ #
+ #     {
+ #         "description": "SeaBIOS",
 -- 
 2.41.0
 
