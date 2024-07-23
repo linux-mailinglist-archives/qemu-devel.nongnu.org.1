@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BAC93A832
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B2593A83B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:43:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMIu-0006XG-UR; Tue, 23 Jul 2024 16:40:12 -0400
+	id 1sWMJ0-0006q8-48; Tue, 23 Jul 2024 16:40:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIb-0005fK-38
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:56 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIf-00063G-Tg
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:59 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIZ-00040d-H2
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:52 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4277a5ed48bso44885285e9.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIe-00041A-Ad
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:57 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-368663d7f80so3241745f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767189; x=1722371989; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767194; x=1722371994; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3JNSLq3T/DO8Fim2AW30tyDDzF8z85BC5OXkOQl9TDE=;
- b=faTz0xwKPZfA3940EgucNLTQArqTbQKKfytHgThB0DMssfffqkCFTnWNUXy9fb00Py
- 5V138fA35RmcNBCN1PKJvRfzgQ5OoxcV6E2/oF15mFyrJqZXjRO0Yj8YCOnl4lR4ijWJ
- yHb7EYXWvEJXhajlqM1L/eQ1Lp4rMTrHk4rCsDiR932e135/FRjxaOCu/9knpu+5Ld2R
- zvC49vPSdV6gcnkVALb+/aXJVyKMOeg1mMU2aXFQwH+zrM8r2GWb59jfxZTjq0HsJplH
- 3YK181nfdldFJ1c21YttbsuC7A4dhst/ScO4BZft1HHpRbeLCAfsLqxxiMH7XvDjYm5F
- CBPA==
+ bh=+hMaqq/BTdi6PrKr3cYrZxRyWg7HqfkCm9irnu5mKRU=;
+ b=e8dv81d4GETIhKjz02U2Qj/VXej0lWG70HkJKws/gKIh0vBvftL2e5b09BHrbbXUES
+ ZFzDakkLq0gHU06/zRYtTh18StG8M+2fEe9KUPnfXEom2USB+is5iTmXVyh16tKT8UG1
+ OHuU5JA1DUV083gWW+wYUwK7MwBQknVWU2QY8aYYdvc50aoh5MFgwXEDoy/xnZHDTKTJ
+ I0hshvtRiZTOGSF05wzUffeH94si7mOfBfSnyCxj7ldy7Zdr6DwyMBzIa5GnOBhHtu2P
+ QFxy/aOgxeRZawzCr9fFfp2+p/7CGMwmj4vcJEVBAUmFk+BVFaOpHPQ5DUk2T86eeiGm
+ ihjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767189; x=1722371989;
+ d=1e100.net; s=20230601; t=1721767194; x=1722371994;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3JNSLq3T/DO8Fim2AW30tyDDzF8z85BC5OXkOQl9TDE=;
- b=J3dLtmc0CVlWmf+MDHGOrOpUQ4BII8ShNdD+aQyAXWm/XBtBN9TE/KUr2GnrQktQMW
- 5QjwwWHbyF1dR0cq2smeCuJik23IgeFcRI1whulwUNK2I/Pt3ooNQqB02BxjwkGpKPOT
- tvwoAemSKykfDupLie8Tj5vfkORD3pv/bllqJuFe1KzinLtAwYw209IjOSm3w2T6hgx+
- PKvdOnOYiM4I7y8DVIryenqR4c0GuHyFBBJy1DrNmTh7dxA0q3MA3HiyFXGpvTfsdFtc
- Jhb46vHiCFvlf763YAHGRrXx1XyIW4X/or1liDT8PMUYwoTiKSz7fAUboZMY/gnu9TB5
- nBzA==
-X-Gm-Message-State: AOJu0Yyp0rMccwG+bb7Brr2ZB++OGlQorFHdE+j/QWODV900jCPtfFpk
- cLgCqpZIQDR//gIgwHC6ZqMAHUY4IP9YjNYIsHH43FOWhkni3H2ikRv3qF0Ztvby6EmFfh3Cw17
- GP+4=
-X-Google-Smtp-Source: AGHT+IGAGzFqxFEqdjKwZQoZWYOrGqX7dkGdleVM4L1x2Szly4d1pLFg84uaAhDyyrl70ORwMSTX0Q==
-X-Received: by 2002:adf:f250:0:b0:368:6633:c547 with SMTP id
- ffacd0b85a97d-369f5ac3e00mr32939f8f.37.1721767189140; 
- Tue, 23 Jul 2024 13:39:49 -0700 (PDT)
+ bh=+hMaqq/BTdi6PrKr3cYrZxRyWg7HqfkCm9irnu5mKRU=;
+ b=kpnZQaBcGTiFIjahmsbi5Y/Sjr/hB2ycjy+8IEGTPtAonJeB3RJNa7J2KBIvVchnJC
+ jS1COoo7v0P2QlTiGtt9sSp/jimnIvxV8IdfjvMoIBlwd6rdSHKm3TGVf00kO1kpWNSf
+ 5hHdGYTsteXAKvfsc6osgOwWc5W/yrhK3NXuf2l2Ip0mDqp3jIvNBq1RgfDpTZgB+FCP
+ i6NXRiXvJK0WeKicC2nFuh9mbncmCh9PO8pV5cBFtoQ20zZel/HqbcZsHOTu0IIW0nPa
+ H7hTG7xDJQl4J/UbUwCRxfZsUVZ/vDcxuSxm+TTWdCjTMxlG9qSd98r9bhlSm0X1US7B
+ 435Q==
+X-Gm-Message-State: AOJu0YzqjkX2xv/QUYLoEnvV4Bnl2vtaidbHIgr9PFl7aGNpSdS2k2Zb
+ 5pDABIcF9xvij++9heuRxWJfCIXP6HWnPyIurqNPqeR+opNsuzCnLqO49FkdT5JYjdmnBms5Zgi
+ DZMs=
+X-Google-Smtp-Source: AGHT+IG57LI5YWyZHVY+kl90wAv5lE9l7oJ9B0qwyRPR4wxUqd35iJDfJuVsGFBnhz88AsrCOTWPBg==
+X-Received: by 2002:a05:6000:d85:b0:368:66b7:621d with SMTP id
+ ffacd0b85a97d-369f5b2c80fmr38100f8f.18.1721767194455; 
+ Tue, 23 Jul 2024 13:39:54 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f9398497sm483755e9.25.2024.07.23.13.39.48
+ ffacd0b85a97d-36878694833sm12408147f8f.55.2024.07.23.13.39.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:39:48 -0700 (PDT)
+ Tue, 23 Jul 2024 13:39:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Markus Armbruster <armbru@redhat.com>,
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/28] docs/interop/firmware.json: convert "Example" section
-Date: Tue, 23 Jul 2024 22:38:36 +0200
-Message-ID: <20240723203855.65033-10-philmd@linaro.org>
+Subject: [PULL 10/28] hw/i2c/mpc_i2c: Fix mmio region size
+Date: Tue, 23 Jul 2024 22:38:37 +0200
+Message-ID: <20240723203855.65033-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,36 +93,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Since commit 3c5f6114d9ff ("qapi: remove "Example" doc section")
-the "Example" section is not valid anymore.
-It has been replaced by the "qmp-example" directive.
+The last register of this device is at offset 0x14 occupying 8 bits so
+to cover it the mmio region needs to be 0x15 bytes long. Also correct
+the name of the field storing this register value to match the
+register name.
 
-This was not detected earlier as firmware.json was not validated.
-As this validation is about to be added, adapt firmware.json.
-
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Message-ID: <20240719-qapi-firmware-json-v6-3-c2e3de390b58@linutronix.de>
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Fixes: 7abb479c7a ("PPC: E500: Add FSL I2C controller")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240721225506.B32704E6039@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/interop/firmware.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i2c/mpc_i2c.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index ae417999447..57f55f6c545 100644
---- a/docs/interop/firmware.json
-+++ b/docs/interop/firmware.json
-@@ -470,7 +470,7 @@
- #
- # Since: 3.0
- #
--# Examples:
-+# .. qmp-example::
- #
- #     {
- #         "description": "SeaBIOS",
+diff --git a/hw/i2c/mpc_i2c.c b/hw/i2c/mpc_i2c.c
+index cb051a520f7..06d4ce7d68d 100644
+--- a/hw/i2c/mpc_i2c.c
++++ b/hw/i2c/mpc_i2c.c
+@@ -82,7 +82,7 @@ struct MPCI2CState {
+     uint8_t cr;
+     uint8_t sr;
+     uint8_t dr;
+-    uint8_t dfssr;
++    uint8_t dfsrr;
+ };
+ 
+ static bool mpc_i2c_is_enabled(MPCI2CState *s)
+@@ -293,7 +293,7 @@ static void mpc_i2c_write(void *opaque, hwaddr addr,
+         }
+         break;
+     case MPC_I2C_DFSRR:
+-        s->dfssr = value;
++        s->dfsrr = value;
+         break;
+     default:
+         DPRINTF("ERROR: Bad write addr 0x%x\n", (unsigned int)addr);
+@@ -319,7 +319,7 @@ static const VMStateDescription mpc_i2c_vmstate = {
+         VMSTATE_UINT8(cr, MPCI2CState),
+         VMSTATE_UINT8(sr, MPCI2CState),
+         VMSTATE_UINT8(dr, MPCI2CState),
+-        VMSTATE_UINT8(dfssr, MPCI2CState),
++        VMSTATE_UINT8(dfsrr, MPCI2CState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -329,7 +329,7 @@ static void mpc_i2c_realize(DeviceState *dev, Error **errp)
+     MPCI2CState  *i2c = MPC_I2C(dev);
+     sysbus_init_irq(SYS_BUS_DEVICE(dev), &i2c->irq);
+     memory_region_init_io(&i2c->iomem, OBJECT(i2c), &i2c_ops, i2c,
+-                          "mpc-i2c", 0x14);
++                          "mpc-i2c", 0x15);
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &i2c->iomem);
+     i2c->bus = i2c_init_bus(dev, "i2c");
+ }
 -- 
 2.41.0
 
