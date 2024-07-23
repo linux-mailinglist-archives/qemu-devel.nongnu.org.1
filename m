@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC0D9397CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 03:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4D69397D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 03:18:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW48N-0002wd-Mf; Mon, 22 Jul 2024 21:16:07 -0400
+	id 1sW49y-0008Ih-JQ; Mon, 22 Jul 2024 21:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW486-00024S-7u
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:15:50 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1sW49Q-0007eU-GH
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:17:13 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW483-0001y7-PK
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:15:49 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1fbc3a9d23bso825305ad.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:15:47 -0700 (PDT)
+ id 1sW49O-0002Lh-4w
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:17:11 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1fc5549788eso37428495ad.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:17:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721697346; x=1722302146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721697428; x=1722302228; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=llxCVToRyfUAht24Ji+fDcCnlhyuGiCqw7QeSSjcM40=;
- b=TpR/zpytxaOXRxlrAfFJdGBJ7R2DrfJS+EqjnlxDsz4GoB7Phm5MeiyJINl3hNM/c4
- xiZ74LoTlhCydRQGZPnZ3QM6zsfJlKtZrEB4el5bV9+18Y1UqNkLfY6Qs0rjUo7hDgId
- WluTs8BqVrdk2a8McsZ9+MFNqHr58Yy9Mg5hoNUxcMd+ha5juO2BGFdgNaLfWixEw/xr
- yKVFyMPp6d77hOlQn7ti9CqLe3VrfAeN+8lcjdeJHpE4/e+PmN4HlgdjBkivPJ6vv40V
- HT5Z2XTdrowL3Y0wzd2URDNDCsw3KvMUM2Q+ZlWVGDPedeiMKnxSTqT63ruTIyLlDLLc
- rTeQ==
+ bh=/qTKaOqetYPf18hLuVZzsRY2daa8pNhGsB9HKubNyZY=;
+ b=OogchreHiG2i0fLHeSjxFpQRy0cnPCFpy+MNZ+6GsYTy0WL6XMsXA09lkUZNlm3vWY
+ vGWin19HnfGATKGkS6k+/aD32SXNxvR/s/fjt99VQj59RPl+Pf9uOggYb0h2cGD1keog
+ En9lLtn4eFWEuzMubFdcvZ8ye3nUpsM8qgtQikb2msOXMz89R47sdvJbLS6h6/KTZ9Tx
+ cqeNmPAJQwK5WHkMD/wqxGamhKl8Nqjmv/hJjlnpHQUexoRZi5QFX0KQO7PUCa/GGGo2
+ aqYSnVo9HI2X1FOKizokack7A32yMVVDjq/Qse40qI8m3qvCs1LF3HoHmXk7mzPISBTr
+ Pxqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721697346; x=1722302146;
+ d=1e100.net; s=20230601; t=1721697428; x=1722302228;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=llxCVToRyfUAht24Ji+fDcCnlhyuGiCqw7QeSSjcM40=;
- b=oKSCckUEEcaKW+boRuprNVbhSBR7o8fNcth7q0u7sMaqrpyuGhXbVDEQ6ZHdss3yCH
- dNy9TNP+JpfDMmlvpj2aDemOFm4tq3IQkmYCY6rUUOogD1C0Y+ALFK41qzd06hxK8Cpi
- xmMlia/3uROlaY7BhMvVdICJJGM31qtjz783taNKJe2T9dfo6xRFIo3UIcnfuS65R2I4
- GrPGyAo3DLNGRKWe7g/Ej6zpN+IYBXnervevg1GlltCv+0Y5dJr5LomX4RYVjMlBWePn
- Uk+s2woHoSaZZCXKosv1QBBZRAeBIby1xK5DqzbudNn9S9yMrUnYjfUejPjeNoHDnpix
- RIhA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWEAaEXlbpRdkyPi5A2jtACbHS/Xs9GIG0sqE3hRUGyOnTiAIZh8uc4Phq4aXUqI2Dwlu8Si9eXu7IFuNW0cqwQ2bFzydI=
-X-Gm-Message-State: AOJu0Yxlqns5siC5Va7wSeib1uI+XP/lf/lyFxXVDCLmzHjXIc2zptGq
- Dhr2R1V9Jwl6rKm6fJL9JGZuwhyXSMLXf50mM9WI8l/5uLEk331lf0Pqz0CWty4=
-X-Google-Smtp-Source: AGHT+IEHnFwI5qTtHPLNDaAx3wp6V4DQq5Cdq0H+jCNV1sVWbcKWohNVYUPhnFwmwUqS5d3U8Lr/lw==
-X-Received: by 2002:a17:902:d58b:b0:1fc:60f1:1905 with SMTP id
- d9443c01a7336-1fd74638e50mr62534495ad.61.1721697345991; 
- Mon, 22 Jul 2024 18:15:45 -0700 (PDT)
+ bh=/qTKaOqetYPf18hLuVZzsRY2daa8pNhGsB9HKubNyZY=;
+ b=HhvLhWBBMX1ttcXv6hLnunq3XpuZl/V5dUiZyFJKByQgA1OEcGs/EBBvbpkJE8jhNV
+ bet4pGjY4w9mU9z4KV/i6tb0K4decHftDAnO07QRUiqHaahz6twQcutdcBt9ql4yhr95
+ s5tzO0S0hN8lvyDUfveJU9q2N9ML1uKj3qeyqJSnXBFXCi9zKhw5oX3q/hK6gBwWqK8f
+ uDUnlWghGjmwyDnDbfjBlWOty6tyg9dY/Y/p9B2pBLxcrfJpSMGlwhG7mx74bfOZAaro
+ wpWTUD+Nwb/mzoI6I5H2qm72MAbzztjQaZjmYL5wsB9+oSlSXnUg5lFYIls3UbjwB3bQ
+ QfNw==
+X-Gm-Message-State: AOJu0YxSSf+QBgutakQr4X9FmNzEmk+hWZv8tT0biXZGnfPT2828Aqfu
+ JeSTXsOp9P01qGbbcqzPwHs5tgFkMglcSrRdtqss1Y7OZZwUwX5k8QOcub0BXF+87XctoxHLKzf
+ H61bwtQ==
+X-Google-Smtp-Source: AGHT+IEswDuG0FdmxCpIjOba6+aLR34GdZjeGAIJ+nn+pu6j4H2W/L+T6EcCWyZVBcPJJLASpJ/zLQ==
+X-Received: by 2002:a17:902:d48d:b0:1fd:82ac:7c2e with SMTP id
+ d9443c01a7336-1fd82ac8886mr97646385ad.25.1721697428292; 
+ Mon, 22 Jul 2024 18:17:08 -0700 (PDT)
 Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fd6f436d26sm61586465ad.201.2024.07.22.18.15.42
+ d9443c01a7336-1fd6f25bfedsm63658935ad.48.2024.07.22.18.17.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 18:15:45 -0700 (PDT)
-Message-ID: <8919bbcb-2e39-409d-a90b-c924932bdccb@linaro.org>
-Date: Tue, 23 Jul 2024 11:15:39 +1000
+ Mon, 22 Jul 2024 18:17:07 -0700 (PDT)
+Message-ID: <0b7514dc-f9ed-4c48-be37-5a5de7b26229@linaro.org>
+Date: Tue, 23 Jul 2024 11:17:00 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/14] bsd-user: Make compile for non-linux user-mode stuff
-To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
-Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 14/14] bsd-user: Add aarch64 build to tree
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Warner Losh <imp@bsdimp.com>
+Cc: qemu-devel@nongnu.org, Kyle Evans <kevans@freebsd.org>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
 References: <20240722214313.89503-1-imp@bsdimp.com>
- <20240722214313.89503-14-imp@bsdimp.com>
+ <20240722214313.89503-15-imp@bsdimp.com>
+ <f3c9d0c0-1cfd-46c8-8524-cffbe5180d3f@linaro.org>
+ <CANCZdfpPrjt8G5WWRPdMNWyb=hskk7ZCVS3HEAcway=XO=K3ng@mail.gmail.com>
+ <f2f6c27e-7625-471f-b888-0f3a870bb0c4@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240722214313.89503-14-imp@bsdimp.com>
+In-Reply-To: <f2f6c27e-7625-471f-b888-0f3a870bb0c4@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,16 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/23/24 07:43, Warner Losh wrote:
-> We include the files that define PR_MTE_TCF_SHIFT only on Linux, but use
-> them unconditionally. Restrict its use to Linux-only.
+On 7/23/24 08:11, Philippe Mathieu-Daudé wrote:
+> On 23/7/24 00:06, Warner Losh wrote:
+>>
+>>
+>> On Mon, Jul 22, 2024 at 3:54 PM Philippe Mathieu-Daudé <philmd@linaro.org 
+>> <mailto:philmd@linaro.org>> wrote:
+>>
+>>     Hi Warner,
+>>
+>>     On 22/7/24 23:43, Warner Losh wrote:
+>>      > Add the aarch64 bsd-user fragments needed to build the new
+>>     aarch64 code.
+>>      >
+>>      > Signed-off-by: Warner Losh <imp@bsdimp.com <mailto:imp@bsdimp.com>>
+>>      > ---
+>>      >   configs/targets/aarch64-bsd-user.mak | 3 +++
+>>      >   1 file changed, 3 insertions(+)
+>>      >   create mode 100644 configs/targets/aarch64-bsd-user.mak
+>>
+>>     Can we build aarch64 on Cirrus-CI? (not clear on
+>>     https://cirrus-ci.org/guide/FreeBSD/
+>>     <https://cirrus-ci.org/guide/FreeBSD/>). If so, could you add
+>>     a follow-up patch to build that on our CI, patching
+>>     .gitlab-ci.d/cirrus.yml?
+>>
+>>
+>> We can build aarch64 host for bsd-user for sure. I'll see if we can do it in cirrus CI.
+>> If so, I'll try to add it to cirrus.yml.
+>>
+>> This patch series adds aarch64 guest...
 > 
-> Signed-off-by: Warner Losh<imp@bsdimp.com>
-> ---
->   target/arm/gdbstub64.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> Yes, we want to use a aarch64 FreeBSD host to build your FreeBSD
+> aarch64 bsd-user guest and test it. Am I wrong?
+> 
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This is adding guest support, so your suggestion is orthogonal.
+
 
 r~
 
