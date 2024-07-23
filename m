@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607DD93999F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFA59399FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:39:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW8uu-00031E-Tc; Tue, 23 Jul 2024 02:22:33 -0400
+	id 1sW9Aa-0000P0-7u; Tue, 23 Jul 2024 02:38:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sW8un-0002z3-CT
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:22:25 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sW8ui-0001uB-9Z
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:22:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721715740; x=1753251740;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nxr7+tBuqop0Fy0B97ZVAaydhGMKvdSjcyv2uVlr4Zo=;
- b=hY+gheDkXve5iKRreCmWi+iNXrufEb9XbJtzR9mcK6IsXyDDkpUNkiwR
- HPlXN659CbHfCOh4p+7h+w/en5MIUvvahPl9IdiWe6nRK/rNLndqRATAa
- eLQz9oZfbpypJjaI8v6mwy26DY0g/19j7wmuUTT2GWjj+qcjY4h+tT1mz
- sUXUzWewGxqILeudBNecbPd08k/du0VN2cwjufoaxIysOHeI3ZRWckx9b
- +QtKeXYT6APyq0runeVwS5Z/WKaHcEuNXaytrGBbKlfijx0ndNcLafXMP
- E2sP4V5ZEI+TdA4YRjll8Ri7/0NE/kgRbX6xeyPRZBHNqialcDxXStwd6 g==;
-X-CSE-ConnectionGUID: NvWoyEjiRmCiXZK7h8tkBQ==
-X-CSE-MsgGUID: CpLElBibS7+m2jCilFZt4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="12661105"
-X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="12661105"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 23:22:16 -0700
-X-CSE-ConnectionGUID: JFPvfVizQcmZcKB7UswOQw==
-X-CSE-MsgGUID: pJznqixsTTCO4fSl/Nq5hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="56682032"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 22 Jul 2024 23:22:13 -0700
-Date: Tue, 23 Jul 2024 14:37:56 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v5 1/8] build-sys: Add rust feature option
-Message-ID: <Zp9PxB4ZyLDgWGtM@intel.com>
-References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
- <cdba13875d38feb836468a73509d24a88c8332ca.1721648163.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW9AX-0000Mw-8V
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:38:41 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW9AV-0004yg-DG
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:38:41 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-42793fc0a6dso36576825e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 23:38:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721716717; x=1722321517; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fVB4kCLoW/coLOXsuSe+RffepDW8tckHbauy3298bUs=;
+ b=XeiootWAnHJdCn1/KEWscBy1hE8dCe4omB7wj1DL6tU5HPavWhh/g584kA9c/22SFw
+ MpGE8Zn7UXEd707xeMlJ6lZr1vGcqJ5HT819YcmKQCiOYB8cNBBRX4JNoEcp0vtrj4/f
+ Q+0gv+yk5DqwrosTjaHCEHCfQEpjXNu4Ng5FIBMSplE7qRUHUtaohgxXDEun25thMehx
+ 4GJ8HFpSZW36VGQh+GP5GmyXQOJlCioYOaIOcXf9yDBXoO49dbJnytND4ePWRa4xzYgT
+ FYih4Oj/sjBXT6BgwPDPFV6TksD5gXBwNgROoKb9SHp0tCy7NU2qZ+44HNVpJ1rmV9/l
+ J+fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721716717; x=1722321517;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fVB4kCLoW/coLOXsuSe+RffepDW8tckHbauy3298bUs=;
+ b=KuC+3Cr/cidFzJao+3oF1+8zEYNwI1mDHtVAzaC7nw6Mzo3CeBLACUhOdYkLYmVaJP
+ vBSRBaqW9mGs91ShonY4fYDIVIoXPbDOhwbsz4oKCo3jC1pfCQtM6xHrXoqoLg+baTkd
+ GWoBCoMYR/dEDHU121wuqnsR1BU1miH8j+5QQleHqTSbp/pTMrMk86/hu8tJng6duftL
+ B/FGdLPS3YqwMs7Sk/WA65P79xc/DgDw43qhVIm9gsmebK9qmhfzkVw+szf5Ckxhysw1
+ KMWBe31BSH2nuuagaJOg5jn0+k3QIig3lVxeUTCLlTZd0y78Fgh3FL7ar7HoowVkTkfp
+ +egw==
+X-Gm-Message-State: AOJu0YyAKYUAo15YLBxoUPpQ4C2qz+82vZnrs6vRRbeayhaIJ4MfpsTL
+ TFSosZg2wJn0KIKMojQalnuSLVQdj6kX2d8iP4ceiP7zRBOLdWo7sbZUrI4J2ik=
+X-Google-Smtp-Source: AGHT+IGg0Dse1CPbDZy7aQqdji29PGBZAnqMIfKHUlt02ezXOvDcrth/Fx7a6FoTBRybgWDFOqbSMw==
+X-Received: by 2002:a05:600c:3ba4:b0:426:5dd0:a1ee with SMTP id
+ 5b1f17b1804b1-427ecfce9c9mr13570805e9.2.1721716717293; 
+ Mon, 22 Jul 2024 23:38:37 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.208.14])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d2a8e47csm183870225e9.29.2024.07.22.23.38.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 23:38:36 -0700 (PDT)
+Message-ID: <2bfad60f-6484-4716-95be-7b847bcdb6e6@linaro.org>
+Date: Tue, 23 Jul 2024 08:38:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cdba13875d38feb836468a73509d24a88c8332ca.1721648163.git.manos.pitsidianakis@linaro.org>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/14] bsd-user: Add aarch64 build to tree
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Warner Losh <imp@bsdimp.com>
+Cc: qemu-devel@nongnu.org, Kyle Evans <kevans@freebsd.org>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20240722214313.89503-1-imp@bsdimp.com>
+ <20240722214313.89503-15-imp@bsdimp.com>
+ <f3c9d0c0-1cfd-46c8-8524-cffbe5180d3f@linaro.org>
+ <CANCZdfpPrjt8G5WWRPdMNWyb=hskk7ZCVS3HEAcway=XO=K3ng@mail.gmail.com>
+ <f2f6c27e-7625-471f-b888-0f3a870bb0c4@linaro.org>
+ <0b7514dc-f9ed-4c48-be37-5a5de7b26229@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <0b7514dc-f9ed-4c48-be37-5a5de7b26229@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,54 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Manos,
-
-On Mon, Jul 22, 2024 at 02:43:31PM +0300, Manos Pitsidianakis wrote:
-> Date: Mon, 22 Jul 2024 14:43:31 +0300
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: [RFC PATCH v5 1/8] build-sys: Add rust feature option
-> X-Mailer: git-send-email 2.44.0
+On 23/7/24 03:17, Richard Henderson wrote:
+> On 7/23/24 08:11, Philippe Mathieu-Daudé wrote:
+>> On 23/7/24 00:06, Warner Losh wrote:
+>>>
+>>>
+>>> On Mon, Jul 22, 2024 at 3:54 PM Philippe Mathieu-Daudé 
+>>> <philmd@linaro.org <mailto:philmd@linaro.org>> wrote:
+>>>
+>>>     Hi Warner,
+>>>
+>>>     On 22/7/24 23:43, Warner Losh wrote:
+>>>      > Add the aarch64 bsd-user fragments needed to build the new
+>>>     aarch64 code.
+>>>      >
+>>>      > Signed-off-by: Warner Losh <imp@bsdimp.com 
+>>> <mailto:imp@bsdimp.com>>
+>>>      > ---
+>>>      >   configs/targets/aarch64-bsd-user.mak | 3 +++
+>>>      >   1 file changed, 3 insertions(+)
+>>>      >   create mode 100644 configs/targets/aarch64-bsd-user.mak
+>>>
+>>>     Can we build aarch64 on Cirrus-CI? (not clear on
+>>>     https://cirrus-ci.org/guide/FreeBSD/
+>>>     <https://cirrus-ci.org/guide/FreeBSD/>). If so, could you add
+>>>     a follow-up patch to build that on our CI, patching
+>>>     .gitlab-ci.d/cirrus.yml?
+>>>
+>>>
+>>> We can build aarch64 host for bsd-user for sure. I'll see if we can 
+>>> do it in cirrus CI.
+>>> If so, I'll try to add it to cirrus.yml.
+>>>
+>>> This patch series adds aarch64 guest...
+>>
+>> Yes, we want to use a aarch64 FreeBSD host to build your FreeBSD
+>> aarch64 bsd-user guest and test it. Am I wrong?
+>>
 > 
-> Add rust feature in meson.build, configure, to prepare for adding Rust
-> code in the followup commits.
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->  MAINTAINERS                   |  5 +++++
->  configure                     | 12 ++++++++++++
->  meson.build                   | 17 ++++++++++++++++-
->  Kconfig                       |  1 +
->  Kconfig.host                  |  3 +++
->  meson_options.txt             |  5 +++++
->  rust/Kconfig                  |  0
->  scripts/meson-buildoptions.sh |  3 +++
->  8 files changed, 45 insertions(+), 1 deletion(-)
->  create mode 100644 rust/Kconfig
-> 
+> This is adding guest support, so your suggestion is orthogonal.
 
-[snip]
+Ah, got it I guess, this series adds support for aarch64 user-mode
+emulation on any FreeBSD kernels, so IIUC we can test it on the current
+FreeBSD x86 job we have. Currently the x64-freebsd-13-build job uses:
 
-> diff --git a/meson.build b/meson.build
-> index a1e51277b0..a3f346ab3c 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -70,6 +70,14 @@ if host_os == 'darwin' and \
->    all_languages += ['objc']
->    objc = meson.get_compiler('objc')
->  endif
-> +if get_option('have_rust') and meson.version().version_compare('<1.0.0')
-> +  error('Rust support requires Meson version >=1.0.0')
-> +endif
-> +have_rust = false
-> +if not get_option('disable_rust') and add_languages('rust', required: get_option('have_rust'), native: false)
-> +  rustc = meson.get_compiler('rust')
-> +  have_rust = true
-> +endif
+   CONFIGURE_ARGS: 
+--target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4eb-softmmu,xtensa-softmmu
+   TEST_TARGETS: check
 
-Only a nit, "disable_rust" seems redundant, and "have_rust" is enough.
+So the aarch64-bsd-user target should be selected automatically,
+is that correct?
 
-Others LGTM,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+(got it, my request to test aarch64 FreeBSD *host* is orthogonal).
 
