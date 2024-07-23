@@ -2,85 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1E893A1A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 15:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC4293A23B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:03:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWFgW-0002sN-Rs; Tue, 23 Jul 2024 09:36:08 -0400
+	id 1sWG4K-000804-Bv; Tue, 23 Jul 2024 10:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWFgV-0002n3-0m
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 09:36:07 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWFgS-0006jU-BJ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 09:36:06 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2ef2ed59200so28433821fa.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 06:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721741762; x=1722346562; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=azOBo8n7PTI1z8TaVTvpugK+dx9lsNzTIbJJ+xk/hOc=;
- b=BKveFRRgXA5nOM4Ayok8cVE7e1kKr6bxmmR0096RwL2MgGMchWE4BbFXM3z8Qch6eH
- DKJBNw4q/xueZ0ia0cxalZ7mUcLvY7xdx1NnCnyreYQleoERNMmxPrfb9xkvQfLEX4Z0
- giyk1pZyTjy/3l5Wqcq4JMOnOPEWUiyoe2RskWqyrqG1U1ADEQ3oHZJSzSihTZiNp79i
- 1mt/I2iErcV62mMVsqA/X48B6dxyPnDIbNLykQVu1nfL9eAr/EVtnAq6QG5gv5OZ2myt
- LWNuVnf3uQF9b0vvH8cdB/BE1SANYvzCoc3foBcAkfMOG7RlLUKjHb9TKeEdBcPMjfLp
- TsWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721741762; x=1722346562;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=azOBo8n7PTI1z8TaVTvpugK+dx9lsNzTIbJJ+xk/hOc=;
- b=fMghdE+VVURXPP904Jpeo0JAOPM6te8HfN6LL8VgYiF5XCEnDVujXwUfpqC0kqM5WV
- +f3HtF+S27qGEQANwLZpJf//YTsBBre3wMO07g8Kkc3VaxS7gVxQTxq+grletjSJ91m7
- 9mdw3flSwL6SPnr5O6xo7K0/VFME0d3osar139L2RXT1XqPPyYpySq47AGNQmKTsTBsW
- K1pactQ3mSVBQmodWxWi3gLZTCI7jQHaZx0JxZSQYTJfzbQ6mh5whu3oIjWpFVebMyzP
- jfpmFxJFuPL3S/JP13MMLNWo12dyUNLy2NTsdJrZq60NcAwU2RMTsqHiRRSmDRGXLqxg
- 4jjg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUKCFccDs5QXt4EfurFJTC82XxbJ1EKi9g0sc+YsoXLgwaRWvRoQ/pbi6r5yGbhob6TGcmxyXkeMscGtg4zlIyoiZYqXqo=
-X-Gm-Message-State: AOJu0YzK5d2I+8M4vIV/nXGv1lc3N35ybahWC22gkcPaqIGzV/Eav2yA
- GTvehwDbNWaAt+X81t4fRqJx36MTKwM5YmATlyymsTEAhyayV4a4gd6IMExUQ50=
-X-Google-Smtp-Source: AGHT+IGYr8mbOlChhljYpDlrWpLH9oe8lvXe9307lziGOLW2iXNL5kziXjQtJrvtHuluQAwMuurIlA==
-X-Received: by 2002:a2e:bc26:0:b0:2ef:316e:8930 with SMTP id
- 38308e7fff4ca-2f01eacebe2mr26197591fa.42.1721741762348; 
- Tue, 23 Jul 2024 06:36:02 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.208.14])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a94380sm202242665e9.39.2024.07.23.06.36.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jul 2024 06:36:01 -0700 (PDT)
-Message-ID: <16970204-0835-4747-a8f1-798d77a74f42@linaro.org>
-Date: Tue, 23 Jul 2024 15:36:00 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG49-0007uZ-TG
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG47-0003dP-5R
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721743229;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=PS3LX1TII9sEr3/onHkgzq9UhztxYYG+k8/oE3yQ1i8=;
+ b=TBsGw5c7OmOfgCtwcNOZkrPh6DRzmmnyH7Fc0nF/R25qJrhx9th/Qs/OFptEUNpIIQRKVS
+ gk/bJ2t7IacZI69a82qcby3eZksWtYiP70ckLRu8hZDg7I5JvQwbADzdsA7uroJopHS9e8
+ E/F9ni4ZeMCZM3Hl2lXNlSef2rN6OEI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-42-9eO3jl__N9mgUdAOonDu5g-1; Tue,
+ 23 Jul 2024 10:00:24 -0400
+X-MC-Unique: 9eO3jl__N9mgUdAOonDu5g-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5EE501954126
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 14:00:23 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.91])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A4A031955D45; Tue, 23 Jul 2024 14:00:21 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/16] vfio queue
+Date: Tue, 23 Jul 2024 16:00:03 +0200
+Message-ID: <20240723140019.387786-1-clg@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] hw/misc/bcm2835_property: Restrict scope of
- start_num, number, otp_row
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20240723131029.1159908-1-peter.maydell@linaro.org>
- <20240723131029.1159908-4-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240723131029.1159908-4-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +77,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/7/24 15:10, Peter Maydell wrote:
-> In the long function bcm2835_property_mbox_push(), the variables
-> start_num, number and otp_row are used only in the four cases which
-> access OTP data, and their uses don't overlap with each other.
-> 
-> Make these variables have scope restricted to the cases where they're
-> used, so it's easier to read each individual case without having to
-> cross-refer up to the variable declaration at the top of the function
-> and check whether the variable is also used later in the loop.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   hw/misc/bcm2835_property.c | 34 ++++++++++++++++++++--------------
->   1 file changed, 20 insertions(+), 14 deletions(-)
+The following changes since commit 6af69d02706c821797802cfd56acdac13a7c9422:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Merge tag 'nvme-next-pull-request' of https://gitlab.com/birkelund/qemu into staging (2024-07-23 13:55:45 +1000)
+
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-vfio-20240723
+
+for you to fetch changes up to 6ac9efe6805af60de14481fdde7d340080d38324:
+
+  vfio/common: Allow disabling device dirty page tracking (2024-07-23 11:10:10 +0200)
+
+----------------------------------------------------------------
+vfio queue:
+
+* IOMMUFD Dirty Tracking support
+* Fix for a possible SEGV in IOMMU type1 container
+* Dropped initialization of host IOMMU device with mdev devices
+
+----------------------------------------------------------------
+Eric Auger (1):
+      hw/vfio/container: Fix SIGSEV on vfio_container_instance_finalize()
+
+Joao Martins (13):
+      vfio/pci: Extract mdev check into an helper
+      vfio/iommufd: Don't initialize nor set a HOST_IOMMU_DEVICE with mdev
+      backends/iommufd: Extend iommufd_backend_get_device_info() to fetch HW capabilities
+      vfio/iommufd: Return errno in iommufd_cdev_attach_ioas_hwpt()
+      vfio/iommufd: Introduce auto domain creation
+      vfio/{iommufd,container}: Remove caps::aw_bits
+      vfio/iommufd: Add hw_caps field to HostIOMMUDeviceCaps
+      vfio/{iommufd, container}: Invoke HostIOMMUDevice::realize() during attach_device()
+      vfio/iommufd: Probe and request hwpt dirty tracking capability
+      vfio/iommufd: Implement VFIOIOMMUClass::set_dirty_tracking support
+      vfio/iommufd: Implement VFIOIOMMUClass::query_dirty_bitmap support
+      vfio/migration: Don't block migration device dirty tracking is unsupported
+      vfio/common: Allow disabling device dirty page tracking
+
+Zhenzhong Duan (2):
+      vfio/ap: Don't initialize HOST_IOMMU_DEVICE with mdev
+      vfio/ccw: Don't initialize HOST_IOMMU_DEVICE with mdev
+
+ include/hw/vfio/vfio-common.h      |  15 +++
+ include/sysemu/host_iommu_device.h |   5 +-
+ include/sysemu/iommufd.h           |  13 ++-
+ backends/iommufd.c                 |  89 ++++++++++++++++-
+ hw/vfio/ap.c                       |   3 +
+ hw/vfio/ccw.c                      |   3 +
+ hw/vfio/common.c                   |  17 ++--
+ hw/vfio/container.c                |  10 +-
+ hw/vfio/helpers.c                  |  25 +++++
+ hw/vfio/iommufd.c                  | 196 +++++++++++++++++++++++++++++++++++--
+ hw/vfio/migration.c                |  12 ++-
+ hw/vfio/pci.c                      |  26 ++---
+ backends/trace-events              |   3 +
+ 13 files changed, 377 insertions(+), 40 deletions(-)
 
 
