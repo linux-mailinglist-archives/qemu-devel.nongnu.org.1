@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239549398AA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 05:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0F49398AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 05:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW6JB-00031a-MZ; Mon, 22 Jul 2024 23:35:25 -0400
+	id 1sW6JE-0003Cg-KZ; Mon, 22 Jul 2024 23:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW6J9-0002uS-Ho
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 23:35:23 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1sW6JC-00035n-6b
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 23:35:26 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sW6J7-0001yu-VG
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 23:35:23 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-260f057aa9bso2815508fac.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 20:35:21 -0700 (PDT)
+ id 1sW6JA-0001zD-9F
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 23:35:25 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-70d138e06e3so1921708b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 20:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721705720; x=1722310520; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721705723; x=1722310523; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0Aw83kLLuGjCQHx2MdR2LGZJ7cF9lloOkwjusYN+Kq0=;
- b=a2hNxd9okMXPrPsJgNol1bFaRISM+BTqi7Kr8Q37cGkAir4tges/a0aqXcPp4hW2XG
- gPFY6gilsf9DfB5d3KvNt6gbTZwyCpazx8xOXqyXEtvqn/OVA7uQmLPKqljVnZyGfEWg
- IRpRI+sR44zsVn8fe9A5USym8jb1fW/lK7bl5wK6zATUo3+2Cn1QJcUmzNlY9S/DlYJt
- vQBO97i6DjE1DC0rXZsFHOcUgst2M+FgFXKvIMMerFy0b5alc2eATIUPJdJwtiC0pg2E
- cFu0HQIc2ATgQg2VVvXS9mR/ME5JRAQYa4n3gHeoBD0CTr1VbYwBCRYLD/MM14kaJC2g
- U2hQ==
+ bh=bg9qUEQyPB3zLUZtLfqXq0g2/mBlvx+VDk4J1iPFK7Y=;
+ b=vV8wlmQajOqaKAwZXENLOCvbcOX8SmTEJZO9a8E/3vhyxCnZG7TTMJvgpffAW0UJKe
+ FuuHgd2LoHI7oJnC+XGi258kzTCWjso6NWazivYVL6z2AXtvNtaeSQa8BZx58gyD6kE+
+ tc3awAcXUKTf3VPrQx/U2x6yoExIr+PVYP2AAUTaQUH5gd1ddXnFyPGMk9ZPjRIXDtvn
+ My1Lt8pkDZHyQ66s6PAhy/XC+EXp+NLKc50gPnGEwVFSUvj0uyQQnwdU3G8jpkh1SnWG
+ sRyJNii7ukM3MxyLxjm9vdvSNDutKQiLBb5iBVuIYum5+qnQ85db6FS1fIbuvpOcqsa5
+ SLDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721705720; x=1722310520;
+ d=1e100.net; s=20230601; t=1721705723; x=1722310523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0Aw83kLLuGjCQHx2MdR2LGZJ7cF9lloOkwjusYN+Kq0=;
- b=cbjatLq+tI4ra2G/lH2kPIclMelM5BmQ/hzFXDOryaPfihUN6K/9HQaCoWp5qQiRi6
- PTjir6n/90pyHG5r/zgZdc3G120nNRxVpbiC5gtpIuJWi/D7WhO5k2Z6M21VqHgvfnAW
- 2GCOG4rUixXokTkH7NZ4JodTJCuGqZQYNFW1Gmqn+JUYoq5PqRdEE8+6oAyfuIukqCWk
- mlcTcGJH799DNJIZcX/0/iYrejnRY2JGExPPQocGKElGr+JW3npP0lFYWdlLPKy05shN
- KZKs0ZrkJH/Xzu4dxYzfYnryvsGZ9+4VlD/nLSPCRCvqV6QtN/423/HsNf8w9eiR1BjG
- RYfw==
-X-Gm-Message-State: AOJu0YzhHd3uwCDgmRphs4ryC4izEk8RDySvx0O97Gqo2HKf1sf51bHf
- N1YUzBEizQPqZ94fyNUD8mlRA2ITJrxOrjzftlhd8mRSaz9/UbTIoeGO4vEvZ3ZsKQ4xmVkXGcl
- +/FRmhg==
-X-Google-Smtp-Source: AGHT+IF0V+oohgp57Ifix300JeB1ZCupg0XVrWSm/A3RxXNMWdZKzLnEzZRNKorC2Xq+sV/IOqRbUw==
-X-Received: by 2002:a05:6870:d627:b0:260:fbc0:96f2 with SMTP id
- 586e51a60fabf-264692d60bdmr1545848fac.34.1721705720471; 
- Mon, 22 Jul 2024 20:35:20 -0700 (PDT)
+ bh=bg9qUEQyPB3zLUZtLfqXq0g2/mBlvx+VDk4J1iPFK7Y=;
+ b=VZ8GgrKRpPifGZTm/z2/TH7mi3CIrnynO2dy7zg29MM3FizYey8kegkufW+cnONsFw
+ +WDx+Fper0A43ZRLlGQeCPx5EqBsxJDuMDLsy7hsPE/+XEM0nSNeI+ufCGm7DlAU/ZiV
+ abE/ImB/yrpio72393Jz5A6HO7Q0EcVig8CNPbP3Hu1MSfS0BEOB1D4hOjNUki3CD7s7
+ xMbr/PGAFIzgC5HLKhPbhxPHUCRTnKZSgdEeC+DkaWvbBRKUv8dlu+3FVSseO20rNnkx
+ WzDjriMQaWXOg2aWaoSg35VlO+rGZ0APES4p/rY+bMsoWjUp6O6xCYfQg0YfI3bmenkK
+ IqwQ==
+X-Gm-Message-State: AOJu0YxFoHP6W46lRLKwV46oKwFKa2edalOg5KBsIdJlbPXeTS28ODZO
+ aMLbzk5ZE+lNKiYMF3jmDOkbnwxA0iCjpU1H7XZ8/t4LBdT89HCEjv01SG0bcIJFaHgBat8QGnp
+ 0LJOFLA==
+X-Google-Smtp-Source: AGHT+IGvciqi8cV0n+WG1q0Mb6FyyWyOw1eaxsFtweQ0HlZc2gP1bOyntZvczofZRoIR+h0e6UROCQ==
+X-Received: by 2002:a05:6a00:3991:b0:706:750c:8dda with SMTP id
+ d2e1a72fcca58-70d0847c8e3mr12793630b3a.6.1721705722751; 
+ Mon, 22 Jul 2024 20:35:22 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70d2b96bfcasm2171380b3a.87.2024.07.22.20.35.18
+ d2e1a72fcca58-70d2b96bfcasm2171380b3a.87.2024.07.22.20.35.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 20:35:20 -0700 (PDT)
+ Mon, 22 Jul 2024 20:35:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 09/12] target/s390x: Use user_or_likely in do_access_memset
-Date: Tue, 23 Jul 2024 13:34:48 +1000
-Message-ID: <20240723033451.546151-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/12] target/s390x: Use user_or_likely in access_memmove
+Date: Tue, 23 Jul 2024 13:34:49 +1000
+Message-ID: <20240723033451.546151-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240723033451.546151-1-richard.henderson@linaro.org>
 References: <20240723033451.546151-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,39 +91,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eliminate the ifdef by using a predicate that is
-always true with CONFIG_USER_ONLY.
+Invert the conditional, indent the block, and use the macro
+that expands to true for user-only.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/mem_helper.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ target/s390x/tcg/mem_helper.c | 54 +++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
 
 diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 6cdbc34178..5311a15a09 100644
+index 5311a15a09..331a35b2e5 100644
 --- a/target/s390x/tcg/mem_helper.c
 +++ b/target/s390x/tcg/mem_helper.c
-@@ -225,10 +225,7 @@ static void do_access_memset(CPUS390XState *env, vaddr vaddr, char *haddr,
-                              uint8_t byte, uint16_t size, int mmu_idx,
-                              uintptr_t ra)
+@@ -296,41 +296,39 @@ static void access_memmove(CPUS390XState *env, S390Access *desta,
+                            S390Access *srca, uintptr_t ra)
  {
--#ifdef CONFIG_USER_ONLY
--    memset(haddr, byte, size);
--#else
--    if (likely(haddr)) {
-+    if (user_or_likely(haddr)) {
-         memset(haddr, byte, size);
+     int len = desta->size1 + desta->size2;
+-    int diff;
+ 
+     assert(len == srca->size1 + srca->size2);
+ 
+     /* Fallback to slow access in case we don't have access to all host pages */
+-    if (unlikely(!desta->haddr1 || (desta->size2 && !desta->haddr2) ||
+-                 !srca->haddr1 || (srca->size2 && !srca->haddr2))) {
+-        int i;
++    if (user_or_likely(desta->haddr1 &&
++                       srca->haddr1 &&
++                       (!desta->size2 || desta->haddr2) &&
++                       (!srca->size2 || srca->haddr2))) {
++        int diff = desta->size1 - srca->size1;
+ 
+-        for (i = 0; i < len; i++) {
+-            uint8_t byte = access_get_byte(env, srca, i, ra);
+-
+-            access_set_byte(env, desta, i, byte, ra);
+-        }
+-        return;
+-    }
+-
+-    diff = desta->size1 - srca->size1;
+-    if (likely(diff == 0)) {
+-        memmove(desta->haddr1, srca->haddr1, srca->size1);
+-        if (unlikely(srca->size2)) {
+-            memmove(desta->haddr2, srca->haddr2, srca->size2);
+-        }
+-    } else if (diff > 0) {
+-        memmove(desta->haddr1, srca->haddr1, srca->size1);
+-        memmove(desta->haddr1 + srca->size1, srca->haddr2, diff);
+-        if (likely(desta->size2)) {
+-            memmove(desta->haddr2, srca->haddr2 + diff, desta->size2);
++        if (likely(diff == 0)) {
++            memmove(desta->haddr1, srca->haddr1, srca->size1);
++            if (unlikely(srca->size2)) {
++                memmove(desta->haddr2, srca->haddr2, srca->size2);
++            }
++        } else if (diff > 0) {
++            memmove(desta->haddr1, srca->haddr1, srca->size1);
++            memmove(desta->haddr1 + srca->size1, srca->haddr2, diff);
++            if (likely(desta->size2)) {
++                memmove(desta->haddr2, srca->haddr2 + diff, desta->size2);
++            }
++        } else {
++            diff = -diff;
++            memmove(desta->haddr1, srca->haddr1, desta->size1);
++            memmove(desta->haddr2, srca->haddr1 + desta->size1, diff);
++            if (likely(srca->size2)) {
++                memmove(desta->haddr2 + diff, srca->haddr2, srca->size2);
++            }
+         }
      } else {
-         MemOpIdx oi = make_memop_idx(MO_UB, mmu_idx);
-@@ -236,7 +233,6 @@ static void do_access_memset(CPUS390XState *env, vaddr vaddr, char *haddr,
-             cpu_stb_mmu(env, vaddr + i, byte, oi, ra);
+-        diff = -diff;
+-        memmove(desta->haddr1, srca->haddr1, desta->size1);
+-        memmove(desta->haddr2, srca->haddr1 + desta->size1, diff);
+-        if (likely(srca->size2)) {
+-            memmove(desta->haddr2 + diff, srca->haddr2, srca->size2);
++        for (int i = 0; i < len; i++) {
++            uint8_t byte = access_get_byte(env, srca, i, ra);
++            access_set_byte(env, desta, i, byte, ra);
          }
      }
--#endif
  }
- 
- static void access_memset(CPUS390XState *env, S390Access *desta,
 -- 
 2.43.0
 
