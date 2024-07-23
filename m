@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B834E939C84
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 10:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E40D9939CDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 10:40:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWAnT-0007rS-BQ; Tue, 23 Jul 2024 04:22:59 -0400
+	id 1sWB3h-0000PX-DX; Tue, 23 Jul 2024 04:39:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWAnP-0007Yc-2W
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 04:22:55 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sWB3e-0000OH-Gc
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 04:39:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWAnN-0000Zq-FN
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 04:22:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721722973; x=1753258973;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=4N1TSsvOhvveEK5eWpQA+zE0ellzIbO3VlwNu6lB/xo=;
- b=Rqu+0ClkX9EyRJgt6xI3bSjdX6fkqVWWGgtt2dgv1FK5j0yJJPGVVPZn
- 4tHLXuyp1aL0X13oCieIdyjKjfSY4DkXevD3P1CmTubLEwbY3p80tMqAh
- UFx1FNM9YJX5ftGa8xQgwfwbMUeQL9XcnX64Qqdm7fcmYuLxmojKo0RAo
- jdAIcF5+seiPCp06dZdT/t+DGlbwIAl01UNFNU8fzjasfsJlN0Zu8lThz
- Y08tqu7HnC40XrWvMEc5cUBMu7mTq2WRNJ3+cLAMS+KWT9tzDAtL70Kwq
- L3G6xzdXmagZXp0AfGf85QdhX23V5wy/agm2X5iHTONSut1vp6Fxc1Sg2 Q==;
-X-CSE-ConnectionGUID: 1jVPK7TTQwuDqlMQ3YgHPg==
-X-CSE-MsgGUID: tnJL2SIsStCtFvxME+e6Tw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="19458707"
-X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="19458707"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2024 01:22:52 -0700
-X-CSE-ConnectionGUID: Hejwk+HiQkOc0rpncfbDfg==
-X-CSE-MsgGUID: L6T/ZmDFT2qKLK4WYiT2og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="52051807"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 23 Jul 2024 01:22:48 -0700
-Date: Tue, 23 Jul 2024 16:38:32 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sWB3c-0003Gb-AH
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 04:39:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721723978;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=yrs/SLY9xwwqmFO6d/Qs1BFfSGGePC25S3fZ6l9P39Q=;
+ b=R/aGiDY1J0kFcUyT99dujtDJEhsN8Hz9xAYJ4RnTP+ua3Ex/dH+moo01A3abtAPmKOsOe8
+ 9AF/DyFTPrTZiJw1wuHCyGDsc2Ul7Ve4kc3KVMxF0evD50LdoeoYejrhSijYzM+TAQD7rK
+ prxMikdBiBZgp9JI0z0M4u8nlD76U1o=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-FX7PXVcqPVyzJJk4mnJwWw-1; Tue,
+ 23 Jul 2024 04:39:34 -0400
+X-MC-Unique: FX7PXVcqPVyzJJk4mnJwWw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A37941955D4C; Tue, 23 Jul 2024 08:39:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.63])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1EA3E1955D45; Tue, 23 Jul 2024 08:39:25 +0000 (UTC)
+Date: Tue, 23 Jul 2024 09:39:22 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [RFC PATCH v5 5/8] .gitattributes: add Rust diff and merge
- attributes
-Message-ID: <Zp9sCMwJA2btMuTd@intel.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [RFC PATCH v5 3/8] CI: Add build-system-rust-debian job
+Message-ID: <Zp9sOsyefNXsgiXA@redhat.com>
 References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
- <990592c7c93a3b2b692dd773c4c9191a82146a80.1721648163.git.manos.pitsidianakis@linaro.org>
+ <ef587f7f38ad5714d5c8eeb05448d19a6130799e.1721648163.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <990592c7c93a3b2b692dd773c4c9191a82146a80.1721648163.git.manos.pitsidianakis@linaro.org>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+In-Reply-To: <ef587f7f38ad5714d5c8eeb05448d19a6130799e.1721648163.git.manos.pitsidianakis@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,26 +88,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 22, 2024 at 02:43:35PM +0300, Manos Pitsidianakis wrote:
-> Date: Mon, 22 Jul 2024 14:43:35 +0300
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: [RFC PATCH v5 5/8] .gitattributes: add Rust diff and merge
->  attributes
-> X-Mailer: git-send-email 2.44.0
+On Mon, Jul 22, 2024 at 02:43:33PM +0300, Manos Pitsidianakis wrote:
+> Add job that builds with rust support enabled on debian.
 > 
-> Set rust source code to diff=rust (built-in with new git versions)
-> and merge=binary for Cargo.lock files (they should not be merged but
-> auto-generated by cargo)
-> 
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 > ---
->  .gitattributes | 3 +++
->  1 file changed, 3 insertions(+)
+>  .gitlab-ci.d/buildtest.yml | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+> index e3a0758bd9..e025e2cbf6 100644
+> --- a/.gitlab-ci.d/buildtest.yml
+> +++ b/.gitlab-ci.d/buildtest.yml
+> @@ -107,6 +107,17 @@ crash-test-debian:
+>      - make NINJA=":" check-venv
+>      - pyvenv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
+>  
+> +build-system-rust-debian:
+> +  extends:
+> +    - .native_build_job_template
+> +    - .native_build_artifact_template
+> +  needs:
+> +    job: amd64-debian-container
+> +  variables:
+> +    IMAGE: debian
+> +    CONFIGURE_ARGS: --enable-rust
+> +    TARGETS: aarch64-softmmu
+> +
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Do we actually want to do this ?  With the updated lcitool containers,
+any of the existing build-system-XXXX jobs ought to be able to detect
+availability of rust and build with it. Re-using existing jobs means
+we burn less CI time.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
