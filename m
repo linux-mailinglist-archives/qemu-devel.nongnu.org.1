@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBAE939B55
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91797939B65
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:06:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW9YY-00067N-A8; Tue, 23 Jul 2024 03:03:30 -0400
+	id 1sW9Ya-0006GH-S5; Tue, 23 Jul 2024 03:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sW9YW-00061f-Id
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:28 -0400
+ id 1sW9YY-00068K-1S
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sW9YU-0000q8-Ud
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:28 -0400
+ id 1sW9YW-0000r8-6U
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721718206;
+ s=mimecast20190719; t=1721718207;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QDm+bALEuRyr/I6SUsJtjqWPSF0aymjvBOySRpCpJs8=;
- b=PRFZE4wnHIlVNgWcMtpCGjnZtsnFNIq0xOnAEUzaavekuCZ6rIuLEQme77V/Nef60IL39a
- fD4qSH9skpZUsd4dl6LCtaqAOYY9ExGxgqsyKqh9kQIkaTTFwJ/cD7WTbiawMqMACWvcCv
- zAbgw4Y4DsTWcplRLR72Y4XCdyZNplQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8jCxwWkVPe6MoXwtRPqnvk5WpSWgmfRj9bnpimrpPq8=;
+ b=eWL/8GO8p4gAVDfTYBLz+qrRbkSN3MO7HIm4/Bo585JImkbiUyIkUvpELBYNQHq49MFILG
+ +nzn1a/pdcuOn++hN1zUvl9LHiBtMPsZ/yMzXfy7+eQHWt1pgEMTgXDGpLcSwqdecc+TWg
+ w0fn0yJv17rQyfEkIizmQlhYM9tCzgQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-a384r1u9OJCQJclz191afQ-1; Tue,
- 23 Jul 2024 03:03:21 -0400
-X-MC-Unique: a384r1u9OJCQJclz191afQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-ClHCKOziNdWlDnn8hVHpjQ-1; Tue,
+ 23 Jul 2024 03:03:23 -0400
+X-MC-Unique: ClHCKOziNdWlDnn8hVHpjQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 74AFD1955D4A; Tue, 23 Jul 2024 07:03:20 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6990C19560B6; Tue, 23 Jul 2024 07:03:22 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.211])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F06873000192; Tue, 23 Jul 2024 07:03:18 +0000 (UTC)
+ id C71033000198; Tue, 23 Jul 2024 07:03:20 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL v2 12/25] qga: conditionalize schema for commands only
- supported on Windows
-Date: Tue, 23 Jul 2024 10:02:38 +0300
-Message-ID: <20240723070251.25575-13-kkostiuk@redhat.com>
+Subject: [PULL v2 13/25] qga: conditionalize schema for commands requiring
+ fsfreeze
+Date: Tue, 23 Jul 2024 10:02:39 +0300
+Message-ID: <20240723070251.25575-14-kkostiuk@redhat.com>
 In-Reply-To: <20240723070251.25575-1-kkostiuk@redhat.com>
 References: <20240723070251.25575-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -84,8 +84,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Daniel P. Berrangé <berrange@redhat.com>
 
 Rather than creating stubs for every command that just return
-QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema to
-fully exclude generation of the commands on non-Windows.
+QERR_UNSUPPORTED, use 'if' conditions in the schema to fully
+exclude generation of the filesystem freezing commands on POSIX
+platforms lacking the required APIs.
 
 The command will be rejected at QMP dispatch time instead,
 avoiding reimplementing rejection by blocking the stub commands.
@@ -104,94 +105,132 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20240712132459.3974109-13-berrange@redhat.com>
+Message-ID: <20240712132459.3974109-14-berrange@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands-posix.c |  9 ---------
- qga/qapi-schema.json | 15 ++++++++++-----
- 2 files changed, 10 insertions(+), 14 deletions(-)
+ qga/commands-posix.c | 47 --------------------------------------------
+ qga/qapi-schema.json | 15 +++++++++-----
+ 2 files changed, 10 insertions(+), 52 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 838dc3cf98..b7f96aa005 100644
+index b7f96aa005..9207cb7a8f 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -1207,8 +1207,6 @@ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
-     blockedrpcs = g_list_append(blockedrpcs, g_strdup("guest-fstrim"));
- #endif
+@@ -1144,39 +1144,6 @@ error:
  
--    blockedrpcs = g_list_append(blockedrpcs, g_strdup("guest-get-devices"));
+ #endif /* HAVE_GETIFADDRS */
+ 
+-#if !defined(CONFIG_FSFREEZE)
 -
-     return blockedrpcs;
- }
- 
-@@ -1419,13 +1417,6 @@ GuestOSInfo *qmp_guest_get_osinfo(Error **errp)
-     return info;
- }
- 
--GuestDeviceInfoList *qmp_guest_get_devices(Error **errp)
+-GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
 -{
 -    error_setg(errp, QERR_UNSUPPORTED);
 -
--    return NULL;
+-    return 0;
 -}
 -
- #ifndef HOST_NAME_MAX
- # ifdef _POSIX_HOST_NAME_MAX
- #  define HOST_NAME_MAX _POSIX_HOST_NAME_MAX
+-int64_t qmp_guest_fsfreeze_freeze(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-
+-    return 0;
+-}
+-
+-int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
+-                                       strList *mountpoints,
+-                                       Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-
+-    return 0;
+-}
+-
+-int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-
+-    return 0;
+-}
+-#endif /* CONFIG_FSFREEZE */
+-
+ #if !defined(CONFIG_FSTRIM)
+ GuestFilesystemTrimResponse *
+ qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
+@@ -1189,20 +1156,6 @@ qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
+ /* add unsupported commands to the list of blocked RPCs */
+ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+ {
+-#if !defined(CONFIG_FSFREEZE)
+-    {
+-        const char *list[] = {
+-            "guest-fsfreeze-status",
+-            "guest-fsfreeze-freeze", "guest-fsfreeze-freeze-list",
+-            "guest-fsfreeze-thaw", NULL};
+-        char **p = (char **)list;
+-
+-        while (*p) {
+-            blockedrpcs = g_list_append(blockedrpcs, g_strdup(*p++));
+-        }
+-    }
+-#endif
+-
+ #if !defined(CONFIG_FSTRIM)
+     blockedrpcs = g_list_append(blockedrpcs, g_strdup("guest-fstrim"));
+ #endif
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 9bd5aa53bc..de3fc46d2e 100644
+index de3fc46d2e..62462f092c 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -1527,7 +1527,8 @@
- # @pci: PCI device
+@@ -412,7 +412,8 @@
+ # Since: 0.15.0
  ##
- { 'enum': 'GuestDeviceType',
--  'data': [ 'pci' ] }
-+  'data': [ 'pci' ],
-+  'if': 'CONFIG_WIN32' }
+ { 'enum': 'GuestFsfreezeStatus',
+-  'data': [ 'thawed', 'frozen' ] }
++  'data': [ 'thawed', 'frozen' ],
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
  
  ##
- # @GuestDeviceIdPCI:
-@@ -1539,7 +1540,8 @@
- # Since: 5.2
+ # @guest-fsfreeze-status:
+@@ -429,7 +430,8 @@
+ # Since: 0.15.0
  ##
- { 'struct': 'GuestDeviceIdPCI',
--  'data': { 'vendor-id': 'uint16', 'device-id': 'uint16' } }
-+  'data': { 'vendor-id': 'uint16', 'device-id': 'uint16' },
-+  'if': 'CONFIG_WIN32' }
+ { 'command': 'guest-fsfreeze-status',
+-  'returns': 'GuestFsfreezeStatus' }
++  'returns': 'GuestFsfreezeStatus',
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
  
  ##
- # @GuestDeviceId:
-@@ -1553,7 +1555,8 @@
- { 'union': 'GuestDeviceId',
-   'base': { 'type': 'GuestDeviceType' },
-   'discriminator': 'type',
--  'data': { 'pci': 'GuestDeviceIdPCI' } }
-+  'data': { 'pci': 'GuestDeviceIdPCI' },
-+  'if': 'CONFIG_WIN32' }
+ # @guest-fsfreeze-freeze:
+@@ -451,7 +453,8 @@
+ # Since: 0.15.0
+ ##
+ { 'command': 'guest-fsfreeze-freeze',
+-  'returns': 'int' }
++  'returns': 'int',
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
  
  ##
- # @GuestDeviceInfo:
-@@ -1574,7 +1577,8 @@
-       '*driver-date': 'int',
-       '*driver-version': 'str',
-       '*id': 'GuestDeviceId'
--  } }
-+  },
-+  'if': 'CONFIG_WIN32' }
+ # @guest-fsfreeze-freeze-list:
+@@ -471,7 +474,8 @@
+ ##
+ { 'command': 'guest-fsfreeze-freeze-list',
+   'data':    { '*mountpoints': ['str'] },
+-  'returns': 'int' }
++  'returns': 'int',
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
  
  ##
- # @guest-get-devices:
-@@ -1586,7 +1590,8 @@
- # Since: 5.2
+ # @guest-fsfreeze-thaw:
+@@ -488,7 +492,8 @@
+ # Since: 0.15.0
  ##
- { 'command': 'guest-get-devices',
--  'returns': ['GuestDeviceInfo'] }
-+  'returns': ['GuestDeviceInfo'],
-+  'if': 'CONFIG_WIN32' }
+ { 'command': 'guest-fsfreeze-thaw',
+-  'returns': 'int' }
++  'returns': 'int',
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
  
  ##
- # @GuestAuthorizedKeys:
+ # @GuestFilesystemTrimResult:
 -- 
 2.45.2
 
