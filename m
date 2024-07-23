@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F2C939F4A
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606DE939F5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWDIL-0003sA-Gb; Tue, 23 Jul 2024 07:03:06 -0400
+	id 1sWDLs-0002GE-PH; Tue, 23 Jul 2024 07:06:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDHt-00036k-0V
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:02:34 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1sWDLp-0001n2-Ut
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:06:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDHr-0003MI-8V
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:02:32 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1sWDLn-0004S6-O5
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:06:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721732550;
+ s=mimecast20190719; t=1721732793;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IT1q+ndAF7/G1yTMy+JX4lYogGoMzMPsKs7/eXYu52g=;
- b=bPun50pW6x7W6gxCFvbB26CSt6y2OqQMBc1n5eXIAiQQNxY2vgL/4pbYiRZhBTtupwoRkj
- 7UJlY3ofAVZOusAXGLRwUYAtjtCjYBywmv3TZJHQQ7Hml2EbFwc8htpmazn2U3T2fKdkAt
- S43FEtu1GHjO0ywmQ4S36bbBUS3IXgU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XOAq5zkHxaGlh/Z/41MZ39P9om+dFtrMCfFrF2bmocc=;
+ b=BmRsywi78S34WXCYgltLX/VvyEoRTWq2xCPYISQEHKmLJmCvbV7ZNWquw5SDkypATVyWyg
+ YuZaGbe70zw6fhtoKIVBtMNtTk3O1AYWyvl5HoUbiNZXzxigzi3xfUx+p/ntV8zc/Xy/WG
+ DLGcCzjRmTpP1dQHogBTwv72T1PORKs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-669-17mg-QhqMQaLMhF_3Nm5Zw-1; Tue, 23 Jul 2024 07:02:29 -0400
-X-MC-Unique: 17mg-QhqMQaLMhF_3Nm5Zw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a77c9c6bdadso49664966b.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 04:02:28 -0700 (PDT)
+ us-mta-621-eHXChOdbNd6-er7SLwXSag-1; Tue, 23 Jul 2024 07:06:32 -0400
+X-MC-Unique: eHXChOdbNd6-er7SLwXSag-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3679ab94cdbso2870775f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 04:06:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721732548; x=1722337348;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IT1q+ndAF7/G1yTMy+JX4lYogGoMzMPsKs7/eXYu52g=;
- b=xSUa+jupLeX3CUUjwnkSXVnGDbc/remrO6m7zlboIjlgbITJc/XsZP66BwlGiNT0ty
- Tu4i8sIEdULO6mQoLW5BiqCpm4TjWc45VzDmQjf+h3vSKHouEVGqLPeEJp//kQ7XHI6O
- xjgzOefbMGCdbuvmt5l1Z+Xq7l+eTWxfWyRUh5P+UAuacAiOJW94meecK0Em0V+aFxof
- RhpCqogy+IbCLFe5WLaNG7qHdh1qb59sRiSc0yLzzr8Hb3kMVWICq+CjjlyIV9gNp8kz
- W3XFDRYRHHcIkPYWKBZ7U8Qmey9J6lQ5W57WsZC/MImghe+6Pm4Cd2LhedA1l+aUtH8h
- 151g==
-X-Gm-Message-State: AOJu0Yx2Uf2KDB1xTV+efA+llQrhWXqHNflsjQodhd8GXK+W6L+1PIMs
- 18EpV1KH14oG1UiIZNi2bN/pRcWSXfIG+9y7rHds92zYyqSIh8Iu68sqhsE8w4C3/P7hMtwlX09
- aiUjV1QvZJxmZW+avayXUpGHLhPBaEzbtINmA1ih/37S2BL7SYtDL
-X-Received: by 2002:a17:907:940e:b0:a7a:a33e:47b8 with SMTP id
- a640c23a62f3a-a7aa33e4e08mr42086066b.66.1721732547880; 
- Tue, 23 Jul 2024 04:02:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhFFUtGXOCyf2FNeZea+Pgsi+CNp6azqhJ3uoZljEIBV4nLiVhV95J7Bk1JUioBRC6Kp2qbw==
-X-Received: by 2002:a17:907:940e:b0:a7a:a33e:47b8 with SMTP id
- a640c23a62f3a-a7aa33e4e08mr42083866b.66.1721732547257; 
- Tue, 23 Jul 2024 04:02:27 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc7:440:9c9a:ffee:509d:1766:aa7f])
+ d=1e100.net; s=20230601; t=1721732791; x=1722337591;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XOAq5zkHxaGlh/Z/41MZ39P9om+dFtrMCfFrF2bmocc=;
+ b=AzzqDal1XeqEp5vxsAu9EwgVG4wMb7YyBruwo9ke2IX8BbKpe4JUwIBEezywldeITF
+ dMEL19YIg8zD1AVmAk051HqKx4WpFjdhT+nYYcj1JHHlJK4NCZ1SKxQpXGSqZni/QF/q
+ Fi0o2l+r9NkZCDM35St7J1E5c1W1upbAZqh+a74lJqcx9sUqkJ3drrg8UbonHSegjRxR
+ Pvq+MT98TbBdfZc24k2zioJE9XGw96tkqSyJJR3acaogQf4WgjZnWmRUzIExwmrpNRZN
+ /1F1eRCUEYJaQczUBmhT7ATKKjqPXH/BULHqjGEADA4aR0hDubucVu3g6mX5+9QDoUwe
+ HeUw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUMOKdqcNF53Ri6aH23LYB6L+w9687Nep+scD3HD6vZOQNILzkODTr7Xa1V2Sa/HOpQqlRIY58pMreq2dgt8ef3JwsWuhk=
+X-Gm-Message-State: AOJu0YwjbOalawFx2lirFmLEZ3lAqayPdJjFVS0ncVXvV/joS1IyJh2Y
+ hdNi4M24Dr0c/xAYq9HF43xxv9espTpkx16kt5kz5zcrHqX6A2NvfEA8EiNCpowenygkTMDtZ0q
+ sA47kM6p7Z+XWTfino1XwAldOjiJojPS/edfCjj3lmEH3Bt3BsHls
+X-Received: by 2002:a05:6000:1283:b0:368:3b83:65be with SMTP id
+ ffacd0b85a97d-369bae3585amr6025961f8f.26.1721732791344; 
+ Tue, 23 Jul 2024 04:06:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHi4xI+jVX3YLD584Qjr/tIQouYsJ+mk+RikR5RriXcnYwEawy9VdttrlWZzs7lPO+QRdOCA==
+X-Received: by 2002:a05:6000:1283:b0:368:3b83:65be with SMTP id
+ ffacd0b85a97d-369bae3585amr6025921f8f.26.1721732790426; 
+ Tue, 23 Jul 2024 04:06:30 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d74b:1cd0:4af1:f18b:763c:5dac?
+ (p200300cfd74b1cd04af1f18b763c5dac.dip0.t-ipconnect.de.
+ [2003:cf:d74b:1cd0:4af1:f18b:763c:5dac])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7a3c7e7871sm530553566b.96.2024.07.23.04.02.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 04:02:26 -0700 (PDT)
-Date: Tue, 23 Jul 2024 07:02:23 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PULL v2 34/61] virtio-net: Implement SR-IOV VF
-Message-ID: <20240723070146-mutt-send-email-mst@kernel.org>
-References: <cover.1721731723.git.mst@redhat.com>
- <c2d6db6a1f39780b24538440091893f9fbe060a7.1721731723.git.mst@redhat.com>
- <a034545a-287e-4320-8bb3-57937f431cbe@daynix.com>
+ ffacd0b85a97d-368787eba8csm11263181f8f.91.2024.07.23.04.06.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jul 2024 04:06:29 -0700 (PDT)
+Message-ID: <322e0561-dd22-43c2-8754-6d1a13fcd03e@redhat.com>
+Date: Tue, 23 Jul 2024 13:06:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a034545a-287e-4320-8bb3-57937f431cbe@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/63] virtio,pci,pc: features,fixes
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <cover.1721607331.git.mst@redhat.com>
+ <438af529-ad2e-4500-9347-387317255ae0@linaro.org>
+ <27fce655-4345-4ee7-af0a-0f11bde7074d@redhat.com>
+ <20240723064525-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20240723064525-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -97,20 +106,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 23, 2024 at 08:00:57PM +0900, Akihiko Odaki wrote:
-> On 2024/07/23 19:58, Michael S. Tsirkin wrote:
-> > From: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > 
-> > A virtio-net device can be added as a SR-IOV VF to another virtio-pci
-> > device that will be the PF.
-> 
-> This does not work without patch "hw/pci: Do not add ROM BAR for SR-IOV VF"
-> because virtio-net-pci has a ROM file. Sorry, I should have noted that.
-> 
-> Regards,
-> Akihiko Odaki
+On 23.07.24 12:45, Michael S. Tsirkin wrote:
+> On Tue, Jul 23, 2024 at 12:18:48PM +0200, Hanna Czenczek wrote:
+>> On 22.07.24 23:32, Richard Henderson wrote:
+>>> On 7/22/24 10:16, Michael S. Tsirkin wrote:
+>>>> A couple of fixes are outstanding, will merge later.
+>>>>
+>>>>
+>>>> The following changes since commit
+>>>> a87a7c449e532130d4fa8faa391ff7e1f04ed660:
+>>>>
+>>>>     Merge tag 'pull-loongarch-20240719'
+>>>> ofhttps://gitlab.com/gaosong/qemu into staging (2024-07-19 16:28:28
+>>>> +1000)
+>>>>
+>>>> are available in the Git repository at:
+>>>>
+>>>>     https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git
+>>>> tags/for_upstream
+>>>>
+>>>> for you to fetch changes up to 67d834362c55d6fca6504975bc34755606f17cf2:
+>>>>
+>>>>     virtio: Always reset vhost devices (2024-07-21 14:45:56 -0400)
+>>>>
+>>>> ----------------------------------------------------------------
+>>>> virtio,pci,pc: features,fixes
+>>>>
+>>>> pci: Initial support for SPDM Responders
+>>>> cxl: Add support for scan media, feature commands, device patrol scrub
+>>>>       control, DDR5 ECS control, firmware updates
+>>>> virtio: in-order support
+>>>> virtio-net: support for SR-IOV emulation (note: known issues on s390,
+>>>>                                             might get reverted if not
+>>>> fixed)
+>>>> smbios: memory device size is now configurable per Machine
+>>>> cpu: architecture agnostic code to support vCPU Hotplug
+>>>>
+>>>> Fixes, cleanups all over the place.
+>>>>
+>>>> Signed-off-by: Michael S. Tsirkin<mst@redhat.com>
+>>> Fails ubsan testing:
+>>>
+>>> https://gitlab.com/qemu-project/qemu/-/jobs/7397450714
+>>>
+>>> ../publish/hw/net/virtio-net.c:3895:18: runtime error: member access
+>>> within null pointer of type 'struct vhost_net'
+>> Honestly, I saw this piece of code, but concluded it already doesn’t make
+>> sense, so I assumed someone™ who wrote this would know why it’s been written
+>> this way, and I should rather not touch it.
+>>
+>> Specifically, the problem is that get_vhost_net() can return a NULL
+>> pointer[1], which is fine, but virtio_net_get_vhost() never checks this.  I
+>> assumed this was written with intent (i.e. `(uintptr_t)&net->dev ==
+>> (uintptr_t)net`, so that NULL remains NULL), because it’s so obvious that
+>> get_vhost_net() can happily return NULL under many circumstances, but maybe
+>> not.
+>>
+>> The same theoretically applies to virtio_crypto_get_vhost(), although I
+>> don’t think that can ever be NULL in practice.
+>>
+>> I’ll re-send the reset patch in a series with two patches that fix those two
+>> functions to check for NULL and explicitly return NULL if necessary.  In the
+>> meantime, it probably makes sense to drop it from this pull request.
+>>
+>> Hanna
+>>
+>> [1] For some reason, it uses integer 0 throughout to signify NULL. That was
+>> another reason that put me off touching this.
+> drop what specifically?
 
-right, but it's harmless since sriov is off by default -
-so you can just send a patch on top.
+My patch, "virtio: Always reset vhost devices".
+
+Judging from the CI trace, the problem to me appears to be that not 
+making get_vhost() depend on vhost_started lets ubsan find a way to have 
+get_vhost_net() return NULL (which I don’t find surprising, that’s why 
+we check get_vhost()’s return value for whether it’s NULL).  It then 
+complains about the `&net->dev` in virtio_net_get_vhost(), because net 
+is NULL, and it’s not entirely clear that `&net->dev == NULL`, too (it 
+is, which is why I decided to leave that piece of code be, originally).
+
+So dropping my patch should make CI succeed again.
+
+Hanna
 
 
