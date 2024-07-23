@@ -2,67 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033579399D1
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 607DD93999F
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW95C-0004Bw-VE; Tue, 23 Jul 2024 02:33:12 -0400
+	id 1sW8uu-00031E-Tc; Tue, 23 Jul 2024 02:22:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1sW954-0004BM-KZ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:33:03 -0400
-Received: from galois.linutronix.de ([193.142.43.55])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sW8un-0002z3-CT
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:22:25 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t-8ch@linutronix.de>)
- id 1sW952-0003mn-Ee
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:33:02 -0400
-Date: Tue, 23 Jul 2024 08:32:42 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1721716363;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hXqan0tb6MQ+wTC7mfNkEitlRIBF60hu07WK8wxDxJg=;
- b=dm8ObF0o1V2K4uWtzij3B3awXCPqU+rFk/Cd0CW+B9sGRTmu4DWrBX6QpqlEbLdA4vQWRQ
- PV6wozra6tnIiq1meoYejdKJhaFJ1jvCgRw/BEin9Ax8XYSyL8/WGlthg+tiwEacIjXlTs
- nzkLNrxDGlz4IoytoqxDZBDAz0bdaAbyaQ2ky8o+g0i+YR9wYOoAzefaIxaq1BH3P6DH2S
- SukAIbLRsLn/CdADJJRi0O14BImUrW9lzISOuY+lNjLz2/cT74E14QRfcitXDtRVcu8ldK
- p2D8tRaJzx3mlEwWGntK0nSqVlcO4BdL1UqS0q3VWy59nGN8f0YjJkH/A/MFIw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1721716363;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hXqan0tb6MQ+wTC7mfNkEitlRIBF60hu07WK8wxDxJg=;
- b=Jf92PZpEMXuLl5liLzOFmRnUYIqQxpCe4Fom9FCDN3cw9F4P7nwPKUv6hFHD9dWZCb08k4
- DPhl8OOj5BMKHCDg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <t-8ch@linutronix.de>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
- Kashyap Chamarthy <kchamart@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
-Subject: Re: [PATCH v6 4/4] docs: add test for firmware.json QAPI
-Message-ID: <20240723080952-f0b6b263-d99b-4cf9-8943-32b627db0cfd@linutronix.de>
-References: <20240719-qapi-firmware-json-v6-0-c2e3de390b58@linutronix.de>
- <20240719-qapi-firmware-json-v6-4-c2e3de390b58@linutronix.de>
- <20247471-ba88-4757-b522-5d750e378fc4@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sW8ui-0001uB-9Z
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:22:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721715740; x=1753251740;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=nxr7+tBuqop0Fy0B97ZVAaydhGMKvdSjcyv2uVlr4Zo=;
+ b=hY+gheDkXve5iKRreCmWi+iNXrufEb9XbJtzR9mcK6IsXyDDkpUNkiwR
+ HPlXN659CbHfCOh4p+7h+w/en5MIUvvahPl9IdiWe6nRK/rNLndqRATAa
+ eLQz9oZfbpypJjaI8v6mwy26DY0g/19j7wmuUTT2GWjj+qcjY4h+tT1mz
+ sUXUzWewGxqILeudBNecbPd08k/du0VN2cwjufoaxIysOHeI3ZRWckx9b
+ +QtKeXYT6APyq0runeVwS5Z/WKaHcEuNXaytrGBbKlfijx0ndNcLafXMP
+ E2sP4V5ZEI+TdA4YRjll8Ri7/0NE/kgRbX6xeyPRZBHNqialcDxXStwd6 g==;
+X-CSE-ConnectionGUID: NvWoyEjiRmCiXZK7h8tkBQ==
+X-CSE-MsgGUID: CpLElBibS7+m2jCilFZt4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="12661105"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="12661105"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 23:22:16 -0700
+X-CSE-ConnectionGUID: JFPvfVizQcmZcKB7UswOQw==
+X-CSE-MsgGUID: pJznqixsTTCO4fSl/Nq5hw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="56682032"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 22 Jul 2024 23:22:13 -0700
+Date: Tue, 23 Jul 2024 14:37:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v5 1/8] build-sys: Add rust feature option
+Message-ID: <Zp9PxB4ZyLDgWGtM@intel.com>
+References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
+ <cdba13875d38feb836468a73509d24a88c8332ca.1721648163.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20247471-ba88-4757-b522-5d750e378fc4@linaro.org>
-Received-SPF: pass client-ip=193.142.43.55; envelope-from=t-8ch@linutronix.de;
- helo=galois.linutronix.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+In-Reply-To: <cdba13875d38feb836468a73509d24a88c8332ca.1721648163.git.manos.pitsidianakis@linaro.org>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,68 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+Hi Manos,
 
-On Tue, Jul 23, 2024 at 12:15:24AM GMT, Philippe Mathieu-Daudé wrote:
-> Hi Thomas,
+On Mon, Jul 22, 2024 at 02:43:31PM +0300, Manos Pitsidianakis wrote:
+> Date: Mon, 22 Jul 2024 14:43:31 +0300
+> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Subject: [RFC PATCH v5 1/8] build-sys: Add rust feature option
+> X-Mailer: git-send-email 2.44.0
 > 
-> On 19/7/24 09:37, Thomas Weißschuh wrote:
-> > To make sure that the QAPI description stays valid, add a testcase.
-> > 
-> > Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > Link: https://lore.kernel.org/qemu-devel/d9ce0234-4beb-4b90-b14c-76810d3b81d7@linaro.org/
-> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> >   docs/meson.build | 5 +++++
-> >   1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/docs/meson.build b/docs/meson.build
-> > index 9040f860ae1a..bcca45a342a3 100644
-> > --- a/docs/meson.build
-> > +++ b/docs/meson.build
-> > @@ -99,3 +99,8 @@ if build_docs
-> >     alias_target('html', sphinxdocs)
-> >     alias_target('man', sphinxmans)
-> >   endif
-> > +
-> > +test('QAPI firmware.json regression tests', python,
-> > +     args: [qapi_gen.full_path(), '-o', meson.current_build_dir() / 'qapi',
-> > +            meson.current_source_dir() / 'interop/firmware.json'],
-> > +     env: test_env, suite: ['qapi-schema', 'qapi-interop'])
+> Add rust feature in meson.build, configure, to prepare for adding Rust
+> code in the followup commits.
 > 
-> Did you test this on GitLab CI? Many jobs are failing as:
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>  MAINTAINERS                   |  5 +++++
+>  configure                     | 12 ++++++++++++
+>  meson.build                   | 17 ++++++++++++++++-
+>  Kconfig                       |  1 +
+>  Kconfig.host                  |  3 +++
+>  meson_options.txt             |  5 +++++
+>  rust/Kconfig                  |  0
+>  scripts/meson-buildoptions.sh |  3 +++
+>  8 files changed, 45 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/Kconfig
 > 
-> Program /builds/qemu/build/pyvenv/bin/sphinx-build skipped: feature docs
-> disabled
-> ../docs/meson.build:106:10: ERROR: Unknown variable "test_env".
-> 
-> See https://gitlab.com/philmd/qemu/-/pipelines/1383618475/failures
 
-No, I only tested it locally. It works there.
-I'll try to setup a personal GitLab CI.
+[snip]
 
-To fix the issue, I think "test_env" can be removed.
-The other calls to "qapi_gen", which 
+> diff --git a/meson.build b/meson.build
+> index a1e51277b0..a3f346ab3c 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -70,6 +70,14 @@ if host_os == 'darwin' and \
+>    all_languages += ['objc']
+>    objc = meson.get_compiler('objc')
+>  endif
+> +if get_option('have_rust') and meson.version().version_compare('<1.0.0')
+> +  error('Rust support requires Meson version >=1.0.0')
+> +endif
+> +have_rust = false
+> +if not get_option('disable_rust') and add_languages('rust', required: get_option('have_rust'), native: false)
+> +  rustc = meson.get_compiler('rust')
+> +  have_rust = true
+> +endif
 
-As a fix for this issue, I think "test_env" can be removed,
-and apparently "qapi_gen" can also be executed without the explicit
-python reference:
+Only a nit, "disable_rust" seems redundant, and "have_rust" is enough.
 
+Others LGTM,
 
-diff --git a/docs/meson.build b/docs/meson.build
-index bcca45a342a3..322452c87787 100644
---- a/docs/meson.build
-+++ b/docs/meson.build
-@@ -100,7 +100,7 @@ if build_docs
-   alias_target('man', sphinxmans)
- endif
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
--test('QAPI firmware.json regression tests', python,
--     args: [qapi_gen.full_path(), '-o', meson.current_build_dir() / 'qapi',
-+test('QAPI firmware.json regression tests', qapi_gen,
-+     args: ['-o', meson.current_build_dir() / 'qapi',
-             meson.current_source_dir() / 'interop/firmware.json'],
--     env: test_env, suite: ['qapi-schema', 'qapi-interop'])
-+     suite: ['qapi-schema', 'qapi-interop'])
 
