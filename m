@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F1C9397BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 03:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CEB9397BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 03:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW3yl-0002Fs-TY; Mon, 22 Jul 2024 21:06:11 -0400
+	id 1sW3ym-0002Gj-JH; Mon, 22 Jul 2024 21:06:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3yj-00028w-HI
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:09 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3yk-0002Dp-Ow
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:10 -0400
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3yh-0008QO-Bu
- for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:09 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-26106ec9336so1840097fac.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:06:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sW3yi-0008Qp-HW
+ for qemu-devel@nongnu.org; Mon, 22 Jul 2024 21:06:10 -0400
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-447f25e65f9so24636371cf.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 18:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cs.unc.edu; s=google; t=1721696765; x=1722301565; darn=nongnu.org;
+ d=cs.unc.edu; s=google; t=1721696767; x=1722301567; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XJ8HWFv9ihWOF+E22RR1hIhCiKb1NCoJ/EAF7Qw8N2w=;
- b=JH/gdf5vLxE2C/xGE/WxYi2tzZOVXezxM0pgjfaGzjbNYUDiJsiWs14qVL/lFBhYcv
- p5NpsjF9m2QlaoS9Dstm3jU2wfo5gOHq5deHIFDuWm2+AQSVgIBmsJ8ODqHBBR6TFbTE
- Ai2wxSuf0XyDbNW4hqubdFM4ytY1HqwlK374ONbf4jMqM4kXUChy9Gd3u2FYLg0o6mgw
- j0xR4qHJSLqJjeJn4QYtWL6vUwP5uARf0oauOf2yRiUGma5m0q7LTxKwGpKTbOXpapde
- z7XVUNxm51RU0RI1sbXkXhIcS5iAHypDP/54Ty8hn11semN6YIEENMMI5c4CLHPAT3/J
- vh7w==
+ bh=XWDXnEPKNEpB10DKBkm4YAVj9PA/XeShZDvT8s5ahIU=;
+ b=YGVH/aaCSe664C5ZG0ggrdmROP8H8Kiy8kQjStfTxYAuL6EFxcFCvrWS9fiDMxbt77
+ LiCkqcPD7l4++DJ0VF80d1GdrHV1jDMh2/Ju3uF3uXUGMF1iwO+Na6Mu2wiZ5dvc9/IF
+ mSFEX5YzYTqHaVT1Oy5/JYOkv0q2Ru/zrXMiyQOody3sRwPSKkG9P3a3GPzvlRp5IL98
+ G6pUg0M9DYO59iwlpd4fDW1gispD0jdP9k9FvlZ6250Mft/8gXHdDw3a+1mpdoyhcSIO
+ M4ryNMe49tPttOu35Z7AUL9yH2uvcLqWfERyKFB/ldX+htEUS/Xc6PkRrgfuC7UNGPeq
+ n63g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721696765; x=1722301565;
+ d=1e100.net; s=20230601; t=1721696767; x=1722301567;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XJ8HWFv9ihWOF+E22RR1hIhCiKb1NCoJ/EAF7Qw8N2w=;
- b=brChgUkIWBmP720at3X4lw/MXPXUKCAUMv5U+Nn0JrFcpD4oYjM/tf76udWbz7iFwh
- TdSFW0l62Hca+s6E1vjGPU4I4qrV8/ygGSXjr5G3aILoOZNjxMoipzJigYgi+uikzLjf
- qK8g6rkIkEMVLgFZLzZgZOxBcojpaopXI7HBPBMiTTpQ/VVQmw32rs+Aq2Wtmtkjai1J
- 7RX1FA5+DZovyRc69xxC4x1d9nQswCIqKS47MNLM7ur+WPIiLi8ixiT5vycyAQBKxsyE
- 3MynHalx1eMYBk5e2Us9d9mnRi2AFwyowQAIBG0jpe1Nx/nKJnU9A0UNDmWdNzOaQ8tK
- Czjg==
-X-Gm-Message-State: AOJu0YwjhPNu+GuHmxK4GQpxqr/LC8XxaBT5kjM1aTCVbkwv8FrKcxlr
- jWxX8G9SpA1BPHNq1k6vcPpDUG+nRGZukR+tkxq4YDvxpNrRrHJehyIKgcQsaDMCuyLbjC1Mpf4
- iD0Z8TkG5G1KpeEWHS2Eb7rImaR4NdTLUQwxFtZTIk7MhOr/caoR+F740qwqK3OT1epRjltW3BD
- r2U8lzE3tk4gQyvleH6Saz7lUdAvhm
-X-Google-Smtp-Source: AGHT+IG3tQdAsCXld+axsJc6tuV9o09i+qPwtsqsIcdpk3J9dv22JjttraF7iwSPsGMwvU31ByGN2w==
-X-Received: by 2002:a05:6870:ac25:b0:261:88b:36fe with SMTP id
- 586e51a60fabf-263ab315e4emr4668266fac.15.1721696764905; 
- Mon, 22 Jul 2024 18:06:04 -0700 (PDT)
+ bh=XWDXnEPKNEpB10DKBkm4YAVj9PA/XeShZDvT8s5ahIU=;
+ b=Q9d7T/7i8UJ5JChuc2xqyF3rnz48/iRiSIPWmRbF3sGsEuvSVkvdjxJYaSW/CQ0I4+
+ o0czzZyficqduZZ7YNolyOfXYqCW0u2W1MfEQaIx7rwXmSxqmpOS/fKO7RC+6liO42Qf
+ h+I/UsQW5l11gzZI484BKM52eV9WbLAraZPg4kU2hrl8fDbnnnLbxm1JIqNS+ZBour6p
+ nAnrtsSqmSpnIJ+OJql+7TC69bek4Z+bhuzYHouJPsmiiqhruPQ6rSH32ZSHX/oq1ttB
+ 02jvNJFxVQfE9U/mSQSxWrc8yumE9C64Hi/cSKLYtYX+6JG59Uln/mnGM16FyesC2A74
+ unVA==
+X-Gm-Message-State: AOJu0Yw3xVYARWn1CdX/8NokR3VeHk2k6Ro2PLsrhEK+YpVRlg5yE9o2
+ uCWIF4mHSVNbgDxlNDwQtVv6wLJoq3oUc438c9AULB+9wx62Yuw+78X/M2SUFCfaTE/C1yUd9qP
+ A2WrHV/gEFSmnbE6/NMWc9FiaRARgNjuUhEjjX8107aBmvUukDs/qz5F0wwbL2pPH/2NowKY5RY
+ MLgyceakSPJFIEO3TEsmG6WMqr+oIv
+X-Google-Smtp-Source: AGHT+IFaGbFIPPIqWA40uW1wev9Fb7KBPBt42XbfQf6WFvs4DG/Vkcs4gZ48ufZxyU+yHoMdknOVow==
+X-Received: by 2002:a05:622a:411:b0:447:e786:3f9b with SMTP id
+ d75a77b69052e-44fc557b048mr20252751cf.49.1721696766621; 
+ Mon, 22 Jul 2024 18:06:06 -0700 (PDT)
 Received: from kermit.cs.unc.edu (kermit.cs.unc.edu. [152.2.133.133])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-44f9cdc0cbdsm37953601cf.92.2024.07.22.18.06.04
+ d75a77b69052e-44f9cdc0cbdsm37953601cf.92.2024.07.22.18.06.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jul 2024 18:06:04 -0700 (PDT)
+ Mon, 22 Jul 2024 18:06:06 -0700 (PDT)
 From: Don Porter <porter@cs.unc.edu>
 To: qemu-devel@nongnu.org
 Cc: dave@treblig.org, peter.maydell@linaro.org, nadav.amit@gmail.com,
  richard.henderson@linaro.org, philmd@linaro.org, berrange@redhat.com,
  Don Porter <porter@cs.unc.edu>
-Subject: [PATCH v4 6/7] Convert x86_cpu_get_memory_mapping() to use generic
- iterators
-Date: Mon, 22 Jul 2024 21:05:44 -0400
-Message-Id: <20240723010545.3648706-7-porter@cs.unc.edu>
+Subject: [PATCH v4 7/7] Convert x86_mmu_translate() to use common code.
+Date: Mon, 22 Jul 2024 21:05:45 -0400
+Message-Id: <20240723010545.3648706-8-porter@cs.unc.edu>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240723010545.3648706-1-porter@cs.unc.edu>
 References: <20240723010545.3648706-1-porter@cs.unc.edu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=porter@cs.unc.edu; helo=mail-oa1-x2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=porter@cs.unc.edu; helo=mail-qt1-x82d.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -95,334 +94,489 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Don Porter <porter@cs.unc.edu>
 ---
- target/i386/arch_memory_mapping.c | 305 ++----------------------------
- 1 file changed, 19 insertions(+), 286 deletions(-)
+ target/i386/tcg/helper-tcg.h         |   2 +-
+ target/i386/tcg/sysemu/excp_helper.c | 417 ++-------------------------
+ 2 files changed, 30 insertions(+), 389 deletions(-)
 
-diff --git a/target/i386/arch_memory_mapping.c b/target/i386/arch_memory_mapping.c
-index ef29e4b42f..bb97443f0f 100644
---- a/target/i386/arch_memory_mapping.c
-+++ b/target/i386/arch_memory_mapping.c
-@@ -1006,301 +1006,34 @@ bool x86_ptw_translate(CPUState *cs, vaddr vaddress, hwaddr *hpa,
+diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+index 1cbeab9161..8f63280359 100644
+--- a/target/i386/tcg/helper-tcg.h
++++ b/target/i386/tcg/helper-tcg.h
+@@ -96,7 +96,7 @@ void cpu_load_eflags(CPUX86State *env, int eflags, int update_mask);
+ typedef struct TranslateFault {
+     int exception_index;
+     int error_code;
+-    target_ulong cr2;
++    uint64_t cr2;
+     TranslateFaultStage2 stage2;
+ } TranslateFault;
  
- }
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 3ebb67d65b..37c33fdfb1 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -36,32 +36,9 @@ typedef struct TranslateParams {
+ typedef struct TranslateResult {
+     hwaddr paddr;
+     int prot;
+-    int page_size;
++    uint64_t page_size;
+ } TranslateResult;
  
--/* PAE Paging or IA-32e Paging */
--static void walk_pte(MemoryMappingList *list, AddressSpace *as,
--                     hwaddr pte_start_addr,
--                     int32_t a20_mask, target_ulong start_line_addr)
+-static bool ptw_translate(PTETranslate *inout, hwaddr addr, uint64_t ra)
 -{
--    hwaddr pte_addr, start_paddr;
--    uint64_t pte;
--    target_ulong start_vaddr;
--    int i;
+-    CPUTLBEntryFull *full;
+-    int flags;
 -
--    for (i = 0; i < 512; i++) {
--        pte_addr = (pte_start_addr + i * 8) & a20_mask;
--        pte = address_space_ldq(as, pte_addr, MEMTXATTRS_UNSPECIFIED, NULL);
--        if (!(pte & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
+-    inout->gaddr = addr;
+-    flags = probe_access_full(inout->env, addr, 0, MMU_DATA_STORE,
+-                              inout->ptw_idx, true, &inout->haddr, &full, ra);
 -
--        start_paddr = (pte & ~0xfff) & ~(0x1ULL << 63);
--        if (cpu_physical_memory_is_io(start_paddr)) {
--            /* I/O region */
--            continue;
--        }
+-    if (unlikely(flags & TLB_INVALID_MASK)) {
+-        TranslateFault *err = inout->err;
 -
--        start_vaddr = start_line_addr | ((i & 0x1ff) << 12);
--        memory_mapping_list_add_merge_sorted(list, start_paddr,
--                                             start_vaddr, 1 << 12);
+-        assert(inout->ptw_idx == MMU_NESTED_IDX);
+-        *err = (TranslateFault){
+-            .error_code = inout->env->error_code,
+-            .cr2 = addr,
+-            .stage2 = S2_GPT,
+-        };
+-        return false;
 -    }
+-    return true;
 -}
 -
--/* 32-bit Paging */
--static void walk_pte2(MemoryMappingList *list, AddressSpace *as,
--                      hwaddr pte_start_addr, int32_t a20_mask,
--                      target_ulong start_line_addr)
--{
--    hwaddr pte_addr, start_paddr;
--    uint32_t pte;
--    target_ulong start_vaddr;
--    int i;
--
--    for (i = 0; i < 1024; i++) {
--        pte_addr = (pte_start_addr + i * 4) & a20_mask;
--        pte = address_space_ldl(as, pte_addr, MEMTXATTRS_UNSPECIFIED, NULL);
--        if (!(pte & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
--
--        start_paddr = pte & ~0xfff;
--        if (cpu_physical_memory_is_io(start_paddr)) {
--            /* I/O region */
--            continue;
--        }
--
--        start_vaddr = start_line_addr | ((i & 0x3ff) << 12);
--        memory_mapping_list_add_merge_sorted(list, start_paddr,
--                                             start_vaddr, 1 << 12);
--    }
--}
--
--/* PAE Paging or IA-32e Paging */
--#define PLM4_ADDR_MASK 0xffffffffff000ULL /* selects bits 51:12 */
--
--static void walk_pde(MemoryMappingList *list, AddressSpace *as,
--                     hwaddr pde_start_addr,
--                     int32_t a20_mask, target_ulong start_line_addr)
--{
--    hwaddr pde_addr, pte_start_addr, start_paddr;
--    uint64_t pde;
--    target_ulong line_addr, start_vaddr;
--    int i;
--
--    for (i = 0; i < 512; i++) {
--        pde_addr = (pde_start_addr + i * 8) & a20_mask;
--        pde = address_space_ldq(as, pde_addr, MEMTXATTRS_UNSPECIFIED, NULL);
--        if (!(pde & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
--
--        line_addr = start_line_addr | ((i & 0x1ff) << 21);
--        if (pde & PG_PSE_MASK) {
--            /* 2 MB page */
--            start_paddr = (pde & ~0x1fffff) & ~(0x1ULL << 63);
--            if (cpu_physical_memory_is_io(start_paddr)) {
--                /* I/O region */
--                continue;
--            }
--            start_vaddr = line_addr;
--            memory_mapping_list_add_merge_sorted(list, start_paddr,
--                                                 start_vaddr, 1 << 21);
--            continue;
--        }
--
--        pte_start_addr = (pde & PLM4_ADDR_MASK) & a20_mask;
--        walk_pte(list, as, pte_start_addr, a20_mask, line_addr);
--    }
--}
--
--/* 32-bit Paging */
--static void walk_pde2(MemoryMappingList *list, AddressSpace *as,
--                      hwaddr pde_start_addr, int32_t a20_mask,
--                      bool pse)
--{
--    hwaddr pde_addr, pte_start_addr, start_paddr, high_paddr;
--    uint32_t pde;
--    target_ulong line_addr, start_vaddr;
--    int i;
--
--    for (i = 0; i < 1024; i++) {
--        pde_addr = (pde_start_addr + i * 4) & a20_mask;
--        pde = address_space_ldl(as, pde_addr, MEMTXATTRS_UNSPECIFIED, NULL);
--        if (!(pde & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
--
--        line_addr = (((unsigned int)i & 0x3ff) << 22);
--        if ((pde & PG_PSE_MASK) && pse) {
--            /*
--             * 4 MB page:
--             * bits 39:32 are bits 20:13 of the PDE
--             * bit3 31:22 are bits 31:22 of the PDE
--             */
--            high_paddr = ((hwaddr)(pde & 0x1fe000) << 19);
--            start_paddr = (pde & ~0x3fffff) | high_paddr;
--            if (cpu_physical_memory_is_io(start_paddr)) {
--                /* I/O region */
--                continue;
--            }
--            start_vaddr = line_addr;
--            memory_mapping_list_add_merge_sorted(list, start_paddr,
--                                                 start_vaddr, 1 << 22);
--            continue;
--        }
--
--        pte_start_addr = (pde & ~0xfff) & a20_mask;
--        walk_pte2(list, as, pte_start_addr, a20_mask, line_addr);
--    }
--}
--
--/* PAE Paging */
--static void walk_pdpe2(MemoryMappingList *list, AddressSpace *as,
--                       hwaddr pdpe_start_addr, int32_t a20_mask)
--{
--    hwaddr pdpe_addr, pde_start_addr;
--    uint64_t pdpe;
--    target_ulong line_addr;
--    int i;
--
--    for (i = 0; i < 4; i++) {
--        pdpe_addr = (pdpe_start_addr + i * 8) & a20_mask;
--        pdpe = address_space_ldq(as, pdpe_addr, MEMTXATTRS_UNSPECIFIED, NULL);
--        if (!(pdpe & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
--
--        line_addr = (((unsigned int)i & 0x3) << 30);
--        pde_start_addr = (pdpe & ~0xfff) & a20_mask;
--        walk_pde(list, as, pde_start_addr, a20_mask, line_addr);
--    }
--}
-+struct memory_mapping_data {
-+    MemoryMappingList *list;
-+};
- 
--#ifdef TARGET_X86_64
--/* IA-32e Paging */
--static void walk_pdpe(MemoryMappingList *list, AddressSpace *as,
--                      hwaddr pdpe_start_addr, int32_t a20_mask,
--                      target_ulong start_line_addr)
-+static int add_memory_mapping_to_list(CPUState *cs, void *data, DecodedPTE *pte,
-+                                      int height, int offset, int mmu_idx,
-+                                      const PageTableLayout *layout)
+ static inline uint32_t ptw_ldl(const PTETranslate *in, uint64_t ra)
  {
--    hwaddr pdpe_addr, pde_start_addr, start_paddr;
--    uint64_t pdpe;
--    target_ulong line_addr, start_vaddr;
--    int i;
--
--    for (i = 0; i < 512; i++) {
--        pdpe_addr = (pdpe_start_addr + i * 8) & a20_mask;
--        pdpe = address_space_ldq(as, pdpe_addr, MEMTXATTRS_UNSPECIFIED, NULL);
--        if (!(pdpe & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
--
--        line_addr = start_line_addr | ((i & 0x1ffULL) << 30);
--        if (pdpe & PG_PSE_MASK) {
--            /* 1 GB page */
--            start_paddr = (pdpe & ~0x3fffffff) & ~(0x1ULL << 63);
--            if (cpu_physical_memory_is_io(start_paddr)) {
--                /* I/O region */
--                continue;
--            }
--            start_vaddr = line_addr;
--            memory_mapping_list_add_merge_sorted(list, start_paddr,
--                                                 start_vaddr, 1 << 30);
--            continue;
--        }
--
--        pde_start_addr = (pdpe & PLM4_ADDR_MASK) & a20_mask;
--        walk_pde(list, as, pde_start_addr, a20_mask, line_addr);
--    }
--}
-+    struct memory_mapping_data *mm_data = (struct memory_mapping_data *) data;
- 
--/* IA-32e Paging */
--static void walk_pml4e(MemoryMappingList *list, AddressSpace *as,
--                       hwaddr pml4e_start_addr, int32_t a20_mask,
--                       target_ulong start_line_addr)
--{
--    hwaddr pml4e_addr, pdpe_start_addr;
--    uint64_t pml4e;
--    target_ulong line_addr;
--    int i;
--
--    for (i = 0; i < 512; i++) {
--        pml4e_addr = (pml4e_start_addr + i * 8) & a20_mask;
--        pml4e = address_space_ldq(as, pml4e_addr, MEMTXATTRS_UNSPECIFIED,
--                                  NULL);
--        if (!(pml4e & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
-+    /* In the case of nested paging, give the real, host-physical mapping. */
-+    hwaddr start_paddr = pte->pte_host_addr;
-+    size_t pg_size = pte->leaf_page_size;
- 
--        line_addr = start_line_addr | ((i & 0x1ffULL) << 39);
--        pdpe_start_addr = (pml4e & PLM4_ADDR_MASK) & a20_mask;
--        walk_pdpe(list, as, pdpe_start_addr, a20_mask, line_addr);
-+    /* This hook skips mappings for the I/O region */
-+    if (cpu_physical_memory_is_io(start_paddr)) {
-+        /* I/O region */
-+        return 0;
-     }
--}
--
--static void walk_pml5e(MemoryMappingList *list, AddressSpace *as,
--                       hwaddr pml5e_start_addr, int32_t a20_mask)
--{
--    hwaddr pml5e_addr, pml4e_start_addr;
--    uint64_t pml5e;
--    target_ulong line_addr;
--    int i;
--
--    for (i = 0; i < 512; i++) {
--        pml5e_addr = (pml5e_start_addr + i * 8) & a20_mask;
--        pml5e = address_space_ldq(as, pml5e_addr, MEMTXATTRS_UNSPECIFIED,
--                                  NULL);
--        if (!(pml5e & PG_PRESENT_MASK)) {
--            /* not present */
--            continue;
--        }
- 
--        line_addr = (0x7fULL << 57) | ((i & 0x1ffULL) << 48);
--        pml4e_start_addr = (pml5e & PLM4_ADDR_MASK) & a20_mask;
--        walk_pml4e(list, as, pml4e_start_addr, a20_mask, line_addr);
--    }
-+    memory_mapping_list_add_merge_sorted(mm_data->list, start_paddr,
-+                                         pte->bits_translated, pg_size);
-+    return 0;
- }
--#endif
- 
- bool x86_cpu_get_memory_mapping(CPUState *cs, MemoryMappingList *list,
-                                 Error **errp)
+     if (likely(in->haddr)) {
+@@ -102,371 +79,33 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+                           uint64_t ra)
  {
--    X86CPU *cpu = X86_CPU(cs);
--    CPUX86State *env = &cpu->env;
--    int32_t a20_mask;
+     const target_ulong addr = in->addr;
+-    const int pg_mode = in->pg_mode;
+-    const bool is_user = is_mmu_index_user(in->mmu_idx);
+-    const MMUAccessType access_type = in->access_type;
+-    uint64_t ptep, pte, rsvd_mask;
+-    PTETranslate pte_trans = {
+-        .env = env,
+-        .err = err,
+-        .ptw_idx = in->ptw_idx,
+-    };
+-    hwaddr pte_addr, paddr;
+-    uint32_t pkr;
+-    int page_size;
+-    int error_code;
 -
--    if (!cpu_paging_enabled(cs, 0)) {
--        /* paging is disabled */
--        return true;
+- restart_all:
+-    rsvd_mask = ~MAKE_64BIT_MASK(0, env_archcpu(env)->phys_bits);
+-    rsvd_mask &= PG_ADDRESS_MASK;
+-    if (!(pg_mode & PG_MODE_NXE)) {
+-        rsvd_mask |= PG_NX_MASK;
 -    }
 -
--    a20_mask = x86_get_a20_mask(env);
--    if (env->cr[4] & CR4_PAE_MASK) {
+-    if (pg_mode & PG_MODE_PAE) {
 -#ifdef TARGET_X86_64
--        if (env->hflags & HF_LMA_MASK) {
--            if (env->cr[4] & CR4_LA57_MASK) {
--                hwaddr pml5e_addr;
--
--                pml5e_addr = (env->cr[3] & PLM4_ADDR_MASK) & a20_mask;
--                walk_pml5e(list, cs->as, pml5e_addr, a20_mask);
+-        if (pg_mode & PG_MODE_LMA) {
+-            if (pg_mode & PG_MODE_LA57) {
+-                /*
+-                 * Page table level 5
+-                 */
+-                pte_addr = (in->cr3 & ~0xfff) + (((addr >> 48) & 0x1ff) << 3);
+-                if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-                    return false;
+-                }
+-            restart_5:
+-                pte = ptw_ldq(&pte_trans, ra);
+-                if (!(pte & PG_PRESENT_MASK)) {
+-                    goto do_fault;
+-                }
+-                if (pte & (rsvd_mask | PG_PSE_MASK)) {
+-                    goto do_fault_rsvd;
+-                }
+-                if (!ptw_setl(&pte_trans, pte, PG_ACCESSED_MASK)) {
+-                    goto restart_5;
+-                }
+-                ptep = pte ^ PG_NX_MASK;
 -            } else {
--                hwaddr pml4e_addr;
+-                pte = in->cr3;
+-                ptep = PG_NX_MASK | PG_USER_MASK | PG_RW_MASK;
+-            }
 -
--                pml4e_addr = (env->cr[3] & PLM4_ADDR_MASK) & a20_mask;
--                walk_pml4e(list, cs->as, pml4e_addr, a20_mask,
--                        0xffffULL << 48);
+-            /*
+-             * Page table level 4
+-             */
+-            pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 39) & 0x1ff) << 3);
+-            if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-                return false;
+-            }
+-        restart_4:
+-            pte = ptw_ldq(&pte_trans, ra);
+-            if (!(pte & PG_PRESENT_MASK)) {
+-                goto do_fault;
+-            }
+-            if (pte & (rsvd_mask | PG_PSE_MASK)) {
+-                goto do_fault_rsvd;
+-            }
+-            if (!ptw_setl(&pte_trans, pte, PG_ACCESSED_MASK)) {
+-                goto restart_4;
+-            }
+-            ptep &= pte ^ PG_NX_MASK;
+-
+-            /*
+-             * Page table level 3
+-             */
+-            pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 30) & 0x1ff) << 3);
+-            if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-                return false;
+-            }
+-        restart_3_lma:
+-            pte = ptw_ldq(&pte_trans, ra);
+-            if (!(pte & PG_PRESENT_MASK)) {
+-                goto do_fault;
+-            }
+-            if (pte & rsvd_mask) {
+-                goto do_fault_rsvd;
+-            }
+-            if (!ptw_setl(&pte_trans, pte, PG_ACCESSED_MASK)) {
+-                goto restart_3_lma;
+-            }
+-            ptep &= pte ^ PG_NX_MASK;
+-            if (pte & PG_PSE_MASK) {
+-                /* 1 GB page */
+-                page_size = 1024 * 1024 * 1024;
+-                goto do_check_protect;
 -            }
 -        } else
 -#endif
 -        {
--            hwaddr pdpe_addr;
--
--            pdpe_addr = (env->cr[3] & ~0x1f) & a20_mask;
--            walk_pdpe2(list, cs->as, pdpe_addr, a20_mask);
+-            /*
+-             * Page table level 3
+-             */
+-            pte_addr = (in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18);
+-            if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-                return false;
+-            }
+-            rsvd_mask |= PG_HI_USER_MASK;
+-        restart_3_nolma:
+-            pte = ptw_ldq(&pte_trans, ra);
+-            if (!(pte & PG_PRESENT_MASK)) {
+-                goto do_fault;
+-            }
+-            if (pte & (rsvd_mask | PG_NX_MASK)) {
+-                goto do_fault_rsvd;
+-            }
+-            if (!ptw_setl(&pte_trans, pte, PG_ACCESSED_MASK)) {
+-                goto restart_3_nolma;
+-            }
+-            ptep = PG_NX_MASK | PG_USER_MASK | PG_RW_MASK;
 -        }
--    } else {
--        hwaddr pde_addr;
--        bool pse;
 -
--        pde_addr = (env->cr[3] & ~0xfff) & a20_mask;
--        pse = !!(env->cr[4] & CR4_PSE_MASK);
--        walk_pde2(list, cs->as, pde_addr, a20_mask, pse);
+-        /*
+-         * Page table level 2
+-         */
+-        pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 21) & 0x1ff) << 3);
+-        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-            return false;
+-        }
+-    restart_2_pae:
+-        pte = ptw_ldq(&pte_trans, ra);
+-        if (!(pte & PG_PRESENT_MASK)) {
+-            goto do_fault;
+-        }
+-        if (pte & rsvd_mask) {
+-            goto do_fault_rsvd;
+-        }
+-        if (pte & PG_PSE_MASK) {
+-            /* 2 MB page */
+-            page_size = 2048 * 1024;
+-            ptep &= pte ^ PG_NX_MASK;
+-            goto do_check_protect;
+-        }
+-        if (!ptw_setl(&pte_trans, pte, PG_ACCESSED_MASK)) {
+-            goto restart_2_pae;
+-        }
+-        ptep &= pte ^ PG_NX_MASK;
+-
+-        /*
+-         * Page table level 1
+-         */
+-        pte_addr = (pte & PG_ADDRESS_MASK) + (((addr >> 12) & 0x1ff) << 3);
+-        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-            return false;
+-        }
+-        pte = ptw_ldq(&pte_trans, ra);
+-        if (!(pte & PG_PRESENT_MASK)) {
+-            goto do_fault;
+-        }
+-        if (pte & rsvd_mask) {
+-            goto do_fault_rsvd;
+-        }
+-        /* combine pde and pte nx, user and rw protections */
+-        ptep &= pte ^ PG_NX_MASK;
+-        page_size = 4096;
+-    } else {
+-        /*
+-         * Page table level 2
+-         */
+-        pte_addr = (in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc);
+-        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-            return false;
+-        }
+-    restart_2_nopae:
+-        pte = ptw_ldl(&pte_trans, ra);
+-        if (!(pte & PG_PRESENT_MASK)) {
+-            goto do_fault;
+-        }
+-        ptep = pte | PG_NX_MASK;
+-
+-        /* if PSE bit is set, then we use a 4MB page */
+-        if ((pte & PG_PSE_MASK) && (pg_mode & PG_MODE_PSE)) {
+-            page_size = 4096 * 1024;
+-            /*
+-             * Bits 20-13 provide bits 39-32 of the address, bit 21 is reserved.
+-             * Leave bits 20-13 in place for setting accessed/dirty bits below.
+-             */
+-            pte = (uint32_t)pte | ((pte & 0x1fe000LL) << (32 - 13));
+-            rsvd_mask = 0x200000;
+-            goto do_check_protect_pse36;
+-        }
+-        if (!ptw_setl(&pte_trans, pte, PG_ACCESSED_MASK)) {
+-            goto restart_2_nopae;
+-        }
+-
+-        /*
+-         * Page table level 1
+-         */
+-        pte_addr = (pte & ~0xfffu) + ((addr >> 10) & 0xffc);
+-        if (!ptw_translate(&pte_trans, pte_addr, ra)) {
+-            return false;
+-        }
+-        pte = ptw_ldl(&pte_trans, ra);
+-        if (!(pte & PG_PRESENT_MASK)) {
+-            goto do_fault;
+-        }
+-        /* combine pde and pte user and rw protections */
+-        ptep &= pte | PG_NX_MASK;
+-        page_size = 4096;
+-        rsvd_mask = 0;
 -    }
 -
+-do_check_protect:
+-    rsvd_mask |= (page_size - 1) & PG_ADDRESS_MASK & ~PG_PSE_PAT_MASK;
+-do_check_protect_pse36:
+-    if (pte & rsvd_mask) {
+-        goto do_fault_rsvd;
+-    }
+-    ptep ^= PG_NX_MASK;
+-
+-    /* can the page can be put in the TLB?  prot will tell us */
+-    if (is_user && !(ptep & PG_USER_MASK)) {
+-        goto do_fault_protect;
+-    }
+-
+-    int prot = 0;
+-    if (!is_mmu_index_smap(in->mmu_idx) || !(ptep & PG_USER_MASK)) {
+-        prot |= PAGE_READ;
+-        if ((ptep & PG_RW_MASK) || !(is_user || (pg_mode & PG_MODE_WP))) {
+-            prot |= PAGE_WRITE;
+-        }
+-    }
+-    if (!(ptep & PG_NX_MASK) &&
+-        (is_user ||
+-         !((pg_mode & PG_MODE_SMEP) && (ptep & PG_USER_MASK)))) {
+-        prot |= PAGE_EXEC;
+-    }
+-
+-    if (ptep & PG_USER_MASK) {
+-        pkr = pg_mode & PG_MODE_PKE ? env->pkru : 0;
+-    } else {
+-        pkr = pg_mode & PG_MODE_PKS ? env->pkrs : 0;
+-    }
+-    if (pkr) {
+-        uint32_t pk = (pte & PG_PKRU_MASK) >> PG_PKRU_BIT;
+-        uint32_t pkr_ad = (pkr >> pk * 2) & 1;
+-        uint32_t pkr_wd = (pkr >> pk * 2) & 2;
+-        uint32_t pkr_prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+-
+-        if (pkr_ad) {
+-            pkr_prot &= ~(PAGE_READ | PAGE_WRITE);
+-        } else if (pkr_wd && (is_user || (pg_mode & PG_MODE_WP))) {
+-            pkr_prot &= ~PAGE_WRITE;
+-        }
+-        if ((pkr_prot & (1 << access_type)) == 0) {
+-            goto do_fault_pk_protect;
+-        }
+-        prot &= pkr_prot;
+-    }
+-
+-    if ((prot & (1 << access_type)) == 0) {
+-        goto do_fault_protect;
+-    }
+-
+-    /* yes, it can! */
+-    {
+-        uint32_t set = PG_ACCESSED_MASK;
+-        if (access_type == MMU_DATA_STORE) {
+-            set |= PG_DIRTY_MASK;
+-        } else if (!(pte & PG_DIRTY_MASK)) {
+-            /*
+-             * Only set write access if already dirty...
+-             * otherwise wait for dirty access.
+-             */
+-            prot &= ~PAGE_WRITE;
+-        }
+-        if (!ptw_setl(&pte_trans, pte, set)) {
+-            /*
+-             * We can arrive here from any of 3 levels and 2 formats.
+-             * The only safe thing is to restart the entire lookup.
+-             */
+-            goto restart_all;
+-        }
++    hwaddr paddr;
++    CPUState *cs = env_cpu(env);
++    bool dirty = false;
++
++    bool ok = x86_ptw_translate(cs, addr, &paddr, false,
++                                in->ptw_idx == MMU_NESTED_IDX ? 1 : 0,
++                                is_mmu_index_user(in->mmu_idx), in->access_type,
++                                &out->page_size, &err->error_code,
++                                (hwaddr *) &err->cr2, &err->stage2, &out->prot,
++                                &dirty);
++    if (!ok) {
++
++        err->exception_index = EXCP0E_PAGE;
++        return false;
+     }
+ 
+-    /* merge offset within page */
+-    paddr = (pte & PG_ADDRESS_MASK & ~(page_size - 1)) | (addr & (page_size - 1));
+-
+     /*
+-     * Note that NPT is walked (for both paging structures and final guest
+-     * addresses) using the address with the A20 bit set.
++     * Only set write access if already dirty...
++     * otherwise wait for dirty access.
+      */
+-    if (in->ptw_idx == MMU_NESTED_IDX) {
+-        CPUTLBEntryFull *full;
+-        int flags, nested_page_size;
+-
+-        flags = probe_access_full(env, paddr, 0, access_type,
+-                                  MMU_NESTED_IDX, true,
+-                                  &pte_trans.haddr, &full, 0);
+-        if (unlikely(flags & TLB_INVALID_MASK)) {
+-            *err = (TranslateFault){
+-                .error_code = env->error_code,
+-                .cr2 = paddr,
+-                .stage2 = S2_GPA,
+-            };
+-            return false;
+-        }
+-
+-        /* Merge stage1 & stage2 protection bits. */
+-        prot &= full->prot;
+-
+-        /* Re-verify resulting protection. */
+-        if ((prot & (1 << access_type)) == 0) {
+-            goto do_fault_protect;
+-        }
+-
+-        /* Merge stage1 & stage2 addresses to final physical address. */
+-        nested_page_size = 1 << full->lg_page_size;
+-        paddr = (full->phys_addr & ~(nested_page_size - 1))
+-              | (paddr & (nested_page_size - 1));
+-
+-        /*
+-         * Use the larger of stage1 & stage2 page sizes, so that
+-         * invalidation works.
+-         */
+-        if (nested_page_size > page_size) {
+-            page_size = nested_page_size;
+-        }
++    if (in->access_type != MMU_DATA_STORE && !dirty) {
++        out->prot &= ~PAGE_WRITE;
+     }
+ 
+     out->paddr = paddr & x86_get_a20_mask(env);
+-    out->prot = prot;
+-    out->page_size = page_size;
 -    return true;
-+    return for_each_pte(cs, &add_memory_mapping_to_list, list, false, false,
-+                        false, 0);
+ 
+- do_fault_rsvd:
+-    error_code = PG_ERROR_RSVD_MASK;
+-    goto do_fault_cont;
+- do_fault_protect:
+-    error_code = PG_ERROR_P_MASK;
+-    goto do_fault_cont;
+- do_fault_pk_protect:
+-    assert(access_type != MMU_INST_FETCH);
+-    error_code = PG_ERROR_PK_MASK | PG_ERROR_P_MASK;
+-    goto do_fault_cont;
+- do_fault:
+-    error_code = 0;
+- do_fault_cont:
+-    if (is_user) {
+-        error_code |= PG_ERROR_U_MASK;
+-    }
+-    switch (access_type) {
+-    case MMU_DATA_LOAD:
+-        break;
+-    case MMU_DATA_STORE:
+-        error_code |= PG_ERROR_W_MASK;
+-        break;
+-    case MMU_INST_FETCH:
+-        if (pg_mode & (PG_MODE_NXE | PG_MODE_SMEP)) {
+-            error_code |= PG_ERROR_I_D_MASK;
+-        }
+-        break;
+-    }
+-    *err = (TranslateFault){
+-        .exception_index = EXCP0E_PAGE,
+-        .error_code = error_code,
+-        .cr2 = addr,
+-    };
+-    return false;
++    return true;
  }
+ 
+ static G_NORETURN void raise_stage2(CPUX86State *env, TranslateFault *err,
+@@ -491,10 +130,11 @@ static G_NORETURN void raise_stage2(CPUX86State *env, TranslateFault *err,
+     cpu_vmexit(env, SVM_EXIT_NPF, exit_info_1, retaddr);
+ }
+ 
+-static bool get_physical_address(CPUX86State *env, vaddr addr,
+-                                 MMUAccessType access_type, int mmu_idx,
+-                                 TranslateResult *out, TranslateFault *err,
+-                                 uint64_t ra)
++static
++bool x86_cpu_get_physical_address(CPUX86State *env, vaddr addr,
++                                  MMUAccessType access_type, int mmu_idx,
++                                  TranslateResult *out,
++                                  TranslateFault *err, uint64_t ra)
+ {
+     TranslateParams in;
+     bool use_stage2 = env->hflags2 & HF2_NPT_MASK;
+@@ -511,7 +151,8 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+             in.cr3 = env->nested_cr3;
+             in.pg_mode = env->nested_pg_mode;
+             in.mmu_idx =
+-                env->nested_pg_mode & PG_MODE_LMA ? MMU_USER64_IDX : MMU_USER32_IDX;
++                env->nested_pg_mode & PG_MODE_LMA ?
++                MMU_USER64_IDX : MMU_USER32_IDX;
+             in.ptw_idx = MMU_PHYS_IDX;
+ 
+             if (!mmu_translate(env, &in, out, err, ra)) {
+@@ -565,8 +206,8 @@ bool x86_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+     TranslateResult out;
+     TranslateFault err;
+ 
+-    if (get_physical_address(env, addr, access_type, mmu_idx, &out, &err,
+-                             retaddr)) {
++    if (x86_cpu_get_physical_address(env, addr, access_type, mmu_idx, &out,
++                                     &err, retaddr)) {
+         /*
+          * Even if 4MB pages, we map only one 4KB page in the cache to
+          * avoid filling it too fast.
 -- 
 2.34.1
 
