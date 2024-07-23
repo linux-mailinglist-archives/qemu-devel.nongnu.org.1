@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C506E93A83D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EDF93A83C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:43:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMKP-00013C-Qu; Tue, 23 Jul 2024 16:41:49 -0400
+	id 1sWMKq-0003Rw-MA; Tue, 23 Jul 2024 16:42:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMK3-00087D-Br
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:41:24 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMK8-0008W3-VM
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:41:30 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMK0-0004WL-K9
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:41:22 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-427db004e36so29717495e9.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:41:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMK4-0004Wa-Um
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:41:27 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4266ea6a488so52257015e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767277; x=1722372077; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767283; x=1722372083; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T1Rd8JLREenPY7uD+H493cwaNhRJxArDOSc9CQhnapI=;
- b=wBRBmOHiukq57BhbTTUKFtfQhk5rj3IlB9SBzreTSsHHLD34Fs2z2SZEupTFL8hjcO
- cuiuMaRHPOMyF1LFGdYjtLLstqxamaRYsbcVyeOlOtyvaK2mem1vwL7JJtbMzg3niEf1
- DrAeAVirHjtGAnVrrDLElmT1trzEVW4yP4pDXxajPqaWtz90PvxPlKvAhwvEJ9HJr8GJ
- tzcA1rfyPPMfkmEhnnDBlBTKa4sNgXBj6c8z7TC1DlkmPB7BtmQhvbYYgEux5D/AXsCf
- YkGPtUuOp2GhymioSTZ6xiIKXJH08EHxvXPspgYbAka4QhQc3peP837cck7dCui+XvvN
- Q11g==
+ bh=edehD0KtGJ7psWAUTWuwqxCMF33mNrSx960MdEztH2M=;
+ b=vag+/qlONDv73l2xtzfaO5MXyl9llE2JAgw8zhlFG7KtSPkSDHity8oDZlRijD1OS6
+ +pMg0KJ7H8ehLmei39ZDZ4DNfwAGmMAlECDXDNsVtm8wyHAgLcViLXQmf0TDkxoz6aH8
+ luufZOedVG0qtiR7aEdb8GQZHTHpbT4YyZeEUOGxBFYh8zE+NC0dPYKQ26qknst02Nya
+ rIcUpnF/mbpJVJi3BD+BJ4Dq4UIrpcd5FntCvjUuMSN48F72f7G/w3MOp5j/D0QUC+15
+ pVztovDzg2k/idQ9F62pd9B1Vq3Vi/lGDsNa1crf9Z5KAnwno5xY8+LkZGMEcLx/ul9/
+ Z2NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767277; x=1722372077;
+ d=1e100.net; s=20230601; t=1721767283; x=1722372083;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T1Rd8JLREenPY7uD+H493cwaNhRJxArDOSc9CQhnapI=;
- b=S3d34h+g2p/O99EhO2sanr2YBUQ/p2x6GwOaEAJ7jXIx8bSofvKWbTrDiL2MlIxtgl
- YSefZb1EfjlwBv4phHxDG91PEBONBlEUhFINARhDD7wWUuz2GmNOCaU+r2ZiBI4/K2No
- JTqJ2ZFjslTyzuZDniiHAbZWqmmNSKpZq3jAR8E5PO7XpsKQBFV6nukYgvpCQRNqVYQJ
- dg1QnyF5asqJ5DwDJG3NEuiyMAnoXHWsq4HcyU/uwwaaZP4PjBllPjJbvtco5AZOom4S
- CoNThRMA+g97WeXIvufJX6Vbd/H7xQX9HgMxu/SjOvUDpYsRqRgJN4x6cUlIAkFiKoxx
- cUWA==
-X-Gm-Message-State: AOJu0Yzb/O8EVl965ZvNyIMgClpY5FDrOxoPgCIHR1tcxWNAGjUeRH2m
- Hd8X0tKJcPqtzf4ZML2eW75Mm6Vtbytg7faTlE7QB8eLqGDau2lsXiif5pF/lSGG8AZsV2fXp5P
- HwhY=
-X-Google-Smtp-Source: AGHT+IGfUznRA8pB8/zGnHSd8/r+tIrnoK4d3cJhfnvCstd1Qbxfv+wVIDqU6avUgxWYvf36TaHuAA==
-X-Received: by 2002:a05:600c:4694:b0:426:6688:2421 with SMTP id
- 5b1f17b1804b1-427f9554a96mr119885e9.11.1721767277493; 
- Tue, 23 Jul 2024 13:41:17 -0700 (PDT)
+ bh=edehD0KtGJ7psWAUTWuwqxCMF33mNrSx960MdEztH2M=;
+ b=Km7wOqiAykMRRvAiD/+8ud7qxxesTJt+kB8lqWcFraL5T1GDzYZQUGS3YqMJ7mJg9J
+ qnGuD6BGLYodHhEVyF19YyynTokkjjindObaVlCVUc+QkxDfIiZdkrlBQETo1Ij6F/yu
+ CBcktoReITRNmG97U5yf/ccG0Q8GTKVz/DIH5tqqbp296V4FQqAGAzr2/ufgzOyxeRY3
+ 5p4FJXMn8vkWCS8G4WNrXyP5CpOcOaeBWkryZUfPsbCmOkC3jBZjg8bzYhMKVn6Ugk3a
+ /mlo5E5sfRT0HLHjulAsGpX8IfwFnfL7hJkUek6PVtgI3REdaXBy1p5re92RSdgvvoa3
+ MqZg==
+X-Gm-Message-State: AOJu0YwzIgSvw9SnVUZsvfJBvEoq04G9Y5whGO7jKPDVCEVxui8O1waq
+ 1KySttMvriyMBIFLddFr6PpS8BOGJtAqrfSZeUSv9qTyM7kYyZxzw1/LjSoTGpMjJo2QSVaXiGd
+ YcYY=
+X-Google-Smtp-Source: AGHT+IHfiMIerRfkNnqj78mw4GHum7yCps2MykY5abNv3AQZOeoYzpsWQZ/RX8wkZoB8cfudZEMdOg==
+X-Received: by 2002:a05:600c:3ac5:b0:426:673a:2904 with SMTP id
+ 5b1f17b1804b1-427f7adf206mr4570065e9.36.1721767282776; 
+ Tue, 23 Jul 2024 13:41:22 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f9398602sm510395e9.26.2024.07.23.13.41.16
+ 5b1f17b1804b1-427f935dd83sm598555e9.5.2024.07.23.13.41.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:41:17 -0700 (PDT)
+ Tue, 23 Jul 2024 13:41:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 25/28] util/fifo8: Expose fifo8_pop_buf()
-Date: Tue, 23 Jul 2024 22:38:52 +0200
-Message-ID: <20240723203855.65033-26-philmd@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 26/28] util/fifo8: Introduce fifo8_drop()
+Date: Tue, 23 Jul 2024 22:38:53 +0200
+Message-ID: <20240723203855.65033-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,153 +94,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract fifo8_pop_buf() from hw/scsi/esp.c and expose
-it as part of the <qemu/fifo8.h> API. This function takes
-care of non-contiguous (wrapped) FIFO buffer (which is an
-implementation detail).
+Add the fifo8_drop() helper for clarity.
+It is a simple wrapper over fifo8_pop_buf().
 
-Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20240722160745.67904-7-philmd@linaro.org>
+Message-Id: <20240722160745.67904-8-philmd@linaro.org>
 ---
- include/qemu/fifo8.h | 16 ++++++++++++++++
- hw/scsi/esp.c        | 36 +++---------------------------------
- util/fifo8.c         | 29 +++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 33 deletions(-)
+ include/qemu/fifo8.h | 9 +++++++++
+ hw/scsi/esp.c        | 2 +-
+ util/fifo8.c         | 6 ++++++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
-index a30220c8e96..bca6da306f7 100644
+index bca6da306f7..d1d06754d84 100644
 --- a/include/qemu/fifo8.h
 +++ b/include/qemu/fifo8.h
-@@ -62,12 +62,28 @@ void fifo8_push_all(Fifo8 *fifo, const uint8_t *data, uint32_t num);
+@@ -131,6 +131,15 @@ const uint8_t *fifo8_pop_bufptr(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
   */
- uint8_t fifo8_pop(Fifo8 *fifo);
+ const uint8_t *fifo8_peek_bufptr(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
  
 +/**
-+ * fifo8_pop_buf:
-+ * @fifo: FIFO to pop from
-+ * @dest: the buffer to write the data into (can be NULL)
-+ * @destlen: size of @dest and maximum number of bytes to pop
++ * fifo8_drop:
++ * @fifo: FIFO to drop bytes
++ * @len: number of bytes to drop
 + *
-+ * Pop a number of elements from the FIFO up to a maximum of @destlen.
-+ * The popped data is copied into the @dest buffer.
-+ * Care is taken when the data wraps around in the ring buffer.
-+ *
-+ * Returns: number of bytes popped.
++ * Drop (consume) bytes from a FIFO.
 + */
-+uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen);
++void fifo8_drop(Fifo8 *fifo, uint32_t len);
 +
  /**
-  * fifo8_pop_bufptr:
-  * @fifo: FIFO to pop from
-  * @max: maximum number of bytes to pop
-  * @numptr: pointer filled with number of bytes returned (can be NULL)
-  *
-+ * New code should prefer to use fifo8_pop_buf() instead of fifo8_pop_bufptr().
-+ *
-  * Pop a number of elements from the FIFO up to a maximum of @max. The buffer
-  * containing the popped data is returned. This buffer points directly into
-  * the internal FIFO backing store and data (without checking for overflow!)
+  * fifo8_reset:
+  * @fifo: FIFO to reset
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 7e9657e9c30..04c9a557b69 100644
+index 04c9a557b69..b7af8256232 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -197,39 +197,9 @@ static uint8_t esp_fifo_pop(ESPState *s)
-     return val;
- }
- 
--static uint32_t esp_fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
--{
--    const uint8_t *buf;
--    uint32_t n, n2;
--    int len;
--
--    if (maxlen == 0) {
--        return 0;
--    }
--
--    len = maxlen;
--    buf = fifo8_pop_bufptr(fifo, len, &n);
--    if (dest) {
--        memcpy(dest, buf, n);
--    }
--
--    /* Add FIFO wraparound if needed */
--    len -= n;
--    len = MIN(len, fifo8_num_used(fifo));
--    if (len) {
--        buf = fifo8_pop_bufptr(fifo, len, &n2);
--        if (dest) {
--            memcpy(&dest[n], buf, n2);
--        }
--        n += n2;
--    }
--
--    return n;
--}
--
- static uint32_t esp_fifo_pop_buf(ESPState *s, uint8_t *dest, int maxlen)
- {
--    uint32_t len = esp_fifo8_pop_buf(&s->fifo, dest, maxlen);
-+    uint32_t len = fifo8_pop_buf(&s->fifo, dest, maxlen);
- 
-     esp_update_drq(s);
-     return len;
-@@ -335,7 +305,7 @@ static void do_command_phase(ESPState *s)
-     if (!cmdlen || !s->current_dev) {
-         return;
-     }
--    esp_fifo8_pop_buf(&s->cmdfifo, buf, cmdlen);
-+    fifo8_pop_buf(&s->cmdfifo, buf, cmdlen);
- 
-     current_lun = scsi_device_find(&s->bus, 0, s->current_dev->id, s->lun);
-     if (!current_lun) {
-@@ -381,7 +351,7 @@ static void do_message_phase(ESPState *s)
+@@ -351,7 +351,7 @@ static void do_message_phase(ESPState *s)
      /* Ignore extended messages for now */
      if (s->cmdfifo_cdb_offset) {
          int len = MIN(s->cmdfifo_cdb_offset, fifo8_num_used(&s->cmdfifo));
--        esp_fifo8_pop_buf(&s->cmdfifo, NULL, len);
-+        fifo8_pop_buf(&s->cmdfifo, NULL, len);
+-        fifo8_pop_buf(&s->cmdfifo, NULL, len);
++        fifo8_drop(&s->cmdfifo, len);
          s->cmdfifo_cdb_offset = 0;
      }
  }
 diff --git a/util/fifo8.c b/util/fifo8.c
-index 5bbb6150b60..a250ea9f804 100644
+index a250ea9f804..1ffa19d900e 100644
 --- a/util/fifo8.c
 +++ b/util/fifo8.c
-@@ -102,6 +102,35 @@ const uint8_t *fifo8_pop_bufptr(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-     return fifo8_peekpop_buf(fifo, max, numptr, true);
+@@ -131,6 +131,12 @@ uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
+     return n1 + n2;
  }
  
-+uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
++void fifo8_drop(Fifo8 *fifo, uint32_t len)
 +{
-+    const uint8_t *buf;
-+    uint32_t n1, n2 = 0;
-+    uint32_t len;
-+
-+    if (destlen == 0) {
-+        return 0;
-+    }
-+
-+    len = destlen;
-+    buf = fifo8_pop_bufptr(fifo, len, &n1);
-+    if (dest) {
-+        memcpy(dest, buf, n1);
-+    }
-+
-+    /* Add FIFO wraparound if needed */
-+    len -= n1;
-+    len = MIN(len, fifo8_num_used(fifo));
-+    if (len) {
-+        buf = fifo8_pop_bufptr(fifo, len, &n2);
-+        if (dest) {
-+            memcpy(&dest[n1], buf, n2);
-+        }
-+    }
-+
-+    return n1 + n2;
++    len -= fifo8_pop_buf(fifo, NULL, len);
++    assert(len == 0);
 +}
 +
  bool fifo8_is_empty(Fifo8 *fifo)
