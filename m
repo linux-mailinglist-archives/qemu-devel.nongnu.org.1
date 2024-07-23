@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCE8939B62
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67DF939B6C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:06:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW9Z8-0001Q2-Ga; Tue, 23 Jul 2024 03:04:06 -0400
+	id 1sW9Z2-0000Ow-Ae; Tue, 23 Jul 2024 03:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sW9Z5-00011Q-6z
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:04:03 -0400
+ id 1sW9Yv-0008Jb-Vj
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sW9Z3-0000xE-6U
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:04:02 -0400
+ id 1sW9Yt-0000vM-OQ
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721718240;
+ s=mimecast20190719; t=1721718230;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wrseMmuiX6II9DUgUI20KHP9sFWySY+HpgvK+lHSj1A=;
- b=aPcnXiCRqBLk7EYMfW9KhdwzRSfMowr65kMkoaGgXKrjnotTPPGKVhmZ21+S67JpdVQ4Xw
- 77KBZgp1DxBIK1+X6imY5EAn+TlDvWuhLHvIZPzpVo1zddUEbNGY0p56qH563bRhB8f34B
- UHUysq84Kb7hnOAkmDhqfFa03jnBLqU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=mwnXjUJHncRGisRIB2U9TuNZDkR7QfHj3L26Hb4fyUU=;
+ b=PuCEhNv2PgTCtc5YbnhxM6aOMr6qy8C4/rqyqhclKVde8jszwNIiQZ0QQegmoF9Ov9P4Og
+ Q2a0Cp/ZYOU343lLs8Mrdt7N4i+vuqOegQLQAYE66vt9yUf0kQ+5XWdObu22Ylplhiv///
+ XE4ddibujBkoadhZwWWEROPCeC4PrUk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-EN1bl3WVN-mGzv6a9Rez9A-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-qF2pFIL9Pr2Jj1Jd3PZVgA-1; Tue,
  23 Jul 2024 03:03:41 -0400
-X-MC-Unique: EN1bl3WVN-mGzv6a9Rez9A-1
+X-MC-Unique: qF2pFIL9Pr2Jj1Jd3PZVgA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 43D611955F0D; Tue, 23 Jul 2024 07:03:37 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B0BB19560AD; Tue, 23 Jul 2024 07:03:39 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.211])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D79073000198; Tue, 23 Jul 2024 07:03:35 +0000 (UTC)
+ id AD59E3000198; Tue, 23 Jul 2024 07:03:37 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL v2 21/25] qga: allow configuration file path via the cli
-Date: Tue, 23 Jul 2024 10:02:47 +0300
-Message-ID: <20240723070251.25575-22-kkostiuk@redhat.com>
+Subject: [PULL v2 22/25] qga: centralize logic for disabling/enabling commands
+Date: Tue, 23 Jul 2024 10:02:48 +0300
+Message-ID: <20240723070251.25575-23-kkostiuk@redhat.com>
 In-Reply-To: <20240723070251.25575-1-kkostiuk@redhat.com>
 References: <20240723070251.25575-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -82,154 +82,336 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-Allowing the user to set the QGA_CONF environment variable to change
-the default configuration file path is very unusual practice, made
-more obscure since this ability is not documented.
+It is confusing having many different pieces of code enabling and
+disabling commands, and it is not clear that they all have the same
+semantics, especially wrt prioritization of the block/allow lists.
+The code attempted to prevent the user from setting both the block
+and allow lists concurrently, however, the logic was flawed as it
+checked settings in the configuration file  separately from the
+command line arguments. Thus it was possible to set a block list
+in the config file and an allow list via a command line argument.
+The --dump-conf option also creates a configuration file with both
+keys present, even if unset, which means it is creating a config
+that cannot actually be loaded again.
 
-This introduces the more normal '-c PATH'  / '--config=PATH' command
-line argument approach. This requires that we parse the comamnd line
-twice, since we want the command line arguments to take priority over
-the configuration file settings in general.
+Centralizing the code in a single method "ga_apply_command_filters"
+will provide a strong guarantee of consistency and clarify the
+intended behaviour. With this there is no compelling technical
+reason to prevent concurrent setting of both the allow and block
+lists, so this flawed restriction is removed.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Message-ID: <20240712132459.3974109-22-berrange@redhat.com>
+Message-ID: <20240712132459.3974109-23-berrange@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- docs/interop/qemu-ga.rst |  5 +++++
- qga/main.c               | 43 ++++++++++++++++++++++++++++++----------
- 2 files changed, 38 insertions(+), 10 deletions(-)
+ docs/interop/qemu-ga.rst |  14 +++++
+ qga/commands-posix.c     |   6 --
+ qga/commands-win32.c     |   6 --
+ qga/main.c               | 128 +++++++++++++++++----------------------
+ 4 files changed, 70 insertions(+), 84 deletions(-)
 
 diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
-index 72fb75a6f5..e42b370319 100644
+index e42b370319..fb75cfd8d4 100644
 --- a/docs/interop/qemu-ga.rst
 +++ b/docs/interop/qemu-ga.rst
-@@ -33,6 +33,11 @@ Options
+@@ -28,6 +28,20 @@ configuration options on the command line. For the same key, the last
+ option wins, but the lists accumulate (see below for configuration
+ file format).
  
- .. program:: qemu-ga
- 
-+.. option:: -c, --config=PATH
++If an allowed RPCs list is defined in the configuration, then all
++RPCs will be blocked by default, except for the allowed list.
 +
-+  Configuration file path (the default is |CONFDIR|\ ``/qemu-ga.conf``,
-+  unless overriden by the QGA_CONF environment variable)
++If a blocked RPCs list is defined in the configuration, then all
++RPCs will be allowed by default, except for the blocked list.
 +
- .. option:: -m, --method=METHOD
++If both allowed and blocked RPCs lists are defined in the configuration,
++then all RPCs will be blocked by default, then the allowed list will
++be applied, followed by the blocked list.
++
++While filesystems are frozen, all except for a designated safe set
++of RPCs will blocked, regardless of what the general configuration
++declares.
++
+ Options
+ -------
  
-   Transport method: one of ``unix-listen``, ``virtio-serial``, or
-diff --git a/qga/main.c b/qga/main.c
-index 6ff022a85d..6ae911eb15 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -248,12 +248,16 @@ static void usage(const char *cmd)
- #ifdef CONFIG_FSFREEZE
-     g_autofree char *fsfreeze_hook = get_relocated_path(QGA_FSFREEZE_HOOK_DEFAULT);
- #endif
-+    g_autofree char *conf_path = get_relocated_path(QGA_CONF_DEFAULT);
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index f4104f2760..578d29f228 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -1136,12 +1136,6 @@ error:
  
-     printf(
- "Usage: %s [-m <method> -p <path>] [<options>]\n"
- "QEMU Guest Agent " QEMU_FULL_VERSION "\n"
- QEMU_COPYRIGHT "\n"
- "\n"
-+"  -c, --config=PATH configuration file path (default is\n"
-+"                    %s/qemu-ga.conf\n"
-+"                    unless overriden by the QGA_CONF environment variable)\n"
- "  -m, --method      transport method: one of unix-listen, virtio-serial,\n"
- "                    isa-serial, or vsock-listen (virtio-serial is the default)\n"
- "  -p, --path        device/socket path (the default for virtio-serial is:\n"
-@@ -294,8 +298,8 @@ QEMU_COPYRIGHT "\n"
- "                    plug/unplug, etc.)\n"
- "  -h, --help        display this help and exit\n"
- "\n"
--QEMU_HELP_BOTTOM "\n"
--    , cmd, QGA_VIRTIO_PATH_DEFAULT, QGA_SERIAL_PATH_DEFAULT,
-+QEMU_HELP_BOTTOM "\n",
-+    cmd, conf_path, QGA_VIRTIO_PATH_DEFAULT, QGA_SERIAL_PATH_DEFAULT,
-     dfl_pathnames.pidfile,
- #ifdef CONFIG_FSFREEZE
-     fsfreeze_hook,
-@@ -1018,15 +1022,14 @@ static GList *split_list(const gchar *str, const gchar *delim)
-     return list;
+ #endif /* HAVE_GETIFADDRS */
+ 
+-/* add unsupported commands to the list of blocked RPCs */
+-GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+-{
+-    return blockedrpcs;
+-}
+-
+ /* register init/cleanup routines for stateful command groups */
+ void ga_command_state_init(GAState *s, GACommandState *cs)
+ {
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 5866cc2e3c..61b36da469 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -1958,12 +1958,6 @@ done:
+     g_free(rawpasswddata);
  }
  
--static void config_load(GAConfig *config)
-+static void config_load(GAConfig *config, const char *confpath, bool required)
+-/* add unsupported commands to the list of blocked RPCs */
+-GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+-{
+-    return blockedrpcs;
+-}
+-
+ /* register init/cleanup routines for stateful command groups */
+ void ga_command_state_init(GAState *s, GACommandState *cs)
  {
-     GError *gerr = NULL;
-     GKeyFile *keyfile;
--    g_autofree char *conf = g_strdup(g_getenv("QGA_CONF")) ?: get_relocated_path(QGA_CONF_DEFAULT);
+diff --git a/qga/main.c b/qga/main.c
+index 6ae911eb15..b8f7b1e4a3 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -423,60 +423,79 @@ static gint ga_strcmp(gconstpointer str1, gconstpointer str2)
+     return strcmp(str1, str2);
+ }
  
-     /* read system config */
-     keyfile = g_key_file_new();
--    if (!g_key_file_load_from_file(keyfile, conf, 0, &gerr)) {
-+    if (!g_key_file_load_from_file(keyfile, confpath, 0, &gerr)) {
-         goto end;
+-/* disable commands that aren't safe for fsfreeze */
+-static void ga_disable_not_allowed_freeze(const QmpCommand *cmd, void *opaque)
++static bool ga_command_is_allowed(const QmpCommand *cmd, GAState *state)
+ {
+-    bool allowed = false;
+     int i = 0;
++    GAConfig *config = state->config;
+     const char *name = qmp_command_name(cmd);
++    /* Fallback policy is allow everything */
++    bool allowed = true;
+ 
+-    while (ga_freeze_allowlist[i] != NULL) {
+-        if (strcmp(name, ga_freeze_allowlist[i]) == 0) {
++    if (config->allowedrpcs) {
++        /*
++         * If an allow-list is given, this changes the fallback
++         * policy to deny everything
++         */
++        allowed = false;
++
++        if (g_list_find_custom(config->allowedrpcs, name, ga_strcmp) != NULL) {
+             allowed = true;
+         }
+-        i++;
      }
-     if (g_key_file_has_key(keyfile, "general", "daemon", NULL)) {
-@@ -1092,10 +1095,10 @@ static void config_load(GAConfig *config)
+-    if (!allowed) {
+-        g_debug("disabling command: %s", name);
+-        qmp_disable_command(&ga_commands, name, "the agent is in frozen state");
+-    }
+-}
  
+-/* [re-]enable all commands, except those explicitly blocked by user */
+-static void ga_enable_non_blocked(const QmpCommand *cmd, void *opaque)
+-{
+-    GAState *s = opaque;
+-    GList *blockedrpcs = s->blockedrpcs;
+-    GList *allowedrpcs = s->allowedrpcs;
+-    const char *name = qmp_command_name(cmd);
+-
+-    if (g_list_find_custom(blockedrpcs, name, ga_strcmp) == NULL) {
+-        if (qmp_command_is_enabled(cmd)) {
+-            return;
++    /*
++     * If both allowedrpcs and blockedrpcs are set, the blocked
++     * list will take priority
++     */
++    if (config->blockedrpcs) {
++        if (g_list_find_custom(config->blockedrpcs, name, ga_strcmp) != NULL) {
++            allowed = false;
+         }
++    }
+ 
+-        if (allowedrpcs &&
+-            g_list_find_custom(allowedrpcs, name, ga_strcmp) == NULL) {
+-            return;
+-        }
++    /*
++     * If frozen, this filtering must take priority over
++     * absolutely everything
++     */
++    if (state->frozen) {
++        allowed = false;
+ 
+-        g_debug("enabling command: %s", name);
+-        qmp_enable_command(&ga_commands, name);
++        while (ga_freeze_allowlist[i] != NULL) {
++            if (strcmp(name, ga_freeze_allowlist[i]) == 0) {
++                allowed = true;
++            }
++            i++;
++        }
+     }
++
++    return allowed;
+ }
+ 
+-/* disable commands that aren't allowed */
+-static void ga_disable_not_allowed(const QmpCommand *cmd, void *opaque)
++static void ga_apply_command_filters_iter(const QmpCommand *cmd, void *opaque)
+ {
+-    GList *allowedrpcs = opaque;
++    GAState *state = opaque;
++    bool want = ga_command_is_allowed(cmd, state);
++    bool have = qmp_command_is_enabled(cmd);
+     const char *name = qmp_command_name(cmd);
+ 
+-    if (g_list_find_custom(allowedrpcs, name, ga_strcmp) == NULL) {
++    if (want == have) {
++        return;
++    }
++
++    if (have) {
+         g_debug("disabling command: %s", name);
+         qmp_disable_command(&ga_commands, name, "the command is not allowed");
++    } else {
++        g_debug("enabling command: %s", name);
++        qmp_enable_command(&ga_commands, name);
+     }
+ }
+ 
++static void ga_apply_command_filters(GAState *state)
++{
++    qmp_for_each_command(&ga_commands, ga_apply_command_filters_iter, state);
++}
++
+ static bool ga_create_file(const char *path)
+ {
+     int fd = open(path, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
+@@ -509,15 +528,14 @@ void ga_set_frozen(GAState *s)
+     if (ga_is_frozen(s)) {
+         return;
+     }
+-    /* disable all forbidden (for frozen state) commands */
+-    qmp_for_each_command(&ga_commands, ga_disable_not_allowed_freeze, NULL);
+     g_warning("disabling logging due to filesystem freeze");
+-    ga_disable_logging(s);
+     s->frozen = true;
+     if (!ga_create_file(s->state_filepath_isfrozen)) {
+         g_warning("unable to create %s, fsfreeze may not function properly",
+                   s->state_filepath_isfrozen);
+     }
++    ga_apply_command_filters(s);
++    ga_disable_logging(s);
+ }
+ 
+ void ga_unset_frozen(GAState *s)
+@@ -549,12 +567,12 @@ void ga_unset_frozen(GAState *s)
+     }
+ 
+     /* enable all disabled, non-blocked and allowed commands */
+-    qmp_for_each_command(&ga_commands, ga_enable_non_blocked, s);
+     s->frozen = false;
+     if (!ga_delete_file(s->state_filepath_isfrozen)) {
+         g_warning("unable to delete %s, fsfreeze may not function properly",
+                   s->state_filepath_isfrozen);
+     }
++    ga_apply_command_filters(s);
+ }
+ 
+ #ifdef CONFIG_FSFREEZE
+@@ -1086,13 +1104,6 @@ static void config_load(GAConfig *config, const char *confpath, bool required)
+                                           split_list(config->aliststr, ","));
+     }
+ 
+-    if (g_key_file_has_key(keyfile, "general", "block-rpcs", NULL) &&
+-        g_key_file_has_key(keyfile, "general", "allow-rpcs", NULL)) {
+-        g_critical("wrong config, using 'block-rpcs' and 'allow-rpcs' keys at"
+-                   " the same time is not allowed");
+-        exit(EXIT_FAILURE);
+-    }
+-
  end:
      g_key_file_free(keyfile);
--    if (gerr &&
--        !(gerr->domain == G_FILE_ERROR && gerr->code == G_FILE_ERROR_NOENT)) {
-+    if (gerr && (required ||
-+                 !(gerr->domain == G_FILE_ERROR && gerr->code == G_FILE_ERROR_NOENT))) {
-         g_critical("error loading configuration from path: %s, %s",
--                   conf, gerr->message);
-+                   confpath, gerr->message);
-         exit(EXIT_FAILURE);
-     }
-     g_clear_error(&gerr);
-@@ -1167,12 +1170,13 @@ static void config_dump(GAConfig *config)
- 
- static void config_parse(GAConfig *config, int argc, char **argv)
+     if (gerr && (required ||
+@@ -1172,7 +1183,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
  {
--    const char *sopt = "hVvdm:p:l:f:F::b:a:s:t:Dr";
-+    const char *sopt = "hVvdc:m:p:l:f:F::b:a:s:t:Dr";
+     const char *sopt = "hVvdc:m:p:l:f:F::b:a:s:t:Dr";
      int opt_ind = 0, ch;
-     bool block_rpcs = false, allow_rpcs = false;
+-    bool block_rpcs = false, allow_rpcs = false;
      const struct option lopt[] = {
          { "help", 0, NULL, 'h' },
          { "version", 0, NULL, 'V' },
-+        { "config", 1, NULL, 'c' },
-         { "dump-conf", 0, NULL, 'D' },
-         { "logfile", 1, NULL, 'l' },
-         { "pidfile", 1, NULL, 'f' },
-@@ -1192,6 +1196,26 @@ static void config_parse(GAConfig *config, int argc, char **argv)
-         { "retry-path", 0, NULL, 'r' },
-         { NULL, 0, NULL, 0 }
-     };
-+    g_autofree char *confpath = g_strdup(g_getenv("QGA_CONF")) ?:
-+        get_relocated_path(QGA_CONF_DEFAULT);
-+    bool confrequired = false;
-+
-+    while ((ch = getopt_long(argc, argv, sopt, lopt, NULL)) != -1) {
-+        switch (ch) {
-+        case 'c':
-+            g_free(confpath);
-+            confpath = g_strdup(optarg);
-+            confrequired = true;
-+            break;
-+        default:
-+            break;
-+        }
-+    }
-+
-+    config_load(config, confpath, confrequired);
-+
-+    /* Reset for second pass */
-+    optind = 1;
+@@ -1268,7 +1278,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+             }
+             config->blockedrpcs = g_list_concat(config->blockedrpcs,
+                                                 split_list(optarg, ","));
+-            block_rpcs = true;
+             break;
+         }
+         case 'a': {
+@@ -1278,7 +1287,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+             }
+             config->allowedrpcs = g_list_concat(config->allowedrpcs,
+                                                 split_list(optarg, ","));
+-            allow_rpcs = true;
+             break;
+         }
+ #ifdef _WIN32
+@@ -1319,12 +1327,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+             exit(EXIT_FAILURE);
+         }
+     }
+-
+-    if (block_rpcs && allow_rpcs) {
+-        g_critical("wrong commandline, using --block-rpcs and --allow-rpcs at the"
+-                   " same time is not allowed");
+-        exit(EXIT_FAILURE);
+-    }
+ }
  
-     while ((ch = getopt_long(argc, argv, sopt, lopt, &opt_ind)) != -1) {
-         switch (ch) {
-@@ -1582,7 +1606,6 @@ int main(int argc, char **argv)
-     qga_qmp_init_marshal(&ga_commands);
+ static void config_free(GAConfig *config)
+@@ -1435,7 +1437,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+             s->deferred_options.log_filepath = config->log_filepath;
+         }
+         ga_disable_logging(s);
+-        qmp_for_each_command(&ga_commands, ga_disable_not_allowed_freeze, NULL);
+     } else {
+         if (config->daemonize) {
+             become_daemon(config->pid_filepath);
+@@ -1459,25 +1460,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+         return NULL;
+     }
  
-     init_dfl_pathnames();
--    config_load(config);
-     config_parse(config, argc, argv);
+-    if (config->allowedrpcs) {
+-        qmp_for_each_command(&ga_commands, ga_disable_not_allowed, config->allowedrpcs);
+-        s->allowedrpcs = config->allowedrpcs;
+-    }
+-
+-    /*
+-     * Some commands can be blocked due to system limitation.
+-     * Initialize blockedrpcs list even if allowedrpcs specified.
+-     */
+-    config->blockedrpcs = ga_command_init_blockedrpcs(config->blockedrpcs);
+-    if (config->blockedrpcs) {
+-        GList *l = config->blockedrpcs;
+-        s->blockedrpcs = config->blockedrpcs;
+-        do {
+-            g_debug("disabling command: %s", (char *)l->data);
+-            qmp_disable_command(&ga_commands, l->data, NULL);
+-            l = g_list_next(l);
+-        } while (l);
+-    }
+     s->command_state = ga_command_state_new();
+     ga_command_state_init(s, s->command_state);
+     ga_command_state_init_all(s->command_state);
+@@ -1503,6 +1485,8 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+     }
+ #endif
  
-     if (config->pid_filepath == NULL) {
++    ga_apply_command_filters(s);
++
+     ga_state = s;
+     return s;
+ }
 -- 
 2.45.2
 
