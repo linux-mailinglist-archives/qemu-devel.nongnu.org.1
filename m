@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9026693A544
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 20:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD1B93A558
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 20:13:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWJxT-0002WA-07; Tue, 23 Jul 2024 14:09:55 -0400
+	id 1sWJxR-0001r7-1F; Tue, 23 Jul 2024 14:09:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWJws-0001Be-01
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWJws-0001Bf-35
  for qemu-devel@nongnu.org; Tue, 23 Jul 2024 14:09:19 -0400
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
+Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWJwe-0001CJ-Nr
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 14:09:15 -0400
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-39888f465d7so9995235ab.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 11:09:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWJwo-0001Cj-EY
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 14:09:17 -0400
+Received: by mail-il1-x135.google.com with SMTP id
+ e9e14a558f8ab-37636c3872bso25955565ab.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 11:09:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721758140; x=1722362940;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721758143; x=1722362943;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6l2giQ2DgrY0GVfdS/Z1DlHyLIcTuXalMYf+UrzR91E=;
- b=GPdAFAtwBtSjDT3KVSIm625+cLXZMUykRguhba/ibmdc4qvREnuLVRDU2vamcQw29p
- E6b2+es4yB4U47wyIxh4AV3/GFZX8ftmS2F1H/1hDsw8lQTm68ptyyp9muG4o+5Dqzo4
- ZmkHxwYdh2oh5yJhIcLJeN7gudKGW0H7QKKjq6nB6T/CUmTDNlLETSgHfKgFxSWdcWDY
- zxP6w2yTqNb8Nq0UPyIODj7jDiccdmhkg5B77Qzwfz/BZj0K7yiXFHZFdu+5/lmhcp/e
- 2II6wBJUKs64JSPViweuxACUYsOZ20xeYwsT12oxM2HhxzbLTjtw4s3+kBC+/tmOvLVq
- vanw==
+ bh=TXCw0+RJXjXO156yoRFr2t5+0iBs33zwi5q8sWmsNWs=;
+ b=Tol5Pfzt00N2MoDzPVr/9jf2A4IedplMBTNxr74fLgXg00FTuB+6GJZpKdwWAZFQiP
+ kvhlp8HpsFJQqebUUfktA7eAUmfzKqfbHYvxVUdOnDDCKnAGTyfqN6Us3H5oa08MbkDb
+ G7gcwEZH9LQX1IZP2b6yCYo5o8BzvZtLm1brrC9mibivzBc5AlN6hLLOT6cm8+edbdxL
+ g3VhB6NU8xjsbbHYln38o0hkX2sGKAXkAFDg5rt0QE2YVmQwJxGgvMVLzs42WKwDKVoE
+ Q78Fo/zcizQOtCBe0FJCXti94Q9LVp+vphjJqFEO13Ao78CvS8c6IaVRM5hfkm63kpGH
+ GO2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721758140; x=1722362940;
+ d=1e100.net; s=20230601; t=1721758143; x=1722362943;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6l2giQ2DgrY0GVfdS/Z1DlHyLIcTuXalMYf+UrzR91E=;
- b=Q7BFSiKqrLQ95NR1e5sTqujtfLCReoThVackGfVrh6Dz9G+P1Ia8S6yeiQedMGa+0S
- tNP6OjpjxEjjKrR+emuIIUA7RwTqtyNqKiv08uwEU8GVVh2S7uEn1MP6OQQ87zqXm1BO
- bOThFkW4K6DSRahaPKLGJVeqhp0ZcflKbp33CxT/wbpix4fI9fvHAIiHMPDFCqJmQSsO
- HTVSLn6s9jU2xdq9XmXMJs/xzdB001MpauDvLeqKenDXJSa1DkwL8bVUOraRVwJTiF4Z
- 3EjzF8U7iMixCRRuWcZsPlMqxe1v4ZNgOlXiW8fCoS4pGzhgrgjWZ0ikYm0jBil88W5q
- Un0Q==
-X-Gm-Message-State: AOJu0Yx983dubpPCYPzmIkln5R2jAH4FkeOBR5zFTBEwLEYUnugVacXh
- TgRpbnvsg4oXUGlCey36iYuP/L5jgb0Qg7xsth1r/Gvyq3g0cQcZSJ9MxQ3tsf9yb5kcta8w+Ne
- Bosg=
-X-Google-Smtp-Source: AGHT+IG628jh6zK46X53MOuNZVB7ZJIIzpI9qlZ6GK4QQZSr7JsghhiZeT0SbW+pC+hzFjCrW0ZVNg==
-X-Received: by 2002:a05:6e02:1c46:b0:382:b3f8:9f72 with SMTP id
- e9e14a558f8ab-39a16c81e5fmr10957115ab.15.1721758140488; 
- Tue, 23 Jul 2024 11:09:00 -0700 (PDT)
+ bh=TXCw0+RJXjXO156yoRFr2t5+0iBs33zwi5q8sWmsNWs=;
+ b=q1mN6oxdZpatRWcEDRW589WydHLgxn0qIOlWwjM0SB1Uq7FiEdQtyb1txuNfGaGBpX
+ 9nNs879ot4adeHsO/M61OqaccGGVR0E2rclRkuHj7nYenrQuWLNjKt8RXx+Ljwcveq//
+ FiibI98plySx0X4KfmOHP7V+7CSePicvEPmsLsqx8hkK4e0Pqv2//r3oL8z0OinigdX1
+ 9/UWyGXn6qWuIWccAgmk3a+hgYLV8HNHb1qmtsbf4gvdTOejUeaYUrCNYRtUw3PvxFwB
+ YLWm565BrD8jC6ESwC79FjFq2VX4gZMtDEy4iVjjqkywpJTgLoIx1zcDVNKiTv8FePaa
+ nnyA==
+X-Gm-Message-State: AOJu0YzGfWUvA1iV4I36jX9tNp2lvbNaJWkyMBVhudRxZ5arHxGk527t
+ WKwkLegEsMxY3i6T5HMzWxXbgZfTdrJQQ1wqUeLtZoxVBoZbQsqeIhYYcnGocnl82ZWfLjWgX5r
+ aGjw=
+X-Google-Smtp-Source: AGHT+IHnrGaNWqqAkwFMvWbCSBLhF1+3y5tcElslWJgwfmkBAw2b6AD8/gSA0E1HvoIR+SaqNAFv2w==
+X-Received: by 2002:a05:6e02:1a83:b0:381:d74f:b2f4 with SMTP id
+ e9e14a558f8ab-39a16d5a102mr9503785ab.24.1721758141350; 
+ Tue, 23 Jul 2024 11:09:01 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-397f7a2827csm33361775ab.53.2024.07.23.11.08.59
+ e9e14a558f8ab-397f7a2827csm33361775ab.53.2024.07.23.11.09.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 23 Jul 2024 11:09:00 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>,
  Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
- Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>,
- Kyle Evans <kevans@FreeBSD.org>,
+ Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/14] bsd-user:Add get_mcontext function for ARM AArch64
-Date: Tue, 23 Jul 2024 12:07:16 -0600
-Message-ID: <20240723180725.99114-6-imp@bsdimp.com>
+Subject: [PULL 06/14] bsd-user:Add setup_sigframe_arch function for ARM AArch64
+Date: Tue, 23 Jul 2024 12:07:17 -0600
+Message-ID: <20240723180725.99114-7-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240723180725.99114-1-imp@bsdimp.com>
 References: <20240723180725.99114-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::12b;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x12b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::135;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x135.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,60 +93,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+The function utilizes the `get_mcontext` function to retrieve the machine
+context for the current CPUARMState
 
-function to retrieve machine context,it populates the provided
-target_mcontext_t structure with information from the CPUARMState
-registers.
-
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240707191128.10509-6-itachis@FreeBSD.org>
+Message-Id: <20240707191128.10509-7-itachis@FreeBSD.org>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/aarch64/signal.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ bsd-user/aarch64/signal.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/bsd-user/aarch64/signal.c b/bsd-user/aarch64/signal.c
-index 98861f9ab3b..ab3bf8558ab 100644
+index ab3bf8558ab..43c886e6036 100644
 --- a/bsd-user/aarch64/signal.c
 +++ b/bsd-user/aarch64/signal.c
-@@ -51,3 +51,33 @@ abi_long set_sigtramp_args(CPUARMState *regs, int sig,
+@@ -81,3 +81,17 @@ abi_long get_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int flags)
  
-     return 0;
+     return err;
  }
 +
 +/*
-+ * Compare to get_mcontext() in arm64/arm64/machdep.c
-+ * Assumes that the memory is locked if mcp points to user memory.
++ * Compare to arm64/arm64/exec_machdep.c sendsig()
++ * Assumes that the memory is locked if frame points to user memory.
 + */
-+abi_long get_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int flags)
++abi_long setup_sigframe_arch(CPUARMState *env, abi_ulong frame_addr,
++                             struct target_sigframe *frame, int flags)
 +{
-+    int err = 0, i;
-+    uint64_t *gr = mcp->mc_gpregs.gp_x;
++    target_mcontext_t *mcp = &frame->sf_uc.uc_mcontext;
 +
-+    mcp->mc_gpregs.gp_spsr = pstate_read(regs);
-+    if (flags & TARGET_MC_GET_CLEAR_RET) {
-+        gr[0] = 0UL;
-+        mcp->mc_gpregs.gp_spsr &= ~CPSR_C;
-+    } else {
-+        gr[0] = tswap64(regs->xregs[0]);
-+    }
-+
-+    for (i = 1; i < 30; i++) {
-+        gr[i] = tswap64(regs->xregs[i]);
-+    }
-+
-+    mcp->mc_gpregs.gp_sp = tswap64(regs->xregs[TARGET_REG_SP]);
-+    mcp->mc_gpregs.gp_lr = tswap64(regs->xregs[TARGET_REG_LR]);
-+    mcp->mc_gpregs.gp_elr = tswap64(regs->pc);
-+
-+    /* XXX FP? */
-+
-+    return err;
++    get_mcontext(env, mcp, flags);
++    return 0;
 +}
++
 -- 
 2.45.1
 
