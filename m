@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970A7939B52
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCE8939B62
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 09:06:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW9Yq-0007fq-R0; Tue, 23 Jul 2024 03:03:49 -0400
+	id 1sW9Z8-0001Q2-Ga; Tue, 23 Jul 2024 03:04:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sW9Yk-0007DO-Tj
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:42 -0400
+ id 1sW9Z5-00011Q-6z
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:04:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1sW9Yj-0000ua-5L
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:03:42 -0400
+ id 1sW9Z3-0000xE-6U
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 03:04:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721718220;
+ s=mimecast20190719; t=1721718240;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9dy1ZmMlwU9LUuKQB553ig1xA979EJ9zAJ4Cv30rbKY=;
- b=E2+GSQKUQxkGoWY17XF/Cbs09XwD9pNbVXuCuhkFNFtuPU58nfcEE1y1e3ySTPDyiAdlP5
- y7TeSwNfviV/UTYsd8pbYSr5v4PIRsLpm40LqsgaIu1wP31Cc6wAvyeysNaHnJ/YElSR50
- 2XbqaaM06P0mqMuQouK2ELM0lqD6cbs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=wrseMmuiX6II9DUgUI20KHP9sFWySY+HpgvK+lHSj1A=;
+ b=aPcnXiCRqBLk7EYMfW9KhdwzRSfMowr65kMkoaGgXKrjnotTPPGKVhmZ21+S67JpdVQ4Xw
+ 77KBZgp1DxBIK1+X6imY5EAn+TlDvWuhLHvIZPzpVo1zddUEbNGY0p56qH563bRhB8f34B
+ UHUysq84Kb7hnOAkmDhqfFa03jnBLqU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-Lb-sjQAwMZ-QwlXPb0m5qA-1; Tue,
- 23 Jul 2024 03:03:36 -0400
-X-MC-Unique: Lb-sjQAwMZ-QwlXPb0m5qA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-EN1bl3WVN-mGzv6a9Rez9A-1; Tue,
+ 23 Jul 2024 03:03:41 -0400
+X-MC-Unique: EN1bl3WVN-mGzv6a9Rez9A-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 698D91956064; Tue, 23 Jul 2024 07:03:35 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 43D611955F0D; Tue, 23 Jul 2024 07:03:37 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.211])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0D17B3000192; Tue, 23 Jul 2024 07:03:33 +0000 (UTC)
+ id D79073000198; Tue, 23 Jul 2024 07:03:35 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL v2 20/25] qga: remove pointless 'blockrpcs_key' variable
-Date: Tue, 23 Jul 2024 10:02:46 +0300
-Message-ID: <20240723070251.25575-21-kkostiuk@redhat.com>
+Subject: [PULL v2 21/25] qga: allow configuration file path via the cli
+Date: Tue, 23 Jul 2024 10:02:47 +0300
+Message-ID: <20240723070251.25575-22-kkostiuk@redhat.com>
 In-Reply-To: <20240723070251.25575-1-kkostiuk@redhat.com>
 References: <20240723070251.25575-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -82,57 +82,154 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This variable was used to support back compat for the old config
-file key name, and became redundant after the following change:
+Allowing the user to set the QGA_CONF environment variable to change
+the default configuration file path is very unusual practice, made
+more obscure since this ability is not documented.
 
-  commit a7a2d636ae4549ef0551134d4bf8e084a14431c4
-  Author: Philippe Mathieu-Daudé <philmd@linaro.org>
-  Date:   Thu May 30 08:36:43 2024 +0200
+This introduces the more normal '-c PATH'  / '--config=PATH' command
+line argument approach. This requires that we parse the comamnd line
+twice, since we want the command line arguments to take priority over
+the configuration file settings in general.
 
-    qga: Remove deprecated 'blacklist' argument / config key
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240712132459.3974109-21-berrange@redhat.com>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Message-ID: <20240712132459.3974109-22-berrange@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/main.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ docs/interop/qemu-ga.rst |  5 +++++
+ qga/main.c               | 43 ++++++++++++++++++++++++++++++----------
+ 2 files changed, 38 insertions(+), 10 deletions(-)
 
+diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
+index 72fb75a6f5..e42b370319 100644
+--- a/docs/interop/qemu-ga.rst
++++ b/docs/interop/qemu-ga.rst
+@@ -33,6 +33,11 @@ Options
+ 
+ .. program:: qemu-ga
+ 
++.. option:: -c, --config=PATH
++
++  Configuration file path (the default is |CONFDIR|\ ``/qemu-ga.conf``,
++  unless overriden by the QGA_CONF environment variable)
++
+ .. option:: -m, --method=METHOD
+ 
+   Transport method: one of ``unix-listen``, ``virtio-serial``, or
 diff --git a/qga/main.c b/qga/main.c
-index 647d27037c..6ff022a85d 100644
+index 6ff022a85d..6ae911eb15 100644
 --- a/qga/main.c
 +++ b/qga/main.c
-@@ -1023,7 +1023,6 @@ static void config_load(GAConfig *config)
+@@ -248,12 +248,16 @@ static void usage(const char *cmd)
+ #ifdef CONFIG_FSFREEZE
+     g_autofree char *fsfreeze_hook = get_relocated_path(QGA_FSFREEZE_HOOK_DEFAULT);
+ #endif
++    g_autofree char *conf_path = get_relocated_path(QGA_CONF_DEFAULT);
+ 
+     printf(
+ "Usage: %s [-m <method> -p <path>] [<options>]\n"
+ "QEMU Guest Agent " QEMU_FULL_VERSION "\n"
+ QEMU_COPYRIGHT "\n"
+ "\n"
++"  -c, --config=PATH configuration file path (default is\n"
++"                    %s/qemu-ga.conf\n"
++"                    unless overriden by the QGA_CONF environment variable)\n"
+ "  -m, --method      transport method: one of unix-listen, virtio-serial,\n"
+ "                    isa-serial, or vsock-listen (virtio-serial is the default)\n"
+ "  -p, --path        device/socket path (the default for virtio-serial is:\n"
+@@ -294,8 +298,8 @@ QEMU_COPYRIGHT "\n"
+ "                    plug/unplug, etc.)\n"
+ "  -h, --help        display this help and exit\n"
+ "\n"
+-QEMU_HELP_BOTTOM "\n"
+-    , cmd, QGA_VIRTIO_PATH_DEFAULT, QGA_SERIAL_PATH_DEFAULT,
++QEMU_HELP_BOTTOM "\n",
++    cmd, conf_path, QGA_VIRTIO_PATH_DEFAULT, QGA_SERIAL_PATH_DEFAULT,
+     dfl_pathnames.pidfile,
+ #ifdef CONFIG_FSFREEZE
+     fsfreeze_hook,
+@@ -1018,15 +1022,14 @@ static GList *split_list(const gchar *str, const gchar *delim)
+     return list;
+ }
+ 
+-static void config_load(GAConfig *config)
++static void config_load(GAConfig *config, const char *confpath, bool required)
+ {
      GError *gerr = NULL;
      GKeyFile *keyfile;
-     g_autofree char *conf = g_strdup(g_getenv("QGA_CONF")) ?: get_relocated_path(QGA_CONF_DEFAULT);
--    const gchar *blockrpcs_key = "block-rpcs";
+-    g_autofree char *conf = g_strdup(g_getenv("QGA_CONF")) ?: get_relocated_path(QGA_CONF_DEFAULT);
  
      /* read system config */
      keyfile = g_key_file_new();
-@@ -1071,9 +1070,9 @@ static void config_load(GAConfig *config)
-             g_key_file_get_boolean(keyfile, "general", "retry-path", &gerr);
+-    if (!g_key_file_load_from_file(keyfile, conf, 0, &gerr)) {
++    if (!g_key_file_load_from_file(keyfile, confpath, 0, &gerr)) {
+         goto end;
      }
+     if (g_key_file_has_key(keyfile, "general", "daemon", NULL)) {
+@@ -1092,10 +1095,10 @@ static void config_load(GAConfig *config)
  
--    if (g_key_file_has_key(keyfile, "general", blockrpcs_key, NULL)) {
-+    if (g_key_file_has_key(keyfile, "general", "block-rpcs", NULL)) {
-         config->bliststr =
--            g_key_file_get_string(keyfile, "general", blockrpcs_key, &gerr);
-+            g_key_file_get_string(keyfile, "general", "block-rpcs", &gerr);
-         config->blockedrpcs = g_list_concat(config->blockedrpcs,
-                                           split_list(config->bliststr, ","));
+ end:
+     g_key_file_free(keyfile);
+-    if (gerr &&
+-        !(gerr->domain == G_FILE_ERROR && gerr->code == G_FILE_ERROR_NOENT)) {
++    if (gerr && (required ||
++                 !(gerr->domain == G_FILE_ERROR && gerr->code == G_FILE_ERROR_NOENT))) {
+         g_critical("error loading configuration from path: %s, %s",
+-                   conf, gerr->message);
++                   confpath, gerr->message);
+         exit(EXIT_FAILURE);
      }
-@@ -1084,7 +1083,7 @@ static void config_load(GAConfig *config)
-                                           split_list(config->aliststr, ","));
-     }
+     g_clear_error(&gerr);
+@@ -1167,12 +1170,13 @@ static void config_dump(GAConfig *config)
  
--    if (g_key_file_has_key(keyfile, "general", blockrpcs_key, NULL) &&
-+    if (g_key_file_has_key(keyfile, "general", "block-rpcs", NULL) &&
-         g_key_file_has_key(keyfile, "general", "allow-rpcs", NULL)) {
-         g_critical("wrong config, using 'block-rpcs' and 'allow-rpcs' keys at"
-                    " the same time is not allowed");
+ static void config_parse(GAConfig *config, int argc, char **argv)
+ {
+-    const char *sopt = "hVvdm:p:l:f:F::b:a:s:t:Dr";
++    const char *sopt = "hVvdc:m:p:l:f:F::b:a:s:t:Dr";
+     int opt_ind = 0, ch;
+     bool block_rpcs = false, allow_rpcs = false;
+     const struct option lopt[] = {
+         { "help", 0, NULL, 'h' },
+         { "version", 0, NULL, 'V' },
++        { "config", 1, NULL, 'c' },
+         { "dump-conf", 0, NULL, 'D' },
+         { "logfile", 1, NULL, 'l' },
+         { "pidfile", 1, NULL, 'f' },
+@@ -1192,6 +1196,26 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+         { "retry-path", 0, NULL, 'r' },
+         { NULL, 0, NULL, 0 }
+     };
++    g_autofree char *confpath = g_strdup(g_getenv("QGA_CONF")) ?:
++        get_relocated_path(QGA_CONF_DEFAULT);
++    bool confrequired = false;
++
++    while ((ch = getopt_long(argc, argv, sopt, lopt, NULL)) != -1) {
++        switch (ch) {
++        case 'c':
++            g_free(confpath);
++            confpath = g_strdup(optarg);
++            confrequired = true;
++            break;
++        default:
++            break;
++        }
++    }
++
++    config_load(config, confpath, confrequired);
++
++    /* Reset for second pass */
++    optind = 1;
+ 
+     while ((ch = getopt_long(argc, argv, sopt, lopt, &opt_ind)) != -1) {
+         switch (ch) {
+@@ -1582,7 +1606,6 @@ int main(int argc, char **argv)
+     qga_qmp_init_marshal(&ga_commands);
+ 
+     init_dfl_pathnames();
+-    config_load(config);
+     config_parse(config, argc, argv);
+ 
+     if (config->pid_filepath == NULL) {
 -- 
 2.45.2
 
