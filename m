@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFCA93A45F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 18:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C81C993A47D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 18:41:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWIKS-0005lM-E3; Tue, 23 Jul 2024 12:25:32 -0400
+	id 1sWIYh-0006sQ-BO; Tue, 23 Jul 2024 12:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sWIKQ-0005kd-AQ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:25:30 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sWIKO-00077k-K6
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:25:30 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3684bea9728so3360999f8f.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 09:25:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721751926; x=1722356726; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZUqqESPN3rURYwrIrQ9xb/I9TaQXbTrIwdP6WuJ8a/A=;
- b=xIcUd5NujFo4h4NiAcVzevt8CaJVlB9YWQhsVXsRa0Qm02uV0odIih44XUjw7yA0SY
- Tk81fzdwcdO3xh+8TC5bb+hG9nS2l0X0NPJse6uaRpE54k6jw4+I0eyTgBNepHq3E4kF
- qfHxNnI+wMm3/4T/NDFT7zOjadsA1v6Sq37/02zxrO6jxpMgIgHmh3RfY+n8VD8K5N/c
- Te72DFcXRaDss67iiLezNR7H80b3AiKaVrMvAvdgqHBbw/F+QPVWOBkmXBHICqzWC9dr
- +GtUROYL+NM1L0tnsDkGBiGSpLfcJ8i7qSTmOho4+znCZQHjKKtGkuLucx18StcSJgLr
- bs9w==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1sWIYZ-0006mJ-Cn
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:40:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1sWIYP-0001YF-91
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:39:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721752795;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SGTSsnU7IzUczG7GKAokId4CNGsKIlF6nc34Cio1mnQ=;
+ b=Atmmt4t0ZtWuCPDw8YghkRbrKYpqUA1hMCn1DpfF4FqgiqSSVW667hmsJ9iUcgqvw7MA1l
+ n7WS6QyGw44dwrUSLHEONlfMVOgKXhmbMm7tV1wCt/f7SQ1Lo+UiBNUbXENXHBAv1ThDPf
+ oOV4DC90tTmA66gWkxLiYK9QJ76l3rs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619-_ROfWzjHNC-Mpl4Wlu9hhg-1; Tue, 23 Jul 2024 12:39:54 -0400
+X-MC-Unique: _ROfWzjHNC-Mpl4Wlu9hhg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42794cb8251so45690195e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 09:39:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721751926; x=1722356726;
+ d=1e100.net; s=20230601; t=1721752790; x=1722357590;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ZUqqESPN3rURYwrIrQ9xb/I9TaQXbTrIwdP6WuJ8a/A=;
- b=QJvMtLYns9NoqQ4W0CYDwEZyq83t7SjEaWxjXFCLHTD56OWd8fh5LtrQKLSb28YjY1
- xCcdZujU4DuQUWe41wK/mz61lZDly6MQkkaCX3LTVY+5zcKuPnu4ko1CwcYefBZcwuBh
- 5iEmhMIkaEKiVmx5ZjuLuobi7UGZicpJxSaVysc5iedPIFlr0QI4rqSScYWWDqwT1SEh
- A/xPfW75xaFYc/UeFgrFxPbi0mw53ebfnn8b/mMRqtO+q7RM2W99D2GnIfEkknBQUUGK
- f8vR1e3rmv1EsI0iTwejTb0iFGmIaEj0PbaiFQyVm053VClzPtY09xjtC8kleNOGbHpb
- HdfQ==
-X-Gm-Message-State: AOJu0YwTY4tHSxX5jy8h1oWDZVWhPQoftoiOlGzdRsCL0HjzsVAmLJda
- yaNtkrOy9liWUUJYxFIEIPPPwLyyLmUbrgq9zIYkmb4ZONpCyoNMnt1LwcUzD8o5mRNyoc+HOor
- +
-X-Google-Smtp-Source: AGHT+IF8LZ6zqPcxpeVVD7P7UVd9ioRazpG/o1MhIy164mxPPVrGHWUPDGHvQUeC/gMLYnQ6/IxuHg==
-X-Received: by 2002:adf:ead2:0:b0:366:eb45:6d55 with SMTP id
- ffacd0b85a97d-369dee43e96mr2407569f8f.49.1721751926528; 
- Tue, 23 Jul 2024 09:25:26 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ bh=SGTSsnU7IzUczG7GKAokId4CNGsKIlF6nc34Cio1mnQ=;
+ b=rq+5H7YLHbaiUf9tqmr7wWYVjlsszu9n6tqqWAd0YLI38xGnNSVi02dV4FxxcXDR4L
+ zJMk28rDN7+rZaIrzg9HHLfAtN3EE+jbq0ZMl+P7cImc6kgazJfTPcIJ6JMR/BLzrD19
+ SUHKlyTWiUnGkxL7mPyoKlBLv8vBGfMumWdoXvoUOu3sM9JplMcWkwYuGA4YyVaXKvlQ
+ O1ReFCKOUJDNfPbb0X4n83lW1iWL2uEBhCQSxjSsyuM/Xw54Ut4P1xPGMN+7La5sXnSk
+ RFnO9jncfPL7OOwIYeTr76xyN8z9rfSLFXD+/1ErR59JP6gdAj0ODkP9zIaQ+r2hb4jC
+ SA4g==
+X-Gm-Message-State: AOJu0YwX8ObJdmZHz9WIGOuIsoXmI8wA+gh0KYyHLL4gWcq9jZjNQqAR
+ O8II1BT3WHmedTPtqK6rf3JZtjTnBnWvuUIkUKc3Pds/TH/xikkxleodabAXay6DUqSFzkO4mMZ
+ LigXW4ZhG9zdeCGGTOn23Kq1f8hLGgx3Nnv69iqBHYpAcSNRM4HKoBIKLX+YFpHvdisnkgZeWQK
+ jYWATEeYnVRCl0gf1NgBVAd528m/3rJDicVA==
+X-Received: by 2002:a05:600c:4f0c:b0:426:5f8f:51a4 with SMTP id
+ 5b1f17b1804b1-427daa2815cmr63475415e9.12.1721752790672; 
+ Tue, 23 Jul 2024 09:39:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExGvcB9WZ3pMXoee+ZTAFTrxea7wH+qLKZSBSBX6Eg7LJ/8ouhXgDveN6Pzn/yph+08EQMpw==
+X-Received: by 2002:a05:600c:4f0c:b0:426:5f8f:51a4 with SMTP id
+ 5b1f17b1804b1-427daa2815cmr63475145e9.12.1721752790006; 
+ Tue, 23 Jul 2024 09:39:50 -0700 (PDT)
+Received: from localhost
+ (p200300cfd74b1cd04af1f18b763c5dac.dip0.t-ipconnect.de.
+ [2003:cf:d74b:1cd0:4af1:f18b:763c:5dac])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d68f789csm180936945e9.6.2024.07.23.09.25.25
+ 5b1f17b1804b1-427d7263687sm178773225e9.4.2024.07.23.09.39.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 09:25:26 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ Tue, 23 Jul 2024 09:39:48 -0700 (PDT)
+From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH] target/i386: Remove dead assignment to ss in do_interrupt64()
-Date: Tue, 23 Jul 2024 17:25:25 +0100
-Message-Id: <20240723162525.1585743-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+Cc: Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PATCH v2 0/2] virtio: Always reset vhost devices
+Date: Tue, 23 Jul 2024 18:39:38 +0200
+Message-ID: <20240723163941.48775-1-hreitz@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,53 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity points out that in do_interrupt64() in the "to inner
-privilege" codepath we set "ss = 0", but because we also set
-"new_stack = 1" there, later in the function we will always override
-that value of ss with "ss = 0 | dpl".
+Hi,
 
-Remove the unnecessary initialization of ss, which allows us to
-reduce the scope of the variable to only where it is used.  Borrow a
-comment from helper_lcall_protected() that explains what "0 | dpl"
-means here.
+As explained in patch 2 (the main one) of this series, we currently
+don’t issue the RESET_DEVICE command to vhost back-ends, even though we
+fully intend to do so.
 
-Resolves: Coverity CID 1527395
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/i386/tcg/seg_helper.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+The problem is that sending this command is gated behind a vhost_started
+check, but at that point (during the device reset process), the device
+is actually stopped, and so vhost_started is false.  We still want to
+send RESET_DEVICE there, so patch 2 removes the vhost_started condition.
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index aac092a356b..bab552cd535 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -926,7 +926,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
-     target_ulong ptr;
-     int type, dpl, selector, cpl, ist;
-     int has_error_code, new_stack;
--    uint32_t e1, e2, e3, ss, eflags;
-+    uint32_t e1, e2, e3, eflags;
-     target_ulong old_eip, offset;
-     bool set_rf;
-     StackAccess sa;
-@@ -1007,7 +1007,6 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
-         /* to inner privilege */
-         new_stack = 1;
-         sa.sp = get_rsp_from_tss(env, ist != 0 ? ist + 3 : dpl);
--        ss = 0;
-     } else {
-         /* to same privilege */
-         if (env->eflags & VM_MASK) {
-@@ -1040,7 +1039,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
-     env->eflags &= ~(TF_MASK | VM_MASK | RF_MASK | NT_MASK);
- 
-     if (new_stack) {
--        ss = 0 | dpl;
-+        uint32_t ss = 0 | dpl; /* SS = NULL selector with RPL = new CPL */
-         cpu_x86_load_seg_cache(env, R_SS, ss, 0, 0, dpl << DESC_DPL_SHIFT);
-     }
-     env->regs[R_ESP] = sa.sp;
+This means that we need to be able to call VirtioDeviceClass.get_vhost()
+when vhost_started is false.  For most .get_vhost() implementations,
+that’s perfectly fine; but three of them (crypto, gpu, net) dereference
+some pointers, so if any of them is NULL, we have to explicitly return
+NULL in those implementations.  That’s what patch 1 is for.
+
+
+This time, I’ve run `make check` with ubsan; I can confirm that v1
+generated errors for vhost-net, but with patch 1 added, it’s clean.
+I’ve also run the CI pipeline:
+https://gitlab.com/hreitz/qemu/-/pipelines/1384524949
+Specifically, clang-system passed:
+https://gitlab.com/hreitz/qemu/-/jobs/7406688234
+The only failure is msys2-64bit, which timed out (re-tried repeatedly),
+but judging from https://gitlab.com/qemu-project/qemu/-/pipelines, I
+think that’s expected.
+
+
+v2: Added patch 1, left patch 2 unchanged.
+
+
+Hanna Czenczek (2):
+  virtio: Allow .get_vhost() without vhost_started
+  virtio: Always reset vhost devices
+
+ include/hw/virtio/virtio.h  |  1 +
+ hw/display/vhost-user-gpu.c |  2 +-
+ hw/net/virtio-net.c         | 19 +++++++++++++++++--
+ hw/virtio/virtio-crypto.c   | 18 +++++++++++++++---
+ hw/virtio/virtio.c          |  8 ++++++--
+ 5 files changed, 40 insertions(+), 8 deletions(-)
+
 -- 
-2.34.1
+2.45.2
 
 
