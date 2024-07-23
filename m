@@ -2,83 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14DC939D44
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 11:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54C6939D84
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 11:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWBXB-0006mb-36; Tue, 23 Jul 2024 05:10:13 -0400
+	id 1sWBjq-0005ZX-2w; Tue, 23 Jul 2024 05:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sWBX3-0006eT-3s
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 05:10:05 -0400
-Received: from mail-vs1-xe30.google.com ([2607:f8b0:4864:20::e30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sWBWy-00029i-Hx
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 05:10:04 -0400
-Received: by mail-vs1-xe30.google.com with SMTP id
- ada2fe7eead31-4928fb6fdceso902132137.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 02:09:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1721725797; x=1722330597;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xrTcZcCQTfrwQTMiEVQL0wH3s9wf348RiRKQQ3JBNBE=;
- b=mQWKGvL8yt11Sfg9Z1/j2oXsKqFU/KsQRunfpxF0e2AoeT8nst08/Tw3Nk4chEMPvu
- WFzkN0piZueoAc+eOp+BVIp6ME0s8opC7r9Ntex7AiwTxhUVGNzcMJGTNjDwYCLXXrxx
- h11F8rd3IpX0tMGXAEk3KAoWdj9tuO7X0OmGWq9pfMv2a51VPm7O4FfjRdxc08tsTCJm
- PDmJm5kdDlm8Muf6zcda0nX1831QYV8DReJJUrOHK9nokYjmDtSsPoSuMQqkFEqmFj0+
- 59Btqo+7KmCDwVm+GuwzNsMndWHa2PXF5AGOtMXJuaqdaQglP5btAKyhPGAddGt9xmal
- zChg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWBjn-0005Wt-Gb
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 05:23:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWBjl-0004vV-B6
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 05:23:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721726592;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=vSLt0ih/utlaqFeVq84GUq1D28QR559+/mo58QkwYb0=;
+ b=JkK+gNYMnnqh9OUSgE4izib9oBioUnD/zgaGguWM3y/ZL2z/gNkkYwrIiMbdeSNLo8cwKR
+ IdPS3J3n8wkKt3TR+d/zu04FZhmlS/IaxIxZhsqku4ECupc49pXmRPDwVtjSMtWl/ySMnQ
+ IBSEpFlvwyAphryApfDKEJLJ20Yo7Zc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-133-zr2Xpn9jPReONq9LWxLWog-1; Tue, 23 Jul 2024 05:23:08 -0400
+X-MC-Unique: zr2Xpn9jPReONq9LWxLWog-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-36831948d94so2904441f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 02:23:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721725797; x=1722330597;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xrTcZcCQTfrwQTMiEVQL0wH3s9wf348RiRKQQ3JBNBE=;
- b=qPbJfY50hAmCtS2yK1vTMpKaH57J4yl4tkwBm/KqjJ1Uq0t1b3StiYgjdVm/C8TFIY
- g5XTMDfccpc3E2/wEIYoQRYoIdRNoYJA6DanAXCVQbqOO6AD4s+SyZNnwMbJQAQfzbw+
- lHIrXDFQyE5nDTspycZieYA/EJVsPoy/SOho5mPrGguVWFjq09j+5cOlmFpOcpcfa7UH
- Bxc9m3LUSKrGHMqKMgDKuRJN8vX9CkHCU8ZPK6M45k3H0uNZ15aZG60tGRYYrw0eDFhF
- waxjqEJIT9rkd+mOIoRhOcYDmnSAi8ROlHXDrtnU6rm0Z4OG5+yuL5eXFj0MgGBiZQ53
- 2I1w==
-X-Gm-Message-State: AOJu0Ywkgu+M31eewRC8cKFRpw6QVJrTMsbvNJF6mIu0wWQvsG+cWKis
- Ju36SMNVFjaX8BFZj+0BACIRXf4jJ5RmByslutgWviLxGUwDOHJnDhRgO7iC5ZevaQdZpP1Q3BR
- YMRENq6uv8Ekps+hUbPOcybSCYCFYijy7NTKp
-X-Google-Smtp-Source: AGHT+IHl/eTJDwvy+ylxN0SaljYAxj6ZpojduHUMbdNpcsO0Vg+U/BwVUWDXyhQmhqjQXqEkUwQ4SAl6wTQhmTxIlOQ=
-X-Received: by 2002:a05:6102:149a:b0:48f:c2dd:3520 with SMTP id
- ada2fe7eead31-4928b9b0d5amr12582336137.11.1721725797241; Tue, 23 Jul 2024
- 02:09:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721726587; x=1722331387;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vSLt0ih/utlaqFeVq84GUq1D28QR559+/mo58QkwYb0=;
+ b=FkEifC7EoOv0sgNjarcwQpTmWSmPQL1KPM/oVc36MPKAw9WzHRAjtqhiQqYpKaquDF
+ wK5wNki4nW8oQqWq6dMuPDHy9BVQzSO1kI5E/SzDFOiImxXYh4fVhacmtD+Pmsos6cUp
+ SUS1+iL/NME7fcqtKpgMza2tiiKP9D7ZUcyZ7FvEg7Wz0npawc1UAE4mX30OxVQBhTME
+ yXUCQ9tlBEpk716XbAMB6tu08aVdAXCLPouCpk5T6utyg+oHYWDjktA3//wlPXkYYBlF
+ dBkGxmJQuR6z463HhQ+POXgluNeqsqCLx/E0ojIVjDQLq4/3UTfqx6YbSBPMXKqQz082
+ leQA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVxQwgoXG1SX1oYgB4j5MgzBnlxExYIk1x1F9UMeQLQ+ygjVy3sZtT9K6osvFSE7CoR0cyZqAhumNX93JqGU39kWaXp9dY=
+X-Gm-Message-State: AOJu0YxJI3eGD1HGO7H9LGEJQOHu82VYxt+/umee5CvZ2WSmE87yN6Mc
+ e6kH04DGhNWbTe1ti4ziiZ08iNhklQf1jvSmhO2mIX+uwxx4jLork46zJTAcEYw2BsMo53gpJ/j
+ Q54FJOvLetxdDjMe2A1WzMP+qQlIEyzsXC511q8mF2KH94VSYr7Kf
+X-Received: by 2002:a5d:6d8a:0:b0:367:95e8:3aef with SMTP id
+ ffacd0b85a97d-369bb2a1bcfmr7978966f8f.42.1721726587331; 
+ Tue, 23 Jul 2024 02:23:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1QjpnmvTMi+lmP2sVQ/IZC2t2/DMaOUKmbKmsKMlILttODmtpHd4irBeYQqxP9yhHQNkoQQ==
+X-Received: by 2002:a5d:6d8a:0:b0:367:95e8:3aef with SMTP id
+ ffacd0b85a97d-369bb2a1bcfmr7978947f8f.42.1721726586861; 
+ Tue, 23 Jul 2024 02:23:06 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-178-36.web.vodafone.de.
+ [109.43.178.36]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-368787ceccasm10818167f8f.81.2024.07.23.02.23.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jul 2024 02:23:06 -0700 (PDT)
+Message-ID: <58178bd0-4e7d-4770-aa54-5bd2811dcb39@redhat.com>
+Date: Tue, 23 Jul 2024 11:23:04 +0200
 MIME-Version: 1.0
-References: <20240723085902.98572-1-philmd@linaro.org>
-In-Reply-To: <20240723085902.98572-1-philmd@linaro.org>
-From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Tue, 23 Jul 2024 11:09:46 +0200
-Message-ID: <CAAibmn1U=47wJOYhhpETHZihTu-aHcohm4eHK0JqK3epSEB8jQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] macos: Allow coredump generation
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Cameron Esfahani <dirty@apple.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Alexander Graf <agraf@csgraf.de>, Akihiko Odaki <akihiko.odaki@daynix.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Roman Bolshakov <roman@roolebo.dev>, 
- Francesco Cagnin <fcagnin@quarkslab.com>
-Content-Type: multipart/alternative; boundary="0000000000008baf1d061de686e1"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::e30;
- envelope-from=phil@philjordan.eu; helo=mail-vs1-xe30.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] target/s390x: filter deprecated properties based on
+ model expansion type
+To: Collin Walling <walling@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, david@redhat.com,
+ wangyanan55@huawei.com, philmd@linaro.org, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net, Jiri Denemark <jdenemar@redhat.com>
+References: <20240719181741.35146-1-walling@linux.ibm.com>
+ <87h6cksk4h.fsf@pond.sub.org>
+ <28ea8260-a411-4651-8e2a-1fcc009f5043@linux.ibm.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <28ea8260-a411-4651-8e2a-1fcc009f5043@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,269 +149,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008baf1d061de686e1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 22/07/2024 16.50, Collin Walling wrote:
+> On 7/20/24 1:33 AM, Markus Armbruster wrote:
+>> Collin Walling <walling@linux.ibm.com> writes:
+>>
+>>> Currently, there is no way to execute the query-cpu-model-expansion
+>>> command to retrieve a comprehenisve list of deprecated properties, as
+>>> the result is dependent per-model. To enable this, the expansion output
+>>> is modified as such:
+>>>
+>>> When reporting a "full" CPU model, show the *entire* list of deprecated
+>>> properties regardless if they are supported on the model. A full
+>>> expansion outputs all known CPU model properties anyway, so it makes
+>>> sense to report all deprecated properties here too.
+>>>
+>>> This allows management apps to query a single model (e.g. host) to
+>>> acquire the full list of deprecated properties.
+>>>
+>>> Additionally, when reporting a "static" CPU model, the command will
+>>> only show deprecated properties that are a subset of the model's
+>>> *enabled* properties. This is more accurate than how the query was
+>>> handled before, which blindly reported deprecated properties that
+>>> were never otherwise introduced for certain models.
+>>>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>> Suggested-by: Jiri Denemark <jdenemar@redhat.com>
+>>> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+>>> ---
+>>>
+>>> Changelog:
+>>>
+>>>      v3
+>>>      - Removed the 'note' and cleaned up documentation
+>>>      - Revised commit message
+>>>
+>>>      v2
+>>>      - Changed commit message
+>>>      - Added documentation reflecting this change
+>>>      - Made code changes that more accurately filter the deprecated
+>>>          properties based on expansion type.  This change makes it
+>>>          so that the deprecated-properties reported for a static model
+>>>          expansion are a subset of the model's properties instead of
+>>>          the model's full-definition properties.
+>>>
+>>> ---
+>>>   qapi/machine-target.json         |  5 +++--
+>>>   target/s390x/cpu_models_sysemu.c | 16 +++++++++-------
+>>>   2 files changed, 12 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+>>> index a8d9ec87f5..67086f006f 100644
+>>> --- a/qapi/machine-target.json
+>>> +++ b/qapi/machine-target.json
+>>> @@ -21,8 +21,9 @@
+>>>   # @props: a dictionary of QOM properties to be applied
+>>>   #
+>>>   # @deprecated-props: a list of properties that are flagged as deprecated
+>>> -#     by the CPU vendor.  These props are a subset of the full model's
+>>> -#     definition list of properties. (since 9.1)
+>>> +#     by the CPU vendor.  These properties are either a subset of the
+>>> +#     properties enabled on the CPU model, or a set of properties
+>>> +#     deprecated across all models for the architecture.
+>>
+>>
+>> When is it "a subset of the properties enabled on the CPU model", and
+>> when is it "a set of properties deprecated across all models for the
+>> architecture"?
+...
+> 
+> Thanks for the feedback!  Pending your response to the above, I'll post
+> a v4.
 
-This can certainly be useful in various situations! However, wholesale
-enabling get-task-allow will enable other processes on the system to inject
-code, connect a debugger, etc. to the Qemu process. Normally, this is only
-something you'd enable for builds that are specifically intended for
-debugging. I'm not sure users running Qemu in production environments will
-necessarily appreciate this - do we perhaps want to gate this behind a
-build configuration flag?
+Since we've got soft-freeze for 9.1 today, I went ahead and put v3 into my 
+last pull-request before the freeze period starts already. Please post the 
+update to the comments as diff on top of that instead - updates to comments 
+should still be fine for merging during the freeze period.
 
-(Related: Would it perhaps make more sense to dynamically
-generate/preprocess the entitlements file based on configuration flags than
-have a bunch of variants of the file? You'll end up with a combinatorial
-explosion sooner or later - I'm also thinking of com.apple.vm.networking
-and com.apple.vm.device-access which we can't enable by default because
-they require Apple to grant the entitlement but which currently require
-patching if you have those entitlements.)
+  Thanks,
+   Thomas
 
-What do you think?
-
-Phil
-
-
-On Tue, 23 Jul 2024 at 10:59, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g>
-wrote:
-
-> QEMU is allowed to generate coredump on other POSIX OSes,
-> bring that functionality to macOS. Admin users still need
-> to enable the kern.coredump sysctl manually running:
->
->   % sudo sysctl kern.coredump=3D1
->
-> the normal users have to enable their shell running:
->
->   % ulimit -c unlimited
->
-> Reference used:
->
-> https://nasa.github.io/trick/howto_guides/How-to-dump-core-file-on-MacOS.=
-html
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> Cc: Alexander Graf <agraf@csgraf.de>
-> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: Phil Dennis-Jordan <phil@philjordan.eu>
-> Cc: Roman Bolshakov <roman@roolebo.dev>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Francesco Cagnin <fcagnin@quarkslab.com>
-> ---
->  MAINTAINERS                  | 2 ++
->  meson.build                  | 6 ++++--
->  accel/hvf/entitlements.plist | 2 ++
->  accel/tcg/entitlements.plist | 8 ++++++++
->  4 files changed, 16 insertions(+), 2 deletions(-)
->  create mode 100644 accel/tcg/entitlements.plist
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d5ff6c2498e..c6f57d77b19 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -611,6 +611,8 @@ M: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->  S: Odd Fixes
->  F: .gitlab-ci.d/cirrus/macos-*
->  F: */*.m
-> +F: accel/tcg/entitlements.plist
-> +F: accel/hvf/entitlements.plist
->  F: scripts/entitlement.sh
->
->  Alpha Machines
-> diff --git a/meson.build b/meson.build
-> index a1e51277b09..aae35e93420 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3983,9 +3983,11 @@ foreach target : target_dirs
->        ]
->        if 'CONFIG_HVF' in config_target
->          entitlements =3D 'accel/hvf/entitlements.plist'
-> -        build_input +=3D files(entitlements)
-> -        install_input +=3D meson.current_source_dir() / entitlements
-> +      else
-> +        entitlements =3D 'accel/tcg/entitlements.plist'
->        endif
-> +      build_input +=3D files(entitlements)
-> +      install_input +=3D meson.current_source_dir() / entitlements
->
->        emulators +=3D {exe['name'] : custom_target(exe['name'],
->                     input: build_input,
-> diff --git a/accel/hvf/entitlements.plist b/accel/hvf/entitlements.plist
-> index 154f3308ef2..af4bb45dbea 100644
-> --- a/accel/hvf/entitlements.plist
-> +++ b/accel/hvf/entitlements.plist
-> @@ -4,5 +4,7 @@
->  <dict>
->      <key>com.apple.security.hypervisor</key>
->      <true/>
-> +    <key>com.apple.security.get-task-allow</key>
-> +    <true/>
->  </dict>
->  </plist>
-> diff --git a/accel/tcg/entitlements.plist b/accel/tcg/entitlements.plist
-> new file mode 100644
-> index 00000000000..9acd12816c9
-> --- /dev/null
-> +++ b/accel/tcg/entitlements.plist
-> @@ -0,0 +1,8 @@
-> +<?xml version=3D"1.0" encoding=3D"UTF-8"?>
-> +<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "
-> http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-> +<plist version=3D"1.0">
-> +<dict>
-> +    <key>com.apple.security.get-task-allow</key>
-> +    <true/>
-> +</dict>
-> +</plist>
-> --
-> 2.41.0
->
->
-
---0000000000008baf1d061de686e1
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>This can certainly be useful in various situations! H=
-owever, wholesale enabling get-task-allow will enable other processes on th=
-e system to inject code, connect a debugger, etc. to the Qemu process. Norm=
-ally, this is only something you&#39;d enable for builds that are specifica=
-lly intended for debugging. I&#39;m not sure users running Qemu in producti=
-on environments will necessarily appreciate this - do we perhaps want to ga=
-te this behind a build configuration flag?</div><div><br></div><div>(Relate=
-d: Would it perhaps make more sense to dynamically generate/preprocess the =
-entitlements file based on configuration flags than have a bunch of variant=
-s of the file? You&#39;ll end up with a combinatorial explosion sooner or l=
-ater - I&#39;m also thinking of com.apple.vm.networking and com.apple.vm.de=
-vice-access which we can&#39;t enable by default because they require Apple=
- to grant the entitlement but which currently require patching if you have =
-those entitlements.)</div><div><br></div><div>What do you think?</div><div>=
-<br></div><div>Phil</div><div><br></div><br><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Tue, 23 Jul 2024 at 10:59, Philippe Ma=
-thieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org=
-</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
-0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
-QEMU is allowed to generate coredump on other POSIX OSes,<br>
-bring that functionality to macOS. Admin users still need<br>
-to enable the kern.coredump sysctl manually running:<br>
-<br>
-=C2=A0 % sudo sysctl kern.coredump=3D1<br>
-<br>
-the normal users have to enable their shell running:<br>
-<br>
-=C2=A0 % ulimit -c unlimited<br>
-<br>
-Reference used:<br>
-<a href=3D"https://nasa.github.io/trick/howto_guides/How-to-dump-core-file-=
-on-MacOS.html" rel=3D"noreferrer" target=3D"_blank">https://nasa.github.io/=
-trick/howto_guides/How-to-dump-core-file-on-MacOS.html</a><br>
-<br>
-Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
-aro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
----<br>
-Cc: Alexander Graf &lt;<a href=3D"mailto:agraf@csgraf.de" target=3D"_blank"=
->agraf@csgraf.de</a>&gt;<br>
-Cc: Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D=
-"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
-Cc: Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org" target=3D=
-"_blank">peter.maydell@linaro.org</a>&gt;<br>
-Cc: Phil Dennis-Jordan &lt;<a href=3D"mailto:phil@philjordan.eu" target=3D"=
-_blank">phil@philjordan.eu</a>&gt;<br>
-Cc: Roman Bolshakov &lt;<a href=3D"mailto:roman@roolebo.dev" target=3D"_bla=
-nk">roman@roolebo.dev</a>&gt;<br>
-Cc: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" target=3D"_bla=
-nk">pbonzini@redhat.com</a>&gt;<br>
-Cc: Francesco Cagnin &lt;<a href=3D"mailto:fcagnin@quarkslab.com" target=3D=
-"_blank">fcagnin@quarkslab.com</a>&gt;<br>
----<br>
-=C2=A0MAINTAINERS=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 | 2 ++<br>
-=C2=A0meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 | 6 ++++--<br>
-=C2=A0accel/hvf/entitlements.plist | 2 ++<br>
-=C2=A0accel/tcg/entitlements.plist | 8 ++++++++<br>
-=C2=A04 files changed, 16 insertions(+), 2 deletions(-)<br>
-=C2=A0create mode 100644 accel/tcg/entitlements.plist<br>
-<br>
-diff --git a/MAINTAINERS b/MAINTAINERS<br>
-index d5ff6c2498e..c6f57d77b19 100644<br>
---- a/MAINTAINERS<br>
-+++ b/MAINTAINERS<br>
-@@ -611,6 +611,8 @@ M: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:ph=
-ilmd@linaro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
-=C2=A0S: Odd Fixes<br>
-=C2=A0F: .gitlab-ci.d/cirrus/macos-*<br>
-=C2=A0F: */*.m<br>
-+F: accel/tcg/entitlements.plist<br>
-+F: accel/hvf/entitlements.plist<br>
-=C2=A0F: scripts/entitlement.sh<br>
-<br>
-=C2=A0Alpha Machines<br>
-diff --git a/meson.build b/meson.build<br>
-index a1e51277b09..aae35e93420 100644<br>
---- a/meson.build<br>
-+++ b/meson.build<br>
-@@ -3983,9 +3983,11 @@ foreach target : target_dirs<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0]<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0if &#39;CONFIG_HVF&#39; in config_target<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0entitlements =3D &#39;accel/hvf/entitleme=
-nts.plist&#39;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 build_input +=3D files(entitlements)<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 install_input +=3D meson.current_source_dir() =
-/ entitlements<br>
-+=C2=A0 =C2=A0 =C2=A0 else<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 entitlements =3D &#39;accel/tcg/entitlements.p=
-list&#39;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0endif<br>
-+=C2=A0 =C2=A0 =C2=A0 build_input +=3D files(entitlements)<br>
-+=C2=A0 =C2=A0 =C2=A0 install_input +=3D meson.current_source_dir() / entit=
-lements<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0emulators +=3D {exe[&#39;name&#39;] : custom_tar=
-get(exe[&#39;name&#39;],<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input=
-: build_input,<br>
-diff --git a/accel/hvf/entitlements.plist b/accel/hvf/entitlements.plist<br=
->
-index 154f3308ef2..af4bb45dbea 100644<br>
---- a/accel/hvf/entitlements.plist<br>
-+++ b/accel/hvf/entitlements.plist<br>
-@@ -4,5 +4,7 @@<br>
-=C2=A0&lt;dict&gt;<br>
-=C2=A0 =C2=A0 =C2=A0&lt;key&gt;com.apple.security.hypervisor&lt;/key&gt;<br=
->
-=C2=A0 =C2=A0 =C2=A0&lt;true/&gt;<br>
-+=C2=A0 =C2=A0 &lt;key&gt;com.apple.security.get-task-allow&lt;/key&gt;<br>
-+=C2=A0 =C2=A0 &lt;true/&gt;<br>
-=C2=A0&lt;/dict&gt;<br>
-=C2=A0&lt;/plist&gt;<br>
-diff --git a/accel/tcg/entitlements.plist b/accel/tcg/entitlements.plist<br=
->
-new file mode 100644<br>
-index 00000000000..9acd12816c9<br>
---- /dev/null<br>
-+++ b/accel/tcg/entitlements.plist<br>
-@@ -0,0 +1,8 @@<br>
-+&lt;?xml version=3D&quot;1.0&quot; encoding=3D&quot;UTF-8&quot;?&gt;<br>
-+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;<a=
- href=3D"http://www.apple.com/DTDs/PropertyList-1.0.dtd" rel=3D"noreferrer"=
- target=3D"_blank">http://www.apple.com/DTDs/PropertyList-1.0.dtd</a>&quot;=
-&gt;<br>
-+&lt;plist version=3D&quot;1.0&quot;&gt;<br>
-+&lt;dict&gt;<br>
-+=C2=A0 =C2=A0 &lt;key&gt;com.apple.security.get-task-allow&lt;/key&gt;<br>
-+=C2=A0 =C2=A0 &lt;true/&gt;<br>
-+&lt;/dict&gt;<br>
-+&lt;/plist&gt;<br>
--- <br>
-2.41.0<br>
-<br>
-</blockquote></div></div>
-
---0000000000008baf1d061de686e1--
 
