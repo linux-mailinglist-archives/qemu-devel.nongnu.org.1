@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC9193A229
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D3093A23C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWG4P-0008KT-H8; Tue, 23 Jul 2024 10:00:49 -0400
+	id 1sWG4Q-0008Ra-UH; Tue, 23 Jul 2024 10:00:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4K-00085E-SN
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4O-0008Hf-03
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4J-0003fI-CU
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:44 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4M-0003fs-HF
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721743242;
+ s=mimecast20190719; t=1721743245;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=phG2Wz39fvauvHi3krmGIqw0XL9Fpi2Pt7JTr5MGETI=;
- b=BsVD/VCoI65VDw6aGqchQOn+U+abPkmumMze4tWSZYvBkJQkR28KEUBynuZAxy5QAUMzwn
- +lqWRK5rT7gjYSiiIF2FskdMK7HhROCzNNnLUBp5h7Sl70e2oapd+1W12PwKasPPqLzuUv
- i3IKUZsTPmxGijWDiGS4RsOt3iUG/3o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=VN5XurOSOhOVI8K7cqKxvgXc+D1w3ycuNbzoZRv8sCw=;
+ b=MYPKrN+3S3O+Ylp/Jv9dcWAXMxox5hjZybJ7MKrC4l4rx0EkqCNN2pHPL4rRCH2wVne5ys
+ RO6uOmTlRJ9rHnDe/B3uEUtwUU94ekSkgB459Gvf/nUnzB6cu4wZ+KFvTrPmqTSYV5UOzO
+ 1W09hCTnwCoYDTzkb0bTR26y0Af/H54=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-lKVjgzPzPfaAoHO6X7fBNg-1; Tue,
- 23 Jul 2024 10:00:40 -0400
-X-MC-Unique: lKVjgzPzPfaAoHO6X7fBNg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-yIKHQ-k9OYCOa1UuWEFMMw-1; Tue,
+ 23 Jul 2024 10:00:42 -0400
+X-MC-Unique: yIKHQ-k9OYCOa1UuWEFMMw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C06891944AA2; Tue, 23 Jul 2024 14:00:37 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5629D19772E1; Tue, 23 Jul 2024 14:00:41 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.91])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 11DF9195605A; Tue, 23 Jul 2024 14:00:35 +0000 (UTC)
+ id 2EA161955D48; Tue, 23 Jul 2024 14:00:37 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Joao Martins <joao.m.martins@oracle.com>,
- Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 06/16] vfio/ap: Don't initialize HOST_IOMMU_DEVICE with mdev
-Date: Tue, 23 Jul 2024 16:00:09 +0200
-Message-ID: <20240723140019.387786-7-clg@redhat.com>
+ Eric Farman <farman@linux.ibm.com>, Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 07/16] vfio/ccw: Don't initialize HOST_IOMMU_DEVICE with mdev
+Date: Tue, 23 Jul 2024 16:00:10 +0200
+Message-ID: <20240723140019.387786-8-clg@redhat.com>
 In-Reply-To: <20240723140019.387786-1-clg@redhat.com>
 References: <20240723140019.387786-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -90,25 +90,26 @@ presence of mdevs.
 Fixes: 930589520128 ("vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Acked-by: Eric Farman <farman@linux.ibm.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/vfio/ap.c | 3 +++
+ hw/vfio/ccw.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 0c4354e3e70169ec072e16da0919936647d1d351..71bf32b83c50b9892b018db10e2f2ae0cf312e97 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -230,6 +230,9 @@ static void vfio_ap_instance_init(Object *obj)
-      */
-     vfio_device_init(vbasedev, VFIO_DEVICE_TYPE_AP, &vfio_ap_ops,
-                      DEVICE(vapdev), true);
-+
-+    /* AP device is mdev type device */
-+    vbasedev->mdev = true;
- }
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index 1f8e1272c7555cd0a770481d1ae92988f6e2e62e..115862f43036442d99c33f0328e5bc599ba1f2b9 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -675,6 +675,9 @@ static void vfio_ccw_instance_init(Object *obj)
+     VFIOCCWDevice *vcdev = VFIO_CCW(obj);
+     VFIODevice *vbasedev = &vcdev->vdev;
  
- #ifdef CONFIG_IOMMUFD
++    /* CCW device is mdev type device */
++    vbasedev->mdev = true;
++
+     /*
+      * All vfio-ccw devices are believed to operate in a way compatible with
+      * discarding of memory in RAM blocks, ie. pages pinned in the host are
 -- 
 2.45.2
 
