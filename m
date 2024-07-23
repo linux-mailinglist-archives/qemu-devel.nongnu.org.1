@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AE293A0F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 15:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F54293A0EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 15:11:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWFHu-0006Ai-Cd; Tue, 23 Jul 2024 09:10:42 -0400
+	id 1sWFHu-0006Cg-Nq; Tue, 23 Jul 2024 09:10:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sWFHr-00062I-Up
+ id 1sWFHr-00061h-Pt
  for qemu-devel@nongnu.org; Tue, 23 Jul 2024 09:10:39 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sWFHn-0000I1-8p
+ id 1sWFHm-0000IU-Km
  for qemu-devel@nongnu.org; Tue, 23 Jul 2024 09:10:39 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-367940c57ddso2873350f8f.3
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3683f56b9bdso2853560f8f.1
  for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 06:10:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721740232; x=1722345032; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721740233; x=1722345033; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W5/2nCZDxS1NroX7MRC4z7mOFdk6Q7iI8dAfdB9mODo=;
- b=P/WUR4qm+m0EkC+N6rdpGohoCRsrOlnsKZKNYm0rudJ7NemCMtVEnnvcvSEyzHLqYt
- nv4slL99TDft0Qf2bexkuDepajoB4kFIc8wbqjDZVv88+lMVke43RXxD2BtHQoeNPgXb
- Ph7bYBz79QYwddQ1S9jtDnKhqa1AfBHFnumUX976Ik772u8iwEMhj8lvnjyy66FCntEq
- ETNjGCWd6ef4R2S3cr/LehcJlgBFbvUbgtglOQqjgXsjvdTP6TJNXK9O2WuTji+vNipz
- ge5aYPyBdc9e+R4/qJZ8zbjLdabsLUUNKoTudF4jFOjhhske8KQxJ7guuTw6oTmrAebR
- 0t+g==
+ bh=GDjhGJy1uudDNK18CuZuB7KjPJkSAemQ7/iwEkdj0Zo=;
+ b=RrdPzu6+30zuIbQp484MFe5pJaqtTFWPHwaXfTnw1C+2Hn20rGby5L2eqDOtMF7O8G
+ HRvWeyC2FMlRuH/g7dlcVdTNO2oHn25oilBXnnwAekgvm9gN9Tsoe5kVOK/SRoOJkQFq
+ kuJ0MGlBSDKxuYfndb6slv2Mmv1itYPa5d8FJbOS66HUCr3cQcbsiZ7pcpYE1dBvngGZ
+ CBE3DQ77DuLnsPnZeVNu2hY7yL75pIf7TVKWLqnr8o0rbdO9bNaESTe2tc5KQsow9Q3x
+ ay9Ws4vGDQ0qioVod2CYj0YoqXFzXX3GYRWqHT4KN6Folw1oX8VsWCVCAxW0uPMF/fil
+ P0ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721740232; x=1722345032;
+ d=1e100.net; s=20230601; t=1721740233; x=1722345033;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W5/2nCZDxS1NroX7MRC4z7mOFdk6Q7iI8dAfdB9mODo=;
- b=A5Z+jNBOpBigLnfu5V28YWkeuAEXYNh5f0HvAQfzE33zJ7ktaHv2x8sROSt7woRGyH
- rDHswr8mb8IgmNdon08LGJA2VRIRKmmQlCAWVgMDKg6NRXQarXIgNZvhs0uxwiPq8eyh
- smVLtpZmpVKHFoAHFBNFE7nN1U+69781ZJnQHw0THZwApQIwyN7fp0gOFWOaIVlwB+yV
- ruEzJkHQcRIPafX4sFmV3oAzmnzAJF7aRJcE4cIxYMB2uAq0/zSt1Kw8HBMc59V65IEl
- a4M9iHUDh4pFcqdiFkWHfioyc3HM0rVWJ4uh3ww3vPWlSxMU6bDQ3rWWCOwDTFzsGWRf
- E3tw==
+ bh=GDjhGJy1uudDNK18CuZuB7KjPJkSAemQ7/iwEkdj0Zo=;
+ b=L+d9bWlUDV80ycfh+zUy0hf2sBeZCcb4qQGXnirIUQAbdEtsJkTbV6jgdl+G5aNeAm
+ XGP4IMcs+fVJmFS42z1XskwVXQZAXmRF8M4lGWGLFnxgGNIJYNPPQOFHatJZ2jcY073c
+ scZKmGoeEoX8JslUthuAIqsrTqmm+ELD3ObbJvsmrNmvcQotq5yQpiWWRfHliXm7s8KP
+ EP4vfnPewUYmTvG5thQGrD15nc48812YJizS4KljdW5Rwy4n6fQZEtDlLq3DnaixUdWI
+ dYat9ZIonyv+zVgCMxZRuYVXVjL2l6/lJsbpp3aoKlHg+5aphAavu1uXb9gA/r3wwdLN
+ UyXA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXrEicnbdq2wYQ9g/PdALZq9IFCx19inQs76sCYX0TJPvXRsY+aEyveBHQmZejOPjrIN0KWSFFKe1MMJDZd1T9Y/kvVyE0=
-X-Gm-Message-State: AOJu0YzE9vvJKZ1f4M17u4P9nclxo4Smpl8oSWK0OWO+kiuGjyKC2N8F
- 1gTraKtDCWeEQub59wKS7KkO9WuZGR2FLe0CWHRd0KdO76US+dNSM7Cpu3mLNVo=
-X-Google-Smtp-Source: AGHT+IHV51C2yixg0ReZM1mT0U6xpxPtF15tJcc6kgrv77EMF3QrwhowO4fprc2RwYcNKWW5bG3Ydw==
-X-Received: by 2002:a05:6000:114f:b0:368:6911:6758 with SMTP id
- ffacd0b85a97d-369bae25123mr6857565f8f.40.1721740231928; 
- Tue, 23 Jul 2024 06:10:31 -0700 (PDT)
+ AJvYcCWkQq7g/xoZ7dqa3AdRad0nAHwnLvQiBPmEgRnSdjAH8iigHqOv/5i5IYnsUuIcJ2pXapd0Eg+lNLJr2XRdQiUGu25oHOo=
+X-Gm-Message-State: AOJu0Yxly8Y46FYIGgKzYxisprC7hghdaRmvrfjaxSSx4Hjmri1yL+46
+ 2XNIxqS//RueVDrI1zQH4m3OnsHSvugNi7KPXlS8ND1Tac6CA7fltT9djBozB94=
+X-Google-Smtp-Source: AGHT+IEAfENa1RvpqhWOb4/+XNcHH9raZ152OHoY68lNbEjmwiQBJsPG68tqnK5n228J0dthsPFLbw==
+X-Received: by 2002:a05:6000:44:b0:369:b849:61b0 with SMTP id
+ ffacd0b85a97d-369bbc69874mr6079499f8f.43.1721740232571; 
+ Tue, 23 Jul 2024 06:10:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36878684773sm11560157f8f.7.2024.07.23.06.10.31
+ ffacd0b85a97d-36878684773sm11560157f8f.7.2024.07.23.06.10.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 06:10:31 -0700 (PDT)
+ Tue, 23 Jul 2024 06:10:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-stable@nongnu.org
-Subject: [PATCH 1/4] hw/misc/bcm2835_property: Fix handling of
- FRAMEBUFFER_SET_PALETTE
-Date: Tue, 23 Jul 2024 14:10:26 +0100
-Message-Id: <20240723131029.1159908-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/4] hw/misc/bcm2835_property: Avoid overflow in OTP access
+ properties
+Date: Tue, 23 Jul 2024 14:10:27 +0100
+Message-Id: <20240723131029.1159908-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240723131029.1159908-1-peter.maydell@linaro.org>
 References: <20240723131029.1159908-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,81 +96,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The documentation of the "Set palette" mailbox property at
-https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface#set-palette
-says it has the form:
+Coverity points out that in our handling of the property
+RPI_FWREQ_SET_CUSTOMER_OTP we have a potential overflow.  This
+happens because we read start_num and number from the guest as
+unsigned 32 bit integers, but then the variable 'n' we use as a loop
+counter as we iterate from start_num to start_num + number is only an
+"int".  That means that if the guest passes us a very large start_num
+we will interpret it as negative.  This will result in an assertion
+failure inside bcm2835_otp_set_row(), which checks that we didn't
+pass it an invalid row number.
 
-    Length: 24..1032
-    Value:
-        u32: offset: first palette index to set (0-255)
-        u32: length: number of palette entries to set (1-256)
-        u32...: RGBA palette values (offset to offset+length-1)
+A similar issue applies to all the properties for accessing OTP rows
+where we are iterating through with a start and length read from the
+guest.
 
-We get this wrong in a couple of ways:
- * we aren't checking the offset and length are in range, so the guest
-   can make us spin for a long time by providing a large length
- * the bounds check on our loop is wrong: we should iterate through
-   'length' palette entries, not 'length - offset' entries
+Use uint32_t for the loop counter to avoid this problem. Because in
+all cases 'n' is only used as a loop counter, we can do this as
+part of the for(), restricting its scope to exactly where we need it.
 
-Fix the loop to implement the bounds checks and get the loop
-condition right. In the process, make the variables local to
-this switch case, rather than function-global, so it's clearer
-what type they are when reading the code.
-
+Resolves: Coverity CID 1549401
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/bcm2835_property.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ hw/misc/bcm2835_property.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
-index 63de3db6215..e28fdca9846 100644
+index e28fdca9846..7eb623b4e90 100644
 --- a/hw/misc/bcm2835_property.c
 +++ b/hw/misc/bcm2835_property.c
-@@ -31,7 +31,6 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+@@ -30,7 +30,6 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+     uint32_t tot_len;
      size_t resplen;
      uint32_t tmp;
-     int n;
--    uint32_t offset, length, color;
+-    int n;
      uint32_t start_num, number, otp_row;
  
      /*
-@@ -274,19 +273,25 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-             resplen = 16;
-             break;
-         case RPI_FWREQ_FRAMEBUFFER_SET_PALETTE:
--            offset = ldl_le_phys(&s->dma_as, value + 12);
--            length = ldl_le_phys(&s->dma_as, value + 16);
--            n = 0;
--            while (n < length - offset) {
--                color = ldl_le_phys(&s->dma_as, value + 20 + (n << 2));
--                stl_le_phys(&s->dma_as,
--                            s->fbdev->vcram_base + ((offset + n) << 2), color);
--                n++;
-+        {
-+            uint32_t offset = ldl_le_phys(&s->dma_as, value + 12);
-+            uint32_t length = ldl_le_phys(&s->dma_as, value + 16);
-+            int resp;
-+
-+            if (offset > 255 || length < 1 || length > 256) {
-+                resp = 1; /* invalid request */
-+            } else {
-+                for (uint32_t e = 0; e < length; e++) {
-+                    uint32_t color = ldl_le_phys(&s->dma_as, value + 20 + (e << 2));
-+                    stl_le_phys(&s->dma_as,
-+                                s->fbdev->vcram_base + ((offset + e) << 2), color);
-+                }
-+                resp = 0;
+@@ -337,7 +336,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+ 
+             resplen = 8 + 4 * number;
+ 
+-            for (n = start_num; n < start_num + number &&
++            for (uint32_t n = start_num; n < start_num + number &&
+                  n < BCM2835_OTP_CUSTOMER_OTP_LEN; n++) {
+                 otp_row = bcm2835_otp_get_row(s->otp,
+                                               BCM2835_OTP_CUSTOMER_OTP + n);
+@@ -366,7 +365,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+                 break;
              }
--            stl_le_phys(&s->dma_as, value + 12, 0);
-+            stl_le_phys(&s->dma_as, value + 12, resp);
-             resplen = 4;
-             break;
--
-+        }
-         case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
-             stl_le_phys(&s->dma_as, value + 12, 1);
-             resplen = 4;
+ 
+-            for (n = start_num; n < start_num + number &&
++            for (uint32_t n = start_num; n < start_num + number &&
+                  n < BCM2835_OTP_CUSTOMER_OTP_LEN; n++) {
+                 otp_row = ldl_le_phys(&s->dma_as,
+                                       value + 20 + ((n - start_num) << 2));
+@@ -383,7 +382,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+ 
+             resplen = 8 + 4 * number;
+ 
+-            for (n = start_num; n < start_num + number &&
++            for (uint32_t n = start_num; n < start_num + number &&
+                  n < BCM2835_OTP_PRIVATE_KEY_LEN; n++) {
+                 otp_row = bcm2835_otp_get_row(s->otp,
+                                               BCM2835_OTP_PRIVATE_KEY + n);
+@@ -403,7 +402,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+                 break;
+             }
+ 
+-            for (n = start_num; n < start_num + number &&
++            for (uint32_t n = start_num; n < start_num + number &&
+                  n < BCM2835_OTP_PRIVATE_KEY_LEN; n++) {
+                 otp_row = ldl_le_phys(&s->dma_as,
+                                       value + 20 + ((n - start_num) << 2));
 -- 
 2.34.1
 
