@@ -2,64 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C5893A261
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF7C93A2A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:25:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWGHt-0007u6-El; Tue, 23 Jul 2024 10:14:45 -0400
+	id 1sWGRv-0004n3-O3; Tue, 23 Jul 2024 10:25:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWGHr-0007n5-45
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:14:43 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ id 1sWGRl-0004cW-1A; Tue, 23 Jul 2024 10:24:57 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWGHn-0006mB-CP
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:14:42 -0400
+ id 1sWGRd-0000OD-1n; Tue, 23 Jul 2024 10:24:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721744079; x=1753280079;
+ t=1721744690; x=1753280690;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=88/ZD+HzKHSRWovuOAAXbLcof1+XgIRS2ZMH1oJpst0=;
- b=MlNalZaIa22z9TtCeOl/ODN5dZuu9R4DKZka0Hhk8kd063KhkEYBlvAO
- bQ/KJzupYnYlCoDxdpcAWt8cfhBn1EMNaxvPsRbjuLUJNGsHZd+yr+VeS
- P9seaOFueKNHG14hWiTek2wxOYyzWUnMP1Sf8PJ+3Xv1qwwGmbeCS9Zd7
- jQschqx9xGDdVzrkxA0qFxWJx81WeUghOwzhzplJfSfCCFbUxP63g26Kh
- Ip+dKu0iIazdy0UrAiIErDSoA5XksGgZHlS02Zut6y/MJrD3iaEQd8S9o
- YSh/Qh2mOX24jCem/dIl5cRVacNqbatqCxW+PSZcb/cmGZVcBGjQvpIHi g==;
-X-CSE-ConnectionGUID: miE9RNduRPGAtSJMQk+VOg==
-X-CSE-MsgGUID: dRMIeNxxRharcD5EtHXf4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="19555156"
-X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="19555156"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2024 07:14:27 -0700
-X-CSE-ConnectionGUID: arDldOIsSRGrOt3VcX9dCw==
-X-CSE-MsgGUID: hsd3Aqi6T3mvWggOqjIPXQ==
+ mime-version:in-reply-to;
+ bh=596BeOYL/C3YYG4gWapj0nT35ULqFklo7XcRsaU+a60=;
+ b=aTD2zwAwsIe509jYLMn73190qOa7EuXx6sNbkYEaMhrlo9goZ5JbsgVV
+ TQc5YckbFEB8j3EOfWBhS3tI76vWAmOr8DXCMg64sM7Arpe3S36/rjnTU
+ SrV+uK7X/g/9DzaakKZ88IM9cMZcX8vqb1n0AG3xfBHDmR+WbDJ30wres
+ RRGZ0jRQ1je/NHa9tnnlHVnt4joRQx9APX6D3cEJ4dVMEnOiRrkxQ9C9L
+ 8/XCNR8k3pz8/eCPO5b3qUSeJ4rcy0FCx+ylyS7G8NjSbPOPNbnomBew1
+ xUJD/KFdzwuAjygO9aO97wULtvz3Ku817Tblon2xX5rvvo4s9NZ93CN+5 Q==;
+X-CSE-ConnectionGUID: p+t/JGkPSrSZxFaG+r1WPA==
+X-CSE-MsgGUID: m9ifGGQnRtyIhmhM8fNmxg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="41900222"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="41900222"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2024 07:24:47 -0700
+X-CSE-ConnectionGUID: hXBJ3rbPRQalpxStCGyFjw==
+X-CSE-MsgGUID: 4ge7qOlyTr2QSQ3s+KE7WA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="52267500"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="52188455"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 23 Jul 2024 07:14:25 -0700
-Date: Tue, 23 Jul 2024 22:30:09 +0800
+ by fmviesa009.fm.intel.com with ESMTP; 23 Jul 2024 07:24:41 -0700
+Date: Tue, 23 Jul 2024 22:40:25 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD() in
- nubus_virtio_mmio_realize()
-Message-ID: <Zp++cQBjGobX+Ty3@intel.com>
-References: <20240715095939.72492-1-zhao1.liu@intel.com>
- <878qxswgrm.fsf@pond.sub.org>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH 1/8] hw/core: Make CPU topology enumeration arch-agnostic
+Message-ID: <Zp/A2W5A0BqjRjR2@intel.com>
+References: <20240704031603.1744546-1-zhao1.liu@intel.com>
+ <20240704031603.1744546-2-zhao1.liu@intel.com>
+ <875xsx4l13.fsf@pond.sub.org> <Zp5mRrjuZWnE+9gz@intel.com>
+ <87ed7kwh2x.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <878qxswgrm.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <87ed7kwh2x.fsf@pond.sub.org>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -83,95 +95,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
-
-On Tue, Jul 23, 2024 at 12:21:17PM +0200, Markus Armbruster wrote:
-> Date: Tue, 23 Jul 2024 12:21:17 +0200
+On Tue, Jul 23, 2024 at 12:14:30PM +0200, Markus Armbruster wrote:
+> Date: Tue, 23 Jul 2024 12:14:30 +0200
 > From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD()
->  in nubus_virtio_mmio_realize()
+> Subject: Re: [PATCH 1/8] hw/core: Make CPU topology enumeration
+>  arch-agnostic
 > 
 > Zhao Liu <zhao1.liu@intel.com> writes:
 > 
-> > As the comment in qapi/error, dereferencing @errp requires
-> 
-> Suggest "According to the comment in qapi/error.h".
- 
-Thanks! Good words.
-
-> > ERRP_GUARD():
+> > Hi Markus,
 > >
-> > * = Why, when and how to use ERRP_GUARD() =
-> > *
-> > * Without ERRP_GUARD(), use of the @errp parameter is restricted:
-> > * - It must not be dereferenced, because it may be null.
-> > ...
-> > * ERRP_GUARD() lifts these restrictions.
-> > *
-> > * To use ERRP_GUARD(), add it right at the beginning of the function.
-> > * @errp can then be used without worrying about the argument being
-> > * NULL or &error_fatal.
-> > *
-> > * Using it when it's not needed is safe, but please avoid cluttering
-> > * the source with useless code.
+> > On Mon, Jul 22, 2024 at 03:24:24PM +0200, Markus Armbruster wrote:
+> >> Date: Mon, 22 Jul 2024 15:24:24 +0200
+> >> From: Markus Armbruster <armbru@redhat.com>
+> >> Subject: Re: [PATCH 1/8] hw/core: Make CPU topology enumeration
+> >>  arch-agnostic
+> >> 
+> >> One little thing...
+> >> 
+> >> Zhao Liu <zhao1.liu@intel.com> writes:
+> >> 
+> >> > Cache topology needs to be defined based on CPU topology levels. Thus,
+> >> > define CPU topology enumeration in qapi/machine.json to make it generic
+> >> > for all architectures.
+> >> >
+> >> > To match the general topology naming style, rename CPU_TOPO_LEVEL_SMT
+> >> > and CPU_TOPO_LEVEL_PACKAGE to CPU_TOPO_LEVEL_THREAD and
+> >> > CPU_TOPO_LEVEL_SOCKET.
+> >> >
+> >> > Also, enumerate additional topology levels for non-i386 arches, and add
+> >> > a CPU_TOPO_LEVEL_DEFAULT to help future smp-cache object de-compatibilize
+> >> > arch-specific cache topology settings.
+> >> >
+> >> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> >> 
+> >> [...]
+> >> 
+> >> > diff --git a/qapi/machine-common.json b/qapi/machine-common.json
+> >> > index fa6bd71d1280..82413c668bdb 100644
+> >> > --- a/qapi/machine-common.json
+> >> > +++ b/qapi/machine-common.json
+> >> > @@ -5,7 +5,7 @@
+> >> >  # See the COPYING file in the top-level directory.
+> >> >  
+> >> >  ##
+> >> > -# = Machines S390 data types
+> >> > +# = Common machine types
+> >> >  ##
+> >> >  
+> >> >  ##
+> >> > @@ -19,3 +19,48 @@
+> >> >  { 'enum': 'CpuS390Entitlement',
+> >> >    'prefix': 'S390_CPU_ENTITLEMENT',
+> >> >    'data': [ 'auto', 'low', 'medium', 'high' ] }
+> >> > +
+> >> > +##
+> >> > +# @CpuTopologyLevel:
+> >> > +#
+> >> > +# An enumeration of CPU topology levels.
+> >> > +#
+> >> > +# @invalid: Invalid topology level.
+> >> > +#
+> >> > +# @thread: thread level, which would also be called SMT level or
+> >> > +#     logical processor level.  The @threads option in
+> >> > +#     SMPConfiguration is used to configure the topology of this
+> >> > +#     level.
+> >> > +#
+> >> > +# @core: core level.  The @cores option in SMPConfiguration is used
+> >> > +#     to configure the topology of this level.
+> >> > +#
+> >> > +# @module: module level.  The @modules option in SMPConfiguration is
+> >> > +#     used to configure the topology of this level.
+> >> > +#
+> >> > +# @cluster: cluster level.  The @clusters option in SMPConfiguration
+> >> > +#     is used to configure the topology of this level.
+> >> > +#
+> >> > +# @die: die level.  The @dies option in SMPConfiguration is used to
+> >> > +#     configure the topology of this level.
+> >> > +#
+> >> > +# @socket: socket level, which would also be called package level.
+> >> > +#     The @sockets option in SMPConfiguration is used to configure
+> >> > +#     the topology of this level.
+> >> > +#
+> >> > +# @book: book level.  The @books option in SMPConfiguration is used
+> >> > +#     to configure the topology of this level.
+> >> > +#
+> >> > +# @drawer: drawer level.  The @drawers option in SMPConfiguration is
+> >> > +#     used to configure the topology of this level.
+> >> > +#
+> >> > +# @default: default level.  Some architectures will have default
+> >> > +#     topology settings (e.g., cache topology), and this special
+> >> > +#     level means following the architecture-specific settings.
+> >> > +#
+> >> > +# Since: 9.1
+> >> > +##
+> >> > +{ 'enum': 'CpuTopologyLevel',
+> >> > +  'prefix': 'CPU_TOPO_LEVEL',
+> >> 
+> >> Why set a 'prefix'?
+> >> 
 > >
-> > But in nubus_virtio_mmio_realize(), @errp is dereferenced without
-> > ERRP_GUARD().
-> 
-> Suggest to scratch "But".
-
-No problem, will do.
-
-> > Although nubus_virtio_mmio_realize() - as a DeviceClass.realize()
-> > method - doesn't get the NULL @errp parameter, it hasn't triggered the
-> > bug that dereferencing the NULL @errp. It's still necessary to follow
-> > the requirement of @errp, so add missing ERRP_GUARD() in
-> > nubus_virtio_mmio_realize().
-> 
-> Suggest
-> 
->   Although nubus_virtio_mmio_realize() - as a DeviceClass.realize()
->   method - is never passed a null @errp argument, it should follow the
->   rules on @errp usage.  Add the ERRP_GUARD() there.
-
-Thanks for the text! It sounds much more authentic!
-
-> > Cc: Laurent Vivier <laurent@vivier.eu>
-> > Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >  hw/nubus/nubus-virtio-mmio.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> > Because my previous i386 commit 6ddeb0ec8c29 ("i386/cpu: Introduce bitmap
+> > to cache available CPU topology levels") introduced the level
+> > enumeration with such prefix. For naming consistency, and to shorten the
+> > length of the name, I've used the same prefix here as well.
 > >
-> > diff --git a/hw/nubus/nubus-virtio-mmio.c b/hw/nubus/nubus-virtio-mmio.c
-> > index 58a63c84d0be..a5558d3ec28b 100644
-> > --- a/hw/nubus/nubus-virtio-mmio.c
-> > +++ b/hw/nubus/nubus-virtio-mmio.c
-> > @@ -23,6 +23,7 @@ static void nubus_virtio_mmio_set_input_irq(void *opaque, int n, int level)
-> >  
-> >  static void nubus_virtio_mmio_realize(DeviceState *dev, Error **errp)
-> >  {
-> > +    ERRP_GUARD();
-> >      NubusVirtioMMIODeviceClass *nvmdc = NUBUS_VIRTIO_MMIO_GET_CLASS(dev);
-> >      NubusVirtioMMIO *s = NUBUS_VIRTIO_MMIO(dev);
-> >      NubusDevice *nd = NUBUS_DEVICE(dev);
->        SysBusDevice *sbd;
->        int i, offset;
+> > I've sensed that you don't like the TOPO abbreviation and I'll remove the
+> > prefix :-).
 > 
->        nvmdc->parent_realize(dev, errp);
+> Consistency is good, but I'd rather achieve it by consistently using
+> "topology".
 > 
-> Here's the dereference:
-> 
->        if (*errp) {
->            return;
->        }
-> 
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
-> 
+> I never liked the 'prefix' feature much.  We have it because the mapping
+> from camel case to upper case with underscores is heuristical, and can
+> result in something undesirable.  See commit 351d36e454c (qapi: allow
+> override of default enum prefix naming).  Using it just to shorten
+> generated identifiers is a bad idea.
 
-Thanks! Will refresh a v2 soon.
+Thanks for your clarification! I see, I will drop the prefix.
 
 Regards,
 Zhao
+
 
 
