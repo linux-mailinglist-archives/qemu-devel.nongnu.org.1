@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF35939F40
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0013939F5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWDFF-0001eP-Fa; Tue, 23 Jul 2024 06:59:49 -0400
+	id 1sWDFI-0002F9-2J; Tue, 23 Jul 2024 06:59:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDEx-0000XB-Rq
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:59:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDF9-0001Rv-7F
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:59:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDEv-0002NW-UR
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:59:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDF5-0002OI-4f
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:59:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721732368;
+ s=mimecast20190719; t=1721732375;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=sZSgHsYIlqu62oOYqEz8U74/NNGfq5BqJa6TiXLGU28=;
- b=NTvI+PgpzMLUfhGDur9ZMnej8IbcnZObz2AWFOaoVgKPj27jz3nGA6tG2bweEM0v86tlm7
- 8IUaC1hJeZ1YJM5fePgxzrkVU1ZgAzWdSyro+IpKXBT26VpjqCULeYiI50a+WU0ekKo8hc
- Norpbif+13CXl7cMARqqMgLxVinhaRk=
+ bh=QIRNn3AfY79eXuLLx4aGJnafHez/N0jAHeOHCZXedWo=;
+ b=iTZAHSVJi+5ETWRGyVkPmBUonF840jWqNMNGOOU3gN9fSZnRUzQVELV/15/cPw/4Hb5IMx
+ Cij1td2o56kpkJHSrJMC2FST6ZXtVXzERElf15EMPVbkakBZgO7aKUGh0KLTG0c5Yl04Ng
+ LaFsPRHIODC5E1M1eTkSKE0sGO4JB3Y=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-xyfaqT61P4abb_3Y26_FqA-1; Tue, 23 Jul 2024 06:59:26 -0400
-X-MC-Unique: xyfaqT61P4abb_3Y26_FqA-1
+ us-mta-629-LrPQlfsLPwWUrdA-6Z3mPw-1; Tue, 23 Jul 2024 06:59:34 -0400
+X-MC-Unique: LrPQlfsLPwWUrdA-6Z3mPw-1
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-427df7c3a2aso20041875e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:59:26 -0700 (PDT)
+ 5b1f17b1804b1-427b7a2052bso55069395e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:59:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721732365; x=1722337165;
+ d=1e100.net; s=20230601; t=1721732372; x=1722337172;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sZSgHsYIlqu62oOYqEz8U74/NNGfq5BqJa6TiXLGU28=;
- b=SBUur9tzE/HEEHZA6P6WpS6G5HbQb/k0K5wq2NgOJfe1G5toBDxPvDribno4WuF6kS
- 9/Z2vCMyVCvEuEDEFWOUFCuZdGThjytbprb9Gp00u5LZ4lDM5KjoTljfbT0a58DLAFWA
- u21Y8PTb3zkGhXwE4RE/lLXCx6pOZvYSYsGA6tUOYxmwuADgRzJvWKZq3u//WVLFHa84
- LAQHEOEPqW6vLzXgJKf1RmFE/qvPRaILcDoNb5lg8SQmtWmvihLs1hzFfO1D9viDjR0v
- jzacb8wDoasAH6vwtDgxPDC16Sg7r/y7G7JN6eOJTOQRZkn05rzf8bs1WIN1vPshRadu
- 7AoA==
-X-Gm-Message-State: AOJu0Yz0ZmAs+U5WZU0zRhzNlA01Ad6+gJZgD6B4AtoP2DyM5brN6Q3h
- 1KtShLfS7tPGQdLTp98w4kKiA8kowLawUKHEVxklhq7KdhruDjRE/Wn4LW6rCP1vsK1na9Urjfc
- Tg1oDP+XkdzVItc3Yh4DFOXIS+kFDwIBeuJ3Ok8ZfW9AeYm4BCBlIjJaELDv308CtS5GibLikln
- ixNPGRk/n0oE5Ve7NSybnUD86Ox7CKBw==
-X-Received: by 2002:a05:600c:1c27:b0:426:62c5:4741 with SMTP id
- 5b1f17b1804b1-427dc515f90mr58917435e9.2.1721732365224; 
- Tue, 23 Jul 2024 03:59:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0C/0uC6m5IL0qVb7HMUY+AUzbnJl48FID37cxT3ijTRR6OYAKyjXokxjyyIACahz0wL6VRA==
-X-Received: by 2002:a05:600c:1c27:b0:426:62c5:4741 with SMTP id
- 5b1f17b1804b1-427dc515f90mr58917135e9.2.1721732364587; 
- Tue, 23 Jul 2024 03:59:24 -0700 (PDT)
+ bh=QIRNn3AfY79eXuLLx4aGJnafHez/N0jAHeOHCZXedWo=;
+ b=dvcSNJeMxLgMImOAoZhHMgi0h48fNk12PqpL5yuowNMWlpSO93OPt5Iw+K6KhG/g5l
+ NptruYCyQfubPeggKLsThh4nBv6FRYOOx6haQpsM70e18K10YTvojsVfsJXyLpXeOW1C
+ VlHbGqucJ84TaWGRAlGG278PJtARFqOb9WqlrfYYjy0Kh0A+UfLfDnqzeEpG+ecD4J70
+ nO0eZjxi9FBtnCH1lm9HrkdDX8hMZjK8nRBJbJ2+R8SM42hqyfzbbOwVWO5W8Q4SeWM+
+ UzSp475YXEXTN9cdfjVcJJaYeYzmaZjEj1er1DrL22KJBneCEqbbRnqtzCrmir4pmyC4
+ JiVw==
+X-Gm-Message-State: AOJu0Yy1i5dXmJs97wPXEKiADMssJXMIvJyecFVrPmfmJsdSXkp3Ng34
+ V7tsZpEvHX6vdymYJagptRICLKKES1kAmgyW6niq3HxgjSmNNLqfquTl3+C+U1wzwpYGiGdKVRd
+ rksx700bJtHOQzCRru+81tCUl51ZH9otHgH3E+PUUYm1CDAymF2N6fDgIl/jb5cohEfhCbKn6iK
+ poKpt4h2UlXPNbm4B9jcPnP9cBOMiD6A==
+X-Received: by 2002:a05:600c:470d:b0:426:5e8e:aa48 with SMTP id
+ 5b1f17b1804b1-427dc52910amr90650355e9.22.1721732372615; 
+ Tue, 23 Jul 2024 03:59:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGecRMxkjpR4Sccdyo7KnsP9n3mM6TbmRpleA3HN3P8Qlb/bddI5UAMH4LbfAI6PL472xf4JQ==
+X-Received: by 2002:a05:600c:470d:b0:426:5e8e:aa48 with SMTP id
+ 5b1f17b1804b1-427dc52910amr90649825e9.22.1721732371979; 
+ Tue, 23 Jul 2024 03:59:31 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:9c9a:ffee:509d:1766:aa7f])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d7263687sm166836685e9.4.2024.07.23.03.59.20
+ 5b1f17b1804b1-427f1f4c274sm14744815e9.1.2024.07.23.03.59.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 03:59:24 -0700 (PDT)
-Date: Tue, 23 Jul 2024 06:59:18 -0400
+ Tue, 23 Jul 2024 03:59:31 -0700 (PDT)
+Date: Tue, 23 Jul 2024 06:59:24 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Salil Mehta <salil.mehta@huawei.com>, Keqian Zhu <zhukeqian1@huawei.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Gavin Shan <gshan@redhat.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Keqian Zhu <zhukeqian1@huawei.com>, Gavin Shan <gshan@redhat.com>,
  Vishnu Pajjuri <vishnu@os.amperecomputing.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Xianglai Li <lixianglai@loongson.cn>, Miguel Luis <miguel.luis@oracle.com>,
  Shaoqin Huang <shahuang@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL v2 40/61] hw/acpi: Update GED _EVT method AML with CPU scan
-Message-ID: <549c9a9dcbc1592ea79496f7b3ab234f366adeba.1721731723.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL v2 41/61] hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+Message-ID: <efdb43b831efa5e0c8da3d062a1a37325b4a7708.1721731723.git.mst@redhat.com>
 References: <cover.1721731723.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -107,64 +111,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Salil Mehta <salil.mehta@huawei.com>
 
-OSPM evaluates _EVT method to map the event. The CPU hotplug event eventually
-results in start of the CPU scan. Scan figures out the CPU and the kind of
-event(plug/unplug) and notifies it back to the guest. Update the GED AML _EVT
-method with the call to method \\_SB.CPUS.CSCN (via \\_SB.GED.CSCN)
-
-Architecture specific code [1] might initialize its CPUs AML code by calling
-common function build_cpus_aml() like below for ARM:
-
-build_cpus_aml(scope, ms, opts, xx_madt_cpu_entry, memmap[VIRT_CPUHP_ACPI].base,
-               "\\_SB", "\\_SB.GED.CSCN", AML_SYSTEM_MEMORY);
-
-[1] https://lore.kernel.org/qemu-devel/20240613233639.202896-13-salil.mehta@huawei.com/
+CPUs Control device(\\_SB.PCI0) register interface for the x86 arch is IO port
+based and existing CPUs AML code assumes _CRS objects would evaluate to a system
+resource which describes IO Port address. But on ARM arch CPUs control
+device(\\_SB.PRES) register interface is memory-mapped hence _CRS object should
+evaluate to system resource which describes memory-mapped base address. Update
+build CPUs AML function to accept both IO/MEMORY region spaces and accordingly
+update the _CRS object.
 
 Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Tested-by: Xianglai Li <lixianglai@loongson.cn>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240716111502.202344-5-salil.mehta@huawei.com>
+Message-Id: <20240716111502.202344-6-salil.mehta@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/acpi/generic_event_device.h | 1 +
- hw/acpi/generic_event_device.c         | 3 +++
- 2 files changed, 4 insertions(+)
+ include/hw/acpi/cpu.h |  5 +++--
+ hw/acpi/cpu.c         | 17 +++++++++++++----
+ hw/i386/acpi-build.c  |  3 ++-
+ 3 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-index e091ac2108..40af3550b5 100644
---- a/include/hw/acpi/generic_event_device.h
-+++ b/include/hw/acpi/generic_event_device.h
-@@ -87,6 +87,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
- #define GED_DEVICE      "GED"
- #define AML_GED_EVT_REG "EREG"
- #define AML_GED_EVT_SEL "ESEL"
-+#define AML_GED_EVT_CPU_SCAN_METHOD "\\_SB.GED.CSCN"
+diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+index df87b15997..32654dc274 100644
+--- a/include/hw/acpi/cpu.h
++++ b/include/hw/acpi/cpu.h
+@@ -63,9 +63,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const CPUArchIdList *apic_ids,
+                                   GArray *entry, bool force_enabled);
  
- /*
-  * Platforms need to specify the GED event bitmap
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 4641933a0f..15b4c3ebbf 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -108,6 +108,9 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
-                 aml_append(if_ctx, aml_call0(MEMORY_DEVICES_CONTAINER "."
-                                              MEMORY_SLOT_SCAN_METHOD));
-                 break;
-+            case ACPI_GED_CPU_HOTPLUG_EVT:
-+                aml_append(if_ctx, aml_call0(AML_GED_EVT_CPU_SCAN_METHOD));
-+                break;
-             case ACPI_GED_PWR_DOWN_EVT:
-                 aml_append(if_ctx,
-                            aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
+ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+-                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
++                    build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
+                     const char *res_root,
+-                    const char *event_handler_method);
++                    const char *event_handler_method,
++                    AmlRegionSpace rs);
+ 
+ void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list);
+ 
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index cf5e9183e4..5cb60ca8bc 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -338,9 +338,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
+ #define CPU_FW_EJECT_EVENT "CEJF"
+ 
+ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+-                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
++                    build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
+                     const char *res_root,
+-                    const char *event_handler_method)
++                    const char *event_handler_method,
++                    AmlRegionSpace rs)
+ {
+     Aml *ifctx;
+     Aml *field;
+@@ -364,14 +365,22 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+             aml_name_decl("_UID", aml_string("CPU Hotplug resources")));
+         aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+ 
++        assert((rs == AML_SYSTEM_IO) || (rs == AML_SYSTEM_MEMORY));
++
+         crs = aml_resource_template();
+-        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
++        if (rs == AML_SYSTEM_IO) {
++            aml_append(crs, aml_io(AML_DECODE16, base_addr, base_addr, 1,
+                                ACPI_CPU_HOTPLUG_REG_LEN));
++        } else if (rs == AML_SYSTEM_MEMORY) {
++            aml_append(crs, aml_memory32_fixed(base_addr,
++                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
++        }
++
+         aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
+ 
+         /* declare CPU hotplug MMIO region with related access fields */
+         aml_append(cpu_ctrl_dev,
+-            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
++            aml_operation_region("PRST", rs, aml_int(base_addr),
+                                  ACPI_CPU_HOTPLUG_REG_LEN));
+ 
+         field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index f4e366f64f..5d4bd2b710 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1536,7 +1536,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+             .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
+         };
+         build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
+-                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02");
++                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02",
++                       AML_SYSTEM_IO);
+     }
+ 
+     if (pcms->memhp_io_base && nr_mem) {
 -- 
 MST
 
