@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E238B93A22F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE5F93A239
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:03:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWG4M-0008A2-Kl; Tue, 23 Jul 2024 10:00:46 -0400
+	id 1sWG4M-00088X-8Z; Tue, 23 Jul 2024 10:00:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4D-0007ui-D5
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:41 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4I-0007yJ-UE
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4B-0003e4-TN
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:37 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4G-0003eu-WD
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721743234;
+ s=mimecast20190719; t=1721743240;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D7JeG/z75pZEebOULs7RZpwQuNEdlxYi3rdtOf5IBtU=;
- b=OIZgywq2Pn/fpdrzctUcebEFEtG9jmbPuuzqZU4zSvdHY18TT8vNp/8eDPqM+xLXAgIunU
- rzqTWsqB9oD2FdYsrZc8jM+GVnVR4TRcj7okk5Aew/IKPEZG//W7sn0VAKl27iYsU37q54
- yv89jThOglE3sFx71tQZNqwUwWI4qXg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8s15tm9bvgrBkPEoSE1RxYiK1oycGKlFaBN5G99QARc=;
+ b=WPYaFdAeg6BXQutKIC7/y43Ag5o+SmzqK/LWawHIm9iNxnTbnr6WMtGIqmTgfWhZQqDmTc
+ XEsJjYqwlGUOaZWhoQ7uQ/5h/52A3BU2hSJKGgSuYnV2KvahhztYjsI6GWrVXotCbVjppm
+ oqwFw2boMACUB3eBH36rH9abpAjd1TI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-vrMqPp0xPJW0pU2-BtKONw-1; Tue,
- 23 Jul 2024 10:00:32 -0400
-X-MC-Unique: vrMqPp0xPJW0pU2-BtKONw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-zb8U_Y5jOzqD5FuqCgINIg-1; Tue,
+ 23 Jul 2024 10:00:34 -0400
+X-MC-Unique: zb8U_Y5jOzqD5FuqCgINIg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DECF01955D47; Tue, 23 Jul 2024 14:00:30 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3FDEE1945102; Tue, 23 Jul 2024 14:00:33 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.91])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CC20C1955D4B; Tue, 23 Jul 2024 14:00:28 +0000 (UTC)
+ id 3A9D01955D48; Tue, 23 Jul 2024 14:00:30 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Joao Martins <joao.m.martins@oracle.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 03/16] vfio/iommufd: Don't initialize nor set a
- HOST_IOMMU_DEVICE with mdev
-Date: Tue, 23 Jul 2024 16:00:06 +0200
-Message-ID: <20240723140019.387786-4-clg@redhat.com>
+Subject: [PULL 04/16] backends/iommufd: Extend
+ iommufd_backend_get_device_info() to fetch HW capabilities
+Date: Tue, 23 Jul 2024 16:00:07 +0200
+Message-ID: <20240723140019.387786-5-clg@redhat.com>
 In-Reply-To: <20240723140019.387786-1-clg@redhat.com>
 References: <20240723140019.387786-1-clg@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -83,72 +85,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Joao Martins <joao.m.martins@oracle.com>
 
-mdevs aren't "physical" devices and when asking for backing IOMMU info, it
-fails the entire provisioning of the guest. Fix that by skipping
-HostIOMMUDevice initialization in the presence of mdevs, and skip setting
-an iommu device when it is known to be an mdev.
+The helper will be able to fetch vendor agnostic IOMMU capabilities
+supported both by hardware and software. Right now it is only iommu dirty
+tracking.
 
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Fixes: 930589520128 ("vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler")
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/vfio/common.c |  4 ++++
- hw/vfio/pci.c    | 11 ++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ include/sysemu/iommufd.h | 2 +-
+ backends/iommufd.c       | 4 +++-
+ hw/vfio/iommufd.c        | 4 +++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 6d15b36e0bbbdaeb9437725167e61fdf5502555a..d7f02be595b5e71558d7e2d75d21d28f05968252 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1548,6 +1548,10 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+index 9edfec604595c7ed0e4032472bb73c9b4d2ea559..57d502a1c79a65e0447989f398e4e54c37839531 100644
+--- a/include/sysemu/iommufd.h
++++ b/include/sysemu/iommufd.h
+@@ -49,7 +49,7 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+                               hwaddr iova, ram_addr_t size);
+ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+                                      uint32_t *type, void *data, uint32_t len,
+-                                     Error **errp);
++                                     uint64_t *caps, Error **errp);
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
+ #endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index cabd1b50025d6910d072fd61d8702765c7ffb7ef..48dfd39624740e05217fb55be98ff5e054a32670 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -209,7 +209,7 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+ 
+ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+                                      uint32_t *type, void *data, uint32_t len,
+-                                     Error **errp)
++                                     uint64_t *caps, Error **errp)
+ {
+     struct iommu_hw_info info = {
+         .size = sizeof(info),
+@@ -225,6 +225,8 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+ 
+     g_assert(type);
+     *type = info.out_data_type;
++    g_assert(caps);
++    *caps = info.out_capabilities;
+ 
+     return true;
+ }
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 7b5f87a1488111f7b88ce7588db4f5e5bd976978..7c1b9e0284a3e84f68d13031cd517bffc47376d8 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -628,11 +628,13 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+     union {
+         struct iommu_hw_info_vtd vtd;
+     } data;
++    uint64_t hw_caps;
+ 
+     hiod->agent = opaque;
+ 
+     if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
+-                                         &type, &data, sizeof(data), errp)) {
++                                         &type, &data, sizeof(data),
++                                         &hw_caps, errp)) {
          return false;
      }
  
-+    if (vbasedev->mdev) {
-+        return true;
-+    }
-+
-     hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
-     if (!HOST_IOMMU_DEVICE_GET_CLASS(hiod)->realize(hiod, vbasedev, errp)) {
-         object_unref(hiod);
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index b34e91468a533ab4d550bf2392e940b867f7b34c..265d3cb82ffc2a6ada02547c0d8e306318442ef7 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3115,7 +3115,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
- 
-     vfio_bars_register(vdev);
- 
--    if (!pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
-+    if (!vbasedev->mdev &&
-+        !pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
-         error_prepend(errp, "Failed to set iommu_device: ");
-         goto out_teardown;
-     }
-@@ -3238,7 +3239,9 @@ out_deregister:
-         timer_free(vdev->intx.mmap_timer);
-     }
- out_unset_idev:
--    pci_device_unset_iommu_device(pdev);
-+    if (!vbasedev->mdev) {
-+        pci_device_unset_iommu_device(pdev);
-+    }
- out_teardown:
-     vfio_teardown_msi(vdev);
-     vfio_bars_exit(vdev);
-@@ -3283,7 +3286,9 @@ static void vfio_exitfn(PCIDevice *pdev)
-     vfio_pci_disable_rp_atomics(vdev);
-     vfio_bars_exit(vdev);
-     vfio_migration_exit(vbasedev);
--    pci_device_unset_iommu_device(pdev);
-+    if (!vbasedev->mdev) {
-+        pci_device_unset_iommu_device(pdev);
-+    }
- }
- 
- static void vfio_pci_reset(DeviceState *dev)
 -- 
 2.45.2
 
