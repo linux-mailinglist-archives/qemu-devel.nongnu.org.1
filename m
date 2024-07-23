@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F3A93A23E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 164B893A22E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:02:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWG4g-0000xq-J9; Tue, 23 Jul 2024 10:01:06 -0400
+	id 1sWG5J-00034k-5n; Tue, 23 Jul 2024 10:01:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4Z-0000YG-Bj
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:01:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG58-0002jO-NA
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:01:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4X-0003he-Mp
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:59 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG56-0003mg-TQ
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:01:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721743257;
+ s=mimecast20190719; t=1721743292;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/1GpTRvIzXhRFqPza1TSDlQxajbX3soGdn+1SqqLOtI=;
- b=M6AaBmuzKHs2EyU1Wm7Vq0/OtI6fMKrYPcDHJuXXBbbXbvjWT8rUsi93vkO+GS3T8ppcHE
- gSH5ibA3XCLGkx8OMbJPFSJOECGv3EXxHE+fBnOIbJ4G3zbbsJK4v6dSNafzrNjDDQrPjY
- MiJUl6ikZpZBrNk6xk8gck9kdTIkqfY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=L6LWwZ8d6VyWjINBiX1CtuubsP8TwW3ib6HhJI4FC6s=;
+ b=CvHujRSrZohJ51tUL7+sDXnPE/Lzxe/Ycoc3h5jpW348oM9RvDI7/mvfq/7uzIJzGDrpnH
+ N4BqOpb0+svcvAhjhZy6BXL2HrwsJnIBGJ9+x5eKyT9FP8KmF0dhRfPVD0C3SowMEpi8FQ
+ PWQXkd2+0WtMwwkUhBy2tWZA9H+zMZQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-ESDd5u5LOY-0g6-wFy-HTA-1; Tue,
- 23 Jul 2024 10:00:54 -0400
-X-MC-Unique: ESDd5u5LOY-0g6-wFy-HTA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-6-I4wl4FNtCfYLsNybey0Q-1; Tue,
+ 23 Jul 2024 10:00:57 -0400
+X-MC-Unique: 6-I4wl4FNtCfYLsNybey0Q-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 625A419560AA; Tue, 23 Jul 2024 14:00:53 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F36931944B2D; Tue, 23 Jul 2024 14:00:55 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.91])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B232B1955D45; Tue, 23 Jul 2024 14:00:51 +0000 (UTC)
+ id C249A195605A; Tue, 23 Jul 2024 14:00:53 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Joao Martins <joao.m.martins@oracle.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 12/16] vfio/iommufd: Probe and request hwpt dirty tracking
- capability
-Date: Tue, 23 Jul 2024 16:00:15 +0200
-Message-ID: <20240723140019.387786-13-clg@redhat.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 13/16] vfio/iommufd: Implement
+ VFIOIOMMUClass::set_dirty_tracking support
+Date: Tue, 23 Jul 2024 16:00:16 +0200
+Message-ID: <20240723140019.387786-14-clg@redhat.com>
 In-Reply-To: <20240723140019.387786-1-clg@redhat.com>
 References: <20240723140019.387786-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,113 +83,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Joao Martins <joao.m.martins@oracle.com>
 
-In preparation to using the dirty tracking UAPI, probe whether the IOMMU
-supports dirty tracking. This is done via the data stored in
-hiod::caps::hw_caps initialized from GET_HW_INFO.
-
-Qemu doesn't know if VF dirty tracking is supported when allocating
-hardware pagetable in iommufd_cdev_autodomains_get(). This is because
-VFIODevice migration state hasn't been initialized *yet* hence it can't pick
-between VF dirty tracking vs IOMMU dirty tracking. So, if IOMMU supports
-dirty tracking it always creates HWPTs with IOMMU_HWPT_ALLOC_DIRTY_TRACKING
-even if later on VFIOMigration decides to use VF dirty tracking instead.
+ioctl(iommufd, IOMMU_HWPT_SET_DIRTY_TRACKING, arg) is the UAPI that
+enables or disables dirty page tracking. The ioctl is used if the hwpt
+has been created with dirty tracking supported domain (stored in
+hwpt::flags) and it is called on the whole list of iommu domains.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-[ clg: - Fixed vbasedev->iommu_dirty_tracking assignment in
-         iommufd_cdev_autodomains_get()
-       - Added warning for heterogeneous dirty page tracking support
-	 in iommufd_cdev_autodomains_get() ]
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  2 ++
- hw/vfio/iommufd.c             | 26 ++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ include/sysemu/iommufd.h |  2 ++
+ backends/iommufd.c       | 23 +++++++++++++++++++++++
+ hw/vfio/iommufd.c        | 32 ++++++++++++++++++++++++++++++++
+ backends/trace-events    |  1 +
+ 4 files changed, 58 insertions(+)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 4e44b26d3c453b5b47a819df371a21a4ca3b39c3..1e02c98b09babb6878fed1130cd1d6a00ac3641e 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -97,6 +97,7 @@ typedef struct IOMMUFDBackend IOMMUFDBackend;
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+index e917e7591d050bd02945f6feb8d268e6d51d49aa..6fb412f61144e91ae02710291368ec9d577832f8 100644
+--- a/include/sysemu/iommufd.h
++++ b/include/sysemu/iommufd.h
+@@ -55,6 +55,8 @@ bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
+                                 uint32_t data_type, uint32_t data_len,
+                                 void *data_ptr, uint32_t *out_hwpt,
+                                 Error **errp);
++bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
++                                        bool start, Error **errp);
  
- typedef struct VFIOIOASHwpt {
-     uint32_t hwpt_id;
-+    uint32_t hwpt_flags;
-     QLIST_HEAD(, VFIODevice) device_list;
-     QLIST_ENTRY(VFIOIOASHwpt) next;
- } VFIOIOASHwpt;
-@@ -139,6 +140,7 @@ typedef struct VFIODevice {
-     OnOffAuto pre_copy_dirty_page_tracking;
-     bool dirty_pages_supported;
-     bool dirty_tracking;
-+    bool iommu_dirty_tracking;
-     HostIOMMUDevice *hiod;
-     int devid;
-     IOMMUFDBackend *iommufd;
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 798c4798a55e0c839c5128b3cd9571356157dce9..240c476eaf5b9b79090b6767c18316ade3b3b794 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -110,6 +110,11 @@ static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
-     iommufd_backend_disconnect(vbasedev->iommufd);
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
+ #endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 06b135111f303ca95d55dc0f71ad3bbb76211337..b9788350388481f449b1969366efa8d7766fc080 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -238,6 +238,29 @@ bool iommufd_backend_alloc_hwpt(IOMMUFDBackend *be, uint32_t dev_id,
+     return true;
  }
  
-+static bool iommufd_hwpt_dirty_tracking(VFIOIOASHwpt *hwpt)
++bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be,
++                                        uint32_t hwpt_id, bool start,
++                                        Error **errp)
 +{
-+    return hwpt && hwpt->hwpt_flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
++    int ret;
++    struct iommu_hwpt_set_dirty_tracking set_dirty = {
++            .size = sizeof(set_dirty),
++            .hwpt_id = hwpt_id,
++            .flags = start ? IOMMU_HWPT_DIRTY_TRACKING_ENABLE : 0,
++    };
++
++    ret = ioctl(be->fd, IOMMU_HWPT_SET_DIRTY_TRACKING, &set_dirty);
++    trace_iommufd_backend_set_dirty(be->fd, hwpt_id, start, ret ? errno : 0);
++    if (ret) {
++        error_setg_errno(errp, errno,
++                         "IOMMU_HWPT_SET_DIRTY_TRACKING(hwpt_id %u) failed",
++                         hwpt_id);
++        return false;
++    }
++
++    return true;
++}
++
+ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+                                      uint32_t *type, void *data, uint32_t len,
+                                      uint64_t *caps, Error **errp)
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 240c476eaf5b9b79090b6767c18316ade3b3b794..e39fbf4dd60a62321def4349fd727da335d82d8d 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -115,6 +115,37 @@ static bool iommufd_hwpt_dirty_tracking(VFIOIOASHwpt *hwpt)
+     return hwpt && hwpt->hwpt_flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+ }
+ 
++static int iommufd_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
++                                           bool start, Error **errp)
++{
++    const VFIOIOMMUFDContainer *container =
++        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
++    VFIOIOASHwpt *hwpt;
++
++    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
++        if (!iommufd_hwpt_dirty_tracking(hwpt)) {
++            continue;
++        }
++
++        if (!iommufd_backend_set_dirty_tracking(container->be,
++                                                hwpt->hwpt_id, start, errp)) {
++            goto err;
++        }
++    }
++
++    return 0;
++
++err:
++    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
++        if (!iommufd_hwpt_dirty_tracking(hwpt)) {
++            continue;
++        }
++        iommufd_backend_set_dirty_tracking(container->be,
++                                           hwpt->hwpt_id, !start, NULL);
++    }
++    return -EINVAL;
 +}
 +
  static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
  {
      ERRP_GUARD();
-@@ -243,10 +248,22 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-         } else {
-             vbasedev->hwpt = hwpt;
-             QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
-+            vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
-             return true;
-         }
-     }
+@@ -739,6 +770,7 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
+     vioc->attach_device = iommufd_cdev_attach;
+     vioc->detach_device = iommufd_cdev_detach;
+     vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
++    vioc->set_dirty_page_tracking = iommufd_set_dirty_page_tracking;
+ };
  
-+    /*
-+     * This is quite early and VFIO Migration state isn't yet fully
-+     * initialized, thus rely only on IOMMU hardware capabilities as to
-+     * whether IOMMU dirty tracking is going to be requested. Later
-+     * vfio_migration_realize() may decide to use VF dirty tracking
-+     * instead.
-+     */
-+    if (vbasedev->hiod->caps.hw_caps & IOMMU_HW_CAP_DIRTY_TRACKING) {
-+        flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
-+    }
-+
-     if (!iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
-                                     container->ioas_id, flags,
-                                     IOMMU_HWPT_DATA_NONE, 0, NULL,
-@@ -256,6 +273,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
- 
-     hwpt = g_malloc0(sizeof(*hwpt));
-     hwpt->hwpt_id = hwpt_id;
-+    hwpt->hwpt_flags = flags;
-     QLIST_INIT(&hwpt->device_list);
- 
-     ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
-@@ -266,8 +284,16 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-     }
- 
-     vbasedev->hwpt = hwpt;
-+    vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
-     QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
-     QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
-+    container->bcontainer.dirty_pages_supported |=
-+                                vbasedev->iommu_dirty_tracking;
-+    if (container->bcontainer.dirty_pages_supported &&
-+        !vbasedev->iommu_dirty_tracking) {
-+        warn_report("IOMMU instance for device %s doesn't support dirty tracking",
-+                    vbasedev->name);
-+    }
-     return true;
- }
- 
+ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+diff --git a/backends/trace-events b/backends/trace-events
+index 4d8ac02fe7d6c6d3780dfef48406872ee46fd4df..28aca3b859d43f35511a95d6eba196046bfda835 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -16,3 +16,4 @@ iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t si
+ iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
+ iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
+ iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
++iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
 -- 
 2.45.2
 
