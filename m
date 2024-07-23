@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A84B939F34
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1E9939F36
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:01:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWDGL-0008P8-HH; Tue, 23 Jul 2024 07:00:57 -0400
+	id 1sWDGG-0007TF-Ty; Tue, 23 Jul 2024 07:00:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDFo-00068J-CE
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:00:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDFv-0006Wi-95
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:00:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDFm-0002ul-OO
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:00:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDFs-0002zJ-Hb
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 07:00:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721732422;
+ s=mimecast20190719; t=1721732428;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lNaBRV7Yd2JZRWzu6CicjU/g67eykdpgIsM3nElPwyU=;
- b=iQXpH2uhgOsSZ1oISXXRH6VHD2luYIhA2zBW2E00Gk7S8y/ACXRSZtOO2fTqjEsLVZX567
- iScZPWQMIk6d88fqvcuOtXM7Q/qdhk0HJ9JYtRiCW2qbrNw9qyYJ8G0LymIH5hFVvc7O7X
- i/AxbIrJPNAy06i3qSJHKkxT87uPiu0=
+ bh=2MFU5YluLJy3dMwMtCRKC5eZxelIcmwO+t8tRGjROFc=;
+ b=egS7n7cu2CKPX0p3loUW2kPe4VQeTupLhZu8RMNWmy8cQDKttaSMExV2YfUUJz0Q4mVOF1
+ +IWgn6XrjJDE1idAugnN3PWnxLOB/rwlT9ukW+ajBYcsKJRFPIylsZbECOxZqcTVXp2T/2
+ hprE9acm5ptD0JlhCn6XIKVmBoWXvxI=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-Tp-q91B-MrGLniD9WERHRQ-1; Tue, 23 Jul 2024 07:00:20 -0400
-X-MC-Unique: Tp-q91B-MrGLniD9WERHRQ-1
+ us-mta-396-SG58dCv5NA26NZhM_FFVSw-1; Tue, 23 Jul 2024 07:00:26 -0400
+X-MC-Unique: SG58dCv5NA26NZhM_FFVSw-1
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-427df7c3a2aso20047725e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 04:00:20 -0700 (PDT)
+ 5b1f17b1804b1-4266fbae4c6so39755285e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 04:00:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721732419; x=1722337219;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lNaBRV7Yd2JZRWzu6CicjU/g67eykdpgIsM3nElPwyU=;
- b=lhuFzYJa2FN+xAiiVlfWOqlFQawOPnpIu5tJ9mSN8TRVNpNLUFojnTTWaHMibfOoCT
- 1lrJYfm5OlN3+t7LumLvSIThPvXq9gtadCjrrutGjjH6ZGC+0ebKAwMLTpJJ4FU6Iw4g
- 3KkbmwfQjqtGsMu7yx9w+xP/al9O0+U3PTLWLsVnZrZtC6jH4Ks64gsApL0rj2JZqVGn
- +kOY9lnfY+SliV9z2a8uUPi827mBxEY6Ry+EvfycU+p7XXK+6y7RHOb3hJ44NJVcR4zM
- NzCIBr61IqERk/oCRvNZdTPiTBCAqZMvGGxh1Z15dZmO4p5q4LSH1gOVpo9kNpGSrgeR
- CUWw==
-X-Gm-Message-State: AOJu0YxXvBrshfvKM5gUN7RBgtA99cjd6sJ714eL9y9M0B3enbwnIXhy
- blx/xvmmcwpuNQ3szHi77Ppgp/uS/6GTyx/qnHWnsKYsk1hxPCo5R7oLqDSjZwGyIlV/5vJxNcF
- Ifkf9UQ03FIBZpEf2YRolUcd8fReh9UPu1eBXg/9duji6a2WUfPafkoBAvAuX2L0wiDDt6JWV1Q
- 8rLt6TMg7dk7OfcbrFdXZRBAbEtAwkag==
-X-Received: by 2002:a05:600c:138b:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-427dc5290ffmr59045985e9.19.1721732419412; 
- Tue, 23 Jul 2024 04:00:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvzJmZOxWpQRfFBp7VjshzP9XB2kRIrkzhmIipSXjNXt7fmpkYodRBPdoUm4jhQhtLWf4rNg==
-X-Received: by 2002:a05:600c:138b:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-427dc5290ffmr59045665e9.19.1721732418897; 
- Tue, 23 Jul 2024 04:00:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721732425; x=1722337225;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2MFU5YluLJy3dMwMtCRKC5eZxelIcmwO+t8tRGjROFc=;
+ b=HTEJiMWb+oIGI32DW2BLigD1ZvL+tS2Ji2GGasgO/h+NTaKNyOcqh0LH2qT2RHRXrH
+ GJuYaz7ZfCZLDbSJWQb/UCOIh9suyDhBkKNNSc/1WKi/HyBgWJ4YxZELHYzuMHwZiubc
+ EGOM9PrlEB/fZ2mI8Y/FtqlVvwucRwDKwnrn0BiMxuTD0oVKjSNfOU+uHrbWSxwtfMLw
+ AaYUvVTGYBKCtO6C2IwA/P3Zm2nDct+zcGyz8LKgVCrCkVAZFu0vSLj9BObmxWbM23Dz
+ B1GZKo1v/nR82GWCAaF3Kl4YhZbGR5+8UBnBXVgBMQ1xr0EVXUEwgFhX8jSLKig+FFn0
+ WJRw==
+X-Gm-Message-State: AOJu0YwudSpJDde3sboE9L4EXcPRkGXsCx5imptlE9BdqeEbi/d3miLI
+ B5UTV5OqR0y+f7CjlH3s1e9KHwYmm8qwpk6/BDHjl5wO6zM+ZO/au3WRMTx0cTMuVCrbkejDLPX
+ XCFwNxVQZCkT2VPFCrzfLJIq2fCuYRpY2zUGhaOSUz8NTzeqdkqm47o6hdqZeZQylattanlNhJH
+ +I8befW4B0/Kf5A1RTUu3+9DTWboulpA==
+X-Received: by 2002:a05:600c:4e47:b0:426:6e8b:3dc5 with SMTP id
+ 5b1f17b1804b1-427dc56753emr76771885e9.32.1721732424662; 
+ Tue, 23 Jul 2024 04:00:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IES2xGA854gQwoyFz4WEDiNhXqaTPv4cn1iY75vXqabsEsDP7O8DHpzV4z3K1Vb2qkzWcRCVw==
+X-Received: by 2002:a05:600c:4e47:b0:426:6e8b:3dc5 with SMTP id
+ 5b1f17b1804b1-427dc56753emr76771375e9.32.1721732423942; 
+ Tue, 23 Jul 2024 04:00:23 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:9c9a:ffee:509d:1766:aa7f])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a3b8ccsm199501005e9.2.2024.07.23.04.00.17
+ 5b1f17b1804b1-427d8f1cf7esm158567575e9.39.2024.07.23.04.00.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 04:00:18 -0700 (PDT)
-Date: Tue, 23 Jul 2024 07:00:15 -0400
+ Tue, 23 Jul 2024 04:00:23 -0700 (PDT)
+Date: Tue, 23 Jul 2024 07:00:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Subject: [PULL v2 49/61] virtio-iommu: Add trace point on
- virtio_iommu_detach_endpoint_from_domain
-Message-ID: <6c027a9de3fae3b8a3a4868e17c7a28ba5372463.1721731723.git.mst@redhat.com>
+ Sunil V L <sunilvl@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
+Subject: [PULL v2 50/61] hw/riscv/virt-acpi-build.c: Add namespace devices
+ for PLIC and APLIC
+Message-ID: <a54dd0cd6b9119c44d52547f51a529122f0ec1f1.1721731723.git.mst@redhat.com>
 References: <cover.1721731723.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1721731723.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -103,45 +106,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-Add a trace point on virtio_iommu_detach_endpoint_from_domain().
+As per the requirement ACPI_080 in the RISC-V Boot and Runtime Services
+(BRS) specification [1],  PLIC and APLIC should be in namespace as well.
+So, add them using the defined HID.
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Message-Id: <20240716094619.1713905-7-eric.auger@redhat.com>
-Tested-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+[1] - https://github.com/riscv-non-isa/riscv-brs/releases/download/v0.0.2/riscv-brs-spec.pdf
+      (Chapter 6)
+
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20240716144306.2432257-2-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-iommu.c | 1 +
- hw/virtio/trace-events   | 1 +
- 2 files changed, 2 insertions(+)
+ hw/riscv/virt-acpi-build.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 440dfa6e92..59ef4fb217 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -308,6 +308,7 @@ static void virtio_iommu_detach_endpoint_from_domain(VirtIOIOMMUEndpoint *ep)
-     if (!ep->domain) {
-         return;
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index 0925528160..5f5082a35b 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -141,6 +141,30 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
      }
-+    trace_virtio_iommu_detach_endpoint_from_domain(domain->id, ep->id);
-     g_tree_foreach(domain->mappings, virtio_iommu_notify_unmap_cb,
-                    ep->iommu_mr);
-     QLIST_REMOVE(ep, next);
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index b7c04f0856..04e36ae047 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -116,6 +116,7 @@ virtio_iommu_get_config(uint64_t page_size_mask, uint64_t start, uint64_t end, u
- virtio_iommu_set_config(uint8_t bypass) "bypass=0x%x"
- virtio_iommu_attach(uint32_t domain_id, uint32_t ep_id) "domain=%d endpoint=%d"
- virtio_iommu_detach(uint32_t domain_id, uint32_t ep_id) "domain=%d endpoint=%d"
-+virtio_iommu_detach_endpoint_from_domain(uint32_t domain_id, uint32_t ep_id) "domain=%d endpoint=%d"
- virtio_iommu_map(uint32_t domain_id, uint64_t virt_start, uint64_t virt_end, uint64_t phys_start, uint32_t flags) "domain=%d virt_start=0x%"PRIx64" virt_end=0x%"PRIx64 " phys_start=0x%"PRIx64" flags=%d"
- virtio_iommu_unmap(uint32_t domain_id, uint64_t virt_start, uint64_t virt_end) "domain=%d virt_start=0x%"PRIx64" virt_end=0x%"PRIx64
- virtio_iommu_unmap_done(uint32_t domain_id, uint64_t virt_start, uint64_t virt_end) "domain=%d virt_start=0x%"PRIx64" virt_end=0x%"PRIx64
+ }
+ 
++static void acpi_dsdt_add_plic_aplic(Aml *scope, uint8_t socket_count,
++                                     uint64_t mmio_base, uint64_t mmio_size,
++                                     const char *hid)
++{
++    uint64_t plic_aplic_addr;
++    uint32_t gsi_base;
++    uint8_t  socket;
++
++    for (socket = 0; socket < socket_count; socket++) {
++        plic_aplic_addr = mmio_base + mmio_size * socket;
++        gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
++        Aml *dev = aml_device("IC%.02X", socket);
++        aml_append(dev, aml_name_decl("_HID", aml_string("%s", hid)));
++        aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
++        aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
++
++        Aml *crs = aml_resource_template();
++        aml_append(crs, aml_memory32_fixed(plic_aplic_addr, mmio_size,
++                                           AML_READ_WRITE));
++        aml_append(dev, aml_name_decl("_CRS", crs));
++        aml_append(scope, dev);
++    }
++}
++
+ static void
+ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+                     uint32_t uart_irq)
+@@ -411,6 +435,14 @@ static void build_dsdt(GArray *table_data,
+ 
+     socket_count = riscv_socket_count(ms);
+ 
++    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
++        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_PLIC].base,
++                                 memmap[VIRT_PLIC].size, "RSCV0001");
++    } else {
++        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_APLIC_S].base,
++                                 memmap[VIRT_APLIC_S].size, "RSCV0002");
++    }
++
+     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
+ 
+     if (socket_count == 1) {
 -- 
 MST
 
