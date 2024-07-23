@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEE0939EA5
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B486E939EA8
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWCXk-0000De-8x; Tue, 23 Jul 2024 06:14:52 -0400
+	id 1sWCaH-0000bE-Rs; Tue, 23 Jul 2024 06:17:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sWCXi-000094-PZ
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:14:50 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWCa2-0008WB-KL
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:17:15 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sWCXg-0000ec-JL
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:14:50 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-70d18112b60so1665549b3a.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:14:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWCa0-0001OS-Sm
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:17:14 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a79f9a72a99so97984866b.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:17:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1721729686; x=1722334486;
- darn=nongnu.org; 
+ d=linaro.org; s=google; t=1721729831; x=1722334631; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=h/Jhl9q3azKsjjZoesAFf4VCmBVR9zWjLPQ4d9xRNnk=;
- b=vZcSjkwyYZrD2aOtFJC+AVa3m63dVsFnWD+fObSJhMFWMH4VwWwlyn4UslpZ+oNa5x
- 2MwUhVP83PaNdo0iYvINsFV3r1NcI7n8VncXNW/O8HJjNAU7UtMwsbgN7jvDaVbXPZD6
- MpaPCqxqO7wbYT9SCyt/Bx+kuXL+SFODaq7mLGAC0AItoyuwG2EKN23tJ2ZJ7Oj5HDdZ
- aqENpCkRCovCElfljbyotTBZ4NWZHuLg91qk5o7g0pzGRHd1tjRY9pZQJq80M2EyNXd2
- gXWFljnghXGicUKBJRKG1G2TcoV3wa0HtMemiYe3AWiDR0gTBMX2HfxMbB0Tt0SgFu6E
- Gflw==
+ bh=0wf60d5+X5f9Nbcemxz+CczAAti8q7IsbdQWVoE//kY=;
+ b=HOFkXaLNdJbrxnxvzuf2NF/mULYWannjvFhm0rJ43QJPvib+LOmeOOHpCxbjKyJ8RK
+ PLvweh1iBAMAb69W0hKgBcF5ZWYMuBEw6R5jRyEvpG2TkWz6X2I5VubnNhvJtcGqJKpo
+ xOgK6NOAhym/MxEHosdHzb3owscHqVJZzRtRbs1sZ9MU8dTGsp0ln95XP0zsQ+3ySLN6
+ th5UYx0Z0qAy7r6dijeA1uzw66wWGBD7bdX948sauMDsK7keDPKRcX7w65Nq1LpTq2TX
+ j5Zkq+MZ8qrg7m0mwge62OO7H0SLAqFYe7Es2gtuTuzd+L3TtQ9K+mEdg0NiXZsAgaBm
+ tgNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721729686; x=1722334486;
+ d=1e100.net; s=20230601; t=1721729831; x=1722334631;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h/Jhl9q3azKsjjZoesAFf4VCmBVR9zWjLPQ4d9xRNnk=;
- b=s1iFZw1wJeU2Ju6SK9kShz14bABMBGOLS4p0JyqswRnHygp1rPpW4rS/20Aiz9xkib
- gv+dk78IELbBkx2Em2N9EYkwIbyUnB+uVQ8i7k/XEK7nAyGvXu2zzcW6KXNQdBZovJMU
- Q/80nb8aCo918ZbmYGdE1pbi81QXVB4IMIuKpAs/5rm7PAf96bkmdcit0xdzS9kcI8Pg
- V+M3mQVTsezx3yqraM5+FipS+0itCfRHv+Y0V+yDb6E63zzjGZnaTQo2LY1+WqtoAcGr
- wBZl4aeVMOXk733f17sRB5W3HA4nxljI5UkURTXh7ANQFdl1rYqizFY1VEZe0dOYXJt/
- XGRg==
+ bh=0wf60d5+X5f9Nbcemxz+CczAAti8q7IsbdQWVoE//kY=;
+ b=Do1JPCp/q4qOBSo/Iq0s+6N5J3rbGChTFAZH7RA8q4EKQT7caOausPMjbjfqvjpAAK
+ 6/k01TofthdiZeltwE53FRqZutwE7ztmy9u8chn7JYh/mtSRF3YXvmyMWFTjqfrH6Wku
+ jwJa2TZmqm3U5i8SSbTpbj9g51fhx2sPT0EloBow8Socs27wknRA92f8cYQykgPYuu0+
+ /PG9ISJG88zmae421hiyfC44s+OQt6a17L213EMlmUD6jOEbyaKqytYI9XH2S/EuWYmv
+ AN+uJ8zkrRwI/fdf+hMzVwgzcUK2A/ENyPOCLsE8pUWsDHJdHSERhMBcQSb6lgN9zwDx
+ +R4Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUAoaELASJLA1GnPbYzp5lfnSJH2x14kVCJhVGivUzTCJ6FLF+Orz0+SVZAGARiPaoVHDfJcrkwxjP3/DGu/XfxQd2GnkI=
-X-Gm-Message-State: AOJu0YweVoG1hOslKkpeyMORlr9y6wQkI761OvVjzQsocuGvJgSQb9RS
- yQ1R73LWL4by17Pv4wAwyIMQW6XVoQxvBGB6DhxgSgDYnHH5KMQB4np2cqGx3EU=
-X-Google-Smtp-Source: AGHT+IH/Qot6Zuf134F0i500oPjr91m9fDEVOI1/EDPUO6MrBzG3m6rwcGQ89nboVrmMI6K1gH0eIg==
-X-Received: by 2002:aa7:90d2:0:b0:70d:15a1:f052 with SMTP id
- d2e1a72fcca58-70e80753666mr2347610b3a.1.1721729686399; 
- Tue, 23 Jul 2024 03:14:46 -0700 (PDT)
-Received: from [157.82.202.230] ([157.82.202.230])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70cff5a149csm6637963b3a.169.2024.07.23.03.14.44
+ AJvYcCX/0k3txckcVSB4t5dxDW1yN8HrGiSkNr0XIHSYKZXJrZvIiBpwUDtp1bItd6GCLjwrpdcOqIh5TK79GSpr3KdIJrUkCG4=
+X-Gm-Message-State: AOJu0YxGXxzMKuXIY4SCsbqKJKTysTUv9wQmKrzANpwyKNi2Lt5JpIS0
+ JOOexDkijAQpld/KpIxtgFKaaT7bZwBUqkHx2em8JBJUNY7oVUFul1qzfgsoA5I=
+X-Google-Smtp-Source: AGHT+IFQBHEzcfsb0OxS5nwyEB1KjkNKk7K7i3s4PGQsO168vo1O2dJpW5j0Hw1Wm8lWmqHBIKrd1w==
+X-Received: by 2002:a17:907:3f0a:b0:a6f:4287:f196 with SMTP id
+ a640c23a62f3a-a7a93f37bf9mr187375366b.2.1721729830973; 
+ Tue, 23 Jul 2024 03:17:10 -0700 (PDT)
+Received: from [192.168.203.175] (5.red-95-127-46.staticip.rima-tde.net.
+ [95.127.46.5]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a7a3c922d3fsm524827466b.183.2024.07.23.03.17.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jul 2024 03:14:46 -0700 (PDT)
-Message-ID: <d5f7e8f5-9085-4330-9408-f3ecab3d3883@daynix.com>
-Date: Tue, 23 Jul 2024 19:14:43 +0900
+ Tue, 23 Jul 2024 03:17:10 -0700 (PDT)
+Message-ID: <9e7032bb-b029-4bed-b187-1525fe104e18@linaro.org>
+Date: Tue, 23 Jul 2024 12:17:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] ui: fixes for dbus clipboard hanling
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240717171541.201525-1-marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v5 04/19] hw/intc/loongson_ipi: Extract
+ loongson_ipi_common_finalize()
+To: gaosong <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Xianglai Li <lixianglai@loongson.cn>
+References: <20240718133312.10324-1-philmd@linaro.org>
+ <20240718133312.10324-5-philmd@linaro.org>
+ <492e9968-a05d-44b2-b374-1d839e49b6e3@linaro.org>
+ <2431160c-5f6e-cc99-5b3f-701ae352ba83@loongson.cn>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240717171541.201525-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <2431160c-5f6e-cc99-5b3f-701ae352ba83@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::432;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +100,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/07/18 2:15, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 23/7/24 12:00, gaosong wrote:
+> 在 2024/7/23 下午4:41, Philippe Mathieu-Daudé 写道:
+>> On 18/7/24 15:32, Philippe Mathieu-Daudé wrote:
+>>> From: Bibo Mao <maobibo@loongson.cn>
+>>>
+>>> In preparation to extract common IPI code in few commits,
+>>> extract loongson_ipi_common_finalize().
+>>>
+>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>> [PMD: Extracted from bigger commit, added commit description]
+>>> Co-Developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>>> Tested-by: Bibo Mao <maobibo@loongson.cn>
+>>> Acked-by: Song Gao <gaosong@loongson.cn>
+>>> ---
+>>>   hw/intc/loongson_ipi.c | 7 ++++++-
+>>>   1 file changed, 6 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
+>>> index d870af39c1..960d1e604f 100644
+>>> --- a/hw/intc/loongson_ipi.c
+>>> +++ b/hw/intc/loongson_ipi.c
+>>> @@ -357,13 +357,18 @@ static void loongson_ipi_class_init(ObjectClass 
+>>> *klass, void *data)
+>>>       dc->vmsd = &vmstate_loongson_ipi;
+>>>   }
+>>>   -static void loongson_ipi_finalize(Object *obj)
+>>> +static void loongson_ipi_common_finalize(Object *obj)
+>>>   {
+>>>       LoongsonIPIState *s = LOONGSON_IPI(obj);
+>>>         g_free(s->cpu);
+>>
+>> Unfortunately the current code is bogus, @cpu is allocated in
+>> loongson_ipi_realize(), a DeviceRealize handler, so must be
+>> de-allocated in a DeviceUnrealize equivalent. Not at the instance
+>> finalize cleanup which is too late because we could leak after
+>> UNREALIZE -> REALIZE sequences.
+>>
+> Yes,  we should use  DeviecUnrealize to free s->cpu.
 > 
-> Hi,
-> 
-> -display dbus clipboard is broken after a client reconnection. The two main
-> issues are capabilities not renegotiated (and thus guest agent not fully
-> functional), and qemu clipboard serial not correctly reset.
-> 
-> Marc-André Lureau (4):
->    ui: add more tracing for dbus
->    ui/vdagent: improve vdagent_fe_open() trace
->    ui/vdagent: notify clipboard peers of serial reset
->    ui/vdagent: send caps on fe_open
-> 
->   audio/dbusaudio.c   |  2 +-
->   ui/clipboard.c      |  2 ++
->   ui/dbus-clipboard.c |  4 ++++
->   ui/vdagent.c        | 11 ++++++++---
->   audio/trace-events  |  2 +-
->   ui/trace-events     |  5 ++++-
->   6 files changed, 20 insertions(+), 6 deletions(-)
-> 
+> I will send a patch to correct it.
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+No need, I already wrote it, currently testing various build
+configs before posting v6.
+
 
