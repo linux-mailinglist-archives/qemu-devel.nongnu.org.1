@@ -2,61 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B774F93A22A
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC9193A229
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 16:01:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWG4M-00088r-FI; Tue, 23 Jul 2024 10:00:46 -0400
+	id 1sWG4P-0008KT-H8; Tue, 23 Jul 2024 10:00:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4J-0007yn-8T
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:43 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4K-00085E-SN
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4H-0003f2-MO
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:43 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sWG4J-0003fI-CU
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 10:00:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721743240;
+ s=mimecast20190719; t=1721743242;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bqoD0cHHDICw3EwjqAou9PeHk0181feIbStHGBTGb94=;
- b=I5slIi4wC2k0dd6lDhnDokJZr1O4yhZ+/xNLE1TQm3kl8aSPiwrFs8y8FzB+UqeKpZvS1Q
- /0QCWxA0777Peyk9MCbyN/LPpuDIivJekcqVKqFgt2jEdsdzhwyIhrAJOyOVoPWV5KnM/C
- PbBJ2CAkicaAnixLXyDd5uSJLEDBH9g=
+ bh=phG2Wz39fvauvHi3krmGIqw0XL9Fpi2Pt7JTr5MGETI=;
+ b=BsVD/VCoI65VDw6aGqchQOn+U+abPkmumMze4tWSZYvBkJQkR28KEUBynuZAxy5QAUMzwn
+ +lqWRK5rT7gjYSiiIF2FskdMK7HhROCzNNnLUBp5h7Sl70e2oapd+1W12PwKasPPqLzuUv
+ i3IKUZsTPmxGijWDiGS4RsOt3iUG/3o=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-v7ikV-enP9u1iRCjV-Hliw-1; Tue,
- 23 Jul 2024 10:00:36 -0400
-X-MC-Unique: v7ikV-enP9u1iRCjV-Hliw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-lKVjgzPzPfaAoHO6X7fBNg-1; Tue,
+ 23 Jul 2024 10:00:40 -0400
+X-MC-Unique: lKVjgzPzPfaAoHO6X7fBNg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A5C201955BEF; Tue, 23 Jul 2024 14:00:35 +0000 (UTC)
+ id C06891944AA2; Tue, 23 Jul 2024 14:00:37 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.91])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 891D2195605A; Tue, 23 Jul 2024 14:00:33 +0000 (UTC)
+ id 11DF9195605A; Tue, 23 Jul 2024 14:00:35 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Joao Martins <joao.m.martins@oracle.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 05/16] vfio/iommufd: Return errno in
- iommufd_cdev_attach_ioas_hwpt()
-Date: Tue, 23 Jul 2024 16:00:08 +0200
-Message-ID: <20240723140019.387786-6-clg@redhat.com>
+ Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 06/16] vfio/ap: Don't initialize HOST_IOMMU_DEVICE with mdev
+Date: Tue, 23 Jul 2024 16:00:09 +0200
+Message-ID: <20240723140019.387786-7-clg@redhat.com>
 In-Reply-To: <20240723140019.387786-1-clg@redhat.com>
 References: <20240723140019.387786-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -83,59 +80,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-In preparation to implement auto domains have the attach function
-return the errno it got during domain attach instead of a bool.
+mdevs aren't "physical" devices and when asking for backing IOMMU info,
+it fails the entire provisioning of the guest. Fix that by setting
+vbasedev->mdev true so skipping HostIOMMUDevice initialization in the
+presence of mdevs.
 
--EINVAL is tracked to track domain incompatibilities, and decide whether
-to create a new IOMMU domain.
-
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Fixes: 930589520128 ("vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/vfio/ap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 7c1b9e0284a3e84f68d13031cd517bffc47376d8..7390621ee92762c5d752c0fae907e71380b6e980 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -172,7 +172,7 @@ out:
-     return ret;
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index 0c4354e3e70169ec072e16da0919936647d1d351..71bf32b83c50b9892b018db10e2f2ae0cf312e97 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -230,6 +230,9 @@ static void vfio_ap_instance_init(Object *obj)
+      */
+     vfio_device_init(vbasedev, VFIO_DEVICE_TYPE_AP, &vfio_ap_ops,
+                      DEVICE(vapdev), true);
++
++    /* AP device is mdev type device */
++    vbasedev->mdev = true;
  }
  
--static bool iommufd_cdev_attach_ioas_hwpt(VFIODevice *vbasedev, uint32_t id,
-+static int iommufd_cdev_attach_ioas_hwpt(VFIODevice *vbasedev, uint32_t id,
-                                          Error **errp)
- {
-     int iommufd = vbasedev->iommufd->fd;
-@@ -187,12 +187,12 @@ static bool iommufd_cdev_attach_ioas_hwpt(VFIODevice *vbasedev, uint32_t id,
-         error_setg_errno(errp, errno,
-                          "[iommufd=%d] error attach %s (%d) to id=%d",
-                          iommufd, vbasedev->name, vbasedev->fd, id);
--        return false;
-+        return -errno;
-     }
- 
-     trace_iommufd_cdev_attach_ioas_hwpt(iommufd, vbasedev->name,
-                                         vbasedev->fd, id);
--    return true;
-+    return 0;
- }
- 
- static bool iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, Error **errp)
-@@ -216,7 +216,7 @@ static bool iommufd_cdev_attach_container(VFIODevice *vbasedev,
-                                           VFIOIOMMUFDContainer *container,
-                                           Error **errp)
- {
--    return iommufd_cdev_attach_ioas_hwpt(vbasedev, container->ioas_id, errp);
-+    return !iommufd_cdev_attach_ioas_hwpt(vbasedev, container->ioas_id, errp);
- }
- 
- static void iommufd_cdev_detach_container(VFIODevice *vbasedev,
+ #ifdef CONFIG_IOMMUFD
 -- 
 2.45.2
 
