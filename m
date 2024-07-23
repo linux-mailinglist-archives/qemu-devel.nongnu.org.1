@@ -2,204 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7242A939994
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFD59399A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 08:24:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW8mc-0004fK-Vn; Tue, 23 Jul 2024 02:13:59 -0400
+	id 1sW8wp-0007HO-LM; Tue, 23 Jul 2024 02:24:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sW8mZ-0004dP-3D
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:13:56 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1sW8mV-0000Cm-Aw
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:13:54 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46N6BU4u009446;
- Tue, 23 Jul 2024 06:13:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- corp-2023-11-20; bh=Q1PexP3Se7nIM1/Kx40LWbwSzGXEs0tYKHtKLgec8Dw=; b=
- TrIEF+HkMOU0l9oYxQEUMsWLDDmQwituVDIs+HwXRT7tZAk/zMj7RxCduhO9Zvdw
- 3kTfFIlzNRKv+5Kus4hoEDJpduifkJBRK3lgaAE4ANQ8+e2kQSli7Y1e9EouFzY4
- L1BULxQ6SGtxmW35U2li8byCHPcauraSdJEtSkTvAGdG0EMXv33/xcysR9smCpCq
- Iy99Y92SE2SOOIa/WdHais3c9Hj4kOjxMsBsj9zWylugkl4KirSLyanRxLGIJYYk
- h3lwMNWc52WHvqneZg3IKhHI08axqSici+3E1WP7ztRTZIUXuxDoxu5WOby8ST3+
- TEcaSsYEGB8r3WXSJM7qIw==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40hfxpdca0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Jul 2024 06:13:47 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 46N5FOB6024953; Tue, 23 Jul 2024 06:13:46 GMT
-Received: from nam02-sn1-obe.outbound.protection.outlook.com
- (mail-sn1nam02lp2041.outbound.protection.outlook.com [104.47.57.41])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 40h2a0yvbd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Jul 2024 06:13:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f+0OCQpaaIXv8I+wo7OufNu9zt8U7Vt1+1ho+vQnEpgr87MIuGgw+zksXM6BZ+8X2VjBvjs/bei6roiPM1L4FgVko5UbfjP0hdI5a3wqQrDBUdcme9JXaai28FGSlN5rzR9NJRF/PUuHToaMyOvrEXl3LDQaMbYiv3utdBrvzQVJnDME3rfVFnFnJ5Qkp/ag4L2whNrtOPO9ikBiFBucmTYkLV40v7lTJJKREF3VLrfa+BaLh7oHFoF3DgkeD3MeJ45B+LJsghO89O/Q305Sjymw5oiD7W/eXkLOf0LY6mI+jZspnf/TQDCMvKpLYjFhlD+HlySONyKvw9us3Bo4iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q1PexP3Se7nIM1/Kx40LWbwSzGXEs0tYKHtKLgec8Dw=;
- b=IbJGu1tKPHxo019zXtiLpJ7/dWm9SBvMD3SJEhhGnL2vmghcn3mROjoEbprX6jKdStmNGIn6M8WnnrHIlUcOGed3ekxY7lFY8Vt2gc+pDpt0YgUB5roiVz5nAT5hyOAAgXV+W3ThM6/w7HtEdpj60rMV3BEjIFwdtY4FqE7W2GwMcIPLWWT4XYA5ucs1HwOJ3liK1DgXIxb1DAIxwQE74IsnRTNi/prWM2wApk/IK05v4ciFPsnJcT+52NZGvp7+UeahT1rmF3iy5j/oW74sCxoq2XUj/0wlfy59ncrFAq0OqayOdpeDSYP/W42vwlOeNi9z85G+cFxFKi41SA7+Lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW8wn-0007FX-0G
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:24:29 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sW8wk-0002EH-TS
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 02:24:28 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4266182a9d7so34012395e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jul 2024 23:24:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q1PexP3Se7nIM1/Kx40LWbwSzGXEs0tYKHtKLgec8Dw=;
- b=BzjiEr0eJYRxgt6tiwoQpaL6n+bmhzzc95faUTmzaRw+0RIHmMMrVH+0/L8IEswC0S3Bw8PC5w/RjTR7PtkgSlzhmNfIf+HYAF4ApFw5QVn0lZOmhlXzvWuY45rZiFkiiFmi52C9F5Gr+N0GTzy7GeWWMyFhD+eA0Glq5BLlHDc=
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
- by SJ0PR10MB5695.namprd10.prod.outlook.com (2603:10b6:a03:3ee::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.29; Tue, 23 Jul
- 2024 06:13:43 +0000
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::79f1:d24f:94ea:2b53]) by PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::79f1:d24f:94ea:2b53%3]) with mapi id 15.20.7762.025; Tue, 23 Jul 2024
- 06:13:43 +0000
-Message-ID: <88eaa782-9221-4fce-90ad-353487cae649@oracle.com>
-Date: Tue, 23 Jul 2024 07:13:35 +0100
-Subject: Re: [PATCH v6 5/9] vfio/iommufd: Probe and request hwpt dirty
- tracking capability
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "Liu, Yi L" <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Avihai Horon <avihaih@nvidia.com>
-References: <20240722211326.70162-1-joao.m.martins@oracle.com>
- <20240722211326.70162-6-joao.m.martins@oracle.com>
- <SJ0PR11MB6744237AD1896B5EFA8E045B92A92@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <SJ0PR11MB6744237AD1896B5EFA8E045B92A92@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::13) To PH0PR10MB5893.namprd10.prod.outlook.com
- (2603:10b6:510:149::11)
+ d=linaro.org; s=google; t=1721715865; x=1722320665; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AfED/y769uK7eoMyRRRpd1y0vNBFKwtZuKlaY7VNFII=;
+ b=s7NSS/0p3CyybZEnTHiw860DhwxEofCjC4TGdVLN9BFKQi7wpHgmByH0a1lKyvvcur
+ B9yFNPL3k5ids+bDjHijExe1C3I/a1hApIWqA8jXCFPvB9ffaff+eojMBP+H/RPMobGx
+ EfswE1H9ZtMW/wOmciuqpHUCzCTpttC9oTux8PI1SlFaA0AICLDJXckZ7UY7wJyxTt2H
+ /IqxbVf4E40Wn1X9myCGI5ASlWFtTd5QuyRYGbfjJ+5jNE/WTelyS9mRq3m3IB+Xblwh
+ 6TV0ySnjSLH7dUkWfsakglQbE0Sc17/FFyU5AaEFYMVN59fnG0CokuZrgrHLiy/RUm3H
+ 7s8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721715865; x=1722320665;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AfED/y769uK7eoMyRRRpd1y0vNBFKwtZuKlaY7VNFII=;
+ b=W3tyY5jo9qrlK+ncM82P9VNaXAbYrQjqqtvI87bDOgrsS8ji5IcA8lXBahpUvlVfFq
+ t7iG2vIatL6HAoXUnXj3cZlI5hHg7xupOZ934R+TWMfG2eNCtjZtZIxHW5auE++CkP3z
+ 8AFlPiqSMtxNH7Wi3+YjQlVxYEA00HtNYtOFjCFjro9XxoIHZdpaIExpv2gTFqt0jzq6
+ 4fsJvz+1TGeRI1muvhjVaxpqIN0U8gn/RdlH5AM4cGkRrAnEAJsAoC2NpOVo9IEixncb
+ m1lPA+2f9xEu/4IFvPD70ScdGZDyDGw7qRsEl27u8q1XnBTYYRFSw2J2s/9syIFIoiiz
+ FciQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWrsV07PXhTFIJtHXu27eGooiroKZn1ydtuK6uidCuwDWjhZ7ZSYS7u1UD0jtzXRmZaYalDiUsnmlXY+Eq0nMMjn/u3NNc=
+X-Gm-Message-State: AOJu0YwW2qSTlXXSSqw8LEfbApKiLxKkrYcM4/Vuqu0HiU4u3mOkEyOV
+ saPLZ9aOYL/GAGW483bWIX3Soq5UyLvEjiKEgAkEuts7MnwHQWit9wRkhX/OEcc=
+X-Google-Smtp-Source: AGHT+IEdFWwnQ6jZapN0wLYqvpZaFIclVG1TZq38xHAjeFnF8sO6c4raIm4wBqxXNCYIAtfQ8TTNFQ==
+X-Received: by 2002:a05:600c:1382:b0:426:59fe:ac2d with SMTP id
+ 5b1f17b1804b1-427daa67bf1mr77228225e9.32.1721715865255; 
+ Mon, 22 Jul 2024 23:24:25 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.208.14])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427e5803bb0sm71381755e9.45.2024.07.22.23.24.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jul 2024 23:24:24 -0700 (PDT)
+Message-ID: <c2085e4c-d2af-4ea1-9a04-f523c94a7315@linaro.org>
+Date: Tue, 23 Jul 2024 08:24:22 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|SJ0PR10MB5695:EE_
-X-MS-Office365-Filtering-Correlation-Id: 954060ec-834f-4c7d-2a7d-08dcaade9a65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Tkh1dDJIQWVmR0diNGQyci9iYkhNaFlYUVA4N1JBUnJWWnUrc0Yvem5IV21X?=
- =?utf-8?B?WUtHc2ZlQVhTWTdNa1NRV3pUd1FDMUNHakl5ODV2aEhCd1dnUWlvYVkvdEE4?=
- =?utf-8?B?RHRhd09nSmRTdEtDWTBKT2JZVllCQVFUN2szaFA1RmxLaUF5V0ltL0JHN3E3?=
- =?utf-8?B?SDJpdER1clpQSTAxNWVKNnBibUFkMmRjUm5DbFhZeENnWHNSNGtjZU5oRnRT?=
- =?utf-8?B?VU93Y0txUTdxTGQ0bkhraVR0SDk0L3lUNHBoMmdyRnR6UmcwWXZmNDBBSFB1?=
- =?utf-8?B?S25qalpXaDl4R0lTYUswM2RVL20yN1hTR2ZWUTM3c3Axd1NpeFNMWTlwblVi?=
- =?utf-8?B?dDZFSlQ1N0FnSnlDS1RSdm41WEFUOHFIQXkrT0IzbDl5SmdUbkNaMDkrOVI1?=
- =?utf-8?B?dWtkS250aE51RmN3R0Npd2xtOTlTOEJtaytFODFTMnpwenB3c25MamdyWnUz?=
- =?utf-8?B?bHBja01OUGRYSnBxdGtJYndNSGFEQ2xJQm81VnBibTVPQTJLT0FCaVE0NVM3?=
- =?utf-8?B?a0o2enZvU0FZNFFnOWlQdHRLdHVWYWw5RkZOUlZXUTcrdkJhVVlwQ3ZrVVkr?=
- =?utf-8?B?cjIzM1d0bUxwVmo4dUNLS2lydzJtSW0vZ3EwcitkWEk1NkxHQ2dPcWtwZmV6?=
- =?utf-8?B?N1ZMMy9MTE1IQW9PSkRFVnorMXRSRG8vRkpYS252Uk1IMTZseExudHBpWURR?=
- =?utf-8?B?TUFFOHhTLzd2Q243UjY3RlJMKzQ0NmQxMkhJbkxwNzhOOUMzaVRFQUZDVnIz?=
- =?utf-8?B?RWM2S2FFeVlTd2trVnQvZGRkbXBWcFRCTkZ5SGV1WTlNUGtqZTVJUFpsNXN1?=
- =?utf-8?B?WnF4eWo1dlJ4NzZTOFltOTNYazYrdHV3eEs1c1VNOC9DaGRzRmNGaVFRdWZS?=
- =?utf-8?B?THRJaFNpZXVmbmtHbzZqNHJuTHhEeGs5UEo5aFk3RTgrQndxTWlVSEcxTUhF?=
- =?utf-8?B?aEJ2NEw0SHVzMEs1VUQyVWVURCthVnVsWUdETlRkajBZQU1YRTlKWHc0dnZk?=
- =?utf-8?B?SEI4SDlZNTJDVWYvR0VJSW01M0NMWnMxOFNkYTJCQ0ZGSnRSd2lLMjZmb2Ux?=
- =?utf-8?B?NjVJVU9YMDVGMkJsVDlkS0g0cEtiTVNRY2dGR2JBczk0S3d1VGFURm92MTgr?=
- =?utf-8?B?L2F3ZDlhV2Naa0o1OS9Nb0hZdC80UjdCS0pWM0UzNTM3dmxSUHNCbGZSK2RI?=
- =?utf-8?B?ZFM3M0JrN1dEdFdXSnZTSCttUzFEUk1NN0pzZ0M3L1M4VzdTTWFGamx2UUpm?=
- =?utf-8?B?MnlWdzlwTlAyVnI2Qy9nbWdrUUt4NWVmb2FkV0d6TUxwcGVxOUhxS0Rhbzgv?=
- =?utf-8?B?aTNZRVhrYmtFaFl4bU1vMjJzb0F2M1k3aitlaTJXYlZaQkFLRnNCZTVBb2cw?=
- =?utf-8?B?L2xTMGpOeHJ3cGQrenZKRjZmZThxV2l1WWNwVEFwbGtOYmdQOFpFZnIvaTlq?=
- =?utf-8?B?UmdEYUVuZ3dRTTdRdmZWbG96QUkwd3hwOTJrM2NFYVA2OE9Od2ZKMWdrUUNo?=
- =?utf-8?B?QTZ5RWtkZjBkQ2RWTEhTTmI2L1QxdzZWOWZaYlNTZ1VjNEtVWDY2TVE1TGJm?=
- =?utf-8?B?d0NUclNSd3pmc0lxbTRtbmcrQUhxblNDZERFVTl5MHhjTG11aEdMbUtNZkFl?=
- =?utf-8?B?eGxnREpQMzFoV1U3ajRRcFNuMFN1aXRkSncvallrYUhBNXpPZ1k1MER6anhU?=
- =?utf-8?B?LzQxUnVWV2dEQ0dXUi9ZOEYrQUVuSXoycGlTd0VwZVZZRzV0TGFTdC9zM212?=
- =?utf-8?B?SE9nN3pNMDVnUGZlRDBmSEs5bDJBTk9MZW5jaVY0UThXK2x3WEo2aXNKOVRZ?=
- =?utf-8?B?Vks5Wk9GMDc3R2t2MjNlZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bWFnUlF0bVp4SmM0czZETHFqekJZZ1ppbEhVMzZsYStKRDJPb01vRGlLblpw?=
- =?utf-8?B?TXFkN0ZkUmlhRFdyRUNuaFMwNmlWcnN4OHhYWVBGNUhRUzdxNkNxTTBlamJ6?=
- =?utf-8?B?SFpUbVhiK2RDenRJaFArblRaUnRBdm1YejNHTExtc2VIL0xURC85VzdOL3E1?=
- =?utf-8?B?amNLMEdJeitIRXhVb0N5T1JEQ2NUbVpCUEpTbjJ1UHVBQnBaUm1YMCsrdURN?=
- =?utf-8?B?U3ArQVdYcTd2aXlsWnJrZkI3eno5YVRkNEhpUytIKzMxd1ZrL0E2aUZUWFRS?=
- =?utf-8?B?dlY4Z2JDNVBlbjRNMS9jeERYMHhFSC92R252YzlQdElPWlZsNWZDYnYwQVNq?=
- =?utf-8?B?b0xyQ0h3MmRUQ2xpcTNyVDZGSXRHckswVC9aWDhmN0MwanQwbWF5Z1pWcHBv?=
- =?utf-8?B?Z2tNUnJmdnhHWklmbFp1N0lGNER0Zk1mNXB3eFZRdlVldXFKRWFSNTN0Qzhl?=
- =?utf-8?B?U2s2aXlrMjBPQ0d1MVhlWXEwcE1iV2NxOEFGeEdhSTFiZnNsZ1YycldUVGlS?=
- =?utf-8?B?dTZWRWxvbG1YRncxaU8rRDVTWmprdWhCQmkrWHRXcmtkMXNhT2JsdlNvYTlQ?=
- =?utf-8?B?TkJFNTR6T3ZZV1d6bXdCUmNkQzdDRUp2SExFeVpUcnNDMm1rMk9mRng3Mloz?=
- =?utf-8?B?V3B2bWpaOGhralNrVHF4eUIwS1RxclJqMjlIZ0NIYzA1YVMxc3IrbzFRcUhV?=
- =?utf-8?B?VXNJNDRHekdvZ1BRVXRvNDRiWGx5dGxZeHRySEs1SnZrNzd3RWVySXZRV2JT?=
- =?utf-8?B?Ym9jL0hhVHJtUldOcVp2RytYWU9nZm9UY2ZpeEorNDlvMi90eksrOFdad1Js?=
- =?utf-8?B?TG1Hd3NMTE9rWElKakVtSFhBUlZURkJFOTYzRkJqY21PNTRMVXluR1RXVE90?=
- =?utf-8?B?d2J3VlVlTW9wbUJONjcxd0lYUjYzYWVFUDNKeDBhZ2FXM2YwZURLVk1wS2tJ?=
- =?utf-8?B?dGhBZlFGcVRaOE1yZ2VRVnhvSXAzQ1drRjl6dUJQQm1GSzNpWFNRK2FYWDJk?=
- =?utf-8?B?bVpYMzBiVlFvRC9BNFJFcXNjV0R3TllObVJUcXhEaTUveTM5YWpSdzQrYnY1?=
- =?utf-8?B?eE0xeERNSEU3L1IzdXdLUUs2KzVWdVpTQ2hQeHRQZ1UrWWltK2ROVUthRTBy?=
- =?utf-8?B?ODVHY3B1NzNFWVpZd1YzcXZZZlpNRDJnS2V5d1F6dDAyeTBhRFNtZHo1Z0JW?=
- =?utf-8?B?UVNyeFZ6NXZGOE5EcW1RQ20rM05LQTYrdmxmQXdvSXFyOU5qZlpxQlllNStX?=
- =?utf-8?B?azI5VG1XZlZEcmQrcVBWNytZWWg2czMvTHBNa01qZXV4K2hKYU1WR0NDOGgv?=
- =?utf-8?B?blRKbmNJNHR3cGhiTXVmWklRZS9XZkdzZjFyK21sZ1hsaVJUbDJZYkN2L29T?=
- =?utf-8?B?TU9NVThaMzdkMXBaQkErckNPRkZLSElHcGIxaWx5NU5YR3pteGFLNkVESTI5?=
- =?utf-8?B?amt5WGJZVXpjRDMwV2RzcWJhYU1rMzJzYWV0UGdCeDhNSXJWaEkrelg2SGRT?=
- =?utf-8?B?Q1ZOQkkrTTJMalZMcmtuUkpLa2NwNGE5UGhmZ0xLYkNxV0V0bHZqWSs4M1lt?=
- =?utf-8?B?eFdYZDZ3bEkzNWd5eVdNNktOdEdzbm1qc0lIL0JQRDFkalNteXhhOGFXUkRT?=
- =?utf-8?B?dDR4T3dHSzFHSEwzb0VoQTdzeXg3N2NhZno5RXlRZDZuL0QwUU50dlNJR1Uz?=
- =?utf-8?B?Nlo1Zm81Qktyc2I5MkFxTDJ4VGJmY1lkUGN5RTVjVytFeTNlMkswZG9aNU1L?=
- =?utf-8?B?cEhueUg2MEVXVUxYRHNZRlphWjZjYW9MM1pSUVFBMjc3VWtqQVp5R0FQZndI?=
- =?utf-8?B?Rkg1dno4Mk9RRVlOZ2lMZU9iQi9qeWt5YlNSc0tzMFBQNnFEZHRCUUdreDRz?=
- =?utf-8?B?REVVKzVBQnVLSWYzNVljQVh2NEtBOGhoNXlET2JjT1lIWlZhcHovVFVrU3Vj?=
- =?utf-8?B?dDJBKzZyeXdpS3U2OHhMMGU2dVVzY1dxRSszVncySC9uM0NWWFl0Skw5S0JT?=
- =?utf-8?B?QjdySjYrU0R1Zk5rTHBEQjd4enJjcW5nK1hNcDBiOExKenRwdTVUK1d1Z0hy?=
- =?utf-8?B?aGJYd1BIRzliSDBPUEN1ZXArc1Z3Z3dVNWc1SVBkM0xURDlnY0M0V0NvY3d3?=
- =?utf-8?B?MlUxQlF3REg0V3Njb2dhNFNablVjNU1IZWduT3NwTlRUdFhNbGNDcnRJTWsz?=
- =?utf-8?B?SUE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 1xypAY9k6wk40JItxc/VPLYzO0FHg6Ypj3HHLgpqOn0HqhZzfMBCrWgad/MQGFLtbCjGwZKIdqMWvv4j+HNx/aqco9p6uSXLO4CGH2ISUqIrgBYhs8J5UeK3kOta4x6iDtNCiwOJVrAFyRH+sD6YO9+0ESvdFpbbA+n8UD1UZ6iHVVP4GWvpOtrv3xj2qQIV36bpnXmLUvYAhm0JOGnWF7omPwhjggQsAn6pCFt2BTeBI9e+xJERciNLUS9NnFt2h+m8ExX+kBryikhUJzJFVyx5Zah112cdUwqB2ik/VgIzQpPYDFQhlJmZyH1qQbrEDWvXNu0abh4ewrtyNBcbn88Zb1fu6lyzK1TyDfLcX0NThhIqYkthPMs9GxPhfFRuLskrMJO1xogzUiao/SQZDtKkqUvqBqnmNLQs0WC94qho0I1/CSk++MnCZPa2AIaEWhoJs8MB7E34Jyrqbq+0AAhzeoLr+kFWpWW88QexWlRhi4SMSZT4A43Nn1uN+A5dmroqLEYiZp17E6dTcqb4WZuVtCtPq+SzdDJrbl5bfeNuHpcgZyNlZxBJOL8KjCKFVyva7/Av6xblmwujbjRtLkb3y5zzDBhJKapQe3+rQ9A=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 954060ec-834f-4c7d-2a7d-08dcaade9a65
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 06:13:43.1822 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t9ZBJ/uVgOHk2g0A+HXl0YKPz6wM93gGMAzPV/KZIk8hcCpdb8FF+uy2j210I/VzsGErVQTaZZTtliXvfm/eQm2MbiHBH5jqSAH4hyUmy1U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5695
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-22_18,2024-07-23_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 spamscore=0
- malwarescore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
- definitions=main-2407230044
-X-Proofpoint-GUID: 9PdjN9Z74Colfj3kl5dLY2DTuCng5dS8
-X-Proofpoint-ORIG-GUID: 9PdjN9Z74Colfj3kl5dLY2DTuCng5dS8
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] osdep: add a qemu_close_all_open_fd() helper
+To: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240717124534.1200735-1-cleger@rivosinc.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240717124534.1200735-1-cleger@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -216,125 +96,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/07/2024 06:11, Duan, Zhenzhong wrote:
-> 
-> 
->> -----Original Message-----
->> From: Joao Martins <joao.m.martins@oracle.com>
->> Subject: [PATCH v6 5/9] vfio/iommufd: Probe and request hwpt dirty
->> tracking capability
->>
->> In preparation to using the dirty tracking UAPI, probe whether the IOMMU
->> supports dirty tracking. This is done via the data stored in
->> hiod::caps::hw_caps initialized from GET_HW_INFO.
->>
->> Qemu doesn't know if VF dirty tracking is supported when allocating
->> hardware pagetable in iommufd_cdev_autodomains_get(). This is because
->> VFIODevice migration state hasn't been initialized *yet* hence it can't pick
->> between VF dirty tracking vs IOMMU dirty tracking. So, if IOMMU supports
->> dirty tracking it always creates HWPTs with
->> IOMMU_HWPT_ALLOC_DIRTY_TRACKING
->> even if later on VFIOMigration decides to use VF dirty tracking instead.
->>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->> ---
->> include/hw/vfio/vfio-common.h |  2 ++
->> hw/vfio/iommufd.c             | 20 ++++++++++++++++++++
->> 2 files changed, 22 insertions(+)
->>
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-
->> common.h
->> index 4e44b26d3c45..1e02c98b09ba 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -97,6 +97,7 @@ typedef struct IOMMUFDBackend IOMMUFDBackend;
->>
->> typedef struct VFIOIOASHwpt {
->>     uint32_t hwpt_id;
->> +    uint32_t hwpt_flags;
->>     QLIST_HEAD(, VFIODevice) device_list;
->>     QLIST_ENTRY(VFIOIOASHwpt) next;
->> } VFIOIOASHwpt;
->> @@ -139,6 +140,7 @@ typedef struct VFIODevice {
->>     OnOffAuto pre_copy_dirty_page_tracking;
->>     bool dirty_pages_supported;
->>     bool dirty_tracking;
->> +    bool iommu_dirty_tracking;
->>     HostIOMMUDevice *hiod;
->>     int devid;
->>     IOMMUFDBackend *iommufd;
->> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->> index 2324bf892c56..7afea0b041ed 100644
->> --- a/hw/vfio/iommufd.c
->> +++ b/hw/vfio/iommufd.c
->> @@ -110,6 +110,11 @@ static void
->> iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
->>     iommufd_backend_disconnect(vbasedev->iommufd);
->> }
->>
->> +static bool iommufd_hwpt_dirty_tracking(VFIOIOASHwpt *hwpt)
->> +{
->> +    return hwpt && hwpt->hwpt_flags &
->> IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
->> +}
->> +
->> static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
->> {
->>     ERRP_GUARD();
->> @@ -246,6 +251,17 @@ static bool
->> iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->>         }
->>     }
->>
->> +    /*
->> +     * This is quite early and VFIO Migration state isn't yet fully
->> +     * initialized, thus rely only on IOMMU hardware capabilities as to
->> +     * whether IOMMU dirty tracking is going to be requested. Later
->> +     * vfio_migration_realize() may decide to use VF dirty tracking
->> +     * instead.
->> +     */
->> +    if (vbasedev->hiod->caps.hw_caps &
->> IOMMU_HW_CAP_DIRTY_TRACKING) {
->> +        flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
->> +    }
->> +
->>     if (!iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
->>                                     container->ioas_id, flags,
->>                                     IOMMU_HWPT_DATA_NONE, 0, NULL,
->> @@ -255,6 +271,7 @@ static bool
->> iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->>
->>     hwpt = g_malloc0(sizeof(*hwpt));
->>     hwpt->hwpt_id = hwpt_id;
->> +    hwpt->hwpt_flags = flags;
->>     QLIST_INIT(&hwpt->device_list);
->>
->>     ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
->> @@ -265,8 +282,11 @@ static bool
->> iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->>     }
->>
->>     vbasedev->hwpt = hwpt;
->> +    vbasedev->iommu_dirty_tracking =
->> iommufd_hwpt_dirty_tracking(hwpt);
-> 
-> Don't we need to do same if attach to existing hwpt?
-> 
+Hi Clément,
 
-Nice catch!
+On 17/7/24 14:45, Clément Léger wrote:
+> Since commit 03e471c41d8b ("qemu_init: increase NOFILE soft limit on
+> POSIX"), the maximum number of file descriptors that can be opened are
+> raised to nofile.rlim_max. On recent debian distro, this yield a maximum
+> of 1073741816 file descriptors. Now, when forking to start
+> qemu-bridge-helper, this actually calls close() on the full possible file
+> descriptor range (more precisely [3 - sysconf(_SC_OPEN_MAX)]) which
+> takes a considerable amount of time. In order to reduce that time,
+> factorize existing code to close all open files descriptors in a new
+> qemu_close_all_open_fd() function. This function uses various methods
+> to close all the open file descriptors ranging from the most efficient
+> one to the least one. It also accepts an ordered array of file
+> descriptors that should not be closed since this is required by the
+> callers that calls it after forking.
+> 
+> Signed-off-by: Clément Léger <cleger@rivosinc.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ----
 
-Yes, we do need it e.g. we will need this fix up fo this patch
+FYI git tools parse 3 '-', not 4.
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 92b976464283..833a7400486c 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -305,6 +305,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-         } else {
-             vbasedev->hwpt = hwpt;
-             QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
-+            vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
-             return true;
-         }
-     }
+> v4:
+>   - Add a comment saying that qemu_close_all_fds() can take a NULL skip
+>     array and nskip == 0
+>   - Added an assert in qemu_close_all_fds() to check for skip/nskip
+>     parameters
+>   - Fix spurious tabs instead of spaces
+>   - Applied checkpatch
+>   - v3: https://lore.kernel.org/qemu-devel/20240716144006.6571-1-cleger@rivosinc.com/
+
+
+> +void qemu_close_all_open_fd(const int *skip, unsigned int nskip)
+> +{
+> +    int open_max = sysconf(_SC_OPEN_MAX);
+> +    unsigned int cur_skip = 0;
+> +    int i;
+> +
+> +    assert(skip != NULL || nskip == 0);
+> +
+> +    if (qemu_close_all_open_fd_close_range(skip, nskip)) {
+> +        return;
+> +    }
+> +
+> +    if (qemu_close_all_open_fd_proc(skip, nskip)) {
+> +        return;
+> +    }
+> +
+> +    /* Fallback */
+> +    for (i = 0; i < open_max; i++) {
+> +        if (cur_skip < nskip && i == skip[cur_skip]) {
+> +            cur_skip++;
+> +            continue;
+> +        }
+> +        close(i);
+> +    }
+> +}
+
+Build failure on windows:
+
+../util/osdep.c: In function 'qemu_close_all_open_fd':
+../util/osdep.c:725:20: error: implicit declaration of function 
+'sysconf'; did you mean 'swscanf'? [-Wimplicit-function-declaration]
+   725 |     int open_max = sysconf(_SC_OPEN_MAX);
+       |                    ^~~~~~~
+       |                    swscanf
+../util/osdep.c:725:20: error: nested extern declaration of 'sysconf' 
+[-Werror=nested-externs]
+../util/osdep.c:725:28: error: '_SC_OPEN_MAX' undeclared (first use in 
+this function); did you mean 'FOPEN_MAX'?
+   725 |     int open_max = sysconf(_SC_OPEN_MAX);
+       |                            ^~~~~~~~~~~~
+       |                            FOPEN_MAX
+../util/osdep.c:725:28: note: each undeclared identifier is reported 
+only once for each function it appears in
+
 
