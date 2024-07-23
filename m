@@ -2,86 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5879E939929
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 07:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 504AF93992E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 07:32:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sW844-0004JU-7d; Tue, 23 Jul 2024 01:27:56 -0400
+	id 1sW87o-000469-4L; Tue, 23 Jul 2024 01:31:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sW841-0004Eo-Ov; Tue, 23 Jul 2024 01:27:53 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sW83z-0008TW-CB; Tue, 23 Jul 2024 01:27:53 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-70d199fb3dfso1745524b3a.3; 
- Mon, 22 Jul 2024 22:27:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sW87V-0003UR-Tz; Tue, 23 Jul 2024 01:31:36 -0400
+Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sW87S-0001TI-O0; Tue, 23 Jul 2024 01:31:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721712469; x=1722317269; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WNXfS30dxaCxpNFC6BT/Ly327c1DaJaco+cOvNJsGrQ=;
- b=Bys4kI8OVoqSw266STC+O6HloBFZn57fmlRS8fkblJqo5KJwPuiq+UHQ/MWsD4X4l6
- qz5xCDpitoPUjmh+bll8XsciqPV5w3B34cnI1mcaK3LQn0JJcQi9pywDJm1LcJ4AVY05
- 44msozsEnos6cu897wFfoi7/PI3XKzO8wnbNKGcCVL+KJIebe/L6o23lJjfBFhKki6Os
- IFjY74rS3bNMXv+JSL1t8DhpWL8C+6Vh544DV+I235q58z5ef188bo+3JQnqNuf93rf2
- 9+HF4CRPS7yVcaEQ/IXaOE4AWr+WZda4Cs5ET5Ns9f/fto5eOluJtQfTSx+vimPkUGUA
- dbbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721712469; x=1722317269;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=WNXfS30dxaCxpNFC6BT/Ly327c1DaJaco+cOvNJsGrQ=;
- b=Eg7xjCAgjEAob4GVdZI4/yZoJUr0aJGWX2poLHvgOoToNpqmDeDzcKHu5WA8bkm4bI
- ymPEx9mvClgfc9Ij52N94coNNzIgGnUuacenIRUAl4jx1g+vBkYz6bq3PRtQIEZeDSA3
- rSn+ambpmL/Im2hYob/5CTE+hrUVXGIE9zi9aOqP8qdItoMSq6x3Ag2Fck8sxo7zAp9N
- 44EBdmq/vgQIX4v2S1qxwOE/mQR78Wj+nMa1zc5sDTVB2sanAb2YFVNCaTXDs8ychq69
- Tv/x2KAf9j9fF+Fh4atM0SxDkHPct/5MBbu+UUdpj3Jr89EXta37Ta7q1lAiZ98z5TQB
- W5mA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVB7qAf5PkLCUmtYQgb2ANFX/Z0gV4r6/r3apj1L9q53hgaDusKG50sXTZLJHrUNp83Dy0/xbmG3eUWP/4jEV1FTuN9
-X-Gm-Message-State: AOJu0YwrRxdvraTy3ycLRPRDvEzzH4ZOEDUzchxUbitQ84MS4t2XudjZ
- BXo3nHdHLafrUFh9QyggINQNEjxVsIZwM1ZTbeiBc5qOI0kUGbVA
-X-Google-Smtp-Source: AGHT+IH4abHIPiIwwViz1f/dgoWp/curX+a3wOSKtVtyuIQm6FQMyM1KD/Sb2VW6QL22Mn5JVOm5Ig==
-X-Received: by 2002:a05:6a00:a8c:b0:705:be21:f2be with SMTP id
- d2e1a72fcca58-70d3a8de550mr2646340b3a.18.1721712469456; 
- Mon, 22 Jul 2024 22:27:49 -0700 (PDT)
-Received: from localhost ([203.220.44.216]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70d2004e09esm3274193b3a.107.2024.07.22.22.27.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jul 2024 22:27:49 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 23 Jul 2024 15:27:43 +1000
-Message-Id: <D2WO4QRM304Q.3K1R34TJVQH12@gmail.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
- <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH v5 2/5] target/ppc: Add Power11 DD2.0 processor
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Aditya Gupta" <adityag@linux.ibm.com>, "Mahesh J Salgaonkar"
- <mahesh@linux.ibm.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>
-X-Mailer: aerc 0.18.0
-References: <20240606121657.254308-1-adityag@linux.ibm.com>
- <20240606121657.254308-3-adityag@linux.ibm.com>
-In-Reply-To: <20240606121657.254308-3-adityag@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=linux.alibaba.com; s=default;
+ t=1721712677; h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From;
+ bh=xt7NhqdCFGA9tOVP6fxR51inD0AiGfOcS0dWC5UHZug=;
+ b=d8dcNCN4rlVwr8dUKnu4QnA0n4vWVJh7aXNOvBCS36K8DdNT3PSxAmUcPNI1VOm9maW1VZRF63CCVeD4NOcEK3SMrqeFMN5gZWus6HNSkHV00xWstaJ28VGIMOU4OWwAdE9/WWWZe+3EXoKNgkRiDRV2Loc/QvDs50VaAnH5mAE=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R431e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033032014031;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0WB7yBSG_1721712675; 
+Received: from 30.166.64.117(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0WB7yBSG_1721712675) by smtp.aliyun-inc.com;
+ Tue, 23 Jul 2024 13:31:16 +0800
+Content-Type: multipart/alternative;
+ boundary="------------EmMvZlHBlDO4OfDJHHtKPtvu"
+Message-ID: <df37fdc2-79c6-420c-bcf4-e7c3649fe446@linux.alibaba.com>
+Date: Tue, 23 Jul 2024 13:29:41 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] target/riscv: Remove redundant insn length check for
+ zama16b
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com
+References: <20240723013012.1443-1-zhiwei_liu@linux.alibaba.com>
+ <dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org>
+Content-Language: en-US
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org>
+Received-SPF: pass client-ip=115.124.30.130;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-130.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,93 +70,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Jun 6, 2024 at 10:16 PM AEST, Aditya Gupta wrote:
-> Add CPU target code to add support for new Power11 Processor.
->
-> Power11 core is same as Power10, hence reuse functions defined for
-> Power10.
->
-> Cc: C=C3=A9dric Le Goater <clg@kaod.org>
-> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-> Cc: Fr=C3=A9d=C3=A9ric Barrat <fbarrat@linux.ibm.com>
-> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> ---
->  target/ppc/compat.c     |  7 ++++++
->  target/ppc/cpu-models.c |  3 +++
->  target/ppc/cpu-models.h |  3 +++
->  target/ppc/cpu_init.c   | 54 +++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 67 insertions(+)
->
-> diff --git a/target/ppc/compat.c b/target/ppc/compat.c
-> index ebef2cccecf3..12dd8ae290ca 100644
-> --- a/target/ppc/compat.c
-> +++ b/target/ppc/compat.c
-> @@ -100,6 +100,13 @@ static const CompatInfo compat_table[] =3D {
->          .pcr_level =3D PCR_COMPAT_3_10,
->          .max_vthreads =3D 8,
->      },
-> +    { /* POWER11, ISA3.10 */
-> +        .name =3D "power11",
-> +        .pvr =3D CPU_POWERPC_LOGICAL_3_10_PLUS,
-> +        .pcr =3D PCR_COMPAT_3_10,
-> +        .pcr_level =3D PCR_COMPAT_3_10,
-> +        .max_vthreads =3D 8,
-> +    },
->  };
-> =20
->  static const CompatInfo *compat_by_pvr(uint32_t pvr)
-> diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
-> index f2301b43f78b..ece348178188 100644
-> --- a/target/ppc/cpu-models.c
-> +++ b/target/ppc/cpu-models.c
-> @@ -734,6 +734,8 @@
->                  "POWER9 v2.2")
->      POWERPC_DEF("power10_v2.0",  CPU_POWERPC_POWER10_DD20,           POW=
-ER10,
->                  "POWER10 v2.0")
-> +    POWERPC_DEF("power11_v2.0",  CPU_POWERPC_POWER11_DD20,           POW=
-ER11,
-> +                "POWER11_v2.0")
->  #endif /* defined (TARGET_PPC64) */
-> =20
->  /***********************************************************************=
-****/
-> @@ -909,6 +911,7 @@ PowerPCCPUAlias ppc_cpu_aliases[] =3D {
->      { "power8nvl", "power8nvl_v1.0" },
->      { "power9", "power9_v2.2" },
->      { "power10", "power10_v2.0" },
-> +    { "power11", "power11_v2.0" },
->  #endif
-> =20
->      /* Generic PowerPCs */
-> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
-> index 0229ef3a9a5c..ef74e387b047 100644
-> --- a/target/ppc/cpu-models.h
-> +++ b/target/ppc/cpu-models.h
-> @@ -354,6 +354,8 @@ enum {
->      CPU_POWERPC_POWER10_BASE       =3D 0x00800000,
->      CPU_POWERPC_POWER10_DD1        =3D 0x00801100,
->      CPU_POWERPC_POWER10_DD20       =3D 0x00801200,
-> +    CPU_POWERPC_POWER11_BASE       =3D 0x00820000,
-> +    CPU_POWERPC_POWER11_DD20       =3D 0x00821200,
->      CPU_POWERPC_970_v22            =3D 0x00390202,
->      CPU_POWERPC_970FX_v10          =3D 0x00391100,
->      CPU_POWERPC_970FX_v20          =3D 0x003C0200,
-> @@ -391,6 +393,7 @@ enum {
->      CPU_POWERPC_LOGICAL_2_07       =3D 0x0F000004,
->      CPU_POWERPC_LOGICAL_3_00       =3D 0x0F000005,
->      CPU_POWERPC_LOGICAL_3_10       =3D 0x0F000006,
-> +    CPU_POWERPC_LOGICAL_3_10_PLUS  =3D 0x0F000007,
+This is a multi-part message in MIME format.
+--------------EmMvZlHBlDO4OfDJHHtKPtvu
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-_PLUS (or POWER7P etc) was a model name itself and had different
-PVR and maybe different features in some cases, which is a bit
-different to the situation here. Could be confusing to call this
-_PLUS, so I would just call it _3_10_P11, as annoying as it is.
+
+On 2024/7/23 10:11, Richard Henderson wrote:
+> On 7/23/24 11:30, LIU Zhiwei wrote:
+>> Both trans_fld/fsd/flw/fsw and gen_load/store will never be a
+>> translation function for compressed instructions, thus we can
+>> remove instruction length check for them.
+>>
+>> Suggested-by: Alistair Francis <alistair.francis@wdc.com>
+>> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>
+> That is both false (trans_fld is used from trans_c_fld),
+Yes. I will fix it later.
+> and not the takeaway you should have gotten (the operation of "fld" 
+> should not depend on the encoding
+
+Do you mean c_fld 和fld both applies to zama16b?
+
+> ).
+>
+> Perhaps FLD/FSD should depend on the ISA (RV32 vs RV64), but perhaps 
+> not.  I cannot tell because I don't see a specification for Zama16b in
+>
+> https://wiki.riscv.org/display/HOME/RISC-V+Specification+Status
+
+I think Zama16b first named in RVA23 profile as Alistair points out.
+
+The more detailed information about its meaning is in priviledged 1.13 
+specification. More exactly, in 3.6.4. Misaligned Atomicity Granule PMA.
+
+The specification said:
+
+"The misaligned atomicity granule PMA applies only to AMOs, loads and stores defined in the base
+ISAs, and loads and stores of no more than MXLEN bits defined in the F, D, and Q extensions. For an
+instruction in that set, if all accessed bytes lie within the same misaligned atomicity granule, the
+instruction will not raise an exception for reasons of address alignment, and the instruction will give
+rise to only one memory operation for the purposes of RVWMO—i.e., it will execute atomically."
+
+That's the reason why I do not apply zama16b to compressed instructions.
 
 Thanks,
-Nick
+Zhiwei
+
+>
+>
+> r~
+--------------EmMvZlHBlDO4OfDJHHtKPtvu
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2024/7/23 10:11, Richard Henderson
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org">On
+      7/23/24 11:30, LIU Zhiwei wrote:
+      <br>
+      <blockquote type="cite">Both trans_fld/fsd/flw/fsw and
+        gen_load/store will never be a
+        <br>
+        translation function for compressed instructions, thus we can
+        <br>
+        remove instruction length check for them.
+        <br>
+        <br>
+        Suggested-by: Alistair Francis <a class="moz-txt-link-rfc2396E" href="mailto:alistair.francis@wdc.com">&lt;alistair.francis@wdc.com&gt;</a>
+        <br>
+        Signed-off-by: LIU Zhiwei <a class="moz-txt-link-rfc2396E" href="mailto:zhiwei_liu@linux.alibaba.com">&lt;zhiwei_liu@linux.alibaba.com&gt;</a>
+        <br>
+      </blockquote>
+      <br>
+      That is both false (trans_fld is used from trans_c_fld),</blockquote>
+    Yes. I will fix it later.<br>
+    <blockquote type="cite"
+      cite="mid:dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org"> and
+      not the takeaway you should have gotten (the operation of "fld"
+      should not depend on the encoding</blockquote>
+    <p>Do you mean c_fld 和fld both applies to zama16b?</p>
+    <blockquote type="cite"
+      cite="mid:dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org">).
+      <br>
+      <br>
+      Perhaps FLD/FSD should depend on the ISA (RV32 vs RV64), but
+      perhaps not.  I cannot tell because I don't see a specification
+      for Zama16b in
+      <br>
+      <br>
+        <a class="moz-txt-link-freetext" href="https://wiki.riscv.org/display/HOME/RISC-V+Specification+Status">https://wiki.riscv.org/display/HOME/RISC-V+Specification+Status</a>
+      <br>
+    </blockquote>
+    <p>I think Zama16b first named in RVA23 profile as Alistair points
+      out. <br>
+    </p>
+    <p>The more detailed information about its meaning is in priviledged
+      1.13 specification. More exactly, in 3.6.4. Misaligned Atomicity
+      Granule PMA.<br>
+    </p>
+    <p>The specification said:</p>
+    <pre>"The misaligned atomicity granule PMA applies only to AMOs, loads and stores defined in the base
+ISAs, and loads and stores of no more than MXLEN bits defined in the F, D, and Q extensions. For an
+instruction in that set, if all accessed bytes lie within the same misaligned atomicity granule, the
+instruction will not raise an exception for reasons of address alignment, and the instruction will give
+rise to only one memory operation for the purposes of RVWMO—i.e., it will execute atomically."
+
+</pre>
+    <p>That's the reason why I do not apply zama16b to compressed
+      instructions.</p>
+    <p>Thanks,<br>
+      Zhiwei<br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org">
+      <br>
+      <br>
+      r~
+      <br>
+    </blockquote>
+  </body>
+</html>
+
+--------------EmMvZlHBlDO4OfDJHHtKPtvu--
 
