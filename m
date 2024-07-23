@@ -2,85 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBDA93A41D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 18:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48CF93A41C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 18:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWHzC-0001vG-NG; Tue, 23 Jul 2024 12:03:34 -0400
+	id 1sWHyC-0006kS-5q; Tue, 23 Jul 2024 12:02:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWHz3-0001G0-6d
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:03:27 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWHyy-0003DL-Of
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:03:24 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-52f01993090so3535964e87.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 09:03:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721750599; x=1722355399; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CuoFuE/etZCROEXlIiPDQu1xFLj9jT2GBkXbshljb78=;
- b=OHfU2g8urFNXH4RxXZQa3cRW/0vGfCDZ1Sdzs59W2ZYeP+WHeAGdzB6UvRgcoRpHt1
- Cx+UsYwzZulWf1ZNwjWeICr7gcEw5JVdWliMN1lY+jDnh+GjG1TId2xoXLnO33RCKdbj
- mqRahXlJGxjL7wg72LHCpRRYP1ry5cIN5njyc/GRaKGodgdAC5VoqycE6atJE/7o9khp
- U5jltu0xzqHo49oRHMuGYNiXw826RF2GKOP5k13qv8lUP1JfNX0rwNIxGekIoemTD8mF
- QCtsPTSAss6CAt75GMqSdwzkFSv5v5p1Krh0i7r9BlHYm3ZFAZd2cvRbbG1Lh41NsgOR
- y0sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721750599; x=1722355399;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CuoFuE/etZCROEXlIiPDQu1xFLj9jT2GBkXbshljb78=;
- b=jOV3xN/0JWpjGN8J5KAfUr4RvVTLpEeOEgUribKYQDf2df18cBCFQ7HhA/kyVlV8E3
- BaRQamZu8hQZQ9qL8e5ZnCDqVAWs76uu99haORV0QQzLK8w7dJcvzSKZhhN5lWlOA0La
- FYUBLp2goHVb30tPncoY2E9TCNXLHQhe88vHTN+ql2rfZUA6vJY6h2n2AE5J/1nkjF0D
- LctNINOaERLOxwYGlApKHy9/jZ6Nqe0II14cbSqAZ+rsccjLb85VxXXwp/zrCvPz24ws
- IyM1BjFOyPMUE6tfxWqX3p+jkmmbrv79Ux1vuCKoyhHmct0dut4vwjeRx3Ru4PX0aQOS
- JH4w==
-X-Gm-Message-State: AOJu0YzlP+bhrYYdIcD2aoo0sC4+djLqAgcDkV8MXMj5eEyy7NFBLAtq
- t0M69Y7GW9WknJMN1FRlSTS0tn3r+QIAiI/YxYRPp6e8UVg91ciU25ySMPwOusY=
-X-Google-Smtp-Source: AGHT+IGZYYhG9EOBZ7U0v/hugn/01yclQwXYi36SsR1sn6O+a3b5ahzvMKPvzK7iUEFYEJJghTpioA==
-X-Received: by 2002:a05:6512:2316:b0:52e:9d28:c28a with SMTP id
- 2adb3069b0e04-52fcda31d37mr25040e87.26.1721750598597; 
- Tue, 23 Jul 2024 09:03:18 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.208.14])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427d2a95530sm196303185e9.45.2024.07.23.09.03.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jul 2024 09:03:17 -0700 (PDT)
-Message-ID: <1d0069cd-891a-4ce8-8759-375493906f55@linaro.org>
-Date: Tue, 23 Jul 2024 18:03:15 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sWHy8-0006Mg-E5
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:02:28 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sWHy4-0002v7-MK
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 12:02:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721750545; x=1753286545;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5MU7eevRpBh53dsFKEvgnt26B1zkUlmoov6+FqAv3AE=;
+ b=FW2YntFV11LC8P+ZhziaX71uClchW78lHAmYF0BCUbjgql+asE51j27v
+ n+wYLY//otnptKcKN9lij+/Kr0roCvW6d/W1l+Bau6okzo8+7Bo8L1Bwc
+ KVmK7GvCHAiniwcNJsyf0qRpZ2hYbnu/G0m8gKcZmt6VeorSLOgfZ5yDP
+ diIviY3SlCDmCb1Wa4PbOiGb97JEqcoJwlkleM66n+urUFRmL0SIa8WdE
+ 7LVmQJWWdNUUv7YvKGtO67tHet4XrZpI68vPf5B8z0ZEK8Mjx3+rtcX+p
+ kXv/zrl+OBZ0dZ9RM/kzPVK9jFCej60bT/C526/IsKk1801Z9bnr9rjoy A==;
+X-CSE-ConnectionGUID: jUAxvXrVSzeBQOGt/1jmWg==
+X-CSE-MsgGUID: FFxpH+gCSFGdM1FmLNspzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="29976271"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="29976271"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2024 09:02:21 -0700
+X-CSE-ConnectionGUID: rXClp3zfTGq8951o0WZXxA==
+X-CSE-MsgGUID: BtksmpK5SHe9ANujf6rF3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; d="scan'208";a="51993759"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 23 Jul 2024 09:02:19 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2] hw/nubus/nubus-virtio-mmio: Fix missing ERRP_GUARD() in
+ nubus_virtio_mmio_realize()
+Date: Wed, 24 Jul 2024 00:18:02 +0800
+Message-Id: <20240723161802.1377985-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] util/async.c: Forbid negative min/max in
- aio_context_set_thread_pool_params()
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- qemu-block@nongnu.org
-References: <20240723150927.1396456-1-peter.maydell@linaro.org>
- <331c454b-56f1-485b-bc70-c1b433db20f7@linaro.org>
- <CAFEAcA_HoeDYvjVsbkMJqYxEWh5nE1Y9hRLkeOhfVqX8=r=H=g@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_HoeDYvjVsbkMJqYxEWh5nE1Y9hRLkeOhfVqX8=r=H=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,54 +79,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/7/24 17:51, Peter Maydell wrote:
-> On Tue, 23 Jul 2024 at 16:44, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 23/7/24 17:09, Peter Maydell wrote:
->>> aio_context_set_thread_pool_params() takes two int64_t arguments to
->>> set the minimum and maximum number of threads in the pool.  We do
->>> some bounds checking on these, but we don't catch the case where the
->>> inputs are negative.  This means that later in the function when we
->>> assign these inputs to the AioContext::thread_pool_min and
->>> ::thread_pool_max fields, which are of type int, the values might
->>> overflow the smaller type.
->>>
->>> A negative number of threads is meaningless, so make
->>> aio_context_set_thread_pool_params() return an error if either min or
->>> max are negative.
->>>
->>> Resolves: Coverity CID 1547605
->>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>> ---
->>>    util/async.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/util/async.c b/util/async.c
->>> index 0467890052a..3e3e4fc7126 100644
->>> --- a/util/async.c
->>> +++ b/util/async.c
->>> @@ -746,7 +746,7 @@ void aio_context_set_thread_pool_params(AioContext *ctx, int64_t min,
->>>                                            int64_t max, Error **errp)
->>>    {
->>>
->>> -    if (min > max || !max || min > INT_MAX || max > INT_MAX) {
->>> +    if (min > max || max <= 0 || min < 0 || min > INT_MAX || max > INT_MAX) {
->>>            error_setg(errp, "bad thread-pool-min/thread-pool-max values");
->>>            return;
->>>        }
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->> I don't get the point of using signed min/max here...
-> 
-> I think this is because those values may originate in a
-> QAPI command structure (EventLoopBaseProperties), where
-> they are defined as "int" rather than a specifically
-> unsigned type. So we carry them around as int64_t until
-> they get to here, where we do the validation of whether
-> they're sensible or not.
+According to the comment in qapi/error.h, dereferencing @errp requires
+ERRP_GUARD():
 
-Ah indeed. Probably very old code hard to change now
-(QAPI does support unsigned types).
+* = Why, when and how to use ERRP_GUARD() =
+*
+* Without ERRP_GUARD(), use of the @errp parameter is restricted:
+* - It must not be dereferenced, because it may be null.
+...
+* ERRP_GUARD() lifts these restrictions.
+*
+* To use ERRP_GUARD(), add it right at the beginning of the function.
+* @errp can then be used without worrying about the argument being
+* NULL or &error_fatal.
+*
+* Using it when it's not needed is safe, but please avoid cluttering
+* the source with useless code.
+
+In nubus_virtio_mmio_realize(), @errp is dereferenced without
+ERRP_GUARD().
+
+Although nubus_virtio_mmio_realize() - as a DeviceClass.realize()
+method - is never passed a null @errp argument, it should follow the
+rules on @errp usage.  Add the ERRP_GUARD() there.
+
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+v2: Used Markus' words in commit message and added his r/b tag.
+---
+ hw/nubus/nubus-virtio-mmio.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hw/nubus/nubus-virtio-mmio.c b/hw/nubus/nubus-virtio-mmio.c
+index 58a63c84d0be..a5558d3ec28b 100644
+--- a/hw/nubus/nubus-virtio-mmio.c
++++ b/hw/nubus/nubus-virtio-mmio.c
+@@ -23,6 +23,7 @@ static void nubus_virtio_mmio_set_input_irq(void *opaque, int n, int level)
+ 
+ static void nubus_virtio_mmio_realize(DeviceState *dev, Error **errp)
+ {
++    ERRP_GUARD();
+     NubusVirtioMMIODeviceClass *nvmdc = NUBUS_VIRTIO_MMIO_GET_CLASS(dev);
+     NubusVirtioMMIO *s = NUBUS_VIRTIO_MMIO(dev);
+     NubusDevice *nd = NUBUS_DEVICE(dev);
+-- 
+2.34.1
 
 
