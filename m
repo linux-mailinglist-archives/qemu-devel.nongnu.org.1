@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775DA939F22
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A48939F27
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWDCz-0000TG-N6; Tue, 23 Jul 2024 06:57:29 -0400
+	id 1sWDD0-0000dl-Nn; Tue, 23 Jul 2024 06:57:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDCk-0007Jd-Na
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:57:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDCo-0007b4-0P
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:57:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDCi-0001p9-DF
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:57:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDCm-0001pm-FI
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:57:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721732231;
+ s=mimecast20190719; t=1721732235;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y5oJRr4r3YF/yxB2ziPoT4Qctv1Z09qYy5SwcSzq9dE=;
- b=f7PgfjR90IluEk5/oUicWFAV1co/i1Lw0jq4WKI6tNB1oCm4eFjfhQp5pRKdUj3HKGR1wl
- 2eliOAddH5eHERXj2S7IArgo5m2KAR2YreFiiZcT+PKpHwKRXhsNX2JD2UOBFj9UlsO2tg
- KQjq21LTs1jaofyAe8756+PHKZHrVjI=
+ bh=Hq4UcO9VA6wUCWPh+nsmUKYS4qa8nT+9OsSYlXgNtFk=;
+ b=BCNrajToRvOWZ/l/Hwu8v/qHwfMgopz5gMWf8Jdm31xMZeEjXeRbtIwW7VgsN2aruQIEU0
+ IfuWr539+V/2c4dgNyxQ0XJyrOzB08mpEozI9c+6ovFSE6oAeXfW7pRe0Ci5d/J3yBxp88
+ blu7a/zq3j5B9HyiKJKXcdKR22Fg7J4=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-GbKX1lkWNKqmO3pb2-HCoQ-1; Tue, 23 Jul 2024 06:57:09 -0400
-X-MC-Unique: GbKX1lkWNKqmO3pb2-HCoQ-1
+ us-mta-100-OFSDCSTcN1CoExorfHofUg-1; Tue, 23 Jul 2024 06:57:13 -0400
+X-MC-Unique: OFSDCSTcN1CoExorfHofUg-1
 Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a6f571c3eefso47958966b.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:57:08 -0700 (PDT)
+ a640c23a62f3a-a77c6ea022fso114972366b.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:57:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721732227; x=1722337027;
+ d=1e100.net; s=20230601; t=1721732232; x=1722337032;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y5oJRr4r3YF/yxB2ziPoT4Qctv1Z09qYy5SwcSzq9dE=;
- b=oMLxQtesteecibGPK1MzIqjWzfXXcTubxBH1nTe3DjbSAhttmolhnAkhGpa9TkhICS
- jKYDprKy3dXxxvGnE6PaGH7IhjD3uSOzKf3yZZsx6SAveMrH/N0ojVkk6JEkIpM2oe9E
- pWsy0meQonh1VSFvC8fRapTnblhuIbkXYI3bylHyL69xU+sUhyuqtHEedUVk/JFs8Vxt
- 8pn4Zu2T2Z4MbVKy9mcDWU8Nv+dQ05uKafEnxyRdX9G+Xb017mI/kwEEKH2yj+7bZtXA
- fOOa9LeWYC9w5EayvwFgnRSKEl+TASRk9PcH7T3BfrJBkYrtiu9ZOl4tWgOyFlnIJvYm
- rJFQ==
-X-Gm-Message-State: AOJu0Yxre7/cWF8kOA2GBB+59mVigSLjeAeqxpanG/YgsRZnAiX9Quqc
- zBWZ/VAhxHkt5Mkbt36ZyMqepWLSAYmMvU2dzZ7GdTZOoI7hN/kqOZhj9BkrMYFfuSMDNOGZDuX
- ZhEGFo3Tp6SozUqURep4zQ+TlPKKyssbrjarU95dv37b4LJvEI7aulMwpOYY9SA3id2LnJZAmNL
- mijqP4PjfHnT2ZcWo4AchOUr95zhXXlA==
-X-Received: by 2002:a17:907:d8e:b0:a77:eb34:3b4b with SMTP id
- a640c23a62f3a-a7a87c006e3mr208357666b.11.1721732227410; 
- Tue, 23 Jul 2024 03:57:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEx7tvHe+yWAO1iXftKoVDSyAZJFbauRNkPZtPTlgWz5Ug1UR82mHbjHEXMSJooAXJRVukIw==
-X-Received: by 2002:a17:907:d8e:b0:a77:eb34:3b4b with SMTP id
- a640c23a62f3a-a7a87c006e3mr208355366b.11.1721732226874; 
- Tue, 23 Jul 2024 03:57:06 -0700 (PDT)
+ bh=Hq4UcO9VA6wUCWPh+nsmUKYS4qa8nT+9OsSYlXgNtFk=;
+ b=rnxK8TnMhb4ttSzZ60NNaS7G33+YSXVz0cjMsseEUXQWJy1TVQRFJjed63Zt1rxFid
+ hLVvDH3wJtZNpivmsc4mlHk57eDOW/txWI18ZPtUIvqlUrj/eA7xAXRsf48pZxyj4+oM
+ SbwDcyWTfg6zH53cmTGPDHIcR+/epGhT5tHRyD7LD8njLTEVCOIZqWJngld/r332OJxd
+ Jihsf5yE4iKHeUUIvYSRfa1j0c7rBuqdm6imnO5atP8ih3zgMgAzIlLwSoL3Pp9NptJE
+ WcjE5zcUfZ7rF+dMoNbtFssLg6Ocg2gAp94P5xSQJTjBV2GzpVoRgDt/+2ucUhP1o3MS
+ 21LQ==
+X-Gm-Message-State: AOJu0YzQShL15TekZy5HcKXHvbZtigaFIV2Kp8r6io6ZlTFzn+K9t8Zy
+ BsEDlK7xVa0Ra7jbzaoe4FGDgoofHi7BCLvqdLEnh8pR2/lpW/OsyWwUdTj+mOY442DvQsBNLkZ
+ g7s42oGx7HOk7e2cAHZR99YpqjmNgxEKMXdkJFAwLh2F7iGYH/OVvstlNhZkG5pMN3lk6D8p+Eq
+ C9kWaGMTcBAIbPYS2C5pstiiNjPtsAww==
+X-Received: by 2002:a17:906:794b:b0:a72:afd9:6109 with SMTP id
+ a640c23a62f3a-a7a9427d9bemr179256466b.16.1721732232093; 
+ Tue, 23 Jul 2024 03:57:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHL7jyIfDFXSQ/d72+GKtR9rBxX7yfG4N0kg9gOGRBb5nwyx8wO6MsdoEGs9Tbx5KlxG4MLQ==
+X-Received: by 2002:a17:906:794b:b0:a72:afd9:6109 with SMTP id
+ a640c23a62f3a-a7a9427d9bemr179254766b.16.1721732231623; 
+ Tue, 23 Jul 2024 03:57:11 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:9c9a:ffee:509d:1766:aa7f])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7a3c926bc8sm528496166b.157.2024.07.23.03.57.03
+ a640c23a62f3a-a7aa309243esm22425266b.151.2024.07.23.03.57.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 03:57:06 -0700 (PDT)
-Date: Tue, 23 Jul 2024 06:57:02 -0400
+ Tue, 23 Jul 2024 03:57:11 -0700 (PDT)
+Date: Tue, 23 Jul 2024 06:57:07 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 21/61] intel_iommu: make type match
-Message-ID: <bb3a23d5b0b43bed3c9a6ecf5a6871e2871be883.1721731723.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
+Subject: [PULL v2 22/61] virtio: Add bool to VirtQueueElement
+Message-ID: <c303aa0942589427b42192ef7cff75a79ef8646b.1721731723.git.mst@redhat.com>
 References: <cover.1721731723.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -82,14 +78,14 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1721731723.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,35 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
+From: Jonah Palmer <jonah.palmer@oracle.com>
 
-The 'level' field in vtd_iotlb_key is an unsigned integer.
-We don't need to store level as an int in vtd_lookup_iotlb.
+Add the boolean 'in_order_filled' member to the VirtQueueElement structure.
+The use of this boolean will signify whether the element has been processed
+and is ready to be flushed (so long as the element is in-order). This
+boolean is used to support the VIRTIO_F_IN_ORDER feature.
 
-This is not an issue by itself, but using unsigned here seems cleaner.
-
-Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Message-Id: <20240709142557.317271-5-clement.mathieu--drif@eviden.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Message-Id: <20240710125522.4168043-2-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/virtio/virtio.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 37c21a0aec..be0cb39b5c 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -358,7 +358,7 @@ static VTDIOTLBEntry *vtd_lookup_iotlb(IntelIOMMUState *s, uint16_t source_id,
- {
-     struct vtd_iotlb_key key;
-     VTDIOTLBEntry *entry;
--    int level;
-+    unsigned level;
- 
-     for (level = VTD_SL_PT_LEVEL; level < VTD_SL_PML4_LEVEL; level++) {
-         key.gfn = vtd_get_iotlb_gfn(addr, level);
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 7512afbc84..fdc827f82e 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -69,6 +69,8 @@ typedef struct VirtQueueElement
+     unsigned int ndescs;
+     unsigned int out_num;
+     unsigned int in_num;
++    /* Element has been processed (VIRTIO_F_IN_ORDER) */
++    bool in_order_filled;
+     hwaddr *in_addr;
+     hwaddr *out_addr;
+     struct iovec *in_sg;
 -- 
 MST
 
