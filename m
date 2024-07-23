@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291CB939F0D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3421939F13
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 12:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWDBZ-000769-Pu; Tue, 23 Jul 2024 06:56:01 -0400
+	id 1sWDBa-0007EA-FH; Tue, 23 Jul 2024 06:56:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDBT-0006tM-Ph
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:55:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDBZ-000793-85
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:56:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDBR-0001cU-O7
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:55:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDBX-0001dN-DZ
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:56:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721732152;
+ s=mimecast20190719; t=1721732158;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=qA9H4BX2NYCarA+XIitFOqcduT5OCfIk2f7Otx3d0Y8=;
- b=OpqAYFA2HRWgHMRzLISoKW2XSYvH/xzh9DIrug3OOtgaFxodYXeFKS10LoFIUc6n0CMjbd
- qKHCmo4GbarX8kqiaqgPcQyYaXvD3tJi6NA1zchFXtcs3RUhTKJ/1Q/xOjUdDFcNUbs1N7
- AxqZ9Uc63ibLBhvp0K2QwxurR5EFkuk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EH7iZz7W3GpWmzCfYcERS56IxpqGZ9YSdfDypAnOEA4=;
+ b=D9j5OSNI0ISnUerZj/8BSLe/TAV9X3DBkQV3r6O/UQf4v4p02xLClPjDa8ykjCOgvIGIOr
+ gw89QJUR5gd2/Hc1vozQjrC4BHbVT+LO7AlOqY8dAIKk/vMwapoK0IfePRK3WcLIosC4GS
+ m9uaAu5gN3/J6SLxw7a3W7FOY8jWmhw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-7cqhZtsUN1SS4TpOkhC9MQ-1; Tue, 23 Jul 2024 06:55:51 -0400
-X-MC-Unique: 7cqhZtsUN1SS4TpOkhC9MQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a77c6ea022fso114813766b.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:55:51 -0700 (PDT)
+ us-mta-608-D2PsyTSQPW60N7kFZnADlw-1; Tue, 23 Jul 2024 06:55:57 -0400
+X-MC-Unique: D2PsyTSQPW60N7kFZnADlw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a7a822ee907so49682866b.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:55:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721732149; x=1722336949;
+ d=1e100.net; s=20230601; t=1721732155; x=1722336955;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qA9H4BX2NYCarA+XIitFOqcduT5OCfIk2f7Otx3d0Y8=;
- b=VGhcCKG2jwuuFzTvWVTM6LU2Ue96d3uRmCgZajXBpCMa/RaDdFXP73OocJMlnaSTNF
- gGt37TQJM2LqMUdVsdDJHcAB6Hw2nsZGR4qWNwt9iYQcXswo17sYd2/z2hauyr0PX0M1
- hM59IzPnoZu+keTY1q5yGXSmSWA/p8R+fqkftqe8bFn5BHEhtIaHLXVD9N77c18+Qw4E
- kkEJJzbJvJY/bR48BrZkC/3jDYXmAIuxtEdGMa2vNBRs2T8ZcvV9TBm3TIDYZpi7ZAmD
- TD0T9ALG2flAN4JMxs7G4klErLmNacSk8NsJHOaip/xFldYc1M9N1scxZw/2k73rYCCR
- /ZKA==
-X-Gm-Message-State: AOJu0YymwSV52AtyJGHyV1Y46ROE9CWO5iRRFJ6EEEhk842SrRLrNSWu
- KYEure13/jDsX1L0vBhf/pdPeNmP7U5/b4S+BznRDeBD86f6OqNT93ZtRucWSlp1kzQEJdPU0O5
- oyRthQgU3NfNns6el9ThxzUYd47y4m7B9jzrqzJUDZDLgH358SxR0Sth9ll+BZQ/108d6CYO8i/
- GVBKHFDDnujy7MeHWnhRJ+MK6ypCyn3g==
-X-Received: by 2002:a17:907:7d8e:b0:a77:d9b5:ad4b with SMTP id
- a640c23a62f3a-a7a9424ec2dmr181696066b.9.1721732149194; 
- Tue, 23 Jul 2024 03:55:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvoju6b5vCAj8EA4VcKDeoobYMsBJMkN8J1IpSVOFJiXrGNM23fEaDWeTucskl12KYa3cCAA==
-X-Received: by 2002:a17:907:7d8e:b0:a77:d9b5:ad4b with SMTP id
- a640c23a62f3a-a7a9424ec2dmr181693266b.9.1721732148637; 
- Tue, 23 Jul 2024 03:55:48 -0700 (PDT)
+ bh=EH7iZz7W3GpWmzCfYcERS56IxpqGZ9YSdfDypAnOEA4=;
+ b=U7BlELdAEHh35bOW5NHN4juq6EpHGNnFgPyoXvbY5ECRLGo0T3WCYgZRjSSQEPd2ZM
+ 58kjaTdn7TzoDD2HynQogbPzcwZg4Oy4tHaHtjv6+86PlcwaQdY6PSs8Ylvxf8T+iiPp
+ NkHZ3Cg9XenCoGVUCkU9FIgrUTSDldDJdRBUKNQGT8nVra81toYGH24NILgNXktb6eCe
+ 7zFHUV7v1ZBdZIdBvPfwl1FFE0Go44k39zcZSWFlbGQhrIT+oGsPbiCkTScrW/IBfPed
+ m0nv9rhFr4NkMiUfNy3d4grB97HmdwwD9FmhQ8ngitipJYG+ijSJljrpDHNxcef87dAX
+ 0qYg==
+X-Gm-Message-State: AOJu0YwIhQ4julKcn3tfVf3zv5XXtUaKveMZIlIZ9w5jgkrzEZxfogK9
+ Nu4zuMM2jYDZWCTn6boj8QkV0qJZzPGhwWSqDk8Mtyff/GNl4nMGhmS0W00YglXr3NH5PauhtcG
+ HQkTssABblgxQxoPwgn2UxB4SDqGWZnhD8CUPSqxW3tFJX0JbClYRRzO4+pik+tvyA9gm88e52r
+ K7RCE5cQDd/cBrk1Cze+mWZCW3ZIdVuw==
+X-Received: by 2002:a17:906:6a2a:b0:a77:cf9d:f498 with SMTP id
+ a640c23a62f3a-a7a4c034e10mr616138366b.40.1721732155631; 
+ Tue, 23 Jul 2024 03:55:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElq73L5/g3H/MTcz1j7Pp0I7Y1Z4gghK+5DeH3+uYuyC0JGBC91N4G0sz73VHT8MYfkzHYww==
+X-Received: by 2002:a17:906:6a2a:b0:a77:cf9d:f498 with SMTP id
+ a640c23a62f3a-a7a4c034e10mr616134466b.40.1721732154920; 
+ Tue, 23 Jul 2024 03:55:54 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:9c9a:ffee:509d:1766:aa7f])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7a3c9273a5sm525604566b.165.2024.07.23.03.55.45
+ a640c23a62f3a-a7aa5b165c9sm3089366b.210.2024.07.23.03.55.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 03:55:48 -0700 (PDT)
-Date: Tue, 23 Jul 2024 06:55:42 -0400
+ Tue, 23 Jul 2024 03:55:54 -0700 (PDT)
+Date: Tue, 23 Jul 2024 06:55:49 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Hyeonggon Yoo <42.hyeyoo@gmail.com>, Davidlohr Bueso <dave@stgolabs.net>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL v2 07/61] hw/cxl/mbox: replace sanitize_running() with
- cxl_dev_media_disabled()
-Message-ID: <75b800dd3bd8042503ddd4e8a4169f34349325e2.1721731723.git.mst@redhat.com>
+Subject: [PULL v2 08/61] hw/cxl/events: discard all event records during
+ sanitation
+Message-ID: <7d65874ba0ea8cdb2a5ac51c397d721d7d49d828.1721731723.git.mst@redhat.com>
 References: <cover.1721731723.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,126 +103,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 
-The spec states that reads/writes should have no effect and a part of
-commands should be ignored when the media is disabled, not when the
-sanitize command is running.
+Per CXL r3.1 Section 8.2.9.9.5.1: Sanitize (Opcode 4400h), the
+sanitize command should delete all event logs. Introduce
+cxl_discard_all_event_logs() and call
+this in __do_sanitization().
 
-Introduce cxl_dev_media_disabled() to check if the media is disabled and
-replace sanitize_running() with it.
-
-Make sure that the media has been correctly disabled during sanitation
-by adding an assert to __toggle_media(). Now, enabling when already
-enabled or vice versa results in an assert() failure.
-
-Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
 Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Link: https://lore.kernel.org/r/20231222090051.3265307-4-42.hyeyoo@gmail.com
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Link: https://lore.kernel.org/r/20231222090051.3265307-5-42.hyeyoo@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Message-Id: <20240705120643.959422-3-Jonathan.Cameron@huawei.com>
+Message-Id: <20240705120643.959422-4-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_device.h | 10 +++++-----
- hw/cxl/cxl-mailbox-utils.c  | 29 +++++++++++++++++------------
- hw/mem/cxl_type3.c          |  4 ++--
- 3 files changed, 24 insertions(+), 19 deletions(-)
+ include/hw/cxl/cxl_device.h |  1 +
+ hw/cxl/cxl-events.c         | 13 +++++++++++++
+ hw/cxl/cxl-mailbox-utils.c  |  1 +
+ 3 files changed, 15 insertions(+)
 
 diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index b5beb7f90e..42a622197e 100644
+index 42a622197e..0509d961c3 100644
 --- a/include/hw/cxl/cxl_device.h
 +++ b/include/hw/cxl/cxl_device.h
-@@ -397,16 +397,16 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
- #define cxl_dev_enable_media(cxlds)                     \
-         do { __toggle_media((cxlds), 0x1); } while (0)
+@@ -562,6 +562,7 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+                                  size_t *len);
+ CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
+                                    CXLClearEventPayload *pl);
++void cxl_discard_all_event_records(CXLDeviceState *cxlds);
  
-+static inline bool cxl_dev_media_disabled(CXLDeviceState *cxl_dstate)
-+{
-+    uint64_t dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
-+    return FIELD_EX64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS) == 0x3;
-+}
- static inline bool scan_media_running(CXLCCI *cci)
- {
-     return !!cci->bg.runtime && cci->bg.opcode == 0x4304;
+ void cxl_event_irq_assert(CXLType3Dev *ct3d);
+ 
+diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
+index d397718b1b..12dee2e467 100644
+--- a/hw/cxl/cxl-events.c
++++ b/hw/cxl/cxl-events.c
+@@ -139,6 +139,19 @@ bool cxl_event_insert(CXLDeviceState *cxlds, CXLEventLogType log_type,
+     return cxl_event_count(log) == 1;
  }
  
--static inline bool sanitize_running(CXLCCI *cci)
--{
--    return !!cci->bg.runtime && cci->bg.opcode == 0x4400;
--}
--
- typedef struct CXLError {
-     QTAILQ_ENTRY(CXLError) node;
-     int type; /* Error code as per FE definition */
++void cxl_discard_all_event_records(CXLDeviceState *cxlds)
++{
++    CXLEventLogType log_type;
++    CXLEventLog *log;
++
++    for (log_type = 0; log_type < CXL_EVENT_TYPE_MAX; log_type++) {
++        log = &cxlds->event_logs[log_type];
++        while (!cxl_event_empty(log)) {
++            cxl_event_delete_head(cxlds, log_type, log);
++        }
++    }
++}
++
+ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+                                  uint8_t log_type, int max_recs,
+                                  size_t *len)
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 8ae9c6a699..522d9aa589 100644
+index 522d9aa589..3c9600c39c 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -2108,6 +2108,7 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-     int ret;
-     const struct cxl_cmd *cxl_cmd;
-     opcode_handler h;
-+    CXLDeviceState *cxl_dstate;
- 
-     *len_out = 0;
-     cxl_cmd = &cci->cxl_cmd_set[set][cmd];
-@@ -2128,18 +2129,22 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-         return CXL_MBOX_BUSY;
-     }
- 
--    /* forbid any selected commands while overwriting */
--    if (sanitize_running(cci)) {
--        if (h == cmd_events_get_records ||
--            h == cmd_ccls_get_partition_info ||
--            h == cmd_ccls_set_lsa ||
--            h == cmd_ccls_get_lsa ||
--            h == cmd_logs_get_log ||
--            h == cmd_media_get_poison_list ||
--            h == cmd_media_inject_poison ||
--            h == cmd_media_clear_poison ||
--            h == cmd_sanitize_overwrite) {
--            return CXL_MBOX_MEDIA_DISABLED;
-+    /* forbid any selected commands while the media is disabled */
-+    if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_TYPE3)) {
-+        cxl_dstate = &CXL_TYPE3(cci->d)->cxl_dstate;
-+
-+        if (cxl_dev_media_disabled(cxl_dstate)) {
-+            if (h == cmd_events_get_records ||
-+                h == cmd_ccls_get_partition_info ||
-+                h == cmd_ccls_set_lsa ||
-+                h == cmd_ccls_get_lsa ||
-+                h == cmd_logs_get_log ||
-+                h == cmd_media_get_poison_list ||
-+                h == cmd_media_inject_poison ||
-+                h == cmd_media_clear_poison ||
-+                h == cmd_sanitize_overwrite) {
-+                return CXL_MBOX_MEDIA_DISABLED;
-+            }
+@@ -949,6 +949,7 @@ static void __do_sanitization(CXLType3Dev *ct3d)
+             memset(lsa, 0, memory_region_size(mr));
          }
      }
++    cxl_discard_all_event_records(&ct3d->cxl_dstate);
+ }
  
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index e763b9bff0..c7910687ae 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1142,7 +1142,7 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
-         return MEMTX_ERROR;
-     }
- 
--    if (sanitize_running(&ct3d->cci)) {
-+    if (cxl_dev_media_disabled(&ct3d->cxl_dstate)) {
-         qemu_guest_getrandom_nofail(data, size);
-         return MEMTX_OK;
-     }
-@@ -1164,7 +1164,7 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
-         return MEMTX_ERROR;
-     }
- 
--    if (sanitize_running(&ct3d->cci)) {
-+    if (cxl_dev_media_disabled(&ct3d->cxl_dstate)) {
-         return MEMTX_OK;
-     }
- 
+ /*
 -- 
 MST
 
