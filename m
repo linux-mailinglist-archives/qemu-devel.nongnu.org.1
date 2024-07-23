@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B91693A830
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075F693A81C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:40:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMIH-0004HS-7P; Tue, 23 Jul 2024 16:39:33 -0400
+	id 1sWMIL-0004XQ-SP; Tue, 23 Jul 2024 16:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIE-0004Fp-S7
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:30 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMIK-0004Uy-4j
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:36 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMID-0003wT-69
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:30 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-368313809a4so137311f8f.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMII-0003xK-Hy
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:35 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3686b554cfcso2898473f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767167; x=1722371967; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721767172; x=1722371972; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JrHcPBiJNMYY45TLfxTrdyg0kVvbbiEg2Yd8/X7ubpI=;
- b=vLYljU6KXnrrpDDMlpW/4g+AYy5/98gQ71OxWS2nmuk54PrgBezm2gdZjwHTDmQe3P
- SmXNg5ZPHRWvBs6anlEsM0PKwFK2kFcHj5mvw7MplDR3+ksQBsxl7QCfIDbkMryDYinr
- gk5fEMjBhhZYgDV01q7X/WZ4JE0C7jIUjF5Qrj18wC1unxIxI3ssafxFioGb004RzbjD
- vHgfWBuUuMw4ya2rrDrYKG605noriaUpUuFLK0e75pvYO6GJjbXK0n59r8ikOHm0ReUu
- zDjAlg5zjNmj29XTYOf0Un39jQM3QEJeKkmsMEtwfD6bCTNKOGGUY365ShFg+kuOpTBI
- Fdfw==
+ bh=mAWB86PPkrxBCeTbR27TWMyKaulXnrAS2NRotSYIsdM=;
+ b=GrDVkwtL1XQYfkDs7gWiFxfboUJl0stRVHNg+1Er2v6VoUzGBJQK+smVLwPU0Ae3x6
+ lo1pESbNo/SIowKNvfEe7Jvk1KjkWbps5yx4Q9KKGOhDeC9Uf9bQxx8rXqFTERXkECw0
+ kaBnV4F0aeDKfpqYdbssvnjaYTelnv9hIU7SQXPkzueVzAeJxB/sVhTloMxrQrU21maP
+ jwy7l90lVrPaqdExIWPplnv5kH24VT2W7sQx5gCIEb33eNKgDC5pbOtmo4LOlDatYnix
+ PLejprUUA38MhrJNLQeAFqJXMAjJQfdAKYLAMM+UKDLhIQ4g/tvukZwh7REbRZ2Fanlt
+ 7rRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767167; x=1722371967;
+ d=1e100.net; s=20230601; t=1721767172; x=1722371972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JrHcPBiJNMYY45TLfxTrdyg0kVvbbiEg2Yd8/X7ubpI=;
- b=LSZaTyTPBkWIDyOe7cvkY9gkqxZoMa9hcqeCGxKFsa7QgcRzIXVllkT0w5d2xQlG9Z
- x6gMrD0qt+QO2iDrJgkyA8HiJSqHx4sTsoNfRWSG2356ZJqNghaf3flNW/A3rd2dzggB
- 1w51y2nIC0kh8hyMmOWuKAP7wuLV8+E/gs728U42S+cNtfHpckZnDMvetOACF/GxGnBG
- lBuS9OY9qeSL9ziFbtDz8sTn4ltQnbZM98nO/zoQd5UEJx8822tm0+xEK+iLYBsi/1LC
- m+XGg+5oTGDV4aO0KMAmjDlggLOQM8Ro5sM5ZMOLMhM20/E7CgQA2E2MxmAFcaaftoku
- D0ug==
-X-Gm-Message-State: AOJu0YzDYntqyi3frD7ceH66g4JUbpSJt7UpWaoYTKWZ9E0lIs9ecLJ6
- rwQGVBNRN3V8zgr/kBC+37BYta9Kho2lbfs8iWSeeaM7FuR7JYwM/RdkMt4TdI2Y0URMw8Mks5Z
- kI4U=
-X-Google-Smtp-Source: AGHT+IGKwhkPIdxGthdNPxuX+0AC0etCyXz6PwIb7/LLquNRD1O1VG/iY5spYqt/ymVVTuHgRXmXbg==
-X-Received: by 2002:a5d:6484:0:b0:368:37aa:50b3 with SMTP id
- ffacd0b85a97d-369e3f01536mr2976124f8f.24.1721767167398; 
- Tue, 23 Jul 2024 13:39:27 -0700 (PDT)
+ bh=mAWB86PPkrxBCeTbR27TWMyKaulXnrAS2NRotSYIsdM=;
+ b=h/Az2F2cTEfLY1nH1u1czAHGsVEk1Kym4FmXI3lqUSPQJN/qcRhc+xAlD6W2LCTpt+
+ Pcd//zegpVFveHNiDpUdptwwLgVAd7G8OwXLdhUIgP0o3HyCiUd5JQ0Bc0toOOK/hE2U
+ b2mzDFz5uYGBA+h19lnEG7m+g9mvWWmVLObC2QRHRxqhSnpyMsZpB5zTXM5+Uh+97d4F
+ IqekJ0ptsE8Tml+ioQ3oUz344+dk6/Ci9eSL60uCNapvqVE0X3yA8terfXkIjFrBWmMN
+ 9CmuAVp0zGCbZNFzJ8nV3Y0Kt7GbXHTFhlvGfbjpA8P1fqY2/jgv4JuIqrRsPpXCt78D
+ hn1Q==
+X-Gm-Message-State: AOJu0Yw/A3Vba8YgtOj3Nj9TOTGGj5OU7+PwzpqXkbknIfNyZhilsRC5
+ pkrjLclQG+UtTFv8EVXCI2ZR3yBhX/+AvtUoDM15qWTC6IArbfDC5Isa7mBweAU5mueYEwmChVy
+ URi8=
+X-Google-Smtp-Source: AGHT+IHw/i222pDAcGyYQI8uppF0fFUZwINVRbOj8+ub+D7NNjE+u6ksBQZ2RPTYluT9BDgGr9VL4g==
+X-Received: by 2002:a5d:4d01:0:b0:367:923b:656b with SMTP id
+ ffacd0b85a97d-369f5b0b8c5mr36823f8f.54.1721767172756; 
+ Tue, 23 Jul 2024 13:39:32 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f937f58dsm520255e9.18.2024.07.23.13.39.26
+ 5b1f17b1804b1-427f93bc977sm373015e9.42.2024.07.23.13.39.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:39:26 -0700 (PDT)
+ Tue, 23 Jul 2024 13:39:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 05/28] hw/intc/loongson_ipi: Declare QOM types using
- DEFINE_TYPES() macro
-Date: Tue, 23 Jul 2024 22:38:32 +0200
-Message-ID: <20240723203855.65033-6-philmd@linaro.org>
+Subject: [PULL 06/28] docs: Correct Loongarch -> LoongArch
+Date: Tue, 23 Jul 2024 22:38:33 +0200
+Message-ID: <20240723203855.65033-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
 References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,49 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When multiple QOM types are registered in the same file,
-it is simpler to use the the DEFINE_TYPES() macro. Replace
-the type_init() / type_register_static() combination.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-Id: <20240718133312.10324-2-philmd@linaro.org>
+Message-Id: <20240718133312.10324-20-philmd@linaro.org>
 ---
- hw/intc/loongson_ipi.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ docs/about/emulation.rst | 2 +-
+ hw/rtc/ls7a_rtc.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index 4013f81745e..682cec96f3f 100644
---- a/hw/intc/loongson_ipi.c
-+++ b/hw/intc/loongson_ipi.c
-@@ -365,16 +365,13 @@ static void loongson_ipi_class_init(ObjectClass *klass, void *data)
-     dc->vmsd = &vmstate_loongson_ipi;
- }
- 
--static const TypeInfo loongson_ipi_info = {
--    .name          = TYPE_LOONGSON_IPI,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(LoongsonIPI),
--    .class_init    = loongson_ipi_class_init,
-+static const TypeInfo loongson_ipi_types[] = {
-+    {
-+        .name               = TYPE_LOONGSON_IPI,
-+        .parent             = TYPE_SYS_BUS_DEVICE,
-+        .instance_size      = sizeof(LoongsonIPI),
-+        .class_init         = loongson_ipi_class_init,
-+    }
- };
- 
--static void loongson_ipi_register_types(void)
--{
--    type_register_static(&loongson_ipi_info);
--}
--
--type_init(loongson_ipi_register_types)
-+DEFINE_TYPES(loongson_ipi_types)
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index b5ff9c5f696..3bfe8cc14a2 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -42,7 +42,7 @@ depending on the guest architecture.
+     - :ref:`Yes<QEMU-PC-System-emulator>`
+     - Yes
+     - The ubiquitous desktop PC CPU architecture, 32 and 64 bit.
+-  * - Loongarch
++  * - LoongArch
+     - Yes
+     - Yes
+     - A MIPS-like 64bit RISC architecture developed in China
+diff --git a/hw/rtc/ls7a_rtc.c b/hw/rtc/ls7a_rtc.c
+index 052201c2cd5..3226b6105e8 100644
+--- a/hw/rtc/ls7a_rtc.c
++++ b/hw/rtc/ls7a_rtc.c
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /*
+- * Loongarch LS7A Real Time Clock emulation
++ * LoongArch LS7A Real Time Clock emulation
+  *
+  * Copyright (C) 2021 Loongson Technology Corporation Limited
+  */
 -- 
 2.41.0
 
