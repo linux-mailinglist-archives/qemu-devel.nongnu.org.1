@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57853939F53
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3547F939F33
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 13:01:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWDDl-0007yR-KQ; Tue, 23 Jul 2024 06:58:17 -0400
+	id 1sWDDn-0008SD-FU; Tue, 23 Jul 2024 06:58:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDDZ-0007TD-KE
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:58:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDDf-00080M-3y
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:58:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDDX-0001xG-W6
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:58:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sWDDd-0001zg-Bu
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 06:58:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721732283;
+ s=mimecast20190719; t=1721732288;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YsjbOlvo43JAEesCygimaYMAVGDqCDgHnftdBHHCG1k=;
- b=BOJoRTYNaDI863daH82J/tD+rOJ2ad/Jp9S/pgjKVuXzOQwssykdLLU0RGeiq3amNSDQBN
- vJzvSZHI/uMqXIK0jd4E6iLuJLYFdTQI112PbyHiKv/ebAkREhslgxPWjFH4vSVpA2DDsE
- 0wRB9Hu74G1dMuj1nhc9w/bGJxWkkUY=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+eij6Bxq47w2bciZE/Rv+DzW/akdlQrWlADFCMstsmc=;
+ b=ZSeOqHK2T3nT+rfFombdVcI614Cs36Vu0twnnA8najaylT5OVrwAePWaR+sR0izsiY1Kuf
+ 469YKR07LPzZbuItt+ENZNEcaoA4EOmdum16sY5wwn5PuEj0fdVVn29skHoOGVqqBhI9xT
+ dEoCvHfz7gC2T7dS2nDXpidp3pnaYB0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-kEyWMpaXMlyHO6Dc9JRysg-1; Tue, 23 Jul 2024 06:58:02 -0400
-X-MC-Unique: kEyWMpaXMlyHO6Dc9JRysg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-52efe4c2261so3546393e87.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:58:01 -0700 (PDT)
+ us-mta-379-TFyoPy-rMqKg-szauTTM2Q-1; Tue, 23 Jul 2024 06:58:07 -0400
+X-MC-Unique: TFyoPy-rMqKg-szauTTM2Q-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a77c9c6bdadso49428666b.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 03:58:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721732280; x=1722337080;
+ d=1e100.net; s=20230601; t=1721732285; x=1722337085;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YsjbOlvo43JAEesCygimaYMAVGDqCDgHnftdBHHCG1k=;
- b=Qblzu4N0aMl4y/zAuwtHbv+aFi+1GgZkY/8e2I/vwSMiuIZTmtUzf0nIAvIzYuujSy
- p3C8mROc4X3JBOxlpvEjkWtodwU/yfUlkksGYl8qZJQ16pxIioiRcFzLm6wnda3ySjXK
- aIYGAS0U96YgqF/HsWH7SG8cBZR3coFvbW2a3XY6bQjSgefM//dubQTmxvVuSwOBt2Xf
- 3Vsl0WYp41m6K8jAeGpMxT2b+TaPx299y9JEuxIbP0xjW85TlPJMRgjiilDarzoTwC2I
- q2yqOssbWJlBobcBej4xohEfk4d+1ycG/uKIoN00A7+SsZvmBnwFY7jLxBkuZR0KPnnH
- dz5w==
-X-Gm-Message-State: AOJu0Yx5YN5ECYPMsSm9DH859+w0xKRRTXgqYMt1vk5co4u0Ov5Tk6tE
- ga9y99IGTe3CS6hVAYyY6UvIH7NXcaAw0bvbWCSaisWiaJUJN2xmclb0xMXnwQmssMI+T0UGvWx
- fS4DX8Tkg36RCdBJfngRJJHwPpbizaEDTXy5FgkhAr4CGH0SLJ8/b5R+CytMycv7eiqPPKX4Uat
- LROJ9G+PxDcKygJ6maSAB5rkMDB+Jq+A==
-X-Received: by 2002:a05:6512:3d88:b0:52c:df74:1577 with SMTP id
- 2adb3069b0e04-52efb7ae98cmr8776440e87.45.1721732279960; 
- Tue, 23 Jul 2024 03:57:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnwwWZ8y4aMbR9vd5lfu1BOH1yEITGJhHGuW6LFJgXfv2rdnEtuCLM0mY6V3IPYaiGIhZPDg==
-X-Received: by 2002:a05:6512:3d88:b0:52c:df74:1577 with SMTP id
- 2adb3069b0e04-52efb7ae98cmr8776396e87.45.1721732279135; 
- Tue, 23 Jul 2024 03:57:59 -0700 (PDT)
+ bh=+eij6Bxq47w2bciZE/Rv+DzW/akdlQrWlADFCMstsmc=;
+ b=dM1gCBTCAjBJ3FxTI19U8Q9bopR1onOH44Sqp6lwafsAKrBLE9yJxzNb3lrUObmr8g
+ bGH/wl9PfS0kdYttg/H4U/sShSj8V8t3q/lqhvkIQJSDIwMtUCX5KyL13omFZtrLFsH3
+ 7hkHCrRmgMKOier8em8df2efHUZ+E8K5A+JkVaPfr9U2ncz887JyypfDUgb2ym29RTgW
+ Dbx2FIckZYXCQOHbUNOyw7RqbCEhsyNKkZLhtIE4LE35TrZHAng7LeGXhLyf9itCYZAf
+ +UIyH2yIjlzxeZOUmQeV0t7qXuh7ghMXhVbd3yc823WPLmTj+GSVoCyNk58l9ABe6gyc
+ AMgg==
+X-Gm-Message-State: AOJu0Yw7t/2mS8/o0eDsvUABj1rOTG4fPv3tOF+7IKeVvFD+j4iMTn9H
+ cYgnC57cOzJQ6inEP1IC2J1mFfwp6iJluFnxKqw0QFEKGMLCVGzzXp1RyNvtNgQJVlWLfOj3C03
+ WjQghkB/TVTXFm7L9fjFdgpRSqD5X+7k8SJxIbOT72XbR2GRW+x0g9qZG3sqtvG7wOFCFo/YJYw
+ Aw2lsQc6AwlOuD228BRzavKg+WdNeQ4A==
+X-Received: by 2002:a17:907:72c9:b0:a7a:9ca6:530 with SMTP id
+ a640c23a62f3a-a7a9ca61448mr102186666b.15.1721732285607; 
+ Tue, 23 Jul 2024 03:58:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAMQsJhpmY8QtPvRSK0lRctPSq9aimacbA+5UIDYnlMxAhSumexQia6lfbGizwtruv9bbKLQ==
+X-Received: by 2002:a17:907:72c9:b0:a7a:9ca6:530 with SMTP id
+ a640c23a62f3a-a7a9ca61448mr102184666b.15.1721732284957; 
+ Tue, 23 Jul 2024 03:58:04 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:9c9a:ffee:509d:1766:aa7f])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7aa08b6f18sm35935766b.46.2024.07.23.03.57.55
+ a640c23a62f3a-a7a3c7b650asm524771166b.49.2024.07.23.03.58.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jul 2024 03:57:58 -0700 (PDT)
-Date: Tue, 23 Jul 2024 06:57:52 -0400
+ Tue, 23 Jul 2024 03:58:04 -0700 (PDT)
+Date: Tue, 23 Jul 2024 06:57:59 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 30/61] pcie_sriov: Ensure PF and VF are mutually exclusive
-Message-ID: <78f9d7fd1989311040beff54979bcb2a1ba0aff2.1721731723.git.mst@redhat.com>
+Subject: [PULL v2 31/61] pcie_sriov: Check PCI Express for SR-IOV PF
+Message-ID: <47cc753e50076c25334091783738be9f716253b1.1721731723.git.mst@redhat.com>
 References: <cover.1721731723.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1721731723.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,10 +102,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A device cannot be a SR-IOV PF and a VF at the same time.
+SR-IOV requires PCI Express.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240715-sriov-v5-3-3f5539093ffc@daynix.com>
+Message-Id: <20240715-sriov-v5-4-3f5539093ffc@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
@@ -113,21 +113,21 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 56523ab4e8..6c79658b4c 100644
+index 6c79658b4c..15a4aac1f4 100644
 --- a/hw/pci/pcie_sriov.c
 +++ b/hw/pci/pcie_sriov.c
 @@ -42,6 +42,11 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
      uint8_t *cfg = dev->config + offset;
      uint8_t *wmask;
  
-+    if (pci_is_vf(dev)) {
-+        error_setg(errp, "a device cannot be both an SR-IOV PF and a VF");
++    if (!pci_is_express(dev)) {
++        error_setg(errp, "PCI Express is required for SR-IOV PF");
 +        return false;
 +    }
 +
-     if (total_vfs) {
-         uint16_t ari_cap = pcie_find_capability(dev, PCI_EXT_CAP_ID_ARI);
-         uint16_t first_vf_devfn = dev->devfn + vf_offset;
+     if (pci_is_vf(dev)) {
+         error_setg(errp, "a device cannot be both an SR-IOV PF and a VF");
+         return false;
 -- 
 MST
 
