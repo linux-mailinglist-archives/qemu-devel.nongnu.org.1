@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8AF93A81F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7F893A838
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jul 2024 22:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWMHp-00038Z-67; Tue, 23 Jul 2024 16:39:05 -0400
+	id 1sWMHv-0003IU-NN; Tue, 23 Jul 2024 16:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMHn-00037X-8q
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:03 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMHr-0003HS-V6
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:08 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMHl-0003uK-99
- for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:03 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-369cb9f086aso2071024f8f.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWMHq-0003un-9s
+ for qemu-devel@nongnu.org; Tue, 23 Jul 2024 16:39:07 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4277a5ed48bso44882085e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jul 2024 13:39:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721767139; x=1722371939; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gpuGBmqnlaRNfBWCS73HM7FOM24QF/0y1loxuYQmhT8=;
- b=thgYyj/HyJglllcyUWB2kXoWF0+6xmrEQXWVwWluXUdiEv9fKQmf2iGvJacSWW4S7W
- 0cmqlcrLqKB75d0vtXf+lxNMAxb785gUfUoLo1Dgt8XGiKa7y2hfoCnUud5HF7WzKHmD
- NErH9CENLZsi5D1+wWEanRxNiW5VGyut6KmrdG/W+cmNPtysFUQpsRkqy0aur6ZtUGyo
- csPfHqHB4PaMMozouhsh9fjRCp9Q0dg5A+eweVx++zvWL3sbjEDz1zzixWgm/wJNegfn
- XYdl+W1IM3cb0iBiv/Czj7iiAgiuSQsFpA8SiNyz/MMM0sp5NijsM/0lzUg2JI9/BAgg
- NjAQ==
+ d=linaro.org; s=google; t=1721767144; x=1722371944; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sVpySpyrjhMtcWBGxVtjyNF2MUS6wyprjn1PN1O1F+w=;
+ b=aT+LAzluqB7+nCIMVw4o7j9fOk36aFCuzlxdVIbf+DA+y11sEAl8/7GFQrgSNj6eDF
+ 8I6vUEHxE2v3YpzIo5xD9vu56ernbBJ93AkA0UU9qNwe3cTYVyLhxY+OdGb/66Ar+3vj
+ pasLf1iK8fVUsIZj9WOHNRKrfbkEyYECzO0y3AaFPslLzgX6MVvr1goPrg9iOuG2tRpp
+ kJk3zS9gY9GGIYOzpBYOc2RSJriJzpc2BwUKhXzHwRYbaVwxUrJRVUjy/ERTlXxBADCz
+ qOWcI1LjRFwKtLSJzV64zeVnXfUaqNLYFLqJ5kYPEcq5Q/Th3jR5IFKiCeJ/9qAbNSf4
+ Y3RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721767139; x=1722371939;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gpuGBmqnlaRNfBWCS73HM7FOM24QF/0y1loxuYQmhT8=;
- b=v5JrIxYdlmay0WOfbYXGJYXPMmwMWRlKowN9jzrU2CNwXlOLbP/WsOM/CZHON6A6iI
- hh3rxoJTu/brPFKN1vgjjm5Qix4zhDXQcmus/MoXHP+W7+1OhO1xYneTmRdhY+4Om9hd
- td6eBf3YPn2gAW6X1ncyZGvsCcO/plsNjwXPgjeyTuzd05hCbwAlnqSOB99vSlTUb4hb
- uyvTo/0+d7KZ4N3fPztCblVH6KEa4slsaAhnLezp1mkB50J8BmeTVU8elNrF/K5yS4O0
- doXcBvvMD5EoQJIlD1IJXimZJGkJEuJ705tQMYcqPcMZMijbfQYelkaTpGjLceaMx+wj
- xHMA==
-X-Gm-Message-State: AOJu0Yzl/PXiDX/OwMjZ9Wvc1a40ctL2v34YgnRGfyk8V3YQ2N9TwGfI
- C9DV2I4dtO5xpZzvHWbMBbBvcMpeOnTD+LbNXg//eBJtrw7EeUyqwyPNqplJq0shVXa3MN2E3wm
- ZnCY=
-X-Google-Smtp-Source: AGHT+IFdzAEDndG0qklvW/rulabgYHoMszbDvzAouDC65eHrFPciPg8O4Czoz7XRaiEG7Kv0+UXqDA==
-X-Received: by 2002:adf:ffc3:0:b0:367:9988:84a0 with SMTP id
- ffacd0b85a97d-369f5b9ebc7mr17456f8f.58.1721767138935; 
- Tue, 23 Jul 2024 13:38:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721767144; x=1722371944;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sVpySpyrjhMtcWBGxVtjyNF2MUS6wyprjn1PN1O1F+w=;
+ b=lI5e8sRHtgWEPOx9lfndxRm42GsSAsauatGN1opavkJQlquFTmL8EoZ9AgS9d9R3tQ
+ g0umCQLwzbJPtHnAfPYYK4wCVYF37HCnVt3oGtEpofhop+TY4xMm7cr+MrHPVOgJMcGb
+ t4xCNboE6R91VA/ksxFmXVwGBxeChmEIMDqP3yWUAjTGQLkgRqzukCY37Z/c/tWsaSO+
+ RqSt1nPDmaaKJ1FgOzC+bhPdUsmphLY8xcNOv3o2WJcbNzNhJ+sGIgHJY88+jFTVVdHL
+ SOltvnCfgO2Hyr6U33PdKPdQN1y9cPIMEEdBK8uZ7KiKQ7A3i+fy1ySkpe0hBC4IIed+
+ 6Qdg==
+X-Gm-Message-State: AOJu0Yyc9+73fXocfIgw7mq9WRgNcKu/LczNbxbkCDLXwCZhXwg+5TrB
+ leiZx20ut28gv2g/FiRoFAKeH/qx8ftUaWOiEEXFrMqL7FewwM3MkcosE5099+S43+/MobO67gs
+ mjhs=
+X-Google-Smtp-Source: AGHT+IGI0VXaOZnQDIADJZ/nJrjJPvXOn4YNqkpnolIPyChdlEgfLD/HF4jqqe7/7SeagPdHLOVkFg==
+X-Received: by 2002:a05:600c:4ecc:b0:426:6921:e3e5 with SMTP id
+ 5b1f17b1804b1-427f95af393mr5855e9.24.1721767144522; 
+ Tue, 23 Jul 2024 13:39:04 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-4.dsl.sta.abo.bbox.fr. [176.184.50.4])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3687868ba9asm12456171f8f.41.2024.07.23.13.38.57
+ 5b1f17b1804b1-427f9399b13sm458445e9.27.2024.07.23.13.39.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jul 2024 13:38:58 -0700 (PDT)
+ Tue, 23 Jul 2024 13:39:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/28] Misc HW+ patches for 2024-07-23
-Date: Tue, 23 Jul 2024 22:38:27 +0200
-Message-ID: <20240723203855.65033-1-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 01/28] accel: Restrict probe_access*() functions to TCG
+Date: Tue, 23 Jul 2024 22:38:28 +0200
+Message-ID: <20240723203855.65033-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240723203855.65033-1-philmd@linaro.org>
+References: <20240723203855.65033-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,115 +93,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3cce8bd4d737f2ca688bbdcb92cd5cc683245bbd:
+This API is specific to TCG (already handled by hardware
+accelerators), so restrict it with #ifdef'ry. Remove
+unnecessary stubs.
 
-  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2024-07-23 15:23:05 +1000)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240529155918.6221-1-philmd@linaro.org>
+---
+ include/exec/exec-all.h |  7 ++++++-
+ accel/stubs/tcg-stub.c  | 14 --------------
+ 2 files changed, 6 insertions(+), 15 deletions(-)
 
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/hw-misc-20240723
-
-for you to fetch changes up to e4a44f94db11fcf873399c60ebb1d93a9ad1cd6e:
-
-  MAINTAINERS: Add myself as a reviewer of machine core (2024-07-23 22:34:54 +0200)
-
-Ignored unrelated error:
-
-    TEST    signals on ppc64
-  signals: allocatestack.c:223: allocate_stack: Assertion `powerof2 (pagesize_m1 + 1)' failed.
-  qemu: uncaught target signal 6 (Aborted) - core dumped
-  timeout: the monitored command dumped core
-  Aborted
-  make[1]: *** [Makefile:175: run-signals] Error 134
-  make: *** [/builds/philmd/qemu/tests/Makefile.include:56: run-tcg-tests-ppc64-linux-user] Error 2
-
-----------------------------------------------------------------
-Misc HW patch queue
-
-- Restrict probe_access*() functions to TCG (Phil)
-- Extract do_invalidate_device_tlb from vtd_process_device_iotlb_desc (Clément)
-- Fixes in Loongson IPI model (Bibo & Phil)
-- Make docs/interop/firmware.json compatible with qapi-gen.py script (Thomas)
-- Correct MPC I2C MMIO region size (Zoltan)
-- Remove useless cast in Loongson3 Virt machine (Yao)
-- Various uses of range overlap API (Yao)
-- Use ERRP_GUARD macro in nubus_virtio_mmio_realize (Zhao)
-- Use DMA memory API in Goldfish UART model (Phil)
-- Expose fifo8_pop_buf and introduce fifo8_drop (Phil)
-- MAINTAINERS updates (Zhao, Phil)
-
-----------------------------------------------------------------
-
-BALATON Zoltan (1):
-  hw/i2c/mpc_i2c: Fix mmio region size
-
-Bibo Mao (1):
-  hw/intc/loongson_ipi: Access memory in little endian
-
-Clément Mathieu--Drif (1):
-  hw/i386/intel_iommu: Extract device IOTLB invalidation logic
-
-Philippe Mathieu-Daudé (13):
-  accel: Restrict probe_access*() functions to TCG
-  hw/intc/loongson_ipi: Fix resource leak
-  hw/intc/loongson_ipi: Declare QOM types using DEFINE_TYPES() macro
-  docs: Correct Loongarch -> LoongArch
-  hw/char/goldfish: Use DMA memory API
-  chardev/char-fe: Document returned value on error
-  util/fifo8: Fix style
-  util/fifo8: Use fifo8_reset() in fifo8_create()
-  util/fifo8: Rename fifo8_peek_buf() -> fifo8_peek_bufptr()
-  util/fifo8: Rename fifo8_pop_buf() -> fifo8_pop_bufptr()
-  util/fifo8: Expose fifo8_pop_buf()
-  util/fifo8: Introduce fifo8_drop()
-  MAINTAINERS: Cover guest-agent in QAPI schema
-
-Thomas Weißschuh (3):
-  docs/interop/firmware.json: add new enum FirmwareFormat
-  docs/interop/firmware.json: add new enum FirmwareArchitecture
-  docs/interop/firmware.json: convert "Example" section
-
-Yao Xingtao (7):
-  hw/mips/loongson3_virt: remove useless type cast
-  util/range: Make ranges_overlap() return bool
-  cxl/mailbox: make range overlap check more readable
-  sparc/ldst_helper: make range overlap check more readable
-  system/memory_mapping: make range overlap check more readable
-  crypto/block-luks: make range overlap check more readable
-  dump: make range overlap check more readable
-
-Zhao Liu (2):
-  hw/nubus/virtio-mmio: Fix missing ERRP_GUARD() in realize handler
-  MAINTAINERS: Add myself as a reviewer of machine core
-
- MAINTAINERS                  |  2 ++
- docs/about/emulation.rst     |  2 +-
- docs/interop/firmware.json   | 47 +++++++++++++++++++++++++----
- include/chardev/char-fe.h    |  3 ++
- include/exec/exec-all.h      |  7 ++++-
- include/qemu/fifo8.h         | 57 +++++++++++++++++++++++-------------
- include/qemu/range.h         |  4 +--
- accel/stubs/tcg-stub.c       | 14 ---------
- chardev/msmouse.c            |  2 +-
- crypto/block-luks.c          |  3 +-
- dump/dump.c                  | 12 +++++---
- hw/char/goldfish_tty.c       | 12 ++++----
- hw/cxl/cxl-mailbox-utils.c   |  8 ++---
- hw/i2c/mpc_i2c.c             |  8 ++---
- hw/i386/intel_iommu.c        | 57 +++++++++++++++++++++---------------
- hw/intc/loongson_ipi.c       | 40 ++++++++++++-------------
- hw/mips/loongson3_virt.c     |  4 +--
- hw/net/allwinner_emac.c      |  2 +-
- hw/nubus/nubus-virtio-mmio.c |  2 ++
- hw/rtc/ls7a_rtc.c            |  2 +-
- hw/scsi/esp.c                | 38 +++---------------------
- system/memory_mapping.c      |  4 +--
- target/sparc/ldst_helper.c   |  5 ++--
- ui/console-vc.c              |  2 +-
- ui/gtk.c                     |  2 +-
- util/fifo8.c                 | 48 +++++++++++++++++++++++++-----
- 26 files changed, 226 insertions(+), 161 deletions(-)
-
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index b6b46ad13c7..72240ef4263 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -301,6 +301,9 @@ static inline void tlb_flush_range_by_mmuidx_all_cpus_synced(CPUState *cpu,
+ {
+ }
+ #endif
++
++#if defined(CONFIG_TCG)
++
+ /**
+  * probe_access:
+  * @env: CPUArchState
+@@ -357,6 +360,7 @@ int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+                        bool nonfault, void **phost, uintptr_t retaddr);
+ 
+ #ifndef CONFIG_USER_ONLY
++
+ /**
+  * probe_access_full:
+  * Like probe_access_flags, except also return into @pfull.
+@@ -392,7 +396,8 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
+                           MMUAccessType access_type, int mmu_idx,
+                           void **phost, CPUTLBEntryFull **pfull);
+ 
+-#endif
++#endif /* !CONFIG_USER_ONLY */
++#endif /* CONFIG_TCG */
+ 
+ static inline tb_page_addr_t tb_page_addr0(const TranslationBlock *tb)
+ {
+diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+index dd890d6cf69..7f4208fddf2 100644
+--- a/accel/stubs/tcg-stub.c
++++ b/accel/stubs/tcg-stub.c
+@@ -18,20 +18,6 @@ void tb_flush(CPUState *cpu)
+ {
+ }
+ 
+-int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+-                       MMUAccessType access_type, int mmu_idx,
+-                       bool nonfault, void **phost, uintptr_t retaddr)
+-{
+-     g_assert_not_reached();
+-}
+-
+-void *probe_access(CPUArchState *env, vaddr addr, int size,
+-                   MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
+-{
+-     /* Handled by hardware accelerator. */
+-     g_assert_not_reached();
+-}
+-
+ G_NORETURN void cpu_loop_exit(CPUState *cpu)
+ {
+     g_assert_not_reached();
 -- 
 2.41.0
 
