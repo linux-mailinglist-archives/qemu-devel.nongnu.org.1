@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5121C93B647
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 19:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A9393B6A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 20:24:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWgDc-0005Bu-AX; Wed, 24 Jul 2024 13:56:04 -0400
+	id 1sWgdQ-0004HI-9e; Wed, 24 Jul 2024 14:22:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgCv-00019A-QX
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:55:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgCr-0006Dq-21
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:55:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721843711;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bK6CvPa1X+f80U/jjtLSazz/18cuyl9V9PAYQOcc5FA=;
- b=KAKRawptoOQ3ufpcDNZ7RhuZc7+bEwjKuuZxFtAzSmKArK3IEypD0CtxRaLeR0dRAlKnaC
- xuHdumPCj5V8pbB4+Kuz2JKU355XILetWUIk50P26vhQYTQNpmsiHDjKdO/fe3uL6Zl+Mv
- njE/RTwMd7lrw+7JH3fhs1VmBGhubC4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-qENVtv0aOC6IrPKJalFT9Q-1; Wed,
- 24 Jul 2024 13:55:08 -0400
-X-MC-Unique: qENVtv0aOC6IrPKJalFT9Q-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 077D91955F2B; Wed, 24 Jul 2024 17:55:07 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.144])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3A8EE1955D42; Wed, 24 Jul 2024 17:55:00 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 23/23] gitlab-ci: Add "check-functional" to the build tests
-Date: Wed, 24 Jul 2024 19:52:41 +0200
-Message-ID: <20240724175248.1389201-24-thuth@redhat.com>
-In-Reply-To: <20240724175248.1389201-1-thuth@redhat.com>
-References: <20240724175248.1389201-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sWgdK-0004Fs-Ri
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 14:22:39 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sWgdJ-0005iy-CG
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 14:22:38 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10835480bso164415a12.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 11:22:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721845355; x=1722450155; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ri1NeKHc3gnHRiGYRMIlqRBDF/XXK7ZLi/6gMp+tvBs=;
+ b=THDoHkHD2q/OeoPqbqw64yeVUzAdxOflq2bxHG8AyWcuRNzR7VddL8I4YD9fL0MqBa
+ IC4Y+4cYz7ty39B1dd8VvLLMQIZ/8pxXBR05c0Lm6CK7/xpve45m6itI1BQGfcYqAX4H
+ 1pdyeG5D9Z3DD/5kWXNsy/nIpK4ujmphnolxsYajOXgR99D5tnphBORqLhKeGA6KTLeZ
+ kBYFOjF1s4Nmoc/DrsxbZNBiYmLvwzhjD24n9lFdWfJWBwYzAtJmiroy3IK6LhzFrgMo
+ axcPW+G+3H12n5HKWombIUAUC8+EhQF/YqRW4gPC7OV1IWDUE2H1cGym2e5jHZnt9cNV
+ f1Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721845355; x=1722450155;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ri1NeKHc3gnHRiGYRMIlqRBDF/XXK7ZLi/6gMp+tvBs=;
+ b=ckO3AcFXIo3Iz8LAqyUaYHp2LaQsVPOKMfZ1F3/mNTEbxQ+qfpX9/L4YoOjor3paKd
+ W40DDyETeeU+TJwN5TaKgskXLBUuO/OaJqwU1nrGaKStr2x8mVpAZtOHQ4eTUE5UBG5I
+ D/2qcDUCW1EAvp+dbAVxkDJe5q7/IeuHnpxyRDPzgMlYLXE1V8GzvpgrdFu1eZ5WKQgj
+ baIsitLE/y1nYnIAYtK77y2Yn8B6rgn8Z3rc9cGejV48ysxdfwiP1yuCyyzrNBbBmQi5
+ pCqrIF6cnhzlhRB1imcK5+6BYinlZyZYsCvJFhQAv1QmE8e2nJlkgf+l/Y+jYNJJVFlc
+ wpKA==
+X-Gm-Message-State: AOJu0YxrDCZN5jpEBTMJfDDGmsEUp9RFNet2X/iB0m3jDaT2R7dfIu+F
+ pDjWv5HjS/U7aKT+TAX2Bt7o/RwmKynVbU5hUPUZo0IEbjNMUd8Mb+2ze94taPMtZDVh1xi3uSB
+ 4RIqVlHswYp5TyI6NGW4r5Zeq5JEX3xNajB3KKg==
+X-Google-Smtp-Source: AGHT+IHTHhzZAKfH7hgPApaXnojvF7GbCkocb11op7fAD2RMnhX31MbmDVXBm1UkP+f/h7OUIvJCqgu65DQJxB5n2Kg=
+X-Received: by 2002:a50:d61a:0:b0:5a0:f0c4:aa7b with SMTP id
+ 4fb4d7f45d1cf-5ac2c1c79abmr120633a12.27.1721845355383; Wed, 24 Jul 2024
+ 11:22:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240719231149.1364-1-zhiwei_liu@linux.alibaba.com>
+ <20240719231149.1364-8-zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20240719231149.1364-8-zhiwei_liu@linux.alibaba.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 24 Jul 2024 19:22:24 +0100
+Message-ID: <CAFEAcA8pdw1zUxMXD1g08TedNo7MizUXOSJF6eciuCU=c2zx7Q@mail.gmail.com>
+Subject: Re: [PATCH v6 7/8] target/riscv: Add any32 and max32 CPU for RV64 QEMU
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com, 
+ bmeng.cn@gmail.com, philmd@linaro.org, alex.bennee@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.136,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,226 +88,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we converted many tests from the "check-avocado" test suite
-to the "check-functional" test suite, we should make sure that these
-also get tested in the CI.
+On Sat, 20 Jul 2024 at 00:18, LIU Zhiwei <zhiwei_liu@linux.alibaba.com> wrote:
+>
+> We may need 32-bit max or 32-bit any CPU for RV64 QEMU. Thus we add
+> these two CPUs for RV64 QEMU.
+>
+> The reason we don't expose them to RV32 QEMU is that we already have
+> max or any cpu with the same configuration. Another reason is that
+> we want to follow the RISC-V custom where addw instruction doesn't
+> exist in RV32 CPU.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- TODO: We should also make sure of cachine the downloaded assets here...
+You might want to consider whether you'd rather have this be
+"-cpu max,64=off" (replace "64" with whatever feature name the
+architecture uses for 64-bit support). That's the way I would plan
+to handle it for Arm (with "-cpu max,aarch64=off"; that works for
+KVM right now and if we ever wanted to handle it for TCG would be how
+I'd want the command line syntax to go).
 
- .gitlab-ci.d/buildtest-template.yml |  3 +-
- .gitlab-ci.d/buildtest.yml          | 60 ++++++++++++++---------------
- 2 files changed, 32 insertions(+), 31 deletions(-)
-
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 8f7ebfaed8..54cae74a8e 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -71,7 +71,7 @@
-     reports:
-       junit: build/meson-logs/testlog.junit.xml
- 
--.avocado_test_job_template:
-+.functional_test_job_template:
-   extends: .common_test_job_template
-   cache:
-     key: "${CI_JOB_NAME}-cache"
-@@ -98,6 +98,7 @@
-         du -chs ${CI_PROJECT_DIR}/avocado-cache ;
-       fi
-     - export AVOCADO_ALLOW_UNTRUSTED_CODE=1
-+    - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-   after_script:
-     - cd build
-     - du -chs ${CI_PROJECT_DIR}/avocado-cache
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index e3a0758bd9..8b1d61911c 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -22,14 +22,14 @@ check-system-alpine:
-     IMAGE: alpine
-     MAKE_CHECK_ARGS: check-unit check-qtest
- 
--avocado-system-alpine:
--  extends: .avocado_test_job_template
-+functional-system-alpine:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-alpine
-       artifacts: true
-   variables:
-     IMAGE: alpine
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
- 
- build-system-ubuntu:
-@@ -53,14 +53,14 @@ check-system-ubuntu:
-     IMAGE: ubuntu2204
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-ubuntu:
--  extends: .avocado_test_job_template
-+functional-system-ubuntu:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-ubuntu
-       artifacts: true
-   variables:
-     IMAGE: ubuntu2204
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
- 
- build-system-debian:
-@@ -85,14 +85,14 @@ check-system-debian:
-     IMAGE: debian
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-debian:
--  extends: .avocado_test_job_template
-+functional-system-debian:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-debian
-       artifacts: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
- 
- crash-test-debian:
-@@ -129,14 +129,14 @@ check-system-fedora:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-fedora:
--  extends: .avocado_test_job_template
-+functional-system-fedora:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-fedora
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
-       arch:riscv32 arch:ppc arch:sparc64
- 
-@@ -243,14 +243,14 @@ check-system-centos:
-     IMAGE: centos9
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-centos:
--  extends: .avocado_test_job_template
-+functional-system-centos:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-centos
-       artifacts: true
-   variables:
-     IMAGE: centos9
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
-       arch:sh4
- 
-@@ -274,14 +274,14 @@ check-system-opensuse:
-     IMAGE: opensuse-leap
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-opensuse:
--  extends: .avocado_test_job_template
-+functional-system-opensuse:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-opensuse
-       artifacts: true
-   variables:
-     IMAGE: opensuse-leap
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
- 
- #
-@@ -302,15 +302,15 @@ build-system-flaky:
-       ppc64-softmmu rx-softmmu s390x-softmmu sh4-softmmu x86_64-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
--avocado-system-flaky:
--  extends: .avocado_test_job_template
-+functional-system-flaky:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-flaky
-       artifacts: true
-   allow_failure: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     QEMU_JOB_OPTIONAL: 1
-     QEMU_TEST_FLAKY_TESTS: 1
-     AVOCADO_TAGS: flaky
-@@ -484,14 +484,14 @@ check-cfi-aarch64:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-aarch64:
--  extends: .avocado_test_job_template
-+functional-cfi-aarch64:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-aarch64
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- build-cfi-ppc64-s390x:
-   extends:
-@@ -522,14 +522,14 @@ check-cfi-ppc64-s390x:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-ppc64-s390x:
--  extends: .avocado_test_job_template
-+functional-cfi-ppc64-s390x:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-ppc64-s390x
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- build-cfi-x86_64:
-   extends:
-@@ -556,14 +556,14 @@ check-cfi-x86_64:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-x86_64:
--  extends: .avocado_test_job_template
-+functional-cfi-x86_64:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-x86_64
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- tsan-build:
-   extends: .native_build_job_template
--- 
-2.45.2
-
+-- PMM
 
