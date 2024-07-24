@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B055093B8FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9523693B8FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:07:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWk8C-0001IJ-4s; Wed, 24 Jul 2024 18:06:44 -0400
+	id 1sWk8G-0001aJ-2X; Wed, 24 Jul 2024 18:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk81-0000dh-BW
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:34 -0400
-Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8D-0001SW-O5
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:45 -0400
+Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk7y-0006d3-Tl
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:32 -0400
-Received: by mail-il1-x132.google.com with SMTP id
- e9e14a558f8ab-36da84df7adso1184125ab.1
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8C-0006eZ-3o
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:45 -0400
+Received: by mail-io1-xd34.google.com with SMTP id
+ ca18e2360f4ac-7fd3dbc01deso9752639f.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858789; x=1722463589;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858802; x=1722463602;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fc1iffmEOa89zbsiVdbsLtEsb0Kc5g9RfeOgTm7uMho=;
- b=Eah7PvgJ9L5+MbPzgxGgfSChOJ1sAeZuYPsHl3ReguNbhkxAlJ4ElwsV2oPM5Ep+vH
- gPCTHsH1hW0XqDbE4JDf1UVls/oKNtr2f6RgJgo6Ruuw5egKWtBeI3Eu5TvwnsAS+b1S
- hMXyWY86toqg27zozf7f02O8kWmMH7FYrkohzC7ghnIcQJm3Qm0lWl1Gvr4gbvEtFGbe
- gbjN414ZHo4B17BSjFM223RYaQVHeCv/F2o8EQW6MfP/z+njPEhIjt9XHm2IYSMaedSp
- uPxMuOIM8R6VU70rNUg7FzCKoGETfeF6Mjl/ONmwhAQ8aDa1W2txBONihqa1baDGxmTv
- M+LA==
+ bh=6NVVykiWpqYjvD45AibIwwzA8pM6gZ3sTQWN+WDs9eM=;
+ b=UgaBxm7xfBrT9rLRsodW5s4wENgQq3hnN0FaR+DxkLnOxvdIT7GwcCqBFiNXHKVrQr
+ 0TXvQyIE44Y0MxCA1KM00KlF4jKVoBtR2+DPqAa4my+vPiArl6wGdmpGYofNIuBTd78v
+ GG756b4BmYF/2dppfQyzdJKOlZxt0M3Sgm4WmProaGpq5U6WpoLUiZPNCPW2uO4BEfYK
+ OCV1duMBkCMdR1TE+BTC2HZ8OKXuvk/dkRTyL3+WSNlHXoigCXprPmewJr8GMTgtge4z
+ saDetJmB1N0+e0uq1+yzeyFxHDVsQnZCg85goxbNgFDPo6ELYHNrINPAWV2SgAfKDRQj
+ VkMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721858789; x=1722463589;
+ d=1e100.net; s=20230601; t=1721858802; x=1722463602;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fc1iffmEOa89zbsiVdbsLtEsb0Kc5g9RfeOgTm7uMho=;
- b=r6ckKiyq8X7Q4WQzCUIaRl1maQF6lVko9XmPRbR9BDLIzql44xouB42lG/+kAVDDAL
- lwFANe24J2SLfxN60Wl5p8SNLauCVaHMCEG/HoEU+0MWEMm9HEFrQbxcpY3U8CTp+o2v
- /2atbi9QUaSezTBJPhTrb2a+vPUK5NSOpXdKx75O67AcbXaw0rustdLUZqJNJleC5miK
- AmvpDG0+a3sfWlSTmQye3WsbT/YcYAWobKjY+42u8n1rC5iaKNdaYkwABBGzHm5mbNsD
- Ku/KxHoXCE1Oq5Qmh8SL5B/Xrj90ZcEAJda/afSsFElNHHqlRZ1i+dMUwNO59espVgTo
- N00w==
-X-Gm-Message-State: AOJu0YyVwfyjKug5AsrBRFzPFHQkptMLzDdyymcTWi4/CsDPaz6G6RDl
- d0POHdKzfS8ZjFoDB0nX7UrDBTEOlYQ/S5Q1S+FO++rqIk65bVg+H8wwse1TlIZa6l06KE1BuKt
- xbL4=
-X-Google-Smtp-Source: AGHT+IGfkLj37XGIgliMA/Pu4ftXFL8Z062WQDYV+jpGi/63t1+iyN7gHgu2F45GQWYl0/LZREiu0g==
-X-Received: by 2002:a05:6e02:12e7:b0:396:788:f4ef with SMTP id
- e9e14a558f8ab-39a1a80ef7fmr25654185ab.14.1721858789352; 
- Wed, 24 Jul 2024 15:06:29 -0700 (PDT)
+ bh=6NVVykiWpqYjvD45AibIwwzA8pM6gZ3sTQWN+WDs9eM=;
+ b=mY0T/pTs2XQtl0diyXvuxi2JAIZVc2zPVIuJyts2XJMo2WSXHzERPODtgA22s3/NFa
+ BAQAKYR6gD6NiNB3RSn9CopUbZ77DkW2XyMco5s8lnqeDIo06+JJ7Ol7w0uYDOUy4qWO
+ u7AMee0HO2ZHYpw/83c4VXCk+eboXNCdP64CZsEzViZiCWUXvKl5yMl2NgEyDD+yP056
+ xEPDy6X8CxF4SdC3SnjOtwg1gl3GcBCCP6rlLMDX4ciPxHixrVu0/uhFynyffAtD/Yx5
+ ICZGvknc29XWkQobWmHMhfvswwNWrmiTiDdxQT5KI0j3XwvWCYStxSp+KUb/aeXk8wKm
+ XZWg==
+X-Gm-Message-State: AOJu0Yzs/xgptLtEQhWICSRQO0k9ds7osgI+cLdExX7gNQgxHJLJvmPs
+ juhF7gq3rkaJL3liDsiNSO8EFOY1GlSK37UI1aRIOKixH8vjP1lr6/Sfh66DACgTOvSb0mJi2v1
+ htxc=
+X-Google-Smtp-Source: AGHT+IEGTqyknQYn8B0a6aM0Z8KoR1fsMcQ0b04o1D0B4PRSfkn1SlFqsm0Zb9Lp7UJwh5PBUhBU5Q==
+X-Received: by 2002:a05:6602:1349:b0:7f9:b435:4f5 with SMTP id
+ ca18e2360f4ac-81f7e49b051mr14971039f.11.1721858790321; 
+ Wed, 24 Jul 2024 15:06:30 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.28
+ 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 15:06:28 -0700 (PDT)
+ Wed, 24 Jul 2024 15:06:29 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, Warner Losh <imp@bsdimp.com>,
- Jessica Clarke <jrtc27@jrtc27.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 11/15] bsd-user: Sync fork_start/fork_end with linux-user
-Date: Wed, 24 Jul 2024 16:04:44 -0600
-Message-ID: <20240724220449.10398-12-imp@bsdimp.com>
+Subject: [PULL 12/15] bsd-user: Define TARGET_SIGSTACK_ALIGN and use it to
+ round stack
+Date: Wed, 24 Jul 2024 16:04:45 -0600
+Message-ID: <20240724220449.10398-13-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240724220449.10398-1-imp@bsdimp.com>
 References: <20240724220449.10398-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::132;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x132.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d34;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd34.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,87 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jessica Clarke <jrtc27@jrtc27.com>
+Most (all?) targets require stacks to be properly aligned. Rather than a
+series of ifdefs in bsd-user/signal.h, instead use a manditory #define
+for all architectures.
 
-This reorders some of the calls, deduplicates code between branches and,
-most importantly, fixes a double end_exclusive call in the parent that
-will cause exclusive_context_count to go negative.
-
-Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
-Pull-Request: https://github.com/qemu-bsd-user/qemu-bsd-user/pull/52
-Reviewed-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/main.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ bsd-user/aarch64/target_arch_signal.h | 2 ++
+ bsd-user/arm/target_arch_signal.h     | 2 ++
+ bsd-user/i386/target_arch_signal.h    | 2 ++
+ bsd-user/signal.c                     | 9 +--------
+ bsd-user/x86_64/target_arch_signal.h  | 2 ++
+ 5 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 82e94a03160..cc980e6f401 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -35,6 +35,7 @@
- #include "qemu/path.h"
- #include "qemu/help_option.h"
- #include "qemu/module.h"
-+#include "qemu/plugin.h"
- #include "exec/exec-all.h"
- #include "user/guest-base.h"
- #include "tcg/startup.h"
-@@ -103,8 +104,9 @@ unsigned long target_sgrowsiz = TARGET_SGROWSIZ; /* amount to grow stack */
- void fork_start(void)
- {
-     start_exclusive();
--    cpu_list_lock();
-     mmap_fork_start();
-+    cpu_list_lock();
-+    qemu_plugin_user_prefork_lock();
-     gdbserver_fork_start();
- }
+diff --git a/bsd-user/aarch64/target_arch_signal.h b/bsd-user/aarch64/target_arch_signal.h
+index bff752a67ab..b72ba7aa504 100644
+--- a/bsd-user/aarch64/target_arch_signal.h
++++ b/bsd-user/aarch64/target_arch_signal.h
+@@ -77,4 +77,6 @@ struct target_sigframe {
+     target_ucontext_t   sf_uc;  /* saved ucontext */
+ };
  
-@@ -112,31 +114,31 @@ void fork_end(pid_t pid)
- {
-     bool child = pid == 0;
++#define TARGET_SIGSTACK_ALIGN 16
++
+ #endif /* TARGET_ARCH_SIGNAL_H */
+diff --git a/bsd-user/arm/target_arch_signal.h b/bsd-user/arm/target_arch_signal.h
+index 02b2b33e07a..10f96b8bfc9 100644
+--- a/bsd-user/arm/target_arch_signal.h
++++ b/bsd-user/arm/target_arch_signal.h
+@@ -86,4 +86,6 @@ struct target_sigframe {
+     target_mcontext_vfp_t sf_vfp; /* actual saved VFP context */
+ };
  
-+    qemu_plugin_user_postfork(child);
-+    mmap_fork_end(child);
-     if (child) {
-         CPUState *cpu, *next_cpu;
-         /*
--         * Child processes created by fork() only have a single thread.  Discard
--         * information about the parent threads.
-+         * Child processes created by fork() only have a single thread.
-+         * Discard information about the parent threads.
-          */
-         CPU_FOREACH_SAFE(cpu, next_cpu) {
-             if (cpu != thread_cpu) {
-                 QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
-             }
-         }
--        mmap_fork_end(child);
--        /*
--         * qemu_init_cpu_list() takes care of reinitializing the exclusive
--         * state, so we don't need to end_exclusive() here.
--         */
-         qemu_init_cpu_list();
-         get_task_state(thread_cpu)->ts_tid = qemu_get_thread_id();
--        gdbserver_fork_end(thread_cpu, pid);
-     } else {
--        mmap_fork_end(child);
-         cpu_list_unlock();
--        gdbserver_fork_end(thread_cpu, pid);
--        end_exclusive();
++#define TARGET_SIGSTACK_ALIGN 8
++
+ #endif /* TARGET_ARCH_SIGNAL_H */
+diff --git a/bsd-user/i386/target_arch_signal.h b/bsd-user/i386/target_arch_signal.h
+index 279dadc22c7..2c14153ab6b 100644
+--- a/bsd-user/i386/target_arch_signal.h
++++ b/bsd-user/i386/target_arch_signal.h
+@@ -88,4 +88,6 @@ struct target_sigframe {
+     uint32_t    __spare__[2];
+ };
+ 
++#define TARGET_SIGSTACK_ALIGN 8
++
+ #endif /* TARGET_ARCH_SIGNAL_H */
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index 8b6654b91da..da49b9bffc1 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -728,14 +728,7 @@ static inline abi_ulong get_sigframe(struct target_sigaction *ka,
+         sp = ts->sigaltstack_used.ss_sp + ts->sigaltstack_used.ss_size;
      }
-+    gdbserver_fork_end(thread_cpu, pid);
-+    /*
-+     * qemu_init_cpu_list() reinitialized the child exclusive state, but we
-+     * also need to keep current_cpu consistent, so call end_exclusive() for
-+     * both child and parent.
-+     */
-+    end_exclusive();
+ 
+-/* TODO: make this a target_arch function / define */
+-#if defined(TARGET_ARM)
+-    return (sp - frame_size) & ~7;
+-#elif defined(TARGET_AARCH64)
+-    return (sp - frame_size) & ~15;
+-#else
+-    return sp - frame_size;
+-#endif
++    return ROUND_DOWN(sp - frame_size, TARGET_SIGSTACK_ALIGN);
  }
  
- void cpu_loop(CPUArchState *env)
+ /* compare to $M/$M/exec_machdep.c sendsig and sys/kern/kern_sig.c sigexit */
+diff --git a/bsd-user/x86_64/target_arch_signal.h b/bsd-user/x86_64/target_arch_signal.h
+index ca24bf1e7f7..f833ee66cef 100644
+--- a/bsd-user/x86_64/target_arch_signal.h
++++ b/bsd-user/x86_64/target_arch_signal.h
+@@ -97,4 +97,6 @@ struct target_sigframe {
+     uint32_t    __spare__[2];
+ };
+ 
++#define TARGET_SIGSTACK_ALIGN 16
++
+ #endif /* TARGET_ARCH_SIGNAL_H */
 -- 
 2.45.1
 
