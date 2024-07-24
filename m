@@ -2,73 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DA793AF74
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA18693AFB9
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 12:16:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWYid-0001am-4Y; Wed, 24 Jul 2024 05:55:35 -0400
+	id 1sWZ1T-0007bf-1X; Wed, 24 Jul 2024 06:15:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sWYiY-0001Mu-8H
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:55:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sWYiW-0005Zz-Kf
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:55:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721814927;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=m4SLtRZ9Zl2E7lboqu49eGPbA+tV0gv/tRQhRCYgiFg=;
- b=O03Z6Am/XnMrtlQ0opwURH/IV4voxYHsh3yBdQXM1R6RENNBIQgVayUwElpUHAAPBgJGbG
- oHuElpewJ+PBoQ2vHbANyXrtZy7rIVjsgyzgSaaWXt4lYl0erZaV19ud/Pb6F+kALDrnMt
- YpZxrujVJaIP3KnxrSxNkTdj1iPjz7M=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-PnbJeFqNOdCjMPh7eypmUA-1; Wed,
- 24 Jul 2024 05:55:25 -0400
-X-MC-Unique: PnbJeFqNOdCjMPh7eypmUA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9CF081955D50; Wed, 24 Jul 2024 09:55:24 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.141])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6960F19560AE; Wed, 24 Jul 2024 09:55:18 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/2] gitlab: display /packages.txt in build jobs
-Date: Wed, 24 Jul 2024 10:55:04 +0100
-Message-ID: <20240724095505.33544-3-berrange@redhat.com>
-In-Reply-To: <20240724095505.33544-1-berrange@redhat.com>
-References: <20240724095505.33544-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sWZ1Q-0007aI-9q
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 06:15:00 -0400
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sWZ1O-000318-HU
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 06:15:00 -0400
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3d9e233873aso3179801b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 03:14:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721816097; x=1722420897; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bA0hhaLu9ChI2mMyne82iUilmamAUGj29iNlKn/cseM=;
+ b=fNn0O4Fqr1xSgwFtljS/XNc0p3MQcOZ6smB94UnPzw6uDq1A/WDRHhDopzYnHXwhFA
+ 7o0xK0KQmou4D7D9HgC+8nAjXLLJ+lyoXT/+9N1OvuDkLtrqIPA7fnUp9o2oIcQ6D/BE
+ 8gvY/qWM9402GGzQ62qLdkVEeMYfxgF4mTK93mx7jyXvSxHdHAJkEGCieXOo0y0MiiR8
+ F9jUJRzL4xGeRCpKO6j4BSnRzoIcA0KHaE/OUqpezsGATDyM0JcahMmxVbnxTfHDSzt/
+ 5L5x+BYOgngvfI/ONaD/Yi2SspZbIHvmruX9OMDJCuGR3wtait0cdoToZZwOSA7fNGbF
+ pTGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721816097; x=1722420897;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bA0hhaLu9ChI2mMyne82iUilmamAUGj29iNlKn/cseM=;
+ b=qx6iUIRay1JauXoDqddErc+gSRK1aKDupte3o0Be4Y/cVUfsXgTVAvWUPLOT0yXXp2
+ 3OKpGKDlpB5P5Cyic7ckyquki0AALt3KJK8SbfMswJFINq6p3bAtGd0FC8kuR/SkGkyH
+ 4+E+F7FyLUL0xJS6w6RUaUiCgMztlthfX9dnW+AAp7qcYia7cV5TlIV3pI3ziUprwRMq
+ 7Axz72OjksXJyexOoiRBNmV2gbw6C7D/i4mrGgeBS62MVCi8K5T9gbxwhFYPUzljqhOm
+ N+jrMFjUqTJqrfs06HxRwtXRr4kNxLNHmOZTlV4Pj2gY9VfiU27x3qAcfO0hi8lrDufW
+ Yh1A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUQRrf+qCM334AaufcRCaJGMT2JlehMND5aQNyMLTcfCr9oVci7XLykHYdm/uFgnfbaxWToRdTeG18PqJqnmjBDSHsnc3s=
+X-Gm-Message-State: AOJu0YyY9IMcZ2MhAVCGnQpvzZOVAPFZep1hLXwmFWPP7v2HybgC+zr3
+ eneRSUM5mJmHVE4UTyIlqRAc+USacDue2g2zzM5kZAQp2RN1ATd0Eze81ZgfIm4=
+X-Google-Smtp-Source: AGHT+IE76oE+ef9pMRWdoR7Q1mnIPiKWTuf/CnNl86Wj2KtR038j6eoTjEV7OPiltdh68IeVeyfM5g==
+X-Received: by 2002:a05:6870:8292:b0:25d:ff4c:bc64 with SMTP id
+ 586e51a60fabf-2648764e7b5mr2873751fac.6.1721816096570; 
+ Wed, 24 Jul 2024 03:14:56 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70d1c5902bdsm5763591b3a.146.2024.07.24.03.14.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 Jul 2024 03:14:56 -0700 (PDT)
+Message-ID: <707d1076-4f29-4089-b7ae-0bdd3e1305ee@linaro.org>
+Date: Wed, 24 Jul 2024 20:14:49 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] gdbstub: Use specific MMU index when probing MTE
+ addresses
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ philmd@linaro.org, alex.bennee@linaro.org
+Cc: peter.maydell@linaro.org
+References: <20240722160709.1677430-1-gustavo.romero@linaro.org>
+ <20240722160709.1677430-2-gustavo.romero@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240722160709.1677430-2-gustavo.romero@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,44 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The lcitool created containers save the full distro package list
-details into /packages.txt. The idea is that build jobs will 'cat'
-this file, so that the build log has a record of what packages
-were used. This is important info, because when it comes to debug
-failures, the original container is often lost.
+On 7/23/24 02:07, Gustavo Romero wrote:
+> +    /* Find out the current translation regime for probe. */
+> +    mmu_index = arm_mmu_idx(env) & ARM_MMU_IDX_COREIDX_MASK;
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- .gitlab-ci.d/buildtest-template.yml  | 1 +
- .gitlab-ci.d/crossbuild-template.yml | 2 ++
- 2 files changed, 3 insertions(+)
+The official interface is cpu_mmu_index().
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 8f7ebfaed8..844c26623d 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -9,6 +9,7 @@
-     when: always
-   before_script:
-     - JOBS=$(expr $(nproc) + 1)
-+    - cat /packages.txt
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
-diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
-index d9f81b7061..53051ec793 100644
---- a/.gitlab-ci.d/crossbuild-template.yml
-+++ b/.gitlab-ci.d/crossbuild-template.yml
-@@ -8,6 +8,8 @@
-     key: "$CI_JOB_NAME"
-     when: always
-   timeout: 80m
-+  before_script:
-+    - cat /packages.txt
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
--- 
-2.45.2
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+
+r~
 
