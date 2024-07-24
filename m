@@ -2,85 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20BC93B33A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 16:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215FD93B471
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 18:02:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWdOQ-0007MT-F4; Wed, 24 Jul 2024 10:55:02 -0400
+	id 1sWePl-0005vr-EN; Wed, 24 Jul 2024 12:00:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWdOF-0007Kd-DO; Wed, 24 Jul 2024 10:54:51 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sWePa-0005sc-Bm; Wed, 24 Jul 2024 12:00:18 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWdOC-0005WT-Re; Wed, 24 Jul 2024 10:54:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721832889; x=1753368889;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nhEKDuTNwPMDwruusMMbK1Dm5j0cygvuqJe3rM266dI=;
- b=PtPqeffwaEUFWuACVlHCZbT9q+1vgiT8Ety7iA3SlkK/baVQbagSCxzx
- XSk5vcuNOkJwnN2TYJul12MJW9cFkFuR4WgRDLT/5MAywJxWi7P3P+lrR
- liDbq/06ef7Xfol0CJT/W5HeYzK2j9vXb5uGU3l5OYX5OLwl9VqNB4Tqx
- ESZG8DBBcIO47uLtt2enastdf5r4WBN2wwC3SEoTTz0S2KQxVhoeFlXva
- sGTOLsJbAzDCHo/UvqKhWdyFEXKHYIlYunT4NUc4uZgLaDnVBTDSkcZDd
- FUdEEIZrGBtIfd6UbDO3+f5OWvtmONqeg9ujmuVsI5BuPk0UmsgDq8KJL A==;
-X-CSE-ConnectionGUID: 7p0CC7XLS3mAiyjN8qlW1A==
-X-CSE-MsgGUID: 4knbuwtXTEeU/8pKmaQ0jA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="44941943"
-X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="44941943"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2024 07:54:45 -0700
-X-CSE-ConnectionGUID: SQlBHtnfSNazf+k8B1Ve8g==
-X-CSE-MsgGUID: gsHTaE3GT0aVEU/MKedVwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="57749094"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 24 Jul 2024 07:54:40 -0700
-Date: Wed, 24 Jul 2024 23:10:24 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ++/vQ==?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
-Message-ID: <ZqEZYEAkMhqBRtbx@intel.com>
-References: <20240704031603.1744546-1-zhao1.liu@intel.com>
- <20240704031603.1744546-3-zhao1.liu@intel.com>
- <87wmld361y.fsf@pond.sub.org> <Zp5tBHBoeXZy44ys@intel.com>
- <87h6cfowei.fsf@pond.sub.org> <ZqD31Oj5P0uDMs-I@redhat.com>
- <ZqEJlmR3U6g8zq0z@intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sWePX-0001G8-UE; Wed, 24 Jul 2024 12:00:17 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C766F7D644;
+ Wed, 24 Jul 2024 18:59:58 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 59EE2112D04;
+ Wed, 24 Jul 2024 19:00:10 +0300 (MSK)
+Message-ID: <bfa1bc39-9efe-4880-a4d0-4cb9d5b44918@tls.msk.ru>
+Date: Wed, 24 Jul 2024 19:00:10 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZqEJlmR3U6g8zq0z@intel.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.136,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] chardev/char-win-stdio.c: restore old console mode
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: songziming <s.ziming@hotmail.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
+References: <ME3P282MB25488BE7C39BF0C35CD0DA5D8CA82@ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM>
+ <9dfc4a6a-da91-4185-a800-40c80dd9a0f6@tls.msk.ru>
+ <CAJ+F1CKm891c5-QLPqVYzzykufpbFvMCxPZKfkuYHh1trztQ8w@mail.gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CAJ+F1CKm891c5-QLPqVYzzykufpbFvMCxPZKfkuYHh1trztQ8w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,54 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
+24.07.2024 13:25, Marc-André Lureau wrote:
+> Hi
+> 
+> On Wed, Jul 24, 2024 at 8:48 AM Michael Tokarev <mjt@tls.msk.ru <mailto:mjt@tls.msk.ru>> wrote:
+> 
+>     22.07.2024 12:52, songziming wrote:
+>      > If I use `-serial stdio` on Windows, after QEMU exits, the terminal
+>      > could not handle arrow keys and tab any more. Because stdio backend
+>      > on Windows sets console mode to virtual terminal input when starts,
+>      > but does not restore the old mode when finalize.
+>      >
+>      > This small patch saves the old console mode and set it back.
+> 
+>     Is this a stable@ material?
+> 
+> 
+> It should be safe, but I don't think it deserves a stable backport: it always had that behaviour before.
 
-On Wed, Jul 24, 2024 at 10:03:02PM +0800, Zhao Liu wrote:
-> Date: Wed, 24 Jul 2024 22:03:02 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
-> 
-> On Wed, Jul 24, 2024 at 01:47:16PM +0100, Daniel P. Berrang? wrote:
-> > Date: Wed, 24 Jul 2024 13:47:16 +0100
-> > From: "Daniel P. Berrang?" <berrange@redhat.com>
-> > Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
-> > 
-> > On Wed, Jul 24, 2024 at 01:35:17PM +0200, Markus Armbruster wrote:
-> > > Zhao Liu <zhao1.liu@intel.com> writes:
-> > > 
-> > > > Hi Markus,
-> > > >> SmpCachesProperties and SmpCacheProperties would put the singular
-> > > >> vs. plural where it belongs.  Sounds a bit awkward to me, though.
-> > > >> Naming is hard.
-> > > >
-> > > > For SmpCachesProperties, it's easy to overlook the first "s".
-> > > >
-> > > >> Other ideas, anybody?
-> > > >
-> > > > Maybe SmpCacheOptions or SmpCachesPropertyWrapper?
-> > > 
-> > > I wonder why we have a single QOM object to configure all caches, and
-> > > not one QOM object per cache.
-> > 
-> > Previous versions of this series were augmenting the existing
-> > -smp command line.
-> 
-> Ah, yes, since -smp, as a sugar option of -machine, doesn't support
-> JSON. In -smp, we need to use keyval's style to configure as:
-> 
-> -smp caches.0.name=l1i,caches.0.topo=core
-> 
-> I think JSON is the more elegant way to go, so I chose -object.
-
-I may have to retract this assertion considering more issues, I could
-fall back to -smp and support it in keyval format, I think it's also ok
-for me if you also like keyval format, sorry for my repetition, we can
-discuss this in this thread:
-
-https://lore.kernel.org/qemu-devel/20240704031603.1744546-1-zhao1.liu@intel.com/T/#m8adba8ba14ebac0c9935fbf45983cc71e53ccf45
+Well. "It was always wrong" does not mean it shouldn't be fixed, I'd say :)
+In my view, a bug is a bug and it's okay to fix it even if it was here since
+the day one.
 
 Thanks,
-Zhao
 
-
+/mjt
 
