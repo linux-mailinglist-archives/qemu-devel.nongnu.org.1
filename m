@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A7193B903
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AEB93B8F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:07:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWk8N-0001x0-C9; Wed, 24 Jul 2024 18:06:55 -0400
+	id 1sWk8O-0002L7-MC; Wed, 24 Jul 2024 18:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8F-0001cj-UX
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:47 -0400
-Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8H-0001h6-07
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:49 -0400
+Received: from mail-io1-xd2e.google.com ([2607:f8b0:4864:20::d2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8E-0006f1-9O
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:47 -0400
-Received: by mail-io1-xd35.google.com with SMTP id
- ca18e2360f4ac-7f70a708f54so12523339f.3
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8F-0006fQ-Ai
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:48 -0400
+Received: by mail-io1-xd2e.google.com with SMTP id
+ ca18e2360f4ac-816b627a7b6so11563439f.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858805; x=1722463605;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858806; x=1722463606;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tlPxaf48ESlCF6z303PSbBfya6HxzRZ782+k35fLNmg=;
- b=fxx7QMxVEn/hGx3Z5WzUC4WOa3IXuhi2T9lNAUuQckrp/L6YegnNabSvWfS77KhjrV
- joJ2mlk7af5joyktCYQanrqxrGgO3eJ188eG7p0KW1gNY7iGjvF/8lN9EzExQeRMRfVJ
- y2NEnpsxjqulJwW7zeccmb7mCvkXIEZNQ8Q0BtlXtC0vMzZpohQOKY/97MsZCsd4dUew
- 6tvl/W8OVjfxCEAfDnGFZs4GkA/cAEStalYAKbUxH0Hbsm8mTm4PbQc9qw9q2fIruI3j
- yokR9QoQ2411JSYtlB0ddT9ywBA1sgYqP7GHFIiNarv5fjHp3USP+ZQi0I8HNJ7MnOOk
- DY1g==
+ bh=tYJVjZqOXEiJ+YQNx+XkrkSOeWdwAX68dW81gy1dzYg=;
+ b=p5CmUrShRpFYoxMZRHsdg0U8AowhqNCq1m0f+xYJ+98p2GFKV4fs1feTeCjknjVeIY
+ r/PtaV1dHDFhFs8dx/6FV3I5X6djjR2HaW1kjBtwrKP9mkIfCRhe2/YHK4b1gI5cZ4xF
+ 5+b1NI9+UTB1C3DBkv/B2IwDMw8SzGzNS0gBk0lKSAlIWIu/FxmQQ8HK9dHmziG/UnEW
+ 4QxbNP9MSixln5PolTTfMrDdcyO/EHCgWa36y587QT5hVZX9Y9oTsY8AP7POvUbikj79
+ TsTqMRfwtPrmxcUirdzfSD5Rrr2KOI5Kk6UipEBXhyfZ0DDCeLQFb+QR+JIcWzcq4gRj
+ /1Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721858805; x=1722463605;
+ d=1e100.net; s=20230601; t=1721858806; x=1722463606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tlPxaf48ESlCF6z303PSbBfya6HxzRZ782+k35fLNmg=;
- b=nBi25dmTPdJc7W2uNkpZXvJF/+ySfJp+nymHJUIJdqQLOWIPnnIuHf9q1d0YX7rEK8
- uwWhSHHCCzD4FycrCIi2cYKBs9VUahZ6uC1gqbggWJqHtGujoIOZU/3mhH67BwztzZDh
- lVyWBga68qdITzZZ3A2ITAjBCKbh/7UKs/CPPDI8fu4CzfYe608TTbEk3+hYlBvLK8Y7
- 9O14mUqkApGAGd+3fzlgRYYLhDT74MgYm2hOh62l4hElfB0+EC6lO9S440FY7R6WetaO
- Z0SEp1tX1I/XTwHy5Ky2JbbdCd7yUsQsXWT+7nufIAIDOoUMClfjvnMU7uRHOc2PPiFt
- Gysw==
-X-Gm-Message-State: AOJu0YxrBeuP35U804x6aVG5WH23HpEgxoiE7JvQ8BqK1SKPUrgsoAwx
- ktfoHQMCJk/h+wHcDy/V7BhqowtYLl3l09TDaTe5WEf7UAhojg7zHbJN4GHj2/VZr7nO96D9DIc
- QSX0=
-X-Google-Smtp-Source: AGHT+IEEDJyC9YOGHODsW8O+uRIMRt7uYzOsva1xjOBFYbFnhWIlF91mswEA7XwB2BsvZQpzKtvEPA==
-X-Received: by 2002:a05:6602:6342:b0:7f9:1b3b:8465 with SMTP id
- ca18e2360f4ac-81f7be7104dmr137960439f.11.1721858804899; 
- Wed, 24 Jul 2024 15:06:44 -0700 (PDT)
+ bh=tYJVjZqOXEiJ+YQNx+XkrkSOeWdwAX68dW81gy1dzYg=;
+ b=Nq5/m9wEU5Fjhg3xXXQoYgpkJqGLXWcjhpBQ/972myhW2v89rt2obA5YYEITl6rbjw
+ mvXDFxCsiyAyDVsy/jYK0yHG0FgU/2jYuUb8hplD8RuwJZoELZAplUNL9ELsudczzRPu
+ d+nGPWqwDwpCPol4EDW1zwNltj4cFBSe+51nPhkKRp9xGjse1gPR/wkuAG70aIzqpoTu
+ nUj/LVmfUf6n8NJZV7czQXd7TPwYLbrYZlNWevZMVuh2X3s1s4D6z28KqHIqV4PToUCT
+ ir6oiuRj7hz529O3dgCCvNnF3kpOvP6CwU+ezHdiZBczFZ04Smt0D7JBR0aOIR5cYfWQ
+ /H1g==
+X-Gm-Message-State: AOJu0YxvFRl8Z9TpNSdPwW5kE1pYTdos5Jyt9WE+0pB4Z8yiX7gykLtN
+ 9Nst0St5bVQK47XEk1rvy26XhDLNHBMepa4lx8Bi4A7QTDr87jBGlr8Dcj13ylxQYwWGrP7Pcqz
+ 98pQ=
+X-Google-Smtp-Source: AGHT+IF1fs6xm7NZeRcOfJN8VAgGfFJDqOkSx5P+hYIzovJkARiaW7A6EHwSUZmwMg6OSd/ETYikCQ==
+X-Received: by 2002:a05:6602:27d1:b0:7f7:d2c7:3b7a with SMTP id
+ ca18e2360f4ac-81f7e2f0af6mr22411639f.0.1721858805960; 
+ Wed, 24 Jul 2024 15:06:45 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.43
+ 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 15:06:44 -0700 (PDT)
+ Wed, 24 Jul 2024 15:06:45 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Warner Losh <imp@bsdimp.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 14/15] bsd-user: Add aarch64 build to tree
-Date: Wed, 24 Jul 2024 16:04:47 -0600
-Message-ID: <20240724220449.10398-15-imp@bsdimp.com>
+ Peter Maydell <peter.maydell@linaro.org>, Warner Losh <imp@bsdimp.com>
+Subject: [PULL 15/15] bsd-user: Add target.h for aarch64.
+Date: Wed, 24 Jul 2024 16:04:48 -0600
+Message-ID: <20240724220449.10398-16-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240724220449.10398-1-imp@bsdimp.com>
 References: <20240724220449.10398-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d35;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd35.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2e;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,24 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the aarch64 bsd-user fragments needed to build the new aarch64 code.
+For aarch64, it's a 64-bit API, so there's no pairing of registers for
+64-bit values.
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- configs/targets/aarch64-bsd-user.mak | 3 +++
- 1 file changed, 3 insertions(+)
- create mode 100644 configs/targets/aarch64-bsd-user.mak
+ bsd-user/aarch64/target.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+ create mode 100644 bsd-user/aarch64/target.h
 
-diff --git a/configs/targets/aarch64-bsd-user.mak b/configs/targets/aarch64-bsd-user.mak
+diff --git a/bsd-user/aarch64/target.h b/bsd-user/aarch64/target.h
 new file mode 100644
-index 00000000000..8aaa5d8c802
+index 00000000000..702aeb7fc57
 --- /dev/null
-+++ b/configs/targets/aarch64-bsd-user.mak
-@@ -0,0 +1,3 @@
-+TARGET_ARCH=aarch64
-+TARGET_BASE_ARCH=arm
-+TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
++++ b/bsd-user/aarch64/target.h
+@@ -0,0 +1,20 @@
++/*
++ * Aarch64 general target stuff that's common to all aarch details
++ *
++ * Copyright (c) 2022 M. Warner Losh <imp@bsdimp.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef TARGET_H
++#define TARGET_H
++
++/*
++ * aaarch64 ABI does not 'lump' the registers for 64-bit args.
++ */
++static inline bool regpairs_aligned(void *cpu_env)
++{
++    return false;
++}
++
++#endif /* TARGET_H */
 -- 
 2.45.1
 
