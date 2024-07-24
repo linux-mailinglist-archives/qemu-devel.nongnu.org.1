@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FECF93B8FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A7193B903
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:10:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWk8J-0001eY-GR; Wed, 24 Jul 2024 18:06:51 -0400
+	id 1sWk8N-0001x0-C9; Wed, 24 Jul 2024 18:06:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8E-0001XJ-Ro
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8F-0001cj-UX
  for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:47 -0400
-Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
+Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8D-0006eh-7i
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:46 -0400
-Received: by mail-io1-xd30.google.com with SMTP id
- ca18e2360f4ac-7f97e794f34so11561339f.3
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8E-0006f1-9O
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:47 -0400
+Received: by mail-io1-xd35.google.com with SMTP id
+ ca18e2360f4ac-7f70a708f54so12523339f.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858804; x=1722463604;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858805; x=1722463605;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sKGM9WxUN43+saolT8pUI05xHvMsh3XU6bG+jc3msxQ=;
- b=fj0DpHg4ax3OrtyshVGMggH2e9cZJw2LH+0ojPaVgcqKZWQE2pSA9JMy031cRpldl8
- kGXOJkLfBqAfwHKPhu0T5v+V4Cqir9Uv/JdZyIQzAySbVx66xkrLbnl3fPc2CPS0sThQ
- 3dfvqi8fcPHBDzAORCixXraDV/fd5+I6usOLJXdnoFajrfl6cOOhoJ7Bqa0B5JWJHuZ5
- L4jrhQrolV1m3aUo7pqLUqoq6B9CMOpynd8vEFP7svtE0l6if7+9DxHeF4+4zeNC0nVh
- nlumkNKglAEhcsIx28l22AGS3ocZA/1FfG89mFvI6YDzq4Sh+0OqoDN4U6eusNlHDKB3
- FKLg==
+ bh=tlPxaf48ESlCF6z303PSbBfya6HxzRZ782+k35fLNmg=;
+ b=fxx7QMxVEn/hGx3Z5WzUC4WOa3IXuhi2T9lNAUuQckrp/L6YegnNabSvWfS77KhjrV
+ joJ2mlk7af5joyktCYQanrqxrGgO3eJ188eG7p0KW1gNY7iGjvF/8lN9EzExQeRMRfVJ
+ y2NEnpsxjqulJwW7zeccmb7mCvkXIEZNQ8Q0BtlXtC0vMzZpohQOKY/97MsZCsd4dUew
+ 6tvl/W8OVjfxCEAfDnGFZs4GkA/cAEStalYAKbUxH0Hbsm8mTm4PbQc9qw9q2fIruI3j
+ yokR9QoQ2411JSYtlB0ddT9ywBA1sgYqP7GHFIiNarv5fjHp3USP+ZQi0I8HNJ7MnOOk
+ DY1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721858804; x=1722463604;
+ d=1e100.net; s=20230601; t=1721858805; x=1722463605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sKGM9WxUN43+saolT8pUI05xHvMsh3XU6bG+jc3msxQ=;
- b=btlEqQ8K2fWuLUbJdilg4NNBDwOtD6PZqm+/Q/2aFk1Td4hrk1yoaAUS7hWaPjO9uX
- mVMd7R9VSsbRqVjVtGIqXAbylIIcq7F81jWY7CUEcPu5AlQzxA93HYWCrSUozVVQaliA
- W+6KAvMR2tYitYFXkdUp2AX+K9o/gtRwdSvA1ahrGWCzNIZtuRu0HIZRVRN4Mb4N2X0g
- 3GyFIUvvJ5HFNPa65wLxsClW9sl6ls62X4xOjRHY/1O4sgjEOX0s63TGA7xwD2fQlQmo
- P0AuYJZCn9cppzJSY3PyZ4e7IEpT2CrsgFYTLyCGQ9NXVwPArae6Wpx+b9Qktf5fqbid
- ASmg==
-X-Gm-Message-State: AOJu0YzZkQqi2OCsy7i2Ve459F4F3qkFBA3cdmn7c/g6PBSBnWNRaG9o
- an9sHCFhDFz5TlVcsmMCmClFjAVEwU4P4kgpCO+2EmgsZHBpHNuFEAQQgPPCWuR76VECTIczTFw
- gWvw=
-X-Google-Smtp-Source: AGHT+IEnnOcG3amLwauDTAEsZVbqMoLajLr1bsbICTS01m0+c0LN7TKLMm9Wcy4TgoKOqRk7nYyN/A==
-X-Received: by 2002:a05:6602:6417:b0:816:ec51:f415 with SMTP id
- ca18e2360f4ac-81f7ba78fb7mr165580839f.0.1721858803744; 
- Wed, 24 Jul 2024 15:06:43 -0700 (PDT)
+ bh=tlPxaf48ESlCF6z303PSbBfya6HxzRZ782+k35fLNmg=;
+ b=nBi25dmTPdJc7W2uNkpZXvJF/+ySfJp+nymHJUIJdqQLOWIPnnIuHf9q1d0YX7rEK8
+ uwWhSHHCCzD4FycrCIi2cYKBs9VUahZ6uC1gqbggWJqHtGujoIOZU/3mhH67BwztzZDh
+ lVyWBga68qdITzZZ3A2ITAjBCKbh/7UKs/CPPDI8fu4CzfYe608TTbEk3+hYlBvLK8Y7
+ 9O14mUqkApGAGd+3fzlgRYYLhDT74MgYm2hOh62l4hElfB0+EC6lO9S440FY7R6WetaO
+ Z0SEp1tX1I/XTwHy5Ky2JbbdCd7yUsQsXWT+7nufIAIDOoUMClfjvnMU7uRHOc2PPiFt
+ Gysw==
+X-Gm-Message-State: AOJu0YxrBeuP35U804x6aVG5WH23HpEgxoiE7JvQ8BqK1SKPUrgsoAwx
+ ktfoHQMCJk/h+wHcDy/V7BhqowtYLl3l09TDaTe5WEf7UAhojg7zHbJN4GHj2/VZr7nO96D9DIc
+ QSX0=
+X-Google-Smtp-Source: AGHT+IEEDJyC9YOGHODsW8O+uRIMRt7uYzOsva1xjOBFYbFnhWIlF91mswEA7XwB2BsvZQpzKtvEPA==
+X-Received: by 2002:a05:6602:6342:b0:7f9:1b3b:8465 with SMTP id
+ ca18e2360f4ac-81f7be7104dmr137960439f.11.1721858804899; 
+ Wed, 24 Jul 2024 15:06:44 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.42
+ 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 15:06:42 -0700 (PDT)
+ Wed, 24 Jul 2024 15:06:44 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/15] bsd-user: Make compile for non-linux user-mode stuff
-Date: Wed, 24 Jul 2024 16:04:46 -0600
-Message-ID: <20240724220449.10398-14-imp@bsdimp.com>
+Subject: [PULL 14/15] bsd-user: Add aarch64 build to tree
+Date: Wed, 24 Jul 2024 16:04:47 -0600
+Message-ID: <20240724220449.10398-15-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240724220449.10398-1-imp@bsdimp.com>
 References: <20240724220449.10398-1-imp@bsdimp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d30;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd30.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d35;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd35.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,40 +92,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We include the files that define PR_MTE_TCF_SHIFT only on Linux, but use
-them unconditionally. Restrict its use to Linux-only.
-
-"It's ugly, but it's not actually wrong."
+Add the aarch64 bsd-user fragments needed to build the new aarch64 code.
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/gdbstub64.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ configs/targets/aarch64-bsd-user.mak | 3 +++
+ 1 file changed, 3 insertions(+)
+ create mode 100644 configs/targets/aarch64-bsd-user.mak
 
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index c8cef8cbc0e..5221381cc85 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -404,6 +404,7 @@ int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
- 
- int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
- {
-+#if defined(CONFIG_LINUX)
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
- 
-@@ -425,6 +426,9 @@ int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
-     arm_set_mte_tcf0(env, tcf);
- 
-     return 1;
-+#else
-+    return 0;
-+#endif
- }
- 
- static void handle_q_memtag(GArray *params, void *user_ctx)
+diff --git a/configs/targets/aarch64-bsd-user.mak b/configs/targets/aarch64-bsd-user.mak
+new file mode 100644
+index 00000000000..8aaa5d8c802
+--- /dev/null
++++ b/configs/targets/aarch64-bsd-user.mak
+@@ -0,0 +1,3 @@
++TARGET_ARCH=aarch64
++TARGET_BASE_ARCH=arm
++TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
 -- 
 2.45.1
 
