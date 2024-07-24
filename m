@@ -2,107 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3CE993B7A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 21:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161B493B7AD
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 21:48:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWhsU-0005tU-TA; Wed, 24 Jul 2024 15:42:22 -0400
+	id 1sWhxo-0002a9-OM; Wed, 24 Jul 2024 15:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1sWhsS-0005sW-2d; Wed, 24 Jul 2024 15:42:20 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1sWhsP-0004Vr-62; Wed, 24 Jul 2024 15:42:19 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46OJP0J4015086;
- Wed, 24 Jul 2024 19:42:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:date:mime-version:subject:to:cc:references:from
- :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=V
- KpNJvi1ceeUf4Mup5glbUF7/HsMe4e66Uwyw1DrtSI=; b=kl1eYke1vLZYVc0jp
- yF12Lg7XGG0AONDlyDnncmmuRtLlHl+zJY0WIBUFsci1jAvdWJIE2Har2pYyHMph
- cb3NV+ykeP+KUFDnHtAe+cGskuntJAdN5fFOj6VQM3XNj/Hsx5pnsPatcUCtyzNf
- pMjcosKyRYw+4G2SA0xA9lh9TfyPfEW0pVVyYgIlUrvTsqoo4H5wb38kKojfMFmr
- /L6kb/pwZGdcfk8SmXtkYxJWpWmND52sbRl/s0jSqdd5urog0NwN5qAntsqpys/v
- RvfYTh+ENJEreCmfrmkMydriXbJode25Uejv4dxiQ6pmrBQ+PsX0/UR+UqX6w8xx
- 6z0Qw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40k6208bhy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jul 2024 19:42:06 +0000 (GMT)
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46OJg5UJ012338;
- Wed, 24 Jul 2024 19:42:05 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40k6208bhv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jul 2024 19:42:05 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46OJFDcJ007861; Wed, 24 Jul 2024 19:42:04 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40gxna1p0r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jul 2024 19:42:04 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46OJg1Wm49414450
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Jul 2024 19:42:04 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC1EF5805F;
- Wed, 24 Jul 2024 19:42:01 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D95505805E;
- Wed, 24 Jul 2024 19:42:00 +0000 (GMT)
-Received: from [9.12.68.85] (unknown [9.12.68.85])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Wed, 24 Jul 2024 19:42:00 +0000 (GMT)
-Message-ID: <9f8023a4-3edd-476f-9243-677138be3921@linux.ibm.com>
-Date: Wed, 24 Jul 2024 15:42:00 -0400
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sWhxT-0002Mo-A1
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 15:47:32 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sWhxP-0006E2-Bs
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 15:47:29 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-70d1d6369acso919739b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 12:47:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721850437; x=1722455237; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2T6v7O+qpLKDTCsjZT5QHx2PqI6oPBcDkqwMfHyRUkE=;
+ b=P2tV2EWMBkEoI3GgTrgZd6QaGxwwC0OFKbWzdo4trnT86vT6NuRGmcrlL/NcqwIzKL
+ 9izXnwkGxzMwD2Cr9NITxEDWMRq6quRgo5iKUv4yFYaZy9Hjas6PUbZBgSMo5C8q4Zh4
+ qfAiRFgpLBP0d8VwgVJ+DJoBFT14M9yAySTIgPbnLogzK7mE8fSLsnCdeVNrtNfGR3x/
+ v/nRaCKl3qhl1vz1XgBEpc9AQujToUP0UBXCaUUF6A25EQH1CCUV2Cp2GgIkQMM/bb7c
+ F/8ETWowcV3KpiRlM0+Qq3s/JtJJaEuUVpzgev15rXs+TJj9a15MVyLlT8KMjg1bIxyi
+ 3Pjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721850437; x=1722455237;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2T6v7O+qpLKDTCsjZT5QHx2PqI6oPBcDkqwMfHyRUkE=;
+ b=K7asuq1jtQvFccPxoZKJLAVP3nIfo+o4zGVQeWd4rRLA3TNqPnBlcqUEsYLCHEbKS1
+ 4/mxJ/I17bTD9ZV3QkhONpq3cOfrfRMFW0HoDXqWIZcb5AgHakJIacEOU7jJStnedxV1
+ +TYYnb9v41HUYXeWzlzPvVhXU9iW4Knp2Nwax6Oj6I1FfFSp9TqObdohadS5XYKTCpS9
+ 07UtYkeaad5fLz9A14ibuWsZvY20B5ayRET1r+d8UdYE1PdnbnTbdpbWfZGJGesXBF4k
+ soK2/VXbIFoAJ4Us3gBtq7hW+OHbTrYi64itwEmSSw4K6nM7YbZnEZeLyNyUsl2lV3jh
+ YL3g==
+X-Gm-Message-State: AOJu0Yxozkfub44GSsvRucCIljPt+1/dFrX1PihUavg9vmcnwrt3W8jM
+ s3cx1RRHOO2FpLBAJ2P0ennlS37lmfwfh+Wz5RgoG2YcVCAvso8WxCBIl6Ob0YbwPmQknGRuKRI
+ Fbrg=
+X-Google-Smtp-Source: AGHT+IFQTvOtHbRAOqVFOhZ/T0sHd2V2luKguAXGf535oKGLLAueB6ifv9GlsJ/Ta1G2bUq6cWAbhQ==
+X-Received: by 2002:a05:6a20:2451:b0:1c3:acd1:5caf with SMTP id
+ adf61e73a8af0-1c47403db98mr900138637.23.1721850437179; 
+ Wed, 24 Jul 2024 12:47:17 -0700 (PDT)
+Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70d19c52a62sm6339116b3a.124.2024.07.24.12.47.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Jul 2024 12:47:16 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Alexandre Iooss <erdnaxe@crans.org>, Zhao Liu <zhao1.liu@intel.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v7 0/6] plugins: access values during a memory read/write
+Date: Wed, 24 Jul 2024 12:47:02 -0700
+Message-Id: <20240724194708.1843704-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] target/s390x: filter deprecated properties based on
- model expansion type
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, thuth@redhat.com,
- david@redhat.com, wangyanan55@huawei.com, philmd@linaro.org,
- marcel.apfelbaum@gmail.com, eduardo@habkost.net,
- Jiri Denemark <jdenemar@redhat.com>
-References: <20240719181741.35146-1-walling@linux.ibm.com>
- <87h6cksk4h.fsf@pond.sub.org>
- <28ea8260-a411-4651-8e2a-1fcc009f5043@linux.ibm.com>
- <87bk2nrzou.fsf@pond.sub.org>
-Content-Language: en-US
-From: Collin Walling <walling@linux.ibm.com>
-In-Reply-To: <87bk2nrzou.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VG5paRh5nK4slt0I1_2kmzFUDTd8BaEd
-X-Proofpoint-GUID: uzD6kWLiGSuinlCiWm8yVYZRhn1sNnii
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-24_21,2024-07-24_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- suspectscore=0 adultscore=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2407240139
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=walling@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,231 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/24 3:56 AM, Markus Armbruster wrote:
-> Collin Walling <walling@linux.ibm.com> writes:
-> 
->> On 7/20/24 1:33 AM, Markus Armbruster wrote:
->>> Collin Walling <walling@linux.ibm.com> writes:
->>>
->>>> Currently, there is no way to execute the query-cpu-model-expansion
->>>> command to retrieve a comprehenisve list of deprecated properties, as
->>>> the result is dependent per-model. To enable this, the expansion output
->>>> is modified as such:
->>>>
->>>> When reporting a "full" CPU model, show the *entire* list of deprecated
->>>> properties regardless if they are supported on the model. A full
->>>> expansion outputs all known CPU model properties anyway, so it makes
->>>> sense to report all deprecated properties here too.
->>>>
->>>> This allows management apps to query a single model (e.g. host) to
->>>> acquire the full list of deprecated properties.
->>>>
->>>> Additionally, when reporting a "static" CPU model, the command will
->>>> only show deprecated properties that are a subset of the model's
->>>> *enabled* properties. This is more accurate than how the query was
->>>> handled before, which blindly reported deprecated properties that
->>>> were never otherwise introduced for certain models.
->>>>
->>>> Acked-by: David Hildenbrand <david@redhat.com>
->>>> Suggested-by: Jiri Denemark <jdenemar@redhat.com>
->>>> Signed-off-by: Collin Walling <walling@linux.ibm.com>
->>>> ---
->>>>
->>>> Changelog:
->>>>
->>>>     v3
->>>>     - Removed the 'note' and cleaned up documentation
->>>>     - Revised commit message
->>>>
->>>>     v2
->>>>     - Changed commit message
->>>>     - Added documentation reflecting this change
->>>>     - Made code changes that more accurately filter the deprecated
->>>>         properties based on expansion type.  This change makes it
->>>>         so that the deprecated-properties reported for a static model
->>>>         expansion are a subset of the model's properties instead of
->>>>         the model's full-definition properties.
->>>>
->>>> ---
->>>>  qapi/machine-target.json         |  5 +++--
->>>>  target/s390x/cpu_models_sysemu.c | 16 +++++++++-------
->>>>  2 files changed, 12 insertions(+), 9 deletions(-)
->>>>
->>>> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
->>>> index a8d9ec87f5..67086f006f 100644
->>>> --- a/qapi/machine-target.json
->>>> +++ b/qapi/machine-target.json
->>>> @@ -21,8 +21,9 @@
->>>>  # @props: a dictionary of QOM properties to be applied
->>>>  #
->>>>  # @deprecated-props: a list of properties that are flagged as deprecated
->>>> -#     by the CPU vendor.  These props are a subset of the full model's
->>>> -#     definition list of properties. (since 9.1)
->>>> +#     by the CPU vendor.  These properties are either a subset of the
->>>> +#     properties enabled on the CPU model, or a set of properties
->>>> +#     deprecated across all models for the architecture.
->>>
->>>
->>> When is it "a subset of the properties enabled on the CPU model", and
->>> when is it "a set of properties deprecated across all models for the
->>> architecture"?
->>>
->>> My guess based on the commit message: it's the former when
->>> query-cpu-model-expansion's type is "static", and the latter when it's
->>> "full".
->>>
->>
->> Correct.  I'm not confident where or how to document this dependency
->> since cross-referencing commands/data structures does not seem to be the
->> convention here.  My first thought is to mention how deprecated
->> properties are expanded under the @CpuModelExpansionType.  Something like:
->>
->> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
->> index 67086f006f..3f38c5229f 100644
->> --- a/qapi/machine-target.json
->> +++ b/qapi/machine-target.json
->> @@ -44,11 +44,15 @@
->>  #     options, and accelerator options.  Therefore, the resulting
->>  #     model can be used by tooling without having to specify a
->>  #     compatibility machine - e.g. when displaying the "host" model.
->> -#     The @static CPU models are migration-safe.
->> +#     The @static CPU models are migration-safe.  Deprecated
->> +#     properties are a subset of the properties enabled for the
->> +#     expanded model.
->>  #
->>  # @full: Expand all properties.  The produced model is not guaranteed
->>  #     to be migration-safe, but allows tooling to get an insight and
->> -#     work with model details.
->> +#     work with model details.  Deprecated properties are a set of
->> +#     properties that are deprecated across all models for the
->> +#     architecture.
->>  #
->>  # .. note:: When a non-migration-safe CPU model is expanded in static
->>  #    mode, some features enabled by the CPU model may be omitted,
->>
->> Thoughts?
-> 
-> The distance between @deprecated-props and parts of its documentation
-> bothers me a bit.
+This series allows plugins to know which value is read/written during a memory
+access.
 
-Let me try to explain the purpose of @deprecated-props and see if it
-helps bring us closer to some semblance of a mutual understanding so we
-can work together on a concise documentation for this field.
+For every memory access, we know copy this value before calling mem callbacks,
+and those can query it using new API function:
+- qemu_plugin_mem_get_value
 
-s390 has been announcing features as deprecated for some time now, which
-was fine as a way to let users know that they should tune their guests
-to no longer user these features.  Now that we are approaching the
-release of generations that will drop these deprecated features
-outright, we encounter an issue: if users have not been mindful with
-disabling these announced-deprecated-features, then their guests running
-on older models will not be able to migrate to machines running on newer
-hardware.
+Mem plugin was extended to print accesses, and a new test was added to check
+functionality work as expected. A bug was found where callbacks were not
+called as expected.
 
-To alleviate this, I've added the @deprecated-props array to the
-CpuModelInfo struct, and this field is populated by a
-query-cpu-model-expansion* return.  It is up the the user/management app
-to make use of this data.
+This will open new use cases for plugins, such as tracking specific values in
+memory.
 
-On the libvirt side (currently in development), I am able to easily
-retrieve the host-model with a full expansion, parse the
-@deprecated-props, and then cache them for later use (e.g. when
-reporting the host-model with these features disabled, or enabling a
-user to define their domain with deprecated-features disabled via a
-convenient XML attribute).
+Needs review:
+Patch 7: tests/tcg/multiarch: add test for plugin memory access
 
-tl;dr @deprecated-props is only reported via a
-query-cpu-model-expansion, and it is up to the user/management app to
-figure out what to do with them.
+v7
+- renamed variable for adding plugins tests in Makefile
+- do not run any command when plugin output should not be checked (thanks Alex)
+- add LICENSE + summary for tests/tcg/multiarch/test-plugin-mem-access.c
+- test for mem access is now multiarch (tested on aarch64, x86_64, i386)
 
-> 
-> On closer examination, more questions on CpuModelInfo emerge.  Uses:
-> 
+v6
+- fix big endian offset for plugin_gen_mem_callbacks_i32
 
-I will attempt to expand on each input @model (CpuModelInfo) as if they
-were documented in the file.
+v5
+- fixed width output for mem values in mem plugin
+- move plugin_mem_value to CPUNegativeOffset
+- tcg/tcg-op-ldst.c: only store word size mem access (do not set upper bits)
 
-> * query-cpu-model-comparison both arguments
-> 
->   Documentation doesn't say how exactly the command uses the members of
->   CpuModelInfo, i.e. @name, @props, @deprecated-props.  Can you tell me?
-> 
+v4
+- fix prototype for stubs qemu_plugin_vcpu_mem_cb (inverted low/high parameters
+  names)
+- link gitlab bugs resolved (thanks @Anton Kochkov for reporting)
+  https://gitlab.com/qemu-project/qemu/-/issues/1719
+  https://gitlab.com/qemu-project/qemu/-/issues/2152
 
-Note: Compares ModelA and ModelB.
+v3
+- simplify API: return an algebraic data type for value accessed
+  this can be easily extended when QEMU will support wider accesses
+- fix Makefile test (use quiet-command instead of manually run the command)
+- rename upper/lower to high/low
+- reorder functions parameters and code to low/high instead of high/low, to
+  follow current convention in QEMU codebase
 
-Both @models must include @name.  @props is optional.  @deprecated-props
-is ignored.
+v2
+- fix compilation on aarch64 (missing undef in accel/tcg/atomic_template.h)
 
-@name: the name of the CPU model definition to look up.  The definition
-will be compared against the generation, GA level, and a static set of
-properties of the opposing model.
+v3
+- add info when printing memory accesses (insn_vaddr,mem_vaddr,mem_hwaddr)
 
-@props: a set of additional properties to include in the model's set of
-properties to be compared.
+Pierrick Bouvier (6):
+  plugins: save value during memory accesses
+  plugins: extend API to get latest memory value accessed
+  tests/tcg: add mechanism to run specific tests with plugins
+  tests/tcg: allow to check output of plugins
+  tests/plugin/mem: add option to print memory accesses
+  tests/tcg/multiarch: add test for plugin memory access
 
-@deprecated-props: ignored.  The user should consider these properties
-beforehand and decide if these properties should be disabled/omitted on
-the respective model.
-
-> * query-cpu-model-expansion argument @model and return value member
->   @model.
-> 
->   The other argument is the expansion type, on which the value of return
->   value model.deprecated-props depends, I believe.  Fine.
-> 
->   Documentation doesn't say how exactly the command uses the members of
->   CpuModelInfo arguments, i.e. @name, @props, @deprecated-props.  Can
->   you tell me?
-> 
-
-The @model must include @name.  @props is optional.  @deprecated-props
-is ignored.
-
-@name: the name of the CPU model definition to look up.  The definition
-is associated with a set of properties that will populate the return data.
-
-@props: a set of additional properties to include in the model's set of
-expanded properties.
-
-@deprecated-props: ignored.  The user should consider these properties
-beforehand and decide if these properties should be disabled/omitted on
-the model.
-
-> * query-cpu-model-baseline both arguments and return value member
->   @model.
-> 
->   Same, except we don't have an expansion type here.  So same question,
->   plus another one: how does return value model.deprecated-props behave?
-> 
-
-Note: Creates a baseline model based on ModelA and ModelB.
-
-The @models must include @name.  @props is optional.  @deprecated-props
-is ignored.
-
-@name: the name of the CPU model definition to look up.  The definition,
-GA level, and a static set of properties will be used to determine the
-maximum model between ModelA and ModelB.
-
-@props: a set of additional properties to include in the model's set of
-properties to be baselined.
-
-@deprecated-props: ignored.  The user should consider these properties
-beforehand and decide if these properties should be disabled/omitted on
-the respective model.
-
-> If you can't answer my questions, we need to find someone who can.
-> 
-
-Hopefully this provides clarity on how CpuModelInfo and its respective
-fields are used in each command.  @David should be able to fill in any
-missing areas / expand / offer corrections.
-
-> [...]
-> 
-> 
+ accel/tcg/atomic_template.h                   |  66 ++++++-
+ include/hw/core/cpu.h                         |   4 +
+ include/qemu/plugin.h                         |   4 +
+ include/qemu/qemu-plugin.h                    |  32 ++++
+ plugins/api.c                                 |  33 ++++
+ plugins/core.c                                |   6 +
+ tcg/tcg-op-ldst.c                             |  66 ++++++-
+ tests/plugin/mem.c                            |  69 ++++++-
+ tests/tcg/multiarch/test-plugin-mem-access.c  | 175 ++++++++++++++++++
+ accel/tcg/atomic_common.c.inc                 |  13 +-
+ accel/tcg/ldst_common.c.inc                   |  38 ++--
+ plugins/qemu-plugins.symbols                  |   1 +
+ tests/tcg/Makefile.target                     |  12 +-
+ tests/tcg/multiarch/Makefile.target           |   7 +
+ .../tcg/multiarch/check-plugin-mem-access.sh  |  30 +++
+ 15 files changed, 524 insertions(+), 32 deletions(-)
+ create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
+ create mode 100755 tests/tcg/multiarch/check-plugin-mem-access.sh
 
 -- 
-Regards,
-  Collin
+2.39.2
 
 
