@@ -2,74 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50BC93B808
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 22:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF44F93B882
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 23:23:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWiYO-0003cc-21; Wed, 24 Jul 2024 16:25:40 -0400
+	id 1sWjRE-0000y0-Qk; Wed, 24 Jul 2024 17:22:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1sWiYK-0003bc-Ag
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 16:25:36 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1sWiYF-0001Dw-Mk
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 16:25:34 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2c964f5a037so182069a91.0
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 13:25:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721852729; x=1722457529;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=s4YPCnDOIa8NUGfAr2gZ4GzcVNlDcSYa3Xe5483kA78=;
- b=B/2+a1i3re1v4t/0FYrDcWobeIwyA4wU2B7I/dLjSAYtcgCK6topOJbUJeWoiBqTlR
- iY/yrPlHPichTa9BJQw/XRJ7l/VRpbNaiDXc+yT5v1SkXFgbKnj9PXOsUTS7NLIy5JHo
- gO0MmQ/+4A8HA2xbHbxQ6wdi9hcRohOJ7i2ls2U5xouH4YtbDxiflEwdJIhfxYvriV70
- HSjFKd4T17EoOW2M6O2Z6tIAkLjm4/W4BC4r2SbYneDSHsdRD+6zF8q20QxlTAVLq192
- 32yXJlgnKmy0kqfflUpbFoaFUhfv5co0PJpycUZFBmlo/Gv4sihb6jNSFoqq0zlNVIge
- 3jhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721852729; x=1722457529;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=s4YPCnDOIa8NUGfAr2gZ4GzcVNlDcSYa3Xe5483kA78=;
- b=vOWCSAbmkw1nnGcn1l3tzRVU/nft0mNoM+PulA6nLdTD7k97DAOXkewKkSFUKV+tSs
- M5iIpVS2U7UvQQdvxcz4ss/vhy5DawbmUNM+De9DLSpv/vvLD5KCVE/o02NIgLw8lqYg
- N/RJaEcH9IxqESoUGbiy5Dx1PDjlNQh8WEN1znQIKtPg8NjWPu6qnI1wamdMpe9/A1JJ
- hQIAGO9oIrEdoi/wmbio72EI2eF6PmS2lz3wX0sYhSTQ95GdihDcmz5isRan6qMVgHCX
- btWBmN6chkv/aMbmyYaYzvvfkhTNbuzxOAX1QQCCe4erv4O9HiYiJ6fwqJ2SnQJ0jza5
- 1D7A==
-X-Gm-Message-State: AOJu0YyholSMbxtINwZXuaSaSfjUujMtA6DkFGKARi8mH94vDxCulQ99
- PKpwXv+LTSKr1f7W4JB535sawxfIkEqn6d1qfMkvrALz1ibmknNPdnYZvM1b+Jkk2k/afCcEmVk
- 7P39PypNH6+jGZX3f648KfRRlxC8990LvzU6+QA==
-X-Google-Smtp-Source: AGHT+IEuK2iI/6IoXQ4V6bKYEaxM5oNJxA/Kyl8s2J6kIpIN1ADKJHZTga4a68nMyFebb/ZAy4gKNA490/PWzsNLJJY=
-X-Received: by 2002:a17:90a:8407:b0:2c9:3370:56e3 with SMTP id
- 98e67ed59e1d1-2cf238fab75mr704541a91.34.1721852728871; Wed, 24 Jul 2024
- 13:25:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1sWjQy-0000A4-9c; Wed, 24 Jul 2024 17:22:04 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1sWjQu-0000VT-AF; Wed, 24 Jul 2024 17:22:02 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46OKujph028111;
+ Wed, 24 Jul 2024 21:21:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=WL0BIHYsBeJCapukG04x/DzV9z
+ mjrJcmAdGArXJvAZY=; b=EvNRma5cycSBDW2ti2wr0sKpvRlPCQjU4SdlEWb5nj
+ Anh5oVGiuo9B/wrAAtxAxi0363AMsj2MViRttCYuLyS4V1vjSmaDhnlwNSbBWMjV
+ YKHngGgRZgnreQMeN4cyP4ewuKTOV9W0OpZpaoggBHh+bvsYDbeG4BQJVok3A6pk
+ x47p5j7p1OmMbfbG/ppK2fsZGy61eVv8D/BtrpmfvVtetpN1OdJvthyuqZOfs4EX
+ 9HowB3wyP0K+AceHm1VB8FI62JyyoGDk5sHNS12lZfc3/PBY+0blxZ9/SZm2IW4N
+ fGZYSC+VF5nEEOnx7qh/PK6p6Giw5dAjDIjXfQymxHUw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40k6wv8d78-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jul 2024 21:21:46 +0000 (GMT)
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46OLLjkb005213;
+ Wed, 24 Jul 2024 21:21:45 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40k6wv8d76-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jul 2024 21:21:45 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46OJSgiW005876; Wed, 24 Jul 2024 21:21:44 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40gy2pj1gh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jul 2024 21:21:44 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46OLLc9X54984994
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Jul 2024 21:21:40 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95CD620040;
+ Wed, 24 Jul 2024 21:21:38 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E7BD20073;
+ Wed, 24 Jul 2024 21:21:37 +0000 (GMT)
+Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 24 Jul 2024 21:21:37 +0000 (GMT)
+From: Michael Kowal <kowal@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
+ npiggin@gmail.com, milesg@linux.ibm.com
+Subject: [PATCH v4 00/11] XIVE changes for Cache Watch, VSTs, STT and info pic
+Date: Wed, 24 Jul 2024 16:21:19 -0500
+Message-Id: <20240724212130.26811-1-kowal@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20240723180725.99114-1-imp@bsdimp.com>
- <d76f7003-e36e-4b9f-a7db-7e8e962b446d@linaro.org>
-In-Reply-To: <d76f7003-e36e-4b9f-a7db-7e8e962b446d@linaro.org>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 24 Jul 2024 14:25:17 -0600
-Message-ID: <CANCZdfpx=tvtpXkV0AMc7+d2cOPC7c5RDvWJZuWW1cJq+VBjrA@mail.gmail.com>
-Subject: Re: [PULL 00/14] Bsd user for 9.1 patches
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
- Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000042ac9e061e04142e"
-Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
- envelope-from=wlosh@bsdimp.com; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EfNv3iaIY6soOtAbLPXu1x1YLx6ZxNZG
+X-Proofpoint-ORIG-GUID: g6ltgv4xSbsCX25BcrYCJ9CHPr7u7inP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-24_24,2024-07-24_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxlogscore=769
+ priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0 impostorscore=0
+ adultscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2407240150
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,231 +108,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000042ac9e061e04142e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Michael Kowal <kowal@linux.vnet.ibm.com>
 
-On Wed, Jul 24, 2024 at 2:55=E2=80=AFAM Richard Henderson <
-richard.henderson@linaro.org> wrote:
+These changes provide enhanced support of the External Interrupt Virtualization
+Engine.  The changes are focused on the following areas:
+ - Cache Watch, Cache Flush and Sync Injection
+ - Virtual Structure Tables
+ - Set Translation Table
+ - 'info pic' command data that is dumped
 
-> On 7/24/24 04:07, Warner Losh wrote:
-> > The following changes since commit
-> 3cce8bd4d737f2ca688bbdcb92cd5cc683245bbd:
-> >
-> >    Merge tag 'ui-pull-request' ofhttps://
-> gitlab.com/marcandre.lureau/qemu into staging (2024-07-23 15:23:05 +1000)
-> >
-> > are available in the Git repository at:
-> >
-> >    git@gitlab.com:bsdimp/qemu.git tags/bsd-user-for-9.1-pull-request
-> >
-> > for you to fetch changes up to afdb6be1bd8528395af65a087bd668bf7a42ab99=
-:
-> >
-> >    bsd-user: Add aarch64 build to tree (2024-07-23 10:56:30 -0600)
-> >
-> > ----------------------------------------------------------------
-> > bsd-user: Misc changes for 9.1 (I hope)
-> >
-> > This patch series includes two main sets of patches. To make it simple =
-to
-> > review, I've included the changes from my student which the later
-> changes depend
-> > on. I've included a change from Jessica and Doug as well. I've reviewed
-> them,
-> > but more eyes never hurt.
-> >
-> > I've also included a number of 'touch up' patches needed either to get
-> the
-> > aarch64 building, or to implmement suggestions from prior review cycles=
-.
-> The
-> > main one is what's charitably described as a kludge: force aarch64 to
-> use 4k
-> > pages. The qemu-project (and blitz branch) hasn't had the necessary
-> changes to
-> > bsd-user needed to support variable page size.
-> >
-> > Sorry this is so late... Live has conspired to delay me.
->
-> Something didn't get committed properly, as it doesn't build:
->
-> $ ninja
-> [343/1144] Compiling C object
-> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o
-> FAILED: libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o
-> cc -m64 -Ilibqemu-aarch64-bsd-user.a.p -I. -I../src -Itarget/arm
-> -I../src/target/arm
-> -I../src/common-user/host/x86_64 -I../src/bsd-user/include
-> -Ibsd-user/freebsd
-> -I../src/bsd-user/freebsd -I../src/bsd-user/host/x86_64 -Ibsd-user
-> -I../src/bsd-user
-> -I../src/bsd-user/aarch64 -Iqapi -Itrace -Iui/shader
-> -I/usr/local/include/capstone
-> -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include
-> -I/usr/local/include
-> -fdiagnostics-color=3Dauto -Wall -Winvalid-pch -std=3Dgnu11 -O2 -g
-> -fstack-protector-strong
-> -Wempty-body -Wendif-labels -Wexpansion-to-defined -Wformat-security
-> -Wformat-y2k
-> -Wignored-qualifiers -Winit-self -Wmissing-format-attribute
-> -Wmissing-prototypes
-> -Wnested-externs -Wold-style-definition -Wredundant-decls
-> -Wstrict-prototypes
-> -Wtype-limits -Wundef -Wvla -Wwrite-strings
-> -Wno-gnu-variable-sized-type-not-at-end
-> -Wno-initializer-overrides -Wno-missing-include-dirs -Wno-psabi
-> -Wno-shift-negative-value
-> -Wno-string-plus-int -Wno-tautological-type-limit-compare
-> -Wno-typedef-redefinition
-> -Wthread-safety -iquote . -iquote /home/rth/qemu/src -iquote
-> /home/rth/qemu/src/include
-> -iquote /home/rth/qemu/src/host/include/x86_64 -iquote
-> /home/rth/qemu/src/host/include/generic -iquote
-> /home/rth/qemu/src/tcg/i386 -pthread
-> -msse2 -mcx16 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE
-> -fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=3Dzero
-> -fzero-call-used-regs=3Dused-gpr -fPIE -DCOMPILING_PER_TARGET
-> '-DCONFIG_TARGET=3D"aarch64-bsd-user-config-target.h"'
-> '-DCONFIG_DEVICES=3D"aarch64-bsd-user-config-devices.h"' -MD -MQ
-> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -MF
-> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o.d -o
-> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -c
-> ../src/bsd-user/aarch64/target_arch_cpu.c
-> In file included from ../src/bsd-user/aarch64/target_arch_cpu.c:20:
-> In file included from ../src/bsd-user/aarch64/target_arch.h:23:
-> ../src/bsd-user/qemu.h:38:10: fatal error: 'target.h' file not found
->     38 | #include "target.h"
->        |          ^~~~~~~~~~
-> 1 error generated.
->
+Version 4 changes:
+- Added Reviewed-by Tags to patch sets 1-8
+- split patch set 9 into 3 patch sets, 9, 10 and 11
 
-Doh! A missing git add indeed. That change didn't cherry-pick from blitz
-(since
-it was something I'd invented for an upstream review that didn't fold back
-into
-blitz properly and I didn't notice until I started prepping this series and
-fixed it
-in blitz)... I goofed up doing it by hand. Will send v2 out shortly.  Sorry
-for the noise.
+Frederic Barrat (9):
+  pnv/xive2: XIVE2 Cache Watch, Cache Flush and Sync Injection support
+  pnv/xive2: Add NVG and NVC to cache watch facility
+  pnv/xive2: Configure Virtualization Structure Tables through the PC
+  pnv/xive2: Enable VST NVG and NVC index compression
+  pnv/xive2: Set Translation Table for the NVC port space
+  pnv/xive2: Fail VST entry address computation if table has no VSD
+  pnv/xive2: Move xive2_nvp_pic_print_info() to xive2.c
+  pnv/xive2: Refine TIMA 'info pic' output
+  pnv/xive2: Dump more END state with 'info pic'
 
-Warner
+Michael Kowal (1):
+  pnv/xive2: Structure/define alignment changes
 
---00000000000042ac9e061e04142e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Nicholas Piggin (1):
+  pnv/xive: Support cache flush and queue sync inject with notifications
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 24, 2024 at 2:55=E2=80=AF=
-AM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
-chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">On 7/24/24 04:07, Warner Losh wrote:<br>
-&gt; The following changes since commit 3cce8bd4d737f2ca688bbdcb92cd5cc6832=
-45bbd:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 Merge tag &#39;ui-pull-request&#39; ofhttps://<a href=3D"=
-http://gitlab.com/marcandre.lureau/qemu" rel=3D"noreferrer" target=3D"_blan=
-k">gitlab.com/marcandre.lureau/qemu</a> into staging (2024-07-23 15:23:05 +=
-1000)<br>
-&gt; <br>
-&gt; are available in the Git repository at:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 git@gitlab.com:bsdimp/qemu.git tags/bsd-user-for-9.1-pull=
--request<br>
-&gt; <br>
-&gt; for you to fetch changes up to afdb6be1bd8528395af65a087bd668bf7a42ab9=
-9:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 bsd-user: Add aarch64 build to tree (2024-07-23 10:56:30 =
--0600)<br>
-&gt; <br>
-&gt; ----------------------------------------------------------------<br>
-&gt; bsd-user: Misc changes for 9.1 (I hope)<br>
-&gt; <br>
-&gt; This patch series includes two main sets of patches. To make it simple=
- to<br>
-&gt; review, I&#39;ve included the changes from my student which the later =
-changes depend<br>
-&gt; on. I&#39;ve included a change from Jessica and Doug as well. I&#39;ve=
- reviewed them,<br>
-&gt; but more eyes never hurt.<br>
-&gt; <br>
-&gt; I&#39;ve also included a number of &#39;touch up&#39; patches needed e=
-ither to get the<br>
-&gt; aarch64 building, or to implmement suggestions from prior review cycle=
-s. The<br>
-&gt; main one is what&#39;s charitably described as a kludge: force aarch64=
- to use 4k<br>
-&gt; pages. The qemu-project (and blitz branch) hasn&#39;t had the necessar=
-y changes to<br>
-&gt; bsd-user needed to support variable page size.<br>
-&gt; <br>
-&gt; Sorry this is so late... Live has conspired to delay me.<br>
-<br>
-Something didn&#39;t get committed properly, as it doesn&#39;t build:<br>
-<br>
-$ ninja<br>
-[343/1144] Compiling C object <br>
-libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o<br>
-FAILED: libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o<b=
-r>
-cc -m64 -Ilibqemu-aarch64-bsd-user.a.p -I. -I../src -Itarget/arm -I../src/t=
-arget/arm <br>
--I../src/common-user/host/x86_64 -I../src/bsd-user/include -Ibsd-user/freeb=
-sd <br>
--I../src/bsd-user/freebsd -I../src/bsd-user/host/x86_64 -Ibsd-user -I../src=
-/bsd-user <br>
--I../src/bsd-user/aarch64 -Iqapi -Itrace -Iui/shader -I/usr/local/include/c=
-apstone <br>
--I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include -I/usr/loca=
-l/include <br>
--fdiagnostics-color=3Dauto -Wall -Winvalid-pch -std=3Dgnu11 -O2 -g -fstack-=
-protector-strong <br>
--Wempty-body -Wendif-labels -Wexpansion-to-defined -Wformat-security -Wform=
-at-y2k <br>
--Wignored-qualifiers -Winit-self -Wmissing-format-attribute -Wmissing-proto=
-types <br>
--Wnested-externs -Wold-style-definition -Wredundant-decls -Wstrict-prototyp=
-es <br>
--Wtype-limits -Wundef -Wvla -Wwrite-strings -Wno-gnu-variable-sized-type-no=
-t-at-end <br>
--Wno-initializer-overrides -Wno-missing-include-dirs -Wno-psabi -Wno-shift-=
-negative-value <br>
--Wno-string-plus-int -Wno-tautological-type-limit-compare -Wno-typedef-rede=
-finition <br>
--Wthread-safety -iquote . -iquote /home/rth/qemu/src -iquote /home/rth/qemu=
-/src/include <br>
--iquote /home/rth/qemu/src/host/include/x86_64 -iquote <br>
-/home/rth/qemu/src/host/include/generic -iquote /home/rth/qemu/src/tcg/i386=
- -pthread <br>
--msse2 -mcx16 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE <b=
-r>
--fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=3Dzero <br=
->
--fzero-call-used-regs=3Dused-gpr -fPIE -DCOMPILING_PER_TARGET <br>
-&#39;-DCONFIG_TARGET=3D&quot;aarch64-bsd-user-config-target.h&quot;&#39; <b=
-r>
-&#39;-DCONFIG_DEVICES=3D&quot;aarch64-bsd-user-config-devices.h&quot;&#39; =
--MD -MQ <br>
-libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -MF <br>
-libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o.d -o <br>
-libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -c <br>
-../src/bsd-user/aarch64/target_arch_cpu.c<br>
-In file included from ../src/bsd-user/aarch64/target_arch_cpu.c:20:<br>
-In file included from ../src/bsd-user/aarch64/target_arch.h:23:<br>
-../src/bsd-user/qemu.h:38:10: fatal error: &#39;target.h&#39; file not foun=
-d<br>
-=C2=A0 =C2=A0 38 | #include &quot;target.h&quot;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~~~~~<b=
-r>
-1 error generated.<br></blockquote><div><br></div><div>Doh! A missing git a=
-dd indeed. That change didn&#39;t cherry-pick from blitz (since</div><div>i=
-t was something I&#39;d invented for an upstream review that didn&#39;t fol=
-d back into</div><div>blitz properly and I didn&#39;t notice until I starte=
-d prepping this series and fixed it</div><div>in blitz)... I goofed up doin=
-g it by hand. Will send v2 out shortly.=C2=A0 Sorry for the noise.</div><di=
-v><br></div><div>Warner</div></div></div>
+ hw/intc/pnv_xive2_regs.h    | 108 +++++++
+ include/hw/ppc/pnv_chip.h   |   1 +
+ include/hw/ppc/xive2_regs.h |   9 +
+ hw/intc/pnv_xive2.c         | 566 ++++++++++++++++++++++++++++++------
+ hw/intc/xive.c              |  12 +-
+ hw/intc/xive2.c             |  33 ++-
+ 6 files changed, 633 insertions(+), 96 deletions(-)
 
---00000000000042ac9e061e04142e--
+--
+2.43.0
+
 
