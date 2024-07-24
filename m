@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5AF093B357
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 17:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B20BC93B33A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 16:56:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWdW7-0000Ql-OU; Wed, 24 Jul 2024 11:03:00 -0400
+	id 1sWdOQ-0007MT-F4; Wed, 24 Jul 2024 10:55:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sWdW2-00008U-AP
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 11:02:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sWdOF-0007Kd-DO; Wed, 24 Jul 2024 10:54:51 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sWdVz-0000Xb-AS
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 11:02:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721833369;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zoge/yJFeeViXjSex+u5bq32QmDqGoP9ZYclm6j+h44=;
- b=GsD+aBYIzJK8nnLyFlnp1m5QbGy1JV4dA97Glx0T32lR7aDKSB3293oVbZzoQ5vokGkSkr
- f4j0B36o6nHpJkBBoKLf2klp2JbnG21pvH8pEt5QczsROTISNUXRbvp5l715PhrdIqzKsI
- SZ/i5nSC1xdomIE7j/mHeTefXR7e8LI=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-oCiTokiCNr6PdQTQTi3-lA-1; Wed, 24 Jul 2024 11:02:47 -0400
-X-MC-Unique: oCiTokiCNr6PdQTQTi3-lA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ef2a44c3dfso36174491fa.1
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 08:02:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721833363; x=1722438163;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zoge/yJFeeViXjSex+u5bq32QmDqGoP9ZYclm6j+h44=;
- b=E2hHCoxvqgeCXnnft9XBrVFnZpuCBRVPXBeRVrXAhrQ5MtJ4dEKOOsYGfkFB77zjCo
- r311BTLKHRWIpt6ZUta8nKULyyTFm7KfJOs6ecN/WzPWduRiyyJaLUIbEHOHFPEJWcZr
- gSJ1klxPYuZpo6BvChlMjmQNsaNJUAGyt9iyEwZ1WHk9N/JF9lb23r47Gtryb6naNgmj
- CNxE5y0AZcBw7zGEa9nJvKWrrd3si9Lq/5bsXFocp86O/cawvsO0yksryloy0uertdVL
- COY2uWdXmDs5XZWWN2PwrzYnG9IkY2A7zeCA4ZftPsf8udUsu3XZYSwwnJhWXdFdydzq
- sUBw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV4ogDmpcl71itz4XcT/pMjHPz/Sx6uoPwXiS3kFqm5fiaEb9A9/v/DnNtllcmHj5bAE9aj4G0pA4VDLhYJptgcMuUPIIY=
-X-Gm-Message-State: AOJu0Yy0ssyFwny+n0BwySfCy6jyh+0XAJiwNTodK+nme7yTR7RVHFn/
- 8qd2oe9+Il8Laon2HB0AhBFIgIeZJ03rDVptSvTw2dYjwB9rEVeoepwE/IIybTQxHLyRYk/7Gni
- pJc+SsUUbgGzYZa70bd4Q787WiHkGf9b04stfoz8HA8WfZkYvbu9v1EaIqbeCgBnlZVD9BTddzd
- Vwn+hjt4rdCQQuEl5IPkhGLlZ2Ymg=
-X-Received: by 2002:a2e:b177:0:b0:2ef:2e59:11dc with SMTP id
- 38308e7fff4ca-2f039ea7e78mr473131fa.25.1721833361937; 
- Wed, 24 Jul 2024 08:02:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGz21slK5EjDe5XNiZaFmx/2TgdS8UQyCtQItTYlVoejwIOUapJGaRf7U/R2/HBOVDs7AueJD6OaQoGJlbCvbY=
-X-Received: by 2002:a2e:b177:0:b0:2ef:2e59:11dc with SMTP id
- 38308e7fff4ca-2f039ea7e78mr472811fa.25.1721833361454; Wed, 24 Jul 2024
- 08:02:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sWdOC-0005WT-Re; Wed, 24 Jul 2024 10:54:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721832889; x=1753368889;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=nhEKDuTNwPMDwruusMMbK1Dm5j0cygvuqJe3rM266dI=;
+ b=PtPqeffwaEUFWuACVlHCZbT9q+1vgiT8Ety7iA3SlkK/baVQbagSCxzx
+ XSk5vcuNOkJwnN2TYJul12MJW9cFkFuR4WgRDLT/5MAywJxWi7P3P+lrR
+ liDbq/06ef7Xfol0CJT/W5HeYzK2j9vXb5uGU3l5OYX5OLwl9VqNB4Tqx
+ ESZG8DBBcIO47uLtt2enastdf5r4WBN2wwC3SEoTTz0S2KQxVhoeFlXva
+ sGTOLsJbAzDCHo/UvqKhWdyFEXKHYIlYunT4NUc4uZgLaDnVBTDSkcZDd
+ FUdEEIZrGBtIfd6UbDO3+f5OWvtmONqeg9ujmuVsI5BuPk0UmsgDq8KJL A==;
+X-CSE-ConnectionGUID: 7p0CC7XLS3mAiyjN8qlW1A==
+X-CSE-MsgGUID: 4knbuwtXTEeU/8pKmaQ0jA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="44941943"
+X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="44941943"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jul 2024 07:54:45 -0700
+X-CSE-ConnectionGUID: SQlBHtnfSNazf+k8B1Ve8g==
+X-CSE-MsgGUID: gsHTaE3GT0aVEU/MKedVwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="57749094"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa004.jf.intel.com with ESMTP; 24 Jul 2024 07:54:40 -0700
+Date: Wed, 24 Jul 2024 23:10:24 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ++/vQ==?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
+Message-ID: <ZqEZYEAkMhqBRtbx@intel.com>
+References: <20240704031603.1744546-1-zhao1.liu@intel.com>
+ <20240704031603.1744546-3-zhao1.liu@intel.com>
+ <87wmld361y.fsf@pond.sub.org> <Zp5tBHBoeXZy44ys@intel.com>
+ <87h6cfowei.fsf@pond.sub.org> <ZqD31Oj5P0uDMs-I@redhat.com>
+ <ZqEJlmR3U6g8zq0z@intel.com>
 MIME-Version: 1.0
-References: <20240724080858.46609-1-lei4.wang@intel.com>
-In-Reply-To: <20240724080858.46609-1-lei4.wang@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 24 Jul 2024 17:02:28 +0200
-Message-ID: <CABgObfYHK+N68pOamxA4nT6iZUvEDeUN-AkNwEE9jgnig3AfNw@mail.gmail.com>
-Subject: Re: [PATCH] target/i386: Raise the highest index value used for any
- VMCS encoding
-To: Lei Wang <lei4.wang@intel.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, Xin Li <xin3.li@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.136,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZqEJlmR3U6g8zq0z@intel.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.136,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,70 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 24, 2024 at 10:09=E2=80=AFAM Lei Wang <lei4.wang@intel.com> wro=
-te:
-> Because the index value of the VMCS field encoding of Secondary VM-exit
-> controls, 0x44, is larger than any existing index value, raise the highes=
-t
-> index value used for any VMCS encoding to 0x44.
->
-> Because the index value of the VMCS field encoding of FRED injected-event
-> data (one of the newly added VMCS fields for FRED transitions), 0x52, is
-> larger than any existing index value, raise the highest index value used
-> for any VMCS encoding to 0x52.
+Hi Daniel,
 
-Hi, can you put together a complete series that includes all that's
-needed for nested FRED support?
+On Wed, Jul 24, 2024 at 10:03:02PM +0800, Zhao Liu wrote:
+> Date: Wed, 24 Jul 2024 22:03:02 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
+> 
+> On Wed, Jul 24, 2024 at 01:47:16PM +0100, Daniel P. Berrang? wrote:
+> > Date: Wed, 24 Jul 2024 13:47:16 +0100
+> > From: "Daniel P. Berrang?" <berrange@redhat.com>
+> > Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
+> > 
+> > On Wed, Jul 24, 2024 at 01:35:17PM +0200, Markus Armbruster wrote:
+> > > Zhao Liu <zhao1.liu@intel.com> writes:
+> > > 
+> > > > Hi Markus,
+> > > >> SmpCachesProperties and SmpCacheProperties would put the singular
+> > > >> vs. plural where it belongs.  Sounds a bit awkward to me, though.
+> > > >> Naming is hard.
+> > > >
+> > > > For SmpCachesProperties, it's easy to overlook the first "s".
+> > > >
+> > > >> Other ideas, anybody?
+> > > >
+> > > > Maybe SmpCacheOptions or SmpCachesPropertyWrapper?
+> > > 
+> > > I wonder why we have a single QOM object to configure all caches, and
+> > > not one QOM object per cache.
+> > 
+> > Previous versions of this series were augmenting the existing
+> > -smp command line.
+> 
+> Ah, yes, since -smp, as a sugar option of -machine, doesn't support
+> JSON. In -smp, we need to use keyval's style to configure as:
+> 
+> -smp caches.0.name=l1i,caches.0.topo=core
+> 
+> I think JSON is the more elegant way to go, so I chose -object.
+
+I may have to retract this assertion considering more issues, I could
+fall back to -smp and support it in keyval format, I think it's also ok
+for me if you also like keyval format, sorry for my repetition, we can
+discuss this in this thread:
+
+https://lore.kernel.org/qemu-devel/20240704031603.1744546-1-zhao1.liu@intel.com/T/#m8adba8ba14ebac0c9935fbf45983cc71e53ccf45
 
 Thanks,
+Zhao
 
-Paolo
-
-> Co-developed-by: Xin Li <xin3.li@intel.com>
-> Signed-off-by: Xin Li <xin3.li@intel.com>
-> Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> ---
->  target/i386/cpu.h     | 1 +
->  target/i386/kvm/kvm.c | 9 ++++++++-
->  2 files changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index c6cc035df3..5604cc2994 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1192,6 +1192,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU =
-*cpu, FeatureWord w);
->  #define VMX_VM_EXIT_PT_CONCEAL_PIP                  0x01000000
->  #define VMX_VM_EXIT_CLEAR_IA32_RTIT_CTL             0x02000000
->  #define VMX_VM_EXIT_LOAD_IA32_PKRS                  0x20000000
-> +#define VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS     0x80000000
->
->  #define VMX_VM_ENTRY_LOAD_DEBUG_CONTROLS            0x00000004
->  #define VMX_VM_ENTRY_IA32E_MODE                     0x00000200
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index b4aab9a410..7c8cb16675 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -3694,7 +3694,14 @@ static void kvm_msr_entry_add_vmx(X86CPU *cpu, Fea=
-tureWordArray f)
->      kvm_msr_entry_add(cpu, MSR_IA32_VMX_CR4_FIXED0,
->                        CR4_VMXE_MASK);
->
-> -    if (f[FEAT_VMX_SECONDARY_CTLS] & VMX_SECONDARY_EXEC_TSC_SCALING) {
-> +    if (f[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
-> +        /* FRED injected-event data (0x2052).  */
-> +        kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x52);
-> +    } else if (f[FEAT_VMX_EXIT_CTLS] &
-> +               VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS) {
-> +        /* Secondary VM-exit controls (0x2044).  */
-> +        kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x44);
-> +    } else if (f[FEAT_VMX_SECONDARY_CTLS] & VMX_SECONDARY_EXEC_TSC_SCALI=
-NG) {
->          /* TSC multiplier (0x2032).  */
->          kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x32);
->      } else {
-> --
-> 2.39.3
->
 
 
