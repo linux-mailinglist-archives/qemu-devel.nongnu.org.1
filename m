@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA9A93B7B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 21:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D50BC93B808
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 22:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWhxa-0002Q7-2g; Wed, 24 Jul 2024 15:47:46 -0400
+	id 1sWiYO-0003cc-21; Wed, 24 Jul 2024 16:25:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sWhxT-0002Ms-Em
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 15:47:32 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1sWiYK-0003bc-Ag
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 16:25:36 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sWhxP-0006Fv-Pd
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 15:47:31 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-70d1cbbeeaeso146255b3a.0
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 12:47:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1sWiYF-0001Dw-Mk
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 16:25:34 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2c964f5a037so182069a91.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 13:25:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721850444; x=1722455244; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jujw3dcwSHYk44u92QIn+K4fYEBnVKCK000Riefc95g=;
- b=jGst0dpygxwIhKSRkM8OYGImXkUvj/tWocM8eK67VNt21SoscV56FY+yt2JKQ2B6+F
- tJYh6kVX8+e8SYE/ugALGRekzI97MiRwl8ZwmGrgSLPsTrcgl9xPpIYqBnbgRK99oIso
- 3OBlMyPH8pSmhfjZNFrjrUUul+FJIzTyQil2NBkNvbxNf0JVJzVMuW8t/4kOA6S3US+/
- 0c9hC/I8TYjw03al4GXtBsa4T5AsD8WUTCFgWBvz0ZmySi6WDfNhTIdef6IVP9d7xYjX
- cpkAZzRYRo8mRUHZnGvrkcd6xuBSJ1L1NxjcnCYkybV2DurVeB7KdnUv6nNLcMsVHGgj
- MeLg==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721852729; x=1722457529;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=s4YPCnDOIa8NUGfAr2gZ4GzcVNlDcSYa3Xe5483kA78=;
+ b=B/2+a1i3re1v4t/0FYrDcWobeIwyA4wU2B7I/dLjSAYtcgCK6topOJbUJeWoiBqTlR
+ iY/yrPlHPichTa9BJQw/XRJ7l/VRpbNaiDXc+yT5v1SkXFgbKnj9PXOsUTS7NLIy5JHo
+ gO0MmQ/+4A8HA2xbHbxQ6wdi9hcRohOJ7i2ls2U5xouH4YtbDxiflEwdJIhfxYvriV70
+ HSjFKd4T17EoOW2M6O2Z6tIAkLjm4/W4BC4r2SbYneDSHsdRD+6zF8q20QxlTAVLq192
+ 32yXJlgnKmy0kqfflUpbFoaFUhfv5co0PJpycUZFBmlo/Gv4sihb6jNSFoqq0zlNVIge
+ 3jhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721850444; x=1722455244;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jujw3dcwSHYk44u92QIn+K4fYEBnVKCK000Riefc95g=;
- b=EpgvcdHBc99FRqQP50sGt2EaqVthF0zOciA/Ok6DYvxBmk7uMwIjEi+8KrcPNdLw5P
- dqIpSH7Ywgb7Jlq8JHNQ7Q11H7KxSKQPlUOcovHf3hzH1EANMNa9Qhhys4O1KbpXBQmm
- /q1NoKjqZTvQaxaSHQ8pILXRxPdI0z3AL57K8aYZYjI2mWJmXSGlkyZmV+KYeWFGS5gq
- 4dfHXEOQtsT/nFw7nHIudwiz+SsiaP3TM1/wBW89Rji5u45JFmosFWE74RL9R+KBiutg
- 3iux9WgO5k1WJpkokO04ICNz4RrHgAnvnuoWsGXYt76lW1+5b6VFuLTJKRLtSD3T5Ibj
- WJ0A==
-X-Gm-Message-State: AOJu0Yy7OAIJDBDq7UIKKWh3XZHQYlTcFld+FZxqAZfVtpxb9lltgLEP
- NbcaRnpSOXi43lfYyDB1zv6hvU6BKoNAUO6efT3t4Q/gHrUKDxJaLKWIhVjhFM3Npt1jkDfisyg
- eTig=
-X-Google-Smtp-Source: AGHT+IH2DUsc1o6nDPsMqReVPg8x/hjacKsYfY50s55gcAcck6DzIqA614bdH0+y0u02t+wkzZJeCQ==
-X-Received: by 2002:a05:6a00:18a2:b0:70b:20d9:3c2a with SMTP id
- d2e1a72fcca58-70eaa947c02mr626992b3a.28.1721850444310; 
- Wed, 24 Jul 2024 12:47:24 -0700 (PDT)
-Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70d19c52a62sm6339116b3a.124.2024.07.24.12.47.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 12:47:23 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alexandre Iooss <erdnaxe@crans.org>, Zhao Liu <zhao1.liu@intel.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Xingtao Yao <yaoxt.fnst@fujitsu.com>
-Subject: [PATCH v7 6/6] tests/tcg/multiarch: add test for plugin memory access
-Date: Wed, 24 Jul 2024 12:47:08 -0700
-Message-Id: <20240724194708.1843704-7-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240724194708.1843704-1-pierrick.bouvier@linaro.org>
-References: <20240724194708.1843704-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1721852729; x=1722457529;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s4YPCnDOIa8NUGfAr2gZ4GzcVNlDcSYa3Xe5483kA78=;
+ b=vOWCSAbmkw1nnGcn1l3tzRVU/nft0mNoM+PulA6nLdTD7k97DAOXkewKkSFUKV+tSs
+ M5iIpVS2U7UvQQdvxcz4ss/vhy5DawbmUNM+De9DLSpv/vvLD5KCVE/o02NIgLw8lqYg
+ N/RJaEcH9IxqESoUGbiy5Dx1PDjlNQh8WEN1znQIKtPg8NjWPu6qnI1wamdMpe9/A1JJ
+ hQIAGO9oIrEdoi/wmbio72EI2eF6PmS2lz3wX0sYhSTQ95GdihDcmz5isRan6qMVgHCX
+ btWBmN6chkv/aMbmyYaYzvvfkhTNbuzxOAX1QQCCe4erv4O9HiYiJ6fwqJ2SnQJ0jza5
+ 1D7A==
+X-Gm-Message-State: AOJu0YyholSMbxtINwZXuaSaSfjUujMtA6DkFGKARi8mH94vDxCulQ99
+ PKpwXv+LTSKr1f7W4JB535sawxfIkEqn6d1qfMkvrALz1ibmknNPdnYZvM1b+Jkk2k/afCcEmVk
+ 7P39PypNH6+jGZX3f648KfRRlxC8990LvzU6+QA==
+X-Google-Smtp-Source: AGHT+IEuK2iI/6IoXQ4V6bKYEaxM5oNJxA/Kyl8s2J6kIpIN1ADKJHZTga4a68nMyFebb/ZAy4gKNA490/PWzsNLJJY=
+X-Received: by 2002:a17:90a:8407:b0:2c9:3370:56e3 with SMTP id
+ 98e67ed59e1d1-2cf238fab75mr704541a91.34.1721852728871; Wed, 24 Jul 2024
+ 13:25:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240723180725.99114-1-imp@bsdimp.com>
+ <d76f7003-e36e-4b9f-a7db-7e8e962b446d@linaro.org>
+In-Reply-To: <d76f7003-e36e-4b9f-a7db-7e8e962b446d@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Wed, 24 Jul 2024 14:25:17 -0600
+Message-ID: <CANCZdfpx=tvtpXkV0AMc7+d2cOPC7c5RDvWJZuWW1cJq+VBjrA@mail.gmail.com>
+Subject: Re: [PULL 00/14] Bsd user for 9.1 patches
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000042ac9e061e04142e"
+Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=wlosh@bsdimp.com; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,269 +85,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an explicit test to check expected memory values are read/written.
-8,16,32 load/store are tested for all arch.
-64,128 load/store are tested for aarch64/x64.
-atomic operations (8,16,32,64) are tested for x64 only.
+--00000000000042ac9e061e04142e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-By default, atomic accesses are non atomic if a single cpu is running,
-so we force creation of a second one by creating a new thread first.
+On Wed, Jul 24, 2024 at 2:55=E2=80=AFAM Richard Henderson <
+richard.henderson@linaro.org> wrote:
 
-load/store helpers code path can't be triggered easily in user mode (no
-softmmu), so we can't test it here.
+> On 7/24/24 04:07, Warner Losh wrote:
+> > The following changes since commit
+> 3cce8bd4d737f2ca688bbdcb92cd5cc683245bbd:
+> >
+> >    Merge tag 'ui-pull-request' ofhttps://
+> gitlab.com/marcandre.lureau/qemu into staging (2024-07-23 15:23:05 +1000)
+> >
+> > are available in the Git repository at:
+> >
+> >    git@gitlab.com:bsdimp/qemu.git tags/bsd-user-for-9.1-pull-request
+> >
+> > for you to fetch changes up to afdb6be1bd8528395af65a087bd668bf7a42ab99=
+:
+> >
+> >    bsd-user: Add aarch64 build to tree (2024-07-23 10:56:30 -0600)
+> >
+> > ----------------------------------------------------------------
+> > bsd-user: Misc changes for 9.1 (I hope)
+> >
+> > This patch series includes two main sets of patches. To make it simple =
+to
+> > review, I've included the changes from my student which the later
+> changes depend
+> > on. I've included a change from Jessica and Doug as well. I've reviewed
+> them,
+> > but more eyes never hurt.
+> >
+> > I've also included a number of 'touch up' patches needed either to get
+> the
+> > aarch64 building, or to implmement suggestions from prior review cycles=
+.
+> The
+> > main one is what's charitably described as a kludge: force aarch64 to
+> use 4k
+> > pages. The qemu-project (and blitz branch) hasn't had the necessary
+> changes to
+> > bsd-user needed to support variable page size.
+> >
+> > Sorry this is so late... Live has conspired to delay me.
+>
+> Something didn't get committed properly, as it doesn't build:
+>
+> $ ninja
+> [343/1144] Compiling C object
+> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o
+> FAILED: libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o
+> cc -m64 -Ilibqemu-aarch64-bsd-user.a.p -I. -I../src -Itarget/arm
+> -I../src/target/arm
+> -I../src/common-user/host/x86_64 -I../src/bsd-user/include
+> -Ibsd-user/freebsd
+> -I../src/bsd-user/freebsd -I../src/bsd-user/host/x86_64 -Ibsd-user
+> -I../src/bsd-user
+> -I../src/bsd-user/aarch64 -Iqapi -Itrace -Iui/shader
+> -I/usr/local/include/capstone
+> -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include
+> -I/usr/local/include
+> -fdiagnostics-color=3Dauto -Wall -Winvalid-pch -std=3Dgnu11 -O2 -g
+> -fstack-protector-strong
+> -Wempty-body -Wendif-labels -Wexpansion-to-defined -Wformat-security
+> -Wformat-y2k
+> -Wignored-qualifiers -Winit-self -Wmissing-format-attribute
+> -Wmissing-prototypes
+> -Wnested-externs -Wold-style-definition -Wredundant-decls
+> -Wstrict-prototypes
+> -Wtype-limits -Wundef -Wvla -Wwrite-strings
+> -Wno-gnu-variable-sized-type-not-at-end
+> -Wno-initializer-overrides -Wno-missing-include-dirs -Wno-psabi
+> -Wno-shift-negative-value
+> -Wno-string-plus-int -Wno-tautological-type-limit-compare
+> -Wno-typedef-redefinition
+> -Wthread-safety -iquote . -iquote /home/rth/qemu/src -iquote
+> /home/rth/qemu/src/include
+> -iquote /home/rth/qemu/src/host/include/x86_64 -iquote
+> /home/rth/qemu/src/host/include/generic -iquote
+> /home/rth/qemu/src/tcg/i386 -pthread
+> -msse2 -mcx16 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE
+> -fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=3Dzero
+> -fzero-call-used-regs=3Dused-gpr -fPIE -DCOMPILING_PER_TARGET
+> '-DCONFIG_TARGET=3D"aarch64-bsd-user-config-target.h"'
+> '-DCONFIG_DEVICES=3D"aarch64-bsd-user-config-devices.h"' -MD -MQ
+> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -MF
+> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o.d -o
+> libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -c
+> ../src/bsd-user/aarch64/target_arch_cpu.c
+> In file included from ../src/bsd-user/aarch64/target_arch_cpu.c:20:
+> In file included from ../src/bsd-user/aarch64/target_arch.h:23:
+> ../src/bsd-user/qemu.h:38:10: fatal error: 'target.h' file not found
+>     38 | #include "target.h"
+>        |          ^~~~~~~~~~
+> 1 error generated.
+>
 
-Output of test-plugin-mem-access.c is the list of expected patterns in
-plugin output. By reading stdout, we can compare to plugins output and
-have a multiarch test.
+Doh! A missing git add indeed. That change didn't cherry-pick from blitz
+(since
+it was something I'd invented for an upstream review that didn't fold back
+into
+blitz properly and I didn't notice until I started prepping this series and
+fixed it
+in blitz)... I goofed up doing it by hand. Will send v2 out shortly.  Sorry
+for the noise.
 
-Can be run with:
-make -C build/tests/tcg/$ARCH-linux-user run-plugin-test-plugin-mem-access-with-libmem.so
+Warner
 
-Tested-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- tests/tcg/multiarch/test-plugin-mem-access.c  | 175 ++++++++++++++++++
- tests/tcg/multiarch/Makefile.target           |   7 +
- .../tcg/multiarch/check-plugin-mem-access.sh  |  30 +++
- 3 files changed, 212 insertions(+)
- create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
- create mode 100755 tests/tcg/multiarch/check-plugin-mem-access.sh
+--00000000000042ac9e061e04142e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tests/tcg/multiarch/test-plugin-mem-access.c b/tests/tcg/multiarch/test-plugin-mem-access.c
-new file mode 100644
-index 00000000000..09d1fa22e35
---- /dev/null
-+++ b/tests/tcg/multiarch/test-plugin-mem-access.c
-@@ -0,0 +1,175 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Check if we detect all memory accesses expected using plugin API.
-+ * Used in conjunction with ./check-plugin-mem-access.sh check script.
-+ * Output of this program is the list of patterns expected in plugin output.
-+ *
-+ * 8,16,32 load/store are tested for all arch.
-+ * 64,128 load/store are tested for aarch64/x64.
-+ * atomic operations (8,16,32,64) are tested for x64 only.
-+ */
-+
-+#include <pthread.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+#if defined(__x86_64__)
-+#include <emmintrin.h>
-+#elif defined(__aarch64__)
-+#include <arm_neon.h>
-+#endif /* __x86_64__ */
-+
-+static void *data;
-+
-+/* ,store_u8,.*,8,store,0xf1 */
-+#define PRINT_EXPECTED(function, type, value, action)                 \
-+do {                                                                  \
-+    printf(",%s,.*,%d,%s,%s\n",                                       \
-+           #function, (int) sizeof(type) * 8, action, value);         \
-+}                                                                     \
-+while (0)
-+
-+#define DEFINE_STORE(name, type, value)                  \
-+                                                         \
-+static void print_expected_store_##name(void)            \
-+{                                                        \
-+    PRINT_EXPECTED(store_##name, type, #value, "store"); \
-+}                                                        \
-+                                                         \
-+static void store_##name(void)                           \
-+{                                                        \
-+    *((type *)data) = value;                             \
-+    print_expected_store_##name();                       \
-+}
-+
-+#define DEFINE_ATOMIC_OP(name, type, value)                    \
-+                                                               \
-+static void print_expected_atomic_op_##name(void)              \
-+{                                                              \
-+    PRINT_EXPECTED(atomic_op_##name, type, "0x0*42", "load");  \
-+    PRINT_EXPECTED(atomic_op_##name, type, #value, "store");   \
-+}                                                              \
-+                                                               \
-+static void atomic_op_##name(void)                             \
-+{                                                              \
-+    *((type *)data) = 0x42;                                    \
-+    __sync_val_compare_and_swap((type *)data, 0x42, value);    \
-+    print_expected_atomic_op_##name();                         \
-+}
-+
-+#define DEFINE_LOAD(name, type, value)                  \
-+                                                        \
-+static void print_expected_load_##name(void)            \
-+{                                                       \
-+    PRINT_EXPECTED(load_##name, type, #value, "load");  \
-+}                                                       \
-+                                                        \
-+static void load_##name(void)                           \
-+{                                                       \
-+    type src = *((type *) data);                        \
-+    type dest = src;                                    \
-+    (void)src, (void)dest;                              \
-+    print_expected_load_##name();                       \
-+}
-+
-+DEFINE_STORE(u8, uint8_t, 0xf1)
-+DEFINE_LOAD(u8, uint8_t, 0xf1)
-+DEFINE_STORE(u16, uint16_t, 0xf123)
-+DEFINE_LOAD(u16, uint16_t, 0xf123)
-+DEFINE_STORE(u32, uint32_t, 0xff112233)
-+DEFINE_LOAD(u32, uint32_t, 0xff112233)
-+
-+#if defined(__x86_64__) || defined(__aarch64__)
-+DEFINE_STORE(u64, uint64_t, 0xf123456789abcdef)
-+DEFINE_LOAD(u64, uint64_t, 0xf123456789abcdef)
-+
-+static void print_expected_store_u128(void)
-+{
-+    PRINT_EXPECTED(store_u128, __int128,
-+                   "0xf122334455667788f123456789abcdef", "store");
-+}
-+
-+static void store_u128(void)
-+{
-+#ifdef __x86_64__
-+    _mm_store_si128(data, _mm_set_epi32(0xf1223344, 0x55667788,
-+                                        0xf1234567, 0x89abcdef));
-+#else
-+    const uint32_t init[4] = {0x89abcdef, 0xf1234567, 0x55667788, 0xf1223344};
-+    uint32x4_t vec = vld1q_u32(init);
-+    vst1q_u32(data, vec);
-+#endif /* __x86_64__ */
-+    print_expected_store_u128();
-+}
-+
-+static void print_expected_load_u128(void)
-+{
-+    PRINT_EXPECTED(load_u128, __int128,
-+                   "0xf122334455667788f123456789abcdef", "load");
-+}
-+
-+static void load_u128(void)
-+{
-+#ifdef __x86_64__
-+    __m128i var = _mm_load_si128(data);
-+#else
-+    uint32x4_t var = vld1q_u32(data);
-+#endif
-+    (void) var;
-+    print_expected_load_u128();
-+}
-+#endif /* __x86_64__ || __aarch64__ */
-+
-+#if defined(__x86_64__)
-+DEFINE_ATOMIC_OP(u8, uint8_t, 0xf1)
-+DEFINE_ATOMIC_OP(u16, uint16_t, 0xf123)
-+DEFINE_ATOMIC_OP(u32, uint32_t, 0xff112233)
-+DEFINE_ATOMIC_OP(u64, uint64_t, 0xf123456789abcdef)
-+#endif /* __x86_64__ */
-+
-+static void *f(void *p)
-+{
-+    return NULL;
-+}
-+
-+int main(void)
-+{
-+    /*
-+     * We force creation of a second thread to enable cpu flag CF_PARALLEL.
-+     * This will generate atomic operations when needed.
-+     */
-+    pthread_t thread;
-+    pthread_create(&thread, NULL, &f, NULL);
-+    pthread_join(thread, NULL);
-+
-+    /* allocate storage up to 128 bits */
-+    data = malloc(16);
-+
-+    store_u8();
-+    load_u8();
-+
-+    store_u16();
-+    load_u16();
-+
-+    store_u32();
-+    load_u32();
-+
-+#if defined(__x86_64__) || defined(__aarch64__)
-+    store_u64();
-+    load_u64();
-+
-+    store_u128();
-+    load_u128();
-+#endif /* __x86_64__ || __aarch64__ */
-+
-+#if defined(__x86_64__)
-+    atomic_op_u8();
-+    atomic_op_u16();
-+    atomic_op_u32();
-+    atomic_op_u64();
-+#endif /* __x86_64__ */
-+
-+    free(data);
-+}
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 5e3391ec9d2..d90cbd3e521 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -170,5 +170,12 @@ run-plugin-semiconsole-with-%:
- TESTS += semihosting semiconsole
- endif
- 
-+# Test plugin memory access instrumentation
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+	PLUGIN_ARGS=$(COMMA)print-accesses=true
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+	CHECK_PLUGIN_OUTPUT_COMMAND= \
-+	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-mem-access.sh
-+
- # Update TESTS
- TESTS += $(MULTIARCH_TESTS)
-diff --git a/tests/tcg/multiarch/check-plugin-mem-access.sh b/tests/tcg/multiarch/check-plugin-mem-access.sh
-new file mode 100755
-index 00000000000..909606943bb
---- /dev/null
-+++ b/tests/tcg/multiarch/check-plugin-mem-access.sh
-@@ -0,0 +1,30 @@
-+#!/usr/bin/env bash
-+
-+set -euo pipefail
-+
-+die()
-+{
-+    echo "$@" 1>&2
-+    exit 1
-+}
-+
-+check()
-+{
-+    file=$1
-+    pattern=$2
-+    grep "$pattern" "$file" > /dev/null || die "\"$pattern\" not found in $file"
-+}
-+
-+[ $# -eq 1 ] || die "usage: plugin_out_file"
-+
-+plugin_out=$1
-+
-+expected()
-+{
-+    ./test-plugin-mem-access ||
-+        die "running test-plugin-mem-access executable failed"
-+}
-+
-+expected | while read line; do
-+    check "$plugin_out" "$line"
-+done
--- 
-2.39.2
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 24, 2024 at 2:55=E2=80=AF=
+AM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
+chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">On 7/24/24 04:07, Warner Losh wrote:<br>
+&gt; The following changes since commit 3cce8bd4d737f2ca688bbdcb92cd5cc6832=
+45bbd:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 Merge tag &#39;ui-pull-request&#39; ofhttps://<a href=3D"=
+http://gitlab.com/marcandre.lureau/qemu" rel=3D"noreferrer" target=3D"_blan=
+k">gitlab.com/marcandre.lureau/qemu</a> into staging (2024-07-23 15:23:05 +=
+1000)<br>
+&gt; <br>
+&gt; are available in the Git repository at:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 git@gitlab.com:bsdimp/qemu.git tags/bsd-user-for-9.1-pull=
+-request<br>
+&gt; <br>
+&gt; for you to fetch changes up to afdb6be1bd8528395af65a087bd668bf7a42ab9=
+9:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 bsd-user: Add aarch64 build to tree (2024-07-23 10:56:30 =
+-0600)<br>
+&gt; <br>
+&gt; ----------------------------------------------------------------<br>
+&gt; bsd-user: Misc changes for 9.1 (I hope)<br>
+&gt; <br>
+&gt; This patch series includes two main sets of patches. To make it simple=
+ to<br>
+&gt; review, I&#39;ve included the changes from my student which the later =
+changes depend<br>
+&gt; on. I&#39;ve included a change from Jessica and Doug as well. I&#39;ve=
+ reviewed them,<br>
+&gt; but more eyes never hurt.<br>
+&gt; <br>
+&gt; I&#39;ve also included a number of &#39;touch up&#39; patches needed e=
+ither to get the<br>
+&gt; aarch64 building, or to implmement suggestions from prior review cycle=
+s. The<br>
+&gt; main one is what&#39;s charitably described as a kludge: force aarch64=
+ to use 4k<br>
+&gt; pages. The qemu-project (and blitz branch) hasn&#39;t had the necessar=
+y changes to<br>
+&gt; bsd-user needed to support variable page size.<br>
+&gt; <br>
+&gt; Sorry this is so late... Live has conspired to delay me.<br>
+<br>
+Something didn&#39;t get committed properly, as it doesn&#39;t build:<br>
+<br>
+$ ninja<br>
+[343/1144] Compiling C object <br>
+libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o<br>
+FAILED: libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o<b=
+r>
+cc -m64 -Ilibqemu-aarch64-bsd-user.a.p -I. -I../src -Itarget/arm -I../src/t=
+arget/arm <br>
+-I../src/common-user/host/x86_64 -I../src/bsd-user/include -Ibsd-user/freeb=
+sd <br>
+-I../src/bsd-user/freebsd -I../src/bsd-user/host/x86_64 -Ibsd-user -I../src=
+/bsd-user <br>
+-I../src/bsd-user/aarch64 -Iqapi -Itrace -Iui/shader -I/usr/local/include/c=
+apstone <br>
+-I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include -I/usr/loca=
+l/include <br>
+-fdiagnostics-color=3Dauto -Wall -Winvalid-pch -std=3Dgnu11 -O2 -g -fstack-=
+protector-strong <br>
+-Wempty-body -Wendif-labels -Wexpansion-to-defined -Wformat-security -Wform=
+at-y2k <br>
+-Wignored-qualifiers -Winit-self -Wmissing-format-attribute -Wmissing-proto=
+types <br>
+-Wnested-externs -Wold-style-definition -Wredundant-decls -Wstrict-prototyp=
+es <br>
+-Wtype-limits -Wundef -Wvla -Wwrite-strings -Wno-gnu-variable-sized-type-no=
+t-at-end <br>
+-Wno-initializer-overrides -Wno-missing-include-dirs -Wno-psabi -Wno-shift-=
+negative-value <br>
+-Wno-string-plus-int -Wno-tautological-type-limit-compare -Wno-typedef-rede=
+finition <br>
+-Wthread-safety -iquote . -iquote /home/rth/qemu/src -iquote /home/rth/qemu=
+/src/include <br>
+-iquote /home/rth/qemu/src/host/include/x86_64 -iquote <br>
+/home/rth/qemu/src/host/include/generic -iquote /home/rth/qemu/src/tcg/i386=
+ -pthread <br>
+-msse2 -mcx16 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE <b=
+r>
+-fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=3Dzero <br=
+>
+-fzero-call-used-regs=3Dused-gpr -fPIE -DCOMPILING_PER_TARGET <br>
+&#39;-DCONFIG_TARGET=3D&quot;aarch64-bsd-user-config-target.h&quot;&#39; <b=
+r>
+&#39;-DCONFIG_DEVICES=3D&quot;aarch64-bsd-user-config-devices.h&quot;&#39; =
+-MD -MQ <br>
+libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -MF <br>
+libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o.d -o <br>
+libqemu-aarch64-bsd-user.a.p/bsd-user_aarch64_target_arch_cpu.c.o -c <br>
+../src/bsd-user/aarch64/target_arch_cpu.c<br>
+In file included from ../src/bsd-user/aarch64/target_arch_cpu.c:20:<br>
+In file included from ../src/bsd-user/aarch64/target_arch.h:23:<br>
+../src/bsd-user/qemu.h:38:10: fatal error: &#39;target.h&#39; file not foun=
+d<br>
+=C2=A0 =C2=A0 38 | #include &quot;target.h&quot;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~~~~~<b=
+r>
+1 error generated.<br></blockquote><div><br></div><div>Doh! A missing git a=
+dd indeed. That change didn&#39;t cherry-pick from blitz (since</div><div>i=
+t was something I&#39;d invented for an upstream review that didn&#39;t fol=
+d back into</div><div>blitz properly and I didn&#39;t notice until I starte=
+d prepping this series and fixed it</div><div>in blitz)... I goofed up doin=
+g it by hand. Will send v2 out shortly.=C2=A0 Sorry for the noise.</div><di=
+v><br></div><div>Warner</div></div></div>
 
+--00000000000042ac9e061e04142e--
 
