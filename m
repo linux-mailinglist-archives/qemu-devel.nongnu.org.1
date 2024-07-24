@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9523693B8FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FECF93B8FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 00:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWk8G-0001aJ-2X; Wed, 24 Jul 2024 18:06:48 -0400
+	id 1sWk8J-0001eY-GR; Wed, 24 Jul 2024 18:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8D-0001SW-O5
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:45 -0400
-Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8E-0001XJ-Ro
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:47 -0400
+Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8C-0006eZ-3o
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:45 -0400
-Received: by mail-io1-xd34.google.com with SMTP id
- ca18e2360f4ac-7fd3dbc01deso9752639f.0
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sWk8D-0006eh-7i
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 18:06:46 -0400
+Received: by mail-io1-xd30.google.com with SMTP id
+ ca18e2360f4ac-7f97e794f34so11561339f.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 15:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858802; x=1722463602;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1721858804; x=1722463604;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6NVVykiWpqYjvD45AibIwwzA8pM6gZ3sTQWN+WDs9eM=;
- b=UgaBxm7xfBrT9rLRsodW5s4wENgQq3hnN0FaR+DxkLnOxvdIT7GwcCqBFiNXHKVrQr
- 0TXvQyIE44Y0MxCA1KM00KlF4jKVoBtR2+DPqAa4my+vPiArl6wGdmpGYofNIuBTd78v
- GG756b4BmYF/2dppfQyzdJKOlZxt0M3Sgm4WmProaGpq5U6WpoLUiZPNCPW2uO4BEfYK
- OCV1duMBkCMdR1TE+BTC2HZ8OKXuvk/dkRTyL3+WSNlHXoigCXprPmewJr8GMTgtge4z
- saDetJmB1N0+e0uq1+yzeyFxHDVsQnZCg85goxbNgFDPo6ELYHNrINPAWV2SgAfKDRQj
- VkMQ==
+ bh=sKGM9WxUN43+saolT8pUI05xHvMsh3XU6bG+jc3msxQ=;
+ b=fj0DpHg4ax3OrtyshVGMggH2e9cZJw2LH+0ojPaVgcqKZWQE2pSA9JMy031cRpldl8
+ kGXOJkLfBqAfwHKPhu0T5v+V4Cqir9Uv/JdZyIQzAySbVx66xkrLbnl3fPc2CPS0sThQ
+ 3dfvqi8fcPHBDzAORCixXraDV/fd5+I6usOLJXdnoFajrfl6cOOhoJ7Bqa0B5JWJHuZ5
+ L4jrhQrolV1m3aUo7pqLUqoq6B9CMOpynd8vEFP7svtE0l6if7+9DxHeF4+4zeNC0nVh
+ nlumkNKglAEhcsIx28l22AGS3ocZA/1FfG89mFvI6YDzq4Sh+0OqoDN4U6eusNlHDKB3
+ FKLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721858802; x=1722463602;
+ d=1e100.net; s=20230601; t=1721858804; x=1722463604;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6NVVykiWpqYjvD45AibIwwzA8pM6gZ3sTQWN+WDs9eM=;
- b=mY0T/pTs2XQtl0diyXvuxi2JAIZVc2zPVIuJyts2XJMo2WSXHzERPODtgA22s3/NFa
- BAQAKYR6gD6NiNB3RSn9CopUbZ77DkW2XyMco5s8lnqeDIo06+JJ7Ol7w0uYDOUy4qWO
- u7AMee0HO2ZHYpw/83c4VXCk+eboXNCdP64CZsEzViZiCWUXvKl5yMl2NgEyDD+yP056
- xEPDy6X8CxF4SdC3SnjOtwg1gl3GcBCCP6rlLMDX4ciPxHixrVu0/uhFynyffAtD/Yx5
- ICZGvknc29XWkQobWmHMhfvswwNWrmiTiDdxQT5KI0j3XwvWCYStxSp+KUb/aeXk8wKm
- XZWg==
-X-Gm-Message-State: AOJu0Yzs/xgptLtEQhWICSRQO0k9ds7osgI+cLdExX7gNQgxHJLJvmPs
- juhF7gq3rkaJL3liDsiNSO8EFOY1GlSK37UI1aRIOKixH8vjP1lr6/Sfh66DACgTOvSb0mJi2v1
- htxc=
-X-Google-Smtp-Source: AGHT+IEGTqyknQYn8B0a6aM0Z8KoR1fsMcQ0b04o1D0B4PRSfkn1SlFqsm0Zb9Lp7UJwh5PBUhBU5Q==
-X-Received: by 2002:a05:6602:1349:b0:7f9:b435:4f5 with SMTP id
- ca18e2360f4ac-81f7e49b051mr14971039f.11.1721858790321; 
- Wed, 24 Jul 2024 15:06:30 -0700 (PDT)
+ bh=sKGM9WxUN43+saolT8pUI05xHvMsh3XU6bG+jc3msxQ=;
+ b=btlEqQ8K2fWuLUbJdilg4NNBDwOtD6PZqm+/Q/2aFk1Td4hrk1yoaAUS7hWaPjO9uX
+ mVMd7R9VSsbRqVjVtGIqXAbylIIcq7F81jWY7CUEcPu5AlQzxA93HYWCrSUozVVQaliA
+ W+6KAvMR2tYitYFXkdUp2AX+K9o/gtRwdSvA1ahrGWCzNIZtuRu0HIZRVRN4Mb4N2X0g
+ 3GyFIUvvJ5HFNPa65wLxsClW9sl6ls62X4xOjRHY/1O4sgjEOX0s63TGA7xwD2fQlQmo
+ P0AuYJZCn9cppzJSY3PyZ4e7IEpT2CrsgFYTLyCGQ9NXVwPArae6Wpx+b9Qktf5fqbid
+ ASmg==
+X-Gm-Message-State: AOJu0YzZkQqi2OCsy7i2Ve459F4F3qkFBA3cdmn7c/g6PBSBnWNRaG9o
+ an9sHCFhDFz5TlVcsmMCmClFjAVEwU4P4kgpCO+2EmgsZHBpHNuFEAQQgPPCWuR76VECTIczTFw
+ gWvw=
+X-Google-Smtp-Source: AGHT+IEnnOcG3amLwauDTAEsZVbqMoLajLr1bsbICTS01m0+c0LN7TKLMm9Wcy4TgoKOqRk7nYyN/A==
+X-Received: by 2002:a05:6602:6417:b0:816:ec51:f415 with SMTP id
+ ca18e2360f4ac-81f7ba78fb7mr165580839f.0.1721858803744; 
+ Wed, 24 Jul 2024 15:06:43 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.29
+ 8926c6da1cb9f-4c29fa983f8sm10086173.47.2024.07.24.15.06.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 15:06:29 -0700 (PDT)
+ Wed, 24 Jul 2024 15:06:42 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/15] bsd-user: Define TARGET_SIGSTACK_ALIGN and use it to
- round stack
-Date: Wed, 24 Jul 2024 16:04:45 -0600
-Message-ID: <20240724220449.10398-13-imp@bsdimp.com>
+Subject: [PULL 13/15] bsd-user: Make compile for non-linux user-mode stuff
+Date: Wed, 24 Jul 2024 16:04:46 -0600
+Message-ID: <20240724220449.10398-14-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240724220449.10398-1-imp@bsdimp.com>
 References: <20240724220449.10398-1-imp@bsdimp.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d34;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd34.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d30;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd30.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,84 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most (all?) targets require stacks to be properly aligned. Rather than a
-series of ifdefs in bsd-user/signal.h, instead use a manditory #define
-for all architectures.
+We include the files that define PR_MTE_TCF_SHIFT only on Linux, but use
+them unconditionally. Restrict its use to Linux-only.
+
+"It's ugly, but it's not actually wrong."
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/aarch64/target_arch_signal.h | 2 ++
- bsd-user/arm/target_arch_signal.h     | 2 ++
- bsd-user/i386/target_arch_signal.h    | 2 ++
- bsd-user/signal.c                     | 9 +--------
- bsd-user/x86_64/target_arch_signal.h  | 2 ++
- 5 files changed, 9 insertions(+), 8 deletions(-)
+ target/arm/gdbstub64.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/bsd-user/aarch64/target_arch_signal.h b/bsd-user/aarch64/target_arch_signal.h
-index bff752a67ab..b72ba7aa504 100644
---- a/bsd-user/aarch64/target_arch_signal.h
-+++ b/bsd-user/aarch64/target_arch_signal.h
-@@ -77,4 +77,6 @@ struct target_sigframe {
-     target_ucontext_t   sf_uc;  /* saved ucontext */
- };
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index c8cef8cbc0e..5221381cc85 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -404,6 +404,7 @@ int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
  
-+#define TARGET_SIGSTACK_ALIGN 16
-+
- #endif /* TARGET_ARCH_SIGNAL_H */
-diff --git a/bsd-user/arm/target_arch_signal.h b/bsd-user/arm/target_arch_signal.h
-index 02b2b33e07a..10f96b8bfc9 100644
---- a/bsd-user/arm/target_arch_signal.h
-+++ b/bsd-user/arm/target_arch_signal.h
-@@ -86,4 +86,6 @@ struct target_sigframe {
-     target_mcontext_vfp_t sf_vfp; /* actual saved VFP context */
- };
+ int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
+ {
++#if defined(CONFIG_LINUX)
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
  
-+#define TARGET_SIGSTACK_ALIGN 8
-+
- #endif /* TARGET_ARCH_SIGNAL_H */
-diff --git a/bsd-user/i386/target_arch_signal.h b/bsd-user/i386/target_arch_signal.h
-index 279dadc22c7..2c14153ab6b 100644
---- a/bsd-user/i386/target_arch_signal.h
-+++ b/bsd-user/i386/target_arch_signal.h
-@@ -88,4 +88,6 @@ struct target_sigframe {
-     uint32_t    __spare__[2];
- };
+@@ -425,6 +426,9 @@ int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
+     arm_set_mte_tcf0(env, tcf);
  
-+#define TARGET_SIGSTACK_ALIGN 8
-+
- #endif /* TARGET_ARCH_SIGNAL_H */
-diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-index 8b6654b91da..da49b9bffc1 100644
---- a/bsd-user/signal.c
-+++ b/bsd-user/signal.c
-@@ -728,14 +728,7 @@ static inline abi_ulong get_sigframe(struct target_sigaction *ka,
-         sp = ts->sigaltstack_used.ss_sp + ts->sigaltstack_used.ss_size;
-     }
- 
--/* TODO: make this a target_arch function / define */
--#if defined(TARGET_ARM)
--    return (sp - frame_size) & ~7;
--#elif defined(TARGET_AARCH64)
--    return (sp - frame_size) & ~15;
--#else
--    return sp - frame_size;
--#endif
-+    return ROUND_DOWN(sp - frame_size, TARGET_SIGSTACK_ALIGN);
+     return 1;
++#else
++    return 0;
++#endif
  }
  
- /* compare to $M/$M/exec_machdep.c sendsig and sys/kern/kern_sig.c sigexit */
-diff --git a/bsd-user/x86_64/target_arch_signal.h b/bsd-user/x86_64/target_arch_signal.h
-index ca24bf1e7f7..f833ee66cef 100644
---- a/bsd-user/x86_64/target_arch_signal.h
-+++ b/bsd-user/x86_64/target_arch_signal.h
-@@ -97,4 +97,6 @@ struct target_sigframe {
-     uint32_t    __spare__[2];
- };
- 
-+#define TARGET_SIGSTACK_ALIGN 16
-+
- #endif /* TARGET_ARCH_SIGNAL_H */
+ static void handle_q_memtag(GArray *params, void *user_ctx)
 -- 
 2.45.1
 
