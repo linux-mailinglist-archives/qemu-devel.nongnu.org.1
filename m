@@ -2,93 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1613A93AF79
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F6793AEEC
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWYjl-0006rz-7n; Wed, 24 Jul 2024 05:56:46 -0400
+	id 1sWYCR-0000rs-Fe; Wed, 24 Jul 2024 05:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sWYjV-0006Sf-P8
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:56:30 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sWYjS-0005g2-Ea
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:56:29 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4266ed6c691so44146095e9.3
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 02:56:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721814984; x=1722419784; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=R0uaSLeh8Ndx6W8ExR39bJlyc1ekS1xMvJDU+9hvJUk=;
- b=p0T7MVWqXBVsqw/ydSvYbBSXLjpKa0wqT7I0oFruVkW8wvNnJnkpDcT7tjxL/xZf/g
- 6BWHH2HN98tnnfksEVPbBBDUVSuGVaszr/9bvL9ZkSwH0jxq4lTt0b6VFxiQ8kilNKUH
- wj1fEUvwM0NT0S3uaslyuH6lUJD/mJTBbIOgzuM9DE3nSLg3UR0aj6gi8A/BQZJBjfSg
- KRkPWbPEN7E1XHJjRBLDKKiGGDEMb3j0mf99zvRAeaC4pd4GbHstFa945PMxMKlIASFI
- hoDHn9qWkjj3+IBccigmNj8VQHYkbcdpwpwolqsJ2eZa5AvhyzHYNt9iqO7pWYxGlDi/
- DFNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721814984; x=1722419784;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=R0uaSLeh8Ndx6W8ExR39bJlyc1ekS1xMvJDU+9hvJUk=;
- b=k+eTiZ1x+Pn4Ad9k5owEuBcGKwqGCWeuOvyYal12nhOaZ03IIYKg85AbEpyn2O1Ss5
- 21bRCEPX/0I2FPmEewCt1YRryMMcpQndFlUd/eViZZ9LV89buUOT0JV4PWELYeXW5dgx
- 6i4InjxAi5Zr2LjvGOSgikUp8cPf8koAw2fujdjg/bjYavJFCKXZTHD4x0thNJcGZDWk
- +TYwzTt5ouhguAJAWWKDaT+kE1t0M6c3PeZ4fBxwY0io0owhf4WDRURGTviO+lZunY+6
- cG4SYJUeigN2bE6uUlnROjCNKCNL+uWgwJ3QFemGdpYY8VffuLeaD9L9WyVY7XO81yIg
- deaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUnf/9JOzj+P6FCXV1qHpnCXNYZ7Nte9A3Un8SSowlLSqimyFTy7jeWr92f65qNKP1vd59zgjAe8le68hRQtkyqnKaBL4I=
-X-Gm-Message-State: AOJu0Yw4s5CQvOXbpgJvaqY8Yzr1VKWJtC4fn/NC5uVngMWg5gxePCf0
- u9+NaQfNhZ45QgGKJce/4dCnPIQTaJrDT6o1LGfA1XccYdAT4WLvG9rDtTtpu3U=
-X-Google-Smtp-Source: AGHT+IEdJTvhPLmOsHoKxgDOX4FseW61WaUhPfLm7gf+Uj7MwSgK8reWZpqzxOsOf1/d2c2wtCOOIw==
-X-Received: by 2002:a05:600c:190d:b0:426:5dd0:a1fc with SMTP id
- 5b1f17b1804b1-427f95b7144mr10066005e9.34.1721814984197; 
- Wed, 24 Jul 2024 02:56:24 -0700 (PDT)
-Received: from meli-email.org (adsl-255.109.242.224.tellas.gr.
- [109.242.224.255]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427f93e605esm22320135e9.34.2024.07.24.02.56.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 02:56:23 -0700 (PDT)
-Date: Wed, 24 Jul 2024 12:14:17 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [RFC PATCH v5 0/8] Add Rust support, implement ARM PL011
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
- <bc27a983-f0b7-4803-96f7-060a4a331348@redhat.com>
-In-Reply-To: <bc27a983-f0b7-4803-96f7-060a4a331348@redhat.com>
-Message-ID: <h4gxy.dr366knvycy@linaro.org>
+ (Exim 4.90_1) (envelope-from
+ <BATV+4a029e35608e1ffcd358+7640+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1sWYCO-0000qS-FY
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:22:16 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+4a029e35608e1ffcd358+7640+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1sWYCL-0003m1-Bf
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:22:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=y+ybyEAgoevb0bfxmd1LMQgVA6vPlCf+h+T2XrvPdGA=; b=ONjgKW5xckyg0wXWru2uAWLBCY
+ BL4fuvC4EuPQ0hLS3IuLAWUE2wR0TYfqvQefAcW0FqmgRVUyHYHA6i2aluwp8L/xJ6T1QiAiMeNgr
+ sFNyV7WmUoB8pjYjl9OOXzuM5u+GH91QvOivSLK3g5qkgyF47FOuehNN9fSTNUVM8UYCWqOHysXxt
+ lb3NTppxGh2869lg8OKKmkB78k0SwnPWStC/ddc63fx5hGiE8jzekamT7Zjs6pmZQkyk73d5QGqKB
+ 0Br9MxQcQ7Gi96aL4RAdgwtCq3WprkDxE4+Yj9MWVEQ9p2TOwdPb0xQqQFmGJIeCJWqjd2ov9uduP
+ 6oQB5QuA==;
+Received: from [2001:8b0:10b:5:6c80:46ed:51d:4ac6]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1sWYCB-00000007h90-41Va; Wed, 24 Jul 2024 09:22:04 +0000
+Message-ID: <eb1cef16ff02bbd80536e10bb7f0a59fb42d7c56.camel@infradead.org>
+Subject: Re: More than 255 vcpus Windows VM setup without viommu ?
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sandesh Patel <sandesh.patel@nutanix.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Rob Scheepens
+ <rob.scheepens@nutanix.com>, Prerna Saxena <confluence@nutanix.com>, Dexuan
+ Cui <decui@microsoft.com>, Alexander Graf <alex@csgraf.de>
+Date: Wed, 24 Jul 2024 10:22:03 +0100
+In-Reply-To: <0957DDAE-1214-4502-BC03-1A18D02B613E@nutanix.com>
+References: <B75A5788-630B-4898-8758-52B57D3D5895@nutanix.com>
+ <3bb7c269ab0a13fe4398d2c7920d2f6bf8e86d47.camel@infradead.org>
+ <7BBA47BD-AC3D-4F12-A860-AD3F2B509257@nutanix.com>
+ <39b92288418839e9cdba447705a44a8e216dedc3.camel@infradead.org>
+ <b37283824ff4b7c6cc3a0c51199e6aa9b4b658a3.camel@infradead.org>
+ <2cffab2dc20f99ab0c0391bbf5076113cf74411b.camel@infradead.org>
+ <ACC111A2-A3BA-49C9-8EAE-C62ADAA74FB7@nutanix.com>
+ <0957DDAE-1214-4502-BC03-1A18D02B613E@nutanix.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-DjE2f+nYdBiTKuDcNVeP"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+4a029e35608e1ffcd358+7640+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,164 +83,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Paolo, thank you for the thorough response,
 
-On Tue, 23 Jul 2024 18:07, Paolo Bonzini <pbonzini@redhat.com> wrote:
->On 7/22/24 13:43, Manos Pitsidianakis wrote:
->> Changes from v4->v5:
->> - Added CI patch from Alex Benee
->> - Removed all cargo use, use meson rust support
->> - Added Kconfig logic
->
->The following requests from the v4 review have also been evaluated (good!):
->
->✅ module structure should resemble the C part of the tree
+--=-DjE2f+nYdBiTKuDcNVeP
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To expand on this, I tried really hard to make the rust code live along 
-the c files, but given that the bindings depend on various headers that 
-are only gathered in the common source set in meson by the time all the 
-subdirs are evaluated, it results in the Rust device being dependendant 
-on a meson target (bindings_rs) that cannot be declared yet.
+On Tue, 2024-07-16 at 05:13 +0000, Sandesh Patel wrote:
+>=20
+>=20
+> > On 11 Jul 2024, at 5:22=E2=80=AFPM, Sandesh Patel <sandesh.patel@nutani=
+x.com> wrote:
+> >=20
+> > Thanks David for all the analysis.
+> > >=20
+> > > Looking at the Linux guest support, it seems to look just at the Hype=
+rV
+> > > CPUID leaves 0x40000081 and 0x40000082. QEMU knows of those only for
+> > > SYNDBG; Sandesh do you want to try setting the
+> > > HYPERV_VS_PROPERTIES_EAX_EXTENDED_IOAPIC_RTE bit that Linux looks for=
+,
+> > > and see how that affects Windows guests (with no emulated IOMMU)?
+> > >=20
+> >=20
+>=20
+> I am enabling same bit (BIT(2) under
+> HYPERV_CPUID_SYNDBG_PLATFORM_CAPABILITIES (0x40000082) with simple
+> kvm patch (need to check how do we switch to 15 bit destination id
+> when enabling this)-
+>=20
+>=20
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index 04cca46fed1e..b9e74b791247 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -2567,6 +2567,7 @@ int kvm_get_hv_cpuid(struct kvm_vcpu *vcpu, struct =
+kvm_cpuid2 *cpuid,
+> =C2=A0
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 case HYPERV_CPUID=
+_SYNDBG_PLATFORM_CAPABILITIES:
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 ent->eax |=3D HV_X64_SYNDBG_CAP_ALLOW_KERNEL_DEBUGGING;
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0ent->eax |=3D HYPERV_VS_PROPERTIES_EAX_EXTENDED_IOAPIC_RTE;
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 break;
+> =C2=A0
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 default:
+> diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
+> index 1030b1b50552..384585a1f165 100644
+> --- a/arch/x86/kvm/hyperv.h
+> +++ b/arch/x86/kvm/hyperv.h
+> @@ -41,6 +41,7 @@
+> =C2=A0 * These are HYPERV_CPUID_SYNDBG_PLATFORM_CAPABILITIES.EAX bits.
+> =C2=A0 */
+> =C2=A0#define HV_X64_SYNDBG_CAP_ALLOW_KERNEL_DEBUGGING =C2=A0 =C2=A0 =C2=
+=A0 BIT(1)
+> +#define HYPERV_VS_PROPERTIES_EAX_EXTENDED_IOAPIC_RTE =C2=A0 BIT(2)
+> =C2=A0
+> =C2=A0/* Hyper-V Synthetic debug options MSR */
+> =C2=A0#define HV_X64_MSR_SYNDBG_CONTROL =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A00x400000F1
+>=20
+>=20
+> I am hitting an issue where the Windows guest is not booting (guest
+> reset in loop) when adding hv-syndbg hyperv feature (or using hv-
+> passthrough). Possibly an occurrence of -
+> =C2=A0https://patchew.org/QEMU/20230612084201.294248-1-vkuznets@redhat.co=
+m
+> /
+> Anything special to take care here?
 
-It's kind of a code smell, ideally we should not use bindgen for QEMU 
-internal headers but update bindings along with the C headers (with 
-extra tests to ensure definitions and layout match). Not for this 
-patchset, but something to keep in mind.
+As a simple test, have you tried just *not* setting the
+ALLOW_KERNEL_DEBUGGING bit? Just comment that line out? So we're only
+setting the magic value in 0x40000081 and then the extended I/OAPIC RTE
+bit in 0x40000082?=20
 
->
->✅ only generate bindings.rs.inc once
->
->✅ a couple lints are too broad and should be enabled per-file. (though 
->there are still some issues with duplication of lints, I consider this 
->mostly done)
->
->✅ please check if -Wl,--whole-archive can be replaced with link_whole 
->(as discussed on IRC, unfortunately it cannot)
->
->
->The hot point here is how to handle dependencies.  I appreciate that you 
->found a way to avoid repeated building of dependent crates, and to 
->integrate with Kconfig, but at the same time this is a huge change which 
->in my opinion is premature.
->
->For example if we can (sooner or later) use the automatic Cargo 
->subprojects, we do not need any vendoring and we can use cargo in the 
->meanwhile (we can drop --cargo and CARGO at any point, just like we 
->dropped --meson and --sphinx-build in QEMU 8.1).
->
->On the other hand, committing to using meson's "raw" (meson.build-level) 
->rust support and vendoring everything is premature in my opinion is very 
->different for people who are already comfortable with Cargo, so it makes 
->it harder to add new dependencies.  In fact, because the huge patch 8 
->did not reach the mailing list, it's really hard to understand what's 
->going on, what had to be done by hand and what is done automatically by 
->meson.
+Although we've heard separately that this *isn't* implemented in
+Windows, so we guess it isn't going to work.
 
-I agree. I personally prefer using meson wraps and fetch the 
-dependencies via network to be honest. While also providing Cargo.toml 
-and Cargo.lock manifests for developers.
+--=-DjE2f+nYdBiTKuDcNVeP
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
->
->In my opinion we should start with cargo workspaces as the 
->known-imperfect (but good enough) solution, so that it could be evolved 
->later.  It is important that any change that deviates from common Rust 
->conventions is documented, and v4 provided a nice basis to build upon, 
->with documentation coming as things settle.  This is why I explicitly 
->didn't include Kconfig in the TODO list in my review of v4.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwNzI0MDkyMjAzWjAvBgkqhkiG9w0BCQQxIgQg1UV+/gDL
+OjSTWTPzRCXesFW0OShe0fGNA8brGTU5tvMwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAXsOnXEjINVnEQ/s89hNuEoJorCsK2gUJ9
+JGZX2cLwqwj51dRTSo3Y7CPVqMZUYahp7l121UXGJ6TsSwNY9rft1aKpNkIqhCvVRPeH/4SpND5E
+B5dFZmVskcZqAwmPCLSIe7jKkEUEmk1BXToY0MEHeUhG58xl8UdaxjwxOHddYLeI844cuLT4YO6E
+nemI+n4vasgmvtNhjzPHCS3xdbLiQez3bV1f54KZe0R2w7Z6kiW3NZKfbNBLhnnf69zhg8FIC6lB
+DSkcus09IVVLFzp0V+J2aCF7Jk3kq22cM0Z4xB0CswJ7YQ3Hh0FZ/nqQSuPc2/PouKpvLpcK2t7a
+UQ1mX2orAzAwvnAzdOFJeLAg/3422xgg5rh7h15sHwmdEWSEG+Mn8YTeqOevqpdAHvdvbwpbmq+2
+lSWiwh70upQW2vdDM2/EgINHc1t4dHhsAMuTVJNiz7hdMsHrSlozZpRJhBGuIhPbVix+QR+9cq98
+e6meTJzh3WmUs4+45+jImEB4ueClK0g1Wr407zvnCuNc2vvdq8Dv0nHxtdhi2NPT1iqQ0TCw0WcK
+fLGV15W0TyyD7+AVTaCUKinCU64rnbKueM/jVMZhurCiqZPZNh7lQATqc3xgWgC6HB7i7EPWBIvq
+2Y71EV3oaz9MN3eHVwDrA7JJ2xnwHZY7c9ERP/yy7wAAAAAAAA==
 
-After working with the latest meson releases, it seems we will soon have 
-a good enough way of handling all this with meson. It makes me sceptical 
-of adding cargo wrappers and using a build system out of meson when we 
-might be able to drop all that soonish. We might as well bite the bullet 
-now to avoid working on something we know we will remove. It's not that 
-of a clear-cut decision, so I'd like feedback on this. What do you 
-think?
 
->
->>   .../vendor/arbitrary-int/.cargo-checksum.json |    1 +
->
->In any case, vendoring should not be done inside hw/char/pl011.
->
->Also, of the code changes (as opposed to the build system changes) that 
->I had asked for in the review of v4, almost none of them have been 
->applied.  I'm copying them here for future reference:
-
-Thanks, this helps a lot.
-
->
->❌ TODO comments when the code is doing potential undefined behavior
-
-Do you mean like Rust's safety comments?
-
-https://std-dev-guide.rust-lang.org/policy/safety-comments.html
-
-These can be required by lints which is really helpful. At this point 
-the UART library has safety comments (which needs to be reviewed for 
-validity). I plan on adding some at the macros in qemu-api as well.
-
->
->❌ a trait to store the CStr corresponding to the structs
-
-I don't know yet if that is helpful in our usecase, because the strings 
-must be visible from C, thus be (rust, not c) statics, unmangled and 
-marked as #[used] for the linker. It makes sense from the Rust POV but 
-must also be FFI-accessible.
-
->
->❌ a trait to generate all-zero structs without having to type "unsafe { 
->MaybeUninit::zeroed().assume_init() }"
-
-Traits cannot have const fns at the moment (traits cannot have 
-type-level effects like const or async but it's WIP to get them into 
-rustc), so this cannot be used for statics and consts.
-
->
->❌ I'd like to use ctor instead of non-portable linker magic,
-
-The linker sections are pretty much standard and in fact ctor uses the 
-same linker attributes. Would writing our own constructor macro be a
-solution for you? My reasoning is that 1) we support our own specific 
-platforms and it's better for portability to reflect that in our source 
-tree and 2) it avoids the external dependency, linker sections do not 
-change so any ctor update would be in the API or adding more platform 
-support,  not fixes in what we target.
-
->and the cstr crate instead of CStr statics or c""
-
-Oh yes, the c"" literals must be replaced. The cstr! macro is the same, 
-semantically, can you explain what you mean by "CStr statics"?
-
->
->If you have a tree that I can look at, to understand more of patch 8, 
->please send a pointer.  However, honestly I am not comfortable with the 
->build system integration as done in this patch.
-
-Ah forgot to mention it in the cover letter, everything is under the 
-rust-pl011-rfc-v5 tag here: 
-
-https://gitlab.com/epilys/rust-for-qemu/-/tree/rust-pl011-rfc-v5?ref_type=tags
-
->
->My suggestion is to do one of the following, or both:
->
->- start from this version; try using Cargo subproject support in 1.5.0 
->and see if it works, so that vendoring can be dropped.  We can require 
->Meson 1.5.0 to work on Rust support.  In this case it's okay not to do 
->any further code changes (the four that were marked ❌ above).
-
-This is my preference as stated above, if everyone also agrees.
->
->- go back to the build system integration of v4, and do *only* the 
->changes that were requested during review (in this case, all of them 
->except link_whole, with you checked it does not work).
->
->If you try using Cargo subproject support, please provide the running 
->time for configure and make, for both "v4" and "v5+subproject".  When I 
->tried it, the processing of the subprojects was very slow.
-
-Hmmm thanks for mentioning that, I did not notice any slow times 
-locally. Will check.
-
-Thanks!
-Manos
+--=-DjE2f+nYdBiTKuDcNVeP--
 
