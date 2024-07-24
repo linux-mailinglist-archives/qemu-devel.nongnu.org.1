@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E0F93AF62
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E33993AF5F
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWYdM-00045n-Dz; Wed, 24 Jul 2024 05:50:08 -0400
+	id 1sWYcn-0008VR-3C; Wed, 24 Jul 2024 05:49:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sWYd2-0002sL-BH
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:49:50 -0400
+ id 1sWYcS-0008Ii-Bd
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:49:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sWYd0-0003dG-P1
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:49:48 -0400
+ id 1sWYcQ-0003ZW-TQ
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:49:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721814586;
+ s=mimecast20190719; t=1721814550;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ooTB6o0l7fGaiBxn6orHO8iTdyy+G4GW6L0eIcZK+Cw=;
- b=QabUqpbWL6GBUFPuOx3QOO5cUaneTFgYhkwrzm4uKPmAJ9dOcbmxFRjevCzsI6EfbJJeOI
- dPpWUQEVgXh6xT09NCC76yq5vBZAmzjc0WozY97sZ3vFE3dMOWuQkqkfpwz1SdfsX+6Llw
- L9ENvaMI7sUG3RTtLxhl6BW2nRuqO5w=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=uIccZmhKXBc7BuOsi31SdYQ75lt4SoV1XHnlyAIxiMM=;
+ b=KcXDOykodA45p6BnScKQ4Hnf3fsCRCUeDNy3l7/t2kAsFkSHV59Xp7P5HATL8HDFNcwCeo
+ R/04XnUSCBljcwy9gonXNdI7ncaEqoITvTBEDQdmu09yxHGZKrteDhAukRl35+nuIoerFB
+ tJFwKL2piqYXYV0Zx3bRGswRr3/fE8s=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-235-EK_4t7FcM-iC7K03Bt4tKA-1; Wed,
- 24 Jul 2024 05:48:19 -0400
-X-MC-Unique: EK_4t7FcM-iC7K03Bt4tKA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-83KBwe9WNCyWlr49_dN7OQ-1; Wed,
+ 24 Jul 2024 05:48:28 -0400
+X-MC-Unique: 83KBwe9WNCyWlr49_dN7OQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C48901955D4E; Wed, 24 Jul 2024 09:48:17 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D5E071955D4D; Wed, 24 Jul 2024 09:48:26 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.141])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 54B0919560AA; Wed, 24 Jul 2024 09:48:02 +0000 (UTC)
+ id 1C08619560AA; Wed, 24 Jul 2024 09:48:18 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -52,11 +52,11 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>, Yao Zi <ziyao@disroot.org>
-Subject: [PULL 05/11] meson.build: fix libgcrypt detection on system without
- libgcrypt-config
-Date: Wed, 24 Jul 2024 10:47:00 +0100
-Message-ID: <20240724094706.30396-6-berrange@redhat.com>
+ Hyman Huang <yong.huang@smartx.com>
+Subject: [PULL 06/11] qapi: drop unused
+ QCryptoBlockCreateOptionsLUKS.detached-header
+Date: Wed, 24 Jul 2024 10:47:01 +0100
+Message-ID: <20240724094706.30396-7-berrange@redhat.com>
 In-Reply-To: <20240724094706.30396-1-berrange@redhat.com>
 References: <20240724094706.30396-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,35 +87,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yao Zi <ziyao@disroot.org>
+The 'detached-header' field in QCryptoBlockCreateOptionsLUKS
+was left over from earlier patch iterations.
 
-libgcrypt starts providing correct pkg-config configuration since 1.9,
-in parallel with libgcrypt-config. Since 1.11 it may also stop
-installing libgcrypt-config in some scenarios. Use the auto method for
-detection of libgcrypt, in which meson will try both pkg-config and
-libgcrypt-config.
-
-Auto method for libgcrypt is supported by meson since 0.49.0, which is
-higher than the version qemu requires.
-
-Signed-off-by: Yao Zi <ziyao@disroot.org>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- meson.build | 1 -
- 1 file changed, 1 deletion(-)
+ qapi/crypto.json | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 4eca361319..ec6fb7d69c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1696,7 +1696,6 @@ endif
- if not gnutls_crypto.found()
-   if (not get_option('gcrypt').auto() or have_system) and not get_option('nettle').enabled()
-     gcrypt = dependency('libgcrypt', version: '>=1.8',
--                        method: 'config-tool',
-                         required: get_option('gcrypt'))
-     # Debian has removed -lgpg-error from libgcrypt-config
-     # as it "spreads unnecessary dependencies" which in
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index e102be337b..f03bdab8c9 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -226,8 +226,6 @@
+ # @iter-time: number of milliseconds to spend in PBKDF passphrase
+ #     processing.  Currently defaults to 2000.  (since 2.8)
+ #
+-# @detached-header: create a detached LUKS header.  (since 9.0)
+-#
+ # Since: 2.6
+ ##
+ { 'struct': 'QCryptoBlockCreateOptionsLUKS',
+@@ -237,8 +235,7 @@
+             '*ivgen-alg': 'QCryptoIVGenAlgorithm',
+             '*ivgen-hash-alg': 'QCryptoHashAlgorithm',
+             '*hash-alg': 'QCryptoHashAlgorithm',
+-            '*iter-time': 'int',
+-            '*detached-header': 'bool'}}
++            '*iter-time': 'int' }}
+ 
+ ##
+ # @QCryptoBlockOpenOptions:
 -- 
 2.45.2
 
