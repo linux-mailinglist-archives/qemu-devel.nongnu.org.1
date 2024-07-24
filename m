@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4802993AF57
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA83493AF65
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 11:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWYcU-0008Ho-JS; Wed, 24 Jul 2024 05:49:14 -0400
+	id 1sWYfZ-0005sF-Ok; Wed, 24 Jul 2024 05:52:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sWYcC-0007HB-AG
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:48:59 -0400
+ id 1sWYfW-0005mm-P4
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:52:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sWYcA-0003W3-QR
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:48:56 -0400
+ id 1sWYfU-0004U0-UG
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 05:52:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721814534;
+ s=mimecast20190719; t=1721814739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LjkklmsysjgtDGCbBleqhZ+dCTTNKmhZGgdg5aNmjms=;
- b=GeP8FKvwjdmwXLrzx9X7jWp1DNjwtYGg6I1JDuTng1dJ0ajXLEdm9IsqbSMO8IDNCU16bm
- ytlo/2DbU6orUSnwtlYY0RMEwzTDY4Xic8lqEuAP4udJKgEpoDFpPPoRIWrjHoquu05rF4
- fCueEn85ZO6WBVJ2NFP7EvO4JQLDI+0=
+ bh=SsjC4SVtGYu4HwGaoZBpQIZD1L1337uaI18uF2z+FbM=;
+ b=EG7vM2ly6lNSYwws1pB94zq/8SKi+A2Eb8Quo/oNlBpb0aqLKROp3dE8jiZLXjeprjOATi
+ IeIx2ZeH2+C1/Yi2AK/GdXngQY2Sypr7LzrQO/XMD7VQX+q/7lqjwyqQtTCZEsUcaAIRP7
+ OYR8gxbTrAxdMQFnZbenrnBSPaF16qQ=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-s8gCPIwwPOWUvZN4WUDmtA-1; Wed,
- 24 Jul 2024 05:48:34 -0400
-X-MC-Unique: s8gCPIwwPOWUvZN4WUDmtA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-bN8hO_6lNxaGlw9_chZ2gw-1; Wed,
+ 24 Jul 2024 05:48:42 -0400
+X-MC-Unique: bN8hO_6lNxaGlw9_chZ2gw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A1B211955D4A; Wed, 24 Jul 2024 09:48:33 +0000 (UTC)
+ id E47541955D4F; Wed, 24 Jul 2024 09:48:40 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.141])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7FE81195605A; Wed, 24 Jul 2024 09:48:27 +0000 (UTC)
+ id 7864A195605A; Wed, 24 Jul 2024 09:48:34 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Hyman Huang <yong.huang@smartx.com>
-Subject: [PULL 07/11] meson: build chardev trace files when have_block
-Date: Wed, 24 Jul 2024 10:47:02 +0100
-Message-ID: <20240724094706.30396-8-berrange@redhat.com>
+Subject: [PULL 08/11] chardev: add tracing of socket error conditions
+Date: Wed, 24 Jul 2024 10:47:03 +0100
+Message-ID: <20240724094706.30396-9-berrange@redhat.com>
 In-Reply-To: <20240724094706.30396-1-berrange@redhat.com>
 References: <20240724094706.30396-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,40 +86,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QSD depends on chardev code, and is built when have_tools is
-true. This means conditionalizing chardev trace on have_system
-is wrong, we need have_block which is set have_system || have_tools.
+This adds trace points to every error scenario in the chardev socket
+backend that can lead to termination of the connection.
 
-This latent bug was historically harmless because only the spice
-chardev included tracing, which wasn't built in a !have_system
-scenario.
-
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ chardev/char-socket.c | 37 ++++++++++++++++++++++++++-----------
+ chardev/trace-events  | 10 ++++++++++
+ 2 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index ec6fb7d69c..5613b62a4f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3343,6 +3343,7 @@ if have_block
-   trace_events_subdirs += [
-     'authz',
-     'block',
-+    'chardev',
-     'io',
-     'nbd',
-     'scsi',
-@@ -3354,7 +3355,6 @@ if have_system
-     'audio',
-     'backends',
-     'backends/tpm',
--    'chardev',
-     'ebpf',
-     'hw/9pfs',
-     'hw/acpi',
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index 812d7aa38a..1ca9441b1b 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -33,6 +33,7 @@
+ #include "qapi/clone-visitor.h"
+ #include "qapi/qapi-visit-sockets.h"
+ #include "qemu/yank.h"
++#include "trace.h"
+ 
+ #include "chardev/char-io.h"
+ #include "chardev/char-socket.h"
+@@ -126,6 +127,7 @@ static int tcp_chr_write(Chardev *chr, const uint8_t *buf, int len)
+         if (ret < 0 && errno != EAGAIN) {
+             if (tcp_chr_read_poll(chr) <= 0) {
+                 /* Perform disconnect and return error. */
++                trace_chr_socket_poll_err(chr, chr->label);
+                 tcp_chr_disconnect_locked(chr);
+             } /* else let the read handler finish it properly */
+         }
+@@ -279,15 +281,16 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
+     size_t i;
+     int *msgfds = NULL;
+     size_t msgfds_num = 0;
++    Error *err = NULL;
+ 
+     if (qio_channel_has_feature(s->ioc, QIO_CHANNEL_FEATURE_FD_PASS)) {
+         ret = qio_channel_readv_full(s->ioc, &iov, 1,
+                                      &msgfds, &msgfds_num,
+-                                     0, NULL);
++                                     0, &err);
+     } else {
+         ret = qio_channel_readv_full(s->ioc, &iov, 1,
+                                      NULL, NULL,
+-                                     0, NULL);
++                                     0, &err);
+     }
+ 
+     if (msgfds_num) {
+@@ -322,7 +325,11 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
+         errno = EAGAIN;
+         ret = -1;
+     } else if (ret == -1) {
++        trace_chr_socket_recv_err(chr, chr->label, error_get_pretty(err));
++        error_free(err);
+         errno = EIO;
++    } else if (ret == 0) {
++        trace_chr_socket_recv_eof(chr, chr->label);
+     }
+ 
+     return ret;
+@@ -463,6 +470,7 @@ static void tcp_chr_disconnect_locked(Chardev *chr)
+     SocketChardev *s = SOCKET_CHARDEV(chr);
+     bool emit_close = s->state == TCP_CHARDEV_STATE_CONNECTED;
+ 
++    trace_chr_socket_disconnect(chr, chr->label);
+     tcp_chr_free_connection(chr);
+ 
+     if (s->listener) {
+@@ -521,6 +529,7 @@ static gboolean tcp_chr_hup(QIOChannel *channel,
+                                void *opaque)
+ {
+     Chardev *chr = CHARDEV(opaque);
++    trace_chr_socket_hangup(chr, chr->label);
+     tcp_chr_disconnect(chr);
+     return G_SOURCE_REMOVE;
+ }
+@@ -672,15 +681,18 @@ static gboolean tcp_chr_telnet_init_io(QIOChannel *ioc,
+     SocketChardev *s = user_data;
+     Chardev *chr = CHARDEV(s);
+     TCPChardevTelnetInit *init = s->telnet_init;
++    Error *err = NULL;
+     ssize_t ret;
+ 
+     assert(init);
+ 
+-    ret = qio_channel_write(ioc, init->buf, init->buflen, NULL);
++    ret = qio_channel_write(ioc, init->buf, init->buflen, &err);
+     if (ret < 0) {
+         if (ret == QIO_CHANNEL_ERR_BLOCK) {
+             ret = 0;
+         } else {
++            trace_chr_socket_write_err(chr, chr->label, error_get_pretty(err));
++            error_free(err);
+             tcp_chr_disconnect(chr);
+             goto end;
+         }
+@@ -765,9 +777,9 @@ static void tcp_chr_websock_handshake(QIOTask *task, gpointer user_data)
+     Error *err = NULL;
+ 
+     if (qio_task_propagate_error(task, &err)) {
+-        error_reportf_err(err,
+-                          "websock handshake of character device %s failed: ",
+-                          chr->label);
++        trace_chr_socket_ws_handshake_err(chr, chr->label,
++                                          error_get_pretty(err));
++        error_free(err);
+         tcp_chr_disconnect(chr);
+     } else {
+         if (s->do_telnetopt) {
+@@ -805,9 +817,9 @@ static void tcp_chr_tls_handshake(QIOTask *task,
+     Error *err = NULL;
+ 
+     if (qio_task_propagate_error(task, &err)) {
+-        error_reportf_err(err,
+-                          "TLS handshake of character device %s failed: ",
+-                          chr->label);
++        trace_chr_socket_tls_handshake_err(chr, chr->label,
++                                           error_get_pretty(err));
++        error_free(err);
+         tcp_chr_disconnect(chr);
+     } else {
+         if (s->is_websock) {
+@@ -826,19 +838,22 @@ static void tcp_chr_tls_init(Chardev *chr)
+     SocketChardev *s = SOCKET_CHARDEV(chr);
+     QIOChannelTLS *tioc;
+     gchar *name;
++    Error *err = NULL;
+ 
+     if (s->is_listen) {
+         tioc = qio_channel_tls_new_server(
+             s->ioc, s->tls_creds,
+             s->tls_authz,
+-            NULL);
++            &err);
+     } else {
+         tioc = qio_channel_tls_new_client(
+             s->ioc, s->tls_creds,
+             s->addr->u.inet.host,
+-            NULL);
++            &err);
+     }
+     if (tioc == NULL) {
++        trace_chr_socket_tls_init_err(chr, chr->label, error_get_pretty(err));
++        error_free(err);
+         tcp_chr_disconnect(chr);
+         return;
+     }
+diff --git a/chardev/trace-events b/chardev/trace-events
+index 027107b0c1..7e97b8a988 100644
+--- a/chardev/trace-events
++++ b/chardev/trace-events
+@@ -17,3 +17,13 @@ spice_vmc_register_interface(void *scd) "spice vmc registered interface %p"
+ spice_vmc_unregister_interface(void *scd) "spice vmc unregistered interface %p"
+ spice_vmc_event(int event) "spice vmc event %d"
+ 
++# char-socket.c
++chr_socket_poll_err(void *chrdev, const char *label) "chardev socket poll error %p (%s)"
++chr_socket_recv_err(void *chrdev, const char *label, const char *err) "chardev socket recv error %p (%s): %s"
++chr_socket_recv_eof(void *chrdev, const char *label) "chardev socket recv end-of-file %p (%s)"
++chr_socket_write_err(void *chrdev, const char *label, const char *err) "chardev socket write error %p (%s): %s"
++chr_socket_disconnect(void *chrdev, const char *label) "chardev socket disconnect %p (%s)"
++chr_socket_hangup(void *chrdev, const char *label) "chardev socket hangup %p (%s)"
++chr_socket_ws_handshake_err(void *chrdev, const char *label, const char *err) "chardev socket websock handshake error %p (%s): %s"
++chr_socket_tls_handshake_err(void *chrdev, const char *label, const char *err) "chardev socket TLS handshake error %p (%s): %s"
++chr_socket_tls_init_err(void *chrdev, const char *label, const char *err) "chardev socket TLS init error %p (%s): %s"
 -- 
 2.45.2
 
