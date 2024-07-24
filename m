@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D34093B62E
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 19:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C78993B63C
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 19:56:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWgAq-0000Z7-Vq; Wed, 24 Jul 2024 13:53:13 -0400
+	id 1sWgAt-0000k5-IJ; Wed, 24 Jul 2024 13:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgAm-0000Y4-3b
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:53:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgAs-0000gF-5y
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:53:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgAj-0005bK-76
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:53:07 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgAm-0005cj-GD
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:53:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721843583;
+ s=mimecast20190719; t=1721843587;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Q359HeAqme6pwojwYJ5fO6HP9Vh36/qptRCiJtWwDPs=;
- b=M43QqVwIKVzrJQL7gagZ6+rRei42zMldgmISOwvpC+uPZ/2pIOuhcxhtec+JNh/CPSVkEG
- LYGNAfcmku7tX3ULoWR53UIhRsckgfVBO5Ki6QBJswC85tfgVGFUBV3/Lv4tfj1eqllehC
- iP4Kbo6HPWLvFDbVRsMEJP41NRmOhec=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bFlCPERrA8XbHL2WbrXxbY4UFojl/kmqfg7LiLdQJco=;
+ b=WJjWXjqlaV961f567bobSJkc0IEm7/ep0VDf+pdpdNt3/h+umBBIEdLfUAlOEaV82TeNqW
+ PigxwTLvOF9uhasX6nbpQSTh9BVHCBxCbFMdAGSMbedjQM1LeWQFAcBQwViwgy/k8mBikf
+ lcuRjS7VyxkwKo/4yYEGBR2hfWIBNSw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-_ZwsVsJXPEaZOiA_A__OuA-1; Wed,
- 24 Jul 2024 13:52:59 -0400
-X-MC-Unique: _ZwsVsJXPEaZOiA_A__OuA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-jsbfeNnWM3S371C9ilHCXg-1; Wed,
+ 24 Jul 2024 13:53:05 -0400
+X-MC-Unique: jsbfeNnWM3S371C9ilHCXg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4932D1955F3D; Wed, 24 Jul 2024 17:52:58 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D5CDE1955D55; Wed, 24 Jul 2024 17:53:03 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.144])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A43881955D42; Wed, 24 Jul 2024 17:52:50 +0000 (UTC)
+ id D87A91955D42; Wed, 24 Jul 2024 17:52:58 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org,
@@ -50,11 +51,12 @@ Cc: Ani Sinha <anisinha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
  qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 00/23] Convert avocado tests to normal Python unittests
-Date: Wed, 24 Jul 2024 19:52:18 +0200
-Message-ID: <20240724175248.1389201-1-thuth@redhat.com>
+Subject: [PATCH v2 01/23] python: Install pycotap in our venv if necessary
+Date: Wed, 24 Jul 2024 19:52:19 +0200
+Message-ID: <20240724175248.1389201-2-thuth@redhat.com>
+In-Reply-To: <20240724175248.1389201-1-thuth@redhat.com>
+References: <20240724175248.1389201-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -81,256 +83,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Avocado v88 that we use in QEMU is already on a life support
-system: It is not supported by upstream anymore, and with the latest
-versions of Python, it won't work anymore since it depends on the
-"imp" module that has been removed in Python 3.12.
+The upcoming functional tests will require pycotap for providing
+TAP output from the python-based tests. Since we want to be able
+to run some of the tests offline by default, too, let's install
+it along with meson in our venv if necessary (it's size is only
+5 kB, so adding the wheel here should not really be a problem).
 
-There have been several attempts to update the test suite in QEMU
-to a newer version of Avocado, but so far no attempt has successfully
-been merged yet.
+The wheel file has been obtained with:
 
-Additionally, the whole "make check" test suite in QEMU is using the
-meson test runner nowadays, so running the python-based tests via the
-Avocodo test runner looks and feels quite like an oddball, requiring
-the users to deal with the knowledge of multiple test runners in
-parallel (e.g. the timeout settings work completely differently).
+ pip download --only-binary :all: --dest . --no-cache pycotap
 
-So instead of trying to update the python-based test suite in QEMU
-to a newer version of Avocado, we should try to better integrate
-it with the meson test runner instead. Indeed most tests work quite
-nicely without the Avocado framework already, as you can see with
-this patch series - it does not convert all tests, just a subset so
-far, but this already proves that many tests only need small modifi-
-cations to work without Avocado.
-
-Only tests that use the LinuxTest / LinuxDistro and LinuxSSHMixIn
-classes (e.g. based on cloud-init images or using SSH) really depend
-on the Avocado framework, so we'd need a solution for those if we
-want to continue using them. One solution might be to simply use the
-required functions from avocado.utils for these tests, and still run
-them via the meson test runner instead, but that needs some further
-investigation that will be done later.
-
-
-Now if you want to try out these patches: Apply the patches, then
-recompile and then run:
-
- make check-functional
-
-You can also run single targets e.g. with:
-
- make check-functional-ppc
-
-You can also run the tests without any test runner now by
-setting the PYTHONPATH environment variable to the "python" folder
-of your source tree, and by specifying the build directory via
-QEMU_BUILD_ROOT (if autodetection fails) and by specifying the
-QEMU binary via QEMU_TEST_QEMU_BINARY. For example:
-
- export PYTHONPATH=$HOME/qemu/python
- export QEMU_TEST_QEMU_BINARY=qemu-system-x86_64
- export QEMU_BUILD_ROOT=$HOME/qemu/build
- ~/qemu/tests/functional/test_virtio_version.py
-
-The logs of the tests can be found in the build directory under
-tests/functional/<arch>/<testname> - console log and general logs will
-be put in separate files there.
-
-Still to be done: Update the documentation for this new test framework.
-
-v2:
-- Addressed review feedback from v1
-- Add pycotap as a wheel instead of trying to install it on demand
-  when running "make check-functional" (works much better now!)
-- Converted much more tests
-- Lots of other small improvements here and there
-
-RFC -> v1:
-- Now using pycotap for running the tests instead of "pytest"
-- Change the name from "tests/pytest" to "tests/functional" accordingly
-- Make it possible to run the tests directly
-- Use Python's urllib instead of wget for downloading
-- Lots of makefile / meson integration improvements
-- Converted more tests
-- Update MAINTAINERS file accordingly
-- Added a patch to run check-functional in the gitlab-CI
-- ... lots of other changes I forgot about ... in fact, I changed so
-  many things that I also did not dare to pick up the Reviewed-bys
-  from the RFC
-
-Thomas Huth (23):
-  python: Install pycotap in our venv if necessary
-  tests/functional: Add base classes for the upcoming pytest-based tests
-  tests/Makefile.include: Increase the level of indentation in the help
-    text
-  tests/functional: Prepare the meson build system for the functional
-    tests
-  tests/functional: Convert simple avocado tests into standalone python
-    tests
-  tests/functional: Convert avocado tests that just need a small
-    adjustment
-  tests/functional: Implement fetch_asset() method for downloading
-    assets
-  tests/functional: Convert some tests that download files via
-    fetch_asset()
-  tests/functional: Add a function for extracting files from an archive
-  tests/functional: Convert some avocado tests that needed
-    avocado.utils.archive
-  tests/functional: Set up logging
-  tests/functional: Convert the s390x avocado tests into standalone
-    tests
-  tests/functional: Convert the x86_cpu_model_versions test
-  tests/functional: Convert the microblaze avocado tests into standalone
-    tests
-  tests/functional: Convert the riscv_opensbi avocado test into a
-    standalone test
-  tests/functional: Convert the virtio_gpu avocado test into a
-    standalone test
-  tests/functional: Convert most ppc avocado tests into standalone tests
-  tests/functional: Convert the ppc_amiga avocado test into a standalone
-    test
-  tests/functional: Convert the ppc_hv avocado test into a standalone
-    test
-  tests/functional: Convert the m68k nextcube test with tesseract
-  tests/functional: Convert the acpi-bits test into a standalone test
-  tests/functional: Convert the rx_gdbsim avocado test into a standalone
-    test
-  gitlab-ci: Add "check-functional" to the build tests
-
- MAINTAINERS                                   |  32 +-
- .gitlab-ci.d/buildtest-template.yml           |   3 +-
- .gitlab-ci.d/buildtest.yml                    |  60 +--
- python/wheels/pycotap-1.3.1-py3-none-any.whl  | Bin 0 -> 5119 bytes
- pythondeps.toml                               |   1 +
- tests/Makefile.include                        |  41 +-
- tests/avocado/machine_microblaze.py           |  61 ---
- tests/avocado/riscv_opensbi.py                |  63 ---
- tests/avocado/tesseract_utils.py              |  46 --
- .../acpi-bits/bits-config/bits-cfg.txt        |   0
- .../acpi-bits/bits-tests/smbios.py2           |   0
- .../acpi-bits/bits-tests/smilatency.py2       |   0
- .../acpi-bits/bits-tests/testacpi.py2         |   0
- .../acpi-bits/bits-tests/testcpuid.py2        |   0
- tests/functional/meson.build                  | 150 +++++++
- tests/functional/qemu_test/__init__.py        | 393 ++++++++++++++++++
- tests/functional/qemu_test/tesseract.py       |  35 ++
- tests/functional/qemu_test/utils.py           |  47 +++
- .../test_acpi_bits.py}                        |  29 +-
- .../test_arm_canona1100.py}                   |  21 +-
- .../test_arm_n8x0.py}                         |  25 +-
- .../test_avr_mega2560.py}                     |  11 +-
- .../test_cpu_queries.py}                      |   7 +-
- .../test_empty_cpu_model.py}                  |   7 +-
- .../test_info_usernet.py}                     |  11 +-
- .../test_loongarch64_virt.py}                 |  16 +-
- .../test_m68k_nextcube.py}                    |  20 +-
- .../test_mem_addr_space.py}                   |  52 +--
- .../functional/test_microblaze_s3adsp1800.py  |  38 ++
- .../test_microblazeel_s3adsp1800.py           |  41 ++
- .../test_mips64el_loongson3v.py}              |  26 +-
- .../test_netdev_ethtool.py}                   |  32 +-
- .../test_pc_cpu_hotplug_props.py}             |  11 +-
- .../test_ppc64_hv.py}                         |  36 +-
- .../test_ppc64_powernv.py}                    |  45 +-
- .../test_ppc64_pseries.py}                    |  45 +-
- .../ppc_405.py => functional/test_ppc_405.py} |  19 +-
- .../test_ppc_40p.py}                          |  37 +-
- .../test_ppc_74xx.py}                         |  74 ++--
- .../test_ppc_amiga.py}                        |  33 +-
- .../test_ppc_bamboo.py}                       |  23 +-
- .../test_ppc_mpc8544ds.py}                    |  19 +-
- .../test_ppc_virtex_ml507.py}                 |  19 +-
- tests/functional/test_riscv_opensbi.py        |  36 ++
- .../test_rx_gdbsim.py}                        |  34 +-
- .../test_s390x_ccw_virtio.py}                 |  32 +-
- .../test_s390x_topology.py}                   |  70 ++--
- .../test_sparc64_sun4u.py}                    |  25 +-
- .../version.py => functional/test_version.py} |  13 +-
- .../test_virtio_gpu.py}                       |  34 +-
- .../test_virtio_version.py}                   |   8 +-
- .../test_x86_cpu_model_versions.py}           |  63 +--
- tests/meson.build                             |   1 +
- 53 files changed, 1187 insertions(+), 758 deletions(-)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ python/wheels/pycotap-1.3.1-py3-none-any.whl | Bin 0 -> 5119 bytes
+ pythondeps.toml                              |   1 +
+ 2 files changed, 1 insertion(+)
  create mode 100644 python/wheels/pycotap-1.3.1-py3-none-any.whl
- delete mode 100644 tests/avocado/machine_microblaze.py
- delete mode 100644 tests/avocado/riscv_opensbi.py
- delete mode 100644 tests/avocado/tesseract_utils.py
- rename tests/{avocado => functional}/acpi-bits/bits-config/bits-cfg.txt (100%)
- rename tests/{avocado => functional}/acpi-bits/bits-tests/smbios.py2 (100%)
- rename tests/{avocado => functional}/acpi-bits/bits-tests/smilatency.py2 (100%)
- rename tests/{avocado => functional}/acpi-bits/bits-tests/testacpi.py2 (100%)
- rename tests/{avocado => functional}/acpi-bits/bits-tests/testcpuid.py2 (100%)
- create mode 100644 tests/functional/meson.build
- create mode 100644 tests/functional/qemu_test/__init__.py
- create mode 100644 tests/functional/qemu_test/tesseract.py
- create mode 100644 tests/functional/qemu_test/utils.py
- rename tests/{avocado/acpi-bits.py => functional/test_acpi_bits.py} (95%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_arm_canona1100.py => functional/test_arm_canona1100.py} (71%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_arm_n8x0.py => functional/test_arm_n8x0.py} (71%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_avr6.py => functional/test_avr_mega2560.py} (90%)
- mode change 100644 => 100755
- rename tests/{avocado/cpu_queries.py => functional/test_cpu_queries.py} (89%)
- mode change 100644 => 100755
- rename tests/{avocado/empty_cpu_model.py => functional/test_empty_cpu_model.py} (84%)
- mode change 100644 => 100755
- rename tests/{avocado/info_usernet.py => functional/test_info_usernet.py} (87%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_loongarch.py => functional/test_loongarch64_virt.py} (89%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_m68k_nextcube.py => functional/test_m68k_nextcube.py} (86%)
- mode change 100644 => 100755
- rename tests/{avocado/mem-addr-space-check.py => functional/test_mem_addr_space.py} (93%)
- mode change 100644 => 100755
- create mode 100755 tests/functional/test_microblaze_s3adsp1800.py
- create mode 100755 tests/functional/test_microblazeel_s3adsp1800.py
- rename tests/{avocado/machine_mips_loongson3v.py => functional/test_mips64el_loongson3v.py} (55%)
- mode change 100644 => 100755
- rename tests/{avocado/netdev-ethtool.py => functional/test_netdev_ethtool.py} (81%)
- mode change 100644 => 100755
- rename tests/{avocado/pc_cpu_hotplug_props.py => functional/test_pc_cpu_hotplug_props.py} (90%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_hv_tests.py => functional/test_ppc64_hv.py} (92%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_powernv.py => functional/test_ppc64_powernv.py} (80%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_pseries.py => functional/test_ppc64_pseries.py} (83%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_405.py => functional/test_ppc_405.py} (73%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_prep_40p.py => functional/test_ppc_40p.py} (78%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_74xx.py => functional/test_ppc_74xx.py} (74%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_amiga.py => functional/test_ppc_amiga.py} (54%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_bamboo.py => functional/test_ppc_bamboo.py} (75%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_mpc8544ds.py => functional/test_ppc_mpc8544ds.py} (75%)
- mode change 100644 => 100755
- rename tests/{avocado/ppc_virtex_ml507.py => functional/test_ppc_virtex_ml507.py} (78%)
- mode change 100644 => 100755
- create mode 100755 tests/functional/test_riscv_opensbi.py
- rename tests/{avocado/machine_rx_gdbsim.py => functional/test_rx_gdbsim.py} (78%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_s390_ccw_virtio.py => functional/test_s390x_ccw_virtio.py} (95%)
- mode change 100644 => 100755
- rename tests/{avocado/s390_topology.py => functional/test_s390x_topology.py} (90%)
- mode change 100644 => 100755
- rename tests/{avocado/machine_sparc64_sun4u.py => functional/test_sparc64_sun4u.py} (60%)
- mode change 100644 => 100755
- rename tests/{avocado/version.py => functional/test_version.py} (78%)
- mode change 100644 => 100755
- rename tests/{avocado/virtio-gpu.py => functional/test_virtio_gpu.py} (88%)
- mode change 100644 => 100755
- rename tests/{avocado/virtio_version.py => functional/test_virtio_version.py} (98%)
- mode change 100644 => 100755
- rename tests/{avocado/x86_cpu_model_versions.py => functional/test_x86_cpu_model_versions.py} (92%)
- mode change 100644 => 100755
 
+diff --git a/python/wheels/pycotap-1.3.1-py3-none-any.whl b/python/wheels/pycotap-1.3.1-py3-none-any.whl
+new file mode 100644
+index 0000000000000000000000000000000000000000..9c2c7d259365c8a0487228c6878e2c0b10ba6bdd
+GIT binary patch
+literal 5119
+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
+a`M=gRMNm<H|DFb*0Z`-skj4D{@BaZhvADJX
+
+literal 0
+HcmV?d00001
+
+diff --git a/pythondeps.toml b/pythondeps.toml
+index f6e590fdd8..0bc4144d4b 100644
+--- a/pythondeps.toml
++++ b/pythondeps.toml
+@@ -20,6 +20,7 @@
+ [meson]
+ # The install key should match the version in python/wheels/
+ meson = { accepted = ">=1.1.0", installed = "1.2.3", canary = "meson" }
++pycotap = { accepted = ">=1.1.0", installed = "1.3.1" }
+ 
+ [docs]
+ # Please keep the installed versions in sync with docs/requirements.txt
 -- 
 2.45.2
 
