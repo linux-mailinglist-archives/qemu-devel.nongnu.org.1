@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEA893B63B
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 19:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D53293B643
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jul 2024 19:56:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWgD1-0001F6-22; Wed, 24 Jul 2024 13:55:27 -0400
+	id 1sWgCV-00077e-9N; Wed, 24 Jul 2024 13:54:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgCH-00068V-09
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:54:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgCL-0006Yl-EK
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:54:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgCC-0005xK-Ke
- for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:54:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sWgCE-0005xw-Sc
+ for qemu-devel@nongnu.org; Wed, 24 Jul 2024 13:54:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721843674;
+ s=mimecast20190719; t=1721843676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hUe7Q96P9b55uMJqmEeKA60XBXRo4Xodz951JEg/wy4=;
- b=VyiplDIlGynbOKiW+QOSqGrBn4/rmtpGeS7e0MSfIP4k0vRViV8+n/fuGCz2sNdI7U8AVx
- w/DO8ZZsmuZJOY/rQjhou/ehOP3NoRRbAoz8frcUTxwte9P9nbhsNCiuIEmrmU3Hqm/CQP
- scwXNmSiuYL8YkpVkj9hXWVq4NCkSz4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Wf8X5omgUCDws1rOtaLrgrsexFOXN3/9UU728c0iMCo=;
+ b=G9k7SX8+x0yvzTeYjRhce+rgw6vPA4QTwR7408zCxFckOBYJBpOT62jR2CElEUc+FIKe1x
+ ukgb9sDdd+p1AJXlAReaDftNk9YkWuVhIhlc4RLs5afjKMYclyGMHr7xah6Ye/PVme7QTq
+ y01HEcnL0wGR7BtY2JsSsb0p2Oi0cJU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-519-rCinRGmHOfOBDZbleE5iDw-1; Wed,
- 24 Jul 2024 13:54:30 -0400
-X-MC-Unique: rCinRGmHOfOBDZbleE5iDw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-475-YtVkMZwNP-WuL4DdxrAK8g-1; Wed,
+ 24 Jul 2024 13:54:33 -0400
+X-MC-Unique: YtVkMZwNP-WuL4DdxrAK8g-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E6A331955BF1; Wed, 24 Jul 2024 17:54:25 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B33711955BEE; Wed, 24 Jul 2024 17:54:31 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.144])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E8931955D45; Wed, 24 Jul 2024 17:54:19 +0000 (UTC)
+ id 2A8631955D48; Wed, 24 Jul 2024 17:54:25 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org,
@@ -51,13 +51,14 @@ Cc: Ani Sinha <anisinha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
  qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 16/23] tests/functional: Convert the virtio_gpu avocado
- test into a standalone test
-Date: Wed, 24 Jul 2024 19:52:34 +0200
-Message-ID: <20240724175248.1389201-17-thuth@redhat.com>
+Subject: [PATCH v2 17/23] tests/functional: Convert most ppc avocado tests
+ into standalone tests
+Date: Wed, 24 Jul 2024 19:52:35 +0200
+Message-ID: <20240724175248.1389201-18-thuth@redhat.com>
 In-Reply-To: <20240724175248.1389201-1-thuth@redhat.com>
 References: <20240724175248.1389201-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -84,136 +85,497 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nothing thrilling in here, it's just a straight forward conversion.
+Nothing thrilling in here, just straight forward conversions.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/meson.build                  |  1 +
- .../test_virtio_gpu.py}                       | 34 ++++++++-----------
- 2 files changed, 16 insertions(+), 19 deletions(-)
- rename tests/{avocado/virtio-gpu.py => functional/test_virtio_gpu.py} (88%)
+ MAINTAINERS                                   |  8 ++--
+ tests/functional/meson.build                  | 10 +++++
+ .../test_ppc64_powernv.py}                    | 45 +++++--------------
+ .../test_ppc64_pseries.py}                    | 45 +++++--------------
+ .../test_ppc_40p.py}                          | 37 ++++++---------
+ .../test_ppc_mpc8544ds.py}                    | 19 ++++----
+ .../test_ppc_virtex_ml507.py}                 | 19 ++++----
+ 7 files changed, 71 insertions(+), 112 deletions(-)
+ rename tests/{avocado/ppc_powernv.py => functional/test_ppc64_powernv.py} (80%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_pseries.py => functional/test_ppc64_pseries.py} (83%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_prep_40p.py => functional/test_ppc_40p.py} (78%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_mpc8544ds.py => functional/test_ppc_mpc8544ds.py} (75%)
+ mode change 100644 => 100755
+ rename tests/{avocado/ppc_virtex_ml507.py => functional/test_ppc_virtex_ml507.py} (78%)
  mode change 100644 => 100755
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 02cf39e94d..cec9a209a9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1449,7 +1449,7 @@ L: qemu-ppc@nongnu.org
+ S: Orphan
+ F: hw/ppc/mpc8544ds.c
+ F: hw/ppc/mpc8544_guts.c
+-F: tests/avocado/ppc_mpc8544ds.py
++F: tests/functional/test_ppc_mpc8544ds.py
+ 
+ New World (mac99)
+ M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+@@ -1502,7 +1502,7 @@ F: hw/dma/i82374.c
+ F: hw/rtc/m48t59-isa.c
+ F: include/hw/isa/pc87312.h
+ F: include/hw/rtc/m48t59.h
+-F: tests/avocado/ppc_prep_40p.py
++F: tests/functional/test_ppc_40p.py
+ 
+ sPAPR (pseries)
+ M: Nicholas Piggin <npiggin@gmail.com>
+@@ -1526,7 +1526,7 @@ F: tests/qtest/spapr*
+ F: tests/qtest/libqos/*spapr*
+ F: tests/qtest/rtas*
+ F: tests/qtest/libqos/rtas*
+-F: tests/avocado/ppc_pseries.py
++F: tests/functional/test_ppc64_pseries.py
+ F: tests/avocado/ppc_hv_tests.py
+ 
+ PowerNV (Non-Virtualized)
+@@ -1558,7 +1558,7 @@ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+ L: qemu-ppc@nongnu.org
+ S: Odd Fixes
+ F: hw/ppc/virtex_ml507.c
+-F: tests/avocado/ppc_virtex_ml507.py
++F: tests/functional/test_ppc_virtex_ml507.py
+ 
+ sam460ex
+ M: BALATON Zoltan <balaton@eik.bme.hu>
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index ebc6e2d1c6..91fe835e8f 100644
+index 91fe835e8f..510dddfc49 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -82,6 +82,7 @@ tests_x86_64_quick = [
+@@ -12,6 +12,8 @@ endif
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+ test_timeouts = {
+   'netdev_ethtool' : 180,
++  'ppc_40p' : 240,
++  'ppc64_powernv' : 120,
+   's390x_ccw_virtio' : 180,
+ }
  
- tests_x86_64_thorough = [
-   'netdev_ethtool',
-+  'virtio_gpu',
+@@ -52,7 +54,15 @@ tests_ppc_quick = [
+ 
+ tests_ppc_thorough = [
+   'ppc_405',
++  'ppc_40p',
+   'ppc_bamboo',
++  'ppc_mpc8544ds',
++  'ppc_virtex_ml507',
++]
++
++tests_ppc64_thorough = [
++  'ppc64_powernv',
++  'ppc64_pseries',
  ]
  
- foreach speed : ['quick', 'thorough']
-diff --git a/tests/avocado/virtio-gpu.py b/tests/functional/test_virtio_gpu.py
+ tests_riscv32_quick = [
+diff --git a/tests/avocado/ppc_powernv.py b/tests/functional/test_ppc64_powernv.py
 old mode 100644
 new mode 100755
-similarity index 88%
-rename from tests/avocado/virtio-gpu.py
-rename to tests/functional/test_virtio_gpu.py
-index 6091f614a4..911b4119c6
---- a/tests/avocado/virtio-gpu.py
-+++ b/tests/functional/test_virtio_gpu.py
-@@ -1,14 +1,16 @@
+similarity index 80%
+rename from tests/avocado/ppc_powernv.py
+rename to tests/functional/test_ppc64_powernv.py
+index 4342941d5d..f3203e5609
+--- a/tests/avocado/ppc_powernv.py
++++ b/tests/functional/test_ppc64_powernv.py
+@@ -1,3 +1,5 @@
 +#!/usr/bin/env python3
 +#
- # virtio-gpu tests
+ # Test that Linux kernel boots on ppc powernv machines and check the console
  #
+ # Copyright (c) 2018, 2020 Red Hat, Inc.
+@@ -5,9 +7,8 @@
  # This work is licensed under the terms of the GNU GPL, version 2 or
  # later.  See the COPYING file in the top-level directory.
  
- 
--from avocado_qemu import BUILD_DIR
+-from avocado.utils import archive
 -from avocado_qemu import QemuSystemTest
 -from avocado_qemu import wait_for_console_pattern
--from avocado_qemu import exec_command_and_wait_for_pattern
--from avocado_qemu import is_readable_executable_file
-+from qemu_test import BUILD_DIR
 +from qemu_test import QemuSystemTest
 +from qemu_test import wait_for_console_pattern
-+from qemu_test import exec_command_and_wait_for_pattern
-+from qemu_test import is_readable_executable_file
  
- from qemu.utils import kvm_available
+ class powernvMachine(QemuSystemTest):
  
-@@ -28,11 +30,6 @@ def pick_default_vug_bin():
+@@ -30,23 +31,13 @@ def do_test_linux_boot(self, command_line = KERNEL_COMMON_COMMAND_LINE):
+         self.vm.launch()
  
- 
- class VirtioGPUx86(QemuSystemTest):
--    """
--    :avocado: tags=virtio-gpu
--    :avocado: tags=arch:x86_64
--    :avocado: tags=cpu:host
--    """
- 
-     KERNEL_COMMAND_LINE = "printk.time=0 console=ttyS0 rdinit=/bin/bash"
-     KERNEL_URL = (
-@@ -57,9 +54,6 @@ def wait_for_console_pattern(self, success_message, vm=None):
-         )
- 
-     def test_virtio_vga_virgl(self):
+     def test_linux_boot(self):
 -        """
--        :avocado: tags=device:virtio-vga-gl
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:powernv
+-        :avocado: tags=accel:tcg
 -        """
-         # FIXME: should check presence of virtio, virgl etc
-         self.require_accelerator('kvm')
+-
++        self.set_machine('powernv')
+         self.do_test_linux_boot()
+         console_pattern = 'VFS: Cannot open root device'
+         wait_for_console_pattern(self, console_pattern, self.panic_message)
  
-@@ -67,6 +61,7 @@ def test_virtio_vga_virgl(self):
-         initrd_path = self.fetch_asset(self.INITRD_URL, self.INITRD_HASH)
+     def test_linux_smp_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:powernv
+-        :avocado: tags=accel:tcg
+-        """
+-
++        self.set_machine('powernv')
+         self.vm.add_args('-smp', '4')
+         self.do_test_linux_boot()
+         console_pattern = 'smp: Brought up 1 node, 4 CPUs'
+@@ -54,12 +45,7 @@ def test_linux_smp_boot(self):
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
  
+     def test_linux_smp_hpt_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:powernv
+-        :avocado: tags=accel:tcg
+-        """
+-
++        self.set_machine('powernv')
+         self.vm.add_args('-smp', '4')
+         self.do_test_linux_boot(self.KERNEL_COMMON_COMMAND_LINE +
+                                 'disable_radix')
+@@ -70,12 +56,7 @@ def test_linux_smp_hpt_boot(self):
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
+ 
+     def test_linux_smt_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:powernv
+-        :avocado: tags=accel:tcg
+-        """
+-
++        self.set_machine('powernv')
+         self.vm.add_args('-smp', '4,threads=4')
+         self.do_test_linux_boot()
+         console_pattern = 'CPU maps initialized for 4 threads per core'
+@@ -85,12 +66,7 @@ def test_linux_smt_boot(self):
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
+ 
+     def test_linux_big_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:powernv
+-        :avocado: tags=accel:tcg
+-        """
+-
++        self.set_machine('powernv')
+         self.vm.add_args('-smp', '16,threads=4,cores=2,sockets=2')
+ 
+         # powernv does not support NUMA
+@@ -100,3 +76,6 @@ def test_linux_big_boot(self):
+         console_pattern = 'smp: Brought up 2 nodes, 16 CPUs'
+         wait_for_console_pattern(self, console_pattern, self.panic_message)
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
+diff --git a/tests/avocado/ppc_pseries.py b/tests/functional/test_ppc64_pseries.py
+old mode 100644
+new mode 100755
+similarity index 83%
+rename from tests/avocado/ppc_pseries.py
+rename to tests/functional/test_ppc64_pseries.py
+index 74aaa4ac4a..9521ed80a5
+--- a/tests/avocado/ppc_pseries.py
++++ b/tests/functional/test_ppc64_pseries.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++#
+ # Test that Linux kernel boots on ppc machines and check the console
+ #
+ # Copyright (c) 2018, 2020 Red Hat, Inc.
+@@ -5,9 +7,8 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
+-from avocado.utils import archive
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import wait_for_console_pattern
++from qemu_test import QemuSystemTest
++from qemu_test import wait_for_console_pattern
+ 
+ class pseriesMachine(QemuSystemTest):
+ 
+@@ -29,32 +30,20 @@ def do_test_ppc64_linux_boot(self, kernel_command_line = KERNEL_COMMON_COMMAND_L
+         self.vm.launch()
+ 
+     def test_ppc64_vof_linux_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:pseries
+-        """
+-
++        self.set_machine('pseries')
+         self.vm.add_args('-machine', 'x-vof=on')
+         self.do_test_ppc64_linux_boot()
+         console_pattern = 'VFS: Cannot open root device'
+         wait_for_console_pattern(self, console_pattern, self.panic_message)
+ 
+     def test_ppc64_linux_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:pseries
+-        """
+-
++        self.set_machine('pseries')
+         self.do_test_ppc64_linux_boot()
+         console_pattern = 'VFS: Cannot open root device'
+         wait_for_console_pattern(self, console_pattern, self.panic_message)
+ 
+     def test_ppc64_linux_smp_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:pseries
+-        """
+-
++        self.set_machine('pseries')
+         self.vm.add_args('-smp', '4')
+         self.do_test_ppc64_linux_boot()
+         console_pattern = 'smp: Brought up 1 node, 4 CPUs'
+@@ -62,11 +51,7 @@ def test_ppc64_linux_smp_boot(self):
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
+ 
+     def test_ppc64_linux_hpt_smp_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:pseries
+-        """
+-
++        self.set_machine('pseries')
+         self.vm.add_args('-smp', '4')
+         self.do_test_ppc64_linux_boot(self.KERNEL_COMMON_COMMAND_LINE +
+                                       'disable_radix')
+@@ -77,11 +62,6 @@ def test_ppc64_linux_hpt_smp_boot(self):
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
+ 
+     def test_ppc64_linux_smt_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:pseries
+-        """
+-
+         self.vm.add_args('-smp', '4,threads=4')
+         self.do_test_ppc64_linux_boot()
+         console_pattern = 'CPU maps initialized for 4 threads per core'
+@@ -91,11 +71,7 @@ def test_ppc64_linux_smt_boot(self):
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
+ 
+     def test_ppc64_linux_big_boot(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:pseries
+-        """
+-
++        self.set_machine('pseries')
+         self.vm.add_args('-smp', '16,threads=4,cores=2,sockets=2')
+         self.vm.add_args('-m', '512M',
+                          '-object', 'memory-backend-ram,size=256M,id=m0',
+@@ -108,3 +84,6 @@ def test_ppc64_linux_big_boot(self):
+         console_pattern = 'smp: Brought up 2 nodes, 16 CPUs'
+         wait_for_console_pattern(self, console_pattern, self.panic_message)
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
+diff --git a/tests/avocado/ppc_prep_40p.py b/tests/functional/test_ppc_40p.py
+old mode 100644
+new mode 100755
+similarity index 78%
+rename from tests/avocado/ppc_prep_40p.py
+rename to tests/functional/test_ppc_40p.py
+index d4f1eb7e1d..c3f713dc51
+--- a/tests/avocado/ppc_prep_40p.py
++++ b/tests/functional/test_ppc_40p.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++#
+ # Functional test that boots a PReP/40p machine and checks its serial console.
+ #
+ # Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
+@@ -7,9 +9,9 @@
+ 
+ import os
+ 
+-from avocado import skipUnless
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import wait_for_console_pattern
++from unittest import skipUnless
++from qemu_test import QemuSystemTest
++from qemu_test import wait_for_console_pattern
+ 
+ 
+ class IbmPrep40pMachine(QemuSystemTest):
+@@ -23,13 +25,7 @@ class IbmPrep40pMachine(QemuSystemTest):
+     # restricted by GSA ADP Schedule Contract with IBM Corp.
+     @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
+     def test_factory_firmware_and_netbsd(self):
+-        """
+-        :avocado: tags=arch:ppc
+-        :avocado: tags=machine:40p
+-        :avocado: tags=os:netbsd
+-        :avocado: tags=slowness:high
+-        :avocado: tags=accel:tcg
+-        """
++        self.set_machine('40p')
+         self.require_accelerator("tcg")
+         bios_url = ('http://ftpmirror.your.org/pub/misc/'
+                     'ftp.software.ibm.com/rs6000/firmware/'
+@@ -50,11 +46,7 @@ def test_factory_firmware_and_netbsd(self):
+         wait_for_console_pattern(self, 'Model: IBM PPS Model 6015')
+ 
+     def test_openbios_192m(self):
+-        """
+-        :avocado: tags=arch:ppc
+-        :avocado: tags=machine:40p
+-        :avocado: tags=accel:tcg
+-        """
++        self.set_machine('40p')
+         self.require_accelerator("tcg")
          self.vm.set_console()
-+        self.vm.add_args("-cpu", "host")
-         self.vm.add_args("-m", "2G")
-         self.vm.add_args("-machine", "pc,accel=kvm")
-         self.vm.add_args("-device", "virtio-vga-gl")
-@@ -83,7 +78,7 @@ def test_virtio_vga_virgl(self):
-             self.vm.launch()
-         except:
-             # TODO: probably fails because we are missing the VirGL features
--            self.cancel("VirGL not enabled?")
-+            self.skipTest("VirGL not enabled?")
+         self.vm.add_args('-m', '192') # test fw_cfg
+@@ -65,21 +57,18 @@ def test_openbios_192m(self):
+         wait_for_console_pattern(self, '>> CPU type PowerPC,604')
  
-         self.wait_for_console_pattern("as init process")
-         exec_command_and_wait_for_pattern(
-@@ -92,15 +87,12 @@ def test_virtio_vga_virgl(self):
-         self.wait_for_console_pattern("features: +virgl +edid")
- 
-     def test_vhost_user_vga_virgl(self):
+     def test_openbios_and_netbsd(self):
 -        """
--        :avocado: tags=device:vhost-user-vga
+-        :avocado: tags=arch:ppc
+-        :avocado: tags=machine:40p
+-        :avocado: tags=os:netbsd
+-        :avocado: tags=accel:tcg
 -        """
-         # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
-         self.require_accelerator('kvm')
- 
-         vug = pick_default_vug_bin()
-         if not vug:
--            self.cancel("Could not find vhost-user-gpu")
-+            self.skipTest("Could not find vhost-user-gpu")
- 
-         kernel_path = self.fetch_asset(self.KERNEL_URL, self.KERNEL_HASH)
-         initrd_path = self.fetch_asset(self.INITRD_URL, self.INITRD_HASH)
-@@ -129,6 +121,7 @@ def test_vhost_user_vga_virgl(self):
-         )
- 
++        self.set_machine('40p')
+         self.require_accelerator("tcg")
+         drive_url = ('https://archive.netbsd.org/pub/NetBSD-archive/'
+                      'NetBSD-7.1.2/iso/NetBSD-7.1.2-prep.iso')
+-        drive_hash = 'ac6fa2707d888b36d6fa64de6e7fe48e'
+-        drive_path = self.fetch_asset(drive_url, asset_hash=drive_hash,
+-                                      algorithm='md5')
++        drive_hash = 'cc7cb290b06aaa839362deb7bd9f417ac5015557db24088508330f76c3f825ec'
++        drive_path = self.fetch_asset(drive_url, asset_hash=drive_hash)
          self.vm.set_console()
-+        self.vm.add_args("-cpu", "host")
-         self.vm.add_args("-m", "2G")
-         self.vm.add_args("-object", "memory-backend-memfd,id=mem,size=2G")
-         self.vm.add_args("-machine", "pc,memory-backend=mem,accel=kvm")
-@@ -147,7 +140,7 @@ def test_vhost_user_vga_virgl(self):
-             self.vm.launch()
-         except:
-             # TODO: probably fails because we are missing the VirGL features
--            self.cancel("VirGL not enabled?")
-+            self.skipTest("VirGL not enabled?")
-         self.wait_for_console_pattern("as init process")
-         exec_command_and_wait_for_pattern(self, "/usr/sbin/modprobe virtio_gpu",
-                                           "features: +virgl +edid")
-@@ -155,3 +148,6 @@ def test_vhost_user_vga_virgl(self):
-         qemu_sock.close()
-         vugp.terminate()
-         vugp.wait()
+         self.vm.add_args('-cdrom', drive_path,
+                          '-boot', 'd')
+ 
+         self.vm.launch()
+         wait_for_console_pattern(self, 'NetBSD/prep BOOT, Revision 1.9')
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
+diff --git a/tests/avocado/ppc_mpc8544ds.py b/tests/functional/test_ppc_mpc8544ds.py
+old mode 100644
+new mode 100755
+similarity index 75%
+rename from tests/avocado/ppc_mpc8544ds.py
+rename to tests/functional/test_ppc_mpc8544ds.py
+index b599fb1cc9..6817ed8091
+--- a/tests/avocado/ppc_mpc8544ds.py
++++ b/tests/functional/test_ppc_mpc8544ds.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++#
+ # Test that Linux kernel boots on ppc machines and check the console
+ #
+ # Copyright (c) 2018, 2020 Red Hat, Inc.
+@@ -5,9 +7,9 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
+-from avocado.utils import archive
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import wait_for_console_pattern
++from qemu_test.utils import archive_extract
++from qemu_test import QemuSystemTest
++from qemu_test import wait_for_console_pattern
+ 
+ class Mpc8544dsMachine(QemuSystemTest):
+ 
+@@ -16,19 +18,18 @@ class Mpc8544dsMachine(QemuSystemTest):
+     panic_message = 'Kernel panic - not syncing'
+ 
+     def test_ppc_mpc8544ds(self):
+-        """
+-        :avocado: tags=arch:ppc
+-        :avocado: tags=machine:mpc8544ds
+-        :avocado: tags=accel:tcg
+-        """
+         self.require_accelerator("tcg")
++        self.set_machine('mpc8544ds')
+         tar_url = ('https://qemu-advcal.gitlab.io'
+                    '/qac-best-of-multiarch/download/day04.tar.xz')
+         tar_hash = 'f46724d281a9f30fa892d458be7beb7d34dc25f9'
+         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
+-        archive.extract(file_path, self.workdir)
++        archive_extract(file_path, self.workdir, member='creek/creek.bin')
+         self.vm.set_console()
+         self.vm.add_args('-kernel', self.workdir + '/creek/creek.bin')
+         self.vm.launch()
+         wait_for_console_pattern(self, 'QEMU advent calendar 2020',
+                                  self.panic_message)
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
+diff --git a/tests/avocado/ppc_virtex_ml507.py b/tests/functional/test_ppc_virtex_ml507.py
+old mode 100644
+new mode 100755
+similarity index 78%
+rename from tests/avocado/ppc_virtex_ml507.py
+rename to tests/functional/test_ppc_virtex_ml507.py
+index a73f8ae396..6d1f1455be
+--- a/tests/avocado/ppc_virtex_ml507.py
++++ b/tests/functional/test_ppc_virtex_ml507.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++#
+ # Test that Linux kernel boots on ppc machines and check the console
+ #
+ # Copyright (c) 2018, 2020 Red Hat, Inc.
+@@ -5,9 +7,9 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
+-from avocado.utils import archive
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import wait_for_console_pattern
++from qemu_test.utils import archive_extract
++from qemu_test import QemuSystemTest
++from qemu_test import wait_for_console_pattern
+ 
+ class VirtexMl507Machine(QemuSystemTest):
+ 
+@@ -16,17 +18,13 @@ class VirtexMl507Machine(QemuSystemTest):
+     panic_message = 'Kernel panic - not syncing'
+ 
+     def test_ppc_virtex_ml507(self):
+-        """
+-        :avocado: tags=arch:ppc
+-        :avocado: tags=machine:virtex-ml507
+-        :avocado: tags=accel:tcg
+-        """
+         self.require_accelerator("tcg")
++        self.set_machine('virtex-ml507')
+         tar_url = ('https://qemu-advcal.gitlab.io'
+                    '/qac-best-of-multiarch/download/day08.tar.xz')
+         tar_hash = '74c68f5af7a7b8f21c03097b298f3bb77ff52c1f'
+         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
+-        archive.extract(file_path, self.workdir)
++        archive_extract(file_path, self.workdir)
+         self.vm.set_console()
+         self.vm.add_args('-kernel', self.workdir + '/hippo/hippo.linux',
+                          '-dtb', self.workdir + '/hippo/virtex440-ml507.dtb',
+@@ -34,3 +32,6 @@ def test_ppc_virtex_ml507(self):
+         self.vm.launch()
+         wait_for_console_pattern(self, 'QEMU advent calendar 2020',
+                                  self.panic_message)
 +
 +if __name__ == '__main__':
 +    QemuSystemTest.main()
