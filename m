@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F02693BC79
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 08:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C986D93BC52
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 08:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWrpP-0002hG-0E; Thu, 25 Jul 2024 02:19:51 -0400
+	id 1sWraN-0006P3-9Q; Thu, 25 Jul 2024 02:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sWrpN-0002gV-Ou
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 02:19:49 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sWraI-0006Nm-No
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 02:04:14 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sWrpL-0006BE-7L
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 02:19:49 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2eeb1ba040aso8439121fa.1
- for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 23:19:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sWraG-0001YU-RY
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 02:04:14 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2cf11b91813so441012a91.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Jul 2024 23:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721888385; x=1722493185; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=m0UXmcumamfjUjzfgaFUZpl610CiLJrhhjKD1Mn/muU=;
- b=CA+b6h8FXU1d06qqUHvYSh7DWXqmaG9L/Ws86tO5jZBeBawKZNHwiUTnHRjvv5ITDY
- FJb1dVgA0ty/64PBIAHMccW1+KeU7SOsWJP4ufRe06GbD5sEQN9Stf1hkfZuClsIvlLD
- Ct9CJHHxG2D8N3sPihHLCA0ab16vnUsbrqi/L+G7qdpskeXkMhKRkuJvPeHagwzrXZap
- z5NHsnxAOPO9eaLGV2lXHWzizSTXgniiMZQX8l/tbe+hCC/Nod+6YuxybOYsV8NER8I4
- l46nVjuDOp4V6zPuXBcuvvFWb/cVugKvlrwu8Jdd72YhwZLhQcj54zuZ8kBNAI9IthEu
- XJOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721888385; x=1722493185;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ d=linaro.org; s=google; t=1721887451; x=1722492251; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=m0UXmcumamfjUjzfgaFUZpl610CiLJrhhjKD1Mn/muU=;
- b=ZOsmxBMlVz8FNirsqtm9JgBqBvH+deJiFGE9Vh4gq2Bqye0Rrspvx7ZQWnfkfwTg/N
- yZPFu/QkL0Uy3jY+4854zTQk93/eS36VFXiT2F6dh095vzWIvljLoJXrS7rHQZHHGzyh
- tUm7+/QfSIVkSr3tjpKUzQv5HEtVj0dQa/AFDByz3n/xxMeyuWRFQJTpf5eZuQT+snc6
- E3tv+VtKQbWzzkoof2Wjyd3Y5BgaeiPxL9wEueGjqIwwCs0buiZ19E3dugUJE5YjBjez
- vwfZ4y9okb87ahUjTWNRLk6bzupBzWLZ7ktPte19niAHpRvz1+2eqRgBoW8QmWv3r6cm
- jwZw==
-X-Gm-Message-State: AOJu0Yz3qMRvF26SNYw+7ZQJPAdOj2eKWqBRuXahkg8vNMhc/WsxQAeQ
- YJJGmS76QtI0Y1Row0w2IdAwu/nxy+9fjm8Kan17Bn4UJkCq9FIKMFkn2fHef2U=
-X-Google-Smtp-Source: AGHT+IGMRQcpevm+Lp3ilyc0t/LoZE6GIFv1iwtJlw8Y829Fzeuwzqi8kHtJp7vlM8wRHDX5Q46PPQ==
-X-Received: by 2002:a2e:a376:0:b0:2ee:7d37:49bd with SMTP id
- 38308e7fff4ca-2f039cdfff7mr12856911fa.22.1721888384363; 
- Wed, 24 Jul 2024 23:19:44 -0700 (PDT)
-Received: from meli-email.org (adsl-231.37.6.1.tellas.gr. [37.6.1.231])
+ bh=oWkDkUpdfsedtAknncaAt3FaBqUrQBbxtsmdvUKJY5I=;
+ b=s2pUpdeA2U7AMws1hWA3xxBJue113IvkwAeXZy5P2zF15jg8X0T4kjhz9mAanFQgmL
+ opmbKKuvvbs51+m+dpJU64Iu+DI15doIrHLU0F4h/TUR6fYYzTJH/cP80g7gN58Tkm95
+ OFNMwLB9Xlp5M7bVzlTpp9aFLQh4EJgxZ9s7ITWJj51YeIcRMdGzIKGNG2A5Eprhe8iu
+ E6NFcQtVFGXiICir8XBVjBgCOQyeSQzKnRW94OeBcGKBlIBbE28UOaExp/JU1PdsoaJi
+ 5Vf9+KK24abShAf1R2z4sv/LnTLb+Ikmht9/o7QkJ09yFq83ar2PrlEy2FmPspHdVUk8
+ ksmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721887451; x=1722492251;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oWkDkUpdfsedtAknncaAt3FaBqUrQBbxtsmdvUKJY5I=;
+ b=DihdQe8ZWFRnxdPERVCPPGrPych1TrnzhncrtzhIjbP8XqA4uCesGDnPdqrEScyPsu
+ aoJVRFlrIq75p6DlWq58A8jNdkR841wXqZP070kaefET2oy7z9FOr0cD1bED1YhRm6rr
+ RLEpuz7VjsdWNyJc3Chmyz8wZGv4wpUPuo3zxCU9IsebvGyfH9eizgDkyCyyKGbhhEMf
+ jOVaYp3oL5cV1ngGQzjkWcM0pxRUElTVbGqirB2Lq3Ofly953xIZs3YZqUxueNISnKcq
+ +/luumM2efh2z0yHdO8mFAEgCfsZSk4ryWzOKSf9zoXkY1awTC2OgP2JjzLJ5kujUQDb
+ xKYA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLyEEB72ZqTD4flUgRI5YLBHd/RkgBgl3IufvErDSlu0nZPUzswT3fb0StRMzyr8cGo5q7xu19qtYgOEyniFgSDagmHfc=
+X-Gm-Message-State: AOJu0YzF8Y2KxOFy/NFFFt0vi+HCI7GH2Y6a5Bim01MVztuO3emjkKs4
+ NNfRTnoxXtGsPZY55dPlKvcu8oPzFsPUBNf+ZkmAvpYb6ch1qFFZnC1j+c1qiy0=
+X-Google-Smtp-Source: AGHT+IFJIYJqqDxZypO/q/Ql0QvmEIMK97ANGIZwOsjYFWQVpwVSJ7vq1npZ49JlPuPVvu2z/NuKRA==
+X-Received: by 2002:a17:90b:390f:b0:2c9:999d:a22d with SMTP id
+ 98e67ed59e1d1-2cf238ebb99mr1884717a91.30.1721887450688; 
+ Wed, 24 Jul 2024 23:04:10 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ac63590d76sm459794a12.24.2024.07.24.23.19.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jul 2024 23:19:44 -0700 (PDT)
-Date: Thu, 25 Jul 2024 08:47:40 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qeemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6kg?=e <alex.bennee@linaro.org>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [RFC PATCH v5 0/8] Add Rust support, implement ARM PL011
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v5.git.manos.pitsidianakis@linaro.org>
- <bc27a983-f0b7-4803-96f7-060a4a331348@redhat.com>
- <h4gxy.dr366knvycy@linaro.org>
- <CABgObfZOqBogWQtzfghjKMsW-J_sp-iL5dt7mmYnvE5eQb9G5w@mail.gmail.com>
-In-Reply-To: <CABgObfZOqBogWQtzfghjKMsW-J_sp-iL5dt7mmYnvE5eQb9G5w@mail.gmail.com>
-Message-ID: <h61ku.ipxyjqsxu75@linaro.org>
+ 98e67ed59e1d1-2cdb73b7674sm2667852a91.20.2024.07.24.23.04.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 Jul 2024 23:04:10 -0700 (PDT)
+Message-ID: <17b9f3cc-1ad7-4e79-8693-1f327f9bd5a6@linaro.org>
+Date: Thu, 25 Jul 2024 16:04:01 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x234.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 4/5] target/riscv: rvv: Provide group continuous
+ ld/st flow for unit-stride ld/st instructions
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20240717133936.713642-1-max.chou@sifive.com>
+ <20240717133936.713642-5-max.chou@sifive.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240717133936.713642-5-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,156 +102,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 24 Jul 2024 13:34, Paolo Bonzini <pbonzini@redhat.com> wrote:
->On Wed, Jul 24, 2024 at 11:58 AM Manos Pitsidianakis
-><manos.pitsidianakis@linaro.org> wrote:
->> >In my opinion we should start with cargo workspaces as the
->> >known-imperfect (but good enough) solution, so that it could be evolved
->> >later.  It is important that any change that deviates from common Rust
->> >conventions is documented, and v4 provided a nice basis to build upon,
->> >with documentation coming as things settle.  This is why I explicitly
->> >didn't include Kconfig in the TODO list in my review of v4.
->>
->> After working with the latest meson releases, it seems we will soon have
->> a good enough way of handling all this with meson. It makes me sceptical
->> of adding cargo wrappers and using a build system out of meson when we
->> might be able to drop all that soonish. We might as well bite the bullet
->> now to avoid working on something we know we will remove.
->
->Ehh, as you say below it's complicated. Sometimes worse is better.
->Personally I wouldn't have minded keeping the v4 approach as a "known
->evil"; but if you can make the Cargo subprojects work, that would be
->fine for me. What I don't like is the vendoring and handwritten (I
->think?) meson.build, I think that's worse than the v4.
->
->> >Also, of the code changes (as opposed to the build system changes) that
->> >I had asked for in the review of v4, almost none of them have been
->> >applied.  I'm copying them here for future reference:
->>
->> Thanks, this helps a lot.
->>
->> >❌ TODO comments when the code is doing potential undefined behavior
->>
->> Do you mean like Rust's safety comments?
->
->No I meant comments where we have known instances of undefined
->behavior. The two I had in my emails are
->
->(in pl011_init):
->// TODO: this assumes that "all zeroes" is a valid state for all fields of
->// PL011State. This is not necessarily true of any #[repr(Rust)] structs,
->// including bilge-generated types. It should instead use MaybeUninit.
->
->(before the call to qemu_chr_fe_accept_input):
->// TODO: this causes a callback that creates another "&mut self".
->// This is forbidden by Rust aliasing rules and has to be fixed
->// using interior mutability.
+On 7/17/24 23:39, Max Chou wrote:
+> +static inline QEMU_ALWAYS_INLINE void
+> +vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
+> +                        void *vd, uint32_t evl, uint32_t reg_start, void *host,
+> +                        uint32_t esz, bool is_load)
+> +{
+> +#if TARGET_BIG_ENDIAN != HOST_BIG_ENDIAN
+> +    for (; reg_start < evl; reg_start++, host += esz) {
+> +        uint32_t byte_off = reg_start * esz;
+> +        ldst_host(vd, byte_off, host);
+> +    }
+> +#else
+> +    uint32_t byte_offset = reg_start * esz;
+> +    uint32_t size = (evl - reg_start) * esz;
+> +
+> +    if (is_load) {
+> +        memcpy(vd + byte_offset, host, size);
+> +    } else {
+> +        memcpy(host, vd + byte_offset, size);
+> +    }
+> +#endif
 
-You mean that we can have a call stack that looks something like...
+First, TARGET_BIG_ENDIAN is always false, so this reduces to HOST_BIG_ENDIAN.
 
-<qemu code>
-|_ pl011_read
-  |_ PL011State::read()
-     |_ qemu_chr_fe_accept_input()
-      |_ pl011_read
-        |_ PL011State::read()
+Second, even if TARGET_BIG_ENDIAN were true, this optimization would be wrong, because of 
+the element ordering given in vector_internals.h (i.e. H1 etc).
 
-If I understand correctly, this does not create another "&mut self", 
-because a mutable reference of self is passed to 
-qemu_chr_fe_accept_input(), and only exists until it returns.
+Third, this can be done with C if, instead of cpp ifdef, so that you always compile-test 
+both sides.
 
-In any case, I agree that these subtleties must be examined thoroughly 
-in general. In this case though PL011State has only Copy fields and no 
-side effects when dropped. This means that adding interior mutability 
-e.g. with Cell would have exactly the same behavior.
+Fourth... what are the atomicity guarantees of RVV?  I didn't immediately see anything in 
+the RVV manual, which suggests that the atomicity is the same as individual integer loads 
+of the same size.  Because there are no atomicity guarantees for memcpy, you can only use 
+this for byte load/store.
 
-But your bringing it up makes me wonder whether we can detect any bad 
-behaviors with miri... It does not play well with FFI boundaries but 
-it's possible to mock them in some cases. I will look into the two TODOs 
-you mention and also if it's possible to verify the correct behavior 
-whenever possible!
+For big-endian bytes, you can optimize this to 64-bit little-endian operations.
+Compare arm gen_sve_ldr.
 
 
->
->> https://std-dev-guide.rust-lang.org/policy/safety-comments.html
->>
->> These can be required by lints which is really helpful. At this point
->> the UART library has safety comments (which needs to be reviewed for
->> validity). I plan on adding some at the macros in qemu-api as well.
->>
->> >
->> >❌ a trait to store the CStr corresponding to the structs
->>
->> I don't know yet if that is helpful in our usecase, because the strings
->> must be visible from C, thus be (rust, not c) statics, unmangled and
->> marked as #[used] for the linker. It makes sense from the Rust POV but
->> must also be FFI-accessible.
->
->Why do they have to be #[used]? You have
->
->+                #[used]
->+                static TYPE_NAME: &::core::ffi::CStr = $tname;
->+                $tname.as_ptr()
->
->but since the cstr crate (and c"" literal) promise to return a
->&'static CStr, I thought it could be just
->
->    $tname.as_ptr()
->
->About traits, I meant something like
->
->pub unsafe trait ObjectType: Sized {
->     const TYPE_NAME: &'static CStr;
->}
->
->So that you can put the trait declaration in the pl011 crate and the
->type_info! macro can do
->
-><$t as ObjectType>::TYPE_NAME.as_ptr()
->
->(also for the parent).
-
-That was my approach at the beginning but I was having issues with the 
-linker stripping the <some const value>.as_ptr() and it would point to 
-invalid memory; I checked it again and I think using #[used] just for 
-the TypeInfo struct declaration might be enough so these can be removed.
-
->
->> >❌ a trait to generate all-zero structs without having to type "unsafe {
->> >MaybeUninit::zeroed().assume_init() }"
->>
->> Traits cannot have const fns at the moment (traits cannot have
->> type-level effects like const or async but it's WIP to get them into
->> rustc), so this cannot be used for statics and consts.
->
->Ah, I see. Anyhow, I've been looking at the Linux kernel's pinned-init
->crate (https://rust-for-linux.com/pinned-init) and it provides a
->Zeroable macro including #[derive] support. So that has gone lower in
->my priority.
->
->> >❌ I'd like to use ctor instead of non-portable linker magic,
->>
->> The linker sections are pretty much standard and in fact ctor uses the
->> same linker attributes. Would writing our own constructor macro be a
->> solution for you? My reasoning is that 1) we support our own specific
->> platforms and it's better for portability to reflect that in our source
->> tree and 2) it avoids the external dependency, linker sections do not
->> change so any ctor update would be in the API or adding more platform
->> support,  not fixes in what we target.
->
->I'd still like to give someone else the burden. :) Writing our own
->constructor macro would be more work for little gain.
-
-Well, it's just that I personally don't view adding __attribute__ 
-manually in only two places is a burden but I've no strong preference 
-over it.
-
-I'm looking at the ctor dependencies and they are a few:
-https://github.com/mmastrac/rust-ctor/blob/cc3ab9160ed9dc3bdf20d735352b519abc2913e9/Cargo.lock
-
-Do you perhaps agree with adding a FIXME comment to replace the linker 
-attributes with ctor when we get the cargo dependency story in meson 
-sorted out?
-
-Manos
+r~
 
