@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD69B93CBE7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A8493CBDD
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:09:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8LD-0002tM-Bj; Thu, 25 Jul 2024 19:57:47 -0400
+	id 1sX8LG-0003Jq-GO; Thu, 25 Jul 2024 19:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8L9-0002ep-R2; Thu, 25 Jul 2024 19:57:43 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1sX8LD-0002xy-1U; Thu, 25 Jul 2024 19:57:47 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8L7-0001QN-Sc; Thu, 25 Jul 2024 19:57:43 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-76cb5b6b3e4so292695a12.1; 
- Thu, 25 Jul 2024 16:57:41 -0700 (PDT)
+ id 1sX8LB-0001S5-88; Thu, 25 Jul 2024 19:57:46 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2cd48ad7f0dso329063a91.0; 
+ Thu, 25 Jul 2024 16:57:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951860; x=1722556660; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951863; x=1722556663; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7IZNXvpP0wcpjvJx+nPXwZmvG3WU6OhipKjq6IwzM/Q=;
- b=clf0e/++8KBwekHpQTiJXRMrdeoseBB0MCxHBG+1zrx+5Rv/GzKKntZkq/oafCeAi2
- gcjOdoyxNyPtK1bazDPRF5YtW9xhb+K4kiSW1Ph927gXVMNtglSu1KqsjpFoY3eXfCkc
- JIQ5PdolXpGuxjhi0KhOaaAl64VW502oXqNd6y4z7sm18sS1vqyZrOFpArQOykoqPiAj
- XFgve5M1RoIF3PETLkS40MHss8Inni/cyBI8HImmSY1wGbD8Jy7aJvKnAcDVqPY9AHTW
- 5q001tBFFsNID3dYSFmx1o+6Rw88wHV2fZ1sxQxSZE2vWRCFDG1EFLRtv0HFTkZ4yWU2
- nhaA==
+ bh=gjpoVU0ZZXX9XSnoeLPS/eSXr8D5zUBAP6EernATugw=;
+ b=L0yDPrqHagvHMhEHzRVvOejUX6TdrpHR27D/exIw3Jt171B2v9iyAMZAcP74r/YdmT
+ hLi2wuVNjNblvxawdpJp3LuoTRpSn6yGGAi4ZVciHesUBbqM/AOHvrFmZpZ8uDlf/+C6
+ J+tgSIMhE047QzfJs6JW/BEWHCWGUj2UJ8qg77Kz4A4tcNCdVmRUVc9wlhbAU3HT7vSp
+ AlE5CgVB+13ATgVUP7l4StATvBytV+h9JNSrUj3LfWduCT9ZWr3DXcQOQFCQpimnsHWQ
+ LuRCvggHGYfPpQKFRdRzRdjrnmNmFea+QlFuwaIZ4a6/OQB6vlJxsbhb5SJgQYfbzE7t
+ Yd/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951860; x=1722556660;
+ d=1e100.net; s=20230601; t=1721951863; x=1722556663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7IZNXvpP0wcpjvJx+nPXwZmvG3WU6OhipKjq6IwzM/Q=;
- b=wGXBG3QC8r0Bg4sIDQXoBSNsVoPhRpoJuXbTvEfhYpmUJPFe6e9SgeeSj0mQt25bPG
- rVSQyBHCwv0RSdP96Wt2q1ZJpxNQH7bodx2PAVmxhTPbAwFqedKGwja8Fb4h0Zfwfa2m
- 6HAW2SziLk93tHNZMsuhRewIhUr/eReOkOHXrZurM14asqN2hM2NhnNHzpGe+/SokEly
- WX4Yh8c0TKBzc6bhWBf6AzP723Jmz4iO//5PBAUxpD+AU+o36mlV4orCMLxC7JwOkyvU
- rCMwynKS4qzU50kEazxyQjEJYztnB7BW1nu6k/qznzCTVUU2TQ0W+cZZAuuGevKAXTRR
- C9TQ==
+ bh=gjpoVU0ZZXX9XSnoeLPS/eSXr8D5zUBAP6EernATugw=;
+ b=P3ythVuDig3Gu8Hazs8fPAnrRjP7mB/kUbCWq9aCnJdnKFHW4wc+udhxtmRZJoeP2J
+ EU6jwxvhgJBNE0rfeFJX5ESl+Nugkc1xcV/vQywPb+u6BjR1ir4RtML+p9XFdLMsozBn
+ yjjx8x+0W24ECmiqqSSmSRT8kg2MpoykC1s36+l/z4gPWG3T3AFkdsuWPf5ro2WsPYh+
+ +OIAjZqFjtes87RPdYGpL9KZTtbJIj28V/oyq04U8W0jx9xXJvl7gvCYYd2KFdWw5wMK
+ RtpiMiKrlcFxl10pmuXBrZrLnuKnlotPcSmSV8+v+8xBp4CNDPvd9ZiW2XTUKZcMo4bA
+ MG+A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU5CG7UyA0Rfos5eHeJ5BE6WNI/tTha+sBwgyBwrpBVX0e7J4cAPmBSBpZdo5pW/4AOV6eRnE8BhNkM9a9tDolWqJyS
-X-Gm-Message-State: AOJu0YwhTMBKQFOz+QJZNJut0QGlyECbFc+Qa3HhH3JW/yldYDVLIlHA
- dheJ1boZJp6jkmwea4JRzRiY8C9bxdRT2YJA8LpFrJCEK2AWDbgfv6fBSA==
-X-Google-Smtp-Source: AGHT+IGOFMZURx0sNLz9XewB+cSrH2OYXBommPcWfMH4VoE7cPNQ2OuahA+QZwivxCdIG7SMnt13cg==
-X-Received: by 2002:a17:90b:4b4a:b0:2c9:81d3:65d5 with SMTP id
- 98e67ed59e1d1-2cf2ea12db0mr4201086a91.24.1721951859952; 
- Thu, 25 Jul 2024 16:57:39 -0700 (PDT)
+ AJvYcCUSWIM48B5Q/E6+WH8Njb/LkByI851hr/iclCpVPUyqN2jOYSpZ2iCDuAT7nDaHlT6SLPS9BZBuTs44L8oPurqMKzdd
+X-Gm-Message-State: AOJu0Yy/rDFM8OSrDdBsf1vsDMNVswGSiS6IVCgIKNWZP4/U0Jpi2tse
+ D5KYjfN8uNFHz71utAW91K7PjvHUHiyeDkv1Ms1WHdJy0i2r0GBiSB+71A==
+X-Google-Smtp-Source: AGHT+IFKXMpvjwVzC6I9wsBl/laqdbj8uNtIwEY7EmmRgudSrWOwwuJMJi4r2nec036ViYURaHDN4w==
+X-Received: by 2002:a17:90b:1c05:b0:2c8:716f:b46e with SMTP id
+ 98e67ed59e1d1-2cf2e9f6d0cmr3877726a91.16.1721951863248; 
+ Thu, 25 Jul 2024 16:57:43 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.36
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:57:39 -0700 (PDT)
+ Thu, 25 Jul 2024 16:57:42 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Chinmay Rath <rathc@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Chinmay Rath <rath.chinmay@linux.ibm.com>
-Subject: [PULL 54/96] target/ppc: Improve VMX integer add/sub saturate
- instructions.
-Date: Fri, 26 Jul 2024 09:53:27 +1000
-Message-ID: <20240725235410.451624-55-npiggin@gmail.com>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 55/96] target/ppc: Move ISA300 flag check out of do_helper_XX3.
+Date: Fri, 26 Jul 2024 09:53:28 +1000
+Message-ID: <20240725235410.451624-56-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,60 +95,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chinmay Rath <rathc@linux.ibm.com>
 
-No need for a full comparison; xor produces non-zero bits for QC just fine.
+Moving PPC2_ISA300 flag check out of do_helper_XX3 method in vmx-impl.c.inc
+so that the helper can be used with other instructions as well.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Chinmay Rath <rath.chinmay@linux.ibm.com>
+Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate/vmx-impl.c.inc | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ target/ppc/translate/vsx-impl.c.inc | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
-index fdb283c1d4..152bcde0e3 100644
---- a/target/ppc/translate/vmx-impl.c.inc
-+++ b/target/ppc/translate/vmx-impl.c.inc
-@@ -2876,15 +2876,15 @@ TRANS(VADDCUW, do_vx_vaddsubcuw, 1)
- /* Integer Add/Sub Saturate Instructions */
- static inline void do_vadd_vsub_sat
- (
--    unsigned vece, TCGv_vec t, TCGv_vec sat, TCGv_vec a, TCGv_vec b,
-+    unsigned vece, TCGv_vec t, TCGv_vec qc, TCGv_vec a, TCGv_vec b,
-     void (*norm_op)(unsigned, TCGv_vec, TCGv_vec, TCGv_vec),
-     void (*sat_op)(unsigned, TCGv_vec, TCGv_vec, TCGv_vec))
+diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+index 0266f09119..6025119e5b 100644
+--- a/target/ppc/translate/vsx-impl.c.inc
++++ b/target/ppc/translate/vsx-impl.c.inc
+@@ -2712,8 +2712,6 @@ static bool do_helper_XX3(DisasContext *ctx, arg_XX3 *a,
+     void (*helper)(TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_ptr))
  {
-     TCGv_vec x = tcg_temp_new_vec_matching(t);
-     norm_op(vece, x, a, b);
-     sat_op(vece, t, a, b);
--    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
--    tcg_gen_or_vec(vece, sat, sat, x);
-+    tcg_gen_xor_vec(vece, x, x, t);
-+    tcg_gen_or_vec(vece, qc, qc, x);
+     TCGv_ptr xt, xa, xb;
+-
+-    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
+     REQUIRE_VSX(ctx);
+ 
+     xt = gen_vsr_ptr(a->xt);
+@@ -2724,13 +2722,13 @@ static bool do_helper_XX3(DisasContext *ctx, arg_XX3 *a,
+     return true;
  }
  
- static void gen_vadd_sat_u(unsigned vece, TCGv_vec t, TCGv_vec sat,
-@@ -2916,16 +2916,16 @@ static void gen_vsub_sat_s(unsigned vece, TCGv_vec t, TCGv_vec sat,
-  * GVecGen4 struct variants.
-  */
- static const TCGOpcode vecop_list_sub_u[] = {
--    INDEX_op_sub_vec, INDEX_op_ussub_vec, INDEX_op_cmp_vec, 0
-+    INDEX_op_sub_vec, INDEX_op_ussub_vec, 0
- };
- static const TCGOpcode vecop_list_sub_s[] = {
--    INDEX_op_sub_vec, INDEX_op_sssub_vec, INDEX_op_cmp_vec, 0
-+    INDEX_op_sub_vec, INDEX_op_sssub_vec, 0
- };
- static const TCGOpcode vecop_list_add_u[] = {
--    INDEX_op_add_vec, INDEX_op_usadd_vec, INDEX_op_cmp_vec, 0
-+    INDEX_op_add_vec, INDEX_op_usadd_vec, 0
- };
- static const TCGOpcode vecop_list_add_s[] = {
--    INDEX_op_add_vec, INDEX_op_ssadd_vec, INDEX_op_cmp_vec, 0
-+    INDEX_op_add_vec, INDEX_op_ssadd_vec, 0
- };
+-TRANS(XSCMPEQDP, do_helper_XX3, gen_helper_XSCMPEQDP)
+-TRANS(XSCMPGEDP, do_helper_XX3, gen_helper_XSCMPGEDP)
+-TRANS(XSCMPGTDP, do_helper_XX3, gen_helper_XSCMPGTDP)
+-TRANS(XSMAXCDP, do_helper_XX3, gen_helper_XSMAXCDP)
+-TRANS(XSMINCDP, do_helper_XX3, gen_helper_XSMINCDP)
+-TRANS(XSMAXJDP, do_helper_XX3, gen_helper_XSMAXJDP)
+-TRANS(XSMINJDP, do_helper_XX3, gen_helper_XSMINJDP)
++TRANS_FLAGS2(ISA300, XSCMPEQDP, do_helper_XX3, gen_helper_XSCMPEQDP)
++TRANS_FLAGS2(ISA300, XSCMPGEDP, do_helper_XX3, gen_helper_XSCMPGEDP)
++TRANS_FLAGS2(ISA300, XSCMPGTDP, do_helper_XX3, gen_helper_XSCMPGTDP)
++TRANS_FLAGS2(ISA300, XSMAXCDP, do_helper_XX3, gen_helper_XSMAXCDP)
++TRANS_FLAGS2(ISA300, XSMINCDP, do_helper_XX3, gen_helper_XSMINCDP)
++TRANS_FLAGS2(ISA300, XSMAXJDP, do_helper_XX3, gen_helper_XSMAXJDP)
++TRANS_FLAGS2(ISA300, XSMINJDP, do_helper_XX3, gen_helper_XSMINJDP)
  
- static const GVecGen4 op_vsububs = {
+ static bool do_helper_X(arg_X *a,
+     void (*helper)(TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_ptr))
 -- 
 2.45.2
 
