@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347AC93CBBB
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 704A093CBD1
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:06:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Mc-0002Xn-DK; Thu, 25 Jul 2024 19:59:14 -0400
+	id 1sX8Mh-0002fd-R6; Thu, 25 Jul 2024 19:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8MW-0002K0-OP; Thu, 25 Jul 2024 19:59:08 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1sX8Ma-0002ZV-IQ; Thu, 25 Jul 2024 19:59:12 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8MU-0001hG-Sz; Thu, 25 Jul 2024 19:59:08 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-70d1dadd5e9so422512b3a.2; 
- Thu, 25 Jul 2024 16:59:06 -0700 (PDT)
+ id 1sX8MY-0001hc-90; Thu, 25 Jul 2024 19:59:12 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-70d23caf8ddso385925b3a.0; 
+ Thu, 25 Jul 2024 16:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951945; x=1722556745; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951948; x=1722556748; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=No4XG6t6wkH9PxiFN/jhvxdmpl9tgi1IP4LVoGa+/Y8=;
- b=IOyEJvzRuBnY56U+hPige7Ue7sZ/4VinCcb2ZefCewp8tUx8IFjaVCOuClaqEdlGJh
- oRhnSgF1aTz8PMEtkRoXWhOr4UXv79BdMaaCYTJ48Yz8dxhhwJqC+8eAmR0MUbb8K61D
- k1IwzAvrM47TjLGe7Avn5nEuVl9zLDXwUKAmPzbqxWpqaaHQ5crZ7Uj5vnqGntSO0Q/Z
- 8l6Syn70d04oHsxzArvKo/hCEUK5r5x6tTHAgSfVRZn94DELc0qr466tg+uQR3Y0JaNZ
- jt4HzuPFaIF/3nB8DsuzyvfuHQqu/U4hwDLKtCUiuP0MY1nDd72oZXwwuasJvhhsbKj5
- V3mg==
+ bh=iaO08R+8F39gfoSuZ4CkZ1qLHXPlBgrMMgGX8DGwSNw=;
+ b=WRBd3zRi4WRLQicsrSrHceV09aUvH7A+m6MlEecujBaFKwitziRi21pmq3QViqC0Lk
+ jC/AMMvpyoQYc/Du9NvX8RlNMLa/cU8GzfstUhQvCsQOcGGX/lj92XixKc9ggxPr+nqT
+ 1DCvE8kgAO3XuzFAARDTNUD11gx27jF9pL5dosjuNZvyBybAc3kRlgNfj+1ODo53t5T4
+ 1NJFIcqVwuVwn9wJUD6sYqEB/uOwOvdWaMp0X+Js4QKRXku0hsKjQX6JtMnZKq8Tp/Xr
+ rGHoNp6z7JIOlNyVqEoRX96aas/dooZQZJIDNpvIMUfalzHWlEVETldI7H3zfkviR5OO
+ vCEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951945; x=1722556745;
+ d=1e100.net; s=20230601; t=1721951948; x=1722556748;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=No4XG6t6wkH9PxiFN/jhvxdmpl9tgi1IP4LVoGa+/Y8=;
- b=xC6WH5/2/EvFX0BqAnv8oQrHt9nFMzmBMA8ILaQtyp6xQAMaFcciakZ4YKrPuLBuVF
- TAaB9ZERDajC4wKzFGvMCfoPi+LTugxlyg5p95YWxc5e13XpOwboiseG5XYs4R4Ir+0q
- ciBbdwLRSFHVsttqH1N5ySudjbgGjxw578o/26EPJD3DWlrmpymj/r6dvCBSG49GoI1k
- p5aA/uYb+RyZdZoCAz8WxQGdtusNpmsZixA6j1dax/dN8PjSTTFJ87H+O21FPbXCyZ2q
- Rbzz3zaDhUx+WwMjHu9EdKPHpvPjZvWTtOEV4JFBHIWuSZBVRKBNTnFNNN1L8zpBTk99
- F2bQ==
+ bh=iaO08R+8F39gfoSuZ4CkZ1qLHXPlBgrMMgGX8DGwSNw=;
+ b=Oc1DFoUTJ/+VmJWXPFC/NfwzORro9EZpoBFd51+zVrU5pXizKu7j4w/GAR9N31aynj
+ NWGs5qQpy5uNvMkVmmMX28ZjbYSAVp+TGdbHKe9npGzaMoZ359QDTtDPmCZjqEO5IhX9
+ xyV+HWRUZ58hT1Vf+92/PRkChWSnHDyJZ+XidkP0VtEfo1RWnnjvbJ16Ys8BqlyqMjFC
+ 0LeinVF5BvkNwt19MOQTXITFoCQbRPQv7jJdFQonpCzkENILL6V04oOeXrdwYOMroEAO
+ Whb9QI0EK/Hj+n412isGHz7KVnURFnsxS5MQGgy401GHkasgqZktO1UzG3W+gR7T9Fdj
+ HOnA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzAjuWa0ffr84/znhSPc3r5QKeITwj775GTZh7ze4koW1XvJ7zU6uWfPGgirUD23ZLeFY2Y0FUAxgdlbGetXzFD9Eb
-X-Gm-Message-State: AOJu0YwN4VseO1rL4j7lI5DP/cUi3tAZZrvEg/Z0q4vns2HW4+dwcmvn
- bY4amuDCP8uqUeRGu9JIWGMYKwK/Szp3DsVf6sLOfZZit4yb6/lmwb3xlg==
-X-Google-Smtp-Source: AGHT+IF5zh+8aNpU6OpGKgOyeG0Oj9yqRdBNZmZ0cKbNK5q2K9XuYqH4/4YmgZjTDVP9Bj/A7BEk5Q==
-X-Received: by 2002:a05:6a20:3504:b0:1be:c262:9c0d with SMTP id
- adf61e73a8af0-1c47b475d0emr3142405637.44.1721951944987; 
- Thu, 25 Jul 2024 16:59:04 -0700 (PDT)
+ AJvYcCXJqYt5W/D4A9htZsw43W8DH9l1nJqVBW235q5NBnZxI4vD2KEK8rHKx6kNha6ymJ9AQuwND+5rDcWrXUE7DMZNNjoW
+X-Gm-Message-State: AOJu0YysoBlfIPiM/Iz64oOiTwEBCXPaidhak27ekwnXXy8g9PadkfDI
+ FTTlsOZ7FKzepYk+SJ7wmJd7pHSNIBPgoCrBYjWwzkV6gyViWBSiIJYLPA==
+X-Google-Smtp-Source: AGHT+IHvsNbXZf6+oXH01fO10VXzmUmBuEYieHTmcPrCFhEc51kbbWjBDmv0KKNJM2dsQhBZmDT6/g==
+X-Received: by 2002:a05:6a20:9148:b0:1c0:f23b:d35a with SMTP id
+ adf61e73a8af0-1c47b140b46mr4595635637.5.1721951948038; 
+ Thu, 25 Jul 2024 16:59:08 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.59.02
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.59.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:59:04 -0700 (PDT)
+ Thu, 25 Jul 2024 16:59:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 80/96] target/ppc/mmu_common.c: Inline and remove
- ppc6xx_tlb_pte_check()
-Date: Fri, 26 Jul 2024 09:53:53 +1000
-Message-ID: <20240725235410.451624-81-npiggin@gmail.com>
+Subject: [PULL 81/96] target/ppc/mmu_common.c: Remove ptem field from mmu_ctx_t
+Date: Fri, 26 Jul 2024 09:53:54 +1000
+Message-ID: <20240725235410.451624-82-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,109 +94,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-This function is only called once and we can make the caller simpler
-by inlining it.
+Instead of passing around ptem in context use it once in the same
+function so it can be removed from mmu_ctx_t.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 71 +++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 49 deletions(-)
+ target/ppc/mmu_common.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index b2993e8563..784e833ff2 100644
+index 784e833ff2..339df377e8 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -91,33 +91,6 @@ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
-     return nr;
- }
+@@ -41,7 +41,6 @@
+ typedef struct {
+     hwaddr raddr;      /* Real address             */
+     int prot;          /* Protection bits          */
+-    target_ulong ptem; /* Virtual segment ID | API */
+     int key;           /* Access key               */
+ } mmu_ctx_t;
  
--static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
--                                target_ulong pte1, int pteh,
--                                MMUAccessType access_type, bool nx)
--{
--    /* Check validity and table match */
--    if (!pte_is_valid(pte0) || ((pte0 >> 6) & 1) != pteh ||
--        (pte0 & PTE_PTEM_MASK) != ctx->ptem) {
--        return -1;
--    }
--    /* all matches should have equal RPN, WIMG & PP */
--    if (ctx->raddr != (hwaddr)-1ULL &&
--        (ctx->raddr & PTE_CHECK_MASK) != (pte1 & PTE_CHECK_MASK)) {
--        qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
--        return -3;
--    }
--    /* Keep the matching PTE information */
--    ctx->raddr = pte1;
--    ctx->prot = ppc_hash32_prot(ctx->key, pte1 & HPTE32_R_PP, nx);
--    if (check_prot_access_type(ctx->prot, access_type)) {
--        qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
--        return 0;
--    } else {
--        qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
--        return -2;
--    }
--}
--
- /* Software driven TLB helpers */
+@@ -95,16 +94,18 @@ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
  
  static int ppc6xx_tlb_check(CPUPPCState *env,
-@@ -149,32 +122,32 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
-                       tlb->EPN, eaddr, tlb->pte1,
-                       access_type == MMU_DATA_STORE ? 'S' : 'L',
+                             mmu_ctx_t *ctx, target_ulong eaddr,
+-                            MMUAccessType access_type, bool nx)
++                            MMUAccessType access_type, target_ulong ptem,
++                            bool nx)
+ {
+     ppc6xx_tlb_t *tlb;
+     target_ulong *pte1p;
+     int nr, best, way, ret;
++    bool is_code = (access_type == MMU_INST_FETCH);
+ 
+     best = -1;
+     ret = -1; /* No TLB found */
+     for (way = 0; way < env->nb_ways; way++) {
+-        nr = ppc6xx_tlb_getnum(env, eaddr, way, access_type == MMU_INST_FETCH);
++        nr = ppc6xx_tlb_getnum(env, eaddr, way, is_code);
+         tlb = &env->tlb.tlb6[nr];
+         /* This test "emulates" the PTE index match for hardware TLBs */
+         if ((eaddr & TARGET_PAGE_MASK) != tlb->EPN) {
+@@ -124,7 +125,7 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
                        access_type == MMU_INST_FETCH ? 'I' : 'D');
--        switch (ppc6xx_tlb_pte_check(ctx, tlb->pte0, tlb->pte1,
--                                     0, access_type, nx)) {
--        case -2:
--            /* Access violation */
--            ret = -2;
--            best = nr;
--            break;
--        case -1: /* No match */
--        case -3: /* TLB inconsistency */
--        default:
--            break;
--        case 0:
--            /* access granted */
--            /*
--             * XXX: we should go on looping to check all TLBs
--             *      consistency but we can speed-up the whole thing as
--             *      the result would be undefined if TLBs are not
--             *      consistent.
--             */
-+        /* Check validity and table match */
-+        if (!pte_is_valid(tlb->pte0) || ((tlb->pte0 >> 6) & 1) != 0 ||
-+            (tlb->pte0 & PTE_PTEM_MASK) != ctx->ptem) {
-+            continue;
-+        }
-+        /* all matches should have equal RPN, WIMG & PP */
-+        if (ctx->raddr != (hwaddr)-1ULL &&
-+            (ctx->raddr & PTE_CHECK_MASK) != (tlb->pte1 & PTE_CHECK_MASK)) {
-+            qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
-+            /* TLB inconsistency */
-+            continue;
-+        }
-+        /* Keep the matching PTE information */
-+        best = nr;
-+        ctx->raddr = tlb->pte1;
-+        ctx->prot = ppc_hash32_prot(ctx->key, tlb->pte1 & HPTE32_R_PP, nx);
-+        if (check_prot_access_type(ctx->prot, access_type)) {
-+            qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
-             ret = 0;
--            best = nr;
--            goto done;
-+            break;
-+        } else {
-+            qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
-+            ret = -2;
+         /* Check validity and table match */
+         if (!pte_is_valid(tlb->pte0) || ((tlb->pte0 >> 6) & 1) != 0 ||
+-            (tlb->pte0 & PTE_PTEM_MASK) != ctx->ptem) {
++            (tlb->pte0 & PTE_PTEM_MASK) != ptem) {
+             continue;
+         }
+         /* all matches should have equal RPN, WIMG & PP */
+@@ -164,6 +165,10 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
+             }
          }
      }
-     if (best != -1) {
--done:
-         qemu_log_mask(CPU_LOG_MMU, "found TLB at addr " HWADDR_FMT_plx
-                       " prot=%01x ret=%d\n",
-                       ctx->raddr & TARGET_PAGE_MASK, ctx->prot, ret);
++    if (ret == -1) {
++        int r = is_code ? SPR_ICMP : SPR_DCMP;
++        env->spr[r] = ptem;
++    }
+ #if defined(DUMP_PAGE_TABLES)
+     if (qemu_loglevel_mask(CPU_LOG_MMU)) {
+         CPUState *cs = env_cpu(env);
+@@ -293,7 +298,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+     hwaddr hash;
+-    target_ulong vsid, sr, pgidx;
++    target_ulong vsid, sr, pgidx, ptem;
+     bool pr, ds, nx;
+ 
+     /* First try to find a BAT entry if there are any */
+@@ -320,7 +325,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+                   access_type == MMU_DATA_STORE, type);
+     pgidx = (eaddr & ~SEGMENT_MASK_256M) >> TARGET_PAGE_BITS;
+     hash = vsid ^ pgidx;
+-    ctx->ptem = (vsid << 7) | (pgidx >> 10);
++    ptem = (vsid << 7) | (pgidx >> 10); /* Virtual segment ID | API */
+ 
+     qemu_log_mask(CPU_LOG_MMU, "pte segment: key=%d ds %d nx %d vsid "
+                   TARGET_FMT_lx "\n", ctx->key, ds, nx, vsid);
+@@ -339,7 +344,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+         /* Initialize real address with an invalid value */
+         ctx->raddr = (hwaddr)-1ULL;
+         /* Software TLB search */
+-        return ppc6xx_tlb_check(env, ctx, eaddr, access_type, nx);
++        return ppc6xx_tlb_check(env, ctx, eaddr, access_type, ptem, nx);
+     }
+ 
+     /* Direct-store segment : absolutely *BUGGY* for now */
+@@ -741,7 +746,7 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
+             cs->exception_index = POWERPC_EXCP_IFTLB;
+             env->error_code = 1 << 18;
+             env->spr[SPR_IMISS] = eaddr;
+-            env->spr[SPR_ICMP] = 0x80000000 | ctx.ptem;
++            env->spr[SPR_ICMP] |= 0x80000000;
+             goto tlb_miss;
+         case -2:
+             /* Access rights violation */
+@@ -772,7 +777,7 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
+                 env->error_code = 0;
+             }
+             env->spr[SPR_DMISS] = eaddr;
+-            env->spr[SPR_DCMP] = 0x80000000 | ctx.ptem;
++            env->spr[SPR_DCMP] |= 0x80000000;
+ tlb_miss:
+             env->error_code |= ctx.key << 19;
+             env->spr[SPR_HASH1] = ppc_hash32_hpt_base(cpu) +
 -- 
 2.45.2
 
