@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F8193CBB0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF49D93CBBD
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:04:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Nm-00081d-1m; Thu, 25 Jul 2024 20:00:26 -0400
+	id 1sX8IZ-00042n-0S; Thu, 25 Jul 2024 19:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8N8-0005np-Fj; Thu, 25 Jul 2024 19:59:47 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1sX8IW-0003vl-BR; Thu, 25 Jul 2024 19:55:00 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8N6-0001wc-W9; Thu, 25 Jul 2024 19:59:46 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2cb64529a36so315615a91.0; 
- Thu, 25 Jul 2024 16:59:43 -0700 (PDT)
+ id 1sX8IU-0000aW-KI; Thu, 25 Jul 2024 19:55:00 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-70d2e68f5a8so337710b3a.3; 
+ Thu, 25 Jul 2024 16:54:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951982; x=1722556782; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951696; x=1722556496; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PetIsmnUlhClflxRVIROa6IgPnq0DtxeztGXxhCMqKs=;
- b=H5hzl4qaRCbVVkn/CBb2EgyOjw8hfgxpEw9Hnt/olSbizjA4WoZvJW3vczrOwsfbYQ
- Qf4YmYnYvbfQ2r434muN06e7ZI7RoK6fXgPPcVuZJSbxc7sDDq8XHFmJQjyKGaUI2Qbm
- 5Nw2zUGBOS7FijFipHKs5nFFlmvxUw2elGxNRPVCzauewT1GmhyxGxg73aUr+Z611n/x
- jwlUmi91YAoHMPEgqyp/FpTdKQWSArchKjtrIfqrAShU4g95XZknFILsMpSXvehwDUIe
- BrSU8PSlZUdkjOi4CYkLlt+zzTixaZ6wjgy7DlVtQPGXeLKTsLXXGRZk5vhvWaHhWZhX
- Wt7w==
+ bh=zbylTCKtEz0fZhsc8131n5s5SygNd8gxPxzcYetS3m0=;
+ b=hVlDijA62WnUDtqAA4o55si8mB7BGebnBVqoVvI4AvBpUtiZbHXwy4sQGSw0ubShn4
+ h6UnHxopUgRt2zrl6wWB4N77CFPqUu5VS1oYWQB91dQg5gvbqv9gaXYVjxUopXTjui9g
+ hc2qALSUvXicVqfxstPlFumU/KpHvcopKa4oFiqjdNtFywIv6RAZUv2SD149i6SqTsv1
+ 5waVQeXuDLa1rormgp7ZPdAgqwpnNNuAawjp8qbdGsWacG2FgfmQdcDZL/FPbLfzq/1d
+ iO/ZFzCfJPj+bHtfEUK9WmpT8LDAa7S8AUHDfN2cPpAzAHTToeNExwnsjDNeWzBeIRhk
+ f12A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951982; x=1722556782;
+ d=1e100.net; s=20230601; t=1721951696; x=1722556496;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PetIsmnUlhClflxRVIROa6IgPnq0DtxeztGXxhCMqKs=;
- b=rXVsD/g1lcvaEY2sgVY2CgmLHH0yXAi8NWVDJEDRkOwFzflCtFzeAojoh1evxjKJ2b
- LzytbjfmUo5AKFDoTtYcRsFW6I5kn5pKgyyDwMGQmRRnDRFdG+hFbHPPsvmDpQfm3BsM
- 58a0PJ7iyUJ9zGzm6aDbQaHU88MkMHhgLT8ocs0/+FYKDdLXxHwK2zmrr8YUaouu1tit
- 6sZXFLFFw3kxbLkEXXbCt+ug+W87J4ht314tUYXBLD3RiycFsgaPMAZNMdunvDbWfamZ
- R+yjCqpBtb3wItmOPCpd+JqIJm7x82oecSMWnHg4t9Dk9Ah6ekF1eWEIFy+vLHD+QMie
- cc9A==
+ bh=zbylTCKtEz0fZhsc8131n5s5SygNd8gxPxzcYetS3m0=;
+ b=WL1jsT46Hooknqgg30DHyki1vSMwnFA/A5Xybg7UV+DqTwE9tVolyflq/TPmzn7+bE
+ FM6QC7bW1eoD0hwrMPzONuGyuIdvLmuvsBln6pA8llc3wMFQqbarKe99TGxvgM6ABFjf
+ nLdpzb9h2YmNoWExleAB9eAGH69RJA6ikUvmude7ZDHSCQqb1qIEx26A2zQrHVzxhOa7
+ aAr5XABBYgLTy71dIi+CKWj0tHJmcz1Kk2R206zYsBDlQXVgmOlckiZfIwa0iH4O0Eij
+ qlRhfm8sKIRYQa3kitslzHMZ9X0uFPsuv6nt2Aaqk3pApEPDZl51F8xAK1PrNIvy5bFd
+ sRhg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVIFgBijyMZaG4XpGJpNhGS10rQsvoqWRZ4PKMi0kMKhHYGK1hm1aNkGxauoSngQ/mIaeKbF5J5X8Bjte/WcDSlhNVw
-X-Gm-Message-State: AOJu0YwyNwfP/KekkWox/rAjwSWDC1gBvZ6vEuodkz6Z+MZDto2lxQQP
- KsfXObYJxMUdvlGLuin3lficTTFLWpZuGMub5FYbsWarOkw6Wt7BSeRR9A==
-X-Google-Smtp-Source: AGHT+IEbpVOquXCFhabAd8DgtnCFKfDXM789Vwyh0Og/oVtWzUrJNzrctXZkteUSHF+gsFtZejslyw==
-X-Received: by 2002:a17:90a:ac05:b0:2c9:6514:39ff with SMTP id
- 98e67ed59e1d1-2cf238ebb83mr4776722a91.33.1721951982157; 
- Thu, 25 Jul 2024 16:59:42 -0700 (PDT)
+ AJvYcCVIGt9is1R8KWgL2PSybpdpUkQ2XQUZW/8I5tkBS00Z7pfpXBbWHvV1zfazWntgM37oQnJnzcQVFJYnfd3vyOa7/9y+
+X-Gm-Message-State: AOJu0Ywrzguzw1eIxuh6pRDjMYRLojv6MmOZ/1AeJuc4UBKBJEd8izr4
+ /FM/sere4Q4IrBZW2gc1qNujaHHsg3VpHE/t5zd/LmPoeGMfmsBbndS//g==
+X-Google-Smtp-Source: AGHT+IFbR2//Ftm9MMKLp9dGcgFDW9l0yfsnBxrPqLgr/FQxVOX7WMc54xQ9FPgou0gaeArzNIz6Cw==
+X-Received: by 2002:a05:6a21:3987:b0:1af:66aa:7fc7 with SMTP id
+ adf61e73a8af0-1c47b167d0emr4669600637.3.1721951696456; 
+ Thu, 25 Jul 2024 16:54:56 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.59.39
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.54.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:59:41 -0700 (PDT)
+ Thu, 25 Jul 2024 16:54:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 92/96] target/ppc/mmu-hash32.c: Inline and remove
- ppc_hash32_pte_raddr()
-Date: Fri, 26 Jul 2024 09:54:05 +1000
-Message-ID: <20240725235410.451624-93-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: [PULL 07/96] target/ppc: handle vcpu hotplug failure gracefully
+Date: Fri, 26 Jul 2024 09:52:40 +1000
+Message-ID: <20240725235410.451624-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,55 +95,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-This function is used only once and does not add more clarity than
-doing it inline.
+On ppc64, the PowerVM hypervisor runs with limited memory and a VCPU
+creation during hotplug may fail during kvm_ioctl for KVM_CREATE_VCPU,
+leading to termination of guest since errp is set to &error_fatal while
+calling kvm_init_vcpu. This unexpected behaviour can be avoided by
+pre-creating and parking vcpu on success or return error otherwise.
+This enables graceful error delivery for any vcpu hotplug failures while
+the guest can keep running.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Also introducing KVM AccelCPUClass to init cpu_target_realize for kvm.
+
+Tested OK by repeatedly doing a hotplug/unplug of vcpus as below:
+
+ #virsh setvcpus hotplug 40
+ #virsh setvcpus hotplug 70
+error: internal error: unable to execute QEMU command 'device_add':
+kvmppc_cpu_realize: vcpu hotplug failed with -12
+
+Signed-off by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+Reported-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Suggested-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Tested-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-hash32.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ target/ppc/kvm.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 6f0f0bbb00..c4de1647e2 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -298,15 +298,6 @@ static hwaddr ppc_hash32_htab_lookup(PowerPCCPU *cpu,
-     return pte_offset;
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 2c3932200b..907dba60d1 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -48,6 +48,8 @@
+ #include "qemu/mmap-alloc.h"
+ #include "elf.h"
+ #include "sysemu/kvm_int.h"
++#include "sysemu/kvm.h"
++#include "hw/core/accel-cpu.h"
+ 
+ #include CONFIG_DEVICES
+ 
+@@ -2346,6 +2348,30 @@ static void alter_insns(uint64_t *word, uint64_t flags, bool on)
+     }
  }
  
--static hwaddr ppc_hash32_pte_raddr(target_ulong sr, ppc_hash_pte32_t pte,
--                                   target_ulong eaddr)
--{
--    hwaddr rpn = pte.pte1 & HPTE32_R_RPN;
--    hwaddr mask = ~TARGET_PAGE_MASK;
--
--    return (rpn & ~mask) | (eaddr & mask);
--}
--
- bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                       hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
-                       bool guest_visible)
-@@ -440,11 +431,12 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-              */
-             prot &= ~PAGE_WRITE;
-         }
--     }
++static bool kvmppc_cpu_realize(CPUState *cs, Error **errp)
++{
++    int ret;
++    const char *vcpu_str = (cs->parent_obj.hotplugged == true) ?
++                           "hotplug" : "create";
++    cs->cpu_index = cpu_get_free_index();
++
++    POWERPC_CPU(cs)->vcpu_id = cs->cpu_index;
++
++    /* create and park to fail gracefully in case vcpu hotplug fails */
++    ret = kvm_create_and_park_vcpu(cs);
++    if (ret) {
++        /*
++         * This causes QEMU to terminate if initial CPU creation
++         * fails, and only CPU hotplug failure if the error happens
++         * there.
++         */
++        error_setg(errp, "%s: vcpu %s failed with %d",
++                         __func__, vcpu_str, ret);
++        return false;
 +    }
-+    *protp = prot;
- 
-     /* 9. Determine the real address from the PTE */
--
--    *raddrp = ppc_hash32_pte_raddr(sr, pte, eaddr);
--    *protp = prot;
-+    *raddrp = pte.pte1 & HPTE32_R_RPN;
-+    *raddrp &= TARGET_PAGE_MASK;
-+    *raddrp |= eaddr & ~TARGET_PAGE_MASK;
-     return true;
++    return true;
++}
++
+ static void kvmppc_host_cpu_class_init(ObjectClass *oc, void *data)
+ {
+     PowerPCCPUClass *pcc = POWERPC_CPU_CLASS(oc);
+@@ -2966,3 +2992,23 @@ void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset)
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
  }
++
++static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
++{
++    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
++
++    acc->cpu_target_realize = kvmppc_cpu_realize;
++}
++
++static const TypeInfo kvm_cpu_accel_type_info = {
++    .name = ACCEL_CPU_NAME("kvm"),
++
++    .parent = TYPE_ACCEL_CPU,
++    .class_init = kvm_cpu_accel_class_init,
++    .abstract = true,
++};
++static void kvm_cpu_accel_register_types(void)
++{
++    type_register_static(&kvm_cpu_accel_type_info);
++}
++type_init(kvm_cpu_accel_register_types);
 -- 
 2.45.2
 
