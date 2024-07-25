@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7641E93BD14
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 09:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD7293BD15
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 09:24:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWsoU-0006Bc-NE; Thu, 25 Jul 2024 03:22:58 -0400
+	id 1sWsoW-0006RO-Em; Thu, 25 Jul 2024 03:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1sWsoO-0005xx-Bw
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 03:22:52 -0400
+ id 1sWsoP-00060b-Hg
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 03:22:53 -0400
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1sWsoL-0001KE-9w
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 03:22:51 -0400
+ id 1sWsoM-0001Gw-Rn
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 03:22:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721892169; x=1753428169;
+ t=1721892171; x=1753428171;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=w97J4M33cCw9TAhSRTajDSuiBoryiegLBL0geGMjfTo=;
- b=Ogat1gvGyq1Isqz7MF1PNXi/5N/UiLDhN+5sdSiWk5XZs8DZOCkdbFor
- W+avTm3l0whH52wXQtXR13TB12QR3wvTLQBieSyqoVhar5wxzcCPg0IpX
- HfkNVjRMUUQFvs5Yzio1kQLqRxsItcsN7gnrRWxnjhy14xg2CD0tiFlP7
- WFk57/bGWJMwty4w6CU/nhrmGIkw3j+7JS7jcl6bmPSnM4FValLLcdz/i
- 5JP9wrE4hEe9CPd2O/HFc6geAxyxLskMmImslgjZsecKAyzEvAXHVwnZh
- ch+2wucrAs1dOsWILU8loC8ehx2mPOBrumbFt4LErCA9SBz8HDCSAcbIE w==;
-X-CSE-ConnectionGUID: 4mPfPkaKR9quYbxzKMAAlg==
-X-CSE-MsgGUID: kmo65k4sQviT6ppGgW8aEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="30753939"
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="30753939"
+ bh=PzDthdOyXi8jqps5YCnKqKm2ZMk1q6Qbjz/AdVU9fYE=;
+ b=e4fM1FUJLzU/+FWrqn4xTI4YNCVqmHxEnvREricLtOy+KqoR4vKxFDlj
+ I841c0xBhyy65RtdvwLpc//JwwLZjRjTfr806ZPtchGqD8QbuCb2pdO8n
+ tAG/Ol0XsOneQeCyRxLgOyfmlUEDN+Sp5Nlqnr0QVqwXs78vWW73PWaKd
+ m2oR5mp0vEIeb5Mq+u1qnH/tBUbSDhw2JfKASqVdRdmtl3+WR3wnYHwNo
+ i6Y2KwV2t7ACw1BorDrAz1ul4GlwmZGpgmRVxp48VO9GH7FAJX1g9pcif
+ 3VqH4Sls4A4oPMoRRYvtpS39+GsXmNt6B0a2wtZHeqhFQWRVSqmuh8vlh A==;
+X-CSE-ConnectionGUID: pUPC0BqpRneFXvz0blCSwQ==
+X-CSE-MsgGUID: 4/rO0yr2TCWijGeQf7/Y3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="30753963"
+X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="30753963"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 00:22:46 -0700
-X-CSE-ConnectionGUID: trBWNliyQSCF+mniCghpGg==
-X-CSE-MsgGUID: Cj11aMxMTk2JVZHfE+JW4g==
+ 25 Jul 2024 00:22:50 -0700
+X-CSE-ConnectionGUID: BmOnfm53TROM4l4nb2FKiw==
+X-CSE-MsgGUID: 1Cs7+M5qSK6v2R8gqF5zBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="52858154"
+X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="52858161"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 00:22:43 -0700
+ 25 Jul 2024 00:22:46 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Peter Xu <peterx@redhat.com>,
@@ -55,10 +55,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  Wang Wei W <wei.w.wang@intel.com>, Peng Chao P <chao.p.peng@intel.com>,
  Gao Chao <chao.gao@intel.com>, Wu Hao <hao.wu@intel.com>,
  Xu Yilun <yilun.xu@intel.com>
-Subject: [RFC PATCH 2/6] guest_memfd: Introduce a helper to notify the
- shared/private state change
-Date: Thu, 25 Jul 2024 03:21:11 -0400
-Message-ID: <20240725072118.358923-3-chenyi.qiang@intel.com>
+Subject: [RFC PATCH 3/6] KVM: Notify the state change via RamDiscardManager
+ helper during shared/private conversion
+Date: Thu, 25 Jul 2024 03:21:12 -0400
+Message-ID: <20240725072118.358923-4-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20240725072118.358923-1-chenyi.qiang@intel.com>
 References: <20240725072118.358923-1-chenyi.qiang@intel.com>
@@ -88,196 +88,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a helper function within RamDiscardManager to efficiently
-notify all registered RamDiscardListeners, including VFIO listeners
-about the memory conversion events between shared and private in
-guest_memfd. The existing VFIO listener can dynamically DMA map/unmap
-the shared pages based on the conversion type:
-- For conversions from shared to private, the VFIO system ensures the
-  discarding of shared mapping from the IOMMU.
-- For conversions from private to shared, it triggers the population of
-  the shared mapping into the IOMMU.
-
-Additionally, there could be some special conversion requests:
-- When a conversion request is made for a page already in the desired
-  state (either private or shared), the helper simply returns success.
-- For requests involving a range partially in the desired state, only
-  the necessary segments are converted, ensuring the entire range
-  complies with the request efficiently.
-- In scenarios where a conversion request is declined by other systems,
-  such as a failure from VFIO during notify_populate(), the helper will
-  roll back the request, maintaining consistency.
+Once exit to userspace to convert the page from private to shared or
+vice versa at runtime, notify the state change via the
+guest_memfd_state_change() helper so that other registered subsystems
+like VFIO can be notified.
 
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
- include/sysemu/guest-memfd-manager.h |   3 +
- system/guest-memfd-manager.c         | 141 +++++++++++++++++++++++++++
- 2 files changed, 144 insertions(+)
+ accel/kvm/kvm-all.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/sysemu/guest-memfd-manager.h b/include/sysemu/guest-memfd-manager.h
-index ab8c2ba362..1cce4cde43 100644
---- a/include/sysemu/guest-memfd-manager.h
-+++ b/include/sysemu/guest-memfd-manager.h
-@@ -43,4 +43,7 @@ struct GuestMemfdManagerClass {
-     void (*realize)(Object *gmm, MemoryRegion *mr, uint64_t region_size);
- };
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 854cb86b22..94bbbbd2de 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -48,6 +48,7 @@
+ #include "kvm-cpus.h"
+ #include "sysemu/dirtylimit.h"
+ #include "qemu/range.h"
++#include "sysemu/guest-memfd-manager.h"
  
-+int guest_memfd_state_change(GuestMemfdManager *gmm, uint64_t offset, uint64_t size,
-+                             bool shared_to_private);
-+
- #endif
-diff --git a/system/guest-memfd-manager.c b/system/guest-memfd-manager.c
-index 7b90f26859..deb43db90b 100644
---- a/system/guest-memfd-manager.c
-+++ b/system/guest-memfd-manager.c
-@@ -243,6 +243,147 @@ static void guest_memfd_rdm_replay_discarded(const RamDiscardManager *rdm,
-                                          guest_memfd_rdm_replay_discarded_cb);
- }
+ #include "hw/boards.h"
+ #include "sysemu/stats.h"
+@@ -2852,6 +2853,7 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+     RAMBlock *rb;
+     void *addr;
+     int ret = -1;
++    GuestMemfdManager *gmm;
  
-+static bool guest_memfd_is_valid_range(GuestMemfdManager *gmm,
-+                                       uint64_t offset, uint64_t size)
-+{
-+    MemoryRegion *mr = gmm->mr;
-+
-+    g_assert(mr);
-+
-+    uint64_t region_size = memory_region_size(mr);
-+    if (!QEMU_IS_ALIGNED(offset, gmm->block_size)) {
-+        return false;
-+    }
-+    if (offset + size < offset || !size) {
-+        return false;
-+    }
-+    if (offset >= region_size || offset + size > region_size) {
-+        return false;
-+    }
-+    return true;
-+}
-+
-+static void guest_memfd_notify_discard(GuestMemfdManager *gmm,
-+                                       uint64_t offset, uint64_t size)
-+{
-+    RamDiscardListener *rdl;
-+
-+    QLIST_FOREACH(rdl, &gmm->rdl_list, next) {
-+        MemoryRegionSection tmp = *rdl->section;
-+
-+        if (!guest_memfd_rdm_intersect_memory_section(&tmp, offset, size)) {
-+            continue;
-+        }
-+
-+        guest_memfd_for_each_populated_range(gmm, &tmp, rdl,
-+                                             guest_memfd_notify_discard_cb);
-+    }
-+}
-+
-+
-+static int guest_memfd_notify_populate(GuestMemfdManager *gmm,
-+                                       uint64_t offset, uint64_t size)
-+{
-+    RamDiscardListener *rdl, *rdl2;
-+    int ret = 0;
-+
-+    QLIST_FOREACH(rdl, &gmm->rdl_list, next) {
-+        MemoryRegionSection tmp = *rdl->section;
-+
-+        if (!guest_memfd_rdm_intersect_memory_section(&tmp, offset, size)) {
-+            continue;
-+        }
-+
-+        ret = guest_memfd_for_each_discarded_range(gmm, &tmp, rdl,
-+                                                   guest_memfd_notify_populate_cb);
-+        if (ret) {
-+            break;
-+        }
+     trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
+ 
+@@ -2914,6 +2916,11 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+     addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
+     rb = qemu_ram_block_from_host(addr, false, &offset);
+ 
++    gmm = GUEST_MEMFD_MANAGER(mr->rdm);
++    if (gmm) {
++        guest_memfd_state_change(gmm, offset, size, to_private);
 +    }
 +
-+    if (ret) {
-+        /* Notify all already-notified listeners. */
-+        QLIST_FOREACH(rdl2, &gmm->rdl_list, next) {
-+            MemoryRegionSection tmp = *rdl2->section;
-+
-+            if (rdl2 == rdl) {
-+                break;
-+            }
-+            if (!guest_memfd_rdm_intersect_memory_section(&tmp, offset, size)) {
-+                continue;
-+            }
-+
-+            guest_memfd_for_each_discarded_range(gmm, &tmp, rdl2,
-+                                                 guest_memfd_notify_discard_cb);
-+        }
-+    }
-+    return ret;
-+}
-+
-+static bool guest_memfd_is_range_populated(GuestMemfdManager *gmm,
-+                                           uint64_t offset, uint64_t size)
-+{
-+    const unsigned long first_bit = offset / gmm->block_size;
-+    const unsigned long last_bit = first_bit + (size / gmm->block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_bit(gmm->discard_bitmap, last_bit + 1, first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+static bool guest_memfd_is_range_discarded(GuestMemfdManager *gmm,
-+                                           uint64_t offset, uint64_t size)
-+{
-+    const unsigned long first_bit = offset / gmm->block_size;
-+    const unsigned long last_bit = first_bit + (size / gmm->block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_zero_bit(gmm->discard_bitmap, last_bit + 1, first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+int guest_memfd_state_change(GuestMemfdManager *gmm, uint64_t offset, uint64_t size,
-+                             bool shared_to_private)
-+{
-+    int ret = 0;
-+
-+    if (!guest_memfd_is_valid_range(gmm, offset, size)) {
-+        error_report("%s, invalid range: offset 0x%lx, size 0x%lx",
-+                     __func__, offset, size);
-+        return -1;
-+    }
-+
-+    if ((shared_to_private && guest_memfd_is_range_discarded(gmm, offset, size)) ||
-+        (!shared_to_private && guest_memfd_is_range_populated(gmm, offset, size))) {
-+        return 0;
-+    }
-+
-+    if (shared_to_private) {
-+        guest_memfd_notify_discard(gmm, offset, size);
-+    } else {
-+        ret = guest_memfd_notify_populate(gmm, offset, size);
-+    }
-+
-+    if (!ret) {
-+        unsigned long first_bit = offset / gmm->block_size;
-+        unsigned long nbits = size / gmm->block_size;
-+
-+        g_assert((first_bit + nbits) <= gmm->discard_bitmap_size);
-+
-+        if (shared_to_private) {
-+            bitmap_set(gmm->discard_bitmap, first_bit, nbits);
-+        } else {
-+            bitmap_clear(gmm->discard_bitmap, first_bit, nbits);
-+        }
-+
-+        return 0;
-+    }
-+
-+    return ret;
-+}
-+
- static void guest_memfd_manager_realize(Object *obj, MemoryRegion *mr,
-                                         uint64_t region_size)
- {
+     if (to_private) {
+         if (rb->page_size != qemu_real_host_page_size()) {
+             /*
 -- 
 2.43.5
 
