@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E655993C105
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F11B693C120
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:51:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWwqe-0005jG-F6; Thu, 25 Jul 2024 07:41:28 -0400
+	id 1sWwzD-0005A1-T8; Thu, 25 Jul 2024 07:50:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sWwqb-0005im-6D
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:41:25 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sWwqZ-0001aj-7n
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:41:24 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7a263f6439eso501510a12.3
- for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 04:41:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1721907681; x=1722512481; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4BjiPeeHBWLhSj4uJU2ToVH3O0/femhQQB0EUVqahOo=;
- b=SGswuBpF6BGf4ZnBxdDhQ1aEyy7+GUh023IGRbNhT/MoMXQHLbXjIlFxiiol+ckEKk
- ltN619HsLaqIXR+LMNQy9NuxYlW5VB5mre+oStbllsm0oradY8HcTO+kReWWMJ5LstQ2
- bVergTru58bhRiMbLvDHUdXo1h1JD1TgANY09jmhtTFRNQN5hB4JbN8bVGjF+0WSREq3
- i/CdHONUNslf6fSyzlZglBVxki7u+9FbM8mI03O1PoOFmJwjd99qGGyNw/yNBzh28iPv
- ZH4Ae0IhOE5LtXGUNaxuXxmQPdCZNN0smLRbeXYKnydVaBD2zLx76h32fZeCZ3Rpqjnl
- GPvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721907681; x=1722512481;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4BjiPeeHBWLhSj4uJU2ToVH3O0/femhQQB0EUVqahOo=;
- b=KDKrbETPJu/Z8rIiB8nci58E4eX4BvI68TZeX80a/pjLlMVtyu1/OOHUVX16s+7EGb
- DdfKV+c4vjt1O4OfzQ667FZZmLszAUnx4SpmwhLpZTFY1eaZaLHUcQhvpyW7B2K0B8uz
- 8rCgl/ovkMZLuYL8B7voiAsOzIPvcNERxPEs6vl4jZXY8DeeXLKYJuHTGv+r+xGPnpej
- VtuKdfo4JP7lCt6IUz5rYjiT7INqf6KWbV99OBIke5LVBAi3+EOq7YisG7pmcOfIrzU7
- UeGzYvyeIY8SYrS9m3KdvA3Afb70T0cyrPaXrm1KPhsMJQ8YkFzJFvQ7IgsiBDwAsbGl
- dewA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUQNQ1sYK2X3IqTHFCDX4vylfhYrV/OUHGUY/Tc8o5dmC5Hr8rB/rh/JU0rzbYyBAS6Fs8b28QwV7ot3b9YW0hJlClbUEQ=
-X-Gm-Message-State: AOJu0YyaHya9g4pBOAcJ46AxfQxezYy4xffJBTHL5Mm+TkS5v4Wg7u21
- u9DvYPEBh+l9tmZaJv1jLig2Cl2D7TlYZEgJN83ygDcmqDGvhBj8mDNWw5MbSaQ=
-X-Google-Smtp-Source: AGHT+IFb5FsvM9EEWWw2n+gVgpg7QtSUNe0zmpOlNbHfhFgLdLEtJb0LC9/EbeNfi94XmCdBURdELw==
-X-Received: by 2002:a05:6a20:a11a:b0:1c2:905c:db0 with SMTP id
- adf61e73a8af0-1c47b4aef68mr1670792637.33.1721907681468; 
- Thu, 25 Jul 2024 04:41:21 -0700 (PDT)
-Received: from [192.168.68.110] ([179.193.8.144])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fed7c8c6f4sm12146155ad.24.2024.07.25.04.41.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Jul 2024 04:41:21 -0700 (PDT)
-Message-ID: <565a0b5c-bf9b-4ae0-8332-14c2e986604d@ventanamicro.com>
-Date: Thu, 25 Jul 2024 08:41:17 -0300
+ (Exim 4.90_1) (envelope-from
+ <BATV+24aa3f22b0bcc14e6bb8+7641+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1sWwzB-00059M-Bx
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:50:17 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+24aa3f22b0bcc14e6bb8+7641+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1sWwz8-0003ca-Of
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:50:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=dOMuI0KOfYdadFjPpCQ6nhBfr9GpmTphMFJg3+Rl+/8=; b=JfT4L9OFqiYLUWe4Tc4X/S2wu9
+ G6FeTUnd37d6c49pRv36hOW0YHufHP5l+TVzCmwGDsMnFYqu+XGfhNDcASr92xry/bf1BNsjDjD4K
+ OSNamL3oT3PyS4MsMu1Vo48vGv7SKG9devhujr/2IPDR+M9Gq56RA9sCHKb980aBt7y8uhT7KsLkK
+ u3D59Ag8wJeHjbCm/8Zt80hQMpAyZ+/lm+DMZru4qRHV3ZXgp/6ClxIQEBI/LfW1hxWf/QIMRU25i
+ aBGx+qVWKYdSRAp9Ea1C9RTWTwa8HTxPTZ4f3gZJ8cVxNKeu6NxCKofp9zjOuzlW61u6aa6wEtGfb
+ HjXpf6tQ==;
+Received: from [2001:8b0:10b:5:25df:2ae1:4889:ee99]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1sWwyn-00000008rrj-2FvO; Thu, 25 Jul 2024 11:49:53 +0000
+Message-ID: <78ae9403ac4f507819c46ed831c714bca966e5a4.camel@infradead.org>
+Subject: Re: [PATCH] ptp: Add vDSO-style vmclock support
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+ <richardcochran@gmail.com>,  Peter Hilber <peter.hilber@opensynergy.com>,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-rtc@vger.kernel.org, "Ridoux,
+ Julien" <ridouxj@amazon.com>, virtio-dev@lists.linux.dev, "Luu, Ryan"
+ <rluu@amazon.com>,  "Chashper, David" <chashper@amazon.com>, "Mohamed
+ Abuelfotoh, Hazem" <abuehaze@amazon.com>
+Cc: "Christopher S . Hall" <christopher.s.hall@intel.com>, Jason Wang
+ <jasowang@redhat.com>, John Stultz <jstultz@google.com>, "Michael S .
+ Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Stephen Boyd
+ <sboyd@kernel.org>,  Thomas Gleixner <tglx@linutronix.de>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Marc Zyngier <maz@kernel.org>,  Mark Rutland
+ <mark.rutland@arm.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Alessandro Zummo <a.zummo@towertech.it>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,  qemu-devel <qemu-devel@nongnu.org>, Simon
+ Horman <horms@kernel.org>
+Date: Thu, 25 Jul 2024 12:49:52 +0100
+In-Reply-To: <541d338f-bffc-4393-a501-92d01e5c8edb@redhat.com>
+References: <14d1626bc9ddae9d8ad19d3c508538d10f5a8e44.camel@infradead.org>
+ <541d338f-bffc-4393-a501-92d01e5c8edb@redhat.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-SY3unfSx3iaL3ixPrA/+"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1] target/riscv: Remove the deprecated 'any' CPU type
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Bin Meng <bmeng.cn@gmail.com>, devel@lists.libvirt.org,
- Weiwei Li <liwei1518@gmail.com>, qemu-riscv@nongnu.org,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>
-References: <20240724130717.95629-1-philmd@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240724130717.95629-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+24aa3f22b0bcc14e6bb8+7641+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,138 +90,133 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--=-SY3unfSx3iaL3ixPrA/+
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/24/24 10:07 AM, Philippe Mathieu-Daudé wrote:
-> The 'any' CPU is deprecated since commit f57d5f8004b
-> ("target/riscv: deprecate the 'any' CPU type"). Users
-> are better off using the default CPUs or the 'max' CPU.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   docs/about/deprecated.rst       | 13 -------------
->   docs/about/removed-features.rst |  8 ++++++++
->   target/riscv/cpu-qom.h          |  1 -
->   target/riscv/cpu.c              | 28 ----------------------------
->   4 files changed, 8 insertions(+), 42 deletions(-)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 88f0f037865..0ac49b15b44 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -347,19 +347,6 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
->   which the 9p ``proxy`` backend currently suffers. However as of to date nobody
->   has indicated plans for such kind of reimplementation unfortunately.
->   
-> -RISC-V 'any' CPU type ``-cpu any`` (since 8.2)
-> -^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> -
-> -The 'any' CPU type was introduced back in 2018 and has been around since the
-> -initial RISC-V QEMU port. Its usage has always been unclear: users don't know
-> -what to expect from a CPU called 'any', and in fact the CPU does not do anything
-> -special that isn't already done by the default CPUs rv32/rv64.
-> -
-> -After the introduction of the 'max' CPU type, RISC-V now has a good coverage
-> -of generic CPUs: rv32 and rv64 as default CPUs and 'max' as a feature complete
-> -CPU for both 32 and 64 bit builds. Users are then discouraged to use the 'any'
-> -CPU type starting in 8.2.
-> -
->   RISC-V CPU properties which start with capital 'Z' (since 8.2)
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->   
-> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-> index fc7b28e6373..f3e9474a73e 100644
-> --- a/docs/about/removed-features.rst
-> +++ b/docs/about/removed-features.rst
-> @@ -850,6 +850,14 @@ The RISC-V no MMU cpus have been removed. The two CPUs: ``rv32imacu-nommu`` and
->   ``rv64imacu-nommu`` can no longer be used. Instead the MMU status can be specified
->   via the CPU ``mmu`` option when using the ``rv32`` or ``rv64`` CPUs.
->   
-> +RISC-V 'any' CPU type ``-cpu any`` (removed in 9.1)
-> +'''''''''''''''''''''''''''''''''''''''''''''''''''
+On Thu, 2024-07-25 at 13:20 +0200, Paolo Abeni wrote:
+>=20
+>=20
+> Just a bunch of 'nits below
 
-With the '9.1' changed to '9.2':
+Thank you. Fixed in
+https://git.infradead.org/users/dwmw2/linux.git/shortlog/refs/heads/vmclock
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+I'll post a new version once I've finished resolving mst's and any
+other feedback.
 
-> +
-> +The 'any' CPU type was introduced back in 2018 and was around since the
-> +initial RISC-V QEMU port. Its usage was always been unclear: users don't know
-> +what to expect from a CPU called 'any', and in fact the CPU does not do anything
-> +special that isn't already done by the default CPUs rv32/rv64.
-> +
->   ``compat`` property of server class POWER CPUs (removed in 6.0)
->   '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
->   
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index 3670cfe6d9a..4464c0fd7a3 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -29,7 +29,6 @@
->   #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
->   #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
->   
-> -#define TYPE_RISCV_CPU_ANY              RISCV_CPU_TYPE_NAME("any")
->   #define TYPE_RISCV_CPU_MAX              RISCV_CPU_TYPE_NAME("max")
->   #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
->   #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index a90808a3bac..4bda754b013 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -438,27 +438,6 @@ static void set_satp_mode_default_map(RISCVCPU *cpu)
->   }
->   #endif
->   
-> -static void riscv_any_cpu_init(Object *obj)
-> -{
-> -    RISCVCPU *cpu = RISCV_CPU(obj);
-> -    CPURISCVState *env = &cpu->env;
-> -    riscv_cpu_set_misa_ext(env, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    set_satp_mode_max_supported(RISCV_CPU(obj),
-> -        riscv_cpu_mxl(&RISCV_CPU(obj)->env) == MXL_RV32 ?
-> -        VM_1_10_SV32 : VM_1_10_SV57);
-> -#endif
-> -
-> -    env->priv_ver = PRIV_VERSION_LATEST;
-> -
-> -    /* inherited from parent obj via riscv_cpu_init() */
-> -    cpu->cfg.ext_zifencei = true;
-> -    cpu->cfg.ext_zicsr = true;
-> -    cpu->cfg.mmu = true;
-> -    cpu->cfg.pmp = true;
-> -}
-> -
->   static void riscv_max_cpu_init(Object *obj)
->   {
->       RISCVCPU *cpu = RISCV_CPU(obj);
-> @@ -1161,11 +1140,6 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
->       RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
->       Error *local_err = NULL;
->   
-> -    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_ANY) != NULL) {
-> -        warn_report("The 'any' CPU is deprecated and will be "
-> -                    "removed in the future.");
-> -    }
-> -
->       cpu_exec_realizefn(cs, &local_err);
->       if (local_err != NULL) {
->           error_propagate(errp, local_err);
-> @@ -2952,7 +2926,6 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->           .abstract = true,
->       },
->   #if defined(TARGET_RISCV32)
-> -    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,       MXL_RV32,  riscv_any_cpu_init),
->       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV32,  riscv_max_cpu_init),
->       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,    MXL_RV32,  rv32_base_cpu_init),
->       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_IBEX,       MXL_RV32,  rv32_ibex_cpu_init),
-> @@ -2962,7 +2935,6 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->       DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV32I,        MXL_RV32,  rv32i_bare_cpu_init),
->       DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV32E,        MXL_RV32,  rv32e_bare_cpu_init),
->   #elif defined(TARGET_RISCV64)
-> -    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,       MXL_RV64,  riscv_any_cpu_init),
->       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV64,  riscv_max_cpu_init),
->       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,    MXL_RV64,  rv64_base_cpu_init),
->       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E51, MXL_RV64,  rv64_sifive_e_cpu_init),
+
+--=-SY3unfSx3iaL3ixPrA/+
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwNzI1MTE0OTUyWjAvBgkqhkiG9w0BCQQxIgQgJr9pTDJ6
+2pqUfwMJ+PXFWtqHecWdxEEUUbpYTArJLv4wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgByTwtaYFwJNc1k+De4/GpwAGU/YAXuhXQo
+uiyaHIbnGT6Peo2jHT0dBt4dCUerw27IK1LU1nNmZvBOaCuBxk/aVnyRQYRzB8Qhj3LhUZD5C0u4
+Z3AcWY4YT+Me+i65kiCwuNeYaAGuiVfRVP3lwd8pVexWPFPAaTqCZrvRrPtcbkuqABZaGVdc/QlS
+71KDoBQxqAvt+JcAVG28kAaht8qVPM0Ae0WW8s2rwF8s/mTV2G32JjHPQkkf4an7b0ER9e99/Szi
+F5oLyHXbM+0wVU6q7MXx4Ky6EGOEpatyNzPlK2W/kF0iw8j7uPToOYL2HdbxYULhYLqzXEdjszbF
+Ow5EhzPxRhUlHpmbRj9FUYrheG7CweqH53UOaAOh2ZprcRNuTBiKCXavl+n6Mhx6Q4UC+LLYdzpB
+riXrk5TG35G0WjUsqC+/Puf7aNH0RYHXQ2Y7HdKyDtR3Vh1r7dxBWCiOHqUjqjYbK8sCDdeZXjL0
+ZH2m55GNXvi5nxr7pJUBdUcdNR1uZos3ZEVh08+4dkK+92jTWfEfTo0J+CStkVfU7owPJhtFqu0y
+87DkxVjTY3m90CFSOp/q86L0buEPBhUHbss0IzvlkWpCRnsk3STGLCDMqGS3Zf6IKhEnWEQYPZ6W
+qXXz6+YMla/M9bGEu7punkNzJNj0i9PE4sCvPgBkywAAAAAAAA==
+
+
+--=-SY3unfSx3iaL3ixPrA/+--
 
