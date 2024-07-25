@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A1A93CB61
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA80093CB57
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:47:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Ai-0001K9-VV; Thu, 25 Jul 2024 19:46:57 -0400
+	id 1sX8Aj-0001PC-Vb; Thu, 25 Jul 2024 19:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sX8Ac-0000vu-KH
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 19:46:50 -0400
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
+ id 1sX8Ae-00013g-7r
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 19:46:52 -0400
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sX8Aa-0005P3-Mf
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 19:46:50 -0400
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-396eb81a1cfso4662425ab.2
- for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 16:46:48 -0700 (PDT)
+ id 1sX8Ac-0005PY-Gv
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 19:46:51 -0400
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-260e5b2dfb5so464803fac.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 16:46:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721951207; x=1722556007;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721951208; x=1722556008;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U1RafRXULaoeGB+gXsUlffAxqhChP6/g1AGQdC0LRV0=;
- b=26/NHMHNVKWjvOi0FcWMOY3yGlWGPjC0bf4CgWBl9GclR5uu+drvebaCA9BWQ9rdmi
- pB9bxyqTbz6dssu6sT7xnE80zS2CjNC7VqrfZeIEjO2jGi36k/xr5ftzcii9vKrWo/DM
- 8ThAMVe8FPdnRd0sjq3VLHxOnIERmkb/K34iF5xl9nHpUqt1ApR+LITSdXpTLaOuZ0Z4
- wuBjiWeNZK4GzsMFrj0t5avJuqirgXsIUKQ84K+INlqKE9FTVf/4L2Aw2ggWTSAMIPGb
- bCIXSkw02mWKYghSpLQEkUtdkTF35Q7jJQmnqp89EQgDs6DCF84YoxH6H6Ng6ODCDkyY
- FCMQ==
+ bh=bfd/g3qnKmKlalH95hAzpJLDLKpqsukOO1ZJ1hRrjxo=;
+ b=ARCvJmLiRApP+wSj0mfgosuQ73l9oFBCg/aWAgtn+5f6nLUiJfjEo8fG5JSCdEtSJd
+ BGnOpqF96ku0Qh63tM9tMMK9ucHOG+/dj4lWS5kmTd+1xqiebhO7SibdgmdEb57evjOu
+ sjdb341P9gS54hgFhAdH3SxNpXqycoiHNLLJbtGFFx01F/kszaHBlAL9wKF3bp2P1EEn
+ zR0QH2tQ7NdWjtoKQJv402CaCcpBvaQ/VFVqzFuuw6g8foxDVBf42gsG/toFb32cpwIm
+ +rjgBr1TupUoDMeyIFggQnOgXczIBOyAi8+nVWWGQJVjqVMVI3aS+LFS1zFn1ApLuRJ4
+ bxgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951207; x=1722556007;
+ d=1e100.net; s=20230601; t=1721951208; x=1722556008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U1RafRXULaoeGB+gXsUlffAxqhChP6/g1AGQdC0LRV0=;
- b=BbUNrjJ9C7DQTf1tLnb9WcWzz8QyCQfDbQgxo6y3Fb2AE9oujh5VUQaqi5it93/VFx
- 3MuLr43BWZxgm7hxIv53VeJuDP8xf9L5yf8gpE2FfTgzACs9FVufxxv6vlQ7GvsbzfHe
- 0Nli37c36LXVNcKoCg4Nub6iTkpyWy+MeukapFSJufLf+z9SbJk4Co7B9vB/zQfHJ9Ge
- b//8MTpy8vAE3QrNLaBtJ0mDI8ZZxpGGZZE80R9jQ66uYWQGoPOITtDHXwRfte8S0n0j
- 8ZGXqTaTh/UgD5lBkjumcPo3tC3Ouzr3lC3RtrBP62TBDtFCeV5F7RSy0VsqezKuRDoX
- WBLw==
+ bh=bfd/g3qnKmKlalH95hAzpJLDLKpqsukOO1ZJ1hRrjxo=;
+ b=rfRtloZwfP0l7IohnXrxama7Xgu71Ty4uxlT5MnbIlDyqCrjJ++LrnRdjhV+hvrEo/
+ rGr9LYyfrUf6tk483ilc7mKBzr5rznnWpO7Sfzn4BhnKZ32yxQGqWH4a/Nv/1yd4UHRy
+ Fk5RPt410Pqs95KgBX20YdZtwmpc/zKx3LYDaHTFSIwDtb2EBiSnssBHzI808ZzhGG3L
+ XZovc6AzoS4q/4p/H2FNDJLs4x6bBPqCoDfNETVg8QAKF/aTo54EczoXyMV2YFwBdves
+ fDdhIIxJYa3O3EtqCGSVVCgaNFIzD+lKT01mldCTcTqbtRPXrjW9W2oZ7qempiJT5tbf
+ RHeA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUZQeMHctZv8BH5is2kAlbDyfzRTxjf1pZft99g/muqtoAUhSuHukaahrw263Fe558H/x4+GmRG6g43vBDX5RltWuNdiY=
-X-Gm-Message-State: AOJu0YyUZ53WuIUjqd10JJZMPB0+Qfba1DxyQFlsRsI1BDcPrdoBjadw
- vhIX+6+/PegHJAWcfEYmt7MBFsM/tWzpTxPUAJYIcXySFEzKQxysDv+ok8tprtE=
-X-Google-Smtp-Source: AGHT+IGy9MqWIDoryJ9a1TUhuvKpi76++J/YXW9VofOVUL5C6siHdDEm9/l6rf1Bb14RQ6thdTsBTA==
-X-Received: by 2002:a05:6e02:12e2:b0:396:b0d:8018 with SMTP id
- e9e14a558f8ab-39a217e0d7amr59304055ab.6.1721951207117; 
- Thu, 25 Jul 2024 16:46:47 -0700 (PDT)
+ AJvYcCXFr73EKPQm+2XrVhNNT8F9cs8BfuaDUHWyxCeea+VVNNDfuSNpnzrFCCnLe944JIW0QKh+z92C88hA@nongnu.org
+X-Gm-Message-State: AOJu0YxdAcYpHoBMXPJnVSEGt5GrSRQFr8n8lzPaGbeCLxEs5ty9PSkU
+ n7KWn6yQ7CzzjgaVe6TZUEcmc2SmljqwT4hs2lq2ds9xUmJ2OSxVsCU4casNr7U=
+X-Google-Smtp-Source: AGHT+IHoXVmXn+LxEPotC1APjvprE04G0CZCFolUXKcmTkKy7NvW7OomvTOR17WDsedu+o8GogGY/Q==
+X-Received: by 2002:a05:6871:796:b0:260:e678:b657 with SMTP id
+ 586e51a60fabf-264a0ca319emr5377055fac.7.1721951208489; 
+ Thu, 25 Jul 2024 16:46:48 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70ead8128d0sm1647565b3a.118.2024.07.25.16.46.46
+ d2e1a72fcca58-70ead8128d0sm1647565b3a.118.2024.07.25.16.46.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:46:46 -0700 (PDT)
+ Thu, 25 Jul 2024 16:46:48 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, jim.shu@sifive.com,
  andy.chiu@sifive.com, jesse.huang@sifive.com, kito.cheng@sifive.com
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH 18/24] linux-user/riscv: setup/teardown zicfiss shadow stack
- for qemu-user
-Date: Thu, 25 Jul 2024 16:46:07 -0700
-Message-ID: <20240725234614.3850142-19-debug@rivosinc.com>
+Subject: [PATCH 19/24] disas/riscv: enable disassembly for zicfiss instructions
+Date: Thu, 25 Jul 2024 16:46:08 -0700
+Message-ID: <20240725234614.3850142-20-debug@rivosinc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240725234614.3850142-1-debug@rivosinc.com>
 References: <20240725234614.3850142-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
- envelope-from=debug@rivosinc.com; helo=mail-il1-x12b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=debug@rivosinc.com; helo=mail-oa1-x2f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,180 +96,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implements shadow stack related prctls for qemu-user on riscv. Allocates
-shadow stack from host memory using `target_mmap` and tears down when
-user issues prctl to disable using `target_munmap`.
+Enable disassembly for sspush, sspopchk, ssrdp & ssamoswap.
+Disasembly is only enabled if zimop and zicfiss ext is set to true.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Co-developed-by: Jesse Huang <jesse.huang@sifive.com>
-Co-developed-by: Jim Shu <jim.shu@sifive.com>
-Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
 ---
- linux-user/riscv/cpu_loop.c     | 50 +++++++++++++++++++++++++++++++++
- linux-user/riscv/target_cpu.h   |  7 +++++
- linux-user/riscv/target_prctl.h | 27 ++++++++++++++++++
- target/riscv/cpu.c              |  4 +++
- target/riscv/cpu.h              |  1 +
- 5 files changed, 89 insertions(+)
+ disas/riscv.c | 34 ++++++++++++++++++++++++++++++++++
+ disas/riscv.h |  1 +
+ 2 files changed, 35 insertions(+)
 
-diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
-index 52c49c2e42..22670b68e0 100644
---- a/linux-user/riscv/cpu_loop.c
-+++ b/linux-user/riscv/cpu_loop.c
-@@ -25,6 +25,7 @@
- #include "signal-common.h"
- #include "elf.h"
- #include "semihosting/common-semi.h"
-+#include "user-mmap.h"
+diff --git a/disas/riscv.c b/disas/riscv.c
+index c7c92acef7..c4e47fbc78 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -975,6 +975,11 @@ typedef enum {
+     rv_op_amocas_b  = 944,
+     rv_op_amocas_h  = 945,
+     rv_op_lpad = 946,
++    rv_op_sspush = 947,
++    rv_op_sspopchk = 948,
++    rv_op_ssrdp = 949,
++    rv_op_ssamoswap_w = 950,
++    rv_op_ssamoswap_d = 951,
+ } rv_op;
  
- void cpu_loop(CPURISCVState *env)
- {
-@@ -94,6 +95,55 @@ void cpu_loop(CPURISCVState *env)
-     }
- }
+ /* register names */
+@@ -2234,6 +2239,11 @@ const rv_opcode_data rvi_opcode_data[] = {
+     { "amocas.b", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+     { "amocas.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+     { "lpad", rv_codec_lp, rv_fmt_imm, NULL, 0, 0, 0 },
++    { "sspush", rv_codec_r, rv_fmt_rs2, NULL, 0, 0, 0 },
++    { "sspopchk", rv_codec_r, rv_fmt_rs1, NULL, 0, 0, 0 },
++    { "ssrdp", rv_codec_r, rv_fmt_rd, NULL, 0, 0, 0 },
++    { "ssamoswap.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
++    { "ssamoswap.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+ };
  
-+#define ZICFISS_GUARD_SIZE  (2UL * TARGET_PAGE_SIZE)
-+#define ZICFISS_STACK_SIZE  (16UL * TARGET_PAGE_SIZE)
-+#define ZICFISS_THREAD_SIZE (ZICFISS_STACK_SIZE + ZICFISS_GUARD_SIZE)
-+
-+void zicfiss_shadow_stack_alloc(CPUArchState *env)
-+{
-+    uintptr_t new_base;
-+
-+    /* SS page should be surrounded by two guard pages */
-+    new_base = (uintptr_t) target_mmap(0, ZICFISS_THREAD_SIZE, PROT_NONE,
-+                                  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    if ((intptr_t)new_base == -1) {
-+        perror("shadow stack alloc failure");
-+        exit(EXIT_FAILURE);
-+    }
-+    new_base += TARGET_PAGE_SIZE;
-+    int ret = mprotect((void *)new_base, ZICFISS_STACK_SIZE,
-+                       PROT_READ | PROT_WRITE);
-+    if (ret == -1) {
-+        perror("shadow stack mprotect failure");
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    env->ssp_base = new_base;
-+    env->ssp = new_base + ZICFISS_STACK_SIZE;
-+}
-+
-+void zicfiss_shadow_stack_release(CPUArchState *env)
-+{
-+    abi_ulong mmap_base;
-+
-+    if (env->ssp == 0) {
-+        perror("release empty shadow stack");
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    /* It should match shadow stack allocation. */
-+    mmap_base = env->ssp_base - TARGET_PAGE_SIZE;
-+
-+    int ret = target_munmap(mmap_base, ZICFISS_THREAD_SIZE);
-+    if (ret == -1) {
-+        perror("shadow stack release failure");
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    env->ssp_base = 0;
-+    env->ssp = 0;
-+}
-+
- void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
- {
-     CPUState *cpu = env_cpu(env);
-diff --git a/linux-user/riscv/target_cpu.h b/linux-user/riscv/target_cpu.h
-index 9c642367a3..bba54d93eb 100644
---- a/linux-user/riscv/target_cpu.h
-+++ b/linux-user/riscv/target_cpu.h
-@@ -1,6 +1,9 @@
- #ifndef RISCV_TARGET_CPU_H
- #define RISCV_TARGET_CPU_H
+ /* CSR names */
+@@ -2251,6 +2261,7 @@ static const char *csr_name(int csrno)
+     case 0x0009: return "vxsat";
+     case 0x000a: return "vxrm";
+     case 0x000f: return "vcsr";
++    case 0x0011: return "ssp";
+     case 0x0015: return "seed";
+     case 0x0017: return "jvt";
+     case 0x0040: return "uscratch";
+@@ -3077,6 +3088,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+             case 66: op = rv_op_amoor_w; break;
+             case 67: op = rv_op_amoor_d; break;
+             case 68: op = rv_op_amoor_q; break;
++            case 74: op = rv_op_ssamoswap_w; break;
++            case 75: op = rv_op_ssamoswap_d; break;
+             case 96: op = rv_op_amoand_b; break;
+             case 97: op = rv_op_amoand_h; break;
+             case 98: op = rv_op_amoand_w; break;
+@@ -4036,11 +4049,32 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                                                        extract32(inst, 26, 2)),
+                                              4, 1, extract32(inst, 30, 1));
+                         op = rv_mop_r_0 + imm_mop5;
++                        /* if zicfiss enabled and mop5 is shadow stack */
++                        if (dec->cfg->ext_zicfiss &&
++                            ((imm_mop5 & 0b11100) == 0b11100)) {
++                                /* rs1=0 means ssrdp */
++                                if ((inst & (0b011111 << 15)) == 0) {
++                                    op = rv_op_ssrdp;
++                                    }
++                                /* rd=0 means sspopchk */
++                                if ((inst & (0b011111 << 7)) == 0) {
++                                    op = rv_op_sspopchk;
++                                }
++                        }
+                     } else if ((extract32(inst, 25, 7) & 0b1011001)
+                                == 0b1000001) {
+                         imm_mop3 = deposit32(extract32(inst, 26, 2),
+                                              2, 1, extract32(inst, 30, 1));
+                         op = rv_mop_rr_0 + imm_mop3;
++                        /* if zicfiss enabled and mop3 is shadow stack */
++                        if (dec->cfg->ext_zicfiss &&
++                            ((imm_mop3 & 0b111) == 0b111)) {
++                                /* rs1=0 and rd=0 means sspush */
++                                if (((inst & (0b011111 << 15)) == 0) &&
++                                    ((inst & (0b011111 << 7)) == 0)) {
++                                    op = rv_op_sspush;
++                                }
++                        }
+                     }
+                 }
+                 break;
+diff --git a/disas/riscv.h b/disas/riscv.h
+index 1182457aff..4895c5a301 100644
+--- a/disas/riscv.h
++++ b/disas/riscv.h
+@@ -224,6 +224,7 @@ enum {
  
-+extern void zicfiss_shadow_stack_alloc(CPUArchState *env);
-+extern void zicfiss_shadow_stack_release(CPUArchState *env);
-+
- static inline void cpu_clone_regs_child(CPURISCVState *env, target_ulong newsp,
-                                         unsigned flags)
- {
-@@ -9,6 +12,10 @@ static inline void cpu_clone_regs_child(CPURISCVState *env, target_ulong newsp,
-     }
- 
-     env->gpr[xA0] = 0;
-+
-+    if (flags & CLONE_VM) {
-+        zicfiss_shadow_stack_alloc(env);
-+    }
- }
- 
- static inline void cpu_clone_regs_parent(CPURISCVState *env, unsigned flags)
-diff --git a/linux-user/riscv/target_prctl.h b/linux-user/riscv/target_prctl.h
-index d7f9f954c9..6293d61519 100644
---- a/linux-user/riscv/target_prctl.h
-+++ b/linux-user/riscv/target_prctl.h
-@@ -13,6 +13,33 @@ static abi_long do_prctl_cfi(CPUArchState *env,
-     if (env_archcpu(env)->cfg.ext_zicfilp) {
- 
-         switch (option) {
-+        case PR_GET_SHADOW_STACK_STATUS:
-+            abi_ulong bcfi_status = 0;
-+            /* indirect branch tracking is enabled on the task or not */
-+            bcfi_status |= (env->ubcfien ? PR_INDIR_BR_LP_ENABLE : 0);
-+            return copy_to_user(flag, &bcfi_status, sizeof(bcfi_status)) ? \
-+                   -EFAULT : 0;
-+
-+        case PR_SET_SHADOW_STACK_STATUS:
-+            /* if any other bit is set, its invalid param */
-+            if (flag & ~PR_SHADOW_STACK_ENABLE) {
-+                return -TARGET_EINVAL;
-+            }
-+
-+           if ((flag & PR_SHADOW_STACK_ENABLE)
-+                && (env->ssp == 0 && !env->ubcfien)) {
-+                    zicfiss_shadow_stack_alloc(env);
-+            } else {
-+                zicfiss_shadow_stack_release(env);
-+            }
-+            env->ubcfien = (flag & PR_SHADOW_STACK_ENABLE);
-+            tb_flush(env_cpu(env));
-+            return 0;
-+
-+        /* locking not implemented (also not needed for qemu-user) yet */
-+        case PR_LOCK_SHADOW_STACK_STATUS:
-+            return -TARGET_EINVAL;
-+
-         case PR_GET_INDIR_BR_LP_STATUS:
-             abi_ulong fcfi_status = 0;
-             /* indirect branch tracking is enabled on the task or not */
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index e1ff246c24..5a34eee10c 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1001,6 +1001,10 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
-     /* on reset ssp is set to 0 */
-     env->ssp = 0;
- 
-+#ifdef CONFIG_USER_ONLY
-+    env->ssp_base = 0;
-+#endif
-+
-     /*
-      * Bits 10, 6, 2 and 12 of mideleg are read only 1 when the Hypervisor
-      * extension is enabled.
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 82475490ab..af89fc1268 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -232,6 +232,7 @@ struct CPUArchState {
-     uint32_t elf_flags;
-     bool ufcfien;
-     bool ubcfien;
-+    target_ulong ssp_base;
- #endif
- 
- #ifndef CONFIG_USER_ONLY
+ #define rv_fmt_none                   "O\t"
+ #define rv_fmt_rs1                    "O\t1"
++#define rv_fmt_rs2                    "O\t2"
+ #define rv_fmt_offset                 "O\to"
+ #define rv_fmt_pred_succ              "O\tp,s"
+ #define rv_fmt_rs1_rs2                "O\t1,2"
 -- 
 2.44.0
 
