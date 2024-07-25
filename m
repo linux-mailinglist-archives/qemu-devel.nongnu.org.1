@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834F893CB96
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4776B93CB9C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:01:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Kn-0000yZ-LI; Thu, 25 Jul 2024 19:57:21 -0400
+	id 1sX8L1-0001Lk-AA; Thu, 25 Jul 2024 19:57:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Ki-0000r4-U9; Thu, 25 Jul 2024 19:57:16 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1sX8Km-00011P-G7; Thu, 25 Jul 2024 19:57:20 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Kh-0001Kq-6C; Thu, 25 Jul 2024 19:57:16 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-76cb5b6b3e4so292519a12.1; 
- Thu, 25 Jul 2024 16:57:14 -0700 (PDT)
+ id 1sX8Kk-0001LU-Nr; Thu, 25 Jul 2024 19:57:20 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2cb5e0b020eso314719a91.2; 
+ Thu, 25 Jul 2024 16:57:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951833; x=1722556633; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951837; x=1722556637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TQ6H5pSLiuZ7uuSY0SB7J25bCXUaO9FF8fBD9NzKeUU=;
- b=O4VgyeXZWMAIrr4Svb+vJ4BNoIU2ZoMiaOxS4iPTDQZGka0kw1BbBdyyQYDriiVd3E
- 7kd1n6bQ968C6UTKvIhqEBcsjcnmF/9EiKrSSmz9GMZf940vg/fXZjMbtB3lBuMYj/Cv
- RJaUoEVf1fsNxQrpO9ho0YwG7iRxAZplQ/ZX8zf6HUIma1q+5vL8dUnEs1qRh/v56ifx
- NFaEGHa6084J8MXl6Nns9Zngcvs7conY4NPksuir2Nt44Z9xaaEmI9lEinDlhzzIIZJD
- Qb8SGyWawlAv0EwsHw2AnIqNIfDRTAIaczWaFOOEyRAYUeb4C9Iotkfmnbfwyff28YzR
- De7g==
+ bh=7+tHFqJ7gV+K/VWjbHPPaHW8XLoGgWDdiXZ96smvE3M=;
+ b=Oer1+1Me+TlQwRzdLH9qoSrwLHccVOc3KiGLKrZcZNeAY7Vsa8aOZm2g3T5xz3siEu
+ iqvGFESd0nc24eCaJGo399Ct3A9X7m2mFMw/ySnwaLJmEugVS+Hnr2mtvo+eEifxHv/g
+ mRCJKm/rbwrC9EkO1e6HaikI1sOfEt4flm4wdklYzYFqUUMCLDhCYQIqNslJIdxNSv/Z
+ zZsleR47IJWABJSiF4hWoEUFQfOe+jId01zJrwGSDMoiy3bsS8N0xZlOHRiFb5gLwmqC
+ juecThJHejR1GRfSqFPN+ibIdsvd/5teI+GN8NVw32UXufDmerR24xoth3KyTMlbjgND
+ vwOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951833; x=1722556633;
+ d=1e100.net; s=20230601; t=1721951837; x=1722556637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TQ6H5pSLiuZ7uuSY0SB7J25bCXUaO9FF8fBD9NzKeUU=;
- b=HGKueoLxuAd2WVR5Skwievmuv7oKR+cGLyVxMyhTO7iVZBVCBzX3HNqAx3ooUVbdZ9
- CWka12MdgY4QxKG3wq9sem597cWXOSNX1tlaGIKAYRn8tNKE7cC3y9UdfKZLIuVVl7vC
- SL7AQ+8HGnPuvK5y4nGz667mV7ArfhPbQY40+qVzVSA8M9MZ/IVGD1y05ARFvKndJVeW
- 2WH09RNJOJvGIMS15HaF3gPfL2w/MA3g65JFo1Pivr8EDiPa3uZ2F9rzx/+YdgPSGi8x
- /JePMBWqeBMKt9/RThocnDNvKcnN/FiwxleSjNg0cQCeLR6G5Q/XXH/oVs7OJrvk9dzE
- EfEg==
+ bh=7+tHFqJ7gV+K/VWjbHPPaHW8XLoGgWDdiXZ96smvE3M=;
+ b=alfgoWJwe+NO7YoSSWkI8KVbXp/CU9OLuBRbwsLQ2P2GBK5+AaiJew/D6WiHZPrueH
+ ZHOsVsnbBMM1TEPZpVFl3fLbHWf3XMrx+/eg1iwz/evSmVmNdAaB8aUmCY8L5uiJ8+Rk
+ PhFDThIhdnO8LXNJsWMM2Su1H/CYektmht5Wj11hTNZUzNOj0EnxB8uU38logMVcu2Pq
+ /fGTQQH8/xPXW9ifBnLgB43rrRCiH9d4nMRn78qZVy6VBm1Ro0xMawtbRtUtyTOrG+B4
+ oJtlVMww9mImemvn2fMadFlXzAio6vKm5oJqbWiOaC5h5OAoN6Q5YPAVrhUjqbn4Brlm
+ h5kA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX4LTKFlKy8xz+OaiRBk8MqvH4cszyHgAMkLWLLSIC0J6R5D2HmF8M3opDzYvOEClFrsIU35XkqOaeaiYYq9jPBe7sq
-X-Gm-Message-State: AOJu0YyCm92SiA8hlOG2ETpfMdATOgWEDjL1LQcG978qXsMh/oWQyxOK
- OcVq5dfQMrNUm4U9yTfHAwvC+Wh4BseBEEw9ieXWt1hbCi1weLCHy4f2Ag==
-X-Google-Smtp-Source: AGHT+IFHJylrExSWERwp3XmXpXV6AgNpFpm2reAfVnRdndZrGUXa2la/OqREn4JL9vfrelsj+fgGow==
-X-Received: by 2002:a17:90a:b118:b0:2c6:ee50:5af4 with SMTP id
- 98e67ed59e1d1-2cf2e9ab0b7mr3866095a91.6.1721951833185; 
- Thu, 25 Jul 2024 16:57:13 -0700 (PDT)
+ AJvYcCXL0hPlzpU/J+4M3SkVFNoYm1dJmG9USo9OwW3j0cKPYNCA+K12Qw5ryXbQrHhih0/qks6q+yjc0Hg0sLjZMF8188AF
+X-Gm-Message-State: AOJu0YwG/Y6GVdIijpu9PmRUefMeP7k4eyZjFvrsqgOFJxkCNNz42NrL
+ fyTv9CL63jLLXhcCe3ases9FmvpbTSjCD9GGCiJBZ0THI8R4XfvfZB6Q8g==
+X-Google-Smtp-Source: AGHT+IGO5D+HrcYki0Cj6qT6D6+SqEA4BALj7tbXKCVUt4CIp3fkpMhfh5PEx43Hhjl28ZvdC+Mdmg==
+X-Received: by 2002:a17:90a:2c4c:b0:2c9:758b:a278 with SMTP id
+ 98e67ed59e1d1-2cf2ec03929mr4109325a91.35.1721951836765; 
+ Thu, 25 Jul 2024 16:57:16 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.10
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:57:12 -0700 (PDT)
+ Thu, 25 Jul 2024 16:57:16 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Frederic Barrat <fbarrat@linux.ibm.com>,
  Michael Kowal <kowal@linux.vnet.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 47/96] pnv/xive2: Enable VST NVG and NVC index compression
-Date: Fri, 26 Jul 2024 09:53:20 +1000
-Message-ID: <20240725235410.451624-48-npiggin@gmail.com>
+Subject: [PULL 48/96] pnv/xive2: Set Translation Table for the NVC port space
+Date: Fri, 26 Jul 2024 09:53:21 +1000
+Message-ID: <20240725235410.451624-49-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_PH_BODY_ACCOUNTS_PRE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,76 +97,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Enable NVG and NVC VST tables for index compression which indicates the number
-of bits the address is shifted to the right for the table accesses.
-The compression values are defined as:
-   0000 - No compression
-   0001 - 1 bit shift
-   0010 - 2 bit shift
-   ....
-   1000 - 8 bit shift
-   1001-1111 - No compression
+Set Translation Table for the NVC port space is missing.  The xive model
+doesn't take into account the remapping of IO operations via the Set
+Translation Table but firmware is allowed to define it for the Notify
+Virtual Crowd (NVC), like it's already done for the other VST tables.
 
 Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/pnv_xive2.c      | 20 ++++++++++++++++++++
- hw/intc/pnv_xive2_regs.h |  2 ++
- 2 files changed, 22 insertions(+)
+ hw/intc/pnv_xive2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 33e76633b5..c3b5bfe61f 100644
+index c3b5bfe61f..08b9166a09 100644
 --- a/hw/intc/pnv_xive2.c
 +++ b/hw/intc/pnv_xive2.c
-@@ -217,6 +217,20 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
-     return pnv_xive2_vst_addr_direct(xive, type, vsd, (idx % vst_per_page));
- }
- 
-+static uint8_t pnv_xive2_nvc_table_compress_shift(PnvXive2 *xive)
-+{
-+    uint8_t shift =  GETFIELD(PC_NXC_PROC_CONFIG_NVC_TABLE_COMPRESS,
-+                              xive->pc_regs[PC_NXC_PROC_CONFIG >> 3]);
-+    return shift > 8 ? 0 : shift;
-+}
-+
-+static uint8_t pnv_xive2_nvg_table_compress_shift(PnvXive2 *xive)
-+{
-+    uint8_t shift = GETFIELD(PC_NXC_PROC_CONFIG_NVG_TABLE_COMPRESS,
-+                             xive->pc_regs[PC_NXC_PROC_CONFIG >> 3]);
-+    return shift > 8 ? 0 : shift;
-+}
-+
- static uint64_t pnv_xive2_vst_addr(PnvXive2 *xive, uint32_t type, uint8_t blk,
-                                    uint32_t idx)
- {
-@@ -238,6 +252,12 @@ static uint64_t pnv_xive2_vst_addr(PnvXive2 *xive, uint32_t type, uint8_t blk,
-         return xive ? pnv_xive2_vst_addr(xive, type, blk, idx) : 0;
-     }
- 
-+    if (type == VST_NVG) {
-+        idx >>= pnv_xive2_nvg_table_compress_shift(xive);
-+    } else if (type == VST_NVC) {
-+        idx >>= pnv_xive2_nvc_table_compress_shift(xive);
-+    }
-+
-     if (VSD_INDIRECT & vsd) {
-         return pnv_xive2_vst_addr_indirect(xive, type, vsd, idx);
-     }
-diff --git a/hw/intc/pnv_xive2_regs.h b/hw/intc/pnv_xive2_regs.h
-index ca05255d20..e8b87b3d2c 100644
---- a/hw/intc/pnv_xive2_regs.h
-+++ b/hw/intc/pnv_xive2_regs.h
-@@ -427,6 +427,8 @@
- #define X_PC_NXC_PROC_CONFIG                    0x28A
- #define PC_NXC_PROC_CONFIG                      0x450
- #define   PC_NXC_PROC_CONFIG_WATCH_ASSIGN       PPC_BITMASK(0, 3)
-+#define   PC_NXC_PROC_CONFIG_NVG_TABLE_COMPRESS PPC_BITMASK(32, 35)
-+#define   PC_NXC_PROC_CONFIG_NVC_TABLE_COMPRESS PPC_BITMASK(36, 39)
- 
- /* NxC Cache Watch 0 Specification */
- #define X_PC_NXC_WATCH0_SPEC                    0x2A0
+@@ -722,6 +722,7 @@ static int pnv_xive2_stt_set_data(PnvXive2 *xive, uint64_t val)
+     case CQ_TAR_NVPG:
+     case CQ_TAR_ESB:
+     case CQ_TAR_END:
++    case CQ_TAR_NVC:
+         xive->tables[tsel][entry] = val;
+         break;
+     default:
 -- 
 2.45.2
 
