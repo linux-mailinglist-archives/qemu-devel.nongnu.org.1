@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD4693CB81
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E6093CB7D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:56:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Iu-0006Mw-22; Thu, 25 Jul 2024 19:55:24 -0400
+	id 1sX8Ix-0006fY-7x; Thu, 25 Jul 2024 19:55:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Iq-00064I-JD; Thu, 25 Jul 2024 19:55:20 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1sX8It-0006Qo-Md; Thu, 25 Jul 2024 19:55:23 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Io-0000p3-Q2; Thu, 25 Jul 2024 19:55:20 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-7a2123e9ad5so238221a12.1; 
- Thu, 25 Jul 2024 16:55:17 -0700 (PDT)
+ id 1sX8Ir-0000sf-W5; Thu, 25 Jul 2024 19:55:23 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-70d2b921c48so393233b3a.1; 
+ Thu, 25 Jul 2024 16:55:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951716; x=1722556516; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951720; x=1722556520; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xijc/4hj1e9Cv15QuxISSCdUEPCfH65xyo31i+c5EP8=;
- b=XGXn6QWdCzoko5f4yEdM0bP/SXQFgWQur3COVcszgcN7RJt6uYxDu+XQ6KTUjCq+tk
- 8B9/MKDGQRMi0K0Pqa2UcRO3kcFC/zqXpEDsUvC4z7VS1/5qQb3Zb2GXeRaV4bGRxAYp
- kzikluConS5RSXeGD1fwjXG69Pc2uEwDIQUCM/s9G/cjmEErvHlQzQiLaHTsHEewrFRY
- pXEZ2u1McFMqcHexqtYuGq5OXWSpQxwS/7qWEDoZ35CwT2iXflKE0DOchsI/AthNaX0l
- 0eZ3s8jFKheg7mcn503+d52MuMrCbEDaDLW8UJaOhIZBmm+OwIGh5HJehJz0k+n9RXzF
- OkSw==
+ bh=k+iyWvitYD/j2rNBgmDFtisWhQvb5c4GOeulfi1Fuk8=;
+ b=Lj3oe1E6O0ajnGlk11DhCQqEB/0uDxhiy8UwEUHScyEeINMRDKsf7vMwDObrhLOXXW
+ CFGHgEsJp6EdFOoIMPWp+0rs4GFgYf95btxjke0Jr5t7FiAY9qtF/tuR21dFlOfQCCsc
+ LmZy+uOFaJc5zc8zTarY/v32J2gpPCeaAcx3mwBvJ+nqWaPTCn9BhJDauaiaJ82GdhbT
+ zd+CvfSM9S8JzDVjGuKbEKUM2Eeml+OGgyELc3exp82e086wMeBgwIosx8aHgNx2kOzi
+ kJ8rbB/sdMQ0N8kONmM6lE/9Y8AcP+uDk4AmR0/B2Pcu5F3p7ZWHexJ9LCeCRqKo7Idl
+ RJdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951716; x=1722556516;
+ d=1e100.net; s=20230601; t=1721951720; x=1722556520;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xijc/4hj1e9Cv15QuxISSCdUEPCfH65xyo31i+c5EP8=;
- b=Tc9inltUuRTZrSRDuEQA0RDKgkz9fkGOvcqQkdJW5Rt2bTC1NXXEbwbYoX6ZoyWy+j
- 4z9DZ/KFGY8Is5yFhkkgmpftjQfkj8mTTP9VYlfcsg+YK4iwVwDUfznpotyFKwflIVwl
- gXlV3EN6yZLaEi5BukGM6F415yBzoGwgSuyY3ck8jomvjYJ+BiX8tkM/qyA3Mdeu0Ihr
- 8Ugz3bFixxtuXxLrDcpBsOqvtDpmEhFkdRVv69q0mIrkF9E4ozMlZ7H41Lg9BXbMF9It
- 7p6E8hc8Bz6KcXIxs9IBti2wxI85oPrxRoGwiVZCJjs8OIklQZiLYL9yEpFwWFLhCXKZ
- e4Lw==
+ bh=k+iyWvitYD/j2rNBgmDFtisWhQvb5c4GOeulfi1Fuk8=;
+ b=nxO0U+9fHwdkK1YC217bMluia4rBNz0IoHIrkiEajSoPBobQ3sP80SYHqRX8jsaCG0
+ T+Ikxzj8ggUvDVlyF8w+55irSAIyrS4jK5hO3wrl/NBax1cwt/zCdrr3vvdGaVhmMjW9
+ BHKirrjTQldhSg9ALMlykmP04ZCBCLwj/Aue3pbO2U2z26Mewn3h5T6OiYr736LEYt35
+ 1jlYo0RUrkPVI3Rpd4YYAmaqW/k3SoMk6LiofeV4uZWBYBs3eAqq+rXr3wwYqAdPY1lQ
+ Tyrmr9B8pwXj8tS4mqgIoMRLdfHrzmhu3K+VV7AqwaEq4TEobVVbtkG1m88LV5d1/TWI
+ VEQw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVE3gcTZ71kwilLqUOSI6x/wyxzwWGN5KhejWCT7/iLL3uqBIjIZ/Ppt1jv3UdpJ/I/4XUzE5Te834noXCMmSwn7wIB
-X-Gm-Message-State: AOJu0YyX3Li6rNB5kIdj6ZBipOMPQXprcdNPlrmHBRyLcFP/aw8UjXW/
- 5vcOR/MTjDx28qOD9Hrve0ZHAypHnJXS00QvFNn0/gnz8vHz63XUvohxMQ==
-X-Google-Smtp-Source: AGHT+IEDDzA9AoAEhEezcu7/biaGMQV1jV7odWvx5Q/IUkKdHl8Jo3NKgTDaqSrMWfsbGpAylwjcJA==
-X-Received: by 2002:a17:90b:384b:b0:2c9:a831:3b7d with SMTP id
- 98e67ed59e1d1-2cdb9442d61mr10948294a91.18.1721951716413; 
- Thu, 25 Jul 2024 16:55:16 -0700 (PDT)
+ AJvYcCWBMYGA71Zz4zzwOxPoOW6q3MDVzvJ9P3YT7UIUBwVL1H+BZ4Z4tM6I2VG+xOztzFe5V5F0dtk9BiZFCD8Pls914tPW
+X-Gm-Message-State: AOJu0YzRpWd3WJC+Po2JW0uEzLn3bCzWO7C3JFaoGzmaxJ7OHyzcEhB6
+ r+IFeT1lGZCg+MdFCTEHYGcgh2yVBuuRmZfWh/GWKrmI43/JCI7ERMsdqg==
+X-Google-Smtp-Source: AGHT+IG6qqGH5rKtxbhWHabXrfSt0FVOOhJ8CecgDCvqTvXNcrQ2scmjw15uLYKapdawB2YAZG1Txg==
+X-Received: by 2002:a05:6a21:78a8:b0:1c0:ee57:a9a3 with SMTP id
+ adf61e73a8af0-1c472b2443dmr5848835637.35.1721951719771; 
+ Thu, 25 Jul 2024 16:55:19 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.13
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:55:15 -0700 (PDT)
+ Thu, 25 Jul 2024 16:55:19 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Aditya Gupta <adityag@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 13/96] ppc/pnv: Update Power10's cfam id to use Power10 DD2
-Date: Fri, 26 Jul 2024 09:52:46 +1000
-Message-ID: <20240725235410.451624-14-npiggin@gmail.com>
+ Glenn Miles <milesg@linux.vnet.ibm.com>, Glenn Miles <milesg@linux.ibm.com>
+Subject: [PULL 14/96] ppc/pnv: Fix loss of LPC SERIRQ interrupts
+Date: Fri, 26 Jul 2024 09:52:47 +1000
+Message-ID: <20240725235410.451624-15-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,48 +92,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Power10 DD1.0 was dropped in:
+The LPC HC irq status register bits are set when an LPC IRQSER input is
+asserted. These irq status bits drive the PSI irq to the CPU interrupt
+controller. The LPC HC irq status bits are cleared by software writing
+to the register with 1's for the bits to clear.
 
-    commit 8f054d9ee825 ("ppc: Drop support for POWER9 and POWER10 DD1 chips")
+Existing register write was clearing the irq status bits even when the
+input was asserted, this results in interrupts being lost.
 
-Use the newer Power10 DD2 chips cfam id.
+This fix changes the behavior to keep track of the device IRQ status
+in internal state that is separate from the irq status register, and
+only allowing the irq status bits to be cleared if the associated
+input is not asserted.
 
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+[np: rebased before P9 PSI SERIRQ patch, adjust changelog/comments]
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c            | 2 +-
- tests/qtest/pnv-xscom.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/ppc/pnv_lpc.c         | 22 +++++++++++++++++++---
+ include/hw/ppc/pnv_lpc.h |  3 +++
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 6b41d1d2dd..13cebd6ab9 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -2087,7 +2087,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
-     PnvChipClass *k = PNV_CHIP_CLASS(klass);
-     static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = {14, 14, 2, 16};
+diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+index d692858bee..7d26b29487 100644
+--- a/hw/ppc/pnv_lpc.c
++++ b/hw/ppc/pnv_lpc.c
+@@ -505,7 +505,14 @@ static void lpc_hc_write(void *opaque, hwaddr addr, uint64_t val,
+         pnv_lpc_eval_irqs(lpc);
+         break;
+     case LPC_HC_IRQSTAT:
+-        lpc->lpc_hc_irqstat &= ~val;
++        /*
++         * This register is write-to-clear for the IRQSER (LPC device IRQ)
++         * status. However if the device has not de-asserted its interrupt
++         * that will just raise this IRQ status bit again. Model this by
++         * keeping track of the inputs and only clearing if the inputs are
++         * deasserted.
++         */
++        lpc->lpc_hc_irqstat &= ~(val & ~lpc->lpc_hc_irq_inputs);
+         pnv_lpc_eval_irqs(lpc);
+         break;
+     case LPC_HC_ERROR_ADDRESS:
+@@ -803,11 +810,20 @@ static void pnv_lpc_isa_irq_handler_cpld(void *opaque, int n, int level)
+ static void pnv_lpc_isa_irq_handler(void *opaque, int n, int level)
+ {
+     PnvLpcController *lpc = PNV_LPC(opaque);
++    uint32_t irq_bit = LPC_HC_IRQ_SERIRQ0 >> n;
  
--    k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
-+    k->chip_cfam_id = 0x220da04980000000ull; /* P10 DD2.0 (with NX) */
-     k->cores_mask = POWER10_CORE_MASK;
-     k->chip_pir = pnv_chip_pir_p10;
-     k->intc_create = pnv_chip_power10_intc_create;
-diff --git a/tests/qtest/pnv-xscom.h b/tests/qtest/pnv-xscom.h
-index 6f62941744..5aa1701ea7 100644
---- a/tests/qtest/pnv-xscom.h
-+++ b/tests/qtest/pnv-xscom.h
-@@ -56,7 +56,7 @@ static const PnvChip pnv_chips[] = {
-         .chip_type  = PNV_CHIP_POWER10,
-         .cpu_model  = "POWER10",
-         .xscom_base = 0x000603fc00000000ull,
--        .cfam_id    = 0x120da04900008000ull,
-+        .cfam_id    = 0x220da04980000000ull,
-         .first_core = 0x0,
-         .num_i2c    = 4,
-     },
+-    /* The Naples HW latches the 1 levels, clearing is done by SW */
+     if (level) {
+-        lpc->lpc_hc_irqstat |= LPC_HC_IRQ_SERIRQ0 >> n;
++        lpc->lpc_hc_irq_inputs |= irq_bit;
++
++        /*
++         * The LPC HC in Naples and later latches LPC IRQ into a bit field in
++         * the IRQSTAT register, and that drives the PSI IRQ to the IC.
++         * Software clears this bit manually (see LPC_HC_IRQSTAT handler).
++         */
++        lpc->lpc_hc_irqstat |= irq_bit;
+         pnv_lpc_eval_irqs(lpc);
++    } else {
++        lpc->lpc_hc_irq_inputs &= ~irq_bit;
+     }
+ }
+ 
+diff --git a/include/hw/ppc/pnv_lpc.h b/include/hw/ppc/pnv_lpc.h
+index 5d22c45570..97c6872c3f 100644
+--- a/include/hw/ppc/pnv_lpc.h
++++ b/include/hw/ppc/pnv_lpc.h
+@@ -73,6 +73,9 @@ struct PnvLpcController {
+     uint32_t opb_irq_pol;
+     uint32_t opb_irq_input;
+ 
++    /* LPC device IRQ state */
++    uint32_t lpc_hc_irq_inputs;
++
+     /* LPC HC registers */
+     uint32_t lpc_hc_fw_seg_idsel;
+     uint32_t lpc_hc_fw_rd_acc_size;
 -- 
 2.45.2
 
