@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FAA93CB9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3848393CB94
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8MW-0002DA-Ea; Thu, 25 Jul 2024 19:59:08 -0400
+	id 1sX8Mv-00032g-D8; Thu, 25 Jul 2024 19:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8MQ-0001tY-TO; Thu, 25 Jul 2024 19:59:02 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1sX8Mc-0002g1-TS; Thu, 25 Jul 2024 19:59:15 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8MP-0001gB-4W; Thu, 25 Jul 2024 19:59:02 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-79b530ba612so306180a12.2; 
- Thu, 25 Jul 2024 16:59:00 -0700 (PDT)
+ id 1sX8Mb-0001hu-5A; Thu, 25 Jul 2024 19:59:14 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2cb64529a36so315400a91.0; 
+ Thu, 25 Jul 2024 16:59:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951939; x=1722556739; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951951; x=1722556751; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zvEcGFZAGDXWXM6HhPAakoKCy+wJeKuiyNBUWGVQaIs=;
- b=VahSnGRg9lr/BJKFPYEeOy1DhGF73be94W/r4fWkTjjXinuW/hDXVn8bcA2YjV1L6h
- cMidadcyJykglxyXBf9pi3zXJ88fEWqZyaViVKaR+TQvfbQqUohDbf3tHBSRamAWpkOY
- tgfZ6VqVFlFtWzET+3NA0D15D+W91VN7kAYBgoVhY3o8Q5Quns1JMwYRkdsCfhYCHJ3Q
- JjPwa+zQ1a8wf9bbVQrDZJNs5E4smwmnGwAmswFQRfElLLVi4Ca7LAiL45qfycRNT4OE
- un7yKZwrAo34orCuVEHNVt0bVc8VaMJ2BSdlb+kZVgxflKbhaORtrf17mdHpFrurcmr+
- ptNA==
+ bh=93c6+H2hrcICDkkxEDbmglLCCDcvdLoQiaSIH3qqU+w=;
+ b=XpYjlLTc5xQm4aActKDWJI48OxhBkBPUfN8lFHYjm2vRvYLfmfHfOOs7Pu2+TKh6rR
+ s97/QT1/YKfynI8N+jkilTehz5CysULS+/2F9jmZL5OtiDDjCW0IYdzcRnyylcNio1ke
+ aOmLkttWc/cF2m8itLQEnN8EG5hNZYMXKpV09hyV+SRBaUDu8CkA2tL/BhhzbknfRpFf
+ MW6gyJFsS6cPdBHe3ieUGaYgHQEhcOFU1WzLUQpFj9fiHPJgHmMzLPhSKHyICp/xoBg/
+ ttzfEEqQyAbGbd14WRoc9RWFBZ4zXxu1zJHXrOq1W9qaXKYLoaQUeh/y/jzAC6QHsCtn
+ JAJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951939; x=1722556739;
+ d=1e100.net; s=20230601; t=1721951951; x=1722556751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zvEcGFZAGDXWXM6HhPAakoKCy+wJeKuiyNBUWGVQaIs=;
- b=h0PBJXlghjUx8eETGJy1DF2MHB4tZxGMgVB3Zamx0Pq3l5Fet8iwRPAZpIH240jonN
- NH5KpGlKTrKBtCWF0b/xO5Zh+nNx4CZ0Y55Kk0fl3EYDuD3jNavF6e72kqTjlMWlYuKm
- kRDIAaofriBnUl/q4RfCNxlRzfZsQTCMxWF+PS1Bm7h9RyX3qY/Bs0Kx8MU//pDBTV9P
- QVgCs7TsGPjrm/YfASYNmBs6VGHH2lEImu58r8c4dfIJspfn3wqYQguekITGExvEmQwc
- r8h0ZXUBBr6FOk/NPEItXjklJPn4N+SiT5PuK8Zgf287V9SrFi9HM25P7PLhCCIZc8CR
- XXcA==
+ bh=93c6+H2hrcICDkkxEDbmglLCCDcvdLoQiaSIH3qqU+w=;
+ b=DeAIKnB72Qg6+2G8MmPWyYrmr9tKNDmgg5DPIrDO6E+ezZEE/qmLDv83hiMophjJ3G
+ PxngF3gkhxcExD9O8KMCDTm9g3EdKq5yLLQ0E/MQv9FLtYTsB+M3dGSO5FIOwbjnwrrk
+ jaKYflFZXInpjQZQM9gVcplX+zE5NLH4Uav8IcktMGCeUPLhLiBQkZQe92em1t2VfuY8
+ rnPRoM92x22krGD/1uEDzwAm7DjgqOsTHmGWREyTWmc3Bq5PC+gq1TExLYjDTcUstbH1
+ IbMaSfIHRB/1C8wUVdpyzqQ28xOT7kea1KyQ5wyxnjeHdemDJpiFPs00E+Vm5mNxdTFZ
+ 9G1Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU6ddJNccLT/u+E95PWsTN+c2MX2LXXoIzgEn9RnEW3mBFR4HGC3kYVcpBTtSoOcHPLps+cFXR3T3BII3hbNAem81S6
-X-Gm-Message-State: AOJu0YwglklI2iTx2iaKdHKXBXWrKLu/jMix+jhOiElKybZOGHsHa/xQ
- rY1ka/0eOv6PWjqvWDHb1U/BWnROOGJ/bdU2Xya5Wg0WzHhzf4BVz8C4xA==
-X-Google-Smtp-Source: AGHT+IGGfC8Yy349KUC16neTDSktLWG0ivCWnXP70g3qdNYZYLQs8tsMHz/YLxRm87wVgJD9ApMV6w==
-X-Received: by 2002:a17:90a:bcf:b0:2c9:9b16:e004 with SMTP id
- 98e67ed59e1d1-2cf2ec35e56mr3318035a91.43.1721951938799; 
- Thu, 25 Jul 2024 16:58:58 -0700 (PDT)
+ AJvYcCXy3c26aKxQunPSg8RAXMi0PpPPTJrZzuZ20oLyK8SPYJbKvuUyUJCUJgdOy3LuXgh++60UtXMm3lHWcSQ5+tTmA5/9
+X-Gm-Message-State: AOJu0YwHYqC5rP+/dM3v8RlXXiJM801D3Tmpd3WQtem0+ghBs8yy6xs7
+ cLJPHppr+w+vJ2D+gNIflQMeD/BxksB+73B5UMzJoQQLgZiWUlamYt0Nfw==
+X-Google-Smtp-Source: AGHT+IEslX8eI463/2mps+z95v6KA5136VtPqHa6xEqowTzdPKL6lx1MDV8vwHYpZSAkQQ+SQLMtUw==
+X-Received: by 2002:a17:90b:4a52:b0:2c9:755f:d4ae with SMTP id
+ 98e67ed59e1d1-2cf237871dcmr5182377a91.8.1721951951159; 
+ Thu, 25 Jul 2024 16:59:11 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.58.56
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.59.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:58:58 -0700 (PDT)
+ Thu, 25 Jul 2024 16:59:10 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 78/96] target/ppc/mmu_common.c: Remove single use local variable
-Date: Fri, 26 Jul 2024 09:53:51 +1000
-Message-ID: <20240725235410.451624-79-npiggin@gmail.com>
+Subject: [PULL 82/96] target/ppc: Add function to get protection key for
+ hash32 MMU
+Date: Fri, 26 Jul 2024 09:53:55 +1000
+Message-ID: <20240725235410.451624-83-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,45 +95,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-In mmu6xx_get_physical_address() tagtet_page_bits local is declared
-only to use TARGET_PAGE_BITS once. Drop the unneeded variable.
+Add a function to get key bit from SR and use it instead of open coded
+version.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/ppc/mmu-hash32.c | 9 ++++++---
+ target/ppc/mmu-hash32.h | 5 +++++
+ target/ppc/mmu_common.c | 3 +--
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index 8a446c8a7d..93559447ff 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -42,7 +42,7 @@ static int ppc_hash32_pte_prot(int mmu_idx,
+ {
+     unsigned pp, key;
+ 
+-    key = !!(mmuidx_pr(mmu_idx) ? (sr & SR32_KP) : (sr & SR32_KS));
++    key = ppc_hash32_key(mmuidx_pr(mmu_idx), sr);
+     pp = pte.pte1 & HPTE32_R_PP;
+ 
+     return ppc_hash32_prot(key, pp, !!(sr & SR32_NX));
+@@ -145,7 +145,6 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+-    int key = !!(mmuidx_pr(mmu_idx) ? (sr & SR32_KP) : (sr & SR32_KS));
+ 
+     qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
+ 
+@@ -206,7 +205,11 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
+         cpu_abort(cs, "ERROR: insn should not need address translation\n");
+     }
+ 
+-    *prot = key ? PAGE_READ | PAGE_WRITE : PAGE_READ;
++    if (ppc_hash32_key(mmuidx_pr(mmu_idx), sr)) {
++        *prot = PAGE_READ | PAGE_WRITE;
++    } else {
++        *prot = PAGE_READ;
++    }
+     if (check_prot_access_type(*prot, access_type)) {
+         *raddr = eaddr;
+         return true;
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index bc4eedbecc..5902cf8333 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -102,6 +102,11 @@ static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
+     stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
+ }
+ 
++static inline bool ppc_hash32_key(bool pr, target_ulong sr)
++{
++    return pr ? (sr & SR32_KP) : (sr & SR32_KS);
++}
++
+ static inline int ppc_hash32_prot(bool key, int pp, bool nx)
+ {
+     int prot;
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 5145bde7f9..0152e8d875 100644
+index 339df377e8..1ed2f45ac7 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -321,7 +321,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     PowerPCCPU *cpu = env_archcpu(env);
-     hwaddr hash;
-     target_ulong vsid, sr, pgidx;
--    int target_page_bits;
-     bool pr, ds, nx;
+@@ -310,8 +310,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     pr = FIELD_EX64(env->msr, MSR, PR);
  
-     /* First try to find a BAT entry if there are any */
-@@ -338,7 +337,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     sr = env->sr[eaddr >> 28];
+-    ctx->key = (((sr & 0x20000000) && pr) ||
+-                ((sr & 0x40000000) && !pr)) ? 1 : 0;
++    ctx->key = ppc_hash32_key(pr, sr);
      ds = sr & SR32_T;
      nx = sr & SR32_NX;
      vsid = sr & SR32_VSID;
--    target_page_bits = TARGET_PAGE_BITS;
-     qemu_log_mask(CPU_LOG_MMU,
-                   "Check segment v=" TARGET_FMT_lx " %d " TARGET_FMT_lx
-                   " nip=" TARGET_FMT_lx " lr=" TARGET_FMT_lx
-@@ -347,7 +345,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-                   (int)FIELD_EX64(env->msr, MSR, IR),
-                   (int)FIELD_EX64(env->msr, MSR, DR), pr ? 1 : 0,
-                   access_type == MMU_DATA_STORE, type);
--    pgidx = (eaddr & ~SEGMENT_MASK_256M) >> target_page_bits;
-+    pgidx = (eaddr & ~SEGMENT_MASK_256M) >> TARGET_PAGE_BITS;
-     hash = vsid ^ pgidx;
-     ctx->ptem = (vsid << 7) | (pgidx >> 10);
- 
 -- 
 2.45.2
 
