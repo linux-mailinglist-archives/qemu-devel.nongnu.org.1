@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0262A93C106
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7918F93C136
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWwqN-0005RK-Fb; Thu, 25 Jul 2024 07:41:12 -0400
+	id 1sWx5R-0002WN-EN; Thu, 25 Jul 2024 07:56:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWwqF-0005OE-DX; Thu, 25 Jul 2024 07:41:03 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWwqB-0001WG-5P; Thu, 25 Jul 2024 07:41:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721907659; x=1753443659;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+MUHoDV+o+BAqrEJb2hWev0rKEyLw15W/zcIr7FnVd4=;
- b=cDPafLSoYUzJ1SzRf2Jno+oUY2xoV1X5cuSiGxRI5kASBZywwddEjR5B
- zkw769mjzklhAqOSzYsZvPEZJi3WrH7mD05qlLqbvh3AuGqXNa1xW8Rl0
- yMqltV0WNWIXnj7JobUT20Cl8rew1E+sUo0jGrCkI6MTnnidpEbrQGs2y
- TVMxtvjFsfZqEFghHRCrzPzkECDkAgW8RyJZmMDvJNoUNLDy4FMhi122U
- 255zBaxrGezLZWkWVA1efUDWZHvoghIPtVyGtJ2KQTJkC2ZUSYedcMKpw
- dw7gZ1RQRRW/Vb97yG5lBIf0IUxNuVsA6oqP8Dc6hbEto0xnIYjQtVcCg w==;
-X-CSE-ConnectionGUID: qVIjQ/YgTlmgbc+nVQzsFw==
-X-CSE-MsgGUID: LZ4gCAZHQkypOK99BTLwCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19512927"
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="19512927"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 04:40:51 -0700
-X-CSE-ConnectionGUID: IvbzGUkuRsqjmtEJqj5HHA==
-X-CSE-MsgGUID: OUEK940ySL6fN9WTOTAudg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="53664396"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 25 Jul 2024 04:40:46 -0700
-Date: Thu, 25 Jul 2024 19:56:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
-Message-ID: <ZqI9bqQDVUU7liW1@intel.com>
-References: <20240704031603.1744546-1-zhao1.liu@intel.com>
- <20240704031603.1744546-3-zhao1.liu@intel.com>
- <87wmld361y.fsf@pond.sub.org> <Zp5tBHBoeXZy44ys@intel.com>
- <87h6cfowei.fsf@pond.sub.org> <ZqEV8uErCn+QkOw8@intel.com>
- <871q3hua56.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWx5L-0002AH-1c
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:56:40 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWx5I-00060K-Ez
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:56:38 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-368440b073bso526763f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 04:56:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721908594; x=1722513394; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=SNRaLDhXuaXBbogo9lc9RUzaiHflqExCllZdrRfY1c4=;
+ b=Flf/JSxouVXCUDzeGkx/yMHuaSgWWdx6XQXSSCoSQ7Podt6InNawYF29B9cOi2bUwZ
+ ZctSjYsRA5IgdkXub3aI6K7Uvt1tQjCsJz9Ru8MT9uCRVR2RqW0is8PXWurWBgadsAPu
+ 17kQMGOIvRUJaK2QokEAwDHs+Ko+BiC7UUSeLlDyRp8UGiWcT/6DE6QJWD1ZtJBnVKZg
+ sa4hiE1gptfVVp7tKnyPj63H1ijvb/FIIAfYcQ+A6/GtCP9Z2zmPiHExER9DhTVZKJeO
+ jm8frcVx/1faJiCQry0YTV8HnkDoeOZ4c35U2NbD2aFQJKVk4hVkGoqiDceKrqDTJf7D
+ MnLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721908594; x=1722513394;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SNRaLDhXuaXBbogo9lc9RUzaiHflqExCllZdrRfY1c4=;
+ b=SFDsr9NMbIc/sltCUT43xHDwlO5e1WxxI4c/thDxFc+QwkrB65jvtW1dwu9E4Z1wbf
+ OFQfQGqFv6zTZrPoZOVGM9c8hfLpmVzA8unZYqQQDlk5TkJ/vTccTr6sTSsBJjxqz4fm
+ Kfn5ERL8vRHXkwmciUujWXKQKEgMd+jCrz//WrSRaU/iaYMC6sblNTvykd/H4mWFA6wp
+ Sioxm7wn5xUO4zoQ57LwHVfxnlOOeCVlb8dLieKopHnFePfs6xZmsoybo27OpflT1pLN
+ lCXXtleZf1apgjKWKA6uRBV6a9/qf5lI395NsYlIb4T2QjMLnk0nZNHpJhiNdI519PW+
+ xfEQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVWAYuGU+ELWwyB0gTArcrPlpxCD4IcmeUJgfeh7zNizHP+bKh8i5faAOThe7Kty1D+/MvX2yQfNeOgF56Q/vlxqPZnkqc=
+X-Gm-Message-State: AOJu0YwvyN9ASu+BI/6x1HxB6zYCsHM6J6qxhBbYmpCv+P6fFMSN0Fcj
+ jqkYC0JEEOgC1tRaXDWzKGlvsEN1Ok0C3K2oWGSVWsLwwJwmhFPByClIjwD22lk=
+X-Google-Smtp-Source: AGHT+IEhaD+zGagEKOj3m50/9uk4Vbqwj4eoZFp+NVJ5M/Z7gikORJQbTPtrIwwZ0K950VfGmH+Z1w==
+X-Received: by 2002:a5d:6d8a:0:b0:362:ad01:5435 with SMTP id
+ ffacd0b85a97d-36b31baa14dmr2324315f8f.29.1721908594355; 
+ Thu, 25 Jul 2024 04:56:34 -0700 (PDT)
+Received: from [192.168.1.102] ([176.187.216.35])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36b36857f23sm1949092f8f.78.2024.07.25.04.56.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Jul 2024 04:56:33 -0700 (PDT)
+Message-ID: <2172b10d-6100-4f91-9b33-d2482254d4ea@linaro.org>
+Date: Thu, 25 Jul 2024 13:56:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <871q3hua56.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/23] tests/functional: Convert simple avocado tests
+ into standalone python tests
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
+References: <20240724175248.1389201-1-thuth@redhat.com>
+ <20240724175248.1389201-6-thuth@redhat.com>
+ <d60683bf-724a-474a-ae97-6ec2eac775a9@linaro.org>
+Content-Language: en-US
+In-Reply-To: <d60683bf-724a-474a-ae97-6ec2eac775a9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,112 +101,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
-
-On Thu, Jul 25, 2024 at 10:51:49AM +0200, Markus Armbruster wrote:
-
-[snip]
-
-> >> What's the use case?  The commit messages don't tell.
-> >
-> > i386 has the default cache topology model: l1 per core/l2 per core/l3
-> > per die.
-> >
-> > Cache topology affects scheduler performance, e.g., kernel's cluster
-> > scheduling.
-> >
-> > Of course I can hardcode some cache topology model in the specific cpu
-> > model that corresponds to the actual hardware, but for -cpu host/max,
-> > the default i386 cache topology model has no flexibility, and the
-> > host-cpu-cache option doesn't have enough fine-grained control over the
-> > cache topology.
-> >
-> > So I want to provide a way to allow user create more fleasible cache
-> > topology. Just like cpu topology.
+On 25/7/24 08:55, Philippe Mathieu-Daudé wrote:
+> Hi Thomas,
+> 
+> On 24/7/24 19:52, Thomas Huth wrote:
+>> These test are rather simple and don't need any modifications apart
+>> from adjusting the "from avocado_qemu" line. To ease debugging, make
+>> the files executable and add a shebang line and Python '__main__'
+>> handling, too, so that these tests can now be run by executing them
+>> directly.
+>>
+>> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   tests/functional/meson.build                  |  5 ++
+>>   .../test_cpu_queries.py}                      |  7 ++-
+>>   .../test_empty_cpu_model.py}                  |  7 ++-
+>>   .../test_mem_addr_space.py}                   | 52 +++----------------
+>>   .../test_pc_cpu_hotplug_props.py}             | 11 ++--
+>>   .../test_virtio_version.py}                   |  8 +--
+>>   6 files changed, 34 insertions(+), 56 deletions(-)
+>>   rename tests/{avocado/cpu_queries.py => 
+>> functional/test_cpu_queries.py} (89%)
+>>   mode change 100644 => 100755
+>>   rename tests/{avocado/empty_cpu_model.py => 
+>> functional/test_empty_cpu_model.py} (84%)
+>>   mode change 100644 => 100755
+>>   rename tests/{avocado/mem-addr-space-check.py => 
+>> functional/test_mem_addr_space.py} (93%)
+>>   mode change 100644 => 100755
+>>   rename tests/{avocado/pc_cpu_hotplug_props.py => 
+>> functional/test_pc_cpu_hotplug_props.py} (90%)
+>>   mode change 100644 => 100755
+>>   rename tests/{avocado/virtio_version.py => 
+>> functional/test_virtio_version.py} (98%)
+>>   mode change 100644 => 100755
 > 
 > 
-> So the use case is exposing a configurable cache topology to the guest
-> in order to increase performance.  Performance can increase when the
-> configured virtual topology is closer to the physical topology than a
-> default topology would be.  This can be the case with CPU host or max.
+>> @@ -22,9 +24,6 @@ class MemAddrCheck(QemuSystemTest):
+>>       # for all 32-bit cases, pci64_hole_size is 0.
+>>       def test_phybits_low_pse36(self):
+>>           """
+>> -        :avocado: tags=machine:q35
+>> -        :avocado: tags=arch:x86_64
 > 
-> Correct?
-
-Yes! That's x86 use case. Jonathan also helped me explain his ARM use case.
-
-> >> Why does that use case make no sense without SMP?
-> >
-> > As the example I mentioned, for Intel hyrbid architecture, P cores has
-> > l2 per core and E cores has l2 per module. Then either setting the l2
-> > topology level as core nor module, can emulate the real case.
-> >
-> > Even considering the more extreme case of Intel 14th MTL CPU, where
-> > some E cores have L3 and some don't even have L3. As well as the last
-> > time you and Daniel mentioned that in the future we could consider
-> > covering more cache properties such as cache size. But the l3 size can
-> > be different in the same system, like AMD's x3D technology. So
-> > generally configuring properties for @name in a list can't take into
-> > account the differences of heterogeneous caches with the same @name.
-> >
-> > Hope my poor english explains the problem well. :-)
+> Could we keep the tags, but renaming as:
 > 
-> I think I understand why you want to configure caches.  My question was
-> about the connection to SMP.
+>            qemu-test-tag=machine:q35
+>            qemu-test-tag=arch:x86_64
 > 
-> Say we run a guest with a single core, no SMP.  Could configuring caches
-> still be useful then?
+> ?
 
-No, for this case the CPU topology (of x86) would be 1 core per module, 1
-module per die, 1 die per socket.
+Bah, let's just remove that for now, since this feature implementation
+might use a different format.
 
-Then this core actually owns the l1/l2/l3.
-
-> >> Can the same @name occur multiple times?  Documentation doesn't tell.
-> >> If yes, what does that mean?
-> >
-> > Yes, this means the later one will override the previous one with the same
-> > name.
 > 
-> Needs documenting.
+> I'm OK to implement the equivalent feature in QEMU functional framework.
 > 
-> If you make it an error, you don't have to document it :)
-
-OK!
-
-> >> Say we later add value "l1" for unified level 1 cache.  Would "l1" then
-> >> conflict with "l1d" and "l1u"?
-> >
-> > Yes, we should check in smp/machine code and ban l1 and l1i/l1d at the
-> > same time. This check I suppose is easy to add.
-> >
-> >> May @topo be "invalid"?  Documentation doesn't tell.  If yes, what does
-> >> that mean?
-> >
-> > Yes, just follow the intel's spec, invalid means the current topology
-> > information is invalid, which is used to encode x86 CPUIDs. So when I
-> > move this level to qapi, I just keeped this. Otherwise, I need to
-> > re-implement the i386 specific invalid level.
+>>           With pse36 feature ON, a processor has 36 bits of 
+>> addressing. So it can
+>>           access up to a maximum of 64GiB of memory. Memory hotplug 
+>> region begins
+>>           at 4 GiB boundary when "above_4g_mem_size" is 0 (this would 
+>> be true when
 > 
-> I'm afraid I don't understand what is supposed to happen when I tell
-> QEMU to make a cache's topology invalid.
-
-Currently this series doesn't allow users to set invalid, if they do, QEMU
-reports an error.
-
-So this invalid is just for QEMU internal use. Do you think it's okay?
-
-[snip]
-
-> > Ah, I also considerred this. I didn't use "type" because people usually
-> > uses cache type to indicate INSTRUCTION/DATA/UNIFIED and cache level to
-> > indicate LEVEL 1/LEVEL 2/LEVEL 3. The enumeration here is a combination of
-> > type+level. So I think it's better to avoid the type term.
-> 
-> SmpCacheLevelAndType is quite a mouthful.
-
-Better name! Thanks!
-
-Regards,
-Zhao
 
 
