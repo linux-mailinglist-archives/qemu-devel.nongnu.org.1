@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1744A93C11F
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5304893C121
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:52:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWwz0-0004tv-Lu; Thu, 25 Jul 2024 07:50:06 -0400
+	id 1sWx0c-0000BI-9n; Thu, 25 Jul 2024 07:51:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWwyv-0004qR-Ts
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:50:02 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWx0N-0008Bg-8w
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:51:31 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWwyu-00037j-4x
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:50:01 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3684bea9728so472424f8f.3
- for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 04:49:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWx0L-0004oQ-Jk
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:51:31 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-368557c9e93so414408f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 04:51:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721908198; x=1722512998; darn=nongnu.org;
+ d=linaro.org; s=google; t=1721908288; x=1722513088; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=b+NxrlB5rX7BGR0AltB7CeIZMcUIPzmHDSdUAkb1Sgk=;
- b=oMOz7FIbBlVuZYPGoxnM2Y82h1MDdG+/OJfECDp0a2Ikeps8UOlHknBjj9VmfFgrAJ
- QAA1df/GsmcaoWMR59/7NaWhCJYt8C+voNwZF7szF60a4Kq7p6N8Jn5REq8ef8Zr08+J
- wMvr2mrCnOCb41tDtDShQe366QJ+ALrMm3tSVLGHxfjHK/H28JOvnhm1ubD2Gg57H67e
- XgHSkBOcAKe6JwPTISv1J+NbU4se117wOGQfVkZWMMB0T6kf5Q0rIT0sPVc2ovi3ICpE
- 3mK/lUzo8pQfbeJrgL5Hw+z+e33GOPY4cocWtThy9AWWs5RHmSDY1Xn+vTAga2eXnrUt
- Cq5A==
+ bh=08urrvynMYNDDjtN4i7oxgs0+ri+z9bSvCvawyV3hSk=;
+ b=Of8pQ9b69PD5QjZQFKb7OGqzWAIQ9XOl7oaPponNNLIa0UN5YeDHplk/8n6y0hxz55
+ UBXHw/GFJt6g4LoZ8eVKsUlwRQyCYeLtUi/9UxVEd7w4nRO3D/z++3otT9UNrADcgcrR
+ m672DmjX1xrG+AM/5dl2/iyLgZEqeb8pMSIRLwQWiBr8sQmTHAsUzyFZcwMCDsVBwIbe
+ WXl3toB55HT8onY+pAf4pEaUqw+iiom7lgLWCBZOpdmraB+rNhD+jKGT2sXN+yJN1LyL
+ HNTNJj7hRglK+HzXBldcSdCxHsu6iVLKkbSoDZ3TOmzLxsBRZ2IlVzSRZOczsppUT+6Z
+ 4MCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721908198; x=1722512998;
+ d=1e100.net; s=20230601; t=1721908288; x=1722513088;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b+NxrlB5rX7BGR0AltB7CeIZMcUIPzmHDSdUAkb1Sgk=;
- b=TtpDfkp8mIELA4IIwVKZrAXfai/j4y+x6A1AyubJ3BRQmxOwbe40HTZyNW8qVo8E3u
- hhchYj7vPKSEvkeecZhX2x8COKeLU7vnWp3hDJuzg5f1Ci68UFKZiVzn1e+BxvDwLsoN
- A8/72kCzCsV/xJbMtIJwBxJAbG+CuwXduRpfQwSpeiBFvLAqzW/7hjBPI38jx93x8QZ6
- uy1E7Oul2y8tJxQcG6wyxFslKRRkuIBJEI4tAbqgoAK8bPnae++ZeY+hpQvHX/oSxzWf
- ZXflPMWztGfOH4D8Ocpe5gkphX9HL4/gNcXPuqsS0KeZitAzjLFFp1XkhZAOFcDntPiT
- gFKg==
+ bh=08urrvynMYNDDjtN4i7oxgs0+ri+z9bSvCvawyV3hSk=;
+ b=dMBfH5vnPExrg/UMaZYYzDLHYzn34Sr+Mz7NvOrcpmamt9tjzeAswg9aRgmXfDjvrk
+ lkdFMXs3BhoJnFsksBFXqAtb71HAtjZtKWCQWtFct+olBRdZyCPBwZvbn87PgxcletKN
+ 5wiNFxlZkqOCqldSabJM/A4Cync1RA7jgYykC5Cd8QBb5CTRU+puLFLCs/dnocX+2m/4
+ 2ktlqNMMounfjaXUi9Ccl21nvRVrk5iog4JckkWVkHLK6fmP8kuCbLkkha6locpfMZv1
+ IbnckDnBwrDpmZ+VNeKPR9K7ke9yJY6F0YcNuh3+AOZ6Gog5MAF7PvQ8y8K37jH+QDJC
+ SK3w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWz76qKLxE/J+o9eaMupsftTSwFEL01ZK7mZ/GIX3AF0fBLEbGjyWBZO+uYxQ5z4IirMYn8bno2yg6n/Z7NtRNUA2PDm30=
-X-Gm-Message-State: AOJu0YwHPY8i/6XGjCMJLFBZfleIX6hw5CD3xvEe3YvoHpi9OQIm4UrM
- IMgyOOhDwCDdjYsPpTGUJnb1TY1M9ketqYUbH2aJM/4vFHFGLsOXssvFsYJyu/Q=
-X-Google-Smtp-Source: AGHT+IGLGddsWNNoWsqNTgg6oKh8n0W1xeWGkShIcqrj8gbsRSiHw9dHLXX5BTQbNdIdQU51BHcGZw==
-X-Received: by 2002:adf:f38c:0:b0:367:9803:bfe7 with SMTP id
- ffacd0b85a97d-36b367b1d98mr1381217f8f.53.1721908197912; 
- Thu, 25 Jul 2024 04:49:57 -0700 (PDT)
+ AJvYcCUgtkJ0RRF8HBf6WkL+IQbZQ6Asv1UksI6fwSmicdgeWcogbFHXXLsR6BYcTCcJhkJnB+K2Q1kqOdSNeqCTBie8qteoApE=
+X-Gm-Message-State: AOJu0YzbK9tzneBSwqu6AY1j7R1aZIgfiMEfaqX11LHW/tOoO1GqhknA
+ DiFPheOiJtBxM3XETen6dhIsFe6JBSZTu1MIYx/2SscQpPGHg0jCn4GBdrwHWaM=
+X-Google-Smtp-Source: AGHT+IEclxBH/6b7O2ZSZfPrLRk2eYmAXJwt5ajVOf7c33W3Ppf+97rO27+VX7iRPOREvW4JFPCgZA==
+X-Received: by 2002:a5d:45cf:0:b0:368:591:9bc1 with SMTP id
+ ffacd0b85a97d-36b364116famr1406869f8f.46.1721908287852; 
+ Thu, 25 Jul 2024 04:51:27 -0700 (PDT)
 Received: from [192.168.1.102] ([176.187.216.35])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b36862271sm1904114f8f.98.2024.07.25.04.49.56
+ ffacd0b85a97d-36b367c0574sm1958837f8f.8.2024.07.25.04.51.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Jul 2024 04:49:56 -0700 (PDT)
-Message-ID: <916e3941-5dd6-48bd-804f-ec8f1f925843@linaro.org>
-Date: Thu, 25 Jul 2024 13:49:55 +0200
+ Thu, 25 Jul 2024 04:51:27 -0700 (PDT)
+Message-ID: <438b30d6-6c16-4e4b-befc-dbf06cf087ba@linaro.org>
+Date: Thu, 25 Jul 2024 13:51:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] hw/misc/bcm2835_property: Fix handling of
- FRAMEBUFFER_SET_PALETTE
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20240723131029.1159908-1-peter.maydell@linaro.org>
- <20240723131029.1159908-2-peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 09/23] tests/functional: Add a function for extracting
+ files from an archive
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
+References: <20240724175248.1389201-1-thuth@redhat.com>
+ <20240724175248.1389201-10-thuth@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240723131029.1159908-2-peter.maydell@linaro.org>
+In-Reply-To: <20240724175248.1389201-10-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,33 +100,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/7/24 15:10, Peter Maydell wrote:
-> The documentation of the "Set palette" mailbox property at
-> https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface#set-palette
-> says it has the form:
+On 24/7/24 19:52, Thomas Huth wrote:
+> Some Avocado-based tests use the "archive" module from avocado.utils
+> to extract files from an archive. To be able to use these tests
+> without Avocado, we have to provide our own function for extracting
+> files. Fortunately, there is already the tarfile module that will
+> provide us with this functionality, so let's just add a nice wrapper
+> function around that.
 > 
->      Length: 24..1032
->      Value:
->          u32: offset: first palette index to set (0-255)
->          u32: length: number of palette entries to set (1-256)
->          u32...: RGBA palette values (offset to offset+length-1)
-> 
-> We get this wrong in a couple of ways:
->   * we aren't checking the offset and length are in range, so the guest
->     can make us spin for a long time by providing a large length
->   * the bounds check on our loop is wrong: we should iterate through
->     'length' palette entries, not 'length - offset' entries
-> 
-> Fix the loop to implement the bounds checks and get the loop
-> condition right. In the process, make the variables local to
-> this switch case, rather than function-global, so it's clearer
-> what type they are when reading the code.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   hw/misc/bcm2835_property.c | 27 ++++++++++++++++-----------
->   1 file changed, 16 insertions(+), 11 deletions(-)
+>   tests/functional/qemu_test/utils.py | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+>   create mode 100644 tests/functional/qemu_test/utils.py
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
