@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0960A93CB78
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EE393CBAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:03:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8ID-0002VB-Fk; Thu, 25 Jul 2024 19:54:41 -0400
+	id 1sX8II-0002se-MK; Thu, 25 Jul 2024 19:54:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8IC-0002SN-C7; Thu, 25 Jul 2024 19:54:40 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1sX8IH-0002qE-KZ; Thu, 25 Jul 2024 19:54:45 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8IA-0000YQ-RW; Thu, 25 Jul 2024 19:54:40 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2cd2f89825fso305920a91.1; 
- Thu, 25 Jul 2024 16:54:37 -0700 (PDT)
+ id 1sX8IG-0000Yq-3d; Thu, 25 Jul 2024 19:54:45 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2cd34c8c588so277117a91.0; 
+ Thu, 25 Jul 2024 16:54:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951677; x=1722556477; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951682; x=1722556482; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y3fKxE/JSYFaIUtvkbmpMB5skLlbL3x9sbgOJyDe/wQ=;
- b=Bw8gSt+UWLJcJqmfFhre04Hl5I7u7IvW7eJ6mtpkFmGnh8FjHYkisFWs6BSO3KhLnL
- psM8XAW+LC2L/o0hZciZGW/DbAo5sJ68ci1mOckBMBQU8NIF/cVNVqIRUsYx8D+2Pk+y
- i1NPopvyp9UCgkUgFBh6Nlo8Er5cNtnD0pGWlX5UfF0GRtPMzvi14YIky9nwWYu8OUsq
- 0DpECDinr2q7BGogrQSceMyNI3fUXzxr+2SyPycI5FYEnlnCwciNV+xETjg7WGVlqfnn
- 5klbGL3LbCNHMse+4OeyjW5FKVhrbInoxafbk1CpJsCMEmIX013MNitBzcXgRdY3Vosz
- 17mA==
+ bh=y4zNsjcWJq28+WrSLK5/Hy2TlcS4xaCyv6HCQHTDD64=;
+ b=bjh6eDMYIvHMT/rJzcEvHmHKTE9RSo3rWvw4SuZwDR6pUhpyiNN1DNBVE1y3Diu9uh
+ vekqYIAvHk2BoNS2/dWmVwZBSmVlHuzS+K4OVI+Oj1fZTaFG0S6TyZTj4Tg06bAihhNx
+ wASN3DoCCPV+hly1XjNif0RPEWjcf+q/Ivr7IGgg5lYDZn0gsgvMc9oUuuKeLNbjHPnz
+ 6yc3rHb97jkuooisy31yIsyVm1GOyivKWE9UyGBupRtULbsfkqMmQycibKVEXIKgJBii
+ 9h/HFK4OPM5pKNivBd47Md0hF5lEHU05Xa6RBh8ASrKdLE+vtaCu5sl6rwCe+BWXX+XS
+ 6IVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951677; x=1722556477;
+ d=1e100.net; s=20230601; t=1721951682; x=1722556482;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y3fKxE/JSYFaIUtvkbmpMB5skLlbL3x9sbgOJyDe/wQ=;
- b=cky9R9q68Gi4n2mNd0lxfs7Ljm97ECJZm/BmkeKdj/zpL0JEZqb4Ced+vzmMtcJe2g
- iJ3ZUGa3Q7/Mlsn/Z1i2vne3mWv/YoJeMHPa1yiFP9bUx0eaDUQS1iGwtR7IjfyogNdj
- IBRIFwHhT5U888TlkNCjFfcO756YFmis9B0jhdr+MQbOEAFOS8VR6+mW1CgAhDvD0jTV
- YcWpnTuw71lh5BP+HX0X7PEtgL/lmLOvvflgexRrBoIkqE9I0N015NJ63oimPe2FeSD2
- MWMq/oQLLY5zIiEhTtVkHXhYL6ofBQ8dmYjlaqvi2BpxUB+2eeeYoSjQRkqhux5VokKS
- EVHg==
+ bh=y4zNsjcWJq28+WrSLK5/Hy2TlcS4xaCyv6HCQHTDD64=;
+ b=UL3ClgLuVFTvmv7BAD8FypZ04v/8UrCo2RYqipmgCAwvKPy7SK9jBRdK1ZbehUdkNM
+ Rreyv6GWiDm2a8BRHp4K0RBLD2EgRihk0F9MAZJwks000CthbCsUsZaolH4h0iIcl84z
+ RWJhqkgnB2WTCxVPzW20o39j9xX5x20U2sTa835/NIglIlfeBwFVAOTVQy39BwWaoBgv
+ D6C2hVPjdSzp5XmSGlTV9QgGsR25GvvNEDF0QsOhgwIQUDM4R/WdFErH/cAxdByaNI/0
+ e+o1mzVOZHzs0lcKubVLCHwW2mIyCffccAKoMD3+jyoxQytIhlCvDY4QgbrVKt/3P46t
+ 4BeQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVlBIi2py7AeJ/U06QFxt967yruYpcFxPHgILvzugjsXNj2NMupSRBiTNwnoPtsXYC0gwt0YiTo87Bga9VqXOWyHLK2eYahawUELqr3mSTM611nxof4kocQMaY/
-X-Gm-Message-State: AOJu0Yx7fuG3qr+PFG9AXAHwDUHJmerZi0/YUhYzDwC/ZxqLNMjqd7jv
- Ysur5RiykfaU6FYBIqKr4S9XBGEXromfG0MC1PiE4dzRVjKqkuTtOWbHsg==
-X-Google-Smtp-Source: AGHT+IEs8m12NMr6jV/THaKEcU/Pwb9g/s946bziTGWVb+9soccl3RgEoHOmU4bB6ImGoyDOs7fI2Q==
-X-Received: by 2002:a17:90b:2247:b0:2c9:98bb:b9fb with SMTP id
- 98e67ed59e1d1-2cf2e9dce55mr3903136a91.10.1721951671323; 
- Thu, 25 Jul 2024 16:54:31 -0700 (PDT)
+ AJvYcCViZYqwyFiD2sDeUrzpBLK9gtiPDa3GeviBdSk2d7Se4FMRP4NvgnVfbGhH1Z3s4mnjKxP/MKeDgZNJkY6vT33AXgkG
+X-Gm-Message-State: AOJu0YzVLo1SyO0eZu8M+RXXgwOTY2SneDyByWEM4Y9/WoS98p4biEOj
+ lGpBTWYx92HCqgh6OKc4DykYo+cVi4jAiQwBHU+L1o33kw9ke9Raka5r6Q==
+X-Google-Smtp-Source: AGHT+IF7eK5GD0wdXLm4pX5ZLHUOkhHhe4YFO1odfOi++RV7EtdAYGAzycgIeMsNLLZmRcnyQbul+A==
+X-Received: by 2002:a17:90b:4acf:b0:2c8:6793:456 with SMTP id
+ 98e67ed59e1d1-2cf2e5abd38mr3895696a91.0.1721951681972; 
+ Thu, 25 Jul 2024 16:54:41 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.54.27
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.54.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:54:30 -0700 (PDT)
+ Thu, 25 Jul 2024 16:54:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/96] spapr: Migrate ail-mode-3 spapr cap
-Date: Fri, 26 Jul 2024 09:52:35 +1000
-Message-ID: <20240725235410.451624-3-npiggin@gmail.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PULL 03/96] spapr: Free stdout path
+Date: Fri, 26 Jul 2024 09:52:36 +1000
+Message-ID: <20240725235410.451624-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,57 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This cap did not add the migration code when it was introduced. This
-results in migration failure when changing the default using the
-command line.
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Cc: qemu-stable@nongnu.org
-Fixes: ccc5a4c5e10 ("spapr: Add SPAPR_CAP_AIL_MODE_3 for AIL mode 3 support for H_SET_MODE hcall")
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+This fixes LeakSanitizer warnings.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c         | 1 +
- hw/ppc/spapr_caps.c    | 1 +
- include/hw/ppc/spapr.h | 1 +
- 3 files changed, 3 insertions(+)
+ hw/ppc/spapr_vof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 98fa3aa6a8..370d7c35d3 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2195,6 +2195,7 @@ static const VMStateDescription vmstate_spapr = {
-         &vmstate_spapr_cap_fwnmi,
-         &vmstate_spapr_fwnmi,
-         &vmstate_spapr_cap_rpt_invalidate,
-+        &vmstate_spapr_cap_ail_mode_3,
-         &vmstate_spapr_cap_nested_papr,
-         NULL
-     }
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 0a15415a1d..2f74923560 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -974,6 +974,7 @@ SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
- SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
- SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
- SPAPR_CAP_MIG_STATE(rpt_invalidate, SPAPR_CAP_RPT_INVALIDATE);
-+SPAPR_CAP_MIG_STATE(ail_mode_3, SPAPR_CAP_AIL_MODE_3);
+diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
+index 09f29be0b9..c02eaacfed 100644
+--- a/hw/ppc/spapr_vof.c
++++ b/hw/ppc/spapr_vof.c
+@@ -28,7 +28,7 @@ target_ulong spapr_h_vof_client(PowerPCCPU *cpu, SpaprMachineState *spapr,
  
- void spapr_caps_init(SpaprMachineState *spapr)
+ void spapr_vof_client_dt_finalize(SpaprMachineState *spapr, void *fdt)
  {
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 4aaf23d28f..f6de3e9972 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -1004,6 +1004,7 @@ extern const VMStateDescription vmstate_spapr_cap_large_decr;
- extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
- extern const VMStateDescription vmstate_spapr_cap_fwnmi;
- extern const VMStateDescription vmstate_spapr_cap_rpt_invalidate;
-+extern const VMStateDescription vmstate_spapr_cap_ail_mode_3;
- extern const VMStateDescription vmstate_spapr_wdt;
+-    char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
++    g_autofree char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
  
- static inline uint8_t spapr_get_cap(SpaprMachineState *spapr, int cap)
+     vof_build_dt(fdt, spapr->vof);
+ 
 -- 
 2.45.2
 
