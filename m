@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50B693CB8F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C92D93CBA9
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:03:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Id-0004U9-Mc; Thu, 25 Jul 2024 19:55:07 -0400
+	id 1sX8If-0004k3-MF; Thu, 25 Jul 2024 19:55:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Ia-0004Cz-0z; Thu, 25 Jul 2024 19:55:04 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1sX8Id-0004aA-DS; Thu, 25 Jul 2024 19:55:07 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8IY-0000aw-4b; Thu, 25 Jul 2024 19:55:03 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2cb5e0b020eso313868a91.2; 
- Thu, 25 Jul 2024 16:55:01 -0700 (PDT)
+ id 1sX8Ib-0000m0-LS; Thu, 25 Jul 2024 19:55:07 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2cb55ff1007so301235a91.0; 
+ Thu, 25 Jul 2024 16:55:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951700; x=1722556500; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951703; x=1722556503; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EaTaKDTXNh3V2EaFkWYN7OVGHBwhKJU9StJXUF+pwj4=;
- b=kZ2tC/jxH4XmMfZR45cROqIgbfTaALJdLA25eqfiM9BuqTcYcCd7FzdOsV5dLPH39f
- ZN4QO6In8AXQ6yP/Byft/pAuwLa/UJ2Ad2Pc7iZrLsXtoMt2l8R684KrK9NsW4AAFUnY
- +ubA0O1JcYkE9XZzb9IgmqhcVDEGlnEl4RquBA8RfdHdYjsTnWVK5ZStKYyghugoltMV
- ftyWGux1swzOa9BfiiK5dF/nMjnpZyEyEn1QLYzzAyVZDfjxU6eeujzvKPFLBcBhd3EG
- 54oHtQlTmEmMiGmP7BjLpd1QVPLX6dt7DwySP89uIwtuNYEzQPbmJr9aF51FiWnniAsq
- dAsw==
+ bh=mop112vd42nzsXR5SxpQiWNuj10AcG+7wfZ1FcSPXq0=;
+ b=b2bsH8thuABGD0qZ0esOZ+UMsmkO6GfdjYVRZ9tEmSPQ2MDjiLguXmlmb2mum9+zQM
+ mPXiGFDDgUmb97GK9m6twShLkrYlePW0Tq0TGZhc2ZwwQZ3XSLNjX4aR+F4TtTH5uZth
+ NfdqZ4WLS04hw5M9Z9JLJdxbbw1O1o/UjuVzjoczQxWpYB4YD0vu3lj7unf6+MimxoRN
+ knN8H0HiY+VZqDaMjzME2X2c09Uw0DoDxNRhssduLsciFk3nZjNCOjeQqOp6yVzHLcZQ
+ WHwy/mRm1Wi/lqRCjFjQQxrGzPzW8+l5o51zWOZ9qtIqBZ7+OBwGunEvTXwB+QdJQIgr
+ iYdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951700; x=1722556500;
+ d=1e100.net; s=20230601; t=1721951703; x=1722556503;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EaTaKDTXNh3V2EaFkWYN7OVGHBwhKJU9StJXUF+pwj4=;
- b=TBhwkr/QAtv8rF1JO8SyVySci82eMs/oqnH2USTI+1EYLt6LZeDv551YQMNIRdy422
- mZib6o1ZQv8ChKzW6N9LdYbytPKlITxrXFbAaicSSeDdr6fVK8z4QAqmJypoLSQCXzVg
- E3z6OEmx/a8I2jlvsYtc3DAr6Ll8MdMjNqcsL4o6TbU2q92yBJCoriAwItc/4ExNviFA
- m8904Gzghs0ejmPpogEqmPFdCKTw6WzD943523Se0+ZUIXaFfy9jCE6CGi4DJRkr8RCB
- ORNkjHTTR6puobBbXdHtYGlrI9r+W3+NYEKJnV722TNc5jvVcBk1tgLjhDOwH8xcMMQm
- pfAQ==
+ bh=mop112vd42nzsXR5SxpQiWNuj10AcG+7wfZ1FcSPXq0=;
+ b=Ti7bdyKQvzw+yYiRwZzpjbyFDlFlpYhFif9kb3QFhDU914jXjIYrswPueWCEPvUksK
+ 96aanwuNCkFVA/HUEz4bACkaBgG7zkaFN15dyv3YqxGSymiFNYiCH9zkFtZj7LCFzbS8
+ PZ/AR0fVS5y9ZZw0+6jnq+a0olWI99+6kix4vGfXBtVK5vLHtDq9XdM5FXMjmr02zL7a
+ 1PBqwrir9G0V9fDDpSxIfRL0Kmn2zSUZJ1NHnVuTGTgDENDS8LF9LTQw+IZFbZCGem+J
+ QgDiGs95ihx5LBNLUa2bFQDH0hVSL0lMagcFyHO4M+9fUWMTjjJXJ1f4CYvQzMvgUzkX
+ BFMg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXZTTvFAx1Q4C3ArXz4xJ9fxw+B/QXO16sC+fKNbkXT5gL4FLBaUHsxub78Mp8+FqnfUaA6SC7x6Saekj8cFev5QBAM
-X-Gm-Message-State: AOJu0YzQ2XKiCeYT1bLqEOOOLmv/ijPGUtRzOK0Cbyx90mvgPnjnqj3T
- V+xaDCRsIxYyTD1VEuK2tpNfOC0tIu6hNZvzvqunoUb/kiJo3hz+1Sxhjg==
-X-Google-Smtp-Source: AGHT+IFWw0MfBFMtUZGkdksWwz/535MMiVdYvKsit/rOOyx1vQvZYnQysyODGVtbflZypaE/FJBEZg==
-X-Received: by 2002:a17:90a:5d8a:b0:2c9:7fba:d895 with SMTP id
- 98e67ed59e1d1-2cf2ec03a51mr3983846a91.38.1721951700040; 
- Thu, 25 Jul 2024 16:55:00 -0700 (PDT)
+ AJvYcCV2OkZCH3ums6OxH83A491zKi+1h1mJs0n3G7BwQ9JWPODFVk34Y/nW7Mh0d9dGrxpv1eYvNVRbJVKn0O339wztBrLR
+X-Gm-Message-State: AOJu0YzTcdQd+n2tyy6lj1h5LkPy5kQ+cBSR8RHpuxgD32icNbPZeKA4
+ 3Xwv1Xva84VVVbIqqUf324kX9iXUcgw7bKecciWg/fjZ4r/mXogLR8TLNg==
+X-Google-Smtp-Source: AGHT+IFFCk9pr7aXkG6RPlKBd0Wx55eCbICyqmXXxsccu691tAA5Gd3wRUNmBdFKRGXQD5ztRJdmGg==
+X-Received: by 2002:a17:90a:ba89:b0:2c1:9892:8fb with SMTP id
+ 98e67ed59e1d1-2cf2e9ab041mr3911897a91.5.1721951703230; 
+ Thu, 25 Jul 2024 16:55:03 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.54.56
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:54:59 -0700 (PDT)
+ Thu, 25 Jul 2024 16:55:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Omar Sandoval <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 08/96] target/ppc/arch_dump: set prstatus pid to cpuid
-Date: Fri, 26 Jul 2024 09:52:41 +1000
-Message-ID: <20240725235410.451624-9-npiggin@gmail.com>
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Subject: [PULL 09/96] linux-header: PPC: KVM: Update one-reg ids for DEXCR,
+ HASHKEYR and HASHPKEYR
+Date: Fri, 26 Jul 2024 09:52:42 +1000
+Message-ID: <20240725235410.451624-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,111 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Omar Sandoval <osandov@osandov.com>
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 
-Every other architecture does this, and debuggers need it to be able to
-identify which prstatus note corresponds to which CPU.
+This is a placeholder change for these SPRs until the full linux
+header update.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Omar Sandoval <osandov@osandov.com>
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/arch_dump.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ linux-headers/asm-powerpc/kvm.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
-index a8315659d9..f45474133a 100644
---- a/target/ppc/arch_dump.c
-+++ b/target/ppc/arch_dump.c
-@@ -47,9 +47,14 @@ struct PPCUserRegStruct {
- } QEMU_PACKED;
+diff --git a/linux-headers/asm-powerpc/kvm.h b/linux-headers/asm-powerpc/kvm.h
+index 1691297a76..eaeda00178 100644
+--- a/linux-headers/asm-powerpc/kvm.h
++++ b/linux-headers/asm-powerpc/kvm.h
+@@ -645,6 +645,9 @@ struct kvm_ppc_cpu_char {
+ #define KVM_REG_PPC_SIER3	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc3)
+ #define KVM_REG_PPC_DAWR1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc4)
+ #define KVM_REG_PPC_DAWRX1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc5)
++#define KVM_REG_PPC_DEXCR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc6)
++#define KVM_REG_PPC_HASHKEYR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc7)
++#define KVM_REG_PPC_HASHPKEYR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc8)
  
- struct PPCElfPrstatus {
--    char pad1[112];
-+    char pad1[32]; /* 32 == offsetof(struct elf_prstatus, pr_pid) */
-+    uint32_t pid;
-+    char pad2[76]; /* 76 == offsetof(struct elf_prstatus, pr_reg) -
-+                            offsetof(struct elf_prstatus, pr_ppid) */
-     struct PPCUserRegStruct pr_reg;
--    char pad2[40];
-+    char pad3[40]; /* 40 == sizeof(struct elf_prstatus) -
-+                            offsetof(struct elf_prstatus, pr_reg) -
-+                            sizeof(struct user_pt_regs) */
- } QEMU_PACKED;
- 
- 
-@@ -96,7 +101,7 @@ typedef struct NoteFuncArg {
-     DumpState *state;
- } NoteFuncArg;
- 
--static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu)
-+static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
- {
-     int i;
-     reg_t cr;
-@@ -109,6 +114,7 @@ static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu)
- 
-     prstatus = &note->contents.prstatus;
-     memset(prstatus, 0, sizeof(*prstatus));
-+    prstatus->pid = cpu_to_dump32(s, id);
-     reg = &prstatus->pr_reg;
- 
-     for (i = 0; i < 32; i++) {
-@@ -127,7 +133,7 @@ static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu)
-     reg->ccr = cpu_to_dump_reg(s, cr);
- }
- 
--static void ppc_write_elf_fpregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-+static void ppc_write_elf_fpregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
- {
-     int i;
-     struct PPCElfFpregset  *fpregset;
-@@ -146,7 +152,7 @@ static void ppc_write_elf_fpregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-     fpregset->fpscr = cpu_to_dump_reg(s, cpu->env.fpscr);
- }
- 
--static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-+static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
- {
-     int i;
-     struct PPCElfVmxregset *vmxregset;
-@@ -178,7 +184,7 @@ static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-     vmxregset->vscr.u32[3] = cpu_to_dump32(s, ppc_get_vscr(&cpu->env));
- }
- 
--static void ppc_write_elf_vsxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-+static void ppc_write_elf_vsxregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
- {
-     int i;
-     struct PPCElfVsxregset *vsxregset;
-@@ -195,7 +201,7 @@ static void ppc_write_elf_vsxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-     }
- }
- 
--static void ppc_write_elf_speregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-+static void ppc_write_elf_speregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
- {
-     struct PPCElfSperegset *speregset;
-     Note *note = &arg->note;
-@@ -211,7 +217,7 @@ static void ppc_write_elf_speregset(NoteFuncArg *arg, PowerPCCPU *cpu)
- 
- static const struct NoteFuncDescStruct {
-     int contents_size;
--    void (*note_contents_func)(NoteFuncArg *arg, PowerPCCPU *cpu);
-+    void (*note_contents_func)(NoteFuncArg *arg, PowerPCCPU *cpu, int id);
- } note_func[] = {
-     {sizeof_field(Note, contents.prstatus),  ppc_write_elf_prstatus},
-     {sizeof_field(Note, contents.fpregset),  ppc_write_elf_fpregset},
-@@ -282,7 +288,7 @@ static int ppc_write_all_elf_notes(const char *note_name,
-         arg.note.hdr.n_descsz = cpu_to_dump32(s, nf->contents_size);
-         strncpy(arg.note.name, note_name, sizeof(arg.note.name));
- 
--        (*nf->note_contents_func)(&arg, cpu);
-+        (*nf->note_contents_func)(&arg, cpu, id);
- 
-         note_size =
-             sizeof(arg.note) - sizeof(arg.note.contents) + nf->contents_size;
+ /* Transactional Memory checkpointed state:
+  * This is all GPRs, all VSX regs and a subset of SPRs
 -- 
 2.45.2
 
