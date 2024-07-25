@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A2093CBEF
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4178C93CBC8
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:05:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8No-0000s6-KG; Thu, 25 Jul 2024 20:00:28 -0400
+	id 1sX8Ns-0001bM-W2; Thu, 25 Jul 2024 20:00:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8N4-0005Ub-ML; Thu, 25 Jul 2024 19:59:42 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1sX8NB-0005yr-24; Thu, 25 Jul 2024 19:59:51 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8N3-0001th-1U; Thu, 25 Jul 2024 19:59:42 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-7a1215dd114so299289a12.1; 
- Thu, 25 Jul 2024 16:59:40 -0700 (PDT)
+ id 1sX8N9-000204-DG; Thu, 25 Jul 2024 19:59:48 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-70d1d6369acso251356b3a.0; 
+ Thu, 25 Jul 2024 16:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951979; x=1722556779; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951985; x=1722556785; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=up67YIHO8e/Pd+K2v5gwq+p55WvdPMk2HgGr2s+CwP8=;
- b=Knqxn32NqG1gKxl29IDNM8a6kx0MfH5nlLZSicZtN7cCWRW1lcbIq5JqRopRX7zShk
- tUdPn0U0piYyMjowZsjSLNhtoxg6eEntGaLzmlrXBU/1YSUz2uKYKMjYYQNcGTq2wJp8
- NwsSCDalUi6chnvi9oi/ABBCj8bICRUzz0NUAU7jkJwZkVLdLWkzqpo1+Ppj7N7C+P+z
- dWikNoVugedrPsRcLPH9snbsHW0SU+FNuJTwcPUrxLf7rxXN6V7QruaZDub1WsfWhTRg
- DbaJbxIaGTTWWxthUDQ6273ZijmRUeQgeMg9WuDzH4D+k/1uoSRuLLr0sU+Yyuq8QizK
- pRqg==
+ bh=XSiLxWDKshk0YREcVW5HCex8in/AdqlYXKlWD5yMiVw=;
+ b=TdXC7mGEvmerbGAc0sERQEXZiYYpAbeGPJ7WdRyt6Sl3SfCnSdKSuyZouxttHWkXR3
+ 3m4PPxJFI/cTQe/RqnoGqPmzqH8yzuevTpv+qBYQOqh5vY46VNc/SFTn8yzNwzfvYOaZ
+ 1YLHeCCWkerIflD19kELH/RVkvGEm04Kn4k/cGsmO0qLW1KKhEMJHxQK1z0my8mujKOT
+ 2b3tOZFpFzuN+EA/B8KdhCwplB45p3zYZip3HYoKeLC55OCwOUneUSGjSStNdVyBvHBg
+ Z5DkqA3fNDgiiSIdMyfgaYG3zXDnPoBC3PBDnIdXf/p6rdhQYsBprYKeqBKOFWWqW7YK
+ cH6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951979; x=1722556779;
+ d=1e100.net; s=20230601; t=1721951985; x=1722556785;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=up67YIHO8e/Pd+K2v5gwq+p55WvdPMk2HgGr2s+CwP8=;
- b=uDjMEnm4ZlVm/iQBs6kNN5JKgJmwnmMDX3mfI2HbfQ3RSUJ39nQqmouZsO7KK/4Sx5
- A2jY+aOo1r+cr/Ql80ejIDXB1gFbaUinZLFY1+BHjzvdG9xppr2IKOjK5Y5HmFlIXswc
- 8Kchwu7p7qZyYIFjbnGu6VSvL3/nt3Ec/ZFTWT9vc/Izui7Q90Zf4Yvz7oMapTmnLkzd
- lIPRX4blhYVIqu5wuS1y8sUI2VVEv2uz/J8vShBJpZnFEnQEv/CHxdTEz/IMzT/DCH20
- ULTjQHMxauHuQ+bAPdIdDLhh2CB33O7lUVwbU4yjoZIUh9qxl92fDH5RW5oVypquoL/y
- 1Dvg==
+ bh=XSiLxWDKshk0YREcVW5HCex8in/AdqlYXKlWD5yMiVw=;
+ b=ILBulpb/zwwZIcd0Lb/o14pfU3fqz6/+14umFblqHUUBzoRjEtywCoKxl8QxbhwVE2
+ NQ+7OxvONd0mAgnG34fa8XuLOJugacSrZc2QtsdM+4piXMQnzf3kNyM5klerfgZG7iZQ
+ WDuRQggfzatemnDhdGDw8XL0ccrgNc/h7jnFAtWUjhg6PRGmLtyypXvklE0S1L7jdV8p
+ 6CGimpu17syXCm41fFcLKurJRXuHnoxP7kEKfYZaVH31h67TsnbTfIZvS5VolB7xmM4L
+ m3EHdekscbi8wPoeHdNKJRKOLAotdq5UhPY6zXUOdEFHrCRTJlZQ9urYVy4uEJUc37KK
+ NW2A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX6OqqFD4YtrzQVNxgQrepcHer+UmvqnNxSRKKiiaBqcC53drOhyDSoj28ZxCghltSICRWy4+Zitdb5Key4RipbZ0KX
-X-Gm-Message-State: AOJu0YwqbqgH3lwFfQNy+tEHNYNI11o1Vb3CRJak29lky5Hh8SMEDOYU
- DkVvd7Vl1aQcjEZNC7lG/FqOhWKJ+X9VOFvObcWVb1XQcblZPKxb8BB33g==
-X-Google-Smtp-Source: AGHT+IHRuAHGqaVy040s/HSHD3DXwlLaB4e4ZJWWE87kwE/d4cWTaSxlqozYcYfQMsADngiDA4zuTA==
-X-Received: by 2002:a17:90b:4d8b:b0:2c9:5a8b:ff7e with SMTP id
- 98e67ed59e1d1-2cf2ea2f2cbmr4357357a91.25.1721951978963; 
- Thu, 25 Jul 2024 16:59:38 -0700 (PDT)
+ AJvYcCWH7ybTQ8sLxgwHwVGEFTk2pRfLz3p3kAXTFxb8Ve00awkS4eKLPtXBYvREayfgnMjZuzZUzAQihGZ0G0NL3B6l3OUW
+X-Gm-Message-State: AOJu0YwnY/rMNOsqbGLABGvhd7FaR94xDY/mADz6bqAcftDTP5fRVCXD
+ QYdhyDKDKLb5zv0sdDZhYRBvsXmQNwsSb7zEdRBl4qyQG+0lf52eWbl3zw==
+X-Google-Smtp-Source: AGHT+IH0bK3e9Dxxso1o4rcGwcnYtthFhFWYg9bSY9b0EPGu758Fs0wiOehlAidcsHNq3EmYoy+9mA==
+X-Received: by 2002:a17:90a:fa01:b0:2cb:5883:8fb0 with SMTP id
+ 98e67ed59e1d1-2cdb9442ae1mr11106638a91.14.1721951985250; 
+ Thu, 25 Jul 2024 16:59:45 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.59.36
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.59.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:59:38 -0700 (PDT)
+ Thu, 25 Jul 2024 16:59:44 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 91/96] target/ppc/mmu_common.c: Remove mmu_ctx_t
-Date: Fri, 26 Jul 2024 09:54:04 +1000
-Message-ID: <20240725235410.451624-92-npiggin@gmail.com>
+Subject: [PULL 93/96] target/ppc/mmu-hash32.c: Move get_pteg_offset32() to the
+ header
+Date: Fri, 26 Jul 2024 09:54:06 +1000
+Message-ID: <20240725235410.451624-94-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,103 +95,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Completely get rid of mmu_ctx_t after converting the remaining
-functions to pass raddr and prot without the context struct.
+This function is a simple shared function, move it to other similar
+static inline functions in the header.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ target/ppc/mmu-hash32.c | 7 -------
+ target/ppc/mmu-hash32.h | 6 +++++-
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 4770b43630..60f8736210 100644
---- a/target/ppc/mmu_common.c
-+++ b/target/ppc/mmu_common.c
-@@ -37,12 +37,6 @@
- 
- /* #define DUMP_PAGE_TABLES */
- 
--/* Context used internally during MMU translations */
--typedef struct {
--    hwaddr raddr;      /* Real address             */
--    int prot;          /* Protection bits          */
--} mmu_ctx_t;
--
- void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
-@@ -264,8 +258,8 @@ static int get_bat_6xx_tlb(CPUPPCState *env, hwaddr *raddr, int *prot,
-     return ret;
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index c4de1647e2..44b16142ab 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -201,13 +201,6 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
+     return false;
  }
  
--static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
--                                       target_ulong eaddr,
-+static int mmu6xx_get_physical_address(CPUPPCState *env, hwaddr *raddr,
-+                                       int *prot, target_ulong eaddr,
-                                        hwaddr *hashp, bool *keyp,
-                                        MMUAccessType access_type, int type)
+-hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
+-{
+-    target_ulong mask = ppc_hash32_hpt_mask(cpu);
+-
+-    return (hash * HASH_PTEG_SIZE_32) & mask;
+-}
+-
+ static hwaddr ppc_hash32_pteg_search(PowerPCCPU *cpu, hwaddr pteg_off,
+                                      bool secondary, target_ulong ptem,
+                                      ppc_hash_pte32_t *pte)
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index bd75f7d647..2838de031c 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -3,7 +3,6 @@
+ 
+ #ifndef CONFIG_USER_ONLY
+ 
+-hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash);
+ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                       hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
+                       bool guest_visible);
+@@ -102,6 +101,11 @@ static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
+     stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
+ }
+ 
++static inline hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
++{
++    return (hash * HASH_PTEG_SIZE_32) & ppc_hash32_hpt_mask(cpu);
++}
++
+ static inline bool ppc_hash32_key(bool pr, target_ulong sr)
  {
-@@ -277,8 +271,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
- 
-     /* First try to find a BAT entry if there are any */
-     if (env->nb_BATs &&
--        get_bat_6xx_tlb(env, &ctx->raddr, &ctx->prot, eaddr,
--                        access_type, pr) == 0) {
-+        get_bat_6xx_tlb(env, raddr, prot, eaddr, access_type, pr) == 0) {
-         return 0;
-     }
- 
-@@ -316,7 +309,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-         *hashp = hash;
- 
-         /* Software TLB search */
--        return ppc6xx_tlb_check(env, &ctx->raddr, &ctx->prot, eaddr,
-+        return ppc6xx_tlb_check(env, raddr, prot, eaddr,
-                                 access_type, ptem, key, nx);
-     }
- 
-@@ -333,7 +326,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-          * Should make the instruction do no-op.  As it already do
-          * no-op, it's quite easy :-)
-          */
--        ctx->raddr = eaddr;
-+        *raddr = eaddr;
-         return 0;
-     case ACCESS_CODE: /* No code fetch is allowed in direct-store areas */
-     case ACCESS_FLOAT: /* Floating point load/store */
-@@ -343,7 +336,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     }
-     if ((access_type == MMU_DATA_STORE || !key) &&
-         (access_type == MMU_DATA_LOAD || key)) {
--        ctx->raddr = eaddr;
-+        *raddr = eaddr;
-         return 2;
-     }
-     return -2;
-@@ -681,7 +674,6 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
- {
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
--    mmu_ctx_t ctx;
-     hwaddr hash = 0; /* init to 0 to avoid used uninit warning */
-     bool key;
-     int type, ret;
-@@ -700,12 +692,9 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
-         type = ACCESS_INT;
-     }
- 
--    ctx.prot = 0;
--    ret = mmu6xx_get_physical_address(env, &ctx, eaddr, &hash, &key,
-+    ret = mmu6xx_get_physical_address(env, raddrp, protp, eaddr, &hash, &key,
-                                       access_type, type);
-     if (ret == 0) {
--        *raddrp = ctx.raddr;
--        *protp = ctx.prot;
-         *psizep = TARGET_PAGE_BITS;
-         return true;
-     } else if (!guest_visible) {
+     return pr ? (sr & SR32_KP) : (sr & SR32_KS);
 -- 
 2.45.2
 
