@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B237293C10C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BC893C144
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 13:58:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sWwrp-0002Tw-8A; Thu, 25 Jul 2024 07:42:41 -0400
+	id 1sWx7L-0002Aw-Le; Thu, 25 Jul 2024 07:58:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWwrh-0001vz-Re; Thu, 25 Jul 2024 07:42:34 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sWwrf-0001i4-2w; Thu, 25 Jul 2024 07:42:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721907751; x=1753443751;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KygXsTO1/7PsKHbHPRlx3mwu6GzCfvzBN5TuN2US15g=;
- b=Ch0utKZ4ilEHD2/h7WNZoi9umqJXXx5djwUrfEVs/KXffFQDrDyJKzbd
- FmIxyTDBwhZJwWF8lPm7pis/ahd8Dn/M1ClzfrtUxlSXXrSM/KcBAX43w
- oksLxH03MrICiVXRzYvPikwv0ziwkBF/Bzp5Qwt/SqwlRyrJ9jfgL50R4
- qufIjnKnXalIspy37M2THYhjYIq2QaAdk/2fjtBBhhTbvSrcYK+QpMZHa
- ZChtzbXMYuc7BHjzP3snrgUgQ6VsmPKCcRbULcSv78ZZz7UtYRJSlp7GB
- 2IkMgzV9zySSyJFz1i4YbmXt9sOkMOAh6VC0Umd86jiXT6/Hj29EO0gML A==;
-X-CSE-ConnectionGUID: gcZAz1gOSwSvfhSU1LCaIQ==
-X-CSE-MsgGUID: nU33LRjFS8qvuNDT8DAEtw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19818826"
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="19818826"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 04:42:28 -0700
-X-CSE-ConnectionGUID: 2Wsp4k4PRGSWlLWNJZuuKw==
-X-CSE-MsgGUID: utSt5rtmS7CpNGoEk5uI9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="83895660"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 25 Jul 2024 04:42:23 -0700
-Date: Thu, 25 Jul 2024 19:58:08 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Markus Armbruster <armbru@redhat.com>, berrange@redhat.com,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin " <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH 2/8] qapi/qom: Introduce smp-cache object
-Message-ID: <ZqI90B1jkfO4N5a5@intel.com>
-References: <20240704031603.1744546-1-zhao1.liu@intel.com>
- <20240704031603.1744546-3-zhao1.liu@intel.com>
- <87wmld361y.fsf@pond.sub.org> <Zp5tBHBoeXZy44ys@intel.com>
- <87h6cfowei.fsf@pond.sub.org> <ZqEV8uErCn+QkOw8@intel.com>
- <871q3hua56.fsf@pond.sub.org> <20240725115059.000016c5@Huawei.com>
- <20240725115902.000037e4@Huawei.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWx7F-0001rP-8q
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:58:37 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sWx7D-0006M1-AE
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 07:58:37 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-367963ea053so598415f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 04:58:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1721908714; x=1722513514; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Fw15GzZcTHTDv/fxWdELoem1xszdI39hrdYstoDZCb8=;
+ b=G/WBGQyhRzeznHJXqPD7Fu2RpdGp1/XtHAb7G0goXLrYZnvwPPyZe+aatvjaYZacKO
+ fAbX84DZG+VqE/YDFlpBEEiQ08sPTJ18DQUVvpwjZvwFnJYBmJOIJAn87cqg4El84TcZ
+ G/P6pfA7ulsK7hCLM6rw6iMYGD72mNOIpw8NcDJZgSVjRwH3wsi1Q4RXmcxzwU7f+L48
+ 2DF6LnIXl/tQc1mnYjwMxWOUpr979SNpo9oAasELWsRwbPTNd800206Mih9lPyYdLhLK
+ S43LuGpJvM3hWyoFOZo3n5KzQPsDegK3MnUMwPeZhSlUNNG727xcyjwkEz5TP23r8bLp
+ Vxsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721908714; x=1722513514;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fw15GzZcTHTDv/fxWdELoem1xszdI39hrdYstoDZCb8=;
+ b=X7h8Q8RbSAhjlXgFHKTATj7D0jkKWeKsYIix8BFBiBsk/88NKzqcUDL5lGnb7mqobx
+ D5sdvBiHlTms6LGVxHwG1DijZjgQURk6ifA0mPZwOsmFcxjyb3vDEiodm9ViA+VTtn/i
+ zuof4SvkY1swlwVUhEUidYYbEqN0m/cyyUFyhIX2sIGzT3diNUBZcqCANwuLJY4Ise9r
+ Vj9De4Sy82V3zlIZYTs+JD5QuMzXZIkFJTU2q+jFZJX1C3AxjMx5INdzjKu5dzNArWDh
+ 0s5OQVsCLRIyTU4d9gXmQqMQrr4KzMlX3QfNuYtUBPN23HYWl3AQYG4Tp2GWSiRe+/Dq
+ zwbw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUhSznVwW5ALLmjZGsud1lGmiBfWfHqhYWpHhdRSJmxEb5eggzpABy3eyV6gfIuR4spg21r8CZNd4S5tcT0WrvSZ/7qzBA=
+X-Gm-Message-State: AOJu0Yysvf5oWPMT2Doihro9133HcEpAyzanp0OU/EB4LfUEPsR0d4/c
+ hRkUuEycf6eTxlIrLG+OCPX3KxoMT5Av0TXQ1ndEzrUvrTLHWtIqGZNrpDeI14E=
+X-Google-Smtp-Source: AGHT+IEfav/E0JoL4fs8XJFFpNJslWceXmd0GzWTgePcCtMhg85iwOXixhhiYOJAzgHo2s/++2rggw==
+X-Received: by 2002:adf:fe0c:0:b0:366:ec30:adcd with SMTP id
+ ffacd0b85a97d-36b363afb47mr1634775f8f.7.1721908713785; 
+ Thu, 25 Jul 2024 04:58:33 -0700 (PDT)
+Received: from [192.168.1.102] ([176.187.216.35])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36b36857fd1sm1943629f8f.69.2024.07.25.04.58.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Jul 2024 04:58:33 -0700 (PDT)
+Message-ID: <124b4dd0-abe6-485a-b7ed-cfa2bd8e071e@linaro.org>
+Date: Thu, 25 Jul 2024 13:58:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725115902.000037e4@Huawei.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/23] tests/functional: Convert simple avocado tests
+ into standalone python tests
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
+References: <20240724175248.1389201-1-thuth@redhat.com>
+ <20240724175248.1389201-6-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240724175248.1389201-6-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,25 +100,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks Jonathon!
+On 24/7/24 19:52, Thomas Huth wrote:
+> These test are rather simple and don't need any modifications apart
+> from adjusting the "from avocado_qemu" line. To ease debugging, make
+> the files executable and add a shebang line and Python '__main__'
+> handling, too, so that these tests can now be run by executing them
+> directly.
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/functional/meson.build                  |  5 ++
+>   .../test_cpu_queries.py}                      |  7 ++-
+>   .../test_empty_cpu_model.py}                  |  7 ++-
+>   .../test_mem_addr_space.py}                   | 52 +++----------------
+>   .../test_pc_cpu_hotplug_props.py}             | 11 ++--
+>   .../test_virtio_version.py}                   |  8 +--
+>   6 files changed, 34 insertions(+), 56 deletions(-)
+>   rename tests/{avocado/cpu_queries.py => functional/test_cpu_queries.py} (89%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/empty_cpu_model.py => functional/test_empty_cpu_model.py} (84%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/mem-addr-space-check.py => functional/test_mem_addr_space.py} (93%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/pc_cpu_hotplug_props.py => functional/test_pc_cpu_hotplug_props.py} (90%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/virtio_version.py => functional/test_virtio_version.py} (98%)
+>   mode change 100644 => 100755
 
-On Thu, Jul 25, 2024 at 11:59:02AM +0100, Jonathan Cameron wrote:
 
-[snip]
+> diff --git a/tests/avocado/mem-addr-space-check.py b/tests/functional/test_mem_addr_space.py
+> old mode 100644
+> new mode 100755
+> similarity index 93%
+> rename from tests/avocado/mem-addr-space-check.py
+> rename to tests/functional/test_mem_addr_space.py
+> index d3974599f4..bb0cf062ca
+> --- a/tests/avocado/mem-addr-space-check.py
+> +++ b/tests/functional/test_mem_addr_space.py
+> @@ -1,3 +1,5 @@
+> +#!/usr/bin/env python3
+> +#
+>   # Check for crash when using memory beyond the available guest processor
+>   # address space.
+>   #
+> @@ -8,7 +10,7 @@
+>   #
+>   # SPDX-License-Identifier: GPL-2.0-or-later
+>   
+> -from avocado_qemu import QemuSystemTest
+> +from qemu_test import QemuSystemTest
+>   import time
+>   
+>   class MemAddrCheck(QemuSystemTest):
+> @@ -22,9 +24,6 @@ class MemAddrCheck(QemuSystemTest):
+>       # for all 32-bit cases, pci64_hole_size is 0.
+>       def test_phybits_low_pse36(self):
+>           """
+> -        :avocado: tags=machine:q35
 
-> > > I think I understand why you want to configure caches.  My question was
-> > > about the connection to SMP.
-> > > 
-> > > Say we run a guest with a single core, no SMP.  Could configuring caches
-> > > still be useful then?  
-> > 
-> > Probably not useful to configure topology (sizes are a separate question)
-> > - any sensible default should be fine.
-> >
+Pre-existing, we should use set_machine('q35') in this file tests.
+(Can be cleaned later.)
 
-Yes, I agree.
-
-Regards,
-Zhao
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
