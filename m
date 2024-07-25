@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C92D93CBA9
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3F893CB8C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:58:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8If-0004k3-MF; Thu, 25 Jul 2024 19:55:09 -0400
+	id 1sX8Ii-00051M-Sx; Thu, 25 Jul 2024 19:55:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Id-0004aA-DS; Thu, 25 Jul 2024 19:55:07 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1sX8Ig-0004tE-Cc; Thu, 25 Jul 2024 19:55:10 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Ib-0000m0-LS; Thu, 25 Jul 2024 19:55:07 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2cb55ff1007so301235a91.0; 
- Thu, 25 Jul 2024 16:55:04 -0700 (PDT)
+ id 1sX8Ie-0000nB-Rp; Thu, 25 Jul 2024 19:55:10 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-79b530ba612so304194a12.2; 
+ Thu, 25 Jul 2024 16:55:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951703; x=1722556503; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951706; x=1722556506; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mop112vd42nzsXR5SxpQiWNuj10AcG+7wfZ1FcSPXq0=;
- b=b2bsH8thuABGD0qZ0esOZ+UMsmkO6GfdjYVRZ9tEmSPQ2MDjiLguXmlmb2mum9+zQM
- mPXiGFDDgUmb97GK9m6twShLkrYlePW0Tq0TGZhc2ZwwQZ3XSLNjX4aR+F4TtTH5uZth
- NfdqZ4WLS04hw5M9Z9JLJdxbbw1O1o/UjuVzjoczQxWpYB4YD0vu3lj7unf6+MimxoRN
- knN8H0HiY+VZqDaMjzME2X2c09Uw0DoDxNRhssduLsciFk3nZjNCOjeQqOp6yVzHLcZQ
- WHwy/mRm1Wi/lqRCjFjQQxrGzPzW8+l5o51zWOZ9qtIqBZ7+OBwGunEvTXwB+QdJQIgr
- iYdA==
+ bh=tzSJO/z7j+GgnjnioIlTWgJR2vtdMWm0HI0he1OMD1c=;
+ b=F3Hs56tVspgrfAEMe0T4Ms8cT8jcso62EHMAN622sAniYwpvBK1DnVRCY1/HpVSoTJ
+ 4TSh4A7IORvLACNbgX/ETzxz+EfuU9VFkfmIDy/0GLBrwE3chU2GapIBLkIDUChexAcC
+ kuGI9L4Pj/AYRR861d0riqh3f1yvSo7y9Yc9IJ36bHgQgKqHiPzmCNJSFAcbstyT2ZVq
+ tKQY5tvZYgGfS5ugcxKWbGahGeuvgA1Vo3fJvJvbZn9vJxkUphxs9pT6WI+e4fi26+cR
+ xnmNIitTTy5rVwJ5AF70ALAetyCuPKfKIfmnrKzlV0u5RzTOWR6YFonX2Gqhpf394hAp
+ X1RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951703; x=1722556503;
+ d=1e100.net; s=20230601; t=1721951706; x=1722556506;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mop112vd42nzsXR5SxpQiWNuj10AcG+7wfZ1FcSPXq0=;
- b=Ti7bdyKQvzw+yYiRwZzpjbyFDlFlpYhFif9kb3QFhDU914jXjIYrswPueWCEPvUksK
- 96aanwuNCkFVA/HUEz4bACkaBgG7zkaFN15dyv3YqxGSymiFNYiCH9zkFtZj7LCFzbS8
- PZ/AR0fVS5y9ZZw0+6jnq+a0olWI99+6kix4vGfXBtVK5vLHtDq9XdM5FXMjmr02zL7a
- 1PBqwrir9G0V9fDDpSxIfRL0Kmn2zSUZJ1NHnVuTGTgDENDS8LF9LTQw+IZFbZCGem+J
- QgDiGs95ihx5LBNLUa2bFQDH0hVSL0lMagcFyHO4M+9fUWMTjjJXJ1f4CYvQzMvgUzkX
- BFMg==
+ bh=tzSJO/z7j+GgnjnioIlTWgJR2vtdMWm0HI0he1OMD1c=;
+ b=OwL9neRWDicacen0fm00zhW/oxGSQ9Ow57rt67RAO6h7nPanRw18yRtT8DWrCXRV3S
+ UAOFY2vTZ+oTGJCtAO6MaKVDq/vnUng65lES7xcs6FoJMAuc3+4CUqiECLI/LY4reXSn
+ E1W7Ead8C7AURBSSYwTn1RfxVEZfismKA5iF7PsYpMfR2ySGXBSekkXBv+sGw5i3F9V5
+ GdSQMBHP4Vn8U9FAjcELO7wULMoJbO0SSq7nRVieq6yJIepxzz2MCjfE/gG/HQVpY4Ye
+ NYX8vFYwo29/HZID0x9gwfJz79C6Vph1VAoiEeoitz9JeIFDaoSL+zDdVJEAxp1TBXOn
+ NSNA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV2OkZCH3ums6OxH83A491zKi+1h1mJs0n3G7BwQ9JWPODFVk34Y/nW7Mh0d9dGrxpv1eYvNVRbJVKn0O339wztBrLR
-X-Gm-Message-State: AOJu0YzTcdQd+n2tyy6lj1h5LkPy5kQ+cBSR8RHpuxgD32icNbPZeKA4
- 3Xwv1Xva84VVVbIqqUf324kX9iXUcgw7bKecciWg/fjZ4r/mXogLR8TLNg==
-X-Google-Smtp-Source: AGHT+IFFCk9pr7aXkG6RPlKBd0Wx55eCbICyqmXXxsccu691tAA5Gd3wRUNmBdFKRGXQD5ztRJdmGg==
-X-Received: by 2002:a17:90a:ba89:b0:2c1:9892:8fb with SMTP id
- 98e67ed59e1d1-2cf2e9ab041mr3911897a91.5.1721951703230; 
- Thu, 25 Jul 2024 16:55:03 -0700 (PDT)
+ AJvYcCV2LmrGda6L6q8DEuCTRRM81XpwVz0JBtya0jk3WsCZauPYEbez8rJd8se+VQDrFb+zYFnI3Fls2yvggrPOhn/kColZ
+X-Gm-Message-State: AOJu0YzOnOAuF8bURKpQ/TzHmCawRfFmuYK6Kt51ZxFFxyVpOPBiZpQa
+ xNNopEdLrEi2EnrTGYVy60mu7k0DT/e3xZVOVQtqShM6SoDKzNBCWJIpJg==
+X-Google-Smtp-Source: AGHT+IFdJmb22TFtMVqzNbS5R6/EkUjlL/d0UxzAuLWGicBTELvVU9Vqy1uFxlHKWdITBJ+xziaA3Q==
+X-Received: by 2002:a17:90a:474a:b0:2c9:3370:56e3 with SMTP id
+ 98e67ed59e1d1-2cf2eb20f74mr3969651a91.34.1721951706249; 
+ Thu, 25 Jul 2024 16:55:06 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.00
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:55:02 -0700 (PDT)
+ Thu, 25 Jul 2024 16:55:05 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Subject: [PULL 09/96] linux-header: PPC: KVM: Update one-reg ids for DEXCR,
- HASHKEYR and HASHPKEYR
-Date: Fri, 26 Jul 2024 09:52:42 +1000
-Message-ID: <20240725235410.451624-10-npiggin@gmail.com>
+Subject: [PULL 10/96] target/ppc/cpu_init: Synchronize DEXCR with KVM for
+ migration
+Date: Fri, 26 Jul 2024 09:52:43 +1000
+Message-ID: <20240725235410.451624-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,29 +95,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 
-This is a placeholder change for these SPRs until the full linux
-header update.
+The patch enables DEXCR migration by hooking with the
+"KVM one reg" ID KVM_REG_PPC_DEXCR.
 
 Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- linux-headers/asm-powerpc/kvm.h | 3 +++
- 1 file changed, 3 insertions(+)
+ target/ppc/cpu_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/linux-headers/asm-powerpc/kvm.h b/linux-headers/asm-powerpc/kvm.h
-index 1691297a76..eaeda00178 100644
---- a/linux-headers/asm-powerpc/kvm.h
-+++ b/linux-headers/asm-powerpc/kvm.h
-@@ -645,6 +645,9 @@ struct kvm_ppc_cpu_char {
- #define KVM_REG_PPC_SIER3	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc3)
- #define KVM_REG_PPC_DAWR1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc4)
- #define KVM_REG_PPC_DAWRX1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc5)
-+#define KVM_REG_PPC_DEXCR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc6)
-+#define KVM_REG_PPC_HASHKEYR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc7)
-+#define KVM_REG_PPC_HASHPKEYR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc8)
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index cdada7987d..7c3ee80661 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5886,9 +5886,9 @@ static void register_power10_hash_sprs(CPUPPCState *env)
  
- /* Transactional Memory checkpointed state:
-  * This is all GPRs, all VSX regs and a subset of SPRs
+ static void register_power10_dexcr_sprs(CPUPPCState *env)
+ {
+-    spr_register(env, SPR_DEXCR, "DEXCR",
++    spr_register_kvm(env, SPR_DEXCR, "DEXCR",
+             SPR_NOACCESS, SPR_NOACCESS,
+-            &spr_read_generic, &spr_write_generic,
++            &spr_read_generic, &spr_write_generic, KVM_REG_PPC_DEXCR,
+             0);
+ 
+     spr_register(env, SPR_UDEXCR, "UDEXCR",
 -- 
 2.45.2
 
