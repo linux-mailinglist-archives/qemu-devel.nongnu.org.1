@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877AC93CBD2
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C10A93CBEC
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:11:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8M1-0000NU-VS; Thu, 25 Jul 2024 19:58:38 -0400
+	id 1sX8MP-0001UC-45; Thu, 25 Jul 2024 19:59:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Lw-0008TP-3D; Thu, 25 Jul 2024 19:58:32 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1sX8M5-0000cz-55; Thu, 25 Jul 2024 19:58:42 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Lu-0001ak-7T; Thu, 25 Jul 2024 19:58:31 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-70d28023accso389246b3a.0; 
- Thu, 25 Jul 2024 16:58:29 -0700 (PDT)
+ id 1sX8M3-0001cT-AS; Thu, 25 Jul 2024 19:58:40 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-70eae5896bcso364619b3a.2; 
+ Thu, 25 Jul 2024 16:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951908; x=1722556708; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951917; x=1722556717; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5P8R3fqODxePYjxBt5uhS8uYJOHjVRCunlLk6iJkAy0=;
- b=M1QdHdjyRSxFWcc+S/Ti1qd4fjQYOAky/ZglolTBPqpAG9u1ILc1BIfKu1ooSAkihi
- UzJ+JTqZp5in/DhtPy4r4pku6YcLHW0Z8RjUjV7nHFExCjK06cKlQdgMVo6nCLh7XFyC
- WhwhV7pSqa75oWStx/ZVdSzXztvtI+/F9j0nbcLgfYrN0HNpbWxIKXsGprvv631Q/4tr
- 6eh3cVF3U7vxbhB2jDfACKfPJF0CyM445aL9sf/kEFSdglo13NAhVmXCI+K00JgrQ0s5
- yo1S9+3JqKe8HqyOVCgz00zqvrRVtlF/rzAFggaGA99kYf6OlhKK/N5MkNIfi7D7mS6f
- lSiw==
+ bh=n6nfklDGVUqP2PKA9q1wSbyX8COk61f+cykQLu5kMNo=;
+ b=DpB//t5vgRVJldHv/vYL8aFvE6Uv3Oa8NMU0GRPFGITCwneISRsli1LTjkwc6Um7vi
+ 15VH8H5yrZoh6vt8+9srdCLbn2ES7b0AWxei94RVK0d5U2R6ylH6UaLDpJfNiFWSNxlc
+ PAIgVdXod5bctVYBI/vM4Di7158vYh2+n0kCMefUT/N3XKnXqV30BhteIgSwcbjRZTCP
+ Ss5niNtHm7a3bA7lmNjzuG0oEluZJw/uXMi/0qMPserZBoNxQZuoLHfmzvCM+cHyVWSm
+ qLtrysNi4N5elba4E7VsEJOCw/LAJHPgf2ELOHCByrN8fdx1iB6h2tOmVaZbvlKRZMvF
+ JDPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951908; x=1722556708;
+ d=1e100.net; s=20230601; t=1721951917; x=1722556717;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5P8R3fqODxePYjxBt5uhS8uYJOHjVRCunlLk6iJkAy0=;
- b=L+NFEKLh/MOnQ0ssIYQilDXXICT9sSp1Rec8xRpNHxoxExf3KZP9enP8UV5q3Q1PFI
- bMHiaKg5Kvjm0bLBfoXekNvdBoE61YFJSrbLMjyUbGO3YOb7otZnTPxHrCSOC6iJkH8J
- bLxTCzmsuPYXbdOGiHJmfcKL/+8QL4Xcdwwyh/VOkNfCMCFncmNPOr5nkf5UqPmLxvbI
- ZaD7QuyKhM+4c3yk+r+T6PNhdXfKRKQiOws0BKEyGBpU/ivDAHVmRHjpt7AHsQ28hjYP
- +yJpzYsUGG7sNq8nQgYqv/GweFmyO34eI8hiqAvzk51cI3SDYMeSULNZw5UXE+NAvMh7
- u3Vw==
+ bh=n6nfklDGVUqP2PKA9q1wSbyX8COk61f+cykQLu5kMNo=;
+ b=ap0X3SeI3DIxvmG9Jme0gkNGETF/v5aL/RO/03pSf36SMJYXZT4Ff5IocSP4Ti9SRa
+ 3+vy1M6rtuuKN7CZVjh435kS1l0kreXXp85HjMKWLR6Xcd8x8eJ3G2TVOYxtSqrXACPY
+ RYlEPbUSVtuUuqUBtrsAPUOv068aJnInong2XN/UX1k6xVMH/HXjXKhClie0i89YCHw6
+ SiXSrOm911k+R5eB+Uy34OnrdejYPwLgWI/+rpZmrlBdkjUhc2524qcdvMVaBX2dXQd4
+ 6/gT/uaqQc4DeyiGrxqllWpyqaPZveQPnb/uGFLB+aE/h4AiwaGHu+wpsi26H6YCumsB
+ 3KZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUWN7TS21Zi678TfmzENOibtB70HFjiRQQn5DZafxnjgv8Q9knYkiCQUWrjL8vV230BrJFGmHvk+qYo+lyiO80qyQ9s
-X-Gm-Message-State: AOJu0YyiS+qusLr8rL+2igOCETeWOFDBltu3hph4YziGJgHOmQgHZTRb
- Op8ZGgkZm3ZRcs+8N1AH9mSFkMYILVxlXl7kp2YTFN38Sy7a/Q2+SjgpQA==
-X-Google-Smtp-Source: AGHT+IG1XCMU1Zb7a9S1N8JaIKScO7jwvpCTO3jsUReoRckudW9qMwnuPzG8/CMwkT1OLqXafmADLA==
-X-Received: by 2002:a05:6a21:9992:b0:1c1:f6f1:de05 with SMTP id
- adf61e73a8af0-1c47b17b015mr4055276637.6.1721951908152; 
- Thu, 25 Jul 2024 16:58:28 -0700 (PDT)
+ AJvYcCUJJ3PgrVMrmsXAVAAythsi2DiHRHCNscNwB8w9Ww8Syzmd9wyjjre5UdU00lnbFptfHiVwU0Jfdru4i6gW0rDYHcqw
+X-Gm-Message-State: AOJu0YwY8dGtsy8FdsC6vZpR13NIOVd024muAefSJb0c5Mwmd68+QtOG
+ bYVL/87M6NDaTWC90nau3O4DF6SWUGgXcTU0CKEp8KTcyHky6mzE5ON5yA==
+X-Google-Smtp-Source: AGHT+IHgI13AP/6EllF6THwIjrrYi7Nc4BoP6eYYuJmI734Zn+KMAFh9ubv/cFZT53LdKyBocwAp9w==
+X-Received: by 2002:a05:6a21:32a3:b0:1c0:e54b:5651 with SMTP id
+ adf61e73a8af0-1c47289f004mr5468833637.24.1721951917423; 
+ Thu, 25 Jul 2024 16:58:37 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.58.25
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.58.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:58:27 -0700 (PDT)
+ Thu, 25 Jul 2024 16:58:37 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 68/96] target/ppc/mmu_common.c: Remove single use local variable
-Date: Fri, 26 Jul 2024 09:53:41 +1000
-Message-ID: <20240725235410.451624-69-npiggin@gmail.com>
+Subject: [PULL 71/96] target/ppc/mmu_common.c: Return directly in
+ ppc6xx_tlb_pte_check()
+Date: Fri, 26 Jul 2024 09:53:44 +1000
+Message-ID: <20240725235410.451624-72-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,36 +95,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-The ptev variable in ppc6xx_tlb_pte_check() is used only once and just
-obfuscates an otherwise clear value. Get rid of it.
+Instead of using a local ret variable return directly and remove the
+local.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/ppc/mmu_common.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 371ec24485..16578f7fa5 100644
+index 799d2ced9b..a5ae11394d 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -98,13 +98,12 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
-                                 target_ulong pte1, int h,
+@@ -98,9 +98,6 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+                                 target_ulong pte1, int pteh,
                                  MMUAccessType access_type)
  {
--    int ret, pteh, ptev, pp;
-+    int ret, pteh, pp;
- 
-     ret = -1;
+-    int ret;
+-
+-    ret = -1;
      /* Check validity and table match */
--    ptev = pte_is_valid(pte0);
-     pteh = (pte0 >> 6) & 1;
--    if (ptev && h == pteh) {
-+    if (pte_is_valid(pte0) && h == pteh) {
+     if (pte_is_valid(pte0) && ((pte0 >> 6) & 1) == pteh) {
          /* Check vsid & api */
-         pp = pte1 & 0x00000003;
-         if ((pte0 & PTE_PTEM_MASK) == ctx->ptem) {
+@@ -118,16 +115,15 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+             if (check_prot_access_type(ctx->prot, access_type)) {
+                 /* Access granted */
+                 qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
+-                ret = 0;
++                return 0;
+             } else {
+                 /* Access right violation */
+                 qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
+-                ret = -2;
++                return -2;
+             }
+         }
+     }
+-
+-    return ret;
++    return -1;
+ }
+ 
+ static int pte_update_flags(mmu_ctx_t *ctx, target_ulong *pte1p,
 -- 
 2.45.2
 
