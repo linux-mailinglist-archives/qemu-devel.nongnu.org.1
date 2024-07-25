@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8108B93CBCE
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87ACA93CBC5
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:05:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Kn-0000wm-4y; Thu, 25 Jul 2024 19:57:21 -0400
+	id 1sX8L5-000253-DY; Thu, 25 Jul 2024 19:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Kf-0000h3-Pc; Thu, 25 Jul 2024 19:57:13 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1sX8Kv-0001Vz-9J; Thu, 25 Jul 2024 19:57:30 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Kd-0001Jq-Nj; Thu, 25 Jul 2024 19:57:13 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-7a264a24ea7so283233a12.3; 
- Thu, 25 Jul 2024 16:57:10 -0700 (PDT)
+ id 1sX8Ks-0001Oc-Ti; Thu, 25 Jul 2024 19:57:28 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-7163489149eso336034a12.1; 
+ Thu, 25 Jul 2024 16:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951830; x=1722556630; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951845; x=1722556645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7DcGp0MCsUZIWO8ubIFG5p3FvmXSUuWq+0YDo/ZNaMg=;
- b=LWLXVojalscJXr2vQ5TdRuCigqnvUdenLsoeXNa1/5tNFjDwtuxWsy9c08hY5AT/Oy
- FWzJBaotppSKofLWoN7S91ATD7OpLXl8Wt40y+E5hiTf2OSQIcgGaAS+9Kf5yXheTS/+
- beI5zBu7pLZE9exGWslqtsepbaZWKDhzy42em32hgcgL0T6bKStm402dUv0DQ6DWvD7P
- onedA+iF0RzMXbdpY0ZgnZl54dLITWm9UGey9m3ntfS2/6ykVxCjLN+RhTDzFP2x05VC
- +GW9sMZT0A6a1bTSOMwR4XOLENx3nCyytUflOfBXEJA66v508JW6VBe3WvMMNGHBqMBP
- m0oQ==
+ bh=Dhji2tzCt7V0bCKi9OaRajRAvFKebIz+tSdljnjixRU=;
+ b=jLiyRsLduOdXP3dJjt0zF8vNdw629j+PHpJUHEmu4FrtMCjTny/DBIDlgIUOosV41k
+ WG67WnI2XqG3szsBjhI/itFaMOWvRkQYNgS2cpEGs+y+/QpDOJJjiIRt/KAg/xye518C
+ vP+hQiqbydTz1FJLzlAxdDxQbZyDsRgz7CmaR3u9ZiROmgv+Wimw2eyp1Kxz87drlA3z
+ AaxnGdKULyHcxzfLfjwHsOMZngbcgYghttD44puM8TaP/T1u7K/gP1BesSul4LVBeLUx
+ UDEoondmwPyyoryeB7PqCAqAeWZqRnqF930Al1xCb7m7tm3nBgqldTGVYX7zBeOzRv/U
+ xTMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951830; x=1722556630;
+ d=1e100.net; s=20230601; t=1721951845; x=1722556645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7DcGp0MCsUZIWO8ubIFG5p3FvmXSUuWq+0YDo/ZNaMg=;
- b=XgAm8ca640XSBp+h7YH77y5QpdKOk9iGzayaOF9DHhznCar9tjUZfsxKOhuo7dU5bt
- FjSmWZYFOW0/Dszl/P53l7pQ6cCLyD09BW/bzvjzyIubUCnZ4r/cfytRF5HAC+srC0Dc
- 9j3yaAat2bAKXDjASKAEhXcy9wVVp89pkqjn5WRdwXSfuQYSDAfFB90gKX29tBsgUpju
- dgOiA0JwAtDyolpL4ArjGgg5IPMZM9Tx32Uic4nD7dTrXU7ujE1AuCGSy0ZQTy0LboMM
- kfpRX99tMkV0M0Pqnxo37355CU5thN/daucael/qGb1ys5uMVzqDGxEAbOJF8sLwjoeG
- 7MrQ==
+ bh=Dhji2tzCt7V0bCKi9OaRajRAvFKebIz+tSdljnjixRU=;
+ b=JzOguyCcNAqhYZbNU691ESPOnrn5zGD71IrRba7/T40HhhzAZtLnOLMuQItQuBHMvR
+ b9u138qkK2DkemEqctT4M73bocxk8PdbACKd6tJRbVkIq9wvXRwfuu45jBGY4xXSGY/x
+ KUyD26l8qbZlCGKz2hP6SNeTTY7+Wpge5UmfZrKFU6+RVNp2P1hwI4TS/39GlTgF9USU
+ nXglVohmjKqkj80E6qICCx8+RHK49NQojX9ixueWnWWp6vjQeBPeCl4GHbATAAlio3wJ
+ GFJrWmhBU5JvQTZ+C3wxhyE1C32B/feW6EMvLU/5cG8OhcqpkMBJ9c3DX8Uu4FhUs8yT
+ H2Lw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWb/r4U1cDvchhzi9OeOr1U3r2QqbJFBgrhRwSrOCwvMN5Yd7Atss8n3zZcDkRy/rYPEajahv8Fdz1wx+IkgQWIJvpJ
-X-Gm-Message-State: AOJu0YyaeDMSS+AsTdPc/7fFtHmquji1ymtnrHj/MEpkgeWaOxKSHFah
- X7uptxhxRG6YKkx/jJ0tfpaGoUftNMHzI/Hyd7G8r1VW9w6j8gRBNImZSg==
-X-Google-Smtp-Source: AGHT+IFh7+e+Ypolzd7mSk6x3kKC5lZk9kLfvd29fbBeOHq8Z8uPNMJYeLphG0kuF1EpmsJAEkVpVA==
-X-Received: by 2002:a05:6a21:3213:b0:1c3:b0d4:3e8f with SMTP id
- adf61e73a8af0-1c47b18da5fmr3171880637.14.1721951829663; 
- Thu, 25 Jul 2024 16:57:09 -0700 (PDT)
+ AJvYcCUeqdJtxqPHPsNqTfEhC9tcgNfQJNSKdKEbrs7Td/eTCMrtX+I46XkTf1SIhAU4lcRePuwteEZ6Jz3NdEBabrW5u73v
+X-Gm-Message-State: AOJu0YzKwQg3EgttDSGlIw+j6MCn4j4xirVfDgKNK315LIwtZJ3ryHeM
+ FQJJVmXebHj3ReyoK4oWfNIsa+1V2mewMOOw5IEWl3h+izU45Nq48Ok44Q==
+X-Google-Smtp-Source: AGHT+IExY5WcUiBmtdbK40DSFUFaomZ5d9Kwz63bcUdSLW1s6pt2v4c0YeC4cONdYnrSfTunCNHOHw==
+X-Received: by 2002:a17:90a:b704:b0:2cb:4f14:2a70 with SMTP id
+ 98e67ed59e1d1-2cf2eb6b180mr3763254a91.30.1721951844440; 
+ Thu, 25 Jul 2024 16:57:24 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.06
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:57:09 -0700 (PDT)
+ Thu, 25 Jul 2024 16:57:23 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Frederic Barrat <fbarrat@linux.ibm.com>,
  Michael Kowal <kowal@linux.vnet.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 46/96] pnv/xive2: Configure Virtualization Structure Tables
- through the PC
-Date: Fri, 26 Jul 2024 09:53:19 +1000
-Message-ID: <20240725235410.451624-47-npiggin@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 50/96] pnv/xive2: Move xive2_nvp_pic_print_info() to xive2.c
+Date: Fri, 26 Jul 2024 09:53:23 +1000
+Message-ID: <20240725235410.451624-51-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,133 +97,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Both the virtualization layer (VC) and presentation layer (PC) need to
-be configured to access the VSTs. Since the information is redundant,
-the xive model combines both into one set of tables and only the
-definitions going through the VC are kept. The definitions through the
-PC are ignored. That works well as long as firmware calls the VC for
-all the tables.
-
-For the NVG and NVC tables, it can make sense to only configure them
-with the PC, since they are only used by the presenter. So this patch
-allows firmware to configure the VST tables through the PC as well.
-The definitions are still shared, since the VST tables can be set
-through both the VC and/or PC, they are dynamically re-mapped in
-memory by first deleting the memory subregion.
+Moving xive2_nvp_pic_print_info() to align with the other "pic_print_info"
+functions.
 
 Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/pnv_xive2.c | 47 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 38 insertions(+), 9 deletions(-)
+ hw/intc/pnv_xive2.c         | 27 ---------------------------
+ hw/intc/xive2.c             | 26 ++++++++++++++++++++++++++
+ include/hw/ppc/xive2_regs.h |  2 ++
+ 3 files changed, 28 insertions(+), 27 deletions(-)
 
 diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 561e61682e..33e76633b5 100644
+index 9fbd44f974..78609105a8 100644
 --- a/hw/intc/pnv_xive2.c
 +++ b/hw/intc/pnv_xive2.c
-@@ -762,6 +762,9 @@ static void pnv_xive2_vst_set_exclusive(PnvXive2 *xive, uint8_t type,
-          * entries provisioned by FW (such as skiboot) and resize the
-          * ESB window accordingly.
-          */
-+        if (memory_region_is_mapped(&xsrc->esb_mmio)) {
-+            memory_region_del_subregion(&xive->esb_mmio, &xsrc->esb_mmio);
-+        }
-         if (!(VSD_INDIRECT & vsd)) {
-             memory_region_set_size(&xsrc->esb_mmio, vst_tsize * SBE_PER_BYTE
-                                    * (1ull << xsrc->esb_shift));
-@@ -777,6 +780,9 @@ static void pnv_xive2_vst_set_exclusive(PnvXive2 *xive, uint8_t type,
-         /*
-          * Backing store pages for the END.
-          */
-+        if (memory_region_is_mapped(&end_xsrc->esb_mmio)) {
-+            memory_region_del_subregion(&xive->end_mmio, &end_xsrc->esb_mmio);
-+        }
-         if (!(VSD_INDIRECT & vsd)) {
-             memory_region_set_size(&end_xsrc->esb_mmio, (vst_tsize / info->size)
-                                    * (1ull << end_xsrc->esb_shift));
-@@ -801,13 +807,10 @@ static void pnv_xive2_vst_set_exclusive(PnvXive2 *xive, uint8_t type,
-  * Both PC and VC sub-engines are configured as each use the Virtual
-  * Structure Tables
-  */
--static void pnv_xive2_vst_set_data(PnvXive2 *xive, uint64_t vsd)
-+static void pnv_xive2_vst_set_data(PnvXive2 *xive, uint64_t vsd,
-+                                   uint8_t type, uint8_t blk)
- {
-     uint8_t mode = GETFIELD(VSD_MODE, vsd);
--    uint8_t type = GETFIELD(VC_VSD_TABLE_SELECT,
--                            xive->vc_regs[VC_VSD_TABLE_ADDR >> 3]);
--    uint8_t blk = GETFIELD(VC_VSD_TABLE_ADDRESS,
--                           xive->vc_regs[VC_VSD_TABLE_ADDR >> 3]);
-     uint64_t vst_addr = vsd & VSD_ADDRESS_MASK;
+@@ -2436,33 +2436,6 @@ static void pnv_xive2_register_types(void)
  
-     if (type > VST_ERQ) {
-@@ -842,6 +845,16 @@ static void pnv_xive2_vst_set_data(PnvXive2 *xive, uint64_t vsd)
-     }
+ type_init(pnv_xive2_register_types)
+ 
+-static void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx,
+-                                     GString *buf)
+-{
+-    uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
+-    uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
+-
+-    if (!xive2_nvp_is_valid(nvp)) {
+-        return;
+-    }
+-
+-    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
+-                           nvp_idx, eq_blk, eq_idx,
+-                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
+-    /*
+-     * When the NVP is HW controlled, more fields are updated
+-     */
+-    if (xive2_nvp_is_hw(nvp)) {
+-        g_string_append_printf(buf, " CPPR:%02x",
+-                               xive_get_field32(NVP2_W2_CPPR, nvp->w2));
+-        if (xive2_nvp_is_co(nvp)) {
+-            g_string_append_printf(buf, " CO:%04x",
+-                                   xive_get_field32(NVP2_W1_CO_THRID, nvp->w1));
+-        }
+-    }
+-    g_string_append_c(buf, '\n');
+-}
+-
+ /*
+  * If the table is direct, we can compute the number of PQ entries
+  * provisioned by FW.
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 3e7238c663..ac914b3d1c 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -137,6 +137,32 @@ void xive2_end_eas_pic_print_info(Xive2End *end, uint32_t end_idx,
+                            (uint32_t) xive_get_field64(EAS2_END_DATA, eas->w));
  }
  
-+static void pnv_xive2_vc_vst_set_data(PnvXive2 *xive, uint64_t vsd)
++void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
 +{
-+    uint8_t type = GETFIELD(VC_VSD_TABLE_SELECT,
-+                            xive->vc_regs[VC_VSD_TABLE_ADDR >> 3]);
-+    uint8_t blk = GETFIELD(VC_VSD_TABLE_ADDRESS,
-+                           xive->vc_regs[VC_VSD_TABLE_ADDR >> 3]);
++    uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
++    uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
 +
-+    pnv_xive2_vst_set_data(xive, vsd, type, blk);
++    if (!xive2_nvp_is_valid(nvp)) {
++        return;
++    }
++
++    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
++                           nvp_idx, eq_blk, eq_idx,
++                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
++    /*
++     * When the NVP is HW controlled, more fields are updated
++     */
++    if (xive2_nvp_is_hw(nvp)) {
++        g_string_append_printf(buf, " CPPR:%02x",
++                               xive_get_field32(NVP2_W2_CPPR, nvp->w2));
++        if (xive2_nvp_is_co(nvp)) {
++            g_string_append_printf(buf, " CO:%04x",
++                                   xive_get_field32(NVP2_W1_CO_THRID, nvp->w1));
++        }
++    }
++    g_string_append_c(buf, '\n');
 +}
++
+ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
+ {
+     uint64_t qaddr_base = xive2_end_qaddr(end);
+diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+index 4e5e17cd89..ec5d6ec2d6 100644
+--- a/include/hw/ppc/xive2_regs.h
++++ b/include/hw/ppc/xive2_regs.h
+@@ -194,6 +194,8 @@ static inline uint32_t xive2_nvp_blk(uint32_t cam_line)
+     return (cam_line >> XIVE2_NVP_SHIFT) & 0xf;
+ }
+ 
++void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf);
 +
  /*
-  * MMIO handlers
+  * Notification Virtual Group or Crowd (NVG/NVC)
   */
-@@ -1271,7 +1284,7 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
-     case VC_VSD_TABLE_ADDR:
-        break;
-     case VC_VSD_TABLE_DATA:
--        pnv_xive2_vst_set_data(xive, val);
-+        pnv_xive2_vc_vst_set_data(xive, val);
-         break;
- 
-     /*
-@@ -1490,6 +1503,16 @@ static uint64_t pnv_xive2_ic_pc_read(void *opaque, hwaddr offset,
-     return val;
- }
- 
-+static void pnv_xive2_pc_vst_set_data(PnvXive2 *xive, uint64_t vsd)
-+{
-+    uint8_t type = GETFIELD(PC_VSD_TABLE_SELECT,
-+                            xive->pc_regs[PC_VSD_TABLE_ADDR >> 3]);
-+    uint8_t blk = GETFIELD(PC_VSD_TABLE_ADDRESS,
-+                           xive->pc_regs[PC_VSD_TABLE_ADDR >> 3]);
-+
-+    pnv_xive2_vst_set_data(xive, vsd, type, blk);
-+}
-+
- static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
-                                   uint64_t val, unsigned size)
- {
-@@ -1500,12 +1523,18 @@ static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
-     switch (offset) {
- 
-     /*
--     * VSD table settings. Only taken into account in the VC
--     * sub-engine because the Xive2Router model combines both VC and PC
--     * sub-engines
-+     * VSD table settings.
-+     * The Xive2Router model combines both VC and PC sub-engines. We
-+     * allow to configure the tables through both, for the rare cases
-+     * where a table only really needs to be configured for one of
-+     * them (e.g. the NVG table for the presenter). It assumes that
-+     * firmware passes the same address to the VC and PC when tables
-+     * are defined for both, which seems acceptable.
-      */
-     case PC_VSD_TABLE_ADDR:
-+        break;
-     case PC_VSD_TABLE_DATA:
-+        pnv_xive2_pc_vst_set_data(xive, val);
-         break;
- 
-     case PC_NXC_PROC_CONFIG:
 -- 
 2.45.2
 
