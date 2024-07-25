@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FD893CBBC
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F1F93CBCD
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:06:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8JA-0007V1-Tl; Thu, 25 Jul 2024 19:55:40 -0400
+	id 1sX8JE-0007z8-FZ; Thu, 25 Jul 2024 19:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Iy-0006ps-Fg; Thu, 25 Jul 2024 19:55:29 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1sX8J5-0007KW-OK; Thu, 25 Jul 2024 19:55:38 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Iw-0000uI-5K; Thu, 25 Jul 2024 19:55:28 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2cb682fb0cdso290404a91.3; 
- Thu, 25 Jul 2024 16:55:25 -0700 (PDT)
+ id 1sX8J2-0000xI-3R; Thu, 25 Jul 2024 19:55:34 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2cb55418470so291378a91.1; 
+ Thu, 25 Jul 2024 16:55:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951724; x=1722556524; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951730; x=1722556530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v0qYWXQCi7Id5dm6kbS55QVjNxgYMe0vHIm8o971smw=;
- b=Ufieob0eW8mHO/uiq026QKRFooVo/goI8naDEtiu51EeIq+PctGZRRaa6RHE4Emrw8
- aFK1w2X40I3m6AjsQ0ti+bsOfrbBIg/jlcjVcO2Z1tvZi9CZvshxNrHHS1ArYQYZQa54
- 9L1XI6R2unHyZe8mEA4dM3lm1KwqzXdeYB87YdCU4eUmi2/l0Fa2UjCWKPeI2S/sEiU/
- c0X21bdHokkf8gm7D22PVVWSAB/crh2bgh+w+oKIWi8lfudQ1oxTUjSVnUZ1kOvOxvr2
- ZNPpr1s30vjJ8wrImuwgSqXvLtEu9r8MvP2Bwtm1GCrOflRe/FfKHgjBucr6gCACLo13
- 28Uw==
+ bh=/yX63KTDQl//4HUcSi0eiTmjyFrfp+jQwa5dnnwjd9o=;
+ b=UBBMLFEM4Gu2EscK0EXNgMBA9vwp/6hZW4JdGrHNKJzPVLnj3o0WRnk6Eth3jBnEx4
+ MsvHPGzJ06/KWC6UDNo5qzPN5CvkNbxXaVg+BYiTzuqpHgCGKeNgWFWICgFcUrYDVUtx
+ XvZZzKBBhAl0Wm/pAJt6uJ1fInGLU0uoY2bAlZhfrnoB7PWTt9+2ndomPRs9jcoGgRr8
+ LEIq3qi4BkpwgW3shMFld9Cxsz2TuKCUGn3GbWQi/QgEnhUTVi1DEQL2x41tYLkZwxtd
+ h/WFoAauHP6E8cGhbrupPkDTOAU7d2vITJEptX3RvsVhvVA6UXvxfayOtb36bZDHGPPt
+ hpLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951724; x=1722556524;
+ d=1e100.net; s=20230601; t=1721951730; x=1722556530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v0qYWXQCi7Id5dm6kbS55QVjNxgYMe0vHIm8o971smw=;
- b=l9Ehj408CZj3KenA31cpsSWUocY8PpNq4/iQPRZRHio+EICPdl001lOz6KoXcz97fQ
- WKXVxBi/VvaToBnZ4RpH8TuRPO57I10KWYct7hvKEWvgv0IzXkSCX/0l4qGWQhzZ1Q2Y
- Y5s8l0ZhPR7G2qQAT7+7r/VaMTYM//5QbMo9Y+2eXAY6Rzw/dSKlAHF1k02IQZEaSvho
- o6Ra6iPy9wd/W3smDNPyVMydfqP4QUJHvtpJ+jyPAQp+QHCCzX5WK0eL3AxnV7z44ptC
- Q6OR5mzcoKDZj2+1MOiTY+/xGUEbhHjmY1KXokzLl82jdihVSsdRo0FjRhW5GjeKQA0r
- duGA==
+ bh=/yX63KTDQl//4HUcSi0eiTmjyFrfp+jQwa5dnnwjd9o=;
+ b=KdNzrpobWnq/D/gRNQ4rVmwbdgKcKmmKC4q17EMicGCdJ4ZsRtCGCWoYh4Nqq9WuD0
+ /Ze2wUUOhlP4GJYC2TMztpwGsvKc/JPJK5yD8INUaRcUC4l+MoSDH3PLTD+GVfXJoKF2
+ 0KzjpukuJhebZH6DNZ1La1Dn5KCv3yjGOZxkwZLeLkqBFWMxLBqxW0T+fy8rwJRDsxnD
+ xeSx4hgolz7BvomvIioWaUjwmeKgOd0NbkJ+bvfhCDY1Fizevltly8E3skzxCVLIwb4a
+ fjBiR0k5fSqg9EvgW3dI3vJQNGHGxXveiZ9yLldU3wPlDOWfXAE2YyHR8UTyu2H33dpd
+ Ca2Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWSkAh6/njmQxTWt1LKZ98EjeuOaIsiQp/sLxFQQxUvOOYnP59nX/nsWiJ+UF2EirD+yEPhQ2bkmwCwK7RvBGQHxUKI
-X-Gm-Message-State: AOJu0Yy7DHy+LsxuPLrdSRHtTySj37/4k4+vKOwHFKLyXDdz+oVJNaiv
- XVNL8/KkfGGFiE8eKpXUj2yqtrH9txkk2APvp1UOVr9fYHK3iQB0ZEtDUQ==
-X-Google-Smtp-Source: AGHT+IFJlOWuvSlYnTjdFNE/lbEqr2mqJfW5QJIZmNdGN66v13bUG5F9naDXVyFgkqBxikUvQ3bl7Q==
-X-Received: by 2002:a17:90b:4ad1:b0:2c7:f3de:27ef with SMTP id
- 98e67ed59e1d1-2cf23943778mr4847287a91.42.1721951723201; 
- Thu, 25 Jul 2024 16:55:23 -0700 (PDT)
+ AJvYcCUR6Ogr7C9cvRc0himqGdhcQo8/3nH98My+YCPP82OqgqQKjl/pb7WgGqAyt4JIX3JVpiPck9ogBBXgzg4pdktvt6EJ
+X-Gm-Message-State: AOJu0YxEUe/Y6/JQGUx2qwJPXLnE2i91sbRkV7IpqtXCJceQ08ONCVub
+ msE13NoZZB8A7bWIml5bWDsXG4J+ErZEg51Ih6lpITAkUmfP3a1AXs/X/w==
+X-Google-Smtp-Source: AGHT+IGrdoIp2QihDlIishWs/Zlz+xj6vk4nvLx+qZ6Wkd1xLHRMQmu85NkBVKGAl3UICh15wPubAg==
+X-Received: by 2002:a17:90b:1b51:b0:2c8:da73:af7d with SMTP id
+ 98e67ed59e1d1-2cf2e9ab11cmr4045173a91.3.1721951730127; 
+ Thu, 25 Jul 2024 16:55:30 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.20
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:55:22 -0700 (PDT)
+ Thu, 25 Jul 2024 16:55:29 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Glenn Miles <milesg@linux.ibm.com>
-Subject: [PULL 15/96] ppc/pnv: Implement POWER9 LPC PSI serirq outputs and
- auto-clear function
-Date: Fri, 26 Jul 2024 09:52:48 +1000
-Message-ID: <20240725235410.451624-16-npiggin@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 17/96] ppc/pnv: Implement ADU access to LPC space
+Date: Fri, 26 Jul 2024 09:52:50 +1000
+Message-ID: <20240725235410.451624-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,360 +93,286 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The POWER8 LPC ISA device irqs all get combined and reported to the line
-connected the PSI LPCHC irq. POWER9 changed this so only internal LPC
-host controller irqs use that line, and the device irqs get routed to
-4 new lines connected to PSI SERIRQ0-3.
+One of the functions of the ADU is indirect memory access engines that
+send and receive data via ADU registers.
 
-POWER9 also introduced a new feature that automatically clears the irq
-status in the LPC host controller when EOI'ed, so software does not have
-to.
+This implements the ADU LPC memory access functionality sufficiently
+for IBM proprietary firmware to access the UART and print characters
+to the serial port as it does on real hardware.
 
-The powernv OPAL (skiboot) firmware managed to work because the LPCHC
-irq handler scanned all LPC irqs and handled those including clearing
-status even on POWER9 systems. So LPC irqs worked despite OPAL thinking
-it was running in POWER9 mode. After this change, UART interrupts show
-up on serirq1 which is where OPAL routes them to:
+This requires a linkage between adu and lpc, which allows adu to
+perform memory access in the lpc space.
 
- cat /proc/interrupts
- ...
- 20:          0  XIVE-IRQ 1048563 Level     opal-psi#0:lpchc
- ...
- 25:         34  XIVE-IRQ 1048568 Level     opal-psi#0:lpc_serirq_mux1
-
-Whereas they previously turn up on lpchc.
-
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c             |  36 +++++++++--
- hw/ppc/pnv_lpc.c         | 128 ++++++++++++++++++++++++++++++++-------
- include/hw/ppc/pnv_lpc.h |  14 ++++-
- 3 files changed, 148 insertions(+), 30 deletions(-)
+ hw/ppc/pnv.c             |  4 ++
+ hw/ppc/pnv_adu.c         | 95 ++++++++++++++++++++++++++++++++++++++++
+ hw/ppc/pnv_lpc.c         | 12 ++---
+ include/hw/ppc/pnv_adu.h |  7 +++
+ include/hw/ppc/pnv_lpc.h |  5 +++
+ 5 files changed, 117 insertions(+), 6 deletions(-)
 
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 13cebd6ab9..f56dcf6597 100644
+index 689197cbb7..91ff1be21f 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -727,7 +727,8 @@ static ISABus *pnv_chip_power8_isa_create(PnvChip *chip, Error **errp)
-     Pnv8Chip *chip8 = PNV8_CHIP(chip);
-     qemu_irq irq = qdev_get_gpio_in(DEVICE(&chip8->psi), PSIHB_IRQ_EXTERNAL);
- 
--    qdev_connect_gpio_out(DEVICE(&chip8->lpc), 0, irq);
-+    qdev_connect_gpio_out_named(DEVICE(&chip8->lpc), "LPCHC", 0, irq);
-+
-     return pnv_lpc_isa_create(&chip8->lpc, true, errp);
- }
- 
-@@ -736,25 +737,48 @@ static ISABus *pnv_chip_power8nvl_isa_create(PnvChip *chip, Error **errp)
-     Pnv8Chip *chip8 = PNV8_CHIP(chip);
-     qemu_irq irq = qdev_get_gpio_in(DEVICE(&chip8->psi), PSIHB_IRQ_LPC_I2C);
- 
--    qdev_connect_gpio_out(DEVICE(&chip8->lpc), 0, irq);
-+    qdev_connect_gpio_out_named(DEVICE(&chip8->lpc), "LPCHC", 0, irq);
-+
-     return pnv_lpc_isa_create(&chip8->lpc, false, errp);
- }
- 
- static ISABus *pnv_chip_power9_isa_create(PnvChip *chip, Error **errp)
- {
-     Pnv9Chip *chip9 = PNV9_CHIP(chip);
--    qemu_irq irq = qdev_get_gpio_in(DEVICE(&chip9->psi), PSIHB9_IRQ_LPCHC);
-+    qemu_irq irq;
-+
-+    irq = qdev_get_gpio_in(DEVICE(&chip9->psi), PSIHB9_IRQ_LPCHC);
-+    qdev_connect_gpio_out_named(DEVICE(&chip9->lpc), "LPCHC", 0, irq);
-+
-+    irq = qdev_get_gpio_in(DEVICE(&chip9->psi), PSIHB9_IRQ_LPC_SIRQ0);
-+    qdev_connect_gpio_out_named(DEVICE(&chip9->lpc), "SERIRQ", 0, irq);
-+    irq = qdev_get_gpio_in(DEVICE(&chip9->psi), PSIHB9_IRQ_LPC_SIRQ1);
-+    qdev_connect_gpio_out_named(DEVICE(&chip9->lpc), "SERIRQ", 1, irq);
-+    irq = qdev_get_gpio_in(DEVICE(&chip9->psi), PSIHB9_IRQ_LPC_SIRQ2);
-+    qdev_connect_gpio_out_named(DEVICE(&chip9->lpc), "SERIRQ", 2, irq);
-+    irq = qdev_get_gpio_in(DEVICE(&chip9->psi), PSIHB9_IRQ_LPC_SIRQ3);
-+    qdev_connect_gpio_out_named(DEVICE(&chip9->lpc), "SERIRQ", 3, irq);
- 
--    qdev_connect_gpio_out(DEVICE(&chip9->lpc), 0, irq);
-     return pnv_lpc_isa_create(&chip9->lpc, false, errp);
- }
- 
- static ISABus *pnv_chip_power10_isa_create(PnvChip *chip, Error **errp)
- {
-     Pnv10Chip *chip10 = PNV10_CHIP(chip);
--    qemu_irq irq = qdev_get_gpio_in(DEVICE(&chip10->psi), PSIHB9_IRQ_LPCHC);
-+    qemu_irq irq;
-+
-+    irq = qdev_get_gpio_in(DEVICE(&chip10->psi), PSIHB9_IRQ_LPCHC);
-+    qdev_connect_gpio_out_named(DEVICE(&chip10->lpc), "LPCHC", 0, irq);
-+
-+    irq = qdev_get_gpio_in(DEVICE(&chip10->psi), PSIHB9_IRQ_LPC_SIRQ0);
-+    qdev_connect_gpio_out_named(DEVICE(&chip10->lpc), "SERIRQ", 0, irq);
-+    irq = qdev_get_gpio_in(DEVICE(&chip10->psi), PSIHB9_IRQ_LPC_SIRQ1);
-+    qdev_connect_gpio_out_named(DEVICE(&chip10->lpc), "SERIRQ", 1, irq);
-+    irq = qdev_get_gpio_in(DEVICE(&chip10->psi), PSIHB9_IRQ_LPC_SIRQ2);
-+    qdev_connect_gpio_out_named(DEVICE(&chip10->lpc), "SERIRQ", 2, irq);
-+    irq = qdev_get_gpio_in(DEVICE(&chip10->psi), PSIHB9_IRQ_LPC_SIRQ3);
-+    qdev_connect_gpio_out_named(DEVICE(&chip10->lpc), "SERIRQ", 3, irq);
- 
--    qdev_connect_gpio_out(DEVICE(&chip10->lpc), 0, irq);
-     return pnv_lpc_isa_create(&chip10->lpc, false, errp);
- }
- 
-diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index 7d26b29487..0f14e180af 100644
---- a/hw/ppc/pnv_lpc.c
-+++ b/hw/ppc/pnv_lpc.c
-@@ -64,6 +64,7 @@ enum {
- #define   LPC_HC_IRQSER_START_4CLK      0x00000000
- #define   LPC_HC_IRQSER_START_6CLK      0x01000000
- #define   LPC_HC_IRQSER_START_8CLK      0x02000000
-+#define   LPC_HC_IRQSER_AUTO_CLEAR      0x00800000
- #define LPC_HC_IRQMASK          0x34    /* same bit defs as LPC_HC_IRQSTAT */
- #define LPC_HC_IRQSTAT          0x38
- #define   LPC_HC_IRQ_SERIRQ0            0x80000000 /* all bits down to ... */
-@@ -420,32 +421,90 @@ static const MemoryRegionOps pnv_lpc_mmio_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
--static void pnv_lpc_eval_irqs(PnvLpcController *lpc)
-+/* Program the POWER9 LPC irq to PSI serirq routing table */
-+static void pnv_lpc_eval_serirq_routes(PnvLpcController *lpc)
- {
--    bool lpc_to_opb_irq = false;
-+    int irq;
- 
--    /* Update LPC controller to OPB line */
--    if (lpc->lpc_hc_irqser_ctrl & LPC_HC_IRQSER_EN) {
--        uint32_t irqs;
-+    if (!lpc->psi_has_serirq) {
-+        if ((lpc->opb_irq_route0 & PPC_BITMASK(8, 13)) ||
-+            (lpc->opb_irq_route1 & PPC_BITMASK(4, 31))) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                "OPB: setting serirq routing on POWER8 system, ignoring.\n");
-+        }
-+        return;
-+    }
- 
--        irqs = lpc->lpc_hc_irqstat & lpc->lpc_hc_irqmask;
--        lpc_to_opb_irq = (irqs != 0);
-+    for (irq = 0; irq <= 13; irq++) {
-+        int serirq = (lpc->opb_irq_route1 >> (31 - 5 - (irq * 2))) & 0x3;
-+        lpc->irq_to_serirq_route[irq] = serirq;
+@@ -1663,6 +1663,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
      }
  
--    /* We don't honor the polarity register, it's pointless and unused
--     * anyway
--     */
--    if (lpc_to_opb_irq) {
--        lpc->opb_irq_input |= OPB_MASTER_IRQ_LPC;
--    } else {
--        lpc->opb_irq_input &= ~OPB_MASTER_IRQ_LPC;
-+    for (irq = 14; irq < ISA_NUM_IRQS; irq++) {
-+        int serirq = (lpc->opb_irq_route0 >> (31 - 9 - (irq * 2))) & 0x3;
-+        lpc->irq_to_serirq_route[irq] = serirq;
-+    }
+     /* ADU */
++    object_property_set_link(OBJECT(&chip9->adu), "lpc", OBJECT(&chip9->lpc),
++                             &error_abort);
+     if (!qdev_realize(DEVICE(&chip9->adu), NULL, errp)) {
+         return;
+     }
+@@ -1929,6 +1931,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /* ADU */
++    object_property_set_link(OBJECT(&chip10->adu), "lpc", OBJECT(&chip10->lpc),
++                             &error_abort);
+     if (!qdev_realize(DEVICE(&chip10->adu), NULL, errp)) {
+         return;
+     }
+diff --git a/hw/ppc/pnv_adu.c b/hw/ppc/pnv_adu.c
+index 8279bc8b26..81b7d6e526 100644
+--- a/hw/ppc/pnv_adu.c
++++ b/hw/ppc/pnv_adu.c
+@@ -21,11 +21,18 @@
+ #include "hw/ppc/pnv.h"
+ #include "hw/ppc/pnv_adu.h"
+ #include "hw/ppc/pnv_chip.h"
++#include "hw/ppc/pnv_lpc.h"
+ #include "hw/ppc/pnv_xscom.h"
+ #include "trace.h"
+ 
++#define ADU_LPC_BASE_REG     0x40
++#define ADU_LPC_CMD_REG      0x41
++#define ADU_LPC_DATA_REG     0x42
++#define ADU_LPC_STATUS_REG   0x43
++
+ static uint64_t pnv_adu_xscom_read(void *opaque, hwaddr addr, unsigned width)
+ {
++    PnvADU *adu = PNV_ADU(opaque);
+     uint32_t offset = addr >> 3;
+     uint64_t val = 0;
+ 
+@@ -34,6 +41,24 @@ static uint64_t pnv_adu_xscom_read(void *opaque, hwaddr addr, unsigned width)
+     case 0x12:     /* log register */
+     case 0x13:     /* error register */
+         break;
++    case ADU_LPC_BASE_REG:
++        /*
++         * LPC Address Map in Pervasive ADU Workbook
++         *
++         * return PNV10_LPCM_BASE(chip) & PPC_BITMASK(8, 31);
++         * XXX: implement as class property, or get from LPC?
++         */
++        qemu_log_mask(LOG_UNIMP, "ADU: LPC_BASE_REG is not implemented\n");
++        break;
++    case ADU_LPC_CMD_REG:
++        val = adu->lpc_cmd_reg;
++        break;
++    case ADU_LPC_DATA_REG:
++        val = adu->lpc_data_reg;
++        break;
++    case ADU_LPC_STATUS_REG:
++        val = PPC_BIT(0); /* ack / done */
++        break;
+ 
+     default:
+         qemu_log_mask(LOG_UNIMP, "ADU Unimplemented read register: Ox%08x\n",
+@@ -45,9 +70,30 @@ static uint64_t pnv_adu_xscom_read(void *opaque, hwaddr addr, unsigned width)
+     return val;
+ }
+ 
++static bool lpc_cmd_read(PnvADU *adu)
++{
++    return !!(adu->lpc_cmd_reg & PPC_BIT(0));
 +}
 +
-+static void pnv_lpc_eval_irqs(PnvLpcController *lpc)
++static bool lpc_cmd_write(PnvADU *adu)
 +{
-+    uint32_t active_irqs = 0;
++    return !lpc_cmd_read(adu);
++}
 +
-+    if (lpc->lpc_hc_irqstat & PPC_BITMASK32(16, 31)) {
-+        qemu_log_mask(LOG_UNIMP, "LPC HC Unimplemented irqs in IRQSTAT: "
-+                                 "0x%08"PRIx32"\n", lpc->lpc_hc_irqstat);
-     }
++static uint32_t lpc_cmd_addr(PnvADU *adu)
++{
++    return (adu->lpc_cmd_reg & PPC_BITMASK(32, 63)) >> PPC_BIT_NR(63);
++}
++
++static uint32_t lpc_cmd_size(PnvADU *adu)
++{
++    return (adu->lpc_cmd_reg & PPC_BITMASK(5, 11)) >> PPC_BIT_NR(11);
++}
++
+ static void pnv_adu_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+                                 unsigned width)
+ {
++    PnvADU *adu = PNV_ADU(opaque);
+     uint32_t offset = addr >> 3;
  
--    /* Update OPB internal latch */
--    lpc->opb_irq_stat |= lpc->opb_irq_input & lpc->opb_irq_mask;
-+    if (lpc->lpc_hc_irqser_ctrl & LPC_HC_IRQSER_EN) {
-+        active_irqs = lpc->lpc_hc_irqstat & lpc->lpc_hc_irqmask;
-+    }
+     trace_pnv_adu_xscom_write(addr, val);
+@@ -58,6 +104,47 @@ static void pnv_adu_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+     case 0x13:     /* error register */
+         break;
  
-     /* Reflect the interrupt */
--    qemu_set_irq(lpc->psi_irq, lpc->opb_irq_stat != 0);
-+    if (!lpc->psi_has_serirq) {
-+        /*
-+         * POWER8 ORs all irqs together (also with LPCHC internal interrupt
-+         * sources) and outputs a single line that raises the PSI LPCHC irq
-+         * which then latches an OPB IRQ status register that sends the irq
-+         * to PSI.
-+         *
-+         * We don't honor the polarity register, it's pointless and unused
-+         * anyway
-+         */
-+        if (active_irqs) {
-+            lpc->opb_irq_input |= OPB_MASTER_IRQ_LPC;
-+        } else {
-+            lpc->opb_irq_input &= ~OPB_MASTER_IRQ_LPC;
++    case ADU_LPC_BASE_REG:
++        qemu_log_mask(LOG_UNIMP,
++                      "ADU: Changing LPC_BASE_REG is not implemented\n");
++        break;
++
++    case ADU_LPC_CMD_REG:
++        adu->lpc_cmd_reg = val;
++        if (lpc_cmd_read(adu)) {
++            uint32_t lpc_addr = lpc_cmd_addr(adu);
++            uint32_t lpc_size = lpc_cmd_size(adu);
++            uint64_t data = 0;
++
++            pnv_lpc_opb_read(adu->lpc, lpc_addr, (void *)&data, lpc_size);
++
++            /*
++             * ADU access is performed within 8-byte aligned sectors. Smaller
++             * access sizes don't get formatted to the least significant byte,
++             * but rather appear in the data reg at the same offset as the
++             * address in memory. This shifts them into that position.
++             */
++            adu->lpc_data_reg = be64_to_cpu(data) >> ((lpc_addr & 7) * 8);
 +        }
++        break;
 +
-+        /* Update OPB internal latch */
-+        lpc->opb_irq_stat |= lpc->opb_irq_input & lpc->opb_irq_mask;
++    case ADU_LPC_DATA_REG:
++        adu->lpc_data_reg = val;
++        if (lpc_cmd_write(adu)) {
++            uint32_t lpc_addr = lpc_cmd_addr(adu);
++            uint32_t lpc_size = lpc_cmd_size(adu);
++            uint64_t data;
 +
-+        qemu_set_irq(lpc->psi_irq_lpchc, lpc->opb_irq_stat != 0);
-+    } else {
-+        /*
-+         * POWER9 and POWER10 have routing fields in OPB master registers that
-+         * send LPC irqs to 4 output lines that raise the PSI SERIRQ irqs.
-+         * These don't appear to get latched into an OPB register like the
-+         * LPCHC irqs.
-+         *
-+         * POWER9 LPC controller internal irqs still go via the OPB
-+         * and LPCHC PSI irqs like P8, but we have no such internal sources
-+         * modelled yet.
-+         */
-+        bool serirq_out[4] = { false, false, false, false };
-+        int irq;
-+
-+        for (irq = 0; irq < ISA_NUM_IRQS; irq++) {
-+            if (active_irqs & (LPC_HC_IRQ_SERIRQ0 >> irq)) {
-+                serirq_out[lpc->irq_to_serirq_route[irq]] = true;
-+            }
++            data = cpu_to_be64(val) >> ((lpc_addr & 7) * 8); /* See above */
++            pnv_lpc_opb_write(adu->lpc, lpc_addr, (void *)&data, lpc_size);
 +        }
++        break;
 +
-+        qemu_set_irq(lpc->psi_irq_serirq[0], serirq_out[0]);
-+        qemu_set_irq(lpc->psi_irq_serirq[1], serirq_out[1]);
-+        qemu_set_irq(lpc->psi_irq_serirq[2], serirq_out[2]);
-+        qemu_set_irq(lpc->psi_irq_serirq[3], serirq_out[3]);
-+    }
++    case ADU_LPC_STATUS_REG:
++        qemu_log_mask(LOG_UNIMP,
++                      "ADU: Changing LPC_STATUS_REG is not implemented\n");
++        break;
++
+     default:
+         qemu_log_mask(LOG_UNIMP, "ADU Unimplemented write register: Ox%08x\n",
+                                                                      offset);
+@@ -78,18 +165,26 @@ static void pnv_adu_realize(DeviceState *dev, Error **errp)
+ {
+     PnvADU *adu = PNV_ADU(dev);
+ 
++    assert(adu->lpc);
++
+     /* XScom regions for ADU registers */
+     pnv_xscom_region_init(&adu->xscom_regs, OBJECT(dev),
+                           &pnv_adu_xscom_ops, adu, "xscom-adu",
+                           PNV9_XSCOM_ADU_SIZE);
  }
  
- static uint64_t lpc_hc_read(void *opaque, hwaddr addr, unsigned size)
-@@ -543,10 +602,10 @@ static uint64_t opb_master_read(void *opaque, hwaddr addr, unsigned size)
-     uint64_t val = 0xfffffffffffffffful;
- 
-     switch (addr) {
--    case OPB_MASTER_LS_ROUTE0: /* TODO */
-+    case OPB_MASTER_LS_ROUTE0:
-         val = lpc->opb_irq_route0;
-         break;
--    case OPB_MASTER_LS_ROUTE1: /* TODO */
-+    case OPB_MASTER_LS_ROUTE1:
-         val = lpc->opb_irq_route1;
-         break;
-     case OPB_MASTER_LS_IRQ_STAT:
-@@ -575,11 +634,15 @@ static void opb_master_write(void *opaque, hwaddr addr,
-     PnvLpcController *lpc = opaque;
- 
-     switch (addr) {
--    case OPB_MASTER_LS_ROUTE0: /* TODO */
-+    case OPB_MASTER_LS_ROUTE0:
-         lpc->opb_irq_route0 = val;
-+        pnv_lpc_eval_serirq_routes(lpc);
-+        pnv_lpc_eval_irqs(lpc);
-         break;
--    case OPB_MASTER_LS_ROUTE1: /* TODO */
-+    case OPB_MASTER_LS_ROUTE1:
-         lpc->opb_irq_route1 = val;
-+        pnv_lpc_eval_serirq_routes(lpc);
-+        pnv_lpc_eval_irqs(lpc);
-         break;
-     case OPB_MASTER_LS_IRQ_STAT:
-         lpc->opb_irq_stat &= ~val;
-@@ -664,6 +727,8 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
-     PnvLpcClass *plc = PNV_LPC_GET_CLASS(dev);
-     Error *local_err = NULL;
- 
-+    object_property_set_bool(OBJECT(lpc), "psi-serirq", true, &error_abort);
-+
-     plc->parent_realize(dev, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
-@@ -673,6 +738,9 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
-     /* P9 uses a MMIO region */
-     memory_region_init_io(&lpc->xscom_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
-                           lpc, "lpcm", PNV9_LPCM_SIZE);
-+
-+    /* P9 LPC routes ISA irqs to 4 PSI SERIRQ lines */
-+    qdev_init_gpio_out_named(dev, lpc->psi_irq_serirq, "SERIRQ", 4);
- }
- 
- static void pnv_lpc_power9_class_init(ObjectClass *klass, void *data)
-@@ -751,13 +819,19 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
-                                 &lpc->lpc_hc_regs);
- 
--    qdev_init_gpio_out(dev, &lpc->psi_irq, 1);
-+    qdev_init_gpio_out_named(dev, &lpc->psi_irq_lpchc, "LPCHC", 1);
- }
- 
-+static Property pnv_lpc_properties[] = {
-+    DEFINE_PROP_BOOL("psi-serirq", PnvLpcController, psi_has_serirq, false),
++static Property pnv_adu_properties[] = {
++    DEFINE_PROP_LINK("lpc", PnvADU, lpc, TYPE_PNV_LPC, PnvLpcController *),
 +    DEFINE_PROP_END_OF_LIST(),
 +};
 +
- static void pnv_lpc_class_init(ObjectClass *klass, void *data)
+ static void pnv_adu_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
  
-+    device_class_set_props(dc, pnv_lpc_properties);
-     dc->realize = pnv_lpc_realize;
-     dc->desc = "PowerNV LPC Controller";
+     dc->realize = pnv_adu_realize;
+     dc->desc = "PowerNV ADU";
++    device_class_set_props(dc, pnv_adu_properties);
      dc->user_creatable = false;
-@@ -803,7 +877,7 @@ static void pnv_lpc_isa_irq_handler_cpld(void *opaque, int n, int level)
-     }
- 
-     if (pnv->cpld_irqstate != old_state) {
--        qemu_set_irq(lpc->psi_irq, pnv->cpld_irqstate != 0);
-+        qemu_set_irq(lpc->psi_irq_lpchc, pnv->cpld_irqstate != 0);
-     }
  }
  
-@@ -824,6 +898,13 @@ static void pnv_lpc_isa_irq_handler(void *opaque, int n, int level)
-         pnv_lpc_eval_irqs(lpc);
-     } else {
-         lpc->lpc_hc_irq_inputs &= ~irq_bit;
-+
-+        /* POWER9 adds an auto-clear mode that clears IRQSTAT bits on EOI */
-+        if (lpc->psi_has_serirq &&
-+            (lpc->lpc_hc_irqser_ctrl & LPC_HC_IRQSER_AUTO_CLEAR)) {
-+            lpc->lpc_hc_irqstat &= ~irq_bit;
-+            pnv_lpc_eval_irqs(lpc);
-+        }
-     }
+diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+index 0f14e180af..f8aad955b5 100644
+--- a/hw/ppc/pnv_lpc.c
++++ b/hw/ppc/pnv_lpc.c
+@@ -236,16 +236,16 @@ int pnv_dt_lpc(PnvChip *chip, void *fdt, int root_offset, uint64_t lpcm_addr,
+  * TODO: rework to use address_space_stq() and address_space_ldq()
+  * instead.
+  */
+-static bool opb_read(PnvLpcController *lpc, uint32_t addr, uint8_t *data,
+-                     int sz)
++bool pnv_lpc_opb_read(PnvLpcController *lpc, uint32_t addr,
++                      uint8_t *data, int sz)
+ {
+     /* XXX Handle access size limits and FW read caching here */
+     return !address_space_read(&lpc->opb_as, addr, MEMTXATTRS_UNSPECIFIED,
+                                data, sz);
  }
  
-@@ -854,6 +935,7 @@ ISABus *pnv_lpc_isa_create(PnvLpcController *lpc, bool use_cpld, Error **errp)
-         handler = pnv_lpc_isa_irq_handler;
+-static bool opb_write(PnvLpcController *lpc, uint32_t addr, uint8_t *data,
+-                      int sz)
++bool pnv_lpc_opb_write(PnvLpcController *lpc, uint32_t addr,
++                       uint8_t *data, int sz)
+ {
+     /* XXX Handle access size limits here */
+     return !address_space_write(&lpc->opb_as, addr, MEMTXATTRS_UNSPECIFIED,
+@@ -277,7 +277,7 @@ static void pnv_lpc_do_eccb(PnvLpcController *lpc, uint64_t cmd)
      }
  
-+    /* POWER has a 17th irq, QEMU only implements the 16 regular device irqs */
-     irqs = qemu_allocate_irqs(handler, lpc, ISA_NUM_IRQS);
+     if (cmd & ECCB_CTL_READ) {
+-        success = opb_read(lpc, opb_addr, data, sz);
++        success = pnv_lpc_opb_read(lpc, opb_addr, data, sz);
+         if (success) {
+             lpc->eccb_stat_reg = ECCB_STAT_OP_DONE |
+                     (((uint64_t)data[0]) << 24 |
+@@ -294,7 +294,7 @@ static void pnv_lpc_do_eccb(PnvLpcController *lpc, uint64_t cmd)
+         data[2] = lpc->eccb_data_reg >>  8;
+         data[3] = lpc->eccb_data_reg;
  
-     isa_bus_register_input_irqs(isa_bus, irqs);
-diff --git a/include/hw/ppc/pnv_lpc.h b/include/hw/ppc/pnv_lpc.h
-index 97c6872c3f..e0fd5e4130 100644
---- a/include/hw/ppc/pnv_lpc.h
-+++ b/include/hw/ppc/pnv_lpc.h
-@@ -23,6 +23,7 @@
- #include "exec/memory.h"
+-        success = opb_write(lpc, opb_addr, data, sz);
++        success = pnv_lpc_opb_write(lpc, opb_addr, data, sz);
+         lpc->eccb_stat_reg = ECCB_STAT_OP_DONE;
+     }
+     /* XXX Which error bit (if any) to signal OPB error ? */
+diff --git a/include/hw/ppc/pnv_adu.h b/include/hw/ppc/pnv_adu.h
+index b5f308627b..f9dbd8c8b3 100644
+--- a/include/hw/ppc/pnv_adu.h
++++ b/include/hw/ppc/pnv_adu.h
+@@ -10,6 +10,7 @@
+ #define PPC_PNV_ADU_H
+ 
  #include "hw/ppc/pnv.h"
++#include "hw/ppc/pnv_lpc.h"
  #include "hw/qdev-core.h"
-+#include "hw/isa/isa.h" /* For ISA_NUM_IRQS */
  
- #define TYPE_PNV_LPC "pnv-lpc"
- typedef struct PnvLpcClass PnvLpcClass;
-@@ -87,8 +88,19 @@ struct PnvLpcController {
-     /* XSCOM registers */
+ #define TYPE_PNV_ADU "pnv-adu"
+@@ -19,6 +20,12 @@ OBJECT_DECLARE_TYPE(PnvADU, PnvADUClass, PNV_ADU)
+ struct PnvADU {
+     DeviceState xd;
+ 
++    /* LPCMC (LPC Master Controller) access engine */
++    PnvLpcController *lpc;
++    uint64_t     lpc_base_reg;
++    uint64_t     lpc_cmd_reg;
++    uint64_t     lpc_data_reg;
++
      MemoryRegion xscom_regs;
- 
-+    /*
-+     * In P8, ISA irqs are combined with internal sources to drive the
-+     * LPCHC interrupt output. P9 ISA irqs raise one of 4 lines that
-+     * drive PSI SERIRQ irqs, routing according to OPB routing registers.
-+     */
-+    bool psi_has_serirq;
-+
-     /* PSI to generate interrupts */
--    qemu_irq psi_irq;
-+    qemu_irq psi_irq_lpchc;
-+
-+    /* P9 serirq lines and irq routing table */
-+    qemu_irq psi_irq_serirq[4];
-+    int irq_to_serirq_route[ISA_NUM_IRQS];
  };
  
- struct PnvLpcClass {
+diff --git a/include/hw/ppc/pnv_lpc.h b/include/hw/ppc/pnv_lpc.h
+index e0fd5e4130..174add4c53 100644
+--- a/include/hw/ppc/pnv_lpc.h
++++ b/include/hw/ppc/pnv_lpc.h
+@@ -109,6 +109,11 @@ struct PnvLpcClass {
+     DeviceRealize parent_realize;
+ };
+ 
++bool pnv_lpc_opb_read(PnvLpcController *lpc, uint32_t addr,
++                      uint8_t *data, int sz);
++bool pnv_lpc_opb_write(PnvLpcController *lpc, uint32_t addr,
++                       uint8_t *data, int sz);
++
+ ISABus *pnv_lpc_isa_create(PnvLpcController *lpc, bool use_cpld, Error **errp);
+ int pnv_dt_lpc(PnvChip *chip, void *fdt, int root_offset,
+                uint64_t lpcm_addr, uint64_t lpcm_size);
 -- 
 2.45.2
 
