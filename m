@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526CF93CBF0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA8E93CBBE
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8Lq-0007wL-Ua; Thu, 25 Jul 2024 19:58:26 -0400
+	id 1sX8Lt-00087B-6d; Thu, 25 Jul 2024 19:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8LW-0006F3-Rw; Thu, 25 Jul 2024 19:58:12 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1sX8LZ-0006SP-Sz; Thu, 25 Jul 2024 19:58:13 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8LT-0001Vb-Ok; Thu, 25 Jul 2024 19:58:06 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-656d8b346d2so283976a12.2; 
- Thu, 25 Jul 2024 16:58:02 -0700 (PDT)
+ id 1sX8LX-0001W7-AA; Thu, 25 Jul 2024 19:58:09 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2cb5787b4a5so293641a91.2; 
+ Thu, 25 Jul 2024 16:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951882; x=1722556682; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951885; x=1722556685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ksbtOr2fFR9ZvnrgX2otizuG+rARTiSjYmU8A5zEVWc=;
- b=aMrVr+Szg2TI5V4Yjt95pTVbPaqzAEyxUfLEEcnY8qWZknflfYoqkPcOd5Pe4vx8gz
- i+JBV8C5qcI1POcPIrheksFj6Ck8THjzdyIYp7GbLe6NVH9XjFaIelp2KG5LrLIiTswU
- ONknL/LeBLFxZH16cy0VypLvU4LNR1+aqt6EZLMheHsdanb93roP/zGaJYjjYksHInTk
- w8kxDrd9cVpIjmun4GV6bb2FaqkKWbQUwg8twWt+OdSxzJEIxw+ymmBBfHX+Db/e+upc
- L5uVf0A6R85tVVhDokK9IDla/r+LFmAUgfxCQFczpbyG5AvAiq2FvLiDoMbHYDlMEFpo
- uURw==
+ bh=AQAKqLoljGdbIxBw31Wuprqd07PqhNDcpZhqslXNEDU=;
+ b=hkhRxGU0uJQZgpgBTZCHO1DMLePi1hDCQfUWzMtP2EAOxzPyg3DChwlF9CnbgOCsm1
+ Ml+UnAYyCfZr3LpvttXsXqRO4o+ZjSc4xG1MmaFWYv5CJkAOdnVsimoNdzPUGu4EqdJu
+ Pdfsw5pzAeEs3rrAl0ce89f3bRlrK234vc09toKBTDBvt5mi0ZDK1zEEkSwBblEvmZGW
+ QLfCuJU77RCCD5wp8jirAwfT9fopB9LgRnQo0jQf7uzrzZfn9wg1r/heKUAXkkdMoub3
+ 3zMkPNS8pSku7MKW912zOwVJwy4DwBnm34p3mYF9lfvuhJBibszQVyiISKn4+jUYeu3W
+ Dp3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951882; x=1722556682;
+ d=1e100.net; s=20230601; t=1721951885; x=1722556685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ksbtOr2fFR9ZvnrgX2otizuG+rARTiSjYmU8A5zEVWc=;
- b=iEHthHrZWVngneTXCuEbbw8acBoygmqEeMb0gX6/b+4S+uwHuFMy4ImOBlzcLLOm+k
- c+rI7ptyTTJLRVWxOMjTv3Kruhcl7BQYRT88Om4yJjx13pShX5mG7CdJ5RRc6Vwm394c
- IztOMw5CmbiSTzHJ08OXY2VIBoNC6e9sbrSUBGFmaT5VqML1GKXFuNhbBd2bWIq5s6ru
- L1adanCFLX5cSuWqW/cSnUUNjYqhqfJfgv/RIrfNh9wdedv9j3i3F9wtjXHhe6j82bUS
- LVasHaiWeJuBXhp1VFTP8TNwfTrWUoFfu4xtND/cvRfQmxm3xQo4jLBhgJfaAGGIsyau
- c2DQ==
+ bh=AQAKqLoljGdbIxBw31Wuprqd07PqhNDcpZhqslXNEDU=;
+ b=uAU1SwNDbzEKO4gdTDg8CBrVU/I3NkLNck/5+c5BFPttdCo5MYFAibwIxVd8ulB9K8
+ zzHhxr78T/FAZUdr0DOuvwZgDgpe4Kt9Z0nsmm82FFwSgco7YFkdmy4s58on72QauZD0
+ N+Q/yRAn02laCTanLeTz1oOye3eAQRYZQTlh6GJraXBwDOihUA2VePI3NCH6Uazwvf01
+ nk0f1p+4+ltmb7TShiMTzVAdTl4Ddtj0o4UlvgVHz9EpKD37qm4iwxPk62GXShiNt0hS
+ Z4NjKtyNwB8NLBqhjROZfdDKyx00AB40kYuvQ0x2qGZzeJVKxgK3HDqZstw/+D2YKc6U
+ 0vFQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2hnpF3RsQyWnjR1xuonPYfMMGJy4qYuxfdFproydtHsiuZ8lUXD0Go4NIYRUFpTZnDuA8IjToL2t0uxYvmidnvo78
-X-Gm-Message-State: AOJu0Yz7rAO9VnGw91LobbfMlKn61tUVc0IoRQViNh2MVOyVTp3e0MIF
- DHlbOqI/Jb1yoN/RCVT/cYlDrmNcpxJpDNbrW2j9DwhfmixtM60EjkMYlA==
-X-Google-Smtp-Source: AGHT+IE7oMaBNE8FXpTmKLzVq15gqR0VhQXNK/wQujz/xmVrq4BKTtWcKAa55mRRkWmMM0VnUjVzPg==
-X-Received: by 2002:a17:90b:4ec5:b0:2c8:647:1600 with SMTP id
- 98e67ed59e1d1-2cf2e9ab28emr3652635a91.9.1721951881523; 
- Thu, 25 Jul 2024 16:58:01 -0700 (PDT)
+ AJvYcCW/AEnRIUOIPhu0GkiO/bXhwygJ+lv8UBMRSfBE1qKCsmz8O2QB3tmQWVIeWdgrvqPXBNKbecYA6WcsXO+cKERxHiu5
+X-Gm-Message-State: AOJu0YzpkGyvB2Az0s0lkYJsDQHQd+RCghFUJJkD2XJsrlGPRwSGs7/c
+ 26N8t02B2K5tNO46FBhBBe7DvmCPgUkfQHH3ghz61rCPFNyaJlpNG1/hDA==
+X-Google-Smtp-Source: AGHT+IHtOqSSXIswo7r84MlH2Ge2MmE6EdHNxp/zinp4DHRR/U4IyYNH6a2kIuGam5k4bm4axkpEgw==
+X-Received: by 2002:a17:90a:3ea3:b0:2c9:8f14:c02e with SMTP id
+ 98e67ed59e1d1-2cf23772f87mr5307408a91.1.1721951885169; 
+ Thu, 25 Jul 2024 16:58:05 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.57.58
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.58.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:58:01 -0700 (PDT)
+ Thu, 25 Jul 2024 16:58:04 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Chinmay Rath <rathc@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 60/96] target/ppc: Move VSX vector storage access insns to
- decodetree.
-Date: Fri, 26 Jul 2024 09:53:33 +1000
-Message-ID: <20240725235410.451624-61-npiggin@gmail.com>
+Subject: [PULL 61/96] target/ppc: Move VSX fp compare insns to decodetree.
+Date: Fri, 26 Jul 2024 09:53:34 +1000
+Message-ID: <20240725235410.451624-62-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,405 +97,215 @@ From: Chinmay Rath <rathc@linux.ibm.com>
 
 Moving the following instructions to decodetree specification:
 
-  lxv{b16, d2, h8, w4, ds, ws}x   : X-form
-  stxv{b16, d2, h8, w4}x          : X-form
+	xvcmp{eq, gt, ge, ne}{s, d}p	: XX3-form
 
 The changes were verified by validating that the tcg-ops generated for those
-instructions remain the same, which were captured using the '-d in_asm,op' flag.
+instructions remain the same which were captured using the '-d in_asm,op' flag.
 
 Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/insn32.decode            |  10 ++
- target/ppc/translate/vsx-impl.c.inc | 199 ++++++++++++----------------
- target/ppc/translate/vsx-ops.c.inc  |  12 --
- 3 files changed, 97 insertions(+), 124 deletions(-)
+ target/ppc/fpu_helper.c             | 16 +++++-----
+ target/ppc/helper.h                 | 16 +++++-----
+ target/ppc/insn32.decode            | 12 ++++++++
+ target/ppc/translate/vsx-impl.c.inc | 46 +++++++++++++----------------
+ target/ppc/translate/vsx-ops.c.inc  | 18 -----------
+ 5 files changed, 48 insertions(+), 60 deletions(-)
 
+diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
+index 3f2e4f5827..230466a87f 100644
+--- a/target/ppc/fpu_helper.c
++++ b/target/ppc/fpu_helper.c
+@@ -2527,14 +2527,14 @@ uint32_t helper_##op(CPUPPCState *env, ppc_vsr_t *xt,                     \
+     return crf6;                                                          \
+ }
+ 
+-VSX_CMP(xvcmpeqdp, 2, float64, VsrD(i), eq, 0, 1)
+-VSX_CMP(xvcmpgedp, 2, float64, VsrD(i), le, 1, 1)
+-VSX_CMP(xvcmpgtdp, 2, float64, VsrD(i), lt, 1, 1)
+-VSX_CMP(xvcmpnedp, 2, float64, VsrD(i), eq, 0, 0)
+-VSX_CMP(xvcmpeqsp, 4, float32, VsrW(i), eq, 0, 1)
+-VSX_CMP(xvcmpgesp, 4, float32, VsrW(i), le, 1, 1)
+-VSX_CMP(xvcmpgtsp, 4, float32, VsrW(i), lt, 1, 1)
+-VSX_CMP(xvcmpnesp, 4, float32, VsrW(i), eq, 0, 0)
++VSX_CMP(XVCMPEQDP, 2, float64, VsrD(i), eq, 0, 1)
++VSX_CMP(XVCMPGEDP, 2, float64, VsrD(i), le, 1, 1)
++VSX_CMP(XVCMPGTDP, 2, float64, VsrD(i), lt, 1, 1)
++VSX_CMP(XVCMPNEDP, 2, float64, VsrD(i), eq, 0, 0)
++VSX_CMP(XVCMPEQSP, 4, float32, VsrW(i), eq, 0, 1)
++VSX_CMP(XVCMPGESP, 4, float32, VsrW(i), le, 1, 1)
++VSX_CMP(XVCMPGTSP, 4, float32, VsrW(i), lt, 1, 1)
++VSX_CMP(XVCMPNESP, 4, float32, VsrW(i), eq, 0, 0)
+ 
+ /*
+  * VSX_CVT_FP_TO_FP - VSX floating point/floating point conversion
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 85be749004..5a77e761bd 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -476,10 +476,10 @@ DEF_HELPER_5(xvnmadddp, void, env, vsr, vsr, vsr, vsr)
+ DEF_HELPER_5(xvnmsubdp, void, env, vsr, vsr, vsr, vsr)
+ DEF_HELPER_4(XVMAXDP, void, env, vsr, vsr, vsr)
+ DEF_HELPER_4(XVMINDP, void, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpeqdp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpgedp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpgtdp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpnedp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPEQDP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPGEDP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPGTDP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPNEDP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+ DEF_HELPER_3(xvcvdpsp, void, env, vsr, vsr)
+ DEF_HELPER_3(xvcvdpsxds, void, env, vsr, vsr)
+ DEF_HELPER_3(xvcvdpsxws, void, env, vsr, vsr)
+@@ -510,10 +510,10 @@ DEF_HELPER_5(xvnmaddsp, void, env, vsr, vsr, vsr, vsr)
+ DEF_HELPER_5(xvnmsubsp, void, env, vsr, vsr, vsr, vsr)
+ DEF_HELPER_4(XVMAXSP, void, env, vsr, vsr, vsr)
+ DEF_HELPER_4(XVMINSP, void, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpeqsp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpgesp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpgtsp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+-DEF_HELPER_FLAGS_4(xvcmpnesp, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPEQSP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPGESP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPGTSP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
++DEF_HELPER_FLAGS_4(XVCMPNESP, TCG_CALL_NO_RWG, i32, env, vsr, vsr, vsr)
+ DEF_HELPER_3(xvcvspdp, void, env, vsr, vsr)
+ DEF_HELPER_3(xvcvsphp, void, env, vsr, vsr)
+ DEF_HELPER_3(xvcvhpsp, void, env, vsr, vsr)
 diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index e87b034159..77869cfb33 100644
+index 77869cfb33..e53fd2840d 100644
 --- a/target/ppc/insn32.decode
 +++ b/target/ppc/insn32.decode
-@@ -1006,9 +1006,19 @@ STXSIHX         011111 ..... ..... ..... 1110101101 .   @X_TSX
- STXSIWX         011111 ..... ..... ..... 0010001100 .   @X_TSX
- STXSSPX         011111 ..... ..... ..... 1010001100 .   @X_TSX
+@@ -241,6 +241,9 @@
+ &XX3            xt xa xb
+ @XX3            ...... ..... ..... ..... ........ ...           &XX3 xt=%xx_xt xa=%xx_xa xb=%xx_xb
  
-+LXVB16X         011111 ..... ..... ..... 1101101100 .   @X_TSX
-+LXVD2X          011111 ..... ..... ..... 1101001100 .   @X_TSX
-+LXVH8X          011111 ..... ..... ..... 1100101100 .   @X_TSX
-+LXVW4X          011111 ..... ..... ..... 1100001100 .   @X_TSX
-+LXVDSX          011111 ..... ..... ..... 0101001100 .   @X_TSX
-+LXVWSX          011111 ..... ..... ..... 0101101100 .   @X_TSX
- LXVL            011111 ..... ..... ..... 0100001101 .   @X_TSX
- LXVLL           011111 ..... ..... ..... 0100101101 .   @X_TSX
++&XX3_rc         xt xa xb rc:bool
++@XX3_rc         ...... ..... ..... ..... rc:1 ....... ...       &XX3_rc xt=%xx_xt xa=%xx_xa xb=%xx_xb
++
+ # 32 bit GER instructions have all mask bits considered 1
+ &MMIRR_XX3      xa xb xt pmsk xmsk ymsk
+ %xx_at          23:3
+@@ -1124,6 +1127,15 @@ XSCMPEQQP       111111 ..... ..... ..... 0001000100 -   @X
+ XSCMPGEQP       111111 ..... ..... ..... 0011000100 -   @X
+ XSCMPGTQP       111111 ..... ..... ..... 0011100100 -   @X
  
-+STXVB16X        011111 ..... ..... ..... 1111101100 .   @X_TSX
-+STXVD2X         011111 ..... ..... ..... 1111001100 .   @X_TSX
-+STXVH8X         011111 ..... ..... ..... 1110101100 .   @X_TSX
-+STXVW4X         011111 ..... ..... ..... 1110001100 .   @X_TSX
- STXVL           011111 ..... ..... ..... 0110001101 .   @X_TSX
- STXVLL          011111 ..... ..... ..... 0110101101 .   @X_TSX
++XVCMPEQSP       111100 ..... ..... ..... . 1000011 ...   @XX3_rc
++XVCMPGTSP       111100 ..... ..... ..... . 1001011 ...   @XX3_rc
++XVCMPGESP       111100 ..... ..... ..... . 1010011 ...   @XX3_rc
++XVCMPNESP       111100 ..... ..... ..... . 1011011 ...   @XX3_rc
++XVCMPEQDP       111100 ..... ..... ..... . 1100011 ...   @XX3_rc
++XVCMPGTDP       111100 ..... ..... ..... . 1101011 ...   @XX3_rc
++XVCMPGEDP       111100 ..... ..... ..... . 1110011 ...   @XX3_rc
++XVCMPNEDP       111100 ..... ..... ..... . 1111011 ...   @XX3_rc
++
+ XSMAXDP         111100 ..... ..... ..... 10100000 ...   @XX3
+ XSMINDP         111100 ..... ..... ..... 10101000 ...   @XX3
  
 diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
-index 46bab49215..e0fb4bad92 100644
+index e0fb4bad92..26ebf3fedf 100644
 --- a/target/ppc/translate/vsx-impl.c.inc
 +++ b/target/ppc/translate/vsx-impl.c.inc
-@@ -46,41 +46,37 @@ TRANS_FLAGS2(ISA300, LXSIHZX, do_lxs, gen_qemu_ld16u_i64);
- TRANS_FLAGS2(VSX207, LXSIWZX, do_lxs, gen_qemu_ld32u_i64);
- TRANS_FLAGS2(VSX207, LXSSPX, do_lxs, gen_qemu_ld32fs);
+@@ -792,34 +792,28 @@ static bool do_xvcpsgn(DisasContext *ctx, arg_XX3 *a, unsigned vece)
+ TRANS(XVCPSGNSP, do_xvcpsgn, MO_32)
+ TRANS(XVCPSGNDP, do_xvcpsgn, MO_64)
  
--static void gen_lxvd2x(DisasContext *ctx)
-+static bool trans_LXVD2X(DisasContext *ctx, arg_LXVD2X *a)
- {
-     TCGv EA;
-     TCGv_i64 t0;
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-+
+-#define VSX_CMP(name, op1, op2, inval, type)                                  \
+-static void gen_##name(DisasContext *ctx)                                     \
+-{                                                                             \
+-    TCGv_i32 ignored;                                                         \
+-    TCGv_ptr xt, xa, xb;                                                      \
+-    if (unlikely(!ctx->vsx_enabled)) {                                        \
+-        gen_exception(ctx, POWERPC_EXCP_VSXU);                                \
+-        return;                                                               \
+-    }                                                                         \
+-    xt = gen_vsr_ptr(xT(ctx->opcode));                                        \
+-    xa = gen_vsr_ptr(xA(ctx->opcode));                                        \
+-    xb = gen_vsr_ptr(xB(ctx->opcode));                                        \
+-    if ((ctx->opcode >> (31 - 21)) & 1) {                                     \
+-        gen_helper_##name(cpu_crf[6], tcg_env, xt, xa, xb);                   \
+-    } else {                                                                  \
+-        ignored = tcg_temp_new_i32();                                         \
+-        gen_helper_##name(ignored, tcg_env, xt, xa, xb);                      \
+-    }                                                                         \
++static bool do_cmp(DisasContext *ctx, arg_XX3_rc *a,
++            void (*helper)(TCGv_i32, TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_ptr))
++{
++    TCGv_i32 dest;
++    TCGv_ptr xt, xa, xb;
 +    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, VSX);
-+
-     t0 = tcg_temp_new_i64();
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     gen_qemu_ld64_i64(ctx, t0, EA);
--    set_cpu_vsr(xT(ctx->opcode), t0, true);
-+    set_cpu_vsr(a->rt, t0, true);
-     tcg_gen_addi_tl(EA, EA, 8);
-     gen_qemu_ld64_i64(ctx, t0, EA);
--    set_cpu_vsr(xT(ctx->opcode), t0, false);
-+    set_cpu_vsr(a->rt, t0, false);
++    xt = gen_vsr_ptr(a->xt);
++    xa = gen_vsr_ptr(a->xa);
++    xb = gen_vsr_ptr(a->xb);
++    dest = a->rc ? cpu_crf[6] : tcg_temp_new_i32();
++    helper(dest, tcg_env, xt, xa, xb);
 +    return true;
  }
  
--static void gen_lxvw4x(DisasContext *ctx)
-+static bool trans_LXVW4X(DisasContext *ctx, arg_LXVW4X *a)
+-VSX_CMP(xvcmpeqdp, 0x0C, 0x0C, 0, PPC2_VSX)
+-VSX_CMP(xvcmpgedp, 0x0C, 0x0E, 0, PPC2_VSX)
+-VSX_CMP(xvcmpgtdp, 0x0C, 0x0D, 0, PPC2_VSX)
+-VSX_CMP(xvcmpnedp, 0x0C, 0x0F, 0, PPC2_ISA300)
+-VSX_CMP(xvcmpeqsp, 0x0C, 0x08, 0, PPC2_VSX)
+-VSX_CMP(xvcmpgesp, 0x0C, 0x0A, 0, PPC2_VSX)
+-VSX_CMP(xvcmpgtsp, 0x0C, 0x09, 0, PPC2_VSX)
+-VSX_CMP(xvcmpnesp, 0x0C, 0x0B, 0, PPC2_VSX)
++TRANS_FLAGS2(VSX, XVCMPEQSP, do_cmp, gen_helper_XVCMPEQSP);
++TRANS_FLAGS2(VSX, XVCMPGTSP, do_cmp, gen_helper_XVCMPGTSP);
++TRANS_FLAGS2(VSX, XVCMPGESP, do_cmp, gen_helper_XVCMPGESP);
++TRANS_FLAGS2(ISA300, XVCMPNESP, do_cmp, gen_helper_XVCMPNESP);
++TRANS_FLAGS2(VSX, XVCMPEQDP, do_cmp, gen_helper_XVCMPEQDP);
++TRANS_FLAGS2(VSX, XVCMPGTDP, do_cmp, gen_helper_XVCMPGTDP);
++TRANS_FLAGS2(VSX, XVCMPGEDP, do_cmp, gen_helper_XVCMPGEDP);
++TRANS_FLAGS2(ISA300, XVCMPNEDP, do_cmp, gen_helper_XVCMPNEDP);
+ 
+ static bool trans_XSCVQPDP(DisasContext *ctx, arg_X_tb_rc *a)
  {
-     TCGv EA;
--    TCGv_i64 xth;
--    TCGv_i64 xtl;
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-+    TCGv_i64 xth, xtl;
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, VSX);
-+
-     xth = tcg_temp_new_i64();
-     xtl = tcg_temp_new_i64();
--
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     if (ctx->le_mode) {
-         TCGv_i64 t0 = tcg_temp_new_i64();
-         TCGv_i64 t1 = tcg_temp_new_i64();
-@@ -97,55 +93,45 @@ static void gen_lxvw4x(DisasContext *ctx)
-         tcg_gen_addi_tl(EA, EA, 8);
-         tcg_gen_qemu_ld_i64(xtl, EA, ctx->mem_idx, MO_BEUQ);
-     }
--    set_cpu_vsr(xT(ctx->opcode), xth, true);
--    set_cpu_vsr(xT(ctx->opcode), xtl, false);
-+    set_cpu_vsr(a->rt, xth, true);
-+    set_cpu_vsr(a->rt, xtl, false);
-+    return true;
- }
- 
--static void gen_lxvwsx(DisasContext *ctx)
-+static bool trans_LXVWSX(DisasContext *ctx, arg_LXVWSX *a)
- {
-     TCGv EA;
-     TCGv_i32 data;
- 
--    if (xT(ctx->opcode) < 32) {
--        if (unlikely(!ctx->vsx_enabled)) {
--            gen_exception(ctx, POWERPC_EXCP_VSXU);
--            return;
--        }
-+    if (a->rt < 32) {
-+        REQUIRE_VSX(ctx);
-     } else {
--        if (unlikely(!ctx->altivec_enabled)) {
--            gen_exception(ctx, POWERPC_EXCP_VPU);
--            return;
--        }
-+        REQUIRE_VECTOR(ctx);
-     }
-+    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
- 
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--
--    gen_addr_reg_index(ctx, EA);
--
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     data = tcg_temp_new_i32();
-     tcg_gen_qemu_ld_i32(data, EA, ctx->mem_idx, DEF_MEMOP(MO_UL));
--    tcg_gen_gvec_dup_i32(MO_UL, vsr_full_offset(xT(ctx->opcode)), 16, 16, data);
-+    tcg_gen_gvec_dup_i32(MO_UL, vsr_full_offset(a->rt), 16, 16, data);
-+    return true;
- }
- 
--static void gen_lxvdsx(DisasContext *ctx)
-+static bool trans_LXVDSX(DisasContext *ctx, arg_LXVDSX *a)
- {
-     TCGv EA;
-     TCGv_i64 data;
- 
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, VSX);
- 
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--
--    gen_addr_reg_index(ctx, EA);
--
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     data = tcg_temp_new_i64();
-     tcg_gen_qemu_ld_i64(data, EA, ctx->mem_idx, DEF_MEMOP(MO_UQ));
--    tcg_gen_gvec_dup_i64(MO_UQ, vsr_full_offset(xT(ctx->opcode)), 16, 16, data);
-+    tcg_gen_gvec_dup_i64(MO_UQ, vsr_full_offset(a->rt), 16, 16, data);
-+    return true;
- }
- 
- static void gen_bswap16x8(TCGv_i64 outh, TCGv_i64 outl,
-@@ -184,52 +170,47 @@ static void gen_bswap32x4(TCGv_i64 outh, TCGv_i64 outl,
-     tcg_gen_deposit_i64(outl, outl, lo, 32, 32);
- }
- 
--static void gen_lxvh8x(DisasContext *ctx)
-+static bool trans_LXVH8X(DisasContext *ctx, arg_LXVH8X *a)
- {
-     TCGv EA;
--    TCGv_i64 xth;
--    TCGv_i64 xtl;
-+    TCGv_i64 xth, xtl;
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
- 
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-     xth = tcg_temp_new_i64();
-     xtl = tcg_temp_new_i64();
-     gen_set_access_type(ctx, ACCESS_INT);
--
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     tcg_gen_qemu_ld_i64(xth, EA, ctx->mem_idx, MO_BEUQ);
-     tcg_gen_addi_tl(EA, EA, 8);
-     tcg_gen_qemu_ld_i64(xtl, EA, ctx->mem_idx, MO_BEUQ);
-     if (ctx->le_mode) {
-         gen_bswap16x8(xth, xtl, xth, xtl);
-     }
--    set_cpu_vsr(xT(ctx->opcode), xth, true);
--    set_cpu_vsr(xT(ctx->opcode), xtl, false);
-+    set_cpu_vsr(a->rt, xth, true);
-+    set_cpu_vsr(a->rt, xtl, false);
-+    return true;
- }
- 
--static void gen_lxvb16x(DisasContext *ctx)
-+static bool trans_LXVB16X(DisasContext *ctx, arg_LXVB16X *a)
- {
-     TCGv EA;
--    TCGv_i64 xth;
--    TCGv_i64 xtl;
-+    TCGv_i64 xth, xtl;
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
- 
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-     xth = tcg_temp_new_i64();
-     xtl = tcg_temp_new_i64();
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     tcg_gen_qemu_ld_i64(xth, EA, ctx->mem_idx, MO_BEUQ);
-     tcg_gen_addi_tl(EA, EA, 8);
-     tcg_gen_qemu_ld_i64(xtl, EA, ctx->mem_idx, MO_BEUQ);
--    set_cpu_vsr(xT(ctx->opcode), xth, true);
--    set_cpu_vsr(xT(ctx->opcode), xtl, false);
-+    set_cpu_vsr(a->rt, xth, true);
-+    set_cpu_vsr(a->rt, xtl, false);
-+    return true;
- }
- 
- #if defined(TARGET_PPC64)
-@@ -319,42 +300,39 @@ TRANS_FLAGS2(ISA300, STXSIHX, do_stxs, gen_qemu_st16_i64);
- TRANS_FLAGS2(VSX207, STXSIWX, do_stxs, gen_qemu_st32_i64);
- TRANS_FLAGS2(VSX207, STXSSPX, do_stxs, gen_qemu_st32fs);
- 
--static void gen_stxvd2x(DisasContext *ctx)
-+static bool trans_STXVD2X(DisasContext *ctx, arg_STXVD2X *a)
- {
-     TCGv EA;
-     TCGv_i64 t0;
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, VSX);
-+
-     t0 = tcg_temp_new_i64();
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
--    get_cpu_vsr(t0, xS(ctx->opcode), true);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-+    get_cpu_vsr(t0, a->rt, true);
-     gen_qemu_st64_i64(ctx, t0, EA);
-     tcg_gen_addi_tl(EA, EA, 8);
--    get_cpu_vsr(t0, xS(ctx->opcode), false);
-+    get_cpu_vsr(t0, a->rt, false);
-     gen_qemu_st64_i64(ctx, t0, EA);
-+    return true;
- }
- 
--static void gen_stxvw4x(DisasContext *ctx)
-+static bool trans_STXVW4X(DisasContext *ctx, arg_STXVW4X *a)
- {
-     TCGv EA;
--    TCGv_i64 xsh;
--    TCGv_i64 xsl;
-+    TCGv_i64 xsh, xsl;
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, VSX);
- 
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-     xsh = tcg_temp_new_i64();
-     xsl = tcg_temp_new_i64();
--    get_cpu_vsr(xsh, xS(ctx->opcode), true);
--    get_cpu_vsr(xsl, xS(ctx->opcode), false);
-+    get_cpu_vsr(xsh, a->rt, true);
-+    get_cpu_vsr(xsl, a->rt, false);
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     if (ctx->le_mode) {
-         TCGv_i64 t0 = tcg_temp_new_i64();
-         TCGv_i64 t1 = tcg_temp_new_i64();
-@@ -371,25 +349,23 @@ static void gen_stxvw4x(DisasContext *ctx)
-         tcg_gen_addi_tl(EA, EA, 8);
-         tcg_gen_qemu_st_i64(xsl, EA, ctx->mem_idx, MO_BEUQ);
-     }
-+    return true;
- }
- 
--static void gen_stxvh8x(DisasContext *ctx)
-+static bool trans_STXVH8X(DisasContext *ctx, arg_STXVH8X *a)
- {
-     TCGv EA;
--    TCGv_i64 xsh;
--    TCGv_i64 xsl;
-+    TCGv_i64 xsh, xsl;
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
- 
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-     xsh = tcg_temp_new_i64();
-     xsl = tcg_temp_new_i64();
--    get_cpu_vsr(xsh, xS(ctx->opcode), true);
--    get_cpu_vsr(xsl, xS(ctx->opcode), false);
-+    get_cpu_vsr(xsh, a->rt, true);
-+    get_cpu_vsr(xsl, a->rt, false);
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     if (ctx->le_mode) {
-         TCGv_i64 outh = tcg_temp_new_i64();
-         TCGv_i64 outl = tcg_temp_new_i64();
-@@ -403,28 +379,27 @@ static void gen_stxvh8x(DisasContext *ctx)
-         tcg_gen_addi_tl(EA, EA, 8);
-         tcg_gen_qemu_st_i64(xsl, EA, ctx->mem_idx, MO_BEUQ);
-     }
-+    return true;
- }
- 
--static void gen_stxvb16x(DisasContext *ctx)
-+static bool trans_STXVB16X(DisasContext *ctx, arg_STXVB16X *a)
- {
-     TCGv EA;
--    TCGv_i64 xsh;
--    TCGv_i64 xsl;
-+    TCGv_i64 xsh, xsl;
-+
-+    REQUIRE_VSX(ctx);
-+    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
- 
--    if (unlikely(!ctx->vsx_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_VSXU);
--        return;
--    }
-     xsh = tcg_temp_new_i64();
-     xsl = tcg_temp_new_i64();
--    get_cpu_vsr(xsh, xS(ctx->opcode), true);
--    get_cpu_vsr(xsl, xS(ctx->opcode), false);
-+    get_cpu_vsr(xsh, a->rt, true);
-+    get_cpu_vsr(xsl, a->rt, false);
-     gen_set_access_type(ctx, ACCESS_INT);
--    EA = tcg_temp_new();
--    gen_addr_reg_index(ctx, EA);
-+    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
-     tcg_gen_qemu_st_i64(xsh, EA, ctx->mem_idx, MO_BEUQ);
-     tcg_gen_addi_tl(EA, EA, 8);
-     tcg_gen_qemu_st_i64(xsl, EA, ctx->mem_idx, MO_BEUQ);
-+    return true;
- }
- 
- static void gen_mfvsrwz(DisasContext *ctx)
 diff --git a/target/ppc/translate/vsx-ops.c.inc b/target/ppc/translate/vsx-ops.c.inc
-index 7f4326c974..91cde088bc 100644
+index 91cde088bc..e553b5b8fa 100644
 --- a/target/ppc/translate/vsx-ops.c.inc
 +++ b/target/ppc/translate/vsx-ops.c.inc
-@@ -1,15 +1,3 @@
--GEN_HANDLER_E(lxvd2x, 0x1F, 0x0C, 0x1A, 0, PPC_NONE, PPC2_VSX),
--GEN_HANDLER_E(lxvwsx, 0x1F, 0x0C, 0x0B, 0, PPC_NONE, PPC2_ISA300),
--GEN_HANDLER_E(lxvdsx, 0x1F, 0x0C, 0x0A, 0, PPC_NONE, PPC2_VSX),
--GEN_HANDLER_E(lxvw4x, 0x1F, 0x0C, 0x18, 0, PPC_NONE, PPC2_VSX),
--GEN_HANDLER_E(lxvh8x, 0x1F, 0x0C, 0x19, 0, PPC_NONE,  PPC2_ISA300),
--GEN_HANDLER_E(lxvb16x, 0x1F, 0x0C, 0x1B, 0, PPC_NONE, PPC2_ISA300),
+@@ -43,16 +43,6 @@ GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 1, opc3, 1, PPC_NONE, fl2), \
+ GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 2, opc3, 1, PPC_NONE, fl2), \
+ GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 3, opc3, 1, PPC_NONE, fl2)
+ 
+-#define GEN_XX3_RC_FORM(name, opc2, opc3, fl2)                          \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x00, opc3 | 0x00, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x01, opc3 | 0x00, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x02, opc3 | 0x00, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x03, opc3 | 0x00, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x00, opc3 | 0x10, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x01, opc3 | 0x10, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x02, opc3 | 0x10, 0, PPC_NONE, fl2), \
+-GEN_HANDLER2_E(name, #name, 0x3C, opc2 | 0x03, opc3 | 0x10, 0, PPC_NONE, fl2)
 -
--GEN_HANDLER_E(stxvd2x, 0x1F, 0xC, 0x1E, 0, PPC_NONE, PPC2_VSX),
--GEN_HANDLER_E(stxvw4x, 0x1F, 0xC, 0x1C, 0, PPC_NONE, PPC2_VSX),
--GEN_HANDLER_E(stxvh8x, 0x1F, 0x0C, 0x1D, 0, PPC_NONE,  PPC2_ISA300),
--GEN_HANDLER_E(stxvb16x, 0x1F, 0x0C, 0x1F, 0, PPC_NONE, PPC2_ISA300),
--
- GEN_HANDLER_E(mfvsrwz, 0x1F, 0x13, 0x03, 0x0000F800, PPC_NONE, PPC2_VSX207),
- GEN_HANDLER_E(mtvsrwa, 0x1F, 0x13, 0x06, 0x0000F800, PPC_NONE, PPC2_VSX207),
- GEN_HANDLER_E(mtvsrwz, 0x1F, 0x13, 0x07, 0x0000F800, PPC_NONE, PPC2_VSX207),
+ #define GEN_XX3FORM_DM(name, opc2, opc3) \
+ GEN_HANDLER2_E(name, #name, 0x3C, opc2|0x00, opc3|0x00, 0, PPC_NONE, PPC2_VSX),\
+ GEN_HANDLER2_E(name, #name, 0x3C, opc2|0x01, opc3|0x00, 0, PPC_NONE, PPC2_VSX),\
+@@ -175,10 +165,6 @@ GEN_XX3FORM_NAME(xvnmadddp, "xvnmaddadp", 0x04, 0x1C, PPC2_VSX),
+ GEN_XX3FORM_NAME(xvnmadddp, "xvnmaddmdp", 0x04, 0x1D, PPC2_VSX),
+ GEN_XX3FORM_NAME(xvnmsubdp, "xvnmsubadp", 0x04, 0x1E, PPC2_VSX),
+ GEN_XX3FORM_NAME(xvnmsubdp, "xvnmsubmdp", 0x04, 0x1F, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpeqdp, 0x0C, 0x0C, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpgtdp, 0x0C, 0x0D, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpgedp, 0x0C, 0x0E, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpnedp, 0x0C, 0x0F, PPC2_ISA300),
+ GEN_XX2FORM(xvcvdpsp, 0x12, 0x18, PPC2_VSX),
+ GEN_XX2FORM(xvcvdpsxds, 0x10, 0x1D, PPC2_VSX),
+ GEN_XX2FORM(xvcvdpsxws, 0x10, 0x0D, PPC2_VSX),
+@@ -207,10 +193,6 @@ GEN_XX3FORM_NAME(xvnmaddsp, "xvnmaddasp", 0x04, 0x18, PPC2_VSX),
+ GEN_XX3FORM_NAME(xvnmaddsp, "xvnmaddmsp", 0x04, 0x19, PPC2_VSX),
+ GEN_XX3FORM_NAME(xvnmsubsp, "xvnmsubasp", 0x04, 0x1A, PPC2_VSX),
+ GEN_XX3FORM_NAME(xvnmsubsp, "xvnmsubmsp", 0x04, 0x1B, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpeqsp, 0x0C, 0x08, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpgtsp, 0x0C, 0x09, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpgesp, 0x0C, 0x0A, PPC2_VSX),
+-GEN_XX3_RC_FORM(xvcmpnesp, 0x0C, 0x0B, PPC2_ISA300),
+ GEN_XX2FORM(xvcvspdp, 0x12, 0x1C, PPC2_VSX),
+ GEN_XX2FORM(xvcvspsxds, 0x10, 0x19, PPC2_VSX),
+ GEN_XX2FORM(xvcvspsxws, 0x10, 0x09, PPC2_VSX),
 -- 
 2.45.2
 
