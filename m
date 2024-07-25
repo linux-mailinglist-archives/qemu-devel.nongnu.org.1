@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714F593C936
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 21:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5977693C93C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jul 2024 21:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX4Z2-00072o-K3; Thu, 25 Jul 2024 15:55:48 -0400
+	id 1sX4cM-0005ab-IZ; Thu, 25 Jul 2024 15:59:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sX4Yu-00071E-Ki
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 15:55:41 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sX4Ys-00023Q-86
- for qemu-devel@nongnu.org; Thu, 25 Jul 2024 15:55:39 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-427d8f1f363so9923565e9.2
- for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 12:55:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1721937334; x=1722542134; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e2yKmR5zSIeR74NPpZ0XO6cSntL2gdPFBrgOaHXBJvI=;
- b=mRyeUswGtslIJofEvGqe0uPLW7/0Xl2ItBCPcEKQGDonQn9NZWEE5hiyFR/E/upzCy
- 8HS+4lSPnkVggQQG30FBOzS2gRawc8dYLnmJebMAIcZNPmZPNn3CMLEIe77DvJQeAfK5
- lEfhwVRnDh3EdO4MvDUuRTfPhsWeVNyOqxoisWqXX+1eZ7qKY4N86sePNO28403GuTPY
- T/nRFAcnlSKgNNVVAGREsAWCDtznLU/MoP6ws99S1dHON4JTcfG42aZ0S2RQ43W5PN7J
- RbpDcAdV+3UKGt3kHPnS2Mi5PKaMxr4zpHabd5AV58qQcHEtbOVBOLFZa0Rf31C12vz0
- RUxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721937334; x=1722542134;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e2yKmR5zSIeR74NPpZ0XO6cSntL2gdPFBrgOaHXBJvI=;
- b=iQ8YIZdhaGahDXBulcNvqmr6nUddO8fmJyjMlhQrYvFNfxjPcRgSvNzwtJ1ygaWqEt
- OoPDaynz91mkM+Z31xzGClFYV4NHsx8Nfm1aRnaRl5q6mAo7ECDsH7D2xG9xi+b8tUsw
- WeyKRa2DDFaNzcp8tgKMWwHYYmKLGjiHpqHiuSxIyVN7DAcx8eEQy/uFDWghmaWdyDYl
- DpQVsoDiMy4GFB4nQ2jXNObEjs9xT7Y9htJt9z6D7I+KdLx5qU2xjnBAFAnb7jMPaTW/
- yOTH0RJolPV0TnLrZrtPJIEPDwHX3VdywBmzMIZwqN+fjuc9EOLSo/bE6AdXBrBgn5oa
- mRPQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVEqwmCyKjvcmT0pd4B+8ymj694l+pm2zgMXGjBUV3FxIz3ur1YYBNqvn3ULvckuSAioxtEFJyOs7P9SxuWXUWummuZ92I=
-X-Gm-Message-State: AOJu0YwhdLeAvyZfxSluc+AbOv9MdJSzhteCzcRU9WgvKeDQhArZDpzS
- M4i9qhVG5gdfsHwipHWfS+6UBXSf2ukkkbjcjBcnQndu3thjTT6aBV/41WVc5rVjKHJMmt1cYHP
- p+NU=
-X-Google-Smtp-Source: AGHT+IG01xvrtMDIuNH7b3psmVCmygASwFRyGV48D7VwXPQ8F5dOw+vz42UZxlaPETAp/iASJr8HTw==
-X-Received: by 2002:a05:600c:5487:b0:426:5fe1:ec7a with SMTP id
- 5b1f17b1804b1-42806be7443mr22549405e9.31.1721937333811; 
- Thu, 25 Jul 2024 12:55:33 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.216.35])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42805749f46sm48480755e9.22.2024.07.25.12.55.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Jul 2024 12:55:33 -0700 (PDT)
-Message-ID: <3723cd77-e617-4278-9922-b67f690c08ba@linaro.org>
-Date: Thu, 25 Jul 2024 21:55:31 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sX4cK-0005VU-RR
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 15:59:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sX4cJ-0002tz-8q
+ for qemu-devel@nongnu.org; Thu, 25 Jul 2024 15:59:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1721937549;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=92Vgcu5AHxv5Z65unevQP4WF0nEFZPbv+kNAVnOzly4=;
+ b=JsRgxroKnXZDWhGLI2FgiWWQY9HyY0sOenYyiYYPD+JxOBKQtfxSXHOvfXVaOMezLi8lmt
+ l0svAH3UV02BT330qYXQPSvybcUHO+6Bu3KOIEJEQLyMb7rLbJ24Yhgg8CmjNQeOGcsab1
+ RiC8RGSm5mWRjq0w+nppbv+N5pg2/Nw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-qlVgJVZnO22h6l-eL-tREw-1; Thu,
+ 25 Jul 2024 15:57:53 -0400
+X-MC-Unique: qlVgJVZnO22h6l-eL-tREw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8B2DD1955F3B; Thu, 25 Jul 2024 19:57:51 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.100])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D04331955F6B; Thu, 25 Jul 2024 19:57:49 +0000 (UTC)
+Date: Thu, 25 Jul 2024 15:57:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org
+Subject: Re: [PATCH] util/async.c: Forbid negative min/max in
+ aio_context_set_thread_pool_params()
+Message-ID: <20240725195748.GB444989@fedora.redhat.com>
+References: <20240723150927.1396456-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] contrib/plugins/cache.c: Remove redundant check of
- l2_access
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20240725164851.1930964-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240725164851.1930964-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="vCz+oJjnFuJGFxIU"
+Content-Disposition: inline
+In-Reply-To: <20240723150927.1396456-1-peter.maydell@linaro.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,20 +82,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/7/24 18:48, Peter Maydell wrote:
-> In append_stats_line(), we have an expression
->     l2_access ? l2_miss_rate : 0.0
-> But this is inside an if (l2_access && l2_misses) { ... } block,
-> so Coverity points out that the false part of the ?: is dead code.
-> 
-> Remove the unnecessary test.
-> 
-> Resolves: Coverity CID 1522458
+
+--vCz+oJjnFuJGFxIU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jul 23, 2024 at 04:09:27PM +0100, Peter Maydell wrote:
+> aio_context_set_thread_pool_params() takes two int64_t arguments to
+> set the minimum and maximum number of threads in the pool.  We do
+> some bounds checking on these, but we don't catch the case where the
+> inputs are negative.  This means that later in the function when we
+> assign these inputs to the AioContext::thread_pool_min and
+> ::thread_pool_max fields, which are of type int, the values might
+> overflow the smaller type.
+>=20
+> A negative number of threads is meaningless, so make
+> aio_context_set_thread_pool_params() return an error if either min or
+> max are negative.
+>=20
+> Resolves: Coverity CID 1547605
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   contrib/plugins/cache.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  util/async.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks, applied to my block tree:
+https://gitlab.com/stefanha/qemu/commits/block
+
+Stefan
+
+--vCz+oJjnFuJGFxIU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmairjwACgkQnKSrs4Gr
+c8hYgAgAsVdwIMFwvfuQ54nNXhNiYjNJh6O1dHFgnNaP3qc6EEiXAFMLMKTaHlWm
+b3/JszgsoxfVof4voAFTXKnSZIrdho8zOsNymjKAvA5NBztfMDGgMdwq75P9lXq7
+cwuNbOydWZSZMp49+4EXX/XnCuFy1CjOQy8ghCFCxiS7co1EBDSocnY9iBQRO/ZC
+lF3q1CiQn+Hgv8rF/rRWQGX7MGxC5BxGkF02kreLiH8B4qhxKlXEjBAmHJF9SLlq
+461ARdgmb9+mkq6EUcsoKsT5nJwprlzpiRaMzhDCLSNCcFdDzLtypOKsYUpNkySM
+XVjyBCCrVVig9Wb4wYv8TW85ErIOPQ==
+=m//w
+-----END PGP SIGNATURE-----
+
+--vCz+oJjnFuJGFxIU--
 
 
