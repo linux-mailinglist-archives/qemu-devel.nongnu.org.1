@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CD093CBAD
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 02:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A982A93CB7F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 01:56:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sX8JC-0007og-Pm; Thu, 25 Jul 2024 19:55:42 -0400
+	id 1sX8JC-0007su-Vv; Thu, 25 Jul 2024 19:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8J1-00074J-Ty; Thu, 25 Jul 2024 19:55:35 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1sX8J9-0007aZ-MT; Thu, 25 Jul 2024 19:55:40 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sX8Iz-0000vu-C4; Thu, 25 Jul 2024 19:55:31 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7928d2abe0aso261750a12.0; 
- Thu, 25 Jul 2024 16:55:28 -0700 (PDT)
+ id 1sX8J5-0000xf-Lq; Thu, 25 Jul 2024 19:55:37 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-71871d5e087so301597a12.1; 
+ Thu, 25 Jul 2024 16:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1721951727; x=1722556527; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1721951733; x=1722556533; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CrI0z6GRU3zk8UJo9Bpz3wyxG+TqE9nxlq3iQG2ngu8=;
- b=TINQz89GZKsPJk7NveXE+xBut57ffV08DENfknYqzC1NvdcI6J3ByomBMkn3h1hBHT
- XRk+xDkEzjRA+h2bdWoc62MZz6Y1RhECdKGmHDt/HSiWexjrZS2ek5M6T9QNWOqktIkm
- YgDDgMdZ9uNuSGyoJAh0F1We5+1hZSjaHQ6BP0hfBOBgnpxsuZiLLYZBA9DNBN4Zg0O5
- boo+kyCSg2/tSWDIQMZxBEEym5OwdSaThgbdnug0NeUczipUDTo8RfCkAzShfB+FCuuj
- eAMZ46SRKHFk4G0IIN57IwwbNLTv/WnPJexFJheq1ZfeBIMXxh5t+XEcJqb1ouyU2oMH
- phdQ==
+ bh=5cRNIZQvI22DqGJqRZ6sJmUnDyfnGdR7fxBN0WMsukQ=;
+ b=D5rZVmz6wFTBEleiQEUZCsij1sonvOQF1Pf4gtktT+iQkdfCD7wuH13xUVHGlMJuw5
+ vczrlcKSHKnH6pmSyEPC78TchOJC14ynkYRHNFiRXynrvr1TW/V9pz5+3evLGJ2ip10v
+ FVYDNpseCdggGu2e2opmsC7Nu14NSHVXbfL2Rqg9Bk881GU+05smDef9g1onjJqdtJ9O
+ vOYt8bdCiQGu/WgJ6NM/AW9+pCXCUAqXTu3QU7lH7NYgMFYYPaQ1L70RNKz1Gymo5R5v
+ rsPfDsLWt8rIAobXHvrkr65agJ96EUPhrlrs9AQ3gsXWeACsqxyoGq18Nzy93Yu6WLR6
+ dVWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721951727; x=1722556527;
+ d=1e100.net; s=20230601; t=1721951733; x=1722556533;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CrI0z6GRU3zk8UJo9Bpz3wyxG+TqE9nxlq3iQG2ngu8=;
- b=OTPtI1kY5RVAIoCP0vc8SIQozwUKwQbYnkA6vUXPQqI9UGwGUrCm8+BFo5JN1jOqr+
- 4xvCPGsG5410O5tCTCPnDnHEd9hVtWVxe8bXSTHNeDc/5oZzDWs8R4njSqvmz0qMFsEt
- 0NEA7u8Fgx89vV+xQ/X+1Y99H8uPNb0idw/18y5LTuc3qOmUrB0hZdzKBP+rAO9hmKpv
- MfLsT3OUOoOGC5/7yCVBLYf7lbozkCzrAgzF7TEfez2tNLJfF2WZgtjezHAuOQrOKWWK
- 0nSUOV//w+LVRTUqB004JFXWZ5dlplIy2qcxxnG392PGOxoe54aStyJo04lE/5jaR8ZC
- XNDw==
+ bh=5cRNIZQvI22DqGJqRZ6sJmUnDyfnGdR7fxBN0WMsukQ=;
+ b=OU1iVk81+Ie6x6sQ8as2U9rjYAuzmiZONoezyMaQCBVVkSC5Exqx1amMf9pTUljROX
+ ggq2MpGd1QcAmv0vojujNLlgBTL1ECRZQIIZrB5VEr88IX6bgFF2TZXmRMm7eCCxDXEl
+ YytCfB/G5AKVcUFa+7HvQbLGOnX+5uOYCPYMw7NniE81ilZpApyDu/GsH3rX5An+G5U9
+ sjIvnTRwylZi7qDU6ulFAKkvpWSsK+2BmlLwSHUzSPu4H6zPmx7mTLivBW+bd+THYQos
+ JZp3JPkXjBzo/8J5BFFJIvgl0glA2RZK9eVnb/QS9G0UigILFmDa0J1Pfe7KLjwFQsAm
+ e8Jg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuXH6GX9FQbnBd3QbGfM2IUdzAT5g6MqvDOE0c/IX63YEj9188uLDHoeky2SHDz6oIu1Bci5rEKXossL4sTi6OiXBX
-X-Gm-Message-State: AOJu0Yyvp+FpZebLGeHmzLGMmWP5CsvYpJ5nVkrgbfsZKD2POSUmT4py
- 1PDXY3sYrTq/asSJmTRj8mzFnGQ1HCOyA6NHNd5ss/VuSPIHV0tXbFz2eg==
-X-Google-Smtp-Source: AGHT+IG0vu25E2Hck9Cm3P38RrNgy7ltC86R2OFfiRghnn50asLbo/JYaPAZRDdQjSMayMG6IAm3Ew==
-X-Received: by 2002:a17:90a:6b0b:b0:2cb:4b31:1c48 with SMTP id
- 98e67ed59e1d1-2cdb96531bamr10632388a91.22.1721951726814; 
- Thu, 25 Jul 2024 16:55:26 -0700 (PDT)
+ AJvYcCXvX/B2Yd6U/ayGqHWjcolYJu0h6lOvnEw+fIeg65wpwEtgaorAMfcV/Hptw+T4DPlxh7AsAD9+Pq7sQOqnoUeIFh0R
+X-Gm-Message-State: AOJu0YzjLYF3rbhqLsoQANyDNF6PRthoaFsWFNZJ3/mVVYjyRavK2Lyv
+ mGh33tCsoto7nHWYAl7TZFlc/nlerrp3C6LwhiCIiqo34LL8t/NWjFMTkg==
+X-Google-Smtp-Source: AGHT+IGMemA1K+1CtJd6xKFtm2XXieQjwtse9MoL4pMXeJNffn+A9hSJwBAWnIAZnjIB4dtZX9vEHw==
+X-Received: by 2002:a17:90a:b30d:b0:2cb:e429:f525 with SMTP id
+ 98e67ed59e1d1-2cf238bdda9mr4929412a91.33.1721951733042; 
+ Thu, 25 Jul 2024 16:55:33 -0700 (PDT)
 Received: from wheely.local0.net ([203.220.44.216])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.24
+ 98e67ed59e1d1-2cf28c7fef3sm2142060a91.16.2024.07.25.16.55.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 16:55:26 -0700 (PDT)
+ Thu, 25 Jul 2024 16:55:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 16/96] ppc/pnv: Begin a more complete ADU LPC model for
- POWER9/10
-Date: Fri, 26 Jul 2024 09:52:49 +1000
-Message-ID: <20240725235410.451624-17-npiggin@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 18/96] target/ppc: Fix msgsnd for POWER8
+Date: Fri, 26 Jul 2024 09:52:51 +1000
+Message-ID: <20240725235410.451624-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725235410.451624-1-npiggin@gmail.com>
 References: <20240725235410.451624-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,336 +93,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements a framework for an ADU unit model.
+POWER8 (ISA v2.07S) introduced the doorbell facility, the msgsnd
+instruction behaved mostly like msgsndp, it was addressed by TIR
+and could only send interrupts between threads on the core.
 
-The ADU unit actually implements XSCOM, which is the bridge between MMIO
-and PIB. However it also includes control and status registers and other
-functions that are exposed as PIB (xscom) registers.
+ISA v3.0 changed msgsnd to be addressed by PIR and can interrupt
+any thread in the system.
 
-To keep things simple, pnv_xscom.c remains the XSCOM bridge
-implementation, and pnv_adu.c implements the ADU registers and other
-functions.
+msgsnd only implements the v3.0 semantics, which can make
+multi-threaded POWER8 hang when booting Linux (due to IPIs
+failing). This change adds v2.07 semantics.
 
-So far, just the ADU no-op registers in the pnv_xscom.c default handler
-are moved over to the adu model.
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/meson.build         |   1 +
- hw/ppc/pnv.c               |  16 ++++++
- hw/ppc/pnv_adu.c           | 111 +++++++++++++++++++++++++++++++++++++
- hw/ppc/pnv_xscom.c         |   9 ---
- hw/ppc/trace-events        |   4 ++
- include/hw/ppc/pnv_adu.h   |  25 +++++++++
- include/hw/ppc/pnv_chip.h  |   3 +
- include/hw/ppc/pnv_xscom.h |   6 ++
- 8 files changed, 166 insertions(+), 9 deletions(-)
- create mode 100644 hw/ppc/pnv_adu.c
- create mode 100644 include/hw/ppc/pnv_adu.h
+ target/ppc/excp_helper.c | 74 ++++++++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 30 deletions(-)
 
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 3ebbf329bc..7cd9189869 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -42,6 +42,7 @@ endif
- ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
-   'pnv.c',
-   'pnv_xscom.c',
-+  'pnv_adu.c',
-   'pnv_core.c',
-   'pnv_i2c.c',
-   'pnv_lpc.c',
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index f56dcf6597..689197cbb7 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1551,6 +1551,7 @@ static void pnv_chip_power9_instance_init(Object *obj)
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(obj);
-     int i;
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 0cd542675f..c0120c8a88 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2998,6 +2998,41 @@ static inline bool dbell_bcast_subproc(target_ulong rb)
+     return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
+ }
  
-+    object_initialize_child(obj, "adu",  &chip9->adu, TYPE_PNV_ADU);
-     object_initialize_child(obj, "xive", &chip9->xive, TYPE_PNV_XIVE);
-     object_property_add_alias(obj, "xive-fabric", OBJECT(&chip9->xive),
-                               "xive-fabric");
-@@ -1661,6 +1662,13 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /* ADU */
-+    if (!qdev_realize(DEVICE(&chip9->adu), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV9_XSCOM_ADU_BASE,
-+                            &chip9->adu.xscom_regs);
-+
-     pnv_chip_quad_realize(chip9, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
-@@ -1827,6 +1835,7 @@ static void pnv_chip_power10_instance_init(Object *obj)
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(obj);
-     int i;
- 
-+    object_initialize_child(obj, "adu",  &chip10->adu, TYPE_PNV_ADU);
-     object_initialize_child(obj, "xive", &chip10->xive, TYPE_PNV_XIVE2);
-     object_property_add_alias(obj, "xive-fabric", OBJECT(&chip10->xive),
-                               "xive-fabric");
-@@ -1919,6 +1928,13 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /* ADU */
-+    if (!qdev_realize(DEVICE(&chip10->adu), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_ADU_BASE,
-+                            &chip10->adu.xscom_regs);
-+
-     pnv_chip_power10_quad_realize(chip10, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
-diff --git a/hw/ppc/pnv_adu.c b/hw/ppc/pnv_adu.c
-new file mode 100644
-index 0000000000..8279bc8b26
---- /dev/null
-+++ b/hw/ppc/pnv_adu.c
-@@ -0,0 +1,111 @@
 +/*
-+ * QEMU PowerPC PowerNV ADU unit
-+ *
-+ * The ADU unit actually implements XSCOM, which is the bridge between MMIO
-+ * and PIB. However it also includes control and status registers and other
-+ * functions that are exposed as PIB (xscom) registers.
-+ *
-+ * To keep things simple, pnv_xscom.c remains the XSCOM bridge
-+ * implementation, and pnv_adu.c implements the ADU registers and other
-+ * functions.
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Send an interrupt to a thread in the same core as env).
 + */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+
-+#include "hw/qdev-properties.h"
-+#include "hw/ppc/pnv.h"
-+#include "hw/ppc/pnv_adu.h"
-+#include "hw/ppc/pnv_chip.h"
-+#include "hw/ppc/pnv_xscom.h"
-+#include "trace.h"
-+
-+static uint64_t pnv_adu_xscom_read(void *opaque, hwaddr addr, unsigned width)
++static void msgsnd_core_tir(CPUPPCState *env, uint32_t target_tir, int irq)
 +{
-+    uint32_t offset = addr >> 3;
-+    uint64_t val = 0;
++    PowerPCCPU *cpu = env_archcpu(env);
++    CPUState *cs = env_cpu(env);
++    uint32_t nr_threads = cs->nr_threads;
 +
-+    switch (offset) {
-+    case 0x18:     /* Receive status reg */
-+    case 0x12:     /* log register */
-+    case 0x13:     /* error register */
-+        break;
-+
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "ADU Unimplemented read register: Ox%08x\n",
-+                                                                     offset);
++    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
++        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
 +    }
 +
-+    trace_pnv_adu_xscom_read(addr, val);
++    if (target_tir >= nr_threads) {
++        return;
++    }
 +
-+    return val;
-+}
++    if (nr_threads == 1) {
++        ppc_set_irq(cpu, irq, 1);
++    } else {
++        CPUState *ccs;
 +
-+static void pnv_adu_xscom_write(void *opaque, hwaddr addr, uint64_t val,
-+                                unsigned width)
-+{
-+    uint32_t offset = addr >> 3;
-+
-+    trace_pnv_adu_xscom_write(addr, val);
-+
-+    switch (offset) {
-+    case 0x18:     /* Receive status reg */
-+    case 0x12:     /* log register */
-+    case 0x13:     /* error register */
-+        break;
-+
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "ADU Unimplemented write register: Ox%08x\n",
-+                                                                     offset);
++        /* Does iothread need to be locked for walking CPU list? */
++        bql_lock();
++        THREAD_SIBLING_FOREACH(cs, ccs) {
++            PowerPCCPU *ccpu = POWERPC_CPU(ccs);
++            if (target_tir == ppc_cpu_tir(ccpu)) {
++                ppc_set_irq(ccpu, irq, 1);
++                break;
++            }
++        }
++        bql_unlock();
 +    }
 +}
 +
-+const MemoryRegionOps pnv_adu_xscom_ops = {
-+    .read = pnv_adu_xscom_read,
-+    .write = pnv_adu_xscom_write,
-+    .valid.min_access_size = 8,
-+    .valid.max_access_size = 8,
-+    .impl.min_access_size = 8,
-+    .impl.max_access_size = 8,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
-+static void pnv_adu_realize(DeviceState *dev, Error **errp)
-+{
-+    PnvADU *adu = PNV_ADU(dev);
-+
-+    /* XScom regions for ADU registers */
-+    pnv_xscom_region_init(&adu->xscom_regs, OBJECT(dev),
-+                          &pnv_adu_xscom_ops, adu, "xscom-adu",
-+                          PNV9_XSCOM_ADU_SIZE);
-+}
-+
-+static void pnv_adu_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->realize = pnv_adu_realize;
-+    dc->desc = "PowerNV ADU";
-+    dc->user_creatable = false;
-+}
-+
-+static const TypeInfo pnv_adu_type_info = {
-+    .name          = TYPE_PNV_ADU,
-+    .parent        = TYPE_DEVICE,
-+    .instance_size = sizeof(PnvADU),
-+    .class_init    = pnv_adu_class_init,
-+    .interfaces    = (InterfaceInfo[]) {
-+        { TYPE_PNV_XSCOM_INTERFACE },
-+        { } },
-+};
-+
-+static void pnv_adu_register_types(void)
-+{
-+    type_register_static(&pnv_adu_type_info);
-+}
-+
-+type_init(pnv_adu_register_types);
-diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
-index a17816d072..d192bbe2c2 100644
---- a/hw/ppc/pnv_xscom.c
-+++ b/hw/ppc/pnv_xscom.c
-@@ -75,11 +75,6 @@ static uint64_t xscom_read_default(PnvChip *chip, uint32_t pcba)
-     case PRD_P9_IPOLL_REG_MASK:
-     case PRD_P9_IPOLL_REG_STATUS:
+ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
+ {
+     if (!dbell_type_server(rb)) {
+@@ -3018,6 +3053,13 @@ void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
+         return;
+     }
  
--        /* P9 xscom reset */
--    case 0x0090018:     /* Receive status reg */
--    case 0x0090012:     /* log register */
--    case 0x0090013:     /* error register */
++    /* POWER8 msgsnd is like msgsndp (targets a thread within core) */
++    if (!(env->insns_flags2 & PPC2_ISA300)) {
++        msgsnd_core_tir(env, rb & PPC_BITMASK(57, 63), PPC_INTERRUPT_HDOORBELL);
++        return;
++    }
++
++    /* POWER9 and later msgsnd is a global (targets any thread) */
+     cpu = ppc_get_vcpu_by_pir(pir);
+     if (!cpu) {
+         return;
+@@ -3064,41 +3106,13 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+  */
+ void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+ {
+-    CPUState *cs = env_cpu(env);
+-    PowerPCCPU *cpu = env_archcpu(env);
+-    CPUState *ccs;
+-    uint32_t nr_threads = cs->nr_threads;
+-    int ttir = rb & PPC_BITMASK(57, 63);
 -
-         /* P8 xscom reset */
-     case 0x2020007:     /* ADU stuff, log register */
-     case 0x2020009:     /* ADU stuff, error register */
-@@ -119,10 +114,6 @@ static bool xscom_write_default(PnvChip *chip, uint32_t pcba, uint64_t val)
-     case 0x1010c03:     /* PIBAM FIR MASK */
-     case 0x1010c04:     /* PIBAM FIR MASK */
-     case 0x1010c05:     /* PIBAM FIR MASK */
--        /* P9 xscom reset */
--    case 0x0090018:     /* Receive status reg */
--    case 0x0090012:     /* log register */
--    case 0x0090013:     /* error register */
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
  
-         /* P8 xscom reset */
-     case 0x2020007:     /* ADU stuff, log register */
-diff --git a/hw/ppc/trace-events b/hw/ppc/trace-events
-index bf29bbfd4b..1f125ce841 100644
---- a/hw/ppc/trace-events
-+++ b/hw/ppc/trace-events
-@@ -95,6 +95,10 @@ vof_write(uint32_t ih, unsigned cb, const char *msg) "ih=0x%x [%u] \"%s\""
- vof_avail(uint64_t start, uint64_t end, uint64_t size) "0x%"PRIx64"..0x%"PRIx64" size=0x%"PRIx64
- vof_claimed(uint64_t start, uint64_t end, uint64_t size) "0x%"PRIx64"..0x%"PRIx64" size=0x%"PRIx64
+-    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+-        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
+-    }
+-
+-    if (!dbell_type_server(rb) || ttir >= nr_threads) {
+-        return;
+-    }
+-
+-    if (nr_threads == 1) {
+-        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
++    if (!dbell_type_server(rb)) {
+         return;
+     }
  
-+# pnv_adu.c
-+pnv_adu_xscom_read(uint64_t addr, uint64_t val) "addr 0x%" PRIx64 " val 0x%" PRIx64
-+pnv_adu_xscom_write(uint64_t addr, uint64_t val) "addr 0x%" PRIx64 " val 0x%" PRIx64
-+
- # pnv_chiptod.c
- pnv_chiptod_xscom_read(uint64_t addr, uint64_t val) "addr 0x%" PRIx64 " val 0x%" PRIx64
- pnv_chiptod_xscom_write(uint64_t addr, uint64_t val) "addr 0x%" PRIx64 " val 0x%" PRIx64
-diff --git a/include/hw/ppc/pnv_adu.h b/include/hw/ppc/pnv_adu.h
-new file mode 100644
-index 0000000000..b5f308627b
---- /dev/null
-+++ b/include/hw/ppc/pnv_adu.h
-@@ -0,0 +1,25 @@
-+/*
-+ * QEMU PowerPC PowerNV Emulation of some ADU behaviour
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef PPC_PNV_ADU_H
-+#define PPC_PNV_ADU_H
-+
-+#include "hw/ppc/pnv.h"
-+#include "hw/qdev-core.h"
-+
-+#define TYPE_PNV_ADU "pnv-adu"
-+
-+OBJECT_DECLARE_TYPE(PnvADU, PnvADUClass, PNV_ADU)
-+
-+struct PnvADU {
-+    DeviceState xd;
-+
-+    MemoryRegion xscom_regs;
-+};
-+
-+#endif /* PPC_PNV_ADU_H */
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index a4ed17ac59..4eaa7d3999 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -2,6 +2,7 @@
- #define PPC_PNV_CHIP_H
+-    /* Does iothread need to be locked for walking CPU list? */
+-    bql_lock();
+-    THREAD_SIBLING_FOREACH(cs, ccs) {
+-        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+-        uint32_t thread_id = ppc_cpu_tir(ccpu);
+-
+-        if (ttir == thread_id) {
+-            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
+-            bql_unlock();
+-            return;
+-        }
+-    }
+-
+-    g_assert_not_reached();
++    msgsnd_core_tir(env, rb & PPC_BITMASK(57, 63), PPC_INTERRUPT_DOORBELL);
+ }
+ #endif /* TARGET_PPC64 */
  
- #include "hw/pci-host/pnv_phb4.h"
-+#include "hw/ppc/pnv_adu.h"
- #include "hw/ppc/pnv_chiptod.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
-@@ -77,6 +78,7 @@ struct Pnv9Chip {
-     PnvChip      parent_obj;
- 
-     /*< public >*/
-+    PnvADU       adu;
-     PnvXive      xive;
-     Pnv9Psi      psi;
-     PnvLpcController lpc;
-@@ -110,6 +112,7 @@ struct Pnv10Chip {
-     PnvChip      parent_obj;
- 
-     /*< public >*/
-+    PnvADU       adu;
-     PnvXive2     xive;
-     Pnv9Psi      psi;
-     PnvLpcController lpc;
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index 6209e18492..e93d310e79 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -82,6 +82,9 @@ struct PnvXScomInterfaceClass {
- #define PNV_XSCOM_PBCQ_SPCI_BASE  0x9013c00
- #define PNV_XSCOM_PBCQ_SPCI_SIZE  0x5
- 
-+#define PNV9_XSCOM_ADU_BASE       0x0090000
-+#define PNV9_XSCOM_ADU_SIZE       0x55
-+
- /*
-  * Layout of the XSCOM PCB addresses (POWER 9)
-  */
-@@ -128,6 +131,9 @@ struct PnvXScomInterfaceClass {
- #define PNV9_XSCOM_PEC_PCI_STK1   0x140
- #define PNV9_XSCOM_PEC_PCI_STK2   0x180
- 
-+#define PNV10_XSCOM_ADU_BASE      0x0090000
-+#define PNV10_XSCOM_ADU_SIZE      0x55
-+
- /*
-  * Layout of the XSCOM PCB addresses (POWER 10)
-  */
 -- 
 2.45.2
 
