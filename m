@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FC093CDDF
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AEF93CDDE
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 08:00:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sXDzW-0000zZ-Kp; Fri, 26 Jul 2024 01:59:46 -0400
+	id 1sXDzY-000166-4K; Fri, 26 Jul 2024 01:59:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sXDzU-0000x1-19
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 01:59:44 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ id 1sXDzW-00012F-NK
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 01:59:46 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sXDzS-0006XH-BI
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 01:59:43 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-7037a208ff5so410119a34.0
- for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 22:59:41 -0700 (PDT)
+ id 1sXDzV-0006bO-4i
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 01:59:46 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3db1d4dab7fso98885b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Jul 2024 22:59:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1721973580; x=1722578380; darn=nongnu.org;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cDXUV1ROupA6i8xkgh2rjOo8lmNHwSBtTD7KktWSLk0=;
- b=ObPDuLDz8C6pd71QZDQ/OcbcrpKOC4r2nDAPgDdJjcWGKzSr6Su/bPMosTZd2JJk7l
- MxDwWv9wQiL4yVqdH3gFMRdL8Y8bAFZZlgLiyz448Dpp9DPw1Vc5imR1Z66/iGwq7ZPG
- iiS687z3CVv36pNs6TOnjXL0tpxq8HIwJJskLQonzQyIJ1rHSifqasoypZDRJH8tqKOj
- msSj2Iy88NjiIwH5DLvHm0FZcfCaiuxJ2JOGH4vLZkyeRnYYqlnycr1QVVtWKfQUxd39
- JKqNWxDsi48yi8SMhwH+touUm1w9LVC/tlwjBDjxzu4ert3xLDtwEtQS4VlUPwJTLDjJ
- 7jGg==
+ d=sifive.com; s=google; t=1721973583; x=1722578383; darn=nongnu.org;
+ h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=FLUVpm7q4t3wLyhn54TwgrrVNxCRL3GBe3+Zpe/mX4s=;
+ b=R9zl//GyxMe8oyjZPl8u5Z60nm25EVq3emsmzXYFpfml/VBw1ZTqgkXQsXNPopOj/P
+ YrfyKdIibvX1CwmtMn4f8+n1A+Hv4OD/ouf4gf5LKQp0jk+d/RNQlqtaypvqKQYsw0f8
+ UhpGNjfV/klp8xgKDNv4OaSsAihu8+71zrt84gSC23SPxUKvZGkr+2aB66OwujGSTpT4
+ 86B2y1sOv7YJCIUWk+8JYn9nP7n65rGm/9M8hT+eS136W2+TzqNoJJMwAaT8OzOkyECI
+ RanreEgUYxmfOW+Gesvlp0gkrsckVVK+RNRdz4LTKPmaL6nEFrqK3Ehhg6pMjfkmssyr
+ z+rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721973580; x=1722578380;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cDXUV1ROupA6i8xkgh2rjOo8lmNHwSBtTD7KktWSLk0=;
- b=fRl3WcZ/TS8jj4QOnLDRccb7qDAARxMTsv37LQoYwIWe0XMBQMkpIU7TL+Lpjf9xSd
- uYfRl0V8JhXL0xdVQ0nTzhQKwXbfKkoiAPdBTlSkhjPrV/FEL9NMbSKvYlzktVIbv2E/
- 9mbK8oKE0nbJ6JgahquavMCn3JlEQZWj7vnSCXJskgGHPQrS5wZnMmjlRI5bUWAZybrN
- gB/sKBWmqyOXZe+wlFs4zzDGAUyDzqgA5Zxsudx6P3SqwU8M2PweqtD2K6/J7azOh4Id
- dcqchYORp4IsEg/e7/nwjsWvLwDfJOEYMVpwEMKE7O7P6Aa1TKP4wwYS9H1tJdqcoqBY
- pjkw==
-X-Gm-Message-State: AOJu0Yz1wZypMwGEeD9l1/ap6A1BWx7CBGyrLP53eDRMbnYFX4Qs74sA
- uU0a1X04lQ9P1XAMrMV9uHT+vd0dVLOtwujyHOENYdxHi7FGBR7rceHF26x2UdxSZ43bEMyQD6q
- dnj+y3hofQFww3/W2CkqTsxoNoKKrBaJuc2lspq7MDnEVVNnT0tJWfjl8ntUvYLoQ5sWga9Cq2l
- nJmidyrF9kQE1d7T4DomM4+OltD8h4ioDHgw==
-X-Google-Smtp-Source: AGHT+IGH5YGGFVoLu4xSKrjrB2FUq6xcGoR8ESV+allZWsZja79leyx+DV3L8Rded1q24fpjC2wTZQ==
-X-Received: by 2002:a05:6830:6318:b0:703:654f:9e9c with SMTP id
- 46e09a7af769-7093210ed03mr5834622a34.3.1721973580434; 
- Thu, 25 Jul 2024 22:59:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1721973583; x=1722578383;
+ h=references:in-reply-to:message-id:date:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FLUVpm7q4t3wLyhn54TwgrrVNxCRL3GBe3+Zpe/mX4s=;
+ b=pSjN7OTpH2jqaW/3XKzB0FIZt6ZEUcpTvrFv7wa+JgrYaOpGwCb0Z6MGp7PSY79ORF
+ CHRV5/HVwY5S3Nl8/LNSr0mY+FDVb+Asb8huyDyx5hLDHKa/rqBpeeZ3VsK77ATvq8i/
+ MLGJH3NLY9wqwgihydB/n4I1RygG7CezjeRJyF4d1CsGtk+aJcCOM63b7T04h2Wh1eRa
+ /bc/Ld+cBG3sMOb9uXYodZpIlL/UMDrM2Q4RuLpUFbnquNeZGGtRbqlkJcr1JmF0zdaz
+ kxaWKhqV1QYvuWbFzXstcDDCGzX82SD9CHRcLj0fNg7V9sXimu8LuNqDL/UMHdi81xUM
+ J/3g==
+X-Gm-Message-State: AOJu0YyasHYZmpsbVpH9b8/xG3kMFJ39S05UNR7fBkfR+2bopr6bm3qj
+ sXzViUODTBtY6VO3u4ZPH/a/27hHqlTD77XVJuV9OJWM5EFoU/Hc2LEnJ57jdgFxh/F11GpG1K8
+ bh3hJal2M/fyF/yTSxPb2V7eLxOOH34nExhbTgVlrYKQDPiWzKHFWVACb3SQfOga/4pcEMxCyiP
+ +QfD5d3lrg+zx70pBteHWd6I4GAEIj1/m6ZA==
+X-Google-Smtp-Source: AGHT+IHEGqtwPvIMzxD5kT3T1o/3W1YlzNZIhHuqum5ELuoyyjRYDxjZBikFuS73jKDvepGoCr7HNg==
+X-Received: by 2002:a05:6808:170a:b0:3d9:2b24:5b2 with SMTP id
+ 5614622812f47-3db10cf0ae0mr6044971b6e.0.1721973583078; 
+ Thu, 25 Jul 2024 22:59:43 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70ead6e1a4bsm2002128b3a.5.2024.07.25.22.59.38
+ d2e1a72fcca58-70ead6e1a4bsm2002128b3a.5.2024.07.25.22.59.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jul 2024 22:59:39 -0700 (PDT)
+ Thu, 25 Jul 2024 22:59:42 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
  qemu-arm@nongnu.org (open list:Xilinx Zynq), Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH 0/4] Several fixes of AXI-ethernet/DMA
-Date: Fri, 26 Jul 2024 13:59:29 +0800
-Message-Id: <20240726055933.817-1-jim.shu@sifive.com>
+Subject: [PATCH 1/4] hw/dma: xilinx_axidma: Correct the txlen value in the
+ descriptor
+Date: Fri, 26 Jul 2024 13:59:30 +0800
+Message-Id: <20240726055933.817-2-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=jim.shu@sifive.com; helo=mail-ot1-x330.google.com
+In-Reply-To: <20240726055933.817-1-jim.shu@sifive.com>
+References: <20240726055933.817-1-jim.shu@sifive.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=jim.shu@sifive.com; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,23 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix txlen value in the descriptor status field, DMA error handling,
-and ethernet/DMA reset flow.
+Currently, txlen is always decremented to 0 before filling to the
+descriptor. Keep the origin txlen value to have the correct value of
+descriptor status field.
 
-*** BLURB HERE ***
+It will fix the 'tx_bytes' statistic value in linux axi-ethernet driver.
 
-Jim Shu (4):
-  hw/dma: xilinx_axidma: Correct the txlen value in the descriptor
-  hw/dma: xilinx_axidma: Send DMA error IRQ if any memory access is
-    failed
-  hw/dma: xilinx_axidma: Reset qemu_irq when DMA/Stream is reset
-  hw/net: xilinx_axienet: Fix DMA RX IRQ if ethernet disable RX
+Signed-off-by: Jim Shu <jim.shu@sifive.com>
+---
+ hw/dma/xilinx_axidma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- hw/dma/trace-events     |  1 +
- hw/dma/xilinx_axidma.c  | 97 +++++++++++++++++++++++++++--------------
- hw/net/xilinx_axienet.c | 71 ++++++++++++++++++------------
- 3 files changed, 107 insertions(+), 62 deletions(-)
-
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+index c9cfc3169b..6aa8c9272c 100644
+--- a/hw/dma/xilinx_axidma.c
++++ b/hw/dma/xilinx_axidma.c
+@@ -291,7 +291,7 @@ static void stream_process_mem2s(struct Stream *s, StreamSink *tx_data_dev,
+                                  StreamSink *tx_control_dev)
+ {
+     uint32_t prev_d;
+-    uint32_t txlen;
++    uint32_t txlen, origin_txlen;
+     uint64_t addr;
+     bool eop;
+ 
+@@ -314,6 +314,7 @@ static void stream_process_mem2s(struct Stream *s, StreamSink *tx_data_dev,
+         }
+ 
+         txlen = s->desc.control & SDESC_CTRL_LEN_MASK;
++        origin_txlen = txlen;
+ 
+         eop = stream_desc_eof(&s->desc);
+         addr = s->desc.buffer_address;
+@@ -334,7 +335,7 @@ static void stream_process_mem2s(struct Stream *s, StreamSink *tx_data_dev,
+         }
+ 
+         /* Update the descriptor.  */
+-        s->desc.status = txlen | SDESC_STATUS_COMPLETE;
++        s->desc.status = origin_txlen | SDESC_STATUS_COMPLETE;
+         stream_desc_store(s, s->regs[R_CURDESC]);
+ 
+         /* Advance.  */
 -- 
 2.17.1
 
