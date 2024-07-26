@@ -2,78 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9E293D407
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 15:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1D693D424
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 15:23:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sXKpZ-00058h-Vh; Fri, 26 Jul 2024 09:17:58 -0400
+	id 1sXKu5-0007go-FH; Fri, 26 Jul 2024 09:22:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+6e6729790a346b8d8b38+7642+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1sXKpJ-00057Z-SC
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 09:17:49 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sXKu3-0007dl-0B; Fri, 26 Jul 2024 09:22:35 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+6e6729790a346b8d8b38+7642+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1sXKpE-0007Bu-H2
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 09:17:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=XmSQh5OinrWitvIBiWF96tEnc4uXqTEWZKkRUXxpvwU=; b=Og0eqOnlPVm8j2wvAUorXo4IfU
- SY7Ygn5H7h5qRq3YKeIfS3ubV0g3Zm8gax/lFaQi+PNo+2KPXkeASIXSqYcb9ENQyTHYDCyCCrRQQ
- wYpZ/If/10BcHd+CFcC6hueSnGYS9WtyZM4HV5LWLpI+Tx7vafzugWZtpxQnHD457S0M3CUmNVvnG
- EFvmjBTAwyZWId/ReAOQ9zNg0e6u2r8S4Jl8mCJ36I14oGXuh4snVvXnbIdV9FZ1Ild97Wht7KRoj
- Ke3e2iidPAvOCVV592CHwrkGpY7KD0xMkS8OWHbYlFwWpboMiVKno/+wv52+x3XCEu/DGwzOaPrBN
- 0uwjcg9A==;
-Received: from 54-240-197-234.amazon.com ([54.240.197.234]
- helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1sXKoy-0000000AFIf-2zeb; Fri, 26 Jul 2024 13:17:20 +0000
-Message-ID: <20da16f7349d18c3f77ef34692a907e01d6da34c.camel@infradead.org>
-Subject: Re: [PATCH v2] ptp: Add vDSO-style vmclock support
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Richard Cochran <richardcochran@gmail.com>, Peter Hilber
- <peter.hilber@opensynergy.com>, linux-kernel@vger.kernel.org, 
- virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-rtc@vger.kernel.org, "Ridoux, Julien" <ridouxj@amazon.com>, 
- virtio-dev@lists.linux.dev, "Luu, Ryan" <rluu@amazon.com>, "Chashper,
- David" <chashper@amazon.com>, "Mohamed Abuelfotoh, Hazem"
- <abuehaze@amazon.com>,  "Christopher S . Hall"
- <christopher.s.hall@intel.com>, Jason Wang <jasowang@redhat.com>, John
- Stultz <jstultz@google.com>,  netdev@vger.kernel.org, Stephen Boyd
- <sboyd@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Marc Zyngier <maz@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Alessandro Zummo <a.zummo@towertech.it>,  Alexandre Belloni
- <alexandre.belloni@bootlin.com>, qemu-devel <qemu-devel@nongnu.org>, Simon
- Horman <horms@kernel.org>
-Date: Fri, 26 Jul 2024 14:17:18 +0100
-In-Reply-To: <20240726090538-mutt-send-email-mst@kernel.org>
-References: <7b3a2490d467560afd2fe08d4f28c4635919ec48.camel@infradead.org>
- <20240726090538-mutt-send-email-mst@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-URugtGsDtyl3FCI3biCS"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sXKtz-0008CO-7r; Fri, 26 Jul 2024 09:22:34 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WVpKR2Tprz6K5nk;
+ Fri, 26 Jul 2024 21:20:43 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 699F5140A46;
+ Fri, 26 Jul 2024 21:22:27 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 26 Jul
+ 2024 14:22:26 +0100
+Date: Fri, 26 Jul 2024 14:22:25 +0100
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: Shiju Jose <shiju.jose@huawei.com>, Alex =?ISO-8859-1?Q?Benn=E9e?=
+ <alex.bennee@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Ani Sinha
+ <anisinha@redhat.com>, Beraldo Leal <bleal@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Eric Blake <eblake@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Markus Armbruster <armbru@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>, "Wainer dos
+ Santos Moschetta" <wainersm@redhat.com>, <linux-kernel@vger.kernel.org>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v3 7/7] acpi/ghes: extend arm error injection logic
+Message-ID: <20240726142225.00000bdd@Huawei.com>
+In-Reply-To: <89e8a63b5e54409dd9bc4e7f4f4c12290838371b.1721630625.git.mchehab+huawei@kernel.org>
+References: <cover.1721630625.git.mchehab+huawei@kernel.org>
+ <89e8a63b5e54409dd9bc4e7f4f4c12290838371b.1721630625.git.mchehab+huawei@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+6e6729790a346b8d8b38+7642+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.203.174.77]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,139 +70,430 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 22 Jul 2024 08:45:59 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
---=-URugtGsDtyl3FCI3biCS
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Enrich CPER error injection logic for ARM processor to allow
+> setting values to  from UEFI 2.10 tables N.16 and N.17.
+>=20
+> It should be noticed that, with such change, all arguments are
+> now optional, so, once QMP is negotiated with:
+>=20
+> 	{ "execute": "qmp_capabilities" }
+>=20
+> the simplest way to generate a cache error is to use:
+>=20
+> 	{ "execute": "arm-inject-error" }
+>=20
+> Also, as now PEI is mapped into an array, it is possible to
+> inject multiple errors at the same CPER record with:
+>=20
+> 	{ "execute": "arm-inject-error", "arguments": {
+> 	   "error": [ {"type": [ "cache-error" ]},
+> 		      {"type": [ "tlb-error" ]} ] } }
+>=20
+> This would generate both cache and TLB errors, using default
+> values for other fields.
+>=20
+> As all fields from ARM Processor CPER are now mapped, all
+> types of CPER records can be generated with the new QAPI.
+>=20
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+If you are happy to smash this into patch 4 then also take ownership
+of the result and change the author as I wrote almost none of the code
+that ended up in the result as only the GHESv2 stuff was mind
+even before you joined this effort - the rest was Shiju's
 
-On Fri, 2024-07-26 at 09:14 -0400, Michael S. Tsirkin wrote:
-> For purposes of virtio, should we label all the fields here
-> __le?
+If you want, I'm fine with a co-developed on the result
 
-Yes. Peter and I discussed that, and it's mostly just a cosmetic change
-at this point. The simple ACPI thing only exists on LE platforms for
-*now* anyway.
-
-We also had a discussion about the use of signed integers. Our fallback
-was "declare it to be an uint16_t in the protocol but that it is to be
-interpreted such that if it's greater than 0x8000 you subtract 0x8000
-from the result". Or whatever actually added up correctly for twos-
-complement signed integers in reality.
-
---=-URugtGsDtyl3FCI3biCS
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwNzI2MTMxNzE5WjAvBgkqhkiG9w0BCQQxIgQg4nbWqPc1
-a2ky01eKDFaeUTIuRE6ddbaWMQNvoQ0XiSMwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAGdxXY+8t8yZILWrgnA1y+fTMdJEdFvnYx
-a6ZUc7IKF5fGhJTpVfv9xYDV3fK8i/rAlpSFuiJv7Y5Z7BSBeI77isbEy3DDp5VVQDemSk2FSnCk
-YRVOepVNlT12hG4EQLoSG7FgM4/Q9cdGI024WqlLmIXs0v0igY5Ky3qrkqo6T5xIQLzd/FlADbHq
-RQ036R9lpBfGtuHs/nyhFmFSUYOgc55vl/VzDWve3b2rv0jMY+LAjcK+lJtzs/3jKNC4LmNmZtYM
-ysRyJP1q0uVlkZtKv1RkJLR+JimSFYrGF4XvmtBxCLNtqA4zSURAFf+4Jkb91gWW5Obo6GnECaWV
-KiMYH7FpAfQ2o8jwI2AX40s1OIinW16+Z3jbUGYzRRP1tuu2XPRfIkuGc1kQpuhKQa3rV0S/6DX3
-g/t+o+Zf963SGsRGTdStNwtHGitEyhsIenu4R3siN4A+4MgvXzaSxBQY0BhPZ/Giw8n5S328XUtS
-bE2mRgD/AiLVRxiqQFlNss9Jp4HivgW3jXkARRaZW709z+NN4dF9MbyckYs/auCi5NUnUKaMJzYw
-te0Z11yvWDtEWwy6/+Mk0GT8Ex44TrbYGfDmNJlKokWCR12LeD/McePQrioQyVRfk+/r0yWVcO1e
-4k1wo30+ZYOv94U89BblUloGhBWAULtsmux84MAKWgAAAAAAAA==
+Jonathan
 
 
---=-URugtGsDtyl3FCI3biCS--
+
+> ---
+>  hw/acpi/ghes.c                  | 168 +++++++-------
+>  hw/arm/arm_error_inject.c       | 399 +++++++++++++++++++++++++++++++-
+>  hw/arm/arm_error_inject_stubs.c |  20 +-
+>  include/hw/acpi/ghes.h          |  40 +++-
+>  qapi/arm-error-inject.json      | 250 +++++++++++++++++++-
+>  tests/lcitool/libvirt-ci        |   2 +-
+>  6 files changed, 778 insertions(+), 101 deletions(-)
+>=20
+> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+> index ebf1b812aaaa..afd1d098a7e3 100644
+> --- a/hw/acpi/ghes.c
+> +++ b/hw/acpi/ghes.c
+
+> +    build_append_int_noprefix(table, err.running_state, 4);
+> +
+> +    /* PSCI state: only valid when running state is zero  */
+> +    build_append_int_noprefix(table, err.psci_state, 4);
+> +
+> +    for (i =3D 0; i < err.err_info_num; i++) {
+> +        /* ARM Propcessor error information */
+> +        /* Version */
+> +        build_append_int_noprefix(table, 0, 1);
+> +
+> +        /*  Length */
+> +        build_append_int_noprefix(table, ACPI_GHES_ARM_CPER_PEI_LENGTH, =
+1);
+> +
+> +        /* Validation Bits */
+> +        build_append_int_noprefix(table, err.pei[i].validation, 2);
+
+Maybe drop some comments when the data being written makes it obvious?
+
+> +
+> +        /* Type */
+> +        build_append_int_noprefix(table, err.pei[i].type, 1);
+> +
+> +        /* Multiple error count */
+> +        build_append_int_noprefix(table, err.pei[i].multiple_error, 2);
+> +
+> +        /* Flags  */
+> +        build_append_int_noprefix(table, err.pei[i].flags, 1);
+> +
+> +        /* Error information  */
+> +        build_append_int_noprefix(table, err.pei[i].error_info, 8);
+> +
+> +        /* Virtual fault address  */
+> +        build_append_int_noprefix(table, err.pei[i].virt_addr, 8);
+> +
+> +        /* Physical fault address  */
+> +        build_append_int_noprefix(table, err.pei[i].phy_addr, 8);
+> +    }
+> +
+> +    for (i =3D 0; i < err.context_info_num; i++) {
+> +        /* ARM Propcessor error context information */
+> +        /* Version */
+> +        build_append_int_noprefix(table, 0, 2);
+> +
+> +        /* Validation type */
+> +        build_append_int_noprefix(table, err.context[i].type, 2);
+> +
+> +        /* Register array size */
+> +        build_append_int_noprefix(table, err.context[i].size * 8, 4);
+> +
+> +        /* Register array (byte 8 of Context info) */
+> +        for (j =3D 0; j < err.context[i].size; j++) {
+> +            build_append_int_noprefix(table, err.context[i].array[j], 8);
+> +        }
+>      }
+
+> diff --git a/hw/arm/arm_error_inject.c b/hw/arm/arm_error_inject.c
+> index 1da97d5d4fdc..67f1c77546b9 100644
+> --- a/hw/arm/arm_error_inject.c
+> +++ b/hw/arm/arm_error_inject.c
+> @@ -10,23 +10,408 @@
+
+> +
+> +/* Handle ARM Context */
+> +static ArmContext *qmp_arm_context(uint16_t *context_info_num,
+> +                                   uint32_t *context_length,
+> +                                   bool has_context,
+> +                                   ArmProcessorContextList const *contex=
+t_list)
+> +{
+> +    ArmProcessorContextList const *next;
+> +    ArmContext *context =3D NULL;
+> +    uint16_t i, j, num, default_type;
+> +
+> +    default_type =3D get_default_context_type();
+> +
+> +    if (!has_context) {
+> +        *context_info_num =3D 0;
+> +        *context_length =3D 0;
+> +
+> +        return NULL;
+> +    }
+> +
+> +    /* Calculate sizes */
+> +    num =3D 0;
+> +    for (next =3D context_list; next; next =3D next->next) {
+> +        uint32_t n_regs =3D 0;
+> +
+> +        if (next->value->has_q_register) {
+> +            uint64List *reg =3D next->value->q_register;
+> +
+> +            while (reg) {
+> +                n_regs++;
+> +                reg =3D reg->next;
+> +            }
+> +
+> +            if (next->value->has_minimal_size &&
+> +                                        next->value->minimal_size < n_re=
+gs) {
+I'd align just after (
+
+> +
+> +static uint8_t *qmp_arm_vendor(uint32_t *vendor_num, bool has_vendor_spe=
+cific,
+> +                               uint8List const *vendor_specific_list)
+> +{
+> +    uint8List const *next =3D vendor_specific_list;
+> +    uint8_t *vendor =3D NULL, *p;
+
+vendor always set before use.
+
+> +
+> +    if (!has_vendor_specific) {
+> +        return NULL;
+> +    }
+> +
+> +    *vendor_num =3D 0;
+> +
+> +    while (next) {
+> +        next =3D next->next;
+> +        (*vendor_num)++;
+> +    }
+> +
+> +    vendor =3D g_malloc(*vendor_num);
+> +
+> +    p =3D vendor;
+> +    next =3D vendor_specific_list;
+> +    while (next) {
+> +        *p =3D next->value;
+> +        next =3D next->next;
+> +        p++;
+> +    }
+> +
+> +    return vendor;
+> +}
+> diff --git a/qapi/arm-error-inject.json b/qapi/arm-error-inject.json
+> index 430e6cea6b60..2a314830fe60 100644
+> --- a/qapi/arm-error-inject.json
+> +++ b/qapi/arm-error-inject.json
+
+> +
+> +##
+> +# @ArmProcessorErrorInformation:
+> +#
+> +# Contains ARM processor error information (PEI) data according with UEFI
+> +# CPER table N.17.
+> +#
+> +# @validation:
+> +#       Valid validation bits for error-info section.
+> +#       Argument is optional. If not specified, those flags will be enab=
+led:
+> +#       first-error-cap and propagated.
+> +#
+> +# @type:
+> +#       ARM processor error types to inject. Argument is mandatory.
+> +#
+> +# @multiple-error:
+> +#       Indicates whether multiple errors have occurred.
+> +#       Argument is optional. If not specified and @validation not enfor=
+ced,
+
+forced probably rather than enforced.
+
+> +#       this field will be marked as invalid at CPER record..
+. only
+
+Good to mention the odd encoding of 0 =3D single error, 1 =3D multiple (los=
+t count)
+2+ =3D actual count of errors
+
+> +#
+> +# @flags:
+> +#       Indicates flags that describe the error attributes.
+> +#       Argument is optional. If not specified and defaults to
+> +#       first-error and propagated.
+> +#
+> +# @error-info:
+> +#       Error information structure is specific to each error type.
+> +#       Argument is optional, and its value depends on the PEI type(s).
+> +#       If not defined, the default depends on the type:
+> +#       - for cache-error: 0x0091000F;
+> +#       - for tlb-error: 0x0054007F;
+> +#       - for bus-error: 0x80D6460FFF;
+> +#       - for micro-arch-error: 0x78DA03FF;
+> +#       - if multiple types used, this bit is disabled from @validation =
+bits.
+> +#
+> +# @virt-addr:
+> +#       Virtual fault address associated with the error.
+> +#       Argument is optional. If not specified and @validation not enfor=
+ced,
+> +#       this field will be marked as invalid at CPER record..
+> +#
+> +# @phy-addr:
+> +#       Physical fault address associated with the error.
+> +#       Argument is optional. If not specified and @validation not enfor=
+ced,
+> +#       this field will be marked as invalid at CPER record..
+> +#
+> +# Since: 9.1
+> +##
+> +{ 'struct': 'ArmProcessorErrorInformation',
+> +  'data': { '*validation': ['ArmPeiValidationBits'],
+> +            'type': ['ArmProcessorErrorType'],
+> +            '*multiple-error': 'uint16',
+> +            '*flags': ['ArmProcessorFlags'],
+> +            '*error-info': 'uint64',
+> +            '*virt-addr':  'uint64',
+> +            '*phy-addr': 'uint64'}
+> +}
+> +
+> +##
+> +# @ArmProcessorContext:
+> +#
+> +# Provide processor context state specific to the ARM processor architec=
+ture,
+> +# According with UEFI 2.10 CPER table N.21.
+> +# Argument is optional.If not specified, no context will be used.
+                          ^ space
+> +#
+> +# @type:
+> +#       Contains an integer value indicating the type of context state b=
+eing
+> +#       reported.
+> +#       Argument is optional. If not defined, it will be set to be EL1 r=
+egister
+> +#       for the emulation, e. g.:
+> +#       - on arm32: AArch32 EL1 context registers;
+> +#       - on arm64: AArch64 EL1 context registers.
+> +#
+> +# @register:
+> +#       Provides the contents of the actual registers or raw data, depen=
+ding
+> +#       on the context type.
+> +#       Argument is optional. If not defined, it will fill the first reg=
+ister
+> +#       with 0xDEADBEEF, and the other ones with zero.
+We could fill this in with a valid snap shot I think?  It' just a set of CP=
+U registers.
+Obviously content would be pretty random and meaningless given the
+error isn't correlated with particular activity (as we triggered it) but ma=
+ybe would
+useful for testing the parsing?
+
+Perhaps that's a job for the future as we will want to be able to override =
+it
+anyway.
+
+> +#
+> +# @minimal-size:
+> +#       Argument is optional. If provided, define the minimal size of the
+> +#       context register array. The actual size is defined by checking t=
+he
+> +#       number of register values plus the content of this field (if use=
+d),
+> +#       ensuring that each processor context information structure array=
+ is
+> +#       padded with zeros if the size is not a multiple of 16 bytes.
+> +#
+> +# Since: 9.1
+> +##
+> +{ 'struct': 'ArmProcessorContext',
+> +  'data': { '*type': 'uint16',
+> +            '*minimal-size': 'uint32',
+> +            '*register': ['uint64']}
+>  }
+> =20
+>  ##
+>  # @arm-inject-error:
+>  #
+> -# Inject ARM Processor error.
+> +# Inject ARM Processor error with data to be filled accordign with UEFI =
+2.10
+> +# CPER table N.16.
+>  #
+> -# @errortypes: ARM processor error types to inject
+> +# @validation:
+> +#       Valid validation bits for ARM processor CPER.
+> +#       Argument is optional. If not specified, the default is
+> +#       calculated based on having the corresponding arguments filled.
+> +#
+> +# @affinity-level:
+> +#       Error affinity level for errors that can be attributed to a spec=
+ific
+> +#       affinity level.
+> +#       Argument is optional. If not specified and @validation not enfor=
+ced,
+> +#       this field will be marked as invalid at CPER record.
+As below.
+
+> +#
+> +# @mpidr-el1:
+> +#       Processor=E2=80=99s unique ID in the system.
+> +#       Argument is optional. If not specified, it will use the cpu mpidr
+> +#       field from the emulation data. If zero and @validation is not
+> +#       enforced, this field will be marked as invalid at CPER record.
+The zero case is obscure enough I'd be tempted to say that if we want
+to test that then we will override the validation field.
+
+The logic will end up simpler and still allow the same level of corner
+case testing for no valid mpidr (which is really odd if it occurs!)
+
+> +#
+> +# @midr-el1:  Identification info of the chip
+> +#       Argument is optional. If not specified, it will use the cpu mpidr
+> +#       field from the emulation data. If zero and @validation is not
+> +#       enforced, this field will be marked as invalid at CPER record.
+
+Same as above.
+
+> +#
+> +# @running-state:
+> +#       Indicates the running state of the processor.
+> +#       Argument is optional. If not specified and @validation not enfor=
+ced,
+> +#       this field will be marked as invalid at CPER record.
+
+Fun corners of the spec.  Can't allow bit0 of this and psci-state.
+We should perhaps enforce that? I don't think we need to inject completely
+invalid states (just corners of what is valid).
+
+> +#
+> +# @psci-state:
+> +#       Provides PSCI state of the processor, as defined in ARM PSCI doc=
+ument.
+> +#       Argument is optional. If not specified, it will use the cpu power
+> +#       state field from the emulation data.
+Hmm. Do you think validation is meant to cover this? Is it under running-st=
+ate?
+
+> +#
+> +# @context:
+> +#       Contains an array of processor context registers.
+> +#       Argument is optional. If not specified, no context will be added.
+> +#
+> +# @vendor-specific:
+> +#       Contains a byte array of vendor-specific data.
+> +#       Argument is optional. If not specified, no vendor-specific data
+> +#       will be added.
+> +#
+> +# @error:
+> +#       Contains an array of ARM processor error information (PEI) secti=
+ons.
+> +#       Argument is optional. If not specified, defaults to a single
+> +#       Program Error Information record defaulting to type=3Dcache-erro=
+r.
+>  #
+>  # Features:
+>  #
+> @@ -44,6 +262,16 @@
+>  # Since: 9.1
+>  ##
+>  { 'command': 'arm-inject-error',
+> -  'data': { 'errortypes': ['ArmProcessorErrorType'] },
+> +  'data': {
+> +    '*validation': ['ArmProcessorValidationBits'],
+> +    '*affinity-level': 'uint8',
+> +    '*mpidr-el1': 'uint64',
+> +    '*midr-el1': 'uint64',
+> +    '*running-state':  ['ArmProcessorRunningState'],
+> +    '*psci-state': 'uint32',
+> +    '*context': ['ArmProcessorContext'],
+> +    '*vendor-specific': ['uint8'],
+> +    '*error': ['ArmProcessorErrorInformation']
+> +  },
+>    'features': [ 'unstable' ]
+>  }
 
