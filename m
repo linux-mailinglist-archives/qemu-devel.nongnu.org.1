@@ -2,90 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D6C93D308
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 14:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CB193D363
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 14:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sXK7Y-0007Wx-Bt; Fri, 26 Jul 2024 08:32:28 -0400
+	id 1sXKJH-0003dC-0R; Fri, 26 Jul 2024 08:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sXK7C-00075q-59
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 08:32:10 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sXK79-0003D7-Om
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 08:32:05 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1fd69e44596so4458505ad.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jul 2024 05:32:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1721997122; x=1722601922; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EtRK4zWhoiaMF0j+CVYjLlZPKRTkFC/ig+Ipn+BZYKg=;
- b=aCef13bxeAzcXPfM49pWR3H09a9k+qm1HLlHopWP1cs6kPAPfFkfk0DfjpgeBwPuIL
- tXugJeRjQfsFJ1Av2NyCKy34EEaLfISf98M6ib0XPljo/3lMFr90NXxGTSEilePBxPHV
- IK4YVdgv1Dr93JpWBLWwNHGITwJ79+6uKKvx8VHEcC0EmiPvAImI/uLNA5vgX4bACXpR
- 8iwEd0AJm1ajJ/OLEjJ+uDctJfL/3vVfzyzwV98MNrQMLICIK5n916T9EmjL9WvIs80T
- c9fGz0s1SkECveW+3lGfBukvkL4YwJp2tvHiKls4VbpziuLOIU8auqTdaDz1R4hvWbwd
- 8Jqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1721997122; x=1722601922;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EtRK4zWhoiaMF0j+CVYjLlZPKRTkFC/ig+Ipn+BZYKg=;
- b=c4F9HooCa/iiFOs2uE1DPSdjXbrh8biFs/ZFMKiJTX54qsTmsKWWdOkg6ODp8P1u54
- dZpHU53BwF6ehBSgjYGwdPHUQrRXa5paM1mn1nT3vOYxDijFpgvMMJ+zjuPfn2CWJcl7
- b5OIfDwR5jS5JZJrpEozUbLeLYL/wfytS9L/Q3CUvFD7D3EYPzNloWHJRhQ9gzVArUVE
- /EH/qcp99HJwme7eoClabJ0rojNCqO8AlCJEbM/PfnSwSDfuGlR8DFbuIzSrwk/ZGEk+
- pj80X7xcJAw42LrGoPSxvx4uqiNk2IIuKAYiR6XY+JBBnVN2pQCJgiQlHMPXTQ86dy2I
- 5E6Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVh8o4DEFS4nZrl2hLZoB3IdodFT6z8B7SOZ8eO/JRSERuQwA5VVeKT3ZknverC3Z9IOYmp4xIyjmdsuzE+QkEotogKlRM=
-X-Gm-Message-State: AOJu0YzJHpC8qHFbkY1dpaT4WEeDq0vXlqePB8idLgkzjsgjiZcfkCKW
- L0FVmHCyyzHEjdfnQGH6xlNGhnAYgs0EwOgf61gq+cIp4OC8L3L91f4+Xy9p7+U=
-X-Google-Smtp-Source: AGHT+IEgymvyGjOEhBuJXdL2Wi2DdocA3Ya4PRzqyhDbvku0sARpaof0y551Ua96Zr/2a9KYz+atcQ==
-X-Received: by 2002:a17:903:41cc:b0:1fd:b5fe:ee91 with SMTP id
- d9443c01a7336-1fdd6e42911mr143186455ad.25.1721997121912; 
- Fri, 26 Jul 2024 05:32:01 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:bcc0:54b1:ce70:829:8c74:d7d4?
- ([2804:7f0:bcc0:54b1:ce70:829:8c74:d7d4])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70ead874aeesm2577489b3a.163.2024.07.26.05.31.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Jul 2024 05:32:01 -0700 (PDT)
-Message-ID: <73a0b3bc-2742-432e-a1bc-061621634a46@ventanamicro.com>
-Date: Fri, 26 Jul 2024 09:31:57 -0300
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sXKJ9-0003Xw-Tg; Fri, 26 Jul 2024 08:44:27 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sXKJ3-0008Tu-3V; Fri, 26 Jul 2024 08:44:27 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WVnSj56z3z67HRc;
+ Fri, 26 Jul 2024 20:41:57 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id EC086140A46;
+ Fri, 26 Jul 2024 20:44:13 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 26 Jul
+ 2024 13:44:13 +0100
+Date: Fri, 26 Jul 2024 13:44:12 +0100
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: Shiju Jose <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Eric Blake <eblake@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Markus
+ Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ <linux-kernel@vger.kernel.org>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v3 4/7] acpi/ghes: Add a logic to handle block addresses
+ and FW first ARM processor error injection
+Message-ID: <20240726134412.000038c1@Huawei.com>
+In-Reply-To: <6a3542a7d8acfbf88c906ec6f6dc5a697257b461.1721630625.git.mchehab+huawei@kernel.org>
+References: <cover.1721630625.git.mchehab+huawei@kernel.org>
+ <6a3542a7d8acfbf88c906ec6f6dc5a697257b461.1721630625.git.mchehab+huawei@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/2] Improve the performance of unit-stride RVV ld/st on
-To: Paolo Savini <paolo.savini@embecosm.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: Richard Handerson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Max Chou <max.chou@sifive.com>
-References: <20240717153040.11073-1-paolo.savini@embecosm.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240717153040.11073-1-paolo.savini@embecosm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.203.174.77]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,79 +69,341 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+On Mon, 22 Jul 2024 08:45:56 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> 1. Some GHES functions require handling addresses. Add a helper function
+>    to support it.
+> 
+> 2. Add support for ACPI CPER (firmware-first) ARM processor error injection.
+> 
+> Compliance with N.2.4.4 ARM Processor Error Section in UEFI 2.6 and
+> upper specs, using error type bit encoding as detailed at UEFI 2.9A
+> errata.
+> 
+> Error injection examples:
+> 
+> { "execute": "qmp_capabilities" }
+> 
+> { "execute": "arm-inject-error",
+>       "arguments": {
+>         "errortypes": ['cache-error']
+>       }
+> }
+> 
+> { "execute": "arm-inject-error",
+>       "arguments": {
+>         "errortypes": ['tlb-error']
+>       }
+> }
+> 
+> { "execute": "arm-inject-error",
+>       "arguments": {
+>         "errortypes": ['bus-error']
+>       }
+> }
+> 
+> { "execute": "arm-inject-error",
+>       "arguments": {
+>         "errortypes": ['cache-error', 'tlb-error']
+>       }
+> }
+> 
+> { "execute": "arm-inject-error",
+>       "arguments": {
+>         "errortypes": ['cache-error', 'tlb-error', 'bus-error', 'micro-arch-error']
+>       }
+> }
+> ...
+> 
+> Co-authored-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Co-authored-by: Shiju Jose <shiju.jose@huawei.com>
+> For Add a logic to handle block addresses,
+# before comments I think?
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> For FW first ARM processor error injection,
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+I can't remember what I wrote in here so may well be commenting on
+my past self ;)
+
+> ---
+>  configs/targets/aarch64-softmmu.mak |   1 +
+>  hw/acpi/ghes.c                      | 258 ++++++++++++++++++++++++++--
+>  hw/arm/Kconfig                      |   4 +
+>  hw/arm/arm_error_inject.c           |  35 ++++
+>  hw/arm/arm_error_inject_stubs.c     |  18 ++
+>  hw/arm/meson.build                  |   3 +
+>  include/hw/acpi/ghes.h              |   2 +
+>  qapi/arm-error-inject.json          |  49 ++++++
+>  qapi/meson.build                    |   1 +
+>  qapi/qapi-schema.json               |   1 +
+>  10 files changed, 361 insertions(+), 11 deletions(-)
+>  create mode 100644 hw/arm/arm_error_inject.c
+>  create mode 100644 hw/arm/arm_error_inject_stubs.c
+>  create mode 100644 qapi/arm-error-inject.json
+> 
+> diff --git a/configs/targets/aarch64-softmmu.mak b/configs/targets/aarch64-softmmu.mak
+> index 84cb32dc2f4f..b4b3cd97934a 100644
+> --- a/configs/targets/aarch64-softmmu.mak
+> +++ b/configs/targets/aarch64-softmmu.mak
+> @@ -5,3 +5,4 @@ TARGET_KVM_HAVE_GUEST_DEBUG=y
+>  TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml gdb-xml/aarch64-pauth.xml
+>  # needed by boot.c
+>  TARGET_NEED_FDT=y
+> +CONFIG_ARM_EINJ=y
+> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+> index 5b8bc6eeb437..6075ef5893ce 100644
+> --- a/hw/acpi/ghes.c
+> +++ b/hw/acpi/ghes.c
+> @@ -27,6 +27,7 @@
+>  #include "hw/acpi/generic_event_device.h"
+>  #include "hw/nvram/fw_cfg.h"
+>  #include "qemu/uuid.h"
+> +#include "qapi/qapi-types-arm-error-inject.h"
+>  
+>  #define ACPI_GHES_ERRORS_FW_CFG_FILE        "etc/hardware_errors"
+>  #define ACPI_GHES_DATA_ADDR_FW_CFG_FILE     "etc/hardware_errors_addr"
+> @@ -53,6 +54,12 @@
+>  /* The memory section CPER size, UEFI 2.6: N.2.5 Memory Error Section */
+>  #define ACPI_GHES_MEM_CPER_LENGTH           80
+>  
+> +/*
+> + * ARM Processor section CPER size, UEFI 2.10: N.2.4.4
+> + * ARM Processor Error Section
+> + */
+> +#define ACPI_GHES_ARM_CPER_LENGTH (72 + 600)
+> +
+>  /* Masks for block_status flags */
+>  #define ACPI_GEBS_UNCORRECTABLE         1
+>  
+> @@ -231,6 +238,142 @@ static int acpi_ghes_record_mem_error(uint64_t error_block_address,
+>      return 0;
+>  }
+>  
+> +/* UEFI 2.9: N.2.4.4 ARM Processor Error Section */
+> +static void acpi_ghes_build_append_arm_cper(uint8_t error_types, GArray *table)
+> +{
+> +    /*
+> +     * ARM Processor Error Record
+> +     */
+> +
+> +    /* Validation Bits */
+> +    build_append_int_noprefix(table,
+> +                              (1ULL << 3) | /* Vendor specific info Valid */
+> +                              (1ULL << 2) | /* Running status Valid */
+> +                              (1ULL << 1) | /* Error affinity level Valid */
+> +                              (1ULL << 0), /* MPIDR Valid */
+> +                              4);
+> +    /* Error Info Num */
+> +    build_append_int_noprefix(table, 1, 2);
+> +    /* Context Info Num */
+> +    build_append_int_noprefix(table, 1, 2);
+> +    /* Section length */
+> +    build_append_int_noprefix(table, ACPI_GHES_ARM_CPER_LENGTH, 4);
+> +    /* Error affinity level */
+> +    build_append_int_noprefix(table, 2, 1);
+> +    /* Reserved */
+> +    build_append_int_noprefix(table, 0, 3);
+> +    /* MPIDR_EL1 */
+> +    build_append_int_noprefix(table, 0xAB12, 8);
+
+These need to be real - I see you fix that in later
+patches, but I'd be tempted to pull it back here.  Or maybe just
+add a comment to say you will rewrite this later.
+
+I know you aren't keen to smash patches with different authorship
+together, but here I think you should just have this
+correct from the start (so combine this and 5-7)
+perhaps with some links back to the version where they are split?
+
+> +    /* MIDR_EL1 */
+> +    build_append_int_noprefix(table, 0xCD24, 8);
+> +    /* Running state */
+> +    build_append_int_noprefix(table, 0x1, 4);
+> +    /* PSCI state */
+> +    build_append_int_noprefix(table, 0x1234, 4);
+> +
+> +    /* ARM Propcessor error information */
+> +    /* Version */
+> +    build_append_int_noprefix(table, 0, 1);
+> +    /*  Length */
+> +    build_append_int_noprefix(table, 32, 1);
+> +    /* Validation Bits */
+> +    build_append_int_noprefix(table,
+> +                              (1ULL << 4) | /* Physical fault address Valid */
+
+Some tabs hiding in here that need to be spaces.
+
+> +                             (1ULL << 3) | /* Virtual fault address Valid */
+> +                             (1ULL << 2) | /* Error information Valid */
+> +                              (1ULL << 1) | /* Flags Valid */
+> +                              (1ULL << 0), /* Multiple error count Valid */
+> +                              2);
+> +    /* Type */
+> +    if (error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_CACHE_ERROR) ||
+> +        error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_TLB_ERROR) ||
+> +        error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_BUS_ERROR) ||
+> +        error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_MICRO_ARCH_ERROR)) {
+> +        build_append_int_noprefix(table, error_types, 1);
+> +    } else {
+> +        return;
+> +    }
+> +    /* Multiple error count */
+> +    build_append_int_noprefix(table, 2, 2);
+> +    /* Flags  */
+> +    build_append_int_noprefix(table, 0xD, 1);
+> +    /* Error information  */
+> +    if (error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_CACHE_ERROR)) {
+> +        build_append_int_noprefix(table, 0x0091000F, 8);
+> +    } else if (error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_TLB_ERROR)) {
+> +        build_append_int_noprefix(table, 0x0054007F, 8);
+> +    } else if (error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_BUS_ERROR)) {
+> +        build_append_int_noprefix(table, 0x80D6460FFF, 8);
+> +    } else if (error_types & BIT(ARM_PROCESSOR_ERROR_TYPE_MICRO_ARCH_ERROR)) {
+> +        build_append_int_noprefix(table, 0x78DA03FF, 8);
+> +    } else {
+> +        return;
+> +    }
+> +    /* Virtual fault address  */
+> +    build_append_int_noprefix(table, 0x67320230, 8);
+> +    /* Physical fault address  */
+> +    build_append_int_noprefix(table, 0x5CDFD492, 8);
+> +
+> +    /* ARM Propcessor error context information */
+> +    /* Version */
+> +    build_append_int_noprefix(table, 0, 2);
+> +    /* Validation Bits */
+> +    /* AArch64 EL1 context registers Valid */
+> +    build_append_int_noprefix(table, 5, 2);
+> +    /* Register array size */
+> +    build_append_int_noprefix(table, 592, 4);
+> +    /* Register array */
+> +    build_append_int_noprefix(table, 0x12ABDE67, 8);
+> +}
+> +
+> +static int acpi_ghes_record_arm_error(uint8_t error_types,
+> +                                      uint64_t error_block_address)
+> +{
+> +    GArray *block;
+> +
+> +    /* ARM processor Error Section Type */
+> +    const uint8_t uefi_cper_arm_sec[] =
+> +          UUID_LE(0xE19E3D16, 0xBC11, 0x11E4, 0x9C, 0xAA, 0xC2, 0x05, \
+> +                  0x1D, 0x5D, 0x46, 0xB0);
+> +
+> +    /*
+> +     * Invalid fru id: ACPI 4.0: 17.3.2.6.1 Generic Error Data,
+> +     * Table 17-13 Generic Error Data Entry
+> +     */
+> +    QemuUUID fru_id = {};
+> +    uint32_t data_length;
+> +
+> +    block = g_array_new(false, true /* clear */, 1);
+> +
+> +    /* This is the length if adding a new generic error data entry*/
+
+space before *
+
+> +    data_length = ACPI_GHES_DATA_LENGTH + ACPI_GHES_ARM_CPER_LENGTH;
+> +    /*
+> +     * It should not run out of the preallocated memory if adding a new generic
+> +     * error data entry
+> +     */
+> +    assert((data_length + ACPI_GHES_GESB_SIZE) <=
+> +            ACPI_GHES_MAX_RAW_DATA_LENGTH);
+> +
+> +    /* Build the new generic error status block header */
+> +    acpi_ghes_generic_error_status(block, ACPI_GEBS_UNCORRECTABLE,
+> +        0, 0, data_length, ACPI_CPER_SEV_RECOVERABLE);
+> +
+> +    /* Build this new generic error data entry header */
+> +    acpi_ghes_generic_error_data(block, uefi_cper_arm_sec,
+> +        ACPI_CPER_SEV_RECOVERABLE, 0, 0,
+> +        ACPI_GHES_ARM_CPER_LENGTH, fru_id, 0);
+> +
+> +    /* Build the ARM processor error section CPER */
+> +    acpi_ghes_build_append_arm_cper(error_types, block);
+> +
+> +    /* Write the generic error data entry into guest memory */
+> +    cpu_physical_memory_write(error_block_address, block->data, block->len);
+> +
+> +    g_array_free(block, true);
+> +
+> +    return 0;
+> +}
 
 
-I suggest adding a "riscv:" at the start of the cover letter subject for the next
-version. This will make it easier for everyone else to quickly identify which arch
-the patches are changing.
+> +bool ghes_record_arm_errors(uint8_t error_types, uint32_t notify)
+> +{
+> +    int read_ack_register = 0;
+> +    uint64_t read_ack_register_addr = 0;
+> +    uint64_t error_block_addr = 0;
+> +
+> +    if (!ghes_get_addr(notify, &error_block_addr, &read_ack_register_addr)) {
+> +        return false;
+> +    }
+> +
+> +    cpu_physical_memory_read(read_ack_register_addr,
+> +                             &read_ack_register, sizeof(uint64_t));
 
-Other than that, and checkpatch.pl style changes, looks good to me.
+longer but I'd prefer sizeof(read_ack_register)
+Maybe we can shorten to read_ack and read_ack_addr?
 
+> +    /* zero means OSPM does not acknowledge the error */
+> +    if (!read_ack_register) {
+> +        error_report("Last time OSPM does not acknowledge the error,"
+> +                     " record CPER failed this time, set the ack value to"
+> +                     " avoid blocking next time CPER record! exit");
+> +        read_ack_register = 1;
+> +        cpu_physical_memory_write(read_ack_register_addr,
+> +                                  &read_ack_register, sizeof(uint64_t));
+sizeof(read_ack_register)
 
-Thanks,
+> +        return false;
+> +    }
+> +
+> +    read_ack_register = cpu_to_le64(0);
+> +    cpu_physical_memory_write(read_ack_register_addr,
+> +                              &read_ack_register, sizeof(uint64_t));
 
+sizeof(read_ack_register)
 
-Daniel
+> +    return acpi_ghes_record_arm_error(error_types, error_block_addr);
+> +}
+> +
 
+> diff --git a/qapi/arm-error-inject.json b/qapi/arm-error-inject.json
+> new file mode 100644
+> index 000000000000..430e6cea6b60
+> --- /dev/null
+> +++ b/qapi/arm-error-inject.json
 
-On 7/17/24 12:30 PM, Paolo Savini wrote:
-> This series of patches builds on top of Max Chou's patches:
-> 
-> https://lore.kernel.org/all/20240613175122.1299212-1-max.chou@sifive.com/
-> 
-> The aim of these patches is to improve the performance of QEMU emulation
-> of RVV unit-stride load and store instructions in the following cases
-> 
-> 1. when the data being loaded/stored per iteration amounts to 8 bytes or less.
-> 2. when the vector length is 16 bytes (VLEN=128) and there is no grouping of the
->     vector registers (LMUL=1).
-> 3. when the data being loaded/stored per iteration is more than 64 bytes.
-> 
-> In the first two cases the optimization consists of avoiding the
-> overhead of probing the RAM of the host machine and perform a simple loop
-> load/store on the data grouped in chunks of as many bytes as possible (8,4,2 or 1).
-> 
-> The third case is optimized by calling the __builtin_memcpy function on
-> data chuncks of 128 bytes and 256 bytes per time.
-> 
-> These patches on top of Max Chou's patches have been tested with SPEC
-> CPU 2017 and achieve an average reduction of 13% of the time needed by
-> QEMU for running the benchmarks compared with the master branch of QEMU.
-> 
-> You can find the source code being developed here: https://github.com/embecosm/rise-rvv-tcg-qemu
-> and regular updates and more statistics about the patch here: https://github.com/embecosm/rise-rvv-tcg-qemu-reports
-> 
-> Changes:
-> - patch 1:
->    - Modify vext_ldst_us to run the simple loop load/store if we
->      are in one of the two cases above.
-> - patch 2:
->    - Modify vext_group_ldst_host to use __builtin_memcpy for data sizes
->      of 128 bits and above.
-> 
-> Cc: Richard Handerson <richard.henderson@linaro.org>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Alistair Francis <alistair.francis@wdc.com>
-> Cc: Bin Meng <bmeng.cn@gmail.com>
-> Cc: Weiwei Li <liwei1518@gmail.com>
-> Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-> Cc: Helene Chelin <helene.chelin@embecosm.com>
-> Cc: Max Chou <max.chou@sifive.com>
-> 
-> Helene CHELIN (1):
->    target/riscv: rvv: reduce the overhead for simple RISC-V vector
->      unit-stride loads and stores
-> 
-> Paolo Savini (1):
->    target/riscv: rvv: improve performance of RISC-V vector loads and
->      stores on large amounts of data.
-> 
->   target/riscv/vector_helper.c | 63 +++++++++++++++++++++++++++++++++++-
->   1 file changed, 62 insertions(+), 1 deletion(-)
-> 
+> +##
+> +# @arm-inject-error:
+> +#
+> +# Inject ARM Processor error.
+> +#
+> +# @errortypes: ARM processor error types to inject
+> +#
+> +# Features:
+> +#
+> +# @unstable: This command is experimental.
+> +#
+> +# Since: 9.1
+Update to 9.2 on next version.
+> +##
+> +{ 'command': 'arm-inject-error',
+> +  'data': { 'errortypes': ['ArmProcessorErrorType'] },
+> +  'features': [ 'unstable' ]
+> +}
+
 
