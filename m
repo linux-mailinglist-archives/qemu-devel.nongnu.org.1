@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B4993D118
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 12:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E4E93D11F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 12:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sXI9z-0004xr-Eu; Fri, 26 Jul 2024 06:26:51 -0400
+	id 1sXIA7-00057b-Lr; Fri, 26 Jul 2024 06:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
- id 1sXI9x-0004t6-Oq
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 06:26:49 -0400
+ id 1sXIA1-00055q-3r
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 06:26:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
- id 1sXI9w-0002zb-Ds
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 06:26:49 -0400
+ id 1sXI9z-00030P-MT
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 06:26:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1721989607;
+ s=mimecast20190719; t=1721989610;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yd17BNDq1NDRiip7e6dtOU7Eu40rr67wNTmomDJc3GQ=;
- b=P63Gz4e2EbEphEs2FJPHUy3dS7jdT1mDqrkXXWfXCGaUGuv/pCHerAEGpsmBYbjZF/29Vu
- KZrb2a99aow+gdO5RuEiCqckZ3T5+zlaeXvpnIrzJPfa3N2dTx5/6v/jH1SHNUrCkjgnqe
- HRL+2bm0kXPu+hB/igWTUbTheKgeTMs=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=jTtG5rF+133Rl4upwhryPbqEnaoY3xhSO1uldM+GCd4=;
+ b=J+MeluHe1kHZjerAgvo+iix6L5wnEZy5XVMFq2hy7Xs4++1VDiGAL8P8apjhAk+pjLgxjo
+ DbCm96le2JRT5M/JgO7jd1aiZ5CGItxbzzX4se+96b8NTnmkYtWjE2SfeZu03MQRGVsX78
+ hJ3cte4+w5N2zSD07Fgqx9TfMe8uByE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-wtY2EAQJMyyFBK2l31lrcA-1; Fri,
- 26 Jul 2024 06:26:45 -0400
-X-MC-Unique: wtY2EAQJMyyFBK2l31lrcA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-oXXP9o2KN9iqlEYa341nkg-1; Fri,
+ 26 Jul 2024 06:26:48 -0400
+X-MC-Unique: oXXP9o2KN9iqlEYa341nkg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 11BCE1944A94
- for <qemu-devel@nongnu.org>; Fri, 26 Jul 2024 10:26:44 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9754E1944B2B
+ for <qemu-devel@nongnu.org>; Fri, 26 Jul 2024 10:26:46 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.39.208.15])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 97F871955F2E; Fri, 26 Jul 2024 10:26:42 +0000 (UTC)
+ id 42E201955F23; Fri, 26 Jul 2024 10:26:45 +0000 (UTC)
 From: Anthony Harivel <aharivel@redhat.com>
 To: pbonzini@redhat.com
 Cc: qemu-devel@nongnu.org,
 	Anthony Harivel <aharivel@redhat.com>
-Subject: [PATCH 1/2] target/i386: Fix typo that assign same value twice
-Date: Fri, 26 Jul 2024 12:26:31 +0200
-Message-ID: <20240726102632.1324432-2-aharivel@redhat.com>
+Subject: [PATCH 2/2] target/i386: Clean output of vmsr_read_thread_stat()
+Date: Fri, 26 Jul 2024 12:26:32 +0200
+Message-ID: <20240726102632.1324432-3-aharivel@redhat.com>
 In-Reply-To: <20240726102632.1324432-1-aharivel@redhat.com>
 References: <20240726102632.1324432-1-aharivel@redhat.com>
 MIME-Version: 1.0
@@ -81,28 +81,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Should fix: CID 1558553
+Fix leaking memory of file handle in case of error
+Erase unused "pid = -1"
+Add clearer error_report
+
+Should fix: CID 1558557
 
 Signed-off-by: Anthony Harivel <aharivel@redhat.com>
 ---
- target/i386/kvm/kvm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/kvm/vmsr_energy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index b4aab9a410b5..31f149c9902c 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2694,8 +2694,8 @@ static void *kvm_msr_energy_thread(void *data)
+diff --git a/target/i386/kvm/vmsr_energy.c b/target/i386/kvm/vmsr_energy.c
+index a1d78f2f2aee..7e064c5aef30 100644
+--- a/target/i386/kvm/vmsr_energy.c
++++ b/target/i386/kvm/vmsr_energy.c
+@@ -270,7 +270,7 @@ void vmsr_read_thread_stat(pid_t pid,
  
-     while (true) {
-         /* Get all qemu threads id */
--        g_autofree pid_t *thread_ids =
--            thread_ids = vmsr_get_thread_ids(vmsr->pid, &num_threads);
-+        g_autofree pid_t *thread_ids
-+            = vmsr_get_thread_ids(vmsr->pid, &num_threads);
+     FILE *file = fopen(path, "r");
+     if (file == NULL) {
+-        pid = -1;
++        error_report("Error opening %s", path_name);
+         return;
+     }
  
-         if (thread_ids == NULL) {
-             goto clean;
+@@ -279,7 +279,8 @@ void vmsr_read_thread_stat(pid_t pid,
+         " %*u %*u %*u %*u %*u %*u %*u %*u %*u %*d %*u %*u %u",
+            utime, stime, cpu_id) != 3)
+     {
+-        pid = -1;
++        fclose(file);
++        error_report("Error fscanf did not report the right amount of items");
+         return;
+     }
+ 
 -- 
 2.45.2
 
