@@ -2,57 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C604993D2D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 14:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D10593D2E9
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 14:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sXJlO-0003Kk-1K; Fri, 26 Jul 2024 08:09:34 -0400
+	id 1sXJyF-0006Rk-DR; Fri, 26 Jul 2024 08:22:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sXJlK-0003Ie-Lk
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 08:09:30 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sXJlH-000895-Fk
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 08:09:30 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WVmj50D06z6K9Sj;
- Fri, 26 Jul 2024 20:07:37 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id EC776140CB1;
- Fri, 26 Jul 2024 20:09:20 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 26 Jul
- 2024 13:09:20 +0100
-Date: Fri, 26 Jul 2024 13:09:19 +0100
-To: Hendrik Wuethrich <whendrik@google.com>
-CC: <qemu-devel@nongnu.org>, <eduardo@habkost.net>,
- <richard.henderson@linaro.org>, <marcel.apfelbaum@gmail.com>,
- <mst@redhat.com>, <pbonzini@redhat.com>, <peternewman@google.com>
-Subject: Re: [PATCH v1 6/9] Add CPUID enumeration for RDT
-Message-ID: <20240726130919.00007580@Huawei.com>
-In-Reply-To: <20240719162929.1197154-7-whendrik@google.com>
-References: <20240719162929.1197154-1-whendrik@google.com>
- <20240719162929.1197154-7-whendrik@google.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sXJyD-0006P5-5Y
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 08:22:49 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sXJyB-0006Ro-BK
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 08:22:48 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1fc5296e214so5303075ad.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Jul 2024 05:22:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1721996566; x=1722601366; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1amohUDCPiTYIIdRIYvUnq0PwPQExwJ5LpZlhWyL0Cw=;
+ b=IJ0WViCVDy9he17zPuG5qHCHIUBCKxtip1Yjoweo3RxbDvP5ioz7sVufBjdEhG3kXf
+ IqnaEtvEcG1HBVW6wEu4mp9SR976w7NiCEZtSEqx9T2R7BKVXrgfSZa36H+ODfqHpV90
+ s/A7pBJDEwX+ReXWwDrh+xSKvCZ02tar2WFDKZ/vmbYCGMAZ/J+XAzhuruI2SRBeEKSb
+ LUG6YFR67uC9GXL3nviIDIf19dregJ9bYPFT5IlQQrorFElfUKZAxAMAjzjgflg6bGMC
+ 69PkLMVW0JkFmnplp/aRFZeS5pzR+uAIPhARY2vWbFFosq9Lj6+BgBY+sw8Lc3OAXNo+
+ ZwOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721996566; x=1722601366;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1amohUDCPiTYIIdRIYvUnq0PwPQExwJ5LpZlhWyL0Cw=;
+ b=kgMGxPzfNLB7eQ+NrZVUrloKVNS3NGVjGbEZjHkmeQR1PT3YCdKv/+2gc1ZemFcKnR
+ Hc+wMKmon4ctbeQEKd3Na01IXlaSp+6u4JXDWxYjHu/mnc8WPmuMKwqJOZzxA9oIhMEX
+ 5PAiEZDzQyq+G6f4Xf37BA5whJc87s5BmMMrMCNJKnSJPg5K2RfJw3diTbVs1uOBl8Zr
+ sNF5C70mL3iXGr8Xu+a63gmPePxKb9ZHsQe0JpjCSZTuJW8kKk6+YKscX1StDUa4mIBD
+ 3VwbJGTv65URoVZsdMYw1Y3teZxuCLAZg4KHoWv/dV62KM6xGXkd4HFsupe7R5WdIQHE
+ 9txQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXeRlZ50yn2tf3P5iQbUK1DIjQ2bSUKhqOvJ+me/IxlKI730nWAtQ0G07HoD9K22VK9IR2dsvXV8i8S/MU69rsK30jpa1A=
+X-Gm-Message-State: AOJu0YySkUwMQaz6MjIaL89iHF+EttDbB0MmczJLiGDAvD3vwOnb65U2
+ /B6b3E+/LX72Idlhkul8+Zb6bfJE29nhwpgpcCvxpNkLLrSD8OhJmWUq8wdeOJ8=
+X-Google-Smtp-Source: AGHT+IFil65YjmLnILeAzoLEnOYDAkAwc1Wf63tvLIGeEzxqgwwvB+tKk/bLRO/WU/BlJaUYcxgiqQ==
+X-Received: by 2002:a17:903:2445:b0:1fc:369b:c1d1 with SMTP id
+ d9443c01a7336-1fed90b8fadmr61574305ad.3.1721996565549; 
+ Fri, 26 Jul 2024 05:22:45 -0700 (PDT)
+Received: from ?IPV6:2804:7f0:bcc0:54b1:ce70:829:8c74:d7d4?
+ ([2804:7f0:bcc0:54b1:ce70:829:8c74:d7d4])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fed7f1aa0dsm30899155ad.187.2024.07.26.05.22.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Jul 2024 05:22:45 -0700 (PDT)
+Message-ID: <009166f4-22b7-4568-9ffa-978f4138df15@ventanamicro.com>
+Date: Fri, 26 Jul 2024 09:22:39 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.174.77]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 1/2] target/riscv: rvv: reduce the overhead for simple
+ RISC-V vector unit-stride loads and stores
+To: Paolo Savini <paolo.savini@embecosm.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Richard Handerson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Max Chou <max.chou@sifive.com>
+References: <20240717153040.11073-1-paolo.savini@embecosm.com>
+ <20240717153040.11073-2-paolo.savini@embecosm.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20240717153040.11073-2-paolo.savini@embecosm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,270 +100,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 Jul 2024 16:29:26 +0000
-Hendrik Wuethrich <whendrik@google.com> wrote:
 
-> From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
->=20
-> Add CPUID enumeration for intel RDT monitoring and allocation, as well
-> as the flags used in the enumeration code.
->=20
-> Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
+
+On 7/17/24 12:30 PM, Paolo Savini wrote:
+> From: Helene CHELIN <helene.chelin@embecosm.com>
+> 
+> This patch improves the performance of the emulation of the RVV unit-stride
+> loads and stores in the following cases:
+> 
+> - when the data being loaded/stored per iteration amounts to 8 bytes or less.
+> - when the vector length is 16 bytes (VLEN=128) and there's no grouping of the
+>    vector registers (LMUL=1).
+> 
+> The optimization consists of avoiding the overhead of probing the RAM of the
+> host machine and doing a loop load/store on the input data grouped in chunks
+> of as many bytes as possible (8,4,2,1 bytes).
+> 
+> Co-authored-by: Helene CHELIN <helene.chelin@embecosm.com>
+> Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
+> 
+> Signed-off-by: Helene CHELIN <helene.chelin@embecosm.com>
 > ---
->  hw/i386/rdt.c         | 29 ++++++++++++++
->  include/hw/i386/rdt.h | 29 ++++++++++++++
->  target/i386/cpu.c     | 91 +++++++++++++++++++++++++++++++++++++++++++
->  target/i386/cpu.h     |  5 +++
->  4 files changed, 154 insertions(+)
->=20
-> diff --git a/hw/i386/rdt.c b/hw/i386/rdt.c
-> index 0d0e5751fc..5ad05f996a 100644
-> --- a/hw/i386/rdt.c
-> +++ b/hw/i386/rdt.c
-> @@ -17,8 +17,18 @@
->  #define MAX_L2_MASK_COUNT      48
->  #define MAX_MBA_THRTL_COUNT    31
-> =20
-> +/* RDT L3 Allocation features */
-> +#define CPUID_10_1_EAX_CBM_LENGTH       0xf
-> +#define CPUID_10_1_EBX_CBM              0x0
-> +#define CPUID_10_1_ECX_CDP              0x0 // to enable, it would be (1=
-U << 2)
->  #define CPUID_10_1_EDX_COS_MAX          MAX_L3_MASK_COUNT
-> +/* RDT L2 Allocation features*/
-> +#define CPUID_10_2_EAX_CBM_LENGTH       0xf
-> +#define CPUID_10_2_EBX_CBM              0x0
->  #define CPUID_10_2_EDX_COS_MAX          MAX_L2_MASK_COUNT
-> +/* RDT MBA features */
-> +#define CPUID_10_3_EAX_THRTL_MAX        89
-> +#define CPUID_10_3_ECX_LINEAR_RESPONSE (1U << 2)
->  #define CPUID_10_3_EDX_COS_MAX          MAX_MBA_THRTL_COUNT
-> =20
->  #define TYPE_RDT "rdt"
-> @@ -61,8 +71,27 @@ struct RDTState {
-> =20
->  struct RDTStateClass { };
-> =20
-> +uint32_t rdt_get_cpuid_15_0_edx_l3(void) { return CPUID_15_1_EDX_L3_OCCU=
-PANCY | CPUID_15_1_EDX_L3_TOTAL_BW | CPUID_15_1_EDX_L3_LOCAL_BW; }
+>   target/riscv/vector_helper.c | 46 ++++++++++++++++++++++++++++++++++++
+>   1 file changed, 46 insertions(+)
+> 
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 29849a8b66..4b444c6bc5 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -633,6 +633,52 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+>   
+>       VSTART_CHECK_EARLY_EXIT(env);
+>   
+> +    /* For data sizes <= 64 bits and for LMUL=1 with VLEN=128 bits we get a
+> +     * better performance by doing a simple simulation of the load/store
+> +     * without the overhead of prodding the host RAM */
+> +    if ((nf == 1) && ((evl << log2_esz) <= 8 ||
+> +	((vext_lmul(desc) == 0) && (simd_maxsz(desc) == 16)))) {
 > +
-> +uint32_t rdt_cpuid_15_1_edx_l3_total_bw_enabled(void) { return CPUID_15_=
-1_EDX_L3_TOTAL_BW; }
-> +uint32_t rdt_cpuid_15_1_edx_l3_local_bw_enabled(void) { return CPUID_15_=
-1_EDX_L3_LOCAL_BW; }
-> +uint32_t rdt_cpuid_15_1_edx_l3_occupancy_enabled(void) { return CPUID_15=
-_1_EDX_L3_OCCUPANCY; }
+> +	uint32_t evl_b = evl << log2_esz;
 > +
-> +uint32_t rdt_cpuid_10_0_ebx_l3_cat_enabled(void) { return CPUID_10_0_EBX=
-_L3_CAT; }
-> +uint32_t rdt_cpuid_10_0_ebx_l2_cat_enabled(void) { return CPUID_10_0_EBX=
-_L2_CAT; }
-> +uint32_t rdt_cpuid_10_0_ebx_l2_mba_enabled(void) { return CPUID_10_0_EBX=
-_MBA; }
-> +
-> +uint32_t rdt_get_cpuid_10_1_eax_cbm_length(void) { return CPUID_10_1_EAX=
-_CBM_LENGTH; }
-> +uint32_t rdt_cpuid_10_1_ebx_cbm_enabled(void) { return CPUID_10_1_EBX_CB=
-M; }
-> +uint32_t rdt_cpuid_10_1_ecx_cdp_enabled(void) { return CPUID_10_1_ECX_CD=
-P; }
->  uint32_t rdt_get_cpuid_10_1_edx_cos_max(void) { return CPUID_10_1_EDX_CO=
-S_MAX; }
-> +
-> +uint32_t rdt_get_cpuid_10_2_eax_cbm_length(void) { return CPUID_10_2_EAX=
-_CBM_LENGTH; }
-> +uint32_t rdt_cpuid_10_2_ebx_cbm_enabled(void) { return CPUID_10_2_EBX_CB=
-M; }
->  uint32_t rdt_get_cpuid_10_2_edx_cos_max(void) { return CPUID_10_2_EDX_CO=
-S_MAX; }
-> +
-> +uint32_t rdt_get_cpuid_10_3_eax_thrtl_max(void) { return CPUID_10_3_EAX_=
-THRTL_MAX; }
-> +uint32_t rdt_cpuid_10_3_eax_linear_response_enabled(void) { return CPUID=
-_10_3_ECX_LINEAR_RESPONSE; }
->  uint32_t rdt_get_cpuid_10_3_edx_cos_max(void) { return CPUID_10_3_EDX_CO=
-S_MAX; }
-> =20
->  bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc) {
-> diff --git a/include/hw/i386/rdt.h b/include/hw/i386/rdt.h
-> index 51d36822f0..74aba33995 100644
-> --- a/include/hw/i386/rdt.h
-> +++ b/include/hw/i386/rdt.h
-> @@ -4,15 +4,44 @@
->  #include <stdbool.h>
->  #include <stdint.h>
-> =20
-> +/* RDT L3 Cache Monitoring Technology */
-> +#define CPUID_15_0_EDX_L3               (1U << 1)
-> +#define CPUID_15_1_EDX_L3_OCCUPANCY     (1U << 0)
-> +#define CPUID_15_1_EDX_L3_TOTAL_BW      (1U << 1)
-> +#define CPUID_15_1_EDX_L3_LOCAL_BW      (1U << 2)
-> +
-> +/* RDT Cache Allocation Technology */
-> +#define CPUID_10_0_EBX_L3_CAT           (1U << 1)
-> +#define CPUID_10_0_EBX_L2_CAT           (1U << 2)
-> +#define CPUID_10_0_EBX_MBA              (1U << 3)
-> +#define CPUID_10_0_EDX CPUID_10_0_EBX_L3_CAT | CPUID_10_0_EBX_L2_CAT | C=
-PUID_10_0_EBX_MBA
-> +
->  typedef struct RDTState RDTState;
->  typedef struct RDTStateInstance RDTStateInstance;
->  typedef struct RDTMonitor RDTMonitor;
->  typedef struct RDTAllocation RDTAllocation;
-> =20
-> +uint32_t rdt_get_cpuid_15_0_edx_l3(void);
-> +
-> +uint32_t rdt_cpuid_15_1_edx_l3_total_bw_enabled(void);
-> +uint32_t rdt_cpuid_15_1_edx_l3_local_bw_enabled(void);
-> +uint32_t rdt_cpuid_15_1_edx_l3_occupancy_enabled(void);
-> +
-> +uint32_t rdt_cpuid_10_0_ebx_l3_cat_enabled(void);
-> +uint32_t rdt_cpuid_10_0_ebx_l2_cat_enabled(void);
-> +uint32_t rdt_cpuid_10_0_ebx_l2_mba_enabled(void);
-> +
-> +uint32_t rdt_get_cpuid_10_1_eax_cbm_length(void);
-> +uint32_t rdt_cpuid_10_1_ebx_cbm_enabled(void);
-> +uint32_t rdt_cpuid_10_1_ecx_cdp_enabled(void);
->  uint32_t rdt_get_cpuid_10_1_edx_cos_max(void);
-> =20
-> +uint32_t rdt_get_cpuid_10_2_eax_cbm_length(void);
-> +uint32_t rdt_cpuid_10_2_ebx_cbm_enabled(void);
->  uint32_t rdt_get_cpuid_10_2_edx_cos_max(void);
-> =20
-> +uint32_t rdt_get_cpuid_10_3_eax_thrtl_max(void);
-> +uint32_t rdt_cpuid_10_3_eax_linear_response_enabled(void);
->  uint32_t rdt_get_cpuid_10_3_edx_cos_max(void);
-> =20
->  bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc);
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 4688d140c2..c61981bf82 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -42,6 +42,7 @@
->  #include "hw/boards.h"
->  #include "hw/i386/sgx-epc.h"
->  #endif
-> +#include "hw/i386/rdt.h"
-> =20
->  #include "disas/capstone.h"
->  #include "cpu-internal.h"
-> @@ -6629,6 +6630,96 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t inde=
-x, uint32_t count,
->          assert(!(*eax & ~0x1f));
->          *ebx &=3D 0xffff; /* The count doesn't need to be reliable. */
->          break;
-> +#ifndef CONFIG_USER_ONLY
-> +    case 0xF:
-> +        /* Shared Resource Monitoring Enumeration Leaf */
-> +        *eax =3D 0;
-> +        *ebx =3D 0;
-> +        *ecx =3D 0;
-> +        *edx =3D 0;
-> +        if (!(env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQM))
-> +            break;
-> +        assert(cpu->rdt);
-> +        /* Non-zero count is ResId */
-> +        switch (count) {
-> +            /* Monitoring Resource Type Enumeration */
-> +            case 0:
-> +                *edx =3D env->features[FEAT_RDT_15_0_EDX];
-> +                *ebx =3D rdt_max_rmid(cpu->rdt);
-> +                break;
-> +            /* L3 Cache Monitoring Capability Enumeration Data */
-> +            case 1:
-> +                /* Upscaling Factor */
-> +                *ebx =3D 1;
-> +                /* MaxRMID */
-> +                *ecx =3D rdt_max_rmid(cpu->rdt);
-> +                /* Set L3 Total BW */
-comments fairly obvious from naming of functions so I'd be tempted
-to drop them all and have
-		   *ecx =3D rdt_max_rmid(cpu->rdt);
-                   *edx =3D rdt_cpuid_15_1_edx_l3_total_bw_enabled() |
-                          rdt_cpuid_15_1_edx_l3_local_bw_enabled() |
-                          rdt_cpuid_15_1_edx_l3_occupancy_enabled();
-
-Same for the rest of the cases
-> +                *edx |=3D rdt_cpuid_15_1_edx_l3_total_bw_enabled();
-> +                /* Set L3 Local BW */
-> +                *edx |=3D rdt_cpuid_15_1_edx_l3_local_bw_enabled();
-> +                /* Set L3 Occupancy */
-> +                *edx |=3D rdt_cpuid_15_1_edx_l3_occupancy_enabled();
-> +                break;
-> +            default:
-> +                break;
+> +        for (uint32_t j = env->vstart; j < evl_b;) {
+> +	    addr = base + j;
+> +            if ((evl_b - j) >= 8) {
+> +                if (is_load)
+> +                    lde_d_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                else
+> +                    ste_d_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                j += 8;
+> +            }
+> +            else if ((evl_b - j) >= 4) {
+> +                if (is_load)
+> +                    lde_w_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                else
+> +                    ste_w_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                j += 4;
+> +            }
+> +            else if ((evl_b - j) >= 2) {
+> +                if (is_load)
+> +                    lde_h_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                else
+> +                    ste_h_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                j += 2;
+> +            }
+> +            else {
+> +                if (is_load)
+> +                    lde_b_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                else
+> +                    ste_b_tlb(env, adjust_addr(env, addr), j, vd, ra);
+> +                j += 1;
+> +            }
 > +        }
-> +        break;
-> +    case 0x10:
-> +        /* Shared Resource Director Technology Allocation Enumeration Le=
-af */
-> +        *eax =3D 0;
-> +        *ebx =3D 0;
-> +        *ecx =3D 0;
-> +        *edx =3D 0;
-> +        if (!(env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQE))
-> +            break;
-> +        assert(cpu->rdt);
-> +        /* Non-zero count is ResId */
-> +        switch (count) {
-> +            /* Cache Allocation Technology Available Resource Types */
-> +            case 0:
-> +                /* Set L3 CAT */
-> +                *ebx |=3D rdt_cpuid_10_0_ebx_l3_cat_enabled();
-> +                /* Set L2 CAT */
-> +                *ebx |=3D rdt_cpuid_10_0_ebx_l2_cat_enabled();
-> +                /* Set MBA */
-> +                *ebx |=3D rdt_cpuid_10_0_ebx_l2_mba_enabled();
-> +                // *edx =3D env->features[FEAT_RDT_10_0_EBX];
+> +
+> +        env->vstart = 0;
+> +        vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
+> +        return;
+> +    }
+> +
 
-Make sure to clean up any commented out code for v2.
-
-> +                break;
-> +            case 1:
-> +                /* Length of capacity bitmask in -1 notation */
-> +                *eax =3D rdt_get_cpuid_10_1_eax_cbm_length();
-> +                /* Capability bit mask */
-> +                *ebx =3D rdt_cpuid_10_1_ebx_cbm_enabled();
-> +                /* Code and Data priotitization */
-> +                *ecx |=3D rdt_cpuid_10_1_ecx_cdp_enabled();
-> +                /* Support for n COS masks (zero-referenced)*/
-> +                *edx =3D  rdt_get_cpuid_10_1_edx_cos_max();
-> +                break;
-> +            case 2:
-> +                /* Length of capacity bitmask in -1 notation */
-> +                *eax =3D rdt_get_cpuid_10_2_eax_cbm_length();
-> +                /* Capability bit mask */
-> +                *ebx =3D rdt_cpuid_10_2_ebx_cbm_enabled();
-> +                /* Support for n COS masks (zero-referenced)*/
-> +                *edx =3D  rdt_get_cpuid_10_2_edx_cos_max();
-> +                break;
-> +            case 3:
-> +                /* Max throttling value -1 (89 means 90) */
-> +                *eax =3D rdt_get_cpuid_10_3_eax_thrtl_max();
-> +                /* Linear response of delay values */
-> +                *ecx =3D rdt_cpuid_10_3_eax_linear_response_enabled();
-> +                /* Max number of CLOS -1 (15 means 16) */
-> +                *edx =3D rdt_get_cpuid_10_3_edx_cos_max();
-> +                break;
-> +            default:
-> +                *eax =3D 0;
-> +                *ebx =3D 0;
-> +                *ecx =3D 0;
-> +                *edx =3D 0;
-already done above.
-> +                break;
-> +        }
-> +        break;
-> +#endif
->      case 0x1C:
->          if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_=
-EDX_ARCH_LBR)) {
->              x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
+Aside from the code style remarks that ./scripts/checkpatch.pl will make here (we always
+use curly braces in all ifs and elses, regardless of being a single statement or not),
+LGTM.
 
 
+Thanks,
+
+
+Daniel
+
+> +
+>       vext_cont_ldst_elements(&info, base, env->vreg, env->vstart, evl, desc,
+>                               log2_esz, false);
+>       /* Probe the page(s).  Exit with exception for any invalid page. */
 
