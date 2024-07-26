@@ -2,72 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDAE93DA3C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 23:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E1393D98A
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jul 2024 22:07:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sXSfn-0004uo-D4; Fri, 26 Jul 2024 17:40:24 -0400
+	id 1sXRDc-0005ck-UU; Fri, 26 Jul 2024 16:07:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <slyubski@gmail.com>)
- id 1sXQpE-0001DP-Mi
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 15:42:00 -0400
-Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sXRDb-0005c6-0A
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 16:07:11 -0400
+Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <slyubski@gmail.com>)
- id 1sXQpD-0005Jo-3F
- for qemu-devel@nongnu.org; Fri, 26 Jul 2024 15:42:00 -0400
-Received: by mail-yb1-xb31.google.com with SMTP id
- 3f1490d57ef6-e01a6e5da1fso6103276.0
- for <qemu-devel@nongnu.org>; Fri, 26 Jul 2024 12:41:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sXRDY-0007LT-9f
+ for qemu-devel@nongnu.org; Fri, 26 Jul 2024 16:07:10 -0400
+Received: by mail-qv1-xf32.google.com with SMTP id
+ 6a1803df08f44-6b7a36f26f3so8832236d6.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jul 2024 13:07:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1722022917; x=1722627717; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=RhSLrCAtx/+SYpHvn38v0ZBPbN69iFcyYxP1ZILqzY8=;
- b=aacVHRr6CF9MZl3NoiQy05Zwj7ObZ3HlcNHOMFswFgPS5elK+4w/+b2jC3oBa3drQj
- G/XHZIPS1giR1czQU5una15wA1NnPSBI8nzkF93wvZscVrCfttyfSj6mSsUgM0WX0Gh+
- nMo083IGy7FD+JFaNRZJrY7RneRIB+4UmCKgEqg5hDmHUsLOUeSHub8rjYBpk5uqZ2kC
- 240bEfoQOSI040DdIvV66jGVPJ+TPTuvjN4PbaRks04Gv92YyNBLsd7SVSQutpmpeFw6
- cac2l/v5K4uXfEYIPkumFQy3QBb2ixlnS9obF4M4QSSw8/LtaH0VviotJCONMtjMfVwQ
- pzyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722022917; x=1722627717;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=cs.unc.edu; s=google; t=1722024426; x=1722629226; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RhSLrCAtx/+SYpHvn38v0ZBPbN69iFcyYxP1ZILqzY8=;
- b=FN3PraatOqzUGlg6kJhLO7KgT9yZJGZVc1mOmjeDEoCube7PWIEKYSrapzl3uSPUW8
- lbdfvan+pj1XtOyzK3sKdsAeXuUkvKAkFWAp34cTmhwEJvnTL2sDYaC4HNYs1Z2rMC4C
- 7OA58tGYWvKHAW4k99ILD7FCDcGZj0K7HtN29SVMV+yCxD8nHGKNjjGZMlDiIFzvs2f0
- mvhqDcULbx/6nefUYyTAwYvQ6gYPMn1YN2V7fv5PMzWajsh93cKd/X+XZbstDfoCCfqN
- v5xeTDTRZ/iDDGqa/bsNynO5g9TmLoxRDgkPKL3FvTxzKOz8lYEpUGbBJCJ+/yeug1zg
- Fcgg==
-X-Gm-Message-State: AOJu0Yx+rHmPJ6yk5/3aElKAbTasrRR5Kuto3t0qcswVfO3xRBkmVrG0
- oCOycFl3OI+qJjci22GqfXq1lbOrXZf+pQGZ6oGDprM2HMbU8TWETSG0CHswk/8L9IsR0XKcTZ5
- V5XWHeF0fEcadm7CNu7IjjezpeY5mBMUo
-X-Google-Smtp-Source: AGHT+IFBVrwWTQi6Wxk4GINoQvypNQHzNAR3EO9ugvTumES/mp52x2g3Azuw8pIiLJyBaCPzhWey7BN21+gpIqDgQMg=
-X-Received: by 2002:a81:4318:0:b0:65e:684a:2d95 with SMTP id
- 00721157ae682-6752313f950mr33945217b3.7.1722022917247; Fri, 26 Jul 2024
- 12:41:57 -0700 (PDT)
+ bh=8AuOzx/9Y1jYZv2yiLo/KkLdwmdsh+pVv3XmCSdHBx0=;
+ b=g2Ou1jFZ5U60qOFkYU79znxV8x5Xq/LcRYdxoilhp2h8E+De3nvynv3KEyi/O0FAPO
+ XSG/tfxY+1jJG3FCfAPt3hlHHfQfHh5AdjgPmWjRfVYwd0IH2cxQk8L9JBYrE2k0v2oL
+ obWZP0+/Pecxp+m74s06puNu7tK0AsiSUAaKkXUYvA3Nv8w0wRpCRbn4m2zf+t7ji9pJ
+ V/yYr9TD8Iv/r0pMgA5XHiuyQP+stOYEUn64Z9s1DZ8A4OOGXimC3ZKLxOfaZEDH6NhG
+ bAZpBcBFg84m8bpG34aG0BD40Ftug7/T+5HOfikAZPf8RLq9u/valSuby1XHebjyree+
+ ORrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722024426; x=1722629226;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8AuOzx/9Y1jYZv2yiLo/KkLdwmdsh+pVv3XmCSdHBx0=;
+ b=QFpzsSBefer1krAEfXcTSNEv9z/9iwjd8KecAt6hYXLEm42vTRrCTj/MdDmUF1o/nA
+ Ww2LWRF6JUDtNiNx+4l1baKyPshwGPaoAwuiaGtFQJxzmm1UZJl+ByH5i5gtgghQRlSI
+ ct3rdWTa5JGq4fquqUErsZdDxR1Sb4BN0CKM2EpZ7C56wjoIx6JY/1LhjK5XIzUy/xqe
+ AZq2yc1bwcqewq6dB+ImLri0T6GJwcUl1ipoW1PoU8PtMgoHadkMvuKPJNZJye3r5Xta
+ zjSYZ9MLgTJWBOFKNdvw0pMPE1GGXfLM3YwrRWjYFZ/9z5fplpXTVGlk7e/P5sdB+HBu
+ NWqA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVYYOCzomu0bgjz80kImmrAyD59BGXH+aZ7S1t8k+IskSq1pqSpeCuy1mJM+owk762+zf1g+op6K29AU9NYywCXUJDF1tc=
+X-Gm-Message-State: AOJu0YwoNIqkQ6KzQy775NWdHunjxlglluLXozxY3JMzKVAHcFeJEIE1
+ eaAaXC7rEyy7z/DAvzg3tlGAOziVz4v/jebnqQyC4HtOY1Cm0Z4NtBBorWhqWQ==
+X-Google-Smtp-Source: AGHT+IG3aJB+5BJo18nTT9fK2s1DfrSsqbPmpIabC0qvauSn6HeRol2VmvsPya3RQvUgmMqb1TnsZg==
+X-Received: by 2002:a05:6214:514e:b0:6ad:84aa:2956 with SMTP id
+ 6a1803df08f44-6bb563091b2mr11186376d6.13.1722024426496; 
+ Fri, 26 Jul 2024 13:07:06 -0700 (PDT)
+Received: from [192.168.86.22] ([136.56.85.135])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6bb3fa94e57sm19556456d6.85.2024.07.26.13.07.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Jul 2024 13:07:05 -0700 (PDT)
+Message-ID: <27646d48-3565-4b72-8d23-f825edcacbf1@cs.unc.edu>
+Date: Fri, 26 Jul 2024 16:07:04 -0400
 MIME-Version: 1.0
-From: Sergei Lyubski <slyubski@gmail.com>
-Date: Fri, 26 Jul 2024 12:41:47 -0700
-Message-ID: <CAMLUMH6dRAg+s9jzfVg3ihbE42yO1PssYLnKm-o99aEkpD8QyQ@mail.gmail.com>
-Subject: The question about migration/checkpointing
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000047204b061e2bb454"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
- envelope-from=slyubski@gmail.com; helo=mail-yb1-xb31.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/7] Add an "info pg" command that prints the current
+ page tables
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: dave@treblig.org, peter.maydell@linaro.org, nadav.amit@gmail.com,
+ philmd@linaro.org, berrange@redhat.com
+References: <20240723010545.3648706-1-porter@cs.unc.edu>
+ <20240723010545.3648706-4-porter@cs.unc.edu>
+ <d3316e48-e601-4a43-b77e-2bf127d91a7a@linaro.org>
+Content-Language: en-US
+From: Don Porter <porter@cs.unc.edu>
+In-Reply-To: <d3316e48-e601-4a43-b77e-2bf127d91a7a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
+ envelope-from=porter@cs.unc.edu; helo=mail-qv1-xf32.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 26 Jul 2024 17:40:11 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,102 +96,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000047204b061e2bb454
-Content-Type: text/plain; charset="UTF-8"
+Hi Richard,
 
-  Hi guys,
+Thank you for the feedback.
 
-My name is Sergey. My company uses QEMU for  CPU
-performance simulation/evaluaton.
-Sorry, I found  your emails in QEMU  relatively recent commits  into ram.c
-.  Why ram.c . Because I see some weirdness in the  behavior.
+On 7/23/24 11:33 PM, Richard Henderson wrote:
+> On 7/23/24 11:05, Don Porter wrote:
+>
+>
+>> +    if (env->hflags & HF_GUEST_MASK) {
+>> +
+>> +        /* Extract the EPTP value from vmcs12 structure, store in 
+>> arch state */
+>> +        if (env->nested_state->format == KVM_STATE_NESTED_FORMAT_VMX) {
+>> +            struct vmcs12 *vmcs =
+>> +                (struct vmcs12 *) env->nested_state->data.vmx->vmcs12;
+>
+> This is not required.  You appear to be confused by nested paging.
+>
+> First: nested paging is how hardware virtualization works.  When we 
+> are *using* hardware virtualization, all of that is the kernel's job.  
+> Our job as hypervisor is to give a bag of pages to the kernel and have 
+> it map them into the guest intermediate address space.
+>
+> When we are *using* hardware virtualization, we are only ever 
+> concerned with one level of paging: from the guest to the intermediate 
+> address space.  From there we use QEMU data structures to map to QEMU 
+> virtual address space (address_space_ld/st, etc).
+>
+> This is all we will ever see from KVM, HVF etc.
+>
+> With TCG, we can *emulate* hardware virtualization.  It is at this 
+> point where we are concerned about two levels of paging, because QEMU 
+> is handling both.
 
-Our goal is :
-     a)  To boot  Linux , to launch some  TEST/SPEC, to drop a few
-checkpoints.
-     b)  To resume  execution from  those checkpoints, to attach a
-performance simulator and
-           to evaluate performance at the "hot" code  areas.
+I actually think we are close to the same understanding, except that one 
+can use KVM to emulate (well, pass through to) Intel's virtualization 
+hardware for a guest (TCG does only appears to support AMD's hardware 
+virtualization interfaces), which is a use case I care about for my course.
 
-  How we tried to do it .
+One of my test cases for these debugging features was to have a simple 
+guest/nested hypervisor running on emulated VT-x hardware. As in, the 
+"guest" code enters VT root mode and sets up a VMCS and EPT, and 
+launches a guest, etc.
 
-     a) run QEMU with -monitor telnet options
-     b) connect  to QEMU with telnet
-     c)  after  LINUX  booted  in  QEMU monitor (telnet)  executed
-            migrate -d file://<FULL  CKPT PATH>
-            quit
-      d)  run QEMU  with option -incoming file://<FULL CKPT PATH>
+My understanding is that when one uses kvm in this way, in the kernel 
+kvm creates shadow page tables to merge the guest hypervisor and host 
+hypervisor's tables transparently to the guest.
 
-  Now !!
+My reading of the KVM code is that this ioctl is the way that emulated 
+architectural state (like the vmcs) is synced from the kernel back to 
+qemu.  I don't see another KVM API for getting things like the extended 
+page table root and certain VMCS configuration flags that one needs to 
+walk the page tables.  Most of this state is not currently exposed to 
+debugging features in qemu, which is why this definition was not needed.
 
-  If  I  drop the checkpoint  when running  on linux a long ( endless) test
-which  prints on      the console,  everything works (!)  and  the console
-is properly restored.
+I am open to other suggestions how to get that state, like the EPT root 
+pointer, from KVM.  Perhaps I am missing something.
 
-  When I drop  the checkpoint  when the linux console is in shell  prompt,
-the restoration does  not  work.
-   I see either error message  from  ram_load_precopy()
-       error_report("Unknown combination of migration flags: 0x%x", flags);
+----
 
-       or
+I will admit the intermediate address space is a lot to get one's head 
+around.  I believe I have consistently used appropriate 
+address_space_ld/st and friends at this point.
 
-   the console is locked, QEMU restarts and  runs  (ps, top).   The only
-solution is to kill
-   QEMU .  After that,  QEMU console is distorted and requires to type
-RESET.
+Thanks again,
 
-    Could you please comment on the above issues.
-    If you need more info I can send you my screen shots.
-    Please note that  that the similar behavior is observed on  both
-     qemu 9.0  ( stable-9.0)  and
-     qemu 8.x
+Don
 
-Thanks in advance.
-Sergey Lyubskiy
-
---00000000000047204b061e2bb454
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">=C2=A0 Hi guys,<div><br></div><div>My name is Sergey. My c=
-ompany uses QEMU for=C2=A0 CPU performance=C2=A0simulation/evaluaton.</div>=
-<div>Sorry, I found=C2=A0 your emails in QEMU=C2=A0 relatively=C2=A0recent =
-commits=C2=A0 into ram.c .=C2=A0 Why ram.c . Because I see some weirdness i=
-n the=C2=A0 behavior.</div><div>=C2=A0=C2=A0</div><div>Our goal is :</div><=
-div>=C2=A0 =C2=A0 =C2=A0a)=C2=A0 To boot=C2=A0 Linux , to launch some=C2=A0=
- TEST/SPEC, to drop a few checkpoints.</div><div>=C2=A0 =C2=A0 =C2=A0b)=C2=
-=A0 To resume=C2=A0 execution from=C2=A0 those checkpoints, to attach a per=
-formance simulator and</div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0t=
-o evaluate=C2=A0performance at the &quot;hot&quot; code=C2=A0 areas.</div><=
-div><br></div><div>=C2=A0 How we tried to do it .</div><div><br></div><div>=
-=C2=A0 =C2=A0 =C2=A0a) run QEMU with -monitor telnet options</div><div>=C2=
-=A0 =C2=A0 =C2=A0b) connect=C2=A0 to QEMU with telnet=C2=A0</div><div>=C2=
-=A0 =C2=A0 =C2=A0c)=C2=A0 after=C2=A0 LINUX=C2=A0 booted=C2=A0 in=C2=A0 QEM=
-U monitor (telnet)=C2=A0 executed</div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 migrate -d file://&lt;FULL=C2=A0 CKPT PATH&gt;=C2=A0</div><div>=
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 quit</div><div>=C2=A0 =C2=A0 =C2=
-=A0 d)=C2=A0 run QEMU=C2=A0 with option=C2=A0-incoming file://&lt;FULL CKPT=
- PATH&gt;</div><div><br></div><div>=C2=A0 Now !!</div><div><br></div><div>=
-=C2=A0 If=C2=A0 I=C2=A0 drop the checkpoint=C2=A0 when running=C2=A0 on lin=
-ux a long ( endless) test which=C2=A0 prints on=C2=A0 =C2=A0 =C2=A0 the con=
-sole,=C2=A0 everything works (!)=C2=A0 and=C2=A0 the console is properly re=
-stored.</div><div>=C2=A0 =C2=A0</div><div>=C2=A0 When I drop=C2=A0 the chec=
-kpoint=C2=A0 when the linux console is in shell=C2=A0 prompt, the restorati=
-on does=C2=A0 not=C2=A0 work.</div><div>=C2=A0 =C2=A0I see either error mes=
-sage=C2=A0 from=C2=A0 ram_load_precopy()</div><div>=C2=A0 =C2=A0 =C2=A0=C2=
-=A0=C2=A0error_report(&quot;Unknown combination of migration flags: 0x%x&qu=
-ot;, flags);</div><div><br></div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0or</div><d=
-iv><br></div><div>=C2=A0 =C2=A0the console is locked, QEMU restarts and=C2=
-=A0 runs=C2=A0 (ps, top).=C2=A0 =C2=A0The only=C2=A0 solution is to kill=C2=
-=A0</div><div>=C2=A0 =C2=A0QEMU .=C2=A0 After that,=C2=A0=C2=A0QEMU console=
- is distorted and requires to type RESET.</div><div><br></div><div>=C2=A0 =
-=C2=A0 Could you please comment on the above issues.=C2=A0</div><div>=C2=A0=
- =C2=A0 If you need more info I can send you my screen shots.</div><div>=C2=
-=A0 =C2=A0 Please note that=C2=A0 that the similar behavior is observed on=
-=C2=A0 both</div><div>=C2=A0 =C2=A0 =C2=A0qemu 9.0=C2=A0 ( stable-9.0)=C2=
-=A0 and</div><div>=C2=A0 =C2=A0 =C2=A0qemu 8.x</div><div><br></div><div>Tha=
-nks in advance.</div><div>Sergey Lyubskiy</div><div class=3D"gmail-yj6qo"><=
-/div><div class=3D"gmail-adL"><br></div></div>
-
---00000000000047204b061e2bb454--
 
