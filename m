@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A555F93F96E
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FE593F97D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:32:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYSIr-0000YX-Mr; Mon, 29 Jul 2024 11:28:49 -0400
+	id 1sYSLz-0008Gu-Kb; Mon, 29 Jul 2024 11:32:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIp-0000Js-L4
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:47 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sYSLx-0008E4-8O
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:32:01 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIl-00009O-MF
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:47 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4266dc7591fso16448985e9.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sYSLu-00016r-Bb
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:32:00 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10835480bso5443650a12.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:31:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722266922; x=1722871722; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jz7Ox8GZ4fBgHa8IWcCtoxPXphT3ERQSEGlUxQOFD08=;
- b=Srp3SKyWWnt6FNQiXVpaec38d/YXtS4zyesfqtPrDgdzDHiVcvCUH5bZ5R4MMgUz41
- uBvSBPQZi/AjyIZkZhaMWK5FSH7lf04dCVZ0WAKuYcVbKejHxrZqWQQeGEsPUvpuQtAK
- 5uHMc8CG9lKrlp+ZLHVZiNoyU1Xw6Bq1lFtsL4qkG/CLYN3ApUqgkbYJbCnUWbUNMaN0
- s1BjKCTia4v12S1dBjcskz7C++I7kD2kY1Q+9EHkGTPF9kQ1TFe54WbL7tgj2S9XiaMJ
- VNaMFXlF2GC4Qa3JPYXm4tAa5V9mOIXofGjVkmA9559fbMPA5a8imEaFtq9GRpRXZUL+
- 6UDg==
+ d=linaro.org; s=google; t=1722267113; x=1722871913; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zhKcAf0ZWfz3qp6TykGkjQBKnlkjPN9B9/lzcKl1IwY=;
+ b=UuVAa8JttULL0Whup4slWn3pRRX780JPHyvN2u61R06U7oyRTZSmFjrby+w5nTcZFk
+ hkQDKUCXvci7mVZ50EPDqe4VS3Xrmi5KMOz0STVLet7p2HJPgxJFLsheapRTBVlG0TTc
+ wL74+wXCuquBHNhEW5PLFkD7yEE/W4uCZzVMeX+ShE4hrAxw424sQltksa1yzYSLBZbD
+ ZR/1MhSB2xkiiKQh70N7qEthh8RLbJmVIRorqpV1rTDYvqwVQx487P7hpofo65HjBd+9
+ kZrIiPMUXESEN0Q2Y39qNVF+E9GHrjDYVMVL9hq62aKf7zVb90ZIMT4yQG4tQPVRY0Y4
+ Bl/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722266922; x=1722871722;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jz7Ox8GZ4fBgHa8IWcCtoxPXphT3ERQSEGlUxQOFD08=;
- b=svjViJWLUDCYby85mp3MOVviUtTACNRB2tQ90khkDeMVqwIDWZyoIG2nglf6eSRbP+
- 5Ey8F/5zM6qGUtEreYR3kTcL3SJDdbunBb9TMF+xt6/hUsJiy6ax/Xs4zkjv8FvAHz52
- bVcTXn7UzGxo32wkjQk7EYQ1EmYlkyYEm4Wpsyas3UwEvx5ds+1F9qMAirBmhdkcvhBJ
- Xs4b+3cD8Q+vNZAe5YqOT2ru+4zYreuhixEpCnwpoTCEpZySvTnss49kSk0rpPDyFSz7
- ONK7vDz/+6o/rQxjfPB7F59j79nvlA0YLF67gXqZryL79zrjLn0F3SzH2twbtpPZnSbn
- 3KDw==
-X-Gm-Message-State: AOJu0YzEYfqx1Gy1kDOEhgeyuyjSmjlS/Z5kQBVZ3Kc5MWmQrQZJLl9y
- U9NmbIb5iwOECyuPQeFRHJQeWMCMJj1yGL1Peeo/bueozmsmuCjk/ZS8uX+1DvTM5JYrt28xVaN
- v
-X-Google-Smtp-Source: AGHT+IFuQJotWxyhTGPrZVPb0S0IiFSQXlanWxvBWHS38i5zJszlbwhWHAV9aQ149I7EKR12XuQvOA==
-X-Received: by 2002:a05:600c:3b1f:b0:426:5416:67de with SMTP id
- 5b1f17b1804b1-42811dd4862mr49326015e9.30.1722266921829; 
- Mon, 29 Jul 2024 08:28:41 -0700 (PDT)
-Received: from localhost.localdomain ([176.176.173.10])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-428057b7218sm181106805e9.47.2024.07.29.08.28.40
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jul 2024 08:28:41 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/14] tests/avocado: test_arm_emcraft_sf2: handle RW
- requirements for asset
-Date: Mon, 29 Jul 2024 17:27:14 +0200
-Message-ID: <20240729152714.10225-15-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240729152714.10225-1-philmd@linaro.org>
-References: <20240729152714.10225-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1722267113; x=1722871913;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zhKcAf0ZWfz3qp6TykGkjQBKnlkjPN9B9/lzcKl1IwY=;
+ b=tRiDYCOrubWqGeeg7OnpBDGvIg2uNVHKx3eQ222GDAxJBbIxcbj7fVTGyVkYxzQn9i
+ CotL+FFq3F4ynkbFe+SMIY5n0LglfNmC1c/qtSaroQlTTpFAe2mhEtf5iWoLXxgXY0cH
+ CaPBZ39pwuQUpjIMVMMzy9En8qyH68qb0RY0djCcqSLA4QcoI9NNLwhbzBryeIPK/uVe
+ MccaX9bPuhnNnkSDFTiGeH8DtTW7jKzfZ41yCrjg0Paluz3CVqz2Dc3sOvloxu2uUrC2
+ u+Q3kD2zZPuFdXxKaCTOM8SmfjbGEY9F1cNvjCQ1oHQoAGZwBxukd8Ok6uK9mNrMvKjc
+ sjnA==
+X-Gm-Message-State: AOJu0YyfPVPLCkkwhf6YPUBX8EAfmS7FaM7V2wnpVDaIQb5Ys8wXTf5n
+ /tTgPaZnuCACNvRacCn/AVSVCO9W/hFt6KggpfoxwV6TOFZazfeHBaOm2YObuHEMJw5U6vrxHzr
+ MgkeqZdT347TaBAhQ9IYePWJdDUmFAhgVVD8vMg==
+X-Google-Smtp-Source: AGHT+IE8dZh7e/EfyfKlczLwtuGatlaHNz6TrU9EmkSM76rDy9x6SAadF4MvLAYsh0LFBfZhqoSEDc6Mpzfm/tfC+p8=
+X-Received: by 2002:a50:cd49:0:b0:5a0:f0c4:aa7b with SMTP id
+ 4fb4d7f45d1cf-5b022003b8bmr4626553a12.27.1722267112810; Mon, 29 Jul 2024
+ 08:31:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+References: <20240726055933.817-1-jim.shu@sifive.com>
+ <20240726055933.817-5-jim.shu@sifive.com>
+In-Reply-To: <20240726055933.817-5-jim.shu@sifive.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 29 Jul 2024 16:31:41 +0100
+Message-ID: <CAFEAcA_QmSdqTo4zmv=AKox2ZiJPt18vV4CwaLLp6VPLWBMcpA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] hw/net: xilinx_axienet: Fix DMA RX IRQ if ethernet
+ disable RX
+To: Jim Shu <jim.shu@sifive.com>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Alistair Francis <alistair@alistair23.me>, Jason Wang <jasowang@redhat.com>, 
+ "open list:Xilinx Zynq" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,49 +89,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cleber Rosa <crosa@redhat.com>
+On Fri, 26 Jul 2024 at 06:59, Jim Shu <jim.shu@sifive.com> wrote:
+>
+> When AXI ethernet RX is disabled, it shouldn't send packets to AXI DMA,
+> which may let AXI DMA to send RX full IRQs. It is aligned with real AXI
+> DMA/ethernet IP behavior in the FPGA.
+>
+> Also, now ethernet RX blocks the RX packets when it is disabled. It
+> should send and clear the remaining RX packets when enabling it.
+>
+> Signed-off-by: Jim Shu <jim.shu@sifive.com>
+> ---
+>  hw/net/xilinx_axienet.c | 71 ++++++++++++++++++++++++-----------------
+>  1 file changed, 42 insertions(+), 29 deletions(-)
+>
+> diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
+> index 05d41bd548..8428f10946 100644
+> --- a/hw/net/xilinx_axienet.c
+> +++ b/hw/net/xilinx_axienet.c
+> @@ -530,6 +530,40 @@ static uint64_t enet_read(void *opaque, hwaddr addr, unsigned size)
+>      return r;
+>  }
+>
+> +static void axienet_eth_rx_notify(void *opaque)
+> +{
+> +    XilinxAXIEnet *s = XILINX_AXI_ENET(opaque);
+> +
+> +    /* If RX is disabled, don't trigger DMA to update RX desc and send IRQ */
+> +    if (!axienet_rx_enabled(s)) {
+> +        return;
+> +    }
 
-The asset used in the mentioned test gets truncated before it's used
-in the test.  This means that the file gets modified, and thus the
-asset's expected hash doesn't match anymore.  This causes cache misses
-and re-downloads every time the test is re-run.
+This checks s->rcw[1] & RCW1_RX, and does nothing if it's not set...
 
-Let's make a copy of the asset so that the one in the cache is
-preserved and the cache sees a hit on re-runs.
+>  static void enet_write(void *opaque, hwaddr addr,
+>                         uint64_t value, unsigned size)
+>  {
+> @@ -546,6 +580,14 @@ static void enet_write(void *opaque, hwaddr addr,
+>              } else {
+>                  qemu_flush_queued_packets(qemu_get_queue(s->nic));
+>              }
+> +
+> +            /*
+> +             * When RX is enabled, check if any remaining data in rxmem
+> +             * and send them.
+> +             */
+> +            if ((addr & 1) && s->rcw[addr & 1] & RCW1_RX) {
+> +                axienet_eth_rx_notify(s);
+> +            }
 
-Signed-off-by: Cleber Rosa <crosa@redhat.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240726134438.14720-9-crosa@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/avocado/boot_linux_console.py | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+...but at this callsite we open-code a check on RCW1_RX and
+skip the call if it's not set. We don't need to check twice.
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index b8b0a4df10..2929aa042d 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -401,14 +401,16 @@ def test_arm_emcraft_sf2(self):
-                    'fe371d32e50ca682391e1e70ab98c2942aeffb01/spi.bin')
-         spi_hash = '65523a1835949b6f4553be96dec1b6a38fb05501'
-         spi_path = self.fetch_asset(spi_url, asset_hash=spi_hash)
-+        spi_path_rw = os.path.join(self.workdir, os.path.basename(spi_path))
-+        shutil.copy(spi_path, spi_path_rw)
- 
--        file_truncate(spi_path, 16 << 20) # Spansion S25FL128SDPBHICO is 16 MiB
-+        file_truncate(spi_path_rw, 16 << 20) # Spansion S25FL128SDPBHICO is 16 MiB
- 
-         self.vm.set_console()
-         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-         self.vm.add_args('-kernel', uboot_path,
-                          '-append', kernel_command_line,
--                         '-drive', 'file=' + spi_path + ',if=mtd,format=raw',
-+                         '-drive', 'file=' + spi_path_rw + ',if=mtd,format=raw',
-                          '-no-reboot')
-         self.vm.launch()
-         self.wait_for_console_pattern('Enter \'help\' for a list')
--- 
-2.45.2
+>              break;
+>
+>          case R_TC:
 
+thanks
+-- PMM
 
