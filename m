@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A151594054B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9EF94049F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcg4-0004o6-T6; Mon, 29 Jul 2024 22:33:28 -0400
+	id 1sYcZM-0001sy-Kp; Mon, 29 Jul 2024 22:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1sYcg1-0004n3-58; Mon, 29 Jul 2024 22:33:25 -0400
-Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1sYcfy-0000WO-Lz; Mon, 29 Jul 2024 22:33:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Type:MIME-Version:Message-ID:Date:References:
- In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=MCS7QX/fDZWzrE9xUFB3LeDIZuYBfAL5DGtiBPec42Y=; b=mMhf3XtJ0KhOH1T3kn9z0uCXIw
- qtj5eW9N1lbOa0/bvoj1BcuAUVeStSFInWUX697EFPtnbCcr7W1putuirYZMRGI/TxNWtn0Uv+ctK
- YxyHRrzFCXB6xKC4Je17M5rESK08usKUyL4VXsqA7cdCu6pnnwSLZjfH/uBB/TkdOSpiXOeeoyfja
- 2wWotMcxJM3pm1UO/Ge0K+z2Xb7MFuFybsuVHqRohJ4VJGztBRwgl69SxHSMOdcmW9vcYDlrTtUuH
- UxuaEBBzC1eBlDiJUK3ED69lJFwduLCvRVuMAC5rapuz9uGR2tBfN37fRqIzXWpVMeoVD0Lf38e2i
- WtfTvnCQ==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
- by fanzine2.igalia.com with esmtps 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1sYYL8-004Nj4-Mk; Mon, 29 Jul 2024 23:55:34 +0200
-Received: from gate.service.igalia.com ([192.168.21.52])
- by mail.igalia.com with esmtp (Exim)
- id 1sYYL6-00BfKf-JA; Mon, 29 Jul 2024 23:55:34 +0200
-Received: from berto by gate.service.igalia.com with local (Exim 4.96)
- (envelope-from <berto@igalia.com>) id 1sYYL6-004ya0-1N;
- Mon, 29 Jul 2024 21:55:32 +0000
-From: Alberto Garcia <berto@igalia.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Hanna
- Czenczek <hreitz@redhat.com>, Nir Soffer <nsoffer@redhat.com>, Madeeha
- Javed <javed@igalia.com>
-Subject: Re: [PATCH v3] scripts/qcow2-to-stdout.py: Add script to write
- qcow2 images to stdout
-In-Reply-To: <pz7gy26uyetg2d7vzudxtoiwqppd4iddo7ctno7lrbumghxzvf@nny3z2qshvsc>
-References: <20240729150226.71250-1-berto@igalia.com>
- <pz7gy26uyetg2d7vzudxtoiwqppd4iddo7ctno7lrbumghxzvf@nny3z2qshvsc>
-Date: Mon, 29 Jul 2024 23:55:32 +0200
-Message-ID: <w51mslz278r.fsf@igalia.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYcZK-0001e2-1K
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:26:30 -0400
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYcZI-0007aG-Iw
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:26:29 -0400
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-67b709024bfso29337237b3.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:26:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722306386; x=1722911186; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=jWAsRYj9wPysg3AlR0EXI7oeYMhruK0UyYdo4inlPic=;
+ b=t/1tqencJ5260BwDxSYB56+sUwzA1kRvAKTFKwpDVm1MYupBKmsNBfwRTGD8vvSV8u
+ ZITfEa5ISpVGaMhD695YZRSW0pG7jyfIZs2pDvmNatGmX/RDuascR03LGOY0rR3r7qKc
+ 8+M7vg0rAj0wApH4x2UwVeYwJ5L6h5dAhkFSr/mQ+ya1iHpp+QPzZEpTYvOTAaUvBQ4a
+ GojY+qFCA9TFnVy3kyw/Ph67TMiPSU5n53rLBS9t+dYft/AVWLGPTqGLlMJTrAiAKgrM
+ gHKZFWFOkBMdR+xXK3iv4Yg6jMbRi25sUOLIf1TnjM9WnLcy2RH9OAENkKIWTTPznmTH
+ abiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722306386; x=1722911186;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jWAsRYj9wPysg3AlR0EXI7oeYMhruK0UyYdo4inlPic=;
+ b=JtWM02zNfMNpc5BCLHwN4tJot7YlsljZjwdKbCKk6knqjMXNeX1w9MxuMQ8yFf/tm2
+ Tq6ru3EeeAi7QWr3XWkC28hPXHlAfw3cIbMLjFmxCxjxnSNJW3Oy6ZuaybRLsbxYtNeQ
+ cM2AsIfjUtFDRMUb+CuQcafiJaL48ZZmL0ZzqBjsRmOIvsqJ5dObGf5SC54t0wUR7vrD
+ A6lEFhet5b+mbUU1rmiXTeilCXLsosNhci4Jc6Y98o/88g0QW0l/+NAkezTsb5V8jVEb
+ 9+RsBiHF+p57fVAqaJx1mC5wQ2rFC1DAvRSt05fGoPxG61E6HnQKRMQ0hNgPwHt/BwD3
+ RP6w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUKZfZD8x/5c4Di0ZOmNk6FzXxGcKCMq3Fc/HD/sWk99kkEoprQoYIfNwj1cQds5hSS7yBSS+MI5nK0AUSg3zJTQNNsyXE=
+X-Gm-Message-State: AOJu0YzNIj3NsV+2BYvkuIP3+qKoX/SfoqzccueMA64xgWPIsUA4LXnb
+ 3KBXUCbySWOHOW0Ad3Qwk6sMrdNmkOdNWzo6i7d/VdGBP8oTMDcsB2LJBQgX/oBPJ8fY0EIC4XM
+ q1u4=
+X-Google-Smtp-Source: AGHT+IGrkEIqWV2RzV9qcXIswKQOiahnB78NqdDE7CIXJHe99a7Ru1V3w80n3VDWp5GhoHFPoURO9w==
+X-Received: by 2002:a17:902:7795:b0:1fd:6e83:ade7 with SMTP id
+ d9443c01a7336-1ff0483293fmr97233295ad.22.1722291716026; 
+ Mon, 29 Jul 2024 15:21:56 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fed7c7fda4sm88083335ad.22.2024.07.29.15.21.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 15:21:55 -0700 (PDT)
+Message-ID: <9b502cc8-a0b3-46c7-b4ae-815ded4478d3@linaro.org>
+Date: Tue, 30 Jul 2024 08:21:50 +1000
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -11
-X-Spam-Bar: -
-Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
- helo=fanzine2.igalia.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/14] gitlab: record installed packages in /packages.txt
+ in containers
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20240729144414.830369-1-alex.bennee@linaro.org>
+ <20240729144414.830369-2-alex.bennee@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240729144414.830369-2-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,76 +98,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon 29 Jul 2024 03:20:18 PM -05, Eric Blake wrote:
-> On Mon, Jul 29, 2024 at 05:02:26PM GMT, Alberto Garcia wrote:
->> +# qcow2 files produced by this script are always arranged like this:
->> +#
->> +# - qcow2 header
->> +# - refcount table
->> +# - refcount blocks
->> +# - L1 table
->> +# - L2 tables
->> +# - Data clusters
->
-> Is it easy to make your tool spit out a qcow2 image with external data
-> file (to write a quick qcow2 wrapper for an existing file to now be
-> used as external data)?  Or is that too much of a difference from the
-> intended use of this tool?
+On 7/30/24 00:44, Alex Bennée wrote:
+> From: Daniel P. Berrangé<berrange@redhat.com>
+> 
+> The lcitool created containers save the full distro package list
+> details into /packages.txt. The idea is that build jobs will 'cat'
+> this file, so that the build log has a record of what packages
+> were used. This is important info, because when it comes to debug
+> failures, the original container is often lost.
+> 
+> This extends the manually written dockerfiles to also create the
+> /packages.txt file.
+> 
+> Signed-off-by: Daniel P. Berrangé<berrange@redhat.com>
+> Message-Id:<20240724095505.33544-2-berrange@redhat.com>
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> ---
+>   tests/docker/dockerfiles/debian-all-test-cross.docker    | 3 ++-
+>   tests/docker/dockerfiles/debian-hexagon-cross.docker     | 3 ++-
+>   tests/docker/dockerfiles/debian-legacy-test-cross.docker | 3 ++-
+>   tests/docker/dockerfiles/debian-loongarch-cross.docker   | 3 ++-
+>   tests/docker/dockerfiles/debian-tricore-cross.docker     | 3 ++-
+>   tests/docker/dockerfiles/debian-xtensa-cross.docker      | 3 ++-
+>   6 files changed, 12 insertions(+), 6 deletions(-)
 
-I didn't consider that use case and I didn't want to make the tool too
-complicated. It's probably not very hard to do, if I can do it without
-too many changes to the code I'll give it a try.
-
->> +def clusters_with_data(fd, cluster_size):
->> +    data_off = 0
->> +    while True:
->> +        hole_off = os.lseek(fd, data_off, os.SEEK_HOLE)
->> +        for idx in range(data_off // cluster_size, math.ceil(hole_off / cluster_size)):
->> +            yield idx
->> +        try:
->> +            data_off = os.lseek(fd, hole_off, os.SEEK_DATA)
->
-> Depending on the size of cluster_size, this could return the same
-> offset more than once (for example, for 1M clusters but 64k
-> granularity on holes, consider what happens if lseek(0, SEEK_HOLE)
-> returns 64k, then lseek(64k, SEEK_DATA) returns 128k: you end up
-> yielding idx 0 twice).  You may need to be more careful than that.
-
-I literally opened my laptop because I just realized that this could be
-a problem :D I'll fix it in the next version.
-
->> +        ret = subprocess.run(
->> +            [
->> +                QEMU_STORAGE_DAEMON,
->> +                "--daemonize",
->> +                "--pidfile", pid_file,
->> +                "--blockdev", f"driver=file,node-name=file0,driver=file,filename={input_file},read-only=on",
->> +                "--blockdev", f"driver={input_format},node-name=disk0,file=file0,read-only=on",
->> +                "--export", f"type=fuse,id=export0,node-name=disk0,mountpoint={raw_file},writable=off",
->> +            ],
->> +            capture_output=True,
->> +        )
->
-> Does q-s-d exposing an image as raw still support lseek(SEEK_HOLE)
-> efficiently?
-
-Yes, I tested it before sending the new version, the improvements are
-actually quite noticeable, thanks Nir for suggesting this.
-
->> +    parser.add_argument(
->> +        "-v",
->> +        dest="qcow2_version",
->> +        metavar="qcow2_version",
->> +        help=f"qcow2 version (default: {QCOW2_DEFAULT_VERSION})",
->> +        default=QCOW2_DEFAULT_VERSION,
->> +        type=int,
->> +        choices=[2, 3],
->
-> Is it really worth trying to create v2 images?
-
-I don't know, I added this because it required almost no changes to the
-code. But I don't have a strong opinion, I can remove support for v2
-images.
-
-Berto
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
