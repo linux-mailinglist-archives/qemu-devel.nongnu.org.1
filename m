@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B26B93F4AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 13:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA44993F4CC
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 14:03:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYOz8-0001w6-21; Mon, 29 Jul 2024 07:56:14 -0400
+	id 1sYP4x-0003Yr-8l; Mon, 29 Jul 2024 08:02:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sYOz5-0001na-Bg
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 07:56:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sYOz3-0003Hb-MC
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 07:56:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722254169;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eCSVOq9LhPfLBfy6HuRWZRfXiaQynAMj8sqpSrqVBG8=;
- b=dmLBNMxTKr2LFMPoo9qaB4v/ZQtnQmeKdOqqbhyAJI26vPGCSUlTDq4i8v5Er6ghSClSGc
- LL+poRRFYHjHHadQkawAStAOyGneRCrFg9hF0BDbBiqQiOZcH3mOcksCSiB8X3EAP35f/8
- OnIT3u++KFX4k1WWQVZcOLgeiPHFdvE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-MQa-ej4gOAmR0cZuUG4eQQ-1; Mon, 29 Jul 2024 07:56:05 -0400
-X-MC-Unique: MQa-ej4gOAmR0cZuUG4eQQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-36831948d94so1452847f8f.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 04:56:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYP4t-0003Uq-F2
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:02:11 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYP4o-0004cJ-DV
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:02:11 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-42122ac2f38so10093555e9.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 05:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722254525; x=1722859325; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/qvSCEYggbJA531byaEkDr9vmqqh4tVOMW6xdeku0Eo=;
+ b=aeeZ6LPj90giWwagvZV8KVaRbCFJ0ykb7zMqoA73/QxU5stZ3sL8Y1Lhz5ykRXlYlY
+ jq7cAa9kMQsCjSL5k/X2AwMpzI6JN32mFHXmHXNtsjqfzJkcGTp+2WFn0mrj3bvfsXvS
+ zg+mWt2AWaV3yO86Mp0wiYWV9/g9jRWYxcSdreGx6e2I3clHq01DuZvCkpEcD3SehGNe
+ oAdw44zV3DgPsdwylgcXoKxtzP4pfBKmd5WJiXKCetJ2X7qnh+RSe+BZGicVEw6HFvZP
+ DZTK577ZwHODNiT5o/HiTXTk0/OfknofnA4lTgSFY6LoMYaABEGihEledTvfBhbZ2EQA
+ bDcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722254164; x=1722858964;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eCSVOq9LhPfLBfy6HuRWZRfXiaQynAMj8sqpSrqVBG8=;
- b=wnUvKdqttVGTxs47fvX20/a3UGwJ7LuxhWfFVCJh/cQ8AodUus8+azj0KXdvDJU7DR
- VTR7GzexR1nhYN2BAwbVAa58IGSvitlFNg06iEgXVsXc2D7mSCnQB4i1Ezv9fpCm73xk
- 5KkEs1Xm/oeAKOpCPqrtlA74X8tlZYmTICtcM/aN3lSub5mqAdxuLNqs/ARhhBy0o6lB
- d5CG2PrgobCHbpX/D4o9r+WAztcULMhpSYr+H7+P8VwvMfW4tbG6lZh9GI3pLoMnfojI
- 2YxW3qBLa6iFz7rk2kVpo3OZ6m7ILdADRZVzKRLvlVn6b9GXKJqOMsFE1b3fdN7cAsv2
- JF6g==
+ d=1e100.net; s=20230601; t=1722254525; x=1722859325;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/qvSCEYggbJA531byaEkDr9vmqqh4tVOMW6xdeku0Eo=;
+ b=SvdsXd/dDWbxXa8u9xdGegA+b3bz5ti35aYIz6y2Y0d1y9oafBrbDa3bTlaf2/Isac
+ 7SfUn8U8YaTKE+k++riXz4UEjia3JWNBixD/RHtAB5/99aafMzND1MqQ/AGkOtq+VYOD
+ Hm5ZtAevzxlcxypzV44xY9tA7E2MjeyxMIn6UVDOaQzre63tg5GYR0L7O6OBRb8nn9U6
+ 7zHTOjA5/UAgsEukMbJhBX0m0Hc4DlJ5bVLLLfE1wNhvwL1sOmqJV9FABm4ul6Y1Rhkw
+ LqLUOCuyL5h0O6Dag9fxFMRcd9A/92pO5tsBKTil4o6oT5yeEPiVEVhVd2VHXBfdfao9
+ FZqg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpHLym2Ns8crQIowfh0bYXe64wo/wiMY+keJiltlgxvbUlLPyKlVgN9+/Zt9cxEjAwtTw+p9cKfNE85PML5sFZB0g47qQ=
-X-Gm-Message-State: AOJu0Yx5Dfwh83DJYfUsZICjAJYJp8y6bSpu5h8bnj4xC/cb/Kbunf6v
- RdvCfyLVdWr1GBSPtshvA7PVpbyMc3o8u+1elHMfJU6mrEZRw+C/Q+80bNyNkR6AKbEFLmc0Ray
- C5AZmrCrrifJFAUwV8HJKzSOv3euyQEcWX24QBHENQM9G/MN4gPrEYvv/yOZPJOVEVMQpIXd6cD
- 78QclgicL9EIW/U84riqksfievSoYOrm0oInq3sA==
-X-Received: by 2002:a05:6000:186c:b0:368:4e28:47f7 with SMTP id
- ffacd0b85a97d-36b5cefd51dmr6220284f8f.6.1722254163946; 
- Mon, 29 Jul 2024 04:56:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFz54WjA+vo2ttOC9KhPgthpaRhina1Z5WxtiW6vBspEPgUIuZEIprU6hUXbd9ObE7Vzh8jnieFv/3c6rehNFY=
-X-Received: by 2002:a05:6000:186c:b0:368:4e28:47f7 with SMTP id
- ffacd0b85a97d-36b5cefd51dmr6220258f8f.6.1722254163473; Mon, 29 Jul 2024
- 04:56:03 -0700 (PDT)
+ AJvYcCXDC0UkDAGf+IJTIAXykq4eMujZsbS6hhn7YstJohjlUJmtdnXgH3ATA1OE4e8lWI/mPXclA1jQvk8k4ACBXGebObiXy4U=
+X-Gm-Message-State: AOJu0YyjhcvVOXW7R6432CY3xK/gdpG/386+gIx5aMShAOJBNYVkGO8R
+ KsllTKe0nJ36uUneGD6AoP2L6np1s6Uuhh3OcKDeh/D+4UTsjG6zh51QwLyhDzc=
+X-Google-Smtp-Source: AGHT+IFD+mPLCP16wqONM0xiaWZbeizYtEHeoTpsypYl3tjtLRKpY7ZoR1jjLZznwWE1Gxi4xvUPLQ==
+X-Received: by 2002:a05:600c:a4b:b0:424:8dbe:817d with SMTP id
+ 5b1f17b1804b1-42811e6ab12mr51422695e9.10.1722254524621; 
+ Mon, 29 Jul 2024 05:02:04 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.173.10])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4280f9e3721sm108545485e9.29.2024.07.29.05.02.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 05:02:04 -0700 (PDT)
+Message-ID: <2d85304c-ccec-43d1-8806-bdf7b861543d@linaro.org>
+Date: Mon, 29 Jul 2024 14:02:00 +0200
 MIME-Version: 1.0
-References: <20240729094702.50282-1-kwolf@redhat.com>
- <20240729094702.50282-5-kwolf@redhat.com>
-In-Reply-To: <20240729094702.50282-5-kwolf@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 29 Jul 2024 13:55:51 +0200
-Message-ID: <CABgObfYbpZ3JV5i_TKjobd6DrzYiy567YAfQbX+x5X7mj1=GKw@mail.gmail.com>
-Subject: Re: [PATCH 4/4] scsi-disk: Always report RESERVATION_CONFLICT to guest
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, fam@euphon.net, stefanha@redhat.com, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/13] Bump avocado to 103.0
+To: Cleber Rosa <crosa@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>, 
+ Beraldo Leal <bleal@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Radoslaw Biernacki <rad@semihalf.com>, Paul Durrant <paul@xen.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20240726134438.14720-1-crosa@redhat.com>
+ <20240726134438.14720-13-crosa@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240726134438.14720-13-crosa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,105 +104,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 29, 2024 at 11:47=E2=80=AFAM Kevin Wolf <kwolf@redhat.com> wrot=
-e:
-> RESERVATION_CONFLICT is not a backend error, but indicates that the
-> guest tried to make a request that it isn't allowed to execute. Pass the
-> error to the guest so that it can decide what to do with it.
+On 26/7/24 15:44, Cleber Rosa wrote:
+> This bumps Avocado to latest the LTS release.
+> 
+> An LTS release is one that can receive bugfixes and guarantees
+> stability for a much longer period and has incremental minor releases
+> made.
+> 
+> Even though the 103.0 LTS release is pretty a rewrite of Avocado when
+> compared to 88.1, the behavior of all existing tests under
+> tests/avocado has been extensively tested no regression in behavior
+> was found.
 
-This is only true of scsi-block (though your patch is okay here -
-scsi-disk would see an EBADE and go down the ret < 0 path).
+Does that restore feature parity for macOS developers? Because this
+community has been left behind ignored for over 2 years and already
+looked at alternatives for functional testing.
 
-In general, for scsi-block I'd expect people to use report instead of
-stop. I agree that this is the best behavior for the case where you
-have a pr-manager, but it may also be better to stop the VM if a
-pr-manager has not been set up.  That's probably a bit hackish, so I
-guess it's okay to add a FIXME or TODO comment instead?
-
-> -        if (status =3D=3D CHECK_CONDITION) {
-> +        switch (status) {
-> +        case CHECK_CONDITION:
->              req_has_sense =3D true;
->              error =3D scsi_sense_buf_to_errno(r->req.sense, sizeof(r->re=
-q.sense));
-> -        } else {
-> +            break;
-> +        case RESERVATION_CONFLICT:
-> +            /* Don't apply the error policy, always report to the guest =
-*/
-
-This is the only case where you get error =3D=3D 0. Maybe remove it from
-the initializer, and set it here?
-
-Paolo
-
-On Mon, Jul 29, 2024 at 11:47=E2=80=AFAM Kevin Wolf <kwolf@redhat.com> wrot=
-e:
->
-> RESERVATION_CONFLICT is not a backend error, but indicates that the
-> guest tried to make a request that it isn't allowed to execute. Pass the
-> error to the guest so that it can decide what to do with it.
->
-> Without this, if we stop the VM in response to a RESERVATION_CONFLICT,
-> it can happen that the VM cannot be resumed any more because every
-> attempt to resume it immediately runs into the same error and stops the
-> VM again.
->
-> One case that expects RESERVATION_CONFLICT errors to be visible in the
-> guest is running the validation tests in Windows 2019's Failover Cluster
-> Manager, which intentionally tries to execute invalid requests to see if
-> they are properly rejected.
->
-> Buglink: https://issues.redhat.com/browse/RHEL-50000
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> Reference: https://avocado-framework.readthedocs.io/en/103.0/releases/lts/103_0.html
+> Signed-off-by: Cleber Rosa <crosa@redhat.com>
 > ---
->  hw/scsi/scsi-disk.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
->
-> diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-> index 69a195177e..e173b238de 100644
-> --- a/hw/scsi/scsi-disk.c
-> +++ b/hw/scsi/scsi-disk.c
-> @@ -235,11 +235,17 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, in=
-t ret, bool acct_failed)
->      } else {
->          /* A passthrough command has completed with nonzero status.  */
->          status =3D ret;
-> -        if (status =3D=3D CHECK_CONDITION) {
-> +        switch (status) {
-> +        case CHECK_CONDITION:
->              req_has_sense =3D true;
->              error =3D scsi_sense_buf_to_errno(r->req.sense, sizeof(r->re=
-q.sense));
-> -        } else {
-> +            break;
-> +        case RESERVATION_CONFLICT:
-> +            /* Don't apply the error policy, always report to the guest =
-*/
-> +            break;
-> +        default:
->              error =3D EINVAL;
-> +            break;
->          }
->      }
->
-> @@ -249,8 +255,9 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int =
-ret, bool acct_failed)
->       * are usually retried immediately, so do not post them to QMP and
->       * do not account them as failed I/O.
->       */
-> -    if (req_has_sense &&
-> -        scsi_sense_buf_is_guest_recoverable(r->req.sense, sizeof(r->req.=
-sense))) {
-> +    if (!error || (req_has_sense &&
-> +                   scsi_sense_buf_is_guest_recoverable(r->req.sense,
-> +                                                       sizeof(r->req.sen=
-se)))) {
->          action =3D BLOCK_ERROR_ACTION_REPORT;
->          acct_failed =3D false;
->      } else {
-> --
-> 2.45.2
->
+>   pythondeps.toml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/pythondeps.toml b/pythondeps.toml
+> index f6e590fdd8..175cf99241 100644
+> --- a/pythondeps.toml
+> +++ b/pythondeps.toml
+> @@ -30,5 +30,5 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
+>   # Note that qemu.git/python/ is always implicitly installed.
+>   # Prefer an LTS version when updating the accepted versions of
+>   # avocado-framework, for example right now the limit is 92.x.
+> -avocado-framework = { accepted = "(>=88.1, <93.0)", installed = "88.1", canary = "avocado" }
+> +avocado-framework = { accepted = "(>=103.0, <104.0)", installed = "103.0", canary = "avocado" }
+>   pycdlib = { accepted = ">=1.11.0" }
 
 
