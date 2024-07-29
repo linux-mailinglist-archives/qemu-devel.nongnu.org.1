@@ -2,92 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE3B93F882
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FBB93F896
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:47:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYRc9-0004xF-Vz; Mon, 29 Jul 2024 10:44:42 -0400
+	id 1sYRc7-0004kJ-86; Mon, 29 Jul 2024 10:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRc6-0004jX-CP
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:38 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYRc5-0004fQ-EH
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:37 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRbv-0008Rv-SR
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:38 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-58ef19aa69dso4070789a12.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYRbv-0008RO-1x
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:37 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42819654737so12237225e9.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722264266; x=1722869066; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PtcZqFWHrEGoL41FTohMyKEPDwyICpuVF7RbypBJq3A=;
- b=QaqrMGb3A82eoqzpBYuFVqSJk45CFX48XCphzCvrgkunueHPd8enJpsmB7y42XNQlS
- 4vlVI+Jriv+km8WjMnGRe6QplxQi+IXu+xprRyqP306rCAg5f3ETM2NG1aCcD/ZrDSGz
- PbS6cPCiWyDfmksMcGbgBHrWRICKoQIOYw7RadoCx2n7VfjVuQMBkRW9eeULv2/nVq3Z
- ajofHPPRUog/LgeEvlHHj+HjVzgno7S47xVqca7tm5E69tGtYSYLp49KAiKspEUOkb1t
- N+3ePgiyzgUjhjSRx/p7WUfsxryNNl6KxSi1chrV8LH86PKW6Vw16SpZVjd6Cr9PqLur
- +Z1A==
+ d=linaro.org; s=google; t=1722264265; x=1722869065; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fGIvyokF0mBN85ur8KilgrswbirGGzlSdx4nrId/gRY=;
+ b=yj+GEnfB50Xbd/34S5tWeyGbcMNXdyaWNZwceLn1+CpKLrAbBP8BEs5n9NbcgRB/vr
+ epcVLskYRexHrZ2dMOmHbJsOrx0+vU6kU9XjOWF3yj1HXuRx+qqvcqWp6Gla/qebWkat
+ ixjdXVtLli5EqI3VfvCEtwCb7Il2I6kv0+zLOqKUMfggFl8p3bDOyvWhlSIWFk8TcSBw
+ QQ2fNkM/MQv5rKEaOzMAyhuQ3hnsDiEkOMXfTj89MM1FZfFarCbi54EUjkNnHuzeOBSr
+ ZnUcsLPeDSBoT49jokjBxdL7npoZ92tbg/llvPe6u9xJqmEvbu16w3vtRb9lGYIlmFPC
+ Qw4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722264266; x=1722869066;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PtcZqFWHrEGoL41FTohMyKEPDwyICpuVF7RbypBJq3A=;
- b=K28xaAZM7F9yFstPNPBEuFipXKaKXWJ9S6fq2iPZk0gOrO/kJVQN9e107XapkvGfwa
- z95+FzKqWhTTpcxw2gT0AVUtijafFeewPzMqPANmKwToA0bjONIZ6fqjll/2ijsMa7nn
- nulWoiaMaD+tJW9A1Li3Ly0Kodupf3+MLvyQ2Ixx+qPHiQi+bUmWflZxYBKPxRcy3oiA
- mSFMKCMBrEAOH19lsn2F4254HLWUYCFG8+JUrFuh3XMa6fuNGAZjuULm9QLO/gOqtKRq
- +6KWaiKvleV3sWxOicR2Os4lgYTReLZ3/6CxCM3BrljkL8kIzDxu8s5aL123W3eoDvNh
- guGw==
-X-Gm-Message-State: AOJu0YwtMxVzEp74x5wCu47voALFMGCP3J7VVqRwXK7wcOs3yG58lyfB
- rKZXHOKvLEBdhoT76P3eTCFI5O5PogN/kF0on2C9GLS3Pzq483Qhl1bJoGGZHPA=
-X-Google-Smtp-Source: AGHT+IEfRp6u/PEriMXjt4MOemKUcELeyZUUP1+B68QPt6BYX7+H57vsJn7bbn9HRz217tQp4Q2OCA==
-X-Received: by 2002:a05:6402:35d6:b0:5a2:2fa5:f146 with SMTP id
- 4fb4d7f45d1cf-5b021f0dcfbmr5499561a12.28.1722264266053; 
- Mon, 29 Jul 2024 07:44:26 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ac6359392bsm5837519a12.33.2024.07.29.07.44.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 07:44:21 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 740E55FA14;
- Mon, 29 Jul 2024 15:44:16 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-riscv@nongnu.org, Weiwei Li <liwei1518@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-s390x@nongnu.org,
- Cleber Rosa <crosa@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-arm@nongnu.org,
- Alexandre Iooss <erdnaxe@crans.org>, Song Gao <gaosong@loongson.cn>,
- David Hildenbrand <david@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 14/14] plugin/loader: handle basic help query
-Date: Mon, 29 Jul 2024 15:44:14 +0100
-Message-Id: <20240729144414.830369-15-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240729144414.830369-1-alex.bennee@linaro.org>
-References: <20240729144414.830369-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1722264265; x=1722869065;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fGIvyokF0mBN85ur8KilgrswbirGGzlSdx4nrId/gRY=;
+ b=prF6TST5GB/CE+Xp6M2rFKdRmjFIRVbTIJQjCR6cWpMnYrykTNeTW7fIMfNQLjGvta
+ yH/yXlA0eWnyEQx+4oY7qW0A8myg0CU2uIjkK7isVlFfNs5fK2+d5nx8Kn4Se4WQXbUw
+ biXgksn6gyYH34zLE2INBhkn6BC0kc2UQ4Rgbb/S2SvAAcSx9XYWMGkPLVPp4vVYdfji
+ Azcbeqhw5YIWQvR527ICvoOMyQ0ua4GGYcFRxMxb93zhnDtJ0NCToTdiUvGrsRsWb5iz
+ rcf8V8NsaF18E3uPxgOLPF7YZWhB/Jhy0QJt29mpL4GPLV+0uP4TxuR+mCgbWQpQYI8z
+ 3Tlw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0fYRBL3JT/KNcBCBvX/bAkH0RuT6GW8pt6WHheHoQbjGm8hdf/1r1ixjfkQyZHQLiyXXGJC5CJM7DRWyIYBDwoZixR0s=
+X-Gm-Message-State: AOJu0YzBOHl4FsJPtACBOuz9bFifFoN2b2hgz/toYpwsfGccsoG7Htfw
+ 0+FwK3tDKb/rrGOaWpv+N/VALM4fAzHj5AJlthGbe+Iu3WvsmHabNLopkLxHs8E=
+X-Google-Smtp-Source: AGHT+IFYvrJmzJyqBu7FRa69HZWew2YSJNuBn8eF6YmD4wuY1POV9ybKFm5aRpbwWQRCse48EyhyIA==
+X-Received: by 2002:a05:600c:198b:b0:426:627d:5542 with SMTP id
+ 5b1f17b1804b1-42811dcd36cmr48248685e9.28.1722264265352; 
+ Mon, 29 Jul 2024 07:44:25 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.173.10])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42805730bdbsm182021775e9.5.2024.07.29.07.44.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 07:44:24 -0700 (PDT)
+Message-ID: <f65c14f8-bc56-41f4-9fb2-73cdf0339a00@linaro.org>
+Date: Mon, 29 Jul 2024 16:44:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/23] Convert avocado tests to normal Python unittests
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
+References: <20240724175248.1389201-1-thuth@redhat.com>
+ <6d609ff1-c4df-4960-be5f-4b29c5911879@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <6d609ff1-c4df-4960-be5f-4b29c5911879@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,43 +98,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As the list of options isn't fixed we do all the parsing by hand.
-Without any named arguments we automatically fill the "file" option
-with the value give so check if it is requesting help and dump some
-basic usage text.
+On 25/7/24 01:35, Richard Henderson wrote:
+> On 7/25/24 03:52, Thomas Huth wrote:
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- plugins/loader.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> I'll say again that the download *must* be handled separately from the 
+> test with timeout. This is an absolute show-stopper.
 
-diff --git a/plugins/loader.c b/plugins/loader.c
-index 513a429c57..ebc01da9c6 100644
---- a/plugins/loader.c
-+++ b/plugins/loader.c
-@@ -18,6 +18,7 @@
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
- #include "qemu/config-file.h"
-+#include "qemu/help_option.h"
- #include "qapi/error.h"
- #include "qemu/lockable.h"
- #include "qemu/option.h"
-@@ -98,7 +99,12 @@ static int plugin_add(void *opaque, const char *name, const char *value,
-     bool is_on;
-     char *fullarg;
- 
--    if (strcmp(name, "file") == 0) {
-+    if (is_help_option(value)) {
-+        printf("Plugin options\n");
-+        printf("  file=<path/to/plugin.so>\n");
-+        printf("  plugin specific arguments\n");
-+        exit(0);
-+    } else if (strcmp(name, "file") == 0) {
-         if (strcmp(value, "") == 0) {
-             error_setg(errp, "requires a non-empty argument");
-             return 1;
--- 
-2.39.2
-
+Queuing patches not related to assets downloading
+(1-6, 13, 15 and 23).
 
