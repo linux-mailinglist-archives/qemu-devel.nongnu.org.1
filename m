@@ -2,89 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565A693F555
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 14:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADFE93F568
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 14:29:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYPTI-0005vG-0L; Mon, 29 Jul 2024 08:27:24 -0400
+	id 1sYPVX-0006ox-Fg; Mon, 29 Jul 2024 08:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sYPTD-0005hG-Az
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:27:19 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sYPVU-0006i9-Vl
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:29:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sYPTB-0000XE-6k
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:27:18 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sYPVT-0000rH-6D
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:29:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722256036;
+ s=mimecast20190719; t=1722256178;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r405Z4NsKXRYcliLg8shaLqdXo0KrWhdO/lyCwJFe8o=;
- b=Sg2b4NJVs7bLjRscLT3h8OkZNya/JqA0MXLHr0tR/OsARs1SPSXjKKdrFBqBMWP7FxxnjE
- eh6Uq3z2A/xrutflJ4vgfE1/f9zCr9JTjGhVGegkJiC181ds/wDoVfwCX2oXvdGix8LhxT
- PhwtmeGcACJhqUp51avFkLQmoN8+fMM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BSCGIkagRajMJUNnkRhQR1V1o2DHbmlR8SKkQy4X4pM=;
+ b=P/qZhkRT37fp3ftw5j7v7IsAZ7himcUU2NwwE0fAkZR3O2W63Z9S1ta0mSxrVz+fJTtm8i
+ ej1rn+ndJo816wI9S/2O+8JJ5v/xi93GDyLpvPDDiudelucNKb+aOpGLjzyLFZwXOBO9ki
+ J+QWTO2LQ/4hjEZYSsa9zEWEXEjELw0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-496-3CQOwrDQP9KGCgU6lRksrQ-1; Mon, 29 Jul 2024 08:27:11 -0400
-X-MC-Unique: 3CQOwrDQP9KGCgU6lRksrQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42808efc688so17100825e9.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 05:27:11 -0700 (PDT)
+ us-mta-182-OVdntNpxM1ezX2RWmiVqvQ-1; Mon, 29 Jul 2024 08:29:36 -0400
+X-MC-Unique: OVdntNpxM1ezX2RWmiVqvQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3687e6d7a3aso1248430f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 05:29:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722256030; x=1722860830;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=r405Z4NsKXRYcliLg8shaLqdXo0KrWhdO/lyCwJFe8o=;
- b=nRtQjdmE7cxCeJKEd5JdJQEckS3elAwmOPC8AT9+50RnjKIYSQN3X6K9xYFqS1lxoi
- cIneKyVYVMB1fabsV66fiYeTVoPav/qq/V7AlF+9gxVh2IrkY8qtsKaK5SUXek2WZdS8
- A+iShWl/SgwHVgalZCYFQxqNvRNo5ldKM62Qw4WBB+vTVBmKvH25Qa+XwYklhvP3zmad
- YqJ0m67d7/J+aKNkqoSyHSRAAAo/tz7JXHb9Nv9tEF97OYSdJ7+Ps4PwWkYMCLv6Gi0N
- Y1h+/g7u40WPUurMc8s1tOjDnhf5ezLHjF18Y/LmBlRUiCl1/zPeiUfP69TWdh1Ye77A
- 9mIw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW46kqtv2wWUuGDHLCswCJBd+ef1A3VkDcKHy23P+RTKa6IHR6xBN2Rpy4OT1/8D7pG20KPCAfgqcGFdWEFGDxuilCc18M=
-X-Gm-Message-State: AOJu0YyD31FwCq9xePLneW7tv8rR5CnDdS64KUEfLY5T/Tw1LrnimHWG
- 4nusnGVg/HPRkYmM1BPUGw1eZcDZD3nc4GCgaHQpZPzDEWWRo7f3MqkoArbTbCv7W/245/Uztgc
- ha6fEqUwyxdOpKIxkgpAUpVRrQbGqMBr75+m8zsBA3donyLaRoAKLuuBYMsoepZm1XSccbzaA5+
- W3vdQ4k/I/HqXDaBNpzViKwVbN5mc=
-X-Received: by 2002:a05:600c:3b1f:b0:426:61e8:fb3b with SMTP id
- 5b1f17b1804b1-42811dcd275mr54887845e9.27.1722256030515; 
- Mon, 29 Jul 2024 05:27:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8sPSP11yJYI5lpeDiTIVAvXlfd14kPOkkKTG5mSZdtnGBZIo7Z/0q7mPdD8uoJ1EcXNxtekd8hvRz3q8Yoa8=
-X-Received: by 2002:a05:600c:3b1f:b0:426:61e8:fb3b with SMTP id
- 5b1f17b1804b1-42811dcd275mr54887615e9.27.1722256029967; Mon, 29 Jul 2024
- 05:27:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1722256175; x=1722860975;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BSCGIkagRajMJUNnkRhQR1V1o2DHbmlR8SKkQy4X4pM=;
+ b=qKn9bQjvZirsZjAxO6Q1pqJcXGCD/d3tqT84BO1M6vWYiAgPHDiIyGne2hodRx84wx
+ DY+iuiVSJSCchCH+xuJmRWTcXFpfY1vHN2WMmxhuL76uOSt+IBEBPVNzga88y6IA6dHo
+ Ihmu5mpbS66hwCesKdg6dI1YfvWCRMrzs9u2zb8Pdi602jJ3bVNkhviiTCa80imwOc3O
+ SCqqKplGzrXx3vhyoDVUYV74SGxlPS9tykY9uFVfk1vvqapsKOgPv2+LUFCglF+i24i3
+ HcLcC4/EyZN0SduqxedJuThyOxuanOoO+LpBXZbVf7RE59g+mb6QQ3g352f55Za7edYA
+ c1jg==
+X-Gm-Message-State: AOJu0Yy6rrSjeesSzZ29SyMDnpSHWs0GOx9llC/kiHcFE3rJN3tnqMrh
+ MJRhGZijwf2SgelJ6fGBW8WA77fCvx1VxZ1+iCyhV2Fmw+BhcUuswjdZ7IqMQ8sMMbJKCQSWJ3E
+ RlRvv0sStF+sa7OsWvXtdXvrrhxOaJe4+cHwjP/wi6WOcrJRXhFil
+X-Received: by 2002:a5d:698b:0:b0:367:9088:fecd with SMTP id
+ ffacd0b85a97d-36b5cee2e4emr5251006f8f.7.1722256175283; 
+ Mon, 29 Jul 2024 05:29:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEeoXJnACuhaOBERrsZqdRmBWKpabnGs5regVIs3AuxVrMGHjcFAaV/fk5WMdAOvhe8d01GBw==
+X-Received: by 2002:a5d:698b:0:b0:367:9088:fecd with SMTP id
+ ffacd0b85a97d-36b5cee2e4emr5250992f8f.7.1722256174814; 
+ Mon, 29 Jul 2024 05:29:34 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427f93594b6sm220493395e9.5.2024.07.29.05.29.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jul 2024 05:29:34 -0700 (PDT)
+Date: Mon, 29 Jul 2024 14:29:32 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Fabiano Rosas
+ <farosas@suse.de>, David Hildenbrand <david@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Philippe Mathieu-Daude <philmd@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>, Markus
+ Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH V2 01/11] machine: alloc-anon option
+Message-ID: <20240729142932.6667c5b5@imammedo.users.ipa.redhat.com>
+In-Reply-To: <88945053-6918-4096-ac55-0ef4b946b241@oracle.com>
+References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
+ <1719776434-435013-2-git-send-email-steven.sistare@oracle.com>
+ <20240716111955.01d1d2b9@imammedo.users.ipa.redhat.com>
+ <88945053-6918-4096-ac55-0ef4b946b241@oracle.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20240729094702.50282-1-kwolf@redhat.com>
- <20240729094702.50282-5-kwolf@redhat.com>
- <CABgObfYbpZ3JV5i_TKjobd6DrzYiy567YAfQbX+x5X7mj1=GKw@mail.gmail.com>
- <ZqeI8TiHg8caawXr@redhat.com>
-In-Reply-To: <ZqeI8TiHg8caawXr@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 29 Jul 2024 14:26:57 +0200
-Message-ID: <CABgObfbecac_70Pt4DWKPRm96VCOOCjGOCSB3TkkK490FmvPsg@mail.gmail.com>
-Subject: Re: [PATCH 4/4] scsi-disk: Always report RESERVATION_CONFLICT to guest
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: "open list:Block layer core" <qemu-block@nongnu.org>,
- Fam Zheng <fam@euphon.net>, 
- "Hajnoczi, Stefan" <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000e0f61d061e61fa78"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,311 +107,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e0f61d061e61fa78
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Sat, 20 Jul 2024 16:28:25 -0400
+Steven Sistare <steven.sistare@oracle.com> wrote:
 
-Il lun 29 lug 2024, 14:20 Kevin Wolf <kwolf@redhat.com> ha scritto:
+> On 7/16/2024 5:19 AM, Igor Mammedov wrote:
+> > On Sun, 30 Jun 2024 12:40:24 -0700
+> > Steve Sistare <steven.sistare@oracle.com> wrote:
+> >   
+> >> Allocate anonymous memory using mmap MAP_ANON or memfd_create depending
+> >> on the value of the anon-alloc machine property.  This affects
+> >> memory-backend-ram objects, guest RAM created with the global -m option
+> >> but without an associated memory-backend object and without the -mem-path
+> >> option  
+> > nowadays, all machines were converted to use memory backend for VM RAM.
+> > so -m option implicitly creates memory-backend object,
+> > which will be either MEMORY_BACKEND_FILE if -mem-path present
+> > or MEMORY_BACKEND_RAM otherwise.  
+> 
+> Yes.  I dropped an an important adjective, "implicit".
+> 
+>    "guest RAM created with the global -m option but without an explicit associated
+>    memory-backend object and without the -mem-path option"
+> 
+> >> To access the same memory in the old and new QEMU processes, the memory
+> >> must be mapped shared.  Therefore, the implementation always sets  
+> >   
+> >> RAM_SHARED if alloc-anon=memfd, except for memory-backend-ram, where the
+> >> user must explicitly specify the share option.  In lieu of defining a new  
+> > so statement at the top that memory-backend-ram is affected is not
+> > really valid?  
+> 
+> memory-backend-ram is affected by alloc-anon.  But in addition, the user must
+> explicitly add the "share" option.  I don't implicitly set share in this case,
+> because I would be overriding the user's specification of the memory object's property,
+> which would be private if omitted.
 
-> Apparently both oVirt and Kubevirt unconditionally use the stop policy,
-> so I'm afraid in this case we must acknowledge that our expectations
-> don't match reality.
->
+instead of touching implicit RAM (-m), it would be better to error out
+and ask user to provide properly configured memory-backend explicitly.
 
-Yeah, of course.
-
-If I understand correctly, not having a pr-manager could mean that QEMU
-> itself is sufficiently privileged and then the same logic would apply.
->
-> But even if it means that we can't change any persistent reservations
-> from the VM, what use would stopping the VM be? You would run into the
-> exact case I'm describing in the commit message: You try to resume the
-> VM and it immediately stops again because the request still doesn't get
-> through. Or do you expect the host admin to take some manual action
-> then?
->
-
-Yes, if the PR operation is not allowed then the host admin would probably
-get a notification and release the PR (or perhaps shutdown the VM with an
-error) itself.
-
-And what would you do about the Windows cluster validation case that
-> intentionally sends a request which reservations don't and shouldn't
-> allow? There is nothing on the host side to fix there. The guest is only
-> happy when it gets an error back.
->
-
-Yes, in that case (which is the most common one) there is nothing you can
-do, so the patch is a good idea even if the case without a PR manager is a
-bit murky.
-
-Paolo
-
-> > -        if (status =3D=3D CHECK_CONDITION) {
-> > > +        switch (status) {
-> > > +        case CHECK_CONDITION:
-> > >              req_has_sense =3D true;
-> > >              error =3D scsi_sense_buf_to_errno(r->req.sense,
-> sizeof(r->req.sense));
-> > > -        } else {
-> > > +            break;
-> > > +        case RESERVATION_CONFLICT:
-> > > +            /* Don't apply the error policy, always report to the
-> guest */
-> >
-> > This is the only case where you get error =3D=3D 0. Maybe remove it fro=
-m
-> > the initializer, and set it here?
->
-> Not sure why the initialiser was added in the first place, but yes, I
-> can do that.
->
-> Kevin
->
-> > On Mon, Jul 29, 2024 at 11:47=E2=80=AFAM Kevin Wolf <kwolf@redhat.com> =
-wrote:
-> > >
-> > > RESERVATION_CONFLICT is not a backend error, but indicates that the
-> > > guest tried to make a request that it isn't allowed to execute. Pass
-> the
-> > > error to the guest so that it can decide what to do with it.
-> > >
-> > > Without this, if we stop the VM in response to a RESERVATION_CONFLICT=
-,
-> > > it can happen that the VM cannot be resumed any more because every
-> > > attempt to resume it immediately runs into the same error and stops t=
-he
-> > > VM again.
-> > >
-> > > One case that expects RESERVATION_CONFLICT errors to be visible in th=
-e
-> > > guest is running the validation tests in Windows 2019's Failover
-> Cluster
-> > > Manager, which intentionally tries to execute invalid requests to see
-> if
-> > > they are properly rejected.
-> > >
-> > > Buglink: https://issues.redhat.com/browse/RHEL-50000
-> > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > > ---
-> > >  hw/scsi/scsi-disk.c | 15 +++++++++++----
-> > >  1 file changed, 11 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-> > > index 69a195177e..e173b238de 100644
-> > > --- a/hw/scsi/scsi-disk.c
-> > > +++ b/hw/scsi/scsi-disk.c
-> > > @@ -235,11 +235,17 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r=
-,
-> int ret, bool acct_failed)
-> > >      } else {
-> > >          /* A passthrough command has completed with nonzero status.
-> */
-> > >          status =3D ret;
-> > > -        if (status =3D=3D CHECK_CONDITION) {
-> > > +        switch (status) {
-> > > +        case CHECK_CONDITION:
-> > >              req_has_sense =3D true;
-> > >              error =3D scsi_sense_buf_to_errno(r->req.sense,
-> sizeof(r->req.sense));
-> > > -        } else {
-> > > +            break;
-> > > +        case RESERVATION_CONFLICT:
-> > > +            /* Don't apply the error policy, always report to the
-> guest */
-> > > +            break;
-> > > +        default:
-> > >              error =3D EINVAL;
-> > > +            break;
-> > >          }
-> > >      }
-> > >
-> > > @@ -249,8 +255,9 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r,
-> int ret, bool acct_failed)
-> > >       * are usually retried immediately, so do not post them to QMP a=
-nd
-> > >       * do not account them as failed I/O.
-> > >       */
-> > > -    if (req_has_sense &&
-> > > -        scsi_sense_buf_is_guest_recoverable(r->req.sense,
-> sizeof(r->req.sense))) {
-> > > +    if (!error || (req_has_sense &&
-> > > +                   scsi_sense_buf_is_guest_recoverable(r->req.sense,
-> > > +
->  sizeof(r->req.sense)))) {
-> > >          action =3D BLOCK_ERROR_ACTION_REPORT;
-> > >          acct_failed =3D false;
-> > >      } else {
-> > > --
-> > > 2.45.2
-> > >
-> >
->
->
-
---000000000000e0f61d061e61fa78
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il lun 29 lug 2024, 14:20 Kevin Wolf &lt;<a href=3D"ma=
-ilto:kwolf@redhat.com">kwolf@redhat.com</a>&gt; ha scritto:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex">Apparently both oVirt and Kubev=
-irt unconditionally use the stop policy,<br>
-so I&#39;m afraid in this case we must acknowledge that our expectations<br=
->
-don&#39;t match reality.<br></blockquote></div></div><div dir=3D"auto"><br>=
-</div><div dir=3D"auto">Yeah, of course.</div><div dir=3D"auto"><br></div><=
-div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">If I understand correctly, not having a pr-manager could=
- mean that QEMU<br>
-itself is sufficiently privileged and then the same logic would apply.<br>
-<br>
-But even if it means that we can&#39;t change any persistent reservations<b=
-r>
-from the VM, what use would stopping the VM be? You would run into the<br>
-exact case I&#39;m describing in the commit message: You try to resume the<=
-br>
-VM and it immediately stops again because the request still doesn&#39;t get=
-<br>
-through. Or do you expect the host admin to take some manual action<br>
-then?<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"a=
-uto">Yes, if the PR operation is not allowed then the host admin would prob=
-ably get a notification and release the PR (or perhaps shutdown the VM with=
- an error) itself.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div =
-class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px=
- 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-And what would you do about the Windows cluster validation case that<br>
-intentionally sends a request which reservations don&#39;t and shouldn&#39;=
-t<br>
-allow? There is nothing on the host side to fix there. The guest is only<br=
->
-happy when it gets an error back.<br></blockquote></div></div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto">Yes, in that case (which is the most commo=
-n one) there is nothing you can do, so the patch is a good idea even if the=
- case without a PR manager is a bit murky.</div><div dir=3D"auto"><br></div=
-><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
-><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x">&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (status =3D=3D CHECK_CONDITION=
-) {<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 switch (status) {<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case CHECK_CONDITION:<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 req_has_sense =3D=
- true;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D scsi_se=
-nse_buf_to_errno(r-&gt;req.sense, sizeof(r-&gt;req.sense));<br>
-&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case RESERVATION_CONFLICT:<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Don&#39;t apply the=
- error policy, always report to the guest */<br>
-&gt; <br>
-&gt; This is the only case where you get error =3D=3D 0. Maybe remove it fr=
-om<br>
-&gt; the initializer, and set it here?<br>
-<br>
-Not sure why the initialiser was added in the first place, but yes, I<br>
-can do that.<br>
-<br>
-Kevin<br>
-<br>
-&gt; On Mon, Jul 29, 2024 at 11:47=E2=80=AFAM Kevin Wolf &lt;<a href=3D"mai=
-lto:kwolf@redhat.com" target=3D"_blank" rel=3D"noreferrer">kwolf@redhat.com=
-</a>&gt; wrote:<br>
-&gt; &gt;<br>
-&gt; &gt; RESERVATION_CONFLICT is not a backend error, but indicates that t=
-he<br>
-&gt; &gt; guest tried to make a request that it isn&#39;t allowed to execut=
-e. Pass the<br>
-&gt; &gt; error to the guest so that it can decide what to do with it.<br>
-&gt; &gt;<br>
-&gt; &gt; Without this, if we stop the VM in response to a RESERVATION_CONF=
-LICT,<br>
-&gt; &gt; it can happen that the VM cannot be resumed any more because ever=
-y<br>
-&gt; &gt; attempt to resume it immediately runs into the same error and sto=
-ps the<br>
-&gt; &gt; VM again.<br>
-&gt; &gt;<br>
-&gt; &gt; One case that expects RESERVATION_CONFLICT errors to be visible i=
-n the<br>
-&gt; &gt; guest is running the validation tests in Windows 2019&#39;s Failo=
-ver Cluster<br>
-&gt; &gt; Manager, which intentionally tries to execute invalid requests to=
- see if<br>
-&gt; &gt; they are properly rejected.<br>
-&gt; &gt;<br>
-&gt; &gt; Buglink: <a href=3D"https://issues.redhat.com/browse/RHEL-50000" =
-rel=3D"noreferrer noreferrer" target=3D"_blank">https://issues.redhat.com/b=
-rowse/RHEL-50000</a><br>
-&gt; &gt; Signed-off-by: Kevin Wolf &lt;<a href=3D"mailto:kwolf@redhat.com"=
- target=3D"_blank" rel=3D"noreferrer">kwolf@redhat.com</a>&gt;<br>
-&gt; &gt; ---<br>
-&gt; &gt;=C2=A0 hw/scsi/scsi-disk.c | 15 +++++++++++----<br>
-&gt; &gt;=C2=A0 1 file changed, 11 insertions(+), 4 deletions(-)<br>
-&gt; &gt;<br>
-&gt; &gt; diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c<br>
-&gt; &gt; index 69a195177e..e173b238de 100644<br>
-&gt; &gt; --- a/hw/scsi/scsi-disk.c<br>
-&gt; &gt; +++ b/hw/scsi/scsi-disk.c<br>
-&gt; &gt; @@ -235,11 +235,17 @@ static bool scsi_handle_rw_error(SCSIDiskRe=
-q *r, int ret, bool acct_failed)<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 } else {<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* A passthrough command has co=
-mpleted with nonzero status.=C2=A0 */<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 status =3D ret;<br>
-&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (status =3D=3D CHECK_CONDITION) {=
-<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 switch (status) {<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case CHECK_CONDITION:<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 req_has_sense =3D=
- true;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D scsi_se=
-nse_buf_to_errno(r-&gt;req.sense, sizeof(r-&gt;req.sense));<br>
-&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case RESERVATION_CONFLICT:<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Don&#39;t apply the=
- error policy, always report to the guest */<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 default:<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D EINVAL;=
-<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; &gt;<br>
-&gt; &gt; @@ -249,8 +255,9 @@ static bool scsi_handle_rw_error(SCSIDiskReq =
-*r, int ret, bool acct_failed)<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0* are usually retried immediately, so d=
-o not post them to QMP and<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0* do not account them as failed I/O.<br=
->
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
-&gt; &gt; -=C2=A0 =C2=A0 if (req_has_sense &amp;&amp;<br>
-&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 scsi_sense_buf_is_guest_recoverable(=
-r-&gt;req.sense, sizeof(r-&gt;req.sense))) {<br>
-&gt; &gt; +=C2=A0 =C2=A0 if (!error || (req_has_sense &amp;&amp;<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0scsi_sense_buf_is_guest_recoverable(r-&gt;req.sense,<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(r-&gt;req=
-.sense)))) {<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 action =3D BLOCK_ERROR_ACTION_R=
-EPORT;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 acct_failed =3D false;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 } else {<br>
-&gt; &gt; --<br>
-&gt; &gt; 2.45.2<br>
-&gt; &gt;<br>
-&gt; <br>
-<br>
-</blockquote></div></div></div>
-
---000000000000e0f61d061e61fa78--
+> 
+> >> RAM flag, at the lowest level the implementation uses RAM_SHARED with fd=-1
+> >> as the condition for calling memfd_create.  
+> > 
+> > In general I do dislike adding yet another option that will affect
+> > guest RAM allocation (memory-backends  should be sufficient).
+> > 
+> > However I do see that you need memfd for device memory (vram, roms, ...).
+> > Can we just use memfd/shared unconditionally for those and
+> > avoid introducing a new confusing option?  
+> 
+> The Linux kernel has different tunables for backing memfd's with huge pages, so we
+> could hurt performance if we unconditionally change to memfd.  The user should have
+> a choice for any segment that is large enough for huge pages to improve performance,
+> which potentially is any memory-backend-object.  The non memory-backend objects are
+> small, and it would be OK to use memfd unconditionally for them.
+> 
+> - Steve
+> 
 
 
