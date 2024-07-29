@@ -2,86 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FBB93F896
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A8093F8B3
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:50:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYRc7-0004kJ-86; Mon, 29 Jul 2024 10:44:39 -0400
+	id 1sYRhV-0000v2-Mv; Mon, 29 Jul 2024 10:50:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYRc5-0004fQ-EH
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:37 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYRbv-0008RO-1x
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:37 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42819654737so12237225e9.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722264265; x=1722869065; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fGIvyokF0mBN85ur8KilgrswbirGGzlSdx4nrId/gRY=;
- b=yj+GEnfB50Xbd/34S5tWeyGbcMNXdyaWNZwceLn1+CpKLrAbBP8BEs5n9NbcgRB/vr
- epcVLskYRexHrZ2dMOmHbJsOrx0+vU6kU9XjOWF3yj1HXuRx+qqvcqWp6Gla/qebWkat
- ixjdXVtLli5EqI3VfvCEtwCb7Il2I6kv0+zLOqKUMfggFl8p3bDOyvWhlSIWFk8TcSBw
- QQ2fNkM/MQv5rKEaOzMAyhuQ3hnsDiEkOMXfTj89MM1FZfFarCbi54EUjkNnHuzeOBSr
- ZnUcsLPeDSBoT49jokjBxdL7npoZ92tbg/llvPe6u9xJqmEvbu16w3vtRb9lGYIlmFPC
- Qw4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722264265; x=1722869065;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fGIvyokF0mBN85ur8KilgrswbirGGzlSdx4nrId/gRY=;
- b=prF6TST5GB/CE+Xp6M2rFKdRmjFIRVbTIJQjCR6cWpMnYrykTNeTW7fIMfNQLjGvta
- yH/yXlA0eWnyEQx+4oY7qW0A8myg0CU2uIjkK7isVlFfNs5fK2+d5nx8Kn4Se4WQXbUw
- biXgksn6gyYH34zLE2INBhkn6BC0kc2UQ4Rgbb/S2SvAAcSx9XYWMGkPLVPp4vVYdfji
- Azcbeqhw5YIWQvR527ICvoOMyQ0ua4GGYcFRxMxb93zhnDtJ0NCToTdiUvGrsRsWb5iz
- rcf8V8NsaF18E3uPxgOLPF7YZWhB/Jhy0QJt29mpL4GPLV+0uP4TxuR+mCgbWQpQYI8z
- 3Tlw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW0fYRBL3JT/KNcBCBvX/bAkH0RuT6GW8pt6WHheHoQbjGm8hdf/1r1ixjfkQyZHQLiyXXGJC5CJM7DRWyIYBDwoZixR0s=
-X-Gm-Message-State: AOJu0YzBOHl4FsJPtACBOuz9bFifFoN2b2hgz/toYpwsfGccsoG7Htfw
- 0+FwK3tDKb/rrGOaWpv+N/VALM4fAzHj5AJlthGbe+Iu3WvsmHabNLopkLxHs8E=
-X-Google-Smtp-Source: AGHT+IFYvrJmzJyqBu7FRa69HZWew2YSJNuBn8eF6YmD4wuY1POV9ybKFm5aRpbwWQRCse48EyhyIA==
-X-Received: by 2002:a05:600c:198b:b0:426:627d:5542 with SMTP id
- 5b1f17b1804b1-42811dcd36cmr48248685e9.28.1722264265352; 
- Mon, 29 Jul 2024 07:44:25 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.173.10])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42805730bdbsm182021775e9.5.2024.07.29.07.44.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Jul 2024 07:44:24 -0700 (PDT)
-Message-ID: <f65c14f8-bc56-41f4-9fb2-73cdf0339a00@linaro.org>
-Date: Mon, 29 Jul 2024 16:44:22 +0200
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sYRhO-0000fr-Rk; Mon, 29 Jul 2024 10:50:06 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1sYRhL-0000yE-EL; Mon, 29 Jul 2024 10:50:06 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46TDHoQA022870;
+ Mon, 29 Jul 2024 14:49:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=c
+ CuzDWZmHC1uEAWPZnHkf/jF4e1fCd8khXJAk2AXcxg=; b=NmtoQ6x8jlNxl0/TD
+ G++V/kCbAHRmbouT3Wggoc5/nrN4yO6TDBcFxIiphyWQabduQTjIKODNKbHOyDlr
+ 7y94SCaVL+tZPKN3vbohEG16fqysdmiArI5BHUrh2ymwvoG0EjmqULVt0rYHj5jY
+ d5EIaWGpPzf8fCYpecGbEVPCI6RMizThqjK0xqxGO8M6VBzxVz9llIIQt0ptjZRj
+ kOXiDEMQBuldNMjP/zvt5YAJwvUzmz98lsylRF9utJYmJgeiu/nKcZAt7LOKxlmS
+ TcHYXvaslz39gtZGrN7UZCKL9QcQBfY0Hy3896TrZPtj919jtP5TGAFPih4WYw7O
+ Uj64Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40mwdm4r04-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jul 2024 14:49:44 +0000 (GMT)
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46TEninx030123;
+ Mon, 29 Jul 2024 14:49:44 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40mwdm4qyx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jul 2024 14:49:44 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46TE5Vgq018867; Mon, 29 Jul 2024 14:49:43 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40nc7pf8a7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jul 2024 14:49:43 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46TEneVd41288008
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Jul 2024 14:49:42 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B65558061;
+ Mon, 29 Jul 2024 14:49:40 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A81025806E;
+ Mon, 29 Jul 2024 14:49:39 +0000 (GMT)
+Received: from [9.67.22.193] (unknown [9.67.22.193])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 29 Jul 2024 14:49:39 +0000 (GMT)
+Message-ID: <63774cce-d8f6-4cfd-9e0b-0a8244653fab@linux.ibm.com>
+Date: Mon, 29 Jul 2024 10:49:39 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/23] Convert avocado tests to normal Python unittests
-To: Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
-References: <20240724175248.1389201-1-thuth@redhat.com>
- <6d609ff1-c4df-4960-be5f-4b29c5911879@linaro.org>
+Subject: Re: [PATCH v1] target/s390x: move @deprecated-props to
+ CpuModelExpansion Info
+To: Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, thuth@redhat.com,
+ wangyanan55@huawei.com, philmd@linaro.org, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net
+References: <20240726203646.20279-1-walling@linux.ibm.com>
+ <877cd7qsnj.fsf@pond.sub.org>
+ <00bc2317-dbba-43b3-b355-ddce45b5dfc6@redhat.com>
+ <87a5i0cmht.fsf@pond.sub.org>
+ <f42a8801-f49d-48b6-84a4-467c89e78657@redhat.com>
+ <87msm0b6zj.fsf@pond.sub.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <6d609ff1-c4df-4960-be5f-4b29c5911879@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Collin Walling <walling@linux.ibm.com>
+In-Reply-To: <87msm0b6zj.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oLzngipvA6x6YUkL_KPkJxa7OBTTTi-_
+X-Proofpoint-ORIG-GUID: vtwVYZpy-ZyVLFJoY7ccP-W9lWGU8WzK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-29_12,2024-07-26_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 mlxlogscore=825 impostorscore=0 adultscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407290097
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=walling@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,12 +120,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/7/24 01:35, Richard Henderson wrote:
-> On 7/25/24 03:52, Thomas Huth wrote:
+On 7/29/24 10:36 AM, Markus Armbruster wrote:
+> David Hildenbrand <david@redhat.com> writes:
+> 
+>>>>> The simplest way to address 4 is to tack 'if': 'TARGET_S390X' to
+>>>>> @deprecated-props.
+>>>>>
+>>>>
+>>>> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+>>>> index 09dec2b9bb..0be95d559c 100644
+>>>> --- a/qapi/machine-target.json
+>>>> +++ b/qapi/machine-target.json
+>>>> @@ -253,7 +253,7 @@
+>>>>    ##
+>>>>    { 'struct': 'CpuModelExpansionInfo',
+>>>>      'data': { 'model': 'CpuModelInfo',
+>>>> -            '*deprecated-props': ['str'] },
+>>>> +            '*deprecated-props' : { 'type': ['str'], 'if': 'TARGET_S390X' } },
+>>>>      'if': { 'any': [ 'TARGET_S390X',
+>>>>                       'TARGET_I386',
+>>>>                       'TARGET_ARM',
+>>>>
+>>>>
+>>>> Should do the trick, right?
+>>>
+>>> Yes.  Break the line before 'if', please.
+>>
+>> Ack
+>>
+>> [...]
+>>
+>>>
+>>> Questions?
+>>
+>> As clear as it can get, thanks! :)
+>>
+>> That would leave us with:
+> 
+> Looks good to me!
+> 
+> 
 
-> I'll say again that the download *must* be handled separately from the 
-> test with timeout. This is an absolute show-stopper.
+Fine by me as well.  Thanks you both for taking care of this.
 
-Queuing patches not related to assets downloading
-(1-6, 13, 15 and 23).
+-- 
+Regards,
+  Collin
+
 
