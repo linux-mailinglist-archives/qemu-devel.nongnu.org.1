@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6758294054E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 773559404FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:29:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcgp-0006vF-28; Mon, 29 Jul 2024 22:34:15 -0400
+	id 1sYcbP-0008RZ-L2; Mon, 29 Jul 2024 22:28:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcgm-0006lZ-9S
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:34:12 -0400
-Received: from mail-yb1-xb2f.google.com ([2607:f8b0:4864:20::b2f])
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1sYcbO-0008R5-BH
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:28:38 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcgk-0000bl-J8
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:34:12 -0400
-Received: by mail-yb1-xb2f.google.com with SMTP id
- 3f1490d57ef6-e05ef3aefcfso2737150276.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:34:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1sYcbM-0007vg-9Z
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:28:38 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-70ea2f25bfaso2653885b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722306846; x=1722911646; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=jVzlYxv6LNLOd2oE/sywmWSa7LfLB6Y6611FxPpDnIs=;
- b=h02XKeCGlWojK0gGFK6dAJ0x3Remz5F8Cy3B7JwOgbuNPpPIigLlxqBTjqAUoOwB5c
- +pc4O7AWkpzORFebBlPiUSJMQyvc6UEBKgYYuVwcQBNGVJTsT9zq1l2hRjLb+aY7C2A7
- ptYDa8UKP9DVkP3QMyLONZArIzlPMLGMdxOBotAKbM7RBolRO7zrpCsN1+Fmv7bpL76F
- UwSW044qoJqYT7O8xtptZD2BPv4oW1uIYCV/13lV6t1Qk7b/kfLCCZzLF7q+S+ToTNQv
- XnLvHF8KNplBdluZzfGtecyuMlfCjBZQHqEsWRRW1zvQHqwKUeReA5FwOirzaw8K+jgM
- pMxQ==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722306515; x=1722911315;
+ darn=nongnu.org; 
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=2EaZ+aIL+lwXwXvSIgd+06Yoo8LOG1/628P6VRlgoTI=;
+ b=j0t0x0Q3SHnGXTFG382S3Xy8RtNVf63IYPaH+Mb6inNL6ObX+Hw/8zUNrY6VRG04UM
+ 2o7fVl8ASr61U+KrIwiwuEXv6VuyWupJp6rfMAqkxWriZ7OLeEG+7MWmpVS7qyY71rHJ
+ qdpG54QeaTBRnzTMxMlFjXPw3dgo10yVqcubRmoGvczclmUifTwl51RCWBtsJm+KOnUZ
+ 1zycpksyaGtPEvjjahe9GpncMoc2IBJqOxGoZuJYTfn18e8TKuvDEkHlZePd2yL0+NUz
+ sJS0o0DG7oIibiUHiyMhLo11LqSW5goyoJ191/AugT7RryvginPxr5br8iYiSPpDXb3O
+ eTSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722306846; x=1722911646;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jVzlYxv6LNLOd2oE/sywmWSa7LfLB6Y6611FxPpDnIs=;
- b=WuBFNoCJ8aiGN+RTeFgkkZVfL+DCU9QHIor2tkaA70PEGztb7aw+wh2+fEkPrPP/pc
- LAmP6hxj2YXg/l7n92EMgv7e1wTGslz9zSOPgc4VsDEdJTuYkwkfAN9TsYDm30eZK89u
- kU1j4wDUCMkZKXmont2bJPrfjJIdjVode9T54GH6ZXHzLL7I43rqVAqUtOz0DxH4zha4
- /P9kM9AMxnZYkllYKhNNR98ts5ukY7onh1NR9n+R853suYTSpGPgd5MZc7xY6hh3l1j4
- n0vOCPLSKidwPCwhShEZQ5Y7QodNsglMzOtXFdRLl1VFQQpFrBt6WpiJS3fzAaMxPkCd
- 17bA==
-X-Gm-Message-State: AOJu0YxC6RYP044uCJ9PEhpVtZBX0as728ILi8WqPoxXo5tdnR46/wLk
- kqRblr+n763kYFH8fkO5uh9+p6+356TYDl4UHrtbG6wisFGDvJCgObjxAjKbCa+TlwY7pTstHFk
- J8g4=
-X-Google-Smtp-Source: AGHT+IGCc/vRFKlFHwPhsN0IidspOybaCNA8ykIHQpfo/V81UtxpEYEetQ4sIPrNjpw3BAuv3QPz4g==
-X-Received: by 2002:a17:90a:750:b0:2c9:64fb:1c7e with SMTP id
- 98e67ed59e1d1-2cf7e1c0e3emr7708086a91.14.1722294921883; 
- Mon, 29 Jul 2024 16:15:21 -0700 (PDT)
-Received: from [192.168.1.113] ([203.56.128.103])
+ d=1e100.net; s=20230601; t=1722306515; x=1722911315;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2EaZ+aIL+lwXwXvSIgd+06Yoo8LOG1/628P6VRlgoTI=;
+ b=hTDXIsARapJ6JNaRsaJ/4+ZeKZZ/Y7yeJThGgFpJ36sKfcdsP7i7nQ16X0tfMCIAGT
+ cJrWmZtnu4FPlUyKPC3XoTuNPrbqpnepaV2zJXp5sR+Xr74KcmOCV1u0/3YZg3v+IF5C
+ yy09Yi7QD6yXjLktetjdj5hcgX8MGGRUnGTSVMXrb2U+MU6pqzWSsHe776/4yzhutAQA
+ IulFj96jCYu5uUeWIBZd12hEQq64ZtDGdvXHlgXCGf4BSjdGoodewk/LocDF+GWl4ANx
+ hu/BTeofd9yF4KZcaXOsfJ1KC97QVKRDgoDzjuBIB2CRHGPO/q++z4/DgRoch/l8IHYO
+ 5P1w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUDDOEwUgbCS92/tUJQ017jQfT9RgUCUON+yYRCx/ai3+yW/RQ3NDf4zCgmgj38nOOYppMlfX7sqbgoD2j/PS2GRwwUkmc=
+X-Gm-Message-State: AOJu0YxDFP3yO2H1PQWBYYhioLt2VbQ5pqKsTp2U3RKJ+WF/eGsJF5Cy
+ GlkKJf+nPttJEVIPtdSrus8TLF4HtqJBeTq8olAVfkImtUF1VmkXuzNbNkfFo2II5202jPlgF6H
+ S
+X-Google-Smtp-Source: AGHT+IGK4kDYOnzQ1LHP7gsh9qlHSbfFXnTFYONcHGHNRhTT3FI0voLN26sc4ZaMGv+blt8kta9mnA==
+X-Received: by 2002:a05:6871:4006:b0:261:2c4:f7a0 with SMTP id
+ 586e51a60fabf-267d4f80cf9mr9752173fac.51.1722296021991; 
+ Mon, 29 Jul 2024 16:33:41 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cf28c5635esm9191168a91.4.2024.07.29.16.15.20
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Jul 2024 16:15:21 -0700 (PDT)
-Message-ID: <ed23bcbc-fdc4-4492-803c-daa95880375a@linaro.org>
-Date: Tue, 30 Jul 2024 09:15:16 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/24] target/riscv: tracking indirect branches (fcfi)
- for zicfilp
-To: qemu-devel@nongnu.org
+ d2e1a72fcca58-70ead8a35d2sm7364223b3a.199.2024.07.29.16.33.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jul 2024 16:33:41 -0700 (PDT)
+Date: Mon, 29 Jul 2024 16:33:39 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, jim.shu@sifive.com,
+ andy.chiu@sifive.com, jesse.huang@sifive.com, kito.cheng@sifive.com,
+ palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
+ bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com
+Subject: Re: [PATCH v2 03/24] target/riscv: save and restore elp state on
+ priv transitions
+Message-ID: <Zqgm0+qXaDmmsaKE@debug.ba.rivosinc.com>
 References: <20240729175327.73705-1-debug@rivosinc.com>
- <20240729175327.73705-6-debug@rivosinc.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240729175327.73705-6-debug@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-yb1-xb2f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ <20240729175327.73705-4-debug@rivosinc.com>
+ <2fea7463-89e9-4fc4-9926-dba304838aab@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2fea7463-89e9-4fc4-9926-dba304838aab@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=debug@rivosinc.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,94 +100,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/30/24 03:53, Deepak Gupta wrote:
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index acba90f170..c746d7df08 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -20,6 +20,7 @@
->   #include "qemu/log.h"
->   #include "cpu.h"
->   #include "tcg/tcg-op.h"
-> +#include "tcg/tcg-temp-internal.h"
+Thanks Richard.
 
-No, this is internal to tcg, as the filename says.
-
-
->   #include "exec/exec-all.h"
->   #include "exec/helper-proto.h"
->   #include "exec/helper-gen.h"
-> @@ -44,6 +45,7 @@ static TCGv load_val;
->   /* globals for PM CSRs */
->   static TCGv pm_mask;
->   static TCGv pm_base;
-> +static TCGOp *cfi_lp_check;
->   
->   /*
->    * If an operation is being performed on less than TARGET_LONG_BITS,
-> @@ -116,6 +118,9 @@ typedef struct DisasContext {
->       bool frm_valid;
->       bool insn_start_updated;
->       const GPtrArray *decoders;
-> +    /* zicfilp extension. cfi enabled or not. lp expected or not */
-> +    bool fcfi_enabled;
-> +    bool fcfi_lp_expected;
->   } DisasContext;
->   
->   static inline bool has_ext(DisasContext *ctx, uint32_t ext)
-> @@ -1238,6 +1243,8 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
->       ctx->pm_base_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_BASE_ENABLED);
->       ctx->ztso = cpu->cfg.ext_ztso;
->       ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
-> +    ctx->fcfi_lp_expected = FIELD_EX32(tb_flags, TB_FLAGS, FCFI_LP_EXPECTED);
-> +    ctx->fcfi_enabled = cpu_get_fcfien(env) && ctx->fcfi_lp_expected;
-
-This is incorrect.  You cannot check fcfien like this here; you must place it in a tb flag 
-like "lp_expected".
+On Tue, Jul 30, 2024 at 09:04:29AM +1000, Richard Henderson wrote:
+>On 7/30/24 03:53, Deepak Gupta wrote:
+>>elp state is recorded in *status on trap entry (less privilege to higher
+>>privilege) and restored in elp from *status on trap exit (higher to less
+>>privilege).
+>>
+>>Additionally this patch introduces a forward cfi helper function to
+>>determine if current privilege has forward cfi is enabled or not based on
+>>*envcfg (for U, VU, S, VU, HS) or mseccfg csr (for M). For qemu-user, a
+>>new field `ufcfien` is introduced which is by default set to false and
+>>helper function returns value deposited in `ufcfien` for qemu-user.
+>
+>Why are you using a different field for qemu-user?
+>Much better to simply configure menvcfg the same as for system mode.
 
 
-> @@ -1245,6 +1252,39 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
->   
->   static void riscv_tr_tb_start(DisasContextBase *db, CPUState *cpu)
->   {
-> +    DisasContext *ctx = container_of(db, DisasContext, base);
-> +
-> +    if (ctx->fcfi_lp_expected) {
-> +        /*
-> +         * Since we can't look ahead to confirm that the first
-> +         * instruction is a legal landing pad instruction, emit
-> +         * compare-and-branch sequence that will be fixed-up in
-> +         * riscv_tr_tb_stop() to either statically hit or skip an
-> +         * illegal instruction exception depending on whether the
-> +         * flag was lowered by translation of a CJLP or JLP as
-> +         * the first instruction in the block.
-> +         */
-> +        TCGv_i32 immediate;
-> +        TCGLabel *l;
-> +        l = gen_new_label();
-> +        immediate = tcg_temp_new_i32();
-> +        tcg_gen_movi_i32(immediate, 0);
-> +        cfi_lp_check = tcg_last_op();
-> +        tcg_gen_brcondi_i32(TCG_COND_EQ, immediate, 0, l);
-> +        tcg_temp_free_i32(immediate);
-> +        tcg_gen_st_tl(
-> +            tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
-> +            tcg_env, offsetof(CPURISCVState, sw_check_code));
-> +        generate_exception(ctx, RISCV_EXCP_SW_CHECK);
-> +        gen_set_label(l);
-> +        /*
-> +         * Despite the use of gen_exception_illegal(), the rest of
-> +         * the TB needs to be generated. The TCG optimizer will
-> +         * clean things up depending on which path ends up being
-> +         * active.
-> +         */
-> +        ctx->base.is_jmp = DISAS_NEXT;
-> +    }
->   }
+I am assuming `CONFIG_USER_ONLY` is set for qemu-user builds and unset
+for `not qemu-user` builds. Let me know if I got that right?
 
-Better to simply delay the check to the first insn load.
-See aarch64_tr_translate_insn, dc_isar_feature(aa64_bti, s).
+`menvcfg` (and a lot of other system related fields CPUArchstate for riscv)
+are wrapped under `#ifndef CONFIG_USER_ONLY`. So `menvcfg` field is not
+available for qemu-user compile.
 
 
-r~
+>
+>
+>>+        return (env->menvcfg & MENVCFG_LPE) ? true : false;
+>
+>Never use ?: with true/false.  Use the correct boolean expression in 
+>the first place, which in this case is just the & expression.
+
+Noted.
+Will fix this and other instances in patch series.
+
+>
+>
+>r~
 
