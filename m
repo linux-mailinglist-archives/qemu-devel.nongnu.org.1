@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AFF93F88F
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 982C293F88A
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:45:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYRc2-0004Qs-SD; Mon, 29 Jul 2024 10:44:34 -0400
+	id 1sYRc2-0004Qg-P1; Mon, 29 Jul 2024 10:44:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRc1-0004Lh-4I
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:33 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1sYRby-0004B8-Sg
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:30 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRbs-0008Pk-BZ
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:32 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-58f9874aeb4so4785709a12.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:23 -0700 (PDT)
+ id 1sYRbq-0008Od-Dd
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:30 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a7aac70e30dso459416366b.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722264263; x=1722869063; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722264261; x=1722869061; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k68dUaa5yNSOgGnmccLcS4zpOsOezQjGJywa7D7FDBg=;
- b=BoV095cys7xqWDm8wqPwaBpdfNGen9D8k02VQOZjkxN/vb2dSOODpfQFF72ROMHJQL
- 1KO0wZtX/DPNqXsaWigkSjzZm3F+T0m5RQ/UDJspmHZEctQLDynD6D0hLHXF3P9N+Zxz
- 0Z4aaY2XHfG2oizP/NxMaEvw6xEB61cqlJaPGjgTDCAF1mBC3vCxtrPbFFP8yrhp7AUN
- MZ0/dLaAIe5Cr/qi8xG6DNjK1ItgMLrxFSiFJWsP288srNXo+zhOrGVo33ihnCj39qK/
- zl+sqFM/mY6aiO9G6/9OK8Aqy5NCtfjkmNZmZyBpIUxO5RJhY1oOmcZ/QSiJkm4LHONF
- wdjw==
+ bh=g5nNh5K9JK+/T3reUDrggUkqIh+tpzSlqYJ3Fy2gqeo=;
+ b=rmyPFoaYhDPr0aTXUcIqtaUD0GKlNs5ZMWU9QgaayAnuuP2i6Tj9JYKYgHFjN7EwbX
+ eCKGgzqAIRCLn1sxdT28ryljaBkjnCzmiWMOdYfRLsKc3CMJYLDQWGJrPzkBa2CmUe3U
+ 4TinW/dCgPLhCeyjj1QxtQBc97foWahkhZTceXPHqpsO+jBN5ULq8V9iADDQ4y3KEv2H
+ GktuOSCfHHsWuZZ6xY7sza21cXUwn5olXErdbxVkUD3Fp+Rp4RAaTX8dAquz0uVUTJAI
+ 34yKBlo4y2vMGKzffGqGyurz6aQvOGCjcL1FMRbGjdGW9C+vnuXudfxQAEU+xdletoHN
+ 0mcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722264263; x=1722869063;
+ d=1e100.net; s=20230601; t=1722264261; x=1722869061;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k68dUaa5yNSOgGnmccLcS4zpOsOezQjGJywa7D7FDBg=;
- b=eUR9OYgr2p2mkyV50jDT1h6HVCDOfE9A4c1gU0ddhji1G2rZie3p23OTwClJP6AxBt
- gsrI+owR98tiVbzKFRS7psaKPzARkwrbSSgPue8+pddgUgfgyMQZrwqeP0SfYgsEKxio
- KX5WP9W1iJcvF05r/Eh/D0J4/mlkIEgCGk18GJ0xP5ufFaDgmPdS9iZfJb41Z+xgKEIu
- 6ChlQa/hhhPzSeEIDlAhKyY3NHB7ncYNCLAyCkjyo7+m4t/gFAV3qSOt7aK7P7YCyp/z
- YfWVZ1p0Egf6fFONfoelu4rvSlJsNfE2uKj3bXAO866fTk/WCuvPXUiMyRu5QKbydjiT
- PVlA==
-X-Gm-Message-State: AOJu0YwZRonmam1oYeAjTHNF5e9UWcYakZuty9vDRdiQy9MPKd+FdNTc
- wuW6nv3/PhE41KWaiRZ/F5aZkIIsEUgd4S9T+C3vjG8R22UWuf+GAjzDydNVT68=
-X-Google-Smtp-Source: AGHT+IHisnIBoJDnsJGlOaz1G2ZgOZJJy3ylebaI2AyDcFA0RiUAwTnoNA5VQHG6BKW8J01ncI8GJw==
-X-Received: by 2002:a17:907:944b:b0:a7a:bae8:f29e with SMTP id
- a640c23a62f3a-a7d400a0385mr487093366b.29.1722264262589; 
- Mon, 29 Jul 2024 07:44:22 -0700 (PDT)
+ bh=g5nNh5K9JK+/T3reUDrggUkqIh+tpzSlqYJ3Fy2gqeo=;
+ b=lLQOgYWY39R+RSzzaXBLBupOMYDJjFdSDiHj5P8g7LyqYuvCRN/IGYm+6Vz1gCH6XJ
+ Gu+u7JZc/vFGVSckF4yzzcOYMtfkK1ctXzXP57zgBMleGkYlC+NUXI7/wU+Vk5K4Uscn
+ WVPxBHtnpF77+kzrUNmxd5JHv+G3P8fNGfcBZZQ1jzqCK91myXJUqSqs4Yui5HfoB+mm
+ oT7AdUxKE+BkCdT9g3iEjOkkcs8Z83zfxjzmc8HJfazrRdF423DTDYYhG/iU4U3I+qmF
+ 6hyxjQtR3K7vjb40xTQZmaTmrkyvyImvCg/LU2p/uGQH9TbfVogK8SDky+tB7d5f5fPp
+ sZUA==
+X-Gm-Message-State: AOJu0YwPXWBoq/ohlD0HQNSCKcYLjxUIAB62zni9SRuycRDjaV4VJL8J
+ TvNYmY21ONPnwU0e0OqY/EcAATwuPXAKgdYRVKyL7lqd7f5C/qsIWxr6DoS1u+M=
+X-Google-Smtp-Source: AGHT+IF9IdjkQYGmEiFx1If2oalFfkPo8nhunRaTr/FU0hYbqn+5gt/XC/cjA2mLIrDjBjI1TMcoOg==
+X-Received: by 2002:a17:907:97c4:b0:a7a:bd5a:1eb3 with SMTP id
+ a640c23a62f3a-a7d3fdb7aa1mr669122166b.8.1722264260641; 
+ Mon, 29 Jul 2024 07:44:20 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad902e2sm520163766b.146.2024.07.29.07.44.17
+ a640c23a62f3a-a7acab4de06sm514722166b.71.2024.07.29.07.44.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 29 Jul 2024 07:44:19 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CC9615FA08;
+ by draig.lan (Postfix) with ESMTP id E88105FA0C;
  Mon, 29 Jul 2024 15:44:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 08/14] tests/avocado: remove tcg_plugins virt_mem_icount test
-Date: Mon, 29 Jul 2024 15:44:08 +0100
-Message-Id: <20240729144414.830369-9-alex.bennee@linaro.org>
+Subject: [PATCH 09/14] tests/tcg: move test plugins into tcg subdir
+Date: Mon, 29 Jul 2024 15:44:09 +0100
+Message-Id: <20240729144414.830369-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240729144414.830369-1-alex.bennee@linaro.org>
 References: <20240729144414.830369-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,63 +110,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 4f8d886085 (tests/plugin/mem: migrate to new per_vcpu API) this
-test was skipping due to not being able to run callback and inline
-memory instrumentation at the same time.
-
-However b480f7a621 (tests/plugin: add test plugin for inline
-operations) tests for all this matching up so we don't need the
-additional complexity in avocado.
-
-Remove the test.
+You cannot use plugins without TCG enabled so it doesn't make sense to
+have them separated off in the test directory structure. While we are
+at it rename the directory to plugins to reflect the plural nature of
+the directory and match up with contrib/plugins.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Fixes: 4f8d886085
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/avocado/tcg_plugins.py | 33 ---------------------------------
- 1 file changed, 33 deletions(-)
+ MAINTAINERS                               | 2 +-
+ tests/{plugin => tcg/plugins}/bb.c        | 0
+ tests/{plugin => tcg/plugins}/empty.c     | 0
+ tests/{plugin => tcg/plugins}/inline.c    | 0
+ tests/{plugin => tcg/plugins}/insn.c      | 0
+ tests/{plugin => tcg/plugins}/mem.c       | 0
+ tests/{plugin => tcg/plugins}/syscall.c   | 0
+ tests/avocado/tcg_plugins.py              | 4 ++--
+ tests/meson.build                         | 2 +-
+ tests/tcg/Makefile.target                 | 4 ++--
+ tests/{plugin => tcg/plugins}/meson.build | 6 +++---
+ 11 files changed, 9 insertions(+), 9 deletions(-)
+ rename tests/{plugin => tcg/plugins}/bb.c (100%)
+ rename tests/{plugin => tcg/plugins}/empty.c (100%)
+ rename tests/{plugin => tcg/plugins}/inline.c (100%)
+ rename tests/{plugin => tcg/plugins}/insn.c (100%)
+ rename tests/{plugin => tcg/plugins}/mem.c (100%)
+ rename tests/{plugin => tcg/plugins}/syscall.c (100%)
+ rename tests/{plugin => tcg/plugins}/meson.build (70%)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 98eddf7ae1..72b3c67360 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3751,7 +3751,7 @@ R: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ S: Maintained
+ F: docs/devel/tcg-plugins.rst
+ F: plugins/
+-F: tests/plugin/
++F: tests/tcg/plugins/
+ F: tests/avocado/tcg_plugins.py
+ F: contrib/plugins/
+ 
+diff --git a/tests/plugin/bb.c b/tests/tcg/plugins/bb.c
+similarity index 100%
+rename from tests/plugin/bb.c
+rename to tests/tcg/plugins/bb.c
+diff --git a/tests/plugin/empty.c b/tests/tcg/plugins/empty.c
+similarity index 100%
+rename from tests/plugin/empty.c
+rename to tests/tcg/plugins/empty.c
+diff --git a/tests/plugin/inline.c b/tests/tcg/plugins/inline.c
+similarity index 100%
+rename from tests/plugin/inline.c
+rename to tests/tcg/plugins/inline.c
+diff --git a/tests/plugin/insn.c b/tests/tcg/plugins/insn.c
+similarity index 100%
+rename from tests/plugin/insn.c
+rename to tests/tcg/plugins/insn.c
+diff --git a/tests/plugin/mem.c b/tests/tcg/plugins/mem.c
+similarity index 100%
+rename from tests/plugin/mem.c
+rename to tests/tcg/plugins/mem.c
+diff --git a/tests/plugin/syscall.c b/tests/tcg/plugins/syscall.c
+similarity index 100%
+rename from tests/plugin/syscall.c
+rename to tests/tcg/plugins/syscall.c
 diff --git a/tests/avocado/tcg_plugins.py b/tests/avocado/tcg_plugins.py
-index 15fd87b2c1..a930fca2c0 100644
+index a930fca2c0..a6ff457e27 100644
 --- a/tests/avocado/tcg_plugins.py
 +++ b/tests/avocado/tcg_plugins.py
-@@ -120,36 +120,3 @@ def test_aarch64_virt_insn_icount(self):
-             else:
-                 count = int(m.group("count"))
-                 self.log.info(f"Counted: {count} instructions")
--
--    def test_aarch64_virt_mem_icount(self):
--        """
--        :avocado: tags=accel:tcg
--        :avocado: tags=arch:aarch64
--        :avocado: tags=machine:virt
--        :avocado: tags=cpu:cortex-a53
--        """
--        kernel_path = self._grab_aarch64_kernel()
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'console=ttyAMA0')
--        console_pattern = 'Kernel panic - not syncing: VFS:'
--
--        plugin_log = tempfile.NamedTemporaryFile(mode="r+t", prefix="plugin",
--                                                 suffix=".log")
--
--        self.run_vm(kernel_path, kernel_command_line,
--                    "tests/plugin/libmem.so,inline=true,callback=true", plugin_log.name,
--                    console_pattern,
--                    args=('-icount', 'shift=1'))
--
--        with plugin_log as lf, \
--             mmap.mmap(lf.fileno(), 0, access=mmap.ACCESS_READ) as s:
--            m = re.findall(br"mem accesses: (?P<count>\d+)", s)
--            if m is None or len(m) != 2:
--                self.fail("no memory access counts found")
--            else:
--                inline = int(m[0])
--                callback = int(m[1])
--                if inline != callback:
--                    self.fail("mismatched access counts")
--                else:
--                    self.log.info(f"Counted {inline} memory accesses")
+@@ -77,7 +77,7 @@ def test_aarch64_virt_insn(self):
+                                                  suffix=".log")
+ 
+         self.run_vm(kernel_path, kernel_command_line,
+-                    "tests/plugin/libinsn.so", plugin_log.name,
++                    "tests/tcg/plugins/libinsn.so", plugin_log.name,
+                     console_pattern)
+ 
+         with plugin_log as lf, \
+@@ -107,7 +107,7 @@ def test_aarch64_virt_insn_icount(self):
+                                                  suffix=".log")
+ 
+         self.run_vm(kernel_path, kernel_command_line,
+-                    "tests/plugin/libinsn.so", plugin_log.name,
++                    "tests/tcg/plugins/libinsn.so", plugin_log.name,
+                     console_pattern,
+                     args=('-icount', 'shift=1'))
+ 
+diff --git a/tests/meson.build b/tests/meson.build
+index acb6807094..80dd3029cf 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -78,7 +78,7 @@ subdir('decode')
+ 
+ if 'CONFIG_TCG' in config_all_accel
+   subdir('fp')
+-  subdir('plugin')
++  subdir('tcg/plugins')
+ endif
+ 
+ subdir('unit')
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 1f8e5b3d30..452a2cde65 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -142,8 +142,8 @@ RUN_TESTS=$(patsubst %,run-%, $(TESTS))
+ 
+ # If plugins exist also include those in the tests
+ ifeq ($(CONFIG_PLUGIN),y)
+-PLUGIN_SRC=$(SRC_PATH)/tests/plugin
+-PLUGIN_LIB=../../plugin
++PLUGIN_SRC=$(SRC_PATH)/tests/tcg/plugins
++PLUGIN_LIB=../plugins
+ VPATH+=$(PLUGIN_LIB)
+ PLUGINS=$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
+ 
+diff --git a/tests/plugin/meson.build b/tests/tcg/plugins/meson.build
+similarity index 70%
+rename from tests/plugin/meson.build
+rename to tests/tcg/plugins/meson.build
+index 9eece5bab5..f847849b1b 100644
+--- a/tests/plugin/meson.build
++++ b/tests/tcg/plugins/meson.build
+@@ -2,15 +2,15 @@ t = []
+ if get_option('plugins')
+   foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'syscall']
+     if host_os == 'windows'
+-      t += shared_module(i, files(i + '.c') + '../../contrib/plugins/win32_linker.c',
+-                        include_directories: '../../include/qemu',
++      t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
++                        include_directories: '../../../include/qemu',
+                         link_depends: [win32_qemu_plugin_api_lib],
+                         link_args: ['-Lplugins', '-lqemu_plugin_api'],
+                         dependencies: glib)
+ 
+     else
+       t += shared_module(i, files(i + '.c'),
+-                        include_directories: '../../include/qemu',
++                        include_directories: '../../../include/qemu',
+                         dependencies: glib)
+     endif
+   endforeach
 -- 
 2.39.2
 
