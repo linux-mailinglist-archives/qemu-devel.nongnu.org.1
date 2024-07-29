@@ -2,64 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B94893F5DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 14:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1712E93F621
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 15:05:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYPoQ-0001GK-Bz; Mon, 29 Jul 2024 08:49:14 -0400
+	id 1sYQ37-0001L9-Ra; Mon, 29 Jul 2024 09:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sYPoN-0001A6-OV; Mon, 29 Jul 2024 08:49:11 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sYPoL-0004mN-SS; Mon, 29 Jul 2024 08:49:11 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 04331614E2;
- Mon, 29 Jul 2024 12:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3784C32786;
- Mon, 29 Jul 2024 12:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1722257346;
- bh=qiXNpi1eTOPDfP97kK82wC1o8JCtBMWHZhQTd5JEvm0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=sHDtvnXkt1avsRE4G2VxEXzbJzZO19bsvalHW82b3sv59QjOGjFxGMlHWv1/kFQCV
- t/Gp8RZ+3WO/lHeLQUowJJz0cj/XpMHuc1mSkINsMCCpYXvC6ZeO9hPkKZoelYMcCU
- vKzlP2YCJmphZTwvUaGcXHxSvGXG+CE7ei9mMB4y/2+Q3avUvpLnzAXL7zPFQ45sTP
- 3ZROSt5H8tJuVfMjEYerxXQ5rFe7uHJPA5yBBeLZNXIBL+PhhwTYaPS2peN0UoyP3D
- sW4iqf04vpb73PXpxsULOTzazuippCR+KZEJnrJv3QyPt1SuNIZ9XMpXwMShPakRn7
- 2XfMlKYJz/Iyg==
-Date: Mon, 29 Jul 2024 14:49:00 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Shiju Jose
- <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
- <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>, Eric Blake
- <eblake@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Michael Roth
- <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, <linux-kernel@vger.kernel.org>,
- <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v3 4/7] acpi/ghes: Add a logic to handle block addresses
- and FW first ARM processor error injection
-Message-ID: <20240729144900.459c0a42@foz.lan>
-In-Reply-To: <20240726134646.000046e3@Huawei.com>
-References: <cover.1721630625.git.mchehab+huawei@kernel.org>
- <6a3542a7d8acfbf88c906ec6f6dc5a697257b461.1721630625.git.mchehab+huawei@kernel.org>
- <87bk2lreeb.fsf@pond.sub.org> <20240726134646.000046e3@Huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYQ35-0001Iu-AQ
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 09:04:23 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYQ33-0007KI-Dg
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 09:04:23 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a7a9e25008aso442580666b.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 06:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722258259; x=1722863059; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VWQ4yhCslGD1M636d0irGcgNZDtB9G7Qz/FcrqfY5Mk=;
+ b=Uxeq0nf7PYpH3kFhaeu1LwSQWu2TrUbTIjKO0ydH2fEM3fkXybFDKYOoHwvsstQdjR
+ paPkPEiuAhyrLyTK874G04x0bMGExnYn09NfRxDcH79eYS+DykNa1tKtJbiKakd/Qn5P
+ wNBMnBVKzioN/ORPbna9qFmRnipLSHIKO1cyRpLV37RTQpeZ+rfVLl4K+VjJ7k0lH+Oh
+ t44APorTb6mGpZAMDyxTkwA37BItn97ABpiImGZ9SUX2K83G/DYMq/jipua7NgCHgz1W
+ vvKSY0/HhtbWpb9T2qh6DrtsCiI6w+FEGTMR2MKxH5ktvbS1FiO0zcxHfonaAtaxRGQx
+ lP7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722258259; x=1722863059;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VWQ4yhCslGD1M636d0irGcgNZDtB9G7Qz/FcrqfY5Mk=;
+ b=vk4Z7saHQl1okauElSU2NKNB+d1uNaGfaesyHUK2wDaUmS2OxEhbw2iVBu1+7Qxjhc
+ wfJoa9fcCgkgjX2Y6y1oSnGQvPSmjyHXarhpHyqUeZkAxVe0WqyM+bfFp93OIPnwwBTu
+ df8OCf1VOgAdITkDokTkSvr+5+QdWx7hKuefePT10jpMWxMoURoA8YA3aSNbp4hvHO6P
+ K0SKVIMo3nEt0aiX/eh+1XKehUN9mRVAk9GRGnZ481YXp40k/gVzlZAjRWtWh2itnDJn
+ Bj/1nBncdgmyGSInqKMtMsaXtVjk7z5MZY8/ipkJxq2QxSTY+an3lviIniF9qAMArVJ8
+ aBCQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUI6j3ixgIfPrUAHghePUGkpZLFFJWkKiD8PPAR8iLfWzthXgh6U6NeO4j0djugyhWrvGvgg1hRHJAcyhVYzpIuP9UKFQw=
+X-Gm-Message-State: AOJu0Yz7/xoV9kg6uFT9fCW3YUhp9gqUDj2qpr0udoxwZOw9+v63Z6yJ
+ TyP3jh2lm4EILxTu+pSDHHk/l2dqkDskt1swn7AKNxiqN1iCRf4+KS55+sUezkk=
+X-Google-Smtp-Source: AGHT+IES8LSsuJeXp1lCWshHbN6U7fw31mwfny/aldOPl0e+bFlW3TlECnW+/KiAOQJrEcUtYcIVqA==
+X-Received: by 2002:a17:906:d551:b0:a7a:a4be:2f9b with SMTP id
+ a640c23a62f3a-a7d3ffdbe1dmr602687666b.1.1722258259220; 
+ Mon, 29 Jul 2024 06:04:19 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.173.10])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a7acab4f79bsm501019666b.70.2024.07.29.06.04.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 06:04:18 -0700 (PDT)
+Message-ID: <668181a8-938e-4b72-a633-cb8566104db7@linaro.org>
+Date: Mon, 29 Jul 2024 15:04:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=139.178.84.217;
- envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 15/23] tests/functional: Convert the riscv_opensbi
+ avocado test into a standalone test
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, Fabiano Rosas <farosas@suse.de>
+References: <20240724175248.1389201-1-thuth@redhat.com>
+ <20240724175248.1389201-16-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240724175248.1389201-16-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,94 +100,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Em Fri, 26 Jul 2024 13:46:46 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
-
-> A few quick replies from me.
-> I'm sure Mauro will add more info.
+On 24/7/24 19:52, Thomas Huth wrote:
+> The avocado test defined test functions for both, riscv32 and riscv64.
+> Since we can run the whole file with multiple targets in the new
+> framework, we can now consolidate the functions so we have to only
+> define one function per machine now.
 > 
-> > > +           'tlb-error',
-> > > +           'bus-error',
-> > > +           'micro-arch-error']
-> > > +}
-> > > +
-> > > +##
-> > > +# @arm-inject-error:
-> > > +#
-> > > +# Inject ARM Processor error.
-> > > +#
-> > > +# @errortypes: ARM processor error types to inject
-> > > +#
-> > > +# Features:
-> > > +#
-> > > +# @unstable: This command is experimental.
-> > > +#
-> > > +# Since: 9.1
-> > > +##
-> > > +{ 'command': 'arm-inject-error',
-> > > +  'data': { 'errortypes': ['ArmProcessorErrorType'] },    
-> > 
-> > Please separate words with dashes: 'error-types'.
-> >   
-> > > +  'features': [ 'unstable' ]
-> > > +}    
-> > 
-> > Is this used only with TARGET_ARM?
-> > 
-> > Why is being able to inject multiple error types at once useful?  
-> 
-> It pokes a weird corner of the specification that I think previously 
-> tripped up Linux.
-> 
-> > 
-> > I'd expect at least some of these errors to come with additional
-> > information.  For instance, I imagine a bus error is associated with
-> > some address.  
-> 
-> Absolutely agree that in sane case you wouldn't have multiple errors
-> but we want to hit the insane ones :(
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/avocado/riscv_opensbi.py         | 63 --------------------------
+>   tests/functional/meson.build           |  8 ++++
+>   tests/functional/test_riscv_opensbi.py | 36 +++++++++++++++
+>   3 files changed, 44 insertions(+), 63 deletions(-)
+>   delete mode 100644 tests/avocado/riscv_opensbi.py
+>   create mode 100755 tests/functional/test_riscv_opensbi.py
 
-Yes.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> There is only prevision for one set of data in the record despite
-> it providing a bitmap for the type of error.
-
-Well, there isn't anything at the UEFI forbidding to use multiple bits.
-
-On a "normal" field with a bitmask, more than one bit set is supported.
-So, as spec doesn't deny it, it should be valid to have more than one 
-bits filled.
-
-Now, when multiple errors bits from this table are set:
-
-            +-----|---------------------------+
-            | Bit | Meaning                   |
-            +=====+===========================+
-            |  1  | Cache Error               |
-            |  2  | TLB Error                 |
-            |  3  | Bus Error                 |
-            |  4  | Micro-architectural Error |
-            +-----|---------------------------+
-
-- if bit 4 is set, as specified at the spec, the error-info field is 
-  defined by the ARM vendor, according with:
-
-	"N.2.4.4.1.1. ARM Vendor Specific Micro-Architecture ErrorStructure
-
-	 This is a vendor specific structure. Please refer to your hardware
-	 vendor documentation for the format of this structure."
-
-  So, provided that the vendor-specific documentation explicitly allows
-  setting bit 4 with other bits, I don't see an UEFI compliance problem.
-
-- if bit 4 is not set, but multiple bits 1 to 3 are set, the content
-  of error-info is currently undefined, as tables N.18 to N.20 won't
-  apply.
-
-Anyway, from spec PoV, IMO UEFI API requires an errata to clearly enforce
-that just one bit should be set or to define the behavior when multiple
-ones are set.
-
-Thanks,
-Mauro
 
