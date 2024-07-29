@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A4593F964
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B4A93F96D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYSIU-0005E5-J7; Mon, 29 Jul 2024 11:28:26 -0400
+	id 1sYSIb-0006IK-LH; Mon, 29 Jul 2024 11:28:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIQ-00052d-QA
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:22 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIX-0005pp-V4
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:30 -0400
 Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIN-0008Nn-N7
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:22 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIV-0008Sk-Nw
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:29 -0400
 Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-368584f9e36so1419574f8f.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:19 -0700 (PDT)
+ ffacd0b85a97d-3684407b2deso1439307f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722266898; x=1722871698; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722266904; x=1722871704; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hJ0+ehSPNMw3L+RsXx/3bfW5qZR45CYyWXKfYU5cn30=;
- b=jkC+IoiQ56WmHqrXsCuQDVKNM8C7qAW2Bgzbcp2bxJoGIf7vl5h2j3GP0nMo9nRubh
- 2w/GmgNe3Tgu60aOuE6gGxSccxu+OKkdyAQy8V8ZJ5vfz5RTP2qlis8H4x9i1h1eZH6Z
- tFjpOAGWMWfEc8zszyIA/2V85Nmjql5klV/JCyaOX4tHQpAFuwjNhgYeVYTdUC5lB3dg
- kGAMaqrtg+g32rTPwfF4luAgXXKrnbMT2XnnmgoM00yKt3qkbz7UwikEISaUzU/ba3cK
- J5ZfBgkSqHdVW8ZeWsIX5hdoATV4M6uKXM753zPoQYEPF5IXWKMLyuZjxaicWV+xLDEs
- Ra6Q==
+ bh=v9+uYHMIghgd2LjabzUJzhrVG79tp1J2HB1deB4p2GI=;
+ b=crQT4POTsIPbhfTqLWYCdhLPjkNbzGSaETnHggBbc0/66rQYAfMaEn+avRZmewpIxf
+ RcvO9Y8HEh7vsfkihK7A1kmAyVVUtU7tlW8nC90epdhLU6yYnXVEFYcx4oMxa/Eb5x/Q
+ 2X4bWhTm8zbQe5s1F2gz86wFn3k0WFG9ZUA+vpX9I/ji9IYTVWhwaCWzqd/MYW+iEeyk
+ 8CdjjU0UXMRlSrziEyEp62NGwzFmItPE2przO1AEucLUMqWyBqlmHs31U8jiqTmCewje
+ Df71rriUnwXeslEKbE7EkQtKNsB/2ZeJc+Q2SIpK1siqF/kBCtfg2fVo5etx2c6eOIhY
+ Nznw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722266898; x=1722871698;
+ d=1e100.net; s=20230601; t=1722266904; x=1722871704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hJ0+ehSPNMw3L+RsXx/3bfW5qZR45CYyWXKfYU5cn30=;
- b=YBaiVM5OGjj/9GFHseudXddBMbsldTou1rH2HcP+4Ds4dXfqeog4p025li++S1Lpv/
- zmF5CJFtXhOt3ara2rMYqCum7wTn5936ZVVxevGjn+QRygTJfhZoo36ZtM+1wIGn55qC
- LvlYFlDlJ7ZoK7SvmrY9QQrmz43drD08Ha0yy7jS+pUjsnPoaexsqrqS8eL5qydUTTJv
- kM+es7pnT30mK3oFHqUF9j+9VwSZRveyuRA/bMLRV31sVq9p4+vA46IMoF9QiahcYioA
- aCZ9LIn7zz2Ri29TMk8S2H6QapTRizAt4rAgsPz7aslP13jEOh9RDaiONCXOYcbOtNyU
- cUrA==
-X-Gm-Message-State: AOJu0YwlJINBCeGQN6NWjhtFTPII3Ztpu6z3M2/SNTMNKwpR+0+7zz6L
- UKv0/wtdIIeEXrRUQ03KZmouBGdZDNV6SC4kDlPPc10VhNAKYbdgOyftBy7lz+FCiVMfwPmfqbM
- J
-X-Google-Smtp-Source: AGHT+IG2RhidZfv4zGjcjCzezmJ1QGe09GAqM9S4tK2uNA5NTaEvp9OOnNwiigu6921i8ZFnU+iMgQ==
-X-Received: by 2002:a05:6000:dc7:b0:367:9237:611d with SMTP id
- ffacd0b85a97d-36b5d096f0amr6103041f8f.60.1722266897790; 
- Mon, 29 Jul 2024 08:28:17 -0700 (PDT)
+ bh=v9+uYHMIghgd2LjabzUJzhrVG79tp1J2HB1deB4p2GI=;
+ b=qirXeUlmbdTjuPWkKvg2mIHvez4RpERFH2keUpj9/9iZsoajtgctVN29n6BZKunBV8
+ uJYhF3CRjiGiDVee5nFrqTJUos8TCLdfbVWbrDxdtG9Rj8ykO3tR39N42i14EMnNK4AO
+ ii4BAFXkXY5jqynaKT0Y566OS9CIUhbSm6r1teQ6UrhAj29o28NRny12zH72PwZXQEAt
+ bm/RaWf8JEGh+lPRi8QPtUDDjC20Cc590yn0qQ9yVktoOfPvxuoqb4Hmx3hq9yzv6Kxz
+ VyI4/9auMWeFtSndjMQcXDO4/uJJaqKwdpzG9h1EhEY9vprqEMxHxxQd0VQSDMjqLmoN
+ r68A==
+X-Gm-Message-State: AOJu0YweCmNxwaalSIsZJ4AWpKUJ6r3z5C8eeYOIfOaacjc6ye6O4C4Y
+ xWjVOH6JZVE0myhuDbP+PWOe0r5y9lnPmC0SEMakElY4g7Q34D4as70QRzg6nw83NXK+45EYLD2
+ d
+X-Google-Smtp-Source: AGHT+IGic3LCoI+pgt5erQ15t+dFGoYJm2buPFRNoVFpKIqbYuF/Us6jXwbqW+uOubqhIhtN5OreSg==
+X-Received: by 2002:a5d:64e1:0:b0:368:4ed7:2acc with SMTP id
+ ffacd0b85a97d-36b5cecf2famr8645980f8f.5.1722266903772; 
+ Mon, 29 Jul 2024 08:28:23 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.173.10])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b36857db6sm12533901f8f.73.2024.07.29.08.28.16
+ ffacd0b85a97d-36b36857d4fsm12615930f8f.86.2024.07.29.08.28.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jul 2024 08:28:17 -0700 (PDT)
+ Mon, 29 Jul 2024 08:28:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/14] tests/functional: Convert the riscv_opensbi avocado test
- into a standalone test
-Date: Mon, 29 Jul 2024 17:27:10 +0200
-Message-ID: <20240729152714.10225-11-philmd@linaro.org>
+Subject: [PULL 11/14] gitlab-ci: Add "check-functional" to the build tests
+Date: Mon, 29 Jul 2024 17:27:11 +0200
+Message-ID: <20240729152714.10225-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240729152714.10225-1-philmd@linaro.org>
 References: <20240729152714.10225-1-philmd@linaro.org>
@@ -96,169 +95,225 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The avocado test defined test functions for both, riscv32 and riscv64.
-Since we can run the whole file with multiple targets in the new
-framework, we can now consolidate the functions so we have to only
-define one function per machine now.
+Now that we converted many tests from the "check-avocado" test suite
+to the "check-functional" test suite, we should make sure that these
+also get tested in the CI.
 
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240724175248.1389201-16-thuth@redhat.com>
-[PMD: Updated MAINTAINERS]
+Message-ID: <20240724175248.1389201-24-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                            |  1 +
- tests/avocado/riscv_opensbi.py         | 63 --------------------------
- tests/functional/meson.build           |  8 ++++
- tests/functional/test_riscv_opensbi.py | 36 +++++++++++++++
- 4 files changed, 45 insertions(+), 63 deletions(-)
- delete mode 100644 tests/avocado/riscv_opensbi.py
- create mode 100755 tests/functional/test_riscv_opensbi.py
+ .gitlab-ci.d/buildtest-template.yml |  3 +-
+ .gitlab-ci.d/buildtest.yml          | 60 ++++++++++++++---------------
+ 2 files changed, 32 insertions(+), 31 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a768808a4a..a906218f9d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -337,6 +337,7 @@ F: include/hw/riscv/
- F: linux-user/host/riscv32/
- F: linux-user/host/riscv64/
- F: tests/tcg/riscv64/
-+F: tests/functional/test_riscv_opensbi.py
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 8f7ebfaed8..54cae74a8e 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -71,7 +71,7 @@
+     reports:
+       junit: build/meson-logs/testlog.junit.xml
  
- RISC-V XThead* extensions
- M: Christoph Muellner <christoph.muellner@vrull.eu>
-diff --git a/tests/avocado/riscv_opensbi.py b/tests/avocado/riscv_opensbi.py
-deleted file mode 100644
-index bfff9cc3c3..0000000000
---- a/tests/avocado/riscv_opensbi.py
-+++ /dev/null
-@@ -1,63 +0,0 @@
--# OpenSBI boot test for RISC-V machines
--#
--# Copyright (c) 2022, Ventana Micro
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern
--
--class RiscvOpenSBI(QemuSystemTest):
--    """
--    :avocado: tags=accel:tcg
--    """
--    timeout = 5
--
--    def boot_opensbi(self):
--        self.vm.set_console()
--        self.vm.launch()
--        wait_for_console_pattern(self, 'Platform Name')
--        wait_for_console_pattern(self, 'Boot HART MEDELEG')
--
--    def test_riscv32_spike(self):
--        """
--        :avocado: tags=arch:riscv32
--        :avocado: tags=machine:spike
--        """
--        self.boot_opensbi()
--
--    def test_riscv64_spike(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:spike
--        """
--        self.boot_opensbi()
--
--    def test_riscv32_sifive_u(self):
--        """
--        :avocado: tags=arch:riscv32
--        :avocado: tags=machine:sifive_u
--        """
--        self.boot_opensbi()
--
--    def test_riscv64_sifive_u(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:sifive_u
--        """
--        self.boot_opensbi()
--
--    def test_riscv32_virt(self):
--        """
--        :avocado: tags=arch:riscv32
--        :avocado: tags=machine:virt
--        """
--        self.boot_opensbi()
--
--    def test_riscv64_virt(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:virt
--        """
--        self.boot_opensbi()
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 48a617033e..94ac97ac53 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -23,6 +23,14 @@ tests_ppc_quick = [
-   'ppc_74xx',
- ]
+-.avocado_test_job_template:
++.functional_test_job_template:
+   extends: .common_test_job_template
+   cache:
+     key: "${CI_JOB_NAME}-cache"
+@@ -98,6 +98,7 @@
+         du -chs ${CI_PROJECT_DIR}/avocado-cache ;
+       fi
+     - export AVOCADO_ALLOW_UNTRUSTED_CODE=1
++    - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
+   after_script:
+     - cd build
+     - du -chs ${CI_PROJECT_DIR}/avocado-cache
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index aa32782405..1d2afae996 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -22,14 +22,14 @@ check-system-alpine:
+     IMAGE: alpine
+     MAKE_CHECK_ARGS: check-unit check-qtest
  
-+tests_riscv32_quick = [
-+  'riscv_opensbi',
-+]
-+
-+tests_riscv64_quick = [
-+  'riscv_opensbi',
-+]
-+
- tests_x86_64_quick = [
-   'cpu_queries',
-   'mem_addr_space',
-diff --git a/tests/functional/test_riscv_opensbi.py b/tests/functional/test_riscv_opensbi.py
-new file mode 100755
-index 0000000000..d077e40f42
---- /dev/null
-+++ b/tests/functional/test_riscv_opensbi.py
-@@ -0,0 +1,36 @@
-+#!/usr/bin/env python3
-+#
-+# OpenSBI boot test for RISC-V machines
-+#
-+# Copyright (c) 2022, Ventana Micro
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+from qemu_test import QemuSystemTest
-+from qemu_test import wait_for_console_pattern
-+
-+class RiscvOpenSBI(QemuSystemTest):
-+
-+    timeout = 5
-+
-+    def boot_opensbi(self):
-+        self.vm.set_console()
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'Platform Name')
-+        wait_for_console_pattern(self, 'Boot HART MEDELEG')
-+
-+    def test_riscv_spike(self):
-+        self.set_machine('spike')
-+        self.boot_opensbi()
-+
-+    def test_riscv_sifive_u(self):
-+        self.set_machine('sifive_u')
-+        self.boot_opensbi()
-+
-+    def test_riscv_virt(self):
-+        self.set_machine('virt')
-+        self.boot_opensbi()
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
+-avocado-system-alpine:
+-  extends: .avocado_test_job_template
++functional-system-alpine:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-alpine
+       artifacts: true
+   variables:
+     IMAGE: alpine
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
+ 
+ build-system-ubuntu:
+@@ -53,14 +53,14 @@ check-system-ubuntu:
+     IMAGE: ubuntu2204
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-system-ubuntu:
+-  extends: .avocado_test_job_template
++functional-system-ubuntu:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-ubuntu
+       artifacts: true
+   variables:
+     IMAGE: ubuntu2204
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
+ 
+ build-system-debian:
+@@ -85,14 +85,14 @@ check-system-debian:
+     IMAGE: debian
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-system-debian:
+-  extends: .avocado_test_job_template
++functional-system-debian:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-debian
+       artifacts: true
+   variables:
+     IMAGE: debian
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
+ 
+ crash-test-debian:
+@@ -129,14 +129,14 @@ check-system-fedora:
+     IMAGE: fedora
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-system-fedora:
+-  extends: .avocado_test_job_template
++functional-system-fedora:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-fedora
+       artifacts: true
+   variables:
+     IMAGE: fedora
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
+       arch:riscv32 arch:ppc arch:sparc64
+ 
+@@ -243,14 +243,14 @@ check-system-centos:
+     IMAGE: centos9
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-system-centos:
+-  extends: .avocado_test_job_template
++functional-system-centos:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-centos
+       artifacts: true
+   variables:
+     IMAGE: centos9
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
+       arch:sh4
+ 
+@@ -274,14 +274,14 @@ check-system-opensuse:
+     IMAGE: opensuse-leap
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-system-opensuse:
+-  extends: .avocado_test_job_template
++functional-system-opensuse:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-opensuse
+       artifacts: true
+   variables:
+     IMAGE: opensuse-leap
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
+ 
+ #
+@@ -302,15 +302,15 @@ build-system-flaky:
+       ppc64-softmmu rx-softmmu s390x-softmmu sh4-softmmu x86_64-softmmu
+     MAKE_CHECK_ARGS: check-build
+ 
+-avocado-system-flaky:
+-  extends: .avocado_test_job_template
++functional-system-flaky:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-system-flaky
+       artifacts: true
+   allow_failure: true
+   variables:
+     IMAGE: debian
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+     QEMU_JOB_OPTIONAL: 1
+     QEMU_TEST_FLAKY_TESTS: 1
+     AVOCADO_TAGS: flaky
+@@ -485,14 +485,14 @@ check-cfi-aarch64:
+     IMAGE: fedora
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-cfi-aarch64:
+-  extends: .avocado_test_job_template
++functional-cfi-aarch64:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-cfi-aarch64
+       artifacts: true
+   variables:
+     IMAGE: fedora
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+ 
+ build-cfi-ppc64-s390x:
+   extends:
+@@ -523,14 +523,14 @@ check-cfi-ppc64-s390x:
+     IMAGE: fedora
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-cfi-ppc64-s390x:
+-  extends: .avocado_test_job_template
++functional-cfi-ppc64-s390x:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-cfi-ppc64-s390x
+       artifacts: true
+   variables:
+     IMAGE: fedora
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+ 
+ build-cfi-x86_64:
+   extends:
+@@ -557,14 +557,14 @@ check-cfi-x86_64:
+     IMAGE: fedora
+     MAKE_CHECK_ARGS: check
+ 
+-avocado-cfi-x86_64:
+-  extends: .avocado_test_job_template
++functional-cfi-x86_64:
++  extends: .functional_test_job_template
+   needs:
+     - job: build-cfi-x86_64
+       artifacts: true
+   variables:
+     IMAGE: fedora
+-    MAKE_CHECK_ARGS: check-avocado
++    MAKE_CHECK_ARGS: check-avocado check-functional
+ 
+ tsan-build:
+   extends: .native_build_job_template
 -- 
 2.45.2
 
