@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7F893FCD3
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0E893FCD2
 	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 19:54:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYUZ8-0004p4-0h; Mon, 29 Jul 2024 13:53:46 -0400
+	id 1sYUZJ-0004yY-FC; Mon, 29 Jul 2024 13:53:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sYUZ4-0004f2-Qp
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:42 -0400
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ id 1sYUZ6-0004ka-5B
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:44 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sYUZ2-0000IF-VB
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:42 -0400
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-260e12aac26so2671839fac.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 10:53:40 -0700 (PDT)
+ id 1sYUZ4-0000In-Ef
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:43 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3db23a60850so1795586b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 10:53:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722275620; x=1722880420;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722275621; x=1722880421;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/UP7ynvstNXIegRQLD30QchsVizfwdQm7R8eXCoJJ2Q=;
- b=Ha8enruyRD2s9ot9p9FgQ/pZOCc3vQVdKU+eTf9uG5xuKRMKsgGxAcsB2RvguQjIQf
- 9wnz1H5zdFGONwB9TeQ0WRf6wh7cs4rSWBUYwoDNcUE5sYteR/dqQHeNS4cDyUkFtNzI
- sb5yzjLj73zpjOgytTULZSKkE5FeGnVKYNeXcKpMsiCkghpdgvXplA6VW+RZrUVOMAbs
- otfHlCl1YaBLBlWkuw377l9LyCLTMeWDfh90K8KmmPsfxienMhHrApZN9MDon9Y/OnNg
- pkRJDltjifCAYDpqYWVVQJaMgORLbcEXoY+Z3lrVLnIGlZMmc33X3beJM7jE6NeVpipc
- cI7g==
+ bh=k622JqYymJR6YovQS6GBPxe8YFj6SVEYXb2hrEdnpy0=;
+ b=PcHl/SdyHHXaw2e1U08YzmaRofzCKpd7C2YIx+a2+6ux2t2xtqCznIhvfy6VvCGY5s
+ YIqWUf7uxewlYmSBUGeCj9pFFXppN4a3joCxPIqknD635iMvdok3OJHi3VBEe2eJxegj
+ ymLHu5194QGHAORsOIPvv4puCr7ZlNShtJuvaZGMI2UB3n08rgJSl/IpFzxkC6i3TsQO
+ dKVwUU6yvNtgm4BV7eEoYeOjYYD+oKDhRP6WRANMCU85TNznrVFjakloFEx1QOwP5Dj3
+ +SmLTOUw3MFk4Q50d4qqN7CEkYqLzk6iqKrHVbzCN3wB37dxcw2DV1sXZeO6i7WwKDc0
+ h6wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722275620; x=1722880420;
+ d=1e100.net; s=20230601; t=1722275621; x=1722880421;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/UP7ynvstNXIegRQLD30QchsVizfwdQm7R8eXCoJJ2Q=;
- b=G+2/hbFQ1DUvGQ9987piPit/QUN3v4hhjocYwDstrOahjRxUVQo4vADWvhzMGUoIEa
- +1MN1wAjFEhqKJM7eRKmcdhRyjDzXa7AKp+oTAJKqn2vl39B7bu/N+/VCI/PO1BUjZ7O
- e9TUrbqptc1vRP1q/naL/8iR6YaoGZyGtYyBDoGlnBDJaKRsUy6qgWAaJ+L44+6Wi7r9
- 6Gc3Zh72uYtUdeZy2PFOtqsEJop1txu8/ewAPt6b5qs1Ru5veWOLJQ/vcq8yDhPvI15l
- Riz6tvWhc2e9Yxb8ltEt2Z9/veUaCIH/TsCoRrh12kTuO/E5casFCWzXT3/kmubUogNB
- rO/w==
+ bh=k622JqYymJR6YovQS6GBPxe8YFj6SVEYXb2hrEdnpy0=;
+ b=iXsIBZvpNwM026hEN1/6zBRj7PpygoTG1W1kgK20S731EC4rjLAK5fgiQ+KCdKYbS4
+ oqhUB3VmrobfZXS2E4qGVkONfRCNsWhvKt1v0Hl5GN6eYNmFq/Mj3JpExzP/+cnEfZ3L
+ Xi37QGIj8Bv+g4bLLanX9cLNZJAWWfh/hAeTVHFS31cw9T9gjJ6QFkNQlCuXXuSxtDVG
+ e+W7PvtKB0Xc4mI/0bWhfkO+Bj8m65zGgR/JLODQ9S9jvkeAnOSw7NYy/bujVIgomP1Y
+ Zoqc+UFh+Tht6jGk+AXjQ4u2QvDRutI/puzc/Sc1qgBkjG7kjVr2377Q5RCM3ODkNKQH
+ jEfg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVPogYYZsKmARXOLxDSF4P8M2fOSv4i3eYRULCXTIkqBQNv5lsqOTES1enpZMZaeEQaI2MNBRjFcllsvNqu2mEsism3CCE=
-X-Gm-Message-State: AOJu0Yw3AzAzcrpPsy4KOEe9QkCRze3d5BhBxuBF+4XGrHh0yTAbbvZO
- ao0cp4aarkHrmlSq+8wiym1UxXdt/491UXqlJmo+sAzbc/uE04j09i0qd5mYZpE=
-X-Google-Smtp-Source: AGHT+IH5QXMZpj5rH9qFf3o8t2zqu+ALESagt5cTQaGeCScJ3CikflaMotg1/4u9guuzIx5lWXTLJQ==
-X-Received: by 2002:a05:6870:80cd:b0:261:1267:fe8a with SMTP id
- 586e51a60fabf-267d4d1668cmr10039768fac.5.1722275619610; 
- Mon, 29 Jul 2024 10:53:39 -0700 (PDT)
+ AJvYcCXTtZgXilZyMaQjdZxY1tocHOmws321NyWnBHKEUxsPirvkhnwHwla40/a0JWT2scUWtWg4rqYcGhZVtNzPkAe8txwJ5UE=
+X-Gm-Message-State: AOJu0YzYyMHpqOeSUW1iTZbGh8oMkVg2s7LMPldFGYL6Ej/uaudzqonp
+ 9viUKRzlF4TlPNFPHmvZG2oM8qKEC5RgUu0KBkaIaVVvpTZDHpt5OAGwPBFlPaI=
+X-Google-Smtp-Source: AGHT+IE1F+bQDJgORGgRNbJkhWRWXDWdWbmiWUMWkwXtaLvT4jnkfLGc/EHvvji+PRkNnzm5zxGmrA==
+X-Received: by 2002:a05:6808:219b:b0:3d9:24f8:7dd2 with SMTP id
+ 5614622812f47-3db23a5a064mr11468658b6e.6.1722275620770; 
+ Mon, 29 Jul 2024 10:53:40 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7a9f7c71b15sm6303141a12.18.2024.07.29.10.53.38
+ 41be03b00d2f7-7a9f7c71b15sm6303141a12.18.2024.07.29.10.53.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 10:53:39 -0700 (PDT)
+ Mon, 29 Jul 2024 10:53:40 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, jim.shu@sifive.com,
  andy.chiu@sifive.com, jesse.huang@sifive.com, kito.cheng@sifive.com
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v2 07/24] disas/riscv: enabled `lpad` disassembly
-Date: Mon, 29 Jul 2024 10:53:09 -0700
-Message-ID: <20240729175327.73705-8-debug@rivosinc.com>
+Subject: [PATCH v2 08/24] linux-user/syscall: introduce prctl for indirect
+ branch tracking
+Date: Mon, 29 Jul 2024 10:53:10 -0700
+Message-ID: <20240729175327.73705-9-debug@rivosinc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240729175327.73705-1-debug@rivosinc.com>
 References: <20240729175327.73705-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=debug@rivosinc.com; helo=mail-oa1-x33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=debug@rivosinc.com; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,91 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Each application enables indirect branch tracking (forward cfi) for itself
+via prctl. Adding branch tracking prctl in linux-user/syscall.
+
+Using same prctl code as proposed in cfi patches in kernel mailing list [1]
+
+[1] - https://lore.kernel.org/all/20240403234054.2020347-1-debug@rivosinc.com/
+
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 Co-developed-by: Jim Shu <jim.shu@sifive.com>
 Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
+Co-developed-by: Jesse Huang <jesse.huang@sifive.com>
 ---
- disas/riscv.c | 18 +++++++++++++++++-
- disas/riscv.h |  2 ++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ linux-user/syscall.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index c8364c2b07..c7c92acef7 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -974,6 +974,7 @@ typedef enum {
-     rv_op_amomaxu_h = 943,
-     rv_op_amocas_b  = 944,
-     rv_op_amocas_h  = 945,
-+    rv_op_lpad = 946,
- } rv_op;
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index b8c278b91d..ec157c1088 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6295,6 +6295,17 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
+ # define PR_SME_VL_INHERIT   (1 << 17)
+ #endif
  
- /* register names */
-@@ -2232,6 +2233,7 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "amomaxu.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "amocas.b", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "amocas.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "lpad", rv_codec_lp, rv_fmt_imm, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -2925,7 +2927,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             case 7: op = rv_op_andi; break;
-             }
-             break;
--        case 5: op = rv_op_auipc; break;
-+        case 5:
-+            op = rv_op_auipc;
-+            if (dec->cfg->ext_zicfilp &&
-+                (((inst >> 7) & 0b11111) == 0b00000)) {
-+                op = rv_op_lpad;
-+            }
-+            break;
-         case 6:
-             switch ((inst >> 12) & 0b111) {
-             case 0: op = rv_op_addiw; break;
-@@ -4482,6 +4490,11 @@ static uint32_t operand_tbl_index(rv_inst inst)
-     return ((inst << 54) >> 56);
- }
- 
-+static uint32_t operand_lpl(rv_inst inst)
-+{
-+    return inst >> 12;
-+}
++#ifndef PR_GET_INDIR_BR_LP_STATUS
++# define PR_GET_INDIR_BR_LP_STATUS      74
++#endif
++#ifndef PR_SET_INDIR_BR_LP_STATUS
++# define PR_SET_INDIR_BR_LP_STATUS      75
++# define PR_INDIR_BR_LP_ENABLE          (1UL << 0)
++#endif
++#ifndef PR_LOCK_INDIR_BR_LP_STATUS
++# define PR_LOCK_INDIR_BR_LP_STATUS     76
++#endif
 +
- /* decode operands */
+ #include "target_prctl.h"
  
- static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-@@ -4869,6 +4882,9 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-         dec->imm = sextract32(operand_rs2(inst), 0, 5);
-         dec->imm1 = operand_imm2(inst);
-         break;
-+    case rv_codec_lp:
-+        dec->imm = operand_lpl(inst);
-+        break;
-     };
- }
+ static abi_long do_prctl_inval0(CPUArchState *env)
+@@ -6477,6 +6488,14 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
+     case PR_SET_TSC:
+         /* Disable to prevent the target disabling stuff we need. */
+         return -TARGET_EINVAL;
++    case PR_GET_INDIR_BR_LP_STATUS:
++    case PR_SET_INDIR_BR_LP_STATUS:
++    case PR_LOCK_INDIR_BR_LP_STATUS:
++#ifndef do_prctl_cfi
++        return do_prctl_inval1(env, arg2);
++#else
++        return do_prctl_cfi(env, option, arg2);
++#endif
  
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 16a08e4895..1182457aff 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -166,6 +166,7 @@ typedef enum {
-     rv_codec_r2_immhl,
-     rv_codec_r2_imm2_imm5,
-     rv_codec_fli,
-+    rv_codec_lp,
- } rv_codec;
- 
- /* structures */
-@@ -228,6 +229,7 @@ enum {
- #define rv_fmt_rs1_rs2                "O\t1,2"
- #define rv_fmt_rd_imm                 "O\t0,i"
- #define rv_fmt_rd_uimm                "O\t0,Ui"
-+#define rv_fmt_imm                    "O\ti"
- #define rv_fmt_rd_offset              "O\t0,o"
- #define rv_fmt_rd_uoffset             "O\t0,Uo"
- #define rv_fmt_rd_rs1_rs2             "O\t0,1,2"
+     default:
+         qemu_log_mask(LOG_UNIMP, "Unsupported prctl: " TARGET_ABI_FMT_ld "\n",
 -- 
 2.44.0
 
