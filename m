@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF6893F96B
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A555F93F96E
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:29:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYSIo-0008Gl-8l; Mon, 29 Jul 2024 11:28:46 -0400
+	id 1sYSIr-0000YX-Mr; Mon, 29 Jul 2024 11:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIl-0007yQ-NJ
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:43 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIp-0000Js-L4
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:47 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIf-00008Q-P9
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:42 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42122ac2f38so11731225e9.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIl-00009O-MF
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:47 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4266dc7591fso16448985e9.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722266916; x=1722871716; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722266922; x=1722871722; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zXdSwZIkaei7IVXcOo85+RXKqlbMq+68sLXgYS3E5lM=;
- b=so0frPNnsN2O8ATzTRyytvUPJufmDis7tThJdjT0TqjVurhHgfQ8q16gs4KRNXygp1
- svhGNf7DCv60u/Cuqu5vUjk8KVmXDcobJ1LnFTKuTbNtF+8Ho+AgeQMUZsa4oxTo+4UG
- 2Zcs7ur9pMFX/b7lGo6pN/IlAwSk70+vYzfbxUAEjcRwvRykV8nEqLraLpFlSdsP47HY
- yoAm18E3UL1V0lXgSu1kdOhsSGO7A/P7p+us9SDa2ECzQNgVxfiUZyHATge2BZvpEJ4T
- ShBUR8Lm7DR/sIfgSLKpkBsptC5CpK9tU2JXwUu1D//7Kqs7qK3jBRkucL/EElapcqZs
- AXfA==
+ bh=jz7Ox8GZ4fBgHa8IWcCtoxPXphT3ERQSEGlUxQOFD08=;
+ b=Srp3SKyWWnt6FNQiXVpaec38d/YXtS4zyesfqtPrDgdzDHiVcvCUH5bZ5R4MMgUz41
+ uBvSBPQZi/AjyIZkZhaMWK5FSH7lf04dCVZ0WAKuYcVbKejHxrZqWQQeGEsPUvpuQtAK
+ 5uHMc8CG9lKrlp+ZLHVZiNoyU1Xw6Bq1lFtsL4qkG/CLYN3ApUqgkbYJbCnUWbUNMaN0
+ s1BjKCTia4v12S1dBjcskz7C++I7kD2kY1Q+9EHkGTPF9kQ1TFe54WbL7tgj2S9XiaMJ
+ VNaMFXlF2GC4Qa3JPYXm4tAa5V9mOIXofGjVkmA9559fbMPA5a8imEaFtq9GRpRXZUL+
+ 6UDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722266916; x=1722871716;
+ d=1e100.net; s=20230601; t=1722266922; x=1722871722;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zXdSwZIkaei7IVXcOo85+RXKqlbMq+68sLXgYS3E5lM=;
- b=S/KZQipT+X0c5SgI3boaYYdARG0LOWEDmK36oR46xewu4OjSNaOPbJGfYLYV+pPOWd
- ZYSWSzubt8VIg1BRPhH+OX0/TcPP2EXxiKJTZzxYLqMm+lCFawze7vH3gcclHGyYBoJH
- S6XJfrSdLZ+eyZnPPJxYY3PRvXz2b2PwLDzyZ5KezNYaqRLCMYd6LGZoMREyRXTV9gYR
- xwmmJEnyjFuuivTnSNegSnXLIN0pOgFoFVKbNYXxfQZugtVcBwfuGBofjGyRkpsPs2fv
- wy2XSX3tcU56IILbpBUciPZGyX3QEv2MOlq44WMDR1VSCKhSQIbEuMIuUSEueu221xs2
- +7bg==
-X-Gm-Message-State: AOJu0YzeSDhnHkI1PfJZjuo+9p8PdGZ5kprAq50913jd5Ch2oB6tL1hh
- MPTgDpnhY/8gVOhSjVVGQFND0tg3EQ827WZs12pyPuJNoq5bCXQOZ83vpvLyDeI+OdmdZCV0lcz
- u
-X-Google-Smtp-Source: AGHT+IEdWtE1I+hDS1jIAqotF7SzgvejyFnco1cDpZQYAdMcSH1EjBnn9KZfB5hOJAt/sAICkDES4w==
-X-Received: by 2002:a05:600c:350c:b0:426:6981:1bd with SMTP id
- 5b1f17b1804b1-42811e52330mr53491205e9.5.1722266915665; 
- Mon, 29 Jul 2024 08:28:35 -0700 (PDT)
+ bh=jz7Ox8GZ4fBgHa8IWcCtoxPXphT3ERQSEGlUxQOFD08=;
+ b=svjViJWLUDCYby85mp3MOVviUtTACNRB2tQ90khkDeMVqwIDWZyoIG2nglf6eSRbP+
+ 5Ey8F/5zM6qGUtEreYR3kTcL3SJDdbunBb9TMF+xt6/hUsJiy6ax/Xs4zkjv8FvAHz52
+ bVcTXn7UzGxo32wkjQk7EYQ1EmYlkyYEm4Wpsyas3UwEvx5ds+1F9qMAirBmhdkcvhBJ
+ Xs4b+3cD8Q+vNZAe5YqOT2ru+4zYreuhixEpCnwpoTCEpZySvTnss49kSk0rpPDyFSz7
+ ONK7vDz/+6o/rQxjfPB7F59j79nvlA0YLF67gXqZryL79zrjLn0F3SzH2twbtpPZnSbn
+ 3KDw==
+X-Gm-Message-State: AOJu0YzEYfqx1Gy1kDOEhgeyuyjSmjlS/Z5kQBVZ3Kc5MWmQrQZJLl9y
+ U9NmbIb5iwOECyuPQeFRHJQeWMCMJj1yGL1Peeo/bueozmsmuCjk/ZS8uX+1DvTM5JYrt28xVaN
+ v
+X-Google-Smtp-Source: AGHT+IFuQJotWxyhTGPrZVPb0S0IiFSQXlanWxvBWHS38i5zJszlbwhWHAV9aQ149I7EKR12XuQvOA==
+X-Received: by 2002:a05:600c:3b1f:b0:426:5416:67de with SMTP id
+ 5b1f17b1804b1-42811dd4862mr49326015e9.30.1722266921829; 
+ Mon, 29 Jul 2024 08:28:41 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.173.10])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-427ef3f459fsm129574945e9.0.2024.07.29.08.28.34
+ 5b1f17b1804b1-428057b7218sm181106805e9.47.2024.07.29.08.28.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jul 2024 08:28:35 -0700 (PDT)
+ Mon, 29 Jul 2024 08:28:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/14] tests/avocado: mips: add hint for fetchasset plugin
-Date: Mon, 29 Jul 2024 17:27:13 +0200
-Message-ID: <20240729152714.10225-14-philmd@linaro.org>
+Subject: [PULL 14/14] tests/avocado: test_arm_emcraft_sf2: handle RW
+ requirements for asset
+Date: Mon, 29 Jul 2024 17:27:14 +0200
+Message-ID: <20240729152714.10225-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240729152714.10225-1-philmd@linaro.org>
 References: <20240729152714.10225-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,69 +96,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cleber Rosa <crosa@redhat.com>
 
-Avocado's fetchasset plugin runs before the actual Avocado job (and
-any test).  It analyses the test's code looking for occurrences of
-"self.fetch_asset()" in the either the actual test or setUp() method.
-It's not able to fully analyze all code, though.
+The asset used in the mentioned test gets truncated before it's used
+in the test.  This means that the file gets modified, and thus the
+asset's expected hash doesn't match anymore.  This causes cache misses
+and re-downloads every time the test is re-run.
 
-The way these tests are written, make the fetchasset plugin blind to
-the assets.  This adds some more code duplication, true, but it will
-aid the fetchasset plugin to download or verify the existence of these
-assets in advance.
+Let's make a copy of the asset so that the one in the cache is
+preserved and the cache sees a hit on re-runs.
 
 Signed-off-by: Cleber Rosa <crosa@redhat.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240726134438.14720-3-crosa@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20240726134438.14720-9-crosa@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/avocado/boot_linux_console.py | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tests/avocado/boot_linux_console.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 450d67be6a..b8b0a4df10 100644
+index b8b0a4df10..2929aa042d 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -274,8 +274,7 @@ def test_mips64el_malta_5KEc_cpio(self):
-         # Wait for VM to shut down gracefully
-         self.vm.wait()
+@@ -401,14 +401,16 @@ def test_arm_emcraft_sf2(self):
+                    'fe371d32e50ca682391e1e70ab98c2942aeffb01/spi.bin')
+         spi_hash = '65523a1835949b6f4553be96dec1b6a38fb05501'
+         spi_path = self.fetch_asset(spi_url, asset_hash=spi_hash)
++        spi_path_rw = os.path.join(self.workdir, os.path.basename(spi_path))
++        shutil.copy(spi_path, spi_path_rw)
  
--    def do_test_mips_malta32el_nanomips(self, kernel_url, kernel_hash):
--        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+    def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
-         kernel_path = self.workdir + "kernel"
-         with lzma.open(kernel_path_xz, 'rb') as f_in:
-             with open(kernel_path, 'wb') as f_out:
-@@ -303,7 +302,8 @@ def test_mips_malta32el_nanomips_4k(self):
-                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
-                       'generic_nano32r6el_page4k.xz')
-         kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
--        self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
-+        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+-        file_truncate(spi_path, 16 << 20) # Spansion S25FL128SDPBHICO is 16 MiB
++        file_truncate(spi_path_rw, 16 << 20) # Spansion S25FL128SDPBHICO is 16 MiB
  
-     def test_mips_malta32el_nanomips_16k_up(self):
-         """
-@@ -316,7 +316,8 @@ def test_mips_malta32el_nanomips_16k_up(self):
-                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
-                       'generic_nano32r6el_page16k_up.xz')
-         kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
--        self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
-+        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
- 
-     def test_mips_malta32el_nanomips_64k_dbg(self):
-         """
-@@ -329,7 +330,8 @@ def test_mips_malta32el_nanomips_64k_dbg(self):
-                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
-                       'generic_nano32r6el_page64k_dbg.xz')
-         kernel_hash = '18d1c68f2e23429e266ca39ba5349ccd0aeb7180'
--        self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
-+        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
- 
-     def test_aarch64_xlnx_versal_virt(self):
-         """
+         self.vm.set_console()
+         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
+         self.vm.add_args('-kernel', uboot_path,
+                          '-append', kernel_command_line,
+-                         '-drive', 'file=' + spi_path + ',if=mtd,format=raw',
++                         '-drive', 'file=' + spi_path_rw + ',if=mtd,format=raw',
+                          '-no-reboot')
+         self.vm.launch()
+         self.wait_for_console_pattern('Enter \'help\' for a list')
 -- 
 2.45.2
 
