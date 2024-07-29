@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D615693F892
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED80293F887
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:45:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYRc2-0004Nk-3w; Mon, 29 Jul 2024 10:44:34 -0400
+	id 1sYRbw-0003wZ-E4; Mon, 29 Jul 2024 10:44:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRbx-00043s-9C
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:29 -0400
+ id 1sYRbu-0003rp-JC
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:26 -0400
 Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRbq-0008Nd-5b
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:29 -0400
+ id 1sYRbp-0008Nk-9f
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:26 -0400
 Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5af6a1afa7bso3185376a12.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:21 -0700 (PDT)
+ 4fb4d7f45d1cf-5a10835480bso5361298a12.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722264260; x=1722869060; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jkd6LFuw9dfVXklEdc2dhr9bRuw+JJYLw6zlp56juC8=;
- b=Y8lHAcKOhkw2IR09ZLukGLyKJaq2zb+CMI6JUjfGI/8xREJ7VYCmHQ2AZgE0rKj2Sk
- 1kckP0ySdEj4j/dTSg5Ijjg1OX0rX7G7rmn5oxsw2d2jwsgybDOdj4H81f27STp/By5s
- Muwsm6lxLuxxBrgG0xKofeCwIFGZzrqIJUXD6R8/0M0BaVvHewWtqwbskYFo0OBqELJn
- ymFFySVSgIAF4Zo7W/YRF5iYi4sahHSKpdQtLIbfYRPysHVOTQ5kqIrFnw4+82MiCWPI
- oZCPy7tFY5abZj/wVCTryxw6UHV1BBBlkuJvzxACkN1SwVPTbNPR1NeGCTzpOhA5H3X6
- tB0Q==
+ bh=TdNyQjx9vy1t8eoHD/QTCnhZHijRSE/LPFIBD5gVquQ=;
+ b=lpFmL4de2DiDohtCspV95InlqOV/tmh0lKc85jYntv+dVHAZLP4ewt7gNmKMh2Gnq5
+ +kD3IJFYqbZugQrwZBTmTcwZrTBYo88eMGjABqsr65/tntJKY3oxj7jxQmwaJqTRihlP
+ dZjrmOvRcyOmVPJry5PC61Z3eli9dL3mMPYo04dYPnHWW5l/LzdjJx+E2eNETZ05A3pt
+ cM0UPHUXduCVmpZtDow6EWD35an35Mo1/Okp931pTCg9+gIXz8yobrShPEEtHyZ/lhG6
+ 0k0/UeU7QQ5cCuJ5XwgKCtuDrhls87JJSd6qgq/9CuPMMjzofGwc8XoXFtDOWiuOdVrT
+ QM5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722264260; x=1722869060;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jkd6LFuw9dfVXklEdc2dhr9bRuw+JJYLw6zlp56juC8=;
- b=LSNXaH4EQ+ZZMJL7n9KFKjcx10nn2ECJbDbMvS6wTbISpdc/ueeuA7o74wWmgifgZh
- uUf0SzUp2JPkm8sR73UNnE7fvEmCzPuWw99ZfEKrAlfCpokFt41hTsHHTnt44zIPICbU
- Bl1WXCngf/FppE3hywOrIaSXbs8OvLpHJ2uL/d3dbyX05wvFwwrYZfr1UpdhogOyxwP2
- VDmeBE5AK7Rl1jYUNFzskektmRxeAZPEon8C7lhhoGf4gomrl6G7EVhmGKtb+7PHgLUd
- pnzv2FZvpUsbROPnU7E0QU6popvuD9Pb91rLRzhBFxcsQ/0+Fh6GlY/9r6ANuVaKRIK2
- DVlg==
-X-Gm-Message-State: AOJu0YyB4krRMcdYeDCUj6ecH8kT1wLroKm1I615Jq8UXuaAFGQ8JTmP
- qNtmZqGtoXSHN5Ezt6CC0qbqmCF+QqtwlxHFxAPAXURwiF8qva79DhvpAyyfeS4=
-X-Google-Smtp-Source: AGHT+IH91duaUyTno3iK0GWmplPV/TkFQqJitVs82wUjLe0nxKZ20fAvbTHzOnq1qhFihMSZq89dkw==
-X-Received: by 2002:a05:6402:1ece:b0:5a2:68a2:ae52 with SMTP id
- 4fb4d7f45d1cf-5b01d37c1fdmr6001624a12.0.1722264259585; 
+ bh=TdNyQjx9vy1t8eoHD/QTCnhZHijRSE/LPFIBD5gVquQ=;
+ b=UAYFM3SQtVdSz74dhm663WzE90PVY1L86Ek1wxCHdhvBUNd8HMdPBjBLx0h59ysbk0
+ V7mujyMw7ROkzw5c60XZJQ5h72v+MV/H8J9gRZBY4rv8o+MQpGuG84cSH2OXNKBjuOJ4
+ lOGdYHiT/XRqyzC5GfBsy+tOs7h3T0e/y9P/wvgWnKXzaO2IB6J8qiEh9+OKMzw8vI3H
+ gZBPgdnw9xfLxP+Z2ETF25FRc+nwaR1i05H1AUGbsQzeqwYHZaDPEbHVMWjj6Z1oqkq4
+ axWxGI5y5oyeeGHsZ+GsSK9aO/edEBkfyRoOvE9bRTMAPKZbILIvG8k8SDEl6R5Qum/o
+ TDzw==
+X-Gm-Message-State: AOJu0Yx+x+c7Qmkm7GiUxpVzm+vM9tPs0O2EAJNXGhsmMPlEiFEgtMHF
+ seM2CEMANbtlV9H6KCmN4BcSiD0po7HjcJvVu3N0Thv0MUgwGLLIgdILX//IxUw=
+X-Google-Smtp-Source: AGHT+IHHhSkKmpbbjVHqoyAkSBJA735SFd4BmTgn67DBvO4GcXVK7szvrETNIxZkj23mIXlWB4PcGQ==
+X-Received: by 2002:a05:6402:2681:b0:5af:758a:6929 with SMTP id
+ 4fb4d7f45d1cf-5b022003a1cmr6077793a12.23.1722264259275; 
  Mon, 29 Jul 2024 07:44:19 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5af2f233be4sm4597887a12.41.2024.07.29.07.44.16
+ 4fb4d7f45d1cf-5ac6377e06fsm5901911a12.28.2024.07.29.07.44.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 29 Jul 2024 07:44:17 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 850715F9CC;
+ by draig.lan (Postfix) with ESMTP id 9DEE25F9F3;
  Mon, 29 Jul 2024 15:44:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,9 +77,9 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 05/14] tests/tcg: update README
-Date: Mon, 29 Jul 2024 15:44:05 +0100
-Message-Id: <20240729144414.830369-6-alex.bennee@linaro.org>
+Subject: [PATCH 06/14] docs/devel: update the testing introduction
+Date: Mon, 29 Jul 2024 15:44:06 +0100
+Message-Id: <20240729144414.830369-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240729144414.830369-1-alex.bennee@linaro.org>
 References: <20240729144414.830369-1-alex.bennee@linaro.org>
@@ -110,43 +110,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the document with details about the layout of tests. Remove the
-out of date cris comments. Refer to the developer guide for details
-about how to run the tests.
+Move the mention of "check-help" up to the intro text and also mention
+the meson test integration.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/README | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ docs/devel/testing.rst | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/tests/tcg/README b/tests/tcg/README
-index 706bb185b4..6d08ca50dc 100644
---- a/tests/tcg/README
-+++ b/tests/tcg/README
-@@ -1,9 +1,14 @@
--This directory contains various interesting guest programs for
--regression testing. Tests are either multi-arch, meaning they can be
--built for all guest architectures that support linux-user executable,
--or they are architecture specific.
--
--CRIS
--====
--The testsuite for CRIS is in tests/tcg/cris.  You can run it
--with "make test-cris".
-+This directory contains various interesting guest binaries for
-+regression testing the Tiny Code Generator doing system and user-mode
-+emulation.
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index 23d3f44f52..b984c5dd26 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -3,13 +3,28 @@
+ Testing in QEMU
+ ===============
+ 
+-This document describes the testing infrastructure in QEMU.
++QEMU's testing infrastructure is fairly complex as it covers
++everything from unit testing and exercising specific sub-systems all
++the way to full blown acceptance tests. To get an overview of the
++tests you can run ``make check-help`` from either the source or build
++tree.
 +
-+The multiarch directory contains shared code for tests that can be
-+built for all guest architectures. Architecture specific code can be
-+found in their respective directories.
++Most (but not all) tests are also integrated into the meson build
++system so can be run directly from the build tree, for example:
 +
-+System mode tests will be under the "system" subdirectories.
++.. code::
 +
-+GDB scripts for exercising the gdbstub on specific tests will be found
-+under the "gdbstb" subdirectories.
++  [./pyvenv/bin/]meson test --suite qemu:softfloat
 +
-+See the developer guide for more instructions on "make check-tcg"
++will run just the softfloat tests.
++
++The rest of this document will cover the details for specific test
++groups.
+ 
+ Testing with "make check"
+ -------------------------
+ 
+-The "make check" testing family includes most of the C based tests in QEMU. For
+-a quick help, run ``make check-help`` from the source tree.
++The "make check" testing family includes most of the C based tests in QEMU.
+ 
+ The usual way to run these tests is:
+ 
 -- 
 2.39.2
 
