@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426F593F884
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD55C93F88E
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:46:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYRc5-0004f9-W4; Mon, 29 Jul 2024 10:44:38 -0400
+	id 1sYRc3-0004W8-T6; Mon, 29 Jul 2024 10:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRc2-0004Tt-Un
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:34 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1sYRc1-0004OS-NW
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:33 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRbu-0008Qt-1m
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:34 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-59589a9be92so5517642a12.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:25 -0700 (PDT)
+ id 1sYRbt-0008Q3-Cs
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:33 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5a2ffc346ceso5322527a12.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722264264; x=1722869064; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pge7513nKBshjtyBdFZgBKyCSQ2SDh37JkBFhtHAoCg=;
- b=Z2CEoM92tEPrgbCv3G50GCaNNquDrhaqb4Z0df7ZkDIsSxjJ0ETU21NAsdmg+nILnL
- gVxhZnsv3UI+F/J508GHpeIHpAb989zcwmX1YaWL3CiKt4+TiMvu9USOw9a0OgZMthrY
- 8mTAspm3gqmGpJ9s9OnUxAa7uw/3TNUZy9URbE7UgA6we/4K/snleCP1FGMqLpQf0iqm
- wKR2i6BvKfmNB1cIWULU/wV3GMMDuKd8GXgoaBeHSnQHLNR8ufHS1dxlH9Pwl8wNOoVW
- vCE8yQkTzabAwJr+1DHmHt/2hwi6UlugfNKHVf30pt/oFK6qKgtzIj1PV90gsOtCvqZY
- pO/g==
+ bh=RIOayMEsJA1tkmepteKB9T0FXWTwbDeTnBtcVohO/HQ=;
+ b=vrz7AqpY0TeQ9/WAPxNm5oFSfMpOi4siqTB17ebTmwHEDG/t0vhuTJpW+G7JqxBK+f
+ RmJCEiIF70+kJe70TsWh+RqongjyO3z5NvWRRuh1mLYz4Y3oEWPRewT4JLBXMkTmooHj
+ pZsGUDWq8p5ewK1qy808Nr8uFr7B/huXBpIGCNKU+43o7KFNXa/CQZvNMgWFqS4CQv7G
+ 7k19hi1U3Y3UohipcWFzN5kWGk6XstRciq54GAbsvWDQGOnWPhuaHadHnEajt1hSb/0L
+ V2yKU91SUud4NGBBKPy2Mvlj80HpnoW8gnFzh7iZHIWZfhDPcE13WIt4fFznIghORmM+
+ pC2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722264264; x=1722869064;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pge7513nKBshjtyBdFZgBKyCSQ2SDh37JkBFhtHAoCg=;
- b=m/jCLjm8TAYJ5Oz3C/6ou/bsvhgtfB1IeY8dNl+j3+ns2TOeiQIgwvBCdH40NpW+wZ
- KZLbx9iKRIwzpJM41ZCjywVuV329TUeMlMtaPdGMiFDYsagjj0os39caGjTyOwzEs708
- zNOZicHEohmHHwkrFloIjZOTjdc+eqcbZ8mIMdMIOGWv3AXeY3GBYf/OPcToUeOG7Rtx
- LbekSaHZgaW59u667lCVWXWxUfrF/A9ep1X+Nws1z55yzsLlzPq4Yv7YXitqX2yfLVdf
- +HLQ+Q3oXAFoVYTn0SVkm5sqvryJvckfOCkAKtcmNNLpNaALHcanp+gfRonHcC1TSU9R
- w2iA==
-X-Gm-Message-State: AOJu0YyhGZa1W6u58F/tUmkVUY7sVitd5YP1P3Xf4qRkEZ3wzwlkHqtH
- gy53oktokv48DQP7jzpI00JTuJce974ctvtbPowJyvaRYEsu3jwCbChuUUCWRI0=
-X-Google-Smtp-Source: AGHT+IEsWFJLPqGVDsePmlOLfsx8ltOW1GIOJELld/RlChVzU5ZaLow5qjhWmwCesZntknV+adzZ2Q==
-X-Received: by 2002:a17:907:96a0:b0:a72:7da4:267c with SMTP id
- a640c23a62f3a-a7d3ffa612bmr624237466b.12.1722264264369; 
- Mon, 29 Jul 2024 07:44:24 -0700 (PDT)
+ bh=RIOayMEsJA1tkmepteKB9T0FXWTwbDeTnBtcVohO/HQ=;
+ b=U24osGjbA8cHM9XpdQjgrLaEyLL2pxLYgZ9l9vly2zkUpQBk3S27k9zL7fw5bh4GhY
+ 0jbfVmSFVVHD8/yqiu9Rc0NXN3k7PXs7dgOroJMe+0FlP3ElQ0T675D9mGzJeaCMl8QZ
+ S4fJES0GThWqfgoRs4I9B/CmFnfyXTfibgOYbinsSTOBxl/FocPL3aHVmBz/eJwovead
+ k7v6J+AU5vXi1691E22bJTS1LLZjp4uPC7lPYSNGWB1LvvY8Qwm/CUwMENYxrKeTFya/
+ 1fq1wev584+SS1fnbeF1V6s8fER+BrF/CrzTeWuTtccXLebYszzCl0HBDQjh3skhX2Co
+ iOaA==
+X-Gm-Message-State: AOJu0YzRhHIppF4aVb64B2br+Adkp1+4zXV7iHrtEX5UWZhxqprV3kOb
+ oPcsmEZXT7giU/CjDdbhfUwDs1MafVCHrogs8zHy4YA1hE32Vgtpscg8H6EtKq4=
+X-Google-Smtp-Source: AGHT+IFBqzVWW8HN4yEEamLBDbG/voeZt/brB68Ctd58ksy7qlSURXpWYpi+y2eacnqXtSPvTiYy9A==
+X-Received: by 2002:a17:907:3d9e:b0:a77:ab40:6d7f with SMTP id
+ a640c23a62f3a-a7d401781femr483657566b.43.1722264263519; 
+ Mon, 29 Jul 2024 07:44:23 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acab23f62sm521017766b.16.2024.07.29.07.44.17
+ a640c23a62f3a-a7acad91080sm518097066b.160.2024.07.29.07.44.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 29 Jul 2024 07:44:19 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2B5B55FA0F;
+ by draig.lan (Postfix) with ESMTP id 43DE05FA11;
  Mon, 29 Jul 2024 15:44:16 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,25 +77,24 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 11/14] contrib/plugins/cache.c: Remove redundant check of
- l2_access
-Date: Mon, 29 Jul 2024 15:44:11 +0100
-Message-Id: <20240729144414.830369-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/14] contrib/plugins: be more vocal building
+Date: Mon, 29 Jul 2024 15:44:12 +0100
+Message-Id: <20240729144414.830369-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240729144414.830369-1-alex.bennee@linaro.org>
 References: <20240729144414.830369-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,37 +110,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+With the conversion to meson and removing the old QEMU Makefile
+baggage we became very silent when building the plugins. Bring in a
+copy of the quiet-command logic (and some magic COMMAs) so we can at
+least assure developers we are building them.
 
-In append_stats_line(), we have an expression
-   l2_access ? l2_miss_rate : 0.0
-But this is inside an if (l2_access && l2_misses) { ... } block,
-so Coverity points out that the false part of the ?: is dead code.
-
-Remove the unnecessary test.
-
-Resolves: Coverity CID 1522458
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240725164851.1930964-1-peter.maydell@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2457
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- contrib/plugins/cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
-index c5c8ac75a9..512ef6776b 100644
---- a/contrib/plugins/cache.c
-+++ b/contrib/plugins/cache.c
-@@ -558,7 +558,7 @@ static void append_stats_line(GString *line,
-                                "  %-12" PRIu64 " %-11" PRIu64 " %10.4lf%%",
-                                l2_access,
-                                l2_misses,
--                               l2_access ? l2_miss_rate : 0.0);
-+                               l2_miss_rate);
-     }
+---
+Maybe we should just move to a meson build as proposed here:
+
+https://gitlab.com/qemu-project/qemu/-/issues/1710
+---
+ contrib/plugins/Makefile | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+index 98a89d5c40..edf256cd9d 100644
+--- a/contrib/plugins/Makefile
++++ b/contrib/plugins/Makefile
+@@ -39,26 +39,41 @@ endif
  
-     g_string_append(line, "\n");
+ SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
+ 
+-# The main QEMU uses Glib extensively so it's perfectly fine to use it
++# The main QEMU uses Glib extensively so it is perfectly fine to use it
+ # in plugins (which many example do).
+ PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
+ PLUGIN_CFLAGS += -fPIC -Wall
+ PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
+ 
++# Helper that honours V=1 so we get some output when compiling
++quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
++quiet-command = $(call quiet-@,$2,$3)$1
++
++# for including , in command strings
++COMMA := ,
++
+ all: $(SONAMES)
+ 
+ %.o: %.c
+-	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
++	$(call quiet-command, \
++		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
++	        BUILD, plugin $@)
+ 
+ ifeq ($(CONFIG_WIN32),y)
+ lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
+-	$(CC) -shared -o $@ $^ $(LDLIBS)
++	$(call quiet-command, \
++		$(CC) -shared -o $@ $^ $(LDLIBS), \
++		LINK, plugin $@)
+ else ifeq ($(CONFIG_DARWIN),y)
+ lib%$(SO_SUFFIX): %.o
+-	$(CC) -bundle -Wl,-undefined,dynamic_lookup -o $@ $^ $(LDLIBS)
++	$(call quiet-command, \
++		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
++		LINK, plugin $@)
+ else
+ lib%$(SO_SUFFIX): %.o
+-	$(CC) -shared -o $@ $^ $(LDLIBS)
++	$(call quiet-command, \
++		$(CC) -shared -o $@ $^ $(LDLIBS), \
++		LINK, plugin $@)
+ endif
+ 
+ 
 -- 
 2.39.2
 
