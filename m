@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD55C93F88E
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B5C93F88C
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 16:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYRc3-0004W8-T6; Mon, 29 Jul 2024 10:44:35 -0400
+	id 1sYRcE-0005Lc-Ji; Mon, 29 Jul 2024 10:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRc1-0004OS-NW
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:33 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1sYRcC-00059h-Cd
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:44 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYRbt-0008Q3-Cs
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:33 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5a2ffc346ceso5322527a12.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:24 -0700 (PDT)
+ id 1sYRbx-0008T6-OZ
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 10:44:44 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2ef2d582e31so43256691fa.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 07:44:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722264264; x=1722869064; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722264267; x=1722869067; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RIOayMEsJA1tkmepteKB9T0FXWTwbDeTnBtcVohO/HQ=;
- b=vrz7AqpY0TeQ9/WAPxNm5oFSfMpOi4siqTB17ebTmwHEDG/t0vhuTJpW+G7JqxBK+f
- RmJCEiIF70+kJe70TsWh+RqongjyO3z5NvWRRuh1mLYz4Y3oEWPRewT4JLBXMkTmooHj
- pZsGUDWq8p5ewK1qy808Nr8uFr7B/huXBpIGCNKU+43o7KFNXa/CQZvNMgWFqS4CQv7G
- 7k19hi1U3Y3UohipcWFzN5kWGk6XstRciq54GAbsvWDQGOnWPhuaHadHnEajt1hSb/0L
- V2yKU91SUud4NGBBKPy2Mvlj80HpnoW8gnFzh7iZHIWZfhDPcE13WIt4fFznIghORmM+
- pC2g==
+ bh=4I0UyAB3UWkIb2mikOF5Y9Vqa9qt5KlackYDMoOxLtQ=;
+ b=sG1vEoLA2oL9obrMh0u1O9ESES+2c28ICDgmpokytLO7Btls7/4bf7ufsomDqX7FNT
+ rWFwZ15lHEsZ9zEEaIp0hnuw1tX9fso+amNLUAbUr7rq4s0Z6F0OAa9JNJc497BkZE8n
+ 1aGjiP064JxTrCWUkaeKEF/60G0h2/13c4wfApbs5/Ez5ksaTfdh08KD7nmNK2cWCDK8
+ CLPr0Qt32pcYGWE7sZomFX3+MFOebfETJABkZJTbTDrvivbRrBtHEkDq1yH72h3lnMXP
+ rQ/2TH6qJHo6RNKs/2lwNiRgi4IyrWHHKRn+s/1nVLQ2Md8YycHSBNCZnJPTmWI0REuB
+ rXnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722264264; x=1722869064;
+ d=1e100.net; s=20230601; t=1722264267; x=1722869067;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RIOayMEsJA1tkmepteKB9T0FXWTwbDeTnBtcVohO/HQ=;
- b=U24osGjbA8cHM9XpdQjgrLaEyLL2pxLYgZ9l9vly2zkUpQBk3S27k9zL7fw5bh4GhY
- 0jbfVmSFVVHD8/yqiu9Rc0NXN3k7PXs7dgOroJMe+0FlP3ElQ0T675D9mGzJeaCMl8QZ
- S4fJES0GThWqfgoRs4I9B/CmFnfyXTfibgOYbinsSTOBxl/FocPL3aHVmBz/eJwovead
- k7v6J+AU5vXi1691E22bJTS1LLZjp4uPC7lPYSNGWB1LvvY8Qwm/CUwMENYxrKeTFya/
- 1fq1wev584+SS1fnbeF1V6s8fER+BrF/CrzTeWuTtccXLebYszzCl0HBDQjh3skhX2Co
- iOaA==
-X-Gm-Message-State: AOJu0YzRhHIppF4aVb64B2br+Adkp1+4zXV7iHrtEX5UWZhxqprV3kOb
- oPcsmEZXT7giU/CjDdbhfUwDs1MafVCHrogs8zHy4YA1hE32Vgtpscg8H6EtKq4=
-X-Google-Smtp-Source: AGHT+IFBqzVWW8HN4yEEamLBDbG/voeZt/brB68Ctd58ksy7qlSURXpWYpi+y2eacnqXtSPvTiYy9A==
-X-Received: by 2002:a17:907:3d9e:b0:a77:ab40:6d7f with SMTP id
- a640c23a62f3a-a7d401781femr483657566b.43.1722264263519; 
- Mon, 29 Jul 2024 07:44:23 -0700 (PDT)
+ bh=4I0UyAB3UWkIb2mikOF5Y9Vqa9qt5KlackYDMoOxLtQ=;
+ b=Qv59pi2DU1SEM6HPH6epFoh2Vh1V/5pnn3Fpieb53Z8/eaXbW++P6Eu2q9YORRnLbm
+ PHNZgpefn2kfqtui3r1b2w4rn6YepOBK2eBiAQ/GNzJrzr2hqFNmBvVEuaQ6Ld8BmcUu
+ I0HhdlDSR+iY/SVOOjuJaDYk0hn8gqTrgpkoNmNqy63UW7rZMrVau1wzTITVZtIlJ2Jo
+ yDcos5qY1R03xIfE1NvL41uHXaflTqSXQnJzVwOiaERQ3Sj0cWhsspSlQ07SPeCeMVNX
+ SkoEuJt5k+SK+GUcR3wuj4KPwuCObTFczYiEMr4h3rlMhd9K4Eq/yiRftpRIFNdPnSFq
+ IJGQ==
+X-Gm-Message-State: AOJu0YzEH98twn2LWbnh9xReLW6AK43j4XO4/Q/yiYSTMSYJp0scG4iX
+ TdQR7cIig58NM0dwAp+av/nw87txi5fCeIo1JdPAbQwntqB59x5294Bniy8E5hY=
+X-Google-Smtp-Source: AGHT+IFl4LCULlJKEByDcLtWCZgItRAwJArV3m4eNczbzVK0sd35IGpGBF3Tkz0ksybl+CJB4WXE/g==
+X-Received: by 2002:a05:651c:1541:b0:2ef:2d6e:58fe with SMTP id
+ 38308e7fff4ca-2f12ee55aabmr58999511fa.32.1722264266422; 
+ Mon, 29 Jul 2024 07:44:26 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad91080sm518097066b.160.2024.07.29.07.44.17
+ 4fb4d7f45d1cf-5ac64eb3980sm5826419a12.60.2024.07.29.07.44.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 07:44:19 -0700 (PDT)
+ Mon, 29 Jul 2024 07:44:22 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 43DE05FA11;
+ by draig.lan (Postfix) with ESMTP id 5BB2B5FA13;
  Mon, 29 Jul 2024 15:44:16 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 12/14] contrib/plugins: be more vocal building
-Date: Mon, 29 Jul 2024 15:44:12 +0100
-Message-Id: <20240729144414.830369-13-alex.bennee@linaro.org>
+Subject: [PATCH 13/14] contrib/plugins: add compat for g_memdup2
+Date: Mon, 29 Jul 2024 15:44:13 +0100
+Message-Id: <20240729144414.830369-14-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240729144414.830369-1-alex.bennee@linaro.org>
 References: <20240729144414.830369-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,73 +110,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the conversion to meson and removing the old QEMU Makefile
-baggage we became very silent when building the plugins. Bring in a
-copy of the quiet-command logic (and some magic COMMAs) so we can at
-least assure developers we are building them.
+We were premature if bumping this because some of our builds are still
+on older glibs. Just copy the compat handler for now and we can remove
+it later.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2457
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
+Fixes: ee293103b0 (plugins: update lockstep to use g_memdup2)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2161
 ---
-Maybe we should just move to a meson build as proposed here:
+ contrib/plugins/lockstep.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-https://gitlab.com/qemu-project/qemu/-/issues/1710
----
- contrib/plugins/Makefile | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
-
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index 98a89d5c40..edf256cd9d 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -39,26 +39,41 @@ endif
+diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
+index 6a7e9bbb39..62981d4e09 100644
+--- a/contrib/plugins/lockstep.c
++++ b/contrib/plugins/lockstep.c
+@@ -101,6 +101,31 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     plugin_cleanup(id);
+ }
  
- SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
- 
--# The main QEMU uses Glib extensively so it's perfectly fine to use it
-+# The main QEMU uses Glib extensively so it is perfectly fine to use it
- # in plugins (which many example do).
- PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
- PLUGIN_CFLAGS += -fPIC -Wall
- PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
- 
-+# Helper that honours V=1 so we get some output when compiling
-+quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
-+quiet-command = $(call quiet-@,$2,$3)$1
++/*
++ * g_memdup has been deprecated in Glib since 2.68 and
++ * will complain about it if you try to use it. However until
++ * glib_req_ver for QEMU is bumped we make a copy of the glib-compat
++ * handler.
++ */
++static inline gpointer g_memdup2_qemu(gconstpointer mem, gsize byte_size)
++{
++#if GLIB_CHECK_VERSION(2, 68, 0)
++    return g_memdup2(mem, byte_size);
++#else
++    gpointer new_mem;
 +
-+# for including , in command strings
-+COMMA := ,
++    if (mem && byte_size != 0) {
++        new_mem = g_malloc(byte_size);
++        memcpy(new_mem, mem, byte_size);
++    } else {
++        new_mem = NULL;
++    }
 +
- all: $(SONAMES)
- 
- %.o: %.c
--	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
-+	$(call quiet-command, \
-+		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
-+	        BUILD, plugin $@)
- 
- ifeq ($(CONFIG_WIN32),y)
- lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
--	$(CC) -shared -o $@ $^ $(LDLIBS)
-+	$(call quiet-command, \
-+		$(CC) -shared -o $@ $^ $(LDLIBS), \
-+		LINK, plugin $@)
- else ifeq ($(CONFIG_DARWIN),y)
- lib%$(SO_SUFFIX): %.o
--	$(CC) -bundle -Wl,-undefined,dynamic_lookup -o $@ $^ $(LDLIBS)
-+	$(call quiet-command, \
-+		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
-+		LINK, plugin $@)
- else
- lib%$(SO_SUFFIX): %.o
--	$(CC) -shared -o $@ $^ $(LDLIBS)
-+	$(call quiet-command, \
-+		$(CC) -shared -o $@ $^ $(LDLIBS), \
-+		LINK, plugin $@)
- endif
- 
- 
++    return new_mem;
++#endif
++}
++#define g_memdup2(m, s) g_memdup2_qemu(m, s)
++
+ static void report_divergance(ExecState *us, ExecState *them)
+ {
+     DivergeState divrec = { log, 0 };
 -- 
 2.39.2
 
