@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE3693F186
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 11:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C27493F18C
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 11:48:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYMyY-0003xG-8Z; Mon, 29 Jul 2024 05:47:30 -0400
+	id 1sYMyV-0003ld-G0; Mon, 29 Jul 2024 05:47:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sYMyW-0003rl-He
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:47:28 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sYMyT-0003fy-Ji
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:47:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sYMyV-0004bb-1q
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:47:28 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sYMyR-0004Zn-Ux
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:47:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722246446;
+ s=mimecast20190719; t=1722246443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7fWS/MeBs6Kai+qgd4zCs2xGsxcdZvo3lCYuqY77YaM=;
- b=TR0zzB8Q7uR8WIStC/WrbqbGupk05mauw9GzwDuId2zA4VLWsPUc+5kVqPmISE2FCFtWla
- N11Kjja7fOjBbKsU5xB5xAVv5POiK6dwaVRgFuz7u7N5YW2tBoFd7ls2GmFMxLEKsvcf8Z
- 5ahd3a+bqXu5nNE9viq7ZFuq/j9BVMo=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=D0wnr40qX08cenRnF3CsAJ3sHAxL0CaU6cGuLQaGj+Q=;
+ b=KNQu1MreNZGX0CuotJWExbQyb+URwzuzejMGznY/mt6W9L6EmkpQuNEslP8RFk6464OCk6
+ t2ezj75JksNnYVuiDx8zIiebb+d2FcxABHd9S3YPpY6pIdlHNjxgEe3GTxrZuObbi4hQhf
+ DDmvbRkXIpEdN2mBrMPwVGZQAw40Pls=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-XY3OFOG7MSumPoj9h0OItg-1; Mon,
- 29 Jul 2024 05:47:18 -0400
-X-MC-Unique: XY3OFOG7MSumPoj9h0OItg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-1Mj4EAV3PbahTWps2-nhHg-1; Mon,
+ 29 Jul 2024 05:47:20 -0400
+X-MC-Unique: 1Mj4EAV3PbahTWps2-nhHg-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4AC801955D4B; Mon, 29 Jul 2024 09:47:17 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B7C781955D4E; Mon, 29 Jul 2024 09:47:19 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.89])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4949E1955F40; Mon, 29 Jul 2024 09:47:15 +0000 (UTC)
+ id 8EA931955F3B; Mon, 29 Jul 2024 09:47:17 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, pbonzini@redhat.com, fam@euphon.net, stefanha@redhat.com,
  qemu-devel@nongnu.org
-Subject: [PATCH 3/4] scsi-disk: Add warning comments that host_status errors
- take a shortcut
-Date: Mon, 29 Jul 2024 11:47:00 +0200
-Message-ID: <20240729094702.50282-4-kwolf@redhat.com>
+Subject: [PATCH 4/4] scsi-disk: Always report RESERVATION_CONFLICT to guest
+Date: Mon, 29 Jul 2024 11:47:01 +0200
+Message-ID: <20240729094702.50282-5-kwolf@redhat.com>
 In-Reply-To: <20240729094702.50282-1-kwolf@redhat.com>
 References: <20240729094702.50282-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -79,64 +78,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-scsi_block_sgio_complete() has surprising behaviour in that there are
-error cases in which it directly completes the request and never calls
-the passed callback. In the current state of the code, this doesn't seem
-to result in bugs, but with future code changes, we must be careful to
-never rely on the callback doing some cleanup until this code smell is
-fixed. For now, just add warnings to make people aware of the trap.
+RESERVATION_CONFLICT is not a backend error, but indicates that the
+guest tried to make a request that it isn't allowed to execute. Pass the
+error to the guest so that it can decide what to do with it.
 
+Without this, if we stop the VM in response to a RESERVATION_CONFLICT,
+it can happen that the VM cannot be resumed any more because every
+attempt to resume it immediately runs into the same error and stops the
+VM again.
+
+One case that expects RESERVATION_CONFLICT errors to be visible in the
+guest is running the validation tests in Windows 2019's Failover Cluster
+Manager, which intentionally tries to execute invalid requests to see if
+they are properly rejected.
+
+Buglink: https://issues.redhat.com/browse/RHEL-50000
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/scsi/scsi-disk.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/scsi/scsi-disk.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 6e1a5c98df..69a195177e 100644
+index 69a195177e..e173b238de 100644
 --- a/hw/scsi/scsi-disk.c
 +++ b/hw/scsi/scsi-disk.c
-@@ -68,6 +68,9 @@ struct SCSIDiskClass {
-     /*
-      * Callbacks receive ret == 0 for success. Errors are represented either as
-      * negative errno values, or as positive SAM status codes.
-+     *
-+     * Beware: For errors returned in host_status, the function may directly
-+     * complete the request and never call the callback.
+@@ -235,11 +235,17 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
+     } else {
+         /* A passthrough command has completed with nonzero status.  */
+         status = ret;
+-        if (status == CHECK_CONDITION) {
++        switch (status) {
++        case CHECK_CONDITION:
+             req_has_sense = true;
+             error = scsi_sense_buf_to_errno(r->req.sense, sizeof(r->req.sense));
+-        } else {
++            break;
++        case RESERVATION_CONFLICT:
++            /* Don't apply the error policy, always report to the guest */
++            break;
++        default:
+             error = EINVAL;
++            break;
+         }
+     }
+ 
+@@ -249,8 +255,9 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
+      * are usually retried immediately, so do not post them to QMP and
+      * do not account them as failed I/O.
       */
-     DMAIOFunc       *dma_readv;
-     DMAIOFunc       *dma_writev;
-@@ -381,6 +384,7 @@ done:
-     scsi_req_unref(&r->req);
- }
- 
-+/* May not be called in all error cases, don't rely on cleanup here */
- static void scsi_dma_complete(void *opaque, int ret)
- {
-     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
-@@ -421,6 +425,7 @@ done:
-     scsi_req_unref(&r->req);
- }
- 
-+/* May not be called in all error cases, don't rely on cleanup here */
- static void scsi_read_complete(void *opaque, int ret)
- {
-     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
-@@ -560,6 +565,7 @@ done:
-     scsi_req_unref(&r->req);
- }
- 
-+/* May not be called in all error cases, don't rely on cleanup here */
- static void scsi_write_complete(void * opaque, int ret)
- {
-     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
-@@ -2821,6 +2827,7 @@ static void scsi_block_sgio_complete(void *opaque, int ret)
-     sg_io_hdr_t *io_hdr = &req->io_header;
- 
-     if (ret == 0) {
-+        /* FIXME This skips calling req->cb() and any cleanup in it */
-         if (io_hdr->host_status != SCSI_HOST_OK) {
-             scsi_req_complete_failed(&r->req, io_hdr->host_status);
-             scsi_req_unref(&r->req);
+-    if (req_has_sense &&
+-        scsi_sense_buf_is_guest_recoverable(r->req.sense, sizeof(r->req.sense))) {
++    if (!error || (req_has_sense &&
++                   scsi_sense_buf_is_guest_recoverable(r->req.sense,
++                                                       sizeof(r->req.sense)))) {
+         action = BLOCK_ERROR_ACTION_REPORT;
+         acct_failed = false;
+     } else {
 -- 
 2.45.2
 
