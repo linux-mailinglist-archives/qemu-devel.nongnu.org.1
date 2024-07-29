@@ -2,70 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C3493F143
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 11:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DB393F154
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 11:38:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYMmm-00006O-Rb; Mon, 29 Jul 2024 05:35:20 -0400
+	id 1sYMp4-00082G-E0; Mon, 29 Jul 2024 05:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYMmk-00005U-MN
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:35:18 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYMp2-0007vh-73
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:37:40 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYMmi-0002VK-Rq
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:35:18 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2ef27bfd15bso44804661fa.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 02:35:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYMp0-0002wE-0e
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 05:37:39 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-368440b073bso973349f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 02:37:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722245714; x=1722850514; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=If7VzGeDlPi3kEFY7/4NDlmmwVdFTFW+FmBsIS3GrTw=;
- b=NHkpZvpxmSqsVsMT1vSTyZJOFwohGiSDGhBBrMn9QmVIsKUg9Yk6vLX335Tb8gK/vJ
- wujYxO0fsnUQ2zDQrGqCZfieqoPkahSjnY5zQc6r3Y4+XMqkjPVItqkOYmq6Pgu+qR1j
- 3cKu1Yvr8R/pezKEPZMsCc4TOBPcihLi3d8zh0RiVOTUuaGgQnNRX6vbBFsvQYyOz22r
- 3Z97LlIiRqMgfbgw+mZjNFW37rYavGS3T4s690ManOxYArrzF95x2QULp9ORyqrqNY+B
- Ruc3APwCPqXjsJCwoToJLkQ/r57mLZNT7Fyz077cfHZepNmMU+YJMFgnvUA/+30a5S8j
- vXUw==
+ d=linaro.org; s=google; t=1722245856; x=1722850656; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sCWkVcHeruDkGrPDh/mRpleBIy3RLpqFEp1Iz7K2KW0=;
+ b=E8lGZwaY/2k+Yrn0gIcQKlrwRoeedWgq6tGynfink0C4ZKjKeHQxop9zNrAqoZGHIC
+ wWgbtazuHlgDq+TThqKLgoaeK37XIVM0WkrJTYM+Dmdqb/5HSM6Yh2+/RUPCyshnj/ww
+ xb+C037qZ0BjfatI6YUbYk/STkpBkmDKeBVwoUatRHyo7m/kwsPD8ORryz7VLIVJwkUU
+ XSJKKnNZhTVuZdHgTzDTk9uhPu4Ot8dGVuqSVD3JtneLgTvVLDYpA+MC4DByp/QHUkPd
+ ruhXsOfLWGtM+Y3oQI78EEB5dQCsQXTQl4ljVIlkNIObLSMxipmV9e7FhB8nZ+asqcmS
+ ebNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722245714; x=1722850514;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=If7VzGeDlPi3kEFY7/4NDlmmwVdFTFW+FmBsIS3GrTw=;
- b=E54ztkCF24NsrhTho3TJElBhl5ejVArb8pJ/mlnMkx/Qlvhwra8j4HGr45jfyNd2dH
- KEpZwP/SNcIPbOP6V8Y2tXhqGPOMJ0vB7H8aoAXEQ3IhMg9u3+pqs1mxGzXh1Algn3jF
- mVYhKIEk2Br1whJm/AIHx9UXbUQljkyy43Hngh6KYSGFr6a3oSE9fOSuyCUr8J2qz03t
- BJ2cX964iVP/Vnkbd/K2J9UjZumc8T9NUns1glq6PCLI5t0qESV1cj3v9MNTONkl1LVR
- 6cPlWdiffogQjOJiS8BPElOf+gmDUvwAHK5fwjKj/DqMTRAggoGdim+nnn4sDcqyINh3
- cNyg==
-X-Gm-Message-State: AOJu0YxdwWDoup/ToKhJPs/19eWjXjRbddlOlqesKY4via9MeQh3Naxc
- lM1AbAZLnMCNpkrrHmf8RCkqTNfE2ng+Af+FLYWb9FSWk0c3I+3yTWwMi//16GGRFrkAfAgOo2h
- ri+zY39cW7BuMkCqOQ0dux0gJESyyR6O4/PL30w==
-X-Google-Smtp-Source: AGHT+IGeaSALdCWJgy0lY9jO/vIjfuEElgIJlxzllalyIiUJxdbUaDh1iX0xWrpypJ8AOhi8LjY2yDci/ggll2in+kc=
-X-Received: by 2002:a05:651c:10b0:b0:2ee:8d04:7689 with SMTP id
- 38308e7fff4ca-2f12ee068bbmr45667581fa.20.1722245714141; Mon, 29 Jul 2024
- 02:35:14 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1722245856; x=1722850656;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sCWkVcHeruDkGrPDh/mRpleBIy3RLpqFEp1Iz7K2KW0=;
+ b=O5jcIqL+iTj5sOSKsmmNkNMl1Q5pOA7YtB9tgJzxplDs0U4A2n99aLXoxHwIv5708L
+ KcAlkaKapHCCjvDg/RfcXWZ3q+4yKF9JBq22MJw2HgTOzW8zhXbWusgAO2NQ9OiKugqp
+ ISqND8Rf98Yl3WTu9+0necBnHFHtA3pM16VnT1EFBhl06n23tXMmPqtma3jnaHx8BAWZ
+ Ru2tuvKOeF3J8YN4+tEA8EO7L5JOXBEGhfPrux4Wc5fYL+hrNtLsf74v0klmapPP6hEa
+ /5xof8ZfRpEAZW5eX/KQm40zcfCJH/iOjsfgCFx/W0oRNOyGcX67uM5mFUup5rSrRG14
+ VB3w==
+X-Gm-Message-State: AOJu0YwYWll6COB8lKaF6QT62U7iwiwpiOrpO1mJiXHYFTvnOHv9+85M
+ 6yHsfGE6/GGAZQQYUUU5/5+6/mF/Lc8U429LEJhOppTvZy0kT8hkhZMLBimd4pU=
+X-Google-Smtp-Source: AGHT+IHacmmssRod2OeVfXmkzB+5gt7LfTOlKhrYcr2pQdtHdb4PHC3OHqdz6TdMRSbuCKkZRmncCQ==
+X-Received: by 2002:adf:c08b:0:b0:368:4ab0:b260 with SMTP id
+ ffacd0b85a97d-36b5d7cfbcamr3776803f8f.18.1722245855653; 
+ Mon, 29 Jul 2024 02:37:35 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.173.10])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36b367fcb78sm11764565f8f.53.2024.07.29.02.37.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 02:37:35 -0700 (PDT)
+Message-ID: <61229356-940e-41f2-9b7c-0d1642c6415c@linaro.org>
+Date: Mon, 29 Jul 2024 11:37:32 +0200
 MIME-Version: 1.0
-References: <20240723070251.25575-1-kkostiuk@redhat.com>
- <20240723070251.25575-26-kkostiuk@redhat.com>
- <CAFEAcA831S0wGbyLwDK7yVeEoi1SFPD7gpYribNqP6AmyQHN5A@mail.gmail.com>
- <CAPMcbCpfP-XX0RsTerdrSunb9Z772efCGKf5h2ju7JQdygvDtA@mail.gmail.com>
-In-Reply-To: <CAPMcbCpfP-XX0RsTerdrSunb9Z772efCGKf5h2ju7JQdygvDtA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 29 Jul 2024 10:35:02 +0100
-Message-ID: <CAFEAcA9CyhYRZz0kK_oB6WKQF-3EZsEg88mdFWoDzQoF6ZfYAw@mail.gmail.com>
-Subject: Re: [PULL v2 25/25] qga/linux: Add new api 'guest-network-get-route'
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] util/cpuinfo: Make use of elf_aux_info(3) on OpenBSD
+To: Brad Smith <brad@comstyle.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <ZqXB_zz0fR1CpA7k@humpty.home.comstyle.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZqXB_zz0fR1CpA7k@humpty.home.comstyle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,26 +93,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 29 Jul 2024 at 08:40, Konstantin Kostiuk <kkostiuk@redhat.com> wrote:
->
-> Hi Peter,
->
-> How to see the full coverity report? In https://gitlab.com/qemu-project/qemu/-/artifacts, I see only job.log
-> Do you expect to fix these errors for the 9.1 release?
+Hi Brad,
 
-Coverity errors are in https://scan.coverity.com/projects/qemu
- -- you can ask for an account with the project if you want
-to see them directly. But I think you have the information
-you need in this email: the actual coverity issue isn't
-much more informative.
+On 28/7/24 05:58, Brad Smith wrote:
+> util/cpuinfo: Make use of elf_aux_info(3) on OpenBSD
+> 
+> Signed-off-by: Brad Smith <brad@comstyle.com>
+> ---
+>   meson.build            | 8 ++++++++
+>   util/cpuinfo-aarch64.c | 9 ++++++---
+>   util/cpuinfo-ppc.c     | 5 +++--
+>   util/getauxval.c       | 2 +-
+>   4 files changed, 18 insertions(+), 6 deletions(-)
 
-> Do you expect to fix these errors for the 9.1 release?
 
-No, I post these emails to inform the people responsible
-for the original commits about the problem so that they
-can provide fixes -- after all, it's the original author
-that knows most about the code and how to test it.
+> diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
+> index 1304f9aa80..ccfcaa0754 100644
+> --- a/util/cpuinfo-ppc.c
+> +++ b/util/cpuinfo-ppc.c
+> @@ -14,7 +14,8 @@
+>   #  include "elf.h"
+>   # endif
+>   #endif
+> -#ifdef __FreeBSD__
+> +#if defined(CONFIG_ELF_AUX_INFO)
+> +# include <sys/auxv.h>
+>   # include <machine/cpu.h>
+>   # ifndef PPC_FEATURE2_ARCH_3_1
+>   #  define PPC_FEATURE2_ARCH_3_1   0
+> @@ -35,7 +36,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+>   
+>       info = CPUINFO_ALWAYS;
+>   
+> -#if defined(CONFIG_LINUX) || defined(__FreeBSD__)
+> +#if defined(CONFIG_LINUX) || deinfed(CONFIG_ELF_AUX_INFO)
 
-thanks
--- PMM
+Typo!
+
+>       unsigned long hwcap = qemu_getauxval(AT_HWCAP);
+>       unsigned long hwcap2 = qemu_getauxval(AT_HWCAP2);
+>   
+> diff --git a/util/getauxval.c b/util/getauxval.c
+> index b124107d61..5bdbb04f8f 100644
+> --- a/util/getauxval.c
+> +++ b/util/getauxval.c
+> @@ -98,7 +98,7 @@ unsigned long qemu_getauxval(unsigned long type)
+>       return 0;
+>   }
+>   
+> -#elif defined(__FreeBSD__)
+> +#elif deinfed(CONFIG_ELF_AUX_INFO)
+
+Same typo, has this patch been tested?
+
+>   #include <sys/auxv.h>
+>   
+>   unsigned long qemu_getauxval(unsigned long type)
+
+Except typos, code LGTM, so:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
