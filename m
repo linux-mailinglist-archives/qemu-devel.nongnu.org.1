@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B4A93F96D
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C140993F972
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 17:29:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYSIb-0006IK-LH; Mon, 29 Jul 2024 11:28:33 -0400
+	id 1sYSId-0006T4-MR; Mon, 29 Jul 2024 11:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIX-0005pp-V4
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:30 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIb-0006Lg-IB
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:33 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIV-0008Sk-Nw
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:29 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3684407b2deso1439307f8f.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYSIZ-00006m-Hd
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 11:28:33 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3684e8220f9so1078736f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 08:28:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722266904; x=1722871704; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722266909; x=1722871709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v9+uYHMIghgd2LjabzUJzhrVG79tp1J2HB1deB4p2GI=;
- b=crQT4POTsIPbhfTqLWYCdhLPjkNbzGSaETnHggBbc0/66rQYAfMaEn+avRZmewpIxf
- RcvO9Y8HEh7vsfkihK7A1kmAyVVUtU7tlW8nC90epdhLU6yYnXVEFYcx4oMxa/Eb5x/Q
- 2X4bWhTm8zbQe5s1F2gz86wFn3k0WFG9ZUA+vpX9I/ji9IYTVWhwaCWzqd/MYW+iEeyk
- 8CdjjU0UXMRlSrziEyEp62NGwzFmItPE2przO1AEucLUMqWyBqlmHs31U8jiqTmCewje
- Df71rriUnwXeslEKbE7EkQtKNsB/2ZeJc+Q2SIpK1siqF/kBCtfg2fVo5etx2c6eOIhY
- Nznw==
+ bh=24RQoEKyoT+5UpLOepmNrf2/RkiZNFw5AqywzTwtt80=;
+ b=wCHCdxfWsNRNUtF1lCqTjnNCgsu8k7psjAPM8xOMquAO0aItj/8cWas+17nsznDAVu
+ MDu6LwRIP4cnMgGHeu57NJMJWb6gLZlh3fxFC/huP51ec8IOGG7itEZd6FL5YfCMR2j8
+ c4hRkZaPJekL1d/sJYGzL2HCbsMPVD9yTmfNVJWTpAEHLIkTdmbOBnVl9CJSyHlNERFB
+ UuEl7eZHDLVVEelss5DxjYQeAr7KV6wBF6uMWfdBfacYBCZE2Uc9rY5ogIAkMyBUP8JS
+ BvQxsWYabXEQwu7zklMz0T9J9H0oqpq9NrQtIclubIbLGxNmnYFZEQuXNG7TJJC3Zecr
+ llRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722266904; x=1722871704;
+ d=1e100.net; s=20230601; t=1722266909; x=1722871709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v9+uYHMIghgd2LjabzUJzhrVG79tp1J2HB1deB4p2GI=;
- b=qirXeUlmbdTjuPWkKvg2mIHvez4RpERFH2keUpj9/9iZsoajtgctVN29n6BZKunBV8
- uJYhF3CRjiGiDVee5nFrqTJUos8TCLdfbVWbrDxdtG9Rj8ykO3tR39N42i14EMnNK4AO
- ii4BAFXkXY5jqynaKT0Y566OS9CIUhbSm6r1teQ6UrhAj29o28NRny12zH72PwZXQEAt
- bm/RaWf8JEGh+lPRi8QPtUDDjC20Cc590yn0qQ9yVktoOfPvxuoqb4Hmx3hq9yzv6Kxz
- VyI4/9auMWeFtSndjMQcXDO4/uJJaqKwdpzG9h1EhEY9vprqEMxHxxQd0VQSDMjqLmoN
- r68A==
-X-Gm-Message-State: AOJu0YweCmNxwaalSIsZJ4AWpKUJ6r3z5C8eeYOIfOaacjc6ye6O4C4Y
- xWjVOH6JZVE0myhuDbP+PWOe0r5y9lnPmC0SEMakElY4g7Q34D4as70QRzg6nw83NXK+45EYLD2
- d
-X-Google-Smtp-Source: AGHT+IGic3LCoI+pgt5erQ15t+dFGoYJm2buPFRNoVFpKIqbYuF/Us6jXwbqW+uOubqhIhtN5OreSg==
-X-Received: by 2002:a5d:64e1:0:b0:368:4ed7:2acc with SMTP id
- ffacd0b85a97d-36b5cecf2famr8645980f8f.5.1722266903772; 
- Mon, 29 Jul 2024 08:28:23 -0700 (PDT)
+ bh=24RQoEKyoT+5UpLOepmNrf2/RkiZNFw5AqywzTwtt80=;
+ b=sKaE/MPPhvif/rAoZU2e6Kqt4JqyJnCSj6Npe2FYWh3ZN7yXjiecmgKaPnYOn9dOF/
+ 1QwsNOs+CWu67/sYMA+ZoVZp61aC8+AJGJJPSwYxZ9SuXKnpEXsaEyocYbmrv6JoM4aI
+ 8ZMbm6unzzLN1jGsQRbo6TYrvKpixwfDV82svmXGgfljosThACUgSd6z2d4Zaz3Qch1H
+ Xji8Isw/8sBh0P4Ft5BpLptuf1Y+zRExi37uumxN4dc98JR2KbydlDocbTZkllNRzFhN
+ /TzRlcUh0RYVssHdV8xq5mPTVcApzWxkV76/VoG2Gmc5UIZQ1fOn5VNOqp2d9IyZuTHW
+ g+Xg==
+X-Gm-Message-State: AOJu0YwxUoxtsG61jAElnlyjlX8l2HMuYwGWrkvX0io3s1LkXZ0EzrD5
+ C1mr6zRaWJrakaFebIFu7I4vBDOKayKNGH9gKV93s2tUAagwWPSRamcSPGwoI9jrDFGQJn3VfxR
+ V
+X-Google-Smtp-Source: AGHT+IFd5Zrr2gZfoj8q+c/s5v8wsX9bkyB6pSZ74JWTocdxqpO8cJX1vSbD7U4oYdBE+PfV2jUiyg==
+X-Received: by 2002:a5d:474f:0:b0:362:2af4:43cc with SMTP id
+ ffacd0b85a97d-36b5d7cfa55mr4952901f8f.19.1722266909624; 
+ Mon, 29 Jul 2024 08:28:29 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.173.10])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b36857d4fsm12615930f8f.86.2024.07.29.08.28.22
+ ffacd0b85a97d-36b36800cdasm12766168f8f.64.2024.07.29.08.28.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jul 2024 08:28:23 -0700 (PDT)
+ Mon, 29 Jul 2024 08:28:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/14] gitlab-ci: Add "check-functional" to the build tests
-Date: Mon, 29 Jul 2024 17:27:11 +0200
-Message-ID: <20240729152714.10225-12-philmd@linaro.org>
+Subject: [PULL 12/14] tests/avocado: mips: fallback to HTTP given certificate
+ expiration
+Date: Mon, 29 Jul 2024 17:27:12 +0200
+Message-ID: <20240729152714.10225-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240729152714.10225-1-philmd@linaro.org>
 References: <20240729152714.10225-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,227 +95,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Cleber Rosa <crosa@redhat.com>
 
-Now that we converted many tests from the "check-avocado" test suite
-to the "check-functional" test suite, we should make sure that these
-also get tested in the CI.
+The SSL certificate installed at mipsdistros.mips.com has expired:
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240724175248.1389201-24-thuth@redhat.com>
+ 0 s:CN = mipsdistros.mips.com
+ i:C = US, O = Amazon, OU = Server CA 1B, CN = Amazon
+ a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+ v:NotBefore: Dec 23 00:00:00 2019 GMT; NotAfter: Jan 23 12:00:00 2021 GMT
+
+Because this project has no control over that certificate and host,
+this falls back to plain HTTP instead.  The integrity of the
+downloaded files can be guaranteed by the existing hashes for those
+files (which are not modified here).
+
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Cleber Rosa <crosa@redhat.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240726134438.14720-2-crosa@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- .gitlab-ci.d/buildtest-template.yml |  3 +-
- .gitlab-ci.d/buildtest.yml          | 60 ++++++++++++++---------------
- 2 files changed, 32 insertions(+), 31 deletions(-)
+ tests/avocado/boot_linux_console.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 8f7ebfaed8..54cae74a8e 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -71,7 +71,7 @@
-     reports:
-       junit: build/meson-logs/testlog.junit.xml
- 
--.avocado_test_job_template:
-+.functional_test_job_template:
-   extends: .common_test_job_template
-   cache:
-     key: "${CI_JOB_NAME}-cache"
-@@ -98,6 +98,7 @@
-         du -chs ${CI_PROJECT_DIR}/avocado-cache ;
-       fi
-     - export AVOCADO_ALLOW_UNTRUSTED_CODE=1
-+    - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-   after_script:
-     - cd build
-     - du -chs ${CI_PROJECT_DIR}/avocado-cache
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index aa32782405..1d2afae996 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -22,14 +22,14 @@ check-system-alpine:
-     IMAGE: alpine
-     MAKE_CHECK_ARGS: check-unit check-qtest
- 
--avocado-system-alpine:
--  extends: .avocado_test_job_template
-+functional-system-alpine:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-alpine
-       artifacts: true
-   variables:
-     IMAGE: alpine
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
- 
- build-system-ubuntu:
-@@ -53,14 +53,14 @@ check-system-ubuntu:
-     IMAGE: ubuntu2204
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-ubuntu:
--  extends: .avocado_test_job_template
-+functional-system-ubuntu:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-ubuntu
-       artifacts: true
-   variables:
-     IMAGE: ubuntu2204
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
- 
- build-system-debian:
-@@ -85,14 +85,14 @@ check-system-debian:
-     IMAGE: debian
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-debian:
--  extends: .avocado_test_job_template
-+functional-system-debian:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-debian
-       artifacts: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
- 
- crash-test-debian:
-@@ -129,14 +129,14 @@ check-system-fedora:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-fedora:
--  extends: .avocado_test_job_template
-+functional-system-fedora:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-fedora
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
-       arch:riscv32 arch:ppc arch:sparc64
- 
-@@ -243,14 +243,14 @@ check-system-centos:
-     IMAGE: centos9
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-centos:
--  extends: .avocado_test_job_template
-+functional-system-centos:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-centos
-       artifacts: true
-   variables:
-     IMAGE: centos9
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
-       arch:sh4
- 
-@@ -274,14 +274,14 @@ check-system-opensuse:
-     IMAGE: opensuse-leap
-     MAKE_CHECK_ARGS: check
- 
--avocado-system-opensuse:
--  extends: .avocado_test_job_template
-+functional-system-opensuse:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-opensuse
-       artifacts: true
-   variables:
-     IMAGE: opensuse-leap
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
- 
- #
-@@ -302,15 +302,15 @@ build-system-flaky:
-       ppc64-softmmu rx-softmmu s390x-softmmu sh4-softmmu x86_64-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
--avocado-system-flaky:
--  extends: .avocado_test_job_template
-+functional-system-flaky:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-system-flaky
-       artifacts: true
-   allow_failure: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
-     QEMU_JOB_OPTIONAL: 1
-     QEMU_TEST_FLAKY_TESTS: 1
-     AVOCADO_TAGS: flaky
-@@ -485,14 +485,14 @@ check-cfi-aarch64:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-aarch64:
--  extends: .avocado_test_job_template
-+functional-cfi-aarch64:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-aarch64
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- build-cfi-ppc64-s390x:
-   extends:
-@@ -523,14 +523,14 @@ check-cfi-ppc64-s390x:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-ppc64-s390x:
--  extends: .avocado_test_job_template
-+functional-cfi-ppc64-s390x:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-ppc64-s390x
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- build-cfi-x86_64:
-   extends:
-@@ -557,14 +557,14 @@ check-cfi-x86_64:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check
- 
--avocado-cfi-x86_64:
--  extends: .avocado_test_job_template
-+functional-cfi-x86_64:
-+  extends: .functional_test_job_template
-   needs:
-     - job: build-cfi-x86_64
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado
-+    MAKE_CHECK_ARGS: check-avocado check-functional
- 
- tsan-build:
-   extends: .native_build_job_template
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index c35fc5e9ba..450d67be6a 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -299,7 +299,7 @@ def test_mips_malta32el_nanomips_4k(self):
+         :avocado: tags=endian:little
+         :avocado: tags=cpu:I7200
+         """
+-        kernel_url = ('https://mipsdistros.mips.com/LinuxDistro/nanomips/'
++        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+                       'generic_nano32r6el_page4k.xz')
+         kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
+@@ -312,7 +312,7 @@ def test_mips_malta32el_nanomips_16k_up(self):
+         :avocado: tags=endian:little
+         :avocado: tags=cpu:I7200
+         """
+-        kernel_url = ('https://mipsdistros.mips.com/LinuxDistro/nanomips/'
++        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+                       'generic_nano32r6el_page16k_up.xz')
+         kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
+@@ -325,7 +325,7 @@ def test_mips_malta32el_nanomips_64k_dbg(self):
+         :avocado: tags=endian:little
+         :avocado: tags=cpu:I7200
+         """
+-        kernel_url = ('https://mipsdistros.mips.com/LinuxDistro/nanomips/'
++        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+                       'generic_nano32r6el_page64k_dbg.xz')
+         kernel_hash = '18d1c68f2e23429e266ca39ba5349ccd0aeb7180'
 -- 
 2.45.2
 
