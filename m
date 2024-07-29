@@ -2,101 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82664940486
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A70D940431
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:13:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcW1-0001Zg-K1; Mon, 29 Jul 2024 22:23:05 -0400
+	id 1sYcLc-0006hG-Pw; Mon, 29 Jul 2024 22:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sYcVw-0001ND-I1; Mon, 29 Jul 2024 22:23:00 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYcLa-0006dE-BR
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:12:18 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sYcVv-00072N-0b; Mon, 29 Jul 2024 22:23:00 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3687f8fcab5so1759928f8f.3; 
- Mon, 29 Jul 2024 19:22:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYcLX-0004BM-So
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:12:18 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-25e3bc751daso2939013fac.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:12:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1722306174; x=1722910974; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8JdBHp9lpgX9d7tp+bmQGMt8Ej9jnlJjkVMDxsR7jhs=;
- b=LTMzMOh1XVdUJLJ5KFjcLMdkEMpNIgF0GRMWraOq0PByzsejja55W04SOdHzKBw0Z9
- W73yh8h++mWxxhGnV3Y8e4KeI53vEVe+vJooPiKwa0hIRcjVMGjOa2V1eVe671JHOEyz
- E/IKGVo49ADWnFtDr9G+OVFBnrmpZqaIHlzQyeK5twH9iW280DzEOwu1/6fEipSTEBHF
- vaGG0BCUgeGcPCmgKIaS2RNUx5O3As1rWtyAzmZx/ilw5YVxkj3yN07A0ijH2NEWEeDF
- ogMoACmWlJxHB5GJ9D6xgBvCvd5DrNm/aeijJLVzaLpldzyoxY5PzDzeETzFLnUQwR9S
- xTcA==
+ d=linaro.org; s=google; t=1722305534; x=1722910334; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ref+X6HfwcJVt+DUoyjVSKl/pdGsw5DSkY0LXIiNoNc=;
+ b=NrL1jTfrJaowQ1RDHCTOXIiGUECAHpJ9eU6o72313WQ1TNcO99PYCy62t2RYiJTlmz
+ 5IBdwNvUd1eeFZu958YIPSVNHCDKRGIJ1vXC9A7DDJduf7vFSHWxPzZlaud2P+HSK2Z8
+ goSGsAF5FQeNZvzilWocXT7b8F07vlpdPfd8iuVg/M7mt/K0d7xrC9mVseeaGWctr/Rb
+ QxmiZfNC5u25IwhrYwNWtCa9FOkyYi4i+L/VS35j8palLFVVYaZXwIdCLVG13yVK26EL
+ 67ca+G7LwWQDGyaxvLIvxfyyo7CYZnQr3HwU5m/NR+IiOexe++vsqFg+InlD9N+YWBma
+ H8vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722306174; x=1722910974;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8JdBHp9lpgX9d7tp+bmQGMt8Ej9jnlJjkVMDxsR7jhs=;
- b=eXGM5CAzsACcolf0bfrwh2qFWK2nxsGvGAxIWEGa/0y2v/ipRUTX4jgsLhr9ro1Ui3
- QVOmKPj+XtB3yhzMFXVDMCjuqD9nMe/TbzSzapOqeiGX/ObpEYpUsE0rU0KBv99hkAyN
- nrRUTT0M+oZMc/NqDj1lkkVR4c/h8Q4bSAhPIZkh6yqI9JywrBAY0Me5fqTjo/1CFraO
- vhR9AcEVh/ttiCbNaF8Tp7GuNLKUycAzWTvpoQMO7xsZiy8oaF0wyekULu043Eu/6Oiw
- sO7WUV/WtRnz7jpGboCOfx9NK3iupjctKiJttpDrod+0TnNE5uCOTQJcf9SSpIZU6HPb
- GI2A==
+ d=1e100.net; s=20230601; t=1722305534; x=1722910334;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ref+X6HfwcJVt+DUoyjVSKl/pdGsw5DSkY0LXIiNoNc=;
+ b=hMEPuVl8KmPLHhM7gxktodDAxD5M+TSpTKw2Y+nCP0sQ+/95u9iW9sx+uix26Nvx8R
+ 1SSGdPBK4e2zmjN6SGTEct+SXooQYPLPxlsGinnqxBU5vL367UrS0x2lP7Wa3lVudJOb
+ tcOSn9290yzkyNtd6BpF5lxU7LR4oI9c2+LuX3MzajayhwR8D16fmdvvKOa534LqSXc3
+ q2suFwNg79Y/3oVcyLE5z0LeVMB7TXI4gr/u8s9jILg6qQQlJqQyiLnEtLxkQEtKUVAq
+ N4JiXqXY+CiZnnMPxQhmqDPzH7iJ6iAiz9oXjEOJaQP73RkfaZjCMaYyyW3nKDOxVvly
+ m2xA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXYOCsGagN7m9e8Fu6kcT2H5x4UX8ej90G2u9dGIQdqQUStGJ5FHXAGm2/ajZ2yOTXlGM3HOqwwQwE7s9EmBeRY4ZSMWMXGrmdc9baKeNK4vS1fjblZ08Cl4wUs1cAwirSwC94Xeqx/e3BvRHzLFCcZdA==
-X-Gm-Message-State: AOJu0Yz4oynFg5M9AJDIO9swbT+uAt7daL1Gek0lXCpp+IJ3rXmCG0Xi
- xb7dnX2x2Vv+uZ2gEZsGDUBAE+8vIFj64OWL5ivaEWLmui9OtNeOr9VKRA==
-X-Google-Smtp-Source: AGHT+IHPmwK10GW8rSmAb6oBJyj4R4EN4ji+4rccKeBoSU/xMINAxC24bddO8C0ZhAc+4HQVXOgocQ==
-X-Received: by 2002:a05:600c:1e26:b0:426:5b84:86d2 with SMTP id
- 5b1f17b1804b1-42811da946fmr65216725e9.20.1722287283185; 
- Mon, 29 Jul 2024 14:08:03 -0700 (PDT)
-Received: from ?IPv6:::1?
- (p200300faaf001b00951a078cd3412cc4.dip0.t-ipconnect.de.
- [2003:fa:af00:1b00:951a:78c:d341:2cc4])
+ AJvYcCWzEf2ijZg785FUx37GyH13PdnBtFcY3wLy6pEYv6G7Dg1j20LC7PPWz1CPxNrtg7r6RR8ToUQelHyqmR2ho3r/rhHmyNw=
+X-Gm-Message-State: AOJu0YxTH7e5OaraNyTBHXTDpFrlCVCsX7FrVt0iI1zavAUgYB9Yh1IW
+ YWixX//e4Fh+gXsxRdGtxLc54sTINRDOHCtyFvSTQkF7faeHyVMhXqnr3c2z7DnYMwBIGQNSTez
+ GJSc=
+X-Google-Smtp-Source: AGHT+IFkKK2UYhb4JKUt9XHfRNavmItVLu559BD86X//ExFnud3V/5EgiJqMYufpLSwvE7P253Oxjg==
+X-Received: by 2002:a17:902:c40c:b0:1fd:a412:5e05 with SMTP id
+ d9443c01a7336-1ff0491ad81mr85602945ad.52.1722288753963; 
+ Mon, 29 Jul 2024 14:32:33 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4280f8da2f7sm122892195e9.10.2024.07.29.14.08.02
+ d9443c01a7336-1fed7c8c9d3sm88307155ad.3.2024.07.29.14.32.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Jul 2024 14:08:02 -0700 (PDT)
-Date: Mon, 29 Jul 2024 21:07:54 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
- Sergio Lopez <slp@redhat.com>,
- =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Artyom Tarasenko <atar4qemu@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- Hanna Reitz <hreitz@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- John Snow <jsnow@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Leonardo Bras <leobras@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v5 05/11] exec/ioport: Add portio_list_set_address()
-In-Reply-To: <f5f5dfca-d60b-4b0d-add9-e41b42bd4ce2@linaro.org>
-References: <20240114123911.4877-1-shentey@gmail.com>
- <20240114123911.4877-6-shentey@gmail.com>
- <f5f5dfca-d60b-4b0d-add9-e41b42bd4ce2@linaro.org>
-Message-ID: <C0822DF6-EA81-48BB-9102-887E66441EF2@gmail.com>
+ Mon, 29 Jul 2024 14:32:33 -0700 (PDT)
+Message-ID: <38387ea5-fb29-430f-a83a-917ca74b8357@linaro.org>
+Date: Tue, 30 Jul 2024 07:32:26 +1000
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x431.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] osdep: add a qemu_close_all_open_fd() helper
+To: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
+References: <20240726075502.4054284-1-cleger@rivosinc.com>
+ <0914a034-260f-44ef-8d75-2dca9d5fcb24@linaro.org>
+ <94b658a0-21c1-4cd0-8bc5-21c0c71b9cb8@rivosinc.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <94b658a0-21c1-4cd0-8bc5-21c0c71b9cb8@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -114,66 +101,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/30/24 00:20, Clément Léger wrote:
+> 
+> 
+> On 29/07/2024 16:00, Philippe Mathieu-Daudé wrote:
+>> Hi Clément,
+>>
+>> On 26/7/24 09:54, Clément Léger wrote:
+>>> Since commit 03e471c41d8b ("qemu_init: increase NOFILE soft limit on
+>>> POSIX"), the maximum number of file descriptors that can be opened are
+>>> raised to nofile.rlim_max. On recent debian distro, this yield a maximum
+>>> of 1073741816 file descriptors. Now, when forking to start
+>>> qemu-bridge-helper, this actually calls close() on the full possible file
+>>> descriptor range (more precisely [3 - sysconf(_SC_OPEN_MAX)]) which
+>>> takes a considerable amount of time. In order to reduce that time,
+>>> factorize existing code to close all open files descriptors in a new
+>>> qemu_close_all_open_fd() function. This function uses various methods
+>>> to close all the open file descriptors ranging from the most efficient
+>>> one to the least one. It also accepts an ordered array of file
+>>> descriptors that should not be closed since this is required by the
+>>> callers that calls it after forking. Since this function is not used
+>>> for Win32, do not implement it to force an error at link time if used.
+>>>
+>>> Signed-off-by: Clément Léger <cleger@rivosinc.com>
+>>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>>> ---
+>>> v5:
+>>>    - Move qemu_close_all_open_fd() to oslib-posix.c since it does not
+>>>      compile on windows and is not even used on it.
+>>>    - v4:
+>>> https://lore.kernel.org/qemu-devel/20240717124534.1200735-1-cleger@rivosinc.com/
+>>>
+>>> v4:
+>>>    - Add a comment saying that qemu_close_all_open_fd() can take a NULL
+>>> skip
+>>>      array and nskip == 0
+>>>    - Added an assert in qemu_close_all_open_fd() to check for skip/nskip
+>>>      parameters
+>>>    - Fix spurious tabs instead of spaces
+>>>    - Applied checkpatch
+>>>    - v3:
+>>> https://lore.kernel.org/qemu-devel/20240716144006.6571-1-cleger@rivosinc.com/
+>>>
+>>> v3:
+>>>    - Use STD*_FILENO defines instead of raw values
+>>>    - Fix indentation of close_all_fds_after_fork()
+>>>    - Check for nksip in fallback code
+>>>    - Check for path starting with a '.' in qemu_close_all_open_fd_proc()
+>>>    - Use unsigned for cur_skip
+>>>    - Move ifdefs inside close_fds functions rather than redefining them
+>>>    - Remove uneeded 'if(nskip)' test
+>>>    - Add comments to close_range version
+>>>    - Reduce range of skip fd as we find them in
+>>>    - v2:
+>>> https://lore.kernel.org/qemu-devel/20240618111704.63092-1-cleger@rivosinc.com/
+>>>
+>>> v2:
+>>>    - Factorize async_teardown.c close_fds implementation as well as
+>>> tap.c ones
+>>>    - Apply checkpatch
+>>>    - v1:
+>>> https://lore.kernel.org/qemu-devel/20240617162520.4045016-1-cleger@rivosinc.com/
+>>>
+>>> ---
+>>>    include/qemu/osdep.h    |   9 +++
+>>>    net/tap.c               |  33 +++++-----
+>>>    system/async-teardown.c |  37 +-----------
+>>>    util/oslib-posix.c      | 131 ++++++++++++++++++++++++++++++++++++++++
+>>>    4 files changed, 160 insertions(+), 50 deletions(-)
+>>
+>> I'm getting this error on msys2, not sure if related:
+>>
+>> WARNING: Failed to terminate process: 1 error occurred:
+>>      * failed to attach the runner process to the console of its parent
+>> process: The handle is invalid.
+>>
+>> I find your patch hard to review. Do you mind splitting as trivial
+>> changes? Something like:
+>>
+>> - Expose close_all_open_fd() renamed as qemu_close_all_open_fd()
+>> - Rework qemu_close_all_open_fd()
+>> - Factor close_all_fds_after_fork() in net/tap.c
+>> - Use qemu_close_all_open_fd() in net/tap.c
+> 
+> Yes sure, I'll do that.
+
+If you're making updates, I think you should drop the linux ifdef for /proc/self/fd.  This 
+is also present on Solaris.  Importantly, it'll compile on all POSIX systems, whether or 
+not /proc is available.
 
 
-Am 29=2E Juli 2024 09:26:19 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phi=
-lmd@linaro=2Eorg>:
->On 14/1/24 13:39, Bernhard Beschow wrote:
->> Some SuperI/O devices such as the VIA south bridges or the PC87312 cont=
-roller
->> are able to relocate their SuperI/O functions=2E Add a convenience func=
-tion for
->> implementing this in the VIA south bridges=2E
->>=20
->> This convenience function relies on previous simplifications in exec/io=
-port
->> which avoids some duplicate synchronization of I/O port base addresses=
-=2E The
->> naming of the function is inspired by its memory_region_set_address() p=
-endant=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->>   docs/devel/migration=2Erst |  5 +++--
->>   include/exec/ioport=2Eh    |  2 ++
->>   system/ioport=2Ec          | 19 +++++++++++++++++++
->>   3 files changed, 24 insertions(+), 2 deletions(-)
->
->
->> +void portio_list_set_address(PortioList *piolist, uint32_t addr)
->> +{
->> +    MemoryRegionPortioList *mrpio;
->> +    unsigned i, j;
->> +
->
->       memory_region_transaction_begin();
->
->> +    for (i =3D 0; i < piolist->nr; ++i) {
->> +        mrpio =3D container_of(piolist->regions[i], MemoryRegionPortio=
-List, mr);
->
->Should we check mrpio->mr is disabled before changing its base address?
-
-Isn't that the responsibility of the guest? What should we do if the check=
- fails?
-
->
->> +        memory_region_set_address(&mrpio->mr,
->> +                                  mrpio->mr=2Eaddr - piolist->addr + a=
-ddr);
->> +        for (j =3D 0; mrpio->ports[j]=2Esize; ++j) {
->> +            mrpio->ports[j]=2Eoffset +=3D addr - piolist->addr;
->> +        }
->
->          memory_region_transaction_commit();
->
->> +    }
->> +
->> +    piolist->addr =3D addr;
->> +}
->> +
->>   static void memory_region_portio_list_finalize(Object *obj)
->>   {
->>       MemoryRegionPortioList *mrpio =3D MEMORY_REGION_PORTIO_LIST(obj);
->
+r~
 
