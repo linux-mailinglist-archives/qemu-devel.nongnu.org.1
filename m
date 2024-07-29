@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0E893FCD2
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 19:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E1A93FCD6
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 19:54:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYUZJ-0004yY-FC; Mon, 29 Jul 2024 13:53:58 -0400
+	id 1sYUZB-0004y0-MV; Mon, 29 Jul 2024 13:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sYUZ6-0004ka-5B
+ id 1sYUZ6-0004nN-Pt
  for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:44 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sYUZ4-0000In-Ef
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:43 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3db23a60850so1795586b6e.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 10:53:41 -0700 (PDT)
+ id 1sYUZ5-0000JT-5Y
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 13:53:44 -0400
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-264a12e05b9so2430360fac.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 10:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722275621; x=1722880421;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722275622; x=1722880422;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k622JqYymJR6YovQS6GBPxe8YFj6SVEYXb2hrEdnpy0=;
- b=PcHl/SdyHHXaw2e1U08YzmaRofzCKpd7C2YIx+a2+6ux2t2xtqCznIhvfy6VvCGY5s
- YIqWUf7uxewlYmSBUGeCj9pFFXppN4a3joCxPIqknD635iMvdok3OJHi3VBEe2eJxegj
- ymLHu5194QGHAORsOIPvv4puCr7ZlNShtJuvaZGMI2UB3n08rgJSl/IpFzxkC6i3TsQO
- dKVwUU6yvNtgm4BV7eEoYeOjYYD+oKDhRP6WRANMCU85TNznrVFjakloFEx1QOwP5Dj3
- +SmLTOUw3MFk4Q50d4qqN7CEkYqLzk6iqKrHVbzCN3wB37dxcw2DV1sXZeO6i7WwKDc0
- h6wg==
+ bh=hFgFtJisZmDduK/TVKWagBehgT0Nl+9kjWGTzeVvu0Q=;
+ b=Yg+vus3gX9zFZwcQ4McID+YPWmPxsdvOkUva1jvMSIRa9wBq73SJcZk/DNQvR4SIdI
+ SQsBsKM2f0o+rcMOx9jRssX8PrXlh1/GK/t9blKF787iUTaZMx2R/Tk9boxvV16GBwK2
+ q3Ye9aaF5mcrZqEdcTnvLiLhM/qWVvfO75Nf0a+T9Buzim5xaxJGMwApGJ3ofx5iZWbi
+ CR8fJuG491OlyyNG7R9cCqQKq/BmuKwWnbMHA16qOF0ujPtG4Rod31oVgW+wYLDXRE5y
+ YE8lMFhx4nq8VTs7jhqcDFsMahpkiDM/C7RLlsAWnWVjYHWf/c2u9l0t0+EASKuI7Ry8
+ Yjiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722275621; x=1722880421;
+ d=1e100.net; s=20230601; t=1722275622; x=1722880422;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k622JqYymJR6YovQS6GBPxe8YFj6SVEYXb2hrEdnpy0=;
- b=iXsIBZvpNwM026hEN1/6zBRj7PpygoTG1W1kgK20S731EC4rjLAK5fgiQ+KCdKYbS4
- oqhUB3VmrobfZXS2E4qGVkONfRCNsWhvKt1v0Hl5GN6eYNmFq/Mj3JpExzP/+cnEfZ3L
- Xi37QGIj8Bv+g4bLLanX9cLNZJAWWfh/hAeTVHFS31cw9T9gjJ6QFkNQlCuXXuSxtDVG
- e+W7PvtKB0Xc4mI/0bWhfkO+Bj8m65zGgR/JLODQ9S9jvkeAnOSw7NYy/bujVIgomP1Y
- Zoqc+UFh+Tht6jGk+AXjQ4u2QvDRutI/puzc/Sc1qgBkjG7kjVr2377Q5RCM3ODkNKQH
- jEfg==
+ bh=hFgFtJisZmDduK/TVKWagBehgT0Nl+9kjWGTzeVvu0Q=;
+ b=SNeM3FQ87pG+psQmopn02lXexQ7Ifot/0B/GBkc6bUqLIRWMtFrDSTmuMXrVmB+dAZ
+ Fskrft8Ant1nuWaoDlPiT6xd9otC7jnc7BJCflXHr0ZzzwrrIfloo9Nxulg8KK5Pqkko
+ bCz2GEHbh1/LGfu1kyDqzsKygfmwh11oI9FhDs4MErcXiXx2hTdx6MSd03Kgt3hOGIlc
+ 7tIjARosQKiDaIcshOin37DggwAlUDVDV2uwZvi3EIVXZDuPMgRurVkxVKil9RkdKDRK
+ mIm2T0yL1I2lUri6hrSQHgkiomJV78YhnYIl1EWClfra7t2xzedT+MXgZDhcBzrhbUwb
+ EfjQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXTtZgXilZyMaQjdZxY1tocHOmws321NyWnBHKEUxsPirvkhnwHwla40/a0JWT2scUWtWg4rqYcGhZVtNzPkAe8txwJ5UE=
-X-Gm-Message-State: AOJu0YzYyMHpqOeSUW1iTZbGh8oMkVg2s7LMPldFGYL6Ej/uaudzqonp
- 9viUKRzlF4TlPNFPHmvZG2oM8qKEC5RgUu0KBkaIaVVvpTZDHpt5OAGwPBFlPaI=
-X-Google-Smtp-Source: AGHT+IE1F+bQDJgORGgRNbJkhWRWXDWdWbmiWUMWkwXtaLvT4jnkfLGc/EHvvji+PRkNnzm5zxGmrA==
-X-Received: by 2002:a05:6808:219b:b0:3d9:24f8:7dd2 with SMTP id
- 5614622812f47-3db23a5a064mr11468658b6e.6.1722275620770; 
- Mon, 29 Jul 2024 10:53:40 -0700 (PDT)
+ AJvYcCUf125zCcCyLZUGkL64cYhSG8kFmLkab2C75NlOWPlYjrVXQ+pl3r2eYsOULGUZ+3qET8N78m2XqIa2B5tKpb3PE0jModE=
+X-Gm-Message-State: AOJu0YxbJ46ESJCNTk8rtpOcksY9DO5Zf7HUrvA8S2jIzLn2ig12iWnH
+ n5tCgcYUq1fol32GiFdpC+wyi1TznPNglEbpqCEh0OoLqaAep+2Kq5Zk08PEtm4=
+X-Google-Smtp-Source: AGHT+IEEHsp/lmXmSHHovi1+fg0xRgYEy80myLMapMQmqibrBOgTbC812oSZx7NLC3nkkIiroz4yMA==
+X-Received: by 2002:a05:6870:519:b0:25a:eca3:6b5e with SMTP id
+ 586e51a60fabf-267d4cdd92emr10312659fac.9.1722275621922; 
+ Mon, 29 Jul 2024 10:53:41 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7a9f7c71b15sm6303141a12.18.2024.07.29.10.53.39
+ 41be03b00d2f7-7a9f7c71b15sm6303141a12.18.2024.07.29.10.53.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 10:53:40 -0700 (PDT)
+ Mon, 29 Jul 2024 10:53:41 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, jim.shu@sifive.com,
  andy.chiu@sifive.com, jesse.huang@sifive.com, kito.cheng@sifive.com
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v2 08/24] linux-user/syscall: introduce prctl for indirect
- branch tracking
-Date: Mon, 29 Jul 2024 10:53:10 -0700
-Message-ID: <20240729175327.73705-9-debug@rivosinc.com>
+Subject: [PATCH v2 09/24] linux-user/riscv: implement indirect branch tracking
+ prctls
+Date: Mon, 29 Jul 2024 10:53:11 -0700
+Message-ID: <20240729175327.73705-10-debug@rivosinc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240729175327.73705-1-debug@rivosinc.com>
 References: <20240729175327.73705-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=debug@rivosinc.com; helo=mail-oi1-x22b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=debug@rivosinc.com; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,58 +97,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Each application enables indirect branch tracking (forward cfi) for itself
-via prctl. Adding branch tracking prctl in linux-user/syscall.
+Implements indirect branch tracking prctls for riscv. Setting and clearing
+branch tracking prctl simply turns on/off `ufcfien` field in `env`.
+tb flush is needed because branch tracking itself leverages tb creation
+logic.
 
-Using same prctl code as proposed in cfi patches in kernel mailing list [1]
-
-[1] - https://lore.kernel.org/all/20240403234054.2020347-1-debug@rivosinc.com/
+locking branch tracking (forward cfi) is not implemented yet (no need yet)
+but added for completeness (kernel patches have this prctl)
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Co-developed-by: Jesse Huang <jesse.huang@sifive.com>
 Co-developed-by: Jim Shu <jim.shu@sifive.com>
 Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
-Co-developed-by: Jesse Huang <jesse.huang@sifive.com>
 ---
- linux-user/syscall.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ linux-user/riscv/target_prctl.h | 43 +++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index b8c278b91d..ec157c1088 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6295,6 +6295,17 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
- # define PR_SME_VL_INHERIT   (1 << 17)
- #endif
- 
-+#ifndef PR_GET_INDIR_BR_LP_STATUS
-+# define PR_GET_INDIR_BR_LP_STATUS      74
-+#endif
-+#ifndef PR_SET_INDIR_BR_LP_STATUS
-+# define PR_SET_INDIR_BR_LP_STATUS      75
-+# define PR_INDIR_BR_LP_ENABLE          (1UL << 0)
-+#endif
-+#ifndef PR_LOCK_INDIR_BR_LP_STATUS
-+# define PR_LOCK_INDIR_BR_LP_STATUS     76
-+#endif
+diff --git a/linux-user/riscv/target_prctl.h b/linux-user/riscv/target_prctl.h
+index eb53b31ad5..d7f9f954c9 100644
+--- a/linux-user/riscv/target_prctl.h
++++ b/linux-user/riscv/target_prctl.h
+@@ -1 +1,44 @@
+ /* No special prctl support required. */
++#ifndef RISCV_TARGET_PRCTL_H
++#define RISCV_TARGET_PRCTL_H
 +
- #include "target_prctl.h"
- 
- static abi_long do_prctl_inval0(CPUArchState *env)
-@@ -6477,6 +6488,14 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-     case PR_SET_TSC:
-         /* Disable to prevent the target disabling stuff we need. */
-         return -TARGET_EINVAL;
-+    case PR_GET_INDIR_BR_LP_STATUS:
-+    case PR_SET_INDIR_BR_LP_STATUS:
-+    case PR_LOCK_INDIR_BR_LP_STATUS:
-+#ifndef do_prctl_cfi
-+        return do_prctl_inval1(env, arg2);
-+#else
-+        return do_prctl_cfi(env, option, arg2);
++/*
++ * -TARGET_EINVAL: Unsupported/Invalid flag for this architecture
++ * -TARGET_EACCES: try to set an already set CFI feature
++ * -TARGET_ENOENT: CFI feature is not supported by CPU
++ */
++static abi_long do_prctl_cfi(CPUArchState *env,
++                                 abi_long option, abi_long flag)
++{
++    if (env_archcpu(env)->cfg.ext_zicfilp) {
++
++        switch (option) {
++        case PR_GET_INDIR_BR_LP_STATUS:
++            abi_ulong fcfi_status = 0;
++            /* indirect branch tracking is enabled on the task or not */
++            fcfi_status |= (env->ufcfien ? PR_INDIR_BR_LP_ENABLE : 0);
++            return copy_to_user(flag, &fcfi_status, sizeof(fcfi_status)) ? \
++                   -EFAULT : 0;
++
++        case PR_SET_INDIR_BR_LP_STATUS:
++            /* if any other bit is set, its invalid param */
++            if (flag & ~PR_INDIR_BR_LP_ENABLE) {
++                return -TARGET_EINVAL;
++            }
++            /* set or clear branch tracking */
++            env->ufcfien = (flag & PR_INDIR_BR_LP_ENABLE);
++            tb_flush(env_cpu(env));
++            return 0;
++
++        /* locking not implemented (also not needed for qemu-user) yet */
++        case PR_LOCK_INDIR_BR_LP_STATUS:
++            return -TARGET_EINVAL;
++        }
++    }
++
++    return -TARGET_ENOENT;
++}
++
++#define do_prctl_cfi do_prctl_cfi
++
 +#endif
- 
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unsupported prctl: " TARGET_ABI_FMT_ld "\n",
 -- 
 2.44.0
 
