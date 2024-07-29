@@ -2,53 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEDA93F4E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 14:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 826D793F510
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jul 2024 14:20:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYPBc-0005mS-Ps; Mon, 29 Jul 2024 08:09:08 -0400
+	id 1sYPL8-0001ie-Un; Mon, 29 Jul 2024 08:18:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=joD8=O5=kaod.org=clg@ozlabs.org>)
- id 1sYPBa-0005kt-I6; Mon, 29 Jul 2024 08:09:06 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sYPL6-0001hd-Le
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:18:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=joD8=O5=kaod.org=clg@ozlabs.org>)
- id 1sYPBY-0005wO-DK; Mon, 29 Jul 2024 08:09:06 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WXcbF5f25z4x6n;
- Mon, 29 Jul 2024 22:08:57 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WXcbC5VW3z4x3d;
- Mon, 29 Jul 2024 22:08:55 +1000 (AEST)
-Message-ID: <51155ede-a34f-40f0-8122-540e25974466@kaod.org>
-Date: Mon, 29 Jul 2024 14:08:51 +0200
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sYPL4-0007lx-7N
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 08:18:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722255532;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iHV4MXS48ouDo3fuFfPdRmfQIaIfwPHQIPJ2Azn6cPI=;
+ b=UHIGdwN7TuflKTGfpKGyaW8c0XVEbVSKC1UOwLuaE1QreY20m8mQSXKj67d5GJ1toyyP2M
+ Ms3Au4I3SGNuux50aS6YzQkJnCzpPQ8tKJZNOlOGCw7C3FU00jvDYvjYIW+GfjYXzxKxCn
+ nzD0iv3wkQ6dMY3PCEMb5I9Os0Shm+A=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-0czvdAzEN7-QaH8M8kTG8Q-1; Mon, 29 Jul 2024 08:18:44 -0400
+X-MC-Unique: 0czvdAzEN7-QaH8M8kTG8Q-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2ef2a44c3dfso29939701fa.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 05:18:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722255523; x=1722860323;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iHV4MXS48ouDo3fuFfPdRmfQIaIfwPHQIPJ2Azn6cPI=;
+ b=FPO9uncNf2ArgpltIb6pRZl7yILV4br+jHgdUFM5fNBR/g4qCv7fFa80Av+6y+rvHt
+ axKr95qHwEi9uInFRv9sr+yE3w+4zZ6yBrzpKzrjLbojqnXWx0oGtRztvpKBQXVUUmUF
+ vyOw+TwO4qvpPRgeElIZmZI5EK1CSxr1Xgynz8VNxe71xk0UOE/CANhXrZ0ouajHCxb/
+ TZUKy78mPBRZ1B/nIyBmgYDYCPIN5QR1R2WKX9U/pojKVQ0kfz7zkCfq0kiLmNuLvwRN
+ zLqvV1mf47Gy44QH7WrMJ8zndidjgsBOukgW1MfgQzuNSSxC3lfOMFmNnQuZAVXfmp9a
+ 6Wtw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXaC7ggNDdogwjDBH8i76EWkdbuV7mjEo6CSvqxtLTPslo3sbtMCYlBEcA5cNxoxVOF/Qhd5Qx+PxSgqYirdXMSeDPJ+v0=
+X-Gm-Message-State: AOJu0YwTgPbd/NHcgEDcjoSBhRBfdT23y4rjR15vD/F4W08FED3GpRXJ
+ IWGpllJ+wSywu17Yq0pFEWx4iAS/UbmIfk5rJDPt4nANbVIeJoDmWfcxfQlt5AceaVIrPb+gVu4
+ n3ZQnNFKoVpyKdbDqAfbCxM2aOx8uW6ZuqKkHhL265lwfcjakh6LM
+X-Received: by 2002:a2e:9c88:0:b0:2ef:18b7:440b with SMTP id
+ 38308e7fff4ca-2f12ee05d8amr48508901fa.12.1722255523497; 
+ Mon, 29 Jul 2024 05:18:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtzA6eTfGdK11i95Jat1CnluAl6Spmn3Rhx090/WvKy3CNLui9mFuwRpG1sU2L7b28cONBrg==
+X-Received: by 2002:a2e:9c88:0:b0:2ef:18b7:440b with SMTP id
+ 38308e7fff4ca-2f12ee05d8amr48508651fa.12.1722255523028; 
+ Mon, 29 Jul 2024 05:18:43 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4280e7c64a6sm118929595e9.41.2024.07.29.05.18.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jul 2024 05:18:42 -0700 (PDT)
+Date: Mon, 29 Jul 2024 14:18:39 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: John Levon <john.levon@nutanix.com>, Manish <manish.mishra@nutanix.com>,
+ qemu-devel@nongnu.org, berrange@redhat.com, pbonzini@redhat.com,
+ bob.ball@nutanix.com, prerna.saxena@nutanix.com
+Subject: Re: [PATCH v1] target/i386: Always set leaf 0x1f
+Message-ID: <20240729141839.44203b6c@imammedo.users.ipa.redhat.com>
+In-Reply-To: <ZqEW/TIZAqLN3CKI@intel.com>
+References: <20240724075226.212882-1-manish.mishra@nutanix.com>
+ <20240724110004.389c1a0c@imammedo.users.ipa.redhat.com>
+ <21ca5c19-677b-4fac-84d4-72413577f260@nutanix.com>
+ <ZqDh2NIE2ELRcwq6@lent>
+ <20240724145432.6e91dd28@imammedo.users.ipa.redhat.com>
+ <ZqEW/TIZAqLN3CKI@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 38/96] hw/ssi: Extend SPI model
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Chalapathi V <chalapathi.v@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>,
- Glenn Miles <milesg@linux.ibm.com>
-References: <20240725235410.451624-1-npiggin@gmail.com>
- <20240725235410.451624-39-npiggin@gmail.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240725235410.451624-39-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=joD8=O5=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,48 +108,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/26/24 01:53, Nicholas Piggin wrote:
-> +static void transfer(PnvSpi *s, PnvXferBuffer *payload)
-> +{
-> +    uint32_t tx;
-> +    uint32_t rx;
-> +    PnvXferBuffer *rsp_payload = NULL;
-> +
-> +    rsp_payload = pnv_spi_xfer_buffer_new();
-> +    for (int offset = 0; offset < payload->len; offset += s->transfer_len) {
-> +        tx = 0;
-> +        for (int i = 0; i < s->transfer_len; i++) {
-> +            if ((offset + i) >= payload->len) {
-> +                tx <<= 8;
-> +            } else {
-> +                tx = (tx << 8) | payload->data[offset + i];
-> +            }
-> +        }
-> +        rx = ssi_transfer(s->ssi_bus, tx);
-> +        for (int i = 0; i < s->transfer_len; i++) {
-> +            if ((offset + i) >= payload->len) {
-> +                break;
-> +            }
-> +            *(pnv_spi_xfer_buffer_write_ptr(rsp_payload, rsp_payload->len, 1)) =
-> +                    (rx >> (8 * (s->transfer_len - 1) - i * 8)) & 0xFF;
-> +        }
-> +    }
-> +    if (rsp_payload != NULL) {
-> +        spi_response(s, s->N1_bits, rsp_payload);
-> +    }
-> +}
+On Wed, 24 Jul 2024 23:00:13 +0800
+Zhao Liu <zhao1.liu@intel.com> wrote:
 
-Coverity reports:
+> Hi Igor,
+> 
+> On Wed, Jul 24, 2024 at 02:54:32PM +0200, Igor Mammedov wrote:
+> > Date: Wed, 24 Jul 2024 14:54:32 +0200
+> > From: Igor Mammedov <imammedo@redhat.com>
+> > Subject: Re: [PATCH v1] target/i386: Always set leaf 0x1f
+> > X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+> > 
+> > On Wed, 24 Jul 2024 12:13:28 +0100
+> > John Levon <john.levon@nutanix.com> wrote:
+> >   
+> > > On Wed, Jul 24, 2024 at 03:59:29PM +0530, Manish wrote:
+> > >   
+> > > > > > Leaf 0x1f is superset of 0xb, so it makes sense to set 0x1f equivalent
+> > > > > > to 0xb by default and workaround windows issue.>
+> > > > > > This change adds a
+> > > > > > new property 'cpuid-0x1f-enforce' to set leaf 0x1f equivalent to 0xb in
+> > > > > > case extended CPU topology is not configured and behave as before otherwise.    
+> > > > > repeating question
+> > > > > why we need to use extra property instead of just adding 0x1f leaf for CPU models
+> > > > > that supposed to have it?    
+> > > > 
+> > > > As i mentioned in earlier response. "Windows expects it only when we have
+> > > > set max cpuid level greater than or equal to 0x1f. I mean if it is exposed
+> > > > it should not be all zeros. SapphireRapids CPU definition raised cpuid level
+> > > > to 0x20, so we starting seeing it with SapphireRapids."
+> > > > 
+> > > > Windows does not expect 0x1f to be present for any CPU model. But if it is
+> > > > exposed to the guest, it expects non-zero values.    
+> > > 
+> > > I think Igor is suggesting:
+> > > 
+> > >  - leave x86_cpu_expand_features() alone completely  
+> > yep, drop that if possible
+> > 
+> >    
+> > >  - change the 0x1f handling to always report topology i.e. never report all
+> > >    zeroes  
+> > 
+> > Do this but only for CPU models that have this leaf per spec,
+> > to avoid live migration issues create a new version of CPU model,
+> > so it would apply only for new version. This way older versions
+> > and migration won't be affected.   
+> 
+> So that in the future every new Intel CPU model will need to always
+> enable 0x1f. Sounds like an endless game. So my question is: at what
+> point is it ok to consider defaulting to always enable 0x1f and just
+> disable it for the old CPU model?
 
->>>     CID 1558831:  Resource leaks  (RESOURCE_LEAK)
->>>     Variable "rsp_payload" going out of scope leaks the storage it points to.
+I have suggested to enable 0x1f leaf excluding:
+   * existing cpu models (versions)
+   * cpu models that do not have this leaf in real world should
+     not have it in QEMU either.
 
+If cpu model already exists, you'd need a new version of cpu model to
+enable new leaf by default.
 
-rsp_payload should be freed.
-
-Thanks,
-
-C.
-
+For completely new cpu model, it could be enabled from the start.
+i.e. workflow for enabling that should be the same as with CPU features
+(or as you said 'endless game' of copying base model and making it look like
+should be according to spec,
+but that's the process we currently use for describing CPU models).
+ 
+> Thanks,
+> Zhao
+> 
 
 
