@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5DC9414D1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 16:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3776C94145D
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 16:28:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYoBA-0007fI-CD; Tue, 30 Jul 2024 10:50:20 -0400
-Received: from eggs.gnu.org ([209.51.188.92])
+	id 1sYmCp-0002M7-LW; Tue, 30 Jul 2024 08:43:57 -0400
+Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <n.novikov@syntacore.com>)
- id 1sYmG4-0005oc-Ie
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:47:25 -0400
-Received: from [89.207.88.248] (helo=mta-04.yadro.com)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sYmCM-0002JI-3h
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:43:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <n.novikov@syntacore.com>)
- id 1sYmEv-00089X-6H
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:47:06 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 7FE2BC0004
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1722342981;
- bh=V+l+hMPgpSjeGnJjRXQ9Se+/zBWez49MK5BRCt63NoE=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=nh6nwHJgdJp4nDGKt2I2qIzmpw1Tc1nFbwgC4mQzxFU8JP4/o46gBZdmbt26LDBOp
- cw6S2KvZyqo5NJgMSIY5dpQOuu07Ttpdb59RBVw3i2azs/dPUjOguc7qffeFPcz8pX
- Lpxkx3yLmheVqH8bxLs2U5n/eQBEhYqeeW/+yaQUuqx3OuTBPcCJVoQtroxtGoNkvn
- YfT8a6+8sqmA2qlj6ydLn2rUgaOqNLUlGvi2lDoL3+4OLrCznvSgRmrVQSoOhLbNHF
- 0zBqk4xfpnOK/BWiC+ajXP5v9oPguPZKYAGr0y4mNDtiTmAXDwnOm3YeCQxiemlN+r
- Ur+qvXSqydtYg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1722342981;
- bh=V+l+hMPgpSjeGnJjRXQ9Se+/zBWez49MK5BRCt63NoE=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=e71ss90Swa8jC8r2k2hWxQM8duJxzuhS1doTgU7siZG0MUJZocsenz075L0+oub7z
- MFGuT7iATB71lv1d1+l1B7Yt3ogG7eg2VdfcZCxeo4uWh6SFTaDcOL2RntePyRHKeB
- W5zh80bJwUmWxjwSROyW2Iife6loj4WzHIOP7sskWfFKzJ706mepGRENxX9j++J8vL
- MpA8qMKNma7+NpOj2k+Tw67d+tSjQlF3c84gTgZYCQXjyknVoEMUfUH27YibjwLPxm
- eIyQMPU8PVYYJcvKDTN1Qpx5FtDj8Ip9B84YjkxZelah5I3qEAdC6/rHZR2r8WtvQI
- 3eGnvRGl9aEUg==
-From: Nikita Novikov <n.novikov@syntacore.com>
-To: <lureau@redhat.com>
-CC: <pbonzini@redhat.com>, <qemu-devel@nongnu.org>, Nikita Novikov
- <n.novikov@syntacore.com>
-Subject: [PATCH] hw/char/riscv_htif: Fix 64-bit var write order in 32-bit
- system
-Date: Tue, 30 Jul 2024 15:35:59 +0300
-Message-ID: <20240730123559.35115-1-n.novikov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sYmBq-0007qa-L2
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:43:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722343321;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JycbVMmMRlQiGwD4Kn9RJXFGAHh+tI+ECZkH/3uGGZs=;
+ b=G+R4vqcTc5HFO1BMEBFBSu4tbqjMnR5aXgYj6MV1hlglQGMfchfhFQh83tyFQ3EdcYqSj3
+ yKIZipl0N5JygGDd1Qdhj8aT7Ajdf0JVlHCpJE96DWlWOEG5fsuzRmkOwiUBLikrnDrKNL
+ uC2LBtM3p1Mn+9qTbgcVgHOsoA910g4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-qw8dK3LXNeGxtlG7eBZLrA-1; Tue,
+ 30 Jul 2024 08:39:41 -0400
+X-MC-Unique: qw8dK3LXNeGxtlG7eBZLrA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A531C1955D4D; Tue, 30 Jul 2024 12:39:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.72])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B12273000193; Tue, 30 Jul 2024 12:39:38 +0000 (UTC)
+Date: Tue, 30 Jul 2024 07:39:35 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, thuth@redhat.com, 
+ kwolf@redhat.com, hreitz@redhat.com, den@virtuozzo.com
+Subject: Re: [PATCH] iotests/024: exclude 'backing file format' field from
+ the output
+Message-ID: <mg4thvc6d2uhixhenryitgctf4hkzkxmefs7ykc2ywr3rjpuk2@vbxdqaqw6myi>
+References: <20240730094701.790624-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- T-EXCH-12.corp.yadro.com (172.17.11.143)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 89.207.88.248 (deferred)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=n.novikov@syntacore.com; helo=mta-04.yadro.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RDNS_NONE=0.793, T_SPF_HELO_TEMPERROR=0.01,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240730094701.790624-1-andrey.drobyshev@virtuozzo.com>
+User-Agent: NeoMutt/20240425
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 Jul 2024 10:50:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,126 +79,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we are trying to write 64-bit value in 32-bit system, the value in HTIF device divides
-on 2 separate 32-bit parts. So device expects write to xHOST_OFFSET1 first, then to xHOST_OFFSET2.
-But some compilers (ex. CLANG) can change the writing queue (xHOST_OFFSET2 first, xHOST_OFFSET1 second)
-because of machine instructions order swapping. That causes wrong behaviour of HTIF device.
-This patch is removing dependency of writing order, so the device will work correctly regardless of compilers.
+On Tue, Jul 30, 2024 at 12:47:01PM GMT, Andrey Drobyshev wrote:
+> Apparently 'qemu-img info' doesn't report the backing file format field
+> for qed (as it does for qcow2):
+> 
+> $ qemu-img create -f qed base.qed 1M && qemu-img create -f qed -b base.qed -F qed top.qed 1M
+> $ qemu-img create -f qcow2 base.qcow2 1M && qemu-img create -f qcow2 -b base.qcow2 -F qcow2 top.qcow2 1M
+> $ qemu-img info top.qed | grep 'backing file format'
+> $ qemu-img info top.qcow2 | grep 'backing file format'
+> backing file format: qcow2
+> 
+> This leads to the 024 test failure with -qed.  Let's just filter the
+> field out and exclude it from the output.
+> 
+> This is a fixup for the commit f93e65ee51 ("iotests/{024, 271}: add
+> testcases for qemu-img rebase").
+> 
+> Found-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>  tests/qemu-iotests/024     | 2 +-
+>  tests/qemu-iotests/024.out | 1 -
+>  2 files changed, 1 insertion(+), 2 deletions(-)
 
-Signed-off-by: Nikita Novikov <n.novikov@syntacore.com>
----
- hw/char/riscv_htif.c         | 43 +++++++++++++++++++-----------------
- include/hw/char/riscv_htif.h | 11 +++++++--
- 2 files changed, 32 insertions(+), 22 deletions(-)
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
-index 9bef60def1..d914f158ea 100644
---- a/hw/char/riscv_htif.c
-+++ b/hw/char/riscv_htif.c
-@@ -233,7 +233,8 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
-         if (cmd == HTIF_CONSOLE_CMD_GETC) {
-             /* this should be a queue, but not yet implemented as such */
-             s->pending_read = val_written;
--            s->tohost = 0; /* clear to indicate we read */
-+            s->tohost = 0;
-+            s->tohost_status = 0x0;     /* clear to indicate we read */
-             return;
-         } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
-             uint8_t ch = (uint8_t)payload;
-@@ -258,7 +259,8 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
-      *  }
-      */
-     s->fromhost = (val_written >> 48 << 48) | (resp << 16 >> 16);
--    s->tohost = 0; /* clear to indicate we read */
-+    s->tohost = 0;
-+    s->tohost_status = 0x0; /* clear to indicate we read */
- }
- 
- #define TOHOST_OFFSET1      (s->tohost_offset)
-@@ -291,32 +293,33 @@ static void htif_mm_write(void *opaque, hwaddr addr,
- {
-     HTIFState *s = opaque;
-     if (addr == TOHOST_OFFSET1) {
--        if (s->tohost == 0x0) {
--            s->allow_tohost = 1;
--            s->tohost = value & 0xFFFFFFFF;
--        } else {
--            s->allow_tohost = 0;
--        }
-+        s->tohost = deposit64(s->tohost, 0, 32, value);
-+        s->tohost_status |= 0x1;
-     } else if (addr == TOHOST_OFFSET2) {
--        if (s->allow_tohost) {
--            s->tohost |= value << 32;
--            htif_handle_tohost_write(s, s->tohost);
--        }
-+        s->tohost = deposit64(s->tohost, 32, 32, value);
-+        s->tohost_status |= 0x2;
-     } else if (addr == FROMHOST_OFFSET1) {
--        s->fromhost_inprogress = 1;
--        s->fromhost = value & 0xFFFFFFFF;
-+        s->fromhost = deposit64(s->fromhost, 0, 32, value);
-+        s->fromhost_status |= 0x1;
-     } else if (addr == FROMHOST_OFFSET2) {
--        s->fromhost |= value << 32;
--        s->fromhost_inprogress = 0;
-+        s->fromhost = deposit64(s->fromhost, 32, 32, value);
-+        s->fromhost_status |= 0x2;
-     } else {
--        qemu_log("Invalid htif write: address %016" PRIx64 "\n",
--            (uint64_t)addr);
-+        qemu_log("Invalid htif write: address %016" HWADDR_PRIu "\n", addr);
-+    }
-+    if (s->tohost_status == 0x3) {
-+        htif_handle_tohost_write(s, s->tohost);
-+        s->tohost_status = 0x0;
-     }
- }
- 
- static const MemoryRegionOps htif_mm_ops = {
-     .read = htif_mm_read,
-     .write = htif_mm_write,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .impl.min_access_size = 4,
-+    .impl.max_access_size = 4
- };
- 
- HTIFState *htif_mm_init(MemoryRegion *address_space, Chardev *chr,
-@@ -343,8 +346,8 @@ HTIFState *htif_mm_init(MemoryRegion *address_space, Chardev *chr,
-     s->tohost_offset = tohost_offset;
-     s->fromhost_offset = fromhost_offset;
-     s->pending_read = 0;
--    s->allow_tohost = 0;
--    s->fromhost_inprogress = 0;
-+    s->tohost_status = 0;
-+    s->fromhost_status = 0;
-     qemu_chr_fe_init(&s->chr, chr, &error_abort);
-     qemu_chr_fe_set_handlers(&s->chr, htif_can_recv, htif_recv, htif_event,
-         htif_be_change, s, NULL, true);
-diff --git a/include/hw/char/riscv_htif.h b/include/hw/char/riscv_htif.h
-index df493fdf6b..2b6d50dc60 100644
---- a/include/hw/char/riscv_htif.h
-+++ b/include/hw/char/riscv_htif.h
-@@ -27,8 +27,15 @@
- #define TYPE_HTIF_UART "riscv.htif.uart"
- 
- typedef struct HTIFState {
--    int allow_tohost;
--    int fromhost_inprogress;
-+    /*
-+     * Vars below can be in 4 states:
-+     * 0x0 - nothing written
-+     * 0x1 - xHOST_OFFEST1 written
-+     * 0x2 - xHOST_OFFSET2 written
-+     * 0x3 - Both written
-+     */
-+    int tohost_status;
-+    int fromhost_status;
- 
-     uint64_t tohost;
-     uint64_t fromhost;
 -- 
-2.34.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
