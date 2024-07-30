@@ -2,94 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854E69410AC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 13:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2769B9410FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 13:46:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYlAv-00048n-E5; Tue, 30 Jul 2024 07:37:53 -0400
+	id 1sYlIX-0007K4-TN; Tue, 30 Jul 2024 07:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sYlAt-00043F-Fx
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 07:37:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sYlAs-0004FZ-1n
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 07:37:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722339469;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gZK/KI1hV5sQPKkIKvFyC7alZL80TlIV+TLtWzNiP+Q=;
- b=O5Y94slxPvrfCq3BzqEDXr1IahL6wdpQQy7nYVoVecHGKSArtjNY/IbTHVgbpYl/UooAM8
- kXbivCxQqsPAGWfXKtyxz8AVNEhnGpL/KN3a4y43FTw7M1jmuA/pSO53b/6/C56F2vZVcL
- CewJOgJN1coub/X8ZYvDnrUsrmqCTho=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-3cmlr9_8NUK4rcHd--Nz1w-1; Tue, 30 Jul 2024 07:37:44 -0400
-X-MC-Unique: 3cmlr9_8NUK4rcHd--Nz1w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a7ab81eea72so394310066b.2
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 04:37:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722339463; x=1722944263;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gZK/KI1hV5sQPKkIKvFyC7alZL80TlIV+TLtWzNiP+Q=;
- b=FoUoK2pyT1vNyYeEoWMW/4yoreSak3JMWRbuKpFi2Sgvfu6nSrZs8K4J1XokxUaPAY
- H7tsM/L1F2EB/A66aEqWowqwICb2UN2ADQ6xhSDvqlE5oaltc6Q035Zde5RVIl0JAsYW
- hrVqDxeRff7HU0KLJ7rlK/+6ap7W0SZftkDYrp1yoXC5Oobh1BURjrnbxejjNiaO5nkr
- f5zRmkpAlEZXK+ysdwePkRToQcWWY/3HXjNQSbfdlxPg6XfI/2g+ypLbOUdHQRcaAXde
- cZwIrHIL1YD08u8voZj3itcmXvUErjwD8qiIEf9psM1JgP4h19ubg/d+iAP0Xk0oxAgy
- xoQA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU2fDlSCJKI4sxSb72WtG3w0I2AlvGDzFkeDgh6TNv+AdsReCithRsPIuO2y/+UqS1HnCRjsZsoySusGo98SAMRCdh3vUM=
-X-Gm-Message-State: AOJu0Yz3tGe5th5JmEhytJTUW66WRLs0WWNj1URQjgkLLtG1G8TF5atJ
- Ph8Wiom8mC5FvfcGyYKdY2uhG4ITECo7lVqnEpqGO29cG8FBFquauL2TjhLGn4hFKDTRVygqPnr
- sOuTxfNzF31yHjRz6iv1PQkhvWo5zBE1JKn4rH3vHwavRZltl2YmY
-X-Received: by 2002:a17:907:7da8:b0:a7d:34bf:600e with SMTP id
- a640c23a62f3a-a7d4015ff44mr735488266b.60.1722339463107; 
- Tue, 30 Jul 2024 04:37:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGyp3kaxv0Atyf+rVcB8TUc1cUKurrl7VsdF2CDaLj5/dMTjWDK0Wi1l0DvH4D8NWFWgSkqsw==
-X-Received: by 2002:a17:907:7da8:b0:a7d:34bf:600e with SMTP id
- a640c23a62f3a-a7d4015ff44mr735485066b.60.1722339462450; 
- Tue, 30 Jul 2024 04:37:42 -0700 (PDT)
-Received: from redhat.com ([2.55.35.236]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad911a0sm625904666b.155.2024.07.30.04.37.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jul 2024 04:37:41 -0700 (PDT)
-Date: Tue, 30 Jul 2024 07:37:36 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Yui Washizu <yui.washidu@gmail.com>
-Subject: Re: [PATCH v5 0/8] virtio-net: add support for SR-IOV emulation
-Message-ID: <20240730073712-mutt-send-email-mst@kernel.org>
-References: <20240715-sriov-v5-0-3f5539093ffc@daynix.com>
+ (Exim 4.90_1) (envelope-from <luzhipeng@cestc.cn>)
+ id 1sYlIK-0007Gn-1a
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 07:45:32 -0400
+Received: from [1.203.97.240] (helo=smtp.cecloud.com)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <luzhipeng@cestc.cn>) id 1sYlIG-000627-F3
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 07:45:31 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by smtp.cecloud.com (Postfix) with ESMTP id 03816900114;
+ Tue, 30 Jul 2024 19:39:18 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-SKE-CHECKED: 1
+X-ANTISPAM-LEVEL: 2
+Received: from localhost.localdomain (unknown [111.48.58.10])
+ by smtp.cecloud.com (postfix) whith ESMTP id
+ P1340312T281473089204592S1722339556090940_; 
+ Tue, 30 Jul 2024 19:39:17 +0800 (CST)
+X-IP-DOMAINF: 1
+X-RL-SENDER: luzhipeng@cestc.cn
+X-SENDER: luzhipeng@cestc.cn
+X-LOGIN-NAME: luzhipeng@cestc.cn
+X-FST-TO: qemu-devel@nongnu.org
+X-RCPT-COUNT: 4
+X-LOCAL-RCPT-COUNT: 1
+X-MUTI-DOMAIN-COUNT: 0
+X-SENDER-IP: 111.48.58.10
+X-ATTACHMENT-NUM: 0
+X-UNIQUE-TAG: <9b57f88ce533b1520c943f9649ceaf02>
+X-System-Flag: 0
+From: luzhipeng <luzhipeng@cestc.cn>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ luzhipeng <luzhipeng@cestc.cn>
+Subject: [PATCH] sm4:Adjust the naming of SM4 encryption method
+Date: Tue, 30 Jul 2024 19:38:50 +0800
+Message-Id: <20240730113850.30-1-luzhipeng@cestc.cn>
+X-Mailer: git-send-email 2.34.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240715-sriov-v5-0-3f5539093ffc@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 1.203.97.240 (failed)
+Received-SPF: pass client-ip=1.203.97.240; envelope-from=luzhipeng@cestc.cn;
+ helo=smtp.cecloud.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RDNS_NONE=0.793,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,11 +74,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 15, 2024 at 02:19:06PM +0900, Akihiko Odaki wrote:
-> Based-on: <20240714-rombar-v2-0-af1504ef55de@daynix.com>
-> ("[PATCH v2 0/4] hw/pci: Convert rom_bar into OnOffAuto")
+With reference to the naming conventions of other encryption algorithms,
+the name of SM4 is modified.So libvirt and qemu are compatible.
 
-OK I will revert this for now. We'll try again after the release,
-there will be time to address s390.
+Signed-off-by: luzhipeng <luzhipeng@cestc.cn>
+---
+ crypto/block-luks.c             | 2 +-
+ crypto/cipher-gcrypt.c.inc      | 4 ++--
+ crypto/cipher-nettle.c.inc      | 4 ++--
+ crypto/cipher.c                 | 4 ++--
+ qapi/crypto.json                | 4 ++--
+ tests/unit/test-crypto-cipher.c | 4 ++--
+ 6 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index 5b777c15d3..c156c6f1ff 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -98,7 +98,7 @@ qcrypto_block_luks_cipher_size_map_twofish[] = {
+ #ifdef CONFIG_CRYPTO_SM4
+ static const QCryptoBlockLUKSCipherSizeMap
+ qcrypto_block_luks_cipher_size_map_sm4[] = {
+-    { 16, QCRYPTO_CIPHER_ALG_SM4},
++    { 16, QCRYPTO_CIPHER_ALG_SM4_128},
+     { 0, 0 },
+ };
+ #endif
+diff --git a/crypto/cipher-gcrypt.c.inc b/crypto/cipher-gcrypt.c.inc
+index 4a8314746d..e9a555bff5 100644
+--- a/crypto/cipher-gcrypt.c.inc
++++ b/crypto/cipher-gcrypt.c.inc
+@@ -46,7 +46,7 @@ static int qcrypto_cipher_alg_to_gcry_alg(QCryptoCipherAlgorithm alg)
+     case QCRYPTO_CIPHER_ALG_TWOFISH_256:
+         return GCRY_CIPHER_TWOFISH;
+ #ifdef CONFIG_CRYPTO_SM4
+-    case QCRYPTO_CIPHER_ALG_SM4:
++    case QCRYPTO_CIPHER_ALG_SM4_128:
+         return GCRY_CIPHER_SM4;
+ #endif
+     default:
+@@ -86,7 +86,7 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgorithm alg,
+     case QCRYPTO_CIPHER_ALG_TWOFISH_128:
+     case QCRYPTO_CIPHER_ALG_TWOFISH_256:
+ #ifdef CONFIG_CRYPTO_SM4
+-    case QCRYPTO_CIPHER_ALG_SM4:
++    case QCRYPTO_CIPHER_ALG_SM4_128:
+ #endif
+         break;
+     default:
+diff --git a/crypto/cipher-nettle.c.inc b/crypto/cipher-nettle.c.inc
+index 42b39e18a2..a62a5e8178 100644
+--- a/crypto/cipher-nettle.c.inc
++++ b/crypto/cipher-nettle.c.inc
+@@ -471,7 +471,7 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgorithm alg,
+     case QCRYPTO_CIPHER_ALG_TWOFISH_192:
+     case QCRYPTO_CIPHER_ALG_TWOFISH_256:
+ #ifdef CONFIG_CRYPTO_SM4
+-    case QCRYPTO_CIPHER_ALG_SM4:
++    case QCRYPTO_CIPHER_ALG_SM4_128:
+ #endif
+         break;
+     default:
+@@ -732,7 +732,7 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
+             return &ctx->base;
+         }
+ #ifdef CONFIG_CRYPTO_SM4
+-    case QCRYPTO_CIPHER_ALG_SM4:
++    case QCRYPTO_CIPHER_ALG_SM4_128:
+         {
+             QCryptoNettleSm4 *ctx = g_new0(QCryptoNettleSm4, 1);
+ 
+diff --git a/crypto/cipher.c b/crypto/cipher.c
+index 5f512768ea..dc4b39d480 100644
+--- a/crypto/cipher.c
++++ b/crypto/cipher.c
+@@ -39,7 +39,7 @@ static const size_t alg_key_len[QCRYPTO_CIPHER_ALG__MAX] = {
+     [QCRYPTO_CIPHER_ALG_TWOFISH_192] = 24,
+     [QCRYPTO_CIPHER_ALG_TWOFISH_256] = 32,
+ #ifdef CONFIG_CRYPTO_SM4
+-    [QCRYPTO_CIPHER_ALG_SM4] = 16,
++    [QCRYPTO_CIPHER_ALG_SM4_128] = 16,
+ #endif
+ };
+ 
+@@ -57,7 +57,7 @@ static const size_t alg_block_len[QCRYPTO_CIPHER_ALG__MAX] = {
+     [QCRYPTO_CIPHER_ALG_TWOFISH_192] = 16,
+     [QCRYPTO_CIPHER_ALG_TWOFISH_256] = 16,
+ #ifdef CONFIG_CRYPTO_SM4
+-    [QCRYPTO_CIPHER_ALG_SM4] = 16,
++    [QCRYPTO_CIPHER_ALG_SM4_128] = 16,
+ #endif
+ };
+ 
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index e102be337b..1a28e312d8 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -94,7 +94,7 @@
+ #
+ # @twofish-256: Twofish with 256 bit / 32 byte keys
+ #
+-# @sm4: SM4 with 128 bit / 16 byte keys (since 9.0)
++# @sm4-128: SM4 with 128 bit / 16 byte keys (since 9.0)
+ #
+ # Since: 2.6
+ ##
+@@ -105,7 +105,7 @@
+            'cast5-128',
+            'serpent-128', 'serpent-192', 'serpent-256',
+            'twofish-128', 'twofish-192', 'twofish-256',
+-           'sm4']}
++           'sm4-128']}
+ 
+ ##
+ # @QCryptoCipherMode:
+diff --git a/tests/unit/test-crypto-cipher.c b/tests/unit/test-crypto-cipher.c
+index f5152e569d..c60d48cb13 100644
+--- a/tests/unit/test-crypto-cipher.c
++++ b/tests/unit/test-crypto-cipher.c
+@@ -385,8 +385,8 @@ static QCryptoCipherTestData test_data[] = {
+ #ifdef CONFIG_CRYPTO_SM4
+     {
+         /* SM4, GB/T 32907-2016, Appendix A.1 */
+-        .path = "/crypto/cipher/sm4",
+-        .alg = QCRYPTO_CIPHER_ALG_SM4,
++        .path = "/crypto/cipher/sm4-128",
++        .alg = QCRYPTO_CIPHER_ALG_SM4_128,
+         .mode = QCRYPTO_CIPHER_MODE_ECB,
+         .key = "0123456789abcdeffedcba9876543210",
+         .plaintext  =
+-- 
+2.34.0.windows.1
+
+
 
 
