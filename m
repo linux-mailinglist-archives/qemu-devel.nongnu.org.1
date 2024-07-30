@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54B5940E1B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA15940E0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjLN-0003lR-Vu; Tue, 30 Jul 2024 05:40:34 -0400
+	id 1sYjLN-0003lZ-VE; Tue, 30 Jul 2024 05:40:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLK-0003ZA-75
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:30 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1sYjLL-0003dq-8a
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:31 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLH-0000XJ-25
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:29 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-36844375001so1777184f8f.0
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:26 -0700 (PDT)
+ id 1sYjLI-0000YY-HA
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:30 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3687f91af40so2217187f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722332425; x=1722937225; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722332427; x=1722937227; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4T6pYopAN2oL2qteh+hB6Dilhk+gKXLQ4w62WyPdv7M=;
- b=sXe+lhNlOh0naJtgSUBry+o5EKssAHlpixEi9g3PI4nW1bZ1NbEawvG8kIzol7tlkq
- MFpAWwiBzZog412x1RFJ9pEkMVL2nc4w4T2CUqPQuboRRDljwmgE8a7RlpDNG2PGLGGk
- gPmRAe8C89EHFz0j3IfvNfCrhQGLGXCK/p4J3db8XVS0HuziR687+R6D04tOaJf5Fi0l
- gIOjR0wfESOh0b+7K+IbPgenc6gVLLnbdR36A+IL+S7wLyhX4qH7WwLpCfiRfAWIpzln
- oeNjhRpNuB2Y5ReK0uu4pakZIm8Cf0Vu54+E24n7KyDZDpXbSLs0jP8E7zhPauF3f8xm
- N6ew==
+ :reply-to; bh=jnq1VIda5vt4YzdNGFFqZt+A/PPj1CEI6DvJT2Yvga0=;
+ b=MNys9gH9FeJdiAPthkLKpsm/+OuU9+kQgFJsPDGRo3bPi4Avf57S4CVJx87e4KiU2a
+ 4V7Iep1zNquD/y6umhxlsqI2/9y2SBA7ZPLfEZWoi3JuYt3+zMLOr24biJp1XwkYCobK
+ /0QTtJj6MR7nBZFXz/OLq4fmQI96kiicktvLupQ/h0Gs7zEVTUOXDZUtepiWSP3pXToM
+ 2JL5zmASlUK/p995oavsSULUQVYx2OMHomQYPF5qXjkLIuUMzjBJPe3PuP9PUUWUJmHp
+ 0w75ATpnLJOdAtzr2mtRdt/lwr8K9HTPbVmSd9UFd9F0bhm2ccV8kuYBpRi3I9PuOm70
+ WF0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722332425; x=1722937225;
+ d=1e100.net; s=20230601; t=1722332427; x=1722937227;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4T6pYopAN2oL2qteh+hB6Dilhk+gKXLQ4w62WyPdv7M=;
- b=xRHzgWTJ9ITcwiTBIMPzULFn57REIogBW8tU57vXXE3wPRS01vF0iZwA9kEvCDRyCQ
- fyyD/Oul9Ye9SJRIS/9fyrWW0NjQyFDVI8wfqFAx0BUpWGTtxAdlov+I5vqr4KVqrpbP
- VrBRm0Tnn4HCR7ReGyypwNeAGWV4i0GXejV36QWOE1mvKJuHpvvANaaArwOslcdS2Idp
- MvjoRXThDitjx2UX+NQP6S7aVAjSHsvQXZUFyOiWEzKhPVEKjeQH9VV2xaw+022y88yT
- iR1bIaECSYRi2sCSlOD6bMSG1saCTP7Nw4xiULBhfKkK1fnbMpls+XITPwTAtF93ONJE
- nLYg==
-X-Gm-Message-State: AOJu0Yz6ICqGhTxS+ijViFrXLLc3p3H8mpUogDJsY3i/bPmK+zswDlU2
- yORI/90YIv0WB/15KUQK4tHB+TdojNg92E7TouyU0b+uZBgPMYpk8QXotwtO68b7v38HnNkrrOR
- e
-X-Google-Smtp-Source: AGHT+IGlsIBIILbHNvdg//vCxiB6b1koyFZ3anQCLh69NoOTrQuaXrF+ZRfHiG439oh7XVxA2iVs2A==
-X-Received: by 2002:a05:6000:1249:b0:367:f054:7aba with SMTP id
- ffacd0b85a97d-36b5d0bc571mr6269721f8f.41.1722332425648; 
- Tue, 30 Jul 2024 02:40:25 -0700 (PDT)
+ bh=jnq1VIda5vt4YzdNGFFqZt+A/PPj1CEI6DvJT2Yvga0=;
+ b=Eq7iF6bGMBTr7VqCgxCMCg7jWio/R0ecu6ooDooviPposcShrnlqN+oWxKdkacJtyJ
+ 9f96hMhZ3IA/5ePr/L+v67Ip+hYvJwlo5d0v7bg2tHHQcBVPNXdr64tmN5lG0EVGt9R/
+ ykE1SjFUmV2ikUVLsWZyd+ufu390zzqRmdZ2IAfe9tS3/wsRu+nrKZp5N9YD98K5l+l1
+ /+3/HGKq+hYO3dgzPP4MAvd/sPHlKIh9NoShnNemaQNtwEp432Inje5JIOeAtHZmAmuC
+ 44y5S0zz6Ij6KRlXfwuNFbFrysX0tfk+aNwA/L2Xyi9E/Zb4qtIbXowgmCkHTSovTWLs
+ vrQQ==
+X-Gm-Message-State: AOJu0Yy+aP0NJgvVmc2V7o5KhMUzhCRkvoM/Y9KO9jghUXW3CUvZvO5+
+ Tpa5RToK6PuK4nf6IjUDMOktXuHG4sreoVaXa3G3oQqfVsGSGzBQp43a3O+KjUWqdpm3EX1QL+I
+ 2
+X-Google-Smtp-Source: AGHT+IEbatzJoLEHwPWAJMfqLoVakWUxs9c2O1RZ7HyfrkbJPjkeaZxK99v2Q4qXbMru5ZACUlpsVQ==
+X-Received: by 2002:a05:6000:196b:b0:368:4ee0:3c65 with SMTP id
+ ffacd0b85a97d-36b5cf1e6bamr6509864f8f.37.1722332426866; 
+ Tue, 30 Jul 2024 02:40:26 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.25
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 Jul 2024 02:40:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/21] hvf: arm: Properly disable PMU
-Date: Tue, 30 Jul 2024 10:40:05 +0100
-Message-Id: <20240730094020.2758637-7-peter.maydell@linaro.org>
+Subject: [PULL 07/21] hvf: arm: Do not advance PC when raising an exception
+Date: Tue, 30 Jul 2024 10:40:06 +0100
+Message-Id: <20240730094020.2758637-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730094020.2758637-1-peter.maydell@linaro.org>
 References: <20240730094020.2758637-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,227 +93,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Setting pmu property used to have no effect for hvf so fix it.
+This is identical with commit 30a1690f2402 ("hvf: arm: Do not advance
+PC when raising an exception") but for writes instead of reads.
 
+Fixes: a2260983c655 ("hvf: arm: Add support for GICv3")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf/hvf.c | 186 +++++++++++++++++++++++--------------------
- 1 file changed, 98 insertions(+), 88 deletions(-)
+ target/arm/hvf/hvf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 1a749534fb0..adcdfae0b17 100644
+index adcdfae0b17..c1496ad5be9 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1204,45 +1204,50 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-     CPUARMState *env = &arm_cpu->env;
- 
-+    if (arm_feature(env, ARM_FEATURE_PMU)) {
-+        switch (reg) {
-+        case SYSREG_PMCR_EL0:
-+            *val = env->cp15.c9_pmcr;
-+            return 0;
-+        case SYSREG_PMCCNTR_EL0:
-+            pmu_op_start(env);
-+            *val = env->cp15.c15_ccnt;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMCNTENCLR_EL0:
-+            *val = env->cp15.c9_pmcnten;
-+            return 0;
-+        case SYSREG_PMOVSCLR_EL0:
-+            *val = env->cp15.c9_pmovsr;
-+            return 0;
-+        case SYSREG_PMSELR_EL0:
-+            *val = env->cp15.c9_pmselr;
-+            return 0;
-+        case SYSREG_PMINTENCLR_EL1:
-+            *val = env->cp15.c9_pminten;
-+            return 0;
-+        case SYSREG_PMCCFILTR_EL0:
-+            *val = env->cp15.pmccfiltr_el0;
-+            return 0;
-+        case SYSREG_PMCNTENSET_EL0:
-+            *val = env->cp15.c9_pmcnten;
-+            return 0;
-+        case SYSREG_PMUSERENR_EL0:
-+            *val = env->cp15.c9_pmuserenr;
-+            return 0;
-+        case SYSREG_PMCEID0_EL0:
-+        case SYSREG_PMCEID1_EL0:
-+            /* We can't really count anything yet, declare all events invalid */
-+            *val = 0;
-+            return 0;
-+        }
-+    }
-+
-     switch (reg) {
-     case SYSREG_CNTPCT_EL0:
-         *val = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) /
-               gt_cntfrq_period_ns(arm_cpu);
-         return 0;
--    case SYSREG_PMCR_EL0:
--        *val = env->cp15.c9_pmcr;
--        return 0;
--    case SYSREG_PMCCNTR_EL0:
--        pmu_op_start(env);
--        *val = env->cp15.c15_ccnt;
--        pmu_op_finish(env);
--        return 0;
--    case SYSREG_PMCNTENCLR_EL0:
--        *val = env->cp15.c9_pmcnten;
--        return 0;
--    case SYSREG_PMOVSCLR_EL0:
--        *val = env->cp15.c9_pmovsr;
--        return 0;
--    case SYSREG_PMSELR_EL0:
--        *val = env->cp15.c9_pmselr;
--        return 0;
--    case SYSREG_PMINTENCLR_EL1:
--        *val = env->cp15.c9_pminten;
--        return 0;
--    case SYSREG_PMCCFILTR_EL0:
--        *val = env->cp15.pmccfiltr_el0;
--        return 0;
--    case SYSREG_PMCNTENSET_EL0:
--        *val = env->cp15.c9_pmcnten;
--        return 0;
--    case SYSREG_PMUSERENR_EL0:
--        *val = env->cp15.c9_pmuserenr;
--        return 0;
--    case SYSREG_PMCEID0_EL0:
--    case SYSREG_PMCEID1_EL0:
--        /* We can't really count anything yet, declare all events invalid */
--        *val = 0;
--        return 0;
-     case SYSREG_OSLSR_EL1:
-         *val = env->cp15.oslsr_el1;
-         return 0;
-@@ -1486,64 +1491,69 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-                            SYSREG_OP2(reg),
-                            val);
- 
--    switch (reg) {
--    case SYSREG_PMCCNTR_EL0:
--        pmu_op_start(env);
--        env->cp15.c15_ccnt = val;
--        pmu_op_finish(env);
--        return 0;
--    case SYSREG_PMCR_EL0:
--        pmu_op_start(env);
-+    if (arm_feature(env, ARM_FEATURE_PMU)) {
-+        switch (reg) {
-+        case SYSREG_PMCCNTR_EL0:
-+            pmu_op_start(env);
-+            env->cp15.c15_ccnt = val;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMCR_EL0:
-+            pmu_op_start(env);
- 
--        if (val & PMCRC) {
--            /* The counter has been reset */
--            env->cp15.c15_ccnt = 0;
--        }
--
--        if (val & PMCRP) {
--            unsigned int i;
--            for (i = 0; i < pmu_num_counters(env); i++) {
--                env->cp15.c14_pmevcntr[i] = 0;
-+            if (val & PMCRC) {
-+                /* The counter has been reset */
-+                env->cp15.c15_ccnt = 0;
-             }
-+
-+            if (val & PMCRP) {
-+                unsigned int i;
-+                for (i = 0; i < pmu_num_counters(env); i++) {
-+                    env->cp15.c14_pmevcntr[i] = 0;
-+                }
-+            }
-+
-+            env->cp15.c9_pmcr &= ~PMCR_WRITABLE_MASK;
-+            env->cp15.c9_pmcr |= (val & PMCR_WRITABLE_MASK);
-+
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMUSERENR_EL0:
-+            env->cp15.c9_pmuserenr = val & 0xf;
-+            return 0;
-+        case SYSREG_PMCNTENSET_EL0:
-+            env->cp15.c9_pmcnten |= (val & pmu_counter_mask(env));
-+            return 0;
-+        case SYSREG_PMCNTENCLR_EL0:
-+            env->cp15.c9_pmcnten &= ~(val & pmu_counter_mask(env));
-+            return 0;
-+        case SYSREG_PMINTENCLR_EL1:
-+            pmu_op_start(env);
-+            env->cp15.c9_pminten |= val;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMOVSCLR_EL0:
-+            pmu_op_start(env);
-+            env->cp15.c9_pmovsr &= ~val;
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMSWINC_EL0:
-+            pmu_op_start(env);
-+            pmswinc_write(env, val);
-+            pmu_op_finish(env);
-+            return 0;
-+        case SYSREG_PMSELR_EL0:
-+            env->cp15.c9_pmselr = val & 0x1f;
-+            return 0;
-+        case SYSREG_PMCCFILTR_EL0:
-+            pmu_op_start(env);
-+            env->cp15.pmccfiltr_el0 = val & PMCCFILTR_EL0;
-+            pmu_op_finish(env);
+@@ -1586,10 +1586,10 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+     case SYSREG_ICC_SGI1R_EL1:
+     case SYSREG_ICC_SRE_EL1:
+         /* Call the TCG sysreg handler. This is only safe for GICv3 regs. */
+-        if (!hvf_sysreg_write_cp(cpu, reg, val)) {
+-            hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
++        if (hvf_sysreg_write_cp(cpu, reg, val)) {
 +            return 0;
          }
-+    }
- 
--        env->cp15.c9_pmcr &= ~PMCR_WRITABLE_MASK;
--        env->cp15.c9_pmcr |= (val & PMCR_WRITABLE_MASK);
--
--        pmu_op_finish(env);
 -        return 0;
--    case SYSREG_PMUSERENR_EL0:
--        env->cp15.c9_pmuserenr = val & 0xf;
--        return 0;
--    case SYSREG_PMCNTENSET_EL0:
--        env->cp15.c9_pmcnten |= (val & pmu_counter_mask(env));
--        return 0;
--    case SYSREG_PMCNTENCLR_EL0:
--        env->cp15.c9_pmcnten &= ~(val & pmu_counter_mask(env));
--        return 0;
--    case SYSREG_PMINTENCLR_EL1:
--        pmu_op_start(env);
--        env->cp15.c9_pminten |= val;
--        pmu_op_finish(env);
--        return 0;
--    case SYSREG_PMOVSCLR_EL0:
--        pmu_op_start(env);
--        env->cp15.c9_pmovsr &= ~val;
--        pmu_op_finish(env);
--        return 0;
--    case SYSREG_PMSWINC_EL0:
--        pmu_op_start(env);
--        pmswinc_write(env, val);
--        pmu_op_finish(env);
--        return 0;
--    case SYSREG_PMSELR_EL0:
--        env->cp15.c9_pmselr = val & 0x1f;
--        return 0;
--    case SYSREG_PMCCFILTR_EL0:
--        pmu_op_start(env);
--        env->cp15.pmccfiltr_el0 = val & PMCCFILTR_EL0;
--        pmu_op_finish(env);
--        return 0;
-+    switch (reg) {
-     case SYSREG_OSLAR_EL1:
-         env->cp15.oslsr_el1 = val & 1;
++        break;
+     case SYSREG_MDSCR_EL1:
+         env->cp15.mdscr_el1 = val;
          return 0;
 -- 
 2.34.1
