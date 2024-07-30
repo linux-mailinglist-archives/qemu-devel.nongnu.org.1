@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF70940E05
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C61940E18
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjLW-0004K5-Vx; Tue, 30 Jul 2024 05:40:43 -0400
+	id 1sYjLR-00041z-Kt; Tue, 30 Jul 2024 05:40:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLO-0003rG-L8
+ id 1sYjLO-0003rn-Pv
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:34 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLM-0000cw-KL
+ id 1sYjLN-0000dA-5B
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:34 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-42816ca797fso20884055e9.2
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-368663d7f80so2042983f8f.3
  for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722332431; x=1722937231; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Rm4cAgPkSZIkkBZ/4z1vocwRbdja/wzHAdJooiJoAB0=;
- b=Mg//dpd3EZ8cAA+pczh29wbZphM7sdJM8IoaQXqHGbQEXaLryji8D3RKOFzFUNt2mt
- 6yyCGCtYhsA0DtRaTIVvK7KZT/PLlW92NEJPHF4WYtqSIxLEhKt/5x0MvK99CbB6D0D0
- /rLhEBY+ZxATtMuY8Zwjpqema43oOsKd/eR+xrIjZlA4uyl63Kw5/1Boga8BejNr30IZ
- 5P2CFJ9ka3tMVfnaDewZHsbHdE5TwGv3PhQQYdrfSdeDd1Lx/6XW5Ibzqh815l5hoFUR
- vOAmgfGi35MTny1obxQ/tpjeloWbbfoF8IiTn/RN7MGOkRWVXLow71b3r12AjgAOJ5D+
- h6ZA==
+ :reply-to; bh=kU9D23p+W3yoB6z9qvYF5ze3lbw4IbqA/FP/4T6R+9k=;
+ b=mzn1ljL9ldqf2tn5wsodeTq+tXrBm8HuULVBDKqkxGZhq6uM77EQ9V/7PjXZrOzWCK
+ eKigAHcQrIHm572u7/Z6ZEnIQE9iKbV45AmxMDZZtB1vrqWvRlzjTqlnG0Q89mUNywDG
+ NFw6WEg9Ncng9jJZIu+1RIS9tf6VG40/S7UZ2S2qOi+lDnDQ2TX2zVSCfkYziq2wEtMa
+ 1U2UszD/o08olF4+/a4SlmIpTK3IYQh2iz9KaQQPu30MS+uJymLmeKkLCklAcUvGM2zH
+ RSLagYNGBvCtu+BRrc/M7VYc2Jmd9cgl35XlmorjwZCd0VLxXhVz5CSJRTor/cH2/etT
+ rUOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722332431; x=1722937231;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rm4cAgPkSZIkkBZ/4z1vocwRbdja/wzHAdJooiJoAB0=;
- b=ui9WKgCOzf5oZ7gKCxuuNpVgqXgLV4WGjFUO3Y7v2VLKFM998yfW9CxV/rrR708c0G
- v5X+0MCKMlzkpZztPDay7S4d4D916adFHRhzvCQsi5Uxi8PhrggADR0kZTqAICV2jIUQ
- pjhBdU+mHufgds8Ink1xXdIjvOUoYD32BKkIy2GxqXo8zqCX8t3DZ5tqNeKJoI7BLPx+
- OJB2ej2gC2pzvzvaLsg/VA4AZzXI0LM+Z/iEO1LAleFFtjoQzZDTT+iRo/TaHdbYKYho
- GiWeJF7NcJ+DIXa5xoBx1e+Mi+tYaq/0eHZp3YMJpd5NuRP39uIVit3tiq0ue8zQNWSw
- lz0g==
-X-Gm-Message-State: AOJu0Yz9UlkooTJPL2eVWpgLGAhbwuHAvxdKUMLLsSkEdFfLLCsaBS+U
- n2+aoeYnpCDgtL8siz+D7XJ28/LNXCc13MN17SCbRvSLpli1ga1jXagqlPb0qB/jIuu0fTRyp2+
- W
-X-Google-Smtp-Source: AGHT+IGlO75m1Hn93j1EXTOTaS2rzk6rt/iDwBeeCAgSV3xt7YSgz8xNOhQW19fci+oKFqWg3St2IA==
-X-Received: by 2002:a05:6000:4d1:b0:367:8847:5bf4 with SMTP id
- ffacd0b85a97d-36b5cee9bbbmr7710993f8f.10.1722332430904; 
- Tue, 30 Jul 2024 02:40:30 -0700 (PDT)
+ bh=kU9D23p+W3yoB6z9qvYF5ze3lbw4IbqA/FP/4T6R+9k=;
+ b=U14Jz07RmtAQEz5lXyuBvTH1cQyYGyuYxg0qqX8OP2O/Qlw0q6I8MBGDPEZDy//1nn
+ AK207r7qexrtYmYQKsDpNvZyLgYxp2PS8ty9QrUVEaCV7vA+CI4y5bbTbBDOsZdxRp02
+ NwW6zQ1YxVAxCbc0YEzNpfW7OG6a4nFWesVr/II3IjYOAlBwawdwJ2FS7M9HAvwqFcAb
+ IUUG1cR19paUZNp7uOplCL5aXxeqWKEqsn4eEqqJjnKBHfOM+YCbQJZQjyS2Yb0rqiz8
+ Oj5UgteGEaA+njoQeWPqNCcho/r7A7tsmMP425whHZf8hBLUsBMnWBJKy1Dbrug0bg5R
+ i/dw==
+X-Gm-Message-State: AOJu0YxI1Bt6aMakxP5NRLYQu+dEvuvSfv1WC7dFGYKFoz5CoL/fc/UO
+ 085A1XHPl6jXkndmyFbALq+MZTnnDaAvxz4NyuihyjJgvIT6FMNmwElkipxlS2Dom7/0oRoSREx
+ J
+X-Google-Smtp-Source: AGHT+IGg+F3J6w+eKYe8GjUEUA0r8uZjKZuKAsOEocrjEZ1wAXvfBgpQt/LwAPEkr8zYE9y4T7HgZw==
+X-Received: by 2002:a5d:4e0d:0:b0:360:79d4:b098 with SMTP id
+ ffacd0b85a97d-36b5d03ce06mr5650520f8f.29.1722332431397; 
+ Tue, 30 Jul 2024 02:40:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.30
+ ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jul 2024 02:40:30 -0700 (PDT)
+ Tue, 30 Jul 2024 02:40:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/21] target/tricore: Use unsigned types for bitops in
- helper_eq_b()
-Date: Tue, 30 Jul 2024 10:40:15 +0100
-Message-Id: <20240730094020.2758637-17-peter.maydell@linaro.org>
+Subject: [PULL 17/21] target/xtensa: Make use of 'segment' in pptlb helper
+ less confusing
+Date: Tue, 30 Jul 2024 10:40:16 +0100
+Message-Id: <20240730094020.2758637-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730094020.2758637-1-peter.maydell@linaro.org>
 References: <20240730094020.2758637-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,39 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity points out that in helper_eq_b() we have an int32_t 'msk'
-and we end up shifting into its sign bit. This is OK for QEMU because
-we use -fwrapv to give this well defined semantics, but when you look
-at what this function is doing it's doing bit operations, so we
-should be using an unsigned variable anyway. This also matches the
-return type of the function.
+Coverity gets confused about the use of the 'segment' variable in the
+pptlb helper function: it thinks that we can take a code path where
+we first initialize it:
+  unsigned segment = XTENSA_MPU_PROBE_B;  // 0x40000000
+and then use that value as a shift count:
+  } else if (nhits == 1 && (env->sregs[MPUENB] & (1u << segment))) {
 
-Make 'ret' and 'msk' uint32_t.
+In fact this isn't possible, beacuse xtensa_mpu_lookup() is passed
+'&segment', and it uses that as an output value, which it will always
+set if it returns nonzero.  But the way the code is currently written
+is confusing to a human reader as well as to Coverity.
 
-Resolves: Coverity CID 1547758
+Instead of initializing 'segment' at the top of the function with a
+value that's only used in the "nhits == 0" code path, use the
+constant value directly in that code path, and don't initialize
+segment.  This matches the way we use xtensa_mpu_lookup() in its
+other callsites in get_physical_addr_mpu().
+
+Resolves: Coverity CID 1547589
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240723151042.1396610-1-peter.maydell@linaro.org
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
+Message-id: 20240723151454.1396826-1-peter.maydell@linaro.org
 ---
- target/tricore/op_helper.c | 4 ++--
+ target/xtensa/mmu_helper.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index ba9c4444b39..a0d5a0da1df 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -1505,8 +1505,8 @@ uint32_t helper_sub_h(CPUTriCoreState *env, target_ulong r1, target_ulong r2)
- 
- uint32_t helper_eq_b(target_ulong r1, target_ulong r2)
+diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
+index 997b21d3890..29b84d5dbf6 100644
+--- a/target/xtensa/mmu_helper.c
++++ b/target/xtensa/mmu_helper.c
+@@ -991,7 +991,7 @@ uint32_t HELPER(rptlb1)(CPUXtensaState *env, uint32_t s)
+ uint32_t HELPER(pptlb)(CPUXtensaState *env, uint32_t v)
  {
--    int32_t ret;
--    int32_t i, msk;
-+    uint32_t ret, msk;
-+    int32_t i;
+     unsigned nhits;
+-    unsigned segment = XTENSA_MPU_PROBE_B;
++    unsigned segment;
+     unsigned bg_segment;
  
-     ret = 0;
-     msk = 0xff;
+     nhits = xtensa_mpu_lookup(env->mpu_fg, env->config->n_mpu_fg_segments,
+@@ -1005,7 +1005,7 @@ uint32_t HELPER(pptlb)(CPUXtensaState *env, uint32_t v)
+         xtensa_mpu_lookup(env->config->mpu_bg,
+                           env->config->n_mpu_bg_segments,
+                           v, &bg_segment);
+-        return env->config->mpu_bg[bg_segment].attr | segment;
++        return env->config->mpu_bg[bg_segment].attr | XTENSA_MPU_PROBE_B;
+     }
+ }
+ 
 -- 
 2.34.1
 
