@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB5094047F
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CFD94044F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:16:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcS0-0007nD-64; Mon, 29 Jul 2024 22:18:56 -0400
+	id 1sYcOg-0008J4-PL; Mon, 29 Jul 2024 22:15:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcRx-0007g5-NN
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:18:53 -0400
-Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
+ id 1sYcOf-0008E1-4C
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:15:29 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcRw-00063A-2z
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:18:53 -0400
-Received: by mail-qv1-xf34.google.com with SMTP id
- 6a1803df08f44-6b95b710e2cso24937716d6.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:18:51 -0700 (PDT)
+ id 1sYcOd-0005Op-DY
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:15:28 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-7a103ac7be3so2266765a12.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:15:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722305931; x=1722910731; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Ul3diKbfJ0YtSu2RbIW4OgRaUQs29Fzjq5o0+nxb3ag=;
- b=fXM14EpAA4yc+DgrZ8C8O7ODFM47yQHoJGzfs/omu1/qCgWVRGVGdcfi0ugC9wlT/r
- Ja9DuhhEvS3j1DT0MmcIN+F/W5DSjoAfaF6nHkEuBB+9L35yZiiTHEeyE6qNXEt0+Dif
- /df9ltMueAyMinK4TAcpQV4DA9qudmUPmruT5MVaGTYFFfy4DmOgTqqVg5bi6Nc3i65N
- OXl6hXYtdxrLDXV/A/RJjidgXxaGmh69U/TU3YXRa6wQSKaZ0czaODb0//GL1VghNzuZ
- qVLkvDsnaQwbH24k6uxoxXcUHpx8u2c+edxaJ7MniZ52xh3RI/36dXFmKG8Kemj9sCLu
- /mCA==
+ d=linaro.org; s=google; t=1722305726; x=1722910526; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pH+41rL90lFjbVWqrfAC1Tzfsae8MNVaqTWvWuyk3aM=;
+ b=WoSRAcf9cnJN3yCilx5XNjA4wos0JTF8TrlhYe3RCMjB166Enspeiy4BL6XtzN+Ck/
+ owaUNjIDiboxYuezc/41syLkHwvA2qG8lNP7oOooY52+szhI/zzK2KsPgtV4V9OiNQPg
+ WIIK3ms75MLKrZ95VNBcYsZlbDI4/fjaOcZwwJETsjVt4gnNkZVCR63mx6BRfwRwiSIR
+ kgVcrMrX2JPnIS/j6bZkKsvVD5yD2vZNN1TvQKcGoVheaHKqXleU+Gyb7E+06/mndYHW
+ 49TdQgeWFYTEgk3LAoDqTqWxHSS4I0bzvxqA3rvHnEDwzqd9a73QOtEnNf3AQEAnXY1W
+ 8Bgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722305931; x=1722910731;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ul3diKbfJ0YtSu2RbIW4OgRaUQs29Fzjq5o0+nxb3ag=;
- b=moie+FyLsT2bhdyGJVCOm6VJS6rl1OxLKSmgjnJi0bPlvWBmiSJRva7fNt6jtc1M+V
- BbrCqs6NJf9HOX3afvPZ13O29HZMAn+6I2ESuNUufgznD1d12dHITNPd8tmPE0Hb4RZ3
- 2wt9vR8Jkapfa4xvd+2ntCFk8CNiYS8f3K1fGow+dT6OxZbaeLnlVhovVfCddJO+gaym
- I18EgzwBFGK7as0wnX8vevXp7E8yuvKFu6TgaLkPWygJ8tXZVtV1p7oIbwsiQIiflZz2
- MKpGyyno7LMvWUAf4pqq4zw3tL1Ez7/J2UfeW8DdPjPru07/mGSiEVFFWPuRDCbZK9rb
- YnVg==
-X-Gm-Message-State: AOJu0Yz9L6KuG5XoscJ53/EPFDMvI+cFENkcFGIougFQDMdD5tsfETNz
- Vjcapf9QDpPjULrF0HidcdxsxG+e9TaYf1GSP6p1RPOckS343dyLqthQsfVljISJrN4Vj9Qmbdx
- TYnI=
-X-Google-Smtp-Source: AGHT+IHug14QlIlSsaTWpvPTQ4GiFL49VBWS6vxiCqtUSjAIp5krF/eKZNUm6O/iNjmuVaoxOVu6xA==
-X-Received: by 2002:a05:6e02:156b:b0:398:ca2b:2537 with SMTP id
- e9e14a558f8ab-39aec2c9cffmr102748305ab.3.1722301928196; 
- Mon, 29 Jul 2024 18:12:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1722305726; x=1722910526;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pH+41rL90lFjbVWqrfAC1Tzfsae8MNVaqTWvWuyk3aM=;
+ b=ogFpPs1xcWoackUuzb4nXVVVnDNKF3x1QKQP7qGEphdqWd54mqr/nNkjXJyliMR0aJ
+ HjXS4A64voa0gQrp46ZuqwH6Xr+iyrPbrS5YqOfx6smTTJg4Gs0zz54ReONbxoJLI1JS
+ J7sPE15MgcfZUF261s6+SYYQooLFJb5zjS+2hZfZc1hXG0sWVF64pjdOo8zDPFZBkDTQ
+ xwYakm/TFwh4tsar/6MA1uA4IllX75aLAyu4+aC5GHW/FRu43CITox9/vC7Mzv9sU9m+
+ wL2H26jQe4ik7OjtQ/Yx/Thj4ws9NVleC/8bmha5CBRIeWtnoH1/OBLNKbjeG1PMnWBg
+ QMLg==
+X-Gm-Message-State: AOJu0YxjAWZQBBTjhsivyj4lc7WtsLXyWXGdKRAtHsdPZ/GDA5eVa6zc
+ zKdtqYWQO3xqISfDFd92NSZdO3SF86+6hW7/jwWW0flZORXuO8hj+dIzYmjbZDmHZ4tTnTsLNjh
+ D+JE=
+X-Google-Smtp-Source: AGHT+IEriPcKSuasBU2TvkAdes5dggN2edS16cT0kZQzwQVIjC2YzfjHLjc3UXZmfpY5Kxx8xdT65Q==
+X-Received: by 2002:a05:6e02:20e1:b0:39a:ea89:22ec with SMTP id
+ e9e14a558f8ab-39aec2d76a3mr110796085ab.9.1722301930485; 
+ Mon, 29 Jul 2024 18:12:10 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.06
- for <qemu-devel@nongnu.org>
+ 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 18:12:07 -0700 (PDT)
+ Mon, 29 Jul 2024 18:12:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/5] misc patch queue
-Date: Tue, 30 Jul 2024 11:11:56 +1000
-Message-ID: <20240730011202.480829-1-richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 1/5] target/rx: Use target_ulong for address in LI
+Date: Tue, 30 Jul 2024 11:11:57 +1000
+Message-ID: <20240730011202.480829-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240730011202.480829-1-richard.henderson@linaro.org>
+References: <20240730011202.480829-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,44 +91,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 93b799fafd9170da3a79a533ea6f73a18de82e22:
+Using int32_t meant that the address was sign-extended to uint64_t
+when passing to translator_ld*, triggering an assert.
 
-  Merge tag 'pull-ppc-for-9.1-2-20240726-1' of https://gitlab.com/npiggin/qemu into staging (2024-07-26 15:10:45 +1000)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2453
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Thomas Huth <thuth@redhat.com>
+---
+ target/rx/translate.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/target/rx/translate.c b/target/rx/translate.c
+index 9b81cf20b3..9aade2b6e5 100644
+--- a/target/rx/translate.c
++++ b/target/rx/translate.c
+@@ -85,7 +85,8 @@ static uint32_t decode_load_bytes(DisasContext *ctx, uint32_t insn,
+ 
+ static uint32_t li(DisasContext *ctx, int sz)
+ {
+-    int32_t tmp, addr;
++    target_ulong addr;
++    uint32_t tmp;
+     CPURXState *env = ctx->env;
+     addr = ctx->base.pc_next;
+ 
+-- 
+2.43.0
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240730
-
-for you to fetch changes up to d9b019e0a05cbbaa184815dd201b25006950c6d7:
-
-  linux-user: open_self_stat: Implement num_threads (2024-07-30 07:59:23 +1000)
-
-----------------------------------------------------------------
-util/getauxval: Ensure setting errno if not found
-util/getauxval: Use elf_aux_info on OpenBSD
-linux-user: open_self_stat: Implement num_threads
-target/rx: Use target_ulong for address in LI
-
-----------------------------------------------------------------
-Brad Smith (1):
-      util/cpuinfo: Make use of elf_aux_info(3) on OpenBSD
-
-Fabio D'Urso (1):
-      linux-user: open_self_stat: Implement num_threads
-
-Richard Henderson (1):
-      target/rx: Use target_ulong for address in LI
-
-Vivian Wang (2):
-      util/getauxval: Ensure setting errno if not found
-      linux-user/main: Check errno when getting AT_EXECFD
-
- linux-user/main.c      |  3 ++-
- linux-user/syscall.c   | 10 ++++++++++
- target/rx/translate.c  |  3 ++-
- util/cpuinfo-aarch64.c |  9 ++++++---
- util/cpuinfo-ppc.c     |  5 +++--
- util/getauxval.c       |  9 +++++++--
- meson.build            |  8 ++++++++
- 7 files changed, 38 insertions(+), 9 deletions(-)
 
