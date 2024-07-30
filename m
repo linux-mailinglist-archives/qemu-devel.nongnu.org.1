@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4078B944D86
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 15:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22347944DA3
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZWHR-0006mY-8R; Thu, 01 Aug 2024 09:55:45 -0400
+	id 1sZWRe-0005ms-LD; Thu, 01 Aug 2024 10:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sZWHK-0006in-7C
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 09:55:38 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sZWH8-0002ka-PE
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 09:55:28 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-52efa16aad9so10134307e87.0
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 06:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1722520524; x=1723125324; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0MZp10X+tqR0pGIQSfiNJKCWljR+FU4ph0z8rqaSaxI=;
- b=Sp5EDIRbZgXOK2dlk+r6TibCqDtaP/H5cIhNOogu6nrgGeStrmnO0JnPL/o0KKXQoo
- FCivTyt9Lb4WFzQkYzixHYqdcw6fUQ44st+67N6XkQ81BgFqQCTIsdMG3P+Z3qX7sMAB
- tbvAbDtTA9OVOYtmD1ytMh3kvDkB7SwVdFfEfc3CsRyhn9SNjmTSC3q1pQYYrulDUjpi
- PAgpdD1873gWfHVgF+/9EJUxwSHMer9oOTFPbVn414KbYq5QvcEMAFSXIAKzmmpC7vzH
- IWU+7UwM8TCOiKCFfQtHWnx6PM9icoWqMEoiorjwrR06Fe+iH57iskCffmB/xJGrjRkD
- JR+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722520524; x=1723125324;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0MZp10X+tqR0pGIQSfiNJKCWljR+FU4ph0z8rqaSaxI=;
- b=tnZuwDKB4JE66X9EaKBWoIuB3uQGLwcoVXV9mIKusiU/NIAdWRdbZ+G1XBjCvnmxqo
- AG8wG3pN4Dhox7KE1WMWyPcFVMKckqHlzDE9/YURqE8wtbCRyzXuXCulDGck+ZX6EzdL
- W2zxrmI4mHxiHtbc2TOH9i+aaowf0qfSxFEuIcf9OLZFYRtb3ybxiIrJqN/OVUUi/3XZ
- c6bc/zghUhHSWC+hiwcl1aknBxgr4FTGJ+bzuoo1dwYDaooQDL4GBC+jOd1gNpkqfLDO
- S9ECKSgl5FzSogLh0TIs/vwrrs879Gtu/iuY8TnLOQlAntbTANYFISejG2ySJzDc8Ujn
- xfBQ==
-X-Gm-Message-State: AOJu0YwJTLdnbxqrUdDevhyYDbbHjaLPqrW2DCkSzwXpMdG1skGj/HK1
- MDk9yKpptzkJpCWkQnK57r+F06sjLAaofhZN4XKf31SoPLI2Vlc1oVXzJ30lR6yFSY8qYMs7k1b
- OheafR1X/89L3XR88fid47WKtcfYuZEcMA+1Icg==
-X-Google-Smtp-Source: AGHT+IHfX7a8uakm6dXY8HZDKoDTAwMEJDMWCBu2MDYl5wCN1PQ26MyOg/ovo6iNcOOGYCpJzxnnZ4elH7VawSGzFkg=
-X-Received: by 2002:a05:6512:2c03:b0:52e:9ac6:a20f with SMTP id
- 2adb3069b0e04-530b61ed13bmr1557976e87.37.1722520523597; Thu, 01 Aug 2024
- 06:55:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sZWRZ-0005kV-9E
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:06:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sZWRX-0006pc-PL
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:06:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722521171;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9enReR5JuFIrgnsIdk8Cd7I6rD+zZR0rzF/C7cWcVs4=;
+ b=AMHDinvXazUGDa5e9RsCGYwAwbtymjfG1uCh8sAMyHZVIkVHUJ5VjWHp3C0CHbBhSyiYxX
+ nyfX0952NoKGGO/g86UGvDtoWjKyLCuPShJZ1SK07i5E1gRVCU4TQ5ovCTlEUBrl7ivAwi
+ AAn0JQGTt5s4y4tAF+kQSzN39zm6k/Y=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-fDjmYv-MOCi_ZtfmT_0rYA-1; Thu,
+ 01 Aug 2024 10:06:06 -0400
+X-MC-Unique: fDjmYv-MOCi_ZtfmT_0rYA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4D5E01955BFA
+ for <qemu-devel@nongnu.org>; Thu,  1 Aug 2024 14:06:05 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.116])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2151E300019E; Thu,  1 Aug 2024 14:06:03 +0000 (UTC)
+Date: Tue, 30 Jul 2024 12:53:45 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v2 1/2] virtio: Allow .get_vhost() without vhost_started
+Message-ID: <20240730165345.GA650820@fedora.redhat.com>
+References: <20240723163941.48775-1-hreitz@redhat.com>
+ <20240723163941.48775-2-hreitz@redhat.com>
 MIME-Version: 1.0
-References: <20240726055933.817-1-jim.shu@sifive.com>
- <20240726055933.817-4-jim.shu@sifive.com>
- <CAFEAcA-ZkcJvFkYyHGi9bXoPvqEzvV0b_z6xaQPLMK9qNHSdCA@mail.gmail.com>
-In-Reply-To: <CAFEAcA-ZkcJvFkYyHGi9bXoPvqEzvV0b_z6xaQPLMK9qNHSdCA@mail.gmail.com>
-From: Jim Shu <jim.shu@sifive.com>
-Date: Thu, 1 Aug 2024 21:55:12 +0800
-Message-ID: <CALw707rwo8w3kFaga_17H+7JPneA7kahqBiLqwo6KGohLV0_SA@mail.gmail.com>
-Subject: Re: [PATCH 3/4] hw/dma: xilinx_axidma: Reset qemu_irq when DMA/Stream
- is reset
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Alistair Francis <alistair@alistair23.me>, Jason Wang <jasowang@redhat.com>, 
- "open list:Xilinx Zynq" <qemu-arm@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=jim.shu@sifive.com; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="p4Rs4p5yfkuMd4ZM"
+Content-Disposition: inline
+In-Reply-To: <20240723163941.48775-2-hreitz@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
+ DKIMWL_WL_HIGH=-0.131, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,69 +84,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
 
-Except DeviceState::reset(), stream_reset() is only used in
-axidma_write() and axidma_write() has qemu_set_irq() at the end of
-function.
-I think this commit could be dropped. I will remove it in the v2 patchset.
+--p4Rs4p5yfkuMd4ZM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Jul 23, 2024 at 06:39:39PM +0200, Hanna Czenczek wrote:
+> Historically, .get_vhost() was probably only called when
+> vdev->vhost_started is true.  However, we now decidedly want to call it
+> also when vhost_started is false, specifically so we can issue a reset
+> to the vhost back-end while device operation is stopped.
+>=20
+> Some .get_vhost() implementations dereference some pointers (or return
+> offsets from them) that are probably guaranteed to be non-NULL when
+> vhost_started is true, but not necessarily otherwise.  This patch makes
+> all such implementations check all such pointers, returning NULL if any
+> is NULL.
+>=20
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  include/hw/virtio/virtio.h  |  1 +
+>  hw/display/vhost-user-gpu.c |  2 +-
+>  hw/net/virtio-net.c         | 19 +++++++++++++++++--
+>  hw/virtio/virtio-crypto.c   | 18 +++++++++++++++---
+>  4 files changed, 34 insertions(+), 6 deletions(-)
 
-Thanks,
-Jim Shu
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
+--p4Rs4p5yfkuMd4ZM
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-On Mon, Jul 29, 2024 at 11:23=E2=80=AFPM Peter Maydell <peter.maydell@linar=
-o.org> wrote:
->
-> On Fri, 26 Jul 2024 at 06:59, Jim Shu <jim.shu@sifive.com> wrote:
-> >
-> > Current DMA/Stream reset will clear interrupt pending bit of DMA device=
-.
-> > The qemu_irq of device should be updated at the same time.
-> >
-> > Signed-off-by: Jim Shu <jim.shu@sifive.com>
-> > ---
-> >  hw/dma/xilinx_axidma.c | 25 +++++++++++++------------
-> >  1 file changed, 13 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
-> > index 728246f925..beb3fbf1d5 100644
-> > --- a/hw/dma/xilinx_axidma.c
-> > +++ b/hw/dma/xilinx_axidma.c
-> > @@ -177,11 +177,24 @@ static inline int stream_halted(struct Stream *s)
-> >      return !!(s->regs[R_DMASR] & DMASR_HALTED);
-> >  }
-> >
-> > +static void stream_update_irq(struct Stream *s)
-> > +{
-> > +    unsigned int pending, mask, irq;
-> > +
-> > +    pending =3D s->regs[R_DMASR] & DMASR_IRQ_MASK;
-> > +    mask =3D s->regs[R_DMACR] & DMASR_IRQ_MASK;
-> > +
-> > +    irq =3D pending & mask;
-> > +
-> > +    qemu_set_irq(s->irq, !!irq);
-> > +}
-> > +
-> >  static void stream_reset(struct Stream *s)
-> >  {
-> >      s->regs[R_DMASR] =3D DMASR_HALTED;  /* starts up halted.  */
-> >      s->regs[R_DMACR] =3D 1 << 16; /* Starts with one in compl threshol=
-d.  */
-> >      s->sof =3D true;
-> > +    stream_update_irq(s); /* Clear interrupt */
-> >  }
->
-> The general rule of thumb in QEMU is not to call
-> qemu_set_irq() from a DeviceState::reset function,
-> and xilinx_axidma_reset calls stream_reset. I think
-> probably the best thing is to separate out whether
-> this is a DeviceState::reset or a software-triggered
-> reset, and only call qemu_set_irq() in the latter case.
->
-> thanks
-> -- PMM
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmapGpkACgkQnKSrs4Gr
+c8i36Qf/RKjv4WcB2GA8BlTtC8Vb7vRBpCQJGGp5ScO9ksaTelp9a/ZeYCrNJx7b
+vIy0lKWTD6xyZ1Jjf6aO89h5rBvzvuYNEEzVz89N3VtM4oQWzXxD7D1Z/FFYDIQE
+WaRTn9qK7H+JB6Vhxs8K02VSC3dj19nEfj2eXhaV6D39MGL9MsZLiga4UgDQq5Xe
+8eeYDcO9zF6P7UFMD086fIVgrsdznQ7VSU8gQfnE6MURI7W50iY0DFMhHYmoVVap
+Dkuw98BUi/z1oEW1/utCK9LtWchB8nos6ysM+lr1R4pZVJkh7tD2FPDMIU2Pad0/
+GqUlr1FpRtIb97CHyESmN29mbnkgWA==
+=qE3j
+-----END PGP SIGNATURE-----
+
+--p4Rs4p5yfkuMd4ZM--
+
 
