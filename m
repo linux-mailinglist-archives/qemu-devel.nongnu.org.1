@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A394E941C6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 19:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 342DB941C84
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 19:08:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYqHA-00005b-8k; Tue, 30 Jul 2024 13:04:40 -0400
+	id 1sYqH7-0008MV-Ri; Tue, 30 Jul 2024 13:04:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYqGp-0007dF-O3
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:04:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sYqGr-0007fE-JG
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:04:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYqGl-0002KH-L5
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:04:19 -0400
+ id 1sYqGp-0002NE-II
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:04:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722359055;
+ s=mimecast20190719; t=1722359058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TGGRhe07KW8b4zRF7Dw43fZiIRvQ6jvhrKqTMO7PCl4=;
- b=YodBBUrgHPFsk9DPc4vwdZkKAYuh5BePJ/cRXKu4uQnvMxOHKcO69OpiSzUCfg6Uz2JS4C
- ZYgkkOO5x83XxPcAUHjs4sp2m8IcXc39lbOLlqSZKKdnn2Q5P8258wr21xSz9EDYTX98+k
- NkVf9MGawgRwdBX39wE07VjIkyTgmSg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vySpXSbXERbRxz54ByMiTUkeb+cYjvlLvmq2IETr1qQ=;
+ b=WDLU5OEukekjN45EPqwOCB/Bciw/5sfp7un80uNoRLHHZH7uecil7UFuJLIlMd6Bkkggaq
+ 7o6ionoE3IsfBQf0D/gGEgFdjtMl8eyVBYGa+37E6e0bzGjBX/rtoV+NlTSwI6Lc17dHSB
+ 5O+GvObzIJXCDxjJhxuOqWLoer6q3T4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-E7J1mvDxMHWCv7zVfD8QVg-1; Tue,
- 30 Jul 2024 13:04:10 -0400
-X-MC-Unique: E7J1mvDxMHWCv7zVfD8QVg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-222-zortssg5ObarUxxFBwf2AA-1; Tue,
+ 30 Jul 2024 13:04:14 -0400
+X-MC-Unique: zortssg5ObarUxxFBwf2AA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3521C1955D4E; Tue, 30 Jul 2024 17:04:09 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A43D1955F3B; Tue, 30 Jul 2024 17:04:13 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.108])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C9BD63000192; Tue, 30 Jul 2024 17:04:05 +0000 (UTC)
+ id AE7593000194; Tue, 30 Jul 2024 17:04:09 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,24 +53,23 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 04/24] tests/Makefile.include: Increase the level of
- indentation in the help text
-Date: Tue, 30 Jul 2024 18:03:24 +0100
-Message-ID: <20240730170347.4103919-5-berrange@redhat.com>
+Subject: [PATCH v3 05/24] tests/functional: Prepare the meson build system for
+ the functional tests
+Date: Tue, 30 Jul 2024 18:03:25 +0100
+Message-ID: <20240730170347.4103919-6-berrange@redhat.com>
 In-Reply-To: <20240730170347.4103919-1-berrange@redhat.com>
 References: <20240730170347.4103919-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,64 +88,135 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The next patch is going to add some entries that need more space between
-the command and the help text, so let's increase the indentation here
-first.
+Provide a meson.build file for the upcoming python-based functional
+tests, and add some wrapper glue targets to the tests/Makefile.include
+file. We are going to use two "speed" modes for the functional tests:
+The "quick" tests can be run at any time (i.e. also during "make check"),
+while the "thorough" tests should only be run when running a
+"make check-functional" test run (since these tests might download
+additional assets from the internet).
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The changes to the meson.build files are partly based on an earlier
+patch by Ani Sinha.
+
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/Makefile.include | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ tests/Makefile.include       | 11 ++++++
+ tests/functional/meson.build | 66 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build            |  1 +
+ 3 files changed, 78 insertions(+)
+ create mode 100644 tests/functional/meson.build
 
 diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 6618bfed70..167d8f29a4 100644
+index 167d8f29a4..d0c2ae30b7 100644
 --- a/tests/Makefile.include
 +++ b/tests/Makefile.include
-@@ -3,28 +3,28 @@
- .PHONY: check-help
- check-help:
- 	@echo "Regression testing targets:"
--	@echo " $(MAKE) check                  Run block, qapi-schema, unit, softfloat, qtest and decodetree tests"
--	@echo " $(MAKE) bench                  Run speed tests"
-+	@echo " $(MAKE) check                    Run block, qapi-schema, unit, softfloat, qtest and decodetree tests"
-+	@echo " $(MAKE) bench                    Run speed tests"
- 	@echo
+@@ -9,6 +9,8 @@ check-help:
  	@echo "Individual test suites:"
--	@echo " $(MAKE) check-qtest-TARGET     Run qtest tests for given target"
--	@echo " $(MAKE) check-qtest            Run qtest tests"
--	@echo " $(MAKE) check-unit             Run qobject tests"
--	@echo " $(MAKE) check-qapi-schema      Run QAPI schema tests"
--	@echo " $(MAKE) check-block            Run block tests"
-+	@echo " $(MAKE) check-qtest-TARGET       Run qtest tests for given target"
-+	@echo " $(MAKE) check-qtest              Run qtest tests"
-+	@echo " $(MAKE) check-unit               Run qobject tests"
-+	@echo " $(MAKE) check-qapi-schema        Run QAPI schema tests"
-+	@echo " $(MAKE) check-block              Run block tests"
- ifneq ($(filter $(all-check-targets), check-softfloat),)
--	@echo " $(MAKE) check-tcg              Run TCG tests"
--	@echo " $(MAKE) check-softfloat        Run FPU emulation tests"
-+	@echo " $(MAKE) check-tcg                Run TCG tests"
-+	@echo " $(MAKE) check-softfloat          Run FPU emulation tests"
- endif
--	@echo " $(MAKE) check-avocado          Run avocado (integration) tests for currently configured targets"
-+	@echo " $(MAKE) check-avocado            Run avocado (integration) tests for currently configured targets"
- 	@echo
--	@echo " $(MAKE) check-report.junit.xml Generates an aggregated XML test report"
--	@echo " $(MAKE) check-venv             Creates a Python venv for tests"
--	@echo " $(MAKE) check-clean            Clean the tests and related data"
-+	@echo " $(MAKE) check-report.junit.xml   Generates an aggregated XML test report"
-+	@echo " $(MAKE) check-venv               Creates a Python venv for tests"
-+	@echo " $(MAKE) check-clean              Clean the tests and related data"
- 	@echo
- 	@echo "The following are useful for CI builds"
--	@echo " $(MAKE) check-build            Build most test binaries"
--	@echo " $(MAKE) get-vm-images          Downloads all images used by avocado tests, according to configured targets (~350 MB each, 1.5 GB max)"
-+	@echo " $(MAKE) check-build              Build most test binaries"
-+	@echo " $(MAKE) get-vm-images            Downloads all images used by avocado tests, according to configured targets (~350 MB each, 1.5 GB max)"
- 	@echo
- 	@echo
- 	@echo "The variable SPEED can be set to control the gtester speed setting."
+ 	@echo " $(MAKE) check-qtest-TARGET       Run qtest tests for given target"
+ 	@echo " $(MAKE) check-qtest              Run qtest tests"
++	@echo " $(MAKE) check-functional         Run python-based functional tests"
++	@echo " $(MAKE) check-functional-TARGET  Run functional tests for a given target"
+ 	@echo " $(MAKE) check-unit               Run qobject tests"
+ 	@echo " $(MAKE) check-qapi-schema        Run QAPI schema tests"
+ 	@echo " $(MAKE) check-block              Run block tests"
+@@ -152,6 +154,15 @@ check-acceptance-deprecated-warning:
+ 
+ check-acceptance: check-acceptance-deprecated-warning | check-avocado
+ 
++FUNCTIONAL_TARGETS=$(patsubst %-softmmu,check-functional-%, $(filter %-softmmu,$(TARGETS)))
++.PHONY: $(FUNCTIONAL_TARGETS)
++$(FUNCTIONAL_TARGETS):
++	@$(MAKE) SPEED=thorough $(subst -functional,-func,$@)
++
++.PHONY: check-functional
++check-functional:
++	@$(MAKE) SPEED=thorough check-func check-func-quick
++
+ # Consolidated targets
+ 
+ .PHONY: check check-clean get-vm-images
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+new file mode 100644
+index 0000000000..7fc9c4e513
+--- /dev/null
++++ b/tests/functional/meson.build
+@@ -0,0 +1,66 @@
++# QEMU functional tests:
++# Tests that are put in the 'quick' category are run by default during
++# 'make check'. Everything that should not be run during 'make check'
++# (e.g. tests that fetch assets from the internet) should be put into
++# the 'thorough' category instead.
++
++# Most tests run too slow with TCI enabled, so skip the functional tests there
++if get_option('tcg_interpreter')
++  subdir_done()
++endif
++
++# Timeouts for individual tests that can be slow e.g. with debugging enabled
++test_timeouts = {
++}
++
++tests_generic = [
++]
++
++tests_x86_64_quick = [
++]
++
++tests_x86_64_thorough = [
++]
++
++foreach speed : ['quick', 'thorough']
++  foreach dir : target_dirs
++    if not dir.endswith('-softmmu')
++      continue
++    endif
++
++    target_base = dir.split('-')[0]
++    test_emulator = emulators['qemu-system-' + target_base]
++
++    if speed == 'quick'
++      suites = ['func-quick', 'func-' + target_base]
++      target_tests = get_variable('tests_' + target_base + '_quick', []) + tests_generic
++    else
++      suites = ['func-' + speed, 'func-' + target_base + '-' + speed, speed]
++      target_tests = get_variable('tests_' + target_base + '_' + speed, [])
++    endif
++
++    test_deps = roms
++    test_env = environment()
++    if have_tools
++      test_env.set('QEMU_TEST_QEMU_IMG', meson.global_build_root() / 'qemu-img')
++      test_deps += [qemu_img]
++    endif
++    test_env.set('QEMU_TEST_QEMU_BINARY',
++                 meson.global_build_root() / 'qemu-system-' + target_base)
++    test_env.set('QEMU_BUILD_ROOT', meson.project_build_root())
++    test_env.set('PYTHONPATH', meson.project_source_root() / 'python:' +
++                               meson.current_source_dir())
++
++    foreach test : target_tests
++      test('func-@0@/@1@'.format(target_base, test),
++           python,
++           depends: [test_deps, test_emulator, emulator_modules],
++           env: test_env,
++           args: [meson.current_source_dir() / 'test_' + test + '.py'],
++           protocol: 'tap',
++           timeout: test_timeouts.get(test, 60),
++           priority: test_timeouts.get(test, 60),
++           suite: suites)
++    endforeach
++  endforeach
++endforeach
+diff --git a/tests/meson.build b/tests/meson.build
+index acb6807094..3345ad2098 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -85,3 +85,4 @@ subdir('unit')
+ subdir('qapi-schema')
+ subdir('qtest')
+ subdir('migration')
++subdir('functional')
 -- 
 2.45.2
 
