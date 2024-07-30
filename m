@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B256F94188E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 18:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD35941897
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 18:23:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYpce-0008Kp-AL; Tue, 30 Jul 2024 12:22:48 -0400
+	id 1sYpce-0008NP-Sx; Tue, 30 Jul 2024 12:22:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYpcc-0008GK-Rj
+ id 1sYpcc-0008Gj-Uo
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 12:22:46 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYpca-0003XL-44
+ id 1sYpca-0003XR-LU
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 12:22:46 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2eeb1ba0481so76974521fa.2
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 09:22:43 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5a2ffc34722so52163a12.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 09:22:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722356561; x=1722961361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722356563; x=1722961363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LeP5hKI1uEP9cOGS+CMSaW0aT4kqda/WdRmJyVhc0Is=;
- b=XUB8zfiCtvxldLzGwKDAo9BDWsOr08IlBLYuTCsFlfj3UwLvxjm45Iceab3hrbTdie
- WzGNdfYgELCEwgD7nKgHV2lSnI4VvLfVw8S2aTRGt0K/3ZO7crC+amLhoSKXXBzrZtMo
- sqY2fsewVH1WwIdkPP+PCGqM/cOUsocnjR5LgRUM55isPyfFPUc3IN6XYkvlNMpsOUkh
- jR2bc7agBcHQBsVSmycEBu8dZZirPGJvznwmZNxqc4/TYBBX2HR2gL6QRinBMCt/Mt8D
- EWIrrIfHcvYEON7gZpVY/R53jE37z8hEKt73x0zG4HgxudoVeUyg6bMQ+hU9Un+VmW3F
- h09w==
+ bh=keY6VpPVumnjGkrnimQUeQrjJ9wrFpao2IDVhIYi/0I=;
+ b=FphgzqXrRP54NFsWF9APP55aWbD/5pwaqEErffH/smztR6oGQVuOOkp2O3xqy+1gzA
+ apseVmMv60WkN+hbq7FVaJSWcslroJ3tfuwjJr037uBHamIO2MYuqlnBzCqW6324pREF
+ a+jdPBqcrbcNxO5nEFxChoN33jf+fz+g1kQaDi6Xn+LOdT2b0jLVz7wmWnPWpGtfvrae
+ ntj+SSXr3PLbZxDCBYHTw39LryHcO3rFLIvzqzeZnCJQS9dDbUPpXuVyXYn/4zMHV+1y
+ gm0S/R9BYJlWIveVKUFASfglNJdhKiMARZlDRbx+CZxgmczesnv+Q8e6N/66y5xgtrop
+ 8gzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722356561; x=1722961361;
+ d=1e100.net; s=20230601; t=1722356563; x=1722961363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LeP5hKI1uEP9cOGS+CMSaW0aT4kqda/WdRmJyVhc0Is=;
- b=K9vxoAv5leI2StFE57bYHxqAZ9cO1VQbcrxhPPuTiq3RE/xbr5vgGC9Tx5ZMFPRh+0
- F/vK57PQxiMeyyryt10k9RxjbnlAFl6ta/23whBAjnjmpdPMYlZ+Z7gcjScSOfIStkqn
- teBWBCQ8ltJbFjX3sRmiy0ETvCfR7OHPPIOGv8atzBM1i543+hreWFgInXpfVGyZtBQC
- kS3qDPLqmSYPTlNF9XLIoF1jLkH6QpVDmWoNgdUg233PuuQhDF3rcQhvGwBo6z4fBcxg
- 90DhJMa+NakNXvMVVoYI+wIyvahi1yrErOkWilDW449/em6yOTrFZZBnnC3RiaETWG8R
- +Cew==
-X-Gm-Message-State: AOJu0YxFRZt2JloF36RmrY956/O88SbdVy39b9Gmb34E/FzBDqzivzGr
- XsLY4J2NeGFTT2WSE4/d9xscB3DzGW5z/lSB6Q/uhWvRRlna8eOL+ErHSyfzD8Y=
-X-Google-Smtp-Source: AGHT+IE/i9oz5LWVCbUqq06uVFHAxv8KHygOw8JFEdLuh7x4pxkry1e5ia8L9Lmm6bTT6opwJ6FnZA==
-X-Received: by 2002:a2e:8804:0:b0:2ee:8db7:47b7 with SMTP id
- 38308e7fff4ca-2f12edd78e8mr71347371fa.26.1722356560649; 
- Tue, 30 Jul 2024 09:22:40 -0700 (PDT)
+ bh=keY6VpPVumnjGkrnimQUeQrjJ9wrFpao2IDVhIYi/0I=;
+ b=WedtOMQHpxkF6uV+THZECynUQZTLpE+g4VLi4BfaNBxhqJLynwduJek7ycnu8H/8jU
+ +7HltVim0y2rT8gE9awRTpw2GQGI5ykiRF0gBr0+xLwDBLyaNntxhzH0cZywcSoHeIwx
+ sH+BgzFMo9GLPUal/0dEFLq5VIKa1myt+r4qg+FHaiYXsj1rWrOYuPJMSp4jANL5UwXG
+ zY5jNJndVvqkAjy7FoeBypLIfxCFN94wyphldYXTxOT4RVA3au76WOY+MI9bv81JNj4k
+ qKmZRERxkg6uSpjSaqt5WKNwy9gU/y3XqD1ovVNrt7Vrvr0Wcd/xdjFx+NqPAdsoO4lK
+ bRcw==
+X-Gm-Message-State: AOJu0Yw71WEiHwKRdAQOc+tpM1fNaFiCCmlEcuz9vUfpu9ia3JptBS/h
+ q3G1QCj4lqDOv84klNpkHXwQja+e1wFKAQvSFu+u7SfegMiLy3HnwpN9wZyLwZ+9QDRbtgmSD3E
+ O
+X-Google-Smtp-Source: AGHT+IHfQ5zdpuKYoSSOqbu3rVxgU1IcF5SN4aknac49jKQyMvDylO1sDAOKyv46RZ5Z6YbTqrQmeg==
+X-Received: by 2002:a50:931d:0:b0:5b4:cbba:902a with SMTP id
+ 4fb4d7f45d1cf-5b4cbc9e0aamr2080087a12.4.1722356562894; 
+ Tue, 30 Jul 2024 09:22:42 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ac65783704sm7337736a12.88.2024.07.30.09.22.38
+ 4fb4d7f45d1cf-5af507c6e9bsm6119847a12.54.2024.07.30.09.22.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jul 2024 09:22:38 -0700 (PDT)
+ Tue, 30 Jul 2024 09:22:40 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3CBD35F931;
+ by draig.lan (Postfix) with ESMTP id 523095F93A;
  Tue, 30 Jul 2024 17:22:38 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PULL 04/14] tests/tcg/loongarch64: Use --no-warn-rwx-segments to
- link system tests
-Date: Tue, 30 Jul 2024 17:22:27 +0100
-Message-Id: <20240730162237.1425515-5-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 05/14] tests/tcg: update README
+Date: Tue, 30 Jul 2024 17:22:28 +0100
+Message-Id: <20240730162237.1425515-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240730162237.1425515-1-alex.bennee@linaro.org>
 References: <20240730162237.1425515-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,34 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+Update the document with details about the layout of tests. Remove the
+out of date cris comments. Refer to the developer guide for details
+about how to run the tests.
 
-Recent debian cross-linker for loongarch issues
-
-  ld: warning: hello has a LOAD segment with RWX permissions
-
-This is partially related to tests/tcg/loongarch64/system/kernel.ld,
-but is not fixed by explicitly adding a single LOAD PHDR.
-Disable the warning, since it does not apply to kernel images.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240724010733.22129-3-richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240729144414.830369-5-alex.bennee@linaro.org>
+Message-Id: <20240729144414.830369-6-alex.bennee@linaro.org>
 
-diff --git a/tests/tcg/loongarch64/Makefile.softmmu-target b/tests/tcg/loongarch64/Makefile.softmmu-target
-index d5d5c1a7f6..6d4a20fde7 100644
---- a/tests/tcg/loongarch64/Makefile.softmmu-target
-+++ b/tests/tcg/loongarch64/Makefile.softmmu-target
-@@ -16,7 +16,7 @@ LINK_SCRIPT=$(LOONGARCH64_SYSTEM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT)
- TESTS+=$(LOONGARCH64_TESTS) $(MULTIARCH_TESTS)
- CFLAGS+=-nostdlib -g -O1 -march=loongarch64 -mabi=lp64d $(MINILIB_INC)
--LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
-+LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc -Wl,--no-warn-rwx-segments
- 
- # building head blobs
- .PRECIOUS: $(CRT_OBJS)
+diff --git a/tests/tcg/README b/tests/tcg/README
+index 706bb185b4..6d08ca50dc 100644
+--- a/tests/tcg/README
++++ b/tests/tcg/README
+@@ -1,9 +1,14 @@
+-This directory contains various interesting guest programs for
+-regression testing. Tests are either multi-arch, meaning they can be
+-built for all guest architectures that support linux-user executable,
+-or they are architecture specific.
+-
+-CRIS
+-====
+-The testsuite for CRIS is in tests/tcg/cris.  You can run it
+-with "make test-cris".
++This directory contains various interesting guest binaries for
++regression testing the Tiny Code Generator doing system and user-mode
++emulation.
++
++The multiarch directory contains shared code for tests that can be
++built for all guest architectures. Architecture specific code can be
++found in their respective directories.
++
++System mode tests will be under the "system" subdirectories.
++
++GDB scripts for exercising the gdbstub on specific tests will be found
++under the "gdbstb" subdirectories.
++
++See the developer guide for more instructions on "make check-tcg"
 -- 
 2.39.2
 
