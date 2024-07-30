@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13280940425
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538FE94047D
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcIA-00029a-Lw; Mon, 29 Jul 2024 22:08:46 -0400
+	id 1sYcRb-00078H-To; Mon, 29 Jul 2024 22:18:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcI8-00028Q-Vl
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:08:45 -0400
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
+ id 1sYcRZ-00077d-OM
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:18:29 -0400
+Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcI4-0003EO-MZ
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:08:44 -0400
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-39865a15900so14992145ab.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:08:40 -0700 (PDT)
+ id 1sYcRY-0005zx-8X
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:18:29 -0400
+Received: by mail-qt1-x833.google.com with SMTP id
+ d75a77b69052e-44fded90c41so22050061cf.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:18:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722305319; x=1722910119; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722305907; x=1722910707; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pvF0s1jQIBySSeBKtBCNdIkStj9P9gT/o0jVZTBUvsc=;
- b=SRfgQLDSCgy+V4bj1tnzi59BhqeBMwpPT7/WuQSo3ISmvtT4RjStcBnlAVSQtur7Za
- rGJet5HsgZHjDlmmXouXudrwU1l0EiHgElOQUVcnlcoUfUMJFQTDn6h9/0HwqjBBxMxP
- 07bD25YrZ91gfojAxtjFvbxuQiWKOruraf0IXp2UfO30xDEvzxrFVJHzsjY1nUjRytu2
- hxF8tUQiJ+J1/1/UCZp/SKnXku/bcrlOJT1VeUVSgbmiyLDS/c11jv2qKkIFNWSitk3n
- OlQZ2EZKSumcOGKY4MG2dPYaAWp3cX8XVqhKUaBqxNJe4QxWiAkY4/v5gczM/4WtreFH
- cusQ==
+ bh=qdOOXlcI2pXCHd0E8nwCuiMDshNmFFas8R7dthZK29c=;
+ b=Hp7qOB5ktSXtjnD9sAfQL7RU+ERmZ/Ugbqnrqg1WrTHnQSUiP97H/FrAszL37LzP3m
+ pX9cDHoJ3CY+ePiU5AuX7sYYKdS9Rho7pKaMKMF8vh50iMkFiEBLYpjxKgyA168x0ocC
+ sGQ7xy2g4Ry+SRSpaCiQGSTjQq/o2iygbfsrVl5T4TD3S86jZUGf7kldrtTCpkZjA/cB
+ AERP6miH09vC3ulOgGA+n5uyqs+MW4Uh084CMk2RhsgeSPsVBMFW65IW3wD5+33oZ8u5
+ ExebmW97LhR8ZfiH04CwamDoKo6b7gO/EYe1Z+uf1cO5gez/qV1LlpzImVWxs95EZEOQ
+ CVag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722305319; x=1722910119;
+ d=1e100.net; s=20230601; t=1722305907; x=1722910707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pvF0s1jQIBySSeBKtBCNdIkStj9P9gT/o0jVZTBUvsc=;
- b=j/v33bAtyrEPLg3K98waG9+kIv+qz0uwR4OYvdq6qXB/kCzGgFsPSCZdqE4zFIH5wk
- KowmrgGWHOx3jrvxzL1stoXJ5ITNtjoo4XYWQD5pQ7tMGYMpmFTMzQCmYRJTLe/X1Cuy
- KMFGrNFk/NcEJs7F6WQCRlK4uUphv5yAmPM+5aLIpy3Sjku0waeOM857E3+7JbyPPIYU
- SIeimbHtjWmyIdB8W1QZx/L6HCobZ4AcTAgs/f0YgOVMWRW3yuwE/Il/1/8UXrrM/1Nh
- C9VTbP49z2ruwSc6CO6tWLsIZKT2Is+R8kPIj3fPNle4DRKby8VW9Y06+bRQUpghUhtW
- JGCQ==
-X-Gm-Message-State: AOJu0Yw3ngQ4v+VgXDJvX7suVNnBfBpfw8HZELUsslB4S59Hf/YllHqH
- MxhTK9KPVwRealKNuqClINJ6G2xmFaiEU7HJe0Rs3OQu035b3gFDtu7zgqjbSnkgVVmcxaUvHtZ
- O4aM=
-X-Google-Smtp-Source: AGHT+IFTIf7LOeBm+FjgWoD0szE5P73hRxwPZGfNUF9Ox3Ri/JAmTT5m+cx07MMpvDb2M0XFQ+cyAA==
-X-Received: by 2002:a05:6a00:2443:b0:70d:2583:7223 with SMTP id
- d2e1a72fcca58-70ecea2ef3emr11413551b3a.17.1722301934907; 
- Mon, 29 Jul 2024 18:12:14 -0700 (PDT)
+ bh=qdOOXlcI2pXCHd0E8nwCuiMDshNmFFas8R7dthZK29c=;
+ b=kWguF16IST25mYBj1rGgjwDmAbPsD/y9x99seqdObWwXRikxQU7iUOYP74l9KswTeI
+ WzQBLJ4S6lNiH/11cKGw7iAOMDQ31n9n99c/Mt1qcZYkLudcIkmzxvml7GlLgQgCIPVw
+ EfXxUy5hGuatgTT7J13haUCmAA3X6v+f9gK2OVu0cOTCMbs9A1vjINbE5F7bMj2XJsjm
+ rX+Huf1yZi/6b0Wd8QA//sa8/qqraOjbQeyGqsk905R1U13vL+T35YODz2IbPwO4waQI
+ 1yDl5kDQMuGNU3IofmC/3g2nLHjrxPnqPHtn8Jhai/6O6Xgpq+TUibkoDMuBb+IW8FQM
+ 13XQ==
+X-Gm-Message-State: AOJu0Yzm260h2QfW7fK/UdyQewHzw2U+rUHRoYdDlM20BqbuNoaGZJ0d
+ sekhW15hXgzZULGSClNMU8A4FAG8Q2AdFk3ovUqPfeYKzNECwQkxhnTzGBLGBuATB1hS2j1cKzf
+ OwvA=
+X-Google-Smtp-Source: AGHT+IH2iXsYm2M5romUtYcoXgvTBkWmSW/JTgHtEI8rGHEeN391KwT6ykEpR8zLdR228Gs51+03UA==
+X-Received: by 2002:a05:6e02:178d:b0:397:3045:9dc2 with SMTP id
+ e9e14a558f8ab-39aec4236a0mr123455735ab.27.1722301937280; 
+ Mon, 29 Jul 2024 18:12:17 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.13
+ 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 18:12:14 -0700 (PDT)
+ Mon, 29 Jul 2024 18:12:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Vivian Wang <uwu@dram.page>
-Subject: [PULL 2/5] util/getauxval: Ensure setting errno if not found
-Date: Tue, 30 Jul 2024 11:11:59 +1000
-Message-ID: <20240730011202.480829-4-richard.henderson@linaro.org>
+Subject: [PULL 3/5] linux-user/main: Check errno when getting AT_EXECFD
+Date: Tue, 30 Jul 2024 11:12:00 +1000
+Message-ID: <20240730011202.480829-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730011202.480829-1-richard.henderson@linaro.org>
 References: <20240730011202.480829-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x833.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,51 +93,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vivian Wang <uwu@dram.page>
 
-Sometimes zero is a valid value for getauxval (e.g. AT_EXECFD). Make
-sure that we can distinguish between a valid zero value and a not found
-entry by setting errno.
+It's possible for AT_EXECFD to end up with a valid value of 0. Check
+errno when using qemu_getauxval instead of return value to handle this
+case.
 
-Assumes that getauxval from sys/auxv.h sets errno correctly.
+Not handling this case leads to a confusing condition where the
+executable ends up as fd 0, i.e. stdin.
 
 Signed-off-by: Vivian Wang <uwu@dram.page>
-Message-ID: <20240723100545.405476-2-uwu@dram.page>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 0b959cf5e4cc ("linux-user: Use qemu_getauxval for AT_EXECFD")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2448
+Message-ID: <20240723100545.405476-3-uwu@dram.page>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/getauxval.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ linux-user/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/util/getauxval.c b/util/getauxval.c
-index b124107d61..ad4f6686a8 100644
---- a/util/getauxval.c
-+++ b/util/getauxval.c
-@@ -95,6 +95,7 @@ unsigned long qemu_getauxval(unsigned long type)
-         }
-     }
- 
-+    errno = ENOENT;
-     return 0;
- }
- 
-@@ -104,7 +105,10 @@ unsigned long qemu_getauxval(unsigned long type)
- unsigned long qemu_getauxval(unsigned long type)
- {
-     unsigned long aux = 0;
--    elf_aux_info(type, &aux, sizeof(aux));
-+    int ret = elf_aux_info(type, &aux, sizeof(aux));
-+    if (ret != 0) {
-+        errno = ret;
-+    }
-     return aux;
- }
- 
-@@ -112,6 +116,7 @@ unsigned long qemu_getauxval(unsigned long type)
- 
- unsigned long qemu_getauxval(unsigned long type)
- {
-+    errno = ENOSYS;
-     return 0;
- }
- 
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 7d3cf45fa9..8143a0d4b0 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -755,8 +755,9 @@ int main(int argc, char **argv, char **envp)
+     /*
+      * Manage binfmt-misc open-binary flag
+      */
++    errno = 0;
+     execfd = qemu_getauxval(AT_EXECFD);
+-    if (execfd == 0) {
++    if (errno != 0) {
+         execfd = open(exec_path, O_RDONLY);
+         if (execfd < 0) {
+             printf("Error while loading %s: %s\n", exec_path, strerror(errno));
 -- 
 2.43.0
 
