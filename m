@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE51F941C6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 19:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00534941C60
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 19:06:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYqHk-0002Gq-VD; Tue, 30 Jul 2024 13:05:18 -0400
+	id 1sYqHp-00032i-Ub; Tue, 30 Jul 2024 13:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYqHa-000246-Sd
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:05:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sYqHf-0002LS-CL
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:05:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYqHZ-0002fU-4O
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:05:06 -0400
+ id 1sYqHd-0002g9-1R
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 13:05:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722359103;
+ s=mimecast20190719; t=1722359107;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pd/ERo3Hy/CXw9w92gfMzgoqJ3+ARjcIKyJjvfszr8Q=;
- b=ipG8Tb6RMVwrLH0yVuBlpZjB1le/wyJBZ1DkZWNxh4jxibpEcm+nIuVuXdWgDmp8NVA9W2
- LS5mRqQQaScWCANtwy3yveoDc4IVuYVY9q8lglbjreyJ7+pqiql4i0bIgFfwPOLcXHgpmC
- tfG4vyL4JwayBm1YbSlElGTL/N5Wtu4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fjlgpD5P7qLljlAU2U6tl3mQoLOHtwiybEiwl2bUdmw=;
+ b=eTZWqrHBy13t+Ao6LVaxuE85EkxA5Emg06EDtAQME20DcCuIeVGS6PBRlqnx6woTTe3wcs
+ QC0vtEyG1J/Z+IM36nOEbcrnc8VNdzpl2+EOGLTXvSgtrABzf9KPek1SeCYQIpfp0a9kDL
+ qOLFDCZgiG9eFcjWXOgQ6Lcu4UpNpoQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-pD2w7Z80PBC8nJPs_uo_qA-1; Tue,
- 30 Jul 2024 13:04:59 -0400
-X-MC-Unique: pD2w7Z80PBC8nJPs_uo_qA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-0N7extT0Pb-ho-UM_Pn7rQ-1; Tue,
+ 30 Jul 2024 13:05:03 -0400
+X-MC-Unique: 0N7extT0Pb-ho-UM_Pn7rQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C4E101955D47; Tue, 30 Jul 2024 17:04:57 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0425C1955D42; Tue, 30 Jul 2024 17:05:02 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.108])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EE3BA3000193; Tue, 30 Jul 2024 17:04:53 +0000 (UTC)
+ id 3FC0E3000193; Tue, 30 Jul 2024 17:04:58 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,24 +52,24 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v3 16/24] tests/functional: Convert the riscv_opensbi avocado
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v3 17/24] tests/functional: Convert the virtio_gpu avocado
  test into a standalone test
-Date: Tue, 30 Jul 2024 18:03:36 +0100
-Message-ID: <20240730170347.4103919-17-berrange@redhat.com>
+Date: Tue, 30 Jul 2024 18:03:37 +0100
+Message-ID: <20240730170347.4103919-18-berrange@redhat.com>
 In-Reply-To: <20240730170347.4103919-1-berrange@redhat.com>
 References: <20240730170347.4103919-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,148 +88,167 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The avocado test defined test functions for both, riscv32 and riscv64.
-Since we can run the whole file with multiple targets in the new
-framework, we can now consolidate the functions so we have to only
-define one function per machine now.
+Nothing thrilling in here, it's just a straight forward conversion.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/riscv_opensbi.py         | 63 --------------------------
- tests/functional/meson.build           |  8 ++++
- tests/functional/test_riscv_opensbi.py | 36 +++++++++++++++
- 3 files changed, 44 insertions(+), 63 deletions(-)
- delete mode 100644 tests/avocado/riscv_opensbi.py
- create mode 100755 tests/functional/test_riscv_opensbi.py
+ tests/functional/meson.build                  |  1 +
+ .../test_virtio_gpu.py}                       | 64 +++++++++----------
+ 2 files changed, 30 insertions(+), 35 deletions(-)
+ rename tests/{avocado/virtio-gpu.py => functional/test_virtio_gpu.py} (73%)
+ mode change 100644 => 100755
 
-diff --git a/tests/avocado/riscv_opensbi.py b/tests/avocado/riscv_opensbi.py
-deleted file mode 100644
-index bfff9cc3c3..0000000000
---- a/tests/avocado/riscv_opensbi.py
-+++ /dev/null
-@@ -1,63 +0,0 @@
--# OpenSBI boot test for RISC-V machines
--#
--# Copyright (c) 2022, Ventana Micro
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern
--
--class RiscvOpenSBI(QemuSystemTest):
--    """
--    :avocado: tags=accel:tcg
--    """
--    timeout = 5
--
--    def boot_opensbi(self):
--        self.vm.set_console()
--        self.vm.launch()
--        wait_for_console_pattern(self, 'Platform Name')
--        wait_for_console_pattern(self, 'Boot HART MEDELEG')
--
--    def test_riscv32_spike(self):
--        """
--        :avocado: tags=arch:riscv32
--        :avocado: tags=machine:spike
--        """
--        self.boot_opensbi()
--
--    def test_riscv64_spike(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:spike
--        """
--        self.boot_opensbi()
--
--    def test_riscv32_sifive_u(self):
--        """
--        :avocado: tags=arch:riscv32
--        :avocado: tags=machine:sifive_u
--        """
--        self.boot_opensbi()
--
--    def test_riscv64_sifive_u(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:sifive_u
--        """
--        self.boot_opensbi()
--
--    def test_riscv32_virt(self):
--        """
--        :avocado: tags=arch:riscv32
--        :avocado: tags=machine:virt
--        """
--        self.boot_opensbi()
--
--    def test_riscv64_virt(self):
--        """
--        :avocado: tags=arch:riscv64
--        :avocado: tags=machine:virt
--        """
--        self.boot_opensbi()
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index d6a1a3a116..55021c4e4d 100644
+index 55021c4e4d..8fbd7c4129 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -55,6 +55,14 @@ tests_ppc_thorough = [
-   'ppc_bamboo',
+@@ -82,6 +82,7 @@ tests_x86_64_quick = [
+ 
+ tests_x86_64_thorough = [
+   'netdev_ethtool',
++  'virtio_gpu',
  ]
  
-+tests_riscv32_quick = [
-+  'riscv_opensbi',
-+]
-+
-+tests_riscv64_quick = [
-+  'riscv_opensbi',
-+]
-+
- tests_s390x_thorough = [
-   's390x_ccw_virtio',
-   's390x_topology',
-diff --git a/tests/functional/test_riscv_opensbi.py b/tests/functional/test_riscv_opensbi.py
-new file mode 100755
-index 0000000000..d077e40f42
---- /dev/null
-+++ b/tests/functional/test_riscv_opensbi.py
-@@ -0,0 +1,36 @@
+ precache_all = []
+diff --git a/tests/avocado/virtio-gpu.py b/tests/functional/test_virtio_gpu.py
+old mode 100644
+new mode 100755
+similarity index 73%
+rename from tests/avocado/virtio-gpu.py
+rename to tests/functional/test_virtio_gpu.py
+index 6091f614a4..e74da39444
+--- a/tests/avocado/virtio-gpu.py
++++ b/tests/functional/test_virtio_gpu.py
+@@ -1,14 +1,16 @@
 +#!/usr/bin/env python3
 +#
-+# OpenSBI boot test for RISC-V machines
-+#
-+# Copyright (c) 2022, Ventana Micro
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+from qemu_test import QemuSystemTest
+ # virtio-gpu tests
+ #
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
+ 
+-from avocado_qemu import BUILD_DIR
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import wait_for_console_pattern
+-from avocado_qemu import exec_command_and_wait_for_pattern
+-from avocado_qemu import is_readable_executable_file
++from qemu_test import BUILD_DIR
++from qemu_test import QemuSystemTest, Asset
 +from qemu_test import wait_for_console_pattern
-+
-+class RiscvOpenSBI(QemuSystemTest):
-+
-+    timeout = 5
-+
-+    def boot_opensbi(self):
-+        self.vm.set_console()
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'Platform Name')
-+        wait_for_console_pattern(self, 'Boot HART MEDELEG')
-+
-+    def test_riscv_spike(self):
-+        self.set_machine('spike')
-+        self.boot_opensbi()
-+
-+    def test_riscv_sifive_u(self):
-+        self.set_machine('sifive_u')
-+        self.boot_opensbi()
-+
-+    def test_riscv_virt(self):
-+        self.set_machine('virt')
-+        self.boot_opensbi()
++from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test import is_readable_executable_file
+ 
+ from qemu.utils import kvm_available
+ 
+@@ -28,25 +30,18 @@ def pick_default_vug_bin():
+ 
+ 
+ class VirtioGPUx86(QemuSystemTest):
+-    """
+-    :avocado: tags=virtio-gpu
+-    :avocado: tags=arch:x86_64
+-    :avocado: tags=cpu:host
+-    """
+ 
+     KERNEL_COMMAND_LINE = "printk.time=0 console=ttyS0 rdinit=/bin/bash"
+-    KERNEL_URL = (
+-        "https://archives.fedoraproject.org/pub/archive/fedora"
+-        "/linux/releases/33/Everything/x86_64/os/images"
+-        "/pxeboot/vmlinuz"
+-    )
+-    KERNEL_HASH = '1433cfe3f2ffaa44de4ecfb57ec25dc2399cdecf'
+-    INITRD_URL = (
+-        "https://archives.fedoraproject.org/pub/archive/fedora"
+-        "/linux/releases/33/Everything/x86_64/os/images"
+-        "/pxeboot/initrd.img"
+-    )
+-    INITRD_HASH = 'c828d68a027b53e5220536585efe03412332c2d9'
++    ASSET_KERNEL = Asset(
++        ("https://archives.fedoraproject.org/pub/archive/fedora"
++         "/linux/releases/33/Everything/x86_64/os/images"
++         "/pxeboot/vmlinuz"),
++        '1433cfe3f2ffaa44de4ecfb57ec25dc2399cdecf')
++    ASSET_INITRD = Asset(
++        ("https://archives.fedoraproject.org/pub/archive/fedora"
++         "/linux/releases/33/Everything/x86_64/os/images"
++         "/pxeboot/initrd.img"),
++        'c828d68a027b53e5220536585efe03412332c2d9')
+ 
+     def wait_for_console_pattern(self, success_message, vm=None):
+         wait_for_console_pattern(
+@@ -57,16 +52,14 @@ def wait_for_console_pattern(self, success_message, vm=None):
+         )
+ 
+     def test_virtio_vga_virgl(self):
+-        """
+-        :avocado: tags=device:virtio-vga-gl
+-        """
+         # FIXME: should check presence of virtio, virgl etc
+         self.require_accelerator('kvm')
+ 
+-        kernel_path = self.fetch_asset(self.KERNEL_URL, self.KERNEL_HASH)
+-        initrd_path = self.fetch_asset(self.INITRD_URL, self.INITRD_HASH)
++        kernel_path = self.ASSET_KERNEL.fetch()
++        initrd_path = self.ASSET_INITRD.fetch()
+ 
+         self.vm.set_console()
++        self.vm.add_args("-cpu", "host")
+         self.vm.add_args("-m", "2G")
+         self.vm.add_args("-machine", "pc,accel=kvm")
+         self.vm.add_args("-device", "virtio-vga-gl")
+@@ -83,7 +76,7 @@ def test_virtio_vga_virgl(self):
+             self.vm.launch()
+         except:
+             # TODO: probably fails because we are missing the VirGL features
+-            self.cancel("VirGL not enabled?")
++            self.skipTest("VirGL not enabled?")
+ 
+         self.wait_for_console_pattern("as init process")
+         exec_command_and_wait_for_pattern(
+@@ -92,18 +85,15 @@ def test_virtio_vga_virgl(self):
+         self.wait_for_console_pattern("features: +virgl +edid")
+ 
+     def test_vhost_user_vga_virgl(self):
+-        """
+-        :avocado: tags=device:vhost-user-vga
+-        """
+         # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
+         self.require_accelerator('kvm')
+ 
+         vug = pick_default_vug_bin()
+         if not vug:
+-            self.cancel("Could not find vhost-user-gpu")
++            self.skipTest("Could not find vhost-user-gpu")
+ 
+-        kernel_path = self.fetch_asset(self.KERNEL_URL, self.KERNEL_HASH)
+-        initrd_path = self.fetch_asset(self.INITRD_URL, self.INITRD_HASH)
++        kernel_path = self.ASSET_KERNEL.fetch()
++        initrd_path = self.ASSET_INITRD.fetch()
+ 
+         # Create socketpair to connect proxy and remote processes
+         qemu_sock, vug_sock = socket.socketpair(
+@@ -129,6 +119,7 @@ def test_vhost_user_vga_virgl(self):
+         )
+ 
+         self.vm.set_console()
++        self.vm.add_args("-cpu", "host")
+         self.vm.add_args("-m", "2G")
+         self.vm.add_args("-object", "memory-backend-memfd,id=mem,size=2G")
+         self.vm.add_args("-machine", "pc,memory-backend=mem,accel=kvm")
+@@ -147,7 +138,7 @@ def test_vhost_user_vga_virgl(self):
+             self.vm.launch()
+         except:
+             # TODO: probably fails because we are missing the VirGL features
+-            self.cancel("VirGL not enabled?")
++            self.skipTest("VirGL not enabled?")
+         self.wait_for_console_pattern("as init process")
+         exec_command_and_wait_for_pattern(self, "/usr/sbin/modprobe virtio_gpu",
+                                           "features: +virgl +edid")
+@@ -155,3 +146,6 @@ def test_vhost_user_vga_virgl(self):
+         qemu_sock.close()
+         vugp.terminate()
+         vugp.wait()
 +
 +if __name__ == '__main__':
 +    QemuSystemTest.main()
