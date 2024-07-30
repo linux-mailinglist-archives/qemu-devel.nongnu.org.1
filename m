@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD5C9422B3
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 00:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F639422B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 00:21:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYvCZ-0005hI-7h; Tue, 30 Jul 2024 18:20:15 -0400
+	id 1sYvCd-0005zj-7h; Tue, 30 Jul 2024 18:20:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYvCX-0005bu-GS
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:20:13 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYvCa-0005pM-Oj
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:20:16 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYvCU-0006i6-WD
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:20:13 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4281e3b2f72so22163015e9.1
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 15:20:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYvCZ-0006iv-10
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:20:16 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-368313809a4so178094f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 15:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722378009; x=1722982809; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722378013; x=1722982813; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X07qTbL83zQOZhtssmu4m+yBs6p/aBS1K1qhIZAMOfc=;
- b=RflqPW2N+9sf1OruQg05FI3DZV7I+94gqUw6UdU/b6VH2GeJNdj/bm6izkxBbn5q6N
- GFF5QmnQNggF4xyBaJMjsF2ROsaTfYxqhHJ5h+AOCJAfkRL+JkNL4G8OILVjtio8AA51
- S6ibcYfZ7H0eggrbc4r1tPBzGLqHUTGo0VnH0HSxEQVJi8qm1o/+bm9AdgT70YXdk4jn
- sWG2azUuBGAn6c2hB4MokunT0k0W3Xu/kFh4JrTs7OmDp7ycrLoz4DTpDGkAgcVEZYm0
- Hi4tEXZAxSEvuy6GLw2gC7u6TNjd3kdI8w+eLckLKjhengZHdqq9sIA/xs0XfBQKo9HH
- zdaQ==
+ bh=24RQoEKyoT+5UpLOepmNrf2/RkiZNFw5AqywzTwtt80=;
+ b=zGXGjZVbbv7NTLfgx57Pmjdk7i2QwSJ6IWN9T5e6Yqj9uJzTC6KsOsSrO27i0t2ZvB
+ nxCkFUhV6okfRDZJB5m1MR6JtR+0E+EeCnspq5RaYWIOV0AxtWs4eAExpcH3cVO4dceU
+ Y+cCsxT4x5G9cPZF2TpZEbbDaB931NtXGU5ZZCfJVDfseIyazfwk3e8g5oL8P/6NMuvu
+ KWIGlzmZttiHlb6JAfk4jcLkc3PVyuDllIHyWxLUPDYvFRfZfCntBLTXzWSIAlNlj5s3
+ OZCbkRzZLqF6WsOH80mjj51lBEt44p1V7mYrAD04Px9gwx5d7cnJLJoa60WJsZQ0Awk7
+ mEBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722378009; x=1722982809;
+ d=1e100.net; s=20230601; t=1722378013; x=1722982813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X07qTbL83zQOZhtssmu4m+yBs6p/aBS1K1qhIZAMOfc=;
- b=s6q4g2nsixoyz6RNRj2kxyrl2i0CPOMzRA9ZRZGP4GYxm8SExJRwA/jb6Pyu/0LCI/
- 8PI0ItV45HCCOfS9Z2Vn853EC0beDjZgMyHW2LnFJZcJ17hpHhCqMdJOyJTIQYdYKuBT
- S3703zRfqoAPiyDUrTW76hHw0iQsLxyG9BMe6nvkcNaIlYfUNKfGWQYpqFlsc9lL1x70
- 2/vNSSqAWMmteisSZFvo9gG9Oa1G8Acrv47dTo5d3z79EVcNda3F+58Fa+r/2hyqEuhB
- haDCARruvaG27C3/QEeVstXFEA+VNWnfnRjoM3KVGtKJ4wM5/xW0UeYMkXSQI+Oc6FVG
- 4Wsw==
-X-Gm-Message-State: AOJu0YyxrcA2nvshyAu2QuyY61tBDNDfBw7KW0EX6G3lsYnMch7ofFN5
- ew6OWlFAbnrtK/gC6Y46gjlM9huh51Jh0bqSzwlUQ10SjQjqhHx1yKxHL6hBY+MRm9PzM+eB9PP
- MdXU=
-X-Google-Smtp-Source: AGHT+IFLdynvy53y5gMjvknbOtbV++Jc0xdy9l4GQ5Zxkfoq8f/scL2zHt9mVA/yBsBu3t7c/QMoBw==
-X-Received: by 2002:adf:f147:0:b0:367:95e8:3aef with SMTP id
- ffacd0b85a97d-36b5d0bc565mr6633811f8f.42.1722378008731; 
- Tue, 30 Jul 2024 15:20:08 -0700 (PDT)
+ bh=24RQoEKyoT+5UpLOepmNrf2/RkiZNFw5AqywzTwtt80=;
+ b=rcgWAPP7mM/i/5f8Y7y49vx9SAKS9GibGkhWB98g4MCxOz+JUknVYxpHsFta+JENxJ
+ rVauR5ghdaHSzfwTzPJp9I4/GFiomQsHEcLM76DuisZTglj5UtZfA76jZarMiJOBErtj
+ N6AZ/8BdsSptt8h4zNVt34E5Wo0+jesSd8r93W3NUrmc58pUanUlVWZfng2OnFB5TMjt
+ T172LXkKOaNDolo5aOUEYjyXhljrUASFDKCcvOSzn6YMGoh16hUObUDkX1vzOEbNMWXh
+ V6TMCdJBFRbrauTaotnSw3E+eTCaBWPQYsvu+KGu8fZC272HQniRHCc2SETYiawia/5B
+ aM1w==
+X-Gm-Message-State: AOJu0YwFPBSl+vrveEoXcc9OOaSbjcan+XHFdEWVNg0+YdfngL+ScVbv
+ 9ROzVRldakHJMQdJe3MBswTEsSoXUZPHJwNAWLU+pOM0j89nbBmRdSuBUM4FSGgFq3Zh6DIVMpn
+ G8Xs=
+X-Google-Smtp-Source: AGHT+IGkau5/2VEu6DmLCIUql1Z711qNocqOHwdy3AXd2lmcjkI4CXFpJ0jvONilGnO9sVSnxhtn7g==
+X-Received: by 2002:adf:f6c3:0:b0:368:6bb:f79e with SMTP id
+ ffacd0b85a97d-36b8c8d7eb2mr2009958f8f.4.1722378013231; 
+ Tue, 30 Jul 2024 15:20:13 -0700 (PDT)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-428057b645dsm228583675e9.43.2024.07.30.15.20.08
+ ffacd0b85a97d-36b36857eb7sm15585085f8f.66.2024.07.30.15.20.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Jul 2024 15:20:08 -0700 (PDT)
+ Tue, 30 Jul 2024 15:20:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org,
+Cc: Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/6] docs/sphinx/depfile.py: Handle env.doc2path() returning a
- Path not a str
-Date: Wed, 31 Jul 2024 00:19:53 +0200
-Message-ID: <20240730221957.34533-3-philmd@linaro.org>
+Subject: [PULL 3/6] tests/avocado: mips: fallback to HTTP given certificate
+ expiration
+Date: Wed, 31 Jul 2024 00:19:54 +0200
+Message-ID: <20240730221957.34533-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730221957.34533-1-philmd@linaro.org>
 References: <20240730221957.34533-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,46 +95,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Cleber Rosa <crosa@redhat.com>
 
-In newer versions of Sphinx the env.doc2path() API is going to change
-to return a Path object rather than a str. This was originally visible
-in Sphinx 8.0.0rc1, but has been rolled back for the final 8.0.0
-release. However it will probably emit a deprecation warning and is
-likely to change for good in 9.0:
-  https://github.com/sphinx-doc/sphinx/issues/12686
+The SSL certificate installed at mipsdistros.mips.com has expired:
 
-Our use in depfile.py assumes a str, and if it is passed a Path
-it will fall over:
- Handler <function write_depfile at 0x77a1775ff560> for event 'build-finished' threw an exception (exception: unsupported operand type(s) for +: 'PosixPath' and 'str')
+ 0 s:CN = mipsdistros.mips.com
+ i:C = US, O = Amazon, OU = Server CA 1B, CN = Amazon
+ a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+ v:NotBefore: Dec 23 00:00:00 2019 GMT; NotAfter: Jan 23 12:00:00 2021 GMT
 
-Wrapping the env.doc2path() call in str() will coerce a Path object
-to the str we expect, and have no effect in older Sphinx versions
-that do return a str.
+Because this project has no control over that certificate and host,
+this falls back to plain HTTP instead.  The integrity of the
+downloaded files can be guaranteed by the existing hashes for those
+files (which are not modified here).
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2458
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240729120533.2486427-1-peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Cleber Rosa <crosa@redhat.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240726134438.14720-2-crosa@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/sphinx/depfile.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/avocado/boot_linux_console.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/docs/sphinx/depfile.py b/docs/sphinx/depfile.py
-index afdcbcec6e..e74be6af98 100644
---- a/docs/sphinx/depfile.py
-+++ b/docs/sphinx/depfile.py
-@@ -19,7 +19,7 @@
- 
- def get_infiles(env):
-     for x in env.found_docs:
--        yield env.doc2path(x)
-+        yield str(env.doc2path(x))
-         yield from ((os.path.join(env.srcdir, dep)
-                     for dep in env.dependencies[x]))
-     for mod in sys.modules.values():
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index c35fc5e9ba..450d67be6a 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -299,7 +299,7 @@ def test_mips_malta32el_nanomips_4k(self):
+         :avocado: tags=endian:little
+         :avocado: tags=cpu:I7200
+         """
+-        kernel_url = ('https://mipsdistros.mips.com/LinuxDistro/nanomips/'
++        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+                       'generic_nano32r6el_page4k.xz')
+         kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
+@@ -312,7 +312,7 @@ def test_mips_malta32el_nanomips_16k_up(self):
+         :avocado: tags=endian:little
+         :avocado: tags=cpu:I7200
+         """
+-        kernel_url = ('https://mipsdistros.mips.com/LinuxDistro/nanomips/'
++        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+                       'generic_nano32r6el_page16k_up.xz')
+         kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
+@@ -325,7 +325,7 @@ def test_mips_malta32el_nanomips_64k_dbg(self):
+         :avocado: tags=endian:little
+         :avocado: tags=cpu:I7200
+         """
+-        kernel_url = ('https://mipsdistros.mips.com/LinuxDistro/nanomips/'
++        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+                       'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+                       'generic_nano32r6el_page64k_dbg.xz')
+         kernel_hash = '18d1c68f2e23429e266ca39ba5349ccd0aeb7180'
 -- 
 2.45.2
 
