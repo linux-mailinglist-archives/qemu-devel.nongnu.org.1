@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11ED5940AEC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9116D940B07
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:14:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYhxB-0007Uc-WC; Tue, 30 Jul 2024 04:11:30 -0400
+	id 1sYhwl-0005XI-If; Tue, 30 Jul 2024 04:11:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwp-0005s8-4H
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:08 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwi-0005N7-Ma
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwc-0001Is-KP
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:06 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwa-0001H9-H9
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722327053;
+ s=mimecast20190719; t=1722327051;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xMIEpCCl6zS+beX53hmPJoZEMmrLIy8jA6bJzpPwIu0=;
- b=MKtb6j176gV7dqx+309c1NPyYJwVbWSSFi7F2ZdeBYQMzbb2AHfvjMOx+vIIu3Jk5EAD1A
- kB523pnWcwSHALvWfbirmt49sc1AmIoklgCNxZUhg19i5tiCd1vFfXjt0Qhf8swogYxuAn
- b1d0Oy6b8Aa7Mj8XjrdK73fWGVwkZIA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DV7+EVWYFbrbaXV5c6Y9cFzbPTN8d8JAt36ne5Q5Nhc=;
+ b=cIBdOUH2l5j2yHyzuGkuxF009lTIMbaQw9qOhMiOoOHZRD9cgQa32VclnRMfNFV9OdcHlg
+ CPnA7Iq6X15GX9nUtBerRwPPa7IVlLxSFR3OVlPINuIEmZtcnNONYllmkuJEXScrIw0M4J
+ WWXiMlOjO7/yo9sCyQnyouEJQXkYgxs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-1QwAeZ54PsiJK9zLtaKlnw-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-HO2voRrbNwuPaRTmjAxVvQ-1; Tue,
  30 Jul 2024 04:10:47 -0400
-X-MC-Unique: 1QwAeZ54PsiJK9zLtaKlnw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+X-MC-Unique: HO2voRrbNwuPaRTmjAxVvQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 714C519560A2; Tue, 30 Jul 2024 08:10:43 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD9A819560B0; Tue, 30 Jul 2024 08:10:42 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 634E11955D45; Tue, 30 Jul 2024 08:10:41 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9168E300018D; Tue, 30 Jul 2024 08:10:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DE17421F4B93; Tue, 30 Jul 2024 10:10:32 +0200 (CEST)
+ id E265121F4B94; Tue, 30 Jul 2024 10:10:32 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
@@ -62,15 +62,15 @@ Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
  vsementsov@yandex-team.ru, wangyanan55@huawei.com,
  yuri.benditovich@daynix.com, zhao1.liu@intel.com, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH 06/18] qapi/ebpf: Drop temporary 'prefix'
-Date: Tue, 30 Jul 2024 10:10:20 +0200
-Message-ID: <20240730081032.1246748-7-armbru@redhat.com>
+Subject: [PATCH 07/18] qapi/machine: Drop temporary 'prefix'
+Date: Tue, 30 Jul 2024 10:10:21 +0200
+Message-ID: <20240730081032.1246748-8-armbru@redhat.com>
 In-Reply-To: <20240730081032.1246748-1-armbru@redhat.com>
 References: <20240730081032.1246748-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -99,37 +99,72 @@ Recent commit "qapi: Smarter camel_to_upper() to reduce need for
 'prefix'" added a temporary 'prefix' to delay changing the generated
 code.
 
-Revert it.  This improves EbpfProgramID's generated enumeration
-constant prefix from EBPF_PROGRAMID to EBPF_PROGRAM_ID.
+Revert it.  This improves HmatLBDataType's generated enumeration
+constant prefix from HMATLB_DATA_TYPE to HMAT_LB_DATA_TYPE.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/ebpf.json  | 1 -
- ebpf/ebpf_rss.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ qapi/machine.json            | 1 -
+ hw/core/numa.c               | 4 ++--
+ hw/pci-bridge/cxl_upstream.c | 4 ++--
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-index 166a9d0eb0..e500b5a744 100644
---- a/qapi/ebpf.json
-+++ b/qapi/ebpf.json
-@@ -42,7 +42,6 @@
- # Since: 9.0
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 5514450e12..fcfd249e2d 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -712,7 +712,6 @@
+ # Since: 5.0
  ##
- { 'enum': 'EbpfProgramID',
--  'prefix': 'EBPF_PROGRAMID',   # TODO drop
-   'if': 'CONFIG_EBPF',
-   'data': [ { 'name': 'rss' } ] }
+ { 'enum': 'HmatLBDataType',
+-  'prefix': 'HMATLB_DATA_TYPE', # TODO drop
+   'data': [ 'access-latency', 'read-latency', 'write-latency',
+             'access-bandwidth', 'read-bandwidth', 'write-bandwidth' ] }
  
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index 87f0714910..dcaa80f380 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -271,4 +271,4 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
-     ctx->map_indirections_table = -1;
- }
+diff --git a/hw/core/numa.c b/hw/core/numa.c
+index f8ce332cfe..fb81c1ed51 100644
+--- a/hw/core/numa.c
++++ b/hw/core/numa.c
+@@ -249,7 +249,7 @@ void parse_numa_hmat_lb(NumaState *numa_state, NumaHmatLBOptions *node,
+     lb_data.initiator = node->initiator;
+     lb_data.target = node->target;
  
--ebpf_binary_init(EBPF_PROGRAMID_RSS, rss_bpf__elf_bytes)
-+ebpf_binary_init(EBPF_PROGRAM_ID_RSS, rss_bpf__elf_bytes)
+-    if (node->data_type <= HMATLB_DATA_TYPE_WRITE_LATENCY) {
++    if (node->data_type <= HMAT_LB_DATA_TYPE_WRITE_LATENCY) {
+         /* Input latency data */
+ 
+         if (!node->has_latency) {
+@@ -313,7 +313,7 @@ void parse_numa_hmat_lb(NumaState *numa_state, NumaHmatLBOptions *node,
+             numa_info[node->target].lb_info_provided |= BIT(0);
+         }
+         lb_data.data = node->latency;
+-    } else if (node->data_type >= HMATLB_DATA_TYPE_ACCESS_BANDWIDTH) {
++    } else if (node->data_type >= HMAT_LB_DATA_TYPE_ACCESS_BANDWIDTH) {
+         /* Input bandwidth data */
+         if (!node->has_bandwidth) {
+             error_setg(errp, "Missing 'bandwidth' option");
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index e51221a5f3..f3e46f0651 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -234,7 +234,7 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+                 .type = CDAT_TYPE_SSLBIS,
+                 .length = sslbis_size,
+             },
+-            .data_type = HMATLB_DATA_TYPE_ACCESS_LATENCY,
++            .data_type = HMAT_LB_DATA_TYPE_ACCESS_LATENCY,
+             .entry_base_unit = 10000,
+         },
+     };
+@@ -254,7 +254,7 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+                 .type = CDAT_TYPE_SSLBIS,
+                 .length = sslbis_size,
+             },
+-            .data_type = HMATLB_DATA_TYPE_ACCESS_BANDWIDTH,
++            .data_type = HMAT_LB_DATA_TYPE_ACCESS_BANDWIDTH,
+             .entry_base_unit = 1024,
+         },
+     };
 -- 
 2.45.0
 
