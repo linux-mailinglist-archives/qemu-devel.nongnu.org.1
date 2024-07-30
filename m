@@ -2,63 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BF3940552
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA209405FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 05:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYciM-0003OL-VJ; Mon, 29 Jul 2024 22:35:50 -0400
+	id 1sYd0Q-00086U-6Z; Mon, 29 Jul 2024 22:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sYciG-0003M4-Rk
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:35:45 -0400
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1sYd0N-000842-UX
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:54:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sYciF-0000xX-CT
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:35:44 -0400
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1sYd0L-0005ck-Ug
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:54:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722306942;
+ s=mimecast20190719; t=1722308064;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x/lf1fnpWqoPcd+N8YM0a4CV8DWy42YlWbuLK1nNl9I=;
- b=iyHc+kos/buA2Ex+Fgc//EWxymGmRdsp0USgSmXNrpVoRKx+jD7x/WxxdipMSQz6N0d2SJ
- q3X4nhWoJwaomlcZrm3ePYzwV91fsyuYwDy311mKOIN/O49tPE+k165pVSRFcA0OaqBLP8
- gbUKpISwLPLPAkN+PQCF/o33voO1RBg=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-zKIBzAReP-OUEhuaC5Maiw-1; Mon,
- 29 Jul 2024 22:35:33 -0400
-X-MC-Unique: zKIBzAReP-OUEhuaC5Maiw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A20D21955D44; Tue, 30 Jul 2024 02:35:31 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.72])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 738431955D42; Tue, 30 Jul 2024 02:35:28 +0000 (UTC)
-Date: Mon, 29 Jul 2024 21:35:25 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com, 
- andrey.drobyshev@virtuozzo.com, vsementsov@yandex-team.ru, kwolf@redhat.com,
- hreitz@redhat.com, berrange@redhat.com
-Subject: Re: [PATCH] nbd: Prevent NULL pointer dereference in
- nbd_blockdev_client_closed()
-Message-ID: <ikmoveaqtlvx4y4xfy5cggn5ws37yryuwrhs3tum6xp23tpmhi@mwuwvhm6aavv>
-References: <20240607150021.121536-1-alexander.ivanov@virtuozzo.com>
- <0a6671e8-58ce-4f63-9e51-b9f33e6d0a2d@virtuozzo.com>
+ bh=AYYbtEJSznN0kMOTZDsE/z3W01PWc60CVmaxsTqLfd4=;
+ b=MIXGfezIrRT4GS0VeQQ1+CtNubB2pSJ+Kgb177lKfKf0mng0LDBbuWLsxE3OMOs7PVM0I9
+ IsVznefma4XLxZ6Rzv7R/dyEbfCdGh1hTiHSjbudHctPR/8T6nXbeJkifw1EHdWiJCdTKp
+ BmL2+XMy/wcVSNRZ4GOTXNjGRFW+QSg=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-518-VlYmyFXcOG2ftDAvIupILw-1; Mon, 29 Jul 2024 22:54:20 -0400
+X-MC-Unique: VlYmyFXcOG2ftDAvIupILw-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-70d24aead3eso3589952b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:54:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722308059; x=1722912859;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AYYbtEJSznN0kMOTZDsE/z3W01PWc60CVmaxsTqLfd4=;
+ b=KwqKXYRSS3bJutCH746aRYutD6bLa8XoqvNJ33qMLG/4svOHfBFv3nU3sW4WVMX25t
+ HENxh0C0CMUD8ymeon2yLFrALs+Lteo5f7NVqd49K4/BtDueFVuBNnzSJIy5mGwNdCv6
+ +5+eVp4vdVVctl0kxQi0pIz27PyYKQ9ROVlmnPXhMRG+AS5iPDe5fhy7YqxJu7e5tubK
+ OOTT0nwXU769yRs+ZRfvVdphbjrygrlh2HklYaA+joRsN8w9enYHrDILhfYhGSVmU6rT
+ SeXWc3oajNwossAWQZd2aC1Uni7oj4o8ObhbcdRA0u+bmSfkyU9O/S48fTd1Q4vOnRnU
+ hVGA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVL2RUirC8CCQgV/4IwhwmnDgo2O8Fdn6Z8+3ct+SRjOSPnwoirVtTA7Js+KqxUZho3CPVL2ggxD1qQA8ENTZOJj9Sc1aI=
+X-Gm-Message-State: AOJu0Yw2ZoYzepOqqJeRR0fGMvk/U5FiuF33ZPW/5Xi2aSMS7+oOc1z+
+ VycrRafaVhvj9GncVOKbwadFgrqEEb1DJ//NN44c2Ef0eByVHEq9vHvRmUXGE7HGmjfkAdfC7an
+ vs+lE1rpsrP4p7LT97tlo2hp9JWQTb/H32I9blG9C5eu4ppbiOw1LoUbyObUFJTf2yDCzHBI+rp
+ fHtCxa3Rlcq2vrx1JMkj232bdRSII=
+X-Received: by 2002:a05:6a20:9190:b0:1c4:819f:8e0c with SMTP id
+ adf61e73a8af0-1c4a117948emr8629965637.6.1722308059135; 
+ Mon, 29 Jul 2024 19:54:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFxXVIvtXgZQaMgDtJTwZSUq5Qbj4igFiyhU6Ik5ArQAhvGKnTdyAqTRGAJOVDqIsHtwz+pbgP966ipOsttHmQ=
+X-Received: by 2002:a05:6a20:9190:b0:1c4:819f:8e0c with SMTP id
+ adf61e73a8af0-1c4a117948emr8629949637.6.1722308058680; Mon, 29 Jul 2024
+ 19:54:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a6671e8-58ce-4f63-9e51-b9f33e6d0a2d@virtuozzo.com>
-User-Agent: NeoMutt/20240425
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+References: <20240708092630.2596945-1-zhao1.liu@intel.com>
+ <ZpdlQDIjGp4wR8aR@intel.com>
+In-Reply-To: <ZpdlQDIjGp4wR8aR@intel.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 30 Jul 2024 10:54:07 +0800
+Message-ID: <CACGkMEsGyKb932T_AJ63sWFObYSJRvghTYywvbDT0BpVV-c9Vw@mail.gmail.com>
+Subject: Re: [PATCH] doc/net/l2tpv3: Update boolean fields' description to
+ avoid short-form use
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -66,7 +82,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,109 +98,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 28, 2024 at 11:58:37AM GMT, Alexander Ivanov wrote:
-> Ping?
-> 
-> On 6/7/24 17:00, Alexander Ivanov wrote:
-> >   static void nbd_blockdev_client_closed(NBDClient *client, bool ignored)
-> >   {
-> >       nbd_client_put(client);
-> > +    if (nbd_server == NULL) {
-> > +        return;
-> > +    }
-> >       assert(nbd_server->connections > 0);
-> >       nbd_server->connections--;
-> >       nbd_update_server_watch(nbd_server);
+On Wed, Jul 17, 2024 at 2:15=E2=80=AFPM Zhao Liu <zhao1.liu@intel.com> wrot=
+e:
 >
+> Hi Jason,
+>
+> Just a kind ping. Does this update satisfy you?
+> Since the original example generates the warning.
+>
+> Thanks,
+> Zhao
 
-I've spent more time looking at this, and I'm stumped.  Maybe Dan can
-help out.  If I understand correctly, here's the race situation we
-have:
+Queued.
 
-qemu main loop                coroutine                    client
-QMP nbd-server-start
- - calls nbd_server_start
-   - assigns nbd_server = g_new0()
-   - calls qio_net_listener_open_sync
-   - calls nbd_server_update_watch
-     - calls qio_net_listener_set_client_func(, nbd_accept, )
-     - waiting for client is now in coroutine
-- returns control to QMP main loop
-                                                           opens TCP socket
-                              - qio notices incoming connection
-                                - calls nbd_accept callback
-                                - starts NBD handshake nbd_client_new(, nbd_blockdev_client_closed)
-QMP nbd-server-stop
- - calls nbd_server_stop
-   - calls nbd_server_free
-     - calls qio_net_listener_disconnect()
-       - marks qio channel as useless
-   - sets nbd_server = NULL
-                                - qio sees channel is useless, disconnects
-                                                           client deals gracefully with dead connection
-                                - calls nbd_blockdev_client_closed callback
-                                - segfault since nbd_server->connections derefs NULL
-
-
-Thread 1 "qemu-kvm" received signal SIGSEGV, Segmentation fault.
-0x000055555600af59 in nbd_blockdev_client_closed (client=0x55555810dfc0, 
-    ignored=false) at ../blockdev-nbd.c:56
-56	    assert(nbd_server->connections > 0);
-(gdb) p nbd_server
-$1 = (NBDServerData *) 0x0
-(gdb) bt
-#0  0x000055555600af59 in nbd_blockdev_client_closed
-    (client=0x55555810dfc0, ignored=false) at ../blockdev-nbd.c:56
-#1  0x0000555555ff72f9 in client_close
-    (client=0x55555810dfc0, negotiated=false) at ../nbd/server.c:1624
-#2  0x0000555555ffbc49 in nbd_co_client_start (opaque=0x55555810dfc0)
-    at ../nbd/server.c:3198
-#3  0x0000555556220629 in coroutine_trampoline (i0=1488434896, i1=21845)
-
-Worse, the race could go another way: if another QMP nbd-server-start
-is called fast enough before the coroutine finishes the nbd_accept
-code from the first connection, it could attempt to modify the second
-nbd_server object, which may be associated with a completely different
-socket.
-
-As far as I can tell, the problem stems from the fact that the attempt
-to establish the connection with the client is continuing in a
-background coroutine despite our efforts to honor the QMP
-nbd-server-stop command.  But I'm not sure on the proper way to inform
-qio to abandon all incoming traffic to a given net listener.  Or maybe
-I should just change the semantics of QMP nbd-server-stop to fail if
-there are known connections from and nbd_accept() - but I still don't
-want that to wait indefinitely, so I still want some way to tell the
-qio channel that the server is going away and to tear down sockets as
-soon as possible.
-
-As a stopgap, something like this might prevent the SEGV:
-
-diff --git i/blockdev-nbd.c w/blockdev-nbd.c
-index 213012435f4..2f5ea094407 100644
---- i/blockdev-nbd.c
-+++ w/blockdev-nbd.c
-@@ -277,6 +277,12 @@ void qmp_nbd_server_stop(Error **errp)
-
-     blk_exp_close_all_type(BLOCK_EXPORT_TYPE_NBD);
-
-+    if (qio_net_listener_is_connected(nbd_server->listener) ||
-+        nbd_server->connections > 0) {
-+        error_setg(errp, "NBD server still has connected clients");
-+        return;
-+    }
-+
-     nbd_server_free(nbd_server);
-     nbd_server = NULL;
- }
-
-but it's not as graceful as I'd like (it would be nicer to have the
-nbd-server-stop command wait until it knows all connections are
-cleaned, instead of failing up front).
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Thanks
 
 
