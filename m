@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17922941460
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 16:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3F194144A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 16:26:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYnq7-0002KT-Sc; Tue, 30 Jul 2024 10:28:35 -0400
+	id 1sYmvA-0003WW-Se; Tue, 30 Jul 2024 09:29:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYnq5-0002EC-Vo
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 10:28:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYnq4-0003Ut-2V
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 10:28:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722349711;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JRk+4VeVtW9bJfH/zMAgm0k34GZlfKGTGWDXXfmPzw0=;
- b=fs/IzB28l8l6V0xkktZD/D5Uv3O6T9YRI2w+N996h4qiZb3rGFXfkkEU1/xXaRpKmIRLMD
- mo1KL3vZu4DUB7rbGD6lEqOY4ljsit+Qkz6yBKXGJtQZmLq10NHrMrbJy06agUQWppD6JE
- CWZa4y6Hx0+0vTOol8szMr8WfVZgfdo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-330-Yq6378-hPWec8Bk0LexGnA-1; Tue,
- 30 Jul 2024 08:22:22 -0400
-X-MC-Unique: Yq6378-hPWec8Bk0LexGnA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3136F1955D56; Tue, 30 Jul 2024 12:22:13 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2A88419560AA; Tue, 30 Jul 2024 12:22:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DAB4021E5E71; Tue, 30 Jul 2024 14:22:05 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  alex.williamson@redhat.com,
- andrew@codeconstruct.com.au,  andrew@daynix.com,
- arei.gonglei@huawei.com,  berto@igalia.com,  borntraeger@linux.ibm.com,
- clg@kaod.org,  david@redhat.com,  den@openvz.org,  eblake@redhat.com,
- eduardo@habkost.net,  farman@linux.ibm.com,  farosas@suse.de,
- hreitz@redhat.com,  idryomov@gmail.com,  iii@linux.ibm.com,
- jamin_lin@aspeedtech.com,  jasowang@redhat.com,  joel@jms.id.au,
- jsnow@redhat.com,  kwolf@redhat.com,  leetroy@gmail.com,
- marcandre.lureau@redhat.com,  marcel.apfelbaum@gmail.com,
- michael.roth@amd.com,  mst@redhat.com,  mtosatti@redhat.com,
- nsg@linux.ibm.com,  pasic@linux.ibm.com,  pbonzini@redhat.com,
- peter.maydell@linaro.org,  peterx@redhat.com,  philmd@linaro.org,
- pizhenwei@bytedance.com,  pl@dlhnet.de,  richard.henderson@linaro.org,
- stefanha@redhat.com,  steven_lee@aspeedtech.com,  thuth@redhat.com,
- vsementsov@yandex-team.ru,  wangyanan55@huawei.com,
- yuri.benditovich@daynix.com,  zhao1.liu@intel.com,
- qemu-block@nongnu.org,  qemu-arm@nongnu.org,  qemu-s390x@nongnu.org,
- kvm@vger.kernel.org, Avihai Horon <avihaih@nvidia.com>, =?utf-8?Q?C?=
- =?utf-8?Q?=C3=A9dric?= Le Goater <clg@redhat.com>
-Subject: Re: [PATCH 01/18] qapi: Smarter camel_to_upper() to reduce need for
- 'prefix'
-In-Reply-To: <ZqiutRoQuAsrllfj@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 30 Jul 2024 10:13:25 +0100")
-References: <20240730081032.1246748-1-armbru@redhat.com>
- <20240730081032.1246748-2-armbru@redhat.com>
- <ZqiutRoQuAsrllfj@redhat.com>
-Date: Tue, 30 Jul 2024 14:22:05 +0200
-Message-ID: <87mslzgjde.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1sYmuV-0003Uw-Ey
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 09:29:09 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1sYmts-000553-Lk
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 09:28:54 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42111cf2706so3857885e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 06:27:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722346032; x=1722950832;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ahoz0KIOaZ5paltn37jRDo8tt6b6VcG4doV39F7NN2A=;
+ b=BUg40VSQt4gBGb4NR0NiXHzqIVOZVOSDLEAz8aAjMPan5Y5Zh/bgnX8SLNjNM8/ipo
+ k+gQ2PKrtAB/HNGuIoKP/BZ/hJ98rjqkErAZZGVt8zcsl86zLmAcBER9RR/TyFxJbgd1
+ PjbMCtfsIr7NdgSvGh+2F12gK8JR3ArXjuUwOb2CdEXczXHuthMjsWo3xVMFXXRIgY8o
+ vlR6iWR2Ot2/P5nYTkqHdnabxodW5tVp2uoO13d16LhkotvQq/vahyIoT7D1WuMmYvcQ
+ vzWYk5bruBmCSUFZcdeQX4ySRab5tCDjA46zgHqNWyQ/gQmK66fME/cWGZiTPpDGLM0N
+ zFVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722346032; x=1722950832;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ahoz0KIOaZ5paltn37jRDo8tt6b6VcG4doV39F7NN2A=;
+ b=EBZTnZuaAy5Wuh9VRCZrP5BWBcVujPVJGeYJ8GRVqGqntnOGfeZc20wMQYOOf7qnxw
+ xF2FDTns/9SqTnN/sgN8Nau6Zq/0T+oVhu14DHxTrFWfqR42D3uL4qObGB/Kc0UgQ1Lf
+ t7DE6UqTF55v/dZ2y92vT7gRtDQ2wdW0vT36DkZ8UzCQ3s+TtU5WrLdrjj1JPt2d9RUR
+ G/bcqvXcF02ya8e8jQgmQpolOkk04Ejeen2ebqBKZQWs5X9E51VwQ8/t374xEITx0lXE
+ J52prvs/Y2hQXbptiPBGxXFoqT9AEqIuICMMS9waaiu0yV6PaE4Ge0sa8kML6fmfcKls
+ GyaQ==
+X-Gm-Message-State: AOJu0YwnTrVuWxGXjeWQ5mpITzlI1Ub5XHVe1cSqr4wKm/xg/uZpIfOA
+ 40Ps/GtrArQsz7hxEqLkf5tEZgW9Drijypuwk80Llyb9Wpr0f0wTQmZ6tmqfWu3/6h5OVivezch
+ 7sZ8=
+X-Google-Smtp-Source: AGHT+IEJ9rjVOH8ljCFqeTfMaPL3QUsTDE1LcsSQO5sOuIjHhWJdR3Jxt7SRPJg4BRIUG2jtZyPS8A==
+X-Received: by 2002:a05:6000:18ab:b0:367:90a8:4d3b with SMTP id
+ ffacd0b85a97d-36b34bf2d44mr7252294f8f.3.1722342280988; 
+ Tue, 30 Jul 2024 05:24:40 -0700 (PDT)
+Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36b36862549sm14577757f8f.106.2024.07.30.05.24.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Jul 2024 05:24:40 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 0/5] qemu/osdep: add a qemu_close_all_open_fd() helper
+Date: Tue, 30 Jul 2024 14:24:23 +0200
+Message-ID: <20240730122437.1749603-1-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=cleger@rivosinc.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,251 +94,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avihai, there's a question for you on VfioMigrationState.
+Since commit 03e471c41d8b ("qemu_init: increase NOFILE soft limit on
+POSIX"), the maximum number of file descriptors that can be opened are
+raised to nofile.rlim_max. On recent debian distro, this yield a maximum
+of 1073741816 file descriptors. Now, when forking to start
+qemu-bridge-helper, this actually calls close() on the full possible file
+descriptor range (more precisely [3 - sysconf(_SC_OPEN_MAX)]) which
+takes a considerable amount of time. In order to reduce that time,
+factorize existing code to close all open files descriptors in a new
+qemu_close_all_open_fd() function. This function uses various methods
+to close all the open file descriptors ranging from the most efficient
+one to the least one. It also accepts an ordered array of file
+descriptors that should not be closed since this is required by the
+callers that calls it after forking. Since this function is not used
+for Win32, do not implement it to force an error at link time if used.
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+---
+v6:
+ - Split patch in multiple commits
+ - Drop Richard Henderson Reviewed-by since there was a lot of
+   modifications
+ - Remove useless #ifdef LINUX in qemu_close_all_open_fd_proc()
+ - v5: https://lore.kernel.org/qemu-devel/20240726075502.4054284-1-cleger@rivosinc.com/
 
-> On Tue, Jul 30, 2024 at 10:10:15AM +0200, Markus Armbruster wrote:
->> camel_to_upper() converts its argument from camel case to upper case
->> with '_' between words.  Used for generated enumeration constant
->> prefixes.
->>=20
->> When some of the words are spelled all caps, where exactly to insert
->> '_' is guesswork.  camel_to_upper()'s guesses are bad enough in places
->> to make people override them with a 'prefix' in the schema.
->>=20
->> Rewrite it to guess better:
->>=20
->> 1. Insert '_' after a non-upper case character followed by an upper
->>    case character:
->>=20
->>        OneTwo -> ONE_TWO
->>        One2Three -> ONE2_THREE
->>=20
->> 2. Insert '_' before the last upper case character followed by a
->>    non-upper case character:
->>=20
->>        ACRONYMWord -> ACRONYM_Word
->>=20
->>    Except at the beginning (as in OneTwo above), or when there is
->>    already one:
->>=20
->>        AbCd -> AB_CD
->>=20
->> This changes the default enumeration constant prefix for a number of
->> enums.  Generated enumeration constants change only where the default
->> is not overridden with 'prefix'.
->>=20
->> The following enumerations without a 'prefix' change:
->>=20
->>     enum       	     	 	    old camel_to_upper()
->>     				    new camel_to_upper()
->>     ------------------------------------------------------------------
->>     DisplayGLMode                   DISPLAYGL_MODE
->> 				    DISPLAY_GL_MODE
->>     EbpfProgramID                   EBPF_PROGRAMID
->> 				    EBPF_PROGRAM_ID
->>     HmatLBDataType                  HMATLB_DATA_TYPE
->> 				    HMAT_LB_DATA_TYPE
->>     HmatLBMemoryHierarchy           HMATLB_MEMORY_HIERARCHY
->> 				    HMAT_LB_MEMORY_HIERARCHY
->>     MultiFDCompression              MULTIFD_COMPRESSION
->> 				    MULTI_FD_COMPRESSION
->>     OffAutoPCIBAR                   OFF_AUTOPCIBAR
->> 				    OFF_AUTO_PCIBAR
->>     QCryptoBlockFormat              Q_CRYPTO_BLOCK_FORMAT
->> 				    QCRYPTO_BLOCK_FORMAT
->>     QCryptoBlockLUKSKeyslotState    Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE
->> 				    QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE
->>     QKeyCode                        Q_KEY_CODE
->>     				    QKEY_CODE
->>     XDbgBlockGraphNodeType          X_DBG_BLOCK_GRAPH_NODE_TYPE
->> 				    XDBG_BLOCK_GRAPH_NODE_TYPE
->>     TestUnionEnumA		    TEST_UNION_ENUMA
->>     				    TEST_UNION_ENUM_A
->>=20
->> Add a 'prefix' so generated code doesn't change now.  Subsequent
->> commits will remove most of them again.  Two will remain:
->> MULTIFD_COMPRESSION, because migration code generally spells "multifd"
->> that way, and Q_KEY_CODE, because that one is baked into
->> subprojects/keycodemapdb/tools/keymap-gen.
->>=20
->> The following enumerations with a 'prefix' change so that the prefix
->> is now superfluous:
->>=20
->>     enum       	     	 	    old camel_to_upper()
->>     				    new camel_to_upper() [equal to prefix]
->>     ------------------------------------------------------------------
->>     BlkdebugIOType                  BLKDEBUGIO_TYPE
->> 				    BLKDEBUG_IO_TYPE
->>     QCryptoTLSCredsEndpoint         Q_CRYPTOTLS_CREDS_ENDPOINT
->> 				    QCRYPTO_TLS_CREDS_ENDPOINT
->>     QCryptoSecretFormat             Q_CRYPTO_SECRET_FORMAT
->> 				    QCRYPTO_SECRET_FORMAT
->>     QCryptoCipherMode               Q_CRYPTO_CIPHER_MODE
->> 				    QCRYPTO_CIPHER_MODE
->>     QCryptodevBackendType           Q_CRYPTODEV_BACKEND_TYPE
->> 				    QCRYPTODEV_BACKEND_TYPE
->>     QType [builtin]                 Q_TYPE
->> 				    QTYPE
->>=20
->> Drop these prefixes.
->>=20
->> The following enumerations with a 'prefix' change without making the
->> 'prefix' superfluous:
->>=20
->>     enum       	     	 	    old camel_to_upper()
->>     				    new camel_to_upper() [equal to prefix]
->> 				    prefix
->>     ------------------------------------------------------------------
->>     CpuS390Entitlement              CPUS390_ENTITLEMENT
->> 				    CPU_S390_ENTITLEMENT
->> 				    S390_CPU_ENTITLEMENT
->>     CpuS390Polarization             CPUS390_POLARIZATION
->> 				    CPU_S390_POLARIZATION
->> 				    S390_CPU_POLARIZATION
->>     CpuS390State                    CPUS390_STATE
->> 				    CPU_S390_STATE
->> 				    S390_CPU_STATE
->>     QAuthZListFormat                Q_AUTHZ_LIST_FORMAT
->> 				    QAUTH_Z_LIST_FORMAT
->> 				    QAUTHZ_LIST_FORMAT
->>     QAuthZListPolicy                Q_AUTHZ_LIST_POLICY
->> 				    QAUTH_Z_LIST_POLICY
->> 				    QAUTHZ_LIST_POLICY
->>     QCryptoAkCipherAlgorithm        Q_CRYPTO_AK_CIPHER_ALGORITHM
->> 				    QCRYPTO_AK_CIPHER_ALGORITHM
->> 				    QCRYPTO_AKCIPHER_ALG
->>     QCryptoAkCipherKeyType          Q_CRYPTO_AK_CIPHER_KEY_TYPE
->> 				    QCRYPTO_AK_CIPHER_KEY_TYPE
->> 				    QCRYPTO_AKCIPHER_KEY_TYPE
->>     QCryptoCipherAlgorithm          Q_CRYPTO_CIPHER_ALGORITHM
->> 				    QCRYPTO_CIPHER_ALGORITHM
->> 				    QCRYPTO_CIPHER_ALG
->>     QCryptoHashAlgorithm            Q_CRYPTO_HASH_ALGORITHM
->> 				    QCRYPTO_HASH_ALGORITHM
->> 				    QCRYPTO_HASH_ALG
->>     QCryptoIVGenAlgorithm           Q_CRYPTOIV_GEN_ALGORITHM
->> 				    QCRYPTO_IV_GEN_ALGORITHM
->> 				    QCRYPTO_IVGEN_ALG
->>     QCryptoRSAPaddingAlgorithm      Q_CRYPTORSA_PADDING_ALGORITHM
->> 				    QCRYPTO_RSA_PADDING_ALGORITHM
->> 				    QCRYPTO_RSA_PADDING_ALG
->>     QCryptodevBackendAlgType        Q_CRYPTODEV_BACKEND_ALG_TYPE
->> 				    QCRYPTODEV_BACKEND_ALG_TYPE
->> 				    QCRYPTODEV_BACKEND_ALG
->>     QCryptodevBackendServiceType    Q_CRYPTODEV_BACKEND_SERVICE_TYPE
->> 				    QCRYPTODEV_BACKEND_SERVICE_TYPE
->> 				    QCRYPTODEV_BACKEND_SERVICE
->>=20
->> Subsequent commits will tweak things to remove most of these prefixes.
->> Only QAUTHZ_LIST_FORMAT and QAUTHZ_LIST_POLICY will remain.
->
-> IIUC from above those two result in=20
->
-> 			    QAUTH_Z_LIST_FORMAT
-> 			    QAUTH_Z_LIST_POLICY
->
-> Is it possible to add a 3rd rule
->
->  *  Single uppercase letter folds into the previous word
+v5:
+ - Move qemu_close_all_open_fd() to oslib-posix.c since it does not
+   compile on windows and is not even used on it.
+ - v4: https://lore.kernel.org/qemu-devel/20240717124534.1200735-1-cleger@rivosinc.com/
 
-I guess we could.
+v4:
+ - Add a comment saying that qemu_close_all_open_fd() can take a NULL skip
+   array and nskip == 0
+ - Added an assert in qemu_close_all_open_fd() to check for skip/nskip
+   parameters
+ - Fix spurious tabs instead of spaces
+ - Applied checkpatch
+ - v3: https://lore.kernel.org/qemu-devel/20240716144006.6571-1-cleger@rivosinc.com/
 
-> or are there valid cases where we have a single uppercase
-> that we want to preserve ?
+v3:
+ - Use STD*_FILENO defines instead of raw values
+ - Fix indentation of close_all_fds_after_fork()
+ - Check for nksip in fallback code
+ - Check for path starting with a '.' in qemu_close_all_open_fd_proc()
+ - Use unsigned for cur_skip
+ - Move ifdefs inside close_fds functions rather than redefining them
+ - Remove uneeded 'if(nskip)' test
+ - Add comments to close_range version
+ - Reduce range of skip fd as we find them in
+ - v2: https://lore.kernel.org/qemu-devel/20240618111704.63092-1-cleger@rivosinc.com/
 
-Not now, but I'd prefer to leave predictions to economists.
+v2:
+ - Factorize async_teardown.c close_fds implementation as well as tap.c ones
+ - Apply checkpatch
+ - v1: https://lore.kernel.org/qemu-devel/20240617162520.4045016-1-cleger@rivosinc.com/
 
-> It sure would be nice to eliminate the 'prefix' concept,
-> that we've clearly over-used, if we can kill the only 2
-> remaining examples.
+Clément Léger (5):
+  qemu/osdep: Move close_all_open_fds() to oslib-posix
+  qemu/osdep: Split qemu_close_all_open_fd() and add fallback
+  net/tap: Factorize fd closing after forking
+  qemu/osdep: Add excluded fd parameter to qemu_close_all_open_fd()
+  net/tap: Use qemu_close_all_open_fd()
 
-There are a few more, actually.  After this series and outside tests:
+ include/qemu/osdep.h    |  11 ++++
+ net/tap.c               |  34 ++++++-----
+ system/async-teardown.c |  37 +-----------
+ util/oslib-posix.c      | 128 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 160 insertions(+), 50 deletions(-)
 
-    enum       	     	 	    default prefix camel_to_upper()
-				    prefix override
-    ------------------------------------------------------------------
-    BlkdebugEvent                   BLKDEBUG_EVENT
-                                    BLKDBG
-    IscsiHeaderDigest               ISCSI_HEADER_DIGEST
-                                    QAPI_ISCSI_HEADER_DIGEST
-    MultiFDCompression              MULTI_FD_COMPRESSION
-                                    MULTIFD_COMPRESSION
-    QAuthZListFormat                QAUTH_Z_LIST_FORMAT
-				    QAUTHZ_LIST_FORMAT
-    QAuthZListPolicy                QAUTH_Z_LIST_POLICY
-				    QAUTHZ_LIST_POLICY
-    QKeyCode                        QKEY_CODE
-                                    Q_KEY_CODE
-    VfioMigrationState              VFIO_MIGRATION_STATE
-                                    QAPI_VFIO_MIGRATION_STATE
-
-Reasons for 'prefix', and what could be done instead of 'prefix':
-
-* BlkdebugEvent: shorten the prefix.
-
-  Could live with the longer names instead.  Some 90 occurences...
-
-* IscsiHeaderDigest
-
-  QAPI version of enum iscsi_header_digest from libiscsi's
-  iscsi/iscsi.h.  We use 'prefix' to avoid name clashes.
-
-  Could rename the type to QapiIscsiHeaderDigest instead.
-
-* MultiFDCompression
-
-  Migration code consistently uses prefixes multifd_, MULTIFD_, and
-  MultiFD_.
-
-  Could rename the type to MultifdCompression instead, but that just
-  moves the inconsistency to the type name.
-
-* QAuthZListFormat and QAuthZListPolicy
-
-  The authz code consistently uses QAuthZ.
-
-  Could make camel_to_upper() avoid the lone Z instead (and hope that'll
-  remain what we want).
-
-* QKeyCode
-
-  Q_KEY_CODE is baked into subprojects/keycodemapdb/tools/keymap-gen.
-
-  Could adjust the subproject instead.
-
-* VfioMigrationState
-
-  Can't see why this one has a prefix.  Avihai, can you enlighten me?
-
-Daniel, thoughts?
-
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>  qapi/block-core.json                     |  3 +-
->>  qapi/common.json                         |  1 +
->>  qapi/crypto.json                         |  6 ++--
->>  qapi/cryptodev.json                      |  1 -
->>  qapi/ebpf.json                           |  1 +
->>  qapi/machine.json                        |  1 +
->>  qapi/migration.json                      |  1 +
->>  qapi/ui.json                             |  2 ++
->>  scripts/qapi/common.py                   | 42 ++++++++++++++----------
->>  scripts/qapi/schema.py                   |  2 +-
->>  tests/qapi-schema/alternate-array.out    |  1 -
->>  tests/qapi-schema/comments.out           |  1 -
->>  tests/qapi-schema/doc-good.out           |  1 -
->>  tests/qapi-schema/empty.out              |  1 -
->>  tests/qapi-schema/include-repetition.out |  1 -
->>  tests/qapi-schema/include-simple.out     |  1 -
->>  tests/qapi-schema/indented-expr.out      |  1 -
->>  tests/qapi-schema/qapi-schema-test.json  |  1 +
->>  tests/qapi-schema/qapi-schema-test.out   |  2 +-
->>  19 files changed, 37 insertions(+), 33 deletions(-)
->
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-
-Thanks!
+-- 
+2.45.2
 
 
