@@ -2,65 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAAA940693
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 06:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0859406CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 07:15:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYeep-0002h3-Aq; Tue, 30 Jul 2024 00:40:19 -0400
+	id 1sYfBC-0006HG-Kx; Tue, 30 Jul 2024 01:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYeen-0002Zl-23
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:17 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sYfBA-0006Cu-6F; Tue, 30 Jul 2024 01:13:44 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYeel-0006BM-CZ
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722314415; x=1753850415;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cL92rD81kzK7ojUvhsDE3dVX2dFVVXty9ZJ/bZd7F3s=;
- b=j2T34JyMW3T0q/9fvF/WLIeXlY5oaEl95w8gGYgp8bAMGJm2hDENrUjn
- jq98uIc8GS4tIU2JzZAxVUL+FBaoP2dSghC9PsYHYbwMYG+T+ydrgg9da
- iv9K9OnoakD2E+w/C4qfpRSDHDCuTviwUfxCmDTC0XLkibkg6ayz3t0t5
- oGzLaQufR/CdIcUllFkh9uPcg38NuPjluhZbdMD5fuxprFz+yYBIgOj8b
- pVEXqHKkAczLmDKXP/h1ChKwOVZWyIszU2sh7CGEsvPrZkqJZCJimxtJP
- FxhYi9EpOuxrBgt/mbdo4PsONB8eQUg7PL7Vvhg8PBcrv702MHeuYIT4l Q==;
-X-CSE-ConnectionGUID: 4kGdcnA/Sja505uYmSosyA==
-X-CSE-MsgGUID: M+dpMc1dTIWgS2KGCAcvVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20288560"
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="20288560"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 21:40:15 -0700
-X-CSE-ConnectionGUID: yfA2DkXRS/GBoAw38B1vsw==
-X-CSE-MsgGUID: jdQwO3WnT5O5S+UthJ6s9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="77429935"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 29 Jul 2024 21:40:13 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 4/4] target/i386/cpu: Mask off SGX/SGX_LC feature words for
- non-PC machine
-Date: Tue, 30 Jul 2024 12:55:44 +0800
-Message-Id: <20240730045544.2516284-5-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240730045544.2516284-1-zhao1.liu@intel.com>
-References: <20240730045544.2516284-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sYfB7-0005YV-EJ; Tue, 30 Jul 2024 01:13:43 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 46659CE0E83;
+ Tue, 30 Jul 2024 05:13:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D1BC32782;
+ Tue, 30 Jul 2024 05:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1722316416;
+ bh=PQJFs7gjyhFWEMZiRmJiA0Z37OpC0Ojvb6+jE9X5Pog=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=tqHBDCq310djAi++Ewo9maQ/VNgqX66At3Yh8sG3vIxc0/p65dSLG1xc2mRpcG2Qm
+ jgnVnPnbbmCBDrhw6/a8E3EeL7fjFVZv/nCbbcvQ4zvdnGW3QhyAzl6hAoczPRDBEg
+ WjM8FshXqcJCcfV2uXbOMOY5jcRJd7VXbOmhqtx6R4o+cJvld+qcwsKpOBOUerZ3WS
+ XfnQisOT09MkkXz/oZriuOtbjgSx9bypVx3PF1eBMTbfxKqWHjX/qrASsa8ZQx3YGd
+ nvy+oKL0AM9chTUlBdRPKPvWVB9i40SRWRWp8p9V6PWZf0pmkbGWTmTsAb+pXAjKVN
+ Nmoa6m/za+bBg==
+Date: Tue, 30 Jul 2024 07:13:30 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, Ani Sinha <anisinha@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>, "Marcel
+ Apfelbaum" <marcel.apfelbaum@gmail.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Shannon Zhao <shannon.zhaosl@gmail.com>, "Yanan
+ Wang" <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ <linux-kernel@vger.kernel.org>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v4 2/6] arm/virt: Wire up GPIO error source for ACPI / GHES
+Message-ID: <20240730071330.4835e943@foz.lan>
+In-Reply-To: <20240729170840.00004763@Huawei.com>
+References: <cover.1722259246.git.mchehab+huawei@kernel.org>
+ <e994c3944d31775d62bbd017dec3adff50ddf269.1722259246.git.mchehab+huawei@kernel.org>
+ <20240729170840.00004763@Huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -44
 X-Spam_score: -4.5
 X-Spam_bar: ----
@@ -83,91 +77,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only PC machine supports SGX, so mask off SGX related feature words for
-non-PC machine (microvm).
+Em Mon, 29 Jul 2024 17:08:40 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/i386/sgx-stub.c        |  5 +++++
- hw/i386/sgx.c             |  8 ++++++++
- include/hw/i386/sgx-epc.h |  1 +
- target/i386/cpu.c         | 15 +++++++++++++++
- 4 files changed, 29 insertions(+)
+> On Mon, 29 Jul 2024 15:21:06 +0200
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Creates a Generic Event Device (GED) as specified at  
+> 
+> I wrote this a while back and wasn't aware of the naming
+> mess around GED in the ACPI spec.  This one is just
+> referred to as 'error device' whereas there is also
+> a Generic Event Device.
+> 
+> Linux solved this clash by going with Hardware Error Device
+> I think we should do the same here.
 
-diff --git a/hw/i386/sgx-stub.c b/hw/i386/sgx-stub.c
-index 16b1dfd90bb5..38ff75e9f377 100644
---- a/hw/i386/sgx-stub.c
-+++ b/hw/i386/sgx-stub.c
-@@ -32,6 +32,11 @@ void pc_machine_init_sgx_epc(PCMachineState *pcms)
-     memset(&pcms->sgx_epc, 0, sizeof(SGXEPCState));
- }
- 
-+bool check_sgx_support(void)
-+{
-+    return false;
-+}
-+
- bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size)
- {
-     return true;
-diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
-index 849472a12865..4900dd414a1f 100644
---- a/hw/i386/sgx.c
-+++ b/hw/i386/sgx.c
-@@ -266,6 +266,14 @@ void hmp_info_sgx(Monitor *mon, const QDict *qdict)
-                    size);
- }
- 
-+bool check_sgx_support(void)
-+{
-+    if (!object_dynamic_cast(qdev_get_machine(), TYPE_PC_MACHINE)) {
-+        return false;
-+    }
-+    return true;
-+}
-+
- bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size)
- {
-     PCMachineState *pcms =
-diff --git a/include/hw/i386/sgx-epc.h b/include/hw/i386/sgx-epc.h
-index 3e00efd870c9..41d55da47999 100644
---- a/include/hw/i386/sgx-epc.h
-+++ b/include/hw/i386/sgx-epc.h
-@@ -58,6 +58,7 @@ typedef struct SGXEPCState {
-     int nr_sections;
- } SGXEPCState;
- 
-+bool check_sgx_support(void);
- bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size);
- void sgx_epc_build_srat(GArray *table_data);
- 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 7f55e9ba3ed8..66f9737a117c 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6103,6 +6103,21 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
-         }
-         break;
- 
-+    case FEAT_7_0_EBX:
-+#ifndef CONFIG_USER_ONLY
-+        if (!check_sgx_support()) {
-+            unavail = CPUID_7_0_EBX_SGX;
-+        }
-+#endif
-+        break;
-+    case FEAT_7_0_ECX:
-+#ifndef CONFIG_USER_ONLY
-+        if (!check_sgx_support()) {
-+            unavail = CPUID_7_0_ECX_SGX_LC;
-+        }
-+#endif
-+        break;
-+
-     default:
-         break;
-     }
--- 
-2.34.1
+I opted to do it a little bit different to stay closer to ACPI 6.5
+18.3.2.7.2. - Event Notification For Generic Error Sources.
 
+There, it is actually talking about a General Purpose Event (GPE).
+Current ACPI spec doesn't mention "GED", so maybe such term was fixed
+on some previous ACPI spec revision.
+
+Basically, it currently mentions:
+	- error device
+	- GPE / General Purpose Event
+	- Generic Hardware Error Source Structure 
+
+I guess Linux crafted the term Hardware Error device by mixing
+those.
+
+As we don't need to really preserve such names here, as this appears
+only at the patch description, I opted to rewrite the patch description
+to:
+
+    arm/virt: Wire up GPIO error source for ACPI / GHES
+    
+    Creates a hardware event device to support General Purpose
+    Event (GPE) as specified at ACPI 6.5 specification at 18.3.2.7.2:
+    https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#event-notification-for-generic-error-sources
+    using HID PNP0C33.
+    
+    The PNP0C33 device is used to report hardware errors to
+    the bios via ACPI APEI Generic Hardware Error Source (GHES).
+    
+    It is aligned with Linux Kernel patch:
+    https://lore.kernel.org/lkml/1272350481-27951-8-git-send-email-ying.huang@intel.com/
+    
+    [mchehab: use a define for the generic event pin number and do some cleanups]
+    Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+Clearly associating "hardware event device" with ACPI GPE. That sounds
+good enough to be stored at the git description associated with such
+change.
+
+> > ACPI 6.5 specification at 18.3.2.7.2:
+> > https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#event-notification-for-generic-error-sources
+> > with HID PNP0C33.
+> > 
+> > The PNP0C33 device is used to report hardware errors to
+> > the bios via ACPI APEI Generic Hardware Error Source (GHES).
+> > 
+> > It is aligned with Linux Kernel patch:
+> > https://lore.kernel.org/lkml/1272350481-27951-8-git-send-email-ying.huang@intel.com/
+> > 
+> > [mchehab: use a define for the generic event pin number and do some cleanups]
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
+> 
+> > ---
+> >  hw/arm/virt-acpi-build.c | 30 ++++++++++++++++++++++++++----
+> >  hw/arm/virt.c            | 14 ++++++++++++--
+> >  include/hw/arm/virt.h    |  1 +
+> >  include/hw/boards.h      |  1 +
+> >  4 files changed, 40 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> > index f76fb117adff..c502ccf40909 100644
+> > --- a/hw/arm/virt-acpi-build.c
+> > +++ b/hw/arm/virt-acpi-build.c
+> > @@ -63,6 +63,7 @@
+> >  
+> >  #define ARM_SPI_BASE 32
+> >  
+> > +#define ACPI_GENERIC_EVENT_DEVICE "GEDD"  
+> 
+> Ah. My mistake. This is the confusing named GENERIC_ERROR_DEVICE
+> or HARDWARE_ERROR_DEVICE (which is what Linux called it because
+> in the ACPI Spec it is just (all lower case) error device).
+
+I opted to use a different name there, using just error device,
+together with the name of the PNP device. So:
+
+	#define PNP0C33_ERROR_DEVICE "GEDD"
+
+This is clear enough for people just looking at the driver, and
+even clearer for people familiar with session 18.3.2.7.2 of the
+ACPI spec.
+
+> 
+> >  #define ACPI_BUILD_TABLE_SIZE             0x20000  
+> 
+> >  /* DSDT */
+> >  static void
+> >  build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> > @@ -841,10 +863,9 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> >                        HOTPLUG_HANDLER(vms->acpi_dev),
+> >                        irqmap[VIRT_ACPI_GED] + ARM_SPI_BASE, AML_SYSTEM_MEMORY,
+> >                        memmap[VIRT_ACPI_GED].base);
+> > -    } else {
+> > -        acpi_dsdt_add_gpio(scope, &memmap[VIRT_GPIO],
+> > -                           (irqmap[VIRT_GPIO] + ARM_SPI_BASE));
+> >      }
+> > +    acpi_dsdt_add_gpio(scope, &memmap[VIRT_GPIO],
+> > +                       (irqmap[VIRT_GPIO] + ARM_SPI_BASE));  
+> 
+> Arguably excess brackets, but obviously this is just a code move
+> so fine to keep it the same.
+
+I'll drop the extra brackets.
+
+> >  
+> >      if (vms->acpi_dev) {
+> >          uint32_t event = object_property_get_uint(OBJECT(vms->acpi_dev),
+> > @@ -858,6 +879,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> >      }
+> >  
+> >      acpi_dsdt_add_power_button(scope);
+
+> > +    acpi_dsdt_add_generic_event_device(scope);
+
+I'm also renaming this function/function call to run away from GED,
+calling it as:
+
+	 acpi_dsdt_add_error_device(scope);
+
+> >  #ifdef CONFIG_TPM
+> >      acpi_dsdt_add_tpm(scope, vms);
+> >  #endif  
+> 
+
+Thanks,
+Mauro
 
