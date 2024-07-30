@@ -2,62 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335D4940AD6
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA76940AFE
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:13:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYhv0-0007qs-Ao; Tue, 30 Jul 2024 04:09:14 -0400
+	id 1sYhx5-0005q5-RY; Tue, 30 Jul 2024 04:11:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sYhuy-0007pR-Gq
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:09:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwl-0005aX-Pp
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sYhuw-0000pc-Ib
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:09:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwb-0001Ho-S2
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722326949;
+ s=mimecast20190719; t=1722327053;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0Za8N01neFRYJ+Ybu7cI0fTPx1xYupGwphv8Z+jK6eY=;
- b=hyqp3vhvoEHCgI6SS6i2X/QrKnErc6/civiKzVpHDn39BlFtvjzb2pYQKGE4UGjr2szv0I
- uQB22HwTsmeqI9O91XKBcMjRZWTMQs3qdInRw/iHpdA/1L1vH78fUieigacoT6x0UtAYWq
- V8V/RPVzMcZL0F+aWU7cO813pRXSXPE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mcwOr9AjizPUDyHe+rlQwWKQSKq+gmwmaPATtnSvnEg=;
+ b=h4qJ6LKojkDozQF+psZ4rcpWGN23TYXL0TIHmcyU5ckh6ii/X8VRgMDxVdUDscDN2hpby0
+ VKL3VXlCRngZLwsCuoz7D7nFEFuRuJirL4PG/VBJumbHPdGm+vUPBGONxtywfTMuCO81ZM
+ WgmdjLYYx74Fk8DF0niZBHJ4XuouTMM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-ZlVUb6sfOSOekBwPfKR-lw-1; Tue,
- 30 Jul 2024 04:09:03 -0400
-X-MC-Unique: ZlVUb6sfOSOekBwPfKR-lw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-209-Xo4kVDoMMymXglKOGkDylQ-1; Tue,
+ 30 Jul 2024 04:10:47 -0400
+X-MC-Unique: Xo4kVDoMMymXglKOGkDylQ-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D820A1955D48; Tue, 30 Jul 2024 08:09:01 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.193.34])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 13A4B1955F3B; Tue, 30 Jul 2024 08:08:58 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A19EA19560B1; Tue, 30 Jul 2024 08:10:43 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E3E9F1955D42; Tue, 30 Jul 2024 08:10:34 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C512721E6693; Tue, 30 Jul 2024 10:10:32 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Collin Walling <walling@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PULL 1/1] target/s390x: move @deprecated-props to CpuModelExpansion
- Info
-Date: Tue, 30 Jul 2024 10:08:52 +0200
-Message-ID: <20240730080852.649251-2-david@redhat.com>
-In-Reply-To: <20240730080852.649251-1-david@redhat.com>
-References: <20240730080852.649251-1-david@redhat.com>
+Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
+ arei.gonglei@huawei.com, berrange@redhat.com, berto@igalia.com,
+ borntraeger@linux.ibm.com, clg@kaod.org, david@redhat.com, den@openvz.org,
+ eblake@redhat.com, eduardo@habkost.net, farman@linux.ibm.com,
+ farosas@suse.de, hreitz@redhat.com, idryomov@gmail.com, iii@linux.ibm.com,
+ jamin_lin@aspeedtech.com, jasowang@redhat.com, joel@jms.id.au,
+ jsnow@redhat.com, kwolf@redhat.com, leetroy@gmail.com,
+ marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
+ michael.roth@amd.com, mst@redhat.com, mtosatti@redhat.com,
+ nsg@linux.ibm.com, pasic@linux.ibm.com, pbonzini@redhat.com,
+ peter.maydell@linaro.org, peterx@redhat.com, philmd@linaro.org,
+ pizhenwei@bytedance.com, pl@dlhnet.de, richard.henderson@linaro.org,
+ stefanha@redhat.com, steven_lee@aspeedtech.com, thuth@redhat.com,
+ vsementsov@yandex-team.ru, wangyanan55@huawei.com,
+ yuri.benditovich@daynix.com, zhao1.liu@intel.com, qemu-block@nongnu.org,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org
+Subject: [PATCH 00/18] qapi: Reduce use of 'prefix'.
+Date: Tue, 30 Jul 2024 10:10:14 +0200
+Message-ID: <20240730081032.1246748-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -65,7 +76,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,152 +92,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Collin Walling <walling@linux.ibm.com>
+QAPI's 'prefix' feature can make the connection between enumeration
+type and its constants less than obvious.  It's best used with
+restraint.
 
-CpuModelInfo is used both as command argument and in command
-returns.
+We use 'prefix' for a number of reasons:
 
-Its @deprecated-props array does not make any sense in arguments,
-and is silently ignored.  We actually want it only as return value
-of query-cpu-model-expansion.
+* To override an ugly default.
 
-Move it from CpuModelInfo to CpuModelExpansionType, and document
-its dependence on expansion type property.
+* To shorten the prefix.
 
-This was identified late during review [1] and we have to fix it up
-while it's not part of an official QEMU release yet.
+* To work around name clashes.
 
-[1] https://lore.kernel.org/qemu-devel/20240719181741.35146-1-walling@linux.ibm.com/
+This series attacks the first two.  It additionally improves a number
+of ugly prefixes we don't override.
 
-Message-ID: <20240726203646.20279-1-walling@linux.ibm.com>
-Fixes: eed0e8ffa38f ("target/s390x: filter deprecated properties based on model expansion type")
-Signed-off-by: Collin Walling <walling@linux.ibm.com>
-[ david: - add "Fixes", adjust description, reference v3 instead
-         - make property s390x-only and non-optional
-         - fixup "populate" vs. "populated" ]
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- qapi/machine-target.json         | 19 +++++++++++--------
- target/s390x/cpu_models_sysemu.c | 29 ++++++++++++++++++-----------
- 2 files changed, 29 insertions(+), 19 deletions(-)
+PATCH 01 improves the default prefix, and drops 'prefix' where it is
+now redundant.  The patch adds temporary 'prefix' to not change
+generated code.
 
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index a552e2b0ce..00bbecc905 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -20,17 +20,11 @@
- #
- # @props: a dictionary of QOM properties to be applied
- #
--# @deprecated-props: a list of properties that are flagged as deprecated
--#     by the CPU vendor.  These properties are either a subset of the
--#     properties enabled on the CPU model, or a set of properties
--#     deprecated across all models for the architecture.
--#
- # Since: 2.8
- ##
- { 'struct': 'CpuModelInfo',
-   'data': { 'name': 'str',
--            '*props': 'any',
--            '*deprecated-props': ['str'] } }
-+            '*props': 'any' } }
- 
- ##
- # @CpuModelExpansionType:
-@@ -248,10 +242,19 @@
- #
- # @model: the expanded CpuModelInfo.
- #
-+# @deprecated-props: a list of properties that are flagged as deprecated
-+#     by the CPU vendor.  The list depends on the CpuModelExpansionType:
-+#     "static" properties are a subset of the enabled-properties for
-+#     the expanded model; "full" properties are a set of properties
-+#     that are deprecated across all models for the architecture.
-+#     (since: 9.1).
-+#
- # Since: 2.8
- ##
- { 'struct': 'CpuModelExpansionInfo',
--  'data': { 'model': 'CpuModelInfo' },
-+  'data': { 'model': 'CpuModelInfo',
-+            'deprecated-props' : { 'type': ['str'],
-+                                   'if': 'TARGET_S390X' } },
-   'if': { 'any': [ 'TARGET_S390X',
-                    'TARGET_I386',
-                    'TARGET_ARM',
-diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-index 94dd798b4c..f6df691b66 100644
---- a/target/s390x/cpu_models_sysemu.c
-+++ b/target/s390x/cpu_models_sysemu.c
-@@ -174,15 +174,11 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
-                                 bool delta_changes)
- {
-     QDict *qdict = qdict_new();
--    S390FeatBitmap bitmap, deprecated;
-+    S390FeatBitmap bitmap;
- 
-     /* always fallback to the static base model */
-     info->name = g_strdup_printf("%s-base", model->def->name);
- 
--    /* features flagged as deprecated */
--    bitmap_zero(deprecated, S390_FEAT_MAX);
--    s390_get_deprecated_features(deprecated);
--
-     if (delta_changes) {
-         /* features deleted from the base feature set */
-         bitmap_andnot(bitmap, model->def->base_feat, model->features,
-@@ -197,9 +193,6 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
-         if (!bitmap_empty(bitmap, S390_FEAT_MAX)) {
-             s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_enabled_feat);
-         }
--
--        /* deprecated features that are a subset of the model's enabled features */
--        bitmap_and(deprecated, deprecated, model->features, S390_FEAT_MAX);
-     } else {
-         /* expand all features */
-         s390_feat_bitmap_to_ascii(model->features, qdict,
-@@ -213,9 +206,6 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
-     } else {
-         info->props = QOBJECT(qdict);
-     }
--
--    s390_feat_bitmap_to_ascii(deprecated, &info->deprecated_props, list_add_feat);
--    info->has_deprecated_props = !!info->deprecated_props;
- }
- 
- CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-@@ -226,6 +216,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     CpuModelExpansionInfo *expansion_info = NULL;
-     S390CPUModel s390_model;
-     bool delta_changes = false;
-+    S390FeatBitmap deprecated_feats;
- 
-     /* convert it to our internal representation */
-     cpu_model_from_info(&s390_model, model, "model", &err);
-@@ -245,6 +236,22 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     expansion_info = g_new0(CpuModelExpansionInfo, 1);
-     expansion_info->model = g_malloc0(sizeof(*expansion_info->model));
-     cpu_info_from_model(expansion_info->model, &s390_model, delta_changes);
-+
-+    /* populate list of deprecated features */
-+    bitmap_zero(deprecated_feats, S390_FEAT_MAX);
-+    s390_get_deprecated_features(deprecated_feats);
-+
-+    if (delta_changes) {
-+        /*
-+         * Only populate deprecated features that are a
-+         * subset of the features enabled on the CPU model.
-+         */
-+        bitmap_and(deprecated_feats, deprecated_feats,
-+                   s390_model.features, S390_FEAT_MAX);
-+    }
-+
-+    s390_feat_bitmap_to_ascii(deprecated_feats,
-+                              &expansion_info->deprecated_props, list_add_feat);
-     return expansion_info;
- }
- 
+PATCH 02-08 revert the temporary 'prefix'.
+
+PATCH 10,17 drop 'prefix' where the default is now better.
+
+PATCH 09,11-15,18 rename QAPI types, and drop their 'prefix'.  I'm
+prepared to adjust the renames according to maintainers' preference.
+
+PATCH 16 renames a non-QAPI type for consistency.
+
+Markus Armbruster (18):
+  qapi: Smarter camel_to_upper() to reduce need for 'prefix'
+  tests/qapi-schema: Drop temporary 'prefix'
+  qapi/block-core: Drop temporary 'prefix'
+  qapi/common: Drop temporary 'prefix'
+  qapi/crypto: Drop temporary 'prefix'
+  qapi/ebpf: Drop temporary 'prefix'
+  qapi/machine: Drop temporary 'prefix'
+  qapi/ui: Drop temporary 'prefix'
+  qapi/machine: Rename CpuS390* to S390Cpu, and drop 'prefix'
+  qapi/crypto: Drop unwanted 'prefix'
+  qapi/crypto: Rename QCryptoHashAlgorithm to *Algo, and drop prefix
+  qapi/crypto: Rename QCryptoCipherAlgorithm to *Algo, and drop prefix
+  qapi/crypto: Rename QCryptoIVGenAlgorithm to *Algo, and drop prefix
+  qapi/crypto: Rename QCryptoAkCipherAlgorithm to *Algo, and drop prefix
+  qapi/crypto: Rename QCryptoRSAPaddingAlgorithm to *Algo, and drop
+    prefix
+  qapi/crypto: Rename QCryptoAFAlg to QCryptoAFAlgo
+  qapi/cryptodev: Drop unwanted 'prefix'
+  qapi/cryptodev: Rename QCryptodevBackendAlgType to *Algo, and drop
+    prefix
+
+ qapi/block-core.json                     |   4 +-
+ qapi/crypto.json                         |  56 ++++------
+ qapi/cryptodev.json                      |   7 +-
+ qapi/machine-common.json                 |   5 +-
+ qapi/machine-target.json                 |  11 +-
+ qapi/machine.json                        |   9 +-
+ qapi/migration.json                      |   1 +
+ qapi/pragma.json                         |   6 +-
+ qapi/ui.json                             |   1 +
+ crypto/afalgpriv.h                       |  14 +--
+ crypto/akcipherpriv.h                    |   2 +-
+ crypto/blockpriv.h                       |   6 +-
+ crypto/cipherpriv.h                      |   2 +-
+ crypto/hashpriv.h                        |   2 +-
+ crypto/hmacpriv.h                        |   4 +-
+ crypto/ivgenpriv.h                       |   6 +-
+ include/crypto/afsplit.h                 |   8 +-
+ include/crypto/block.h                   |   2 +-
+ include/crypto/cipher.h                  |  18 ++--
+ include/crypto/hash.h                    |  18 ++--
+ include/crypto/hmac.h                    |   6 +-
+ include/crypto/ivgen.h                   |  30 +++---
+ include/crypto/pbkdf.h                   |  14 +--
+ include/hw/qdev-properties-system.h      |   2 +-
+ include/hw/s390x/cpu-topology.h          |   2 +-
+ include/sysemu/cryptodev.h               |   2 +-
+ target/s390x/cpu.h                       |   2 +-
+ backends/cryptodev-builtin.c             |  52 ++++-----
+ backends/cryptodev-lkcf.c                |  36 +++----
+ backends/cryptodev-vhost-user.c          |   6 +-
+ backends/cryptodev.c                     |  12 +--
+ block.c                                  |   6 +-
+ block/crypto.c                           |  10 +-
+ block/parallels-ext.c                    |   2 +-
+ block/qcow.c                             |   2 +-
+ block/qcow2.c                            |  10 +-
+ block/quorum.c                           |   4 +-
+ block/rbd.c                              |   4 +-
+ crypto/afalg.c                           |   8 +-
+ crypto/afsplit.c                         |   6 +-
+ crypto/akcipher.c                        |   2 +-
+ crypto/block-luks.c                      | 128 +++++++++++------------
+ crypto/block-qcow.c                      |   6 +-
+ crypto/block.c                           |   8 +-
+ crypto/cipher-afalg.c                    |  36 +++----
+ crypto/cipher.c                          |  72 ++++++-------
+ crypto/hash-afalg.c                      |  40 +++----
+ crypto/hash-gcrypt.c                     |  20 ++--
+ crypto/hash-glib.c                       |  20 ++--
+ crypto/hash-gnutls.c                     |  20 ++--
+ crypto/hash-nettle.c                     |  18 ++--
+ crypto/hash.c                            |  30 +++---
+ crypto/hmac-gcrypt.c                     |  22 ++--
+ crypto/hmac-glib.c                       |  22 ++--
+ crypto/hmac-gnutls.c                     |  22 ++--
+ crypto/hmac-nettle.c                     |  22 ++--
+ crypto/hmac.c                            |   2 +-
+ crypto/ivgen.c                           |  18 ++--
+ crypto/pbkdf-gcrypt.c                    |  36 +++----
+ crypto/pbkdf-gnutls.c                    |  36 +++----
+ crypto/pbkdf-nettle.c                    |  32 +++---
+ crypto/pbkdf-stub.c                      |   4 +-
+ crypto/pbkdf.c                           |   2 +-
+ crypto/secret_common.c                   |   2 +-
+ ebpf/ebpf_rss.c                          |   2 +-
+ hw/core/numa.c                           |   4 +-
+ hw/core/qdev-properties-system.c         |   6 +-
+ hw/misc/aspeed_hace.c                    |  16 +--
+ hw/pci-bridge/cxl_upstream.c             |   4 +-
+ hw/s390x/cpu-topology.c                  |   6 +-
+ hw/vfio/pci.c                            |  10 +-
+ hw/virtio/virtio-crypto.c                |  24 ++---
+ io/channel-websock.c                     |   2 +-
+ system/vl.c                              |   2 +-
+ target/i386/sev.c                        |   6 +-
+ tests/bench/benchmark-crypto-akcipher.c  |  28 ++---
+ tests/bench/benchmark-crypto-cipher.c    |  22 ++--
+ tests/bench/benchmark-crypto-hash.c      |  10 +-
+ tests/bench/benchmark-crypto-hmac.c      |   6 +-
+ tests/unit/test-crypto-afsplit.c         |  10 +-
+ tests/unit/test-crypto-akcipher.c        |  54 +++++-----
+ tests/unit/test-crypto-block.c           |  58 +++++-----
+ tests/unit/test-crypto-cipher.c          |  66 ++++++------
+ tests/unit/test-crypto-hash.c            |  42 ++++----
+ tests/unit/test-crypto-hmac.c            |  16 +--
+ tests/unit/test-crypto-ivgen.c           |  38 +++----
+ tests/unit/test-crypto-pbkdf.c           |  44 ++++----
+ tests/unit/test-qobject-input-visitor.c  |   4 +-
+ tests/unit/test-qobject-output-visitor.c |   4 +-
+ ui/dbus.c                                |   8 +-
+ ui/egl-context.c                         |   2 +-
+ ui/egl-headless.c                        |   2 +-
+ ui/egl-helpers.c                         |  12 +--
+ ui/gtk.c                                 |   4 +-
+ ui/sdl2-gl.c                             |   8 +-
+ ui/sdl2.c                                |   2 +-
+ ui/spice-core.c                          |   2 +-
+ ui/vnc.c                                 |   6 +-
+ util/hbitmap.c                           |   2 +-
+ crypto/akcipher-gcrypt.c.inc             |  44 ++++----
+ crypto/akcipher-nettle.c.inc             |  56 +++++-----
+ crypto/cipher-builtin.c.inc              |  18 ++--
+ crypto/cipher-gcrypt.c.inc               |  56 +++++-----
+ crypto/cipher-gnutls.c.inc               |  38 +++----
+ crypto/cipher-nettle.c.inc               |  58 +++++-----
+ crypto/rsakey-builtin.c.inc              |   4 +-
+ crypto/rsakey-nettle.c.inc               |   4 +-
+ scripts/qapi/common.py                   |  42 ++++----
+ scripts/qapi/schema.py                   |   2 +-
+ tests/qapi-schema/alternate-array.out    |   1 -
+ tests/qapi-schema/comments.out           |   1 -
+ tests/qapi-schema/doc-good.out           |   1 -
+ tests/qapi-schema/empty.out              |   1 -
+ tests/qapi-schema/include-repetition.out |   1 -
+ tests/qapi-schema/include-simple.out     |   1 -
+ tests/qapi-schema/indented-expr.out      |   1 -
+ tests/qapi-schema/qapi-schema-test.out   |   1 -
+ 117 files changed, 932 insertions(+), 948 deletions(-)
+
 -- 
-2.45.2
+2.45.0
 
 
