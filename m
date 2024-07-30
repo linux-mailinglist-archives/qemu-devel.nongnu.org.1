@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4957F940E2B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F586940E24
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:44:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjLR-00041p-Gq; Tue, 30 Jul 2024 05:40:37 -0400
+	id 1sYjLV-0004FZ-Gy; Tue, 30 Jul 2024 05:40:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLM-0003jL-NZ
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:32 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1sYjLN-0003mM-Ey
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:33 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLK-0000aW-EY
+ id 1sYjLK-0000bj-Qw
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:32 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4281d812d3eso19863145e9.3
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:29 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-368440b073bso1744461f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722332429; x=1722937229; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=720J6Fnn90LCfDNzvb5BOYvjsNm2pz0pQOgxMBS+Hs0=;
- b=jjASWuXjK6MJvGeTE7ennWdmCRDst+YkyOvgKIGip+pLtW4cm1GvfYsJuZVo4qUqZx
- G4gAfPtn4BpxhSvnNRrCnCKpb1aB58d0NFAlZdQDhyj5ORp25GzmktYu9BAHahT9H1JV
- GUecfskkf34nRdrCtFV/6P0HTCKDhs9MbcY7JVFxKbbrxyun2jmP81bxCIZjtgMknupb
- fo4VLZ0VpF9ygSojVjMlZx07sdwv8qgaxGELuLJERj+Xt8df+WU7lk70SeJsmpV4H9ys
- 6v5k+WD+sURzX1k16hXwNizuTE9yBILZ+qyXHtU1oNer4kzN1d0WTqtZosoUOicBj91Q
- nK9A==
+ :reply-to; bh=0K0Gkugc0azQ0l2zlcwkWWXyTIwjww7OgMp4rP3ZvNg=;
+ b=OUuLXmM9FiiuO4OUft8H42nhh2XZjDWxB1bbQF6PJ2L1hHMIf4a8WTxeIcq7UnFH+p
+ cBeyleunjm4C6BnrFHAsAMu4noE7LZ7f1LhFsIWwQdtoV+lddf2bdvjDa6onFqIYTq/R
+ EvhMQvUKcRFnfzswzBva9GZF2DBdJ+vzZ5uSNYm1Juv6FvVJyKimclbvS0mx6XovWzKb
+ 1pu1pq7xiuJHrsdOQ5iwCsr73C+H9muF95T/D7yZqTeOetIB1UL+UlGsJbInTtsk1Lxv
+ PdrUKg9D6JWogegVIci7/+oOVNzl3gC6L35LKCLOsuYxcpg/Tg/AOYTkK2UoaAd1gK4i
+ FljQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722332429; x=1722937229;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=720J6Fnn90LCfDNzvb5BOYvjsNm2pz0pQOgxMBS+Hs0=;
- b=BUq4QS/Fzy1G61Eulu+UZ/geZatWvn7uwu71usD1NaQN8STDZ/SBWsdUP74Of+hVPf
- zL48ivAdZaQRPyczKLJx/s6VRUgDDXJd342fPI5IHOa1YO1F72QYWYevlz+f3cdUMez0
- EqMpsOfJNjGFlLtn2NwU7qthr0xpf96lHmgtCdtnwFct0oyHOhd5HoTd3mrD2tPbl0KV
- hAPhZe38lGrn0/Q/HNlKS9EOsak2RMuDWCGB6l0OOtRdhWx9wuyORK3CUtt4ZRg3leBY
- 3Q77ArLQFLhwRuOdcn1MoTyINAM9TjeUWuWrmn0QbRVrw5ghoI2wYtUf2WdesVf7Dqtx
- Jinw==
-X-Gm-Message-State: AOJu0Yxmiwy6L1uMAUdKeK5BXphatzjZz3ztmSX/OcvvT71KZ+tNUUzk
- 2hAvwaILr10XYT+WuQYbGtKQ8+ouVVK2xWwlXfd6VIdmdEkUnfFiuFfev9aw0fDHeNhyy5hT2zI
- E
-X-Google-Smtp-Source: AGHT+IHdh7qmWnQffjQPs4VGVXveUUmmJmzvdKUq+eCiUa2DWeKPR681d/BlFu6hZNpzC4Su7Fic7g==
-X-Received: by 2002:adf:f00c:0:b0:368:7943:8b1f with SMTP id
- ffacd0b85a97d-36b5d0d0f9dmr8965034f8f.43.1722332428734; 
- Tue, 30 Jul 2024 02:40:28 -0700 (PDT)
+ bh=0K0Gkugc0azQ0l2zlcwkWWXyTIwjww7OgMp4rP3ZvNg=;
+ b=SiE6ysOJAbQpR7yJx+NbormcUSUNSv1ibUxWGYXKZSPk54TwB1gizWN9rHs5K8Es9k
+ xqyMDiW5mKRa4A+rKM9kiYvnGXdBKxFqRxBk/on3wZ8KtzoK6UJa1UMC8p1H/OYelWcg
+ j7N+Lx87nMUA0rafXyqCu2MJEOsmFH4bwqpSlQiN7qUWf3K3R+ThWCWPSKWVTRLC7sDM
+ 75cwHTbaNaBk8Mo8BEeIGFb0oYpi2QI8S8Xs1TfllFmcZdB8+UNbZW17x4vicgjwoswB
+ fwPnLZSuehuZh9lBTeJz1x8+ypcNpROL5CV/yYPCNSCfaHVBp/6SrQCiSHYp+XC6xlDL
+ Yfqw==
+X-Gm-Message-State: AOJu0Yx0Wdn9rIHM8fyFCVRLtthMRgdZ9BxyX0qzn6K/C+/SAEeUNMqR
+ MYeVPbLSp2QN+LxBRAT3KRl2L1l8sHonH7G+MQZUGcQvJXccRGV3sLelptToNKFddjsWy94RtO0
+ 5
+X-Google-Smtp-Source: AGHT+IHmLNtRRGDEKY1q73mgMEXL5NV4tyUnE/fhG+tFR+pWp0akK3bsmluDIAl+/K6m44o/wPe6DQ==
+X-Received: by 2002:adf:fd8d:0:b0:362:ad01:5435 with SMTP id
+ ffacd0b85a97d-36b8c8ed70dmr923232f8f.29.1722332429238; 
+ Tue, 30 Jul 2024 02:40:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.28
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 Jul 2024 02:40:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/21] hw/misc/bcm2835_property: Reduce scope of variables in
- mbox push function
-Date: Tue, 30 Jul 2024 10:40:10 +0100
-Message-Id: <20240730094020.2758637-12-peter.maydell@linaro.org>
+Subject: [PULL 12/21] target/arm: Don't assert for 128-bit tile accesses when
+ SVL is 128
+Date: Tue, 30 Jul 2024 10:40:11 +0100
+Message-Id: <20240730094020.2758637-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730094020.2758637-1-peter.maydell@linaro.org>
 References: <20240730094020.2758637-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,72 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In bcm2835_property_mbox_push(), some variables are defined at function scope
-but used only in a smaller scope of the function:
- * tag, bufsize, resplen are used only in the body of the while() loop
- * tmp is used only for RPI_FWREQ_SET_POWER_STATE (and is badly named)
+For an instruction which accesses a 128-bit element tile when
+the SVL is also 128 (for example MOV z0.Q, p0/M, ZA0H.Q[w0,0]),
+we will assert in get_tile_rowcol():
 
-Declare these variables in the scope where they're needed, so the code
-is easier to read.
+qemu-system-aarch64: ../../tcg/tcg-op.c:926: tcg_gen_deposit_z_i32: Assertion `len > 0' failed.
 
+This happens because we calculate
+    len = ctz32(streaming_vec_reg_size(s)) - esz;$
+but if the SVL and the element size are the same len is 0, and
+the deposit operation asserts.
+
+In this case the ZA storage contains exactly one 128 bit
+element ZA tile, and the horizontal or vertical slice is just
+that tile. This means that regardless of the index value in
+the Ws register, we always access that tile. (In pseudocode terms,
+we calculate (index + offset) MOD 1, which is 0.)
+
+Special case the len == 0 case to avoid hitting the assertion
+in tcg_gen_deposit_z_i32().
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240723131029.1159908-5-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240722172957.1041231-2-peter.maydell@linaro.org
 ---
- hw/misc/bcm2835_property.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ target/arm/tcg/translate-sme.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
-index 443d42a1824..8ca3128f29b 100644
---- a/hw/misc/bcm2835_property.c
-+++ b/hw/misc/bcm2835_property.c
-@@ -25,11 +25,7 @@
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index 185a8a917b0..a50a419af27 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -49,7 +49,15 @@ static TCGv_ptr get_tile_rowcol(DisasContext *s, int esz, int rs,
+     /* Prepare a power-of-two modulo via extraction of @len bits. */
+     len = ctz32(streaming_vec_reg_size(s)) - esz;
  
- static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
- {
--    uint32_t tag;
--    uint32_t bufsize;
-     uint32_t tot_len;
--    size_t resplen;
--    uint32_t tmp;
- 
-     /*
-      * Copy the current state of the framebuffer config; we will update
-@@ -48,10 +44,10 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-     /* @(addr + 4) : Buffer response code */
-     value = s->addr + 8;
-     while (value + 8 <= s->addr + tot_len) {
--        tag = ldl_le_phys(&s->dma_as, value);
--        bufsize = ldl_le_phys(&s->dma_as, value + 4);
-+        uint32_t tag = ldl_le_phys(&s->dma_as, value);
-+        uint32_t bufsize = ldl_le_phys(&s->dma_as, value + 4);
-         /* @(value + 8) : Request/response indicator */
--        resplen = 0;
-+        size_t resplen = 0;
-         switch (tag) {
-         case RPI_FWREQ_PROPERTY_END:
-             break;
-@@ -95,13 +91,16 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-             resplen = 8;
-             break;
-         case RPI_FWREQ_SET_POWER_STATE:
--            /* Assume that whatever device they asked for exists,
--             * and we'll just claim we set it to the desired state
-+        {
-+            /*
-+             * Assume that whatever device they asked for exists,
-+             * and we'll just claim we set it to the desired state.
-              */
--            tmp = ldl_le_phys(&s->dma_as, value + 16);
--            stl_le_phys(&s->dma_as, value + 16, (tmp & 1));
-+            uint32_t state = ldl_le_phys(&s->dma_as, value + 16);
-+            stl_le_phys(&s->dma_as, value + 16, (state & 1));
-             resplen = 8;
-             break;
-+        }
- 
-         /* Clocks */
- 
+-    if (vertical) {
++    if (!len) {
++        /*
++         * SVL is 128 and the element size is 128. There is exactly
++         * one 128x128 tile in the ZA storage, and so we calculate
++         * (Rs + imm) MOD 1, which is always 0. We need to special case
++         * this because TCG doesn't allow deposit ops with len 0.
++         */
++        tcg_gen_movi_i32(tmp, 0);
++    } else if (vertical) {
+         /*
+          * Compute the byte offset of the index within the tile:
+          *     (index % (svl / size)) * size
 -- 
 2.34.1
 
