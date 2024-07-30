@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E18C940449
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13280940425
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcOe-000892-8x; Mon, 29 Jul 2024 22:15:28 -0400
+	id 1sYcIA-00029a-Lw; Mon, 29 Jul 2024 22:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcOc-00088I-1X
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:15:26 -0400
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ id 1sYcI8-00028Q-Vl
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:08:45 -0400
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcOa-0005OY-Ir
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:15:25 -0400
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-44fffca4fb7so15994891cf.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:15:24 -0700 (PDT)
+ id 1sYcI4-0003EO-MZ
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:08:44 -0400
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-39865a15900so14992145ab.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722305723; x=1722910523; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722305319; x=1722910119; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tLrGX9Afltcgokadlb0YQI/9367xWPIB4Lrlteq6PUs=;
- b=lKC96hVuyT0lJ2/NTcQXobo4zAhvwRzccJx8FSrVkn8VStKQx4ZW9dyumJLR1k/sFV
- bfAViSU62GkU9JILNTAE2hMHiKa+BWz7TQak6jKK30MS8YD9voGubv+XEUUMuiFICBCC
- BftSEa5IRbOrD/54XOThO2Ic0Gq3nL254GFg0GrCGhvJiLWuw3CTTUtPMPOcbB/X8zvf
- qQmgwFoIgxZr5EVjYe/gaLXAsosXwYAgF7qjF5l+lrlNxWfc3hf8XlovJtjB6MMy28Y2
- +LbpUmRts7TyziXZVYIFq+lhhc751iDbi9FU2hTjDkk9RSVZg79ktd3P4YUQzgMnZNhZ
- TQjg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pvF0s1jQIBySSeBKtBCNdIkStj9P9gT/o0jVZTBUvsc=;
+ b=SRfgQLDSCgy+V4bj1tnzi59BhqeBMwpPT7/WuQSo3ISmvtT4RjStcBnlAVSQtur7Za
+ rGJet5HsgZHjDlmmXouXudrwU1l0EiHgElOQUVcnlcoUfUMJFQTDn6h9/0HwqjBBxMxP
+ 07bD25YrZ91gfojAxtjFvbxuQiWKOruraf0IXp2UfO30xDEvzxrFVJHzsjY1nUjRytu2
+ hxF8tUQiJ+J1/1/UCZp/SKnXku/bcrlOJT1VeUVSgbmiyLDS/c11jv2qKkIFNWSitk3n
+ OlQZ2EZKSumcOGKY4MG2dPYaAWp3cX8XVqhKUaBqxNJe4QxWiAkY4/v5gczM/4WtreFH
+ cusQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722305723; x=1722910523;
+ d=1e100.net; s=20230601; t=1722305319; x=1722910119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tLrGX9Afltcgokadlb0YQI/9367xWPIB4Lrlteq6PUs=;
- b=UOjn0+1LqqKAQx9gCdExCwEH39E20iitb4xcZNpUT1u4dR1VDvSMkxrvsIPZ7drFfW
- +HIkFXnUwRhzH/1vkB6FQxXzWxOIWS9uSavHTXFTi5pYPUXZKbaapYLgi0t6XUNa1TqV
- hp0DTfmfj7mHnGTgPVEwc9xmem7aQFO/GjW5+ImDIul4FSUJQ+4UFU25SsTfyQ5r6+bb
- wRatoNPmaq47xqMoECiH5sD+4Gzy/Gk6J7zO4jkPhaZT/q56bPvQa0OAi5Hs6Ur2XBoo
- ovJs6kcqtBMBRAWq8KPpyJd8fW9+KTwpb4mNCCdo8kxaqrzpcgRhTrWWR5SGhfeqr/P5
- xDyw==
-X-Gm-Message-State: AOJu0Yzv16W5cyCphlF1z4H8FYVZmWvjIGpE3eeuWAptjTiVHdLPwGhY
- /LfPM2fugTOTmgJ+WDEM9y5DeQs8i7qQP+c53hgt8hsXwmzmalMFzlvsw6qAisc2/HFRjqcmwhH
- FJNc=
-X-Google-Smtp-Source: AGHT+IGmZlGXbPQaMFUPkW2EUPbFQhCxhFr3kltuYgJsJd2wCPq6BJgcHeZQTkupelS8S5F/UHyjgQ==
-X-Received: by 2002:a05:6808:3086:b0:3d9:2bbb:1cb4 with SMTP id
- 5614622812f47-3db23a7dcf5mr10395701b6e.35.1722301932573; 
- Mon, 29 Jul 2024 18:12:12 -0700 (PDT)
+ bh=pvF0s1jQIBySSeBKtBCNdIkStj9P9gT/o0jVZTBUvsc=;
+ b=j/v33bAtyrEPLg3K98waG9+kIv+qz0uwR4OYvdq6qXB/kCzGgFsPSCZdqE4zFIH5wk
+ KowmrgGWHOx3jrvxzL1stoXJ5ITNtjoo4XYWQD5pQ7tMGYMpmFTMzQCmYRJTLe/X1Cuy
+ KMFGrNFk/NcEJs7F6WQCRlK4uUphv5yAmPM+5aLIpy3Sjku0waeOM857E3+7JbyPPIYU
+ SIeimbHtjWmyIdB8W1QZx/L6HCobZ4AcTAgs/f0YgOVMWRW3yuwE/Il/1/8UXrrM/1Nh
+ C9VTbP49z2ruwSc6CO6tWLsIZKT2Is+R8kPIj3fPNle4DRKby8VW9Y06+bRQUpghUhtW
+ JGCQ==
+X-Gm-Message-State: AOJu0Yw3ngQ4v+VgXDJvX7suVNnBfBpfw8HZELUsslB4S59Hf/YllHqH
+ MxhTK9KPVwRealKNuqClINJ6G2xmFaiEU7HJe0Rs3OQu035b3gFDtu7zgqjbSnkgVVmcxaUvHtZ
+ O4aM=
+X-Google-Smtp-Source: AGHT+IFTIf7LOeBm+FjgWoD0szE5P73hRxwPZGfNUF9Ox3Ri/JAmTT5m+cx07MMpvDb2M0XFQ+cyAA==
+X-Received: by 2002:a05:6a00:2443:b0:70d:2583:7223 with SMTP id
+ d2e1a72fcca58-70ecea2ef3emr11413551b3a.17.1722301934907; 
+ Mon, 29 Jul 2024 18:12:14 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.10
- for <qemu-devel@nongnu.org>
+ 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 18:12:12 -0700 (PDT)
+ Mon, 29 Jul 2024 18:12:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH for-9.1] tests/vm/openbsd: Install tomli
-Date: Tue, 30 Jul 2024 11:11:58 +1000
-Message-ID: <20240730011202.480829-3-richard.henderson@linaro.org>
+Cc: Vivian Wang <uwu@dram.page>
+Subject: [PULL 2/5] util/getauxval: Ensure setting errno if not found
+Date: Tue, 30 Jul 2024 11:11:59 +1000
+Message-ID: <20240730011202.480829-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730011202.480829-1-richard.henderson@linaro.org>
 References: <20240730011202.480829-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x833.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,25 +91,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tomli is now required by configure.
+From: Vivian Wang <uwu@dram.page>
 
+Sometimes zero is a valid value for getauxval (e.g. AT_EXECFD). Make
+sure that we can distinguish between a valid zero value and a not found
+entry by setting errno.
+
+Assumes that getauxval from sys/auxv.h sets errno correctly.
+
+Signed-off-by: Vivian Wang <uwu@dram.page>
+Message-ID: <20240723100545.405476-2-uwu@dram.page>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/vm/openbsd | 1 +
- 1 file changed, 1 insertion(+)
+ util/getauxval.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/vm/openbsd b/tests/vm/openbsd
-index 5e646f7c51..49cab08782 100755
---- a/tests/vm/openbsd
-+++ b/tests/vm/openbsd
-@@ -32,6 +32,7 @@ class OpenBSDVM(basevm.BaseVM):
-         "pkgconf",
-         "bzip2", "xz",
-         "ninja",
-+        "py3-tomli",
+diff --git a/util/getauxval.c b/util/getauxval.c
+index b124107d61..ad4f6686a8 100644
+--- a/util/getauxval.c
++++ b/util/getauxval.c
+@@ -95,6 +95,7 @@ unsigned long qemu_getauxval(unsigned long type)
+         }
+     }
  
-         # gnu tools
-         "bash",
++    errno = ENOENT;
+     return 0;
+ }
+ 
+@@ -104,7 +105,10 @@ unsigned long qemu_getauxval(unsigned long type)
+ unsigned long qemu_getauxval(unsigned long type)
+ {
+     unsigned long aux = 0;
+-    elf_aux_info(type, &aux, sizeof(aux));
++    int ret = elf_aux_info(type, &aux, sizeof(aux));
++    if (ret != 0) {
++        errno = ret;
++    }
+     return aux;
+ }
+ 
+@@ -112,6 +116,7 @@ unsigned long qemu_getauxval(unsigned long type)
+ 
+ unsigned long qemu_getauxval(unsigned long type)
+ {
++    errno = ENOSYS;
+     return 0;
+ }
+ 
 -- 
 2.43.0
 
