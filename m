@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6876C940B02
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E20C940AF9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:13:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYhwg-00058z-Gw; Tue, 30 Jul 2024 04:10:58 -0400
+	id 1sYhwf-000558-Po; Tue, 30 Jul 2024 04:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwe-00053s-TY
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:10:56 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwc-0004w3-Sz
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:10:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwZ-0001Ft-Mj
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:10:56 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwZ-0001Fa-DY
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:10:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1722327050;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GV+6KPGe99/i1xPJ5kS7xN1XeiEsEAI7uvO5HniHNZs=;
- b=gLpPimKU5ItFMToj27m98+VMe9kIr1oGMmxCqJGJJV0xhdyqTmKl1DGABRYcAMsIGHElTd
- 5y3GoaUFnJqRwyKwMWL02DUU2hw/IbNpwDOya2/gillgKuYlAPxIIPTGpsbWzJlhtdU8V+
- HMtGo7+a/bErvMK5yamPHGYPVUX6NZ4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=rEo38lpj5pKroMhTmXhAg9xdI4a0uSu2selrCgZQTVY=;
+ b=QBf39HhqrlFP/jZlitXuvwwW8Roenvn3FNY24e5q5rw+LQ10v3QUZBYdJh06lshB3oJ+4r
+ HMyunaeMhwqE1WV/A9SHVF7aW6iJmn76ZrB79zOkufrXC5E0dqonAsfRTfpmCwc7fmrpD/
+ PQBzm3PEa17DFZjQxMIAIFy/JtY0Aqw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-231-sUDGu6JOPuGkNhrx1I6LIA-1; Tue,
- 30 Jul 2024 04:10:47 -0400
-X-MC-Unique: sUDGu6JOPuGkNhrx1I6LIA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-365-uYIN_LaRPM2GTvQ-9jPnAA-1; Tue,
+ 30 Jul 2024 04:10:44 -0400
+X-MC-Unique: uYIN_LaRPM2GTvQ-9jPnAA-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3930E1956088; Tue, 30 Jul 2024 08:10:42 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 66A411956095; Tue, 30 Jul 2024 08:10:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CBC1E19560AA; Tue, 30 Jul 2024 08:10:34 +0000 (UTC)
+ id 08C131955D47; Tue, 30 Jul 2024 08:10:35 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D15BE21F4B8D; Tue, 30 Jul 2024 10:10:32 +0200 (CEST)
+ id D59B921F4B8E; Tue, 30 Jul 2024 10:10:32 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
@@ -62,9 +62,9 @@ Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
  vsementsov@yandex-team.ru, wangyanan55@huawei.com,
  yuri.benditovich@daynix.com, zhao1.liu@intel.com, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH 03/18] qapi/block-core: Drop temporary 'prefix'
-Date: Tue, 30 Jul 2024 10:10:17 +0200
-Message-ID: <20240730081032.1246748-4-armbru@redhat.com>
+Subject: [PATCH 04/18] qapi/common: Drop temporary 'prefix'
+Date: Tue, 30 Jul 2024 10:10:18 +0200
+Message-ID: <20240730081032.1246748-5-armbru@redhat.com>
 In-Reply-To: <20240730081032.1246748-1-armbru@redhat.com>
 References: <20240730081032.1246748-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -79,7 +79,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,60 +99,76 @@ Recent commit "qapi: Smarter camel_to_upper() to reduce need for
 'prefix'" added a temporary 'prefix' to delay changing the generated
 code.
 
-Revert it.  This improves XDbgBlockGraphNodeType's generated
-enumeration constant prefix from
-X_DBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_BACKEND to
-XDBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_BACKEND.
+Revert it.  This improves OffAutoPCIBAR's generated enumeration
+constant prefix from OFF_AUTOPCIBAR_OFF to OFF_AUTO_PCIBAR_OFF.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/block-core.json | 1 -
- block.c              | 6 +++---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ qapi/common.json |  1 -
+ hw/vfio/pci.c    | 10 +++++-----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 897bc7e0e7..d4c869ac64 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2011,7 +2011,6 @@
- # Since: 4.0
+diff --git a/qapi/common.json b/qapi/common.json
+index 25726d3113..7558ce5430 100644
+--- a/qapi/common.json
++++ b/qapi/common.json
+@@ -92,7 +92,6 @@
+ # Since: 2.12
  ##
- { 'enum': 'XDbgBlockGraphNodeType',
--  'prefix': 'X_DBG_BLOCK_GRAPH_NODE_TYPE', # TODO drop
-   'data': [ 'block-backend', 'block-job', 'block-driver' ] }
+ { 'enum': 'OffAutoPCIBAR',
+-  'prefix': 'OFF_AUTOPCIBAR',   # TODO drop
+   'data': [ 'off', 'auto', 'bar0', 'bar1', 'bar2', 'bar3', 'bar4', 'bar5' ] }
  
  ##
-diff --git a/block.c b/block.c
-index c317de9eaa..7d90007cae 100644
---- a/block.c
-+++ b/block.c
-@@ -6351,7 +6351,7 @@ XDbgBlockGraph *bdrv_get_xdbg_block_graph(Error **errp)
-         if (!*name) {
-             name = allocated_name = blk_get_attached_dev_id(blk);
-         }
--        xdbg_graph_add_node(gr, blk, X_DBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_BACKEND,
-+        xdbg_graph_add_node(gr, blk, XDBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_BACKEND,
-                            name);
-         g_free(allocated_name);
-         if (blk_root(blk)) {
-@@ -6364,7 +6364,7 @@ XDbgBlockGraph *bdrv_get_xdbg_block_graph(Error **errp)
-              job = block_job_next_locked(job)) {
-             GSList *el;
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 2407720c35..0a99e55247 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -1452,7 +1452,7 @@ static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+     int target_bar = -1;
+     size_t msix_sz;
  
--            xdbg_graph_add_node(gr, job, X_DBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_JOB,
-+            xdbg_graph_add_node(gr, job, XDBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_JOB,
-                                 job->job.id);
-             for (el = job->nodes; el; el = el->next) {
-                 xdbg_graph_add_edge(gr, job, (BdrvChild *)el->data);
-@@ -6373,7 +6373,7 @@ XDbgBlockGraph *bdrv_get_xdbg_block_graph(Error **errp)
+-    if (!vdev->msix || vdev->msix_relo == OFF_AUTOPCIBAR_OFF) {
++    if (!vdev->msix || vdev->msix_relo == OFF_AUTO_PCIBAR_OFF) {
+         return true;
      }
  
-     QTAILQ_FOREACH(bs, &graph_bdrv_states, node_list) {
--        xdbg_graph_add_node(gr, bs, X_DBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_DRIVER,
-+        xdbg_graph_add_node(gr, bs, XDBG_BLOCK_GRAPH_NODE_TYPE_BLOCK_DRIVER,
-                            bs->node_name);
-         QLIST_FOREACH(child, &bs->children, next) {
-             xdbg_graph_add_edge(gr, bs, child);
+@@ -1464,7 +1464,7 @@ static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+     /* PCI BARs must be a power of 2 */
+     msix_sz = pow2ceil(msix_sz);
+ 
+-    if (vdev->msix_relo == OFF_AUTOPCIBAR_AUTO) {
++    if (vdev->msix_relo == OFF_AUTO_PCIBAR_AUTO) {
+         /*
+          * TODO: Lookup table for known devices.
+          *
+@@ -1479,7 +1479,7 @@ static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+             return false;
+         }
+     } else {
+-        target_bar = (int)(vdev->msix_relo - OFF_AUTOPCIBAR_BAR0);
++        target_bar = (int)(vdev->msix_relo - OFF_AUTO_PCIBAR_BAR0);
+     }
+ 
+     /* I/O port BARs cannot host MSI-X structures */
+@@ -1624,7 +1624,7 @@ static bool vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+         } else if (vfio_pci_is(vdev, PCI_VENDOR_ID_BAIDU,
+                                PCI_DEVICE_ID_KUNLUN_VF)) {
+             msix->pba_offset = 0xb400;
+-        } else if (vdev->msix_relo == OFF_AUTOPCIBAR_OFF) {
++        } else if (vdev->msix_relo == OFF_AUTO_PCIBAR_OFF) {
+             error_setg(errp, "hardware reports invalid configuration, "
+                        "MSIX PBA outside of specified BAR");
+             g_free(msix);
+@@ -3403,7 +3403,7 @@ static Property vfio_pci_dev_properties[] = {
+                                    nv_gpudirect_clique,
+                                    qdev_prop_nv_gpudirect_clique, uint8_t),
+     DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
+-                                OFF_AUTOPCIBAR_OFF),
++                                OFF_AUTO_PCIBAR_OFF),
+ #ifdef CONFIG_IOMMUFD
+     DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
+                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
 -- 
 2.45.0
 
