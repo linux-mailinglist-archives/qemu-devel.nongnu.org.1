@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F396C940694
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 06:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAAA940693
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 06:41:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYeeo-0002cb-4i; Tue, 30 Jul 2024 00:40:18 -0400
+	id 1sYeep-0002h3-Aq; Tue, 30 Jul 2024 00:40:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYeem-0002Wh-9v
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:16 -0400
+ id 1sYeen-0002Zl-23
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:17 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYeek-0006Bm-Jl
+ id 1sYeel-0006BM-CZ
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1722314415; x=1753850415;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Y0+ZveYI45DAfzdpujWTiwJ4SUqNeCrezwMTY5sy5OM=;
- b=WWhqK24dwIE/nSUR4EXIGhSXzuzTB6Eih0lZwqYDt7Q5NYGj1pYl0pd/
- JBd8mJ9CIdODQYbBgYFtcVnDsHd3b0Zw4fDMizjysb/kVubMJmgRYdNPu
- RaUOv354vMBVxvWCqbNM5P1UZIE9PsDEu5De1Jy1MfyUas/pP8PEvTH6Q
- xHE+TtK3CyXVm9XISKPOrDSwH92fpH0XCINy2L7NVfu6jeRAgnkjPa97J
- O+MjJKMJXoJdgf78879XAl85g33L2+kqPWosGpl8OhAT4bVQAJ0YNNCUC
- kudcwuUBzdkOBgiE2IOufPs5QG9MvLAMmMrv61m5bdQpMfcYOBIrpXOy+ Q==;
-X-CSE-ConnectionGUID: h2/8yhazRdGEKfOFWDYyww==
-X-CSE-MsgGUID: /G/UY8gGR22IDHM68ufAqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20288553"
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="20288553"
+ bh=cL92rD81kzK7ojUvhsDE3dVX2dFVVXty9ZJ/bZd7F3s=;
+ b=j2T34JyMW3T0q/9fvF/WLIeXlY5oaEl95w8gGYgp8bAMGJm2hDENrUjn
+ jq98uIc8GS4tIU2JzZAxVUL+FBaoP2dSghC9PsYHYbwMYG+T+ydrgg9da
+ iv9K9OnoakD2E+w/C4qfpRSDHDCuTviwUfxCmDTC0XLkibkg6ayz3t0t5
+ oGzLaQufR/CdIcUllFkh9uPcg38NuPjluhZbdMD5fuxprFz+yYBIgOj8b
+ pVEXqHKkAczLmDKXP/h1ChKwOVZWyIszU2sh7CGEsvPrZkqJZCJimxtJP
+ FxhYi9EpOuxrBgt/mbdo4PsONB8eQUg7PL7Vvhg8PBcrv702MHeuYIT4l Q==;
+X-CSE-ConnectionGUID: 4kGdcnA/Sja505uYmSosyA==
+X-CSE-MsgGUID: M+dpMc1dTIWgS2KGCAcvVA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20288560"
+X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="20288560"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 21:40:13 -0700
-X-CSE-ConnectionGUID: ihovqMzlTq6WKRIyWjTBXg==
-X-CSE-MsgGUID: o2KKnGPPROeRXJ4eG9oDdA==
+ 29 Jul 2024 21:40:15 -0700
+X-CSE-ConnectionGUID: yfA2DkXRS/GBoAw38B1vsw==
+X-CSE-MsgGUID: jdQwO3WnT5O5S+UthJ6s9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="77429930"
+X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="77429935"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 29 Jul 2024 21:40:11 -0700
+ by fmviesa002.fm.intel.com with ESMTP; 29 Jul 2024 21:40:13 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -50,9 +50,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 3/4] target/i386/cpu: Add dependencies of CPUID 0x12 leaves
-Date: Tue, 30 Jul 2024 12:55:43 +0800
-Message-Id: <20240730045544.2516284-4-zhao1.liu@intel.com>
+Subject: [PATCH 4/4] target/i386/cpu: Mask off SGX/SGX_LC feature words for
+ non-PC machine
+Date: Tue, 30 Jul 2024 12:55:44 +0800
+Message-Id: <20240730045544.2516284-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730045544.2516284-1-zhao1.liu@intel.com>
 References: <20240730045544.2516284-1-zhao1.liu@intel.com>
@@ -82,41 +83,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As SDM stated, CPUID 0x12 leaves depend on CPUID_7_0_EBX_SGX (SGX
-feature word).
-
-Since FEAT_SGX_12_0_EAX, FEAT_SGX_12_0_EBX and FEAT_SGX_12_1_EAX define
-multiple feature words, add the dependencies of those registers to
-report the warning to user if SGX is absent.
+Only PC machine supports SGX, so mask off SGX related feature words for
+non-PC machine (microvm).
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/i386/sgx-stub.c        |  5 +++++
+ hw/i386/sgx.c             |  8 ++++++++
+ include/hw/i386/sgx-epc.h |  1 +
+ target/i386/cpu.c         | 15 +++++++++++++++
+ 4 files changed, 29 insertions(+)
 
+diff --git a/hw/i386/sgx-stub.c b/hw/i386/sgx-stub.c
+index 16b1dfd90bb5..38ff75e9f377 100644
+--- a/hw/i386/sgx-stub.c
++++ b/hw/i386/sgx-stub.c
+@@ -32,6 +32,11 @@ void pc_machine_init_sgx_epc(PCMachineState *pcms)
+     memset(&pcms->sgx_epc, 0, sizeof(SGXEPCState));
+ }
+ 
++bool check_sgx_support(void)
++{
++    return false;
++}
++
+ bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size)
+ {
+     return true;
+diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
+index 849472a12865..4900dd414a1f 100644
+--- a/hw/i386/sgx.c
++++ b/hw/i386/sgx.c
+@@ -266,6 +266,14 @@ void hmp_info_sgx(Monitor *mon, const QDict *qdict)
+                    size);
+ }
+ 
++bool check_sgx_support(void)
++{
++    if (!object_dynamic_cast(qdev_get_machine(), TYPE_PC_MACHINE)) {
++        return false;
++    }
++    return true;
++}
++
+ bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size)
+ {
+     PCMachineState *pcms =
+diff --git a/include/hw/i386/sgx-epc.h b/include/hw/i386/sgx-epc.h
+index 3e00efd870c9..41d55da47999 100644
+--- a/include/hw/i386/sgx-epc.h
++++ b/include/hw/i386/sgx-epc.h
+@@ -58,6 +58,7 @@ typedef struct SGXEPCState {
+     int nr_sections;
+ } SGXEPCState;
+ 
++bool check_sgx_support(void);
+ bool sgx_epc_get_section(int section_nr, uint64_t *addr, uint64_t *size);
+ void sgx_epc_build_srat(GArray *table_data);
+ 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 7a6d0b05ce27..7f55e9ba3ed8 100644
+index 7f55e9ba3ed8..66f9737a117c 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1734,6 +1734,18 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-         .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_SGX_LC },
-     },
-+    {
-+        .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-+        .to = { FEAT_SGX_12_0_EAX,          ~0ull },
-+    },
-+    {
-+        .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-+        .to = { FEAT_SGX_12_0_EBX,          ~0ull },
-+    },
-+    {
-+        .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-+        .to = { FEAT_SGX_12_1_EAX,          ~0ull },
-+    },
- };
+@@ -6103,6 +6103,21 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
+         }
+         break;
  
- typedef struct X86RegisterInfo32 {
++    case FEAT_7_0_EBX:
++#ifndef CONFIG_USER_ONLY
++        if (!check_sgx_support()) {
++            unavail = CPUID_7_0_EBX_SGX;
++        }
++#endif
++        break;
++    case FEAT_7_0_ECX:
++#ifndef CONFIG_USER_ONLY
++        if (!check_sgx_support()) {
++            unavail = CPUID_7_0_ECX_SGX_LC;
++        }
++#endif
++        break;
++
+     default:
+         break;
+     }
 -- 
 2.34.1
 
