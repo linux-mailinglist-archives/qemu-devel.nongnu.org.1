@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DB7940695
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 06:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73405940696
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 06:41:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYeel-0002S7-Nd; Tue, 30 Jul 2024 00:40:15 -0400
+	id 1sYeem-0002V5-IR; Tue, 30 Jul 2024 00:40:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYeek-0002Oe-8h
+ id 1sYeek-0002PO-G4
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:14 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYeei-0006Bm-ET
+ id 1sYeei-0006BM-V3
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 00:40:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1722314413; x=1753850413;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cO8APYbdqznN8knoscacJL2ZntmQ4Beu6oELSifWUR0=;
- b=iID1x1SzXT8DHjbkxKQL6qRO37kbd/O+kFQODiW1jeKMB5+AdvpEPf5d
- MI14kt8+o7Dm8HjD/1pJGRoNdhNcSGI9qmcujaI7STk4fswSVPp0wJz2F
- 5V21q47WtBWbG23s6OsG3qjx3yWUmJzUl87nV1SdKmFp3hZoRzEvE2QZZ
- iAcuvRS5hAvBDYKQ/afo08TXwwzvny8GIKC5ig0p482wFyvUAYKsHADFB
- DczOXKrwwDi2+LbknB3kViwJVWNZ5Asg4r95N6lp4KR6kDM2v5j/oHD1f
- XJ5w2SO9RUc9XT7QmVgRqsLmSUw2pt8ZD5wE9QXEHy1XASBIPURf5+9bf g==;
-X-CSE-ConnectionGUID: hdy3z9IMTg27qh62tFKXeg==
-X-CSE-MsgGUID: /Fmg1SIsQROanHNfAeUA4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20288541"
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="20288541"
+ bh=9eRZFeah8dznjRAUrRvArWMs0YEBaH6rJfloDBnonuU=;
+ b=V0sjimOod7w6TwK6FJlv11ZAovxMo4LXuz+ctpqjHwgAXBaX7nCKwoYb
+ gBMo6PSAttwT3fRza+zlo7xvsNGDq47g35u77iqOWFZotLqPFyPFvQKwo
+ d+plqKvWP3xJhSgAxxad96W8KVzjmqAgYvVW1z3hF3y7+ElCHrhBTFSs6
+ +/Dc1lkDVWBX+XgMLRQLv9kH6lJBnCzQjg5znXMEUiZN47MOeyxOJviI7
+ 8w1/RNmEHOfRjs/W/QQj/iOvhQuOQmY4k+cs0NO6bsZG6mbk3uBc82CaW
+ 5zHXj0SVVUS9OoHu/ch5F/xCH/zD88WgOzMDhY98yZ/me5CimwosDPsg/ g==;
+X-CSE-ConnectionGUID: i0SpAIGSS9KG6OpKjc9PWg==
+X-CSE-MsgGUID: BYVtEqEKR3yyIAAGSSOWgw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20288547"
+X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="20288547"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 21:40:09 -0700
-X-CSE-ConnectionGUID: enGiqNH0QJWTpJQtjwSJ7Q==
-X-CSE-MsgGUID: a52CgpznQ3uw781Hg12p8w==
+ 29 Jul 2024 21:40:11 -0700
+X-CSE-ConnectionGUID: VHosnQHPTHi03+9n6dEgCg==
+X-CSE-MsgGUID: wRZYjRe0QAed3qN+9PQKaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="77429910"
+X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="77429923"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 29 Jul 2024 21:40:07 -0700
+ by fmviesa002.fm.intel.com with ESMTP; 29 Jul 2024 21:40:09 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -50,10 +50,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 1/4] target/i386/cpu: Remove unnecessary SGX feature words
- checks
-Date: Tue, 30 Jul 2024 12:55:41 +0800
-Message-Id: <20240730045544.2516284-2-zhao1.liu@intel.com>
+Subject: [PATCH 2/4] target/i386/cpu: Explicitly express SGX_LC and SGX
+ feature words dependency
+Date: Tue, 30 Jul 2024 12:55:42 +0800
+Message-Id: <20240730045544.2516284-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730045544.2516284-1-zhao1.liu@intel.com>
 References: <20240730045544.2516284-1-zhao1.liu@intel.com>
@@ -83,56 +83,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUID.0x7.0.ebx and CPUID.0x7.0.ecx leaves have been expressed as the
-feature word lists, and the Host capability support has been checked
-in x86_cpu_filter_features().
+At present, cpu_x86_cpuid() silently masks off SGX_LC if SGX is absent.
 
-Therefore, such checks on SGX feature "words" are redundant, and
-the follow-up adjustments to those feature "words" will not actually
-take effect.
+This is not proper because the user is not told about the dependency
+between the two.
 
-Remove unnecessary SGX feature words related checks.
+So explicitly define the dependency between SGX_LC and SGX feature
+words, so that user could get a warning when SGX_LC is enabled but
+SGX is absent.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ target/i386/cpu.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4688d140c2d9..2b3642c9b13c 100644
+index 2b3642c9b13c..7a6d0b05ce27 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6537,8 +6537,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-     case 7:
-         /* Structured Extended Feature Flags Enumeration Leaf */
-         if (count == 0) {
--            uint32_t eax_0_unused, ebx_0, ecx_0, edx_0_unused;
--
-             /* Maximum ECX value for sub-leaves */
-             *eax = env->cpuid_level_func7;
-             *ebx = env->features[FEAT_7_0_EBX]; /* Feature flags */
-@@ -6548,20 +6546,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+@@ -1730,6 +1730,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_WRMSRNS },
+         .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
+     },
++    {
++        .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
++        .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_SGX_LC },
++    },
+ };
+ 
+ typedef struct X86RegisterInfo32 {
+@@ -6545,11 +6549,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+                 *ecx |= CPUID_7_0_ECX_OSPKE;
              }
              *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
- 
--            /*
--             * SGX cannot be emulated in software.  If hardware does not
--             * support enabling SGX and/or SGX flexible launch control,
--             * then we need to update the VM's CPUID values accordingly.
--             */
--            x86_cpu_get_supported_cpuid(0x7, 0,
--                                        &eax_0_unused, &ebx_0,
--                                        &ecx_0, &edx_0_unused);
--            if ((*ebx & CPUID_7_0_EBX_SGX) && !(ebx_0 & CPUID_7_0_EBX_SGX)) {
--                *ebx &= ~CPUID_7_0_EBX_SGX;
--            }
 -
-             if ((*ecx & CPUID_7_0_ECX_SGX_LC)
--                    && (!(*ebx & CPUID_7_0_EBX_SGX) || !(ecx_0 & CPUID_7_0_ECX_SGX_LC))) {
-+                    && (!(*ebx & CPUID_7_0_EBX_SGX))) {
-                 *ecx &= ~CPUID_7_0_ECX_SGX_LC;
-             }
+-            if ((*ecx & CPUID_7_0_ECX_SGX_LC)
+-                    && (!(*ebx & CPUID_7_0_EBX_SGX))) {
+-                *ecx &= ~CPUID_7_0_ECX_SGX_LC;
+-            }
          } else if (count == 1) {
+             *eax = env->features[FEAT_7_1_EAX];
+             *edx = env->features[FEAT_7_1_EDX];
 -- 
 2.34.1
 
