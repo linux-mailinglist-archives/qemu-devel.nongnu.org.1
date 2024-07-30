@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FD8940E06
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D1C940E09
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjLS-000464-Qt; Tue, 30 Jul 2024 05:40:38 -0400
+	id 1sYjLS-00044e-C6; Tue, 30 Jul 2024 05:40:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLP-0003vj-LE
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:35 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1sYjLQ-0003y0-6Z
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:36 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLO-0000df-3N
+ id 1sYjLO-0000eC-G1
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:35 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4280bca3960so25368305e9.3
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:33 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3684bea9728so2289809f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722332433; x=1722937233; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/p7od16yWan/HDEkGj2xKqznwD/3Uyvk/bZAOed461U=;
- b=aGWOjwOlSK8J+sC6ZJFJL5xn4uDPoP2r9y+PnjvTm4AiZrhZEdYkqUwA+Za0qNBgef
- WJ4bEqSlF8CEJlfaodpfX6k6MJj00QxMAt7q6NmXRAy/iBHts9Zh3EZ7kKvMQ1qNs4yy
- gfaNauvpvfljZcWLbWsSK4WhrJW1+TDVnX/RpYMw5qpYR++DHUjwC21EC63Nsv/jFr6l
- DjGrkxGYluRrJ/FJE5tabXp+pMvt9gJEv5REwdtgc3x/x2EzLVXftcksZVCm9UYBaTup
- G89y0viz8OOUgU75D0yU4PWhOND9MPEuYJ0gP0r6jsEFw5Nr1xoMB2uXsoz7ogdjuk4m
- n1hQ==
+ :reply-to; bh=jfxWTbmPHfPItv3Jo669wf0TJh+oQpU/CHJm1l2IvZY=;
+ b=f3x38ekkwj/oKWFcFQEGzkUITXRcmlvJWTMZTO+sBE7c4qAZrvww9P86Np+PexAy7G
+ /DivMIrFh9p/u4q+oXZYEVQ3dVX3Ajb/4bNz+ZNyd7uOZ1qr3Gv0obvHiLyzaQTZFCUJ
+ KhtbWluwB3WeCp0k4/G7fc3H4umMuTTiWo83xN4k+RDcmGETZjIFYS3/+k9CLAUBf3PM
+ uUsjPC6D3ktEMspJfYGvVAzL3XJD8SMo/U014sVylh9ngOpY6LYWauvVFYwLHljMDh8A
+ YbCNXAW7PDuJnNrT7QOYO3XFusDWYFKrbCNBgeBDDy8Md8+po0VmDWttLAGJA6N9Lkkz
+ +dfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722332433; x=1722937233;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/p7od16yWan/HDEkGj2xKqznwD/3Uyvk/bZAOed461U=;
- b=RJn3A0AtQqd96/3C3V8kCfv3cIFWTK2/wD3CaHLlyW8+clAlS550NFKy4OxwBm5x6C
- 070JuaVaKbVV9eKkIKcqAzXkp6O17puNpqyZgr8Qw3thq9YzBVKKp7h9xuscrklpaCoq
- hZ/JWtuw3aQ7y/SkX56Bf8RmSbISfNjbEXk1QAbDHFBoBXBCg1uf345Bgxy88TpEajW9
- RudyEVbaIBYwerDg5NuWv52nWYomfDHUQjaTHWLGgJDNMmEriba8+brpqre52pPuOy7m
- XaC+rZeA6tlZh6wu5/mLaXKagsHY/eDWURxxoIMGhp8wQJpulOm3LVPp7klO0U2xwWcj
- V17g==
-X-Gm-Message-State: AOJu0YyDzzjo/QlqYcV/viywDfQJz5mjikfL34D7V8XoS8LGNn0ZOXsB
- yC6p6SgI1Dtghd3F22FmaEM0oKpGDiRgDPpLq1J4LItteCnxYbu5oYGvAu8uuZ7L/Cw6csMssjc
- V
-X-Google-Smtp-Source: AGHT+IF+pNRJ3pVHCBr6CxeZULr52V7dsxz+Q49euP97uyNx8prcWL+oyFJOo9gR81G+7Li8QtV/Mg==
-X-Received: by 2002:a05:600c:6dce:b0:427:985b:178b with SMTP id
- 5b1f17b1804b1-42811d871a4mr68531495e9.16.1722332432646; 
- Tue, 30 Jul 2024 02:40:32 -0700 (PDT)
+ bh=jfxWTbmPHfPItv3Jo669wf0TJh+oQpU/CHJm1l2IvZY=;
+ b=vbaD8wANyuFgSwXKHw9eEjdy49PxqbB52Xh+dZPpxmdJf88RDJrUJTah+GvsmaBYvq
+ Au55G1OPt+Voe9U+1bQr587iyRnDrJWgFhcmSoZfT7j1HkbR7Wm6J/iF6nCKubmIeYpt
+ LnBPcjLT5Ga+cxADnyJcwUwAhNgjWcXjxtRP7JP5e7OxplHlM0UDcfcL/Y/022hJ279a
+ u0+WY67X4tnZAOk2LGhlDxeih+pCTfGMToJeOyU5l/zMHmPR/kgX8WE+2FX20sgyDYaA
+ Npj6CyDnauHl6s6k7SpyKyu2Peb4WUXZDh352Yc7ZxblVGx9RPOLDsenP4vUpRr1szZ8
+ QRTg==
+X-Gm-Message-State: AOJu0YxK3/6PH0e6FUqiQ4FuDOAmRAuUlEV70IzPDz6I3LccLLBSvOVs
+ qg2ViJBVBdUThyPV+TPP1aQ6akCggz4XuuoFldINx/eC3/E388re0G+mTJFgbQZfC54H5k0ZK/P
+ B
+X-Google-Smtp-Source: AGHT+IHai7uLDlxDLkqZbV6e4fqlgoceBTG5yuftQG2j57yPVODDrFyNIbziHbuoXhhUwDCkFC8Cag==
+X-Received: by 2002:a05:6000:1546:b0:368:420e:b790 with SMTP id
+ ffacd0b85a97d-36b5cef8f76mr8545304f8f.14.1722332433088; 
+ Tue, 30 Jul 2024 02:40:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.32
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 Jul 2024 02:40:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/21] target/sh4: Avoid shift into sign bit in
- update_itlb_use()
-Date: Tue, 30 Jul 2024 10:40:19 +0100
-Message-Id: <20240730094020.2758637-21-peter.maydell@linaro.org>
+Subject: [PULL 21/21] system/physmem: Where we assume we have a RAM MR,
+ assert it
+Date: Tue, 30 Jul 2024 10:40:20 +0100
+Message-Id: <20240730094020.2758637-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730094020.2758637-1-peter.maydell@linaro.org>
 References: <20240730094020.2758637-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,36 +92,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In update_itlb_use() the variables or_mask and and_mask are uint8_t,
-which means that in expressions like "and_mask << 24" the usual C
-arithmetic conversions will result in the shift being done as a
-signed int type, and so we will shift into the sign bit. For QEMU
-this isn't undefined behaviour because we use -fwrapv; but we can
-avoid it anyway by using uint32_t types for or_mask and and_mask.
+In the functions invalidate_and_set_dirty() and
+cpu_physical_memory_snapshot_and_clear_dirty(), we assume that we
+are dealing with RAM memory regions. In this case we know that
+memory_region_get_ram_addr() will succeed. Assert this before we
+use the returned ram_addr_t in arithmetic.
 
-Resolves: Coverity CID 1547628
+This makes Coverity happier about these functions: it otherwise
+complains that we might have an arithmetic overflow that stems
+from the possible -1 return from memory_region_get_ram_addr().
+
+Resolves: Coverity CID 1547629, 1547715
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Message-id: 20240723172431.1757296-1-peter.maydell@linaro.org
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Message-id: 20240723170513.1676453-1-peter.maydell@linaro.org
 ---
- target/sh4/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ system/physmem.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/target/sh4/helper.c b/target/sh4/helper.c
-index 67029106277..9659c695504 100644
---- a/target/sh4/helper.c
-+++ b/target/sh4/helper.c
-@@ -187,7 +187,7 @@ void superh_cpu_do_interrupt(CPUState *cs)
- 
- static void update_itlb_use(CPUSH4State * env, int itlbnb)
+diff --git a/system/physmem.c b/system/physmem.c
+index 0e19186e1b4..94600a33ec3 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -923,13 +923,19 @@ DirtyBitmapSnapshot *cpu_physical_memory_snapshot_and_clear_dirty
+     (MemoryRegion *mr, hwaddr offset, hwaddr length, unsigned client)
  {
--    uint8_t or_mask = 0, and_mask = (uint8_t) - 1;
-+    uint32_t or_mask = 0, and_mask = 0xff;
+     DirtyMemoryBlocks *blocks;
+-    ram_addr_t start = memory_region_get_ram_addr(mr) + offset;
++    ram_addr_t start, first, last;
+     unsigned long align = 1UL << (TARGET_PAGE_BITS + BITS_PER_LEVEL);
+-    ram_addr_t first = QEMU_ALIGN_DOWN(start, align);
+-    ram_addr_t last  = QEMU_ALIGN_UP(start + length, align);
+     DirtyBitmapSnapshot *snap;
+     unsigned long page, end, dest;
  
-     switch (itlbnb) {
-     case 0:
++    start = memory_region_get_ram_addr(mr);
++    /* We know we're only called for RAM MemoryRegions */
++    assert(start != RAM_ADDR_INVALID);
++    start += offset;
++
++    first = QEMU_ALIGN_DOWN(start, align);
++    last  = QEMU_ALIGN_UP(start + length, align);
++
+     snap = g_malloc0(sizeof(*snap) +
+                      ((last - first) >> (TARGET_PAGE_BITS + 3)));
+     snap->start = first;
+@@ -2659,7 +2665,11 @@ static void invalidate_and_set_dirty(MemoryRegion *mr, hwaddr addr,
+                                      hwaddr length)
+ {
+     uint8_t dirty_log_mask = memory_region_get_dirty_log_mask(mr);
+-    addr += memory_region_get_ram_addr(mr);
++    ram_addr_t ramaddr = memory_region_get_ram_addr(mr);
++
++    /* We know we're only called for RAM MemoryRegions */
++    assert(ramaddr != RAM_ADDR_INVALID);
++    addr += ramaddr;
+ 
+     /* No early return if dirty_log_mask is or becomes 0, because
+      * cpu_physical_memory_set_dirty_range will still call
 -- 
 2.34.1
 
