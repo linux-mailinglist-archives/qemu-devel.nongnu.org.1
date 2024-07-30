@@ -2,103 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432E6941E15
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 19:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D63A1941EBD
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 19:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYqaY-0005Xe-Sc; Tue, 30 Jul 2024 13:24:42 -0400
+	id 1sYqht-0004mx-MT; Tue, 30 Jul 2024 13:32:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sYqaW-0005QP-JD; Tue, 30 Jul 2024 13:24:40 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <SRS0=7GHu=O6=kaod.org=clg@ozlabs.org>)
+ id 1sYqho-0004Zm-M4; Tue, 30 Jul 2024 13:32:12 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sYqaU-0006Q8-KH; Tue, 30 Jul 2024 13:24:40 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46UErjml007078;
- Tue, 30 Jul 2024 17:24:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
- GfscVe+HkXsEDdXBGtCiUz4XP5BOJOnj86uzmyTNkxs=; b=dM4fiiU1OqDNh/6i
- /2W93F5U5jNqYrEEN7FacihGLNkSW7pzx/QRlgz7NQHpv9Wj3HCfH/oz6sjOSe3o
- MOASCy7Hm8HXOelmdBjv9i8ZnkNcD6AIIkue4tSIDEWkLsctpcOXEwCO/Jc4ku0h
- GvFaQnDyq+5ImcDL1mYQE/M8ckdNDFaSiRYXAuSX+TGfAr1wA6krFJCm72nKbXHl
- 2D5cxzys74kLy2eYi18eyP1JvkaeTUMJ4MQG2URZ8KABSFMY8wXDOt8B9X3Rwcwi
- SnRY/xX2bXeKegsaktlu/A7ZiGhkYhji+G/67fMMM6pBricsODU2xDtDTAdPEqiN
- 99eHpQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40q1398nws-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jul 2024 17:24:28 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46UHOSWk015666;
- Tue, 30 Jul 2024 17:24:28 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40q1398nwq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jul 2024 17:24:28 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46UGdUWC029118; Tue, 30 Jul 2024 17:24:26 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40nbm0pau5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jul 2024 17:24:26 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46UHOLsU21430576
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Jul 2024 17:24:23 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 12AE420043;
- Tue, 30 Jul 2024 17:24:21 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AAF12004B;
- Tue, 30 Jul 2024 17:24:19 +0000 (GMT)
-Received: from gfwr527.rchland.ibm.com (unknown [9.10.239.127])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 30 Jul 2024 17:24:18 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@linux.ibm.com, chalapathi.v@ibm.com,
- chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
- dantan@us.ibm.com, milesg@linux.ibm.com
-Subject: [PATCH v6 6/6] tests/qtest: Add pnv-spi-seeprom qtest
-Date: Tue, 30 Jul 2024 12:23:43 -0500
-Message-Id: <20240730172343.5818-7-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240730172343.5818-1-chalapathi.v@linux.ibm.com>
-References: <20240730172343.5818-1-chalapathi.v@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <SRS0=7GHu=O6=kaod.org=clg@ozlabs.org>)
+ id 1sYqhl-00082U-W3; Tue, 30 Jul 2024 13:32:12 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WYMjb5L0Gz4xTw;
+ Wed, 31 Jul 2024 03:32:03 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WYMjX3FW2z4xKS;
+ Wed, 31 Jul 2024 03:32:00 +1000 (AEST)
+Message-ID: <a5d408eb-0a79-49da-902f-a5f79a74d733@kaod.org>
+Date: Tue, 30 Jul 2024 19:31:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xYFiuxq-IWpRqfhkKymYcjYquOeYl_nk
-X-Proofpoint-ORIG-GUID: XDiVcBhszEtHy2J1TApDKPYCTxtcqPik
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-30_13,2024-07-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 phishscore=0
- mlxlogscore=555 impostorscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0
- adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2407300115
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/6] hw/ppc: SPI model
+To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ calebs@linux.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.ibm.com,
+ dantan@us.ibm.com, milesg@linux.ibm.com
+References: <20240730172343.5818-1-chalapathi.v@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240730172343.5818-1-chalapathi.v@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=7GHu=O6=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,147 +63,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In this commit Write a qtest pnv-spi-seeprom-test to check the
-SPI transactions between spi controller and seeprom device.
+Hello Chalapathi
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-Acked-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Caleb Schlossin <calebs@linux.vnet.ibm.com>
----
- tests/qtest/pnv-spi-seeprom-test.c | 110 +++++++++++++++++++++++++++++
- tests/qtest/meson.build            |   1 +
- 2 files changed, 111 insertions(+)
- create mode 100644 tests/qtest/pnv-spi-seeprom-test.c
+On 7/30/24 19:23, Chalapathi V wrote:
+> Hello,
+> 
+> In patch v6 below issues detected during Coverity Scan were fixed.
+> - CID 1558831:  Resource leaks  (RESOURCE_LEAK)
+>    Variable "rsp_payload" going out of scope leaks the storage it points to.
+> - CID 1558827:    (OVERRUN)
+>    Overrunning array "s->seq_op" of 8 bytes at byte offset 16 using index
+>    "get_seq_index(s) + 1" (which evaluates to 16).
 
-diff --git a/tests/qtest/pnv-spi-seeprom-test.c b/tests/qtest/pnv-spi-seeprom-test.c
-new file mode 100644
-index 0000000000..92bc8a11ae
---- /dev/null
-+++ b/tests/qtest/pnv-spi-seeprom-test.c
-@@ -0,0 +1,110 @@
-+/*
-+ * QTest testcase for PowerNV 10 Seeprom Communications
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <unistd.h>
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "qemu/bswap.h"
-+#include "hw/ssi/pnv_spi_regs.h"
-+#include "pnv-xscom.h"
-+
-+#define FLASH_SIZE              (512 * 1024)
-+#define SPIC2_XSCOM_BASE        0xc0040
-+
-+/* To transmit READ opcode and address */
-+#define READ_OP_TDR_DATA        0x0300010000000000
-+/*
-+ * N1 shift - tx 4 bytes (transmit opcode and address)
-+ * N2 shift - tx and rx 8 bytes.
-+ */
-+#define READ_OP_COUNTER_CONFIG  0x2040000000002b00
-+/* SEQ_OP_SELECT_RESPONDER - N1 Shift - N2 Shift * 5 - SEQ_OP_STOP */
-+#define READ_OP_SEQUENCER       0x1130404040404010
-+
-+/* To transmit WREN(Set Write Enable Latch in status0 register) opcode */
-+#define WRITE_OP_WREN           0x0600000000000000
-+/* To transmit WRITE opcode, address and data */
-+#define WRITE_OP_TDR_DATA       0x0300010012345678
-+/* N1 shift - tx 8 bytes (transmit opcode, address and data) */
-+#define WRITE_OP_COUNTER_CONFIG 0x4000000000002000
-+/* SEQ_OP_SELECT_RESPONDER - N1 Shift - SEQ_OP_STOP */
-+#define WRITE_OP_SEQUENCER      0x1130100000000000
-+
-+static void pnv_spi_xscom_write(QTestState *qts, const PnvChip *chip,
-+        uint32_t reg, uint64_t val)
-+{
-+    uint32_t pcba = SPIC2_XSCOM_BASE + reg;
-+    qtest_writeq(qts, pnv_xscom_addr(chip, pcba), val);
-+}
-+
-+static uint64_t pnv_spi_xscom_read(QTestState *qts, const PnvChip *chip,
-+        uint32_t reg)
-+{
-+    uint32_t pcba = SPIC2_XSCOM_BASE + reg;
-+    return qtest_readq(qts, pnv_xscom_addr(chip, pcba));
-+}
-+
-+static void spi_seeprom_transaction(QTestState *qts, const PnvChip *chip)
-+{
-+    /* SPI transactions to SEEPROM to read from SEEPROM image */
-+    pnv_spi_xscom_write(qts, chip, SPI_CTR_CFG_REG, READ_OP_COUNTER_CONFIG);
-+    pnv_spi_xscom_write(qts, chip, SPI_SEQ_OP_REG, READ_OP_SEQUENCER);
-+    pnv_spi_xscom_write(qts, chip, SPI_XMIT_DATA_REG, READ_OP_TDR_DATA);
-+    pnv_spi_xscom_write(qts, chip, SPI_XMIT_DATA_REG, 0);
-+    /* Read 5*8 bytes from SEEPROM at 0x100 */
-+    uint64_t rdr_val = pnv_spi_xscom_read(qts, chip, SPI_RCV_DATA_REG);
-+    g_test_message("RDR READ = 0x%lx", rdr_val);
-+    rdr_val = pnv_spi_xscom_read(qts, chip, SPI_RCV_DATA_REG);
-+    rdr_val = pnv_spi_xscom_read(qts, chip, SPI_RCV_DATA_REG);
-+    rdr_val = pnv_spi_xscom_read(qts, chip, SPI_RCV_DATA_REG);
-+    rdr_val = pnv_spi_xscom_read(qts, chip, SPI_RCV_DATA_REG);
-+    g_test_message("RDR READ = 0x%lx", rdr_val);
-+
-+    /* SPI transactions to SEEPROM to write to SEEPROM image */
-+    pnv_spi_xscom_write(qts, chip, SPI_CTR_CFG_REG, WRITE_OP_COUNTER_CONFIG);
-+    /* Set Write Enable Latch bit of status0 register */
-+    pnv_spi_xscom_write(qts, chip, SPI_SEQ_OP_REG, WRITE_OP_SEQUENCER);
-+    pnv_spi_xscom_write(qts, chip, SPI_XMIT_DATA_REG, WRITE_OP_WREN);
-+    /* write 8 bytes to SEEPROM at 0x100 */
-+    pnv_spi_xscom_write(qts, chip, SPI_SEQ_OP_REG, WRITE_OP_SEQUENCER);
-+    pnv_spi_xscom_write(qts, chip, SPI_XMIT_DATA_REG, WRITE_OP_TDR_DATA);
-+}
-+
-+static void test_spi_seeprom(const void *data)
-+{
-+    const PnvChip *chip = data;
-+    QTestState *qts = NULL;
-+    g_autofree char *tmp_path = NULL;
-+    int ret;
-+    int fd;
-+
-+    /* Create a temporary raw image */
-+    fd = g_file_open_tmp("qtest-seeprom-XXXXXX", &tmp_path, NULL);
-+    g_assert(fd >= 0);
-+    ret = ftruncate(fd, FLASH_SIZE);
-+    g_assert(ret == 0);
-+    close(fd);
-+
-+    qts = qtest_initf("-m 2G -machine powernv10 -smp 2,cores=2,"
-+                      "threads=1 -accel tcg,thread=single -nographic "
-+                      "-blockdev node-name=pib_spic2,driver=file,"
-+                      "filename=%s -device 25csm04,bus=pnv-spi-bus.2,cs=0,"
-+                      "drive=pib_spic2", tmp_path);
-+    spi_seeprom_transaction(qts, chip);
-+    qtest_quit(qts);
-+    unlink(tmp_path);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    char *tname = g_strdup_printf("pnv-xscom/spi-seeprom/%s",
-+            pnv_chips[3].cpu_model);
-+    qtest_add_data_func(tname, &pnv_chips[3], test_spi_seeprom);
-+    g_free(tname);
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 86293051dc..2fa98b2430 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -171,6 +171,7 @@ qtests_ppc64 = \
-   qtests_ppc + \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['device-plug-test'] : []) +               \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-xscom-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-spi-seeprom-test'] : []) +           \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-host-i2c-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['rtas-test'] : []) +                      \
-   (slirp.found() ? ['pxe-test'] : []) +              \
--- 
-2.39.3
+You don't need to resend a v6 because the PowerNV SPI model is already
+merged upstream :
+
+  https://gitlab.com/qemu-project/qemu/-/commit/29318db133d0b2523bda771f76aa50c08842527f
+
+What we would need now is a series of two patches on top of upstream
+fixing the issues reported by coverity. Each patch should contain
+a "Fixes: Coverity CID XYZxyz" tag.
+
+Thanks,
+
+C.
+
+
+
+
+> The qom-tree looks like below.
+> (qemu) info qom-tree
+> /machine (powernv10-machine)
+>    /chip[0] (power10_v2.0-pnv-chip)
+>      /pib_spic[0] (pnv-spi)
+>        /pnv-spi-bus.0 (SSI)
+>        /xscom-spi[0] (memory-region)
+>      /pib_spic[1] (pnv-spi)
+>        /pnv-spi-bus.1 (SSI)
+>        /xscom-spi[0] (memory-region)
+>      /pib_spic[2] (pnv-spi)
+>        /pnv-spi-bus.2 (SSI)
+>        /xscom-spi[0] (memory-region)
+>      /pib_spic[3] (pnv-spi)
+>        /pnv-spi-bus.3 (SSI)
+>        /xscom-spi[0] (memory-region)
+>      /pib_spic[4] (pnv-spi)
+>        /pnv-spi-bus.4 (SSI)
+>        /xscom-spi[0] (memory-region)
+>      /pib_spic[5] (pnv-spi)
+>        /pnv-spi-bus.5 (SSI)
+>        /xscom-spi[0] (memory-region)
+> 
+> (qemu) info qom-tree
+> /machine (powernv10-machine)
+>    /peripheral-anon (container)
+>      /device[0] (25csm04)
+>        /WP#[0] (irq)
+>        /ssi-gpio-cs[0] (irq)
+> 
+> Patches overview in v6.
+> PATCH1: Remove ppc target dependency from include/hw/ppc/pnv_xscom.h so
+>          that pnv_xscom.h can be included in hw/ssi/pnv_spi.c in PATCH2.
+> PATCH2: Create a PNV SPI model and implement configuration unit
+>          to model SCOM registers.
+> PATCH3: Extend PNV SPI model: implement sequencer FSM and shift engine.
+> PATCH4: Add Microchip's SEEPROM 25csm04 model on top of m25p80.
+> PATCH5: Connect SPI controllers to p10 chip and connect cs lines.
+> PATCH6: Write a qtest pnv-spi-seeprom-test to check the SPI transactions
+>          between spi controller and seeprom device.
+> 
+> Test covered:
+> make check
+> make check-avocado
+> 
+> Thank You,
+> Chalapathi
+> 
+> Chalapathi V (6):
+>    ppc/pnv: Remove ppc target dependency from pnv_xscom.h
+>    hw/ssi: Add SPI model
+>    hw/ssi: Extend SPI model
+>    hw/block: Add Microchip's 25CSM04 to m25p80
+>    hw/ppc: SPI controller wiring to P10 chip
+>    tests/qtest: Add pnv-spi-seeprom qtest
+> 
+>   include/hw/ppc/pnv_chip.h          |    3 +
+>   include/hw/ppc/pnv_xscom.h         |    5 +-
+>   include/hw/ssi/pnv_spi.h           |   67 ++
+>   include/hw/ssi/pnv_spi_regs.h      |  133 +++
+>   hw/block/m25p80.c                  |    3 +
+>   hw/ppc/pnv.c                       |   21 +-
+>   hw/ssi/pnv_spi.c                   | 1269 ++++++++++++++++++++++++++++
+>   tests/qtest/pnv-spi-seeprom-test.c |  110 +++
+>   hw/ppc/Kconfig                     |    3 +
+>   hw/ssi/Kconfig                     |    4 +
+>   hw/ssi/meson.build                 |    1 +
+>   hw/ssi/trace-events                |   21 +
+>   tests/qtest/meson.build            |    1 +
+>   13 files changed, 1639 insertions(+), 2 deletions(-)
+>   create mode 100644 include/hw/ssi/pnv_spi.h
+>   create mode 100644 include/hw/ssi/pnv_spi_regs.h
+>   create mode 100644 hw/ssi/pnv_spi.c
+>   create mode 100644 tests/qtest/pnv-spi-seeprom-test.c
+> 
 
 
