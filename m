@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773559404FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AD5940434
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:13:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcbP-0008RZ-L2; Mon, 29 Jul 2024 22:28:39 -0400
+	id 1sYcMP-0000Dz-3G; Mon, 29 Jul 2024 22:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sYcbO-0008R5-BH
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:28:38 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYcMM-00005E-Mp
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:13:06 -0400
+Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sYcbM-0007vg-9Z
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:28:38 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-70ea2f25bfaso2653885b3a.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:28:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYcMK-0004qq-Rn
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:13:06 -0400
+Received: by mail-io1-xd32.google.com with SMTP id
+ ca18e2360f4ac-8111f946f04so178136539f.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722306515; x=1722911315;
- darn=nongnu.org; 
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=2EaZ+aIL+lwXwXvSIgd+06Yoo8LOG1/628P6VRlgoTI=;
- b=j0t0x0Q3SHnGXTFG382S3Xy8RtNVf63IYPaH+Mb6inNL6ObX+Hw/8zUNrY6VRG04UM
- 2o7fVl8ASr61U+KrIwiwuEXv6VuyWupJp6rfMAqkxWriZ7OLeEG+7MWmpVS7qyY71rHJ
- qdpG54QeaTBRnzTMxMlFjXPw3dgo10yVqcubRmoGvczclmUifTwl51RCWBtsJm+KOnUZ
- 1zycpksyaGtPEvjjahe9GpncMoc2IBJqOxGoZuJYTfn18e8TKuvDEkHlZePd2yL0+NUz
- sJS0o0DG7oIibiUHiyMhLo11LqSW5goyoJ191/AugT7RryvginPxr5br8iYiSPpDXb3O
- eTSA==
+ d=linaro.org; s=google; t=1722305583; x=1722910383; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=tjxU4Pd+MXWcR+5/JzQwgIWtGtDmaE39V6TRa+KX2Pg=;
+ b=ZvUFAvU0I4zYpoQKyyUjZexsXsi0MbTY1O0wp3gcbRWpRqh1cffSyK1YawSDwNQ8Lx
+ 6Fr904cYBOBuMUVZu+pssJk374oVjuumF9ycuHgGe7pXko//4A9/Y/Bkrd99NJUOcSMh
+ RSH1yAahWZMkxy33cCrozYhQKpZ3FDcI31OryTRU+YVnKXMDjTmWxr1YUVNZbSKqK0yP
+ XyN00RxBF6lGZo6lt3mZ/Psg6Pqeh2vUzz4CToJe8vOPxFzY1zI7C9l1Sr1g6vOuKHft
+ kwogHvlEJqctYcOztOPr435frHPk+Ky47iFX1NBhecCvxlSlQLLmTdkxQalE5r1QDujM
+ 20Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722306515; x=1722911315;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2EaZ+aIL+lwXwXvSIgd+06Yoo8LOG1/628P6VRlgoTI=;
- b=hTDXIsARapJ6JNaRsaJ/4+ZeKZZ/Y7yeJThGgFpJ36sKfcdsP7i7nQ16X0tfMCIAGT
- cJrWmZtnu4FPlUyKPC3XoTuNPrbqpnepaV2zJXp5sR+Xr74KcmOCV1u0/3YZg3v+IF5C
- yy09Yi7QD6yXjLktetjdj5hcgX8MGGRUnGTSVMXrb2U+MU6pqzWSsHe776/4yzhutAQA
- IulFj96jCYu5uUeWIBZd12hEQq64ZtDGdvXHlgXCGf4BSjdGoodewk/LocDF+GWl4ANx
- hu/BTeofd9yF4KZcaXOsfJ1KC97QVKRDgoDzjuBIB2CRHGPO/q++z4/DgRoch/l8IHYO
- 5P1w==
+ d=1e100.net; s=20230601; t=1722305583; x=1722910383;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tjxU4Pd+MXWcR+5/JzQwgIWtGtDmaE39V6TRa+KX2Pg=;
+ b=aq488eOB6ZVJimWE1BaHQqq8lECOeQDuGmyhVTbnl0sFekw/tugItzmC4GjynPErOb
+ oQuSRJ6b3iSWn3i8f6qQc51SGEuDw2MNXOVMcqP+wWKu/NSY8/PAcZId2N/Rvx5gRgue
+ DjDrmHJiOyMPOYusUDcaXLaY4FpOrWVpCk//KcX6hhOPuVtXcAVcTJ/T1ITA/PbJXVWH
+ fYabvwk6T/y/neBUh8k+bfxm6ZfAVNO5PUqLyYo2awvKZDp+eCCwUicfpnjwlki+EMXm
+ X7dmB538qnfzPDALl6JgikweB+G6/BFNxL9EuztIcX19RYnRdWN4aCaxrqkfWyw9d4kK
+ 1+SQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUDDOEwUgbCS92/tUJQ017jQfT9RgUCUON+yYRCx/ai3+yW/RQ3NDf4zCgmgj38nOOYppMlfX7sqbgoD2j/PS2GRwwUkmc=
-X-Gm-Message-State: AOJu0YxDFP3yO2H1PQWBYYhioLt2VbQ5pqKsTp2U3RKJ+WF/eGsJF5Cy
- GlkKJf+nPttJEVIPtdSrus8TLF4HtqJBeTq8olAVfkImtUF1VmkXuzNbNkfFo2II5202jPlgF6H
- S
-X-Google-Smtp-Source: AGHT+IGK4kDYOnzQ1LHP7gsh9qlHSbfFXnTFYONcHGHNRhTT3FI0voLN26sc4ZaMGv+blt8kta9mnA==
-X-Received: by 2002:a05:6871:4006:b0:261:2c4:f7a0 with SMTP id
- 586e51a60fabf-267d4f80cf9mr9752173fac.51.1722296021991; 
- Mon, 29 Jul 2024 16:33:41 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
+ AJvYcCVmpS4h9+Nm8BB7YygIsM/bKpu5uf3WLcuUhqlg4QGzzwJtZ8qAuSBD3pQ1th+9PJl8Vxi3Db40A/z7ZoQS4q12gknhQBk=
+X-Gm-Message-State: AOJu0YwhOPbpvnQ4xw678KOiWTgfEDXjPAUASXfAfrgmgpV0g9gUz75p
+ IjUJof68QhKEnpRV+j65w6xq81HqvBfTjBGIX8TxlBGHkWuBgl63ZqELgWDGHVgE+IZxWto4jIu
+ nv4Y=
+X-Google-Smtp-Source: AGHT+IEeoICMu4UL8jj5vpvKUwRnacnphXa0cwGaygpZOKxgi5XrmPj3+lc+O9rYm0Lgz4EzQEDi6g==
+X-Received: by 2002:a17:90b:4a50:b0:2c9:5a8b:ff7e with SMTP id
+ 98e67ed59e1d1-2cf7e216b0cmr11112138a91.25.1722298708561; 
+ Mon, 29 Jul 2024 17:18:28 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70ead8a35d2sm7364223b3a.199.2024.07.29.16.33.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 16:33:41 -0700 (PDT)
-Date: Mon, 29 Jul 2024 16:33:39 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, jim.shu@sifive.com,
- andy.chiu@sifive.com, jesse.huang@sifive.com, kito.cheng@sifive.com,
- palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
- bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com
-Subject: Re: [PATCH v2 03/24] target/riscv: save and restore elp state on
- priv transitions
-Message-ID: <Zqgm0+qXaDmmsaKE@debug.ba.rivosinc.com>
-References: <20240729175327.73705-1-debug@rivosinc.com>
- <20240729175327.73705-4-debug@rivosinc.com>
- <2fea7463-89e9-4fc4-9926-dba304838aab@linaro.org>
+ 98e67ed59e1d1-2cdb738fe0fsm11220403a91.10.2024.07.29.17.18.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 17:18:28 -0700 (PDT)
+Message-ID: <100fdfe8-4c9d-48aa-9d92-95c818bc08db@linaro.org>
+Date: Tue, 30 Jul 2024 10:18:23 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <2fea7463-89e9-4fc4-9926-dba304838aab@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=debug@rivosinc.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/2] QAPI patches patches for 2024-07-29
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+References: <20240729063722.839708-1-armbru@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240729063722.839708-1-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,43 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks Richard.
-
-On Tue, Jul 30, 2024 at 09:04:29AM +1000, Richard Henderson wrote:
->On 7/30/24 03:53, Deepak Gupta wrote:
->>elp state is recorded in *status on trap entry (less privilege to higher
->>privilege) and restored in elp from *status on trap exit (higher to less
->>privilege).
->>
->>Additionally this patch introduces a forward cfi helper function to
->>determine if current privilege has forward cfi is enabled or not based on
->>*envcfg (for U, VU, S, VU, HS) or mseccfg csr (for M). For qemu-user, a
->>new field `ufcfien` is introduced which is by default set to false and
->>helper function returns value deposited in `ufcfien` for qemu-user.
->
->Why are you using a different field for qemu-user?
->Much better to simply configure menvcfg the same as for system mode.
-
-
-I am assuming `CONFIG_USER_ONLY` is set for qemu-user builds and unset
-for `not qemu-user` builds. Let me know if I got that right?
-
-`menvcfg` (and a lot of other system related fields CPUArchstate for riscv)
-are wrapped under `#ifndef CONFIG_USER_ONLY`. So `menvcfg` field is not
-available for qemu-user compile.
+On 7/29/24 16:37, Markus Armbruster wrote:
+> The following changes since commit 93b799fafd9170da3a79a533ea6f73a18de82e22:
+> 
+>    Merge tag 'pull-ppc-for-9.1-2-20240726-1' ofhttps://gitlab.com/npiggin/qemu into staging (2024-07-26 15:10:45 +1000)
+> 
+> are available in the Git repository at:
+> 
+>    https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-07-29
+> 
+> for you to fetch changes up to bc2e34e343b40b83cca82409db9c126df2e28c81:
+> 
+>    qapi/machine: Belatedly document target loongarch64 is since 7.1 (2024-07-29 07:29:47 +0200)
+> 
+> ----------------------------------------------------------------
+> QAPI patches patches for 2024-07-29
 
 
->
->
->>+        return (env->menvcfg & MENVCFG_LPE) ? true : false;
->
->Never use ?: with true/false.  Use the correct boolean expression in 
->the first place, which in this case is just the & expression.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
 
-Noted.
-Will fix this and other instances in patch series.
-
->
->
->r~
+r~
 
