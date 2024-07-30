@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA15940E0A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7C7940E21
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:44:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjLN-0003lZ-VE; Tue, 30 Jul 2024 05:40:33 -0400
+	id 1sYjLO-0003ov-Td; Tue, 30 Jul 2024 05:40:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLL-0003dq-8a
+ id 1sYjLL-0003fA-Ja
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:31 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLI-0000YY-HA
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:30 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3687f91af40so2217187f8f.0
+ id 1sYjLJ-0000Yn-10
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:31 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3683329f787so2166111f8f.1
  for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722332427; x=1722937227; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jnq1VIda5vt4YzdNGFFqZt+A/PPj1CEI6DvJT2Yvga0=;
- b=MNys9gH9FeJdiAPthkLKpsm/+OuU9+kQgFJsPDGRo3bPi4Avf57S4CVJx87e4KiU2a
- 4V7Iep1zNquD/y6umhxlsqI2/9y2SBA7ZPLfEZWoi3JuYt3+zMLOr24biJp1XwkYCobK
- /0QTtJj6MR7nBZFXz/OLq4fmQI96kiicktvLupQ/h0Gs7zEVTUOXDZUtepiWSP3pXToM
- 2JL5zmASlUK/p995oavsSULUQVYx2OMHomQYPF5qXjkLIuUMzjBJPe3PuP9PUUWUJmHp
- 0w75ATpnLJOdAtzr2mtRdt/lwr8K9HTPbVmSd9UFd9F0bhm2ccV8kuYBpRi3I9PuOm70
- WF0g==
+ :reply-to; bh=7nLQOxJ+g65mj2LydJL4MXaPvrQeqRnkG/NPnjTzCQk=;
+ b=CfJfkwZBaaNfG4sJKDA3PGogxziJ5aIB/0LWpr7s5cZ07mW/LB233ObODMErIN78e9
+ lHjcvsfqsyTDo/YA2rTLESqkzvzXl0j2ExLh4vhRReog0oWset/3vbvNt9ETYAvLCl9+
+ 2LAb40P6dMF8xq1SvghYbJ/gLoVFAXrGAcWiY/6bVmsTyk0p9vBUPl6LFdcivCdeKRrB
+ LIepGnjPtGmBx5vAzvd5Ei5UyhhDxn7OYZUbjTGYdfdQKowJRyw+2eusGmyOcWT4zvgL
+ wkCo/for70UO0FjgnZL1Srwvydtf1t+mccU7FlYmUwhFByGSR9ER/4F5Ms/eJCyl+1xZ
+ K/wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722332427; x=1722937227;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jnq1VIda5vt4YzdNGFFqZt+A/PPj1CEI6DvJT2Yvga0=;
- b=Eq7iF6bGMBTr7VqCgxCMCg7jWio/R0ecu6ooDooviPposcShrnlqN+oWxKdkacJtyJ
- 9f96hMhZ3IA/5ePr/L+v67Ip+hYvJwlo5d0v7bg2tHHQcBVPNXdr64tmN5lG0EVGt9R/
- ykE1SjFUmV2ikUVLsWZyd+ufu390zzqRmdZ2IAfe9tS3/wsRu+nrKZp5N9YD98K5l+l1
- /+3/HGKq+hYO3dgzPP4MAvd/sPHlKIh9NoShnNemaQNtwEp432Inje5JIOeAtHZmAmuC
- 44y5S0zz6Ij6KRlXfwuNFbFrysX0tfk+aNwA/L2Xyi9E/Zb4qtIbXowgmCkHTSovTWLs
- vrQQ==
-X-Gm-Message-State: AOJu0Yy+aP0NJgvVmc2V7o5KhMUzhCRkvoM/Y9KO9jghUXW3CUvZvO5+
- Tpa5RToK6PuK4nf6IjUDMOktXuHG4sreoVaXa3G3oQqfVsGSGzBQp43a3O+KjUWqdpm3EX1QL+I
- 2
-X-Google-Smtp-Source: AGHT+IEbatzJoLEHwPWAJMfqLoVakWUxs9c2O1RZ7HyfrkbJPjkeaZxK99v2Q4qXbMru5ZACUlpsVQ==
-X-Received: by 2002:a05:6000:196b:b0:368:4ee0:3c65 with SMTP id
- ffacd0b85a97d-36b5cf1e6bamr6509864f8f.37.1722332426866; 
- Tue, 30 Jul 2024 02:40:26 -0700 (PDT)
+ bh=7nLQOxJ+g65mj2LydJL4MXaPvrQeqRnkG/NPnjTzCQk=;
+ b=ZzV4o64FTzMz8YqCsxNccYWJuVXhH3968MuVRxOjyFFJGME6pG9ZYDeYifCLYTCdVI
+ gE5fkVQliYlVduloU+5311xHIX094+BekJ9uPxEgkpFonkgpUIITCm8mcpEKqaetFCVB
+ vDq/PG1+YPUzebjg6gjqzjYPjVrgtu1BO+4PD+GOyf6OV2PcJpmaHj4o9CgJTJYLa3fL
+ deAtOM+dplGG0X4L+xbA6koI9IvwL+eoLTobHN4R5FNyMm7MmDiHB3rYNeiRiJreVPXo
+ 1ph0Tfe5xcu+BlHvVFcDuZ0M/BEcF7nw1ibpwUuysVWdivdzt/br2m05nLogCwJt3OvP
+ IWzQ==
+X-Gm-Message-State: AOJu0YxjY+2LSxusN5XY9hxckZksF/UtPyCiG1bYDIBhfRT883nY0rxa
+ Eyhdxtb5dziVFYgC7OcfAlfHxKKtboV9dtUm2pZPNKeIcWpTFiA3qtC4Dj3ducJiYaVxEnKRzUQ
+ T
+X-Google-Smtp-Source: AGHT+IGxMLYeLCuVpLBPe55yX44FLU983h0Knm4RknNmR9YbBL4W8EZtX1pcHgQr6gWpMn3dRpcUrg==
+X-Received: by 2002:a05:6000:1542:b0:368:4e4f:cec5 with SMTP id
+ ffacd0b85a97d-36b5cf25338mr9134188f8f.35.1722332427406; 
+ Tue, 30 Jul 2024 02:40:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.25
+ ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jul 2024 02:40:25 -0700 (PDT)
+ Tue, 30 Jul 2024 02:40:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/21] hvf: arm: Do not advance PC when raising an exception
-Date: Tue, 30 Jul 2024 10:40:06 +0100
-Message-Id: <20240730094020.2758637-8-peter.maydell@linaro.org>
+Subject: [PULL 08/21] hw/misc/bcm2835_property: Fix handling of
+ FRAMEBUFFER_SET_PALETTE
+Date: Tue, 30 Jul 2024 10:40:07 +0100
+Message-Id: <20240730094020.2758637-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730094020.2758637-1-peter.maydell@linaro.org>
 References: <20240730094020.2758637-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,37 +93,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+The documentation of the "Set palette" mailbox property at
+https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface#set-palette
+says it has the form:
 
-This is identical with commit 30a1690f2402 ("hvf: arm: Do not advance
-PC when raising an exception") but for writes instead of reads.
+    Length: 24..1032
+    Value:
+        u32: offset: first palette index to set (0-255)
+        u32: length: number of palette entries to set (1-256)
+        u32...: RGBA palette values (offset to offset+length-1)
 
-Fixes: a2260983c655 ("hvf: arm: Add support for GICv3")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+We get this wrong in a couple of ways:
+ * we aren't checking the offset and length are in range, so the guest
+   can make us spin for a long time by providing a large length
+ * the bounds check on our loop is wrong: we should iterate through
+   'length' palette entries, not 'length - offset' entries
+
+Fix the loop to implement the bounds checks and get the loop
+condition right. In the process, make the variables local to
+this switch case, rather than function-global, so it's clearer
+what type they are when reading the code.
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240723131029.1159908-2-peter.maydell@linaro.org
 ---
- target/arm/hvf/hvf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/misc/bcm2835_property.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index adcdfae0b17..c1496ad5be9 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1586,10 +1586,10 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_ICC_SGI1R_EL1:
-     case SYSREG_ICC_SRE_EL1:
-         /* Call the TCG sysreg handler. This is only safe for GICv3 regs. */
--        if (!hvf_sysreg_write_cp(cpu, reg, val)) {
--            hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-+        if (hvf_sysreg_write_cp(cpu, reg, val)) {
-+            return 0;
-         }
--        return 0;
-+        break;
-     case SYSREG_MDSCR_EL1:
-         env->cp15.mdscr_el1 = val;
-         return 0;
+diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
+index 63de3db6215..e28fdca9846 100644
+--- a/hw/misc/bcm2835_property.c
++++ b/hw/misc/bcm2835_property.c
+@@ -31,7 +31,6 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+     size_t resplen;
+     uint32_t tmp;
+     int n;
+-    uint32_t offset, length, color;
+     uint32_t start_num, number, otp_row;
+ 
+     /*
+@@ -274,19 +273,25 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+             resplen = 16;
+             break;
+         case RPI_FWREQ_FRAMEBUFFER_SET_PALETTE:
+-            offset = ldl_le_phys(&s->dma_as, value + 12);
+-            length = ldl_le_phys(&s->dma_as, value + 16);
+-            n = 0;
+-            while (n < length - offset) {
+-                color = ldl_le_phys(&s->dma_as, value + 20 + (n << 2));
+-                stl_le_phys(&s->dma_as,
+-                            s->fbdev->vcram_base + ((offset + n) << 2), color);
+-                n++;
++        {
++            uint32_t offset = ldl_le_phys(&s->dma_as, value + 12);
++            uint32_t length = ldl_le_phys(&s->dma_as, value + 16);
++            int resp;
++
++            if (offset > 255 || length < 1 || length > 256) {
++                resp = 1; /* invalid request */
++            } else {
++                for (uint32_t e = 0; e < length; e++) {
++                    uint32_t color = ldl_le_phys(&s->dma_as, value + 20 + (e << 2));
++                    stl_le_phys(&s->dma_as,
++                                s->fbdev->vcram_base + ((offset + e) << 2), color);
++                }
++                resp = 0;
+             }
+-            stl_le_phys(&s->dma_as, value + 12, 0);
++            stl_le_phys(&s->dma_as, value + 12, resp);
+             resplen = 4;
+             break;
+-
++        }
+         case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
+             stl_le_phys(&s->dma_as, value + 12, 1);
+             resplen = 4;
 -- 
 2.34.1
 
