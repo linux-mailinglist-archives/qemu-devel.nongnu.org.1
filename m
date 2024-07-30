@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538FE94047D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3191A940487
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 04:26:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYcRb-00078H-To; Mon, 29 Jul 2024 22:18:32 -0400
+	id 1sYcYW-0007S1-No; Mon, 29 Jul 2024 22:25:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcRZ-00077d-OM
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:18:29 -0400
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ id 1sYcYT-0007OP-3h
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:25:38 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sYcRY-0005zx-8X
- for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:18:29 -0400
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-44fded90c41so22050061cf.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:18:27 -0700 (PDT)
+ id 1sYcYR-0007U6-BY
+ for qemu-devel@nongnu.org; Mon, 29 Jul 2024 22:25:36 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-5d5e1c86b83so1443039eaf.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jul 2024 19:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722305907; x=1722910707; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722306334; x=1722911134; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qdOOXlcI2pXCHd0E8nwCuiMDshNmFFas8R7dthZK29c=;
- b=Hp7qOB5ktSXtjnD9sAfQL7RU+ERmZ/Ugbqnrqg1WrTHnQSUiP97H/FrAszL37LzP3m
- pX9cDHoJ3CY+ePiU5AuX7sYYKdS9Rho7pKaMKMF8vh50iMkFiEBLYpjxKgyA168x0ocC
- sGQ7xy2g4Ry+SRSpaCiQGSTjQq/o2iygbfsrVl5T4TD3S86jZUGf7kldrtTCpkZjA/cB
- AERP6miH09vC3ulOgGA+n5uyqs+MW4Uh084CMk2RhsgeSPsVBMFW65IW3wD5+33oZ8u5
- ExebmW97LhR8ZfiH04CwamDoKo6b7gO/EYe1Z+uf1cO5gez/qV1LlpzImVWxs95EZEOQ
- CVag==
+ bh=a2wtDHUY+HHrfRWzkSo3Bk34wWAfi1Yqji+v1/RaSkc=;
+ b=JyG5lpzK8Fx3c8ZzS38saCfzuw4XepZ5xv32R8KrA8wcykE90EkTtv3Tt0XiAgEJHq
+ s2vo+1IB8U1v6j1X1DpjkQgmy6EJwfI321ekTpPqP5/n5PaM5aNlJvvAcwnhQoJsWWD5
+ TRGLIqYY6WmJ8VQHp0sQ5PHmTYABAophEq1RvzNLnGxSIDSTpWCiUxmMpSneAi+22WkV
+ vYvzGLD6+ac42wddIAbsLaPs4cg/lmQV0bj53ycBdU8EJa7SZd2f9hNaZNFPOUZd5Ra6
+ E4U6U8I1bV0YtePox/2KCNhvbWNLG+WTBXRNU3Vnq9xBP8LWWWdrkKjtfsJxL45TPpLU
+ VUjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722305907; x=1722910707;
+ d=1e100.net; s=20230601; t=1722306334; x=1722911134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qdOOXlcI2pXCHd0E8nwCuiMDshNmFFas8R7dthZK29c=;
- b=kWguF16IST25mYBj1rGgjwDmAbPsD/y9x99seqdObWwXRikxQU7iUOYP74l9KswTeI
- WzQBLJ4S6lNiH/11cKGw7iAOMDQ31n9n99c/Mt1qcZYkLudcIkmzxvml7GlLgQgCIPVw
- EfXxUy5hGuatgTT7J13haUCmAA3X6v+f9gK2OVu0cOTCMbs9A1vjINbE5F7bMj2XJsjm
- rX+Huf1yZi/6b0Wd8QA//sa8/qqraOjbQeyGqsk905R1U13vL+T35YODz2IbPwO4waQI
- 1yDl5kDQMuGNU3IofmC/3g2nLHjrxPnqPHtn8Jhai/6O6Xgpq+TUibkoDMuBb+IW8FQM
- 13XQ==
-X-Gm-Message-State: AOJu0Yzm260h2QfW7fK/UdyQewHzw2U+rUHRoYdDlM20BqbuNoaGZJ0d
- sekhW15hXgzZULGSClNMU8A4FAG8Q2AdFk3ovUqPfeYKzNECwQkxhnTzGBLGBuATB1hS2j1cKzf
- OwvA=
-X-Google-Smtp-Source: AGHT+IH2iXsYm2M5romUtYcoXgvTBkWmSW/JTgHtEI8rGHEeN391KwT6ykEpR8zLdR228Gs51+03UA==
-X-Received: by 2002:a05:6e02:178d:b0:397:3045:9dc2 with SMTP id
- e9e14a558f8ab-39aec4236a0mr123455735ab.27.1722301937280; 
- Mon, 29 Jul 2024 18:12:17 -0700 (PDT)
+ bh=a2wtDHUY+HHrfRWzkSo3Bk34wWAfi1Yqji+v1/RaSkc=;
+ b=nQyeemPqQdb+aGO7aVFaz6u+2iJ6krvNwV7VcHcG4zx/jtpIia7tiPKVo1ka30pXgD
+ m1f2Q9AQKAstINYgT5rZuowBCeAyUJ110UE2eB76xp9Isww7Ylllo+3cxq2tn58tVFTR
+ 5WYxJ26oeOB9LMvFmhv7sSq6IoaKrpSfrDffeF2FMozsVE4+lvTmWxbYpxbtCI6JoC8k
+ o2Li6uTwn29XTArnn59GnPjFJes/yrrmt9EOhKRTnjHqQkl/zO3+nMYcsSsolh96pxm7
+ Is6H4ToNa0BlII/PsNER3gnk56CmQ6KPDvVgLU5iDtzAyAjQ0UPM4cHAOx4LXC+QxpSN
+ 5b5g==
+X-Gm-Message-State: AOJu0Yw5X5DZcGvrV/0Hr/t2T+8jAPOKonFQJTTZDMAI9q7LXnE7IEa3
+ jfDWNYc97w0rWEY+ceqa71pu3fErKU1fswfjIz7AoETcteKPnhXFK0bJfvjJ5iIMeXd3hX6JhcB
+ drdg=
+X-Google-Smtp-Source: AGHT+IHomwBW++cs9aOrDRrwgEbGxLkTpk6KKS+Upl+WfQ4f2xgaz2sRFWS8NxCihdSys9OEjz8d2A==
+X-Received: by 2002:a05:6870:b28e:b0:261:f4c:e08c with SMTP id
+ 586e51a60fabf-267d4dd3eb0mr11718340fac.29.1722301939544; 
+ Mon, 29 Jul 2024 18:12:19 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.15
+ 41be03b00d2f7-7a9f7c6ff4bsm6750206a12.4.2024.07.29.18.12.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jul 2024 18:12:16 -0700 (PDT)
+ Mon, 29 Jul 2024 18:12:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Vivian Wang <uwu@dram.page>
-Subject: [PULL 3/5] linux-user/main: Check errno when getting AT_EXECFD
-Date: Tue, 30 Jul 2024 11:12:00 +1000
-Message-ID: <20240730011202.480829-5-richard.henderson@linaro.org>
+Cc: Brad Smith <brad@comstyle.com>
+Subject: [PULL 4/5] util/cpuinfo: Make use of elf_aux_info(3) on OpenBSD
+Date: Tue, 30 Jul 2024 11:12:01 +1000
+Message-ID: <20240730011202.480829-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730011202.480829-1-richard.henderson@linaro.org>
 References: <20240730011202.480829-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x833.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,40 +91,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivian Wang <uwu@dram.page>
+From: Brad Smith <brad@comstyle.com>
 
-It's possible for AT_EXECFD to end up with a valid value of 0. Check
-errno when using qemu_getauxval instead of return value to handle this
-case.
-
-Not handling this case leads to a confusing condition where the
-executable ends up as fd 0, i.e. stdin.
-
-Signed-off-by: Vivian Wang <uwu@dram.page>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Fixes: 0b959cf5e4cc ("linux-user: Use qemu_getauxval for AT_EXECFD")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2448
-Message-ID: <20240723100545.405476-3-uwu@dram.page>
+Signed-off-by: Brad Smith <brad@comstyle.com>
+Message-ID: <ZqXB_zz0fR1CpA7k@humpty.home.comstyle.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ util/cpuinfo-aarch64.c | 9 ++++++---
+ util/cpuinfo-ppc.c     | 5 +++--
+ util/getauxval.c       | 2 +-
+ meson.build            | 8 ++++++++
+ 4 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 7d3cf45fa9..8143a0d4b0 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -755,8 +755,9 @@ int main(int argc, char **argv, char **envp)
-     /*
-      * Manage binfmt-misc open-binary flag
-      */
-+    errno = 0;
-     execfd = qemu_getauxval(AT_EXECFD);
--    if (execfd == 0) {
-+    if (errno != 0) {
-         execfd = open(exec_path, O_RDONLY);
-         if (execfd < 0) {
-             printf("Error while loading %s: %s\n", exec_path, strerror(errno));
+diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
+index 8ca775a14b..57468890c3 100644
+--- a/util/cpuinfo-aarch64.c
++++ b/util/cpuinfo-aarch64.c
+@@ -17,10 +17,13 @@
+ #  define HWCAP2_BTI 0  /* added in glibc 2.32 */
+ # endif
+ #endif
++#ifdef CONFIG_ELF_AUX_INFO
++#include <sys/auxv.h>
++#endif
+ #ifdef CONFIG_DARWIN
+ # include <sys/sysctl.h>
+ #endif
+-#ifdef __OpenBSD__
++#if defined(__OpenBSD__) && !defined(CONFIG_ELF_AUX_INFO)
+ # include <machine/armreg.h>
+ # include <machine/cpu.h>
+ # include <sys/types.h>
+@@ -61,7 +64,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+ 
+     info = CPUINFO_ALWAYS;
+ 
+-#ifdef CONFIG_LINUX
++#if defined(CONFIG_LINUX) || defined(CONFIG_ELF_AUX_INFO)
+     unsigned long hwcap = qemu_getauxval(AT_HWCAP);
+     info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
+     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+@@ -78,7 +81,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_PMULL") * CPUINFO_PMULL;
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_BTI") * CPUINFO_BTI;
+ #endif
+-#ifdef __OpenBSD__
++#if defined(__OpenBSD__) && !defined(CONFIG_ELF_AUX_INFO)
+     int mib[2];
+     uint64_t isar0;
+     uint64_t pfr1;
+diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
+index 1304f9aa80..4d3d3aae0b 100644
+--- a/util/cpuinfo-ppc.c
++++ b/util/cpuinfo-ppc.c
+@@ -14,7 +14,8 @@
+ #  include "elf.h"
+ # endif
+ #endif
+-#ifdef __FreeBSD__
++#if defined(CONFIG_ELF_AUX_INFO)
++# include <sys/auxv.h>
+ # include <machine/cpu.h>
+ # ifndef PPC_FEATURE2_ARCH_3_1
+ #  define PPC_FEATURE2_ARCH_3_1   0
+@@ -35,7 +36,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+ 
+     info = CPUINFO_ALWAYS;
+ 
+-#if defined(CONFIG_LINUX) || defined(__FreeBSD__)
++#if defined(CONFIG_LINUX) || defined(CONFIG_ELF_AUX_INFO)
+     unsigned long hwcap = qemu_getauxval(AT_HWCAP);
+     unsigned long hwcap2 = qemu_getauxval(AT_HWCAP2);
+ 
+diff --git a/util/getauxval.c b/util/getauxval.c
+index ad4f6686a8..0735cd8271 100644
+--- a/util/getauxval.c
++++ b/util/getauxval.c
+@@ -99,7 +99,7 @@ unsigned long qemu_getauxval(unsigned long type)
+     return 0;
+ }
+ 
+-#elif defined(__FreeBSD__)
++#elif defined(CONFIG_ELF_AUX_INFO)
+ #include <sys/auxv.h>
+ 
+ unsigned long qemu_getauxval(unsigned long type)
+diff --git a/meson.build b/meson.build
+index 5613b62a4f..97f63aa86c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2835,6 +2835,14 @@ config_host_data.set('CONFIG_GETAUXVAL', cc.links(gnu_source_prefix + '''
+     return getauxval(AT_HWCAP) == 0;
+   }'''))
+ 
++config_host_data.set('CONFIG_ELF_AUX_INFO', cc.links(gnu_source_prefix + '''
++  #include <sys/auxv.h>
++  int main(void) {
++    unsigned long hwcap = 0;
++    elf_aux_info(AT_HWCAP, &hwcap, sizeof(hwcap));
++    return hwcap;
++  }'''))
++
+ config_host_data.set('CONFIG_USBFS', have_linux_user and cc.compiles('''
+   #include <linux/usbdevice_fs.h>
+ 
 -- 
 2.43.0
 
