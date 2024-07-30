@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7E940D48
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBC0940D4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYj3U-0000Nc-4D; Tue, 30 Jul 2024 05:22:04 -0400
+	id 1sYj3d-0000iI-E3; Tue, 30 Jul 2024 05:22:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3R-0000JC-Vl
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:01 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3b-0000bV-5Y
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:11 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3Q-0005kM-EE
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:01 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-426526d30aaso25457445e9.0
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:22:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3Y-0005lM-Vo
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:10 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4281abc65daso18168545e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:22:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722331319; x=1722936119; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722331327; x=1722936127; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fRMGyzp03tYfu+a5mNwyhx3DbvljVjB1l6w81zoWVuY=;
- b=rkLnIo6CLqCFwYqG4JoU6NzcdRAnwSFtqmaTKenoNtyXDWXESUm9902YiuvfbXMU81
- 4SO36jzn6O1bjy6pq72/Vb/4ENLAaQtGyeZLay/5ygNyNhB0WYgtrE3jYtGirN0ECmiN
- 9wuCW3l7JNRTwc7aAkKnfWgswGyXyrwMtgAaJcc5U/aojI9x/ZMdczsec74xyNBej42w
- h1dHZDYqBWq8wg+zhaEgY7wN1zBXItEEuFDuANUMcdKH0PsKBB3E8FNBWctRPIf533EG
- WoZjUqK0MHwsHm8DWMrh8h3Zs1NziZkGehl34qbA3pfHe5VM9GXffPZu0s01cdSS4wZt
- stEg==
+ bh=OQ1Qo4EummoLtaisooBllEpj3+LWFIK8W5rm3kHkgq8=;
+ b=Zm3+08Gz9e2VswihpWAIfNRLWT7e22ZbRv74FjJHx6lHLX6A7vXYEKJlnEcA95BFJB
+ CV26TM3HjNoM/BI2Z2vcWDjMls6NoMGm+HW6u2+KC1FZEiJ3XhY2mWUbn1lv+9c2YhMU
+ qyGOzfjFa3Fi/9tMtnhtT3Grd5lHCi3nhQ4D7abpZ4BegbHnHA3x3K8Akmbzjej7+uWI
+ xHrwAUYvUi8EuAX+ZBspV4vx4/xS7+iqpYDaUrR/CfOzfLM6XUIW4O0j52cMIoy83w2x
+ HM8EnLf/2eX48dpwBENCpz0GbwypPNd17AUinggAk2BuxWm19SN5GGfUFyJKWvRpjR3p
+ QWFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722331319; x=1722936119;
+ d=1e100.net; s=20230601; t=1722331327; x=1722936127;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fRMGyzp03tYfu+a5mNwyhx3DbvljVjB1l6w81zoWVuY=;
- b=YKRVRC7mhGC4d8ZL9xcBU1nMGk1XIcxIGZ+Pk9XyOCEthftCEDLS6B96CIdgHqbhuV
- pids+Qzw5ZV01FuABRwk2uQ1RFRwMb46Ol0bf6WtXKdCfYG2MdcumrOupIqZdpU4HqyP
- 67N4lIdqxej0y+SM2Mdid1SwWPDg8OjkzvZX/VQOzumUPb6bavDgJbtx6a49AfRV3x8O
- ydUySDrABrJA/KKNX3UyekdpD7AUzxdVAsxb3zPvMqy2EFZPPo22iSo2kwwIu5cn2574
- VwYduthCFh5FcFbJN7cpy6mO3v2DoOAqCZk/YhdF9DfRVuIjVKnZhXprhSaxSGAvFSY8
- Gv0Q==
-X-Gm-Message-State: AOJu0Yyekd+jGj5QF5bZ0OCiwImm5TuWELploABCw1vGmY2pT1Ycy4qj
- pnJ1KztIORK3q17s3Gr6NiKLkM7uip0pUNA708BFNhH2r1Ew8n7VtlPZf/BKSndaJktRcnVbG4B
- uv68=
-X-Google-Smtp-Source: AGHT+IEehUY4cPJwEgOJWU5SYmjAo9/YXvfZchEzo4pXMNvpRXEQsZq1r6gd4nidsmcwk7dg9uZYDg==
-X-Received: by 2002:a05:600c:6b06:b0:426:6f1e:ce93 with SMTP id
- 5b1f17b1804b1-42811dfe3d0mr69752425e9.33.1722331318878; 
- Tue, 30 Jul 2024 02:21:58 -0700 (PDT)
+ bh=OQ1Qo4EummoLtaisooBllEpj3+LWFIK8W5rm3kHkgq8=;
+ b=xEMxa6lo8rMZQzaWffM1Fm9+GU8QTDB0sm1T9JZF2dgf7qsVRbNEg5Uc1xzbVgNgJ0
+ e35pt/57AL9uqN9ABY9hjdrQot2AHLTf9cNdTPFvackT8hhaUW2+JF8h5oPIwF9I9K/5
+ KR66sB/05spnUGiyQ0yEg2YLpisZG3+pS4AFKSOmaq5iKejlOkZEVJYBRjVwdhNTh3Ij
+ 3MrAw1128wzoooEKujLxyDgOzdTGwB2CaKSghteZzZ+IEvBhkMmLsRkkCE0e3FuHOD+A
+ QpqWP50UkxTCeCwJWBRig41cotTF14TcPImqZo/qYLbB5Td8A9GouQExFHVQc50iVN6Z
+ Jv+A==
+X-Gm-Message-State: AOJu0Yyo/kinxFVC8bIdDDIT+pazTOLEHrjmKvvoPRNETV4nr1HkULkO
+ ExLfWajcmm5YFKBQjD1xyc39dZ5q6cHK5Te7OTXIy223ToSrCrLKVTFg1uRWlF4HlTvxeuyAMdQ
+ A0oU=
+X-Google-Smtp-Source: AGHT+IFRTF+dUA9Tr+PQeP7ek4VXX28cN88EFTIOg8DPMdw2Go1EPZECbANoRDKe3r5gRZnwH/8ReQ==
+X-Received: by 2002:a05:600c:3541:b0:428:314:f08e with SMTP id
+ 5b1f17b1804b1-42811d736f4mr65614495e9.5.1722331326831; 
+ Tue, 30 Jul 2024 02:22:06 -0700 (PDT)
 Received: from localhost.localdomain (82.red-88-28-10.dynamicip.rima-tde.net.
  [88.28.10.82]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-428089c28f0sm192352015e9.28.2024.07.30.02.21.56
+ 5b1f17b1804b1-427f93594b6sm251246625e9.5.2024.07.30.02.22.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Jul 2024 02:21:58 -0700 (PDT)
+ Tue, 30 Jul 2024 02:22:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bmeng.cn@gmail.com>, Zheyu Ma <zheyuma97@gmail.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-stable@nongnu.org
-Subject: [PATCH-for-9.1 2/5] hw/sd/sdcard: Do not abort when reading DAT lines
- on invalid cmd state
-Date: Tue, 30 Jul 2024 11:21:35 +0200
-Message-ID: <20240730092138.32443-3-philmd@linaro.org>
+Subject: [PATCH-for-9.1 3/5] hw/sd/sdhci: Reset @data_count index on invalid
+ ADMA transfers
+Date: Tue, 30 Jul 2024 11:21:36 +0200
+Message-ID: <20240730092138.32443-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730092138.32443-1-philmd@linaro.org>
 References: <20240730092138.32443-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Guest should not try to read the DAT lines from invalid
-command state. If it still insists to do so, return a
-dummy value.
+We neglected to clear the @data_count index on ADMA error,
+allowing to trigger assertion in sdhci_read_dataport() or
+sdhci_write_dataport().
 
 Cc: qemu-stable@nongnu.org
-Fixes: e2dec2eab0 ("hw/sd/sdcard: Remove default case in read/write on DAT lines")
+Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
 Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2454
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2455
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/sd/sdhci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index c02f04f1ea..b1e6e36b44 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -2540,7 +2540,9 @@ uint8_t sd_read_byte(SDState *sd)
-         break;
- 
-     default:
--        g_assert_not_reached();
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: DAT read illegal for command %s\n",
-+                                       __func__, sd->last_cmd_name);
-+        return dummy_byte;
-     }
- 
-     return ret;
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index d02c3e3963..8293d83556 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -846,6 +846,7 @@ static void sdhci_do_adma(SDHCIState *s)
+                 }
+             }
+             if (res != MEMTX_OK) {
++                s->data_count = 0;
+                 if (s->errintstsen & SDHC_EISEN_ADMAERR) {
+                     trace_sdhci_error("Set ADMA error flag");
+                     s->errintsts |= SDHC_EIS_ADMAERR;
 -- 
 2.45.2
 
