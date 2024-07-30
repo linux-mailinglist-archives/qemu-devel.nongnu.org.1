@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D68940B0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72573940B9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 10:31:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYhxs-0001Zw-Dv; Tue, 30 Jul 2024 04:12:12 -0400
+	id 1sYiF1-0007Cd-4Y; Tue, 30 Jul 2024 04:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhx3-0006rG-B0
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sYhwj-0001ND-PU
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:11:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722327060;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/IcBJJUvdSdN0kBRVvjJDdC45PwUmOYNtwRnS1xygRQ=;
- b=O4hGDP7y4IISVx/9CSgHK8u43r6FSAxTRp0emaG6VB06sbwj2t7LwoqD2+JnM7dP5AX9qm
- OHtzcHbuoE21AkolAx9VxOzscEc/1BS/DZqanHVCQKNwk4l4v6XaV7aUHAGkl3yfLLJGpl
- i/0w5Np4G+k1HBAQH4TEHGw9lkiUYQ4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-SphhJlo4OpGi7sxY1Y86NA-1; Tue,
- 30 Jul 2024 04:10:52 -0400
-X-MC-Unique: SphhJlo4OpGi7sxY1Y86NA-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 040C51955D44; Tue, 30 Jul 2024 08:10:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B006300019A; Tue, 30 Jul 2024 08:10:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1FC2821F4BA3; Tue, 30 Jul 2024 10:10:33 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
- arei.gonglei@huawei.com, berrange@redhat.com, berto@igalia.com,
- borntraeger@linux.ibm.com, clg@kaod.org, david@redhat.com, den@openvz.org,
- eblake@redhat.com, eduardo@habkost.net, farman@linux.ibm.com,
- farosas@suse.de, hreitz@redhat.com, idryomov@gmail.com, iii@linux.ibm.com,
- jamin_lin@aspeedtech.com, jasowang@redhat.com, joel@jms.id.au,
- jsnow@redhat.com, kwolf@redhat.com, leetroy@gmail.com,
- marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
- michael.roth@amd.com, mst@redhat.com, mtosatti@redhat.com,
- nsg@linux.ibm.com, pasic@linux.ibm.com, pbonzini@redhat.com,
- peter.maydell@linaro.org, peterx@redhat.com, philmd@linaro.org,
- pizhenwei@bytedance.com, pl@dlhnet.de, richard.henderson@linaro.org,
- stefanha@redhat.com, steven_lee@aspeedtech.com, thuth@redhat.com,
- vsementsov@yandex-team.ru, wangyanan55@huawei.com,
- yuri.benditovich@daynix.com, zhao1.liu@intel.com, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH 18/18] qapi/cryptodev: Rename QCryptodevBackendAlgType to
- *Algo, and drop prefix
-Date: Tue, 30 Jul 2024 10:10:32 +0200
-Message-ID: <20240730081032.1246748-19-armbru@redhat.com>
-In-Reply-To: <20240730081032.1246748-1-armbru@redhat.com>
-References: <20240730081032.1246748-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sYiEz-00076U-4m
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:29:53 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sYiEx-0004SH-CH
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 04:29:52 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5b391c8abd7so1925099a12.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 01:29:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722328189; x=1722932989; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=bvctSTCxXDG9vkXCPJRFSO2OwM56i0h+SX57avLe2Sg=;
+ b=M/4mS9IqJBN5Th0IgQzBCJ1+1LRDe6cN0zwPEmCSIPTbo2P946F3PGZhWAbJO/pXH0
+ 2nDkd/iDUheQcmrcgNbKORpzqUUKgYyY6pXCZIGNqP7G9o/qPuNsOL1pRRe5nVSd7SoN
+ 5+6yJHvqhV3DhLaZ/H7O9pK4Pgsla8jpUo6AUIw+G8oMBbqhW1IquE4yRxQT7U7alRa9
+ rKLlL9Kn5sJwvsu+NL/MamZxxmivJ97pnyC504c09WAuMbFfze+DoVCPixTjEpdHHFhr
+ 8qjdMuuGP32Q8XDQ9UL3tjvjcQzPYx2f6rAQjC9NNrLvUbbPI/uFhXjkA75rW+ek0bOZ
+ sh2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722328189; x=1722932989;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bvctSTCxXDG9vkXCPJRFSO2OwM56i0h+SX57avLe2Sg=;
+ b=L1VsmW+WZOp73o2ZftuYEUY2hIIS5GVLGlmOEbY5QePbOtCJnTvfSZE9LiueeO2n6B
+ dPWVga7LIwq2BKu1FlB0pliYQK0m+5lK+2bfrv0bo/ghpl7BtLYREB5Og7A0n6dnnq+X
+ g2x2qjjuVwBNXmeQeZl7bipm/FUk6DdxytGuEvfTQwT/tBT/NotVCm6FMT/nbAUdablT
+ dE3SZe/UPdx3vNKASiQQGiJStYZxl7vjWl/kIwL+p0Sz+tWIg1Xr57+c/zT+uLwNTIfa
+ /SVTv8o0wcY7JMmkPDBU3l84qHJ16ceJ04/jk/EDmvUL8UmrMGK8GadLXvXR8bMDpIbF
+ 4CHg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWeche9Du1wGLoT5ZxaIYdtMBlomx8DhW0+5LuxUeVtc2eY4rPmvrMvCJwVQPF5DUN6vquiDOac2YRGxOTLIdW1WnemZ8w=
+X-Gm-Message-State: AOJu0YyzswpQtQxvjHlGAyipHqLYawxP6KcgrLkPrQunvRl1B8kJK/Po
+ ofCO/vght42By6QfoObmT+/tladJRGUYzwK1XN/lSV4taoNFNgjF7kTOZj1TcbCJXMvUnf01apd
+ yMk4cA31GI+cCo4y+nvXIKQFS4W4K/+7uBRMHcA==
+X-Google-Smtp-Source: AGHT+IErCc8jLnL94ZNnMfdPeD4RlLQ0Wtssx5HIgjIRj8h1yZKWV6ZokNRGFXEBilq3W+viB6Om7wZ7Cday52qL5Gg=
+X-Received: by 2002:a50:a411:0:b0:5a1:7d68:62d8 with SMTP id
+ 4fb4d7f45d1cf-5b022c81f43mr5928071a12.38.1722328188753; Tue, 30 Jul 2024
+ 01:29:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <cover.1721630625.git.mchehab+huawei@kernel.org>
+ <bf8367bddfdc95e378b5725c732533c3ba20d388.1721630625.git.mchehab+huawei@kernel.org>
+ <20240730092549.6898ff3c@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240730092549.6898ff3c@imammedo.users.ipa.redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 Jul 2024 09:29:37 +0100
+Message-ID: <CAFEAcA8VWc3eQZqfJP9k5LYF-9aLChHQ+uS9UBfGV6nvybDxqQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] arm/virt: place power button pin number on a define
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Shannon Zhao <shannon.zhaosl@gmail.com>, linux-kernel@vger.kernel.org, 
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,203 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPI's 'prefix' feature can make the connection between enumeration
-type and its constants less than obvious.  It's best used with
-restraint.
+On Tue, 30 Jul 2024 at 08:26, Igor Mammedov <imammedo@redhat.com> wrote:
+>
+> On Mon, 22 Jul 2024 08:45:53 +0200
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+>
+> > Having magic numbers inside the code is not a good idea, as it
+> > is error-prone. So, instead, create a macro with the number
+> > definition.
+> >
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-QCryptodevBackendAlgType a 'prefix' that overrides the generated
-enumeration constants' prefix to QCRYPTODEV_BACKEND_ALG.
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> > index b0c68d66a345..c99c8b1713c6 100644
+> > --- a/hw/arm/virt.c
+> > +++ b/hw/arm/virt.c
+> > @@ -1004,7 +1004,7 @@ static void virt_powerdown_req(Notifier *n, void *opaque)
+> >      if (s->acpi_dev) {
+> >          acpi_send_event(s->acpi_dev, ACPI_POWER_DOWN_STATUS);
+> >      } else {
+> > -        /* use gpio Pin 3 for power button event */
+> > +        /* use gpio Pin for power button event */
+> >          qemu_set_irq(qdev_get_gpio_in(gpio_key_dev, 0), 1);
+>
+> /me confused, it was saying Pin 3 but is passing 0 as argument where as elsewhere
+> you are passing 3. Is this a bug?
 
-We could simply drop 'prefix', but I think the abbreviation "alg" is
-less than clear.
+No. The gpio_key_dev is a gpio-key device which has one
+input (which you assert to "press the key") and one output,
+which goes high when the key is pressed and then falls
+100ms later. The virt board wires up the output of the
+gpio-key device to input 3 on the PL061 GPIO controller.
+(This happens in create_gpio_keys().) So the code is correct
+to assert input 0 on the gpio-key device and the comment
+isn't wrong that this results in GPIO pin 3 being asserted:
+the link is just indirect.
 
-Additionally rename the type to QCryptodevBackendAlgoType.  The prefix
-becomes QCRYPTODEV_BACKEND_ALGO_TYPE.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- qapi/cryptodev.json          |  5 ++---
- include/sysemu/cryptodev.h   |  2 +-
- backends/cryptodev-builtin.c |  6 +++---
- backends/cryptodev-lkcf.c    |  4 ++--
- backends/cryptodev.c         |  6 +++---
- hw/virtio/virtio-crypto.c    | 14 +++++++-------
- 6 files changed, 18 insertions(+), 19 deletions(-)
-
-diff --git a/qapi/cryptodev.json b/qapi/cryptodev.json
-index 65abc16842..5e417340dc 100644
---- a/qapi/cryptodev.json
-+++ b/qapi/cryptodev.json
-@@ -9,7 +9,7 @@
- ##
- 
- ##
--# @QCryptodevBackendAlgType:
-+# @QCryptodevBackendAlgoType:
- #
- # The supported algorithm types of a crypto device.
- #
-@@ -19,8 +19,7 @@
- #
- # Since: 8.0
- ##
--{ 'enum': 'QCryptodevBackendAlgType',
--  'prefix': 'QCRYPTODEV_BACKEND_ALG',
-+{ 'enum': 'QCryptodevBackendAlgoType',
-   'data': ['sym', 'asym']}
- 
- ##
-diff --git a/include/sysemu/cryptodev.h b/include/sysemu/cryptodev.h
-index 96d3998b93..b20822df0d 100644
---- a/include/sysemu/cryptodev.h
-+++ b/include/sysemu/cryptodev.h
-@@ -178,7 +178,7 @@ typedef struct CryptoDevBackendAsymOpInfo {
- typedef void (*CryptoDevCompletionFunc) (void *opaque, int ret);
- 
- typedef struct CryptoDevBackendOpInfo {
--    QCryptodevBackendAlgType algtype;
-+    QCryptodevBackendAlgoType algtype;
-     uint32_t op_code;
-     uint32_t queue_index;
-     CryptoDevCompletionFunc cb;
-diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index 170c93a6be..b1486be630 100644
---- a/backends/cryptodev-builtin.c
-+++ b/backends/cryptodev-builtin.c
-@@ -549,7 +549,7 @@ static int cryptodev_builtin_operation(
-     CryptoDevBackendBuiltinSession *sess;
-     CryptoDevBackendSymOpInfo *sym_op_info;
-     CryptoDevBackendAsymOpInfo *asym_op_info;
--    QCryptodevBackendAlgType algtype = op_info->algtype;
-+    QCryptodevBackendAlgoType algtype = op_info->algtype;
-     int status = -VIRTIO_CRYPTO_ERR;
-     Error *local_error = NULL;
- 
-@@ -561,11 +561,11 @@ static int cryptodev_builtin_operation(
-     }
- 
-     sess = builtin->sessions[op_info->session_id];
--    if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         sym_op_info = op_info->u.sym_op_info;
-         status = cryptodev_builtin_sym_operation(sess, sym_op_info,
-                                                  &local_error);
--    } else if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    } else if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         asym_op_info = op_info->u.asym_op_info;
-         status = cryptodev_builtin_asym_operation(sess, op_info->op_code,
-                                                   asym_op_info, &local_error);
-diff --git a/backends/cryptodev-lkcf.c b/backends/cryptodev-lkcf.c
-index 0dc4b067f5..38deac0717 100644
---- a/backends/cryptodev-lkcf.c
-+++ b/backends/cryptodev-lkcf.c
-@@ -474,7 +474,7 @@ static int cryptodev_lkcf_operation(
-     CryptoDevBackendLKCF *lkcf =
-         CRYPTODEV_BACKEND_LKCF(backend);
-     CryptoDevBackendLKCFSession *sess;
--    QCryptodevBackendAlgType algtype = op_info->algtype;
-+    QCryptodevBackendAlgoType algtype = op_info->algtype;
-     CryptoDevLKCFTask *task;
- 
-     if (op_info->session_id >= MAX_SESSIONS ||
-@@ -485,7 +485,7 @@ static int cryptodev_lkcf_operation(
-     }
- 
-     sess = lkcf->sess[op_info->session_id];
--    if (algtype != QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    if (algtype != QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         error_report("algtype not supported: %u", algtype);
-         return -VIRTIO_CRYPTO_NOTSUPP;
-     }
-diff --git a/backends/cryptodev.c b/backends/cryptodev.c
-index 76dfe65904..d8bd2a1ae6 100644
---- a/backends/cryptodev.c
-+++ b/backends/cryptodev.c
-@@ -185,10 +185,10 @@ static int cryptodev_backend_operation(
- static int cryptodev_backend_account(CryptoDevBackend *backend,
-                  CryptoDevBackendOpInfo *op_info)
- {
--    enum QCryptodevBackendAlgType algtype = op_info->algtype;
-+    enum QCryptodevBackendAlgoType algtype = op_info->algtype;
-     int len;
- 
--    if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
-         len = asym_op_info->src_len;
- 
-@@ -212,7 +212,7 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
-         default:
-             return -VIRTIO_CRYPTO_NOTSUPP;
-         }
--    } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    } else if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
-         len = sym_op_info->src_len;
- 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index 0ab8ae3282..6e9d8293da 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -461,7 +461,7 @@ static void virtio_crypto_init_request(VirtIOCrypto *vcrypto, VirtQueue *vq,
-     req->in_iov = NULL;
-     req->in_num = 0;
-     req->in_len = 0;
--    req->flags = QCRYPTODEV_BACKEND_ALG__MAX;
-+    req->flags = QCRYPTODEV_BACKEND_ALGO_TYPE__MAX;
-     memset(&req->op_info, 0x00, sizeof(req->op_info));
- }
- 
-@@ -471,7 +471,7 @@ static void virtio_crypto_free_request(VirtIOCryptoReq *req)
-         return;
-     }
- 
--    if (req->flags == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         size_t max_len;
-         CryptoDevBackendSymOpInfo *op_info = req->op_info.u.sym_op_info;
- 
-@@ -486,7 +486,7 @@ static void virtio_crypto_free_request(VirtIOCryptoReq *req)
-             memset(op_info, 0, sizeof(*op_info) + max_len);
-             g_free(op_info);
-         }
--    } else if (req->flags == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    } else if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         CryptoDevBackendAsymOpInfo *op_info = req->op_info.u.asym_op_info;
-         if (op_info) {
-             g_free(op_info->src);
-@@ -571,10 +571,10 @@ static void virtio_crypto_req_complete(void *opaque, int ret)
-     VirtIODevice *vdev = VIRTIO_DEVICE(vcrypto);
-     uint8_t status = -ret;
- 
--    if (req->flags == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         virtio_crypto_sym_input_data_helper(vdev, req, status,
-                                             req->op_info.u.sym_op_info);
--    } else if (req->flags == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    } else if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         virtio_crypto_akcipher_input_data_helper(vdev, req, status,
-                                              req->op_info.u.asym_op_info);
-     }
-@@ -884,7 +884,7 @@ virtio_crypto_handle_request(VirtIOCryptoReq *request)
-     switch (opcode) {
-     case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
-     case VIRTIO_CRYPTO_CIPHER_DECRYPT:
--        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALG_SYM;
-+        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALGO_TYPE_SYM;
-         ret = virtio_crypto_handle_sym_req(vcrypto,
-                          &req.u.sym_req, op_info,
-                          out_iov, out_num);
-@@ -894,7 +894,7 @@ virtio_crypto_handle_request(VirtIOCryptoReq *request)
-     case VIRTIO_CRYPTO_AKCIPHER_DECRYPT:
-     case VIRTIO_CRYPTO_AKCIPHER_SIGN:
-     case VIRTIO_CRYPTO_AKCIPHER_VERIFY:
--        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALG_ASYM;
-+        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM;
-         ret = virtio_crypto_handle_asym_req(vcrypto,
-                          &req.u.akcipher_req, op_info,
-                          out_iov, out_num);
--- 
-2.45.0
-
+thanks
+-- PMM
 
