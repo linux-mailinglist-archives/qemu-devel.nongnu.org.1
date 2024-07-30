@@ -2,180 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B56941544
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 17:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E4794147B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 16:35:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYoZz-0000Hz-Md; Tue, 30 Jul 2024 11:15:59 -0400
+	id 1sYnvy-0000m7-7d; Tue, 30 Jul 2024 10:34:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1sYoZv-0000B1-Qj; Tue, 30 Jul 2024 11:15:56 -0400
-Received: from mail-co1nam11on20600.outbound.protection.outlook.com
- ([2a01:111:f403:2416::600]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <berto@igalia.com>)
+ id 1sYnvw-0000hl-B0; Tue, 30 Jul 2024 10:34:36 -0400
+Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1sYoZt-00061I-EX; Tue, 30 Jul 2024 11:15:55 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S8bjJRUqBd3ODxRLXhJ+2muPBcDMcefdBwswDkNCbzjsy4xeIKf6eiNsWmU01xsO5wIgZ2paw2KiuGgsKUJxKxZtyuYlS8mCru41hLvva2ApiI3MhD/xX1VPTaFFbdEYYX9zWYFj6PxwFsNa5bLykTT3AayZt+Ru8i87t6JGOYPefUjBDykFdcQlrObaGz6V369AcmwoQxNsmRFCMga15PD1Fn+XAbbo4moKEq+8gYpfAs34nx/a9y+SOCvwxv/daWjt2/JgwgWSpJc4hcsWI6YwFIkYoMpdI3vzVS9hafND+4NLgmGJ6c34ce20+azXrmyFUD/1o9Z1iWdB5ToG8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lMlUjwW6lf1Jym/HW6MX9NE6dYvNtx3uj2pPSlwVBwY=;
- b=HGborSZakw8EzEAxRa9dCXU8/DFwU59tVkBiv4zvu3u1yAT5LzVbp3blQaUeGGDwULX2LZ5GGuUyfRhx+/U9/WklaNCw4tduBpVMOCA9+YA79Gj4exr/ICWYoDiER+oL2ocYLXtl1vGf/hAHiX8VJ0ibyyvLo6+cekiT/Dvgi4//YJPFUfwmNIXisWIr2Wj8qBPih5ll7AP2eJUa8rOYdLWqSEjqNnA6xeoeE1Ds4cpIBvIS8hiSx2eR5tLGCQg1N2xf9m3ea4ebzIOGQYIcWZJ1GfyUjs3lPYrqscb3nYw3nNsQASXP9wv0Da130mDWniqg7E3Az+zWaPWt0kx/Nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lMlUjwW6lf1Jym/HW6MX9NE6dYvNtx3uj2pPSlwVBwY=;
- b=Qn6Y8qPvDTqTagY38akAjbGQThKUV+2Bm2B4JtV6YenYvSS1uQuWZrS1z5YHc97/TACGckfiuEQHd3xKht4zeOybF+pKnIwEUlo8wsYzOIpxVdV4d0Qwwtnx5FO1CpMg9crippk0uBPQB7RkWEFzk+ZMpYNbv+HhQ2KVrhCXr+kRlUTl6CplqiqU65kq8VJTEUKTh4+Ddwqs6mmzzrMUxpyNahjuOf+Amc67BQC5kjbX1YPVyW0+UnvR7+uq5iSjRubL418IsWDNcuuo67lYqGHE76mFmyO7ZywDpbgnvnlanuPzfwgjegDyVZ/uLb/QI1inO7lT7IO6sMJG4thdAA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by DS0PR12MB6535.namprd12.prod.outlook.com (2603:10b6:8:c0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
- 2024 13:33:49 +0000
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::e2a0:b00b:806b:dc91]) by DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::e2a0:b00b:806b:dc91%6]) with mapi id 15.20.7828.016; Tue, 30 Jul 2024
- 13:33:49 +0000
-Message-ID: <9b147a34-4641-4b4c-a050-51ceb3ea6a67@nvidia.com>
-Date: Tue, 30 Jul 2024 16:33:31 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/18] qapi: Smarter camel_to_upper() to reduce need for
- 'prefix'
-To: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com,
- andrew@codeconstruct.com.au, andrew@daynix.com, arei.gonglei@huawei.com,
- berto@igalia.com, borntraeger@linux.ibm.com, clg@kaod.org, david@redhat.com,
- den@openvz.org, eblake@redhat.com, eduardo@habkost.net,
- farman@linux.ibm.com, farosas@suse.de, hreitz@redhat.com,
- idryomov@gmail.com, iii@linux.ibm.com, jamin_lin@aspeedtech.com,
- jasowang@redhat.com, joel@jms.id.au, jsnow@redhat.com, kwolf@redhat.com,
- leetroy@gmail.com, marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
- michael.roth@amd.com, mst@redhat.com, mtosatti@redhat.com,
- nsg@linux.ibm.com, pasic@linux.ibm.com, pbonzini@redhat.com,
- peter.maydell@linaro.org, peterx@redhat.com, philmd@linaro.org,
- pizhenwei@bytedance.com, pl@dlhnet.de, richard.henderson@linaro.org,
- stefanha@redhat.com, steven_lee@aspeedtech.com, thuth@redhat.com,
- vsementsov@yandex-team.ru, wangyanan55@huawei.com,
- yuri.benditovich@daynix.com, zhao1.liu@intel.com, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20240730081032.1246748-1-armbru@redhat.com>
- <20240730081032.1246748-2-armbru@redhat.com> <ZqiutRoQuAsrllfj@redhat.com>
- <87mslzgjde.fsf@pond.sub.org>
-Content-Language: en-US
-From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <87mslzgjde.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P265CA0013.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::9) To DM6PR12MB5549.namprd12.prod.outlook.com
- (2603:10b6:5:209::13)
+ (Exim 4.90_1) (envelope-from <berto@igalia.com>)
+ id 1sYnvs-0004RT-46; Tue, 30 Jul 2024 10:34:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=H7Mea8AhJANtTLIOkwdIE/zKAkIOn2Va3ejkl13aTxc=; b=WTfX3nIaWuigIeEzOKQvfPTCfI
+ 0j13ZlbzSiMouQEoJBgvgnJh9HGH6bh28cEUW+svhQWTAs/bKm+WYuTm3HUqvLyDZNwSM/53qqS/c
+ ElB7tjFtSYJ8/VtI+z/9gYputjuSFCbkKB9XlK+tXhErKYjLg4izGYaW/S3cSZ4IVZPc8PEVoWHer
+ U+YqnBc2Nuf+6pwaFHziTk8OW8FbZPU7J5tsSS1KiZqBSCsqqPh+7ZlA4bqGmX+wojFp5s6LDXuit
+ m1mVZOBmrYXd165Zv/8YhUv8uEg4v1Xa7dl2sAbGfoiCErjZMJKBZhLVfNMbuD2hijsVixGh6UoP9
+ 9fc1c/vQ==;
+Received: from ip40.wifi.igalia.com ([192.168.12.40] helo=zeus.local)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1sYne3-005cfB-HP; Tue, 30 Jul 2024 16:16:07 +0200
+Received: from berto by zeus.local with local (Exim 4.96)
+ (envelope-from <berto@igalia.com>) id 1sYne3-000FiW-0u;
+ Tue, 30 Jul 2024 16:16:07 +0200
+From: Alberto Garcia <berto@igalia.com>
+To: qemu-devel@nongnu.org
+Cc: Alberto Garcia <berto@igalia.com>, qemu-block@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>, Nir Soffer <nsoffer@redhat.com>,
+ Madeeha Javed <javed@igalia.com>
+Subject: [PATCH v4] scripts/qcow2-to-stdout.py: Add script to write qcow2
+ images to stdout
+Date: Tue, 30 Jul 2024 16:15:52 +0200
+Message-Id: <20240730141552.60404-1-berto@igalia.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DS0PR12MB6535:EE_
-X-MS-Office365-Filtering-Correlation-Id: b635dc1c-a7d9-4b12-776b-08dcb09c3e88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?bDYxNkk0bmJVbnZXMEVSRkxDTGJZMTVQaHNjSHh5MVViak1FenBOaGg4RWdT?=
- =?utf-8?B?NXdQbmQyQkIzTWtYSlhaMWNXSmE4eFRidTBVUGYvZkxDWnFscWhSNlErSkc1?=
- =?utf-8?B?bzljTE04dTFWdDQwbzEyZHhBL1FrZk51T1d6YWhUeXFibVYydll1dXN0T2Iy?=
- =?utf-8?B?OU5jN2dsekZ3MVJtVmlxUTd6VjJCSDdBTHRPYnZFQW9kMkRuQ1hVZXVTLzZL?=
- =?utf-8?B?WEE5U2duK3UvQTZwQjNCSDJBcTJzM0UvbnVtS2Y0dytvV1R2c2tKZTNSTys5?=
- =?utf-8?B?aitram1zZ3NIN01TNDVLM3V1cDNVTVFGbjBCaVV4YmhqM29XdVZVeXNJbzZD?=
- =?utf-8?B?aTcrU2xFeCtnSXRQTktQV01vVThDQVJJdExwUUFHSEUxdzdXQ1R1QmQrcklr?=
- =?utf-8?B?VVFlbGlSOENSZkR6d3BhTkpmQzVNWnNnMExRL1F1TjBlMWhYQ0hqUnVMUFN2?=
- =?utf-8?B?eElrMDFFOGJHSFRDMzNuSGdjOEZVeUlOLytRcW81ZGtvMTFEd1oyb05pNGdn?=
- =?utf-8?B?czV6Nm5uK2dmZ0tFZEFQY1REYS9XejU3N1REM2ZOUzErVHZqMkVmQkFtdksw?=
- =?utf-8?B?QlUrU24vU1ZnTWJGN0xoRjhiMGFoYmhhaVRZYzcxbTJzcm80MU5tdGhic1BH?=
- =?utf-8?B?dGIwVCszZ1IyNG1PR1pGczRLL05MQktPdVIrOGRQNEQ2aytsNGJ6QTJ4ck5F?=
- =?utf-8?B?bUNUbHh3NkxIcCt6OXNXb0dnelVQRldmZGJsSEFnZEc3eTZmWmFMb2ZkYmMw?=
- =?utf-8?B?cEFDNUpvemcrN2lUSXNoOWd2ajB5d01WK2FKT0J0Tis4bWhQcXZmRU5pWWNV?=
- =?utf-8?B?WXE2cmd3aVhoa0xZeThYVXZqV0xiaUg3bGxiV1RvbXdMNUJEUjBlektCUUVL?=
- =?utf-8?B?ODJTMjhNdW44QVpBeGMxdDh3eVFPZEViaFFldzNwL0FBbE5wWEdJZFdNa1ZY?=
- =?utf-8?B?VjNxZWI3cytIcjdOeDl5V3pLNUZHQ2FRUUFNZlptVjczdkhaVTc3WFdmTHk4?=
- =?utf-8?B?MnRhTkovRWg2YmxpQXJiaHZYUGQyWHBrQ2NNNnQ3VGNYWnpwYnNPbFJ2TExQ?=
- =?utf-8?B?WmVzQ1JDeFRyUnJnYS9qeWxKbkkxZExjYVdPK0lzQ1M1eEFqSWk4Nk83ajMz?=
- =?utf-8?B?NjE1aitFYStic1NQUjErVnBmNjlwSUVRV0NjeVBvNzZkT3hYbnZyc1pRNlBt?=
- =?utf-8?B?TjJHQjZlYzNTdG4raW1uZ0RMZTJnd2xGSG1sUFduNFhHOGNEVDVZQ1k4b1Vu?=
- =?utf-8?B?UnJrMXVzbmovRStNQndyYWtMT05aWm5La20vcEVjRlF4V3RTMmQ2SFdrTmJW?=
- =?utf-8?B?TUd6b3oySnpPSFU0bThTVmlEeHVpT21KZHlkZDRPeGZnaEswNVlsdTg5ZzhN?=
- =?utf-8?B?WElPaGFvNnZXQXhOMnM4cHNRVUkvRjcyTlNXVW9UWjlKNXRSZGRxVldnV0li?=
- =?utf-8?B?K0RHbnRoZ0RzN252YjRyY0FiaWJxM2FrbUtVUnpFOGNTakFycEN4bFZTVVpz?=
- =?utf-8?B?SmxJTCs2VkFOV09INkMxcDI2MnZBdWt3cG5FSGxJYzFwaGxwQUJEV3I1SVVS?=
- =?utf-8?B?dExPbjJ6OFJYaElFRytKYmNmODBnMU1MTVMycDhmWWNSUUdYRFFJeHozQTVD?=
- =?utf-8?B?V2JIVlFWNHdmNzVaNS90c0FKVG5CaXpQRmxENi9FYXZZMm5yS016d1A2R01N?=
- =?utf-8?B?Ri9iTlFSNk4zamJYemx2WjFZRkFOeTI1dVgrNHNTMnYxS1NWZTh3ckR3S1V2?=
- =?utf-8?B?REtEbmRMc0plQ2F6UG5xZFdYOWhXajJ3RFg0SDN1MUxGZElYdmo5dS94bStY?=
- =?utf-8?B?eGd1NVJmL2oxdEYyZ3YvUT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(7416014)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?KythcWNwK0poelFHb3o3MHNUejNlWXpiZWgvTzQyNHZTYnBJdXFubUlwVHlB?=
- =?utf-8?B?V2liTUZ6TkswRWtjUmpwY01nRVhrazViMlZqU2E3QkZEMWVGNi9GcG04bkN5?=
- =?utf-8?B?QWEvRUQ0czIraGtRVW1ubTVRanpta3VvRlBJN2c4QWlocGFlZlZ0ZkNpbHE3?=
- =?utf-8?B?QkVmRFBZcXBERUZnMmRqWDMvSHhick96eUVXaXB6ei9uTDM2WVhlSkk0V1RM?=
- =?utf-8?B?MTBsSE5LRXdPMjJqRTVQdnBsWVZOK2JBSVV0VEFCQ1NlZ2hHS1dBNml6a0Vn?=
- =?utf-8?B?NmdQSGpTaDhiNGNVdStBcTh1U2hBYUsvU1dtNHdvWFA1NWduZnl4WjAxZ08v?=
- =?utf-8?B?R1lQNVFHc01UdlRjdDZrRTdwUWZnQytuempNeWJobVZkSUtET3lFMG4yWFZR?=
- =?utf-8?B?ZWRiaGZNTWMyeXk4cDFCSXRKVGRSMUpscVF5TE5NSEdNZ0VvM1lpclp6dUVV?=
- =?utf-8?B?K1Arb09nRnhqSGNqSDUvSjA4Z2pmSjZraW5uTTh5UWtSc1FSUGRCTTJDZERY?=
- =?utf-8?B?bkdtcGhiK2dVYnhXMGlvZ2lrOHJ1c1NPMi9GbWxqL29tN0FQc0lHZ3prUW9G?=
- =?utf-8?B?RngrZmpjMmdKazJOMzRiZE5qdFVSUGJydEhJSjF3QXplQzlMVTF5QjV4OFZD?=
- =?utf-8?B?SSsrL1hUTVh1VjQ5MVp4RDkrZmJPc1BnYkYvdGZaNlllWlMrVnpqRmRKczJQ?=
- =?utf-8?B?VEovS0NlYW5DU3BjMzRza1FtWEFiMmtUcGg1MVRITFpqVDk3VXhWUUk5Qlpt?=
- =?utf-8?B?YlVqVWRJekZDVDIvUGVpZUEwMjkzc3RJa25leTlIWXhRd0xXcjBvV0o1eFBM?=
- =?utf-8?B?b2xtcG9qREpFNzdERFdiaDY3Ui9JeVA4RXlvVnBZODQrSlYvY0p6aVBzWm93?=
- =?utf-8?B?aFJIajVubFNucVU5cVFrNSs1SkRKRkliWDZvemdvdGw1RWFCSXpZWkxFM2s4?=
- =?utf-8?B?V0RGNnUxZFhXOVBRWElCU0JCd0FCZFhvSmtES2FqSXY5UHc5UndDVEJMUXBH?=
- =?utf-8?B?b3d2VTVKTmE0c0lKdlJRNk5ST0NWT25OVUJqc0cwTFJiRTJsSHdqWEIrQ3Vr?=
- =?utf-8?B?dGh6T29ERTNaVzJ0SlRNL1RnYTlVbnJnMVI0cGNkMHArcmoxMmFQcDY5Yjd1?=
- =?utf-8?B?VzA0RkxJQU1meEh5NGtaRmtMb2ZmSEdZdEp1bnFNL1VCcVB6ZmNHbzRFWHRS?=
- =?utf-8?B?QVRGanRxdDBTblJnWnZaVlFad1M4RTFQMU9VWGRSUDAyandLb1pFTHFGbDE0?=
- =?utf-8?B?WXdMdnZHS3lzZWJIclZETlRnY0pnS093SGdvcnFjZlVvdmZuSTBkNHcrd0d3?=
- =?utf-8?B?RFJQK0krbkp6RW53OVdIVjBTbmUwd0RnWUdyUFZ4RkJMU1krRFFQUVJuN0dp?=
- =?utf-8?B?Q3gvTEQ0NjdYdEQyNEJ6Y2JCTFFFQ0lJcWJvRXhDSEFzcUt5NFJReWhJalk5?=
- =?utf-8?B?c2dnK3pMdHUvYVBXbFp0TVpKVTFiWmtIUHlVZ09KM2U3dE5hWHErMmFJV3U0?=
- =?utf-8?B?b0RRVjNLeUNlRUhUVmFyR21KMlROUDZ5TzFZbnNTWHIxUXdTTE1LWWdsb2JT?=
- =?utf-8?B?TVpkb0JMS1BEZ0hIa0U0RmZlcElYazE2SDNzNWQ0b0o2aVJrQy9MeEwxUGxz?=
- =?utf-8?B?M2pDZjBKdHEwbklmNE53b09HOVZQbTZiMWg2VWRsN1Q0R0t3V2VzaGVvd2JS?=
- =?utf-8?B?amhmT1VpYzRGY3VocmJHNW1La3FqTTZjU1MxNm9KdGdLaWt5SStVdWlvdVRu?=
- =?utf-8?B?YlRNd3ZZTkNqQjZscm9QTyttWERUZXBNMEFKZWc3WmdaUmdhdGNYK3JhMFMz?=
- =?utf-8?B?M3BxUnZiV3ErQWtXY3VqeCszZW12VkgrUjNZNkNGNzlhdytsUStyNUhQN1gr?=
- =?utf-8?B?Qjd6V3YzckpYYlVaWCt4UGVVRHBvQTBrYnp4UVllVUZLeERIVmZNcGhrZDdi?=
- =?utf-8?B?Mi91eHJ3b2NuUEx4T3lFTERyVUIvM204RDhCR21iQWZqcFUybExFbEVkdVRK?=
- =?utf-8?B?dDIyUDNEQlNrdXpHNGZIOFdPU2Qxb1FneWF3SWhCVEtGTFhLQUdsUktLRmRH?=
- =?utf-8?B?RE5ITFgxdEN0UDJNOXkxOWZvZEROc3h2RC9qbC9pbXBtamRUK2x3MnhyZXQy?=
- =?utf-8?Q?KCgNE1NT8GlwoXo7suf3Wo431?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b635dc1c-a7d9-4b12-776b-08dcb09c3e88
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 13:33:49.2835 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j9+baKPkIvMWRNd6dRd8/O0VT97Kx8ULu/TemtZb5g+tgQYBCdnC0o2bi4cjBu3kNihMjaJMpgKXCUOxtsrYXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6535
-Received-SPF: softfail client-ip=2a01:111:f403:2416::600;
- envelope-from=avihaih@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
+ helo=fanzine2.igalia.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -191,258 +73,532 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This tool converts a disk image to qcow2, writing the result directly
+to stdout. This can be used for example to send the generated file
+over the network.
 
-On 30/07/2024 15:22, Markus Armbruster wrote:
-> External email: Use caution opening links or attachments
->
->
-> Avihai, there's a question for you on VfioMigrationState.
->
-> Daniel P. Berrangé <berrange@redhat.com> writes:
->
->> On Tue, Jul 30, 2024 at 10:10:15AM +0200, Markus Armbruster wrote:
->>> camel_to_upper() converts its argument from camel case to upper case
->>> with '_' between words.  Used for generated enumeration constant
->>> prefixes.
->>>
->>> When some of the words are spelled all caps, where exactly to insert
->>> '_' is guesswork.  camel_to_upper()'s guesses are bad enough in places
->>> to make people override them with a 'prefix' in the schema.
->>>
->>> Rewrite it to guess better:
->>>
->>> 1. Insert '_' after a non-upper case character followed by an upper
->>>     case character:
->>>
->>>         OneTwo -> ONE_TWO
->>>         One2Three -> ONE2_THREE
->>>
->>> 2. Insert '_' before the last upper case character followed by a
->>>     non-upper case character:
->>>
->>>         ACRONYMWord -> ACRONYM_Word
->>>
->>>     Except at the beginning (as in OneTwo above), or when there is
->>>     already one:
->>>
->>>         AbCd -> AB_CD
->>>
->>> This changes the default enumeration constant prefix for a number of
->>> enums.  Generated enumeration constants change only where the default
->>> is not overridden with 'prefix'.
->>>
->>> The following enumerations without a 'prefix' change:
->>>
->>>      enum                                 old camel_to_upper()
->>>                                   new camel_to_upper()
->>>      ------------------------------------------------------------------
->>>      DisplayGLMode                   DISPLAYGL_MODE
->>>                                   DISPLAY_GL_MODE
->>>      EbpfProgramID                   EBPF_PROGRAMID
->>>                                   EBPF_PROGRAM_ID
->>>      HmatLBDataType                  HMATLB_DATA_TYPE
->>>                                   HMAT_LB_DATA_TYPE
->>>      HmatLBMemoryHierarchy           HMATLB_MEMORY_HIERARCHY
->>>                                   HMAT_LB_MEMORY_HIERARCHY
->>>      MultiFDCompression              MULTIFD_COMPRESSION
->>>                                   MULTI_FD_COMPRESSION
->>>      OffAutoPCIBAR                   OFF_AUTOPCIBAR
->>>                                   OFF_AUTO_PCIBAR
->>>      QCryptoBlockFormat              Q_CRYPTO_BLOCK_FORMAT
->>>                                   QCRYPTO_BLOCK_FORMAT
->>>      QCryptoBlockLUKSKeyslotState    Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE
->>>                                   QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE
->>>      QKeyCode                        Q_KEY_CODE
->>>                                   QKEY_CODE
->>>      XDbgBlockGraphNodeType          X_DBG_BLOCK_GRAPH_NODE_TYPE
->>>                                   XDBG_BLOCK_GRAPH_NODE_TYPE
->>>      TestUnionEnumA               TEST_UNION_ENUMA
->>>                                   TEST_UNION_ENUM_A
->>>
->>> Add a 'prefix' so generated code doesn't change now.  Subsequent
->>> commits will remove most of them again.  Two will remain:
->>> MULTIFD_COMPRESSION, because migration code generally spells "multifd"
->>> that way, and Q_KEY_CODE, because that one is baked into
->>> subprojects/keycodemapdb/tools/keymap-gen.
->>>
->>> The following enumerations with a 'prefix' change so that the prefix
->>> is now superfluous:
->>>
->>>      enum                                 old camel_to_upper()
->>>                                   new camel_to_upper() [equal to prefix]
->>>      ------------------------------------------------------------------
->>>      BlkdebugIOType                  BLKDEBUGIO_TYPE
->>>                                   BLKDEBUG_IO_TYPE
->>>      QCryptoTLSCredsEndpoint         Q_CRYPTOTLS_CREDS_ENDPOINT
->>>                                   QCRYPTO_TLS_CREDS_ENDPOINT
->>>      QCryptoSecretFormat             Q_CRYPTO_SECRET_FORMAT
->>>                                   QCRYPTO_SECRET_FORMAT
->>>      QCryptoCipherMode               Q_CRYPTO_CIPHER_MODE
->>>                                   QCRYPTO_CIPHER_MODE
->>>      QCryptodevBackendType           Q_CRYPTODEV_BACKEND_TYPE
->>>                                   QCRYPTODEV_BACKEND_TYPE
->>>      QType [builtin]                 Q_TYPE
->>>                                   QTYPE
->>>
->>> Drop these prefixes.
->>>
->>> The following enumerations with a 'prefix' change without making the
->>> 'prefix' superfluous:
->>>
->>>      enum                                 old camel_to_upper()
->>>                                   new camel_to_upper() [equal to prefix]
->>>                                   prefix
->>>      ------------------------------------------------------------------
->>>      CpuS390Entitlement              CPUS390_ENTITLEMENT
->>>                                   CPU_S390_ENTITLEMENT
->>>                                   S390_CPU_ENTITLEMENT
->>>      CpuS390Polarization             CPUS390_POLARIZATION
->>>                                   CPU_S390_POLARIZATION
->>>                                   S390_CPU_POLARIZATION
->>>      CpuS390State                    CPUS390_STATE
->>>                                   CPU_S390_STATE
->>>                                   S390_CPU_STATE
->>>      QAuthZListFormat                Q_AUTHZ_LIST_FORMAT
->>>                                   QAUTH_Z_LIST_FORMAT
->>>                                   QAUTHZ_LIST_FORMAT
->>>      QAuthZListPolicy                Q_AUTHZ_LIST_POLICY
->>>                                   QAUTH_Z_LIST_POLICY
->>>                                   QAUTHZ_LIST_POLICY
->>>      QCryptoAkCipherAlgorithm        Q_CRYPTO_AK_CIPHER_ALGORITHM
->>>                                   QCRYPTO_AK_CIPHER_ALGORITHM
->>>                                   QCRYPTO_AKCIPHER_ALG
->>>      QCryptoAkCipherKeyType          Q_CRYPTO_AK_CIPHER_KEY_TYPE
->>>                                   QCRYPTO_AK_CIPHER_KEY_TYPE
->>>                                   QCRYPTO_AKCIPHER_KEY_TYPE
->>>      QCryptoCipherAlgorithm          Q_CRYPTO_CIPHER_ALGORITHM
->>>                                   QCRYPTO_CIPHER_ALGORITHM
->>>                                   QCRYPTO_CIPHER_ALG
->>>      QCryptoHashAlgorithm            Q_CRYPTO_HASH_ALGORITHM
->>>                                   QCRYPTO_HASH_ALGORITHM
->>>                                   QCRYPTO_HASH_ALG
->>>      QCryptoIVGenAlgorithm           Q_CRYPTOIV_GEN_ALGORITHM
->>>                                   QCRYPTO_IV_GEN_ALGORITHM
->>>                                   QCRYPTO_IVGEN_ALG
->>>      QCryptoRSAPaddingAlgorithm      Q_CRYPTORSA_PADDING_ALGORITHM
->>>                                   QCRYPTO_RSA_PADDING_ALGORITHM
->>>                                   QCRYPTO_RSA_PADDING_ALG
->>>      QCryptodevBackendAlgType        Q_CRYPTODEV_BACKEND_ALG_TYPE
->>>                                   QCRYPTODEV_BACKEND_ALG_TYPE
->>>                                   QCRYPTODEV_BACKEND_ALG
->>>      QCryptodevBackendServiceType    Q_CRYPTODEV_BACKEND_SERVICE_TYPE
->>>                                   QCRYPTODEV_BACKEND_SERVICE_TYPE
->>>                                   QCRYPTODEV_BACKEND_SERVICE
->>>
->>> Subsequent commits will tweak things to remove most of these prefixes.
->>> Only QAUTHZ_LIST_FORMAT and QAUTHZ_LIST_POLICY will remain.
->> IIUC from above those two result in
->>
->>                            QAUTH_Z_LIST_FORMAT
->>                            QAUTH_Z_LIST_POLICY
->>
->> Is it possible to add a 3rd rule
->>
->>   *  Single uppercase letter folds into the previous word
-> I guess we could.
->
->> or are there valid cases where we have a single uppercase
->> that we want to preserve ?
-> Not now, but I'd prefer to leave predictions to economists.
->
->> It sure would be nice to eliminate the 'prefix' concept,
->> that we've clearly over-used, if we can kill the only 2
->> remaining examples.
-> There are a few more, actually.  After this series and outside tests:
->
->      enum                            default prefix camel_to_upper()
->                                      prefix override
->      ------------------------------------------------------------------
->      BlkdebugEvent                   BLKDEBUG_EVENT
->                                      BLKDBG
->      IscsiHeaderDigest               ISCSI_HEADER_DIGEST
->                                      QAPI_ISCSI_HEADER_DIGEST
->      MultiFDCompression              MULTI_FD_COMPRESSION
->                                      MULTIFD_COMPRESSION
->      QAuthZListFormat                QAUTH_Z_LIST_FORMAT
->                                      QAUTHZ_LIST_FORMAT
->      QAuthZListPolicy                QAUTH_Z_LIST_POLICY
->                                      QAUTHZ_LIST_POLICY
->      QKeyCode                        QKEY_CODE
->                                      Q_KEY_CODE
->      VfioMigrationState              VFIO_MIGRATION_STATE
->                                      QAPI_VFIO_MIGRATION_STATE
->
-> Reasons for 'prefix', and what could be done instead of 'prefix':
->
-> * BlkdebugEvent: shorten the prefix.
->
->    Could live with the longer names instead.  Some 90 occurences...
->
-> * IscsiHeaderDigest
->
->    QAPI version of enum iscsi_header_digest from libiscsi's
->    iscsi/iscsi.h.  We use 'prefix' to avoid name clashes.
->
->    Could rename the type to QapiIscsiHeaderDigest instead.
->
-> * MultiFDCompression
->
->    Migration code consistently uses prefixes multifd_, MULTIFD_, and
->    MultiFD_.
->
->    Could rename the type to MultifdCompression instead, but that just
->    moves the inconsistency to the type name.
->
-> * QAuthZListFormat and QAuthZListPolicy
->
->    The authz code consistently uses QAuthZ.
->
->    Could make camel_to_upper() avoid the lone Z instead (and hope that'll
->    remain what we want).
->
-> * QKeyCode
->
->    Q_KEY_CODE is baked into subprojects/keycodemapdb/tools/keymap-gen.
->
->    Could adjust the subproject instead.
->
-> * VfioMigrationState
->
->    Can't see why this one has a prefix.  Avihai, can you enlighten me?
+This is equivalent to using qemu-img to convert a file to qcow2 and
+then writing the result to stdout, with the difference that this tool
+does not need to create this temporary qcow2 file and therefore does
+not need any additional disk space.
 
-linux-headers/linux/vfio.h defines enum vfio_device_mig_state with 
-values VFIO_DEVICE_STATE_STOP etc.
-I used the QAPI prefix to emphasize this is a QAPI entity rather than a 
-VFIO entity.
+Implementing this directly in qemu-img is not really an option because
+it expects the output file to be seekable and it is also meant to be a
+generic tool that supports all combinations of file formats and image
+options. Instead, this tool can only produce qcow2 files with the
+basic options, without compression, encryption or other features.
 
-Thanks.
+The input file is read twice. The first pass is used to determine
+which clusters contain non-zero data and that information is used to
+create the qcow2 header, refcount table and blocks, and L1 and L2
+tables. After all that metadata is created then the second pass is
+used to write the guest data.
 
->
-> Daniel, thoughts?
->
->>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->>> ---
->>>   qapi/block-core.json                     |  3 +-
->>>   qapi/common.json                         |  1 +
->>>   qapi/crypto.json                         |  6 ++--
->>>   qapi/cryptodev.json                      |  1 -
->>>   qapi/ebpf.json                           |  1 +
->>>   qapi/machine.json                        |  1 +
->>>   qapi/migration.json                      |  1 +
->>>   qapi/ui.json                             |  2 ++
->>>   scripts/qapi/common.py                   | 42 ++++++++++++++----------
->>>   scripts/qapi/schema.py                   |  2 +-
->>>   tests/qapi-schema/alternate-array.out    |  1 -
->>>   tests/qapi-schema/comments.out           |  1 -
->>>   tests/qapi-schema/doc-good.out           |  1 -
->>>   tests/qapi-schema/empty.out              |  1 -
->>>   tests/qapi-schema/include-repetition.out |  1 -
->>>   tests/qapi-schema/include-simple.out     |  1 -
->>>   tests/qapi-schema/indented-expr.out      |  1 -
->>>   tests/qapi-schema/qapi-schema-test.json  |  1 +
->>>   tests/qapi-schema/qapi-schema-test.out   |  2 +-
->>>   19 files changed, 37 insertions(+), 33 deletions(-)
->> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Thanks!
->
+By default qcow2-to-stdout.py expects the input to be a raw file, but
+if qemu-storage-daemon is available then it can also be used to read
+images in other formats. Alternatively the user can also run qemu-nbd
+or qemu-storage-daemon manually instead.
+
+Signed-off-by: Alberto Garcia <berto@igalia.com>
+Signed-off-by: Madeeha Javed <javed@igalia.com>
+---
+ scripts/qcow2-to-stdout.py | 449 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 449 insertions(+)
+ create mode 100755 scripts/qcow2-to-stdout.py
+
+v4:
+- Rewrite clusters_with_data() to simplify the code and to prevent the
+  same cluster from being returned more than once.
+- Add support for data_file and data_file_raw [Eric]
+- When allocating the l2_bitmap use the actual number of L1 entries
+  instead of the theoretical maximum. This reduces the memory
+  requirements significantly with larger cluster sizes.
+- Add align_up() function
+- Remove support for v2 images [Eric]
+- Fix typo in commit message [Eric]
+- Minor style fixes
+
+v3: https://lists.gnu.org/archive/html/qemu-block/2024-07/msg00597.html
+- Remove stale 'import atexit' [Nir]
+- Replace all instances of int(x / y) with x // y [Nir]
+- Rename bitmap_test() to bitmap_is_set() [Nir]
+- Use os.path.join() to construct path names [Nir]
+- Rename create_qcow2_file() to write_qcow2_content() [Nir]
+- Create a main() function [Nir]
+- Use os.pread() with the absolute offset instead of seek() [Nir]
+- Detect holes in the input file and skip reading them [Nir]
+
+v2: https://lists.gnu.org/archive/html/qemu-block/2024-07/msg00018.html
+- Define the QCOW2_V3_HDR_LENGTH and QCOW2_FEATURE_NAME_TABLE constants [Manos]
+- Define the QEMU_STORAGE_DAEMON constant
+- Use isfile() instead of exists() for the input file
+- Refuse to write to stdout if it's a tty [Manos]
+- Move the bulk of the code to a function called from __main__ [Manos]
+- Remove the qcow2_ prefix from qcow2_cluster_size and qcow2_refcount_bits
+- Formatting fixes suggested by the Python black formatter [Manos]
+- On error pass the string directly to sys.exit()
+- Capture the output of qemu-storage-daemon [Manos]
+- Use a contextmanager to run qemu-storage-daemon [Manos]
+- Update patch description to mention why this cannot be implemeted directly in qemu-img [Manos]
+
+v1: https://lists.gnu.org/archive/html/qemu-block/2024-06/msg00073.html
+
+diff --git a/scripts/qcow2-to-stdout.py b/scripts/qcow2-to-stdout.py
+new file mode 100755
+index 0000000000..06b7c13ccb
+--- /dev/null
++++ b/scripts/qcow2-to-stdout.py
+@@ -0,0 +1,449 @@
++#!/usr/bin/env python3
++
++# This tool reads a disk image in any format and converts it to qcow2,
++# writing the result directly to stdout.
++#
++# Copyright (C) 2024 Igalia, S.L.
++#
++# Authors: Alberto Garcia <berto@igalia.com>
++#          Madeeha Javed <javed@igalia.com>
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# qcow2 files produced by this script are always arranged like this:
++#
++# - qcow2 header
++# - refcount table
++# - refcount blocks
++# - L1 table
++# - L2 tables
++# - Data clusters
++#
++# A note about variable names: in qcow2 there is one refcount table
++# and one (active) L1 table, although each can occupy several
++# clusters. For the sake of simplicity the code sometimes talks about
++# refcount tables and L1 tables when referring to those clusters.
++
++import argparse
++import errno
++import math
++import os
++import signal
++import struct
++import subprocess
++import sys
++import tempfile
++import time
++from contextlib import contextmanager
++
++QCOW2_DEFAULT_CLUSTER_SIZE = 65536
++QCOW2_DEFAULT_REFCOUNT_BITS = 16
++QCOW2_FEATURE_NAME_TABLE = 0x6803F857
++QCOW2_DATA_FILE_NAME_STRING = 0x44415441
++QCOW2_V3_HEADER_LENGTH = 112  # Header length in QEMU 9.0. Must be a multiple of 8
++QCOW2_INCOMPAT_DATA_FILE_BIT = 2
++QCOW2_AUTOCLEAR_DATA_FILE_RAW_BIT = 1
++QCOW_OFLAG_COPIED = 1 << 63
++QEMU_STORAGE_DAEMON = "qemu-storage-daemon"
++
++
++def bitmap_set(bitmap, idx):
++    bitmap[idx // 8] |= 1 << (idx % 8)
++
++
++def bitmap_is_set(bitmap, idx):
++    return (bitmap[idx // 8] & (1 << (idx % 8))) != 0
++
++
++def bitmap_iterator(bitmap, length):
++    for idx in range(length):
++        if bitmap_is_set(bitmap, idx):
++            yield idx
++
++
++def align_up(num, d):
++    return d * math.ceil(num / d)
++
++
++# Holes in the input file contain only zeroes so we can skip them and
++# save time. This function returns the indexes of the clusters that
++# are known to contain data. Those are the ones that we need to read.
++def clusters_with_data(fd, cluster_size):
++    data_to = 0
++    while True:
++        try:
++            data_from = os.lseek(fd, data_to, os.SEEK_DATA)
++            data_to = align_up(os.lseek(fd, data_from, os.SEEK_HOLE), cluster_size)
++            for idx in range(data_from // cluster_size, data_to // cluster_size):
++                yield idx
++        except OSError as err:
++            if err.errno == errno.ENXIO:  # End of file reached
++                break
++            raise err
++
++
++# write_qcow2_content() expects a raw input file. If we have a different
++# format we can use qemu-storage-daemon to make it appear as raw.
++@contextmanager
++def get_input_as_raw_file(input_file, input_format):
++    if input_format == "raw":
++        yield input_file
++        return
++    try:
++        temp_dir = tempfile.mkdtemp()
++        pid_file = os.path.join(temp_dir, "pid")
++        raw_file = os.path.join(temp_dir, "raw")
++        open(raw_file, "wb").close()
++        ret = subprocess.run(
++            [
++                QEMU_STORAGE_DAEMON,
++                "--daemonize",
++                "--pidfile", pid_file,
++                "--blockdev", f"driver=file,node-name=file0,driver=file,filename={input_file},read-only=on",
++                "--blockdev", f"driver={input_format},node-name=disk0,file=file0,read-only=on",
++                "--export", f"type=fuse,id=export0,node-name=disk0,mountpoint={raw_file},writable=off",
++            ],
++            capture_output=True,
++        )
++        if ret.returncode != 0:
++            sys.exit("[Error] Could not start the qemu-storage-daemon:\n" +
++                     ret.stderr.decode().rstrip('\n'))
++        yield raw_file
++    finally:
++        # Kill the storage daemon on exit
++        # and remove all temporary files
++        if os.path.exists(pid_file):
++            with open(pid_file, "r") as f:
++                pid = int(f.readline())
++            os.kill(pid, signal.SIGTERM)
++            while os.path.exists(pid_file):
++                time.sleep(0.1)
++        os.unlink(raw_file)
++        os.rmdir(temp_dir)
++
++
++def write_features(cluster, offset, data_file_name):
++    if data_file_name is not None:
++        encoded_name = data_file_name.encode("utf-8")
++        padded_name_len = align_up(len(encoded_name), 8)
++        struct.pack_into(f">II{padded_name_len}s", cluster, offset,
++                         QCOW2_DATA_FILE_NAME_STRING,
++                         len(encoded_name),
++                         encoded_name)
++        offset += 8 + padded_name_len
++
++    qcow2_features = [
++        # Incompatible
++        (0, 0, "dirty bit"),
++        (0, 1, "corrupt bit"),
++        (0, 2, "external data file"),
++        (0, 3, "compression type"),
++        (0, 4, "extended L2 entries"),
++        # Compatible
++        (1, 0, "lazy refcounts"),
++        # Autoclear
++        (2, 0, "bitmaps"),
++        (2, 1, "raw external data"),
++    ]
++    struct.pack_into(">I", cluster, offset, QCOW2_FEATURE_NAME_TABLE)
++    struct.pack_into(">I", cluster, offset + 4, len(qcow2_features) * 48)
++    offset += 8
++    for feature_type, feature_bit, feature_name in qcow2_features:
++        struct.pack_into(">BB46s", cluster, offset,
++                         feature_type, feature_bit, feature_name.encode("ascii"))
++        offset += 48
++
++
++def write_qcow2_content(input_file, cluster_size, refcount_bits, data_file_name, data_file_raw):
++    # Some basic values
++    l1_entries_per_table = cluster_size // 8
++    l2_entries_per_table = cluster_size // 8
++    refcounts_per_table  = cluster_size // 8
++    refcounts_per_block  = cluster_size * 8 // refcount_bits
++
++    # Virtual disk size, number of data clusters and L1 entries
++    disk_size = align_up(os.path.getsize(input_file), 512)
++    total_data_clusters = math.ceil(disk_size / cluster_size)
++    l1_entries = math.ceil(total_data_clusters / l2_entries_per_table)
++    allocated_l1_tables = math.ceil(l1_entries / l1_entries_per_table)
++
++    # Max L1 table size is 32 MB (QCOW_MAX_L1_SIZE in block/qcow2.h)
++    if (l1_entries * 8) > (32 * 1024 * 1024):
++        sys.exit("[Error] The image size is too large. Try using a larger cluster size.")
++
++    # Two bitmaps indicating which L1 and L2 entries are set
++    l1_bitmap = bytearray(allocated_l1_tables * l1_entries_per_table // 8)
++    l2_bitmap = bytearray(l1_entries * l2_entries_per_table // 8)
++    allocated_l2_tables = 0
++    allocated_data_clusters = 0
++
++    if data_file_raw:
++        # If data_file_raw is set then all clusters are allocated and
++        # we don't need to read the input file at all.
++        allocated_l2_tables = l1_entries
++        for idx in range(l1_entries):
++            bitmap_set(l1_bitmap, idx)
++        for idx in range(total_data_clusters):
++            bitmap_set(l2_bitmap, idx)
++    else:
++        # Open the input file for reading
++        fd = os.open(input_file, os.O_RDONLY)
++        zero_cluster = bytes(cluster_size)
++        # Read all the clusters that contain data
++        for idx in clusters_with_data(fd, cluster_size):
++            cluster = os.pread(fd, cluster_size, cluster_size * idx)
++            # If the last cluster is smaller than cluster_size pad it with zeroes
++            if len(cluster) < cluster_size:
++                cluster += bytes(cluster_size - len(cluster))
++            # If a cluster has non-zero data then it must be allocated
++            # in the output file and its L2 entry must be set
++            if cluster != zero_cluster:
++                bitmap_set(l2_bitmap, idx)
++                allocated_data_clusters += 1
++                # Allocated data clusters also need their corresponding L1 entry and L2 table
++                l1_idx = math.floor(idx / l2_entries_per_table)
++                if not bitmap_is_set(l1_bitmap, l1_idx):
++                    bitmap_set(l1_bitmap, l1_idx)
++                    allocated_l2_tables += 1
++
++    # Total amount of allocated clusters excluding the refcount blocks and table
++    total_allocated_clusters = 1 + allocated_l1_tables + allocated_l2_tables
++    if data_file_name is None:
++        total_allocated_clusters += allocated_data_clusters
++
++    # Clusters allocated for the refcount blocks and table
++    allocated_refcount_blocks = math.ceil(total_allocated_clusters  / refcounts_per_block)
++    allocated_refcount_tables = math.ceil(allocated_refcount_blocks / refcounts_per_table)
++
++    # Now we have a problem because allocated_refcount_blocks and allocated_refcount_tables...
++    # (a) increase total_allocated_clusters, and
++    # (b) need to be recalculated when total_allocated_clusters is increased
++    # So we need to repeat the calculation as long as the numbers change
++    while True:
++        new_total_allocated_clusters = total_allocated_clusters + allocated_refcount_tables + allocated_refcount_blocks
++        new_allocated_refcount_blocks = math.ceil(new_total_allocated_clusters / refcounts_per_block)
++        if new_allocated_refcount_blocks > allocated_refcount_blocks:
++            allocated_refcount_blocks = new_allocated_refcount_blocks
++            allocated_refcount_tables = math.ceil(allocated_refcount_blocks / refcounts_per_table)
++        else:
++            break
++
++    # Now that we have the final numbers we can update total_allocated_clusters
++    total_allocated_clusters += allocated_refcount_tables + allocated_refcount_blocks
++
++    # At this point we have the exact number of clusters that the output
++    # image is going to use so we can calculate all the offsets.
++    current_cluster_idx = 1
++
++    refcount_table_offset = current_cluster_idx * cluster_size
++    current_cluster_idx += allocated_refcount_tables
++
++    refcount_block_offset = current_cluster_idx * cluster_size
++    current_cluster_idx += allocated_refcount_blocks
++
++    l1_table_offset = current_cluster_idx * cluster_size
++    current_cluster_idx += allocated_l1_tables
++
++    l2_table_offset = current_cluster_idx * cluster_size
++    current_cluster_idx += allocated_l2_tables
++
++    data_clusters_offset = current_cluster_idx * cluster_size
++
++    # Calculate some values used in the qcow2 header
++    if allocated_l1_tables == 0:
++        l1_table_offset = 0
++
++    hdr_cluster_bits = int(math.log2(cluster_size))
++    hdr_refcount_bits = int(math.log2(refcount_bits))
++    hdr_length = QCOW2_V3_HEADER_LENGTH
++    hdr_incompat_features = 0
++    if data_file_name is not None:
++        hdr_incompat_features |= 1 << QCOW2_INCOMPAT_DATA_FILE_BIT
++    hdr_autoclear_features = 0
++    if data_file_raw:
++        hdr_autoclear_features |= 1 << QCOW2_AUTOCLEAR_DATA_FILE_RAW_BIT
++
++    ### Write qcow2 header
++    cluster = bytearray(cluster_size)
++    struct.pack_into(">4sIQIIQIIQQIIQQQQII", cluster, 0,
++        b"QFI\xfb",            # QCOW magic string
++        3,                     # version
++        0,                     # backing file offset
++        0,                     # backing file sizes
++        hdr_cluster_bits,
++        disk_size,
++        0,                     # encryption method
++        l1_entries,
++        l1_table_offset,
++        refcount_table_offset,
++        allocated_refcount_tables,
++        0,                     # number of snapshots
++        0,                     # snapshot table offset
++        hdr_incompat_features,
++        0,                     # compatible features
++        hdr_autoclear_features,
++        hdr_refcount_bits,
++        hdr_length,
++    )
++
++    write_features(cluster, hdr_length, data_file_name)
++
++    sys.stdout.buffer.write(cluster)
++
++    ### Write refcount table
++    cur_offset = refcount_block_offset
++    remaining_refcount_table_entries = allocated_refcount_blocks # Each entry is a pointer to a refcount block
++    while remaining_refcount_table_entries > 0:
++        cluster = bytearray(cluster_size)
++        to_write = min(remaining_refcount_table_entries, refcounts_per_table)
++        remaining_refcount_table_entries -= to_write
++        for idx in range(to_write):
++            struct.pack_into(">Q", cluster, idx * 8, cur_offset)
++            cur_offset += cluster_size
++        sys.stdout.buffer.write(cluster)
++
++    ### Write refcount blocks
++    remaining_refcount_block_entries = total_allocated_clusters # One entry for each allocated cluster
++    for tbl in range(allocated_refcount_blocks):
++        cluster = bytearray(cluster_size)
++        to_write = min(remaining_refcount_block_entries, refcounts_per_block)
++        remaining_refcount_block_entries -= to_write
++        # All refcount entries contain the number 1. The only difference
++        # is their bit width, defined when the image is created.
++        for idx in range(to_write):
++            if refcount_bits == 64:
++                struct.pack_into(">Q", cluster, idx * 8, 1)
++            elif refcount_bits == 32:
++                struct.pack_into(">L", cluster, idx * 4, 1)
++            elif refcount_bits == 16:
++                struct.pack_into(">H", cluster, idx * 2, 1)
++            elif refcount_bits == 8:
++                cluster[idx] = 1
++            elif refcount_bits == 4:
++                cluster[idx // 2] |= 1 << ((idx % 2) * 4)
++            elif refcount_bits == 2:
++                cluster[idx // 4] |= 1 << ((idx % 4) * 2)
++            elif refcount_bits == 1:
++                cluster[idx // 8] |= 1 << (idx % 8)
++        sys.stdout.buffer.write(cluster)
++
++    ### Write L1 table
++    cur_offset = l2_table_offset
++    for tbl in range(allocated_l1_tables):
++        cluster = bytearray(cluster_size)
++        for idx in range(l1_entries_per_table):
++            l1_idx = tbl * l1_entries_per_table + idx
++            if bitmap_is_set(l1_bitmap, l1_idx):
++                struct.pack_into(">Q", cluster, idx * 8, cur_offset | QCOW_OFLAG_COPIED)
++                cur_offset += cluster_size
++        sys.stdout.buffer.write(cluster)
++
++    ### Write L2 tables
++    cur_offset = data_clusters_offset
++    for tbl in range(l1_entries):
++        # Skip the empty L2 tables. We can identify them because
++        # there is no L1 entry pointing at them.
++        if bitmap_is_set(l1_bitmap, tbl):
++            cluster = bytearray(cluster_size)
++            for idx in range(l2_entries_per_table):
++                l2_idx = tbl * l2_entries_per_table + idx
++                if bitmap_is_set(l2_bitmap, l2_idx):
++                    if data_file_name is None:
++                        struct.pack_into(">Q", cluster, idx * 8, cur_offset | QCOW_OFLAG_COPIED)
++                        cur_offset += cluster_size
++                    else:
++                        struct.pack_into(">Q", cluster, idx * 8, (l2_idx * cluster_size) | QCOW_OFLAG_COPIED)
++            sys.stdout.buffer.write(cluster)
++
++    ### Write data clusters
++    if data_file_name is None:
++        for idx in bitmap_iterator(l2_bitmap, total_data_clusters):
++            cluster = os.pread(fd, cluster_size, cluster_size * idx)
++            # If the last cluster is smaller than cluster_size pad it with zeroes
++            if len(cluster) < cluster_size:
++                cluster += bytes(cluster_size - len(cluster))
++            sys.stdout.buffer.write(cluster)
++
++    if not data_file_raw:
++        os.close(fd)
++
++
++def main():
++    # Command-line arguments
++    parser = argparse.ArgumentParser(
++        description="This program converts a QEMU disk image to qcow2 "
++        "and writes it to the standard output"
++    )
++    parser.add_argument("input_file", help="name of the input file")
++    parser.add_argument(
++        "-f",
++        dest="input_format",
++        metavar="input_format",
++        help="format of the input file (default: raw)",
++        default="raw",
++    )
++    parser.add_argument(
++        "-c",
++        dest="cluster_size",
++        metavar="cluster_size",
++        help=f"qcow2 cluster size (default: {QCOW2_DEFAULT_CLUSTER_SIZE})",
++        default=QCOW2_DEFAULT_CLUSTER_SIZE,
++        type=int,
++        choices=[1 << x for x in range(9, 22)],
++    )
++    parser.add_argument(
++        "-r",
++        dest="refcount_bits",
++        metavar="refcount_bits",
++        help=f"width of the reference count entries (default: {QCOW2_DEFAULT_REFCOUNT_BITS})",
++        default=QCOW2_DEFAULT_REFCOUNT_BITS,
++        type=int,
++        choices=[1 << x for x in range(7)],
++    )
++    parser.add_argument(
++        "-d",
++        dest="data_file",
++        help="create an image with input_file as an external data file",
++        action="store_true",
++    )
++    parser.add_argument(
++        "-R",
++        dest="data_file_raw",
++        help="enable data_file_raw on the generated image (implies -d)",
++        action="store_true",
++    )
++    args = parser.parse_args()
++
++    if args.data_file_raw:
++        args.data_file = True
++
++    if not os.path.isfile(args.input_file):
++        sys.exit(f"[Error] {args.input_file} does not exist or is not a regular file.")
++
++    if args.data_file and args.input_format != "raw":
++        sys.exit("[Error] External data files can only be used with raw input images")
++
++    # A 512 byte header is too small for the data file name extension
++    if args.data_file and args.cluster_size == 512:
++        sys.exit("[Error] External data files require a larger cluster size")
++
++    if sys.stdout.isatty():
++        sys.exit("[Error] Refusing to write to a tty. Try redirecting stdout.")
++
++    if args.data_file:
++        data_file_name = args.input_file
++    else:
++        data_file_name = None
++
++    with get_input_as_raw_file(args.input_file, args.input_format) as raw_file:
++        write_qcow2_content(
++            raw_file,
++            args.cluster_size,
++            args.refcount_bits,
++            data_file_name,
++            args.data_file_raw,
++        )
++
++
++if __name__ == "__main__":
++    main()
+-- 
+2.39.2
+
 
