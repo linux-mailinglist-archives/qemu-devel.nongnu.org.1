@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490C5940CE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCFB940CF1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYioj-0002Kt-C7; Tue, 30 Jul 2024 05:06:49 -0400
+	id 1sYipN-0005Y7-8X; Tue, 30 Jul 2024 05:07:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYioh-0002EW-Cr
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:06:47 -0400
+ id 1sYipL-0005Sx-Oo
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:07:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYiof-0002eX-Bl
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:06:47 -0400
+ id 1sYipI-0002kW-L2
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:07:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722330404;
+ s=mimecast20190719; t=1722330444;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hD2wuqxPh2jNWtI+P8UeiNp+i2th2ceGYiWyfsYeooo=;
- b=AR/veFBZujbjFNJ1erZrErmMSGOJ9SUIaWDncLNOz0ZB3u9VRF6Ho1h6g8hW4W0eDtWXUd
- fIAL49GsyzQNYVYEo8/E6X1Zps3Z1sn9427NIntINgTfRdkg5xKGpbKcZ6bGqvW5U7iq1k
- 7NdYcnJMLYImP2cXsuVsNcBOzYB2wzI=
+ bh=8G8Ati8s0mfJIwWhbqO1Cy1v5UKqA95Dovy5TDyMNOs=;
+ b=dN0dPk0U8pPKZu+ealO4ML1P7lX/WcLPPzzFyKL0h2dASqcUhxaRZvvp8y3mY2NtwBYNzv
+ R6nGscO3GIaDMd5SxPa2+xsQ/I+2WS9Bz0MY2tJJx+8dA8FTVYsS94HHuRYeeALwJoxLO5
+ eTprdjnIl+bFgdcxNwsqkbJ5WPWFXH0=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-216-W961CZLiMsejrsAvp2KgOQ-1; Tue,
- 30 Jul 2024 05:06:41 -0400
-X-MC-Unique: W961CZLiMsejrsAvp2KgOQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-524-tl4Lklj9PCCoKtygfp27yQ-1; Tue,
+ 30 Jul 2024 05:07:20 -0400
+X-MC-Unique: tl4Lklj9PCCoKtygfp27yQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 547981955BEE; Tue, 30 Jul 2024 09:06:36 +0000 (UTC)
+ id A5F001955BF4; Tue, 30 Jul 2024 09:07:15 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.108])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 763D11955D42; Tue, 30 Jul 2024 09:06:20 +0000 (UTC)
-Date: Tue, 30 Jul 2024 10:06:16 +0100
+ id 7EE801955D45; Tue, 30 Jul 2024 09:06:58 +0000 (UTC)
+Date: Tue, 30 Jul 2024 10:06:54 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com,
@@ -67,15 +67,16 @@ Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com,
  yuri.benditovich@daynix.com, zhao1.liu@intel.com,
  qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  kvm@vger.kernel.org
-Subject: Re: [PATCH 17/18] qapi/cryptodev: Drop unwanted 'prefix'
-Message-ID: <ZqitCCTOc_U0NRms@redhat.com>
+Subject: Re: [PATCH 18/18] qapi/cryptodev: Rename QCryptodevBackendAlgType to
+ *Algo, and drop prefix
+Message-ID: <ZqitLrbh3LrI9Lp0@redhat.com>
 References: <20240730081032.1246748-1-armbru@redhat.com>
- <20240730081032.1246748-18-armbru@redhat.com>
+ <20240730081032.1246748-19-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240730081032.1246748-18-armbru@redhat.com>
+In-Reply-To: <20240730081032.1246748-19-armbru@redhat.com>
 User-Agent: Mutt/2.2.12 (2023-09-09)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -103,25 +104,29 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 30, 2024 at 10:10:31AM +0200, Markus Armbruster wrote:
+On Tue, Jul 30, 2024 at 10:10:32AM +0200, Markus Armbruster wrote:
 > QAPI's 'prefix' feature can make the connection between enumeration
 > type and its constants less than obvious.  It's best used with
 > restraint.
 > 
-> QCryptodevBackendServiceType has a 'prefix' that overrides the
-> generated enumeration constants' prefix to QCRYPTODEV_BACKEND_SERVICE.
+> QCryptodevBackendAlgType a 'prefix' that overrides the generated
+> enumeration constants' prefix to QCRYPTODEV_BACKEND_ALG.
 > 
-> Drop it.  The prefix becomes QCRYPTODEV_BACKEND_SERVICE_TYPE.
+> We could simply drop 'prefix', but I think the abbreviation "alg" is
+> less than clear.
+> 
+> Additionally rename the type to QCryptodevBackendAlgoType.  The prefix
+> becomes QCRYPTODEV_BACKEND_ALGO_TYPE.
 > 
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  qapi/cryptodev.json             |  1 -
->  backends/cryptodev-builtin.c    |  8 ++++----
->  backends/cryptodev-lkcf.c       |  2 +-
->  backends/cryptodev-vhost-user.c |  6 +++---
->  backends/cryptodev.c            |  6 +++---
->  hw/virtio/virtio-crypto.c       | 10 +++++-----
->  6 files changed, 16 insertions(+), 17 deletions(-)
+>  qapi/cryptodev.json          |  5 ++---
+>  include/sysemu/cryptodev.h   |  2 +-
+>  backends/cryptodev-builtin.c |  6 +++---
+>  backends/cryptodev-lkcf.c    |  4 ++--
+>  backends/cryptodev.c         |  6 +++---
+>  hw/virtio/virtio-crypto.c    | 14 +++++++-------
+>  6 files changed, 18 insertions(+), 19 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
