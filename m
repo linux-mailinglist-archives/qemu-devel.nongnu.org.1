@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7159413A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 15:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01589413DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 16:02:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYliS-0005RB-Kc; Tue, 30 Jul 2024 08:12:39 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1sYm51-0003Pq-5P; Tue, 30 Jul 2024 08:35:57 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYlhv-0005Nv-Iz
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:12:07 -0400
-Received: from [170.10.133.124] (helo=us-smtp-delivery-124.mimecast.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sYlhM-0002UH-R0
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:11:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722341401;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=lEWZXIbOPxifRh0tCzGglZf0QAJzKMvIhLQ4RwqE1wU=;
- b=boxJsq6eOKrOAlSYup21GSQjlUXrpxopYmTdcbXgUUfzDRoiQAc4xep+iICR49uH0zu4b4
- ttJ8ZZx+wfst1qnZ3rLgLkvdBVqWo04bJVTdGF+xsIqjLXnqaq9xMS4w9OUx10l8gvuZy8
- 0fIfZyk6kp8MrWH1C2btm89YxifQprw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-gBuobwmsNuq-ys-xk9V9Vg-1; Tue,
- 30 Jul 2024 08:01:51 -0400
-X-MC-Unique: gBuobwmsNuq-ys-xk9V9Vg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6D8ED1955D47; Tue, 30 Jul 2024 12:01:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.108])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1E1B5300018D; Tue, 30 Jul 2024 12:01:48 +0000 (UTC)
-Date: Tue, 30 Jul 2024 13:01:45 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: luzhipeng <luzhipeng@cestc.cn>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH] sm4:Adjust the naming of SM4 encryption method
-Message-ID: <ZqjWKbiGcIM96DdO@redhat.com>
-References: <20240730113850.30-1-luzhipeng@cestc.cn>
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1sYm4J-0003EL-Hx
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:35:08 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1sYm3c-00069m-Iy
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 08:34:54 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-52f00427236so836847e87.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 05:33:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722342783; x=1722947583;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zBkVCmIiTiPE9vfd/7IXrJK8wgsdsb9XrAkbKfnUBLU=;
+ b=PMNeYh53VtwnIsw6OAZqd52pwe1JNszCkhDPmaE+ATYUoJhzYQj/roa2UNaB1ycszs
+ iTBMNA+cOUtOJ1QaQok2qss8gceKdfIIT5TPVZ2x/mdYQd//tstguP13X0XqdnXGSRnI
+ Hy2lAqKHAQXL09E7ddP3nUwP7jGUh0aXABQ0Fd2L3SxidlTbabJvfCg0zwtjxiKq8QmE
+ AHOF2Mb0XZ72Zgiys2MG2rA0lOMOeHDeWLKran9FNJDQDaR2JM6TStuY6yeeqC93jYbQ
+ kHhYtV8fSGHu9+IVbERJUsQQBobPNLDIr4nRkJX5dcLZKLgCNM7G7m42HQ6AXEAN12uH
+ 7kAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722342783; x=1722947583;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zBkVCmIiTiPE9vfd/7IXrJK8wgsdsb9XrAkbKfnUBLU=;
+ b=ZQtxAMxgjh77uwWLc7uo24nJ29atSpYv8+MyoV7w5b1EgCv1KG8VIyC4LeE+ZzqhfJ
+ HNpvDWYX4q7DVvN8OEum+1V8su+Am8k2SHRlFaXY/ur2NN7g9Zkar+KPiebxNT/D9RhR
+ TFCUbQLsx9tbjKWbMDMwQGCWzMbIHJdXZhCXcJtSB1n9/I3BItUr7rxL8H1j/qd08rtB
+ zW3S6w0d6cv1TxaiYw1nNXd1cZ0sBEk3TKlfKXmb906p6ukvMKluu723tENYNXwU3B05
+ GiQUKUlJP7YbdOX4PBgDK2N/8D0j5T0PDzU0X5ppWwMcImLkC9F7afCDSJ+i3gya/9q9
+ aAvw==
+X-Gm-Message-State: AOJu0Yzrg6kUf39swlCWCePey0RLPDSJxMNuEKcGXDUOeiWCilL98RE+
+ UP7TVEQ6RGX0l3OHhqJpvY0HXdG/+E/W2HYb9ZPdg9kJ1gx1h66QXvZpsLFnRU93gHbAYY463PI
+ WmQQ=
+X-Google-Smtp-Source: AGHT+IEniLmR/90yo57Z+so4cK1Xdbg2SW1Oh703uTXr1CvLJDhpsOaUUE/EmU3y1EXMH3giVIquyQ==
+X-Received: by 2002:a05:6000:400f:b0:365:da7f:6c17 with SMTP id
+ ffacd0b85a97d-36b34e592d6mr7731008f8f.7.1722342282500; 
+ Tue, 30 Jul 2024 05:24:42 -0700 (PDT)
+Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36b36862549sm14577757f8f.106.2024.07.30.05.24.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Jul 2024 05:24:41 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 1/5] qemu/osdep: Move close_all_open_fds() to oslib-posix
+Date: Tue, 30 Jul 2024 14:24:24 +0200
+Message-ID: <20240730122437.1749603-2-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240730122437.1749603-1-cleger@rivosinc.com>
+References: <20240730122437.1749603-1-cleger@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240730113850.30-1-luzhipeng@cestc.cn>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 170.10.133.124 (deferred)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RDNS_NONE=0.793, T_SPF_HELO_TEMPERROR=0.01,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=cleger@rivosinc.com; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,59 +94,136 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 30, 2024 at 07:38:50PM +0800, luzhipeng wrote:
-> With reference to the naming conventions of other encryption algorithms,
-> the name of SM4 is modified.So libvirt and qemu are compatible.
-> 
-> Signed-off-by: luzhipeng <luzhipeng@cestc.cn>
-> ---
->  crypto/block-luks.c             | 2 +-
->  crypto/cipher-gcrypt.c.inc      | 4 ++--
->  crypto/cipher-nettle.c.inc      | 4 ++--
->  crypto/cipher.c                 | 4 ++--
->  qapi/crypto.json                | 4 ++--
->  tests/unit/test-crypto-cipher.c | 4 ++--
->  6 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/qapi/crypto.json b/qapi/crypto.json
-> index e102be337b..1a28e312d8 100644
-> --- a/qapi/crypto.json
-> +++ b/qapi/crypto.json
-> @@ -94,7 +94,7 @@
->  #
->  # @twofish-256: Twofish with 256 bit / 32 byte keys
->  #
-> -# @sm4: SM4 with 128 bit / 16 byte keys (since 9.0)
-> +# @sm4-128: SM4 with 128 bit / 16 byte keys (since 9.0)
->  #
->  # Since: 2.6
->  ##
-> @@ -105,7 +105,7 @@
->             'cast5-128',
->             'serpent-128', 'serpent-192', 'serpent-256',
->             'twofish-128', 'twofish-192', 'twofish-256',
-> -           'sm4']}
-> +           'sm4-128']}
+Move close_all_open_fds() in oslib-posix, rename it
+qemu_close_all_open_fds() and export it.
 
-This rename isn't permitted, as 'sm4' was already exposed as public API
-in the 9.0 release and thus this would break backwards compatibility.
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+---
+ include/qemu/osdep.h    |  7 +++++++
+ system/async-teardown.c | 37 +------------------------------------
+ util/oslib-posix.c      | 34 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 36 deletions(-)
 
-I agree it would have been nice to call it 'sm4-128' and I dropped the
-ball by not suggesting a rename when this was first proposed. At this
-point though, I don't think  we need to go through the many release
-dance of deprecating the old name & introducing a new name & finally
-removing the old name, since IIUC, SM4 is always 128 bits in size.
-
-
-With regards,
-Daniel
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 191916f38e..5cd8517380 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -757,6 +757,13 @@ static inline void qemu_reset_optind(void)
+ 
+ int qemu_fdatasync(int fd);
+ 
++/**
++ * qemu_close_all_open_fd:
++ *
++ * Close all open file descriptors
++ */
++void qemu_close_all_open_fd(void);
++
+ /**
+  * Sync changes made to the memory mapped file back to the backing
+  * storage. For POSIX compliant systems this will fallback
+diff --git a/system/async-teardown.c b/system/async-teardown.c
+index 396963c091..edf49e1007 100644
+--- a/system/async-teardown.c
++++ b/system/async-teardown.c
+@@ -26,40 +26,6 @@
+ 
+ static pid_t the_ppid;
+ 
+-/*
+- * Close all open file descriptors.
+- */
+-static void close_all_open_fd(void)
+-{
+-    struct dirent *de;
+-    int fd, dfd;
+-    DIR *dir;
+-
+-#ifdef CONFIG_CLOSE_RANGE
+-    int r = close_range(0, ~0U, 0);
+-    if (!r) {
+-        /* Success, no need to try other ways. */
+-        return;
+-    }
+-#endif
+-
+-    dir = opendir("/proc/self/fd");
+-    if (!dir) {
+-        /* If /proc is not mounted, there is nothing that can be done. */
+-        return;
+-    }
+-    /* Avoid closing the directory. */
+-    dfd = dirfd(dir);
+-
+-    for (de = readdir(dir); de; de = readdir(dir)) {
+-        fd = atoi(de->d_name);
+-        if (fd != dfd) {
+-            close(fd);
+-        }
+-    }
+-    closedir(dir);
+-}
+-
+ static void hup_handler(int signal)
+ {
+     /* Check every second if this process has been reparented. */
+@@ -85,9 +51,8 @@ static int async_teardown_fn(void *arg)
+     /*
+      * Close all file descriptors that might have been inherited from the
+      * main qemu process when doing clone, needed to make libvirt happy.
+-     * Not using close_range for increased compatibility with older kernels.
+      */
+-    close_all_open_fd();
++    qemu_close_all_open_fd();
+ 
+     /* Set up a handler for SIGHUP and unblock SIGHUP. */
+     sigaction(SIGHUP, &sa, NULL);
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index b090fe0eed..1e867efa47 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -807,3 +807,37 @@ int qemu_msync(void *addr, size_t length, int fd)
+ 
+     return msync(addr, length, MS_SYNC);
+ }
++
++/*
++ * Close all open file descriptors.
++ */
++void qemu_close_all_open_fd(void)
++{
++    struct dirent *de;
++    int fd, dfd;
++    DIR *dir;
++
++#ifdef CONFIG_CLOSE_RANGE
++    int r = close_range(0, ~0U, 0);
++    if (!r) {
++        /* Success, no need to try other ways. */
++        return;
++    }
++#endif
++
++    dir = opendir("/proc/self/fd");
++    if (!dir) {
++        /* If /proc is not mounted, there is nothing that can be done. */
++        return;
++    }
++    /* Avoid closing the directory. */
++    dfd = dirfd(dir);
++
++    for (de = readdir(dir); de; de = readdir(dir)) {
++        fd = atoi(de->d_name);
++        if (fd != dfd) {
++            close(fd);
++        }
++    }
++    closedir(dir);
++}
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.45.2
 
 
