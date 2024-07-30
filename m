@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B7A940D9F
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 146C9940E03
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjBj-000467-MD; Tue, 30 Jul 2024 05:30:35 -0400
+	id 1sYjLJ-0003UF-DY; Tue, 30 Jul 2024 05:40:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjBg-000422-Oj
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:30:32 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1sYjLH-0003SW-Cl
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:27 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjBd-0007GB-Vv
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:30:32 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2f136e23229so25255971fa.1
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:30:29 -0700 (PDT)
+ id 1sYjLF-0000Wp-JV
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:27 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4281d812d3eso19861805e9.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722331827; x=1722936627; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=uNsh7c3255rTpF65wyORY+h4ndviNnkJbAViEsxA+Y8=;
- b=oivESpYB5HHXJu2Zq/Y6rkDvFFWl7UjLayoXy4A1bTfj/5q+mn9qiUw+szSJK0w4fS
- +GIxUDsz+G1uovQh0ULoRDOdR00hDdF8oXpyy4LAv4mc4d9GdHJt/HpfdfcjDClyvCDh
- QsTBw4nHK8W/TCJrPCrSUIZL5/3eT9xQ4CBees5zZMDcaUCgbOTYnkSzy2Pb0BXvZ8JH
- Q2vij/gk7P2edjwhrx8dNOeTozhe9YU0RdleUAGpGYsApG+87pHaad2icb8YWWC38GhM
- HhHlKG9mJ3vh4j2Z7harXcu9a1y3AUwyuSdi+7/Jc8X02W8GGIlfabwN8n2Nx9TnM5GP
- HCmg==
+ d=linaro.org; s=google; t=1722332423; x=1722937223; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AwEczY42MhFblaALEOHIc9YDov6tfs1YZvL5O8SqFPU=;
+ b=IXwZDCydcJmVH29LLAvz872DLeGkva2SEBybYzpdkA7yb/Wm8GhUM/Z6t3aOjETs3+
+ P6+wsS9fRVOtCT8lQ9igkOUgDunE+GMjPZbMgORt24f9o4MUWAh5ilLgdyIA/6niLO2n
+ yBZB3WDg/809C4fj606+c/0mC5aOrRKuI1faAkoPu34cG1JIJHPcdZbtIvlGDOOzNupE
+ LNBj/KLWuHdKVQ+z1Pms4ciuA9Veeiu+5TGhIDIkCQbRLj2qd0mjrat2tt8DFiREJZDE
+ ADD/T6K4eIdCeChezT6PjU8MDPKwJWB1nUwfSdnpm/KmArcgOlLxuOm2tK2im1SMCx15
+ p7zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722331827; x=1722936627;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uNsh7c3255rTpF65wyORY+h4ndviNnkJbAViEsxA+Y8=;
- b=PBgI2fyggdtT0SLDdnU1LuekA6R3+kpeeldbiYezPFpCPElxYdZmfPFGWq5RNYNYDg
- z3NGHZPyl1aRCIxFN0oUw9n0mqzv6W7KoarDT+nwgCc5jSNEsVyTsgwIifCjN/sM+6te
- 5k4LBm9dUW7J55lvjiXaACOLIMxIfl7VxUZYaIuJBiLLbiXw2HtqlZ7w3/6kFcfqKI9W
- j/7/qYJMuIT5kQS5wVBx0fhZ1y1lK8fpBzzTy+8HgoYhsuzgc2rP6vKuCrTtYqfgE5bk
- 1H90HB9N0X9PpZNgjuKHSJbp2tIFsI1ot+3h6mHiR4GeWtfcg+tgGT+WiGLJLPl5d3Xk
- ybjw==
-X-Gm-Message-State: AOJu0YwscRutu5MCWH+8Ew5xUOsBh/6MkgszF3Lvp2hPLpxRl1puEJsJ
- GXF7hqRAVwNzeSUxzRPxdH9sfo70l+7hejZzxr/joyD5YS6owTJlBoHS95xCdLKBX7pu2B2WQXX
- 3TlXSX9l7wI6SDlqo8VYX+VCBOrP0DIS7g2bbOpU/pKtvAnD9
-X-Google-Smtp-Source: AGHT+IFghVn26lHfIjlhSmjwASFU7ALEIyolQ0JNVT4TPkIFWd6YzYMqrhy97QMFJQDTJPNyIxB5gQX/jrE55GavXrg=
-X-Received: by 2002:a2e:a176:0:b0:2f0:1d51:a8fa with SMTP id
- 38308e7fff4ca-2f12ee5bb0fmr70569201fa.30.1722331826805; Tue, 30 Jul 2024
- 02:30:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240730013922.540523-1-richard.henderson@linaro.org>
-In-Reply-To: <20240730013922.540523-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1722332423; x=1722937223;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AwEczY42MhFblaALEOHIc9YDov6tfs1YZvL5O8SqFPU=;
+ b=ow37rs0OlgLhsW+SoN9/u3x5HbIF274r7/0r9Tc3Ztc9+OIu+ko6AJIfwnp6sT6GdS
+ 5qYvdmujcLl0whYLWoxZVAVsh+YXnhn3DcSKVuYnksFGk627C0kGmyAT7MBJF+CAyYyq
+ /TMALTSbRRtGmvnnd0L4tY5n5pGC3XRcLMCUj622ZrH5fnEFSC1rutIRF3toXkfNN3iz
+ ra9vXFw/VVeaYbfUxBF6iSDu+ISH/mkec0AFo6VyCzst1xAaNHFmTx4XNdwhwkvvB2pO
+ PMmMccBQVgLWBLRbdTY8Am9P5BEeUppZQnMNaCm/PLDF5NmAI7hn17Y+wy0OucWMo8f7
+ 3iPw==
+X-Gm-Message-State: AOJu0Yzo0xy0Xc3d/e3KalZEsvHrR3TTC4LjB4zYPR55zKJbm8wFXgaV
+ WNn1V8twwjfa6erzVM5T8GEW+9yShhX3vi0Csoel1uV4TYjbNuCaBUddQ095CblHfC+GrfRh/1Y
+ F
+X-Google-Smtp-Source: AGHT+IF3I32S+fr1eINs8CRaWmbp0jmsudDB7wQRvhKuryTiEEGdII79YjL8YrRtQR+yHs5Atqr9GQ==
+X-Received: by 2002:a05:6000:1b91:b0:368:7e54:baaa with SMTP id
+ ffacd0b85a97d-36b5cf254e7mr8076144f8f.4.1722332422906; 
+ Tue, 30 Jul 2024 02:40:22 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.22
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Jul 2024 02:40:22 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 Jul 2024 10:30:15 +0100
-Message-ID: <CAFEAcA-yuy54nnuoa_B32UpKPtfhRmo9sd1N7eYKSz4O0PC7qg@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Fix BTI versus CF_PCREL
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/21] target-arm queue
+Date: Tue, 30 Jul 2024 10:39:59 +0100
+Message-Id: <20240730094020.2758637-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,85 +89,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 30 Jul 2024 at 03:07, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> With pcrel, we cannot check the guarded page bit at translation
-> time, as different mappings of the same physical page may or may
-> not have the GP bit set.
->
-> Instead, add a couple of helpers to check the page at runtime,
-> after all other filters that might obviate the need for the check.
->
-> The set_btype_for_br call must be moved after the gen_a64_set_pc
-> call to ensure the current pc can still be computed.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/tcg/helper-a64.h    |  3 ++
->  target/arm/tcg/translate.h     |  2 --
->  target/arm/tcg/helper-a64.c    | 38 ++++++++++++++++++++
->  target/arm/tcg/translate-a64.c | 64 ++++++++--------------------------
->  4 files changed, 55 insertions(+), 52 deletions(-)
->
-> diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-> index 371388f61b..481007bf39 100644
-> --- a/target/arm/tcg/helper-a64.h
-> +++ b/target/arm/tcg/helper-a64.h
-> @@ -133,6 +133,9 @@ DEF_HELPER_4(cpyfp, void, env, i32, i32, i32)
->  DEF_HELPER_4(cpyfm, void, env, i32, i32, i32)
->  DEF_HELPER_4(cpyfe, void, env, i32, i32, i32)
->
-> +DEF_HELPER_FLAGS_1(guarded_page_check, TCG_CALL_NO_WG, void, env)
-> +DEF_HELPER_FLAGS_2(guarded_page_br, TCG_CALL_NO_RWG, void, env, tl)
-> +
->  DEF_HELPER_FLAGS_5(gvec_fdiv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
->  DEF_HELPER_FLAGS_5(gvec_fdiv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
->  DEF_HELPER_FLAGS_5(gvec_fdiv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-> diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-> index a8672c857c..01c217f4a4 100644
-> --- a/target/arm/tcg/translate.h
-> +++ b/target/arm/tcg/translate.h
-> @@ -163,8 +163,6 @@ typedef struct DisasContext {
->      uint8_t dcz_blocksize;
->      /* A copy of cpu->gm_blocksize. */
->      uint8_t gm_blocksize;
-> -    /* True if this page is guarded.  */
-> -    bool guarded_page;
->      /* True if the current insn_start has been updated. */
->      bool insn_start_updated;
->      /* Bottom two bits of XScale c15_cpar coprocessor access control reg */
-> diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-> index c60d2a7ec9..424fe927b4 100644
-> --- a/target/arm/tcg/helper-a64.c
-> +++ b/target/arm/tcg/helper-a64.c
-> @@ -1877,3 +1877,41 @@ void HELPER(cpyfe)(CPUARMState *env, uint32_t syndrome, uint32_t wdesc,
->  {
->      do_cpye(env, syndrome, wdesc, rdesc, false, GETPC());
->  }
-> +
-> +static bool is_guarded_page(CPUARMState *env, target_ulong addr)
-> +{
-> +#ifdef CONFIG_USER_ONLY
-> +    return page_get_flags(addr) & PAGE_BTI;
-> +#else
-> +    CPUTLBEntryFull *full;
-> +    void *host;
-> +    int mmu_idx = cpu_mmu_index(env_cpu(env), true);
-> +    int flags = probe_access_full(env, addr, 0, MMU_INST_FETCH, mmu_idx,
-> +                                  false, &host, &full, 0);
-> +
-> +    assert(!(flags & TLB_INVALID_MASK));
-
-Is there a race condition here where some other vCPU
-knocks this entry out of the TLB between the point when
-we started executing the TB and when we made this helper
-function call ?
-
-> +    return full->extra.arm.guarded;
-> +#endif
-> +}
+Arm pullreq: these are all bugfixes. I've included a handful
+of my fixes for various non-arm minor Coverity issues too.
 
 thanks
 -- PMM
+
+The following changes since commit 93b799fafd9170da3a79a533ea6f73a18de82e22:
+
+  Merge tag 'pull-ppc-for-9.1-2-20240726-1' of https://gitlab.com/npiggin/qemu into staging (2024-07-26 15:10:45 +1000)
+
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240730
+
+for you to fetch changes up to 73188068d7ba40c8a37b4763db38bb1ce24ca07d:
+
+  system/physmem: Where we assume we have a RAM MR, assert it (2024-07-29 17:03:35 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
+ * hw/arm/smmuv3: Assert input to oas2bits() is valid
+ * target/arm/kvm: Set PMU for host only when available
+ * target/arm/kvm: Do not silently remove PMU
+ * hvf: arm: Properly disable PMU
+ * hvf: arm: Do not advance PC when raising an exception
+ * hw/misc/bcm2835_property: several minor bugfixes
+ * target/arm: Don't assert for 128-bit tile accesses when SVL is 128
+ * target/arm: Fix UMOPA/UMOPS of 16-bit values
+ * target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
+ * system/physmem: Where we assume we have a RAM MR, assert it
+ * sh4, i386, m68k, xtensa, tricore, arm: fix minor Coverity issues
+
+----------------------------------------------------------------
+Akihiko Odaki (5):
+      target/arm/kvm: Set PMU for host only when available
+      target/arm/kvm: Do not silently remove PMU
+      hvf: arm: Raise an exception for sysreg by default
+      hvf: arm: Properly disable PMU
+      hvf: arm: Do not advance PC when raising an exception
+
+Frederik van Hövell (1):
+      hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
+
+Mostafa Saleh (1):
+      hw/arm/smmuv3: Assert input to oas2bits() is valid
+
+Peter Maydell (14):
+      hw/misc/bcm2835_property: Fix handling of FRAMEBUFFER_SET_PALETTE
+      hw/misc/bcm2835_property: Avoid overflow in OTP access properties
+      hw/misc/bcm2835_property: Restrict scope of start_num, number, otp_row
+      hw/misc/bcm2835_property: Reduce scope of variables in mbox push function
+      target/arm: Don't assert for 128-bit tile accesses when SVL is 128
+      target/arm: Fix UMOPA/UMOPS of 16-bit values
+      target/arm: Avoid shifts by -1 in tszimm_shr() and tszimm_shl()
+      target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
+      target/tricore: Use unsigned types for bitops in helper_eq_b()
+      target/xtensa: Make use of 'segment' in pptlb helper less confusing
+      target/m68k: avoid shift into sign bit in dump_address_map()
+      target/i386: Remove dead assignment to ss in do_interrupt64()
+      target/sh4: Avoid shift into sign bit in update_itlb_use()
+      system/physmem: Where we assume we have a RAM MR, assert it
+
+ hw/arm/smmuv3-internal.h       |   3 +-
+ hw/char/bcm2835_aux.c          |   2 +-
+ hw/misc/bcm2835_property.c     |  91 +++++++------
+ system/physmem.c               |  18 ++-
+ target/arm/helper.c            |   2 +-
+ target/arm/hvf/hvf.c           | 302 +++++++++++++++++++++--------------------
+ target/arm/kvm.c               |   7 +-
+ target/arm/tcg/sme_helper.c    |   8 +-
+ target/arm/tcg/translate-sme.c |  10 +-
+ target/arm/tcg/translate-sve.c |  18 ++-
+ target/i386/tcg/seg_helper.c   |   5 +-
+ target/m68k/helper.c           |   7 +-
+ target/sh4/helper.c            |   2 +-
+ target/tricore/op_helper.c     |   4 +-
+ target/xtensa/mmu_helper.c     |   4 +-
+ 15 files changed, 262 insertions(+), 221 deletions(-)
 
