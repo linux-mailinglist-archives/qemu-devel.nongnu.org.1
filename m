@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146C9940E03
+	by mail.lfdr.de (Postfix) with ESMTPS id 19933940E04
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:41:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYjLJ-0003UF-DY; Tue, 30 Jul 2024 05:40:29 -0400
+	id 1sYjLK-0003ZR-OR; Tue, 30 Jul 2024 05:40:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLH-0003SW-Cl
+ id 1sYjLH-0003SX-DF
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:27 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sYjLF-0000Wp-JV
+ id 1sYjLF-0000Wv-JZ
  for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:40:27 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4281d812d3eso19861805e9.3
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3687fb526b9so1972703f8f.0
  for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:40:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722332423; x=1722937223; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=AwEczY42MhFblaALEOHIc9YDov6tfs1YZvL5O8SqFPU=;
- b=IXwZDCydcJmVH29LLAvz872DLeGkva2SEBybYzpdkA7yb/Wm8GhUM/Z6t3aOjETs3+
- P6+wsS9fRVOtCT8lQ9igkOUgDunE+GMjPZbMgORt24f9o4MUWAh5ilLgdyIA/6niLO2n
- yBZB3WDg/809C4fj606+c/0mC5aOrRKuI1faAkoPu34cG1JIJHPcdZbtIvlGDOOzNupE
- LNBj/KLWuHdKVQ+z1Pms4ciuA9Veeiu+5TGhIDIkCQbRLj2qd0mjrat2tt8DFiREJZDE
- ADD/T6K4eIdCeChezT6PjU8MDPKwJWB1nUwfSdnpm/KmArcgOlLxuOm2tK2im1SMCx15
- p7zg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=B5RN4DpWdHMmOm58ODLLg2Ecn4bzdDrCkkEJlS4i1B8=;
+ b=qxeZjrZsVJoU76K4CaH4t0OnjVm2j1b4chcBtQF5FzIjDM81FEo35UVH6st6FOVx9H
+ xpBoOtkvY2fU1tdiM7XBjpC64wVu8xab2J8XL9oljSIZqnRgJ20FOzDzvD9R/t2VnG86
+ WJbkYnfrs1kO+S06Khecw3eFZmWmbX40iAQglrmUZAPcEoNb1UuMMTFOMB/rhTg/8T2T
+ ln5O6LJwq0CsrJjQp6t3TYaKiD8rwNKyS8ky/Ku0mgn8E9OKWWGl9XJ+FbdDPe0aSRH/
+ wJftKdIFEznwPnwT31d7F0Cc4p4t+RvoTpw5GarodbEqfKLBCiBGxRW7Lvjbz1aj7YGi
+ Ak1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722332423; x=1722937223;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AwEczY42MhFblaALEOHIc9YDov6tfs1YZvL5O8SqFPU=;
- b=ow37rs0OlgLhsW+SoN9/u3x5HbIF274r7/0r9Tc3Ztc9+OIu+ko6AJIfwnp6sT6GdS
- 5qYvdmujcLl0whYLWoxZVAVsh+YXnhn3DcSKVuYnksFGk627C0kGmyAT7MBJF+CAyYyq
- /TMALTSbRRtGmvnnd0L4tY5n5pGC3XRcLMCUj622ZrH5fnEFSC1rutIRF3toXkfNN3iz
- ra9vXFw/VVeaYbfUxBF6iSDu+ISH/mkec0AFo6VyCzst1xAaNHFmTx4XNdwhwkvvB2pO
- PMmMccBQVgLWBLRbdTY8Am9P5BEeUppZQnMNaCm/PLDF5NmAI7hn17Y+wy0OucWMo8f7
- 3iPw==
-X-Gm-Message-State: AOJu0Yzo0xy0Xc3d/e3KalZEsvHrR3TTC4LjB4zYPR55zKJbm8wFXgaV
- WNn1V8twwjfa6erzVM5T8GEW+9yShhX3vi0Csoel1uV4TYjbNuCaBUddQ095CblHfC+GrfRh/1Y
- F
-X-Google-Smtp-Source: AGHT+IF3I32S+fr1eINs8CRaWmbp0jmsudDB7wQRvhKuryTiEEGdII79YjL8YrRtQR+yHs5Atqr9GQ==
-X-Received: by 2002:a05:6000:1b91:b0:368:7e54:baaa with SMTP id
- ffacd0b85a97d-36b5cf254e7mr8076144f8f.4.1722332422906; 
- Tue, 30 Jul 2024 02:40:22 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=B5RN4DpWdHMmOm58ODLLg2Ecn4bzdDrCkkEJlS4i1B8=;
+ b=C8/g2XlgzfJcgANdv5p0agsPvTn4RWDnCo7Yo3V0zEMKi8/LWDPlWXY0L0aiA9xAoL
+ 0iRwcSzMNV2Hzq/1XN09bwF0PiR541k7AAuXaAonVHE6peUpKlndEENCbhXRncibVvp6
+ f6XEl8HYQ93aQpXUzXzhL5rM11mTrBxm3P4vUlsxihZrbxqu/KrscPahhBc9u//WxvpR
+ rEKj6JXTwFikDR+olR9vwnbRP/N2uGrx9GrjAiaMZXz5QUT8RdQGCPySGF/m0wIkJj/q
+ /i9kcicBAV3poIjSizvGXAHaAgwPllwVqe9AvtjT8Sv2Lze7Nisc6aGjdTFYY4JK8O6F
+ 8c5g==
+X-Gm-Message-State: AOJu0YwSM7wRd6uWdddnqwz/K/gj1RfiU9H+grJ31QOR+PUQuUD3vHOc
+ w4sK+n36TQV2SdNUp3XaO8Gw9HGUaikP75KZ1EgTOnGOb8l47CNmCnbroISmxt2E1XWC86n8SNX
+ v
+X-Google-Smtp-Source: AGHT+IEir56mfxnFhQi9ENEt2QckaifU7OkniU19hBlCkrVvND2JYw6JeRaGxumqRCmRHxsyrEOVZA==
+X-Received: by 2002:adf:e60f:0:b0:368:3731:1614 with SMTP id
+ ffacd0b85a97d-36b5cf243f2mr6704492f8f.32.1722332423335; 
+ Tue, 30 Jul 2024 02:40:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36b36862549sm14194974f8f.106.2024.07.30.02.40.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jul 2024 02:40:22 -0700 (PDT)
+ Tue, 30 Jul 2024 02:40:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/21] target-arm queue
-Date: Tue, 30 Jul 2024 10:39:59 +0100
-Message-Id: <20240730094020.2758637-1-peter.maydell@linaro.org>
+Subject: [PULL 01/21] hw/char/bcm2835_aux: Fix assert when receive FIFO fills
+ up
+Date: Tue, 30 Jul 2024 10:40:00 +0100
+Message-Id: <20240730094020.2758637-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240730094020.2758637-1-peter.maydell@linaro.org>
+References: <20240730094020.2758637-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,83 +93,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Arm pullreq: these are all bugfixes. I've included a handful
-of my fixes for various non-arm minor Coverity issues too.
+From: Frederik van Hövell <frederik@fvhovell.nl>
 
-thanks
--- PMM
+When a bare-metal application on the raspi3 board reads the
+AUX_MU_STAT_REG MMIO register while the device's buffer is
+at full receive FIFO capacity
+(i.e. `s->read_count == BCM2835_AUX_RX_FIFO_LEN`) the
+assertion `assert(s->read_count < BCM2835_AUX_RX_FIFO_LEN)`
+fails.
 
-The following changes since commit 93b799fafd9170da3a79a533ea6f73a18de82e22:
+Reported-by: Cryptjar <cryptjar@junk.studio>
+Suggested-by: Cryptjar <cryptjar@junk.studio>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/459
+Signed-off-by: Frederik van Hövell <frederik@fvhovell.nl>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[PMM: commit message tweaks]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/char/bcm2835_aux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Merge tag 'pull-ppc-for-9.1-2-20240726-1' of https://gitlab.com/npiggin/qemu into staging (2024-07-26 15:10:45 +1000)
+diff --git a/hw/char/bcm2835_aux.c b/hw/char/bcm2835_aux.c
+index 83990e20f76..fca2f27a553 100644
+--- a/hw/char/bcm2835_aux.c
++++ b/hw/char/bcm2835_aux.c
+@@ -138,7 +138,7 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+         res = 0x30e; /* space in the output buffer, empty tx fifo, idle tx/rx */
+         if (s->read_count > 0) {
+             res |= 0x1; /* data in input buffer */
+-            assert(s->read_count < BCM2835_AUX_RX_FIFO_LEN);
++            assert(s->read_count <= BCM2835_AUX_RX_FIFO_LEN);
+             res |= ((uint32_t)s->read_count) << 16; /* rx fifo fill level */
+         }
+         return res;
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240730
-
-for you to fetch changes up to 73188068d7ba40c8a37b4763db38bb1ce24ca07d:
-
-  system/physmem: Where we assume we have a RAM MR, assert it (2024-07-29 17:03:35 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
- * hw/arm/smmuv3: Assert input to oas2bits() is valid
- * target/arm/kvm: Set PMU for host only when available
- * target/arm/kvm: Do not silently remove PMU
- * hvf: arm: Properly disable PMU
- * hvf: arm: Do not advance PC when raising an exception
- * hw/misc/bcm2835_property: several minor bugfixes
- * target/arm: Don't assert for 128-bit tile accesses when SVL is 128
- * target/arm: Fix UMOPA/UMOPS of 16-bit values
- * target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
- * system/physmem: Where we assume we have a RAM MR, assert it
- * sh4, i386, m68k, xtensa, tricore, arm: fix minor Coverity issues
-
-----------------------------------------------------------------
-Akihiko Odaki (5):
-      target/arm/kvm: Set PMU for host only when available
-      target/arm/kvm: Do not silently remove PMU
-      hvf: arm: Raise an exception for sysreg by default
-      hvf: arm: Properly disable PMU
-      hvf: arm: Do not advance PC when raising an exception
-
-Frederik van Hövell (1):
-      hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
-
-Mostafa Saleh (1):
-      hw/arm/smmuv3: Assert input to oas2bits() is valid
-
-Peter Maydell (14):
-      hw/misc/bcm2835_property: Fix handling of FRAMEBUFFER_SET_PALETTE
-      hw/misc/bcm2835_property: Avoid overflow in OTP access properties
-      hw/misc/bcm2835_property: Restrict scope of start_num, number, otp_row
-      hw/misc/bcm2835_property: Reduce scope of variables in mbox push function
-      target/arm: Don't assert for 128-bit tile accesses when SVL is 128
-      target/arm: Fix UMOPA/UMOPS of 16-bit values
-      target/arm: Avoid shifts by -1 in tszimm_shr() and tszimm_shl()
-      target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
-      target/tricore: Use unsigned types for bitops in helper_eq_b()
-      target/xtensa: Make use of 'segment' in pptlb helper less confusing
-      target/m68k: avoid shift into sign bit in dump_address_map()
-      target/i386: Remove dead assignment to ss in do_interrupt64()
-      target/sh4: Avoid shift into sign bit in update_itlb_use()
-      system/physmem: Where we assume we have a RAM MR, assert it
-
- hw/arm/smmuv3-internal.h       |   3 +-
- hw/char/bcm2835_aux.c          |   2 +-
- hw/misc/bcm2835_property.c     |  91 +++++++------
- system/physmem.c               |  18 ++-
- target/arm/helper.c            |   2 +-
- target/arm/hvf/hvf.c           | 302 +++++++++++++++++++++--------------------
- target/arm/kvm.c               |   7 +-
- target/arm/tcg/sme_helper.c    |   8 +-
- target/arm/tcg/translate-sme.c |  10 +-
- target/arm/tcg/translate-sve.c |  18 ++-
- target/i386/tcg/seg_helper.c   |   5 +-
- target/m68k/helper.c           |   7 +-
- target/sh4/helper.c            |   2 +-
- target/tricore/op_helper.c     |   4 +-
- target/xtensa/mmu_helper.c     |   4 +-
- 15 files changed, 262 insertions(+), 221 deletions(-)
 
