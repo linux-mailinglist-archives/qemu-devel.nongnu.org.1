@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7115940D27
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B7A940D9F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYiv7-0005Lj-4T; Tue, 30 Jul 2024 05:13:25 -0400
+	id 1sYjBj-000467-MD; Tue, 30 Jul 2024 05:30:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYiv3-0005Bs-1O; Tue, 30 Jul 2024 05:13:21 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sYiv0-0003pX-Ga; Tue, 30 Jul 2024 05:13:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722330798; x=1753866798;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=OJN+ESOf3j7WgRm7tp+5EaN6VLIEhB0GeZBgm8RyWZI=;
- b=VU1ZvamSbhpUJ1ZL3Nf2LSKn9Eh+h959uoXWtI4cN1QGZTDf1aRRMpEA
- lIqXL/l0tgVj9mEktMYNn5wZeqnRB/jt/yGhEDBISg16KbqUXMhA8FfVa
- qooBXwxRqNrWkm0ugk3Vtmbhce70X6XtsPiIgfN8kMN5iOZQqfjqRY94O
- FZT3FfZQYB51JQqCXNPcl/sJZGrCRoDDABio3FIr7zf9vAb7hCL/9DlIA
- da7aA/qFKC4R1pvhvoARbidnZRnTKr/BWQ4t2ATIajyCYz0BGMn8HVxtA
- 80ln5jaS2TE5wLUKC0h9Wg2fWK8rYn1KGFtthpRzqSwKj8qUlf/HyJuFk g==;
-X-CSE-ConnectionGUID: IflEyHHwSP6OLEsRhXPQKQ==
-X-CSE-MsgGUID: Yg/3g3FESF2JMjjjsYRa1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31542665"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="31542665"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 02:13:14 -0700
-X-CSE-ConnectionGUID: gswTXqQTRYekTBKloxnqDw==
-X-CSE-MsgGUID: gyJq+ddtRmOByRaoPYZs5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="77507899"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 30 Jul 2024 02:13:04 -0700
-Date: Tue, 30 Jul 2024 17:28:50 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com,
- andrew@codeconstruct.com.au, andrew@daynix.com,
- arei.gonglei@huawei.com, berrange@redhat.com, berto@igalia.com,
- borntraeger@linux.ibm.com, clg@kaod.org, david@redhat.com,
- den@openvz.org, eblake@redhat.com, eduardo@habkost.net,
- farman@linux.ibm.com, farosas@suse.de, hreitz@redhat.com,
- idryomov@gmail.com, iii@linux.ibm.com, jamin_lin@aspeedtech.com,
- jasowang@redhat.com, joel@jms.id.au, jsnow@redhat.com,
- kwolf@redhat.com, leetroy@gmail.com, marcandre.lureau@redhat.com,
- marcel.apfelbaum@gmail.com, michael.roth@amd.com, mst@redhat.com,
- mtosatti@redhat.com, nsg@linux.ibm.com, pasic@linux.ibm.com,
- pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
- philmd@linaro.org, pizhenwei@bytedance.com, pl@dlhnet.de,
- richard.henderson@linaro.org, stefanha@redhat.com,
- steven_lee@aspeedtech.com, thuth@redhat.com,
- vsementsov@yandex-team.ru, wangyanan55@huawei.com,
- yuri.benditovich@daynix.com, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [PATCH 07/18] qapi/machine: Drop temporary 'prefix'
-Message-ID: <ZqiyUjihMSD0ce4b@intel.com>
-References: <20240730081032.1246748-1-armbru@redhat.com>
- <20240730081032.1246748-8-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sYjBg-000422-Oj
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:30:32 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sYjBd-0007GB-Vv
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:30:32 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2f136e23229so25255971fa.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722331827; x=1722936627; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=uNsh7c3255rTpF65wyORY+h4ndviNnkJbAViEsxA+Y8=;
+ b=oivESpYB5HHXJu2Zq/Y6rkDvFFWl7UjLayoXy4A1bTfj/5q+mn9qiUw+szSJK0w4fS
+ +GIxUDsz+G1uovQh0ULoRDOdR00hDdF8oXpyy4LAv4mc4d9GdHJt/HpfdfcjDClyvCDh
+ QsTBw4nHK8W/TCJrPCrSUIZL5/3eT9xQ4CBees5zZMDcaUCgbOTYnkSzy2Pb0BXvZ8JH
+ Q2vij/gk7P2edjwhrx8dNOeTozhe9YU0RdleUAGpGYsApG+87pHaad2icb8YWWC38GhM
+ HhHlKG9mJ3vh4j2Z7harXcu9a1y3AUwyuSdi+7/Jc8X02W8GGIlfabwN8n2Nx9TnM5GP
+ HCmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722331827; x=1722936627;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uNsh7c3255rTpF65wyORY+h4ndviNnkJbAViEsxA+Y8=;
+ b=PBgI2fyggdtT0SLDdnU1LuekA6R3+kpeeldbiYezPFpCPElxYdZmfPFGWq5RNYNYDg
+ z3NGHZPyl1aRCIxFN0oUw9n0mqzv6W7KoarDT+nwgCc5jSNEsVyTsgwIifCjN/sM+6te
+ 5k4LBm9dUW7J55lvjiXaACOLIMxIfl7VxUZYaIuJBiLLbiXw2HtqlZ7w3/6kFcfqKI9W
+ j/7/qYJMuIT5kQS5wVBx0fhZ1y1lK8fpBzzTy+8HgoYhsuzgc2rP6vKuCrTtYqfgE5bk
+ 1H90HB9N0X9PpZNgjuKHSJbp2tIFsI1ot+3h6mHiR4GeWtfcg+tgGT+WiGLJLPl5d3Xk
+ ybjw==
+X-Gm-Message-State: AOJu0YwscRutu5MCWH+8Ew5xUOsBh/6MkgszF3Lvp2hPLpxRl1puEJsJ
+ GXF7hqRAVwNzeSUxzRPxdH9sfo70l+7hejZzxr/joyD5YS6owTJlBoHS95xCdLKBX7pu2B2WQXX
+ 3TlXSX9l7wI6SDlqo8VYX+VCBOrP0DIS7g2bbOpU/pKtvAnD9
+X-Google-Smtp-Source: AGHT+IFghVn26lHfIjlhSmjwASFU7ALEIyolQ0JNVT4TPkIFWd6YzYMqrhy97QMFJQDTJPNyIxB5gQX/jrE55GavXrg=
+X-Received: by 2002:a2e:a176:0:b0:2f0:1d51:a8fa with SMTP id
+ 38308e7fff4ca-2f12ee5bb0fmr70569201fa.30.1722331826805; Tue, 30 Jul 2024
+ 02:30:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730081032.1246748-8-armbru@redhat.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240730013922.540523-1-richard.henderson@linaro.org>
+In-Reply-To: <20240730013922.540523-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 Jul 2024 10:30:15 +0100
+Message-ID: <CAFEAcA-yuy54nnuoa_B32UpKPtfhRmo9sd1N7eYKSz4O0PC7qg@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Fix BTI versus CF_PCREL
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,25 +85,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 30, 2024 at 10:10:21AM +0200, Markus Armbruster wrote:
-> Date: Tue, 30 Jul 2024 10:10:21 +0200
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: [PATCH 07/18] qapi/machine: Drop temporary 'prefix'
-> 
-> Recent commit "qapi: Smarter camel_to_upper() to reduce need for
-> 'prefix'" added a temporary 'prefix' to delay changing the generated
-> code.
-> 
-> Revert it.  This improves HmatLBDataType's generated enumeration
-> constant prefix from HMATLB_DATA_TYPE to HMAT_LB_DATA_TYPE.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+On Tue, 30 Jul 2024 at 03:07, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> With pcrel, we cannot check the guarded page bit at translation
+> time, as different mappings of the same physical page may or may
+> not have the GP bit set.
+>
+> Instead, add a couple of helpers to check the page at runtime,
+> after all other filters that might obviate the need for the check.
+>
+> The set_btype_for_br call must be moved after the gen_a64_set_pc
+> call to ensure the current pc can still be computed.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  qapi/machine.json            | 1 -
->  hw/core/numa.c               | 4 ++--
->  hw/pci-bridge/cxl_upstream.c | 4 ++--
->  3 files changed, 4 insertions(+), 5 deletions(-)
+>  target/arm/tcg/helper-a64.h    |  3 ++
+>  target/arm/tcg/translate.h     |  2 --
+>  target/arm/tcg/helper-a64.c    | 38 ++++++++++++++++++++
+>  target/arm/tcg/translate-a64.c | 64 ++++++++--------------------------
+>  4 files changed, 55 insertions(+), 52 deletions(-)
+>
+> diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+> index 371388f61b..481007bf39 100644
+> --- a/target/arm/tcg/helper-a64.h
+> +++ b/target/arm/tcg/helper-a64.h
+> @@ -133,6 +133,9 @@ DEF_HELPER_4(cpyfp, void, env, i32, i32, i32)
+>  DEF_HELPER_4(cpyfm, void, env, i32, i32, i32)
+>  DEF_HELPER_4(cpyfe, void, env, i32, i32, i32)
+>
+> +DEF_HELPER_FLAGS_1(guarded_page_check, TCG_CALL_NO_WG, void, env)
+> +DEF_HELPER_FLAGS_2(guarded_page_br, TCG_CALL_NO_RWG, void, env, tl)
+> +
+>  DEF_HELPER_FLAGS_5(gvec_fdiv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+>  DEF_HELPER_FLAGS_5(gvec_fdiv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+>  DEF_HELPER_FLAGS_5(gvec_fdiv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+> diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+> index a8672c857c..01c217f4a4 100644
+> --- a/target/arm/tcg/translate.h
+> +++ b/target/arm/tcg/translate.h
+> @@ -163,8 +163,6 @@ typedef struct DisasContext {
+>      uint8_t dcz_blocksize;
+>      /* A copy of cpu->gm_blocksize. */
+>      uint8_t gm_blocksize;
+> -    /* True if this page is guarded.  */
+> -    bool guarded_page;
+>      /* True if the current insn_start has been updated. */
+>      bool insn_start_updated;
+>      /* Bottom two bits of XScale c15_cpar coprocessor access control reg */
+> diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+> index c60d2a7ec9..424fe927b4 100644
+> --- a/target/arm/tcg/helper-a64.c
+> +++ b/target/arm/tcg/helper-a64.c
+> @@ -1877,3 +1877,41 @@ void HELPER(cpyfe)(CPUARMState *env, uint32_t syndrome, uint32_t wdesc,
+>  {
+>      do_cpye(env, syndrome, wdesc, rdesc, false, GETPC());
+>  }
+> +
+> +static bool is_guarded_page(CPUARMState *env, target_ulong addr)
+> +{
+> +#ifdef CONFIG_USER_ONLY
+> +    return page_get_flags(addr) & PAGE_BTI;
+> +#else
+> +    CPUTLBEntryFull *full;
+> +    void *host;
+> +    int mmu_idx = cpu_mmu_index(env_cpu(env), true);
+> +    int flags = probe_access_full(env, addr, 0, MMU_INST_FETCH, mmu_idx,
+> +                                  false, &host, &full, 0);
+> +
+> +    assert(!(flags & TLB_INVALID_MASK));
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Is there a race condition here where some other vCPU
+knocks this entry out of the TLB between the point when
+we started executing the TB and when we made this helper
+function call ?
 
+> +    return full->extra.arm.guarded;
+> +#endif
+> +}
+
+thanks
+-- PMM
 
