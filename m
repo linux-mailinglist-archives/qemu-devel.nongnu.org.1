@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6F894189A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 18:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4826E9418BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 18:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYpcg-0008Sc-6J; Tue, 30 Jul 2024 12:22:50 -0400
+	id 1sYpch-00005f-8R; Tue, 30 Jul 2024 12:22:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYpcd-0008K9-Ks
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 12:22:47 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1sYpce-0008OJ-KT
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 12:22:48 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sYpcb-0003Xm-Vh
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 12:22:47 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-52f04c29588so8630818e87.3
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 09:22:45 -0700 (PDT)
+ id 1sYpcd-0003YP-1e
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 12:22:48 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a7a9e25008aso619453966b.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 09:22:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722356564; x=1722961364; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722356565; x=1722961365; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D5h3hA9rJCoPrXhXtX9PMhPKr74TW2tQR0MpOfcAcjo=;
- b=FcjYqtiha3YmnN3ZoHHlFU1tVyWvoHfx8Ng7aAyfd6rk/EDJa4sSSmtyYDKUbXNBCy
- syC54lqTbKEDvmnbZv6bpVOFJLXt2RMnBoUhetB89hBndwWRkqnyArbCviLMibHdvu6m
- eT91K4znIjNFi80WGfzlhZo7/ciZuD5q0bMKOkhyvLaE13yKPy384l5Wp9GVTgzGnoCQ
- k6iKwAh2UrZAZP3LpXNPk+klU1CV/XYtd1hZzeMQRjsbEZ881HD02ioJPo8U+LIl27jp
- xO7XuqtMFUmOr9/kYWnHq7JaxAFNSN6ZcfHkBxLnzFVr6R51hPk9v6mFA+g5njYGZ5yn
- rjTQ==
+ bh=De4SMrBSDt0IKfpACiMysHGGtZ7LaSlvWkE+afXomyQ=;
+ b=oeVnyjS+0H70oXQpfVztCnbIbiZ2QUYf+bmsdJemW89wnRIvN4dRVuOzGvD27YQGq7
+ BT1BNaoaeIYxbuCeS44iPGGPewAJCl76fusWIpsPKVrIYNb4qdPRKyAOY61/ZJzEY9O+
+ +ml/NyaCpgKk1F40FTu4IeBF1um8cnvoqowTCqQFuG5b27BenrdMWJ+vpY1ML/CnJIhA
+ SXNliTfcbSKrBk5uznENytuC7QTDlrgRiTrffHavZtPBtVR/bhc4Gudc0yBuefAqB0U7
+ xBE5z8zRhOceHU8gnt+gbX3C9b5+NFk5eatGY6QQj7ZAatiUM1CQaB2uLSRHyEYINg8o
+ QfhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722356564; x=1722961364;
+ d=1e100.net; s=20230601; t=1722356565; x=1722961365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D5h3hA9rJCoPrXhXtX9PMhPKr74TW2tQR0MpOfcAcjo=;
- b=pdo+zSbslSIEvEJtHXnZiw8EJTz8frv5+tUdfwrFdxjh+ZNA7GVnL+A85uj5IFCKgc
- avDawBlYPQWyAaLe1OuM4cbF723K1kY3a7+ipdqnFv0D25qoJNn9CBk5yKUd5gxuWiX6
- gAHFYD7TvXe8CoTgn4FYD0z/K0R4RakYeBQcKNF+rFs9mqct/Q+oAbjZDwXFZ+a1IXzR
- t0TsPwMJAcELd+U0Jwl/RG//sf+J6UfJbGA3S2Ocsy44xNDncAEDHFOpRd49hGkO50B2
- UHJW6qHb+9uo+ysxE7altZtN+Z+AEKce4mvuCZEISRpfqc8GwFKcQq1LFlIWuhgUSxqH
- PVkA==
-X-Gm-Message-State: AOJu0YxImOyrWXl3YoneXFrXrg9TaLBaJSntLCFUzmcrVZQb2pxpF9po
- +E9AySKANzkiraVoO7s+RrpmOC0qM5Saab+Pw1J5Kh1BN8y0HX7GDsVG5SmJRJY=
-X-Google-Smtp-Source: AGHT+IEkGhkZUMmuVnhbHlHFnM8S4j5Crjw55lnORY7DKtdmh0BHS2zcfPVdpCuXNYzPdUprZm16xg==
-X-Received: by 2002:ac2:4f09:0:b0:530:ab86:3 with SMTP id
- 2adb3069b0e04-530ab8602a2mr1700605e87.1.1722356563626; 
- Tue, 30 Jul 2024 09:22:43 -0700 (PDT)
+ bh=De4SMrBSDt0IKfpACiMysHGGtZ7LaSlvWkE+afXomyQ=;
+ b=u7PLAhnsc/HPeTe20B7OT55hAMMnWGy/l9WL2XKVhajb6FsXC/c/HzIzUatmPI9gmu
+ NN8H98dV+3bf4L75dbweoEDFZBVfZnA0vzcbXzGXlittckikIc7g4yz1NstHn7Rd8DOJ
+ Kb/sSwxO6Ymdr5TYumwlPJcUGzgTx4xYWiycEAXzfrpqD0RgaErkA1kAx7Scfly0GYd4
+ 7vfNwi2a1qsxyUVj4SihAzyd28qLeNqZVRZC2AejSQdsgSl9QAbBtrmpmW/jk7BmCCGH
+ dJRseKHHdmn1LmKzxKXNR7bDGsK8YiOX+vTVfGIpkjP58JcWPDPebUEJ550iDmKBAHge
+ EZ9g==
+X-Gm-Message-State: AOJu0YyJjSxvU8KDWe1Hv6vZVEGpaJ0wxRTQ7eYIR2Fp5r1sANznloyc
+ vwcJcZIjQhl9xiqWv+DYTl2ndcKg2g2kl2T6aueW19LL/RCcWKdaYlSCux7gFcM=
+X-Google-Smtp-Source: AGHT+IFPqROpx0V8jxvENDXxM0BcR9BwAzQaQZwgpLK7k9cHtaDtsP0/3AopMi1H9LwA0yKBxH4lyw==
+X-Received: by 2002:a17:907:d17:b0:a7a:c256:3cb with SMTP id
+ a640c23a62f3a-a7d400e1442mr768461666b.39.1722356565189; 
+ Tue, 30 Jul 2024 09:22:45 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad90e34sm662539466b.164.2024.07.30.09.22.40
+ a640c23a62f3a-a7acab5c8fdsm663824766b.89.2024.07.30.09.22.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 30 Jul 2024 09:22:40 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7B3325F9CC;
+ by draig.lan (Postfix) with ESMTP id 909945F9F3;
  Tue, 30 Jul 2024 17:22:38 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 07/14] docs/devel: document how to run individual TCG tests
-Date: Tue, 30 Jul 2024 17:22:30 +0100
-Message-Id: <20240730162237.1425515-8-alex.bennee@linaro.org>
+Subject: [PULL 08/14] tests/avocado: remove tcg_plugins virt_mem_icount test
+Date: Tue, 30 Jul 2024 17:22:31 +0100
+Message-Id: <20240730162237.1425515-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240730162237.1425515-1-alex.bennee@linaro.org>
 References: <20240730162237.1425515-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 6f6ca067d2 (tests/tcg: add some help output for running
-individual tests) we made it easier to run individual tests for a
-given architecture. Lets reference that in the developer
-documentation.
+Since 4f8d886085 (tests/plugin/mem: migrate to new per_vcpu API) this
+test was skipping due to not being able to run callback and inline
+memory instrumentation at the same time.
 
+However b480f7a621 (tests/plugin: add test plugin for inline
+operations) tests for all this matching up so we don't need the
+additional complexity in avocado.
+
+Remove the test.
+
+Fixes: 4f8d886085
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240729144414.830369-8-alex.bennee@linaro.org>
+Message-Id: <20240729144414.830369-9-alex.bennee@linaro.org>
 
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index b984c5dd26..af73d3d64f 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -1490,6 +1490,19 @@ And run with::
- Adding ``V=1`` to the invocation will show the details of how to
- invoke QEMU for the test which is useful for debugging tests.
- 
-+Running individual tests
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Tests can also be run directly from the test build directory. If you
-+run ``make help`` from the test build directory you will get a list of
-+all the tests that can be run. Please note that same binaries are used
-+in multiple tests, for example::
-+
-+  make run-plugin-test-mmap-with-libinline.so
-+
-+will run the mmap test with the ``libinline.so`` TCG plugin. The
-+gdbstub tests also re-use the test binaries but while exercising gdb.
-+
- TCG test dependencies
- ~~~~~~~~~~~~~~~~~~~~~
- 
+diff --git a/tests/avocado/tcg_plugins.py b/tests/avocado/tcg_plugins.py
+index 15fd87b2c1..a930fca2c0 100644
+--- a/tests/avocado/tcg_plugins.py
++++ b/tests/avocado/tcg_plugins.py
+@@ -120,36 +120,3 @@ def test_aarch64_virt_insn_icount(self):
+             else:
+                 count = int(m.group("count"))
+                 self.log.info(f"Counted: {count} instructions")
+-
+-    def test_aarch64_virt_mem_icount(self):
+-        """
+-        :avocado: tags=accel:tcg
+-        :avocado: tags=arch:aarch64
+-        :avocado: tags=machine:virt
+-        :avocado: tags=cpu:cortex-a53
+-        """
+-        kernel_path = self._grab_aarch64_kernel()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'console=ttyAMA0')
+-        console_pattern = 'Kernel panic - not syncing: VFS:'
+-
+-        plugin_log = tempfile.NamedTemporaryFile(mode="r+t", prefix="plugin",
+-                                                 suffix=".log")
+-
+-        self.run_vm(kernel_path, kernel_command_line,
+-                    "tests/plugin/libmem.so,inline=true,callback=true", plugin_log.name,
+-                    console_pattern,
+-                    args=('-icount', 'shift=1'))
+-
+-        with plugin_log as lf, \
+-             mmap.mmap(lf.fileno(), 0, access=mmap.ACCESS_READ) as s:
+-            m = re.findall(br"mem accesses: (?P<count>\d+)", s)
+-            if m is None or len(m) != 2:
+-                self.fail("no memory access counts found")
+-            else:
+-                inline = int(m[0])
+-                callback = int(m[1])
+-                if inline != callback:
+-                    self.fail("mismatched access counts")
+-                else:
+-                    self.log.info(f"Counted {inline} memory accesses")
 -- 
 2.39.2
 
