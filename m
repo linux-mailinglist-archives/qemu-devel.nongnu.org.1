@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C724C9422AD
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 00:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9ED942304
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 00:38:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYvCw-0007Bn-TT; Tue, 30 Jul 2024 18:20:38 -0400
+	id 1sYvSR-0005bU-TS; Tue, 30 Jul 2024 18:36:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYvCo-0006yL-Vi
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:20:30 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYvSP-0005Z4-FF
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:36:37 -0400
+Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYvCn-0006pZ-3r
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:20:30 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-36865a516f1so3532784f8f.0
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 15:20:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sYvSL-0001RD-Ox
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 18:36:37 -0400
+Received: by mail-il1-x12d.google.com with SMTP id
+ e9e14a558f8ab-395e9f2ebc0so29991295ab.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 15:36:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722378027; x=1722982827; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9Lc+azGwkwuTK4hgApgrGG827mAv+IHvwoS10S2KQ54=;
- b=j2trGSpOycL9mTldfJLKyX/GXcQz0c4t01TWyTjTBIoPxQW09HnJFNcqtlTtwwz68C
- reNJQWo6RZaAOP1ziBO0lKE/gJiZGe+ubU8DNlLTBBn53dx+qSuhI3fqAkIZ4gZ4QK1O
- f4LDT3qL6mKfzeMBwwHUElFe3htae0d+Fad+QwIrS6WF4SJQc3Gwdf7v0Nu6C9B9H553
- aOGu135RP2NUBaKpdf/M4PES37C6Gi9bK/1XMAAXeW/Vvb6rk8f9g5vTqn0UFP6Pum4A
- z8GPvFsGhkyKvxZjdQqBwHSr+Vw/BqYSGeVbAM1o92bSMHDt5MpM+3lf44o2IUGT35zN
- 16tg==
+ d=linaro.org; s=google; t=1722378992; x=1722983792; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ObO4rf3+Yh1uQa1rPri0fpxTbgw3SANBVkBBG+duNQk=;
+ b=VOOQonCKsrt/K6aP23Uf1T0G++cwMad6JxvQWGA5a5cTQpFBNSec0DReYEtBmxHoh8
+ 30SRvhDI5SPWt3I8UbeMXbI7zOSowpKTjr7PNBcn8SyqrGYER2EJYtrGECyHhxe83hwo
+ fcgDImm/csG9fwBemDu5hdu7ygn3hlLEWpf8Uk5/UkJ+5IFra9Jyeeg1DQN10Y/vBvCv
+ xXWqidN6nEfZJQXHWvpsl8HLG7i0LVgPFOCwNGrdgPntFVWOF2A4xnBFudOpakOhxvGK
+ hvbbXBe6TU5qBByHpuTlMBr9UZ/y3884iqGgqxQGt1nN1JpkrQ4vLKhi2YstQrmYNIKj
+ ul0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722378027; x=1722982827;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9Lc+azGwkwuTK4hgApgrGG827mAv+IHvwoS10S2KQ54=;
- b=nHHuG6kgr3E0v5w3VKPfXp+yJOayxSNTERx61zLFB8R4GU/6EaeBjvCFkCycqN4CYS
- nVvRcdawN2WPphnC8qCDQRcbg6nvlsmtOUaPXx6nFfMvSDJDt0uGDcAHmxEy5LnujJW2
- bxo5AfpRyew1cbXy7chpGwk8NLuWU0DiiUbdlYC5F46RmRxU3fU/NNknsAHYL6Yg4l6V
- 2hVUgSxEtB0FkxQklW5Juwfld5OXvgHquyYHWp2uZURySZTGEBBK96upTojZPm2lWy4m
- vkXBOuJDynrRmPti41rRlnMqn4hyXAlUmFqJr7QOWIE8tufSGaU2CDWROo36883/07+d
- 27fQ==
-X-Gm-Message-State: AOJu0YwN1oJWY8YdzxBl6E5sAfyfWAnG29r0sM4kBOwazZCF44Lnrvvr
- cXJ7wPLlPTqbo5q5pBS8/lw11GpcYfjMWo26z0BmrkZm5QzMOo64aozjgPyet6W5QRm1Y8vZaVd
- DY/c=
-X-Google-Smtp-Source: AGHT+IH3HpUUmQdxX4ZT0HyUVDyxKukpgKgfDlrFZ7mwt6QpAGf634G4j5Rl5g5/50ZX/o2kDQVONQ==
-X-Received: by 2002:adf:a31d:0:b0:368:7868:2d76 with SMTP id
- ffacd0b85a97d-36b5d2c9df1mr9009505f8f.51.1722378027088; 
- Tue, 30 Jul 2024 15:20:27 -0700 (PDT)
-Received: from localhost.localdomain ([78.196.4.158])
+ d=1e100.net; s=20230601; t=1722378992; x=1722983792;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ObO4rf3+Yh1uQa1rPri0fpxTbgw3SANBVkBBG+duNQk=;
+ b=WVfQKEosQrQhxWFz/+5G/y9T3AwjyzCsFCN2kVSF82q/vGXDvArN2xpcJJpYOzjx7w
+ BNAbS9NbHUhjf2oglKy6Z1FZfQxFERpPuN02rM740JmPLZWkZ1Sll1wJ7L43TFvJRU5Y
+ sFI/mZVV5/Sm4zaifGOnGm6xg5DrQdgO+XKO/Zm4udsiVr3YOPvhdv6Qwx1fR8QaKg0v
+ X49LE17kJ+OWJe1DVpdxKs5g8MUpL7rurZPVLmJDOrDjL6Oib75/cBK5C9oSumE1fozE
+ /i3XEqgaJdopx3AEPmr3QSP5YmzMBsKiNEn8UsvVwK7i9f4RSbixIAlzcp5XjqS4PAQ+
+ ilog==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXGnmYecuDX8EjFqUDUyrYBEIHcpsUN1mgac8iq1uTX5lR2NhQ1WKfCTZhOL2QKfwGMXBBx73MZJtWtwepXXc5cTbKNOsI=
+X-Gm-Message-State: AOJu0YyNKX0Hq4WmmW4ZI6rg+u5T9uGyEBbkT0UKOVN0lR8mLTBvyz5W
+ Sam4qTetMzsynxa7+62V6ISQWh4W07+GjZQ7pIehendXcITg09J2wIsiI95/H8I=
+X-Google-Smtp-Source: AGHT+IFort65k2CnKQJNC5X+UbmYERnaCL1Fai51jHT1GGoXXxmFsE+LYb8pvo0U5+18TirPRKmvUw==
+X-Received: by 2002:a05:6e02:12cb:b0:374:a44b:1186 with SMTP id
+ e9e14a558f8ab-39aec2df3e3mr172211655ab.12.1722378992169; 
+ Tue, 30 Jul 2024 15:36:32 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b36861b29sm15559499f8f.93.2024.07.30.15.20.26
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Jul 2024 15:20:26 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 6/6] osdep.h: Clean up no-longer-needed back-compat for macOS 10
-Date: Wed, 31 Jul 2024 00:19:57 +0200
-Message-ID: <20240730221957.34533-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730221957.34533-1-philmd@linaro.org>
-References: <20240730221957.34533-1-philmd@linaro.org>
+ 41be03b00d2f7-7a9f7b7b029sm9310999a12.11.2024.07.30.15.36.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 Jul 2024 15:36:31 -0700 (PDT)
+Message-ID: <7c9662a0-240b-4bf5-9676-5eff403f86ef@linaro.org>
+Date: Wed, 31 Jul 2024 08:36:24 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/arm: Handle denormals correctly for FMOPA
+ (widening)
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20240730155819.2958924-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240730155819.2958924-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,42 +97,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+On 7/31/24 01:58, Peter Maydell wrote:
+> -void HELPER(sme_fmopa_h)(void *vza, void *vzn, void *vzm, void *vpn,
+> -                         void *vpm, void *vst, uint32_t desc)
+> +void HELPER(sme_fmopa_h)(CPUARMState *env,
+> +                         void *vza, void *vzn, void *vzm, void *vpn,
+> +                         void *vpm, uint32_t desc)
 
-Our official support policy only supports the most recent two
-versions of macOS (currently macOS 13 Ventura and macOS 14 Sonoma),
-and we already have code that assumes at least macOS 12 Monterey or
-better.  In commit 2d27c91e2b72ac7 we dropped some of the back-compat
-code for older macOS versions, but missed the guard in osdep.h that
-is providing a fallback for macOS 10 and earlier.
+I think the env pointer should replace vst in the argument ordering.
+That keeps with the standard gvec signature.
 
-Simplify the ifdef to the "ifdef __APPLE__" that we use elsewhere for
-"is this macOS?".
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240730095939.2781172-1-peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/qemu/osdep.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 191916f38e..720ed21a7e 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -786,8 +786,7 @@ size_t qemu_get_host_physmem(void);
-  * Toggle write/execute on the pages marked MAP_JIT
-  * for the current thread.
-  */
--#if defined(MAC_OS_VERSION_11_0) && \
--    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
-+#ifdef __APPLE__
- static inline void qemu_thread_jit_execute(void)
- {
-     pthread_jit_write_protect_np(true);
--- 
-2.45.2
-
+r~
 
