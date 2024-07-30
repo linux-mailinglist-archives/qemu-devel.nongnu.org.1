@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9037F940D49
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE008940D4C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jul 2024 11:23:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sYj3k-0001G6-0W; Tue, 30 Jul 2024 05:22:20 -0400
+	id 1sYj3u-0001pc-6S; Tue, 30 Jul 2024 05:22:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3h-00018g-TN
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:17 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3q-0001lG-Tv
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:26 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3g-0005nY-AH
- for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:17 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4281faefea9so12650615e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:22:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sYj3o-0005oI-Iv
+ for qemu-devel@nongnu.org; Tue, 30 Jul 2024 05:22:26 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2ef2c56da6cso51584791fa.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Jul 2024 02:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722331334; x=1722936134; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722331342; x=1722936142; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ugc2yLiSsI07WG//ugTlVImvOO+yujn7Q1YmHPiaYeY=;
- b=svE9vyBe4iLfuPzZ3CPXE+TN9XEPe1Pa4WFrbu0faWq9YD120fY/baAVbXZ4/mssYI
- f7jMRXgKz33DhaQ2YFPCL5XqeaY/8l/wTlCFVc1jPjSLbsU4eTqBTwZG3SsmefmYfc5o
- g2n/abH1neRSolNakGn2SYN1f+JG7H8hwzbSWHudoX7009r6cgfni+84rOpNcoabg6MO
- qKR+XqZOty/fNPPdlUPL/vAytzPpW2TDgXstWvTgVyB7RMD2Nzx3zDNKJ/WU2KNgknZv
- Oc6t/EfZVyPDb13G/gyzhyOJ12HFysaldlNSb6+uj0dVQ5i8mOpNiMXkd67pmC0w9lwf
- vsyw==
+ bh=vNkJJhtqcxfGEvl8U9EJzFqc2LtYmhOZWYrWmgfKr40=;
+ b=sqFd78I0QhwN3P/m/Sul+MmFaL7X+TKK4KDOBGpE0+qKlM9w01HYixRRhoy8DULc4B
+ bD5g/xtxX3QPBwM2W2Y61cV3x6DuPiufYVymrYrbUqNFoK3NX3T6A3CzChsae63rin7Y
+ qpRG6zQp7ZNbj0Uw8iODRsrPJChuQnXgQcWQuJF1g7gCqU4Sc0tKrXol+Dy+Ui/jQVdo
+ TpFWU/32vrD6EylrlXhcmVYTL/1/2n4rYu3cFDUz0+7e2VDqm9c2E/B9Ub+XjBE+50TX
+ 2xvWzjo+HOYKxL3S+v5M+3uEwhhEib1EUjrG+wISC8nKT+EZWRPRQlVOAD1B4by80T3J
+ oWOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722331334; x=1722936134;
+ d=1e100.net; s=20230601; t=1722331342; x=1722936142;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ugc2yLiSsI07WG//ugTlVImvOO+yujn7Q1YmHPiaYeY=;
- b=f+8i1vO2sSz+CR+Uokav2ed27mRdFjo9YjBXuL6pn1Q700+DWDJW48PIFoY7ltMNfc
- J8tIDBPzgHzm13Cyf9KjtjZ8pxTcVVIyN1Tc8SaHMTDZ6Q8ig9Wt0Ymy0pILe6S3eTRj
- fHhGAUeluQjDgIX0SFcbzaeaTZzkmXli8NvGaPmNCDMdCLoLLw8q0KuoG3tg9+EXMPSK
- X0Q/4YKveAiVKrb5f6Y/qYUmN2ATGS5ctvgL/57oGdO1R/M/m97fxIkiAzZewUfDNoLi
- BrxvMtagPo7aImjvMJi7sF1aLEImj470j24S+CS05h3SXanh9GZcfuOYMH+aRd0Y5CGE
- Q2tw==
-X-Gm-Message-State: AOJu0YxXUHYh6FGkMCsAHbjeD4NDXbzC4Y6eOk2bnX9E1Uxl8ePGqHlG
- Kijd6cZdtHWHn1f/RNYI/qDr9BE8UCalZXMTTYFZG31SApvVnSa76zIbPjcMihra2FOVWqZXXBO
- Yo2A=
-X-Google-Smtp-Source: AGHT+IGrxNlg8ZBJVA1vrv42R029iazlceOSbctY1GNsHcX+9VYtmRc2z2zSyU7fzJ/oWi5CIeQ8UA==
-X-Received: by 2002:a05:600c:4f8e:b0:426:6e9a:7a1c with SMTP id
- 5b1f17b1804b1-42811e12d86mr67992635e9.25.1722331334313; 
- Tue, 30 Jul 2024 02:22:14 -0700 (PDT)
+ bh=vNkJJhtqcxfGEvl8U9EJzFqc2LtYmhOZWYrWmgfKr40=;
+ b=ZcZXOuE9oruflp/84yt4xDMe32GYSr3zGJ/yC5OtaxZAN8qFS3pXrVobEwwyEo66+X
+ Bpg+PVY4VOXZ1pA2jc32LEi47qJgE3v+Spm4hc4vAkrMUOSGuIUWvhydrP/3ScpGV8pq
+ 9rrRJqg+WIqOK/n5hu0OIJviU4ezMy0YhslxCBE7PVA+miAz5LAypdAjR+4tqTc1fMrM
+ EWldicf8i5BqBQDTcr3m24gOjZ2jIWci9LPDJVGAlxUp59OGoQ71tgGYZapwuUItUI1n
+ VA2b+Nrxs4o2T8DUQm/0FSLlDtHYAVu4CL/kJvCo6gn1CyW9YYKAceukAE/dGI4z0I0J
+ Z4qg==
+X-Gm-Message-State: AOJu0YzkGBg+VcUm3wBZ9aLGuiOjPim5vDtQzAU43cIdfD+hI58PkEhS
+ 5sekzNAVQ5oc0RN3VsRR4uQ2G7ijPOGddxZ/IZIppFsBPAXrb87Mez4yjNNfOrBuQI6/rW36K+/
+ nd9Y=
+X-Google-Smtp-Source: AGHT+IEXmRZlm7i9STjSm0m4HcoPoH5PGsuk6ZyzSgN1qlDvC+p2ExfgyiMI5QK0XJRePPKuSB8FZA==
+X-Received: by 2002:a2e:9608:0:b0:2ef:2f17:9edd with SMTP id
+ 38308e7fff4ca-2f12ee2f188mr65928521fa.44.1722331342158; 
+ Tue, 30 Jul 2024 02:22:22 -0700 (PDT)
 Received: from localhost.localdomain (82.red-88-28-10.dynamicip.rima-tde.net.
  [88.28.10.82]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42809e4423dsm173477325e9.13.2024.07.30.02.22.12
+ 5b1f17b1804b1-4281dae1479sm59492875e9.44.2024.07.30.02.22.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Jul 2024 02:22:13 -0700 (PDT)
+ Tue, 30 Jul 2024 02:22:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bmeng.cn@gmail.com>, Zheyu Ma <zheyuma97@gmail.com>,
  qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 4/5] hw/sd/sdhci: Trace ADMA descriptors
-Date: Tue, 30 Jul 2024 11:21:37 +0200
-Message-ID: <20240730092138.32443-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-stable@nongnu.org
+Subject: [PATCH-for-9.1 5/5] hw/sd/sdhci: Check ADMA descriptors can be
+ accessed
+Date: Tue, 30 Jul 2024 11:21:38 +0200
+Message-ID: <20240730092138.32443-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730092138.32443-1-philmd@linaro.org>
 References: <20240730092138.32443-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,64 +95,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Since malicious guest can write invalid addresses to
+the ADMASYSADDR register, we need to check whether the
+descriptor could be correctly filled or not.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci.c      | 8 ++++++++
- hw/sd/trace-events | 1 +
- 2 files changed, 9 insertions(+)
+ hw/sd/sdhci.c      | 86 ++++++++++++++++++++++++++--------------------
+ hw/sd/trace-events |  2 +-
+ 2 files changed, 49 insertions(+), 39 deletions(-)
 
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 8293d83556..66b9364e9e 100644
+index 66b9364e9e..eb0476b9aa 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -693,6 +693,11 @@ typedef struct ADMADescr {
-     uint8_t incr;
- } ADMADescr;
+@@ -698,53 +698,62 @@ static void trace_adma_description(const char *type, const ADMADescr *dscr)
+     trace_sdhci_adma_desc(type, dscr->addr, dscr->length, dscr->attr, dscr->incr);
+ }
  
-+static void trace_adma_description(const char *type, const ADMADescr *dscr)
-+{
-+    trace_sdhci_adma_desc(type, dscr->addr, dscr->length, dscr->attr, dscr->incr);
-+}
-+
- static void get_adma_description(SDHCIState *s, ADMADescr *dscr)
+-static void get_adma_description(SDHCIState *s, ADMADescr *dscr)
++static MemTxResult get_adma_description(SDHCIState *s, ADMADescr *dscr)
  {
      uint32_t adma1 = 0;
-@@ -710,6 +715,7 @@ static void get_adma_description(SDHCIState *s, ADMADescr *dscr)
-         dscr->length = (uint16_t)extract64(adma2, 16, 16);
-         dscr->attr = (uint8_t)extract64(adma2, 0, 7);
-         dscr->incr = 8;
-+        trace_adma_description("ADMA2_32", dscr);
+     uint64_t adma2 = 0;
+     hwaddr entry_addr = (hwaddr)s->admasysaddr;
++    MemTxResult res;
++
+     switch (SDHC_DMA_TYPE(s->hostctl1)) {
+     case SDHC_CTRL_ADMA2_32:
+-        dma_memory_read(s->dma_as, entry_addr, &adma2, sizeof(adma2),
+-                        MEMTXATTRS_UNSPECIFIED);
+-        adma2 = le64_to_cpu(adma2);
+-        /* The spec does not specify endianness of descriptor table.
+-         * We currently assume that it is LE.
+-         */
+-        dscr->addr = (hwaddr)extract64(adma2, 32, 32) & ~0x3ull;
+-        dscr->length = (uint16_t)extract64(adma2, 16, 16);
+-        dscr->attr = (uint8_t)extract64(adma2, 0, 7);
+-        dscr->incr = 8;
+-        trace_adma_description("ADMA2_32", dscr);
++        res = dma_memory_read(s->dma_as, entry_addr, &adma2, sizeof(adma2),
++                              MEMTXATTRS_UNSPECIFIED);
++        if (res == MEMTX_OK) {
++            adma2 = le64_to_cpu(adma2);
++            /* The spec does not specify endianness of descriptor table.
++             * We currently assume that it is LE.
++             */
++            dscr->addr = (hwaddr)extract64(adma2, 32, 32) & ~0x3ull;
++            dscr->length = (uint16_t)extract64(adma2, 16, 16);
++            dscr->attr = (uint8_t)extract64(adma2, 0, 7);
++            dscr->incr = 8;
++            trace_adma_description("ADMA2_32", dscr);
++        }
          break;
      case SDHC_CTRL_ADMA1_32:
-         dma_memory_read(s->dma_as, entry_addr, &adma1, sizeof(adma1),
-@@ -723,6 +729,7 @@ static void get_adma_description(SDHCIState *s, ADMADescr *dscr)
-         } else {
-             dscr->length = 4 * KiB;
+-        dma_memory_read(s->dma_as, entry_addr, &adma1, sizeof(adma1),
+-                        MEMTXATTRS_UNSPECIFIED);
+-        adma1 = le32_to_cpu(adma1);
+-        dscr->addr = (hwaddr)(adma1 & 0xFFFFF000);
+-        dscr->attr = (uint8_t)extract32(adma1, 0, 7);
+-        dscr->incr = 4;
+-        if ((dscr->attr & SDHC_ADMA_ATTR_ACT_MASK) == SDHC_ADMA_ATTR_SET_LEN) {
+-            dscr->length = (uint16_t)extract32(adma1, 12, 16);
+-        } else {
+-            dscr->length = 4 * KiB;
++        res = dma_memory_read(s->dma_as, entry_addr, &adma1, sizeof(adma1),
++                              MEMTXATTRS_UNSPECIFIED);
++        if (res == MEMTX_OK) {
++            adma1 = le32_to_cpu(adma1);
++            dscr->addr = (hwaddr)(adma1 & ~0xfff);
++            dscr->attr = (uint8_t)extract32(adma1, 0, 7);
++            dscr->incr = 4;
++            if ((dscr->attr & SDHC_ADMA_ATTR_ACT_MASK) == SDHC_ADMA_ATTR_SET_LEN) {
++                dscr->length = (uint16_t)extract32(adma1, 12, 16);
++            } else {
++                dscr->length = 4 * KiB;
++            }
++            trace_adma_description("ADMA1_32", dscr);
          }
-+        trace_adma_description("ADMA1_32", dscr);
+-        trace_adma_description("ADMA1_32", dscr);
          break;
      case SDHC_CTRL_ADMA2_64:
-         dma_memory_read(s->dma_as, entry_addr, &dscr->attr, 1,
-@@ -735,6 +742,7 @@ static void get_adma_description(SDHCIState *s, ADMADescr *dscr)
-         dscr->addr = le64_to_cpu(dscr->addr);
-         dscr->attr &= (uint8_t) ~0xC0;
-         dscr->incr = 12;
-+        trace_adma_description("ADMA2_64", dscr);
+-        dma_memory_read(s->dma_as, entry_addr, &dscr->attr, 1,
+-                        MEMTXATTRS_UNSPECIFIED);
+-        dma_memory_read(s->dma_as, entry_addr + 2, &dscr->length, 2,
+-                        MEMTXATTRS_UNSPECIFIED);
+-        dscr->length = le16_to_cpu(dscr->length);
+-        dma_memory_read(s->dma_as, entry_addr + 4, &dscr->addr, 8,
+-                        MEMTXATTRS_UNSPECIFIED);
+-        dscr->addr = le64_to_cpu(dscr->addr);
+-        dscr->attr &= (uint8_t) ~0xC0;
+-        dscr->incr = 12;
+-        trace_adma_description("ADMA2_64", dscr);
++        res = dma_memory_read(s->dma_as, entry_addr, &dscr->attr, 1,
++                              MEMTXATTRS_UNSPECIFIED);
++        res |= dma_memory_read(s->dma_as, entry_addr + 2, &dscr->length, 2,
++                               MEMTXATTRS_UNSPECIFIED);
++        res |= dma_memory_read(s->dma_as, entry_addr + 4, &dscr->addr, 8,
++                               MEMTXATTRS_UNSPECIFIED);
++        if (res == MEMTX_OK) {
++            dscr->length = le16_to_cpu(dscr->length);
++            dscr->addr = le64_to_cpu(dscr->addr);
++            dscr->attr &= (uint8_t) ~0xc0;
++            dscr->incr = 12;
++            trace_adma_description("ADMA2_64", dscr);
++        }
          break;
      }
++    return res;
  }
+ 
+ /* Advanced DMA data transfer */
+@@ -755,7 +764,6 @@ static void sdhci_do_adma(SDHCIState *s)
+     const uint16_t block_size = s->blksize & BLOCK_SIZE_MASK;
+     const MemTxAttrs attrs = { .memory = true };
+     ADMADescr dscr = {};
+-    MemTxResult res;
+     int i;
+ 
+     if (s->trnmod & SDHC_TRNS_BLK_CNT_EN && !s->blkcnt) {
+@@ -765,12 +773,14 @@ static void sdhci_do_adma(SDHCIState *s)
+     }
+ 
+     for (i = 0; i < SDHC_ADMA_DESCS_PER_DELAY; ++i) {
++        MemTxResult res;
++
+         s->admaerr &= ~SDHC_ADMAERR_LENGTH_MISMATCH;
+ 
+-        get_adma_description(s, &dscr);
+-        trace_sdhci_adma_loop(dscr.addr, dscr.length, dscr.attr);
++        res = get_adma_description(s, &dscr);
++        trace_sdhci_adma_loop(dscr.addr, dscr.length, dscr.attr, res);
+ 
+-        if ((dscr.attr & SDHC_ADMA_ATTR_VALID) == 0) {
++        if (res != MEMTX_OK || (dscr.attr & SDHC_ADMA_ATTR_VALID) == 0) {
+             /* Indicate that error occurred in ST_FDS state */
+             s->admaerr &= ~SDHC_ADMAERR_STATE_MASK;
+             s->admaerr |= SDHC_ADMAERR_STATE_ST_FDS;
 diff --git a/hw/sd/trace-events b/hw/sd/trace-events
-index 43671dc791..3d3f5c1cb7 100644
+index 3d3f5c1cb7..a802a717b9 100644
 --- a/hw/sd/trace-events
 +++ b/hw/sd/trace-events
-@@ -35,6 +35,7 @@ sdhci_access(const char *access, unsigned int size, uint64_t offset, const char
+@@ -29,7 +29,7 @@ sdhci_response4(uint32_t r0) "RSPREG[31..0]=0x%08x"
+ sdhci_response16(uint32_t r3, uint32_t r2, uint32_t r1, uint32_t r0) "RSPREG[127..96]=0x%08x, RSPREG[95..64]=0x%08x, RSPREG[63..32]=0x%08x, RSPREG[31..0]=0x%08x"
+ sdhci_end_transfer(uint8_t cmd, uint32_t arg) "Automatically issue CMD%02u 0x%08x"
+ sdhci_adma(const char *desc, uint32_t sysad) "%s: admasysaddr=0x%" PRIx32
+-sdhci_adma_loop(uint64_t addr, uint16_t length, uint8_t attr) "addr=0x%08" PRIx64 ", len=%d, attr=0x%x"
++sdhci_adma_loop(uint64_t addr, uint16_t length, uint8_t attr, uint32_t res) "addr=0x%08" PRIx64 ", len=%d, attr=0x%x, res=%" PRIu32
+ sdhci_adma_transfer_completed(void) ""
+ sdhci_access(const char *access, unsigned int size, uint64_t offset, const char *dir, uint64_t val, uint64_t val2) "%s%u: addr[0x%04" PRIx64 "] %s 0x%08" PRIx64 " (%" PRIu64 ")"
  sdhci_read_dataport(uint16_t data_count) "all %u bytes of data have been read from input buffer"
- sdhci_write_dataport(uint16_t data_count) "write buffer filled with %u bytes of data"
- sdhci_capareg(const char *desc, uint16_t val) "%s: %u"
-+sdhci_adma_desc(const char *type, uint64_t addr, uint16_t length, uint8_t attr, uint8_t incr) "%s addr:0x%08"PRIx64" len:0x%x, attr:0x%x, incr:%u"
- 
- # sd.c
- sdcard_normal_command(const char *proto, const char *cmd_desc, uint8_t cmd, uint32_t arg, const char *state) "%s %20s/ CMD%02d arg 0x%08x (state %s)"
 -- 
 2.45.2
 
