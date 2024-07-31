@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC511942D15
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585B5942D19
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:19:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ7La-0004zS-Cf; Wed, 31 Jul 2024 07:18:22 -0400
+	id 1sZ7Ld-0005BR-7j; Wed, 31 Jul 2024 07:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZ7LY-0004uM-HD
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:20 -0400
+ id 1sZ7Lb-00056R-JU
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZ7LW-0006lT-VC
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:20 -0400
+ id 1sZ7LZ-0006ly-Ug
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722424698;
+ s=mimecast20190719; t=1722424700;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aYyzfF6IqNI/L5NVj2X9zCG1qLPKn4/0ehGgl/Nh5hs=;
- b=EuiOMw1o1DolyvdA5smgeeZ/LDYgJiujcLPAomvxR2zPfOXmTdMgnMkYfuvgSCwTYO31Wy
- REkdYr8an0zLOJwxfqRbyb1MWeu0bZPnlFtQRqYmlS+scVKUySRJt7k0BxUg/2fgc+LudV
- xwcBV/goP0vYt8IfHvpIbnxijPMwuoY=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UXQp/6q+UgrnD2vb9HkCYwGfgn5PjByeKn38gVNGzJM=;
+ b=RqvWZ8WmGA1WDfRE21p71VvSIAlCnjdvXhgATWv4+csRDQvIrZSjk9nWaOCzH9odXuIKMf
+ axPBmHBMmLQnk4JeZK2A1RTDP2vAkVeg5sqlsr8ZBJCKmt7CEPixImBpmRRS3pwedf8r51
+ Uu4khnxyKprIZoaHscdFZVhT7bG8OaM=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-304-bhX0ubxlOEi-_9zCJzCpGg-1; Wed, 31 Jul 2024 07:18:16 -0400
-X-MC-Unique: bhX0ubxlOEi-_9zCJzCpGg-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5a766a51b0dso6173771a12.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:16 -0700 (PDT)
+ us-mta-404-HyYRgSHOPsiakK2bnpQqng-1; Wed, 31 Jul 2024 07:18:19 -0400
+X-MC-Unique: HyYRgSHOPsiakK2bnpQqng-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-52eff10441fso6390606e87.3
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722424694; x=1723029494;
+ d=1e100.net; s=20230601; t=1722424697; x=1723029497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aYyzfF6IqNI/L5NVj2X9zCG1qLPKn4/0ehGgl/Nh5hs=;
- b=KAZjc8R5N58hHkBsaDlS1GM/UAP27pRIgqtRoLUo2gwz87NTb80Hm+MZohzDlQqUgM
- e6EDE7Vf7i2liEb+bjesw+AA45pxQd6Hxxp5lCiyd4Rxsw6KM7wwqz95yrXqG7Fzc8Ae
- 9AtZEkVElj6f1Ba9fgOdvYfj7MBEeDlCYAkKBhNJkFKRnLYnZZECJe2zhl/AjKzC8mCJ
- 92M/iOFu2xm2/fonvP1066zlAQdh0o87rBNM7977Jd9HIvTBb4R65XCENH0yyjfsG9Js
- XFDXp7lx7Zq2Z5WRr8cvsjvhSh23GPSqV5fOnYXkezZWVpSypyws/wg/wlC1mKxaSLC1
- V8Ow==
-X-Gm-Message-State: AOJu0YxpOLFMscu6j2NVxnhyP8VdDu8cgPF5o3Gxdx7rHx6wMcevcZcT
- OjUT1JBUIJt5LCbqr1QzCkML1E0xPzfLcQUUwwmH4xpatTzHuRnGJAMKKqZ3tLOk9Zqk5wdTPgk
- 62pjkdtTrpKyKjbhcJiurDpc3kYIwiUwnl+dqdFHRBKuch/Vx4GuQgD+3P8QOehqogcmvdRIXMw
- 6ROE1GHXnPZGg+bpovpfeuPiCjbj/Gz6Oj+0rb
-X-Received: by 2002:a50:d4d5:0:b0:5af:874d:1b7b with SMTP id
- 4fb4d7f45d1cf-5b02000c604mr9118256a12.1.1722424694534; 
- Wed, 31 Jul 2024 04:18:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHscWNXIyOaWDoq+cl3VgCRoKNVrM48mtyCKBkDpOwgWt1IUGSvzqZe7lPZBmQ5SWbYdV/rKQ==
-X-Received: by 2002:a50:d4d5:0:b0:5af:874d:1b7b with SMTP id
- 4fb4d7f45d1cf-5b02000c604mr9118231a12.1.1722424694044; 
- Wed, 31 Jul 2024 04:18:14 -0700 (PDT)
+ bh=UXQp/6q+UgrnD2vb9HkCYwGfgn5PjByeKn38gVNGzJM=;
+ b=PbfGVMIUkT5FbfKlu+cz0fJsjKYCqcCSXHcPShdg2hhBNxEQcCF2Kum8nJJUZADJYe
+ +G39AMdWcygcesPH9NfFmu7EtbrQe7aCJOXunzuD9enWNAi+myfky0BYG+/goa4monIh
+ D2Iu6i2yMJw+Oi1i+eNcbWypNb1/FK0QfTQvRTrhP6TpSuJonzukfFwbUk5N74yOYGxD
+ FqAgsVoEgYLI54nbS5vNqFCAxVFOFnAfVqG91S03ufQba5Mvi4ek1qLSb42fR4Q0A9ds
+ 1nAc6pf3NytJUBj9AfH0ddL/awTMYq0o3318pB9Ti30hZLZ1NQ12WbbYW6aqhn0tIdpo
+ 7veQ==
+X-Gm-Message-State: AOJu0Yy7DBkE6lc/5Evmr+2eU1s4MI3l37nHaknn/YcVqmVVbL0Kqt5E
+ 2MwRlUH1Kwt/bVxRq2+3K3ounKlEEW+AyLrU98izzfAoO6FZQtr/giiSWXN8dAX2B1MsXg+jXdQ
+ NMYCckR05FZA6lJQ/CuK7T2J+1RUpk7vc/kHl6FvBPjGTgDtKIW4Wzr+T/oEgs3IXZ39M/1/6e0
+ rSN2zEBCGN7NNDjvQ5bzJ4fp9m2FiluSXjXY8k
+X-Received: by 2002:a05:6512:286:b0:52f:c2ef:a76a with SMTP id
+ 2adb3069b0e04-5309b2720a2mr7918448e87.18.1722424697394; 
+ Wed, 31 Jul 2024 04:18:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERpqr58GDaaFTu+Ox4BYb5uKLqIsNilOjryoHAFCWA5/YvTgu4GL8ve4O+U+WZWCL7g19peQ==
+X-Received: by 2002:a05:6512:286:b0:52f:c2ef:a76a with SMTP id
+ 2adb3069b0e04-5309b2720a2mr7918438e87.18.1722424696873; 
+ Wed, 31 Jul 2024 04:18:16 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ac6358fa5esm8548783a12.32.2024.07.31.04.18.13
+ 4fb4d7f45d1cf-5ac63590cedsm8530617a12.29.2024.07.31.04.18.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 04:18:13 -0700 (PDT)
+ Wed, 31 Jul 2024 04:18:16 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiong Zhang <xiong.y.zhang@linux.intel.com>
-Subject: [PULL 02/10] target/i386: Change unavail from u32 to u64
-Date: Wed, 31 Jul 2024 13:17:58 +0200
-Message-ID: <20240731111806.167225-3-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 03/10] target/i386/cpu: Remove unnecessary SGX feature words
+ checks
+Date: Wed, 31 Jul 2024 13:17:59 +0200
+Message-ID: <20240731111806.167225-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240731111806.167225-1-pbonzini@redhat.com>
 References: <20240731111806.167225-1-pbonzini@redhat.com>
@@ -100,35 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiong Zhang <xiong.y.zhang@linux.intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-The feature word 'r' is a u64, and "unavail" is a u32, the operation
-'r &= ~unavail' clears the high 32 bits of 'r'. This causes many vmx cases
-in kvm-unit-tests to fail. Changing 'unavail' from u32 to u64 fixes this
-issue.
+CPUID.0x7.0.ebx and CPUID.0x7.0.ecx leaves have been expressed as the
+feature word lists, and the Host capability support has been checked
+in x86_cpu_filter_features().
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2442
-Fixes: 0b2757412cb1 ("target/i386: drop AMD machine check bits from Intel CPUID")
-Signed-off-by: Xiong Zhang <xiong.y.zhang@linux.intel.com>
-Link: https://lore.kernel.org/r/20240730082927.250180-1-xiong.y.zhang@linux.intel.com
+Therefore, such checks on SGX feature "words" are redundant, and
+the follow-up adjustments to those feature "words" will not actually
+take effect.
+
+Remove unnecessary SGX feature words related checks.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20240730045544.2516284-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/cpu.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4688d140c2d..ef06da54c63 100644
+index ef06da54c63..a9535284aa9 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6039,7 +6039,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
- {
-     FeatureWordInfo *wi = &feature_word_info[w];
-     uint64_t r = 0;
--    uint32_t unavail = 0;
-+    uint64_t unavail = 0;
+@@ -6537,8 +6537,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     case 7:
+         /* Structured Extended Feature Flags Enumeration Leaf */
+         if (count == 0) {
+-            uint32_t eax_0_unused, ebx_0, ecx_0, edx_0_unused;
+-
+             /* Maximum ECX value for sub-leaves */
+             *eax = env->cpuid_level_func7;
+             *ebx = env->features[FEAT_7_0_EBX]; /* Feature flags */
+@@ -6548,20 +6546,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             }
+             *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
  
-     if (kvm_enabled()) {
-         switch (wi->type) {
+-            /*
+-             * SGX cannot be emulated in software.  If hardware does not
+-             * support enabling SGX and/or SGX flexible launch control,
+-             * then we need to update the VM's CPUID values accordingly.
+-             */
+-            x86_cpu_get_supported_cpuid(0x7, 0,
+-                                        &eax_0_unused, &ebx_0,
+-                                        &ecx_0, &edx_0_unused);
+-            if ((*ebx & CPUID_7_0_EBX_SGX) && !(ebx_0 & CPUID_7_0_EBX_SGX)) {
+-                *ebx &= ~CPUID_7_0_EBX_SGX;
+-            }
+-
+             if ((*ecx & CPUID_7_0_ECX_SGX_LC)
+-                    && (!(*ebx & CPUID_7_0_EBX_SGX) || !(ecx_0 & CPUID_7_0_ECX_SGX_LC))) {
++                    && (!(*ebx & CPUID_7_0_EBX_SGX))) {
+                 *ecx &= ~CPUID_7_0_ECX_SGX_LC;
+             }
+         } else if (count == 1) {
 -- 
 2.45.2
 
