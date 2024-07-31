@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65247943221
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE43943253
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:44:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZARQ-0004nr-7m; Wed, 31 Jul 2024 10:36:36 -0400
+	id 1sZAXr-0001Ga-I9; Wed, 31 Jul 2024 10:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZARJ-0004Vc-17
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:36:29 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1sZAXo-00019F-Mw
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:43:12 -0400
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZARE-0002ek-Ki
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:36:27 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2ef2cb7d562so75761411fa.3
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 07:36:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1sZAXm-0004Qa-KI
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:43:12 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-5d5af7ae388so525338eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 07:43:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722436583; x=1723041383; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1722436988; x=1723041788; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6N+m3/t8IvmE5Sgkmkq6gGUNm/dDeZpi/vHzdYBag3E=;
- b=Wl1onWjwY1bhrprcnf3qQgIF5Wr4/hlPrBlS09soj9EG5HOgZBZJ15024cIlmuSAK5
- zb1qy/v/iIhgjdgiIKJ6IPu9k6VzLfLa9Nq/lmpzdOHwtP6fbzFop/sQfHZiyIu14bjm
- uZ9WQ3zeTtQ7xibONY+ii5s2mvHk9mLPUBZ/pTYPJsiLsAcEhnIRb25ctuDvTbXEhU2u
- ArZ2C3AaSOng9fQHhMzPSXOtv9h67c3KGB/yBEDoQI8BxsIIk1tVPdIfAcElRPWbUja/
- 4NrLd/SEB/83CTpOoozwc0ZM2icRQcv+nq9AnkIB2JSLhB+QfkFptRe41j1ITuKv4SJO
- hW7A==
+ bh=AcbSoOBB4zsBd7C3R6ZBHOIVYaklvGZLq5eMHix/yHY=;
+ b=mykR8GRUdcp8CdoeI2jjzHs5i6CwP5BngHtT6xc3PZhSQrVXjatkleR9IZZde2UcGm
+ hZf5EIoP5AIIJOVx0tfG2B+gJFtvxhy0YpkPt+bgl7unzThu1rG8Hen/Dkcxy79Q/lke
+ gPj5Q2wPy7JsP9uaRqtAH/b/UYA73HQ0Wl3aEPhpZAGWFTBuF0YTryQl9grRQQt8X7qY
+ jjfEyjWE4bnkD5ye2LPb0BX7lhbWeIVBBsncXK1/EwZGJ3pbvQ8xeVd7B8+eJsnR6A4h
+ P3gZG+W5NrodrkUsbLqG9yKtZTQ9kcoDK8bYj9zigUAqcNSJtjCG9CCyULD+rIcSck4g
+ /BBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722436583; x=1723041383;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1722436988; x=1723041788;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6N+m3/t8IvmE5Sgkmkq6gGUNm/dDeZpi/vHzdYBag3E=;
- b=SlxxCpoYcBLikr+lFMq+EWk3ArDQ9V5r+q1Fb9iaQa3Eh2aqVUuT9Pu+AGv79ByByC
- /VciCaLozbcuVBfAzMprkH1z9GSkqnja6HyCGPnZVcxTy0tCSbNx4aZJ5PC0dtJHhO+t
- 3vpp/SiKo3IBMfWkqrdHPv/K1KU2aRcQcZswsb9+oKKAg38apB9I9GC3CjhSzXIXCaEJ
- pM0dQzwGdu4jRSLGY3Ax14MggvLUDg48Aduc6WjC3L1biJD/yIi2MSaNXfTfjQi0N4QI
- ENqYwu6sqRVmrl/MbDdii5efUR3tkC9U2ZNYBdKXooCARryffgjK/Ik7cEWwcPDtFf3y
- Yrqw==
-X-Gm-Message-State: AOJu0Yxid0YtCvroYZnbERCVOGlMwDxudkRVEeTgVSWh7dEU+STtD5Pl
- NbcaMEQp4eB2Ig56P3qriBVAjztLuc9Z5KhoLMI8WjDFSWDCx7jKzZGLGSrRdyWFyNPwgww8ADH
- N
-X-Google-Smtp-Source: AGHT+IF9r4V6T2a2m+mgsn3GI7Y2U5gf/aG2t4Zry+80JI0bMJ9IWysDmCtxx6a+j5H0q0Gi3BY1aA==
-X-Received: by 2002:a2e:9dc6:0:b0:2ef:2b06:b686 with SMTP id
- 38308e7fff4ca-2f12ecd2d3fmr109026131fa.17.1722436583009; 
- Wed, 31 Jul 2024 07:36:23 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4282b89a86dsm23976025e9.1.2024.07.31.07.36.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 07:36:22 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- "Richard W.M. Jones" <rjones@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH 7/7] block/ssh.c: Don't double-check that characters are hex
- digits
-Date: Wed, 31 Jul 2024 15:36:17 +0100
-Message-Id: <20240731143617.3391947-8-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240731143617.3391947-1-peter.maydell@linaro.org>
-References: <20240731143617.3391947-1-peter.maydell@linaro.org>
+ bh=AcbSoOBB4zsBd7C3R6ZBHOIVYaklvGZLq5eMHix/yHY=;
+ b=Tc1Ap34NHE3xRlJqi2hG9WmTSMVDpIO5OX6pZfwnDxfpvaujjdufOCBMJhA3OzsqcO
+ O1BusQcrjX8nme2QXdDzgpEYrSlDAZQLVRGSO9pOY4y6+CszsiRfhEH4kdVqxWpa0GzD
+ JjHbCakBZi3NnkeBWXRvKZ75Mx1vcmIKGQs3VY6DNRlpHvN0nSNO/zNwDOiurMewJMCw
+ SDd1T5IU51b0HoehMxTm8cEG2E2gPxdaEKoIJgih/xv+nCxV3chAH6PCaTfJwgX9sEYO
+ 1WewKjCtr9fhUY7Tw8C6sfNZY0fBBlXl4Td7SNbkCf9541v2jg3I/u6xjYZAEQs7ZIJE
+ eTIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXP7Lv44Jxiz4DEFn42pv6ZnNU29A7mX/hi+fPg7eSWhfoC8VDSWAW8bktOQR5ABpvc3sPeEU8yL3UUA1+gzjI6pS1NgTc=
+X-Gm-Message-State: AOJu0YyqUQPoYTYXumj+bSW2EZROQsWCcp6wR+SGdKwx8k87BzzkStf7
+ Nwa5vGE+YftlNSMuYMJIro4Is60k0QfrDfLccvyqO/Ixl1aSS4BlmuzkLNKsxNqBSc+T8HFooFP
+ s98T4IiRTvUPbeczbFAkOuG5zQig=
+X-Google-Smtp-Source: AGHT+IFt5A3lOWQZ07oGEGRPecfQfj8+TmHwFw6brqATQtmHjGipKXeAc2hleBcGh4kx5RLzYZscBnnUF2NYYME5Bps=
+X-Received: by 2002:a05:6870:8a0e:b0:258:3455:4b2f with SMTP id
+ 586e51a60fabf-26822e30336mr2684384fac.17.1722436988499; Wed, 31 Jul 2024
+ 07:43:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22e.google.com
+References: <20240708143027.480821-1-stefanha@redhat.com>
+ <87ttgyd4j9.fsf@pond.sub.org> <ZqpCinmDOyKuzJnO@angien.pipo.sk>
+In-Reply-To: <ZqpCinmDOyKuzJnO@angien.pipo.sk>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 31 Jul 2024 10:42:55 -0400
+Message-ID: <CAJSP0QXFMawAu7u+gEzp+j7RHQHqDrztgwj_xDFKLd2j7gF6Jw@mail.gmail.com>
+Subject: Re: [PATCH] qdev-monitor: QAPIfy QMP device_add
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,50 +93,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In compare_fingerprint() we effectively check whether the characters
-in the fingerprint are valid hex digits twice: first we do so with
-qemu_isxdigit(), but then the hex2decimal() function also has a code
-path where it effectively detects an invalid digit and returns -1.
-This causes Coverity to complain because it thinks that we might use
-that -1 value in an expression where it would be an integer overflow.
+On Wed, 31 Jul 2024 at 09:59, Peter Krempa <pkrempa@redhat.com> wrote:
+>
+> On Tue, Jul 09, 2024 at 16:27:22 +0200, Markus Armbruster wrote:
+> > Stefan Hajnoczi <stefanha@redhat.com> writes:
+> >
+> > > The QMP device_add monitor command converts the QDict arguments to
+> > > QemuOpts and then back again to QDict. This process only supports sca=
+lar
+> > > types. Device properties like virtio-blk-pci's iothread-vq-mapping (a=
+n
+> > > array of objects) are silently dropped by qemu_opts_from_qdict() duri=
+ng
+> > > the QemuOpts conversion even though QAPI is capable of validating the=
+m.
+> > > As a result, hotplugging virtio-blk-pci devices with the
+> > > iothread-vq-mapping property does not work as expected (the property =
+is
+> > > ignored). It's time to QAPIfy QMP device_add!
+> >
+> > This patch doesn't fully QAPIfy device_add: we still lack a schema
+> > and use 'gen': false.  It gets us closer, though.
+> >
+> > > Get rid of the QemuOpts conversion in qmp_device_add() and call
+> > > qdev_device_add_from_qdict() with from_json=3Dtrue. Using the QMP
+> > > command's QDict arguments directly allows non-scalar properties.
+> > >
+> > > The HMP is also adjusted since qmp_device_add()'s now expects properl=
+y
+> > > typed JSON arguments and cannot be used from HMP anymore. Move the co=
+de
+> > > that was previously in qmp_device_add() (with QemuOpts conversion and
+> > > from_json=3Dfalse) into hmp_device_add() so that its behavior is
+> > > unchanged.
+> > >
+> > > This patch changes the behavior of QMP device_add but not HMP
+> > > device_add. QMP clients that sent incorrectly typed device_add QMP
+> > > commands no longer work. This is a breaking change but clients should=
+ be
+> > > using the correct types already. See the netdev_add QAPIfication in
+> > > commit db2a380c8457 for similar reasoning.
+> >
+> > Another one is 9151e59a8b6e: it QAPIfied object-add.
+> >
+> > Both commits eliminated the roundtrip through QemuOpts, and weaned the
+> > command off 'gen': false.
+> >
+> > This commit eliminates the roundtrip, but keeps 'gen': false.  Best we
+> > can do now, but I'd like the commit message to make this clear.
+> >
+> > > Markus helped me figure this out and even provided a draft patch. The
+> > > code ended up very close to what he suggested.
+> > >
+> > > Suggested-by: Markus Armbruster <armbru@redhat.com>
+> > > Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > ---
+> > >  system/qdev-monitor.c | 41 ++++++++++++++++++++++++++++-------------
+> > >  1 file changed, 28 insertions(+), 13 deletions(-)
+>
+> [...]
+>
+> > Have a look at this TODO in vl.c:
+> >
+> >     QTAILQ_FOREACH(opt, &device_opts, next) {
+> >         DeviceState *dev;
+> >         loc_push_restore(&opt->loc);
+> >         /*
+> >          * TODO Eventually we should call qmp_device_add() here to make=
+ sure it
+> >          * behaves the same, but QMP still has to accept incorrectly ty=
+ped
+> >          * options until libvirt is fixed and we want to be strict on t=
+he CLI
+> >          * from the start, so call qdev_device_add_from_qdict() directl=
+y for
+> >          * now.
+> >          */
+>
+> So at least this TODO should already be handled on libvirt's side.
+>
+> With modern qemu libvirt is using JSON for -device and exactly the same
+> JSON for device_add. From what I remember from the time when I've
+> converted -device to use JSON, -device already required the correct
+> types, which would mean that also libvirt uses the correct types now.
 
-Avoid the double-check of hex digit validity by testing the return
-values from hex2decimal() rather than doing separate calls to
-qemu_isxdigit().
+Great, thank you. I will update the code.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Could alternatively have put a g_assert_non_reached() in
-hex2decimal(), but this seemed better to me.
----
- block/ssh.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/block/ssh.c b/block/ssh.c
-index 27d582e0e3d..510dd208aba 100644
---- a/block/ssh.c
-+++ b/block/ssh.c
-@@ -376,13 +376,15 @@ static int compare_fingerprint(const unsigned char *fingerprint, size_t len,
-     unsigned c;
- 
-     while (len > 0) {
-+        unsigned c0, c1;
-         while (*host_key_check == ':')
-             host_key_check++;
--        if (!qemu_isxdigit(host_key_check[0]) ||
--            !qemu_isxdigit(host_key_check[1]))
-+        c0 = hex2decimal(host_key_check[0]);
-+        c1 = hex2decimal(host_key_check[1]);
-+        if (c0 > 0xf || c1 > 0xf) {
-             return 1;
--        c = hex2decimal(host_key_check[0]) * 16 +
--            hex2decimal(host_key_check[1]);
-+        }
-+        c = c0 * 16 + c1;
-         if (c - *fingerprint != 0)
-             return c - *fingerprint;
-         fingerprint++;
--- 
-2.34.1
-
+Stefan
 
