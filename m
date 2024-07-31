@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5DE94298E
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 10:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FC4942993
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 10:50:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ50o-0002YS-Sj; Wed, 31 Jul 2024 04:48:47 -0400
+	id 1sZ51G-0003I4-Ud; Wed, 31 Jul 2024 04:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1sZ50m-0002Pq-8O
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 04:48:44 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1sZ50k-0004cF-Kh
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 04:48:43 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-42111cf2706so5061475e9.0
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 01:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722415721; x=1723020521;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XxTT+tyZr9At4fgl+GpnY8w1n+uFaZlL69cg05NKgv4=;
- b=v2MtBze/VlpYSPY5h02ftnn/PEkANQ1MHdFLCOIQ212j9bporkKZXuLM+XhJqAC8+a
- /zakYxWE8bZo8YK83mLii374p1/rkElui3IPeRTpAWeTDWrb4XlgF6/8xj2m8fSq2dbj
- 3dt0r6bu4TbpUvfIcMxsWaJl5WsEwl0e1TN5sWJBD9OPp/r+9TOr6/+DLrY04v966udN
- a+z1QRDKZ5C+7G8rssUUYgxz7U9nEnptcn/2gBxuBdaSEENF0Cucu0XKZZziJYNtCtAE
- Qk0/qyy6LjXAKDB54BP8hIry7iU6DVZ6xVLvCZyNGyUx9jVJJl8Z10V6hEeG/JumTcgU
- snRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722415721; x=1723020521;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XxTT+tyZr9At4fgl+GpnY8w1n+uFaZlL69cg05NKgv4=;
- b=c3pVwoZalZkdPouZZ2PrMz0l/F/zh5iNUdv0zPg/+cRW06cIsAorrp0guFbBe+7+5q
- BDWCm+XOuo8xJhP5JkfUUtyKCj+SQjCCIauZl0jNtJeBBA+OhqVSlQ9Lok3PZ3cbqnKL
- nnDoqk4nODHQD8rHoxG89k2uhFQGEj/FcF1NWtnTrTMGa2DoM1EHJcZ/5fBhJEOsvH0y
- GvaEukBq4rSHh0bphyfnUAkkytVrJJyUo+dWLxAMTMdvrdmQBPqp5FF3HrMwWToVJxsZ
- omaeyi1FCk9NVj592IYcwqxs/fBuXaL9FYZgJngXjDlFH3HMsZddo4OU9Jykp36h9fJo
- SA3A==
-X-Gm-Message-State: AOJu0YyIPx+MW0bA6sXu1jE4mp+dD8pCtDX6oazZNo1u/gC5KpxkEyoj
- PbBiynx3Kx0hbGGHo2XiCbJK/dRoEuHJU+SZiHxrNSHgYPs3mQ9M94hR2ZLAII7OKB442e8upwY
- FhRg=
-X-Google-Smtp-Source: AGHT+IHMNgq4HoQ6IJGLsznC23wWCYpClU66IAnUMh9rfl8p0vwZEJfRwvN6n98Xnl+wRjSQO8Kjng==
-X-Received: by 2002:a05:6000:18ab:b0:367:90a8:4d3b with SMTP id
- ffacd0b85a97d-36b34bf2d44mr8401583f8f.3.1722415720939; 
- Wed, 31 Jul 2024 01:48:40 -0700 (PDT)
-Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b367c0344sm16576425f8f.2.2024.07.31.01.48.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 01:48:40 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v7 5/5] net/tap: Use qemu_close_all_open_fd()
-Date: Wed, 31 Jul 2024 10:48:29 +0200
-Message-ID: <20240731084832.1829291-6-cleger@rivosinc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240731084832.1829291-1-cleger@rivosinc.com>
-References: <20240731084832.1829291-1-cleger@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1sZ51F-0003Gc-0M; Wed, 31 Jul 2024 04:49:13 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1sZ51B-0004e6-QS; Wed, 31 Jul 2024 04:49:12 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WYm1G53Xwz6K8C8;
+ Wed, 31 Jul 2024 16:46:58 +0800 (CST)
+Received: from lhrpeml100003.china.huawei.com (unknown [7.191.160.210])
+ by mail.maildlp.com (Postfix) with ESMTPS id 61257140CF4;
+ Wed, 31 Jul 2024 16:48:56 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 31 Jul 2024 09:48:56 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
+ Wed, 31 Jul 2024 09:48:56 +0100
+To: Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin"
+ <mtsirkin@redhat.com>, "peter.maydell@linaro.org" <peter.maydell@linaro.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "mst@redhat.com" <mst@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "maz@kernel.org"
+ <maz@kernel.org>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
+ <lpieralisi@kernel.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
+ <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ "npiggin@gmail.com" <npiggin@gmail.com>, "harshpb@linux.ibm.com"
+ <harshpb@linux.ibm.com>, Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH] accel/kvm/kvm-all: Fixes the missing break in vCPU unpark
+ logic
+Thread-Topic: [PATCH] accel/kvm/kvm-all: Fixes the missing break in vCPU
+ unpark logic
+Thread-Index: AQHa3qJBk0Exld31N0eXTFVI7pTjNrIIr9WAgAffXcA=
+Date: Wed, 31 Jul 2024 08:48:55 +0000
+Message-ID: <ae5fa879bb7d416b92face2dcf9045fd@huawei.com>
+References: <20240725145132.99355-1-salil.mehta@huawei.com>
+ <20240726113355.731e61fe@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240726113355.731e61fe@imammedo.users.ipa.redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.153.133]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=cleger@rivosinc.com; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,49 +94,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of using a slow implementation to close all open fd after
-forking, use qemu_close_all_open_fd().
+Hello,
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- net/tap.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+A quick check and a gentle reminder, has this patch been accepted?
 
-diff --git a/net/tap.c b/net/tap.c
-index 7b2d5d5703..3f90022c0b 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -387,13 +387,20 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
- 
- static void close_all_fds_after_fork(int excluded_fd)
- {
--    int open_max = sysconf(_SC_OPEN_MAX), i;
-+    const int skip_fd[] = {STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO,
-+                           excluded_fd};
-+    unsigned int nskip = ARRAY_SIZE(skip_fd);
- 
--    for (i = 3; i < open_max; i++) {
--        if (i != excluded_fd) {
--            close(i);
--        }
-+    /*
-+     * skip_fd must be an ordered array of distinct fds, exclude
-+     * excluded_fd if already included in the [STDIN_FILENO - STDERR_FILENO]
-+     * range
-+     */
-+    if (excluded_fd <= STDERR_FILENO) {
-+        nskip--;
-     }
-+
-+    qemu_close_all_open_fd(skip_fd, nskip);
- }
- 
- static void launch_script(const char *setup_script, const char *ifname,
--- 
-2.45.2
+Best regards
+Salil.
+
+>  From: Igor Mammedov <imammedo@redhat.com>
+>  Sent: Friday, July 26, 2024 10:34 AM
+>  To: Salil Mehta <salil.mehta@huawei.com>
+> =20
+>  On Thu, 25 Jul 2024 15:51:32 +0100
+>  Salil Mehta <salil.mehta@huawei.com> wrote:
+> =20
+>  > Loop should exit prematurely on successfully finding out the parked
+>  > vCPU (struct
+>  > KVMParkedVcpu) in the 'struct KVMState' maintained
+>  'kvm_parked_vcpus'
+>  > list of parked vCPUs.
+>  >
+>  > Fixes: Coverity CID 1558552
+>  > Fixes: 08c3286822 ("accel/kvm: Extract common KVM vCPU
+>  > {creation,parking} code")
+>  > Reported-by: Peter Maydell <peter.maydell@linaro.org>
+>  > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+>  > Message-ID:
+>  > <CAFEAcA-3_d1c7XSXWkFubD-
+>  LsW5c5i95e6xxV09r2C9yGtzcdA@mail.gmail.com>
+>  > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> =20
+>  Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+> =20
+>  > ---
+>  >  accel/kvm/kvm-all.c | 1 +
+>  >  1 file changed, 1 insertion(+)
+>  >
+>  > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c index
+>  > 0aa4b4624a..c181297f00 100644
+>  > --- a/accel/kvm/kvm-all.c
+>  > +++ b/accel/kvm/kvm-all.c
+>  > @@ -362,6 +362,7 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long
+>  vcpu_id)
+>  >              QLIST_REMOVE(cpu, node);
+>  >              kvm_fd =3D cpu->kvm_fd;
+>  >              g_free(cpu);
+>  > +            break;
+>  >          }
+>  >      }
+>  >
+> =20
 
 
