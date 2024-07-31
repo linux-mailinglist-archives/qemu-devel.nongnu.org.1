@@ -2,81 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17DB942D22
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98293942D21
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ7MD-0006iL-S3; Wed, 31 Jul 2024 07:19:01 -0400
+	id 1sZ7M0-0006R4-3g; Wed, 31 Jul 2024 07:18:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZ7MC-0006eu-1a
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:19:00 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sZ7Lx-0006Ma-2C
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZ7MA-0006pz-Lj
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:59 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sZ7Lv-0006nZ-Dy
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722424738;
+ s=mimecast20190719; t=1722424720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EV2mr0xjlD8I0ffhcoIthBmy7Vwwm1tNrboAunzoeDA=;
- b=LKPwr/pck0uaFPWXR8d7T+7LpPw3p+7sCoyaQ53jFaO61ph1OavMEA1wTJvzFIDg+bhl4b
- lpty99bkKNpUSiLCsbYuzGTs/QkQ+4Omq35VdSblefmy/La86BiN9efjiBkjW7AjLaIz3e
- Fo7Uarh1D66ow6gp+BL5LjVtuV9W73Q=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=2ZAdrir/XPqbfvH9QDX+kfny3g50pUo5BZS7PsDKhr8=;
+ b=GVq3OWlAsZMhcx7Q81bYJj53etPH5W20yEnL1YPUR6K5FuwJIfb2q4PSBQo0dzu6575WMd
+ zzUHonuJ7BV7M0tP0nplDoNWWjUfVRZqjzPeHzT1e64LHpXVw7uqP6IiTEC0NI8SnmDnYp
+ gQIFW4qPRSFB21EbVqonn1Bn9OTMlj0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-r-7XXpaIO0qX3M_Oy2I2Kw-1; Wed, 31 Jul 2024 07:18:56 -0400
-X-MC-Unique: r-7XXpaIO0qX3M_Oy2I2Kw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a7a8a38a4bcso248894366b.0
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:56 -0700 (PDT)
+ us-mta-73-N5vA2C3VPi-KNeDl6O-BSQ-1; Wed, 31 Jul 2024 07:18:39 -0400
+X-MC-Unique: N5vA2C3VPi-KNeDl6O-BSQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a7aaef3fdafso119655866b.1
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722424734; x=1723029534;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EV2mr0xjlD8I0ffhcoIthBmy7Vwwm1tNrboAunzoeDA=;
- b=uEvjmnDGRZwyNDRhwPP1awM13cWCCh9gChQ1OuSSd2QCloC7Z6vL4fZaWLD/Di7nZJ
- Orwo2x/8pAj14NDM6XMGvfYqWzlSqWqSnKaUYTrmiLDlYWw9XaGA/EJTJFCpq4Ln748c
- plT3TUGJG/NmQ6jfDwjInAnP567pAIWJfnqmSeNQXAEIaa6+DIWLEuO+Ffdt64aVvZpv
- 9Sdc48mhjCR1o+p1ojgCz2oEMxyspiv7AC2IT1fZKxNkVFuiCaiRLZE/sfFO8z63dLWv
- JQrlqFLGlubiUvMB+ka1RpOjylKUsXPCmcsEw3o+aiUDkycMvKXQwwipU/LDQTTVBeCx
- Rbgg==
-X-Gm-Message-State: AOJu0YxSv6CZLM6GRKVNi1xXb8tBNFjW+dfLTcWnValFyErSt/r3cU/v
- 9Qxt9c+0Ecxx3GL4vhAR9w34iQUDIDb8joWlhCbWfzUVwMSaPgS2GxdYnlH8//FGIZfUNZtLFEv
- 2UP+XHsglI+wfe9GjS7fdHhsoZLVBksPDCDz7MRN4gTUxDM+vlUAbCdogYdY6N8GH9xU+ceB9az
- LbgmgKrzGTW4o+UnAO/bKNTo+6lREf67ObRyHp
-X-Received: by 2002:a05:6402:26d6:b0:57d:669:caf2 with SMTP id
- 4fb4d7f45d1cf-5b02317d0a3mr14495172a12.25.1722424734653; 
- Wed, 31 Jul 2024 04:18:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7zHnVt7DRPrWIor5mqy5dZIgpU/a4Mw86c+ii0dl1hXAuomGRwncvq1aI6v6Bj/amnhQYZw==
-X-Received: by 2002:a05:6402:26d6:b0:57d:669:caf2 with SMTP id
- 4fb4d7f45d1cf-5b02317d0a3mr14495160a12.25.1722424734273; 
- Wed, 31 Jul 2024 04:18:54 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
+ d=1e100.net; s=20230601; t=1722424718; x=1723029518;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=2ZAdrir/XPqbfvH9QDX+kfny3g50pUo5BZS7PsDKhr8=;
+ b=pl0tJrtoWBKpDxTMWYQulw27H7Q2Vz0hGGe8uYflcVDQfRItaXNc8/xNs3YqmD6wN2
+ dQ+vuXpOho/dUBUN65fnIHph4wwnJmt8e6DhLEd1ClqAFenZVrNdNewyxGsZ7OBxBdSP
+ sbuNBGBzloousrx2afjMBjawIQ9UIpULLlY6CPozK/QTbaQDmlHK8qMm9hLBzjyWbanZ
+ aFZqotrFEekjU+v7r5/Ncv6CzMp2QmMlT/x86R1D1oLi+hMLFECXZN1xBONW9ACxmL4z
+ P3XBm34q9neGSZZr2IRq9CkbbKXmBz6PmJkMoYNAkN/1ziKe6efC3+v4vOeytwVCd2+v
+ WMbw==
+X-Gm-Message-State: AOJu0YwsUnOeFbULT3pA1s+6gkX+mBWygZpyTid+LavGbArrf3P+A95E
+ ERt0FueB8eFvQNUe7VsLcs98DO+tzDm1yK9IVEmFVjTqL1jbpOY8gs9rZCsB2fd+sZxCPd5RK31
+ B73TdpTkv87y8Nb6n42Edhs8HEifBHihOeitdai5cZB4nUaczP6wo
+X-Received: by 2002:a17:907:7f13:b0:a6f:6337:1ad5 with SMTP id
+ a640c23a62f3a-a7d85a4c772mr473551466b.27.1722424717761; 
+ Wed, 31 Jul 2024 04:18:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtsbeRG2h5iQvMOcjjOiuOUIYF6sGKYeFbxW+JKxy4hY5/XZrj6Jyn1Ccfy7kOvO+24uK95A==
+X-Received: by 2002:a17:907:7f13:b0:a6f:6337:1ad5 with SMTP id
+ a640c23a62f3a-a7d85a4c772mr473547766b.27.1722424717174; 
+ Wed, 31 Jul 2024 04:18:37 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70b:5f00:9b61:28a2:eea1:fa49?
+ (p200300cbc70b5f009b6128a2eea1fa49.dip0.t-ipconnect.de.
+ [2003:cb:c70b:5f00:9b61:28a2:eea1:fa49])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5afc05c7a44sm6913068a12.6.2024.07.31.04.18.53
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 04:18:53 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PULL 10/10] qemu-vmsr-helper: implement --verbose/-v
-Date: Wed, 31 Jul 2024 13:18:06 +0200
-Message-ID: <20240731111806.167225-11-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240731111806.167225-1-pbonzini@redhat.com>
-References: <20240731111806.167225-1-pbonzini@redhat.com>
+ a640c23a62f3a-a7acad41484sm756980766b.124.2024.07.31.04.18.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 Jul 2024 04:18:36 -0700 (PDT)
+Message-ID: <d299bbad-81bc-462e-91b5-a6d9c27ffe3a@redhat.com>
+Date: Wed, 31 Jul 2024 13:18:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/6] Enable shared device assignment
+To: Chenyi Qiang <chenyi.qiang@intel.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>,
+ Edgecombe Rick P <rick.p.edgecombe@intel.com>,
+ Wang Wei W <wei.w.wang@intel.com>, Peng Chao P <chao.p.peng@intel.com>,
+ Gao Chao <chao.gao@intel.com>, Wu Hao <hao.wu@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+References: <20240725072118.358923-1-chenyi.qiang@intel.com>
+ <ace9bb98-1415-460f-b8f5-e50607fbce20@redhat.com>
+ <69091ee4-f1c9-43ce-8a2a-9bb370e8115f@intel.com>
+ <d87a5e47-3c48-4e20-b3de-e83c2ca44606@redhat.com>
+ <0fdd0340-8daa-45b8-9e1c-bafe6f4e6a60@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <0fdd0340-8daa-45b8-9e1c-bafe6f4e6a60@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,50 +158,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similar to qemu-pr-helper, do not print errors from the socket handling loop
-unless a --verbose or -v option is provided explicitly on the command line.
+Sorry for the late reply!
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- tools/i386/qemu-vmsr-helper.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+>> Current users must skip it, yes. How private memory would have to be
+>> handled, and who would handle it, is rather unclear.
+>>
+>> Again, maybe we'd want separate RamDiscardManager for private and shared
+>> memory (after all, these are two separate memory backends).
+> 
+> We also considered distinguishing the populate and discard operation for
+> private and shared memory separately. As in method 2 above, we mentioned
+> to add a new argument to indicate the memory attribute to operate on.
+> They seem to have a similar idea.
 
-diff --git a/tools/i386/qemu-vmsr-helper.c b/tools/i386/qemu-vmsr-helper.c
-index 585eaf88b37..a35dcb88a3f 100644
---- a/tools/i386/qemu-vmsr-helper.c
-+++ b/tools/i386/qemu-vmsr-helper.c
-@@ -54,6 +54,7 @@ static enum { RUNNING, TERMINATE, TERMINATING } state;
- static QIOChannelSocket *server_ioc;
- static int server_watch;
- static int num_active_sockets = 1;
-+static bool verbose;
- 
- #ifdef CONFIG_LIBCAP_NG
- static int uid = -1;
-@@ -265,7 +266,11 @@ static void coroutine_fn vh_co_entry(void *opaque)
- 
- out:
-     if (local_err) {
--        error_report_err(local_err);
-+        if (!verbose) {
-+            error_free(local_err);
-+        } else {
-+            error_report_err(local_err);
-+        }
-     }
- 
-     object_unref(OBJECT(client->ioc));
-@@ -431,6 +436,9 @@ int main(int argc, char **argv)
-         case 'd':
-             daemonize = true;
-             break;
-+        case 'v':
-+            verbose = true;
-+            break;
-         case 'T':
-             trace_opt_parse(optarg);
-             break;
+Yes. Likely it's just some implementation detail. I think the following 
+states would be possible:
+
+* Discarded in shared + discarded in private (not populated)
+* Discarded in shared + populated in private (private populated)
+* Populated in shared + discarded in private (shared populated)
+
+One could map these to states discarded/private/shared indeed.
+
+[...]
+
+>> I've had this talk with Intel, because the 4K granularity is a pain. I
+>> was told that ship has sailed ... and we have to cope with random 4K
+>> conversions :(
+>>
+>> The many mappings will likely add both memory and runtime overheads in
+>> the kernel. But we only know once we measure.
+> 
+> In the normal case, the main runtime overhead comes from
+> private<->shared flip in SWIOTLB, which defaults to 6% of memory with a
+> maximum of 1Gbyte. I think this overhead is acceptable. In non-default
+> case, e.g. dynamic allocated DMA buffer, the runtime overhead will
+> increase. As for the memory overheads, It is indeed unavoidable.
+> 
+> Will these performance issues be a deal breaker for enabling shared
+> device assignment in this way?
+
+I see the most problematic part being the dma_entry_limit and all of 
+these individual MAP/UNMAP calls on 4KiB granularity.
+
+dma_entry_limit is "unsigned int", and defaults to U16_MAX. So the 
+possible maximum should be 4294967296, and the default is 65535.
+
+So we should be able to have a maximum of 16 TiB shared memory all in 
+4KiB chunks.
+
+sizeof(struct vfio_dma) is probably something like <= 96 bytes, implying 
+a per-page overhead of ~2.4%, excluding the actual rbtree.
+
+Tree lookup/modifications with that many nodes might also get a bit 
+slower, but likely still tolerable as you note.
+
+Deal breaker? Not sure. Rather "suboptimal" :) ... but maybe unavoidable 
+for your use case?
+
 -- 
-2.45.2
+Cheers,
+
+David / dhildenb
 
 
