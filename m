@@ -2,82 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BF3942F7D
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 15:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90999943050
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 15:27:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ8vu-0007fE-7L; Wed, 31 Jul 2024 08:59:58 -0400
+	id 1sZ9Kv-0002nn-Mk; Wed, 31 Jul 2024 09:25:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZ8vq-0007cN-Uv
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:59:55 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZ8vo-0000VK-BU
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:59:54 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4281c164408so29632755e9.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 05:59:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722430790; x=1723035590; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OLSyX6zFymTvj4jmx0lZAzBqJUXkBdxutZEfpeLOrP0=;
- b=yEeUcFvHZaC2CnzvfeVihvVf9Z3/5JIMsWg6ytD/FSQIMeMHkud1j7pJD14dFQMnfN
- 1AZvJs2cJ3VX9mMio8pAbTmDJdqqmfxoQXeW3DNTOX54rXgLx4iOntMUFU/fGAyOII7a
- gE77jY72Vjngd/TBS1nNyWN6+r1/YtqZsNMI0JnPfitMbn9C+cEqoxzcpdTAkp4eyN9A
- 8afCABgritHh3uPJvrstNFLuXdYUEn1gsPLhlbUn2wPqikw6Krgie5kN6PskkNf6WeOQ
- rWlkLrj6xJy0ctBly6c0k65upaBfC2H45KxMZmsVJQc62gDMIRZuC9ho/phLi875GG86
- 2UjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722430790; x=1723035590;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OLSyX6zFymTvj4jmx0lZAzBqJUXkBdxutZEfpeLOrP0=;
- b=MhwinJmDd6MSzDFetSBFzCV2jnGBCz7tgMYoqhOiongBww3RAyjcGu+EF79ysEyIP7
- MUOIWpoU11TbSrqCqyiN6/P6i4oUva2O3GSrX07ASiB7u55fUh7DmyoNxYoM4HCp1Cjq
- G6jlxM04FuseQlPFXOfUbbtrLXhn9ZBZabYKKqBtpTGALhE50qlauybxhmO+zjhRNzDh
- lOAF+NByM/YfpW3Gfnn4EaKu/ecUlb/bcBK4FOgFjDhSWMKhYSF4D+1aHLJ8pPMKY7Er
- 1MEMIiRud734kd9ORboKDECcEg/p/zmTi8Cp2qtscXPeLg5EKusGL01F2htXeUMil1ua
- nzPA==
-X-Gm-Message-State: AOJu0Yzg0F7MlcPl3UsTHoKp9wTKhn3uqU/OGVqPWYyMxznU7wKPOj7p
- wgCKx2lrJj/jaqhx1vsnvZJTgitRaym3nYAdk/DN4yPQ4mB6qAvEj9gpJy1Zi9Q=
-X-Google-Smtp-Source: AGHT+IEzODNRbi7/rn4Hj4nzItw6LqYb1HfON53XWrKiXWNneD5Wf7iw28c2RpYAikKZEZ6WgUqw+Q==
-X-Received: by 2002:a05:600c:1e02:b0:428:18d9:9963 with SMTP id
- 5b1f17b1804b1-42818d99a9cmr80307385e9.22.1722430790486; 
- Wed, 31 Jul 2024 05:59:50 -0700 (PDT)
-Received: from [192.168.214.175] (29.170.88.92.rev.sfr.net. [92.88.170.29])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4282bb98040sm21289625e9.40.2024.07.31.05.59.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 Jul 2024 05:59:50 -0700 (PDT)
-Message-ID: <bcb99096-7013-4b72-bb64-7ec91cfeb567@linaro.org>
-Date: Wed, 31 Jul 2024 14:59:47 +0200
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sZ9Kr-0002la-VR; Wed, 31 Jul 2024 09:25:45 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sZ9Kq-000582-47; Wed, 31 Jul 2024 09:25:45 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46VBSxQu005250;
+ Wed, 31 Jul 2024 13:25:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=ovus5UlPKAld5lkd56ks4IhzGK
+ wS8+lccnIO2dZgV+Y=; b=jTVRxKfI2chSQcsLbCd90do7uSWCnHLBQECCpxNY8Z
+ CezfHbLSWid5qP3sNWLzYtNzF7y6c8LkjoDQUXNI3tkIzA67OrQy1cKVx+dX68tG
+ oc5tKvhtlQ3ZILXgXvePa30EnADbTnPBK6NePxQo3BM3dse3mYERapfUlBc1cKnA
+ tlLn8Hs6r5cSFQScUH1QRY38xsD5Bari5xFO1YeXtA5XTmTzu5TjRT8WofYWXCr/
+ 9jpYtNcfzWlIpDnTyMu0FJcUElP71IwuUKmPrkRSrEY6Z8XBqNlWDRRcvbs/+rdp
+ 61v6uBnLtodzGe+++Dna590tpKF0OyVtX2dLPNyFVTgA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40qme20bbm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Jul 2024 13:25:34 +0000 (GMT)
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46VDPWlY022998;
+ Wed, 31 Jul 2024 13:25:32 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40qme20b80-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Jul 2024 13:25:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 46VBAcKo007470; Wed, 31 Jul 2024 13:22:44 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 40nb7ubwer-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Jul 2024 13:22:44 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 46VDMd0q50594150
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 31 Jul 2024 13:22:41 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 472452004B;
+ Wed, 31 Jul 2024 13:22:39 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1E3AD20043;
+ Wed, 31 Jul 2024 13:22:37 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
+ [9.109.199.72]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 31 Jul 2024 13:22:36 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
+Subject: [RFC PATCH] hw/ppc: Implement -dtb support for PowerNV
+Date: Wed, 31 Jul 2024 18:52:35 +0530
+Message-ID: <20240731132235.887918-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iotests/024: exclude 'backing file format' field from the
- output
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, thuth@redhat.com, kwolf@redhat.com,
- hreitz@redhat.com, den@virtuozzo.com
-References: <20240730094701.790624-1-andrey.drobyshev@virtuozzo.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240730094701.790624-1-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: X6_iEZ2rvcHQfJkDVF3mdy1cTOD3Iy1V
+X-Proofpoint-GUID: wDCMDeeTJKyPmUQHQsliAGuZJcFEbvLg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-31_08,2024-07-31_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 suspectscore=0 adultscore=0 mlxlogscore=427 impostorscore=0
+ bulkscore=0 spamscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407310098
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,30 +112,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/7/24 11:47, Andrey Drobyshev wrote:
-> Apparently 'qemu-img info' doesn't report the backing file format field
-> for qed (as it does for qcow2):
-> 
-> $ qemu-img create -f qed base.qed 1M && qemu-img create -f qed -b base.qed -F qed top.qed 1M
-> $ qemu-img create -f qcow2 base.qcow2 1M && qemu-img create -f qcow2 -b base.qcow2 -F qcow2 top.qcow2 1M
-> $ qemu-img info top.qed | grep 'backing file format'
-> $ qemu-img info top.qcow2 | grep 'backing file format'
-> backing file format: qcow2
-> 
-> This leads to the 024 test failure with -qed.  Let's just filter the
-> field out and exclude it from the output.
-> 
-> This is a fixup for the commit f93e65ee51 ("iotests/{024, 271}: add
-> testcases for qemu-img rebase").
-> 
-> Found-by: Thomas Huth <thuth@redhat.com>
+Currently any device tree passed with -dtb option in QEMU, was ignored
+by the PowerNV code.
 
-s/Found/Reported/
+Read and pass the passed -dtb to the kernel, thus enabling easier
+debugging with custom DTBs.
 
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   tests/qemu-iotests/024     | 2 +-
->   tests/qemu-iotests/024.out | 1 -
->   2 files changed, 1 insertion(+), 2 deletions(-)
+The existing behaviour when -dtb is 'not' passed, is preserved as-is.
+
+But when a '-dtb' is passed, it completely overrides any dtb nodes or
+changes QEMU might have done, such as '-append' arguments to the kernel
+(which are mentioned in /chosen/bootargs in the dtb), hence add warning
+when -dtb is being used
+
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+
+---
+This is an RFC patch, and hence might not be the final implementation,
+though this current one is a solution which works
+---
+---
+ hw/ppc/pnv.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 3526852685b4..12cc909b9e26 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -714,6 +714,8 @@ static void pnv_reset(MachineState *machine, ShutdownCause reason)
+     PnvMachineState *pnv = PNV_MACHINE(machine);
+     IPMIBmc *bmc;
+     void *fdt;
++    FILE *fdt_file;
++    uint32_t fdt_size;
+ 
+     qemu_devices_reset(reason);
+ 
+@@ -736,10 +738,31 @@ static void pnv_reset(MachineState *machine, ShutdownCause reason)
+         }
+     }
+ 
+-    fdt = pnv_dt_create(machine);
++    if (machine->dtb) {
++        warn_report("with manually passed dtb, some options like '-append'"
++                " might ignored and the dtb passed will be used as-is");
+ 
+-    /* Pack resulting tree */
+-    _FDT((fdt_pack(fdt)));
++        fdt = g_malloc0(FDT_MAX_SIZE);
++
++        /* read the file 'machine->dtb', and load it into 'fdt' buffer */
++        fdt_file = fopen(machine->dtb, "r");
++        if (fdt_file != NULL) {
++            fdt_size = fread(fdt, sizeof(char), FDT_MAX_SIZE, fdt_file);
++            if (ferror(fdt_file) != 0) {
++                error_report("Could not load dtb '%s'",
++                             machine->dtb);
++                exit(1);
++            }
++
++            /* mark end of the fdt buffer with '\0' */
++            ((char *)fdt)[fdt_size] = '\0';
++        }
++    } else {
++        fdt = pnv_dt_create(machine);
++
++        /* Pack resulting tree */
++        _FDT((fdt_pack(fdt)));
++    }
+ 
+     qemu_fdt_dumpdtb(fdt, fdt_totalsize(fdt));
+     cpu_physical_memory_write(PNV_FDT_ADDR, fdt, fdt_totalsize(fdt));
+-- 
+2.45.2
 
 
