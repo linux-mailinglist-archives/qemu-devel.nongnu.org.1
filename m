@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B90942D1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC511942D15
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:19:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ7LX-0004pD-Ns; Wed, 31 Jul 2024 07:18:19 -0400
+	id 1sZ7La-0004zS-Cf; Wed, 31 Jul 2024 07:18:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZ7LV-0004oY-KI
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sZ7LY-0004uM-HD
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZ7LU-0006l2-55
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:17 -0400
+ id 1sZ7LW-0006lT-VC
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722424695;
+ s=mimecast20190719; t=1722424698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cJcXNK/y8GUg9fYFr/3hXtvxWP19H58fRdjkvKirAyQ=;
- b=ZQSWovgG7UiDPSRjy0++QbTdXLRVvbmUdqqiOPAjNQv2cz4mEW+3c9jcvXga69M7YydS14
- AODTBgsmtkjX2eMxwSfARZRC5K1Wu89m7EEcRs2UnNJg09KihCcnP6QphPHAaFQtX7L8rf
- NdKMvIY147dq4lFPNel2MlSIJqKERKk=
+ bh=aYyzfF6IqNI/L5NVj2X9zCG1qLPKn4/0ehGgl/Nh5hs=;
+ b=EuiOMw1o1DolyvdA5smgeeZ/LDYgJiujcLPAomvxR2zPfOXmTdMgnMkYfuvgSCwTYO31Wy
+ REkdYr8an0zLOJwxfqRbyb1MWeu0bZPnlFtQRqYmlS+scVKUySRJt7k0BxUg/2fgc+LudV
+ xwcBV/goP0vYt8IfHvpIbnxijPMwuoY=
 Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
  [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-207-2UQTITpJP4-rNxeh31SVVw-1; Wed, 31 Jul 2024 07:18:13 -0400
-X-MC-Unique: 2UQTITpJP4-rNxeh31SVVw-1
+ us-mta-304-bhX0ubxlOEi-_9zCJzCpGg-1; Wed, 31 Jul 2024 07:18:16 -0400
+X-MC-Unique: bhX0ubxlOEi-_9zCJzCpGg-1
 Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5a113d5cd1eso3589893a12.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:13 -0700 (PDT)
+ 4fb4d7f45d1cf-5a766a51b0dso6173771a12.1
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722424692; x=1723029492;
+ d=1e100.net; s=20230601; t=1722424694; x=1723029494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cJcXNK/y8GUg9fYFr/3hXtvxWP19H58fRdjkvKirAyQ=;
- b=oz9CeKZsy6DMGGd9agCM9jXopFlcDSjodK5JtiF9rllsTHvNTEybxky/Mxn//wnO0/
- h++BQSo2/IGcirvLqzQJdKGz2Vmak4otGkIENkAMlcCdbC1gUmheOlR9QZiGL2EmmSht
- 3mWH3I50XrIlZnk0zrosEu8AfM0CUTNTBjexyDPSLT3938OjeL0ngh5d9BIr+1VLWvM3
- rCKiSNlkQ0bCUqj9bdu0SEQXaZU20xUTFrmjuCSl98QGYJbMO0dh/DGW6S9AmpwH3pgv
- 3KNz5ZnuWhHYLMVrErkAASQ6kmL5B9NaCRYWvk5xyHl+TU6n2ALuaFyeb4S5E1QeEhNo
- L3JQ==
-X-Gm-Message-State: AOJu0YwpoQM+1FTqrI+4Tuh2QEcapcK04ByOSWfctyuRLPzBQ5FIHgx5
- ix10RZuTUbJYEEvjZ3sKuEb3LzhArj/c/Xns5WNPW5AFkhY/bV/4AjIByqw8Ce86D9hmTdyBR41
- rYCkOuzoiZEc3yYG8ppVYYdvA4X1r9rFlHlKqwZCpvQhNW3TWR28QX2oyN3IjoicYZ/SUxlrQ1Q
- s7d67kmGgfy9LLy0CYP4s7PFMAa+KxrPZfW3Am
-X-Received: by 2002:a05:6402:1e93:b0:5a2:97d7:c728 with SMTP id
- 4fb4d7f45d1cf-5b01d84be21mr14234840a12.0.1722424692124; 
- Wed, 31 Jul 2024 04:18:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvSQ9s2SmCECaS66Hpze2CS/qV9pFevKhYb8Djj58QrRlhZfgEP7EiphYbvEL0xx+WJjMStg==
-X-Received: by 2002:a05:6402:1e93:b0:5a2:97d7:c728 with SMTP id
- 4fb4d7f45d1cf-5b01d84be21mr14234814a12.0.1722424691455; 
- Wed, 31 Jul 2024 04:18:11 -0700 (PDT)
+ bh=aYyzfF6IqNI/L5NVj2X9zCG1qLPKn4/0ehGgl/Nh5hs=;
+ b=KAZjc8R5N58hHkBsaDlS1GM/UAP27pRIgqtRoLUo2gwz87NTb80Hm+MZohzDlQqUgM
+ e6EDE7Vf7i2liEb+bjesw+AA45pxQd6Hxxp5lCiyd4Rxsw6KM7wwqz95yrXqG7Fzc8Ae
+ 9AtZEkVElj6f1Ba9fgOdvYfj7MBEeDlCYAkKBhNJkFKRnLYnZZECJe2zhl/AjKzC8mCJ
+ 92M/iOFu2xm2/fonvP1066zlAQdh0o87rBNM7977Jd9HIvTBb4R65XCENH0yyjfsG9Js
+ XFDXp7lx7Zq2Z5WRr8cvsjvhSh23GPSqV5fOnYXkezZWVpSypyws/wg/wlC1mKxaSLC1
+ V8Ow==
+X-Gm-Message-State: AOJu0YxpOLFMscu6j2NVxnhyP8VdDu8cgPF5o3Gxdx7rHx6wMcevcZcT
+ OjUT1JBUIJt5LCbqr1QzCkML1E0xPzfLcQUUwwmH4xpatTzHuRnGJAMKKqZ3tLOk9Zqk5wdTPgk
+ 62pjkdtTrpKyKjbhcJiurDpc3kYIwiUwnl+dqdFHRBKuch/Vx4GuQgD+3P8QOehqogcmvdRIXMw
+ 6ROE1GHXnPZGg+bpovpfeuPiCjbj/Gz6Oj+0rb
+X-Received: by 2002:a50:d4d5:0:b0:5af:874d:1b7b with SMTP id
+ 4fb4d7f45d1cf-5b02000c604mr9118256a12.1.1722424694534; 
+ Wed, 31 Jul 2024 04:18:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHscWNXIyOaWDoq+cl3VgCRoKNVrM48mtyCKBkDpOwgWt1IUGSvzqZe7lPZBmQ5SWbYdV/rKQ==
+X-Received: by 2002:a50:d4d5:0:b0:5af:874d:1b7b with SMTP id
+ 4fb4d7f45d1cf-5b02000c604mr9118231a12.1.1722424694044; 
+ Wed, 31 Jul 2024 04:18:14 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5afb9422c41sm6936753a12.82.2024.07.31.04.18.10
+ 4fb4d7f45d1cf-5ac6358fa5esm8548783a12.32.2024.07.31.04.18.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 04:18:11 -0700 (PDT)
+ Wed, 31 Jul 2024 04:18:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/10] tests/vm/openbsd: Install tomli
-Date: Wed, 31 Jul 2024 13:17:57 +0200
-Message-ID: <20240731111806.167225-2-pbonzini@redhat.com>
+Cc: Xiong Zhang <xiong.y.zhang@linux.intel.com>
+Subject: [PULL 02/10] target/i386: Change unavail from u32 to u64
+Date: Wed, 31 Jul 2024 13:17:58 +0200
+Message-ID: <20240731111806.167225-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240731111806.167225-1-pbonzini@redhat.com>
 References: <20240731111806.167225-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,29 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Xiong Zhang <xiong.y.zhang@linux.intel.com>
 
-OpenBSD still defaults to python 3.10, therefore tomli is now required by configure.
+The feature word 'r' is a u64, and "unavail" is a u32, the operation
+'r &= ~unavail' clears the high 32 bits of 'r'. This causes many vmx cases
+in kvm-unit-tests to fail. Changing 'unavail' from u32 to u64 fixes this
+issue.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240729051244.436851-1-richard.henderson@linaro.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2442
+Fixes: 0b2757412cb1 ("target/i386: drop AMD machine check bits from Intel CPUID")
+Signed-off-by: Xiong Zhang <xiong.y.zhang@linux.intel.com>
+Link: https://lore.kernel.org/r/20240730082927.250180-1-xiong.y.zhang@linux.intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/vm/openbsd | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/vm/openbsd b/tests/vm/openbsd
-index 5e646f7c51e..49cab087825 100755
---- a/tests/vm/openbsd
-+++ b/tests/vm/openbsd
-@@ -32,6 +32,7 @@ class OpenBSDVM(basevm.BaseVM):
-         "pkgconf",
-         "bzip2", "xz",
-         "ninja",
-+        "py3-tomli",
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 4688d140c2d..ef06da54c63 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6039,7 +6039,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
+ {
+     FeatureWordInfo *wi = &feature_word_info[w];
+     uint64_t r = 0;
+-    uint32_t unavail = 0;
++    uint64_t unavail = 0;
  
-         # gnu tools
-         "bash",
+     if (kvm_enabled()) {
+         switch (wi->type) {
 -- 
 2.45.2
 
