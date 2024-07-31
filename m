@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA8394321E
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EA4943219
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZARP-0004kj-Qn; Wed, 31 Jul 2024 10:36:35 -0400
+	id 1sZARQ-0004wx-Rr; Wed, 31 Jul 2024 10:36:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZARH-0004V3-Sl
+ id 1sZARH-0004VI-Uo
  for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:36:29 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZARD-0002eN-OD
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:36:26 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4281f00e70cso26130155e9.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 07:36:22 -0700 (PDT)
+ id 1sZARD-0002eY-Tb
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:36:27 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-42809d6e719so38481705e9.3
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 07:36:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722436582; x=1723041382; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MAd46eTldG2I+2ED6a/rVkcfbA6YevMDXfrDk/LBM/Q=;
- b=R8kL5rlZThLIGA8FZC7y/fcakAuzaOdaxHQoVW6yhlnmNmr5Kkg9TULROnItIo8tDs
- syiDj3S1+0/sGJdER4TCxKAv2e+wev+Kip9yEUroMk3667fZX6V3hcz91VZtLUZ2Js+V
- bPo5Pq4ynjGUmy6QrvNLXa3FXI/+XCXOgNgHkzAdFy6mENXFfLJLK09mmN9+qPWvNESE
- 66ZfdaJFGWL18Z7KCpWOgCtuw4FQIHF5nweUzZ8jCX3BaCuzZ/SjIRcSF9Lp4hxkXOav
- P+9dGIXEXVbSLA+aCAiuZThn94P+9uNkoX7/+gjGRdwxNH9+mlOyMWmaHlAR296KSsHa
- LWew==
+ bh=Kb8rrJWADVvXdHvGrD9NacsP9WtS53Udc5d9elH1XfE=;
+ b=riK9jB+hX43CTzerMc46tCM0xe5OWLgf2LyD6qTKFCPQ0v+6lJwrlJxLPpBipsKIe/
+ PIfg+CW1CleQ08QDnfoTtnhqzuS02iRBWFLtYrKREVeocF3ToL1CVUg/CvQSSVu+B+uk
+ RoSl0y1kJ64My5Izas5+p7U4n7iuzyodew1cuPQ5NtE7tOfiwy7zC26hlkCQlhWiKnFQ
+ 2c8GedKaazfs5wccxdzK70GK2YtYz7/JgzKBVMYmFfN+DuuKM4PdOlr4CbU10T227tp+
+ YU3bYkfpPQ8X2D78W0bTHcSyXym/guarmNf8acp4k3/cCe4CdN0dC2FtlCJ4LW/sSzB9
+ dXoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722436582; x=1723041382;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MAd46eTldG2I+2ED6a/rVkcfbA6YevMDXfrDk/LBM/Q=;
- b=h5oMUuVUJ6f6r0YZuZgeM9lLMAQGistYQLKzkdw3nB/qizRI3EUNUkb3dXNIfx9yg/
- Sct+ofZjfWQ0tvFPt+uiilOOApz/Nq/dp+s2bjiLe4fTpw5ppLHm3Ypw1oGwohMO5SZf
- Fkwg1CMRH6ZEqSafRIECHoO1irBHaHN5Fe+fudAiTTre4dlCao850QXmwz/a9ot0tGgb
- A/rXPgE7rtKQ3dP4X2rIluq9UCckiiItwL+oIBczhaVuLyJziX2SiwEWGE6oUOU4U/1O
- +2P78t7ChZlmVh6kfn78yCMegvAn6CSZDWofomJjNH6KwVYKu2ts50+Tuz1gyvPt4/as
- hF5Q==
-X-Gm-Message-State: AOJu0Yx6Vpo9fabvl0ZXNE7KjuJ3yKsD3ZQWKKUOvyIn4jmS31UqfNbf
- 27XIsJN0hj2VN0xI1s60Jv524aEfXxrg7WEi8eQ1osg90ZdiT4cf25w4iiQ2AzzwqEa7D48OBmH
- 4
-X-Google-Smtp-Source: AGHT+IEhSBErl0jyu9s+g96bkqrq1Co2veAAhfqZmHeUBJ5zqUxDD5cMmMuB++ZoSsF8uwkFEz3kow==
-X-Received: by 2002:a05:600c:4c1a:b0:428:10e3:a000 with SMTP id
- 5b1f17b1804b1-42811dfe3f3mr77300845e9.37.1722436581874; 
- Wed, 31 Jul 2024 07:36:21 -0700 (PDT)
+ bh=Kb8rrJWADVvXdHvGrD9NacsP9WtS53Udc5d9elH1XfE=;
+ b=ujpHn2O+LWyfxjJxrkzXRDyJuMAMOpmeSIEsFglaG/Kx++ngh5IojXKtPbi0/oXg2j
+ 7Hi+5/GusBaoW3GO9KEvXGEgQVtZrGR0EmunNAG5Ey49wdB0Zcghnc6Zynd3dEiC4m7k
+ URr9Qi2ujy4AFwBpwcoXsxJyb5+x+AXPjel72Z2v+yBdMSH1ZIItRcXwV0/oofJ1nMSZ
+ gPm3kg7SJM3oamSww1wzSraXJDa0B8bShc4XBWloJFWpyjnawsDoCLM3Y0VMj9lZBRkm
+ S64eSblrIcos8ySokPLCS/AGiW9f+RILjSTfaWHoBzoA47frFMrgyjPFkgNqoaGBL7Br
+ hR4w==
+X-Gm-Message-State: AOJu0YxtHz7U0/QfrHdCzPzJdKYjLA7gq5M7RIhkxY/pnYDsByEGLtr4
+ 58CakdinEhEOqrYlbx0qDknZFaGmFQeZivx+ezKAVIPOC+HwpiH/eFpyMr7wkgo0M+/U1PfFaby
+ y
+X-Google-Smtp-Source: AGHT+IG0XFFcFLY//fT1hQqd61SRyvaqYzAYw7RFo5X4drLqLTChawEAhPlWrrlxFYXH9Sj3Qv7E2g==
+X-Received: by 2002:a05:600c:46cc:b0:426:5269:9838 with SMTP id
+ 5b1f17b1804b1-42811d73f0amr94743475e9.4.1722436582479; 
+ Wed, 31 Jul 2024 07:36:22 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4282b89a86dsm23976025e9.1.2024.07.31.07.36.21
+ 5b1f17b1804b1-4282b89a86dsm23976025e9.1.2024.07.31.07.36.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 07:36:21 -0700 (PDT)
+ Wed, 31 Jul 2024 07:36:22 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  "Richard W.M. Jones" <rjones@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH 5/7] hw/block/fdc-isa: Assert that isa_fdc_get_drive_max_chs()
- found something
-Date: Wed, 31 Jul 2024 15:36:15 +0100
-Message-Id: <20240731143617.3391947-6-peter.maydell@linaro.org>
+Subject: [PATCH 6/7] hw/ide/pci.c: Remove dead code from bmdma_prepare_buf()
+Date: Wed, 31 Jul 2024 15:36:16 +0100
+Message-Id: <20240731143617.3391947-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240731143617.3391947-1-peter.maydell@linaro.org>
 References: <20240731143617.3391947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,36 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity complains about an overflow in isa_fdc_get_drive_max_chs()
-that can happen if the loop over fd_formats never finds a match,
-because we initialize *maxc to 0 and then at the end of the
-function decrement it.
+Coverity notes that the code at the end of the loop in
+bmdma_prepare_buf() is unreachable.  This is because in commit
+9fbf0fa81fca8f527 ("ide: remove hardcoded 2GiB transactional limit")
+we removed the only codepath in the loop which could "break" out of
+it, but didn't notice that this meant we should also remove the code
+at the end of the loop.
 
-This can't ever actually happen because fd_formats has at least
-one entry for each FloppyDriveType, so we must at least once
-find a match and update *maxc, *maxh and *maxs. Assert that we
-did find a match, which should keep Coverity happy and will also
-detect possible bugs in the data in fd_formats.
+Remove the dead code.
 
-Resolves: Coverity CID 1547663
+Resolves: Coverity CID 1547772
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/block/fdc-isa.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ide/pci.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
-index e43dc532af8..796835f57b3 100644
---- a/hw/block/fdc-isa.c
-+++ b/hw/block/fdc-isa.c
-@@ -147,6 +147,8 @@ static void isa_fdc_get_drive_max_chs(FloppyDriveType type, uint8_t *maxc,
-             *maxs = fdf->last_sect;
+diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+index 4675d079a17..f2cb500a94f 100644
+--- a/hw/ide/pci.c
++++ b/hw/ide/pci.c
+@@ -266,10 +266,6 @@ static int32_t bmdma_prepare_buf(const IDEDMA *dma, int32_t limit)
+             s->io_buffer_size += l;
          }
      }
-+    /* fd_formats must contain at least one entry per FloppyDriveType */
-+    assert(*maxc);
-     (*maxc)--;
+-
+-    qemu_sglist_destroy(&s->sg);
+-    s->io_buffer_size = 0;
+-    return -1;
  }
  
+ /* return 0 if buffer completed */
 -- 
 2.34.1
 
