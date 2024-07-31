@@ -2,83 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F5F943275
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79D7943276
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZAeO-0004EM-K6; Wed, 31 Jul 2024 10:50:00 -0400
+	id 1sZAf3-0007ba-JD; Wed, 31 Jul 2024 10:50:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philipp.reisner@linbit.com>)
- id 1sZAeL-00044P-BZ
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:49:58 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philipp.reisner@linbit.com>)
- id 1sZAeI-0005eo-Ql
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:49:57 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a7a975fb47eso809262366b.3
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 07:49:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linbit-com.20230601.gappssmtp.com; s=20230601; t=1722437391; x=1723042191;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0KaoxBzIIywVnQdSBrnOgH21sK/NEKHNZyj6SYMBRxs=;
- b=NBxP0jPdAN6cQ6okYaZmDTKLLR5U8tEIVj3T/Y4yQPUg0CcZRpUbJ5cN0nv6bF/3lT
- HxUck20KhKfoy63/XqUO+dc42e/BLNK5ZAB/9sfjiRU3w45c367IQoB8Ya7pJ8jIH8v2
- ElQ6e9IUzP+1SF4f3PMdDM1fuI9J47pQw4IOqiGPCTSL2KsUaLM8Ln7nkOxV9zJgVaCH
- M8xi9oDnUK6IFPSraBSeVJknrJ99g8LnbnkugMo3sFj28EdShGg5cspL9ZE+GwuWbrlZ
- /gdATMTYOGNCEklHCY+HsNEru+/k4/GJ0wb5fuR1iAsTBXQjWDCI8CtgtYFzPYwW8ah3
- 24Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722437391; x=1723042191;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0KaoxBzIIywVnQdSBrnOgH21sK/NEKHNZyj6SYMBRxs=;
- b=C1xzBU2jbbCBnxptS+/YR/hoM6e6z15Bnc+tue3KcoDcQeNVPUJfj0hlLv8xih2y6J
- hv/AwYQZz7hXoojq1cZtUgYHgjJ8xwCrFbhyvSmNsd7zYkrM/hRbINIsAhWrnj3WGGqT
- YIY4p616SCU5OAmzLEcNHpBVl9L4LaVArmIeBH/b/8QqDnTUVDyYDEhHQyscrBLKb9iy
- iVn2pZfkWKRAZmgxIDbrL/gofieIHU61t6dJiPQk+jE/Le5+oSsb0Zy7oVqGb+9yY0El
- ScYVhMz+eJr/DQYWyxXIyZ8QMTsjMjsEHPFtWOVlpnS5G8ri0piaTt5T8XpqquE14SZi
- P3ZA==
-X-Gm-Message-State: AOJu0YzlmEl4rVpBrKNnsgO5sSsAYAZ24EfR/QIgFZeZsU0oifwweMCI
- XvlhW1lTub+SqqpfTLpw7hobSRVb01y2C6aUN2SuRF7I5k/hg6CI7C2eBVyIwXFEH/L2IW4Mla3
- m
-X-Google-Smtp-Source: AGHT+IGRJujEA8FhVJdUsxTMGkfPJm0ohneerJcJ1QRysk3lrHNOmAyWkJ+auV6fyD2gNSYMsZQ2gQ==
-X-Received: by 2002:a17:907:3e1a:b0:a7a:9a78:4b4e with SMTP id
- a640c23a62f3a-a7d400e8951mr933366466b.40.1722437391499; 
- Wed, 31 Jul 2024 07:49:51 -0700 (PDT)
-Received: from ryzen9.home (193-80-247-151.adsl.highway.telekom.at.
- [193.80.247.151]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acab23125sm779180466b.1.2024.07.31.07.49.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 07:49:51 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philipp Reisner <philipp.reisner@linbit.com>
-Subject: [PATCH] util: retry open() when it gets interrupted by a signal
-Date: Wed, 31 Jul 2024 16:49:46 +0200
-Message-ID: <20240731144946.322498-1-philipp.reisner@linbit.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <CAFEAcA9J37Z1JJb34zyRDo=ow0h1QgOq9bm10dCc0u5bMyQKpg@mail.gmail.com>
-References: <CAFEAcA9J37Z1JJb34zyRDo=ow0h1QgOq9bm10dCc0u5bMyQKpg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sZAex-0007CX-E8
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:50:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sZAev-0005xt-Ri
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:50:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722437432;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=whzXyBAy8e8MHiXXhJc2uI7BplDoZlcoz2xqVP8cYVM=;
+ b=Vg2mrroWri/+/EfxZguBAz5PIsTjnU7NEXIHhgKN8Zo6ab1PvuAshc5JxfEBeWm31p1Db5
+ 5J1MVxdsXEXZdSct8XtNpRA8nc9w8uqhyFBG85qICJBot+zQ/B/aGKjCUD8UX2yqbG0rTo
+ H2gJGclQ3o5ls7f46GuIQnTFGcQ3Jao=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-437-3X0QG3ARMC6QYnGVB59_ug-1; Wed,
+ 31 Jul 2024 10:50:29 -0400
+X-MC-Unique: 3X0QG3ARMC6QYnGVB59_ug-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CEED8195608B; Wed, 31 Jul 2024 14:50:27 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8622D1955E80; Wed, 31 Jul 2024 14:50:26 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 55C4721E668B; Wed, 31 Jul 2024 16:50:24 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>,  Stefan Weil <sw@weilnetz.de>,  "Richard
+ W.M. Jones" <rjones@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Kevin
+ Wolf <kwolf@redhat.com>,  qemu-block@nongnu.org
+Subject: Re: [PATCH 5/7] hw/block/fdc-isa: Assert that
+ isa_fdc_get_drive_max_chs() found something
+In-Reply-To: <20240731143617.3391947-6-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Wed, 31 Jul 2024 15:36:15 +0100")
+References: <20240731143617.3391947-1-peter.maydell@linaro.org>
+ <20240731143617.3391947-6-peter.maydell@linaro.org>
+Date: Wed, 31 Jul 2024 16:50:24 +0200
+Message-ID: <877cd1liof.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philipp.reisner@linbit.com; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,38 +86,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As with many syscalls, open() might be interrupted by a signal.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-The experienced logfile entry is:
+> Coverity complains about an overflow in isa_fdc_get_drive_max_chs()
+> that can happen if the loop over fd_formats never finds a match,
+> because we initialize *maxc to 0 and then at the end of the
+> function decrement it.
+>
+> This can't ever actually happen because fd_formats has at least
+> one entry for each FloppyDriveType, so we must at least once
+> find a match and update *maxc, *maxh and *maxs. Assert that we
+> did find a match, which should keep Coverity happy and will also
+> detect possible bugs in the data in fd_formats.
+>
+> Resolves: Coverity CID 1547663
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  hw/block/fdc-isa.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+> index e43dc532af8..796835f57b3 100644
+> --- a/hw/block/fdc-isa.c
+> +++ b/hw/block/fdc-isa.c
+> @@ -147,6 +147,8 @@ static void isa_fdc_get_drive_max_chs(FloppyDriveType type, uint8_t *maxc,
+>              *maxs = fdf->last_sect;
+>          }
+>      }
+> +    /* fd_formats must contain at least one entry per FloppyDriveType */
+> +    assert(*maxc);
+>      (*maxc)--;
+>  }
 
-qemu-system-x86_64: -device virtio-blk-pci,bus=pci.0,addr=0x7,drive=libvirt-2-format,id=virtio-disk0,bootindex=2,write-cache=on,serial=1b990c4d13b74a4e90ea: Could not open '/dev/drbd1003': Interrupted system call
-
-Retry it until it is not interrupted by a signal.
-FYI, dd has the same kind of loop aroud open().
-https://github.com/coreutils/coreutils/blob/1ae98dbda7322427e8226356fd110d2553f5fac9/src/dd.c#L1294-L1299
-
-Signed-off-by: Philipp Reisner <philipp.reisner@linbit.com>
----
- util/osdep.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/util/osdep.c b/util/osdep.c
-index 770369831b..13a09d0dd5 100644
---- a/util/osdep.c
-+++ b/util/osdep.c
-@@ -295,9 +295,9 @@ static int qemu_open_cloexec(const char *name, int flags, mode_t mode)
- {
-     int ret;
- #ifdef O_CLOEXEC
--    ret = open(name, flags | O_CLOEXEC, mode);
-+    ret = RETRY_ON_EINTR(open(name, flags | O_CLOEXEC, mode));
- #else
--    ret = open(name, flags, mode);
-+    ret = RETRY_ON_EINTR(open(name, flags, mode));
-     if (ret >= 0) {
-         qemu_set_cloexec(ret);
-     }
--- 
-2.45.2
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
