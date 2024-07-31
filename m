@@ -2,80 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76519942FB3
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 15:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DA5942F59
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 14:56:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ91e-0004jI-PV; Wed, 31 Jul 2024 09:05:54 -0400
+	id 1sZ8si-0006KN-Lt; Wed, 31 Jul 2024 08:56:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1sZ91W-0004et-Eq
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 09:05:46 -0400
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1sZ91U-0001sV-7A
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 09:05:46 -0400
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 2B29941207
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 13:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1722431140;
- bh=0ppAZKFYmOdqYyRRoQb4S1cbnkVOsnxbmg7QQmbtseg=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=K/Bbf7KCS3TAaYs1KLnuDL6d/eBaO45dIZAhZ6yG3oFN1+enyD8SKIZ3g6xyBDHVc
- bYPyXMoODlponZ1VQfCAy1dyMKZ3NPVNFI5Mkp5EOXBCiXrFhCDV3M9DR/jCxNXRTf
- c60RX4mZCW4z7gttuq8aSdYZWLW6SPqBM3YGeJRPTyX4n56dcKLuCtOzXPejXOU5cs
- 0JIecFAo+UT6d18Pp8u/CT4SWg4lp0cHYDxIs+3ihYlJdbQv8cf9usy8W5zx74ym62
- VqGXBC4KTOBd4Oov7O8HK4b+8C75O4NWXxMADezBBPLgf9JFyqLOmPUkNizJBGs0Uo
- jyFrB91TyPGzA==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 218B87E1F6
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 13:05:40 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZ8sg-0006CW-70
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:56:38 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZ8se-0008Nb-GO
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:56:37 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2ef2c56d9dcso73815821fa.2
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 05:56:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722430594; x=1723035394; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AK504CrbjKyIKsoqlY59MxTzWmq3hgVDrxhHvVIpBhw=;
+ b=Ep0LmHd/Zh/bT7mWFcq2XUBFhF1fjnIyQ/D/qxKqHreGh7tlk4u8EoMt32EzlwKBZ2
+ AAB32qrQI8v0J1nM90zIx60pTDFACTCrwUh+2zjhZwWPRalh4lX2u8v6l8BQyRIzbi+/
+ wyXCRDlNTp1u2JjXp0ICKsPehCMkb/uLj/FRMWUxO/3UQ6F29hcNI9q6ZIKbcDYSaIEz
+ DcuP08Kv6hMnOk+kR4TkZ+9Sxkzjx848TgGhXJNMF5jxPGInOGZCiA109kOJQnso9MAe
+ TBaJ54Ln6L8Pw0tAjxsuRG/ZZReSWD0Kd+bTFs9SKJxi+7xlA7QhhqSmh2jGxyzDbmbs
+ 19Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722430594; x=1723035394;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AK504CrbjKyIKsoqlY59MxTzWmq3hgVDrxhHvVIpBhw=;
+ b=RD2BYXqNPRfJFxjh3DJ6TrWvbmPHsofTvtmVMGlPDpjAzmh1Ukb4PEak+B70L6DQSN
+ +SpTzpaTUpaeodsukI0OqZJwfjSILCZW4i4ReBJRIe1bql9jovlvtsLN529HAHsKq8FN
+ Q26sn38n0bKPYzK4kMHCcPDD9iu317mHoo4k6yBeyUimEvkb6HXpkVkAxwECq35/JFis
+ ruOuR+pUtXsSo7f2tXARe4uAhKmYQlKtYQ+YKOfXdlFhwW7//m/7/m7rfl23KI+li0aS
+ HbLB/wEZPdy7wQCa7FpxtO2c11R2VIXr5BuMJJtNVlhz+4wo7g5q1iqwdED8LTHmmqYI
+ erDg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV5I5gzKCXOeIynLBXdWQf9N38FvAeXAtdMhXRmoSDMmn/cy39rXylL2UZSRGTS2qqUOQgnpRtYG46OT5eoxHYiCuVTRJQ=
+X-Gm-Message-State: AOJu0YyxlxPvrn9jrDBl2IwYULiKgMceWxZnf9jBJrd0QTtVIdLVcONb
+ +EMUNu8jgnUNT9d1aKcfNljHF7fgeDKhJ1mIxTKnXcaPobx1/uVLjU3j1Yg5274=
+X-Google-Smtp-Source: AGHT+IF5KxySbbFIb4o7k6TYejg1U9YQemar7GAVTXaYjTkMrKEkc6S+pivK1CcdeYL+hSqhACz7lg==
+X-Received: by 2002:a2e:964f:0:b0:2ef:2b56:36a9 with SMTP id
+ 38308e7fff4ca-2f12ecd297emr102645641fa.16.1722430594359; 
+ Wed, 31 Jul 2024 05:56:34 -0700 (PDT)
+Received: from [192.168.214.175] (29.170.88.92.rev.sfr.net. [92.88.170.29])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4282babaa2esm21212345e9.25.2024.07.31.05.56.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 Jul 2024 05:56:33 -0700 (PDT)
+Message-ID: <9fbf2f80-c7df-4819-8f74-c7ce75dc70a5@linaro.org>
+Date: Wed, 31 Jul 2024 14:56:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 31 Jul 2024 12:56:24 -0000
-From: =?utf-8?q?Micha=C5=82_Fita?= <2072564@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- status=Triaged; importance=Undecided; assignee=sergio.durigan@canonical.com; 
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: dimitry.unified-streaming.com michal.fita sergiodj
-X-Launchpad-Bug-Reporter: Dimitry Andric (dimitry.unified-streaming.com)
-X-Launchpad-Bug-Modifier: =?utf-8?q?Micha=C5=82_Fita_=28michal=2Efita=29?=
-References: <172053137048.3332067.13534832802726064667.malonedeb@juju-98d295-prod-launchpad-7>
-Message-Id: <172243058497.3038745.7611135827346947168.malone@juju-98d295-prod-launchpad-7>
-Subject: [Bug 2072564] Re: qemu-aarch64-static segfaults running ldconfig.real
- (amd64 host)
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="e3ace39cea497a5ecb83e8fb6dd8e7e169f02939";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: ea9a332e36b19be6d5ee0b2167258aebecd9299a
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 16/24] tests/functional: Convert the riscv_opensbi
+ avocado test into a standalone test
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+References: <20240730170347.4103919-1-berrange@redhat.com>
+ <20240730170347.4103919-17-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240730170347.4103919-17-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -84,92 +98,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2072564 <2072564@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm using quemu to tweak Armbian Jammy images for Raspberry Pi 5 (so it
-would have ldconfig from 22.04) and I have signal 11 when libc
-reconfiguration is triggered by apt.
+On 30/7/24 19:03, Daniel P. Berrangé wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> The avocado test defined test functions for both, riscv32 and riscv64.
+> Since we can run the whole file with multiple targets in the new
+> framework, we can now consolidate the functions so we have to only
+> define one function per machine now.
+> 
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/avocado/riscv_opensbi.py         | 63 --------------------------
+>   tests/functional/meson.build           |  8 ++++
+>   tests/functional/test_riscv_opensbi.py | 36 +++++++++++++++
+>   3 files changed, 44 insertions(+), 63 deletions(-)
+>   delete mode 100644 tests/avocado/riscv_opensbi.py
+>   create mode 100755 tests/functional/test_riscv_opensbi.py
 
-What you may find interesting running the same process of updates on the
-same base image on Ubuntu 22.04 (which has qemu 6.2) works fine.
+Please squash:
 
-My googling around "libc signal 11 quemu" lead to a lot of people
-reporting problems with docker buildx with qemu predating 7.0. This
-smells kind of regression in 8.2 used in 24.04. Then the issue linked
-above says affected ldconfigs are 2.33 to 2.35...
+-- >8 --
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 98eddf7ae1..a906218f9d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -336,6 +337,7 @@ F: include/hw/riscv/
+  F: linux-user/host/riscv32/
+  F: linux-user/host/riscv64/
+  F: tests/tcg/riscv64/
++F: tests/functional/test_riscv_opensbi.py
 
-Does Ubuntu really need to wait for upstream to deal with this? It's a
-huge slap in the face for everyone on 24.04 needing to meddle 22.04
-ARM64 images.
+  RISC-V XThead* extensions
+  M: Christoph Muellner <christoph.muellner@vrull.eu>
+---
 
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2072564
-
-Title:
-  qemu-aarch64-static segfaults running ldconfig.real (amd64 host)
-
-Status in QEMU:
-  New
-Status in qemu package in Ubuntu:
-  Triaged
-
-Bug description:
-  This affects the qemu-user-static 1:8.2.2+ds-0ubuntu1 package on
-  Ubuntu 24.04, running on a amd64 host.
-
-  When running docker containers with Ubuntu 22.04 in them, emulating
-  arm64 with qemu-aarch64-static, invocations of ldconfig (actually
-  ldconfig.real) segfault. For example:
-
-  $ docker run -ti --platform linux/arm64/v8 ubuntu:22.04=20
-  root@8861ff640a1c:/# /sbin/ldconfig.real
-  Segmentation fault
-
-  If you copy the ldconfig.real binary to the host, and run it directly
-  via qemu-aarch64-static:
-
-  $ gdb --args qemu-aarch64-static ./ldconfig.real=20
-  GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
-  Copyright (C) 2024 Free Software Foundation, Inc.
-  License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.h=
-tml>
-  This is free software: you are free to change and redistribute it.
-  There is NO WARRANTY, to the extent permitted by law.
-  Type "show copying" and "show warranty" for details.
-  This GDB was configured as "x86_64-linux-gnu".
-  Type "show configuration" for configuration details.
-  For bug reporting instructions, please see:
-  <https://www.gnu.org/software/gdb/bugs/>.
-  Find the GDB manual and other documentation resources online at:
-      <http://www.gnu.org/software/gdb/documentation/>.
-
-  For help, type "help".
-  Type "apropos word" to search for commands related to "word"...
-  Reading symbols from qemu-aarch64-static...
-  Reading symbols from /home/dim/.cache/debuginfod_client/86579812b213be096=
-4189499f62f176bea817bf2/debuginfo...
-  (gdb) r
-  Starting program: /usr/bin/qemu-aarch64-static ./ldconfig.real
-  [Thread debugging using libthread_db enabled]
-  Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
-  [New Thread 0x7ffff76006c0 (LWP 28378)]
-
-  Thread 1 "qemu-aarch64-st" received signal SIGSEGV, Segmentation fault.
-  0x00007fffe801645b in ?? ()
-  (gdb) disassemble=20
-  No function contains program counter for selected frame.
-
-  It looks like this is a known qemu regression after v8.1.1:
-  https://gitlab.com/qemu-project/qemu/-/issues/1913
-
-  Downgrading the package to qemu-user-
-  static_8.0.4+dfsg-1ubuntu3_amd64.deb fixes the segfault.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2072564/+subscriptions
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
