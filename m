@@ -2,75 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D94943106
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 15:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC67F943162
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 15:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ9TO-0001Pu-Nn; Wed, 31 Jul 2024 09:34:34 -0400
+	id 1sZ9jJ-00053d-7O; Wed, 31 Jul 2024 09:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZ9TL-0001OB-FV
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 09:34:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <junon@oro.sh>) id 1sZ9jH-000534-MQ
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 09:50:59 -0400
+Received: from out-184.mta0.migadu.com ([91.218.175.184])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZ9TJ-0006W8-BB
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 09:34:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722432867;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=QKhe1skX0A9BUM0iun7o2z0tKLunb3zPUTWJoI6hvNQ=;
- b=CFQDUotB38mArX93/dRNt3A+LBqhfIZ9p8yhjcOtR9vjj+Cj28TDhV67TX98V0YEPrBlB7
- JzKziQjsyyXnvmmiiZ+sQuwzJ9A1K/tPsdbVpNKBkGpbWHKY5rdoA556wAySefUqXd8t+R
- OtNqdQt3guk8YsVf5th6+o/9ihYkWbY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-330-B1KbsUNONqilnF8Tc79_eg-1; Wed,
- 31 Jul 2024 09:34:23 -0400
-X-MC-Unique: B1KbsUNONqilnF8Tc79_eg-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E241C1955F4A; Wed, 31 Jul 2024 13:34:13 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.33])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 76BBC1955DE9; Wed, 31 Jul 2024 13:34:04 +0000 (UTC)
-Date: Wed, 31 Jul 2024 14:34:00 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?utf-8?B?RnLDqWTDqXJpYw==?= Barrat <fbarrat@linux.ibm.com>,
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Subject: Re: [RFC PATCH] hw/ppc: Implement -dtb support for PowerNV
-Message-ID: <Zqo9SOG_t-iI9xW4@redhat.com>
-References: <20240731132235.887918-1-adityag@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <junon@oro.sh>) id 1sZ9jE-0000vl-Ac
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 09:50:59 -0400
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oro.sh; s=key1;
+ t=1722433853;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nnYjsgXS9yAkNYBEnLsfdmYlBlGx037SDwa8IA0y9/I=;
+ b=ZMx//O5lYCYDvEK7/bBRc3ds+Va7JCek3PZ+IIWUU43pPDhZvovBBGN3w4Io7NVwvt+X4t
+ t1XBlqlmspmdXVOpIEJ6VWa8KalEMn0PwhOY6RoW4gIfBTemTyZVqJ65SOHu+kiazLVdxF
+ BCrn4zdT5GCfhB2YHq5C7KZR9tHEoVw=
+From: Josh Junon <junon@oro.sh>
+To: qemu-devel@nongnu.org
+Cc: Josh Junon <junon@oro.sh>, "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH] qmp: Fix higher half vaddrs for [p]memsave
+Date: Wed, 31 Jul 2024 15:50:31 +0200
+Message-Id: <20240731135031.11260-1-junon@oro.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240731132235.887918-1-adityag@linux.ibm.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=91.218.175.184; envelope-from=junon@oro.sh;
+ helo=out-184.mta0.migadu.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,99 +63,754 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 31, 2024 at 06:52:35PM +0530, Aditya Gupta wrote:
-> Currently any device tree passed with -dtb option in QEMU, was ignored
-> by the PowerNV code.
-> 
-> Read and pass the passed -dtb to the kernel, thus enabling easier
-> debugging with custom DTBs.
-> 
-> The existing behaviour when -dtb is 'not' passed, is preserved as-is.
-> 
-> But when a '-dtb' is passed, it completely overrides any dtb nodes or
-> changes QEMU might have done, such as '-append' arguments to the kernel
-> (which are mentioned in /chosen/bootargs in the dtb), hence add warning
-> when -dtb is being used
-> 
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> 
-> ---
-> This is an RFC patch, and hence might not be the final implementation,
-> though this current one is a solution which works
-> ---
-> ---
->  hw/ppc/pnv.c | 29 ++++++++++++++++++++++++++---
->  1 file changed, 26 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 3526852685b4..12cc909b9e26 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -714,6 +714,8 @@ static void pnv_reset(MachineState *machine, ShutdownCause reason)
->      PnvMachineState *pnv = PNV_MACHINE(machine);
->      IPMIBmc *bmc;
->      void *fdt;
-> +    FILE *fdt_file;
-> +    uint32_t fdt_size;
->  
->      qemu_devices_reset(reason);
->  
-> @@ -736,10 +738,31 @@ static void pnv_reset(MachineState *machine, ShutdownCause reason)
->          }
->      }
->  
-> -    fdt = pnv_dt_create(machine);
-> +    if (machine->dtb) {
-> +        warn_report("with manually passed dtb, some options like '-append'"
-> +                " might ignored and the dtb passed will be used as-is");
+Previously, int64_t's were used when parsing virtual / physical
+addresses for the [p]memsave commands over QMP (HMP was unaffected).
+This caused issues when the virtual addresses were in the higher
+half of a 64-bit address space, as various portions of the parsing
+code would consider them out of bounds.
 
-Check whether append is actually set, and report an fatal error in
-that case. 
+This PR addresses that, creating uint64_t analogs for much of the
+parsing/qdict implementations, as well as the expression parser,
+to allow for higher-half virtual addresses (or any address with a
+MSB=1).
+---
+ hmp-commands.hx            |   4 +-
+ hw/core/machine-hmp-cmds.c |   8 +-
+ include/qapi/qmp/qdict.h   |   4 +
+ monitor/hmp-expr.inc       | 200 ++++++++++++++++++++++++++++++
+ monitor/hmp.c              | 241 ++++++++-----------------------------
+ qapi/machine.json          |   4 +-
+ qobject/qdict.c            |  38 ++++++
+ system/cpus.c              |   4 +-
+ tests/unit/check-qdict.c   |  39 ++++++
+ 9 files changed, 343 insertions(+), 199 deletions(-)
+ create mode 100644 monitor/hmp-expr.inc
 
->  
-> -    /* Pack resulting tree */
-> -    _FDT((fdt_pack(fdt)));
-> +        fdt = g_malloc0(FDT_MAX_SIZE);
-> +
-> +        /* read the file 'machine->dtb', and load it into 'fdt' buffer */
-> +        fdt_file = fopen(machine->dtb, "r");
-> +        if (fdt_file != NULL) {
-> +            fdt_size = fread(fdt, sizeof(char), FDT_MAX_SIZE, fdt_file);
-> +            if (ferror(fdt_file) != 0) {
-> +                error_report("Could not load dtb '%s'",
-> +                             machine->dtb);
-> +                exit(1);
-> +            }
-> +
-> +            /* mark end of the fdt buffer with '\0' */
-> +            ((char *)fdt)[fdt_size] = '\0';
-> +        }
-
-Preferrable to use g_file_get_contents()
-
-> +    } else {
-> +        fdt = pnv_dt_create(machine);
-> +
-> +        /* Pack resulting tree */
-> +        _FDT((fdt_pack(fdt)));
-> +    }
->  
->      qemu_fdt_dumpdtb(fdt, fdt_totalsize(fdt));
->      cpu_physical_memory_write(PNV_FDT_ADDR, fdt, fdt_totalsize(fdt));
-> -- 
-> 2.45.2
-> 
-> 
-
-With regards,
-Daniel
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 06746f0afc..9e0fe980b1 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -801,7 +801,7 @@ ERST
+ 
+     {
+         .name       = "memsave",
+-        .args_type  = "val:l,size:i,filename:s",
++        .args_type  = "val:u,size:u,filename:s",
+         .params     = "addr size file",
+         .help       = "save to disk virtual memory dump starting at 'addr' of size 'size'",
+         .cmd        = hmp_memsave,
+@@ -814,7 +814,7 @@ ERST
+ 
+     {
+         .name       = "pmemsave",
+-        .args_type  = "val:l,size:i,filename:s",
++        .args_type  = "val:u,size:u,filename:s",
+         .params     = "addr size file",
+         .help       = "save to disk physical memory dump starting at 'addr' of size 'size'",
+         .cmd        = hmp_pmemsave,
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index 8701f00cc7..10512a034b 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -196,9 +196,9 @@ void hmp_system_powerdown(Monitor *mon, const QDict *qdict)
+ 
+ void hmp_memsave(Monitor *mon, const QDict *qdict)
+ {
+-    uint32_t size = qdict_get_int(qdict, "size");
++    uint64_t size = qdict_get_uint(qdict, "size");
+     const char *filename = qdict_get_str(qdict, "filename");
+-    uint64_t addr = qdict_get_int(qdict, "val");
++    uint64_t addr = qdict_get_uint(qdict, "val");
+     Error *err = NULL;
+     int cpu_index = monitor_get_cpu_index(mon);
+ 
+@@ -213,9 +213,9 @@ void hmp_memsave(Monitor *mon, const QDict *qdict)
+ 
+ void hmp_pmemsave(Monitor *mon, const QDict *qdict)
+ {
+-    uint32_t size = qdict_get_int(qdict, "size");
++    uint64_t size = qdict_get_uint(qdict, "size");
+     const char *filename = qdict_get_str(qdict, "filename");
+-    uint64_t addr = qdict_get_int(qdict, "val");
++    uint64_t addr = qdict_get_uint(qdict, "val");
+     Error *err = NULL;
+ 
+     qmp_pmemsave(addr, size, filename, &err);
+diff --git a/include/qapi/qmp/qdict.h b/include/qapi/qmp/qdict.h
+index 82e90fc072..38c310becb 100644
+--- a/include/qapi/qmp/qdict.h
++++ b/include/qapi/qmp/qdict.h
+@@ -52,17 +52,21 @@ const QDictEntry *qdict_next(const QDict *qdict, const QDictEntry *entry);
+ 
+ void qdict_put_bool(QDict *qdict, const char *key, bool value);
+ void qdict_put_int(QDict *qdict, const char *key, int64_t value);
++void qdict_put_uint(QDict *qdict, const char *key, uint64_t value);
+ void qdict_put_null(QDict *qdict, const char *key);
+ void qdict_put_str(QDict *qdict, const char *key, const char *value);
+ 
+ double qdict_get_double(const QDict *qdict, const char *key);
+ int64_t qdict_get_int(const QDict *qdict, const char *key);
++uint64_t qdict_get_uint(const QDict *qdict, const char *key);
+ bool qdict_get_bool(const QDict *qdict, const char *key);
+ QList *qdict_get_qlist(const QDict *qdict, const char *key);
+ QDict *qdict_get_qdict(const QDict *qdict, const char *key);
+ const char *qdict_get_str(const QDict *qdict, const char *key);
+ int64_t qdict_get_try_int(const QDict *qdict, const char *key,
+                           int64_t def_value);
++uint64_t qdict_get_try_uint(const QDict *qdict, const char *key,
++                          uint64_t def_value);
+ bool qdict_get_try_bool(const QDict *qdict, const char *key, bool def_value);
+ const char *qdict_get_try_str(const QDict *qdict, const char *key);
+ 
+diff --git a/monitor/hmp-expr.inc b/monitor/hmp-expr.inc
+new file mode 100644
+index 0000000000..789a957ed2
+--- /dev/null
++++ b/monitor/hmp-expr.inc
+@@ -0,0 +1,200 @@
++#ifndef HMP_EXPR_INC_TY
++#error "missing HMP_EXPR_INC_TY"
++#endif
++
++#ifndef HMP_EXPR_INC_IDENT
++#error "missing HMP_EXPR_INC_IDENT"
++#endif
++
++static HMP_EXPR_INC_TY HMP_EXPR_INC_IDENT(expr_sum)(Monitor *mon);
++
++static HMP_EXPR_INC_TY HMP_EXPR_INC_IDENT(expr_unary)(Monitor *mon)
++{
++    HMP_EXPR_INC_TY n;
++    char *p;
++    int ret;
++
++    switch (*pch) {
++    case '+':
++        next();
++        n = HMP_EXPR_INC_IDENT(expr_unary)(mon);
++        break;
++    case '-':
++        next();
++        n = -HMP_EXPR_INC_IDENT(expr_unary)(mon);
++        break;
++    case '~':
++        next();
++        n = ~HMP_EXPR_INC_IDENT(expr_unary)(mon);
++        break;
++    case '(':
++        next();
++        n = HMP_EXPR_INC_IDENT(expr_sum)(mon);
++        if (*pch != ')') {
++            expr_error(mon, "')' expected");
++        }
++        next();
++        break;
++    case '\'':
++        pch++;
++        if (*pch == '\0') {
++            expr_error(mon, "character constant expected");
++        }
++        n = *pch;
++        pch++;
++        if (*pch != '\'') {
++            expr_error(mon, "missing terminating \' character");
++        }
++        next();
++        break;
++    case '$':
++        {
++            char buf[128], *q;
++            int64_t reg = 0;
++
++            pch++;
++            q = buf;
++            while ((*pch >= 'a' && *pch <= 'z') ||
++                   (*pch >= 'A' && *pch <= 'Z') ||
++                   (*pch >= '0' && *pch <= '9') ||
++                   *pch == '_' || *pch == '.') {
++                if ((q - buf) < sizeof(buf) - 1) {
++                    *q++ = *pch;
++                }
++                pch++;
++            }
++            while (qemu_isspace(*pch)) {
++                pch++;
++            }
++            *q = 0;
++            ret = get_monitor_def(mon, &reg, buf);
++            if (ret < 0) {
++                expr_error(mon, "unknown register");
++            }
++            n = (HMP_EXPR_INC_TY)reg;
++        }
++        break;
++    case '\0':
++        expr_error(mon, "unexpected end of expression");
++        n = 0;
++        break;
++    default:
++        errno = 0;
++        n = strtoull(pch, &p, 0);
++        if (errno == ERANGE) {
++            expr_error(mon, "number too large");
++        }
++        if (pch == p) {
++            expr_error(mon, "invalid char '%c' in expression", *p);
++        }
++        pch = p;
++        while (qemu_isspace(*pch)) {
++            pch++;
++        }
++        break;
++    }
++    return n;
++}
++
++static HMP_EXPR_INC_TY HMP_EXPR_INC_IDENT(expr_prod)(Monitor *mon)
++{
++    HMP_EXPR_INC_TY val, val2;
++    int op;
++
++    val = HMP_EXPR_INC_IDENT(expr_unary)(mon);
++    for (;;) {
++        op = *pch;
++        if (op != '*' && op != '/' && op != '%') {
++            break;
++        }
++        next();
++        val2 = HMP_EXPR_INC_IDENT(expr_unary)(mon);
++        switch (op) {
++        default:
++        case '*':
++            val *= val2;
++            break;
++        case '/':
++        case '%':
++            if (val2 == 0) {
++                expr_error(mon, "division by zero");
++            }
++            if (op == '/') {
++                val /= val2;
++            } else {
++                val %= val2;
++            }
++            break;
++        }
++    }
++    return val;
++}
++
++static HMP_EXPR_INC_TY HMP_EXPR_INC_IDENT(expr_logic)(Monitor *mon)
++{
++    HMP_EXPR_INC_TY val, val2;
++    int op;
++
++    val = HMP_EXPR_INC_IDENT(expr_prod)(mon);
++    for (;;) {
++        op = *pch;
++        if (op != '&' && op != '|' && op != '^') {
++            break;
++        }
++        next();
++        val2 = HMP_EXPR_INC_IDENT(expr_prod)(mon);
++        switch (op) {
++        default:
++        case '&':
++            val &= val2;
++            break;
++        case '|':
++            val |= val2;
++            break;
++        case '^':
++            val ^= val2;
++            break;
++        }
++    }
++    return val;
++}
++
++static HMP_EXPR_INC_TY HMP_EXPR_INC_IDENT(expr_sum)(Monitor *mon)
++{
++    HMP_EXPR_INC_TY val, val2;
++    int op;
++
++    val = HMP_EXPR_INC_IDENT(expr_logic)(mon);
++    for (;;) {
++        op = *pch;
++        if (op != '+' && op != '-') {
++            break;
++        }
++        next();
++        val2 = HMP_EXPR_INC_IDENT(expr_logic)(mon);
++        if (op == '+') {
++            val += val2;
++        } else {
++            val -= val2;
++        }
++    }
++    return val;
++}
++
++static int HMP_EXPR_INC_IDENT(get_expr)(Monitor *mon, HMP_EXPR_INC_TY *pval, const char **pp)
++{
++    pch = *pp;
++    if (sigsetjmp(expr_env, 0)) {
++        *pp = pch;
++        return -1;
++    }
++    while (qemu_isspace(*pch)) {
++        pch++;
++    }
++    *pval = HMP_EXPR_INC_IDENT(expr_sum)(mon);
++    *pp = pch;
++    return 0;
++}
++
++#undef HMP_EXPR_INC_TY
++#undef HMP_EXPR_INC_IDENT
+diff --git a/monitor/hmp.c b/monitor/hmp.c
+index 460e8832f6..95d965a20a 100644
+--- a/monitor/hmp.c
++++ b/monitor/hmp.c
+@@ -332,195 +332,13 @@ static void next(void)
+     }
+ }
+ 
+-static int64_t expr_sum(Monitor *mon);
++#define HMP_EXPR_INC_TY int64_t
++#define HMP_EXPR_INC_IDENT(name) name ## _int64
++#include "monitor/hmp-expr.inc"
+ 
+-static int64_t expr_unary(Monitor *mon)
+-{
+-    int64_t n;
+-    char *p;
+-    int ret;
+-
+-    switch (*pch) {
+-    case '+':
+-        next();
+-        n = expr_unary(mon);
+-        break;
+-    case '-':
+-        next();
+-        n = -expr_unary(mon);
+-        break;
+-    case '~':
+-        next();
+-        n = ~expr_unary(mon);
+-        break;
+-    case '(':
+-        next();
+-        n = expr_sum(mon);
+-        if (*pch != ')') {
+-            expr_error(mon, "')' expected");
+-        }
+-        next();
+-        break;
+-    case '\'':
+-        pch++;
+-        if (*pch == '\0') {
+-            expr_error(mon, "character constant expected");
+-        }
+-        n = *pch;
+-        pch++;
+-        if (*pch != '\'') {
+-            expr_error(mon, "missing terminating \' character");
+-        }
+-        next();
+-        break;
+-    case '$':
+-        {
+-            char buf[128], *q;
+-            int64_t reg = 0;
+-
+-            pch++;
+-            q = buf;
+-            while ((*pch >= 'a' && *pch <= 'z') ||
+-                   (*pch >= 'A' && *pch <= 'Z') ||
+-                   (*pch >= '0' && *pch <= '9') ||
+-                   *pch == '_' || *pch == '.') {
+-                if ((q - buf) < sizeof(buf) - 1) {
+-                    *q++ = *pch;
+-                }
+-                pch++;
+-            }
+-            while (qemu_isspace(*pch)) {
+-                pch++;
+-            }
+-            *q = 0;
+-            ret = get_monitor_def(mon, &reg, buf);
+-            if (ret < 0) {
+-                expr_error(mon, "unknown register");
+-            }
+-            n = reg;
+-        }
+-        break;
+-    case '\0':
+-        expr_error(mon, "unexpected end of expression");
+-        n = 0;
+-        break;
+-    default:
+-        errno = 0;
+-        n = strtoull(pch, &p, 0);
+-        if (errno == ERANGE) {
+-            expr_error(mon, "number too large");
+-        }
+-        if (pch == p) {
+-            expr_error(mon, "invalid char '%c' in expression", *p);
+-        }
+-        pch = p;
+-        while (qemu_isspace(*pch)) {
+-            pch++;
+-        }
+-        break;
+-    }
+-    return n;
+-}
+-
+-static int64_t expr_prod(Monitor *mon)
+-{
+-    int64_t val, val2;
+-    int op;
+-
+-    val = expr_unary(mon);
+-    for (;;) {
+-        op = *pch;
+-        if (op != '*' && op != '/' && op != '%') {
+-            break;
+-        }
+-        next();
+-        val2 = expr_unary(mon);
+-        switch (op) {
+-        default:
+-        case '*':
+-            val *= val2;
+-            break;
+-        case '/':
+-        case '%':
+-            if (val2 == 0) {
+-                expr_error(mon, "division by zero");
+-            }
+-            if (op == '/') {
+-                val /= val2;
+-            } else {
+-                val %= val2;
+-            }
+-            break;
+-        }
+-    }
+-    return val;
+-}
+-
+-static int64_t expr_logic(Monitor *mon)
+-{
+-    int64_t val, val2;
+-    int op;
+-
+-    val = expr_prod(mon);
+-    for (;;) {
+-        op = *pch;
+-        if (op != '&' && op != '|' && op != '^') {
+-            break;
+-        }
+-        next();
+-        val2 = expr_prod(mon);
+-        switch (op) {
+-        default:
+-        case '&':
+-            val &= val2;
+-            break;
+-        case '|':
+-            val |= val2;
+-            break;
+-        case '^':
+-            val ^= val2;
+-            break;
+-        }
+-    }
+-    return val;
+-}
+-
+-static int64_t expr_sum(Monitor *mon)
+-{
+-    int64_t val, val2;
+-    int op;
+-
+-    val = expr_logic(mon);
+-    for (;;) {
+-        op = *pch;
+-        if (op != '+' && op != '-') {
+-            break;
+-        }
+-        next();
+-        val2 = expr_logic(mon);
+-        if (op == '+') {
+-            val += val2;
+-        } else {
+-            val -= val2;
+-        }
+-    }
+-    return val;
+-}
+-
+-static int get_expr(Monitor *mon, int64_t *pval, const char **pp)
+-{
+-    pch = *pp;
+-    if (sigsetjmp(expr_env, 0)) {
+-        *pp = pch;
+-        return -1;
+-    }
+-    while (qemu_isspace(*pch)) {
+-        pch++;
+-    }
+-    *pval = expr_sum(mon);
+-    *pp = pch;
+-    return 0;
+-}
++#define HMP_EXPR_INC_TY uint64_t
++#define HMP_EXPR_INC_IDENT(name) name ## _uint64
++#include "monitor/hmp-expr.inc"
+ 
+ static int get_double(Monitor *mon, double *pval, const char **pp)
+ {
+@@ -882,7 +700,7 @@ static QDict *monitor_parse_arguments(Monitor *mon,
+                     }
+                     typestr++;
+                 }
+-                if (get_expr(mon, &val, &p)) {
++                if (get_expr_int64(mon, &val, &p)) {
+                     goto fail;
+                 }
+                 /* Check if 'i' is greater than 32-bit */
+@@ -900,6 +718,51 @@ static QDict *monitor_parse_arguments(Monitor *mon,
+                 qdict_put_int(qdict, key, val);
+             }
+             break;
++        case 'd':
++        case 'u':
++        case 'm':
++            {
++                uint64_t val;
++
++                while (qemu_isspace(*p)) {
++                    p++;
++                }
++                if (*typestr == '?' || *typestr == '.') {
++                    if (*typestr == '?') {
++                        if (*p == '\0') {
++                            typestr++;
++                            break;
++                        }
++                    } else {
++                        if (*p == '.') {
++                            p++;
++                            while (qemu_isspace(*p)) {
++                                p++;
++                            }
++                        } else {
++                            typestr++;
++                            break;
++                        }
++                    }
++                    typestr++;
++                }
++
++                if (get_expr_uint64(mon, &val, &p)) {
++                    goto fail;
++                }
++
++                /* Check if 'd' is greater than 32-bit */
++                if ((c == 'd') && ((val >> 32) & 0xffffffff)) {
++                    monitor_printf(mon, "\'%s\' has failed: ", cmd->name);
++                    monitor_printf(mon, "integer is for 32-bit values\n");
++                    goto fail;
++                } else if (c == 'm') {
++                    val *= MiB;
++                }
++
++                qdict_put_uint(qdict, key, val);
++            }
++            break;
+         case 'o':
+             {
+                 int ret;
+diff --git a/qapi/machine.json b/qapi/machine.json
+index fcfd249e2d..90f4ecbfd0 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -852,7 +852,7 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'memsave',
+-  'data': {'val': 'int', 'size': 'int', 'filename': 'str', '*cpu-index': 'int'} }
++  'data': {'val': 'uint64', 'size': 'uint64', 'filename': 'str', '*cpu-index': 'int'} }
+ 
+ ##
+ # @pmemsave:
+@@ -878,7 +878,7 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'pmemsave',
+-  'data': {'val': 'int', 'size': 'int', 'filename': 'str'} }
++  'data': {'val': 'uint64', 'size': 'uint64', 'filename': 'str'} }
+ 
+ ##
+ # @Memdev:
+diff --git a/qobject/qdict.c b/qobject/qdict.c
+index 8faff230d3..9696eee57d 100644
+--- a/qobject/qdict.c
++++ b/qobject/qdict.c
+@@ -136,6 +136,11 @@ void qdict_put_int(QDict *qdict, const char *key, int64_t value)
+     qdict_put(qdict, key, qnum_from_int(value));
+ }
+ 
++void qdict_put_uint(QDict *qdict, const char *key, uint64_t value)
++{
++    qdict_put(qdict, key, qnum_from_uint(value));
++}
++
+ void qdict_put_bool(QDict *qdict, const char *key, bool value)
+ {
+     qdict_put(qdict, key, qbool_from_bool(value));
+@@ -209,6 +214,19 @@ int64_t qdict_get_int(const QDict *qdict, const char *key)
+     return qnum_get_int(qobject_to(QNum, qdict_get(qdict, key)));
+ }
+ 
++/**
++ * qdict_get_int(): Get an unsigned integer mapped by 'key'
++ *
++ * This function assumes that 'key' exists and it stores a
++ * QNum representable as uint.
++ *
++ * Return integer mapped by 'key'.
++ */
++uint64_t qdict_get_uint(const QDict *qdict, const char *key)
++{
++    return qnum_get_uint(qobject_to(QNum, qdict_get(qdict, key)));
++}
++
+ /**
+  * qdict_get_bool(): Get a bool mapped by 'key'
+  *
+@@ -272,6 +290,26 @@ int64_t qdict_get_try_int(const QDict *qdict, const char *key,
+     return val;
+ }
+ 
++/**
++ * qdict_get_try_uint(): Try to get unsigned integer mapped by 'key'
++ *
++ * Return integer mapped by 'key', if it is not present in the
++ * dictionary or if the stored object is not a QNum representing an
++ * unsigned integer, 'def_value' will be returned.
++ */
++uint64_t qdict_get_try_uint(const QDict *qdict, const char *key,
++                          uint64_t def_value)
++{
++    QNum *qnum = qobject_to(QNum, qdict_get(qdict, key));
++    uint64_t val;
++
++    if (!qnum || !qnum_get_try_uint(qnum, &val)) {
++        return def_value;
++    }
++
++    return val;
++}
++
+ /**
+  * qdict_get_try_bool(): Try to get a bool mapped by 'key'
+  *
+diff --git a/system/cpus.c b/system/cpus.c
+index 5e3a988a0a..daad8852d1 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -792,7 +792,7 @@ int vm_stop_force_state(RunState state)
+     }
+ }
+ 
+-void qmp_memsave(int64_t addr, int64_t size, const char *filename,
++void qmp_memsave(uint64_t addr, uint64_t size, const char *filename,
+                  bool has_cpu, int64_t cpu_index, Error **errp)
+ {
+     FILE *f;
+@@ -840,7 +840,7 @@ exit:
+     fclose(f);
+ }
+ 
+-void qmp_pmemsave(int64_t addr, int64_t size, const char *filename,
++void qmp_pmemsave(uint64_t addr, uint64_t size, const char *filename,
+                   Error **errp)
+ {
+     FILE *f;
+diff --git a/tests/unit/check-qdict.c b/tests/unit/check-qdict.c
+index b5efa859b0..09ebe08900 100644
+--- a/tests/unit/check-qdict.c
++++ b/tests/unit/check-qdict.c
+@@ -99,6 +99,21 @@ static void qdict_get_int_test(void)
+     qobject_unref(tests_dict);
+ }
+ 
++static void qdict_get_uint_test(void)
++{
++    int ret;
++    const unsigned int value = 100;
++    const char *key = "int";
++    QDict *tests_dict = qdict_new();
++
++    qdict_put_uint(tests_dict, key, value);
++
++    ret = qdict_get_uint(tests_dict, key);
++    g_assert(ret == value);
++
++    qobject_unref(tests_dict);
++}
++
+ static void qdict_get_try_int_test(void)
+ {
+     int ret;
+@@ -121,6 +136,28 @@ static void qdict_get_try_int_test(void)
+     qobject_unref(tests_dict);
+ }
+ 
++static void qdict_get_try_uint_test(void)
++{
++    int ret;
++    const unsigned int value = 100;
++    const char *key = "int";
++    QDict *tests_dict = qdict_new();
++
++    qdict_put_uint(tests_dict, key, value);
++    qdict_put_str(tests_dict, "string", "test");
++
++    ret = qdict_get_try_uint(tests_dict, key, 0);
++    g_assert(ret == value);
++
++    ret = qdict_get_try_uint(tests_dict, "missing", -42);
++    g_assert_cmpuint(ret, ==, -42);
++
++    ret = qdict_get_try_uint(tests_dict, "string", -42);
++    g_assert_cmpuint(ret, ==, -42);
++
++    qobject_unref(tests_dict);
++}
++
+ static void qdict_get_str_test(void)
+ {
+     const char *p;
+@@ -358,7 +395,9 @@ int main(int argc, char **argv)
+     /* Continue, but now with fixtures */
+     g_test_add_func("/public/get", qdict_get_test);
+     g_test_add_func("/public/get_int", qdict_get_int_test);
++    g_test_add_func("/public/get_uint", qdict_get_uint_test);
+     g_test_add_func("/public/get_try_int", qdict_get_try_int_test);
++    g_test_add_func("/public/get_try_uint", qdict_get_try_uint_test);
+     g_test_add_func("/public/get_str", qdict_get_str_test);
+     g_test_add_func("/public/get_try_str", qdict_get_try_str_test);
+     g_test_add_func("/public/haskey_not", qdict_haskey_not_test);
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
