@@ -2,147 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98293942D21
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FA8942D2A
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 13:22:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ7M0-0006R4-3g; Wed, 31 Jul 2024 07:18:48 -0400
+	id 1sZ7Ot-00064G-HS; Wed, 31 Jul 2024 07:21:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sZ7Lx-0006Ma-2C
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sZ7Or-0005zF-Fa; Wed, 31 Jul 2024 07:21:45 -0400
+Received: from out30-110.freemail.mail.aliyun.com ([115.124.30.110])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sZ7Lv-0006nZ-Dy
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 07:18:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722424720;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=2ZAdrir/XPqbfvH9QDX+kfny3g50pUo5BZS7PsDKhr8=;
- b=GVq3OWlAsZMhcx7Q81bYJj53etPH5W20yEnL1YPUR6K5FuwJIfb2q4PSBQo0dzu6575WMd
- zzUHonuJ7BV7M0tP0nplDoNWWjUfVRZqjzPeHzT1e64LHpXVw7uqP6IiTEC0NI8SnmDnYp
- gQIFW4qPRSFB21EbVqonn1Bn9OTMlj0=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-73-N5vA2C3VPi-KNeDl6O-BSQ-1; Wed, 31 Jul 2024 07:18:39 -0400
-X-MC-Unique: N5vA2C3VPi-KNeDl6O-BSQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a7aaef3fdafso119655866b.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 04:18:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722424718; x=1723029518;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=2ZAdrir/XPqbfvH9QDX+kfny3g50pUo5BZS7PsDKhr8=;
- b=pl0tJrtoWBKpDxTMWYQulw27H7Q2Vz0hGGe8uYflcVDQfRItaXNc8/xNs3YqmD6wN2
- dQ+vuXpOho/dUBUN65fnIHph4wwnJmt8e6DhLEd1ClqAFenZVrNdNewyxGsZ7OBxBdSP
- sbuNBGBzloousrx2afjMBjawIQ9UIpULLlY6CPozK/QTbaQDmlHK8qMm9hLBzjyWbanZ
- aFZqotrFEekjU+v7r5/Ncv6CzMp2QmMlT/x86R1D1oLi+hMLFECXZN1xBONW9ACxmL4z
- P3XBm34q9neGSZZr2IRq9CkbbKXmBz6PmJkMoYNAkN/1ziKe6efC3+v4vOeytwVCd2+v
- WMbw==
-X-Gm-Message-State: AOJu0YwsUnOeFbULT3pA1s+6gkX+mBWygZpyTid+LavGbArrf3P+A95E
- ERt0FueB8eFvQNUe7VsLcs98DO+tzDm1yK9IVEmFVjTqL1jbpOY8gs9rZCsB2fd+sZxCPd5RK31
- B73TdpTkv87y8Nb6n42Edhs8HEifBHihOeitdai5cZB4nUaczP6wo
-X-Received: by 2002:a17:907:7f13:b0:a6f:6337:1ad5 with SMTP id
- a640c23a62f3a-a7d85a4c772mr473551466b.27.1722424717761; 
- Wed, 31 Jul 2024 04:18:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtsbeRG2h5iQvMOcjjOiuOUIYF6sGKYeFbxW+JKxy4hY5/XZrj6Jyn1Ccfy7kOvO+24uK95A==
-X-Received: by 2002:a17:907:7f13:b0:a6f:6337:1ad5 with SMTP id
- a640c23a62f3a-a7d85a4c772mr473547766b.27.1722424717174; 
- Wed, 31 Jul 2024 04:18:37 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70b:5f00:9b61:28a2:eea1:fa49?
- (p200300cbc70b5f009b6128a2eea1fa49.dip0.t-ipconnect.de.
- [2003:cb:c70b:5f00:9b61:28a2:eea1:fa49])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad41484sm756980766b.124.2024.07.31.04.18.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 Jul 2024 04:18:36 -0700 (PDT)
-Message-ID: <d299bbad-81bc-462e-91b5-a6d9c27ffe3a@redhat.com>
-Date: Wed, 31 Jul 2024 13:18:35 +0200
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sZ7Ok-0007VX-CB; Wed, 31 Jul 2024 07:21:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1722424888; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=tC3Ku7djqienx5qdftiwGyt+xRIeB8SpBNvj0iOVh4E=;
+ b=wbhXXZTPAcNWG1Pogx560vMBQNgM36QUfv5ruO04GWZIKgQCZ1OJ9Nj/dmdA+gQOVRNcT4zNtJm4QdadDzXj7rp9cf3myDq2dj5zNsgUAnmn8yBi/4G6prL1IwjUaPcPfkBzuqPWfvrhH+PubpEaE/sdhnUJaAI4JCD1YkoFGWo=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R871e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033032014031;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
+ TI=SMTPD_---0WBjLE3E_1722424885; 
+Received: from 30.166.64.102(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0WBjLE3E_1722424885) by smtp.aliyun-inc.com;
+ Wed, 31 Jul 2024 19:21:26 +0800
+Message-ID: <9a05c6f9-fdef-484a-a836-1d3da9be0935@linux.alibaba.com>
+Date: Wed, 31 Jul 2024 19:21:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] Enable shared device assignment
-To: Chenyi Qiang <chenyi.qiang@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Williams Dan J <dan.j.williams@intel.com>,
- Edgecombe Rick P <rick.p.edgecombe@intel.com>,
- Wang Wei W <wei.w.wang@intel.com>, Peng Chao P <chao.p.peng@intel.com>,
- Gao Chao <chao.gao@intel.com>, Wu Hao <hao.wu@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-References: <20240725072118.358923-1-chenyi.qiang@intel.com>
- <ace9bb98-1415-460f-b8f5-e50607fbce20@redhat.com>
- <69091ee4-f1c9-43ce-8a2a-9bb370e8115f@intel.com>
- <d87a5e47-3c48-4e20-b3de-e83c2ca44606@redhat.com>
- <0fdd0340-8daa-45b8-9e1c-bafe6f4e6a60@intel.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 1/1] target/riscv: Remove redundant insn length check for
+ zama16b
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com
+References: <20240723013012.1443-1-zhiwei_liu@linux.alibaba.com>
+ <dea63117-cabd-4669-bffd-e8c0cb8d9147@linaro.org>
+ <df37fdc2-79c6-420c-bcf4-e7c3649fe446@linux.alibaba.com>
+ <8d12202f-7170-4127-a1a6-c23c03835cf6@linaro.org>
+ <ca1b9449-f6e0-412c-829a-bc6258f461ff@linux.alibaba.com>
+ <CAKmqyKMftPJuLDc=8vR5R=j90CPYHxM1NscMB_fXk2SUgfM5pQ@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <0fdd0340-8daa-45b8-9e1c-bafe6f4e6a60@intel.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <CAKmqyKMftPJuLDc=8vR5R=j90CPYHxM1NscMB_fXk2SUgfM5pQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.110;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-110.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,67 +75,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry for the late reply!
 
->> Current users must skip it, yes. How private memory would have to be
->> handled, and who would handle it, is rather unclear.
+On 2024/7/31 17:38, Alistair Francis wrote:
+> On Thu, Jul 25, 2024 at 11:53 AM LIU Zhiwei
+> <zhiwei_liu@linux.alibaba.com> wrote:
 >>
->> Again, maybe we'd want separate RamDiscardManager for private and shared
->> memory (after all, these are two separate memory backends).
-> 
-> We also considered distinguishing the populate and discard operation for
-> private and shared memory separately. As in method 2 above, we mentioned
-> to add a new argument to indicate the memory attribute to operate on.
-> They seem to have a similar idea.
-
-Yes. Likely it's just some implementation detail. I think the following 
-states would be possible:
-
-* Discarded in shared + discarded in private (not populated)
-* Discarded in shared + populated in private (private populated)
-* Populated in shared + discarded in private (shared populated)
-
-One could map these to states discarded/private/shared indeed.
-
-[...]
-
->> I've had this talk with Intel, because the 4K granularity is a pain. I
->> was told that ship has sailed ... and we have to cope with random 4K
->> conversions :(
+>> On 2024/7/23 13:59, Richard Henderson wrote:
+>>> On 7/23/24 15:29, LIU Zhiwei wrote:
+>>>> The more detailed information about its meaning is in priviledged
+>>>> 1.13 specification. More exactly, in 3.6.4. Misaligned Atomicity
+>>>> Granule PMA.
+>>>>
+>>>> The specification said:
+>>>>
+>>>> "The misaligned atomicity granule PMA applies only to AMOs, loads and
+>>>> stores defined in the base
+>>>> ISAs, and loads and stores of no more than MXLEN bits defined in the
+>>>> F, D, and Q extensions. For an
+>>>> instruction in that set, if all accessed bytes lie within the same
+>>>> misaligned atomicity granule, the
+>>>> instruction will not raise an exception for reasons of address
+>>>> alignment, and the instruction will give
+>>>> rise to only one memory operation for the purposes of RVWMO—i.e., it
+>>>> will execute atomically."
+>>>>
+>>>> That's the reason why I do not apply zama16b to compressed instructions.
+>>> Given the non-specificity of this paragraph, I think not specifically
+>>> calling out compressed forms of the base ISA is simply a documentation
+>>> error.  In general, the compressed ISA is supposed to be a smaller
+>>> encoding of the exact same instruction as the standard ISA.
+>> Yes, it's a documentation error. We will fix in the specification.
 >>
->> The many mappings will likely add both memory and runtime overheads in
->> the kernel. But we only know once we measure.
-> 
-> In the normal case, the main runtime overhead comes from
-> private<->shared flip in SWIOTLB, which defaults to 6% of memory with a
-> maximum of 1Gbyte. I think this overhead is acceptable. In non-default
-> case, e.g. dynamic allocated DMA buffer, the runtime overhead will
-> increase. As for the memory overheads, It is indeed unavoidable.
-> 
-> Will these performance issues be a deal breaker for enabling shared
-> device assignment in this way?
+>> https://github.com/riscv/riscv-isa-manual/pull/1557
+> Thanks for getting that clarified
+>
+> What's the status of a followup patch? We should fix this before the release
 
-I see the most problematic part being the dma_entry_limit and all of 
-these individual MAP/UNMAP calls on 4KiB granularity.
+I will send the follow patch  as soon as possible.  And resolve another 
+comment Richard gives later as it need some work on PBMT(I think).
 
-dma_entry_limit is "unsigned int", and defaults to U16_MAX. So the 
-possible maximum should be 4294967296, and the default is 65535.
+Thanks,
+Zhiwei
 
-So we should be able to have a maximum of 16 TiB shared memory all in 
-4KiB chunks.
-
-sizeof(struct vfio_dma) is probably something like <= 96 bytes, implying 
-a per-page overhead of ~2.4%, excluding the actual rbtree.
-
-Tree lookup/modifications with that many nodes might also get a bit 
-slower, but likely still tolerable as you note.
-
-Deal breaker? Not sure. Rather "suboptimal" :) ... but maybe unavoidable 
-for your use case?
-
--- 
-Cheers,
-
-David / dhildenb
-
+>
+> Alistair
 
