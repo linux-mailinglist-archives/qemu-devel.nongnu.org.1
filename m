@@ -2,98 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE41942BAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 12:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A537942BF3
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 12:30:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ6Ha-0007Ap-ST; Wed, 31 Jul 2024 06:10:10 -0400
+	id 1sZ6a6-0002V7-2j; Wed, 31 Jul 2024 06:29:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1sZ6HX-00077Y-S9; Wed, 31 Jul 2024 06:10:07 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1sZ6HV-0002hd-B9; Wed, 31 Jul 2024 06:10:07 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46V5ImJj028676;
- Wed, 31 Jul 2024 10:10:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=pp1; bh=svJzSp8Crzh8vmxDnOECq7w1I/
- 9ZCak5NMCdPaEIvi0=; b=o4HoCtRPq3DgG/Mk8T02iS2qEsm8mb887IXno5JpC9
- 5kupmFpZLTa63A8a4dQWUcL5FvnqbkkGeIz5C7+VpsGXyhbUX6BOpAFmxXz+FlCg
- a5W6H/+/0IGQgz8lnzmuWNzleGevbGbdK8BW34NJmPPOBrSp5aCdul5ieay8zFnP
- +l7rQG1yh303LoLsWZNoGPqQgpR9P150uWaJZ+PXqSDQUQw6zBuONW++L/FIXiZI
- 5glrh2KIiHO0181b0tnO0EiqrzwS8QzN/9G2soTy4JhloZdN82CiUzEtgNbPofwZ
- t1xoUMdEi7Wqg3fk/aYKilFXpf/1pRNspoMJHKmO9zkQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40qeqbgpu8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jul 2024 10:10:01 +0000 (GMT)
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46VAA1Ax005862;
- Wed, 31 Jul 2024 10:10:01 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40qeqbgpu4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jul 2024 10:10:00 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 46V87sm3029128; Wed, 31 Jul 2024 10:09:59 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40nbm0u0ww-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jul 2024 10:09:59 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 46VA9tZJ55312814
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 Jul 2024 10:09:57 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE55220156;
- Wed, 31 Jul 2024 10:09:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 56F9A20151;
- Wed, 31 Jul 2024 10:09:55 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.30.41])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 31 Jul 2024 10:09:55 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH] target/ppc: Set ctx->opcode for decode_insn32()
-Date: Wed, 31 Jul 2024 12:07:48 +0200
-Message-ID: <20240731100953.14950-1-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZ6a4-0002Uc-E3
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 06:29:16 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZ6a2-0006To-Ua
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 06:29:16 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5af326eddb2so1396409a12.1
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 03:29:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722421753; x=1723026553; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=x3jd6uQpRLcSiqYvfcp0Bn8+wVjS1FMr8cGifJuep2Y=;
+ b=DLoa1SgYz0Baz+kYWySr/ODTOlCUvnlzW3JxaKTEZoZVI5gL0apvi0q1lZ1H+CPghi
+ e4tmv4dUCSgotBkSDnA8MzC3dUdqQPPNI19VezEnLF95n3SVaLkevbqfjWMstY++J/l7
+ +JgcWKg2GbaRi/y0vShSX9bKqWNmBX/VD4AaR5Gf4+fdn/Dbzazsvbgx/5L97sze2WBC
+ KVZBhYgyznrHuPmvwwgojKsPngUOI78R0/ZtrmK18coAtfl60aE3Ez1m0OCTG0dDE291
+ 0JKNk+NHwJUpvNELi4tEYv5dPS9pKfDR000uwvZVXeixeg+J6dK6acGaJEeovontTgmB
+ V/XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722421753; x=1723026553;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=x3jd6uQpRLcSiqYvfcp0Bn8+wVjS1FMr8cGifJuep2Y=;
+ b=l+jZHyD70N6L+0PAvysW2p++HeeyFo2Loxs84dk4CS2UjdpqvIqDWjwrPTZ2UGjJnU
+ o6pf/WwnFJP0M/xF1LHyrit/gJ4QG/MXlnNLxrKsK0SKQ2GdG0e7/uR1GSEtOBSgwOaU
+ omQ7a72IVvnXRH+tgLtbCNSQCHPoUH2DN9/5zsb1RqjemgPxE/s9UKIa5O5+SBEoxc9n
+ uro/ZnmxcdhiHDfkl6Wj1ZxpDDxfdxljOSdUUhCzvKi3O+7Cb4rllGjQQ2IGSqFsjaBL
+ Ft/t0cHwnvVy1j2EgeJcY7r7WUNfeaxphET/lAX7bN2wkr2M5frHGnSOO2nSdVFqvO+m
+ SnUQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVdN/LeTs5z1VUchEKxUKNZPYfi37KxV0dsKkh+nwGPTgP5qSAWRzRpQTCWp5U2C7h1lCYevjoNbkCizcCFXTGLoaFxJOY=
+X-Gm-Message-State: AOJu0YwDlgKwW+7EdwN5Dq8+oDWlyUZnc1tCTAZ2v00eOt5gc+4np78Q
+ Qi1LYdsBaaEtnBpRqTDd2pPEaWnvbQ8UQYfWtoZl5Uhkxdg/ruxFQhKMX+puGMZWcv7nyxwPFle
+ SXbKYkm0ugLpe3xEs7YWwP6WiIeHHuNmhKsTjkw==
+X-Google-Smtp-Source: AGHT+IFgdTyEODuXD1/OAWNlWcon4DC23x81l/IV0chxSLqqTq1VsGmdmBZKj8atabVyv42odVWdX8DEhcHgg7LGRSc=
+X-Received: by 2002:a50:931d:0:b0:5b4:cbba:902a with SMTP id
+ 4fb4d7f45d1cf-5b4cbc9e0aamr4372577a12.4.1722421752898; Wed, 31 Jul 2024
+ 03:29:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YdTwHovDHlk7-547ayWPpWWMU9pU-psR
-X-Proofpoint-GUID: WdyLqamPtTdSkGryCuE_Wb_n6cGbgqsB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-31_07,2024-07-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- malwarescore=0 mlxlogscore=838 suspectscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407310073
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <8AFDCC22-C476-45EF-9119-2E3C9A2A91C3@linux.dev>
+ <87le1jc8qi.fsf@draig.linaro.org>
+ <7F67EEEA-D222-4348-83EF-5C81C94C79D0@linux.dev>
+ <87h6c5dh31.fsf@draig.linaro.org>
+In-Reply-To: <87h6c5dh31.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 31 Jul 2024 11:29:01 +0100
+Message-ID: <CAFEAcA_y1y+5aqDXDUmAzRJo2Kf9o+JwbH-6MB62UEZD=LQZ-w@mail.gmail.com>
+Subject: Re: QEMU unexpectedly closed the monitor
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Itaru Kitayama <itaru.kitayama@linux.dev>, qemu-devel@nongnu.org, 
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,47 +94,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-divdu (without a dot) sometimes updates cr0, even though it shouldn't.
-The reason is that gen_op_arith_divd() checks Rc(ctx->opcode), which is
-not initialized. This field is initialized only for instructions that
-go through decode_legacy(), and not decodetree.
+On Wed, 31 Jul 2024 at 10:52, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+> You then need to manually strip out all the various chardevs for libvirt
+> control sockets and you can an equivalent command line you can run from
+> the console. One thing that did jump out as a bit weird to me was:
+>
+>  -rtc base=3Dutc -no-shutdown -no-acpi -boot strict=3Don \
+>  -kernel /home/realm/Image-v6.10 \
+>  -initrd /home/realm/rootfs.cpio \
+>  -append 'earlycon console=3DttyAMA0 rdinit=3D/sbin/init rw root=3D/dev/v=
+da acpi=3Don'
 
-There already was a similar issue fixed in commit 86e6202a57b1
-("target/ppc: Make divw[u] handler method decodetree compatible.").
+Also worth checking here I guess is whether virt-install
+is running QEMU as a user which doesn't have access to
+the /home/realm/Image-v6.10 etc files -- are they world
+readable?
 
-It's not immediately clear what else may access the uninitialized
-ctx->opcode, so instead of playing whack-a-mole and changing the check
-to compute_rc0, simply initialize ctx->opcode.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 99082815f17f ("target/ppc: Add infrastructure for prefixed insns")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- target/ppc/translate.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 71513ba9646..02c810e8848 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -6426,8 +6426,6 @@ static bool decode_legacy(PowerPCCPU *cpu, DisasContext *ctx, uint32_t insn)
-     opc_handler_t **table, *handler;
-     uint32_t inval;
- 
--    ctx->opcode = insn;
--
-     LOG_DISAS("translate opcode %08x (%02x %02x %02x %02x) (%s)\n",
-               insn, opc1(insn), opc2(insn), opc3(insn), opc4(insn),
-               ctx->le_mode ? "little" : "big");
-@@ -6561,6 +6559,7 @@ static void ppc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     ctx->base.pc_next = pc += 4;
- 
-     if (!is_prefix_insn(ctx, insn)) {
-+        ctx->opcode = insn;
-         ok = (decode_insn32(ctx, insn) ||
-               decode_legacy(cpu, ctx, insn));
-     } else if ((pc & 63) == 0) {
--- 
-2.45.2
-
+thanks
+-- PMM
 
