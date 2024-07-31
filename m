@@ -2,67 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB22942E7D
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 14:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E245942E78
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 14:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ8VW-0002Yd-0e; Wed, 31 Jul 2024 08:32:42 -0400
+	id 1sZ8VT-0002MV-EY; Wed, 31 Jul 2024 08:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sZ8VS-0002MG-0t
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:32:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sZ8VQ-00047U-5h
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:32:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722429155;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FOIXpdiXP48X03eoys7HTXHfkbmBuHCmyJnnxafRgkA=;
- b=AUNRzEkOdg6Xd1XnZbtqybWMD84Q6aVwjbVloAVHxNyCoBpWuG4ug1UjuvxY4yUFpMUuKv
- i3OdA+w+akXsUOif2tEuB3fvrFeh465Kz1XxqhUaGB/4pu5IEZynoOnpvLQugsPi9RXn6H
- s8sgM7tuMFlH2z8eHvE6GTJ1xAhLIyw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-Gk62xqpRNUynKS1g6Or1lw-1; Wed,
- 31 Jul 2024 08:32:32 -0400
-X-MC-Unique: Gk62xqpRNUynKS1g6Or1lw-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7426C189A364; Wed, 31 Jul 2024 12:32:31 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.194.1])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 08DA61955E92; Wed, 31 Jul 2024 12:32:28 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, pbonzini@redhat.com, fam@euphon.net, stefanha@redhat.com,
- qemu-devel@nongnu.org
-Subject: [PATCH v2 4/4] scsi-disk: Always report RESERVATION_CONFLICT to guest
-Date: Wed, 31 Jul 2024 14:32:07 +0200
-Message-ID: <20240731123207.27636-5-kwolf@redhat.com>
-In-Reply-To: <20240731123207.27636-1-kwolf@redhat.com>
-References: <20240731123207.27636-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZ8VQ-0002Hm-BO
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:32:36 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZ8VN-00046r-AI
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 08:32:35 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2ef2c109eabso73343511fa.0
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 05:32:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722429151; x=1723033951; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wcUhUapOSPC/xpUeHp8ecRLUUNL4MA/ONK1NUCRXAdU=;
+ b=GP2WVK7N1RLWhMEDxcdA5qvnY2k2m8YHz3C+0t4AQem+jB/0e3EdKmORA9Ls6NdFWU
+ NnX7qskaRji3ngkuBdp3b4pN281te6Shu+7nEsJCUgsTUV7n5aYv4Vz/yN89ijOyClog
+ M7SYUbNIui804UrmUndmNlwRwTu1I1eG6n54ll5uf8x9kLY6wup4AbS+d6Col54xjmdf
+ nuSx/db0O9EiJ+KZZcv9+Y9jjHyX9WmOsz04Zb4gnKiDzjnKwGRoQXEcYPYnNndtJVDM
+ 6p9rmtA1xYv1OwD9yFat2sWjiq5DHDj3P7PTZhEFbRiCDNj4c82xXHxDU9B4HIVo6G9+
+ P9XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722429151; x=1723033951;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wcUhUapOSPC/xpUeHp8ecRLUUNL4MA/ONK1NUCRXAdU=;
+ b=EusjcL+MUWWz/CcPRHhKYcKCMoxyqKHCKIObsf1iqrvLw8zY7oPHcCd6vcu8QIIbWk
+ Qq9Q7frMwR3OxtKZ9ZLF3kC8zGbattWrQc/sEkTj5AqLnhfsTIttC2Lo43Hf0qJjo+oy
+ QYwthGTE1tPd9qxUd5nkkRBfO9OP/sKj/kz05gzheTqivy1RWG7ahaHQV8+obyLNuVlD
+ PhOYzfza3MRAzin2OfE7sXI1KCX9TZPicRbJQLiUTHeXQyBl1vSvm1OU1DCSB+QP2/5d
+ twFw3A1+UXEp7vz4aMzqd5YkMZPRJgFEbH1weWDTGUwBT9EHSWHygLe7BmTkgLn31Z+g
+ FTqA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWdeGqMETXtA7cdXo9yeyhlFJGLd5RuogtFkya1f9Xg4KqVVudx+9eh+gRWey3i2lEMiKt4wJtnEY42ODGTDocyyXoai1I=
+X-Gm-Message-State: AOJu0YyqspTovXConNXwLg01YgsWPckUdTdNID8Xm2KWe9/sNryM1MEV
+ iF692oCwt+uJB3HaxdqHvSEhLoqRYz1W/ZQueNGV1EqZCjvVTl7YXSrHrm4ZO03pLBB8I9vivyp
+ KSab6PGGWrnSsRDCEzalz0e5KWe0cxgUR2aHT/A==
+X-Google-Smtp-Source: AGHT+IFNv1+exEvSMNzbE/IjPSiBV4BOYQM59cxI92yBnHSiSKHjmUIY/lbg0MK38UliRHDqFjdbN1HKE2KmwQQR0nk=
+X-Received: by 2002:ac2:4ec8:0:b0:52e:a60e:3a0a with SMTP id
+ 2adb3069b0e04-5309b269c0fmr8926440e87.2.1722429151194; Wed, 31 Jul 2024
+ 05:32:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240730160306.2959745-1-peter.maydell@linaro.org>
+ <20240730160306.2959745-7-peter.maydell@linaro.org>
+ <e0b7d735-e54a-44cc-bcb0-ef6f4518da5b@linaro.org>
+In-Reply-To: <e0b7d735-e54a-44cc-bcb0-ef6f4518da5b@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 31 Jul 2024 13:32:20 +0100
+Message-ID: <CAFEAcA8Pj636YHVjCO5rBz49MwaSJW1Jnsv0UVF=g6UqiH7SjA@mail.gmail.com>
+Subject: Re: [PATCH 6/8] target/arm: Prepare bfdotadd() callers for FEAT_EBF
+ support
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,92 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the case of scsi-block, RESERVATION_CONFLICT is not a backend error,
-but indicates that the guest tried to make a request that it isn't
-allowed to execute. Pass the error to the guest so that it can decide
-what to do with it.
+On Wed, 31 Jul 2024 at 02:48, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 7/31/24 02:03, Peter Maydell wrote:
+> > @@ -2790,7 +2790,7 @@ DO_MMLA_B(gvec_usmmla_b, do_usmmla_b)
+> >    * BFloat16 Dot Product
+> >    */
+> >
+> > -float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2)
+> > +bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp)
+> >   {
+> >       /* FPCR is ignored for BFDOT and BFMMLA. */
+> >       float_status bf_status = {
+> > @@ -2800,29 +2800,50 @@ float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2)
+> >           .flush_inputs_to_zero = true,
+> >           .default_nan_mode = true,
+> >       };
+> > +
+> > +    *statusp = bf_status;
+> > +    return false;
+> > +}
+>
+> Looking at the next patch, I think dropping the local variable is better.
+>
+>    *statusp = (float_status){
+>        ...
+>    };
 
-Without this, if we stop the VM in response to a RESERVATION_CONFLICT
-(as is the default policy in management software such as oVirt or
-KubeVirt), it can happen that the VM cannot be resumed any more because
-every attempt to resume it immediately runs into the same error and
-stops the VM again.
+Yes, I agree; I've updated this patch and the next accordingly.
 
-One case that expects RESERVATION_CONFLICT errors to be visible in the
-guest is running the validation tests in Windows 2019's Failover Cluster
-Manager, which intentionally tries to execute invalid requests to see if
-they are properly rejected.
-
-Buglink: https://issues.redhat.com/browse/RHEL-50000
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- hw/scsi/scsi-disk.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
-
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 69a195177e..4d94b2b816 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -224,7 +224,7 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
-     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
-     SCSIDiskClass *sdc = (SCSIDiskClass *) object_get_class(OBJECT(s));
-     SCSISense sense = SENSE_CODE(NO_SENSE);
--    int error = 0;
-+    int error;
-     bool req_has_sense = false;
-     BlockErrorAction action;
-     int status;
-@@ -235,11 +235,35 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
-     } else {
-         /* A passthrough command has completed with nonzero status.  */
-         status = ret;
--        if (status == CHECK_CONDITION) {
-+        switch (status) {
-+        case CHECK_CONDITION:
-             req_has_sense = true;
-             error = scsi_sense_buf_to_errno(r->req.sense, sizeof(r->req.sense));
--        } else {
-+            break;
-+        case RESERVATION_CONFLICT:
-+            /*
-+             * Don't apply the error policy, always report to the guest.
-+             *
-+             * This is a passthrough code path, so it's not a backend error, but
-+             * a response to an invalid guest request.
-+             *
-+             * Windows Failover Cluster validation intentionally sends invalid
-+             * requests to verify that reservations work as intended. It is
-+             * crucial that it sees the resulting errors.
-+             *
-+             * Treating a reservation conflict as a guest-side error is obvious
-+             * when a pr-manager is in use. Without one, the situation is less
-+             * clear, but there might be nothing that can be fixed on the host
-+             * (like in the above example), and we don't want to be stuck in a
-+             * loop where resuming the VM and retrying the request immediately
-+             * stops it again. So always reporting is still the safer option in
-+             * this case, too.
-+             */
-+            error = 0;
-+            break;
-+        default:
-             error = EINVAL;
-+            break;
-         }
-     }
- 
-@@ -249,8 +273,9 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
-      * are usually retried immediately, so do not post them to QMP and
-      * do not account them as failed I/O.
-      */
--    if (req_has_sense &&
--        scsi_sense_buf_is_guest_recoverable(r->req.sense, sizeof(r->req.sense))) {
-+    if (!error || (req_has_sense &&
-+                   scsi_sense_buf_is_guest_recoverable(r->req.sense,
-+                                                       sizeof(r->req.sense)))) {
-         action = BLOCK_ERROR_ACTION_REPORT;
-         acct_failed = false;
-     } else {
--- 
-2.45.2
-
+-- PMM
 
