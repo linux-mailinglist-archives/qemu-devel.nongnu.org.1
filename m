@@ -2,81 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9D2943274
+	by mail.lfdr.de (Postfix) with ESMTPS id CF057943273
 	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 16:50:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZAdz-0002S8-9X; Wed, 31 Jul 2024 10:49:35 -0400
+	id 1sZAe2-0002en-OJ; Wed, 31 Jul 2024 10:49:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZAdx-0002Og-Vq
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:49:34 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZAdw-0005by-Dv
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 10:49:33 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5a167b9df7eso9360666a12.3
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 07:49:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722437370; x=1723042170; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5NuSlD5hyOsRMOR77RKasUNaEXrV0ltqiuv56Yepehk=;
- b=Cg3JFNDsrkR2VKrb4W2z4YxNvHoIXKWOTHP/R2AyQWqI7SZbndxyJhVzXqurjDzH0i
- cDDxKXGwwnmAdWVDXWx+/8crF8jcp+zBP8WOFm0YTMh0+WSvamh8tVLScg6LAl6T1qtw
- VYtmy0GQdkFn2tuOpTaVW1MHWEL9YStlsaVDj6hJzVqxfaP6oHLMY6nimbin2gsMr7Ua
- jp5PStQe+vbZEkIHScly6eijh6FNN4YrbDOitYvapjrrSQbH5RGVKXB513D/RXbt6g1A
- 5Ksl0Ho+sVfyp3UsQSWE75SYHMIZNjsKvP47L6R24pk6a8k6puVCQ2Oj1ICZsGlOKonI
- ICSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722437370; x=1723042170;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5NuSlD5hyOsRMOR77RKasUNaEXrV0ltqiuv56Yepehk=;
- b=clAZy8yM2n4Rv/NlnxCvYYgL0SUV5LrX/raZYAs3HmhknBXhFzF8wsD7As2gxUXQSI
- X0efEtdwGn3XWdn5GqeBr4vRm4pfdCiRJ53k2HIikLsNmJpKXeUs15L9lkdGWNnJT1XY
- Wx6Xis6HxEg0AMH0/mFSM0fZwCZf7XmUf74QpJUFDcNzLUJ0T06tuos7ZydI4LPAZVGL
- XIDdYEV1K3BNYzQO7mA1bmY4mqql7Y4ODY14DP89MXfkDjRxJmX3BkWVMIQz/wAsd8hC
- 61vRLYTdIID1vIGwcEeNTXotUnJck1rQNjmfx0oX8gZ1D6h1trvEMjZpyXOTUpIMm7GH
- EpUw==
-X-Gm-Message-State: AOJu0YyMWZRrtCssPvPN4qirR2GCwzC7vMdb40AnZF8eDwQDbZ/PoSKi
- BsOk53ANx5D5XLRxeqZOdAufOJwm/7ABxa25yPKCb0fHtdzvxCXsnYHxk6brRJuTf+BMp9xe6yM
- P3OrkAyVhY53AX6b2gJW1Rf+e86yefapr2DNdsA==
-X-Google-Smtp-Source: AGHT+IFM6j/vsu5ZOQg3Smgz1SodAwiBfFFwAVfbxOZBQW2JqyYnY6YJsGRS14oX1NaKy620nVRsAFRTX1BDQUVq3O4=
-X-Received: by 2002:a05:6402:34d2:b0:58c:eee0:4913 with SMTP id
- 4fb4d7f45d1cf-5b021d22aa6mr9923226a12.27.1722437370170; Wed, 31 Jul 2024
- 07:49:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=ZOnj=O7=kaod.org=clg@ozlabs.org>)
+ id 1sZAe0-0002aS-Pm; Wed, 31 Jul 2024 10:49:36 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=ZOnj=O7=kaod.org=clg@ozlabs.org>)
+ id 1sZAdx-0005br-Up; Wed, 31 Jul 2024 10:49:36 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WYw3Y1Xllz4wZx;
+ Thu,  1 Aug 2024 00:49:29 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WYw3V304Vz4wcl;
+ Thu,  1 Aug 2024 00:49:26 +1000 (AEST)
+Message-ID: <ceba3fd8-ac6b-4b84-ad1d-5854a0caf3eb@kaod.org>
+Date: Wed, 31 Jul 2024 16:49:24 +0200
 MIME-Version: 1.0
-References: <20240731143617.3391947-1-peter.maydell@linaro.org>
- <20240731143617.3391947-5-peter.maydell@linaro.org>
- <87bk2dliud.fsf@pond.sub.org>
-In-Reply-To: <87bk2dliud.fsf@pond.sub.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 31 Jul 2024 15:49:18 +0100
-Message-ID: <CAFEAcA8Mx-vANgzAwpzFhun0+YAtxE5erdNRMAnfsx0SLqKBiA@mail.gmail.com>
-Subject: Re: [PATCH 4/7] hw/ide/atapi: Be explicit that assigning to s->lcyl
- truncates
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- John Snow <jsnow@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
- "Richard W.M. Jones" <rjones@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] hw/ppc: Implement -dtb support for PowerNV
+To: Aditya Gupta <adityag@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20240731132235.887918-1-adityag@linux.ibm.com>
+ <Zqo9SOG_t-iI9xW4@redhat.com>
+ <fenybu4ixflehyc64kt4s73nqderhkl6xcik5gvgopot23dg75@e4asgghuctp3>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <fenybu4ixflehyc64kt4s73nqderhkl6xcik5gvgopot23dg75@e4asgghuctp3>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=ZOnj=O7=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,63 +69,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 Jul 2024 at 15:47, Markus Armbruster <armbru@redhat.com> wrote:
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > In ide_atapi_cmd_reply_end() we calculate a 16-bit size, and then
-> > assign its two halves to s->lcyl and s->hcyl like this:
-> >
-> >            s->lcyl = size;
-> >            s->hcyl = size >> 8;
-> >
-> > Coverity warns that the first line here can overflow the
-> > 8-bit s->lcyl variable. This is true, and in this case we're
-> > deliberately only after the low 8 bits of the value. The
-> > code is clearer to both humans and Coverity if we're explicit
-> > that we only wanted the low 8 bits, though.
-> >
->
-> Resolves?
+On 7/31/24 15:51, Aditya Gupta wrote:
+> Hi Daniel,
+> 
+> Thank you for the review.
+> 
+> On 24/07/31 02:34PM, Daniel P. Berrangé wrote:
+>> On Wed, Jul 31, 2024 at 06:52:35PM +0530, Aditya Gupta wrote:
+>>> Currently any device tree passed with -dtb option in QEMU, was ignored
+>>> by the PowerNV code.
+>>>
+>>> Read and pass the passed -dtb to the kernel, thus enabling easier
+>>> debugging with custom DTBs.
+>>>
+>>> The existing behaviour when -dtb is 'not' passed, is preserved as-is.
+>>>
+>>> But when a '-dtb' is passed, it completely overrides any dtb nodes or
+>>> changes QEMU might have done, such as '-append' arguments to the kernel
+>>> (which are mentioned in /chosen/bootargs in the dtb), hence add warning
+>>> when -dtb is being used
+>>>
+>>> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+>>>
+>>> ---
+>>> This is an RFC patch, and hence might not be the final implementation,
+>>> though this current one is a solution which works
+>>> ---
+>>> ---
+>>>   hw/ppc/pnv.c | 29 ++++++++++++++++++++++++++---
+>>>   1 file changed, 26 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+>>> index 3526852685b4..12cc909b9e26 100644
+>>> --- a/hw/ppc/pnv.c
+>>> +++ b/hw/ppc/pnv.c
+>>> @@ -714,6 +714,8 @@ static void pnv_reset(MachineState *machine, ShutdownCause reason)
+>>>       PnvMachineState *pnv = PNV_MACHINE(machine);
+>>>       IPMIBmc *bmc;
+>>>       void *fdt;
+>>> +    FILE *fdt_file;
+>>> +    uint32_t fdt_size;
+>>>   
+>>>       qemu_devices_reset(reason);
+>>>   
+>>> @@ -736,10 +738,31 @@ static void pnv_reset(MachineState *machine, ShutdownCause reason)
+>>>           }
+>>>       }
+>>>   
+>>> -    fdt = pnv_dt_create(machine);
+>>> +    if (machine->dtb) {
+>>> +        warn_report("with manually passed dtb, some options like '-append'"
+>>> +                " might ignored and the dtb passed will be used as-is");
+>>
+>> Check whether append is actually set, and report an fatal error in
+>> that case.
+> 
+> Got it.
 
-Whoops.
+and this check should be done preferably when the machine is initialized,
+not in the reset handler.
 
-Resolves: Coverity CID 1547621
+Thanks,
 
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >  hw/ide/atapi.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
-> > index fcb6cca1573..e82959dc2d3 100644
-> > --- a/hw/ide/atapi.c
-> > +++ b/hw/ide/atapi.c
-> > @@ -265,7 +265,7 @@ void ide_atapi_cmd_reply_end(IDEState *s)
->                /* a new transfer is needed */
->                s->nsector = (s->nsector & ~7) | ATAPI_INT_REASON_IO;
->                ide_bus_set_irq(s->bus);
->                byte_count_limit = atapi_byte_count_limit(s);
->                trace_ide_atapi_cmd_reply_end_bcl(s, byte_count_limit);
->                size = s->packet_transfer_size;
->                if (size > byte_count_limit) {
->                    /* byte count limit must be even if this case */
->                    if (byte_count_limit & 1)
-> >                      byte_count_limit--;
-> >                  size = byte_count_limit;
-> >              }
-> > -            s->lcyl = size;
-> > +            s->lcyl = size & 0xff;
-> >              s->hcyl = size >> 8;
-> >              s->elementary_transfer_size = size;
-> >              /* we cannot transmit more than one sector at a time */
->
-> @size is int.  I wonder why it's fine with size >> 8...  ah,
-> atapi_byte_count_limit() returns uint16_t, and Coverity is smart enough
-> to data-flow this via @byte_count_limit into @size.
->
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+C.
 
-thanks
--- PMM
 
