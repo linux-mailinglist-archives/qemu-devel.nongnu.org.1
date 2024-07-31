@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D780594298F
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 10:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7985942995
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jul 2024 10:50:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZ50m-0002NJ-DQ; Wed, 31 Jul 2024 04:48:44 -0400
+	id 1sZ50n-0002Qf-1n; Wed, 31 Jul 2024 04:48:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1sZ50k-0002HB-4G
+ id 1sZ50k-0002I1-Ar
  for qemu-devel@nongnu.org; Wed, 31 Jul 2024 04:48:42 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1sZ50i-0004bc-GT
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 04:48:41 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2ef247e8479so4374941fa.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 01:48:40 -0700 (PDT)
+ id 1sZ50i-0004bf-CR
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 04:48:42 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-36874d7f70bso605324f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 01:48:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722415718; x=1723020518;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q1X8hnMqcOSbqxXp33EZy6XsP0jjL/S5AUJi2hLZhJM=;
- b=0Mkp99U7+rQlECcE5tWZzBFSYz4fC/p/1nDuT/3Udn9n5inzkcWMag/naUtcvL1tLF
- Xn7M1+NlMXz5P0baKEIsI9WoOSSDOeogRt4jXdVe7cEiDWlPfo8JoXZ655aGzLzbYjyQ
- NC9NI8Oo36mvT6QHTZwmnMsmanQrWTM93XVEpUVJz+6L43axrxcAIEQPr+5Fuiak2ryy
- TwRqdwT/awa3H5CzJPsYvY+CURAjsmv7wUq23BXW9Y83kw22d2CtjphiZBbZu3T04Xuj
- PwJ4c1ezYZZd7qEyzVfC/yWbO/XOvIABG9qG1PU1I+RzLioDGypN6NIE3hHBSiRyZ/02
- ybWA==
+ bh=MacBk+b81Y9XSBf3+Dejb8DivJ0DDo61Nr8SOpG9EWU=;
+ b=2tDVLmMuCAeHdzn0sC78tz2O0WH5aqkqAPMt1D1nce0fwN4b9Iz/sKS+38OW1BrlOY
+ Al98ulw5ft72EyWUx3uzVvyvfF1Ygx0RU+BDQIJTkjmVd/NNtwS+3tPhjoZnLVlOHrcy
+ P2I8r+JEyitRuZf6KIstz/ZdH70ID/+xkeb6H8wEaD47nxdDXQbvFot1fTdxUrijj2J7
+ 0WV6UzVR4zJtTN2X9CZ6c5ATbOfkbCKmXDOwy6lNNgxpNgtq5pylwEQzXojBC7z4uem2
+ nRkikAZcuoafPopqjyy6NZy1JJKebjpzQaNmE1I/oIbyrFLwpuzfqUavQtQ8rBmfl4j4
+ YdOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722415718; x=1723020518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q1X8hnMqcOSbqxXp33EZy6XsP0jjL/S5AUJi2hLZhJM=;
- b=Rn6SMRPfCC0YbaGH8hQmweutZckiZn+QEa85QArJ4M/Ge0EbKo00jQgeDJapNKCg/r
- JHnMnHs99v8EWmpYqN0Yj4jFbcwAjrbNdqYd7h2zOh7PjMLxOvXK79xQrAYxMnRYNtyd
- 5a3avsb0Vhr9+ROLuPJRyFmdUbdLP/BSPXgcryL1+O+yIHGfhuoAPcFAQagcDZWN++Bk
- MzkLKh7d0Ehuo/8E9E4p8xN7UQdlj026jxvjWP8A6HNyO8aMDHb4eAMK3qk/9J9EbUCr
- pvp0bsh6PRugJDNY6/d5dNwb/q9E+3nVEozlffWgA67H+LaPtQeYstYw+hBAE5BKZnUQ
- wOSg==
-X-Gm-Message-State: AOJu0YwUanMPvPzeVYRfbF2jfQtJSGAfld3QmpTuqIgc/B7tQQf4IANa
- KbB+jhlNEEDUJYY+wsCd4LJnZIJuXkYBg4hGMOOsrasMWlyWY/IdAv1SI/kseFMMQLZvyg/GYv1
- 0HQY=
-X-Google-Smtp-Source: AGHT+IG5nyMLmjCWaiZJ8S93k+dKlfDj8Q9PSr8k5q5kE1juGXV4nNCSvtwDojdxoPbHs+rBqW7YtQ==
-X-Received: by 2002:a05:651c:155:b0:2ef:2346:9135 with SMTP id
- 38308e7fff4ca-2f03c8000e0mr67104591fa.9.1722415717439; 
- Wed, 31 Jul 2024 01:48:37 -0700 (PDT)
+ bh=MacBk+b81Y9XSBf3+Dejb8DivJ0DDo61Nr8SOpG9EWU=;
+ b=kaAHXX3RF0JaY0kmqc3RFyLqNxXibIiAsHB1AbpYb1tEEjF6R/MgRJvt3SAcjdDSV+
+ uMqUFlvVxv5Ih62DOM/m5cMtofk9Wi+H8y1gI+i3QCN0eMOCHO+NiNjU+YK+wGk5AwX5
+ lDZQxRsalKmoibrGvBARzqO+XNAk0aaffOtm2vUCPmt6FoFCj3jHi1hznVnr6/ckvSTm
+ YVh65M9XjMSDwqLrVNSIgYvjOUrpizHSVOMm1FZNGoNvDvrch1lO351gvssYqbf9Qcqg
+ Hhvi8RXGVdQ51dm7u2xPLx4TsbhwA+3KJeCOgbLyoADZRWXbjh03HVmw6kGQDS3QcKzm
+ X09g==
+X-Gm-Message-State: AOJu0Yx0tjHNZw7JCpx2y3jAdwdg3YTxb9rINHCMXSllFJgh61xUR575
+ SsIVgvV2szXTImhao7meQZ5wLJ6vQm6f80hWxlmV0FUajHsd4wRstm5hum2O0a6l9+apIFh+ewv
+ j6uI=
+X-Google-Smtp-Source: AGHT+IFD82QolmIrJcH+O9fEBiISrlJAJHBkvhgIcd+oMOnSShpF9H56hE3GWETiAQxXO5I4qEPmyg==
+X-Received: by 2002:a05:600c:3ca8:b0:426:6cd1:d104 with SMTP id
+ 5b1f17b1804b1-4280578251bmr90184735e9.4.1722415718319; 
+ Wed, 31 Jul 2024 01:48:38 -0700 (PDT)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b367c0344sm16576425f8f.2.2024.07.31.01.48.36
+ ffacd0b85a97d-36b367c0344sm16576425f8f.2.2024.07.31.01.48.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jul 2024 01:48:36 -0700 (PDT)
+ Wed, 31 Jul 2024 01:48:37 -0700 (PDT)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
@@ -65,18 +65,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v7 2/5] qemu/osdep: Split qemu_close_all_open_fd() and add
- fallback
-Date: Wed, 31 Jul 2024 10:48:26 +0200
-Message-ID: <20240731084832.1829291-3-cleger@rivosinc.com>
+Subject: [PATCH v7 3/5] net/tap: Factorize fd closing after forking
+Date: Wed, 31 Jul 2024 10:48:27 +0200
+Message-ID: <20240731084832.1829291-4-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240731084832.1829291-1-cleger@rivosinc.com>
 References: <20240731084832.1829291-1-cleger@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=cleger@rivosinc.com; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=cleger@rivosinc.com; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,89 +97,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to make it cleaner, split qemu_close_all_open_fd() logic into
-multiple subfunctions (close with close_range(), with /proc/self/fd and
-fallback).
+The same code is used twice to actually close all open file descriptors
+after forking. Factorize it in a single place.
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/oslib-posix.c | 50 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 37 insertions(+), 13 deletions(-)
+ net/tap.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 1e867efa47..9b79fc7cff 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -808,27 +808,16 @@ int qemu_msync(void *addr, size_t length, int fd)
-     return msync(addr, length, MS_SYNC);
+diff --git a/net/tap.c b/net/tap.c
+index 51f7aec39d..7b2d5d5703 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -385,6 +385,17 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
+     return s;
  }
  
--/*
-- * Close all open file descriptors.
-- */
--void qemu_close_all_open_fd(void)
-+static bool qemu_close_all_open_fd_proc(void)
- {
-     struct dirent *de;
-     int fd, dfd;
-     DIR *dir;
- 
--#ifdef CONFIG_CLOSE_RANGE
--    int r = close_range(0, ~0U, 0);
--    if (!r) {
--        /* Success, no need to try other ways. */
--        return;
--    }
--#endif
--
-     dir = opendir("/proc/self/fd");
-     if (!dir) {
-         /* If /proc is not mounted, there is nothing that can be done. */
--        return;
-+        return false;
-     }
-     /* Avoid closing the directory. */
-     dfd = dirfd(dir);
-@@ -840,4 +829,39 @@ void qemu_close_all_open_fd(void)
-         }
-     }
-     closedir(dir);
-+
-+    return true;
-+}
-+
-+static bool qemu_close_all_open_fd_close_range(void)
-+{
-+#ifdef CONFIG_CLOSE_RANGE
-+    int r = close_range(0, ~0U, 0);
-+    if (!r) {
-+        /* Success, no need to try other ways. */
-+        return true;
-+    }
-+#endif
-+    return false;
-+}
-+
-+static void qemu_close_all_open_fd_fallback(void)
++static void close_all_fds_after_fork(int excluded_fd)
 +{
 +    int open_max = sysconf(_SC_OPEN_MAX), i;
 +
-+    /* Fallback */
-+    for (i = 0; i < open_max; i++) {
-+        close(i);
++    for (i = 3; i < open_max; i++) {
++        if (i != excluded_fd) {
++            close(i);
++        }
 +    }
 +}
 +
-+/*
-+ * Close all open file descriptors.
-+ */
-+void qemu_close_all_open_fd(void)
-+{
-+    if (!qemu_close_all_open_fd_close_range() &&
-+        !qemu_close_all_open_fd_proc()) {
-+        qemu_close_all_open_fd_fallback();
-+    }
- }
+ static void launch_script(const char *setup_script, const char *ifname,
+                           int fd, Error **errp)
+ {
+@@ -400,13 +411,7 @@ static void launch_script(const char *setup_script, const char *ifname,
+         return;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
+-
+-        for (i = 3; i < open_max; i++) {
+-            if (i != fd) {
+-                close(i);
+-            }
+-        }
++        close_all_fds_after_fork(fd);
+         parg = args;
+         *parg++ = (char *)setup_script;
+         *parg++ = (char *)ifname;
+@@ -490,17 +495,11 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+         return -1;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
+         char *fd_buf = NULL;
+         char *br_buf = NULL;
+         char *helper_cmd = NULL;
+ 
+-        for (i = 3; i < open_max; i++) {
+-            if (i != sv[1]) {
+-                close(i);
+-            }
+-        }
+-
++        close_all_fds_after_fork(sv[1]);
+         fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
+ 
+         if (strrchr(helper, ' ') || strrchr(helper, '\t')) {
 -- 
 2.45.2
 
