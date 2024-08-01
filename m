@@ -2,69 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1AA9448C2
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 11:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 012C59448C4
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 11:49:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZSQO-0004aH-VT; Thu, 01 Aug 2024 05:48:45 -0400
+	id 1sZSQp-0005Fv-3k; Thu, 01 Aug 2024 05:49:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+dbee7cb4c0de7920b212+7648+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1sZSQM-0004ZN-F0
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 05:48:42 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+dbee7cb4c0de7920b212+7648+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1sZSQC-0003aL-DM
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 05:48:42 -0400
+ (Exim 4.90_1) (envelope-from <xiangwencheng@dayudpu.com>)
+ id 1sZSQm-0005EL-BT
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 05:49:08 -0400
+Received: from va-2-32.ptr.blmpb.com ([209.127.231.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xiangwencheng@dayudpu.com>)
+ id 1sZSQh-0003fU-LO
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 05:49:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=2/ABZobOn2g8OFzXKtukb7tYaMh9J42JeVoW1CcuHOw=; b=lWOywtORg1uz6jkf7oImLAwYgz
- 2F3CrsojxonAx2v7XewVHS8ugI/p310lau1uV1qwgjPSsqQh9qgg45xpCr5cFU9uVwPHir9yoPOwI
- Ei555s+Hx5b593ZZ0oYgjlk834wQhqxHZ97i2HsV/Xxeyy2+GcpTQ5m/TRPIpRHlG7pB68u+e5xqs
- LjZASTudyUgI2WbI6Q19SxvpoHAddWtm2TeQjmn8kuRfGbfr0wq1cXoy9tSqYkNocn4cXkOJsjrWB
- jLlCU9D+Hc21X19gw9C25zgqY7FaD3L/QeLL74Zu/rfop48G551j0VrpzxVnvJTtpv8hCKpk2sx6x
- 7PLr6cZA==;
-Received: from [2001:8b0:10b:5:6bc8:e78:2c4f:f682]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1sZSQ7-0000000HHNm-15Lw; Thu, 01 Aug 2024 09:48:27 +0000
-Message-ID: <97ec9198156107c34f1aedddc1a98c5617784a0b.camel@infradead.org>
-Subject: Re: [PULL 02/22] tests/avocado: use snapshot=on in kvm_xen_guest
-From: David Woodhouse <dwmw2@infradead.org>
-To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Paul
- Durrant <paul@xen.org>, Cleber Rosa <crosa@redhat.com>, Wainer dos Santos
- Moschetta <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, "open list:Overall KVM CPUs"
- <kvm@vger.kernel.org>
-Date: Thu, 01 Aug 2024 10:48:26 +0100
-In-Reply-To: <20240112110435.3801068-3-alex.bennee@linaro.org>
-References: <20240112110435.3801068-1-alex.bennee@linaro.org>
- <20240112110435.3801068-3-alex.bennee@linaro.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-8/RbjRwbEZBx5aH0K6P7"
-User-Agent: Evolution 3.44.4-0ubuntu2 
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+dbee7cb4c0de7920b212+7648+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ s=s1; d=dayudpu-com.20200927.dkim.feishu.cn; t=1722505718;
+ h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=VzDKqb5cywqOkSOGbX8+L8Sdk7F2n3pVd4J/YH+RTZE=;
+ b=oCR6FHNDNYT5Nb1pqva7LQilpqmIAZXKHdJhloxAL8Uc/ljNS9WSsqw2EqnwrZ92PDzaMq
+ N7M40GCJeoGR73kMhbXHLjXOJOLKAXOE7xJmZlKYfnqGH5pKcotOPIBdMiA3s0Z8QMih4i
+ ac2KvTDDi0YRmS092PB5yT482JuoZ25kuoa02OZLI2/w3DTRI5p5mCrNRiDW1LQDlD+eZn
+ SghemyHHJx/JS9vJ+Rny2VXbRwABms52X2sYeD6xGMpS+xDc4Q7qUe3z3ReTLFobv5gYnW
+ afgRoU67gkjs+HofDALL9LnjBRWNV1G2SkqV7oDEKH77J583lzMzTATncaeHlQ==
+Message-Id: <fba0cfc406f202976ef5ac5d129e08524ce06bbf.cce6af4a.43f3.41da.bd6c.5fdb96e92401@feishu.cn>
+Subject: Re: [PATCH v2] vhsot-user: Do not wait for replay for not sent
+ VHOST_USER_SET_LOG_BASE
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+166ab59f5+cdcf46+nongnu.org+xiangwencheng@dayudpu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 01 Aug 2024 17:48:36 +0800
+Cc: <qemu-devel@nongnu.org>
+From: "BillXiang" <xiangwencheng@dayudpu.com>
+References: <20240718083103.56214-1-xiangwencheng@dayudpu.com>
+ <20240720145819-mutt-send-email-mst@kernel.org>
+ <fba0cfc406f202976ef5ac5d129e08524ce06bbf.0ff73b39.722e.4462.b426.f477adef04f2@feishu.cn>
+ <20240801042507-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20240801042507-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Received-SPF: pass client-ip=209.127.231.32;
+ envelope-from=xiangwencheng@dayudpu.com; helo=va-2-32.ptr.blmpb.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,148 +68,111 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-8/RbjRwbEZBx5aH0K6P7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+> From: "Michael S. Tsirkin"<mst@redhat.com>
+> Date:=C2=A0 Thu, Aug 1, 2024, 16:26
+> Subject:=C2=A0 Re: [PATCH v2] vhsot-user: Do not wait for replay for not =
+sent VHOST_USER_SET_LOG_BASE
+> To: "BillXiang"<xiangwencheng@dayudpu.com>
+> Cc: <qemu-devel@nongnu.org>
+> On Sun, Jul 21, 2024 at 11:20:56AM +0800, BillXiang wrote:
+> >=C2=A0
+> > > From: "Michael S. Tsirkin"<mst@redhat.com>
+> > > Date:=C2=A0 Sun, Jul 21, 2024, 03:01
+> > > Subject:=C2=A0 Re: [PATCH v2] vhsot-user: Do not wait for replay for =
+not sent VHOST_USER_SET_LOG_BASE
+> > > To: "BillXiang"<xiangwencheng@dayudpu.com>
+> > > Cc: <qemu-devel@nongnu.org>
+> > > typos in subject do not inspire confidence.
+> >=C2=A0
+> > Sorry
+> >=C2=A0
+> > >=C2=A0
+> > > On Thu, Jul 18, 2024 at 04:31:03PM +0800, BillXiang wrote:
+> > > > From: BillXiang <xiangwencheng@dayudpu.com>
+> > > >=C2=A0
+> > > > We have added VHOST_USER_SET_LOG_BASE to vhost_user_per_device_requ=
+est
+> > > > in https://lists.nongnu.org/archive/html/qemu-devel/2024-06/msg0255=
+9.html
+> > >=C2=A0
+> > > Pls put commit here not ML link:
+> > > commit ABCDEFGHIKLM ("subject")
+> > >=C2=A0
+> > > > and will send this message only for vq 0.
+> > >=C2=A0
+> > > you mean "should send"?
+> > >=C2=A0
+> >=C2=A0
+> > What I mean is the commit 7c211eb078c4 ("vhost-user: Skip unnecessary d=
+uplicated VHOST_USER_SET_LOG_BASE requests")=C2=A0
+> > will cause VHOST_USER_SET_LOG_BASE to be sent only when 'vq_index =3D=
+=3D 0' in vhost_user_write,=C2=A0
+> > so that we can not use vhost_user_read to get reply when 'vq_index !=3D=
+ 0'
+>=C2=A0
+>=C2=A0
+> do we try to do it now? in which configurations?
+>=C2=A0
 
-T24gRnJpLCAyMDI0LTAxLTEyIGF0IDExOjA0ICswMDAwLCBBbGV4IEJlbm7DqWUgd3JvdGU6Cj4g
-VGhpcyBlbnN1cmVzIHRoZSByb290ZnMgaXMgbmV2ZXIgcGVybWFuZW50bHkgY2hhbmdlZCBhcyB3
-ZSBkb24ndCBuZWVkCj4gcGVyc2lzdGVuY2UgYmV0d2VlbiB0ZXN0cyBhbnl3YXkuCj4gCj4gTWVz
-c2FnZS1JZDogPDIwMjQwMTAzMTczMzQ5LjM5ODUyNi0zLWFsZXguYmVubmVlQGxpbmFyby5vcmc+
-Cj4gU2lnbmVkLW9mZi1ieTogQWxleCBCZW5uw6llIDxhbGV4LmJlbm5lZUBsaW5hcm8ub3JnPgo+
-IFJldmlld2VkLWJ5OiBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSA8cGhpbG1kQGxpbmFyby5vcmc+
-Cj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2F2b2NhZG8va3ZtX3hlbl9ndWVzdC5weSBiL3Rlc3Rz
-L2F2b2NhZG8va3ZtX3hlbl9ndWVzdC5weQo+IGluZGV4IDUzOTEyODMxMTNlLi5mOGNiNDU4ZDVk
-YiAxMDA2NDQKPiAtLS0gYS90ZXN0cy9hdm9jYWRvL2t2bV94ZW5fZ3Vlc3QucHkKPiArKysgYi90
-ZXN0cy9hdm9jYWRvL2t2bV94ZW5fZ3Vlc3QucHkKPiBAQCAtNTksNyArNTksNyBAQCBkZWYgY29t
-bW9uX3ZtX3NldHVwKHNlbGYpOgo+IMKgwqDCoMKgIGRlZiBydW5fYW5kX2NoZWNrKHNlbGYpOgo+
-IMKgwqDCoMKgwqDCoMKgwqAgc2VsZi52bS5hZGRfYXJncygnLWtlcm5lbCcsIHNlbGYua2VybmVs
-X3BhdGgsCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgJy1hcHBlbmQnLCBzZWxmLmtlcm5lbF9wYXJhbXMsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAnLWRyaXZlJyzCoCBmImZpbGU9e3NlbGYucm9v
-dGZzfSxpZj1ub25lLGZvcm1hdD1yYXcsaWQ9ZHJ2MCIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAnLWRyaXZlJyzCoCBmImZpbGU9e3NlbGYucm9v
-dGZzfSxpZj1ub25lLHNuYXBzaG90PW9uLGZvcm1hdD1yYXcsaWQ9ZHJ2MCIsCj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJy1kZXZpY2UnLCAneGVu
-LWRpc2ssZHJpdmU9ZHJ2MCx2ZGV2PXh2ZGEnLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICctZGV2aWNlJywgJ3ZpcnRpby1uZXQtcGNpLG5ldGRl
-dj11bmV0JywKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCAnLW5ldGRldicsICd1c2VyLGlkPXVuZXQsaG9zdGZ3ZD06MTI3LjAuMC4xOjAtOjIyJykK
-CkkgZG9uJ3QgZXZlbiB1bmRlcnN0YW5kIHdoeSBpdCBuZWVkcyB0byBiZSB3cml0YWJsZSBhdCBh
-bGwuIENvdWxkIHdlIGp1c3QgZml4IHRoYXQ/Cg==
+Sorry, I'm not certain about what you're instructing me to do.
 
+Maybe I should merge this patch whit commit 7c211eb078c4
+("vhost-user: Skip unnecessary duplicated VHOST_USER_SET_LOG_BASE requests"=
+)=C2=A0
+=C2=A0and "[PATCH] vhsot-user: Remove redundant judgment" into one patch.
 
---=-8/RbjRwbEZBx5aH0K6P7
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+All of these three patches are aimed to do the same thing as=C2=A0
+commit c98ac64cfb53 ("vhost-user: send set log base message only once")
+which is not a good solution because there is already a function vhost_user=
+_per_device_request
+for those messages that should be sent only once per device.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwODAxMDk0ODI2WjAvBgkqhkiG9w0BCQQxIgQgMfJ/rQXG
-u6BmN2fPvEvYQZXEw1pXPdxHABz+1YeazAgwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAqm5zMhe0fva3ckpYUQvZ43ZQbmaUEBjlz
-Ty2sbUEb28z9VWlDQq/+OFG3Dfc/6Npm+xGSEzuxqrAfMqltiUbDYi/8juVp0dEBmEjH92nsocl5
-ulq5F3rBykajtwvXcdirMOrneiJls6Eglx97+r1NmW/Jb2+EIxI/4c8I97IENGd1wA18gLhQPuYw
-5xW9UpsayPLjqOzrhQrNrGCoxW/FiEakb3Pc6RHys58g+K9edkwDyq3zYbkyFlXDras5CFSHOtGZ
-j5Xs31ad/mAUnp2bJ5zYA2NRYQwpnG4tKLGWmVD5TQTbI7zmgF+j3tuczBYtUGBN0mZmjAKvWkys
-wuGPjZQyxJ76f0zvVTR4I0BILoBVPmMf2F8QE87SELY5TW4VakLazneqFiNZVHS74CV6C4mbEaW1
-PzCNH57y2aIF9mBEptJs68vytYfpDM2KGd/FrOiMTsdJQzTZ/bYdsCGhyd6UyYKybsv8/mnRwPLC
-gjqy0O/kvmEcIYPN5fRAKltYQ8f36GhqmVNNvf2lSpyY49POhWu2gvhH12VZg37U7leGpW3Zpa94
-sWKNlob1vYfvcJxIRv+C6jSC7FPoMd4/wqMtWdB880QLtZwypOpERj6LWBVpthb/tt8lyOHp75kS
-4zE+hmkt2g0Xn1FB98X6VW/pUEQnE6G7NYPW2OcTGAAAAAAAAA==
+In commit 7c211eb078c4 ("vhost-user: Skip unnecessary duplicated VHOST_USER=
+_SET_LOG_BASE requests")=C2=A0
+I added VHOST_USER_SET_LOG_BASE to vhost_user_per_device_request so that it=
+ will be sent only once=C2=A0
+per device when 'vq_index =3D=3D 0'.
+After that we should remove the check add by commit c98ac64cfb53 ("vhost-us=
+er: send set log base message only once")
+in "[PATCH] vhsot-user: Remove redundant judgment".
+And last, in current patch "vhsot-user: Do not wait for replay for not sent=
+ VHOST_USER_SET_LOG_BASE"
+we should only read reply when 'vq_index =3D=3D 0'.
 
-
---=-8/RbjRwbEZBx5aH0K6P7--
+>=C2=A0
+> > >=C2=A0
+> > > >=C2=A0
+> > > > Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
+> > > > ---
+> > > > V1[1] -> V2:
+> > > >=C2=A0 - Refrain from appending flags to messages that could=C2=A0
+> > > > precipitate validation failures upon execution of the=C2=A0
+> > > > `vhost_user_read_header` function.=C2=A0
+> > > >=C2=A0
+> > > > [1]https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg0192=
+3.html
+> > > > ---
+> > > >=C2=A0 hw/virtio/vhost-user.c | 2 +-
+> > > >=C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> > > >=C2=A0
+> > > > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> > > > index 00561daa06..fd12992d15 100644
+> > > > --- a/hw/virtio/vhost-user.c
+> > > > +++ b/hw/virtio/vhost-user.c
+> > > > @@ -460,7 +460,7 @@ static int vhost_user_set_log_base(struct vhost=
+_dev *dev, uint64_t base,
+> > > > =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 return ret;
+> > > > =C2=A0 =C2=A0=C2=A0 }
+> > > > =C2=A0
+> > > > - =C2=A0=C2=A0 if (shmfd) {
+> > > > + =C2=A0=C2=A0 if (shmfd && (dev->vq_index =3D=3D 0)) {
+> > >=C2=A0
+> > > extra () not needed here.
+> > >=C2=A0
+> > > > =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 msg.hdr.size =3D 0;
+> > > > =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 ret =3D vhost_user_read(dev, &msg=
+);
+> > > > =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 if (ret < 0) {
+> > > > --=C2=A0
+> > > > 2.30.0
 
