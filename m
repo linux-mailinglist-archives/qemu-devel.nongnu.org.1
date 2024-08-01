@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D8E944E9A
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3BA944E9B
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZXEN-0004U8-QM; Thu, 01 Aug 2024 10:56:39 -0400
+	id 1sZXET-0004gQ-KZ; Thu, 01 Aug 2024 10:56:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZXEM-0004TN-66
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:56:38 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZXER-0004fF-Th
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:56:43 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZXEK-0004UF-LP
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:56:37 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3683f56b9bdso3566631f8f.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 07:56:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZXEQ-0004Ue-8A
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:56:43 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-428e1915e7fso6118385e9.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 07:56:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722524194; x=1723128994; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=matng5Fep0g8jPV7m04ym4tW6NsmJ6p6PTM6YUsuJ80=;
- b=zSzjjBjx4UtjH1SKcasqD1xEiBD0QASkZVKCK7ypqTryiGmrDTg3AoE/SFcKv7f6yP
- IkYxzzeGvSK+suInc+9cwMNj+f3LtsZs3apTrKJs6aOTu9vf4GIHevmPZBcWx5+7dOpf
- Hgz6xvhnIZoAXnv6yRzuIbAsT/tBWkw81UpPkpHIEzSOiKlGBi7QgAPjdK/tL81UXs+i
- sGg5N4Giz3WuZgOz9sPLYbi2ihJgEqKpbYGOsKlctx1RnsXtov/I9iC6KjD9XWRamyuB
- QNVJjF53KMEfDcH5HP+GWjvjpA1o+3C7c/4Na3iF5yiCS725J45i4f6jJ+Xq7zkXc2fb
- YrrQ==
+ d=linaro.org; s=google; t=1722524200; x=1723129000; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZOavi68dVWhtO7uLbJ3C8KU4nLZTxGicWmAVgpdjLVU=;
+ b=B+Mgegd7F6dabjoiNmuO6K3ZEm9TrgB5160zO8j3RaUygv30RBH0WhGt3OiZCJGNMU
+ weXWFJ4NonWoQQKzp7Q6yYAq6yR2Ifo7wpxKlnPJeTU9Z8WJ3Z9+RF4V91JtjibpWmiq
+ P+zTIkx9cnMUIOlwqIBmjsJ3VEvZqvSvsfS7xftd4+i+C+Udomr/RLKa5fUJk70NFHiY
+ hDP9dFeM6wYELSrNm03HeR0MeNHfCxQSgLd7XHCdt8xAqOjkE1xsiv1LjObCMYcs323J
+ /OOUqDXr7y8gCnM78K/RiS3WXOf/Ao0lqYfCyhji2Q7fSBIp0een/mlF2JXm+p13dvh9
+ 3d5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722524194; x=1723128994;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=matng5Fep0g8jPV7m04ym4tW6NsmJ6p6PTM6YUsuJ80=;
- b=UR6q+zHiVoNXm+t0nW0ewaPii40UGqvpCzCnSkKgDFrNnG9qEtqK2Gnx6lZvJ9DCL5
- 0v9hlvJLZYnEvDTK4r9M73xCQRue7ngUoWGIJ6nM/pqKpYgeCzVLej5HsTPK/SLg4dWG
- CAUwIqRWF8+lB75cEau/+BQziPzCJn8Mn9C+hlANiOnTiPLe0BhxI+0c7JUMC81VMsDI
- +ZSxp2jEpx78lciW2itPezua17tljS3Obo5BVmsH1Rus5ZVFlO3KNKrPiC3ilYL3BDZ/
- 65B6Xf0NPVvCjqB7h+033xMWhggRP8beICD0DlAIw9xXEaOFgcc3JiOaoDF6oKHwo4sT
- 58Bg==
-X-Gm-Message-State: AOJu0YysRbNzIMfJ8l1vdjj9+t8X1zTKAJ3q5IqQW7eacB6ptonAFS07
- z0ASSI6MTy3MGjc42A1FfPOS7h0QA8dzqU4YtEKeJh0wAblXfmNYE8suF9nU+IXFk3AkhY+0k5b
- EP88=
-X-Google-Smtp-Source: AGHT+IEgIJF3Pcc7dTIPhNjb66N+8vbFystd155o1igCjfg2BckBasPnv31URriBRC/4+TukKzHhzA==
-X-Received: by 2002:adf:e98a:0:b0:368:3751:de3 with SMTP id
- ffacd0b85a97d-36bbc10d051mr64926f8f.31.1722524194104; 
- Thu, 01 Aug 2024 07:56:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1722524200; x=1723129000;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZOavi68dVWhtO7uLbJ3C8KU4nLZTxGicWmAVgpdjLVU=;
+ b=HykL4vTEgcO28ylE46F0O9xMqtr8kSvHyGPoifiNJ9nRtIjjHIE6G0667YO7gEQiml
+ 6C+fzo88PKrfpeb0eFld3Mgu/aqlaCIOxef5Zj4pEgeAkUMFA6b7en0hABFTG5m/k78P
+ zYzeynVP1Hq+iRuT/Ht2JQcIPJ25M0aBuIZHJqWCJvMXYHUGoz/6BEYz5ZjCJM9rS1ge
+ A1Uihp2Ooj00RArCBkjaK4J9veLymQ530gn3cTPT9eFA1QDNMa5m+k9LmTUGJYh+didt
+ RO7SDlzQyacNXrGwu3BEGnvejxcjPS6FCzOn74OnC7hx0FFAwwZAYSmFH+eh6U2UBqha
+ zc/w==
+X-Gm-Message-State: AOJu0Ywwy7IWVFJAfDI3xnxuN2Xv8tXgYthFu4jLa4w+nQCfi7pUzYLp
+ BTgCL7Kl0qwaQxfkcGz/QE/25waLX9CHIwzJs9FboUPvBqgmzavVSxKX4nnG6VB6U5cQAjUNe5+
+ TufE=
+X-Google-Smtp-Source: AGHT+IHn/PB7MIqeB60EPTdGTA6Cm2c6Cs1OxWm3/U8vyRAmYnmdYequbl4q/z+CRMROo/mI4bZBxA==
+X-Received: by 2002:a05:600c:a0b:b0:426:549b:dd7a with SMTP id
+ 5b1f17b1804b1-428e6b93992mr675665e9.36.1722524200291; 
+ Thu, 01 Aug 2024 07:56:40 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.130.148])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b367c0889sm19685718f8f.22.2024.08.01.07.56.32
+ 5b1f17b1804b1-4282b89aa4bsm61006475e9.7.2024.08.01.07.56.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 Aug 2024 07:56:33 -0700 (PDT)
+ Thu, 01 Aug 2024 07:56:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PATCH-for-9.1 v2 0/2] hw/pci-host/gt64120: Set PCI base address
- register write mask
-Date: Thu,  1 Aug 2024 16:56:28 +0200
-Message-ID: <20240801145630.52680-1-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 1/2] hw/pci-host/gt64120: Reset config registers
+ during RESET phase
+Date: Thu,  1 Aug 2024 16:56:29 +0200
+Message-ID: <20240801145630.52680-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240801145630.52680-1-philmd@linaro.org>
+References: <20240801145630.52680-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,15 +94,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: Move reset values from Realize to ResetHold (mst)
+Reset config values in the device RESET phase, not only once
+when the device is realized, because otherwise the device can
+use unknown values at reset.
 
-Philippe Mathieu-Daudé (2):
-  hw/pci-host/gt64120: Reset config registers during RESET phase
-  hw/pci-host/gt64120: Set PCI base address register write mask
+Reported-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/pci-host/gt64120.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
- hw/pci-host/gt64120.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
+diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
+index e02efc9e2e..b68d647753 100644
+--- a/hw/pci-host/gt64120.c
++++ b/hw/pci-host/gt64120.c
+@@ -1,6 +1,8 @@
+ /*
+  * QEMU GT64120 PCI host
+  *
++ * (Datasheet GT-64120 Rev 1.4 from Sep 14, 1999)
++ *
+  * Copyright (c) 2006,2007 Aurelien Jarno
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+@@ -1211,19 +1213,24 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
+     empty_slot_init("GT64120", 0, 0x20000000);
+ }
+ 
+-static void gt64120_pci_realize(PCIDevice *d, Error **errp)
++static void gt64120_pci_reset_hold(Object *obj, ResetType type)
+ {
+-    /* FIXME: Malta specific hw assumptions ahead */
++    PCIDevice *d = PCI_DEVICE(obj);
++
++    /* Values from chapter 17.16 "PCI Configuration" */
++
+     pci_set_word(d->config + PCI_COMMAND, 0);
+     pci_set_word(d->config + PCI_STATUS,
+                  PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
+     pci_config_set_prog_interface(d->config, 0);
++
+     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x1c000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x1f000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_4, 0x14000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_5, 0x14000001);
++
+     pci_set_byte(d->config + 0x3d, 0x01);
+ }
+ 
+@@ -1231,8 +1238,9 @@ static void gt64120_pci_class_init(ObjectClass *klass, void *data)
+ {
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+-    k->realize = gt64120_pci_realize;
++    rc->phases.hold = gt64120_pci_reset_hold;
+     k->vendor_id = PCI_VENDOR_ID_MARVELL;
+     k->device_id = PCI_DEVICE_ID_MARVELL_GT6412X;
+     k->revision = 0x10;
 -- 
 2.45.2
 
