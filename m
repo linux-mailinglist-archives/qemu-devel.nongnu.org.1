@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8903B9453B6
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 22:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7B29453BF
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 22:33:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZcRu-0004Ho-3U; Thu, 01 Aug 2024 16:30:58 -0400
+	id 1sZcRq-000400-Ry; Thu, 01 Aug 2024 16:30:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1sZcRl-0003oD-JK; Thu, 01 Aug 2024 16:30:49 -0400
+ id 1sZcRm-0003s5-Lh; Thu, 01 Aug 2024 16:30:50 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1sZcRh-0007Nj-7H; Thu, 01 Aug 2024 16:30:48 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 471JKZhb006222;
- Thu, 1 Aug 2024 20:30:34 GMT
+ id 1sZcRj-0007OJ-Ac; Thu, 01 Aug 2024 16:30:50 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 471JwZhU026196;
+ Thu, 1 Aug 2024 20:30:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=zh4nz8uWy+Jjz
- UogOcNEa1nAWKl+x65PqSnUET3GuCY=; b=EPIO+FS8b09SH4o3DS/z7eeB1Yd5C
- ipMcmOROtKZAMCa3BA7cE3EQKYTfcmH2XCHTr9z1q5YB6XwUmBz3FpRODqj2wtHN
- xqmC8bPQMn8OozsrV3nuNCrCnOlLWxC7OuDNMfezqt9Ua7fW98qiOhuDNpu7bOFf
- egCz88BrFYWNne8sNuWc4DEmxVTgUcFpUCuMF1ZE4J0cjMLFNTHoIXF9MDQAmtjK
- 1DXb7AuVeli2ShymfZq5iMM4giVhZko98XdaJR5dC7WrhROe9ROkKhPeXHmYn4tP
- YxnQLB3OGjiT9oaQHXwYiwQGqEKetmocsQ8/ppNjjGZsfS4TER7QyQJqA==
+ :mime-version:content-transfer-encoding; s=pp1; bh=fROQaJYVef/gF
+ QfuzfqZzrc/USykQdsuMKfYGga3GXo=; b=Af0Bv6HPejKGrkcnW4cC3XM/1BqBv
+ H8mCJuyjOs0+ooJEGEW/rri/1UuPR7tfqlCGFZUlQJlaRoc8SCq4esrCTAhSkBKZ
+ JZwn99jZiU69+G77HotsA0Vn2Im9lr5tpQhCz48iu2oeFcTSQ6Mq5HjPvGKLK5bX
+ ijFsE/8lIDmGR44zF9qLAcfDrd/4WJcp/yT0ygBIv/0nEIbGurWrZfz1//HH3HZ5
+ Mygwni54Q/Rr0k9qEzF0+Bw5neiSxsyTG1rBeKRgECf+/7m1x7QPKuYCHR0RZlur
+ YX0MvMZhLOvuZfkyo9MzUB6N0YzxXLwTRjUds3KNV0iDC+EX5NFSgDm4g==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40rdyhrg0v-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40rh05022s-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Aug 2024 20:30:34 +0000 (GMT)
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 471KUXZp025473;
- Thu, 1 Aug 2024 20:30:33 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40rdyhrg0s-1
+ Thu, 01 Aug 2024 20:30:36 +0000 (GMT)
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 471KUZfY013497;
+ Thu, 1 Aug 2024 20:30:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40rh05022q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Aug 2024 20:30:33 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 471Jh4oE009202; Thu, 1 Aug 2024 20:30:33 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 40ndx3begj-1
+ Thu, 01 Aug 2024 20:30:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 471JR5rA003935; Thu, 1 Aug 2024 20:30:35 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 40ndemughp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Aug 2024 20:30:33 +0000
+ Thu, 01 Aug 2024 20:30:34 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 471KURFE27067124
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 471KUTIZ53412098
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Aug 2024 20:30:29 GMT
+ Thu, 1 Aug 2024 20:30:31 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C85942004F;
- Thu,  1 Aug 2024 20:30:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4257720043;
+ Thu,  1 Aug 2024 20:30:29 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9EE862004D;
- Thu,  1 Aug 2024 20:30:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 18E082004B;
+ Thu,  1 Aug 2024 20:30:28 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  1 Aug 2024 20:30:26 +0000 (GMT)
+ Thu,  1 Aug 2024 20:30:27 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH 06/13] ppc/xive2: Dump the VP-group and crowd tables with
- 'info pic'
-Date: Thu,  1 Aug 2024 15:30:01 -0500
-Message-Id: <20240801203008.11224-7-kowal@linux.ibm.com>
+Subject: [PATCH 07/13] ppc/xive2: Allow 1-byte write of Target field in TIMA
+Date: Thu,  1 Aug 2024 15:30:02 -0500
+Message-Id: <20240801203008.11224-8-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240801203008.11224-1-kowal@linux.ibm.com>
 References: <20240801203008.11224-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VzDIPF1HL46OEC0g0Af0DSl0zCzsgUHI
-X-Proofpoint-ORIG-GUID: GbTKWegIiz_dL0wBw1jW-5Jk_nmdNqFu
+X-Proofpoint-GUID: DVhS9FFEUnfZ54ALkiZiof9oihwGCgUg
+X-Proofpoint-ORIG-GUID: uACKbfxFM0EZyzh2Aw-xgpdMLrij25YJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-01_18,2024-08-01_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
- spamscore=0 mlxlogscore=736 mlxscore=0 adultscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1015 suspectscore=0
+ bulkscore=0 impostorscore=0 phishscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 mlxscore=0 mlxlogscore=818
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2407110000 definitions=main-2408010135
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -112,267 +111,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-The 'info pic' HMP command dumps the state of the interrupt controller.
-Add the dump of the NVG and NVC tables to its output to ease debug.
+When running PowerVM, the console is littered with XIVE traces regarding
+invalid writes to TIMA address 0x100b6 due to a lack of support for writes
+to the "TARGET" field which was added for XIVE GEN2.  To fix this, we add
+special op support for 1-byte writes to this field.
 
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 ---
- include/hw/ppc/xive2.h      | 12 ++++++
- include/hw/ppc/xive2_regs.h |  6 +++
- hw/intc/pnv_xive2.c         | 56 ++++++++++++++++++++++++--
- hw/intc/xive2.c             | 80 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 151 insertions(+), 3 deletions(-)
+ include/hw/ppc/xive2.h     |  2 ++
+ include/hw/ppc/xive_regs.h |  1 +
+ hw/intc/xive.c             |  2 ++
+ hw/intc/xive2.c            | 13 +++++++++++++
+ 4 files changed, 18 insertions(+)
 
 diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-index 654f485e9b..b7a7c33ddd 100644
+index b7a7c33ddd..36bd0e747f 100644
 --- a/include/hw/ppc/xive2.h
 +++ b/include/hw/ppc/xive2.h
-@@ -53,6 +53,12 @@ typedef struct Xive2RouterClass {
-                    Xive2Nvp *nvp);
-     int (*write_nvp)(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
-                      Xive2Nvp *nvp, uint8_t word_number);
-+    int (*get_nvgc)(Xive2Router *xrtr, bool crowd,
-+                    uint8_t nvgc_blk, uint32_t nvgc_idx,
-+                    Xive2Nvgc *nvgc);
-+    int (*write_nvgc)(Xive2Router *xrtr, bool crowd,
-+                      uint8_t nvgc_blk, uint32_t nvgc_idx,
-+                      Xive2Nvgc *nvgc);
-     uint8_t (*get_block_id)(Xive2Router *xrtr);
-     uint32_t (*get_config)(Xive2Router *xrtr);
- } Xive2RouterClass;
-@@ -67,6 +73,12 @@ int xive2_router_get_nvp(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
-                         Xive2Nvp *nvp);
- int xive2_router_write_nvp(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
-                           Xive2Nvp *nvp, uint8_t word_number);
-+int xive2_router_get_nvgc(Xive2Router *xrtr, bool crowd,
-+                          uint8_t nvgc_blk, uint32_t nvgc_idx,
-+                          Xive2Nvgc *nvgc);
-+int xive2_router_write_nvgc(Xive2Router *xrtr, bool crowd,
-+                            uint8_t nvgc_blk, uint32_t nvgc_idx,
-+                            Xive2Nvgc *nvgc);
- uint32_t xive2_router_get_config(Xive2Router *xrtr);
+@@ -121,5 +121,7 @@ uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                                hwaddr offset, unsigned size);
+ void xive2_tm_pull_os_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+                              hwaddr offset, uint64_t value, unsigned size);
++void xive2_tm_set_hv_target(XivePresenter *xptr, XiveTCTX *tctx,
++                            hwaddr offset, uint64_t value, unsigned size);
  
- void xive2_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked);
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index d71a54f9ff..99840e88a8 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -212,6 +212,7 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf);
- typedef struct Xive2Nvgc {
-         uint32_t        w0;
- #define NVGC2_W0_VALID             PPC_BIT32(0)
-+#define NVGC2_W0_PGONEXT           PPC_BITMASK32(26, 31)
-         uint32_t        w1;
-         uint32_t        w2;
-         uint32_t        w3;
-@@ -221,4 +222,9 @@ typedef struct Xive2Nvgc {
-         uint32_t        w7;
- } Xive2Nvgc;
+ #endif /* PPC_XIVE2_H */
+diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
+index 27a744d50d..f8f05deafd 100644
+--- a/include/hw/ppc/xive_regs.h
++++ b/include/hw/ppc/xive_regs.h
+@@ -79,6 +79,7 @@
+ #define TM_INC                  0x5  /*  -   +   -   +  */
+ #define TM_LGS                  0x5  /*  +   +   +   +  */ /* Rename P10 */
+ #define TM_AGE                  0x6  /*  -   +   -   +  */
++#define TM_T                    0x6  /*  -   +   -   +  */ /* Rename P10 */
+ #define TM_PIPR                 0x7  /*  -   +   -   +  */
+ #define TM_OGEN                 0xF  /*  -   +   -   -  */ /* P10 only */
  
-+#define xive2_nvgc_is_valid(nvgc)    (be32_to_cpu((nvgc)->w0) & NVGC2_W0_VALID)
-+
-+void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx,
-+                               GString *buf);
-+
- #endif /* PPC_XIVE2_REGS_H */
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 4740c56347..5959e2df3a 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -490,6 +490,35 @@ static int pnv_xive2_write_nvp(Xive2Router *xrtr, uint8_t blk, uint32_t idx,
-                               word_number);
- }
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 8605dd618f..6229a6f870 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -546,6 +546,8 @@ static const XiveTmOp xive2_tm_operations[] = {
+                                                      NULL },
+     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, NULL,
+                                                      xive_tm_vt_poll },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_T,     1, xive2_tm_set_hv_target,
++                                                     NULL },
  
-+static int pnv_xive2_get_nvgc(Xive2Router *xrtr, bool crowd,
-+                              uint8_t blk, uint32_t idx,
-+                              Xive2Nvgc *nvgc)
-+{
-+    int type;
-+
-+    if (crowd) {
-+        type = VST_NVC;
-+    } else {
-+        type = VST_NVG;
-+    }
-+    return pnv_xive2_vst_read(PNV_XIVE2(xrtr), type, blk, idx, nvgc);
-+}
-+
-+static int pnv_xive2_write_nvgc(Xive2Router *xrtr, bool crowd,
-+                                uint8_t blk, uint32_t idx,
-+                                Xive2Nvgc *nvgc)
-+{
-+    int type;
-+
-+    if (crowd) {
-+        type = VST_NVC;
-+    } else {
-+        type = VST_NVG;
-+    }
-+    return pnv_xive2_vst_write(PNV_XIVE2(xrtr), type, blk, idx, nvgc,
-+                               XIVE_VST_WORD_ALL);
-+}
-+
- static int pnv_xive2_nxc_to_table_type(uint8_t nxc_type, uint32_t *table_type)
- {
-     switch (nxc_type) {
-@@ -2407,6 +2436,8 @@ static void pnv_xive2_class_init(ObjectClass *klass, void *data)
-     xrc->write_end = pnv_xive2_write_end;
-     xrc->get_nvp   = pnv_xive2_get_nvp;
-     xrc->write_nvp = pnv_xive2_write_nvp;
-+    xrc->get_nvgc   = pnv_xive2_get_nvgc;
-+    xrc->write_nvgc = pnv_xive2_write_nvgc;
-     xrc->get_config  = pnv_xive2_get_config;
-     xrc->get_block_id = pnv_xive2_get_block_id;
- 
-@@ -2497,8 +2528,9 @@ void pnv_xive2_pic_print_info(PnvXive2 *xive, GString *buf)
-     Xive2Eas eas;
-     Xive2End end;
-     Xive2Nvp nvp;
-+    Xive2Nvgc nvgc;
-     int i;
--    uint64_t xive_nvp_per_subpage;
-+    uint64_t entries_per_subpage;
- 
-     g_string_append_printf(buf, "XIVE[%x] Source %08x .. %08x\n",
-                            blk, srcno0, srcno0 + nr_esbs - 1);
-@@ -2530,10 +2562,28 @@ void pnv_xive2_pic_print_info(PnvXive2 *xive, GString *buf)
- 
-     g_string_append_printf(buf, "XIVE[%x] #%d NVPT %08x .. %08x\n",
-                            chip_id, blk, 0, XIVE2_NVP_COUNT - 1);
--    xive_nvp_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVP);
--    for (i = 0; i < XIVE2_NVP_COUNT; i += xive_nvp_per_subpage) {
-+    entries_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVP);
-+    for (i = 0; i < XIVE2_NVP_COUNT; i += entries_per_subpage) {
-         while (!xive2_router_get_nvp(xrtr, blk, i, &nvp)) {
-             xive2_nvp_pic_print_info(&nvp, i++, buf);
-         }
-     }
-+
-+    g_string_append_printf(buf, "XIVE[%x] #%d NVGT %08x .. %08x\n",
-+                           chip_id, blk, 0, XIVE2_NVP_COUNT - 1);
-+    entries_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVG);
-+    for (i = 0; i < XIVE2_NVP_COUNT; i += entries_per_subpage) {
-+        while (!xive2_router_get_nvgc(xrtr, false, blk, i, &nvgc)) {
-+            xive2_nvgc_pic_print_info(&nvgc, i++, buf);
-+        }
-+    }
-+
-+    g_string_append_printf(buf, "XIVE[%x] #%d NVCT %08x .. %08x\n",
-+                          chip_id, blk, 0, XIVE2_NVP_COUNT - 1);
-+    entries_per_subpage = pnv_xive2_vst_per_subpage(xive, VST_NVC);
-+    for (i = 0; i < XIVE2_NVP_COUNT; i += entries_per_subpage) {
-+        while (!xive2_router_get_nvgc(xrtr, true, blk, i, &nvgc)) {
-+            xive2_nvgc_pic_print_info(&nvgc, i++, buf);
-+        }
-+    }
- }
+     /* MMIOs above 2K : special operations with side effects */
+     { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,         2, NULL,
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 034baabf1e..9d19273bc8 100644
+index 9d19273bc8..eed0cc9c3c 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -43,6 +43,51 @@ static uint64_t xive2_nvp_reporting_addr(Xive2Nvp *nvp)
-     return cache_addr;
+@@ -600,6 +600,19 @@ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     }
  }
  
-+static uint32_t xive2_nvgc_get_backlog(Xive2Nvgc *nvgc, uint8_t priority)
++static void xive2_tctx_set_target(XiveTCTX *tctx, uint8_t ring, uint8_t target)
 +{
-+    uint32_t val = 0;
-+    uint8_t *ptr, i;
++    uint8_t *regs = &tctx->regs[ring];
 +
-+    if (priority > 7) {
-+        return 0;
-+    }
-+
-+    /*
-+     * The per-priority backlog counters are 24-bit and the structure
-+     * is stored in big endian
-+     */
-+    ptr = (uint8_t *)&nvgc->w2 + priority * 3;
-+    for (i = 0; i < 3; i++, ptr++) {
-+        val = (val << 8) + *ptr;
-+    }
-+    return val;
++    regs[TM_T] = target;
 +}
 +
-+__attribute__((unused))
-+static void  xive2_nvgc_set_backlog(Xive2Nvgc *nvgc, uint8_t priority,
-+                                   uint32_t val)
++void xive2_tm_set_hv_target(XivePresenter *xptr, XiveTCTX *tctx,
++                            hwaddr offset, uint64_t value, unsigned size)
 +{
-+    uint8_t *ptr, i;
-+    uint32_t shift;
-+
-+    if (priority > 7) {
-+        return;
-+    }
-+
-+    if (val > 0xFFFFFF) {
-+        val = 0xFFFFFF;
-+    }
-+    /*
-+     * The per-priority backlog counters are 24-bit and the structure
-+     * is stored in big endian
-+     */
-+    ptr = (uint8_t *)&nvgc->w2 + priority * 3;
-+    for (i = 0; i < 3; i++, ptr++) {
-+        shift = 8 * (2 - i);
-+        *ptr = (val >> shift) & 0xFF;
-+    }
-+}
-+
- void xive2_eas_pic_print_info(Xive2Eas *eas, uint32_t lisn, GString *buf)
- {
-     if (!xive2_eas_is_valid(eas)) {
-@@ -189,6 +234,23 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
-     g_string_append_c(buf, '\n');
- }
- 
-+void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx, GString *buf)
-+{
-+    uint8_t i;
-+
-+    if (!xive2_nvgc_is_valid(nvgc)) {
-+        return;
-+    }
-+
-+    g_string_append_printf(buf, "  %08x PGoNext:%02x bklog: ", nvgc_idx,
-+                           xive_get_field32(NVGC2_W0_PGONEXT, nvgc->w0));
-+    for (i = 0; i <= XIVE_PRIORITY_MAX; i++) {
-+        g_string_append_printf(buf, "[%d]=0x%x ",
-+                               i, xive2_nvgc_get_backlog(nvgc, i));
-+    }
-+    g_string_append_printf(buf, "\n");
-+}
-+
- static void xive2_end_enqueue(Xive2End *end, uint32_t data)
- {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
-@@ -600,6 +662,24 @@ int xive2_router_write_nvp(Xive2Router *xrtr, uint8_t nvp_blk, uint32_t nvp_idx,
-    return xrc->write_nvp(xrtr, nvp_blk, nvp_idx, nvp, word_number);
- }
- 
-+int xive2_router_get_nvgc(Xive2Router *xrtr, bool crowd,
-+                          uint8_t nvgc_blk, uint32_t nvgc_idx,
-+                          Xive2Nvgc *nvgc)
-+{
-+   Xive2RouterClass *xrc = XIVE2_ROUTER_GET_CLASS(xrtr);
-+
-+   return xrc->get_nvgc(xrtr, crowd, nvgc_blk, nvgc_idx, nvgc);
-+}
-+
-+int xive2_router_write_nvgc(Xive2Router *xrtr, bool crowd,
-+                            uint8_t nvgc_blk, uint32_t nvgc_idx,
-+                            Xive2Nvgc *nvgc)
-+{
-+   Xive2RouterClass *xrc = XIVE2_ROUTER_GET_CLASS(xrtr);
-+
-+   return xrc->write_nvgc(xrtr, crowd, nvgc_blk, nvgc_idx, nvgc);
++    xive2_tctx_set_target(tctx, TM_QW3_HV_PHYS, value & 0xff);
 +}
 +
  /*
-  * The thread context register words are in big-endian format.
+  * XIVE Router (aka. Virtualization Controller or IVRE)
   */
 -- 
 2.43.0
