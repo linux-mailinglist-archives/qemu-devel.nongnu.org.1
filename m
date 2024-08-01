@@ -2,106 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6371944B6F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 14:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF9F944B88
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 14:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZV2B-0000cH-5L; Thu, 01 Aug 2024 08:35:55 -0400
+	id 1sZV28-0000PJ-5W; Thu, 01 Aug 2024 08:35:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1y-0008WQ-Ul
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:44 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV20-000066-Di
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:45 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1w-0000xG-TM
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:42 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1y-00011P-LK
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:44 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 99E4F1FB52;
- Thu,  1 Aug 2024 12:35:39 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 408A521A07;
+ Thu,  1 Aug 2024 12:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722515739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1722515741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=unEJEs0mAPmoeu9vAAXxG1Xh/PbJ6Ie5GG6fBVWq7DI=;
- b=jMTw7+J5Q+XBcfH2zPSX+5Q69VkchXFvhBqe7gABNZkOVFV+yVDXrS6PvGJI671jIePXg+
- NXZqTrQx8KsAcpuaaxxCaERTzIiLN8sehE2l/tmyL47ZZZso/vM9GCrOn8E4/T/5Dh9Kcj
- zpxJ4zue9fcDLMHerJsAH1mfjy+8Pz8=
+ bh=PmUTQQyDTHqlG67FNIO6dHj5PDWded6yIHBpLiX753U=;
+ b=IGST8DQxKEmEls/d4G37MqsDsOz1LugFovq68khKYqvHIMSVspb28QMtLdO4LEmznWrv70
+ KGqjaJUJ3PnbCabOyBQE442Gf82z0JlHojqpPTd7DI3EnwJlTXipk8yuFUrQFt4q6Hhi9X
+ kKyW2oH8w6mRHsY7Ck5j/oTNM+xoJYE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722515739;
+ s=susede2_ed25519; t=1722515741;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=unEJEs0mAPmoeu9vAAXxG1Xh/PbJ6Ie5GG6fBVWq7DI=;
- b=rP8xwh+9fYx2oN2ua/i6UrCQNa/QNJgC0G7pWiTaXbIq4SFETJW8UwXgrIHCvTkIUD/ian
- nHq3cBhnodOK42Bg==
-Authentication-Results: smtp-out2.suse.de;
+ bh=PmUTQQyDTHqlG67FNIO6dHj5PDWded6yIHBpLiX753U=;
+ b=0N3idHf4e8rkjguDrqqQ/3YwpLJjT7oBD9FrtH7IAmgrJSVaQWWaJZ86Xk/8liAnwXkLT4
+ y6WMhEa7Q4XGJ3Cg==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722515739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1722515741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=unEJEs0mAPmoeu9vAAXxG1Xh/PbJ6Ie5GG6fBVWq7DI=;
- b=jMTw7+J5Q+XBcfH2zPSX+5Q69VkchXFvhBqe7gABNZkOVFV+yVDXrS6PvGJI671jIePXg+
- NXZqTrQx8KsAcpuaaxxCaERTzIiLN8sehE2l/tmyL47ZZZso/vM9GCrOn8E4/T/5Dh9Kcj
- zpxJ4zue9fcDLMHerJsAH1mfjy+8Pz8=
+ bh=PmUTQQyDTHqlG67FNIO6dHj5PDWded6yIHBpLiX753U=;
+ b=IGST8DQxKEmEls/d4G37MqsDsOz1LugFovq68khKYqvHIMSVspb28QMtLdO4LEmznWrv70
+ KGqjaJUJ3PnbCabOyBQE442Gf82z0JlHojqpPTd7DI3EnwJlTXipk8yuFUrQFt4q6Hhi9X
+ kKyW2oH8w6mRHsY7Ck5j/oTNM+xoJYE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722515739;
+ s=susede2_ed25519; t=1722515741;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=unEJEs0mAPmoeu9vAAXxG1Xh/PbJ6Ie5GG6fBVWq7DI=;
- b=rP8xwh+9fYx2oN2ua/i6UrCQNa/QNJgC0G7pWiTaXbIq4SFETJW8UwXgrIHCvTkIUD/ian
- nHq3cBhnodOK42Bg==
+ bh=PmUTQQyDTHqlG67FNIO6dHj5PDWded6yIHBpLiX753U=;
+ b=0N3idHf4e8rkjguDrqqQ/3YwpLJjT7oBD9FrtH7IAmgrJSVaQWWaJZ86Xk/8liAnwXkLT4
+ y6WMhEa7Q4XGJ3Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6F07513946;
- Thu,  1 Aug 2024 12:35:38 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 16DD713946;
+ Thu,  1 Aug 2024 12:35:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4HeLDRqBq2YEYAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 01 Aug 2024 12:35:38 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uPqvMxuBq2YEYAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 01 Aug 2024 12:35:39 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Subject: [PATCH v3 12/14] migration/multifd: Allow multifd sync without flush
-Date: Thu,  1 Aug 2024 09:35:14 -0300
-Message-Id: <20240801123516.4498-13-farosas@suse.de>
+Subject: [PATCH v3 13/14] migration/multifd: Register nocomp ops dynamically
+Date: Thu,  1 Aug 2024 09:35:15 -0300
+Message-Id: <20240801123516.4498-14-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240801123516.4498-1-farosas@suse.de>
 References: <20240801123516.4498-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.60 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
- MIME_TRACE(0.00)[0:+];
+X-Spamd-Result: default: False [0.40 / 50.00]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- FROM_EQ_ENVFROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.60
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: 0.40
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,113 +114,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Separate the multifd sync from flushing the client data to the
-channels. These two operations are closely related but not strictly
-necessary to be executed together.
+Prior to moving the ram code into multifd-ram.c, change the code to
+register the nocomp ops dynamically so we don't need to have the ops
+structure defined in multifd.c.
 
-The multifd sync is intrinsic to how multifd works. The multiple
-channels operate independently and may finish IO out of order in
-relation to each other. This applies also between the source and
-destination QEMU.
-
-Flushing the data that is left in the client-owned data structures
-(e.g. MultiFDPages_t) prior to sync is usually the right thing to do,
-but that is particular to how the ram migration is implemented with
-several passes over dirty data.
-
-Make these two routines separate, allowing future code to call the
-sync by itself if needed. This also allows the usage of
-multifd_ram_send to be isolated to ram code.
+While here, rename s/nocomp/ram/ and remove the docstrings which are
+mostly useless (if anything, it's the function pointers in multifd.h
+that should be documented like that).
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 13 +++++++++----
- migration/multifd.h |  1 +
- migration/ram.c     |  8 ++++----
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ migration/multifd.c | 101 ++++++++++++--------------------------------
+ 1 file changed, 28 insertions(+), 73 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 1c16879495..c25ab4924c 100644
+index c25ab4924c..d5be784b6f 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -921,11 +921,8 @@ static int multifd_zero_copy_flush(QIOChannel *c)
-     return ret;
+@@ -167,15 +167,7 @@ static void multifd_set_file_bitmap(MultiFDSendParams *p)
+     }
  }
  
--int multifd_send_sync_main(void)
-+int multifd_ram_flush_and_sync(void)
- {
--    int i;
--    bool flush_zero_copy;
+-/* Multifd without compression */
 -
-     if (!migrate_multifd()) {
-         return 0;
-     }
-@@ -937,6 +934,14 @@ int multifd_send_sync_main(void)
-         }
-     }
+-/**
+- * nocomp_send_setup: setup send side
+- *
+- * @p: Params for the channel that we are using
+- * @errp: pointer to an error
+- */
+-static int nocomp_send_setup(MultiFDSendParams *p, Error **errp)
++static int ram_send_setup(MultiFDSendParams *p, Error **errp)
+ {
+     uint32_t page_count = multifd_ram_page_count();
  
-+    return multifd_send_sync_main();
+@@ -193,15 +185,7 @@ static int nocomp_send_setup(MultiFDSendParams *p, Error **errp)
+     return 0;
+ }
+ 
+-/**
+- * nocomp_send_cleanup: cleanup send side
+- *
+- * For no compression this function does nothing.
+- *
+- * @p: Params for the channel that we are using
+- * @errp: pointer to an error
+- */
+-static void nocomp_send_cleanup(MultiFDSendParams *p, Error **errp)
++static void ram_send_cleanup(MultiFDSendParams *p, Error **errp)
+ {
+     g_free(p->iov);
+     p->iov = NULL;
+@@ -222,18 +206,7 @@ static void multifd_send_prepare_iovs(MultiFDSendParams *p)
+     p->next_packet_size = pages->normal_num * page_size;
+ }
+ 
+-/**
+- * nocomp_send_prepare: prepare date to be able to send
+- *
+- * For no compression we just have to calculate the size of the
+- * packet.
+- *
+- * Returns 0 for success or -1 for error
+- *
+- * @p: Params for the channel that we are using
+- * @errp: pointer to an error
+- */
+-static int nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
++static int ram_send_prepare(MultiFDSendParams *p, Error **errp)
+ {
+     bool use_zero_copy_send = migrate_zero_copy_send();
+     int ret;
+@@ -272,46 +245,19 @@ static int nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
+     return 0;
+ }
+ 
+-/**
+- * nocomp_recv_setup: setup receive side
+- *
+- * For no compression this function does nothing.
+- *
+- * Returns 0 for success or -1 for error
+- *
+- * @p: Params for the channel that we are using
+- * @errp: pointer to an error
+- */
+-static int nocomp_recv_setup(MultiFDRecvParams *p, Error **errp)
++static int ram_recv_setup(MultiFDRecvParams *p, Error **errp)
+ {
+     p->iov = g_new0(struct iovec, multifd_ram_page_count());
+     return 0;
+ }
+ 
+-/**
+- * nocomp_recv_cleanup: setup receive side
+- *
+- * For no compression this function does nothing.
+- *
+- * @p: Params for the channel that we are using
+- */
+-static void nocomp_recv_cleanup(MultiFDRecvParams *p)
++static void ram_recv_cleanup(MultiFDRecvParams *p)
+ {
+     g_free(p->iov);
+     p->iov = NULL;
+ }
+ 
+-/**
+- * nocomp_recv: read the data from the channel
+- *
+- * For no compression we just need to read things into the correct place.
+- *
+- * Returns 0 for success or -1 for error
+- *
+- * @p: Params for the channel that we are using
+- * @errp: pointer to an error
+- */
+-static int nocomp_recv(MultiFDRecvParams *p, Error **errp)
++static int ram_recv(MultiFDRecvParams *p, Error **errp)
+ {
+     uint32_t flags;
+ 
+@@ -341,22 +287,15 @@ static int nocomp_recv(MultiFDRecvParams *p, Error **errp)
+     return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+ }
+ 
+-static MultiFDMethods multifd_nocomp_ops = {
+-    .send_setup = nocomp_send_setup,
+-    .send_cleanup = nocomp_send_cleanup,
+-    .send_prepare = nocomp_send_prepare,
+-    .recv_setup = nocomp_recv_setup,
+-    .recv_cleanup = nocomp_recv_cleanup,
+-    .recv = nocomp_recv
+-};
+-
+-static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] = {
+-    [MULTIFD_COMPRESSION_NONE] = &multifd_nocomp_ops,
+-};
++static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] = {};
+ 
+ void multifd_register_ops(int method, MultiFDMethods *ops)
+ {
+-    assert(0 < method && method < MULTIFD_COMPRESSION__MAX);
++    if (method == MULTIFD_COMPRESSION_NONE) {
++        assert(!multifd_ops[method]);
++    } else {
++        assert(0 < method && method < MULTIFD_COMPRESSION__MAX);
++    }
+     multifd_ops[method] = ops;
+ }
+ 
+@@ -1755,3 +1694,19 @@ bool multifd_send_prepare_common(MultiFDSendParams *p)
+ 
+     return true;
+ }
++
++static MultiFDMethods multifd_ram_ops = {
++    .send_setup = ram_send_setup,
++    .send_cleanup = ram_send_cleanup,
++    .send_prepare = ram_send_prepare,
++    .recv_setup = ram_recv_setup,
++    .recv_cleanup = ram_recv_cleanup,
++    .recv = ram_recv
++};
++
++static void multifd_ram_register(void)
++{
++    multifd_register_ops(MULTIFD_COMPRESSION_NONE, &multifd_ram_ops);
 +}
 +
-+int multifd_send_sync_main(void)
-+{
-+    int i;
-+    bool flush_zero_copy;
-+
-     flush_zero_copy = migrate_zero_copy_send();
- 
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-diff --git a/migration/multifd.h b/migration/multifd.h
-index e3d0120837..19a43d46c0 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -278,4 +278,5 @@ static inline uint32_t multifd_ram_page_count(void)
- 
- void multifd_ram_save_setup(void);
- void multifd_ram_save_cleanup(void);
-+int multifd_ram_flush_and_sync(void);
- #endif
-diff --git a/migration/ram.c b/migration/ram.c
-index 1815b2557b..67ca3d5d51 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1326,7 +1326,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-                 (!migrate_multifd_flush_after_each_section() ||
-                  migrate_mapped_ram())) {
-                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
--                int ret = multifd_send_sync_main();
-+                int ret = multifd_ram_flush_and_sync();
-                 if (ret < 0) {
-                     return ret;
-                 }
-@@ -3066,7 +3066,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
-     }
- 
-     bql_unlock();
--    ret = multifd_send_sync_main();
-+    ret = multifd_ram_flush_and_sync();
-     bql_lock();
-     if (ret < 0) {
-         error_setg(errp, "%s: multifd synchronization failed", __func__);
-@@ -3213,7 +3213,7 @@ out:
-         && migration_is_setup_or_active()) {
-         if (migrate_multifd() && migrate_multifd_flush_after_each_section() &&
-             !migrate_mapped_ram()) {
--            ret = multifd_send_sync_main();
-+            ret = multifd_ram_flush_and_sync();
-             if (ret < 0) {
-                 return ret;
-             }
-@@ -3285,7 +3285,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         }
-     }
- 
--    ret = multifd_send_sync_main();
-+    ret = multifd_ram_flush_and_sync();
-     if (ret < 0) {
-         return ret;
-     }
++migration_init(multifd_ram_register);
 -- 
 2.35.3
 
