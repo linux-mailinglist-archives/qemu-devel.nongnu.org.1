@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5801B94490A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D09B944919
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:10:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZSiu-000112-6Y; Thu, 01 Aug 2024 06:07:52 -0400
+	id 1sZSko-0001at-4i; Thu, 01 Aug 2024 06:09:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZSis-0000v4-1Q
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:07:50 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZSiq-0006c3-AQ
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:07:49 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a7abe5aa9d5so781676766b.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:07:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722506866; x=1723111666; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=a6ArcVT1vup6+uuJoJ1ubNJgA9SGz0vY4xBKeQu+H+s=;
- b=Wg8Rf95aKalsgQvpCS/MSR04pJymW/w+2uXctciVrHlH2mOH+avq5dETbdVqMZRPO0
- v9FfynZU9P2t6ploJF9Ay7HiCVTEK0+bI8+qm6/U8stchSysGHLWsIMpSNLHF6ntjcQ2
- kM2J6APh53qBlYOWhOdH6SNDroUkP8sfxqG5gStMZHEXN91pPde1dZRdCOj/zFUGt3hJ
- rs8yF4haKTZCRPEnZdJEr161Ou4wZPwZR2xeUYnRla3ksKPFMBrjrjEkq9BDhJ18b12i
- eyvsZha5DO6ry8Kb68Y/7ukD0m6E/OI3Lmiy+NPE8LwQwUk9im89nAPp/LrBAiihu3G1
- mr2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722506866; x=1723111666;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=a6ArcVT1vup6+uuJoJ1ubNJgA9SGz0vY4xBKeQu+H+s=;
- b=kOegMB8DRk3miVID7Gqd11MrNz+mtRRXzd6czEWES5+xvF3zuL24gOrfywmKVCQLdJ
- 0sae7N3ZkvQoWoEgYeTPPyKkgw7d6KHJnEzGv42tinQf/OWpHnEyhVEdu6t/TZZjDqfH
- 3vfOLQ8HdDn2iMjM7cpSoPtUZDT3lFZ+fu7tlIGeVXalhYD7iJpC621fTltTFfVnW0vc
- zC2idp35EBQXAITnt3Y9LqzEbgiZk8/mZDoxlJZrSaBmHMyx/2cjBjJpGdFyM3+JvoHf
- k/YOo9Esss3sCLds/hoBYAD6MjOvSwNaxFSzYxYKBjV7mCITXJ8Ug3UtvnAQJQRLXHqJ
- gFAg==
-X-Gm-Message-State: AOJu0YwtnukIASefspNe2wN6v45ygxGfnwA7QOl0NGp3qPm0hqTp33A8
- u3eFvxb6h/c//3R5RSIIdevA7tFFpMXp8kcBv0bqy3fo56xlQQHC9Ac7qiBhEyvCcsHGzUhP/tj
- E
-X-Google-Smtp-Source: AGHT+IF+gp8X9NEcdWcSwWpHzSINyZz2V93EMceK+gnmJc+psMfLWxuFUUOteZ2IdgJ0j+EvBVj9CA==
-X-Received: by 2002:a17:907:3909:b0:a7d:3cf6:48d1 with SMTP id
- a640c23a62f3a-a7daf56b6admr108148566b.32.1722506865968; 
- Thu, 01 Aug 2024 03:07:45 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.130.148])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad9026fsm891732966b.145.2024.08.01.03.07.44
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 Aug 2024 03:07:45 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1?] hw/pci/pci-hmp-cmds: Avoid displaying bogus size in
- 'info pci'
-Date: Thu,  1 Aug 2024 12:07:42 +0200
-Message-ID: <20240801100742.50312-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sZSkl-0001T7-K7
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:09:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sZSkj-0007QU-IV
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:09:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722506985;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=r0VMI7Or2ebFT8na4YBzWTfxv52cy1HsikMjHoVlw5I=;
+ b=RwqMeAJdZx08imjf/RBCpRsFfnsGtajV2A+1qqlfIb+TBb4RCAu2vXrnXwu/WUuga9n3yl
+ 2ynrSlP3wgQHlRV2CAfX75Mkahr8UzDakZS8zqVVeSASGjfNmTx4rZV+uGEButRZIrok7F
+ Lj+dji61ACwT3uoqpWm0KsGY7PtdGgA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-M7EP8uTaOGuwQqRql5XTvA-1; Thu,
+ 01 Aug 2024 06:09:42 -0400
+X-MC-Unique: M7EP8uTaOGuwQqRql5XTvA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 918021955D52; Thu,  1 Aug 2024 10:09:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.109])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 37B541955F23; Thu,  1 Aug 2024 10:09:34 +0000 (UTC)
+Date: Thu, 1 Aug 2024 11:09:31 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, Ani Sinha <anisinha@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v3 16/24] tests/functional: Convert the riscv_opensbi
+ avocado test into a standalone test
+Message-ID: <Zqte2ySm_scvu17t@redhat.com>
+References: <20240730170347.4103919-1-berrange@redhat.com>
+ <20240730170347.4103919-17-berrange@redhat.com>
+ <9fbf2f80-c7df-4819-8f74-c7ce75dc70a5@linaro.org>
+ <42fb9582-9215-4ccc-bede-0c4f03fffd4c@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <42fb9582-9215-4ccc-bede-0c4f03fffd4c@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,69 +89,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When BAR aren't configured, we get:
+On Thu, Aug 01, 2024 at 09:00:36AM +1000, Richard Henderson wrote:
+> On 7/31/24 22:56, Philippe Mathieu-Daudé wrote:
+> > On 30/7/24 19:03, Daniel P. Berrangé wrote:
+> > > From: Thomas Huth <thuth@redhat.com>
+> > > 
+> > > The avocado test defined test functions for both, riscv32 and riscv64.
+> > > Since we can run the whole file with multiple targets in the new
+> > > framework, we can now consolidate the functions so we have to only
+> > > define one function per machine now.
+> > > 
+> > > Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> > > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > > ---
+> > >   tests/avocado/riscv_opensbi.py         | 63 --------------------------
+> > >   tests/functional/meson.build           |  8 ++++
+> > >   tests/functional/test_riscv_opensbi.py | 36 +++++++++++++++
+> > >   3 files changed, 44 insertions(+), 63 deletions(-)
+> > >   delete mode 100644 tests/avocado/riscv_opensbi.py
+> > >   create mode 100755 tests/functional/test_riscv_opensbi.py
+> > 
+> > Please squash:
+> > 
+> > -- >8 --
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 98eddf7ae1..a906218f9d 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -336,6 +337,7 @@ F: include/hw/riscv/
+> >   F: linux-user/host/riscv32/
+> >   F: linux-user/host/riscv64/
+> >   F: tests/tcg/riscv64/
+> > +F: tests/functional/test_riscv_opensbi.py
+> 
+> It seems worth taking this opportunity to add per-target subdirs of
+> tests/functional/, so that we don't have to list every individual test in
+> MAINTAINERS.
+> 
+> Surely one
+> 
+> F: tests/functional/riscv/
+> 
+> etc, is actually maintainable...
 
-  (qemu) info pci
-    Bus  0, device   0, function 0:
-      Host bridge: PCI device dead:beef
-        ...
-        BAR4: 32 bit memory at 0xffffffffffffffff [0x00000ffe].
-        BAR5: I/O at 0xffffffffffffffff [0x0ffe].
+Either that or wildcard the filenames
 
-Improve logging to not display bogus sizes:
+ F: tests/functional/test_riscv_*
 
-      BAR4: 32 bit memory (not configured)
-      BAR5: I/O (not configured)
 
-Remove trailing dot which is not used in other commands format.
+but subdirs matching the target is probably a little nicer to really
+encourage people to follow conventions more strictly. We would also
+need a "tests/functional/common/" for tests which aren't target specific
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/pci/pci-hmp-cmds.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
-
-diff --git a/hw/pci/pci-hmp-cmds.c b/hw/pci/pci-hmp-cmds.c
-index b09fce9377..8421c3f74a 100644
---- a/hw/pci/pci-hmp-cmds.c
-+++ b/hw/pci/pci-hmp-cmds.c
-@@ -83,15 +83,25 @@ static void hmp_info_pci_device(Monitor *mon, const PciDeviceInfo *dev)
-         monitor_printf(mon, "      BAR%" PRId64 ": ", region->value->bar);
- 
-         if (!strcmp(region->value->type, "io")) {
--            monitor_printf(mon, "I/O at 0x%04" PRIx64
--                                " [0x%04" PRIx64 "].\n",
--                           addr, addr + size - 1);
-+            if (addr != UINT64_MAX) {
-+                monitor_printf(mon, "I/O at 0x%04" PRIx64
-+                                    " [0x%04" PRIx64 "]\n",
-+                               addr, addr + size - 1);
-+            } else {
-+                monitor_printf(mon, "I/O (not configured)\n");
-+            }
-         } else {
--            monitor_printf(mon, "%d bit%s memory at 0x%08" PRIx64
--                               " [0x%08" PRIx64 "].\n",
--                           region->value->mem_type_64 ? 64 : 32,
--                           region->value->prefetch ? " prefetchable" : "",
--                           addr, addr + size - 1);
-+            if (addr != UINT64_MAX) {
-+                monitor_printf(mon, "%d bit%s memory at 0x%08" PRIx64
-+                                   " [0x%08" PRIx64 "]\n",
-+                               region->value->mem_type_64 ? 64 : 32,
-+                               region->value->prefetch ? " prefetchable" : "",
-+                               addr, addr + size - 1);
-+            } else {
-+                monitor_printf(mon, "%d bit%s memory (not configured)\n",
-+                               region->value->mem_type_64 ? 64 : 32,
-+                               region->value->prefetch ? " prefetchable" : "");
-+            }
-         }
-     }
- 
+With regards,
+Daniel
 -- 
-2.45.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
