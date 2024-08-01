@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28A094527E
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 20:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F71945275
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 20:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZa5R-0001ZJ-M7; Thu, 01 Aug 2024 13:59:37 -0400
+	id 1sZa5S-0001kO-UM; Thu, 01 Aug 2024 13:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZa5N-0001XR-C6
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:33 -0400
+ id 1sZa5P-0001ZF-4h
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZa5K-0005uB-V2
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:32 -0400
+ id 1sZa5M-0005uM-59
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722535169;
+ s=mimecast20190719; t=1722535171;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qUkIIosbBETnEy5HXrShiEtjaYOvur2tbXwmwlKnd4Y=;
- b=T9I4gxT6k8s77bOAT44WtU+1z6RA7PswVKNpmS0Ig9rt228DZspRDxQlGEvslaABCZI7EX
- IKMl437Q/td9kPNi79t0ELFYf1znhEB32AnOcOgeVMTKqTakKQYD5SzF+Qkf+UDjPeBj+s
- adGqJBfLkqPQy7L17bciNBx/GDUfnsY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=gjmXgGzTx2PPKb6vl+5P/ivLVpqgVC1jTbbAHudRTVw=;
+ b=Jo7IguMd1Pq2yl5w3NqP69WX7c0zJUROxM6DsEunw4PRYbrNp5BEwEGg+fCuevlfmylyOM
+ vGY47G/Yc4C5//wk13Ree4A45R0hfyb7p6HNWTEaMmmNBgoHZ/pThmFrxxhD78QrHqsO5K
+ Wnaoki0zKIFaCtQhzNuB0RkkBm5PHgQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-zW22CGDKNCirwD5jdFcW7w-1; Thu,
- 01 Aug 2024 13:59:25 -0400
-X-MC-Unique: zW22CGDKNCirwD5jdFcW7w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-2HESJ0tjPXi3Capv2bcuUg-1; Thu,
+ 01 Aug 2024 13:59:28 -0400
+X-MC-Unique: 2HESJ0tjPXi3Capv2bcuUg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5868D1955F06; Thu,  1 Aug 2024 17:59:24 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A1791955D45; Thu,  1 Aug 2024 17:59:27 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.17])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 497D019560AA; Thu,  1 Aug 2024 17:59:20 +0000 (UTC)
+ id 908D1195605A; Thu,  1 Aug 2024 17:59:24 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/6] scripts/qapi: rename 'special_features' to 'features'
-Date: Thu,  1 Aug 2024 18:59:09 +0100
-Message-ID: <20240801175913.669013-3-berrange@redhat.com>
+Subject: [PATCH 3/6] qapi: use "QAPI_FEATURE" as namespace for features
+Date: Thu,  1 Aug 2024 18:59:10 +0100
+Message-ID: <20240801175913.669013-4-berrange@redhat.com>
 In-Reply-To: <20240801175913.669013-1-berrange@redhat.com>
 References: <20240801175913.669013-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,131 +86,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This updates the QAPI code generation to refer to 'features' instead
-of 'special_features', in preparation for generalizing their exposure.
+This more clearly distinguishes the feature constants from other
+QAPI constants.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/qapi/commands.py |  4 ++--
- scripts/qapi/gen.py      |  8 ++++----
- scripts/qapi/types.py    | 10 +++++-----
- scripts/qapi/visit.py    | 14 +++++++-------
- 4 files changed, 18 insertions(+), 18 deletions(-)
+ include/qapi/util.h           | 4 ++--
+ qapi/qapi-util.c              | 4 ++--
+ qapi/qobject-output-visitor.c | 4 ++--
+ scripts/qapi/gen.py           | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
-index 79951a841f..d629d2d97e 100644
---- a/scripts/qapi/commands.py
-+++ b/scripts/qapi/commands.py
-@@ -25,7 +25,7 @@
-     QAPIGenC,
-     QAPISchemaModularCVisitor,
-     build_params,
--    gen_special_features,
-+    gen_features,
-     ifcontext,
- )
- from .schema import (
-@@ -298,7 +298,7 @@ def gen_register_command(name: str,
- ''',
-                 name=name, c_name=c_name(name),
-                 opts=' | '.join(options) or 0,
--                feats=gen_special_features(features))
-+                feats=gen_features(features))
-     return ret
+diff --git a/include/qapi/util.h b/include/qapi/util.h
+index b377cb9c70..a693cac9ea 100644
+--- a/include/qapi/util.h
++++ b/include/qapi/util.h
+@@ -12,8 +12,8 @@
+ #define QAPI_UTIL_H
  
+ typedef enum {
+-    QAPI_DEPRECATED,
+-    QAPI_UNSTABLE,
++    QAPI_FEATURE_DEPRECATED,
++    QAPI_FEATURE_UNSTABLE,
+ } QapiFeature;
  
-diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
-index 6a8abe0041..e6c80cce23 100644
---- a/scripts/qapi/gen.py
-+++ b/scripts/qapi/gen.py
-@@ -40,10 +40,10 @@
- from .source import QAPISourceInfo
- 
- 
--def gen_special_features(features: Sequence[QAPISchemaFeature]) -> str:
--    special_features = [f"1u << QAPI_{feat.name.upper()}"
--                        for feat in features if feat.is_special()]
--    return ' | '.join(special_features) or '0'
-+def gen_features(features: Sequence[QAPISchemaFeature]) -> str:
-+    features = [f"1u << QAPI_{feat.name.upper()}"
-+                for feat in features if feat.is_special()]
-+    return ' | '.join(features) or '0'
- 
- 
- class QAPIGen:
-diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
-index 7bc3f8241f..ade6b7a3d7 100644
---- a/scripts/qapi/types.py
-+++ b/scripts/qapi/types.py
-@@ -18,7 +18,7 @@
- from .common import c_enum_const, c_name, mcgen
- from .gen import (
-     QAPISchemaModularCVisitor,
--    gen_special_features,
-+    gen_features,
-     ifcontext,
- )
- from .schema import (
-@@ -61,12 +61,12 @@ def gen_enum_lookup(name: str,
-                      index=index, name=memb.name)
-         ret += memb.ifcond.gen_endif()
- 
--        special_features = gen_special_features(memb.features)
--        if special_features != '0':
-+        features = gen_features(memb.features)
-+        if features != '0':
-             feats += mcgen('''
--        [%(index)s] = %(special_features)s,
-+        [%(index)s] = %(features)s,
- ''',
--                           index=index, special_features=special_features)
-+                           index=index, features=features)
- 
-     if feats:
-         ret += mcgen('''
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index 12f92e429f..8dbf4ef1c3 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -23,7 +23,7 @@
- )
- from .gen import (
-     QAPISchemaModularCVisitor,
--    gen_special_features,
-+    gen_features,
-     ifcontext,
- )
- from .schema import (
-@@ -103,15 +103,15 @@ def gen_visit_object_members(name: str,
- ''',
-                          name=memb.name, has=has)
-             indent.increase()
--        special_features = gen_special_features(memb.features)
--        if special_features != '0':
-+        features = gen_features(memb.features)
-+        if features != '0':
-             ret += mcgen('''
--    if (visit_policy_reject(v, "%(name)s", %(special_features)s, errp)) {
-+    if (visit_policy_reject(v, "%(name)s", %(features)s, errp)) {
+ typedef struct QEnumLookup {
+diff --git a/qapi/qapi-util.c b/qapi/qapi-util.c
+index 3d849fe034..48c8c867d3 100644
+--- a/qapi/qapi-util.c
++++ b/qapi/qapi-util.c
+@@ -43,13 +43,13 @@ bool compat_policy_input_ok(uint64_t features,
+                             const char *kind, const char *name,
+                             Error **errp)
+ {
+-    if ((features & 1u << QAPI_DEPRECATED)
++    if ((features & 1u << QAPI_FEATURE_DEPRECATED)
+         && !compat_policy_input_ok1("Deprecated",
+                                     policy->deprecated_input,
+                                     error_class, kind, name, errp)) {
          return false;
      }
--    if (!visit_policy_skip(v, "%(name)s", %(special_features)s)) {
-+    if (!visit_policy_skip(v, "%(name)s", %(features)s)) {
- ''',
--                         name=memb.name, special_features=special_features)
-+                         name=memb.name, features=features)
-             indent.increase()
-         ret += mcgen('''
-     if (!visit_type_%(c_type)s(v, "%(name)s", &obj->%(c_name)s, errp)) {
-@@ -120,7 +120,7 @@ def gen_visit_object_members(name: str,
- ''',
-                      c_type=memb.type.c_name(), name=memb.name,
-                      c_name=c_name(memb.name))
--        if special_features != '0':
-+        if features != '0':
-             indent.decrease()
-             ret += mcgen('''
-     }
+-    if ((features & (1u << QAPI_UNSTABLE))
++    if ((features & (1u << QAPI_FEATURE_UNSTABLE))
+         && !compat_policy_input_ok1("Unstable",
+                                     policy->unstable_input,
+                                     error_class, kind, name, errp)) {
+diff --git a/qapi/qobject-output-visitor.c b/qapi/qobject-output-visitor.c
+index 8902287caa..b13c94d913 100644
+--- a/qapi/qobject-output-visitor.c
++++ b/qapi/qobject-output-visitor.c
+@@ -214,9 +214,9 @@ static bool qobject_output_policy_skip(Visitor *v, const char *name,
+ {
+     CompatPolicy *pol = &v->compat_policy;
+ 
+-    return ((features & 1u << QAPI_DEPRECATED)
++    return ((features & 1u << QAPI_FEATURE_DEPRECATED)
+             && pol->deprecated_output == COMPAT_POLICY_OUTPUT_HIDE)
+-        || ((features & 1u << QAPI_UNSTABLE)
++        || ((features & 1u << QAPI_FEATURE_UNSTABLE)
+             && pol->unstable_output == COMPAT_POLICY_OUTPUT_HIDE);
+ }
+ 
+diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
+index e6c80cce23..0ff29dc776 100644
+--- a/scripts/qapi/gen.py
++++ b/scripts/qapi/gen.py
+@@ -41,7 +41,7 @@
+ 
+ 
+ def gen_features(features: Sequence[QAPISchemaFeature]) -> str:
+-    features = [f"1u << QAPI_{feat.name.upper()}"
++    features = [f"1u << QAPI_FEATURE_{feat.name.upper()}"
+                 for feat in features if feat.is_special()]
+     return ' | '.join(features) or '0'
+ 
 -- 
 2.45.2
 
