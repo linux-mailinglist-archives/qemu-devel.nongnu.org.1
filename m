@@ -2,98 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1A5945003
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 18:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3F594503D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 18:13:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZYIi-0002IW-Se; Thu, 01 Aug 2024 12:05:12 -0400
+	id 1sZYP6-0001EY-Oy; Thu, 01 Aug 2024 12:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sZYId-0002EQ-QQ
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:05:08 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZYP4-0001CJ-1o
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:11:46 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sZYIb-0001gB-QZ
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:05:07 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a7ab5fc975dso650814066b.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 09:05:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZYP1-0006CO-RK
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:11:45 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42816ca797fso42847855e9.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 09:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722528303; x=1723133103; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UraJEAGUMpzljakCtRMmTiDbLKttts3ShtT7iKqW2eQ=;
- b=F/k8KVVq8Xez/YbL2THE4Xku1Bifwq6ZZZaL6FuyEqkEiJp9cCTI31dGnAnspbtG3s
- X4U0j+e3cdM0/o9sir6M+k0KVnfeaOq7M6wCnINgAZcEKkYPCxjT0FU28riRmELuelQo
- Ds+S9+p/+TqqrS9jq8TanHInkaKSTwAH3npnSh19k794acaMz4xJi3RNcTt6SWchg82E
- Gm2hPPUQJgYPsPYKqTapSPwYvAty7/jvpJ7WjyaN5L7oe6lG4OyNldqiDdKZ9GPBwMec
- PawHA5jpA6zTCM2fHVPQ7fhjjGP0tRdBka9bpYG40+xu59NzOAMSD/7aUe9Cyuse3c5H
- Su+A==
+ d=linaro.org; s=google; t=1722528702; x=1723133502; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IXOe2oCgMbv2tEutIjcK2r/oyREZzaqfz4sK7BVHm8o=;
+ b=bi6zBywhi9dDAdNxLpkGYWSJMkoo1u01RFu8KHUhh4CCV3hjScG1WiXLAiTCjpxYna
+ KxHJzbUp+d5VU7uAHgnjA2IMzDOOKvOS4qDROQWDFhB5O3SXCAGAalLXtrt6+/JjQPDG
+ /SojT08UbpKJatP34VKeZDCN7zInCzfc/pbdCUuQ6SpNy0wmY3SbhIGUO/is8Mrm/ZuT
+ 2FbyhVNezxKkrtF7ZEFem5rwQKKzzpgohBWpKJCghvLa/wFuIgAhfI04N5HKx3GBw+KC
+ Mypebxp4xq/S7usKS9vbEfQ8BzMs1lB9jnrV3uhCNSFuDlejp8BCDti+TIAi0KBQVW1O
+ vmNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722528303; x=1723133103;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UraJEAGUMpzljakCtRMmTiDbLKttts3ShtT7iKqW2eQ=;
- b=GqAEM1Jll4nhGcQD81MZNWwGeuFF6vaBOCYYbUu/bi6v+qqTjT5usvrcvkLOAEfkAf
- Ft1TNnX8GPcBt+ETAzRgO+pNfdRtz6tWhgbmAETLnQu+/Yim3CFLVh7HzFCZmtv9HQ8g
- 06AO16O11iYrc/VpQRi2tQWK/a+R/mcK9tM24L2Q4+WtpV75m5vz0IkXQ5x4pnD7W182
- 5J0zNYCHGxNoSwz04p3nInicMEcrIaC87LXiQ1VN1PlBlo48SVw8beIjXKK+sWI/HisS
- MOpBYzEvjGGSBCuiKBbL76LQ+N0ed6/Q3iRHVdEK5yd91wplw/SbXK5mGB1GCy99lSyS
- vrKQ==
+ d=1e100.net; s=20230601; t=1722528702; x=1723133502;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IXOe2oCgMbv2tEutIjcK2r/oyREZzaqfz4sK7BVHm8o=;
+ b=ppGDd+SWyPltTm4k0fkOnMbdWlgb2/slLaMAE3PI+2E+MlJ/DRito+42D9y1+eHBMx
+ Et3MhHH0lHKiW5B29k7ZCD3ceOjSvKaQd8AEUog6UfeszdU2vFOifmhGnRuPMAQsVgLt
+ 40rGfTNu+dbB4N2FCSzTrvjwdxAlic1lUmSJ6HW1TYArvAzaI2jtRhUePzfvupmiK0zJ
+ O5DCG+Z29+ZQXbdgEy8YMp1Oub0Ndo2Xw5Z94gKF+m3ewkOa+do8zQ/9gJoJp/qgLaTF
+ B0EYqOBNowzfucJBmuxB3/SzGd3usr7lMmZ8lEhflEdnF/KLtQ45QJ9c2BYuowyMsBf/
+ edxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW56/nJBAe4y/LkCqq0HPyfFoz5zAWf4OqH7Yv0MTL6bC1NZOV46MXxt0S043kBErx1ViV4WvVMBbSw+6qa0K14BS1tDYg=
-X-Gm-Message-State: AOJu0YzDLUaiUXVVdqLhjXiDNHfCSn6jTWDezsx6pUHg5GgFkem9lq4+
- CnaSKIPUcpu4wCFmmI/SWnfKtJYk7gU2Iy2+OtUtrLy7SFKsxgmYN8zOoglBy20=
-X-Google-Smtp-Source: AGHT+IGQheyAl83OGQCgDvJX1Qq8gYqzJ54QT7zQyOcPCVmA/8NmGImxlX4P5CkAk0dPsdGHHNmHrQ==
-X-Received: by 2002:a17:906:c10a:b0:a6e:f7bc:dcab with SMTP id
- a640c23a62f3a-a7dc50a47cemr50816366b.65.1722528302383; 
- Thu, 01 Aug 2024 09:05:02 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acadbb910sm919959766b.225.2024.08.01.09.05.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 09:05:01 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AF1225F7AD;
- Thu,  1 Aug 2024 17:05:00 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Cleber Rosa <crosa@redhat.com>
-Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org,  Peter
- Maydell <peter.maydell@linaro.org>,  Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,  Sriram Yagnaraman
- <sriram.yagnaraman@ericsson.com>,  David Woodhouse <dwmw2@infradead.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Leif Lindholm
- <quic_llindhol@quicinc.com>,  Jiaxun Yang <jiaxun.yang@flygoat.com>,
- kvm@vger.kernel.org,  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,  qemu-arm@nongnu.org,
- Radoslaw Biernacki <rad@semihalf.com>,  Paul Durrant <paul@xen.org>,
- Paolo Bonzini <pbonzini@redhat.com>,  Akihiko Odaki
- <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH 06/13] tests/avocado: use more distinct names for assets
-In-Reply-To: <CA+bd_6JjpHe=DJZMJb7x-bu_-i8X2Z4LCuk-Mz-2_LbqtUKYNQ@mail.gmail.com>
- (Cleber Rosa's message of "Wed, 31 Jul 2024 23:12:34 -0400")
-References: <20240726134438.14720-1-crosa@redhat.com>
- <20240726134438.14720-7-crosa@redhat.com>
- <ZqdzqnpKja7Xo-Yc@redhat.com>
- <CA+bd_6JjpHe=DJZMJb7x-bu_-i8X2Z4LCuk-Mz-2_LbqtUKYNQ@mail.gmail.com>
-Date: Thu, 01 Aug 2024 17:05:00 +0100
-Message-ID: <87sevocjpv.fsf@draig.linaro.org>
+ AJvYcCWHD13Ebu5tNTyy2QOwbhYcnR//GYYjqOsthi38MaG7L1RxcCPsNaf+gDCnv2ahp/9MRTTEi9ZHxPRTVAq1gdyYFpYOAJM=
+X-Gm-Message-State: AOJu0YwnEB/3nxPPiKU8L2MltQJX2EgfcoDhpd1G5ejrLPBMy054hVck
+ An0YatX6jWB9TLiUQuyXXzLP+fKLKLJWYpKiNRoXxdviTyKb0w0YhODNy94gKcU=
+X-Google-Smtp-Source: AGHT+IF++jWCC8D+TNjqYV+2dx+rUV/+civnaubvAkU97Ez2imcm78Yf83WoG4u5RzNGKMBkVgMjcQ==
+X-Received: by 2002:a05:600c:1987:b0:428:2502:75b5 with SMTP id
+ 5b1f17b1804b1-428e6afa2eemr2973985e9.11.1722528701904; 
+ Thu, 01 Aug 2024 09:11:41 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.130.148])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4282bb9d54esm62441235e9.43.2024.08.01.09.11.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Aug 2024 09:11:41 -0700 (PDT)
+Message-ID: <7e690384-e357-488d-a4aa-a3e5da0bc109@linaro.org>
+Date: Thu, 1 Aug 2024 18:11:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/24] tests/functional: Add base classes for the
+ upcoming pytest-based tests
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>
+References: <20240730170347.4103919-1-berrange@redhat.com>
+ <20240730170347.4103919-3-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240730170347.4103919-3-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,88 +100,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cleber Rosa <crosa@redhat.com> writes:
+On 30/7/24 19:03, Daniel P. Berrangé wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> The file is mostly a copy of the tests/avocado/avocado_qemu/__init__.py
+> file with some adjustments to get rid of the Avocado dependencies (i.e.
+> we also have to drop the LinuxSSHMixIn and LinuxTest for now).
+> 
+> The emulator binary and build directory are now passed via
+> environment variables that will be set via meson.build later.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> [DB: split __init__.py into multiple files]
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   tests/functional/qemu_test/__init__.py |  13 ++
+>   tests/functional/qemu_test/cmd.py      | 171 +++++++++++++++++++++++++
+>   tests/functional/qemu_test/config.py   |  36 ++++++
+>   tests/functional/qemu_test/testcase.py | 154 ++++++++++++++++++++++
+>   4 files changed, 374 insertions(+)
+>   create mode 100644 tests/functional/qemu_test/__init__.py
+>   create mode 100644 tests/functional/qemu_test/cmd.py
+>   create mode 100644 tests/functional/qemu_test/config.py
+>   create mode 100644 tests/functional/qemu_test/testcase.py
 
-> On Mon, Jul 29, 2024 at 6:49=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange=
-@redhat.com> wrote:
->>
->> On Fri, Jul 26, 2024 at 09:44:31AM -0400, Cleber Rosa wrote:
->> > Avocado's asset system will deposit files in a cache organized either
->> > by their original location (the URI) or by their names.  Because the
->> > cache (and the "by_name" sub directory) is common across tests, it's a
->> > good idea to make these names as distinct as possible.
->> >
->> > This avoid name clashes, which makes future Avocado runs to attempt to
->> > redownload the assets with the same name, but from the different
->> > locations they actually are from.  This causes cache misses, extra
->> > downloads, and possibly canceled tests.
->> >
->> > Signed-off-by: Cleber Rosa <crosa@redhat.com>
->> > ---
->> >  tests/avocado/kvm_xen_guest.py  | 3 ++-
->> >  tests/avocado/netdev-ethtool.py | 3 ++-
->> >  2 files changed, 4 insertions(+), 2 deletions(-)
->> >
->> > diff --git a/tests/avocado/kvm_xen_guest.py b/tests/avocado/kvm_xen_gu=
-est.py
->> > index f8cb458d5d..318fadebc3 100644
->> > --- a/tests/avocado/kvm_xen_guest.py
->> > +++ b/tests/avocado/kvm_xen_guest.py
->> > @@ -40,7 +40,8 @@ def get_asset(self, name, sha1):
->> >          url =3D base_url + name
->> >          # use explicit name rather than failing to neatly parse the
->> >          # URL into a unique one
->> > -        return self.fetch_asset(name=3Dname, locations=3D(url), asset=
-_hash=3Dsha1)
->> > +        return self.fetch_asset(name=3Df"qemu-kvm-xen-guest-{name}",
->> > +                                locations=3D(url), asset_hash=3Dsha1)
->>
->> Why do we need to pass a name here at all ? I see the comment here
->> but it isn't very clear about what the problem is. It just feels
->> wrong to be creating ourselves uniqueness naming problems, when we
->> have a nicely unique URL, and that cached URL can be shared across
->> tests, where as the custom names added by this patch are forcing
->> no-caching of the same URL between tests.
->>
->
-> Now with your comment, I do agree that this adds some unneeded
-> maintenance burden indeed.  Also, this was part of my pre-avocado bump
-> patches that would work around issues present in < 103.0.  But let me
-> give the complete answer.
->
-> Under 88.1 the "uniqueness" of the URL did not consider the query
-> parameters in the URL.  So, under 88.1:
->
->    avocado.utils.asset.Asset(name=3D'bzImage',
-> locations=3D['https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?pa=
-th=3D%2Fkvm-xen-guest&files=3DbzImage',
-> ...)
->    avocado.utils.asset.Asset(name=3D'bzImage',
-> locations=3D['https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?pa=
-th=3D%2Fnetdev-ethtool&files=3DbzImage',
-> ...)
 
-This is mostly a hack to avoid having to tell NextCloud to generate a
-unique sharing URL for every file.
+> diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+> new file mode 100644
+> index 0000000000..82cc1d454f
+> --- /dev/null
+> +++ b/tests/functional/qemu_test/testcase.py
+> @@ -0,0 +1,154 @@
+> +# Test class and utilities for functional tests
+> +#
+> +# Copyright 2018, 2024 Red Hat, Inc.
+> +#
+> +# Original Author (Avocado-based tests):
+> +#  Cleber Rosa <crosa@redhat.com>
+> +#
+> +# Adaption for standalone version:
+> +#  Thomas Huth <thuth@redhat.com>
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or
+> +# later.  See the COPYING file in the top-level directory.
+> +
+> +import logging
+> +import os
+> +import pycotap
+> +import sys
+> +import unittest
+> +import uuid
+> +
+> +from qemu.machine import QEMUMachine
+> +from qemu.utils import kvm_available, tcg_available
+> +
+> +from .cmd import run_cmd
+> +from .config import BUILD_DIR
+> +
+> +
+> +class QemuBaseTest(unittest.TestCase):
+> +
+> +    qemu_bin = os.getenv('QEMU_TEST_QEMU_BINARY')
+> +    arch = None
+> +
+> +    workdir = None
+> +    log = logging.getLogger('qemu-test')
+> +
+> +    def setUp(self, bin_prefix):
+> +        self.assertIsNotNone(self.qemu_bin, 'QEMU_TEST_QEMU_BINARY must be set')
+> +        self.arch = self.qemu_bin.split('-')[-1]
+> +
+> +        self.workdir = os.path.join(BUILD_DIR, 'tests/functional', self.arch,
+> +                                    self.id())
+> +        if not os.path.exists(self.workdir):
+> +            os.makedirs(self.workdir)
+> +
+> +    def main():
 
->
-> Would save content to the same location:
-> /tmp/cache_old/by_location/2a8ecd750eb952504ad96b89576207afe1be6a8f/downl=
-oad.
->
-> This is no longer the case on 103.0 (actually since 92.0), the
-> contents of those exact assets would be saved to
-> '/by_location/415c998a0061347e5115da53d57ea92c908a2e7f/path=3D%2Fkvm-xen-=
-guest&files=3DbzImage'
-> and /by_location/415c998a0061347e5115da53d57ea92c908a2e7f/path=3D%2Fnetde=
-v-ethtool&files=3DbzImage'.
->
-> I personally don't like having the files named, although uniquely,
-> after the query parameters.  But, If this doesn't bother others more
-> than the maintenance burden, and Avocado version bump is applied, this
-> patch can be dropped.
+[*]
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> +        tr = pycotap.TAPTestRunner(message_log = pycotap.LogMode.LogToError,
+> +                                   test_output_log = pycotap.LogMode.LogToError)
+> +        path = os.path.basename(sys.argv[0])[:-3]
+
+Moving the 'path' line in [*] simplifies patch #9 (no duplication).
+
+> +        unittest.main(module = None, testRunner = tr, argv=["__dummy__", path])
+
 
