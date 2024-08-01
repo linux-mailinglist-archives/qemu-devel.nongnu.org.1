@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCDF944B72
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 14:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28E8944B8D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 14:40:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZV2b-0002Ev-N9; Thu, 01 Aug 2024 08:36:21 -0400
+	id 1sZV4a-00051z-SN; Thu, 01 Aug 2024 08:38:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZV2Z-00029a-Kf
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:36:19 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZV4W-0004bQ-19
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:38:21 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZV2X-0001di-Dj
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:36:19 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2f040733086so80126411fa.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 05:36:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZV4T-00027g-7g
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:38:18 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-428141be2ddso45402675e9.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 05:38:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722515775; x=1723120575; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AFXwgARkTU6t7ujPZhm+twS44Mu4z5CPiIZcyO6ym3Q=;
- b=dsH/boSh3m7WllRzh4yAJIn8lc3L5Nq2pgCdJjBzrhmzSKzryv9AJ2fqcZIBpZpgWZ
- Aa7EA69Kj3ijLZ/3jOToYlV+qmkdY+1UUFN/okXVbmkU5ZrPd0bEq8tnklnUeQRNdcrQ
- 9oyRX5GsqpDwHG+8jQlj/tbuCwlWH5CCBtbJEGa4Bng+rnfBRU0msVTWeRMJ4FhR3hxx
- S89FC0tWZiydudXMqZxgtDlazbONeO/M5vRvH2bJ5x2v2whi+/SxC9zZ2mzq+/zob0Z4
- u+EV/hLP8YL3yZYHL6b7acooMyWxLT1ESJBP0pgxaD/KRkCJ1eeVwJnCplZQhhmhWON9
- AvZw==
+ d=linaro.org; s=google; t=1722515894; x=1723120694; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=EDJyPA23QqXy3m2HXs0alZD9FTsiftBYfRYVZLga4oE=;
+ b=oMqExneB1kjG/GKWFhZbrdv/FU3de3uQfsq/lL1ya5gw+SqorBnbYYTegsv01xdjTz
+ SR4wg0joUIkMktq6zexFu4+VpRJlscxSnPGnfRvK4mCPmk4PFcnYhhhcF4WNwObx1McZ
+ PTU9bUSTktEE8wyxqcvPr+hL0HweLc6YXxVRgwiBwaf3WtIqdDnr4B1+81IPs6MYJINe
+ KhNLYJOaz+2DqffhmKIF5eIpejVR4z0ggUWvXH0y5sUJMXsmqQEXyH3QKp5RdijZrKxh
+ 7Gr3dXOUMBrm+dG47ivLaIJHog9VL8CbwDIGfWObMYNtZdUf+qnxzAgoYViur5tczt3b
+ Dbtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722515775; x=1723120575;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1722515894; x=1723120694;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AFXwgARkTU6t7ujPZhm+twS44Mu4z5CPiIZcyO6ym3Q=;
- b=R0dggjhtivt4lRjIUH608GskpfS/5RqoWsErYp5vkCFhdsuV3LXxeM0sRJyR0v6Rng
- QEA92t1wKum4wnTeVJkrGkI3g+BSm+A8aA9WXI6+q5eKKOXscdGSXOMmLAnMA6CIQHPs
- yrLo21vCTVwaTJmSoMH20PHW0W0aHWqb6XW0WWYQt9F5Yqutsw1LBgOHOxB0ZjGJ6dAq
- RwoAAKLQx/b9+t3ZOIaTlugyEZMdhgj/j6q2tcmMgLvB2Cx4eKSL0cEJWLiVoRS0DXey
- vYdjBiQWMD5DgLYI8LOLNnj/Cu75RKuKI1u+YK9eA07r/LkGVHWb+9oAykwUHeXgjepe
- P53g==
-X-Gm-Message-State: AOJu0YzO5WPHLR2jXz9dNGHIsN9sHhgECvf4Mur5WFNYI+MQ/cdd8G/f
- kdgicToxOlP2gauZTw1kulsKmiH7JEuxi74vsd+QIxDfP0ILUyBzubGFGx1+84Q=
-X-Google-Smtp-Source: AGHT+IFNb+1Bbg+P3B1wdSVpep/dQLfy15ukteBugQevIgHc3DxFVOH8cCBoBvLjYwRHxxrPOO3k2g==
-X-Received: by 2002:a2e:87c3:0:b0:2ee:7bcd:a52 with SMTP id
- 38308e7fff4ca-2f15ab53020mr638231fa.46.1722515774724; 
- Thu, 01 Aug 2024 05:36:14 -0700 (PDT)
+ bh=EDJyPA23QqXy3m2HXs0alZD9FTsiftBYfRYVZLga4oE=;
+ b=kpQU47Cpn76ger4AHc2ARsx+xRxKxrQQkrnsz5agv0ZNsx9K+xLDSRnH+EfOXqSXrN
+ hEOiTWnYv1NjBhdM+g1ESTwujCpqU4Sbr8Y0c8IXipTwMLlycSqrOxB0mSq9qBoRWXKF
+ jFDoYfmIAKOIdF7gWOQhd2Uct7soaYVxm1bFj0mxejM3UR11/97hsKC/PFLrPMDwKzkh
+ 6E1ExkC7WoG2tyRUSttDAsQcjT4BttCj49dOxnO4OEV+9OXnQo6XGixDny78KUY7RR+m
+ 2dzoNhqYAUhW3TLwEuWyBWGRtV5w+enqi+XKBqTltS8j4r3d4jmy2mvX9UEVqAUUMV9c
+ vMbQ==
+X-Gm-Message-State: AOJu0YwUMirv243uqLSlQfCHeVb79eAfaTUevFyQuRj6vKi6My4+jpYG
+ UlAJ9ZU2h3YBRVdcXrTekkxT35Nb2t2WVS29bFAYVLcjy62Cqpmtb6jdmRFlj1M=
+X-Google-Smtp-Source: AGHT+IGhLFwf2MKVJuY3M7dcY6SaDQsX0LV30jMqkZir6Ai5+12Ff0MTZu7h7OVOrP2+FH/FiIoG3w==
+X-Received: by 2002:a05:600c:6c4e:b0:426:6a53:e54f with SMTP id
+ 5b1f17b1804b1-428b032c05cmr15195565e9.33.1722515893879; 
+ Thu, 01 Aug 2024 05:38:13 -0700 (PDT)
 Received: from [192.168.33.175] (206.red-88-29-191.dynamicip.rima-tde.net.
  [88.29.191.206]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36b367e51f0sm19370028f8f.46.2024.08.01.05.36.13
+ 5b1f17b1804b1-4282b8ada7esm57491265e9.15.2024.08.01.05.38.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Aug 2024 05:36:14 -0700 (PDT)
-Message-ID: <3b2c64bd-33b4-48bf-9afa-ac5b138b901a@linaro.org>
-Date: Thu, 1 Aug 2024 14:36:11 +0200
+ Thu, 01 Aug 2024 05:38:13 -0700 (PDT)
+Message-ID: <cc6824b3-d4d0-434c-8f9c-c70864abc342@linaro.org>
+Date: Thu, 1 Aug 2024 14:38:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH-for-9.1?] hw/pci/pci-hmp-cmds: Avoid displaying bogus size
  in 'info pci'
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 References: <20240801100742.50312-1-philmd@linaro.org>
  <20240801062632-mutt-send-email-mst@kernel.org>
+ <3b2c64bd-33b4-48bf-9afa-ac5b138b901a@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240801062632-mutt-send-email-mst@kernel.org>
+In-Reply-To: <3b2c64bd-33b4-48bf-9afa-ac5b138b901a@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,77 +94,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/24 12:27, Michael S. Tsirkin wrote:
-> On Thu, Aug 01, 2024 at 12:07:42PM +0200, Philippe Mathieu-Daudé wrote:
->> When BAR aren't configured, we get:
+On 1/8/24 14:36, Philippe Mathieu-Daudé wrote:
+> On 1/8/24 12:27, Michael S. Tsirkin wrote:
+>> On Thu, Aug 01, 2024 at 12:07:42PM +0200, Philippe Mathieu-Daudé wrote:
+>>> When BAR aren't configured, we get:
+>>>
+>>>    (qemu) info pci
+>>>      Bus  0, device   0, function 0:
+>>>        Host bridge: PCI device dead:beef
+>>>          ...
+>>>          BAR4: 32 bit memory at 0xffffffffffffffff [0x00000ffe].
+>>>          BAR5: I/O at 0xffffffffffffffff [0x0ffe].
+>>>
+>>> Improve logging to not display bogus sizes:
+>>>
+>>>        BAR4: 32 bit memory (not configured)
+>>>        BAR5: I/O (not configured)
+>>>
+>>> Remove trailing dot which is not used in other commands format.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   hw/pci/pci-hmp-cmds.c | 26 ++++++++++++++++++--------
+>>>   1 file changed, 18 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/hw/pci/pci-hmp-cmds.c b/hw/pci/pci-hmp-cmds.c
+>>> index b09fce9377..8421c3f74a 100644
+>>> --- a/hw/pci/pci-hmp-cmds.c
+>>> +++ b/hw/pci/pci-hmp-cmds.c
+>>> @@ -83,15 +83,25 @@ static void hmp_info_pci_device(Monitor *mon, 
+>>> const PciDeviceInfo *dev)
+>>>           monitor_printf(mon, "      BAR%" PRId64 ": ", 
+>>> region->value->bar);
+>>>           if (!strcmp(region->value->type, "io")) {
+>>> -            monitor_printf(mon, "I/O at 0x%04" PRIx64
+>>> -                                " [0x%04" PRIx64 "].\n",
+>>> -                           addr, addr + size - 1);
+>>> +            if (addr != UINT64_MAX) {
+>>> +                monitor_printf(mon, "I/O at 0x%04" PRIx64
+>>> +                                    " [0x%04" PRIx64 "]\n",
+>>> +                               addr, addr + size - 1);
+>>> +            } else {
+>>> +                monitor_printf(mon, "I/O (not configured)\n");
+>>> +            }
+>>>           } else {
+>>> -            monitor_printf(mon, "%d bit%s memory at 0x%08" PRIx64
+>>> -                               " [0x%08" PRIx64 "].\n",
+>>> -                           region->value->mem_type_64 ? 64 : 32,
+>>> -                           region->value->prefetch ? " prefetchable" 
+>>> : "",
+>>> -                           addr, addr + size - 1);
+>>> +            if (addr != UINT64_MAX) {
+>>> +                monitor_printf(mon, "%d bit%s memory at 0x%08" PRIx64
+>>> +                                   " [0x%08" PRIx64 "]\n",
+>>> +                               region->value->mem_type_64 ? 64 : 32,
+>>> +                               region->value->prefetch ? " 
+>>> prefetchable" : "",
+>>> +                               addr, addr + size - 1);
+>>> +            } else {
+>>> +                monitor_printf(mon, "%d bit%s memory (not 
+>>> configured)\n",
+>>> +                               region->value->mem_type_64 ? 64 : 32,
+>>> +                               region->value->prefetch ? " 
+>>> prefetchable" : "");
+>>> +            }
+>>>           }
+>>>       }
 >>
->>    (qemu) info pci
->>      Bus  0, device   0, function 0:
->>        Host bridge: PCI device dead:beef
->>          ...
->>          BAR4: 32 bit memory at 0xffffffffffffffff [0x00000ffe].
->>          BAR5: I/O at 0xffffffffffffffff [0x0ffe].
->>
->> Improve logging to not display bogus sizes:
->>
->>        BAR4: 32 bit memory (not configured)
->>        BAR5: I/O (not configured)
->>
->> Remove trailing dot which is not used in other commands format.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   hw/pci/pci-hmp-cmds.c | 26 ++++++++++++++++++--------
->>   1 file changed, 18 insertions(+), 8 deletions(-)
->>
->> diff --git a/hw/pci/pci-hmp-cmds.c b/hw/pci/pci-hmp-cmds.c
->> index b09fce9377..8421c3f74a 100644
->> --- a/hw/pci/pci-hmp-cmds.c
->> +++ b/hw/pci/pci-hmp-cmds.c
->> @@ -83,15 +83,25 @@ static void hmp_info_pci_device(Monitor *mon, const PciDeviceInfo *dev)
->>           monitor_printf(mon, "      BAR%" PRId64 ": ", region->value->bar);
->>   
->>           if (!strcmp(region->value->type, "io")) {
->> -            monitor_printf(mon, "I/O at 0x%04" PRIx64
->> -                                " [0x%04" PRIx64 "].\n",
->> -                           addr, addr + size - 1);
->> +            if (addr != UINT64_MAX) {
->> +                monitor_printf(mon, "I/O at 0x%04" PRIx64
->> +                                    " [0x%04" PRIx64 "]\n",
->> +                               addr, addr + size - 1);
->> +            } else {
->> +                monitor_printf(mon, "I/O (not configured)\n");
->> +            }
->>           } else {
->> -            monitor_printf(mon, "%d bit%s memory at 0x%08" PRIx64
->> -                               " [0x%08" PRIx64 "].\n",
->> -                           region->value->mem_type_64 ? 64 : 32,
->> -                           region->value->prefetch ? " prefetchable" : "",
->> -                           addr, addr + size - 1);
->> +            if (addr != UINT64_MAX) {
->> +                monitor_printf(mon, "%d bit%s memory at 0x%08" PRIx64
->> +                                   " [0x%08" PRIx64 "]\n",
->> +                               region->value->mem_type_64 ? 64 : 32,
->> +                               region->value->prefetch ? " prefetchable" : "",
->> +                               addr, addr + size - 1);
->> +            } else {
->> +                monitor_printf(mon, "%d bit%s memory (not configured)\n",
->> +                               region->value->mem_type_64 ? 64 : 32,
->> +                               region->value->prefetch ? " prefetchable" : "");
->> +            }
->>           }
->>       }
+>> what makes bar unconfigured is that memory space is disabled,
+>> not that it has a special value.
 > 
-> what makes bar unconfigured is that memory space is disabled,
-> not that it has a special value.
+> I tried to add a PciMemoryRegion::enabled field then realized
+> unmapped regions are advertised using addr = PCI_BAR_UNMAPPED
+> (which is UINT64_MAX):
+> 
+> typedef struct PCIIORegion {
+>    pcibus_t addr; /* current PCI mapping address. -1 means not mapped */
+> #define PCI_BAR_UNMAPPED (~(pcibus_t)0)
+> 
+> OK if I respin this patch with s/UINT64_MAX/PCI_BAR_UNMAPPED/?
 
-I tried to add a PciMemoryRegion::enabled field then realized
-unmapped regions are advertised using addr = PCI_BAR_UNMAPPED
-(which is UINT64_MAX):
-
-typedef struct PCIIORegion {
-   pcibus_t addr; /* current PCI mapping address. -1 means not mapped */
-#define PCI_BAR_UNMAPPED (~(pcibus_t)0)
-
-OK if I respin this patch with s/UINT64_MAX/PCI_BAR_UNMAPPED/?
+and s/configured/mapped/ in printf.
 
