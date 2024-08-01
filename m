@@ -2,82 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D01945198
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 19:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 703C494519F
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 19:41:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZZlS-0003UP-6u; Thu, 01 Aug 2024 13:38:58 -0400
+	id 1sZZnf-0008OM-T1; Thu, 01 Aug 2024 13:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZZlP-0003Pe-Ak
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:38:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZZlL-0006Qy-V4
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:38:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722533930;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0c2hJaqBrg8gvwcscqodyDP58+zufPv/LmjPoSE3Z0w=;
- b=TKZ261rPGuyedy9c2xTxHYhgEbC8xaBqjGLgH+09vwVRYuQ1+1NM0v+zs6EetoMYgHmntg
- Jh5zly1jUReAVfKnIHUBT0Dp4u1IXkH4QVlSvGZSlcnnJpnEIcLIGlitVWd9Qkg6mQ3Bnh
- kv60SDSYAmCC0q9d6vTXkagXLDPtUIM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-g42Fiw4rNe6XcAwzy5Vqtg-1; Thu,
- 01 Aug 2024 13:38:47 -0400
-X-MC-Unique: g42Fiw4rNe6XcAwzy5Vqtg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZZna-0008KW-J3
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:41:10 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZZnY-0006xK-JG
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:41:10 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 966651955D55; Thu,  1 Aug 2024 17:38:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.17])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F358195605A; Thu,  1 Aug 2024 17:38:40 +0000 (UTC)
-Date: Thu, 1 Aug 2024 18:38:37 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-s390x <qemu-s390x@nongnu.org>,
- Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v3 13/24] tests/functional: Convert the s390x avocado
- tests into standalone tests
-Message-ID: <ZqvIHb15uzWZw6Qt@redhat.com>
-References: <20240730170347.4103919-1-berrange@redhat.com>
- <20240730170347.4103919-14-berrange@redhat.com>
- <0f30e83a-2048-4dcb-ba41-47920c62e1e1@linaro.org>
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 149871FB64;
+ Thu,  1 Aug 2024 17:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1722534065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=UgBQGLsIoW7Bf3SE3abuUZQqF8f9YMwqyIl5DpXB7qc=;
+ b=xmv9JEJZ/HWuClLiVSOQSddFu37c4mJtEoDnFnc8t10yaGzpxOCx7GKi4YytGJSmGb6NLC
+ lVxvH1pVJy2jd6RU8XGTCNkKZAl8FUuoHC4i49ijcCYc1sMpIXgo3ZmfI2rg03tXz49cWU
+ kVHLHDY8S9IX9DO5hLJjnm7eAZgQmp8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1722534065;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=UgBQGLsIoW7Bf3SE3abuUZQqF8f9YMwqyIl5DpXB7qc=;
+ b=F2uLuGh8pDIyw9rMMKRVRe3mNxEfXrmBDlgUiRbwHQHidJvqCu3Dp7ocfrZR12kE1/Ti2y
+ qZHqC3L73gCIOLAQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xmv9JEJZ;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=F2uLuGh8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1722534065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=UgBQGLsIoW7Bf3SE3abuUZQqF8f9YMwqyIl5DpXB7qc=;
+ b=xmv9JEJZ/HWuClLiVSOQSddFu37c4mJtEoDnFnc8t10yaGzpxOCx7GKi4YytGJSmGb6NLC
+ lVxvH1pVJy2jd6RU8XGTCNkKZAl8FUuoHC4i49ijcCYc1sMpIXgo3ZmfI2rg03tXz49cWU
+ kVHLHDY8S9IX9DO5hLJjnm7eAZgQmp8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1722534065;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=UgBQGLsIoW7Bf3SE3abuUZQqF8f9YMwqyIl5DpXB7qc=;
+ b=F2uLuGh8pDIyw9rMMKRVRe3mNxEfXrmBDlgUiRbwHQHidJvqCu3Dp7ocfrZR12kE1/Ti2y
+ qZHqC3L73gCIOLAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B284136CF;
+ Thu,  1 Aug 2024 17:41:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uXCyNK/Iq2brOQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 01 Aug 2024 17:41:03 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>
+Subject: [PATCH 0/2] Multifd fixes
+Date: Thu,  1 Aug 2024 14:40:59 -0300
+Message-Id: <20240801174101.31806-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0f30e83a-2048-4dcb-ba41-47920c62e1e1@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.81 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[]; ARC_NA(0.00)[];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RCPT_COUNT_TWO(0.00)[2];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_TLS_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,gitlab.com:url,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Spam-Score: -4.81
+X-Rspamd-Queue-Id: 149871FB64
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,52 +111,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 01, 2024 at 07:11:01PM +0200, Philippe Mathieu-Daudé wrote:
-> On 30/7/24 19:03, Daniel P. Berrangé wrote:
-> > From: Thomas Huth <thuth@redhat.com>
-> > 
-> > These tests use archive.lzma_uncompress() from the Avocado utils,
-> > so provide a small helper function for this, based on the
-> > standard lzma module from Python instead.
-> > 
-> > And while we're at it, replace the MD5 hashes in the topology test
-> > with proper SHA256 hashes, since MD5 should not be used anymore
-> > nowadays.
-> > 
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > ---
-> >   MAINTAINERS                                   |  4 +-
-> >   tests/functional/meson.build                  |  6 ++
-> >   tests/functional/qemu_test/utils.py           | 14 +++
-> >   .../test_s390x_ccw_virtio.py}                 | 79 ++++++++---------
-> >   .../test_s390x_topology.py}                   | 86 ++++++++-----------
-> >   5 files changed, 94 insertions(+), 95 deletions(-)
-> >   rename tests/{avocado/machine_s390_ccw_virtio.py => functional/test_s390x_ccw_virtio.py} (85%)
-> >   mode change 100644 => 100755
-> >   rename tests/{avocado/s390_topology.py => functional/test_s390x_topology.py} (88%)
-> >   mode change 100644 => 100755
-> 
-> Conversion LGTM, so:
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Now while testing I'm getting errors, but maybe pre-existing...
+Hi, a couple of multifd fixes to issues that Jim spotted while working
+on mapped-ram for libvirt.
 
-What host arch / OS are you running tests from ?
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1397467740
 
-I got through the full set of testing on Fedora x86_64, so
-wondering if something differs.
+Fabiano Rosas (2):
+  migration: Fix cleanup of iochannel in file migration
+  migration/multifd: Fix multifd_send_setup cleanup when channel
+    creation fails
 
+ migration/file.c    |  2 --
+ migration/multifd.c | 26 +++++++++++++++-----------
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.35.3
 
 
