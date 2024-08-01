@@ -2,79 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1A8944E4F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539FC944E6C
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:48:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZX1s-0004hr-6u; Thu, 01 Aug 2024 10:43:44 -0400
+	id 1sZX5R-000147-Gv; Thu, 01 Aug 2024 10:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1sZX1n-0004hL-FY
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:43:39 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1sZX1k-0001Is-U5
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:43:39 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7afd1aeac83so1788768a12.0
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 07:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722523415; x=1723128215;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=o5uEPZmBALVhkB8zBE1rg3ejDHIi7NrCyvVnKiBAGA0=;
- b=fo0ysU7FetLBT3t2pbhBYJii15g0y24TtT74zGNMYs0eYBNJzyypjtH1V+iI8KilYr
- NyaitRQRKbxHUyrLPOAe2HiVT4qbghdxErx9m2Fw15MosPl/P5Hzpyf8btTmEA1Jp6Av
- 9YlU7wdXLzjHPAV7JjSnamOh7E4pmwXteZWLUQqKgkjhH8A8LPJKOdTduuq8YZKtuU3a
- MXkaPEv3aeq5H4Kdb7ht2n1O5wWHpVnvyknkixqVWlFDd4K0/a+PxDWctuIm/+RiU2yL
- dSaCH083cErcYSeBXB9LO07cBImDX3j5uWwX+DY1YgmRwFZzv4/I00E1idpIAe/KaCPt
- nZQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722523415; x=1723128215;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=o5uEPZmBALVhkB8zBE1rg3ejDHIi7NrCyvVnKiBAGA0=;
- b=xCvQx4NT3HAcg7f84sMe1swzjAJ3L/kwIFAA+RZtbeKkPlYKvDCJ85cQ7hlPFpHE6N
- fP9PqBRT86Mgp1/Yq3EWqqzPfO5FiI7E6H9uH0gnRqDnFPnBcfKemiHEF4Quww+i60qB
- PZgC1rfrLrWooTgkYE5mMDowBIMFNYHsOcRuvjrXGX62ludOid3cQ5mkJwAYYAzjZi5S
- eqkJINsnGyVJUBUAtGfoFKeO6Wbbg0a4wO7VfpPOIvQ9bP4yjXTfVgkTEjhmc5laFHh8
- +mm+wmBI1e83fr7cbtTCegVLWITediliS5BF7kK5ICeCqmD5S1MZVtMri5bxfu5IAdTV
- 1Elg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUTAZssAdHbFB4Jy/KB+8zvRrtd3j6DiM/Mj/tazn7dJqKQ/82bjthjmhhkSoX23W64AhYoTGR76uJNibo1B1QOn+xspp4=
-X-Gm-Message-State: AOJu0Yymy+lGTH0QGqrlPn3JDndkVLfr9MlbUCKdOondVGwQhkq9/WsB
- z08GdIFhVVOKVgFyTQ8fhT131RKIuzF0QsOtx0a+6AUR/MnC8foCgJerpgfXb4KjSfiMeKqMLGt
- fZee6DiO6+MhnmMUbKOLjYw18R0Xt5/zzHvhnDg==
-X-Google-Smtp-Source: AGHT+IF1DFJD/lOHm1JpDsBZdzS+s/gpPaFLC9VPw8NODlcRWjp/+Kck1ppZSPNWHtrxPTN5FhBGNiovzY+U/Wl40oU=
-X-Received: by 2002:a17:90a:8d09:b0:2cb:5fe6:8a1d with SMTP id
- 98e67ed59e1d1-2cff0934695mr2531492a91.9.1722523415019; Thu, 01 Aug 2024
- 07:43:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sZX5P-0000xR-AH; Thu, 01 Aug 2024 10:47:23 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sZX5L-0001qY-RJ; Thu, 01 Aug 2024 10:47:23 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 79602628A6;
+ Thu,  1 Aug 2024 14:47:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41F3C4AF0B;
+ Thu,  1 Aug 2024 14:47:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1722523637;
+ bh=5XwGE1OWSAGPagP3hzhg9rsK0lxXgffU2Uv36f4SHSg=;
+ h=From:To:Cc:Subject:Date:From;
+ b=oC6Fo9aqyqeE1gDAFJaLV3/yNM2Kt9Ot5yri3ryrVX9x//ZuxdLOro6arET93a1e9
+ O5OyDwxaHF1nYnpQFaVQgKkptFWwRGZEONkjsTcHgELG9E4h+8gCItnILQD3uG06v5
+ +ViZWx0HpuRuWVbBukcJNEdaxJVhBowihySUVM5NYXUV39wMJA7Utfc4xKoOP20Ijc
+ k52hq7MgjBB6kdArkT9UedB5FX/L1gC8cq+trlRgc+3Y5GBnicgLwnCcufbW5+R4sg
+ TrPSEnGRkHC7zdCWezPCm9GiRHopA3pJe8MtWKd+iedjxIZkwJXZSKg61rp4S+EJJ7
+ AU3r4gnkfBEcQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sZX5H-00000001WCQ-2hTg; Thu, 01 Aug 2024 16:47:15 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: 
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH v4 0/7] Add ACPI CPER firmware first error injection on ARM
+ emulation
+Date: Thu,  1 Aug 2024 16:47:03 +0200
+Message-ID: <cover.1722523312.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20240731144532.5997-1-iii@linux.ibm.com>
- <CANCZdfpw7iDr4fBmsuukA5aVzcWBgCX09DVngg1RYHtv832zQQ@mail.gmail.com>
- <fd23f7fd27a9928fd0a07b2cbe72e1487bf063c1.camel@linux.ibm.com>
-In-Reply-To: <fd23f7fd27a9928fd0a07b2cbe72e1487bf063c1.camel@linux.ibm.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Thu, 1 Aug 2024 08:43:24 -0600
-Message-ID: <CANCZdfo8+a2KugwN-q7-Whj_mVdVmefNqwyg_ApSW4FaBLmgVA@mail.gmail.com>
-Subject: Re: [PATCH] bsd-user/main: Allow setting tb-size
-To: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Kyle Evans <kevans@freebsd.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000451d7e061ea03c1d"
-Received-SPF: none client-ip=2607:f8b0:4864:20::52a;
- envelope-from=wlosh@bsdimp.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_FONT_LOW_CONTRAST=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,93 +75,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000451d7e061ea03c1d
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Testing OS kernel ACPI APEI CPER support is tricky, as one depends on
+having hardware with special-purpose BIOS and/or hardware.
 
-On Thu, Aug 1, 2024 at 2:25=E2=80=AFAM Ilya Leoshkevich <iii@linux.ibm.com>=
- wrote:
+With QEMU, it becomes a lot easier, as it can be done via QMP.
 
-> On Wed, 2024-07-31 at 15:21 -0600, Warner Losh wrote:
->
-> On Wed, Jul 31, 2024 at 8: 45 AM Ilya Leoshkevich <iii@ linux. ibm. com>
-> wrote: While qemu-system can set tb-size using -accel tcg,tb-size=3Dn, th=
-ere
-> is no similar knob for qemu-bsd-user. Add one in a way similar to how
-> one-insn-per-tb is already
-> On Wed, Jul 31, 2024 at 8:45=E2=80=AFAM Ilya Leoshkevich <iii@linux.ibm.c=
-om>
-> wrote:
->
-> While qemu-system can set tb-size using -accel tcg,tb-size=3Dn, there
-> is no similar knob for qemu-bsd-user. Add one in a way similar to how
-> one-insn-per-tb is already handled.
->
->
-> Cool! Are you using bsd-user and need this for some reason? Or is this
-> purely theoretical? Is there a larger context I can read about somewhere?
->
->
-> I needed this on Linux in order to debug an issue where I suspected full
-> TB invalidation may be an issue.
-> It turned out to be something completely different, but I found it useful=
-:
-> setting it to, e.g., 4096 makes full TB invalidation very rare, so if a
-> problem is still reproducible, then the root causes is something else.
-> Philippe suggested to implement this for BSD as well in order to keep the
-> interfaces in sync.
->
+This series add support for injecting CPER records on ARM emulation.
 
-Excellent! Thank you for taking the time to do this! And the other bug fix.
-Both have been queued to my first post 9.1 pull branch.
+The QEMU side changes add a QAPI able to do CPER error injection
+on ARM, with a raw data parameter, making it very flexible.
 
-Warner
+A script is provided at the final patch implementing support for
+ARM Processor CPER error injection according with ACPI 6.x and=20
+UEFI 2.9A/2.10 specs, via QMP.
 
---000000000000451d7e061ea03c1d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Injecting such errors can be done using the provided script:
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 1, 2024 at 2:25=E2=80=AFA=
-M Ilya Leoshkevich &lt;<a href=3D"mailto:iii@linux.ibm.com">iii@linux.ibm.c=
-om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-"><div class=3D"msg-6262023560108835313">
+	$ ./scripts/ghes_inject.py arm=20
+		 {"QMP": {"version": {"qemu": {"micro": 50, "minor": 0, "major": 9}, "pac=
+kage": "v9.0.0-2621-g3de6991b870a"}, "capabilities": ["oob"]}}
+	{ "execute": "qmp_capabilities" }=20
+		 {"return": {}}
+	{ "execute": "ghes-cper", "arguments": {"cper": {"notification-type": [22,=
+ 61, 158, 225, 17, 188, 228, 17, 156, 170, 194, 5, 29, 93, 70, 176], "raw-d=
+ata": [0, 0, 0, 0, 1, 0, 0, 0, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0=
+, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 4, 0, 2, 1, 0, =
+0, 0, 0, 0, 0, 0, 0, 0, 0, 239, 190, 173, 222, 0, 0, 0, 0, 173, 11, 186, 17=
+1, 0, 0, 0, 0]}} }
+		 {"return": {}}
+
+Produces a simple CPER register, properly handled by the Linux
+Kernel:
+
+[ 5876.041410] {18}[Hardware Error]: Hardware error from APEI Generic Hardw=
+are Error Source: 1
+[ 5876.041775] {18}[Hardware Error]: event severity: recoverable
+[ 5876.042023] {18}[Hardware Error]:  Error 0, type: recoverable
+[ 5876.042280] {18}[Hardware Error]:   section_type: ARM processor error
+[ 5876.042538] {18}[Hardware Error]:   MIDR: 0x0000000000000000
+[ 5876.042781] {18}[Hardware Error]:   Error info structure 0:
+[ 5876.043013] {18}[Hardware Error]:   num errors: 2
+[ 5876.043222] {18}[Hardware Error]:    error_type: 0x02: cache error
+[ 5876.043500] {18}[Hardware Error]:    error_info: 0x0000000000000000
+[ 5876.043800] [Firmware Warn]: GHES: Unhandled processor error type 0x02: =
+cache error
+
+More complex use cases can be done, like:
+
+	$ ./scripts/ghes_inject.py arm --mpidr 0x444 --running --affinity 1 --erro=
+r-info 12345678 --vendor 0x13,123,4,5,1 --ctx-array 0,1,2,3,4,5 -t cache tl=
+b bus vendor tlb,vendor
+		 {"QMP": {"version": {"qemu": {"micro": 50, "minor": 0, "major": 9}, "pac=
+kage": "v9.0.0-2621-g3de6991b870a"}, "capabilities": ["oob"]}}
+	{ "execute": "qmp_capabilities" }=20
+		 {"return": {}}
+	{ "execute": "ghes-cper", "arguments": {"cper": {"notification-type": [22,=
+ 61, 158, 225, 17, 188, 228, 17, 156, 170, 194, 5, 29, 93, 70, 176], "raw-d=
+ata": [7, 0, 0, 0, 5, 0, 1, 0, 13, 1, 0, 0, 1, 0, 0, 0, 68, 4, 0, 0, 0, 0, =
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 32, 4, 0, 2, 1, 0,=
+ 0, 0, 0, 0, 0, 0, 0, 0, 0, 239, 190, 173, 222, 0, 0, 0, 0, 173, 11, 186, 1=
+71, 0, 0, 0, 0, 0, 32, 4, 0, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 239, 190, =
+173, 222, 0, 0, 0, 0, 173, 11, 186, 171, 0, 0, 0, 0, 0, 32, 4, 0, 8, 1, 0, =
+0, 0, 0, 0, 0, 0, 0, 0, 0, 239, 190, 173, 222, 0, 0, 0, 0, 173, 11, 186, 17=
+1, 0, 0, 0, 0, 0, 32, 4, 0, 16, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 239, 190, =
+173, 222, 0, 0, 0, 0, 173, 11, 186, 171, 0, 0, 0, 0, 0, 32, 0, 0, 20, 1, 0,=
+ 0, 0, 0, 0, 0, 0, 0, 0, 0, 239, 190, 173, 222, 0, 0, 0, 0, 173, 11, 186, 1=
+71, 0, 0, 0, 0, 0, 0, 5, 0, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0=
+, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0=
+, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 123, 4, 5, 1=
+]}} }
+		 {"return": {}}
+
+964.134325] {19}[Hardware Error]: Hardware error from APEI Generic Hardware=
+ Error Source: 1
+[ 5964.134692] {19}[Hardware Error]: event severity: recoverable
+[ 5964.134942] {19}[Hardware Error]:  Error 0, type: recoverable
+[ 5964.135200] {19}[Hardware Error]:   section_type: ARM processor error
+[ 5964.135466] {19}[Hardware Error]:   MIDR: 0x0000000000000000
+[ 5964.135700] {19}[Hardware Error]:   Multiprocessor Affinity Register (MP=
+IDR): 0x0000000000000444
+[ 5964.136025] {19}[Hardware Error]:   error affinity level: 1
+[ 5964.136255] {19}[Hardware Error]:   running state: 0x1
+[ 5964.136468] {19}[Hardware Error]:   Power State Coordination Interface s=
+tate: 0
+[ 5964.136767] {19}[Hardware Error]:   Error info structure 0:
+[ 5964.137001] {19}[Hardware Error]:   num errors: 2
+[ 5964.137210] {19}[Hardware Error]:    error_type: 0x02: cache error
+[ 5964.137472] {19}[Hardware Error]:    error_info: 0x0000000000000000
+[ 5964.137737] {19}[Hardware Error]:   Error info structure 1:
+[ 5964.137976] {19}[Hardware Error]:   num errors: 2
+[ 5964.138192] {19}[Hardware Error]:    error_type: 0x04: TLB error
+[ 5964.138459] {19}[Hardware Error]:    error_info: 0x0000000000000000
+[ 5964.138727] {19}[Hardware Error]:   Error info structure 2:
+[ 5964.138967] {19}[Hardware Error]:   num errors: 2
+[ 5964.139185] {19}[Hardware Error]:    error_type: 0x08: bus error
+[ 5964.139451] {19}[Hardware Error]:    error_info: 0x0000000000000000
+[ 5964.139751] {19}[Hardware Error]:   Error info structure 3:
+[ 5964.139993] {19}[Hardware Error]:   num errors: 2
+[ 5964.140210] {19}[Hardware Error]:    error_type: 0x10: micro-architectur=
+al error
+[ 5964.140522] {19}[Hardware Error]:    error_info: 0x0000000000000000
+[ 5964.140790] {19}[Hardware Error]:   Error info structure 4:
+[ 5964.141030] {19}[Hardware Error]:   num errors: 2
+[ 5964.141261] {19}[Hardware Error]:    error_type: 0x14: TLB error|micro-a=
+rchitectural error
+[ 5964.141599] {19}[Hardware Error]:   Context info structure 0:
+[ 5964.141843] {19}[Hardware Error]:    register context type: AArch64 EL1 =
+context registers
+[ 5964.142195] {19}[Hardware Error]:    00000000: 00000000 00000000 0000000=
+1 00000000
+[ 5964.142534] {19}[Hardware Error]:    00000010: 00000002 00000000 0000000=
+3 00000000
+[ 5964.142867] {19}[Hardware Error]:    00000020: 00000004 00000000 0000000=
+5 00000000
+[ 5964.143193] {19}[Hardware Error]:    00000030: 00000000 00000000
+[ 5964.143464] {19}[Hardware Error]:   Vendor specific error info has 5 byt=
+es:
+[ 5964.143750] {19}[Hardware Error]:    00000000: 13 7b 04 05 01           =
+                        .{...
+[ 5964.144164] [Firmware Warn]: GHES: Unhandled processor error type 0x02: =
+cache error
+[ 5964.144483] [Firmware Warn]: GHES: Unhandled processor error type 0x04: =
+TLB error
+[ 5964.144793] [Firmware Warn]: GHES: Unhandled processor error type 0x08: =
+bus error
+[ 5964.145099] [Firmware Warn]: GHES: Unhandled processor error type 0x10: =
+micro-architectural error
+[ 5964.145454] [Firmware Warn]: GHES: Unhandled processor error type 0x14: =
+TLB error|micro-architectural error
+
+---
+
+v4:
+- CPER generation moved to happen outside QEMU;
+- One patch adding support for mpidr query was removed.
+
+v3:
+- patch 1 cleanups with some comment changes and adding another place where
+  the poweroff GPIO define should be used. No changes on other patches (exc=
+ept
+  due to conflict resolution).
+
+v2:
+- added a new patch using a define for GPIO power pin;
+- patch 2 changed to also use a define for generic error GPIO pin;
+- a couple cleanups at patch 2 removing uneeded else clauses.
 
 
 
+Jonathan Cameron (1):
+  acpi/ghes: Support GPIO error source
+
+Mauro Carvalho Chehab (6):
+  arm/virt: place power button pin number on a define
+  acpi/generic_event_device: add an APEI error device
+  arm/virt: Wire up GPIO error source for ACPI / GHES
+  qapi/ghes-cper: add an interface to do generic CPER error injection
+  acpi/ghes: add support for generic error injection via QAPI
+  scripts/ghes_inject: add a script to generate GHES error inject
+
+ MAINTAINERS                            |   8 +
+ hw/acpi/Kconfig                        |   5 +
+ hw/acpi/generic_event_device.c         |  17 +
+ hw/acpi/ghes.c                         | 178 ++++++-
+ hw/acpi/ghes_cper.c                    |  53 ++
+ hw/acpi/meson.build                    |   2 +
+ hw/arm/Kconfig                         |   5 +
+ hw/arm/virt-acpi-build.c               |  25 +-
+ hw/arm/virt.c                          |  33 +-
+ include/hw/acpi/acpi_dev_interface.h   |   1 +
+ include/hw/acpi/generic_event_device.h |   3 +
+ include/hw/acpi/ghes.h                 |  14 +-
+ include/hw/arm/virt.h                  |   5 +
+ qapi/ghes-cper.json                    |  54 ++
+ qapi/meson.build                       |   1 +
+ qapi/qapi-schema.json                  |   1 +
+ scripts/ghes_inject.py                 | 673 +++++++++++++++++++++++++
+ 17 files changed, 1048 insertions(+), 30 deletions(-)
+ create mode 100644 hw/acpi/ghes_cper.c
+ create mode 100644 qapi/ghes-cper.json
+ create mode 100755 scripts/ghes_inject.py
+
+--=20
+2.45.2
 
 
-<div><div>On Wed, 2024-07-31 at 15:21 -0600, Warner Losh wrote:</div><block=
-quote type=3D"cite" style=3D"margin:0px 0px 0px 0.8ex;border-left:2px solid=
- rgb(114,159,207);padding-left:1ex"><div style=3D"font-size:1px;color:rgb(2=
-55,255,255);line-height:1px;height:0px;max-height:0px;opacity:0;overflow:hi=
-dden;display:none">On Wed, Jul 31, 2024 at 8:=E2=80=8A45 AM Ilya Leoshkevic=
-h &lt;iii@=E2=80=8Alinux.=E2=80=8Aibm.=E2=80=8Acom&gt; wrote: While qemu-sy=
-stem can set tb-size using -accel tcg,tb-size=3Dn, there is no similar knob=
- for qemu-bsd-user. Add one in a way similar to how one-insn-per-tb is alre=
-ady</div><div> </div><div style=3D"font-size:1px;color:rgb(255,255,255);lin=
-e-height:1px;height:0px;max-height:0px;opacity:0;overflow:hidden;display:no=
-ne"></div><div> </div><div dir=3D"ltr">On Wed, Jul 31, 2024 at 8:45=E2=80=
-=AFAM Ilya Leoshkevich &lt;<a href=3D"mailto:iii@linux.ibm.com" target=3D"_=
-blank">iii@linux.ibm.com</a>&gt; wrote:<div class=3D"gmail_quote"><blockquo=
-te type=3D"cite" style=3D"margin:0px 0px 0px 0.8ex;border-left:2px solid rg=
-b(114,159,207);padding-left:1ex"><div>While qemu-system can set tb-size usi=
-ng -accel tcg,tb-size=3Dn, there<br>is no similar knob for qemu-bsd-user. A=
-dd one in a way similar to how<br>one-insn-per-tb is already handled.<br></=
-div><br></blockquote><div><br></div><div>Cool! Are you using bsd-user and n=
-eed this for some reason? Or is this</div><div>purely theoretical? Is there=
- a larger context I can read about somewhere?<br></div></div></div></blockq=
-uote><div><br></div><div>I needed this on Linux in order to debug an issue =
-where I suspected full TB invalidation may be an issue.</div><div>It turned=
- out to be something completely different, but I found it useful: setting i=
-t to, e.g., 4096 makes full TB invalidation very rare, so if a problem is s=
-till reproducible, then the root causes is something else.</div><div>Philip=
-pe suggested to implement this for BSD as well in order to keep the interfa=
-ces in sync.</div></div></div></blockquote><div><br></div><div>Excellent! T=
-hank you for taking the time to do this! And the other bug fix. Both have b=
-een queued to my first post 9.1 pull branch.</div><div><br></div><div>Warne=
-r=C2=A0</div></div></div>
-
---000000000000451d7e061ea03c1d--
 
