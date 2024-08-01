@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39ED94497B
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B60D944978
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZTBP-00024O-Q1; Thu, 01 Aug 2024 06:37:19 -0400
+	id 1sZTBY-00030z-C6; Thu, 01 Aug 2024 06:37:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTBN-0001n7-QL
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:37:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTBT-0002tp-VU
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:37:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTBM-0001pS-0G
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:37:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTBS-0001qd-6y
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:37:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722508635;
+ s=mimecast20190719; t=1722508641;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=oq1o9SvpX+0hrvIlhCMEJnYTzkg9hgopt6NINCt9TXs=;
- b=UwJSKwtADfAHSNjNj+LbXe9wBfTYymAcBTjkRYZvrSE6dc55H6U2ZqdQZZhoAcKVCQwVB3
- 2o2roAsnDPHaIHmKVa0KDuZob+3aiCqcKmXYxLnj8ndWItFAocrWgkQsqbamMFwDkp6Vbg
- F4mh3S4PPHI13xufzWE0SD2Or9cTdXg=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kOlVB7WwJCX9drLmyP0GySNt0EHrEKT86ZQ33vsIJ0g=;
+ b=E1igy8ugbHygX4jz0tA5aLHhscy/hlNLE/aIAVIC9ATFwdjbPV7VwY2oxZH3SJN6LHHZcr
+ GamgIsY0i5NVfcV7+kLPLacAUg9t689vb877ziHjrP1+IT2N7b1/yDUMxdTl49wtTuASv+
+ kOSHm6K7xtjtsR7gVOcUMErnysAVT8o=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-EXenFmNCNnaI4tE3D15uDA-1; Thu, 01 Aug 2024 06:37:14 -0400
-X-MC-Unique: EXenFmNCNnaI4tE3D15uDA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5a429a572daso5611354a12.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:37:13 -0700 (PDT)
+ us-mta-646-v5c0E_hyMQutuZxE4jXHAg-1; Thu, 01 Aug 2024 06:37:20 -0400
+X-MC-Unique: v5c0E_hyMQutuZxE4jXHAg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5a2ceb035f9so2660664a12.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:37:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722508632; x=1723113432;
+ d=1e100.net; s=20230601; t=1722508638; x=1723113438;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oq1o9SvpX+0hrvIlhCMEJnYTzkg9hgopt6NINCt9TXs=;
- b=U3u+Izy5u90iP7/zpJ/b8mkEbAOgvIrlNeyAaU1/fQVcw0vqFgVtqfqjctO0YsfdEt
- x7Mk5nqDYNTVW9UOsmRPjwgizFucBFO0tECogoxpR8dKH2Gm0A8Ry1q1Zmgls0+pwRoS
- jlrIXoVxRvKFav8qB2vyRidtJ6vQ1i8/nRksA4fZxT8e7uQDI7lqEKM2iN/P3f/FADpo
- Yq3PM+mFMMmXEjPfc6+vB3tQOG7N1odNq3v1NvEIXf7DNmsAHOH5fKHYTUPJYCt1B1Au
- 3b965cZepxjacG0mdf/8aL6y/r55ep9PuOJq2AOXeqNE9Ex6v1E9IgEDvjqAMJAs2kpm
- khhw==
-X-Gm-Message-State: AOJu0Yy4ZPvcJAuwgnlfV9APDkgOSSzTT8Ss7U438SjeVRm+bXzHpgwr
- r9q7CVP+AFvVET+ikmrgtnRPcA2b0ve1dZnozs11HmFeRHRvNOCOFRF1uGFzR1CdV/4HrJdJdYt
- a/3TTyWiZgU0opI/vJOns9NpMJoQ+7k44KmaOpKdtnffWMN2/KYICufQ7rlOV5sOeBfvv6NioPK
- avtBVnc0v2S+uwvubqbfO3eSRH6OiQfQ==
-X-Received: by 2002:a17:907:d93:b0:a77:e1fb:7dec with SMTP id
- a640c23a62f3a-a7daf4c373bmr143244266b.17.1722508632300; 
- Thu, 01 Aug 2024 03:37:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHid+7aVanMVJcJKYW83ebd5losGd1kZ1LNm+BUBdm1h6AzczAuS6u+FMLvZ+R+hbBePm9yRQ==
-X-Received: by 2002:a17:907:d93:b0:a77:e1fb:7dec with SMTP id
- a640c23a62f3a-a7daf4c373bmr143241166b.17.1722508631535; 
- Thu, 01 Aug 2024 03:37:11 -0700 (PDT)
+ bh=kOlVB7WwJCX9drLmyP0GySNt0EHrEKT86ZQ33vsIJ0g=;
+ b=Oxs4vGXGOLiG4O9ovYz4W+BF77ESZSn8iRqHMu6nJnMnAm/4Uybtr8rLvEAjslw4ab
+ vqfTNhtDBy33DQsgssL04cW74EyvdNecd8FKOJPFNjZsC81P/nUJF7XZGAu7xGMTZAaW
+ E57pv38GtHs+/ucP+yeGjQIUuO3zmkxAAzfojx8nTAoj5idctg4Xbz6QFTRsTmlXlxkK
+ oX6WW+3Up/NU5yFIfOVcxCNVQ2yroUiSMBlj0YgD+5CFub9X3iPi77ia5Qgr5fRFPAeO
+ yehReZ6HH5/tqIrOhvqW0MN2/f1WKfC2X1ZbrEmTd6QvByYQokIuHw2YlB7HmyhJ4S0u
+ fWUA==
+X-Gm-Message-State: AOJu0YzD7+CmTVuPTDHtvKIzSOVXX0tKc12d98MH1t+D3qHTkDSyp5Gn
+ KRnpeZ8RT7m2Vu6jrg6drj7SClDw3myVJImiV3iQDYLIKMsWyMzkaXc6JTofuuA+Tadd6Ix0tUI
+ VODhkkAxsWCL8RZXl2NJ22K/92Y97nvP1WMWrUO0yodMT/T+uaPiWU3LMlmWWBW4XlPdnNPtwTB
+ 1rpKgcfrz0FTDD217we5iPDsyOPQCtww==
+X-Received: by 2002:a05:6402:5253:b0:57d:455:d395 with SMTP id
+ 4fb4d7f45d1cf-5b77c28ed64mr760776a12.7.1722508638469; 
+ Thu, 01 Aug 2024 03:37:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZtd/mEIqzI1B9QmqIuimkJW+I1NHLRLfmldGQsR4vOaGJA4TqYolkGo9fXOdbmiDQIGGZbA==
+X-Received: by 2002:a05:6402:5253:b0:57d:455:d395 with SMTP id
+ 4fb4d7f45d1cf-5b77c28ed64mr760733a12.7.1722508637828; 
+ Thu, 01 Aug 2024 03:37:17 -0700 (PDT)
 Received: from redhat.com ([2.55.44.248]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad90251sm897244466b.143.2024.08.01.03.37.08
+ 4fb4d7f45d1cf-5ac63b59cb0sm10049005a12.45.2024.08.01.03.37.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 03:37:09 -0700 (PDT)
-Date: Thu, 1 Aug 2024 06:37:06 -0400
+ Thu, 01 Aug 2024 03:37:15 -0700 (PDT)
+Date: Thu, 1 Aug 2024 06:37:12 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 17/19] Revert "hw/pci: Rename has_power to enabled"
-Message-ID: <93829009a685687e2fb48158cb5df18c4eb49d07.1722508478.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 18/19] hw/i386/amd_iommu: Don't leak memory in
+ amdvi_update_iotlb()
+Message-ID: <9a45b0761628cc59267b3283a85d15294464ac31.1722508478.git.mst@redhat.com>
 References: <cover.1722508478.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,16 +78,16 @@ Content-Disposition: inline
 In-Reply-To: <cover.1722508478.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,113 +103,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 6a31b219a5338564f3978251c79f96f689e037da.
+From: Peter Maydell <peter.maydell@linaro.org>
 
+In amdvi_update_iotlb() we will only put a new entry in the hash
+table if to_cache.perm is not IOMMU_NONE.  However we allocate the
+memory for the new AMDVIIOTLBEntry and for the hash table key
+regardless.  This means that in the IOMMU_NONE case we will leak the
+memory we alloacted.
+
+Move the allocations into the if() to the point where we know we're
+going to add the item to the hash table.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2452
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20240731170019.3590563-1-peter.maydell@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pci.h        |  7 +------
- include/hw/pci/pci_device.h |  2 +-
- hw/pci/pci.c                | 14 +++++++-------
- hw/pci/pci_host.c           |  4 ++--
- 4 files changed, 11 insertions(+), 16 deletions(-)
+ hw/i386/amd_iommu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index fe04b4fafd..eb26cac810 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -678,11 +678,6 @@ static inline void pci_irq_pulse(PCIDevice *pci_dev)
- }
- 
- MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
--void pci_set_enabled(PCIDevice *pci_dev, bool state);
--
--static inline void pci_set_power(PCIDevice *pci_dev, bool state)
--{
--    pci_set_enabled(pci_dev, state);
--}
-+void pci_set_power(PCIDevice *pci_dev, bool state);
- 
- #endif
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index f38fb31119..15694f2489 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -57,7 +57,7 @@ typedef struct PCIReqIDCache PCIReqIDCache;
- struct PCIDevice {
-     DeviceState qdev;
-     bool partially_hotplugged;
--    bool enabled;
-+    bool has_power;
- 
-     /* PCI config space */
-     uint8_t *config;
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index b532888e8f..fab86d0567 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1525,7 +1525,7 @@ static void pci_update_mappings(PCIDevice *d)
-             continue;
- 
-         new_addr = pci_bar_address(d, i, r->type, r->size);
--        if (!d->enabled) {
-+        if (!d->has_power) {
-             new_addr = PCI_BAR_UNMAPPED;
-         }
- 
-@@ -1613,7 +1613,7 @@ void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int
-         pci_update_irq_disabled(d, was_irq_disabled);
-         memory_region_set_enabled(&d->bus_master_enable_region,
-                                   (pci_get_word(d->config + PCI_COMMAND)
--                                   & PCI_COMMAND_MASTER) && d->enabled);
-+                                   & PCI_COMMAND_MASTER) && d->has_power);
-     }
- 
-     msi_write_config(d, addr, val_in, l);
-@@ -2884,18 +2884,18 @@ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
-     return msg;
- }
- 
--void pci_set_enabled(PCIDevice *d, bool state)
-+void pci_set_power(PCIDevice *d, bool state)
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 6d4fde72f9..87643d2891 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -357,12 +357,12 @@ static void amdvi_update_iotlb(AMDVIState *s, uint16_t devid,
+                                uint64_t gpa, IOMMUTLBEntry to_cache,
+                                uint16_t domid)
  {
--    if (d->enabled == state) {
-+    if (d->has_power == state) {
-         return;
-     }
- 
--    d->enabled = state;
-+    d->has_power = state;
-     pci_update_mappings(d);
-     memory_region_set_enabled(&d->bus_master_enable_region,
-                               (pci_get_word(d->config + PCI_COMMAND)
--                               & PCI_COMMAND_MASTER) && d->enabled);
--    if (!d->enabled) {
-+                               & PCI_COMMAND_MASTER) && d->has_power);
-+    if (!d->has_power) {
-         pci_device_reset(d);
-     }
- }
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index 0d82727cc9..dfe6fe6184 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -86,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
-      * allowing direct removal of unexposed functions.
-      */
-     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
--        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
-+        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
-         return;
-     }
- 
-@@ -111,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
-      * allowing direct removal of unexposed functions.
-      */
-     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
--        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
-+        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
-         return ~0x0;
-     }
+-    AMDVIIOTLBEntry *entry = g_new(AMDVIIOTLBEntry, 1);
+-    uint64_t *key = g_new(uint64_t, 1);
+-    uint64_t gfn = gpa >> AMDVI_PAGE_SHIFT_4K;
+-
+     /* don't cache erroneous translations */
+     if (to_cache.perm != IOMMU_NONE) {
++        AMDVIIOTLBEntry *entry = g_new(AMDVIIOTLBEntry, 1);
++        uint64_t *key = g_new(uint64_t, 1);
++        uint64_t gfn = gpa >> AMDVI_PAGE_SHIFT_4K;
++
+         trace_amdvi_cache_update(domid, PCI_BUS_NUM(devid), PCI_SLOT(devid),
+                 PCI_FUNC(devid), gpa, to_cache.translated_addr);
  
 -- 
 MST
