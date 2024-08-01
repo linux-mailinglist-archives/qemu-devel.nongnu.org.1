@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B00A945139
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 19:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B37894513F
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 19:03:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZZAp-0002a1-Vf; Thu, 01 Aug 2024 13:01:07 -0400
+	id 1sZZBW-0003FK-Lv; Thu, 01 Aug 2024 13:01:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZZAf-0002W1-9e
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:01:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZZAc-0003MQ-Qf
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:00:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722531653;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FAPOHpgR1rlppHkVZwm24AUL5VzrImG+dlMjIOkZCXo=;
- b=GnEBVWW1fiCVXDdQgolcLv2KqaJuX89Be7TlgXRFpTe5yHV/tSww7GPbJzj09+ZYkECq6T
- HAtXgm1/cUXrwFtweNZFx7buFeCzPWVIJhVGM4VMs5M1HhWtL0TY1FNSZCuOP+N09EkVEl
- +kMNP2f2xd6Ig0c8DCieJBggVjzbNB0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-lU1ZvgxIOu2f4mboJ1enWQ-1; Thu,
- 01 Aug 2024 13:00:49 -0400
-X-MC-Unique: lU1ZvgxIOu2f4mboJ1enWQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ACFDC1955D4F; Thu,  1 Aug 2024 17:00:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.109])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8AF69195605A; Thu,  1 Aug 2024 17:00:43 +0000 (UTC)
-Date: Thu, 1 Aug 2024 18:00:40 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v3 08/24] tests/functional: add a module for handling
- asset download & caching
-Message-ID: <Zqu_OGRE_uTtof79@redhat.com>
-References: <20240730170347.4103919-1-berrange@redhat.com>
- <20240730170347.4103919-9-berrange@redhat.com>
- <b9a55935-ccf6-4f13-9437-52608afc0db3@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZZBL-00033Q-0B
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:01:39 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZZBG-0003PE-DZ
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:01:38 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-428119da952so46113795e9.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 10:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722531693; x=1723136493; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZYslOvdpteYQ2jvRo0kuy3ybTbbgO2ynHOwUzqgT4UU=;
+ b=rr6zmsDU0IoWK/8HH/r1+ChWYzDU4GbQ8gKAB6CO5BzVQhoxW5ugto6SkUofyVBLqj
+ zb/l16hriQWG32Ll3437C3c/c3rn3oQ2MUASwg0SLmAmKm5FaJDicbJM6yqVcI8+/tHa
+ jzjmcRp/67imVwWeCn0T3XGIEGLfdQSDYds2mzgtWqxq4ULgMOb2XKW2oiatgQA4YFjg
+ SnVlaly+CZ6Nuv4GIxA/FYyaKoFJdf2fvmabHNvMm3GruYvYHfcIYqkT3hMuH4JNwOi4
+ 3rw4l92bjdXNKAJQif2DYp0aNHm3RkFXVaFTnYEJHW1oLZSALiYNgL/uEHMhCbvuzBke
+ u9pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722531693; x=1723136493;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZYslOvdpteYQ2jvRo0kuy3ybTbbgO2ynHOwUzqgT4UU=;
+ b=GFv2uZyfCYMdjILEcLC4dhVVoPchGuczwifwbQKnHlDwT1SnWhGaeQEaP8b2vMaPqp
+ OJkFKCpk1LwVIOrJEg116VaEYJpCmpgHJroO0eLMhXlL5xSZZHrzh9qxz58IbtyDe9Z0
+ 2XepgNtNWec2Jr5+YF+S7Eefb2qVZ5Jdww6QWx/F7qPYC78xSCh8ikJ4WHiBRD1GDE4Z
+ gHemfQxow7EYoP2XjxR09PO42hCkJDb9DHqj2qGDmKvSTwdMgEFd550zmHZyOaMu8oFo
+ I3I6SMjs8H1l/KfH8gCZjgW+JXL6XwPiFD6iYyg25AzD9gRrpooYkkuPT51/bvExkwbb
+ l1CA==
+X-Gm-Message-State: AOJu0YzNlN0I6MdSXIq21qcDMC4pEjutrZCN+wkMSUbG0vgAtDv3l1Zy
+ Wyr1bxbxDUCN7qd/sZW/jVwxnLzNEr4dJ0CzDIYsFz+MmsbN9LQsgm5N6kYjFGv//d58PXUly7P
+ B
+X-Google-Smtp-Source: AGHT+IFoIx1pT4QrDgf+L59yOOHuZczVMx3mB2vpKGBlDP40SJhg0pP4eFV7ui3vSpmw2h3+NeMVaQ==
+X-Received: by 2002:a05:600c:5102:b0:427:d72a:6c26 with SMTP id
+ 5b1f17b1804b1-428e6af2e18mr4163285e9.6.1722531692496; 
+ Thu, 01 Aug 2024 10:01:32 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-428e24c2b4csm30385255e9.31.2024.08.01.10.01.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Aug 2024 10:01:32 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Stefan Hajnoczi <stefanha@redhat.com>, "Denis V. Lunev" <den@openvz.org>,
+ Jiri Pirko <jiri@resnulli.us>
+Subject: [PATCH 0/5] docs: more conversions from txt to rst
+Date: Thu,  1 Aug 2024 18:01:26 +0100
+Message-Id: <20240801170131.3977807-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b9a55935-ccf6-4f13-9437-52608afc0db3@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,111 +89,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 01, 2024 at 06:20:58PM +0200, Philippe Mathieu-Daudé wrote:
-> On 30/7/24 19:03, Daniel P. Berrangé wrote:
-> > The 'Asset' class is a simple module that declares a downloadable
-> > asset that can be cached locally. Downloads are stored in the user's
-> > home dir at ~/.cache/qemu/download, using a sha256 sum of the URL.
-> > 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   tests/functional/qemu_test/__init__.py |  1 +
-> >   tests/functional/qemu_test/asset.py    | 96 ++++++++++++++++++++++++++
-> >   2 files changed, 97 insertions(+)
-> >   create mode 100644 tests/functional/qemu_test/asset.py
-> > 
-> > diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
-> > index 2f1e0bc70d..db05c8f412 100644
-> > --- a/tests/functional/qemu_test/__init__.py
-> > +++ b/tests/functional/qemu_test/__init__.py
-> > @@ -6,6 +6,7 @@
-> >   # later.  See the COPYING file in the top-level directory.
-> > +from .asset import Asset
-> 
-> For next patch?
-> 
-> >   from .config import BUILD_DIR
-> >   from .cmd import has_cmd, has_cmds, run_cmd, is_readable_executable_file, \
-> >       interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
-> > diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-> > new file mode 100644
-> > index 0000000000..6432da2e0b
-> > --- /dev/null
-> > +++ b/tests/functional/qemu_test/asset.py
-> > @@ -0,0 +1,96 @@
-> > +# Test utilities for fetching & caching assets
-> > +#
-> > +# Copyright 2024 Red Hat, Inc.
-> > +#
-> > +# This work is licensed under the terms of the GNU GPL, version 2 or
-> > +# later.  See the COPYING file in the top-level directory.
-> > +
-> > +import hashlib
-> > +import logging
-> > +import os
-> > +import subprocess
-> > +import urllib.request
-> > +from pathlib import Path
-> > +from shutil import copyfileobj
-> > +
-> > +
-> > +# Instances of this class must be declared as class level variables
-> > +# starting with a name "ASSET_". This enables the pre-caching logic
-> > +# to easily find all referenced assets and download them prior to
-> > +# execution of the tests.
-> > +class Asset:
-> > +
-> > +    def __init__(self, url, hash):
-> > +        self.url = url
-> > +        self.hash = hash
-> > +        self.cache_dir = Path(Path("~").expanduser(),
-> > +                              ".cache", "qemu", "download")
-> > +        self.cache_file = Path(self.cache_dir,
-> > +                               hashlib.sha256(url.encode("utf-8")).hexdigest())
-> > +        self.log = logging.getLogger('qemu-test')
-> > +
-> > +    def __repr__(self):
-> > +        return "Asset: url=%s hash=%s cache=%s" % (
-> > +            self.url, self.hash, self.cache_file)
-> > +
-> > +    def _check(self, cache_file):
-> > +        if self.hash is None:
-> > +            return True
-> > +        if len(self.hash) == 40:
-> > +            sum_prog = 'sha1sum'
-> > +        elif len(self.hash) == 64:
-> > +            sum_prog = 'sha256sum'
-> 
-> Do we want to support these? Should we declare them deprecated
-> and emit a warning?
+This patchset converts four files in specs and interop
+from plain text to rST format. Technically this wouldn't
+be a bugfix but I think it's probably reasonable to put
+them in to 9.1 if they get review.
 
-Oh thanks for the reminder. I wanted to standardize on sha256 ,since
-sha1 is broken and sha512 is overkill.
+thanks
+-- PMM
 
-Since I've run the tests once I've got everything download and can
-now trivially generate the sha256 for everything we need.
+Peter Maydell (5):
+  docs/specs/rocker.txt: Convert to rST
+  docs/interop/nbd.txt: Convert to rST
+  docs/interop/parallels.txt: Convert to rST
+  docs/interop/prl-xml.txt: Convert to rST
+  docs/interop/prl-xml.rst: Fix minor grammar nits
 
-> 
-> > +        elif len(self.hash) == 128:
-> > +            sum_prog = 'sha512sum'
-> > +        else:
-> > +            raise Exception("unknown hash type")
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Very nice :)
-> 
+ MAINTAINERS                                   |   7 +-
+ docs/interop/index.rst                        |   3 +
+ docs/interop/nbd.rst                          |  89 ++++++++
+ docs/interop/nbd.txt                          |  72 -------
+ docs/interop/{parallels.txt => parallels.rst} | 108 +++++-----
+ docs/interop/prl-xml.rst                      | 192 ++++++++++++++++++
+ docs/interop/prl-xml.txt                      | 158 --------------
+ docs/specs/index.rst                          |   1 +
+ docs/specs/{rocker.txt => rocker.rst}         | 181 +++++++++--------
+ 9 files changed, 438 insertions(+), 373 deletions(-)
+ create mode 100644 docs/interop/nbd.rst
+ delete mode 100644 docs/interop/nbd.txt
+ rename docs/interop/{parallels.txt => parallels.rst} (72%)
+ create mode 100644 docs/interop/prl-xml.rst
+ delete mode 100644 docs/interop/prl-xml.txt
+ rename docs/specs/{rocker.txt => rocker.rst} (91%)
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
