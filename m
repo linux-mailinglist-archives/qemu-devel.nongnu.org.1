@@ -2,112 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C235944B74
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 14:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 651C8944B77
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 14:38:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZV26-0000IP-Ni; Thu, 01 Aug 2024 08:35:50 -0400
+	id 1sZV27-0000Lm-Eq; Thu, 01 Aug 2024 08:35:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1v-0008UC-8Q
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:40 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1x-0008VV-Da
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:42 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1t-0000pw-IE
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:38 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZV1v-0000qz-Br
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 08:35:41 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 4EB9D21B5F;
- Thu,  1 Aug 2024 12:35:36 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id EFF531FB4E;
+ Thu,  1 Aug 2024 12:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722515736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1722515738; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n+XOv7Gu4c73ChHrW4LqNQPVbdOmzFxtgzX+S81fCis=;
- b=MwQVdH/TXp+cCX0XwWjosNW7Xe/OjydFjKf64z9MnNfHJjFa1YlTnIA51aI09lHUiWolL4
- 7x2o0kFyxznSo+lRp8mZLbtC0CtToAuCfWQK+soY+xVzqDAI7QKwtUJa+HNte29vgZyYhf
- VheSA/eugwdWNFgKMP9JuS3knXNbL2E=
+ bh=IGOQXHelFrYd1CF0QtFnL++hhRTSduYUcoZHP849jTY=;
+ b=GrFJtfAsuRsKGQXMGU7bh6WvCy853rPw078QG7rRBXYnDLtwyNt81TRNyPO4j8B4VquSYr
+ mpRUwhmCTfs/nofbf/zZITdcgl/P28M/soknbmKzZLWVJN9OxNuIxfKWIwHrclZwXXmeAc
+ Utd1FGBs06jTausd3fiAPMVetqwXsG8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722515736;
+ s=susede2_ed25519; t=1722515738;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n+XOv7Gu4c73ChHrW4LqNQPVbdOmzFxtgzX+S81fCis=;
- b=VRcf1W/k5x2ezQO8UHrizNOsmdKsR/4TLG68CsfPXI+qfbvJCmjP54+U3MKcL5ih5338Jw
- Go1jhQNQkMkgAnCA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="MwQVdH/T";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="VRcf1W/k"
+ bh=IGOQXHelFrYd1CF0QtFnL++hhRTSduYUcoZHP849jTY=;
+ b=ZeoFGU2hr1XJX++74GAyFLydwT5oMz3gBgfzQDJ8SQnazVIF5D8dtAAhWokDcKTdOPQXvM
+ wW0uxzP1sj/XQyCg==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cPy3qveI;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4mZGPc9y
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722515736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1722515737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n+XOv7Gu4c73ChHrW4LqNQPVbdOmzFxtgzX+S81fCis=;
- b=MwQVdH/TXp+cCX0XwWjosNW7Xe/OjydFjKf64z9MnNfHJjFa1YlTnIA51aI09lHUiWolL4
- 7x2o0kFyxznSo+lRp8mZLbtC0CtToAuCfWQK+soY+xVzqDAI7QKwtUJa+HNte29vgZyYhf
- VheSA/eugwdWNFgKMP9JuS3knXNbL2E=
+ bh=IGOQXHelFrYd1CF0QtFnL++hhRTSduYUcoZHP849jTY=;
+ b=cPy3qveIbc2QiFxE4xarszbhc/FxMkTlXa/TpKuTV6Nk1QeZvkB+cpBWIPJ3Rk4M1LZu5c
+ KavyeqoJbTOZWuJasAl+TOAPNsy6e9MtRYSNVt5uAr9iwiT+RDgdmd0cBMe+t/vpteVzKx
+ 9ZcF/WveJ8L9Bet9Ntk0lxxe4TzLU98=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722515736;
+ s=susede2_ed25519; t=1722515737;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n+XOv7Gu4c73ChHrW4LqNQPVbdOmzFxtgzX+S81fCis=;
- b=VRcf1W/k5x2ezQO8UHrizNOsmdKsR/4TLG68CsfPXI+qfbvJCmjP54+U3MKcL5ih5338Jw
- Go1jhQNQkMkgAnCA==
+ bh=IGOQXHelFrYd1CF0QtFnL++hhRTSduYUcoZHP849jTY=;
+ b=4mZGPc9yBSLAYfXXGJpO2a+w0bSnAtqB49EyhhYB8h2x6xe31rJi2+HHUMhYHSw2LEqz0w
+ 5a/eg8EB/QVqptAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2546B13946;
- Thu,  1 Aug 2024 12:35:34 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4A4313946;
+ Thu,  1 Aug 2024 12:35:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gDxXNxaBq2YEYAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 01 Aug 2024 12:35:34 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id iGKJIhiBq2YEYAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 01 Aug 2024 12:35:36 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Subject: [PATCH v3 10/14] migration/multifd: Don't send ram data during SYNC
-Date: Thu,  1 Aug 2024 09:35:12 -0300
-Message-Id: <20240801123516.4498-11-farosas@suse.de>
+Subject: [PATCH v3 11/14] migration/multifd: Replace multifd_send_state->pages
+ with client data
+Date: Thu,  1 Aug 2024 09:35:13 -0300
+Message-Id: <20240801123516.4498-12-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240801123516.4498-1-farosas@suse.de>
 References: <20240801123516.4498-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 4EB9D21B5F
-X-Spam-Score: -2.81
-X-Spamd-Result: default: False [-2.81 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.81 / 50.00];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[]; ARC_NA(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[3];
  RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_TLS_ALL(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  DKIM_TRACE(0.00)[suse.de:+]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Rspamd-Action: no action
+X-Spam-Score: -1.81
+X-Rspamd-Queue-Id: EFF531FB4E
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,71 +126,253 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Skip saving and loading any ram data in the packet in the case of a
-SYNC. This fixes a shortcoming of the current code which requires a
-reset of the MultiFDPages_t fields right after the previous
-pending_job finishes, otherwise the very next job might be a SYNC and
-multifd_send_fill_packet() will put the stale values in the packet.
+Multifd currently has a simple scheduling mechanism that distributes
+work to the various channels by keeping storage space within each
+channel and an extra space that is given to the client. Each time the
+client fills the space with data and calls into multifd, that space is
+given to the next idle channel and a free storage space is taken from
+the channel and given to client for the next iteration.
 
-By not calling multifd_ram_fill_packet(), we can stop resetting
-MultiFDPages_t in the multifd core and leave that to the client code.
+This means we always need (#multifd_channels + 1) memory slots to
+operate multifd.
 
-Actually moving the reset function is not yet done because
-pages->num==0 is used by the client code to determine whether the
-MultiFDPages_t needs to be flushed. The subsequent patches will
-replace that with a generic flag that is not dependent on
-MultiFDPages_t.
+This is fine, except that the presence of this one extra memory slot
+doesn't allow different types of payloads to be processed at the same
+time in different channels, i.e. the data type of
+multifd_send_state->pages needs to be the same as p->pages.
+
+For each new data type different from MultiFDPage_t that is to be
+handled, this logic would need to be duplicated by adding new fields
+to multifd_send_state, to the channels and to multifd_send_pages().
+
+Fix this situation by moving the extra slot into the client and using
+only the generic type MultiFDSendData in the multifd core.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ migration/multifd.c | 79 ++++++++++++++++++++++++++-------------------
+ migration/multifd.h |  3 ++
+ migration/ram.c     |  2 ++
+ 3 files changed, 50 insertions(+), 34 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 7d946e6661..ec6dcb9999 100644
+index ec6dcb9999..1c16879495 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -456,6 +456,7 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
+@@ -49,7 +49,6 @@ typedef struct {
+ 
+ struct {
+     MultiFDSendParams *params;
+-    MultiFDSendData *data;
+     /*
+      * Global number of generated multifd packets.
+      *
+@@ -97,6 +96,8 @@ struct {
+     MultiFDMethods *ops;
+ } *multifd_recv_state;
+ 
++static MultiFDSendData *multifd_ram_send;
++
+ static size_t multifd_ram_payload_size(void)
  {
-     MultiFDPacket_t *packet = p->packet;
-     uint64_t packet_num;
-+    bool sync_packet = p->flags & MULTIFD_FLAG_SYNC;
+     uint32_t n = multifd_ram_page_count();
+@@ -130,6 +131,17 @@ static MultiFDSendData *multifd_send_data_alloc(void)
+     return g_malloc0(size_minus_payload + max_payload_size);
+ }
  
-     memset(packet, 0, p->packet_len);
++void multifd_ram_save_setup(void)
++{
++    multifd_ram_send = multifd_send_data_alloc();
++}
++
++void multifd_ram_save_cleanup(void)
++{
++    g_free(multifd_ram_send);
++    multifd_ram_send = NULL;
++}
++
+ static bool multifd_use_packets(void)
+ {
+     return !migrate_mapped_ram();
+@@ -617,25 +629,20 @@ static void multifd_send_kick_main(MultiFDSendParams *p)
+ }
  
-@@ -470,7 +471,9 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
+ /*
+- * How we use multifd_send_state->pages and channel->pages?
++ * multifd_send() works by exchanging the MultiFDSendData object
++ * provided by the caller with an unused MultiFDSendData object from
++ * the next channel that is found to be idle.
+  *
+- * We create a pages for each channel, and a main one.  Each time that
+- * we need to send a batch of pages we interchange the ones between
+- * multifd_send_state and the channel that is sending it.  There are
+- * two reasons for that:
+- *    - to not have to do so many mallocs during migration
+- *    - to make easier to know what to free at the end of migration
++ * The channel owns the data until it finishes transmitting and the
++ * caller owns the empty object until it fills it with data and calls
++ * this function again. No locking necessary.
+  *
+- * This way we always know who is the owner of each "pages" struct,
+- * and we don't need any locking.  It belongs to the migration thread
+- * or to the channel thread.  Switching is safe because the migration
+- * thread is using the channel mutex when changing it, and the channel
+- * have to had finish with its own, otherwise pending_job can't be
+- * false.
++ * Switching is safe because both the migration thread and the channel
++ * thread have barriers in place to serialize access.
+  *
+  * Returns true if succeed, false otherwise.
+  */
+-static bool multifd_send_pages(void)
++static bool multifd_send(MultiFDSendData **send_data)
+ {
+     int i;
+     static int next_channel;
+@@ -676,11 +683,16 @@ static bool multifd_send_pages(void)
+      */
+     smp_mb_acquire();
  
-     p->packets_sent++;
+-    assert(!p->data->u.ram.num);
++    assert(multifd_payload_empty(p->data));
  
--    multifd_ram_fill_packet(p);
-+    if (!sync_packet) {
-+        multifd_ram_fill_packet(p);
+-    tmp = multifd_send_state->data;
+-    multifd_send_state->data = p->data;
++    /*
++     * Swap the pointers. The channel gets the client data for
++     * transferring and the client gets back an unused data slot.
++     */
++    tmp = *send_data;
++    *send_data = p->data;
+     p->data = tmp;
++
+     /*
+      * Making sure p->data is setup before marking pending_job=true. Pairs
+      * with the qatomic_load_acquire() in multifd_send_thread().
+@@ -712,7 +724,12 @@ bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+     MultiFDPages_t *pages;
+ 
+ retry:
+-    pages = &multifd_send_state->data->u.ram;
++    pages = &multifd_ram_send->u.ram;
++
++    if (multifd_payload_empty(multifd_ram_send)) {
++        multifd_pages_reset(pages);
++        multifd_set_payload_type(multifd_ram_send, MULTIFD_PAYLOAD_RAM);
 +    }
  
-     trace_multifd_send_fill(p->id, packet_num,
-                             p->flags, p->next_packet_size);
-@@ -581,7 +584,9 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
-     p->packet_num = be64_to_cpu(packet->packet_num);
-     p->packets_recved++;
+     /* If the queue is empty, we can already enqueue now */
+     if (multifd_queue_empty(pages)) {
+@@ -730,7 +747,7 @@ retry:
+      * After flush, always retry.
+      */
+     if (pages->block != block || multifd_queue_full(pages)) {
+-        if (!multifd_send_pages()) {
++        if (!multifd_send(&multifd_ram_send)) {
+             return false;
+         }
+         goto retry;
+@@ -860,8 +877,6 @@ static void multifd_send_cleanup_state(void)
+     qemu_sem_destroy(&multifd_send_state->channels_ready);
+     g_free(multifd_send_state->params);
+     multifd_send_state->params = NULL;
+-    g_free(multifd_send_state->data);
+-    multifd_send_state->data = NULL;
+     g_free(multifd_send_state);
+     multifd_send_state = NULL;
+ }
+@@ -910,15 +925,14 @@ int multifd_send_sync_main(void)
+ {
+     int i;
+     bool flush_zero_copy;
+-    MultiFDPages_t *pages;
  
--    ret = multifd_ram_unfill_packet(p, errp);
-+    if (!(p->flags & MULTIFD_FLAG_SYNC)) {
-+        ret = multifd_ram_unfill_packet(p, errp);
-+    }
+     if (!migrate_multifd()) {
+         return 0;
+     }
+-    pages = &multifd_send_state->data->u.ram;
+-    if (pages->num) {
+-        if (!multifd_send_pages()) {
+-            error_report("%s: multifd_send_pages fail", __func__);
++
++    if (!multifd_payload_empty(multifd_ram_send)) {
++        if (!multifd_send(&multifd_ram_send)) {
++            error_report("%s: multifd_send fail", __func__);
+             return -1;
+         }
+     }
+@@ -992,13 +1006,11 @@ static void *multifd_send_thread(void *opaque)
  
-     trace_multifd_recv_unfill(p->id, p->packet_num, p->flags,
-                               p->next_packet_size);
-@@ -1536,7 +1541,9 @@ static void *multifd_recv_thread(void *opaque)
-             flags = p->flags;
-             /* recv methods don't know how to handle the SYNC flag */
-             p->flags &= ~MULTIFD_FLAG_SYNC;
--            has_data = p->normal_num || p->zero_num;
-+            if (!(flags & MULTIFD_FLAG_SYNC)) {
-+                has_data = p->normal_num || p->zero_num;
-+            }
-             qemu_mutex_unlock(&p->mutex);
-         } else {
+         /*
+          * Read pending_job flag before p->data.  Pairs with the
+-         * qatomic_store_release() in multifd_send_pages().
++         * qatomic_store_release() in multifd_send().
+          */
+         if (qatomic_load_acquire(&p->pending_job)) {
+-            MultiFDPages_t *pages = &p->data->u.ram;
+-
+             p->iovs_num = 0;
+-            assert(pages->num);
++            assert(!multifd_payload_empty(p->data));
+ 
+             ret = multifd_send_state->ops->send_prepare(p, &local_err);
+             if (ret != 0) {
+@@ -1021,13 +1033,13 @@ static void *multifd_send_thread(void *opaque)
+             stat64_add(&mig_stats.multifd_bytes,
+                        p->next_packet_size + p->packet_len);
+ 
+-            multifd_pages_reset(pages);
+             p->next_packet_size = 0;
++            multifd_set_payload_type(p->data, MULTIFD_PAYLOAD_NONE);
+ 
              /*
+              * Making sure p->data is published before saying "we're
+              * free".  Pairs with the smp_mb_acquire() in
+-             * multifd_send_pages().
++             * multifd_send().
+              */
+             qatomic_store_release(&p->pending_job, false);
+         } else {
+@@ -1220,7 +1232,6 @@ bool multifd_send_setup(void)
+     thread_count = migrate_multifd_channels();
+     multifd_send_state = g_malloc0(sizeof(*multifd_send_state));
+     multifd_send_state->params = g_new0(MultiFDSendParams, thread_count);
+-    multifd_send_state->data = multifd_send_data_alloc();
+     qemu_sem_init(&multifd_send_state->channels_created, 0);
+     qemu_sem_init(&multifd_send_state->channels_ready, 0);
+     qatomic_set(&multifd_send_state->exiting, 0);
+diff --git a/migration/multifd.h b/migration/multifd.h
+index c2ba4cad13..e3d0120837 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -275,4 +275,7 @@ static inline uint32_t multifd_ram_page_count(void)
+ {
+     return MULTIFD_PACKET_SIZE / qemu_target_page_size();
+ }
++
++void multifd_ram_save_setup(void);
++void multifd_ram_save_cleanup(void);
+ #endif
+diff --git a/migration/ram.c b/migration/ram.c
+index edec1a2d07..1815b2557b 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -2387,6 +2387,7 @@ static void ram_save_cleanup(void *opaque)
+     ram_bitmaps_destroy();
+ 
+     xbzrle_cleanup();
++    multifd_ram_save_cleanup();
+     ram_state_cleanup(rsp);
+     g_free(migration_ops);
+     migration_ops = NULL;
+@@ -3058,6 +3059,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
+     migration_ops = g_malloc0(sizeof(MigrationOps));
+ 
+     if (migrate_multifd()) {
++        multifd_ram_save_setup();
+         migration_ops->ram_save_target_page = ram_save_target_page_multifd;
+     } else {
+         migration_ops->ram_save_target_page = ram_save_target_page_legacy;
 -- 
 2.35.3
 
