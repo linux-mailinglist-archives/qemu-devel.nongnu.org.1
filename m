@@ -2,52 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B836294543F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 23:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6F29453B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 22:28:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZdgc-0002MB-VD; Thu, 01 Aug 2024 17:50:15 -0400
+	id 1sZcNh-0006zq-Mk; Thu, 01 Aug 2024 16:26:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1sZd37-0006Jg-EL; Thu, 01 Aug 2024 17:09:28 -0400
-Received: from mail-a.sr.ht ([46.23.81.152])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1sZcNS-0006xj-PC; Thu, 01 Aug 2024 16:26:24 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1sZd35-0002Nm-1V; Thu, 01 Aug 2024 17:09:25 -0400
-DKIM-Signature: a=rsa-sha256; bh=UkruwxpzGN0nWml852+v7xpPKHyhVVIZCJ8N7KBWdEc=; 
- c=simple/simple; d=git.sr.ht; h=From:Date:Subject:Reply-to:To;
- q=dns/txt; s=20240113; t=1722546557; v=1;
- b=GUGyFzhUZz063e25UxUiXQWHa0jtbIGLAqA+SObN35od1suSBVp5mR9XF+DotxbFiR+tvLKu
- ddxW5x5i22XczRYvCI4W5DvfocHdNiEx9T94XL72iR+qF79X2nwafOitRXZwMRiUQlBzy99Sm6i
- oHl/t0zoQNFlBHGdfsCy7d8X8X2Tv/7xiGOTo5K/RwBmE36RpJ1/VUTDCrh3L3T5oTAP7p+0foa
- W27xE8NwxnDwuLdurjBYsPQM9Oj5MwuRNvc5hQrxEV/xuf1CmTbcEAYBCs4JgBz2xkXs731yyHN
- anBaNBj2QtEiooKGqmJKjV2NhNJ1aH7L1NtOq2EPHbTAw==
-Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id AC1E3201D3;
- Thu,  1 Aug 2024 21:09:17 +0000 (UTC)
-From: ~arichardson <arichardson@git.sr.ht>
-Date: Thu, 01 Aug 2024 13:22:57 -0700
-Subject: [PATCH qemu] target/arm: add support for 64-bit PMCCNTR in AArch32
- mode
-Message-ID: <172254655764.30961.6353738068636770908-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1sZcNP-0006Um-Aa; Thu, 01 Aug 2024 16:26:21 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 471JMXuV006513;
+ Thu, 1 Aug 2024 20:26:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=xY4rUoAL0RCl2l0h8JdFmjmqQR
+ S67f9QZ2RFIrSgCzE=; b=Hb0zx+ZZy5kMypB+giuInRNyntbNa41q/gEQt2QtPh
+ cyR1+FEBKAymDrhL/JP4z1/DApZriWUTj8y6vifNM8H6OJeztL++BbOO2t6Ql6NQ
+ /b7kHxc3WVyvKHcyJm1qXfipCpsOGlr2gXgEsk/DNypq+uJw11N0cjc7kFebjtvC
+ hQRaJTsRAZth0oWUAuuba/08xpHjh2Z7SPz1Qa08sc6ibrjLXBRs7RewFd+v+9wb
+ FxUM8hWYEJa83hcZU7EkvBhfWha2IRjaOV4kL0nySP5RmdUsABp2Mf9M9sA5HLga
+ +cjXNdl8JokUqWoZ4bZJk8GKKCWq5uYAuzxvVeACj04g==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40rebqgc7d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Aug 2024 20:26:15 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 471J5He4011295; Thu, 1 Aug 2024 20:23:46 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40ncqn3nhn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Aug 2024 20:23:46 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 471KNgtA31326850
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Aug 2024 20:23:44 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 51A3C20040;
+ Thu,  1 Aug 2024 20:23:42 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E53C820043;
+ Thu,  1 Aug 2024 20:23:41 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.14.120])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  1 Aug 2024 20:23:41 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ qemu-stable@nongnu.org
+Subject: [PATCH] linux-user/elfload: Fix pr_pid values in core files
+Date: Thu,  1 Aug 2024 22:23:22 +0200
+Message-ID: <20240801202340.21845-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
- helo=mail-a.sr.ht
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GKN4UiD4jdY1DoPxIpjTlHbbQ-Gi9_Jb
+X-Proofpoint-ORIG-GUID: GKN4UiD4jdY1DoPxIpjTlHbbQ-Gi9_Jb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-01_18,2024-08-01_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408010135
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 01 Aug 2024 17:50:11 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,37 +100,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~arichardson <mail@alexrichardson.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Richardson <alexrichardson@google.com>
+Analyzing qemu-produced core dumps of multi-threaded apps runs into:
 
-See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers=
-/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=3Den
+    (gdb) info threads
+      [...]
+      21   Thread 0x3ff83cc0740 (LWP 9295) warning: Couldn't find general-purpose registers in core file.
+    <unavailable> in ?? ()
 
-Signed-off-by: Alex Richardson <alexrichardson@google.com>
+The reason is that all pr_pid values are the same, because the same
+TaskState is used for all CPUs when generating NT_PRSTATUS notes.
+
+Fix by using TaskStates associated with individual CPUs.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 243c47066253 ("linux-user/elfload: Write corefile elf header in one block")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/arm/helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ linux-user/elfload.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8fb4b474e8..94900667c3 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5952,6 +5952,12 @@ static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-       .access =3D PL1_RW, .accessfn =3D access_trap_aa32s_el1,
-       .writefn =3D sdcr_write,
-       .fieldoffset =3D offsetoflow32(CPUARMState, cp15.mdcr_el3) },
-+    { .name =3D "PMCCNTR", .state =3D ARM_CP_STATE_AA32,
-+      .type =3D ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
-+      .cp =3D 15, .crm =3D 9, .opc1 =3D 0,
-+      .access =3D PL0_RW, .resetvalue =3D 0, .fgt =3D FGT_PMCCNTR_EL0,
-+      .readfn =3D pmccntr_read, .writefn =3D pmccntr_write,
-+      .accessfn =3D pmreg_access_ccntr },
- };
-=20
- /* These are present only when EL1 supports AArch32 */
---=20
-2.43.4
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 7ecbc8a7cc0..0861f115fc4 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -4102,8 +4102,7 @@ static void fill_elf_note_phdr(struct elf_phdr *phdr, size_t sz, off_t offset)
+     bswap_phdr(phdr, 1);
+ }
+ 
+-static void fill_prstatus_note(void *data, const TaskState *ts,
+-                               CPUState *cpu, int signr)
++static void fill_prstatus_note(void *data, CPUState *cpu, int signr)
+ {
+     /*
+      * Because note memory is only aligned to 4, and target_elf_prstatus
+@@ -4113,7 +4112,7 @@ static void fill_prstatus_note(void *data, const TaskState *ts,
+     struct target_elf_prstatus prstatus = {
+         .pr_info.si_signo = signr,
+         .pr_cursig = signr,
+-        .pr_pid = ts->ts_tid,
++        .pr_pid = get_task_state(cpu)->ts_tid,
+         .pr_ppid = getppid(),
+         .pr_pgrp = getpgrp(),
+         .pr_sid = getsid(0),
+@@ -4428,8 +4427,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+         CPU_FOREACH(cpu_iter) {
+             dptr = fill_note(&hptr, NT_PRSTATUS, "CORE",
+                              sizeof(struct target_elf_prstatus));
+-            fill_prstatus_note(dptr, ts, cpu_iter,
+-                               cpu_iter == cpu ? signr : 0);
++            fill_prstatus_note(dptr, cpu_iter, cpu_iter == cpu ? signr : 0);
+         }
+ 
+         if (dump_write(fd, header, data_offset) < 0) {
+-- 
+2.45.2
+
 
