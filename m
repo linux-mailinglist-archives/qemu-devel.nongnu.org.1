@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DCB944DB7
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D7E944DEB
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:24:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZWYF-0007tP-1e; Thu, 01 Aug 2024 10:13:07 -0400
+	id 1sZWiH-0004fH-Om; Thu, 01 Aug 2024 10:23:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZWY7-0007b2-QP
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:12:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZWY5-0000hf-G5
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:12:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722521575;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YN6t44olBJkAs3gBbnsGS+20yQACTXBPBaWC6An01Vg=;
- b=R57/7/lIhmr7Wu9lPYUny2LRTaKvznPBHSXcQnUREVhgna8tgevtnIAjbi2P7tfd/waCCe
- 51UTcVunbuL1birGb/pkk9zSEv5AQfxslYJHHzV0G1OJdmraejNdylgBzR9RwB4hLUgs5H
- MFpPwJGQ1alX5lPG0xrspsBUjeMJm6Y=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-ar-pjWX_PHuZWLUPCheRgw-1; Thu, 01 Aug 2024 10:12:53 -0400
-X-MC-Unique: ar-pjWX_PHuZWLUPCheRgw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a7ab50e6735so359519066b.0
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 07:12:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZWiF-0004eE-Uv
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:23:27 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sZWiE-0002do-9y
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:23:27 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2ef2d7d8854so83625681fa.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 07:23:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722522204; x=1723127004; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=myunw28flnSS/WmHYmFUyo5zN+xij5Yj/F4mI2ONk5U=;
+ b=d7Mj1H2+CEDEFok3JBzk92PJ6WUNb+xq75qRo+pGdn2B7LilmPCGK3esKn/PHUBYAg
+ LB4L6s0xJgF+9s6EfMP8CN1PeEAeI4JY2R05SyggSS/WcZCJZOVGR/fEu7XfSNrmo6Fq
+ 7ixjLp8ba2oMq0lmX96I+sF19VZeGTo9VAVR8P4Xel7CkQmiS8S+23EMW/yRoTWmmXNi
+ 70VSuQtkyzK9fjQ+/AiIFBTQlDaHlzFjmTzmbiw304lVXVaTTe5wKVe5KUJQFd1T7vbd
+ 6xcrampM1U/HdWNbSAQt/7KlNzLg5YWf+GxfVHn25hF214MgyUQ0vVDsJWutFrMiKyjj
+ U5eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722521572; x=1723126372;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YN6t44olBJkAs3gBbnsGS+20yQACTXBPBaWC6An01Vg=;
- b=rqgLm1rnzGgTHtl1pw0eF1a5jLpFn611xDhbYcX9DRb1OwVNddBpp6Bmv9lmY7jsXW
- SasIXFZWzwx8c8cwdTxx2FjARVLWGZLbgU/oZf70W8cLA9TxQquY2g3SQ3tbKNZimQi7
- flUp2CylARNPOltwBSbP0jVWVP3WLlQ+HMeNN3HRYshRzhdv/g7T2GmzGZ7ER+6ymxLU
- 9q+7ahXhKaFQKyr59TORhFCpyLC8AR68DxzqscVqCs3l5+YB6mVPdbcvyovRTXrfTlZK
- fswPWrrxMjqR1njUtWeUyRDy1+qdzZUwWd8sxnRJvNLJByhxNfQeqGzij1y8fBGBoWfs
- yjNw==
-X-Gm-Message-State: AOJu0YyfjKePcyS98o7Nd4uNSuwaejflIWovKRIGS7RorMYlqnFV+MD3
- PqrZ3Oh747j1M6ygF0Dbz3yxRp0ye7Hp56CGYDwzSQauN2EvBlFcFF9RoexbU/68ZR339hAy/jR
- AyQGZF47Ft2nYQC1TkBX6ElCY0koRY1HHRN6xAIeqTLCOykevktVfNsXVkO5e
-X-Received: by 2002:a17:907:96a1:b0:a77:e1fb:7dea with SMTP id
- a640c23a62f3a-a7dc4d90171mr26706566b.2.1722521572348; 
- Thu, 01 Aug 2024 07:12:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGNvQkExyCi1efXPU4aP8xm0jpxex/WSn/wzEsPIoPbP8+yEvcaSZOQJjMt6l/18GQNqyCXlA==
-X-Received: by 2002:a17:907:96a1:b0:a77:e1fb:7dea with SMTP id
- a640c23a62f3a-a7dc4d90171mr26702666b.2.1722521571568; 
- Thu, 01 Aug 2024 07:12:51 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:176:b4e2:f32f:7caa:572:123e])
+ d=1e100.net; s=20230601; t=1722522204; x=1723127004;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=myunw28flnSS/WmHYmFUyo5zN+xij5Yj/F4mI2ONk5U=;
+ b=hJ5pWxIz59WOVvoxTF8jiCS4dTrMCnnvRAvbC4cdJ1gHAc9YwPhoyqHp2qw586o6j7
+ TF9tvs8bj0Zg2hp2wscgVTzopnl2mJJGuBLRKlMovGBFCRecFkER6QuykUWJYCkSFcvb
+ U0YiEMKlAxR5tImhICC72f8vvJ7TcbUwwHboeO0YQP0r0obIrP+kNliVVXEO9qITKV/k
+ RiySli4wKPWyocoPPlbDFxtXlJhS9PhkqQntMASGZwtmP6/OZPFJLM0R0v9oc2fGqL8S
+ M0w0inPZeqiREnRRqdqo/IEDC4nH2b0lLrem+6/TnVtSCOqwODWeLxPxNnZ5X4RlR/0+
+ wG9Q==
+X-Gm-Message-State: AOJu0Yw9xUfrBRIlgR+uPyixpcV3pV4JQHoOuFvo1Xt1jOkoVKXaKyXs
+ LuXO2gxN1Arcop4Goa2Wimt0B+S3xjYmbB1j3INwyLTqjQh4pnWX3/HHAp0YLvLIn2JGYtQ9Yd/
+ 4
+X-Google-Smtp-Source: AGHT+IG/I2WfGiXvyjjHOE2cwFiNeGcgsrHQyJXAim5jVOqZzXaApGj+ZPZU1mCbFbGSy9hszV4zEw==
+X-Received: by 2002:a2e:87ce:0:b0:2ef:2855:533f with SMTP id
+ 38308e7fff4ca-2f15aa8744dmr3586831fa.16.1722522204179; 
+ Thu, 01 Aug 2024 07:23:24 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acac615c0sm903674766b.97.2024.08.01.07.12.49
+ 5b1f17b1804b1-428e08012d7sm29657435e9.22.2024.08.01.07.23.23
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 07:12:50 -0700 (PDT)
-Date: Thu, 1 Aug 2024 10:12:42 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: BillXiang <xiangwencheng@dayudpu.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] vhost-user: Do not wait for reply for not sent
- VHOST_USER_SET_LOG_BASE
-Message-ID: <20240801101210-mutt-send-email-mst@kernel.org>
-References: <20240801124540.38774-1-xiangwencheng@dayudpu.com>
+ Thu, 01 Aug 2024 07:23:23 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/4] target-arm queue
+Date: Thu,  1 Aug 2024 15:23:18 +0100
+Message-Id: <20240801142322.3948866-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240801124540.38774-1-xiangwencheng@dayudpu.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,42 +89,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 01, 2024 at 08:45:40PM +0800, BillXiang wrote:
-> From: BillXiang <xiangwencheng@dayudpu.com>
-> 
-> Currently, we have added VHOST_USER_SET_LOG_BASE to 
-> vhost_user_per_device_request in commit 7c211eb078c4 
-> ("vhost-user: Skip unnecessary duplicated VHOST_USER_SET_LOG_BASE requests"), 
-> as a result, VHOST_USER_SET_LOG_BASE will be sent only once 
-> when 'vq_index == 0'.
-> In this patch we add the check of 'vq_index == 0' before 
-> vhost_user_read, such that we do not wait for reply for not
-> sent VHOST_USER_SET_LOG_BASE.
-> 
-> Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
-> ---
->  hw/virtio/vhost-user.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 00561daa06..fd12992d15 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -460,7 +460,7 @@ static int vhost_user_set_log_base(struct vhost_dev *dev, uint64_t base,
->          return ret;
->      }
->  
-> -    if (shmfd) {
-> +    if (shmfd && (dev->vq_index == 0)) {
->          msg.hdr.size = 0;
->          ret = vhost_user_read(dev, &msg);
->          if (ret < 0) {
+Just 4 bug fixes here...
 
+thanks
+-- PMM
 
+The following changes since commit e9d2db818ff934afb366aea566d0b33acf7bced1:
 
-How do things work now after 7c211eb078c4 then?
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-08-01 07:31:49 +1000)
 
-> -- 
-> 2.30.0
+are available in the Git repository at:
 
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240801
+
+for you to fetch changes up to 5e8e4f098d872818aa9a138a171200068b81c8d1:
+
+  target/xtensa: Correct assert condition in handle_interrupt() (2024-08-01 10:59:01 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hw/arm/mps2-tz.c: fix RX/TX interrupts order
+ * accel/kvm/kvm-all: Fixes the missing break in vCPU unpark logic
+ * target/arm: Handle denormals correctly for FMOPA (widening)
+ * target/xtensa: Correct assert condition in handle_interrupt()
+
+----------------------------------------------------------------
+Marco Palumbi (1):
+      hw/arm/mps2-tz.c: fix RX/TX interrupts order
+
+Peter Maydell (2):
+      target/arm: Handle denormals correctly for FMOPA (widening)
+      target/xtensa: Correct assert condition in handle_interrupt()
+
+Salil Mehta (1):
+      accel/kvm/kvm-all: Fixes the missing break in vCPU unpark logic
+
+ target/arm/tcg/helper-sme.h    |  2 +-
+ accel/kvm/kvm-all.c            |  1 +
+ hw/arm/mps2-tz.c               |  6 +++---
+ target/arm/tcg/sme_helper.c    | 39 +++++++++++++++++++++++++++------------
+ target/arm/tcg/translate-sme.c | 25 +++++++++++++++++++++++--
+ target/xtensa/exc_helper.c     |  2 +-
+ 6 files changed, 56 insertions(+), 19 deletions(-)
 
