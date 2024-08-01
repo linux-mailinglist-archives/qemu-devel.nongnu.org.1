@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33469944DEA
+	by mail.lfdr.de (Postfix) with ESMTPS id C3656944DEC
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 16:24:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZWiI-0004hz-DP; Thu, 01 Aug 2024 10:23:30 -0400
+	id 1sZWiK-0004os-0P; Thu, 01 Aug 2024 10:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZWiG-0004eY-Bd
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:23:28 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1sZWiH-0004fI-8d
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:23:29 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sZWiE-0002dq-Ja
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:23:28 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-367963ea053so4496637f8f.2
+ id 1sZWiE-0002e7-TV
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 10:23:29 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4266dc7591fso44145315e9.0
  for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 07:23:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1722522205; x=1723127005; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=h+MJzRKWcpjrJjzySZ9OhtIFSfp0r37te0SXkDl+IAY=;
- b=nqP1IE//+sKDqhCWIxEUqQ8Nk64gLPP6QrRZdu4vfDxLd5I54Bm4GhUUAdzcmjYcwM
- g4SE/qRYSP4M6+XplO2TlvJ5++79dOk7TZ0pePnjeoWK9Cq9iAMonXWANCyZHWt+1oa4
- Wj6OayJGS01tDtntR35qpkM5QyHwwz7kxjqSvGD9BU3MHX8KfZlk+dRYSqVdtlXWJ2d5
- XMBXzrDGriz3lErOHAJH3CkzWI/Jq/8/ErJCa56OqYFBUmOv1z++fcvzBra0pDvIYAQo
- jcdL2g7ypHUbirALMxVI7LaJr8ouSDVRFO1vAgE0wKh+alXVLnDAnxWvykpsmCrApC0z
- WoFw==
+ :reply-to; bh=I/6CNtfkx/vK3/2m6asJcZw+ghBegtW4R7IRgfjVD4E=;
+ b=Ekt+TZyKTOh3e8Uk9xh9H2AcTuFpJ/5cKnknWiK2iJb3sNz2A0l2pWvR89kOX6rSNs
+ ssgJlAA0IWJ6iMAjHmfzjiTJsQOMkO0UOk7P/KhLQXZhGfQLnDnMPr/hMG2LDmQDttGH
+ Gc4UXkdIcMh7/c3wAo+MUI+rMhLtj1piidd3vmECDfY50csWe6ek5mDcHYGgmfNWgB7z
+ n5dI8E4i0I5it71Fyb0VhpAFtF7M1F6/Jz+lG4Q4JBKqxSZkPMp0g5Ke2Be9nWkbYUGX
+ FRArZDF5yjOetvGb8JzylITzHSCJRBLJ5a+BJW/sneUtFJvCEbafRHaXE+z497eH+ZW8
+ 404w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1722522205; x=1723127005;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h+MJzRKWcpjrJjzySZ9OhtIFSfp0r37te0SXkDl+IAY=;
- b=oEdOe+4aTaZRLQ7se1wgsmsBSAU4aYm4lyS7LSCY3HuPGUgXewo5gMTosQcDuSpN9M
- DtO+cDhxT08PXYmuUG0Gb67JuQ8UmpzcHorzW/smj/xbtABDBInKYKh7TFrsiQxVeTzR
- sL5Kgd2vxCo4iFVXot/qs8ggy4bXV/IrMG5JgCCdil4dv+VlizY2cHcARGUzqhqkCsBz
- k40I9y1yRXvnj76x3nX86RVPBKmWJboWABbSDMK+GmfAF/YFmop0QNwRm28FezEK0Li9
- jjWsbhfBEOGNM1vqDCqpalRzINK/Ht4VsYCVG/cqbmncjlHoGsfHjN2LNY2x27BtHLUH
- 7clw==
-X-Gm-Message-State: AOJu0YwzehNSUEZopNNbu4AXiap2RvTf/yKgg8jFwvMZ5bpRRG996DFG
- IPqJrvbDN4FTXWk+aPH/rJ97dI/xbAzOunOJT08t3GzUYV+m/P98WwOJ6Ho7kCmzfLHyJlkxI4J
- f
-X-Google-Smtp-Source: AGHT+IHatWi5XSBaCnJPnbTC1lTaJEc3W6ghu5gwQ99vkxGuIZI4Y1XOFsnyNa+OIgwVc0d7czWPQA==
-X-Received: by 2002:adf:f60d:0:b0:369:b842:5065 with SMTP id
- ffacd0b85a97d-36baaf61c08mr2242773f8f.41.1722522204684; 
- Thu, 01 Aug 2024 07:23:24 -0700 (PDT)
+ bh=I/6CNtfkx/vK3/2m6asJcZw+ghBegtW4R7IRgfjVD4E=;
+ b=LYRoIgxzk6Q4quLVGyz1QFme9GPK+iIJ+cWVNOkxJr9Y1oDfTnvp5EB2TW7idpe4Ct
+ PUkYVja77B18/+U8u8tNTIZpMkziGbOM14uShmyFKFMBOdt2BfKE7Gz5gwbUj4vS70MG
+ a12cKj+j/ybh+3L5PuwhvPJXgxJQYLSpNgiz1aNZPHc+yqzNzRZxwgd61YMD27JU4Bxs
+ xMm0PEUr662MYw+mW7LhNIHkphcrEszeYzCgmwmfq+CWcWvqsHIxecaw6Im3ib8Dx0Ah
+ 6XPKwcnqyVLkCG07cYlUer5zY97nd/0gGKt8y6tFBZGoF4ZdL1VtFRGcfvFcChVJHfjT
+ D8yA==
+X-Gm-Message-State: AOJu0YxhwXiiZrGRkfXHE1RTdJjjEdL0u1+hi5Nz/dhNqbsEyMZtpsnR
+ bMP7VxIp0AnypfRCQaFEFh3MIeq20C/nXHYPOLQl1OllmSYppqHVkXTAweCRfwgQWoU/o+JKN5Q
+ R
+X-Google-Smtp-Source: AGHT+IGxHDXVNERd/qiwsLBtD0aEPlVLnxfuSvl3OsVlnfkTXpLlg+KhXmsyIRK1t35Wf6k4jtrHSw==
+X-Received: by 2002:a05:600c:524f:b0:428:17b6:bcf1 with SMTP id
+ 5b1f17b1804b1-428e6b0a2bcmr300065e9.22.1722522205173; 
+ Thu, 01 Aug 2024 07:23:25 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-428e08012d7sm29657435e9.22.2024.08.01.07.23.24
@@ -59,16 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 01 Aug 2024 07:23:24 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/4] hw/arm/mps2-tz.c: fix RX/TX interrupts order
-Date: Thu,  1 Aug 2024 15:23:19 +0100
-Message-Id: <20240801142322.3948866-2-peter.maydell@linaro.org>
+Subject: [PULL 2/4] accel/kvm/kvm-all: Fixes the missing break in vCPU unpark
+ logic
+Date: Thu,  1 Aug 2024 15:23:20 +0100
+Message-Id: <20240801142322.3948866-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240801142322.3948866-1-peter.maydell@linaro.org>
 References: <20240801142322.3948866-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,48 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marco Palumbi <Marco.Palumbi@tii.ae>
+From: Salil Mehta <salil.mehta@huawei.com>
 
-The order of the RX and TX interrupts are swapped.
-This commit fixes the order as per the following documents:
- * https://developer.arm.com/documentation/dai0505/latest/
- * https://developer.arm.com/documentation/dai0521/latest/
- * https://developer.arm.com/documentation/dai0524/latest/
- * https://developer.arm.com/documentation/dai0547/latest/
+Loop should exit prematurely on successfully finding out the parked vCPU (struct
+KVMParkedVcpu) in the 'struct KVMState' maintained 'kvm_parked_vcpus' list of
+parked vCPUs.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Marco Palumbi <Marco.Palumbi@tii.ae>
-Message-id: 20240730073123.72992-1-marco@palumbi.it
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: Coverity CID 1558552
+Fixes: 08c3286822 ("accel/kvm: Extract common KVM vCPU {creation,parking} code")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Message-id: 20240725145132.99355-1-salil.mehta@huawei.com
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <CAFEAcA-3_d1c7XSXWkFubD-LsW5c5i95e6xxV09r2C9yGtzcdA@mail.gmail.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/mps2-tz.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ accel/kvm/kvm-all.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
-index a2d18afd792..aec57c0d686 100644
---- a/hw/arm/mps2-tz.c
-+++ b/hw/arm/mps2-tz.c
-@@ -435,7 +435,7 @@ static MemoryRegion *make_uart(MPS2TZMachineState *mms, void *opaque,
-                                const char *name, hwaddr size,
-                                const int *irqs, const PPCExtraData *extradata)
- {
--    /* The irq[] array is tx, rx, combined, in that order */
-+    /* The irq[] array is rx, tx, combined, in that order */
-     MPS2TZMachineClass *mmc = MPS2TZ_MACHINE_GET_CLASS(mms);
-     CMSDKAPBUART *uart = opaque;
-     int i = uart - &mms->uart[0];
-@@ -447,8 +447,8 @@ static MemoryRegion *make_uart(MPS2TZMachineState *mms, void *opaque,
-     qdev_prop_set_uint32(DEVICE(uart), "pclk-frq", mmc->apb_periph_frq);
-     sysbus_realize(SYS_BUS_DEVICE(uart), &error_fatal);
-     s = SYS_BUS_DEVICE(uart);
--    sysbus_connect_irq(s, 0, get_sse_irq_in(mms, irqs[0]));
--    sysbus_connect_irq(s, 1, get_sse_irq_in(mms, irqs[1]));
-+    sysbus_connect_irq(s, 0, get_sse_irq_in(mms, irqs[1]));
-+    sysbus_connect_irq(s, 1, get_sse_irq_in(mms, irqs[0]));
-     sysbus_connect_irq(s, 2, qdev_get_gpio_in(orgate_dev, i * 2));
-     sysbus_connect_irq(s, 3, qdev_get_gpio_in(orgate_dev, i * 2 + 1));
-     sysbus_connect_irq(s, 4, get_sse_irq_in(mms, irqs[2]));
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index e1d13863063..75d11a07b2b 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -362,6 +362,7 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
+             QLIST_REMOVE(cpu, node);
+             kvm_fd = cpu->kvm_fd;
+             g_free(cpu);
++            break;
+         }
+     }
+ 
 -- 
 2.34.1
 
