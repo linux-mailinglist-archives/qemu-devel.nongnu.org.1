@@ -2,130 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99162944597
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 09:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD40944594
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 09:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZQL7-0002P9-WB; Thu, 01 Aug 2024 03:35:10 -0400
+	id 1sZQL9-0002RZ-JY; Thu, 01 Aug 2024 03:35:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Lei.Huang@amd.com>) id 1sZM2W-0007J0-U3
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 22:59:40 -0400
-Received: from mail-dm3nam02on2062.outbound.protection.outlook.com
- ([40.107.95.62] helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <huangwenyuu@outlook.com>)
+ id 1sZOY7-000670-Mm
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 01:40:27 -0400
+Received: from mail-japaneastazolkn19010007.outbound.protection.outlook.com
+ ([52.103.43.7] helo=TY3P286CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Lei.Huang@amd.com>) id 1sZM2U-00005k-G9
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 22:59:40 -0400
+ (Exim 4.90_1) (envelope-from <huangwenyuu@outlook.com>)
+ id 1sZOY5-0000Hn-TE
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 01:40:27 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LI0e93nnWvp2J4iQiRERSRUGSiPWTVHlkjJNQi6uC5DDYhwCkBhy9fIn7ggNBsqBP6RRpaXSayzx3hPAV8onoLMooW7qXrWyV2nq4YMIwo9aQpe9fr1XmluUYYv5av59E8jHRU8pjr/lYcq5WUvQFGEfGFvgXXq4Bq83GnedMcUT/VPYG575DfScTCgZvlf45W/y5DeVYYCUWB+9b/s2Phf7rQtQd2r3NKRxq1VvlL+ZsoIH4MdWRY/A4clW8r7GfJODGktttI4STxfe44cxd01k/m2YdQ7jAItWu3O9YLg6karIcnC4bZ5w4itbt6yOYAPh3IX2ltWvfnI64fogow==
+ b=Y62ugUyAxXZsLI0Jc4F7M4y/euzDLOLCpJCNOaSlyl7xMw1q39XoX5C3+Hmdzmx28U6cYQ6mTUDAWWmOjDZ+IC0BK7SBrnYZEuqzhFc9o/j9MLDAb2BG+NSUVmsh6UOjJ1yCtiDKrluO1DwaJPPJDgk+U/T90U/VM1gQjqjUMiqy/jcdjl9793BXU4Eac3Qa0XWT5WiqgNGS1nEPY4DixRIr+kTwOVdBKF/ezqYPLvoc0IGl67EBMdEtmmHEobPIa8pxDHAYOSqpA2xxTwJGOBd0BKpm3IW9JYaMCWUq82AciOCUBGEqAGX/Q7qPnHWOMuXAkKmsDYiF1mQomZo7Aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nOk+sfBuzPbh1hBtpWO1MlgWMq5JYQ6omqLePzSEjSY=;
- b=qJYCFRa70ZAwhsrTNe5MfvrAmHHbTFpS1h9MfrC/WORpUu4LcwoSm+hrUrNaWDvB/3DlCpedj8htvpvGLG8BmfXd0EG7WsavZEkLs6JcI1tm7bezx332ozWTY3++syEztDRWh0Yhrljv3Zirjw8RCneyecfrVomk3hfb2hPYgyF0SK0qSuVq0sHOy5y3mjfe//tMkHkbl7nxy0cTdaZ9xEx7WWvmPEnI7fNQzblCKkIyWS01CJ8AE69sG5Gi89LFUnvqtHr7lLuDXMWU5oiOS4A5nVkyL1vSAlPoxgkzESPfXzEcmh7dL+Y2r0wNgF+bI+BHeMMjD9FMzaB5u+s8sA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ bh=vui7lRF/9oAhPSfpV8XMH4Wv3GXoEOSQvGa+5vxowzU=;
+ b=sb2I/LNutVNlHBkfgFHJunjr0hEO2oaOpooK4x/1n+FQnti9ICT8CJ4nInlOirngXzy3SwmNVOWQFgk+Yh2xGkZnlUdjgGheKftg4Ph54FnTl/XdYPFHYmNK56m4vHjPEz8zHxZgkhnLoc0aSgNrRoOjb61UojrVwjx19ClhvlhmrQ4y1svmzHtjO+zCTXq0F8J/Jgi8ToLMXjUdF3B7fT9zXfpJpuuCdHFVbZZqqD5fFhkD47lHfWXPi6R4QoLjwjEMMhU72QXxOwwbyVllnVnobIqH0EKjQmJAp4stcg4ieWQoFSW39f00ibG/QtjWHvusBOlKDHdvq+vLOF3SQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nOk+sfBuzPbh1hBtpWO1MlgWMq5JYQ6omqLePzSEjSY=;
- b=rrmnMDAJXvS6wf6RDiuA3+buxFx7yPBusGzX23iXNALlKfpXLcFzWCtP/2sb8YU5hrPABsn2Otqulbes+8sTIx7Oa6MJ8K2C2KKa/sFGEfdKJHLTVf7HeEM8XCWQBJ5LA6TrliLXz9UzcAx6PqR6ux1ddxxLUWF2HJke5B9MkXQ=
-Received: from BN1PR10CA0026.namprd10.prod.outlook.com (2603:10b6:408:e0::31)
- by DM6PR12MB4105.namprd12.prod.outlook.com (2603:10b6:5:217::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Thu, 1 Aug
- 2024 02:54:32 +0000
-Received: from BN1PEPF00004681.namprd03.prod.outlook.com
- (2603:10b6:408:e0:cafe::c1) by BN1PR10CA0026.outlook.office365.com
- (2603:10b6:408:e0::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.34 via Frontend
- Transport; Thu, 1 Aug 2024 02:54:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF00004681.mail.protection.outlook.com (10.167.243.87) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7828.19 via Frontend Transport; Thu, 1 Aug 2024 02:54:32 +0000
-Received: from SHA-L-LEIHUANG.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 31 Jul
- 2024 21:54:30 -0500
-From: Lei Huang <Lei.Huang@amd.com>
-To: <mst@redhat.com>
-CC: <leihuang@amd.com>, <pierre-eric.pelloux-prayer@amd.com>,
- <ken.xue@amd.com>, <qemu-devel@nongnu.org>, Lei Huang <Lei.Huang@amd.com>
-Subject: [PATCH v2 1/1] virtio-gpu: customize EDID for vms
-Date: Thu, 1 Aug 2024 10:53:33 +0800
-Message-ID: <20240801025334.1610-2-Lei.Huang@amd.com>
-X-Mailer: git-send-email 2.44.0.windows.1
-In-Reply-To: <20240801025334.1610-1-Lei.Huang@amd.com>
-References: <20240801025334.1610-1-Lei.Huang@amd.com>
-MIME-Version: 1.0
+ bh=vui7lRF/9oAhPSfpV8XMH4Wv3GXoEOSQvGa+5vxowzU=;
+ b=Cm3VOlUQCaobFfvzM0OTm1WRzM/LfPAUiaMW5Gh9tNXxVAQPGJANA3+Uro/+Bq6pDf+JFxWnhYgqhojV4VWrIKBsACiPdxN9N5gcQP04lx4GSaPQGy92b4lQ4A+6L4BBJLFHdO7mLMhOeCKe9UADna1EJPS8la0dWUnc3H78mthdfJqqCr2heMbIUYsRmdjzXEQB+YjUDO/rN4kMgfR8uTpDCcn4L7V5nBeHykf3vxqZWqBqOq0X+vvz+uY4/cXJg//xyOUdPHFxWrv+XJODkl9thDZMy4O5YTIk/P8zhn/8Y1y3HUKBdNpf2jW0v3aOj7uDB1KaYPxSlxi1hTf9jA==
+Received: from TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8022::15)
+ by TY1P286MB3181.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2e4::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Thu, 1 Aug
+ 2024 05:35:16 +0000
+Received: from TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::948f:9ea:14f6:1f5e]) by TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::948f:9ea:14f6:1f5e%6]) with mapi id 15.20.7807.026; Thu, 1 Aug 2024
+ 05:35:16 +0000
+From: Wenyu Huang <huangwenyuu@outlook.com>
+To: mst@redhat.com,
+	qemu-devel@nongnu.org
+Cc: huangwenyuu@outlook.com
+Subject: [PATCH] Cleanup: rename virtio_split_packed_update_used_idx
+Date: Thu,  1 Aug 2024 01:35:12 -0400
+Message-ID: <TYBP286MB036536B9015994AA5F3E4495ACB22@TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
+X-TMN: [1CTvf/sxOZY9sH7Hnaa4I6NWQyu2ZyhR]
+X-ClientProxiedBy: SI1PR02CA0034.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::10) To TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:404:8022::15)
+X-Microsoft-Original-Message-ID: <20240801053512.25778-1-huangwenyuu@outlook.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004681:EE_|DM6PR12MB4105:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee956338-c59a-4904-739e-08dcb1d54542
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
+X-MS-TrafficTypeDiagnostic: TYBP286MB0365:EE_|TY1P286MB3181:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89bbbd4f-3190-4bb9-f8d5-08dcb1ebb8f7
+X-MS-Exchange-SLBlob-MailProps: Cq7lScuPrnpXB0xcNeDVdJIgd0h0Wm5onx2dxdB74NOio1nCkB3wnBMb4nwPtDJVsgcPYrzem1xBM8/mncG5kq5fU4n8GO72/7+1paEyfqlBoRFr33TXjGpX4YuZezlKvAAe1fsDhdxBzYlSs0UiW9YfQk2vmcxXOuuVp99L2jbxFGz7zmyzDlsMiIpyjjn4VurBY9gM/2ATqyLskcpjeB9aTYcU9gv6ytnkxdCXONt7VtuVc82E7/NZgPaWj8h7Wye8e01S1y4myZb4F5h8Wzj/ZAAwVJ1mZ43u1Xc4Gg7/SU27rTE3dJJ35W5KKD1iEDrJVIOvN82obDcEjL6eaznlei75Kh35lXrp4OUare77X/HtFXhRSwPiDREr1gfhdXPgfos04+28oySAkAANEz0taRcE8W+/LX0t8A+wtPnuL4HI4L15Rm8tw856HfBCydU7d5dl/L8lSLtIir0r3LinncuVXsA4r96QViNm3gmhB1voVN9FskxtYeTMOj7pON7DKHHwICWZr29ZwWiwENF/sZxB1N3LyWvCQ+pDB/uLqNNqFuFuK0HN1bCXt0gi7welWOQqX8hrlQe2QJU/HkvZk+kwzNyua/aZ6p9gBkRENdiVUV5TpitjvBoj7SPfmgSwY64PiFTeUaA6Z8BpjmRyyxthc+jpDk/kKNcPNXy99CKTWQoWbJM60QQH9xGyflxMi/ZsH9rYsDPLFRCGy+RznyUqReo5ddr9t8LZHiv00XC1NO0H1J8A0hxAcTZfSpPK6Qy8aEE=
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|36860700013|82310400026|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mKlrgf1+7fKjcvCgIkHgwY6AOpknzs1+nCou4xgJJv2MBqZlO7DJ4GR11cTW?=
- =?us-ascii?Q?5AxmZymp8S3/gjNPPb5B4AKXbQOUEf7w/luvClVJX8bSxz03KMhMcVPcAMtj?=
- =?us-ascii?Q?QMrQ6hgfrgeDZy1sOD4/5HdHrZ/pPAFiP6tT4BT733ogEbzst3S1oZwjkeQg?=
- =?us-ascii?Q?mYCkP+z0I8tnTewFL0vUUPJRwa8IEWWCkCfcF57zcgJQMwa8wU7izyU4rnjN?=
- =?us-ascii?Q?BumdE8B7wHdavrT/kSP0s212zdq+BlKOY9p87/EBWCaFs/DgqkgKAdQLhVO5?=
- =?us-ascii?Q?aHwj/6BTcZS1+wVv3ZtxZOr8h69eLrLAiSYAGwDwbE9u7IQ/VX05JWLnP0wq?=
- =?us-ascii?Q?YbzCCePQK68fUkRfdAjjbs87EOojuvOCfn0nDoh1n5e3GKLpk4UP2NELC/fW?=
- =?us-ascii?Q?conaoYTCgNEagpRWkAM8QvC063xjjK0EUVa8uWw5/atervHd5m8EE1S80yoV?=
- =?us-ascii?Q?m6ucWgzwwmK57FObzCe0/lhe1Tveyfh5PCabhYv8t3yxAV4FM6okhFSvxy4O?=
- =?us-ascii?Q?+AXEz2Kw1k/SDR6YMjMNBUqloef6zEX8jmQNZWSduEV+VQcG5lOCYh7G6hr/?=
- =?us-ascii?Q?VW6B06j8Djbk2y+XyOAnZDt5wo68sKDDgfGHKNox4DHPdsI12SYKa6NQFcxe?=
- =?us-ascii?Q?1zi0PxVWn8jRfyoKORxqcLQNzuaJp84fXvYLwIx6Zz1L6l2lL8U3w2tIl8LH?=
- =?us-ascii?Q?xpTXb659tKopyPkKj12eohZMr3Ua3nY2SOWEE6HZvxO3xgXW76J6KNjsc4o/?=
- =?us-ascii?Q?pun8vshquCgdZd3IfurybeznVrrvAjVgCV6wDZnXD0n4E9mmUCdmEUBaAhQy?=
- =?us-ascii?Q?vwMQiHRbZBj6XHdi/dTADGukIxJWbblvg1zXfG1QfQNKIQo2cYiR3o82N+zK?=
- =?us-ascii?Q?5q7/BBRf1LJ7Cm5JzC4eYwcNWBtIar37tSJ0fH9BymI1+Hnoscv9BgV7Kb/k?=
- =?us-ascii?Q?K3nl0lo32Wk5YA5sfvr2LS6tLoxpOZQBF90gKzNcwCmb9VXczRqylWZ0dfIy?=
- =?us-ascii?Q?0zS/c3bcSznTwXW+2511Ypd++iJmxQsaB2ponOmd7ot0TKe6T0UXPAlKi0ek?=
- =?us-ascii?Q?ptjFIUsjlECHHm/kUDQ/oAB9soB1lUcV4aWKw+vfW+KbE47NPp/6SfxFuH+Z?=
- =?us-ascii?Q?x2HSMEVhwYZHel8lAC9xO53vwujiz9PELcKiG98q+oxQxn19leaO3YNa7M7s?=
- =?us-ascii?Q?Mollo0hMVWXwX89VHvvmME1ycv4/44RLKPE2R7tlTN1Kq2iRHNURA+lFCVWO?=
- =?us-ascii?Q?w+fwZhy7aFBPSCT+PsTZsYETfk6HwAayxgPU+8e+6sCn64/RmR23Q36Gxf9D?=
- =?us-ascii?Q?w5np80+g5FUf92V3GpY9wEyCwMQniu7zl6Je4qVXEa6v8IUgHshEbv5ZAmsg?=
- =?us-ascii?Q?oPnBh8M0NVZMR4kdmWa6mH15s/4pJRoA0x6mNi+uQ2W/zZ/IwZuYSwW/6xFn?=
- =?us-ascii?Q?FSd0FnjW4aP5pFNyjFfZh6o6/F88G+0T?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 02:54:32.7276 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee956338-c59a-4904-739e-08dcb1d54542
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004681.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4105
-Received-SPF: permerror client-ip=40.107.95.62; envelope-from=Lei.Huang@amd.com;
- helo=NAM02-DM3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ ARA:14566002|461199028|5072599009|8060799006|19110799003|3412199025|440099028|1710799026;
+X-Microsoft-Antispam-Message-Info: qk7+xqizqxwzvRt8+e0wFwDlE9EUYKPf5tHFGcw/eZ6P2CjHG6sdk9pkKfbmdWIEP+VZR29h8JgSc3/VhLoV30k15CYlM+nsWxXhrTIm9lFOFHBSJMZ7Mz8DjoaUozUOPp2KsvHbafEYoUYGa+qT5isZ3mOp4bXz9lHHH/NF8gu+7hR48caDAtd8X8zlaN5cURPkU04ESHHHVUTDte7UE3jpNNKqVzhphSI711OAcpI7V1MHJTAcs8tUQZn7kh4S+1Kfzwb9tqynKGtd6WJUahxPZ9P/QV76P5IQp/nX+jaQz1OLPCbVnkmpGhN2XNSaWgj6Ab3D0KknzMxor1wq0HvG43QB/KjjlOCUm3wR0/nlL1tMzdlU+pJID/j3MlNuiV0MQPX9ms+MPeYPoByu2gU/YfNXTjcyxXfnKCXUuPehspi2CZMV2DD/MopPrQeGFd/ThsvnQI5E9u9mKCpUVsD5/QBv4vETxISew4m6+gQ7DBH39epUMz5kzAaa3XLMaDTV/yBJcRu0RaMO0kTCsn4nr/cZwlm5IfsPPPM3sr8RTKPiM+Dr2DOOCl+eN1Bz6FpyOtZDbcmYtBFzfQ1NF7LVGJxJSKNVM/bgxNMgtO+2MqX0+ZqdG+8pVmDKgXe/+mCMjSB0CWvXmYP1vEnjGsewodrpRr3lbb14pt7IobmX6JiRbnyZY9CPjjgfObWirMtOlCkvC0RmaEbmWy4Cyw==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TTFC3H836CScOEXKKphyXFVwN5gM6ijuIzej7eC5lBIgnYlWDPkPIYArHu1c?=
+ =?us-ascii?Q?Q1zjuj7VU0S5F3tLVR8TUz3WnyekuUmFLERYNHNO2F/aeaJC23wC1vMPXBuL?=
+ =?us-ascii?Q?7PxQ4PDYb0bFOILx3MjhzGoVdCVT0NUUVwz39j4OLAUOUa7zQPJrdO7vSxz2?=
+ =?us-ascii?Q?CZq7n/UzIM8DSYi8dLCASwx7R+SeC97T9Wf059hsoQZ9MIhVjncudPySCFD5?=
+ =?us-ascii?Q?tESxWBRR4hnnFPHnIoYAP6GTKRVEsDGyqaEcLrDPO3VuzVvr7kYmXkpf3d22?=
+ =?us-ascii?Q?kHobNEhwWiZl/6StuG3/32hvM9tC8cqOdhCsCCZ+R903xaO43b6VSm3tXfdO?=
+ =?us-ascii?Q?p2l9TDxJQESu74FUrRxmEyl+Xk3JDkKu0x/Ua2/HIE4jtny79bdnBUWBTc4J?=
+ =?us-ascii?Q?852hlMQeL4ZJE9Mh3R9Oyui3ASLrbEO+Ev/eWzle4VxMooFjFlnPfvFMjLy6?=
+ =?us-ascii?Q?XCRZhW9fjtaD6/1+bwzrXqWhaKS4zmpESYSf4Kt7FsZ9xj8mYwQ7rCav8QCI?=
+ =?us-ascii?Q?vD8WP0z9bPfVGIJOf7vY5o+CBeSjFEYm/Mvo3HBGiLn+lpmB/sOkFkf+h666?=
+ =?us-ascii?Q?0y19pOitONUv90ZY6U/9oMVb79QUAnx4lZ/CIWDm78e+5/e4tdkx1OPybf5d?=
+ =?us-ascii?Q?i2trJmPoM2uIBq8B3QcMxxhtT4yFMyeAYFStVQspWJh58uVJzls91I/WUD6f?=
+ =?us-ascii?Q?FOL/+tFjbtn4eR47mmSuUeazc/lUS1a2v/ji402mSVmlGM0h67k8Xi7Sdbaw?=
+ =?us-ascii?Q?rujXuKcZr6DQSLmnVbVpzGoWPNwbUKH0EVWnmksNzFqbcIFQ21Kl1TARtHuz?=
+ =?us-ascii?Q?mYjI4Zk4Iocq1dUKk3xBglt/knecL6NDGNGwwJPPUyKyFb5KCkpP2zSPZWE4?=
+ =?us-ascii?Q?Px3NP4WrCxEa83w9+3Yf3D4tyr45/StdXyU2FUGuzL3EENsS+rB59hM4aTb2?=
+ =?us-ascii?Q?Nf4FLPxhPCmRIwuB2TWXIxCc3xSyAKvn5hR0g0TM1mFOroOJ9uZgWNcGhxi+?=
+ =?us-ascii?Q?15As4yxXfFr1dAaTljbBDl6Gmt2dOqhomY2zCA+C8/gKROoRVZT0W5iKYouS?=
+ =?us-ascii?Q?UTzbXqTZ9K8gjZkeoY7RjP7NMbkUrFTdXsL+8vJkZcz/QDM9GoKs1gnDBa9F?=
+ =?us-ascii?Q?8Z5MeCJfuf2GPtIQmBHWPrX8nJ2o+SsX6a0w3tVRuMLV0rrCKKgytcjdFaeh?=
+ =?us-ascii?Q?QnGpgIh5NXAYXN1Wru6G+0BtqwQk/xL+cEbkP8bR21ozqjnZ5KZT0Mh3ZI0u?=
+ =?us-ascii?Q?B8QTAblNspVy9YNsOSOn?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89bbbd4f-3190-4bb9-f8d5-08dcb1ebb8f7
+X-MS-Exchange-CrossTenant-AuthSource: TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 05:35:16.2581 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY1P286MB3181
+Received-SPF: pass client-ip=52.103.43.7; envelope-from=huangwenyuu@outlook.com;
+ helo=TY3P286CU002.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -144,162 +123,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-customize refresh rate and resolution for the guest VM
-instead of being limited by the actual resolution of the host.
+virtio_split_packed_update_used_idx should be
+virtio_queue_split_update_used_idx like
+virtio_split_packed_update_used_idx.
 
-add edid info and modify conf like:
-"-device", "virtio-vga-gl,edid=on,max_outputs=2,
-refresh_rate0=120000,maxx0=7680,maxy0=1080,refresh_rate1=75000,
-maxx1=3840,maxy1=960"
-
-Change-Id: I5d5742d280186ffd5dee9eba7697f06a2b09b123
-Signed-off-by: Lei Huang <Lei.Huang@amd.com>
+Signed-off-by: Wenyu Huang <huangwenyuu@outlook.com>
 ---
- hw/display/virtio-gpu-base.c   | 41 ++++++++++++++++++++++++++++------
- hw/display/virtio-gpu.c        |  1 +
- include/hw/virtio/virtio-gpu.h | 26 +++++++++++++++++++++
- 3 files changed, 61 insertions(+), 7 deletions(-)
+ hw/virtio/virtio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index 4fc7ef8896c..80d22005447 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -46,8 +46,18 @@ virtio_gpu_base_fill_display_info(VirtIOGPUBase *g,
-     for (i = 0; i < g->conf.max_outputs; i++) {
-         if (g->enabled_output_bitmask & (1 << i)) {
-             dpy_info->pmodes[i].enabled = 1;
--            dpy_info->pmodes[i].r.width = cpu_to_le32(g->req_state[i].width);
--            dpy_info->pmodes[i].r.height = cpu_to_le32(g->req_state[i].height);
-+            if (g->edid_info[i].maxx && g->edid_info[i].maxy &&
-+                virtio_gpu_edid_enabled(g->conf)) {
-+                dpy_info->pmodes[i].r.width =
-+                    cpu_to_le32(g->edid_info[i].maxx);
-+                dpy_info->pmodes[i].r.height =
-+                    cpu_to_le32(g->edid_info[i].maxy);
-+            } else {
-+                dpy_info->pmodes[i].r.width =
-+                    cpu_to_le32(g->req_state[i].width);
-+                dpy_info->pmodes[i].r.height =
-+                    cpu_to_le32(g->req_state[i].height);
-+            }
-         }
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 397c261c3c..5836f680f0 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3609,7 +3609,7 @@ static void virtio_queue_packed_update_used_idx(VirtIODevice *vdev, int n)
+     return;
+ }
+ 
+-static void virtio_split_packed_update_used_idx(VirtIODevice *vdev, int n)
++static void virtio_queue_split_update_used_idx(VirtIODevice *vdev, int n)
+ {
+     RCU_READ_LOCK_GUARD();
+     if (vdev->vq[n].vring.desc) {
+@@ -3622,7 +3622,7 @@ void virtio_queue_update_used_idx(VirtIODevice *vdev, int n)
+     if (virtio_vdev_has_feature(vdev, VIRTIO_F_RING_PACKED)) {
+         return virtio_queue_packed_update_used_idx(vdev, n);
+     } else {
+-        return virtio_split_packed_update_used_idx(vdev, n);
++        return virtio_queue_split_update_used_idx(vdev, n);
      }
  }
-@@ -62,6 +72,8 @@ virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
-         .prefx = g->req_state[scanout].width,
-         .prefy = g->req_state[scanout].height,
-         .refresh_rate = g->req_state[scanout].refresh_rate,
-+        .maxx = g->req_state[scanout].width,
-+        .maxy = g->req_state[scanout].height,
-     };
  
-     edid->size = cpu_to_le32(sizeof(edid->edid));
-@@ -96,9 +108,16 @@ static void virtio_gpu_ui_info(void *opaque, uint32_t idx, QemuUIInfo *info)
- 
-     g->req_state[idx].x = info->xoff;
-     g->req_state[idx].y = info->yoff;
--    g->req_state[idx].refresh_rate = info->refresh_rate;
--    g->req_state[idx].width = info->width;
--    g->req_state[idx].height = info->height;
-+    if (!g->edid_info[idx].refresh_rate) {
-+        g->req_state[idx].refresh_rate = info->refresh_rate;
-+    }
-+    if (!g->edid_info[idx].maxx) {
-+        g->req_state[idx].width = info->width;
-+    }
-+    if (!g->edid_info[idx].maxy) {
-+        g->req_state[idx].height = info->height;
-+    }
-+
-     g->req_state[idx].width_mm = info->width_mm;
-     g->req_state[idx].height_mm = info->height_mm;
- 
-@@ -204,11 +223,19 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
- 
-     g->enabled_output_bitmask = 1;
- 
--    g->req_state[0].width = g->conf.xres;
--    g->req_state[0].height = g->conf.yres;
- 
-     g->hw_ops = &virtio_gpu_ops;
-     for (i = 0; i < g->conf.max_outputs; i++) {
-+        if (g->edid_info[i].maxx && g->edid_info[i].maxy &&
-+            virtio_gpu_edid_enabled(g->conf) &&
-+            g->edid_info[i].refresh_rate) {
-+            g->req_state[i].refresh_rate = g->edid_info[i].refresh_rate;
-+            g->req_state[i].width = g->edid_info[i].maxx;
-+            g->req_state[i].height = g->edid_info[i].maxy;
-+        } else {
-+            g->req_state[i].width = g->conf.xres;
-+            g->req_state[i].height = g->conf.yres;
-+        }
-         g->scanout[i].con =
-             graphic_console_init(DEVICE(g), i, &virtio_gpu_ops, g);
-     }
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 3281842bfe1..dd759a80522 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1666,6 +1666,7 @@ static const VMStateDescription vmstate_virtio_gpu = {
- 
- static Property virtio_gpu_properties[] = {
-     VIRTIO_GPU_BASE_PROPERTIES(VirtIOGPU, parent_obj.conf),
-+    VIRTIO_GPU_EDID_PROPERTIES_MULTI_DISPLAY(VirtIOGPU, parent_obj.edid_info),
-     DEFINE_PROP_SIZE("max_hostmem", VirtIOGPU, conf_max_hostmem,
-                      256 * MiB),
-     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 7a59379f5a7..61c69735dba 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -18,6 +18,7 @@
- #include "ui/qemu-pixman.h"
- #include "ui/console.h"
- #include "hw/virtio/virtio.h"
-+#include "hw/display/edid.h"
- #include "qemu/log.h"
- #include "sysemu/vhost-user-backend.h"
- 
-@@ -150,6 +151,7 @@ struct VirtIOGPUBase {
-     MemoryRegion hostmem;
- 
-     struct virtio_gpu_scanout scanout[VIRTIO_GPU_MAX_SCANOUTS];
-+    struct qemu_edid_info   edid_info[VIRTIO_GPU_MAX_SCANOUTS];
- 
-     int enabled_output_bitmask;
-     struct virtio_gpu_requested_state req_state[VIRTIO_GPU_MAX_SCANOUTS];
-@@ -168,6 +170,30 @@ struct VirtIOGPUBaseClass {
-     DEFINE_PROP_UINT32("xres", _state, _conf.xres, 1280), \
-     DEFINE_PROP_UINT32("yres", _state, _conf.yres, 800)
- 
-+#define VIRTIO_GPU_EDID_PROPERTIES_MULTI_DISPLAY(_state, _edid_info)   \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 0),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 1),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 2),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 3),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 4),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 5),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 6),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 7),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 8),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 9),                 \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 10),                \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 11),                \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 12),                \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 13),                \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 14),                \
-+    VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, 15)                 \
-+
-+#define VIRTIO_GPU_EDID_PROPERTIES(_state, _edid_info, id)             \
-+    DEFINE_PROP_UINT32("maxx" #id, _state, _edid_info[id].maxx, 0),    \
-+    DEFINE_PROP_UINT32("maxy" #id, _state, _edid_info[id].maxy, 0),    \
-+    DEFINE_PROP_UINT32("refresh_rate" #id, _state,                     \
-+            _edid_info[id].refresh_rate, 0)
-+
- typedef struct VGPUDMABuf {
-     QemuDmaBuf *buf;
-     uint32_t scanout_id;
 -- 
-2.45.2
+2.43.0
 
 
