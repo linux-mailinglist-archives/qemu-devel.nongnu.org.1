@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6294E945272
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DE1945273
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 20:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZa5a-00028K-97; Thu, 01 Aug 2024 13:59:46 -0400
+	id 1sZa5d-0002Nk-JJ; Thu, 01 Aug 2024 13:59:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZa5U-0001x9-Vi
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sZa5b-0002KI-2j
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sZa5T-0005vG-6e
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:40 -0400
+ id 1sZa5X-0005zA-5b
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 13:59:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722535177;
+ s=mimecast20190719; t=1722535181;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SasQSSECtI5DkO6YiV8MC31dvU9pBpDLxRDKkUkwUys=;
- b=Mv4dAPr21h29YuATuoR7b1gitMTvTOxs0WOndaxrUOai8+xY0i1qWGlNLF6lrk2SGMXTtK
- 76Z2T+CRtZV7frpiwTQZhh+7fyzzRD3/8H0v7LoBaiHSvqEYP3waFfefqcRvtZuflAJQGd
- r7BxcaRj/hnBwm22oY8Dy/eT/B5piJs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vKj/R/LTdslBdO3NPUSSDISUWikk5J0XoRlJ1Pv42W4=;
+ b=BFjJ7a4Ywx1rUeywjovfnyBVPDjQxKbBk6nhcxqIkn3xSyBqnzc+EfThc5bGCYMVrfNdgQ
+ v7y+5U2B7KXDkUvBNf44FFFzweAUanMuA9zlwiHIJWVcWZRPkEYNrwadif2+LU0BU9N4+Y
+ 4hOPWHM5jDMCEvYhC/NNUmfa3McBYLE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-iut_6S-ROiy00YWqmBTNdA-1; Thu,
- 01 Aug 2024 13:59:35 -0400
-X-MC-Unique: iut_6S-ROiy00YWqmBTNdA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-M5j83n_QN126TT3PRBeP7g-1; Thu,
+ 01 Aug 2024 13:59:38 -0400
+X-MC-Unique: M5j83n_QN126TT3PRBeP7g-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 73A7A1955D4D; Thu,  1 Aug 2024 17:59:34 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C36D619560A2; Thu,  1 Aug 2024 17:59:37 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.17])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EB95B195605A; Thu,  1 Aug 2024 17:59:30 +0000 (UTC)
+ id C7D7519560AA; Thu,  1 Aug 2024 17:59:34 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,23 +52,23 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 5/6] qapi: apply schema prefix to QAPI feature enum constants
-Date: Thu,  1 Aug 2024 18:59:12 +0100
-Message-ID: <20240801175913.669013-6-berrange@redhat.com>
+Subject: [PATCH 6/6] qapi: expose all schema features to code
+Date: Thu,  1 Aug 2024 18:59:13 +0100
+Message-ID: <20240801175913.669013-7-berrange@redhat.com>
 In-Reply-To: <20240801175913.669013-1-berrange@redhat.com>
 References: <20240801175913.669013-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,140 +86,245 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows us to include multiple QAPI schemas in the same file.
+This removed the QapiFeatures enum and auto-generates an enum which
+exposes all features defined by the schema to code.
+
+The 'deprecated' and 'unstable' features still have a little bit of
+special handling, being force defined to be the 1st + 2nd features
+in the enum, regardless of whether they're used in the schema. This
+is because QAPI common code references these features.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/qapi/commands.py | 7 ++++---
- scripts/qapi/events.py   | 3 ++-
- scripts/qapi/gen.py      | 6 +++---
- scripts/qapi/types.py    | 5 +++--
- scripts/qapi/visit.py    | 5 +++--
- 5 files changed, 15 insertions(+), 11 deletions(-)
+ include/qapi/util.h      |   5 --
+ meson.build              |   1 +
+ scripts/qapi/features.py | 134 +++++++++++++++++++++++++++++++++++++++
+ scripts/qapi/main.py     |   2 +
+ scripts/qapi/schema.py   |   5 +-
+ scripts/qapi/types.py    |   4 +-
+ 6 files changed, 144 insertions(+), 7 deletions(-)
+ create mode 100644 scripts/qapi/features.py
 
-diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
-index d629d2d97e..81134de6c0 100644
---- a/scripts/qapi/commands.py
-+++ b/scripts/qapi/commands.py
-@@ -280,7 +280,8 @@ def gen_register_command(name: str,
-                          success_response: bool,
-                          allow_oob: bool,
-                          allow_preconfig: bool,
--                         coroutine: bool) -> str:
-+                         coroutine: bool,
-+                         prefix: str) -> str:
-     options = []
+diff --git a/include/qapi/util.h b/include/qapi/util.h
+index a693cac9ea..9e390486c0 100644
+--- a/include/qapi/util.h
++++ b/include/qapi/util.h
+@@ -11,11 +11,6 @@
+ #ifndef QAPI_UTIL_H
+ #define QAPI_UTIL_H
  
-     if not success_response:
-@@ -298,7 +299,7 @@ def gen_register_command(name: str,
- ''',
-                 name=name, c_name=c_name(name),
-                 opts=' | '.join(options) or 0,
--                feats=gen_features(features))
-+                feats=gen_features(prefix, features))
-     return ret
+-typedef enum {
+-    QAPI_FEATURE_DEPRECATED,
+-    QAPI_FEATURE_UNSTABLE,
+-} QapiFeature;
+-
+ typedef struct QEnumLookup {
+     const char *const *array;
+     const uint64_t *const features;
+diff --git a/meson.build b/meson.build
+index 97f63aa86c..40002c59f5 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3268,6 +3268,7 @@ qapi_gen_depends = [ meson.current_source_dir() / 'scripts/qapi/__init__.py',
+                      meson.current_source_dir() / 'scripts/qapi/schema.py',
+                      meson.current_source_dir() / 'scripts/qapi/source.py',
+                      meson.current_source_dir() / 'scripts/qapi/types.py',
++                     meson.current_source_dir() / 'scripts/qapi/features.py',
+                      meson.current_source_dir() / 'scripts/qapi/visit.py',
+                      meson.current_source_dir() / 'scripts/qapi-gen.py'
+ ]
+diff --git a/scripts/qapi/features.py b/scripts/qapi/features.py
+new file mode 100644
+index 0000000000..9b77be6310
+--- /dev/null
++++ b/scripts/qapi/features.py
+@@ -0,0 +1,134 @@
++"""
++QAPI types generator
++
++Copyright 2024 Red Hat
++
++This work is licensed under the terms of the GNU GPL, version 2.
++# See the COPYING file in the top-level directory.
++"""
++
++from typing import List, Optional
++
++from .common import c_enum_const, mcgen, c_name
++from .gen import QAPISchemaMonolithicCVisitor
++from .schema import (
++    QAPISchema,
++    QAPISchemaAlternatives,
++    QAPISchemaBranches,
++    QAPISchemaEntity,
++    QAPISchemaEnumMember,
++    QAPISchemaFeature,
++    QAPISchemaIfCond,
++    QAPISchemaObjectType,
++    QAPISchemaObjectTypeMember,
++    QAPISchemaType,
++    QAPISchemaVariants,
++)
++from .source import QAPISourceInfo
++
++
++class QAPISchemaGenFeatureVisitor(QAPISchemaMonolithicCVisitor):
++
++    def __init__(self, prefix: str):
++        super().__init__(
++            prefix, 'qapi-features',
++            ' * Schema-defined QAPI features',
++            __doc__)
++
++        self.features = {}
++
++    def visit_end(self) -> None:
++        features = []
++
++        # We always want special features to have the same
++        # enum value across all schemas, since they're
++        # referenced from common code. Put them at the
++        # start of the list, regardless of whether they
++        # are actually referenced in the schema
++        for name in QAPISchemaFeature.SPECIAL_NAMES:
++            features.append(name)
++
++        features.extend(sorted(self.features.keys()))
++
++        if len(features) > 64:
++            raise Exception("Maximum of 64 schema features is permitted")
++
++        self._genh.add("typedef enum {\n")
++        for name in features:
++            self._genh.add(f"    {c_enum_const(self._prefix + 'QAPI_FEATURE', name)},\n")
++
++        self._genh.add("} " + c_name(self._prefix + 'QapiFeature') + ";\n")
++
++    def _record(self, features: List[QAPISchemaFeature]):
++        for f in features:
++            # Special features are handled separately
++            if f.name in QAPISchemaFeature.SPECIAL_NAMES:
++                continue
++            self.features[f.name] = True
++
++    def visit_enum_type(self,
++                        name: str,
++                        info: Optional[QAPISourceInfo],
++                        ifcond: QAPISchemaIfCond,
++                        features: List[QAPISchemaFeature],
++                        members: List[QAPISchemaEnumMember],
++                        prefix: Optional[str]) -> None:
++        self._record(features)
++
++    def visit_object_type_flat(self,
++                               name: str,
++                               info: Optional[QAPISourceInfo],
++                               ifcond: QAPISchemaIfCond,
++                               features: List[QAPISchemaFeature],
++                               members: List[QAPISchemaObjectTypeMember],
++                               branches: Optional[QAPISchemaBranches]) -> None:
++        self._record(features)
++
++    def visit_object_type(self,
++                          name: str,
++                          info: Optional[QAPISourceInfo],
++                          ifcond: QAPISchemaIfCond,
++                          features: List[QAPISchemaFeature],
++                          base: Optional[QAPISchemaObjectType],
++                          members: List[QAPISchemaObjectTypeMember],
++                          branches: Optional[QAPISchemaBranches]) -> None:
++        self._record(features)
++
++    def visit_alternate_type(self,
++                             name: str,
++                             info: Optional[QAPISourceInfo],
++                             ifcond: QAPISchemaIfCond,
++                             features: List[QAPISchemaFeature],
++                             alternatives: QAPISchemaAlternatives) -> None:
++        self._record(features)
++
++    def visit_command(self,
++                      name: str,
++                      info: Optional[QAPISourceInfo],
++                      ifcond: QAPISchemaIfCond,
++                      features: List[QAPISchemaFeature],
++                      arg_type: Optional[QAPISchemaObjectType],
++                      ret_type: Optional[QAPISchemaType],
++                      gen: bool,
++                      success_response: bool,
++                      boxed: bool,
++                      allow_oob: bool,
++                      allow_preconfig: bool,
++                      coroutine: bool) -> None:
++        self._record(features)
++
++    def visit_event(self,
++                    name: str,
++                    info: Optional[QAPISourceInfo],
++                    ifcond: QAPISchemaIfCond,
++                    features: List[QAPISchemaFeature],
++                    arg_type: Optional[QAPISchemaObjectType],
++                    boxed: bool) -> None:
++        self._record(features)
++
++def gen_features(schema: QAPISchema,
++                 output_dir: str,
++                 prefix: str) -> None:
++    vis = QAPISchemaGenFeatureVisitor(prefix)
++    schema.visit(vis)
++    vis.write(output_dir)
+diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+index 316736b6a2..2b9a2c0c02 100644
+--- a/scripts/qapi/main.py
++++ b/scripts/qapi/main.py
+@@ -18,6 +18,7 @@
+ from .introspect import gen_introspect
+ from .schema import QAPISchema
+ from .types import gen_types
++from .features import gen_features
+ from .visit import gen_visit
  
  
-@@ -407,7 +408,7 @@ def visit_command(self,
-             with ifcontext(ifcond, self._genh, self._genc):
-                 self._genc.add(gen_register_command(
-                     name, features, success_response, allow_oob,
--                    allow_preconfig, coroutine))
-+                    allow_preconfig, coroutine, self._prefix))
+@@ -49,6 +50,7 @@ def generate(schema_file: str,
+ 
+     schema = QAPISchema(schema_file)
+     gen_types(schema, output_dir, prefix, builtins)
++    gen_features(schema, output_dir, prefix)
+     gen_visit(schema, output_dir, prefix, builtins)
+     gen_commands(schema, output_dir, prefix, gen_tracing)
+     gen_events(schema, output_dir, prefix)
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index d65c35f6ee..160ce0a7c0 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -933,8 +933,11 @@ def connect_doc(self, doc: Optional[QAPIDoc]) -> None:
+ class QAPISchemaFeature(QAPISchemaMember):
+     role = 'feature'
+ 
++    # Features which are standardized across all schemas
++    SPECIAL_NAMES = ['deprecated', 'unstable']
++
+     def is_special(self) -> bool:
+-        return self.name in ('deprecated', 'unstable')
++        return self.name in QAPISchemaFeature.SPECIAL_NAMES
  
  
- def gen_commands(schema: QAPISchema,
-diff --git a/scripts/qapi/events.py b/scripts/qapi/events.py
-index d1f639981a..8a489e559a 100644
---- a/scripts/qapi/events.py
-+++ b/scripts/qapi/events.py
-@@ -218,7 +218,8 @@ def visit_end(self) -> None:
-         self._genh.add(gen_enum(self._event_enum_name,
-                                 self._event_enum_members))
-         self._genc.add(gen_enum_lookup(self._event_enum_name,
--                                       self._event_enum_members))
-+                                       self._event_enum_members,
-+                                       self._prefix))
-         self._genh.add(mcgen('''
- 
- void %(event_emit)s(%(event_enum)s event, QDict *qdict);
-diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
-index 036977d989..399a0ae62d 100644
---- a/scripts/qapi/gen.py
-+++ b/scripts/qapi/gen.py
-@@ -41,9 +41,9 @@
- from .source import QAPISourceInfo
- 
- 
--def gen_features(features: Sequence[QAPISchemaFeature]) -> str:
--    features = [f"1u << {c_enum_const('QAPI_FEATURE', feat.name)}"
--                for feat in features if feat.is_special()]
-+def gen_features(prefix, features: Sequence[QAPISchemaFeature]) -> str:
-+    features = [f"1u << {c_enum_const(prefix + 'QAPI_FEATURE', feat.name)}"
-+                for feat in features]
-     return ' | '.join(features) or '0'
- 
- 
+ class QAPISchemaObjectTypeMember(QAPISchemaMember):
 diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
-index ade6b7a3d7..b2d26c2ea8 100644
+index b2d26c2ea8..3435f1b0b0 100644
 --- a/scripts/qapi/types.py
 +++ b/scripts/qapi/types.py
-@@ -43,6 +43,7 @@
+@@ -313,7 +313,9 @@ def _begin_user_module(self, name: str) -> None:
+                                       types=types, visit=visit))
+         self._genh.preamble_add(mcgen('''
+ #include "qapi/qapi-builtin-types.h"
+-'''))
++#include "%(prefix)sqapi-features.h"
++''',
++                                      prefix=self._prefix))
  
- def gen_enum_lookup(name: str,
-                     members: List[QAPISchemaEnumMember],
-+                    modprefix: str,
-                     prefix: Optional[str] = None) -> str:
-     max_index = c_enum_const(name, '_MAX', prefix)
-     feats = ''
-@@ -61,7 +62,7 @@ def gen_enum_lookup(name: str,
-                      index=index, name=memb.name)
-         ret += memb.ifcond.gen_endif()
- 
--        features = gen_features(memb.features)
-+        features = gen_features(modprefix, memb.features)
-         if features != '0':
-             feats += mcgen('''
-         [%(index)s] = %(features)s,
-@@ -331,7 +332,7 @@ def visit_enum_type(self,
-                         prefix: Optional[str]) -> None:
-         with ifcontext(ifcond, self._genh, self._genc):
-             self._genh.preamble_add(gen_enum(name, members, prefix))
--            self._genc.add(gen_enum_lookup(name, members, prefix))
-+            self._genc.add(gen_enum_lookup(name, members, self._prefix, prefix))
- 
-     def visit_array_type(self,
-                          name: str,
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index 8dbf4ef1c3..883d720e36 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -62,6 +62,7 @@ def gen_visit_members_decl(name: str) -> str:
- 
- 
- def gen_visit_object_members(name: str,
-+                             prefix: str,
-                              base: Optional[QAPISchemaObjectType],
-                              members: List[QAPISchemaObjectTypeMember],
-                              branches: Optional[QAPISchemaBranches]) -> str:
-@@ -103,7 +104,7 @@ def gen_visit_object_members(name: str,
- ''',
-                          name=memb.name, has=has)
-             indent.increase()
--        features = gen_features(memb.features)
-+        features = gen_features(prefix, memb.features)
-         if features != '0':
-             ret += mcgen('''
-     if (visit_policy_reject(v, "%(name)s", %(features)s, errp)) {
-@@ -402,7 +403,7 @@ def visit_object_type(self,
-             return
-         with ifcontext(ifcond, self._genh, self._genc):
-             self._genh.add(gen_visit_members_decl(name))
--            self._genc.add(gen_visit_object_members(name, base,
-+            self._genc.add(gen_visit_object_members(name, self._prefix, base,
-                                                     members, branches))
-             # TODO Worth changing the visitor signature, so we could
-             # directly use rather than repeat type.is_implicit()?
+     def visit_begin(self, schema: QAPISchema) -> None:
+         # gen_object() is recursive, ensure it doesn't visit the empty type
 -- 
 2.45.2
 
