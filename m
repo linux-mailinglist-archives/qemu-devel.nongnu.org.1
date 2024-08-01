@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8016B9448F2
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E90E944A73
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 13:34:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZScY-0007ud-SS; Thu, 01 Aug 2024 06:01:18 -0400
+	id 1sZU3t-0001lS-QE; Thu, 01 Aug 2024 07:33:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sZScM-0007Wc-Jf
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:01:06 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sZU3s-0001ks-I8
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 07:33:36 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sZScG-0005eM-TO
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:01:05 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a7b2dbd81e3so885562666b.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:01:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sZU3q-0005bc-Vk
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 07:33:36 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1fd9e70b592so48303725ad.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 04:33:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722506459; x=1723111259; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UTBpZ4WfhGR6wr0rsPWMHJvB/g81CHGnO+KPNCQUrl8=;
- b=utwxKpkGxvo0y/7EtluOXwmsbt8NzLWVxyStFJbRcdR+MrJR9Ohf4CYKSnZR66zFSh
- wi6ZPAf4r93cKF2szqkOo06bqFEoSpfiM0B0I+6ZTb1nlyg057IuMKjJVmg9UVrStlfj
- xfTRNlhO2Kul8J3mT5g/fyrTou3o9veKiaUd3WdqiB/FuRBbuvC6SKcByrQqm/GBtVgp
- RW9Tb8p6SXnwS7guIsGl1A9FJq1VINMZQF61ywabJNQzQC0+FxbIIonMxJNjm8xrVoA1
- okywAI1mGVSvJTWOD8pmxoi1ZRazY4wTLyOP7nz9a94qVrYbM9aKTgnwKZppCSC/7uAo
- EWzQ==
+ d=linaro.org; s=google; t=1722512013; x=1723116813; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AikQYzZLvJC1qAr5mnVkHuc3qnQ4VJKU1Kq1tgMFSIM=;
+ b=fUhoFkValWUCgqfeorBf6hRTbjMBy85Cqz1Ver9qGoYPDJotCuQIx1oA3fmXq+Hbkw
+ JWHsvYueY2rmAd2Dx4jVD4zTe8KwJ4AoJT/w3UbHrJU7UilOeu57YaS4LJIZUafJJq+I
+ 0Dr9f/9oCtapt66DpD7S+y3OE+kF0lnvB1sNPAerVanetOE0gUZw2M0CJhakGINeFXC9
+ ApeceO3SpCzq1gX+NGDF7zTlQzGr6WdB2US3aTZxEiof4+jNvkF6eIZvfUXhlmisLCKB
+ AublI7kxgddgYq0xrFg57Lzb/CsWFW+CGkqvGsfdJwdcHgjoAp7Tbrm0dpxT/mi+1AL6
+ EfbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722506459; x=1723111259;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UTBpZ4WfhGR6wr0rsPWMHJvB/g81CHGnO+KPNCQUrl8=;
- b=bwaTj9yPj6hc+hsSqdbxbv6GoIZw15bStvBnP4JFyft/xEsNr+F1bBnxrutVwVxPUx
- v2S507BUFzpfWf6ZFJGnmKP6zqcUBXfwcqeRVYzGslz6vOy1vneREYYgOOZIlagvXQcz
- 3+e7lb620+Sn5ZnV9KdQSwgEDgc6lRd5SwDOIbLhHGQXdYVHp4TjcjfuZW4CB1NOVR7O
- fBAI+Kk6fLRdP0DoBNaTcS7TfrtjsP2NlX8MiZYh7ktmnA6/H5RO/WyMYjGIvtdEi9ql
- p5G9lomEsKj92mWRqIlx83mboK5wlArKESQdk3zV+HBkY2q9f662QMJglllOlQSv7/AL
- WSmg==
-X-Gm-Message-State: AOJu0YwNJBRbS+r0UaqjMpFUu+9xuIX3saAEfPcyDmWX4WW6gHkkCvkj
- OEfKWkEFA+9HTX8Opx53FuOEryWwcrLh2lnj6Y8vaH46KiCO62aWG+pcYbGT0ok=
-X-Google-Smtp-Source: AGHT+IGTX94rNEMUKs6V8nykGdwyXbzvXcf77vZEjS/1hYkSDTtlbkZ6iAstJTgdWAbJigHPKnT+xw==
-X-Received: by 2002:a17:907:1c9f:b0:a7a:9a78:4b59 with SMTP id
- a640c23a62f3a-a7daf2d1823mr149139866b.23.1722506458703; 
- Thu, 01 Aug 2024 03:00:58 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acab2316dsm883514466b.2.2024.08.01.03.00.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 03:00:58 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2C2495F80C;
- Thu,  1 Aug 2024 11:00:57 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  John
- Snow <jsnow@redhat.com>,  qemu-ppc@nongnu.org,  Richard Henderson
- <richard.henderson@linaro.org>,  Ani Sinha <anisinha@redhat.com>,  Thomas
- Huth <thuth@redhat.com>
-Subject: Re: [PATCH v3 04/24] tests/Makefile.include: Increase the level of
- indentation in the help text
-In-Reply-To: <20240730170347.4103919-5-berrange@redhat.com> ("Daniel P.
- =?utf-8?Q?Berrang=C3=A9=22's?= message of "Tue, 30 Jul 2024 18:03:24
- +0100")
-References: <20240730170347.4103919-1-berrange@redhat.com>
- <20240730170347.4103919-5-berrange@redhat.com>
-Date: Thu, 01 Aug 2024 11:00:57 +0100
-Message-ID: <87cymsef52.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1722512013; x=1723116813;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AikQYzZLvJC1qAr5mnVkHuc3qnQ4VJKU1Kq1tgMFSIM=;
+ b=HSvqtSB3V2dkr4+l+RI1lpUDoIr3vOihX/HYagnS1AgD+YfvZ4UKCYoJxbQfyCQ97u
+ xCGHRVdK/R0BEPNVvAldgdXlEXgdtsUm0yWTa10X1/M1/tuKll044hSxnFfqe1f/C0hQ
+ wbxbkJRwBqAdy0WUHLaIGVtEzlL/NAKwMGUidpF9DV6wSlCr1jqwFHV2AypX7vbxDe+J
+ nyPzzugQnwwxn60LYjWAJqjr9lQBp+kk/NxfTF4hEvZIGE3UPr/Qh1X7ya9qE2Qs2unR
+ SbzWYRx/zEZyZLMApiahyB2O6dgEHroBDRIWawhr+KgUrwUxyVKZTTNodMcVsAZ11VSa
+ tW6Q==
+X-Gm-Message-State: AOJu0YxjiNALePfz+86d1owG/VmhcZrGoaS704Kb+CAACdwOK5Mz5dQ9
+ ER2yTzjbh+CLphVUk6i5nVTGIKs7F22dyzqM9X3ED3djby1EugGTEH7BzCdXHn8=
+X-Google-Smtp-Source: AGHT+IHO3OEx23NTGtwtbjYkauzVaNO+tjRCqHIoEFgxqZYAS3VQg718fJMxSXvrZIedbVHGTenKVQ==
+X-Received: by 2002:a17:903:2308:b0:1ff:493:8de1 with SMTP id
+ d9443c01a7336-1ff4ce70206mr26477655ad.1.1722512013144; 
+ Thu, 01 Aug 2024 04:33:33 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fed7fb497esm136333995ad.268.2024.08.01.04.33.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Aug 2024 04:33:32 -0700 (PDT)
+Message-ID: <0cbb34e8-fa32-469a-a516-4f9ac91a6eff@linaro.org>
+Date: Thu, 1 Aug 2024 19:12:31 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/24] target/riscv: tracking indirect branches (fcfi)
+ for zicfilp
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: qemu-devel@nongnu.org
+References: <20240729175327.73705-1-debug@rivosinc.com>
+ <20240729175327.73705-6-debug@rivosinc.com>
+ <ed23bcbc-fdc4-4492-803c-daa95880375a@linaro.org>
+ <CAKC1njQJiNHT1b2jD009zsNeXrUZ9OG2S4VTeFmnAS4c_f-kAA@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAKC1njQJiNHT1b2jD009zsNeXrUZ9OG2S4VTeFmnAS4c_f-kAA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,20 +97,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 8/1/24 16:59, Deepak Gupta wrote:
+> hmm... you've suggested below to use `aarch64_tr_translate_insn` and
+> check if it's the first instruction.
+> and put the check there.
+> In that case I won't need FCFI_LP_EXPECTED TB flag.
+> Then I would rather use it as FCFI_ENABLED TB flag.
 
-> From: Thomas Huth <thuth@redhat.com>
->
-> The next patch is going to add some entries that need more space between
-> the command and the help text, so let's increase the indentation here
-> first.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+You will need both bits.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+r~
 
