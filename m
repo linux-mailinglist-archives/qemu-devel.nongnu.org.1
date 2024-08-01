@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF26D9450E8
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 18:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F39AD945100
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 18:44:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZYrK-0004mA-5u; Thu, 01 Aug 2024 12:40:58 -0400
+	id 1sZYu8-0004rP-12; Thu, 01 Aug 2024 12:43:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZYrF-0004hj-84
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:40:53 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZYu6-0004qS-Ok
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:43:50 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZYrD-0007WO-NL
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:40:52 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5a156557026so9708783a12.2
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 09:40:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZYu5-0007mP-5e
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 12:43:50 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10bb7bcd0so10920356a12.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 09:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722530450; x=1723135250; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722530628; x=1723135428; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gFv8+bFaAX4XJAhR/zrYQwvP5KXnyrUNY4dtNIYiqOU=;
- b=pWxBXef9YX+ZCqN57p1NZxwPh2b8QXdlSJn1py/x3MPRXmsP/yQeY+4BuC3Z8Gk9SR
- y9VdG74Z6lkdeLoa6SpErd/8gv1WvBaXThH3GEPkJvUL36nWyX/YrdUQbtjpvhOpwIW6
- qv/lsiAF6uElYuk9ZFrPOz84SGHZDGnTELl7GUZ7fgvnACfBAyaHZ2tCslckv2l3rSNR
- AJtQXfIOmIG7ev0KwCk0ayqWkY8jnyoRQuIaPoMgc0QkZdQIuDypssh+fDet6DtgCW7M
- FqIj4klK2Z8v6ZEDab/jlhcVD8LXTKhemT05uptxn+2SuyPly3tREjVNBoKRCQZrDdWj
- ADZA==
+ bh=LuAbgaieZwJhPfCe8PPzJIgx+KXXSVz5ultijqYEues=;
+ b=G1tkOvwV91EbVn2GveJiRmR5ONNrtDOW359Z8VRHkRp+8tp7gcuNw6JD+K/tGJJsuX
+ D84BV+dTotXHAkCSytVpaFguGL1wiHRgkUD+I1zeiUog4ZLCNhrxgobtNwcRlcAa38L9
+ s1xhHntjM7SFskU3zxzjpBSfBfQtw74rsX3JaZFJ2MelounnP07p7y7akQ+dwpdIU5Ye
+ s2SPNoMxhbaIUOZxDjmGXqIa/ShZofb+ut/poSysLduFU3/AVnsddf2b0e5ML/aOzw3y
+ Oigyoc0Hw5UbB28Y+eXsGT0MAmsx/8PqtUh1DkNNZwJ0TFq6Yo9BhOgOAsSKPrVzhtVt
+ giyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722530450; x=1723135250;
+ d=1e100.net; s=20230601; t=1722530628; x=1723135428;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gFv8+bFaAX4XJAhR/zrYQwvP5KXnyrUNY4dtNIYiqOU=;
- b=k6QIqtyF4iJ4CGcUCaolLVfGYDliWcq4yuU6d+YJ1ZwCPMZ8cMNmmNrf4hHpPytDVM
- GZ40b1fZNU/AcVEniHKBAmhCVfcxYx5a9xhTZWgDyMxgmrEEYJdSXe31k04iBzSW0pZP
- uHPBZLzNYLOpWrRBrtkimA8qgIR3vc3H2Ne9nI/z9d6DCArqosjMfiY43pK9xgXcutY2
- rWtnVOumX6ses9qIawBe4R8uTzKsZX+8icP6wJCEfAp6y+p8YChaEVaAl6Pkgkei8Ja6
- cap3/f3Jz6n09JEMk/f5sTIRsL6zHopAaXd+rmDYrT8Eo3FlZDi+HaqdyifMCV4Kr38+
- iu+w==
+ bh=LuAbgaieZwJhPfCe8PPzJIgx+KXXSVz5ultijqYEues=;
+ b=a/hm9vI9ytHXT62JzFhQZ7Uiyuhf3xWT4O2G8V4hOY4IX01KVsSCqBsZZWoIr3oKi4
+ E3RrV1HQCbCoTmoRObjBibTdslsuinreW5J6zozPsA+DvuZdDYIxgVs2Y5SakBfyoEnC
+ n0M3Y/oDR9BJu/IRF3qrNDGuLVxvBXeAfVWQyotmDWxCa2YNUfRMm6OGn8fRPAu2Stbw
+ pCCtswP2og4+oC85lc9I6os1xI8K6/HSQgaUrtO9r1/VhxxsAfswdsp3G7U821iTbqZd
+ 3yb5oZjYRkeyq8XV60kYCILEbouCVHo1qoyX8CYNjA9zaNRmeoNLqArH/RDDCkgV6ayW
+ LINA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCULEV1mzJ3Wta0S6RyR7PVTJuABUfrmgpT6IBytZjU2wRnOmpTx/AAJta48Tn5dv9mBrFljmaM5i7XHReeXJkmuN2FDsLk=
-X-Gm-Message-State: AOJu0Yx2BFwTs+J2/9QEfODmK0SoyQeqiJ1V1DtzjxIdRC1wUMcTBR0x
- JP43N57XxYAbHMtWdC2Iyq++jJ9MZPYc8zhC6wso4S5kylagyL+dFCAdjPz4hY8=
-X-Google-Smtp-Source: AGHT+IHasACKbww1xqE33+RoP9nl56m8M5t+NVrlo3GaX8XGYOAsgbCEoqUUGgeOPYFyJGo81r9Nqg==
-X-Received: by 2002:aa7:dcd9:0:b0:5a1:40d9:6a46 with SMTP id
- 4fb4d7f45d1cf-5b7f5dc5d68mr638962a12.36.1722530450069; 
- Thu, 01 Aug 2024 09:40:50 -0700 (PDT)
+ AJvYcCXB7gASdvdC2v4kxeAutXuKARyMeIVt1QJPmPbga1aXzkbgBEMESFhm+Mu1Ea5tbLH7/d3kf52PDrAFkx1jEA7sjc/tDpU=
+X-Gm-Message-State: AOJu0Yz/U0lueZZXqupxGq6AcalgvfBQnBYF8inoz5DJmstw4CTjEQUn
+ c/5jAl7GCFLMIUHsJZMyYrS/No4XV75wExfSsaq5zzBcmPY1aOCuKiiVBgYhsgU=
+X-Google-Smtp-Source: AGHT+IH9Ox+UcTGRael+qyJdEvRArxUg6RRXnmQGhkljbCopnsr2l3gExTII6DGhHTE6QQMjBMQh5g==
+X-Received: by 2002:a05:6402:a50:b0:578:60a6:7c69 with SMTP id
+ 4fb4d7f45d1cf-5b7f5413b46mr637327a12.30.1722530627496; 
+ Thu, 01 Aug 2024 09:43:47 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.211.94])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ac63590e73sm10459950a12.35.2024.08.01.09.40.48
+ 4fb4d7f45d1cf-5ac63590ac3sm10402636a12.34.2024.08.01.09.43.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Aug 2024 09:40:49 -0700 (PDT)
-Message-ID: <64746db0-7ae0-40bf-8c0f-9c5a3dacdb1d@linaro.org>
-Date: Thu, 1 Aug 2024 18:40:47 +0200
+ Thu, 01 Aug 2024 09:43:47 -0700 (PDT)
+Message-ID: <afe7df7c-86d8-4347-b3ac-c158a6c7ce04@linaro.org>
+Date: Thu, 1 Aug 2024 18:43:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 24/24] gitlab-ci: Add "check-functional" to the build
- tests
+Subject: Re: [PATCH v3 14/24] tests/functional: Convert the
+ x86_cpu_model_versions test
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -70,21 +70,21 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>
 References: <20240730170347.4103919-1-berrange@redhat.com>
- <20240730170347.4103919-25-berrange@redhat.com>
+ <20240730170347.4103919-15-berrange@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240730170347.4103919-25-berrange@redhat.com>
+In-Reply-To: <20240730170347.4103919-15-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,16 +103,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 30/7/24 19:03, Daniel P. Berrangé wrote:
 > From: Thomas Huth <thuth@redhat.com>
 > 
-> Now that we converted many tests from the "check-avocado" test suite
-> to the "check-functional" test suite, we should make sure that these
-> also get tested in the CI.
+> Nothing thrilling in here, it's just a straight forward conversion.
 > 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   .gitlab-ci.d/buildtest-template.yml |  3 +-
->   .gitlab-ci.d/buildtest.yml          | 60 ++++++++++++++---------------
->   2 files changed, 32 insertions(+), 31 deletions(-)
+>   tests/functional/meson.build                  |  1 +
+>   .../test_x86_cpu_model_versions.py}           | 63 ++++++-------------
+>   2 files changed, 20 insertions(+), 44 deletions(-)
+>   rename tests/{avocado/x86_cpu_model_versions.py => functional/test_x86_cpu_model_versions.py} (92%)
+>   mode change 100644 => 100755
+
+
+> @@ -217,9 +216,8 @@ def test_4_1_alias(self):
+>       def test_none_alias(self):
+>           """
+>           Check if unversioned CPU model is an alias pointing to some version
+> -
+> -        :avocado: tags=machine:none
+>           """
+> +        self.machine = 'none'
+
+            self.set_machine('none')
+
+>           self.vm.add_args('-S')
+>           self.vm.launch()
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
