@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC7A9454FB
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 01:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAAAD9455D4
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 03:01:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZfSj-0001Uj-Nf; Thu, 01 Aug 2024 19:44:02 -0400
+	id 1sZgee-0003yd-Vr; Thu, 01 Aug 2024 21:00:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZfSf-0001Ty-MA
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 19:43:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sZfSc-0001oC-Oh
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 19:43:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722555831;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=igfziAhXHEqZepOq2g/cEjBcQT6bFTUtsGt6WB6hWCA=;
- b=In38YZbPUbedkfeI1RTPp/aJMJ0K77dfAY7SijMxU0m/ytm34uSCHTXQh7XjXqWhXwm4tq
- OqbFqm+8SL+seZSmh0cb3kYT2KbBbqSAca7wCirnbo7XfFeSMnMaKO3mWewT0JoEtsr4b2
- ORfXId4zvvtwTK7ZmJyiLs1OdPwuV58=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-368-8mrNRqOGNW6R5mUzThO3pw-1; Thu, 01 Aug 2024 19:43:50 -0400
-X-MC-Unique: 8mrNRqOGNW6R5mUzThO3pw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5a429a572daso6085469a12.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 16:43:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <3NAasZg4KCi0JUNgaRLQJaMbXWPXXPUN.LXVZNVd-MNeNUWXWPWd.XaP@flex--alexrichardson.bounces.google.com>)
+ id 1sZdtX-0000s4-RP
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 18:03:36 -0400
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3NAasZg4KCi0JUNgaRLQJaMbXWPXXPUN.LXVZNVd-MNeNUWXWPWd.XaP@flex--alexrichardson.bounces.google.com>)
+ id 1sZdtW-0007J9-7o
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 18:03:35 -0400
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-64c3f08ca52so148017047b3.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 15:03:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1722549812; x=1723154612; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=zM7C0L6Fvwie9kg4zGf+RjPnTtCxOnj1yUYBOTGzzXo=;
+ b=GXczwTEAhVhy0QKHm2pd10sypFGWAhKXV+jVBYbHRflqU1oIDS2pI0szmdf5ohFgw3
+ YokGjfAMFAUaoawO0YbCd6AlND9mhaS2atWjPSd+PVr0m3BUf4/jyYBPy5+egVd4p+xL
+ N4fQhZ/+442hFKz8tpRQ6m1C0CHjZxDz8G6Vs/Jd9ZH+WuLGFs1nUkx5mmnJW/yPf7d9
+ S0wCqAVk5LGbPPgkYVU9kQJbtuez1jDDJLDvQWihrsDgFRAPM0hXBagoCnYkhc5zft6C
+ UNZuoZYBM6T8NPyOxZgyHd43z6UG+ojtwhuxZHrxGWGYZGGlmN8gzWmjCQm4ZTb+IazQ
+ Vbcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722555828; x=1723160628;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=igfziAhXHEqZepOq2g/cEjBcQT6bFTUtsGt6WB6hWCA=;
- b=HD/XWc969sFd/I8RGuzurRPfCuCFyFHeAQr8T2w96XgfS/OPz6nmBSec4CRTeTiyww
- xSTqcacW1gD+HPaLFtgtpq8t6c38znmBa5vKC+UE7Ss0N+t9wm408ArNeN53jnx04BFY
- 1IxxH5e1jsQc7YCxJ+3qHQ8RRBSSx6eRhKvlsgHXqulmIVg1MyO4qgjZEHwSRxVIVXdw
- PD/2eHUukhhzHfr4TltUuqefXYr0+coj1E/NGf8aWvc6Wz6nOmiP0YaYjakf7FhEfXOl
- 8q7abxq+3LUvIFuiCu86ouSxolMkIdqw/yMWojg1UhaxHIm7ydToREEOh3eiqYvUJgog
- diWg==
-X-Gm-Message-State: AOJu0YwdFqs11rJM3eOXkgr0M8AQcWvWowCGIS3VFiYBECDWF4kP38cE
- k2u30DXysHCptEwRRdmxpgxQmU/hZZj/aN94NPtBD7dWOTCnRoYO6U+Bc8NCc4N0p7vkOMCAic5
- P4tnZ4l3Z4Bnn3t8bOd6Bb+jOqgffiTRkiYs9qCcMKVfHPeYKQgrrhoKMO/F8MANxAG5YmQ4heO
- GYCCxLkaVuX5+A3Jl1zIDekIfC+5orMD+s4+Ct
-X-Received: by 2002:a17:907:94cb:b0:a77:b052:877e with SMTP id
- a640c23a62f3a-a7dc4e5626fmr140574166b.19.1722555827792; 
- Thu, 01 Aug 2024 16:43:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPIMNy2DFkHQoqIWx3ltDct47CmduchW8AMpdbXdFtQf7XRxtQApCDcfiZ2aRNSoprHETh1Q==
-X-Received: by 2002:a17:907:94cb:b0:a77:b052:877e with SMTP id
- a640c23a62f3a-a7dc4e5626fmr140572466b.19.1722555827215; 
- Thu, 01 Aug 2024 16:43:47 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9ec8879sm31705166b.211.2024.08.01.16.43.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 16:43:46 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Zixi Chen <zixchen@redhat.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PATCH] target/i386: SEV: fix mismatch in vcek-disabled property name
-Date: Fri,  2 Aug 2024 01:43:45 +0200
-Message-ID: <20240801234345.355447-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ d=1e100.net; s=20230601; t=1722549812; x=1723154612;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zM7C0L6Fvwie9kg4zGf+RjPnTtCxOnj1yUYBOTGzzXo=;
+ b=j4RwSqPYs2TX/kmwdz/f5Dj4Dnf/Rm5M9bG2YIpz6TpwBpYSyw57wA9j1XgCRBXfbq
+ 3hjxYSn9JUX2J7DoyDqJOFagDHGKQvW4mxjTNuXb5a+2iLpiWq3WqMyhmuzozCI+CyiV
+ sdiaSqFabosmvo2JDRAoMiwUKdtEfgyauc29YVtBP1ZW2H2on0X8e7OlOhObnYbb7grk
+ PIVVIomBnywfbCOPu/DK8z6EYF1ECtv96e77l2TjS+N6Q5rEoCubBxvoupXaemqBSOZ/
+ jWKhuMG28uB3lOUcZLDkh6hhdpDrzup26fFapZLNEzCCQ75LS0ciwI2GN1z0ss5m7oi5
+ RzQQ==
+X-Gm-Message-State: AOJu0YxlzI1PwdtiCuxFHr0KBsFvUOgCrNwavR07vBj9ovh+0aqds3kx
+ UoIth/W4mUOzOT8itMu+0pajRgt4itug7ePotiXgv8U3HDigAyamNqTnA7KV8q1K0XuJnK3AaBs
+ rXV3gJ4gudxYGZ3j3LEw0PDPOeBjp+D7Z9houfhXBPD0FPOAwPwzNICSG+rTE31fBk+ttrxg8iT
+ Xcl39str0gle68e3qjfOEp9zuDT6tVNHGNZdCBOaT3qAGDPu/qA2VWvzfgJ8URsskQ3stQFH5ZN
+ g==
+X-Google-Smtp-Source: AGHT+IECB0eynnBH6XHH8uy+3S/vNaF32tWAs+DzMW8+BnPO0bhutzOr6cpqKQbBXwBmvNBgjBB0DI8yMupy61otVGJ+Iw==
+X-Received: from alexrichardson.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2c0d])
+ (user=alexrichardson job=sendgmr) by 2002:a05:690c:113:b0:62c:ff73:83f with
+ SMTP id 00721157ae682-68964b5ad18mr223807b3.8.1722549812058; Thu, 01 Aug 2024
+ 15:03:32 -0700 (PDT)
+Date: Thu,  1 Aug 2024 15:03:28 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
+Message-ID: <20240801220328.941866-1-alexrichardson@google.com>
+Subject: [PATCH] target/arm: add support for 64-bit PMCCNTR in AArch32 mode
+From: Alex Richardson <alexrichardson@google.com>
+To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Alex Richardson <alexrichardson@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3NAasZg4KCi0JUNgaRLQJaMbXWPXXPUN.LXVZNVd-MNeNUWXWPWd.XaP@flex--alexrichardson.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 01 Aug 2024 21:00:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,31 +91,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vcek-disabled property of the sev-snp-guest object is misspelled
-vcek-required (which I suppose would use the opposite polarity) in
-the call to object_class_property_add_bool().  Fix it.
+See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
 
-Reported-by: Zixi Chen <zixchen@redhat.com>
-Cc: Pankaj Gupta <pankaj.gupta@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Alex Richardson <alexrichardson@google.com>
 ---
- target/i386/sev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/helper.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index a1157c0ede6..a0d271f8986 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -2422,7 +2422,7 @@ sev_snp_guest_class_init(ObjectClass *oc, void *data)
-     object_class_property_add_bool(oc, "author-key-enabled",
-                                    sev_snp_guest_get_author_key_enabled,
-                                    sev_snp_guest_set_author_key_enabled);
--    object_class_property_add_bool(oc, "vcek-required",
-+    object_class_property_add_bool(oc, "vcek-disabled",
-                                    sev_snp_guest_get_vcek_disabled,
-                                    sev_snp_guest_set_vcek_disabled);
-     object_class_property_add_str(oc, "host-data",
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 8fb4b474e8..94900667c3 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -5952,6 +5952,12 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
+       .access = PL1_RW, .accessfn = access_trap_aa32s_el1,
+       .writefn = sdcr_write,
+       .fieldoffset = offsetoflow32(CPUARMState, cp15.mdcr_el3) },
++    { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
++      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
++      .cp = 15, .crm = 9, .opc1 = 0,
++      .access = PL0_RW, .resetvalue = 0, .fgt = FGT_PMCCNTR_EL0,
++      .readfn = pmccntr_read, .writefn = pmccntr_write,
++      .accessfn = pmreg_access_ccntr },
+ };
+ 
+ /* These are present only when EL1 supports AArch32 */
 -- 
-2.45.2
+2.46.0.rc2.264.g509ed76dc8-goog
 
 
