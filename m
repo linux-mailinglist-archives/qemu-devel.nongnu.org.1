@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F91C9441BE
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 05:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 009979441E0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 05:26:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZMNP-0007fo-BC; Wed, 31 Jul 2024 23:21:15 -0400
+	id 1sZMRL-0004XB-I0; Wed, 31 Jul 2024 23:25:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1sZMNO-0007f2-4u
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 23:21:14 -0400
+ (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1sZMRG-0004WY-S9
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 23:25:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1sZMNM-00036R-Aw
- for qemu-devel@nongnu.org; Wed, 31 Jul 2024 23:21:13 -0400
+ (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1sZMRF-00056o-Gu
+ for qemu-devel@nongnu.org; Wed, 31 Jul 2024 23:25:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722482471;
+ s=mimecast20190719; t=1722482712;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3L2qM8ejm2ahCeHxHfhlaEvmc2geAFoV8VAb1fNK9SI=;
- b=Z7XUjjhrhfLWuNutt1+4hr48v71+VNYyg6qh0QzegFAsEsnNWca5oAWFMlixymLD7MqzAl
- UJ+7RKNbNYkdNYXflYV5Ncls/oktdXHcvYK1XAx68eh6RKYQw4FGX17ZTZjK/i2wG8VQIx
- W9/7vIsumdWvk8QwSZ1J/Asyp1r9BjM=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LIA8qtIEwBqGQojB8vR+PEMLSgLeUXkAJyI8y+mq9FA=;
+ b=A1jG9AbfrDoH9/BN5TJchnL0Ub5vIAKD8u82fvkSKLkmF3F1Wtyf2mFbFUSPaf35hAiVXr
+ g+zL9C1HullYJLv6TG+QtBsrTz6brUQ8T+OwlZorDpx+TM2dJ1z0e6tBvd/1BOBD+W9JXS
+ GywUAHNP/D4ini4iwIcv7TFmpHLGgRM=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-3yhx5yRRNMyEtzTaMmUFkw-1; Wed, 31 Jul 2024 23:21:09 -0400
-X-MC-Unique: 3yhx5yRRNMyEtzTaMmUFkw-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-654d96c2bb5so117765347b3.2
- for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 20:21:08 -0700 (PDT)
+ us-mta-374-BMETwDrVMmS28Ff5DEwyKg-1; Wed, 31 Jul 2024 23:25:10 -0400
+X-MC-Unique: BMETwDrVMmS28Ff5DEwyKg-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-66a2aee82a0so125419287b3.0
+ for <qemu-devel@nongnu.org>; Wed, 31 Jul 2024 20:25:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722482468; x=1723087268;
+ d=1e100.net; s=20230601; t=1722482709; x=1723087509;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3L2qM8ejm2ahCeHxHfhlaEvmc2geAFoV8VAb1fNK9SI=;
- b=g0zPStDf+iEcX7kQ37JB6FTT5XXApigTTC3nzt0/iyYzeychKJ6yY8rv4YNr5+m4EN
- y44t1wMsXycpz0H5SYcJA3ntMOad6OYxpiUYnV1nFUbPrTEWknTceu4A69456GgwXtw6
- 5qXd7YHPEogZUtQ2KXjaPkj18NfrAIOE8gKUbCPg17026nIoTFLC0irfA/OjAe+me2z3
- LkYLTziwHZbSk5YjZS8aXdPzAAEy971/dSSKQIjaIyAtWRpPUj6AZ3izViJxYXrkOV19
- 1axu6BZkx16pUUuJCOnT/SvrjBzFX21kNL51xdfIs5UPf7VyWoQUOErcWwjlGq9COLRB
- 2qTA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUOAA+u5RPcAmZovPEgBdJOiBZjtxvR0LlnNJFeyFetYkpDqbduWkt+CrWLAHQWxIXYk5p9Vs7hS4FVTCIP/WntLPlcuI0=
-X-Gm-Message-State: AOJu0YzOpR1bWpJEaTY58jZhcYlCCCcvfqOelCGJeSYAGkkvNOuDP7BA
- dop0/3Y0hoF83wGbml427iTrhRQWqAzu0E2Myvrw9rJfbpvTBfM5YY8IxENkpg36rDzTSDiX5HV
- udSfNMXvfLaCV1Zg/zwa+C8JpetZUmhRSMHZOAKCARDdUBR6IovHE6pUarB2b6O/DiC11gByzrs
- rCaPRAsAnTIV0PURna6f5cu4DwyfM=
-X-Received: by 2002:a81:9e0b:0:b0:65f:9796:2bdf with SMTP id
- 00721157ae682-6874e3a353bmr11944427b3.27.1722482468402; 
- Wed, 31 Jul 2024 20:21:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/B7vKknlSLIpX/PzKYimkunlNYGAGba4CoCVx15nKCeW8j5fj5eTdje1OP15fs0TyI/8uKynT9Wdinr8oj8E=
-X-Received: by 2002:a81:9e0b:0:b0:65f:9796:2bdf with SMTP id
- 00721157ae682-6874e3a353bmr11944157b3.27.1722482468074; Wed, 31 Jul 2024
- 20:21:08 -0700 (PDT)
+ bh=LIA8qtIEwBqGQojB8vR+PEMLSgLeUXkAJyI8y+mq9FA=;
+ b=KCjpMRLygEqJ8bAK4RPgSeRLUoT5+JMqIPmPExuEW3Y5zgpewYkksgDbxrpZT8rSc3
+ KxeKu4irLFydiK+6jDlcd9IEYJe/0Jg4ik9YjlQwt6drq4mKSoHYpU7+qeLQaKQd1IF2
+ UlP8lVHanvGVxDMvRA4hiuB4gKcULt3hgG8WSBj0UPbkLlQBJOe60QVyJSHzDjlvKGRR
+ NS0XLqZSrrTA2ZFbLaijQizMjID6S2AO4/WVE1W6ppIxhAJsJpTqfyxIg9ROHcKjl+XL
+ R+j2yqOpY1z/zsn3ur112Lx4I2dTOfCBMCu3HNhWVSm5vtqOCiMXYff0fPx2ddRtv6DQ
+ W1gA==
+X-Gm-Message-State: AOJu0YxW06wuHFQHqOFG27pCNtJingxPf7QhZVwbs64LxyOYINgQJKjg
+ wZk9SFHH8hl0lekbiNn6WM8EfxxqP2EcfYsLYixomfafeEefieyiTOcQsvdqHPhbn9ZAAWP3yGh
+ pfqCWwwtvMcyAZVIC5Z7HDM7x8XcSG/j3p+R3jPYv10qPsTbrxPVugU6oJtxzje0RLzb86axe+Y
+ Xg+imYLZjBjKRphTzWrKyiFL58zKM=
+X-Received: by 2002:a81:5b04:0:b0:66a:843c:4c38 with SMTP id
+ 00721157ae682-687521b9560mr5159487b3.37.1722482709706; 
+ Wed, 31 Jul 2024 20:25:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdm8eONMfPaB0Qsap8XfUDxD67qSjsWH3V5PzSZRWN1oS7bhdQe8tBToa8XMYEsh5v+snsMPZPXHV3aL0f7zE=
+X-Received: by 2002:a81:5b04:0:b0:66a:843c:4c38 with SMTP id
+ 00721157ae682-687521b9560mr5159337b3.37.1722482709450; Wed, 31 Jul 2024
+ 20:25:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240726134438.14720-1-crosa@redhat.com>
- <20240726134438.14720-7-crosa@redhat.com>
- <ZqdzqnpKja7Xo-Yc@redhat.com>
- <6dbc898d-be8a-497c-87bb-d13d956cd279@linaro.org>
-In-Reply-To: <6dbc898d-be8a-497c-87bb-d13d956cd279@linaro.org>
+ <20240726134438.14720-10-crosa@redhat.com>
+ <Zqd2edn1-aNiVriv@redhat.com>
+In-Reply-To: <Zqd2edn1-aNiVriv@redhat.com>
 From: Cleber Rosa <crosa@redhat.com>
-Date: Wed, 31 Jul 2024 23:20:57 -0400
-Message-ID: <CA+bd_6LFDwv+y7c8gu89bCcgX3QXHXsyvCrCiAidP40ptdKExw@mail.gmail.com>
-Subject: Re: [PATCH 06/13] tests/avocado: use more distinct names for assets
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+Date: Wed, 31 Jul 2024 23:24:58 -0400
+Message-ID: <CA+bd_6JBpV3A_yyi_R5uELfZkf4zfKJSW9YuZd+am-guK7-QjQ@mail.gmail.com>
+Subject: Re: [PATCH 09/13] tests/avocado/boot_xen.py: fetch kernel during test
+ setUp()
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
  Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>, 
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
  David Woodhouse <dwmw2@infradead.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, kvm@vger.kernel.org, 
  =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
@@ -109,97 +107,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 29, 2024 at 7:54=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
+On Mon, Jul 29, 2024 at 7:01=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
 >
-> On 29/7/24 12:49, Daniel P. Berrang=C3=A9 wrote:
-> > On Fri, Jul 26, 2024 at 09:44:31AM -0400, Cleber Rosa wrote:
-> >> Avocado's asset system will deposit files in a cache organized either
-> >> by their original location (the URI) or by their names.  Because the
-> >> cache (and the "by_name" sub directory) is common across tests, it's a
-> >> good idea to make these names as distinct as possible.
-> >>
-> >> This avoid name clashes, which makes future Avocado runs to attempt to
-> >> redownload the assets with the same name, but from the different
-> >> locations they actually are from.  This causes cache misses, extra
-> >> downloads, and possibly canceled tests.
-> >>
-> >> Signed-off-by: Cleber Rosa <crosa@redhat.com>
-> >> ---
-> >>   tests/avocado/kvm_xen_guest.py  | 3 ++-
-> >>   tests/avocado/netdev-ethtool.py | 3 ++-
-> >>   2 files changed, 4 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/tests/avocado/kvm_xen_guest.py b/tests/avocado/kvm_xen_gu=
-est.py
-> >> index f8cb458d5d..318fadebc3 100644
-> >> --- a/tests/avocado/kvm_xen_guest.py
-> >> +++ b/tests/avocado/kvm_xen_guest.py
-> >> @@ -40,7 +40,8 @@ def get_asset(self, name, sha1):
-> >>           url =3D base_url + name
-> >>           # use explicit name rather than failing to neatly parse the
-> >>           # URL into a unique one
-> >> -        return self.fetch_asset(name=3Dname, locations=3D(url), asset=
-_hash=3Dsha1)
-> >> +        return self.fetch_asset(name=3Df"qemu-kvm-xen-guest-{name}",
-> >> +                                locations=3D(url), asset_hash=3Dsha1)
-> >
-> > Why do we need to pass a name here at all ? I see the comment here
-> > but it isn't very clear about what the problem is. It just feels
-> > wrong to be creating ourselves uniqueness naming problems, when we
-> > have a nicely unique URL, and that cached URL can be shared across
-> > tests, where as the custom names added by this patch are forcing
-> > no-caching of the same URL between tests.
+> On Fri, Jul 26, 2024 at 09:44:34AM -0400, Cleber Rosa wrote:
+> > The kernel is a common blob used in all tests.  By moving it to the
+> > setUp() method, the "fetch asset" plugin will recognize the kernel and
+> > attempt to fetch it and cache it before the tests are started.
 >
-> I thought $name was purely for debugging; the file was downloaded
-> in a temporary location, and if the hash matched, it was renamed
-> in the cache as $asset_hash which is unique. This was suggested
-> in order to avoid dealing with URL updates for the same asset.
-> Isn't it the case?
+> The other tests don't call  fetch_asset() from their setUp
+> method - what's different about this test that prevents the
+> asset caching working ?
 >
 
-Hi Phillipe,
+The "wizardry" of the "fetch asset" plugin limits itself to analyzing
+test methods and the setUp() method.  This test currently does that in
+the "fetch_guest_kernel()" method, which makes it blind to the "fetch
+asset" plugin.
 
-I've replied to Daniel's question, but let me repeat the relevant
-parts of the $name behavior here.
-
----
-
-Under 88.1 the "uniqueness" of the URL did not consider the query
-parameters in the URL.  So, under 88.1:
-
-   avocado.utils.asset.Asset(name=3D'bzImage',
-locations=3D['https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?path=
-=3D%2Fkvm-xen-guest&files=3DbzImage',
-...)
-   avocado.utils.asset.Asset(name=3D'bzImage',
-locations=3D['https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?path=
-=3D%2Fnetdev-ethtool&files=3DbzImage',
-...)
-
-Would save content to the same location:
-/tmp/cache_old/by_location/2a8ecd750eb952504ad96b89576207afe1be6a8f/downloa=
-d.
-
-This is no longer the case on 103.0 (actually since 92.0), the
-contents of those exact assets would be saved to
-'/by_location/415c998a0061347e5115da53d57ea92c908a2e7f/path=3D%2Fkvm-xen-gu=
-est&files=3DbzImage'
-and /by_location/415c998a0061347e5115da53d57ea92c908a2e7f/path=3D%2Fnetdev-=
-ethtool&files=3DbzImage'.
-
-I personally don't like having the files named, although uniquely,
-after the query parameters.  But, If this doesn't bother others more
-than the maintenance burden, and Avocado version bump is applied, this
-patch can be dropped.
-
----
-
-Now, an update: instead of dropping the patch, it could be simplified
-by keeping just the "name" parameter (with the URL) and dropping the
-"locations" parameter (that has a single location).
-
-Let me know if this makes sense and what you take on it.
+If there are other tests doing that (in custom methods), then a
+similar change would be desirable.
 
 Regards,
 - Cleber.
