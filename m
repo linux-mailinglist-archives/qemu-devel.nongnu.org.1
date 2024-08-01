@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E920694497F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535BF944981
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:38:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZTAu-0005vj-L1; Thu, 01 Aug 2024 06:36:48 -0400
+	id 1sZTAu-0005t7-HP; Thu, 01 Aug 2024 06:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAj-00054j-Fu
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAo-0005OS-W4
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAh-0001fq-LV
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAn-0001gm-FU
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722508595;
+ s=mimecast20190719; t=1722508600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=G4QMeU0+8DoiMY9SQEvoe2ryIifTYQOkCLesk2LGT2U=;
- b=REwsM0ZkBNLqFF6vrCbGkBUOEoVKdETTKABkM5lt3MwBZLbNn7fSbp/LB+/I48Brnli9HY
- YGuwD/yhw1rM+Vr0wT7WsJFkC8Z4Yy4JV/IJdDduVCpyxsyxkJ71Z+L/QJm6tDhBKYecM+
- Nk+fyuEZraUMP9Ln7q5a7RP9D0ySFic=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KkHPmgwBXR83hmpRdf4peeHnWvvgF2d+14hJg8f9R0s=;
+ b=ENlFUZIgB2Ul6hJiorlV6Yf6elhD3bg5ED7g0zg2DSo69xGg3MFtjL0+OW26Cgfh/CtjLW
+ 4L75i+muotGn3yS7/I1KwDkC7fpxT3Ioizv8vECoA2yW8yc4WG7zbDcl8nsFfdX5KtAskv
+ msUkAvNGbESFjD7eyv9ZtrVo/zPx8II=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-Np6eLwWZPnijI1cgGKu1tQ-1; Thu, 01 Aug 2024 06:36:34 -0400
-X-MC-Unique: Np6eLwWZPnijI1cgGKu1tQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5a3fa8b9151so5988073a12.2
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:36:33 -0700 (PDT)
+ us-mta-610-vaI-UWSDPui6dbeXtDNhaw-1; Thu, 01 Aug 2024 06:36:39 -0400
+X-MC-Unique: vaI-UWSDPui6dbeXtDNhaw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5a766a51b0dso7447873a12.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:36:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722508592; x=1723113392;
+ d=1e100.net; s=20230601; t=1722508598; x=1723113398;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G4QMeU0+8DoiMY9SQEvoe2ryIifTYQOkCLesk2LGT2U=;
- b=hIGAmGV03Ig+TmTsrDqbCrccdGpKKCfJd9TVsHfxdYVpexHhNJ2GGiNFzQXL7HLylf
- DTnkYtQssj4+BOKz7FPN1utidCJSt5Qe2FBwZhjLMizYpGKVEywlpZ892XLJbqEuu5sh
- kZkAGXGRSSSqAnuYuWRbZ8UojsOZJG5zo9KZPPCQmxBTX0MhlhVi88e3zRNrOyPwUUWg
- nupbbbrUpzGrKScajEmA6BDntd8K48cp8JeZ+5WMQ8jIRN44KveM2HwvQJ8fHftczeD3
- MrSH5QOHVs4F5nPZjymskv824qRKpiPCKMP/pvqJ1TF1+Nico+4xgeRkm3BKw2DPzOS0
- Oifg==
-X-Gm-Message-State: AOJu0YzdUEgNdr5h7ybzcujpKI/5MTThA1iqFMf1vCWjDFzMNP//jIwo
- KU0nk7JLpESgbvIlqmdpa0H2hTop2i0iorN1n1tHiXnaBoqR94K+vVzi7Ks0qR1VSwrXWkHPboR
- bkLPdvjeSe703a/bhTdURJLf1xjG3jVxFvhkBy0djO6L69HR+1+kA9qZhUkEsWPKIeJ0HoxbTjv
- tk6iNlHSMIt1LpVNGcS0hexvwlQmFnVA==
-X-Received: by 2002:aa7:c142:0:b0:5a1:eb48:2b9a with SMTP id
- 4fb4d7f45d1cf-5b7003d7926mr1320393a12.25.1722508592515; 
- Thu, 01 Aug 2024 03:36:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0KIqZ+Fu+Sgh15KrbEP6wF8b4nDwpPxLL90QvxVwzoE6lZaUaUjdMowqYjpd/ZjQVUhyM3w==
-X-Received: by 2002:aa7:c142:0:b0:5a1:eb48:2b9a with SMTP id
- 4fb4d7f45d1cf-5b7003d7926mr1320358a12.25.1722508591757; 
- Thu, 01 Aug 2024 03:36:31 -0700 (PDT)
+ bh=KkHPmgwBXR83hmpRdf4peeHnWvvgF2d+14hJg8f9R0s=;
+ b=BLS1dqvT6lPpxoBlhmZz+NLlxFWAXYXYv/9HrP+Gp72Gj/H7mVekZ+kbwPKLZiulcE
+ 3AhjIoAnzoa87BrTlP43u/WMg4XH9dvr6EcOiYxImp6PYJRt1EV66DqrzBpv7JSKAiTq
+ b01AOx2dWFXwS8rURU33lpkC8iNjZEwW7PEyqa8VqC6+dHaSWaybIcmgLW0W+K/oBGSx
+ XFe5X0BNAyE6L6sJ+jcZLS6wBR+5LuRw9YR7iPtzqbCHqahoQb7/EeIrDonmMjCxD7Ug
+ PXv7jfDbuw7Z/+1Hb2pUpeeK3G/NKZHbosLcFWVGHJMX6THyaYSqDxF1AfrSoJScUPGd
+ nM1w==
+X-Gm-Message-State: AOJu0YxvKIe+KbdePWgD+wuwrW1B9/U9dVE1U3TVRynR1hdlM/XVtHrc
+ +jZiJT1CEHf+ob+qt78czBSzbVF2w0IeM8cJVZZM2ekJMh8N4zKvgN71yx2U4OXtnwRQCqIvzYd
+ jf4IWjP3IJY4SeTcvkB5fG78A7UZq0dyVg2pfZzkkDFhdkQ4kbbEB/hLtskHRzgnX80PMUT+AT6
+ darpjZ2hXPtH96/j3/4CFEOLo3zDq3Cw==
+X-Received: by 2002:a05:6402:104f:b0:59e:9e8b:f6d with SMTP id
+ 4fb4d7f45d1cf-5b6fe52dd9bmr1150665a12.2.1722508598047; 
+ Thu, 01 Aug 2024 03:36:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJ/rrLhrx5z69phBz3eiWDIy8ROdi9xooEqTrEgeLYfXIio6t1PQ4cqydl8Y7/H4U7Vu0kMQ==
+X-Received: by 2002:a05:6402:104f:b0:59e:9e8b:f6d with SMTP id
+ 4fb4d7f45d1cf-5b6fe52dd9bmr1150645a12.2.1722508597317; 
+ Thu, 01 Aug 2024 03:36:37 -0700 (PDT)
 Received: from redhat.com ([2.55.44.248]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ac63590d81sm10069517a12.23.2024.08.01.03.36.29
+ 4fb4d7f45d1cf-5ac631b0395sm10040635a12.20.2024.08.01.03.36.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 03:36:30 -0700 (PDT)
-Date: Thu, 1 Aug 2024 06:36:28 -0400
+ Thu, 01 Aug 2024 03:36:35 -0700 (PDT)
+Date: Thu, 1 Aug 2024 06:36:31 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 10/19] Revert "pcie_sriov: Remove num_vfs from PCIESriovPF"
-Message-ID: <ae9c192de7ab0f56f32d8b60b6568917e0138919.1722508478.git.mst@redhat.com>
+Subject: [PULL 11/19] Revert "pcie_sriov: Release VFs failed to realize"
+Message-ID: <9bab08da4e932e9c95919951792ae09d0a59f726.1722508478.git.mst@redhat.com>
 References: <cover.1722508478.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -98,128 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit cbd9e5120bac3e292eee77b7a2e3692f235a1a26.
+This reverts commit 1a9bf009012e590cb166a4a9bae4bc18fb084d76.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pcie_sriov.h |  1 +
- hw/pci/pcie_sriov.c         | 28 ++++++++--------------------
- hw/pci/trace-events         |  2 +-
- 3 files changed, 10 insertions(+), 21 deletions(-)
+ hw/pci/pcie_sriov.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index 5148c5b77d..70649236c1 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -16,6 +16,7 @@
- #include "hw/pci/pci.h"
- 
- typedef struct PCIESriovPF {
-+    uint16_t num_vfs;   /* Number of virtual functions created */
-     uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
-     PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
- } PCIESriovPF;
 diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index fae6acea4a..9bd7f8acc3 100644
+index 9bd7f8acc3..faadb0d2ea 100644
 --- a/hw/pci/pcie_sriov.c
 +++ b/hw/pci/pcie_sriov.c
-@@ -57,6 +57,7 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-     pcie_add_capability(dev, PCI_EXT_CAP_ID_SRIOV, 1,
-                         offset, PCI_EXT_CAP_SRIOV_SIZEOF);
-     dev->exp.sriov_cap = offset;
-+    dev->exp.sriov_pf.num_vfs = 0;
-     dev->exp.sriov_pf.vf = NULL;
+@@ -99,8 +99,6 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+         vf->exp.sriov_vf.vf_number = i;
  
-     pci_set_word(cfg + PCI_SRIOV_VF_OFFSET, vf_offset);
-@@ -185,12 +186,6 @@ void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
-     }
- }
- 
--static void clear_ctrl_vfe(PCIDevice *dev)
--{
--    uint8_t *ctrl = dev->config + dev->exp.sriov_cap + PCI_SRIOV_CTRL;
--    pci_set_word(ctrl, pci_get_word(ctrl) & ~PCI_SRIOV_CTRL_VFE);
--}
--
- static void register_vfs(PCIDevice *dev)
- {
-     uint16_t num_vfs;
-@@ -200,7 +195,6 @@ static void register_vfs(PCIDevice *dev)
-     assert(sriov_cap > 0);
-     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
-     if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
--        clear_ctrl_vfe(dev);
-         return;
-     }
- 
-@@ -209,18 +203,20 @@ static void register_vfs(PCIDevice *dev)
-     for (i = 0; i < num_vfs; i++) {
-         pci_set_enabled(dev->exp.sriov_pf.vf[i], true);
-     }
-+    dev->exp.sriov_pf.num_vfs = num_vfs;
- }
- 
- static void unregister_vfs(PCIDevice *dev)
- {
-+    uint16_t num_vfs = dev->exp.sriov_pf.num_vfs;
-     uint16_t i;
--    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
- 
-     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
--                               PCI_FUNC(dev->devfn));
--    for (i = 0; i < pci_get_word(cfg + PCI_SRIOV_TOTAL_VF); i++) {
-+                               PCI_FUNC(dev->devfn), num_vfs);
-+    for (i = 0; i < num_vfs; i++) {
-         pci_set_enabled(dev->exp.sriov_pf.vf[i], false);
-     }
-+    dev->exp.sriov_pf.num_vfs = 0;
- }
- 
- void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-@@ -246,9 +242,6 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-         } else {
-             unregister_vfs(dev);
+         if (!qdev_realize(&vf->qdev, bus, errp)) {
+-            object_unparent(OBJECT(vf));
+-            object_unref(vf);
+             unparent_vfs(dev, i);
+             return false;
          }
--    } else if (range_covers_byte(off, len, PCI_SRIOV_NUM_VF)) {
--        clear_ctrl_vfe(dev);
--        unregister_vfs(dev);
-     }
- }
- 
-@@ -311,7 +304,7 @@ PCIDevice *pcie_sriov_get_pf(PCIDevice *dev)
- PCIDevice *pcie_sriov_get_vf_at_index(PCIDevice *dev, int n)
- {
-     assert(!pci_is_vf(dev));
--    if (n < pcie_sriov_num_vfs(dev)) {
-+    if (n < dev->exp.sriov_pf.num_vfs) {
-         return dev->exp.sriov_pf.vf[n];
-     }
-     return NULL;
-@@ -319,10 +312,5 @@ PCIDevice *pcie_sriov_get_vf_at_index(PCIDevice *dev, int n)
- 
- uint16_t pcie_sriov_num_vfs(PCIDevice *dev)
- {
--    uint16_t sriov_cap = dev->exp.sriov_cap;
--    uint8_t *cfg = dev->config + sriov_cap;
--
--    return sriov_cap &&
--           (pci_get_word(cfg + PCI_SRIOV_CTRL) & PCI_SRIOV_CTRL_VFE) ?
--           pci_get_word(cfg + PCI_SRIOV_NUM_VF) : 0;
-+    return dev->exp.sriov_pf.num_vfs;
- }
-diff --git a/hw/pci/trace-events b/hw/pci/trace-events
-index e98f575a9d..19643aa8c6 100644
---- a/hw/pci/trace-events
-+++ b/hw/pci/trace-events
-@@ -14,7 +14,7 @@ msix_write_config(char *name, bool enabled, bool masked) "dev %s enabled %d mask
- 
- # hw/pci/pcie_sriov.c
- sriov_register_vfs(const char *name, int slot, int function, int num_vfs) "%s %02x:%x: creating %d vf devs"
--sriov_unregister_vfs(const char *name, int slot, int function) "%s %02x:%x: Unregistering vf devs"
-+sriov_unregister_vfs(const char *name, int slot, int function, int num_vfs) "%s %02x:%x: Unregistering %d vf devs"
- sriov_config_write(const char *name, int slot, int fun, uint32_t offset, uint32_t val, uint32_t len) "%s %02x:%x: sriov offset 0x%x val 0x%x len %d"
- 
- # pcie.c
 -- 
 MST
 
