@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4218944977
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFA2944982
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:38:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZTAt-0005Rk-EE; Thu, 01 Aug 2024 06:36:47 -0400
+	id 1sZTAu-0005u2-Mt; Thu, 01 Aug 2024 06:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAb-0004WX-Iv
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAi-0004zi-6i
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAa-0001d8-6H
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:29 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZTAg-0001fi-Ov
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:36:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722508587;
+ s=mimecast20190719; t=1722508593;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=SekfldKxDjaLjrGHvZ8eOZLUMSLhZFBP5+JICVV9W20=;
- b=YhFqISWD+n/sVFWoNThlA9FirooqN/egm4YMVbi3jpaH0+1GhcW2lv2lXs+u50uv3Vly8z
- wQd21dFH0Xo4DOGKNAO3taVivI3lcqjmZsFaneRcUAvMSBgCbrxjhiL/n8VAYeJ96FfWz2
- baepXWl2+gkN4DdKt562Bco175XLj54=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YZJrjrbWqX6EKULFw0AJWSDhkMqAw8uHUBrOGrGavqw=;
+ b=OiVEX86bOPZ2cb3Av66pDFUXqKGNk0oP4aEt6GRS/S6K8u0ahsnhiwxer+UUZWcZcZPTeW
+ c76gDTpe9OdE+RFk4J6Y6yXxFLiJhZos96dBL/8H9TM0o2TRfCS3FKlY4TyzAZWqWYl16e
+ 8O8H/iU0H7YfVVsO31MP6qKVbknhjRE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-JxFfJVbpNByxLfGXjsk_Ug-1; Thu, 01 Aug 2024 06:36:25 -0400
-X-MC-Unique: JxFfJVbpNByxLfGXjsk_Ug-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-52f00bde210so7588295e87.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:36:25 -0700 (PDT)
+ us-mta-241-QL1dfpkCM4CPBHoWNfx-aQ-1; Thu, 01 Aug 2024 06:36:30 -0400
+X-MC-Unique: QL1dfpkCM4CPBHoWNfx-aQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a77f0eca75bso627675566b.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 03:36:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722508583; x=1723113383;
+ d=1e100.net; s=20230601; t=1722508588; x=1723113388;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SekfldKxDjaLjrGHvZ8eOZLUMSLhZFBP5+JICVV9W20=;
- b=XYTJ07RYEZxWI7/5kH+vnxPvYnu2sFMBd3FtOsv7vQt3L6y6iNhDUo9lLCfDvyRTBZ
- hfHbulrp0dh4N+nVkxs4KqMk55C+Fsl2vWpUkL+E7GZFTiB/MSrRV4xdMEj+VLdQg1F+
- nuSoJQWZRoQCBpXA4Y+C6xaHFf+BivGJGhSYDi+1ZNVye7p7KgfveuO7S8H/tliXJNnC
- 8tJ9Die4o51JDEciX5dFCijZArm2f7fnscqtH9YTq92lrekNpWvrGdn/fayILyrVT2qo
- d4F6n7WXZ2QaamsI8W6ODDVwdod04saPq66H1S9uruTke7ActZq7okn9LJspaeiBSmjO
- HVSQ==
-X-Gm-Message-State: AOJu0Yzxh926ud1cjfd825TsbdBeagCLemNPnhVFIeROczuF2aMSiJT9
- 60GI9HdUfTdEMwl5Mztf+aasp1e6BV6HMRiOlKbhftmg0xOxanNVnRtvIOIIBDRVwGZGSJJ0rwo
- MMmzWta+dtQdKlrEA+MemYcZjq9va3zaKwjuDJX3vCgq1uqdvmixx2oNFLn6L1IVPCqQQpvQZXX
- +uPsJnB3qSkMBfRevPJ3AwOXw5oMjIYw==
-X-Received: by 2002:ac2:51ab:0:b0:52f:c10d:21f0 with SMTP id
- 2adb3069b0e04-530b61f68b3mr1168349e87.54.1722508583183; 
- Thu, 01 Aug 2024 03:36:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHwHUbeue8zsMszWxUzuuSQXlDjohDBz66f1DdkpVHCr5/zuYq5qBcZ5ZXPH4wvfoYR8iwtxA==
-X-Received: by 2002:ac2:51ab:0:b0:52f:c10d:21f0 with SMTP id
- 2adb3069b0e04-530b61f68b3mr1168303e87.54.1722508582280; 
- Thu, 01 Aug 2024 03:36:22 -0700 (PDT)
+ bh=YZJrjrbWqX6EKULFw0AJWSDhkMqAw8uHUBrOGrGavqw=;
+ b=VQQxMBJJfBUPz9zTSnNYHn9kmfXw00MRIfCsa5vvVFoMcUXu6CzcKKxrU6163W40o5
+ ns9QigBQ9A9/3dIOnBQu4cD6nB1ccn17GkGeyb16ush1ROqCHtqLLMC1hI/sD4CHSgn6
+ pt2Jn8264dct3LbXOGJgK2uOxyiKkWfO3b7XqLfVAcN5pNjsc7uY1Ybzj9Zb7XKJhiN0
+ 6KOxpTUprKL2Khj8/7OzstDrgq/eTC8ft95l38e68Pm3jsZOPXxZO+GYIqveOxO6BfnJ
+ O4KI9kXejSStTyVWTS1MS27QF15DXS0Gy9xFKL9WSknysuv8tFO7GIMF4lDXn57kFGED
+ 82ug==
+X-Gm-Message-State: AOJu0YyIvFxCJzBfhclsriyrlXiAe4trPNpT24fNdC5MGEqOZskgk62+
+ IGKK9l4fX3HKFgTMtY9p9N4lmCAk3DUHwb6HB7FaOCQBS0ZyB3mhlbW21xpOx+QfPTK3goO2aUS
+ c4LGQO0wCg/VcM3WRpZFrxjMCJpxJ33cE+WUsUDaEi8WgsmotQnlx58By7RDvV1pdvmpeKbnMYt
+ TP+muvDcHdaVx++yQwNmn0NVV8dzqW2Q==
+X-Received: by 2002:a17:906:dc8b:b0:a6f:5150:b807 with SMTP id
+ a640c23a62f3a-a7daf50c41cmr193577266b.35.1722508588276; 
+ Thu, 01 Aug 2024 03:36:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFd18rHx+j/26V/QAfEH2YP3UUT1TYMFZURiIRIYE5oZa0GlT6OjfOWdJboo0fN+s5BfCZE3g==
+X-Received: by 2002:a17:906:dc8b:b0:a6f:5150:b807 with SMTP id
+ a640c23a62f3a-a7daf50c41cmr193573966b.35.1722508587674; 
+ Thu, 01 Aug 2024 03:36:27 -0700 (PDT)
 Received: from redhat.com ([2.55.44.248]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7acad91eeesm889918366b.178.2024.08.01.03.36.17
+ a640c23a62f3a-a7acab23094sm880206366b.5.2024.08.01.03.36.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Aug 2024 03:36:18 -0700 (PDT)
-Date: Thu, 1 Aug 2024 06:36:15 -0400
+ Thu, 01 Aug 2024 03:36:25 -0700 (PDT)
+Date: Thu, 1 Aug 2024 06:36:22 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 08/19] Revert "hw/pci: Fix SR-IOV VF number calculation"
-Message-ID: <558452512f068bfb3584a5a8b15530b0c53074c7.1722508478.git.mst@redhat.com>
+Subject: [PULL 09/19] Revert "pcie_sriov: Register VFs after migration"
+Message-ID: <b9ba81769499533488540b6d5ed7c7569476a427.1722508478.git.mst@redhat.com>
 References: <cover.1722508478.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -98,30 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit ca6dd3aef8a103138c99788bcba8195d4905ddc5.
+This reverts commit 107a64b9a360cf5ca046852bc03334f7a9f22aef.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci/pci.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ include/hw/pci/pcie_sriov.h | 2 --
+ hw/pci/pci.c                | 7 -------
+ hw/pci/pcie_sriov.c         | 7 -------
+ 3 files changed, 16 deletions(-)
 
+diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
+index c5d2d318d3..5148c5b77d 100644
+--- a/include/hw/pci/pcie_sriov.h
++++ b/include/hw/pci/pcie_sriov.h
+@@ -57,8 +57,6 @@ void pcie_sriov_pf_add_sup_pgsize(PCIDevice *dev, uint16_t opt_sup_pgsize);
+ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
+                              uint32_t val, int len);
+ 
+-void pcie_sriov_pf_post_load(PCIDevice *dev);
+-
+ /* Reset SR/IOV */
+ void pcie_sriov_pf_reset(PCIDevice *dev);
+ 
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index cf2794879d..4c7be52951 100644
+index 4c7be52951..5c0050e178 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -1437,11 +1437,7 @@ static pcibus_t pci_config_get_bar_addr(PCIDevice *d, int reg,
-             pci_get_word(pf->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
-         uint16_t vf_stride =
-             pci_get_word(pf->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
--        uint32_t vf_num = d->devfn - (pf->devfn + vf_offset);
--
--        if (vf_num) {
--            vf_num /= vf_stride;
--        }
-+        uint32_t vf_num = (d->devfn - (pf->devfn + vf_offset)) / vf_stride;
+@@ -733,17 +733,10 @@ static bool migrate_is_not_pcie(void *opaque, int version_id)
+     return !pci_is_express((PCIDevice *)opaque);
+ }
  
-         if (type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
-             new_addr = pci_get_quad(pf->config + bar);
+-static int pci_post_load(void *opaque, int version_id)
+-{
+-    pcie_sriov_pf_post_load(opaque);
+-    return 0;
+-}
+-
+ const VMStateDescription vmstate_pci_device = {
+     .name = "PCIDevice",
+     .version_id = 2,
+     .minimum_version_id = 1,
+-    .post_load = pci_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_INT32_POSITIVE_LE(version_id, PCIDevice),
+         VMSTATE_BUFFER_UNSAFE_INFO_TEST(config, PCIDevice,
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index 56523ab4e8..fae6acea4a 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -252,13 +252,6 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
+     }
+ }
+ 
+-void pcie_sriov_pf_post_load(PCIDevice *dev)
+-{
+-    if (dev->exp.sriov_cap) {
+-        register_vfs(dev);
+-    }
+-}
+-
+ 
+ /* Reset SR/IOV */
+ void pcie_sriov_pf_reset(PCIDevice *dev)
 -- 
 MST
 
