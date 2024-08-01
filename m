@@ -2,189 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8BBB944909
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA20094490F
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Aug 2024 12:08:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZSi4-0007qb-B3; Thu, 01 Aug 2024 06:07:00 -0400
+	id 1sZSjP-0003Sl-CL; Thu, 01 Aug 2024 06:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manish.mishra@nutanix.com>)
- id 1sZSi2-0007pB-CM
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:06:58 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sZSjK-00033r-5n
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:08:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manish.mishra@nutanix.com>)
- id 1sZSi0-0006SP-Ic
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:06:58 -0400
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47182MIY022880;
- Thu, 1 Aug 2024 03:06:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=gJKvuC9b7VCJ1ITFZYGy6UQObHZwPk+/WtqSRM8hj
- PY=; b=DRxgd8rmbG1OOw0YpnUyVw/SxZO2GwZH3dxyKpJdtADyH7QOSEIVR8Hyh
- kxM5V1OaStkAhE7GRbFpdZdtD2JQAlv80k3vi0McUO5mKcEzDO5oEDUy8HVbxO6s
- NYGH+ZZrhOfCGXoGTLmKjye0H93+HbOZ+GZFkuAYjo9oGMCbpKTldVbfyHewUbHI
- h7+n+76VpActb0kybgkerOysuC2Z23Mx5j3RkxT3q/jPrrUYuB3XldGTmkhSrGPS
- dqVmME4SyuOZzcEOPj91hW8mAjYyIlVlhyPkEYotPhw4AH5Oo70KIApEsieup7aT
- JD9kBEKlhBgiGvuzHyrKJTkZsSfMA==
-Received: from bn1pr04cu002.outbound.protection.outlook.com
- (mail-eastus2azlp17010002.outbound.protection.outlook.com [40.93.12.2])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 40q9cguy3b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Aug 2024 03:06:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KudQRjOiJ1fuAbquhMVUwOdtFQP27I2mumKPLT4zWwDWQLwM7vC36CEFxf6DawgHgu+oLVM5km+ikfH5JElG/4z3ltVTpBPH/oPzGg14uyyY18DJA64fS/4gITGgWnZqxmNdRe6K7QB9slv5Ni6Ap8AuQxH77TGtVQIAu6KJPwThoqfzNYEadIFglRx495ycvrB4rnEChJLriMFh1/6Gob+5UQ80ur4zn12wA/vyigyBpueqfU0JjmvUOadxmRKLgtyro+9IH1NNqZQXoNQeK1EIFaz/4KdHbSZReLFrnWT7GRlU4aBoTyyifpjyqeCaYLfuIX9Ws+apDCg85faZLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gJKvuC9b7VCJ1ITFZYGy6UQObHZwPk+/WtqSRM8hjPY=;
- b=ukr7MF8YL85f8zESR9y3hVF/UbN49v2grsm3YkU73fqjghEgXn+REcdz/pqt5XDiOfqmBUTKSYKawU6ILKrIZB5/HglPT6IDhHspeIz19HbrsN0qsK9hR/50Ghr1yMI0rBs8L3mXDCeriZFchsLmWChDmkVMWh6GsaZCQ7Q5vQOpKPi5KSizeAF9k9uw4tiaRs4Pl+S41d2AtvdJS0I2aLz4Qe0j/rZgkXedAPdZc2brhUDjjxrShzfCLhj5QuZJWCOHoEsvT7FinSyeOmhK95Pph2yDL2FF14oG+wINUcobqYkzKxgHBpDhRQBqykhmLdQrSET6l99rerMcSW20KA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gJKvuC9b7VCJ1ITFZYGy6UQObHZwPk+/WtqSRM8hjPY=;
- b=WsIqGFwGV8T4vc0QZG6J7rPTgBttSuIhytgzJ24zZmyEIGJUcP3P9a/pLEsR50wdW7R6hAsqXeULNHYeH4rd7QxepgIMrhkrRkuQdB451Ltk0R6BFqzja45q90s277rAzFbD20wvGa2BbbNVe6v5WhHM2G6s0AoaVf/kTYDlIeCidWDL5z/qB+h2eGC3yErLDSujTu/6VEKWKT1e6n3aktOo4w9zhoqVlWOiEeDxLmafl7tEAbzaavMuj+V264S+mYL2ihsmSIMt7B0TbTvTJIpW6VplCLcZrwZrKtGA9y6dSUn+SKN7hB0fEWXsXwQCdiacYy6E+CsDKpE7QBt2vA==
-Received: from SA0PR02MB7386.namprd02.prod.outlook.com (2603:10b6:806:d9::19)
- by CO1PR02MB8491.namprd02.prod.outlook.com (2603:10b6:303:15a::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.23; Thu, 1 Aug
- 2024 10:06:35 +0000
-Received: from SA0PR02MB7386.namprd02.prod.outlook.com
- ([fe80::4c36:8bda:38b:e564]) by SA0PR02MB7386.namprd02.prod.outlook.com
- ([fe80::4c36:8bda:38b:e564%4]) with mapi id 15.20.7828.016; Thu, 1 Aug 2024
- 10:06:35 +0000
-Message-ID: <d7de1729-e497-4913-be8e-8938e83b3a2a@nutanix.com>
-Date: Thu, 1 Aug 2024 15:36:10 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] target/i386: Always set leaf 0x1f
-Content-Language: en-GB
-To: Xiaoyao Li <xiaoyao.li@intel.com>, John Levon <john.levon@nutanix.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- berrange@redhat.com, zhao1.liu@intel.com, pbonzini@redhat.com,
- bob.ball@nutanix.com, prerna.saxena@nutanix.com
-References: <20240724075226.212882-1-manish.mishra@nutanix.com>
- <20240724110004.389c1a0c@imammedo.users.ipa.redhat.com>
- <21ca5c19-677b-4fac-84d4-72413577f260@nutanix.com>
- <6e65dbb2-461e-44f4-842c-249c7b333885@intel.com> <Zqn6mNuCH4/HJoO/@lent>
- <bda03736-ade0-46a9-977f-1ae368374555@intel.com>
-From: Manish <manish.mishra@nutanix.com>
-In-Reply-To: <bda03736-ade0-46a9-977f-1ae368374555@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0054.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::6) To SA0PR02MB7386.namprd02.prod.outlook.com
- (2603:10b6:806:d9::19)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sZSjH-00077A-NO
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 06:08:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722506894;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fDHdj0aQ0c4Ld5C71SWCQAk7Uzpzm5R+FzlzkspxkBk=;
+ b=JEu50ppwt4CZeExGzA7Wp1A/ApDiiPEXnW58XIP/0fT4ptlEC+rWrSuk9FeDzMDZu/u8Do
+ JO1isf1xtx366F5tBZkPq8R5eR+RIycVZsKxXF6u5AOVyskI6VXmoUsMkqKRe4QE/3KlMd
+ wkLOn6ewVkBFyNFeOIz90L4EVXQFhoc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-jbTamVZYNrCeNXlUmQZ92g-1; Thu,
+ 01 Aug 2024 06:08:11 -0400
+X-MC-Unique: jbTamVZYNrCeNXlUmQZ92g-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7F3F182A9CB; Thu,  1 Aug 2024 10:07:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.109])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 471721955D4D; Thu,  1 Aug 2024 10:07:23 +0000 (UTC)
+Date: Thu, 1 Aug 2024 11:07:20 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3 02/24] tests/functional: Add base classes for the
+ upcoming pytest-based tests
+Message-ID: <ZqteWGZFbpY3gjgT@redhat.com>
+References: <20240730170347.4103919-1-berrange@redhat.com>
+ <20240730170347.4103919-3-berrange@redhat.com>
+ <87ed79fxlo.fsf@draig.linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR02MB7386:EE_|CO1PR02MB8491:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2cdfe50-f6c9-40a8-cbf7-08dcb211a00c
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|52116014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WHR2cDhsckMvU3Q4SWhOSWhhVGU5a29sT2ZiaGtWUlBMZk1kTDNheThCNm1F?=
- =?utf-8?B?M0cvM3BEUXJIYlVZaEp3ZTU2ZEl2RTJFL1AzVTBlTURGN01FZTh2SXQzNXMy?=
- =?utf-8?B?U0pJelpmN0RjT2pRWm1mY0Q3Nk9OSFFHWnRySHlXaTlVYjh4TzF2TGJzOFJu?=
- =?utf-8?B?RTZyM1VvOGZCMFZ1VFVydnlFM3U3TXlxQkRDdzh1Njg0WlhzS3dpTWlDLzhO?=
- =?utf-8?B?bDF5WWxTZjYzQ3RITVNSbXNtSGFnTGFBK21FWTZZbUN2ZUZ3NCtmVTZSY0V0?=
- =?utf-8?B?YmhlalBCME94eW5xVmNrd2FWSndZRGMxckR4YzZBZDlTbHIyQ1l2Z3huODJD?=
- =?utf-8?B?OFI4cU50eTdwb1BNMFpuNWJLTk9IUmI3czRRS3VBOTFoVXhwUTdoeUFXaTFq?=
- =?utf-8?B?ZVMrRDJVa2Y4ajRLSHE3TjZVMG51TWxQQU1KczlyQ0JNOHBoQUpGdHlsR2lu?=
- =?utf-8?B?T2NNalZ3eFErMEsremsxZUhaZmNoWHN4YjlBaGtFd0I1OU5ZOTIxTzBXbEZ2?=
- =?utf-8?B?SnorVlR3TFF4NC8yMW41OGwvOUNMTnpmenMwalp4V3QrWHo2S2lvZjBKZlND?=
- =?utf-8?B?T2FST095YjRhcnJKSGlaL3dBRzhwWTh1aU55M0dFWUNkbW93UnljS0lIQWxC?=
- =?utf-8?B?QlRIc1VRQlVRVklqa1FmZTBsNnR5TUI1SUZDZEUwbW5QaWd5YnhKQ0o2cElN?=
- =?utf-8?B?bk8zY3Mrai9rRDRLVjRlTi9YM1NjZTVkN2FmSG9ybC83aXBmaW5wUUJxQnAy?=
- =?utf-8?B?OFZ3TnZJaWFmem1QaksxbXFRMlF0QlBiSThzUUp0VVRObWdhKy9tZnRMMFE3?=
- =?utf-8?B?dkxvV0NRWHhQSnRobjhWNFBEYjl0TWJjeDcrNzlMQnp3S3gyY2dzYkxsenFM?=
- =?utf-8?B?bStGOEpuTU43Y3FocjBHRU5xbWhkQ1JEOE01K1ZJSnRpOE5jM29uNWZVNzlX?=
- =?utf-8?B?aFQ1aGU3cU9sVVRHWFRPVE1DQmJjNDRSQjJoSjQvWUxzT0Q3WXhOODFOZ0gw?=
- =?utf-8?B?cGVPMUl1SE11U2FTbEhRMzlCZlRENzllR01pYW5IbG1qMjNpdmNnUzdnN2h5?=
- =?utf-8?B?UEUyTzlxTDBKZm40djUvTE5QR3AzdSs3QlVmd2VibWxVeUR0VzJtVk9KS2k0?=
- =?utf-8?B?S2hPUWt0b0lOeGtVcS9nZlBCYldFVC9aOFVEVXJDQ1VUVVJ2U3JEMDRUbkds?=
- =?utf-8?B?ZjFhOXIwcWVRc24vMHI5SS93ajNlUXlTVUVhYTlTOGFEQ3EwdnNFeWdqUk5G?=
- =?utf-8?B?L054OGpSWlFVS0dSckVNSG1hWTdIVHh5M2FTUmFsZXY5N0F3enpyMFZFNXNN?=
- =?utf-8?B?VklHeFh0Z3R1ZzNKM1A1OWxMZjQwSmpZTjR5R3JySDNWSExGYytaNDNsYmFp?=
- =?utf-8?B?cWtZSElGSGZOVVRDS3BFNXNMc3ZtMWFxN2NsZzlyNEN0Y0w3RTBpNVNjZ1ZO?=
- =?utf-8?B?Q1BidWhybTBKakR4ckw1R0l4cXc1VWkyWFhodEhibUowZGx6eHFJTzROaWdZ?=
- =?utf-8?B?UytsUEZvWmdGS2haUitiUHY2cXN1N3JDRUtUYmRURlV2MU9GdEdIenBGSmhO?=
- =?utf-8?B?T1ZjbzBKVDU5TDdFZXdUOWZYOHA5ZFhVbDljYno3VGRpd0c2Y012MkR4eTdX?=
- =?utf-8?B?SnBxSHBKc3lIamJFaWcvQmVLODJQSHpSNUJUR2lGU1pvR0lXUG1jekw3bmxM?=
- =?utf-8?B?aUJnVGYwVG9vT3p1YUR4cUhieWFOMGpOWENxWEcxQ1Z6R2ZDWmVyN1ArdS84?=
- =?utf-8?B?L0p2UGdZaDhaM0tCbnVlNjZqWGpjVXIzK281dkczTHdrU1BlL295dXNxa0RW?=
- =?utf-8?B?ZEZMdVVkQWJ6L1ltVWxpZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA0PR02MB7386.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(52116014); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aVFOdzVBUDJ2YysxMTM0eXdnQ0grYWRzbTdvNWRhamlCOEwrSUdlV1l5YnJi?=
- =?utf-8?B?WXB0eVdQa09oVEYvQVQxQ28rZTY1Z3dROUJkTkRLZExYZndiMlhQUzZ1SUdw?=
- =?utf-8?B?OTZGd085bzJIT2wvbU5vdkEycDFBdlF0dnhDWUNQaTdxQ0hTbHZPUG9vZGpM?=
- =?utf-8?B?NkRTODIxL3VTRjFJWElEaHpGcnZKdWZseEdWNVBORm5vR1dKRWhKNHNoVk1n?=
- =?utf-8?B?aENnTWFWYWVUZldyQnhJUDJzNytKdDVCRHlZd2FwRzl6MFk3WVp6R0w4U1Nk?=
- =?utf-8?B?K29tcGFwc0dOMXE5MG5hUWxwaGhJZGNQN29qdEUvRkkzMmlDakg0eEFJeEpi?=
- =?utf-8?B?YmJOZC9rYW5PVGpmcEpweFhIdE43eFNadHp4WlZzdmF2YzVHaVZ0ZllWdzFO?=
- =?utf-8?B?eUJLaHpieTIrdDNJN1pFVExhU29acmRFOFBoR1VtdjV6OUJ6bEdJVGpUNWls?=
- =?utf-8?B?Y2ZlWFlISzNTRjJWb05qcThVeHRIRnI0QjVFV1pFc0QzWVlrMS9XYjFPeGl0?=
- =?utf-8?B?dTF2MC9tbkdoK2h0VkdQMFk2SWRhT25ZTDRDcmxZOExIZTRWZ213UXlmSlps?=
- =?utf-8?B?clNsbWpaK0xnRnFPZFBDV05aVzFabGd3Z1VUR3BVenRDSGVzaGZCblZEUjdw?=
- =?utf-8?B?d2hXSVhHNFhRS2J0ZCsxdGhrTnNsaFV5eldpNyszdkVZZDZySllhdjk3aDAx?=
- =?utf-8?B?d3V6SzNtTjdGUkZRbUl6eFFlc1M4enJEMmliNmV6d1ZPdXd1bkVnUWxCa2FY?=
- =?utf-8?B?VC9PTVJ4WGVTU1U0Mjk3cmNlM0YyMEYxVXBnU2NzMHJjQkZqT3RheTRRZU9X?=
- =?utf-8?B?bDNWcE1zVGQzWGhxRWpmNzhqUHFqQm9EQXJuejVCT0dnZ0FrYkhuZW40T2xo?=
- =?utf-8?B?aVQySG0xYm1jemdSaHZGUkVHWE1tbkI2dUZ4L1pCYTloZ0xVeGlXYzNUcHZZ?=
- =?utf-8?B?L3pNMUFZM09RbXhNU0FtbE1ZSlJRaFJLTGpFUEYwMmRIMlp3TmY5MWNQY0No?=
- =?utf-8?B?VUtjd1VlTjhUR2VUM2lOKzBCOGZTNVV6NGpTUEFaQTlNcExKOEp0TG50Y29N?=
- =?utf-8?B?R1k2RE5RbCt2QXhPRUhYVFNHM2ZxZWVvc0xaTXExVDdubkowNkFKb295Qzl3?=
- =?utf-8?B?RjkxaHFjOGw2Q2ErVTFzZjk3R0g4VkNjRGFsZ2t4U25YV0d0QTRVbk5GUGdw?=
- =?utf-8?B?QWVkNFRWYjdMazdSL2JrQ3VGWXNkTkh2UStpa1JKSG9DWWtOd2V6bkJQMC8w?=
- =?utf-8?B?MFl1MWpSbGhGWXk5SmNBeG5DNHdYdGRsUEF4UXNsT2daMkhWczBCeUJCenRx?=
- =?utf-8?B?S2F3RWZLK2tiWG9KVzZ3QzFwVVVVampDWEI5Ylc4bVZpeDczajVTczVVQm9G?=
- =?utf-8?B?VHdhejBQRzd2eWxnWWc5UlFiVjRSZUp5NzFlY3pra2NXR0xDT0RoUkpaRUdG?=
- =?utf-8?B?Z1lVYnBsM2Nna3NoOUdBMUFpOUdNZk1RL1hpWnFQNExzQVhaaExncHI2Wk5F?=
- =?utf-8?B?Wmo1K2J2LzM2TjZkcHU3SDBpK3lLQktxT1NIUDJJTDBrRHZJcmJ2NDBvbGtS?=
- =?utf-8?B?NHNoak4wYzA3MkZQNjJpNmpleE14L3g0OERneHdFNVB6Vk5UMml4TkVZclBN?=
- =?utf-8?B?L0prRTd1UFNSN3I1ZE8vWUpMYkZTeEM0c3ZWZzY3ZVJkMHNVLzZyK3lGSzh1?=
- =?utf-8?B?TGNTMnVPbHZ3M0hnRU9yL29FdkVNd0MvQVZNVXZNN2hqZlBybEZZTTcrei9G?=
- =?utf-8?B?Ykt2NFdrQnc2dFNSWW5wMkJrbVpSZ255eGNBMnE2Q0dkSDhqVnZqWFJNczZH?=
- =?utf-8?B?cVVMcy9zMklqbnoyRzE4OHVRREhxaXZWbkRuSUZjMWF0UWwvMzBtc096NEdP?=
- =?utf-8?B?YkxVV3lJY2ZaUytidnJUR2tkOVZjREtjNzc4ZUNJcFZhWkIxbnZYZ3YyeTdZ?=
- =?utf-8?B?ODlNZ0ZybGRtbURKQlovT05Ld2d1NVdPazhHMzZFanZRUUxhN0JEUTZQSExQ?=
- =?utf-8?B?emhmKytkeVNKblN1b2JiQW11Z3B3Q201bDc4akVTSStNUWQxMnNOMUxFOGYv?=
- =?utf-8?B?QXVWb2tjUmY5M3dvZHdqQ1NlaGE3WFpOWmgzaWhvNmFSeHhueTFtNnd3UGVt?=
- =?utf-8?B?OUFXVmdaNVBycGxoVHNTWi90b3FsL3RNYmRKalZjd3Q3TnhIVzBJY1FWSnVP?=
- =?utf-8?B?VE1KNHNzVXNGU1pxQ1hiQTMyUTlJbE51TEdITUxVYTE4eW9RZS9JNlZjZ3VO?=
- =?utf-8?B?Vk5pTXljb04rYXZQS21wNmVEK1lRPT0=?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2cdfe50-f6c9-40a8-cbf7-08dcb211a00c
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR02MB7386.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 10:06:35.2793 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ys52T1G8SWSqRc1QAOzTXSCldfaiV4+MTdbs8bS80iEOrBMeYyKBNkJJO4as6e2Z3dwIEk84nmwjQM/nKEdNR0CDNlC2hbxkqgWpowaLjF4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR02MB8491
-X-Proofpoint-GUID: kAW7HkNFbdq-m9QsTXwL54HkiOLvcslq
-X-Proofpoint-ORIG-GUID: kAW7HkNFbdq-m9QsTXwL54HkiOLvcslq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-01_07,2024-07-31_01,2024-05-17_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=manish.mishra@nutanix.com; helo=mx0a-002c1b01.pphosted.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ed79fxlo.fsf@draig.linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -198,47 +88,127 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Jul 31, 2024 at 03:24:35PM +0100, Alex Bennée wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > From: Thomas Huth <thuth@redhat.com>
+> >
+> > The file is mostly a copy of the tests/avocado/avocado_qemu/__init__.py
+> > file with some adjustments to get rid of the Avocado dependencies (i.e.
+> > we also have to drop the LinuxSSHMixIn and LinuxTest for now).
+> >
+> > The emulator binary and build directory are now passed via
+> > environment variables that will be set via meson.build later.
+> <snip>
+> > diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+> > new file mode 100644
+> > index 0000000000..82cc1d454f
+> > --- /dev/null
+> > +++ b/tests/functional/qemu_test/testcase.py
+> > @@ -0,0 +1,154 @@
+> > +# Test class and utilities for functional tests
+> > +#
+> > +# Copyright 2018, 2024 Red Hat, Inc.
+> > +#
+> > +# Original Author (Avocado-based tests):
+> > +#  Cleber Rosa <crosa@redhat.com>
+> > +#
+> > +# Adaption for standalone version:
+> > +#  Thomas Huth <thuth@redhat.com>
+> > +#
+> > +# This work is licensed under the terms of the GNU GPL, version 2 or
+> > +# later.  See the COPYING file in the top-level directory.
+> > +
+> > +import logging
+> > +import os
+> > +import pycotap
+> > +import sys
+> > +import unittest
+> > +import uuid
+> > +
+> > +from qemu.machine import QEMUMachine
+> > +from qemu.utils import kvm_available, tcg_available
+> > +
+> > +from .cmd import run_cmd
+> > +from .config import BUILD_DIR
+> > +
+> > +
+> > +class QemuBaseTest(unittest.TestCase):
+> > +
+> > +    qemu_bin = os.getenv('QEMU_TEST_QEMU_BINARY')
+> > +    arch = None
+> > +
+> > +    workdir = None
+> > +    log = logging.getLogger('qemu-test')
+> > +
+> > +    def setUp(self, bin_prefix):
+> > +        self.assertIsNotNone(self.qemu_bin, 'QEMU_TEST_QEMU_BINARY must be set')
+> > +        self.arch = self.qemu_bin.split('-')[-1]
+> > +
+> > +        self.workdir = os.path.join(BUILD_DIR, 'tests/functional', self.arch,
+> > +                                    self.id())
+> > +        if not os.path.exists(self.workdir):
+> > +            os.makedirs(self.workdir)
+> 
+> This is racy under --repeat:
+> 
+>   ==================================== 1/4 =====================================
+>   test:         qemu:func-quick+func-riscv64 / func-riscv64-riscv_opensbi
+>   start time:   14:16:52
+>   duration:     0.06s
+>   result:       exit status 1
+>   command:      PYTHONPATH=/home/alex/lsrc/qemu.git/python:/home/alex/lsrc/qemu.git/tests/functional QEMU_BUILD_ROOT=/home/alex/lsrc/qemu.git/builds/all QEMU_TEST_QEMU_BINARY=
+>   /home/alex/lsrc/qemu.git/builds/all/qemu-system-riscv64 MALLOC_PERTURB_=71 QEMU_TEST_QEMU_IMG=/home/alex/lsrc/qemu.git/builds/all/qemu-img /home/alex/lsrc/qemu.git/builds/al
+>   l/pyvenv/bin/python3 /home/alex/lsrc/qemu.git/tests/functional/test_riscv_opensbi.py
+>   ----------------------------------- stdout -----------------------------------
+>   TAP version 13
+>   not ok 1 test_riscv_opensbi.RiscvOpenSBI.test_riscv_sifive_u
+>   not ok 2 test_riscv_opensbi.RiscvOpenSBI.test_riscv_spike
+>   not ok 3 test_riscv_opensbi.RiscvOpenSBI.test_riscv_virt
+>   1..3
+>   ----------------------------------- stderr -----------------------------------
+>   Traceback (most recent call last):
+>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.py", line 85, in setUp
+>       super().setUp('qemu-system-')
+>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.py", line 45, in setUp
+>       os.makedirs(self.workdir)
+>     File "<frozen os>", line 225, in makedirs 
+>   FileExistsError: [Errno 17] File exists: '/home/alex/lsrc/qemu.git/builds/all/tests/functional/riscv64/test_riscv_opensbi.RiscvOpenSBI.test_riscv_sifive_u'
+> 
+>   Traceback (most recent call last):
+>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.py", line 85, in setUp
+>       super().setUp('qemu-system-')
+>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.py", line 45, in setUp
+>       os.makedirs(self.workdir)
+>     File "<frozen os>", line 225, in makedirs 
+>   FileExistsError: [Errno 17] File exists: '/home/alex/lsrc/qemu.git/builds/all/tests/functional/riscv64/test_riscv_opensbi.RiscvOpenSBI.test_riscv_spike'
+> 
+>   Traceback (most recent call last):
+>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.py", line 85, in setUp
+>       super().setUp('qemu-system-')
+>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.py", line 45, in setUp
+>       os.makedirs(self.workdir)
+>     File "<frozen os>", line 225, in makedirs 
+>   FileExistsError: [Errno 17] File exists: '/home/alex/lsrc/qemu.git/builds/all/tests/functional/riscv64/test_riscv_opensbi.RiscvOpenSBI.test_riscv_virt'
+> 
+> 
+>   (test program exited with status code 1)
+> 
+> We could just:
+> 
+>   os.makedirs(self.workdir, exist_ok = True)
 
-On 31/07/24 9:01 pm, Xiaoyao Li wrote:
-> !-------------------------------------------------------------------|
->  CAUTION: External Email
->
-> |-------------------------------------------------------------------!
->
-> On 7/31/2024 4:49 PM, John Levon wrote:
->> On Wed, Jul 31, 2024 at 03:02:15PM +0800, Xiaoyao Li wrote:
->>
->>>> Windows does not expect 0x1f to be present for any CPU model. But 
->>>> if it
->>>> is exposed to the guest, it expects non-zero values.
->>>
->>> Please fix Windows!
->>
->> A ticket has been filed with MSFT, we are aware this is a guest bug.
->>
->> But that doesn't really help anybody trying to use Windows right now.
->
-> For existing buggy Windows, we can still introduce 
-> "cpuid-0x1f-enforce" but not make it default on.
->
-> People want to boot the buggy Windows needs to opt-in it themselves 
-> via "-cpu xxx,cpuid-0x1f-enforce=on". This way, we don't have live 
-> migration issue and it doesn't affect anything.
+Yeah, that's a better approach.
 
-
-Yes, that makes sense, I will send a updated patch by tomorrow if no one 
-has any objection with this.
-
->
->> regards
->> john
-
-
-Thanks
-
-Manish Mishra
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
