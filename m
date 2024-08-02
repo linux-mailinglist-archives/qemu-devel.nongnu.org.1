@@ -2,101 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98020945BBD
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 12:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A95D945B64
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 11:48:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZp7D-0007JC-Pk; Fri, 02 Aug 2024 06:02:27 -0400
+	id 1sZotS-0007nz-4H; Fri, 02 Aug 2024 05:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sZp7B-0007Cl-Ca
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 06:02:25 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sZotP-0007mS-37; Fri, 02 Aug 2024 05:48:11 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sZp78-0004gT-Lk
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 06:02:25 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4729Iqd9021203;
- Fri, 2 Aug 2024 10:02:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=iIVjvu85D9K1q
- hEziIv0wA1/t1l4O02FOAAC99avhnI=; b=kGXhBYRZhVgpnS6IEm4WOSCjUUkt2
- PV2Q0i4Q159oq7JQeMUQtzQmi/S04T3pH3ts8TQlwQItKR7nPwsWM1F73+2sg5nt
- L7EhcvaNS2Bx2IcFesInEmgMRvJhjZZmCTW4SDqQIYxqtvLXsEPR7IwcFockNXQs
- n8ebj2tc4PJcDjFUncX1/t8zpzmEyOjPIHyxQcPbOiKDeqyApmiHiZ1SkdotnmvT
- Vf/v7WMkyOFXfJLl/9UAyFGReGsVVd1mYF3JzoGiNl4k2I4TYd4XhDDPHWnPk+sG
- Oh0Q692XqVVe5aFk6swHFgchu3thQG0Wbq9hilNLk6e2xqww1wgVuvkNQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ru3j89c1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Aug 2024 10:02:18 +0000 (GMT)
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 472A2HOU000924;
- Fri, 2 Aug 2024 10:02:17 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ru3j89bv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Aug 2024 10:02:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 4727dOEr018863; Fri, 2 Aug 2024 10:02:17 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40nc7q6n2x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Aug 2024 10:02:16 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 472A2DQD57868674
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Aug 2024 10:02:15 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E8F9A2005A;
- Fri,  2 Aug 2024 10:02:12 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9268B2006E;
- Fri,  2 Aug 2024 10:02:12 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.14.120])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  2 Aug 2024 10:02:12 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 5/5] tests/tcg: Run test-proc-mappings.py on i386
-Date: Fri,  2 Aug 2024 11:59:18 +0200
-Message-ID: <20240802095942.34565-6-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240802095942.34565-1-iii@linux.ibm.com>
-References: <20240802095942.34565-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sZotL-0004UB-AP; Fri, 02 Aug 2024 05:48:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722592087; x=1754128087;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=kqQcjt8ahHm0LUdDkgUTxKLsmqLB40UCsPTMULgSq+s=;
+ b=keQxVZuCewglwo14QDdpYhCHfzVNPznhmoXEyrNMrTLAvpsbpmlveA0J
+ pVCvdO4s6XPrF6zH2uObhmbLd/zbd3HYk7WKgdfRsWg/8DEi9ynBpxCzO
+ AFHcJXUmjQoexAiz7/ZhM3MnvtAYx+Q3fKhq9Vvhju7yflru6bXsEyTkh
+ VTTctHNOeJVr05nA+jrP5kKYYlkmcOd3OtlFjE7AfYqy0Z83V2J2riths
+ qpipXlGuIrL70WwXyNv+Ot9wpu20Y2WH0dYKdocNf0JSwkODhtOofclLP
+ hiNCHq/q6JO9waEMDUCg8UWHQ8O15HscFO7irwc4C9Dh1gWTmfzPgFRAj w==;
+X-CSE-ConnectionGUID: p3A2ucubRXOIiuiNm1j38g==
+X-CSE-MsgGUID: NOZtKxZ0TD6fsc//uVbupA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="20774530"
+X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; d="scan'208";a="20774530"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Aug 2024 02:48:03 -0700
+X-CSE-ConnectionGUID: Kgw64EYBRCWfML41yTcO+w==
+X-CSE-MsgGUID: BweuvkbuTiWba31HNNVsCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; d="scan'208";a="55267892"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa009.jf.intel.com with ESMTP; 02 Aug 2024 02:47:58 -0700
+Date: Fri, 2 Aug 2024 18:03:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Shaoqin Huang <shahuang@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Eric Auger <eauger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@intel.com>, Yuan Yao <yuan.yao@intel.com>,
+ Xiong Zhang <xiong.y.zhang@intel.com>, Mingwei Zhang <mizhang@google.com>,
+ Jim Mattson <jmattson@google.com>
+Subject: Re: [RFC 0/5] accel/kvm: Support KVM PMU filter
+Message-ID: <ZqyvAWQdmW41D5H1@intel.com>
+References: <20240710045117.3164577-1-zhao1.liu@intel.com>
+ <b10545d1-8e81-44f0-8e13-eee393ea4d1b@redhat.com>
+ <ZqyovJZkOjm6HZFv@intel.com>
+ <45e9258c-b370-4b5c-884b-80a21f69cee8@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RBWOLJJzSaSMZfGJ5dRc78Qk-HuEJr-K
-X-Proofpoint-ORIG-GUID: Ihzb_VpYyTY_hOeEi1ds0RAZP0Iz8hq1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-02_06,2024-08-01_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=983 phishscore=0 clxscore=1015 priorityscore=1501
- malwarescore=0 adultscore=0 mlxscore=0 bulkscore=0 spamscore=0
- suspectscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408020066
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <45e9258c-b370-4b5c-884b-80a21f69cee8@redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -114,44 +93,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that orig_ax is exposed and GDB is happy, don't skip
-test-proc-mappings.py on i386. In fact, it's broken only on
-m68k now, so skip only this architecture.
+On Fri, Aug 02, 2024 at 05:41:57PM +0800, Shaoqin Huang wrote:
+> Date: Fri, 2 Aug 2024 17:41:57 +0800
+> From: Shaoqin Huang <shahuang@redhat.com>
+> Subject: Re: [RFC 0/5] accel/kvm: Support KVM PMU filter
+> 
+> Hi Zhao,
+> 
+> On 8/2/24 17:37, Zhao Liu wrote:
+> > Hello Shaoqin,
+> > 
+> > On Fri, Aug 02, 2024 at 05:01:47PM +0800, Shaoqin Huang wrote:
+> > > Date: Fri, 2 Aug 2024 17:01:47 +0800
+> > > From: Shaoqin Huang <shahuang@redhat.com>
+> > > Subject: Re: [RFC 0/5] accel/kvm: Support KVM PMU filter
+> > > 
+> > > Hi Zhao,
+> > > 
+> > > On 7/10/24 12:51, Zhao Liu wrote:
+> > > > Hi QEMU maintainers, arm and PMU folks,
+> > > > 
+> > > > I picked up Shaoqing's previous work [1] on the KVM PMU filter for arm,
+> > > > and now is trying to support this feature for x86 with a JSON-compatible
+> > > > API.
+> > > > 
+> > > > While arm and x86 use different KVM ioctls to configure the PMU filter,
+> > > > considering they all have similar inputs (PMU event + action), it is
+> > > > still possible to abstract a generic, cross-architecture kvm-pmu-filter
+> > > > object and provide users with a sufficiently generic or near-consistent
+> > > > QAPI interface.
+> > > > 
+> > > > That's what I did in this series, a new kvm-pmu-filter object, with the
+> > > > API like:
+> > > > 
+> > > > -object '{"qom-type":"kvm-pmu-filter","id":"f0","events":[{"action":"allow","format":"raw","code":"0xc4"}]}'
+> > > > 
+> > > > For i386, this object is inserted into kvm accelerator and is extended
+> > > > to support fixed-counter and more formats ("x86-default" and
+> > > > "x86-masked-entry"):
+> > > > 
+> > > > -accel kvm,pmu-filter=f0 \
+> > > > -object pmu='{"qom-type":"kvm-pmu-filter","id":"f0","x86-fixed-counter":{"action":"allow","bitmap":"0x0"},"events":[{"action":"allow","format":"x86-masked-entry","select":"0xc4","mask":"0xff","match":"0","exclude":true},{"action":"allow","format":"x86-masked-entry","select":"0xc5","mask":"0xff","match":"0","exclude":true}]}'
+> > > 
+> > > What if I want to create the PMU Filter on ARM to deny the event range
+> > > [0x5,0x10], and allow deny event 0x13, how should I write the json?
+> > > 
+> > 
+> > Cuurently this doesn't support the event range (since the raw format of
+> > x86 event cannot be said to be continuous).
+> > 
+> > So with the basic support, we need to configure events one by one:
+> > 
+> > -object pmu='{"qom-type":"kvm-pmu-filter","id":"f0","events":[{"action":"allow","format":"raw","code":"0x5"},{"action":"allow","format":"raw","select":"0x6"},{"action":"allow","format":"raw","code":"0x7"},{"action":"allow","format":"raw","code":"0x8"},{"action":"allow","format":"raw","code":"0x9"},{"action":"allow","format":"raw","code":"0x10"},{"action":"deny","format":"raw","code":"0x13"}]}'
+> > 
+> > This one looks a lot more complicated, but in the future, arm could
+> > further support event-range (maybe implement event-range via mask), but
+> > I think this could be arch-specific format since not all architectures'
+> > events are continuous.
+> > 
+> > Additional, I'm a bit confused by your example, and I hope you can help
+> > me understand that: when configuring 0x5~0x10 to be allow, isn't it true
+> > that all other events are denied by default, so denying 0x13 again is a
+> > redundant operation? What is the default action for all other events
+> > except 0x5~0x10 and 0x13?
+> > 
+> > If we specify action as allow for 0x5~0x10 and deny for the rest by
+> > default, then there is no need to set an action for each event but only
+> > a global one (as suggested by Dapeng), so the above command line can be
+> > simplified as:
+> > 
+> > -object pmu='{"qom-type":"kvm-pmu-filter","id":"f0","action":"allow","events":[{"format":"raw","code":"0x5"},{"format":"raw","select":"0x6"},{"format":"raw","code":"0x7"},{"format":"raw","code":"0x8"},{"format":"raw","code":"0x9"},{"format":"raw","code":"0x10"}]}'
+> > 
+> 
+> Yes you are right. On Arm when you first set the PMU Filter, if the first
+> filter is allow, then all other event will be denied by default. The reverse
+> is also the same, if the first filter is deny, then all other event will be
+> allowed by default.
+> 
+> On ARM the PMU Filter is much more simper than x86 I think. We only need to
+> care about the special event with allow or deny action.
+> 
+> If we don't support event range filter, I think that's fine. This can be
+> added in the future.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- .../tcg/multiarch/gdbstub/test-proc-mappings.py | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+This is good news for me, I can implement global action in the next
+version and iterate further! Thank you for your confirmation!
 
-diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-index 564613fabf0..0f687f3284a 100644
---- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-+++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-@@ -8,17 +8,12 @@
- 
- def run_test():
-     """Run through the tests one by one"""
--    try:
--        mappings = gdb.execute("info proc mappings", False, True)
--    except gdb.error as exc:
--        exc_str = str(exc)
--        if "Not supported on this target." in exc_str:
--            # Detect failures due to an outstanding issue with how GDB handles
--            # the x86_64 QEMU's target.xml, which does not contain the
--            # definition of orig_rax. Skip the test in this case.
--            print("SKIP: {}".format(exc_str))
--            return
--        raise
-+    if gdb.selected_inferior().architecture().name() == "m68k":
-+        # m68k GDB supports only GDB_OSABI_SVR4, but GDB_OSABI_LINUX is
-+        # required for the info proc support (see set_gdbarch_info_proc()).
-+        print("SKIP: m68k GDB does not support GDB_OSABI_LINUX")
-+        exit(0)
-+    mappings = gdb.execute("info proc mappings", False, True)
-     report(isinstance(mappings, str), "Fetched the mappings from the inferior")
-     # Broken with host page size > guest page size
-     # report("/sha1" in mappings, "Found the test binary name in the mappings")
--- 
-2.45.2
+Regards,
+Zhao
 
 
