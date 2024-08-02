@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17635946549
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 23:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAA594653E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 23:46:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sa04z-0005Hp-Lj; Fri, 02 Aug 2024 17:44:54 -0400
+	id 1sa04p-0004TD-Bt; Fri, 02 Aug 2024 17:44:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sa04k-0004TT-B0; Fri, 02 Aug 2024 17:44:39 -0400
-Received: from sin.source.kernel.org ([145.40.73.55])
+ id 1sa04h-0004P1-L2
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:44:35 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sa04g-0001Al-VG; Fri, 02 Aug 2024 17:44:38 -0400
+ id 1sa04f-0001AB-JR
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:44:35 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 79236CE1BC1;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 177FF62B4F;
  Fri,  2 Aug 2024 21:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2175C4AF11;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB15FC4AF0E;
  Fri,  2 Aug 2024 21:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1722635063;
- bh=wmX5BOavDV5A0y4JGTIfwXXXDCYeYux2q4KKf6xw9vs=;
+ bh=lzZeLSx62/9+XmtaXqmWuty+3/8CulkJ9V68HTTwfN0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=E34VGHamkEFAsuv6m6ZKnXZVpDvel53+0WGEuomQDdXsiNOY7IlOGo+NEWMqfWSnV
- UIz2EsZ6/FjAg5o6/jOZ6+GMVI7QmQGuW9gR4odCeELqyWkE9nS4Zm1otbIE4q4N6A
- BpKIrZM4fUOApvdDrXdGhh4eSUnTpa66JbQxEKcVgVz88ebRWL1toHdCWj9VRajlQU
- SdCzqGu409bHWlNojB2k3TSUJF49smY2qxBx+r8IMQ8aoE0xQKUzg1oLAZ4oSVhh2B
- 1pC/xuHFMyiJAS19E9a+2NmQ3+vONULZcqlloUdaTBW1yCng8jvrjIVm4eQRspdgEy
- eZQp0oz87Hlcw==
+ b=rQLuyKyUCRd/IQHZcat6NUYgzcSczLY+8tA+dgXRW45MHl1CVSRhJsQjxqSJzcEPV
+ XPn31ifRdjVuhHvvd58t5c2ldt+hkt+l+Iww25f6YnxrCNgqWjuWljCUvZBj+Rw/p5
+ G3TqDYnhJehu1NqAqWZfGL/v1njwh6YjrpNZEqYPhTRIXTKMhz3lnfg3/E0jaiSn4A
+ m0ECiezzZoP+ZU5SoIXZKAwQv0sV/XlS5ddmIe7ylChE2lAwaaZDddQl7A4DfntD4m
+ RUWAa3GhoR5JgJJaF4lEbL0j5l5hRPTvivIUD7E6wAyftIBfdhlsWG9Ix5pYt2fdBY
+ /ZYlxgmR3n8vg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1sa04T-00000002naD-2eiE; Fri, 02 Aug 2024 23:44:21 +0200
+ id 1sa04T-00000002naG-2lLc; Fri, 02 Aug 2024 23:44:21 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v5 1/7] arm/virt: place power button pin number on a define
-Date: Fri,  2 Aug 2024 23:43:56 +0200
-Message-ID: <e5afbbaf2836ebe22b48c455285eccef86db966b.1722634602.git.mchehab+huawei@kernel.org>
+ Igor Mammedov <imammedo@redhat.com>, linux-kernel@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH v5 2/7] acpi/generic_event_device: add an APEI error device
+Date: Fri,  2 Aug 2024 23:43:57 +0200
+Message-ID: <5dfb5fb31afa249e06e0f849b37a7cb525f81215.1722634602.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1722634602.git.mchehab+huawei@kernel.org>
 References: <cover.1722634602.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55;
- envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.124,
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.124,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,82 +77,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Having magic numbers inside the code is not a good idea, as it
-is error-prone. So, instead, create a macro with the number
-definition.
+Adds a Generic Event Device to handle generic hardware error
+events, supporting General Purpose Event (GPE) as specified at
+ACPI 6.5 specification at 18.3.2.7.2:
+https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#event-notification-for-generic-error-sources
+using HID PNP0C33.
 
+The PNP0C33 device is used to report hardware errors to
+the bios via ACPI APEI Generic Hardware Error Source (GHES).
+
+Co-authored-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Co-authored-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/arm/virt-acpi-build.c | 6 +++---
- hw/arm/virt.c            | 7 ++++---
- include/hw/arm/virt.h    | 3 +++
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ hw/acpi/generic_event_device.c         | 17 +++++++++++++++++
+ include/hw/acpi/acpi_dev_interface.h   |  1 +
+ include/hw/acpi/generic_event_device.h |  3 +++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index e10cad86dd73..f76fb117adff 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -154,10 +154,10 @@ static void acpi_dsdt_add_gpio(Aml *scope, const MemMapEntry *gpio_memmap,
-     aml_append(dev, aml_name_decl("_CRS", crs));
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 15b4c3ebbf24..b9ad05e98c05 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -26,6 +26,7 @@ static const uint32_t ged_supported_events[] = {
+     ACPI_GED_PWR_DOWN_EVT,
+     ACPI_GED_NVDIMM_HOTPLUG_EVT,
+     ACPI_GED_CPU_HOTPLUG_EVT,
++    ACPI_GED_ERROR_EVT
+ };
  
-     Aml *aei = aml_resource_template();
--    /* Pin 3 for power button */
--    const uint32_t pin_list[1] = {3};
-+
-+    const uint32_t pin = GPIO_PIN_POWER_BUTTON;
-     aml_append(aei, aml_gpio_int(AML_CONSUMER, AML_EDGE, AML_ACTIVE_HIGH,
--                                 AML_EXCLUSIVE, AML_PULL_UP, 0, pin_list, 1,
-+                                 AML_EXCLUSIVE, AML_PULL_UP, 0, &pin, 1,
-                                  "GPO0", NULL, 0));
-     aml_append(dev, aml_name_decl("_AEI", aei));
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 719e83e6a1e7..687fe0bb8bc9 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1004,7 +1004,7 @@ static void virt_powerdown_req(Notifier *n, void *opaque)
-     if (s->acpi_dev) {
-         acpi_send_event(s->acpi_dev, ACPI_POWER_DOWN_STATUS);
-     } else {
--        /* use gpio Pin 3 for power button event */
-+        /* use gpio Pin for power button event */
-         qemu_set_irq(qdev_get_gpio_in(gpio_key_dev, 0), 1);
-     }
+ /*
+@@ -116,6 +117,11 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
+                            aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
+                                       aml_int(0x80)));
+                 break;
++            case ACPI_GED_ERROR_EVT:
++                aml_append(if_ctx,
++                           aml_notify(aml_name(ACPI_APEI_ERROR_DEVICE),
++                                      aml_int(0x80)));
++                break;
+             case ACPI_GED_NVDIMM_HOTPLUG_EVT:
+                 aml_append(if_ctx,
+                            aml_notify(aml_name("\\_SB.NVDR"),
+@@ -153,6 +159,15 @@ void acpi_dsdt_add_power_button(Aml *scope)
+     aml_append(scope, dev);
  }
-@@ -1013,7 +1013,8 @@ static void create_gpio_keys(char *fdt, DeviceState *pl061_dev,
-                              uint32_t phandle)
+ 
++void acpi_dsdt_add_error_device(Aml *scope)
++{
++    Aml *dev = aml_device(ACPI_APEI_ERROR_DEVICE);
++    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0C33")));
++    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
++    aml_append(dev, aml_name_decl("_STA", aml_int(0xF)));
++    aml_append(scope, dev);
++}
++
+ /* Memory read by the GED _EVT AML dynamic method */
+ static uint64_t ged_evt_read(void *opaque, hwaddr addr, unsigned size)
  {
-     gpio_key_dev = sysbus_create_simple("gpio-key", -1,
--                                        qdev_get_gpio_in(pl061_dev, 3));
-+                                        qdev_get_gpio_in(pl061_dev,
-+                                                         GPIO_PIN_POWER_BUTTON));
+@@ -295,6 +310,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+         sel = ACPI_GED_MEM_HOTPLUG_EVT;
+     } else if (ev & ACPI_POWER_DOWN_STATUS) {
+         sel = ACPI_GED_PWR_DOWN_EVT;
++    } else if (ev & ACPI_GENERIC_ERROR) {
++        sel = ACPI_GED_ERROR_EVT;
+     } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
+         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
+     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
+diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
+index 68d9d15f50aa..8294f8f0ccca 100644
+--- a/include/hw/acpi/acpi_dev_interface.h
++++ b/include/hw/acpi/acpi_dev_interface.h
+@@ -13,6 +13,7 @@ typedef enum {
+     ACPI_NVDIMM_HOTPLUG_STATUS = 16,
+     ACPI_VMGENID_CHANGE_STATUS = 32,
+     ACPI_POWER_DOWN_STATUS = 64,
++    ACPI_GENERIC_ERROR = 128,
+ } AcpiEventStatusBits;
  
-     qemu_fdt_add_subnode(fdt, "/gpio-keys");
-     qemu_fdt_setprop_string(fdt, "/gpio-keys", "compatible", "gpio-keys");
-@@ -1024,7 +1025,7 @@ static void create_gpio_keys(char *fdt, DeviceState *pl061_dev,
-     qemu_fdt_setprop_cell(fdt, "/gpio-keys/poweroff", "linux,code",
-                           KEY_POWER);
-     qemu_fdt_setprop_cells(fdt, "/gpio-keys/poweroff",
--                           "gpios", phandle, 3, 0);
-+                           "gpios", phandle, GPIO_PIN_POWER_BUTTON, 0);
- }
+ #define TYPE_ACPI_DEVICE_IF "acpi-device-interface"
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index 40af3550b56d..b8f2f1328e0c 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -66,6 +66,7 @@
+ #include "qom/object.h"
  
- #define SECURE_GPIO_POWEROFF 0
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index ab961bb6a9b8..a4d937ed45ac 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -47,6 +47,9 @@
- /* See Linux kernel arch/arm64/include/asm/pvclock-abi.h */
- #define PVTIME_SIZE_PER_CPU 64
+ #define ACPI_POWER_BUTTON_DEVICE "PWRB"
++#define ACPI_APEI_ERROR_DEVICE   "GEDD"
  
-+/* GPIO pins */
-+#define GPIO_PIN_POWER_BUTTON  3
-+
- enum {
-     VIRT_FLASH,
-     VIRT_MEM,
+ #define TYPE_ACPI_GED "acpi-ged"
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+@@ -98,6 +99,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ #define ACPI_GED_PWR_DOWN_EVT      0x2
+ #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+ #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
++#define ACPI_GED_ERROR_EVT          0x10
+ 
+ typedef struct GEDState {
+     MemoryRegion evt;
+@@ -120,5 +122,6 @@ struct AcpiGedState {
+ void build_ged_aml(Aml *table, const char* name, HotplugHandler *hotplug_dev,
+                    uint32_t ged_irq, AmlRegionSpace rs, hwaddr ged_base);
+ void acpi_dsdt_add_power_button(Aml *scope);
++void acpi_dsdt_add_error_device(Aml *scope);
+ 
+ #endif
 -- 
 2.45.2
 
