@@ -2,82 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15B7946247
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 19:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080CA9463AC
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 21:22:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZvnf-00046F-Ha; Fri, 02 Aug 2024 13:10:43 -0400
+	id 1sZxq4-0003BZ-Tu; Fri, 02 Aug 2024 15:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZvne-00045i-4u
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 13:10:42 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZvnc-0001BW-Fn
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 13:10:41 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a7a8553db90so1129367866b.2
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 10:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722618638; x=1723223438; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TqUjxIdKSvsizFNHQdJuvAS4tLUxFNJv4u/cmIrhrNI=;
- b=DuCGy1vlwfsPf0eSIcv2XM1vlUDYCHmv+tCaM+f0wHDZ+dEQzZSKTJ6opoBB3cDb4P
- pQ1CFGhNnPfejw1By3FX8EnBdClHVrXO3slMU0n2C5oUYYciyoq2XcKEizo2bvAxjb6T
- AlhXUhIHTiLerT677lUKNC2gQ3EZ+x2fG4WYaoA0mSMNfYNJizWGJtVa+SUT26rN6vgb
- KqepgVv4EJj8zk/v2q4IycB4XpM9eJPTt6yaLYaw7rcbIJFEzgsPQE1DFUk61bSHBVCM
- yQFm7v0ZO7KNafdU/+6C8zk3SAFD70jfme5kjPTL3qmBc2X5x4nQtnjjDmycRGsHokVv
- OZiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722618638; x=1723223438;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TqUjxIdKSvsizFNHQdJuvAS4tLUxFNJv4u/cmIrhrNI=;
- b=gW/3eKaHhMBuGQN6wzn8usqRgvYKl9VtkT+Vl/W17/3hFJrgrkzewZpeI2zzSKmZSD
- H47VRiqb17uh0m51Imu8BnE4EhbBPyvso5lqP1oWW5ILRaMNgbvPE6ii24TTJOlps4UP
- 3dJ3+tCvUQn9k2DEzmutvLPoSimyWUUv97LiF+SHUtNusCpfMNOGXIxg/2UpRHiCrEL9
- MgyCOW9Nsfb2HWmcBFeA4TiY+acfiiFr7gJa0S6Bh+UZ2CMbYnNhle60lvGJuTo4ZtX0
- 7lTEgvJak3TUGcNi0wZNWwsjZJdaqrAjKsZOJBng7AX8UhO/Y1i4d17nL7HX7YSPieVv
- vSSg==
-X-Gm-Message-State: AOJu0YzJwFFCiLmSyT5O80yXldqSBXRe2lH6pHFK8joUFVK3/cdQSj9D
- OLOHHT/2hx+7U0xyJyBcbEs84HK17Y0r7YhrZBbqs2HeU4jhkeZwtRNV2gkERegPy322p+SbXFW
- s
-X-Google-Smtp-Source: AGHT+IFOhKRtHxXj5TN8ktdKH0fL24vgJN6s0FXmBpQiOUaHdfrt1HCbGtkazKBBXOlliImibe5SjA==
-X-Received: by 2002:a17:907:7f8d:b0:a72:5598:f03d with SMTP id
- a640c23a62f3a-a7dc5157d5bmr313693566b.59.1722618638036; 
- Fri, 02 Aug 2024 10:10:38 -0700 (PDT)
-Received: from m1x-phil.lan (cvl92-h01-176-184-49-210.dsl.sta.abo.bbox.fr.
- [176.184.49.210]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9d55ab8sm119274166b.131.2024.08.02.10.10.36
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 Aug 2024 10:10:37 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH-for-9.1 v4 2/2] hw/pci-host/gt64120: Reset config registers
- during RESET phase
-Date: Fri,  2 Aug 2024 19:10:23 +0200
-Message-ID: <20240802171023.85719-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240802171023.85719-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1sZxpz-0003An-2h
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 15:21:15 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1sZxpw-0005mf-QV
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 15:21:14 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8AF4E4E6004;
+ Fri, 02 Aug 2024 21:21:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id RLe42StmQCbM; Fri,  2 Aug 2024 21:21:00 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 928304E6001; Fri, 02 Aug 2024 21:21:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 90C8374577C;
+ Fri, 02 Aug 2024 21:21:00 +0200 (CEST)
+Date: Fri, 2 Aug 2024 21:21:00 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>, 
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH-for-9.1 v4 1/2] hw/pci-host/gt64120: Set PCI base address
+ register write mask
+In-Reply-To: <20240802171023.85719-2-philmd@linaro.org>
+Message-ID: <0319cc95-fb5b-d904-4043-00384ac9df4e@eik.bme.hu>
 References: <20240802171023.85719-1-philmd@linaro.org>
+ <20240802171023.85719-2-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ BOUNDARY="3866299591-1803442020-1722625654=:46709"
+Content-ID: <5d4ff228-0391-e18f-4409-e569fcf807c8@eik.bme.hu>
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,67 +67,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reset config values in the device RESET phase, not only once
-when the device is realized, because otherwise the device can
-use unknown values at reset.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Since we are adding a new reset method, use the preferred
-Resettable API (for a simple leaf device reset, a
-DeviceClass::reset method and a ResettableClass::reset_hold
-method are essentially identical).
+--3866299591-1803442020-1722625654=:46709
+Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <a704aec2-d86d-051f-d235-8068947911f1@eik.bme.hu>
 
-Reported-by: Michael S. Tsirkin <mst@redhat.com>
+On Fri, 2 Aug 2024, Philippe Mathieu-Daudé wrote:
+> When booting Linux we see:
+>
+>  PCI host bridge to bus 0000:00
+>  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+>  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+>  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+>  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
+>  pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
+>  pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+>  pci 0000:00:00.0: [Firmware Bug]: reg 0x1c: invalid BAR (can't size)
+>  pci 0000:00:00.0: [Firmware Bug]: reg 0x20: invalid BAR (can't size)
+>  pci 0000:00:00.0: [Firmware Bug]: reg 0x24: invalid BAR (can't size)
+>
+> This is due to missing base address register write mask.
+> Add it to get:
+>
+>  PCI host bridge to bus 0000:00
+>  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+>  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+>  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+>  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
+>  pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00000fff pref]
+>  pci 0000:00:00.0: reg 0x14: [mem 0x01000000-0x01000fff pref]
+>  pci 0000:00:00.0: reg 0x18: [mem 0x1c000000-0x1c000fff]
+>  pci 0000:00:00.0: reg 0x1c: [mem 0x1f000000-0x1f000fff]
+>  pci 0000:00:00.0: reg 0x20: [mem 0x1be00000-0x1be00fff]
+>  pci 0000:00:00.0: reg 0x24: [io  0x14000000-0x14000fff]
+>
+> Since this device is only used by MIPS machines which aren't
+> versioned, we don't need to update migration compat machinery.
+>
+> Mention the datasheet referenced. Remove the "Malta assumptions
+> ahead" comment since the reset values from the datasheet are used.
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> hw/pci-host/gt64120.c | 14 +++++++++++++-
+> 1 file changed, 13 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
+> index e02efc9e2e..7df2855f32 100644
+> --- a/hw/pci-host/gt64120.c
+> +++ b/hw/pci-host/gt64120.c
+> @@ -1,6 +1,8 @@
+> /*
+>  * QEMU GT64120 PCI host
+>  *
+> + * (Datasheet GT-64120 Rev 1.4 from Sep 14, 1999)
+> + *
+>  * Copyright (c) 2006,2007 Aurelien Jarno
+>  *
+>  * Permission is hereby granted, free of charge, to any person obtaining a copy
+> @@ -1213,17 +1215,27 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
+>
+> static void gt64120_pci_realize(PCIDevice *d, Error **errp)
+> {
+> -    /* FIXME: Malta specific hw assumptions ahead */
+> +    /* Values from chapter 17.16 "PCI Configuration" */
+> +
+>     pci_set_word(d->config + PCI_COMMAND, 0);
+>     pci_set_word(d->config + PCI_STATUS,
+>                  PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
+>     pci_config_set_prog_interface(d->config, 0);
+> +
+> +    pci_set_long(d->wmask + PCI_BASE_ADDRESS_0, 0xfffff009);
+> +    pci_set_long(d->wmask + PCI_BASE_ADDRESS_1, 0xfffff009);
+> +    pci_set_long(d->wmask + PCI_BASE_ADDRESS_2, 0xfffff009);
+> +    pci_set_long(d->wmask + PCI_BASE_ADDRESS_3, 0xfffff009);
+> +    pci_set_long(d->wmask + PCI_BASE_ADDRESS_4, 0xfffff009);
+
+Documentation says bit 0 is read only 0 for these? Why mask ending with 9 
+not 8? Also prefetch bit 3 is read only 0 for the last one BAR4. 
+Otherwise:
+
 Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Signed-off-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
----
- hw/pci-host/gt64120.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index 7df2855f32..b0d05db577 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -1217,17 +1217,24 @@ static void gt64120_pci_realize(PCIDevice *d, Error **errp)
- {
-     /* Values from chapter 17.16 "PCI Configuration" */
- 
--    pci_set_word(d->config + PCI_COMMAND, 0);
--    pci_set_word(d->config + PCI_STATUS,
--                 PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
--    pci_config_set_prog_interface(d->config, 0);
--
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_0, 0xfffff009);
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_1, 0xfffff009);
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_2, 0xfffff009);
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_3, 0xfffff009);
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_4, 0xfffff009);
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_5, 0xfffff001);
-+}
-+
-+static void gt64120_pci_reset_hold(Object *obj, ResetType type)
-+{
-+    PCIDevice *d = PCI_DEVICE(obj);
-+
-+    /* Values from chapter 17.16 "PCI Configuration" */
-+
-+    pci_set_word(d->config + PCI_COMMAND, 0);
-+    pci_set_word(d->config + PCI_STATUS,
-+                 PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
-+    pci_config_set_prog_interface(d->config, 0);
- 
-     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
-@@ -1243,7 +1250,9 @@ static void gt64120_pci_class_init(ObjectClass *klass, void *data)
- {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-+    rc->phases.hold = gt64120_pci_reset_hold;
-     k->realize = gt64120_pci_realize;
-     k->vendor_id = PCI_VENDOR_ID_MARVELL;
-     k->device_id = PCI_DEVICE_ID_MARVELL_GT6412X;
--- 
-2.45.2
+Regards,
+BALATON Zoltan
 
+> +    pci_set_long(d->wmask + PCI_BASE_ADDRESS_5, 0xfffff001);
+> +
+>     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
+>     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
+>     pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x1c000000);
+>     pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x1f000000);
+>     pci_set_long(d->config + PCI_BASE_ADDRESS_4, 0x14000000);
+>     pci_set_long(d->config + PCI_BASE_ADDRESS_5, 0x14000001);
+> +
+>     pci_set_byte(d->config + 0x3d, 0x01);
+> }
+>
+>
+--3866299591-1803442020-1722625654=:46709--
 
