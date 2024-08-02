@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86EB945D0D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 13:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD1B945D2E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 13:22:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZqGG-0002Pf-7v; Fri, 02 Aug 2024 07:15:52 -0400
+	id 1sZqMF-0006sm-7V; Fri, 02 Aug 2024 07:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sZqGD-0002OQ-Eu
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:15:49 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1sZqMC-0006rh-Oz
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:22:00 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sZqGB-0005Wv-TT
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:15:49 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a7a9185e1c0so806236166b.1
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 04:15:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1sZqMB-00075Q-0H
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:22:00 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1fd640a6454so63907075ad.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 04:21:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722597346; x=1723202146; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=e+44dpgRtXaXlvWeGa06WK3Rxt1+rkpwzOuWKFzcYNI=;
- b=wZxIpn0sIu+2VJX+eR8lDPR3F4q8KqjBpyoA8OZ0PkHYMrL7KQXl7TC3M6NrKMcN88
- 9FNOPP23eeq7KQ11yEABBUtJe/ksYFFG5YlBgtM6qYSSw1lClI/xBKpAcvOK7J/BnIhR
- XV/dN7KsYD++2KALZiNW50c+qBkpzqHRUJM6k1V6Wh75ZvvtJhINmGSLtYU1w7/MK9P6
- uZIL8vh8ALEjvxiUgEkHWT6J5EfWsyqQkeuXGkh64H9srS7hZdFjSjfHxisHBCBwTQCG
- TA27SZTlzqfZ6R0/X2ZNA4AwNTaVAl9C8O7Z1GQCbvM1Tf0R2bWKH9pDGaiR6L1+ZIHp
- m6qQ==
+ d=gmail.com; s=20230601; t=1722597717; x=1723202517; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/W4HOWdp9M8JPFz1nZKMqd6j4+8CcehdV+OKEGXBKH0=;
+ b=B9RgPWvBeZKRvAThtSBJOVA2xQDy0yzkCpLE72cKy7p5MG8nL6SbgqQs0OIT1dQpJP
+ TxVf7CIKU4B7J/L+GcjVv3zuB59dUOZqitGjZDcWUdYgHaBh8xODH/veWDE2W5F7n5OH
+ Y06GWgxlRtEezMjxblrA3n769B0nYxCpGB/YT/neDmyNb0glSEUh5NHKVD0Rq3i2h6tv
+ t0bDHAp+wna2IzKoRppsydLlbdfOnPQcX+iTY99gcTUg0OzxM2OVGpCXPA4KH8T9NkE0
+ /Os2H2IaFrkH0Y2kuReJDKKmfDN8YgPq7bGIwBcjwnamvBIWgaS5OPe7aWZ7cXU8uiQT
+ Vucw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722597346; x=1723202146;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e+44dpgRtXaXlvWeGa06WK3Rxt1+rkpwzOuWKFzcYNI=;
- b=d+ptzv8w68fM8Z66Ae5eYAyK6CAwvBvo1EDY4Qpr/pB461zBQ/cNHn4Oabb0MufNr2
- OWTy5Uj+B+Yl2h/XdL9a2cud7dl+/Gy9xW6x3f2XQGDRx+NDU3FdOKdnHrd37pUNLUai
- ZRDgC5zZmBFw7wHEPMe4ccK6tAf9aimqhJqPl0V+Bikfkl4fktedv4ZrLKgtIr2+ExQ7
- 25SAwAaOxfWOIypXMhhsp2xLAhqzxleYEH+Ab0JRLSI9DSvbLG18yWjOJCd/GzpwjGTB
- hccWtljI4jFXm6Ra36qKMxuJ59SR3YvzAhN1Dnd05HIwy4EUDePMCWdgPR4r0ipUB1nW
- blJA==
+ d=1e100.net; s=20230601; t=1722597717; x=1723202517;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/W4HOWdp9M8JPFz1nZKMqd6j4+8CcehdV+OKEGXBKH0=;
+ b=XKgL+VnIsJwY9VPnr1F1oFFKM/8Q5HPI/pSnRliTBdCqveyEd2TBGcyIpeNHcwOjv5
+ aZ5DSdlSh+E+WYBm0h7ApBKwBD2vy8BX8Ase98dfhYbzJ1GrtSkTLbXqJSClgV2FTTqG
+ UrR23rgL5uaORKPz0M7wEgVop+TQsLWHPmdb8lVhxoYtLQSG/+7HHoy070A4rzsRW6iz
+ 6ORHIfImSQVxQk0LjTURW2EVSusOYnD6qxYeFrNI+0ytYUjOa8OansG1vBeU0y/U4T09
+ cjuHqjmn3J74mdbporFkBoJ2VmuRhNV5dmSv+Not+/yu4iSXq7FsfAXYlcW3lGqB12j+
+ TgsA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWA8rntnZEP96dwA+kvFFgbcp2W1TINj2FIg2yKRAa9TPOZ34pamxck/kCKmSdAshdhoGs55ETNDAT5@nongnu.org
-X-Gm-Message-State: AOJu0YxzpPc1lWYfEcjIaViHFcgkfTQwzLybDmtRY7AREJz1LUSwPI6T
- WabHzD2DAr/43lobK7RRYz7vcUdYifztQVNqKllyMpNR+j13uqQMyCcqcRdIeHc=
-X-Google-Smtp-Source: AGHT+IEdB4mjo49H+VzMG/oS0nHnJ2QXsUl8bm+l09Zgo4p90LxAUjzvNVTwN0jl9UTagLjeQUMk9w==
-X-Received: by 2002:a17:906:6a09:b0:a7a:bae8:f2a1 with SMTP id
- a640c23a62f3a-a7dc50a2f0fmr225858866b.42.1722597345836; 
- Fri, 02 Aug 2024 04:15:45 -0700 (PDT)
-Received: from meli-email.org (adsl-146.37.6.160.tellas.gr. [37.6.160.146])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9c0cdddsm87069566b.81.2024.08.02.04.15.45
+ AJvYcCVyMGO2pVqZv5w1qx7cV/VGrFAYwWuoxYhfg4MYpxzab0YU9Z45egq4OSB8U5f/RSVkmTwVSFEW3wF3@nongnu.org
+X-Gm-Message-State: AOJu0YxbzP/Me+XdlRt0VkS3z9C90CmCXNIqTt7LYF2z2Z9KS+J3eH5+
+ cykg0xUcIgiIgn/tl+dX0KP3cRnHAOKIZmorDk+nT0f04TBOp/2ZAM/XNQ==
+X-Google-Smtp-Source: AGHT+IGAC/0+0YFA+SGBzDBwi/3wdqrm1uWgWQiLnsKBAdZmD1/W4Mu4je23XNJAur0X68p6ERyOVw==
+X-Received: by 2002:a17:903:2443:b0:1fd:6655:e732 with SMTP id
+ d9443c01a7336-1ff574caa46mr30660465ad.54.1722597716586; 
+ Fri, 02 Aug 2024 04:21:56 -0700 (PDT)
+Received: from valdaarhun.. ([223.233.85.12]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1ff5929ae4esm14801335ad.269.2024.08.02.04.21.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 04:15:45 -0700 (PDT)
-Date: Fri, 02 Aug 2024 14:13:14 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Zheyu Ma <zheyuma97@gmail.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PULL v2 17/61] virtio-snd: check for invalid param shift operands
-User-Agent: meli 0.8.7
-References: <cover.1721731723.git.mst@redhat.com>
- <9b6083465fb8311f2410615f8303a41f580a2a20.1721731723.git.mst@redhat.com>
- <21a0899b-cff5-49da-bda5-f53e12cca234@t-online.de>
- <20240801042204-mutt-send-email-mst@kernel.org>
- <79f6f143-0dda-4630-89ea-8d3a8ca4dba3@t-online.de>
-In-Reply-To: <79f6f143-0dda-4630-89ea-8d3a8ca4dba3@t-online.de>
-Message-ID: <hl8m7.3vs5o9nscf7x@linaro.org>
+ Fri, 02 Aug 2024 04:21:56 -0700 (PDT)
+From: Sahil Siddiq <icegambit91@gmail.com>
+X-Google-Original-From: Sahil Siddiq <sahilcdq@proton.me>
+To: eperezma@redhat.com,
+	sgarzare@redhat.com
+Cc: mst@redhat.com, qemu-devel@nongnu.org, icegambit91@gmail.com,
+ Sahil Siddiq <sahilcdq@proton.me>
+Subject: [RFC v3 0/3] Add packed virtqueue to shadow virtqueue
+Date: Fri,  2 Aug 2024 16:51:35 +0530
+Message-ID: <20240802112138.46831-1-sahilcdq@proton.me>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=icegambit91@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,37 +92,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 02 Aug 2024 08:03, Volker Rümelin <vr_qemu@t-online.de> wrote:
->Am 01.08.24 um 10:22 schrieb Michael S. Tsirkin:
->> On Sat, Jul 27, 2024 at 08:55:10AM +0200, Volker Rümelin wrote: >>>> 
->>> Hi Manos,
->>>
->>> this patch doesn't work as intended. I guess you wanted to write
->>>
->>>     if (params->format >= sizeof(supported_formats) * BITS_PER_BYTE ||
->>>         !(supported_formats & BIT(params->format))) {
->>>
->>>> +    if (BIT(params->format) > sizeof(supported_formats) ||
->>>> +        !(supported_formats & BIT(params->format))) {
->>>>          error_report("Stream format is not supported.");
->>>>          return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
->>>>      }
->>>> -    if (!(supported_rates & BIT(params->rate))) {
->>>     if (params->rate >= sizeof(supported_rates) * BITS_PER_BYTE ||
->>>         !(supported_rates & BIT(params->rate))) {
->>>
->>> With best regards,
->>> Volker
->>
->> Any response here? Should I revert?
->
->No response so far. It's not necessary to revert. I'll send a patch.
->
->With best regards,
->Volker
+Hi,
 
-Hello, I am on PTO. I reviewed Volker's patch, and it LGTM.
+Here's a new patch series that incorporates all
+the suggested changes from v2.
 
-Thank you both,
-Manos
+I have tried my best to deduplicate the implementation.
+Please let me know if I have missed something.
+
+I'll also test these changes out by following the
+suggestions given in response to v1. I'll have more
+confidence once I know these changes work.
+
+Thanks,
+Sahil
+
+v1: https://lists.nongnu.org/archive/html/qemu-devel/2024-06/msg03417.html
+v2: https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg06196.html
+
+Changes v2 -> v3:
+* vhost-shadow-virtqueue.c
+  - Move parts common to "vhost_svq_add_split" and
+    "vhost_svq_add_packed" to "vhost_svq_add".
+  (vhost_svq_add_packed):
+  - Refactor to minimize duplicate code between
+    this and "vhost_svq_add_split"
+  - Fix code style issues.
+  (vhost_svq_add_split):
+  - Merge with "vhost_svq_vring_write_descs()"
+  - Refactor to minimize duplicate code between
+    this and "vhost_svq_add_packed"
+  (vhost_svq_add):
+  - Refactor to minimize duplicate code between
+    split and packed version of "vhost_svq_add"
+  (vhost_svq_memory_packed): New function
+  (vhost_svq_start):
+  - Remove common variables out of if-else branch.
+  (vhost_svq_stop):
+  - Add support for packed vq.
+  (vhost_svq_get_vring_addr): Revert changes
+  (vhost_svq_get_vring_addr_packed): Likwise.
+* vhost-shadow-virtqueue.h
+  - Revert changes made to "vhost_svq_get_vring_addr*"
+    functions.
+* vhost-vdpa.c: Revert changes.
+
+Sahil Siddiq (3):
+  vhost: Introduce packed vq and add buffer elements
+  vhost: Data structure changes to support packed vqs
+  vhost: Allocate memory for packed vring
+
+ hw/virtio/vhost-shadow-virtqueue.c | 230 ++++++++++++++++++++---------
+ hw/virtio/vhost-shadow-virtqueue.h |  70 ++++++---
+ 2 files changed, 206 insertions(+), 94 deletions(-)
+
+-- 
+2.45.2
+
 
