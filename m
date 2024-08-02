@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47225945E35
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 14:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E32A945E4C
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 15:03:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZrry-00012W-AD; Fri, 02 Aug 2024 08:58:54 -0400
+	id 1sZrvH-0002p3-0o; Fri, 02 Aug 2024 09:02:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sZrrt-00011v-PX
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 08:58:49 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1sZrv9-0002nd-QK
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:02:11 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sZrrs-0003Nz-5t
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 08:58:49 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2cd5e3c27c5so5643035a91.3
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 05:58:47 -0700 (PDT)
+ id 1sZrv5-00048h-El
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:02:08 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2cb55ff1007so5497753a91.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 06:02:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722603526; x=1723208326; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722603726; x=1723208526; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BdrIrSvxSG0D/0gD2xrHW0aNNpXztW+srY7Y0IIKG8E=;
- b=DBGy4o7TqtUYCX4XlGk2lT6Cf/JWMPghRpyF0jZL4TLu72ZBWjAarww15Dx+6A52ov
- OVmyig4p/yJIZ1qNb4EB0AZazjNVnAcV9sbjiSmSv2WRTl5er4GP+/O3xyTR9kIdZi7G
- /uuXT4+Ruo8hTiXHjdoW1v0y0XVgV1uwsFQ94wXagz2RrvreM3K3dm51xFjJ9Xp1izBn
- eMM+ftO/tiLeDHn1jDKC0vY5fA2RFkH+qeYLn4h2jS84cUuWv1mIoSYtP2XwR2KtSTKd
- YOOmBZ0bT2vut0Tn7jpCC6xqXnjxTKR7WuoFS0/LNgm0hP4V2X6cOR7mFf7iScRIVxuc
- GeKw==
+ bh=yMkuQ942APWmwsDdHDq6QxNykJv0g24tlTLRG1r5n5A=;
+ b=DlwXx+lRLPAgakLS2DWFd7IytRDDwJtLxcM5uPuWMeaHUFonxgZQtO4dHGbyEVSr0A
+ mvbc0zzuUhRPXsmrV2Q+CE8mfvTrChiOcULJ2tTcsA/YeC1v1/LvRc5E2GqZYgBNhViN
+ iV2CXoZmQ8R3VJIzBet7FWKDH/ahzujuqtSzUDyfvC5Syq60iNdTwJkfpwr3u01a13k9
+ pAwV56oY3oil9Ik6uWb18wU/7q66URehbCEpKjzd18ypeytx9mk3WE3ttHqHqquSb1JU
+ h2+Qu88RLQcJQIeh3NwrBjbuK4T9NaTJT3yfF3bUyszbed33BTJE0nbzBOsuSVmT/agQ
+ ZhdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722603526; x=1723208326;
+ d=1e100.net; s=20230601; t=1722603726; x=1723208526;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BdrIrSvxSG0D/0gD2xrHW0aNNpXztW+srY7Y0IIKG8E=;
- b=My8bOMiqjwJkwSjE9Ud2oXJOxP7COKYIKF4ZNYKcgJ8qk2abONUy1WXZmDfVTMva9y
- 3D2C89JVG4BOIBJRxI9BUz7aUMqeN0a0gf9pDiHBanHs8te6ZGefb4d3EAmYTI8YEqQv
- Wi6skSrkSizqpKw2EJGVOAlLHE0bx9wbw5v/MJ1z+PcRNAprYlEtIaUgOlhLHsB1vXXp
- eUPDcSOiTeu686PsbgSS2WuCmKSPfc3UraYLlDoZNdYvpLwo1RFRUoub75tYqyXOba2o
- V2LZGfeYDeIY8yzQT4BQYLEa6eQ4UDTYCOpCVFWFsYYKTYqrVCPZ4z1OIZ8Ww0p7GwMh
- omPA==
+ bh=yMkuQ942APWmwsDdHDq6QxNykJv0g24tlTLRG1r5n5A=;
+ b=jVQEpUF4p+l4hzOb8NYvBKiI1UD+xdN1Pez5iHA3BX0wAfYqHJPnMBxPPzzxkwgdez
+ ouvDUV9W3N3aN2EleL5cZyrq001PTGyQxqgMVsjB4zqfgMjmWMFj1O58M3KQhwChQTab
+ CBzUW5TqOAKohs6pBXQ7SGhyEK6lKGCF+cpSKqcamVwUjMf5nSPCS3M541WVpPXuVZh5
+ uoxOGSls/wmqWKrjnmgiui1EEoQxu3zm7UebD40henK7UME5aHw9fpjB8E0dt+ATq/Do
+ mIjTLkrHcb7eYCDrWSm2DB+GoTzSFbli2Z0onFW6gSJQgoGhPBkqPEMg/jFoMY9Rojwr
+ O3Eg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVw0DiPKn1dVHzWJJzRrGe94bRA5BQW3DlX6enalzoX49jliP067UF3voaf6uKy9DPDB09q9SvBS7KmRAFZnJ5Ob20DIIc=
-X-Gm-Message-State: AOJu0YyMfjv06f5nTbZ8gveE7XZx8Ly2ZFix17Fa2FyEZ6ZduzPrKjNZ
- PlNtWQLxoe5EQEsoiyHdIgXy7CwojbdfT3ZvGAOufo7posIZlcxDj9VSBObUB6A=
-X-Google-Smtp-Source: AGHT+IF+lGoA5JgCY/zlUC39faAxvGB+rvArFVumCkJuNTT4hyfuXKAL+Pt2QZ67L7rX/TPfflB3Yg==
-X-Received: by 2002:a17:90b:4b87:b0:2c9:6a38:54e4 with SMTP id
- 98e67ed59e1d1-2cff9546780mr3665456a91.41.1722603526056; 
- Fri, 02 Aug 2024 05:58:46 -0700 (PDT)
+ AJvYcCXI9v6PqD98RDmNekL4nOMzHJnKuq15rXLJsgczByGJ3PpURHXEFwlG1rztAPVeiGWF6mSi2RzyO1/zblm9W2Rwnyn3/qk=
+X-Gm-Message-State: AOJu0YwXNGox9lUF6FJGFvMNO0u4kU2KFz9hgRgbBbHKh7FxGwztKMWv
+ IiaWCau45jwAGkBd6tXGPAUbtxggimQLDAdRIzuGayPa3/phMm6A9xT+yKxkQ70=
+X-Google-Smtp-Source: AGHT+IGSJcHmBI8eV0Kv22K+a4XgofOd9izxm+usFAy2xEj7KA3q/+Cd3/7YoZS/RRXQk8/AQwkEzQ==
+X-Received: by 2002:a17:90b:194c:b0:2c9:6f03:6fd6 with SMTP id
+ 98e67ed59e1d1-2cff941b383mr4181204a91.17.1722603725751; 
+ Fri, 02 Aug 2024 06:02:05 -0700 (PDT)
 Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2cfdc42fa06sm5142661a91.16.2024.08.02.05.58.43
+ 98e67ed59e1d1-2cfdc430fadsm5129161a91.23.2024.08.02.06.02.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Aug 2024 05:58:45 -0700 (PDT)
-Message-ID: <861d9ac6-2cd4-4831-91dc-850eb146c9a2@linaro.org>
-Date: Fri, 2 Aug 2024 22:58:37 +1000
+ Fri, 02 Aug 2024 06:02:05 -0700 (PDT)
+Message-ID: <26cfe760-eeec-4fc9-bcb4-fa937b507d2a@linaro.org>
+Date: Fri, 2 Aug 2024 23:01:58 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/18] bsd-user: Implement RISC-V CPU register cloning and
- reset functions
+Subject: Re: [PATCH 04/18] bsd-user: Implement RISC-V TLS register setup
 To: Ajeet Singh <itachis6234@gmail.com>, qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark.corbin@embecsom.com>,
  Ajeet Singh <itachis@FreeBSD.org>
 References: <20240802083423.142365-1-itachis@FreeBSD.org>
- <20240802083423.142365-4-itachis@FreeBSD.org>
+ <20240802083423.142365-5-itachis@FreeBSD.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240802083423.142365-4-itachis@FreeBSD.org>
+In-Reply-To: <20240802083423.142365-5-itachis@FreeBSD.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,40 +98,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/2/24 18:34, Ajeet Singh wrote:
-> From: Mark Corbin <mark.corbin@embecsom.com>
+> From: Mark Corbin<mark.corbin@embecsom.com>
 > 
-> Added functions for cloning CPU registers and resetting the CPU state
-> for RISC-V architecture.
+> Added the 'target_cpu_set_tls' function to handle setting the Thread
+> Local Storage (TLS) register for the RISC-V architecture.
 > 
-> Signed-off-by: Mark Corbin <mark.corbin@embecsom.com>
-> Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+> Signed-off-by: Mark Corbin<mark.corbin@embecsom.com>
+> Signed-off-by: Ajeet Singh<itachis@FreeBSD.org>
 > ---
->   bsd-user/riscv/target_arch_cpu.h | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/bsd-user/riscv/target_arch_cpu.h b/bsd-user/riscv/target_arch_cpu.h
-> index 5b436b2ac9..53db790517 100644
-> --- a/bsd-user/riscv/target_arch_cpu.h
-> +++ b/bsd-user/riscv/target_arch_cpu.h
-> @@ -130,4 +130,18 @@ static inline void target_cpu_loop(CPURISCVState *env)
->       }
->   }
->   
-> +static inline void target_cpu_clone_regs(CPURISCVState *env, target_ulong newsp)
-> +{
-> +    if (newsp) {
-> +        env->gpr[xSP] = newsp;
-> +    }
-> +
-> +    env->gpr[xA0] = 0; /* a0 */
-> +    env->gpr[5] = 0;   /* t0 */
+>   bsd-user/riscv/target_arch_cpu.c | 29 +++++++++++++++++++++++++++++
+>   1 file changed, 29 insertions(+)
+>   create mode 100644 bsd-user/riscv/target_arch_cpu.c
 
-There is an xT0 define too.
-That probably obviates the two comments.
-
-With that,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
