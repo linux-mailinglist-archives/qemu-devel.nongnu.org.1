@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98AB94569B
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 05:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEB594569A
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 05:20:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZipz-0004ZA-Og; Thu, 01 Aug 2024 23:20:15 -0400
+	id 1sZiq5-00055V-FA; Thu, 01 Aug 2024 23:20:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sZipv-0004QL-RF
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:12 -0400
+ id 1sZiq2-0004wD-Iv
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sZipu-0000E5-5z
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:11 -0400
+ id 1sZiq0-0000FA-Kw
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722568809;
+ s=mimecast20190719; t=1722568815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nBs8OkMFEZs07p/oPIadTvaQSehAUqrlPLPwQHfg1nI=;
- b=F8FNBELLOQeJZsijwf89/n26hFzpjOWfp//fQ6PO7wUXWBjEKNeHiz7StLLw5WxynM8T5C
- 4nx76wLxd0C2ZaJEd7ap7/vXkQu0rUha1ITM6BERNKCWyNDWxwzdUiS76oMP7OBcvbv9xE
- 8n9413OG3M+AKd3C8Mac/zpHjDadhLw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=kH91dpfOq90fqHB6xmeludhTenxbeE0OM39M3ee/QGM=;
+ b=gn6gRgRRrl/fRtX1Bj8MU5D9wHpuPPNHNNWyLMW1JLqBxLC5gL82Xl/W89j6Wovtb+jEqM
+ 5tcGsjDOYmBmUNcxL1Z/TtwdVW6NyK0azAdGz2oaPuT30rAGHitMmoqDLfptcME0e7p0+W
+ NT2s/QMeqMNrolymej/0VsIFzXDyo7M=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-egbLY2t0MRe-gg2drYDrMQ-1; Thu,
- 01 Aug 2024 23:20:08 -0400
-X-MC-Unique: egbLY2t0MRe-gg2drYDrMQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-269-jbSE6dOEP72hKY1bPCfdVA-1; Thu,
+ 01 Aug 2024 23:20:11 -0400
+X-MC-Unique: jbSE6dOEP72hKY1bPCfdVA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 94FC41955D54
- for <qemu-devel@nongnu.org>; Fri,  2 Aug 2024 03:20:05 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 021F61955D4B
+ for <qemu-devel@nongnu.org>; Fri,  2 Aug 2024 03:20:10 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.229])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 022A8300018D; Fri,  2 Aug 2024 03:20:01 +0000 (UTC)
+ id 6B336300018D; Fri,  2 Aug 2024 03:20:06 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 6/8] net: update netdev dgram man page with unix socket
-Date: Fri,  2 Aug 2024 11:19:27 +0800
-Message-ID: <20240802031929.44060-7-jasowang@redhat.com>
+Subject: [PULL 7/8] net: update netdev stream man page with the reconnect
+ parameter
+Date: Fri,  2 Aug 2024 11:19:28 +0800
+Message-ID: <20240802031929.44060-8-jasowang@redhat.com>
 In-Reply-To: <20240802031929.44060-1-jasowang@redhat.com>
 References: <20240802031929.44060-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -86,51 +87,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laurent Vivier <lvivier@redhat.com>
 
-Add the description of "-netdev dgram" with a unix domain socket.
-The code has been added but the man page has not been updated.
+"-netdev stream" supports a reconnect parameter that attempts to
+reconnect automatically the socket if it is disconnected. The code
+has been added but the man page has not been updated.
 
-Fixes: 784e7a253104 ("net: dgram: add unix socket")
+Fixes: 148fbf0d58a6 ("net: stream: add a new option to automatically reconnect"
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- qemu-options.hx | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ qemu-options.hx | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/qemu-options.hx b/qemu-options.hx
-index 2614eea4d7..23a53a7190 100644
+index 23a53a7190..cee0da2014 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -3500,6 +3500,29 @@ SRST
-                       -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
-                       -netdev dgram,id=net0,local.type=inet,local.host=localhost,local.port=1235,remote.type=inet,remote.host=localhost,remote.port=1234
+@@ -3353,7 +3353,7 @@ SRST
+                          -device e1000,netdev=n1,mac=52:54:00:12:34:56 \\
+                          -netdev socket,id=n1,mcast=239.192.168.1:1102,localaddr=1.2.3.4
  
-+``-netdev dgram,id=str,local.type=unix,local.path=path[,remote.type=unix,remote.path=path]``
-+    Configure a network backend to connect to another QEMU virtual
-+    machine or a proxy using a datagram oriented unix socket.
+-``-netdev stream,id=str[,server=on|off],addr.type=inet,addr.host=host,addr.port=port[,to=maxport][,numeric=on|off][,keep-alive=on|off][,mptcp=on|off][,addr.ipv4=on|off][,addr.ipv6=on|off]``
++``-netdev stream,id=str[,server=on|off],addr.type=inet,addr.host=host,addr.port=port[,to=maxport][,numeric=on|off][,keep-alive=on|off][,mptcp=on|off][,addr.ipv4=on|off][,addr.ipv6=on|off][,reconnect=seconds]``
+     Configure a network backend to connect to another QEMU virtual machine or a proxy using a TCP/IP socket.
+ 
+     ``server=on|off``
+@@ -3380,6 +3380,10 @@ SRST
+     ``ipv6=on|off``
+         whether to accept IPv6 addresses, default to try both IPv4 and IPv6
+ 
++    ``reconnect=seconds``
++        for a client socket, if a socket is disconnected, then attempt a reconnect after the given number of seconds.
++        Setting this to zero disables this function.  (default: 0)
 +
-+    ``local.path=path``
-+        filesystem path to use to bind the socket
+     Example (two guests connected using a TCP/IP socket):
+ 
+     .. parsed-literal::
+@@ -3391,9 +3395,9 @@ SRST
+         # second VM
+         |qemu_system| linux.img \\
+                       -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
+-                      -netdev stream,id=net0,server=off,addr.type=inet,addr.host=localhost,addr.port=1234
++                      -netdev stream,id=net0,server=off,addr.type=inet,addr.host=localhost,addr.port=1234,reconnect=5
+ 
+-``-netdev stream,id=str[,server=on|off],addr.type=unix,addr.path=path[,abstract=on|off][,tight=on|off]``
++``-netdev stream,id=str[,server=on|off],addr.type=unix,addr.path=path[,abstract=on|off][,tight=on|off][,reconnect=seconds]``
+     Configure a network backend to connect to another QEMU virtual machine or a proxy using a stream oriented unix domain socket.
+ 
+     ``server=on|off``
+@@ -3408,6 +3412,10 @@ SRST
+     ``tight=on|off``
+         if false, pad an abstract socket address with enough null bytes to make it fill struct sockaddr_un member sun_path.
+ 
++    ``reconnect=seconds``
++        for a client socket, if a socket is disconnected, then attempt a reconnect after the given number of seconds.
++        Setting this to zero disables this function.  (default: 0)
 +
-+    ``remote.path=path``
-+        filesystem path to use as a destination (see sendto(2))
+     Example (using passt as a replacement of -netdev user):
+ 
+     .. parsed-literal::
+@@ -3431,9 +3439,9 @@ SRST
+         # second VM
+         |qemu_system| linux.img \\
+                       -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
+-                      -netdev stream,id=net0,server=off,addr.type=unix,addr.path=/tmp/qemu0
++                      -netdev stream,id=net0,server=off,addr.type=unix,addr.path=/tmp/qemu0,reconnect=5
+ 
+-``-netdev stream,id=str[,server=on|off],addr.type=fd,addr.str=file-descriptor``
++``-netdev stream,id=str[,server=on|off],addr.type=fd,addr.str=file-descriptor[,reconnect=seconds]``
+     Configure a network backend to connect to another QEMU virtual machine or a proxy using a stream oriented socket file descriptor.
+ 
+     ``server=on|off``
+@@ -3442,6 +3450,10 @@ SRST
+     ``addr.str=file-descriptor``
+         file descriptor number to use as a socket
+ 
++    ``reconnect=seconds``
++        for a client socket, if a socket is disconnected, then attempt a reconnect after the given number of seconds.
++        Setting this to zero disables this function.  (default: 0)
 +
-+    Example (two guests connected using an UDP/UNIX socket):
-+
-+    .. parsed-literal::
-+
-+        # first VM
-+        |qemu_system| linux.img \\
-+                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
-+                      -netdev dgram,id=net0,local.type=unix,local.path=/tmp/qemu0,remote.type=unix,remote.path=/tmp/qemu1
-+        # second VM
-+        |qemu_system| linux.img \\
-+                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
-+                      -netdev dgram,id=net0,local.type=unix,local.path=/tmp/qemu1,remote.type=unix,remote.path=/tmp/qemu0
-+
- ``-netdev dgram,id=str,local.type=fd,local.str=file-descriptor``
-     Configure a network backend to connect to another QEMU virtual
-     machine or a proxy using a datagram oriented socket file descriptor.
+ ``-netdev dgram,id=str,remote.type=inet,remote.host=maddr,remote.port=port[,local.type=inet,local.host=addr]``
+     Configure a network backend to connect to a multicast address.
+ 
 -- 
 2.42.0
 
