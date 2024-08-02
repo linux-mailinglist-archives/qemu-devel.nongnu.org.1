@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542F9946654
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5D094664F
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:58:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sa29l-00020j-6d; Fri, 02 Aug 2024 19:57:57 -0400
+	id 1sa29k-0001yL-EX; Fri, 02 Aug 2024 19:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29d-0001en-Gb
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29e-0001im-M2
  for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:51 -0400
-Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29c-0004Hm-2m
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:49 -0400
-Received: by mail-io1-xd2d.google.com with SMTP id
- ca18e2360f4ac-81fd1e05a5aso92144839f.0
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29d-0004Hw-7n
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:50 -0400
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-81f8d644fe0so244061139f.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643067; x=1723247867;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643068; x=1723247868;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ARXUdRtW9JUYDBe/PGc2EUZh9mbaCTufkya2rCFHUZQ=;
- b=Kds3UqA9UUv2PDtcSSJjaNZwFHeZvU7RQFOkgeV1av6J9IMJRly5BT8J6QSZRhw3Yk
- cK16uppq1XU77/sH7tcQB6C3Xslj2ZPlarrULYGi3Mjb/44aHAuOoyvjwP25HwZ9mrQl
- j2kULE0G4HVPJRnoPTPfOouvfFaqmAj3PWSF5SvvzWlbonrpnU0gMjsgamqkiJ4aJZvO
- rQ8go1OeDum0X88toXGiSIzSN0LI9SvY0qUmvKI8ZeC2/7IuNGLRsOKAZlHFGLnxlNn2
- /WWWE1RyhknuhxaRd3cZkQy+mTzFvz+ovzo0srtYqA0X39S8BiV5ReeuPfa2cBjrL/ZG
- vQtA==
+ bh=1Z2vd5lroKGBHrik7P/5HRr5owaUTXoIaCHxzqNr690=;
+ b=qhCGpuAdibP4XNbdwE92QWhyB+i56ZQVg1SbT2ZiPyyMI9iXatSuLeUdLl8s4ajXG5
+ xB+mdGOIddbmfyqe38O08bVfrBawokFNaj1yXcbjU0BhHXSOs+C+rLpCx8odrY4olUQ6
+ BHYLIZ2e8ViPnEL/erp4WQOfZrgZIrWndF9uHkKsR1to55klEk48z/GW2GOnJYpoH9dX
+ TvDuAnsZXc/zPqWYm2okDAxa4aNlh0Uihj2Q2HypqTnqpwCrHW8OfDrL3rEIK/6ZtfTA
+ mdnzQHwYVOe1EQplXywDCFKEzSDDo85L5YRUBAaUPjIGWqxB7X4cFyzXffUeTmBNIgAi
+ 3F4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722643067; x=1723247867;
+ d=1e100.net; s=20230601; t=1722643068; x=1723247868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ARXUdRtW9JUYDBe/PGc2EUZh9mbaCTufkya2rCFHUZQ=;
- b=NJOaDsOrfY+VTtMapUh1x0ESkKH6o0yDceYf990KfxqxQnVv9bWvTKvp8SF+u+oDHS
- iyF6Hltz46YjDImZeHL6vWmnUOVcozUzipOXPzd39YoSDQKFdNfqojenIZbDWb5QBFJx
- CpV/UTiAs/AiUB/Y8o0ky5Y6MOVOnUoHEZUzJnNHMwzzBxpjAubcMSzsi2G2sQnslXVn
- uD38iZGaKY2K7bUaRqjg7dvGKREXzQQmMTZLveq3tBqT9FLWX8Nz+eyyflW3xD+dey4y
- l7E9+fuu9Lv5tEt8SPnpggQxicSUE+7ZKt+pyH92esVbqm2XeEgImcVyraiHmjHt94Pb
- onHA==
-X-Gm-Message-State: AOJu0YwhKJApy9TUVPGinX8wNIW1ryqNL3O/QR5NCYM7NcUlsEHKF1VS
- 4NWKJG6bmGiZKZe42nYiQevWj8gRDchpWq+dzcw97OwtHmthrIbJ3YjBcbzPk4O1cYLPGP93cmW
- 1k7E=
-X-Google-Smtp-Source: AGHT+IGJ8kBl1jAk/AiBp+gXJapmmr90k+KYMEUr1aXQGBzm5v5FOeHeCD46xd5FHzwZ2op+oj4ZNg==
-X-Received: by 2002:a05:6602:1512:b0:7fc:89ed:c15d with SMTP id
- ca18e2360f4ac-81fd43e16a7mr672562239f.13.1722643066686; 
- Fri, 02 Aug 2024 16:57:46 -0700 (PDT)
+ bh=1Z2vd5lroKGBHrik7P/5HRr5owaUTXoIaCHxzqNr690=;
+ b=h0c6PF3UfVC8RlSlOogYAJ9IwcURdZq9UKCqyySiUCA58yGjz1ubB43YSj0XsbeiYI
+ zwa+di2U8TeBUHShZmOZp59tfSR1QsW3T7E5VPQnw9KVo26o6u9crOT149yzS5i5QC0+
+ Gv7uXAFuiqbVTip7ALv7JmcvpQ+Y7mtLRtDuuWv3lPSk0pPz0SSh49FsX8J3IAXiNto5
+ 3C9pNBnriJHTWHx5vDwoknGoyaLFoPDVGku5zy5a4VObQN+9oDqnyrJ/SecvU7mNjEhB
+ iz3YiGj0VKz8ClQxs3s/1p/ERyPhYy77U4dUiM5CYQ1dCP/HPH5a049wkrC6z7upshIc
+ C3wA==
+X-Gm-Message-State: AOJu0Yxtl8MjJk1BBL+xF3cGHO+h9KamlmBgv0uhSBFGACxe2FDlJPDs
+ anLjee9Y7HrmmNCHdGCwqNNFsP6B5+VM2TSiuY8vn6DtwlNjbuSPzlDbPO61x/9KLucYYmVhoIJ
+ GUIg=
+X-Google-Smtp-Source: AGHT+IFopvDLL12aWDbRW2rUu2u/fJ2ptES83fR6pOQKS/EQQxVz/dSQbgCiu2yG+ePVF9jkTnCjIA==
+X-Received: by 2002:a05:6602:341f:b0:81f:8bed:702f with SMTP id
+ ca18e2360f4ac-81fd4353a65mr629795739f.1.1722643067821; 
+ Fri, 02 Aug 2024 16:57:47 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.45
+ 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 16:57:45 -0700 (PDT)
+ Fri, 02 Aug 2024 16:57:47 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
  Jessica Clarke <jrtc27@jrtc27.com>
-Subject: [PATCH 07/17] bsd-user: Remove deprecated -p argument
-Date: Fri,  2 Aug 2024 17:56:07 -0600
-Message-ID: <20240802235617.7971-8-imp@bsdimp.com>
+Subject: [PATCH 08/17] bsd-user: Eliminate unused qemu_uname_release
+Date: Fri,  2 Aug 2024 17:56:08 -0600
+Message-ID: <20240802235617.7971-9-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240802235617.7971-1-imp@bsdimp.com>
 References: <20240802235617.7971-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d2d;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd2d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,33 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FreeBSD never really used the -p argument, so it's safe to remove
-entirely.
+bsd-user has never supported this, and FreeBSD make it easy to set this
+on a per-jail basis, so that the normal reporting routines that we pass
+through just work. Since this was never used, and never even in the
+usage(), retire it to cut down on the clutter. It was literally just a
+write-only variable.
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/main.c | 8 --------
- 1 file changed, 8 deletions(-)
+ bsd-user/main.c | 3 ---
+ bsd-user/qemu.h | 1 -
+ 2 files changed, 4 deletions(-)
 
 diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 9ad31bd1efe..709ab10ddc1 100644
+index 709ab10ddc1..8c52fb43ff1 100644
 --- a/bsd-user/main.c
 +++ b/bsd-user/main.c
-@@ -388,14 +388,6 @@ int main(int argc, char **argv)
-             }
-         } else if (!strcmp(r, "L")) {
+@@ -92,7 +92,6 @@ static const char *cpu_type;
+ unsigned long reserved_va;
+ 
+ const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+-const char *qemu_uname_release;
+ 
+ unsigned long target_maxtsiz = TARGET_MAXTSIZ;   /* max text size */
+ unsigned long target_dfldsiz = TARGET_DFLDSIZ;   /* initial data size limit */
+@@ -390,8 +389,6 @@ int main(int argc, char **argv)
              interp_prefix = argv[optind++];
--        } else if (!strcmp(r, "p")) {
--            unsigned size, want = qemu_real_host_page_size();
--
--            r = argv[optind++];
--            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
--                warn_report("Deprecated page size option cannot "
--                            "change host page size (%u)", want);
--            }
          } else if (!strcmp(r, "g")) {
              gdbstub = g_strdup(argv[optind++]);
-         } else if (!strcmp(r, "r")) {
+-        } else if (!strcmp(r, "r")) {
+-            qemu_uname_release = argv[optind++];
+         } else if (!strcmp(r, "cpu")) {
+             cpu_model = argv[optind++];
+             if (is_help_option(cpu_model)) {
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index b97a902a4c2..ed6044cfdaf 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -122,7 +122,6 @@ struct TaskState {
+ void init_task_state(TaskState *ts);
+ void stop_all_tasks(void);
+ extern const char *interp_prefix;
+-extern const char *qemu_uname_release;
+ 
+ /*
+  * TARGET_ARG_MAX defines the number of bytes allocated for arguments
 -- 
 2.45.1
 
