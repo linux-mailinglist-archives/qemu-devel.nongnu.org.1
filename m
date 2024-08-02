@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3459694664E
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB29946653
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:59:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sa29j-0001wG-T3; Fri, 02 Aug 2024 19:57:55 -0400
+	id 1sa29l-0001zw-0U; Fri, 02 Aug 2024 19:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29a-0001Tl-LV
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:46 -0400
-Received: from mail-io1-xd29.google.com ([2607:f8b0:4864:20::d29])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29b-0001WH-AC
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:49 -0400
+Received: from mail-io1-xd2a.google.com ([2607:f8b0:4864:20::d2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29Z-0004EO-5H
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:46 -0400
-Received: by mail-io1-xd29.google.com with SMTP id
- ca18e2360f4ac-8152f0c63c1so310173339f.1
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29Z-0004HH-SG
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:47 -0400
+Received: by mail-io1-xd2a.google.com with SMTP id
+ ca18e2360f4ac-81f8f0198beso363088839f.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643063; x=1723247863;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643064; x=1723247864;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i+M2MfyOC3APTOH0qT5489YkK6Lsz6CNB5NL1MMUEoY=;
- b=C/aJSUEOjiak6/wTjfAkly0xjzXO1HfzVJK6xhYJnAXxZtHpRALUAllEUO98BsvjD+
- 3x5+1rzPvZgC22dhCxY/jUjr0KQlCCnzDt37ZzDrUkbLJ2+B05UlA7KtsnR3CUtUe0L9
- f1KXrNnTjYKyTbzSd5Nj0ch4fC23ZfmOiP0+tVSo5p6ZpT613MhK5mRgiEbMcbWZvFZl
- rE9k5FtA//xFP+bc9gGvGXzeMysCdy60nuQwsNXL1cAR/BLF+Qg+OR0CT3IZBO9UOe7v
- AD5ArL3thBoQ/GF8iBlascgqNozVKvpxMMlGIiTjVKctkupWolNEMqFGKoVhicGtiZxA
- EVxA==
+ bh=TT3QX4LoQAijDXK3PbVvKtS6ffPFG//HKfS5znuzPiU=;
+ b=oP1rAz2pyeJN3GyKijg27cI0TsnUlEDG3yQdLGDiBVReu/9vWoJzmbYUlB3zkVT5TA
+ xIXcf8TIjLlsy62w13dTV6odmQS0+aU+8LKfyPFo+wmUfNCxAiOEiSiQqC+IZpulWRGq
+ CCvXZHGws8xLfvCWHLH7c6RxMvpgrjKG8IiJRGD2zuhaA7JI/NfujFkLAnK5TL01sEYN
+ F0mSydlrmTVzuttTI/GXgmRkFRXNoMZz1gXNo8AasVixJtrOpw17LSxOvqB+juTDoGP3
+ RlbiIhahYM0fScNQQ1nyyJSDbPyxq1Umpk5cTA68RgK+n4LiuDKSE8gWj/Jp+ODLnHEk
+ VLiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722643063; x=1723247863;
+ d=1e100.net; s=20230601; t=1722643064; x=1723247864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i+M2MfyOC3APTOH0qT5489YkK6Lsz6CNB5NL1MMUEoY=;
- b=TYdfH7Dep0Kh6DyTlr0TL6yBUWdfkPuPhkuKqcKRFgVK3V0bQIbol1IDH7o+qZhJPL
- OziT6Oy5lUjeNEP2hAwbfHbpgKN7+y2TIvFXd60yncRLCEWoulDFsuP/fXmfUIu1CfwT
- xkzmq4IgCt/zhd6S4bo84rt17OLHVWgMoensbkt+AuKht1xDGacnmLBnG9X0Aj4gzrVp
- D7uX49EAuCR0UTKHvTtKlAuFJ45BOB06iMp1M3qji79PSa0y9thnIMSoGYJXQ0ZT2NJO
- XW3HwF0vsKzxRk4bZTkxGVQz3gglQu04nnRcqB0yB1ebd5Kj42pWUk38yrwu3ApY4s1k
- nxBQ==
-X-Gm-Message-State: AOJu0YwcWgZxbXOSSmdqjyj14GfroobUu0y0yWnHKtHG9SpESizca04m
- NWpP3ExdawhXp/F0c9kpdOc6yyyTRzsRHtatRIvQ1bVyFzrYKf8okn4Qs7yW0Ce8sDvCb36pBVu
- EbOo=
-X-Google-Smtp-Source: AGHT+IGppSYYqBA7hedKkDI4HBy9gNIJuSyRuommAOrM1q9arH0ioYRQOjbSk/3u+KaDK4EMElyGNQ==
-X-Received: by 2002:a05:6602:2cc8:b0:81f:9826:19ff with SMTP id
- ca18e2360f4ac-81fd4374a3dmr708269339f.9.1722643063174; 
- Fri, 02 Aug 2024 16:57:43 -0700 (PDT)
+ bh=TT3QX4LoQAijDXK3PbVvKtS6ffPFG//HKfS5znuzPiU=;
+ b=efjWFIXvHRRbTj+ZQALkolmZqWyApv6MzEo+ZPWUQf0jhXoOCQl4jUNi/Eo3vYek5o
+ aOFB8zcsXEX1YolYlyjABRbmuk/mj9x8kFsz7B36+S0z2VlTbnPoPXd/pA2ebx7MZP5c
+ d2aI0DgfrUyuHu9ttyZft5eLtxJzyetQ6WQTyOB7XS+JHCcsqel78i7SIilFL4o2g3x9
+ pO6jEuPlW9y97IEr/MzZR893ar6GxzP0mysJhvWrYJVDSef8xQXE7U4kcoIIqNcsG+Bt
+ UyZH5ydG4zbaSNoUrs9F9YeilAQ1Ee+jzqw+jjz3Fr8g0LEOgtWhjo0uRKyyCYZVwDlE
+ IPbA==
+X-Gm-Message-State: AOJu0Yw5a5jzr2UHg9dGaamXqByRRojT5+yz0Vsh9K7nnMGb3uEELxbG
+ 81qObrSY2y/wIijCEKN+rk6p4YcKbFZtIE/JGvAF/r7kJyA5HKWpRA9u6bhSXn4YuDCOBTRh9GU
+ inmo=
+X-Google-Smtp-Source: AGHT+IHKMQy2uGTBXZNGdTpzn44FwHdb5451ftzXLqW17nSXCtUxbEnaKZOHbwwYB8Bmw02RhowFvg==
+X-Received: by 2002:a05:6602:27c4:b0:81f:9552:e091 with SMTP id
+ ca18e2360f4ac-81fd43623f5mr567102039f.7.1722643064423; 
+ Fri, 02 Aug 2024 16:57:44 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.42
+ 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 16:57:42 -0700 (PDT)
+ Fri, 02 Aug 2024 16:57:43 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Jessica Clarke <jrtc27@jrtc27.com>, Stacey Son <sson@FreeBSD.org>,
- Justin Hibbits <chmeeedalf@gmail.com>
-Subject: [PATCH 04/17] bsd-user: Implement cpu_copy()
-Date: Fri,  2 Aug 2024 17:56:04 -0600
-Message-ID: <20240802235617.7971-5-imp@bsdimp.com>
+ Jessica Clarke <jrtc27@jrtc27.com>
+Subject: [PATCH 05/17] bsd-user: Eliminate unused regs arg in load_elf_binary
+Date: Fri,  2 Aug 2024 17:56:05 -0600
+Message-ID: <20240802235617.7971-6-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240802235617.7971-1-imp@bsdimp.com>
 References: <20240802235617.7971-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d29;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd29.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2a;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,62 +91,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
-
-Catch up with 30ba0ee52d15 and implement cpu_copy(). It's needed for
-threading. Stacey's original code, with bug fixes from Jessica, Justin
-and myself.
-
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
-Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
-Signed-off-by: Justin Hibbits <chmeeedalf@gmail.com>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/main.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ bsd-user/bsdload.c | 2 +-
+ bsd-user/elfload.c | 3 +--
+ bsd-user/qemu.h    | 3 +--
+ 3 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 1533fd51168..9ad31bd1efe 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -224,6 +224,37 @@ void init_task_state(TaskState *ts)
-     };
+diff --git a/bsd-user/bsdload.c b/bsd-user/bsdload.c
+index 5b3c061a452..dcf3ca14fcc 100644
+--- a/bsd-user/bsdload.c
++++ b/bsd-user/bsdload.c
+@@ -193,7 +193,7 @@ int loader_exec(const char *filename, char **argv, char **envp,
+                 && bprm->buf[1] == 'E'
+                 && bprm->buf[2] == 'L'
+                 && bprm->buf[3] == 'F') {
+-            retval = load_elf_binary(bprm, regs, infop);
++            retval = load_elf_binary(bprm, infop);
+         } else {
+             fprintf(stderr, "Unknown binary format\n");
+             return -1;
+diff --git a/bsd-user/elfload.c b/bsd-user/elfload.c
+index 833fa3bd057..caf8a1adf2d 100644
+--- a/bsd-user/elfload.c
++++ b/bsd-user/elfload.c
+@@ -597,8 +597,7 @@ load_elf_sections(const struct elfhdr *hdr, struct elf_phdr *phdr, int fd,
+     return 0;
  }
  
-+CPUArchState *cpu_copy(CPUArchState *env)
-+{
-+    CPUState *cpu = env_cpu(env);
-+    CPUState *new_cpu = cpu_create(cpu_type);
-+    CPUArchState *new_env = cpu_env(new_cpu);
-+    CPUBreakpoint *bp;
-+    CPUWatchpoint *wp;
-+
-+    /* Reset non arch specific state */
-+    cpu_reset(new_cpu);
-+
-+    new_cpu->tcg_cflags = cpu->tcg_cflags;
-+    memcpy(new_env, env, sizeof(CPUArchState));
-+
-+    /*
-+     * Clone all break/watchpoints.
-+     * Note: Once we support ptrace with hw-debug register access, make sure
-+     * BP_CPU break/watchpoints are handled correctly on clone.
-+     */
-+    QTAILQ_INIT(&cpu->breakpoints);
-+    QTAILQ_INIT(&cpu->watchpoints);
-+    QTAILQ_FOREACH(bp, &cpu->breakpoints, entry) {
-+        cpu_breakpoint_insert(new_cpu, bp->pc, bp->flags, NULL);
-+    }
-+    QTAILQ_FOREACH(wp, &cpu->watchpoints, entry) {
-+        cpu_watchpoint_insert(new_cpu, wp->vaddr, wp->len, wp->flags, NULL);
-+    }
-+
-+    return new_env;
-+}
-+
- void gemu_log(const char *fmt, ...)
+-int load_elf_binary(struct bsd_binprm *bprm, struct target_pt_regs *regs,
+-                    struct image_info *info)
++int load_elf_binary(struct bsd_binprm *bprm, struct image_info *info)
  {
-     va_list ap;
+     struct elfhdr elf_ex;
+     struct elfhdr interp_elf_ex;
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index c7f78096734..f18a54cc933 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -163,8 +163,7 @@ int loader_exec(const char *filename, char **argv, char **envp,
+                 struct target_pt_regs *regs, struct image_info *infop,
+                 struct bsd_binprm *bprm);
+ 
+-int load_elf_binary(struct bsd_binprm *bprm, struct target_pt_regs *regs,
+-                    struct image_info *info);
++int load_elf_binary(struct bsd_binprm *bprm, struct image_info *info);
+ int load_flt_binary(struct bsd_binprm *bprm, struct target_pt_regs *regs,
+                     struct image_info *info);
+ int is_target_elf_binary(int fd);
 -- 
 2.45.1
 
