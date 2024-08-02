@@ -2,70 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDDB945615
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 03:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DB394560D
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 03:42:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZhPY-0000p2-LG; Thu, 01 Aug 2024 21:48:52 -0400
+	id 1sZhIJ-0003rY-WD; Thu, 01 Aug 2024 21:41:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sZhPW-0000jR-8c
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 21:48:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sZhPU-0001xu-P7
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 21:48:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722563328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W+ocFGmg17RpHpMuCKxkl0vQ5+ZuyZySzGSS1ZlXAEk=;
- b=YdgkARPPIBvZqxW9C2k5Vclg4muDY2B0BmxZYbuV5czzs0WLVTnS6k0QXzi3bXofnTGwuS
- OBwdwGuC7SCxBiW8fBLHwW6weHkVfynVj6BGduDRuOrPMfpj7MRpvbEX3wZMTFl55YGFSr
- tDsSe5QqWne336D3RorQdquf12vXC/Q=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-WMtS9pGePhGtwsjZdxflOA-1; Thu,
- 01 Aug 2024 21:48:45 -0400
-X-MC-Unique: WMtS9pGePhGtwsjZdxflOA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 610F91956064; Fri,  2 Aug 2024 01:48:42 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.72])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BA397195605A; Fri,  2 Aug 2024 01:48:38 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com,
- vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com,
- berrange@redhat.com, Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Subject: [PATCH v2 3/3] nbd: Minor style fixes
-Date: Thu,  1 Aug 2024 20:32:08 -0500
-Message-ID: <20240802014824.1906798-8-eblake@redhat.com>
-In-Reply-To: <20240802014824.1906798-5-eblake@redhat.com>
-References: <20240802014824.1906798-5-eblake@redhat.com>
-MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sZhII-0003qg-KS; Thu, 01 Aug 2024 21:41:22 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sZhIG-0006pO-Re; Thu, 01 Aug 2024 21:41:22 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1fd9e6189d5so61717005ad.3; 
+ Thu, 01 Aug 2024 18:41:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1722562878; x=1723167678; darn=nongnu.org;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fhfSQeXVvl8lev6E4pBmnoGpo+FZbPLjOX6fbiH10qA=;
+ b=OoNFSyXUrlY/3mW5hSy8S9f5KgW/6tU5mgiwuu7lJvM0Owno5b3avyAYW/YSaxOPXm
+ iUQzw+zg/saDqaLkVbmIPp1i4JG7ylETFfkXxgJ96Uu/AP42gqLVJO38pMMkFGxboY/+
+ 7jmCK4yYOP3Ry3aDbcHacMRCTlhJSuyiLzhZrYawycCx0/LG5IOAzDuHt4+XKrfauoP0
+ Fw8sXOj5GPjwyX+ad3CRoxRMiQ4pgEvroFAeH6MydneJNeuu97Lqese5vFNP4Ke5ErnI
+ BqLUtTgcsXr1Mtx8R1ETvuMoO5zLK/E1GrScjKwVpOmyxHmMPWGRDnc6PHXOFHewluH9
+ IZhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722562878; x=1723167678;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=fhfSQeXVvl8lev6E4pBmnoGpo+FZbPLjOX6fbiH10qA=;
+ b=DNpe5Z6mMdDUUHVteBaX/S7+WVIZV7J6ePzxLPva+h0zTC/vgjryVMTs5AQYTbOKAo
+ HusSvaOrLc2hNqDtQvcmwbCh4znYQeTVK7ayFx13EM1eKaDxzq1274vRnz5GWfkfbRNJ
+ neUHAinxg9sxRWDjR0cRctZd3NoEwKHdQKnOiTKAUbL7RbgY/F0VoNq9PsAKYUI0eDjS
+ fGHzk1qHRXBBjrjKxVxLitmsFXNNNQ2mGjQ99BjL0Y2klRoZ5BzHvVnrg9MouH8q3RFE
+ UoJhVkcHvg0Xg13mUO4P9XQ7fSpriIOZKQS+wYM5WE38gg/mtAZihGqfO2LW5mxpUFtk
+ cxdQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWkV6Q3QEIdopIhbx/vWl+4k3E82ZLYKw7SasoLNFRKzmyVS1uCr6dGyrOD1fum98fzaSpP3YMjjKzFvK66OzI7IfmW1Fo=
+X-Gm-Message-State: AOJu0YwP2Fuz+77Dg4jlnSDfPx4sGZbZL2JcEYBsdMvEmJCEUsKPhACu
+ kEPZ2ZvvO9nkGG9L60905VAJDRqfqwVIr2c18TqXCzIN8N7OFsdOZvWBAhdD
+X-Google-Smtp-Source: AGHT+IGAJw/O0R1QhbXXGKYpc8MX/tJWmk6RqVl3ZpEaBduUZATISsY7PAWrp+JO3PQ5RG9WJ1LiOQ==
+X-Received: by 2002:a17:902:f54b:b0:1fd:8904:ecf6 with SMTP id
+ d9443c01a7336-1ff5728c53fmr30436525ad.21.1722562878443; 
+ Thu, 01 Aug 2024 18:41:18 -0700 (PDT)
+Received: from localhost ([1.145.56.254]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1ff5929ae4esm5447385ad.269.2024.08.01.18.41.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Aug 2024 18:41:17 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 02 Aug 2024 11:41:12 +1000
+Message-Id: <D351KQYRFR7O.CVO9X3Y89JG0@gmail.com>
+Subject: Re: [PATCH v4 04/11] pnv/xive2: Add NVG and NVC to cache watch
+ facility
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Michael Kowal" <kowal@linux.ibm.com>, <qemu-devel@nongnu.org>
+Cc: <qemu-ppc@nongnu.org>, <clg@kaod.org>, <fbarrat@linux.ibm.com>,
+ <milesg@linux.ibm.com>
+X-Mailer: aerc 0.18.2
+References: <20240724212130.26811-1-kowal@linux.ibm.com>
+ <20240724212130.26811-5-kowal@linux.ibm.com>
+In-Reply-To: <20240724212130.26811-5-kowal@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,43 +94,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Touch up a comment with the wrong type name, and an over-long line,
-both noticed while working on the previous patches.
+On Thu Jul 25, 2024 at 7:21 AM AEST, Michael Kowal wrote:
+> From: Frederic Barrat <fbarrat@linux.ibm.com>
+>
+> The cache watch facility uses the same register interface to handle
+> entries in the NVP, NVG and NVC tables. A bit-field in the 'watchX
+> specification' register tells the table type. So far, that bit-field
+> was not read and the code assumed a read/write to the NVP table.
+>
+> This patch allows to read/write entries in the NVG and NVC table as
+> well.
+>
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
+> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  hw/intc/pnv_xive2.c | 49 +++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 38 insertions(+), 11 deletions(-)
+>
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index 3dbbfddacb..dfb0927fd3 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -465,10 +465,30 @@ static int pnv_xive2_write_nvp(Xive2Router *xrtr, u=
+int8_t blk, uint32_t idx,
+>                                word_number);
+>  }
+> =20
+> -static int pnv_xive2_nvp_update(PnvXive2 *xive, uint8_t watch_engine)
+> +static int pnv_xive2_nxc_to_table_type(uint8_t nxc_type, uint32_t *table=
+_type)
+>  {
+> -    uint8_t  blk;
+> -    uint32_t idx;
+> +    switch (nxc_type) {
+> +    case PC_NXC_WATCH_NXC_NVP:
+> +        *table_type =3D VST_NVP;
+> +        break;
+> +    case PC_NXC_WATCH_NXC_NVG:
+> +        *table_type =3D VST_NVG;
+> +        break;
+> +    case PC_NXC_WATCH_NXC_NVC:
+> +        *table_type =3D VST_NVC;
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "XIVE: invalid table type for nxc operation\n");
+> +        return -1;
+> +    }
+> +    return 0;
+> +}
+> +
+> +static int pnv_xive2_nxc_update(PnvXive2 *xive, uint8_t watch_engine)
+> +{
+> +    uint8_t  blk, nxc_type;
+> +    uint32_t idx, table_type =3D -1;
+>      int i, spec_reg, data_reg;
+>      uint64_t nxc_watch[4];
+> =20
+> @@ -476,21 +496,24 @@ static int pnv_xive2_nvp_update(PnvXive2 *xive, uin=
+t8_t watch_engine)
+> =20
+>      spec_reg =3D (PC_NXC_WATCH0_SPEC + watch_engine * 0x40) >> 3;
+>      data_reg =3D (PC_NXC_WATCH0_DATA0 + watch_engine * 0x40) >> 3;
+> +    nxc_type =3D GETFIELD(PC_NXC_WATCH_NXC_TYPE, xive->pc_regs[spec_reg]=
+);
+>      blk =3D GETFIELD(PC_NXC_WATCH_BLOCK_ID, xive->pc_regs[spec_reg]);
+>      idx =3D GETFIELD(PC_NXC_WATCH_INDEX, xive->pc_regs[spec_reg]);
+> =20
+> +    assert(pnv_xive2_nxc_to_table_type(nxc_type, &table_type));
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- nbd/server.c | 2 +-
- qemu-nbd.c   | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+Hey Mike,
 
-diff --git a/nbd/server.c b/nbd/server.c
-index 7c37d9753f0..3debc416dd0 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -1973,7 +1973,7 @@ static void nbd_export_request_shutdown(BlockExport *blk_exp)
+Was in a bit of a rush and forgot to let you know earlier (thanks for
+reminding me) - I flipped the assert condition on these when merging.
+IIRC I got an always-false warning on one of the CI tests there, but I
+can't seem to find which one, or why it didn't usually warn.
 
-     blk_exp_ref(&exp->common);
-     /*
--     * TODO: Should we expand QMP NbdServerRemoveNode enum to allow a
-+     * TODO: Should we expand QMP BlockExportRemoveMode enum to allow a
-      * close mode that stops advertising the export to new clients but
-      * still permits existing clients to run to completion? Because of
-      * that possibility, nbd_export_close() can be called more than
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 3ad50eec18e..c0bd16217cd 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -589,7 +589,8 @@ int main(int argc, char **argv)
-     pthread_t client_thread;
-     const char *fmt = NULL;
-     Error *local_err = NULL;
--    BlockdevDetectZeroesOptions detect_zeroes = BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
-+    BlockdevDetectZeroesOptions detect_zeroes =
-+        BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
-     QDict *options = NULL;
-     const char *export_name = NULL; /* defaults to "" later for server mode */
-     const char *export_description = NULL;
--- 
-2.45.2
+I know you're part way through wrangling a bunch of other xive stuff
+that makes this stuff difficult to test, so no worries.
 
+Thanks,
+Nick
 
