@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481FA945FB8
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 16:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE663945FBC
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 16:56:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZtg2-0002ZS-TE; Fri, 02 Aug 2024 10:54:42 -0400
+	id 1sZtg8-00036Z-Ks; Fri, 02 Aug 2024 10:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1sZtg0-0002VD-Re
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 10:54:40 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1sZtg6-0002sn-2I
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 10:54:46 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1sZtfy-0005Dv-CO
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 10:54:40 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1fc53171e56so5152335ad.3
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 07:54:37 -0700 (PDT)
+ id 1sZtg4-0005EH-8u
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 10:54:45 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1fc5bc8d23cso4680145ad.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 07:54:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722610476; x=1723215276;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1722610482; x=1723215282;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2wKnSaxwAurxqVOmTM00rPFAGyNfPCMfOr7fL121OPg=;
- b=r32HeYo46e05OUdqUYtxHgHNWZ9F+WhaB2HbXBy2cZWYUjZ4nJ/9F2AEV5v+3LSXAP
- Tk9uYNTCPWxNRG/eESvDnuqVhevOU5yikleRtZ2kTB3qraXC28rr4sqGhNU7g7VUbkdY
- EZurgW++wcqRmf3q9uwNaEIIES++V4fIhSd+sXZrqNQguJjYLXeNbWEU4OhD8oBnBK0Q
- X1DBVa2rHSW7J2p4E8DVv7/VoZwxPxLiQWhJN1kiYEWHPsJNSmg3ElSOY3OqBSuJcDc/
- sqF8isf2p9ROHwQgyDAd+TMcQqYzbdnpH7uJnrFsMYA5c4A32To+qR3STHPGyw39h8HX
- htwQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RbiqW0FBf0s4d09Z/i1Ew4rMVuSfOI51ePlXd/j06TE=;
+ b=16ls7nVEFT3GqF3zQC/POivHH3K4kYwITUfq4r5LjswEWYDUPsaRT4aWp7iAwTJTVD
+ FhVON1jkQLQTKP7lVzHth8q5L9uYbZApckvuHXZP+EpR+hUrnf6ybm338ZWQXvAcopQt
+ kBFKnIuAIuQCbNNjed2deMx8x1g52ZWl4rERy5uNCS0OGZUtZG8xegnkkhcXCHYs4SAk
+ zLQ5UK6owqSyWFG2pMFe+41yerULBxx6I2dHQzdKWSGgcZ+JoLqCJfHdFH8HSOnsaJc/
+ SF0mvJtdEEd1Q2Ss1TyOU4yB/e7v7FV2EEkAY9JK6xojHUO7UI3kVV4nEH3kbF0BPMga
+ G4zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722610476; x=1723215276;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2wKnSaxwAurxqVOmTM00rPFAGyNfPCMfOr7fL121OPg=;
- b=Yydv69kuk3sD79/atVdbOPrxP4R6mzVXJp+sXplwuCtDqTcXjDqSuYntLXRmahqW0C
- GWVIZjuzvPUpbxtPvsnzmqZnIU2bchRyquVu2G2fQC6pCvqNI8TW9Z3R73DpLaqVqRxf
- mjaQm8glQsC6VGxJUKfE1ro/XhsiG2YXIUeeRvCLt3xdELEMbyJ0M45hCLQJKmGVSOC1
- GTpKjhZDtNq/MpttPJpQzhcpErf+gzNnh1qQpYjPki3wHHuHWuQCf+oT6iAQcPnavNfQ
- sdtk8MMebK5PE9sbR9rnk1aCAKCtuWl8r4GOcpikJDDEgkEwqqWLdfCb0UtTRWvPoNfm
- aAQg==
-X-Gm-Message-State: AOJu0YwzdANZbX/az+hMoBCgFRY3w8wolgwE7nfiA7WfYTh2RpvBFiXu
- 1RHnzNFKR7YUleyuqh8G0cweEXKEIviaxhhwr9cjEz/vYLmTE9zIvvC/SLfk2tTD5Bphzh216o5
- sjg4=
-X-Google-Smtp-Source: AGHT+IFbG5Zb//fBxukt4QXHIaj+Gq2rUCb01AXDNSzEGv3MTrXwILzTFdx6PtKh9LU+U4Qy71TmUA==
-X-Received: by 2002:a17:902:d502:b0:1fc:5cc8:bb1b with SMTP id
- d9443c01a7336-1ff57422457mr28400875ad.7.1722610476078; 
- Fri, 02 Aug 2024 07:54:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1722610482; x=1723215282;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RbiqW0FBf0s4d09Z/i1Ew4rMVuSfOI51ePlXd/j06TE=;
+ b=HbgJ5an7XulZ+WqSDPyBPDgjvyDRXN+tecFHNds4CrKVUvHEay71LjfqJXzvXRZ/gP
+ G0w851RaxGPZNGzKmp7kKl9XgYoxyNiKAmXR9ft9t8m1YKEdmXawCIM86YMXWm8QVpqq
+ 9+rU7FRSSsBuEz6nvr/feewBMSNeXSAHNWwGUlUcUiRf7evGH6up71rTERXN63Pyh9rB
+ BEROmMF67RtGgtUJjdKt0lBnLceSCz8T+CXUDqfcn4n2U/OeuWvgBxCJ0VwD+9ydJm6v
+ RfAM/wlRe/H6nPVbAvrc24KyIs7EuIG437JSL2cFt3Sif6dmBSbMNj4NOiz4twUQm20B
+ cOfQ==
+X-Gm-Message-State: AOJu0YwfN2mu7cWAZi2LXc2xoiJ59+VxPP/iM+PDW5mUjbOUOZZyw1LT
+ rSYqOax0v+sfeHEoFKjh0xPzVdasOR9HDpL7OqmUV89XR9vKG9p9nuqFfgWH8Is2ILj/nJWlC16
+ scgA=
+X-Google-Smtp-Source: AGHT+IG3AXqGPRklcFjv4Zj4ZHxg2d7d4ZvupJgR/ISntF5u5kG/89iUoRmum4VrkD6MBWAnbc6NDg==
+X-Received: by 2002:a17:902:f54b:b0:1fb:a38b:c5b6 with SMTP id
+ d9443c01a7336-1ff57250140mr28789535ad.1.1722610481653; 
+ Fri, 02 Aug 2024 07:54:41 -0700 (PDT)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff592aee19sm17920635ad.282.2024.08.02.07.54.31
+ d9443c01a7336-1ff592aee19sm17920635ad.282.2024.08.02.07.54.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 07:54:35 -0700 (PDT)
+ Fri, 02 Aug 2024 07:54:41 -0700 (PDT)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
@@ -64,15 +65,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v8 0/5] qemu/osdep: add a qemu_close_all_open_fd() helper
-Date: Fri,  2 Aug 2024 16:54:16 +0200
-Message-ID: <20240802145423.3232974-1-cleger@rivosinc.com>
+Subject: [PATCH v8 1/5] qemu/osdep: Move close_all_open_fds() to oslib-posix
+Date: Fri,  2 Aug 2024 16:54:17 +0200
+Message-ID: <20240802145423.3232974-2-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240802145423.3232974-1-cleger@rivosinc.com>
+References: <20240802145423.3232974-1-cleger@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=cleger@rivosinc.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=cleger@rivosinc.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,84 +97,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 03e471c41d8b ("qemu_init: increase NOFILE soft limit on
-POSIX"), the maximum number of file descriptors that can be opened are
-raised to nofile.rlim_max. On recent debian distro, this yield a maximum
-of 1073741816 file descriptors. Now, when forking to start
-qemu-bridge-helper, this actually calls close() on the full possible file
-descriptor range (more precisely [3 - sysconf(_SC_OPEN_MAX)]) which
-takes a considerable amount of time. In order to reduce that time,
-factorize existing code to close all open files descriptors in a new
-qemu_close_all_open_fd() function. This function uses various methods
-to close all the open file descriptors ranging from the most efficient
-one to the least one. It also accepts an ordered array of file
-descriptors that should not be closed since this is required by the
-callers that calls it after forking. Since this function is not used
-for Win32, do not implement it to force an error at link time if used.
+Move close_all_open_fds() in oslib-posix, rename it
+qemu_close_all_open_fds() and export it.
 
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v8:
- - Fix erroneous -1 added to open_max
- - Remove useless close_fd assignation
- - v7: https://lore.kernel.org/qemu-devel/20240731084832.1829291-1-cleger@rivosinc.com/
+ include/qemu/osdep.h    |  7 +++++++
+ system/async-teardown.c | 37 +------------------------------------
+ util/oslib-posix.c      | 34 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 36 deletions(-)
 
-v7:
- - Passed open_max to qemu_close_all_open_fd() subfunctions
- - Remove extra whitespace
- - Reduce some variable scopes
- - v7: https://lore.kernel.org/qemu-devel/20240730122437.1749603-1-cleger@rivosinc.com/
-
-v6:
- - Split patch in multiple commits
- - Drop Richard Henderson Reviewed-by since there was a lot of
-   modifications
- - Remove useless #ifdef LINUX in qemu_close_all_open_fd_proc()
- - v5: https://lore.kernel.org/qemu-devel/20240726075502.4054284-1-cleger@rivosinc.com/
-
-v5:
- - Move qemu_close_all_open_fd() to oslib-posix.c since it does not
-   compile on windows and is not even used on it.
- - v4: https://lore.kernel.org/qemu-devel/20240717124534.1200735-1-cleger@rivosinc.com/
-
-v4:
- - Add a comment saying that qemu_close_all_open_fd() can take a NULL skip
-   array and nskip == 0
- - Added an assert in qemu_close_all_open_fd() to check for skip/nskip
-   parameters
- - Fix spurious tabs instead of spaces
- - Applied checkpatch
- - v3: https://lore.kernel.org/qemu-devel/20240716144006.6571-1-cleger@rivosinc.com/
-
-v3:
- - Use STD*_FILENO defines instead of raw values
- - Fix indentation of close_all_fds_after_fork()
- - Check for nksip in fallback code
- - Check for path starting with a '.' in qemu_close_all_open_fd_proc()
- - Use unsigned for cur_skip
- - Move ifdefs inside close_fds functions rather than redefining them
- - Remove uneeded 'if(nskip)' test
- - Add comments to close_range version
- - Reduce range of skip fd as we find them in
- - v2: https://lore.kernel.org/qemu-devel/20240618111704.63092-1-cleger@rivosinc.com/
-
-v2:
- - Factorize async_teardown.c close_fds implementation as well as tap.c ones
- - Apply checkpatch
- - v1: https://lore.kernel.org/qemu-devel/20240617162520.4045016-1-cleger@rivosinc.com/
-
-Clément Léger (5):
-  qemu/osdep: Move close_all_open_fds() to oslib-posix
-  qemu/osdep: Split qemu_close_all_open_fd() and add fallback
-  net/tap: Factorize fd closing after forking
-  qemu/osdep: Add excluded fd parameter to qemu_close_all_open_fd()
-  net/tap: Use qemu_close_all_open_fd()
-
- include/qemu/osdep.h    |  11 ++++
- net/tap.c               |  34 ++++++-----
- system/async-teardown.c |  37 +----------
- util/oslib-posix.c      | 132 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 164 insertions(+), 50 deletions(-)
-
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 720ed21a7e..de77c5c254 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -757,6 +757,13 @@ static inline void qemu_reset_optind(void)
+ 
+ int qemu_fdatasync(int fd);
+ 
++/**
++ * qemu_close_all_open_fd:
++ *
++ * Close all open file descriptors
++ */
++void qemu_close_all_open_fd(void);
++
+ /**
+  * Sync changes made to the memory mapped file back to the backing
+  * storage. For POSIX compliant systems this will fallback
+diff --git a/system/async-teardown.c b/system/async-teardown.c
+index 396963c091..edf49e1007 100644
+--- a/system/async-teardown.c
++++ b/system/async-teardown.c
+@@ -26,40 +26,6 @@
+ 
+ static pid_t the_ppid;
+ 
+-/*
+- * Close all open file descriptors.
+- */
+-static void close_all_open_fd(void)
+-{
+-    struct dirent *de;
+-    int fd, dfd;
+-    DIR *dir;
+-
+-#ifdef CONFIG_CLOSE_RANGE
+-    int r = close_range(0, ~0U, 0);
+-    if (!r) {
+-        /* Success, no need to try other ways. */
+-        return;
+-    }
+-#endif
+-
+-    dir = opendir("/proc/self/fd");
+-    if (!dir) {
+-        /* If /proc is not mounted, there is nothing that can be done. */
+-        return;
+-    }
+-    /* Avoid closing the directory. */
+-    dfd = dirfd(dir);
+-
+-    for (de = readdir(dir); de; de = readdir(dir)) {
+-        fd = atoi(de->d_name);
+-        if (fd != dfd) {
+-            close(fd);
+-        }
+-    }
+-    closedir(dir);
+-}
+-
+ static void hup_handler(int signal)
+ {
+     /* Check every second if this process has been reparented. */
+@@ -85,9 +51,8 @@ static int async_teardown_fn(void *arg)
+     /*
+      * Close all file descriptors that might have been inherited from the
+      * main qemu process when doing clone, needed to make libvirt happy.
+-     * Not using close_range for increased compatibility with older kernels.
+      */
+-    close_all_open_fd();
++    qemu_close_all_open_fd();
+ 
+     /* Set up a handler for SIGHUP and unblock SIGHUP. */
+     sigaction(SIGHUP, &sa, NULL);
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index b090fe0eed..1e867efa47 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -807,3 +807,37 @@ int qemu_msync(void *addr, size_t length, int fd)
+ 
+     return msync(addr, length, MS_SYNC);
+ }
++
++/*
++ * Close all open file descriptors.
++ */
++void qemu_close_all_open_fd(void)
++{
++    struct dirent *de;
++    int fd, dfd;
++    DIR *dir;
++
++#ifdef CONFIG_CLOSE_RANGE
++    int r = close_range(0, ~0U, 0);
++    if (!r) {
++        /* Success, no need to try other ways. */
++        return;
++    }
++#endif
++
++    dir = opendir("/proc/self/fd");
++    if (!dir) {
++        /* If /proc is not mounted, there is nothing that can be done. */
++        return;
++    }
++    /* Avoid closing the directory. */
++    dfd = dirfd(dir);
++
++    for (de = readdir(dir); de; de = readdir(dir)) {
++        fd = atoi(de->d_name);
++        if (fd != dfd) {
++            close(fd);
++        }
++    }
++    closedir(dir);
++}
 -- 
 2.45.2
 
