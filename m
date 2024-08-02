@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7930F945D35
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 13:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871A6945D3B
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 13:26:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZqMm-0007Qa-EM; Fri, 02 Aug 2024 07:22:36 -0400
+	id 1sZqQN-00065J-VT; Fri, 02 Aug 2024 07:26:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1sZqMh-0007Ll-Fc
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:22:31 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1sZqQL-0005yD-3B
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:26:17 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1sZqMf-0007Ah-6f
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:22:31 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1fd65aaac27so22722025ad.1
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 04:22:28 -0700 (PDT)
+ id 1sZqQJ-0008Bg-7t
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:26:16 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1fc65329979so69222005ad.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 04:26:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1722597747; x=1723202547; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1722597973; x=1723202773; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y82r/XxOIkgx1ODHTsgWMJ/HRE9njRvzy0BrWUZyvFU=;
- b=ZGI07wNyTCn1r70xDZC8f82n/RzdPjDbGBiN1AU1Sxb58s80l7SdqPvpa3fli0jRDa
- ZyaCpookPH12b9c3jF6eli+3fjCh0XC3RhSkXdGkE6pkt5liaCMP8aXo5oNyqd0ajeNd
- 0PNl20cbM1YbTIZALMJ/NmO81PFM8sh0AArS0DeO/CAoOSUPiw44K8/BspcD/lWRvkqn
- 7nxOwkBAj8OAJek+E0NrzHydRos0wJK1FRxAOjmA7/A9sSukDevtrb0yuy/tl9VTv35M
- mO8gIPiV4OqvcYNbG215WamvjKzD4cVuNxMg8OSKjRNODe+rBv5N2Hli1qbDtyHTMyAq
- jCXQ==
+ bh=/C+cJKFO0bt1DxPTWKksyVN3fKJ+x+Sxy6ZVWA4ZsyI=;
+ b=h4KvvSZCC8G782Rj2+41WAkh0ER+zmJy/f055moU+lFw3NfGydbeerlMneVboaatL4
+ bHygt2Sx4+kqz0e9erDiOBmiVk3W98rT9buEOKvEmSp36ylabPdQDuhlw0FETqMut76s
+ unG8OFj9arxejNyZWo228vKyXgwej/YstY/U6cqMjXDPQnrWWHTskMIWnrw9c9amvURF
+ 057W0ZI3Gsz55i9Hrr9SFDcljnDb6laoG+ftKhOIN9YNoIQ8efIprezgtsxgFqeWuSNE
+ ZxTSUlMsRHDcBDK8iuwzF71gly31k8lH1isuA+tmGRrHBjBTeSuXsQrfkELKjgb4ZM4v
+ yRZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722597747; x=1723202547;
+ d=1e100.net; s=20230601; t=1722597973; x=1723202773;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y82r/XxOIkgx1ODHTsgWMJ/HRE9njRvzy0BrWUZyvFU=;
- b=tExFGnTLNcKCwL+lUVkad7th6Z7BLRwdZNJwNY8RMz/td0y/bMNdCm/OeDYmZh2aip
- OJU0S6xO8HD8wcyOfb9X+A5NpnIi24m7S4YkDUD7vSwkBHdfQ+L5lVB+hD9SHOJyB0Fo
- czvSlrL9Huq0plqd5TBE8s12tj0WCqOrxinRpRMexcKIDHekCYDI2ZF/Wmnvp8wRJVP3
- 5MpXVcSL8im9saIQbkdVWS1/rVkc2NYbwjJJvRdqcEoLnBKjpqCohlK+pOWpbK3X3cH6
- HyUa5oRg3/R58SPPSC/REd5d3iQCTqpv7pWW6vuwlYIyNCyLkg+V5lCMRgd7TwR0Wp5j
- hxFg==
+ bh=/C+cJKFO0bt1DxPTWKksyVN3fKJ+x+Sxy6ZVWA4ZsyI=;
+ b=r537Kg8AspyzTIPy6aSedjjPSYC3nd7WAm3ALN58aqNt52SjGjCk0NhN1U1TEDK5hA
+ XYo1mP0a4v7GQxNPyTbFJB+dzFDNiNvkDrB/4M9ezo/InP+5beoSnxis1ChN7lz1158D
+ 9yidTIkpydX55XTdOEIiPY3EyQPKJUf4tLBhi+C1HptIHRjAVo8GbegvIA7BvmUWebUJ
+ XZGAF5jsh6lVFklS9c/guT48sDIrOnc0W243b+ZA8P6q2YnqBxmxSl18Er+i8uBtnmVG
+ 2l2xNWP6h9TJytdZlDRugjBkqImkjtjorBTlMhVhcan1nC/c53GEb1Pw63860nOHMjTc
+ SWHA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVeV+NbInFt8DJYhfOOJLH28JK054FLDZ4vE00adhQmc17hVHFezn6PxPqIhyezMgRU4JlfslElyUN+YPuTzUZRzriVhxQ=
-X-Gm-Message-State: AOJu0Yx+dDPYFf0f+h0qdR0o4enLNF3kHGSIADulJ8Jba7a4xhSqFiQK
- +KqLhiMD+JXDof1iRMbex2BR0VpsIlI37lkjrg2xcO0Rb7ZKFrlehoP5+g==
-X-Google-Smtp-Source: AGHT+IEjKKuG/jOVKz0Pj/NChouyUQS/lojdEBLOojX6hs/DyhiHWXBnvRw81UxmzYr1f1LWIXFPIA==
-X-Received: by 2002:a17:903:2443:b0:1fd:cda0:77fd with SMTP id
- d9443c01a7336-1ff523ef645mr68374335ad.3.1722597746042; 
- Fri, 02 Aug 2024 04:22:26 -0700 (PDT)
-Received: from valdaarhun.. ([223.233.85.12]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff5929ae4esm14801335ad.269.2024.08.02.04.22.23
+ AJvYcCUYBe709gkTUyPObY1Wp24yBJHw0vHfDfaImowOAdkSqI9Co1YOsNKiQ43lneKZieE+bfNKSUiIcvvKD1u37saH+LeeuEE=
+X-Gm-Message-State: AOJu0Ywp3qeBPNMhyfwt5g+C8G3dIkDAsP1LKMyhCtNZLVmnyFsgryoN
+ iTP8rnxmWkHKYuW6tjmjzYtW/k3gOwA4lfwdkEhoPKektvL9O4ue
+X-Google-Smtp-Source: AGHT+IED+BHIb8D+EACtwViwnaxvlnYmXd2IlxbRar5PRp2oo/VLqoHD4Rcq6XITdNOhlb2GRGU3dg==
+X-Received: by 2002:a17:902:f685:b0:1fc:719c:5f0 with SMTP id
+ d9443c01a7336-1ff573e75a3mr44704375ad.49.1722597973274; 
+ Fri, 02 Aug 2024 04:26:13 -0700 (PDT)
+Received: from valdaarhun.localnet ([223.233.85.12])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1ff5905ee07sm14910415ad.153.2024.08.02.04.26.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 04:22:25 -0700 (PDT)
-From: Sahil Siddiq <icegambit91@gmail.com>
-X-Google-Original-From: Sahil Siddiq <sahilcdq@proton.me>
-To: eperezma@redhat.com,
-	sgarzare@redhat.com
-Cc: mst@redhat.com, qemu-devel@nongnu.org, icegambit91@gmail.com,
+ Fri, 02 Aug 2024 04:26:12 -0700 (PDT)
+From: Sahil <icegambit91@gmail.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org,
  Sahil Siddiq <sahilcdq@proton.me>
-Subject: [RFC v3 3/3] vhost: Allocate memory for packed vring
-Date: Fri,  2 Aug 2024 16:51:38 +0530
-Message-ID: <20240802112138.46831-4-sahilcdq@proton.me>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240802112138.46831-1-sahilcdq@proton.me>
-References: <20240802112138.46831-1-sahilcdq@proton.me>
+Subject: Re: [RFC v2 1/3] vhost: Introduce packed vq and add buffer elements
+Date: Fri, 02 Aug 2024 16:56:03 +0530
+Message-ID: <12491035.O9o76ZdvQC@valdaarhun>
+In-Reply-To: <CAJaqyWd4Ts-JMofDeZ4Uv8Azdi3s_NaYmATd7ezJxwMG+HiPUw@mail.gmail.com>
+References: <20240726095822.104017-1-sahilcdq@proton.me>
+ <2957475.e9J7NaK4W3@valdaarhun>
+ <CAJaqyWd4Ts-JMofDeZ4Uv8Azdi3s_NaYmATd7ezJxwMG+HiPUw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=icegambit91@gmail.com; helo=mail-pl1-x62a.google.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=icegambit91@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: 15
 X-Spam_score: 1.5
 X-Spam_bar: +
@@ -95,140 +96,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allocate memory for the packed vq format and support
-packed vq in the SVQ "start" and "stop" operations.
+Hi,
 
-Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
----
-Changes v2 -> v3:
-* vhost-shadow-virtqueue.c
-  (vhost_svq_memory_packed): New function
-  (vhost_svq_start):
-  - Remove common variables out of if-else branch.
-  (vhost_svq_stop):
-  - Add support for packed vq.
-  (vhost_svq_get_vring_addr): Revert changes
-  (vhost_svq_get_vring_addr_packed): Likwise.
-* vhost-shadow-virtqueue.h
-  - Revert changes made to "vhost_svq_get_vring_addr*"
-    functions.
-* vhost-vdpa.c: Revert changes.
+On Monday, July 29, 2024 1:51:27=E2=80=AFPM GMT+5:30 Eugenio Perez Martin w=
+rote:
+> On Sun, Jul 28, 2024 at 7:37=E2=80=AFPM Sahil <icegambit91@gmail.com> wro=
+te:
+> > [...]
+> > > > +static bool vhost_svq_add_packed(VhostShadowVirtqueue *svq,
+> > > > +                                const struct iovec *out_sg, size_t=
+ out_num,
+> > > > +                                const struct iovec *in_sg, size_t =
+in_num,
+> > > > +                                unsigned *head)
+> > > > +{
+> > > > +    bool ok;
+> > > > +    uint16_t head_flags =3D 0;
+> > > > +    g_autofree hwaddr *sgs =3D g_new(hwaddr, out_num + in_num);
+> > > > +
+> > > > +    *head =3D svq->vring_packed.next_avail_idx;
+> > > > +
+> > > > +    /* We need some descriptors here */
+> > > > +    if (unlikely(!out_num && !in_num)) {
+> > > > +        qemu_log_mask(LOG_GUEST_ERROR,
+> > > > +                      "Guest provided element with no descriptors"=
+);
+> > > > +        return false;
+> > > > +    }
+> > > > +
+> > > > +    uint16_t id, curr, i;
+> > > > +    unsigned n;
+> > > > +    struct vring_packed_desc *descs =3D svq->vring_packed.vring.de=
+sc;
+> > > > +
+> > > > +    i =3D *head;
+> > > > +    id =3D svq->free_head;
+> > > > +    curr =3D id;
+> > > > +
+> > > > +    size_t num =3D out_num + in_num;
+> > > > +
+> > > > +    ok =3D vhost_svq_translate_addr(svq, sgs, out_sg, out_num);
+> > > > +    if (unlikely(!ok)) {
+> > > > +        return false;
+> > > > +    }
+> > > > +
+> > > > +    ok =3D vhost_svq_translate_addr(svq, sgs + out_num, in_sg, in_=
+num);
+> > > > +    if (unlikely(!ok)) {
+> > > > +        return false;
+> > > > +    }
+> > > > +
+> > >=20
+> > > (sorry I missed this from the RFC v1) I think all of the above should
+> > > be in the caller, isn't it? It is duplicated with split.
+> >=20
+> > I don't think this will be straightforward. While they perform the same
+> > logical step in both cases, their implementation is a little different.
+> > For example, the "sgs" pointer is created a little differently in both
+> > cases.
+>=20
+> Do you mean because MAX() vs in_num+out_num? It is ok to convert both
+> to the latter.
+>=20
+> > The parameters to
+> > "vhost_svq_translate_addr" is also a little different. I think if they =
+are
+> > moved to the caller, they will be in both "svq->is_packed" branches (in
+> > "vhost_svq_add").
+> I don't see any difference apart from calling it with in and out sgs
+> separately or calling it for all of the array, am I missing something?
+>=20
 
- hw/virtio/vhost-shadow-virtqueue.c | 56 +++++++++++++++++++++++-------
- hw/virtio/vhost-shadow-virtqueue.h |  4 +++
- 2 files changed, 47 insertions(+), 13 deletions(-)
+I tried refactoring this and have sent a new patch series. Please let me
+know if I have missed something.
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index 4c308ee53d..f4285db2b4 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -645,6 +645,8 @@ void vhost_svq_set_svq_call_fd(VhostShadowVirtqueue *svq, int call_fd)
- 
- /**
-  * Get the shadow vq vring address.
-+ * This is used irrespective of whether the
-+ * split or packed vq format is used.
-  * @svq: Shadow virtqueue
-  * @addr: Destination to store address
-  */
-@@ -672,6 +674,16 @@ size_t vhost_svq_device_area_size(const VhostShadowVirtqueue *svq)
-     return ROUND_UP(used_size, qemu_real_host_page_size());
- }
- 
-+size_t vhost_svq_memory_packed(const VhostShadowVirtqueue *svq)
-+{
-+    size_t desc_size = sizeof(struct vring_packed_desc) * svq->num_free;
-+    size_t driver_event_suppression = sizeof(struct vring_packed_desc_event);
-+    size_t device_event_suppression = sizeof(struct vring_packed_desc_event);
-+
-+    return ROUND_UP(desc_size + driver_event_suppression + device_event_suppression,
-+                    qemu_real_host_page_size());
-+}
-+
- /**
-  * Set a new file descriptor for the guest to kick the SVQ and notify for avail
-  *
-@@ -726,17 +738,30 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
- 
-     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
-     svq->num_free = svq->vring.num;
--    svq->vring.desc = mmap(NULL, vhost_svq_driver_area_size(svq),
--                           PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
--                           -1, 0);
--    desc_size = sizeof(vring_desc_t) * svq->vring.num;
--    svq->vring.avail = (void *)((char *)svq->vring.desc + desc_size);
--    svq->vring.used = mmap(NULL, vhost_svq_device_area_size(svq),
--                           PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
--                           -1, 0);
--    svq->desc_state = g_new0(SVQDescState, svq->vring.num);
--    svq->desc_next = g_new0(uint16_t, svq->vring.num);
--    for (unsigned i = 0; i < svq->vring.num - 1; i++) {
-+    svq->is_packed = virtio_vdev_has_feature(svq->vdev, VIRTIO_F_RING_PACKED);
-+
-+    if (virtio_vdev_has_feature(svq->vdev, VIRTIO_F_RING_PACKED)) {
-+        svq->vring_packed.vring.desc = mmap(NULL, vhost_svq_memory_packed(svq),
-+                                            PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
-+                                            -1, 0);
-+        desc_size = sizeof(struct vring_packed_desc) * svq->vring.num;
-+        svq->vring_packed.vring.driver = (void *)((char *)svq->vring_packed.vring.desc + desc_size);
-+        svq->vring_packed.vring.device = (void *)((char *)svq->vring_packed.vring.driver +
-+                                                  sizeof(struct vring_packed_desc_event));
-+    } else {
-+        svq->vring.desc = mmap(NULL, vhost_svq_driver_area_size(svq),
-+                               PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
-+                               -1, 0);
-+        desc_size = sizeof(vring_desc_t) * svq->vring.num;
-+        svq->vring.avail = (void *)((char *)svq->vring.desc + desc_size);
-+        svq->vring.used = mmap(NULL, vhost_svq_device_area_size(svq),
-+                               PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
-+                               -1, 0);
-+    }
-+
-+    svq->desc_state = g_new0(SVQDescState, svq->num_free);
-+    svq->desc_next = g_new0(uint16_t, svq->num_free);
-+    for (unsigned i = 0; i < svq->num_free - 1; i++) {
-         svq->desc_next[i] = cpu_to_le16(i + 1);
-     }
- }
-@@ -776,8 +801,13 @@ void vhost_svq_stop(VhostShadowVirtqueue *svq)
-     svq->vq = NULL;
-     g_free(svq->desc_next);
-     g_free(svq->desc_state);
--    munmap(svq->vring.desc, vhost_svq_driver_area_size(svq));
--    munmap(svq->vring.used, vhost_svq_device_area_size(svq));
-+
-+    if (svq->is_packed) {
-+        munmap(svq->vring_packed.vring.desc, vhost_svq_memory_packed(svq));
-+    } else {
-+        munmap(svq->vring.desc, vhost_svq_driver_area_size(svq));
-+        munmap(svq->vring.used, vhost_svq_device_area_size(svq));
-+    }
-     event_notifier_set_handler(&svq->hdev_call, NULL);
- }
- 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
-index ee1a87f523..03b722a186 100644
---- a/hw/virtio/vhost-shadow-virtqueue.h
-+++ b/hw/virtio/vhost-shadow-virtqueue.h
-@@ -67,6 +67,9 @@ struct vring_packed {
- 
- /* Shadow virtqueue to relay notifications */
- typedef struct VhostShadowVirtqueue {
-+    /* True if packed virtqueue */
-+    bool is_packed;
-+
-     /* Virtio queue shadowing */
-     VirtQueue *vq;
- 
-@@ -150,6 +153,7 @@ void vhost_svq_get_vring_addr(const VhostShadowVirtqueue *svq,
-                               struct vhost_vring_addr *addr);
- size_t vhost_svq_driver_area_size(const VhostShadowVirtqueue *svq);
- size_t vhost_svq_device_area_size(const VhostShadowVirtqueue *svq);
-+size_t vhost_svq_memory_packed(const VhostShadowVirtqueue *svq);
- 
- void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
-                      VirtQueue *vq, VhostIOVATree *iova_tree);
--- 
-2.45.2
+Thanks,
+Sahil
+
 
 
