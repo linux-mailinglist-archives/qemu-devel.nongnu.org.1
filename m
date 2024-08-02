@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B939A9458EF
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 09:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6057945922
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 09:46:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZmpH-0000RM-Gb; Fri, 02 Aug 2024 03:35:47 -0400
+	id 1sZmyx-0004MU-DK; Fri, 02 Aug 2024 03:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1sZmpE-0000I8-Sa
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 03:35:45 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sZmyu-0004L7-Ah
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 03:45:44 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1sZmpC-0006vW-Rk
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 03:35:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722584143; x=1754120143;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=K7Le+SN/xC2gk5hunIyvYAHQePh0F2RhxsYuIxUG3ws=;
- b=krnGqc4hgc7cbZgjDILoVe3D2yz+ZavdZrjHc0sKTgrN4HgSxiP+u8YP
- H5pcDTdmNfQ9hQLrinFqJ6fplddvAEvLnhfjllt2lP+BWfnDzcNclxKS4
- 0EN51wqYNtOHp4OAygwq5p+Ce90rBEjlPqF4vDlptdQqp839DeNHz9FL7
- tzoaj1BW2cJY+eMJrX9C9h/pK5VZPiuV1W2Q7ILCOS8Qhqf8UFXcT7zx7
- nv1vLh4kvthmNKw/7PA3hsEgvUXeD++R4/iejewhnL8mghLhvSfP0WKTI
- qBSajCK+JnLYoAAxmT0utlV1ssgQyQEEjTStgZPD9bik7d5vXSXkphkgp w==;
-X-CSE-ConnectionGUID: fRFZjv4ATqWQ1rJtWE/7qA==
-X-CSE-MsgGUID: KeACpK65T6mDKycM0AHYhw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="43103849"
-X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; d="scan'208";a="43103849"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Aug 2024 00:35:41 -0700
-X-CSE-ConnectionGUID: kf1VhOQCS+O94Dh7Hv1Cfw==
-X-CSE-MsgGUID: L9CYua6ZQra0uySHItN0yg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; d="scan'208";a="59426748"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.26])
- ([10.124.240.26])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Aug 2024 00:35:38 -0700
-Message-ID: <d987ea0e-da52-403f-b183-95f0ff453504@intel.com>
-Date: Fri, 2 Aug 2024 15:35:35 +0800
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sZmys-0004G1-7p
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 03:45:44 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A443380425;
+ Fri,  2 Aug 2024 10:45:13 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 48F46119A8D;
+ Fri,  2 Aug 2024 10:45:38 +0300 (MSK)
+Message-ID: <162f8e89-1f1d-465d-a787-8abd565ce0e3@tls.msk.ru>
+Date: Fri, 2 Aug 2024 10:45:38 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] target/i386: Always set leaf 0x1f
-To: Manish <manish.mishra@nutanix.com>, Igor Mammedov <imammedo@redhat.com>
-Cc: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org,
- berrange@redhat.com, zhao1.liu@intel.com, pbonzini@redhat.com,
- bob.ball@nutanix.com, prerna.saxena@nutanix.com
-References: <20240724075226.212882-1-manish.mishra@nutanix.com>
- <20240724110004.389c1a0c@imammedo.users.ipa.redhat.com>
- <21ca5c19-677b-4fac-84d4-72413577f260@nutanix.com>
- <6e65dbb2-461e-44f4-842c-249c7b333885@intel.com> <Zqn6mNuCH4/HJoO/@lent>
- <bda03736-ade0-46a9-977f-1ae368374555@intel.com>
- <d7de1729-e497-4913-be8e-8938e83b3a2a@nutanix.com>
- <20240801122537.4307ea77@imammedo.users.ipa.redhat.com>
- <e9f61d7d-2f72-4644-ba9f-241672d27cda@intel.com>
- <4bcae915-5812-4465-8ce0-dca787cc4860@nutanix.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <4bcae915-5812-4465-8ce0-dca787cc4860@nutanix.com>
+Subject: Re: [PULL 3/4] target/arm: Handle denormals correctly for FMOPA
+ (widening)
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20240801142322.3948866-1-peter.maydell@linaro.org>
+ <20240801142322.3948866-4-peter.maydell@linaro.org>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240801142322.3948866-4-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,97 +83,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/2024 12:46 AM, Manish wrote:
+01.08.2024 17:23, Peter Maydell wrote:
+> The FMOPA (widening) SME instruction takes pairs of half-precision
+> floating point values, widens them to single-precision, does a
+> two-way dot product and accumulates the results into a
+> single-precision destination.  We don't quite correctly handle the
+> FPCR bits FZ and FZ16 which control flushing of denormal inputs and
+> outputs.  This is because at the moment we pass a single float_status
+> value to the helper function, which then uses that configuration for
+> all the fp operations it does.  However, because the inputs to this
+> operation are float16 and the outputs are float32 we need to use the
+> fp_status_f16 for the float16 input widening but the normal fp_status
+> for everything else.  Otherwise we will apply the flushing control
+> FPCR.FZ16 to the 32-bit output rather than the FPCR.FZ control, and
+> incorrectly flush a denormal output to zero when we should not (or
+> vice-versa).
 > 
-> On 01/08/24 8:41 pm, Xiaoyao Li wrote:
->> !-------------------------------------------------------------------|
->>  CAUTION: External Email
->>
->> |-------------------------------------------------------------------!
->>
->> On 8/1/2024 6:25 PM, Igor Mammedov wrote:
->>> On Thu, 1 Aug 2024 15:36:10 +0530
->>> Manish <manish.mishra@nutanix.com> wrote:
->>>
->>>> On 31/07/24 9:01 pm, Xiaoyao Li wrote:
->>>>> !-------------------------------------------------------------------|
->>>>>   CAUTION: External Email
->>>>>
->>>>> |-------------------------------------------------------------------!
->>>>>
->>>>> On 7/31/2024 4:49 PM, John Levon wrote:
->>>>>> On Wed, Jul 31, 2024 at 03:02:15PM +0800, Xiaoyao Li wrote:
->>>>>>>> Windows does not expect 0x1f to be present for any CPU model. But
->>>>>>>> if it
->>>>>>>> is exposed to the guest, it expects non-zero values.
->>>>>>>
->>>>>>> Please fix Windows!
->>>>>>
->>>>>> A ticket has been filed with MSFT, we are aware this is a guest bug.
->>>>>>
->>>>>> But that doesn't really help anybody trying to use Windows right now.
->>>>>
->>>>> For existing buggy Windows, we can still introduce
->>>>> "cpuid-0x1f-enforce" but not make it default on.
->>>>>
->>>>> People want to boot the buggy Windows needs to opt-in it themselves
->>>>> via "-cpu xxx,cpuid-0x1f-enforce=on". This way, we don't have live
->>>>> migration issue and it doesn't affect anything.
->>>>
->>>>
->>>> Yes, that makes sense, I will send a updated patch by tomorrow if no 
->>>> one
->>>> has any objection with this.
->>>
->>> I'd rename it to
->>>     x-have-cpuid-0x1f-leaf
->>> (x-) to reflect that it's not stable/maintained and subject
->>> to be dropped in future
->>>
->>> Also please clearly spell out that it's a temporary workaround for ...
->>> in commit message.
->>
->> I have a patch at hand, to introduce enable_cpuid_0x1f similar as 
->> enable_cpuid_0xb, for TDX:
->>
->> https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_intel-2Dstaging_qemu-2Dtdx_commit_de08fd30926bc9d7997af6bd12cfff1b998da8b7&d=DwIDaQ&c=s883GpUCOChKOHiocYtGcg&r=c4KON2DiMd-szjwjggQcuUvTsPWblztAL0gVzaHnNmc&m=CIrxjRd0KG4ww4BtSxZysWS0tFYfPGTRBG731EmlUcy7BFlAw3-5PLp2SlKPR83m&s=2gKDZXpqB7wE8v0vtN8l65WBqTtXOUJ-FkMblXcT_Ws&e=
->> It is not a temporary solution. So I would suggest to drop (x-).
->> If no objection, I think Manish can start from my patch and it only 
->> misses a property definition for windows case:
->>
->>   DEFINE_PROP_BOOL("cpuid-0x1f", X86CPU, enable_cpuid_0x1f, false);
->>
->>
-> Thanks Xiaoyao, I see your patch does what we require but i am not able 
-> to track these patches, are these in line to be merged soon? We need 
-> this urgently. Also as it is just a single line change on top of your 
-> changes, how i manage my change? Should i wait for you to merge and then 
-> send patch or you will be fine to directly include it in your series?
+> (In commit 207d30b5fdb5b we tried to fix the FZ handling but
+> didn't get it right, switching from "use FPCR.FZ for everything" to
+> "use FPCR.FZ16 for everything".)
+> 
+> Pass the CPU env to the sme_fmopa_h helper instead of an fp_status
+> pointer, and have the helper pass an extra fp_status into the
+> f16_dotadd() function so that we can use the right status for the
+> right parts of this operation.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 207d30b5fdb5 ("target/arm: Use FPST_F16 for SME FMOPA (widening)")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2373
 
-Sent it:
+I know it's too late already, but it looks like this Fixes needs to be:
+Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
 
-https://lore.kernel.org/qemu-devel/20240802072426.4016194-1-xiaoyao.li@intel.com/
+FWIW.
 
-We can continue the discussion from there.
+Thanks,
 
-> 
->>
->>>
->>>>
->>>>>> regards
->>>>>> john
->>>>
->>>>
->>>> Thanks
->>>>
->>>> Manish Mishra
->>>>
->>>
->>
-> 
-> Thanks
-> 
-> Manish Mishra
-> 
+/mjt
+
+-- 
+GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
+New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
+Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
+Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
 
 
