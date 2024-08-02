@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F9E946516
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 23:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A116994651E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 23:39:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZzsK-0006ax-0X; Fri, 02 Aug 2024 17:31:48 -0400
+	id 1sZzz0-0003Z5-Ie; Fri, 02 Aug 2024 17:38:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzsC-0006BD-Su
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:31:40 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzyx-0003Wi-Mw
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:38:39 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzsB-0003Jo-9u
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:31:40 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a7aa4bf4d1eso225394866b.0
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 14:31:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzyw-0006aI-4r
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:38:39 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a7d26c2297eso1083087566b.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 14:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722634297; x=1723239097; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=u0NPDPj0IuFlNwdkUvZuUBMEuKlzPRqWqvQfGq6P0Mw=;
- b=hlR1rTwMuCjQ1vqIexsEobHqoFSkgl8W/83FOfM0baAhlj8TyFce7pQmUrd/iWZuqN
- m+vcXobzYcuO7sQpw1YTLeofWXNAab5iGYdaBVyNf+dlZ7Rh0IF9xyP/UO9QMsX/ufTK
- zh5tXcz6oOdNByASEY1u4P+GSWDNKMB+WuEOSqYFTuco6urCVrhtQcLiMWYCr+7SLS6Z
- j4v8pqXXQVWS0hGqHfGuVaAkrrgq2NOCy2ylWtxSBrSEa7JNLvLhxhBQGzsqzn5FCqB4
- WTVllGTkFMtXHPE3xG23Glhd/FTJypxcu6ArhzodcvtfbJZPOruT35eoBbOkFAzpUg7q
- A3Bw==
+ d=linaro.org; s=google; t=1722634716; x=1723239516; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DrMy0r6qtp0ap9X+3XwWcJzzskVnRzE9X486ESn9B64=;
+ b=mXCfSPDoqNy72z1FvLn5X2NTr1xys+Da9fMRVkGa3qAhvztXuND/Z3Qd+6A1u4MSAM
+ FyLTlO8VvkvmG6xqAW1wWo8hbZHJtyVWt5xElO+80a0s24QGjD/bOrTrMhWZQJkr1xNW
+ xZuu7X6oXieKq4PhMisYXAWgwYV+kLR/XNy+taEV4bJ7avqxHflPZxyUYIpc6AP8iDEc
+ awQcyI1cCozK7DrBaiNPs8eI+XHjRP05gB/ni6IoXU2D2aJxG3MZ3gdGTmHcN8IzC8al
+ uhxuRj5WCJ77gCJ8562z5FEV2oNu8JROn365iJVI7pEhu2UTZKFe4E5/1l/urDkJcos/
+ lldQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722634297; x=1723239097;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=u0NPDPj0IuFlNwdkUvZuUBMEuKlzPRqWqvQfGq6P0Mw=;
- b=tbzvz1q6SlVRNtSTo2n4Rw5D9EICRPbOkSSO1l6Ig9U7gED+M3e5RKrn1+zVlE43lh
- LwhKrko5IVIlNrVP+yRLB+UdE0x9rsuJpEoOf2OdyFYgcEaL9IfA+/UkKBkB6RfUv9dG
- tllt+KyTsmvIuWoiaoQ6Yv6R0oG8fj987DxFDK0QSQw2+VvzWqWMbk9Kc6j1Xa+Dqrjv
- wmbiOZmRLVBb5GzMPG31Aih9tdwAvBb3rvPEA9FrOH/KvLQMMJ6AOSdijFYPysmThZwQ
- Z4SpOYLMGq5B2zuihn2rFoXuGKvS5+kzG/RH83Rv9UAZGBI+p0e8ghCUY9t8TyN4DK5a
- zVFQ==
-X-Gm-Message-State: AOJu0YwviF0OyWWoRGYRU1uyOWCdz2f3YPxFO6tFoU/WkJW5IV+WMOAs
- GjpHmWPLM8sVOWetrQdFCHkB6t+EudGbk3yYws7sZ7gDeEtLcraOjFEzHPpLEWj5/kNBu9vtIiU
- Z
-X-Google-Smtp-Source: AGHT+IFS9NpJSAx4q+mibUMjVFBO4rE4GFznOOlWtLgN9YK2IG3luz44QV/WrVXF8nLhH7Ra08Y1yg==
-X-Received: by 2002:a17:907:72c5:b0:a7a:929f:c0d6 with SMTP id
- a640c23a62f3a-a7dc508005bmr388290466b.38.1722634297150; 
- Fri, 02 Aug 2024 14:31:37 -0700 (PDT)
-Received: from m1x-phil.lan (cvl92-h01-176-184-49-210.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1722634716; x=1723239516;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DrMy0r6qtp0ap9X+3XwWcJzzskVnRzE9X486ESn9B64=;
+ b=XMFEqyjXxgOd0RG4fD9SNlbfjDUcuHpoD275hKhhlHi5dM87/7FG+tYj/yLrwB240h
+ yxJbtjUwaDUpAuZuPN8wO1CNQcHElVmSEixRQSJ/RfpcPkC7pkpc1ZeNeSa3/XQg6r+R
+ Dp+KMatncgv0MVnxayk0eq3o+IAKPJw6F3y1cT71G3v9Szws/fDaDGgB/mUc/B+LPSYC
+ GJecotiv0zRATvgjXVndcZKw+E4f6XVs+zgF32WGSVNIJySjd+aYzBQNAKfKaa0i2gdR
+ 4V1m6NhSu8M6jtPTJAWuaaA1DMrwr9/mfTKRtD4sWIFFghc4a7M1Z88u4TtlXFaBpwuo
+ dzQw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVVSxNa2BKA5G28kXqIg5CcKxA2U0CFAjy9APN6HFZsXaFcfpgnAYZSMK726H56z1lnyhhBnoctJWsEoIotl8F7o2q6grg=
+X-Gm-Message-State: AOJu0YwvYiX9wROqx6xWI4OTgJqjqlGksOy7SrQRSXCCYbWsDzeMte4p
+ 2zl6Ar2rEp9J6uNX6mKAW3ZIZxytW9UkkEL+J07UFohuBEWpBYL5AHHFOJAXq9k=
+X-Google-Smtp-Source: AGHT+IGb5vUO59oRaIm9psCWcmZxzQ67NAg0sT5kJMWkNwKGpg7Rz58sktsg97dIBF7S5GKliqMKAA==
+X-Received: by 2002:a17:906:c115:b0:a7a:97ca:3056 with SMTP id
+ a640c23a62f3a-a7dc4e56bffmr346101466b.16.1722634716155; 
+ Fri, 02 Aug 2024 14:38:36 -0700 (PDT)
+Received: from [192.168.69.100] (cvl92-h01-176-184-49-210.dsl.sta.abo.bbox.fr.
  [176.184.49.210]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9d45400sm140676266b.141.2024.08.02.14.31.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 Aug 2024 14:31:36 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH-for-9.1 v5 2/2] hw/pci-host/gt64120: Reset config registers
- during RESET phase
-Date: Fri,  2 Aug 2024 23:31:22 +0200
-Message-ID: <20240802213122.86852-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240802213122.86852-1-philmd@linaro.org>
-References: <20240802213122.86852-1-philmd@linaro.org>
+ a640c23a62f3a-a7dc9bc4219sm139530366b.30.2024.08.02.14.38.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Aug 2024 14:38:35 -0700 (PDT)
+Message-ID: <571a2dd5-16f0-4fcf-aa3f-aa758bef3c45@linaro.org>
+Date: Fri, 2 Aug 2024 23:38:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] util: Refactor json-writer's string sanitizer to be
+ public
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, rjones@redhat.com,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240802194156.2131519-4-eblake@redhat.com>
+ <20240802194156.2131519-5-eblake@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240802194156.2131519-5-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,67 +96,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reset config values in the device RESET phase, not only once
-when the device is realized, because otherwise the device can
-use unknown values at reset.
+On 2/8/24 21:26, Eric Blake wrote:
+> My next patch needs to convert text from an untrusted input into an
+> output representation that is suitable for display on a terminal is
+> useful to more than just the json-writer; the text should normally be
+> UTF-8, but blindly allowing all Unicode code points (including ASCII
+> ESC) through to a terminal risks remote-code-execution attacks on some
+> terminals.  Extract the existing body of json-writer's quoted_strinto
+> a new helper routine mod_utf8_sanitize, and generalize it to also work
+> on data that is length-limited rather than NUL-terminated.  [I was
+> actually surprised that glib does not have such a sanitizer already -
+> Google turns up lots of examples of rolling your own string
+> sanitizer.]
+> 
+> If desired in the future, we may want to tweak whether the output is
+> guaranteed to be ASCII (using lots of \u escape sequences, including
+> surrogate pairs for code points outside the BMP) or if we are okay
+> passing printable Unicode through (we still need to escape control
+> characters).  But for now, I went for minimal code churn, including
+> the fact that the resulting function allows a non-UTF-8 2-byte synonym
+> for U+0000.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   include/qemu/unicode.h |  3 ++
+>   qobject/json-writer.c  | 47 +----------------------
+>   util/unicode.c         | 84 ++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 88 insertions(+), 46 deletions(-)
 
-Since we are adding a new reset method, use the preferred
-Resettable API (for a simple leaf device reset, a
-DeviceClass::reset method and a ResettableClass::reset_hold
-method are essentially identical).
+Preferably moving the docstring help to the header,
 
-Reported-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/pci-host/gt64120.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index 573d2619ee..33607dfbec 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -1217,17 +1217,24 @@ static void gt64120_pci_realize(PCIDevice *d, Error **errp)
- {
-     /* Values from chapter 17.16 "PCI Configuration" */
- 
--    pci_set_word(d->config + PCI_COMMAND, 0);
--    pci_set_word(d->config + PCI_STATUS,
--                 PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
--    pci_config_set_prog_interface(d->config, 0);
--
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_0, 0xfffff008); /* SCS[1:0] */
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_1, 0xfffff008); /* SCS[3:2] */
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_2, 0xfffff008); /* CS[2:0] */
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_3, 0xfffff008); /* CS[3], BootCS */
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_4, 0xfffff000); /* ISD MMIO */
-     pci_set_long(d->wmask + PCI_BASE_ADDRESS_5, 0xfffff001); /* ISD I/O */
-+}
-+
-+static void gt64120_pci_reset_hold(Object *obj, ResetType type)
-+{
-+    PCIDevice *d = PCI_DEVICE(obj);
-+
-+    /* Values from chapter 17.16 "PCI Configuration" */
-+
-+    pci_set_word(d->config + PCI_COMMAND, 0);
-+    pci_set_word(d->config + PCI_STATUS,
-+                 PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
-+    pci_config_set_prog_interface(d->config, 0);
- 
-     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
-@@ -1243,7 +1250,9 @@ static void gt64120_pci_class_init(ObjectClass *klass, void *data)
- {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-+    rc->phases.hold = gt64120_pci_reset_hold;
-     k->realize = gt64120_pci_realize;
-     k->vendor_id = PCI_VENDOR_ID_MARVELL;
-     k->device_id = PCI_DEVICE_ID_MARVELL_GT6412X;
--- 
-2.45.2
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
