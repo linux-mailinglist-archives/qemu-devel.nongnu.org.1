@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A35945B65
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 11:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C56B945B7A
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 11:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZotc-00089Y-9g; Fri, 02 Aug 2024 05:48:24 -0400
+	id 1sZovY-0007DE-Qb; Fri, 02 Aug 2024 05:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sZotZ-00088R-AW
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 05:48:21 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1sZovN-00075L-LE
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 05:50:14 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sZotX-000662-G7
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 05:48:21 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1fd66cddd4dso71868115ad.2
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 02:48:17 -0700 (PDT)
+ id 1sZovM-0001WI-4R
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 05:50:13 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1fc5549788eso63654135ad.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 02:50:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722592096; x=1723196896; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722592211; x=1723197011; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=MyXbJajJbGZroM/TtRn5eqWOwHNX10+Vdq5dPkdeSWo=;
- b=L9l8ZBZ83hugGygSzZ5A+5WvRWKU+Xu9YKWrW2trk5dUpJv41bPUjSVw91GJr9WPlS
- i0nZruECVc+XJMVAKJsUDhAUi/5oXdDSg+wbVVidni/Iv8AkCcZ04g5EmQ8HdWCGQTBT
- wSh29TmuZbYzkHmAIftVfUjRE/XF5DfcSwHJIO4+6A4jgzKzbjMyFL16K+3fI0zuiG9s
- Ezd+iwfhJV68QUuEiQnf+fcYv2Ro4Vng2HoLg6H3XXAmVrSE2hbtJpoa1hP7A2EL93yL
- m6xratkfJp2pXvKaL8AUstP8bqsJ00RarppMnlAVj5IK96tZGcQSitm/TH7zjenJFOwc
- jMow==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=iL8zIXOgW+JeIC4273pCkQw1ENrYCzK7uuoMXuKFmLA=;
+ b=DRkdSo+ZAveQ1o+ZLErpXNs/SDZD5zvB4VRFZdRaT/Rgn/qEPL2+6T+GsuvFyHzxvB
+ z3aBXLHEWQ4Ibkzvk3L/6SDjzJKt76+2xDmdoaD2f67dFEyXQrTpVF5EXpYe2Lh4Qt1y
+ 5XB+2o2Qt4f+sD6qM6j0pIa1wwfWvned8WGeTG3qnKXAD5OHH2TGwPIIk5sdXx8cxKGT
+ 5/unQLKFY9v0MkjGMIGOfNHQ89KcxuLiHJpnaxTRnefFHfKCNwTCu+f7It0aNwpgBm15
+ V9HYZeR/46QPnQI0ghR5e5W6kTuPcnpMEasyaGbl4NKs4e+2Sj+RwyJnCwwDAYwbcs2h
+ AbqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722592096; x=1723196896;
+ d=1e100.net; s=20230601; t=1722592211; x=1723197011;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MyXbJajJbGZroM/TtRn5eqWOwHNX10+Vdq5dPkdeSWo=;
- b=pa2GEC1wfzqcS4/nDmyWU3zwlUt875AdnN0fskXR/2n4CgDX5eNIGxzlU2SKEeHurp
- +VPqn3x1IBGjMC6ngdW7nkNQvtlnIwEaI2x9WXOlHInFSkxKxaG1cqBg71kEQdUuCqjC
- f5gMJbEWyTe+3P242RyMrqf3d/y5FlURy+JR1J0RHyQMg9ubAlSM7U3bYfsuipy9jJ8W
- dym/n1NKuXjxPyDvhT6fjbTyHv5dyjhNMTY9gUS9HE0pyvdimgNJfQlmL/987vBlXtDM
- EeM2/HQE+xGLBZSc8JpXe1MhIaTJegy6d/8y4BwVmfVVrA7w/9FqGodYs51oUv/1C7VI
- F3Fw==
+ bh=iL8zIXOgW+JeIC4273pCkQw1ENrYCzK7uuoMXuKFmLA=;
+ b=Ciyffd70ZIwyULOYJNXi71JGVsmX7KqFWSd0kDkOBpm0p9aGXgR42IZdHhzesUhIJ5
+ wDgXToe6nsGNb9EpYfTlyLbSZLVohatLtz99ZHLP3uvauS7PJQni0ktSI8rBOkr3p0HX
+ T++BRJglGJqsOBQDj4dMIHpPNnRWSxHNBQ0AawTb6ee4CQCEFu7QZAXXpuV7yWJ6xgmt
+ Lvk/Jt/HWb3OwNUjzu3sMMO71X7SRW2dn5Pn2w+8apjmXT/Btjt/4ZkNmzWLYixKTvFp
+ 1Xivv+Mif4kaF+eS7FuM709phWr/kzXDH6kqIXu8mSWEmUNMCxGTsxi5R5JlMV6Kx+87
+ 0Xlg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQiMvz/Q7MnKysCBp0pnn3LoOnfcIGQkP/FivPUMVP/sBnlvH/C+/Cf5Al4WsMj2+1PBd5m2hahL0J@nongnu.org
-X-Gm-Message-State: AOJu0YzyCKtRauIkHNHGnjGMKeGKK/333XrtkjxjkyPt774ZrkDbJMKd
- SZA0hV4N0vcJ81tgefc/vsWOIDUweHCEW6zCDzK1wp1mtpsVceYFzNk/UYRT21Y=
-X-Google-Smtp-Source: AGHT+IGBOlwCm2mDADiPA7gioRS5IHMZqj6rIzO3xb7Cj9doFazdeG4m9TNNcj1L8Dv1PMToGmbo0Q==
-X-Received: by 2002:a17:902:d502:b0:1ff:4fa9:1434 with SMTP id
- d9443c01a7336-1ff57258aafmr42915945ad.19.1722592096119; 
- Fri, 02 Aug 2024 02:48:16 -0700 (PDT)
+ AJvYcCWlppPZ8ymAoCddo4Vb+kmzvH4PhH4FMuLGrEsHvkdnjElrZOwc4kZLdib5iltGiHZlgBaLaE5QLD8m1KZE1Y71waCyNb8=
+X-Gm-Message-State: AOJu0YxXHQ3iMzntql2coDjz12DK3FTfxt3JN/iz2Se7sVc7JqiVzMIb
+ RpSZwTjnCaZQfYXoPPKDvDRmEYop9VGOSsmelOoxn+hojR2GxtcR6NRzna48aqr9S+PBEls4hKl
+ Pwqg85w==
+X-Google-Smtp-Source: AGHT+IFkz1K+asSWPBEDXz/dhX2JtciaIegI6JNvPl15cM4HRmcLvctd3TtAKbP0IcxZc24HBlw1zg==
+X-Received: by 2002:a05:6a21:789c:b0:1c4:a67d:3b24 with SMTP id
+ adf61e73a8af0-1c6995cbc34mr4213753637.25.1722592210507; 
+ Fri, 02 Aug 2024 02:50:10 -0700 (PDT)
 Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff59059f9asm13019375ad.131.2024.08.02.02.48.14
+ d9443c01a7336-1ff5905c86esm13112625ad.168.2024.08.02.02.50.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Aug 2024 02:48:15 -0700 (PDT)
-Message-ID: <01fe2ff5-d630-4608-9ae1-cce62f290594@linaro.org>
-Date: Fri, 2 Aug 2024 19:48:11 +1000
+ Fri, 02 Aug 2024 02:50:09 -0700 (PDT)
+Message-ID: <403570be-bbea-4165-b0c4-b7c5dfdf1a80@linaro.org>
+Date: Fri, 2 Aug 2024 19:50:04 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/8] Net patches
-To: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-References: <20240802031929.44060-1-jasowang@redhat.com>
+Subject: Re: [PATCH] hvf: arm: Fix hvf_sysreg_read_cp() call
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240802-hvf-v1-1-e2c0292037e5@daynix.com>
+ <CAFEAcA_-bfGnQRc6cjp8Ej3WKTJGkKfELzv5j3Zc-2vyNHm9ng@mail.gmail.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240802031929.44060-1-jasowang@redhat.com>
+In-Reply-To: <CAFEAcA_-bfGnQRc6cjp8Ej3WKTJGkKfELzv5j3Zc-2vyNHm9ng@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,20 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/24 13:19, Jason Wang wrote:
-> The following changes since commit 31669121a01a14732f57c49400bc239cf9fd505f:
+On 8/2/24 18:44, Peter Maydell wrote:
+> On Fri, 2 Aug 2024 at 09:37, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> Commit 05b8d7249109 ("hvf: arm: Do not advance PC when raising an
+>> exception") changed val from uint64_t to a pointer to uint64_t in
+>> hvf_sysreg_read(), but didn't change its hvf_sysreg_read_cp() call.
+>>
+>> Fixes: 05b8d7249109 ("hvf: arm: Do not advance PC when raising an exception")
+>> Reported-by: Richard Henderson <richard.henderson@linaro.org>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > 
->    Merge tag 'pull-target-arm-20240801' ofhttps://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-08-02 08:18:37 +1000)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/jasowang/qemu.git tags/net-pull-request
-> 
-> for you to fetch changes up to 64f75f57f9d2c8c12ac6d9355fa5d3a2af5879ca:
-> 
->    net: Reinstate '-net nic, model=help' output as documented in man page (2024-08-02 11:09:52 +0800)
+> Richard: I'm not going to be back at work til next Thursday:
+> feel free to grab this and apply directly to fix the cirrus
+> build.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Will do, thanks for the heads up.
 
 
 r~
