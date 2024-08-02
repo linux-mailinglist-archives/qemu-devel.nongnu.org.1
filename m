@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FB294569C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 05:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DA994569F
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 05:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZipo-0003ta-KG; Thu, 01 Aug 2024 23:20:04 -0400
+	id 1sZips-00047G-N1; Thu, 01 Aug 2024 23:20:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sZipl-0003jf-HQ
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:01 -0400
+ id 1sZipo-0003rq-KO
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sZipj-0008RS-Ez
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:01 -0400
+ id 1sZipk-0008Rg-FE
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 23:20:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722568798;
+ s=mimecast20190719; t=1722568799;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+e/f3N/cVvvaxPSwMQ5IefHh/4m0XF1vehCSZAYlYMk=;
- b=BhSX3cNPIzl1njMJWe1sgdmcdC5xBUJbM1TeY1ZyazcvGEBVJKhBuhYjhge/nVcdCWA3OD
- 4/MGsApACHCbV+d82H71vle64Btxgqtxag/7TQsSRVRu3kT0T3n5IUJ17saqmLqQcHbffm
- oklOi+5++zrhQzJ89hGuPFGl/Tn9Qwg=
+ bh=yH7Hhnxy+JZeYhNTYJSvoZ9X0We0m2TGS1abbdMhA+w=;
+ b=BZOJvwrfMIROmagTuBGH0rGHWGOBfdH4ByMb8bYWWfFoqmbMCnQN+YE4cWzxHf+Hy9oJqL
+ XFEbzednmpSPnfCGtAs7cTjY3ya1RSVtce15prhoYSb+LopmZqHP4Uq08j0UoDpPDssJc1
+ tT5ZMnLVwnAOSWgBxdhnZaRkrMUo6OQ=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-FVBuxm4YM06s-3ijMfYNLw-1; Thu,
- 01 Aug 2024 23:19:55 -0400
-X-MC-Unique: FVBuxm4YM06s-3ijMfYNLw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-BUoW7K4zMr6vrT31lF51mg-1; Thu,
+ 01 Aug 2024 23:19:58 -0400
+X-MC-Unique: BUoW7K4zMr6vrT31lF51mg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5F80A1955D48; Fri,  2 Aug 2024 03:19:52 +0000 (UTC)
+ id AE39A1955D4F
+ for <qemu-devel@nongnu.org>; Fri,  2 Aug 2024 03:19:56 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.229])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F3941300018D; Fri,  2 Aug 2024 03:19:46 +0000 (UTC)
+ id 36B6B300019D; Fri,  2 Aug 2024 03:19:52 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: thomas <east.moutain.yang@gmail.com>, qemu-stable@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 3/8] virtio-net: Fix network stall at the host side waiting for
- kick
-Date: Fri,  2 Aug 2024 11:19:24 +0800
-Message-ID: <20240802031929.44060-4-jasowang@redhat.com>
+Cc: Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 4/8] net: update netdev stream/dgram man page
+Date: Fri,  2 Aug 2024 11:19:25 +0800
+Message-ID: <20240802031929.44060-5-jasowang@redhat.com>
 In-Reply-To: <20240802031929.44060-1-jasowang@redhat.com>
 References: <20240802031929.44060-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
@@ -83,336 +84,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: thomas <east.moutain.yang@gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
 
-Patch 06b12970174 ("virtio-net: fix network stall under load")
-added double-check to test whether the available buffer size
-can satisfy the request or not, in case the guest has added
-some buffers to the avail ring simultaneously after the first
-check. It will be lucky if the available buffer size becomes
-okay after the double-check, then the host can send the packet
-to the guest. If the buffer size still can't satisfy the request,
-even if the guest has added some buffers, viritio-net would
-stall at the host side forever.
+Add the description of "-netdev stream" and "-netdev dgram" in the QEMU
+manpage.
 
-The patch enables notification and checks whether the guest has
-added some buffers since last check of available buffers when
-the available buffers are insufficient. If no buffer is added,
-return false, else recheck the available buffers in the loop.
-If the available buffers are sufficient, disable notification
-and return true.
+Add some examples on how to use them.
 
-Changes:
-1. Change the return type of virtqueue_get_avail_bytes() from void
-   to int, it returns an opaque that represents the shadow_avail_idx
-   of the virtqueue on success, else -1 on error.
-2. Add a new API: virtio_queue_enable_notification_and_check(),
-   it takes an opaque as input arg which is returned from
-   virtqueue_get_avail_bytes(). It enables notification firstly,
-   then checks whether the guest has added some buffers since
-   last check of available buffers or not by virtio_queue_poll(),
-   return ture if yes.
-
-The patch also reverts patch "06b12970174".
-
-The case below can reproduce the stall.
-
-                                       Guest 0
-                                     +--------+
-                                     | iperf  |
-                    ---------------> | server |
-         Host       |                +--------+
-       +--------+   |                    ...
-       | iperf  |----
-       | client |----                  Guest n
-       +--------+   |                +--------+
-                    |                | iperf  |
-                    ---------------> | server |
-                                     +--------+
-
-Boot many guests from qemu with virtio network:
- qemu ... -netdev tap,id=net_x \
-    -device virtio-net-pci-non-transitional,\
-    iommu_platform=on,mac=xx:xx:xx:xx:xx:xx,netdev=net_x
-
-Each guest acts as iperf server with commands below:
- iperf3 -s -D -i 10 -p 8001
- iperf3 -s -D -i 10 -p 8002
-
-The host as iperf client:
- iperf3 -c guest_IP -p 8001 -i 30 -w 256k -P 20 -t 40000
- iperf3 -c guest_IP -p 8002 -i 30 -w 256k -P 20 -t 40000
-
-After some time, the host loses connection to the guest,
-the guest can send packet to the host, but can't receive
-packet from the host.
-
-It's more likely to happen if SWIOTLB is enabled in the guest,
-allocating and freeing bounce buffer takes some CPU ticks,
-copying from/to bounce buffer takes more CPU ticks, compared
-with that there is no bounce buffer in the guest.
-Once the rate of producing packets from the host approximates
-the rate of receiveing packets in the guest, the guest would
-loop in NAPI.
-
-         receive packets    ---
-               |             |
-               v             |
-           free buf      virtnet_poll
-               |             |
-               v             |
-     add buf to avail ring  ---
-               |
-               |  need kick the host?
-               |  NAPI continues
-               v
-         receive packets    ---
-               |             |
-               v             |
-           free buf      virtnet_poll
-               |             |
-               v             |
-     add buf to avail ring  ---
-               |
-               v
-              ...           ...
-
-On the other hand, the host fetches free buf from avail
-ring, if the buf in the avail ring is not enough, the
-host notifies the guest the event by writing the avail
-idx read from avail ring to the event idx of used ring,
-then the host goes to sleep, waiting for the kick signal
-from the guest.
-
-Once the guest finds the host is waiting for kick singal
-(in virtqueue_kick_prepare_split()), it kicks the host.
-
-The host may stall forever at the sequences below:
-
-         Host                        Guest
-     ------------                 -----------
- fetch buf, send packet           receive packet ---
-         ...                          ...         |
- fetch buf, send packet             add buf       |
-         ...                        add buf   virtnet_poll
-    buf not enough      avail idx-> add buf       |
-    read avail idx                  add buf       |
-                                    add buf      ---
-                                  receive packet ---
-    write event idx                   ...         |
-    wait for kick                   add buf   virtnet_poll
-                                      ...         |
-                                                 ---
-                                 no more packet, exit NAPI
-
-In the first loop of NAPI above, indicated in the range of
-virtnet_poll above, the host is sending packets while the
-guest is receiving packets and adding buffers.
- step 1: The buf is not enough, for example, a big packet
-         needs 5 buf, but the available buf count is 3.
-         The host read current avail idx.
- step 2: The guest adds some buf, then checks whether the
-         host is waiting for kick signal, not at this time.
-         The used ring is not empty, the guest continues
-         the second loop of NAPI.
- step 3: The host writes the avail idx read from avail
-         ring to used ring as event idx via
-         virtio_queue_set_notification(q->rx_vq, 1).
- step 4: At the end of the second loop of NAPI, recheck
-         whether kick is needed, as the event idx in the
-         used ring written by the host is beyound the
-         range of kick condition, the guest will not
-         send kick signal to the host.
-
-Fixes: 06b12970174 ("virtio-net: fix network stall under load")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Wencheng Yang <east.moutain.yang@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 5166fe0ae46d ("qapi: net: add stream and dgram netdevs")
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/virtio-net.c        | 28 ++++++++++-------
- hw/virtio/virtio.c         | 64 +++++++++++++++++++++++++++++++++++---
- include/hw/virtio/virtio.h | 19 +++++++++--
- 3 files changed, 92 insertions(+), 19 deletions(-)
+ qemu-options.hx | 114 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 5635620a31..08aa0b65e3 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1641,24 +1641,28 @@ static bool virtio_net_can_receive(NetClientState *nc)
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 369ae81d7c..52143cfb8f 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -3353,6 +3353,120 @@ SRST
+                          -device e1000,netdev=n1,mac=52:54:00:12:34:56 \\
+                          -netdev socket,id=n1,mcast=239.192.168.1:1102,localaddr=1.2.3.4
  
- static int virtio_net_has_buffers(VirtIONetQueue *q, int bufsize)
- {
-+    int opaque;
-+    unsigned int in_bytes;
-     VirtIONet *n = q->n;
--    if (virtio_queue_empty(q->rx_vq) ||
--        (n->mergeable_rx_bufs &&
--         !virtqueue_avail_bytes(q->rx_vq, bufsize, 0))) {
--        virtio_queue_set_notification(q->rx_vq, 1);
--
--        /* To avoid a race condition where the guest has made some buffers
--         * available after the above check but before notification was
--         * enabled, check for available buffers again.
--         */
--        if (virtio_queue_empty(q->rx_vq) ||
--            (n->mergeable_rx_bufs &&
--             !virtqueue_avail_bytes(q->rx_vq, bufsize, 0))) {
++``-netdev stream,id=str[,server=on|off],addr.type=inet,addr.host=host,addr.port=port[,to=maxport][,numeric=on|off][,keep-alive=on|off][,mptcp=on|off][,addr.ipv4=on|off][,addr.ipv6=on|off]``
++    Configure a network backend to connect to another QEMU virtual machine or a proxy using a TCP/IP socket.
 +
-+    while (virtio_queue_empty(q->rx_vq) || n->mergeable_rx_bufs) {
-+        opaque = virtqueue_get_avail_bytes(q->rx_vq, &in_bytes, NULL,
-+                                           bufsize, 0);
-+        /* Buffer is enough, disable notifiaction */
-+        if (bufsize <= in_bytes) {
-+            break;
-+        }
++    ``server=on|off``
++        if ``on`` create a server socket
 +
-+        if (virtio_queue_enable_notification_and_check(q->rx_vq, opaque)) {
-+            /* Guest has added some buffers, try again */
-+            continue;
-+        } else {
-             return 0;
-         }
-     }
- 
-     virtio_queue_set_notification(q->rx_vq, 0);
++    ``addr.host=host,addr.port=port``
++        socket address to listen on (server=on) or connect to (server=off)
 +
-     return 1;
- }
- 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 397c261c3c..9e10cbc058 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -744,6 +744,60 @@ int virtio_queue_empty(VirtQueue *vq)
-     }
- }
- 
-+static bool virtio_queue_split_poll(VirtQueue *vq, unsigned shadow_idx)
-+{
-+    if (unlikely(!vq->vring.avail)) {
-+        return false;
-+    }
++    ``to=maxport``
++        if present, this is range of possible addresses, with port between ``port`` and ``maxport``.
 +
-+    return (uint16_t)shadow_idx != vring_avail_idx(vq);
-+}
++    ``numeric=on|off``
++        if ``on`` ``host`` and ``port`` are guaranteed to be numeric, otherwise a name resolution should be attempted (default: ``off``)
 +
-+static bool virtio_queue_packed_poll(VirtQueue *vq, unsigned shadow_idx)
-+{
-+    VRingPackedDesc desc;
-+    VRingMemoryRegionCaches *caches;
++    ``keep-alive=on|off``
++        enable keep-alive when connecting to this socket.  Not supported for passive sockets.
 +
-+    if (unlikely(!vq->vring.desc)) {
-+        return false;
-+    }
++    ``mptcp=on|off``
++        enable multipath TCP
 +
-+    caches = vring_get_region_caches(vq);
-+    if (!caches) {
-+        return false;
-+    }
++    ``ipv4=on|off``
++        whether to accept IPv4 addresses, default to try both IPv4 and IPv6
 +
-+    vring_packed_desc_read(vq->vdev, &desc, &caches->desc,
-+                           shadow_idx, true);
++    ``ipv6=on|off``
++        whether to accept IPv6 addresses, default to try both IPv4 and IPv6
 +
-+    return is_desc_avail(desc.flags, vq->shadow_avail_wrap_counter);
-+}
++    Example (two guests connected using a TCP/IP socket):
 +
-+static bool virtio_queue_poll(VirtQueue *vq, unsigned shadow_idx)
-+{
-+    if (virtio_device_disabled(vq->vdev)) {
-+        return false;
-+    }
++    .. parsed-literal::
 +
-+    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
-+        return virtio_queue_packed_poll(vq, shadow_idx);
-+    } else {
-+        return virtio_queue_split_poll(vq, shadow_idx);
-+    }
-+}
++        # first VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev stream,id=net0,server=on,addr.type=inet,addr.host=localhost,addr.port=1234
++        # second VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
++                      -netdev stream,id=net0,server=off,addr.type=inet,addr.host=localhost,addr.port=1234
 +
-+bool virtio_queue_enable_notification_and_check(VirtQueue *vq,
-+                                                int opaque)
-+{
-+    virtio_queue_set_notification(vq, 1);
++``-netdev stream,id=str[,server=on|off],addr.type=fd,addr.str=file-descriptor``
++    Configure a network backend to connect to another QEMU virtual machine or a proxy using a stream oriented socket file descriptor.
 +
-+    if (opaque >= 0) {
-+        return virtio_queue_poll(vq, (unsigned)opaque);
-+    } else {
-+        return false;
-+    }
-+}
++    ``server=on|off``
++        if ``on`` create a server socket
 +
- static void virtqueue_unmap_sg(VirtQueue *vq, const VirtQueueElement *elem,
-                                unsigned int len)
- {
-@@ -1442,9 +1496,9 @@ err:
-     goto done;
- }
- 
--void virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
--                               unsigned int *out_bytes,
--                               unsigned max_in_bytes, unsigned max_out_bytes)
-+int virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
-+                              unsigned int *out_bytes, unsigned max_in_bytes,
-+                              unsigned max_out_bytes)
- {
-     uint16_t desc_size;
-     VRingMemoryRegionCaches *caches;
-@@ -1477,7 +1531,7 @@ void virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
-                                         caches);
-     }
- 
--    return;
-+    return (int)vq->shadow_avail_idx;
- err:
-     if (in_bytes) {
-         *in_bytes = 0;
-@@ -1485,6 +1539,8 @@ err:
-     if (out_bytes) {
-         *out_bytes = 0;
-     }
++    ``addr.str=file-descriptor``
++        file descriptor number to use as a socket
 +
-+    return -1;
- }
- 
- int virtqueue_avail_bytes(VirtQueue *vq, unsigned int in_bytes,
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index d2a1938757..0fcbc5c0c6 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -273,9 +273,13 @@ void qemu_put_virtqueue_element(VirtIODevice *vdev, QEMUFile *f,
-                                 VirtQueueElement *elem);
- int virtqueue_avail_bytes(VirtQueue *vq, unsigned int in_bytes,
-                           unsigned int out_bytes);
--void virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
--                               unsigned int *out_bytes,
--                               unsigned max_in_bytes, unsigned max_out_bytes);
-+/**
-+ * Return <0 on error or an opaque >=0 to pass to
-+ * virtio_queue_enable_notification_and_check on success.
-+ */
-+int virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
-+                              unsigned int *out_bytes, unsigned max_in_bytes,
-+                              unsigned max_out_bytes);
- 
- void virtio_notify_irqfd(VirtIODevice *vdev, VirtQueue *vq);
- void virtio_notify(VirtIODevice *vdev, VirtQueue *vq);
-@@ -309,6 +313,15 @@ int virtio_queue_ready(VirtQueue *vq);
- 
- int virtio_queue_empty(VirtQueue *vq);
- 
-+/**
-+ * Enable notification and check whether guest has added some
-+ * buffers since last call to virtqueue_get_avail_bytes.
-+ *
-+ * @opaque: value returned from virtqueue_get_avail_bytes
-+ */
-+bool virtio_queue_enable_notification_and_check(VirtQueue *vq,
-+                                                int opaque);
++``-netdev dgram,id=str,remote.type=inet,remote.host=maddr,remote.port=port[,local.type=inet,local.host=addr]``
++    Configure a network backend to connect to a multicast address.
 +
- void virtio_queue_set_shadow_avail_idx(VirtQueue *vq, uint16_t idx);
- 
- /* Host binding interface.  */
++    ``remote.host=maddr,remote.port=port``
++        multicast address
++
++    ``local.host=addr``
++        specify the host address to send packets from
++
++    Example:
++
++    .. parsed-literal::
++
++        # launch one QEMU instance
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev dgram,id=net0,remote.type=inet,remote.host=224.0.0.1,remote.port=1234
++        # launch another QEMU instance on same "bus"
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
++                      -netdev dgram,id=net0,remote.type=inet,remote.host=224.0.0.1,remote.port=1234
++        # launch yet another QEMU instance on same "bus"
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:58 \\
++                      -netdev dgram,id=net0,remote.type=inet,remote.host=224.0.0.1,remote.port=1234
++
++``-netdev dgram,id=str,remote.type=inet,remote.host=maddr,remote.port=port[,local.type=fd,local.str=file-descriptor]``
++    Configure a network backend to connect to a multicast address using a UDP socket file descriptor.
++
++    ``remote.host=maddr,remote.port=port``
++        multicast address
++
++    ``local.str=file-descriptor``
++        File descriptor to use to send packets
++
++``-netdev dgram,id=str,local.type=inet,local.host=addr,local.port=port[,remote.type=inet,remote.host=addr,remote.port=port]``
++    Configure a network backend to connect to another QEMU virtual
++    machine or a proxy using a datagram oriented unix domain socket.
++
++    ``local.host=addr,local.port=port``
++        IP address to use to send the packets from
++
++    ``remote.host=addr,remote.port=port``
++        Destination IP address
++
++    Example (two guests connected using an UDP/IP socket):
++
++    .. parsed-literal::
++
++        # first VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev dgram,id=net0,local.type=inet,local.host=localhost,local.port=1234,remote.type=inet,remote.host=localhost,remote.port=1235
++        # second VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev dgram,id=net0,local.type=inet,local.host=localhost,local.port=1235,remote.type=inet,remote.host=localhost,remote.port=1234
++
++``-netdev dgram,id=str,local.type=fd,local.str=file-descriptor``
++    Configure a network backend to connect to another QEMU virtual
++    machine or a proxy using a datagram oriented socket file descriptor.
++
++    ``local.str=file-descriptor``
++        File descriptor to use to send packets
++
+ ``-netdev l2tpv3,id=id,src=srcaddr,dst=dstaddr[,srcport=srcport][,dstport=dstport],txsession=txsession[,rxsession=rxsession][,ipv6=on|off][,udp=on|off][,cookie64=on|off][,counter=on|off][,pincounter=on|off][,txcookie=txcookie][,rxcookie=rxcookie][,offset=offset]``
+     Configure a L2TPv3 pseudowire host network backend. L2TPv3 (RFC3931)
+     is a popular protocol to transport Ethernet (and other Layer 2) data
 -- 
 2.42.0
 
