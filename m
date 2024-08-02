@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEF4945E83
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 15:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9B6945E86
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 15:20:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZsAE-0000y3-Oz; Fri, 02 Aug 2024 09:17:46 -0400
+	id 1sZsCg-0007ov-MB; Fri, 02 Aug 2024 09:20:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZsAB-0000mG-6y
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:17:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sZsA9-00076O-17
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:17:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722604657;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7NeK4sv5AjBrzmr0WGfA6jrvyRWZG3TcLHeQXpfwEq8=;
- b=VE34ppJ/FsYOOURVpVBfBbhyfPtWxK8N0JUs2kvz+7KeVh/PBd+MnjR+9m/zGx604GLOO+
- bHtD6hNG0n0zjSJcSnVg4EthYqBOP/T6ZQyyvTlyEswGBk899sHQoia05XKY2yF6xAnNDC
- BJTYSQM5CzvvCkny402lg9Rg+EHnkEU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-325-vhFn5RekOWKgy_6DfxJMow-1; Fri, 02 Aug 2024 09:17:33 -0400
-X-MC-Unique: vhFn5RekOWKgy_6DfxJMow-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4280a434147so52624045e9.3
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 06:17:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sZsCe-0007oQ-HH
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:20:16 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sZsCc-0002TJ-VR
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:20:16 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7b396521ff6so3100530a12.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 06:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722604813; x=1723209613; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3fNA8hdVpqFkzAAVruxdEaQCr69Ceo77k/Rmj72x5IQ=;
+ b=H8yFoxfdv5T1FQjihoZgiTcbCFcnAGkMsEKUuPp/diBhWIgZvluvCdJA3HUa2ddanD
+ PMnK5loMzINxfY2JpA1p6W68G87DqXOhRpRK4I4D8oY5xYVdGJyL5l6Y0fk/PX2o+GDd
+ bDCZg8JxuieEiCZdgvi+srvB4bEzl7VcTl3RJ4rKK6F2HeeAk/swEJcMeZ9MR98pfQFX
+ 4kKSyqHFI73lhsuIHN9K9o0+UVXvNXinFWCUZbfegA6T74AaHeEC66HP+9Runzv2btNJ
+ +v/Jg8b2q1Qilu1JjduHQQJ+bAtusysWwCG0NBHKdF4hpcKJZJgVRULB41SuYyFarlx2
+ Bu0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722604652; x=1723209452;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7NeK4sv5AjBrzmr0WGfA6jrvyRWZG3TcLHeQXpfwEq8=;
- b=R6Eb3ddMOY5fzWQAx3r7AhkSQFAykhkVfB1dz4aru5BmgtUQSfWw5jsgzPzrahIwfN
- CBAafZIorJcOcvVLvVNKsgYW3UWHIQizaizV2WhWMjOxpsBSpIwH0oqjk+p51wDNA/3F
- 5zW6KFlAwgiDqq03Sb8okdFJdnmVv0jxP90IujECgH2RLvqHBK1qtgpxuxLOR/fjSR50
- WQz1Zt+E24ztRNFn+luOsM+DxcJ50/SnnyplDrm6YwgtVnjdekecLH0y9+RsDV48EBlw
- yXHRQXJge5BR7YP5b2Dx7qIulnxrA4SGDZRX2a23fTANQnxg/GwaFropE5BOMdc2Crfj
- A8CQ==
+ d=1e100.net; s=20230601; t=1722604813; x=1723209613;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3fNA8hdVpqFkzAAVruxdEaQCr69Ceo77k/Rmj72x5IQ=;
+ b=wHKqF7ddKD85gRvsSpeKj1njQxwwvf7mxjWGM7bJeUO8FtQ/Nj9/LEebl605zPREi1
+ rY5YsmCXCFNw2nC8drS3I8aw3iFCNQn+vyvHJeaoVi5Xa/RhXlu3sCrDg3fudTbU371+
+ ++8mSkHsIMF4NBXwswESi4YVVHql0IKnX3iTiu0IfQULkUVd/S6IVfpu3jFo9y/I8T8Q
+ txxJ5M8yzwWGf1nlHSxoAjWwdnIJrLh1gpHQRHeFK6SuQa5NLjAnbscJzgqPW9Zv247I
+ Yecjr2/TZemSSX8ueyF8OL5T9oBfVviCEh31hGRhNL+ApdW/OYIrWTLnRWJYiywU/Nni
+ /wcA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWdCbxWm/lPr9hyNtvA5xilQB3URKJE3N5hh/nTDJmu4XZlCdjfSGib3GqAVCO32CpKSEScqzafDQLJfeHoAfYoaGKSwl4=
-X-Gm-Message-State: AOJu0Yw5NiG+ZeAptdHNdDG329CXvkGnr+g2ANVd5Xhlpq7e38ERTUUW
- DkpXjKoJ3mtTe7PQyUykXdpv2Xzvmhj/q/6SmbLoU1sMNpM+6neY6CIG3KPv4xJzKXZPnmVdq8B
- CuFZSBX43kS09zcWpZAzlZjFWl0cXl9BwWTmgswwPEQjTG+Q2EO8f
-X-Received: by 2002:a05:600c:1c9a:b0:426:61e8:fb3b with SMTP id
- 5b1f17b1804b1-428e6b78d94mr21804815e9.27.1722604652289; 
- Fri, 02 Aug 2024 06:17:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVFga+VmlGqVsjo4C2MLsNVaCBkin3MBfeEA8mxi7a1vO66IKQlh9M8anStRHH8udR1LT+Ew==
-X-Received: by 2002:a05:600c:1c9a:b0:426:61e8:fb3b with SMTP id
- 5b1f17b1804b1-428e6b78d94mr21804525e9.27.1722604651458; 
- Fri, 02 Aug 2024 06:17:31 -0700 (PDT)
-Received: from redhat.com ([2.55.39.123]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-428e6e7cbd2sm33088825e9.38.2024.08.02.06.17.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 06:17:29 -0700 (PDT)
-Date: Fri, 2 Aug 2024 09:17:21 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Yuri Benditovich <yuri.benditovich@daynix.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Peter Xu <peterx@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, dmitry.fleytman@gmail.com,
- sriram.yagnaraman@ericsson.com, sw@weilnetz.de, yan@daynix.com,
- Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] vhost: Add VIRTIO_NET_F_RSC_EXT to vhost feature bits
-Message-ID: <20240802091627-mutt-send-email-mst@kernel.org>
-References: <20240802-rsc-v1-1-2b607bd2f555@daynix.com>
- <CAOEp5OfRw9DAryCM+Yfe_WceHOfe=A_vxnvZWN2hZBybj5NAeA@mail.gmail.com>
+ AJvYcCUp2XaAbSsaF6Y1rx+hoPMazLA7DhHcTUZLv8wfhUQvAWZUvt/xPsk1sGT+3jQ5UUIFGIi289yYO8qBtGYSbTfc/8wuj4Y=
+X-Gm-Message-State: AOJu0YxCIbOCkp7y84I8du6HT+TGO5+DoD7TTd/6cQJw1QHcMOjteUzK
+ MDmdFt9laRF53eZsk2CMaP1tLJVLhuLi0zuZk0q882fXd61yGJ1MUuz4bGmWE8k=
+X-Google-Smtp-Source: AGHT+IH12jgMWH7HJFxZEfFkcL4A1pK72aYlUQEH/d28WS5WM5nUHVpG8LRmOEeBMMawClLcRRWyag==
+X-Received: by 2002:a17:90b:4c4a:b0:2cf:fcce:5a15 with SMTP id
+ 98e67ed59e1d1-2cffcce5bcdmr3189198a91.28.1722604813084; 
+ Fri, 02 Aug 2024 06:20:13 -0700 (PDT)
+Received: from [192.168.1.113] ([203.56.128.103])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2cfdc42fa36sm5156616a91.15.2024.08.02.06.20.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Aug 2024 06:20:12 -0700 (PDT)
+Message-ID: <fe7e06e9-c10c-406d-b793-248dc80834df@linaro.org>
+Date: Fri, 2 Aug 2024 23:20:06 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOEp5OfRw9DAryCM+Yfe_WceHOfe=A_vxnvZWN2hZBybj5NAeA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/18] bsd-user: Define RISC-V register structures and
+ register copying
+To: Ajeet Singh <itachis6234@gmail.com>, qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark.corbin@embecsom.com>,
+ Ajeet Singh <itachis@FreeBSD.org>
+References: <20240802083423.142365-1-itachis@FreeBSD.org>
+ <20240802083423.142365-8-itachis@FreeBSD.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240802083423.142365-8-itachis@FreeBSD.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.124,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,21 +98,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 02, 2024 at 10:34:37AM +0300, Yuri Benditovich wrote:
-> At the moment kernel (vhost) and vhost user backends do not support
-> this feature (and IMO they do not need to)
-> In order to support it they need to implement a) coalescing of
-> segmented TCP packets and b) population of respective fields in
-> host-to-guest packets (number of coalesced segments and counter of
-> duplicated acks)
-> Just to remind - this feature is intended to be used without vhost and
-> without migration
+On 8/2/24 18:34, Ajeet Singh wrote:
+> From: Mark Corbin<mark.corbin@embecsom.com>
 > 
-> Thanks
-> Yuri
+> Added definitions for RISC-V register structures, including
+> general-purpose registers and floating-point registers, in
+> 'target_arch_reg.h'. Implemented the 'target_copy_regs' function to
+> copy register values from the CPU state to the target register
+> structure, ensuring proper endianness handling using 'tswapreg'.
+> 
+> Signed-off-by: Mark Corbin<mark.corbin@embecsom.com>
+> Signed-off-by: Ajeet Singh<itachis@FreeBSD.org>
+> ---
+>   bsd-user/riscv/target_arch_reg.h | 88 ++++++++++++++++++++++++++++++++
+>   1 file changed, 88 insertions(+)
+>   create mode 100644 bsd-user/riscv/target_arch_reg.h
 
-it is off ny default so no big deal ...
-if it's incompatiblr with vhost/migration I guess it is a good idea
-to make sure users do not enable it like this.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+r~
 
