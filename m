@@ -2,100 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCBB9457C8
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 07:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D289457AF
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 07:39:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZlBX-0000f0-NA; Fri, 02 Aug 2024 01:50:39 -0400
+	id 1sZkzr-00035N-OK; Fri, 02 Aug 2024 01:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <k831.kim@samsung.com>)
- id 1sZkhE-0006NI-16
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:19:20 -0400
-Received: from mailout3.samsung.com ([203.254.224.33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <k831.kim@samsung.com>)
- id 1sZkhA-0006x7-07
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:19:19 -0400
-Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20240802051904epoutp0384a7913f7b42cbe0aff025a78d0da0c1~n0bIAEKN53074930749epoutp03n
- for <qemu-devel@nongnu.org>; Fri,  2 Aug 2024 05:19:04 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20240802051904epoutp0384a7913f7b42cbe0aff025a78d0da0c1~n0bIAEKN53074930749epoutp03n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1722575944;
- bh=Gb8B3TXn+xo9h4l6vSboE3RdLHUd/nPBab6r1NkFaV0=;
- h=Subject:Reply-To:From:To:CC:Date:References:From;
- b=m3ZDQVrdET3eZ7s5g4hx8bVYLCD6TElEAP5DhZR+2WxT4nqHAGQnXedtutsFqOOz3
- JT+8P6lSyoimg9oAYRpzs+1Dj+C4VGVbQon+YjXUh+hhi/AEZWht6HckgYJqtiVvde
- N81lC3Il44qndvw+NA7ABw7eLapMKqg5eX40QZJ4=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
- epcas2p4.samsung.com (KnoxPortal) with ESMTP id
- 20240802051904epcas2p4657d6102cf1a37cd71457662ddb530f2~n0bHQ8-ip0256902569epcas2p4F;
- Fri,  2 Aug 2024 05:19:04 +0000 (GMT)
-Received: from epsmges2p2.samsung.com (unknown [182.195.36.99]) by
- epsnrtp1.localdomain (Postfix) with ESMTP id 4WZvJR2Dd9z4x9QB; Fri,  2 Aug
- 2024 05:19:03 +0000 (GMT)
-X-AuditID: b6c32a46-4b7fa70000002752-d3-66ac6c471356
-Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
- epsmges2p2.samsung.com (Symantec Messaging Gateway) with SMTP id
- B5.31.10066.74C6CA66; Fri,  2 Aug 2024 14:19:03 +0900 (KST)
-Mime-Version: 1.0
-Subject: [PATCH] hw/ufs: add basic info of query response upiu
-From: Kyoungrul Kim <k831.kim@samsung.com>
-To: Jeuk Kim <jeuk20.kim@samsung.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Kyoungrul Kim
- <k831.kim@samsung.com>, Minwoo Im <minwoo.im@samsung.com>, SSDR Gost Dev
- <gost.dev@samsung.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-X-CPGS-Detection: blocking_info_exchange
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d@epcms2p3>
-Date: Fri, 02 Aug 2024 14:19:02 +0900
-X-CMS-MailID: 20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d
-Content-Transfer-Encoding: 7bit
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sZkzo-00034o-Mx
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:38:32 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sZkzm-0003gn-Ld
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:38:32 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1fc6a017abdso52784435ad.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 22:38:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1722577109; x=1723181909;
+ darn=nongnu.org; 
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eGaTYy3U1N6gj26D8cJ144df6qPTUusOZaXUi98TAYc=;
+ b=h8tEM6NWojcFj0H1+MOtCzmlSVA7PGuO0YAJ2KRhb1ctpnwtGEZcLPsnd0NLQv0yFB
+ hjJX24xgAM4PKEvL+GwzoRXP9WkSqSW1AwTF+9bidpKr2nr3ClxK6wUiO90PmR4VB3xS
+ guRq09NJhitY/eJ8dwjRYEmLhxrBSrP1Oj2TBmD4MhuxXvmgbHndwF7ozr34U55PATvN
+ oZjZa8MrrtxSuDTkAKhVeltVIhJfRsztoQ4qe04qnIkS5HKwctBWis/CCOHYvmq+iW4y
+ IpCvp+TlGWAib5cqc2MYIhkP5CAI6U+q3qlpQL5th5vaFJatCdB1a2ku7d/lm63pmrJS
+ 1PdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722577109; x=1723181909;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eGaTYy3U1N6gj26D8cJ144df6qPTUusOZaXUi98TAYc=;
+ b=MEbwk0o+UqUHJdZpTSx8yRJYO553bLglVzgsHfKFE4TaJixj9h0rIS9eEmC+sL6cZY
+ tS+qQP6Wk8vGzOIqAfM4IkZ0I4Ts2NFnHoBJs/93ElswjE3WKSvsFLhZK3KU2oSSoYL5
+ iHs86zn4x7Z4xiZuAuFeU9j9iD/7abnnLNGUKwtJ31UnoR4ni0fe6a4KzveVInW5vFzw
+ CE3wyIQfFDV2rA+iT9sTFHWah+50VQUzJzXtZJdc85uNifFJisIJU9T56qU5nGGPT8O9
+ t3EBpOgYx/FukuHeN7+5ZyhvhRtrM14dGPIJ8SSJxrpcsF/Iyb2Niv2ZCE78t+gdanQd
+ 09jg==
+X-Gm-Message-State: AOJu0YwROeUJ3FdugrLUxv9+GWHLcZyo+ql7aYEDXsg/bexUv7NIg6u5
+ x3RZ0nzc0MMnm6C6Nh5Dp95xAQxLDI6twVVe5cPYxsjOcnwvLm5dRz/EcPKeUAk=
+X-Google-Smtp-Source: AGHT+IFDOsyyz6BkWTABeJbiANg1s3wnYDMd3J2PGo5tIcpCkIxbXygTH2dzH4fiUA6OtBNpXtM6UQ==
+X-Received: by 2002:a17:902:e741:b0:1fa:925b:5b77 with SMTP id
+ d9443c01a7336-1ff574e2846mr30983025ad.64.1722577108902; 
+ Thu, 01 Aug 2024 22:38:28 -0700 (PDT)
+Received: from localhost ([157.82.201.15]) by smtp.gmail.com with UTF8SMTPSA id
+ d9443c01a7336-1ff58f53832sm8387965ad.73.2024.08.01.22.38.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Aug 2024 22:38:28 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Date: Fri, 02 Aug 2024 14:38:19 +0900
+Subject: [PATCH] vhost: Add VIRTIO_NET_F_RSC_EXT to vhost feature bits
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrHKsWRmVeSWpSXmKPExsWy7bCmqa57zpo0gz1v+SxuHtjJZHF/6zVG
- iymbvjJaPDt9gNnieO8OFgdWjyfXNjN59G1ZxRjAFJVtk5GamJJapJCal5yfkpmXbqvkHRzv
- HG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQO0TkmhLDGnFCgUkFhcrKRvZ1OUX1qSqpCRX1xi
- q5RakJJTYF6gV5yYW1yal66Xl1piZWhgYGQKVJiQndH84B5zwR7hio5j31kaGB/xdzFyckgI
- mEi83fiMpYuRi0NIYAejxKznraxdjBwcvAKCEn93CIPUCAvYScx+/psVxBYSkJO4Pr+bFSKu
- I9Hd/IEZxGYT0JLYeHwjG4gtIqAq8WrxJrCZzALLGCU2zT3LDrGMV2JG+1MWCFtaYvvyrYwQ
- tobEj2W9zBC2qMTN1W/ZYez3x+ZD1YhItN47C1UjKPHg526ouKTEjGNtUPFqiauNu8EWSwh0
- MEq0tD5khUiYS6xcfQmsgVfAV+L2j7dgcRagS+ed2gBV4yKx+dZrMJtZQF5i+9s5zKCAYBbQ
- lFi/Sx/ElBBQljhyiwWigk+i4/BfuLd2zHvCBGErSbRvuwo1UULi2cQLzBCtHhKHX0VAgjBQ
- 4v/H2YwTGBVmIQJ6FpK1sxDWLmBkXsUollpQnJueWmxUYASP2+T83E2M4ISn5baDccrbD3qH
- GJk4GA8xSnAwK4nwCp1cmSbEm5JYWZValB9fVJqTWnyI0RTo4YnMUqLJ+cCUm1cSb2hiaWBi
- ZmZobmRqYK4kznuvdW6KkEB6YklqdmpqQWoRTB8TB6dUA9PORPlbC59Uxvc133rozW6s2y+z
- zYvlU5y7iVpYo4XK3l1fG3kX3OB6vpep+5yBSlF6j4joy2tSnznmbVmQn9GRtrPGvez252tH
- /i/J4HxdOTm2iaPLbqKxYtC1pIyP8rfkU9NseqY2663aceVdndGVaxzNa9dPODlXMO/+0pl/
- q5Zez/4XtVvj6e7E64Jcof1HSjuXtVTaHHPjnHuvXVH/+vY3TVfaP29aJ2AfIX2H4cjXJO/V
- 0ppaG8OnyLbtz6258GuBUbxg46FYxbMveXg7Ozue+jtKyu24+4N7Q8zZJ1PelUn0bnOyebNS
- PrlhDUexXW+Z9MajMmYXTTwt25yW7bufvyUg49XPnFv9vEosxRmJhlrMRcWJABtE9VoBBAAA
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d
-References: <CGME20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d@epcms2p3>
-Received-SPF: pass client-ip=203.254.224.33; envelope-from=k831.kim@samsung.com;
- helo=mailout3.samsung.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240802-rsc-v1-1-2b607bd2f555@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAMpwrGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCwMj3aLiZN1US4O0JBNTo6QU8zQloMqCotS0zAqwKdGxtbUA3lLU4VU
+ AAAA=
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Peter Xu <peterx@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, eduardo@habkost.net, 
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com, 
+ dmitry.fleytman@gmail.com, sriram.yagnaraman@ericsson.com, sw@weilnetz.de, 
+ yan@daynix.com, Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 02 Aug 2024 01:50:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,70 +96,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: k831.kim@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modify to fill the opcode, idn, index, selector information of
-all Query Response UPIU. because attr and flag operation of query
-response upiu need these information too.
+VIRTIO_NET_F_RSC_EXT is implemented in the rx data path, which vhost
+implements, so vhost needs to support the feature if it is ever to be
+enabled with vhost. The feature must be disabled otherwise.
 
-Signed-off-by: KyoungrulKim <k831.kim@samsung.com>
+Fixes: 2974e916df87 ("virtio-net: support RSC v4/v6 tcp traffic for Windows HCK")
+Reported-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/ufs/ufs.c | 13 +++++++++----
- hw/ufs/ufs.h |  1 +
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ hw/net/vhost_net.c | 2 ++
+ net/vhost-vdpa.c   | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index 945a0ea127..ce2c96aeea 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -851,6 +851,14 @@ void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type, uint8_t flags,
-     req->rsp_upiu.header.data_segment_length = cpu_to_be16(data_segment_length);
- }
- 
-+void ufs_build_query_response(UfsRequest *req)
-+{
-+    req->rsp_upiu.qr.opcode = req->req_upiu.qr.opcode;
-+    req->rsp_upiu.qr.idn = req->req_upiu.qr.idn;
-+    req->rsp_upiu.qr.index = req->req_upiu.qr.index;
-+    req->rsp_upiu.qr.selector = req->req_upiu.qr.selector;
-+}
-+
- static UfsReqResult ufs_exec_scsi_cmd(UfsRequest *req)
- {
-     UfsHc *u = req->hc;
-@@ -1327,10 +1335,6 @@ static QueryRespCode ufs_read_desc(UfsRequest *req)
-     if (length > req->rsp_upiu.qr.data[0]) {
-         length = req->rsp_upiu.qr.data[0];
-     }
--    req->rsp_upiu.qr.opcode = req->req_upiu.qr.opcode;
--    req->rsp_upiu.qr.idn = req->req_upiu.qr.idn;
--    req->rsp_upiu.qr.index = req->req_upiu.qr.index;
--    req->rsp_upiu.qr.selector = req->req_upiu.qr.selector;
-     req->rsp_upiu.qr.length = cpu_to_be16(length);
- 
-     return status;
-@@ -1411,6 +1415,7 @@ static UfsReqResult ufs_exec_query_cmd(UfsRequest *req)
-     data_segment_length = be16_to_cpu(req->rsp_upiu.qr.length);
-     ufs_build_upiu_header(req, UFS_UPIU_TRANSACTION_QUERY_RSP, 0, status, 0,
-                           data_segment_length);
-+    ufs_build_query_response(req);
- 
-     if (status != UFS_QUERY_RESULT_SUCCESS) {
-         return UFS_REQUEST_FAIL;
-diff --git a/hw/ufs/ufs.h b/hw/ufs/ufs.h
-index 6c9382cbc4..4bcc41f53a 100644
---- a/hw/ufs/ufs.h
-+++ b/hw/ufs/ufs.h
-@@ -228,6 +228,7 @@ static inline bool is_wlun(uint8_t lun)
- void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type, uint8_t flags,
-                            uint8_t response, uint8_t scsi_status,
-                            uint16_t data_segment_length);
-+void ufs_build_query_response(UfsRequest *req);
- void ufs_complete_req(UfsRequest *req, UfsReqResult req_result);
- void ufs_init_wlu(UfsLu *wlu, uint8_t wlun);
- #endif /* HW_UFS_UFS_H */
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index a788e6937e03..dedf9ad7c242 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -50,6 +50,7 @@ static const int kernel_feature_bits[] = {
+     VIRTIO_F_RING_RESET,
+     VIRTIO_F_IN_ORDER,
+     VIRTIO_F_NOTIFICATION_DATA,
++    VIRTIO_NET_F_RSC_EXT,
+     VIRTIO_NET_F_HASH_REPORT,
+     VHOST_INVALID_FEATURE_BIT
+ };
+@@ -81,6 +82,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_F_RING_RESET,
+     VIRTIO_F_IN_ORDER,
+     VIRTIO_NET_F_RSS,
++    VIRTIO_NET_F_RSC_EXT,
+     VIRTIO_NET_F_HASH_REPORT,
+     VIRTIO_NET_F_GUEST_USO4,
+     VIRTIO_NET_F_GUEST_USO6,
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 03457ead663a..46b02c50be8c 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -88,6 +88,7 @@ const int vdpa_feature_bits[] = {
+     VIRTIO_NET_F_MQ,
+     VIRTIO_NET_F_MRG_RXBUF,
+     VIRTIO_NET_F_MTU,
++    VIRTIO_NET_F_RSC_EXT,
+     VIRTIO_NET_F_RSS,
+     VIRTIO_NET_F_STATUS,
+     VIRTIO_RING_F_EVENT_IDX,
+
+---
+base-commit: 31669121a01a14732f57c49400bc239cf9fd505f
+change-id: 20240802-rsc-e90fb452bd7f
+
+Best regards,
 -- 
-2.34.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
