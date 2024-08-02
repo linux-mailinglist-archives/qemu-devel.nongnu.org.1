@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281FF946514
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 23:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E052946517
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 23:32:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZzs3-0005L3-MG; Fri, 02 Aug 2024 17:31:31 -0400
+	id 1sZzsI-0005wZ-PM; Fri, 02 Aug 2024 17:31:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzs1-0005KS-QE
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:31:29 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzs7-0005mv-OZ
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:31:36 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzs0-0003IX-4c
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:31:29 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5afa207b8bfso9159769a12.0
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 14:31:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sZzs5-0003J6-6t
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 17:31:34 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10835487fso11776371a12.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 14:31:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722634285; x=1723239085; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SsIJvXECX3ZUrG58uSJMHDT5xr/6hYjddrPUH/LP6yY=;
- b=WQPgDAYI8gwmZdR6Zs9h7D+6g3jpCLOvzZTBuFKqiPOcid7eF1nr+6idrO2Nsjs0J8
- iJ8Z218HYDNQIwHKv+lUISicx3pQBGG0uSiBEUz0IbsqJ5b90vIO51I+PJmu0oYcBiZg
- dCDEibYpDNDgbpGlFcdAtj0Aa/GroVJaprRWUOkFALqE/MeLlMKsszdrEoshYJgY5bzf
- xmvcTQYCToaTImTkepM6A5vuarrPDW+muW3qRlEDNzTCT7U7MYBTD2QUOaavcS+sZPnB
- /IiKk2sO4+cmOFoZZyLmfw3FZ9W35vj5a2bbemwXL+6jitnQbYTP7Zg4nLyD3HVbqB1B
- 12ig==
+ d=linaro.org; s=google; t=1722634291; x=1723239091; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4bGJmkWTOT3c/YDzrQKbOjU81hBSqBBa98tYGP+qJ3Y=;
+ b=gCxf7g+np4tQxpAf62hxQX3FgQfH1OdoyrtwZAezKS9iLsdupg93FjRNWKS8KbriaP
+ 7VFy4iS9tVVSW0dgcwjsrthXxCCxT2eFdPzu1OKP3ZVWOPm9L6rBQMGz9dT5KoOt6ffc
+ FSWiiucSOn/jcyBpYNf3d6967FYO6AW3QDg3ae/++oPaS0z7WjSiFuIMeyEUz4Kj/CzR
+ XBcCKPGBhpXkXHPxBxq/ZeJ5kDX0l25KhGcqaULZrwDva70rb8TbCczpFiKpjdlz+OUH
+ 1V0cRktRXpziYLhM91XtV1pdgNPd0RhBW8TNl7ZlIS6X1mfcb4ErkvaaKA72MygQEQ0F
+ zEug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722634285; x=1723239085;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SsIJvXECX3ZUrG58uSJMHDT5xr/6hYjddrPUH/LP6yY=;
- b=GNt10dFQK++TFDLjCRQv5NvK7+S92rkITjpBJph9te1JkjgopMBEeEMYkEnmWFuKYy
- ZvitqUw0CrsLYgSoDcK924wW046Q5aiGFty51Ld8g1h+Rt5SfI6r9f+2MMMMlb7TeQZ4
- uYq1sp9v/BzVa0tP/m6Ln4+oafcyirJfrrQn9OG2snuHbjtRE6qJKlBwsBJvr+11za8D
- yA/JPOED+5jgcjCLPgU4VwHKKVRnE9ayGaOfkl4e4WTFDyZ2rN8hqXv4NNDiJtcTdqQZ
- WE6OcA6mkV6INhva7y76QJnLqQ2Om+LVGNmRp1KLnNbEF9QOGFAtbmQ9Y1MjaUB61KX0
- 0vvg==
-X-Gm-Message-State: AOJu0Yz6BMVHeH04TdLuUZcQYCEek47703wkUFUO4rsmTZDhume1u9m5
- 46bOuva+LegmfbjUzhfCH0O5w6DtKmwKmPiWc4O/aYFXh15G1CTbnnKPejMwa+3I7HiGMDkeG5j
- o
-X-Google-Smtp-Source: AGHT+IF5QNcS6x1+LlrxAxH1Z72XR1Sw7qN3z1CwlNKwxrKlEruuRjt/nFOqEbZrnJXGcu1wdY5wlQ==
-X-Received: by 2002:a17:907:2d27:b0:a7d:3de1:4ab2 with SMTP id
- a640c23a62f3a-a7dc4fa885fmr275820366b.27.1722634285289; 
- Fri, 02 Aug 2024 14:31:25 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1722634291; x=1723239091;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4bGJmkWTOT3c/YDzrQKbOjU81hBSqBBa98tYGP+qJ3Y=;
+ b=K14XWF3CpALruMrYecybsNLUFw/3OQWZzQtA8qSmntDGfBMpG951W4yMf5iPFFtrx9
+ jcbegJzuRit656czS6pbNo2n9ep3Jb6rnB5nUkxtwVTvP7R7gxwCv7EJMv7CbIs2jIVR
+ Y3X+i6XBv4SIJvbGsHjy/fLc4+XAWfOMYF6K6jPtVqhz8OThT1Q63QdFGXCzupUcl8TV
+ YB8mHcWiSdydaTCKfe9+ZgQsA24LqsWUgRc1jI80Gd3Ath1bSyawMwi5xgiPI200eSra
+ 380QMpUYurY8JKP3wTuwlyugsbtj/JMRb79te7L9w0NEZdJK49NygNEdy9dcSLe8OyJS
+ 37Jg==
+X-Gm-Message-State: AOJu0Yzc9IQVI3DDBZmlXWvt+YoJXQzgCBxjRycJxm4eeOsXkP8SX3vh
+ CQLq0OXMCl/JwA6YzZ5HNoX5pG4nkNRzKIa9f5v72ZtrBA8eiMyajJiefv88mH8cZIp64crw64D
+ 8
+X-Google-Smtp-Source: AGHT+IEJ3U6+/4toOPgx3z5KjP4ohlgc4lTQFJx6yuiiHBUyhwzBmd7ttEVxjNtauwlXMLUQTEbldw==
+X-Received: by 2002:a17:907:2dac:b0:a6f:586b:6c2 with SMTP id
+ a640c23a62f3a-a7dc510131cmr315701666b.60.1722634291324; 
+ Fri, 02 Aug 2024 14:31:31 -0700 (PDT)
 Received: from m1x-phil.lan (cvl92-h01-176-184-49-210.dsl.sta.abo.bbox.fr.
  [176.184.49.210]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9d88650sm137862566b.152.2024.08.02.14.31.23
+ a640c23a62f3a-a7dc9c0c578sm139991666b.73.2024.08.02.14.31.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 Aug 2024 14:31:24 -0700 (PDT)
+ Fri, 02 Aug 2024 14:31:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH-for-9.1 v5 0/2] hw/pci-host/gt64120: Set PCI base address
+Subject: [PATCH-for-9.1 v5 1/2] hw/pci-host/gt64120: Set PCI base address
  register write mask
-Date: Fri,  2 Aug 2024 23:31:20 +0200
-Message-ID: <20240802213122.86852-1-philmd@linaro.org>
+Date: Fri,  2 Aug 2024 23:31:21 +0200
+Message-ID: <20240802213122.86852-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240802213122.86852-1-philmd@linaro.org>
+References: <20240802213122.86852-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,21 +95,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v5:
-- correct wmask (Zoltan)
+When booting Linux we see:
 
-v4:
-- invert patches order
-- set wmask in DeviceRealize
-- update patch descriptions (migration, Resettable API)
+  PCI host bridge to bus 0000:00
+  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x1c: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x20: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x24: invalid BAR (can't size)
 
-Philippe Mathieu-Daudé (2):
-  hw/pci-host/gt64120: Set PCI base address register write mask
-  hw/pci-host/gt64120: Reset config registers during RESET phase
+This is due to missing base address register write mask.
+Add it to get:
 
- hw/pci-host/gt64120.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+  PCI host bridge to bus 0000:00
+  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
+  pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00000fff pref]
+  pci 0000:00:00.0: reg 0x14: [mem 0x01000000-0x01000fff pref]
+  pci 0000:00:00.0: reg 0x18: [mem 0x1c000000-0x1c000fff]
+  pci 0000:00:00.0: reg 0x1c: [mem 0x1f000000-0x1f000fff]
+  pci 0000:00:00.0: reg 0x20: [mem 0x1be00000-0x1be00fff]
+  pci 0000:00:00.0: reg 0x24: [io  0x14000000-0x14000fff]
 
+Since this device is only used by MIPS machines which aren't
+versioned, we don't need to update migration compat machinery.
+
+Mention the datasheet referenced. Remove the "Malta assumptions
+ahead" comment since the reset values from the datasheet are used.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/pci-host/gt64120.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
+index e02efc9e2e..573d2619ee 100644
+--- a/hw/pci-host/gt64120.c
++++ b/hw/pci-host/gt64120.c
+@@ -1,6 +1,8 @@
+ /*
+  * QEMU GT64120 PCI host
+  *
++ * (Datasheet GT-64120 Rev 1.4 from Sep 14, 1999)
++ *
+  * Copyright (c) 2006,2007 Aurelien Jarno
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+@@ -1213,17 +1215,27 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
+ 
+ static void gt64120_pci_realize(PCIDevice *d, Error **errp)
+ {
+-    /* FIXME: Malta specific hw assumptions ahead */
++    /* Values from chapter 17.16 "PCI Configuration" */
++
+     pci_set_word(d->config + PCI_COMMAND, 0);
+     pci_set_word(d->config + PCI_STATUS,
+                  PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
+     pci_config_set_prog_interface(d->config, 0);
++
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_0, 0xfffff008); /* SCS[1:0] */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_1, 0xfffff008); /* SCS[3:2] */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_2, 0xfffff008); /* CS[2:0] */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_3, 0xfffff008); /* CS[3], BootCS */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_4, 0xfffff000); /* ISD MMIO */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_5, 0xfffff001); /* ISD I/O */
++
+     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x1c000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x1f000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_4, 0x14000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_5, 0x14000001);
++
+     pci_set_byte(d->config + 0x3d, 0x01);
+ }
+ 
 -- 
 2.45.2
 
