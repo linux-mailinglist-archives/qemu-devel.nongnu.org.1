@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD26A94665E
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 02:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 542F9946654
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sa29n-00028q-41; Fri, 02 Aug 2024 19:57:59 -0400
+	id 1sa29l-00020j-6d; Fri, 02 Aug 2024 19:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29c-0001ab-GC
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:49 -0400
-Received: from mail-io1-xd2a.google.com ([2607:f8b0:4864:20::d2a])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29d-0001en-Gb
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:51 -0400
+Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29b-0004HO-2B
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:48 -0400
-Received: by mail-io1-xd2a.google.com with SMTP id
- ca18e2360f4ac-81fe38c7255so3105639f.1
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29c-0004Hm-2m
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:49 -0400
+Received: by mail-io1-xd2d.google.com with SMTP id
+ ca18e2360f4ac-81fd1e05a5aso92144839f.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643065; x=1723247865;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643067; x=1723247867;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rl/znR7UzS/Jv1fIJnzwl/xusVFEIhdoOvswwLVsMsA=;
- b=uwtlK/fX+94kU5k4vg0on7GeGwp7+c598sPaMm/OclVl85tfkY+ki+xvDjSacUwRqr
- PLnvRygKLBLPXTApyBzQ/UevYmhBIOgGuix42MhvXbdHN+oWI84iyzN1OT09I1AfeKgN
- KbctEh0cHAi1E8STU4M0SIxZup+aaGcss75hEFPHvtUrjXe8ymyGbvclOGZgJkBX44XH
- gnBjcPr10UWA1SHn2kGSK7J346vZXrOKOe3thmz7i5BWwAPD9ea+Q/Sna8Glwl8QBZDt
- YEjQsUar1GZMzyenIwIbVJYoHIBkoJIeECFNcfokEeammSQw8IzeVVRQI8oRDOdfEDm7
- suMA==
+ bh=ARXUdRtW9JUYDBe/PGc2EUZh9mbaCTufkya2rCFHUZQ=;
+ b=Kds3UqA9UUv2PDtcSSJjaNZwFHeZvU7RQFOkgeV1av6J9IMJRly5BT8J6QSZRhw3Yk
+ cK16uppq1XU77/sH7tcQB6C3Xslj2ZPlarrULYGi3Mjb/44aHAuOoyvjwP25HwZ9mrQl
+ j2kULE0G4HVPJRnoPTPfOouvfFaqmAj3PWSF5SvvzWlbonrpnU0gMjsgamqkiJ4aJZvO
+ rQ8go1OeDum0X88toXGiSIzSN0LI9SvY0qUmvKI8ZeC2/7IuNGLRsOKAZlHFGLnxlNn2
+ /WWWE1RyhknuhxaRd3cZkQy+mTzFvz+ovzo0srtYqA0X39S8BiV5ReeuPfa2cBjrL/ZG
+ vQtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722643065; x=1723247865;
+ d=1e100.net; s=20230601; t=1722643067; x=1723247867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rl/znR7UzS/Jv1fIJnzwl/xusVFEIhdoOvswwLVsMsA=;
- b=qMGkvHv/JyUmP3ljwBE6iL3njmBa/hzDkTXaThb8BtHKxUwQaJ3IaghIwMDUfLPrss
- h5Ak0kdKmZCj8VYTW/mLBbi+8JV6r2pUcZuAzNgrtYAYfAXft0kujVo4jzFQDz9FfxW2
- 1CkJE/Hp4mlEGD6P6rdRfovydeBl+pVAJ9zFakgobmsyedyXLshZCNZYXofW24+LTFxz
- gsGpv+sdjyXvZGhhOji8mosdybTfaxywZEOC2kHaoZmo1vkatQaewQfkgltPiIFyrPnT
- ZXz3jwkdNNc50ts0VDOcRbvq9nhvNHO1tsNDTdJzf0vWEtWzhUr9ElbD0ZVjNbABNJsK
- XPTA==
-X-Gm-Message-State: AOJu0YwKtfzZ+PcpDkqCC+bNSn74k7Bh+ye1E2qHgo8Fenl5uqd0Q9PJ
- gQDhkHy08szuXao9XY61bEHBJ3XzO1wJYFxxchdoXKxNe1iwKxrF27Xb/fOZB3s8fK64sVohWBR
- l0+k=
-X-Google-Smtp-Source: AGHT+IHaBirxAvRkwv2oRYt0555cjDOxoNSL52MbfDWjzhkOB1rTzgoq1htIwlyMZjYQI2GYbekYqA==
-X-Received: by 2002:a05:6602:6c09:b0:803:85ba:3cf9 with SMTP id
- ca18e2360f4ac-81fd437127bmr663467339f.10.1722643065590; 
- Fri, 02 Aug 2024 16:57:45 -0700 (PDT)
+ bh=ARXUdRtW9JUYDBe/PGc2EUZh9mbaCTufkya2rCFHUZQ=;
+ b=NJOaDsOrfY+VTtMapUh1x0ESkKH6o0yDceYf990KfxqxQnVv9bWvTKvp8SF+u+oDHS
+ iyF6Hltz46YjDImZeHL6vWmnUOVcozUzipOXPzd39YoSDQKFdNfqojenIZbDWb5QBFJx
+ CpV/UTiAs/AiUB/Y8o0ky5Y6MOVOnUoHEZUzJnNHMwzzBxpjAubcMSzsi2G2sQnslXVn
+ uD38iZGaKY2K7bUaRqjg7dvGKREXzQQmMTZLveq3tBqT9FLWX8Nz+eyyflW3xD+dey4y
+ l7E9+fuu9Lv5tEt8SPnpggQxicSUE+7ZKt+pyH92esVbqm2XeEgImcVyraiHmjHt94Pb
+ onHA==
+X-Gm-Message-State: AOJu0YwhKJApy9TUVPGinX8wNIW1ryqNL3O/QR5NCYM7NcUlsEHKF1VS
+ 4NWKJG6bmGiZKZe42nYiQevWj8gRDchpWq+dzcw97OwtHmthrIbJ3YjBcbzPk4O1cYLPGP93cmW
+ 1k7E=
+X-Google-Smtp-Source: AGHT+IGJ8kBl1jAk/AiBp+gXJapmmr90k+KYMEUr1aXQGBzm5v5FOeHeCD46xd5FHzwZ2op+oj4ZNg==
+X-Received: by 2002:a05:6602:1512:b0:7fc:89ed:c15d with SMTP id
+ ca18e2360f4ac-81fd43e16a7mr672562239f.13.1722643066686; 
+ Fri, 02 Aug 2024 16:57:46 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.44
+ 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 16:57:44 -0700 (PDT)
+ Fri, 02 Aug 2024 16:57:45 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
  Jessica Clarke <jrtc27@jrtc27.com>
-Subject: [PATCH 06/17] bsd-user: Remove load_flt_binary prototype
-Date: Fri,  2 Aug 2024 17:56:06 -0600
-Message-ID: <20240802235617.7971-7-imp@bsdimp.com>
+Subject: [PATCH 07/17] bsd-user: Remove deprecated -p argument
+Date: Fri,  2 Aug 2024 17:56:07 -0600
+Message-ID: <20240802235617.7971-8-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240802235617.7971-1-imp@bsdimp.com>
 References: <20240802235617.7971-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d2a;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd2a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2d;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,26 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bsd-user doesn't have support for loading FLT binaries.
+FreeBSD never really used the -p argument, so it's safe to remove
+entirely.
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/qemu.h | 2 --
- 1 file changed, 2 deletions(-)
+ bsd-user/main.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index f18a54cc933..b97a902a4c2 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -164,8 +164,6 @@ int loader_exec(const char *filename, char **argv, char **envp,
-                 struct bsd_binprm *bprm);
- 
- int load_elf_binary(struct bsd_binprm *bprm, struct image_info *info);
--int load_flt_binary(struct bsd_binprm *bprm, struct target_pt_regs *regs,
--                    struct image_info *info);
- int is_target_elf_binary(int fd);
- 
- abi_long memcpy_to_target(abi_ulong dest, const void *src,
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index 9ad31bd1efe..709ab10ddc1 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -388,14 +388,6 @@ int main(int argc, char **argv)
+             }
+         } else if (!strcmp(r, "L")) {
+             interp_prefix = argv[optind++];
+-        } else if (!strcmp(r, "p")) {
+-            unsigned size, want = qemu_real_host_page_size();
+-
+-            r = argv[optind++];
+-            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
+-                warn_report("Deprecated page size option cannot "
+-                            "change host page size (%u)", want);
+-            }
+         } else if (!strcmp(r, "g")) {
+             gdbstub = g_strdup(argv[optind++]);
+         } else if (!strcmp(r, "r")) {
 -- 
 2.45.1
 
