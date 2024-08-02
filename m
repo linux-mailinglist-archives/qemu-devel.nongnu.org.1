@@ -2,58 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B29B9458AD
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 09:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31B99458E3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 09:32:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZmgc-0003Da-8E; Fri, 02 Aug 2024 03:26:50 -0400
+	id 1sZmld-0004sF-Ds; Fri, 02 Aug 2024 03:32:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1sZmgT-0002vp-LP; Fri, 02 Aug 2024 03:26:41 -0400
-Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sZmlb-0004qq-95
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 03:31:59 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1sZmgR-0003j9-H8; Fri, 02 Aug 2024 03:26:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1722583594; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
- bh=xlzdiXK8B41IrEGqINwACSXTyo01TRzc8KDruDLPmlI=;
- b=lZ3cxdm3OTbX37KKEKGyYs1A1xB57WvHXRR7X39vf7rSR3glI2TCCxw+Ioeh+iA8mWxp5WYnkQ/f78ZIWhoXwac/mAmItet3Mr4s1L96nU0aAr65hQUgPbgsY22MfUbQ8qMBVM86RHr8WCCUhyCygGl0Rwk/YAPCWiDxv9rP1PI=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R171e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033037067112;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0WBwhJWB_1722583592; 
-Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WBwhJWB_1722583592) by smtp.aliyun-inc.com;
- Fri, 02 Aug 2024 15:26:34 +0800
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org
-Subject: [PATCH v3 3/3] target/riscv: Relax fld alignment requirement
-Date: Fri,  2 Aug 2024 15:24:17 +0800
-Message-Id: <20240802072417.659-4-zhiwei_liu@linux.alibaba.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20240802072417.659-1-zhiwei_liu@linux.alibaba.com>
-References: <20240802072417.659-1-zhiwei_liu@linux.alibaba.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sZmlY-0005QG-HF
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 03:31:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722583916; x=1754119916;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7D9m1Vwty0leOO0yNxbulFSsgnMu6gZlwL31j+W/bsM=;
+ b=Zxey3BZMEK1uQnBzEkucjyszCicaL5WHcDZrXHJcEtWlAYEzE54U05bR
+ dALv9uRwnELuC5LnNFk6/ywsMWBD2KorR7t6hRg5ROUu2CPpYICPzIkVa
+ 4jk2fOwlNsSdgi06p/Ykr+1J6z9MggEokBXJ3poDcWZCSJYzLuwm9vYVq
+ uo9gCWz+h0aB9ONvq8hhFLg01W4XlwGyXPlfmYPWw0U6RyF9pM9nmTDVH
+ fVrtv5n2CqgZzfIrFlGZiM8QKAkOqe+gOMGWaSp22XK+iBr5bAx73KCkC
+ LmG40LpU9KcONsjIob6UvzIPVAfSX0OvuP0FNqjCy/m5N4GqCzMdwM4W4 A==;
+X-CSE-ConnectionGUID: gNKRXEONSnSKesEqjxwVtQ==
+X-CSE-MsgGUID: NddrGtyETtCFp0ebNOwB3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="20760861"
+X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; d="scan'208";a="20760861"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Aug 2024 00:31:53 -0700
+X-CSE-ConnectionGUID: kYXpqQzTTEmvYdDzebwAiQ==
+X-CSE-MsgGUID: /PnYbwGdQ72DNF0bJmo2Mg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; d="scan'208";a="55915131"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orviesa007.jf.intel.com with ESMTP; 02 Aug 2024 00:31:50 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>
+Cc: Manish <manish.mishra@nutanix.com>, John Levon <john.levon@nutanix.com>,
+ zhao1.liu@intel.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH] i386/cpu: Introduce enable_cpuid_0x1f to force exposing CPUID
+ 0x1f
+Date: Fri,  2 Aug 2024 03:24:26 -0400
+Message-Id: <20240802072426.4016194-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.111;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-111.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,59 +82,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the risc-v specification:
-"FLD and FSD are only guaranteed to execute atomically if the effective
-address is naturally aligned and XLEN≥64."
+Currently, QEMU exposes CPUID 0x1f to guest only when necessary, i.e.,
+when topology level that cannot be enumerated by leaf 0xB, e.g., die or
+module level, are configured for the guest.
 
-We currently implement fld as MO_ATOM_IFALIGN when XLEN < 64, which does
-not violate the rules. But it will hide some problems. So relax it to
-MO_ATOM_NONE.
+However, 1) TDX architecture forces to require CPUID 0x1f to configure CPU
+topology. and 2) There is a bug in Windows that Windows expects valid
+0x1f leafs when the maximum basic leaf > 0x1f[1].
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Introduce a bool flag enable_cpuid_0x1f in CPU for the cases that
+requires CPUID leaf 0x1f to be exposed to guest. For case 2), introduce
+a user settable property as well, which provides an opt-in interface
+for people to run the buggy Windows as a workaround. The default value
+of the property is set to false, thus making no effect on existing
+setup.
+
+Opportunistically rename x86_has_extended_topo() to
+x86_has_v2_extended_topo() because per Intel SDM, leaf 0xb is for extended
+topology enumeration leaf and leaf 0x1f is v2 extended topology enumration
+leaf.
+
+[1] https://lore.kernel.org/qemu-devel/21ca5c19-677b-4fac-84d4-72413577f260@nutanix.com/
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/riscv/insn_trans/trans_rvd.c.inc | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ include/hw/i386/topology.h |  9 ---------
+ target/i386/cpu.c          | 18 ++++++++++++++++--
+ target/i386/cpu.h          |  4 ++++
+ target/i386/kvm/kvm.c      |  2 +-
+ 4 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/target/riscv/insn_trans/trans_rvd.c.inc b/target/riscv/insn_trans/trans_rvd.c.inc
-index 49682292b8..8a46124f98 100644
---- a/target/riscv/insn_trans/trans_rvd.c.inc
-+++ b/target/riscv/insn_trans/trans_rvd.c.inc
-@@ -48,11 +48,17 @@ static bool trans_fld(DisasContext *ctx, arg_fld *a)
-     REQUIRE_EXT(ctx, RVD);
+diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+index dff49fce1154..b63bce2f4c82 100644
+--- a/include/hw/i386/topology.h
++++ b/include/hw/i386/topology.h
+@@ -207,13 +207,4 @@ static inline apic_id_t x86_apicid_from_cpu_idx(X86CPUTopoInfo *topo_info,
+     return x86_apicid_from_topo_ids(topo_info, &topo_ids);
+ }
  
-     /*
--     * Zama16b applies to loads and stores of no more than MXLEN bits defined
--     * in the F, D, and Q extensions.
-+     * FLD and FSD are only guaranteed to execute atomically if the effective
-+     * address is naturally aligned and XLEN≥64. Also, zama16b applies to
-+     * loads and stores of no more than MXLEN bits defined in the F, D, and
-+     * Q extensions.
-      */
--    if ((get_xl_max(ctx) >= MXL_RV64) && ctx->cfg_ptr->ext_zama16b) {
-+    if (get_xl_max(ctx) == MXL_RV32) {
-+        memop |= MO_ATOM_NONE;
-+    } else if (ctx->cfg_ptr->ext_zama16b) {
-         memop |= MO_ATOM_WITHIN16;
-+    } else {
-+        memop |= MO_ATOM_IFALIGN;
-     }
+-/*
+- * Check whether there's extended topology level (module or die)?
+- */
+-static inline bool x86_has_extended_topo(unsigned long *topo_bitmap)
+-{
+-    return test_bit(CPU_TOPO_LEVEL_MODULE, topo_bitmap) ||
+-           test_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
+-}
+-
+ #endif /* HW_I386_TOPOLOGY_H */
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 4688d140c2d9..b5b7ac96c272 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -300,6 +300,19 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
+            (cache->complex_indexing ? CACHE_COMPLEX_IDX : 0);
+ }
  
-     decode_save_opc(ctx);
-@@ -71,8 +77,12 @@ static bool trans_fsd(DisasContext *ctx, arg_fsd *a)
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVD);
++/*
++ * Check whether there's v2 extended topology level (module or die)?
++ */
++bool x86_has_v2_extended_topo(X86CPU *cpu)
++{
++    if (cpu->enable_cpuid_0x1f) {
++        return true;
++    }
++
++    return test_bit(CPU_TOPO_LEVEL_MODULE, cpu->env.avail_cpu_topo) ||
++           test_bit(CPU_TOPO_LEVEL_DIE, cpu->env.avail_cpu_topo);
++}
++
+ static uint32_t num_threads_by_topo_level(X86CPUTopoInfo *topo_info,
+                                           enum CPUTopoLevel topo_level)
+ {
+@@ -6637,7 +6650,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         break;
+     case 0x1F:
+         /* V2 Extended Topology Enumeration Leaf */
+-        if (!x86_has_extended_topo(env->avail_cpu_topo)) {
++        if (!x86_has_v2_extended_topo(cpu)) {
+             *eax = *ebx = *ecx = *edx = 0;
+             break;
+         }
+@@ -7450,7 +7463,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+          * cpu->vendor_cpuid_only has been unset for compatibility with older
+          * machine types.
+          */
+-        if (x86_has_extended_topo(env->avail_cpu_topo) &&
++        if (x86_has_v2_extended_topo(cpu) &&
+             (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
+             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x1F);
+         }
+@@ -8316,6 +8329,7 @@ static Property x86_cpu_properties[] = {
+     DEFINE_PROP_BOOL("full-cpuid-auto-level", X86CPU, full_cpuid_auto_level, true),
+     DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
+     DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
++    DEFINE_PROP_BOOL("cpuid-0x1f", X86CPU, enable_cpuid_0x1f, false),
+     DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
+     DEFINE_PROP_BOOL("x-amd-topoext-features-only", X86CPU, amd_topoext_features_only, true),
+     DEFINE_PROP_BOOL("lmce", X86CPU, enable_lmce, false),
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c6cc035df3d8..211a42ffbfa6 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2110,6 +2110,9 @@ struct ArchCPU {
+     /* Compatibility bits for old machine types: */
+     bool enable_cpuid_0xb;
  
--    if ((get_xl_max(ctx) >= MXL_RV64) && ctx->cfg_ptr->ext_zama16b) {
-+    if (get_xl_max(ctx) == MXL_RV32) {
-+        memop |= MO_ATOM_NONE;
-+    } else if (ctx->cfg_ptr->ext_zama16b) {
-         memop |= MO_ATOM_WITHIN16;
-+    } else {
-+        memop |= MO_ATOM_IFALIGN;
-     }
++    /* Force to expose cpuid 0x1f */
++    bool enable_cpuid_0x1f;
++
+     /* Enable auto level-increase for all CPUID leaves */
+     bool full_cpuid_auto_level;
  
-     decode_save_opc(ctx);
+@@ -2368,6 +2371,7 @@ void cpu_set_apic_feature(CPUX86State *env);
+ void host_cpuid(uint32_t function, uint32_t count,
+                 uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx);
+ bool cpu_has_x2apic_feature(CPUX86State *env);
++bool x86_has_v2_extended_topo(X86CPU *cpu);
+ 
+ /* helper.c */
+ void x86_cpu_set_a20(X86CPU *cpu, int a20_state);
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index b4aab9a410b5..d43c1fa26746 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1835,7 +1835,7 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
+             break;
+         }
+         case 0x1f:
+-            if (!x86_has_extended_topo(env->avail_cpu_topo)) {
++            if (!x86_has_v2_extended_topo(env_archcpu(env))) {
+                 cpuid_i--;
+                 break;
+             }
 -- 
-2.25.1
+2.34.1
 
 
