@@ -2,91 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C8E94578F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 07:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCBB9457C8
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 07:51:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZkhY-0007u4-DH; Fri, 02 Aug 2024 01:19:40 -0400
+	id 1sZlBX-0000f0-NA; Fri, 02 Aug 2024 01:50:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sZkhV-0007kg-Lj
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:19:37 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sZkhT-00070Z-Jt
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:19:37 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1fd65aaac27so20889545ad.1
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 22:19:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1722575974; x=1723180774;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0RYDgLdr7HQ010CTBqvRUSBgNA/oE/wNQ3ZQWiob4V0=;
- b=XtZ1g8JqBzX0FYFoyj4Nz6/zHzalerpjrEbyC1aOwTZLhYU2zK5WtTK45CC4+GjdwP
- fUg8uDhhz2Z5tfozJ/ydXRtXPfn0dfugV24IjQVWVGmhuuSXmp31vwDRApolu7HgGXMM
- tFqCttFgXQXOFnRD8dbQwu7hUW7dpI+cP/NNHfZ9ZZPj+7QsCbEx1b2VmUUFhi727ao+
- UChIIQKMM+WJOTfGUG4w6HGzHwMDwUOWDUyONuDg/4F+7uxlhN1seSi3wl8HxzAzoSU7
- s5FOj2pU/N+0kjGDM8a7qM9v/I7f/zYOX/J//kvX8y3dN+mOY24CHpj+fa6ldkPVOema
- 9shw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722575974; x=1723180774;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0RYDgLdr7HQ010CTBqvRUSBgNA/oE/wNQ3ZQWiob4V0=;
- b=DvWVhw9MbNrd1uhYFwDB/XusnnYdTGY247PdHuvdksCmSJMYY6zf1A3Ja3pwiLfwWp
- ixXkRL68r9S2/gYFauVnBmjH8mgaKtJQQlG377VSEi90zdbcWnL8xiRVBxnRM604rolL
- EiIxPCuXa+YhGqpkULpnxbcDurbmrTBLpcyJtwTDqWdlfwvcfa+D7Iq560K7hI4xDinF
- y+7gpruW9pknP6avqItb+pJdXRgj34USfX956uGaARMIDjeWS/LaBZxsJJmTCUMqSL+f
- rMewbTZSFscJmqEQvIVUqLMZ7HqJNppHg7lz+JYPUMvQykJnxJxvSBXSJHOTpskCH/U6
- EPKg==
-X-Gm-Message-State: AOJu0YzkC5mygTqge2utVZhIaAuOXqQ0teBoyshdFdp+C4uBOlTYEFog
- BwJCzR98ykNuWTexsFLH/3mbL/RAYt/dMvq3nfbBdnw1YdHl3QI9f5yDRZMhBMU=
-X-Google-Smtp-Source: AGHT+IEDYHPvHBQL+TTvTJTSvHIjVBsC1UHTTOyjd66+dQwL02gyRtvLyK4DiPHH7qZRais7zdk0wg==
-X-Received: by 2002:a17:902:e5cb:b0:1fb:6ea1:6e with SMTP id
- d9443c01a7336-1ff5240bc5fmr50314765ad.9.1722575973716; 
- Thu, 01 Aug 2024 22:19:33 -0700 (PDT)
-Received: from localhost ([157.82.201.15]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1ff58f62e7asm8094375ad.115.2024.08.01.22.19.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Aug 2024 22:19:33 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 02 Aug 2024 14:18:01 +0900
-Subject: [PATCH for-9.2 v11 11/11] hw/qdev: Remove opts member
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <k831.kim@samsung.com>)
+ id 1sZkhE-0006NI-16
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:19:20 -0400
+Received: from mailout3.samsung.com ([203.254.224.33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <k831.kim@samsung.com>)
+ id 1sZkhA-0006x7-07
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 01:19:19 -0400
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+ by mailout3.samsung.com (KnoxPortal) with ESMTP id
+ 20240802051904epoutp0384a7913f7b42cbe0aff025a78d0da0c1~n0bIAEKN53074930749epoutp03n
+ for <qemu-devel@nongnu.org>; Fri,  2 Aug 2024 05:19:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
+ 20240802051904epoutp0384a7913f7b42cbe0aff025a78d0da0c1~n0bIAEKN53074930749epoutp03n
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1722575944;
+ bh=Gb8B3TXn+xo9h4l6vSboE3RdLHUd/nPBab6r1NkFaV0=;
+ h=Subject:Reply-To:From:To:CC:Date:References:From;
+ b=m3ZDQVrdET3eZ7s5g4hx8bVYLCD6TElEAP5DhZR+2WxT4nqHAGQnXedtutsFqOOz3
+ JT+8P6lSyoimg9oAYRpzs+1Dj+C4VGVbQon+YjXUh+hhi/AEZWht6HckgYJqtiVvde
+ N81lC3Il44qndvw+NA7ABw7eLapMKqg5eX40QZJ4=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+ epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+ 20240802051904epcas2p4657d6102cf1a37cd71457662ddb530f2~n0bHQ8-ip0256902569epcas2p4F;
+ Fri,  2 Aug 2024 05:19:04 +0000 (GMT)
+Received: from epsmges2p2.samsung.com (unknown [182.195.36.99]) by
+ epsnrtp1.localdomain (Postfix) with ESMTP id 4WZvJR2Dd9z4x9QB; Fri,  2 Aug
+ 2024 05:19:03 +0000 (GMT)
+X-AuditID: b6c32a46-4b7fa70000002752-d3-66ac6c471356
+Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
+ epsmges2p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+ B5.31.10066.74C6CA66; Fri,  2 Aug 2024 14:19:03 +0900 (KST)
+Mime-Version: 1.0
+Subject: [PATCH] hw/ufs: add basic info of query response upiu
+From: Kyoungrul Kim <k831.kim@samsung.com>
+To: Jeuk Kim <jeuk20.kim@samsung.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Kyoungrul Kim
+ <k831.kim@samsung.com>, Minwoo Im <minwoo.im@samsung.com>, SSDR Gost Dev
+ <gost.dev@samsung.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+X-CPGS-Detection: blocking_info_exchange
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d@epcms2p3>
+Date: Fri, 02 Aug 2024 14:19:02 +0900
+X-CMS-MailID: 20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240802-reuse-v11-11-fb83bb8c19fb@daynix.com>
-References: <20240802-reuse-v11-0-fb83bb8c19fb@daynix.com>
-In-Reply-To: <20240802-reuse-v11-0-fb83bb8c19fb@daynix.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
- Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrHKsWRmVeSWpSXmKPExsWy7bCmqa57zpo0gz1v+SxuHtjJZHF/6zVG
+ iymbvjJaPDt9gNnieO8OFgdWjyfXNjN59G1ZxRjAFJVtk5GamJJapJCal5yfkpmXbqvkHRzv
+ HG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQO0TkmhLDGnFCgUkFhcrKRvZ1OUX1qSqpCRX1xi
+ q5RakJJTYF6gV5yYW1yal66Xl1piZWhgYGQKVJiQndH84B5zwR7hio5j31kaGB/xdzFyckgI
+ mEi83fiMpYuRi0NIYAejxKznraxdjBwcvAKCEn93CIPUCAvYScx+/psVxBYSkJO4Pr+bFSKu
+ I9Hd/IEZxGYT0JLYeHwjG4gtIqAq8WrxJrCZzALLGCU2zT3LDrGMV2JG+1MWCFtaYvvyrYwQ
+ tobEj2W9zBC2qMTN1W/ZYez3x+ZD1YhItN47C1UjKPHg526ouKTEjGNtUPFqiauNu8EWSwh0
+ MEq0tD5khUiYS6xcfQmsgVfAV+L2j7dgcRagS+ed2gBV4yKx+dZrMJtZQF5i+9s5zKCAYBbQ
+ lFi/Sx/ElBBQljhyiwWigk+i4/BfuLd2zHvCBGErSbRvuwo1UULi2cQLzBCtHhKHX0VAgjBQ
+ 4v/H2YwTGBVmIQJ6FpK1sxDWLmBkXsUollpQnJueWmxUYASP2+T83E2M4ISn5baDccrbD3qH
+ GJk4GA8xSnAwK4nwCp1cmSbEm5JYWZValB9fVJqTWnyI0RTo4YnMUqLJ+cCUm1cSb2hiaWBi
+ ZmZobmRqYK4kznuvdW6KkEB6YklqdmpqQWoRTB8TB6dUA9PORPlbC59Uxvc133rozW6s2y+z
+ zYvlU5y7iVpYo4XK3l1fG3kX3OB6vpep+5yBSlF6j4joy2tSnznmbVmQn9GRtrPGvez252tH
+ /i/J4HxdOTm2iaPLbqKxYtC1pIyP8rfkU9NseqY2663aceVdndGVaxzNa9dPODlXMO/+0pl/
+ q5Zez/4XtVvj6e7E64Jcof1HSjuXtVTaHHPjnHuvXVH/+vY3TVfaP29aJ2AfIX2H4cjXJO/V
+ 0ppaG8OnyLbtz6258GuBUbxg46FYxbMveXg7Ozue+jtKyu24+4N7Q8zZJ1PelUn0bnOyebNS
+ PrlhDUexXW+Z9MajMmYXTTwt25yW7bufvyUg49XPnFv9vEosxRmJhlrMRcWJABtE9VoBBAAA
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d
+References: <CGME20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d@epcms2p3>
+Received-SPF: pass client-ip=203.254.224.33; envelope-from=k831.kim@samsung.com;
+ helo=mailout3.samsung.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 02 Aug 2024 01:50:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,81 +107,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: k831.kim@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
+Modify to fill the opcode, idn, index, selector information of
+all Query Response UPIU. because attr and flag operation of query
+response upiu need these information too.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: KyoungrulKim <k831.kim@samsung.com>
 ---
- include/hw/qdev-core.h |  4 ----
- hw/core/qdev.c         |  1 -
- system/qdev-monitor.c  | 12 +++++++-----
- 3 files changed, 7 insertions(+), 10 deletions(-)
+ hw/ufs/ufs.c | 13 +++++++++----
+ hw/ufs/ufs.h |  1 +
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 77bfcbdf732a..a3757e6769f8 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -237,10 +237,6 @@ struct DeviceState {
-      * @pending_deleted_expires_ms: optional timeout for deletion events
-      */
-     int64_t pending_deleted_expires_ms;
--    /**
--     * @opts: QDict of options for the device
--     */
--    QDict *opts;
-     /**
-      * @hotplugged: was device added after PHASE_MACHINE_READY?
-      */
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index f3a996f57dee..2fc84699d432 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -706,7 +706,6 @@ static void device_finalize(Object *obj)
-         dev->canonical_path = NULL;
-     }
- 
--    qobject_unref(dev->opts);
-     g_free(dev->id);
+diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+index 945a0ea127..ce2c96aeea 100644
+--- a/hw/ufs/ufs.c
++++ b/hw/ufs/ufs.c
+@@ -851,6 +851,14 @@ void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type, uint8_t flags,
+     req->rsp_upiu.header.data_segment_length = cpu_to_be16(data_segment_length);
  }
  
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 6af6ef7d667f..3551989d5153 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -624,6 +624,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     char *id;
-     DeviceState *dev = NULL;
-     BusState *bus = NULL;
-+    QDict *properties;
- 
-     driver = qdict_get_try_str(opts, "driver");
-     if (!driver) {
-@@ -705,13 +706,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
++void ufs_build_query_response(UfsRequest *req)
++{
++    req->rsp_upiu.qr.opcode = req->req_upiu.qr.opcode;
++    req->rsp_upiu.qr.idn = req->req_upiu.qr.idn;
++    req->rsp_upiu.qr.index = req->req_upiu.qr.index;
++    req->rsp_upiu.qr.selector = req->req_upiu.qr.selector;
++}
++
+ static UfsReqResult ufs_exec_scsi_cmd(UfsRequest *req)
+ {
+     UfsHc *u = req->hc;
+@@ -1327,10 +1335,6 @@ static QueryRespCode ufs_read_desc(UfsRequest *req)
+     if (length > req->rsp_upiu.qr.data[0]) {
+         length = req->rsp_upiu.qr.data[0];
      }
+-    req->rsp_upiu.qr.opcode = req->req_upiu.qr.opcode;
+-    req->rsp_upiu.qr.idn = req->req_upiu.qr.idn;
+-    req->rsp_upiu.qr.index = req->req_upiu.qr.index;
+-    req->rsp_upiu.qr.selector = req->req_upiu.qr.selector;
+     req->rsp_upiu.qr.length = cpu_to_be16(length);
  
-     /* set properties */
--    dev->opts = qdict_clone_shallow(opts);
--    qdict_del(dev->opts, "driver");
--    qdict_del(dev->opts, "bus");
--    qdict_del(dev->opts, "id");
-+    properties = qdict_clone_shallow(opts);
-+    qdict_del(properties, "driver");
-+    qdict_del(properties, "bus");
-+    qdict_del(properties, "id");
+     return status;
+@@ -1411,6 +1415,7 @@ static UfsReqResult ufs_exec_query_cmd(UfsRequest *req)
+     data_segment_length = be16_to_cpu(req->rsp_upiu.qr.length);
+     ufs_build_upiu_header(req, UFS_UPIU_TRANSACTION_QUERY_RSP, 0, status, 0,
+                           data_segment_length);
++    ufs_build_query_response(req);
  
--    object_set_properties_from_keyval(&dev->parent_obj, dev->opts, from_json,
-+    object_set_properties_from_keyval(&dev->parent_obj, properties, from_json,
-                                       errp);
-+    qobject_unref(properties);
-     if (*errp) {
-         goto err_del_dev;
-     }
-
+     if (status != UFS_QUERY_RESULT_SUCCESS) {
+         return UFS_REQUEST_FAIL;
+diff --git a/hw/ufs/ufs.h b/hw/ufs/ufs.h
+index 6c9382cbc4..4bcc41f53a 100644
+--- a/hw/ufs/ufs.h
++++ b/hw/ufs/ufs.h
+@@ -228,6 +228,7 @@ static inline bool is_wlun(uint8_t lun)
+ void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type, uint8_t flags,
+                            uint8_t response, uint8_t scsi_status,
+                            uint16_t data_segment_length);
++void ufs_build_query_response(UfsRequest *req);
+ void ufs_complete_req(UfsRequest *req, UfsReqResult req_result);
+ void ufs_init_wlu(UfsLu *wlu, uint8_t wlun);
+ #endif /* HW_UFS_UFS_H */
 -- 
-2.45.2
-
+2.34.1
 
