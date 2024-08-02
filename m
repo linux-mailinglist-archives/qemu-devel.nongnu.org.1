@@ -2,73 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67475945EC7
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 15:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFD1945ECB
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 15:39:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZsSP-0001Lp-TB; Fri, 02 Aug 2024 09:36:33 -0400
+	id 1sZsUD-0000UE-8N; Fri, 02 Aug 2024 09:38:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sZsSN-0001GH-VF
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:36:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sZsUA-0000Mr-Ta
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:38:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sZsSJ-00028P-L9
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:36:30 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sZsU9-0002xi-8n
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 09:38:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722605786;
+ s=mimecast20190719; t=1722605900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=r/UP1g4MDL3U20GfWcxRyZD2Jg9N1GbGdrjWp7kedn8=;
- b=RJkf7kpXqVL/NTHFbt4p/pOWx5ONvc9usFRMpqbrOFy5PuAJN58h6A3QGsI8tdVz077Nta
- oLMmSlbIDgR+AVfyuqqc4SqIlcFGiE2gDQW4tz0PyQ66MFGR+1s+RTzFt2iekgm7wwQlBN
- VUHELBzJy7L5y99XuzPFJOgZI8LKEng=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=76X2gLmSh91Q7+zu1kNaeBaPwdxCniEJ0/G6OTn3N1o=;
+ b=FOWnNRjD5AYq6DRSdkBQf9r8Zpqpff4GmelE3y7UZKmAZai0Es44gxs1E8WiSoev1GdGyo
+ dg8Cmsi7IcEeTyMvJz6PncQn39lemrAfuQPnvINWQ0Xfl8pHtn/zvDaF4TycxwkljPOsDu
+ cGRcHzWby+sEyEJL9dlFSBS9lzznGg4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-4sn6o_8DNwO4NHi_rZOf8g-1; Fri,
- 02 Aug 2024 09:36:21 -0400
-X-MC-Unique: 4sn6o_8DNwO4NHi_rZOf8g-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-KRCKrrK1OCKyeIlraDWx0Q-1; Fri,
+ 02 Aug 2024 09:38:18 -0400
+X-MC-Unique: KRCKrrK1OCKyeIlraDWx0Q-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 819651955D45; Fri,  2 Aug 2024 13:36:19 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E218219560AE; Fri,  2 Aug 2024 13:36:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D590A21E668B; Fri,  2 Aug 2024 15:36:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-block@nongnu.org,  qemu-devel@nongnu.org,  eblake@redhat.com,
- devel@lists.libvirt.org,  hreitz@redhat.com,  kwolf@redhat.com,
- jsnow@redhat.com,  pkrempa@redhat.com,  f.ebner@proxmox.com
-Subject: Re: [PATCH v2 6/7] qapi/block-core: derpecate block-job-change
-In-Reply-To: <20240626110124.374336-7-vsementsov@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Wed, 26 Jun 2024 14:01:23 +0300")
-References: <20240626110124.374336-1-vsementsov@yandex-team.ru>
- <20240626110124.374336-7-vsementsov@yandex-team.ru>
-Date: Fri, 02 Aug 2024 15:36:16 +0200
-Message-ID: <874j8311yn.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 718691944B30; Fri,  2 Aug 2024 13:38:16 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.72])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B13F1195605A; Fri,  2 Aug 2024 13:38:15 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: nbd@other.debian.org
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH] docs: Tweak location of qemu nbd extensions
+Date: Fri,  2 Aug 2024 08:36:43 -0500
+Message-ID: <20240802133811.2001029-1-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.124,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,6 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Typo in subject: it's "deprecate".
+Upstream QEMU is moving the location of its NBD docs, as of its commit
+XXXX[1].  Instead of pointing to the raw git source file, point to the
+rendered html version built from rST.
+
+CC: qemu-devel@nongnu.org
+Signed-off-by: Eric Blake <eblake@redhat.com>
+
+---
+
+[1] Commit id TBD, I will update this patch to match reality once
+qemu's patch lands, and only push this once the new link actually
+exists.  See also
+https://lists.gnu.org/archive/html/qemu-devel/2024-08/msg00223.html
+
+---
+ doc/proto.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/doc/proto.md b/doc/proto.md
+index cf1f60f..565fbeb 100644
+--- a/doc/proto.md
++++ b/doc/proto.md
+@@ -963,7 +963,7 @@ Namespaces MUST be consist of one of the following:
+ Third-party implementations can register additional namespaces by
+ simple request to the mailing-list. The following additional
+ third-party namespaces are currently registered:
+-* `qemu`, maintained by [qemu.org](https://gitlab.com/qemu-project/qemu/-/blob/master/docs/interop/nbd.txt)
++* `qemu`, maintained by [qemu.org](https://www.qemu.org/docs/master/interop/nbd.html)
+
+ Save in respect of the `base:` namespace described below, this specification
+ requires no specific semantics of metadata contexts, except that all the
+-- 
+2.45.2
 
 
