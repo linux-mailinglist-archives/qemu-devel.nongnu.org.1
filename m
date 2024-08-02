@@ -2,119 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6652E945E18
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 14:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90213945E1E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 14:52:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZrgq-0006zE-Bz; Fri, 02 Aug 2024 08:47:24 -0400
+	id 1sZrlT-00084X-I4; Fri, 02 Aug 2024 08:52:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZrgn-0006x2-KF
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 08:47:21 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sZrgl-0000Mo-Mc
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 08:47:21 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8C28D219B0;
- Fri,  2 Aug 2024 12:47:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722602836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NjPopi+AogEtRtml3lqI9NoiDIlORcbuZuE2YKjo2aI=;
- b=SP9eN5yPvWihRbihYBYYSRzLMF0VvQPp4/wLQDwWRT5pI+oLX++vHk+ymKl6HdJArUc9a7
- BiFiauiVEBd+HamDN94E1qsuYFJLp/P0vkSt71mlC4Yp4u963zfXF3wrLP3QWUnHnILcgp
- VcnU05j5KaTUDw++w4hy3u26YDOm+Bg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722602836;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NjPopi+AogEtRtml3lqI9NoiDIlORcbuZuE2YKjo2aI=;
- b=CEafSk7koPwuGfhc5Lz/NgVeIsarsuDo3Iq7Xvjf+qmvRct/UPWZ8wA7iF6tvMSn9+L32W
- TVvD0MzBW0vmstDg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RVQuCREa;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="UFG4HdB/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722602835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NjPopi+AogEtRtml3lqI9NoiDIlORcbuZuE2YKjo2aI=;
- b=RVQuCREa9syoSG8OtqXDANmute9nS3tbV2wNVdF1OF6oxdps1Rb78rbENYS73xIIl3WN3M
- a5pEFTsyXwo6itrI6XLl+fPorz0wDFkBcpORLZ2birvRPTSkJGXeOwBaz22mzOl7NE9HB7
- y7wumjJAPv+bb9E6/NJet58gj352Bt8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722602835;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NjPopi+AogEtRtml3lqI9NoiDIlORcbuZuE2YKjo2aI=;
- b=UFG4HdB/HNvCygt0ooNsm7ZLx4WzDFPvo/GIw0P0ocHk9ZxXpQ3YJsI5xaG2WrFPzeSuGo
- 8gR504E3pc9HQjCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5990813999;
- Fri,  2 Aug 2024 12:47:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SDprCFLVrGaPYgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 02 Aug 2024 12:47:14 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org,
-	Fabiano Rosas <farosas@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 0/2] Multifd fixes
-Date: Fri,  2 Aug 2024 09:47:05 -0300
-Message-Id: <172260260949.8916.4118167202139653374.b4-ty@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240801174101.31806-1-farosas@suse.de>
-References: <20240801174101.31806-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <junon@oro.sh>) id 1sZrlR-00083q-Me
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 08:52:09 -0400
+Received: from out-177.mta1.migadu.com ([2001:41d0:203:375::b1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <junon@oro.sh>) id 1sZrlN-0002fJ-N7
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 08:52:09 -0400
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oro.sh; s=key1;
+ t=1722603122;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yFCW6+JCo6EKvl12jXJZXQ1CcdpBm41NoW/x9AFHQQE=;
+ b=OMGama4KNaHFqfMysNkvgiz53ckhqDJTcsqvS2tgVvleJPcp8XHxYCa/0rrjYvZebQzwlB
+ CJhrG1XvhY+lHyWIEanPlvCj7dz267Z2LTXT+tdGH3vEoqNggK0kYZsc+yPUQJHcn1YimT
+ /w6Oe3G1HBvJkAatNWwtKVqF1fI9dog=
+From: Josh Junon <junon@oro.sh>
+To: qemu-devel@nongnu.org
+Cc: Josh Junon <junon@oro.sh>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2] qmp: Use unsigned integers for address parameters
+Date: Fri,  2 Aug 2024 14:51:32 +0200
+Message-Id: <20240802125132.19860-1-junon@oro.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[99.98%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCPT_COUNT_THREE(0.00)[3]; RCVD_VIA_SMTP_AUTH(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,suse.de:dkim]
-X-Rspamd-Action: no action
-X-Spam-Score: -6.51
-X-Rspamd-Queue-Id: 8C28D219B0
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=2001:41d0:203:375::b1; envelope-from=junon@oro.sh;
+ helo=out-177.mta1.migadu.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -131,17 +67,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 01 Aug 2024 14:40:59 -0300, Fabiano Rosas wrote:
-> on mapped-ram for libvirt.
-> 
-> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1397467740
-> 
-> Fabiano Rosas (2):
->   migration: Fix cleanup of iochannel in file migration
->   migration/multifd: Fix multifd_send_setup cleanup when channel
->     creation fails
-> 
-> [...]
+Fixes higher-half address parsing for QMP commands
+`[p]memsave` and `dump-guest-memory`.
 
-Queued, thanks!
+Signed-off-by: Josh Junon <junon@oro.sh>
+---
+ dump/dump.c       |  4 ++--
+ qapi/dump.json    |  2 +-
+ qapi/machine.json | 11 +++++++++--
+ system/cpus.c     |  8 ++++----
+ 4 files changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/dump/dump.c b/dump/dump.c
+index 45e84428ae..00a1323735 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -2063,8 +2063,8 @@ DumpQueryResult *qmp_query_dump(Error **errp)
+ 
+ void qmp_dump_guest_memory(bool paging, const char *protocol,
+                            bool has_detach, bool detach,
+-                           bool has_begin, int64_t begin,
+-                           bool has_length, int64_t length,
++                           bool has_begin, uint64_t begin,
++                           bool has_length, uint64_t length,
+                            bool has_format, DumpGuestMemoryFormat format,
+                            Error **errp)
+ {
+diff --git a/qapi/dump.json b/qapi/dump.json
+index d8145dad97..3b751c0356 100644
+--- a/qapi/dump.json
++++ b/qapi/dump.json
+@@ -102,7 +102,7 @@
+ ##
+ { 'command': 'dump-guest-memory',
+   'data': { 'paging': 'bool', 'protocol': 'str', '*detach': 'bool',
+-            '*begin': 'int', '*length': 'int',
++            '*begin': 'uint64', '*length': 'size',
+             '*format': 'DumpGuestMemoryFormat'} }
+ 
+ ##
+diff --git a/qapi/machine.json b/qapi/machine.json
+index fcfd249e2d..fb618dc99f 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -852,7 +852,11 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'memsave',
+-  'data': {'val': 'int', 'size': 'int', 'filename': 'str', '*cpu-index': 'int'} }
++  'data': {
++     'val': 'uint64',
++     'size': 'size',
++     'filename': 'str',
++     '*cpu-index': 'int' } }
+ 
+ ##
+ # @pmemsave:
+@@ -878,7 +882,10 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'pmemsave',
+-  'data': {'val': 'int', 'size': 'int', 'filename': 'str'} }
++  'data': {
++    'val': 'uint64',
++    'size': 'size',
++    'filename': 'str' } }
+ 
+ ##
+ # @Memdev:
+diff --git a/system/cpus.c b/system/cpus.c
+index 5e3a988a0a..128face42b 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -792,14 +792,14 @@ int vm_stop_force_state(RunState state)
+     }
+ }
+ 
+-void qmp_memsave(int64_t addr, int64_t size, const char *filename,
++void qmp_memsave(uint64_t addr, uint64_t size, const char *filename,
+                  bool has_cpu, int64_t cpu_index, Error **errp)
+ {
+     FILE *f;
+     uint32_t l;
+     CPUState *cpu;
+     uint8_t buf[1024];
+-    int64_t orig_addr = addr, orig_size = size;
++    uint64_t orig_addr = addr, orig_size = size;
+ 
+     if (!has_cpu) {
+         cpu_index = 0;
+@@ -840,11 +840,11 @@ exit:
+     fclose(f);
+ }
+ 
+-void qmp_pmemsave(int64_t addr, int64_t size, const char *filename,
++void qmp_pmemsave(uint64_t addr, uint64_t size, const char *filename,
+                   Error **errp)
+ {
+     FILE *f;
+-    uint32_t l;
++    uint64_t l;
+     uint8_t buf[1024];
+ 
+     f = fopen(filename, "wb");
+-- 
+2.34.1
+
 
