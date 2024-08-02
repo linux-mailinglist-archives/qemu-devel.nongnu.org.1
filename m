@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3E69455A5
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 02:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE4E945614
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 03:49:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZgMC-0006VT-O3; Thu, 01 Aug 2024 20:41:20 -0400
+	id 1sZhPO-0000BI-Q8; Thu, 01 Aug 2024 21:48:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sZgM8-0006V0-4W
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 20:41:16 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sZgM6-0007Gu-EA
- for qemu-devel@nongnu.org; Thu, 01 Aug 2024 20:41:15 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1fc60c3ead4so56309755ad.0
- for <qemu-devel@nongnu.org>; Thu, 01 Aug 2024 17:41:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722559273; x=1723164073; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=T7wAUaMp/ucYXleqI+9l13fRaFch+BLy98S4UCEMtls=;
- b=ZvtzMivBl18ufj2iNme0zNdlE/3ZBvDPl15QjgZ38nOkPYOsIX4PrWQMhGtV4WZH1m
- c0qgrMtBAJvOfaRI4iPDqf9C3yWo2N1LkisdPBqZrVOkczYn5XeN/o2jr4mjQ+Ua5UpD
- jg1dLM4tuJb9xj+Nk/7zcT5xITxS4Q4EA0aD4ndzivF0L8p7XmwhBfHzbEQrUM4TqWOT
- bzRU8JY5SUTGVbZOlYT80wNFgk8QUeUS7Fm+0Wx3HeJGvZ3RDuB16RRNrYkl7qMETGwe
- HuXsZL06rVGws7zCjwZ45Ykgqi87+U0W5+NhNPBJAXnljUaamY24rS5lwm8N9Jenn19T
- k0LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722559273; x=1723164073;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T7wAUaMp/ucYXleqI+9l13fRaFch+BLy98S4UCEMtls=;
- b=RnSJV0YzGJKE9wgMASGjcpX+IAAh0PhpeMoVXyyKRMJi+oz6Mo9u+y7nG0yTak6UVj
- S7s5agORFXfuBVwKHKewvr/eTWWkEj5LAwAug6huRG1KNy/yhemTosV0mpCKm2KpT8+/
- h/d7ZIVKR2el8+5zL8xP3WsDfRduCXLO33lBfyEyiWnYnD3IeiuV8Nk3dhrckjQAsuxu
- 43LG7YtFCrIMP5FxmfKNKh4Va/xQxzii4JchwIEBkKCb0i7AEvVbYxeR3jrc7Sb+SnY/
- iOKB3i0EzDm8S0n/6dLXorYx984ILWvmuYcNc4xEdC5nDzOoCUvkhk9s4I0J7GPxHHaL
- FUkA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVq5c66qpv8NZiY2zNiy7EM+y0q7ezwEr8tUg0rxxLb5OTeU9h3/8C8v3Ccx07+ZYlUQ5LIQnqn+DjmzPEoJPzYpDTynnU=
-X-Gm-Message-State: AOJu0YyMMR17kARrG16n5cLhuaoVxXshZcpvvu60+eZr6QKQjRTgGSHd
- miR6pinKKsDj/Rj4zuylwe8OckW7ieWp6+l8VXkZCHCtRJbi/sCs/UnZsud4DnexCapNPAgbNpS
- pfcjncw==
-X-Google-Smtp-Source: AGHT+IE02e91XPi/Co62+rqz0jFnBbppEd1uJImGm2wThcfj0zA5UDyfLwua9QbrVb4+mbtV2GBqDQ==
-X-Received: by 2002:a17:903:41c8:b0:1fd:cda0:2f4c with SMTP id
- d9443c01a7336-1ff572a35e0mr22749475ad.18.1722559272458; 
- Thu, 01 Aug 2024 17:41:12 -0700 (PDT)
-Received: from [192.168.1.113] ([203.56.128.103])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff5928ff1esm4944085ad.237.2024.08.01.17.41.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Aug 2024 17:41:11 -0700 (PDT)
-Message-ID: <ecedb1a4-919c-492a-a775-f2c74d1d82c3@linaro.org>
-Date: Fri, 2 Aug 2024 10:41:07 +1000
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sZhPM-00009q-HO
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 21:48:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sZhPK-0001wf-G8
+ for qemu-devel@nongnu.org; Thu, 01 Aug 2024 21:48:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722563317;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9uFJRE9LT2GDABzWrPy+vqa1ZqrveZQtNa1KSxb+l1U=;
+ b=jEAXy3uqWP0B1HY9JxvRuctlwncHY6k5enfOJN1SIEJEZJn8nK6pQm3wjuf+or97ZHQfEJ
+ zy2wXHf4eJ30hAkF09B+Gw8Xmk5XXqHsmSp16MmigXooqXNvcqj/Dm8eWn/UgsP5aMGGSd
+ Fh8GoWpd3zMOPJLZei0BMUWUbiXPoWU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-rSigsGCbPXW5Dgddu2Zjmg-1; Thu,
+ 01 Aug 2024 21:48:34 -0400
+X-MC-Unique: rSigsGCbPXW5Dgddu2Zjmg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 270941955D4D; Fri,  2 Aug 2024 01:48:33 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.72])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B356E19560AA; Fri,  2 Aug 2024 01:48:29 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com,
+ vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com,
+ berrange@redhat.com, Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Subject: [PATCH v2 for-9.1 0/3] Avoid NBD crash on nbd-server-stop
+Date: Thu,  1 Aug 2024 20:32:05 -0500
+Message-ID: <20240802014824.1906798-5-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/4] target-arm queue
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20240801142322.3948866-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240801142322.3948866-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,32 +78,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/24 00:23, Peter Maydell wrote:
-> Just 4 bug fixes here...
-> 
-> thanks
-> -- PMM
-> 
-> The following changes since commit e9d2db818ff934afb366aea566d0b33acf7bced1:
-> 
->    Merge tag 'for-upstream' ofhttps://gitlab.com/bonzini/qemu into staging (2024-08-01 07:31:49 +1000)
-> 
-> are available in the Git repository at:
-> 
->    https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240801
-> 
-> for you to fetch changes up to 5e8e4f098d872818aa9a138a171200068b81c8d1:
-> 
->    target/xtensa: Correct assert condition in handle_interrupt() (2024-08-01 10:59:01 +0100)
-> 
-> ----------------------------------------------------------------
-> target-arm queue:
->   * hw/arm/mps2-tz.c: fix RX/TX interrupts order
->   * accel/kvm/kvm-all: Fixes the missing break in vCPU unpark logic
->   * target/arm: Handle denormals correctly for FMOPA (widening)
->   * target/xtensa: Correct assert condition in handle_interrupt()
+v1 was here:
+https://lists.gnu.org/archive/html/qemu-devel/2024-06/msg01609.html
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+Since then, I've applied with Red Hat to get a CVE assigned (a client
+not using TLS should never be able to cause the destination qemu to
+crash during live storage migration), and will update to include that
+number once it is assigned.  But since the issue has already been on
+list, I see no need to further embargo this patch attempt.
 
-r~
+I've also concluded from my audit that Alexander's initial hunch was
+right: there's nothing simple we can do to prevent qio coroutines from
+reaching our callback into nbd_blockdev_client_closed() after a QMP
+nbd-server-stop (I could not find a graceful way to close the qio
+channel and then forcefully wait for the coroutine to finish), so that
+function has to be prepared to handle late clients, but the fix in
+patch 1 is a bit more involved than Alexander's attempt since we must
+also not corrupt a subsequent nbd-server-start.  Patch 2 is
+insufficient on its own to prevent the problems, but reduces the
+amount of time that a client can hang on to server resources after
+nbd-server-stop (the client will see EPIPE rather than being able to
+carry on a prolonged NBD_OPT_* conversation).
+
+[I'm also aware of some Coverity analysis pointing to potential race
+conditions in block/nbd.c; if those need fixes, I hope to also post
+patches for those in time for inclusion in the same pull request that
+picks up this series]
+
+Eric Blake (3):
+  nbd: CVE-XXX: Use cookie to track generation of nbd-server
+  nbd: CVE-XXX: Close stray client sockets at server shutdown
+  nbd: Minor style fixes
+
+ include/block/nbd.h |  3 ++-
+ blockdev-nbd.c      | 39 ++++++++++++++++++++++++++++++++++-----
+ nbd/server.c        | 14 +++++++++-----
+ qemu-nbd.c          |  8 +++++---
+ 4 files changed, 50 insertions(+), 14 deletions(-)
+
+-- 
+2.45.2
+
 
