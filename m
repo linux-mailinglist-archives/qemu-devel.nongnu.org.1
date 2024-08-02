@@ -2,65 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01983945CF5
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 13:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EA1945D01
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Aug 2024 13:13:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sZqBf-0001EJ-0Y; Fri, 02 Aug 2024 07:11:07 -0400
+	id 1sZqDF-0007V9-Vo; Fri, 02 Aug 2024 07:12:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sZqBV-0001C6-Ia; Fri, 02 Aug 2024 07:10:57 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sZqBS-0004mK-UY; Fri, 02 Aug 2024 07:10:56 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4F81460B52;
- Fri,  2 Aug 2024 14:10:50 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b725::1:34] (unknown
- [2a02:6b8:b081:b725::1:34])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id nAWlw38IcCg0-dMoKrgoX; Fri, 02 Aug 2024 14:10:49 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1722597049;
- bh=XGWR8kuofwt84k9I/kYRha2MxzC+QzNYpbmNvp4lHnk=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=f+gZaFcsaaVG24fD1/tzMqzRBEUnQXo6HD5BjZBEsECdQVpVNGiGPIhM4yFLSGUyY
- gly8HsNqTnB9SoeBXe7kX2zT+dWoHc/mpkxNrSZppXmxVwCYtanRiObzM8KQH/3o0k
- WhnF+7usD6SGSUzyrJ4Gi/wxfU6XEf2dFxSgNxHg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <2ee88d14-98a0-4189-96fe-be737f915744@yandex-team.ru>
-Date: Fri, 2 Aug 2024 14:10:49 +0300
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sZqDB-0007Qc-VP
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:12:41 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sZqDA-0006jb-Df
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 07:12:41 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5a1337cfbb5so12865945a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 04:12:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722597158; x=1723201958; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=lavbJMgYEf9moKbNFJH2GN3J9/8/DEWhuvohPFrHTlw=;
+ b=fbTW92kK7JzB4uEIKsY+j2fS0Osr15ccEisTFUmzVg6NVFxuqOrmTttqwxYHvx5Qz2
+ xQp7ex8e1HqLwwi5tjwibl/ItynuDxi3DJ97NGF1ZYrh5xF1LvewF4LUUXFbkvKFVVWI
+ P2Bw1EXZDLgHIsLKEyqYlzBXEIgXXZOsMj6Y6c0SSSTFHPLb70Rnk8Upx10z6gxYC64u
+ 19/hzkS1LC0TMUvNbi1Z/mHno1v1DBQVZ4ekiB8boJVdtp/63ZFcz4GLDYgkCgkgtZ+h
+ i7j5yzHx+VFk6UDxjwyprrLjnTPtq1T8d2Fspyu9p/Cp//+mACQq5aQbJKdYoL2Lb1KT
+ 4FeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722597158; x=1723201958;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lavbJMgYEf9moKbNFJH2GN3J9/8/DEWhuvohPFrHTlw=;
+ b=pLFF2qddA2CiL6r8wftpbChOCnfnk5yAYjnQDqjfBiLmb+4pWLK1g0yrckgD0C0YuY
+ kpuLj3Yo+grm/06KKgWqizWvPug19KUQlKBkUsDuDDZpusDPt9H2HSTyXltKzUa/up3M
+ yNKOoffW8zXzS3n/YYpMnDc/97wQZA5Wd6OAKSxXkPOTzy+Ar7wxbzm6bIemFLQ36EIL
+ ZCEzx7/edlHlHn/C6+qmPDmommATBtaQRGKoZUG8W6ZrjKU2Us3L3c7IQ0dETjsm0jB9
+ mSG8NFTVQvKgXLJhfOr3a57hX7yxsj9Ow165nYMAy3QEgtsMfumMJQRtwSvylOdUQqst
+ THxg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVzPu/W/uznVPVlPktz6HOR4LkT2ToYHBYFOKjZM10NS7iJTsEf2uLmMRn3R4kY33DoNWeOu354lkVunRaF52AckFRMbCI=
+X-Gm-Message-State: AOJu0YzKzGuTeHj4n6y29Y+lUuV9NvjCwEdX1MDsXiUplFWsULogLpZ0
+ +GEHgLe8LfdQR+8Bwo9rSe0DI0UiPJ5XHnHfsLFfyvjHke091W9qIqnNEZg8tcA=
+X-Google-Smtp-Source: AGHT+IFmi190W8igl6I6jkfSY+KqxYZx/GkSPxJDLTEU6FD/GC5G4gQwIzsaWzTeb+a/WvIie2A8CA==
+X-Received: by 2002:a17:907:9486:b0:a6f:59dc:4ece with SMTP id
+ a640c23a62f3a-a7dc4dc3c72mr253654066b.2.1722597158360; 
+ Fri, 02 Aug 2024 04:12:38 -0700 (PDT)
+Received: from meli-email.org (adsl-146.37.6.160.tellas.gr. [37.6.160.146])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a7dc9ecb546sm85952766b.224.2024.08.02.04.12.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 Aug 2024 04:12:38 -0700 (PDT)
+Date: Fri, 02 Aug 2024 14:11:20 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Zheyu Ma <zheyuma97@gmail.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/audio/virtio-snd: fix invalid param check
+User-Agent: meli 0.8.7
+References: <20240802071805.7123-1-vr_qemu@t-online.de>
+In-Reply-To: <20240802071805.7123-1-vr_qemu@t-online.de>
+Message-ID: <hl8gz.cfuid0km5pqb@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] qapi/block-core: derpecate block-job-change
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, eblake@redhat.com,
- devel@lists.libvirt.org, hreitz@redhat.com, kwolf@redhat.com,
- jsnow@redhat.com, pkrempa@redhat.com, f.ebner@proxmox.com
-References: <20240626110124.374336-1-vsementsov@yandex-team.ru>
- <20240626110124.374336-7-vsementsov@yandex-team.ru>
- <87frs7x8tm.fsf@pond.sub.org>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87frs7x8tm.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,35 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18.07.24 14:01, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> That's a first step to move on newer job-* APIs.
->>
->> The difference between block-job-change and job-change is in
->> find_block_job_locked() vs find_job_locked() functions. What's
->> different?
->>
->> 1. find_block_job_locked() do check, is found job a block-job. This OK
-> 
-> Do you mean something like find_block_job_locked() finds only block
-> jobs, whereas find_job_locked() finds any kind of job?
+On Fri, 02 Aug 2024 10:18, Volker Rümelin <vr_qemu@t-online.de> wrote:
+>Commit 9b6083465f ("virtio-snd: check for invalid param shift
+>operands") tries to prevent invalid parameters specified by the
+>guest. However, the code is not correct.
+>
+>Change the code so that the parameters format and rate, which are
+>a bit numbers, are compared with the bit size of the data type.
+>
+>Fixes: 9b6083465f ("virtio-snd: check for invalid param shift operands")
+>Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+>---
+> hw/audio/virtio-snd.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+>
+>diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+>index e5196aa4bb..d1cf5eb445 100644
+>--- a/hw/audio/virtio-snd.c
+>+++ b/hw/audio/virtio-snd.c
+>@@ -282,12 +282,12 @@ uint32_t virtio_snd_set_pcm_params(VirtIOSound *s,
+>         error_report("Number of channels is not supported.");
+>         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+>     }
+>-    if (BIT(params->format) > sizeof(supported_formats) ||
+>+    if (params->format >= sizeof(supported_formats) * BITS_PER_BYTE ||
+>         !(supported_formats & BIT(params->format))) {
+>         error_report("Stream format is not supported.");
+>         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+>     }
+>-    if (BIT(params->rate) > sizeof(supported_rates) ||
+>+    if (params->rate >= sizeof(supported_rates) * BITS_PER_BYTE ||
+>         !(supported_rates & BIT(params->rate))) {
+>         error_report("Stream rate is not supported.");
+>         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+>-- 
+>2.35.3
+>
 
-Yes
+Thanks for the fix Volker :)
 
-> 
->>     when moving to more generic API, no needs to document this change.
->>
->> 2. find_block_job_locked() reports DeviceNotActive on failure, when
->>     find_job_locked() reports GenericError. Still, for block-job-change
->>     errors are not documented at all, so be silent in deprecated.txt as
->>     well.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> 
-
--- 
-Best regards,
-Vladimir
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
