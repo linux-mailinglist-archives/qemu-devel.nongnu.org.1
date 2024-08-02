@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F94946650
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B402894665A
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Aug 2024 01:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sa29o-0002Fr-O8; Fri, 02 Aug 2024 19:58:00 -0400
+	id 1sa29p-0002Jc-ED; Fri, 02 Aug 2024 19:58:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29k-0001yw-4o
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:56 -0400
-Received: from mail-io1-xd2c.google.com ([2607:f8b0:4864:20::d2c])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29l-00024Q-HP
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:57 -0400
+Received: from mail-io1-xd29.google.com ([2607:f8b0:4864:20::d29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29i-0004Iw-Jg
- for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:55 -0400
-Received: by mail-io1-xd2c.google.com with SMTP id
- ca18e2360f4ac-81f860c6015so357271139f.0
- for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sa29j-0004JB-LL
+ for qemu-devel@nongnu.org; Fri, 02 Aug 2024 19:57:57 -0400
+Received: by mail-io1-xd29.google.com with SMTP id
+ ca18e2360f4ac-81fd1e1d38bso100892439f.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Aug 2024 16:57:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643073; x=1723247873;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1722643074; x=1723247874;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zcFCklOxEptK/v+KYBlk+aaUGmJl8I5KUjcP8oU3kVY=;
- b=2Fi8EXtQ6HRAnNfojg+cnCpCMGSRD1JnurMQMhBkTVfAqc48PaHvoLs5i57Wr8zTED
- PdcRQUb+cOIEu4Vs4u6L0OqSuARDZRXHbru6ZtyW7IF5YLNYtB8JOSdY5NpZ8BrdfhOr
- 1A+PHupaJPOEMps0v34mfpDp3Jev73opLDNBicOknQepuntUqIbIMeQqRmTmCJyVKk0N
- vTfj+a3hHv4ii7iP8Gx3VUAPJxs71E7F3CvgDqvAK/vwc1LRUKeUvwuJwHxjNEBdocR+
- b5XEef8iaHr5UYVByUhqPC9OglTytQ88F95B6Y6KsClj8hjOK0Ro9FX48oi4XHGnvnK1
- aZTg==
+ bh=hxMMYdUIWV7BpRLm7ZCMIQipXwTZjxzuoSHO0vQ0wkg=;
+ b=SQ1KV4Ef2K1ALJpMrxtJH8Y+H3hRJa922zdfzx5woN4S9FO+5hwrtqAyVxPKGShxT8
+ w6iRryQEGYW0wFy3Nk/OSXRMOPfI3xG4LPo0mv9XQPbcd+FZzB3Kzkdbi1g2+Y0815a9
+ zJ/+xe8Ftl9oc91ZAspktksNIV0K7t8sQLxoe4Xdh5dLhTQ4Jr41cStBTnVmABVNigSt
+ 0nbp090Nd/v82UD4PTZ0WNpemvGi+WNakzc0iW3CqLaFOzxBPks8hDRufR7UWMlkDKps
+ Qsx4hzuSvjQQbU/1hgo9MkCdyzKnqku1UNEp37JpKbVxkFOVtLYiTxRtM5JgE07exOqj
+ FEiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722643073; x=1723247873;
+ d=1e100.net; s=20230601; t=1722643074; x=1723247874;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zcFCklOxEptK/v+KYBlk+aaUGmJl8I5KUjcP8oU3kVY=;
- b=EsKEDTckcnbgOVYVwIWb9q4VjMYFyM5y06S0W2Bth0USLf3ysdDft0LSo34lRkD9Qn
- twu+78CPoOM/YLNmgxB5YlB7WtcUIWt8Xr4VfasULEHQn4srm8MCtGLFNxb7iqgzLHD8
- vQSm5hH/XacKuW1YwozVIqI66Xto3rEARc+4gdHEglDLlznQrLV1W+h1j2WfhtH55pcD
- nRw7KaKvsa6+zb5Cj2Hu3t4sDEc4cHAxHujyHBUI9ZtacLzl/F7eG8J3YIBXsGqv4fjN
- tFxmxMUQCnvLhRUbdamfLrAQhNq9KjiyEl1nEFfFzJ/S2ek7clvMyDHklqrncHBvuGRY
- D6sw==
-X-Gm-Message-State: AOJu0Yx4Fbjds2Q9+/Iiu71eusYbhYhM+oG+H62aWordM+IGmJ6q5i2H
- wYWv9JUaoh9oTrXWMwr2hr4Z5Vm10EMVMR/PgRvc6th3cRJ3ChftTVxykzud2ZBo+cxIbDiqZCg
- qkMQ=
-X-Google-Smtp-Source: AGHT+IF+T6AgLY1GQRi4nbq5nPAncJzm//ge4HtzBIoewlabZi/Bxkj8Q7QDmeCMupKHCP+kqJbo0g==
-X-Received: by 2002:a05:6602:27cf:b0:812:9c27:357c with SMTP id
- ca18e2360f4ac-81fd43652b4mr808645739f.8.1722643073028; 
- Fri, 02 Aug 2024 16:57:53 -0700 (PDT)
+ bh=hxMMYdUIWV7BpRLm7ZCMIQipXwTZjxzuoSHO0vQ0wkg=;
+ b=VWblmrtNVf0TxG4r3U73Wh/KRguYIJjpeky7H/DWkmEdFm+EcDThKGmES+HukniUUM
+ qu51ADmezY3VPoDdb3wgFdXIZEr8UegP/8eOgHKssPfVTHB3Qlfq3inNCGMFzt10rASW
+ q/hO/dwz/1tZ0WuahdPcD7HVNpV6EGlVZ6Vh4MS16/pXzZEXDfKD+4y9BT8bpmPkvBuw
+ 8FcFBlejlJydujuAaMjhYFLWCGa92ZJgofMTojNyzEUOv/OQfjQf2i0yX38DnPe8Ptcf
+ lTYaNvPLu2S53EO7OvXu8S1PBBFfcSzO6u2kz7Y2TOvZByMYPA9KAXf4C32bsEFAd3fS
+ xo1g==
+X-Gm-Message-State: AOJu0YxFuiYT1YNsaAlqn3NfBHmuFurgbBWKdFkKqHstv9/PJGb2mhhZ
+ z2OamCD9+4HzxITGATGhpqkn9Oo0WmCf1858PVRlhced+JNegSpFnL/wpJFSKV41mUP7rZl1BFN
+ fPTI=
+X-Google-Smtp-Source: AGHT+IGOtmJw+WDFJLDwZQOmXBDlkxuSSUI+xcUIY8OIa5mLiv99XnDwXo+CCxGno1/WCschjBcdRg==
+X-Received: by 2002:a05:6602:641f:b0:7f7:e273:a97d with SMTP id
+ ca18e2360f4ac-81fd437a1d5mr638006239f.9.1722643074290; 
+ Fri, 02 Aug 2024 16:57:54 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.51
+ 8926c6da1cb9f-4c8d69a8227sm683131173.47.2024.08.02.16.57.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Aug 2024 16:57:52 -0700 (PDT)
+ Fri, 02 Aug 2024 16:57:53 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
  Jessica Clarke <jrtc27@jrtc27.com>
-Subject: [PATCH 13/17] bsd-user: target_mprotect: rename prot to target_prot
-Date: Fri,  2 Aug 2024 17:56:13 -0600
-Message-ID: <20240802235617.7971-14-imp@bsdimp.com>
+Subject: [PATCH 14/17] bsd-user: target_mmap*: change prot to target_prot
+Date: Fri,  2 Aug 2024 17:56:14 -0600
+Message-ID: <20240802235617.7971-15-imp@bsdimp.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240802235617.7971-1-imp@bsdimp.com>
 References: <20240802235617.7971-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d2c;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd2c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d29;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,79 +91,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Linux-user's target_mprotect uses this convention, so move to it.
+Adopt the linux-user convention of using target_prot for passed in
+protections. no functional change.
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/mmap.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ bsd-user/mmap.c | 47 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
 
 diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index ed8d31a9048..d34075c5c64 100644
+index d34075c5c64..2118972f073 100644
 --- a/bsd-user/mmap.c
 +++ b/bsd-user/mmap.c
-@@ -61,16 +61,16 @@ void mmap_fork_end(int child)
+@@ -152,7 +152,7 @@ error:
+  */
+ static int mmap_frag(abi_ulong real_start,
+                      abi_ulong start, abi_ulong end,
+-                     int prot, int flags, int fd, abi_ulong offset)
++                     int target_prot, int flags, int fd, abi_ulong offset)
+ {
+     abi_ulong real_end, addr;
+     void *host_start;
+@@ -170,20 +170,20 @@ static int mmap_frag(abi_ulong real_start,
+ 
+     if (prot1 == 0) {
+         /* no page was there, so we allocate one. See also above. */
+-        void *p = mmap(host_start, qemu_host_page_size, prot,
++        void *p = mmap(host_start, qemu_host_page_size, target_prot,
+                        flags | ((fd != -1) ? MAP_ANON : 0), -1, 0);
+         if (p == MAP_FAILED)
+             return -1;
+-        prot1 = prot;
++        prot1 = target_prot;
+     }
+     prot1 &= PAGE_RWX;
+ 
+-    prot_new = prot | prot1;
++    prot_new = target_prot | prot1;
+     if (fd != -1) {
+         /* msync() won't work here, so we return an error if write is
+            possible while it is a shared mapping */
+         if ((flags & TARGET_BSD_MAP_FLAGMASK) == MAP_SHARED &&
+-            (prot & PROT_WRITE))
++            (target_prot & PROT_WRITE))
+             return -1;
+ 
+         /* adjust protection to be able to read */
+@@ -367,7 +367,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size)
  }
  
- /* NOTE: all the constants are the HOST ones, but addresses are target. */
--int target_mprotect(abi_ulong start, abi_ulong len, int prot)
-+int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
+ /* NOTE: all the constants are the HOST ones */
+-abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
++abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+                      int flags, int fd, off_t offset)
  {
-     abi_ulong end, host_start, host_end, addr;
-     int prot1, ret;
- 
-     qemu_log_mask(CPU_LOG_PAGE, "mprotect: start=0x" TARGET_ABI_FMT_lx
-                   " len=0x" TARGET_ABI_FMT_lx " prot=%c%c%c\n", start, len,
--                  prot & PROT_READ ? 'r' : '-',
--                  prot & PROT_WRITE ? 'w' : '-',
--                  prot & PROT_EXEC ? 'x' : '-');
-+                  target_prot & PROT_READ ? 'r' : '-',
-+                  target_prot & PROT_WRITE ? 'w' : '-',
-+                  target_prot & PROT_EXEC ? 'x' : '-');
-     if ((start & ~TARGET_PAGE_MASK) != 0)
-         return -EINVAL;
-     len = TARGET_PAGE_ALIGN(len);
-@@ -78,7 +78,7 @@ int target_mprotect(abi_ulong start, abi_ulong len, int prot)
-         return -ENOMEM;
+     abi_ulong ret, end, real_start, real_end, retaddr, host_offset, host_len;
+@@ -377,9 +377,9 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+         qemu_log("mmap: start=0x" TARGET_ABI_FMT_lx
+                  " len=0x" TARGET_ABI_FMT_lx " prot=%c%c%c flags=",
+                  start, len,
+-                 prot & PROT_READ ? 'r' : '-',
+-                 prot & PROT_WRITE ? 'w' : '-',
+-                 prot & PROT_EXEC ? 'x' : '-');
++                 target_prot & PROT_READ ? 'r' : '-',
++                 target_prot & PROT_WRITE ? 'w' : '-',
++                 target_prot & PROT_EXEC ? 'x' : '-');
+         if (flags & MAP_ALIGNMENT_MASK) {
+             qemu_log("MAP_ALIGNED(%u) ",
+                      (flags & MAP_ALIGNMENT_MASK) >> MAP_ALIGNMENT_SHIFT);
+@@ -416,13 +416,14 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+         goto fail;
      }
-     end = start + len;
--    prot &= PROT_READ | PROT_WRITE | PROT_EXEC;
-+    target_prot &= PROT_READ | PROT_WRITE | PROT_EXEC;
-     if (len == 0)
-         return 0;
- 
-@@ -87,7 +87,7 @@ int target_mprotect(abi_ulong start, abi_ulong len, int prot)
-     host_end = HOST_PAGE_ALIGN(end);
-     if (start > host_start) {
-         /* handle host page containing start */
--        prot1 = prot;
-+        prot1 = target_prot;
-         for (addr = host_start; addr < start; addr += TARGET_PAGE_SIZE) {
-             prot1 |= page_get_flags(addr);
+     if (flags & MAP_STACK) {
+-        if ((fd != -1) || ((prot & (PROT_READ | PROT_WRITE)) !=
+-                    (PROT_READ | PROT_WRITE))) {
++        if (fd != -1 ||
++            ((target_prot & (PROT_READ | PROT_WRITE)) !=
++             (PROT_READ | PROT_WRITE))) {
+             errno = EINVAL;
+             goto fail;
          }
-@@ -104,7 +104,7 @@ int target_mprotect(abi_ulong start, abi_ulong len, int prot)
-         host_start += qemu_host_page_size;
      }
-     if (end < host_end) {
--        prot1 = prot;
-+        prot1 = target_prot;
-         for (addr = end; addr < host_end; addr += TARGET_PAGE_SIZE) {
-             prot1 |= page_get_flags(addr);
+-    if ((flags & MAP_GUARD) && (prot != PROT_NONE || fd != -1 ||
++    if ((flags & MAP_GUARD) && (target_prot != PROT_NONE || fd != -1 ||
+         offset != 0 || (flags & (MAP_SHARED | MAP_PRIVATE |
+         /* MAP_PREFAULT | */ /* MAP_PREFAULT not in mman.h */
+         MAP_PREFAULT_READ | MAP_ANON | MAP_STACK)) != 0)) {
+@@ -512,14 +513,14 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+          * especially important if qemu_host_page_size >
+          * qemu_real_host_page_size
+          */
+-        p = mmap(g2h_untagged(start), host_len, prot,
++        p = mmap(g2h_untagged(start), host_len, target_prot,
+                  flags | MAP_FIXED | ((fd != -1) ? MAP_ANON : 0), -1, 0);
+         if (p == MAP_FAILED)
+             goto fail;
+         /* update start so that it points to the file position at 'offset' */
+         host_start = (unsigned long)p;
+         if (fd != -1) {
+-            p = mmap(g2h_untagged(start), len, prot,
++            p = mmap(g2h_untagged(start), len, target_prot,
+                      flags | MAP_FIXED, fd, host_offset);
+             if (p == MAP_FAILED) {
+                 munmap(g2h_untagged(start), host_len);
+@@ -557,11 +558,11 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+              * possible while it is a shared mapping
+              */
+             if ((flags & TARGET_BSD_MAP_FLAGMASK) == MAP_SHARED &&
+-                (prot & PROT_WRITE)) {
++                (target_prot & PROT_WRITE)) {
+                 errno = EINVAL;
+                 goto fail;
+             }
+-            retaddr = target_mmap(start, len, prot | PROT_WRITE,
++            retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
+                                   MAP_FIXED | MAP_PRIVATE | MAP_ANON,
+                                   -1, 0);
+             if (retaddr == -1)
+@@ -569,8 +570,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+             if (pread(fd, g2h_untagged(start), len, offset) == -1) {
+                 goto fail;
+             }
+-            if (!(prot & PROT_WRITE)) {
+-                ret = target_mprotect(start, len, prot);
++            if (!(target_prot & PROT_WRITE)) {
++                ret = target_mprotect(start, len, target_prot);
+                 assert(ret == 0);
+             }
+             goto the_end;
+@@ -587,13 +588,13 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+             if (real_end == real_start + qemu_host_page_size) {
+                 /* one single host page */
+                 ret = mmap_frag(real_start, start, end,
+-                                prot, flags, fd, offset);
++                                target_prot, flags, fd, offset);
+                 if (ret == -1)
+                     goto fail;
+                 goto the_end1;
+             }
+             ret = mmap_frag(real_start, start, real_start + qemu_host_page_size,
+-                            prot, flags, fd, offset);
++                            target_prot, flags, fd, offset);
+             if (ret == -1)
+                 goto fail;
+             real_start += qemu_host_page_size;
+@@ -602,7 +603,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+         if (end < real_end) {
+             ret = mmap_frag(real_end - qemu_host_page_size,
+                             real_end - qemu_host_page_size, end,
+-                            prot, flags, fd,
++                            target_prot, flags, fd,
+                             offset + real_end - qemu_host_page_size - start);
+             if (ret == -1)
+                 goto fail;
+@@ -618,13 +619,13 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+             else
+                 offset1 = offset + real_start - start;
+             p = mmap(g2h_untagged(real_start), real_end - real_start,
+-                     prot, flags, fd, offset1);
++                     target_prot, flags, fd, offset1);
+             if (p == MAP_FAILED)
+                 goto fail;
          }
-@@ -117,11 +117,11 @@ int target_mprotect(abi_ulong start, abi_ulong len, int prot)
- 
-     /* handle the pages in the middle */
-     if (host_start < host_end) {
--        ret = mprotect(g2h_untagged(host_start), host_end - host_start, prot);
-+        ret = mprotect(g2h_untagged(host_start), host_end - host_start, target_prot);
-         if (ret != 0)
-             goto error;
      }
+  the_end1:
 -    page_set_flags(start, start + len - 1, prot | PAGE_VALID);
 +    page_set_flags(start, start + len - 1, target_prot | PAGE_VALID);
-     mmap_unlock();
-     return 0;
- error:
+  the_end:
+ #ifdef DEBUG_MMAP
+     printf("ret=0x" TARGET_ABI_FMT_lx "\n", start);
 -- 
 2.45.1
 
