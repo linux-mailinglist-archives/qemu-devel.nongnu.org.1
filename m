@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF86946D02
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Aug 2024 09:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF30946D0D
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Aug 2024 09:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1saVbj-0006gx-S6; Sun, 04 Aug 2024 03:24:47 -0400
+	id 1saVdX-0002aR-6B; Sun, 04 Aug 2024 03:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saVbh-0006ff-Cc
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:24:45 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1saVdT-0002Zt-Iv
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:26:35 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saVbf-0003RZ-Q9
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:24:45 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3db130a872fso6632875b6e.2
- for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 00:24:43 -0700 (PDT)
+ id 1saVdR-0005IX-Qg
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:26:35 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1fc4fcbb131so82191065ad.3
+ for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 00:26:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722756282; x=1723361082; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722756389; x=1723361189; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=b+HMgu+Ln+10CcO5tpaDhcaNT+HQToInF7AUMA8xn98=;
- b=o++D66cbJIm67clAdX5ci7hyuFMLyoBYWri5SulPjk6CfNbpmmiQiqq0Ac/B24X05Z
- Jb0hPt2Qvzi+aWl0rn2bZQxAwJ+xeKwi+2AKJD0hDXqI7UHPSfrdSzcugmirYIBd1uP8
- lKTXBHIzXRMy+is7le1GX31usJstvS6dfjp4cQaOGRhVNMw+GPlMBlaTgDiIp+KY4ZwP
- DabeBeiws0+qfVGoLx+frgncmJWi5l/84Rddm7JQUyXj5b4PluNVTGq3/vG0NmbS7hp+
- ZXUn2AfEacAsXR8CqvvPgyN9LEnR9j7qXZ7EInOHMkEtuMNB4FG9VVwb8BpFPjYiPdqD
- ggXQ==
+ bh=X2y6oeL7r4Rh8/M/UWLHR82kj3IT1sRHyyh6+9CHl5s=;
+ b=c/xPnbtK3aNfjwtri2A+486XiYHqW5o4Za8RLI2wsxHjHJ064DyW+mv10aogtWPmv3
+ NeDBvBfx7jpTaNy228E9DX8Jmu3GZ2TT2Aacu99LJHdRKz8rfbuqqTOnoKnsWT12CIVg
+ kkCr+OrUvWF2ZGOVBdlQiUVVXqJpUbvEv7qhQlUD7XoDNDvXAsBzE4gPLFHsqDh6Y5SM
+ yo0BmS2uG9wce+vDTz/zqixmdpIDLf66sCe4hsk04wz3VeSeRc7mbX8os0NA8k/pKjvk
+ gIQxsZQoP1wf2GsReCJLGasS9a8FzJC+LnEYv5TDPSthQXpXDXpRhAlA05ZCjyWPynsw
+ 7aPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722756282; x=1723361082;
+ d=1e100.net; s=20230601; t=1722756389; x=1723361189;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b+HMgu+Ln+10CcO5tpaDhcaNT+HQToInF7AUMA8xn98=;
- b=D9S6hNj9rgipvYmm29zOmDFnHkg+lrbh54lowHP8Jx7VsnnxL9ns2tpKt6Yo04FyUM
- LIQoBg3PRuXTcXxfrzovzwqXOmwp1JEn5TZgoL97up/dHdYDryAGcDT6Z3j6TUcjXjGk
- widehKkiAaBULBUWzr0m2LJVGLuoDfuAl/Tt6r00b4FIet4NIFAy+UO2CbDK/otIPtoy
- qBBvP8qi2TNV48vF55HRo1FvF57v4GiJwFUqfBlbz+D8dskWeVyZWtcEnp5eagjE4A3P
- yHbPUDQYjtABMW+J+p5dhX7bTVXqCoeRgRLRC1W97Z1OYHblqJM5qAjeSm0fSVhSP3RJ
- S4xQ==
+ bh=X2y6oeL7r4Rh8/M/UWLHR82kj3IT1sRHyyh6+9CHl5s=;
+ b=vjE1VdY4uyrQtv+yGI5299dGxctiB7ejijOjRjSNzSucHy+nnkQhrQByBeoQ96hW0Y
+ 7hqOotu6C1mMBNGY20WnXB4RuV02xWoWG38Ly+s7bMkfSXig8A2+fY4aLSKBWk5cpxxE
+ LmLWgYKbRa7ELl9cQhcUq8FiWABJf3+awCvZlDEb6KdsqAzyx4Zes1DUmPuWQajOtU1n
+ SYpEo7HsvWwZLlID4j3CUe+Xi01lkRsem9KUKAqbZRjLcul3fFnYCQix+T1wub6HCQCi
+ GKanog1C9hldBCGCFWbTicijjfh+IscBy2+qaKcPMikFDZc5IfGvrS7SWntbKyu5/3X+
+ sKrA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWEEKp8Hi+XiJPBaoRyObvin0h0AdcByt1nre+N/xR+uCAvCdTSnu8/kiilOb/102NxYeCWuF4zhqjdtTt1gHMuLxxIkOQ=
-X-Gm-Message-State: AOJu0YyeqNx08NZnQP/3jqgTDW2ghK5ZwXY057kPqMUylp7Xm2Rwut6Q
- Zq+0AEGcJhGLULX9yw7l8+6GG7GOEWBEbVrlzcxl0YehjS/tPfDXzxF0kIAVMAU=
-X-Google-Smtp-Source: AGHT+IHE1a8Tv3xAkuKai1w71Mw7ZN0V8a88+sg+exrZrFdF6uVSqR+EAF0oYXU0iazRdn8OgugEWg==
-X-Received: by 2002:a05:6808:21a9:b0:3d9:3f51:f351 with SMTP id
- 5614622812f47-3db55800d3cmr12170421b6e.11.1722756282339; 
- Sun, 04 Aug 2024 00:24:42 -0700 (PDT)
+ AJvYcCWK2/ryuaqnrZNDdtr0A5e/OSFKwJrnEWSxEwwNsKM9n5C93DhQxJyM7yLl57qW3HVKsonM9w+Nrx+dhSXsb5souQzbHIw=
+X-Gm-Message-State: AOJu0YyC3qOqnZu/BSRm4K60T25YBWmP/HIAuAuHkxlqIWMK9gEA/H+A
+ VUmV3GRe8ahJ6mvsf/FMXd+w69eY8CS74PwVsCKJvGV3m5ChX/GOU45o1LAgGU8=
+X-Google-Smtp-Source: AGHT+IGYEXZTFULWdsN/oIBM5xAFpH/e1/QAo0yJWIef9VBKvW7WGI6n8YTGMnvtDs+UOQuoCGf8vA==
+X-Received: by 2002:a17:903:41d1:b0:1fb:9cbf:b4cd with SMTP id
+ d9443c01a7336-1ff574bc175mr111104015ad.63.1722756388564; 
+ Sun, 04 Aug 2024 00:26:28 -0700 (PDT)
 Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff58f2a159sm44936995ad.3.2024.08.04.00.24.38
+ 98e67ed59e1d1-2cfdc45aaf5sm7938752a91.25.2024.08.04.00.26.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Aug 2024 00:24:41 -0700 (PDT)
-Message-ID: <79c5256f-df62-48ec-bb96-a6b880a2a675@linaro.org>
-Date: Sun, 4 Aug 2024 17:24:35 +1000
+ Sun, 04 Aug 2024 00:26:28 -0700 (PDT)
+Message-ID: <dfb34396-0f77-4f92-b345-b7ef05bf18b2@linaro.org>
+Date: Sun, 4 Aug 2024 17:26:23 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/17] bsd-user: Implement cpu_copy()
+Subject: Re: [PATCH 05/17] bsd-user: Eliminate unused regs arg in
+ load_elf_binary
 To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
-Cc: Kyle Evans <kevans@freebsd.org>, Jessica Clarke <jrtc27@jrtc27.com>,
- Stacey Son <sson@FreeBSD.org>, Justin Hibbits <chmeeedalf@gmail.com>
+Cc: Kyle Evans <kevans@freebsd.org>, Jessica Clarke <jrtc27@jrtc27.com>
 References: <20240802235617.7971-1-imp@bsdimp.com>
- <20240802235617.7971-5-imp@bsdimp.com>
+ <20240802235617.7971-6-imp@bsdimp.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240802235617.7971-5-imp@bsdimp.com>
+In-Reply-To: <20240802235617.7971-6-imp@bsdimp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,19 +98,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/3/24 09:56, Warner Losh wrote:
-> From: Stacey Son<sson@FreeBSD.org>
-> 
-> Catch up with 30ba0ee52d15 and implement cpu_copy(). It's needed for
-> threading. Stacey's original code, with bug fixes from Jessica, Justin
-> and myself.
-> 
-> Signed-off-by: Stacey Son<sson@FreeBSD.org>
-> Signed-off-by: Jessica Clarke<jrtc27@jrtc27.com>
-> Signed-off-by: Justin Hibbits<chmeeedalf@gmail.com>
 > Signed-off-by: Warner Losh<imp@bsdimp.com>
 > ---
->   bsd-user/main.c | 31 +++++++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
+>   bsd-user/bsdload.c | 2 +-
+>   bsd-user/elfload.c | 3 +--
+>   bsd-user/qemu.h    | 3 +--
+>   3 files changed, 3 insertions(+), 5 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
