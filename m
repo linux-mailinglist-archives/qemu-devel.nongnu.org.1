@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0A8946D10
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Aug 2024 09:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE170946D12
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Aug 2024 09:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1saVdi-0002ou-UE; Sun, 04 Aug 2024 03:26:50 -0400
+	id 1saVe1-0004Np-4N; Sun, 04 Aug 2024 03:27:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saVdf-0002oM-Lf
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:26:48 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ id 1saVdz-0004Du-2R
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:27:07 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saVdc-0005KM-7D
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:26:46 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-709428a9469so5537484a34.3
- for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 00:26:43 -0700 (PDT)
+ id 1saVdx-0005Mh-HS
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 03:27:06 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-e0bf97a2b96so935016276.3
+ for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 00:27:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722756402; x=1723361202; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722756424; x=1723361224; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=20VWO78GY6kQ+fCLjYjsQUtlRZPlu6El2/jARPb+C+c=;
- b=dOzxHgqJpB6+VK7jH5gegH/eScLKVHidI7lDfOwisfIOeAUnVRsMkWWD9mM1lDN3Qz
- frrlZWmWyNS3EiPdHjLivZIfz2ru70DO3PmDebU6+iCRHujipduVxqcssZ7DL7FI8X8E
- hhksqolSxfFf0lewTbYjIZ7op+xKuSfKdGqhopdIIJOFYkbjWU6hjjOegHV79YPkUseP
- jj2D2Se25i0Z3feKNo4QJCUYj68ZWb8LGDKfJKwS3VyuWAk50h0eLnGCLZ+SWP6K/02U
- XhE8GXWO64YdFAgciDgqJBvn5BQB6HjGJbLyjIJLXlpYVIFluRKL0bDzN57kBF00ycef
- XEWA==
+ bh=ODODGyF0jDqpgjd44c35DlSyRsyYpcN+GwIJ8WkWVwo=;
+ b=dLTnrHokvDhsO0Hl68fQ5qjybCJazxg/Phngwnr0uRXqO67dbYKmkUIycxhNM3Very
+ MlP+nZY1muOqiIpnGtP4CCP4L0hkhYYz/Zx5MD/5O7LE+eNYIuvYrcC6QODxmZniHAim
+ eUHYe03dx5TnbxvIIgqdBM5iReLBpBQmyKJB+cJGzvQl1o7lu61C7j1bTlVbUZZqvwE6
+ ssjKb/nSyGUauuJTo6v9jlJ7ZKz8vHP3rHvLWCDlOt64bHCYMpvzuEm6dvg7DgvTd+K4
+ N99ch7G7wOyi0itcDqOalxsTpwuPlKzE7p+BL9r4OVQOI+dWWaZX6x7PrZAD4gAsTInA
+ bm2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722756402; x=1723361202;
+ d=1e100.net; s=20230601; t=1722756424; x=1723361224;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=20VWO78GY6kQ+fCLjYjsQUtlRZPlu6El2/jARPb+C+c=;
- b=k6sopiMaSWJYEjE/YUamGjS3A1arYc1P9nHT6xE+2r5UVWsig4fQpV95qVYT4OhlFd
- QQTg7ZbDkijFtr5unc7/ssWez1JKLW6Sy9q6XpYQMdMl4+6SOjbVyGcRqahnZf1u6lvD
- 3wGyDguawP0xOYeB5N1tmCQQxBcZb7tl5jbvywlHvViHtZagqQoOJYasJ5RiGZ3k0ag3
- 13b4oAdVrj8M6E9EY2h809fYIGTPe/9j2V6upswyb+1N8dY9rJtKNW/rNFM/o77gUpg5
- S3skjGoY1aS6JWGNV6jSgq/j2+bPs6QXFJvXn3HgbjDf0S1dwRj29eSrMlEacU0DTqKT
- nMCw==
+ bh=ODODGyF0jDqpgjd44c35DlSyRsyYpcN+GwIJ8WkWVwo=;
+ b=AA0isFXTxzxmdvp3tHGtDtzP+nTJk2OD0ah2jJSSwfBimJJ+t6iFiQMPxATAx13r9+
+ 7AUQqn/HzPiqCocC2gWb9m+s2wFKj6JsHf1kN9T6LfxKlCm+qQt2a0MuE4HSB7sMI5ph
+ xxQWSb+XnbIpi4sC/TiEPV8U7Y0X61A9uK3yXLvE0e1/SD4QN8su59BHLucvLQHss1In
+ wl6CggYcoy6FqgmMa5SOl63rHalvX18ZBx2twK7ENWTvTcYADmj3LaRMV3aVUAJDl++O
+ Iy1E3mBYwkfoq6bXPbB/rdTvDm98ynepqGyX+pdMVaHpL4q0Y5CdB2WB9rEyT/gYMJbT
+ ty/w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWslXllAyHDG1AVnFdb9bOANec0AlVohWwtA5l+e95jbNJCI2wVEdEkKsVVViRTDB+mft+9UnMuVPi1/vgOZ+YTlmvOCe0=
-X-Gm-Message-State: AOJu0YwFnfOs8zsnSTyr03fSGDMhDIi0jzqeH3BZQnp65WCBJIveJF7Y
- TgURvyM6MQPFWYDzTMMnzLgj6v5xrFDFe1CzBa9TOXDb0LEYgPsY2EH4LYO8K8o=
-X-Google-Smtp-Source: AGHT+IGEZ1PRQlT7LUrQ9rl2Xi1ynXhHHebtfyzbsL8wLUrTAv9LQI9yXICFLaTnvCcw6O34NfS9ZQ==
-X-Received: by 2002:a05:6830:6a8e:b0:703:5c2b:9024 with SMTP id
- 46e09a7af769-709b323d790mr12574633a34.16.1722756402487; 
- Sun, 04 Aug 2024 00:26:42 -0700 (PDT)
+ AJvYcCWcIHgVsZNViqe69MyO3c2Y4UxFex9bGuM2MT/R4GAqR3PeUmR9Y6Vfd1375fpRMHVrCfbHeZrl7KGVYiU4PtuXVau4XJI=
+X-Gm-Message-State: AOJu0Yy2txFb23FB6yfv/Q8cb4aKgFMkl4ttjeIH9VYpmvUPfZN/MPnp
+ T78qtNYAyYcDeStmJcMk5tc5scRdjl2Ip7TMjyJT4BLn1doG/BHVkFbd4bpGZoRJvODzThX8S2c
+ It7QfXw==
+X-Google-Smtp-Source: AGHT+IE6BYTMKCsQIoDYUzXQzLENZUouGxLMF912x/1Tr8bPs0UQnqEqw50bfPXJIavEs+F6Nfv07Q==
+X-Received: by 2002:a05:6902:2b83:b0:e03:6023:ef75 with SMTP id
+ 3f1490d57ef6-e0bde408988mr10155959276.38.1722756424291; 
+ Sun, 04 Aug 2024 00:27:04 -0700 (PDT)
 Received: from [192.168.1.113] ([203.56.128.103])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7b763a3d36bsm3647618a12.52.2024.08.04.00.26.39
+ 98e67ed59e1d1-2cfdc4cf660sm7966105a91.42.2024.08.04.00.27.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Aug 2024 00:26:42 -0700 (PDT)
-Message-ID: <0523ba58-4417-410a-9090-178303e92095@linaro.org>
-Date: Sun, 4 Aug 2024 17:26:37 +1000
+ Sun, 04 Aug 2024 00:27:03 -0700 (PDT)
+Message-ID: <16b1f448-b281-4e94-a87c-aba8db94b6cd@linaro.org>
+Date: Sun, 4 Aug 2024 17:26:58 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/17] bsd-user: Remove load_flt_binary prototype
+Subject: Re: [PATCH 07/17] bsd-user: Remove deprecated -p argument
 To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
 Cc: Kyle Evans <kevans@freebsd.org>, Jessica Clarke <jrtc27@jrtc27.com>
 References: <20240802235617.7971-1-imp@bsdimp.com>
- <20240802235617.7971-7-imp@bsdimp.com>
+ <20240802235617.7971-8-imp@bsdimp.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240802235617.7971-7-imp@bsdimp.com>
+In-Reply-To: <20240802235617.7971-8-imp@bsdimp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yb1-xb2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,12 +98,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/3/24 09:56, Warner Losh wrote:
-> bsd-user doesn't have support for loading FLT binaries.
+> FreeBSD never really used the -p argument, so it's safe to remove
+> entirely.
 > 
 > Signed-off-by: Warner Losh<imp@bsdimp.com>
 > ---
->   bsd-user/qemu.h | 2 --
->   1 file changed, 2 deletions(-)
+>   bsd-user/main.c | 8 --------
+>   1 file changed, 8 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
