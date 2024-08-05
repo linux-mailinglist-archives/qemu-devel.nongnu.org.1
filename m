@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67719471EF
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 02:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7FB9471F1
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 02:33:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1saldk-0008Kp-Fb; Sun, 04 Aug 2024 20:31:56 -0400
+	id 1saldo-00006d-8e; Sun, 04 Aug 2024 20:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saldi-0008GK-Vs
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:55 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1saldl-0008PV-8c
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:57 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saldh-0002K0-74
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:54 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-70eb73a9f14so7496153b3a.2
- for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 17:31:52 -0700 (PDT)
+ id 1saldj-0002KC-LK
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:57 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-70eaf5874ddso7494603b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 17:31:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722817912; x=1723422712; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722817914; x=1723422714; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9loKzQW0fz51/k/WMOHKeqW5+iqLnIhl+VnJpSdO5ZI=;
- b=z8JohOe5JP8EdqkOEMIzg7roJLJ9w0DnhGtYH8RzmrDAWxQvQ4k1XqMLV4P200wwa+
- S6DyzEpIMYkiJHO4q9+EAUbdyo7bHnQZx2dlYZHArmmGI20cvOy5TJOdeAz7A0j71XAy
- JRsxlT6YiXG4iyw6wC8dUKoBbecSUdR2LplJ43k6Ov96TGhi2dBSvA7liIt0DECxi6HC
- aVLGAJG2HS9HCz8q59h/76IO6DPGFqiqtTNAyX+Fp+iQhZCetuDygh7x1NaKpn3TDmt/
- dBFLDyd2cwpYnkf59vP4f0/5M+lYHL614CaagUD0z3SJukXW6X99nnjvYs+cJbk06NnQ
- WCFg==
+ bh=zCe4GkwH/iAnpmcpXgqjGYu6VSZ8QZlYv/hHC8b9IYI=;
+ b=rdkeGhj16oa8Y5B8j6NgH7jUWTJkb1fHjsRMQFoVhbrYuMCJcGGe+4+/FTsk/ipgWb
+ 5PZ8kCs/7w6tBt7phOj8g9buewNhOE9+/J89nSEFteJBqcpl7uwI55ANK+yTcjvODb/8
+ WjvOvg91F5a9Y/nvMYd21I3IvVeO6R3NSN7SZ2X7deG/D71GdDUsgnqn6+uR3dCBhwMi
+ mLsQWtHpb7dsbiKTLFNoIEu3dCSD8U9wAZ4Wh5s57lHPW+DovOZBE8QmVWHGOpTjOOkk
+ 32NtHvbFkKv8QPSh7wIIICFYtMmQs+7rJb9poU3pgXk1Q8pGmHnQ1mvoEYAiH8AOx5Mz
+ 5kMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722817912; x=1723422712;
+ d=1e100.net; s=20230601; t=1722817914; x=1723422714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9loKzQW0fz51/k/WMOHKeqW5+iqLnIhl+VnJpSdO5ZI=;
- b=nXUNWaoQNbu1N8j3dOBOoZ+uOBXvSQemn1M3bgNXWD6ovOqlSVyw1mDHxfL3tOcag9
- c9/0SpcgtgQQvCBab7TUMRLxU3PIq27gjOyfeSgRcQN1sppipaFZjjKNvyaajdBlXC83
- 0XURflMuq/6b4iIHz7inxub4m2qrQMpkWmoA75jOMTKNGmpcbLDf9aC00fpiulCcDOyh
- PYu1Yi2VJPpLjSf0kr+uQf3fv4R2x6uggyB7TZhPge7GPE5Vw5grlhlD3LDycM/HKCc3
- 8RhxLrozBwnhTbNAdaEFS99rroH4aqxkt/RO1nNTtaWLVY17sc9Q5rzfBjqiiuBbY+Pu
- Ad3w==
-X-Gm-Message-State: AOJu0Yyehg4RrOKq5QcReITwmAuj/ymPgY2LvAKu5PW0RDQ9qh+BX8x/
- l2coECoFi3G9xWp0nNgrbpQHnhvnlN+rUbRVACy+wSSCEiG6tED7cJBnQP80ls9HT7V7G6jask6
- gnIRLSA==
-X-Google-Smtp-Source: AGHT+IEvdMNgPGsehcKqxCVF7owcv9eNvXWwTqHmDDWT5K9tnLJhGkLLkBmAhXEYjFBIwLm4jyAdXw==
-X-Received: by 2002:a05:6a00:22d6:b0:710:591e:b52f with SMTP id
- d2e1a72fcca58-7106cf933f9mr13521120b3a.5.1722817911689; 
- Sun, 04 Aug 2024 17:31:51 -0700 (PDT)
+ bh=zCe4GkwH/iAnpmcpXgqjGYu6VSZ8QZlYv/hHC8b9IYI=;
+ b=r+gSc7Qdm3BkhDQ/A0awXJPRGXtuXlLe8EyYzeUam22kOfp2gYsPisUzl1ZtFoL6AC
+ maYPXoyCmxKDSCez2pR5yytyLG3O09kEqy/I3XJGtOAmORpT9fb1Gjajm6jLkzBVbuNG
+ +bJWrGnMAi/SSbcmn54wOwDa+0hqpqcf+Cur8Snr+6Z992HmR72knKYoYboMlvnQMyDk
+ jJKIXSMcxAk1bxgYYPRDHWEuZyko/tPd/cfXR5mQidLYArr2KqnikRL4Ae1eLBYifCC7
+ jQr+34c+HJyfTIwVLaQPta/bs9Lqj0isr0XZOd/YbXsHrlevxnzP1MVQWUWsTIGX1EXH
+ IseQ==
+X-Gm-Message-State: AOJu0YziB3XwGQibUombyQ6LMUIuI1F3F02gaZmZakdce6JqTYCCtc3m
+ nnAIQxce50jWwOMzUgAd1m0arN3C9rhU7sekHtwc7/nBmmsqGJGC18E1A0YDGICFIBdGW0FmO0U
+ UYHaLAg==
+X-Google-Smtp-Source: AGHT+IGI8rWmmxTFk6Jo3jU6wPokUjmP1UWm5VMT4a4ZHL/LMt90XTZXeuWrVzcA3TcD+o8TqJV/Dw==
+X-Received: by 2002:a05:6a20:8416:b0:1c4:b927:1ffb with SMTP id
+ adf61e73a8af0-1c69953db33mr9534159637.17.1722817914049; 
+ Sun, 04 Aug 2024 17:31:54 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7106ed16cb3sm4576038b3a.179.2024.08.04.17.31.49
+ d2e1a72fcca58-7106ed16cb3sm4576038b3a.179.2024.08.04.17.31.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Aug 2024 17:31:51 -0700 (PDT)
+ Sun, 04 Aug 2024 17:31:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-Subject: [PULL 5/6] qemu/osdep: Add excluded fd parameter to
- qemu_close_all_open_fd()
-Date: Mon,  5 Aug 2024 10:31:28 +1000
-Message-ID: <20240805003130.1421051-7-richard.henderson@linaro.org>
+Subject: [PULL 6/6] net/tap: Use qemu_close_all_open_fd()
+Date: Mon,  5 Aug 2024 10:31:29 +1000
+Message-ID: <20240805003130.1421051-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805003130.1421051-1-richard.henderson@linaro.org>
 References: <20240805003130.1421051-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,195 +94,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clément Léger <cleger@rivosinc.com>
 
-In order for this function to be usable by tap.c code, add a list of
-file descriptors that should not be closed.
+Instead of using a slow implementation to close all open fd after
+forking, use qemu_close_all_open_fd().
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Message-ID: <20240802145423.3232974-5-cleger@rivosinc.com>
-[rth: Use max_fd in qemu_close_all_open_fd_close_range]
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240802145423.3232974-6-cleger@rivosinc.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/osdep.h    |  8 +++-
- system/async-teardown.c |  2 +-
- util/oslib-posix.c      | 98 ++++++++++++++++++++++++++++++++++-------
- 3 files changed, 89 insertions(+), 19 deletions(-)
+ net/tap.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index de77c5c254..4cc4c32b14 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -760,9 +760,13 @@ int qemu_fdatasync(int fd);
- /**
-  * qemu_close_all_open_fd:
-  *
-- * Close all open file descriptors
-+ * Close all open file descriptors except the ones supplied in the @skip array
-+ *
-+ * @skip: ordered array of distinct file descriptors that should not be closed
-+ *        if any, or NULL.
-+ * @nskip: number of entries in the @skip array or 0 if @skip is NULL.
-  */
--void qemu_close_all_open_fd(void);
-+void qemu_close_all_open_fd(const int *skip, unsigned int nskip);
+diff --git a/net/tap.c b/net/tap.c
+index 7b2d5d5703..3f90022c0b 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -387,13 +387,20 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
  
- /**
-  * Sync changes made to the memory mapped file back to the backing
-diff --git a/system/async-teardown.c b/system/async-teardown.c
-index edf49e1007..9148ee8d04 100644
---- a/system/async-teardown.c
-+++ b/system/async-teardown.c
-@@ -52,7 +52,7 @@ static int async_teardown_fn(void *arg)
-      * Close all file descriptors that might have been inherited from the
-      * main qemu process when doing clone, needed to make libvirt happy.
-      */
--    qemu_close_all_open_fd();
-+    qemu_close_all_open_fd(NULL, 0);
- 
-     /* Set up a handler for SIGHUP and unblock SIGHUP. */
-     sigaction(SIGHUP, &sa, NULL);
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 9b79fc7cff..11b35e48fb 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -808,11 +808,12 @@ int qemu_msync(void *addr, size_t length, int fd)
-     return msync(addr, length, MS_SYNC);
- }
- 
--static bool qemu_close_all_open_fd_proc(void)
-+static bool qemu_close_all_open_fd_proc(const int *skip, unsigned int nskip)
- {
-     struct dirent *de;
-     int fd, dfd;
-     DIR *dir;
-+    unsigned int skip_start = 0, skip_end = nskip;
- 
-     dir = opendir("/proc/self/fd");
-     if (!dir) {
-@@ -823,8 +824,33 @@ static bool qemu_close_all_open_fd_proc(void)
-     dfd = dirfd(dir);
- 
-     for (de = readdir(dir); de; de = readdir(dir)) {
-+        bool close_fd = true;
-+
-+        if (de->d_name[0] == '.') {
-+            continue;
-+        }
-         fd = atoi(de->d_name);
--        if (fd != dfd) {
-+        if (fd == dfd) {
-+            continue;
-+        }
-+
-+        for (unsigned int i = skip_start; i < skip_end; i++) {
-+            if (fd < skip[i]) {
-+                /* We are below the next skipped fd, break */
-+                break;
-+            } else if (fd == skip[i]) {
-+                close_fd = false;
-+                /* Restrict the range as we found fds matching start/end */
-+                if (i == skip_start) {
-+                    skip_start++;
-+                } else if (i == skip_end) {
-+                    skip_end--;
-+                }
-+                break;
-+            }
-+        }
-+
-+        if (close_fd) {
-             close(fd);
-         }
-     }
-@@ -833,24 +859,60 @@ static bool qemu_close_all_open_fd_proc(void)
-     return true;
- }
- 
--static bool qemu_close_all_open_fd_close_range(void)
-+static bool qemu_close_all_open_fd_close_range(const int *skip,
-+                                               unsigned int nskip,
-+                                               int open_max)
- {
- #ifdef CONFIG_CLOSE_RANGE
--    int r = close_range(0, ~0U, 0);
--    if (!r) {
--        /* Success, no need to try other ways. */
--        return true;
--    }
--#endif
-+    int max_fd = open_max - 1;
-+    int first = 0, last;
-+    unsigned int cur_skip = 0;
-+    int ret;
-+
-+    do {
-+        /* Find the start boundary of the range to close */
-+        while (cur_skip < nskip && first == skip[cur_skip]) {
-+            cur_skip++;
-+            first++;
-+        }
-+
-+        /* Find the upper boundary of the range to close */
-+        last = max_fd;
-+        if (cur_skip < nskip) {
-+            last = skip[cur_skip] - 1;
-+            last = MIN(last, max_fd);
-+        }
-+
-+        /* With the adjustments to the range, we might be done. */
-+        if (first > last) {
-+            break;
-+        }
-+
-+        ret = close_range(first, last, 0);
-+        if (ret < 0) {
-+            return false;
-+        }
-+
-+        first = last + 1;
-+    } while (last < max_fd);
-+
-+    return true;
-+#else
-     return false;
-+#endif
- }
- 
--static void qemu_close_all_open_fd_fallback(void)
-+static void qemu_close_all_open_fd_fallback(const int *skip, unsigned int nskip,
-+                                            int open_max)
+ static void close_all_fds_after_fork(int excluded_fd)
  {
 -    int open_max = sysconf(_SC_OPEN_MAX), i;
-+    unsigned int cur_skip = 0;
++    const int skip_fd[] = {STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO,
++                           excluded_fd};
++    unsigned int nskip = ARRAY_SIZE(skip_fd);
  
-     /* Fallback */
--    for (i = 0; i < open_max; i++) {
-+    for (int i = 0; i < open_max; i++) {
-+        if (cur_skip < nskip && i == skip[cur_skip]) {
-+            cur_skip++;
-+            continue;
-+        }
-         close(i);
+-    for (i = 3; i < open_max; i++) {
+-        if (i != excluded_fd) {
+-            close(i);
+-        }
++    /*
++     * skip_fd must be an ordered array of distinct fds, exclude
++     * excluded_fd if already included in the [STDIN_FILENO - STDERR_FILENO]
++     * range
++     */
++    if (excluded_fd <= STDERR_FILENO) {
++        nskip--;
      }
- }
-@@ -858,10 +920,14 @@ static void qemu_close_all_open_fd_fallback(void)
- /*
-  * Close all open file descriptors.
-  */
--void qemu_close_all_open_fd(void)
-+void qemu_close_all_open_fd(const int *skip, unsigned int nskip)
- {
--    if (!qemu_close_all_open_fd_close_range() &&
--        !qemu_close_all_open_fd_proc()) {
--        qemu_close_all_open_fd_fallback();
-+    int open_max = sysconf(_SC_OPEN_MAX);
 +
-+    assert(skip != NULL || nskip == 0);
-+
-+    if (!qemu_close_all_open_fd_close_range(skip, nskip, open_max) &&
-+        !qemu_close_all_open_fd_proc(skip, nskip)) {
-+        qemu_close_all_open_fd_fallback(skip, nskip, open_max);
-     }
++    qemu_close_all_open_fd(skip_fd, nskip);
  }
+ 
+ static void launch_script(const char *setup_script, const char *ifname,
 -- 
 2.43.0
 
