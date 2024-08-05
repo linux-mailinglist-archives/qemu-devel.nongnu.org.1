@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD79494832E
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB6294831C
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:18:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb49I-0002hH-9W; Mon, 05 Aug 2024 16:17:44 -0400
+	id 1sb49M-000335-JL; Mon, 05 Aug 2024 16:17:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3XjOxZgUKCsU4l6t0rzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--tavip.bounces.google.com>)
- id 1sb49E-0002Rj-3z
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:40 -0400
-Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+ <3YDOxZgUKCsc6n8v2t11tyr.p1z3rz7-qr8ry010t07.14t@flex--tavip.bounces.google.com>)
+ id 1sb49I-0002of-Cq
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:44 -0400
+Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3XjOxZgUKCsU4l6t0rzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--tavip.bounces.google.com>)
- id 1sb49B-0001Qr-WD
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:39 -0400
-Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-e0e3eb3fe93so3039972276.1
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:36 -0700 (PDT)
+ <3YDOxZgUKCsc6n8v2t11tyr.p1z3rz7-qr8ry010t07.14t@flex--tavip.bounces.google.com>)
+ id 1sb49F-0001RE-9v
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:44 -0400
+Received: by mail-pg1-x549.google.com with SMTP id
+ 41be03b00d2f7-649731dd35bso8223203a12.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1722889055; x=1723493855; darn=nongnu.org;
+ d=google.com; s=20230601; t=1722889057; x=1723493857; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=nk3wy3iOlV41EdYWg2ADHBcnClsgP1AAs+CwqJBw/xU=;
- b=jn3Hed2apC4MeGSWIyxVR+3UoRxESiaQARUo11hPk8A9U/howsPgtHtpRm8PxwuzPC
- PN0dU2JP5Z3yKx/gHxU4HA7SOHzNyX8Sn0Q/WTHbEx42oCzrxuKRLUAwcsqXHJasEcQE
- x7jmRIZ0PBKsXx93uHvMSAndAH0jqv8nFVYAcS73kJQqVKxXQZT4jKz5fAZAO0dZGasb
- oc6GHrtWVTsx3fnhV+E19V66Z8vMp+euVaGydzuZpNQ2pVQK2c6aaGXv19/eV+bLUsCT
- vhFjRkU85vUjUNVQvIbEXSy+WIbupiWLkwAmWZqMoo6rbgLfH2n7lylw93a0YBBZa1QB
- ORuw==
+ bh=xU5YoCp1yOlClenc+sMgGqOCDAj0a2iC6b3QkZBvnbA=;
+ b=pdm/NZJFqMH1tWDotNl04VKDoHIWvrEJ83hniYdxmn9D16cynV0ETM7EHgV3ubrJND
+ w4ljJza6vW8B0awYubUlwZSNOJM8slmLYxE2jjYtyiep3cjBs/1J4wooPmrfHjSIZ5+x
+ 362gNKukqQ9W0A0GPKPA94YvAp5r62HVZ06ag3cm919WJib6UaHjskPNC7pAqDgvdAcy
+ 0ozf6UIjaZW4477dV7yDexEz4IYc9Z9zifTi43ijoEJS+8i8c8i1dcM6SirV0IWqD4sB
+ HM5an3Djsdeolu7u+MutEld2KuzzDALFR5dK5NZAZuzqbEZjOrmM2l6Sd6+Pvh6eFCxP
+ 3MeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722889055; x=1723493855;
+ d=1e100.net; s=20230601; t=1722889057; x=1723493857;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nk3wy3iOlV41EdYWg2ADHBcnClsgP1AAs+CwqJBw/xU=;
- b=b2uLA/HyqQvrkDwiQruvvRbJ1sYc1zJUbMchxBpc0BNeuPq9p/CI5fNpPqGlrUc+xv
- M9InYmDs8UBDvSppM83J0VuDrAwfaPdunEuoGutdfp4R9ybe3PjfcVlWp15Lw4WyoOlv
- LGBt6UiIVfbnNRy+eURmE8ob1kPupqaXKhXeKkp01rHBLH0KVFYG8X8RmXPqUo8jg33e
- koppJNgh3ctZ2J6p01d6Q6MMy4MspW29E5todR6Rh1GsSmY9GTEgNRgmrQUQWdZBBXuJ
- OAhhShIFAF21ANdlhZDLzTAHQSKKXkw3XEyXMR7imloVGkjC3HhKCt2S4HSl7R+XRrD3
- 9qeQ==
-X-Gm-Message-State: AOJu0YxD14UKBg/DtbMuHycHj2Y/RjRNeO0NIfZNLjmx3lPYiaTHrWOL
- fW7wdLwkyhAkwesJzjV9jz/F2/7nU8bvXLemf1PQEV5epfCKDjeltp76vGoWqMrgzJMs/17wQ+8
- oAB8/18KSh3Iu6KHC4gMb0oMTLTtYgeCVh/BD2agPgYp6vOC4+F1spdK+TcZp2bblfK1NzQx/WY
- xIukSo9ZhrmlIGaochSldjwQk4CA==
-X-Google-Smtp-Source: AGHT+IEii4/yzMfSp7LOsX7bSvtcsSwu3YPG0OH9OJP+3Z7rDF983ZAsDWCas7p00n2RRZm2FOn48nbu7Q==
+ bh=xU5YoCp1yOlClenc+sMgGqOCDAj0a2iC6b3QkZBvnbA=;
+ b=IqIXX7D2pYayq/AGHjWUi45VHvuVp4i5iellKEjbAtai4YS3l+wafD3AEXFafKsFqK
+ ozA4e2oj+nQcO2UA/QYSwTMIZMCSFoPTichU7hMQM91qgixSjNJZOE/4XttbY6xd6djj
+ ylo6zHBP0nx7alcva7uevrnHBEq+aXqRa1ICU+hKMMYX2UPDZ+Ko/jN1YL0oZ9+DwPaO
+ mZamxJVaPyfTxxoDwR6jKmY/SpCPBebLtEORg8F+45dANpVPVzp6d3deLfsuhMMKikqR
+ ST4JGSUhcr9eAX+JxJhYr1UPo923nTE1kI5JhR2jCQxxSAn3A/P7JsAXufFKg4t0fyjy
+ Wy3Q==
+X-Gm-Message-State: AOJu0YyyQz0r/UCi/nFpXwTFlyDyf7aK5Y/q3rIkrwui0yALGV+tOare
+ VDEFAXwbagZ5pvQpA8676OomZSilw7M98KGtke7e/Gr/Al83ADHt4tva7S/9Oi21rVdBJOtjaso
+ O0+hAPNOwWmiRWmjnBqW8wG5EoAwhl60I09j8LQFE21YAQvmennYN7zQqQyTsPultMe72rYDc/7
+ GcYWeDTuMa8dnHeARFpsspk04kfg==
+X-Google-Smtp-Source: AGHT+IEtEwV3xypSgEnFhmUjU6qXW1j+oyQGdeQtD2Sw0m7UuLuMq4ZYQZwgA67eCesfEw+/BoRavLh1Bw==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a5b:404:0:b0:e0b:eb06:58b2 with
- SMTP id
- 3f1490d57ef6-e0beb068624mr15190276.8.1722889054883; Mon, 05 Aug 2024 13:17:34
- -0700 (PDT)
-Date: Mon,  5 Aug 2024 13:17:03 -0700
+ (user=tavip job=sendgmr) by 2002:a17:902:d4c5:b0:1fd:73e6:83c0
+ with SMTP id
+ d9443c01a7336-1ff572a43eemr5414585ad.1.1722889056755; Mon, 05 Aug 2024
+ 13:17:36 -0700 (PDT)
+Date: Mon,  5 Aug 2024 13:17:04 -0700
 In-Reply-To: <20240805201719.2345596-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240805201719.2345596-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240805201719.2345596-9-tavip@google.com>
-Subject: [RFC PATCH 08/23] test/unit: add register access macros and functions
+Message-ID: <20240805201719.2345596-10-tavip@google.com>
+Subject: [RFC PATCH 09/23] test/unit: add flexcomm unit test
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -69,9 +69,9 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  marcandre.lureau@redhat.com, alistair@alistair23.me, berrange@redhat.com, 
  philmd@linaro.org, jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=3XjOxZgUKCsU4l6t0rzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--tavip.bounces.google.com;
- helo=mail-yb1-xb4a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
+ envelope-from=3YDOxZgUKCsc6n8v2t11tyr.p1z3rz7-qr8ry010t07.14t@flex--tavip.bounces.google.com;
+ helo=mail-pg1-x549.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -94,48 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add register access macros for devices models that use SVD generated
-registers. This allows accessing register or register bit fields in
-unit tests, e.g.:
-
-  REG32_WRITE(f->dev, FLEXCOMM, PSELID, persel);
-  g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, PERSEL) == persel);
-
-Also add support for accessing 32bit registers with memory transaction
-state, e.g.:
-
-  /* no register access until a function is selected  */
-  g_assert(reg32_addr_read_raw(f->dev, FLEXCOMM_BASE, &tmp, 4) == MEMTX_ERROR);
+Add flexcomm function selection unit tests.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- include/hw/regs.h      |   2 +-
- tests/unit/reg-utils.h | 103 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 104 insertions(+), 1 deletion(-)
- create mode 100644 tests/unit/reg-utils.h
+ tests/unit/meson.build     |   8 +-
+ tests/unit/test-flexcomm.c | 215 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 222 insertions(+), 1 deletion(-)
+ create mode 100644 tests/unit/test-flexcomm.c
 
-diff --git a/include/hw/regs.h b/include/hw/regs.h
-index 8d0da0629d..fd6576ba2b 100644
---- a/include/hw/regs.h
-+++ b/include/hw/regs.h
-@@ -59,7 +59,7 @@ static inline bool reg32_aligned_access(hwaddr addr, unsigned size)
-  * // backstore is updated to 0x78
-  * reg32_write(&backstore, REG2_ADDR, 0x12345678, wr_bits_array);
-  */
--static inline uint32_t reg32_write(void *base, uint32_t off, uint32_t val,
-+static inline uint32_t reg32_write(void *base, uint32_t addr, uint32_t val,
-                                    const uint32_t *rw_bits_array)
- {
-     uint32_t *ptr = base + addr;
-diff --git a/tests/unit/reg-utils.h b/tests/unit/reg-utils.h
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index 397f2503f8..4ccb15404d 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -141,7 +141,13 @@ if have_system
+     'test-bufferiszero': [],
+     'test-smp-parse': [qom, meson.project_source_root() / 'hw/core/machine-smp.c'],
+     'test-vmstate': [migration, io],
+-    'test-yank': ['socket-helpers.c', qom, io, chardev]
++    'test-yank': ['socket-helpers.c', qom, io, chardev],
++    'test-flexcomm': [
++      hwcore,
++      meson.project_source_root() / 'hw/core/gpio.c',
++      meson.project_source_root() / 'tests/unit/sysbus-mock.c',
++      meson.project_source_root() / 'hw/misc/flexcomm.c',
++     ],
+   }
+   if config_host_data.get('CONFIG_INOTIFY1')
+     tests += {'test-util-filemonitor': []}
+diff --git a/tests/unit/test-flexcomm.c b/tests/unit/test-flexcomm.c
 new file mode 100644
-index 0000000000..f18ee07d20
+index 0000000000..f4efe2ac52
 --- /dev/null
-+++ b/tests/unit/reg-utils.h
-@@ -0,0 +1,103 @@
++++ b/tests/unit/test-flexcomm.c
+@@ -0,0 +1,215 @@
 +/*
-+ * Register access utilities for peripheral device tests.
-+ *
 + * Copyright (C) 2024 Google LLC
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
@@ -143,99 +136,213 @@ index 0000000000..f18ee07d20
 + * This work is licensed under the terms of the GNU GPL, version 2 or later.
 + * See the COPYING file in the top-level directory.
 + */
-+#ifndef _REG_UTILS_H
-+#define _REG_UTILS_H
 +
-+#ifdef DEBUG_REG
-+#define debug(fmt, args...) fprintf(stderr, fmt, ## args)
-+#else
-+#define debug(fmt, args...)
-+#endif
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "qemu/main-loop.h"
++#include "exec/memory.h"
++#include "hw/irq.h"
++#include "hw/qdev-properties.h"
 +
-+#define _REG_OFF(mod, field) (offsetof(mod##_Type, field))
++#include "hw/misc/flexcomm.h"
++#include "sysbus-mock.h"
++#include "reg-utils.h"
 +
-+#define REG32_READ(dev, mod, reg)                                       \
-+    ({                                                                  \
-+        uint32_t value;                                                 \
-+        value = sysbus_mmio_read_addr(dev, mod##_BASE + _REG_OFF(mod, reg), \
-+                                      sizeof(uint32_t));                \
-+        debug("[%s] -> %08x\n", #reg, value);                           \
-+        value;                                                          \
-+    })
++#define MAX_MSG_STACK 2
 +
-+#define REG32_WRITE(dev, mod, reg, value)                               \
-+    do {                                                                \
-+        debug("[%s] <- %08x\n", #reg, value);                           \
-+        sysbus_mmio_write_addr(dev, mod##_BASE + _REG_OFF(mod, reg), value, \
-+                               sizeof(uint32_t));                       \
-+    } while (0)
++typedef struct {
++    DeviceState *dev;
++    char *msg[MAX_MSG_STACK];
++    int msg_count;
++} TestFixture;
 +
-+#define REG_FIELD_VAL(v, mod, reg, field)                               \
-+    ((v & mod##_##reg##_##field##_Msk) >> mod##_##reg##_##field##_Pos)
++#define SELECT_MSG(f, selected) "f[%d]select(%d)", f, selected
++#define REG_READ_MSG(f, addr, size) "f[%d]reg_read(%x, %d)", f, \
++        (uint32_t)addr, size
++#define REG_WRITE_MSG(f, addr, data, size) "f[%d]reg_write(%x, %x, %d)", \
++        f, (uint32_t)addr, (uint32_t)data, size
 +
-+#define REG32_READ_FIELD(dev, mod, reg, field)                  \
-+    REG_FIELD_VAL(REG32_READ(dev, mod, reg), mod, reg, field)
++#define FLEXCOMM_BASE 0x40106000UL
 +
-+#define REG32_WRITE_FIELD(dev, mod, reg, field, val)                    \
-+    do {                                                                \
-+        uint32_t _tmp = REG32_READ(dev, mod, reg);                      \
-+                                                                        \
-+        _tmp &= ~mod##_##reg##_##field##_Msk;                           \
-+        _tmp |= (val << mod##_##reg##_##field##_Pos) &                  \
-+            mod##_##reg##_##field##_Msk;                                \
-+        REG32_WRITE(dev, mod, reg, _tmp);                               \
-+    } while (0)
 +
-+#define REG32_WRITE_FIELD_NOUPDATE(dev, mod, reg, field, val)           \
-+    do {                                                                \
-+        uint32_t _tmp;                                                  \
-+                                                                        \
-+        _tmp = (val << mod##_##reg##_##field##_Pos) &                   \
-+            mod##_##reg##_##field##_Msk;                                \
-+        REG32_WRITE(dev, mod, reg, _tmp);                               \
-+    } while (0)
-+
-+#define WAIT_REG32_FIELD(ms, dev, mod, reg, field, val)         \
-+    {                                                           \
-+        int remaining = ms;                                     \
-+                                                                \
-+        while (remaining) {                                     \
-+            if (REG32_READ_FIELD(dev, mod, reg, field) == val) {    \
-+                break;                                          \
-+            }                                                   \
-+            main_loop_wait(false);                              \
-+            usleep(1000);                                       \
-+            remaining--;                                        \
-+        }                                                       \
-+                                                                \
-+        g_assert(remaining);                                    \
-+    }
-+
-+static inline MemTxResult reg32_addr_read_raw(DeviceState *dev, uint32_t addr,
-+                                              uint32_t *value, uint32_t size)
++static void f_ops_select(void *opaque, FlexcommState *s, int f,
++                         bool selected)
 +{
-+    MemTxResult res;
-+    uint64_t tmp;
++    TestFixture *tf = (TestFixture *)opaque;
 +
-+    res = sysbus_mmio_read_addr_raw(dev, addr, &tmp, size);
-+    if (res == MEMTX_OK) {
-+        *value = tmp;
-+    }
-+    debug("%d: [%x] -[%d]-> %08x\n", res, addr, size, *value);
-+    return res;
++    tf->msg[tf->msg_count++] = g_strdup_printf(SELECT_MSG(f, selected));
 +}
 +
-+static inline MemTxResult reg32_addr_write_raw(DeviceState *dev, uint32_t addr,
-+                                               uint32_t value, uint32_t size)
++static MemTxResult f_ops_reg_read(void *opaque, FlexcommState *s, int f,
++                                  hwaddr addr, uint64_t *data, unsigned size)
 +{
-+    MemTxResult res;
++    TestFixture *tf = (TestFixture *)opaque;
 +
-+    res = sysbus_mmio_write_addr_raw(dev, addr, value, size);
-+    debug("%d: [%x] <-[%d]- %08x\n", res, addr, size, value);
-+    return res;
++    tf->msg[tf->msg_count++] = g_strdup_printf(REG_READ_MSG(f, addr, size));
++    return MEMTX_OK;
 +}
 +
-+#endif /* _REG_UTILS_H */
++static MemTxResult f_ops_reg_write(void *opaque, FlexcommState *s, int f,
++                                   hwaddr addr, uint64_t data, unsigned size)
++{
++    TestFixture *tf = (TestFixture *)opaque;
++
++    tf->msg[tf->msg_count++] = g_strdup_printf(REG_WRITE_MSG(f, addr, data,
++                                                             size));
++    return MEMTX_OK;
++}
++
++static void assert_msg(TestFixture *f, const char *fmt, ...)
++    __attribute__((format(printf, 2, 3)));
++
++static void assert_msg(TestFixture *f, const char *fmt, ...)
++{
++    va_list ap;
++    char *msg;
++
++    va_start(ap, fmt);
++    msg = g_strdup_vprintf(fmt, ap);
++    va_end(ap);
++
++    g_assert_cmpstr(msg, ==, f->msg[--f->msg_count]);
++}
++
++static const FlexcommFunctionOps f_ops = {
++    .select = f_ops_select,
++    .reg_read = f_ops_reg_read,
++    .reg_write = f_ops_reg_write,
++};
++
++/*
++ * Test fixture initialization.
++ */
++static void set_up(TestFixture *f, gconstpointer data)
++{
++    int i;
++
++    f->dev = qdev_new(TYPE_FLEXCOMM);
++    g_assert(f->dev);
++
++    if (data != NULL) {
++        qdev_prop_set_int32(DEVICE(f->dev), "functions", (uintptr_t)data);
++    }
++
++    qdev_realize_and_unref(f->dev, NULL, NULL);
++    sysbus_mmio_map(SYS_BUS_DEVICE(f->dev), 0, FLEXCOMM_BASE);
++
++    for (i = 0; i < FLEXCOMM_FUNCTIONS; i++) {
++        /* replace functions ops */
++        flexcomm_unregister_ops(i);
++        assert(flexcomm_register_ops(i, f, &f_ops, NULL));
++        assert(!flexcomm_register_ops(i, f, &f_ops, NULL));
++    }
++
++    device_cold_reset(f->dev);
++}
++
++static void tear_down(TestFixture *f, gconstpointer user_data)
++{
++    qdev_unrealize(f->dev);
++    g_free(f->dev);
++}
++
++static void select_test(TestFixture *f, gconstpointer user_data)
++{
++    uint32_t tmp = 0;
++    struct {
++        int persel;
++        int func;
++    } persel_func_map[] = {
++        { FLEXCOMM_PERSEL_USART, FLEXCOMM_FUNC_USART },
++        { FLEXCOMM_PERSEL_SPI, FLEXCOMM_FUNC_SPI },
++        { FLEXCOMM_PERSEL_I2C, FLEXCOMM_FUNC_I2C },
++        { FLEXCOMM_PERSEL_I2S_TX, FLEXCOMM_FUNC_I2S },
++        { FLEXCOMM_PERSEL_I2S_RX, FLEXCOMM_FUNC_I2S },
++    };
++    int i;
++
++    /* test that no function is selected */
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, PERSEL) == 0);
++
++    /* no register access until a function is selected  */
++    g_assert(reg32_addr_read_raw(f->dev, FLEXCOMM_BASE, &tmp, 4)
++             == MEMTX_ERROR);
++    g_assert(reg32_addr_write_raw(f->dev, FLEXCOMM_BASE, tmp, 4)
++             == MEMTX_ERROR);
++
++    /* test that we can select all functions (including I2S RX) */
++    for (i = 0; i < ARRAY_SIZE(persel_func_map); i++) {
++        int persel = persel_func_map[i].persel;
++        int func = persel_func_map[i].func;
++
++        REG32_WRITE(f->dev, FLEXCOMM, PSELID, persel);
++        g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, PERSEL) == persel);
++        g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PID, ID) == persel);
++
++        /* check that current function was selected */
++        assert_msg(f, SELECT_MSG(func, 1));
++
++        /* check that previous function was de-selected */
++        if (i > 0) {
++            int prev_func = persel_func_map[i - 1].func;
++
++            assert_msg(f, SELECT_MSG(prev_func, 0));
++        }
++
++        /* test that we can access function registers */
++        reg32_addr_write_raw(f->dev, FLEXCOMM_BASE + 0x100, 0xabcd, 4);
++        assert_msg(f, REG_WRITE_MSG(func, 0x100, 0xabcd, 4));
++
++        reg32_addr_read_raw(f->dev, FLEXCOMM_BASE + 0x100, &tmp, 4);
++        assert_msg(f, REG_READ_MSG(func, 0x100, 4));
++    }
++
++    /* try to select something invalid */
++    REG32_WRITE(f->dev, FLEXCOMM, PSELID, 7);
++    /* check for no function selected */
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, PERSEL) == 0);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PID, ID) == 0);
++    /* check that previous function was deselected */
++    assert_msg(f, SELECT_MSG(FLEXCOMM_FUNC_I2S, 0));
++
++    /* now select and lock USART */
++    tmp = FLEXCOMM_PSELID_LOCK_Msk | FLEXCOMM_PERSEL_USART;
++    REG32_WRITE(f->dev, FLEXCOMM, PSELID, tmp);
++    tmp = REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, PERSEL);
++    g_assert(tmp == FLEXCOMM_PERSEL_USART);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, LOCK) == 1);
++    tmp = REG32_READ_FIELD(f->dev, FLEXCOMM, PID, ID);
++    g_assert(tmp == FLEXCOMM_PERSEL_USART);
++    assert_msg(f, SELECT_MSG(FLEXCOMM_FUNC_USART, 1));
++
++    /* try to change the selection to spi */
++    REG32_WRITE(f->dev, FLEXCOMM, PSELID, FLEXCOMM_PERSEL_SPI);
++    /* it should still be locked USART */
++    tmp = REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, PERSEL);
++    g_assert(tmp == FLEXCOMM_PERSEL_USART);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM, PSELID, LOCK) == 1);
++    tmp = REG32_READ_FIELD(f->dev, FLEXCOMM, PID, ID);
++    g_assert(tmp == FLEXCOMM_PERSEL_USART);
++}
++
++/* mock-up */
++const PropertyInfo qdev_prop_chr;
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    /* Initialize object types. */
++    sysbus_mock_init();
++    module_call_init(MODULE_INIT_QOM);
++
++    g_test_add("/flexcomm/select_test", TestFixture,
++               (gconstpointer)FLEXCOMM_FULL, set_up, select_test,
++               tear_down);
++
++    return g_test_run();
++}
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
 
