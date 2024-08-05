@@ -2,111 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8837094836F
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 863BD9483D1
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 23:06:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb4Jo-0000E2-0y; Mon, 05 Aug 2024 16:28:36 -0400
+	id 1sb4su-0006rt-BV; Mon, 05 Aug 2024 17:04:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sb4Jm-0000AF-5N
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:28:34 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
+ id 1sb4ss-0006oM-1R; Mon, 05 Aug 2024 17:04:50 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sb4Jj-00035s-Ts
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:28:33 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id C666A21C91;
- Mon,  5 Aug 2024 20:28:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722889709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9ePoJJiF8D2v8INiMCjSWRfu3g2oSzoZaf7FWrTQeHo=;
- b=G3qmdIKSFAZ3BhL/r7XSNQ/wP3pXTDwtE7cgIRBJRh09MDCFRzmPcvPWulX0HBg1I4DtKP
- ZxrjxzbZXC3P/VDLff2oRcnj8KFopJGWM74XEbgse/wrUf/SnUyxjtx9hOVA3bUakYL82h
- 1oFzFZiUcYf2zZvqnFCRLM8F2pjAzME=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722889709;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9ePoJJiF8D2v8INiMCjSWRfu3g2oSzoZaf7FWrTQeHo=;
- b=wsa9PEoILTL4nksCP08n8RNcnvIthsRvd+pBnHfDcE6VornKd4a7p9RLK5d6DBiOVPuPKY
- 9JyDOXBhONo60vCg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=08C7IaR6;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3g82TFsd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1722889708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9ePoJJiF8D2v8INiMCjSWRfu3g2oSzoZaf7FWrTQeHo=;
- b=08C7IaR6rhBGJgjYyQASqacqptyu16MuRIS/qh15hFNHiQXz3WkTTEYC3UcjS5vZWGoJa3
- 7VfqrWbehuGoles7jHaFhtWVm5qR/9tXC19f3cm1xVU9Gu/VxOP4Zvtux5RkQpsrZetJ6j
- bcNmwXbzbvCHSvQ4SnuSG0C8ZkECLS8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1722889708;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9ePoJJiF8D2v8INiMCjSWRfu3g2oSzoZaf7FWrTQeHo=;
- b=3g82TFsdOOVBGM3OivKg8Mx1y1l05Lnr5BoQGg1tj+eYFgL8PHNkS7DmJG81vKbOthDt9f
- r6KxEd7sWgoRWDCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4CD8B13254;
- Mon,  5 Aug 2024 20:28:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SzlNBew1sWbtNQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 05 Aug 2024 20:28:28 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Dario Faggioli <dfaggioli@suse.com>, qemu-devel@nongnu.org
-Cc: jpoimboe@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Fabian Vogt
- <fvogt@suse.de>, Nikolay Borisov <nik.borisov@suse.com>,
- fabiano.rosas@suse.com
-Subject: Re: SRSO mitigation in microcode not passed through to VMs
-In-Reply-To: <68f8b8b1ca1bf58b059f52afbd1c9c51108a074a.camel@suse.com>
-References: <68f8b8b1ca1bf58b059f52afbd1c9c51108a074a.camel@suse.com>
-Date: Mon, 05 Aug 2024 17:28:25 -0300
-Message-ID: <87r0b2hfyu.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
+ id 1sb4sq-00081f-3E; Mon, 05 Aug 2024 17:04:49 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1fd70ba6a15so83364055ad.0; 
+ Mon, 05 Aug 2024 14:04:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1722891886; x=1723496686; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XySQWrEFO9nPy8SoTcGCQY7CmQyabF4H4g770XsoGWU=;
+ b=aFeA/tV8WfH9KmdNDIEia7H/6rlyY0YwE4l68I2UnydfeZefUq85VzYd7ACfUMTMeG
+ 2+jcsnNQITmc4eEXJ3c/lWLM2ygmgMH+8ViWtwxbWIgDWSo4laQslIaEa+FzOxNRciTH
+ mzY3RUfHfaEXkh4LvfvlATZjVBSKkQxa3tMueHfDyRqdvDWnEPszTXg0UYXhhCzMHGxt
+ qzWuiWCtoWUUTJ/66KSew/rK/1e2GisFKwOS6CY1aY66AY5m/pgbB5l8mJs2nT//o0kd
+ vAo0OF8bK/SvCeaegFEjqztpjE96Bg6+eX+hcbZfqtVNLzv9vpZMPp0txplLSOWQVCBF
+ 3EnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722891886; x=1723496686;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XySQWrEFO9nPy8SoTcGCQY7CmQyabF4H4g770XsoGWU=;
+ b=Ew+L+IZWskgCInrGwtov5DBlFq0+DFSFK17O+GgmC3aQq+OMwA/78nFpFHrC3R5UHv
+ LBVIz6E25R7nV2LElI4XAd4wX+TSY4myZ0B3gEjXFF/ssu5eO2M7yVK//3Vg76ZlPuTJ
+ 9CXKvJk2lwQI55IAdi2jUMLbY6Ojo2xw/0gVYrtXElKrfjRoiaiirnHBb+ll7lDL/KMR
+ 0t4iFgyjvh+FXsOrEtTrU5DneyGIz3Lah/1WmpL0xmm2SapdC+M4oT+PwsCuGotpWMHS
+ NSSElyeFQo6a2i4GFu2/s3cetbRbRCHw9tJDxjsoZkM8rKUh9DlpoGEDwnrdgpThwR2J
+ TWQw==
+X-Gm-Message-State: AOJu0YzhAfgvZ/ACYh7/0vVEc9q/AcGauIiLsllIRxcXVh1FBzYKswRe
+ 1dx+w+cYc1HbFSAX6wSxk6bGUmgWaSfIwguu6sESd3j0w+BotzkPOSBQ8i/z
+X-Google-Smtp-Source: AGHT+IHM9L+mQEaah81Nrb82lfOcmT5oG+oJhroIJJDQSPIUstzGVqgyvzOHNfg/4YlFC+3U4Ar3Ww==
+X-Received: by 2002:a17:903:11ce:b0:1fb:82f5:6641 with SMTP id
+ d9443c01a7336-1ff57292c9dmr142214395ad.23.1722891885864; 
+ Mon, 05 Aug 2024 14:04:45 -0700 (PDT)
+Received: from localhost ([205.175.106.198])
+ by smtp.gmail.com with UTF8SMTPSA id
+ d9443c01a7336-1ff59059f9asm72684995ad.131.2024.08.05.14.04.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Aug 2024 14:04:45 -0700 (PDT)
+From: Gregor Haas <gregorhaas1997@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, dbarboza@ventanamicro.com,
+ alistair.francis@wdc.com, Gregor Haas <gregorhaas1997@gmail.com>
+Subject: [PATCH v3 0/1] Add support for generating OpenSBI domains in the
+ device tree
+Date: Mon,  5 Aug 2024 14:04:43 -0700
+Message-ID: <20240805210444.497723-1-gregorhaas1997@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Action: no action
-X-Spam-Score: -6.51
-X-Rspamd-Queue-Id: C666A21C91
-X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MISSING_XM_UA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_SEVEN(0.00)[7]; RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.com:email,suse.com:url];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=gregorhaas1997@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,76 +89,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dario Faggioli <dfaggioli@suse.com> writes:
+This patch series adds support for specifying OpenSBI domains on the QEMU
+command line. A simple example of what this looks like is below, including
+mapping the board's UART into the secondary domain:
 
-> Hello,
->
-> So, even if SRSO is fully mitigated on the host, we still see as not
-> completely patched inside of the VMs running on Zen 3 and 4 hosts
-> (e.g., AMD EPYC 7713)
->
-> We can see an example of that here:
-> https://bugzilla.suse.com/show_bug.cgi?id=1228079
->
-> This specific bug is about SLE15SP5, where we have old versions of QEMU
-> and kernel (and the kernel was missing a backport), but we see it also
-> on openSUSE Tumbleweed, where we have kernel 6.9.9 and QEMU 9.0.2, e.g:
->
->
->   ### Host
->   virt136:~ # uname -a
->   Linux virt136 6.9.9-1-default #1 SMP PREEMPT_DYNAMIC Thu Jul 11 11:31:54 UTC 2024 (8c0f797) x86_64 x86_64 x86_64 GNU/Linux
->
->   virt136:~ # qemu-system-x86_64 --version
->   QEMU emulator version 9.0.2 (openSUSE Tumbleweed)
->
->   virt136:~ # cat /proc/cpuinfo | grep -e "vendor\|family\|model\|stepping\|microcode" | tail -5
->   cpu family	: 25
->   model		: 1
->   model name	: AMD EPYC 7713 64-Core Processor
->   stepping	: 1
->   microcode	: 0xa0011d5
->
->   virt136:~ # lscpu | grep rstack
->   Vulnerability Spec rstack overflow:   Mitigation; Safe RET
->
->   ### Guest
->   virt136:~ # virsh console opensusetumbleweed
->   Connected to domain 'opensusetumbleweed'
->   Escape character is ^] (Ctrl + ])
->
->   localhost:~ # uname -a
->   Linux localhost.localdomain 6.9.9-1-default #1 SMP PREEMPT_DYNAMIC Thu Jul 11 11:31:54 UTC 2024 (8c0f797) x86_64 x86_64 x86_64 GNU/Linux
->
->   localhost:~ # lscpu | grep rstack
->   Vulnerability Spec rstack overflow:   Vulnerable: Safe RET, no microcode
->
->
-> Fabian and Nikolay (Cc-ed) can provide more details, if necessary.
-> AFAIUI this is due to how/when the proper bit in CPUID is set, on this
-> specific CPU model.
->
-> In fact (and I'm quoting Nikolay): "the problem with the IBPB_BRTYPE
-> flag is that on CPUs which require the microcode fix, the flag is not
-> shown by CPUID despite it actually being available. Ini this case the
-> kernel checks whether the feature is valid by doing a specific wrmsr
-> and, if it is, it sets the flag internally in the kernel and in KVM's
-> cpuid representation".
->
-> Yet, we don't see this in the VM, because QEMU seems to be masking it
-> (as visible, e.g., here:
-> https://bugzilla.suse.com/show_bug.cgi?id=1228079#c2)
->
-> In one of the thread on LKML where this mitigation was discussed, we
-> found mentions (from Josh, Cc-ed) to a QEMU patch being necessary, and
-> also being ready and about to be submitted, e.g.:
->
-> https://lore.kernel.org/lkml/20230821170520.dcovzudamnoqp7jc@treble/
->
+qemu-system-riscv64 -machine virt -bios fw_jump.bin -cpu max -smp 2 -m 4G -nographic \
+        -device opensbi-memregion,id=mem,base=0xBC000000,order=26,mmio=false \
+        -device opensbi-memregion,id=uart,base=0x10000000,order=12,mmio=true,device0="/soc/serial@10000000" \
+        -device opensbi-domain,id=domain,possible-harts=0-1,boot-hart=0x0,next-addr=0xBC000000,next-mode=1,region0=mem,perms0=0x3f,region1=uart,perms1=0x3f
 
-After reading some more about the subject I think the correct way
-forward is indeed a patch like the one above. I sent something to the
-list with a slight modification, you are all in copy.
+As a result of the above configuration, QEMU will add the following subnodes to
+the device tree:
 
-https://lore.kernel.org/r/20240805202041.5936-1-farosas@suse.de
+chosen {
+        opensbi-domains {
+                compatible = "opensbi,domain,config";
+
+                domain {
+                        next-mode = <0x01>;
+                        next-addr = <0x00 0xbc000000>;
+                        boot-hart = <0x03>;
+                        regions = <0x8000 0x3f 0x8002 0x3f>;
+                        possible-harts = <0x03 0x01>;
+                        phandle = <0x8003>;
+                        compatible = "opensbi,domain,instance";
+                };
+
+                uart {
+                        phandle = <0x8002>;
+                        devices = <0x1800000>;
+                        mmio;
+                        order = <0x0c>;
+                        base = <0x00 0x10000000>;
+                        compatible = "opensbi,domain,memregion";
+                };
+
+                mem {
+                        phandle = <0x8000>;
+                        order = <0x1a>;
+                        base = <0x00 0xbc000000>;
+                        compatible = "opensbi,domain,memregion";
+                };
+        };
+};
+
+This results in OpenSBI output as below, where regions 01-03 are inherited from
+the root domain and regions 00 and 04 correspond to the user specified ones:
+
+Domain1 Name              : domain
+Domain1 Boot HART         : 0
+Domain1 HARTs             : 0,1
+Domain1 Region00          : 0x0000000010000000-0x0000000010000fff M: (I,R,W,X) S/U: (R,W,X)
+Domain1 Region01          : 0x0000000002000000-0x000000000200ffff M: (I,R,W) S/U: ()
+Domain1 Region02          : 0x0000000080080000-0x000000008009ffff M: (R,W) S/U: ()
+Domain1 Region03          : 0x0000000080000000-0x000000008007ffff M: (R,X) S/U: ()
+Domain1 Region04          : 0x00000000bc000000-0x00000000bfffffff M: (R,W,X) S/U: (R,W,X)
+Domain1 Next Address      : 0x00000000bc000000
+Domain1 Next Arg1         : 0x0000000000000000
+Domain1 Next Mode         : S-mode
+Domain1 SysReset          : no
+Domain1 SysSuspend        : no
+
+v3:
+- Addressed review comments from v2 by adding default values to new properties.
+  This results in concrete errors at QEMU configuration time if a mandatory
+  property (as mandated by the OpenSBI spec) is not provided.
+- Changed command line encoding for the possible-harts field from a CPU bitmask
+  (e.g. where bit X is set if CPU X is a possible hart) to a range format (e.g.
+  the possible harts should be CPUs X-Y, where Y >= X). This does constrain the
+  hart assignment to consecutive ranges of harts, but this constraint is also
+  present for other QEMU subsystems (such as NUMA).
+- Added create_fdt_one_device(), which is invoked when scanning the device tree
+  for a memregion's devices. This function allocates a phandle for a region's
+  device if one does not yet exist.
+
+v2:
+- Addressed review comments from v1. Specifically, renamed domain.{c,h} ->
+  opensbi_domain.{c,h} to increase clarity of what these files do. Also, more
+  consistently use g_autofree for dynamically allocated variables
+- Added an "assign" flag to OpenSBIDomainState, which indicates whether to
+  assign the domain's boot hart to it at domain parsing time.
+
+Gregor Haas (1):
+  Add support for generating OpenSBI domains in the device tree
+
+ MAINTAINERS                       |   7 +
+ hw/riscv/Kconfig                  |   4 +
+ hw/riscv/meson.build              |   1 +
+ hw/riscv/opensbi_domain.c         | 542 ++++++++++++++++++++++++++++++
+ hw/riscv/virt.c                   |   3 +
+ include/hw/riscv/opensbi_domain.h |  50 +++
+ 6 files changed, 607 insertions(+)
+ create mode 100644 hw/riscv/opensbi_domain.c
+ create mode 100644 include/hw/riscv/opensbi_domain.h
+
+-- 
+2.45.2
+
 
