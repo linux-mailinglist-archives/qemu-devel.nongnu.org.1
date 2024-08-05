@@ -2,64 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521C5948327
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F493948324
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:19:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb494-0001hM-9s; Mon, 05 Aug 2024 16:17:30 -0400
+	id 1sb495-0001jj-16; Mon, 05 Aug 2024 16:17:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3UDOxZgUKCrcqXsfmdlldib.Zljnbjr-absbiklkdkr.lod@flex--tavip.bounces.google.com>)
- id 1sb491-0001W9-Rt
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:27 -0400
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ <3UjOxZgUKCrksZuhofnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--tavip.bounces.google.com>)
+ id 1sb493-0001fu-Bf
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:29 -0400
+Received: from mail-pj1-x104a.google.com ([2607:f8b0:4864:20::104a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3UDOxZgUKCrcqXsfmdlldib.Zljnbjr-absbiklkdkr.lod@flex--tavip.bounces.google.com>)
- id 1sb48y-0001NW-I4
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:27 -0400
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-6688c44060fso240017457b3.2
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:21 -0700 (PDT)
+ <3UjOxZgUKCrksZuhofnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--tavip.bounces.google.com>)
+ id 1sb490-0001Nu-Db
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:29 -0400
+Received: by mail-pj1-x104a.google.com with SMTP id
+ 98e67ed59e1d1-2cb576921b6so23235a91.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1722889040; x=1723493840; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=XerA3mOsf4a50OWNf/gGXm4sNrAu9HVWQtZ4JJlFGM4=;
- b=yApR8IwlgevTiwn0D7LeL9BEWCKPynfz818jl0wpTLB9FhbpgOPXy85sL3+dBixmDU
- IjDmdNLA8b588dHlBopCDPA65MN5PnnmMYF56tMyWHlIMQHEnaE5wihVw8rU3jYp4S6x
- 58oA4k2EZo3KBf8w+v55IKeOEt/KHwaSW8bzZH/gm1oo9nVk6fGuwv5JIuCN0yguDenm
- YRGLemX2xaiKkoTHDk/ttgLOu+KhcpFiInJhmnLsiRGd7RrcuRJI0Sds1qZeo5+FdfGY
- d8GBxcranlGl5zU6ZW8NhwK34wyJL3cBrg49h7b3lnHaMsDbgRKC8ndqALOLA9BfrPir
- C9Ug==
+ d=google.com; s=20230601; t=1722889042; x=1723493842; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=v+XZ2Rl5k5if0oOWfRcW5SGcn2wm2BUtZIoAAUrM80c=;
+ b=XvDD8jonemqGJ8R3hMqlTU3FSS8pzrMcSY9fZDzPPLiMqGHXkf+RRpUyKerPjqqBHj
+ fh/uw9Xwh26MlYgdwby0DaKDtLpP84hBPzy4uYiDM67nl3G1SPhYodhBqHw9GswFKgNd
+ iA5gwHSmxw82pRCIzLNw2w0AF4xsS/6WZ4mcATXtUCA5RViVfrg0cMu1o2JsTJgUalWx
+ jRk99qaN3h1XRA6PioBEIlAJm/a6oTwZbRd3Apm3BHlXx4dyNQ8pyn3x77zTRqK4LWiV
+ Z2d2eKQ/KROkPEOxRKUcjfDoVQSPiEajw3MQXm4z8y9eQccLx7UQTQ40EVPOhdAKmd6X
+ uVkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722889040; x=1723493840;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XerA3mOsf4a50OWNf/gGXm4sNrAu9HVWQtZ4JJlFGM4=;
- b=pCeAzTf84MzmhH80d9jN2Tf7yjTtfEmpUZboMO4xzgFrVqofMYnhS+yRSVKh64YOHr
- jvcSGEpl5dnN59VEX7cOeIw6blnBy/9YWWl4l9vL980PWV4IQL7/fj3LOp89PdnC1Xgo
- 4O+QnEn4Z7cf+B6CPAut3KQ7H5wLvcvUrp8bRhWa2TP6UeLLulJDldZ+TjJADItcIGpp
- qeRS+oykFbJyt5BAV1FOjl24lJsC2S/8E7kjAbsWhRGxBH19TIhXSYQiLElTDK6Vjz9O
- giNe3/Ey8FPeFOGpZISb7exIO1fNqycAvl4Fu7CzZxSrxf59mDKevUAf2GeqZNopwfuR
- U5zQ==
-X-Gm-Message-State: AOJu0YxT7DYj6KNRGdxhrulaS9FXvvXOM+pn1DRgeDSCflYp1vgu3Rm9
- sPHdND/cmeAQ2OauFQHk2Fgbtkkzd1+xmxfmDlHaZKpibZMc7VJ4Nlt+Csg0pohm9P2lzXzr77H
- ljgTcG2dnnE3U/fsw+JSIs2nF2pEMQHP9myJTPEw0/AMjO28yPi/D+aKtJecKwsuBTvP2S6A3iz
- 2txY+v2e8I+m8I5rrRFxlToM1BfQ==
-X-Google-Smtp-Source: AGHT+IGqaTTPDERThIQ2lScByzIxC7MD4g+tlWTVvyLfl5S4gKHi5XMT98i4r1gqhOcJr9iKVMbiNcbz3A==
+ d=1e100.net; s=20230601; t=1722889042; x=1723493842;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=v+XZ2Rl5k5if0oOWfRcW5SGcn2wm2BUtZIoAAUrM80c=;
+ b=OEWUoxFlL1holtchCe0zW3LET23Rn1arh7jtU/9LLrduiwb4dB/0Q4OG03ezlVTPIj
+ LYdUR4Ihd+DHbz5xbsJsaerhr8XpYBFyN9/8n4Nmpum263QTWhPt+OFZXzg/aVOIC1vJ
+ IEXYrsKc48KMZnIfTpHoiRUSUya4uycSlpdx8pZJKuzI1rPV8WiebFWZwRnLMax6brE8
+ L9WXn5ncML4V4nZq/frlGRcJKY5QfTb/2uLpuUK1+YHSb85SIs8qjYPLlQlhANRwka2o
+ F3+MVd1StaUXLfdP0IU1SP8ctbSwnLs+yalyywWGU5tPAUZL9bsgmE7CFyE3Gb6MLmOB
+ FMzA==
+X-Gm-Message-State: AOJu0YzViGVWCb59B8XSlF4CBqK/wCYyV+/UhYGQiWSeHTqMwolMy/+q
+ BC83Cmk3JLKnqjP4/zUDZSfKSnDkKHIt/kMttJ1vIG9RnF9y5enyof0Rp7rJuyEY8/3r6cfXvK1
+ t46jm76ibk9EnZTKMugxV38g4pYd1jGKEN9lHnhAGFWjU6jQa26YwPcw/Xi8Z4us+ZXGbQHLb2h
+ ZIPPVe58aEvdHBNyUuiEyMy8I+gg==
+X-Google-Smtp-Source: AGHT+IGSw77EguaF6TzFUl9hSn+D85XT29tsuj2jEdezd7+A3i+GB6qt6WaOoxbln6W2tkN/LgpP3KwjKQ==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a05:690c:3008:b0:68d:1d96:6a72
+ (user=tavip job=sendgmr) by 2002:a17:90b:3cc7:b0:2c9:81c6:b0ee
  with SMTP id
- 00721157ae682-68d1d966f02mr1246467b3.1.1722889040430; Mon, 05 Aug 2024
- 13:17:20 -0700 (PDT)
-Date: Mon,  5 Aug 2024 13:16:55 -0700
+ 98e67ed59e1d1-2cff9520a11mr181407a91.4.1722889042082; Mon, 05 Aug 2024
+ 13:17:22 -0700 (PDT)
+Date: Mon,  5 Aug 2024 13:16:56 -0700
+In-Reply-To: <20240805201719.2345596-1-tavip@google.com>
 Mime-Version: 1.0
+References: <20240805201719.2345596-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240805201719.2345596-1-tavip@google.com>
-Subject: [RFC PATCH 00/23] NXP i.MX RT595, ARM SVD and device model unit tests
+Message-ID: <20240805201719.2345596-2-tavip@google.com>
+Subject: [RFC PATCH 01/23] fifo32: add peek function
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -67,16 +69,16 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  marcandre.lureau@redhat.com, alistair@alistair23.me, berrange@redhat.com, 
  philmd@linaro.org, jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3UDOxZgUKCrcqXsfmdlldib.Zljnbjr-absbiklkdkr.lod@flex--tavip.bounces.google.com;
- helo=mail-yw1-x114a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::104a;
+ envelope-from=3UjOxZgUKCrksZuhofnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--tavip.bounces.google.com;
+ helo=mail-pj1-x104a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,173 +94,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set adds support for NXP's RT500 MCU [1] and the RT595
-EVK[2]. More RT500 device models will be submitted in future patch sets.
+Add fifo32_peek() that returns the first element from the queue
+without popping it.
 
-The goal of this first patch set is to provide a minimal set that
-allows running the NXP MCU SDK hello world example[4] and to get feedback
-on a couple of new / non-standard approaches.
+Signed-off-by: Octavian Purdila <tavip@google.com>
+---
+ include/qemu/fifo32.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-First, this patch set introduces a (python) tool that generates C
-header files from ARM SVD files[3]. This significantly reduces the
-effort to write a new device model by automatically generating:
-register definitions and layout (including bit fields), register names
-for easier debugging and tracing, reset register values, etc.
-
-It also introduces unit tests for device models. To allow accessing
-registers from unit tests a system bus mock is created. The main
-advantage of unit tests for device models over QTest is that device
-models can be tested in isolation and do not require a full qemu
-machine.
-
-[1] https://www.nxp.com/docs/en/data-sheet/IMXRT500EC.pdf
-[2] https://www.nxp.com/webapp/Download?colCode=MIMXRT595EVKHUG
-[3] https://arm-software.github.io/CMSIS_5/SVD/html/index.html
-[4] Building and running the NXP MCU SDK hello world example
-
-    Clone the following git repos:
-
-    https://github.com/nxp-mcuxpresso/cmsis.git,
-    https://github.com/nxp-mcuxpresso/mcux-sdk.git
-    https://github.com/nxp-mcuxpresso/mcux-sdk-examples.git
-
-    in the following directories: CMSIS, core, examples.
-
-    cd examples/evkmimxrt595/demo_apps/hello_world/armgcc
-
-    ARMGCC_DIR=/usr CFLAGS=-I../../../../../CMSIS/CMSIS/Core/Include \
-      sh build_flash_debug.sh
-
-    qemu-system-arm --machine rt595-evk -kernel flash_debug/hello_world.elf \
-      -global armv7m.init-nsvtor=0x08001000 -global armv7m.init-svtor=0x08001000 \
-      -chardev stdio,id=flexcomm0
-
-Octavian Purdila (19):
-  fifo32: add peek function
-  tests/unit: add fifo test
-  hw/arm: add SVD file for NXP i.MX RT595
-  hw: add register access utility functions
-  hw/misc: add basic flexcomm device model
-  test/unit: add register access macros and functions
-  test/unit: add flexcomm unit test
-  hw/char: add support for flexcomm usart
-  test/unit: add flexcomm usart unit test
-  hw/i2c: add support for flexcomm i2c
-  test/unit: add i2c-tester
-  test/unit: add unit tests for flexcomm i2c
-  test/unit: add spi-tester
-  hw/misc: add support for RT500's clock controller
-  test/unit: add unit tests for RT500's clock controller
-  hw/ssi: add support for flexspi
-  hw/misc: add support for RT500 reset controller
-  hw/arm: add basic support for the RT500 SoC
-  hw/arm: add RT595-EVK board
-
-Sebastian Ene (2):
-  hw/ssi: add support for flexcomm spi
-  test/unit: add unit tests for flexcomm spi
-
-Stefan Stanacar (1):
-  scripts: add script to generate C header files from SVD XML files
-
-Valentin Ghita (1):
-  tests/unit: add system bus mock
-
- configure                         |      2 +-
- hw/arm/Kconfig                    |     13 +
- hw/arm/meson.build                |      4 +
- hw/arm/rt500.c                    |    348 +
- hw/arm/rt595-evk.c                |     64 +
- hw/arm/svd/MIMXRT595S_cm33.xml    | 224052 +++++++++++++++++++++++++++
- hw/arm/svd/meson.build            |     42 +
- hw/char/flexcomm_usart.c          |    302 +
- hw/char/meson.build               |      1 +
- hw/char/trace-events              |      9 +
- hw/i2c/flexcomm_i2c.c             |    224 +
- hw/i2c/meson.build                |      1 +
- hw/i2c/trace-events               |     10 +
- hw/misc/Kconfig                   |     12 +
- hw/misc/flexcomm.c                |    304 +
- hw/misc/meson.build               |      5 +
- hw/misc/rt500_clkctl0.c           |    243 +
- hw/misc/rt500_clkctl1.c           |    224 +
- hw/misc/rt500_rstctl.c            |    219 +
- hw/misc/trace-events              |     18 +
- hw/ssi/Kconfig                    |      4 +
- hw/ssi/flexcomm_spi.c             |    443 +
- hw/ssi/flexspi.c                  |    216 +
- hw/ssi/meson.build                |      2 +
- hw/ssi/trace-events               |     12 +
- include/hw/arm/rt500.h            |     49 +
- include/hw/char/flexcomm_usart.h  |     20 +
- include/hw/i2c/flexcomm_i2c.h     |     27 +
- include/hw/misc/flexcomm.h        |     92 +
- include/hw/misc/rt500_clk_freqs.h |     18 +
- include/hw/misc/rt500_clkctl0.h   |     37 +
- include/hw/misc/rt500_clkctl1.h   |     38 +
- include/hw/misc/rt500_rstctl.h    |     38 +
- include/hw/regs.h                 |     89 +
- include/hw/ssi/flexcomm_spi.h     |     20 +
- include/hw/ssi/flexspi.h          |     34 +
- include/qemu/fifo32.h             |     29 +
- meson.build                       |      4 +
- python/setup.cfg                  |      1 +
- python/tests/minreqs.txt          |      3 +
- pythondeps.toml                   |      3 +
- scripts/svd-gen-header.py         |    342 +
- tests/unit/i2c_tester.c           |    111 +
- tests/unit/i2c_tester.h           |     34 +
- tests/unit/meson.build            |     56 +-
- tests/unit/reg-utils.h            |    103 +
- tests/unit/spi_tester.c           |     60 +
- tests/unit/spi_tester.h           |     32 +
- tests/unit/sysbus-mock.c          |    314 +
- tests/unit/sysbus-mock.h          |     82 +
- tests/unit/test-fifo.c            |     98 +
- tests/unit/test-flexcomm-i2c.c    |    209 +
- tests/unit/test-flexcomm-spi.c    |    204 +
- tests/unit/test-flexcomm-usart.c  |    321 +
- tests/unit/test-flexcomm.c        |    215 +
- tests/unit/test-rt500-clkctl.c    |    270 +
- 56 files changed, 229725 insertions(+), 2 deletions(-)
- create mode 100644 hw/arm/rt500.c
- create mode 100644 hw/arm/rt595-evk.c
- create mode 100644 hw/arm/svd/MIMXRT595S_cm33.xml
- create mode 100644 hw/arm/svd/meson.build
- create mode 100644 hw/char/flexcomm_usart.c
- create mode 100644 hw/i2c/flexcomm_i2c.c
- create mode 100644 hw/misc/flexcomm.c
- create mode 100644 hw/misc/rt500_clkctl0.c
- create mode 100644 hw/misc/rt500_clkctl1.c
- create mode 100644 hw/misc/rt500_rstctl.c
- create mode 100644 hw/ssi/flexcomm_spi.c
- create mode 100644 hw/ssi/flexspi.c
- create mode 100644 include/hw/arm/rt500.h
- create mode 100644 include/hw/char/flexcomm_usart.h
- create mode 100644 include/hw/i2c/flexcomm_i2c.h
- create mode 100644 include/hw/misc/flexcomm.h
- create mode 100644 include/hw/misc/rt500_clk_freqs.h
- create mode 100644 include/hw/misc/rt500_clkctl0.h
- create mode 100644 include/hw/misc/rt500_clkctl1.h
- create mode 100644 include/hw/misc/rt500_rstctl.h
- create mode 100644 include/hw/regs.h
- create mode 100644 include/hw/ssi/flexcomm_spi.h
- create mode 100644 include/hw/ssi/flexspi.h
- create mode 100755 scripts/svd-gen-header.py
- create mode 100644 tests/unit/i2c_tester.c
- create mode 100644 tests/unit/i2c_tester.h
- create mode 100644 tests/unit/reg-utils.h
- create mode 100644 tests/unit/spi_tester.c
- create mode 100644 tests/unit/spi_tester.h
- create mode 100644 tests/unit/sysbus-mock.c
- create mode 100644 tests/unit/sysbus-mock.h
- create mode 100644 tests/unit/test-fifo.c
- create mode 100644 tests/unit/test-flexcomm-i2c.c
- create mode 100644 tests/unit/test-flexcomm-spi.c
- create mode 100644 tests/unit/test-flexcomm-usart.c
- create mode 100644 tests/unit/test-flexcomm.c
- create mode 100644 tests/unit/test-rt500-clkctl.c
-
+diff --git a/include/qemu/fifo32.h b/include/qemu/fifo32.h
+index 4e9fd1b5ef..c9befc47c8 100644
+--- a/include/qemu/fifo32.h
++++ b/include/qemu/fifo32.h
+@@ -140,6 +140,35 @@ static inline uint32_t fifo32_pop(Fifo32 *fifo)
+     return ret;
+ }
+ 
++/**
++ * fifo32_peek:
++ * @fifo: fifo to peek at
++ *
++ * Returns the value from the FIFO's head without poping it. Behaviour
++ * is undefined if the FIFO is empty. Clients are responsible for
++ * checking for emptiness using fifo32_is_empty().
++ *
++ * Returns: the value from the FIFO's head
++ */
++
++static inline uint32_t fifo32_peek(Fifo32 *fifo)
++{
++    uint32_t ret = 0, num;
++    const uint8_t *buf;
++    int i;
++
++    buf = fifo8_peek_buf(&fifo->fifo, 4, &num);
++    if (num != 4) {
++        return ret;
++    }
++
++    for (i = 0; i < sizeof(uint32_t); i++) {
++        ret |= buf[i] << (i * 8);
++    }
++
++    return ret;
++}
++
+ /**
+  * There is no fifo32_pop_buf() because the data is not stored in the buffer
+  * as a set of native-order words.
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
 
