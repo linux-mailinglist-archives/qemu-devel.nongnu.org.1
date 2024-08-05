@@ -2,71 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1249F94767D
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 10:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D209476F0
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 10:12:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sasd1-0000FD-Rs; Mon, 05 Aug 2024 03:59:39 -0400
+	id 1sasnK-0005aR-9Q; Mon, 05 Aug 2024 04:10:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sasd0-0000E6-4Z
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 03:59:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gorg@gorgnet.net>) id 1sao8C-0008Dv-KP
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 23:11:32 -0400
+Received: from gorgnet.net ([2a01:4f9:c012:ca43::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sascx-0005P4-Gn
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 03:59:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722844773;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HSpIet5B0ReF8Cn59W+S8kCRPEbJtdYOgQKiYtmPygE=;
- b=AvRXNwEIIooWLOZGmSeN96WpLVfN0yb4kiIBd6Fm3TLtNdyH5dMTirI7/19j4jjK/bIemb
- 4ulQQyphgVWP9XwNbqln07FW2RcSAEMgtYXMjSpd12cFgGPuDoqIrNy3gt6fbN6iQLs+5C
- TOn9mmTWj6n3ZTC9DnMPvgiFwJ1d8R0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-sJHOfHv_PFW9IX85WOaLxw-1; Mon,
- 05 Aug 2024 03:59:29 -0400
-X-MC-Unique: sJHOfHv_PFW9IX85WOaLxw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48C7B1955D47; Mon,  5 Aug 2024 07:59:28 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D2C611955D44; Mon,  5 Aug 2024 07:59:27 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AC88021F4B8C; Mon,  5 Aug 2024 09:59:25 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <gorg@gorgnet.net>) id 1sao88-0007hA-70
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 23:11:32 -0400
+DKIM-Signature: v=1; a=ed25519-sha256; c=simple/simple;
+ d=gorgnet.net; s=b1; x=1723432279; q=dns/txt; h=Received:
+ Received:From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+ Content-Transfer-Encoding; bh=Xz285uRSybBtiTbzvqcQNiuBc2k3ceYY0
+ 2oDTMiNJwQ=; b=ypfmbzc2jvSsuKaS4gxOEOMYjUnaFR40KsX5vV5blIIclb+rk
+ PaKaNfie2E5oxbIFYwFzt0I4YflU9WMDF/rAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=gorgnet.net; s=a1; x=1723432279; q=dns/txt; h=Received:
+ Received:From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+ Content-Transfer-Encoding; bh=Xz285uRSybBtiTbzvqcQNiuBc2k3ceYY0
+ 2oDTMiNJwQ=; b=Of65wOQh+PkVgog2MEzmhqauZrCKAVhOJnJKj/1+7oyP23X1A
+ Lg2wH+Cx9rJbKf7ArTf71dbYQ0cTymS4eNZ7AtfIrqd1UcslP+yOkBxUxQwKNc7k
+ MpgABzmDFxa48ny1Dj2TVexsE3VL56Q2CYH5IoWaNt1JHIJW9iOKa7hBVlhNTYLJ
+ 2ZoFHmBwvR04/YQAqinQJLUdwVhihPU6BGoii6L4Raj+i27G7yxCpY3JzSB7YzdQ
+ SEJtk4iUUWJx9DHFr6ZWfn2njHAjP2V940WPHL316Op1EpJQ+cRRKimAvjWI02RK
+ zewf8jbW+M2tZtb7W6CdOgmRPIeOLY4423Qww==
+Received: (qmail 7206 invoked from network); 5 Aug 2024 03:11:18 -0000
+Received: from unknown (HELO localhost.localdomain)
+ (gorg@gorgnet.net@73.203.127.165)
+ de/crypted with TLSv1.2: ECDHE-ECDSA-CHACHA20-POLY1305 [unknown/unknown] 
+ DN=none by 0 with ESMTPSA; 5 Aug 2024 03:11:18 -0000
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	Josh Junon <junon@oro.sh>
-Subject: [PULL 2/2] qmp: Fix higher half vaddrs for [p]memsave
-Date: Mon,  5 Aug 2024 09:59:25 +0200
-Message-ID: <20240805075925.2062973-3-armbru@redhat.com>
-In-Reply-To: <20240805075925.2062973-1-armbru@redhat.com>
-References: <20240805075925.2062973-1-armbru@redhat.com>
+Cc: qemu-trivial@nongnu.org, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ George Matsumura <gorg@gorgnet.net>
+Subject: [PATCH 1/2] docs/specs/pci-ids: Add missing devices
+Date: Sun,  4 Aug 2024 21:10:11 -0600
+Message-ID: <20240805031012.16547-2-gorg@gorgnet.net>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Received-SPF: pass client-ip=2a01:4f9:c012:ca43::1;
+ envelope-from=gorg@gorgnet.net; helo=gorgnet.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 05 Aug 2024 04:10:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,99 +67,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  George Matsumura <gorg@gorgnet.net>
+From:  George Matsumura via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Josh Junon <junon@oro.sh>
+Add the missing devices 1b36:000c (PCIe root port) and 1b36:000e
+(PCIe-to-PCI bridge).
 
-Fixes higher-half address parsing for QMP commands
-`[p]memsave`.
-
-Signed-off-by: Josh Junon <junon@oro.sh>
-Message-ID: <20240802140704.13591-1-junon@oro.sh>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Subject tweaked, and one PRId64 updated to PRIu64]
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: George Matsumura <gorg@gorgnet.net>
 ---
- qapi/machine.json | 11 +++++++++--
- system/cpus.c     | 12 ++++++------
- 2 files changed, 15 insertions(+), 8 deletions(-)
+ docs/specs/pci-ids.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 4582e58f7d..d4317435e7 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -852,7 +852,11 @@
- #     <- { "return": {} }
- ##
- { 'command': 'memsave',
--  'data': {'val': 'int', 'size': 'int', 'filename': 'str', '*cpu-index': 'int'} }
-+  'data': {
-+     'val': 'uint64',
-+     'size': 'size',
-+     'filename': 'str',
-+     '*cpu-index': 'int' } }
- 
- ##
- # @pmemsave:
-@@ -878,7 +882,10 @@
- #     <- { "return": {} }
- ##
- { 'command': 'pmemsave',
--  'data': {'val': 'int', 'size': 'int', 'filename': 'str'} }
-+  'data': {
-+    'val': 'uint64',
-+    'size': 'size',
-+    'filename': 'str' } }
- 
- ##
- # @Memdev:
-diff --git a/system/cpus.c b/system/cpus.c
-index 5e3a988a0a..1c818ff682 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -792,14 +792,14 @@ int vm_stop_force_state(RunState state)
-     }
- }
- 
--void qmp_memsave(int64_t addr, int64_t size, const char *filename,
-+void qmp_memsave(uint64_t addr, uint64_t size, const char *filename,
-                  bool has_cpu, int64_t cpu_index, Error **errp)
- {
-     FILE *f;
--    uint32_t l;
-+    uint64_t l;
-     CPUState *cpu;
-     uint8_t buf[1024];
--    int64_t orig_addr = addr, orig_size = size;
-+    uint64_t orig_addr = addr, orig_size = size;
- 
-     if (!has_cpu) {
-         cpu_index = 0;
-@@ -823,7 +823,7 @@ void qmp_memsave(int64_t addr, int64_t size, const char *filename,
-         if (l > size)
-             l = size;
-         if (cpu_memory_rw_debug(cpu, addr, buf, l, 0) != 0) {
--            error_setg(errp, "Invalid addr 0x%016" PRIx64 "/size %" PRId64
-+            error_setg(errp, "Invalid addr 0x%016" PRIx64 "/size %" PRIu64
-                              " specified", orig_addr, orig_size);
-             goto exit;
-         }
-@@ -840,11 +840,11 @@ exit:
-     fclose(f);
- }
- 
--void qmp_pmemsave(int64_t addr, int64_t size, const char *filename,
-+void qmp_pmemsave(uint64_t addr, uint64_t size, const char *filename,
-                   Error **errp)
- {
-     FILE *f;
--    uint32_t l;
-+    uint64_t l;
-     uint8_t buf[1024];
- 
-     f = fopen(filename, "wb");
+diff --git a/docs/specs/pci-ids.rst b/docs/specs/pci-ids.rst
+index c0a3dec2e7..0de13de1e4 100644
+--- a/docs/specs/pci-ids.rst
++++ b/docs/specs/pci-ids.rst
+@@ -82,8 +82,12 @@ PCI devices (other than virtio):
+   PCI-PCI bridge (multiseat)
+ 1b36:000b
+   PCIe Expander Bridge (-device pxb-pcie)
++1b36:000c
++  PCIe Root Port (``-device pcie-root-port``)
+ 1b36:000d
+   PCI xhci usb host adapter
++1b36:000e
++  PCIe-to-PCI bridge (``-device pcie-pci-bridge``)
+ 1b36:000f
+   mdpy (mdev sample device), ``linux/samples/vfio-mdev/mdpy.c``
+ 1b36:0010
 -- 
-2.45.0
+2.46.0
 
 
