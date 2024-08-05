@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5E2947514
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 08:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBF294754B
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 08:32:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1saqy8-0002mD-5H; Mon, 05 Aug 2024 02:13:20 -0400
+	id 1sarEh-0001pt-EA; Mon, 05 Aug 2024 02:30:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1saqxv-0002jh-1C
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:13:08 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1saqxp-000833-FX
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:13:06 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-52f04150796so15640703e87.3
- for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 23:12:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1722838378; x=1723443178; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=qKfUThdQsLkFA6LYklbVLSCEwFJGaxuCvq2ljSDF5/M=;
- b=iwgYjPesHaqZeZVvvC4OE3/TE8LxsSwlUW0IHlKby3X2xU/wBPJxtFcQ9QQ//uj4xF
- bUNbyRWyhS7JH/Ec5eABwOsmkFyQNzuCOBvEJ9SmMfd+GwFk8SC+SWEe2vjgwpQJmw6r
- 600Z8t+ri5X0C1SxT2lk1HK6NPVIZD4l5ifkziwdrrortLowdiwKhsIL7PHFJ91RJgwL
- 3GPnGINwR/AxjWdrmC6Ptb6EadmSqsLwBfBkumZSLGp4xITkwL1rAY/klp3HeIVYhigN
- 56PM7FHkNTj07lV7SBzYFQBX64ZaJJWxQH2X6wo6SX7gcw/Aw10uYel4EhozoAs3A3r8
- VLIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722838378; x=1723443178;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qKfUThdQsLkFA6LYklbVLSCEwFJGaxuCvq2ljSDF5/M=;
- b=olMX2KwpP5OnRazi04N4dDrtYtFhtc1XE8PqDDcHress70rHrncy2xMzMLwQHaVQ1Z
- 4JtkCPRD4Aq1tT99PIioRE9rL7LqJthWSOK7Cpz55iVx7bvKul3QJou05OCVK3maXUsI
- 4Ae/tz/olZ4nKumnS+Cxs1bSYB/ixirkeIIaVy5Aw/0frQo3d9xHZy2PGcQGMXrXsegI
- Q/uungq4c65tMFJNR6gNO+suxwAvSas9J24t44TpkY7sThQKO1JAU35uSrTdHu9PyORG
- fJGRAAfVrChiN5lgAsIir0S+U+cibM91b8TY1zf2wO3i7DYKGJC7fSPtD2+6JVDJ8o+B
- 3IAQ==
-X-Gm-Message-State: AOJu0YyTy3ltbUwV9vfvFFmbgbPVGyZry7M1NmvvT0A7pcbNovifTiJ1
- N0qUzgGZS4/GJx/1+jN6RAjCwkFaEV9b+XS+es6Mh9zUoo1FZa++
-X-Google-Smtp-Source: AGHT+IEe+PmHDPI7oF+fo+ak4vt7dP7sQyr1eoXWAXQHzgm5gUvuBqC6Bzu+RLNXe+LPY3jqKG+UEQ==
-X-Received: by 2002:ac2:4c51:0:b0:52e:9882:2cd8 with SMTP id
- 2adb3069b0e04-530bb3670f6mr6590163e87.4.1722838377189; 
- Sun, 04 Aug 2024 23:12:57 -0700 (PDT)
-Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
- [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-428e6e7d585sm124194775e9.35.2024.08.04.23.12.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Aug 2024 23:12:55 -0700 (PDT)
-Date: Mon, 5 Aug 2024 07:12:55 +0100
-From: Stafford Horne <shorne@gmail.com>
-To: Joel Holdsworth <jholdsworth@nvidia.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] hw/openrisc: Fixed undercounting of TTCR in continuous
- mode
-Message-ID: <ZrBtZ4VKEC0dgmWG@antec>
-References: <20240607222933.45791-1-jholdsworth@nvidia.com>
- <ZmTbnfrp73tAt3KY@antec>
- <DM4PR12MB65656FF201E6BFB43FDB4A3BC8C62@DM4PR12MB6565.namprd12.prod.outlook.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sarEX-0001pC-9D
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:30:17 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sarET-00029G-KC
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:30:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722839414; x=1754375414;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=p7wFuXhoGbra2VszxYDKcCWTsL6+aR8q1CT8fd+RXOo=;
+ b=VfbVsM9VHVr6XjmsStY8IJ0h4n8fwtKUXiDA/eQ/Cn45HfHGX39qtlFu
+ r8O/B+CjvknuOFLaG3Dc36X80tFcdCyRFBmeZb7iqL47PDawDYp4nJzRE
+ inLuvr/gqgWw/cdK+ZJO0iJ+7E/IXbbKLRaBCwBreLaw/eJS4hAaGOcc2
+ JxGpgoOIY9bLrtE9InkdrgxFB3qij2zEkRJkh53VyNTLfFYEQEDxxgIRF
+ XatW1Oh5SBAPkanXxHZJDCa8Mt8X6tJc+qcUUsZiHR+qo2+ttJTskHkzQ
+ Km7JRXdS0Rhzryhp5ug6MpZZgMqANKB6q0n1E66sWhE3s2utApDKtn0te Q==;
+X-CSE-ConnectionGUID: SMocyzAPSi21s2OPOGxG0g==
+X-CSE-MsgGUID: lb1hnYATTxueQrPhBs8DLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="38282657"
+X-IronPort-AV: E=Sophos;i="6.09,263,1716274800"; d="scan'208";a="38282657"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Aug 2024 23:30:08 -0700
+X-CSE-ConnectionGUID: HouqdQ8XQuGys3ji/rQPlw==
+X-CSE-MsgGUID: NKNFh/tuTDWZWTMxLA9+xQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,263,1716274800"; d="scan'208";a="56786437"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Aug 2024 23:30:03 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com
+Subject: [PATCH v2 00/17] intel_iommu: Enable stage-1 translation for emulated
+ device
+Date: Mon,  5 Aug 2024 14:27:10 +0800
+Message-Id: <20240805062727.2307552-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM4PR12MB65656FF201E6BFB43FDB4A3BC8C62@DM4PR12MB6565.namprd12.prod.outlook.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=shorne@gmail.com; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=192.198.163.8;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,51 +83,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 10, 2024 at 07:29:15PM +0000, Joel Holdsworth wrote:
-> Hi Stafford, thanks for your response.
-> 
-> >†- You sent this 2 times, is the only change in v2 the sender address?
-> 
-> Yes, I was just having some difficulty with Git and SMTP. Should be fixed now.
+Hi,
 
-OK.
+Per Jason Wang's suggestion, iommufd nesting series[1] is split into
+"Enable stage-1 translation for emulated device" series and
+"Enable stage-1 translation for passthrough device" series.
 
-> >> In the existing design, TTCR is prone to undercounting when running in
-> >> continuous mode. This manifests as a timer interrupt appearing to
-> >> trigger a few cycles prior to the deadline set in SPR_TTMR_TP.
-> 
-> > This is a good find, I have noticed the timer is off when running on OpenRISC
-> > but never tracked it down to this undercounting issue.† I also notice
-> > unexplained RCU stalls when running in Linux when tere is no load, this timer
-> issue might be related.
-> 
-> > Did you notice this via other system symptoms when running OpenRISC or just via
-> > code auditing of QEMU?
-> 
-> I'm working on an OpenRISC port of Zephyr. The under-counting issue causes
-> consistent deadlocks in my experiments with the test suite. I wouldn't be
-> surprised if it causes problems for other OS's.
+This series enables stage-1 translation support for emulated device
+in intel iommu which we called "modern" mode.
 
-Thats cool.  I got around to testing the patch with Linux, unfortunately I didnt
-see an improvement in the lockups I have been seeing during boot time.  But I am
-sure this is a step in the right direction.
+PATCH1-5:  Some preparing work before support stage-1 translation
+PATCH6-8:  Implement stage-1 translation for emulated device
+PATCH9-13: Emulate iotlb invalidation of stage-1 mapping
+PATCH14:   Set default aw_bits to 48 in scalable modren mode
+PATCH15-16:Expose scalable "modern" mode and "x-cap-fs1gp" to cmdline
+PATCH17:   Add qtest
 
-> > In QEMU there is a function clock_ns_to_ticks(). Could this maybe be used
-> > instead to give us more standard fix?
-> 
-> Seems like a good idea, and I now have some nearly-complete patch that brings
-> hw/openrisc/cputimer.c into closer alignment with
-> target/mips/sysemu/cp0_timer.c.
+Note in spec revision 3.4, it renamed "First-level" to "First-stage",
+"Second-level" to "Second-stage". But the scalable mode was added
+before that change. So we keep old favor using First-level/fl/Second-level/sl
+in code but change to use stage-1/stage-2 in commit log.
+But keep in mind First-level/fl/stage-1 all have same meaning,
+same for Second-level/sl/stage-2.
 
-Hi, I was waiting for this second version patch, v2.  Have you ever completed it?
+Qemu code can be found at [2]
+The whole nesting series can be found at [3]
 
-> However, don't we run into problems with undercounting with clock_ns_to_ticks,
-> because if I understand correctly it will round ticks down, not up?, which is
-> the problem I was trying to avoid in the first place.
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02740.html
+[2] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_stage1_emu_v2
+[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv2
 
-You might be right, but if that is the case maybe it's a but to raise to the
-maintainers directly.  I was planning to look into this more cosely after you
-sent the followup patch.
+Thanks
+Zhenzhong
 
--Stafford
+Changelog:
+v2:
+- check ecap/cap bits instead of s->scalable_modern in vtd_pe_type_check() (Clement)
+- declare VTD_ECAP_FLTS/FS1GP after the feature is implemented (Clement)
+- define VTD_INV_DESC_PIOTLB_G (Clement)
+- make error msg consistent in vtd_process_piotlb_desc() (Clement)
+- refine commit log in patch16 (Clement)
+- add VTD_ECAP_IR to ECAP_MODERN_FIXED1 (Clement)
+- add a knob x-cap-fs1gp to control stage-1 1G paging capability
+- collect Clement's R-B
+
+v1:
+- define VTD_HOST_AW_AUTO (Clement)
+- passing pgtt as a parameter to vtd_update_iotlb (Clement)
+- prefix sl_/fl_ to second/first level specific functions (Clement)
+- pick reserved bit check from Clement, add his Co-developed-by
+- Update test without using libqtest-single.h (Thomas)
+
+rfcv2:
+- split from nesting series (Jason)
+- merged some commits from Clement
+- add qtest (jason)
+
+Cl√©ment Mathieu--Drif (4):
+  intel_iommu: Check if the input address is canonical
+  intel_iommu: Set accessed and dirty bits during first stage
+    translation
+  intel_iommu: Add an internal API to find an address space with PASID
+  intel_iommu: Add support for PASID-based device IOTLB invalidation
+
+Yi Liu (3):
+  intel_iommu: Rename slpte to pte
+  intel_iommu: Implement stage-1 translation
+  intel_iommu: Modify x-scalable-mode to be string option to expose
+    scalable modern mode
+
+Yu Zhang (1):
+  intel_iommu: Use the latest fault reasons defined by spec
+
+Zhenzhong Duan (9):
+  intel_iommu: Make pasid entry type check accurate
+  intel_iommu: Add a placeholder variable for scalable modern mode
+  intel_iommu: Flush stage-2 cache in PASID-selective PASID-based iotlb
+    invalidation
+  intel_iommu: Flush stage-1 cache in iotlb invalidation
+  intel_iommu: Process PASID-based iotlb invalidation
+  intel_iommu: piotlb invalidation should notify unmap
+  intel_iommu: Set default aw_bits to 48 in scalable modren mode
+  intel_iommu: Introduce a property to control FS1GP cap bit setting
+  tests/qtest: Add intel-iommu test
+
+ MAINTAINERS                    |   1 +
+ hw/i386/intel_iommu_internal.h |  91 ++++-
+ include/hw/i386/intel_iommu.h  |   9 +-
+ hw/i386/intel_iommu.c          | 689 +++++++++++++++++++++++++++------
+ tests/qtest/intel-iommu-test.c |  70 ++++
+ tests/qtest/meson.build        |   1 +
+ 6 files changed, 731 insertions(+), 130 deletions(-)
+ create mode 100644 tests/qtest/intel-iommu-test.c
+
+-- 
+2.34.1
+
 
