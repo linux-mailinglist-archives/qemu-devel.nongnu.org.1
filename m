@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F51F9478DC
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 12:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D80739478D7
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 12:01:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sauV8-0003CA-Gh; Mon, 05 Aug 2024 05:59:38 -0400
+	id 1sauVC-0003Qt-59; Mon, 05 Aug 2024 05:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sauV6-000393-7O
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:59:36 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1sauVA-0003Nh-L9
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:59:40 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sauV4-0001Dx-NV
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:59:35 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fdd6d81812so88694925ad.1
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 02:59:34 -0700 (PDT)
+ id 1sauV9-0001EN-4v
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:59:40 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1fd9e6189d5so80731135ad.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 02:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1722851972; x=1723456772;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1722851977; x=1723456777;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=h49lGewxT9hFA+tlJrf36flRr26IrZVQVpZMqnu2U/A=;
- b=0LiCMSTInLESWSlSIdiPdlxn+T5sMai059YBDeSU3GxOTMTWM0IvouAoQSIOruLncD
- 9Ckz9PLuCfspEEAZqZyfWfzgiGQypvdFtsvbKP2nVMkXwrKsQBopXun9o104ZuJtD+kJ
- 54A0weQ2FRxDThZioyskOJT/m1Yfj9Nvm20ZAISX5Y/mxuRnUkb3m0EKH+CjTepM46Xx
- B4GpSG/kAzNNOQC7nnRywb1HbSgHB283znJFiTkffXB42e87QrIx5P5yibMBqaWYR+Xi
- qCT+qMczw8gXAyZ5nkiDVk28hCIxO+5hoIv0su1wc5lY0bpXOvB/2lLqtSmlvVIBJmI3
- NMyA==
+ :reply-to; bh=LvYGkO0/34C91V8NXfef8guAibLAhiHYP0GgJQZDQZY=;
+ b=OkpL3jk5uiZ9KfXMdqIbRtr/+gILbs9EEciFP85LGJuRJ5r4CM3XivHkZ+zvfzCccH
+ LjXKnZYDQaajgmjcdNED1WmzykDH2WBsHWG1Qg/NZ+JrDxPimIdqqvuXcabvSpVDAXe+
+ OuMmjtfsRHAy34Tc001Df6bf/girtpCra5aNIZLyTLvrYqLP5joroSHl/mVfMliiwoan
+ t8gn564508MuRDOxbzPiGMNzff2yQqf8ieLJCZSoRRjVToyW7Kpuw84Z96xUnbMXs1WI
+ Lvd9JJnH9FRNey4wvyD7DzSSIczCUUgg3osns3cUXX/du1oFrNmXmT0RgS7lEMkGgJd5
+ iXVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722851972; x=1723456772;
+ d=1e100.net; s=20230601; t=1722851977; x=1723456777;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h49lGewxT9hFA+tlJrf36flRr26IrZVQVpZMqnu2U/A=;
- b=qxrHu2FtWp+R0LgZQB+waVALNSnabZSKhTrwVeNnC8qBA4XXS0XsQeoZP6/yZISZEv
- DUVbBjRbTEEckLgAV7z4KtHl+G5jlrmZWW1Pms8/WAVBSglChGaDh9zsfhZKGouJtFVv
- DRT1EBiPFvGPRKv+bwmD5PCCYfinta9JBoWzJxPaX/6ViN9WtOt7iB8N87C97JtGvPn1
- NHZ8Y3wJoCn8NMNErTzDkVRQTnd6A21TPKXTKVZqaiAPRTTX1PtrM728E1t+uWB3S9Gb
- MNyUBpyBkSpYMSS5fFujEkRS+ySvu0e6+SpDyLg7XiV7jJ7LITc2t8zD4V33j7gv/92v
- Fh7w==
-X-Gm-Message-State: AOJu0YyK49DpY8iiRRLIGHuMOr/ig2HhOGZsf8r0Hqz5AjZbbOzKzUB2
- deTSxlrVIfFKNP1Nw/073SroOKa6UuIunL54Mh52h9/WdinbMgNMxqORwFu4p30=
-X-Google-Smtp-Source: AGHT+IFMxas0IGE1uLO9bondQe0+egYNs5JjKDwQHB5wZvCvKWAConiEj0Dg51LGeNdwFeHDXmPr4g==
-X-Received: by 2002:a17:902:c94d:b0:1ff:4a11:5f72 with SMTP id
- d9443c01a7336-1ff57271b1amr145075095ad.23.1722851972213; 
- Mon, 05 Aug 2024 02:59:32 -0700 (PDT)
+ bh=LvYGkO0/34C91V8NXfef8guAibLAhiHYP0GgJQZDQZY=;
+ b=OfmuCxralnZg3NAh6/7M5Wzag/8LbVljIjqAKvRSFyg8oCltYnASlA2OwN+K0bxZdA
+ /+6R4EuYA53lOckl2IOMo3dyLeaS8/vqJ0xvoXkxe8QMcE6zVWx+PbshYS+Hj/dhZr/i
+ jGeGkPcAXQtSarMgWkD5TZEfQGT39GnrRrkfjPEsWpFYGTMixr45dA0oL0FT0wF0nZga
+ SwOX/uA1nIOv7UzdVPlw/QZ5NPf/AdyAf49nmpTlg1phRtzi134DVLD3Bieeb85PgoMg
+ hspqKg7tR1SvgM/a02DJ1M++2bYq4sWY/Z5kBRfxqSjge7PUno4nvSTb3wqpiUSOMtfS
+ gH+g==
+X-Gm-Message-State: AOJu0YyQjO0POU/Bp9C9qdWW8yqya5gM/Exn4+NPo/IdseLNwHKC2wVU
+ QJKhsa/uHnXnOPjC2tn1CGSnY8UeM4A9FYpxKbbWVyj6S4ZFlg6oOojI7lX2SHw=
+X-Google-Smtp-Source: AGHT+IHKZfmNrs9COenNr9rHpHrlTA+tCgC1dQuZckaluzhRuF+QMSJPpMwl5bOYcMVAk+KgZNu5Zw==
+X-Received: by 2002:a17:902:d507:b0:1fd:6a00:582e with SMTP id
+ d9443c01a7336-1ff572cdd9amr99225215ad.30.1722851977617; 
+ Mon, 05 Aug 2024 02:59:37 -0700 (PDT)
 Received: from localhost ([157.82.202.230])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1ff58f2a22bsm64017635ad.10.2024.08.05.02.59.29
+ d9443c01a7336-1ff59060045sm63441995ad.147.2024.08.05.02.59.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Aug 2024 02:59:31 -0700 (PDT)
+ Mon, 05 Aug 2024 02:59:37 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 05 Aug 2024 18:58:59 +0900
-Subject: [PATCH for-9.2 v13 02/12] hw/ppc/spapr_pci: Do not create DT for
- disabled PCI device
+Date: Mon, 05 Aug 2024 18:59:00 +0900
+Subject: [PATCH for-9.2 v13 03/12] hw/ppc/spapr_pci: Do not reject VFs
+ created after a PF
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240805-reuse-v13-2-aaeaa4d7dfd2@daynix.com>
+Message-Id: <20240805-reuse-v13-3-aaeaa4d7dfd2@daynix.com>
 References: <20240805-reuse-v13-0-aaeaa4d7dfd2@daynix.com>
 In-Reply-To: <20240805-reuse-v13-0-aaeaa4d7dfd2@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -80,8 +80,8 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -103,29 +103,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Disabled means it is a disabled SR-IOV VF or it is powered off, and
-hidden from the guest.
+A PF may automatically create VFs and the PF may be function 0.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/ppc/spapr_pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/ppc/spapr_pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 7cf9904c3546..f63182a03c41 100644
+index f63182a03c41..ed4454bbf79e 100644
 --- a/hw/ppc/spapr_pci.c
 +++ b/hw/ppc/spapr_pci.c
-@@ -1296,6 +1296,10 @@ static void spapr_dt_pci_device_cb(PCIBus *bus, PCIDevice *pdev,
-         return;
-     }
- 
-+    if (!pdev->enabled) {
-+        return;
-+    }
-+
-     err = spapr_dt_pci_device(p->sphb, pdev, p->fdt, p->offset);
-     if (err < 0) {
-         p->err = err;
+@@ -1573,7 +1573,9 @@ static void spapr_pci_pre_plug(HotplugHandler *plug_handler,
+      * hotplug, we do not allow functions to be hotplugged to a
+      * slot that already has function 0 present
+      */
+-    if (plugged_dev->hotplugged && bus->devices[PCI_DEVFN(slotnr, 0)] &&
++    if (plugged_dev->hotplugged &&
++        !pci_is_vf(pdev) &&
++        bus->devices[PCI_DEVFN(slotnr, 0)] &&
+         PCI_FUNC(pdev->devfn) != 0) {
+         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
+                    " additional functions can no longer be exposed to guest.",
 
 -- 
 2.45.2
