@@ -2,74 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE41D947B16
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 14:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D4C947ADD
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 14:06:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sawyl-0004ET-8I; Mon, 05 Aug 2024 08:38:23 -0400
+	id 1sawSl-0000mB-Nc; Mon, 05 Aug 2024 08:05:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sawyj-00046J-D4
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:38:21 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sawSg-0000VQ-Ne
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:05:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sawyg-0004xh-W3
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:38:20 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sawSe-0007LJ-DK
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:05:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722861495;
+ s=mimecast20190719; t=1722859510;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=1cuc537s+5TMTDvlPztxVKUxMDLANMOuKDpSwy2aCjo=;
- b=f4bLbdSon20HIh5UmH7RMRGy6XFbW174Vw263e5nTqKV1IdEpXUlbEgmezkrC0mV/aHnjT
- EGPQzfQsRGEbAY0wQurcnLyVugAq77255i0IdcIZRZMzMyL0zScUsB0kTcQhXk7XUVbYQJ
- Xfur0aVjgtdvF5egCcQ010rnkDQN7gY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ in-reply-to:in-reply-to:references:references;
+ bh=k2+03LMEuPaGM16pwn+EMkekWvEJ9+6FEyr5EweSAqY=;
+ b=RN7cRobMi/WW9PMiTziBU4lVnPl+x3tMCRpwqmu+jem5AWnhMlltWxsqtKw8UV0veZ0W4M
+ Tv12bNbsW0lJE6l1QeQ7/tCWCucjCat62zp+3pJPcPdjTNf/uNbB8JuaJnMWuNJ6+cyQEW
+ Yw7qn7RUtTFkGyp44eIjXavxL5vmiAk=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-Cf_Sk1u0PnGOerwPAJudmg-1; Mon,
- 05 Aug 2024 08:38:14 -0400
-X-MC-Unique: Cf_Sk1u0PnGOerwPAJudmg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-5Z5-sSQ1OIiTooFT60s0Cw-1; Mon,
+ 05 Aug 2024 08:05:05 -0400
+X-MC-Unique: 5Z5-sSQ1OIiTooFT60s0Cw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6B2A81955BEF; Mon,  5 Aug 2024 12:38:13 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.245])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2C64F30001A7; Mon,  5 Aug 2024 12:38:13 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0E58821E6692; Mon,  5 Aug 2024 14:38:11 +0200 (CEST)
-Resent-To: michael.roth@amd.com, philmd@linaro.org, qemu-devel@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 05 Aug 2024 14:38:10 +0200
-Resent-Message-ID: <871q33no0d.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Michael
- Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 3/6] qapi: use "QAPI_FEATURE" as namespace for features
-In-Reply-To: <20240801175913.669013-4-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Thu, 1 Aug 2024 18:59:10
- +0100")
-References: <20240801175913.669013-1-berrange@redhat.com>
- <20240801175913.669013-4-berrange@redhat.com>
-Date: Mon, 05 Aug 2024 14:01:01 +0200
-Message-ID: <877ccvp4aq.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 650C519540FC; Mon,  5 Aug 2024 12:05:04 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.224])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C30419560AE; Mon,  5 Aug 2024 12:05:00 +0000 (UTC)
+Date: Mon, 5 Aug 2024 14:04:58 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, hreitz@redhat.com,
+ vsementsov@yandex-team.ru, pbonzini@redhat.com, eesposit@redhat.com,
+ den@virtuozzo.com
+Subject: Re: [PATCH v3 2/3] iotests/298: add testcase for async writes with
+ preallocation filter
+Message-ID: <ZrC_6jb8M6YU1AfQ@redhat.com>
+References: <20240716144123.651476-1-andrey.drobyshev@virtuozzo.com>
+ <20240716144123.651476-3-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Lines: 8
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716144123.651476-3-andrey.drobyshev@virtuozzo.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -77,7 +65,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,13 +81,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Am 16.07.2024 um 16:41 hat Andrey Drobyshev geschrieben:
+> The testcase simply creates a 64G image with 1M clusters, generates a list
+> of 1M aligned offsets and feeds aio_write commands with those offsets to
+> qemu-io run with '--aio native --nocache'.  Then we check the data
+> written at each of the offsets.  Before the previous commit this could
+> result into a race within the preallocation filter which would zeroize
+> some clusters after actually writing data to them.
+> 
+> Note: the test doesn't fail in 100% cases as there's a race involved,
+> but the failures are pretty consistent so it should be good enough for
+> detecting the problem.
+> 
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-> This more clearly distinguishes the feature constants from other
-> QAPI constants.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+I left it running in a loop for a while, but couldn't reproduce the bug
+with this test.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>  tests/qemu-iotests/298     | 49 ++++++++++++++++++++++++++++++++++++++
+>  tests/qemu-iotests/298.out |  4 ++--
+>  2 files changed, 51 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/qemu-iotests/298 b/tests/qemu-iotests/298
+> index 09c9290711..b7126e9e15 100755
+> --- a/tests/qemu-iotests/298
+> +++ b/tests/qemu-iotests/298
+> @@ -20,8 +20,10 @@
+>  
+>  import os
+>  import iotests
+> +import random
+>  
+>  MiB = 1024 * 1024
+> +GiB = MiB * 1024
+>  disk = os.path.join(iotests.test_dir, 'disk')
+>  overlay = os.path.join(iotests.test_dir, 'overlay')
+>  refdisk = os.path.join(iotests.test_dir, 'refdisk')
+> @@ -176,5 +178,52 @@ class TestTruncate(iotests.QMPTestCase):
+>          self.do_test('off', '150M')
+>  
+>  
+> +class TestPreallocAsyncWrites(iotests.QMPTestCase):
+> +    def setUp(self):
+> +        # Make sure we get reproducible write patterns on each run
+> +        random.seed(42)
+> +        iotests.qemu_img_create('-f', iotests.imgfmt, disk, '-o',
+> +                                f'cluster_size={MiB},lazy_refcounts=on',
+> +                                str(64 * GiB))
+> +
+> +    def tearDown(self):
+> +        os.remove(disk)
+> +
+> +    def test_prealloc_async_writes(self):
+> +        def gen_write_pattern():
+> +            n = 0
+> +            while True:
+> +                yield '-P 0xaa' if n else '-z'
+> +                n = 1 - n
+
+This looks like a complicated way to write the following?
+
+    # Alternate between write_zeroes and writing data
+    def gen_write_pattern():
+        while True:
+            yield '-z'
+            yield '-P 0xaa'
+
+> +        def gen_read_pattern():
+> +            n = 0
+> +            while True:
+> +                yield '-P 0xaa' if n else '-P 0x00'
+> +                n = 1 - n
+
+Same here.
+
+Kevin
 
 
