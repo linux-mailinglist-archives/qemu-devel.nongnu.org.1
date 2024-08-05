@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5D09483E0
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 23:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CED948539
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 00:01:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb4xs-0001yd-Bi; Mon, 05 Aug 2024 17:10:00 -0400
+	id 1sb5kD-0002x5-9a; Mon, 05 Aug 2024 17:59:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sb4xQ-00018k-6Y
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:09:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sb4xO-00005N-9Q
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:09:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722892169;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FJ15q8CYPj6PTN7hDi0BIfIjd8VlCM6ctQu3O7D8jso=;
- b=HJcMEJPHvfFyqGQvt04xH3MBeBqEBcQYRQ1dNyQaq++mzPWfzt21ADutAS75lftu9glBjb
- FyxIrwQSaZY9oPiVnsyEFX8ZVxB+kYtqxhBhHOCgrE9oeR+LObXMQ0M596ApC+aroqtqyC
- XbhWiQh+AniiCjtnKRJMDsGAHlcvgAM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-WVYWbzNNN6S7Sqcvf7mejg-1; Mon,
- 05 Aug 2024 17:09:25 -0400
-X-MC-Unique: WVYWbzNNN6S7Sqcvf7mejg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8940B19560B3; Mon,  5 Aug 2024 21:09:24 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.193.224])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 626D130001B4; Mon,  5 Aug 2024 21:09:23 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 13/13] iotests/024: exclude 'backing file format' field from
- the output
-Date: Mon,  5 Aug 2024 23:08:51 +0200
-Message-ID: <20240805210851.314076-14-kwolf@redhat.com>
-In-Reply-To: <20240805210851.314076-1-kwolf@redhat.com>
-References: <20240805210851.314076-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sb5k5-0002ug-Bx
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:59:49 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sb5k3-0006RF-KG
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:59:49 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-7a18ba4143bso7558242a12.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 14:59:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722895185; x=1723499985; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ze4f5WWRI0v4Ei0sg6/Kj76OA6a3KyEEqX7xYsmSIkc=;
+ b=HzTQyHifu+TKmu1oTzQfrHmDJopFOx9u/957GrX1STCqRXR5bm2SD/baqRE+Z0z2pb
+ M+FZP6GBLbIi0aHCiqXZ6KX3wMhmuJh/3GPY6JSv6bzuq2/ixUD8LjPDeT2gco8lZX29
+ lixVeNK9kaXN/qUBRfHE0187LdQsdfLGPgvKwR3hfrrhNtiEsWxDpiIYRYmXULNsfQu0
+ rwgqeJIauTtT8iQX4gYsMmc0WL4CHIXwIeUZ6eayRpH3KFh5aNd2CFTpjFjDy4ZNVb6Q
+ U2zrgofcADvG+4EzGeG8JXDOTZ4wkpMHlGK+D8oGmowYLq6PwpChyfj8SvARrAcRr/BQ
+ 6qLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722895185; x=1723499985;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ze4f5WWRI0v4Ei0sg6/Kj76OA6a3KyEEqX7xYsmSIkc=;
+ b=Ab8iYBSsmPlaP6nwvOhJ9qZs55APOhrUh7RWVrmwTNHp1cugnBWhdKTfZXRPKrFUzF
+ uKWZVN1Vx/pBBROdMGznlariH2Y30mfvP3tQC6lT8ATe1FxbLZA2jpJHfaiQKuj7ryA2
+ OBlqZR77Y8HTa2mwUdxwStuWiqgKyGfcpOGhLrfGUftjUdKMs5NXzn9zwXLwLhpQabxl
+ nnfWskvJlixFg0xYep0ssMi+a/yjSFeV49E335I1U/PbD30aA5iP3hCkZtQrcu6oyMoe
+ 6rTub12BDi0wHQmUZXvRm8uyxV/4E+qp4ddyETv3OszwcBrc76ewlWBp/i4PT60Tb3rA
+ 3ZPw==
+X-Gm-Message-State: AOJu0YzsW3j/yP5FBquJw9z8M6288I/ZP0Pxvxu+rhGauarTsKwzs63w
+ ITAOkkJtAs1PxzCu5voUis+LgDKcx4PUSNnfVF0iQGkEHCY8Q2D5p+gE2THoxuJ+n1syObQRPda
+ 3y0g=
+X-Google-Smtp-Source: AGHT+IHjx9Xjh9u+T9f1BuKfWnEiLG7VFCqkYVzMNXd/lxSGLn8VqtEgqPchY4Z8w7Av97aBWvb/cg==
+X-Received: by 2002:a17:90b:1e4c:b0:2c9:57a4:a8c4 with SMTP id
+ 98e67ed59e1d1-2cff955901dmr11095275a91.42.1722895184806; 
+ Mon, 05 Aug 2024 14:59:44 -0700 (PDT)
+Received: from [192.168.0.152] ([144.6.121.55])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2cffaf69a1csm7572143a91.7.2024.08.05.14.59.41
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Aug 2024 14:59:44 -0700 (PDT)
+Message-ID: <1943ce20-91a6-4942-9dd6-9d1024dc2728@linaro.org>
+Date: Tue, 6 Aug 2024 07:59:38 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/6] misc patch queue
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20240805003130.1421051-1-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20240805003130.1421051-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,60 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+On 8/5/24 10:31, Richard Henderson wrote:
+> The following changes since commit f9851d2ffef59b3a7f39513469263ab3b019480f:
+> 
+>    Merge tag 'migration-20240802-pull-request' ofhttps://gitlab.com/farosas/qemu into staging (2024-08-03 07:26:26 +1000)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240805
+> 
+> for you to fetch changes up to 9996a35c6433c0e019a1c05791299db5e63a5db7:
+> 
+>    net/tap: Use qemu_close_all_open_fd() (2024-08-05 08:33:36 +1000)
+> 
+> ----------------------------------------------------------------
+> linux-user/elfload: Fix pr_pid values in core files
+> util: Add qemu_close_all_open_fd
+> net/tap: Use qemu_close_all_open_fd
 
-Apparently 'qemu-img info' doesn't report the backing file format field
-for qed (as it does for qcow2):
 
-$ qemu-img create -f qed base.qed 1M && qemu-img create -f qed -b base.qed -F qed top.qed 1M
-$ qemu-img create -f qcow2 base.qcow2 1M && qemu-img create -f qcow2 -b base.qcow2 -F qcow2 top.qcow2 1M
-$ qemu-img info top.qed | grep 'backing file format'
-$ qemu-img info top.qcow2 | grep 'backing file format'
-backing file format: qcow2
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
 
-This leads to the 024 test failure with -qed.  Let's just filter the
-field out and exclude it from the output.
-
-This is a fixup for the commit f93e65ee51 ("iotests/{024, 271}: add
-testcases for qemu-img rebase").
-
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Message-ID: <20240730094701.790624-1-andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- tests/qemu-iotests/024     | 2 +-
- tests/qemu-iotests/024.out | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/tests/qemu-iotests/024 b/tests/qemu-iotests/024
-index 285f17e79f..b29c76e161 100755
---- a/tests/qemu-iotests/024
-+++ b/tests/qemu-iotests/024
-@@ -283,7 +283,7 @@ TEST_IMG=$BASE_OLD _make_test_img -b "$BASE_NEW" -F $IMGFMT \
- CLUSTER_SIZE=$(( CLUSTER_SIZE * 2 )) TEST_IMG=$OVERLAY \
-     _make_test_img -b "$BASE_OLD" -F $IMGFMT $(( CLUSTER_SIZE * 6 ))
- 
--TEST_IMG=$OVERLAY _img_info
-+TEST_IMG=$OVERLAY _img_info | grep -v '^backing file format:'
- 
- echo
- echo "Fill backing files with data"
-diff --git a/tests/qemu-iotests/024.out b/tests/qemu-iotests/024.out
-index e1e8eea863..3d1e31927a 100644
---- a/tests/qemu-iotests/024.out
-+++ b/tests/qemu-iotests/024.out
-@@ -214,7 +214,6 @@ file format: IMGFMT
- virtual size: 384 KiB (393216 bytes)
- cluster_size: 131072
- backing file: TEST_DIR/subdir/t.IMGFMT.base_old
--backing file format: IMGFMT
- 
- Fill backing files with data
- 
--- 
-2.45.2
-
+r~
 
