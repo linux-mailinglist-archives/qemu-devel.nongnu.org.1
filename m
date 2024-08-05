@@ -2,144 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F999478BA
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 11:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7997A9478DB
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 12:01:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sauOV-0006La-1o; Mon, 05 Aug 2024 05:52:47 -0400
+	id 1sauUz-0002lf-4t; Mon, 05 Aug 2024 05:59:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sauOT-0006L4-6I
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:52:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sauOR-0008LR-Mr
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:52:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722851561;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uGCGO/DB+EfmOabKIkXEOknhCnwtduq7gANaKCS5tNc=;
- b=LgnDgjTcUm2gPuVy+tSW+VFa8icWonu1BORk3wwDjj5C6MJJstOak6D8rqKkph5f8zuuwx
- 2BFA72UajGAEJKXvvJwdgsfgigD0yg6HbsLuorFFP19fsZsiYVjlQP06oI3LAf252QDoa/
- x5YgvIQPTRLbqhUzoXY2TGEEtTaj/+E=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-3N79N5o4OpSSeRPZH3KrKA-1; Mon, 05 Aug 2024 05:52:39 -0400
-X-MC-Unique: 3N79N5o4OpSSeRPZH3KrKA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36873a449dfso2605167f8f.0
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 02:52:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sauUw-0002jl-UH
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:59:26 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sauUu-0001Cg-CR
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 05:59:26 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-7b594936e9bso3170923a12.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 02:59:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1722851963; x=1723456763;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wqGte9pCBehLcbyqGGkvT4TF73XqfnPCAAnWA0xhIUk=;
+ b=2tg0aK4yMShQO/0I6NRV2mW9nrCCwX+DIHNrN0Yoh30u5phldxRRKj6CyjbvgrdBIo
+ SgG5BKJqm3LpcSt164bOLbPTVTfa9wYyUjnnJaco9CrXSxahJK1TLls9gz493u6EIJ0t
+ tUtYaGGgPD5AcvUAWnfBkWRfi/LvRLIlYndvNHs6UMpgV9nVvwsQjz7K9mVS6SLkdf0S
+ IGJAB+5xTHjPE6MJrFuRPt5/yjY1LBnaTtSE93SyqWfnYyRokKvMBauUr9mYHMwlN5bz
+ fnXtVR3qNRY5ocsYPsS6Hqn1PHq3WR13vuAur996yPW3pPIq/34lsdP4lwOEZrTULw6f
+ 06/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722851558; x=1723456358;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=uGCGO/DB+EfmOabKIkXEOknhCnwtduq7gANaKCS5tNc=;
- b=Zo6v9szl4+Z9GMYO4B5VrktcgGqxq2EdB3HUjxi69Ypr4IZ4lTIN7KLooG0HX8pJGN
- Q2qjRHhzmI7dYL2jopa195C8IJNywBgvXuwemICG3/6EQcbnI1AgKUyOk6jaOEKXBUnj
- ILXriDP9HLTT3ntUnNkY6uwlYZCEzrSWUTFx+9/U72oWuzHbGvfg68T++CfiUDD5E5Iy
- gt9KNwcvPnvQX3/agNi+wRSoRF1OGxR5D95VFReLttWC7OnDBELj0Aue/xL6Jvh33hZe
- WRcr7MnudFWgPmvA5fhZjeHWebq3ImYMuGaHvqpwndvMIVdGpoX8ktQZ5XxOYafNyvsR
- rggg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU5KXoHLiMRz3knZI392VSzkNbPNRYOJGy5taadXXPizQdBuR81CP4yWbjlRzyByaPRrhNQj8LVYNgM0bUEMtTjD5wJ83E=
-X-Gm-Message-State: AOJu0YzQF2GxpunVeOwSB2sWoJXLBY4zUnSt0cfBhJ18TLsh4e8A+fqY
- TnnA1kq1AzemAqhcV3QL85dBtfie6yTozUMJ82oFPLtQ/iagR9N3GoBfWocg3mzYVvHGqIsYm03
- jo4hcaqGquUeKgaWIMHmm1y8HmowsKO3AgnYNqZY2xd9AjD61o1mW
-X-Received: by 2002:adf:f60b:0:b0:36b:aa96:d1e5 with SMTP id
- ffacd0b85a97d-36bbbe5b841mr9400995f8f.18.1722851557883; 
- Mon, 05 Aug 2024 02:52:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFquxaKtlJa/tG0mqIEQQ4SgliO4vtb04PJiLlWvPdSZ6UpWj2TeCjkVlDC1dNY8HIsiYmCxw==
-X-Received: by 2002:adf:f60b:0:b0:36b:aa96:d1e5 with SMTP id
- ffacd0b85a97d-36bbbe5b841mr9400970f8f.18.1722851557365; 
- Mon, 05 Aug 2024 02:52:37 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36bbd0597f6sm9332197f8f.66.2024.08.05.02.52.36
+ d=1e100.net; s=20230601; t=1722851963; x=1723456763;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wqGte9pCBehLcbyqGGkvT4TF73XqfnPCAAnWA0xhIUk=;
+ b=wfAgeaUo7lndIZU9yCBJhfHY+IOFasvXkl2YL7EYE1+7MUDQw6C3A5bZjX0ZHvC/f3
+ Td7o7x7vTTtfJ0JymjEwJ6yqZj4G88406D3uG9tMjK8RsJFg4/X0JXH6QO/z8FJ/HLWw
+ eCNDA3tfdMgstDxAHgO/Q6A9L27IItdNO0LEcdNs/i6YiApeAAMQ7Onkq8PZlLxmsral
+ 45JiUY6urwpb9UUwoGLrSKgVSc4WG/fOYjxyF/fOpTxIqtIghCwSrxGmXBRvuvS9QS0p
+ UZrYz/NMxGZmbBtV4I1exOAvajXU4qHSaJaSUef756QTCXTm0dCQ+pG5mMaOBVPzwFEZ
+ OOEQ==
+X-Gm-Message-State: AOJu0YzfhH3nhaIsCcY2ku9mPZ0LdyN75KP5ag01bhKp7edgDPUib4nB
+ g/C0bkkrNMoO3Y+IRrG0jrEngocrqmqgjYxL5U0ZX5+RDOgNP+n4YAroPTTbwR0=
+X-Google-Smtp-Source: AGHT+IHA0Z/khd+75Dwpa0UGtQXe1eGKIwgpqcZioV+tIynMcOF5QPPmQ+SampJRjy4RRTQZW/K1Dg==
+X-Received: by 2002:a17:90b:1e04:b0:2cc:f2c1:88fb with SMTP id
+ 98e67ed59e1d1-2cff9413d63mr9359739a91.16.1722851962581; 
+ Mon, 05 Aug 2024 02:59:22 -0700 (PDT)
+Received: from localhost ([157.82.202.230])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 98e67ed59e1d1-2cffb38bbc6sm6593359a91.53.2024.08.05.02.59.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Aug 2024 02:52:36 -0700 (PDT)
-Message-ID: <636cc66b-95bf-4003-9e35-9547dfbcbfd1@redhat.com>
-Date: Mon, 5 Aug 2024 11:52:35 +0200
+ Mon, 05 Aug 2024 02:59:22 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH for-9.2 v13 00/12] hw/pci: SR-IOV related fixes and
+ improvements
+Date: Mon, 05 Aug 2024 18:58:57 +0900
+Message-Id: <20240805-reuse-v13-0-aaeaa4d7dfd2@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 00/11] Live update: cpr-exec
-To: Peter Xu <peterx@redhat.com>
-Cc: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
- <Zpk7Mf2c7LiNV2xC@x1n> <37d9e725-1be7-48e1-b621-3f657192f124@redhat.com>
- <Zq-hkUnPGWHMoEY0@x1n>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Zq-hkUnPGWHMoEY0@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGGisGYC/2XSyU7DMBAA0F9BPpNqZrwOJ/4DcbAdm+ZAixKIW
+ lX9d5yIpEY+enljz3ITUxqHNImXp5sY0zxMw/lUFiifn0Q8+tNH6oa+bAgCUoDE3Zh+ptRl7xN
+ RQGSpRLn7NaY8XNZAbyKfx44PJN7LwXGYvs/jdX1gxvV4DUUg/0LN2EGnQ3JRx2SkdK+9v56Gy
+ yGeP9cQM1UMYWNUGKngyWsgw9QwWTPamCzMAdpgHMdkc8NUzdTG1MLY98DSg82qYbpmbmO6sKR
+ yxIgctOeGmYrRnptZckuKPLkAMbe52Zrtn7QL44gqxMCaUsNczfZPuoU5MgbIYTLQMH4wiXpjX
+ Jix3hv2WfVaNgzh4QzZvd9QoI0egku97LltAVaD4mBvHS6TkoOTIbhSzxxaSDXc64LLrPSSJUS
+ FiOF/Pe/3+y+hUs9iCAMAAA==
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,43 +108,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.08.24 17:43, Peter Xu wrote:
-> On Mon, Jul 22, 2024 at 10:59:47AM +0200, David Hildenbrand wrote:
->>> So I wonder whether there's comparison between exec() and transfer mode
->>> that you recently proposed.
->>>
->>> I'm asking because exec() (besides all the rest of things that I dislike on
->>> it in this approach..) should be simply slower, logically, due to the
->>> serialized operation to (1) tearing down the old mm, (2) reload the new
->>> ELF, then (3) runs through the QEMU init process.
->>>
->>> If with a generic migration solution, the dest QEMU can start running (2+3)
->>> concurrently without even need to run (1).
->>
->> I'll note (not sure if already discussed) that with the "async-teardown"
->> option we have a way to move the MM teardown to a separate process, such
->> that it will happen asynchronously.
-> 
-> I just had a look, maybe it won't trivially work, as it relies on QEMU
-> process to quit first..
-> 
-> async_teardown_fn():
->      if (the_ppid == getppid()) {
->          pause();
->      }
-> 
-> While if we stick with exec(), then PID shouldn't change, so the teardown
-> process can hold the mm and pause until the VM is destroyed..
+Supersedes: <20240714-rombar-v2-0-af1504ef55de@daynix.com>
+("[PATCH v2 0/4] hw/pci: Convert rom_bar into OnOffAuto")
 
-Right, the mechanism would have to be extended to realize that exec() 
-happened. Notifying the child before exec() would be undesired, so it 
-would have to happen after exec() from the changed parent.
+I submitted a RFC series[1] to add support for SR-IOV emulation to
+virtio-net-pci. During the development of the series, I fixed some
+trivial bugs and made improvements that I think are independently
+useful. This series extracts those fixes and improvements from the RFC
+series.
 
-Sounds doable, but certainly doesn't come for free!
+[1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
 
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v13:
+- Added patch "s390x/pci: Check for multifunction after device
+  realization". I found SR-IOV devices, which are multifunction devices,
+  are not supposed to work at all with s390x on QEMU.
+- Link to v12: https://lore.kernel.org/r/20240804-reuse-v12-0-d3930c4111b2@daynix.com
+
+Changes in v12:
+- Changed to ignore invalid PCI_SRIOV_NUM_VF writes as done for
+  PCI_SRIOV_CTRL_VFE.
+- Updated the message for patch "hw/pci: Use -1 as the default value for
+  rombar". (Markus Armbruster)
+- Link to v11: https://lore.kernel.org/r/20240802-reuse-v11-0-fb83bb8c19fb@daynix.com
+
+Changes in v11:
+- Rebased.
+- Dropped patch "hw/pci: Convert rom_bar into OnOffAuto".
+- Added patch "hw/pci: Use -1 as the default value for rombar".
+- Added for-9.2 to give a testing period for possible breakage with
+  libvirt/s390x.
+- Link to v10: https://lore.kernel.org/r/20240627-reuse-v10-0-7ca0b8ed3d9f@daynix.com
+
+Changes in v10:
+- Added patch "hw/ppc/spapr_pci: Do not reject VFs created after a PF".
+- Added patch "hw/ppc/spapr_pci: Do not create DT for disabled PCI device".
+- Added patch "hw/pci: Convert rom_bar into OnOffAuto".
+- Dropped patch "hw/pci: Determine if rombar is explicitly enabled".
+- Dropped patch "hw/qdev: Remove opts member".
+- Link to v9: https://lore.kernel.org/r/20240315-reuse-v9-0-67aa69af4d53@daynix.com
+
+Changes in v9:
+- Rebased.
+- Restored '#include "qapi/error.h"' (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Ensure VF function number does not overflow"
+  to fix abortion with wrong PF addr.
+- Link to v8: https://lore.kernel.org/r/20240228-reuse-v8-0-282660281e60@daynix.com
+
+Changes in v8:
+- Clarified that "hw/pci: Replace -1 with UINT32_MAX for romsize" is
+  not a bug fix. (Markus Armbruster)
+- Squashed patch "vfio: Avoid inspecting option QDict for rombar" into
+  "hw/pci: Determine if rombar is explicitly enabled".
+  (Markus Armbruster)
+- Noted the minor semantics change for patch "hw/pci: Determine if
+  rombar is explicitly enabled". (Markus Armbruster)
+- Link to v7: https://lore.kernel.org/r/20240224-reuse-v7-0-29c14bcb952e@daynix.com
+
+Changes in v7:
+- Replaced -1 with UINT32_MAX when expressing uint32_t.
+  (Markus Armbruster)
+- Added patch "hw/pci: Replace -1 with UINT32_MAX for romsize".
+- Link to v6: https://lore.kernel.org/r/20240220-reuse-v6-0-2e42a28b0cf2@daynix.com
+
+Changes in v6:
+- Fixed migration.
+- Added patch "pcie_sriov: Do not manually unrealize".
+- Restored patch "pcie_sriov: Release VFs failed to realize" that was
+  missed in v5.
+- Link to v5: https://lore.kernel.org/r/20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com
+
+Changes in v5:
+- Added patch "hw/pci: Always call pcie_sriov_pf_reset()".
+- Added patch "pcie_sriov: Reset SR-IOV extended capability".
+- Removed a reference to PCI_SRIOV_CTRL_VFE in hw/nvme.
+  (Michael S. Tsirkin)
+- Noted the impact on the guest of patch "pcie_sriov: Do not reset
+  NumVFs after unregistering VFs". (Michael S. Tsirkin)
+- Changed to use pcie_sriov_num_vfs().
+- Restored pci_set_power() and changed it to call pci_set_enabled() only
+  for PFs with an expalanation. (Michael S. Tsirkin)
+- Reordered patches.
+- Link to v4: https://lore.kernel.org/r/20240214-reuse-v4-0-89ad093a07f4@daynix.com
+
+Changes in v4:
+- Reverted the change to pci_rom_bar_explicitly_enabled().
+  (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Do not reset NumVFs after unregistering VFs".
+- Added patch "hw/nvme: Refer to dev->exp.sriov_pf.num_vfs".
+- Link to v3: https://lore.kernel.org/r/20240212-reuse-v3-0-8017b689ce7f@daynix.com
+
+Changes in v3:
+- Extracted patch "hw/pci: Use -1 as a default value for rombar" from
+  patch "hw/pci: Determine if rombar is explicitly enabled"
+  (Philippe Mathieu-Daudé)
+- Added an audit result of PCIDevice::rom_bar to the message of patch
+  "hw/pci: Use -1 as a default value for rombar"
+  (Philippe Mathieu-Daudé)
+- Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
+
+Changes in v2:
+- Reset after enabling a function so that NVMe VF state gets updated.
+- Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
+
+---
+Akihiko Odaki (12):
+      hw/pci: Rename has_power to enabled
+      hw/ppc/spapr_pci: Do not create DT for disabled PCI device
+      hw/ppc/spapr_pci: Do not reject VFs created after a PF
+      s390x/pci: Check for multifunction after device realization
+      pcie_sriov: Do not manually unrealize
+      pcie_sriov: Ensure VF function number does not overflow
+      pcie_sriov: Reuse SR-IOV VF device instances
+      pcie_sriov: Release VFs failed to realize
+      pcie_sriov: Remove num_vfs from PCIESriovPF
+      pcie_sriov: Register VFs after migration
+      hw/pci: Use -1 as the default value for rombar
+      hw/qdev: Remove opts member
+
+ docs/pcie_sriov.txt         |   8 ++-
+ include/hw/pci/pci.h        |   2 +-
+ include/hw/pci/pci_device.h |  19 ++++-
+ include/hw/pci/pcie_sriov.h |   9 +--
+ include/hw/qdev-core.h      |   4 --
+ hw/core/qdev.c              |   1 -
+ hw/net/igb.c                |  13 +++-
+ hw/nvme/ctrl.c              |  24 ++++---
+ hw/pci/pci.c                |  23 +++---
+ hw/pci/pci_host.c           |   4 +-
+ hw/pci/pcie_sriov.c         | 165 +++++++++++++++++++++++++-------------------
+ hw/ppc/spapr_pci.c          |   8 ++-
+ hw/s390x/s390-pci-bus.c     |  14 ++--
+ hw/vfio/pci.c               |   5 +-
+ system/qdev-monitor.c       |  12 ++--
+ hw/pci/trace-events         |   2 +-
+ 16 files changed, 187 insertions(+), 126 deletions(-)
+---
+base-commit: 31669121a01a14732f57c49400bc239cf9fd505f
+change-id: 20240129-reuse-faae22b11934
+
+Best regards,
 -- 
-Cheers,
-
-David / dhildenb
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
