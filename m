@@ -2,76 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECC0947549
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 08:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7EE947569
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 08:40:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sarFz-0005Pm-KT; Mon, 05 Aug 2024 02:31:47 -0400
+	id 1sarNV-0002J6-IX; Mon, 05 Aug 2024 02:39:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sarFm-0004QB-2f
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:31:36 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sarNN-0001zg-Kr
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:39:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sarFj-0002FJ-Fm
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:31:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722839491; x=1754375491;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+gTPb7kGR/A9WlIO3Qas3Y/8henOtiHRKV6x1G6ILnU=;
- b=N/cEqF6wsY4nkSx3Ri/eQM7RZoKkypiLfiCGl/j/SKnwV1nhQKpwbjTp
- GPf8PMzEIvc4+0At/ZdwGN3GAv4FYwh6az2fzM8Pn5x47v+wFLp8DUfUJ
- i0Vt7iyssHyNwA3PyFzxAyVzw0jOZJ8+Bsko8Zw4bduP70WciKrrxjwH5
- YAeBWVx9uI1uCKL1l2w9DHXEM9+unB+QDxCHOcoHzVDY4CMA4dLLPZFpx
- 8XFPh8Tl2NxD8Dk1Z1ZFYvKpS/cfZsTWKXKgvxY24Xj2QJfqOjGPzJQxh
- xL1nv06NLVFaFGN7Nqfj+vv6rAodLSGlhjSfb+HozecI49I3a1EA3R7so w==;
-X-CSE-ConnectionGUID: Wd+1EXyISaClsvr8h/pYtw==
-X-CSE-MsgGUID: vof6zuwbQ5+6yCinxNpRIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="38282934"
-X-IronPort-AV: E=Sophos;i="6.09,263,1716274800"; d="scan'208";a="38282934"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2024 23:31:27 -0700
-X-CSE-ConnectionGUID: ZkXQbJ9ARaOca9OKR20anw==
-X-CSE-MsgGUID: q/XYb0LFTa+YzFz2dbx/TQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,263,1716274800"; d="scan'208";a="56787193"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2024 23:31:23 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sarNL-0002z8-5a
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 02:39:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722839960;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MExdmSlSZtUh+fm/UPvtQcxGaOCyqRbIbnRAOdn/BXA=;
+ b=BAQgNLN1idh/S3iKgNOEfcEdd+2SKY7IMx66cPInaEDuJas7LarimP/8W7+KnLOKSP5Soj
+ LGVo23R0HiJweN2Lsz2wKl8PmUhpIeosUVwflwb19w7EONJZKt8cj3HHribtfjnfCLRpO8
+ JRTmhfTH/Egt5CQsq9c4w3Jy9sOIoSI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-27-j78XzPyyOaaqWe4856Mp2w-1; Mon, 05 Aug 2024 02:39:17 -0400
+X-MC-Unique: j78XzPyyOaaqWe4856Mp2w-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42807a05413so66603495e9.2
+ for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 23:39:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722839954; x=1723444754;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MExdmSlSZtUh+fm/UPvtQcxGaOCyqRbIbnRAOdn/BXA=;
+ b=D9LO3BZ9kcPCEP/rsj3xqIzyBWvgBue3kMneyaSQMPeEuhK+V5EWCv5AKvDuK9MFAe
+ yScBa/3/bOvOl8m6FU8GtFRbmtB7zGN3ejuwTpAHTo/LrvffpBZZEnGYcK5kBL8Odbif
+ QShJ+TRKxsogsk3KlGIi1XYk01zDz0bMPlrxuUpmW8BZ/KpIorvKXFre4LtbKNUHdvAH
+ TkR8wD78nGR7UmZESx082tSfrnvITruPzzK4uAbXwkkyDqCeyw2LBmsj4vkox5ccjd4u
+ WXEekWTr1w9p8BvKs6msc+OlOTvTknt0bSfhZJBx7ihDUHVzeTJH7hAS0n33TBzdgdjM
+ s0pQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX1HTvvt27QoNAsyVphxAUtBmTsQq640CbyLqGIoiA2ldG9oOtpMzQ9+8OdJbmrlqBcqzClYW2DoU7gfBPgTEC46bkbjwc=
+X-Gm-Message-State: AOJu0YyN0zKPkIRyk6dCm4bQ4XqSwVI00kppstix11SZF4YzXFCj9hVP
+ c4fUiA9wPCR5AictZt1wWyRe9Rp0AGD7hDxjVnvu17NkHmIKDRiQDAWJD+nuTPj78BnV2uqDr2A
+ d9tF9xCbz5eUGbkKxUYk1e6WwAi4YDm9dgl+70z1V4YaLbtIiNXrs
+X-Received: by 2002:a05:600c:a0b:b0:426:549b:dd7a with SMTP id
+ 5b1f17b1804b1-428e6b93992mr63960545e9.36.1722839954327; 
+ Sun, 04 Aug 2024 23:39:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRyLBItmjb4VhevynqnM3Gt4IKcRcsUrb4x9HWpGabUuxc5zDzba+NwvOEXBujEJrc00GNyA==
+X-Received: by 2002:a05:600c:a0b:b0:426:549b:dd7a with SMTP id
+ 5b1f17b1804b1-428e6b93992mr63960335e9.36.1722839953484; 
+ Sun, 04 Aug 2024 23:39:13 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:17d:dd95:f049:da1a:7ecb:6d9])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-428e6e7d57asm124792965e9.33.2024.08.04.23.39.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 04 Aug 2024 23:39:12 -0700 (PDT)
+Date: Mon, 5 Aug 2024 02:39:07 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 17/17] tests/qtest: Add intel-iommu test
-Date: Mon,  5 Aug 2024 14:27:27 +0800
-Message-Id: <20240805062727.2307552-18-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240805062727.2307552-1-zhenzhong.duan@intel.com>
-References: <20240805062727.2307552-1-zhenzhong.duan@intel.com>
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH for-9.2 v12 00/11] hw/pci: SR-IOV related fixes and
+ improvements
+Message-ID: <20240805023719-mutt-send-email-mst@kernel.org>
+References: <20240804-reuse-v12-0-d3930c4111b2@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.8;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+In-Reply-To: <20240804-reuse-v12-0-d3930c4111b2@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,135 +111,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the framework to test the intel-iommu device.
+On Sun, Aug 04, 2024 at 06:01:36PM +0900, Akihiko Odaki wrote:
+> Supersedes: <20240714-rombar-v2-0-af1504ef55de@daynix.com>
+> ("[PATCH v2 0/4] hw/pci: Convert rom_bar into OnOffAuto")
+> 
+> I submitted a RFC series[1] to add support for SR-IOV emulation to
+> virtio-net-pci. During the development of the series, I fixed some
+> trivial bugs and made improvements that I think are independently
+> useful. This series extracts those fixes and improvements from the RFC
+> series.
+> 
+> [1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> Changes in v12:
+> - Changed to ignore invalid PCI_SRIOV_NUM_VF writes as done for
+>   PCI_SRIOV_CTRL_VFE.
+> - Updated the message for patch "hw/pci: Use -1 as the default value for
+>   rombar". (Markus Armbruster)
+> - Link to v11: https://lore.kernel.org/r/20240802-reuse-v11-0-fb83bb8c19fb@daynix.com
 
-Currently only tested cap/ecap bits correctness in scalable
-modern mode. Also tested cap/ecap bits consistency before
-and after system reset.
+The igb issue is still with us, is it not?
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cl√©ment Mathieu--Drif<clement.mathieu--drif@eviden.com>
----
- MAINTAINERS                    |  1 +
- include/hw/i386/intel_iommu.h  |  1 +
- tests/qtest/intel-iommu-test.c | 70 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |  1 +
- 4 files changed, 73 insertions(+)
- create mode 100644 tests/qtest/intel-iommu-test.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e34c2bd4cd..c9a2321f1c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3673,6 +3673,7 @@ S: Supported
- F: hw/i386/intel_iommu.c
- F: hw/i386/intel_iommu_internal.h
- F: include/hw/i386/intel_iommu.h
-+F: tests/qtest/intel-iommu-test.c
- 
- AMD-Vi Emulation
- S: Orphan
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index f6d9b41b80..0c9bb8eab6 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -47,6 +47,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
- #define VTD_HOST_AW_48BIT           48
- #define VTD_HOST_AW_AUTO            0xff
- #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
-+#define VTD_MGAW_FROM_CAP(cap)      ((cap >> 16) & 0x3fULL)
- 
- #define DMAR_REPORT_F_INTR          (1)
- 
-diff --git a/tests/qtest/intel-iommu-test.c b/tests/qtest/intel-iommu-test.c
-new file mode 100644
-index 0000000000..fa9169f1a3
---- /dev/null
-+++ b/tests/qtest/intel-iommu-test.c
-@@ -0,0 +1,70 @@
-+/*
-+ * QTest testcase for intel-iommu
-+ *
-+ * Copyright (c) 2024 Intel, Inc.
-+ *
-+ * Author: Zhenzhong Duan <zhenzhong.duan@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "hw/i386/intel_iommu_internal.h"
-+
-+#define CAP_MODERN_FIXED1    (VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | \
-+                              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS)
-+#define ECAP_MODERN_FIXED1   (VTD_ECAP_QI |  VTD_ECAP_IR | VTD_ECAP_IRO | \
-+                              VTD_ECAP_MHMV | VTD_ECAP_SMTS | VTD_ECAP_FLTS)
-+
-+static inline uint32_t vtd_reg_readl(QTestState *s, uint64_t offset)
-+{
-+    return qtest_readl(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
-+}
-+
-+static inline uint64_t vtd_reg_readq(QTestState *s, uint64_t offset)
-+{
-+    return qtest_readq(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
-+}
-+
-+static void test_intel_iommu_modern(void)
-+{
-+    uint8_t init_csr[DMAR_REG_SIZE];     /* register values */
-+    uint8_t post_reset_csr[DMAR_REG_SIZE];     /* register values */
-+    uint64_t cap, ecap, tmp;
-+    QTestState *s;
-+
-+    s = qtest_init("-M q35 -device intel-iommu,x-scalable-mode=modern");
-+
-+    cap = vtd_reg_readq(s, DMAR_CAP_REG);
-+    g_assert((cap & CAP_MODERN_FIXED1) == CAP_MODERN_FIXED1);
-+
-+    tmp = cap & VTD_CAP_SAGAW_MASK;
-+    g_assert(tmp == (VTD_CAP_SAGAW_39bit | VTD_CAP_SAGAW_48bit));
-+
-+    tmp = VTD_MGAW_FROM_CAP(cap);
-+    g_assert(tmp == VTD_HOST_AW_48BIT - 1);
-+
-+    ecap = vtd_reg_readq(s, DMAR_ECAP_REG);
-+    g_assert((ecap & ECAP_MODERN_FIXED1) == ECAP_MODERN_FIXED1);
-+
-+    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, init_csr, DMAR_REG_SIZE);
-+
-+    qobject_unref(qtest_qmp(s, "{ 'execute': 'system_reset' }"));
-+    qtest_qmp_eventwait(s, "RESET");
-+
-+    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, post_reset_csr, DMAR_REG_SIZE);
-+    /* Ensure registers are consistent after hard reset */
-+    g_assert(!memcmp(init_csr, post_reset_csr, DMAR_REG_SIZE));
-+
-+    qtest_quit(s);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("/q35/intel-iommu/modern", test_intel_iommu_modern);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 2f0d3ef080..76d183df74 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -79,6 +79,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_ESP_PCI') ? ['am53c974-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_VTD') ? ['intel-iommu-test'] : []) +                 \
-   (host_os != 'windows' and                                                                \
-    config_all_devices.has_key('CONFIG_ACPI_ERST') ? ['erst-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_PCIE_PORT') and                                       \
--- 
-2.34.1
+> Changes in v11:
+> - Rebased.
+> - Dropped patch "hw/pci: Convert rom_bar into OnOffAuto".
+> - Added patch "hw/pci: Use -1 as the default value for rombar".
+> - Added for-9.2 to give a testing period for possible breakage with
+>   libvirt/s390x.
+> - Link to v10: https://lore.kernel.org/r/20240627-reuse-v10-0-7ca0b8ed3d9f@daynix.com
+> 
+> Changes in v10:
+> - Added patch "hw/ppc/spapr_pci: Do not reject VFs created after a PF".
+> - Added patch "hw/ppc/spapr_pci: Do not create DT for disabled PCI device".
+> - Added patch "hw/pci: Convert rom_bar into OnOffAuto".
+> - Dropped patch "hw/pci: Determine if rombar is explicitly enabled".
+> - Dropped patch "hw/qdev: Remove opts member".
+> - Link to v9: https://lore.kernel.org/r/20240315-reuse-v9-0-67aa69af4d53@daynix.com
+> 
+> Changes in v9:
+> - Rebased.
+> - Restored '#include "qapi/error.h"' (Michael S. Tsirkin)
+> - Added patch "pcie_sriov: Ensure VF function number does not overflow"
+>   to fix abortion with wrong PF addr.
+> - Link to v8: https://lore.kernel.org/r/20240228-reuse-v8-0-282660281e60@daynix.com
+> 
+> Changes in v8:
+> - Clarified that "hw/pci: Replace -1 with UINT32_MAX for romsize" is
+>   not a bug fix. (Markus Armbruster)
+> - Squashed patch "vfio: Avoid inspecting option QDict for rombar" into
+>   "hw/pci: Determine if rombar is explicitly enabled".
+>   (Markus Armbruster)
+> - Noted the minor semantics change for patch "hw/pci: Determine if
+>   rombar is explicitly enabled". (Markus Armbruster)
+> - Link to v7: https://lore.kernel.org/r/20240224-reuse-v7-0-29c14bcb952e@daynix.com
+> 
+> Changes in v7:
+> - Replaced -1 with UINT32_MAX when expressing uint32_t.
+>   (Markus Armbruster)
+> - Added patch "hw/pci: Replace -1 with UINT32_MAX for romsize".
+> - Link to v6: https://lore.kernel.org/r/20240220-reuse-v6-0-2e42a28b0cf2@daynix.com
+> 
+> Changes in v6:
+> - Fixed migration.
+> - Added patch "pcie_sriov: Do not manually unrealize".
+> - Restored patch "pcie_sriov: Release VFs failed to realize" that was
+>   missed in v5.
+> - Link to v5: https://lore.kernel.org/r/20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com
+> 
+> Changes in v5:
+> - Added patch "hw/pci: Always call pcie_sriov_pf_reset()".
+> - Added patch "pcie_sriov: Reset SR-IOV extended capability".
+> - Removed a reference to PCI_SRIOV_CTRL_VFE in hw/nvme.
+>   (Michael S. Tsirkin)
+> - Noted the impact on the guest of patch "pcie_sriov: Do not reset
+>   NumVFs after unregistering VFs". (Michael S. Tsirkin)
+> - Changed to use pcie_sriov_num_vfs().
+> - Restored pci_set_power() and changed it to call pci_set_enabled() only
+>   for PFs with an expalanation. (Michael S. Tsirkin)
+> - Reordered patches.
+> - Link to v4: https://lore.kernel.org/r/20240214-reuse-v4-0-89ad093a07f4@daynix.com
+> 
+> Changes in v4:
+> - Reverted the change to pci_rom_bar_explicitly_enabled().
+>   (Michael S. Tsirkin)
+> - Added patch "pcie_sriov: Do not reset NumVFs after unregistering VFs".
+> - Added patch "hw/nvme: Refer to dev->exp.sriov_pf.num_vfs".
+> - Link to v3: https://lore.kernel.org/r/20240212-reuse-v3-0-8017b689ce7f@daynix.com
+> 
+> Changes in v3:
+> - Extracted patch "hw/pci: Use -1 as a default value for rombar" from
+>   patch "hw/pci: Determine if rombar is explicitly enabled"
+>   (Philippe Mathieu-DaudÈ)
+> - Added an audit result of PCIDevice::rom_bar to the message of patch
+>   "hw/pci: Use -1 as a default value for rombar"
+>   (Philippe Mathieu-DaudÈ)
+> - Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
+> 
+> Changes in v2:
+> - Reset after enabling a function so that NVMe VF state gets updated.
+> - Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
+> 
+> ---
+> Akihiko Odaki (11):
+>       hw/pci: Rename has_power to enabled
+>       hw/ppc/spapr_pci: Do not create DT for disabled PCI device
+>       hw/ppc/spapr_pci: Do not reject VFs created after a PF
+>       pcie_sriov: Do not manually unrealize
+>       pcie_sriov: Ensure VF function number does not overflow
+>       pcie_sriov: Reuse SR-IOV VF device instances
+>       pcie_sriov: Release VFs failed to realize
+>       pcie_sriov: Remove num_vfs from PCIESriovPF
+>       pcie_sriov: Register VFs after migration
+>       hw/pci: Use -1 as the default value for rombar
+>       hw/qdev: Remove opts member
+> 
+>  docs/pcie_sriov.txt         |   8 ++-
+>  include/hw/pci/pci.h        |   2 +-
+>  include/hw/pci/pci_device.h |  19 ++++-
+>  include/hw/pci/pcie_sriov.h |   9 +--
+>  include/hw/qdev-core.h      |   4 --
+>  hw/core/qdev.c              |   1 -
+>  hw/net/igb.c                |  13 +++-
+>  hw/nvme/ctrl.c              |  24 ++++---
+>  hw/pci/pci.c                |  23 +++---
+>  hw/pci/pci_host.c           |   4 +-
+>  hw/pci/pcie_sriov.c         | 165 +++++++++++++++++++++++++-------------------
+>  hw/ppc/spapr_pci.c          |   8 ++-
+>  hw/vfio/pci.c               |   5 +-
+>  system/qdev-monitor.c       |  12 ++--
+>  hw/pci/trace-events         |   2 +-
+>  15 files changed, 181 insertions(+), 118 deletions(-)
+> ---
+> base-commit: 31669121a01a14732f57c49400bc239cf9fd505f
+> change-id: 20240129-reuse-faae22b11934
+> 
+> Best regards,
+> -- 
+> Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
