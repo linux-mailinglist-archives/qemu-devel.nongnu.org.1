@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3127D947B1A
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 14:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 588B1947B71
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 14:57:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sax1r-0001LA-De; Mon, 05 Aug 2024 08:41:35 -0400
+	id 1saxG0-0005oc-U8; Mon, 05 Aug 2024 08:56:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sax1o-0001CN-70
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:41:32 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1saxFx-0005lq-Vo
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:56:09 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sax1m-0005LY-L0
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:41:31 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2ef2d96164aso114834691fa.3
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 05:41:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1saxFv-0007J9-8t
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 08:56:09 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-368313809a4so3192243f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 05:56:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722861688; x=1723466488; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xdLYvMBdwZXRyAq8zx7Lu0UhGl1/Y8CL4Ifn6yeBmeI=;
- b=wN6syAi/TY0NGlL1+aqAKQYWe/SRjw6GnSRgV/FkBvE7wWskF7kzAjfIRDGSdiLIDN
- JPmn957hTGXqzCKFMauC1+DwnMEj99XtCkGkkHBggR8/tkKrBgBSlVeVGfulAJFxZPSf
- Bm4NQ7L0gQpQ0KIqX0BK0qmDH3ToRNjbQbzg0HguMvYZeGWphG6dHs+PHz9phjOq6ACP
- UqhQ5PUC4IJfj4j2a+uIJjHns29POsNsA5pMoZjev0vQtg1u7TTod/f/VB7ze2xvQzkg
- YwhkAicCxODFnkOxsBurvM8Qa/nlRdcTnYs7hLtlGSPiKq9l5dzXJeApeoSGhWnkOXrm
- 3G8Q==
+ d=linaro.org; s=google; t=1722862565; x=1723467365; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=jW+cL0un0yaEuTnEfzHHyqs9PyJTDRK27tK6QVzXixI=;
+ b=mWPi1LD7B8r0Y7EIHILx/na1MmkzL7ZLF46ILrorSjRmJu2/v4wK2BzW6/Ev+n0AAP
+ qma8SWu0qCmFYNMLjM16/HyJntNzIal+MaA22KArgdI/NknfYUiKDhQfdefPml0k/H4G
+ HyXYdwG83ZA9FnAOfnsNASYt3nga3ktyU6umHRlkhugjZs27WtwX6U830EGWpSKhf+s5
+ LBk7PxuGZw3TgRezkmYN/RLeG3lJo4Mhsu7VAvyAbb1PZTN+ebU1N5pKRs+WSDt+UXVy
+ ruIl40pp8GdMi9joPdZG9LHRz5ShMfcjKPd5I+hNs/SFIVDYEuBsCsbPyyUK84CImCHu
+ 1bGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722861688; x=1723466488;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xdLYvMBdwZXRyAq8zx7Lu0UhGl1/Y8CL4Ifn6yeBmeI=;
- b=p2Y/PnZeW0vEjj45ZrcankATWX+RL5VVKb4GqdlqFK625TX7ciq1QYrJIibonm43ya
- v9Hf+bpMLoZxuJEtL+nqCWWLuI5sfiATA+GYsdsz66DI2uB9MVd++qGKx8zBrPIqxemI
- KCLfjeaeWrTP/hR9s76e1gZU8lK1mWyPTw0i5svZTRkHHRJNsTP2lMC6q8vY4e/SXcPJ
- +2AXih85IdcTm0fHNAv+SoXidQPJHJNMi8Cv4P44zTYRDwX8dw8JsqwTijURxStdAeem
- IvgiiYNSnrreorPoRUb6XkxaCndrg9KBmtCrxg35qPnK6Ye7+7k8nLzCjj7bo6FOPWmm
- FYew==
-X-Gm-Message-State: AOJu0YzzOqrcq9c4CERO2IcLnAM6XRePgDqisxP0lPGDtVerfTll0EdG
- TO9WfExMoF+NSYFysjlRerWstxisksii22pFsszXAcUIfOzffRIhKavRZgyqdn0=
-X-Google-Smtp-Source: AGHT+IH6B1yFUSo9VABE7ZNOOBXpMGvOHfhypqcK48TI2EFXl9vrx2TfYo0UbpW7tzV7fENmcZNMXQ==
-X-Received: by 2002:a2e:87c3:0:b0:2ee:7bcd:a52 with SMTP id
- 38308e7fff4ca-2f15ab53020mr73326171fa.46.1722861688312; 
- Mon, 05 Aug 2024 05:41:28 -0700 (PDT)
-Received: from [192.168.1.102] (cor91-h02-176-184-30-132.dsl.sta.abo.bbox.fr.
- [176.184.30.132]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36bbd059e18sm9719434f8f.68.2024.08.05.05.41.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Aug 2024 05:41:27 -0700 (PDT)
-Message-ID: <3e93ed77-fa43-4f2e-923f-8d5578716a04@linaro.org>
-Date: Mon, 5 Aug 2024 14:41:25 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+ d=1e100.net; s=20230601; t=1722862565; x=1723467365;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jW+cL0un0yaEuTnEfzHHyqs9PyJTDRK27tK6QVzXixI=;
+ b=pMGbzhj1eGdhOwju4xP5VeiXZuS5tGBM2PCU5U/B/w8rMZFpo4CBGrzVsR37rzkyjf
+ IH/HLBbQFucqKyLiKSFKb1p8tfU0bMD+DDJWuZJpCewkQ65/5JNaYkejvZekOgcbAYox
+ p5FhEab1ZxtHJ7vnh8v3QG6uoyhm+wolK/TPsljF+vA8Pa8ts1nZfuSeqKCEN0vgQIq+
+ ZK+MTBUrgnka/GJQVBLZmGqbx2pBu/OT+9iPuNT10PF2ku3URENoEmzPZDHSW4q1OJg3
+ /GpPR1k3G9Rh8cm7of05KYxXu09u37rl2XtkQeusBd6TRo8hckEBF+gnlNky9+z5+aLa
+ 3+4w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWs2mPHQiB10Et3dkP+UVY2Q60rDJR/gPldAQLbhAix79MQ36I2hjjnZEEyEb6I4W4E0d+Pv5g6X5SUNc/fa7gbLqXueyA=
+X-Gm-Message-State: AOJu0YwoN/jPQUeEIB5jVfG1nnzoyK02w407dOuV36ti5Z2T7Nskqrwd
+ zNY7giPc+R5RNeXIfa7yK9xoTMEPj2RUOmNMxd+LtDaacP/MEFrhU2GUtKAsAqo=
+X-Google-Smtp-Source: AGHT+IGLZOUg4mgF/QKBxKVkEu2tQr9VDPP3gNGOsSjHhwjnKle6mCm86Fv5LJIsL8SihhzrCTUbwQ==
+X-Received: by 2002:a05:6000:2112:b0:36b:c3a9:c51c with SMTP id
+ ffacd0b85a97d-36bc3a9c78fmr8135476f8f.9.1722862564625; 
+ Mon, 05 Aug 2024 05:56:04 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36bbd05980csm9842578f8f.76.2024.08.05.05.56.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Aug 2024 05:56:04 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E762D5F882;
+ Mon,  5 Aug 2024 13:56:02 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,  qemu-devel@nongnu.org,
+ Cleber Rosa <crosa@redhat.com>,  Wainer dos Santos Moschetta
+ <wainersm@redhat.com>,  Beraldo Leal <bleal@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>
 Subject: Re: [RFC PATCH] tests/avocado: Re-enable gdbsim-r5f562n8 testing
  U-Boot
-To: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <3e93ed77-fa43-4f2e-923f-8d5578716a04@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 5 Aug 2024 14:41:25
+ +0200")
 References: <20240801172332.65701-1-philmd@linaro.org>
  <87r0b3e9yp.wl-ysato@users.sourceforge.jp>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87r0b3e9yp.wl-ysato@users.sourceforge.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+ <3e93ed77-fa43-4f2e-923f-8d5578716a04@linaro.org>
+Date: Mon, 05 Aug 2024 13:56:02 +0100
+Message-ID: <878qxbruvx.fsf@draig.linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,29 +102,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/8/24 08:54, Yoshinori Sato wrote:
-> On Fri, 02 Aug 2024 02:23:32 +0900,
-> Philippe Mathieu-Daudé wrote:
->>
->> We disabled all RX tests on commit 9b45cc9931 ("docs/devel:
->> rationalise unstable gitlab tests under FLAKY_TESTS") for
->> being flaky. However I don't recall the U-Boot test to fail
->> (the problematic line checking the 'version' string is already
->> commented out), and I'm running this test reliably, so re-enable
->> it.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   tests/avocado/machine_rx_gdbsim.py | 2 --
->>   1 file changed, 2 deletions(-)
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+> On 5/8/24 08:54, Yoshinori Sato wrote:
+>> On Fri, 02 Aug 2024 02:23:32 +0900,
+>> Philippe Mathieu-Daud=C3=A9 wrote:
+>>>
+>>> We disabled all RX tests on commit 9b45cc9931 ("docs/devel:
+>>> rationalise unstable gitlab tests under FLAKY_TESTS") for
+>>> being flaky. However I don't recall the U-Boot test to fail
+>>> (the problematic line checking the 'version' string is already
+>>> commented out), and I'm running this test reliably, so re-enable
+>>> it.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>>> ---
+>>>   tests/avocado/machine_rx_gdbsim.py | 2 --
+>>>   1 file changed, 2 deletions(-)
+>
+>> Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+>
+> Thanks, I'll queue this patch for 9.2 to avoid messing
+> with the next release.
 
-Thanks, I'll queue this patch for 9.2 to avoid messing
-with the next release.
+Testing updates are usually fine, but I can leave it to you to merge if
+you prefer.
 
-Regards,
+>
+> Regards,
+>
+> Phil.
 
-Phil.
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
