@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65790948328
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9FC948326
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:19:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb49T-0003cc-Hm; Mon, 05 Aug 2024 16:17:55 -0400
+	id 1sb49T-0003bh-Gb; Mon, 05 Aug 2024 16:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3ZTOxZgUKCswBsD07y66y3w.u648w4C-vwDw3565y5C.69y@flex--tavip.bounces.google.com>)
- id 1sb49O-0003L9-GY
+ <3aDOxZgUKCs8EvG3A19916z.x97Bz7F-yzGz689818F.9C1@flex--tavip.bounces.google.com>)
+ id 1sb49P-0003P6-DZ
  for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:51 -0400
-Received: from mail-pj1-x104a.google.com ([2607:f8b0:4864:20::104a])
+Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3ZTOxZgUKCswBsD07y66y3w.u648w4C-vwDw3565y5C.69y@flex--tavip.bounces.google.com>)
- id 1sb49L-0001Tr-Gg
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:49 -0400
-Received: by mail-pj1-x104a.google.com with SMTP id
- 98e67ed59e1d1-2cb4d02f34cso10950096a91.3
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:44 -0700 (PDT)
+ <3aDOxZgUKCs8EvG3A19916z.x97Bz7F-yzGz689818F.9C1@flex--tavip.bounces.google.com>)
+ id 1sb49M-0001UI-DX
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:50 -0400
+Received: by mail-pj1-x1049.google.com with SMTP id
+ 98e67ed59e1d1-2cff79ae0f3so4096152a91.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1722889063; x=1723493863; darn=nongnu.org;
+ d=google.com; s=20230601; t=1722889066; x=1723493866; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=JJx2zYTysuPPGq4jl/CUtBvGg4dYG4R93ytcuWg1fhs=;
- b=eFeDg+4ImBxloSjupfPH3XHn743nG7QTAZpYTG5QEt2aUMeLAwZJWTwVbZxQJIXRw1
- yqB+f4GFKP8FxMCt7VNC31bz8qCgF0AbR1N3NC/mR7z1VaCxWwnO8Sa2PCsATfDUJsIr
- IWIgLLZZ88C9j1Ju56JVABv1YF4kFna8cR+2vNPs/JLYbhl1YWt8El6rI1nJ3kE/jwBw
- pnKnYQjSHxI4CWZSEjsFUyXkILViD0ttHF4YcnHuLGM6Sq8SbAdwjCkN6N0fO6zubt/i
- 9j2imVM35EI5cjt8c/lmTP4qnRfv9+a5JrHEP1DcXJIos5LmS63try320nFsuiHxprMq
- sehA==
+ bh=yKViGbBXbgsf40jDlea1Rbu9Pc/wgyZ+coz/6jiEdWo=;
+ b=TTFrgSvOk16Gwg0E4EM49VxC+sCASYSVRwsmx0NJw8dssUcWd6G5sV+UZRZalSF4LK
+ aKKl+Xi0cZiE9A7JgFgR1/Gy2VGI5WTY5vCzenhmcM098lgt+FSMFQHXThgViK4+7GTI
+ VrYkIbdrG5y506LW5/fPZGYXOsAl8I3zGA7Rk8vN58xyIoZCnk5MHpPMV3/TZcPmd3ts
+ TydypEll3hXLJbTM8UfJPhZLbJTTZmv8P2tf8q09TGIIHyom2SCsH8dY00w0EvS2jt1X
+ bLKe5WU3st0BOj+MmZpQs+dlvK1M83hBuh6a/et1u7kjeiLqtFGWR2P2mp1UzgHOWaim
+ QVcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722889063; x=1723493863;
+ d=1e100.net; s=20230601; t=1722889066; x=1723493866;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JJx2zYTysuPPGq4jl/CUtBvGg4dYG4R93ytcuWg1fhs=;
- b=liEvEp8wY2CEQQbg7kDancJLogpSktcplHG3QwFokPN1vMV9HkDsmS4WAPleYT82uB
- 9meUuZnBUWMOjCKcGDNeWSrSyN7Lx/eKGDGm55bmxjmUJh0SPnAyDtSuKEHf8GMCxgz1
- 69Is21NqbRcjtBstjcmuxTsicbJEsIrO+T/PJJWnequKVpoLZqKew4NyQCk1xgrmWa0+
- +qRI+ubtS1jEOjkiqVwD4v/7QxDj8FXrQPUUMD8nYcAPVHd9iW735OBbVHOQTr+pBSb4
- sRfXkdKOQbwt4kPo++o5g+7Xy6gSQGgoWl1fduH4ILLeHDGtflctPVFkRIswFDRMTttg
- nS0Q==
-X-Gm-Message-State: AOJu0YzLSyR4IQKMeVh7ziyNNNSVM8Pi4x1uCXdmY30HbVaQ55elL3Jo
- o6PoT3+OsT71z6wftNFSaHjGcEXgjr0h+7/tmjoCz7aIFluHtXYocEEvJ32pZPglqAt4e9bC2Q3
- MzCXQbWuGzhulgejxFwWlzzetNqUD5UY0S+zVogSquuRsXI/H6Rh0ke86G2PMm33cQz+hZsRAWg
- wvFXf/UwVN8pKz2wSs12QtC7LRyA==
-X-Google-Smtp-Source: AGHT+IFJ6HmLYx+llIq607FEkRA2hqMCqRAGPVf+vAAKgX7jthaVgxS/Ia/9f+16jdToHqdzT0ceAn1c4g==
+ bh=yKViGbBXbgsf40jDlea1Rbu9Pc/wgyZ+coz/6jiEdWo=;
+ b=avkh5edue9TcOe4FIaNdyfpuNaQc8IwTLC6S7dm5mSU7D4bUlVnHLzSXuOGzmJGEHl
+ gn/LvHfGTtnIPOv0o3UJtkShgf22Cub5rgqyKw1ar7tt2+r82mw33uMZfOFjrQSd2pgv
+ nNLXXiL83/Ki7/UCRHmneZ3ysHgOMxo7Iuzeth6Nn0PLVhyo6wl6HMg3GQDEigwMihAe
+ 8CWs+62NepgfLm2BK+gOpFgav+6uttQdFRvnTOP8GoCzfqizOLmWc57Dk20QxFItj7Y3
+ p2OBuRqB3X7edbItL4TYQDxWKwRhbXYgwjUv5RvKjXV/jmqMKQCJxKgrxueKOkb3mztm
+ wrwQ==
+X-Gm-Message-State: AOJu0YyEeLbKFFVHBlB4TvcyU1U0TZFbQq4XsJFridhVEA9/5pXZOf03
+ ls36nuJjkQ68HxAeeuPJub82P4eOz4L7s76SF31xXMpWfpCY8RPGtbW+KyOFfJA5jHF/0cOfNHL
+ NCIsKPEqkYfEhjPDYf2/D6haeLQVyAC1TfqhUguSQgq5Lbf/vYCoYuAGYotgIY8wJUlmBkQunSx
+ lbjXB803jre9rZkaSoCqq3rZ16DA==
+X-Google-Smtp-Source: AGHT+IEru86bm/+1q+FLmL7wwlYksXRv1IHzcU3JoLAoRcdP6I9MQ8+1J/BYTCPAlqTiOGFbzd7E25IUmA==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a17:90b:3e8c:b0:2c9:9208:ee66
+ (user=tavip job=sendgmr) by 2002:a17:90a:c982:b0:2c9:63d6:a183
  with SMTP id
- 98e67ed59e1d1-2cff956d6f7mr34756a91.7.1722889061818; Mon, 05 Aug 2024
- 13:17:41 -0700 (PDT)
-Date: Mon,  5 Aug 2024 13:17:07 -0700
+ 98e67ed59e1d1-2cff955376dmr29109a91.7.1722889064153; Mon, 05 Aug 2024
+ 13:17:44 -0700 (PDT)
+Date: Mon,  5 Aug 2024 13:17:08 -0700
 In-Reply-To: <20240805201719.2345596-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240805201719.2345596-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240805201719.2345596-13-tavip@google.com>
-Subject: [RFC PATCH 12/23] hw/i2c: add support for flexcomm i2c
+Message-ID: <20240805201719.2345596-14-tavip@google.com>
+Subject: [RFC PATCH 13/23] test/unit: add i2c-tester
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -69,9 +69,9 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  marcandre.lureau@redhat.com, alistair@alistair23.me, berrange@redhat.com, 
  philmd@linaro.org, jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::104a;
- envelope-from=3ZTOxZgUKCswBsD07y66y3w.u648w4C-vwDw3565y5C.69y@flex--tavip.bounces.google.com;
- helo=mail-pj1-x104a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
+ envelope-from=3aDOxZgUKCs8EvG3A19916z.x97Bz7F-yzGz689818F.9C1@flex--tavip.bounces.google.com;
+ helo=mail-pj1-x1049.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -94,43 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for NXP's flexcomm i2c. It does not support slave mode or
-DMA.
+Add a simple i2c peripheral to be used for testing I2C device
+models. The peripheral has a fixed number of registers that can be
+read and written.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- hw/arm/svd/meson.build        |   4 +
- hw/i2c/flexcomm_i2c.c         | 224 ++++++++++++++++++++++++++++++++++
- hw/i2c/meson.build            |   1 +
- hw/i2c/trace-events           |  10 ++
- hw/misc/flexcomm.c            |   6 +
- include/hw/i2c/flexcomm_i2c.h |  27 ++++
- include/hw/misc/flexcomm.h    |   4 +
- tests/unit/meson.build        |   4 +
- 8 files changed, 280 insertions(+)
- create mode 100644 hw/i2c/flexcomm_i2c.c
- create mode 100644 include/hw/i2c/flexcomm_i2c.h
+ tests/unit/i2c_tester.c | 111 ++++++++++++++++++++++++++++++++++++++++
+ tests/unit/i2c_tester.h |  34 ++++++++++++
+ 2 files changed, 145 insertions(+)
+ create mode 100644 tests/unit/i2c_tester.c
+ create mode 100644 tests/unit/i2c_tester.h
 
-diff --git a/hw/arm/svd/meson.build b/hw/arm/svd/meson.build
-index ed0f69f437..fa0d3da829 100644
---- a/hw/arm/svd/meson.build
-+++ b/hw/arm/svd/meson.build
-@@ -6,3 +6,7 @@ genh += custom_target('flexcomm_usart.h',
-                       output: 'flexcomm_usart.h',
-                       input: 'MIMXRT595S_cm33.xml',
-                       command: [ svd_gen_header, '-i', '@INPUT@', '-o', '@OUTPUT@', '-p', 'USART0', '-t', 'FLEXCOMM_USART'])
-+genh += custom_target('flexcomm_i2c_regs.h',
-+                      output: 'flexcomm_i2c.h',
-+                      input: 'MIMXRT595S_cm33.xml',
-+                      command: [ svd_gen_header, '-i', '@INPUT@', '-o', '@OUTPUT@', '-p', 'I2C0', '-t', 'FLEXCOMM_I2C'])
-diff --git a/hw/i2c/flexcomm_i2c.c b/hw/i2c/flexcomm_i2c.c
+diff --git a/tests/unit/i2c_tester.c b/tests/unit/i2c_tester.c
 new file mode 100644
-index 0000000000..7e74f858ce
+index 0000000000..ea36a17f1f
 --- /dev/null
-+++ b/hw/i2c/flexcomm_i2c.c
-@@ -0,0 +1,224 @@
++++ b/tests/unit/i2c_tester.c
+@@ -0,0 +1,111 @@
 +/*
-+ * QEMU model for NXP's FLEXCOMM I2C
++ * Simple I2C peripheral for testing I2C device models.
 + *
 + * Copyright (c) 2024 Google LLC
 + *
@@ -140,286 +123,113 @@ index 0000000000..7e74f858ce
 + * See the COPYING file in the top-level directory.
 + */
 +
-+#include "qemu/osdep.h"
-+#include "qemu/cutils.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-properties.h"
++#include "i2c_tester.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "exec/address-spaces.h"
-+#include "qapi/error.h"
-+#include "trace.h"
-+#include "hw/regs.h"
-+#include "hw/i2c/flexcomm_i2c.h"
 +
-+#define reg(field) offsetof(FLEXCOMM_I2C_Type, field)
-+#define regi(x) (reg(x) / sizeof(uint32_t))
-+#define REG_NO (sizeof(FLEXCOMM_I2C_Type) / sizeof(uint32_t))
-+
-+static FLEXCOMM_I2C_REGISTER_NAMES_ARRAY(reg_names);
-+
-+static void flexcomm_i2c_reset(FlexcommState *s)
++static void i2c_tester_reset(DeviceState *ds)
 +{
-+    flexcomm_i2c_reset_registers(&s->regs.i2c);
++    I2cTesterState *s = I2C_TESTER(ds);
++
++    s->set_reg_idx = false;
++    s->reg_idx     = 0;
++    memset(s->regs, 0, I2C_TESTER_NUM_REGS);
 +}
 +
-+static void flexcomm_i2c_irq_update(FlexcommState *s)
++static int i2c_tester_event(I2CSlave *i2c, enum i2c_event event)
 +{
-+    bool enabled = s->regs.i2c.CFG_b.MSTEN;
-+    bool irq, per_irqs;
++    I2cTesterState *s = I2C_TESTER(i2c);
 +
-+    s->regs.i2c.INTSTAT = s->regs.i2c.STAT & s->regs.i2c.INTENSET;
-+    per_irqs = s->regs.i2c.INTSTAT != 0;
++    if (event == I2C_START_SEND) {
++        s->set_reg_idx = true;
++    }
 +
-+    irq = enabled && per_irqs;
-+
-+    trace_flexcomm_i2c_irq(DEVICE(s)->id, irq, per_irqs, enabled);
-+    flexcomm_irq(s, irq);
++    return 0;
 +}
 +
-+static MemTxResult flexcomm_i2c_reg_read(void *opaque, FlexcommState *s,
-+                                          int f, hwaddr addr, uint64_t *data,
-+                                          unsigned size)
++static uint8_t i2c_tester_rx(I2CSlave *i2c)
 +{
-+    MemTxResult ret = MEMTX_OK;
++    I2cTesterState *s = I2C_TESTER(i2c);
 +
-+    if (!reg32_aligned_access(addr, size)) {
-+        ret = MEMTX_ERROR;
-+        goto out;
++    if (s->reg_idx >= I2C_TESTER_NUM_REGS) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: invalid reg 0x%02x\n", __func__,
++                      s->reg_idx);
++        return I2C_NACK;
 +    }
 +
-+    *data = reg32_read(&s->regs, addr);
-+
-+    flexcomm_i2c_irq_update(s);
-+
-+out:
-+    trace_flexcomm_i2c_reg_read(DEVICE(s)->id, reg_names[addr], addr, *data);
-+    return ret;
++    return s->regs[s->reg_idx];
 +}
 +
-+static MemTxResult flexcomm_i2c_reg_write(void *opaque, FlexcommState *s,
-+                                           int f, hwaddr addr, uint64_t value,
-+                                           unsigned size)
++static int i2c_tester_tx(I2CSlave *i2c, uint8_t data)
 +{
-+    MemTxResult ret = MEMTX_OK;
-+    static uint32_t mask[REG_NO] = {
-+        [regi(CFG)] = BITS(5, 0),
-+        [regi(STAT)] = BITS(25, 24) | BIT(19) | BIT(17) | BIT(15) | BIT(6),
-+        [regi(INTENSET)] = BITS(25, 24) | BIT(19) | BITS(17, 15) | BIT(11) |
-+                           BIT(8) |  BIT(6) | BIT(4) | BIT(0),
-+        [regi(INTENCLR)] = BITS(25, 24) | BIT(19) | BITS(17, 15) | BIT(11) |
-+                           BIT(8) |  BIT(6) | BIT(4) | BIT(0),
-+        [regi(TIMEOUT)] = BITS(15, 0),
-+        [regi(CLKDIV)] = BITS(15, 0),
-+        [regi(MSTCTL)] = BITS(3, 0),
-+        [regi(MSTTIME)] = BITS(6, 4) | BITS(2, 0),
-+        [regi(MSTDAT)] = BITS(7, 0),
-+        [regi(SLVCTL)] = BITS(9, 8) | BIT(3) | BITS(1, 0),
-+        [regi(SLVDAT)] = BITS(7, 0),
-+        [regi(SLVADR0)] = BIT(15) | BITS(7, 0),
-+        [regi(SLVADR1)] = BIT(15) | BITS(7, 0),
-+        [regi(SLVADR2)] = BIT(15) | BITS(7, 0),
-+        [regi(SLVADR3)] = BIT(15) | BITS(7, 0),
-+        [regi(SLVQUAL0)] = BITS(7, 0),
-+    };
++    I2cTesterState *s = I2C_TESTER(i2c);
 +
-+    if (!reg32_aligned_access(addr, size)) {
-+        ret = MEMTX_ERROR;
-+        goto out;
++    if (s->set_reg_idx) {
++        /* Setting the register in which the operation will be done. */
++        s->reg_idx = data;
++        s->set_reg_idx = false;
++        return 0;
 +    }
 +
-+    switch (addr) {
-+    case reg(CFG):
-+    {
-+        reg32_write(&s->regs, addr, value, mask);
-+        if (s->regs.i2c.CFG_b.SLVEN) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "I2C slave not supported");
-+        }
-+        if (s->regs.i2c.CFG_b.MONEN) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "I2C monitoring not supported");
-+        }
-+        break;
-+    }
-+    case reg(INTENCLR):
-+    {
-+        s->regs.i2c.INTENSET &= ~(value & mask[addr / 4]);
-+        break;
-+    }
-+    case reg(TIMEOUT):
-+    {
-+        reg32_write(&s->regs, addr, value, mask);
-+        /* The bottom 4 bits are hard-wired to 0xF */
-+        s->regs.i2c.TIMEOUT_b.TOMIN = 0xf;
-+        break;
-+    }
-+    case reg(MSTCTL):
-+    {
-+        reg32_write(&s->regs, addr, value, mask);
-+        if (s->regs.i2c.MSTCTL_b.MSTSTART) {
-+            uint8_t i2c_addr = s->regs.i2c.MSTDAT_b.DATA;
-+            bool recv = i2c_addr & 1;
-+
-+            trace_flexcomm_i2c_start(DEVICE(s)->id, i2c_addr, recv);
-+            if (i2c_start_transfer(s->i2c, i2c_addr, recv)) {
-+                s->regs.i2c.STAT_b.MSTSTATE = MSTSTATE_NAKADR;
-+                trace_flexcomm_i2c_nak(DEVICE(s)->id);
-+            } else {
-+                if (recv) {
-+                    uint8_t data = i2c_recv(s->i2c);
-+
-+                    s->regs.i2c.MSTDAT_b.DATA = data;
-+                    trace_flexcomm_i2c_rx(DEVICE(s)->id, data);
-+                    s->regs.i2c.STAT_b.MSTSTATE = MSTSTATE_RXRDY;
-+                } else {
-+                    s->regs.i2c.STAT_b.MSTSTATE = MSTSTATE_TXRDY;
-+                }
-+            }
-+        }
-+        if (s->regs.i2c.MSTCTL_b.MSTSTOP) {
-+            s->regs.i2c.STAT_b.MSTSTATE = MSTSTATE_IDLE;
-+            i2c_end_transfer(s->i2c);
-+        }
-+        if (s->regs.i2c.MSTCTL_b.MSTCONTINUE) {
-+            if (s->regs.i2c.STAT_b.MSTSTATE == MSTSTATE_TXRDY) {
-+                uint8_t data = s->regs.i2c.MSTDAT_b.DATA;
-+
-+                trace_flexcomm_i2c_tx(DEVICE(s)->id, data);
-+                if (i2c_send(s->i2c, data)) {
-+                    s->regs.i2c.STAT_b.MSTSTATE = MSTSTATE_NAKDAT;
-+                }
-+            } else if (s->regs.i2c.STAT_b.MSTSTATE == MSTSTATE_RXRDY) {
-+                uint8_t data = i2c_recv(s->i2c);
-+
-+                s->regs.i2c.MSTDAT_b.DATA = data;
-+                trace_flexcomm_i2c_rx(DEVICE(s)->id, data);
-+            }
-+        }
-+        break;
-+    }
-+    case reg(STAT):
-+    {
-+        /* write 1 to clear bits */
-+        s->regs.i2c.STAT &= ~(value & mask[addr / 4]);
-+        break;
-+    }
-+    case reg(SLVCTL):
-+    case reg(SLVDAT):
-+    case reg(SLVADR0):
-+    case reg(SLVADR1):
-+    case reg(SLVADR2):
-+    case reg(SLVADR3):
-+    case reg(SLVQUAL0):
-+    {
-+        qemu_log_mask(LOG_GUEST_ERROR, "I2C slave not supported\n");
-+        break;
-+    }
-+    default:
-+        reg32_write(&s->regs, addr, value, mask);
-+        break;
++    if (s->reg_idx >= I2C_TESTER_NUM_REGS) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: invalid reg 0x%02x\n", __func__,
++                      s->reg_idx);
++        return I2C_NACK;
 +    }
 +
-+    flexcomm_i2c_irq_update(s);
++    /* Write reg data. */
++    s->regs[s->reg_idx] = data;
 +
-+out:
-+    trace_flexcomm_i2c_reg_write(DEVICE(s)->id, reg_names[addr], addr, value);
-+    return ret;
++    return 0;
 +}
 +
-+static void flexcomm_i2c_select(void *opaque, FlexcommState *s, int f,
-+                                 bool set)
++static void i2c_tester_init(Object *obj)
 +{
-+    if (set) {
-+        flexcomm_i2c_reset(s);
-+    }
 +}
 +
-+static const FlexcommFunctionOps flexcomm_i2c_ops = {
-+    .select = flexcomm_i2c_select,
-+    .reg_read = flexcomm_i2c_reg_read,
-+    .reg_write = flexcomm_i2c_reg_write,
++static void i2c_tester_realize(DeviceState *ds, Error **errp)
++{
++}
++
++static void i2c_tester_unrealize(DeviceState *dev)
++{
++}
++
++static void i2c_tester_class_init(ObjectClass *oc, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(oc);
++    I2CSlaveClass *isc = I2C_SLAVE_CLASS(oc);
++
++    dc->reset = i2c_tester_reset;
++    dc->realize   = i2c_tester_realize;
++    dc->unrealize = i2c_tester_unrealize;
++
++    isc->event = i2c_tester_event;
++    isc->recv = i2c_tester_rx;
++    isc->send = i2c_tester_tx;
++}
++
++static const TypeInfo i2c_tester_info = {
++    .name = TYPE_I2C_TESTER,
++    .parent = TYPE_I2C_SLAVE,
++    .instance_size = sizeof(I2cTesterState),
++    .instance_init = i2c_tester_init,
++    .class_init = i2c_tester_class_init
 +};
 +
-+void flexcomm_i2c_init(FlexcommState *s)
++static void i2c_tester_register_type(void)
 +{
-+    s->i2c = i2c_init_bus(DEVICE(s), "i2c");
++    type_register_static(&i2c_tester_info);
 +}
 +
-+void flexcomm_i2c_register(void)
-+{
-+    Error *err = NULL;
-+
-+    if (!flexcomm_register_ops(FLEXCOMM_FUNC_I2C, NULL,
-+                               &flexcomm_i2c_ops, &err)) {
-+        error_report_err(err);
-+    }
-+}
-diff --git a/hw/i2c/meson.build b/hw/i2c/meson.build
-index c459adcb59..e7d79e6938 100644
---- a/hw/i2c/meson.build
-+++ b/hw/i2c/meson.build
-@@ -18,4 +18,5 @@ i2c_ss.add(when: 'CONFIG_PPC4XX', if_true: files('ppc4xx_i2c.c'))
- i2c_ss.add(when: 'CONFIG_PCA954X', if_true: files('i2c_mux_pca954x.c'))
- i2c_ss.add(when: 'CONFIG_PMBUS', if_true: files('pmbus_device.c'))
- i2c_ss.add(when: 'CONFIG_BCM2835_I2C', if_true: files('bcm2835_i2c.c'))
-+i2c_ss.add(when: 'CONFIG_FLEXCOMM', if_true: files('flexcomm_i2c.c'))
- system_ss.add_all(when: 'CONFIG_I2C', if_true: i2c_ss)
-diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
-index 6900e06eda..9f0175fab7 100644
---- a/hw/i2c/trace-events
-+++ b/hw/i2c/trace-events
-@@ -51,3 +51,13 @@ npcm7xx_smbus_recv_fifo(const char *id, uint8_t received, uint8_t expected) "%s
- 
- pca954x_write_bytes(uint8_t value) "PCA954X write data: 0x%02x"
- pca954x_read_data(uint8_t value) "PCA954X read data: 0x%02x"
-+
-+# flexcomm_i2c.c
-+
-+flexcomm_i2c_reg_read(const char *id, const char *reg_name, uint32_t addr, uint32_t val) " %s: %s[0x%04x] -> 0x%08x"
-+flexcomm_i2c_reg_write(const char *id, const char *reg_name, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
-+flexcomm_i2c_start(const char *id, uint8_t addr, uint8_t recv) "%s: 0x%02x %d"
-+flexcomm_i2c_rx(const char *id, uint8_t data) "%s: <- 0x%02x"
-+flexcomm_i2c_tx(const char *id, uint8_t data) "%s: -> 0x%02x"
-+flexcomm_i2c_nak(const char *id) "%s: <- nak"
-+flexcomm_i2c_irq(const char *id, bool irq, bool perirqs, bool enabled) "%s: %d %d %d"
-diff --git a/hw/misc/flexcomm.c b/hw/misc/flexcomm.c
-index 0c94928aa2..2722c1d6a9 100644
---- a/hw/misc/flexcomm.c
-+++ b/hw/misc/flexcomm.c
-@@ -23,6 +23,7 @@
- #include "hw/regs.h"
- #include "hw/misc/flexcomm.h"
- #include "hw/char/flexcomm_usart.h"
-+#include "hw/i2c/flexcomm_i2c.h"
- 
- #define reg(field) offsetof(FLEXCOMM_Type, field)
- #define regi(x) (reg(x) / sizeof(uint32_t))
-@@ -228,6 +229,10 @@ static void flexcomm_realize(DeviceState *dev, Error **errp)
-     if (has_function(s, FLEXCOMM_FUNC_USART)) {
-         flexcomm_usart_init(s);
-     }
-+
-+    if (has_function(s, FLEXCOMM_FUNC_I2C)) {
-+        flexcomm_i2c_init(s);
-+    }
- }
- 
- static void flexcomm_class_init(ObjectClass *klass, void *data)
-@@ -239,6 +244,7 @@ static void flexcomm_class_init(ObjectClass *klass, void *data)
-     dc->realize = flexcomm_realize;
- 
-     flexcomm_usart_register();
-+    flexcomm_i2c_register();
- }
- 
- static const TypeInfo flexcomm_info = {
-diff --git a/include/hw/i2c/flexcomm_i2c.h b/include/hw/i2c/flexcomm_i2c.h
++type_init(i2c_tester_register_type);
+diff --git a/tests/unit/i2c_tester.h b/tests/unit/i2c_tester.h
 new file mode 100644
-index 0000000000..aea01f13bd
+index 0000000000..9eebe1b6e3
 --- /dev/null
-+++ b/include/hw/i2c/flexcomm_i2c.h
-@@ -0,0 +1,27 @@
++++ b/tests/unit/i2c_tester.h
+@@ -0,0 +1,34 @@
 +/*
-+ * QEMU model for NXP's FLEXCOMM I2C
 + *
 + * Copyright (c) 2024 Google LLC
 + *
@@ -429,75 +239,30 @@ index 0000000000..aea01f13bd
 + * See the COPYING file in the top-level directory.
 + */
 +
-+#ifndef HW_CHAR_FLEXCOMM_I2C_H
-+#define HW_CHAR_FLEXCOMM_I2C_H
++#ifndef TESTS_UNIT_I2C_TESTER_H
++#define TESTS_UNIT_I2C_TESTER_H
 +
-+#include "hw/misc/flexcomm.h"
-+
-+void flexcomm_i2c_init(FlexcommState *s);
-+void flexcomm_i2c_register(void);
-+
-+#define MSTSTATE_IDLE 0
-+#define MSTSTATE_RXRDY 1
-+#define MSTSTATE_TXRDY 2
-+#define MSTSTATE_NAKADR 3
-+#define MSTSTATE_NAKDAT 4
-+
-+
-+#endif /* HW_CHAR_FLEXCOMM_I2C_H */
-diff --git a/include/hw/misc/flexcomm.h b/include/hw/misc/flexcomm.h
-index db76e32c6d..3d042a3511 100644
---- a/include/hw/misc/flexcomm.h
-+++ b/include/hw/misc/flexcomm.h
-@@ -14,8 +14,10 @@
- 
- #include "hw/sysbus.h"
- #include "chardev/char-fe.h"
++#include "qemu/osdep.h"
 +#include "hw/i2c/i2c.h"
- #include "hw/arm/svd/flexcomm.h"
- #include "hw/arm/svd/flexcomm_usart.h"
-+#include "hw/arm/svd/flexcomm_i2c.h"
- #include "qemu/fifo32.h"
- 
- #define TYPE_FLEXCOMM "flexcomm"
-@@ -46,6 +48,7 @@ typedef struct {
-     union {
-         FLEXCOMM_Type flex;
-         FLEXCOMM_USART_Type usart;
-+        FLEXCOMM_I2C_Type i2c;
-     } regs;
-     uint32_t functions;
-     qemu_irq irq;
-@@ -53,6 +56,7 @@ typedef struct {
-     CharBackend chr;
-     Fifo32 tx_fifo;
-     Fifo32 rx_fifo;
-+    I2CBus *i2c;
- } FlexcommState;
- 
- typedef struct {
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index dcfd2e661c..4c22cb3ccc 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -148,6 +148,8 @@ if have_system
-       meson.project_source_root() / 'tests/unit/sysbus-mock.c',
-       meson.project_source_root() / 'hw/misc/flexcomm.c',
-       meson.project_source_root() / 'hw/char/flexcomm_usart.c',
-+      meson.project_source_root() / 'hw/i2c/flexcomm_i2c.c',
-+      meson.project_source_root() / 'hw/i2c/core.c',
-      ],
-     'test-flexcomm-usart': [
-       hwcore, chardev, qom, migration,
-@@ -155,6 +157,8 @@ if have_system
-       meson.project_source_root() / 'tests/unit/sysbus-mock.c',
-       meson.project_source_root() / 'hw/misc/flexcomm.c',
-       meson.project_source_root() / 'hw/char/flexcomm_usart.c',
-+      meson.project_source_root() / 'hw/i2c/flexcomm_i2c.c',
-+      meson.project_source_root() / 'hw/i2c/core.c',
-     ],
-   }
-   if config_host_data.get('CONFIG_INOTIFY1')
++#include "hw/irq.h"
++
++#define I2C_TESTER_NUM_REGS    0x31
++
++#define TYPE_I2C_TESTER "i2c_tester"
++#define I2C_TESTER(obj) OBJECT_CHECK(I2cTesterState, (obj), TYPE_I2C_TESTER)
++
++typedef struct {
++    /* <private> */
++    I2CSlave i2c;
++
++    /* <public> */
++    bool set_reg_idx;
++
++    uint8_t reg_idx;
++    uint8_t regs[I2C_TESTER_NUM_REGS];
++} I2cTesterState;
++
++#endif /* TESTS_UNIT_I2C_TESTER_H */
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
 
