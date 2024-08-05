@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112E6947EC2
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 17:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A631D947EBB
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 17:55:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb015-0007fS-98; Mon, 05 Aug 2024 11:52:59 -0400
+	id 1sb018-0007rf-QM; Mon, 05 Aug 2024 11:53:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.zeise@seagate.com>)
- id 1sb013-0007aX-Es; Mon, 05 Aug 2024 11:52:57 -0400
+ id 1sb015-0007j7-Ik; Mon, 05 Aug 2024 11:52:59 -0400
 Received: from esa.hc4959-67.iphmx.com ([216.71.153.94])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.zeise@seagate.com>)
- id 1sb010-0003nI-R9; Mon, 05 Aug 2024 11:52:57 -0400
+ id 1sb013-0003o3-QP; Mon, 05 Aug 2024 11:52:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=seagate.com; i=@seagate.com; q=dns/txt; s=stxiport;
- t=1722873174; x=1754409174;
+ t=1722873177; x=1754409177;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=mLxDUVpOD72dMtrEN1LwWCo/uWnU7WeHsiIaFqrm2VU=;
- b=pqeyBpT7nIC7OvoDsHqoBAzHTP1UcSYy0IWy0YR9yZwYfdqH6/bhj8mr
- SCYaUVa2peeaLpN+HFfKey6BVlq729xygtqdPLBgM2nqj4EiEnulIzWjr
- GxF0GNOYh23GumwJ90na42oZ5pFKAjslCNzpQhRCtMFuAIFBXL26r8G6h 4=;
-X-CSE-ConnectionGUID: Km7AlsdSTn+NLKtccXh1pg==
-X-CSE-MsgGUID: VMG18DEOR7+HcNTLXvnlYg==
-Received: from mail-bn8nam12lp2174.outbound.protection.outlook.com (HELO
- NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.174])
+ bh=yBUuwYe1RumimG7s1APfwYRTHe2/dVbSy6IAO5eoAGs=;
+ b=Dy8tka0Yc8TUMVLRbN66boWM2Yo+2+kRJyR3aQAfdUJQa1Ah1r3HwVA/
+ MeRBQWejV937kl9zti3cBj0vy0C9nsAFDYs4z11jxhh5/TwzQiTkrXC1d
+ E3f6z3zq4DJXtMIkergcxEde+0a4qlebvk0CXzQ7Qdb5Qmmz6IsH0lGhO Y=;
+X-CSE-ConnectionGUID: wX//03nyTlGTJ9S7RMqhZA==
+X-CSE-MsgGUID: GPR/6rbZTmOuE5pty/NrWA==
+Received: from mail-co1nam11lp2168.outbound.protection.outlook.com (HELO
+ NAM11-CO1-obe.outbound.protection.outlook.com) ([104.47.56.168])
  by ob1.hc4959-67.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 08:52:51 -0700
+ 05 Aug 2024 08:52:55 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SiuxVWEsRSRqGkE01BDc2J73SzAbfZu0NcWtibfltwwodipPWKeWWi+4ScLp2bqwXLH9GPS6S7UzMyw/T2kzDfH8IgpNcx3zNYhakvoddvq3bBnb0hfWJzPdkFWzoaRVw52LxPwbEFo/ytnlMek1L8faBhsVsSV8qwXCuu2gG7xeveS2NXpFaznuzt5emC1OwnhbPCG7MXCrQKmeBXg6iogEwMgS2Bz2lt5l/VGurgDBSGSdLGnJH/JolyPsD/s5mooX15VRLSQw3NECQsVSP8WdlZQFr322w2CfPpt41ltZ1PaVDSvxhKaZblPFyhEpsw+xXPgukZ5LcMhR9KRGYg==
+ b=N+aMH8XaDttC6/X9mQAYLcsmF2Gbq/SGjA1o9E7W08CUdGZP9BBC/ZckToGrhASytVihDqNBgCj8sLGiWj/z8/9J+23HO+xj9QWSoQeP9lJqRuQAswOoya1GNdSzApUknFvsa+nLiOtKHIDekQTLKGPMri0CfHNUT8ZE/SRz0vsIhpjZ49OpONYn05bDPU9iURNF7bIB8OsQzeR/+VaNaTPCJAm53CKQMbA/pBxZrJ8ZhO0UUZrIKuUWqA2hqx2/zPLqsV5OPRqFzi3C6VIDYiYJb/n579kD4PR0NEPsIkcTTWfXGEL2ltlfEHj0BE0sX3LpvFlCGw7hG6VaCM+nng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IGKj/vm5VdsgbSXJTTkUy/L/9ssTMA5Zoz3FbIxWQeU=;
- b=Gss10H1LLe5XTThKdJDakRor9GUDrSc2Flbzk0hnpnAh/Hy5AjExBRrvFO81pcvw4aYus/R6CBclNWo7Ynf8aIjRRCcZWI/+K8RAcsYfb6xALOWbut6gE2C8JB0f859oEtZXlrNTYv3pXgU66OyAY6Y7ziAf+gM1MJnQ+ZyF24McpwIurmoZtb1QgHmNvfWPt8Fy/TmNFh9C11Iy5011h9CxqFYh0fsdnN38cjyqHzUgg7ejq99woLz1Z9dh/GA+WtSffPR6bZpIsBUdOJLb0nA+kx3nNk+C/vSArF5lBG9ZeBDlZYV2b+awZV+rrK/W1NduPspYxGB/plP6lu1oXg==
+ bh=VuIWH7hKv3rHqAI1K7OylgWYSlekB1h/ulCjPBW4OZo=;
+ b=vtZOWCx1T87W0WoqI0hNjwb5P/4KF7A7NLhp0SQIA1pstmCaiS6yTc4w2bsrulykmmmmrALYaZ0GYb4yUA84UyVwcD8S+0Ku4EDRBkx2pj1HFZlPTl9g7GC4HQpALbdhCL/m/WVfvCvgJ+0vcgGosTCahc5nbRGf4WbDbIh15TbHZ8fIGNKzTt76hv0FLoOeJLReZzfwLDiz7d6aWFGV1Ay+cDMsr2maxPigYZU7fPtqccelYRClAqqGHDT5c1RhDnm/HyVeQ1OIgAyCTuJ1LbociCdfI133SN4RpmuWKca4jJaLasjgtVMd5wah4W5aqBZ3x+LV7Mvot9g4g6PN5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
  is 134.204.222.53) smtp.rcpttodomain=nongnu.org smtp.mailfrom=seagate.com;
  dmarc=fail (p=reject sp=reject pct=100) action=oreject
@@ -45,43 +45,43 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seagate.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IGKj/vm5VdsgbSXJTTkUy/L/9ssTMA5Zoz3FbIxWQeU=;
- b=NG/uEC5W7Y5qtOH1bRBemI4fssDZ2uND8h1Wg/rQFWt2D6ZcLkn9FPzmL3fzQ6JJAFkDt4yiC+i0J7ZXFPsq3R0KocUAYM230BYpdl0tKqarZgtMYK12Skn2pmHSmAqTTckpAvjN5MJbkCRiIRjMjaOylITQfu8KiJw1eB54GJY=
-Received: from MW4PR04CA0365.namprd04.prod.outlook.com (2603:10b6:303:81::10)
- by MN0PR20MB7481.namprd20.prod.outlook.com (2603:10b6:208:4c2::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Mon, 5 Aug
- 2024 15:52:47 +0000
+ bh=VuIWH7hKv3rHqAI1K7OylgWYSlekB1h/ulCjPBW4OZo=;
+ b=FpoZC6a7khV+1V/o+0VUelX1wLyb8oDbhshmeRb7q1OJzniM4irDqllEeyMnPLwQMde/XYT2cf6krDFM+EJi/9nky88Rb1zNGZj/hyFHl6SmYsnQNzKKPLqu9hhUIfleao3G4j4axA5lCFSIdb2LGEe3QU5Wc2VVjg2/9N2riug=
+Received: from MW4PR04CA0363.namprd04.prod.outlook.com (2603:10b6:303:81::8)
+ by DM4PR20MB4968.namprd20.prod.outlook.com (2603:10b6:8:8a::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Mon, 5 Aug
+ 2024 15:52:53 +0000
 Received: from CO1PEPF000044F2.namprd05.prod.outlook.com
- (2603:10b6:303:81:cafe::ea) by MW4PR04CA0365.outlook.office365.com
- (2603:10b6:303:81::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.27 via Frontend
- Transport; Mon, 5 Aug 2024 15:52:47 +0000
+ (2603:10b6:303:81:cafe::f1) by MW4PR04CA0363.outlook.office365.com
+ (2603:10b6:303:81::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26 via Frontend
+ Transport; Mon, 5 Aug 2024 15:52:53 +0000
 X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
  134.204.222.53) smtp.mailfrom=seagate.com; dkim=none (message not signed)
  header.d=none;dmarc=fail action=oreject header.from=seagate.com;
 Received: from lcopzesaa002.seagate.com (134.204.222.53) by
  CO1PEPF000044F2.mail.protection.outlook.com (10.167.241.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7849.8 via Frontend Transport; Mon, 5 Aug 2024 15:52:47 +0000
-X-CSE-ConnectionGUID: lKM39m3kTKuySbtufaDxjA==
-X-CSE-MsgGUID: LN3HHDwJRnKnpRC2X81ddg==
+ 15.20.7849.8 via Frontend Transport; Mon, 5 Aug 2024 15:52:52 +0000
+X-CSE-ConnectionGUID: NSBIonBsQFCkh9H4MlTsdg==
+X-CSE-MsgGUID: yR2Yd2e/Rr241zJRAlRhuA==
 Received: from lcopiesaa001.seagate.com ([10.230.120.52])
- by lcopzesaa002.seagate.com with ESMTP; 05 Aug 2024 08:57:39 -0700
-X-CSE-ConnectionGUID: b23P30nHQkC1FwhDesi6Ag==
-X-CSE-MsgGUID: fkLDhRTkThi4OgAnEDZTww==
-X-IronPort-AV: E=Sophos;i="6.09,265,1716274800"; d="scan'208";a="106920678"
+ by lcopzesaa002.seagate.com with ESMTP; 05 Aug 2024 08:57:44 -0700
+X-CSE-ConnectionGUID: 3VAPqAfBT+ersI21d+pulg==
+X-CSE-MsgGUID: mjHBWRNqQDKi4vRROOg+lg==
+X-IronPort-AV: E=Sophos;i="6.09,265,1716274800"; d="scan'208";a="106920681"
 STX-Internal-Mailhost: TRUE
 Received: from unknown (HELO cortana..) ([10.4.50.14])
- by lcopiesaa001.seagate.com with ESMTP; 05 Aug 2024 08:52:39 -0700
+ by lcopiesaa001.seagate.com with ESMTP; 05 Aug 2024 08:52:44 -0700
 From: Alejandro Zeise <alejandro.zeise@seagate.com>
 To: qemu-arm@nongnu.org
 Cc: alejandro.zeise@seagate.com, kris.conklin@seagate.com,
  jonathan.henze@seagate.com, evan.burgess@seagate.com, clg@kaod.org,
  peter.maydell@linaro.org, berrange@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v3 01/12] crypto: accumulative hashing API
-Date: Mon,  5 Aug 2024 15:50:36 +0000
-Message-Id: <20240805155047.3151540-2-alejandro.zeise@seagate.com>
+Subject: [PATCH v3 02/12] crypto/hash-glib: Remove old hash API implementation
+Date: Mon,  5 Aug 2024 15:50:37 +0000
+Message-Id: <20240805155047.3151540-3-alejandro.zeise@seagate.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240805155047.3151540-1-alejandro.zeise@seagate.com>
 References: <20240805155047.3151540-1-alejandro.zeise@seagate.com>
@@ -89,55 +89,55 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F2:EE_|MN0PR20MB7481:EE_
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F2:EE_|DM4PR20MB4968:EE_
 Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 6315083b-6ac8-4d34-4e43-08dcb566a721
+X-MS-Office365-Filtering-Correlation-Id: 51303e72-7571-46a7-d8d1-08dcb566aa76
 STX-Hosted-IronPort-Oubound: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|376014|82310400026|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9Uw8RZBvN/KwxmYwevbM7st+RehenRBuOA/VnM6HTcD2JW4poyUhe4enBrTR?=
- =?us-ascii?Q?ZwRKFe4V/Man2lkULpJmwumjV1vb7emSo11oRDK4obVcsCRhE7P3QZ1gb9O/?=
- =?us-ascii?Q?Z6sLPP1hVTvJ0i2A3LqfpQFcZC1X1EBb9KeqjpLwSjHuYDuR98FTXM/KEMSn?=
- =?us-ascii?Q?9m5vPqMi4BN32aOVm3MV86LqDeIRx3Lmf9SDdVB7KJiSBIwpVa9etxUqiLxo?=
- =?us-ascii?Q?iN18d5D2kQSO/3KCyropXBE/BHg5o2sPto+XjrJzzLYkwUgwAtmToJFKd7Zs?=
- =?us-ascii?Q?yrCAA6PBWEDIddM2P7q2tSIlJy04KhDaf2Cgsn27Vc2wXTLoLCbgGkyQ8wVg?=
- =?us-ascii?Q?jfI4+BYU64nJq/P/i8mmixnEfyqnhOi5tvHChNsg2SvVECwJa0nDLVvLzMy0?=
- =?us-ascii?Q?5K4ycdageZXHte0mUpTi/PvhXf0bDWgMV1e3kZWmAsfTZKXTJW+Snmdgwguh?=
- =?us-ascii?Q?uoVheGAPjpBD+vIR0qtNKMbSrer66sUI4PojRUt+nYRGSYlCYzlH4vVnKYQn?=
- =?us-ascii?Q?BQ4WL4aI8L9oBfU2kV4U9X8qIjagiujU5k0jytswiqhfAjfFlCl1VP7h8Q7P?=
- =?us-ascii?Q?kCuk5SJvTZCiTMikFG5AAMGRDrCveRWRDXU4RwbBi74GGVPlmVxcAuyzjrla?=
- =?us-ascii?Q?2OLkgW36LCCQCPhjx4VwWxSoyRACM/SDyMgJiAFm0mdjdF+79xw4uwWpLmjk?=
- =?us-ascii?Q?LftOXhMJy8v1gyFmR7ttpHcmjwx4icqnlRARRLTAAd1YDoFxg9tf0VuHMGBC?=
- =?us-ascii?Q?KWyvrzZ9zRR/Ug0+h+UIJHkpXmHhAa4+yoMoldt9F7eur+X0vxJ4pameYWbb?=
- =?us-ascii?Q?EZE8K105HCbKUv4hziU1YEjiFnvPiQjq7Mv8uKc0vvq8QPh1q6Wta79com3u?=
- =?us-ascii?Q?ellnA5YCfYtZd0jPi09SA6ehIUavzf6DfiVx3fd4zL1uy18I6Gj2KY46RlBJ?=
- =?us-ascii?Q?pFfbuibUo/tR9vp60sLrqj4PONJWlOgCJ9HmbqdX5/C4Yfn7BZXakDFomRT7?=
- =?us-ascii?Q?vQhRopcKRcQ58AEVV4q9O9x8bUYgzO9P8Jh3veVQfmx1CPM+RTlbegVDDxgg?=
- =?us-ascii?Q?K+Rln0D7Tj49I/x7leVLpbHdjlH3J58s5ajAbl7vDM4D6/qPOecGg+oH0ARU?=
- =?us-ascii?Q?Zt6Ms3gkL9scJepuvXq3iufpbU5+W7T0M2h7yBXq3MVQydkgD6fDd3xcl9f+?=
- =?us-ascii?Q?4VKEtX/rViAyh4knr/T7e5jsVn2Flj2zbodD+znpQSBmN9woctU2QLVb5sFU?=
- =?us-ascii?Q?djhzzkUOWf6In7PhMhwU9OQ1eWOydfXpJKgz/RbSvfbrwNuYY8OFbCoKj7Ea?=
- =?us-ascii?Q?HFgsNwYrSTC4HxIg/a7IGe4vqvvlXCy+WCi/z8//YPdYcxXRu2gFjtC5BpXf?=
- =?us-ascii?Q?D6KIXp+VbgY/xbfMeklgkRBgU2jD3fZ6RyoNhe90zaD/PT5qxd403c/I0RRz?=
- =?us-ascii?Q?oATBIkM9GlgF9Nc3XsS0UmoBWPGDudQA?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?NN3geoq9ZSq1gbi/6D8ZNs7W8IPjlXuXYUK1Kip2jPTJ6nsGOrgmIgXhTQI+?=
+ =?us-ascii?Q?L/B+eeWR2Ee6LyhhJCou2tMCYOdsUkJ4NQ5SIUYL1SyJZ4MpalIix79mF7d4?=
+ =?us-ascii?Q?6N2wid6Ip6xfc7zC8sQtZBlje4EasTZkubvY231OgdWqd/74iUbak1JOVRLe?=
+ =?us-ascii?Q?OsNoo7fIxjc+X/NtpbGf6KFtGS/6xPG+lvOnzivA4rX8/OXw63GbvhPlT0C7?=
+ =?us-ascii?Q?VcxmR+QZs1oJz54ALzABGhcnZTwXiV+4z7Tl3UjppyVE16ee5PAQ+jm46hLk?=
+ =?us-ascii?Q?JP2lY+RIycM61KTEST14AZQvRzRFhL1feMXkobofpMu1Obj3VtkbYVZHuZ9c?=
+ =?us-ascii?Q?HZSImbBe2u/ms+QEv49rFLvhHJwRAemSuLpuK9SteUwWjTPebzors0/gJGxt?=
+ =?us-ascii?Q?FIt9zApIZzDHCLExmBjPirO+Q7ZdnFrEsiqZls5s6OWewUD/Q6N40+OrGRi4?=
+ =?us-ascii?Q?CFJ7b7xnliJygO0c2+hPaaxrPDoQrX5lWv8DQxtP6TuCtFPt1MqWy8deh7hL?=
+ =?us-ascii?Q?NbzXHg8Jy6zr/XHfI1YCIwdfw7ZxAPmyixzQJIXDJdt2PNTYD/SpHfolNNTq?=
+ =?us-ascii?Q?sLd7bs3QSVzpqElUBqDiVnLP0aa8Ggc+zXl8WybputiRjcNfoYXrZZBFrK3z?=
+ =?us-ascii?Q?dqqPyw51WeBytgNxsuu4JIRiozIAzK/o4Je0zuyqFr5jFH1aNXF/RHxiDDRq?=
+ =?us-ascii?Q?rF701lXkYQgWzHZiny5aZ+gUmc/QAvD6w8/zf+EKZG9YcRs/DFFe+4hSMsAm?=
+ =?us-ascii?Q?hR8hhK1mSzDy+uKom1nRCeX+dpa3rsHJ0JLuEKZ8rUr8hPE2JnfHX6igbBqg?=
+ =?us-ascii?Q?i9cF+RRdm3nctOSkLT4SaSbfqVSybEuZQi/wWhkZSggzeV4zuXmeujsrfTHx?=
+ =?us-ascii?Q?gs1k9b67hJTwfok3Z2pM2K+iW4tJ3r9seVXArCRHm5iTSVcdc/3KYGYuaL69?=
+ =?us-ascii?Q?CPYn22DEvW1a35wJXsyMrPjtCV6U2Z7c5O4/LOu+VojMN3LhdpilL3QsJwiI?=
+ =?us-ascii?Q?GV6ll0artQspyYpLe5mP9D31/H+FEaBtwGGmlkqSxaQDhRS8ecsVuwvcln0S?=
+ =?us-ascii?Q?DKz/ENpTTtZAGsQMvcL4PF2htNWhd8IxL24pgFAeEaBqseo4j4+LhKv+8d3J?=
+ =?us-ascii?Q?QTUgz//o/3ohPCH4uTeJAbmikDTgxiZXnS8F60D36JePkeVwc0jqVDUhbgYC?=
+ =?us-ascii?Q?0eLf9oHO5bRmH94t2zdFITUyxNWJtVVKwSskSoOr1E1es9bKmcbOhHCsyy4Y?=
+ =?us-ascii?Q?PodG+ucyMYZamyxQn+w+uAngTXfFr0u3X1wJtdQV8ORYeyRUU+HMlPmMI98Y?=
+ =?us-ascii?Q?3qlol/JIKvwCvZNWOO6tPTDeMiogPKNs0JekGO3uJaBA9JZfEd8iuuEMShe1?=
+ =?us-ascii?Q?gqrM9pJjMpZMofMNJwVWgMcJ2nTeWw/JDzcpWPolYTaFt8r7JDVbN7MXgLD3?=
+ =?us-ascii?Q?ukH65LbKyIflQC1VwU683OfZkoDGDEK5?=
 X-Forefront-Antispam-Report: CIP:134.204.222.53; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:lcopzesaa002.seagate.com; PTR:InfoDomainNonexistent;
  CAT:NONE; SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 5hXara1XEAA92fxccxJEFXCv0AoHPaIt6CHfuafjbFzoS54qN/8HlDpZZAnz0gzMCbavh7sleBqm/22luWJS8aHystNFjAFqkbF/3yCv4lwif7HF1jjlxaIev2fKH0hvvqIuJEKHB9spawkCkCqMGDDpAQ2t3HXijOVD1K5gNUUSGmtrGqt5qJHyyf47NFYnPoeg7QeqX8luapS/c7MT1BxRqK6bsUHi1ns/JeYeXz+2sqSvvB4PiXqEDOMJFrk7u3D1G+S3OQLUNe1uUj00C6CvGHPVL0lwnGwgRw/m/TbiFvXr0myPgJs/agywhyf3ddHR3VApmcirQAxPYY1KzCD4Bhl9zU4aTcyNqC34mZF+iYb79csG/K89RbJMtWMyx0WLGMpLvR4/hMq7bOzmP1mY4p8bNFqX297jWxN+Sn4zaQXBbwthLzc9/poEV735ogeMLpJ166kaBrGF8eIsuS5lObKLI1u59lMsuigwPfUbdnJT1351R8i49uvWB+5b+ripAFKeAal0N3ADtGZz+mKnKSb3PgXtNAvcX7hjCrIsP7Jf98q9XJYRcQAleO6sREYSnyjhNKw4CKfvatgDu+GEKeXRqiPbms8SVYFYH40dW8W+IzInLy0vw1r9gkBs
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: +KVWFSuiKDhInNdSUQXxCeSwUOGXJBM5CAjwwmq3ofp5zSplQaAuXFizRv7eMJnNMW/KI02JJM1AOFzViEFriFAFkbi9+iPpffOAoCry118o5wfhh9dj2Pi9ZpjZhvPNs3jogkq9sfkLYfwrkv3l5tAAMPUyXTA8i/TdmVZO/sPsyf+rVSihlmFJq7HIXlMaIX77NusW3nGIPZvvm35hj5VDQJF8u52QY78OJgdBjet5IsCIKLQ9u/mIAD20n1Gd4li6DILmXgKExg7rA01lBZURF8yEoqjQa8fKaid0CKMmbo80euZd+gWkdwA/5WUbieN9O4mw/ubeRcopg6eymgW+4zVvyvhwIkbRc3ik+6VvEsTiekQif1GkMqhPMaA6lelhfL1sRFxd2fR5lmN2FSrEUybbUC9rQc6ZwqVzUm9TTWV5+fdbq8npipDp4LwTHsgD84RYI+5R1MLD/DFVN40q3Rc38B1L5uK92zdL0F2iup197+5tQWDHWg1SbFsAnfku42RDEpT8QRA7ChpFfm8WpSB3vB92/han6UxmRtCJgb85bfb+ndWaRfgzgJ4qpUOeYFCHNLsaYh8wq1RvnMwof2caaF+R1uktl+eIQujBLrJC7CETcApaysilYlzq
 X-OriginatorOrg: seagate.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 15:52:47.1287 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6315083b-6ac8-4d34-4e43-08dcb566a721
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 15:52:52.5662 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51303e72-7571-46a7-d8d1-08dcb566aa76
 X-MS-Exchange-CrossTenant-Id: d466216a-c643-434a-9c2e-057448c17cbe
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d466216a-c643-434a-9c2e-057448c17cbe; Ip=[134.204.222.53];
  Helo=[lcopzesaa002.seagate.com]
 X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F2.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR20MB7481
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR20MB4968
 Received-SPF: pass client-ip=216.71.153.94;
  envelope-from=alejandro.zeise@seagate.com; helo=esa.hc4959-67.iphmx.com
 X-Spam_score_int: -44
@@ -162,374 +162,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes the hash API to support accumulative hashing.
-Hash objects are created with "qcrypto_hash_new",
-updated with data with "qcrypto_hash_update", and
-the hash obtained with "qcrypto_hash_finalize".
-
-These changes bring the hashing API more in line with the
-hmac API.
+Removes old implemention in the GLib hash driver. Will
+be replaced with a new implementation in accordance
+with the accumulative hashing changes in the patch series.
 
 Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
 ---
- crypto/hash.c         | 136 +++++++++++++++++++++++++++++++-----------
- crypto/hashpriv.h     |  19 ++++--
- include/crypto/hash.h | 106 ++++++++++++++++++++++++++++++++
- 3 files changed, 220 insertions(+), 41 deletions(-)
+ crypto/hash-glib.c | 53 ++--------------------------------------------
+ 1 file changed, 2 insertions(+), 51 deletions(-)
 
-diff --git a/crypto/hash.c b/crypto/hash.c
-index b0f8228bdc..5c60973bde 100644
---- a/crypto/hash.c
-+++ b/crypto/hash.c
+diff --git a/crypto/hash-glib.c b/crypto/hash-glib.c
+index 82de9db705..ceaf346bf4 100644
+--- a/crypto/hash-glib.c
++++ b/crypto/hash-glib.c
 @@ -1,6 +1,7 @@
  /*
   * QEMU Crypto hash algorithms
   *
 + * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
-  * Copyright (c) 2015 Red Hat, Inc.
+  * Copyright (c) 2016 Red Hat, Inc.
   *
   * This library is free software; you can redistribute it and/or
-@@ -45,23 +46,20 @@ int qcrypto_hash_bytesv(QCryptoHashAlgorithm alg,
-                         size_t *resultlen,
-                         Error **errp)
- {
--#ifdef CONFIG_AF_ALG
--    int ret;
--    /*
--     * TODO:
--     * Maybe we should treat some afalg errors as fatal
--     */
--    ret = qcrypto_hash_afalg_driver.hash_bytesv(alg, iov, niov,
--                                                result, resultlen,
--                                                NULL);
--    if (ret == 0) {
--        return ret;
-+    int fail;
-+    QCryptoHash *ctx = qcrypto_hash_new(alg, errp);
-+
-+    if (ctx) {
-+        fail = qcrypto_hash_update(ctx, iov, niov, errp) ||
-+               qcrypto_hash_finalize_bytes(ctx, result, resultlen, errp);
-+
-+        /* Ensure context is always freed regardless of error */
-+        fail = qcrypto_hash_free(ctx) || fail;
-+    } else {
-+        fail = -1;
-     }
--#endif
- 
--    return qcrypto_hash_lib_driver.hash_bytesv(alg, iov, niov,
--                                               result, resultlen,
--                                               errp);
-+    return fail;
+@@ -44,57 +45,7 @@ gboolean qcrypto_hash_supports(QCryptoHashAlgorithm alg)
  }
  
  
-@@ -77,30 +75,94 @@ int qcrypto_hash_bytes(QCryptoHashAlgorithm alg,
-     return qcrypto_hash_bytesv(alg, &iov, 1, result, resultlen, errp);
- }
- 
-+int qcrypto_hash_update(QCryptoHash *hash,
-+                        const struct iovec *iov,
-+                        size_t niov,
-+                        Error **errp)
-+{
-+    return qcrypto_hash_lib_driver.hash_update(hash, iov, niov, errp);
-+}
-+
-+QCryptoHash *qcrypto_hash_new(QCryptoHashAlgorithm alg, Error **errp)
-+{
-+    return qcrypto_hash_lib_driver.hash_new(alg, errp);
-+}
-+
-+int qcrypto_hash_free(QCryptoHash *hash)
-+{
-+    return qcrypto_hash_lib_driver.hash_free(hash);
-+}
-+
-+int qcrypto_hash_finalize_bytes(QCryptoHash *hash,
-+                                uint8_t **result,
-+                                size_t *result_len,
-+                                Error **errp)
-+{
-+    return qcrypto_hash_lib_driver.hash_finalize(hash, result, result_len, errp);
-+}
-+
- static const char hex[] = "0123456789abcdef";
- 
-+int qcrypto_hash_finalize_digest(QCryptoHash *hash,
-+                                 char **digest,
-+                                 Error **errp)
-+{
-+    int ret;
-+    uint8_t *result = NULL;
-+    size_t resultlen = 0;
-+    size_t i;
-+
-+    ret = qcrypto_hash_finalize_bytes(hash, &result, &resultlen, errp);
-+    if (ret == 0) {
-+        *digest = g_new0(char, (resultlen * 2) + 1);
-+        for (i = 0 ; i < resultlen ; i++) {
-+            (*digest)[(i * 2)] = hex[(result[i] >> 4) & 0xf];
-+            (*digest)[(i * 2) + 1] = hex[result[i] & 0xf];
-+        }
-+        (*digest)[resultlen * 2] = '\0';
-+        g_free(result);
-+    }
-+
-+    return ret;
-+}
-+
-+int qcrypto_hash_finalize_base64(QCryptoHash *hash,
-+                                 char **base64,
-+                                 Error **errp)
-+{
-+    int ret;
-+    uint8_t *result = NULL;
-+    size_t resultlen = 0;
-+
-+    ret = qcrypto_hash_finalize_bytes(hash, &result, &resultlen, errp);
-+    if (ret == 0) {
-+        *base64 = g_base64_encode(result, resultlen);
-+        g_free(result);
-+    }
-+
-+    return ret;
-+}
-+
- int qcrypto_hash_digestv(QCryptoHashAlgorithm alg,
-                          const struct iovec *iov,
-                          size_t niov,
-                          char **digest,
-                          Error **errp)
- {
--    uint8_t *result = NULL;
--    size_t resultlen = 0;
--    size_t i;
-+    bool fail;
-+    QCryptoHash *ctx = qcrypto_hash_new(alg, errp);
- 
--    if (qcrypto_hash_bytesv(alg, iov, niov, &result, &resultlen, errp) < 0) {
+-static int
+-qcrypto_glib_hash_bytesv(QCryptoHashAlgorithm alg,
+-                         const struct iovec *iov,
+-                         size_t niov,
+-                         uint8_t **result,
+-                         size_t *resultlen,
+-                         Error **errp)
+-{
+-    int i, ret;
+-    GChecksum *cs;
+-
+-    if (!qcrypto_hash_supports(alg)) {
+-        error_setg(errp,
+-                   "Unknown hash algorithm %d",
+-                   alg);
 -        return -1;
 -    }
-+    if (ctx) {
-+        fail = qcrypto_hash_update(ctx, iov, niov, errp) ||
-+               qcrypto_hash_finalize_digest(ctx, digest, errp);
- 
--    *digest = g_new0(char, (resultlen * 2) + 1);
--    for (i = 0 ; i < resultlen ; i++) {
--        (*digest)[(i * 2)] = hex[(result[i] >> 4) & 0xf];
--        (*digest)[(i * 2) + 1] = hex[result[i] & 0xf];
-+        /* Ensure context is always freed regardless of error */
-+        fail = qcrypto_hash_free(ctx) || fail;
-+    } else {
-+        fail = false;
-     }
--    (*digest)[resultlen * 2] = '\0';
--    g_free(result);
+-
+-    cs = g_checksum_new(qcrypto_hash_alg_map[alg]);
+-
+-    for (i = 0; i < niov; i++) {
+-        g_checksum_update(cs, iov[i].iov_base, iov[i].iov_len);
+-    }
+-
+-    ret = g_checksum_type_get_length(qcrypto_hash_alg_map[alg]);
+-    if (ret < 0) {
+-        error_setg(errp, "%s",
+-                   "Unable to get hash length");
+-        goto error;
+-    }
+-    if (*resultlen == 0) {
+-        *resultlen = ret;
+-        *result = g_new0(uint8_t, *resultlen);
+-    } else if (*resultlen != ret) {
+-        error_setg(errp,
+-                   "Result buffer size %zu is smaller than hash %d",
+-                   *resultlen, ret);
+-        goto error;
+-    }
+-
+-    g_checksum_get_digest(cs, *result, resultlen);
+-
+-    g_checksum_free(cs);
 -    return 0;
+-
+- error:
+-    g_checksum_free(cs);
+-    return -1;
+-}
+-
+ 
+ QCryptoHashDriver qcrypto_hash_lib_driver = {
+-    .hash_bytesv = qcrypto_glib_hash_bytesv,
 +
-+    return fail;
- }
- 
- int qcrypto_hash_digest(QCryptoHashAlgorithm alg,
-@@ -120,16 +182,20 @@ int qcrypto_hash_base64v(QCryptoHashAlgorithm alg,
-                          char **base64,
-                          Error **errp)
- {
--    uint8_t *result = NULL;
--    size_t resultlen = 0;
-+    bool fail;
-+    QCryptoHash *ctx = qcrypto_hash_new(alg, errp);
-+
-+    if (ctx) {
-+        fail = qcrypto_hash_update(ctx, iov, niov, errp) ||
-+               qcrypto_hash_finalize_base64(ctx, base64, errp);
- 
--    if (qcrypto_hash_bytesv(alg, iov, niov, &result, &resultlen, errp) < 0) {
--        return -1;
-+        /* Ensure context is always freed regardless of error */
-+        fail = qcrypto_hash_free(ctx) || fail;
-+    } else {
-+        fail = 1;
-     }
- 
--    *base64 = g_base64_encode(result, resultlen);
--    g_free(result);
--    return 0;
-+    return fail;
- }
- 
- int qcrypto_hash_base64(QCryptoHashAlgorithm alg,
-diff --git a/crypto/hashpriv.h b/crypto/hashpriv.h
-index cee26ccb47..8a7d80619e 100644
---- a/crypto/hashpriv.h
-+++ b/crypto/hashpriv.h
-@@ -1,6 +1,7 @@
- /*
-  * QEMU Crypto hash driver supports
-  *
-+ * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
-  * Copyright (c) 2017 HUAWEI TECHNOLOGIES CO., LTD.
-  *
-  * Authors:
-@@ -15,15 +16,21 @@
- #ifndef QCRYPTO_HASHPRIV_H
- #define QCRYPTO_HASHPRIV_H
- 
-+#include "crypto/hash.h"
-+
- typedef struct QCryptoHashDriver QCryptoHashDriver;
- 
- struct QCryptoHashDriver {
--    int (*hash_bytesv)(QCryptoHashAlgorithm alg,
--                       const struct iovec *iov,
--                       size_t niov,
--                       uint8_t **result,
--                       size_t *resultlen,
--                       Error **errp);
-+   QCryptoHash *(*hash_new)(QCryptoHashAlgorithm alg, Error **errp);
-+   int (*hash_update)(QCryptoHash *hash,
-+                      const struct iovec *iov,
-+                      size_t niov,
-+                      Error **errp);
-+   int (*hash_finalize)(QCryptoHash *hash,
-+                        uint8_t **result,
-+                        size_t *resultlen,
-+                        Error **errp);
-+   int (*hash_free)(QCryptoHash *hash);
  };
- 
- extern QCryptoHashDriver qcrypto_hash_lib_driver;
-diff --git a/include/crypto/hash.h b/include/crypto/hash.h
-index 54d87aa2a1..96d080eeb5 100644
---- a/include/crypto/hash.h
-+++ b/include/crypto/hash.h
-@@ -1,6 +1,7 @@
- /*
-  * QEMU Crypto hash algorithms
-  *
-+ * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
-  * Copyright (c) 2015 Red Hat, Inc.
-  *
-  * This library is free software; you can redistribute it and/or
-@@ -25,6 +26,13 @@
- 
- /* See also "QCryptoHashAlgorithm" defined in qapi/crypto.json */
- 
-+typedef struct QCryptoHash QCryptoHash;
-+struct QCryptoHash {
-+    QCryptoHashAlgorithm alg;
-+    void *opaque;
-+    void *driver;
-+};
-+
- /**
-  * qcrypto_hash_supports:
-  * @alg: the hash algorithm
-@@ -120,6 +128,102 @@ int qcrypto_hash_digestv(QCryptoHashAlgorithm alg,
-                          char **digest,
-                          Error **errp);
- 
-+/**
-+ * qcrypto_hash_update:
-+ * @hash: hash object from qcrypto_hash_new
-+ * @iov: the array of memory regions to hash
-+ * @niov: the length of @iov
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Updates the given hash object with all the memory regions
-+ * present in @iov.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_update(QCryptoHash *hash,
-+                        const struct iovec *iov,
-+                        size_t niov,
-+                        Error **errp);
-+
-+/**
-+ * qcrypto_hash_finalize_digest:
-+ * @hash: the hash object to finalize
-+ * @digest: pointer to hold output hash
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Computes the hash from the given hash object. Hash object
-+ * is expected to have its data updated from the qcrypto_hash_update function.
-+ * The @digest pointer will be filled with the printable hex digest of the
-+ * computed hash, which will be terminated by '\0'. The memory pointer
-+ * in @digest must be released with a call to g_free() when
-+ * no longer required.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_finalize_digest(QCryptoHash *hash,
-+                                 char **digest,
-+                                 Error **errp);
-+
-+/**
-+ * qcrypto_hash_finalize_base64:
-+ * @hash_ctx: hash object to finalize
-+ * @base64: pointer to store the hash result in
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Computes the hash from the given hash object. Hash object
-+ * is expected to have it's data updated from the qcrypto_hash_update function.
-+ * The @base64 pointer will be filled with the base64 encoding of the computed
-+ * hash, which will be terminated by '\0'. The memory pointer in @base64
-+ * must be released with a call to g_free() when no longer required.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_finalize_base64(QCryptoHash *hash,
-+                                 char **base64,
-+                                 Error **errp);
-+
-+/**
-+ * qcrypto_hash_finalize_bytes:
-+ * @hash_ctx: hash object to finalize
-+ * @result: pointer to store the hash result in
-+ * @result_len: Pointer to store the length of the result in
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Computes the hash from the given hash object. Hash object
-+ * is expected to have it's data updated from the qcrypto_hash_update function.
-+ * The memory pointer in @result must be released with a call to g_free()
-+ * when no longer required.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_finalize_bytes(QCryptoHash *hash,
-+                                uint8_t **result,
-+                                size_t *result_len,
-+                                Error **errp);
-+
-+/**
-+ * qcrypto_hash_new:
-+ * @alg: the hash algorithm
-+ * @errp: pointer to a NULL-initialized error object
-+ *
-+ * Creates a new hashing context for the chosen algorithm for
-+ * usage with qcrypto_hash_update.
-+ *
-+ * Returns: New hash object with the given algorithm
-+ */
-+QCryptoHash *qcrypto_hash_new(QCryptoHashAlgorithm alg,
-+                              Error **errp);
-+
-+/**
-+ * qcrypto_hash_free:
-+ * @hash: hash object to free
-+ *
-+ * Frees a hashing context for the chosen algorithm.
-+ *
-+ * Returns: 0 on success, -1 on error
-+ */
-+int qcrypto_hash_free(QCryptoHash *hash);
-+
- /**
-  * qcrypto_hash_digest:
-  * @alg: the hash algorithm
 -- 
 2.34.1
 
