@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F79E9483E8
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 23:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EEB9483DF
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 23:10:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb4xE-0008UD-Bn; Mon, 05 Aug 2024 17:09:20 -0400
+	id 1sb4xG-0000Cu-Sh; Mon, 05 Aug 2024 17:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sb4xC-0008TF-3c
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:09:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sb4xD-0008UR-HT
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:09:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sb4x3-0008Sl-Cs
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:09:17 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sb4xB-0008T4-26
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 17:09:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722892146;
+ s=mimecast20190719; t=1722892149;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sS+r8IfbbmrpLEZ6oy4QNDwezTjm3o7MWffy1eZKmxM=;
- b=NzGmYSDXItasZ6UjxnKiAengyvX4vBK2xRXaoEB+8y1yUBJQ/yFteaNN1v3WEjsf4NPORs
- e1tdCWSgddmgQ55lWcAttvjJqHN73fA+MFO2JodznIcljnBR9a3ASrmvfc6yaB+5w0XU0h
- /FSmtn2A1slHMCNEr96x91V7zirTxcA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=/g0sHsnAjTQQwqSUZTxHOBU5uq4XarRAoERO1KomibQ=;
+ b=JTFOksgqMtxNAzFLqmkE66g70lqoRzCXgg2hkSrHEoe3zZp+eEgT45hKyv1+Q+0MKLJw+9
+ bTuHdD0aDZTIu23nanQUDWSEw02dQQ8Q05T1DJGjVXgY949gxBmUCeLHOXR6+TRTFBwBwO
+ UljPYIRWcuq5nOYsAmaB7Orbx0Yvfb4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-0_6T_KrHNv-hRziup85vZw-1; Mon,
- 05 Aug 2024 17:09:05 -0400
-X-MC-Unique: 0_6T_KrHNv-hRziup85vZw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-53-Ad9bJgZdO5CgvRA1zr2OJg-1; Mon,
+ 05 Aug 2024 17:09:06 -0400
+X-MC-Unique: Ad9bJgZdO5CgvRA1zr2OJg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 24BF41955D42; Mon,  5 Aug 2024 21:09:04 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C508519560B1; Mon,  5 Aug 2024 21:09:05 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.224])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 54D8830001AA; Mon,  5 Aug 2024 21:08:57 +0000 (UTC)
+ id 6BE2530001B7; Mon,  5 Aug 2024 21:09:04 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 01/13] qapi-block-core: Clean up
- blockdev-snapshot-internal-sync doc
-Date: Mon,  5 Aug 2024 23:08:39 +0200
-Message-ID: <20240805210851.314076-2-kwolf@redhat.com>
+Subject: [PULL 02/13] block-copy: Fix missing graph lock
+Date: Mon,  5 Aug 2024 23:08:40 +0200
+Message-ID: <20240805210851.314076-3-kwolf@redhat.com>
 In-Reply-To: <20240805210851.314076-1-kwolf@redhat.com>
 References: <20240805210851.314076-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,55 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Markus Armbruster <armbru@redhat.com>
+The graph lock needs to be held when calling bdrv_co_pdiscard(). Fix
+block_copy_task_entry() to take it for the call.
 
-BlockdevSnapshotInternal is the arguments type of command
-blockdev-snapshot-internal-sync.  Its doc comment contains this note:
+WITH_GRAPH_RDLOCK_GUARD() was implemented in a weak way because of
+limitations in clang's Thread Safety Analysis at the time, so that it
+only asserts that the lock is held (which allows calling functions that
+require the lock), but we never deal with the unlocking (so even after
+the scope of the guard, the compiler assumes that the lock is still
+held). This is why the compiler didn't catch this locking error.
 
-    # .. note:: In a transaction, if @name is empty or any snapshot matching
-    #    @name exists, the operation will fail.  Only some image formats
-    #    support it; for example, qcow2, and rbd.
-
-"In a transaction" is misleading, and "if @name is empty or any
-snapshot matching @name exists, the operation will fail" is redundant
-with the command's Errors documentation.  Drop.
-
-The remainder is fine.  Move it to the command's doc comment, where it
-is more prominently visible, with a slight rephrasing for clarity.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240718123609.3063055-1-armbru@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20240627181245.281403-2-kwolf@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qapi/block-core.json | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ block/block-copy.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index f400b334c8..994e384a71 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -6046,10 +6046,6 @@
- #
- # @name: the name of the internal snapshot to be created
- #
--# .. note:: In a transaction, if @name is empty or any snapshot matching
--#    @name exists, the operation will fail.  Only some image formats
--#    support it; for example, qcow2, and rbd.
--#
- # Since: 1.7
- ##
- { 'struct': 'BlockdevSnapshotInternal',
-@@ -6070,6 +6066,9 @@
- #     - If the format of the image used does not support it,
- #       GenericError
- #
-+# .. note:: Only some image formats such as qcow2 and rbd support
-+#    internal snapshots.
-+#
- # Since: 1.7
- #
- # .. qmp-example::
+diff --git a/block/block-copy.c b/block/block-copy.c
+index 7e3b378528..cc618e4561 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -595,7 +595,9 @@ static coroutine_fn int block_copy_task_entry(AioTask *task)
+     if (s->discard_source && ret == 0) {
+         int64_t nbytes =
+             MIN(t->req.offset + t->req.bytes, s->len) - t->req.offset;
+-        bdrv_co_pdiscard(s->source, t->req.offset, nbytes);
++        WITH_GRAPH_RDLOCK_GUARD() {
++            bdrv_co_pdiscard(s->source, t->req.offset, nbytes);
++        }
+     }
+ 
+     return ret;
 -- 
 2.45.2
 
