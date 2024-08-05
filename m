@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E7394832C
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFB8948325
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 22:19:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sb49i-00059A-T2; Mon, 05 Aug 2024 16:18:10 -0400
+	id 1sb49k-0005QD-EW; Mon, 05 Aug 2024 16:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3cTOxZgUKCtgN4PCJAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--tavip.bounces.google.com>)
- id 1sb49X-00040G-Lt
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:59 -0400
-Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
+ <3cjOxZgUKCtkO5QDKBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--tavip.bounces.google.com>)
+ id 1sb49c-0004XO-So
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:18:05 -0400
+Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3cTOxZgUKCtgN4PCJAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--tavip.bounces.google.com>)
- id 1sb49T-0001WB-MA
- for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:17:59 -0400
-Received: by mail-pl1-x649.google.com with SMTP id
- d9443c01a7336-1fd9a0efe4eso89516645ad.0
- for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:54 -0700 (PDT)
+ <3cjOxZgUKCtkO5QDKBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--tavip.bounces.google.com>)
+ id 1sb49X-0001Wt-Rr
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 16:18:04 -0400
+Received: by mail-pg1-x549.google.com with SMTP id
+ 41be03b00d2f7-7a267d9e7b0so8383193a12.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 13:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1722889073; x=1723493873; darn=nongnu.org;
+ d=google.com; s=20230601; t=1722889076; x=1723493876; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=v2jh5tjCtlI1RmgfNYjqVuuv8CQQZbs99DRkNkD9UB4=;
- b=QZkkMQ56ebcCn4zst7AmsNZ77oAl1z1JaooJ37+EmqH8ExhJF9zDJ3rRFkPfFPxYxv
- EAh+C4vDnVjh5c5syvwb6hKV90dFO9GIPPydG9vcj75c6Y5mKDYbHQGOLsKd5RfVyM5f
- Csyrf/JPzKO6JMPYQ0wgrDYZOnD8fz60b86Oe9laZxOLeKrphZIPMH71mpg/BqKV0VZ7
- 2p5SSG8wHDebTugmJ2P2MZVSga5d2TJdWEJUF0/kh48A4s6ygkYPGV1ZmgD45ENKF8rJ
- 680Op7TPurtFvXgxG4F63AJjdjl6RLNldOzd23GTN6mIdF9GMwHM9v3S3+yxcXPH4mj4
- LjWg==
+ bh=TDXUM/DnNUUyn6pHbVPdEoD8ZybpFrPwu+WD1vFxHS8=;
+ b=P0jeBNKe9VJyfd1tjbon6jVJ51NGTCE0bMyIsbeVWloxuS+i+nn3m2x6yUfNzXI+q7
+ iD4UPUytwT/nzlNKXFPbk/Mi+QQzUBsUQ4HvE1qXPK2ZLTSN7apz4BSPDl1YNl5vu1LD
+ 4oMOgu2OsV+IxdC2NjVuRTlsBo1EWvIXjQDhuf+o6mX8lLZ6bMKnJF3VBVniicBXdR1w
+ ZrbETAwTRbhNR0b91BaNWcf59vI9RvGKYDH8AKeHwRWtVhISCKgvcrVKIhPujT4KE1On
+ ZZUd3KGnh2Q1mgsBduQR2AQlEr3pyX5jDrFwYMlth+0x6U+Dmmp0pOlS1jGvVvWD5KTC
+ szcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722889073; x=1723493873;
+ d=1e100.net; s=20230601; t=1722889076; x=1723493876;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v2jh5tjCtlI1RmgfNYjqVuuv8CQQZbs99DRkNkD9UB4=;
- b=AoD5YAosmksTdEzOwW+JuGtJOFR7IA55jMoA+dtQV3cCqL9I+wTBHlQSm40LpBN/YT
- YU44lSijjCCWjYsl6yP7s3mSIjHkGGTGo04IApWxWiej0fo9N5xcJ37VgBUBl1jXOHNu
- wpRjMncX0U7hN/wh/hTQziufzEO4ggIzpJozVUoCWoqSn3+dX0wiN7TPaZgoMlG7fONT
- 3uvapk+WSKrGzAnohvHpIrb1R6UekogFbeBHSorQRtT9U6sfNRls+bo/xkfGD9KiRThh
- cWYLx8rGbBiuLAfkcuUdSQEAkAdk8ZFbmhz7PodmAeJ7h3QjPvCQElF9nhhTcccJ/pqn
- XOAg==
-X-Gm-Message-State: AOJu0YzHJHarB0tsu08EfxcUsiu0qqmjF4iaGSrROXzhshF9QIECke4j
- pZhiLP7q+nBoaJQbpI+w6wRQCeZdikX9vsZ6z0PZi4mYkOM68PrCnm3bOp2E7MfnJNx3KdNgf8X
- DAqjnEtd3OfXsR9jhAIGr/XVO/ShOsFAiaF3drSi2pdTkycRaKJur7W8efInklYlmHY9UaC38ar
- o7S3osFMSb2XkVAAUh0vKqnBnzuA==
-X-Google-Smtp-Source: AGHT+IEZdX2+oV28BPB0L7VYVGqFiktD6Oe29pv7sN7eBnPkvt3mVBy2Us8eoLe88yTqNmo0HP3uxSkHfQ==
+ bh=TDXUM/DnNUUyn6pHbVPdEoD8ZybpFrPwu+WD1vFxHS8=;
+ b=PQJV//NG4jrYcFG0fjhyy1Ma4uLWkf4UiQUUYaLVLlHInM6aSoRuM3wLTrQKHt+hQR
+ Dp/FjQaZQAQZNq/IHSXcYxBeezCisTu9vG5JNOjo1d1Ss7vaCtlnNh6++sGHj1UYHKIU
+ KHtVkDt1ei3EtuwOBVeqdOnvGcwNrdYXwzOaaFLN2QVzMYfGuc+KsoRSei+t308kI3i4
+ EIlh2taL3U+Jlf6F8X8XsYgzOK09JMgoYjA2NDakqQrGXLrsVSRyFEpDstzAOJhbmDD4
+ FlJppJbF8tM86zgDVUJoU5RaD+hjXEXOe3rEfV+acO2YMVBfK7CplfbjNW8ERApAM/+0
+ XB3g==
+X-Gm-Message-State: AOJu0Yza65vlPuew7f9Acgd8sxOjZkC9y4xTzyuOaBRvIX62zBTOWmZT
+ VecGjRbvBhFw22GM2zMuYCPgLahC4rD3gTBFsdFh5e24zpT8QVZb402L08MMktuTDq7sh+2W0W5
+ HXcn4wISeNg58bJ4UakpxpYaVzkxi3udXIc7OhgM0bKJLnWGzZUR6POF0behZlhWdoIXf8X6NSy
+ 8r2MZLH6wJzA6/SLTJGqXo0/N82w==
+X-Google-Smtp-Source: AGHT+IFnbKW0982idR2ThGvBGZQLmLXkxC9szOhbfZs08+ppAvucuotVSSXrQPXEto+7IAj1EGypCgRzBg==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a17:902:dac4:b0:1fc:57b7:9959
+ (user=tavip job=sendgmr) by 2002:a17:90b:1b05:b0:2ca:7e66:2d90
  with SMTP id
- d9443c01a7336-1ff5732e3b0mr3746995ad.6.1722889073028; Mon, 05 Aug 2024
- 13:17:53 -0700 (PDT)
-Date: Mon,  5 Aug 2024 13:17:13 -0700
+ 98e67ed59e1d1-2cff955f924mr72168a91.7.1722889074724; Mon, 05 Aug 2024
+ 13:17:54 -0700 (PDT)
+Date: Mon,  5 Aug 2024 13:17:14 -0700
 In-Reply-To: <20240805201719.2345596-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240805201719.2345596-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240805201719.2345596-19-tavip@google.com>
-Subject: [RFC PATCH 18/23] hw/misc: add support for RT500's clock controller
+Message-ID: <20240805201719.2345596-20-tavip@google.com>
+Subject: [RFC PATCH 19/23] test/unit: add unit tests for RT500's clock
+ controller
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -69,16 +70,16 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  marcandre.lureau@redhat.com, alistair@alistair23.me, berrange@redhat.com, 
  philmd@linaro.org, jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
- envelope-from=3cTOxZgUKCtgN4PCJAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--tavip.bounces.google.com;
- helo=mail-pl1-x649.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
+ envelope-from=3cjOxZgUKCtkO5QDKBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--tavip.bounces.google.com;
+ helo=mail-pg1-x549.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,77 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It supports system and audio PLL initialization and SYSTICK and
-OSTIMER clock source selection.
+Add test to exercise clocks set and clear, system PLL initialization,
+audio PLL initialization, systick and ostimer clock source selection.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- hw/arm/svd/meson.build            |   8 +
- hw/misc/Kconfig                   |   6 +
- hw/misc/meson.build               |   2 +
- hw/misc/rt500_clkctl0.c           | 243 ++++++++++++++++++++++++++++++
- hw/misc/rt500_clkctl1.c           | 224 +++++++++++++++++++++++++++
- hw/misc/trace-events              |   8 +
- include/hw/misc/rt500_clk_freqs.h |  18 +++
- include/hw/misc/rt500_clkctl0.h   |  37 +++++
- include/hw/misc/rt500_clkctl1.h   |  38 +++++
- 9 files changed, 584 insertions(+)
- create mode 100644 hw/misc/rt500_clkctl0.c
- create mode 100644 hw/misc/rt500_clkctl1.c
- create mode 100644 include/hw/misc/rt500_clk_freqs.h
- create mode 100644 include/hw/misc/rt500_clkctl0.h
- create mode 100644 include/hw/misc/rt500_clkctl1.h
+ tests/unit/meson.build         |   7 +
+ tests/unit/test-rt500-clkctl.c | 270 +++++++++++++++++++++++++++++++++
+ 2 files changed, 277 insertions(+)
+ create mode 100644 tests/unit/test-rt500-clkctl.c
 
-diff --git a/hw/arm/svd/meson.build b/hw/arm/svd/meson.build
-index 8b3b045137..6ab13f8757 100644
---- a/hw/arm/svd/meson.build
-+++ b/hw/arm/svd/meson.build
-@@ -14,3 +14,11 @@ genh += custom_target('flexcomm_spi.h',
-                       output: 'flexcomm_spi.h',
-                       input: 'MIMXRT595S_cm33.xml',
-                       command: [ svd_gen_header, '-i', '@INPUT@', '-o', '@OUTPUT@', '-p', 'SPI0', '-t', 'FLEXCOMM_SPI'])
-+genh += custom_target('rt500_clkctl0.h',
-+                      output: 'rt500_clkctl0.h',
-+                      input: 'MIMXRT595S_cm33.xml',
-+                      command: [ svd_gen_header, '-i', '@INPUT@', '-o', '@OUTPUT@', '-p', 'CLKCTL0', '-t', 'RT500_CLKCTL0'])
-+genh += custom_target('rt500_clkctl1.h',
-+                      output: 'rt500_clkctl1.h',
-+                      input: 'MIMXRT595S_cm33.xml',
-+                      command: [ svd_gen_header, '-i', '@INPUT@', '-o', '@OUTPUT@', '-p', 'CLKCTL1', '-t', 'RT500_CLKCTL1'])
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 14167ae9e8..392ae9e84f 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -216,4 +216,10 @@ config XLNX_VERSAL_TRNG
- config FLEXCOMM
-     bool
- 
-+config RT500_CLKCTL0
-+    bool
-+
-+config RT500_CLKCTL1
-+    bool
-+
- source macio/Kconfig
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 8414767ae3..68929949a6 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -158,3 +158,5 @@ system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
- system_ss.add(when: 'CONFIG_LASI', if_true: files('lasi.c'))
- 
- system_ss.add(when: 'CONFIG_FLEXCOMM', if_true: files('flexcomm.c'))
-+system_ss.add(when: 'CONFIG_RT500_CLKCTL0', if_true: files('rt500_clkctl0.c'))
-+system_ss.add(when: 'CONFIG_RT500_CLKCTL1', if_true: files('rt500_clkctl1.c'))
-diff --git a/hw/misc/rt500_clkctl0.c b/hw/misc/rt500_clkctl0.c
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index 7a28e7b521..be3062acbf 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -188,6 +188,13 @@ if have_system
+       meson.project_source_root() / 'hw/ssi/ssi.c',
+       'spi_tester.c',
+     ],
++    'test-rt500-clkctl': [
++      hwcore,
++      meson.project_source_root() / 'hw/core/gpio.c',
++      meson.project_source_root() / 'hw/misc/rt500_clkctl0.c',
++      meson.project_source_root() / 'hw/misc/rt500_clkctl1.c',
++      meson.project_source_root() / 'tests/unit/sysbus-mock.c',
++    ],
+   }
+   if config_host_data.get('CONFIG_INOTIFY1')
+     tests += {'test-util-filemonitor': []}
+diff --git a/tests/unit/test-rt500-clkctl.c b/tests/unit/test-rt500-clkctl.c
 new file mode 100644
-index 0000000000..84b5631924
+index 0000000000..9312091c46
 --- /dev/null
-+++ b/hw/misc/rt500_clkctl0.c
-@@ -0,0 +1,243 @@
++++ b/tests/unit/test-rt500-clkctl.c
+@@ -0,0 +1,270 @@
 +/*
-+ * QEMU model for RT500 Clock Controller
-+ *
 + * Copyright (c) 2024 Google LLC
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
@@ -174,594 +139,266 @@ index 0000000000..84b5631924
 + */
 +
 +#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "qemu/main-loop.h"
++#include "exec/memory.h"
 +#include "hw/clock.h"
 +#include "hw/irq.h"
 +#include "hw/qdev-clock.h"
 +#include "hw/qdev-properties.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "exec/address-spaces.h"
-+#include "hw/regs.h"
++
 +#include "hw/misc/rt500_clkctl0.h"
-+#include "hw/misc/rt500_clk_freqs.h"
-+
-+#include "trace.h"
-+
-+#define reg(field) offsetof(RT500_CLKCTL0_Type, field)
-+#define REG_NO (sizeof(RT500_CLKCTL0_Type) / sizeof(uint32_t))
-+#define regi(x) (reg(x) / sizeof(uint32_t))
-+
-+static RT500_CLKCTL0_REGISTER_NAMES_ARRAY(reg_names);
-+
-+static MemTxResult rt500_clkctl0_read(void *opaque, hwaddr addr,
-+                                      uint64_t *data, unsigned size,
-+                                      MemTxAttrs attrs)
-+{
-+    RT500ClkCtl0State *s = opaque;
-+    MemTxResult ret = MEMTX_OK;
-+
-+    if (!reg32_aligned_access(addr, size)) {
-+        ret = MEMTX_ERROR;
-+        goto out;
-+    }
-+
-+    switch (addr) {
-+    case reg(PSCCTL0_SET):
-+    case reg(PSCCTL1_SET):
-+    case reg(PSCCTL2_SET):
-+    case reg(PSCCTL0_CLR):
-+    case reg(PSCCTL1_CLR):
-+    case reg(PSCCTL2_CLR):
-+        /* write only registers */
-+        ret = MEMTX_ERROR;
-+        break;
-+    default:
-+        *data = reg32_read(&s->regs, addr);
-+        break;
-+    }
-+
-+out:
-+    trace_rt500_clkctl0_reg_read(reg_names[addr], addr, *data);
-+    return ret;
-+}
-+
-+static inline void set_systick_clk_from_div(RT500ClkCtl0State *s)
-+{
-+    uint32_t div = s->regs.SYSTICKFCLKDIV_b.DIV + 1;
-+    uint32_t rate = clock_get_hz(s->sysclk);
-+
-+    clock_set_hz(s->systick_clk, rate / div);
-+}
-+
-+static MemTxResult rt500_clkctl0_write(void *opaque, hwaddr addr,
-+                                       uint64_t value, unsigned size,
-+                                       MemTxAttrs attrs)
-+{
-+    RT500ClkCtl0State *s = opaque;
-+    MemTxResult ret = MEMTX_OK;
-+    static uint32_t wr_mask[REG_NO] = {
-+        [0 ... REG_NO - 1] = BITS(31, 0),
-+        [regi(FRO_CAPVAL)] = 0,
-+        [regi(FROCLKSTATUS)] = 0,
-+    };
-+
-+    if (!reg32_aligned_access(addr, size)) {
-+        ret = MEMTX_ERROR;
-+        goto out;
-+    }
-+
-+    switch (addr) {
-+    case reg(PSCCTL0):
-+    case reg(PSCCTL1):
-+    case reg(PSCCTL2):
-+    {
-+        reg32_write(&s->regs, addr, value, wr_mask);
-+        break;
-+    }
-+    case reg(PSCCTL0_SET):
-+    case reg(PSCCTL1_SET):
-+    case reg(PSCCTL2_SET):
-+    {
-+        uint32_t update_addr = reg(PSCCTL0) + (addr - reg(PSCCTL0_SET));
-+        reg32_write(&s->regs, update_addr,
-+                    reg32_read(&s->regs, update_addr) | value, wr_mask);
-+        break;
-+    }
-+    case reg(PSCCTL0_CLR):
-+    case reg(PSCCTL1_CLR):
-+    case reg(PSCCTL2_CLR):
-+    {
-+        uint32_t update_addr = reg(PSCCTL0) + (addr - reg(PSCCTL0_CLR));
-+        reg32_write(&s->regs, update_addr,
-+                    reg32_read(&s->regs, update_addr) & ~value, wr_mask);
-+        break;
-+    }
-+    default:
-+        reg32_write(&s->regs, addr, value, wr_mask);
-+    }
-+
-+    switch (addr) {
-+    case reg(SYSPLL0PFD):
-+    {
-+        if (!s->regs.SYSPLL0PFD_b.PFD0_CLKGATE) {
-+            s->regs.SYSPLL0PFD_b.PFD0_CLKRDY = 1;
-+        } else {
-+            s->regs.SYSPLL0PFD_b.PFD0_CLKRDY = 0;
-+        }
-+        if (!s->regs.SYSPLL0PFD_b.PFD1_CLKGATE) {
-+            s->regs.SYSPLL0PFD_b.PFD1_CLKRDY = 1;
-+        } else {
-+            s->regs.SYSPLL0PFD_b.PFD1_CLKRDY = 0;
-+        }
-+        if (!s->regs.SYSPLL0PFD_b.PFD2_CLKGATE) {
-+            s->regs.SYSPLL0PFD_b.PFD2_CLKRDY = 1;
-+        } else {
-+            s->regs.SYSPLL0PFD_b.PFD2_CLKRDY = 0;
-+        }
-+        if (!s->regs.SYSPLL0PFD_b.PFD3_CLKGATE) {
-+            s->regs.SYSPLL0PFD_b.PFD3_CLKRDY = 1;
-+        } else {
-+            s->regs.SYSPLL0PFD_b.PFD3_CLKRDY = 0;
-+        }
-+        break;
-+    }
-+    case reg(SYSTICKFCLKSEL):
-+    {
-+        switch (s->regs.SYSTICKFCLKSEL_b.SEL) {
-+        case SYSTICKFCLKSEL_DIVOUT:
-+        {
-+            set_systick_clk_from_div(s);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_LPOSC:
-+        {
-+            clock_set_hz(s->systick_clk, LPOSC_CLK_HZ);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_32KHZRTC:
-+        {
-+            clock_set_hz(s->systick_clk, RTC32KHZ_CLK_HZ);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_NONE:
-+        {
-+            clock_set_hz(s->systick_clk, 0);
-+            break;
-+        }
-+        }
-+        clock_propagate(s->systick_clk);
-+        break;
-+    }
-+    case reg(SYSTICKFCLKDIV):
-+    {
-+        if (s->regs.SYSTICKFCLKSEL_b.SEL == SYSTICKFCLKSEL_DIVOUT) {
-+            set_systick_clk_from_div(s);
-+            clock_propagate(s->systick_clk);
-+        }
-+        break;
-+    }
-+    }
-+
-+out:
-+    trace_rt500_clkctl0_reg_write(reg_names[addr], addr, value);
-+    return ret;
-+
-+    return MEMTX_OK;
-+}
-+
-+static const MemoryRegionOps rt500_clkctl0_ops = {
-+    .read_with_attrs = rt500_clkctl0_read,
-+    .write_with_attrs = rt500_clkctl0_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static void rt500_clkctl0_reset(DeviceState *dev)
-+{
-+    RT500ClkCtl0State *s = RT500_CLKCTL0(dev);
-+
-+    memset(&s->regs, 0, sizeof(s->regs));
-+
-+    rt500_clkctl0_reset_registers(&s->regs);
-+
-+    /* clock OK immediately after reset */
-+    s->regs.FROCLKSTATUS = 0x00000001;
-+}
-+
-+static void rt500_clkctl0_init(Object *obj)
-+{
-+    RT500ClkCtl0State *s = RT500_CLKCTL0(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &rt500_clkctl0_ops, s,
-+                          TYPE_RT500_CLKCTL0, sizeof(s->regs));
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-+    s->systick_clk = qdev_init_clock_out(DEVICE(s), "systick_clk");
-+}
-+
-+static void rt500_clkctl0_realize(DeviceState *dev, Error **errp)
-+{
-+}
-+
-+static void rt500_clkctl0_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->reset = rt500_clkctl0_reset;
-+    dc->realize = rt500_clkctl0_realize;
-+}
-+
-+static const TypeInfo rt500_clkctl0_info = {
-+    .name          = TYPE_RT500_CLKCTL0,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(RT500ClkCtl0State),
-+    .instance_init = rt500_clkctl0_init,
-+    .class_init    = rt500_clkctl0_class_init,
-+};
-+
-+static void rt500_clkctl0_register_types(void)
-+{
-+    type_register_static(&rt500_clkctl0_info);
-+}
-+
-+type_init(rt500_clkctl0_register_types)
-+
-diff --git a/hw/misc/rt500_clkctl1.c b/hw/misc/rt500_clkctl1.c
-new file mode 100644
-index 0000000000..a5a8cf6564
---- /dev/null
-+++ b/hw/misc/rt500_clkctl1.c
-@@ -0,0 +1,224 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/clock.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-clock.h"
-+#include "hw/qdev-properties.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "exec/address-spaces.h"
-+#include "hw/regs.h"
 +#include "hw/misc/rt500_clkctl1.h"
 +#include "hw/misc/rt500_clk_freqs.h"
-+
-+#include "trace.h"
-+
-+#define reg(field) offsetof(RT500_CLKCTL1_Type, field)
-+#define REG_NO (sizeof(RT500_CLKCTL1_Type) / sizeof(uint32_t))
-+#define regi(x) (reg(x) / sizeof(uint32_t))
-+
-+static RT500_CLKCTL1_REGISTER_NAMES_ARRAY(reg_names);
-+
-+static MemTxResult rt500_clkctl1_read(void *opaque, hwaddr addr,
-+                                      uint64_t *data, unsigned size,
-+                                      MemTxAttrs attrs)
-+{
-+    RT500ClkCtl1State *s = opaque;
-+    MemTxResult ret = MEMTX_OK;
-+
-+    if (!reg32_aligned_access(addr, size)) {
-+        ret = MEMTX_ERROR;
-+        goto out;
-+    }
-+
-+    switch (addr) {
-+    case reg(PSCCTL0_SET):
-+    case reg(PSCCTL1_SET):
-+    case reg(PSCCTL2_SET):
-+    case reg(PSCCTL0_CLR):
-+    case reg(PSCCTL1_CLR):
-+    case reg(PSCCTL2_CLR):
-+        /* write only registers */
-+        ret = MEMTX_ERROR;
-+        break;
-+    default:
-+        *data = reg32_read(&s->regs, addr);
-+        break;
-+    }
-+
-+out:
-+    trace_rt500_clkctl1_reg_read(reg_names[addr], addr, *data);
-+    return ret;
-+}
-+
-+static MemTxResult rt500_clkctl1_write(void *opaque, hwaddr addr,
-+                                       uint64_t value, unsigned size,
-+                                       MemTxAttrs attrs)
-+{
-+    RT500ClkCtl1State *s = opaque;
-+    MemTxResult ret = MEMTX_OK;
-+    static uint32_t wr_mask[REG_NO] = {
-+        [0 ... REG_NO - 1] = BITS(31, 0),
-+    };
-+
-+    if (!reg32_aligned_access(addr, size)) {
-+        ret = MEMTX_ERROR;
-+        goto out;
-+    }
-+
-+    switch (addr) {
-+    case reg(PSCCTL0):
-+    case reg(PSCCTL1):
-+    case reg(PSCCTL2):
-+    {
-+        reg32_write(&s->regs, addr, value, wr_mask);
-+        break;
-+    }
-+    case reg(PSCCTL0_SET):
-+    case reg(PSCCTL1_SET):
-+    case reg(PSCCTL2_SET):
-+    {
-+        uint32_t update_addr = reg(PSCCTL0) + (addr - reg(PSCCTL0_SET));
-+        reg32_write(&s->regs, update_addr,
-+                    reg32_read(&s->regs, update_addr) | value, wr_mask);
-+        break;
-+    }
-+    case reg(PSCCTL0_CLR):
-+    case reg(PSCCTL1_CLR):
-+    case reg(PSCCTL2_CLR):
-+    {
-+        uint32_t update_addr = reg(PSCCTL0) + (addr - reg(PSCCTL0_CLR));
-+        reg32_write(&s->regs, update_addr,
-+                    reg32_read(&s->regs, update_addr) & ~value, wr_mask);
-+        break;
-+    }
-+    default:
-+        reg32_write(&s->regs, addr, value, wr_mask);
-+    }
-+
-+    switch (addr) {
-+    case reg(AUDIOPLL0PFD):
-+    {
-+        if (!s->regs.AUDIOPLL0PFD_b.PFD0_CLKGATE) {
-+            s->regs.AUDIOPLL0PFD_b.PFD0_CLKRDY = 1;
-+        } else {
-+            s->regs.AUDIOPLL0PFD_b.PFD0_CLKRDY = 0;
-+        }
-+        if (!s->regs.AUDIOPLL0PFD_b.PFD1_CLKGATE) {
-+            s->regs.AUDIOPLL0PFD_b.PFD1_CLKRDY = 1;
-+        } else {
-+            s->regs.AUDIOPLL0PFD_b.PFD1_CLKRDY = 0;
-+        }
-+        if (!s->regs.AUDIOPLL0PFD_b.PFD2_CLKGATE) {
-+            s->regs.AUDIOPLL0PFD_b.PFD2_CLKRDY = 1;
-+        } else {
-+            s->regs.AUDIOPLL0PFD_b.PFD2_CLKRDY = 0;
-+        }
-+        if (!s->regs.AUDIOPLL0PFD_b.PFD3_CLKGATE) {
-+            s->regs.AUDIOPLL0PFD_b.PFD3_CLKRDY = 1;
-+        } else {
-+            s->regs.AUDIOPLL0PFD_b.PFD3_CLKRDY = 0;
-+        }
-+        break;
-+    }
-+    case reg(OSEVENTTFCLKSEL):
-+    {
-+        switch (s->regs.OSEVENTTFCLKSEL_b.SEL) {
-+        case OSEVENTTFCLKSEL_LPOSC:
-+        {
-+            clock_set_hz(s->ostimer_clk, LPOSC_CLK_HZ);
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_32KHZRTC:
-+        {
-+            clock_set_hz(s->ostimer_clk, RTC32KHZ_CLK_HZ);
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_HCLK:
-+        {
-+            clock_set_hz(s->ostimer_clk, clock_get_hz(s->sysclk));
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_NONE:
-+        {
-+            clock_set_hz(s->ostimer_clk, 0);
-+            break;
-+        }
-+        }
-+
-+        clock_propagate(s->ostimer_clk);
-+        break;
-+    }
-+    }
-+
-+out:
-+    trace_rt500_clkctl1_reg_write(reg_names[addr], addr, value);
-+    return ret;
-+
-+    return MEMTX_OK;
-+}
-+
-+
-+static const MemoryRegionOps rt500_clkctl1_ops = {
-+    .read_with_attrs = rt500_clkctl1_read,
-+    .write_with_attrs = rt500_clkctl1_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static void rt500_clkctl1_reset(DeviceState *dev)
-+{
-+    RT500ClkCtl1State *s = RT500_CLKCTL1(dev);
-+
-+    memset(&s->regs, 0, sizeof(s->regs));
-+
-+    rt500_clkctl1_reset_registers(&s->regs);
-+}
-+
-+static void rt500_clkctl1_init(Object *obj)
-+{
-+    RT500ClkCtl1State *s = RT500_CLKCTL1(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &rt500_clkctl1_ops, s,
-+                          TYPE_RT500_CLKCTL1, sizeof(s->regs));
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-+    s->ostimer_clk = qdev_init_clock_out(DEVICE(s), "ostimer_clk");
-+}
-+
-+static void rt500_clkctl1_realize(DeviceState *dev, Error **errp)
-+{
-+}
-+
-+static void rt500_clkctl1_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->reset = rt500_clkctl1_reset;
-+    dc->realize = rt500_clkctl1_realize;
-+}
-+
-+static const TypeInfo rt500_clkctl1_info = {
-+    .name          = TYPE_RT500_CLKCTL1,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(RT500ClkCtl1State),
-+    .instance_init = rt500_clkctl1_init,
-+    .class_init    = rt500_clkctl1_class_init,
-+};
-+
-+static void rt500_clkctl1_register_types(void)
-+{
-+    type_register_static(&rt500_clkctl1_info);
-+}
-+
-+type_init(rt500_clkctl1_register_types)
-+
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 71ec77de29..e65fcfa613 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -357,3 +357,11 @@ flexcomm_reset(void) ""
- flexcomm_irq(const char *id, uint8_t irq) "%s %d"
- flexcomm_reg_read(const char *devname, const char *regname, uint32_t addr, uint32_t val) "%s: %s[0x%04x] -> 0x%08x"
- flexcomm_reg_write(const char *dename, const char *regname, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
-+
-+# rt500_clkctl0.c
-+rt500_clkctl0_reg_read(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] -> 0x%08x"
-+rt500_clkctl0_reg_write(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] <- 0x%08x"
-+
-+# rt500_clkctl1.c
-+rt500_clkctl1_reg_read(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] -> 0x%08x"
-+rt500_clkctl1_reg_write(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] <- 0x%08x"
-diff --git a/include/hw/misc/rt500_clk_freqs.h b/include/hw/misc/rt500_clk_freqs.h
-new file mode 100644
-index 0000000000..1e366d4967
---- /dev/null
-+++ b/include/hw/misc/rt500_clk_freqs.h
-@@ -0,0 +1,18 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef HW_MISC_RT500_CLK_FREQS_H
-+#define HW_MISC_RT500_CLK_FREQS_H
-+
-+#define RTC32KHZ_CLK_HZ 32000
-+#define LPOSC_CLK_HZ 1000000
-+
-+#endif /* HW_MISC_RT500_CLK_FREQS_H */
-diff --git a/include/hw/misc/rt500_clkctl0.h b/include/hw/misc/rt500_clkctl0.h
-new file mode 100644
-index 0000000000..798ded96e3
---- /dev/null
-+++ b/include/hw/misc/rt500_clkctl0.h
-@@ -0,0 +1,37 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef HW_MISC_RT500_CLKCTL0_H
-+#define HW_MISC_RT500_CLKCTL0_H
-+
-+#include "hw/arm/svd/rt500_clkctl0.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_RT500_CLKCTL0 "rt500-clkctl0"
-+#define RT500_CLKCTL0(o) OBJECT_CHECK(RT500ClkCtl0State, o, TYPE_RT500_CLKCTL0)
-+
-+#define SYSTICKFCLKSEL_DIVOUT 0
-+#define SYSTICKFCLKSEL_LPOSC 1
-+#define SYSTICKFCLKSEL_32KHZRTC 2
-+#define SYSTICKFCLKSEL_NONE 7
++#include "sysbus-mock.h"
++#include "reg-utils.h"
 +
 +typedef struct {
-+    /* <private> */
-+    SysBusDevice parent_obj;
-+
-+    /* <public> */
-+    MemoryRegion mmio;
-+    RT500_CLKCTL0_Type regs;
++    DeviceState *clk0;
++    DeviceState *clk1;
++    Clock *sysclk;
 +    Clock *systick_clk;
-+    Clock *sysclk;
-+} RT500ClkCtl0State;
-+
-+#endif /* HW_MISC_RT500_CLKCTL0_H */
-diff --git a/include/hw/misc/rt500_clkctl1.h b/include/hw/misc/rt500_clkctl1.h
-new file mode 100644
-index 0000000000..7b6e56e294
---- /dev/null
-+++ b/include/hw/misc/rt500_clkctl1.h
-@@ -0,0 +1,38 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+
-+#ifndef HW_MISC_RT500_CLKCTL1_H
-+#define HW_MISC_RT500_CLKCTL1_H
-+
-+#include "hw/arm/svd/rt500_clkctl1.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_RT500_CLKCTL1 "rt500-clkctl1"
-+#define RT500_CLKCTL1(o) OBJECT_CHECK(RT500ClkCtl1State, o, TYPE_RT500_CLKCTL1)
-+
-+#define OSEVENTTFCLKSEL_LPOSC 0
-+#define OSEVENTTFCLKSEL_32KHZRTC 1
-+#define OSEVENTTFCLKSEL_HCLK 2
-+#define OSEVENTTFCLKSEL_NONE 7
-+
-+typedef struct {
-+    /* <private> */
-+    SysBusDevice parent_obj;
-+
-+    /* <public> */
-+    MemoryRegion mmio;
-+    RT500_CLKCTL1_Type regs;
-+    Clock *sysclk;
 +    Clock *ostimer_clk;
-+} RT500ClkCtl1State;
++} TestFixture;
 +
-+#endif /* HW_MISC_RT500_CLKCTL1_H */
++#define SYSCLK_HZ 100000000
++
++#define RT500_CLKCTL0_BASE 0x40001000UL
++#define RT500_CLKCTL1_BASE 0x40021000UL
++
++/*
++ * Test fixture initialization.
++ */
++static void set_up(TestFixture *f, gconstpointer data)
++{
++    f->clk0 = qdev_new(TYPE_RT500_CLKCTL0);
++    g_assert(f->clk0);
++
++    f->clk1 = qdev_new(TYPE_RT500_CLKCTL1);
++    g_assert(f->clk1);
++
++    f->sysclk = clock_new(OBJECT(&f->clk0->parent_obj), "SYSCLK");
++    clock_set_hz(f->sysclk, SYSCLK_HZ);
++
++    qdev_connect_clock_in(f->clk0, "sysclk", f->sysclk);
++    f->systick_clk = RT500_CLKCTL0(f->clk0)->systick_clk;
++
++    qdev_connect_clock_in(f->clk1, "sysclk", f->sysclk);
++    f->ostimer_clk = RT500_CLKCTL1(f->clk1)->ostimer_clk;
++
++    qdev_realize_and_unref(f->clk0, NULL, NULL);
++    sysbus_mmio_map(SYS_BUS_DEVICE(f->clk0), 0, RT500_CLKCTL0_BASE);
++
++    qdev_realize_and_unref(f->clk1, NULL, NULL);
++    sysbus_mmio_map(SYS_BUS_DEVICE(f->clk1), 0, RT500_CLKCTL1_BASE);
++
++    device_cold_reset(f->clk0);
++    device_cold_reset(f->clk1);
++}
++
++static void tear_down(TestFixture *f, gconstpointer user_data)
++{
++    qdev_unrealize(f->clk0);
++    qdev_unrealize(f->clk1);
++    g_free(f->clk0);
++    g_free(f->clk1);
++}
++
++#undef CLKCTL0
++#undef CLKCTL1
++
++static void pscctl_test(TestFixture *f, gconstpointer user_data)
++{
++    /* rom controller clock should be enabled at reset */
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, PSCCTL0, ROM_CTRLR_CLK)
++             == 1);
++
++    /* DSP clk is disabled at reset */
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, PSCCTL0, DSP_CLK) == 0);
++
++    /* check PSCTL_SET functionality */
++    REG32_WRITE(f->clk0, RT500_CLKCTL0, PSCCTL0_SET,
++                RT500_CLKCTL0_PSCCTL0_DSP_CLK_Msk);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, PSCCTL0, DSP_CLK) == 1);
++
++    /* check PSCTL_CLR functionality */
++    REG32_WRITE(f->clk0, RT500_CLKCTL0, PSCCTL0_CLR,
++                RT500_CLKCTL0_PSCCTL0_DSP_CLK_Msk);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, PSCCTL0, DSP_CLK) == 0);
++
++    /* FLEXIO clk is disabled at reset */
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, PSCCTL0, FlexIO) == 0);
++
++    /* check PSCTL_SET functionality */
++    REG32_WRITE(f->clk1, RT500_CLKCTL1, PSCCTL0_SET,
++                RT500_CLKCTL1_PSCCTL0_FlexIO_Msk);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, PSCCTL0, FlexIO) == 1);
++
++    /* check PSCTL_CLR functionality */
++    REG32_WRITE(f->clk1, RT500_CLKCTL1, PSCCTL0_CLR,
++                RT500_CLKCTL1_PSCCTL0_FlexIO_Msk);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, PSCCTL0, FlexIO) == 0);
++}
++
++static void audiopll0pfd_test(TestFixture *f, gconstpointer user_data)
++{
++    /*  audio plls are gated at boot */
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD,
++                              PFD3_CLKGATE) == 1);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD,
++                              PFD2_CLKGATE) == 1);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD,
++                              PFD1_CLKGATE) == 1);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD,
++                              PFD0_CLKGATE) == 1);
++
++    /*  ,,, and clocks are not ready */
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD3_CLKRDY)
++             == 0);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD2_CLKRDY)
++             == 0);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD1_CLKRDY)
++             == 0);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD0_CLKRDY)
++             == 0);
++
++    /* ungate all plls and check that clocks are ready */
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD3_CLKGATE, 0);
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD2_CLKGATE, 0);
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD1_CLKGATE, 0);
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD0_CLKGATE, 0);
++
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD3_CLKRDY)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD2_CLKRDY)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD1_CLKRDY)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk1, RT500_CLKCTL1, AUDIOPLL0PFD, PFD0_CLKRDY)
++             == 1);
++}
++
++static void syspll0pfd_test(TestFixture *f, gconstpointer user_data)
++{
++    /*  system plls are gated at boot */
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD3_CLKGATE)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD2_CLKGATE)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD1_CLKGATE)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD0_CLKGATE)
++             == 1);
++
++    /*  ,,, and clocks are not ready */
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD3_CLKRDY)
++             == 0);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD2_CLKRDY)
++             == 0);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD1_CLKRDY)
++             == 0);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD0_CLKRDY)
++             == 0);
++
++    /* ungate all plls and check that clocks are ready */
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD3_CLKGATE, 0);
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD2_CLKGATE, 0);
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD1_CLKGATE, 0);
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD0_CLKGATE, 0);
++
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD3_CLKRDY)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD2_CLKRDY)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD1_CLKRDY)
++             == 1);
++    g_assert(REG32_READ_FIELD(f->clk0, RT500_CLKCTL0, SYSPLL0PFD, PFD0_CLKRDY)
++             == 1);
++}
++
++static void systick_clk_test(TestFixture *f, gconstpointer user_data)
++{
++    /* systick is not running at reset */
++    g_assert(clock_get_hz(f->systick_clk) == 0);
++
++    /* select divout no divisor */
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSTICKFCLKSEL, SEL,
++                    SYSTICKFCLKSEL_DIVOUT);
++    g_assert(clock_get_hz(f->systick_clk) == SYSCLK_HZ);
++
++    /* change divisor to 2 */
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSTICKFCLKDIV, DIV, 1);
++    g_assert(clock_get_hz(f->systick_clk) == SYSCLK_HZ / 2);
++
++    /* select lpsoc */
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSTICKFCLKSEL, SEL,
++                    SYSTICKFCLKSEL_LPOSC);
++    g_assert(clock_get_hz(f->systick_clk) == LPOSC_CLK_HZ);
++
++    /* select lpsoc */
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSTICKFCLKSEL, SEL,
++                    SYSTICKFCLKSEL_32KHZRTC);
++    g_assert(clock_get_hz(f->systick_clk) == RTC32KHZ_CLK_HZ);
++
++    /* disable clock */
++    REG32_WRITE_FIELD(f->clk0, RT500_CLKCTL0, SYSTICKFCLKSEL, SEL,
++                    SYSTICKFCLKSEL_NONE);
++    g_assert(clock_get_hz(f->systick_clk) == 0);
++}
++
++static void ostimer_clk_test(TestFixture *f, gconstpointer user_data)
++{
++    /* systick is not running at reset */
++    g_assert(clock_get_hz(f->ostimer_clk) == 0);
++
++    /* select lpsoc */
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, OSEVENTTFCLKSEL, SEL,
++                    OSEVENTTFCLKSEL_LPOSC);
++    g_assert(clock_get_hz(f->ostimer_clk) == LPOSC_CLK_HZ);
++
++
++    /* select 32khz RTC */
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, OSEVENTTFCLKSEL, SEL,
++                    OSEVENTTFCLKSEL_32KHZRTC);
++    g_assert(clock_get_hz(f->ostimer_clk) == RTC32KHZ_CLK_HZ);
++
++    /* select hclk */
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, OSEVENTTFCLKSEL, SEL,
++                    OSEVENTTFCLKSEL_HCLK);
++    g_assert(clock_get_hz(f->ostimer_clk) == SYSCLK_HZ);
++
++    /* disable clock */
++    REG32_WRITE_FIELD(f->clk1, RT500_CLKCTL1, OSEVENTTFCLKSEL, SEL,
++                    OSEVENTTFCLKSEL_NONE);
++    g_assert(clock_get_hz(f->ostimer_clk) == 0);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    /* Initialize object types. */
++    sysbus_mock_init();
++    module_call_init(MODULE_INIT_QOM);
++
++    g_test_add("/rt500-clkctl/pscctl-test", TestFixture, NULL,
++               set_up, pscctl_test, tear_down);
++
++    g_test_add("/rt500-clkctl/syspll0pfd-test", TestFixture, NULL,
++               set_up, syspll0pfd_test, tear_down);
++
++    g_test_add("/rt500-clkctl/audiopll0pfd-test", TestFixture, NULL,
++               set_up, audiopll0pfd_test, tear_down);
++
++    g_test_add("/rt500-clkctl/systick-test", TestFixture, NULL,
++               set_up, systick_clk_test, tear_down);
++
++    g_test_add("/rt500-clkctl/ostimer-clk-test", TestFixture, NULL,
++               set_up, ostimer_clk_test, tear_down);
++
++    return g_test_run();
++}
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
 
