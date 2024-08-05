@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2DF89471F0
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 02:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 856099471F2
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 02:33:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1salda-0007fY-7R; Sun, 04 Aug 2024 20:31:46 -0400
+	id 1saldd-0007ts-QI; Sun, 04 Aug 2024 20:31:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saldY-0007bh-Sm
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:44 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1saldb-0007m6-FN
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:47 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1saldX-0002Iw-1q
- for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:44 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-70eae5896bcso8560951b3a.2
- for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 17:31:42 -0700 (PDT)
+ id 1saldZ-0002JM-Qj
+ for qemu-devel@nongnu.org; Sun, 04 Aug 2024 20:31:47 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-70d150e8153so3301865b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 04 Aug 2024 17:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722817902; x=1723422702; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722817904; x=1723422704; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2FAvv3yZjIy3oYnoHY2EdlCQMFjiKoZMDRTSrJ4FWdU=;
- b=DGw77imu05A8s3Wm9ChBRvPP2bHqXr9CRSXCth994kMQ6p4uuyhnOALg4HgcBTgBe8
- wYf8ej5gjLQ8pfA7js+SDHnkDxaeNVjiNOIFOKmolqbYzIr0N87JVnB/t7PH7hJUFUvh
- 7sc+xsQc0w3ssfyVuGqR/ckDcnDZzytnmk/dR+2DAzVDii+stZyLsXFM7xQvaWBc7ZVU
- QHgZ6iCvH7ikhUNrn2ilOyhBKa4O5p7MszRFm0HWuQHPcXhmW76Tc3OIne1A0KyHqp06
- QUbszlhOB+nBeydCW5KBFkY1sfuZoKtrmuIHauVLA3yB6WlV9g89n+ZQEIeNrglL2RNR
- U0lw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hbxagQGZ9enwm2uWyobspLUjv+kLe0ys5wANtBKsnzE=;
+ b=CZ1DcJwZuqy/nrM8pY5oc5XgukNTvh4OffcFLyd3oxKMZDsUYaGuZFQ3yicXXaaZyk
+ bDFVhKOQ6tgnchLnIqOSP1xSpAot9W1RljpQlUWAcJLpJWivoRO/rHkjl1e/o6eDovCH
+ PlmZecFGjRZZbyzCfGFR964hRQcShryN8dTxYsKVkG/cHUtBXhFXR0ZcqWQE0tEveW20
+ 1FM+hU3DDmUXMEI9YAX88h36u4mXkZmBSoRXOysYkFPqbOfpyBfv6e/Hz1BmeXg06via
+ UMjyDLAiKkYlrb+2GVKqJNVNhF2PxLyvy5VjksJYt1MmAWRWQbS0/KpYEENFnM8joqjI
+ 6Euw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722817902; x=1723422702;
+ d=1e100.net; s=20230601; t=1722817904; x=1723422704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2FAvv3yZjIy3oYnoHY2EdlCQMFjiKoZMDRTSrJ4FWdU=;
- b=oioJ6C3VZo6iWLkNEDNMJ625EOnaxpoyAmBElnm4RT7vzoNyMwj9CXHlY98WNxLY+/
- HlAtLKaAZ5IJp6I72kVMUJcM6XGyvkSDnfFPTxGhIr0yltsDRaRowuFDysmElTcxu4pT
- XHN9CuAOB8eeZOIm2ul3YHnl6C74swy/54evTjYYOjfIg2MhmxEBzGeA81W9/dJqPlbt
- bE77cOLIjjcQ8wmPWO9ci2FAiCzDNopsZykf6C9s9Qv0XhIqEsn8Qv1x/ckaAfQvH6gw
- UbwPI9iyl4ZQVcQ0p6M8suX0P2X4E/8PUnJr+Ta6A299lvIhXX2SBqvOgzbR5kzDa6zE
- UoBQ==
-X-Gm-Message-State: AOJu0Yz672P3R8TBkR58JIVS+DQaU8cSlMvn6qOhrnP7nLqz/eoER3sZ
- EhOJlcIz39j54m2xR+RrIEzd8RX7E0nAfI4v94EUSBjcppjnGgQ7E0L50aAtJwfr7RViXCH+9Vk
- PKkm+yw==
-X-Google-Smtp-Source: AGHT+IFaTP8oCUyXymoIl3zTm62gsDOW4sU49if+syXviCtCfc9ZQ/LZi+pDCHnf+Uw4SQP9eQ7Sgw==
-X-Received: by 2002:a05:6a00:1407:b0:70d:3a45:5b44 with SMTP id
- d2e1a72fcca58-7106cfccce4mr13703097b3a.14.1722817901440; 
- Sun, 04 Aug 2024 17:31:41 -0700 (PDT)
+ bh=hbxagQGZ9enwm2uWyobspLUjv+kLe0ys5wANtBKsnzE=;
+ b=ICOfgLHxGY705U8ryk2DvRz03OXMMZnO2jNu2cCfK8sAJvFGnbVRpGMpC+zmKLKGPu
+ wA9SDkFN1xMvGm60hxMpOdijchlZUrESZ1lZkK0nTVkmgCTz/D5ZKWaiwgfLdLKcyAJm
+ rS11y0wksvqM/VdHue7ea6EN+8UwVtHaI5kO9g2tvotyqwiAUi3AHfmcJOIjKkLy7xKC
+ FHXCwkeVlY4eKyAs7GPKtEimMs3la7MzXOGFzPrI0tkWpKIhwZFphd5otpqhAGzaWzpl
+ L4EeRVWLn0uORDe/1/UEls+ShrdwS4Qag4Tg90IgrA7XC4l1bdcJbZ0cSCoYuLaO4RE5
+ Homg==
+X-Gm-Message-State: AOJu0Yx7ZNyNX7D84xnrCEBpjjo7/PG4d3Uhdv/R5RptUi6/E/Kid9+F
+ MuHPbrYi662E4ltNA9W38EaUBEQnQo+MMfx/xjIzyurKU1VCML+9WHCHu6kGPF4iGvBwN5xqhKG
+ /yM+JuA==
+X-Google-Smtp-Source: AGHT+IFkkUC+mFjLaRBAUN6z7tpvd3EEx0ZAA7xLlBHfBHi/onGdIPKnCeGszYUm0YHph88ERT6c3g==
+X-Received: by 2002:a05:6a00:2406:b0:70d:14d1:1bad with SMTP id
+ d2e1a72fcca58-7106d9d9330mr18041602b3a.3.1722817904230; 
+ Sun, 04 Aug 2024 17:31:44 -0700 (PDT)
 Received: from stoup.. ([203.56.128.103]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7106ed16cb3sm4576038b3a.179.2024.08.04.17.31.39
- for <qemu-devel@nongnu.org>
+ d2e1a72fcca58-7106ed16cb3sm4576038b3a.179.2024.08.04.17.31.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Aug 2024 17:31:40 -0700 (PDT)
+ Sun, 04 Aug 2024 17:31:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH for-9.1] target/i386: Fix VSIB decode
-Date: Mon,  5 Aug 2024 10:31:24 +1000
-Message-ID: <20240805003130.1421051-3-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 2/6] qemu/osdep: Move close_all_open_fds() to oslib-posix
+Date: Mon,  5 Aug 2024 10:31:25 +1000
+Message-ID: <20240805003130.1421051-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805003130.1421051-1-richard.henderson@linaro.org>
 References: <20240805003130.1421051-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,122 +93,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With normal SIB, index == 4 indicates no index.
-With VSIB, there is no exception for VR4/VR12.
+From: Clément Léger <cleger@rivosinc.com>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2474
+Move close_all_open_fds() in oslib-posix, rename it
+qemu_close_all_open_fds() and export it.
+
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240802145423.3232974-2-cleger@rivosinc.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/translate.c      | 20 ++++++++++----------
- target/i386/tcg/decode-new.c.inc |  3 ++-
- 2 files changed, 12 insertions(+), 11 deletions(-)
+ include/qemu/osdep.h    |  7 +++++++
+ system/async-teardown.c | 37 +------------------------------------
+ util/oslib-posix.c      | 34 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 36 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index fb0d01b356..98f5fe61ed 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -1534,7 +1534,7 @@ typedef struct AddressParts {
- } AddressParts;
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 720ed21a7e..de77c5c254 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -757,6 +757,13 @@ static inline void qemu_reset_optind(void)
  
- static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
--                                    int modrm)
-+                                    int modrm, bool is_vsib)
- {
-     int def_seg, base, index, scale, mod, rm;
-     target_long disp;
-@@ -1563,7 +1563,7 @@ static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
-             int code = x86_ldub_code(env, s);
-             scale = (code >> 6) & 3;
-             index = ((code >> 3) & 7) | REX_X(s);
--            if (index == 4) {
-+            if (index == 4 && !is_vsib) {
-                 index = -1;  /* no index */
-             }
-             base = (code & 7) | REX_B(s);
-@@ -1693,21 +1693,21 @@ static TCGv gen_lea_modrm_1(DisasContext *s, AddressParts a, bool is_vsib)
+ int qemu_fdatasync(int fd);
  
- static void gen_lea_modrm(CPUX86State *env, DisasContext *s, int modrm)
++/**
++ * qemu_close_all_open_fd:
++ *
++ * Close all open file descriptors
++ */
++void qemu_close_all_open_fd(void);
++
+ /**
+  * Sync changes made to the memory mapped file back to the backing
+  * storage. For POSIX compliant systems this will fallback
+diff --git a/system/async-teardown.c b/system/async-teardown.c
+index 396963c091..edf49e1007 100644
+--- a/system/async-teardown.c
++++ b/system/async-teardown.c
+@@ -26,40 +26,6 @@
+ 
+ static pid_t the_ppid;
+ 
+-/*
+- * Close all open file descriptors.
+- */
+-static void close_all_open_fd(void)
+-{
+-    struct dirent *de;
+-    int fd, dfd;
+-    DIR *dir;
+-
+-#ifdef CONFIG_CLOSE_RANGE
+-    int r = close_range(0, ~0U, 0);
+-    if (!r) {
+-        /* Success, no need to try other ways. */
+-        return;
+-    }
+-#endif
+-
+-    dir = opendir("/proc/self/fd");
+-    if (!dir) {
+-        /* If /proc is not mounted, there is nothing that can be done. */
+-        return;
+-    }
+-    /* Avoid closing the directory. */
+-    dfd = dirfd(dir);
+-
+-    for (de = readdir(dir); de; de = readdir(dir)) {
+-        fd = atoi(de->d_name);
+-        if (fd != dfd) {
+-            close(fd);
+-        }
+-    }
+-    closedir(dir);
+-}
+-
+ static void hup_handler(int signal)
  {
--    AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+    AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-     TCGv ea = gen_lea_modrm_1(s, a, false);
-     gen_lea_v_seg(s, ea, a.def_seg, s->override);
+     /* Check every second if this process has been reparented. */
+@@ -85,9 +51,8 @@ static int async_teardown_fn(void *arg)
+     /*
+      * Close all file descriptors that might have been inherited from the
+      * main qemu process when doing clone, needed to make libvirt happy.
+-     * Not using close_range for increased compatibility with older kernels.
+      */
+-    close_all_open_fd();
++    qemu_close_all_open_fd();
+ 
+     /* Set up a handler for SIGHUP and unblock SIGHUP. */
+     sigaction(SIGHUP, &sa, NULL);
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index b090fe0eed..1e867efa47 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -807,3 +807,37 @@ int qemu_msync(void *addr, size_t length, int fd)
+ 
+     return msync(addr, length, MS_SYNC);
  }
- 
- static void gen_nop_modrm(CPUX86State *env, DisasContext *s, int modrm)
- {
--    (void)gen_lea_modrm_0(env, s, modrm);
-+    (void)gen_lea_modrm_0(env, s, modrm, false);
- }
- 
- /* Used for BNDCL, BNDCU, BNDCN.  */
- static void gen_bndck(CPUX86State *env, DisasContext *s, int modrm,
-                       TCGCond cond, TCGv_i64 bndv)
- {
--    AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+    AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-     TCGv ea = gen_lea_modrm_1(s, a, false);
- 
-     tcg_gen_extu_tl_i64(s->tmp1_i64, ea);
-@@ -2428,7 +2428,7 @@ static bool disas_insn_x87(DisasContext *s, CPUState *cpu, int b)
-     op = ((b & 7) << 3) | ((modrm >> 3) & 7);
-     if (mod != 3) {
-         /* memory op */
--        AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+        AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-         TCGv ea = gen_lea_modrm_1(s, a, false);
-         TCGv last_addr = tcg_temp_new();
-         bool update_fdp = true;
-@@ -3089,7 +3089,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         rm = (modrm & 7) | REX_B(s);
-         gen_op_mov_v_reg(s, MO_32, s->T1, reg);
-         if (mod != 3) {
--            AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+            AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-             /* specific case: we need to add a displacement */
-             gen_exts(ot, s->T1);
-             tcg_gen_sari_tl(s->tmp0, s->T1, 3 + ot);
-@@ -3646,7 +3646,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                 }
-             } else if (mod != 3) {
-                 /* bndldx */
--                AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-                 if (reg >= 4
-                     || (prefixes & PREFIX_LOCK)
-                     || s->aflag == MO_16
-@@ -3690,7 +3690,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                     || s->aflag == MO_16) {
-                     goto illegal_op;
-                 }
--                AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-                 if (a.base >= 0) {
-                     tcg_gen_extu_tl_i64(cpu_bndl[reg], cpu_regs[a.base]);
-                     if (!CODE64(s)) {
-@@ -3751,7 +3751,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                 }
-             } else if (mod != 3) {
-                 /* bndstx */
--                AddressParts a = gen_lea_modrm_0(env, s, modrm);
-+                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
-                 if (reg >= 4
-                     || (prefixes & PREFIX_LOCK)
-                     || s->aflag == MO_16
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index d2da1d396d..b22210f45d 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1811,7 +1811,8 @@ static int decode_modrm(DisasContext *s, CPUX86State *env, X86DecodedInsn *decod
-     } else {
-         op->has_ea = true;
-         op->n = -1;
--        decode->mem = gen_lea_modrm_0(env, s, get_modrm(s, env));
-+        decode->mem = gen_lea_modrm_0(env, s, modrm,
-+                                      decode->e.vex_class == 12);
-     }
-     return modrm;
- }
++
++/*
++ * Close all open file descriptors.
++ */
++void qemu_close_all_open_fd(void)
++{
++    struct dirent *de;
++    int fd, dfd;
++    DIR *dir;
++
++#ifdef CONFIG_CLOSE_RANGE
++    int r = close_range(0, ~0U, 0);
++    if (!r) {
++        /* Success, no need to try other ways. */
++        return;
++    }
++#endif
++
++    dir = opendir("/proc/self/fd");
++    if (!dir) {
++        /* If /proc is not mounted, there is nothing that can be done. */
++        return;
++    }
++    /* Avoid closing the directory. */
++    dfd = dirfd(dir);
++
++    for (de = readdir(dir); de; de = readdir(dir)) {
++        fd = atoi(de->d_name);
++        if (fd != dfd) {
++            close(fd);
++        }
++    }
++    closedir(dir);
++}
 -- 
 2.43.0
 
