@@ -2,81 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9B79476F1
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 10:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F4E947740
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Aug 2024 10:25:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sasnK-0005by-AB; Mon, 05 Aug 2024 04:10:18 -0400
+	id 1sat0e-0007ps-R0; Mon, 05 Aug 2024 04:24:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tejasvipin76@gmail.com>)
- id 1sarlB-0005AX-Gh; Mon, 05 Aug 2024 03:04:01 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tejasvipin76@gmail.com>)
- id 1sarl9-0006QX-QD; Mon, 05 Aug 2024 03:04:01 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1fd66cddd4dso93081965ad.2; 
- Mon, 05 Aug 2024 00:03:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1722841437; x=1723446237; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=CI8oUk9cDQT0xO+kzgQaEwt83ymP26MK6WYI8qZRMfU=;
- b=EB0BVhJ5IU5RjG07i7a/bRR06Q3tJtbvKxbVuO6SElZCOYBHlQcUupqHqHEWUNwN2m
- mK/lDhtnPoNF8LK/tnk7/YaG0qh6qWqZ2Ctsv1GW0tOnJV+vRZOZvW/kWAu6YxMMoIMF
- 5XL+DTkUzLyuN0xVP/QBsp+b/WnT/dL2UdRCXD1eyyZ54Ls3aCHsfjeHJ/xdTaz/Gdrc
- xEaZ8cvFJO1hDSPjTBrPFxJb6ZI6gXneEBPWHQM/fhWX2+JohRerM3K3GWPaquAYl8cc
- LdbD9GecYmdKlK8rDVWroZmXwNbfCpk/YMegnY4JUOHWVpBvmqiR2TptTGb9lz7UbrFP
- C7+Q==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sat0c-0007of-7Q
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 04:24:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sat0a-0001Q0-D1
+ for qemu-devel@nongnu.org; Mon, 05 Aug 2024 04:24:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722846238;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=nNMNttYYfVprmlt5gv7GcUzumKfOGJyN5wjbkY8akBw=;
+ b=cLT+Zb6JJRDKc+xZkg5nFSpkkpezJaTUC9ZWuZI8+gx6VKIuFsrzmV3CRuzlpnfjyHOdWV
+ kmWuIve1PjxqGU9eW9XqYC8LWiCj9H9wgpZrAoaSNxo+7kJJ2bjG+NBqlPO4iGUKXhDEs1
+ cE2KjcznuIdgxO8pT1soIwTgYIPtRzU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-pRxZRvGyM6yhpgPcVfcgSw-1; Mon, 05 Aug 2024 04:23:56 -0400
+X-MC-Unique: pRxZRvGyM6yhpgPcVfcgSw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3686d709f6dso5999631f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Aug 2024 01:23:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722841437; x=1723446237;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CI8oUk9cDQT0xO+kzgQaEwt83ymP26MK6WYI8qZRMfU=;
- b=Z0K7pB/3Xfv6AD6cq47MhK6q47XKsQGi+tznr2pT1lpzeaVbNfGX18SyigZ49JIfSl
- 2M/35OhcnMTK51819VDIrwKquuLHMG6YVaNOXzmQnUuhNLraplscKfH2LuLRZJYA5Ttv
- 5S7xLGgFBn5X1seJFj0Uysn00GO1cHtGXFrSM/8vH3RF1XOootRrZYYt6ygyIYXc1MvM
- dc11nATTm5wg0Hbv41rg5yTOjNXl2wf5M3Y9lnPNCs5hyGOL7ufXurCCAiqForBW4i3g
- 14r37N5HQgxxq2drmdhTxFvClltBde0iRQ6oggowP8u18ORAjod4uTxCBq/5zTvOtyi4
- QwWg==
+ d=1e100.net; s=20230601; t=1722846235; x=1723451035;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nNMNttYYfVprmlt5gv7GcUzumKfOGJyN5wjbkY8akBw=;
+ b=t1ZFMFPOkD4gjkfVi9qPKOPgmnXvFhmqwYZXj+z2e3YUuY+qZbl4lNmZDDTSApjFpr
+ Je19AslrH8lwW0FOlmVM+/c2x2rpDHbs4aodpPplvX42VILVtpu5Nu5XLQt/l/8KwslF
+ XDDw+995BsaymPfpBgQsIk42zOGYEpFK6anU94dqOykRcI4wVfk7R8EtwwG/G4shDYb3
+ cqs3k01Ao1z8G3q5KzMYYHf3W6PwgvQTqD7qpf73L3fI6k0Ys0rmj7PZtmvj5BWIenNP
+ r1oGMvbTUXxWP19y3Eh8yH1a+cwpyEyi+2h4mA/DzItODZPrgmGjRhwnkAvQImhhgsLK
+ 8V0g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUqOimu/xjza0OT7AJ+O5GeyydUoJ8CVsb/jA00Rh5XxRDIJozduk1Sj/DSH6r3sozA+JIkKmth32pN6fu4k7EiPrPYiHphZJejErFh5agbmgZzA9BqW6SmgoE=
-X-Gm-Message-State: AOJu0YxnnLlJfpL+PYPV0PhhnNjN/a8h+ElzWkuI64rMyMLhoxrraMoN
- wdFO33HHC2Iz2EYjHyWICvBeCsW+QSUrszQ/MMd+pJy9MOQlMKthdWiCZA==
-X-Google-Smtp-Source: AGHT+IGrtMHEg4AyILeHsdYFvcHAlvPjLrfdBcTVfRl5l3dyBpDZSxm2jan73XLYsJasnReFMcDL9w==
-X-Received: by 2002:a17:902:d4c5:b0:1fd:5e91:2b13 with SMTP id
- d9443c01a7336-1ff5722c06bmr153488205ad.1.1722841436638; 
- Mon, 05 Aug 2024 00:03:56 -0700 (PDT)
-Received: from distilledx.localdomain ([14.96.13.220])
+ AJvYcCW7fwETzJIfTVBvRTt0tO661fqSeJzcYUQz5gbpyT3V6WMxQsUU7FwbF4uZaLxVv0t3+SOX6CDFlMZ7jhQ+QcMisMzgJDs=
+X-Gm-Message-State: AOJu0Yxpz5g2j7OeZ01p4jYuYwaPXrwN3tabE+Jk29iaRdI9aCpKw/GF
+ /rd3Y6RwCU/+VY3hIi547sEjp6ul5fEZ3wWKwJldMjYIJWh9Zn9p10vwdOoSiFNCG1I0mDPfVgz
+ LQz1KR+TdE4NDDw4T/2rP8zz6gcLKLbvrG49hX4IkhzbQFWkx0Q2+
+X-Received: by 2002:a5d:6287:0:b0:368:7f4f:9e95 with SMTP id
+ ffacd0b85a97d-36bbc0e5ee5mr5882581f8f.10.1722846235542; 
+ Mon, 05 Aug 2024 01:23:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNd+OSB6y4qg2sVmYeGoDTRk3+T0gJsfc8Fv7G54Lwdin/KoAt0bi5wwME8zFnvo8I0qhYkQ==
+X-Received: by 2002:a5d:6287:0:b0:368:7f4f:9e95 with SMTP id
+ ffacd0b85a97d-36bbc0e5ee5mr5882542f8f.10.1722846234716; 
+ Mon, 05 Aug 2024 01:23:54 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:17d:dd95:f049:da1a:7ecb:6d9])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff58f26f4bsm59929585ad.34.2024.08.05.00.03.53
+ ffacd0b85a97d-36bbcf1db70sm8935226f8f.32.2024.08.05.01.23.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Aug 2024 00:03:56 -0700 (PDT)
-From: Tejas Vipin <tejasvipin76@gmail.com>
-To: mark.cave-ayland@ilande.co.uk
-Cc: qemu-trivial@nongnu.org, qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- Tejas Vipin <tejasvipin76@gmail.com>
-Subject: [PATCH] ppc: fix incorrect spelling of PowerMac
-Date: Mon,  5 Aug 2024 12:31:50 +0530
-Message-ID: <20240805070150.369824-1-tejasvipin76@gmail.com>
-X-Mailer: git-send-email 2.46.0
+ Mon, 05 Aug 2024 01:23:54 -0700 (PDT)
+Date: Mon, 5 Aug 2024 04:23:44 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Peter Xu <peterx@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, dmitry.fleytman@gmail.com,
+ jasowang@redhat.com, sriram.yagnaraman@est.tech, sw@weilnetz.de,
+ qemu-devel@nongnu.org, yan@daynix.com,
+ Fabiano Rosas <farosas@suse.de>, devel@lists.libvirt.org
+Subject: Re: [PATCH v2 4/4] virtio-net: Add support for USO features
+Message-ID: <20240805041650-mutt-send-email-mst@kernel.org>
+References: <Zqk6x2nd3Twz--75@x1n>
+ <39a8bb8b-4191-4f41-aaf7-06df24bf3280@daynix.com>
+ <ZqumIZcs1tCNTpRE@x1n>
+ <b70d09a5-554a-456b-904e-59cec5836ae8@daynix.com>
+ <Zqz1vvYqRuIAPnod@x1n>
+ <c5ea7a57-fc52-4bb7-bc4c-f3aca8da0574@daynix.com>
+ <Zq0IrhV-DgStpJtk@x1n>
+ <8ad96f43-83ae-49ae-abc1-1e17ee15f24d@daynix.com>
+ <20240805032937-mutt-send-email-mst@kernel.org>
+ <cb71a6de-eb7a-402b-a58a-89198b4343f5@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=tejasvipin76@gmail.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb71a6de-eb7a-402b-a58a-89198b4343f5@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 05 Aug 2024 04:10:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,59 +114,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PowerMac is spelled as PowerMAC (Media Access Control) in some places.
-This is misleading.
+On Mon, Aug 05, 2024 at 04:53:52PM +0900, Akihiko Odaki wrote:
+> On 2024/08/05 16:30, Michael S. Tsirkin wrote:
+> > On Sun, Aug 04, 2024 at 03:49:45PM +0900, Akihiko Odaki wrote:
+> > > I suggest disabling all offload features of virtio-net with 9.2.
+> > 
+> > Yea ... no.
+> > 
+> > > I want to keep things consistent so I want to disable all at once. This
+> > > change will be very uncomfortable for us, who are implementing offload
+> > > features, but I hope it will motivate us to implement a proper solution.
+> > 
+> > It's uncomfortable for users.
+> 
+> An obvious alternative is to set cross-migrate=off by default (I dropped the
+> no- prefix because no-cross-migrate=off is confusing). I don't have a
+> particular idea whether cross-migrate should be on or off by default.
+> 
+> This is a trade-off of safety and performance. In general, I believe safety
+> should come first before performance.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2297
-Signed-off-by: Tejas Vipin <tejasvipin76@gmail.com>
----
- docs/system/ppc/powermac.rst | 4 ++--
- hw/ppc/mac_newworld.c        | 2 +-
- hw/ppc/mac_oldworld.c        | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+There's no actual safety issue here. You can't migrate certain configurations.
+So I don't really understand what "cross-migrate" is supposed to do:
+fail migration in 100% of cases?
 
-diff --git a/docs/system/ppc/powermac.rst b/docs/system/ppc/powermac.rst
-index 04334ba210..3eac81c491 100644
---- a/docs/system/ppc/powermac.rst
-+++ b/docs/system/ppc/powermac.rst
-@@ -4,8 +4,8 @@ PowerMac family boards (``g3beige``, ``mac99``)
- Use the executable ``qemu-system-ppc`` to simulate a complete PowerMac
- PowerPC system.
- 
--- ``g3beige``              Heathrow based PowerMAC
--- ``mac99``                Mac99 based PowerMAC
-+- ``g3beige``              Heathrow based PowerMac
-+- ``mac99``                Mac99 based PowerMac
- 
- Supported devices
- -----------------
-diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
-index ff9e490c4e..9d249a506c 100644
---- a/hw/ppc/mac_newworld.c
-+++ b/hw/ppc/mac_newworld.c
-@@ -571,7 +571,7 @@ static void core99_machine_class_init(ObjectClass *oc, void *data)
-     MachineClass *mc = MACHINE_CLASS(oc);
-     FWPathProviderClass *fwc = FW_PATH_PROVIDER_CLASS(oc);
- 
--    mc->desc = "Mac99 based PowerMAC";
-+    mc->desc = "Mac99 based PowerMac";
-     mc->init = ppc_core99_init;
-     mc->block_default_type = IF_IDE;
-     /* SMP is not supported currently */
-diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
-index 1981d3d8f6..eef3261002 100644
---- a/hw/ppc/mac_oldworld.c
-+++ b/hw/ppc/mac_oldworld.c
-@@ -411,7 +411,7 @@ static void heathrow_class_init(ObjectClass *oc, void *data)
-     MachineClass *mc = MACHINE_CLASS(oc);
-     FWPathProviderClass *fwc = FW_PATH_PROVIDER_CLASS(oc);
- 
--    mc->desc = "Heathrow based PowerMAC";
-+    mc->desc = "Heathrow based PowerMac";
-     mc->init = ppc_heathrow_init;
-     mc->block_default_type = IF_IDE;
-     /* SMP is not supported currently */
+I can see value in getting configuration from source and not starting
+qemu on destination if it can not be migrated. This is rather
+straight-forward, and seems directly useful for management.
+I also see value in getting configuration from destination and starting
+on source only if it can be migrated. As a variant of last one, I maybe
+see value in getting that info from multiple destinations. Using this
+last kind of thing would be trickier because it's not at the libvirt level,
+so we would need very good documentation.
+
+> On the other hand, disabling offload features is a breaking change. QEMU
+> also has -only-migratable option; it is more consistent to make the
+> additional assurance for migration opt-in instead of opt-out. Finally, I see
+> migration across hosts as an advanced feature, and perhaps it can be
+> justified to make it more like an optional feature.
+> 
+> Regards,
+> Akihiko Odaki
+
+It's already an optional feature.
+
 -- 
-2.46.0
+MST
 
 
