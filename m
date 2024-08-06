@@ -2,86 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFEA9493CB
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AA59493F7
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbLXN-0000Na-6Y; Tue, 06 Aug 2024 10:51:45 -0400
+	id 1sbLcB-0000dB-6B; Tue, 06 Aug 2024 10:56:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbLXK-0000KI-AP
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:51:42 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbLXH-0001CS-Hn
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:51:42 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-530ad969360so1086572e87.0
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 07:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722955897; x=1723560697; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iXESy4XjNfOB5fDZVIQB6FXyT4kJ4xMiItE1SCk6V2A=;
- b=PXpo9TEc1Z7wQCZBdGo99itsW4mG56qbVJjHGe0ADnmM93p9GTWsQttaju1w7R4g+C
- cGoQCQykRATyFUJV21bModez1lIxaa9HVtGy9FC26DkPU0uzKP9dcLwjybNtA61LYlcy
- saN9oihSXUJ1+XfORxj4aVu3b6VwsCQMNFP1m0ckUUb1DZRp6YqW+4+VbTyuaIJnbQo+
- oduRBuMGuscSwW9PP85F3fnhrs6cB6BUj4lpXagHVkuxZvjwUHnKtDaqL4rsz4Xwgleh
- B3cNqlcvoAAUHyJbL1C64pGmwxBTmO1fIuX/ReChfGQY/62PBNqJV6aW33xECZlaT+YZ
- rGAQ==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sbLc9-0000cL-4m
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:56:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sbLc4-0001sZ-S2
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:56:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722956193;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=in22lGiWvjvVa+QnCNaYBNzPdS4W23iInNoRspQ3yDo=;
+ b=YQF6zexygM4NJYBAV8KOU4JC0V5MdNMmslTuv0w3aCBVo1Az5+Lrw87Wv/tuPkAnNqSsUg
+ TYfat3T3HvGZie3KEPdhokvOiz6NgWJw0+hOEW0128yBUtOdSaLcfvRmyc9eVAAZUW2/yQ
+ 2NbU3A8ym09RQeVHC0F2QA7UGnbGho0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-C17W2V3_NG-UJelpA4rNug-1; Tue, 06 Aug 2024 10:56:31 -0400
+X-MC-Unique: C17W2V3_NG-UJelpA4rNug-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4281d0d1c57so32900125e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 07:56:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722955897; x=1723560697;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iXESy4XjNfOB5fDZVIQB6FXyT4kJ4xMiItE1SCk6V2A=;
- b=GppoXiTogymHUWkJdWrIMq/kraeHkp5Bo7yu+lqE/Qzhsdy8SAqI8uneXn+ng2kS+q
- VpVc0bQbLTgKGLwWg4xOTjjFF0DGhUcEpMMEKx/IKTHdcVNODQgvaL3mxNDS+8feipP8
- en5+CkQawWW+brQTacZYGm5uyoWkZkbfD6tF8P8iIM5DyL9Fb5blt54vk61OLy+tyXdU
- le5Icdm+cARkRb9y5CEn8oamLUx2vDwDmP9EcG2qpKCBO89UrIA5o9P72pbIQExxCKva
- u9aXrkO7CelB95VP5TEwF/s2oJODkyk0KK0QjdemJrRKAcPAlC4MPhZSDweCDD9loabT
- WZDA==
+ d=1e100.net; s=20230601; t=1722956191; x=1723560991;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=in22lGiWvjvVa+QnCNaYBNzPdS4W23iInNoRspQ3yDo=;
+ b=sKXWXG4DY9brBkdzxa/UHSkTb1IrxS6UpA0XTLofzFNJZE7t5fA4Kkcb0DI+4akg1x
+ 0P/IolWklIJoym/4cWlf/7MYD4JbKbsAipZ7yUBxrpMQjusuEIef1Z8SPOx7NtfIg/Lc
+ fRqrZ1UJq26Um6EBduUcCTSpatsvhRPJhLyR9+XjXrsDZziFtwDBVlTFz/kfkAidO0NU
+ eDrTwyS6vbZIjimDdDuLGHCcVwKjp9Cr0CZ5LlvUTH5hDhgg1WWc6p0v6OlHNPNCuEVd
+ fGoa/HWyjUm2trac6fcuiu/acofcA5lJcBXvwuA7J1EXIhLFl1d9z9yCb9mzXU1rZQy/
+ QylA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVvRzwVULsjwnwvdv6iVqPRsNi+8QMY4utm5rCiZ/0UDyBS5HTMjPDsoFcepBYn5wVeMFNZOlcx0eSD6cG4GVBCJMFbswg=
-X-Gm-Message-State: AOJu0Yyhi595HT3JLrxEXOJ9vS1CCwbtnKqlZNczfbB4n1lux8bPmDUq
- F4FAiDW3UtbHCPEV+QpPpA0tmdgy1S+bYfniiFnR2ETIeDRz5ppdYKoYDZvUrrs=
-X-Google-Smtp-Source: AGHT+IGSw/bY6cCR7X9UuHUO1HoWRwm1HQO3qraDU7xKg640AteB+QezKCbASF/jZrGlCWb8Up6q5w==
-X-Received: by 2002:a05:6512:131e:b0:52c:952a:67da with SMTP id
- 2adb3069b0e04-530bb4d6d4fmr10164447e87.55.1722955897220; 
- Tue, 06 Aug 2024 07:51:37 -0700 (PDT)
-Received: from [192.168.69.100] (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
- [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9ec7173sm550750666b.204.2024.08.06.07.51.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Aug 2024 07:51:36 -0700 (PDT)
-Message-ID: <a37a5291-5917-45e6-8697-08defb97ac29@linaro.org>
-Date: Tue, 6 Aug 2024 16:51:33 +0200
+ AJvYcCXW8X2vZ+LEFE5PyLbOaPNwRidi6i9qQZXia499dbebtchCB/xiXJywTzXCjo9S0RoNMZTYUKZHaSWgx6FOrGb1aVMmhKU=
+X-Gm-Message-State: AOJu0YwEXo/pqn3GW2gIn9hiWwYYFJkujCF6TO1zChZvUo9asZKmyRim
+ SaNW1DYTVy7ZiaJQtbpoPAUFZAjUH3EBbxmv51ky4vTOoMAcCpomqbSQ9UP4TDcsBIePuc0i0z2
+ U/biXHc272qLIWPPGOgQoM9lKjUuCP9GiLzqBI8u9uQj6jCjKSJYw
+X-Received: by 2002:adf:e406:0:b0:367:89b0:f584 with SMTP id
+ ffacd0b85a97d-36bbbe41a5amr10941567f8f.11.1722956190536; 
+ Tue, 06 Aug 2024 07:56:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNDOkrESu3JIcTRCLpzIkfYFQ0PveSez4G5RsxMBCn5JrfRQ0E1ZJKxzo3960b/TvlD38l3A==
+X-Received: by 2002:adf:e406:0:b0:367:89b0:f584 with SMTP id
+ ffacd0b85a97d-36bbbe41a5amr10941544f8f.11.1722956189943; 
+ Tue, 06 Aug 2024 07:56:29 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36bbd01ee25sm13114422f8f.53.2024.08.06.07.56.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Aug 2024 07:56:29 -0700 (PDT)
+Date: Tue, 6 Aug 2024 16:56:28 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, Cleber Rosa <crosa@redhat.com>, John Snow
+ <jsnow@redhat.com>, linux-kernel@vger.kernel.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 7/7] scripts/ghes_inject: add a script to generate
+ GHES error inject
+Message-ID: <20240806165628.7ceffbe8@imammedo.users.ipa.redhat.com>
+In-Reply-To: <0654a89fe24f4343016b9cecc0752594ad1cd49f.1722634602.git.mchehab+huawei@kernel.org>
+References: <cover.1722634602.git.mchehab+huawei@kernel.org>
+ <0654a89fe24f4343016b9cecc0752594ad1cd49f.1722634602.git.mchehab+huawei@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 22/23] hw/arm: add basic support for the RT500 SoC
-To: Octavian Purdila <tavip@google.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
- alex.bennee@linaro.org, thuth@redhat.com, peter.maydell@linaro.org,
- marcandre.lureau@redhat.com, alistair@alistair23.me, berrange@redhat.com,
- jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com
-References: <20240805201719.2345596-1-tavip@google.com>
- <20240805201719.2345596-23-tavip@google.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240805201719.2345596-23-tavip@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,531 +106,732 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Octavian,
+On Fri,  2 Aug 2024 23:44:02 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-Few comments inlined.
-
-On 5/8/24 22:17, Octavian Purdila wrote:
-> Add basic support for the RT500 SoC. It supports enough peripherals to
-> run the NXP's microXpresso SDK hello world example.
+> Using the QMP GHESv2 API requires preparing a raw data array
+> containing a CPER record.
 > 
-> Signed-off-by: Octavian Purdila <tavip@google.com>
+> Add a helper script with subcommands to prepare such data.
+> 
+> Currently, only ARM Processor error CPER record is supported.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 > ---
->   hw/arm/Kconfig         |   8 +
->   hw/arm/meson.build     |   1 +
->   hw/arm/rt500.c         | 348 +++++++++++++++++++++++++++++++++++++++++
->   hw/arm/svd/meson.build |   6 +
->   include/hw/arm/rt500.h |  49 ++++++
->   5 files changed, 412 insertions(+)
->   create mode 100644 hw/arm/rt500.c
->   create mode 100644 include/hw/arm/rt500.h
-
-If possible please setup scripts/git.orderfile, it help to
-review.
-
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 1ad60da7aa..7ffece3dec 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -712,3 +712,11 @@ config ARMSSE
->       select UNIMP
->       select SSE_COUNTER
->       select SSE_TIMER
-> +
-> +config RT500
-> +    bool
-> +    select FLEXCOMM
-> +    select RT500_CLKCTL0
-> +    select RT500_CLKCTL1
-> +    select FLEXSPI
-> +    select RT500_RSTCTL
-> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-> index eb604d00cf..7d827d512c 100644
-> --- a/hw/arm/meson.build
-> +++ b/hw/arm/meson.build
-> @@ -59,6 +59,7 @@ arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
->   arm_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
->   arm_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
->   arm_ss.add(when: 'CONFIG_XEN', if_true: files('xen_arm.c'))
-> +arm_ss.add(when: 'CONFIG_RT500', if_true: files('rt500.c'))
->   
->   system_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
->   system_ss.add(when: 'CONFIG_CHEETAH', if_true: files('palm.c'))
-> diff --git a/hw/arm/rt500.c b/hw/arm/rt500.c
+>  MAINTAINERS                    |   3 +
+>  scripts/arm_processor_error.py | 352 +++++++++++++++++++++++++++++++++
+>  scripts/ghes_inject.py         |  59 ++++++
+>  scripts/qmp_helper.py          | 249 +++++++++++++++++++++++
+>  4 files changed, 663 insertions(+)
+>  create mode 100644 scripts/arm_processor_error.py
+>  create mode 100755 scripts/ghes_inject.py
+>  create mode 100644 scripts/qmp_helper.py
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 655edcb6688c..e490f69da1de 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2081,6 +2081,9 @@ S: Maintained
+>  F: hw/arm/ghes_cper.c
+>  F: hw/acpi/ghes_cper_stub.c
+>  F: qapi/ghes-cper.json
+> +F: scripts/ghes_inject.py
+> +F: scripts/arm_processor_error.py
+> +F: scripts/qmp_helper.py
+>  
+>  ppc4xx
+>  L: qemu-ppc@nongnu.org
+> diff --git a/scripts/arm_processor_error.py b/scripts/arm_processor_error.py
 > new file mode 100644
-> index 0000000000..0866ef3ef6
+> index 000000000000..df4efa508790
 > --- /dev/null
-> +++ b/hw/arm/rt500.c
-> @@ -0,0 +1,348 @@
-> +/*
-> + * i.MX RT500 platforms.
-> + *
-> + * Copyright (c) 2024 Google LLC
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
+> +++ b/scripts/arm_processor_error.py
+> @@ -0,0 +1,352 @@
+> +#!/usr/bin/env python3
+> +#
+> +# pylint: disable=C0301, C0114, R0912, R0913, R0914, R0915, W0511
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (C) 2024 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 > +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "hw/sysbus.h"
-> +#include "hw/arm/boot.h"
-> +#include "hw/boards.h"
-> +#include "hw/irq.h"
-> +#include "qemu/log.h"
-> +#include "qemu/datadir.h"
-> +#include "exec/address-spaces.h"
-> +#include "sysemu/reset.h"
-> +#include "sysemu/runstate.h"
-> +#include "sysemu/sysemu.h"
-> +#include "hw/arm/armv7m.h"
-> +#include "hw/loader.h"
-> +#include "hw/qdev-clock.h"
-> +#include "hw/misc/unimp.h"
-> +#include "hw/arm/rt500.h"
-> +#include "hw/arm/svd/rt500.h"
-> +
-> +#define MMAP_SRAM_CODE_BASE   (0x0)
-> +#define MMAP_SRAM_DATA_BASE   (0x20000000)
-> +#define MMAP_SRAM_SIZE        (5 * MiB)
-> +#define MMAP_BOOT_ROM_BASE    (0x03000000)
-> +#define MMAP_BOOT_ROM_SIZE    (192 * KiB)
-> +#define MMAP_SDMA_RAM_BASE    (0x24100000)
-> +#define MMAP_SDMA_RAM_SIZE    (32 * KiB)
-> +#define MMAP_FLEXSPI0_BASE    (0x08000000)
-> +#define MMAP_FLEXSPI0_SIZE    (128 * MiB)
-> +#define MMAP_FLEXSPI1_BASE    (0x28000000)
-> +#define MMAP_FLEXSPI1_SIZE    (128 * MiB)
-> +
-> +#define SECURE_OFFSET    (0x10000000)
-> +
-> +typedef enum MemInfoType {
-> +    MEM_RAM,
-> +    MEM_ROM,
-> +    MEM_ALIAS
-> +} MemInfoType;
-> +
-> +static void do_sys_reset(void *opaque, int n, int level)
-> +{
-> +    if (level) {
-> +        qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-> +    }
-> +}
-> +
-> +static void rt500_init(Object *obj)
-> +{
-> +    RT500State *s = RT500(obj);
-> +    int i;
-> +
-> +    /* Add ARMv7-M device */
-> +    object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
-> +
-> +    for (i = 0; i < RT500_FLEXCOMM_NUM; i++) {
-> +        char id[] = "flexcommXX";
-> +
-> +        snprintf(id, sizeof(id), "flexcomm%d", i);
-> +        object_initialize_child(obj, id, &s->flexcomm[i], TYPE_FLEXCOMM);
-> +        DEVICE(&s->flexcomm[i])->id = g_strdup(id);
+> +# TODO: current implementation has dummy defaults.
+> +#
+> +# For a better implementation, a QMP addition/call is needed to
+> +# retrieve some data for ARM Processor Error injection:
+> +#
+> +#   - machine emulation architecture, as ARM current default is
+> +#     for AArch64;
+> +#   - ARM registers: power_state, midr, mpidr.
 
-Directly g_strdup_printf().
+I'm not really reviewing the script but here some pointers how to fetch properties
 
-> +    }
-> +
-> +    object_initialize_child(obj, "clkctl0", &s->clkctl0, TYPE_RT500_CLKCTL0);
-> +    object_initialize_child(obj, "clkctl1", &s->clkctl1, TYPE_RT500_CLKCTL1);
-> +
-> +    /* Initialize clocks */
-> +    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-> +    s->refclk = qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0);
-> +
-> +    for (i = 0; i < RT500_FLEXSPI_NUM; i++) {
-> +        char id[] = "flexspiXX";
-> +
-> +        snprintf(id, sizeof(id), "flexspi%d", i);
-> +        object_initialize_child(obj, id, &s->flexspi[i], TYPE_FLEXSPI);
-> +        DEVICE(&s->flexspi[i])->id = g_strdup(id);
-> +    }
-> +
-> +    for (i = 0; i < RT500_RSTCTL_NUM; i++) {
-> +        char id[] = "rstctlX";
-> +
-> +        snprintf(id, sizeof(id), "rstctl%d", i);
-> +        object_initialize_child(obj, id, &s->rstctl[i],
-> +                                TYPE_RT500_RSTCTL);
-> +        DEVICE(&s->rstctl[i])->id = g_strdup(id);
-> +    }
-> +}
-> +
-> +static void rt500_realize_memory(RT500State *s, Error **errp)
-> +{
+start qemu with QMP connection
+  ./qemu-system-aarch64 -M virt -qmp unix:/tmp/s,server,nowait
+use script
+  ./scripts/qmp/qom-get --socket /tmp/s /machine/unattached/device[0].midr
 
-static
+you can use ./scripts/qmp/qom-tree to explore what's there
 
-> +    const struct {
-> +        const char *name;
-> +        hwaddr base;
-> +        size_t size;
-> +        MemInfoType type;
-> +        int alias_for;
-> +    } mem_info[] = {
-> +        {
-> +            .name = "SRAM (code bus)",
-> +            .base = MMAP_SRAM_CODE_BASE,
-> +            .size = MMAP_SRAM_SIZE,
-> +            .type = MEM_RAM,
-> +        },
-> +        {
-> +            .name = "BOOT-ROM",
-> +            .base = MMAP_BOOT_ROM_BASE,
-> +            .size = MMAP_BOOT_ROM_SIZE,
-> +            .type = MEM_ROM,
-> +        },
-> +        {
-> +            .name = "Smart DMA RAM",
-> +            .base = MMAP_SDMA_RAM_BASE,
-> +            .size = MMAP_SDMA_RAM_SIZE,
-> +            .type = MEM_RAM,
-> +        },
-> +        {
-> +            .name = "SRAM (data bus)",
-> +            .base = MMAP_SRAM_DATA_BASE,
-> +            .size = MMAP_SRAM_SIZE,
-> +            .type = MEM_ALIAS,
-> +            .alias_for = 0
-> +        },
-> +    };
-> +    int i;
+see commit e61cc6b5c69 how to add property (DEFINE_PROP_UINT32 part mainly),
+as long as it's prefixed with "x-" (meaning internal/unstable) likelihood is
+that no one would object adding extra ones
+
 > +
-> +    s->mem = g_malloc_n(2 * ARRAY_SIZE(mem_info), sizeof(MemoryRegion));
-> +    for (i = 0; i < ARRAY_SIZE(mem_info); i++) {
-> +        const char *name = mem_info[i].name;
-> +        int size = mem_info[i].size;
-> +        int type = mem_info[i].type;
-> +        int alias_for = mem_info[i].alias_for;
-> +        MemoryRegion *mem = &s->mem[i];
-> +        uint32_t base = mem_info[i].base;
-> +        MemoryRegion *sec_mem;
-> +        char sec_name[256];
+> +import argparse
+> +import json
 > +
-> +        switch (type) {
-> +        case MEM_RAM:
-> +            memory_region_init_ram(mem, OBJECT(s), name, size, errp);
-> +            break;
-> +        case MEM_ROM:
-> +            memory_region_init_rom(mem, OBJECT(s), name, size, errp);
-> +            break;
-> +        case MEM_ALIAS:
-> +        {
-> +            MemoryRegion *orig = &s->mem[alias_for];
+> +from qmp_helper import (qmp_command, get_choice, get_mult_array,
+> +                        get_mult_choices, get_mult_int, bit,
+> +                        data_add, to_guid)
 > +
-> +            memory_region_init_alias(mem, OBJECT(s), name, orig, 0, size);
-> +            break;
-> +        }
-> +        default:
-> +            g_assert_not_reached();
+> +# Arm processor EINJ logic
+> +#
+> +ACPI_GHES_ARM_CPER_LENGTH = 40
+> +ACPI_GHES_ARM_CPER_PEI_LENGTH = 32
+> +
+> +# TODO: query it from emulation. Current default valid only for Aarch64
+> +CONTEXT_AARCH64_EL1 = 5
+> +
+> +class ArmProcessorEinj:
+> +    """
+> +    Implements ARM Processor Error injection via GHES
+> +    """
+> +
+> +    def __init__(self):
+> +        """Initialize the error injection class"""
+> +
+> +        # Valid choice values
+> +        self.arm_valid_bits = {
+> +            "mpidr":    bit(0),
+> +            "affinity": bit(1),
+> +            "running":  bit(2),
+> +            "vendor":   bit(3),
 > +        }
 > +
-> +        memory_region_add_subregion(get_system_memory(), base, mem);
-> +
-> +        /* create secure alias */
-> +        snprintf(sec_name, sizeof(sec_name), "SECURE %s", name);
-> +        sec_mem = &s->mem[ARRAY_SIZE(mem_info) + i];
-> +        if (type == MEM_ALIAS) {
-> +            mem = &s->mem[alias_for];
+> +        self.pei_flags = {
+> +            "first":        bit(0),
+> +            "last":         bit(1),
+> +            "propagated":   bit(2),
+> +            "overflow":     bit(3),
 > +        }
-> +        memory_region_init_alias(sec_mem, OBJECT(s), sec_name, mem, 0, size);
-> +        memory_region_add_subregion(get_system_memory(), base + SECURE_OFFSET,
-> +                                    sec_mem);
 > +
-> +        if (mem_info[i].type == MEM_ROM) {
-> +            char *fname = qemu_find_file(QEMU_FILE_TYPE_BIOS, "rt500.rom");
-> +
-> +            if (fname) {
-> +                int fsize = get_image_size(fname);
-> +                int ret;
-> +
-> +                if (fsize > size) {
-> +                    error_setg(errp, "rom file too big: %d > %d", fsize, size);
-> +                } else {
-> +                    ret = load_image_targphys(fname, base, size);
-> +                    if (ret < 0) {
-> +                        error_setg(errp, "could not load rom: %s", fname);
-> +                    }
-> +                }
-> +            }
-> +            g_free(fname);
+> +        self.pei_error_types = {
+> +            "cache":        bit(1),
+> +            "tlb":          bit(2),
+> +            "bus":          bit(3),
+> +            "micro-arch":   bit(4),
 > +        }
-> +    }
-> +}
 > +
-> +static void rt500_realize(DeviceState *dev, Error **errp)
-> +{
-> +    MachineState *ms = MACHINE(qdev_get_machine());
-> +    RT500State *s = RT500(dev);
-> +    int i;
-
-Preferably reduce iterator variables scope.
-
+> +        self.pei_valid_bits = {
+> +            "multiple-error":   bit(0),
+> +            "flags":            bit(1),
+> +            "error-info":       bit(2),
+> +            "virt-addr":        bit(3),
+> +            "phy-addr":         bit(4),
+> +        }
 > +
-> +    rt500_realize_memory(s, errp);
+> +        self.data = bytearray()
 > +
-> +    /* Setup ARMv7M CPU */
-> +    qdev_prop_set_uint32(DEVICE(&s->armv7m), "num-irq",
-> +                         RT500_FLEXCOMM16_IRQn + 1);
-
-Preferably a definition:
-
-#define RT500_NUM_IRQ (RT500_FLEXCOMM16_IRQn + 1)
-
-> +    qdev_prop_set_uint8(DEVICE(&s->armv7m), "num-prio-bits", 3);
-> +    qdev_prop_set_string(DEVICE(&s->armv7m), "cpu-type", ms->cpu_type);
-
-Do you plan to add RT500 machines not based on the Cortex-M33?
-Otherwise simpler to hardcode the CPU type here.
-
-> +    object_property_set_link(OBJECT(&s->armv7m), "memory",
-> +                             OBJECT(get_system_memory()), &error_abort);
-> +    if (!ms->kernel_filename) {
-> +        qdev_prop_set_uint32(DEVICE(&s->armv7m), "init-nsvtor",
-> +                             MMAP_BOOT_ROM_BASE);
-> +        qdev_prop_set_uint32(DEVICE(&s->armv7m), "init-svtor",
-> +                             MMAP_BOOT_ROM_BASE + SECURE_OFFSET);
-> +    }
+> +    def create_subparser(self, subparsers):
+> +        """Add a subparser to handle for the error fields"""
 > +
-> +    qdev_connect_clock_in(DEVICE(&s->armv7m), "cpuclk", s->sysclk);
-> +    qdev_connect_clock_in(DEVICE(&s->armv7m), "refclk",
-> +                     qdev_get_clock_out(DEVICE(&s->clkctl0), "systick_clk"));
+> +        parser = subparsers.add_parser("arm",
+> +                                       help="Generate an ARM processor CPER")
 > +
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(&s->armv7m), errp);
-> +    qdev_connect_gpio_out_named(DEVICE(&s->armv7m), "SYSRESETREQ", 0,
-> +                                qemu_allocate_irq(&do_sys_reset, NULL, 0));
+> +        arm_valid_bits = ",".join(self.arm_valid_bits.keys())
+> +        flags = ",".join(self.pei_flags.keys())
+> +        error_types = ",".join(self.pei_error_types.keys())
+> +        pei_valid_bits = ",".join(self.arm_valid_bits.keys())
 > +
-> +    /* Setup FLEXCOMM */
-> +    for (i = 0; i < RT500_FLEXCOMM_NUM; i++) {
-> +        const uint32_t addr[] = {
-
-static
-
-> +            RT500_FLEXCOMM0_BASE, RT500_FLEXCOMM1_BASE, RT500_FLEXCOMM2_BASE,
-> +            RT500_FLEXCOMM3_BASE, RT500_FLEXCOMM4_BASE, RT500_FLEXCOMM5_BASE,
-> +            RT500_FLEXCOMM6_BASE, RT500_FLEXCOMM7_BASE, RT500_FLEXCOMM8_BASE,
-> +            RT500_FLEXCOMM8_BASE, RT500_FLEXCOMM10_BASE, RT500_FLEXCOMM11_BASE,
-> +            RT500_FLEXCOMM12_BASE, RT500_FLEXCOMM13_BASE, RT500_FLEXCOMM14_BASE,
-> +            RT500_FLEXCOMM15_BASE, RT500_FLEXCOMM16_BASE
-> +        };
-> +        const int irq[] = {
-> +            RT500_FLEXCOMM0_IRQn, RT500_FLEXCOMM1_IRQn, RT500_FLEXCOMM2_IRQn,
-> +            RT500_FLEXCOMM3_IRQn, RT500_FLEXCOMM4_IRQn, RT500_FLEXCOMM5_IRQn,
-> +            RT500_FLEXCOMM6_IRQn, RT500_FLEXCOMM7_IRQn, RT500_FLEXCOMM8_IRQn,
-> +            RT500_FLEXCOMM9_IRQn, RT500_FLEXCOMM10_IRQn, RT500_FLEXCOMM11_IRQn,
-> +            RT500_FLEXCOMM12_IRQn, RT500_FLEXCOMM13_IRQn, RT500_FLEXCOMM14_IRQn,
-> +            RT500_FLEXCOMM15_IRQn, RT500_FLEXCOMM16_IRQn
-> +        };
-> +        const int functions[] = {
-> +            FLEXCOMM_FULL, FLEXCOMM_FULL, FLEXCOMM_FULL,
-> +            FLEXCOMM_FULL, FLEXCOMM_FULL, FLEXCOMM_FULL,
-> +            FLEXCOMM_FULL, FLEXCOMM_FULL, FLEXCOMM_FULL,
-> +            FLEXCOMM_FULL, FLEXCOMM_FULL, FLEXCOMM_FULL,
-> +            FLEXCOMM_FULL, FLEXCOMM_FULL, FLEXCOMM_HSSPI,
-> +            FLEXCOMM_PMICI2C, FLEXCOMM_HSSPI
-> +        };
-> +        DeviceState *ds = DEVICE(&s->flexcomm[i]);
-> +        char id[] = "flexcommXX";
+> +        # UEFI N.16 ARM Validation bits
+> +        g_arm = parser.add_argument_group("ARM processor")
+> +        g_arm.add_argument("--arm", "--arm-valid",
+> +                           help=f"ARM valid bits: {arm_valid_bits}")
+> +        g_arm.add_argument("-a", "--affinity",  "--level", "--affinity-level",
+> +                           type=lambda x: int(x, 0),
+> +                           help="Affinity level (when multiple levels apply)")
+> +        g_arm.add_argument("-l", "--mpidr", type=lambda x: int(x, 0),
+> +                           help="Multiprocessor Affinity Register")
+> +        g_arm.add_argument("-i", "--midr", type=lambda x: int(x, 0),
+> +                           help="Main ID Register")
+> +        g_arm.add_argument("-r", "--running",
+> +                           action=argparse.BooleanOptionalAction,
+> +                           default=None,
+> +                           help="Indicates if the processor is running or not")
+> +        g_arm.add_argument("--psci", "--psci-state",
+> +                           type=lambda x: int(x, 0),
+> +                           help="Power State Coordination Interface - PSCI state")
 > +
-> +        snprintf(id, sizeof(id), "flexcomm%d", i);
-> +        qdev_prop_set_uint32(ds, "functions", functions[i]);
-> +        qdev_prop_set_chr(ds, "chardev", qemu_chr_find(id));
-> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(ds), errp);
-> +        sysbus_mmio_map(SYS_BUS_DEVICE(ds), 0, addr[i]);
-> +        sysbus_connect_irq(SYS_BUS_DEVICE(ds), 0,
-> +                           qdev_get_gpio_in(DEVICE(&s->armv7m), irq[i]));
-> +    }
+> +        # TODO: Add vendor-specific support
 > +
-> +    /* Setup CTLCTL0 */
-> +    qdev_connect_clock_in(DEVICE(&s->clkctl0), "sysclk", s->sysclk);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(DEVICE(&s->clkctl0)), errp);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(DEVICE(&s->clkctl0)), 0, RT500_CLKCTL0_BASE);
+> +        # UEFI N.17 bitmaps (type and flags)
+> +        g_pei = parser.add_argument_group("ARM Processor Error Info (PEI)")
+> +        g_pei.add_argument("-t", "--type", nargs="+",
+> +                        help=f"one or more error types: {error_types}")
+> +        g_pei.add_argument("-f", "--flags", nargs="*",
+> +                        help=f"zero or more error flags: {flags}")
+> +        g_pei.add_argument("-V", "--pei-valid", "--error-valid", nargs="*",
+> +                        help=f"zero or more PEI valid bits: {pei_valid_bits}")
 > +
-> +    /* Setup CTLCTL1 */
-> +    qdev_connect_clock_in(DEVICE(&s->clkctl1), "sysclk", s->sysclk);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(DEVICE(&s->clkctl1)), errp);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(DEVICE(&s->clkctl1)), 0, RT500_CLKCTL1_BASE);
+> +        # UEFI N.17 Integer values
+> +        g_pei.add_argument("-m", "--multiple-error", nargs="+",
+> +                        help="Number of errors: 0: Single error, 1: Multiple errors, 2-65535: Error count if known")
+> +        g_pei.add_argument("-e", "--error-info", nargs="+",
+> +                        help="Error information (UEFI 2.10 tables N.18 to N.20)")
+> +        g_pei.add_argument("-p", "--physical-address",  nargs="+",
+> +                        help="Physical address")
+> +        g_pei.add_argument("-v", "--virtual-address",  nargs="+",
+> +                        help="Virtual address")
 > +
-> +    /* Setup FlexSPI */
-> +    for (i = 0; i < RT500_FLEXSPI_NUM; i++) {
-> +        const uint32_t addr[] = {
-
-static
-
-> +            RT500_FLEXSPI0_BASE, RT500_FLEXSPI1_BASE
-> +        };
-> +        const uint32_t mmap_base[] = {
-> +            MMAP_FLEXSPI0_BASE, MMAP_FLEXSPI1_BASE
-> +        };
-> +        const uint32_t mmap_size[] = {
-> +            MMAP_FLEXSPI0_SIZE, MMAP_FLEXSPI1_SIZE,
-> +        };
-> +        DeviceState *ds = DEVICE(&s->flexspi[i]);
+> +        # UEFI N.21 Context
+> +        g_ctx = parser.add_argument_group("Processor Context")
+> +        g_ctx.add_argument("--ctx-type", "--context-type", nargs="*",
+> +                        help="Type of the context (0=ARM32 GPR, 5=ARM64 EL1, other values supported)")
+> +        g_ctx.add_argument("--ctx-size", "--context-size", nargs="*",
+> +                        help="Minimal size of the context")
+> +        g_ctx.add_argument("--ctx-array", "--context-array", nargs="*",
+> +                        help="Comma-separated arrays for each context")
 > +
-> +        qdev_prop_set_uint32(ds, "mmap_base", mmap_base[i]);
-> +        qdev_prop_set_uint32(ds, "mmap_size", mmap_size[i]);
-> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(ds), errp);
-> +        sysbus_mmio_map(SYS_BUS_DEVICE(ds), 0, addr[i]);
-> +    }
+> +        # Vendor-specific data
+> +        g_vendor = parser.add_argument_group("Vendor-specific data")
+> +        g_vendor.add_argument("--vendor", "--vendor-specific", nargs="+",
+> +                        help="Vendor-specific byte arrays of data")
 > +
-> +    /* Setup reset controllers */
-> +    for (i = 0; i < RT500_RSTCTL_NUM; i++) {
-> +        DeviceState *ds = DEVICE(&s->rstctl[i]);
+> +    def parse_args(self, args):
+> +        """Parse subcommand arguments"""
 > +
-> +        const uint32_t addr[] = {
-
-static
-
-> +            RT500_RSTCTL0_BASE, RT500_RSTCTL1_BASE
-> +        };
+> +        cper = {}
+> +        pei = {}
+> +        ctx = {}
+> +        vendor = {}
 > +
-> +        qdev_prop_set_uint32(ds, "num", i);
-> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(ds), errp);
-> +        sysbus_mmio_map(SYS_BUS_DEVICE(ds), 0, addr[i]);
-> +    }
-> +}
+> +        arg = vars(args)
 > +
-> +static void rt500_finalize(Object *obj)
-> +{
-> +    RT500State *s = RT500(obj);
+> +        # Handle global parameters
+> +        if args.arm:
+> +            arm_valid_init = False
+> +            cper["valid"] = get_choice(name="valid",
+> +                                       value=args.arm,
+> +                                       choices=self.arm_valid_bits,
+> +                                       suffixes=["-error", "-err"])
+> +        else:
+> +            cper["valid"] = 0
+> +            arm_valid_init = True
 > +
-> +    g_free(s->mem);
-
-Allocated via rt500_realize() -> rt500_realize_memory() so
-to be released in a DeviceUnrealize() handler.
-
-> +}
+> +        if "running" in arg:
+> +            if args.running:
+> +                cper["running-state"] = bit(0)
+> +            else:
+> +                cper["running-state"] = 0
+> +        else:
+> +            cper["running-state"] = 0
 > +
-> +static void rt500_reset(DeviceState *ds)
-> +{
-> +}
+> +        if arm_valid_init:
+> +            if args.affinity:
+> +                cper["valid"] |= self.arm_valid_bits["affinity"]
 > +
-> +static Property rt500_properties[] = {
-
-To be filled later?
-
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
+> +            if args.mpidr:
+> +                cper["valid"] |= self.arm_valid_bits["mpidr"]
 > +
-> +static void rt500_class_init(ObjectClass *oc, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> +            if "running-state" in cper:
+> +                cper["valid"] |= self.arm_valid_bits["running"]
 > +
-> +    device_class_set_props(dc, rt500_properties);
-> +    dc->realize = rt500_realize;
-> +    dc->desc = "RT500 (ARM Cortex-M33)";
-> +    dc->reset = rt500_reset;
-> +}
+> +            if args.psci:
+> +                cper["valid"] |= self.arm_valid_bits["running"]
 > +
-> +static const TypeInfo rt500_type_info = {
-> +    .name = TYPE_RT500,
-> +    .parent = TYPE_SYS_BUS_DEVICE,
-> +    .instance_size = sizeof(RT500State),
-> +    .instance_init = rt500_init,
-> +    .instance_finalize = rt500_finalize,
-> +    .class_init = rt500_class_init,
-> +};
+> +        # Handle PEI
+> +        if not args.type:
+> +            args.type = ["cache-error"]
 > +
-> +static void rt500_register_types(void)
-> +{
-> +    type_register_static(&rt500_type_info);
-
-Preferably use the DEFINE_TYPES() macro.
-
-> +}
+> +        get_mult_choices(
+> +            pei,
+> +            name="valid",
+> +            values=args.pei_valid,
+> +            choices=self.pei_valid_bits,
+> +            suffixes=["-valid", "-info", "--information", "--addr"],
+> +        )
+> +        get_mult_choices(
+> +            pei,
+> +            name="type",
+> +            values=args.type,
+> +            choices=self.pei_error_types,
+> +            suffixes=["-error", "-err"],
+> +        )
+> +        get_mult_choices(
+> +            pei,
+> +            name="flags",
+> +            values=args.flags,
+> +            choices=self.pei_flags,
+> +            suffixes=["-error", "-cap"],
+> +        )
+> +        get_mult_int(pei, "error-info", args.error_info)
+> +        get_mult_int(pei, "multiple-error", args.multiple_error)
+> +        get_mult_int(pei, "phy-addr", args.physical_address)
+> +        get_mult_int(pei, "virt-addr", args.virtual_address)
 > +
-> +type_init(rt500_register_types)
-> diff --git a/hw/arm/svd/meson.build b/hw/arm/svd/meson.build
-> index 72a7421c6f..930a8b7343 100644
-> --- a/hw/arm/svd/meson.build
-> +++ b/hw/arm/svd/meson.build
-> @@ -34,3 +34,9 @@ genh += custom_target('rt500_rstctl1.h',
->                         output: 'rt500_rstctl1.h',
->                         input: 'MIMXRT595S_cm33.xml',
->                         command: [ svd_gen_header, '-i', '@INPUT@', '-o', '@OUTPUT@', '-p', 'RSTCTL1', '-t', 'RT500_RSTCTL1'])
-> +genh += custom_target('rt500.h',
-> +                      output: 'rt500.h',
-> +                      input: 'MIMXRT595S_cm33.xml',
-> +                      command: [ svd_gen_header,'-i', '@INPUT@', '-o', '@OUTPUT@', '-s', 'RT500',
-> +		                 '-p', 'FLEXCOMM0', '-p', 'CLKCTL0', '-p', 'CLKCTL1',
-> +				 '-p', 'FLEXSPI0', '-p', 'FLEXSPI1', '-p', 'RSTCTL0', '-p', 'RSTCTL1'])
-> diff --git a/include/hw/arm/rt500.h b/include/hw/arm/rt500.h
+> +        # Handle context
+> +        get_mult_int(ctx, "type", args.ctx_type, allow_zero=True)
+> +        get_mult_int(ctx, "minimal-size", args.ctx_size, allow_zero=True)
+> +        get_mult_array(ctx, "register", args.ctx_array, allow_zero=True)
+> +
+> +        get_mult_array(vendor, "bytes", args.vendor, max_val=255)
+> +
+> +        # Store PEI
+> +        pei_data = bytearray()
+> +        default_flags  = self.pei_flags["first"]
+> +        default_flags |= self.pei_flags["last"]
+> +
+> +        error_info_num = 0
+> +
+> +        for i, p in pei.items():        # pylint: disable=W0612
+> +            error_info_num += 1
+> +
+> +            # UEFI 2.10 doesn't define how to encode error information
+> +            # when multiple types are raised. So, provide a default only
+> +            # if a single type is there
+> +            if "error-info" not in p:
+> +                if p["type"] == bit(1):
+> +                    p["error-info"] = 0x0091000F
+> +                if p["type"] == bit(2):
+> +                    p["error-info"] = 0x0054007F
+> +                if p["type"] == bit(3):
+> +                    p["error-info"] = 0x80D6460FFF
+> +                if p["type"] == bit(4):
+> +                    p["error-info"] = 0x78DA03FF
+> +
+> +            if "valid" not in p:
+> +                p["valid"] = 0
+> +                if "multiple-error" in p:
+> +                    p["valid"] |= self.pei_valid_bits["multiple-error"]
+> +
+> +                if "flags" in p:
+> +                    p["valid"] |= self.pei_valid_bits["flags"]
+> +
+> +                if "error-info" in p:
+> +                    p["valid"] |= self.pei_valid_bits["error-info"]
+> +
+> +                if "phy-addr" in p:
+> +                    p["valid"] |= self.pei_valid_bits["phy-addr"]
+> +
+> +                if "virt-addr" in p:
+> +                    p["valid"] |= self.pei_valid_bits["virt-addr"]
+> +
+> +            # Version
+> +            data_add(pei_data, 0, 1)
+> +
+> +            data_add(pei_data, ACPI_GHES_ARM_CPER_PEI_LENGTH, 1)
+> +
+> +            data_add(pei_data, p["valid"], 2)
+> +            data_add(pei_data, p["type"], 1)
+> +            data_add(pei_data, p.get("multiple-error", 1), 2)
+> +            data_add(pei_data, p.get("flags", default_flags), 1)
+> +            data_add(pei_data, p.get("error-info", 0), 8)
+> +            data_add(pei_data, p.get("virt-addr", 0xDEADBEEF), 8)
+> +            data_add(pei_data, p.get("phy-addr", 0xABBA0BAD), 8)
+> +
+> +        # Store Context
+> +        ctx_data = bytearray()
+> +        context_info_num = 0
+> +
+> +        if ctx:
+> +            for k in sorted(ctx.keys()):
+> +                context_info_num += 1
+> +
+> +                if "type" not in ctx:
+> +                    ctx[k]["type"] = CONTEXT_AARCH64_EL1
+> +
+> +                if "register" not in ctx:
+> +                    ctx[k]["register"] = []
+> +
+> +                reg_size = len(ctx[k]["register"])
+> +                size = 0
+> +
+> +                if "minimal-size" in ctx:
+> +                    size = ctx[k]["minimal-size"]
+> +
+> +                size = max(size, reg_size)
+> +
+> +                size = (size + 1) % 0xFFFE
+> +
+> +                # Version
+> +                data_add(ctx_data, 0, 2)
+> +
+> +                data_add(ctx_data, ctx[k]["type"], 2)
+> +
+> +                data_add(ctx_data, 8 * size, 4)
+> +
+> +                for r in ctx[k]["register"]:
+> +                    data_add(ctx_data, r, 8)
+> +
+> +                for i in range(reg_size, size):   # pylint: disable=W0612
+> +                    data_add(ctx_data, 0, 8)
+> +
+> +        # Vendor-specific bytes are not grouped
+> +        vendor_data = bytearray()
+> +        if vendor:
+> +            for k in sorted(vendor.keys()):
+> +                for b in vendor[k]["bytes"]:
+> +                    data_add(vendor_data, b, 1)
+> +
+> +        # Encode ARM Processor Error
+> +        data = bytearray()
+> +
+> +        data_add(data, cper["valid"], 4)
+> +
+> +        data_add(data, error_info_num, 2)
+> +        data_add(data, context_info_num, 2)
+> +
+> +        # Calculate the length of the CPER data
+> +        cper_length = ACPI_GHES_ARM_CPER_LENGTH
+> +        cper_length += len(pei_data)
+> +        cper_length += len(vendor_data)
+> +        cper_length += len(ctx_data)
+> +        data_add(data, cper_length, 4)
+> +
+> +        data_add(data, arg.get("affinity-level", 0), 1)
+> +
+> +        # Reserved
+> +        data_add(data, 0, 3)
+> +
+> +        data_add(data, arg.get("mpidr-el1", 0), 8)
+> +        data_add(data, arg.get("midr-el1", 0), 8)
+> +        data_add(data, cper["running-state"], 4)
+> +        data_add(data, arg.get("psci-state", 0), 4)
+> +
+> +        # Add PEI
+> +        data.extend(pei_data)
+> +        data.extend(ctx_data)
+> +        data.extend(vendor_data)
+> +
+> +        self.data = data
+> +
+> +    def run(self, host, port):
+> +        """Execute QMP commands"""
+> +
+> +        guid = to_guid(0xE19E3D16, 0xBC11, 0x11E4,
+> +                       [0x9C, 0xAA, 0xC2, 0x05,
+> +                        0x1D, 0x5D, 0x46, 0xB0])
+> +
+> +        qmp_command(host, port, guid, self.data)
+> diff --git a/scripts/ghes_inject.py b/scripts/ghes_inject.py
+> new file mode 100755
+> index 000000000000..8415ccbbc53d
+> --- /dev/null
+> +++ b/scripts/ghes_inject.py
+> @@ -0,0 +1,59 @@
+> +#!/usr/bin/env python3
+> +#
+> +# pylint: disable=C0301, C0114
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (C) 2024 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> +
+> +import argparse
+> +
+> +from arm_processor_error import ArmProcessorEinj
+> +
+> +EINJ_DESCRIPTION = """
+> +Handle ACPI GHESv2 error injection logic QEMU QMP interface.\n
+> +
+> +It allows using UEFI BIOS EINJ features to generate GHES records.
+> +
+> +It helps testing Linux CPER and GHES drivers and to test rasdaemon
+> +error handling logic.
+> +
+> +Currently, it support ARM processor error injection for ARM processor
+> +events, being compatible with UEFI 2.9A Errata.
+> +
+> +This small utility works together with those QEMU additions:
+> +- https://gitlab.com/mchehab_kernel/qemu/-/tree/arm-error-inject-v2
+> +"""
+> +
+> +def main():
+> +    """Main program"""
+> +
+> +    # Main parser - handle generic args like QEMU QMP TCP socket options
+> +    parser = argparse.ArgumentParser(prog="einj.py",
+> +                                     formatter_class=argparse.RawDescriptionHelpFormatter,
+> +                                     usage="%(prog)s [options]",
+> +                                     description=EINJ_DESCRIPTION,
+> +                                     epilog="If a field is not defined, a default value will be applied by QEMU.")
+> +
+> +    g_options = parser.add_argument_group("QEMU QMP socket options")
+> +    g_options.add_argument("-H", "--host", default="localhost", type=str,
+> +                           help="host name")
+> +    g_options.add_argument("-P", "--port", default=4445, type=int,
+> +                           help="TCP port number")
+> +
+> +    arm_einj = ArmProcessorEinj()
+> +
+> +    # Call subparsers
+> +    subparsers = parser.add_subparsers(dest='command')
+> +
+> +    arm_einj.create_subparser(subparsers)
+> +
+> +    args = parser.parse_args()
+> +
+> +    # Handle subparser commands
+> +    if args.command == "arm":
+> +        arm_einj.parse_args(args)
+> +        arm_einj.run(args.host, args.port)
+> +
+> +
+> +if __name__ == "__main__":
+> +    main()
+> diff --git a/scripts/qmp_helper.py b/scripts/qmp_helper.py
 > new file mode 100644
-> index 0000000000..8ca7972f8a
+> index 000000000000..13fae7a7af0e
 > --- /dev/null
-> +++ b/include/hw/arm/rt500.h
-> @@ -0,0 +1,49 @@
-> +/*
-> + * i.MX RT500 platforms.
-> + *
-> + * Copyright (c) 2024 Google LLC
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Contributions after 2012-01-13 are licensed under the terms of the
-> + * GNU GPL, version 2 or (at your option) any later version.
-> + */
+> +++ b/scripts/qmp_helper.py
+> @@ -0,0 +1,249 @@
+> +#!/usr/bin/env python3
+> +#
+> +# pylint: disable=C0301, C0114, R0912, R0913, R0915, W0511
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (C) 2024 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 > +
-> +#ifndef HW_ARM_RT500_H
-> +#define HW_ARM_RT500_H
+> +import json
+> +import socket
+> +import sys
 > +
-> +#include "qemu/osdep.h"
-
-No osdep.h in header.
-
-> +#include "qemu/units.h"
-
-Not used (move to source).
-
-> +#include "hw/arm/boot.h"
-
-Not used.
-
-> +#include "hw/arm/armv7m.h"
-> +#include "hw/misc/flexcomm.h"
-> +#include "hw/misc/rt500_clkctl0.h"
-> +#include "hw/misc/rt500_clkctl1.h"
-> +#include "hw/ssi/flexspi.h"
-> +#include "hw/misc/rt500_rstctl.h"
+> +from base64 import b64encode
 > +
-> +#define TYPE_RT500 "rt500"
-> +#define RT500(obj) OBJECT_CHECK(RT500State, (obj), TYPE_RT500)
+> +#
+> +# Socket QMP send command
+> +#
+> +def qmp_command(host, port, guid, data):
+> +    """Send commands to QEMU though QMP TCP socket"""
 > +
-> +#define RT500_FLEXCOMM_NUM (17)
-> +#define RT500_FLEXSPI_NUM (2)
-> +#define RT500_RSTCTL_NUM (2)
+> +    # Fill the commands to be sent
+> +    commands = []
 > +
-> +typedef struct RT500State {
-> +    /*< private >*/
-> +    SysBusDevice parent_obj;
+> +    # Needed to negotiate QMP and for QEMU to accept the command
+> +    commands.append('{ "execute": "qmp_capabilities" } ')
 > +
-> +    /*< public >*/
-
-Please drop private/public comments.
-
-> +    ARMv7MState armv7m;
-> +    MemoryRegion *mem;
-> +    FlexcommState flexcomm[RT500_FLEXCOMM_NUM];
-> +    RT500ClkCtl0State clkctl0;
-> +    RT500ClkCtl1State clkctl1;
-> +    FlexSpiState flexspi[RT500_FLEXSPI_NUM];
-> +    RT500RstCtlState rstctl[RT500_RSTCTL_NUM];
+> +    base64_data = b64encode(bytes(data)).decode('ascii')
 > +
-> +    Clock *sysclk;
-> +    Clock *refclk;
-> +} RT500State;
+> +    cmd_arg = {
+> +        'cper': {
+> +            'notification-type': guid,
+> +            "raw-data": base64_data
+> +        }
+> +    }
 > +
-> +#endif /* HW_ARM_RT500_H */
-
-LGTM,
-
-Phil.
+> +    command = '{ "execute": "ghes-cper", '
+> +    command += '"arguments": ' + json.dumps(cmd_arg) + " }"
+> +
+> +    commands.append(command)
+> +
+> +    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+> +    try:
+> +        s.connect((host, port))
+> +    except ConnectionRefusedError:
+> +        sys.exit(f"Can't connect to QMP host {host}:{port}")
+> +
+> +    data = s.recv(1024)
+> +    try:
+> +        obj = json.loads(data.decode("utf-8"))
+> +    except json.JSONDecodeError as e:
+> +        print(f"Invalid QMP answer: {e}")
+> +        s.close()
+> +        return
+> +
+> +    if "QMP" not in obj:
+> +        print(f"Invalid QMP answer: {data.decode("utf-8")}")
+> +        s.close()
+> +        return
+> +
+> +    for i, command in enumerate(commands):
+> +        s.sendall(command.encode("utf-8"))
+> +        data = s.recv(1024)
+> +        try:
+> +            obj = json.loads(data.decode("utf-8"))
+> +        except json.JSONDecodeError as e:
+> +            print(f"Invalid QMP answer: {e}")
+> +            s.close()
+> +            return
+> +
+> +        if isinstance(obj.get("return"), dict):
+> +            if obj["return"]:
+> +                print(json.dumps(obj["return"]))
+> +            elif i > 0:
+> +                print("Error injected.")
+> +        elif isinstance(obj.get("error"), dict):
+> +            error = obj["error"]
+> +            print(f'{error["class"]}: {error["desc"]}')
+> +        else:
+> +            print(json.dumps(obj))
+> +
+> +    s.shutdown(socket.SHUT_WR)
+> +    while 1:
+> +        data = s.recv(1024)
+> +        if data == b"":
+> +            break
+> +        try:
+> +            obj = json.loads(data.decode("utf-8"))
+> +        except json.JSONDecodeError as e:
+> +            print(f"Invalid QMP answer: {e}")
+> +            s.close()
+> +            return
+> +
+> +        if isinstance(obj.get("return"), dict):
+> +            print(json.dumps(obj["return"]))
+> +        if isinstance(obj.get("error"), dict):
+> +            error = obj["error"]
+> +            print(f'{error["class"]}: {error["desc"]}')
+> +        else:
+> +            print(json.dumps(obj))
+> +
+> +    s.close()
+> +
+> +
+> +#
+> +# Helper routines to handle multiple choice arguments
+> +#
+> +def get_choice(name, value, choices, suffixes=None):
+> +    """Produce a list from multiple choice argument"""
+> +
+> +    new_values = 0
+> +
+> +    if not value:
+> +        return new_values
+> +
+> +    for val in value.split(","):
+> +        val = val.lower()
+> +
+> +        if suffixes:
+> +            for suffix in suffixes:
+> +                val = val.removesuffix(suffix)
+> +
+> +        if val not in choices.keys():
+> +            sys.exit(f"Error on '{name}': choice {val} is invalid.")
+> +
+> +        val = choices[val]
+> +
+> +        new_values |= val
+> +
+> +    return new_values
+> +
+> +
+> +def get_mult_array(mult, name, values, allow_zero=False, max_val=None):
+> +    """Add numbered hashes from integer lists"""
+> +
+> +    if not allow_zero:
+> +        if not values:
+> +            return
+> +    else:
+> +        if values is None:
+> +            return
+> +
+> +        if not values:
+> +            i = 0
+> +            if i not in mult:
+> +                mult[i] = {}
+> +
+> +            mult[i][name] = []
+> +            return
+> +
+> +    i = 0
+> +    for value in values:
+> +        for val in value.split(","):
+> +            try:
+> +                val = int(val, 0)
+> +            except ValueError:
+> +                sys.exit(f"Error on '{name}': {val} is not an integer")
+> +
+> +            if val < 0:
+> +                sys.exit(f"Error on '{name}': {val} is not unsigned")
+> +
+> +            if max_val and val > max_val:
+> +                sys.exit(f"Error on '{name}': {val} is too little")
+> +
+> +            if i not in mult:
+> +                mult[i] = {}
+> +
+> +            if name not in mult[i]:
+> +                mult[i][name] = []
+> +
+> +            mult[i][name].append(val)
+> +
+> +        i += 1
+> +
+> +
+> +def get_mult_choices(mult, name, values, choices,
+> +                     suffixes=None, allow_zero=False):
+> +    """Add numbered hashes from multiple choice arguments"""
+> +
+> +    if not allow_zero:
+> +        if not values:
+> +            return
+> +    else:
+> +        if values is None:
+> +            return
+> +
+> +    i = 0
+> +    for val in values:
+> +        new_values = get_choice(name, val, choices, suffixes)
+> +
+> +        if i not in mult:
+> +            mult[i] = {}
+> +
+> +        mult[i][name] = new_values
+> +        i += 1
+> +
+> +
+> +def get_mult_int(mult, name, values, allow_zero=False):
+> +    """Add numbered hashes from integer arguments"""
+> +    if not allow_zero:
+> +        if not values:
+> +            return
+> +    else:
+> +        if values is None:
+> +            return
+> +
+> +    i = 0
+> +    for val in values:
+> +        try:
+> +            val = int(val, 0)
+> +        except ValueError:
+> +            sys.exit(f"Error on '{name}': {val} is not an integer")
+> +
+> +        if val < 0:
+> +            sys.exit(f"Error on '{name}': {val} is not unsigned")
+> +
+> +        if i not in mult:
+> +            mult[i] = {}
+> +
+> +        mult[i][name] = val
+> +        i += 1
+> +
+> +
+> +#
+> +# Data encode helper functions
+> +#
+> +def bit(b):
+> +    """Simple macro to define a bit on a bitmask"""
+> +    return 1 << b
+> +
+> +
+> +def data_add(data, value, num_bytes):
+> +    """Adds bytes from value inside a bitarray"""
+> +
+> +    data.extend(value.to_bytes(num_bytes, byteorder="little"))
+> +
+> +def to_guid(time_low, time_mid, time_high, nodes):
+> +    """Create an GUID string"""
+> +
+> +    assert(len(nodes) == 8)
+> +
+> +    clock = nodes[0] << 8 | nodes[1]
+> +
+> +    node = 0
+> +    for i in range(2, len(nodes)):
+> +        node = node << 8 | nodes[i]
+> +
+> +    s = f"{time_low:08x}-{time_mid:04x}-"
+> +    s += f"{time_high:04x}-{clock:04x}-{node:012x}"
+> +
+> +    return s
 
 
