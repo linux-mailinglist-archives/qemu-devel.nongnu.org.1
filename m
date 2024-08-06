@@ -2,74 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713E4948FF3
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1B8948FF2
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:03:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJmO-0003u8-NX; Tue, 06 Aug 2024 08:59:08 -0400
+	id 1sbJns-000691-CH; Tue, 06 Aug 2024 09:00:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbJlf-0000lY-AW
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:58:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sbJmS-0005BK-Gy; Tue, 06 Aug 2024 08:59:19 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbJlc-0000zw-So
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:58:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722949099;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2Jp4GYq0Q+y0lAIVBGLkBXkXlpXH90EQAb39NujUIDQ=;
- b=FZvqVjdDCL7BfjEtOjzEAHeiZK7pDWrjrbPkJbcV98oXT1roeacLQAuW5ukgRhbVZCUSAw
- /8dRyZb1TO/ObTYiWYpl2erJYug4o/jCtfhMihvvMQExIWYyNXX9UmKh4N1LYvok2XGYiP
- eCPBIrTBP4szJOzENsEtZ8X7DMtWjr8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-MR1GhnxoP726GbPPC6h8Aw-1; Tue,
- 06 Aug 2024 08:58:17 -0400
-X-MC-Unique: MR1GhnxoP726GbPPC6h8Aw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E38F11955D53; Tue,  6 Aug 2024 12:58:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.20])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8576300019B; Tue,  6 Aug 2024 12:58:10 +0000 (UTC)
-Date: Tue, 6 Aug 2024 07:58:07 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, 
- qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, 
- alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
-Subject: Re: [PATCH v3 2/2] nbd: Clean up clients more efficiently
-Message-ID: <sx5es6bzgepmx3bsnjrtprb35iwkyzqadtf46shfcl7lkdsuxc@gjcvjopdmpzo>
-References: <20240806022542.381883-4-eblake@redhat.com>
- <20240806022542.381883-6-eblake@redhat.com>
- <ZrHtxrb5dyh3eKJu@redhat.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sbJmQ-00012L-5d; Tue, 06 Aug 2024 08:59:12 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 98C69CE0B2C;
+ Tue,  6 Aug 2024 12:59:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED608C32786;
+ Tue,  6 Aug 2024 12:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1722949144;
+ bh=WRTEl+sMiGldjc/6bXsqZRJ/sl8EcbB0pjjcgi5eOnM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=ep8RaX588umdUmUXLx5Ecl9eEvX47YNAmIbVYHbQTjddP7hhN8RESSLm8qBqTxC2a
+ k04/3yPcH8nLyiGq5pVGelazPggWt2NSyeVNfoQ3swNmK33MgaD9ZVCYC2Y6xPPZ0m
+ f5wpcsjveio4ADHrQPIgaHAugiXHmzHhWYBwgV3A/8L/qMKGGBL6Td0f866TjjrY5q
+ 9I7Sl2im7O/9/+nDA0Q3dP2yYghsWpfxyTkJduOG5KzpW0Ug9/ddbVCI64akiIQHxZ
+ UhmAixa1/lBNLzqpKl+/OgmbXLzzLAn1+oZ1C7pFSZWvo4szdCO2IsYZD8g89Fu5/0
+ c7VTb9knXrq7w==
+Date: Tue, 6 Aug 2024 14:58:56 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>, Eric Blake
+ <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, linux-kernel@vger.kernel.org,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 5/7] qapi/ghes-cper: add an interface to do generic
+ CPER error injection
+Message-ID: <20240806145856.106c7ebe@foz.lan>
+In-Reply-To: <20240806145153.0e1a70a9@imammedo.users.ipa.redhat.com>
+References: <cover.1722634602.git.mchehab+huawei@kernel.org>
+ <51cbdc8a53e58c69ee17b15c398feeeeeeb64f34.1722634602.git.mchehab+huawei@kernel.org>
+ <20240806145153.0e1a70a9@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZrHtxrb5dyh3eKJu@redhat.com>
-User-Agent: NeoMutt/20240425
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,57 +76,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 06, 2024 at 10:32:54AM GMT, Daniel P. Berrangé wrote:
-> On Mon, Aug 05, 2024 at 09:21:36PM -0500, Eric Blake wrote:
-> > Since an NBD server may be long-living, serving clients that
-> > repeatedly connect and disconnect, it can be more efficient to clean
-> > up after each client disconnects, rather than storing a list of
-> > resources to clean up when the server exits.  Rewrite the list of
-> > known clients to be double-linked so that we can get O(1) deletion to
-> > keep the list pruned to size as clients exit.  This in turn requires
-> > each client to track an opaque pointer of owner information (although
-> > qemu-nbd doesn't need to refer to it).
+Em Tue, 6 Aug 2024 14:51:53 +0200
+Igor Mammedov <imammedo@redhat.com> escreveu:
+
+> > +{ 'struct': 'CommonPlatformErrorRecord',
+> > +  'data': {  
 > 
-> I tend to feel that this needs to be squashed into the previous
-> patch.  The previous patch effectively creates unbounded memory
-> usage in the NBD server. ie consider a client that connects and
-> immediately disconnects, not sending any data, in a tight loop.
-> It will "leak" NBDConn & QIOChanelSocket pointers for each
-> iteration of the loop, only to be cleaned up when the NBD Server
-> is shutdown.
+> > +      'notification-type': 'str',  
 > 
-> Especially given that we tagged the previous commit with a CVE
-> and not this commit,  people could be misled into backporting
-> only the former commit leaving them open to the leak.
+> this should be source id (type is just impl. detail of how QEMU delivers
+> event for given source id)
+> unless there is no plan to use more sources,
+> I'd just drop this from API to avoid confusing user.
+> 
+> Since the patch comes before 5/7, it's not clear how it will be used at this point.
+> I'd move the patch after 5/7.
 
-Makes sense.  Will respin v4 along those lines; although I plan to
-refactor slightly: have patch 1 pick up the part of this patch that
-allows server.c to track a client's owner, then patch 2 be the CVE fix
-creating the doubly-linked list of QIOSocketChannel wrappers as
-owners.  Also, I realized that nbd_server->connections == 0 is now
-effectively redundant with QLIST_EMPTY(&nbd_server->conns), so that's
-another cleanup to squash in.
+As described at:
 
-> > @@ -103,14 +112,9 @@ static void nbd_server_free(NBDServerData *server)
-> >       */
-> >      qio_net_listener_disconnect(server->listener);
-> >      object_unref(OBJECT(server->listener));
-> > -    while (!QSLIST_EMPTY(&server->conns)) {
-> > -        NBDConn *conn = QSLIST_FIRST(&server->conns);
-> > -
-> > +    QLIST_FOREACH_SAFE(conn, &server->conns, next, tmp) {
-> >          qio_channel_shutdown(QIO_CHANNEL(conn->cioc), QIO_CHANNEL_SHUTDOWN_BOTH,
-> >                               NULL);
-> > -        object_unref(OBJECT(conn->cioc));
-> > -        QSLIST_REMOVE_HEAD(&server->conns, next);
-> > -        g_free(conn);
-> >      }
-> > 
-> >      AIO_WAIT_WHILE_UNLOCKED(NULL, server->connections > 0);
+> +# @notification-type: pre-assigned GUID string indicating the record
+> +#   association with an error event notification type, as defined
+> +#   at https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#record-header
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+This is actually GUID of the error to be generated. Perhaps the better would
+be to change the above to:
 
+	{ 'struct': 'CommonPlatformErrorRecord',
+	  'data': {
+		'guid': 'str',
+		'raw-data': 'str'
+	}
+
+Making it even clearer. In any case, this is mandatory, as otherwise
+the interface would be limited to a single type.
+
+Thanks,
+Mauro
 
