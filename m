@@ -2,78 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF789491B2
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C02FD949185
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:31:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbKNM-0006lM-Iu; Tue, 06 Aug 2024 09:37:20 -0400
+	id 1sbKHA-0005Lj-MX; Tue, 06 Aug 2024 09:30:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sbKNH-0006V8-M0
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:37:15 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sbKH1-0005AA-7o
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:30:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sbKNC-0006pv-BG
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:37:15 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sbKGz-0006AH-Ep
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:30:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722951428;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=s0Azy5IqZ41TCP/WCbxsy2VM9SX9V8d+xsx3W+hTjbY=;
- b=Yf9HDhrETMGAVyBjPGnQGOCPWp953D21dfbAvsxu7PkP5gVGA7kgWHoFe8kDeGASw1JOs8
- X8PirO9tw5cLewukYTQY7o4JkLFnpoYRN/gOrI6+VsWEaXn7QEMTBGbzrOD2qBZqNxD4V3
- LotFO7g50dAXEoU1j7+MQOA3vxSWqYU=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-480-vgThdpK0OsCMUbymB6Vj1Q-1; Tue, 06 Aug 2024 09:37:05 -0400
-X-MC-Unique: vgThdpK0OsCMUbymB6Vj1Q-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2f18429ce00so5935371fa.0
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 06:37:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722951424; x=1723556224;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s0Azy5IqZ41TCP/WCbxsy2VM9SX9V8d+xsx3W+hTjbY=;
- b=mzuKJLDD3sx6pPU/Cr6JE2ssUItsGd+PGgHkFK/5+Gw6pJ9nzM3ChzEt2hBZ5R1MJ0
- CFBnkzsiRcUeeQRhYhBAAS/RshKR/lxW8K5qRZKjlDxPLjv0g3gfytmCfauNkR7pxSZp
- ETeDe//OJxyOPrHbH03ew4uAHvEnRlQ9qZ7/5A3Lly5QEqLw87qplmecqzon5Z+XSf2s
- a8vtC12v+gAIG283nQK2kNnGxJgQxIqqNJhRhj3StlPhW9yTDn0ug2lcxZxPH0UlQSSO
- UOte8LIZja4b/Q5s0rkQK5nGvIbYG6uYdK0tlKVSpGnxeXh7YEmxdKcq1O3hxgFzJXAx
- O5GQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV04JuC9tgJkGWAASxdIOVd5UMLO2t1kI808IPuJDH50tMlsQcyIXJVPc4ge6Z3jUcbbORxs/bOrqn9@nongnu.org
-X-Gm-Message-State: AOJu0YwrQGiKIl1N5L09XptC2t+tcsYZNl+1XIwo+90AT2A/NdaHObmH
- ICXqb0gd8FPPAC5l6yF7AOo9h7W3EFMQG6F3EMZt2PWb0IY573Jir6teFLcVDKnPhQctgNQa2FI
- UQcWZBx3mNOTnEg5uh6/G6w8k91tQEc6grr3NykkrQu3jG5LLHDMs
-X-Received: by 2002:a05:6000:156e:b0:360:8c88:ab82 with SMTP id
- ffacd0b85a97d-36bbbeefe27mr16409177f8f.30.1722951035939; 
- Tue, 06 Aug 2024 06:30:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqvw0eH3+3qQ9AF5AQ6WDIO6ESB2IvDxX/qux9Igzn9we9Z73ZJVj/YF24ncuuYR73NS485A==
-X-Received: by 2002:a05:6000:156e:b0:360:8c88:ab82 with SMTP id
- ffacd0b85a97d-36bbbeefe27mr16408981f8f.30.1722951033086; 
- Tue, 06 Aug 2024 06:30:33 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:175:c9eb:d9d4:606a:87dc:59c7])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36bbcf0ccc5sm13123697f8f.23.2024.08.06.06.30.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Aug 2024 06:30:32 -0700 (PDT)
-Date: Tue, 6 Aug 2024 09:30:30 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cindy Lu <lulu@redhat.com>
-Cc: jasowang@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/3] virtio_net: Add the check for vdpa's mac address
-Message-ID: <20240806093013-mutt-send-email-mst@kernel.org>
-References: <20240806005814.51651-1-lulu@redhat.com>
+ s=mimecast20190719; t=1722951044;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=v6EtI4825o7zfeXYMcpDE2BgJvWmzAELY6slBuOpxMk=;
+ b=fNBKVhRLsIWZUFzm1L4r9MKqbkRdEj74mUDtG9oMi7Z2YsvAhr9Ig/805rB8aSpiRyDBnt
+ FbUgWG1ktWZ/dNudnQYmEPeEJ2aX4Jxw1UMmaS28QugaNyz7Iv4yiB0UFrXlyySEx/Osef
+ S9M7kMp62iy6HWqWwVW0XF3x6iF/oyQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-mNku20iKP1i9JaQ0meO0pA-1; Tue,
+ 06 Aug 2024 09:30:42 -0400
+X-MC-Unique: mNku20iKP1i9JaQ0meO0pA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 568A9195422A; Tue,  6 Aug 2024 13:30:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.106])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A0FBD19560AA; Tue,  6 Aug 2024 13:30:37 +0000 (UTC)
+Date: Tue, 6 Aug 2024 14:30:34 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Zhibin Hu <huzhibin5@huawei.com>, qemu-stable@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: Re: [PULL 2/8] virtio-net: Ensure queue index fits with RSS
+Message-ID: <ZrIlej6y0fTLZ_JZ@redhat.com>
+References: <20240802031929.44060-1-jasowang@redhat.com>
+ <20240802031929.44060-3-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240806005814.51651-1-lulu@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20240802031929.44060-3-jasowang@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -95,88 +81,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 06, 2024 at 08:58:01AM +0800, Cindy Lu wrote:
-> When using a VDPA device, it is important to ensure that
-> the MAC address in the hardware matches the MAC address
-> from the QEMU command line.
-> This will allow the device to boot.
+On Fri, Aug 02, 2024 at 11:19:23AM +0800, Jason Wang wrote:
+> From: Akihiko Odaki <akihiko.odaki@daynix.com>
 > 
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
-
-Always post threads with a cover letter please.
-
+> Ensure the queue index points to a valid queue when software RSS
+> enabled. The new calculation matches with the behavior of Linux's TAP
+> device with the RSS eBPF program.
+> 
+> Fixes: 4474e37a5b3a ("virtio-net: implement RX RSS processing")
+> Reported-by: Zhibin Hu <huzhibin5@huawei.com>
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
 > ---
->  hw/net/virtio-net.c | 33 +++++++++++++++++++++++++++++----
->  1 file changed, 29 insertions(+), 4 deletions(-)
+>  hw/net/virtio-net.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+
+FYI, this patch is the fix for CVE-2024-6505.
+
+Please make sure to mention CVE assignments in the commit message
+when one is available.
+
 > 
 > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 9c7e85caea..7f51bd0dd3 100644
+> index 8f30972708..5635620a31 100644
 > --- a/hw/net/virtio-net.c
 > +++ b/hw/net/virtio-net.c
-> @@ -3579,12 +3579,36 @@ static bool failover_hide_primary_device(DeviceListener *listener,
->      /* failover_primary_hidden is set during feature negotiation */
->      return qatomic_read(&n->failover_primary_hidden);
->  }
-> +static bool virtio_net_check_vdpa_mac(NetClientState *nc, VirtIONet *n, MACAddr *cmdline_mac,
-> +				      Error **errp)
-> +{
-> +	struct virtio_net_config hwcfg = {};
-> +	static const MACAddr zero = { .a = { 0, 0, 0, 0, 0, 0 } };
-> +
-> +	vhost_net_get_config(get_vhost_net(nc->peer), (uint8_t *)&hwcfg, ETH_ALEN);
-> +
-> +    /*
-> +     * For VDPA device: Only two situations are acceptable:
-> +     * 1.The hardware MAC address is the same as the QEMU command line MAC
-> +     *   address, and both of them are not 0.
-> +     */
-> +
-> +	if (memcmp(&hwcfg.mac, &zero, sizeof(MACAddr)) != 0) {
-> +		if ((memcmp(&hwcfg.mac, cmdline_mac, sizeof(MACAddr)) == 0)) {
-> +			return true;
-> +		}
-> +	}
-> +	error_setg(errp, "vDPA device's mac != the mac address from qemu cmdline"
-> +			 "Please check the the vdpa device's setting.");
->  
-> +	return false;
-> +}
->  static void virtio_net_device_realize(DeviceState *dev, Error **errp)
->  {
->      VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->      VirtIONet *n = VIRTIO_NET(dev);
->      NetClientState *nc;
-> +    MACAddr macaddr_cmdline;
->      int i;
->  
->      if (n->net_conf.mtu) {
-> @@ -3692,6 +3716,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
->      virtio_net_add_queue(n, 0);
->  
->      n->ctrl_vq = virtio_add_queue(vdev, 64, virtio_net_handle_ctrl);
-> +    memcpy(&macaddr_cmdline, &n->nic_conf.macaddr, sizeof(n->mac));
->      qemu_macaddr_default_if_unset(&n->nic_conf.macaddr);
->      memcpy(&n->mac[0], &n->nic_conf.macaddr, sizeof(n->mac));
->      n->status = VIRTIO_NET_S_LINK_UP;
-> @@ -3739,10 +3764,10 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
->      nc->rxfilter_notify_enabled = 1;
->  
->     if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_VDPA) {
-> -        struct virtio_net_config netcfg = {};
-> -        memcpy(&netcfg.mac, &n->nic_conf.macaddr, ETH_ALEN);
-> -        vhost_net_set_config(get_vhost_net(nc->peer),
-> -            (uint8_t *)&netcfg, 0, ETH_ALEN, VHOST_SET_CONFIG_TYPE_FRONTEND);
-> +	   if (!virtio_net_check_vdpa_mac(nc, n, &macaddr_cmdline, errp)) {
-> +		   virtio_cleanup(vdev);
-> +		   return;
-> +	   }
+> @@ -1905,7 +1905,8 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+>      if (!no_rss && n->rss_data.enabled && n->rss_data.enabled_software_rss) {
+>          int index = virtio_net_process_rss(nc, buf, size, &extra_hdr);
+>          if (index >= 0) {
+> -            NetClientState *nc2 = qemu_get_subqueue(n->nic, index);
+> +            NetClientState *nc2 =
+> +                qemu_get_subqueue(n->nic, index % n->curr_queue_pairs);
+>              return virtio_net_receive_rcu(nc2, buf, size, true);
+>          }
 >      }
->      QTAILQ_INIT(&n->rsc_chains);
->      n->qdev = dev;
-> -- 
-> 2.45.0
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
