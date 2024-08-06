@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A62948FEC
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8806B948FD8
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:01:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJhX-0007KG-5Z; Tue, 06 Aug 2024 08:54:07 -0400
+	id 1sbJhY-0007oK-JB; Tue, 06 Aug 2024 08:54:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhN-0006t0-NO
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:53:57 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhS-0007Lk-Jj
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:03 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhL-0000Jp-Vl
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:53:57 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a7aac70e30dso58972166b.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:53:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhQ-0000K7-OL
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:02 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-52fc14d6689so515672e87.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948832; x=1723553632; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722948838; x=1723553638; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QOLg5Vi3ZKfkY84yToih/WZzzIJIKq2Y34KfZXOpYeQ=;
- b=no95ZLQvcosJocWsWEj/XtQfQt5OhX5b12WmRhZDr2TQi/p5Eyh94yXljaFqM/SMVs
- upFhbVVwfK+Pj02lYbLGR3IDWzdHB/NKKLITYa6mDZCpBLhwhQP7gBfQnfiW9e4l79F+
- 4wERMAefTaPLv2OSSkbY0X+tCyAxIGNkebVBX77O9Srwnmqlxu6jJeoOqb1OH6Ry53o9
- OVi15bmJuHQ42fGRHQG0m2ZXIN9XgXBXLJha+l9mkFGJE8UU4+f0WDYk2PTl2sbfFpMj
- JbaJOnXKtsBPMexIDO0+IbDxl6vZf/8a70L/SbLU+YKQ+FbCJf1R5BHyqB3hlKjYnIS2
- 2W3w==
+ bh=AMipe/hXLqtb3Ef8XbFqx4kLNXFlOJjSHmZuoVlilTA=;
+ b=M7lEONhJ7UuMoo/Pk40/xnfDfkIbohUZBK37LDkikZYgrUTgICk9WW9OjaUgbIPuuJ
+ DqtJJkkS2nMl6w//T72jOS1AXaMd3jGGpA/z4838SxkL41ytFtAxAH3ukBXDuuneJ0PM
+ E17JWlixB8bnGhK/w+7c2yMvYEjz3Sw+sXSjQo7akuLiJrrLqGsbG6i0heSWbRm2DLDg
+ iUPO8QrUsYFjBOhWVsd5FCHXrFduF85n5ZPr6ZS5+prXw/JRCa9QFezSSpHwhiEg6Qt9
+ UUIH+LGVeTzALzk+oExwIdO9Ad6k+9GEMA3Bx6hSq2PGMFftXguE0PO4ZsyuEdU2mQO4
+ d7aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948832; x=1723553632;
+ d=1e100.net; s=20230601; t=1722948838; x=1723553638;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QOLg5Vi3ZKfkY84yToih/WZzzIJIKq2Y34KfZXOpYeQ=;
- b=bx3JDFQ8FzvKpgiXlYc9Mc1cHATT2ZT1vMSSmS06R6Pa3cFPXGFsEw2MgmtWiRqq2m
- t4J9uq8A1EvtIE1UgKNqgxIGHTbLsREjMb4CwV9+gYDZFIt6u9WvLokldTMC0etLesvF
- zdvl3BKpWdVkF5luUbvw4rwmYi9JErQa/uEUbZBI5dTrrplZflc3pTKa8FekMJfzZWaq
- Mme+FeRpns9LYlrcojLHwFX2plrwnKoeLmG5w9aRMmsfoKlnKhy/V6BhRX7WCvKe4Q9F
- rEZorkcyv2nUqYzt43UBUAmWEbvm6H9nKkHL2zBeZjoxrwKmTdz2gUuD2Yxab2cQA1tM
- g0Hg==
-X-Gm-Message-State: AOJu0Yy20wbC31CQh4y1I3UwQHy22aBh8u3iBu+7/xiq9n0z8w6qa6O1
- h6kWiJZubhAVdzFgDgWVELzxpuUEsblPowskT2aSjmVRqavbCjTlmIsmAYKKRF8JlUVsniINkjR
- k
-X-Google-Smtp-Source: AGHT+IGRaM4WMc9qgogB5AShB+bzTSo/cHkQ3V4A+4cH5o1QooY7YebFilHRAhzKUkqJtd4l6SCNXg==
-X-Received: by 2002:a17:906:d262:b0:a7a:9f78:fef with SMTP id
- a640c23a62f3a-a7dc5179f86mr1164585766b.45.1722948831676; 
- Tue, 06 Aug 2024 05:53:51 -0700 (PDT)
+ bh=AMipe/hXLqtb3Ef8XbFqx4kLNXFlOJjSHmZuoVlilTA=;
+ b=p9FI8bzQxHS8aLuvSegv7ybbnBHn9OASF+x8yzzF3SOj3Aq2Zp/oEJ7pNVqkbtlNRQ
+ 7+iQ0bLwiucKDQGmpJMge1izs2UAIHpBRacc1b4dHzaf49X4ifmqAPA6+gcLa09P1kOX
+ Eg0Yo02jzZHXGaARYP894f8n//9rA9eb9jMPNGNzfaPOs3R63IEnGt0ymxlcwuPf8bF9
+ EU6wbw8mVlrEU7sBFNDh2+irvv2AbC1idjieLyGo7oq90loMnJz/1q+76I/FHylupty7
+ a9osMi9AB/tYin0qPcWm2P+24JeQKQOHKs8LwGbW1jRkTo1EBVvgTSnSq0mz81qzLzfm
+ RF0g==
+X-Gm-Message-State: AOJu0Yy0MzCjdze1xLCpHTmZBazX9K0SufKz+f8BLlv2+Zg/wa2KdNxb
+ zHtOOryO6AHZRy2Xome1bEXB/IQRBit4vN1KgD80ewtnLsQ9cWTkZ1BrEGh9HVuUOuKX5DZiLlQ
+ s
+X-Google-Smtp-Source: AGHT+IH8G0ZoABRlxKVigalJQip/AR4YTB9XiD8/200FTJozro7KFpdNnKVWQEkmHPtGccX+VtEQeQ==
+X-Received: by 2002:a05:6512:ba9:b0:52e:9481:eaa1 with SMTP id
+ 2adb3069b0e04-530bb37425dmr10667974e87.23.1722948837724; 
+ Tue, 06 Aug 2024 05:53:57 -0700 (PDT)
 Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
  [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9c0ca00sm545543866b.68.2024.08.06.05.53.50
+ a640c23a62f3a-a7dc9e7fe3csm539363066b.162.2024.08.06.05.53.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:53:51 -0700 (PDT)
+ Tue, 06 Aug 2024 05:53:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/28] hw/block/pflash_cfi01: Don't decrement pfl->counter
- below 0
-Date: Tue,  6 Aug 2024 14:51:46 +0200
-Message-ID: <20240806125157.91185-19-philmd@linaro.org>
+Subject: [PULL 19/28] hw/ide/atapi: Be explicit that assigning to s->lcyl
+ truncates
+Date: Tue,  6 Aug 2024 14:51:47 +0200
+Message-ID: <20240806125157.91185-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
 References: <20240806125157.91185-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,36 +96,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In pflash_write() Coverity points out that we can decrement the
-unsigned pfl->counter below zero, which makes it wrap around.  In
-fact this is harmless, because if pfl->counter is 0 at this point we
-also increment pfl->wcycle to 3, and the wcycle == 3 handling doesn't
-look at counter; the only way back into code which looks at the
-counter value is via wcycle == 1, which will reinitialize the counter.
-But it's arguably a little clearer to break early in the "counter ==
-0" if(), to avoid the decrement-below-zero.
+In ide_atapi_cmd_reply_end() we calculate a 16-bit size, and then
+assign its two halves to s->lcyl and s->hcyl like this:
 
-Resolves: Coverity CID 1547611
+           s->lcyl = size;
+           s->hcyl = size >> 8;
+
+Coverity warns that the first line here can overflow the
+8-bit s->lcyl variable. This is true, and in this case we're
+deliberately only after the low 8 bits of the value. The
+code is clearer to both humans and Coverity if we're explicit
+that we only wanted the low 8 bits, though.
+
+Resolves: Coverity CID 1547621
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240731143617.3391947-4-peter.maydell@linaro.org>
+Message-ID: <20240731143617.3391947-5-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/pflash_cfi01.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/ide/atapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-index c8f1cf5a87..2f3d1dd509 100644
---- a/hw/block/pflash_cfi01.c
-+++ b/hw/block/pflash_cfi01.c
-@@ -614,6 +614,7 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
-             if (!pfl->counter) {
-                 trace_pflash_write(pfl->name, "block write finished");
-                 pfl->wcycle++;
-+                break;
+diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
+index fcb6cca157..e82959dc2d 100644
+--- a/hw/ide/atapi.c
++++ b/hw/ide/atapi.c
+@@ -265,7 +265,7 @@ void ide_atapi_cmd_reply_end(IDEState *s)
+                     byte_count_limit--;
+                 size = byte_count_limit;
              }
- 
-             pfl->counter--;
+-            s->lcyl = size;
++            s->lcyl = size & 0xff;
+             s->hcyl = size >> 8;
+             s->elementary_transfer_size = size;
+             /* we cannot transmit more than one sector at a time */
 -- 
 2.45.2
 
