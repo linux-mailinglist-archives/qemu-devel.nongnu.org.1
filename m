@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8806B948FD8
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A635948FA0
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:54:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJhY-0007oK-JB; Tue, 06 Aug 2024 08:54:08 -0400
+	id 1sbJhm-00082e-7Y; Tue, 06 Aug 2024 08:54:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhS-0007Lk-Jj
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:03 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhX-0007m2-61
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:07 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhQ-0000K7-OL
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:02 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-52fc14d6689so515672e87.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:53:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhV-0000KX-8J
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:06 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a7a83a968ddso68664166b.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948838; x=1723553638; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722948843; x=1723553643; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AMipe/hXLqtb3Ef8XbFqx4kLNXFlOJjSHmZuoVlilTA=;
- b=M7lEONhJ7UuMoo/Pk40/xnfDfkIbohUZBK37LDkikZYgrUTgICk9WW9OjaUgbIPuuJ
- DqtJJkkS2nMl6w//T72jOS1AXaMd3jGGpA/z4838SxkL41ytFtAxAH3ukBXDuuneJ0PM
- E17JWlixB8bnGhK/w+7c2yMvYEjz3Sw+sXSjQo7akuLiJrrLqGsbG6i0heSWbRm2DLDg
- iUPO8QrUsYFjBOhWVsd5FCHXrFduF85n5ZPr6ZS5+prXw/JRCa9QFezSSpHwhiEg6Qt9
- UUIH+LGVeTzALzk+oExwIdO9Ad6k+9GEMA3Bx6hSq2PGMFftXguE0PO4ZsyuEdU2mQO4
- d7aQ==
+ bh=T2BNzJT5/rzAun9sis8NChUOI8pg5PZFtzu3546w0iw=;
+ b=luom6VsDG7eJb/MsC2Emug3Dip+gUBk0+vtOqRnikMkTlCSOIYHp8TNeuSQGA3gmuu
+ VXrS5mTGYjt8MLYCHKuTKXxT+eyTD7OnfgyJhT/YsCn8npp/UTuIXrFS7zQuqZ97GqgQ
+ gXcP9D+U/JdccXbFubb7KdSVU0f/sZOJWI048fsCs8Y5ic3ztc/wRwxuWr8aqyWnVSNb
+ L8Bfc8VblSJDMdSyaX1/KlIXLclbHsqRx+KYjMElpasigQud4qpXFqmj1N9HAzbWUIY9
+ ygUFhhf2UCGEwd6zSAPT4Jj9R3khezu6TCfVzpGx0iSsY42S2sh7snEPNw/+WXZAPkuK
+ 8Nuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948838; x=1723553638;
+ d=1e100.net; s=20230601; t=1722948843; x=1723553643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AMipe/hXLqtb3Ef8XbFqx4kLNXFlOJjSHmZuoVlilTA=;
- b=p9FI8bzQxHS8aLuvSegv7ybbnBHn9OASF+x8yzzF3SOj3Aq2Zp/oEJ7pNVqkbtlNRQ
- 7+iQ0bLwiucKDQGmpJMge1izs2UAIHpBRacc1b4dHzaf49X4ifmqAPA6+gcLa09P1kOX
- Eg0Yo02jzZHXGaARYP894f8n//9rA9eb9jMPNGNzfaPOs3R63IEnGt0ymxlcwuPf8bF9
- EU6wbw8mVlrEU7sBFNDh2+irvv2AbC1idjieLyGo7oq90loMnJz/1q+76I/FHylupty7
- a9osMi9AB/tYin0qPcWm2P+24JeQKQOHKs8LwGbW1jRkTo1EBVvgTSnSq0mz81qzLzfm
- RF0g==
-X-Gm-Message-State: AOJu0Yy0MzCjdze1xLCpHTmZBazX9K0SufKz+f8BLlv2+Zg/wa2KdNxb
- zHtOOryO6AHZRy2Xome1bEXB/IQRBit4vN1KgD80ewtnLsQ9cWTkZ1BrEGh9HVuUOuKX5DZiLlQ
- s
-X-Google-Smtp-Source: AGHT+IH8G0ZoABRlxKVigalJQip/AR4YTB9XiD8/200FTJozro7KFpdNnKVWQEkmHPtGccX+VtEQeQ==
-X-Received: by 2002:a05:6512:ba9:b0:52e:9481:eaa1 with SMTP id
- 2adb3069b0e04-530bb37425dmr10667974e87.23.1722948837724; 
- Tue, 06 Aug 2024 05:53:57 -0700 (PDT)
+ bh=T2BNzJT5/rzAun9sis8NChUOI8pg5PZFtzu3546w0iw=;
+ b=QLCWZr5dDiri+X6FPfCQxfrH4K4XLVpIazSDL7TzTu7xGDJIZQj2CFmtXYRWbkbV3z
+ cWE8Ka3wUJ/y7T7smO4rf0AXSEI+xRKvZyKxKloyvfE57Q9vNhOHnxHvVN1/ln1TClC0
+ kW5Y+urGDGmCxbA/2IKFAtawSKJs4Wu7cOdLLsgT6vAM93CFnkGAx1APzxu9UwKMsmBa
+ 80H8J1CpeV5rCvrI1ELtlhZ2koZH0F85NKa03CQx7b7miTHGyUg7J9K/t8mrraQhfQr6
+ U5EbinrSfr7KZGkkLgemWsQV0lpLNzxRlKUGWzMq8WZ7YiBscj57/9N8kEWpwql/Xt7x
+ CskA==
+X-Gm-Message-State: AOJu0Yw4+vFCftluAr1xHqouh8PgC/C9vHdaqv2F04se/GMbWvvIGnD1
+ snd4CSBdW6V7vmC8aYaA9pvxIhQ7H2ermgu5oxsg6veLRjjjUIu8T/fL6OmZu0VDNvtnWK0GELc
+ l
+X-Google-Smtp-Source: AGHT+IG+moa5CelR4wcWKiPrSXr92jlFBykqrBUANqj/NP10lZca8tLDfw7h0yzZPG8/tpjwCGMWHQ==
+X-Received: by 2002:a17:907:1b10:b0:a7d:3ab9:6a5d with SMTP id
+ a640c23a62f3a-a7dc5130c90mr891231866b.69.1722948843425; 
+ Tue, 06 Aug 2024 05:54:03 -0700 (PDT)
 Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
  [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9e7fe3csm539363066b.162.2024.08.06.05.53.56
+ a640c23a62f3a-a7dc9ec7575sm539465766b.205.2024.08.06.05.54.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:53:57 -0700 (PDT)
+ Tue, 06 Aug 2024 05:54:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 19/28] hw/ide/atapi: Be explicit that assigning to s->lcyl
- truncates
-Date: Tue,  6 Aug 2024 14:51:47 +0200
-Message-ID: <20240806125157.91185-20-philmd@linaro.org>
+Subject: [PULL 20/28] hw/block/fdc-isa: Assert that
+ isa_fdc_get_drive_max_chs() found something
+Date: Tue,  6 Aug 2024 14:51:48 +0200
+Message-ID: <20240806125157.91185-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
 References: <20240806125157.91185-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,41 +96,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In ide_atapi_cmd_reply_end() we calculate a 16-bit size, and then
-assign its two halves to s->lcyl and s->hcyl like this:
+Coverity complains about an overflow in isa_fdc_get_drive_max_chs()
+that can happen if the loop over fd_formats never finds a match,
+because we initialize *maxc to 0 and then at the end of the
+function decrement it.
 
-           s->lcyl = size;
-           s->hcyl = size >> 8;
+This can't ever actually happen because fd_formats has at least
+one entry for each FloppyDriveType, so we must at least once
+find a match and update *maxc, *maxh and *maxs. Assert that we
+did find a match, which should keep Coverity happy and will also
+detect possible bugs in the data in fd_formats.
 
-Coverity warns that the first line here can overflow the
-8-bit s->lcyl variable. This is true, and in this case we're
-deliberately only after the low 8 bits of the value. The
-code is clearer to both humans and Coverity if we're explicit
-that we only wanted the low 8 bits, though.
-
-Resolves: Coverity CID 1547621
+Resolves: Coverity CID 1547663
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240731143617.3391947-5-peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240731143617.3391947-6-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/atapi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/block/fdc-isa.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
-index fcb6cca157..e82959dc2d 100644
---- a/hw/ide/atapi.c
-+++ b/hw/ide/atapi.c
-@@ -265,7 +265,7 @@ void ide_atapi_cmd_reply_end(IDEState *s)
-                     byte_count_limit--;
-                 size = byte_count_limit;
-             }
--            s->lcyl = size;
-+            s->lcyl = size & 0xff;
-             s->hcyl = size >> 8;
-             s->elementary_transfer_size = size;
-             /* we cannot transmit more than one sector at a time */
+diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+index e43dc532af..796835f57b 100644
+--- a/hw/block/fdc-isa.c
++++ b/hw/block/fdc-isa.c
+@@ -147,6 +147,8 @@ static void isa_fdc_get_drive_max_chs(FloppyDriveType type, uint8_t *maxc,
+             *maxs = fdf->last_sect;
+         }
+     }
++    /* fd_formats must contain at least one entry per FloppyDriveType */
++    assert(*maxc);
+     (*maxc)--;
+ }
+ 
 -- 
 2.45.2
 
