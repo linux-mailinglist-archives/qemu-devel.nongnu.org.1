@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0933948FCC
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 713E4948FF3
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:03:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJkT-0002Rz-33; Tue, 06 Aug 2024 08:57:12 -0400
+	id 1sbJmO-0003u8-NX; Tue, 06 Aug 2024 08:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJiI-0002no-0v
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:55 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJiF-0000UT-IL
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:53 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2f16d2f2b68so10343971fa.3
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948889; x=1723553689; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=77mKDDwsQ4N9EU0OpMBcpTovtWIwsiedBtivnY0Iukw=;
- b=Qu2lRgvtWUoBdhyQV+WuXtEl9UdPNHwrsSQ8XP9xCBMeBlGAUeFrIMD+i83YjlUpGT
- yPelIYWqg/yXP4VKDsHyLmk/mag4luvj6xtakq/DNWFXLkSsaPd6gqmDJ5o2S4YVlu4b
- S73st1jgwnPifxnuZbFYhF8bwEE6Tj4cd6ukZ88GKfqX4fG336I99e6VCb+bsftIKOjz
- t+C7fjYr2g/DAlgLPCFT4rmc8pVKea/CLVcLKSNM3tZz6zW6YLh0FTJkAiLGTgMcfKop
- u2/SRWqzEBrvVuGTKTW8MU5I4GxkrGY5abGm8+NWqvax0DXjK7rbOVzym4N6k6v6vKyg
- DgeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948889; x=1723553689;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=77mKDDwsQ4N9EU0OpMBcpTovtWIwsiedBtivnY0Iukw=;
- b=gMuQ91hw0nW6aXKgNic9I0BOP1mLN2sS12c4euzWllle+O44XAYsANuaDX4MITTyxc
- PBS4GjPi3UCAA5/l5CVSIepnY5ukNHZfKvIgk5Z0Z+tppXbmAbQtKtEOpMoLEJRNUuGx
- 3JXK8yrA/LrDvj2PEJta63YdzyDZmmV+NQl/P3v2XBipQrMM22ssnWqWCtLyjk8UthH+
- xDuSSgHgQN2sUGuWdYEq+53Ui//gfTsKKHMUCg9vxN45nnacoTNn8epEWcfIas6BKO02
- h0GnOfRLZwrU6RmRXue9OC4tX6yty9n0oWPKkVnTHqi57/mhDTfU/3W7Dv/VHvanKxXb
- yNUA==
-X-Gm-Message-State: AOJu0YxPg82aq7W6pDCBn/oGqel0q0LgHAxo4jDBUOgdnTGtf/Vl/4Rh
- jTOz/7cJ/tFke8Q5LxdN1fQZUKlusExi8B+63v8sQEQv9TjHVfeLWviLH6Ih0LajFZrgFkwrCJQ
- V
-X-Google-Smtp-Source: AGHT+IGPJ76mc/UQH9XLaxpy2CfyQDntSF5wjLya5+pAlsgmZ8swYga5cElYxvfYK29b00l582g1iQ==
-X-Received: by 2002:a2e:8703:0:b0:2ef:1b1b:7f42 with SMTP id
- 38308e7fff4ca-2f15ab2a580mr118277291fa.36.1722948889440; 
- Tue, 06 Aug 2024 05:54:49 -0700 (PDT)
-Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
- [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9e7fe2fsm548850866b.178.2024.08.06.05.54.48
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:54:49 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: George Matsumura <gorg@gorgnet.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/28] docs/specs/pci-ids: Fix markup
-Date: Tue,  6 Aug 2024 14:51:56 +0200
-Message-ID: <20240806125157.91185-29-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
-References: <20240806125157.91185-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbJlf-0000lY-AW
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:58:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbJlc-0000zw-So
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:58:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722949099;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2Jp4GYq0Q+y0lAIVBGLkBXkXlpXH90EQAb39NujUIDQ=;
+ b=FZvqVjdDCL7BfjEtOjzEAHeiZK7pDWrjrbPkJbcV98oXT1roeacLQAuW5ukgRhbVZCUSAw
+ /8dRyZb1TO/ObTYiWYpl2erJYug4o/jCtfhMihvvMQExIWYyNXX9UmKh4N1LYvok2XGYiP
+ eCPBIrTBP4szJOzENsEtZ8X7DMtWjr8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-MR1GhnxoP726GbPPC6h8Aw-1; Tue,
+ 06 Aug 2024 08:58:17 -0400
+X-MC-Unique: MR1GhnxoP726GbPPC6h8Aw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E38F11955D53; Tue,  6 Aug 2024 12:58:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.20])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A8576300019B; Tue,  6 Aug 2024 12:58:10 +0000 (UTC)
+Date: Tue, 6 Aug 2024 07:58:07 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, 
+ qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, 
+ alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
+Subject: Re: [PATCH v3 2/2] nbd: Clean up clients more efficiently
+Message-ID: <sx5es6bzgepmx3bsnjrtprb35iwkyzqadtf46shfcl7lkdsuxc@gjcvjopdmpzo>
+References: <20240806022542.381883-4-eblake@redhat.com>
+ <20240806022542.381883-6-eblake@redhat.com>
+ <ZrHtxrb5dyh3eKJu@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <ZrHtxrb5dyh3eKJu@redhat.com>
+User-Agent: NeoMutt/20240425
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,38 +85,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: George Matsumura <gorg@gorgnet.net>
+On Tue, Aug 06, 2024 at 10:32:54AM GMT, Daniel P. Berrangé wrote:
+> On Mon, Aug 05, 2024 at 09:21:36PM -0500, Eric Blake wrote:
+> > Since an NBD server may be long-living, serving clients that
+> > repeatedly connect and disconnect, it can be more efficient to clean
+> > up after each client disconnects, rather than storing a list of
+> > resources to clean up when the server exits.  Rewrite the list of
+> > known clients to be double-linked so that we can get O(1) deletion to
+> > keep the list pruned to size as clients exit.  This in turn requires
+> > each client to track an opaque pointer of owner information (although
+> > qemu-nbd doesn't need to refer to it).
+> 
+> I tend to feel that this needs to be squashed into the previous
+> patch.  The previous patch effectively creates unbounded memory
+> usage in the NBD server. ie consider a client that connects and
+> immediately disconnects, not sending any data, in a tight loop.
+> It will "leak" NBDConn & QIOChanelSocket pointers for each
+> iteration of the loop, only to be cleaned up when the NBD Server
+> is shutdown.
+> 
+> Especially given that we tagged the previous commit with a CVE
+> and not this commit,  people could be misled into backporting
+> only the former commit leaving them open to the leak.
 
-This fixes the markup of the PCI and PCIe Expander Bridge entries to be
-consistent with the rest of the file.
+Makes sense.  Will respin v4 along those lines; although I plan to
+refactor slightly: have patch 1 pick up the part of this patch that
+allows server.c to track a client's owner, then patch 2 be the CVE fix
+creating the doubly-linked list of QIOSocketChannel wrappers as
+owners.  Also, I realized that nbd_server->connections == 0 is now
+effectively redundant with QLIST_EMPTY(&nbd_server->conns), so that's
+another cleanup to squash in.
 
-Signed-off-by: George Matsumura <gorg@gorgnet.net>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240805031012.16547-4-gorg@gorgnet.net>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/specs/pci-ids.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> > @@ -103,14 +112,9 @@ static void nbd_server_free(NBDServerData *server)
+> >       */
+> >      qio_net_listener_disconnect(server->listener);
+> >      object_unref(OBJECT(server->listener));
+> > -    while (!QSLIST_EMPTY(&server->conns)) {
+> > -        NBDConn *conn = QSLIST_FIRST(&server->conns);
+> > -
+> > +    QLIST_FOREACH_SAFE(conn, &server->conns, next, tmp) {
+> >          qio_channel_shutdown(QIO_CHANNEL(conn->cioc), QIO_CHANNEL_SHUTDOWN_BOTH,
+> >                               NULL);
+> > -        object_unref(OBJECT(conn->cioc));
+> > -        QSLIST_REMOVE_HEAD(&server->conns, next);
+> > -        g_free(conn);
+> >      }
+> > 
+> >      AIO_WAIT_WHILE_UNLOCKED(NULL, server->connections > 0);
 
-diff --git a/docs/specs/pci-ids.rst b/docs/specs/pci-ids.rst
-index 0de13de1e4..328ab31fe8 100644
---- a/docs/specs/pci-ids.rst
-+++ b/docs/specs/pci-ids.rst
-@@ -77,11 +77,11 @@ PCI devices (other than virtio):
- 1b36:0008
-   PCIe host bridge
- 1b36:0009
--  PCI Expander Bridge (-device pxb)
-+  PCI Expander Bridge (``-device pxb``)
- 1b36:000a
-   PCI-PCI bridge (multiseat)
- 1b36:000b
--  PCIe Expander Bridge (-device pxb-pcie)
-+  PCIe Expander Bridge (``-device pxb-pcie``)
- 1b36:000c
-   PCIe Root Port (``-device pcie-root-port``)
- 1b36:000d
 -- 
-2.45.2
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
