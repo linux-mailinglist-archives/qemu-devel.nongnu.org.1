@@ -2,84 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548319492DD
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 627BC9492E6
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbL2r-0001a1-J1; Tue, 06 Aug 2024 10:20:13 -0400
+	id 1sbL6H-0006dR-Tj; Tue, 06 Aug 2024 10:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbL2e-0001PF-7L
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:20:02 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sbL6B-0006co-RR
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:23:40 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbL2c-0004Vq-FP
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:19:59 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5a20de39cfbso762493a12.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 07:19:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sbL6A-0005HT-6z
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:23:39 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5a156557026so722921a12.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 07:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722953996; x=1723558796; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sEYxqiGFTFwjc+puEXGbYroS/ETTWPFhLrPNeiiUdpw=;
- b=nI/GErxmlImr3E7+3KSu2D5M8kL6DAJsQnshfyVpZhFp+fRxpW9qj9CBl0Dj5R3L+7
- gzpG+V2WfkWcy4yQobAVEqS2Utx8kKiXh9IWHcCCy6TWmNR5ZaLF/8a+KP+8m3I/k56t
- Hk8HZ95bK2LeIWNNm/1ERQmXzEqg+KOzN7v8/6+neJTdDPqftMZ55qqG9UwnNssm5boE
- w2LD4zD13Dl0ORXd5ym+Bq4r3jq7QCm99MdZIgP+d0Hkqd4vlBULQ3USWE/Bh9N3ucni
- ZlnORhI/PJxhm1Z4TFVNG6p6nNBcZbrzpyO6EQunt75zgagYEHsPkfUqNgSpbiFN2yQx
- enMQ==
+ d=linaro.org; s=google; t=1722954215; x=1723559015; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=GGlTVfogk7IPRrICUnStRFnTuIzHGcV9bjp6DbVN+i4=;
+ b=Da74ypdxFAO8B7yg+pYPruWpG7egZ14ZtrrEYousH5dKpMGVZg5QQXioKJ5PhoHV2a
+ 3PCQfCOacy069s5N74xd+ekswQ3UrXF5GJ/cFAvSOsAfAANykWJVu8cYR485qtitK/jn
+ Q+WRA7KQzxOnuROsgI7Aei9045WDOd2g2125NPCjC3OwKAw8vSbNPzFX+ulXV4+2wDtT
+ igQQOJZMZr3LyP1vmOYGmqSDHeJmjyyot554rUPbb5oVaq29xkjqcjnDaf6NUVCCCFPH
+ Izou41R0uCsbNn/IO8ApGV8VPGc24m22288eSYkeLMyS+YIVDKhZZDH7ANM8Tkp1BDSp
+ lm6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722953996; x=1723558796;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1722954215; x=1723559015;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sEYxqiGFTFwjc+puEXGbYroS/ETTWPFhLrPNeiiUdpw=;
- b=JOxnKbD1KVLgCUObFCYzX3wypmvdVHIVCagmWzXA007Sh1jlxh1Jg1EPabpOMzXm2Y
- 9VA20E3froRwp4gpAu4SnAaA8mJQzHX7mPn2fwJYucDXK0lCNaFsv1a23yAoETWc0f6M
- REUd1pGdXITBYq37CylJg6g2IeSN8IXNa7UvgvcP7AwyuY4lDP2PNdu2lQQ4x1ArCIqp
- LnKo826czSCc1dG1otwgC/HEFk4fE0UzN0T3G4P3/7lvfsiSsxk+BUqa9FdXV6j5CLdQ
- kiwQJP59oivWBaBsXMq6KQ3azH4CvPALwVTRbLZLu8ER3BxdlnNygjFLgkq69kO0hYBy
- k5/g==
-X-Gm-Message-State: AOJu0YyBYcfITqVjADQ8fO8IdM65gc/S0oqy0DedUhwMaMC/kmE1SmvY
- k0zrQ9s9qOyw0TUVjmOjypnPeDJv+sx/A66zZwvMEvuQ3ZDNgXSPpzc+k36sO4+U6iTfiXBLzIp
- x
-X-Google-Smtp-Source: AGHT+IH1kVcq6PvtuOsEvVhlvCsjwjhTyIAny7uNav/VWxKNC7GH+B4O2p/YfJoLMZUgZ+ht4eAxaw==
-X-Received: by 2002:a17:907:2cc4:b0:a77:abe5:5f47 with SMTP id
- a640c23a62f3a-a7dc50a2e83mr1153162066b.63.1722953995801; 
- Tue, 06 Aug 2024 07:19:55 -0700 (PDT)
-Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
- [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9d45452sm550439066b.111.2024.08.06.07.19.54
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 07:19:55 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1? 2/2] hw/intc/arm_gic: Only provide
- query-gic-capabilities when GIC built-in
-Date: Tue,  6 Aug 2024 16:19:40 +0200
-Message-ID: <20240806141940.22095-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240806141940.22095-1-philmd@linaro.org>
-References: <20240806141940.22095-1-philmd@linaro.org>
+ bh=GGlTVfogk7IPRrICUnStRFnTuIzHGcV9bjp6DbVN+i4=;
+ b=DlhCekPh5TN/qCIfoJFzJbz0P+yrHPxJEVqOzTKGMzkhCmo6kSBA5t6k2JfhdDc6ub
+ ewfxFhzOdZs1yhXHu2nbH9EC7cH/siNbTz+t8A0ZjfiVnG/W3ox2uPxiN31CRh4/WEQr
+ +MwpE5pyyhc7n8fJ9fwfIgLMpoo2QVT3kjPpTlu3ZKbNvd1E8P5idr/EKFr+eRqC4/eR
+ YeuGPcG6wwIU5PjRMEdMNxlKccofFMgrz0Cr3UFqjfGbJ2RwtI+bqozPET4O+f/xZz18
+ OmWupw+VugKkSM+cnckDFoGMv8guIZ/LhGVYHNANz18duxwlC0EEvfRq2BCZphDJGjBa
+ 9Cig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVp8lUjQYllMT04+lB/60wv5HSq78kwOEd3pTVz1NI0pmhhB6q174E70mhCEWFukLK8aYEQ/H1kdPLE4wbElkRIKM5/Npc=
+X-Gm-Message-State: AOJu0YxjokjT0ZZxjKVu737ZGMh4N+XjyVVK2sDu3uSokc06Bh2Y12uh
+ pXZ6ZJD7eFN7SjMWHD8DDHqBfB5aq3E7EvfKuwtJxO2BmTQzi52uLC7nhWgJdFk=
+X-Google-Smtp-Source: AGHT+IH0hCMk3C7SlBrsVBouDbwE0edv+4WsojKFrOkT04JwxpEiGW7Bfs6umg2uRJA+r5xzLZ7I3A==
+X-Received: by 2002:a50:a68c:0:b0:5b9:462d:c530 with SMTP id
+ 4fb4d7f45d1cf-5b9462dc82bmr9197996a12.6.1722954215028; 
+ Tue, 06 Aug 2024 07:23:35 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5bb9bfead52sm184873a12.86.2024.08.06.07.23.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Aug 2024 07:23:34 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 2B85A5F77B;
+ Tue,  6 Aug 2024 15:23:33 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,  Huang Rui
+ <ray.huang@amd.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Antonio Caggiano
+ <quic_acaggian@quicinc.com>,  "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>,  Robert Beckett <bob.beckett@collabora.com>,  Gert
+ Wollny <gert.wollny@collabora.com>,  qemu-devel@nongnu.org,  Gurchetan
+ Singh <gurchetansingh@chromium.org>,  ernunes@redhat.com,  Alyssa Ross
+ <hi@alyssa.is>,  Roger Pau =?utf-8?Q?Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,  Stefano Stabellini
+ <stefano.stabellini@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,  Pierre-Eric Pelloux-Prayer
+ <pierre-eric.pelloux-prayer@amd.com>,  Honglei Huang
+ <honglei1.huang@amd.com>,  Julia Zhang <julia.zhang@amd.com>,  Chen Jiqian
+ <Jiqian.Chen@amd.com>,  Yiwei Zhang <zzyiwei@chromium.org>
+Subject: Re: [PATCH v16 01/13] virtio-gpu: Use trace events for tracking
+ number of in-flight fences
+In-Reply-To: <20240623152343.328436-2-dmitry.osipenko@collabora.com> (Dmitry
+ Osipenko's message of "Sun, 23 Jun 2024 18:23:31 +0300")
+References: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
+ <20240623152343.328436-2-dmitry.osipenko@collabora.com>
+Date: Tue, 06 Aug 2024 15:23:33 +0100
+Message-ID: <87o765raqi.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,77 +114,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When configuring QEMU with --without-default-devices and
-not including machines using a GIC, the GIC model is not
-built in but the 'query-gic-capabilities' command still
-returns false hopes about GIC:
+Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
 
-  {"execute": "query-gic-capabilities"}
-  {"return": [{"emulated": true, "version": 3, "kernel": false}, {"emulated": true, "version": 2, "kernel": false}]}
+> Replace printf's used for tracking of in-flight fence inc/dec events
+> with tracing, for consistency with the rest of virtio-gpu code that
+> uses tracing.
+>
+> Suggested-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-Restrict the command to when the GIC is available. If it
-isn't we'll get:
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-  { "execute": "query-gic-capabilities" }
-  {"error": {"class": "CommandNotFound", "desc": "The command query-gic-capabilities has not been found"}}
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2484
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- qapi/misc-target.json | 4 ++--
- hw/intc/arm_gic_qmp.c | 2 ++
- hw/intc/meson.build   | 2 +-
- 3 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index 8d70bd24d8..b857e44c2e 100644
---- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -316,7 +316,7 @@
-   'data': { 'version': 'int',
-             'emulated': 'bool',
-             'kernel': 'bool' },
--  'if': 'TARGET_ARM' }
-+  'if': 'CONFIG_ARM_GIC' }
- 
- ##
- # @query-gic-capabilities:
-@@ -335,7 +335,7 @@
- #                     { "version": 3, "emulated": false, "kernel": true } ] }
- ##
- { 'command': 'query-gic-capabilities', 'returns': ['GICCapability'],
--  'if': 'TARGET_ARM' }
-+  'if': 'CONFIG_ARM_GIC' }
- 
- ##
- # @SGXEPCSection:
-diff --git a/hw/intc/arm_gic_qmp.c b/hw/intc/arm_gic_qmp.c
-index 71056a0c10..1fc79c775b 100644
---- a/hw/intc/arm_gic_qmp.c
-+++ b/hw/intc/arm_gic_qmp.c
-@@ -6,6 +6,8 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/util.h"
-+
-+#include CONFIG_DEVICES
- #include "qapi/qapi-commands-misc-target.h"
- #include "kvm_arm.h"
- 
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index 45d3503d49..b9550967e2 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -39,7 +39,7 @@ if config_all_devices.has_key('CONFIG_APIC') or \
- endif
- 
- specific_ss.add(when: 'CONFIG_APIC', if_true: files('apic.c', 'apic_common.c'))
--specific_ss.add(when: 'CONFIG_ARM', if_true: files('arm_gic_qmp.c'))
-+specific_ss.add(when: 'CONFIG_ARM_GIC', if_true: files('arm_gic_qmp.c'))
- specific_ss.add(when: 'CONFIG_ARM_GIC', if_true: files('arm_gicv3_cpuif_common.c'))
- specific_ss.add(when: 'CONFIG_ARM_GICV3_TCG', if_true: files('arm_gicv3_cpuif.c'))
- specific_ss.add(when: 'CONFIG_ARM_GIC_KVM', if_true: files('arm_gic_kvm.c'))
--- 
-2.45.2
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
