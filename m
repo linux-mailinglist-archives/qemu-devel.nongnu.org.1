@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF1B948A2A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 09:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF01948A2B
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 09:33:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbEgb-0000pB-Vj; Tue, 06 Aug 2024 03:32:50 -0400
+	id 1sbEhR-0004L9-Ef; Tue, 06 Aug 2024 03:33:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sbEgZ-0000h6-O5
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 03:32:47 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbEhA-0003Pj-6w
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 03:33:26 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sbEgX-0004By-47
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 03:32:47 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1fc692abba4so4205035ad.2
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 00:32:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbEh6-0004FY-TK
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 03:33:22 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2eeb1ba0481so3455181fa.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 00:33:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722929563; x=1723534363; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722929599; x=1723534399; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hEySo4ELoiD1N2a0rOiicpq47pHf4iQHTPdQaJF9qwA=;
- b=VKDmOj/GuvrJqy+vCnJh442LWoitvaK6HJtMmX4ow7vGTqjYqoT3g2Nv/gdj1YCGy6
- KXj9YkiVIP02of4g5nw8uJVRRAcyTZyp4W1uijOszkyHMpwo5CBerSGn+LPEw9tP/QyJ
- ejetINznV31iFfwUN9pxcy7x7MjPWt4Xb9xDmwsi35pu6+MLkGRFBrXRfOa5A4Ej81kc
- CrjTiQQJag8Cs+XR4cCTMFyhfGwYJ70HeyG48hhTHGUj/hoUMwHp0cnSXiHwoY5BS1v5
- LAuDUAqewzDGr1QKm1vJPTio07MrTZXaY1DLcHkeHN0SmBnPYQbTlRwr/ZoME0WouVPL
- +qlA==
+ bh=CQrirKIsu1h7yRBRE4BeL1Y9tux6J2tEp0DQHqMY8EE=;
+ b=pL2aYdLeTeZcA+hbC7TTtOvL2T3OtqMKwdXoxSkWFXFbwXQHDtIPJeFBalytVReujv
+ jsBcFd8Tm8Nd/lWw16WspeFqlZa06wR8qYQm+c5W9T/fqdyAML7xHRuNMz030HHlOVXk
+ VDyqL4eOb/SU19OY/jOI7lDgCLdyPGIiy2WWyAI5C9bD98YIQB4KqhFmsx1Cgveo0L3Z
+ Y14ObHzKWKFX+RILC/U9c/4o5J7c1jQAUoEfmny/eRmAE/mBE3FqaUoQKNtjn2wMAmaA
+ S3eif6da0maNkoIXSOLgxBmfYQxDs2hfc5Mkdj7asdciRw0UlZN4mtPp4YeEb/jPbT6e
+ BcPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722929563; x=1723534363;
+ d=1e100.net; s=20230601; t=1722929599; x=1723534399;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hEySo4ELoiD1N2a0rOiicpq47pHf4iQHTPdQaJF9qwA=;
- b=ZQ6fX/hgdfvSy/HJpZvEJhx+3FSEMVbjadww4rH51PzFOwZfow4HBFNbx1jqlpehC4
- K9e2fI4KZEtn8v5ag+d1lY0YC1UoX4pto2+86E59yb4dDqc9uDrvhZfhVu8MQq7h1ttX
- yNHU4EkNOHzeqvv6hdM+O8hKz5hiLR3LGeJ6kyKMYL320nWpMrV3PmbkWPZL5bwn8nc8
- Hg48MD8mk2oXFi0chnLjAYSIgYwbPdg6OeckPbSXXUtYkkzjwNVbW20dumqx26VGQ1rT
- f9ZtfxRAABgG/iZE3QaTrVdua4reTOUCVZsSBtH4ix6O2FamS7XfWKli+iNh725whDis
- /98Q==
-X-Gm-Message-State: AOJu0Yy0FR8yds+AiBwH3pV/kZRoGsiO+mTad8eXTokLABvxTzdr30vn
- B1XiB2ErKuOJwsjSMF+rla6FZxus2cX7UZkk5G+D0dUBnytOZ8/sarg62tBygpc=
-X-Google-Smtp-Source: AGHT+IFQo4xsvh8ckTk78bNzIwNfCQJwUQ6q9+4n9xhdXn8mYTL3+0jWD2IQuYUp3WwCmSV9/2jQCg==
-X-Received: by 2002:a17:902:d2cc:b0:1fb:54d9:ebbb with SMTP id
- d9443c01a7336-1ff57295018mr134268595ad.22.1722929563302; 
- Tue, 06 Aug 2024 00:32:43 -0700 (PDT)
-Received: from [192.168.1.113] ([203.56.128.103])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff58f53985sm80989285ad.76.2024.08.06.00.32.40
+ bh=CQrirKIsu1h7yRBRE4BeL1Y9tux6J2tEp0DQHqMY8EE=;
+ b=tmh/vZVYY4ElEsRvVct6cm9aM07nxQ8qMx5/jhWM5f4wnDxN6Gu0UaOQl9WYW96foI
+ Wq1zTMJgNVSwYH2s+zq5D+Es4aZmWn+R5UVsYDGLw1a2JhbdkCowKj9OtCxmYo8M9vlo
+ Berd97Vo7DOlfs1gLDfpLpqMH+bP2aZqrEzZM4VgElHfQW9zIcKinfe60o+vryehO2X7
+ TIV6KscELUikkRBvZ+KgDWKumgGc/fT3aa8WgON8COzOCKiSpuA+SQRAeeHOzXq4tSUm
+ o7SYbVihMV/cuHNY1vc7nXnu6JQZUnmSJVQwKEBOffkECWd0X8vHNBgq4kIJH9Ljh3y2
+ /PDQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVr/CcXrL8yx4kPBKSKs6iPWdeG+w317JEf1McSwTRbm3cKNup8mROM5JpCbkR8UAzhht4bsvkllGCUH+0/QsaZmvtFjEQ=
+X-Gm-Message-State: AOJu0Yw9oXM0iaBJ7zaSg6uMHKRH7a89hUjGtHKyy1iyJlQBzd6o3TFs
+ nGlGIyhjbDP239ElqNOFn/824+4vmJbca8DsN2qHcOgfPaJaEAafeGHb3skeEPs=
+X-Google-Smtp-Source: AGHT+IF8yESOckIVJDeGfazLHyz5eHBmH3EuRa5DO/1sefdDzdJDtqRlWUrmu5zpeOwkxcGFM/UAfg==
+X-Received: by 2002:a2e:3505:0:b0:2ef:22ed:3818 with SMTP id
+ 38308e7fff4ca-2f15ab0bf4cmr95870081fa.32.1722929598421; 
+ Tue, 06 Aug 2024 00:33:18 -0700 (PDT)
+Received: from [192.168.69.100] (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
+ [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4282b8adc7dsm228931375e9.14.2024.08.06.00.33.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Aug 2024 00:32:42 -0700 (PDT)
-Message-ID: <2ff6be31-e726-4522-8601-19a9be187bf3@linaro.org>
-Date: Tue, 6 Aug 2024 17:32:29 +1000
+ Tue, 06 Aug 2024 00:33:17 -0700 (PDT)
+Message-ID: <eef17fc4-c73e-4926-b67e-fc967fe316a0@linaro.org>
+Date: Tue, 6 Aug 2024 09:33:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/13] Block layer patches
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20240805210851.314076-1-kwolf@redhat.com>
+Subject: Re: [PATCH 1/3] hw/display/virtio-gpu: Improve "opengl is not
+ available" error message
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>
+References: <20240731154136.3494621-1-peter.maydell@linaro.org>
+ <20240731154136.3494621-2-peter.maydell@linaro.org>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240805210851.314076-1-kwolf@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240731154136.3494621-2-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/6/24 07:08, Kevin Wolf wrote:
-> The following changes since commit f9851d2ffef59b3a7f39513469263ab3b019480f:
+On 31/7/24 17:41, Peter Maydell wrote:
+> If the user tries to use the virtio-gpu-gl device but the display
+> backend doesn't have OpenGL support enabled, we currently print a
+> rather uninformative error message:
 > 
->    Merge tag 'migration-20240802-pull-request' ofhttps://gitlab.com/farosas/qemu into staging (2024-08-03 07:26:26 +1000)
+> $ qemu-system-aarch64 -M virt -device virtio-gpu-gl
+> qemu-system-aarch64: -device virtio-gpu-gl: opengl is not available
 > 
-> are available in the Git repository at:
+> Since OpenGL is not enabled on display frontends by default, users
+> are quite likely to run into this. Improve the error message to
+> be more specific and to suggest to the user a path forward.
 > 
->    https://repo.or.cz/qemu/kevin.git tags/for-upstream
+> Note that the case of "user tried to enable OpenGL but the display
+> backend doesn't handle it" is caught elsewhere first, so we can
+> assume that isn't the problem:
 > 
-> for you to fetch changes up to 833362e55d9acc6b7ccc1d80d8cd84688e7f5761:
+> $ qemu-system-aarch64 -M virt -device virtio-gpu-gl -display curses,gl=on
+> qemu-system-aarch64: OpenGL is not supported by the display
 > 
->    iotests/024: exclude 'backing file format' field from the output (2024-08-05 23:00:42 +0200)
+> (Use of error_append_hint() requires us to add an ERRP_GUARD() to
+> the function, as noted in include/qapi/error.h.)
 > 
-> ----------------------------------------------------------------
-> Block layer patches
+> With this commit we now produce the hopefully more helpful error:
+> $ ./build/x86/qemu-system-aarch64 -M virt -device virtio-gpu-gl
+> qemu-system-aarch64: -device virtio-gpu-gl: The display backend does not have OpenGL support enabled
+> It can be enabled with '-display BACKEND,gl=on' where BACKEND is the name of the display backend to use.
 > 
-> - scsi-block: Fix error handling with r/werror=stop
-> - Depend on newer clang for TSA, make WITH_GRAPH_RDLOCK_GUARD() fully
->    checked, fix block-copy to add missing lock
-> - vvfat: Fix write bugs for large files and add iotests
-> - Clean up blockdev-snapshot-internal-sync doc
-> - Fix iotests 024 for qed
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2443
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   hw/display/virtio-gpu-gl.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
 
-Auto-merging qapi/block-core.json
-CONFLICT (content): Merge conflict in qapi/block-core.json
-Automatic merge failed; fix conflicts and then commit the result.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Please re-spin, thanks.
-
-
-r~
 
