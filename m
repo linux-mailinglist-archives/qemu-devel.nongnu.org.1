@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98FA9492BA
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 926D99492DA
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:20:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbKui-0001cx-QO; Tue, 06 Aug 2024 10:11:48 -0400
+	id 1sbL2b-00019i-Ds; Tue, 06 Aug 2024 10:19:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbKuB-0001PC-2Q
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:11:15 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbL2R-000168-4U
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:19:48 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbKu9-0003OZ-DP
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:11:14 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5bb8e62570fso1093790a12.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 07:11:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbL2P-0004RP-DF
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:19:46 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a7aada2358fso1116458266b.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 07:19:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722953471; x=1723558271; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j8eprkCb+5u1QCZPBdw5EVhuGugytSUaxmCaHRPhoEs=;
- b=tQqCCZUzST4/cXRSkt1ddnl8YvsczUa722G352vPFXp9szXuZbaYFGHvJrYiWy5j5a
- EOzFhbyAXMp4Aj9f/sSdtyz+oG7M5o7AQjFKKhm4k5C/+EqpMvBkSzjKasozjZN+LChm
- YLREabT8BCfFeC99eWZcGuitCu834PvY5DcjbtabDXXgRwyYBkVfFGd71ZnGvSe7yVdC
- Kg5QRjLKVq/94gfIcKmQCf4Sc0T5sEejhxSdNDxF0Vv+ff90Wvym8j+EXyVLmI9WSCPX
- B03F9ELMLW4JKM0TQCdZKPbxt9+eTAA4Hobn+PqOstcas23UateEmO4lLHAMT3UzPwQo
- AD9A==
+ d=linaro.org; s=google; t=1722953983; x=1723558783; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FMOBByQTuB0kCr54Tn1SiXD/gk4GGph9q20Pk/9oV3w=;
+ b=DCOgigUraxR9bRKdIWS0mcOrJGh1RvZq57TaldoYUSumHipPu7Wrd7pLZZuqpG7QPH
+ suX+Y/n6DejOLoVPI5MrchxrBLdl8gbA1liHagd1a8GsAchvRhDygGHWj8DA7R8wn0aD
+ 4VPOsO+PQpEZdyI2hTTawpmUgCre5v1up3/svWHVWY9+zlpuG7Q4qouaFBJEL1ZWPdsq
+ z10wRzDwIkzXNGFgVyRBzT/yBIUNPHU4vuVJs0rgjel/i7TEetNsPMToXML/l2Yp4QU4
+ QEvmg6T+chP4d0w+4oVzaawxc8qoi+p7zzxZVpaQP9zJyWAT3VKJCyDexp2kIuQHPIlb
+ xk2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722953471; x=1723558271;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j8eprkCb+5u1QCZPBdw5EVhuGugytSUaxmCaHRPhoEs=;
- b=ShNDfZ5FuwbsFg6LpvM+jK4Sq4MduAXwQi2aXNd5JNczHD0wf17grR0AUkqVuHOLy8
- nrBC2mSjiIWj/9r0sUhaTVdwGAcDOaYcW+DEwLxwShzQipbiZuwWWaL4L1p0Peq4DBdT
- TBV9YjDqFIk/floaYBcav/knEm7RxH8QbT/9CtKkznE/h3jtCcQtYe83pCsYohdNZn2o
- YtuyIFRy9RmAFreBS/LmgnGcJRXvj46gVmYOyZZmyLdRQ2IxTIuhqAzrPjvNrKzDOgvM
- gZkUF0yFBbDhnhbB6Iqfqyh1YkeT7AYLfXYfRv5h0dwwjvwcFy5mXUG6GCjBqBevJ5vX
- BBHw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXa8geK2aHJmx+0TkG4HbGgy11A4EwMrcOrjsqBLzo290eHyAFW3l3vNcpfSmcMzsXThnqdf1Kqlqt9cTlTqJsGm185cbA=
-X-Gm-Message-State: AOJu0Ywbs5JTWgetOqzkCAIf40LA5s/k9gMF/Q5cZdb4ikDNOMRAaU8F
- S3A98uplb7eeYvoIgX6H4Uc7nkWIB4BzbSmXT042hExLtNdkpzePtmcDJyuxZRc=
-X-Google-Smtp-Source: AGHT+IGTJbRHjxGfSJuesdkgbT/CGnC65EhQVCUP9vOpKDYctEiTkXVWhnDDsGzg7TJugrN3qXk3mg==
-X-Received: by 2002:aa7:d5c1:0:b0:5a3:283d:b05a with SMTP id
- 4fb4d7f45d1cf-5b7f40a72d0mr10831854a12.17.1722953470644; 
- Tue, 06 Aug 2024 07:11:10 -0700 (PDT)
-Received: from [192.168.69.100] (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1722953983; x=1723558783;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FMOBByQTuB0kCr54Tn1SiXD/gk4GGph9q20Pk/9oV3w=;
+ b=l8M4XZLijDmplxEUbBJ73OpSe8LKAncUxNkA9ICci3Mopg3aM04MFoZj86jV/4cj8S
+ pfTQXvA7FJ3yjuJX2pIPfo4JQJfWrwwl0/5kVTgTyI2WiMNEF3QU8Q/GUSSbXMCeEuTJ
+ wrLxgTqSPY7SJ/vnbC8ZsZVeyqQRjsZG+f8pKPQ7MDpyGtgv2pIpmf6zIpwJoMOOi2Hx
+ mbZ+UC+w9HY5SStlShqv052JjN6JGkTXjb+rPCOxCcFnSF8tuUOM2gqTNPMJAMTXc4Wq
+ /GqZlCNnNWkIDM/z/KY3R0NqPcMbfurF2+MGQ/QMmr539iPpD4LAzXo/MlwWM06HjwWS
+ 2U6Q==
+X-Gm-Message-State: AOJu0YzyLJu9UZjcyPPlt8/r1F/tWJolxe/V5gAvVLmIOls3WCp3p/Z1
+ vflxeCwAzAtmPWrOgEvL8yVch4JvweFGqWVLovTSeFqs0mgDCX0ljlnqw2m7C/eIeSLnVDnNzC+
+ I
+X-Google-Smtp-Source: AGHT+IHEMDxm4ye0mykYFg9IUVbdFwXZqvC33Ux6VfwvWtt0eh8rqCfM7LziDWHsTYoOf8jNIkNEcw==
+X-Received: by 2002:a17:906:d257:b0:a6e:f869:d718 with SMTP id
+ a640c23a62f3a-a7dc600f98cmr1244020266b.21.1722953983306; 
+ Tue, 06 Aug 2024 07:19:43 -0700 (PDT)
+Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
  [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5b839c24028sm5974243a12.24.2024.08.06.07.11.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Aug 2024 07:11:10 -0700 (PDT)
-Message-ID: <535b48e2-65b7-4cee-9bff-4fb0140d0d04@linaro.org>
-Date: Tue, 6 Aug 2024 16:11:07 +0200
+ a640c23a62f3a-a7dc9c0c0e0sm555953866b.67.2024.08.06.07.19.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 06 Aug 2024 07:19:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1? 0/2] hw/intc/arm_gic: Only provide
+ query-gic-capabilities when GIC built-in
+Date: Tue,  6 Aug 2024 16:19:38 +0200
+Message-ID: <20240806141940.22095-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] Fixes: Coverity CID 1558831
-To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@linux.ibm.com, chalapathi.v@ibm.com,
- saif.abrar@linux.ibm.com, dantan@us.ibm.com, milesg@linux.ibm.com
-References: <20240806134829.351703-1-chalapathi.v@linux.ibm.com>
- <20240806134829.351703-3-chalapathi.v@linux.ibm.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240806134829.351703-3-chalapathi.v@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,17 +92,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/24 15:48, Chalapathi V wrote:
-> In this commit the following coverity scan defect has been fixed
-> CID 1558831:  Resource leaks  (RESOURCE_LEAK)
->    Variable "rsp_payload" going out of scope leaks the storage it
->    points to.
-> 
-> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-> ---
->   hw/ssi/pnv_spi.c | 1 +
->   1 file changed, 1 insertion(+)
+Attempt to clarify confuse output from the
+'query-gic-capabilities' QMP command when
+no GIC devices are built in.
 
-Fixes: b4cb930e40 ("hw/ssi: Extend SPI model")
+Philippe Mathieu-Daudé (2):
+  target/arm: Move qmp_query_gic_capabilities() to hw/intc/
+  hw/intc/arm_gic: Only provide query-gic-capabilities when GIC built-in
+
+ qapi/misc-target.json     |  4 +--
+ hw/intc/arm_gic_qmp.c     | 61 +++++++++++++++++++++++++++++++++++++++
+ target/arm/arm-qmp-cmds.c | 52 +--------------------------------
+ hw/intc/meson.build       |  1 +
+ 4 files changed, 65 insertions(+), 53 deletions(-)
+ create mode 100644 hw/intc/arm_gic_qmp.c
+
+-- 
+2.45.2
 
 
