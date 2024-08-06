@@ -2,102 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6169D949208
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0004494925C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:59:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbKYp-0007Jl-LW; Tue, 06 Aug 2024 09:49:11 -0400
+	id 1sbKhI-00059j-MH; Tue, 06 Aug 2024 09:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sbKYn-0007FB-Qm; Tue, 06 Aug 2024 09:49:09 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbKhD-00056i-Tk
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:57:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sbKYm-0000Bv-9J; Tue, 06 Aug 2024 09:49:09 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 476DOS2j026635;
- Tue, 6 Aug 2024 13:48:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=8/XQU+E7/extO
- /kTIUmTB1at76QAdFdBvr8baeNssT0=; b=nAvjMwf/SU+70xmZOv9f82aTTzD07
- GVyCZpNesUm26YzzbunPmz5RdZ548UiwZrvAhIJQ3ajRLpV3c8vGxJ4xRx/2wQs7
- URwZdV07iVtAKAHnzZesXdG4KpddSOA64BBfVlHYWnjNJ8OXspciUTW88eSLxvxJ
- AIhl7UaqXbMa/WhQU733SBRuSDYr3VG0hqzPtXPfun7JNebl39w4F1xoyYunsVoj
- MdMmNP2uqRs5DtDn1ML/DgKz20esutVPm8V7zC4W/lqeFD7qthG6SZuXzYCFoatA
- JHA11OBuRkvGr5rsBhdD/kfsWoOzqf3FgxP2x4/yztnt3wt3b5pxxcDaQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40uj3vrea9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2024 13:48:59 +0000 (GMT)
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 476DmwSj009138;
- Tue, 6 Aug 2024 13:48:58 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40uj3vrea7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2024 13:48:58 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 476Bg31P024121; Tue, 6 Aug 2024 13:48:57 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40syvpbwq9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2024 13:48:57 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 476DmpoP20054300
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Aug 2024 13:48:53 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 835912004B;
- Tue,  6 Aug 2024 13:48:51 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91D4020040;
- Tue,  6 Aug 2024 13:48:48 +0000 (GMT)
-Received: from LAPTOP-UGTOAIPD.ibm.com (unknown [9.43.9.228])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  6 Aug 2024 13:48:48 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@linux.ibm.com, chalapathi.v@ibm.com,
- chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
- dantan@us.ibm.com, milesg@linux.ibm.com
-Subject: [PATCH v1 2/2] Fixes: Coverity CID 1558831
-Date: Tue,  6 Aug 2024 19:18:29 +0530
-Message-Id: <20240806134829.351703-3-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240806134829.351703-1-chalapathi.v@linux.ibm.com>
-References: <20240806134829.351703-1-chalapathi.v@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbKhA-0001Y2-Rq
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:57:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722952667;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Uk+h0sC7+k/5uvB2SfC8rdjIUeCnNCSF39u1Stu8xh8=;
+ b=CawyUn1Ayvd9E3Eub2gtHwxASlpFBz54zPAwjFvhOTPC+p5g93yC+Bu4jBcb/Xg5YPqTkQ
+ /GctlfMJiYhCxM0LIWSIzt0cBCzzFb21wZ4ukLmZTFUlo599un+xm+Mn/2PC0LnUJe+azb
+ +YXAC1UkshuuN04YnSzMoj4FwsL2GsQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-UzCF3h4ZODW46fbIihCmvg-1; Tue,
+ 06 Aug 2024 09:57:42 -0400
+X-MC-Unique: UzCF3h4ZODW46fbIihCmvg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7CCC1944A95; Tue,  6 Aug 2024 13:57:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.154])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7B511955D44; Tue,  6 Aug 2024 13:56:16 +0000 (UTC)
+Date: Tue, 6 Aug 2024 08:56:13 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, 
+ qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, 
+ alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
+Subject: Re: [PATCH v3 2/2] nbd: Clean up clients more efficiently
+Message-ID: <v7g76prhzxmq6gmibbazrgsrjvoiekkpmcdlh2ywzb5kcfj7jk@v2d67bpo2bwf>
+References: <20240806022542.381883-4-eblake@redhat.com>
+ <20240806022542.381883-6-eblake@redhat.com>
+ <ZrHtxrb5dyh3eKJu@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QXXnxvec7I2cUTEqQpfWiF6OanA1_0SD
-X-Proofpoint-GUID: zvgA4QZDQhVf-gJguTMOYmCo25WZwgqS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-06_11,2024-08-06_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- phishscore=0 mlxlogscore=944
- clxscore=1015 impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408060093
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+In-Reply-To: <ZrHtxrb5dyh3eKJu@redhat.com>
+User-Agent: NeoMutt/20240425
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,29 +85,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In this commit the following coverity scan defect has been fixed
-CID 1558831:  Resource leaks  (RESOURCE_LEAK)
-  Variable "rsp_payload" going out of scope leaks the storage it
-  points to.
+On Tue, Aug 06, 2024 at 10:32:54AM GMT, Daniel P. Berrangé wrote:
+> On Mon, Aug 05, 2024 at 09:21:36PM -0500, Eric Blake wrote:
+> > Since an NBD server may be long-living, serving clients that
+> > repeatedly connect and disconnect, it can be more efficient to clean
+> > up after each client disconnects, rather than storing a list of
+> > resources to clean up when the server exits.  Rewrite the list of
+> > known clients to be double-linked so that we can get O(1) deletion to
+> > keep the list pruned to size as clients exit.  This in turn requires
+> > each client to track an opaque pointer of owner information (although
+> > qemu-nbd doesn't need to refer to it).
+> 
+> I tend to feel that this needs to be squashed into the previous
+> patch.  The previous patch effectively creates unbounded memory
+> usage in the NBD server. ie consider a client that connects and
+> immediately disconnects, not sending any data, in a tight loop.
+> It will "leak" NBDConn & QIOChanelSocket pointers for each
+> iteration of the loop, only to be cleaned up when the NBD Server
+> is shutdown.
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
----
- hw/ssi/pnv_spi.c | 1 +
- 1 file changed, 1 insertion(+)
+Hmm. Offline, we observed that qemu's default of unlimited clients may
+not be the smartest thing - if max-connections is not set, we may want
+to default it to something like 100 (even when MULTI_CONN is
+exploited, most clients that take advantage of it will probably only
+use 8 or 16 parallel sockets; more than that tends to run into other
+limits rather than providing continual improvements).  I can add such
+a change in default in v4.  In contrast, qemu-nbd defaults to
+max-connections 1 for historical reasons (among others, if you have a
+non-persistent server, it is really nice that qemu-nbd automatically
+exits after the first client disconnects, rather than needing to clean
+up the server yourself), but that's too small for MULTI_CONN to be of
+any use.
 
-diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-index a33f682897..dbe06df224 100644
---- a/hw/ssi/pnv_spi.c
-+++ b/hw/ssi/pnv_spi.c
-@@ -237,6 +237,7 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
-     }
-     if (rsp_payload != NULL) {
-         spi_response(s, s->N1_bits, rsp_payload);
-+        pnv_spi_xfer_buffer_free(rsp_payload);
-     }
- }
- 
 -- 
-2.34.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
