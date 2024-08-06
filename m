@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C47948FC0
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60BF948FE1
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:02:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJiT-0001Ym-No; Tue, 06 Aug 2024 08:55:13 -0400
+	id 1sbJjY-00054t-UH; Tue, 06 Aug 2024 08:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhg-0000F4-Oa
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhj-0000TS-Ew
  for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:24 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhb-0000MA-TZ
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:13 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2ef32fea28dso6962461fa.2
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhh-0000N2-H5
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:19 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a7a9a369055so54930866b.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948849; x=1723553649; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722948855; x=1723553655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gv+R0AOxTRNRr/YYta1DbILbzN2/ozjvln37VG+akqw=;
- b=pMqQlNuhvjAjZ/LZtahOeUPMpwtwcsQFzPfPSHOwHYr8IkA18U5kfNmpnN2Hs9I2Ef
- fr/v13JgebmIAV/bw843V47ESuhVkL12S4hxqUwtWbAssE0ywieUrlHQaq6HCzf5el2e
- cRXzgVkOoOwhbP916+veJqzy+OU1gSZWeDyoZfBGrbCGFy58R33bIFDghUpbiwX63SkC
- 9Y6jgtdUOLDF7ySuw8RCpx/BfO8pwNKfEo9hFExBAomWwQA7foD8s+W1ZhgaqOMQTgYV
- 37Z+hoDKoxyl1s9V1cuhAmQQdWa+crysZ5qP0NaKYYBNsDNrGDPxgz4hOHXlZ0xAdseU
- H4Cw==
+ bh=nMm3A0DabsjolGXhyPhZ1sZzpOJXfaTPvfWzaUzLVvw=;
+ b=SmbFAtbBPrGEkMuqRRb54s1Mewcnumej2DweE3kd3GdlqyW1uheRnTWocWgZHvBPbj
+ 2YvBY5T+24pigPU4uJoRzPfbmWwpcWdTnO0OqaOeNQSjz74jRs2kMOGRRfOemwVuphYh
+ 756EoKTqB/+jk2vgF6b05Gc7EHDly/PxF6p9G5qSmh2nQaqLJQ2O9pj+ITMTfL5yVKi6
+ EoZVpgbG6cmUEdDWff5jcHtM7p8SwxOr6D+S/c8lAMOQsFJ+0k9Sgi8myjfEKlWIw8VG
+ /gP5syLzgR38PUNIVhLp7q+eeiBtGUKMGxv/n+kmn3nsNytHpiYXeUaRAS4x/QKexbFQ
+ HG2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948849; x=1723553649;
+ d=1e100.net; s=20230601; t=1722948855; x=1723553655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gv+R0AOxTRNRr/YYta1DbILbzN2/ozjvln37VG+akqw=;
- b=n01DbxhFfyrmFQpo/prEma1sy7EMVZvkRNcrqOHXPq1WOdEHomwIg+gZzy+anNeSLp
- qA5AZsIeE97j0GQeIyWWcJLgtJA1kNlYkYfxnq8llA16OLlCdHulvDnWvqAeZDWTFB7w
- 9unmV2kubi2nX/i3T7zWEe8URs6QxDA7sqj+WJbVNeQOCzbgH5Imdy+rhN0Ub1DAaA+E
- qAU89IQAGPdhp2ybRzdYsY3GHmwPePek2gmwC+sZeR5ZQI4WTpocgRJe/X1drpDjurev
- IbTsw7DIBOeSo/IOMdZGszDAfMke/GBC1Xy2gxvuRF8IBrpkqEZVOB+ItxfhNht36Jjy
- 5MHQ==
-X-Gm-Message-State: AOJu0Yydo86uBHraLbzIH4r7b1wbciCrtXTOLMorZ+JDTO5sitOsIefq
- sx3p0XdzhF7S/GgvTdEMx6Kx9yCONDV74N8MHMpIIXOP1vMMYh8czuWQ0UmAtP6S5QqLSY+4rVR
- S
-X-Google-Smtp-Source: AGHT+IEjUA7XHVQZQ9IKvGvDk1ZhAIr83KVOzxwR2ijFBWm9ba6PraKB14zqi/sY1NsIg+m0hfzMvA==
-X-Received: by 2002:a2e:98c3:0:b0:2ef:2b06:e554 with SMTP id
- 38308e7fff4ca-2f15aa87375mr99364231fa.15.1722948849227; 
- Tue, 06 Aug 2024 05:54:09 -0700 (PDT)
+ bh=nMm3A0DabsjolGXhyPhZ1sZzpOJXfaTPvfWzaUzLVvw=;
+ b=p4mQlJBJS+xEsoPDd4JorTAXV6vsN/HnOk8QRWplEnLT2SVoo7fEEvduK/ryPRNSo7
+ Fj89u8UVTC94jBvuAqdc8PIOtlC0r6WejwwpwOtmtY8scVYsoVTuvlEdimwu2V+STUdU
+ uOnsXM85JgQZ5ISkl05s7L6rgBH2RpQRE2V9JcGjsqwxIizafr/U4j7LzuVpsZ1vWUgA
+ eBhtSjFcsAgwukfvvGC98M3+gd9ozgikMeWnY3CYwQp6g7EK7Aps7P6tL4B1oxX3ZKWe
+ sNcAp8VYvKpBhh8ph7h67SAY53Wrr+NwnZzjdg10RASvEkQLuIYFMMXX6Imb8eSrCMZi
+ Q9Nw==
+X-Gm-Message-State: AOJu0YzSCl1bX2nMfdOHCX9prx3pq/QwoIxcU2oAIGqaz8dOLspB2zUk
+ oFJ9NhrEECMsJ6a+s2wID7IYqiZUvZz0VqGPu67abQ0/tkW8g+QannIZYy8Vc4W0Xrld7A0xzzH
+ D
+X-Google-Smtp-Source: AGHT+IH24eR79lDqIaE2q6DNcV5o2zg5AdeRNNb2Klp0VvlkZeCQ8kqmCVHJWCRJCsLUmt8xuxUqZg==
+X-Received: by 2002:a17:907:724b:b0:a77:b516:3023 with SMTP id
+ a640c23a62f3a-a7dc4db2a1emr1035988366b.4.1722948855304; 
+ Tue, 06 Aug 2024 05:54:15 -0700 (PDT)
 Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
  [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5bb88d1d9a3sm2558061a12.26.2024.08.06.05.54.08
+ a640c23a62f3a-a7dc9bc3c7asm558455666b.14.2024.08.06.05.54.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:54:08 -0700 (PDT)
+ Tue, 06 Aug 2024 05:54:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 21/28] hw/ide/pci: Remove dead code from bmdma_prepare_buf()
-Date: Tue,  6 Aug 2024 14:51:49 +0200
-Message-ID: <20240806125157.91185-22-philmd@linaro.org>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 22/28] hw/display/virtio-gpu: Improve "opengl is not available"
+ error message
+Date: Tue,  6 Aug 2024 14:51:50 +0200
+Message-ID: <20240806125157.91185-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
 References: <20240806125157.91185-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,52 +96,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Coverity notes that the code at the end of the loop in
-bmdma_prepare_buf() is unreachable.  This is because in commit
-9fbf0fa81fca8f527 ("ide: remove hardcoded 2GiB transactional limit")
-we removed the only codepath in the loop which could "break" out of
-it, but didn't notice that this meant we should also remove the code
-at the end of the loop.
+If the user tries to use the virtio-gpu-gl device but the display
+backend doesn't have OpenGL support enabled, we currently print a
+rather uninformative error message:
 
-Remove the dead code.
+$ qemu-system-aarch64 -M virt -device virtio-gpu-gl
+qemu-system-aarch64: -device virtio-gpu-gl: opengl is not available
 
-Resolves: Coverity CID 1547772
+Since OpenGL is not enabled on display frontends by default, users
+are quite likely to run into this. Improve the error message to
+be more specific and to suggest to the user a path forward.
+
+Note that the case of "user tried to enable OpenGL but the display
+backend doesn't handle it" is caught elsewhere first, so we can
+assume that isn't the problem:
+
+$ qemu-system-aarch64 -M virt -device virtio-gpu-gl -display curses,gl=on
+qemu-system-aarch64: OpenGL is not supported by the display
+
+(Use of error_append_hint() requires us to add an ERRP_GUARD() to
+the function, as noted in include/qapi/error.h.)
+
+With this commit we now produce the hopefully more helpful error:
+$ ./build/x86/qemu-system-aarch64 -M virt -device virtio-gpu-gl
+qemu-system-aarch64: -device virtio-gpu-gl: The display backend does not have OpenGL support enabled
+It can be enabled with '-display BACKEND,gl=on' where BACKEND is the name of the display backend to use.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2443
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-[PMD: Break and return once at EOF]
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20240731154136.3494621-2-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240805182419.22239-1-philmd@linaro.org>
 ---
- hw/ide/pci.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ hw/display/virtio-gpu-gl.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index 4675d079a1..a008fe7316 100644
---- a/hw/ide/pci.c
-+++ b/hw/ide/pci.c
-@@ -237,7 +237,7 @@ static int32_t bmdma_prepare_buf(const IDEDMA *dma, int32_t limit)
-             /* end of table (with a fail safe of one page) */
-             if (bm->cur_prd_last ||
-                 (bm->cur_addr - bm->addr) >= BMDMA_PAGE_SIZE) {
--                return s->sg.size;
-+                break;
-             }
-             pci_dma_read(pci_dev, bm->cur_addr, &prd, 8);
-             bm->cur_addr += 8;
-@@ -266,10 +266,7 @@ static int32_t bmdma_prepare_buf(const IDEDMA *dma, int32_t limit)
-             s->io_buffer_size += l;
-         }
-     }
--
--    qemu_sglist_destroy(&s->sg);
--    s->io_buffer_size = 0;
--    return -1;
-+    return s->sg.size;
- }
+diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+index 952820a425..29d20b0132 100644
+--- a/hw/display/virtio-gpu-gl.c
++++ b/hw/display/virtio-gpu-gl.c
+@@ -106,6 +106,7 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
  
- /* return 0 if buffer completed */
+ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
+ {
++    ERRP_GUARD();
+     VirtIOGPU *g = VIRTIO_GPU(qdev);
+ 
+ #if HOST_BIG_ENDIAN
+@@ -119,7 +120,12 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
+     }
+ 
+     if (!display_opengl) {
+-        error_setg(errp, "opengl is not available");
++        error_setg(errp,
++                   "The display backend does not have OpenGL support enabled");
++        error_append_hint(errp,
++                          "It can be enabled with '-display BACKEND,gl=on' "
++                          "where BACKEND is the name of the display backend "
++                          "to use.\n");
+         return;
+     }
+ 
 -- 
 2.45.2
 
