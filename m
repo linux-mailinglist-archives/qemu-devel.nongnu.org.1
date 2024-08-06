@@ -2,60 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D98094969A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 19:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0329496E3
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 19:33:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbNsf-0000Zj-4Q; Tue, 06 Aug 2024 13:21:53 -0400
+	id 1sbO2W-0007Dz-9r; Tue, 06 Aug 2024 13:32:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+045a134c4f2ff45cf0c3+7653+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1sbNsb-0000Yg-Nj; Tue, 06 Aug 2024 13:21:49 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1sbO2P-0007D8-Vy
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 13:31:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+045a134c4f2ff45cf0c3+7653+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1sbNsZ-0004yo-17; Tue, 06 Aug 2024 13:21:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
- From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=7BDEE/1KYynIV5EYjRUP7OJjgrNP7RABmmtrkprGk9E=; b=RhdCwLUD4zPX5ntOfyJEeOemJz
- hxDlnKLquQ4YCXoimbPAZBljJBT7v7FXOK/RQ/uBdWL96b9ERzMN2JlwiHp2jdalEfmAOQDY5fkeQ
- VLKtjCfV4n/c5zFLIZP8VqEeCzzEf+ohBPSNsdA8/lqPoRhk7UI1h/y8bSFJFSar6/lI6ZyePzECu
- U9yGOJnCWNAZXkHv4rKL0ve1pOrFu2ORR0z196i/ZphF1YderWgx/CArt7wjEATQe4u4lq4OeXAIj
- OYh7PIPk4/ShETtLsfmaA/K6tqyWSgP4SQqRfB5LZfwZAvtKHTmQTmcYyTBKUJNiOh0/OMwVYc212
- brNfDlqA==;
-Received: from [2001:8b0:10b:5:95e1:bb50:f4dd:70b1]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1sbNsQ-000000061T9-0yGs; Tue, 06 Aug 2024 17:21:38 +0000
-Message-ID: <c5f7438e2e0c40b0f89030de1096335f5704d3a5.camel@infradead.org>
-Subject: [PATCH] net: Fix '-net nic,model=' for non-help arguments
-From: David Woodhouse <dwmw2@infradead.org>
+ (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1sbO2N-0006LO-NE
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 13:31:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722965512;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nXinTE9rFIYefn8SSsxp/18DtX97VEd5BEq82ma5RtM=;
+ b=aFWPIwePeW+qtaOjk/HY5EQJwpHjCjm3WKvLxToDUvs1LQhZXBtwerbd+9n9VAgWo1RBcD
+ G0fV8lSbE2gfvhu3olTJ9c3OY/z7QG5vLlmdjQX3e6ucsEjSjQgc6QgZYsWKBaGyMrZvPo
+ BBy+T/tAoPRu5hZzcKNA7lwyEBrFzMs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-KsaEGWMPNgyDiFOpDM_1WQ-1; Tue,
+ 06 Aug 2024 13:31:50 -0400
+X-MC-Unique: KsaEGWMPNgyDiFOpDM_1WQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 467151955BFA; Tue,  6 Aug 2024 17:31:38 +0000 (UTC)
+Received: from p1.localdomain.com (unknown [10.39.192.15])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DB8421955F65; Tue,  6 Aug 2024 17:31:23 +0000 (UTC)
+From: Cleber Rosa <crosa@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, Jason Wang <jasowang@redhat.com>, 
- qemu-stable <qemu-stable@nongnu.org>, Hans <sungdgdhtryrt@gmail.com>
-Date: Tue, 06 Aug 2024 18:21:37 +0100
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-azAbhZaONU8KVTl5p6cc"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Radoslaw Biernacki <rad@semihalf.com>, Troy Lee <leetroy@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Beraldo Leal <bleal@redhat.com>,
+ kvm@vger.kernel.org, Joel Stanley <joel@jms.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Paul Durrant <paul@xen.org>, Eric Auger <eric.auger@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>, qemu-arm@nongnu.org,
+ Cleber Rosa <crosa@redhat.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>
+Subject: [PATCH v2 0/9] Bump Avocado to 103.0 LTS and update tests for
+ compatibility and new features
+Date: Tue,  6 Aug 2024 13:31:10 -0400
+Message-ID: <20240806173119.582857-1-crosa@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+045a134c4f2ff45cf0c3+7653+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=crosa@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,157 +98,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a *long* overdue update of the Avocado version used in QEMU.
+It comes a time where the role of the runner and the libraries are
+being discussed and questioned.
 
---=-azAbhZaONU8KVTl5p6cc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+These exact commits have been staging on my side for over 30 days now,
+and I was exceeding what I should in terms of testing before posting.
+I apologize for the miscalculation.
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Nevertheless, as pointed out, on the ML, these changes are needed NOW.
 
-Oops, don't *delete* the model option when checking for 'help'.
+Some examples of runs in the CI can be seen below:
 
-Fixes: 64f75f57f9d2 ("net: Reinstate '-net nic, model=3Dhelp' output as doc=
-umented in man page")
-Reported-by: Hans <sungdgdhtryrt@gmail.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: qemu-stable@nongnu.org
----
-This whole mess of alternative command line options could really do
-with some self tests. And maybe removing half of them. Three ways of
-doing the same thing ought to suffice.
+* Serial with 103.0 LTS (https://gitlab.com/cleber.gnu/qemu/-/jobs/7074346143#L220):
+   RESULTS    : PASS 46 | ERROR 0 | FAIL 0 | SKIP 2 | WARN 0 | INTERRUPT 0 | CANCEL 0
+   JOB TIME   : 432.63 s
 
- net/net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+* Parallel with 103.0 LTS (https://gitlab.com/cleber.gnu/qemu/-/jobs/7085879478#L222)
+   RESULTS    : PASS 46 | ERROR 0 | FAIL 0 | SKIP 2 | WARN 0 | INTERRUPT 0 | CANCEL 0
+   JOB TIME   : 148.99 s
 
-diff --git a/net/net.c b/net/net.c
-index 2eb8bc9c0b..fc1125111c 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1737,7 +1737,7 @@ void net_check_clients(void)
-=20
- static int net_init_client(void *dummy, QemuOpts *opts, Error **errp)
- {
--    const char *model =3D qemu_opt_get_del(opts, "model");
-+    const char *model =3D qemu_opt_get(opts, "model");
-=20
-     if (is_nic_model_help_option(model)) {
-         return 0;
---=20
-2.44.0
+Changes from v1 (references are from v1):
 
+This version first applies the Avocado version bump (now PATCH 1),
+adding to that patch the serial execution behavior.  Avocado 103.0 LTS
+can run all existing tests in QEMU without any changes, so it's safe
+to pick PATCH 1 *only* from this series if needed.  A GitLab CI job that
+does only that can be seen here:
 
+ https://gitlab.com/cleber.gnu/qemu/-/pipelines/1402633650
 
---=-azAbhZaONU8KVTl5p6cc
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Details on changes:
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwODA2MTcyMTM3WjAvBgkqhkiG9w0BCQQxIgQg/6jw+Ff4
-XKqm6o25t1QnXbj0AsFxySdTBii1j9EB5Nowgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgB+pRIrHSnogs7wjijissOXqnOOLdLz45TQ
-XiPAKsuPYhJBPcfdQ9NNPL/TXD/gw/mixGMO7tiDlkt52Kwwy4VOUuSqC+1H8Ulr2hey9rXAQwMl
-2HfnPlt/+t6LJESNnBJS0KhGX3jTobnWuDTU7x9s6THRycJjB2iumX6r0AWzpjyAx0Xi86MlbmCg
-bjEa8qPVkLWakQ5a6TwwPjcwys0xeWzEdmtWHCTCoeSIlpUMb4K7NITj1LsqYNsI/aX7+bLRl4t+
-CKheFF9Sk1tebNPWNepolj49EwrfmDHInO6UY7OHfoD4KRCIIwt0vbiO42ME4Otknfi/8Uc4Pssj
-VJFzGU9Ac7jsUQMoam7HNlYUybjK3bA2QiyzVKt95ZRJPHH5ZsQvLmu96Ph/l06jigropltnDHdH
-b5J6WiKStvW16uH6ead15T/JzpejTxuH0hzIlGIHBbUKqeU8SSdhy7HHWYjuOrxqj3pcceDPdp8c
-1UnkzYAT0OQxrF6siHNYOQo4ZHgi5emRLyYOkRkbtkSjWvBIN7oknkLAXhQPbZ4AN2S/ixJTnO92
-lZMMij4424fipkpBOkyNbNXHFggW1LS/fwiQ49vVV1NPDKh3RaUH/wuIn81yP2nKWsgVFfNJbmlb
-tWFe3ixugpNTcyVmyP4jdqxLf13RKiEcDedn2yd7LAAAAAAAAA==
+ * Moved "Bump avocado to 103.0" to first patch
 
+ * Patches already applied:
+    - [PATCH 1/13] tests/avocado: mips: fallback to HTTP given certificate expiration
+    - [PATCH 2/13] tests/avocado: mips: add hint for fetchasset plugin
+    - [PATCH 8/13] testa/avocado: test_arm_emcraft_sf2: handle RW requirements for asset
 
---=-azAbhZaONU8KVTl5p6cc--
+  * Dropped patches:
+    - [PATCH 3/13] tests/avocado/intel_iommu.py: increase timeout
+    - [PATCH 6/13] tests/avocado: use more distinct names for assets
+      - Replaced with "tests/avocado: simplify parameters on fetch_asset with name only"
+    - [PATCH 7/13] tests/avocado/kvm_xen_guest.py: cope with asset RW requirements
+
+  * [PATCH 5/13] tests/avocado: machine aarch64: standardize location and RO access:
+    - Fixed rebase mistake
+
+  * [PATCH 11/13] tests/avocado/machine_aarch64_sbsaref.py: allow for rw usage of image
+    - Use "snapshot=on" instead of new copy of file
+
+  * New patches:
+    - tests/avocado: apply proper skipUnless decorator
+    - tests/avocado: simplify parameters on fetch_asset with name only
+
+Cleber Rosa (9):
+  Bump avocado to 103.0
+  tests/avocado: apply proper skipUnless decorator
+  tests/avocado: add cdrom permission related tests
+  tests/avocado: machine aarch64: standardize location and RO access
+  tests/avocado: simplify parameters on fetch_asset with name only
+  tests/avocado/boot_xen.py: fetch kernel during test setUp()
+  tests/avocado/tuxrun_baselines.py: use Avocado's zstd support
+  tests/avocado/machine_aarch64_sbsaref.py: allow for rw usage of image
+  Avocado tests: allow for parallel execution of tests
+
+ docs/devel/testing.rst                   | 12 +++++++
+ pythondeps.toml                          |  2 +-
+ tests/Makefile.include                   |  6 +++-
+ tests/avocado/boot_linux_console.py      |  1 -
+ tests/avocado/boot_xen.py                | 13 ++++----
+ tests/avocado/cdrom.py                   | 41 ++++++++++++++++++++++++
+ tests/avocado/intel_iommu.py             |  1 -
+ tests/avocado/kvm_xen_guest.py           |  2 +-
+ tests/avocado/linux_initrd.py            |  1 -
+ tests/avocado/machine_aarch64_sbsaref.py |  4 +--
+ tests/avocado/machine_aarch64_virt.py    | 14 ++++----
+ tests/avocado/machine_aspeed.py          |  2 --
+ tests/avocado/machine_mips_malta.py      |  2 --
+ tests/avocado/machine_rx_gdbsim.py       |  2 --
+ tests/avocado/netdev-ethtool.py          |  2 +-
+ tests/avocado/reverse_debugging.py       |  4 ---
+ tests/avocado/smmu.py                    |  1 -
+ tests/avocado/tuxrun_baselines.py        | 16 ++++-----
+ 18 files changed, 82 insertions(+), 44 deletions(-)
+ create mode 100644 tests/avocado/cdrom.py
+
+-- 
+2.45.2
+
 
