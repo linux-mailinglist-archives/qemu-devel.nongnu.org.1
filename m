@@ -2,82 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2527948FDB
+	by mail.lfdr.de (Postfix) with ESMTPS id D3744948FDA
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:01:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJkF-0001Jv-Ez; Tue, 06 Aug 2024 08:56:55 -0400
+	id 1sbJfd-0004s0-S2; Tue, 06 Aug 2024 08:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJi0-0001fi-7B
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:38 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhy-0000P5-BN
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:35 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a7a9cf7d3f3so77308166b.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948872; x=1723553672; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ypdbeuI3/3zkqxrrQlfqtvt5UnR+ONpIVnv+X7Sc7F4=;
- b=UOwVR5EUu5a2N+T0yWbOTY3Z1t0/daSYxvlHH6vbtNMi24zwRz1UrQYquzrRCv2zi1
- TjZicPov6itbsZ1JowtklgUZnDVuMeMw7S5cYQMIMcUpa8RHpiRACxpRhVuoBgZicRza
- Mzxkno0EKv48aTBXyo5iCXvQVruEOawD1RYsHWLshOmnSaZO+ObM+KeZn2No3FfnE6g9
- pHiVFo6WuI9y5+9ZOghfkZHqQsi01SPoeJgmdiV7TqZG8NabflJsrcJVSdNRr+vnP56P
- DumRxeP5jBaBW8b2dm5YGNnVDbFiP2tEbkqY1kG2dBKmp1HQfjFA6JRkEyfRZZ1qeB9B
- MFcQ==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sbJfb-0004pz-30
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:52:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sbJfV-0008Eo-Uo
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:52:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1722948720;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RcCqYXLbfyl8NrZROynzZEyLhQLUtE5aTO6tsO3xOlo=;
+ b=aAN85CiH4JkHtkOP0QQ/wRtQtjEcgZNG7M7rThh6bil3UGyQ7Hf0HpkpgyUvJ/MfZQ5U7q
+ u1MIHJO1UZmInolPZxzd3Q9zvhdYvU0AnW74ENfcowmkY0kFRg/ms7qsZnJBvR76nmiOBG
+ ZOj+mcKw9dySj+KPd4TWxFgSJdRvKD4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-46-oPx4X59BPrqt2CyiSDwNcQ-1; Tue, 06 Aug 2024 08:51:58 -0400
+X-MC-Unique: oPx4X59BPrqt2CyiSDwNcQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42816aacabcso5080415e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:51:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948872; x=1723553672;
+ d=1e100.net; s=20230601; t=1722948717; x=1723553517;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ypdbeuI3/3zkqxrrQlfqtvt5UnR+ONpIVnv+X7Sc7F4=;
- b=EOnVbjSfbHEEhqOm/6g6OFK5FANXzKi41e/M9vcTHiREygpmd3VB09Qfq/OHSAHJai
- NtJGQ6Hv+Wtd4PpZyyWhtcoW1tdxTinDRfAtJesmeiFzsko/WHgtk8wuIykmEFWEqMnj
- qfT3UlcHf/3JLuyisrXaktcMIO8K3TnV7cHdZO/MM+tF0UmBs0h9BtgEskwrKHavJsAY
- 3XVClVEoNwqBvDWmGot9+1aBkXpooj6RW0A0My/1EDqCAf8FEEOGq0tfv9qfIMl/3dyk
- mFhqZgV25s/mICdFgvR/yk18rEZuwdhF7vdPSUw7vaLgvAhDmdEnS3Btes+WOhR92QXs
- mhuQ==
-X-Gm-Message-State: AOJu0Yxieg7tgF1zqp6nLX2cyaWIoN6q4PDgw4G70hv7IEF75a38pgKA
- 5Zpr36Fid7Xf42H8dGUUO7AC9K82/lIdCTV5J4ElE7XXAOim90CxvSzfddc1ZtsflHME67qkWUK
- V
-X-Google-Smtp-Source: AGHT+IGL/4huUwzcaLaq6PgwpIBAIzK6jpN8ZZXtAH1L3lKCQWPQ2lA7CiO9A/Y6o0KABCklX7vuug==
-X-Received: by 2002:a17:907:3e1a:b0:a75:2781:a5c4 with SMTP id
- a640c23a62f3a-a7dc4ea9ebdmr1048774766b.29.1722948872256; 
- Tue, 06 Aug 2024 05:54:32 -0700 (PDT)
-Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
- [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9c0c0d5sm545644666b.48.2024.08.06.05.54.31
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:54:31 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 25/28] hw/pci-host/gt64120: Set PCI base address register write
- mask
-Date: Tue,  6 Aug 2024 14:51:53 +0200
-Message-ID: <20240806125157.91185-26-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
-References: <20240806125157.91185-1-philmd@linaro.org>
+ bh=RcCqYXLbfyl8NrZROynzZEyLhQLUtE5aTO6tsO3xOlo=;
+ b=tsLXprnRIn7jl8p7x2KC0aLaNTiw1SXBy/ULxl/5lI2D3k8zWhvWIdQTjcEWTtwZoL
+ IaBCsbYD6zpNQxFAL2FjC/hJ82azbczJ8DkER/ial+VfBRhZqkFvv7HQW0toeq7pnQag
+ M5ltt2Og5h7qGH5mVZ1VNIc7yxSPDGCcioWq1qMg6C9TBXLDSqIos2jTYQ3h0nYWwAGg
+ LHUmQA5dWbLLI2K0/bEmFbWOwSTFpCc98mEwWAwDRhc5ravYhKnpE614iMB5hZW0NSXf
+ jcBnzO1ey43Jmraz64tACvo3ziBAQ1emFWfW8+Y2sae964s9nXU4dOh5mCAZe73RaSHG
+ kZOA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVOEKim6/VgqbBTAFqbdOMrqlnC36ILhamtle6yGSBcav660DVIQBTFGefPLE7QPa/4jxaceyrPYDpljzXZOiEaGmpRyUE=
+X-Gm-Message-State: AOJu0Yws9DsXzIWEVYy/KfFKsMQIICJehKI3VhwvQjGk5d1M8jvS6Qv5
+ aQ1BWlYmti9YI7gS7ATRIfkxYLWSrphSzVGeiI0IwJeQ40t7FK66rn1+xgOVSBIxSgJCWBPEo50
+ +k2l9GVTFVmLsdAcvhwxl+6tYYiNYjuRasmIRm03NRM+azVTWv7PI
+X-Received: by 2002:a05:600c:1c14:b0:427:985b:178b with SMTP id
+ 5b1f17b1804b1-428ea0fd693mr84412385e9.16.1722948717070; 
+ Tue, 06 Aug 2024 05:51:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETUDRBH0w8TmSPjUX+r9AIm9FcNwAIyhG6KkOo2oT8gRKN8FIq07Xl4DFhVVvA6RFoMIbqtQ==
+X-Received: by 2002:a05:600c:1c14:b0:427:985b:178b with SMTP id
+ 5b1f17b1804b1-428ea0fd693mr84412085e9.16.1722948716471; 
+ Tue, 06 Aug 2024 05:51:56 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-428e6e329b6sm178988095e9.20.2024.08.06.05.51.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Aug 2024 05:51:55 -0700 (PDT)
+Date: Tue, 6 Aug 2024 14:51:53 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>, Eric Blake
+ <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, linux-kernel@vger.kernel.org,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 5/7] qapi/ghes-cper: add an interface to do generic
+ CPER error injection
+Message-ID: <20240806145153.0e1a70a9@imammedo.users.ipa.redhat.com>
+In-Reply-To: <51cbdc8a53e58c69ee17b15c398feeeeeeb64f34.1722634602.git.mchehab+huawei@kernel.org>
+References: <cover.1722634602.git.mchehab+huawei@kernel.org>
+ <51cbdc8a53e58c69ee17b15c398feeeeeeb64f34.1722634602.git.mchehab+huawei@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,90 +110,283 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When booting Linux we see:
+On Fri,  2 Aug 2024 23:44:00 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-  PCI host bridge to bus 0000:00
-  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
-  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
-  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
-  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
-  pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
-  pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
-  pci 0000:00:00.0: [Firmware Bug]: reg 0x1c: invalid BAR (can't size)
-  pci 0000:00:00.0: [Firmware Bug]: reg 0x20: invalid BAR (can't size)
-  pci 0000:00:00.0: [Firmware Bug]: reg 0x24: invalid BAR (can't size)
+> Creates a QMP command to be used for generic ACPI APEI hardware error
+> injection (HEST) via GHESv2.
+> 
+> The actual GHES code will be added at the followup patch.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  MAINTAINERS              |  7 +++++
+>  hw/acpi/Kconfig          |  5 ++++
+>  hw/acpi/ghes_cper.c      | 45 ++++++++++++++++++++++++++++++++
+>  hw/acpi/ghes_cper_stub.c | 18 +++++++++++++
+>  hw/acpi/meson.build      |  2 ++
+>  hw/arm/Kconfig           |  5 ++++
+>  include/hw/acpi/ghes.h   |  7 +++++
+>  qapi/ghes-cper.json      | 55 ++++++++++++++++++++++++++++++++++++++++
+>  qapi/meson.build         |  1 +
+>  qapi/qapi-schema.json    |  1 +
+>  10 files changed, 146 insertions(+)
+>  create mode 100644 hw/acpi/ghes_cper.c
+>  create mode 100644 hw/acpi/ghes_cper_stub.c
+>  create mode 100644 qapi/ghes-cper.json
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 98eddf7ae155..655edcb6688c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2075,6 +2075,13 @@ F: hw/acpi/ghes.c
+>  F: include/hw/acpi/ghes.h
+>  F: docs/specs/acpi_hest_ghes.rst
+>  
+> +ACPI/HEST/GHES/ARM processor CPER
+> +R: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> +S: Maintained
+> +F: hw/arm/ghes_cper.c
+> +F: hw/acpi/ghes_cper_stub.c
+> +F: qapi/ghes-cper.json
+> +
+>  ppc4xx
+>  L: qemu-ppc@nongnu.org
+>  S: Orphan
+> diff --git a/hw/acpi/Kconfig b/hw/acpi/Kconfig
+> index e07d3204eb36..73ffbb82c150 100644
+> --- a/hw/acpi/Kconfig
+> +++ b/hw/acpi/Kconfig
+> @@ -51,6 +51,11 @@ config ACPI_APEI
+>      bool
+>      depends on ACPI
+>  
+> +config GHES_CPER
+> +    bool
+> +    depends on ACPI_APEI
+> +    default y
+> +
+>  config ACPI_PCI
+>      bool
+>      depends on ACPI && PCI
+> diff --git a/hw/acpi/ghes_cper.c b/hw/acpi/ghes_cper.c
+> new file mode 100644
+> index 000000000000..7aa7e71e90dc
+> --- /dev/null
+> +++ b/hw/acpi/ghes_cper.c
+> @@ -0,0 +1,45 @@
+> +/*
+> + * ARM Processor error injection
+> + *
+> + * Copyright(C) 2024 Huawei LTD.
+> + *
+> + * This code is licensed under the GPL version 2 or later. See the
+> + * COPYING file in the top-level directory.
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +
+> +#include "qemu/base64.h"
+> +#include "qemu/error-report.h"
+> +#include "qemu/uuid.h"
+> +#include "qapi/qapi-commands-ghes-cper.h"
+> +#include "hw/acpi/ghes.h"
+> +
+> +void qmp_ghes_cper(CommonPlatformErrorRecord *qmp_cper,
+> +                   Error **errp)
+> +{
+> +    int rc;
+> +    AcpiGhesCper cper;
+> +    QemuUUID be_uuid, le_uuid;
+> +
+> +    rc = qemu_uuid_parse(qmp_cper->notification_type, &be_uuid);
+> +    if (rc) {
+> +        error_setg(errp, "GHES: Invalid UUID: %s",
+> +                   qmp_cper->notification_type);
+> +        return;
+> +    }
+> +
+> +    le_uuid = qemu_uuid_bswap(be_uuid);
+> +    cper.guid = le_uuid.data;
+> +
+> +    cper.data = qbase64_decode(qmp_cper->raw_data, -1,
+> +                               &cper.data_len, errp);
+> +    if (!cper.data) {
+> +        return;
+> +    }
+> +
+> +    /* TODO: call a function at ghes */
+> +
+> +    g_free(cper.data);
+> +}
+> diff --git a/hw/acpi/ghes_cper_stub.c b/hw/acpi/ghes_cper_stub.c
+> new file mode 100644
+> index 000000000000..7ce6ed70a265
+> --- /dev/null
+> +++ b/hw/acpi/ghes_cper_stub.c
+> @@ -0,0 +1,18 @@
+> +/*
+> + * ARM Processor error injection
+> + *
+> + * Copyright(C) 2024 Huawei LTD.
+> + *
+> + * This code is licensed under the GPL version 2 or later. See the
+> + * COPYING file in the top-level directory.
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "qapi/qapi-commands-ghes-cper.h"
+> +#include "hw/acpi/ghes.h"
+> +
+> +void qmp_ghes_cper(CommonPlatformErrorRecord *cper, Error **errp)
+> +{
+> +}
+> diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
+> index fa5c07db9068..6cbf430eb66d 100644
+> --- a/hw/acpi/meson.build
+> +++ b/hw/acpi/meson.build
+> @@ -34,4 +34,6 @@ endif
+>  system_ss.add(when: 'CONFIG_ACPI', if_false: files('acpi-stub.c', 'aml-build-stub.c', 'ghes-stub.c', 'acpi_interface.c'))
+>  system_ss.add(when: 'CONFIG_ACPI_PCI_BRIDGE', if_false: files('pci-bridge-stub.c'))
+>  system_ss.add_all(when: 'CONFIG_ACPI', if_true: acpi_ss)
+> +system_ss.add(when: 'CONFIG_GHES_CPER', if_true: files('ghes_cper.c'))
+> +system_ss.add(when: 'CONFIG_GHES_CPER', if_false: files('ghes_cper_stub.c'))
+>  system_ss.add(files('acpi-qmp-cmds.c'))
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index 1ad60da7aa2d..bed6ba27d715 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -712,3 +712,8 @@ config ARMSSE
+>      select UNIMP
+>      select SSE_COUNTER
+>      select SSE_TIMER
+> +
+> +config GHES_CPER
+> +    bool
+> +    depends on ARM
+> +    default y if AARCH64
+> diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+> index 33be1eb5acf4..06a5b8820cd5 100644
+> --- a/include/hw/acpi/ghes.h
+> +++ b/include/hw/acpi/ghes.h
+> @@ -23,6 +23,7 @@
+>  #define ACPI_GHES_H
+>  
+>  #include "hw/acpi/bios-linker-loader.h"
+> +#include "qapi/error.h"
+>  #include "qemu/notify.h"
+>  
+>  extern NotifierList generic_error_notifiers;
+> @@ -78,6 +79,12 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+>                            GArray *hardware_errors);
+>  int acpi_ghes_record_errors(uint8_t notify, uint64_t error_physical_addr);
+>  
+> +typedef struct AcpiGhesCper {
+> +    uint8_t *guid;
+> +    uint8_t *data;
+> +    size_t data_len;
+> +} AcpiGhesCper;
+> +
+>  /**
+>   * acpi_ghes_present: Report whether ACPI GHES table is present
+>   *
+> diff --git a/qapi/ghes-cper.json b/qapi/ghes-cper.json
+> new file mode 100644
+> index 000000000000..3cc4f9f2aaa9
+> --- /dev/null
+> +++ b/qapi/ghes-cper.json
+> @@ -0,0 +1,55 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +
+> +##
+> +# = GHESv2 CPER Error Injection
+> +#
+> +# These are defined at
+> +# ACPI 6.2: 18.3.2.8 Generic Hardware Error Source version 2
+> +# (GHESv2 - Type 10)
+> +##
+> +
+> +##
+> +# @CommonPlatformErrorRecord:
+> +#
+> +# Common Platform Error Record - CPER - as defined at the UEFI
+> +# specification.  See
+> +# https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#record-header
+> +# for more details.
+> +#
+> +# @notification-type: pre-assigned GUID string indicating the record
+> +#   association with an error event notification type, as defined
+> +#   at https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#record-header
+> +#
+> +# @raw-data: Contains a base64 encoded string with the payload of
+> +#   the CPER.
+> +#
+> +# Since: 9.2
+> +##
+> +{ 'struct': 'CommonPlatformErrorRecord',
+> +  'data': {
 
-This is due to missing base address register write mask.
-Add it to get:
+> +      'notification-type': 'str',
 
-  PCI host bridge to bus 0000:00
-  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
-  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
-  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
-  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
-  pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00000fff pref]
-  pci 0000:00:00.0: reg 0x14: [mem 0x01000000-0x01000fff pref]
-  pci 0000:00:00.0: reg 0x18: [mem 0x1c000000-0x1c000fff]
-  pci 0000:00:00.0: reg 0x1c: [mem 0x1f000000-0x1f000fff]
-  pci 0000:00:00.0: reg 0x20: [mem 0x1be00000-0x1be00fff]
-  pci 0000:00:00.0: reg 0x24: [io  0x14000000-0x14000fff]
+this should be source id (type is just impl. detail of how QEMU delivers
+event for given source id)
+unless there is no plan to use more sources,
+I'd just drop this from API to avoid confusing user.
 
-Since this device is only used by MIPS machines which aren't
-versioned, we don't need to update migration compat machinery.
+Since the patch comes before 5/7, it's not clear how it will be used at this point.
+I'd move the patch after 5/7.
 
-Mention the datasheet referenced. Remove the "Malta assumptions
-ahead" comment since the reset values from the datasheet are used.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-Id: <20240802213122.86852-2-philmd@linaro.org>
----
- hw/pci-host/gt64120.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index e02efc9e2e..573d2619ee 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -1,6 +1,8 @@
- /*
-  * QEMU GT64120 PCI host
-  *
-+ * (Datasheet GT-64120 Rev 1.4 from Sep 14, 1999)
-+ *
-  * Copyright (c) 2006,2007 Aurelien Jarno
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-@@ -1213,17 +1215,27 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
- 
- static void gt64120_pci_realize(PCIDevice *d, Error **errp)
- {
--    /* FIXME: Malta specific hw assumptions ahead */
-+    /* Values from chapter 17.16 "PCI Configuration" */
-+
-     pci_set_word(d->config + PCI_COMMAND, 0);
-     pci_set_word(d->config + PCI_STATUS,
-                  PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
-     pci_config_set_prog_interface(d->config, 0);
-+
-+    pci_set_long(d->wmask + PCI_BASE_ADDRESS_0, 0xfffff008); /* SCS[1:0] */
-+    pci_set_long(d->wmask + PCI_BASE_ADDRESS_1, 0xfffff008); /* SCS[3:2] */
-+    pci_set_long(d->wmask + PCI_BASE_ADDRESS_2, 0xfffff008); /* CS[2:0] */
-+    pci_set_long(d->wmask + PCI_BASE_ADDRESS_3, 0xfffff008); /* CS[3], BootCS */
-+    pci_set_long(d->wmask + PCI_BASE_ADDRESS_4, 0xfffff000); /* ISD MMIO */
-+    pci_set_long(d->wmask + PCI_BASE_ADDRESS_5, 0xfffff001); /* ISD I/O */
-+
-     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x1c000000);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x1f000000);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_4, 0x14000000);
-     pci_set_long(d->config + PCI_BASE_ADDRESS_5, 0x14000001);
-+
-     pci_set_byte(d->config + 0x3d, 0x01);
- }
- 
--- 
-2.45.2
+> +      'raw-data': 'str'
+> +  }
+> +}
+> +
+> +##
+> +# @ghes-cper:
+> +#
+> +# Inject ARM Processor error with data to be filled according with
+> +# ACPI 6.2 GHESv2 spec.
+> +#
+> +# @cper: a single CPER record to be sent to the guest OS.
+> +#
+> +# Features:
+> +#
+> +# @unstable: This command is experimental.
+> +#
+> +# Since: 9.2
+> +##
+> +{ 'command': 'ghes-cper',
+> +  'data': {
+> +    'cper': 'CommonPlatformErrorRecord'
+> +  },
+> +  'features': [ 'unstable' ]
+> +}
+> diff --git a/qapi/meson.build b/qapi/meson.build
+> index e7bc54e5d047..bd13cd7d40c9 100644
+> --- a/qapi/meson.build
+> +++ b/qapi/meson.build
+> @@ -35,6 +35,7 @@ qapi_all_modules = [
+>    'dump',
+>    'ebpf',
+>    'error',
+> +  'ghes-cper',
+>    'introspect',
+>    'job',
+>    'machine-common',
+> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+> index b1581988e4eb..c1a267399fe5 100644
+> --- a/qapi/qapi-schema.json
+> +++ b/qapi/qapi-schema.json
+> @@ -75,6 +75,7 @@
+>  { 'include': 'misc-target.json' }
+>  { 'include': 'audio.json' }
+>  { 'include': 'acpi.json' }
+> +{ 'include': 'ghes-cper.json' }
+>  { 'include': 'pci.json' }
+>  { 'include': 'stats.json' }
+>  { 'include': 'virtio.json' }
 
 
