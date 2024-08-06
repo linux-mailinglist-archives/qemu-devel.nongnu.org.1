@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA6B9493FF
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 16:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F110094943E
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 17:12:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbLcn-0001vo-GZ; Tue, 06 Aug 2024 10:57:21 -0400
+	id 1sbLpt-0006QF-Ch; Tue, 06 Aug 2024 11:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sbLcl-0001nu-2H
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:57:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sbLci-0001xt-Ju
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 10:57:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722956235;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=C4dymvc2MOazeFcHCfl7ctCRCuRvQ1KhpacdSK9eASs=;
- b=Vc59GZjFgKV7tcJ12o+U03j4/DHY52vBjd5aw3h3blNz6UOJqTgDtvUnyABi9O1pfFlYI4
- TtlV8GVQba/5yP3jszWf+jY2gl3rG5Q6bc7R3d9oImGRmqUQjHGpH9WZb9aQuKe/O2XYV5
- xetR6DBMlLk6UO/Jq0TwIoxOoSKQcNc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-AAV6wXJmOnCpweQBOdcjQw-1; Tue,
- 06 Aug 2024 10:57:13 -0400
-X-MC-Unique: AAV6wXJmOnCpweQBOdcjQw-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30D3E1955D4E; Tue,  6 Aug 2024 14:57:12 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.106])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A9C1019560AE; Tue,  6 Aug 2024 14:57:09 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbLpo-0006PK-Uh
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 11:10:49 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbLpl-0003fR-1y
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 11:10:47 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a6265d3ba8fso65700566b.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 08:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1722957040; x=1723561840; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y2p+kq+b1QH3l+tEwxaI+/LqcGMZAJUnrFHD2/FgIR8=;
+ b=Cug5VrgLL6eZKk3YUVK8irhbf/F8M/eFcWAHGwP9cr8W24WQSEkvE6EuaTispXwIO5
+ sJY888szN9x19Z51VODluNjDM01DsS21EdkjZqLKg9/LgTE2Gn4I6LF30BjgtClBicMz
+ 82+mGnOH0tavlJ31bqPyyMoG5vWh+imhENVlvdKBw3spzh4VSag0kGvG+Qd+cBa++MZ8
+ zHFwm7k0j67WOhV1Ox6jtcIRS15viGpGGM/ljrQNOE9EvN7/dDnGW+j6iVBGsQqo41RF
+ aZm/0Nm68ujqNF27R0jrvemNBOi3G8QLa3VSRuf4/l2/GXupplDktLtacEP383aTZT0X
+ QQSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722957040; x=1723561840;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y2p+kq+b1QH3l+tEwxaI+/LqcGMZAJUnrFHD2/FgIR8=;
+ b=uni1+zYaBUiCcyLSdystzH9EO1RBqb9TJW51ThwMzBADPpGmxZkuVfcBwVY7jHFWtd
+ 2eYi52RUn0x46llB/VG6zDvX/I7JdxuyrXUHDAFhsVLs69FlIgCeNPC/Op+7d2mHKGMQ
+ 4k+lABlmVPK5qXZGb98UPj7qZQ7XhsPXbt8c+GOzoMdeZaCLfUY6Y3vIWIurf1c6LrdE
+ ARwHr9GQEovqcLcU5DSX4oRKH9uyFDX795VdOmxsQzEpSnWOhUYwwYmrzQMT+01ElCGt
+ JGFrkSDePABQFolFqh+ueuz6lb1bun0gJ9Q+/+RMz7xMG1qd06TsHlg4qv+TURJfs1k7
+ 0VUQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXlewCES35XRZUGJYu+0Sfc/eNFaM3s6N4VWw/Raay36s404cAHTttIhTyNpMNpphJRC9WK2Ov/gG/IXe5QOUVtQbAvWyc=
+X-Gm-Message-State: AOJu0Yz3optA8wgl75K/bBu9xOuy6oJv6lRRAOgVnTJaW+pbQB3CJ1qF
+ K4a/1xIdDOF+9Eshwt3Dd2I2/u4JAuGqofFCDl1jK+SY7eYri4EQmBIIFbGOtvw=
+X-Google-Smtp-Source: AGHT+IHQeVbWChKStKZV813/MF1Dye5QIiE+PrGSfcSuFVrDoX+wwdHX3U5UtbfN6XjTvKL05+tHdg==
+X-Received: by 2002:a17:907:968b:b0:a7a:952b:95ae with SMTP id
+ a640c23a62f3a-a7dc509f900mr1182474766b.47.1722957040376; 
+ Tue, 06 Aug 2024 08:10:40 -0700 (PDT)
+Received: from [192.168.69.100] (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
+ [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a7dc9c0c7e0sm551529366b.75.2024.08.06.08.10.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Aug 2024 08:10:39 -0700 (PDT)
+Message-ID: <183e2ae7-0f8f-456a-8fe3-e57f7acc4445@linaro.org>
+Date: Tue, 6 Aug 2024 17:10:37 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] hw/net: fix typo s/epbf/ebpf/ in virtio-net
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>,
  Yuri Benditovich <yuri.benditovich@daynix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 5/5] ebpf: improve trace event coverage to all key operations
-Date: Tue,  6 Aug 2024 15:56:53 +0100
-Message-ID: <20240806145653.1632478-6-berrange@redhat.com>
-In-Reply-To: <20240806145653.1632478-1-berrange@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, Andrew Melnychenko <andrew@daynix.com>
 References: <20240806145653.1632478-1-berrange@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20240806145653.1632478-2-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240806145653.1632478-2-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,131 +97,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The existing error trace event is renamed to have a name prefix
-matching its source file & to remove the redundant first arg that
-adds no useful information.
+On 6/8/24 16:56, Daniel P. Berrangé wrote:
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   hw/net/virtio-net.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- ebpf/ebpf_rss.c   | 29 ++++++++++++++++++++++++-----
- ebpf/trace-events |  6 +++++-
- 2 files changed, 29 insertions(+), 6 deletions(-)
-
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index 59854c8b51..8c42953475 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -53,7 +53,7 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx, Error **errp)
-                                    PROT_READ | PROT_WRITE, MAP_SHARED,
-                                    ctx->map_configuration, 0);
-     if (ctx->mmap_configuration == MAP_FAILED) {
--        trace_ebpf_error("eBPF RSS", "can not mmap eBPF configuration array");
-+        trace_ebpf_rss_error(ctx, "can not mmap eBPF configuration array");
-         error_setg(errp, "Unable to map eBPF configuration array");
-         return false;
-     }
-@@ -61,7 +61,7 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx, Error **errp)
-                                    PROT_READ | PROT_WRITE, MAP_SHARED,
-                                    ctx->map_toeplitz_key, 0);
-     if (ctx->mmap_toeplitz_key == MAP_FAILED) {
--        trace_ebpf_error("eBPF RSS", "can not mmap eBPF toeplitz key");
-+        trace_ebpf_rss_error(ctx, "can not mmap eBPF toeplitz key");
-         error_setg(errp, "Unable to map eBPF toeplitz array");
-         goto toeplitz_fail;
-     }
-@@ -69,11 +69,15 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx, Error **errp)
-                                    PROT_READ | PROT_WRITE, MAP_SHARED,
-                                    ctx->map_indirections_table, 0);
-     if (ctx->mmap_indirections_table == MAP_FAILED) {
--        trace_ebpf_error("eBPF RSS", "can not mmap eBPF indirection table");
-+        trace_ebpf_rss_error(ctx, "can not mmap eBPF indirection table");
-         error_setg(errp, "Unable to map eBPF indirection array");
-         goto indirection_fail;
-     }
- 
-+    trace_ebpf_rss_mmap(ctx,
-+                        ctx->mmap_configuration,
-+                        ctx->mmap_toeplitz_key,
-+                        ctx->mmap_indirections_table);
-     return true;
- 
- indirection_fail:
-@@ -108,7 +112,7 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx, Error **errp)
- 
-     rss_bpf_ctx = rss_bpf__open();
-     if (rss_bpf_ctx == NULL) {
--        trace_ebpf_error("eBPF RSS", "can not open eBPF RSS object");
-+        trace_ebpf_rss_error(ctx, "can not open eBPF RSS object");
-         error_setg(errp, "Unable to open eBPF RSS object");
-         goto error;
-     }
-@@ -116,7 +120,7 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx, Error **errp)
-     bpf_program__set_type(rss_bpf_ctx->progs.tun_rss_steering_prog, BPF_PROG_TYPE_SOCKET_FILTER);
- 
-     if (rss_bpf__load(rss_bpf_ctx)) {
--        trace_ebpf_error("eBPF RSS", "can not load RSS program");
-+        trace_ebpf_rss_error(ctx, "can not load RSS program");
-         error_setg(errp, "Unable to load eBPF program");
-         goto error;
-     }
-@@ -131,6 +135,11 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx, Error **errp)
-     ctx->map_toeplitz_key = bpf_map__fd(
-             rss_bpf_ctx->maps.tap_rss_map_toeplitz_key);
- 
-+    trace_ebpf_rss_load(ctx,
-+                        ctx->program_fd,
-+                        ctx->map_configuration,
-+                        ctx->map_indirections_table,
-+                        ctx->map_toeplitz_key);
-     if (!ebpf_rss_mmap(ctx, errp)) {
-         goto error;
-     }
-@@ -178,6 +187,12 @@ bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
-     ctx->map_toeplitz_key = toeplitz_fd;
-     ctx->map_indirections_table = table_fd;
- 
-+    trace_ebpf_rss_load(ctx,
-+                        ctx->program_fd,
-+                        ctx->map_configuration,
-+                        ctx->map_indirections_table,
-+                        ctx->map_toeplitz_key);
-+
-     if (!ebpf_rss_mmap(ctx, errp)) {
-         ctx->program_fd = -1;
-         ctx->map_configuration = -1;
-@@ -259,6 +274,8 @@ bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
- 
-     ebpf_rss_set_toepliz_key(ctx, toeplitz_key);
- 
-+    trace_ebpf_rss_set_data(ctx, config, indirections_table, toeplitz_key);
-+
-     return true;
- }
- 
-@@ -268,6 +285,8 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
-         return;
-     }
- 
-+    trace_ebpf_rss_unload(ctx);
-+
-     ebpf_rss_munmap(ctx);
- 
-     if (ctx->obj) {
-diff --git a/ebpf/trace-events b/ebpf/trace-events
-index b3ad1a35f2..0202abd905 100644
---- a/ebpf/trace-events
-+++ b/ebpf/trace-events
-@@ -1,4 +1,8 @@
- # See docs/devel/tracing.rst for syntax documentation.
- 
- # ebpf-rss.c
--ebpf_error(const char *s1, const char *s2) "error in %s: %s"
-+ebpf_rss_error(void *ctx, const char *s) "ctx=%p error=%s"
-+ebpf_rss_load(void *ctx, int progfd, int cfgfd, int toepfd, int indirfd) "ctx=%p program-fd=%d config-fd=%d toeplitz-fd=%d indirection-fd=%d"
-+ebpf_rss_mmap(void *ctx, void *cfgptr, void *toepptr, void *indirptr) "ctx=%p config-ptr=%p toeplitz-ptr=%p indirection-ptr=%p"
-+ebpf_rss_unload(void *ctx) "rss unload ctx=%p"
-+ebpf_rss_set_data(void *ctx, void *cfgptr, void *toepptr, void *indirptr) "ctx=%p config-ptr=%p toeplitz-ptr=%p indirection-ptr=%p"
--- 
-2.45.2
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
