@@ -2,84 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54A1948E62
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F681948E8A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:10:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbIxU-0000qZ-Jd; Tue, 06 Aug 2024 08:06:32 -0400
+	id 1sbJ0g-0000UL-Sv; Tue, 06 Aug 2024 08:09:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sbIxQ-0000ob-Jf
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:06:28 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sbIxN-0001Cq-J0
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:06:27 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52f01b8738dso718583e87.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:06:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722945981; x=1723550781; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qnVBfqlkOxhMSKyH+fBWhpF6qHnvq20ApNiTBfcsfRI=;
- b=ZHQZjdhOuONSOpgwL8MilB7tH+tOlEXGCUmNIy5vIFI42ARTzHOjFuh180likSvOHQ
- j9OEOpOkX1Mxbwri6T/109fKhRNDKL8nh1IxPiB3hFVjo8SzunN7d/o6FWmfNBwy8hj8
- fZK1/pqx+D4ywIXqVY8IJAZcESl3cxZmKfLHF/4LMIODywZfsVVmZA8sX0Evd8oMlSfM
- pqxg07+UTkI831Zv6V5gEKKULB3uVXM6mQMnxwtQ3wpbYkfg3+DjkWuSsi/yPQlc3L5e
- CbHOApJBaKxaXXm7QUwVc13Oy82IbQwLrHlYDg/Zhs24tDQGUPMolM/QGMt7gPyd8m21
- plWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722945981; x=1723550781;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qnVBfqlkOxhMSKyH+fBWhpF6qHnvq20ApNiTBfcsfRI=;
- b=YsdqhXkPi5bJP9BczE/jwmnMmXCFYzOry0PU4QNTzqXndibEdRT739aBr++OFXriI3
- dDDkY5vzEf/fKOnfuYxxiWB6wg1NpMWx1U+95QzBXRIZdXe7j1zmAv1+Oj94/xSwV/Y5
- r6Xoib0kvP7g7PrJGgG1ZvQNfBUE8/yAgQc7O0bg+wX67G3W4AeKbann/MG4rXl2SJjv
- Sc85PyKDD8Nn/9NX0KW44oCuPny9XKw7lnz4Ayw8NmzxbQxKwh+NzThSbWKY8xIacHF9
- Pdn+NXMLzmgxRUKF8BzPcIMOMH/lLGAhbCWbHpZsJdBQ1pmdQDQkqM2fHE34ON3cBvyf
- ff+Q==
-X-Gm-Message-State: AOJu0Yz920oE9UMJGjC7fl1b26f5KXsRNFei/KzNwoQqdMpedYNW7YAz
- N1mGgMZabClpxEFXncx+kqG/CvjiC/Yjo1J2V2pJOuWiJuRSeGRUYsV8bwiDmlAVxMxrDab+L6/
- I
-X-Google-Smtp-Source: AGHT+IEZQSOY21Yo1IO4stUgdUHYBB0HcKxc3a/rSD7YtEwCcdPvTxlAYVsRb0OoEoziP/4NQ1Thpg==
-X-Received: by 2002:a05:6512:3baa:b0:52c:dbe7:cfd5 with SMTP id
- 2adb3069b0e04-530bb387535mr9570809e87.32.1722945980658; 
- Tue, 06 Aug 2024 05:06:20 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9d89a8esm552168566b.144.2024.08.06.05.06.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Aug 2024 05:06:19 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1432E5F8A1;
- Tue,  6 Aug 2024 13:06:19 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Greg McGary <gkm@rivosinc.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] Add plugin bbvgen: basic block icounts for topblocks +
- simpoints
-In-Reply-To: <20240805161951.2701529-1-gkm@rivosinc.com> (Greg McGary's
- message of "Mon, 5 Aug 2024 09:19:51 -0700")
-References: <20240805161951.2701529-1-gkm@rivosinc.com>
-Date: Tue, 06 Aug 2024 13:06:19 +0100
-Message-ID: <87a5hpsvno.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1sbJ0W-0000D4-N4; Tue, 06 Aug 2024 08:09:41 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1sbJ0R-0001gz-ER; Tue, 06 Aug 2024 08:09:40 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 98C184E602E;
+ Tue, 06 Aug 2024 14:09:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id Auc9EGOWeYZ5; Tue,  6 Aug 2024 14:09:29 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 6F0DB4E601B; Tue, 06 Aug 2024 14:09:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6DEAB74577C;
+ Tue, 06 Aug 2024 14:09:29 +0200 (CEST)
+Date: Tue, 6 Aug 2024 14:09:29 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>, 
+ QEMU PowerPC <qemu-ppc@nongnu.org>
+Subject: Re: u-boot-sam460ex fixes
+In-Reply-To: <D38CKY8VZYDW.6M3KDSQTX0VZ@gmail.com>
+Message-ID: <68a69072-f9c9-15d2-778a-ec4a5f0b80a0@eik.bme.hu>
+References: <142f2839-578c-4dc5-a837-ffacdc18d8c4@tls.msk.ru>
+ <D38CKY8VZYDW.6M3KDSQTX0VZ@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,29 +63,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Greg McGary <gkm@rivosinc.com> writes:
-
-> Tally icounts for basic blocks. The data is useful for producing
-> human-readable topblocks reports, and for creating simpoints to guide
-> accurate & efficient machine simulation runs.
+On Tue, 6 Aug 2024, Nicholas Piggin wrote:
+> On Sat Aug 3, 2024 at 6:40 PM AEST, Michael Tokarev wrote:
+>> Hi!
+>>
+>> It's been a long time since everyone's fighting with u-boot-sam460ex code which is
+>> very bad, suffers from countless issues.
+>>
+>> For one, it does not compile for quite a long time with current compilers.
+>>
+>> For example, here are changes which I apply to this code when building things on
+>> Debian: https://salsa.debian.org/qemu-team/qemu/-/tree/master/debian/patches/
+>> (see u-boot-sam460ex-* files in there).  I just created another patch,
+>> u-boot-sam460ex-build.patch, to address numerous new issues revealed by gcc-14
+>> and its new defaults in Debian.
+>>
+>> Please note that most of the last patch are actually just workarounds, not real
+>> fixes, - real fixes needs much more than that.
+>>
+>> For example, there are a LOT of *conflicting* function declarations in .c files
+>> where the functions are being used, instead of writing them in a common .h file
+>> and including in both users and where it's defined.
+>>
+>> There are a lot of free conversions between pointer and integer. Some of the
+>> functions almost always used with a pointer but expects an integer, or vise
+>> versa.
+>>
+>> This code is awful.
+>>
+>> But.
+>>
+>> Can at least this minimal set of changes be comitted, to let this source to
+>> be compiled at least somehow?  For the benefit of everyone.
+>>
+>> The last patch (-build) also fixes a real bug:
+>>
+>>   	char arr[8] = { 0 };
+>> -	i2c_write(0x68, 0x08, 1, &arr, 8);
+>> +	i2c_write(0x68, 0x08, 1, arr, 8);
 >
-> QEMU's The Tiny Code Generator creates TCG blocks in a way that is
-> expedient for JIT translation but does not conform to the model of CFG
-> basic blocks. TCG greedily translates straight-line code until it must
-> end the block for one of four reasons: (1) page boundary, or (2)
-> maximum TCG block length, or (3) CSR-hacking insn, or (4) jump/branch
-> insn. A single TCG block can span multiple CFG blocks when there are
-> internal branch targets. Multiple TCG blocks can constitute a single
-> CFG block when the component TCG blocks terminate at page boundary,
-> max block length, or CSR-hacking insn.
->
-> The bbvgen plugin normalizes TCG blocks into CFG blocks.
+> Not sure about u-boot. Have you tried to get the patches upstreamed?
 
-Are there any tools that consume this data?
+The sam360ex u-boot is changed from upstream U-Boot by the vendor of the 
+machine and they did not upstream it, that's why we can't use the same 
+u-boot that's used for e500 and need a separate version. The repo for 
+sam460ex is mirrored from my repo so I could change it but maybe better 
+postpone it after the release and then look at updating to the latest 
+firmware version and then fix bugs in that.
 
-<snip>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Regards,
+BALATON Zoltan
 
