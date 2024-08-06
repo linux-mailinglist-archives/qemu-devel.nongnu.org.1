@@ -2,64 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1B8948FF2
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B07C39490A2
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:16:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJns-000691-CH; Tue, 06 Aug 2024 09:00:40 -0400
+	id 1sbK0P-0002vq-Vw; Tue, 06 Aug 2024 09:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sbJmS-0005BK-Gy; Tue, 06 Aug 2024 08:59:19 -0400
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sbJmQ-00012L-5d; Tue, 06 Aug 2024 08:59:12 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 98C69CE0B2C;
- Tue,  6 Aug 2024 12:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED608C32786;
- Tue,  6 Aug 2024 12:59:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1722949144;
- bh=WRTEl+sMiGldjc/6bXsqZRJ/sl8EcbB0pjjcgi5eOnM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=ep8RaX588umdUmUXLx5Ecl9eEvX47YNAmIbVYHbQTjddP7hhN8RESSLm8qBqTxC2a
- k04/3yPcH8nLyiGq5pVGelazPggWt2NSyeVNfoQ3swNmK33MgaD9ZVCYC2Y6xPPZ0m
- f5wpcsjveio4ADHrQPIgaHAugiXHmzHhWYBwgV3A/8L/qMKGGBL6Td0f866TjjrY5q
- 9I7Sl2im7O/9/+nDA0Q3dP2yYghsWpfxyTkJduOG5KzpW0Ug9/ddbVCI64akiIQHxZ
- UhmAixa1/lBNLzqpKl+/OgmbXLzzLAn1+oZ1C7pFSZWvo4szdCO2IsYZD8g89Fu5/0
- c7VTb9knXrq7w==
-Date: Tue, 6 Aug 2024 14:58:56 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
- <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
- <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>, Eric Blake
- <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael Roth
- <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v5 5/7] qapi/ghes-cper: add an interface to do generic
- CPER error injection
-Message-ID: <20240806145856.106c7ebe@foz.lan>
-In-Reply-To: <20240806145153.0e1a70a9@imammedo.users.ipa.redhat.com>
-References: <cover.1722634602.git.mchehab+huawei@kernel.org>
- <51cbdc8a53e58c69ee17b15c398feeeeeeb64f34.1722634602.git.mchehab+huawei@kernel.org>
- <20240806145153.0e1a70a9@imammedo.users.ipa.redhat.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sbK0L-0002iP-Te; Tue, 06 Aug 2024 09:13:34 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sbK0K-0003U4-7A; Tue, 06 Aug 2024 09:13:33 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-70f5ef740b7so465205b3a.2; 
+ Tue, 06 Aug 2024 06:13:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1722950008; x=1723554808; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qlAsZT4AulQJCTyqDzqJuYc0MJQ/i/89K4mepYy3Dcc=;
+ b=gxm75Hr3/gnPBsFAPR9M1jz/phqxeBl7CRA162qCrmwTy+eTAh8HSrc78QSctVmxeR
+ NfuJVAwyGn9AhnwIblOkNalHVNgmBc2/Cl91KStAQP02fIoKfQ6w6nMoQNKYq3blHVv/
+ fiadAspuUJu4MjJOFT2uFSVvo0d1q3BGdo1KUNKXFGp3Fud6QhpEnL5QVobJ2crPYdEt
+ fKeEhox1QBOikWAhC22fRtc2m/n8eRyCps83FHAUvTnj4Q3FfyWWemqqmi9B7hjmk7+O
+ 6/pWkmRItDdRBf9ghpPzljeaEl0zdHodlVuYjqHHl3607+b/b+hZvVm6i4qlhhk/5tMN
+ NwXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722950008; x=1723554808;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qlAsZT4AulQJCTyqDzqJuYc0MJQ/i/89K4mepYy3Dcc=;
+ b=IhiUm9geIB7ZQXlCgET4PiBZmFrDjhKOkg3CywoLGfCZfaRBMAa7zYXkVzrXKfkjYi
+ IxGar1Ak/mcTWL6qH8iVAESqEgBSk8OkHHzPMi76625IXGlwwBY3ThgWXX/W098GjTGg
+ LxsQkYNzkygWWcDfwL0fa4yxccmFemN3fYE8tpWDbA2qxsNmlBg3ylGwiws/e5yGv52j
+ uQIPXw8ZOmhpbI7NSuJAdAh+P2rXpHD1ARJE+ay36Ixasu0n1w7AT5+3iwC8wDDlnbuB
+ NE/osVRXA9lUmQpDQA7YzzF3I3aG12I9YDx79ZNquDwzWxjyNiXqS//aMUmQJKwsLPEp
+ paNg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXX7PEXHllvYlId8MQixvTpekJRCFDfcM/yYy0dl8KGd0OnLZyfSPK5cYMiZGUerQo+tNFrijAdkP+SWdrPiH8hSCJli0o=
+X-Gm-Message-State: AOJu0Yyr5cLXn75EHRtLYIr4OmmTjrUe7hBKqb1oHjKqxmffzhCHu+/+
+ 0qpMw4lBj8oKlI61Ij2UzAIAA4TWIWNlRMxqTI1gUT/Dn9VTwgAZQGXLQcF9
+X-Google-Smtp-Source: AGHT+IGeW8y6gkuGjKe53Zv2BJrnusZSo+B8HeCxlMNBC+E/LMIxfUqt8e57voYp8cIq96CI4VWvMw==
+X-Received: by 2002:a17:902:e5c2:b0:1fc:6740:3ce6 with SMTP id
+ d9443c01a7336-1ff572592f9mr189276275ad.20.1722950008023; 
+ Tue, 06 Aug 2024 06:13:28 -0700 (PDT)
+Received: from wheely.local0.net ([1.145.149.136])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1ff5905b4ddsm87403425ad.173.2024.08.06.06.13.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Aug 2024 06:13:27 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH 0/7] various ppc fixes
+Date: Tue,  6 Aug 2024 23:13:10 +1000
+Message-ID: <20240806131318.275109-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,40 +89,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Em Tue, 6 Aug 2024 14:51:53 +0200
-Igor Mammedov <imammedo@redhat.com> escreveu:
-
-> > +{ 'struct': 'CommonPlatformErrorRecord',
-> > +  'data': {  
-> 
-> > +      'notification-type': 'str',  
-> 
-> this should be source id (type is just impl. detail of how QEMU delivers
-> event for given source id)
-> unless there is no plan to use more sources,
-> I'd just drop this from API to avoid confusing user.
-> 
-> Since the patch comes before 5/7, it's not clear how it will be used at this point.
-> I'd move the patch after 5/7.
-
-As described at:
-
-> +# @notification-type: pre-assigned GUID string indicating the record
-> +#   association with an error event notification type, as defined
-> +#   at https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#record-header
-
-This is actually GUID of the error to be generated. Perhaps the better would
-be to change the above to:
-
-	{ 'struct': 'CommonPlatformErrorRecord',
-	  'data': {
-		'guid': 'str',
-		'raw-data': 'str'
-	}
-
-Making it even clearer. In any case, this is mandatory, as otherwise
-the interface would be limited to a single type.
+This fixes LPC serirq Coverity issues introduced in the merge
+window that Cedric reported. Also fixes for an assorted bunch of 
+emulation issues recently turned up when running PowerVM firmware
+on the model.
 
 Thanks,
-Mauro
+Nick
+
+Nicholas Piggin (7):
+  ppc/pnv: Fix LPC serirq routing calculation
+  ppc/pnv: Fix LPC POWER8 register sanity check
+  target/ppc: Fix mtDPDES targeting SMT siblings
+  target/ppc: PMIs are level triggered
+  target/ppc: Fix doorbell delivery to threads in powersave
+  target/ppc: Fix HFSCR facility checks
+  target/ppc: Fix VRMA to not check virtual page class key protection
+
+ target/ppc/cpu.h         |  5 +++--
+ hw/ppc/pnv_lpc.c         | 14 ++++++++++----
+ target/ppc/excp_helper.c | 21 +++++++++++++--------
+ target/ppc/misc_helper.c |  2 +-
+ target/ppc/mmu-hash64.c  |  9 ++++++++-
+ 5 files changed, 35 insertions(+), 16 deletions(-)
+
+-- 
+2.45.2
+
 
