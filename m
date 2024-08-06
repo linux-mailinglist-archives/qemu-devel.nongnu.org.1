@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A635948FA0
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C47948FC0
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJhm-00082e-7Y; Tue, 06 Aug 2024 08:54:28 -0400
+	id 1sbJiT-0001Ym-No; Tue, 06 Aug 2024 08:55:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhX-0007m2-61
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:07 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhg-0000F4-Oa
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:24 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhV-0000KX-8J
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:06 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a7a83a968ddso68664166b.0
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhb-0000MA-TZ
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:13 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2ef32fea28dso6962461fa.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948843; x=1723553643; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722948849; x=1723553649; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T2BNzJT5/rzAun9sis8NChUOI8pg5PZFtzu3546w0iw=;
- b=luom6VsDG7eJb/MsC2Emug3Dip+gUBk0+vtOqRnikMkTlCSOIYHp8TNeuSQGA3gmuu
- VXrS5mTGYjt8MLYCHKuTKXxT+eyTD7OnfgyJhT/YsCn8npp/UTuIXrFS7zQuqZ97GqgQ
- gXcP9D+U/JdccXbFubb7KdSVU0f/sZOJWI048fsCs8Y5ic3ztc/wRwxuWr8aqyWnVSNb
- L8Bfc8VblSJDMdSyaX1/KlIXLclbHsqRx+KYjMElpasigQud4qpXFqmj1N9HAzbWUIY9
- ygUFhhf2UCGEwd6zSAPT4Jj9R3khezu6TCfVzpGx0iSsY42S2sh7snEPNw/+WXZAPkuK
- 8Nuw==
+ bh=gv+R0AOxTRNRr/YYta1DbILbzN2/ozjvln37VG+akqw=;
+ b=pMqQlNuhvjAjZ/LZtahOeUPMpwtwcsQFzPfPSHOwHYr8IkA18U5kfNmpnN2Hs9I2Ef
+ fr/v13JgebmIAV/bw843V47ESuhVkL12S4hxqUwtWbAssE0ywieUrlHQaq6HCzf5el2e
+ cRXzgVkOoOwhbP916+veJqzy+OU1gSZWeDyoZfBGrbCGFy58R33bIFDghUpbiwX63SkC
+ 9Y6jgtdUOLDF7ySuw8RCpx/BfO8pwNKfEo9hFExBAomWwQA7foD8s+W1ZhgaqOMQTgYV
+ 37Z+hoDKoxyl1s9V1cuhAmQQdWa+crysZ5qP0NaKYYBNsDNrGDPxgz4hOHXlZ0xAdseU
+ H4Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948843; x=1723553643;
+ d=1e100.net; s=20230601; t=1722948849; x=1723553649;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T2BNzJT5/rzAun9sis8NChUOI8pg5PZFtzu3546w0iw=;
- b=QLCWZr5dDiri+X6FPfCQxfrH4K4XLVpIazSDL7TzTu7xGDJIZQj2CFmtXYRWbkbV3z
- cWE8Ka3wUJ/y7T7smO4rf0AXSEI+xRKvZyKxKloyvfE57Q9vNhOHnxHvVN1/ln1TClC0
- kW5Y+urGDGmCxbA/2IKFAtawSKJs4Wu7cOdLLsgT6vAM93CFnkGAx1APzxu9UwKMsmBa
- 80H8J1CpeV5rCvrI1ELtlhZ2koZH0F85NKa03CQx7b7miTHGyUg7J9K/t8mrraQhfQr6
- U5EbinrSfr7KZGkkLgemWsQV0lpLNzxRlKUGWzMq8WZ7YiBscj57/9N8kEWpwql/Xt7x
- CskA==
-X-Gm-Message-State: AOJu0Yw4+vFCftluAr1xHqouh8PgC/C9vHdaqv2F04se/GMbWvvIGnD1
- snd4CSBdW6V7vmC8aYaA9pvxIhQ7H2ermgu5oxsg6veLRjjjUIu8T/fL6OmZu0VDNvtnWK0GELc
- l
-X-Google-Smtp-Source: AGHT+IG+moa5CelR4wcWKiPrSXr92jlFBykqrBUANqj/NP10lZca8tLDfw7h0yzZPG8/tpjwCGMWHQ==
-X-Received: by 2002:a17:907:1b10:b0:a7d:3ab9:6a5d with SMTP id
- a640c23a62f3a-a7dc5130c90mr891231866b.69.1722948843425; 
- Tue, 06 Aug 2024 05:54:03 -0700 (PDT)
+ bh=gv+R0AOxTRNRr/YYta1DbILbzN2/ozjvln37VG+akqw=;
+ b=n01DbxhFfyrmFQpo/prEma1sy7EMVZvkRNcrqOHXPq1WOdEHomwIg+gZzy+anNeSLp
+ qA5AZsIeE97j0GQeIyWWcJLgtJA1kNlYkYfxnq8llA16OLlCdHulvDnWvqAeZDWTFB7w
+ 9unmV2kubi2nX/i3T7zWEe8URs6QxDA7sqj+WJbVNeQOCzbgH5Imdy+rhN0Ub1DAaA+E
+ qAU89IQAGPdhp2ybRzdYsY3GHmwPePek2gmwC+sZeR5ZQI4WTpocgRJe/X1drpDjurev
+ IbTsw7DIBOeSo/IOMdZGszDAfMke/GBC1Xy2gxvuRF8IBrpkqEZVOB+ItxfhNht36Jjy
+ 5MHQ==
+X-Gm-Message-State: AOJu0Yydo86uBHraLbzIH4r7b1wbciCrtXTOLMorZ+JDTO5sitOsIefq
+ sx3p0XdzhF7S/GgvTdEMx6Kx9yCONDV74N8MHMpIIXOP1vMMYh8czuWQ0UmAtP6S5QqLSY+4rVR
+ S
+X-Google-Smtp-Source: AGHT+IEjUA7XHVQZQ9IKvGvDk1ZhAIr83KVOzxwR2ijFBWm9ba6PraKB14zqi/sY1NsIg+m0hfzMvA==
+X-Received: by 2002:a2e:98c3:0:b0:2ef:2b06:e554 with SMTP id
+ 38308e7fff4ca-2f15aa87375mr99364231fa.15.1722948849227; 
+ Tue, 06 Aug 2024 05:54:09 -0700 (PDT)
 Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
  [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9ec7575sm539465766b.205.2024.08.06.05.54.02
+ 4fb4d7f45d1cf-5bb88d1d9a3sm2558061a12.26.2024.08.06.05.54.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:54:03 -0700 (PDT)
+ Tue, 06 Aug 2024 05:54:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/28] hw/block/fdc-isa: Assert that
- isa_fdc_get_drive_max_chs() found something
-Date: Tue,  6 Aug 2024 14:51:48 +0200
-Message-ID: <20240806125157.91185-21-philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 21/28] hw/ide/pci: Remove dead code from bmdma_prepare_buf()
+Date: Tue,  6 Aug 2024 14:51:49 +0200
+Message-ID: <20240806125157.91185-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
 References: <20240806125157.91185-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,41 +95,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Coverity complains about an overflow in isa_fdc_get_drive_max_chs()
-that can happen if the loop over fd_formats never finds a match,
-because we initialize *maxc to 0 and then at the end of the
-function decrement it.
+Coverity notes that the code at the end of the loop in
+bmdma_prepare_buf() is unreachable.  This is because in commit
+9fbf0fa81fca8f527 ("ide: remove hardcoded 2GiB transactional limit")
+we removed the only codepath in the loop which could "break" out of
+it, but didn't notice that this meant we should also remove the code
+at the end of the loop.
 
-This can't ever actually happen because fd_formats has at least
-one entry for each FloppyDriveType, so we must at least once
-find a match and update *maxc, *maxh and *maxs. Assert that we
-did find a match, which should keep Coverity happy and will also
-detect possible bugs in the data in fd_formats.
+Remove the dead code.
 
-Resolves: Coverity CID 1547663
+Resolves: Coverity CID 1547772
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240731143617.3391947-6-peter.maydell@linaro.org>
+[PMD: Break and return once at EOF]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240805182419.22239-1-philmd@linaro.org>
 ---
- hw/block/fdc-isa.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ide/pci.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
-index e43dc532af..796835f57b 100644
---- a/hw/block/fdc-isa.c
-+++ b/hw/block/fdc-isa.c
-@@ -147,6 +147,8 @@ static void isa_fdc_get_drive_max_chs(FloppyDriveType type, uint8_t *maxc,
-             *maxs = fdf->last_sect;
+diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+index 4675d079a1..a008fe7316 100644
+--- a/hw/ide/pci.c
++++ b/hw/ide/pci.c
+@@ -237,7 +237,7 @@ static int32_t bmdma_prepare_buf(const IDEDMA *dma, int32_t limit)
+             /* end of table (with a fail safe of one page) */
+             if (bm->cur_prd_last ||
+                 (bm->cur_addr - bm->addr) >= BMDMA_PAGE_SIZE) {
+-                return s->sg.size;
++                break;
+             }
+             pci_dma_read(pci_dev, bm->cur_addr, &prd, 8);
+             bm->cur_addr += 8;
+@@ -266,10 +266,7 @@ static int32_t bmdma_prepare_buf(const IDEDMA *dma, int32_t limit)
+             s->io_buffer_size += l;
          }
      }
-+    /* fd_formats must contain at least one entry per FloppyDriveType */
-+    assert(*maxc);
-     (*maxc)--;
+-
+-    qemu_sglist_destroy(&s->sg);
+-    s->io_buffer_size = 0;
+-    return -1;
++    return s->sg.size;
  }
  
+ /* return 0 if buffer completed */
 -- 
 2.45.2
 
