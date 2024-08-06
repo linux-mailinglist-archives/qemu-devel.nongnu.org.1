@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFF49491A0
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FFD9491B4
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:38:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbKKQ-0003A5-Km; Tue, 06 Aug 2024 09:34:18 -0400
+	id 1sbKO2-00016l-HB; Tue, 06 Aug 2024 09:38:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbKKO-00036O-Us
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:34:16 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sbKNy-0000vO-A8
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:37:58 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbKKM-0006P0-Mx
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:34:15 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5ba43b433beso672048a12.1
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 06:34:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sbKNw-0006tk-62
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 09:37:58 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-428243f928cso4621255e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 06:37:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722951253; x=1723556053; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=y+bzf7UTfWNtBZ5IHph82N7P6rbHPP38Abl59ip1cI4=;
- b=QM6MSZfKexWRGE44eIzoszSzMF8aOx3Ukr8tghzU9tLTPSuxwP1/5gc5vQ8Ilz4bH2
- VH96F8SOh8TexR+GGbVq53PsTjyHKluwcqbDdOVporKnOY6cL4Wz556fYHWISLWB9dR8
- jQel9qe5oSHNoNN+PBZcUtdY3MhbUpelToPNE0NffjZ1d3gNl5r8fqQSmJ2JhT4JrK3C
- m5ceLAjsVgLkviRElZY5W/09ojq3eV+L4eK4SXL1aHbqe0rRLEu7ZyxWF4rjNhlfl1jJ
- XFGm+q1cFjp6tEKh3Wc0HUVe5gc3RzzXtRxH5YZmmPofT63jaEoOWWbFR1PUaTW41EO0
- JPVg==
+ d=linaro.org; s=google; t=1722951474; x=1723556274; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=YE8yTeyPqFC5byBHVK4aIwCUqnqjwdXQAVSnebz3dhk=;
+ b=SFTPO53e/sfXKse4ry0u8PROW5i1/xh03TN6iEXUWOP/nTybGV68yg+R5nNZecHn7E
+ 7js4tOFwj5Cyh93hdxiItXfktRDbUKRwMe+V7KpPZ8RAUhvd7gJJuF+kMJ6YalBNio4H
+ haVjWBasDwnJKPKf1Co4vUgc1TwvfiRf07bsOZ/rsomjRQFNnk6NT+sY0VJ76n8JQTJk
+ QlqQbkcBODzUO2zVxzU0hf6KUHwqYWF+bv9bKQoRQWtZeHnHTggtWC/0oiZgwRDbqbLs
+ UPjg1/+lZASPLtR32effmxSUb4fOTLAoOkmdiTjGMVBwxXQk/6bbVXOy+SZrvIZh3azP
+ IvcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722951253; x=1723556053;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y+bzf7UTfWNtBZ5IHph82N7P6rbHPP38Abl59ip1cI4=;
- b=XK7e58q1iTIS2Ak29UBjiGeg9uq5sM5llxLg3/4VIvUJ3iZ5wNRr1JN+q52ZLHCQ7u
- cxU+TzMfQYvgx8nMWUrMyk8cjYKQ6MdxL+wMiPyDyBpmiOxiJ4bD0KEUqWdJP5bRl1cE
- /1ZUrGsOPs2YNqokKJLH6TcsncJwG7AViUIPjEeh8HdwcWHg1l4S+j7rL+TpeXoe6G3c
- EV/1vNTtqtKRFxihmZ0bW3zDvpSCkyYqIj0i8Cjh8aECFRa/PgTtXfjKEnIXyC/5HVkX
- bkLMuXJRSRH7qrDv5v75uKhNBXe98itXoj0g+ohWPQn7w8YiXC9fRoed5qFrvdDGqX9J
- jaDQ==
-X-Gm-Message-State: AOJu0YwHis3YWZxPgaNFZU6DsNtawouTAIxe4YLaQFJZN4FIAWma37pO
- VxPceXNQ/EMSXnVFrPAM8vSIiMJjV1VWnB3xPjvBY2fUw5mrlE3+HE+8ZUqYybQ=
-X-Google-Smtp-Source: AGHT+IHMV/nm3YeCdRs4k6HXgLCdrml7n5P4WREP4DDjanQFlvvyDqiZtDNa4jhF7r5ugCVxOwB39Q==
-X-Received: by 2002:aa7:c599:0:b0:5a2:2fa5:f145 with SMTP id
- 4fb4d7f45d1cf-5b7f57f3128mr11459406a12.25.1722951252880; 
- Tue, 06 Aug 2024 06:34:12 -0700 (PDT)
-Received: from [192.168.69.100] (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
- [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5b839610c77sm6010863a12.9.2024.08.06.06.34.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Aug 2024 06:34:12 -0700 (PDT)
-Message-ID: <48f48b08-c092-4ea2-bf07-f5377bed061a@linaro.org>
-Date: Tue, 6 Aug 2024 15:34:10 +0200
+ d=1e100.net; s=20230601; t=1722951474; x=1723556274;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YE8yTeyPqFC5byBHVK4aIwCUqnqjwdXQAVSnebz3dhk=;
+ b=LnjvzCGXFXdYdG9s87b7B+2NKnijIDzPyAiZGio2ykkfWJvAUFTwrDTz6e36a0E2Uz
+ 0Oj9GxYwvtGQPH5gkyUf11mm9hDiSrffcbIYrw5hPTHuMcdAafyb6tKGSqWUBP8fgl1e
+ tu3Tr81zmjcg2gpiwHp/+McUauANVu7XnfhyfvC4W6y1NUGTRdw5EiKzRXVLz/PkD5jG
+ q3tLsMol9dKxVjh6otk2yVD3U7BJ0acOOpqw7qt/9UgjdbqL44WHZ1cOnhc6rxN2xuVS
+ WkarUi9T+9588EhSPtZg1ZBj/+88pEK6SeO8meBLLLYKfX6X2/sC63GBOeO401BtgLox
+ C9RQ==
+X-Gm-Message-State: AOJu0YyoZlT+JCfgD37eGUVVnxUU8kLtsMALfByykeOIQeB7GZK031eh
+ akJmar6ajdMaaheZ6GdlerDihXzodiT7KOWfaB5EEsk0fKS6OGz9MnC65ACbmos=
+X-Google-Smtp-Source: AGHT+IEYYFAvJcV/3y3QlpV1cv5pZ+ucTs0ELOxE5qT5nLlwGzFRfonx5qEN7JHeOPZvIvR5v1iINg==
+X-Received: by 2002:a5d:4e91:0:b0:367:958e:9821 with SMTP id
+ ffacd0b85a97d-36bbc12d79emr10173718f8f.29.1722951473601; 
+ Tue, 06 Aug 2024 06:37:53 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36bbd074583sm13041389f8f.108.2024.08.06.06.37.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Aug 2024 06:37:52 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 9EFA65F77B;
+ Tue,  6 Aug 2024 14:37:51 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 1/3] hw/display/virtio-gpu: Improve "opengl is not
+ available" error message
+In-Reply-To: <20240731154136.3494621-2-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Wed, 31 Jul 2024 16:41:34 +0100")
+References: <20240731154136.3494621-1-peter.maydell@linaro.org>
+ <20240731154136.3494621-2-peter.maydell@linaro.org>
+Date: Tue, 06 Aug 2024 14:37:51 +0100
+Message-ID: <875xsdsrf4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] target/ppc: Fix mtDPDES targeting SMT siblings
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20240806131318.275109-1-npiggin@gmail.com>
- <20240806131318.275109-4-npiggin@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240806131318.275109-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,17 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/24 15:13, Nicholas Piggin wrote:
-> A typo in the loop over SMT threads to set irq level for doorbells
-> when storing to DPDES meant everything was aimed at the CPU executing
-> the instruction.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   target/ppc/misc_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Fixes: d24e80b2ae ("target/ppc: Add msgsnd/p and DPDES SMT support")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> If the user tries to use the virtio-gpu-gl device but the display
+> backend doesn't have OpenGL support enabled, we currently print a
+> rather uninformative error message:
+>
+> $ qemu-system-aarch64 -M virt -device virtio-gpu-gl
+> qemu-system-aarch64: -device virtio-gpu-gl: opengl is not available
+>
+> Since OpenGL is not enabled on display frontends by default, users
+> are quite likely to run into this. Improve the error message to
+> be more specific and to suggest to the user a path forward.
+>
+> Note that the case of "user tried to enable OpenGL but the display
+> backend doesn't handle it" is caught elsewhere first, so we can
+> assume that isn't the problem:
+>
+> $ qemu-system-aarch64 -M virt -device virtio-gpu-gl -display curses,gl=3D=
+on
+> qemu-system-aarch64: OpenGL is not supported by the display
+>
+> (Use of error_append_hint() requires us to add an ERRP_GUARD() to
+> the function, as noted in include/qapi/error.h.)
+>
+> With this commit we now produce the hopefully more helpful error:
+> $ ./build/x86/qemu-system-aarch64 -M virt -device virtio-gpu-gl
+> qemu-system-aarch64: -device virtio-gpu-gl: The display backend does not =
+have OpenGL support enabled
+> It can be enabled with '-display BACKEND,gl=3Don' where BACKEND is the na=
+me of the display backend to use.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2443
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
