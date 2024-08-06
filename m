@@ -2,69 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD09594954C
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 18:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3430894956A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 18:19:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbMld-0000Ui-DS; Tue, 06 Aug 2024 12:10:34 -0400
+	id 1sbMtL-0003VF-QK; Tue, 06 Aug 2024 12:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1sbMlO-0008GT-TF
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 12:10:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sbMtI-0003Tz-SF
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 12:18:28 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1sbMlL-000366-O5
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 12:10:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1722960609;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=C2WMu9lnCNzsVzNnuFMls45e0qsZBUGL2IWt/5pGpaw=;
- b=jLGurV8piMzeK2aUHx1EtPTbTMNpvf42Av8fka+6+btcg/CtFn6ZjDkSSOouxACXjZFzQD
- 6Sv9mvc2bVVx5Jy/E+5JW/yWYuhSbb6fFI4VbnX33skqklBz4MwJ8jltMs8uABz64vXfJK
- 8H2dMG2stFEPsFUeYbW2/TxzJwpsVUI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-KYGQfRnWOSGsB8rA0e2dLA-1; Tue,
- 06 Aug 2024 12:08:08 -0400
-X-MC-Unique: KYGQfRnWOSGsB8rA0e2dLA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 486B11955D52; Tue,  6 Aug 2024 16:08:07 +0000 (UTC)
-Received: from rh-jmarcin.brq.redhat.com (unknown [10.43.2.64])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ED74E1955D42; Tue,  6 Aug 2024 16:08:05 +0000 (UTC)
-From: Juraj Marcin <jmarcin@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 4/4] virtio-mem: Add support for suspend+wake-up with plugged
- memory
-Date: Tue,  6 Aug 2024 18:07:54 +0200
-Message-ID: <20240806160756.182524-5-jmarcin@redhat.com>
-In-Reply-To: <20240806160756.182524-1-jmarcin@redhat.com>
-References: <20240806160756.182524-1-jmarcin@redhat.com>
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sbMtG-0004Yy-QS
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 12:18:28 -0400
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 476B2jl5014253;
+ Tue, 6 Aug 2024 16:18:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ EPhkMMQuMfMhVnAOgDFn5cyTIJzRxB3jdN26T56A0/M=; b=QQXlFlmWXgLqt0KZ
+ uYgfuVowhRXOuUO/Qk+2IAdZNmKagAG0GkxocuL1lwz7yLXAmXgByUER0nGQd7GF
+ 0BWY6G89fzGI171ujhb13GXKJDn0Jrk/7fdgzyPwl4OYdw5i1NDUR+FYb9XQ/vhc
+ oYdbZZEOqaBX9cE7pTD2J5ai8EqwHemu9YfHJtdatNJXNmCWxr4B7sRFbieMhhK6
+ bYozMM7ECARjxrl70HRusHXEJ+32TnFkXKh3j+90gKta6DUkF4hSs4KU8++DLx6q
+ 0Z+RqFnKdZmS9usj2tvGTOSjKnQPl7bv69vfRKWI/wj4ENFXykT4xIpO/lSo0IMV
+ h0h2iQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sdu97w29-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Aug 2024 16:18:20 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id
+ 476GIJRC014229
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 6 Aug 2024 16:18:19 GMT
+Received: from [10.110.63.1] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 6 Aug 2024
+ 09:18:18 -0700
+Message-ID: <81fc7759-0312-439c-98a3-e5cf582cdf1c@quicinc.com>
+Date: Tue, 6 Aug 2024 11:18:17 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/hexagon: don't look for static glib
+To: Alyssa Ross <hi@alyssa.is>, Brian Cain <bcain@quicinc.com>
+CC: <qemu-devel@nongnu.org>
+References: <20240805104921.4035256-1-hi@alyssa.is>
+Content-Language: en-US
+From: Brian Cain <quic_bcain@quicinc.com>
+In-Reply-To: <20240805104921.4035256-1-hi@alyssa.is>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: hIcMJ77Xm0GB977m1iW_MSSMrlVNcRAt
+X-Proofpoint-GUID: hIcMJ77Xm0GB977m1iW_MSSMrlVNcRAt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-06_12,2024-08-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
+ clxscore=1015 phishscore=0 spamscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408060114
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_bcain@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,65 +100,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before, the virtio-mem device would unplug all the memory with any reset
-of the device, including during the wake-up of the guest from a
-suspended state. Due to this, the virtio-mem driver in the Linux kernel
-disallowed suspend-to-ram requests in the guest when the
-VIRTIO_MEM_F_PERSISTENT_SUSPEND feature is not exposed by QEMU.
 
-This patch adds the code to skip the reset on wake-up and exposes
-theVIRTIO_MEM_F_PERSISTENT_SUSPEND feature to the guest kernel driver
-when suspending is possible in QEMU (currently only x86).
+On 8/5/2024 5:49 AM, Alyssa Ross wrote:
+> When cross compiling QEMU configured with --static, I've been getting
+> configure errors like the following:
+>
+>      Build-time dependency glib-2.0 found: NO
+>
+>      ../target/hexagon/meson.build:303:15: ERROR: Dependency lookup for glib-2.0 with method 'pkgconfig' failed: Could not generate libs for glib-2.0:
+>      Package libpcre2-8 was not found in the pkg-config search path.
+>      Perhaps you should add the directory containing `libpcre2-8.pc'
+>      to the PKG_CONFIG_PATH environment variable
+>      Package 'libpcre2-8', required by 'glib-2.0', not found
+>
+> This happens because --static sets the prefer_static Meson option, but
+> my build machine doesn't have a static libpcre2.  I don't think it
+> makes sense to insist that native dependencies are static, just
+> because I want the non-native QEMU binaries to be static.
+>
+> Signed-off-by: Alyssa Ross <hi@alyssa.is>
+> ---
 
-Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
----
- hw/virtio/virtio-mem.c | 10 ++++++++++
- hw/virtio/virtio-qmp.c |  3 +++
- 2 files changed, 13 insertions(+)
+Reviewed-by: Brian Cain <bcain@quicinc.com>
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 4f2fd7dc2e..d373eb0028 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -883,6 +883,9 @@ static uint64_t virtio_mem_get_features(VirtIODevice *vdev, uint64_t features,
-     if (vmem->unplugged_inaccessible == ON_OFF_AUTO_ON) {
-         virtio_add_feature(&features, VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE);
-     }
-+    if (qemu_wakeup_suspend_enabled()) {
-+        virtio_add_feature(&features, VIRTIO_MEM_F_PERSISTENT_SUSPEND);
-+    }
-     return features;
- }
- 
-@@ -1841,6 +1844,13 @@ static void virtio_mem_system_reset_hold(Object *obj, ResetType type)
- {
-     VirtIOMEM *vmem = VIRTIO_MEM(obj);
- 
-+    /*
-+     * When waking up from standby/suspend-to-ram, do not unplug any memory.
-+     */
-+    if (type == RESET_TYPE_WAKEUP) {
-+        return;
-+    }
-+
-     /*
-      * During usual resets, we will unplug all memory and shrink the usable
-      * region size. This is, however, not possible in all scenarios. Then,
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 1dd96ed20f..cccc6fe761 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -450,6 +450,9 @@ static const qmp_virtio_feature_map_t virtio_mem_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE, \
-             "VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE: Unplugged memory cannot be "
-             "accessed"),
-+    FEATURE_ENTRY(VIRTIO_MEM_F_PERSISTENT_SUSPEND, \
-+            "VIRTIO_MEM_F_PERSISTENT_SUSPND: Plugged memory will remain "
-+            "plugged when suspending+resuming"),
-     { -1, "" }
- };
- #endif
--- 
-2.45.2
 
+>   target/hexagon/meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
+> index b0b253aa6b..9ea1f4fc59 100644
+> --- a/target/hexagon/meson.build
+> +++ b/target/hexagon/meson.build
+> @@ -300,7 +300,7 @@ if idef_parser_enabled and 'hexagon-linux-user' in target_dirs
+>           arguments: ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@']
+>       )
+>   
+> -    glib_dep = dependency('glib-2.0', native: true)
+> +    glib_dep = dependency('glib-2.0', native: true, static: false)
+>   
+>       idef_parser = executable(
+>           'idef-parser',
+>
+> base-commit: f9851d2ffef59b3a7f39513469263ab3b019480f
 
