@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA1E948FC9
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 14:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2527948FDB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Aug 2024 15:01:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbJit-0002rV-AC; Tue, 06 Aug 2024 08:55:41 -0400
+	id 1sbJkF-0001Jv-Ez; Tue, 06 Aug 2024 08:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhu-0001Be-8P
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:31 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJi0-0001fi-7B
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:38 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhs-0000OS-EL
- for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:29 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a7a9a7af0d0so56649466b.3
- for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbJhy-0000P5-BN
+ for qemu-devel@nongnu.org; Tue, 06 Aug 2024 08:54:35 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a7a9cf7d3f3so77308166b.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Aug 2024 05:54:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1722948866; x=1723553666; darn=nongnu.org;
+ d=linaro.org; s=google; t=1722948872; x=1723553672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lTDAhFeBz9GijM5OI6/yGi13UeAA7K13kn7Zuxhnv+U=;
- b=NPNVgoVsqnWR2wGTYEo/+XHOwqUPR3N8M418/RJfFh5xb6Oa+gJa5OQol9pg3IfO+t
- 2DSpRtTdGFKTdEJW8lxAb9D74M9RzcSRllFM0SE+Pre68K3nUNhi23N+WQ+CkF/tjIMv
- tUtpkgySAQNa07F8ha9/4bTLSW/vnYPQUvUQZnUIuW1XSfjWyvBdb+Gk8VL0WnUVzcsP
- XbERr7kiJdmQIySGXINcFhFMCv3mI5yfrVkpuUjeytx8IjC9IxbkZvPEUCCIdjl+qAHZ
- Ck7zlrnF/tb5Lv9oR0sQVZZ8vQfH7w31iD1eF8Uy9+BxVMOO7zJ1QG5B8y+qrn14iSp/
- upFg==
+ bh=ypdbeuI3/3zkqxrrQlfqtvt5UnR+ONpIVnv+X7Sc7F4=;
+ b=UOwVR5EUu5a2N+T0yWbOTY3Z1t0/daSYxvlHH6vbtNMi24zwRz1UrQYquzrRCv2zi1
+ TjZicPov6itbsZ1JowtklgUZnDVuMeMw7S5cYQMIMcUpa8RHpiRACxpRhVuoBgZicRza
+ Mzxkno0EKv48aTBXyo5iCXvQVruEOawD1RYsHWLshOmnSaZO+ObM+KeZn2No3FfnE6g9
+ pHiVFo6WuI9y5+9ZOghfkZHqQsi01SPoeJgmdiV7TqZG8NabflJsrcJVSdNRr+vnP56P
+ DumRxeP5jBaBW8b2dm5YGNnVDbFiP2tEbkqY1kG2dBKmp1HQfjFA6JRkEyfRZZ1qeB9B
+ MFcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722948866; x=1723553666;
+ d=1e100.net; s=20230601; t=1722948872; x=1723553672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lTDAhFeBz9GijM5OI6/yGi13UeAA7K13kn7Zuxhnv+U=;
- b=Tm5bjljQq/O+hDD0zvyXKBf9Ygr6u8/j23INt+3pCDVCfB25Ft+PcOvjTl6X1xWaur
- RwOOBwuIXw0auVglmo7/nUZ9LNKw7uedXfOv0UxY9cFrBLXVp+SZvPAbjZdKDiGDquAp
- 4MuGoQs6jhubYslLoaGAs0/chfrSOy8Fg/y0bSfFjrz1Km5alfsPwRHiZDEOShu0YPyD
- Gamj//18+x5RkEKMpBgS+uZFHuQ4hKcHbPrmPjYvt+peYTs/RYCTOE+78bydAicCdczR
- M4S/VxbPOfXDhCSgKR2KOyVGRCkbz55h8Bp9UgKfN+mQN7haKU+3R8orpcCQWdGYFNo8
- NpZg==
-X-Gm-Message-State: AOJu0Yw5u6D7fsnpbFIeo/HMASJNJH1bQjGwTpqFfJOE55Yh8MmnT21d
- Vdeo03krPuRpIcDxbJUqJmGvWZyPR7Stb3tHebmJmMPtYHKEpi3U3hey+QG6Kz+5iMTA6v+Fh7L
- M
-X-Google-Smtp-Source: AGHT+IGomE15Wo24DJ7lRF9r2AdwMtkLdlxkaxrrJGCGSbJvrkwY5lYMVoVzNmiweJgvYZedJRXyAg==
-X-Received: by 2002:a17:907:7ea4:b0:a7a:a06b:eebf with SMTP id
- a640c23a62f3a-a7dc4e86892mr989659866b.22.1722948866623; 
- Tue, 06 Aug 2024 05:54:26 -0700 (PDT)
+ bh=ypdbeuI3/3zkqxrrQlfqtvt5UnR+ONpIVnv+X7Sc7F4=;
+ b=EOnVbjSfbHEEhqOm/6g6OFK5FANXzKi41e/M9vcTHiREygpmd3VB09Qfq/OHSAHJai
+ NtJGQ6Hv+Wtd4PpZyyWhtcoW1tdxTinDRfAtJesmeiFzsko/WHgtk8wuIykmEFWEqMnj
+ qfT3UlcHf/3JLuyisrXaktcMIO8K3TnV7cHdZO/MM+tF0UmBs0h9BtgEskwrKHavJsAY
+ 3XVClVEoNwqBvDWmGot9+1aBkXpooj6RW0A0My/1EDqCAf8FEEOGq0tfv9qfIMl/3dyk
+ mFhqZgV25s/mICdFgvR/yk18rEZuwdhF7vdPSUw7vaLgvAhDmdEnS3Btes+WOhR92QXs
+ mhuQ==
+X-Gm-Message-State: AOJu0Yxieg7tgF1zqp6nLX2cyaWIoN6q4PDgw4G70hv7IEF75a38pgKA
+ 5Zpr36Fid7Xf42H8dGUUO7AC9K82/lIdCTV5J4ElE7XXAOim90CxvSzfddc1ZtsflHME67qkWUK
+ V
+X-Google-Smtp-Source: AGHT+IGL/4huUwzcaLaq6PgwpIBAIzK6jpN8ZZXtAH1L3lKCQWPQ2lA7CiO9A/Y6o0KABCklX7vuug==
+X-Received: by 2002:a17:907:3e1a:b0:a75:2781:a5c4 with SMTP id
+ a640c23a62f3a-a7dc4ea9ebdmr1048774766b.29.1722948872256; 
+ Tue, 06 Aug 2024 05:54:32 -0700 (PDT)
 Received: from m1x-phil.lan (cor91-h02-176-184-30-206.dsl.sta.abo.bbox.fr.
  [176.184.30.206]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7de2d923ccsm423738866b.79.2024.08.06.05.54.25
+ a640c23a62f3a-a7dc9c0c0d5sm545644666b.48.2024.08.06.05.54.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Aug 2024 05:54:26 -0700 (PDT)
+ Tue, 06 Aug 2024 05:54:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 24/28] ui/console: Note in '-display help' that some backends
- support suboptions
-Date: Tue,  6 Aug 2024 14:51:52 +0200
-Message-ID: <20240806125157.91185-25-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 25/28] hw/pci-host/gt64120: Set PCI base address register write
+ mask
+Date: Tue,  6 Aug 2024 14:51:53 +0200
+Message-ID: <20240806125157.91185-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240806125157.91185-1-philmd@linaro.org>
 References: <20240806125157.91185-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,51 +93,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+When booting Linux we see:
 
-Currently '-display help' only prints the available backends. Some
-of those backends support suboptions (e.g. '-display gtk,gl=on').
-Mention that in the help output, and point the user to where they
-might be able to find more information about the suboptions.
-The new output looks like this:
+  PCI host bridge to bus 0000:00
+  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x1c: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x20: invalid BAR (can't size)
+  pci 0000:00:00.0: [Firmware Bug]: reg 0x24: invalid BAR (can't size)
 
-  $ qemu-system-aarch64 -display help
-  Available display backend types:
-  none
-  gtk
-  sdl
-  egl-headless
-  curses
-  spice-app
-  dbus
+This is due to missing base address register write mask.
+Add it to get:
 
-  Some display backends support suboptions, which can be set with
-     -display backend,option=value,option=value...
-  For a short list of the suboptions for each display, see the top-level -help output; more detail is in the documentation.
+  PCI host bridge to bus 0000:00
+  pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+  pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+  pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+  pci 0000:00:00.0: [11ab:4620] type 00 class 0x060000
+  pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00000fff pref]
+  pci 0000:00:00.0: reg 0x14: [mem 0x01000000-0x01000fff pref]
+  pci 0000:00:00.0: reg 0x18: [mem 0x1c000000-0x1c000fff]
+  pci 0000:00:00.0: reg 0x1c: [mem 0x1f000000-0x1f000fff]
+  pci 0000:00:00.0: reg 0x20: [mem 0x1be00000-0x1be00fff]
+  pci 0000:00:00.0: reg 0x24: [io  0x14000000-0x14000fff]
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20240731154136.3494621-4-peter.maydell@linaro.org>
+Since this device is only used by MIPS machines which aren't
+versioned, we don't need to update migration compat machinery.
+
+Mention the datasheet referenced. Remove the "Malta assumptions
+ahead" comment since the reset values from the datasheet are used.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Message-Id: <20240802213122.86852-2-philmd@linaro.org>
 ---
- ui/console.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/pci-host/gt64120.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/ui/console.c b/ui/console.c
-index e8f0083af7..105a0e2c70 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1632,4 +1632,9 @@ void qemu_display_help(void)
-             printf("%s\n",  DisplayType_str(dpys[idx]->type));
-         }
-     }
-+    printf("\n"
-+           "Some display backends support suboptions, which can be set with\n"
-+           "   -display backend,option=value,option=value...\n"
-+           "For a short list of the suboptions for each display, see the "
-+           "top-level -help output; more detail is in the documentation.\n");
+diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
+index e02efc9e2e..573d2619ee 100644
+--- a/hw/pci-host/gt64120.c
++++ b/hw/pci-host/gt64120.c
+@@ -1,6 +1,8 @@
+ /*
+  * QEMU GT64120 PCI host
+  *
++ * (Datasheet GT-64120 Rev 1.4 from Sep 14, 1999)
++ *
+  * Copyright (c) 2006,2007 Aurelien Jarno
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+@@ -1213,17 +1215,27 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
+ 
+ static void gt64120_pci_realize(PCIDevice *d, Error **errp)
+ {
+-    /* FIXME: Malta specific hw assumptions ahead */
++    /* Values from chapter 17.16 "PCI Configuration" */
++
+     pci_set_word(d->config + PCI_COMMAND, 0);
+     pci_set_word(d->config + PCI_STATUS,
+                  PCI_STATUS_FAST_BACK | PCI_STATUS_DEVSEL_MEDIUM);
+     pci_config_set_prog_interface(d->config, 0);
++
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_0, 0xfffff008); /* SCS[1:0] */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_1, 0xfffff008); /* SCS[3:2] */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_2, 0xfffff008); /* CS[2:0] */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_3, 0xfffff008); /* CS[3], BootCS */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_4, 0xfffff000); /* ISD MMIO */
++    pci_set_long(d->wmask + PCI_BASE_ADDRESS_5, 0xfffff001); /* ISD I/O */
++
+     pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x00000008);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x01000008);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x1c000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x1f000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_4, 0x14000000);
+     pci_set_long(d->config + PCI_BASE_ADDRESS_5, 0x14000001);
++
+     pci_set_byte(d->config + 0x3d, 0x01);
  }
+ 
 -- 
 2.45.2
 
