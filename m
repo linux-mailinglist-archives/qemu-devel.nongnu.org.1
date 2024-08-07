@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DC994ACCD
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 17:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D9794AD46
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 17:46:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbiWK-0008RS-Om; Wed, 07 Aug 2024 11:24:12 -0400
+	id 1sbird-0004J5-P7; Wed, 07 Aug 2024 11:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sbiWJ-0008Qy-5N
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 11:24:11 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sbiWH-0003al-9f
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 11:24:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723044249; x=1754580249;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1C4N7azzbwbfTVKCZSe9FZT0areAlLy1fUB37HjW0wA=;
- b=ndddy7CbO0f+Bugf6y3EHiSg95rDfLlftVAdsvhwCZoEtkFXxqgIOrkm
- NOO4dhcytWC/2RLsv90p7txGkH+yoJvYqBa+9DgWjednT7mKzLcOswHaj
- L5EwKztMZZBGpmR3R0z8Oom8AKCCknwDjqJKnk/e8wIAqfE+li5suvmwJ
- u6COP5a4DSRjKhkIYZ7BEv1qU16IVavKFhKCiecbshJLNWgTcJnrBzs5m
- X6cyaFO6Mj7m/ONmcFggpcYz8dEn0upkv0lVCr/2oXQ9/FJWLM58tDvLe
- 4myiCFRr6JS+YaWSFvphNYsRw6mIldtEWJV2CAZwGYJRRAzVAKjVR6E1M w==;
-X-CSE-ConnectionGUID: HfknPZS4TamnRJV2Ncbtpg==
-X-CSE-MsgGUID: 1H2dT+COQ0a4I8Yv4HQI9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="12903062"
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="12903062"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2024 08:24:05 -0700
-X-CSE-ConnectionGUID: 4cMn+c+jSGqtQI20IKgudA==
-X-CSE-MsgGUID: qtql8pdFTQOatiq5fY0XqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="61828536"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 07 Aug 2024 08:24:04 -0700
-Date: Wed, 7 Aug 2024 23:39:53 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Xin Li (Intel)" <xin@zytor.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
- lei4.wang@intel.com, xin3.li@intel.com
-Subject: Re: [PATCH v1 3/3] target/i386: Raise the highest index value used
- for any VMCS encoding
-Message-ID: <ZrOVSXX2uvezT3J1@intel.com>
-References: <20240807081813.735158-1-xin@zytor.com>
- <20240807081813.735158-4-xin@zytor.com>
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1sbirW-0004IS-Od
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 11:46:06 -0400
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1sbirU-0006Qi-8h
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 11:46:06 -0400
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-2689f749702so21104fac.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 08:44:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1723045440; x=1723650240;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z2wwnQZAZTutW1/5c+dMVshvT+BgeY8/AGOPZebu2DA=;
+ b=h0Ry+78NCxsWsxroFycMrNGRSPHHHpW3IldrkIhicQmohKOEL98smqcUmfkFMACAEP
+ r4a2qK1n7D9cNJObbG3i1+J70MQW1L9sAb7Bz20NpwI4oXhB0OV1lUKlHcamGJrqSEIj
+ tNhboxs0yy5Bi5LjkYuh8oCIHZvfSNC0Yje94Ic7Wxw7xtShDSSp7v7C6e5mnY8k2+Lr
+ SWL/vFjrtEKPAy4sRRqled5WRctL5MjpDpSWwNJukoZZTwNRMvvCuf3y+JW2rj8Y7KoJ
+ MaurDWE4pg3cKzO57QM6dAT+Xk5IKch4Lvhx7Ez43gxjGPLFmP+V/Ctsq8nwDEpmbk5u
+ PCaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723045440; x=1723650240;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Z2wwnQZAZTutW1/5c+dMVshvT+BgeY8/AGOPZebu2DA=;
+ b=kWnMXbtseJLAEXzno3JbANrpMxp2YKbZqAAFRYXdhnrWVnD2iLlZkZiusZVpt2QXIU
+ s4m1lCWFOAxRRHLb/9YxKdemj6VTNThyrFgl70KnFpvf887ENyfSD07PTMkAp0LRSXBS
+ CdDmlNO8fEPTEVXY0IADs1NSgWX+JDYNEvqQ8uVZ+6ZSR0qQmiX5E+SPt3Ik2+2Q3RDg
+ EnlZkDzdBJNFzi83KVdZ1X8It6zn3uSERF0Oyqxh0/rwAPGmCvHr961AIQwfTJpBdyfS
+ OLSvI53AflAV0U16cw6mCHurx/tek/iDHtse5ejnmd5vS6cBTJ33kaLbcoByPxwnQeze
+ 1SVQ==
+X-Gm-Message-State: AOJu0YyvL83DtRLeqgHULe1/D89XSEeDd6WJNxpP03z9uvQ+qdyFG3TV
+ lDuwCavflbefLB7w4puyHel3AxfNNtCGy2YoUlquxepnwp1Bj+IVYbepHBCaNTBvMAgJfdcNWMX
+ OR3fsB7NrU7V0FIsyfq/PmXwVah/LX7DsVtPmbg==
+X-Google-Smtp-Source: AGHT+IHecYjktdhWQx0npsv1Cry93lfgxyNUBojMh3eK5bj/2jdLO0PWVkoChn59iHIRd8XUgl/SO/gyrhuHGYDTMYk=
+X-Received: by 2002:a05:6870:f14e:b0:260:f43e:7d89 with SMTP id
+ 586e51a60fabf-26891a80a57mr24602241fac.2.1723045439511; Wed, 07 Aug 2024
+ 08:43:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240807081813.735158-4-xin@zytor.com>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <89555383887355d848c1005bfde1641bcddff024.1721821071.git.yong.huang@smartx.com>
+ <ZqlGjaleFHdnJUZy@x1n>
+ <CAK9dgmbkKPDTYv0i1jpASgTR5iN+_4+DrZUxo5VxQF3NdZewaQ@mail.gmail.com>
+ <ZrJTDhyRdjEL9VTV@x1n>
+ <CAK9dgmYcW7C9i+KGMH1pN_QRWy_A1ZGXixi49Unt6VhaP6DVzw@mail.gmail.com>
+ <ZrNvltexbLK8yxTm@x1n>
+In-Reply-To: <ZrNvltexbLK8yxTm@x1n>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Wed, 7 Aug 2024 23:43:43 +0800
+Message-ID: <CAK9dgmbWf19X_2zWYG7w4b7mzDncCw0jBEVG0EQ8k003AQ_dqg@mail.gmail.com>
+Subject: Re: [PATCH] migration: Refine the convergence detection
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Content-Type: multipart/alternative; boundary="0000000000005abb0d061f19c745"
+Received-SPF: none client-ip=2001:4860:4864:20::30;
+ envelope-from=yong.huang@smartx.com; helo=mail-oa1-x30.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,88 +90,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xin,
+--0000000000005abb0d061f19c745
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 07, 2024 at 01:18:12AM -0700, Xin Li (Intel) wrote:
-> Date: Wed,  7 Aug 2024 01:18:12 -0700
-> From: "Xin Li (Intel)" <xin@zytor.com>
-> Subject: [PATCH v1 3/3] target/i386: Raise the highest index value used for
->  any VMCS encoding
-> X-Mailer: git-send-email 2.45.2
-> 
-> From: Lei Wang <lei4.wang@intel.com>
-> 
-> Because the index value of the VMCS field encoding of FRED injected-event
-> data (one of the newly added VMCS fields for FRED transitions), 0x52, is
-> larger than any existing index value, raise the highest index value used
-> for any VMCS encoding to 0x52.
-> 
-> Because the index value of the VMCS field encoding of Secondary VM-exit
-> controls, 0x44, is larger than any existing index value, raise the highest
-> index value used for any VMCS encoding to 0x44.
-> 
-> Co-developed-by: Xin Li <xin3.li@intel.com>
-> Signed-off-by: Xin Li <xin3.li@intel.com>
-> Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> ---
->  target/i386/cpu.h     | 1 +
->  target/i386/kvm/kvm.c | 9 ++++++++-
->  2 files changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 118ef9cb68..62324c3dcd 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1186,6 +1186,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->  #define VMX_VM_EXIT_PT_CONCEAL_PIP                  0x01000000
->  #define VMX_VM_EXIT_CLEAR_IA32_RTIT_CTL             0x02000000
->  #define VMX_VM_EXIT_LOAD_IA32_PKRS                  0x20000000
-> +#define VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS     0x80000000
+On Wed, Aug 7, 2024 at 8:59=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
 
-It's necessary to add the corresponding feat_name to FEAT_VMX_EXIT_CTLS
-feat word array, which could help filter the user's settings in the -cpu.
+> On Wed, Aug 07, 2024 at 02:46:29PM +0800, Yong Huang wrote:
+> > I still think dropping the dirty_rate_high_cnt is a refinement. If
+> migration
+> > has a precise detection of convergence, what do you think of it?
+>
+> Maybe; I don't think I thought through those yet..  If so that'll make
+> sense to be based on the sync change first, then we can have a parameter
+> (doesn't sound like a cap on its own) for keeping the old auto-converge,
+> and pile new logics there.
+>
 
->  #define VMX_VM_ENTRY_LOAD_DEBUG_CONTROLS            0x00000004
->  #define VMX_VM_ENTRY_IA32E_MODE                     0x00000200
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 31f149c990..fac5990274 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -3694,7 +3694,14 @@ static void kvm_msr_entry_add_vmx(X86CPU *cpu, FeatureWordArray f)
->      kvm_msr_entry_add(cpu, MSR_IA32_VMX_CR4_FIXED0,
->                        CR4_VMXE_MASK);
->  
-> -    if (f[FEAT_VMX_SECONDARY_CTLS] & VMX_SECONDARY_EXEC_TSC_SCALING) {
-> +    if (f[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
-> +        /* FRED injected-event data (0x2052).  */
-> +        kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x52);
-
-HMM, I have the questions when I check the FRED spec.
-
-Section 9.3.4 said, (for injected-event data) "This field has uses the
-encoding pair 2052H/2053H."
-
-So why adjust the highest index to 0x52 other than 0x53?
-
-And it seems FRED introduces another field "original-event data"
-(0x2404/0x2405), why not consider this field here as well?
-
-> +    } else if (f[FEAT_VMX_EXIT_CTLS] &
-> +               VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS) {
-> +        /* Secondary VM-exit controls (0x2044).  */
-> +        kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x44);
-> +    } else if (f[FEAT_VMX_SECONDARY_CTLS] & VMX_SECONDARY_EXEC_TSC_SCALING) {
->          /* TSC multiplier (0x2032).  */
->          kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x32);
->      } else {
-
-Maybe we could adjust the index in a cleaner way like
-x86_cpu_adjust_level(), but the current case-by-case is ok for me as
-well.
-
-Regards,
-Zhao
+Get it, I'll try it this way and see how it works
 
 
+>
+> Thanks,
+>
+> --
+> Peter Xu
+>
+>
+
+--=20
+Best regards
+
+--0000000000005abb0d061f19c745
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 7, 202=
+4 at 8:59=E2=80=AFPM Peter Xu &lt;<a href=3D"mailto:peterx@redhat.com">pete=
+rx@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:soli=
+d;border-left-color:rgb(204,204,204);padding-left:1ex">On Wed, Aug 07, 2024=
+ at 02:46:29PM +0800, Yong Huang wrote:<br>
+&gt; I still think dropping the dirty_rate_high_cnt is a refinement. If mig=
+ration<br>
+&gt; has a precise detection of convergence, what do you think of it?<br>
+<br>
+Maybe; I don&#39;t think I thought through those yet..=C2=A0 If so that&#39=
+;ll make<br>
+sense to be based on the sync change first, then we can have a parameter<br=
+>
+(doesn&#39;t sound like a cap on its own) for keeping the old auto-converge=
+,<br>
+and pile new logics there.<br></blockquote><div><br></div><div><div style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=3D"gmail_defaul=
+t">Get it, I&#39;ll try it this way and see how it works</div></div><div>=
+=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left-width:1px;border-left-style:solid;border-left-color:rgb(20=
+4,204,204);padding-left:1ex">
+<br>
+Thanks,<br>
+<br>
+-- <br>
+Peter Xu<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--0000000000005abb0d061f19c745--
 
