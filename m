@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A5E94B32F
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 00:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3C794B34C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 00:59:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbpKY-0000xd-9S; Wed, 07 Aug 2024 18:40:30 -0400
+	id 1sbpbY-0007LB-7R; Wed, 07 Aug 2024 18:58:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sbpKS-0000uI-DV
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 18:40:24 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1sbpbW-0007JR-2H
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 18:58:02 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sbpKQ-0007kv-Hn
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 18:40:24 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1ff3d5c6e9eso3698355ad.1
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 15:40:21 -0700 (PDT)
+ id 1sbpbS-0001KC-Ri
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 18:58:01 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1fb3b7d0d56so2821595ad.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 15:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723070420; x=1723675220; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723071477; x=1723676277; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=o2V16sMFB1RaRMBD2wL/6AH5VRh1gdvosaHId079BLw=;
- b=cK0ScIAaI4HlGvf1lAzV3t741OwsYPzRjUp+KNLlSV2lrXxj3Q3Yj9jOmC1D9/fkeX
- 6NwG90UwKpKyHJBtGhFXMHCnmnAWKg3gsXcm+ndOVrSftyo+iVdmpUK8g7DkxzPce0AB
- OKpoihidGOSNZd6x98mp7OPhyYDDQawiYS6uNQ/1utDzwlmHQAjKLcjDwdCTyVaszudw
- 2bkACKYxLqD8FBx6nXLRYtJRbiMXrNS0WYWEaHPkWzWbftWw6k+WXMNPDsQUWfdwj3aD
- w0hptA+tqkEFo4A73dHdQKvs1SH6HdT4KOFmW/uMNqsbqxF3Xuk2yaijTPzj2JLtFLuu
- kGTA==
+ bh=W9Gpp5EGoJF312BO83kqM/H8vKDu3Q7UhGmUwUXlac0=;
+ b=FGwWNvVhhkQwQ6h4CnwPrzNWWEscL1XTIV/6fRYNmOCeb/Z7uqmBC50szXKrnOqkfk
+ vYhITA8liOk5d2syCVuzGEeMXNYAnoytC+9V4FLcNK7+DUlVWJvJA+F0j7rdkIBNPIj3
+ /pXGFzFsA3dYEv/BXOH0x+H29r06IJE0amp5VdcTAC72ZZmdF2SlfJOsjcNCqM3XRjMp
+ dkv71SbIWIdKVsoHIjmhgbj6opDSKX8luz4oYyXlG2A1Y1t3BZXy6VRhr2WZUbMjbNq+
+ EkaOHDjScj8BYB85rCoIwjg8anmddtRKTm/ECuOeIVi7It/pSL6LFq45Lv390nhabCY5
+ otMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723070420; x=1723675220;
+ d=1e100.net; s=20230601; t=1723071477; x=1723676277;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o2V16sMFB1RaRMBD2wL/6AH5VRh1gdvosaHId079BLw=;
- b=mM+UCeg0ScdwrUbHJJMKM/7mhZLJJE/KzyQlQgHhIGeerW7yfRFUKK/mbF1sTDoce9
- OLY70Em71B7m/AVu0rP/DHHz3xwbkXjXhvH1kCFAw6n8u4PekWt9ay2v31xGbPthhUaz
- AilVYWc7A3jyumVqPoa/aN9a/cb2/ZKUWBeTvPVif+RV7C3i0qSkEn7bijA7ArK37MVe
- Ljr/WZ7C0yrQMl52snEdWdaxzWd8wo3q6oIijc/vCB289r1jgxAL8rcN8DCsL/WCEiJ/
- YGRBBrbF19YURufVpDASbuVEmVDZsNVctKUH1wyfECimgKALf+CeWK/VZUojClcZIK6I
- SrBg==
-X-Gm-Message-State: AOJu0YwtRPwIvJDwXwquu1cSvtIqSx56Iv7fYxPln0syKNUrk6JzFySI
- 8JEkE0ocrPFCN37NHir5tM+OH+96NEq/un5JfBsMfVmri9angb92bX/mMvoAmE4=
-X-Google-Smtp-Source: AGHT+IFLJyZkJ0mMugjXvEvTWk8e0Cl4GP/QJ7/1+v/acd5mZTXW1WeeiBvTWxn6bZKv1e4iG/+y8A==
-X-Received: by 2002:a17:902:e843:b0:1fc:4bdc:d413 with SMTP id
- d9443c01a7336-200952d4129mr1116815ad.60.1723070419769; 
- Wed, 07 Aug 2024 15:40:19 -0700 (PDT)
+ bh=W9Gpp5EGoJF312BO83kqM/H8vKDu3Q7UhGmUwUXlac0=;
+ b=H66jl6lSpdzxGEtYAAQh4dTcMCBUvxXsSvGy/RxtwJS5pZMWdXIZOCADuBks2nTgfb
+ DKuKmlv6qWlQC9l0CL9lwUxM9QWnjt1l7aLTIHRR5KmDqRh/6Gno1TAFMjq8oCcY2rlC
+ vrmER4h+FQaa3gTq2TCmQVmxaKC6CfjVzF4jtCpJ/BDSBm0DFtP+DqTxZhbdnt16UEG3
+ 1wxpU3XZGurnG0tZlj0sIuQLnCLEozEI3ClFuZbXDzCGXtsayrAuWKFP4oVAEJ0oi6Vv
+ AZznZkHEELtBiwpbBAmLXIw/gTof/ZPHP4e1n8+yZT5uXvQs2NXCQZGNFgD13th7NiFT
+ us3w==
+X-Gm-Message-State: AOJu0YzAIo9tNQZTl9pMSea47KGOMnxJh0HPIqlxbWubrzajWGhpoxpD
+ /S0CjFP2Eyy/kC3xu+PPsxqb72fvy4PeNxX/pAOqv5j4CdVnB/T8Ix0OdTpjQyI=
+X-Google-Smtp-Source: AGHT+IE/p/23hX+ZpMTCjVpPK8ruOcEy2qBc5CVYRsD6w87Xi0v7RjoRrkFTFZpXzC7hNWUEkbIM9w==
+X-Received: by 2002:a17:902:cecd:b0:1fd:d6d8:133e with SMTP id
+ d9443c01a7336-200952478d4mr1744955ad.14.1723071476694; 
+ Wed, 07 Aug 2024 15:57:56 -0700 (PDT)
 Received: from [192.168.1.113] ([203.30.4.111])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff590608a7sm111388015ad.141.2024.08.07.15.40.14
+ d9443c01a7336-1ff58f56febsm112239085ad.88.2024.08.07.15.57.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Aug 2024 15:40:19 -0700 (PDT)
-Message-ID: <0f68fb8e-9821-4639-a934-ca1f4a668e4c@linaro.org>
-Date: Thu, 8 Aug 2024 08:40:08 +1000
+ Wed, 07 Aug 2024 15:57:56 -0700 (PDT)
+Message-ID: <eed6673a-0877-4e4e-8b86-7a7d7b770b7a@linaro.org>
+Date: Thu, 8 Aug 2024 08:57:47 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/20] target/riscv: save and restore elp state on priv
- transitions
+Subject: Re: [PATCH v3 15/20] target/riscv: shadow stack mmu index for shadow
+ stack instructions
 To: Deepak Gupta <debug@rivosinc.com>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
  palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, Jim Shu <jim.shu@sifive.com>,
- Andy Chiu <andy.chiu@sifive.com>
+ zhiwei_liu@linux.alibaba.com
 References: <20240807000652.1417776-1-debug@rivosinc.com>
- <20240807000652.1417776-5-debug@rivosinc.com>
- <e2d6dfe2-0c99-4caa-bba9-ce9b1225d0c4@linaro.org>
- <ZrPU3fwHGV8l0gDT@debug.ba.rivosinc.com>
+ <20240807000652.1417776-16-debug@rivosinc.com>
+ <26d37287-b4e3-42b8-818d-b96bcf128a75@linaro.org>
+ <ZrPl4fFyLX5N2WUs@debug.ba.rivosinc.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZrPU3fwHGV8l0gDT@debug.ba.rivosinc.com>
+In-Reply-To: <ZrPl4fFyLX5N2WUs@debug.ba.rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,41 +100,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/24 06:11, Deepak Gupta wrote:
->>> +    /*
->>> +     * If forward cfi enabled for new priv, restore elp status
->>> +     * and clear spelp in mstatus
->>> +     */
->>> +    if (cpu_get_fcfien(env)) {
->>> +        env->elp = get_field(env->mstatus, MSTATUS_SPELP);
->>> +        env->mstatus = set_field(env->mstatus, MSTATUS_SPELP, 0);
->>> +    }
+On 8/8/24 07:23, Deepak Gupta wrote:
+> On Wed, Aug 07, 2024 at 12:43:31PM +1000, Richard Henderson wrote:
+>> On 8/7/24 10:06, Deepak Gupta wrote:
+>>> Shadow stack instructions shadow stack mmu index for load/stores.
+>>> `MMU_IDX_SS_ACCESS` at bit positon 3 is used as shadow stack index.
+>>> Shadow stack mmu index depend on privilege and SUM bit. If shadow stack
+>>> accesses happening in user mode, shadow stack mmu index = 0b1000. If
+>>> shaodw stack access happening in supervisor mode mmu index = 0b1001. If
+>>> shadow stack access happening in supervisor mode with SUM=1 then mmu
+>>> index = 0b1010
+>>>
+>>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>>> ---
+>>>  target/riscv/cpu.h                            | 13 ++++++++++
+>>>  target/riscv/cpu_helper.c                     |  3 +++
+>>>  target/riscv/insn_trans/trans_rva.c.inc       |  8 ++++++
+>>>  target/riscv/insn_trans/trans_rvzicfiss.c.inc |  6 +++++
+>>>  target/riscv/internals.h                      |  1 +
+>>>  target/riscv/translate.c                      | 25 +++++++++++++++++++
+>>>  6 files changed, 56 insertions(+)
+>>>
+>>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>>> index 6da94c417c..3ad220a9fe 100644
+>>> --- a/target/riscv/cpu.h
+>>> +++ b/target/riscv/cpu.h
+>>> @@ -615,6 +615,19 @@ FIELD(TB_FLAGS, FCFI_ENABLED, 28, 1)
+>>>  FIELD(TB_FLAGS, FCFI_LP_EXPECTED, 29, 1)
+>>>  /* zicfiss needs a TB flag so that correct TB is located based on tb flags */
+>>>  FIELD(TB_FLAGS, BCFI_ENABLED, 30, 1)
+>>> +/*
+>>> + * zicfiss shadow stack is special memory on which regular stores aren't
+>>> + * allowed but shadow stack stores are allowed. Shadow stack stores can
+>>> + * happen as `sspush` or `ssamoswap` instructions. `sspush` implicitly
+>>> + * takes shadow stack address from CSR_SSP. But `ssamoswap` takes address
+>>> + * from encoded input register and it will be used by supervisor software
+>>> + * to access (read/write) user shadow stack for setting up rt_frame during
+>>> + * signal delivery. Supervisor software will do so by setting SUM=1. Thus
+>>> + * a TB flag is needed if SUM was 1 during TB generation to correctly
+>>> + * reflect memory permissions to access shadow stack user memory from
+>>> + * supervisor mode.
+>>> + */
+>>> +FIELD(TB_FLAGS, SUM, 31, 1)
 >>
->> The spec is perhaps poorly written here.  I read
->>
->>  ... if xPP holds the value y, then ELP is set to the value of xPELP if yLPE is 1;
->>  otherwise, it is set to NO_LP_EXPECTED; xPELP is set to NO_LP_EXPECTED.
->>
->> as xPELP always being cleared, regardless of yLPE.
+>> This is already encoded into the mmu_idx as MMUIdx_S_SUM.
 > 
-> Yes that's what code above is also doing. restore elp status from SPELP field and clear
-> it at SPELP.
+> This is where I need some help / suggestion and clarifications.
+> 
+> `riscv_env_mmu_index` is the which does mode --> mmu index translation and that's
+> where `MMUIdx_S_SUM` is set.
+> 
+> Although above function assumes following things
+>     -- Only loads ands stores are supposed to do read and write.
+>     -- Translates env/priv --> mmu index
+> 
+> In case of shadow stack, we need to hold following true:
+> Shadow stack are not writeable via regular stores but are allowed to be readable.
+> Shadow stack are writeable only via shadow stack instruction.
+> Shadow stack instructions can't operate on non-shadow stack memory.
+> 
+> This let me to create a new mmu index (as you saw in patches). This mmu index is only
+> setup by shadow stack instruction and thus has to be known at translation time
 
-No, my point is that the text doesn't seem to be
+All good so far.
 
-   if (enabled) {
-     restore elp
-     clear pelp
-   }
+> There is no way of telling in `riscv_env_mmu_index` about whether mmu index is requested
+> for regular load/store or some other instruction (in this case shadow stack instruction).
+> If that is available then I think I can use `riscv_env_mmu_index`.
 
-but
+What you miss is that the result of riscv_env_mmu_index is stored
 
-   if (enabled) {
-     restore elp
-   }
-   clear pelp
+   ctx->mem_idx
 
-I.e. the clear is unconditional.
+So that takes care of U, S, SUM, M, VS, VU, etc.  All you need at
+this point is to or in your shadow stack bit:
+
+   ctx->mem_idx | MMU_IDX_SS_ACCESS
+
+(Perhaps SS_WRITE is a better name, since read access is never prohibited?)
+
+Note that you can do this without ifdefs -- user-only will happily accept and ignore the 
+mmu index.  Also note that user-only will *not* be able to restrict access to the shadow 
+stack pages in the way the spec describes.  We rely on the host mmu for read/write 
+permission for user-only.  For now -- changing that is a long term goal.
+
+
+> Question:
+> I see that `riscv_env_mmu_index` could be called from a bunch of places in (like
+> `accel/tcg/ldst_common.c.inc` as well. Does it exclude loads, stores which calculate mmu
+> indexes during translation (like shadow stack load, stores) ?
+
+It means you cannot use the legacy interfaces for the shadow stack.
+The current interfaces:
+
+  *        cpu_ld{sign}{size}{end}_mmuidx_ra(env, ptr, mmu_idx, retaddr)
+  *        cpu_ld{sign}{size}{end}_mmu(env, ptr, oi, retaddr)
+...
+  *        cpu_st{size}{end}_mmuidx_ra(env, ptr, val, mmu_idx, retaddr)
+  *        cpu_st{size}{end}_mmu(env, ptr, val, oi, retaddr)
+
+take the mmu_idx as a parameter.
+
+But as it happens, the shadow stack instructions are simple enough to implement all 
+inline, so you won't need to call the out-of-line load/store functions from cpu helpers.
 
 
 r~
