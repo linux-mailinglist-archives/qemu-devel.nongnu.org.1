@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B058894A292
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 10:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5070694A28D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 10:19:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbbuX-0000zh-Le; Wed, 07 Aug 2024 04:20:45 -0400
+	id 1sbbsf-0000aR-Oo; Wed, 07 Aug 2024 04:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sbbuV-0000tg-G5
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:20:43 -0400
-Received: from terminus.zytor.com ([198.137.202.136])
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sbbsO-0000Hf-HC
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:18:32 -0400
+Received: from torg.zytor.com ([2607:7c80:54:3::138] helo=mail.zytor.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sbbuT-0007Fr-0a
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:20:43 -0400
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sbbsM-0006ui-Hd
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:18:32 -0400
 Received: from terminus.zytor.com (terminus.zytor.com
  [IPv6:2607:7c80:54:3:0:0:0:136]) (authenticated bits=0)
- by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 4778IDpe735187
+ by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 4778IDpf735187
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
  Wed, 7 Aug 2024 01:18:17 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 4778IDpe735187
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 4778IDpf735187
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
- s=2024071601; t=1723018697;
- bh=QL9mGtdxGEoJ7LmZv1od9L07EiNIKIqpnoWywqqH9bw=;
- h=From:To:Cc:Subject:Date:From;
- b=C/AAeu9QCYaK43aRz2VLFC6crUU+Ckz2OoCa38Amb2ZUK3IOslvSrTuJATRpRgYBm
- 3DQwpTkPIKqaXqZuTYpwiiAMSyhnXbZ9z8BOKbkvy82I7pP3hSLSlGWbGHBE5jNcRY
- ZProDFw5ZIdYR2qyW7m6N9jdRzL/TTD/pC0WJ6ESubS26AvA4G2I3r24Hc1B7hYmAB
- QftEo+STd6JTfFQa7KKX1ziScSEJkYmj9WtNzrsjuOBpcRjDR8wzPx4jWq+a97SZzk
- QOD4h5XI2jH1Mrg4NOqyyP3MsemRb0Tb+QgtCXSso1ynt6HBoEDCrkPea6jn8FuT+C
- oGoBwbbWR+NMA==
+ s=2024071601; t=1723018698;
+ bh=cLhnhzRXZr2FwWzd1KskHfPSIS/PzC+PgX/l/u713kQ=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=Gep/dezni3c9dR93wP+dHZQLqT7/iiAfYrsPWP0XIPXKjUCApLLbKv4Ub3vji4RhG
+ 33G8hWTvIclV4SyF7d4BjVsBXlcnzov6hXRenxF5BWAq3WuPAJoOl0t9gHNCCGCRCi
+ 5J4P2d5oET4Plkep/VsQLAuwF2EXHKm6izGni4I7Vfb6OKWNwiM+UHEHT6h8WS5ZVv
+ QPkp31Qq5uXz2C5x1ZTmarCEQjRwYRKQag2+xLxQy7hmMQDJ73e2FnP9F1J7Sdo9TD
+ ynUyBxto59MRp7eeSyE7SW9pz231WUj2ps11Vo/QB+lytD8rgHaWlx6iaMXgWpwZFt
+ a2skGF4qaFRSA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, lei4.wang@intel.com,
  zhao1.liu@intel.com, xin3.li@intel.com
-Subject: [PATCH v1 0/3] target/i386: Add nested FRED support
-Date: Wed,  7 Aug 2024 01:18:09 -0700
-Message-ID: <20240807081813.735158-1-xin@zytor.com>
+Subject: [PATCH v1 1/3] target/i386: Delete duplicated macro definition
+ CR4_FRED_MASK
+Date: Wed,  7 Aug 2024 01:18:10 -0700
+Message-ID: <20240807081813.735158-2-xin@zytor.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240807081813.735158-1-xin@zytor.com>
+References: <20240807081813.735158-1-xin@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.137.202.136; envelope-from=xin@zytor.com;
- helo=terminus.zytor.com
+Received-SPF: pass client-ip=2607:7c80:54:3::138; envelope-from=xin@zytor.com;
+ helo=mail.zytor.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,24 +68,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set adds nested FRED support to allow KVM to run a nested
-guest with FRED enabled.
+Macro CR4_FRED_MASK is defined twice, delete one.
 
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+---
+ target/i386/cpu.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-Lei Wang (1):
-  target/i386: Raise the highest index value used for any VMCS encoding
-
-Xin Li (Intel) (2):
-  target/i386: Delete duplicated macro definition CR4_FRED_MASK
-  target/i386: Add VMX control bits for nested FRED support
-
- target/i386/cpu.c     | 4 ++--
- target/i386/cpu.h     | 7 +------
- target/i386/kvm/kvm.c | 9 ++++++++-
- 3 files changed, 11 insertions(+), 9 deletions(-)
-
-
-base-commit: 6d00c6f982562222adbd0613966285792125abe5
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c6cc035df3..118ef9cb68 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -267,12 +267,6 @@ typedef enum X86Seg {
+ #define CR4_FRED_MASK   0
+ #endif
+ 
+-#ifdef TARGET_X86_64
+-#define CR4_FRED_MASK   (1ULL << 32)
+-#else
+-#define CR4_FRED_MASK   0
+-#endif
+-
+ #define CR4_RESERVED_MASK \
+ (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+                 | CR4_DE_MASK | CR4_PSE_MASK | CR4_PAE_MASK \
 -- 
 2.45.2
 
