@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5155B94A7D1
+	by mail.lfdr.de (Postfix) with ESMTPS id E795394A7D3
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 14:39:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbfvR-0003Ei-RK; Wed, 07 Aug 2024 08:37:57 -0400
+	id 1sbfvk-0003On-E1; Wed, 07 Aug 2024 08:38:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfvM-0003E8-PK
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:37:53 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfvT-0003O4-Dn
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:38:00 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfvL-0004io-5H
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:37:52 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42812945633so12825895e9.0
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 05:37:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfvR-0004iy-R1
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:37:59 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-369cb9f086aso1085367f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 05:37:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723034269; x=1723639069; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723034275; x=1723639075; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rnPHm5qmilosKgT5p/Ig2S4/TLxu+gWuPX7v2WagT94=;
- b=DU5H6yUbh64Q27BuJS467eFTyzdveZYHJxdTsuFs3Sw2h7BHaqU/I2F1f+zO38T9q6
- mmrmytwVXklWhJnrOQCV12vOUaiWzpdC1Yr7WhON1PXMA0TAHjtcJFGRSzyVr26FVeUo
- xVgo0HXvAzNLc1r9IFQJ0W0UaSSzFRgQeaGNEaNGS7LD7WHWkzUckK/4i+4wk7YrBaVh
- rK4as6h+aF2NawaoQUQhmmuP3BUnGclqR+7brVM1sgDcySJhn9bAZGob17MYzw40xG2T
- bxXT6Q+J5eqaA52xnGG5HebHmsOuLTqWOA0kN4cTl0m+ypMPU6H8KyeiAXONYVUgc3ji
- g2Sw==
+ bh=RpWIKWWe5ixWDtiVxOKLp+Lsc4k9VqF1doDZjHB6Yj4=;
+ b=KhgLBKF0iP7sfipXXuR0qbs2SuHbO5PYsO6oPowTecPu1sFEj3BeuvcCB/4svFB58b
+ kENjL0HtSCkv/1o/pMg035VBhj/K107kQqxGEA9tER0oYj7bw5JYwOyEtUbeZxZRHmfr
+ XocxUC+dgBp0BJSgYXTpstzEMHZ2Ptbw7MssqnvVzkuwFhoLQzAruB7RoXRpRLHQoWnS
+ OXyzdZG+xVRnCPKrV/M54xlDAo6dqoGoKIE5OropIY0ijRTnOtMpT2XmwnsZP1FOvEcy
+ +BPhC3btFa80geS4gGMj9MZ7hXSKGWeZyf5DPZo3butXeINOGDqLgdeV0RCPYfUZrFQv
+ rQEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723034269; x=1723639069;
+ d=1e100.net; s=20230601; t=1723034275; x=1723639075;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rnPHm5qmilosKgT5p/Ig2S4/TLxu+gWuPX7v2WagT94=;
- b=kQryK3uSMGs07rfpYc+5jcTZnqZTP5bTDOljFuzgjo9G56LQUYJoHVDAkosQiCnbzb
- gm39R1i/uAPVzHkl4Za1Uoeyci0fO/3wV4HP9zESzREx80ygAQwSft5YyIt612z/ltgp
- de8hTLqMlSFn/SQZ8sMFfA+3ZQtulQYsSxgyhS2QBuPYKtt4Qg1DXSR+sqzXuqsl74IK
- vYyO4+pwIULrV84kJumMbiWxl4IQPo0CwnNf8fKUoYpkRCVxGoltOUZXlG2N/HBYrr3P
- KRe3sgCqI0RpsQlKyx+B74jezUnlfaTb9/bx7HRwOGrRazFZeGHW8M9N2Sr0l8k6jIAK
- ljfg==
-X-Gm-Message-State: AOJu0YxhJSS0zS2Yk8+h1jQp420XjQWTQnAI8NhxpVf6G3ay+AYESBTn
- AnfVHyhVGYiZWp6I4rKtJGAou6qKcWBtCI7dVTEi7QjoglvYfXlqJ4i3AIsI5gtKJQfwFyqZVFs
- j
-X-Google-Smtp-Source: AGHT+IGPL0xrhYbmEkA7VxG6RR4T9wovYudrUBlEKXROkuTIaODRl3twy95iA1OVxshAEidO2Js0VA==
-X-Received: by 2002:a05:6000:1fa2:b0:368:7ee2:b7c8 with SMTP id
- ffacd0b85a97d-36bbc0e6721mr14969362f8f.1.1723034269357; 
- Wed, 07 Aug 2024 05:37:49 -0700 (PDT)
+ bh=RpWIKWWe5ixWDtiVxOKLp+Lsc4k9VqF1doDZjHB6Yj4=;
+ b=SJ/K9Zrp377PjIfImsR+BBb4PCg536SiMkB2cb6+BG0qF/bBvsJe0vF6CpLGPmuDlT
+ A3U67NE3c3TUXGo3QUjU7gent8nRd/H54VLdIEcqmFau5b6pwmZAcuhAmIYPXh8eYVrL
+ pAwjZikbJXOfUWo7/mpHa7BQ2vAiocuwbCY6/Ld+6bWmykrmOMLJdy+yUGFgMvEJY1pU
+ tkx0MxeurCXcgpF8f/pndn/OphBDUA8s0PnjFfsiaE9rhtiwlAri9PHzOOqRfWmVOGTn
+ c9TEMWZTBhoZJyTSqzm/QwvDvcAe2pNAAYHctYW8clZXLW5ycGscqZ0fwP9joPEAZy7j
+ dOqQ==
+X-Gm-Message-State: AOJu0Yw5znK0qgfNEbOhOS0ClBWIhoSoPDtOzOwskTGcNwn6UXBAoPqn
+ iNwrOnMpyXlCvrfNYBWb3e5wUQJ3F3Facmu1s1U5iiVrzAOMKBGkjA1PVRH42QkVZR90f+yYMrQ
+ K
+X-Google-Smtp-Source: AGHT+IGWBokZAprO6MY1OBf7LHSQ/yhmmO5z5uqCjUx1MdlBbl6uDJ8ssEq8U4nKJZD3UAO62rSonQ==
+X-Received: by 2002:adf:b51a:0:b0:368:30fe:ffd2 with SMTP id
+ ffacd0b85a97d-36bbc10fb16mr13421243f8f.22.1723034275121; 
+ Wed, 07 Aug 2024 05:37:55 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.120])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36bbcf0c314sm15660585f8f.12.2024.08.07.05.37.48
+ ffacd0b85a97d-36bbd01eff1sm15850833f8f.44.2024.08.07.05.37.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Aug 2024 05:37:48 -0700 (PDT)
+ Wed, 07 Aug 2024 05:37:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Zach van Rijn <me@zv.io>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/4] linux-user: Factor print_buf_len() out
-Date: Wed,  7 Aug 2024 14:37:32 +0200
-Message-ID: <20240807123734.52501-3-philmd@linaro.org>
+Subject: [PATCH v2 3/4] linux-user: Add strace for sendto()
+Date: Wed,  7 Aug 2024 14:37:33 +0200
+Message-ID: <20240807123734.52501-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240807123734.52501-1-philmd@linaro.org>
 References: <20240807123734.52501-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,47 +94,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/strace.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ linux-user/strace.c    | 15 +++++++++++++++
+ linux-user/strace.list |  2 +-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 80f64ff40c..210ff86afc 100644
+index 210ff86afc..98ef26b917 100644
 --- a/linux-user/strace.c
 +++ b/linux-user/strace.c
-@@ -1655,6 +1655,13 @@ print_buf(abi_long addr, abi_long len, int last)
-     }
+@@ -3127,6 +3127,21 @@ print_bind(CPUArchState *cpu_env, const struct syscallname *name,
  }
+ #endif
  
++#ifdef TARGET_NR_sendto
 +static void
-+print_buf_len(abi_long addr, abi_long len, int last)
++print_sendto(CPUArchState *cpu_env, const struct syscallname *name,
++             abi_long arg0, abi_long arg1, abi_long arg2,
++             abi_long arg3, abi_long arg4, abi_long arg5)
 +{
-+    print_buf(addr, len, 0);
-+    print_raw_param(TARGET_ABI_FMT_ld, len, last);
++    print_syscall_prologue(name);
++    print_sockfd(arg0, 0);
++    print_buf_len(arg1, arg2, 0);
++    print_flags(msg_flags, arg3, 0);
++    print_sockaddr(arg4, arg5, 1);
++    print_syscall_epilogue(name);
 +}
++#endif
 +
- /*
-  * Prints out raw parameter using given format.  Caller needs
-  * to do byte swapping if needed.
-@@ -2742,8 +2749,7 @@ static void do_print_sendrecv(const char *name, abi_long arg1)
- 
-     qemu_log("%s(", name);
-     print_sockfd(sockfd, 0);
--    print_buf(msg, len, 0);
--    print_raw_param(TARGET_ABI_FMT_ld, len, 0);
-+    print_buf_len(msg, len, 0);
-     print_flags(msg_flags, flags, 1);
-     qemu_log(")");
- }
-@@ -2761,8 +2767,7 @@ static void do_print_msgaddr(const char *name, abi_long arg1)
- 
-     qemu_log("%s(", name);
-     print_sockfd(sockfd, 0);
--    print_buf(msg, len, 0);
--    print_raw_param(TARGET_ABI_FMT_ld, len, 0);
-+    print_buf_len(msg, len, 0);
-     print_flags(msg_flags, flags, 0);
-     print_sockaddr(addr, addrlen, 0);
-     qemu_log(")");
+ #if defined(TARGET_NR_stat) || defined(TARGET_NR_stat64) || \
+     defined(TARGET_NR_lstat) || defined(TARGET_NR_lstat64)
+ static void
+diff --git a/linux-user/strace.list b/linux-user/strace.list
+index dfd4237d14..5a86419e7d 100644
+--- a/linux-user/strace.list
++++ b/linux-user/strace.list
+@@ -1285,7 +1285,7 @@
+ { TARGET_NR_sendmsg, "sendmsg" , NULL, NULL, NULL },
+ #endif
+ #ifdef TARGET_NR_sendto
+-{ TARGET_NR_sendto, "sendto" , NULL, NULL, NULL },
++{ TARGET_NR_sendto, "sendto" , NULL, print_sendto, NULL },
+ #endif
+ #ifdef TARGET_NR_setdomainname
+ { TARGET_NR_setdomainname, "setdomainname" , NULL, NULL, NULL },
 -- 
 2.45.2
 
