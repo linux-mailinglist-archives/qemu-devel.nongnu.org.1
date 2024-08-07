@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5133094B21B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 23:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F199E94B220
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 23:26:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbo8Q-0000z3-Mx; Wed, 07 Aug 2024 17:23:54 -0400
+	id 1sboAN-0007Mi-V6; Wed, 07 Aug 2024 17:25:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sbo8O-0000sC-CO
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 17:23:52 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1sboAL-0007FM-5S
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 17:25:53 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sbo8M-0005uI-A8
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 17:23:52 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7106cf5771bso281472b3a.2
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 14:23:49 -0700 (PDT)
+ id 1sboAJ-0006Gs-Mz
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 17:25:52 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2cf98ba0559so269951a91.2
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 14:25:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1723065828; x=1723670628;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1723065950; x=1723670750;
  darn=nongnu.org; 
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=67dD1CqQJNguArHNkmKZf4A2zUv5efkTEt8ROsaaWPs=;
- b=g4+k0BSI5SOHGlTdOpxhdhjqrBiJwsca/eDz53/QozXLVPg+LsntcBfxkmrH1Xoy+G
- Fo9mBehPRE472i9lwS26DnSVYsYqT4O/9T11hMwo/zvohwbQ9SKTTIx4lyy3Sfy7IEoh
- nWriE1mgq86IwVmsMQ2ArtUjuPtP8uD8xktvudvzjD58pGiLWS98ifdGx1OujmJL0r8y
- EU/OK12Qw0Wa9u/Ffyk7NK2u1pDgQMf1lvahDzY+BLHOqvHl5xf3GPFqmRIpFygscL+x
- W2JBGgOpdR1ZJVqE+ssr9FIgjmzMQf1St8goFyPp+Z/MnCkvrimaXKWzV/NNm1H9fnOy
- tJ1A==
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=+NtiK39PRKu5TV3cugoLOjFunL6Il1sVYisbMr+D3PI=;
+ b=ZxpIuJ4TELs7c+jj1QXsflnUd9Gwl7ficCqDZFKOrbOXBsoP5chOTeJJrb4v4E/ojK
+ rDVPcDkFY+nNW26UaWPHj+AIsDX+HHkK+DYG++hQwDZpVc9M5dJOvi8xuqmXQhiUtsik
+ uf+ytUiHpZRy+LoqcPSIi4mu+3vTsKioeM3xSS5tQUc/006GXNy9COpSGiXiXGFGDrhG
+ rOLZ/jMD8/5dSZJETW+XrF1hGbfq40vk2mBIOhgdg5cxiJUGBHdYTA5cW340L+tyPeR7
+ FcSNCM3JzLpYO1zVLaDIQ6fqhZp6qBds+LYiQ8NBwu9uLVG8yULZV2HlNykR6uRMoNIW
+ WGpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723065828; x=1723670628;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=67dD1CqQJNguArHNkmKZf4A2zUv5efkTEt8ROsaaWPs=;
- b=LphL80D34Jdbl3kYREweIvrocyG0vyE6pv5w1CukfZaA5CmmvEcBb5r2k3XNKpnfvw
- WHysL3CXUZb6w3Z093OzynId7vfpMUSXsTx2p6TV0iW8EMRA9VHlW8aZhG0CUlobZqzD
- 4UwGXxa56qDGP11RIU9DSN0S7S71Nb8EMv5Yy8I+920xS0uA70Jrx+2QBtg7q1ENbdJw
- AzBbul9MFRQZbmuZAQ5eqcCB5n6JXtx1TWzSO8oSoI0q35QXQnuXiPGdhLG5icAMyHl1
- 8Y/QN1ZloTj294GACeoL8pd3gLAwVdiamU6drDfcY1lK8+EAkpuU2dtL6ARPukuGZGEO
- vqKA==
-X-Gm-Message-State: AOJu0YwbGe/wnn0jfwYkTEtauzhq1p1rKS/ux3kQYQTLir9xYn7WKwBB
- 4Zj9VnTFEPxkPIjHVm8I00c39sQOwspfarXN3sOwmS7nz2NLS8Rd9VO897XNYGs=
-X-Google-Smtp-Source: AGHT+IG2XGU+VyZWOqXsRFEHnOvqXZIEDNj9nHdijyWxQEcWJTmob7pyWveTb8/UOcigGZyHAal9yA==
-X-Received: by 2002:a05:6a00:2289:b0:70d:2af7:849d with SMTP id
- d2e1a72fcca58-7106d082021mr20778372b3a.23.1723065828286; 
- Wed, 07 Aug 2024 14:23:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723065950; x=1723670750;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+NtiK39PRKu5TV3cugoLOjFunL6Il1sVYisbMr+D3PI=;
+ b=fCOTmIVeZQcHOp+xlMYSshdiNxmEiIVlIBqcgk5woGa0+ZZr8FW2pflfHEzwAIC6Xn
+ lbbeXfLnwcaqKWxiNrFDsbQO88xWVPTZe4FF85+Ver5QBmgkEXMlIr5xfyc5DXQo3aTh
+ hEGiBDFor8rLywMtZsUwOlR2yuCevCUwcw69VMY+1Ni3PUFXLsKcO+SirT8bDiEQz2aG
+ TxCCuYwpoaBs3vwor7B6j/dkLSYgJlEKRT6BGvDRnaGdWkOH8smuhhPTmA5Isi4sbLr4
+ tv5JOSpVEQw5syx4BFjMnduf8ysLoQDee+DLqQo8KsdjjPbnnxQJaQn05JX2EeJlQgs2
+ yAZg==
+X-Gm-Message-State: AOJu0YyHonR0lfYAb5IVtCSqnjZDVGkQs/gD4SGLRK10VyFJdrEcheJT
+ SVh67/K4e/2QxU+QR5TW+VBHGVkPGQID4JXhSPEyTOeVRVgCGnYlc//lAerW9Ic=
+X-Google-Smtp-Source: AGHT+IG4VBMMMkHVCIsDHgj3vFh1zNGK25ly+a0ECrLxZRa4JWijhVstTHJme7lxWcPyQyVPZQFJkQ==
+X-Received: by 2002:a17:90a:e00a:b0:2d1:bf4b:4a6d with SMTP id
+ 98e67ed59e1d1-2d1bf4b4b7dmr309289a91.1.1723065950007; 
+ Wed, 07 Aug 2024 14:25:50 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7106ec1604asm8822528b3a.35.2024.08.07.14.23.47
+ 98e67ed59e1d1-2d1b36dd55csm2068242a91.29.2024.08.07.14.25.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Aug 2024 14:23:47 -0700 (PDT)
-Date: Wed, 7 Aug 2024 14:23:45 -0700
+ Wed, 07 Aug 2024 14:25:49 -0700 (PDT)
+Date: Wed, 7 Aug 2024 14:25:47 -0700
 From: Deepak Gupta <debug@rivosinc.com>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
  palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com
-Subject: Re: [PATCH v3 15/20] target/riscv: shadow stack mmu index for shadow
- stack instructions
-Message-ID: <ZrPl4fFyLX5N2WUs@debug.ba.rivosinc.com>
+ zhiwei_liu@linux.alibaba.com, Jim Shu <jim.shu@sifive.com>,
+ Andy Chiu <andy.chiu@sifive.com>
+Subject: Re: [PATCH v3 12/20] target/riscv: implement zicfiss instructions
+Message-ID: <ZrPmW3VvOiRObRfk@debug.ba.rivosinc.com>
 References: <20240807000652.1417776-1-debug@rivosinc.com>
- <20240807000652.1417776-16-debug@rivosinc.com>
- <26d37287-b4e3-42b8-818d-b96bcf128a75@linaro.org>
+ <20240807000652.1417776-13-debug@rivosinc.com>
+ <199f7ee2-411c-48ec-bf69-34fceab8f48a@linaro.org>
+ <26d1f8a7-9131-40f2-8d3a-e1daabad149b@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <26d37287-b4e3-42b8-818d-b96bcf128a75@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=debug@rivosinc.com; helo=mail-pf1-x42d.google.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <26d1f8a7-9131-40f2-8d3a-e1daabad149b@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=debug@rivosinc.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,77 +99,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 07, 2024 at 12:43:31PM +1000, Richard Henderson wrote:
->On 8/7/24 10:06, Deepak Gupta wrote:
->>Shadow stack instructions shadow stack mmu index for load/stores.
->>`MMU_IDX_SS_ACCESS` at bit positon 3 is used as shadow stack index.
->>Shadow stack mmu index depend on privilege and SUM bit. If shadow stack
->>accesses happening in user mode, shadow stack mmu index = 0b1000. If
->>shaodw stack access happening in supervisor mode mmu index = 0b1001. If
->>shadow stack access happening in supervisor mode with SUM=1 then mmu
->>index = 0b1010
+On Wed, Aug 07, 2024 at 12:56:46PM +1000, Richard Henderson wrote:
+>On 8/7/24 12:39, Richard Henderson wrote:
+>>>+static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
+>>>+{
+>>>+    /* default for qemu-user, use regular RW memory and thus mmu_idx=0 */
+>>>+    int ss_mmu_idx = 0;
 >>
->>Signed-off-by: Deepak Gupta <debug@rivosinc.com>
->>---
->>  target/riscv/cpu.h                            | 13 ++++++++++
->>  target/riscv/cpu_helper.c                     |  3 +++
->>  target/riscv/insn_trans/trans_rva.c.inc       |  8 ++++++
->>  target/riscv/insn_trans/trans_rvzicfiss.c.inc |  6 +++++
->>  target/riscv/internals.h                      |  1 +
->>  target/riscv/translate.c                      | 25 +++++++++++++++++++
->>  6 files changed, 56 insertions(+)
->>
->>diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
->>index 6da94c417c..3ad220a9fe 100644
->>--- a/target/riscv/cpu.h
->>+++ b/target/riscv/cpu.h
->>@@ -615,6 +615,19 @@ FIELD(TB_FLAGS, FCFI_ENABLED, 28, 1)
->>  FIELD(TB_FLAGS, FCFI_LP_EXPECTED, 29, 1)
->>  /* zicfiss needs a TB flag so that correct TB is located based on tb flags */
->>  FIELD(TB_FLAGS, BCFI_ENABLED, 30, 1)
->>+/*
->>+ * zicfiss shadow stack is special memory on which regular stores aren't
->>+ * allowed but shadow stack stores are allowed. Shadow stack stores can
->>+ * happen as `sspush` or `ssamoswap` instructions. `sspush` implicitly
->>+ * takes shadow stack address from CSR_SSP. But `ssamoswap` takes address
->>+ * from encoded input register and it will be used by supervisor software
->>+ * to access (read/write) user shadow stack for setting up rt_frame during
->>+ * signal delivery. Supervisor software will do so by setting SUM=1. Thus
->>+ * a TB flag is needed if SUM was 1 during TB generation to correctly
->>+ * reflect memory permissions to access shadow stack user memory from
->>+ * supervisor mode.
->>+ */
->>+FIELD(TB_FLAGS, SUM, 31, 1)
+>>This can't be right, since 0 is M_MODE.
 >
->This is already encoded into the mmu_idx as MMUIdx_S_SUM.
+>I'm wrong about m-mode here, but "0" is certainly not right.
 
-This is where I need some help / suggestion and clarifications.
+I followed `riscv_env_mmu_index` here. If CONFIG_USER_ONLY, it returns 0.
+For qemu-user, I didn't bother to protect shadow stack from normal stores.
+And simply used index 0.
 
-`riscv_env_mmu_index` is the which does mode --> mmu index translation and that's
-where `MMUIdx_S_SUM` is set.
-
-Although above function assumes following things
-    -- Only loads ands stores are supposed to do read and write.
-    -- Translates env/priv --> mmu index
-
-In case of shadow stack, we need to hold following true:
-Shadow stack are not writeable via regular stores but are allowed to be readable.
-Shadow stack are writeable only via shadow stack instruction.
-Shadow stack instructions can't operate on non-shadow stack memory.
-
-This let me to create a new mmu index (as you saw in patches). This mmu index is only
-setup by shadow stack instruction and thus has to be known at translation time
-(and that's why SUM TB flag)
-
-There is no way of telling in `riscv_env_mmu_index` about whether mmu index is requested
-for regular load/store or some other instruction (in this case shadow stack instruction).
-If that is available then I think I can use `riscv_env_mmu_index`.
-
-Question:
-I see that `riscv_env_mmu_index` could be called from a bunch of places in (like
-`accel/tcg/ldst_common.c.inc` as well. Does it exclude loads, stores which calculate mmu
-indexes during translation (like shadow stack load, stores) ?
-
+>
+>I strongly suspect you want "ctx->mem_idx | MMU_IDX_SS_ACCESS",
+>once you add that bit in a few patches.
 >
 >
 >r~
