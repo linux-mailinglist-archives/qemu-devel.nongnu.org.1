@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E8C94A7D2
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 14:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9344794A803
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 14:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbfvl-0003Yl-2S; Wed, 07 Aug 2024 08:38:17 -0400
+	id 1sbg0f-0007z4-DD; Wed, 07 Aug 2024 08:43:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfvY-0003Om-Ui
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:38:08 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbg0a-0007yL-4J
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:43:16 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfvW-0004j8-TK
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:38:04 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3685a564bafso944691f8f.3
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 05:38:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbg0X-0005Mu-B5
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:43:15 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-428101fa30aso11933785e9.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 05:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723034281; x=1723639081; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Pq1dTXzDXbRYVMh0ReJZN5GzV4YwZOctS4OmQtmosdA=;
- b=excwC3Esi70I1NSvZC3VTe/TylvQ+2MuIGK/bizV+LPl/UjRYTPh9f1CQZ0AJ8ty8E
- kWTmggjWrGOgzKyk/MEpu2GlrzHPs1gOhQA+hWWXPQtq+v/hpwX7CRecl62QGsBBTMQL
- FuYPsGUvTcAC+0t575sf4kkhhhCJq4Qbz+saYocSYwBziiu7WQ1igTJKTWd3xw7+XEDb
- WycuX1V56C7meQHL/KrnGjKCeYgi102nEr8f4yn9vL+P/EGEEAacEPh/3YMZOGnNp//h
- XxFK3ePnlRIuT7+IOblkUgnJHsfwAMS8QNLIeTs/OHjBy8AKwLAxfpSIxck/vYsfCGUw
- BHTQ==
+ d=linaro.org; s=google; t=1723034590; x=1723639390; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TL5081hbBIr3tCvE3Zar9ZNbWMAEgMPLCiEUuGEST9U=;
+ b=amPAUqAbJ5EwaF7SHnSLznkQyhv17T+WxnX9A5bCT0nHxZniduaVJmvu7q1xeGU4Ay
+ uZENDLGew/ooQw5vZcMR419RRoNxcVeH1MtqdM7NpBIf3F4B91xem7tN1m+Gn48vP1Gs
+ hMe/VJb4zqdChfAJOsPxvn40Dx6Lgt/0X64PbI2KHcQfZuw+1swglgaAh3xqoH3aOGqV
+ mq4Fn3vIOPm9vuzjgjggKJxYt6htqR2uJ7CyeFADJGGOsj+d2dq+ucIFaXsWPOrgZGGo
+ KKShlfo5BOSTtSO+lSsgfqIe4d3iUoRSMmGGgdL37M62km4t995zie+ulbwJth5B4Cpg
+ w6uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723034281; x=1723639081;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Pq1dTXzDXbRYVMh0ReJZN5GzV4YwZOctS4OmQtmosdA=;
- b=U9xJAYY9v5AYJNzrxIBHk+UcMICXBfvnhKxGUEWegWfJhI1xc1xrchURkzMq6bCocM
- Y6Ybg2xfY/GdxHDQAtkzjtZTTK/T4idOV/U0MJ5iDEDDtiAWrNfC/WRLloNnX1+icdAS
- aMzVnhSvUtul+csEnfGwRfqwXz8Q5DrQOrz8C4XuM/AAA7hgOAI8VLhTJ58zre5TaRF5
- L1uo++Bgg26jD+wmSLKCpm5/kSduOtyXNsYMjqslPi8m8f80XbBWs+qosTh5A6nHAIIw
- oGDMBxn1v/KwbcqJbpX2LAfSJNNLm4HpgMY3pmXRF54pF3/iE3Or3xFZ56h0gINgcwX7
- 9b0w==
-X-Gm-Message-State: AOJu0YzrtJxNys3O+J4bh2DSahesa6ySIMI8gIY/okSx5tX2iIRX0z0/
- 5tuFJjJXnIhPPSldf+9ztod4PgQRRcwCiGtJZeXSex3hblpdcTc1fRYnTHw3PQIA8q2561Zc8Hp
- D
-X-Google-Smtp-Source: AGHT+IFicKdMpWJ9Ol7cxh/jMPaeCJdnUUlIMySUL5F9Gb9OOwnusGAOGI11yDrFMsAvk6Pdd76VgA==
-X-Received: by 2002:adf:dd87:0:b0:367:f104:d9e8 with SMTP id
- ffacd0b85a97d-36bbc16102bmr12385015f8f.47.1723034280721; 
- Wed, 07 Aug 2024 05:38:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723034590; x=1723639390;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TL5081hbBIr3tCvE3Zar9ZNbWMAEgMPLCiEUuGEST9U=;
+ b=ot06UgGxHK38uVlARX1kxGiP5lQGUX6pghq/8U4MH0pYREV4Q8rNy9FcAccgbeubcD
+ beY0NlIZ1Jxs79NqjNhETyhKgQoPdnYWqGLSsGiF2kmcmj0IUM5nDWnh5OP0gaTxraIj
+ tnJpHR8ViE7CiLLdaSaB0SNlCjlxpYXeGyL6U29Jv4vcWy55R6zyCj02L0HbfVNoWrBw
+ cgxYFgY2gxEWiMYRFgmUfAhABXGJ6lCku7m/91ogV4jiEEgF2KW2j9byHptdT/NRAidc
+ B29VQKFe6RVktkYh41zyfyNWBdECxCemOZPRjYfrhHlVbba0gFa2aF5SJBgJrNlXmhyD
+ XfjA==
+X-Gm-Message-State: AOJu0Yw/+bQVZ5rkX4BJnUpjfvwL9BkzEnbje4MQpRNx49Vcs6cy5UGe
+ AHdKKW/eHFoHjkSeDyTvP49ujtPYus6RuuxTAxWZCJYrnzmIUDPkgcpFIlh4AHf4otxrA3cjqiK
+ U
+X-Google-Smtp-Source: AGHT+IEc7G7QYv7gW73O8M6OTsRLj0UO4JUnxt/5jhy9axJArFbPwXsVyqHFpo5ZyNMPWZgXJQ1/QQ==
+X-Received: by 2002:a05:600c:1c17:b0:426:5ee5:3129 with SMTP id
+ 5b1f17b1804b1-428e6aea7bdmr134195695e9.2.1723034589480; 
+ Wed, 07 Aug 2024 05:43:09 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.120])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36bbcf0de1csm16027213f8f.4.2024.08.07.05.37.59
+ 5b1f17b1804b1-4290598f18asm27492195e9.27.2024.08.07.05.43.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Aug 2024 05:38:00 -0700 (PDT)
+ Wed, 07 Aug 2024 05:43:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Zach van Rijn <me@zv.io>,
+Cc: Zach van Rijn <me@zv.io>, Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/4] linux-user: Add strace for recvfrom()
-Date: Wed,  7 Aug 2024 14:37:34 +0200
-Message-ID: <20240807123734.52501-5-philmd@linaro.org>
+Subject: [PATCH v3 0/5] linux-user: Trace sendto/recvfrom
+Date: Wed,  7 Aug 2024 14:43:01 +0200
+Message-ID: <20240807124306.52903-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240807123734.52501-1-philmd@linaro.org>
-References: <20240807123734.52501-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,55 +90,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- linux-user/strace.c    | 19 +++++++++++++++++++
- linux-user/strace.list |  2 +-
- 2 files changed, 20 insertions(+), 1 deletion(-)
+Since v2:
+- Do not squash 2 first patches...
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 98ef26b917..d76907fdc9 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -3127,6 +3127,25 @@ print_bind(CPUArchState *cpu_env, const struct syscallname *name,
- }
- #endif
- 
-+#ifdef TARGET_NR_recvfrom
-+static void
-+print_recvfrom(CPUArchState *cpu_env, const struct syscallname *name,
-+               abi_long arg0, abi_long arg1, abi_long arg2,
-+               abi_long arg3, abi_long arg4, abi_long arg5)
-+{
-+    abi_ulong addrlen;
-+
-+    get_user_ualx(addrlen, arg5, 0);
-+
-+    print_syscall_prologue(name);
-+    print_sockfd(arg0, 0);
-+    print_buf_len(arg1, arg2, 0);
-+    print_flags(msg_flags, arg3, 0);
-+    print_sockaddr(arg4, addrlen, 1);
-+    print_syscall_epilogue(name);
-+}
-+#endif
-+
- #ifdef TARGET_NR_sendto
- static void
- print_sendto(CPUArchState *cpu_env, const struct syscallname *name,
-diff --git a/linux-user/strace.list b/linux-user/strace.list
-index 5a86419e7d..77ca824f9c 100644
---- a/linux-user/strace.list
-+++ b/linux-user/strace.list
-@@ -1135,7 +1135,7 @@
- { TARGET_NR_recv, "recv" , "%s(%d,%p,%u,%d)", NULL, NULL },
- #endif
- #ifdef TARGET_NR_recvfrom
--{ TARGET_NR_recvfrom, "recvfrom" , NULL, NULL, NULL },
-+{ TARGET_NR_recvfrom, "recvfrom" , NULL, print_recvfrom, NULL },
- #endif
- #ifdef TARGET_NR_recvmmsg
- { TARGET_NR_recvmmsg, "recvmmsg" , NULL, NULL, NULL },
+Since v1:
+- Add/use print_buf_len (rth)
+
+Strace format added while debugging
+https://gitlab.com/qemu-project/qemu/-/issues/2485
+
+Philippe Mathieu-Daudé (5):
+  linux-user: Correct print_sockaddr() format
+  linux-user: Display sockaddr buffer as pointer
+  linux-user: Factor print_buf_len() out
+  linux-user: Add strace for sendto()
+  linux-user: Add strace for recvfrom()
+
+ linux-user/strace.c    | 51 +++++++++++++++++++++++++++++++++++++-----
+ linux-user/strace.list |  4 ++--
+ 2 files changed, 47 insertions(+), 8 deletions(-)
+
 -- 
 2.45.2
 
