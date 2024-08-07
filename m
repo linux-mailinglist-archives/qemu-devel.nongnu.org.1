@@ -2,65 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994A194AF27
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 19:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 919FA94AF2E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 19:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbknO-0006uz-Dh; Wed, 07 Aug 2024 13:49:58 -0400
+	id 1sbknV-0007Fj-LI; Wed, 07 Aug 2024 13:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbknM-0006tP-My
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 13:49:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbknR-00077C-QC
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 13:50:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbknK-0000Qj-Tp
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 13:49:56 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sbknP-0000Rl-V4
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 13:50:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723052993;
+ s=mimecast20190719; t=1723052998;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=4TS7ZORWg48o1sVJT03VC1l5ZCwt1N1XlNM04+sEkuA=;
- b=SqyTNDhRcg0PsjLk1c3Khfv46NAw1fmTinZk9jzdZwlv/76Kgp6b8E1NA50ub1dJDbSGo8
- WeT5pIkR3xBlZ9YXVKwihPwA70Td5jOEEsIJqmHkGuJAjstLrQ9uABxgoCVhYy8MISKhM2
- Lfa61oXHN5wMWjInE3Y3UuSsT9/z9+s=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nuIGRKa6aa188HkbqJ/CgjfL046BU5hWeK0P66oLYGY=;
+ b=RzWrNfks2mEW/HNkO5ylH7x4aUX1WH++7/GPL2dLFS/Vh7K2HnBRXXBsECVfkTgM2XqXVf
+ QVp1pu7KyqNCTD59LLrUz7IgLp8f4IEQyUFEhQyMi5ExSbEc5bim+0upnGtkXmEB2h9HcD
+ 7lwbNvNzMtzM5wvr0DFlUcteQ2tMG08=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-WGQye2X2Py2GbOQdfpRYpw-1; Wed,
- 07 Aug 2024 13:49:49 -0400
-X-MC-Unique: WGQye2X2Py2GbOQdfpRYpw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-3-Cr0tuU8FNUiEQrzRML_8kA-1; Wed,
+ 07 Aug 2024 13:49:54 -0400
+X-MC-Unique: Cr0tuU8FNUiEQrzRML_8kA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9567E1955F43; Wed,  7 Aug 2024 17:49:47 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 714961955D44; Wed,  7 Aug 2024 17:49:52 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.114])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2E6F4300018D; Wed,  7 Aug 2024 17:49:44 +0000 (UTC)
+ id 15B57300018D; Wed,  7 Aug 2024 17:49:48 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, berrange@redhat.com,
  qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com,
  alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
-Subject: [PATCH for-9.1 v4 0/7] CVE-2024-7409
-Date: Wed,  7 Aug 2024 12:43:26 -0500
-Message-ID: <20240807174943.771624-9-eblake@redhat.com>
+Subject: [PATCH v4 1/7] nbd: Minor style fixes
+Date: Wed,  7 Aug 2024 12:43:27 -0500
+Message-ID: <20240807174943.771624-10-eblake@redhat.com>
+In-Reply-To: <20240807174943.771624-9-eblake@redhat.com>
+References: <20240807174943.771624-9-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,40 +80,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3 was here:
-https://lists.gnu.org/archive/html/qemu-devel/2024-08/msg00818.html
+Touch up a comment with the wrong type name, and an over-long line,
+both noticed while working on upcoming patches.
 
-since then:
- - re-add a minor patch from v2 (now patch 1)
- - refactor how the client opaque pointer is handled (patch 2)
- - add two new patches to prevent malicious clients from consuming
-   inordinate resources: change the default max-connections from
-   unlimited to capped at 100 (patch 3), and add code to kill any
-   client that takes longer than 10 seconds after connect to reach
-   NBD_OPT_GO (patch 4) [Dan]
- - squash the connection list handling into a single patch (5) [Dan]
- - two new additional patches for reverting back to 9.0 behavior for
-   integration testing purposes; I'm okay if these last two miss 9.1
+Signed-off-by: Eric Blake <eblake@redhat.com>
+---
+ nbd/server.c | 2 +-
+ qemu-nbd.c   | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-Eric Blake (7):
-  nbd: Minor style fixes
-  nbd/server: Plumb in new args to nbd_client_add()
-  nbd/server: CVE-2024-7409: Change default max-connections to 100
-  nbd/server: CVE-2024-7409: Drop non-negotiating clients
-  nbd/server: CVE-2024-7409: Close stray client sockets at shutdown
-  qemu-nbd: Allow users to adjust handshake limit
-  nbd/server: Allow users to adjust handshake limit in QMP
+diff --git a/nbd/server.c b/nbd/server.c
+index 892797bb111..ecd9366ba64 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -1972,7 +1972,7 @@ static void nbd_export_request_shutdown(BlockExport *blk_exp)
 
- docs/tools/qemu-nbd.rst        |  5 +++
- qapi/block-export.json         | 18 +++++++---
- include/block/nbd.h            | 20 +++++++++--
- block/monitor/block-hmp-cmds.c |  3 +-
- blockdev-nbd.c                 | 62 +++++++++++++++++++++++++++++++---
- nbd/server.c                   | 51 +++++++++++++++++++++++++---
- qemu-nbd.c                     | 44 ++++++++++++++++--------
- nbd/trace-events               |  1 +
- 8 files changed, 173 insertions(+), 31 deletions(-)
-
+     blk_exp_ref(&exp->common);
+     /*
+-     * TODO: Should we expand QMP NbdServerRemoveNode enum to allow a
++     * TODO: Should we expand QMP BlockExportRemoveMode enum to allow a
+      * close mode that stops advertising the export to new clients but
+      * still permits existing clients to run to completion? Because of
+      * that possibility, nbd_export_close() can be called more than
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index d7b3ccab21c..8e104ef22c3 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -588,7 +588,8 @@ int main(int argc, char **argv)
+     pthread_t client_thread;
+     const char *fmt = NULL;
+     Error *local_err = NULL;
+-    BlockdevDetectZeroesOptions detect_zeroes = BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
++    BlockdevDetectZeroesOptions detect_zeroes =
++        BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
+     QDict *options = NULL;
+     const char *export_name = NULL; /* defaults to "" later for server mode */
+     const char *export_description = NULL;
 -- 
 2.45.2
 
