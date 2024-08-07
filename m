@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43D594A9E2
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 16:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DC994ACCD
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 17:25:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbhTH-0005Lz-G3; Wed, 07 Aug 2024 10:16:59 -0400
+	id 1sbiWK-0008RS-Om; Wed, 07 Aug 2024 11:24:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sbhTE-0005LG-DR
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 10:16:56 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ id 1sbiWJ-0008Qy-5N
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 11:24:11 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sbhTC-0001Ul-L5
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 10:16:56 -0400
+ id 1sbiWH-0003al-9f
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 11:24:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723040215; x=1754576215;
+ t=1723044249; x=1754580249;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=FuSgMD04SqrzRCXoRnWNrBv+OiFSDp9HYzVPTL4nETU=;
- b=fYKOBnhCyKLAuHWWYc7QU3Kb4n0dm0LflA1+2hLog2lAFP0oYUWMtY90
- iXDDcwZQ71tBvFoTCL+6DEqvO9AoDb7jHlPFoCJjVO8kfkXeS/Nh0XHgS
- ooIR5cetbU48kxng5LtGA+aJuo4dDj32OroTE+evM8PutVyqenvdnHbr0
- X34GlGAQtLNBIaXoXpDng7Gjfq3qJ/g5I62COSg8RC1jAR89Qd1kNh8FZ
- QcQJTc1my69cX4a8YaUy2KcB8qr17uF8LYPyKSFqn36YmKRmpl+QXGH/j
- kNSQrHf///H+izV02rAk302+ISc+yCudVmiIwsDpEWKzZ8Oej3ZJvP8+Z w==;
-X-CSE-ConnectionGUID: 1EHRBMT5TiGF30fgH+1i3g==
-X-CSE-MsgGUID: qUuvwd7UQXW8BX0EBzQOCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="32501343"
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="32501343"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2024 07:16:51 -0700
-X-CSE-ConnectionGUID: 00/VtAqjQo6ycHeYSzn6eA==
-X-CSE-MsgGUID: nuabMJ5qQnGO0eilVs9ARw==
+ bh=1C4N7azzbwbfTVKCZSe9FZT0areAlLy1fUB37HjW0wA=;
+ b=ndddy7CbO0f+Bugf6y3EHiSg95rDfLlftVAdsvhwCZoEtkFXxqgIOrkm
+ NOO4dhcytWC/2RLsv90p7txGkH+yoJvYqBa+9DgWjednT7mKzLcOswHaj
+ L5EwKztMZZBGpmR3R0z8Oom8AKCCknwDjqJKnk/e8wIAqfE+li5suvmwJ
+ u6COP5a4DSRjKhkIYZ7BEv1qU16IVavKFhKCiecbshJLNWgTcJnrBzs5m
+ X6cyaFO6Mj7m/ONmcFggpcYz8dEn0upkv0lVCr/2oXQ9/FJWLM58tDvLe
+ 4myiCFRr6JS+YaWSFvphNYsRw6mIldtEWJV2CAZwGYJRRAzVAKjVR6E1M w==;
+X-CSE-ConnectionGUID: HfknPZS4TamnRJV2Ncbtpg==
+X-CSE-MsgGUID: 1H2dT+COQ0a4I8Yv4HQI9w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="12903062"
+X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="12903062"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2024 08:24:05 -0700
+X-CSE-ConnectionGUID: 4cMn+c+jSGqtQI20IKgudA==
+X-CSE-MsgGUID: qtql8pdFTQOatiq5fY0XqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="87530139"
+X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="61828536"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 07 Aug 2024 07:16:48 -0700
-Date: Wed, 7 Aug 2024 22:32:38 +0800
+ by orviesa004.jf.intel.com with ESMTP; 07 Aug 2024 08:24:04 -0700
+Date: Wed, 7 Aug 2024 23:39:53 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: "Xin Li (Intel)" <xin@zytor.com>
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
  lei4.wang@intel.com, xin3.li@intel.com
-Subject: Re: [PATCH v1 1/3] target/i386: Delete duplicated macro definition
- CR4_FRED_MASK
-Message-ID: <ZrOFhijavHLeI6D4@intel.com>
+Subject: Re: [PATCH v1 3/3] target/i386: Raise the highest index value used
+ for any VMCS encoding
+Message-ID: <ZrOVSXX2uvezT3J1@intel.com>
 References: <20240807081813.735158-1-xin@zytor.com>
- <20240807081813.735158-2-xin@zytor.com>
+ <20240807081813.735158-4-xin@zytor.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240807081813.735158-2-xin@zytor.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240807081813.735158-4-xin@zytor.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -82,20 +82,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 07, 2024 at 01:18:10AM -0700, Xin Li (Intel) wrote:
-> Date: Wed,  7 Aug 2024 01:18:10 -0700
+Hi Xin,
+
+On Wed, Aug 07, 2024 at 01:18:12AM -0700, Xin Li (Intel) wrote:
+> Date: Wed,  7 Aug 2024 01:18:12 -0700
 > From: "Xin Li (Intel)" <xin@zytor.com>
-> Subject: [PATCH v1 1/3] target/i386: Delete duplicated macro definition
->  CR4_FRED_MASK
+> Subject: [PATCH v1 3/3] target/i386: Raise the highest index value used for
+>  any VMCS encoding
 > X-Mailer: git-send-email 2.45.2
 > 
-> Macro CR4_FRED_MASK is defined twice, delete one.
+> From: Lei Wang <lei4.wang@intel.com>
 > 
+> Because the index value of the VMCS field encoding of FRED injected-event
+> data (one of the newly added VMCS fields for FRED transitions), 0x52, is
+> larger than any existing index value, raise the highest index value used
+> for any VMCS encoding to 0x52.
+> 
+> Because the index value of the VMCS field encoding of Secondary VM-exit
+> controls, 0x44, is larger than any existing index value, raise the highest
+> index value used for any VMCS encoding to 0x44.
+> 
+> Co-developed-by: Xin Li <xin3.li@intel.com>
+> Signed-off-by: Xin Li <xin3.li@intel.com>
+> Signed-off-by: Lei Wang <lei4.wang@intel.com>
 > Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 > ---
->  target/i386/cpu.h | 6 ------
->  1 file changed, 6 deletions(-)
+>  target/i386/cpu.h     | 1 +
+>  target/i386/kvm/kvm.c | 9 ++++++++-
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 118ef9cb68..62324c3dcd 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1186,6 +1186,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+>  #define VMX_VM_EXIT_PT_CONCEAL_PIP                  0x01000000
+>  #define VMX_VM_EXIT_CLEAR_IA32_RTIT_CTL             0x02000000
+>  #define VMX_VM_EXIT_LOAD_IA32_PKRS                  0x20000000
+> +#define VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS     0x80000000
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+It's necessary to add the corresponding feat_name to FEAT_VMX_EXIT_CTLS
+feat word array, which could help filter the user's settings in the -cpu.
+
+>  #define VMX_VM_ENTRY_LOAD_DEBUG_CONTROLS            0x00000004
+>  #define VMX_VM_ENTRY_IA32E_MODE                     0x00000200
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 31f149c990..fac5990274 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -3694,7 +3694,14 @@ static void kvm_msr_entry_add_vmx(X86CPU *cpu, FeatureWordArray f)
+>      kvm_msr_entry_add(cpu, MSR_IA32_VMX_CR4_FIXED0,
+>                        CR4_VMXE_MASK);
+>  
+> -    if (f[FEAT_VMX_SECONDARY_CTLS] & VMX_SECONDARY_EXEC_TSC_SCALING) {
+> +    if (f[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
+> +        /* FRED injected-event data (0x2052).  */
+> +        kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x52);
+
+HMM, I have the questions when I check the FRED spec.
+
+Section 9.3.4 said, (for injected-event data) "This field has uses the
+encoding pair 2052H/2053H."
+
+So why adjust the highest index to 0x52 other than 0x53?
+
+And it seems FRED introduces another field "original-event data"
+(0x2404/0x2405), why not consider this field here as well?
+
+> +    } else if (f[FEAT_VMX_EXIT_CTLS] &
+> +               VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS) {
+> +        /* Secondary VM-exit controls (0x2044).  */
+> +        kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x44);
+> +    } else if (f[FEAT_VMX_SECONDARY_CTLS] & VMX_SECONDARY_EXEC_TSC_SCALING) {
+>          /* TSC multiplier (0x2032).  */
+>          kvm_msr_entry_add(cpu, MSR_IA32_VMX_VMCS_ENUM, 0x32);
+>      } else {
+
+Maybe we could adjust the index in a cleaner way like
+x86_cpu_adjust_level(), but the current case-by-case is ok for me as
+well.
+
+Regards,
+Zhao
+
 
 
