@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B597994B0B7
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 21:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD39094B0BF
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 21:55:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbmjJ-0005kx-Jm; Wed, 07 Aug 2024 15:53:55 -0400
+	id 1sbmjd-0006HA-RK; Wed, 07 Aug 2024 15:54:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.zeise@seagate.com>)
- id 1sbmjD-0005dU-SH; Wed, 07 Aug 2024 15:53:47 -0400
+ id 1sbmjF-0005jo-QG; Wed, 07 Aug 2024 15:53:51 -0400
 Received: from esa.hc4959-67.iphmx.com ([139.138.35.140])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.zeise@seagate.com>)
- id 1sbmjB-0001yc-QY; Wed, 07 Aug 2024 15:53:47 -0400
+ id 1sbmjE-0001yD-5D; Wed, 07 Aug 2024 15:53:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=seagate.com; i=@seagate.com; q=dns/txt; s=stxiport;
- t=1723060425; x=1754596425;
+ t=1723060428; x=1754596428;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vjOlFVPALIkssHYKTfnPmxNBwSHHIulRzDZ5emEL0ck=;
- b=sCNW4lYQ4IXGYtWJIFhFHmU1lBao5zp2EaKXdDvwDmOjUkrwF8m+ubpy
- nGtGwJu69HgZpMX2ijhZKuk+yebz0LSD5ObJxZoJToxaY+sy7OOV9Cat6
- fADPXizmSuh36nheSjcx7JDQH+p3JxXKMyXYp1R78DRV867ZnAhFZSnbw E=;
-X-CSE-ConnectionGUID: /eiPaWUGTHyNuSfaPxYwcw==
-X-CSE-MsgGUID: ahFBn+G5SE6vToW+nso95w==
-Received: from mail-dm6nam11lp2169.outbound.protection.outlook.com (HELO
- NAM11-DM6-obe.outbound.protection.outlook.com) ([104.47.57.169])
+ bh=dVAAJNGuu3wCMT1tbnINnXtWktD09JxN+M/icRJCpWU=;
+ b=Tg6dPrAS5XfN84bOnWP6SAXH8b8/AoFSH5kg/2XM4AAUpvVzRLlL8Sb9
+ pdm9THarb1WgvkhJqIInfW6Sge6WEYhhWStSsyGNLnc3Q3rAzdL3DyTQt
+ F20TwSCT2yA6E8jY3E5DbevqpCoIfyNHUXmosWEVhtO5Qcvji+E00/FzX U=;
+X-CSE-ConnectionGUID: JX5Y9N+XRTCV9Ljz4X2CSw==
+X-CSE-MsgGUID: R897MPz1TGiP0TMYLyCyZg==
+Received: from mail-dm3nam02lp2041.outbound.protection.outlook.com (HELO
+ NAM02-DM3-obe.outbound.protection.outlook.com) ([104.47.56.41])
  by ob1.hc4959-67.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2024 12:53:42 -0700
+ 07 Aug 2024 12:53:47 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZOd3I9vvITxEOcx+I199mDj7ML2rJ1FzbiA/KsUmJQhqAp6ksbcb2TLiCWJzXgAGITzQRsnK09zYTSU38gIuuk+nB5XRdvg1qmhKF9W2brPaaw0gfAwphbZd8UvcVJ3FD5AdlWDPTnrNVGbW+XrabNgnpZaNt3m96L4S/8S+fP5d6z9wN8C20ncqixyPBQVUekV6JXyjBtOw0WLqWDqQVUw+CIPdxaZktEGecuhwLWEB6Bz+sSyiSz1nFtSt4Qf4JvBhfpP6pSSaYr70IyZTzZa+MtRdhrFY/uYzDj+46yV6ovIq18RbwEo2/bqc13+LdIxBZ5FDOk9W2w9924XswQ==
+ b=TMavNLmLuANpF1INu7rzbxfKGIX5kOhtxM1Po0fTb1T+K9H3mfEC2+hywo/oTaYu/nYA4EQ3aHrvGTXw7CdsrjruJRuEjMRI9KVE6FCp9SGNbBIXVukVETWq0oWk7OpbkKz7LsjNYImNTQ3YS/13hMGTjXix92S+3+QSGyOCp9+kmjWKpjWzLr3uZCoVDnJNhKE36qDKFoz5e7vlyJygWOwcEtgPYYpizHgCoFbO/dzmvXmR/O7jyC8fKh3eh5N0wjJx0si9PxG7/iNBr0pSvgmLf1kltfcbsbB/FM2msvNYKLvgCHhg0uW0lmYIg8lXKW42fkKzou3QBzFkFUNrTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l+nZCYWp6LcTEFnVK/Ik8oeBgOmXVjXjfWSQH5F7bNM=;
- b=gxD6+VwsQb6VVunH4iUjjh3mlFDL8Fqbf3qBjjc0FPPAlyt/6tbqat7fiAxu5iscn40HtET8ZDc9OTFkig4S7Nw0wHKBAKlN1jbmJa3fvKBZwEaAcjznxx7CuYl2TuuKV718Mi1WUgAhhKm5/HPAaVHBLgP6U2gJgmxYqsG9m84wnbR+s7C8RdP7rupUpPrr0o4io/XM8ClVThBFDAw6hfoo9YrfmO8KrEjMo/DroY10WGqO8tucT+3Ig9aFiyB6JHMdWAOw31/z0LIm8NLNp4pXOyn8z+NzILT9/fQmsOy+HlTCC3dsH/QUbo22V/6Ob86If1/W9CUH5xzMb+hTIQ==
+ bh=1pJAr7bJw3o8CypqtrR8n0/poOCIe5m+NKgZ/RgkOFw=;
+ b=OiNQFQU19eR6lHPgcSPtBh7ASq3Y3xfPK8sEaIZqpS36fo/cwhrTNZvWqHTY0kM4+0jFQW/PsVIbqt8nyrFDRmeuUdlYtawi39Vp1eXRPsc1IDCIVbr+LI6Tc5jKCS5smagEdTIbM8GBEBvxSWUjD5bkEZ8i4I7MBSuxd0BwdmeFeP433TW1qpPcPDOLG55jRT4bBDOPEymemqI9DxWWpqN5xJRGURnU+QsxWWd2pZcdi3rkw+aKOZ8nZDOoOlzR6DX57Oln+3I8pblkMQxGKAoVD1p+4lV/knnl04F2GWA3iZYsYR93XTRTMBGLY0QGj9WOpG28FK7iKYZ04Dg7Qw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
  is 192.55.16.51) smtp.rcpttodomain=nongnu.org smtp.mailfrom=seagate.com;
  dmarc=fail (p=reject sp=reject pct=100) action=oreject
@@ -45,44 +45,44 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seagate.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l+nZCYWp6LcTEFnVK/Ik8oeBgOmXVjXjfWSQH5F7bNM=;
- b=ZqA5rKpJtV2rJd6XsjiGZUI+BB8gT+hQUeWUWVeFDDXO+krqXgYnYFDWrjDmSn0AX90LSsXPuQsjf/T9hxtFwH06JEW580fy/v0y2KIh6qEhYl5yg6Rk/9eDJOz6Cw8OgzEjpLBcj0zZiSM5jP9BVdy2E63ena9V8262aXWmpxQ=
-Received: from BL1PR13CA0310.namprd13.prod.outlook.com (2603:10b6:208:2c1::15)
- by SJ0PR20MB4536.namprd20.prod.outlook.com (2603:10b6:a03:3ef::17)
+ bh=1pJAr7bJw3o8CypqtrR8n0/poOCIe5m+NKgZ/RgkOFw=;
+ b=bWMrHVgCvPJpfgDp2iX93urmzE37FeHEh4QiiC+RPbUYe5SWN2BKpM+jGKOglgvjP8F2mbXl7Ywkp64ONIRL1dNjUqkI8ifAV5zr+HH09M+FrCifA5rS8hFKl6fNgdFKApEsmuRNFEK7vfc174m9lVAQ3fnvyrjioMRMuZDhHSA=
+Received: from PH7P221CA0060.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:33c::16)
+ by PH8PR20MB5290.namprd20.prod.outlook.com (2603:10b6:510:1ca::9)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.25; Wed, 7 Aug
- 2024 19:53:40 +0000
-Received: from BN3PEPF0000B078.namprd04.prod.outlook.com
- (2603:10b6:208:2c1:cafe::da) by BL1PR13CA0310.outlook.office365.com
- (2603:10b6:208:2c1::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.9 via Frontend
- Transport; Wed, 7 Aug 2024 19:53:39 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Wed, 7 Aug
+ 2024 19:53:44 +0000
+Received: from CY4PEPF0000EE38.namprd03.prod.outlook.com
+ (2603:10b6:510:33c:cafe::95) by PH7P221CA0060.outlook.office365.com
+ (2603:10b6:510:33c::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.14 via Frontend
+ Transport; Wed, 7 Aug 2024 19:53:44 +0000
 X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 192.55.16.51)
  smtp.mailfrom=seagate.com;
  dkim=none (message not signed)
  header.d=none;dmarc=fail action=oreject header.from=seagate.com;
 Received: from sgspzesaa002.seagate.com (192.55.16.51) by
- BN3PEPF0000B078.mail.protection.outlook.com (10.167.243.123) with Microsoft
+ CY4PEPF0000EE38.mail.protection.outlook.com (10.167.242.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7849.8 via Frontend Transport; Wed, 7 Aug 2024 19:53:38 +0000
-X-CSE-ConnectionGUID: UdmeCrlrQDCUXnkfu5IuCQ==
-X-CSE-MsgGUID: 3MdgpI4JRNejUMxF5oLOZA==
+ 15.20.7828.19 via Frontend Transport; Wed, 7 Aug 2024 19:53:43 +0000
+X-CSE-ConnectionGUID: eu3q7q8lRrSUlhOiwPmBkg==
+X-CSE-MsgGUID: atTk3cZxQ0SEeXTdVJAu/g==
 Received: from sgspiesaa002.seagate.com ([10.4.144.53])
- by sgspzesaa002.seagate.com with ESMTP; 07 Aug 2024 12:53:29 -0700
-X-CSE-ConnectionGUID: KGaNtEsKSp2PXicHKrVBOg==
-X-CSE-MsgGUID: Tv68JOLTT2+Hgt3EHH5f1g==
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="122235457"
+ by sgspzesaa002.seagate.com with ESMTP; 07 Aug 2024 12:53:32 -0700
+X-CSE-ConnectionGUID: w60W210jRxau09DJraI+2A==
+X-CSE-MsgGUID: PPO1bAamRe+uQp+GGKatwg==
+X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="122235460"
 STX-Internal-Mailhost: TRUE
 Received: from unknown (HELO cortana..) ([10.4.50.14])
- by sgspiesaa002.seagate.com with ESMTP; 07 Aug 2024 12:53:21 -0700
+ by sgspiesaa002.seagate.com with ESMTP; 07 Aug 2024 12:53:24 -0700
 From: Alejandro Zeise <alejandro.zeise@seagate.com>
 To: qemu-arm@nongnu.org
 Cc: alejandro.zeise@seagate.com, kris.conklin@seagate.com,
  jonathan.henze@seagate.com, evan.burgess@seagate.com, clg@kaod.org,
  peter.maydell@linaro.org, berrange@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v4 02/15] crypto/hash-glib: Implement new hash API
-Date: Wed,  7 Aug 2024 19:51:09 +0000
-Message-Id: <20240807195122.2827364-3-alejandro.zeise@seagate.com>
+Subject: [PATCH v4 03/15] crypto/hash-gcrypt: Implement new hash API
+Date: Wed,  7 Aug 2024 19:51:10 +0000
+Message-Id: <20240807195122.2827364-4-alejandro.zeise@seagate.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240807195122.2827364-1-alejandro.zeise@seagate.com>
 References: <20240807195122.2827364-1-alejandro.zeise@seagate.com>
@@ -90,55 +90,55 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B078:EE_|SJ0PR20MB4536:EE_
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE38:EE_|PH8PR20MB5290:EE_
 Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 56d16580-9172-4296-a834-08dcb71aa22d
+X-MS-Office365-Filtering-Correlation-Id: 36d4e859-433d-4ebc-a071-08dcb71aa4a6
 STX-Hosted-IronPort-Oubound: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/1JqAmA6nm9Uyj55ZA+b63K68xCpc+EOhtk/OFAuIeokgZMXdIh1R8UZScf8?=
- =?us-ascii?Q?Odg/ap78ihVPM1K6B1yT53PCBN10Ke4CWIVplDh+1XnnquYIeGVS60ZOQ02f?=
- =?us-ascii?Q?rY6rDGQMNBTN48vTM4udzQUOhnnPeV442abmE5J7+DqBfBaqEs9p3l1M9gH+?=
- =?us-ascii?Q?zq1G4RRcrTXusWfqbx4AUvaTaCIVL7FFKi7VcHQqwguidf/OAl9nUZaccDwi?=
- =?us-ascii?Q?J7HqUmwH0I2ZYv9B8dVgxsd6kORn+kaX/nBr+H03iLQRNzP7c2vKXn+s+HZX?=
- =?us-ascii?Q?/rV9ZlqosvjqtkwK228jtwSObmsBeOb84XpTxU/fSs0YVxgUZfNaVcj+RAY/?=
- =?us-ascii?Q?8o3HyNWn1C1h30wABJrHJMftHjvnDZyvq1Z98A9Pf2sjB7PTLmfTLg47zkar?=
- =?us-ascii?Q?HjOvwkuYs1jOKKybbxmIXae/BZE6V3+9tMp7+m0nL0VrijWDbzOEmyldKQZE?=
- =?us-ascii?Q?nW5xbeM2LZPA1tBJNLcGvTs1QlS6NuvYap91tVDIt9gZ4xcd3q+mxO1XqeBf?=
- =?us-ascii?Q?H0t+kf2+AtqhZw9QgtcvBGjrCNIzmUYQKrx//iKPYG3K2KfY+qAuYFVCyO+5?=
- =?us-ascii?Q?3ccDih8QVAGTZ1DXExrIf5V4zXII5H5ragjZIMeBPQr7feyxFehtLqAEw8KG?=
- =?us-ascii?Q?WJlfjpZ0Pv5DoaVcmwhcNDj1r9S73YSzLFcmKKw2Cj9kkq82PQ03DiNvD6FD?=
- =?us-ascii?Q?K3Jd0IRtR1NH1sloGtjGqDPzI4IlQtJ+DTQm1QTHG50k+39ebpqSO1Scjt7f?=
- =?us-ascii?Q?V23JPJVBNlsqTTdST9SedTakejqj2bnnj4UQlK1Ox7/mSJ1r924tuhMIlLoS?=
- =?us-ascii?Q?3tyY8qWG8FpurdXlUeljyfk9NxcXy9dr7pTKU3Cs+afv9lbXRJLqzYtpHIvB?=
- =?us-ascii?Q?l1/e+WirOxeIhDk2jNLi8Zb6fZLjvdUlXsAIIpS+oVCSfdl3e6AnCdYlRehS?=
- =?us-ascii?Q?VjD11xt2jFE6R5Yj5NmkLPzDfaBZycStmmy88XKSspHdW21kFoLfthgdx/XV?=
- =?us-ascii?Q?Bxevp0JepmhKJvSopa0mSIVi2xM82SIVAmdSo4PX2BJy7hOGySyBUlrz4leO?=
- =?us-ascii?Q?1/d07Oq5ht9ir+butUI3NkUeUFslmbZ5QiHlEyU6Y5i/1Xg4Jm6vwCtNpzLw?=
- =?us-ascii?Q?t+Gzus7hgSyYC43/zF5vG6zb/tW/XxyxgS8akNwYUuaaRQAYXDU/gpJYqpFY?=
- =?us-ascii?Q?eOfkXN8i5v+OQ8Gq3FjkXiinMI5NBnFqBMPR+yT5HVafWXeGmglupFg5mnGb?=
- =?us-ascii?Q?PY71zk8zqLAESOIsODv5aLYuOgMG8Vq8/Fe8bC3O0jue+zZBrKfcdkJmtylO?=
- =?us-ascii?Q?Wvyoi/6Fqn/CvVIHLI7BPbw/bH057gnfJqWRvTiucOQAReJiyx3SRYoR0nYB?=
- =?us-ascii?Q?8+47pKOulHrxCSs7PCw/Lfmn7RKwO7v7C+Yv5X+mKsxccpRhJx0qSJiYPe5W?=
- =?us-ascii?Q?LjFCOKqI5mT3IVfF6xfgW5ApG5aQr9R1?=
+ ARA:13230040|82310400026|36860700013|376014|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mLnNr26YIDgo9gpSnFI98n2Nola9bL8dt8D262ewPV46mW9JQgh0Wug1/gfi?=
+ =?us-ascii?Q?SY9pkfeinAWzbT6Fs+9yBMP3oMTY9Tf4nZ9bBNJ6PY1rC1B3MLUlGOyb/rSl?=
+ =?us-ascii?Q?qp7SHeNPYpJ+vEs2c7dYgDP251eRAvXUwGiX9miTC7+zF5ERJHt3f1g9soN0?=
+ =?us-ascii?Q?HRIqr/8wWhbVqQBOjiJknf7DrHts0G+NwXkot6VmnfEI6DPQSF6AdNXMU7vi?=
+ =?us-ascii?Q?tUElEGb/D8FdoMko5C3+tuVF2VpnszxsCks6s3LCvFmyqRLHmI1UC7yUGQ7f?=
+ =?us-ascii?Q?fyUlRRxLSKoFdrcfJ1YHPlC/dtum+CAPnF5h+voXktrytsEgK7i1tZ3PRbOU?=
+ =?us-ascii?Q?P71tf9WmVCObs1tN4wV4BGOeGCuOsud1j/Tk6YLgphiYcFLIZ9mU9u59I4eH?=
+ =?us-ascii?Q?7aH8hgZz/M+3U+aHoNCBV+0miHuy+Ybk5H4ud0qcQY67XJdO0dLoqGDgwbOw?=
+ =?us-ascii?Q?bCprTbf/WpKNyBMFZzSNa9Sye+5Cb6YcsupUYb6jKQch1C71OgtdoFruw3yr?=
+ =?us-ascii?Q?jEeNM81YsXIQbpEx6dYjrPXPhNZtZmRc6XD2DREh9cz6cLUmYGMIqNnxS6o6?=
+ =?us-ascii?Q?274qFqTbrbPXWmuRRaX1Clh3cQZz2jaAk4h4UHikGgtq/fcw/j/ja5Zme4Ms?=
+ =?us-ascii?Q?n7970zRNteXa5MQVz3tAFpz1q2NdXcpKmhMZNzqXEJYZYRX4mgj4InCl4Mcj?=
+ =?us-ascii?Q?9BhpSyGD9aIwA1C2BTnIcK3bZxVFFDf0jXtqFPZGl5ain5115HlfbklXgn75?=
+ =?us-ascii?Q?KS7mpUsiodXnt2zB4MMKzkODdlptMnFoN5/nbRrtl9C77/rOtUunzmFpTlj9?=
+ =?us-ascii?Q?jZfbbE73lO5kOyCXcd2lv1IAkJNbv74emy3EPUMUU/v5TIp08L6wdBwJK4WE?=
+ =?us-ascii?Q?sWKLpDtFTsoc5sOkOXRxqFhaan8RNIYAwTmfsXl1v7AgnGATgqZKkv050oT3?=
+ =?us-ascii?Q?6MN5mAegpBbSuFqFfbF/5fmrBFyc/T/2VbZrjMIfcJRubjb5EOeSwMDcRxZ4?=
+ =?us-ascii?Q?tnBhA/PziqRmF2aup4uzI3uk+98lFULODJv1yfzG071U/SMRV3dHu+Ld9jXA?=
+ =?us-ascii?Q?DjHLmPpM3pn1iG6B27a7VimWXiS1uyy1PZ+icm8ayXkxWj41ODiT/UHfeOK1?=
+ =?us-ascii?Q?WBkRChw5JXwVbLZNB6quVGPdGc1P4V16Mu46K14REQ/p8hVw24NAAjVyEqEn?=
+ =?us-ascii?Q?74w4hnlIU7qR4iBEHRiShT5bJmVNjC5jSg0NRszOqYw3Yb9lZZpH00WvNS1h?=
+ =?us-ascii?Q?NVscNzNjg65Cs+0jPH8Kz/04Iyfl0JcPmr9Xm7owPPKoeWB3GvO7s0VgafNM?=
+ =?us-ascii?Q?pKf8xOMWooZe49D1csCsvOfKKgc8onT1TDttSNquwZZTlL51Ar4aZaj81sPB?=
+ =?us-ascii?Q?XfNt2NQ+eAV6RSjmeHubwA4y4znou8GjHIeoGdMNQ6QeBoFbybx0rq/jGFFs?=
+ =?us-ascii?Q?Aw1WUeOfuNlt3ooxYb1vTquUqE5loDbm?=
 X-Forefront-Antispam-Report: CIP:192.55.16.51; CTRY:SG; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:sgspzesaa002.seagate.com; PTR:InfoDomainNonexistent;
- CAT:NONE; SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);
+ CAT:NONE; SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: yiKe6yD8gVtjbRBpL5qpbNbUOCAv9xeKPc6X43bfUwYSWV6bNtN+YmZMJJx4KYk3C8MZV7OAkHB/ZXsT7LSa6RdPAls6SsWwXfiujXar9k8a++Hwh5JQczeQD31BXz1Sj7bnS2l/YQFihusfsjqFjtOFgA7iUGKKOGt5yuoxNSPxkr3N3uU9KZRmw4X74ukebtMfIwZvFheygCavEhUzxiOhTP33WgaJTGhlPlbNTSG2BY0UX5d9tT+k9ff5/jhttxx0vMnchIEtYDFhstOWi3uQ0B3sSnDiAb4r6zffr5qZ+rUPxQ0lV71QxPPiXdXwF25cW45w41tEaJEWXGbEFEmDLrNiD4UkFvRY9e+5Wk+euXIBB4/XZQn9sHp8N1IF8zuFw8jbQqd1G4edCs+8E6RogjS4kZaaxmZS4zkoPYZDyz3xmFzV9Uk8+7a0ZTw+dx7HC2IQlc/FzdGsAh0CRpYkjMPiklm78T0lGAixXL+XjttDmgzqC9jTyN4iEKDcUmNS8LoUApZ78yaGg8qhejqP3la3bJY3Z/hqDgi74NGlEHnzAKkMIQksCV7c/qDCrHIBZif8H6HCmRDfpKcbmgn8RoWtAaYZxjTfy6jsYDZ5Q3uaCIpzj2bnzZwci75M
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Iv7+HMgqG/crZFqLxRdsCfUGwqxN0UH8dTCN8gnEU2aQNHVsxu+Nbel01IIrmT40zAHbEqw/95MKiBcrVdzlpd0DdTpKYgrYAT+tcylS1vSdu9d05nBM2Dtqphc5G5/Ad/ai8mUIlDnHDMsc9wS7JqH5ZH8BGxQuiPLCEi5UPds9k19xqb2x0My4iYUHEJC+MKhkmRxMzb3PGZlTTba+G6WmFKcpDhKn/KuysWsKZNf5aCg53U76S/KeBekei+j76v207jbGDKNYB//mKg25opTWwwfhVwKwUroAdO7sKKNUhvAN9cUrmYEypa5gUCD6+hyFFBo3X0KgbDvQd98JtudgPBi5xGsZDNW5hLRPE1tXs7nrEd4dYzop29iCVKeMCfj4PC+LBZe643Gib90QvQ/Z9g+IrYzh8j0z5GBLLoTKof8IC6HjXHJTSJvliiyuQ9NLx/V9yx7eWuTw1xtpGLNQsG42mcyGuFrMkq/cAqGdNH4oZR0uU7pS3a6naJRQQclX/LD2oMhT9liMvY1oc/4mqYxomaDPbXja8p0fIX5y92NRaHlOKLNzI/ZQLSRQaPDR17HF3oN2P6J4CTcYP6I08cBfJuxpZ9MC0TJmcQjZeNzyjxPBvc5eJNBtQGZw
 X-OriginatorOrg: seagate.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 19:53:38.5982 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56d16580-9172-4296-a834-08dcb71aa22d
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 19:53:43.1840 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36d4e859-433d-4ebc-a071-08dcb71aa4a6
 X-MS-Exchange-CrossTenant-Id: d466216a-c643-434a-9c2e-057448c17cbe
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d466216a-c643-434a-9c2e-057448c17cbe; Ip=[192.55.16.51];
  Helo=[sgspzesaa002.seagate.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B078.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE38.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR20MB4536
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR20MB5290
 Received-SPF: pass client-ip=139.138.35.140;
  envelope-from=alejandro.zeise@seagate.com; helo=esa.hc4959-67.iphmx.com
 X-Spam_score_int: -44
@@ -163,19 +163,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implements the new hashing API in the GLib hash driver.
+Implements the new hashing API in the gcrypt hash driver.
 Supports creating/destroying a context, updating the context
 with input data and obtaining an output hash.
 
 Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
 ---
- crypto/hash-glib.c | 77 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ crypto/hash-gcrypt.c | 79 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/crypto/hash-glib.c b/crypto/hash-glib.c
-index 82de9db705..9f4490762a 100644
---- a/crypto/hash-glib.c
-+++ b/crypto/hash-glib.c
+diff --git a/crypto/hash-gcrypt.c b/crypto/hash-gcrypt.c
+index 829e48258d..e05511cafa 100644
+--- a/crypto/hash-gcrypt.c
++++ b/crypto/hash-gcrypt.c
 @@ -1,6 +1,7 @@
  /*
   * QEMU Crypto hash algorithms
@@ -184,13 +184,12 @@ index 82de9db705..9f4490762a 100644
   * Copyright (c) 2016 Red Hat, Inc.
   *
   * This library is free software; you can redistribute it and/or
-@@ -95,6 +96,81 @@ qcrypto_glib_hash_bytesv(QCryptoHashAlgorithm alg,
+@@ -110,7 +111,85 @@ qcrypto_gcrypt_hash_bytesv(QCryptoHashAlgorithm alg,
+     return -1;
  }
  
- 
 +static
-+QCryptoHash *qcrypto_glib_hash_new(QCryptoHashAlgorithm alg,
-+                                   Error **errp)
++QCryptoHash *qcrypto_gcrypt_hash_new(QCryptoHashAlgorithm alg, Error **errp)
 +{
 +    QCryptoHash *hash = NULL;
 +
@@ -201,17 +200,22 @@ index 82de9db705..9f4490762a 100644
 +    } else {
 +        hash = g_new(QCryptoHash, 1);
 +        hash->alg = alg;
-+        hash->opaque = g_checksum_new(qcrypto_hash_alg_map[alg]);
++        hash->opaque = g_new(gcry_md_hd_t, 1);
++
++        gcry_md_open((gcry_md_hd_t *) hash->opaque, qcrypto_hash_alg_map[alg], 0);
 +    }
 +
 +    return hash;
 +}
 +
 +static
-+void qcrypto_glib_hash_free(QCryptoHash *hash)
++void qcrypto_gcrypt_hash_free(QCryptoHash *hash)
 +{
-+    if (hash->opaque) {
-+        g_checksum_free((GChecksum *) hash->opaque);
++    gcry_md_hd_t *ctx = hash->opaque;
++
++    if (ctx) {
++        gcry_md_close(*ctx);
++        g_free(ctx);
 +    }
 +
 +    g_free(hash);
@@ -219,52 +223,52 @@ index 82de9db705..9f4490762a 100644
 +
 +
 +static
-+int qcrypto_glib_hash_update(QCryptoHash *hash,
-+                             const struct iovec *iov,
-+                             size_t niov,
-+                             Error **errp)
++int qcrypto_gcrypt_hash_update(QCryptoHash *hash,
++                               const struct iovec *iov,
++                               size_t niov,
++                               Error **errp)
 +{
-+    GChecksum *ctx = hash->opaque;
++    gcry_md_hd_t *ctx = hash->opaque;
 +
 +    for (int i = 0; i < niov; i++) {
-+        g_checksum_update(ctx, iov[i].iov_base, iov[i].iov_len);
++        gcry_md_write(*ctx, iov[i].iov_base, iov[i].iov_len);
 +    }
 +
 +    return 0;
 +}
 +
 +static
-+int qcrypto_glib_hash_finalize(QCryptoHash *hash,
-+                               uint8_t **result,
-+                               size_t *result_len,
-+                               Error **errp)
++int qcrypto_gcrypt_hash_finalize(QCryptoHash *hash,
++                                 uint8_t **result,
++                                 size_t *result_len,
++                                 Error **errp)
 +{
-+    int ret;
-+    GChecksum *ctx = hash->opaque;
++    unsigned char *digest;
++    int ret = 0;
++    gcry_md_hd_t *ctx = hash->opaque;
 +
-+    ret = g_checksum_type_get_length(qcrypto_hash_alg_map[hash->alg]);
-+    if (ret < 0) {
++    *result_len = gcry_md_get_algo_dlen(qcrypto_hash_alg_map[hash->alg]);
++    if (*result_len == 0) {
 +        error_setg(errp, "%s",
 +                   "Unable to get hash length");
-+        *result_len = 0;
 +        ret = -1;
 +    } else {
-+        *result_len = ret;
 +        *result = g_new(uint8_t, *result_len);
 +
-+        g_checksum_get_digest(ctx, *result, result_len);
-+        ret = 0;
++        /* Digest is freed by gcry_md_close(), copy it */
++        digest = gcry_md_read(*ctx, 0);
++        memcpy(*result, digest, *result_len);
 +    }
 +
 +    return ret;
 +}
-+
+ 
  QCryptoHashDriver qcrypto_hash_lib_driver = {
-     .hash_bytesv = qcrypto_glib_hash_bytesv,
-+    .hash_new      = qcrypto_glib_hash_new,
-+    .hash_update   = qcrypto_glib_hash_update,
-+    .hash_finalize = qcrypto_glib_hash_finalize,
-+    .hash_free     = qcrypto_glib_hash_free,
+     .hash_bytesv = qcrypto_gcrypt_hash_bytesv,
++    .hash_new      = qcrypto_gcrypt_hash_new,
++    .hash_update   = qcrypto_gcrypt_hash_update,
++    .hash_finalize = qcrypto_gcrypt_hash_finalize,
++    .hash_free     = qcrypto_gcrypt_hash_free,
  };
 -- 
 2.34.1
