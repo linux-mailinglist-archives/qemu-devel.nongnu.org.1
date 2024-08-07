@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038D794A862
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 15:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E365194A7DF
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 14:40:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbgPg-0001a1-N1; Wed, 07 Aug 2024 09:09:12 -0400
+	id 1sbfU0-00066Y-St; Wed, 07 Aug 2024 08:09:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yaozhenguo1@gmail.com>)
- id 1sbdOC-000766-5g
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:55:28 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfTm-0005yi-BM
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:09:26 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yaozhenguo1@gmail.com>)
- id 1sbdOA-0004D2-EA
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:55:27 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-7105043330aso1437396b3a.0
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 02:55:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbfTg-0008DI-F3
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 08:09:20 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3684e8220f9so461338f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 05:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723024525; x=1723629325; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Uviacm/uMbm2emfL4M26wkPAMIKsc8+30xZJBnQdb0I=;
- b=H1ItiyK6eB++yyaDiXd6TaCn4l/p5Hd/EOPI3DNTUnyCsxkntL/CPcPcpMPPrxBHF9
- aOilttMIrZZRnLHYm8dOcCjxNZwnyJzy2RJvXJVUNFEviFC1HTh63dTKbB8Me2Z5WtOl
- ndYHyHVR+deUFKJJa7XEYQL/UfF13ueGG6IlX4IG2x3OFdKCT7DrcnnpD39gI8s66XXZ
- 7HvqAuUFWIQbiHX6ukC3y3UdP10804CSBj1Ujrp0n6Kepdmf7Btm4RLra+S7PdMwmXAa
- YW9bMpbLhm2y+c6LVKJk8+/65pfwHtb85ozWmNw9Lly06Fzq8tvWSVxLIuBGkeDRHhlM
- y+YQ==
+ d=linaro.org; s=google; t=1723032554; x=1723637354; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BzYjHKM8QWm29bOPoyExYoIAdgoIo8pXShLve8RotKo=;
+ b=OwM9aLirNLI3qdRghKg70E/Je0R8mlkw6ufPJ4ldZ/YY1X22Qgyed/FVPVeba9T2nw
+ 505i9likWjnYOjptYw1zKQzhfI3QGP9bOpFedduAkio1S+D2DphvCGBePZFXeBfzriK5
+ zZ+CqVJN42rl0v92/VW8QgXSyNSvAi/Io5W5di5wXoL4Hd2IXe5iQBla7BY+NdYWbqnx
+ NsbdpYGHbxQk44UxbDE8Fw3LnpM55BrM2Rpt4qgIAlTGG2ajsjsbq5gyNKOqTCxTQeKc
+ TLK+oinRhUdB3gASu3S4by4hoD3EAHPCokgGHPWypqE4f5Z2xg8in1TlBUnMMWEXXWnM
+ fhKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723024525; x=1723629325;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Uviacm/uMbm2emfL4M26wkPAMIKsc8+30xZJBnQdb0I=;
- b=d7iHwxFlZJr6ezDeIGg2cl24Ixm0TLRIWtZ++bwZa5BSHyoFvXgMOrLeLylgiMhyEj
- HtTonFtG95F86T0ltxhg5iWnHWNeQ3S/1jsMfzLe+ivqRGV430gAZtoxbFAmJzlCqSS/
- jpf660PRkmjzHJWOGrjQ4BkrgFBkJuqOH5U6BK4QfEj0WwsVoSph7ynyIZSGUf5BQYB/
- oqAZLHCMkwR9b2lTRSE5q1HJ/D7F8+xAbqsQwyc0a/HOAugLhUGH9Bpr4Eu2bb0GpwoH
- 4VFvXuMHEvCyrq5/ujxxF5iSnafjsdjJNUEocHkJVfdDnuCF9QOy8/5DIyJE+lsW1umh
- W+cA==
-X-Gm-Message-State: AOJu0YyQ/YhmLSQsHnqMw9JT35Sl338MnalN/bpviRmjIsf3T2SHTi+j
- DcTQk2DxE5f9RllqAD/5FsOyP1cPuYn1X9Giyv3bRR36/07m7JW2X9HRvg==
-X-Google-Smtp-Source: AGHT+IEcCSXz7WB7mKn3x6RxbzU1KtqyvlAsxlnb6mq/IXN+Ruky0V3E2UewjSvOLKEaE+IPQab9Og==
-X-Received: by 2002:a05:6a00:17a0:b0:706:6af8:e088 with SMTP id
- d2e1a72fcca58-7106cfa1e92mr19953089b3a.3.1723024524487; 
- Wed, 07 Aug 2024 02:55:24 -0700 (PDT)
-Received: from localhost.localdomain ([119.28.83.92])
+ d=1e100.net; s=20230601; t=1723032554; x=1723637354;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BzYjHKM8QWm29bOPoyExYoIAdgoIo8pXShLve8RotKo=;
+ b=cqOFyjI6S9jln3hLusGS0bDHr2rG0unXyUHJguuMB49bTpKOdMgMWcKpEOi4jwe1mk
+ QROEXZL1QE59Pmm/ypVPlD3HFewglZoa2bZ/tMq/NtvFmJMZ2qeoGuZufiYW/KINaSyY
+ atkBynlpSDhY0oKXOUNoJDM8x0wajth++oEJs7zoN86FGeLj3ESZceH/sPx0W4e1oUgC
+ 2OvNJIMlyGERWsJQPFAn5XXAo2QgP4TA7D5YIatGwnFONQWOzF2jAN8UDJWZunc1ALTA
+ fwfQeXAqTyJvjkojLTZ7qc/icMp53OuLWX4UGN6ZMC4Nszhc3OraicOzpP68UFIQsksx
+ 5x+g==
+X-Gm-Message-State: AOJu0YzvhH0flfH7LopJIdAqA6xvtn8t4aKIgvUe9sp5Smf8pOM6cmc0
+ osScc/yVMVygANddvFLpF7ye0NZq9hvfSPiHO/EEK8kyNZooARt8ZNOEsoFXNlQ=
+X-Google-Smtp-Source: AGHT+IEexye4bTd5GUjoXpcrXInlT7xJIWsZz+MgVf0XYtY7myKgZXP/OTB5nYoAwB/pb07EXpD07Q==
+X-Received: by 2002:adf:b197:0:b0:36b:a9e8:6b5 with SMTP id
+ ffacd0b85a97d-36bf0db1e40mr1574498f8f.10.1723032553621; 
+ Wed, 07 Aug 2024 05:09:13 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.212.120])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7106ec73d8csm8353474b3a.92.2024.08.07.02.55.22
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Aug 2024 02:55:24 -0700 (PDT)
-From: yaozhenguo <yaozhenguo1@gmail.com>
-X-Google-Original-From: yaozhenguo <yaozhenguo@jd.com>
-To: alex.bennee@linaro.org,
-	mst@redhat.com,
-	sgarzare@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yaozhenguo@jd.com
-Subject: [PATCH] virtio/vhost-user: fix qemu crash when hotunplug
- vhost-user-net device
-Date: Wed,  7 Aug 2024 17:55:08 +0800
-Message-Id: <20240807095508.54750-1-yaozhenguo@jd.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+ ffacd0b85a97d-36bbd01efe5sm15832435f8f.46.2024.08.07.05.09.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Aug 2024 05:09:13 -0700 (PDT)
+Message-ID: <f2491b8e-595f-456e-8dd4-92a11207e092@linaro.org>
+Date: Wed, 7 Aug 2024 14:09:11 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] qapi: Generate QAPI files using qapi/ for generated
+ header paths
+To: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20240807093406.40360-1-philmd@linaro.org>
+ <ZrNB5C7Ta-Qg-9HT@redhat.com> <87ttfwwqrx.fsf@pond.sub.org>
+ <ZrNTxb8go0xqfE3R@redhat.com> <8734ngwpca.fsf@pond.sub.org>
+ <ZrNZmFL_HjuKrque@redhat.com> <87ed70v8x0.fsf@pond.sub.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87ed70v8x0.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=yaozhenguo1@gmail.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 07 Aug 2024 09:09:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,137 +97,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When hotplug and hotunplug vhost-user-net device quickly.
-qemu will crash. BT is as below:
+On 7/8/24 14:01, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+>> On Wed, Aug 07, 2024 at 01:21:25PM +0200, Markus Armbruster wrote:
+>>> Daniel P. Berrangé <berrange@redhat.com> writes:
+>>>
+>>>> On Wed, Aug 07, 2024 at 12:50:26PM +0200, Markus Armbruster wrote:
+>>>>> Daniel P. Berrangé <berrange@redhat.com> writes:
+>>>
+>>> [...]
+>>>
+>>>>>> It is confusing that we have both shared stuff and QMP schema
+>>>>>> only stuff under the same location.
+>>>>>
+>>>>> Which stuff in which location?
+>>>>
+>>>> There are multiple directories with 'qapi' in their name
+>>>>
+>>>>   - $SRC/include/qapi - all generic stuff for any consumer of QAPI
+>>>>   - $SRC/qapi - impl of generic stuff from $SRC/include/qapi, but
+>>>>                 also the QMP schema for machine emulator
+>>>>   - $BUILD/qapi - generated code for QMP schema for machine emulator
+>>>
+>>>     - scripts/qapi - the generator code
+>>>
+>>>>
+>>>> I find it confusing that we have both generic QAPI code and the main
+>>>> machine emulator QMP schema in directories sharing the same 'qapi'
+>>>> name.
+>>>
+>>> Got it.
+>>>
+>>> Lack of separation between generic C infrastructure and specific schema
+>>> hasn't really annoyed me.  Possibly because the two are, for better or
+>>> worse, joined at the hip.  Except for the use of "qapi:" in commit
+>>> message titles; there I've at times felt a slight urge to distinguish
+>>> between schema work, C infrastructure work, and generator work.
+>>>
+>>> Of course, other people's confusion trumps my non-annoyance.
+>>
+>> When we first introduced the QAPI/QMP schema for system emulator of
+>> course it was fine, since we didn't have QGA usage.
+> 
+> Actually, qga's QAPI schema (commit e3d4d25206a) predates the main QAPI
+> schema (commit e3193601c84) by a few weeks.
+> 
+>>                                                      Now days we have
+>> a dedicate $SRCDIR/system directory for the system emulators, so I
+>> wonder if its worth putting the system emulator schemas in there
+>> instead ? Caveat is that the QSD also uses some of this schema.
+> 
+> Another caveat is that much QAPI code, both infrastructure and
+> generated, has bled into programs other than qemu-system-FOO.
 
-0  __pthread_kill_implementation () at /usr/lib64/libc.so.6
-1  raise () at /usr/lib64/libc.so.6
-2  abort () at /usr/lib64/libc.so.6
-3  try_dequeue () at ../util/rcu.c:235
-4  call_rcu_thread (opaque=opaque@entry=0x0) at ../util/rcu.c:288
-5  qemu_thread_start (args=0x55b10d9ceaa0) at ../util/qemu-thread-posix.c:541
-6  start_thread () at /usr/lib64/libc.so.6
-7  clone3 () at /usr/lib64/libc.so.6
+qapi/qapi-types-foo.h is OK since we to share libcommon.a.
 
-1. device_del qmp process
+I'm not sure about qapi/qapi-visit-foo.h, maybe due to qtests?
+There was also some code pulled by QOM properties, althougth not used.
 
-virtio_set_status
-  vhost_dev_stop
-    vhost_user_get_vring_base
-      vhost_user_host_notifier_remove
+> $ gdb -batch -ex "info sources" bld/qemu-i386 | tr ',' '\012' | sed -n '/qapi/s,^.*/qemu/,,p'
+> bld/qapi/qapi-types-machine-common.h
+> bld/qapi/qapi-types-machine.h
+> include/qapi/util.h
+> bld/qapi/qapi-builtin-types.h
+> bld/qapi/qapi-types-error.h
+> bld/qapi/qapi-types-common.h
+> bld/qapi/qapi-types-run-state.h
+> include/qapi/error.h
+> bld/qapi/qapi-visit-machine.h
+> include/qapi/visitor.h
+> bld/qapi/qapi-builtin-visit.h
+> bld/qapi/qapi-types-replay.h
+> include/qapi/qmp/qobject.h
+> include/qapi/qmp/qlist.h
+> include/qapi/qmp/qdict.h
+> bld/qapi/qapi-events-qdev.h
+> include/qapi/qmp/qbool.h
+> include/qapi/qmp/qnum.h
+> include/qapi/qmp/qstring.h
+> include/qapi/forward-visitor.h
+> include/qapi/string-output-visitor.h
+> include/qapi/string-input-visitor.h
+> include/qapi/qobject-input-visitor.h
+> bld/qapi/qapi-types-authz.h
+> bld/qapi/qapi-types-crypto.h
+> bld/qapi/qapi-types-sockets.h
+> bld/qapi/qapi-types-block-core.h
+> bld/qapi/qapi-types-qom.h
+> include/qapi/qmp/qjson.h
+> bld/qapi/qapi-visit-qom.h
+> include/qapi/qobject-output-visitor.h
+> bld/qapi/qapi-builtin-visit.c
+> bld/qapi/qapi-types-common.c
+> bld/qapi/qapi-visit-common.h
+> include/qapi/dealloc-visitor.h
+> bld/qapi/qapi-visit-common.c
+> bld/qapi/qapi-visit-machine.c
+> bld/qapi/qapi-visit-machine-common.h
+> bld/qapi/qapi-types-qom.c
+> bld/qapi/qapi-visit-qom.c
+> bld/qapi/qapi-visit-crypto.h
+> bld/qapi/qapi-visit-block-core.h
+> bld/qapi/qapi-visit-authz.h
+> bld/qapi/qapi-visit-sockets.h
+> bld/qapi/qapi-visit-sockets.c
+> bld/qapi/qapi-events-qdev.c
+> bld/qapi/qapi-emit-events.h
+> bld/qapi/qapi-types-qdev.h
+> bld/qapi/qapi-visit-qdev.h
+> include/qapi/compat-policy.h
+> include/qapi/qmp-event.h
+> qapi/qapi-dealloc-visitor.c
+> include/qapi/qmp/qnull.h
+> include/qapi/visitor-impl.h
+> bld/qapi/qapi-types-compat.h
+> qapi/qapi-forward-visitor.c
+> qapi/qapi-util.c
+> qapi/qapi-visit-core.c
+> bld/trace/trace-qapi.h
+> qapi/trace-events
+> bld/trace/trace-dtrace-qapi.h
+> qapi/qobject-input-visitor.c
+> qapi/qobject-output-visitor.c
+> qapi/string-input-visitor.c
+> qapi/string-output-visitor.c
+> qapi/qmp-dispatch.c
+> include/qapi/qmp/dispatch.h
+> qapi/qmp-event.c
+> qapi/qmp-registry.c
+> include/qapi/qmp/json-parser.h
+> include/qapi/qmp/json-writer.h
+> bld/qapi/qapi-builtin-types.c
+> bld/qapi/qapi-visit-authz.c
+> bld/qapi/qapi-visit-block-core.c
+> bld/qapi/qapi-types-job.h
+> bld/qapi/qapi-visit-job.h
+> bld/qapi/qapi-visit-crypto.c
+> bld/qapi/qapi-types-error.c
+> bld/qapi/qapi-visit-job.c
+> bld/qapi/qapi-visit-machine-common.c
+> bld/qapi/qapi-types-machine.c
+> bld/qapi/qapi-types-sockets.c
+> bld/qapi/qapi-visit-qdev.c
+> bld/trace/trace-qapi.c
+> bld/qapi/qapi-types-authz.c
+> bld/qapi/qapi-types-block-core.c
+> bld/qapi/qapi-types-crypto.c
+> bld/qapi/qapi-types-job.c
+> bld/qapi/qapi-types-machine-common.c
+> 
 
-vhost_user_slave_handle_vring_host_notifier maybe called asynchronous after
-vhost_user_host_notifier_remove. vhost_user_host_notifier_remove will not
-all call_rcu because of notifier->addr is NULL at this time.
-
-2. netdev_del qmp process
-
-vhost_user_cleanup
-       vhost_user_host_notifier_remove
-       g_free_rcu
-
-vhost_user_host_notifier_remove and g_free_rcu will sumbit same rcu_head
-to rcu node list. rcu_call_count add twice but only one node is added.
-rcu thread will abort when calling try_dequeue with node list is empty.
-Fix this by moving g_free(n) to vhost_user_host_notifier_free.
-
-Fixes: 503e355465 ("virtio/vhost-user: dynamically assign VhostUserHostNotifiers")
-Signed-off-by: yaozhenguo <yaozhenguo@jd.com>
----
- hw/virtio/vhost-user.c         | 23 +++++++++++------------
- include/hw/virtio/vhost-user.h |  1 +
- 2 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 00561daa06..7ab37c0da2 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1188,6 +1188,12 @@ static void vhost_user_host_notifier_free(VhostUserHostNotifier *n)
-     assert(n && n->unmap_addr);
-     munmap(n->unmap_addr, qemu_real_host_page_size());
-     n->unmap_addr = NULL;
-+    if (n->need_free) {
-+        memory_region_transaction_begin();
-+        object_unparent(OBJECT(&n->mr));
-+        memory_region_transaction_commit();
-+        g_free(n);
-+    }
- }
- 
- /*
-@@ -1195,7 +1201,7 @@ static void vhost_user_host_notifier_free(VhostUserHostNotifier *n)
-  * under rcu.
-  */
- static void vhost_user_host_notifier_remove(VhostUserHostNotifier *n,
--                                            VirtIODevice *vdev)
-+                                            VirtIODevice *vdev, bool free)
- {
-     if (n->addr) {
-         if (vdev) {
-@@ -1204,6 +1210,7 @@ static void vhost_user_host_notifier_remove(VhostUserHostNotifier *n,
-         assert(!n->unmap_addr);
-         n->unmap_addr = n->addr;
-         n->addr = NULL;
-+        n->need_free = free;
-         call_rcu(n, vhost_user_host_notifier_free, rcu);
-     }
- }
-@@ -1280,7 +1287,7 @@ static int vhost_user_get_vring_base(struct vhost_dev *dev,
- 
-     VhostUserHostNotifier *n = fetch_notifier(u->user, ring->index);
-     if (n) {
--        vhost_user_host_notifier_remove(n, dev->vdev);
-+        vhost_user_host_notifier_remove(n, dev->vdev, false);
-     }
- 
-     ret = vhost_user_write(dev, &msg, NULL, 0);
-@@ -1562,7 +1569,7 @@ static int vhost_user_backend_handle_vring_host_notifier(struct vhost_dev *dev,
-      * new mapped address.
-      */
-     n = fetch_or_create_notifier(user, queue_idx);
--    vhost_user_host_notifier_remove(n, vdev);
-+    vhost_user_host_notifier_remove(n, vdev, false);
- 
-     if (area->u64 & VHOST_USER_VRING_NOFD_MASK) {
-         return 0;
-@@ -2737,13 +2744,7 @@ static void vhost_user_state_destroy(gpointer data)
- {
-     VhostUserHostNotifier *n = (VhostUserHostNotifier *) data;
-     if (n) {
--        vhost_user_host_notifier_remove(n, NULL);
--        object_unparent(OBJECT(&n->mr));
--        /*
--         * We can't free until vhost_user_host_notifier_remove has
--         * done it's thing so schedule the free with RCU.
--         */
--        g_free_rcu(n, rcu);
-+        vhost_user_host_notifier_remove(n, NULL, true);
-     }
- }
- 
-@@ -2765,9 +2766,7 @@ void vhost_user_cleanup(VhostUserState *user)
-     if (!user->chr) {
-         return;
-     }
--    memory_region_transaction_begin();
-     user->notifiers = (GPtrArray *) g_ptr_array_free(user->notifiers, true);
--    memory_region_transaction_commit();
-     user->chr = NULL;
- }
- 
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 324cd8663a..a171f29e0b 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -54,6 +54,7 @@ typedef struct VhostUserHostNotifier {
-     void *addr;
-     void *unmap_addr;
-     int idx;
-+    bool need_free;
- } VhostUserHostNotifier;
- 
- /**
--- 
-2.43.0
-
+At least there are no qapi/qapi-commands-foo.[ch]!
 
