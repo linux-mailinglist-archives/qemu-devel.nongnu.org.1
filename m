@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE0F94A719
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 13:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D249194A722
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 13:43:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbf2Z-00068b-RU; Wed, 07 Aug 2024 07:41:15 -0400
+	id 1sbf2Z-00067a-H2; Wed, 07 Aug 2024 07:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sbf2W-00062o-O9
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 07:41:13 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1sbf2V-00061r-BF
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 07:41:11 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sbf2T-0003B4-IH
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 07:41:11 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-52f04150796so2583995e87.3
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 04:41:09 -0700 (PDT)
+ id 1sbf2S-0003Aw-2v
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 07:41:10 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5b3fff87e6bso2071496a12.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 04:41:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723030868; x=1723635668; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723030866; x=1723635666; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pTfCk64r8q3pxcxN1PtSEYt96mHUVpiaIdaNgLQ6haU=;
- b=Ryj5yRA5w3eApM83TRw2Jo1I7tyqKMLoshIFyUoA0XyJjlrFgJSCWwvUqAc7VF9wcG
- kg6Igraogta1fNDYzIq7hjbvsjsMuPJd1H5HmsuRtpQVArvWIg+xFx90o7CT6nCeb7i5
- UIwbBB7rExRiptCxTiU747/ga2MV/kOkCHf12QCYRvqwvIVQiTOEy64pTRMPHr/MN6No
- oY7ghscLsljCU1SglW2vWm3j1xnjCd9pKq56Vy5qTPkB9iYoVV0dut8RDs3uxNMc/j14
- 0MPP79jxtEbstKsND9cPTZjOfT3bXE/aF254FVKBrdgXkFlRXsbc5SkB0ZZ9iAwS3Kyn
- HOGQ==
+ bh=d0QPEqtA+qpDzt7i0lZe0ZnMA0wLtKuzxZzR6bJALDk=;
+ b=iKiG3saLhsSfZosd05qJMJpe7uNecCh409uXaTPXQ08n4Vn/5BMSkz5zhJTQWah5Dc
+ +fiomGCArdl4YlnxYzotSCCrrPyCdJJz5euHPM9BQp6c7onNAe7nYvk9OZvDx6EfmS7p
+ upUcPmaFd3Web03O7eEjf85FLBDtX1CdxFeTK5K9+1fj4qE/1IJ0/JPCne5rOM535NIG
+ gm6QqctFXp3YRlORbJrhBJ5NzJPgNiqnNAvvVWi9eRJ9CRUNZ0n+IHcYFOafc6POYLd5
+ nC5oGzIJMGvLrlMZBAUdN6jcVRnC1oEKpVehoAfATP1xeWhUKjoSy6SXv2CollbeS7Mn
+ //Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723030868; x=1723635668;
+ d=1e100.net; s=20230601; t=1723030866; x=1723635666;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pTfCk64r8q3pxcxN1PtSEYt96mHUVpiaIdaNgLQ6haU=;
- b=AxoBrGkJZaiYL4X4glRtCPGcdHuv/DTtcmeCYX8Hg9xJHV6FLGQ4/6H0hlZRs6vkO2
- Qwa+AQ2b0EF9LRgdTCLu/GtwtGNRNMZpsPQOGdGlsC4OObEluEFv101lchiekoVl9GKk
- adJMRZ0/0rn2SYLO61MVNkGglnH5wFLVLBIPclUGLIa11HKo5SXNTbOyah6l4RBvK9oq
- fbUI1SvKfZpBQtC0ERGGJQva8TB4yEDB+eQVXpaip/Rxq+UgQMAH3/XyskUBGBgCznLf
- zlzHNJ5b3wRPWjrDuZFXlu/JnwkH/ufheojD3Qt+vHOlJ/7ZsLcfy8qmvhDYWzWHDHG0
- aBvg==
-X-Gm-Message-State: AOJu0YyTwPAVWEhtcAnYgsAKIEmuIPgJugMJTFZNzRtEckxBfa7oA1UF
- /9wcOZuu9CD+2O02dVCXHF0eOR4uG4rmAIC9pbad5uaSSr/d3wGCLq0roGfZ8WE=
-X-Google-Smtp-Source: AGHT+IECak3W7ZhApmMH6jRsCuYSU3oEitW7MAeF+7eSMLpbzH8qePAkgso1AIK8NYf6uG1Y39UYKg==
-X-Received: by 2002:a05:6512:3f0d:b0:52c:e040:7d9 with SMTP id
- 2adb3069b0e04-530bb3b4a15mr11695346e87.59.1723030867011; 
- Wed, 07 Aug 2024 04:41:07 -0700 (PDT)
+ bh=d0QPEqtA+qpDzt7i0lZe0ZnMA0wLtKuzxZzR6bJALDk=;
+ b=XkPTHYbNADWDLyA2Ug7jJ98wH6+hvjdlxsnBrgl9s7WHNr8BvqGw4pN+Ull1HECJWl
+ uJ5B6uR4v6OViP9domEMyMzuqTZ/uYAAEmEEtfApPdACuY+w2tcI0KXOqKh0c+E8K8Mw
+ hdxx46ly4ZP1f9SoBE5oeQuONomU9dgXuLP1NQNowQwSTBuACyG0JSd27hvRh4rSnpFG
+ UnuARQJIbe8PjDWg7uYVRUaqaxl+JPwSbgZ7tARY+5cLH0iW1u3kOvdizr97BGtG4fRW
+ wbZpcbakHuvcsXmoEwI5XK9d4S3Yd4yT0QCyRi/j6x2+nNFiSjxTXpIaz10hAmOhXFIO
+ WfMg==
+X-Gm-Message-State: AOJu0Yw/qQZ9KAZIusGe3yAoyMO8k9tOOrMmueFaxZMwF5CfK9J1JEOm
+ rYvrJCfEuUxvI17ZjjEAY8qDlVTnx9KrxilH+WiJqIRdsoSvQ8fsfGGCRiu8XCo=
+X-Google-Smtp-Source: AGHT+IGXfhMo4WKM08xR1ijUVkUY2acH2LQ5WRnPWtiEulanBGCcoTaNxAzcAmHrg4vPybmMDq4HJQ==
+X-Received: by 2002:a05:6402:1a3c:b0:5a3:5ac1:ed57 with SMTP id
+ 4fb4d7f45d1cf-5b7f36f5898mr14248901a12.5.1723030866202; 
+ Wed, 07 Aug 2024 04:41:06 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a7dc9d88650sm627436166b.152.2024.08.07.04.41.00
+ 4fb4d7f45d1cf-5b83bf3ad38sm6969960a12.84.2024.08.07.04.41.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 07 Aug 2024 04:41:01 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2CD175F935;
+ by draig.lan (Postfix) with ESMTP id 430ED5F950;
  Wed,  7 Aug 2024 12:41:00 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -67,17 +67,18 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH 3/6] configure: Fix arch detection for GDB_HAS_MTE
-Date: Wed,  7 Aug 2024 12:40:56 +0100
-Message-Id: <20240807114059.2339021-4-alex.bennee@linaro.org>
+Subject: [PATCH 4/6] configure: Avoid use of param. expansion when using
+ gdb_version
+Date: Wed,  7 Aug 2024 12:40:57 +0100
+Message-Id: <20240807114059.2339021-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240807114059.2339021-1-alex.bennee@linaro.org>
 References: <20240807114059.2339021-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,27 +103,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-GDB_HAS_MTE must only be set if GDB supports the aarch64 arch, so the
-test if "aarch64" string is present must be against GDB-related
-'$gdb_arches' variable and not against '$arch' variable.
+$gdb_version is now used in more than one conditional case and its usage
+in such cases may increase in the future. Therefore, avoid using shell
+parameter expansion when using it by setting gdb_version to its final
+form.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-Id: <20240804161850.2646299-2-gustavo.romero@linaro.org>
+Message-Id: <20240804161850.2646299-3-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ configure | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/configure b/configure
-index 019fcbd0ef..a3aa257fd3 100755
+index a3aa257fd3..97de85d710 100755
 --- a/configure
 +++ b/configure
-@@ -1673,7 +1673,7 @@ for target in $target_list; do
+@@ -1103,8 +1103,10 @@ fi
+ # gdb test
+ 
+ if test -n "$gdb_bin"; then
+-    gdb_version=$($gdb_bin --version | head -n 1)
+-    if version_ge ${gdb_version##* } 9.1; then
++    gdb_version_string=$($gdb_bin --version | head -n 1)
++    # Extract last field in the version string
++    gdb_version=${gdb_version_string##* }
++    if version_ge $gdb_version 9.1; then
+         gdb_arches=$($python "$source_path/scripts/probe-gdb-support.py" $gdb_bin)
+     else
+         gdb_bin=""
+@@ -1673,7 +1675,7 @@ for target in $target_list; do
            echo "GDB=$gdb_bin" >> $config_target_mak
        fi
  
--      if test "${arch}" = "aarch64" && version_ge ${gdb_version##* } 15.0; then
-+      if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge ${gdb_version##* } 15.0; then
+-      if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge ${gdb_version##* } 15.0; then
++      if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge $gdb_version 15.0; then
            echo "GDB_HAS_MTE=y" >> $config_target_mak
        fi
  
