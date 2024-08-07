@@ -2,79 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E1994A28B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 10:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B058894A292
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 10:21:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbbqO-0003bu-Og; Wed, 07 Aug 2024 04:16:28 -0400
+	id 1sbbuX-0000zh-Le; Wed, 07 Aug 2024 04:20:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sbbqK-0003X5-9k
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:16:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sbbuV-0000tg-G5
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:20:43 -0400
+Received: from terminus.zytor.com ([198.137.202.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sbbqH-0006mR-Dm
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:16:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723018579;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uIWD3gKCs/+S0jBcNjaionm02eBM5EhFim02t5GD0PM=;
- b=JQ0aEA7orQiM8iBImE8y7UpDmKUeluObK++uxqRlnKWSMFvL7+3sqEo3BXhh8KgcW3fWBw
- OgQDK2heSqBo1Uto0swALcEWGei/6i4JS3tZWg4au+Bo43yaGLH+f/MU7g42aZrCt57K9v
- 4hYVvK2OY2l+a+Lp0VMzET1hP1CJcg8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-358-6ldfQ0avNTGjW2gvaFJ62A-1; Wed,
- 07 Aug 2024 04:16:15 -0400
-X-MC-Unique: 6ldfQ0avNTGjW2gvaFJ62A-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F12B619560A3; Wed,  7 Aug 2024 08:16:12 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.245])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8C8EE19560A3; Wed,  7 Aug 2024 08:16:11 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 42C4921E668F; Wed,  7 Aug 2024 10:16:09 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Eric Blake <eblake@redhat.com>,
- qemu-arm@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Thomas
- Huth <thuth@redhat.com>
-Subject: Re: [RFC PATCH-for-9.1? 1/2] target/arm: Move
- qmp_query_gic_capabilities() to hw/intc/
-In-Reply-To: <df628091-6d6a-4fdc-b048-3dd91a8060a1@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 7 Aug 2024 09:28:32
- +0200")
-References: <20240806141940.22095-1-philmd@linaro.org>
- <20240806141940.22095-2-philmd@linaro.org>
- <877ccs29xh.fsf@pond.sub.org>
- <df628091-6d6a-4fdc-b048-3dd91a8060a1@linaro.org>
-Date: Wed, 07 Aug 2024 10:16:09 +0200
-Message-ID: <87sevgychi.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sbbuT-0007Fr-0a
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 04:20:43 -0400
+Received: from terminus.zytor.com (terminus.zytor.com
+ [IPv6:2607:7c80:54:3:0:0:0:136]) (authenticated bits=0)
+ by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 4778IDpe735187
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+ Wed, 7 Aug 2024 01:18:17 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 4778IDpe735187
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+ s=2024071601; t=1723018697;
+ bh=QL9mGtdxGEoJ7LmZv1od9L07EiNIKIqpnoWywqqH9bw=;
+ h=From:To:Cc:Subject:Date:From;
+ b=C/AAeu9QCYaK43aRz2VLFC6crUU+Ckz2OoCa38Amb2ZUK3IOslvSrTuJATRpRgYBm
+ 3DQwpTkPIKqaXqZuTYpwiiAMSyhnXbZ9z8BOKbkvy82I7pP3hSLSlGWbGHBE5jNcRY
+ ZProDFw5ZIdYR2qyW7m6N9jdRzL/TTD/pC0WJ6ESubS26AvA4G2I3r24Hc1B7hYmAB
+ QftEo+STd6JTfFQa7KKX1ziScSEJkYmj9WtNzrsjuOBpcRjDR8wzPx4jWq+a97SZzk
+ QOD4h5XI2jH1Mrg4NOqyyP3MsemRb0Tb+QgtCXSso1ynt6HBoEDCrkPea6jn8FuT+C
+ oGoBwbbWR+NMA==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, lei4.wang@intel.com,
+ zhao1.liu@intel.com, xin3.li@intel.com
+Subject: [PATCH v1 0/3] target/i386: Add nested FRED support
+Date: Wed,  7 Aug 2024 01:18:09 -0700
+Message-ID: <20240807081813.735158-1-xin@zytor.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.137.202.136; envelope-from=xin@zytor.com;
+ helo=terminus.zytor.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,58 +66,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+This patch set adds nested FRED support to allow KVM to run a nested
+guest with FRED enabled.
 
-> On 7/8/24 07:12, Markus Armbruster wrote:
->> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
->>=20
->>> qmp_query_gic_capabilities() is not specific to the ARM
->>> architecture but to the GIC device which is modelled in
->>> hw/intc/, so move the code there for clarity. No logical
->>> change intended.
->>>
->>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->>> ---
->>>   hw/intc/arm_gic_qmp.c     | 59 +++++++++++++++++++++++++++++++++++++++
->>>   target/arm/arm-qmp-cmds.c | 52 +---------------------------------
->>>   hw/intc/meson.build       |  1 +
->>>   3 files changed, 61 insertions(+), 51 deletions(-)
->>>   create mode 100644 hw/intc/arm_gic_qmp.c
->> [...]
->>=20
->>> diff --git a/hw/intc/meson.build b/hw/intc/meson.build
->>> index afd1aa51ee..45d3503d49 100644
->>> --- a/hw/intc/meson.build
->>> +++ b/hw/intc/meson.build
->>> @@ -39,6 +39,7 @@ if config_all_devices.has_key('CONFIG_APIC') or \
->>>   endif
->>>     specific_ss.add(when: 'CONFIG_APIC', if_true: files('apic.c', 'apic=
-_common.c'))
->>> +specific_ss.add(when: 'CONFIG_ARM', if_true: files('arm_gic_qmp.c'))
->>>   specific_ss.add(when: 'CONFIG_ARM_GIC', if_true: files('arm_gicv3_cpu=
-if_common.c'))
->>>   specific_ss.add(when: 'CONFIG_ARM_GICV3_TCG', if_true: files('arm_gic=
-v3_cpuif.c'))
->>>   specific_ss.add(when: 'CONFIG_ARM_GIC_KVM', if_true: files('arm_gic_k=
-vm.c'))
->> You move qmp_query_gic_capabilities() from target/arm/arm-qmp-cmds.c (in
->> arm_system_ss) to hw/intc/arm_gic_qmp.c (in specific_ss when
->> CONFIG_ARM).
->>
->> Both _ss are target-dependent.  In my testing, both get only compiled
->> for target arm and aarch64.  Obvious for arm-qmp-cmds.c in
->> arm_system_ss.  Less so for arm_gic_qmp.c in specific_ss; I guess the
->> CONFIG_ARM does the trick there.  Correct?
->
-> Correct, Kconfig CONFIG_ARM_GIC depends on Kconfig CONFIG_ARM,
-> itself defined for configure TARGET_ARM (see target/arm/Kconfig).
-> (Also CONFIG_AARCH64 selects CONFIG_ARM).
->
-> I can clarify that in the patch description if necessary.
 
-Wouldn't hurt.  If figure this patch is meant to be just code motion,
-but it's not obvious from the patch that the code being moved gets
-compiled into the exact same binaries before and after the move, unless
-you know how CONFIG_ARM works.
+Lei Wang (1):
+  target/i386: Raise the highest index value used for any VMCS encoding
+
+Xin Li (Intel) (2):
+  target/i386: Delete duplicated macro definition CR4_FRED_MASK
+  target/i386: Add VMX control bits for nested FRED support
+
+ target/i386/cpu.c     | 4 ++--
+ target/i386/cpu.h     | 7 +------
+ target/i386/kvm/kvm.c | 9 ++++++++-
+ 3 files changed, 11 insertions(+), 9 deletions(-)
+
+
+base-commit: 6d00c6f982562222adbd0613966285792125abe5
+-- 
+2.45.2
 
 
