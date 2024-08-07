@@ -2,103 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948C494A4C8
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 11:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B81994A4A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 11:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbdMy-00049M-Pv; Wed, 07 Aug 2024 05:54:12 -0400
+	id 1sbdEN-00006T-Ez; Wed, 07 Aug 2024 05:45:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1sbdMw-00047p-F5
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:54:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sbdEK-0008P5-Ds
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:45:16 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1sbdMu-0003v1-Vd
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:54:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723024445;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=c4rEUNvnBbG0xbJ2RrHigmSaZpS34ff5WQDm5mZqVP0=;
- b=WOBAZ6dSg8uK6KtKkrNCY8ANIQ5zmUnE8qsJKi+v4akmAuFHuwZ+6QwJHgbtxXnV4qu977
- bv74rt2Y01gFbLbbgT8+BbG8n+brAjkJsPoOc/iXWUUky74F3KhGgDSyuNAdDsnwZp52hN
- wzU7k7pBEt6iyH8zT4NmvMy+6mOm/+Q=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-Kil8Ag2QMCyXrjaJB4G9zw-1; Wed, 07 Aug 2024 05:54:03 -0400
-X-MC-Unique: Kil8Ag2QMCyXrjaJB4G9zw-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-7b544c7f7b3so1579799a12.2
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 02:54:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723024443; x=1723629243;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c4rEUNvnBbG0xbJ2RrHigmSaZpS34ff5WQDm5mZqVP0=;
- b=s72Tid51eQc7JVvnWdsnbkAuQFi/OxbHDXNb9ywt6Cna8F1/TNYLL9cp11D7AG4oR2
- q9H1Oq+Ttxk3kRa+RCk/jkSdOEU9aGbGhrMd14IhkI6BdqhzUKirpfD0lUNt26B3YVA7
- 80dEokU3m6Rjy2UDQFVfuhTwnXGAQ4LLwdP4EYpTbaEstRdX0xxgCgcSRZYYoUYefc0v
- 4kLqGuGWX1lGEPtF1IqwT3kAUz5SE45BIvBl9kfuivs23PMmu58tOI1VrwK72XTZ5Q/N
- tBIja4I4BthzSqyl6fJxjvRnQJziWegvQNlSXY3HIltK1ciokzIKojXBPRKS8Oc9+yKz
- BS8A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVg1kSlZVPGO6ux8ZHo1gwwSg5E1gZTs77pUU4HphLmvfirDYSYwQJc+zorQQ51kEvCo1Ilaf7oVdgOPiS+Eh9agErrZvA=
-X-Gm-Message-State: AOJu0Yxz0vcIaDPiDY5STMUS0hkoOFH2xh2lPNLgJEtm2PeuENMJ95uW
- j7O+DF4qEIBWsAIFhCfOHYD7+L2phb1rC9DMfhUwWUDFkqY74EKy5vCwfUdnDxLBCo7oEFnyrlC
- m1108Rm0F7Cv+eFqECVK62sU9rEDXoCfNV7gZQvUgT4BKbL+aYMGL
-X-Received: by 2002:a05:6a21:7881:b0:1c4:a5fe:321b with SMTP id
- adf61e73a8af0-1c6995820ccmr25736545637.18.1723024442656; 
- Wed, 07 Aug 2024 02:54:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrxY7oThqUer/XGccL9k8b/SIvL3kCEP7q+irjg7xBFLpFqzsRmBXPKOv9eqH5JTf2YOnO9Q==
-X-Received: by 2002:a05:6a21:7881:b0:1c4:a5fe:321b with SMTP id
- adf61e73a8af0-1c6995820ccmr25736524637.18.1723024442176; 
- Wed, 07 Aug 2024 02:54:02 -0700 (PDT)
-Received: from [192.168.68.54] ([43.252.112.201])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7106ed30840sm8061372b3a.210.2024.08.07.02.53.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Aug 2024 02:54:01 -0700 (PDT)
-Message-ID: <41fbfa5a-a10f-4ca0-8a52-e447043ff306@redhat.com>
-Date: Wed, 7 Aug 2024 19:53:46 +1000
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sbdEG-0002hn-Mi
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:45:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723023913; x=1754559913;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=52qBbsPBw1CW9TaWGnYB9fhKWhRZ0gzJVUln8IvbArI=;
+ b=FUdLxClooGU7eIk7tpDNlEnd80euBj1lOKLB9D7H29sFoaQUxV4sGDtf
+ jpftontrr+9dvrHSleorKx00nqGkriQQwTKwQY7p5Vw7zSB4JNV4/FyFM
+ bNKMFC7H+oEASI1BSQvMjfeaHO9o1SFXkqpgh6OlpSNuwym+GyDbe2Ryv
+ UTkV9SFSjdK2JjTpEcwILDoBYpVI4sQ67VGfY1yUVxY8DpeXqoHdfF6k3
+ SLN0LlGrj96DGUGHFzj6m+mJrWcGqygVn9IedNROMaNMXBb4tq5NBteWn
+ q7q4hUsYfaxLIFGUXxjekKu7mjNgkrtVpwzVY0pbwZ3PgKtfSzl+WEUc0 A==;
+X-CSE-ConnectionGUID: 25e/JwK2TjOMkHF6rwfEzA==
+X-CSE-MsgGUID: 0ic44X0NR9KU3ylfTLsY6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="32486475"
+X-IronPort-AV: E=Sophos;i="6.09,269,1716274800"; d="scan'208";a="32486475"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2024 02:45:09 -0700
+X-CSE-ConnectionGUID: JNzXxyT0QwWPJHLXE0WANw==
+X-CSE-MsgGUID: YjK0r+O/TcaC1t4EM2x6kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,269,1716274800"; d="scan'208";a="56482022"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 07 Aug 2024 02:45:07 -0700
+Date: Wed, 7 Aug 2024 18:00:57 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache object
+Message-ID: <ZrNF2Q0YxseXCJGA@intel.com>
+References: <20240704031603.1744546-1-zhao1.liu@intel.com>
+ <20240704031603.1744546-9-zhao1.liu@intel.com>
+ <87r0bl35ug.fsf@pond.sub.org> <Zp5vxtXWDeHAdPok@intel.com>
+ <87bk2nnev2.fsf@pond.sub.org> <ZqEN1kZaQcuY4UPG@intel.com>
+ <87le1psuv3.fsf@pond.sub.org> <ZqtXP9MViOlyhEsu@intel.com>
+ <87mslweb38.fsf@pond.sub.org> <ZqyRik4UHHz3xaKl@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC V3 00/29] Support of Virtual CPU Hotplug for ARMv8 Arch
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
- ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
- rafael@kernel.org, borntraeger@linux.ibm.com, alex.bennee@linaro.org,
- npiggin@gmail.com, harshpb@linux.ibm.com, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
- maobibo@loongson.cn, lixianglai@loongson.cn, shahuang@redhat.com,
- zhao1.liu@intel.com, linuxarm@huawei.com
-References: <20240613233639.202896-1-salil.mehta@huawei.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20240613233639.202896-1-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZqyRik4UHHz3xaKl@intel.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,42 +85,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
+Hi Markus,
 
-With this series and latest upstream Linux kernel (host), I ran into core dump as below.
-I'm not sure if it's a known issue or not.
+Just a kindly ping. Hopefully we can continue this discussion when
+you're free.
 
-# uname -r
-6.11.0-rc2-gavin+
-# /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64 -accel kvm \
-   -machine virt,gic-version=host,nvdimm=on -cpu host                 \
-   -smp maxcpus=2,cpus=1,sockets=2,clusters=1,cores=1,threads=1       \
-   -m 4096M,slots=16,maxmem=128G                                      \
-   -object memory-backend-ram,id=mem0,size=2048M                      \
-   -object memory-backend-ram,id=mem1,size=2048M                      \
-   -numa node,nodeid=0,memdev=mem0,cpus=0-0                           \
-   -numa node,nodeid=1,memdev=mem1,cpus=1-1                           \
-     :
-qemu-system-aarch64: Failed to initialize host vcpu 1
-Aborted (core dumped)
+Regards,
+Zhao
 
-# gdb /var/lib/systemd/coredump/core.0 /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64
-(gdb) bt
-#0  0x0000ffff9eec42e8 in __pthread_kill_implementation () at /lib64/libc.so.6
-#1  0x0000ffff9ee7c73c in raise () at /lib64/libc.so.6
-#2  0x0000ffff9ee69034 in abort () at /lib64/libc.so.6
-#3  0x0000aaaac71152c0 in kvm_arm_create_host_vcpu (cpu=0xaaaae4c0cb80)
-     at ../target/arm/kvm.c:1093
-#4  0x0000aaaac7057520 in machvirt_init (machine=0xaaaae48198c0) at ../hw/arm/virt.c:2534
-#5  0x0000aaaac6b0d31c in machine_run_board_init
-     (machine=0xaaaae48198c0, mem_path=0x0, errp=0xfffff754ee38) at ../hw/core/machine.c:1576
-#6  0x0000aaaac6f58d70 in qemu_init_board () at ../system/vl.c:2620
-#7  0x0000aaaac6f590dc in qmp_x_exit_preconfig (errp=0xaaaac8911120 <error_fatal>)
-     at ../system/vl.c:2712
-#8  0x0000aaaac6f5b728 in qemu_init (argc=82, argv=0xfffff754f1d8) at ../system/vl.c:3758
-#9  0x0000aaaac6a5315c in main (argc=82, argv=0xfffff754f1d8) at ../system/main.c:47
-
-Thanks,
-Gavin
-
+On Fri, Aug 02, 2024 at 03:58:02PM +0800, Zhao Liu wrote:
+> Date: Fri, 2 Aug 2024 15:58:02 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache
+>  object
+> 
+> On Thu, Aug 01, 2024 at 01:28:27PM +0200, Markus Armbruster wrote:
+> > Date: Thu, 01 Aug 2024 13:28:27 +0200
+> > From: Markus Armbruster <armbru@redhat.com>
+> > Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache
+> >  object
+> > 
+> > Zhao Liu <zhao1.liu@intel.com> writes:
+> > 
+> > > On Thu, Jul 25, 2024 at 11:07:12AM +0200, Markus Armbruster wrote:
+> > >> Date: Thu, 25 Jul 2024 11:07:12 +0200
+> > >> From: Markus Armbruster <armbru@redhat.com>
+> > >> Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache
+> > >>  object
+> > >> 
+> > >> Zhao Liu <zhao1.liu@intel.com> writes:
+> > >> 
+> > >> > Hi Markus and Daniel,
+> > >> >
+> > >> > I have the questions about the -object per cache implementation:
+> > >> >
+> > >> > On Wed, Jul 24, 2024 at 02:39:29PM +0200, Markus Armbruster wrote:
+> > >> >> Date: Wed, 24 Jul 2024 14:39:29 +0200
+> > >> >> From: Markus Armbruster <armbru@redhat.com>
+> > >> >> Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache
+> > >> >>  object
+> > >> >> 
+> > >> >> Zhao Liu <zhao1.liu@intel.com> writes:
+> > >> >> 
+> > >> >> > Hi Markus,
+> > >> >> >
+> > >> >> > On Mon, Jul 22, 2024 at 03:37:43PM +0200, Markus Armbruster wrote:
+> > >> >> >> Date: Mon, 22 Jul 2024 15:37:43 +0200
+> > >> >> >> From: Markus Armbruster <armbru@redhat.com>
+> > >> >> >> Subject: Re: [PATCH 8/8] qemu-options: Add the description of smp-cache
+> > >> >> >>  object
+> > >> >> >> 
+> > >> >> >> Zhao Liu <zhao1.liu@intel.com> writes:
+> > >> >> >> 
+> > >> >> >> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > >> >> >> 
+> > >> >> >> This patch is just documentation.  The code got added in some previous
+> > >> >> >> patch.  Would it make sense to squash this patch into that previous
+> > >> >> >> patch?
+> > >> >> >
+> > >> >> > OK, I'll merge them.
+> > >> >> >
+> > >> >> >> > ---
+> > >> >> >> > Changes since RFC v2:
+> > >> >> >> >  * Rewrote the document of smp-cache object.
+> > >> >> >> >
+> > >> >> >> > Changes since RFC v1:
+> > >> >> >> >  * Use "*_cache=topo_level" as -smp example as the original "level"
+> > >> >> >> >    term for a cache has a totally different meaning. (Jonathan)
+> > >> >> >> > ---
+> > >> >> >> >  qemu-options.hx | 58 +++++++++++++++++++++++++++++++++++++++++++++++++
+> > >> >> >> >  1 file changed, 58 insertions(+)
+> > >> >> >> >
+> > >> >> >> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > >> >> >> > index 8ca7f34ef0c8..4b84f4508a6e 100644
+> > >> >> >> > --- a/qemu-options.hx
+> > >> >> >> > +++ b/qemu-options.hx
+> > >> >> >> > @@ -159,6 +159,15 @@ SRST
+> > >> >> >> >          ::
+> > >> >> >> >  
+> > >> >> >> >              -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+> > >> >> >> > +
+> > >> >> >> > +    ``smp-cache='id'``
+> > >> >> >> > +        Allows to configure cache property (now only the cache topology level).
+> > >> >> >> > +
+> > >> >> >> > +        For example:
+> > >> >> >> > +        ::
+> > >> >> >> > +
+> > >> >> >> > +            -object '{"qom-type":"smp-cache","id":"cache","caches":[{"name":"l1d","topo":"core"},{"name":"l1i","topo":"core"},{"name":"l2","topo":"module"},{"name":"l3","topo":"die"}]}'
+> > >> >> >> > +            -machine smp-cache=cache
+> > >> >> >> >  ERST
+> > >> >> >> >  
+> > >> >> >> >  DEF("M", HAS_ARG, QEMU_OPTION_M,
+> > >> >> >> > @@ -5871,6 +5880,55 @@ SRST
+> > >> >> >> >          ::
+> > >> >> >> >  
+> > >> >> >> >              (qemu) qom-set /objects/iothread1 poll-max-ns 100000
+> > >> >> >> > +
+> > >> >> >> > +    ``-object '{"qom-type":"smp-cache","id":id,"caches":[{"name":cache_name,"topo":cache_topo}]}'``
+> > >> >> >> > +        Create an smp-cache object that configures machine's cache
+> > >> >> >> > +        property. Currently, cache property only include cache topology
+> > >> >> >> > +        level.
+> > >> >> >> > +
+> > >> >> >> > +        This option must be written in JSON format to support JSON list.
+> > >> >> >> 
+> > >> >> >> Why?
+> > >> >> >
+> > >> >> > I'm not familiar with this, so I hope you could educate me if I'm wrong.
+> > >> >> >
+> > >> >> > All I know so far is for -object that defining a list can only be done in
+> > >> >> > JSON format and not with a numeric index like a keyval based option, like:
+> > >> >> >
+> > >> >> > -object smp-cache,id=cache0,caches.0.name=l1i,caches.0.topo=core: Parameter 'caches' is missing
+> > >> >> >
+> > >> >> > the above doesn't work.
+> > >> >> >
+> > >> >> > Is there any other way to specify a list in command line?
+> > >> >> 
+> > >> >> The command line is a big, sprawling mess :)
+> > >> >> 
+> > >> >> -object supports either a JSON or a QemuOpts argument.  *Not* keyval!
+> > >> >> 
+> > >> >> Both QemuOpts and keyval parse something like KEY=VALUE,...  Keyval
+> > >> >> supports arrays and objects via dotted keys.  QemuOpts doesn't natively
+> > >> >> support arrays and objects, but its users can hack around that
+> > >> >> limitation in various ways.  -object doesn't.  So you're right, it's
+> > >> >> JSON or bust here.
+> > >> >> 
+> > >> >> However, if we used one object per cache instead, we could get something
+> > >> >> like
+> > >> >> 
+> > >> >>     -object smp-cache,name=l1d,...
+> > >> >>     -object smp-cache,name=l1u,...
+> > >> >>     -object smp-cache,name=l2,...
+> > >> >>     ...
+> > >> >
+> > >> > Current, I use -object to create a smp_cache object, and link it to
+> > >> > MachineState by -machine,smp-cache=obj_id.
+> > >> >
+> > >> > Then for the objects per cache, how could I link them to machine?
+> > >> >
+> > >> > Is it possible that I create something static in smp_cache.c and expose
+> > >> > all the cache information to machine through some interface?
+> > >> 
+> > >> Good questions.  However, before we head deeper into the weeds here, I
+> > >> feel we should discuss the things below.  And before we do that, I need
+> > >> a clear understanding of the use case.  Elsewhere in this thread, I just
+> > >> described the use case as I understand it.  Please reply there.  I'll
+> > >> then come back to this message.
+> > >> 
+> > >> [...]
+> > >
+> > > Jonathan and I provided different use cases for x86 and Arm. Could we
+> > > come back here to continue the discussion? :)
+> > 
+> > Can you provide a brief summary of the design alternatives that have
+> > been proposed so far?  Because I've lost track.
+> 
+> No problem!
+> 
+> Currently, we have the following options:
+> 
+> * 1st: The first one is just to configure cache topology with several
+>   options in -smp:
+> 
+>   -smp l1i-cache-topo=core,l1d-cache-topo-core
+> 
+>   This one lacks scalability to support the cache size that ARM will
+>   need in the future.
+> 
+> 
+> * 2nd: The cache list object in -smp.
+> 
+>   The idea was to use JSON to configure the cache list. However, the
+>   underlying implementation of -smp at the moment is keyval parsing,
+>   which is not compatible with JSON.
+> 
+>   If we can not insist on JSON format, then cache lists can also be
+>   implemented in the following way:
+>   
+>   -smp caches.0.name=l1i,caches.0.topo=core,\
+>        caches.1.name=l1d,caches.1.topo=core
+> 
+> 
+> * 3rd: The cache list object linked in -machine.
+> 
+>   Considering that -object is JSON-compatible so that defining lists via
+>   JSON is more friendly, I implemented the caches list via -object and
+>   linked it to MachineState:
+> 
+>   -object '{"qom-type":"smp-cache","id":"obj","caches":[{"name":"l1d","topo":"core"},{"name":"l1i","topo":"core"}]}'
+>   -machine smp-caches=obj
+> 
+> 
+> * 4th: The per cache object without any list:
+> 
+>   -object smp-cache,id=cache0,name=l1i,topo=core \
+>   -object smp-cache,id=cache1,name=l1d,topo=core
+> 
+>   This proposal is clearer, but there are a few opens:
+>   - I plan to push qom-topo forward, which would abstract CPU related
+>     topology levels and cache to "device" instead of object. Is there a
+>     conflict here?
+> 
+>   - Multiple cache objects can't be linked to the machine on the command
+>     line, so I maintain a static cache list in smp_cache.c and expose
+>     the cache information to the machine through some interface. is this
+>     way acceptable?
+> 
+> 
+> In summary, the 4th proposal was the most up in the air, as it looked to
+> be conflict with the hybrid topology I wanted to do (and while hybrid
+> topology may not be accepted by the community either, I thought it would
+> be best for the two work to be in the same direction).
+> 
+> The difference between 2nd and 3rd is about the JSON requirement, if JSON
+> is mandatory for now then it's 3rd, if it's not mandatory (or accept to
+> make -machine/-smp support JSON in the future), 2nd looks cleaner, which
+> puts the caches list in -smp.
+> 
+> Regards,
+> Zhao
+> 
+> 
+> 
 
