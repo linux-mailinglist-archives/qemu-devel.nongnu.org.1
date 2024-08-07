@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC14094A3F3
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 11:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5003D94A46C
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 11:35:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbckO-0006iT-A6; Wed, 07 Aug 2024 05:14:20 -0400
+	id 1sbd3k-0005PO-Pr; Wed, 07 Aug 2024 05:34:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sbckK-0006hr-FO
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:14:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sbckF-0006B5-Om
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:14:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723022043;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qpPs+Qraro6qJyFlSrAezDqzsv4t4lyIAex+TwE4sjs=;
- b=LbKR8tHooAfHAyfhVvxxrOh1lXBPDnn4lsWKE5Zd2M47TWFRsTfQf0EDzErLVzEf/h/ciE
- xDRlo/FjYjqjvkyGTdbWwIDWBtz7z8QZ7yFKzdYmKNH7dRrEyIfk1gLiXjr/y/7Dv1fA2v
- Fm5kPYduh8Ic5WBbnEakqXRHIveAqhg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-SzWL4GfhMry2eNOBJKT8jA-1; Wed,
- 07 Aug 2024 05:13:59 -0400
-X-MC-Unique: SzWL4GfhMry2eNOBJKT8jA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 88C441944B2B; Wed,  7 Aug 2024 09:13:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.79])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A9DBA1953BB7; Wed,  7 Aug 2024 09:13:54 +0000 (UTC)
-Date: Wed, 7 Aug 2024 10:13:51 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH 3/5] ebpf: add formal error reporting to all APIs
-Message-ID: <ZrM6z0sO-ZNLf3Fw@redhat.com>
-References: <20240806145653.1632478-1-berrange@redhat.com>
- <20240806145653.1632478-4-berrange@redhat.com>
- <208ede45-0866-4dce-b6ef-e8390c1c56c1@linaro.org>
- <ZrI_IsxXceEJewFO@redhat.com>
- <5403fa28-bc81-4208-9b16-7912a3b190c5@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbd3e-0005Os-Vj
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:34:15 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbd3c-0000Y8-RS
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 05:34:14 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5b3fff87e6bso1940938a12.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 02:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723023249; x=1723628049; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zRNRhLaRdR9xHIJalWIpxS96jcroaoR0FxmZ5ndovgY=;
+ b=pSsgpZDLE6g9ikfNDclW8iHYQcU/WblnplcnLs8tVruTxov1Uj9IyfyRUik6CsguKP
+ t0MAf2cSyYaQ0kBVmWIkwJTRev5Z2cQP46fJG68uNzZ44ONAjntAmRB3tvvpVqPaeuXI
+ BKQRjgC8/uJWd2cAOgcqY1Ps+PodwK7/g86HKVLmDZin1UANrQYmiQHWu45dZal8M8h8
+ VOfPCauhy+ERXfC3UqLWfV+UKIQbztxxrRL4mWxkn3MZL8OWQyTZnIhO+72gq0rDv1Jt
+ VlUCPhekHVnx89kM4gmgVnosjf+SHYW/Q+U/kgv5hi0XJ6fWxxwDXcFgO10sbacN2tV1
+ 4fDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723023249; x=1723628049;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zRNRhLaRdR9xHIJalWIpxS96jcroaoR0FxmZ5ndovgY=;
+ b=FeV/TtrocfvPLzLgRJvBH2KTeMMQ9GsQu5F+JMZ51qk+4xWc3XPc8AoAZhjE4/xVL6
+ 3+Zj9bYpZnr2VsU+FUB5IOtirWHILxTzWT3g5VaDjEeu2TE2MGa4iKQ1A2QlpXPNfDD2
+ UmaU+8Io90XtE7q2YP3PYVSroqVuxjJLfk+X2owCBgNzFHUfYmA42UpoM4yvBB69ahUJ
+ ibaUb0GA2xOJXANePAvBdvDn7Wd6xy1dHcmrzzahgMKjFrddXjgOqa6HvYCgYWG/xCNX
+ TV3CwjsO1JNbBVz4qYqjA9hG6ihPevONp23l7baOsMbUdqh9/U2sr3pwYu8JrnzhtGHy
+ Ih1Q==
+X-Gm-Message-State: AOJu0YyrnZ184zlNZ68z3jYt+/6Rcp8UbJVFC8JSkyWqQLA1l4WIxyqe
+ QUV7dKa+Ua9ixyJg2BJkOuC36Bw4n/5sDDUI9hf553RsVmfcTqs8DfKvP9x+yS8M6D08j27raOh
+ l
+X-Google-Smtp-Source: AGHT+IGo9pemnwZy8Lp7mASB43K7L73NOb2UycOFP/3Y2TmIEvR6TbgiSpGbGhA43+vaTCVDE4uprw==
+X-Received: by 2002:a05:6402:457:b0:59e:686b:1874 with SMTP id
+ 4fb4d7f45d1cf-5b7f36f5040mr13032880a12.6.1723023249461; 
+ Wed, 07 Aug 2024 02:34:09 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.212.120])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5b839708c56sm6873934a12.2.2024.08.07.02.34.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 07 Aug 2024 02:34:08 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH] qapi: Generate QAPI files using qapi/ for generated
+ header paths
+Date: Wed,  7 Aug 2024 11:34:06 +0200
+Message-ID: <20240807093406.40360-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5403fa28-bc81-4208-9b16-7912a3b190c5@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,92 +89,156 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 07, 2024 at 09:37:00AM +0200, Philippe Mathieu-Daudé wrote:
-> On 6/8/24 17:20, Daniel P. Berrangé wrote:
-> > On Tue, Aug 06, 2024 at 05:11:55PM +0200, Philippe Mathieu-Daudé wrote:
-> > > On 6/8/24 16:56, Daniel P. Berrangé wrote:
-> > > > The eBPF code is currently reporting error messages through trace
-> > > > events. Trace events are fine for debugging, but they are not to be
-> > > > considered the primary error reporting mechanism, as their output
-> > > > is inaccessible to callers.
-> > > > 
-> > > > This adds an "Error **errp" parameter to all methods which have
-> > > > important error scenarios to report to the caller.
-> > > > 
-> > > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > > > ---
-> > > >    ebpf/ebpf_rss.c     | 59 ++++++++++++++++++++++++++++++++++++---------
-> > > >    ebpf/ebpf_rss.h     | 10 +++++---
-> > > >    hw/net/virtio-net.c |  7 +++---
-> > > >    3 files changed, 59 insertions(+), 17 deletions(-)
-> > > > 
-> > > > diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-> > > > index aa7170d997..59854c8b51 100644
-> > > > --- a/ebpf/ebpf_rss.c
-> > > > +++ b/ebpf/ebpf_rss.c
-> > > > @@ -47,13 +47,14 @@ bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx)
-> > > >        return ctx != NULL && (ctx->obj != NULL || ctx->program_fd != -1);
-> > > >    }
-> > > > -static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
-> > > > +static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx, Error **errp)
-> > > >    {
-> > > >        ctx->mmap_configuration = mmap(NULL, qemu_real_host_page_size(),
-> > > >                                       PROT_READ | PROT_WRITE, MAP_SHARED,
-> > > >                                       ctx->map_configuration, 0);
-> > > >        if (ctx->mmap_configuration == MAP_FAILED) {
-> > > >            trace_ebpf_error("eBPF RSS", "can not mmap eBPF configuration array");
-> > > > +        error_setg(errp, "Unable to map eBPF configuration array");
-> > > >            return false;
-> > > >        }
-> > > >        ctx->mmap_toeplitz_key = mmap(NULL, qemu_real_host_page_size(),
-> > > > @@ -61,6 +62,7 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
-> > > >                                       ctx->map_toeplitz_key, 0);
-> > > >        if (ctx->mmap_toeplitz_key == MAP_FAILED) {
-> > > >            trace_ebpf_error("eBPF RSS", "can not mmap eBPF toeplitz key");
-> > > > +        error_setg(errp, "Unable to map eBPF toeplitz array");
-> > > >            goto toeplitz_fail;
-> > > >        }
-> > > >        ctx->mmap_indirections_table = mmap(NULL, qemu_real_host_page_size(),
-> > > > @@ -68,6 +70,7 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
-> > > >                                       ctx->map_indirections_table, 0);
-> > > >        if (ctx->mmap_indirections_table == MAP_FAILED) {
-> > > >            trace_ebpf_error("eBPF RSS", "can not mmap eBPF indirection table");
-> > > > +        error_setg(errp, "Unable to map eBPF indirection array");
-> > > 
-> > > Aren't these trace_ebpf_error() calls redundant now?
-> > 
-> > Yes & no. Errors propagated up the call stack don't get included in
-> > any trace output, and so if a caller doesn't log them anywhere they
-> > can thus be invisible to someone just looking at trace output.
-> > 
-> > I could remove them all from the eBPF code though, and put a single
-> > trace event in the hw/net/virtio-net.c file instead ? Bit of a bike
-> > shed colouring exercise to decide which is best though.
-> 
-> No problem, I'm fine with this patch.
-> 
-> Note from experience (although pre-existing in this patch), trace
-> events can be very verbose, and a what makes them powerful is we
-> can filter particular ones. The following pattern isn't practical
-> to filter:
-> 
->   trace_foo_error(const char *error_msg);
-> 
-> While a bit tedious to add, having a single trace event per error
-> is way more useful.
+QAPI script generates headers under the qapi/ directory,
+so use this prefix in generated header paths, keeping
+all QAPI under the qapi/ namespace.
 
-Yeah, I agree with you on that. I should look at changing it to add
-distinct error probes.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Ideally I'd also remove "CPPFLAGS+=-I qapi" in this patch
+but I couldn't figure out where meson adds it...
+---
+ scripts/qapi/commands.py   | 10 +++++-----
+ scripts/qapi/events.py     | 10 +++++-----
+ scripts/qapi/gen.py        |  2 +-
+ scripts/qapi/introspect.py |  2 +-
+ scripts/qapi/types.py      |  4 ++--
+ scripts/qapi/visit.py      |  4 ++--
+ 6 files changed, 16 insertions(+), 16 deletions(-)
 
-With regards,
-Daniel
+diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
+index 79951a841f..07fbd21334 100644
+--- a/scripts/qapi/commands.py
++++ b/scripts/qapi/commands.py
+@@ -323,8 +323,8 @@ def _begin_user_module(self, name: str) -> None:
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/dealloc-visitor.h"
+ #include "qapi/error.h"
+-#include "%(visit)s.h"
+-#include "%(commands)s.h"
++#include "qapi/%(visit)s.h"
++#include "qapi/%(commands)s.h"
+ ''',
+                              commands=commands, visit=visit))
+ 
+@@ -338,7 +338,7 @@ def _begin_user_module(self, name: str) -> None:
+             # match .underscorify() in trace/meson.build
+ 
+         self._genh.add(mcgen('''
+-#include "%(types)s.h"
++#include "qapi/%(types)s.h"
+ 
+ ''',
+                              types=types))
+@@ -353,8 +353,8 @@ def visit_begin(self, schema: QAPISchema) -> None:
+                              c_prefix=c_name(self._prefix, protect=False)))
+         self._genc.add(mcgen('''
+ #include "qemu/osdep.h"
+-#include "%(prefix)sqapi-commands.h"
+-#include "%(prefix)sqapi-init-commands.h"
++#include "qapi/%(prefix)sqapi-commands.h"
++#include "qapi/%(prefix)sqapi-init-commands.h"
+ 
+ void %(c_prefix)sqmp_init_marshal(QmpCommandList *cmds)
+ {
+diff --git a/scripts/qapi/events.py b/scripts/qapi/events.py
+index d1f639981a..f3803c8afe 100644
+--- a/scripts/qapi/events.py
++++ b/scripts/qapi/events.py
+@@ -189,9 +189,9 @@ def _begin_user_module(self, name: str) -> None:
+         visit = self._module_basename('qapi-visit', name)
+         self._genc.add(mcgen('''
+ #include "qemu/osdep.h"
+-#include "%(prefix)sqapi-emit-events.h"
+-#include "%(events)s.h"
+-#include "%(visit)s.h"
++#include "qapi/%(prefix)sqapi-emit-events.h"
++#include "qapi/%(events)s.h"
++#include "qapi/%(visit)s.h"
+ #include "qapi/compat-policy.h"
+ #include "qapi/error.h"
+ #include "qapi/qmp/qdict.h"
+@@ -201,7 +201,7 @@ def _begin_user_module(self, name: str) -> None:
+                              prefix=self._prefix))
+         self._genh.add(mcgen('''
+ #include "qapi/util.h"
+-#include "%(types)s.h"
++#include "qapi/%(types)s.h"
+ ''',
+                              types=types))
+ 
+@@ -209,7 +209,7 @@ def visit_end(self) -> None:
+         self._add_module('./emit', ' * QAPI Events emission')
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
+-#include "%(prefix)sqapi-emit-events.h"
++#include "qapi/%(prefix)sqapi-emit-events.h"
+ ''',
+                                       prefix=self._prefix))
+         self._genh.preamble_add(mcgen('''
+diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
+index 6a8abe0041..d24bd7ba08 100644
+--- a/scripts/qapi/gen.py
++++ b/scripts/qapi/gen.py
+@@ -363,6 +363,6 @@ def visit_include(self, name: str, info: Optional[QAPISourceInfo]) -> None:
+         relname = os.path.relpath(self._module_filename(self._what, name),
+                                   os.path.dirname(self._genh.fname))
+         self._genh.preamble_add(mcgen('''
+-#include "%(relname)s.h"
++#include "qapi/%(relname)s.h"
+ ''',
+                                       relname=relname))
+diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+index ac14b20f30..7b74db11ed 100644
+--- a/scripts/qapi/introspect.py
++++ b/scripts/qapi/introspect.py
+@@ -182,7 +182,7 @@ def __init__(self, prefix: str, unmask: bool):
+         self._name_map: Dict[str, str] = {}
+         self._genc.add(mcgen('''
+ #include "qemu/osdep.h"
+-#include "%(prefix)sqapi-introspect.h"
++#include "qapi/%(prefix)sqapi-introspect.h"
+ 
+ ''',
+                              prefix=prefix))
+diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
+index 0dd0b00ada..19c8c9c18c 100644
+--- a/scripts/qapi/types.py
++++ b/scripts/qapi/types.py
+@@ -306,8 +306,8 @@ def _begin_user_module(self, name: str) -> None:
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
+ #include "qapi/dealloc-visitor.h"
+-#include "%(types)s.h"
+-#include "%(visit)s.h"
++#include "qapi/%(types)s.h"
++#include "qapi/%(visit)s.h"
+ ''',
+                                       types=types, visit=visit))
+         self._genh.preamble_add(mcgen('''
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index 12f92e429f..06d89504ce 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -359,12 +359,12 @@ def _begin_user_module(self, name: str) -> None:
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "%(visit)s.h"
++#include "qapi/%(visit)s.h"
+ ''',
+                                       visit=visit))
+         self._genh.preamble_add(mcgen('''
+ #include "qapi/qapi-builtin-visit.h"
+-#include "%(types)s.h"
++#include "qapi/%(types)s.h"
+ 
+ ''',
+                                       types=types))
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.45.2
 
 
