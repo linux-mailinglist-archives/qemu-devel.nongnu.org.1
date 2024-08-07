@@ -2,74 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED91594B230
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 23:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E9194B2F3
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 00:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sboEh-0000Wa-LQ; Wed, 07 Aug 2024 17:30:23 -0400
+	id 1sbp1u-0002B2-B6; Wed, 07 Aug 2024 18:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sboEf-0000Uz-AJ
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 17:30:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1sbp1j-0002AU-Ih
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 18:21:03 -0400
+Received: from mail-dm6nam11on2059.outbound.protection.outlook.com
+ ([40.107.223.59] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sboEd-0006sz-G5
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 17:30:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723066217;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=25QnZEl54KxSQKXCqOFIfHhFacsI5RS3kxL4mu7w9ZM=;
- b=dU2V5ejbe3UPX5QQFvRyCo8am6ez5jtMDeFv8VI2YFuKSBZUWdtemj1V9zXw4jxPyGSXF4
- 4nz+LGYTRnT5KY0KI9Y8z8aksNlMmbcVG1srLyOm1jYH8radrEdnjl2jGXn+u3ozZcSGeV
- H4a4S/q/kSSfTXwq+2fgr1s8Igv7M7Y=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-i0yh4ipSPnaMYJXx7oMd_Q-1; Wed,
- 07 Aug 2024 17:30:16 -0400
-X-MC-Unique: i0yh4ipSPnaMYJXx7oMd_Q-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0C6731955F42; Wed,  7 Aug 2024 21:30:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.114])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30A0E3000197; Wed,  7 Aug 2024 21:30:12 +0000 (UTC)
-Date: Wed, 7 Aug 2024 16:30:09 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, 
- qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, 
- alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
-Subject: Re: [PATCH v4 5/7] nbd/server: CVE-2024-7409: Close stray client
- sockets at shutdown
-Message-ID: <qszghymm32cxjlr26ktwlcsus3zgyt2ztjdsal7rjlwox5vxsw@35yrkrpjkyi3>
-References: <20240807174943.771624-9-eblake@redhat.com>
- <20240807174943.771624-14-eblake@redhat.com>
- <ZrO9BeplRulpFbVP@redhat.com>
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1sbp1h-0004z9-9Q
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 18:21:03 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GanBE+C31iXj5Z0s/AmHh6jT4OtlIfEecAT2ii8CwDUzxGdPemh9MHgEOcV7DZDsc1FzWv/hMArFRK6t+MGUvQuWI5XXKz3fKq9RdvXSws82416tu4tb6N+XF2NP4XuuzvWiTPJv5g+21EgdhGmwmds5ko47S/MWY5XrOrhfz9tpV5vG03wGedfERJw1RlhkLghutE4n3XgI9xxHbIgtIWnRvNHIPmy7HDF3gpOYL8wP0pVjSPyb4F7YpAtvt9NcP8VTg5ZEdkJh3c/dzYFMxm6dMDWS40X+BxZm7Bt5veBJEP0ciC3UlaK/AQnulUXuMd0QNJUeO69EssF8iiqO8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KeZn/OxC98c6/Yo5piz6c6jBUdhs3HGA7hM+ers+boo=;
+ b=vSr5EoTV5qswPJfZt64/MXGW4U++EyxxLxvMb0ch8aJ63P1ZSQT897/rOhEC0NQtf7rvm/50mq3HqBq4fGPpK3+D9VO3fyfjyXRwJMQghPT/VoALqE5iOLG0qBR1FUwqEpdOcTt2HZ61/Ja5oqC+AWr0jH1TJzD4WLJmqiYrt2VIC2zKtdRVTnZ3GzJVLwYBd0adTK1uMYuWyRseTit4jJJ7KIa0KqqHkYf5pr44G+XeemAHMb+yfsklGVmcYCAnoOtDEYOe8eOyQ5V3F2GmQsDJcbWjnr2weBjI2r37ry9b6euhzxJ8KQkdqCM5BRpiS5Qsq8uQ75c4wSfVzqRSvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KeZn/OxC98c6/Yo5piz6c6jBUdhs3HGA7hM+ers+boo=;
+ b=RPyLckkj9GyEfig/FkY4No3JVQ6dvUucRUuig6JAhBwCpZS5WfmVKpIr8EpEmdvOMMrdiKNW3QZh9wDgeroGNEietkPYTHRp93UeLF/6+rkOZ9vO1KFjfCGUUnzDbolotL+quEtogWO89Un1m9aKXlBIhNMtYa/g1RKvzWYWg4Y=
+Received: from CH0PR03CA0381.namprd03.prod.outlook.com (2603:10b6:610:119::16)
+ by MN6PR12MB8589.namprd12.prod.outlook.com (2603:10b6:208:47d::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Wed, 7 Aug
+ 2024 22:15:52 +0000
+Received: from CH2PEPF00000149.namprd02.prod.outlook.com
+ (2603:10b6:610:119:cafe::9e) by CH0PR03CA0381.outlook.office365.com
+ (2603:10b6:610:119::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.30 via Frontend
+ Transport; Wed, 7 Aug 2024 22:15:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF00000149.mail.protection.outlook.com (10.167.244.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7849.8 via Frontend Transport; Wed, 7 Aug 2024 22:15:52 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 Aug
+ 2024 17:15:51 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <pbonzini@redhat.com>
+CC: <babu.moger@amd.com>, <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>
+Subject: [PATCH v2 0/4] i386/cpu: Add support for perfmon-v2,
+ RAS bits and EPYC-Turin CPU model
+Date: Wed, 7 Aug 2024 17:15:42 -0500
+Message-ID: <cover.1723068946.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZrO9BeplRulpFbVP@redhat.com>
-User-Agent: NeoMutt/20240425
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000149:EE_|MN6PR12MB8589:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18ddb99d-8d39-4aa9-56bd-08dcb72e8038
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?X24eqRKJfu5F+XY14XYfC7YONodvCMu5nvSweF7ExBdSavzu9kYiA6tUFvlT?=
+ =?us-ascii?Q?SZ1NAA/xD85SuR6DdOxsT9/BQwgq4OhBHqIpgNwui1IjPdGnBFzZLq4U6ecQ?=
+ =?us-ascii?Q?z7OOMYyLZXXI8fwORUudw1X6Zxs3o5wXr3LOpEWWUBMalcUGC20BfM3VxRNF?=
+ =?us-ascii?Q?nP4CUyNFSd+vIxCluAwSjgojhr8hruiQq2IAbnIEHd6Pe2MO18HSNCgXBE/d?=
+ =?us-ascii?Q?K5xrYL4L2F3CeXrVcQAD8g00NI5wU2127IJFkOXSXi2xVOsZ4iq8Adz7zUm7?=
+ =?us-ascii?Q?FjlkqkC/GozRdiQiVWONcnvnfuha4JremiBihWN2wPRls2v+2/0wO0vdjZG8?=
+ =?us-ascii?Q?XzqwUrUehhmQWebnVbqZYFapz9KDLMTfKX1Ox26O7KTPShN4Y41qXlpyXWE8?=
+ =?us-ascii?Q?57swvIaH+gUlku0z4wfi8GTVdhE1lKDDRIWk+M4M0e5U59TgKkcInEmYhav1?=
+ =?us-ascii?Q?EKTBebN+dPPcTmgTrwdX+9H5bTniCkV2EQvWhRet1FQ6zUIzfym4DU1OMICF?=
+ =?us-ascii?Q?U/pl428atVuI403rJpqucsspJ8tFoMmkR8Y4F4Sbari21fiJYavkvY+P8MDe?=
+ =?us-ascii?Q?t8AQMcUM2Q+z17URq8f+llX0R7jBkZz4i++0Yt1MjkjGSnm+cq0wCinYhxzA?=
+ =?us-ascii?Q?3v9L8l4ZI99MGsa4H4cdanaSkrloRw4NgFojLwWiYe2S0OYQ87dznCrpKgQz?=
+ =?us-ascii?Q?/eWXHedQRzRcMf5fqz8E7kYhMXGNQUWB6F6y2Jsgg0f88jP95XSKEz0Dcu6C?=
+ =?us-ascii?Q?F0nWp83mjNGmF8c2vSXS+HAxlBWxtMd+5ti9yNA49MHX5yrIJ5ceq/1NCHNZ?=
+ =?us-ascii?Q?V0bjEek6bv4FHSuqhfaOElW6u2hZD0KCJuZN9+GJ6bi5+W2noveY0ePx4uoS?=
+ =?us-ascii?Q?jFOO7Ot/eUoS7z0qTFg1l4jWyMpOYCvp4fJ7ckFri7zf94M8fpSPIaeuJHyU?=
+ =?us-ascii?Q?9F49S5UJkpwhv6qP8uB69P9pMUllPqKKiTs83LnBZwzSm9Kt+P2bFigeA/wp?=
+ =?us-ascii?Q?uEqp2dbD+iP88GtTlpD6M9Yj7ZIlLBBEAAiwsa+gk+nGifw0htrSiABSPxhX?=
+ =?us-ascii?Q?zdnuWH1AMsDybsSCCTKvkayTNg0WMu8O7nrDpmNLCzEhrcMzUtEjbC2IEX9q?=
+ =?us-ascii?Q?z/chyZ2N7ctLbU9/pAHN6Rs0O9JGhabaiqAMklgjxnHPCqQG+YsNoSOG/Yi9?=
+ =?us-ascii?Q?Lmeo5J1piBX12521Ci/LeQXAJRGoxQ4jYU2pP9a0WgqiMrB4BaCBGVEJiuPr?=
+ =?us-ascii?Q?GxqjeS+IDE0Cp1QklCDy0GFlJjWtFr2F+VyZUpfym58OC3cjDTVYDUJ6YmEE?=
+ =?us-ascii?Q?gIfIlY3TvMhB3PbsSpm6sT/wlhz2UcyrsgNlF1bKyVokfE7sLkX944gYWgxq?=
+ =?us-ascii?Q?BX32/eRJqnn1C1IyjqbMvvtRxWr07IsVrUiJYTGvPDWTUz6Vhw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 22:15:52.6541 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18ddb99d-8d39-4aa9-56bd-08dcb72e8038
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF00000149.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8589
+Received-SPF: permerror client-ip=40.107.223.59;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,84 +143,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 07, 2024 at 07:29:25PM GMT, Daniel P. Berrangé wrote:
-> On Wed, Aug 07, 2024 at 12:43:31PM -0500, Eric Blake wrote:
-> > A malicious client can attempt to connect to an NBD server, and then
-> > intentionally delay progress in the handshake, including if it does
-> > not know the TLS secrets.  Although this behavior can be bounded by
-> > the max-connections parameter, the QMP nbd-server-start currently
-> > defaults to unlimited incoming client connections.  Worse, if the
 
-I need to touch that sentence up to match the earlier patches.  (The
-curse of rebasing late at night...)
+This series adds the support for following features in qemu.
+1. RAS feature bits (SUCCOR, McaOverflowRecov)
+2. perfmon-v2
+3. Update EPYC-Genoa to support perfmon-v2 and RAS bits
+4. Add support for EPYC-Turin
 
-> > client waits to close the socket until after the QMP nbd-server-stop
-> > command is executed, qemu will then SEGV when trying to dereference
-> > the NULL nbd_server global which is no longer present, which amounts
-> > to a denial of service attack.  If another NBD server is started
-> > before the malicious client disconnects, I cannot rule out additional
-> > adverse effects when the old client interferes with the connection
-> > count of the new server.
+---
+v2: Fixed couple of typos.
+    Added Reviewed-by tag from Zhao.
+    Rebased on top of 6d00c6f98256 ("Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging")
+  
+v1: https://lore.kernel.org/qemu-devel/cover.1718218999.git.babu.moger@amd.com/
+-- 
+2.34.1
 
-I _think_ the effect is most likely to be an assertion failure
-(nbd_server->connections > 0), since we recommend compiling qemu with
-assertions enabled.  But "most likely" is not the same as "certainty".
 
-> > 
-> > For environments without this patch, the CVE can be mitigated by
-> > ensuring (such as via a firewall) that only trusted clients can
-> > connect to an NBD server.  Note that using frameworks like libvirt
-> > that ensure that TLS is used and that nbd-server-stop is not executed
-> > while any trusted clients are still connected will only help if there
-> > is also no possibility for an untrusted client to open a connection
-> > but then stall on the NBD handshake.
-> > 
-> > Given the previous patches, it would be possible to guarantee that no
-> > clients remain connected by having nbd-server-stop sleep for longer
-> > than the default handshake deadline before finally freeing the global
-> > nbd_server object, but that could make QMP non-responsive for a long
-> > time.  So intead, this patch fixes the problem by tracking all client
-> > sockets opened while the server is running, and forcefully closing any
-> > such sockets remaining without a completed handshake at the time of
-> > nbd-server-stop, then waiting until the coroutines servicing those
-> > sockets notice the state change.  nbd-server-stop now has a second
-> > AIO_WAIT_WHILE_UNLOCKED (the first is indirectly through the
-> > blk_exp_close_all_type() that disconnects all clients that completed
-> > handshakes), but forced socket shutdown is enough to progress the
-> > coroutines and quickly tear down all clients before the server is
-> > freed, thus finally fixing the CVE.
-> > 
-> > This patch relies heavily on the fact that nbd/server.c guarantees
-> > that it only calls nbd_blockdev_client_closed() from the main loop
-> > (see the assertion in nbd_client_put() and the hoops used in
-> > nbd_client_put_nonzero() to achieve that); if we did not have that
-> > guarantee, we would also need a mutex protecting our accesses of the
-> > list of connections to survive re-entrancy from independent iothreads.
-> > 
-> > Although I did not actually try to test old builds, it looks like this
-> > problem has existed since at least commit 862172f45c (v2.12.0, 2017) -
-> > even back when that patch started using a QIONetListener to handle
-> > listening on multiple sockets, nbd_server_free() was already unaware
-> > that the nbd_blockdev_client_closed callback can be reached later by a
-> > client thread that has not completed handshakes (and therefore the
-> > client's socket never got added to the list closed in
-> > nbd_export_close_all), despite that patch intentionally tearing down
-> > the QIONetListener to prevent new clients.
-> > 
-> > Reported-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> > Fixes: CVE-2024-7409
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > ---
-> >  blockdev-nbd.c | 35 ++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 34 insertions(+), 1 deletion(-)
-> 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Thanks for a speedy review.
+Babu Moger (3):
+  i386/cpu: Add RAS feature bits on EPYC CPU models
+  i386/cpu: Enable perfmon-v2 and RAS feature bits on EPYC-Genoa
+  i386/cpu: Add support for EPYC-Turin model
+
+Sandipan Das (1):
+  i386/cpu: Add PerfMonV2 feature bit
+
+ target/i386/cpu.c | 202 ++++++++++++++++++++++++++++++++++++++++++++++
+ target/i386/cpu.h |   4 +
+ 2 files changed, 206 insertions(+)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.34.1
 
 
