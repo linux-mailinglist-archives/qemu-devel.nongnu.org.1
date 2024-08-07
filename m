@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA5994B14A
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 22:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A0D94B14D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Aug 2024 22:29:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbnGs-0001dl-0P; Wed, 07 Aug 2024 16:28:34 -0400
+	id 1sbnH0-000202-Ls; Wed, 07 Aug 2024 16:28:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbnGp-0001YD-W2
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 16:28:32 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbnGw-0001y9-Ui
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 16:28:39 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbnGo-0006tz-2L
- for qemu-devel@nongnu.org; Wed, 07 Aug 2024 16:28:31 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-368663d7f80so98112f8f.3
- for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 13:28:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sbnGu-0006uO-8D
+ for qemu-devel@nongnu.org; Wed, 07 Aug 2024 16:28:38 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4280ee5f1e3so1966045e9.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Aug 2024 13:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723062508; x=1723667308; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723062514; x=1723667314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=64V2wCrrYmQb5TKOeGR5XbQEWlSQEIaOZkBcAH6L56E=;
- b=qYOa2xoCjjcofywzBJvPEsG4kUCgPi6vTeyxn4vDQmXCn6Q1wlfCuLZEjuEM31VdT1
- A+4xkja2avrRw7mxVCgY+N/WcjpYi8NWLE8zQNwlEpPmlYtcogQoGMLL2e9umSLN7KrM
- g7Hj0NXTY5FTVV58932/xfjXqXJRLir8Yb6Bm3S33u9xdlgEymjY2AeQQksrSE7NZu8d
- XSxgHKE4jYbgkTlc5z218aw1Plk1UnUCazvBgX3G1Eh4y2WL80OVaCzHHphJF1o5Z/3D
- qYCMiHFHoVqoKeuuAOXIGMbSfrZAy91P4pVDlsVBPpMOzDIF8+AMDCpybfoBa8B7R4q4
- GQOw==
+ bh=i6ryEDlXxlrvMeiKVLcQCfvmoYPTROsSgs3XZya+DuI=;
+ b=yWBB0tQS3x/zbLLG5yYzvkI66qaduOSxYEAG7FSlLKSlV09G4cX3dc2PiSvo281pyZ
+ lcJSLxTd8VMQyrmp2p8G23X1K7NcG9UAkpxUyeWfHEtw9Fm18ozYFsBOUFJakW+MFXCv
+ wVzRVb0/eAWd2BKZ0WN6Y3ci5o6splvjw/ke4K7d1AvAecf37d5Alb6QrpoTInBVxLCW
+ JDagWNd74Z/meDBtFlzR6q21Mk5EjAxZqic7ILSnZix9AiQErRmu6xUhn0MrNXaYBC0B
+ e+uRqO1S2/YE1nvZygHHxTHR7JJTIBamvT+qbhgSgfhs3jhMjBy+ZihcEfKzS05Nxu2h
+ PKAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723062508; x=1723667308;
+ d=1e100.net; s=20230601; t=1723062514; x=1723667314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=64V2wCrrYmQb5TKOeGR5XbQEWlSQEIaOZkBcAH6L56E=;
- b=riLhreh0bdCKUHk3Mw4gRtSVZXDk0NwOZZWGlXFF58zIWl83kUKrXP/liHQ2dKq+c3
- n2DMoAB1DSDMU+vIWoLa5yozwmW508mCAd2uxkxr2MLM9VFEa4VPgRNZVJh4UXqqnw/T
- in8t9fDPPXtUgDS6kadRg65oW95awb5xVyXgeBqjjpp0tWTgl8M5rdKLeP2PvEdDgwsh
- dXQtNN2rdHCZgzKauBX9ChFp3hUzFWKNglyvf/Bro9XKnyFvqAu3J5TCHwb0BZrPw21o
- vdLy6AdFIQT0NswXPjSLN06QKjaljrRpGXnI6P1CB0x67+Zz61k1BGdMkS4czXFc2t5M
- T3KQ==
-X-Gm-Message-State: AOJu0YwXAzZQ2dxaUkurGmm7jWHNmwQ674s1Wm9NrRt7OsOBxMTurOYY
- 9eK2XD9l/7X6f85vZ9S3Rh/MqsBKFIEx/5ybYyArLSzC+WQlPrNXaA1ZeKkdsA9xRxmE7x9PXNL
- U
-X-Google-Smtp-Source: AGHT+IF6EVqFQ62pSG19zvVCjx6YsEtR7MuubzLMXC/MVgAuhBvZKH0S9QdDlNTK2rJnUhwDglEiEw==
-X-Received: by 2002:a05:6000:d2:b0:368:71fa:7532 with SMTP id
- ffacd0b85a97d-36bbc0e7225mr11786735f8f.31.1723062507881; 
- Wed, 07 Aug 2024 13:28:27 -0700 (PDT)
+ bh=i6ryEDlXxlrvMeiKVLcQCfvmoYPTROsSgs3XZya+DuI=;
+ b=SxVlMoiTOdSRMA+NbEBjf4QOUOlhsCPIZeYBBkrrL407EfCeY/DDMuGWUS/lmD3ngx
+ rxMv4RarkbWSi2tcUrxlmNicE5HUq7k1O1xyiDke9hpXemb2BUfNhqT9wcNffog02Crj
+ UQKOcLkT+1QA3Csy6BCblZ9E9HQVhFlzz5Npwpa0Q/T9PFcyuKALNGFoxVQUIKZowbMC
+ /RdDe4GmE7PCRTAjMuO/VxurMaxfpjLKfbzhGtS4D5V7ooy2ma3bASQwrxemKebO13Xg
+ BkP7UZV3BbArKDBUcwiIZJ9WDAzHl+VZjlxvmdvzA0N9DfAS6yQTDoOj/EgQQcT6cphi
+ m+2g==
+X-Gm-Message-State: AOJu0Yy8HpwdtP7HsMdtQu1MogANMy5CU7gctK6nLF5Dgf+vU6AqGAFD
+ fQ6EqIOGYbOIk2ALnzkrStOd9YDxxGdhV9sDSgtrL7l5kUHLTH606heuQNE3wSiQxD1FX9a7o82
+ V
+X-Google-Smtp-Source: AGHT+IE1Jd3/3I1uB09/WeI2RIs6cGzJ5SzwkPTGSv9BFq68vOR+/N7AH/sdomEHd0F5YrMMlYyGLQ==
+X-Received: by 2002:a05:600c:470a:b0:425:7884:6b29 with SMTP id
+ 5b1f17b1804b1-428e6b08a32mr142794275e9.19.1723062514246; 
+ Wed, 07 Aug 2024 13:28:34 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.120])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36bbcf1e0bcsm16946687f8f.30.2024.08.07.13.28.25
+ 5b1f17b1804b1-4290580c573sm44258595e9.39.2024.08.07.13.28.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Aug 2024 13:28:27 -0700 (PDT)
+ Wed, 07 Aug 2024 13:28:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Glenn Miles <milesg@linux.ibm.com>,
@@ -62,18 +62,19 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Glenn Miles <milesg@linux.ibm.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Chalapathi V <chalapathi.v@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 v2 3/4] hw/ssi/pnv_spi: Return early in transfer()
-Date: Wed,  7 Aug 2024 22:28:03 +0200
-Message-ID: <20240807202804.56038-4-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 4/4] hw/ssi/pnv_spi: Fixes Coverity CID 1558831
+Date: Wed,  7 Aug 2024 22:28:04 +0200
+Message-ID: <20240807202804.56038-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240807202804.56038-1-philmd@linaro.org>
 References: <20240807202804.56038-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,36 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return early to simplify next commit.
-No logical change intended.
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
 
+In this commit the following coverity scan defect has been fixed
+CID 1558831:  Resource leaks  (RESOURCE_LEAK)
+  Variable "rsp_payload" going out of scope leaks the storage it
+  points to.
+
+Fixes: Coverity CID 1558831
+Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+Fixes: b4cb930e40 ("hw/ssi: Extend SPI model")
+[PMD: Rebased on previous commit (returning earlier)]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ssi/pnv_spi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/ssi/pnv_spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-index 13a47f07e7..05e6afc11e 100644
+index 05e6afc11e..eadc36fa86 100644
 --- a/hw/ssi/pnv_spi.c
 +++ b/hw/ssi/pnv_spi.c
-@@ -217,6 +217,9 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
-     PnvXferBuffer *rsp_payload = NULL;
- 
-     rsp_payload = pnv_spi_xfer_buffer_new();
-+    if (!rsp_payload) {
-+        return;
-+    }
-     for (int offset = 0; offset < payload->len; offset += s->transfer_len) {
-         tx = 0;
-         for (int i = 0; i < s->transfer_len; i++) {
-@@ -235,9 +238,7 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
-                     (rx >> (8 * (s->transfer_len - 1) - i * 8)) & 0xFF;
+@@ -239,6 +239,7 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payload)
          }
      }
--    if (rsp_payload != NULL) {
--        spi_response(s, s->N1_bits, rsp_payload);
--    }
-+    spi_response(s, s->N1_bits, rsp_payload);
+     spi_response(s, s->N1_bits, rsp_payload);
++    pnv_spi_xfer_buffer_free(rsp_payload);
  }
  
  static inline uint8_t get_seq_index(PnvSpi *s)
