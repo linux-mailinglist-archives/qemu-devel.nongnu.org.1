@@ -2,93 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAE194BCEA
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 14:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0114C94BD16
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 14:12:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc1ta-0003yX-Er; Thu, 08 Aug 2024 08:05:30 -0400
+	id 1sc1zf-0001HM-0i; Thu, 08 Aug 2024 08:11:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sc1tU-0003x8-KH
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 08:05:26 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sc1tJ-0002kc-5b
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 08:05:18 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5bb8e62575eso267445a12.3
- for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 05:05:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723118709; x=1723723509; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ie9/zshnXJahaSjDJyr5B0VRG7Ex38kTtZj2BwALYOY=;
- b=A+SDeZXrrZIuT0ZoY/zIiiuyYmqkIjw91XmfvP8bGccIkByT+8GjLVXtHCOvYoyayL
- N8qTG6Ne58RTx8AxRuijSJQuWhsjkBHinLX1Et7H9chf/E8J4ggYgBnSgLuFa3cwhLRO
- lKbM153onnW1daZbFZT4QOkneIIau0etxWRVTJoPnmLVIf+r6fsHvwBtYu/t2KCCmm0/
- KiJx/moDwbrHVQZJJa0iE7bBrMMBv7sv5huqLdN+UswNKqvxY3f/iIfj5jroaVgY8jcb
- ruWqCytZR+8ZeJRfj/xEiGSmAYY3k4cYMoYu4GtfViogEpB8oZixVFMiKGvfH92xME/e
- gOAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723118709; x=1723723509;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ie9/zshnXJahaSjDJyr5B0VRG7Ex38kTtZj2BwALYOY=;
- b=SzG91MOTQugn9HguzYLP2kcdnemtUNHb660X8UKXdAUPU6F2QWEsnK/pMv+QeCO6IR
- dlaeC7Lkg5FX6hH68871BWdWrZ0YP38fOrw557+nZqvbA9McGdbzVINt29UjfcwijfKd
- PyYlYtNqlviGb7IYtzu3Taaxp/kpDMlixiH1rbArnK2pwfD2mNg0hppU9hNTa7p9xmmM
- +38+d9m+7uAW2iuF7XGYMDduwodcBNdbPLn1ZaeUCLTvGCXxHkfuMcIKanfqIjee1d0I
- 5KpmAQ2FWB311e1FOfijugmUtaOgegiaVSqxsKO7CAQbjA4hBPCpHhfCqq5+4rJeMfu7
- Wh7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVKXr/cWXOpm2ibFYg2xJ9b/8DVenv8RE1oOZu9yj1ZnRdsZ9OCQZ8lBedRHxy+vUPYN4iPiYNvqbS8KQTRlxZ6pYVAgkw=
-X-Gm-Message-State: AOJu0Yyb0T0UzKW5onIpMEMYVZ2KzRkL+ppnQZ3l7nuX6rpMiDbge7h9
- es1fXm2ctQsMZVaks23GgWBdBGhKb1T1dTEk+YK6ShDkrdtipbvXT2WXTVvxAN29eDMbaLzIEhM
- UZc67fBOSrlDbrX+KLRl+tFarQYPYewzXiBHwtQ==
-X-Google-Smtp-Source: AGHT+IGMDM0cbDlPBhRjwdc+E6prr95O7WFyn8nu2feRlNjHFPyE7jel1d7FCeABtOX6UXE8zNxPeK66X/SmYOk1m7U=
-X-Received: by 2002:a05:6402:13d3:b0:5a1:f9bc:7f13 with SMTP id
- 4fb4d7f45d1cf-5bbb235ae4dmr2037485a12.22.1723118709019; Thu, 08 Aug 2024
- 05:05:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sc1zX-0001Bn-FJ; Thu, 08 Aug 2024 08:11:40 -0400
+Received: from sin.source.kernel.org ([145.40.73.55])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sc1zU-0003S3-Qo; Thu, 08 Aug 2024 08:11:39 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 85D2ECE13B5;
+ Thu,  8 Aug 2024 12:11:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B0DC4AF10;
+ Thu,  8 Aug 2024 12:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1723119080;
+ bh=okDt0GF8kFCoft7LCpimb0DlLgYHkqdTo2/807i2Izk=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=eY5IkJARG4aA/YFX2VkVMgRviMYbTYcnncqt4Al0e87J3bJPWSZCs+elDKgmYOAIC
+ cdUXuDTislz46dDFhM4mOzRm74/CWxkVsuMLrTX9v1gTKXTDgMOonjjPaETlrooKK+
+ E7Did2Cxy4wAQa9MaGwCujgwPVc8OugUizkFvZ8j3pRGF388GDiPGsiY0nk2a7vib5
+ 1H8DL2+zY1Iajvup3N+uT0GyQDDoASreEpRit4UrQt1l6QuDRbU046SXyg4D8oPC0k
+ krIP9LyhZZu5PwpUcl9ECVpbieBU+iJZltj6ilOoSY0nbT+3CBRTNuLcXI6KSKhC66
+ aYup7vo7S0EeA==
+Date: Thu, 8 Aug 2024 14:11:14 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 6/7] acpi/ghes: add support for generic error
+ injection via QAPI
+Message-ID: <20240808141114.3b021f80@foz.lan>
+In-Reply-To: <20240806163113.3bdc260a@imammedo.users.ipa.redhat.com>
+References: <cover.1722634602.git.mchehab+huawei@kernel.org>
+ <20c491e357340e0062b6ff09867c1661ed4d2479.1722634602.git.mchehab+huawei@kernel.org>
+ <20240806163113.3bdc260a@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20240806141940.22095-1-philmd@linaro.org>
- <20240806141940.22095-2-philmd@linaro.org>
- <f82397e9-3be4-49be-b291-5598acdaf39b@linaro.org>
- <CAFEAcA9emwsK07+itUzMxReOLG8gHaxNdDE8ymuwyuBfsoY2Pg@mail.gmail.com>
- <87bk23skhq.fsf@pond.sub.org>
- <CAFEAcA8J4i-81rOEHBpqbV=c4F26o6qd3Lg9dZV+BuNyZPGg7Q@mail.gmail.com>
- <87ed6z1j77.fsf@pond.sub.org>
- <CAFEAcA_=GYBGpbvfKMGsYrUKWgcTLrriBKd37jOVFV1YMfy8Mw@mail.gmail.com>
- <ZrSqsEedC3rmVbD9@redhat.com>
- <CAFEAcA-c7bYaWdOp0ShzUE83kKaYmqoH5DpW+EnU_sVzJgdu4A@mail.gmail.com>
- <ZrSwl0VBX4_1Tc71@redhat.com>
-In-Reply-To: <ZrSwl0VBX4_1Tc71@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Aug 2024 13:04:58 +0100
-Message-ID: <CAFEAcA9wG8okctQW7kEKX0xQWph6dgdt1v6vfe0eg2xKzmXYMw@mail.gmail.com>
-Subject: Re: [RFC PATCH-for-9.1? 1/2] target/arm: Move
- qmp_query_gic_capabilities() to hw/intc/
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, qemu-arm@nongnu.org, 
- Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=145.40.73.55;
+ envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,52 +73,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 Aug 2024 at 12:54, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
-wrote:
->
-> On Thu, Aug 08, 2024 at 12:32:35PM +0100, Peter Maydell wrote:
-> > On Thu, 8 Aug 2024 at 12:23, Daniel P. Berrang=C3=A9 <berrange@redhat.c=
-om> wrote:
-> > > On Thu, Aug 08, 2024 at 11:15:17AM +0100, Peter Maydell wrote:
-> > > > It's not possible to use KVM with that machine type, so the
-> > > > question is a bit moot. (This also indicates that the
-> > > > interface is not very helpful -- it purports to tell the
-> > > > management layer whether it can use an accelerated in-kernel
-> > > > GIC, but because it doesn't specifiy the board type there's
-> > > > no way to provide an accurate answer. It would be useful
-> > > > to know exactly what libvirt/etc actually use this for...)
-> > >
-> > > Libvirt uses this exclusively with the arm 'virt' machine type.
-> > >
-> > > If the user didn't express any GIC preference, then if KVM is in use,
-> > > we'll pick the highest GIC version QEMU reports as supported.
-> >
-> > You can get that without querying QEMU by asking for 'gic-version=3Dmax=
-'
-> > if you like.
->
-> This isn't in the VM startup path. It is when we expand the user
-> provided XML config into an ABI stable XML config by filling in
-> the blanks left by the user. So we need to actually query the
-> values available.
->
-> > > If TCG
-> > > is in use we'll always pick v2, even if QEMU reports v3 is emulatable
-> > > due to the v3 impl lacking MSI controller which we need for PCI-e
-> >
-> > Our emulated GICv3 supports the ITS which has MSI support, so I'm not
-> > sure what forcing GICv2 is getting you here. Looking at the linked
-> > RHEL bugzilla bug, I suspect this is an out-of-date policy from before
-> > we added the ITS emulation in 2021 (it's present by default
-> > in virt-2.8 and later machine types). So that is something that
-> > libvirt should update I think.
->
-> It looks like it is virt-6.2 or later, and libvirt can probe it
-> by looking for existence of the arm-gicv3-its QOM type IIUC.
+Em Tue, 6 Aug 2024 16:31:13 +0200
+Igor Mammedov <imammedo@redhat.com> escreveu:
 
-Yes. (I was confused by the 'no_its' setting in virt-2.8, but
-that is for "is there a KVM ITS", and no_tcg_its is separate
-and as you say added with 6.2.)
+> > +    /* Could also be read back from the error_block_address register */
+> > +    *error_block_addr = base +
+> > +        ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t) +
+> > +        ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t) +
+> > +        error_source_to_index[notify] * ACPI_GHES_MAX_RAW_DATA_LENGTH;
+> > +
+> > +    return true;
+> > +}  
+> 
+> I don't like all this pointer math, which is basically a reverse engineered
+> QEMU actions on startup + guest provided etc/hardware_errors address.
+> 
+> For once, it assumes error_source_to_index[] matches order in which HEST
+> error sources were described, which is fragile.
+> 
+> 2nd: migration-wive it's disaster, since old/new HEST/hardware_errors tables
+> in RAM migrated from older version might not match above assumptions
+> of target QEMU. 
+> 
+> I see 2 ways to rectify it:
+>   1st: preferred/cleanest would be to tell QEMU (via fw_cfg) address of HEST table
+>        in guest RAM, like we do with etc/hardware_errors, see
+>             build_ghes_error_table()
+>                ...
+>                tell firmware to write hardware_errors GPA into
+>        and then fetch from HEST table in RAM, the guest patched error/ack addresses
+>        for given source_id
+> 
+>        code-wise: relatively simple once one wraps their own head over
+>                  how this whole APEI thing works in QEMU
+>                  workflow  is described in docs/specs/acpi_hest_ghes.rst
+>                  look to me as sufficient to grasp it.
+>                  (but my view is very biased given my prior knowledge,
+>                   aka: docs/comments/examples wrt acpi patching are good enough)
+>                  (if it's not clear how to do it, ask me for pointers)
 
--- PMM
+That sounds a better approach, however...
+
+>   2nd:  sort of hack based on build_ghes_v2() Error Status Address/Read Ack Register
+>         patching instructions
+>                bios_linker_loader_add_pointer(linker, ACPI_BUILD_TABLE_FILE,                
+>                    address_offset + GAS_ADDR_OFFSET, sizeof(uint64_t),                      
+>                    ACPI_GHES_ERRORS_FW_CFG_FILE, source_id * sizeof(uint64_t));
+>                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+>         during build_ghes_v2() also store on a side mapping
+>              source_id -> error address offset : read ack address
+> 
+>         so when you are injecting error, you'd at least use offsets
+>         used at start time, to get rid of risk where injection code
+>         diverge from HEST:etc/hardware_errors layout at start time.
+> 
+>         However to make migration safe, one would need to add a fat
+>         comment not to change order ghest error sources in HEST _and_
+>         a dedicated unit test to make sure we catch it when that happens.
+>         bios_tables_test should be able to catch the change, but it won't
+>         say what's wrong, hence a test case that explicitly checks order
+>         and loudly & clear complains when we will break order assumptions.
+> 
+>         downside:
+>            * we are are limiting ways HEST could be composed/reshuffled in future
+>            * consumption of extra CI resources
+>            * and well, it relies on above duct tape holding all pieces together
+
+I ended opting to do approach (2) on this changeset, as the current code
+is already using bios_linker_loader_add_pointer() for ghes, being deeply 
+relying on the block address/ack and cper calculus.
+
+To avoid troubles on this duct tape, I opted to move all offset math
+to a single function at ghes.c:
+
+	/*
+	 * ID numbers used to fill HEST source ID field
+	 */
+	enum AcpiHestSourceId {
+	    ACPI_HEST_SRC_ID_SEA,
+	    ACPI_HEST_SRC_ID_GED,
+	
+	    /* Shall be the last one */
+	    ACPI_HEST_SRC_ID_COUNT
+	} AcpiHestSourceId;
+
+	...
+
+	static bool acpi_hest_address_offset(enum AcpiGhesNotifyType notify,
+        	                             uint64_t *error_block_offset,
+                	                     uint64_t *ack_offset,
+                        	             uint64_t *cper_offset,
+                                	     enum AcpiHestSourceId *source_id)
+	{
+	    enum AcpiHestSourceId source;
+	    uint64_t offset;
+
+	    switch (notify) {
+	    case ACPI_GHES_NOTIFY_SEA:      /* Only on ARMv8 */
+	        source = ACPI_HEST_SRC_ID_SEA;
+	        break;
+	    case ACPI_GHES_NOTIFY_GPIO:
+	        source = ACPI_HEST_SRC_ID_GED;
+	        break;
+	    default:
+	        return true;
+	    }
+
+	    if (source_id) {
+	        *source_id = source;
+	    }
+
+	    /*
+	     * Please see docs/specs/acpi_hest_ghes.rst for the memory layout.
+	     * In summary, memory starts with error addresses, then acks and
+	     * finally CPER blocks.
+	     */
+
+	    offset = source * sizeof(uint64_t);
+
+	    if (error_block_offset) {
+	        *error_block_offset = offset;
+	    }
+	    if (ack_offset) {
+	        *ack_offset = offset + ACPI_HEST_SRC_ID_COUNT * sizeof(uint64_t);
+	    }
+	    if (cper_offset) {
+	        *cper_offset = 2 * ACPI_HEST_SRC_ID_COUNT * sizeof(uint64_t) +
+	                       source * ACPI_GHES_MAX_RAW_DATA_LENGTH;
+	    }
+
+	    return false;
+	}
+
+I also removed the anonymous enum with SEA/GPIO source IDs, using
+only the ACPI notify type as arguments at the function calls.
+
+As there's now a single point where the offsets from
+docs/specs/acpi_hest_ghes.rst are enforced, this should be error
+prone.
+
+The code could later be changed to use approach (2), on a separate
+cleanup.
+
+Thanks,
+Mauro
 
