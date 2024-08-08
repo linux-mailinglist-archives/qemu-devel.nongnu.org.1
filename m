@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F02694BBB3
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 12:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D558694BBBB
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 12:55:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc0lD-00033S-Rf; Thu, 08 Aug 2024 06:52:47 -0400
+	id 1sc0nP-0001r9-Dt; Thu, 08 Aug 2024 06:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sc0lB-00032J-PR
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:52:45 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sc0l9-00083F-OU
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:52:45 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-2cd5e3c27c5so675300a91.3
- for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 03:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1723114362; x=1723719162;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Zoysz1qpWPgyaEppwm4JxqxfQwhMN3EWZN0gvTf99lc=;
- b=GxZrqx1xFj7lOdtLx2mtW3K8VVYAvhkq2aW/j1rDrndiWGIgLAxOnMyeuVw4fg7KHM
- 0cSqP43r+qJ+YNsXjXcc9LjKkb0r9PIYwwGJ8UxxK14ZAsOZolX6YFDTiCn2xQpTCKaV
- 66xs1D/epoB0zOeYlteKEgjUxFiE5p+Xr8F3SfJr0FCN5LQs3W68JvZCavrAhWHQ4dcd
- feqZKoFYVHyK7XLRxyGsRfbYc8KLS0RDaq+UwzNVbHAddufzVaKQ8kfPah3F7x5gV7tY
- hYqw9T0jK7to3KQAmWbktU1n+07fN2zLg6TQwj5Lum+Rfkn0SBBmiElDlMzcyJG/vyMg
- 3NFA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sc0nM-0001jV-Pe
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:55:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sc0nK-0008Ak-Uk
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:55:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723114496;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zjyDMI9ogR47NxvfhuQjhsZ9/6yxTvf3cZ+Uw8+lVl0=;
+ b=KjceCyIN6oxDRVX/uuha2wivuBHDDJfIQocubPdwZqNRpbxgzBUQySWpttn0Q/rhW9HXcg
+ VPE4prTMqDSPtwkwB3ZI2E/XYYEgoFn8lXbgx5sn100yFY7sXNvd5WjSBaP7eHzPZcaL9j
+ 0bb/VGNoinYtnL67PjHoKF4jcNNVkZk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-Tq2EsGtANxSjkRKK9c8dvQ-1; Thu, 08 Aug 2024 06:54:55 -0400
+X-MC-Unique: Tq2EsGtANxSjkRKK9c8dvQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a7a9447efcbso24986666b.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 03:54:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723114362; x=1723719162;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zoysz1qpWPgyaEppwm4JxqxfQwhMN3EWZN0gvTf99lc=;
- b=tNb4XD57kd33hSU+6HACk4tRifjqcXrCEB+38yehTLDSkL5Xoef9XQCQpjtlarbd1o
- DIY53OS5nm8qKFeiNkLacvIAnKZ4fKmtmx/W9UbPbYXP7S8jOwkTVVbQWQYAzdr+DRNx
- AN3Qf9L6gpcCVkOkqBO5ipPL3DtE7AIejtK0KBSHTrmCiBfn50fhHoBy42QKrB9hEWr6
- Kpt4YDtzYuwvcpcKbC2URfhNShecHbuO4fH4GyumJUigP0cM/EG6oC+cZppcqNO/X7I0
- MH9KlvLGFdHX6GshZmVV9j2UTQx1XcN0Vuviuk/3FlZLqY9/iPfR1/Ue6LBDfG33p90R
- G5Rw==
+ d=1e100.net; s=20230601; t=1723114494; x=1723719294;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zjyDMI9ogR47NxvfhuQjhsZ9/6yxTvf3cZ+Uw8+lVl0=;
+ b=OMUSw2eZbjMguOEudnazNYEVpbAnNhu7oUfcwOv/jP4Sre28/EbzKAgBMyi66U1/kO
+ ZBLD6pBuwsy/Jzhgw+RSiF8lhX/oNywXnJw727TuYGEZ6gikGn3BJHZ5TZt+bnD3s1OD
+ LypVcozn6ckJALcKwlAV6I0KDw9Mgc0jey3R4oGIicfRQ4OdkqguES0QOd52MZLAcHNw
+ SxJm0an7wkQdWVQ2cMXVJoqOQffmu5sRRf7puwXkPQPAbQQ+ZMXNLBblPrsHMB8pcEb3
+ XFwpWcSsY66pgwHlbm5VXICZ0/BMEs5QK0qhRH3vBq1+iY6AtUMFT4x1QmX50d5FpgvB
+ Y5fQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVgOygacL1rRAO5TZX03xpBGqiYEBWNFjOS2iBC8urNcwjEvxL/oFGvZ5sQWKl00keCqKAlhUWFPmP1gWRfu4icvvxyszA=
-X-Gm-Message-State: AOJu0YyxCk0cBMIf8dG0ra2wiNjJC9aqa4udexkhGPnKENEPVWmPeC/j
- cggv60hHC0VRHH2uFcMmBgaOn7L8VEp2/6nNw91lkdv5GJudeh2G6q5undghnZM=
-X-Google-Smtp-Source: AGHT+IEbjv6atpJ8q4V+7z0Vcnwx46f2cO9x10LmyBPWGVZjqyB0s+M8B71oVcbGuwK6WYVY1fvvrQ==
-X-Received: by 2002:a17:90b:1989:b0:2c9:9b16:e004 with SMTP id
- 98e67ed59e1d1-2d1c34747b7mr1570531a91.43.1723114361741; 
- Thu, 08 Aug 2024 03:52:41 -0700 (PDT)
-Received: from [157.82.205.232] ([157.82.205.232])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d1c9c64b1fsm884269a91.7.2024.08.08.03.52.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 08 Aug 2024 03:52:41 -0700 (PDT)
-Message-ID: <890f9d0a-3ded-488d-b274-8be9c38b5df3@daynix.com>
-Date: Thu, 8 Aug 2024 19:52:37 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] virtio-net: Add support for USO features
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ AJvYcCV5j3l/72Oq6T3O41oHdqA67DDpTm6Qv6gknd2m2fFx8saNFhCb/upZFrdRmPQxnE2rBod/YI7SrhuDqr1+OQqVTledNR8=
+X-Gm-Message-State: AOJu0Ywiyu7EW25mMHBw0NjxbWHCpt+mOAb62Zoi8J+8pX0cYiIF+Ycj
+ i3TtpGBQglr6DkdlEhIsWLPCh+HMTb5SDMOmKITEa82YNIFHw0w3sDy3fZ0ROiVp0MdO9DtEU86
+ aJJRHhChooLekBQaJ9CC/Woa++gIlCedXBikAGxjsATtRl3pd2ngo
+X-Received: by 2002:a05:6402:5191:b0:5b9:462d:c53c with SMTP id
+ 4fb4d7f45d1cf-5bbb2239773mr1606699a12.6.1723114493943; 
+ Thu, 08 Aug 2024 03:54:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEX3R3jJSuExDIf/RpYZgZUuW1OzX+jfFk2nzcI4GmlYsCufcKKaakhbukRmJ48j8LYPjDsxw==
+X-Received: by 2002:a05:6402:5191:b0:5b9:462d:c53c with SMTP id
+ 4fb4d7f45d1cf-5bbb2239773mr1606645a12.6.1723114493127; 
+ Thu, 08 Aug 2024 03:54:53 -0700 (PDT)
+Received: from redhat.com ([2.55.34.111]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5bbb2d34ccfsm531729a12.77.2024.08.08.03.54.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Aug 2024 03:54:51 -0700 (PDT)
+Date: Thu, 8 Aug 2024 06:54:46 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Peter Xu <peterx@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
  Yuri Benditovich <yuri.benditovich@daynix.com>, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- dmitry.fleytman@gmail.com, jasowang@redhat.com, sriram.yagnaraman@est.tech,
- sw@weilnetz.de, qemu-devel@nongnu.org, yan@daynix.com,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, dmitry.fleytman@gmail.com,
+ jasowang@redhat.com, sriram.yagnaraman@est.tech, sw@weilnetz.de,
+ qemu-devel@nongnu.org, yan@daynix.com,
  Fabiano Rosas <farosas@suse.de>, devel@lists.libvirt.org
-References: <Zqz1vvYqRuIAPnod@x1n>
- <c5ea7a57-fc52-4bb7-bc4c-f3aca8da0574@daynix.com> <Zq0IrhV-DgStpJtk@x1n>
+Subject: Re: [PATCH v2 4/4] virtio-net: Add support for USO features
+Message-ID: <20240808065339-mutt-send-email-mst@kernel.org>
+References: <Zq0IrhV-DgStpJtk@x1n>
  <8ad96f43-83ae-49ae-abc1-1e17ee15f24d@daynix.com>
  <20240805032937-mutt-send-email-mst@kernel.org>
  <cb71a6de-eb7a-402b-a58a-89198b4343f5@daynix.com>
@@ -82,19 +84,20 @@ References: <Zqz1vvYqRuIAPnod@x1n>
  <20240805060544-mutt-send-email-mst@kernel.org>
  <2b62780c-a6cb-4262-beb5-81d54c14f545@daynix.com>
  <20240806092822-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240806092822-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1036;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1036.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ <890f9d0a-3ded-488d-b274-8be9c38b5df3@daynix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <890f9d0a-3ded-488d-b274-8be9c38b5df3@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,28 +113,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/08/06 22:29, Michael S. Tsirkin wrote:
-> On Tue, Aug 06, 2024 at 04:35:44PM +0900, Akihiko Odaki wrote:
->> On 2024/08/05 19:08, Michael S. Tsirkin wrote:
->>> On Mon, Aug 05, 2024 at 06:37:58PM +0900, Akihiko Odaki wrote:
->>>> If cross-migrate=off, QEMU can still migrate on the same host (checkpoint
->>>> and restart). QEMU can also migrate across hosts if the user ensures they
->>>> are on the same platform.
->>>
->>> What is so special about checkpoint/restart? I guess we hope that
->>> downgrades are uncommon, but they are possible...
->>
->> Downgrades will not work with cross-migrate=off. Users who want downgrades
->> should use cross-migrate=on.
+On Thu, Aug 08, 2024 at 07:52:37PM +0900, Akihiko Odaki wrote:
+> On 2024/08/06 22:29, Michael S. Tsirkin wrote:
+> > On Tue, Aug 06, 2024 at 04:35:44PM +0900, Akihiko Odaki wrote:
+> > > On 2024/08/05 19:08, Michael S. Tsirkin wrote:
+> > > > On Mon, Aug 05, 2024 at 06:37:58PM +0900, Akihiko Odaki wrote:
+> > > > > If cross-migrate=off, QEMU can still migrate on the same host (checkpoint
+> > > > > and restart). QEMU can also migrate across hosts if the user ensures they
+> > > > > are on the same platform.
+> > > > 
+> > > > What is so special about checkpoint/restart? I guess we hope that
+> > > > downgrades are uncommon, but they are possible...
+> > > 
+> > > Downgrades will not work with cross-migrate=off. Users who want downgrades
+> > > should use cross-migrate=on.
+> > 
+> > We also don't know that upgrades do not disable a feature:
+> > can happen if e.g. there's a serious bug in the feature.
+> > Basically, this makes the feature too fragile, in my opinion.
 > 
-> We also don't know that upgrades do not disable a feature:
-> can happen if e.g. there's a serious bug in the feature.
-> Basically, this makes the feature too fragile, in my opinion.
+> We can do nothing in such a case. Whether it is on a single host or multiple
+> hosts, we cannot support migration if features once enabled disappear.
+> 
+> Regards,
+> Akihiko Odaki
 
-We can do nothing in such a case. Whether it is on a single host or 
-multiple hosts, we cannot support migration if features once enabled 
-disappear.
+It does not follow that we have to do something, and this is something,
+therefore that we have to do this.
 
-Regards,
-Akihiko Odaki
+This is just a reason not to handle checkpoint/restart any different
+than any other migration.
+
+-- 
+MST
+
 
