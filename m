@@ -2,99 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AB494BF99
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 16:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D75E94BFB1
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 16:33:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc41w-0008Qp-Ca; Thu, 08 Aug 2024 10:22:16 -0400
+	id 1sc4Ce-0005Nl-Ep; Thu, 08 Aug 2024 10:33:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sc41t-0008IG-QM
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:22:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sc41s-0004ti-0Q
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:22:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723126931;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eWiq/R1qfDvotqZucy6GvkqQ+EVl6vxLjsehT82Sjwk=;
- b=V5793x0+Hynpq/EJXiLfpNOn4SfruRdz/EtETVEi4Rvmsrs0TX/orT4vKpbiHm0MrzlgpF
- r8WvnqdjDj+oe4M8XnVE9PHGBn7LcfuUZmFpfC7PBHL9W6MlEtHU5eK+bCvOiItcv6EyO1
- jaFVckq/8CmKN2qblSZ3nSUZgtoZL/Q=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-97-3GIGwS-JNIOMV7ArHsCvZw-1; Thu, 08 Aug 2024 10:22:08 -0400
-X-MC-Unique: 3GIGwS-JNIOMV7ArHsCvZw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3688010b3bfso761199f8f.3
- for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 07:22:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sc4Ca-0005Mf-5s
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:33:16 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sc4CY-0006KE-FB
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:33:15 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a7d638a1f27so43357866b.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 07:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723127593; x=1723732393; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nioHeWMXtFzyLLKsZrn0g5FDxHVTN0nVtxne61S9YDE=;
+ b=jRdclCRbNSxDR82OZIJylMhnPBFaLulHmHvBAdsqCAP7ImNM5f09ucXDhfZUXet5Fe
+ MObWyk2UMQLlJ3YfOOz6KDYSyBv8IClhP44ewDeJL49sTp3XDl473Oowsd9l1Tkht+P6
+ e18AFVoICv7jRuOEYpXPlUqIgYuf/7qWXZ9pfi9aah04k9+ZmXTwRPEbnurujN0qhq9N
+ Ikyx/6hWOEF294AGwTzbNIf888MjDV0N3+jklruLC1tY/bDJjyjHDSKGRQCHdqWPILh5
+ Yypr+g2ggF9x+o50mziqRNvxQ4teU/Db9mYLyYRTVvqBZtjRjOgACkh61inHztXh8OaC
+ sFpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723126928; x=1723731728;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1723127593; x=1723732393;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eWiq/R1qfDvotqZucy6GvkqQ+EVl6vxLjsehT82Sjwk=;
- b=GSh9oGEMdmqqEaUH7YMfQo/8dtToq2so+0fhpTr29gDBarEXI6oNh2IW7Q2/VQPVYP
- 6llcJ4JuMsARG/x/QAeOyfgSi43C+aCIzEMHONHSkK/bER03EyjrNgmTdysOZ3YuPrMi
- P6AMwSNX0a6XfJ3yD0jCRP67AySENDR6VaEQooGjDWI+5SxRygLp9/+iDC7n/KTtMzZY
- ih4/d7ED0ygG6D7k/hjFvVSp8ArARVvc4Gzl4pJ90r+9xvi2iZyhKx78JYTEANadoMYQ
- aE9POvaHcHJ3XN6Jh6qBK8gHitR3JO3nTRaUsORLMut+ALySsjyn3r96c8QmVO9a09/7
- qe9Q==
+ bh=nioHeWMXtFzyLLKsZrn0g5FDxHVTN0nVtxne61S9YDE=;
+ b=X8sdVx2LSn6G7PyS4IUhvwROpfHlg16WsOWONmZwqKY+v7s79CKwtTmheTJTSMSzk2
+ Z4BpgTbyL1/UAecpSdJh6MlRIUtd8O1p5jE1PvGLamnLbwTZLEAte++4+oxinSMZAZsU
+ mwil2q1cs0YYXVxDlzRCqS3ilZFvV9Anhb2VHWnq5QFfPXgodTpLwIdpI4q8ZYJHfW7o
+ KCP5f+sL6xsI8Z9sy1Ec3sTK5v6KDxwNbRd0tRdzS+9VjMPy2OzDLEZlPxYDQQ30GZgF
+ jfopxts7NP4lIWeq7k6hYuaBcUeXm4lY2cMav2Izq8epcxygXZdmcxBEoufMhij0FAFD
+ bDnw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUT5zUtq6E8Lor2CMlYYt32Pw1+8ZXn1oexftQiCLzilxm5WA3zZomXgNkR/cEYVr9e54tGdUGefgbTx0Dyn7gsciQrKp0=
-X-Gm-Message-State: AOJu0YwoLj+AESioJ0RnsKUITZB1syAsfG462E5Rn41BmWP1rzzA65fh
- 4vjGdlyz7WoV0gp0uZOpflb5RN1SUxWCUWgmY3IqZrd6QS1S9Yv8D/RWniQV/ku57lV3mKX++fQ
- j7CfF4dGr0qPbGqVT/wW0tUK7TpdkQOSKjSsPzXgFZRmeFMeqVJZV
-X-Received: by 2002:adf:979e:0:b0:36b:a40c:5c09 with SMTP id
- ffacd0b85a97d-36d27591d39mr1599406f8f.58.1723126927518; 
- Thu, 08 Aug 2024 07:22:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEo0de8q7z1Eh0G8+bm2AJ2Ysdfe9LC2CbGZ+DN71+L8yiJUWpRbi57ySyHOUuoDJl7shFiVg==
-X-Received: by 2002:adf:979e:0:b0:36b:a40c:5c09 with SMTP id
- ffacd0b85a97d-36d27591d39mr1599371f8f.58.1723126926960; 
- Thu, 08 Aug 2024 07:22:06 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36d2718bfc4sm2072056f8f.57.2024.08.08.07.22.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Aug 2024 07:22:06 -0700 (PDT)
-Date: Thu, 8 Aug 2024 16:22:05 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Markus Armbruster <armbru@redhat.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>, "Michael
- S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
- <gengdongjiu1@gmail.com>, Eric Blake <eblake@redhat.com>, Michael Roth
- <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v5 5/7] qapi/ghes-cper: add an interface to do generic
- CPER error injection
-Message-ID: <20240808162205.3a85efb6@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240808161141.5ffe730e@foz.lan>
-References: <cover.1722634602.git.mchehab+huawei@kernel.org>
- <51cbdc8a53e58c69ee17b15c398feeeeeeb64f34.1722634602.git.mchehab+huawei@kernel.org>
- <87v80b1jqe.fsf@pond.sub.org> <20240808161141.5ffe730e@foz.lan>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ AJvYcCX1lcTOyle7iJdKQCPQeA829UP9VgUiCY4r51gE7/aEkVuqMBajT9nYwqgpDV9p941ZUV/TAupxhqWAI5bhkKRl1F+6uy0=
+X-Gm-Message-State: AOJu0YzPKVYdNBX5tyiFVxYRuMcsRXnVYPUyZ3bk0fdwoj+iSFVSCM/Q
+ XeTc882wAGBXDObKpa3PEwjsNsDqrUF/A/VfJI4Om/3MaI75jvKXHxp7scMC4Ia6P06sh1tzZNw
+ 4GMNhf21Q6kWCjnLhnGp0yTokjxnX+736dhuoLg==
+X-Google-Smtp-Source: AGHT+IEYLXVxPzJLiyPO/q6WShUZe3dHASsvfU5IepBNjQ59+nhWBnbsAh8hqiingbqxdNmrAvKSpSWg4/eYfTsBl8k=
+X-Received: by 2002:a05:6402:3484:b0:57a:3046:1cd8 with SMTP id
+ 4fb4d7f45d1cf-5bbb22399e9mr2377198a12.7.1723127592553; Thu, 08 Aug 2024
+ 07:33:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240806134829.351703-1-chalapathi.v@linux.ibm.com>
+ <20240806134829.351703-3-chalapathi.v@linux.ibm.com>
+ <e3e60776-3f63-4024-a595-2989a59e15ed@linaro.org>
+In-Reply-To: <e3e60776-3f63-4024-a595-2989a59e15ed@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 Aug 2024 15:33:01 +0100
+Message-ID: <CAFEAcA_H+KtpBUKx4CcwKnNjL_4iOX-weLBXcrt+JzYBAgwJag@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] Fixes: Coverity CID 1558831
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org, 
+ Glenn Miles <milesg@linux.ibm.com>, Caleb Schlossin <calebs@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, fbarrat@linux.ibm.com,
+ clg@kaod.org, chalapathi.v@ibm.com, saif.abrar@linux.ibm.com, 
+ dantan@us.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,113 +95,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 Aug 2024 16:11:41 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Wed, 7 Aug 2024 at 21:13, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Back at this patch since C=C3=A9dric asked me to look at it.
+>
+> On 6/8/24 15:48, Chalapathi V wrote:
+> > In this commit the following coverity scan defect has been fixed
+> > CID 1558831:  Resource leaks  (RESOURCE_LEAK)
+> >    Variable "rsp_payload" going out of scope leaks the storage it
+> >    points to.
+> >
+> > Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+> > ---
+> >   hw/ssi/pnv_spi.c | 1 +
+> >   1 file changed, 1 insertion(+)
+> >
+> > diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+> > index a33f682897..dbe06df224 100644
+> > --- a/hw/ssi/pnv_spi.c
+> > +++ b/hw/ssi/pnv_spi.c
+> > @@ -237,6 +237,7 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payl=
+oad)
+> >       }
+> >       if (rsp_payload !=3D NULL) {
+> >           spi_response(s, s->N1_bits, rsp_payload);
+> > +        pnv_spi_xfer_buffer_free(rsp_payload);
+> >       }
+> >   }
+> >
+>
+> Or bigger patch but simpler logic:
+>
+> -- >8 --
+> diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+> index c1297ab733..aaedba84af 100644
+> --- a/hw/ssi/pnv_spi.c
+> +++ b/hw/ssi/pnv_spi.c
+> @@ -217,6 +217,9 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payloa=
+d)
+>       PnvXferBuffer *rsp_payload =3D NULL;
+>
+>       rsp_payload =3D pnv_spi_xfer_buffer_new();
+> +    if (!rsp_payload) {
+> +        return;
+> +    }
 
-> Em Thu, 08 Aug 2024 10:50:33 +0200
-> Markus Armbruster <armbru@redhat.com> escreveu:
-> 
-> > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:  
-> 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 98eddf7ae155..655edcb6688c 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -2075,6 +2075,13 @@ F: hw/acpi/ghes.c
-> > >  F: include/hw/acpi/ghes.h
-> > >  F: docs/specs/acpi_hest_ghes.rst
-> > >  
-> > > +ACPI/HEST/GHES/ARM processor CPER
-> > > +R: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > > +S: Maintained
-> > > +F: hw/arm/ghes_cper.c
-> > > +F: hw/acpi/ghes_cper_stub.c
-> > > +F: qapi/ghes-cper.json
-> > > +    
-> > 
-> > Here's the reason for creating a new QAPI module instead of adding to
-> > existing module acpi.json: different maintainers.
-> > 
-> > Hypothetical question: if we didn't care for that, would this go into
-> > qapi/acpi.json?  
-> 
-> Independently of maintainers, GHES is part of ACPI APEI HEST, meaning
-> to report hardware errors. Such hardware errors are typically handled by 
-> the host OS, so quest doesn't need to be aware of that[1].
-> 
-> So, IMO the best would be to keep APEI/HEST/GHES in a separate file.
-> 
-> [1] still, I can foresee some scenarios were passing some errors to the
->     guest could make sense.
-> 
-> > 
-> > If yes, then should we call it acpi-ghes-cper.json or acpi-ghes.json
-> > instead?  
-> 
-> Naming it as acpi-ghes,acpi-hest or acpi-ghes-cper would equally work
-> from my side.
+pnv_spi_xfer_buffer_new() cannot fail (it calls
+g_malloc0, which aborts on not having enough memory)
+so we don't need to check it for NULL.
 
-if we going to keep it generic, acpi-hest would do
+>       for (int offset =3D 0; offset < payload->len; offset +=3D
+> s->transfer_len) {
+>           tx =3D 0;
+>           for (int i =3D 0; i < s->transfer_len; i++) {
+> @@ -235,9 +238,8 @@ static void transfer(PnvSpi *s, PnvXferBuffer *payloa=
+d)
+>                       (rx >> (8 * (s->transfer_len - 1) - i * 8)) & 0xFF;
+>           }
+>       }
+> -    if (rsp_payload !=3D NULL) {
+> -        spi_response(s, s->N1_bits, rsp_payload);
+> -    }
 
-> 
-> >   
-> > >  ppc4xx
-> > >  L: qemu-ppc@nongnu.org
-> > >  S: Orphan    
-> > 
-> > [...]
-> >   
-> > > diff --git a/qapi/ghes-cper.json b/qapi/ghes-cper.json
-> > > new file mode 100644
-> > > index 000000000000..3cc4f9f2aaa9
-> > > --- /dev/null
-> > > +++ b/qapi/ghes-cper.json
-> > > @@ -0,0 +1,55 @@
-> > > +# -*- Mode: Python -*-
-> > > +# vim: filetype=python
-> > > +
-> > > +##
-> > > +# = GHESv2 CPER Error Injection
-> > > +#
-> > > +# These are defined at
-> > > +# ACPI 6.2: 18.3.2.8 Generic Hardware Error Source version 2
-> > > +# (GHESv2 - Type 10)
-> > > +##    
-> > 
-> > Feels a bit terse.  These what?
-> > 
-> > The reference could be clearer: "defined in the ACPI Specification 6.2,
-> > section 18.3.2.8 Generic Hardware Error Source version 2".  A link would
-> > be nice, if it's stable.  
-> 
-> I can add a link, but only newer ACPI versions are hosted in html format
-> (e. g. only versions 6.4 and 6.5 are available as html at uefi.org).
+(So this NULL check was unnecessary in the old code.)
 
-some years earlier it could be said 'stable link' about acpi spec hosted
-elsewhere. Not the case anymore after umbrella change.
+> +    spi_response(s, s->N1_bits, rsp_payload);
+> +    pnv_spi_xfer_buffer_free(rsp_payload);
+>   }
+>
+> ---
+>
+> I note few things is odd here:
+>
+> 1/ pnv_spi_xfer_buffer_new() uses the GLib g_malloc0() call
+>     while pnv_spi_xfer_buffer_free() uses plan free().
 
-spec name, rev, chapter worked fine for acpi code (it's easy to find wherever spec is hosted).
-Probably the same would work for QAPI, I'm not QAPI maintainer though,
-so preffered approach here is absolutely up to you.
+This does work (glib guarantees now that g_malloc and friends
+can be paired with free), but it is not great style.
 
-> 
-> Can I place something like:
-> 
-> 	Defined since ACPI Specification 6.2,
-> 	section 18.3.2.8 Generic Hardware Error Source version 2. See:
-> 
-> 	https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#generic-hardware-error-source-version-2-ghesv2-type-10
-> 
-> e. g. having the link pointing to ACPI 6.4 or 6.5, instead of 6.2?
-> 
-> >   # @raw-data: payload of the CPER encoded in base64
-> > 
-> > Have you considered naming this @payload instead?  
-> 
-> Works for me.
-> 
-> Thanks,
-> Mauro
-> 
+> 2/ pnv_spi_xfer_buffer_free() frees payload->data so doesn't
+>     match pnv_spi_xfer_buffer_new().
 
+This part I think is OK -- the payload->data buffer is
+allocated with g_realloc(), so pnv_spi_xfer_buffer_new()
+creates a valid initial state (payload->data =3D NULL and
+payload->len =3D 0), pnv_spi_xfer_buffer_write_ptr() may
+allocate or extend the buffer (using g_realloc and
+updating the payload->len to match), and
+pnv_spi_xfer_buffer_free() will free the buffer
+(including handling the "buffer never allocated so
+payload->data =3D NULL" case, because free(NULL) is OK).
+
+What it doesn't get right I think is that when
+pnv_spi_xfer_buffer_write_ptr() extends the payload->data
+buffer it doesn't zero the newly added memory, so I think
+we might end up giving the guest back the contents of
+uninitialized memory.
+
+Another style issue is:
+    PnvXferBuffer *payload =3D g_malloc0(sizeof(*payload));
+g_new0(PnvXferBuffer, 1) is the better way to say
+"allocate me a zeroed out PnvXferBuffer", rather than
+manual use of sizeof.
+
+The various places which do
+    if (*payload =3D=3D NULL) {
+        *payload =3D pnv_spi_xfer_buffer_new();
+    }
+also look odd to me -- I'm pretty sure that
+in operation_shiftn1() and operation_shiftn2() it
+is impossible for them to be called with a NULL payload.
+
+The PnvXferBuffer struct is only 12 bytes large
+(a length and a pointer), so it seems rather overkill
+to be allocating and freeing it -- is it possible to
+have it be a local variable instead?
+
+My other question here is whether we need to be doing
+dynamic memory allocation, extension and freeing of the
+payload->data at all. This is quite an unusual thing to
+need to do in a hardware device model, because usually
+the real hardware we're modelling doesn't have infinite
+resources, it has some fixed amount of memory that it
+has to work with. If the guest can effectively ask
+us to allocate arbitrary amounts of memory, do we
+have appropriate guards in place to forbid that?
+
+Is there a datasheet for this device?
+
+thanks
+-- PMM
 
