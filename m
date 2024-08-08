@@ -2,75 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC0A94BFAF
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 16:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E878194C01B
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 16:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc4AU-0000tv-AI; Thu, 08 Aug 2024 10:31:06 -0400
+	id 1sc4Qi-0004qH-O3; Thu, 08 Aug 2024 10:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sc4AQ-0000tH-JS
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:31:02 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sc4Qf-0004fC-Al
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:47:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sc4AO-000675-7m
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:31:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723127460; x=1754663460;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+aF6CMtCk/FJR9JQ5ElsXUpRqhzOnaMp2vyHsyl2GCM=;
- b=LdI17IIRqSnXfKaw28mGX2lIPYQBChViU0x6mjVdeMmotbZZNezasV5n
- vJ1Wgpkr7r4/UyYjks0bgzB2pwWz21A8AdF9nnkzXceFUQ/+OZ+NfPQ74
- ciztami+ttXUDMmkNvNZuje53kXWPLG64qRGCJv/pJApzr+XwHvEoi6+G
- 33B/sF+8NZITKdEF5mwbX+HRAQ4gjrkH+YEaX8dvKRi6ZATFRnv2Zz6hN
- i64a0qrj0xORhBkysXMtd+dVB3CNLy9Zt82FsaVQhJRPQzZ9Ven/g83P+
- 7D+mON7d//uDSxV9c+48SkqfGgPMKZ95PxQN5VzvCrqWW/naj8F9moGMS A==;
-X-CSE-ConnectionGUID: guPzOfacR7yi43l/y+OHZA==
-X-CSE-MsgGUID: RqRJwTALRgWGO+WiDyN2Vg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21137966"
-X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="21137966"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 07:30:57 -0700
-X-CSE-ConnectionGUID: 5G8oAFLyREiyePe7mrb/vA==
-X-CSE-MsgGUID: x/Ya5AFiRdezsZdHJDj3rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="80466509"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 08 Aug 2024 07:30:56 -0700
-Date: Thu, 8 Aug 2024 22:46:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Manish <manish.mishra@nutanix.com>, John Levon <john.levon@nutanix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] i386/cpu: Introduce enable_cpuid_0x1f to force exposing
- CPUID 0x1f
-Message-ID: <ZrTaVfziPc61OYlI@intel.com>
-References: <20240802072426.4016194-1-xiaoyao.li@intel.com>
- <ZrSZQN/AQa6BiIUu@intel.com>
- <26064315-6730-48fa-9f04-cb86a2dcfdf0@intel.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sc4Qd-0008IX-NG
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:47:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723128467;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9ds8IK0umKYhnxlKO1uHl2oBOX4Dz1vmyItbXCFLB8s=;
+ b=V4LfhC+rOoosGp8tcaURtEJlyAZrCLx+Pr7FzPdvBcjk6BkMmWZI5WNDhIAT3F/0yIYoHK
+ sglP/E4B9ak10MU5AqAuSh7OM/MgQi1ACHwcJp3MuRwc87tzsysYl3exuMECTadyVOH27S
+ dSqUW1SEDWKBuoXZ/5QTJXbFKU1zhuA=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-628-x0fwqI9hMwGxT1pvjtjCZQ-1; Thu, 08 Aug 2024 10:47:45 -0400
+X-MC-Unique: x0fwqI9hMwGxT1pvjtjCZQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5bb88479be6so803003a12.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 07:47:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723128465; x=1723733265;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9ds8IK0umKYhnxlKO1uHl2oBOX4Dz1vmyItbXCFLB8s=;
+ b=URMoC+ipRJmbn+Ya2+T8AJg0HLvuJYFbQxCpY9DU7y6VBEfOMtpwwfbAzbNYAbMoLx
+ sbmbZ18C43EZA6ugNPn41R0zK9UmrZHERimr39WF8C8g7dIXxytBAEno49ZBmsbjQDWO
+ vxj5+LNIeR6xC+0B/3pXWE7M3xJOv8c+djVJ8IyR1G+rmQtb71V69t8/m/5kuQCr+lmj
+ Xn3RVCAtIicyeaRuJs2D/ZYROn2EaWIrv6xESzI2DiPYptv7DBLz9UD5yIOy45N9tYSV
+ QAC6r43OMhskvjIOjWNMQjheCQbgDpCR28p1FNiW/LogXgzztHyV7l5TE0in4MwEG/rk
+ Mm4Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXQbrncTWEFGWlRCoKBpvOl+XmyVTd0iFU76QivpWLVeRaVA2XiQXgalDYwfnzLNADVU9ByBdYinSzoHEuhUxQpLx3gOhs=
+X-Gm-Message-State: AOJu0Yy+/grdj9krMEc9S91xq0GLY1w8Y6RXhw4MqbbbP82xwVbX3Alb
+ 0T1uvW1d/ChGNNW4mvuzaeaCyhTgJVqRRYWXbwKT0pNuhrQsaezoTVa42OD8WDZ+d6cD0ZgGtKR
+ cvyONmIUjHMTBFsiPXoN8UwnBNp5jxTkIL29uRUCyKaanoGvQnz4f
+X-Received: by 2002:a05:6402:210f:b0:5a2:f154:95f4 with SMTP id
+ 4fb4d7f45d1cf-5bbb21d08d1mr1810883a12.22.1723128464564; 
+ Thu, 08 Aug 2024 07:47:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH6N1RTiDI1FBdsuG8XC4Iw2HSQ7YPzQrepQnJiRJzAiCdqI72T1UmRKa68Qblrx40bIQRyiw==
+X-Received: by 2002:a05:6402:210f:b0:5a2:f154:95f4 with SMTP id
+ 4fb4d7f45d1cf-5bbb21d08d1mr1810823a12.22.1723128463387; 
+ Thu, 08 Aug 2024 07:47:43 -0700 (PDT)
+Received: from redhat.com ([2.55.14.119]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5bbb2bf813bsm695308a12.20.2024.08.08.07.47.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Aug 2024 07:47:42 -0700 (PDT)
+Date: Thu, 8 Aug 2024 10:47:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, dmitry.fleytman@gmail.com,
+ jasowang@redhat.com, sriram.yagnaraman@est.tech, sw@weilnetz.de,
+ qemu-devel@nongnu.org, yan@daynix.com,
+ Fabiano Rosas <farosas@suse.de>, devel@lists.libvirt.org
+Subject: Re: [PATCH v2 4/4] virtio-net: Add support for USO features
+Message-ID: <20240808104559-mutt-send-email-mst@kernel.org>
+References: <20240805041650-mutt-send-email-mst@kernel.org>
+ <c7447c6c-0562-4e0f-bc1b-61a1430c9852@daynix.com>
+ <20240805060544-mutt-send-email-mst@kernel.org>
+ <2b62780c-a6cb-4262-beb5-81d54c14f545@daynix.com>
+ <20240806092822-mutt-send-email-mst@kernel.org>
+ <890f9d0a-3ded-488d-b274-8be9c38b5df3@daynix.com>
+ <20240808065339-mutt-send-email-mst@kernel.org>
+ <274ccd97-a473-4937-a57b-0029a18069c9@daynix.com>
+ <20240808070912-mutt-send-email-mst@kernel.org>
+ <ZrTTCIpXLmW8c5Kv@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <26064315-6730-48fa-9f04-cb86a2dcfdf0@intel.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+In-Reply-To: <ZrTTCIpXLmW8c5Kv@x1n>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,109 +113,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 08, 2024 at 09:59:07PM +0800, Xiaoyao Li wrote:
-> Date: Thu, 8 Aug 2024 21:59:07 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH] i386/cpu: Introduce enable_cpuid_0x1f to force
->  exposing CPUID 0x1f
+On Thu, Aug 08, 2024 at 10:15:36AM -0400, Peter Xu wrote:
+> On Thu, Aug 08, 2024 at 07:12:14AM -0400, Michael S. Tsirkin wrote:
+> > This is too big of a hammer. People already use what you call "cross
+> > migrate" and have for years. We are not going to stop developing
+> > features just because someone suddenly became aware of some such bit.
+> > If you care, you will have to work to solve the problem properly -
+> > nacking half baked hacks is the only tool maintainers have to make
+> > people work on hard problems.
 > 
-> On 8/8/2024 6:09 PM, Zhao Liu wrote:
-> > Hi Xiaoyao,
-> > 
-> > Patch is generally fine for me. Just a few nits:
-> > 
-> > On Fri, Aug 02, 2024 at 03:24:26AM -0400, Xiaoyao Li wrote:
-> > > diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-> > > index dff49fce1154..b63bce2f4c82 100644
-> > > --- a/include/hw/i386/topology.h
-> > > +++ b/include/hw/i386/topology.h
-> > > @@ -207,13 +207,4 @@ static inline apic_id_t x86_apicid_from_cpu_idx(X86CPUTopoInfo *topo_info,
-> > >       return x86_apicid_from_topo_ids(topo_info, &topo_ids);
-> > >   }
-> > > -/*
-> > > - * Check whether there's extended topology level (module or die)?
-> > > - */
-> > > -static inline bool x86_has_extended_topo(unsigned long *topo_bitmap)
-> > > -{
-> > > -    return test_bit(CPU_TOPO_LEVEL_MODULE, topo_bitmap) ||
-> > > -           test_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
-> > > -}
-> > > -
-> > 
-> > [snip]
-> > 
-> > > +/*
-> > > + * Check whether there's v2 extended topology level (module or die)?
-> > > + */
-> > > +bool x86_has_v2_extended_topo(X86CPU *cpu)
-> > > +{
-> > > +    if (cpu->enable_cpuid_0x1f) {
-> > > +        return true;
-> > > +    }
-> > > +
-> > > +    return test_bit(CPU_TOPO_LEVEL_MODULE, cpu->env.avail_cpu_topo) ||
-> > > +           test_bit(CPU_TOPO_LEVEL_DIE, cpu->env.avail_cpu_topo);
-> > > +}
-> > > +
-> > 
-> > I suggest to decouple 0x1f enablement and extended topo check, since as
-> > the comment of CPUTopoLevel said:
-> > 
-> > /*
-> >   * CPUTopoLevel is the general i386 topology hierarchical representation,
-> >   * ordered by increasing hierarchical relationship.
-> >   * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
-> >   * or AMD (CPUID[0x80000026]).
-> >   */
-> > 
-> > The topology enumeration is generic and is not bound to the vendor.
+> IMHO this is totally different thing.  It's not about proposing a new
+> feature yet so far, it's about how we should fix a breakage first.
 > 
-> I don't quit get your point. All the current usages of
-> x86_has_extended_topo() are for CPUID leaf 0x1f, which is an Intel specific
-> leaf.
+> And that's why I think we should fix it even in the simple way first, then
+> we consider anything more benefitial from perf side without breaking
+> anything, which should be on top of that.
+> 
+> Thanks,
 
-0x1f is just a user of that helper, and AMD's leaf would be another
-potential user, even if it is not implemented yet.
+As I said, once the quick hack is merged people stop caring.
+Mixing different kernel versions in migration is esoteric enough for
+this not to matter to most people. There's no rush I think, address
+it properly.
 
-What this helper does is check the topology hierarchy set by -smp for
-x86 CPUs, and has nothing to do with enabling 0x1f or not. You cannot
-falsely report the presence of module/die if -smp doesn't configure such
-levels but 0x1f is forcibly enabled.
+-- 
+MST
 
-> Are you saying x86_has_extended_topo() will be used for leaf 0x80000026 for
-> AMD as well?
-> 
-> or maybe I misunderstand the meaning "extend_topo". The extend_topo just
-> means the topo level of module and die, and the topo level of smt and core
-> are non-extended? 
-
-Any levels that 0xb doesn't cover.
-
-> If so, this is new to me, could I ask where the
-> definitions come from? or just QEMU defines them itself?
->
-> > [snip]
-> > 
-> > > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> > > index c6cc035df3d8..211a42ffbfa6 100644
-> > > --- a/target/i386/cpu.h
-> > > +++ b/target/i386/cpu.h
-> > > @@ -2110,6 +2110,9 @@ struct ArchCPU {
-> > >       /* Compatibility bits for old machine types: */
-> > >       bool enable_cpuid_0xb;
-> > > +    /* Force to expose cpuid 0x1f */
-> > 
-> > Maybe "Force to enable cpuid 0x1f"?
-> 
-> I can change to it.
-> 
-> > > +    bool enable_cpuid_0x1f;
-> > > +
-> > >       /* Enable auto level-increase for all CPUID leaves */
-> > >       bool full_cpuid_auto_level;i
-> > 
-> > Regards,
-> > Zhao
-> > 
-> 
 
