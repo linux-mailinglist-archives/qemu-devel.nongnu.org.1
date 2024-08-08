@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE2C94BD69
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 14:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CEC94BD6E
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 14:27:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc2EJ-0000Ya-LV; Thu, 08 Aug 2024 08:26:55 -0400
+	id 1sc2EO-0000yU-2U; Thu, 08 Aug 2024 08:27:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sc2EE-0000Bf-Qw; Thu, 08 Aug 2024 08:26:52 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ id 1sc2EE-0000Be-Qt
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 08:26:52 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sc2E9-0005xO-Bt; Thu, 08 Aug 2024 08:26:48 -0400
+ id 1sc2EB-0005xr-6g
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 08:26:49 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 9EA1E615DD;
- Thu,  8 Aug 2024 12:26:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C10C4AF0C;
+ by sin.source.kernel.org (Postfix) with ESMTP id 46B87CE12FF;
+ Thu,  8 Aug 2024 12:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93DFC4AF09;
  Thu,  8 Aug 2024 12:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1723120003;
- bh=ZOxDxxTAY5bHcgYcs4XI5591I7f113rMY6ajTI12ouQ=;
- h=From:To:Cc:Subject:Date:From;
- b=SGNpItAxANKAuE/4pD2apfR93PB7VqLsQj5gyXyF3Rl5YafQcROTkK3O9ZVD4LJm5
- MI1CaDmxNU2XIKh1xo6H96LQFy2EBzLOXeJfOQCNnbOPtAXKskyAT+XkSjWVD7LC54
- vlNkow+Vrd7OEkEDVI0PtN9qw+503jjymolAPSX2FgRSXleyzQTEdUUkpJg3FEinm5
- IjP6v7zIKlsCA7eG23wPyeF/9QrK8mKJjx5tY0MlGJoEZphrwrOVJh2grn/HH0yN+I
- 5lrKTw5IkKBP0f+rRw09BgHRBiTEj8ymCDMiUfEt6k4+Xr3BXcHkRzYguvZc9IDiWp
- VFf4+71ILO8/g==
+ s=k20201202; t=1723120002;
+ bh=+COdGK7bRLdFc3Xci68sxDJkHe3wEhoAcFT7ySCk4ZQ=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=gWu9vQjEcTRVFLLmZpxD2QYzEkZJrbkYr9Ky9/wKv6R4cp5t1CBxkT4C5ZsCfhB6K
+ ZRyg+e8xqQKlkKXJVc+xZaoIh3jCd8BrkE/5Cr6H0sPzclPIEtbriVMZ74R8ENbWWz
+ eGhOwCJQlG9wohWC7GObp/87bFfRXSBPiNYJDPRs1+ieZjVSKn0OtNEUWVd+U0fI8X
+ y0QGQB/wMuy1HPqAFEr7krrs+RO6oQkDVtRXD12B44X10unsWB92AA/1yvx75tXyzW
+ fGchbqaVvOKX2fz+skrIn4BA74oV1p+R0E90Ysu2e0H9sg5oBLOIdqTVrqnQMRCjf2
+ iAY5eFiVQvSgA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1sc2E4-00000000oD9-3O1z; Thu, 08 Aug 2024 14:26:40 +0200
+ id 1sc2E4-00000000oDC-3VKA; Thu, 08 Aug 2024 14:26:40 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, linux-kernel@vger.kernel.org,
  qemu-devel@nongnu.org
-Subject: [PATCH v6 00/10] Add ACPI CPER firmware first error injection on ARM
- emulation
-Date: Thu,  8 Aug 2024 14:26:26 +0200
-Message-ID: <cover.1723119423.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v6 01/10] acpi/generic_event_device: add an APEI error device
+Date: Thu,  8 Aug 2024 14:26:27 +0200
+Message-ID: <f43b43fa2e80cbbecf6e47986d768029d531d29f.1723119423.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1723119423.git.mchehab+huawei@kernel.org>
+References: <cover.1723119423.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217;
- envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,203 +76,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Testing OS kernel ACPI APEI CPER support is tricky, as one depends on
-having hardware with special-purpose BIOS and/or hardware.
+Adds a generic error device to handle generic hardware error
+events as specified at ACPI 6.5 specification at 18.3.2.7.2:
+https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#event-notification-for-generic-error-sources
+using HID PNP0C33.
 
-With QEMU, it becomes a lot easier, as it can be done via QMP.
+The PNP0C33 device is used to report hardware errors to
+the guest via ACPI APEI Generic Hardware Error Source (GHES).
 
-This series add support for injecting CPER records on ARM emulation.
-
-The QEMU side changes add a QAPI able to do CPER error injection
-on ARM, with a raw data parameter, making it very flexible.
-
-A script is provided at the final patch implementing support for
-ARM Processor CPER error injection according with ACPI 6.x and 
-UEFI 2.9A/2.10 specs, via QMP.
-
-Injecting such errors can be done using the provided script:
-
-	$ ./scripts/ghes_inject.py arm 
-	Error injected.
-
-Produces a simple CPER register, properly handled by the Linux
-Kernel:
-
-[  794.983753] {4}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-[  794.984150] {4}[Hardware Error]: event severity: recoverable
-[  794.984391] {4}[Hardware Error]:  Error 0, type: recoverable
-[  794.984652] {4}[Hardware Error]:   section_type: ARM processor error
-[  794.984926] {4}[Hardware Error]:   MIDR: 0x0000000000000000
-[  794.985184] {4}[Hardware Error]:   running state: 0x0
-[  794.985411] {4}[Hardware Error]:   Power State Coordination Interface state: 0
-[  794.985720] {4}[Hardware Error]:   Error info structure 0:
-[  794.985960] {4}[Hardware Error]:   num errors: 2
-[  794.986175] {4}[Hardware Error]:    error_type: 0x02: cache error
-[  794.986442] {4}[Hardware Error]:    error_info: 0x000000000091000f
-[  794.986755] {4}[Hardware Error]:     transaction type: Data Access
-[  794.987027] {4}[Hardware Error]:     cache error, operation type: Data write
-[  794.987310] {4}[Hardware Error]:     cache level: 2
-[  794.987529] {4}[Hardware Error]:     processor context not corrupted
-[  794.987867] [Firmware Warn]: GHES: Unhandled processor error type 0x02: cache error
-
-More complex use cases can be done, like:
-
-	$ ./scripts/ghes_inject.py arm --mpidr 0x444 --running --affinity 1 \
-	  --error-info 12345678 --vendor 0x13,123,4,5,1 --ctx-array 0,1,2,3,4,5 \
-	  -t cache tlb bus micro-arch tlb,micro-arch
-	Error injected.
-
-[  899.181246] {5}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-[  899.181769] {5}[Hardware Error]: event severity: recoverable
-[  899.182069] {5}[Hardware Error]:  Error 0, type: recoverable
-[  899.182370] {5}[Hardware Error]:   section_type: ARM processor error
-[  899.182689] {5}[Hardware Error]:   MIDR: 0x0000000000000000
-[  899.182980] {5}[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x0000000000000000
-[  899.183395] {5}[Hardware Error]:   error affinity level: 0
-[  899.183683] {5}[Hardware Error]:   running state: 0x1
-[  899.183962] {5}[Hardware Error]:   Power State Coordination Interface state: 0
-[  899.184332] {5}[Hardware Error]:   Error info structure 0:
-[  899.184610] {5}[Hardware Error]:   num errors: 2
-[  899.184864] {5}[Hardware Error]:    error_type: 0x02: cache error
-[  899.185181] {5}[Hardware Error]:    error_info: 0x0000000000bc614e
-[  899.185504] {5}[Hardware Error]:     cache level: 2
-[  899.185771] {5}[Hardware Error]:     processor context not corrupted
-[  899.186082] {5}[Hardware Error]:   Error info structure 1:
-[  899.186366] {5}[Hardware Error]:   num errors: 2
-[  899.186613] {5}[Hardware Error]:    error_type: 0x04: TLB error
-[  899.186929] {5}[Hardware Error]:    error_info: 0x000000000054007f
-[  899.187236] {5}[Hardware Error]:     transaction type: Instruction
-[  899.187588] {5}[Hardware Error]:     TLB error, operation type: Instruction fetch
-[  899.187962] {5}[Hardware Error]:     TLB level: 1
-[  899.188209] {5}[Hardware Error]:     processor context not corrupted
-[  899.188535] {5}[Hardware Error]:     the error has not been corrected
-[  899.188853] {5}[Hardware Error]:     PC is imprecise
-[  899.189114] {5}[Hardware Error]:   Error info structure 2:
-[  899.189404] {5}[Hardware Error]:   num errors: 2
-[  899.189653] {5}[Hardware Error]:    error_type: 0x08: bus error
-[  899.189967] {5}[Hardware Error]:    error_info: 0x00000080d6460fff
-[  899.190293] {5}[Hardware Error]:     transaction type: Generic
-[  899.190611] {5}[Hardware Error]:     bus error, operation type: Generic read (type of instruction or data request cannot be determined)
-[  899.191174] {5}[Hardware Error]:     affinity level at which the bus error occurred: 1
-[  899.191563] {5}[Hardware Error]:     processor context corrupted
-[  899.191872] {5}[Hardware Error]:     the error has been corrected
-[  899.192185] {5}[Hardware Error]:     PC is imprecise
-[  899.192445] {5}[Hardware Error]:     Program execution can be restarted reliably at the PC associated with the error.
-[  899.192939] {5}[Hardware Error]:     participation type: Local processor observed
-[  899.193324] {5}[Hardware Error]:     request timed out
-[  899.193596] {5}[Hardware Error]:     address space: External Memory Access
-[  899.193945] {5}[Hardware Error]:     memory access attributes:0x20
-[  899.194273] {5}[Hardware Error]:     access mode: secure
-[  899.194544] {5}[Hardware Error]:   Error info structure 3:
-[  899.194838] {5}[Hardware Error]:   num errors: 2
-[  899.195088] {5}[Hardware Error]:    error_type: 0x10: micro-architectural error
-[  899.195456] {5}[Hardware Error]:    error_info: 0x0000000078da03ff
-[  899.195782] {5}[Hardware Error]:   Error info structure 4:
-[  899.196070] {5}[Hardware Error]:   num errors: 2
-[  899.196331] {5}[Hardware Error]:    error_type: 0x14: TLB error|micro-architectural error
-[  899.196733] {5}[Hardware Error]:   Context info structure 0:
-[  899.197024] {5}[Hardware Error]:    register context type: AArch64 EL1 context registers
-[  899.197427] {5}[Hardware Error]:    00000000: 00000000 00000000
-[  899.197741] {5}[Hardware Error]:   Vendor specific error info has 5 bytes:
-[  899.198096] {5}[Hardware Error]:    00000000: 13 7b 04 05 01                                   .{...
-[  899.198610] [Firmware Warn]: GHES: Unhandled processor error type 0x02: cache error
-[  899.199000] [Firmware Warn]: GHES: Unhandled processor error type 0x04: TLB error
-[  899.199388] [Firmware Warn]: GHES: Unhandled processor error type 0x08: bus error
-[  899.199767] [Firmware Warn]: GHES: Unhandled processor error type 0x10: micro-architectural error
-[  899.200194] [Firmware Warn]: GHES: Unhandled processor error type 0x14: TLB error|micro-architectural error
-
+Co-authored-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Co-authored-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
+ hw/acpi/aml-build.c                    | 10 ++++++++++
+ hw/acpi/generic_event_device.c         |  8 ++++++++
+ include/hw/acpi/acpi_dev_interface.h   |  1 +
+ include/hw/acpi/aml-build.h            |  2 ++
+ include/hw/acpi/generic_event_device.h |  1 +
+ 5 files changed, 22 insertions(+)
 
-v6:
-- PNP0C33 device creation moved to aml-build.c;
-- acpi_ghes record functions now use ACPI notify parameter,
-  instead of source ID;
-- the number of source IDs is now automatically calculated;
-- some code cleanups and function/var renames;
-- some fixes and cleanups at the error injection script;
-- ghes cper stub now produces an error if cper JSON is not compiled;
-- Offset calculation logic for GHES was refactored;
-- Updated documentation to reflect the GHES allocated size;
-- Added a x-mpidr object for QOM usage;
-- Added a patch making usage of x-mpidr field at ARM injection
-  script;
-
-v5:
-- CPER guid is now passing as string;
-- raw-data is now passed with base64 encode;
-- Removed several GPIO left-overs from arm/virt.c changes;
-- Lots of cleanups and improvements at the error injection script.
-  It now better handles QMP dialog and doesn't print debug messages.
-  Also, code was split on two modules, to make easier to add more
-  error injection commands.
-
-v4:
-- CPER generation moved to happen outside QEMU;
-- One patch adding support for mpidr query was removed.
-
-v3:
-- patch 1 cleanups with some comment changes and adding another place where
-  the poweroff GPIO define should be used. No changes on other patches (except
-  due to conflict resolution).
-
-v2:
-- added a new patch using a define for GPIO power pin;
-- patch 2 changed to also use a define for generic error GPIO pin;
-- a couple cleanups at patch 2 removing uneeded else clauses.
-
-
-
-Jonathan Cameron (1):
-  acpi/ghes: Add support for GED error device
-
-Mauro Carvalho Chehab (9):
-  acpi/generic_event_device: add an APEI error device
-  arm/virt: Wire up a GED error device for ACPI / GHES
-  qapi/ghes-cper: add an interface to do generic CPER error injection
-  acpi/ghes: rework the logic to handle HEST source ID
-  acpi/ghes: add support for generic error injection via QAPI
-  docs: acpi_hest_ghes: fix documentation for CPER size
-  scripts/ghes_inject: add a script to generate GHES error inject
-  target/arm: add an experimental mpidr arm cpu property object
-  scripts/arm_processor_error.py: retrieve mpidr if not filled
-
- MAINTAINERS                            |  10 +
- docs/specs/acpi_hest_ghes.rst          |   6 +-
- hw/acpi/Kconfig                        |   5 +
- hw/acpi/aml-build.c                    |  10 +
- hw/acpi/generic_event_device.c         |   8 +
- hw/acpi/ghes-stub.c                    |   3 +-
- hw/acpi/ghes.c                         | 308 ++++++++++++++----
- hw/acpi/ghes_cper.c                    |  45 +++
- hw/acpi/ghes_cper_stub.c               |  19 ++
- hw/acpi/meson.build                    |   2 +
- hw/arm/Kconfig                         |   5 +
- hw/arm/virt-acpi-build.c               |   1 +
- hw/arm/virt.c                          |  12 +-
- include/hw/acpi/acpi_dev_interface.h   |   1 +
- include/hw/acpi/aml-build.h            |   2 +
- include/hw/acpi/generic_event_device.h |   1 +
- include/hw/acpi/ghes.h                 |  24 +-
- include/hw/arm/virt.h                  |   1 +
- qapi/ghes-cper.json                    |  55 ++++
- qapi/meson.build                       |   1 +
- qapi/qapi-schema.json                  |   1 +
- scripts/arm_processor_error.py         | 389 ++++++++++++++++++++++
- scripts/ghes_inject.py                 |  48 +++
- scripts/qmp_helper.py                  | 431 +++++++++++++++++++++++++
- target/arm/cpu.c                       |   1 +
- target/arm/cpu.h                       |   1 +
- target/arm/helper.c                    |  10 +-
- 27 files changed, 1316 insertions(+), 84 deletions(-)
- create mode 100644 hw/acpi/ghes_cper.c
- create mode 100644 hw/acpi/ghes_cper_stub.c
- create mode 100644 qapi/ghes-cper.json
- create mode 100644 scripts/arm_processor_error.py
- create mode 100755 scripts/ghes_inject.py
- create mode 100644 scripts/qmp_helper.py
-
+diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+index 6d4517cfbe3d..cb167523859f 100644
+--- a/hw/acpi/aml-build.c
++++ b/hw/acpi/aml-build.c
+@@ -2520,3 +2520,13 @@ Aml *aml_i2c_serial_bus_device(uint16_t address, const char *resource_source)
+ 
+     return var;
+ }
++
++/* ACPI 5.0: 18.3.2.6.2 Event Notification For Generic Error Sources */
++Aml *aml_error_device(void)
++{
++    Aml *dev = aml_device(ACPI_APEI_ERROR_DEVICE);
++    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0C33")));
++    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
++
++    return dev;
++}
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 15b4c3ebbf24..1673e9695be3 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -26,6 +26,7 @@ static const uint32_t ged_supported_events[] = {
+     ACPI_GED_PWR_DOWN_EVT,
+     ACPI_GED_NVDIMM_HOTPLUG_EVT,
+     ACPI_GED_CPU_HOTPLUG_EVT,
++    ACPI_GED_ERROR_EVT
+ };
+ 
+ /*
+@@ -116,6 +117,11 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
+                            aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
+                                       aml_int(0x80)));
+                 break;
++            case ACPI_GED_ERROR_EVT:
++                aml_append(if_ctx,
++                           aml_notify(aml_name(ACPI_APEI_ERROR_DEVICE),
++                                      aml_int(0x80)));
++                break;
+             case ACPI_GED_NVDIMM_HOTPLUG_EVT:
+                 aml_append(if_ctx,
+                            aml_notify(aml_name("\\_SB.NVDR"),
+@@ -295,6 +301,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+         sel = ACPI_GED_MEM_HOTPLUG_EVT;
+     } else if (ev & ACPI_POWER_DOWN_STATUS) {
+         sel = ACPI_GED_PWR_DOWN_EVT;
++    } else if (ev & ACPI_GENERIC_ERROR) {
++        sel = ACPI_GED_ERROR_EVT;
+     } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
+         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
+     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
+diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
+index 68d9d15f50aa..8294f8f0ccca 100644
+--- a/include/hw/acpi/acpi_dev_interface.h
++++ b/include/hw/acpi/acpi_dev_interface.h
+@@ -13,6 +13,7 @@ typedef enum {
+     ACPI_NVDIMM_HOTPLUG_STATUS = 16,
+     ACPI_VMGENID_CHANGE_STATUS = 32,
+     ACPI_POWER_DOWN_STATUS = 64,
++    ACPI_GENERIC_ERROR = 128,
+ } AcpiEventStatusBits;
+ 
+ #define TYPE_ACPI_DEVICE_IF "acpi-device-interface"
+diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
+index a3784155cb33..44d1a6af0c69 100644
+--- a/include/hw/acpi/aml-build.h
++++ b/include/hw/acpi/aml-build.h
+@@ -252,6 +252,7 @@ struct CrsRangeSet {
+ /* Consumer/Producer */
+ #define AML_SERIAL_BUS_FLAG_CONSUME_ONLY        (1 << 1)
+ 
++#define ACPI_APEI_ERROR_DEVICE   "GEDD"
+ /**
+  * init_aml_allocator:
+  *
+@@ -382,6 +383,7 @@ Aml *aml_dma(AmlDmaType typ, AmlDmaBusMaster bm, AmlTransferSize sz,
+              uint8_t channel);
+ Aml *aml_sleep(uint64_t msec);
+ Aml *aml_i2c_serial_bus_device(uint16_t address, const char *resource_source);
++Aml *aml_error_device(void);
+ 
+ /* Block AML object primitives */
+ Aml *aml_scope(const char *name_format, ...) G_GNUC_PRINTF(1, 2);
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index 40af3550b56d..9ace8fe70328 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -98,6 +98,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ #define ACPI_GED_PWR_DOWN_EVT      0x2
+ #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+ #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
++#define ACPI_GED_ERROR_EVT          0x10
+ 
+ typedef struct GEDState {
+     MemoryRegion evt;
 -- 
 2.45.2
-
 
 
