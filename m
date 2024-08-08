@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD1294C397
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 19:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D88194C39F
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 19:24:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc6qj-0006ls-JV; Thu, 08 Aug 2024 13:22:53 -0400
+	id 1sc6rt-0003dc-NS; Thu, 08 Aug 2024 13:24:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sc6qe-0006Tw-CJ
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 13:22:48 -0400
+ id 1sc6rr-0003WG-IX
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 13:24:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sc6qc-0007Mb-Pj
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 13:22:48 -0400
+ id 1sc6rm-0007Wv-UX
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 13:24:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723137766;
+ s=mimecast20190719; t=1723137837;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QaYyVHB+mxSzA1ftHlJTWZJ4MWnm5chCEnkVXEtMXpQ=;
- b=YUCM4qMxghpCey5BsiGwbE02X0xppAFR82dCTInWYCyQRha8aRUvT0G8r3Nux2IojVNXoz
- DSiy4bkoaUxSOd/p2AUC2eFgU4fdtDAVhPPqGKgXZ5zWxvQ4W/XwV1bxJi0lGzDK22PmrU
- hCvMGkdH7cnpysQ+32G2lJ7TOdJMj/I=
+ bh=y8RZusI0wlQhSYv/EDKdBLZQZwYvxu8BhHsThyZhmSM=;
+ b=N1Yo4r5kEd7/M6mabLP+d2fDbvR9wn7qXPW2PHxe1/SAxacgtJsmcDG82RAyAigkLTjCf8
+ 0rQmwSdSij3YcqDL47JGKCgjIqw0EEpsXdpYMcl5MedT7DxhVPULrJyHYkB8x9AXY3gQw+
+ V4JUKfGm8sj/Nu4myDw7qG+PQvxm60U=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-m_qH7z-8OX-QPQIAz0-WfA-1; Thu,
- 08 Aug 2024 13:22:40 -0400
-X-MC-Unique: m_qH7z-8OX-QPQIAz0-WfA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-Vyv586aROJSRECviWC09Zg-1; Thu,
+ 08 Aug 2024 13:23:51 -0400
+X-MC-Unique: Vyv586aROJSRECviWC09Zg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 535431944B2D; Thu,  8 Aug 2024 17:22:39 +0000 (UTC)
+ id 564E31944B2E; Thu,  8 Aug 2024 17:23:50 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.163])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0DCC81955E93; Thu,  8 Aug 2024 17:22:35 +0000 (UTC)
-Date: Thu, 8 Aug 2024 18:22:32 +0100
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4498619560A3; Thu,  8 Aug 2024 17:23:47 +0000 (UTC)
+Date: Thu, 8 Aug 2024 18:23:44 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Alejandro Zeise <alejandro.zeise@seagate.com>
 Cc: qemu-arm@nongnu.org, kris.conklin@seagate.com,
  jonathan.henze@seagate.com, evan.burgess@seagate.com, clg@kaod.org,
  peter.maydell@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 12/15] crypto/hash-nettle: Remove old hash API functions
-Message-ID: <ZrT-2MAv3K8irj54@redhat.com>
+Subject: Re: [PATCH v4 13/15] crypto/hash-afalg: Remove old hash API functions
+Message-ID: <ZrT_ICX_Ys4Fyvwm@redhat.com>
 References: <20240807195122.2827364-1-alejandro.zeise@seagate.com>
- <20240807195122.2827364-13-alejandro.zeise@seagate.com>
+ <20240807195122.2827364-14-alejandro.zeise@seagate.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240807195122.2827364-13-alejandro.zeise@seagate.com>
+In-Reply-To: <20240807195122.2827364-14-alejandro.zeise@seagate.com>
 User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -87,13 +87,14 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 07, 2024 at 07:51:19PM +0000, Alejandro Zeise wrote:
-> Removes old hash implemention in the nettle hash driver.
+On Wed, Aug 07, 2024 at 07:51:20PM +0000, Alejandro Zeise wrote:
+> Removes the old hash API functions in the afalg driver,
+> and modifies the hmac function to use the new helper functions.
 > 
 > Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
 > ---
->  crypto/hash-nettle.c | 53 --------------------------------------------
->  1 file changed, 53 deletions(-)
+>  crypto/hash-afalg.c | 59 +++------------------------------------------
+>  1 file changed, 3 insertions(+), 56 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
