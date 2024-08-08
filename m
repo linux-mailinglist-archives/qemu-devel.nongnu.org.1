@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A64394C451
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 20:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC03794C44C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 20:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc7qg-00075c-Jg; Thu, 08 Aug 2024 14:26:54 -0400
+	id 1sc7qi-0007JU-Ug; Thu, 08 Aug 2024 14:26:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sc7qb-0006vk-6r
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 14:26:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sc7qe-00075E-Te
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 14:26:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sc7qX-0000zl-6d
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 14:26:47 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sc7qa-00010P-TN
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 14:26:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723141604;
+ s=mimecast20190719; t=1723141607;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XPzDwnV7bltr5P6E7tqUg1PVMwh8QxRkScJ+Mwg6V7Q=;
- b=ghUyPj/7oslU6oV6ybrLNG8mxSJxm75YvxokbM3t40rW95r8nnjdiRJV4c2UJ+yFa4ewGS
- suLj3DUejBUEzwTTb3DSeDkVDuT2assRASopIUKg7YSCjL5fpDPxGsUIhC4h2n2eqlxpmm
- yHYUktgxikaiRuRaHokAp3QYQhROOCI=
+ bh=TCyr7FYSBNpBY8JP2h8Gp4KgWb+w+sLKTsRT6zhiF2k=;
+ b=Dz3HwwQkpNMg5Qw6+ya6boMINanot+sJp8ssMpeJBiU9r25q+cBg/WdFmI1yy1Ck5EVxhQ
+ x7YCYBNMRlEVbVxvNi2IvI3iBPZYzKHpaMAUxQigUJDEQOEvhlULunargXs5LDNEpJ6ZuW
+ dNxAzp1iccM094UGHXeXX4f8otTtnYA=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-232-IxSSjyQGNAO3ePcIaay1pw-1; Thu,
- 08 Aug 2024 14:26:41 -0400
-X-MC-Unique: IxSSjyQGNAO3ePcIaay1pw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-330-ft6mSj8SOzKUYa7gp0tHrQ-1; Thu,
+ 08 Aug 2024 14:26:42 -0400
+X-MC-Unique: ft6mSj8SOzKUYa7gp0tHrQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1BAB71944AA8; Thu,  8 Aug 2024 18:26:39 +0000 (UTC)
+ id 13B501944B2F; Thu,  8 Aug 2024 18:26:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.245])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 774EB1956052; Thu,  8 Aug 2024 18:26:38 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5B58E1955E99; Thu,  8 Aug 2024 18:26:38 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 264C521E5A5E; Thu,  8 Aug 2024 20:26:36 +0200 (CEST)
+ id 29B4621E5A5F; Thu,  8 Aug 2024 20:26:36 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
  jiri@resnulli.us, jsnow@redhat.com
-Subject: [PATCH 1/6] qapi/char: Supply missing member documentation
-Date: Thu,  8 Aug 2024 20:26:31 +0200
-Message-ID: <20240808182636.3657537-2-armbru@redhat.com>
+Subject: [PATCH 2/6] qapi/common: Supply missing member documentation
+Date: Thu,  8 Aug 2024 20:26:32 +0200
+Message-ID: <20240808182636.3657537-3-armbru@redhat.com>
 In-Reply-To: <20240808182636.3657537-1-armbru@redhat.com>
 References: <20240808182636.3657537-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -82,98 +82,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we neglect to document several members of ChardevBackendKind,
-their description in the QEMU QMP Reference manual is "Not
-documented".  Fix that, and improve the existing member documentation.
+Since we neglect to document the members of GrabToggleKeys, their
+description in the QEMU QMP Reference manual is "Not documented".  Fix
+that.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/char.json   | 44 ++++++++++++++++++++++++++++----------------
+ qapi/common.json | 14 +++++++++++++-
  qapi/pragma.json |  1 -
- 2 files changed, 28 insertions(+), 17 deletions(-)
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/qapi/char.json b/qapi/char.json
-index ef58445cee..8a4a87c95c 100644
---- a/qapi/char.json
-+++ b/qapi/char.json
-@@ -434,37 +434,49 @@
+diff --git a/qapi/common.json b/qapi/common.json
+index 7558ce5430..6ffc7a3789 100644
+--- a/qapi/common.json
++++ b/qapi/common.json
+@@ -183,7 +183,19 @@
  ##
- # @ChardevBackendKind:
+ # @GrabToggleKeys:
  #
--# @pipe: Since 1.5
-+# @file: regular files
- #
--# @udp: Since 1.5
-+# @serial: serial host device
- #
--# @mux: Since 1.5
-+# @parallel: parallel host device
- #
--# @msmouse: Since 1.5
-+# @pipe: pipes (since 1.5)
- #
--# @wctablet: Since 2.9
-+# @socket: stream socket
- #
--# @braille: Since 1.5
-+# @udp: datagram socket (since 1.5)
- #
--# @testdev: Since 2.2
-+# @pty: pseudo-terminal
- #
--# @stdio: Since 1.5
-+# @null: provides no input, throws away output
- #
--# @console: Since 1.5
-+# @mux: (since 1.5)
- #
--# @spicevmc: Since 1.5
-+# @msmouse: emulated Microsoft serial mouse (since 1.5)
- #
--# @spiceport: Since 1.5
-+# @wctablet: emulated Wacom Penpartner serial tablet (since 2.9)
- #
--# @qemu-vdagent: Since 6.1
-+# @braille: Baum Braille device (since 1.5)
- #
--# @dbus: Since 7.0
-+# @testdev: device for test-suite control (since 2.2)
- #
--# @vc: v1.5
-+# @stdio: standard I/O (since 1.5)
- #
--# @ringbuf: Since 1.6
-+# @console: Windows console (since 1.5)
- #
--# @memory: Since 1.5
-+# @spicevmc: spice vm channel (since 1.5)
+-# Keys to toggle input-linux between host and guest.
++# Key combinations to toggle input-linux between host and guest.
 +#
-+# @spiceport: Spice port channel (since 1.5)
++# @ctrl-ctrl: left and right control key
 +#
-+# @qemu-vdagent: Spice vdagent (since 6.1)
++# @alt-alt: left and right alt key
 +#
-+# @dbus: D-Bus channel (since 7.0)
++# @shift-shift: left and right shift key
 +#
-+# @vc: virtual console (since v1.5)
++# @meta-meta: left and right meta key
 +#
-+# @ringbuf: memory ring buffer (since 1.6)
++# @scrolllock: scroll lock key
 +#
-+# @memory: synonym for @ringbuf (since 1.5)
++# @ctrl-scrolllock: either control key and scroll lock key
  #
- # Features:
- #
+ # Since: 4.0
+ ##
 diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 59fbe74b8c..39a424303b 100644
+index 39a424303b..6ff135d8d2 100644
 --- a/qapi/pragma.json
 +++ b/qapi/pragma.json
-@@ -46,7 +46,6 @@
-         'BlockdevSnapshotSyncWrapper',
-         'BlockdevSnapshotWrapper',
-         'BlockdevVmdkAdapterType',
--        'ChardevBackendKind',
-         'CpuS390Entitlement',
-         'CpuS390Polarization',
-         'CpuS390State',
+@@ -55,7 +55,6 @@
+         'DummyBlockCoreForceArrays',
+         'DummyForceArrays',
+         'DummyVirtioForceArrays',
+-        'GrabToggleKeys',
+         'HotKeyMod',
+         'ImageInfoSpecificKind',
+         'InputAxis',
 -- 
 2.45.0
 
