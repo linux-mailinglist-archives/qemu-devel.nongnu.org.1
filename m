@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648BD94B9A4
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 11:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C3494BA1C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 11:53:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sbzOF-0000nl-Pj; Thu, 08 Aug 2024 05:24:59 -0400
+	id 1sbzod-0000ac-UH; Thu, 08 Aug 2024 05:52:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sbzOC-0000mZ-Q2
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 05:24:56 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sbzoa-0000ZS-Ul
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 05:52:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sbzO9-0004D7-0Q
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 05:24:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723109093; x=1754645093;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=386A0BBaRX3jDp8fOnNYUADd2ks/RpMi/bWG9OBvsV0=;
- b=mnIoF3pbrUebtdrmHgyG3tdFz2I+WAQLm2dPReP0Mec/W6MoUywmmo7h
- YGV8A0ikt9OC4QMo3YL/a+ho0Qu9+yDp+VOtRsfpyNBUCHOciBA6nUlS1
- FpbTzNYwn6fHf6LJbosIEExXnjNZng47EM2RyRbRS5U0sywqzCICu0Eay
- w5JuYQMcr0ehMz7xhDO6HkFerCzJW9BA4NMWI+xIv+sR4EgTpTWFU/ZR0
- I18WPWwopSrm6E0M6E4BnTmTB4zjLuMsd6lQVUaGE4sgfRO6c0BLAV8Zn
- YgZdjWr9HeSilV7nEi8Jeu6qCKT3sp0V4+yDuMB/ob05GGwiVQT0UtaxG w==;
-X-CSE-ConnectionGUID: +V8lA+TIR4ygkVkJgNIsFQ==
-X-CSE-MsgGUID: NuUHyfdVRROTIU5yjO6SyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="25094055"
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; d="scan'208";a="25094055"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 02:24:49 -0700
-X-CSE-ConnectionGUID: S6gqtJEqTACjazY2lbm2Gw==
-X-CSE-MsgGUID: uGNm97kLRSa2C0OGhY+c2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; d="scan'208";a="88064997"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 08 Aug 2024 02:24:48 -0700
-Date: Thu, 8 Aug 2024 17:40:38 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xin Li <xin@zytor.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v1 2/3] target/i386: Add VMX control bits for nested FRED
- support
-Message-ID: <ZrSSlri1K5WL7XVj@intel.com>
-References: <20240807081813.735158-1-xin@zytor.com>
- <20240807081813.735158-3-xin@zytor.com>
- <ZrOZkYuSKhYH0ymi@intel.com>
- <f4422fc2-d8fc-4902-80c7-0e2dda5bba59@zytor.com>
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sbzoZ-0007n6-44
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 05:52:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723110727;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=2fLAuOQQx4K6cW/ltORWMUabva7gDp7ZMHtx9l+kUuY=;
+ b=Pf6Ys0Rib99IzVojiIERGW4GJ2V+NukjP3u+oqh+6roXdxVy812DwIyiPQG0Xua41VGFCH
+ YwKipXAuSu9ONJvNllt2MrIs93FyjYSy8H9aHnQK8gMoa51Ui4Ypl/6P8ytKyfM2w+NXjA
+ NQxwHW+fTIN4b7qjiJW6t/yCgTUWz3U=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-329-M9Tjy974MUqx2pdtssvaPQ-1; Thu,
+ 08 Aug 2024 05:52:05 -0400
+X-MC-Unique: M9Tjy974MUqx2pdtssvaPQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8889F19560A2; Thu,  8 Aug 2024 09:52:04 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.74.17.66])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DEB2419560AA; Thu,  8 Aug 2024 09:51:59 +0000 (UTC)
+From: Prasad Pandit <ppandit@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: farosas@suse.de, jasowang@redhat.com, mcoqueli@redhat.com, mst@redhat.com,
+ peterx@redhat.com, pjp@fedoraproject.org
+Subject: [RFC-PATCH v1 0/2] Postcopy migration and vhost-user errors
+Date: Thu,  8 Aug 2024 15:21:45 +0530
+Message-ID: <20240808095147.291626-1-ppandit@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f4422fc2-d8fc-4902-80c7-0e2dda5bba59@zytor.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,70 +77,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xin,
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-On Thu, Aug 08, 2024 at 12:04:42AM -0700, Xin Li wrote:
-> Date: Thu, 8 Aug 2024 00:04:42 -0700
-> From: Xin Li <xin@zytor.com>
-> Subject: Re: [PATCH v1 2/3] target/i386: Add VMX control bits for nested
->  FRED support
-> 
-> On 8/7/2024 8:58 AM, Zhao Liu wrote:
-> > On Wed, Aug 07, 2024 at 01:18:11AM -0700, Xin Li (Intel) wrote:
-> > > @@ -1435,7 +1435,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-> > >               "vmx-exit-save-efer", "vmx-exit-load-efer",
-> > >                   "vmx-exit-save-preemption-timer", "vmx-exit-clear-bndcfgs",
-> > >               NULL, "vmx-exit-clear-rtit-ctl", NULL, NULL,
-> > > -            NULL, "vmx-exit-load-pkrs", NULL, NULL,
-> > > +            NULL, "vmx-exit-load-pkrs", NULL, "vmx-exit-secondary-ctls",
-> > 
-> > Oh, the order of my reviews is mixed up.
-> > It's better to move VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS into this patch.
-> 
-> Usually a simple definition is added in a patch where it is used, not in
-> qemu?
-> 
-> > >           },
-> > >           .msr = {
-> > >               .index = MSR_IA32_VMX_TRUE_EXIT_CTLS,
-> > > @@ -1450,7 +1450,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-> > >               NULL, "vmx-entry-ia32e-mode", NULL, NULL,
-> > >               NULL, "vmx-entry-load-perf-global-ctrl", "vmx-entry-load-pat", "vmx-entry-load-efer",
-> > >               "vmx-entry-load-bndcfgs", NULL, "vmx-entry-load-rtit-ctl", NULL,
-> > > -            NULL, NULL, "vmx-entry-load-pkrs", NULL,
-> > > +            NULL, NULL, "vmx-entry-load-pkrs", "vmx-entry-load-fred",
-> > 
-> > Should we also define VMX_VM_ENTRY_LOAD_FRED? "vmx-entry-load-rtit-ctl"
-> > and "vmx-entry-load-pkrs" have their corresponding bit definitions, even
-> > if they are not used.
-> 
-> I'm not sure, but why add something that is not being used (thus not
-> tested)?
+Hello,
 
-Yes, the use of macros is a factor. My another consideration is the
-integrity of the feature definitions. When the such feature definitions
-were first introduced in commit 704798add83b (¡±target/i386: add VMX
-definitions¡±), I understand thay were mainly used to enumerate and
-reflect hardware support and not all defs are used directly.
+* virsh(1) offers multiple options to initiate Postcopy migration:
 
-The feat word name and the feature definition should essentially be
-bound, and it might be possible to generate the feature definition
-from the feat word via some script without having to add it manually,
-but right now there is no work on this, and no additional constraints,
-so we have to manually add and manually check it to make sure that the
-two correspond to each other. When a feature word is added, it means
-that Host supports the corresponding feature, and from an integrity
-perspective, so it is natural to continue adding definition (just like
-the commit 52a44ad2b92b ("target/i386: Expose VMX entry/exit load pkrs
-control bits")), right?
+    1) virsh migrate --postcopy --postcopy-after-precopy
+    2) virsh migrate --postcopy + virsh migrate-postcopy
+    3) virsh migrate --postcopy --timeout <N> --timeout-postcopy
 
-Though I found that there are still some mismatches between the feature
-word and the corresponding definition, but ideally they should coexist.
+When Postcopy migration is invoked via method (2) or (3) above,
+the guest on the destination host seems to hang or get stuck sometimes.
 
-About the test, if it's just enumerated and not added to a specific CPU
-model or involved by other logic, it's harmless?
+* During Postcopy migration, multiple threads are spawned on the destination
+host to start the guest and setup devices. One such thread starts vhost
+device via vhost_dev_start() function and another called fault_thread handles
+page faults in user space using kernel's userfaultfd(2) system.
 
-Thanks,
-Zhao
+* When fault_thread exits upon completion of Postcopy migration, it sends a
+'postcopy_end' message to the vhost-user device. But sometimes 'postcopy_end'
+message is sent while vhost device is being setup via vhost_dev_start().
+
+     Thread-1                                  Thread-2
+
+vhost_dev_start                        postcopy_ram_incoming_cleanup
+ vhost_device_iotlb_miss                postcopy_notify
+  vhost_backend_update_device_iotlb      vhost_user_postcopy_notifier
+   vhost_user_send_device_iotlb_msg       vhost_user_postcopy_end
+    process_message_reply                  process_message_reply
+     vhost_user_read                        vhost_user_read
+      vhost_user_read_header                 vhost_user_read_header
+       "Fail to update device iotlb"          "Failed to receive reply to postcopy_end"
+
+This creates confusion when vhost device receives 'postcopy_end' message while
+it is still trying to update IOTLB entries.
+
+This seems to leave the guest in a stranded/hung state because fault_thread
+has exited saying Postcopy migration has ended, but vhost-device is probably
+still expecting updates. QEMU logs following errors on the destination host
+===
+...
+qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+qemu-kvm: vhost_user_postcopy_end: 700871,700900: Failed to receive reply to postcopy_end
+qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x8 instead of 0x5.
+qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x16 instead of 0x5.
+qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+===
+
+* Couple of patches here help to fix/handle these errors.
+
+Thank you.
+---
+Prasad Pandit (2):
+  vhost: fail device start if iotlb update fails
+  vhost-user: add a request-reply lock
+
+ hw/virtio/vhost-user.c         | 74 ++++++++++++++++++++++++++++++++++
+ hw/virtio/vhost.c              |  6 ++-
+ include/hw/virtio/vhost-user.h |  3 ++
+ 3 files changed, 82 insertions(+), 1 deletion(-)
+
+--
+2.46.0
 
 
