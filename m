@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FF494C32C
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 19:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD38894C277
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 18:18:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc6Tv-0001Pi-6m; Thu, 08 Aug 2024 12:59:19 -0400
+	id 1sc5pR-00007I-Ny; Thu, 08 Aug 2024 12:17:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yusuf.colak3406@gmail.com>)
- id 1sc5H9-0002CS-B2
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 11:42:03 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sc5pP-00006f-9K
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 12:17:27 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yusuf.colak3406@gmail.com>)
- id 1sc5H6-0007Th-9w
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 11:42:03 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-66526e430e0so10370357b3.2
- for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 08:41:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sc5pN-0004Pp-53
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 12:17:27 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5ba43b433beso1323432a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 09:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723131718; x=1723736518; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=jNNOFGUMabz5LcMMn5A0iat/PWcGnDNzNL3t3iaTSSI=;
- b=kvoE6tQqQfpvtISM2NZSSUrXDReGlwxVMBTzTAE8ZxrAzIeZ3ypEy7UbpRsCT6+De9
- qp3bIRZdz5i6l9sd49+61BmJwnCUYB55KbjPN8qKkFCj6jU729sdrC1ZVXMU7qr1qE06
- YE7NWFCmjspm9TkjWP58gfMEwh2bk2K/y4a39gMkZROrKV1D9xqrXh20DeQVfgtjIadc
- cAfd9bV75SmTUUHGPXMU1K/G3dhXYIYpuO4kApboPJY7xzhYdNw9LoYYFua6FdjM8dFb
- eyXj9BTHeXLditMIcnM7giHT5+AAb9MKPMlKRSYbf6XS7r3v8GPo/mp46iW+icN7zi0r
- QgAA==
+ d=linaro.org; s=google; t=1723133843; x=1723738643; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Efwt1mG8YrRhKfCjMS6sDnoVzjTSjeueUv0ps7jdJ8=;
+ b=Vej52L3ZN6VdvmenYx/ydvR3SCgzOtARKfRVuH7XjVCwo9P2yraCBjB6el0t6m2Lws
+ Fq1J3eYfZW60Ux7uojt9KiUxRJv2u5q/Go8nO9heAEZ7BZaUaz+W9+D/ctky/PVy+mQ8
+ K/VX40SvoWTQJtjwLrAuFTpK5QrgbXC0zfLT4SC7lNSB+8Ve30l5XsIDkomFeZXDv6eD
+ jOsVqGA94hkXW1yeopF4+2LpQPu4NQXRuV7x8TjU3dwg8HTd15ynoVrJumIeVzGolMIl
+ WAb6Ppc9WYNjEr0mTavLHM0Gzgoy0he7P/FdTbZ+b/StYspLFFeQqQiYmyBWplotQIPZ
+ SEgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723131718; x=1723736518;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jNNOFGUMabz5LcMMn5A0iat/PWcGnDNzNL3t3iaTSSI=;
- b=sWDgl2h3TZ2SLYVIRRTEI1juQMwgQvbZ6K1FSZ4ooOa6pSJM7RjBVoqn7nwZH1zNRY
- NOc4GD5ucNhUvi35C0eWM99S+MVQhgCuT6AOkCQaILAU4vLDQMnLMo2lkvuzSo7xTMAA
- FDu4taaltRPbmh+ZmoxzvS7Yg2p1HGcwz+JSaTFtq9f2OrPIN3BABnat3bfkYJKQuuIe
- 4d2HaS5iPTdDUo9qlZu6FOmr4edaRPgDLAMWgLHHZMOBLGe8GZolheAIwx/AhS8GHj/G
- M8eEDWKyyJAHHQ2OX8ym1PQKfjYe1O2EEqSa8785ujXNJZ47/jP3LKCfhvH4q1VCiyau
- LEdg==
-X-Gm-Message-State: AOJu0YyTajI5zvL6MYBNFDaTbHSFZBMta2F1bh5xVbaR1DwRajS04LPy
- Q1iMQcl7DZE/ecFUKCBJa7Mwy8BS1RNdkWVVhKgHFApupdlKBh9TJDP8LXTRyIzPAQcrpgFGFbX
- iPx/V7IZFzXGbE3NPBUJ55QgNwNLMSuoi
-X-Google-Smtp-Source: AGHT+IEECZXQVuy5TRmRNFbpP3D7Ov19oL0Bn8VQ5NH/p2kX1a096boADy5elfx9EB54UtiDK2dy1Ge35gSznoXxW30=
-X-Received: by 2002:a05:690c:4784:b0:64a:90fe:911e with SMTP id
- 00721157ae682-69bfb7e5474mr21819677b3.31.1723131717626; Thu, 08 Aug 2024
- 08:41:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723133843; x=1723738643;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7Efwt1mG8YrRhKfCjMS6sDnoVzjTSjeueUv0ps7jdJ8=;
+ b=rMxcntmWBQl/2VGgCP+ARHABqBH0ziQjNYF9lxE4q0peULioAshmzMJCigP2Wbulw4
+ 5OxYUL8lWkB5UYO/RY4fl3fYgs+vKPts7OZ43SKqyQmrq2ipX5HEa0sCv9m7AeWI0Yw/
+ EtKI/DO2zfg8qilLvpye7a4jf1dWNqZDdv+KysxCKpuDQc8gdxuTfttovOVECOkBpkcp
+ KX1xZhvlNAtK9vkd1Um4XDU3HBjDlRKbw7INUzRG7T1Ztbqyw67QfCMDVkixKccmNbvO
+ FcznIppNI+d2wR/3ZbS1o+gCpjfxOpxjnWBxY/D+ruVRNb9GODXLHOz4H4v58MRbfcI4
+ Pv0Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUW2tv+RQAOgxljOV+dZcmAR02qB8YzEu7IVhHKMPVgzSRg/2hsPmYCIPay+DmfRWHs0qKygD0QJA2YF0/2JiGxtSldtnI=
+X-Gm-Message-State: AOJu0YxcxUa1OCheNy3cmx65MHE2mpZ9PYVMVTs0XDCbAWKJigYilUNU
+ WcNaiusydFP0EI2ZYzF+6cJM9hHxETFZFw4OCSwhVBUzQX1M9WlYnQk72Yz2+JehFtk8f+zmW5p
+ pgi9kYtWajezZ/TJuENivz4QxZyK8BOJPWSix1g==
+X-Google-Smtp-Source: AGHT+IFk2A71+OPHTwQU+9HyMZpYC0P0iL/fHLEoVVMo8Tp2XMDLOW5XZX7SHzRmW366WgTUEpJ1RtoumS9PpKYnd5c=
+X-Received: by 2002:a05:6402:2346:b0:5a4:6dec:cd41 with SMTP id
+ 4fb4d7f45d1cf-5bbb23aa915mr2002307a12.28.1723133842731; Thu, 08 Aug 2024
+ 09:17:22 -0700 (PDT)
 MIME-Version: 1.0
-From: =?UTF-8?Q?Yusuf_said_=C3=87olak?= <yusuf.colak3406@gmail.com>
-Date: Thu, 8 Aug 2024 15:41:46 +0000
-Message-ID: <CANwC2_Tph=P2Ho-nm-x5C8wkbz5NX=PXDA5GvuP9cf08Gscrxw@mail.gmail.com>
-Subject: bug?
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000ee37b9061f2ddd94"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=yusuf.colak3406@gmail.com; helo=mail-yw1-x1134.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240806160756.182524-1-jmarcin@redhat.com>
+ <20240806160756.182524-3-jmarcin@redhat.com>
+ <CAFEAcA9iCcmwkN2m9unjZskFHPg=DSDjC-SeNyskmjtkFJvFMQ@mail.gmail.com>
+ <CAC2qdxDhfon3Xe7J4jCVyqx7VdR-CMbo2r7Vat=WOA0qWLoFMg@mail.gmail.com>
+ <34840c40-1a54-4aa0-a424-defd93d3b2b2@redhat.com>
+ <CAFEAcA9LNj1JENcCKHU+BvKE+K5_b3jUSS_prwAC2X084xvT8A@mail.gmail.com>
+ <bf8d2172-ddd3-499c-a164-6b358c6496a7@redhat.com>
+In-Reply-To: <bf8d2172-ddd3-499c-a164-6b358c6496a7@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 Aug 2024 17:17:10 +0100
+Message-ID: <CAFEAcA_Zo-WmjMZwcecwgPAp_DOfaewV_nDx3QpCzYx7h2Kckw@mail.gmail.com>
+Subject: Re: [PATCH 2/4] reset: Add RESET_TYPE_WAKEUP
+To: David Hildenbrand <david@redhat.com>
+Cc: Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Aug 2024 12:58:57 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,48 +93,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ee37b9061f2ddd94
-Content-Type: text/plain; charset="UTF-8"
+On Thu, 8 Aug 2024 at 17:04, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 08.08.24 17:56, Peter Maydell wrote:
+> > Right, I guess that's my question -- is "WAKEUP" ever any
+> > different from "WARM" reset? I think the latter is a more
+> > common general concept.
+> >
+> > On the other hand it looks like we already have the
+> > concept in the runstate state machine of
+> > RUN_STATE_SUSPENDED versus RUN_STATE_RUNNING, and so if we
+> > define "WAKEUP" as "goes from SUSPENDED to RUNNING" that's
+> > quite a clearly defined condition.
+>
+> Right.
+>
+> > Whereas WARM reset would
+> > be a much wider range of things and ought to include for
+> > instance "guest triggers a reset by writing to port 92"
+> > and all the other SHUTDOWN_CAUSE_GUEST_RESET cases.
+> > (Side note: do we document all these runstates and transitions
+> > anywhere?)
+> >
+> > For virtio-mem, on a guest-triggered reset, should it
+> > (a) definitely not unplug all the hotplugged memory
+> > (b) definitely unplug all the hotplugged memory
+> > (c) we don't care?
+>
+> During ordinary system resets (COLD) where RAM content is not guaranteed
+> to survive:
 
-I installed qemu successfully and downloaded emulator you published on
-github, i runned
+"COLD" isn't an "ordinary system reset", though -- COLD
+reset is more like "I powered the computer off and then
+turned it on again". A "WARM" reset is like "I pressed
+the front panel reset button, or the watchdog device
+fired and reset the system". We don't currently really
+model front-panel or watchdog reset properly, we assume
+that it's close enough to have it be the same as
+power-off-and-on reset (and there are some kludges in
+various places where it's not quite right).
 
-mkdir buildcd build
+> Effectively (b)
+>
+> During special kexec-style resets (e.g., on s390x there is a difference)
+> where RAM content must survive:
+>
+> Effectively (a)
+>
+>
+> On implementing architectures (x86, arm64), kexec-style resets are
+> really like warm resets. For example, when we trigger kexec->kdump we
+> must not suddenly lose the RAM content.
 
-but if i run ../configure it gives ;
+(There's an awkward conflict here with our rom blob
+system, which currently does a "copy any guest images
+back into RAM" on reset. Should we do that on warm
+reset? For some usecases you want those original
+images back again, but for "guest did a kexec" you
+almost certainly don't...)
 
+> In that sense, at least virtio-mem wants to treat WARM and WAKEUP resets
+> alike. But I agree that simply because virtio-mem want sot treat them
+> alike doesn't mean that we should represent in QEMU using a single reset
+> type.
 
+On the other hand, if virtio-mem does want to treat them
+the same we could start with only implementing WARM and
+not add WAKEUP until we have a use-case for it.
 
+By the way, I assume this patchseries is 9.2 material,
+not trying to fix a bug for this release ?
 
-ERROR: missing GIT submodules
-This is not a GIT checkout but module content appears to
-be missing. Do not use 'git archive' or GitHub download links
-to acquire QEMU source archives. Non-GIT builds are only
-supported with source archives linked from:
-
-  https://www.qemu.org/download/#source
-
-Developers working with GIT can use scripts/archive-source.sh
-if they need to create valid source archives.
-
-can you help me with this?
-
---000000000000ee37b9061f2ddd94
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">I installed qemu successfully and downloaded emulator you =
-published on github, i runned <br><pre>mkdir build
-<span class=3D"gmail-pl-c1">cd</span> build<br><br></pre><pre>but if i run =
-../configure it gives ;<br></pre><pre><br><br><br>ERROR: missing GIT submod=
-ules<br>This is not a GIT checkout but module content appears to<br>be miss=
-ing. Do not use &#39;git archive&#39; or GitHub download links<br>to acquir=
-e QEMU source archives. Non-GIT builds are only<br>supported with source ar=
-chives linked from:<br><br>=C2=A0 <a href=3D"https://www.qemu.org/download/=
-#source">https://www.qemu.org/download/#source</a><br><br>Developers workin=
-g with GIT can use scripts/archive-source.sh<br>if they need to create vali=
-d source archives.<br><br></pre><pre>can you help me with this?<br></pre></=
-div>
-
---000000000000ee37b9061f2ddd94--
+thanks
+-- PMM
 
