@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DCD94C014
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 16:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC0A94BFAF
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 16:32:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc4PK-0006Ag-5G; Thu, 08 Aug 2024 10:46:26 -0400
+	id 1sc4AU-0000tv-AI; Thu, 08 Aug 2024 10:31:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sc4P8-0005x9-V4
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:46:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sc4AQ-0000tH-JS
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:31:02 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sc4P5-00087X-DW
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:46:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723128360;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Vsy+kQPvnenW2/13lHMrZ1NDZEbx4ggdcgIqJP+YPxc=;
- b=Km7uZpIuvGpjK1h5hKMGMo+BaoO8yxDs5ZDmFWE6qU6KEtmVykE0wjW96QfMpzvl2KvkOB
- EWNuNAVoJZfKAw6V5kjITBhr/84gZB5NWVA5K4vzLL2mWBTMaed1UUOAIgjNpc2LjEYpDI
- w7sh54ipncV1lFAYREriWViGYOOtv7I=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-qmltV5FpPnSUeIh-n7Lpfw-1; Thu,
- 08 Aug 2024 10:45:57 -0400
-X-MC-Unique: qmltV5FpPnSUeIh-n7Lpfw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 22A8F1955BC1; Thu,  8 Aug 2024 14:45:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.245])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC8431959164; Thu,  8 Aug 2024 14:45:53 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8C41421E6682; Thu,  8 Aug 2024 16:45:51 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  Shiju Jose <shiju.jose@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,  Ani Sinha <anisinha@redhat.com>,
- Dongjiu Geng <gengdongjiu1@gmail.com>,  Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
- linux-kernel@vger.kernel.org,  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v5 5/7] qapi/ghes-cper: add an interface to do generic
- CPER error injection
-In-Reply-To: <20240808162205.3a85efb6@imammedo.users.ipa.redhat.com> (Igor
- Mammedov's message of "Thu, 8 Aug 2024 16:22:05 +0200")
-References: <cover.1722634602.git.mchehab+huawei@kernel.org>
- <51cbdc8a53e58c69ee17b15c398feeeeeeb64f34.1722634602.git.mchehab+huawei@kernel.org>
- <87v80b1jqe.fsf@pond.sub.org> <20240808161141.5ffe730e@foz.lan>
- <20240808162205.3a85efb6@imammedo.users.ipa.redhat.com>
-Date: Thu, 08 Aug 2024 16:45:51 +0200
-Message-ID: <87ikwbrs2o.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sc4AO-000675-7m
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 10:31:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723127460; x=1754663460;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+aF6CMtCk/FJR9JQ5ElsXUpRqhzOnaMp2vyHsyl2GCM=;
+ b=LdI17IIRqSnXfKaw28mGX2lIPYQBChViU0x6mjVdeMmotbZZNezasV5n
+ vJ1Wgpkr7r4/UyYjks0bgzB2pwWz21A8AdF9nnkzXceFUQ/+OZ+NfPQ74
+ ciztami+ttXUDMmkNvNZuje53kXWPLG64qRGCJv/pJApzr+XwHvEoi6+G
+ 33B/sF+8NZITKdEF5mwbX+HRAQ4gjrkH+YEaX8dvKRi6ZATFRnv2Zz6hN
+ i64a0qrj0xORhBkysXMtd+dVB3CNLy9Zt82FsaVQhJRPQzZ9Ven/g83P+
+ 7D+mON7d//uDSxV9c+48SkqfGgPMKZ95PxQN5VzvCrqWW/naj8F9moGMS A==;
+X-CSE-ConnectionGUID: guPzOfacR7yi43l/y+OHZA==
+X-CSE-MsgGUID: RqRJwTALRgWGO+WiDyN2Vg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21137966"
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="21137966"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2024 07:30:57 -0700
+X-CSE-ConnectionGUID: 5G8oAFLyREiyePe7mrb/vA==
+X-CSE-MsgGUID: x/Ya5AFiRdezsZdHJDj3rA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="80466509"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa002.fm.intel.com with ESMTP; 08 Aug 2024 07:30:56 -0700
+Date: Thu, 8 Aug 2024 22:46:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Manish <manish.mishra@nutanix.com>, John Levon <john.levon@nutanix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] i386/cpu: Introduce enable_cpuid_0x1f to force exposing
+ CPUID 0x1f
+Message-ID: <ZrTaVfziPc61OYlI@intel.com>
+References: <20240802072426.4016194-1-xiaoyao.li@intel.com>
+ <ZrSZQN/AQa6BiIUu@intel.com>
+ <26064315-6730-48fa-9f04-cb86a2dcfdf0@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <26064315-6730-48fa-9f04-cb86a2dcfdf0@intel.com>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,102 +86,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Igor Mammedov <imammedo@redhat.com> writes:
+On Thu, Aug 08, 2024 at 09:59:07PM +0800, Xiaoyao Li wrote:
+> Date: Thu, 8 Aug 2024 21:59:07 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH] i386/cpu: Introduce enable_cpuid_0x1f to force
+>  exposing CPUID 0x1f
+> 
+> On 8/8/2024 6:09 PM, Zhao Liu wrote:
+> > Hi Xiaoyao,
+> > 
+> > Patch is generally fine for me. Just a few nits:
+> > 
+> > On Fri, Aug 02, 2024 at 03:24:26AM -0400, Xiaoyao Li wrote:
+> > > diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+> > > index dff49fce1154..b63bce2f4c82 100644
+> > > --- a/include/hw/i386/topology.h
+> > > +++ b/include/hw/i386/topology.h
+> > > @@ -207,13 +207,4 @@ static inline apic_id_t x86_apicid_from_cpu_idx(X86CPUTopoInfo *topo_info,
+> > >       return x86_apicid_from_topo_ids(topo_info, &topo_ids);
+> > >   }
+> > > -/*
+> > > - * Check whether there's extended topology level (module or die)?
+> > > - */
+> > > -static inline bool x86_has_extended_topo(unsigned long *topo_bitmap)
+> > > -{
+> > > -    return test_bit(CPU_TOPO_LEVEL_MODULE, topo_bitmap) ||
+> > > -           test_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
+> > > -}
+> > > -
+> > 
+> > [snip]
+> > 
+> > > +/*
+> > > + * Check whether there's v2 extended topology level (module or die)?
+> > > + */
+> > > +bool x86_has_v2_extended_topo(X86CPU *cpu)
+> > > +{
+> > > +    if (cpu->enable_cpuid_0x1f) {
+> > > +        return true;
+> > > +    }
+> > > +
+> > > +    return test_bit(CPU_TOPO_LEVEL_MODULE, cpu->env.avail_cpu_topo) ||
+> > > +           test_bit(CPU_TOPO_LEVEL_DIE, cpu->env.avail_cpu_topo);
+> > > +}
+> > > +
+> > 
+> > I suggest to decouple 0x1f enablement and extended topo check, since as
+> > the comment of CPUTopoLevel said:
+> > 
+> > /*
+> >   * CPUTopoLevel is the general i386 topology hierarchical representation,
+> >   * ordered by increasing hierarchical relationship.
+> >   * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
+> >   * or AMD (CPUID[0x80000026]).
+> >   */
+> > 
+> > The topology enumeration is generic and is not bound to the vendor.
+> 
+> I don't quit get your point. All the current usages of
+> x86_has_extended_topo() are for CPUID leaf 0x1f, which is an Intel specific
+> leaf.
 
-> On Thu, 8 Aug 2024 16:11:41 +0200
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+0x1f is just a user of that helper, and AMD's leaf would be another
+potential user, even if it is not implemented yet.
+
+What this helper does is check the topology hierarchy set by -smp for
+x86 CPUs, and has nothing to do with enabling 0x1f or not. You cannot
+falsely report the presence of module/die if -smp doesn't configure such
+levels but 0x1f is forcibly enabled.
+
+> Are you saying x86_has_extended_topo() will be used for leaf 0x80000026 for
+> AMD as well?
+> 
+> or maybe I misunderstand the meaning "extend_topo". The extend_topo just
+> means the topo level of module and die, and the topo level of smt and core
+> are non-extended? 
+
+Any levels that 0xb doesn't cover.
+
+> If so, this is new to me, could I ask where the
+> definitions come from? or just QEMU defines them itself?
 >
->> Em Thu, 08 Aug 2024 10:50:33 +0200
->> Markus Armbruster <armbru@redhat.com> escreveu:
->> 
->> > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:  
->> 
->> > > diff --git a/MAINTAINERS b/MAINTAINERS
->> > > index 98eddf7ae155..655edcb6688c 100644
->> > > --- a/MAINTAINERS
->> > > +++ b/MAINTAINERS
->> > > @@ -2075,6 +2075,13 @@ F: hw/acpi/ghes.c
->> > >  F: include/hw/acpi/ghes.h
->> > >  F: docs/specs/acpi_hest_ghes.rst
->> > >  
->> > > +ACPI/HEST/GHES/ARM processor CPER
->> > > +R: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
->> > > +S: Maintained
->> > > +F: hw/arm/ghes_cper.c
->> > > +F: hw/acpi/ghes_cper_stub.c
->> > > +F: qapi/ghes-cper.json
->> > > +    
->> > 
->> > Here's the reason for creating a new QAPI module instead of adding to
->> > existing module acpi.json: different maintainers.
->> > 
->> > Hypothetical question: if we didn't care for that, would this go into
->> > qapi/acpi.json?  
->> 
->> Independently of maintainers, GHES is part of ACPI APEI HEST, meaning
->> to report hardware errors. Such hardware errors are typically handled by 
->> the host OS, so quest doesn't need to be aware of that[1].
->> 
->> So, IMO the best would be to keep APEI/HEST/GHES in a separate file.
->> 
->> [1] still, I can foresee some scenarios were passing some errors to the
->>     guest could make sense.
->> 
->> > 
->> > If yes, then should we call it acpi-ghes-cper.json or acpi-ghes.json
->> > instead?  
->> 
->> Naming it as acpi-ghes,acpi-hest or acpi-ghes-cper would equally work
->> from my side.
->
-> if we going to keep it generic, acpi-hest would do
-
-Works for me.
-
->> > >  ppc4xx
->> > >  L: qemu-ppc@nongnu.org
->> > >  S: Orphan    
->> > 
->> > [...]
->> >   
->> > > diff --git a/qapi/ghes-cper.json b/qapi/ghes-cper.json
->> > > new file mode 100644
->> > > index 000000000000..3cc4f9f2aaa9
->> > > --- /dev/null
->> > > +++ b/qapi/ghes-cper.json
->> > > @@ -0,0 +1,55 @@
->> > > +# -*- Mode: Python -*-
->> > > +# vim: filetype=python
->> > > +
->> > > +##
->> > > +# = GHESv2 CPER Error Injection
->> > > +#
->> > > +# These are defined at
->> > > +# ACPI 6.2: 18.3.2.8 Generic Hardware Error Source version 2
->> > > +# (GHESv2 - Type 10)
->> > > +##    
->> > 
->> > Feels a bit terse.  These what?
->> > 
->> > The reference could be clearer: "defined in the ACPI Specification 6.2,
->> > section 18.3.2.8 Generic Hardware Error Source version 2".  A link would
->> > be nice, if it's stable.  
->> 
->> I can add a link, but only newer ACPI versions are hosted in html format
->> (e. g. only versions 6.4 and 6.5 are available as html at uefi.org).
->
-> some years earlier it could be said 'stable link' about acpi spec hosted
-> elsewhere. Not the case anymore after umbrella change.
->
-> spec name, rev, chapter worked fine for acpi code (it's easy to find wherever spec is hosted).
-> Probably the same would work for QAPI, I'm not QAPI maintainer though,
-> so preffered approach here is absolutely up to you.
-
-A link is strictly optional.  Stable links are nice, stale links are
-annoying.  Mauro, you decide :)
-
-Thanks!
-
-[...]
-
+> > [snip]
+> > 
+> > > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> > > index c6cc035df3d8..211a42ffbfa6 100644
+> > > --- a/target/i386/cpu.h
+> > > +++ b/target/i386/cpu.h
+> > > @@ -2110,6 +2110,9 @@ struct ArchCPU {
+> > >       /* Compatibility bits for old machine types: */
+> > >       bool enable_cpuid_0xb;
+> > > +    /* Force to expose cpuid 0x1f */
+> > 
+> > Maybe "Force to enable cpuid 0x1f"?
+> 
+> I can change to it.
+> 
+> > > +    bool enable_cpuid_0x1f;
+> > > +
+> > >       /* Enable auto level-increase for all CPUID leaves */
+> > >       bool full_cpuid_auto_level;i
+> > 
+> > Regards,
+> > Zhao
+> > 
+> 
 
