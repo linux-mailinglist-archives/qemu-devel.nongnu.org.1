@@ -2,72 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4C394C244
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 18:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7065294C2D8
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 18:39:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc5dZ-0006s1-0j; Thu, 08 Aug 2024 12:05:13 -0400
+	id 1sc69B-0001oC-Kf; Thu, 08 Aug 2024 12:37:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sc5dC-0006mi-En
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 12:04:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sc5dA-0002eh-IA
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 12:04:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723133087;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=+9sL8w5QsojHmEMAyRA5Dd5G7XNuy64k2XrWFYyv56c=;
- b=I+dOKbokBnw++a6ANiFUGeJHNbfXssCF0yKxissFqpih7R5q5j1axFaiRLoYssbnawyrBa
- xHk9kn3xTE/dyM+sxDT9iCZeMM+UysiGghRwdUR842n0xlcb7V6hpAh9hEWzwYF/7V0N8M
- sRAqhAza1d8yaXSFkgelzSbFBt+IU9Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-4k9LryapMFyJFgihj67nbQ-1; Thu,
- 08 Aug 2024 12:04:43 -0400
-X-MC-Unique: 4k9LryapMFyJFgihj67nbQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1sc69A-0001nh-4u
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 12:37:52 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1sc698-00087V-0a
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 12:37:51 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AA25D196CDFE; Thu,  8 Aug 2024 16:04:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.163])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99ECF19560AA; Thu,  8 Aug 2024 16:04:38 +0000 (UTC)
-Date: Thu, 8 Aug 2024 17:04:34 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alejandro Zeise <alejandro.zeise@seagate.com>
-Cc: qemu-arm@nongnu.org, kris.conklin@seagate.com,
- jonathan.henze@seagate.com, evan.burgess@seagate.com, clg@kaod.org,
- peter.maydell@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 01/15] crypto: accumulative hashing API
-Message-ID: <ZrTskk2UCzWbmupd@redhat.com>
-References: <20240807195122.2827364-1-alejandro.zeise@seagate.com>
- <20240807195122.2827364-2-alejandro.zeise@seagate.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 20B7B21D34;
+ Thu,  8 Aug 2024 16:37:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1723135067; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FT6POBvoe+yceWz2dTOKo85Viu9VOo9r/g2Kos0kDdI=;
+ b=jbbSxESmx7Dph6AXufN+jgTTbBSkt5d0dMyKbXVAcx04p+vh7JX1/g5ayz2QJhtI/DsHla
+ L2nBJ9FnTWTEPhhifZrednIBYgLLi9/oxIgw05kv06HrTxuXa0IxAZT6zwdJb6Uo/Om+3E
+ +V0BkClbhvAgdowjI6rE/6jw8NDWTSs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1723135067;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FT6POBvoe+yceWz2dTOKo85Viu9VOo9r/g2Kos0kDdI=;
+ b=EhqEGc1n9UhPT747OUq3VGiibPinN/b9RWZiJzSMj3CaK+WezjB2u52Z/rjUY+p3lta+7H
+ DwGiOvHLVqoUn4AQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1723135067; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FT6POBvoe+yceWz2dTOKo85Viu9VOo9r/g2Kos0kDdI=;
+ b=jbbSxESmx7Dph6AXufN+jgTTbBSkt5d0dMyKbXVAcx04p+vh7JX1/g5ayz2QJhtI/DsHla
+ L2nBJ9FnTWTEPhhifZrednIBYgLLi9/oxIgw05kv06HrTxuXa0IxAZT6zwdJb6Uo/Om+3E
+ +V0BkClbhvAgdowjI6rE/6jw8NDWTSs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1723135067;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FT6POBvoe+yceWz2dTOKo85Viu9VOo9r/g2Kos0kDdI=;
+ b=EhqEGc1n9UhPT747OUq3VGiibPinN/b9RWZiJzSMj3CaK+WezjB2u52Z/rjUY+p3lta+7H
+ DwGiOvHLVqoUn4AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E3CA313BAF;
+ Thu,  8 Aug 2024 12:58:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id B6yrMwXBtGZsZwAAD6G6ig
+ (envelope-from <cfontana@suse.de>); Thu, 08 Aug 2024 12:58:45 +0000
+Message-ID: <34b23dba-52ef-400b-a876-47bafc8989ce@suse.de>
+Date: Thu, 8 Aug 2024 14:58:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240807195122.2827364-2-alejandro.zeise@seagate.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] kvm: refactor core virtual machine creation into its
+ own function
+To: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: zhao1.liu@intel.com, kvm@vger.kernel.org, qemu-devel@nongnu.org
+References: <20240808113838.1697366-1-anisinha@redhat.com>
+Content-Language: en-US
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20240808113838.1697366-1-anisinha@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.29 / 50.00]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.998]; MIME_GOOD(-0.10)[text/plain];
+ XM_UA_NO_VERSION(0.01)[]; FROM_HAS_DN(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,intel.com:email];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -1.29
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=cfontana@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,114 +117,162 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 07, 2024 at 07:51:08PM +0000, Alejandro Zeise wrote:
-> Changes the hash API to support accumulative hashing.
-> Hash objects are created with "qcrypto_hash_new",
-> updated with data with "qcrypto_hash_update", and
-> the hash obtained with "qcrypto_hash_finalize".
+Hello,
+
+as a suggestion you could adjust the names of the functions to match the existing pattern in this module.
+
+It is modulename_method ie kvm_* , so:
+
+On 8/8/24 13:38, Ani Sinha wrote:
+> Refactoring the core logic around KVM_CREATE_VM into its own separate function
+> so that it can be called from other functions in subsequent patches. There is
+> no functional change in this patch.
 > 
-> These changes bring the hashing API more in line with the
-> hmac API.
-> 
-> Signed-off-by: Alejandro Zeise <alejandro.zeise@seagate.com>
+> CC: pbonzini@redhat.com
+> CC: zhao1.liu@intel.com
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
 > ---
->  crypto/hashpriv.h     |  13 +++++
->  include/crypto/hash.h | 119 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 132 insertions(+)
+>  accel/kvm/kvm-all.c | 93 +++++++++++++++++++++++++++------------------
+>  1 file changed, 56 insertions(+), 37 deletions(-)
 > 
-> diff --git a/crypto/hashpriv.h b/crypto/hashpriv.h
-> index cee26ccb47..02f17ee99f 100644
-> --- a/crypto/hashpriv.h
-> +++ b/crypto/hashpriv.h
-> @@ -1,6 +1,7 @@
->  /*
->   * QEMU Crypto hash driver supports
->   *
-> + * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
->   * Copyright (c) 2017 HUAWEI TECHNOLOGIES CO., LTD.
->   *
->   * Authors:
-> @@ -15,6 +16,8 @@
->  #ifndef QCRYPTO_HASHPRIV_H
->  #define QCRYPTO_HASHPRIV_H
+> changelog:
+> v2: s/fprintf/warn_report as suggested by zhao
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 75d11a07b2..c2e177c39f 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2385,6 +2385,60 @@ uint32_t kvm_dirty_ring_size(void)
+>      return kvm_state->kvm_dirty_ring_size;
+>  }
 >  
-> +#include "crypto/hash.h"
+> +static int do_kvm_create_vm(MachineState *ms, int type)
+
+kvm_do_create_vm()
+
+btw does the "_do_" part add anything of value? Otherwise I would do:
+
+kvm_create_vm()
+
+
+
+> +{
+> +    KVMState *s;
+> +    int ret;
 > +
->  typedef struct QCryptoHashDriver QCryptoHashDriver;
->  
->  struct QCryptoHashDriver {
-> @@ -24,6 +27,16 @@ struct QCryptoHashDriver {
->                         uint8_t **result,
->                         size_t *resultlen,
->                         Error **errp);
-> +    QCryptoHash *(*hash_new)(QCryptoHashAlgorithm alg, Error **errp);
-> +    int (*hash_update)(QCryptoHash *hash,
-> +                       const struct iovec *iov,
-> +                       size_t niov,
-> +                       Error **errp);
-> +    int (*hash_finalize)(QCryptoHash *hash,
-> +                         uint8_t **result,
-> +                         size_t *resultlen,
-> +                         Error **errp);
-> +    void (*hash_free)(QCryptoHash *hash);
->  };
->  
->  extern QCryptoHashDriver qcrypto_hash_lib_driver;
-> diff --git a/include/crypto/hash.h b/include/crypto/hash.h
-> index 54d87aa2a1..6d7222867e 100644
-> --- a/include/crypto/hash.h
-> +++ b/include/crypto/hash.h
-> @@ -1,6 +1,7 @@
->  /*
->   * QEMU Crypto hash algorithms
->   *
-> + * Copyright (c) 2024 Seagate Technology LLC and/or its Affiliates
->   * Copyright (c) 2015 Red Hat, Inc.
->   *
->   * This library is free software; you can redistribute it and/or
-> @@ -25,6 +26,13 @@
->  
->  /* See also "QCryptoHashAlgorithm" defined in qapi/crypto.json */
->  
-> +typedef struct QCryptoHash QCryptoHash;
-> +struct QCryptoHash {
-> +    QCryptoHashAlgorithm alg;
-> +    void *opaque;
-> +    void *driver;
-> +};
+> +    s = KVM_STATE(ms->accelerator);
 > +
->  /**
->   * qcrypto_hash_supports:
->   * @alg: the hash algorithm
-> @@ -120,6 +128,117 @@ int qcrypto_hash_digestv(QCryptoHashAlgorithm alg,
->                           char **digest,
->                           Error **errp);
+> +    do {
+> +        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
+> +    } while (ret == -EINTR);
+> +
+> +    if (ret < 0) {
+> +        warn_report("ioctl(KVM_CREATE_VM) failed: %d %s", -ret,
+> +                    strerror(-ret));
+> +
+> +#ifdef TARGET_S390X
+> +        if (ret == -EINVAL) {
+> +            warn_report("Host kernel setup problem detected. Please verify:");
+> +            warn_report("- for kernels supporting the switch_amode or"
+> +                        " user_mode parameters, whether");
+> +            warn_report("  user space is running in primary address space");
+> +            warn_report("- for kernels supporting the vm.allocate_pgste "
+> +                        "sysctl, whether it is enabled");
+> +        }
+> +#elif defined(TARGET_PPC)
+> +        if (ret == -EINVAL) {
+> +            warn_report("PPC KVM module is not loaded. Try modprobe kvm_%s.",
+> +                        (type == 2) ? "pr" : "hv");
+> +        }
+> +#endif
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+> +static int find_kvm_machine_type(MachineState *ms)
+
+kvm_find_machine_type
+
+Thanks,
+
+C
+
+> +{
+> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
+> +    int type;
+> +
+> +    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
+> +        g_autofree char *kvm_type;
+> +        kvm_type = object_property_get_str(OBJECT(current_machine),
+> +                                           "kvm-type",
+> +                                           &error_abort);
+> +        type = mc->kvm_type(ms, kvm_type);
+> +    } else if (mc->kvm_type) {
+> +        type = mc->kvm_type(ms, NULL);
+> +    } else {
+> +        type = kvm_arch_get_default_type(ms);
+> +    }
+> +    return type;
+> +}
+> +
+>  static int kvm_init(MachineState *ms)
+>  {
+>      MachineClass *mc = MACHINE_GET_CLASS(ms);
+> @@ -2467,49 +2521,14 @@ static int kvm_init(MachineState *ms)
+>      }
+>      s->as = g_new0(struct KVMAs, s->nr_as);
 >  
-> +/**
-> + * qcrypto_hash_updatev:
-> + * @hash: hash object from qcrypto_hash_new
-> + * @iov: the array of memory regions to hash
-> + * @niov: the length of @iov
-> + * @errp: pointer to a NULL-initialized error object
-> + *
-> + * Updates the given hash object with all the memory regions
-> + * present in @iov.
-> + *
-> + * Returns: 0 on success, non-zero on error
-
-Minor point, this and all the other APIs should be saying
-'or -1 on error' to follow QEMU's error reporting standards.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> -    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
+> -        g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
+> -                                                            "kvm-type",
+> -                                                            &error_abort);
+> -        type = mc->kvm_type(ms, kvm_type);
+> -    } else if (mc->kvm_type) {
+> -        type = mc->kvm_type(ms, NULL);
+> -    } else {
+> -        type = kvm_arch_get_default_type(ms);
+> -    }
+> -
+> +    type = find_kvm_machine_type(ms);
+>      if (type < 0) {
+>          ret = -EINVAL;
+>          goto err;
+>      }
+>  
+> -    do {
+> -        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
+> -    } while (ret == -EINTR);
+> -
+> +    ret = do_kvm_create_vm(ms, type);
+>      if (ret < 0) {
+> -        fprintf(stderr, "ioctl(KVM_CREATE_VM) failed: %d %s\n", -ret,
+> -                strerror(-ret));
+> -
+> -#ifdef TARGET_S390X
+> -        if (ret == -EINVAL) {
+> -            fprintf(stderr,
+> -                    "Host kernel setup problem detected. Please verify:\n");
+> -            fprintf(stderr, "- for kernels supporting the switch_amode or"
+> -                    " user_mode parameters, whether\n");
+> -            fprintf(stderr,
+> -                    "  user space is running in primary address space\n");
+> -            fprintf(stderr,
+> -                    "- for kernels supporting the vm.allocate_pgste sysctl, "
+> -                    "whether it is enabled\n");
+> -        }
+> -#elif defined(TARGET_PPC)
+> -        if (ret == -EINVAL) {
+> -            fprintf(stderr,
+> -                    "PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
+> -                    (type == 2) ? "pr" : "hv");
+> -        }
+> -#endif
+>          goto err;
+>      }
+>  
 
 
