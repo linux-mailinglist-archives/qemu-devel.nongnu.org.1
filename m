@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624DA94BA9C
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 12:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E07C94BAA7
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Aug 2024 12:16:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sc0AA-0007Kl-Pe; Thu, 08 Aug 2024 06:14:30 -0400
+	id 1sc0Bk-00031G-AA; Thu, 08 Aug 2024 06:16:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sc0A8-0007K7-LF
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:14:28 -0400
+ id 1sc0BY-0002kL-60
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:15:56 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sc0A6-0002m0-Ve
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:14:28 -0400
+ id 1sc0BW-00035P-9S
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 06:15:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723112067; x=1754648067;
+ t=1723112154; x=1754648154;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=YOhx1boi9x9b6qcJA6P4XBVcLGPxFpM+NaTdwul0UXE=;
- b=fD/kV+/Hzywa+m5BrlG/tR3lxY92WtHT7uPjGE/wctxYKAKsj0aMJipN
- mtrwLb+zU443QwobVkiTga8h4gA//VHKQ+WIz9dxArm/MSskgyYYKjw24
- qY/YBimNtx4KdfN9F4uxffy/oEmlHR40xu6g/3U6V7SSW925yQQhYp6jx
- ik21+I4kqbroevH0HJ/buuUGEPDtPQy4eRVT3koeMVikckXqwA5eC6mpi
- pQpU1dQi81TLJVpN5woe/iigK0/QC+GjEa0tfU0JkBQe4B9jpFsZlTv5O
- iXXWFwISssGSrxpIfprAYvANWpKRpeuxOR61vYLmWzQUNh+/lminKyrLv A==;
-X-CSE-ConnectionGUID: q8jioANxRb+mxHH0cZB6Vg==
-X-CSE-MsgGUID: 5DMhKqPjSL2N1ldAp0SUYQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="21109575"
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; d="scan'208";a="21109575"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ bh=5jStgwZ82O+yP8UIEKI1zciskdtjYX3WrtDCvgy9N3g=;
+ b=ZDqGi5WVoonwyeCWwCnCVwzyEYORmYk1RUnzSIMIMZ5DjAyt8zChbxf1
+ kj9LPZNSAcE8NPUkHV9rKJrn0Bt9zpdOchFGUzbWi22kPkFZuxjyc/Mu5
+ +CAPRwYdUxji4jHZL1/Qi3CjJFM7wsXk7yzCZqjHjP+7MqFwjeCkJfmRF
+ EAGK7WE0l/JOdzU3cIYkkdWUftHJ5sKY16F+QPBO9SF2308A+3WHfucIv
+ EUAO6/qgNvQvRIImxn1KeQpSoSau5wYMWMdvJhyvaNWqJVFtV03Ypm/Jn
+ qnfbOX7gAevX1IXgjXx/m7wwHAKCkmwWWL6P6y1TWXdvNzM6oKuF80zYC g==;
+X-CSE-ConnectionGUID: WhbIB3zPTTOJpKm6Pv7qZA==
+X-CSE-MsgGUID: k7ukqSwGSxOg5dCZDnAaew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="21109731"
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; d="scan'208";a="21109731"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 03:14:22 -0700
-X-CSE-ConnectionGUID: aUKj9Wu6SP+7bAtj1pixXw==
-X-CSE-MsgGUID: tUF6/aM6Q+CcKdFpArtNVg==
+ 08 Aug 2024 03:15:52 -0700
+X-CSE-ConnectionGUID: iK4dcg1pQ324EQ8t9FlAfA==
+X-CSE-MsgGUID: sr9tcA2aQGyor8DR4EJiAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; d="scan'208";a="57410334"
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; d="scan'208";a="56853159"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa006.jf.intel.com with ESMTP; 08 Aug 2024 03:14:20 -0700
-Date: Thu, 8 Aug 2024 18:30:09 +0800
+ by fmviesa007.fm.intel.com with ESMTP; 08 Aug 2024 03:15:51 -0700
+Date: Thu, 8 Aug 2024 18:31:40 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: EwanHai <ewanhai-oc@zhaoxin.com>
 Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, qemu-devel@nongnu.org,
  ewanhai@zhaoxin.com, cobechen@zhaoxin.com, rockcui@zhaoxin.com,
  louisqi@zhaoxin.com, liamni@zhaoxin.com, frankzhu@zhaoxin.com
-Subject: Re: [PATCH v2 4/4] target/i386: Update CMPLegacy handling for
- Zhaoxin CPUs
-Message-ID: <ZrSeMfpBm8NrXRWK@intel.com>
+Subject: Re: [PATCH v2 1/4] target/i386: Add support for Zhaoxin CPU vendor
+ identification
+Message-ID: <ZrSejMP8SDEIm37l@intel.com>
 References: <20240704112511.184257-1-ewanhai-oc@zhaoxin.com>
- <20240704112511.184257-5-ewanhai-oc@zhaoxin.com>
+ <20240704112511.184257-2-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240704112511.184257-5-ewanhai-oc@zhaoxin.com>
+In-Reply-To: <20240704112511.184257-2-ewanhai-oc@zhaoxin.com>
 Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
@@ -83,50 +83,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi EwanHai,
-
-On Thu, Jul 04, 2024 at 07:25:11AM -0400, EwanHai wrote:
-> Date: Thu, 4 Jul 2024 07:25:11 -0400
+On Thu, Jul 04, 2024 at 07:25:08AM -0400, EwanHai wrote:
+> Date: Thu, 4 Jul 2024 07:25:08 -0400
 > From: EwanHai <ewanhai-oc@zhaoxin.com>
-> Subject: [PATCH v2 4/4] target/i386: Update CMPLegacy handling for Zhaoxin
->  CPUs
+> Subject: [PATCH v2 1/4] target/i386: Add support for Zhaoxin CPU vendor
+>  identification
 > X-Mailer: git-send-email 2.34.1
 > 
-> Zhaoxin CPUs handle the CMPLegacy bit in the same way
-> as Intel CPUs. This patch simplifies the existing logic by
-> using the IS_XXX_CPU macro and includes checks for Zhaoxin
-> vendor to align their behavior with Intel.
+> Zhaoxin currently uses two vendors: "Shanghai" and "Centaurhauls".
+> It is important to note that the latter now belongs to Zhaoxin. Therefore,
+> this patch replaces CPUID_VENDOR_VIA with CPUID_VENDOR_ZHAOXIN1.
+> 
+> The previous CPUID_VENDOR_VIA macro was only defined but never used in
+> QEMU, making this change straightforward.
+> 
+> Additionally, the IS_ZHAOXIN_CPU macro has been added to simplify the
+> checks for Zhaoxin CPUs.
 > 
 > Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 > ---
->  target/i386/cpu.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index a3747fc487..c52a4cf3ba 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -6945,9 +6945,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->           * So don't set it here for Intel to make Linux guests happy.
->           */
->          if (threads_per_pkg > 1) {
-> -            if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
-> -                env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
-> -                env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
-> +            if (!IS_INTEL_CPU(env) && !IS_ZHAOXIN_CPU(env)) {
+>  target/i386/cpu.h | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
 
-This change implicitly changes the behavior of existing VIA CPU.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Is this a bug for the original VIA? If so, I suggest a separate patch to
-fix it and explain the effect on the VIA (Zhaoxin1) CPU.
-
-Regards,
-Zhao
-
->                  *ecx |= 1 << 1;    /* CmpLegacy bit */
->              }
->          }
-> -- 
-> 2.34.1
-> 
 
