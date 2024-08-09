@@ -2,52 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05CF94C8FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 05:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E81694C8FC
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 05:53:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scGfj-00088W-5P; Thu, 08 Aug 2024 23:52:11 -0400
+	id 1scGfl-0008I2-La; Thu, 08 Aug 2024 23:52:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1scGfh-00086f-1T
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:52:09 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1scGfj-0008Cp-Nz
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:52:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1scGff-0008MP-Ew
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:52:08 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1scGfi-0008Mj-6K
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:52:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723175526;
+ s=mimecast20190719; t=1723175529;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=JWDt4I+81m8CBbmiUvK537yFMwopmOQ1ObO7UTLy0pI=;
- b=UbhzHzH6wrjZVYjXZDgtWlFXSzvyLHh5B/Pzgn3o9cYvOYuTMZ6N1hp/y1gd99NSzUSiuY
- HAUfIgC6GG57OjDxo7rb7FExJgbIzGeJEU5Cqwkd6vsD5MXPb65xQTNrm/D/ssbgqGG4Kb
- TPqVoYSujZTjlNW6UZjHeumrJ7HgDkw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4k0H5Hflq+fZeTxxuN1fp4nLwX3JGjh6VdgBQuWFXfA=;
+ b=F8VVb7tslVSZdf8yL1UmxcAuEZHSvEWkMAq+ZufFHN2+A1whtmdGhrGIdKguZ+LKRXVxB/
+ EAot/E96IJJd/kimhFx1gHQHdKONxqO/Fr2g7WFkT8LIIFz1qtwmlOBlUK17nxELOnZzjq
+ hx0Wo1BJwcJTqtYqJRXnv1lJdvDAANA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-TC-aA-HrOreojHNtPsrXWQ-1; Thu,
- 08 Aug 2024 23:52:01 -0400
-X-MC-Unique: TC-aA-HrOreojHNtPsrXWQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-rpWT1NAfPECsJr7eUah1Ew-1; Thu,
+ 08 Aug 2024 23:52:05 -0400
+X-MC-Unique: rpWT1NAfPECsJr7eUah1Ew-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 71E811944DEE; Fri,  9 Aug 2024 03:51:59 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E2F0319776AE; Fri,  9 Aug 2024 03:52:03 +0000 (UTC)
 Received: from gshan-thinkpadx1nanogen2.remote.csb (unknown [10.64.136.133])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2B9C6195917D; Fri,  9 Aug 2024 03:51:53 +0000 (UTC)
+ id 0ABA41945109; Fri,  9 Aug 2024 03:51:59 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, pbonzini@redhat.com,
  philmd@linaro.org, richard.henderson@linaro.org, shan.gavin@gmail.com
-Subject: [PATCH 0/4] hw/arm/virt: Improve virt_kvm_type()
-Date: Fri,  9 Aug 2024 13:51:29 +1000
-Message-ID: <20240809035134.699830-1-gshan@redhat.com>
+Subject: [PATCH 1/4] hw/arm/virt: hide virt_kvm_type() on !CONFIG_KVM
+Date: Fri,  9 Aug 2024 13:51:30 +1000
+Message-ID: <20240809035134.699830-2-gshan@redhat.com>
+In-Reply-To: <20240809035134.699830-1-gshan@redhat.com>
+References: <20240809035134.699830-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -76,33 +79,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hw/arm/virt.c::virt_kvm_type() can be improved due to the facts as
-below, when I inspect the code to review Salil's (RFCv3) vCPU hotplug
-series.
+virt_kvm_type() and mc->kvm_type() are only needed when CONFIG_KVM
+is enabled. It's reasonable to hide them when CONFIG_KVM is disabled.
 
-  * virt_kvm_type() and MachineClass::kvm_type() are needed only when
-    CONFIG_KVM is enabled.
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+---
+ hw/arm/virt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-  * kvm_arm_get_max_vm_ipa_size() and kvm_arch_get_default_type() are
-    generally interchangeable with the exception that type zero is
-    corresponding to IPA size (bits) 40. So it's unecessary to keep
-    both APIs.
-
-Lets clean it up so that kvm_arm_get_max_vm_ipa_size() is eventually
-removed. kvm_arch_get_default_type() is used to get the KVM type and
-IPA size (bits).
-
-Gavin Shan (4):
-  hw/arm/virt: hide virt_kvm_type() on !CONFIG_KVM
-  hw/arm/virt: Avoid multiple lines of comments in virt_kvm_type()
-  hw/arm/virt: Use kvm_arch_get_default_type()
-  target/arm/kvm: Remove kvm_arm_get_max_vm_ipa_size()
-
- hw/arm/virt.c        | 22 +++++++++++-----------
- target/arm/kvm.c     | 13 ++-----------
- target/arm/kvm_arm.h | 15 ---------------
- 3 files changed, 13 insertions(+), 37 deletions(-)
-
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 719e83e6a1..83be57db37 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2991,6 +2991,7 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
+  * for arm64 kvm_type [7-0] encodes the requested number of bits
+  * in the IPA address space
+  */
++#ifdef CONFIG_KVM
+ static int virt_kvm_type(MachineState *ms, const char *type_str)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(ms);
+@@ -3025,6 +3026,7 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+      */
+     return fixed_ipa ? 0 : requested_pa_size;
+ }
++#endif /* CONFIG_KVM */
+ 
+ static void virt_machine_class_init(ObjectClass *oc, void *data)
+ {
+@@ -3084,7 +3086,9 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+ #endif
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
++#ifdef CONFIG_KVM
+     mc->kvm_type = virt_kvm_type;
++#endif
+     assert(!mc->get_hotplug_handler);
+     mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
+     hc->pre_plug = virt_machine_device_pre_plug_cb;
 -- 
 2.45.2
 
