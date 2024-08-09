@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7154B94CB9D
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 09:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D009794CB99
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 09:46:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scKKA-0002mc-II; Fri, 09 Aug 2024 03:46:10 -0400
+	id 1scKK9-0002jI-Rq; Fri, 09 Aug 2024 03:46:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1scKK8-0002iF-E0
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:46:08 -0400
+ id 1scKK7-0002hj-Tp
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:46:07 -0400
 Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1scKK5-0002vj-SR
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:46:08 -0400
+ id 1scKK6-0002w6-7l
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:46:07 -0400
 Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-70d25b5b6b0so1448607b3a.2
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 00:44:04 -0700 (PDT)
+ d2e1a72fcca58-70eae5896bcso1629879b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 00:44:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1723189443; x=1723794243;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1723189445; x=1723794245;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/waCfZIpwHr1OgYBTlJkVrmnPH0POYFcg1/H/+p2zcM=;
- b=WdCasAfUjJGffUqv/TQN6Io0jeXBtx00fn/7H3WlDjbuOedd8HOsHBMpl7+lbDT31f
- LbsyX+ew9UHHCh4llxZOsreXRFn3dm6kpocGud4SufDTPV6A4FSgc2LqulP3h47l+5xg
- HdMmGM5ooTxrFMs7EkINzKBgBz7NWqSAeec5WcV3imPaH+wxzypuV+2cokIDvs9lNAV7
- zNgj5kUsj0UVYVhd/h76sBUMa2sFlyww/5RqZRxl1sMPvqzU9an1tS6njE5fIwWAii2h
- xlb+ybZbGR8uGWKdKjfaDrtHdixKexhtnncStT2aiWvw/32BP8f/ustVY4xovxIsugtQ
- DULg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SlUMRFbIZO8Gfc3E5mF3qJaWebgi/RdemF9uE7TuxV0=;
+ b=WZXxWtAzeqpisRfuQoHV4hwv5GIsUPQlCdExMGJY5TvOZKXyjJpER0Q+/cHIkOJSh0
+ kjXQUI9vUUW4NbAREoV4M8rOvZedCkqbd5jyAfKfxN6rTR+puDJmRumbp3LKYdsi5GAF
+ 7k+dN5+9nD0dW/juWknKXjw/XjMoo8J+2c7R+aiB3pkQSmOwuTsNTpmLcty+SmN0cmHV
+ vSu+GYZB2Ny/mCZXtkZ+CFpC1hdeNKkPFrtZExwkQg2YH++bpsbOZuGMoqJxjlY0Ui9w
+ E+3noZGXqOQcfaUHgprT3plf46x0HkIWUrgc6dzlDaKaHLafXYdgwJWMm7aibFSiOA0L
+ 2psg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723189443; x=1723794243;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/waCfZIpwHr1OgYBTlJkVrmnPH0POYFcg1/H/+p2zcM=;
- b=vwz/3sA62KgGgqrlr+I2Eb+9U6tYQBz4vSj5ee3XLKaXCM0enY6hQQGTsS9AOTopjV
- 9Budxs+oD1XnumkiDu1eGG9btHjo57EbApQghvqdCzkK9Ij82mzfPq4h0yCfhxceadHO
- LPmw+GYfmPANOF77md6n1nSPu6lJqaIER1dSh3d8ZSU2RwQ70qH09/8gYTcH+kq37w0o
- yE+SXIXn6zP6Lfyk1BL227BtyXIw3HGeejmvRNFJ241kre3VpDiLSKtQRezEWtr8TGfy
- L6fHlKtMKYnCA/Nw4Q+2PpNcsIfWdFPeyOFa9IUvJ1GFFDO9q0vegU3wDQL367/nP9pX
- ZzYw==
-X-Gm-Message-State: AOJu0YxMGx3tDqdSgatsu9VkZ4YoL3BHPNiZ/xWxN0XY8Co7yhSXnkrZ
- x6lhf3AUkTs8aOdu+TrGhcY4AIGD8GuI4ODiCFScw8ZERuOBcCU0GN2lgNzatI65DvGrwqE8O7s
- /KvLgBA==
-X-Google-Smtp-Source: AGHT+IF8vcxHFwak5VEvoQqOvO5aDEiPjD49SxIvxht4Mu6/PL8/awbnAXYDlGNGLF4ZhMJaGCOcbQ==
-X-Received: by 2002:a05:6a00:4b4f:b0:70a:efd7:ada1 with SMTP id
- d2e1a72fcca58-710dc75fa1amr627257b3a.17.1723189442151; 
- Fri, 09 Aug 2024 00:44:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723189445; x=1723794245;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SlUMRFbIZO8Gfc3E5mF3qJaWebgi/RdemF9uE7TuxV0=;
+ b=D0i6Juzoq0FlTsq3cZ9e0X8sCRFLBpsUOk5yjEl/reTH9e69KXyb9oLKw1LZTsyHgb
+ mETYHWf6MF9Sc21snwOMIOJ5YjKbY9SLbP7j+VvfswkG1ByMv6d1bnTZ7BcaZtOqCbJk
+ rgUu+jtSa9XEjZTAdFUZfr20dfYl+WXSbFyMMia8o1U6xxQVzKIcQgDV5DrCw7EKqqwY
+ qZqfx2xGuZPYlNhgyo711ovExOOaPUmfH6Mg0qOPNSwHrXNdiJNv2et+SF/rY91qGOQO
+ tDZY77zSpv7dKx7ltbN08igYliqpl1FcAuK5XYadN/W6L5PhF+IVrAouU3qH1HZufOGJ
+ 9rdA==
+X-Gm-Message-State: AOJu0Yxy6DmOGfh4fVzy5X/Ucmf552di677aaRr7uVfUi5uvio/hak+3
+ 6giRru+ZNOrRsPg5zZYubOXdXuFfhipUwTKRtMNphXHT9JF23LZWwPJ7nP0cXMksumOvqqRxpMC
+ vvMFOJQ==
+X-Google-Smtp-Source: AGHT+IF5iobtFcYdnhTu/Lt/GRAoBZbjdDXVsWBKry9PHxVGt1lgaqOC0ClvdyxysJSXpUjnQbvqkQ==
+X-Received: by 2002:a05:6a00:1482:b0:70b:152:331 with SMTP id
+ d2e1a72fcca58-710dc79c6e5mr700352b3a.21.1723189444297; 
+ Fri, 09 Aug 2024 00:44:04 -0700 (PDT)
 Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-710cb22a455sm2123212b3a.71.2024.08.09.00.44.00
+ d2e1a72fcca58-710cb22a455sm2123212b3a.71.2024.08.09.00.44.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Aug 2024 00:44:01 -0700 (PDT)
+ Fri, 09 Aug 2024 00:44:04 -0700 (PDT)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  yong.huang@smartx.com
-Subject: [PATCH v1 0/5] Guestperf: miscellaneous refinement and enrichment 
-Date: Fri,  9 Aug 2024 15:43:31 +0800
-Message-Id: <cover.1723189080.git.yong.huang@smartx.com>
+Subject: [PATCH v1 1/5] tests/migration: Move the guestperf tool to scripts
+ directory
+Date: Fri,  9 Aug 2024 15:43:32 +0800
+Message-Id: <38f6c0a2385f75f437d2b8b7b5fa82adacc2879c.1723189080.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <cover.1723189080.git.yong.huang@smartx.com>
+References: <cover.1723189080.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=2607:f8b0:4864:20::435;
@@ -92,60 +96,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-The previous patchset:
-https://lore.kernel.org/qemu-devel/cover.1722957352.git.yong.huang@smartx.com/
-does not made the necessary changes and tests for the upstream version.
+Guestperf was designed to test the performance of migration,
+with a loose connection to the fundamental test cases of QEMU.
 
-This patchset works for that:
-1. Move the guestperf to scripts directory suggested by Fabiano Rosas
-2. Make initrd-stress.img built by default suggested by Fabiano Rosas
-3. Make the necessary changes to adapt the latest multifd behavior
-4. A nitpick for multifd migration
-5. Support multifd compression option
+To improve the repository's structure, move it to the scripts
+directory.
 
-Please review,
-
-Thanks
-
-Yong
-
-Hyman Huang (5):
-  tests/migration: Move the guestperf tool to scripts directory
-  tests/migration: Make initrd-stress.img built by default
-  guestperf: Support deferred migration for multifd
-  guestperf: Nitpick the inconsistent parameters
-  guestperf: Introduce multifd compression option
-
- MAINTAINERS                                        |  5 ++++
- {tests => scripts}/migration/guestperf-batch.py    |  0
- {tests => scripts}/migration/guestperf-plot.py     |  0
- {tests => scripts}/migration/guestperf.py          |  0
- {tests => scripts}/migration/guestperf/__init__.py |  0
- .../migration/guestperf/comparison.py              | 15 +++++++++-
- {tests => scripts}/migration/guestperf/engine.py   | 32 +++++++++++++++++++---
- {tests => scripts}/migration/guestperf/hardware.py |  0
- {tests => scripts}/migration/guestperf/plot.py     |  0
- {tests => scripts}/migration/guestperf/progress.py |  0
- {tests => scripts}/migration/guestperf/report.py   |  0
- {tests => scripts}/migration/guestperf/scenario.py |  7 +++--
- {tests => scripts}/migration/guestperf/shell.py    |  3 ++
- {tests => scripts}/migration/guestperf/timings.py  |  0
- tests/migration/meson.build                        |  5 ++--
- 15 files changed, 58 insertions(+), 9 deletions(-)
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+---
+ MAINTAINERS                                          | 5 +++++
+ {tests => scripts}/migration/guestperf-batch.py      | 0
+ {tests => scripts}/migration/guestperf-plot.py       | 0
+ {tests => scripts}/migration/guestperf.py            | 0
+ {tests => scripts}/migration/guestperf/__init__.py   | 0
+ {tests => scripts}/migration/guestperf/comparison.py | 0
+ {tests => scripts}/migration/guestperf/engine.py     | 0
+ {tests => scripts}/migration/guestperf/hardware.py   | 0
+ {tests => scripts}/migration/guestperf/plot.py       | 0
+ {tests => scripts}/migration/guestperf/progress.py   | 0
+ {tests => scripts}/migration/guestperf/report.py     | 0
+ {tests => scripts}/migration/guestperf/scenario.py   | 0
+ {tests => scripts}/migration/guestperf/shell.py      | 0
+ {tests => scripts}/migration/guestperf/timings.py    | 0
+ 14 files changed, 5 insertions(+)
  rename {tests => scripts}/migration/guestperf-batch.py (100%)
  rename {tests => scripts}/migration/guestperf-plot.py (100%)
  rename {tests => scripts}/migration/guestperf.py (100%)
  rename {tests => scripts}/migration/guestperf/__init__.py (100%)
- rename {tests => scripts}/migration/guestperf/comparison.py (89%)
- rename {tests => scripts}/migration/guestperf/engine.py (93%)
+ rename {tests => scripts}/migration/guestperf/comparison.py (100%)
+ rename {tests => scripts}/migration/guestperf/engine.py (100%)
  rename {tests => scripts}/migration/guestperf/hardware.py (100%)
  rename {tests => scripts}/migration/guestperf/plot.py (100%)
  rename {tests => scripts}/migration/guestperf/progress.py (100%)
  rename {tests => scripts}/migration/guestperf/report.py (100%)
- rename {tests => scripts}/migration/guestperf/scenario.py (93%)
- rename {tests => scripts}/migration/guestperf/shell.py (98%)
+ rename {tests => scripts}/migration/guestperf/scenario.py (100%)
+ rename {tests => scripts}/migration/guestperf/shell.py (100%)
  rename {tests => scripts}/migration/guestperf/timings.py (100%)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 10af212632..dae1535dae 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3449,6 +3449,11 @@ F: migration/dirtyrate.h
+ F: include/sysemu/dirtyrate.h
+ F: docs/devel/migration/dirty-limit.rst
+ 
++Migration performance test tool
++M: Hyman Huang <yong.huang@smartx.com>
++S: Maintained
++F: scripts/migration/
++
+ Detached LUKS header
+ M: Hyman Huang <yong.huang@smartx.com>
+ S: Maintained
+diff --git a/tests/migration/guestperf-batch.py b/scripts/migration/guestperf-batch.py
+similarity index 100%
+rename from tests/migration/guestperf-batch.py
+rename to scripts/migration/guestperf-batch.py
+diff --git a/tests/migration/guestperf-plot.py b/scripts/migration/guestperf-plot.py
+similarity index 100%
+rename from tests/migration/guestperf-plot.py
+rename to scripts/migration/guestperf-plot.py
+diff --git a/tests/migration/guestperf.py b/scripts/migration/guestperf.py
+similarity index 100%
+rename from tests/migration/guestperf.py
+rename to scripts/migration/guestperf.py
+diff --git a/tests/migration/guestperf/__init__.py b/scripts/migration/guestperf/__init__.py
+similarity index 100%
+rename from tests/migration/guestperf/__init__.py
+rename to scripts/migration/guestperf/__init__.py
+diff --git a/tests/migration/guestperf/comparison.py b/scripts/migration/guestperf/comparison.py
+similarity index 100%
+rename from tests/migration/guestperf/comparison.py
+rename to scripts/migration/guestperf/comparison.py
+diff --git a/tests/migration/guestperf/engine.py b/scripts/migration/guestperf/engine.py
+similarity index 100%
+rename from tests/migration/guestperf/engine.py
+rename to scripts/migration/guestperf/engine.py
+diff --git a/tests/migration/guestperf/hardware.py b/scripts/migration/guestperf/hardware.py
+similarity index 100%
+rename from tests/migration/guestperf/hardware.py
+rename to scripts/migration/guestperf/hardware.py
+diff --git a/tests/migration/guestperf/plot.py b/scripts/migration/guestperf/plot.py
+similarity index 100%
+rename from tests/migration/guestperf/plot.py
+rename to scripts/migration/guestperf/plot.py
+diff --git a/tests/migration/guestperf/progress.py b/scripts/migration/guestperf/progress.py
+similarity index 100%
+rename from tests/migration/guestperf/progress.py
+rename to scripts/migration/guestperf/progress.py
+diff --git a/tests/migration/guestperf/report.py b/scripts/migration/guestperf/report.py
+similarity index 100%
+rename from tests/migration/guestperf/report.py
+rename to scripts/migration/guestperf/report.py
+diff --git a/tests/migration/guestperf/scenario.py b/scripts/migration/guestperf/scenario.py
+similarity index 100%
+rename from tests/migration/guestperf/scenario.py
+rename to scripts/migration/guestperf/scenario.py
+diff --git a/tests/migration/guestperf/shell.py b/scripts/migration/guestperf/shell.py
+similarity index 100%
+rename from tests/migration/guestperf/shell.py
+rename to scripts/migration/guestperf/shell.py
+diff --git a/tests/migration/guestperf/timings.py b/scripts/migration/guestperf/timings.py
+similarity index 100%
+rename from tests/migration/guestperf/timings.py
+rename to scripts/migration/guestperf/timings.py
 -- 
 2.11.0
 
