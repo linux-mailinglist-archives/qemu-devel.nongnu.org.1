@@ -2,62 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE0694C8DD
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 05:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2717E94C8E5
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 05:32:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scGFq-0004zs-6W; Thu, 08 Aug 2024 23:25:26 -0400
+	id 1scGLw-0001uB-VX; Thu, 08 Aug 2024 23:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1scGFm-0004xg-Tw
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:25:22 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ id 1scGLt-0001tZ-TI
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:31:41 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1scGFk-0005F2-6w
- for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:25:22 -0400
+ id 1scGLr-0005oC-Sk
+ for qemu-devel@nongnu.org; Thu, 08 Aug 2024 23:31:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723173921; x=1754709921;
+ t=1723174300; x=1754710300;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Tw+oP3IUd1a2tjFWuBay+BRp/YDXjyJCFYsMxwsCFAA=;
- b=cUPweliK8Hfr4ejjoGnjfdeWdiAIc8i1+QZb49UWtwDOtWqW/IbQGqdN
- fhnL4nEE8+gX9aIgPkuUgd6yMI9+Bm7SrQu9sRQCXocCYvE5m1aRpiy8k
- Y4YcyGNH9NNC9VCcDtY5N9GFMKsx8o+4Jzpb9CRQQK43aKhT02neS0FEg
- KbJrRo7jw9IEfm7aPgobk0xKzf7Tt3RDW4OqZDZM/OMoYzNevDXMBUQy8
- VswqbG/Yiy+v9Kh1ebg7O+/9sSZEpm8K/Dpfv0Dop/y22dUe5+f2b6GbA
- 5m0Q/EvlZcIjRy9uQaoXgJrM6rNsMMqZDCuIjRDWZtvOiiQysrBwGbtP9 g==;
-X-CSE-ConnectionGUID: k0t38VKoQWKEfZBK5O2qXA==
-X-CSE-MsgGUID: rcfnYlp6QeeL2KHp0CYFxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="31909003"
-X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="31909003"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 20:25:17 -0700
-X-CSE-ConnectionGUID: TUDafeUTQROSXWiRTIUWbg==
-X-CSE-MsgGUID: Z1EXJPldT+Sok75tUmhTgw==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=QbIpNfktatoMKfhHmUxdgliPiGkZXFxrwtj6S+VVZq4=;
+ b=OIeOluWTKJHa4v57ChqzCv6PF8WnLPg6FyoL/y/+aXvuvyOOYE9LfWwE
+ 4Y4hJgIkSZcFkKCRjfJmDzCiH3EQvFfWzukLPKyQXXWNbb9+wRsf+ujt7
+ zFQNdcANl2UevvG4+dBHJ/6qj7jdqg9LQjC7sZP10NZXk+dMeWVsL9k/8
+ YmQvmCX8/+3Ai+JcEVFRTm6FCG82rWgoCcDubphEnd818DpTvQMeet9Dc
+ CFCte1u8ov9HrbmQadKXAxUhfbfWGWZrIc9LRmD/M2/Xwot1R6ST0teWO
+ ei+v86zk7YCfewNzSBg50a+XjmCRjJm5xCK59vK12Tj1+1gsIq+adF4A4 g==;
+X-CSE-ConnectionGUID: CMb9/9iyQvO17ufEEJZrag==
+X-CSE-MsgGUID: aD+nlyHRTvCtuI3vsX8f3Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="24241470"
+X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="24241470"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2024 20:31:34 -0700
+X-CSE-ConnectionGUID: godCJc7XRHS2btiuARrLCg==
+X-CSE-MsgGUID: UhUcV34ESiuv/lizDRBXaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="57306512"
+X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="88311121"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 08 Aug 2024 20:25:15 -0700
-Date: Fri, 9 Aug 2024 11:41:05 +0800
+ by fmviesa001.fm.intel.com with ESMTP; 08 Aug 2024 20:31:31 -0700
+Date: Fri, 9 Aug 2024 11:47:21 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] kvm: refactor core virtual machine creation into its
- own function
-Message-ID: <ZrWP0fWPNzeAvjja@intel.com>
-References: <20240808113838.1697366-1-anisinha@redhat.com>
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, qemu-devel@nongnu.org,
+ ewanhai@zhaoxin.com, cobechen@zhaoxin.com, rockcui@zhaoxin.com,
+ louisqi@zhaoxin.com, liamni@zhaoxin.com, frankzhu@zhaoxin.com
+Subject: Re: [PATCH v2 4/4] target/i386: Update CMPLegacy handling for
+ Zhaoxin CPUs
+Message-ID: <ZrWRSXIPYwEkpXK/@intel.com>
+References: <20240704112511.184257-1-ewanhai-oc@zhaoxin.com>
+ <20240704112511.184257-5-ewanhai-oc@zhaoxin.com>
+ <ZrSeMfpBm8NrXRWK@intel.com>
+ <236c8032-6e17-4002-86e1-4483b55977f7@zhaoxin.com>
+ <ZrWLgN1L280h75QF@intel.com>
+ <d37a0bb1-23c3-4226-87c9-da73f4b59d72@zhaoxin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=gb2312
 Content-Disposition: inline
-In-Reply-To: <20240808113838.1697366-1-anisinha@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d37a0bb1-23c3-4226-87c9-da73f4b59d72@zhaoxin.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -81,184 +88,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Ani,
+On Thu, Aug 08, 2024 at 11:25:45PM -0400, Ewan Hai wrote:
 
-On Thu, Aug 08, 2024 at 05:08:38PM +0530, Ani Sinha wrote:
-> Date: Thu,  8 Aug 2024 17:08:38 +0530
-> From: Ani Sinha <anisinha@redhat.com>
-> Subject: [PATCH v2] kvm: refactor core virtual machine creation into its
->  own function
-> X-Mailer: git-send-email 2.45.2
-> 
-> Refactoring the core logic around KVM_CREATE_VM into its own separate function
-> so that it can be called from other functions in subsequent patches. There is
-> no functional change in this patch.
-> 
-> CC: pbonzini@redhat.com
-> CC: zhao1.liu@intel.com
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->  accel/kvm/kvm-all.c | 93 +++++++++++++++++++++++++++------------------
->  1 file changed, 56 insertions(+), 37 deletions(-)
-> 
-> changelog:
-> v2: s/fprintf/warn_report as suggested by zhao
+[snip]
 
-Thanks for your change!
+> Thank you for your suggestion; the changes will indeed make it clearer.
+> I have a question: since you¡¯ve already added your reviewed-by tag to
+> the first three patches, if I want to modify these descriptions, should
+> I submit a v3 patchset containing all four patches, or should I only send a
+> new patch titled "target/i386: Mask CMPLegacy bit in CPUID[0x80000001].ecx
+> for Zhaoxin/Centaur CPUs"?
 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 75d11a07b2..c2e177c39f 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -2385,6 +2385,60 @@ uint32_t kvm_dirty_ring_size(void)
->      return kvm_state->kvm_dirty_ring_size;
->  }
->  
-> +static int do_kvm_create_vm(MachineState *ms, int type)
-> +{
-> +    KVMState *s;
-> +    int ret;
-> +
-> +    s = KVM_STATE(ms->accelerator);
-> +
-> +    do {
-> +        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
-> +    } while (ret == -EINTR);
-> +
-> +    if (ret < 0) {
-> +        warn_report("ioctl(KVM_CREATE_VM) failed: %d %s", -ret,
-> +                    strerror(-ret));
-> +
-> +#ifdef TARGET_S390X
-> +        if (ret == -EINVAL) {
-> +            warn_report("Host kernel setup problem detected. Please verify:");
-> +            warn_report("- for kernels supporting the switch_amode or"
-> +                        " user_mode parameters, whether");
-> +            warn_report("  user space is running in primary address space");
-> +            warn_report("- for kernels supporting the vm.allocate_pgste "
-> +                        "sysctl, whether it is enabled");
-> +        }
-> +#elif defined(TARGET_PPC)
-> +        if (ret == -EINVAL) {
-> +            warn_report("PPC KVM module is not loaded. Try modprobe kvm_%s.",
-> +                        (type == 2) ? "pr" : "hv");
-> +        }
-> +#endif
+The v3 should contain all 4 patches, and you can add my R/b tag in the
+first three patches.
 
-I think error level message is more appropriate than warn because after
-the print QEMU handles error and terminates the Guest startup.
-
-What about the following change?
-
-#ifdef TARGET_S390X
-        if (ret == -EINVAL) {
-            error_report("Host kernel setup problem detected");
-            error_printf("Please verify:\n");
-            error_printf("- for kernels supporting the switch_amode or"
-                         " user_mode parameters, whether\n");
-            error_printf("  user space is running in primary address space\n");
-            error_printf("- for kernels supporting the vm.allocate_pgste "
-                         "sysctl, whether it is enabled\n");
-        }
-#elif defined(TARGET_PPC)
-        if (ret == -EINVAL) {
-            error_report("PPC KVM module is not loaded");
-            error_printf("Try modprobe kvm_%s.\n",
-                         (type == 2) ? "pr" : "hv");
-	}
-#endif
-
-The above uses error_report() to just print error reason/error code
-since for error_report, "The resulting message should be a single
-phrase, with no newline or trailing punctuation."
-
-Other specific hints or information are printed by error_printf()
-because style.rst suggests "Use error_printf() & friends to print
-additional information."
-
-Thanks,
-Zhao
-
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +static int find_kvm_machine_type(MachineState *ms)
-> +{
-> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
-> +    int type;
-> +
-> +    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
-> +        g_autofree char *kvm_type;
-> +        kvm_type = object_property_get_str(OBJECT(current_machine),
-> +                                           "kvm-type",
-> +                                           &error_abort);
-> +        type = mc->kvm_type(ms, kvm_type);
-> +    } else if (mc->kvm_type) {
-> +        type = mc->kvm_type(ms, NULL);
-> +    } else {
-> +        type = kvm_arch_get_default_type(ms);
-> +    }
-> +    return type;
-> +}
-> +
->  static int kvm_init(MachineState *ms)
->  {
->      MachineClass *mc = MACHINE_GET_CLASS(ms);
-> @@ -2467,49 +2521,14 @@ static int kvm_init(MachineState *ms)
->      }
->      s->as = g_new0(struct KVMAs, s->nr_as);
->  
-> -    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
-> -        g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
-> -                                                            "kvm-type",
-> -                                                            &error_abort);
-> -        type = mc->kvm_type(ms, kvm_type);
-> -    } else if (mc->kvm_type) {
-> -        type = mc->kvm_type(ms, NULL);
-> -    } else {
-> -        type = kvm_arch_get_default_type(ms);
-> -    }
-> -
-> +    type = find_kvm_machine_type(ms);
->      if (type < 0) {
->          ret = -EINVAL;
->          goto err;
->      }
->  
-> -    do {
-> -        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
-> -    } while (ret == -EINTR);
-> -
-> +    ret = do_kvm_create_vm(ms, type);
->      if (ret < 0) {
-> -        fprintf(stderr, "ioctl(KVM_CREATE_VM) failed: %d %s\n", -ret,
-> -                strerror(-ret));
-> -
-> -#ifdef TARGET_S390X
-> -        if (ret == -EINVAL) {
-> -            fprintf(stderr,
-> -                    "Host kernel setup problem detected. Please verify:\n");
-> -            fprintf(stderr, "- for kernels supporting the switch_amode or"
-> -                    " user_mode parameters, whether\n");
-> -            fprintf(stderr,
-> -                    "  user space is running in primary address space\n");
-> -            fprintf(stderr,
-> -                    "- for kernels supporting the vm.allocate_pgste sysctl, "
-> -                    "whether it is enabled\n");
-> -        }
-> -#elif defined(TARGET_PPC)
-> -        if (ret == -EINVAL) {
-> -            fprintf(stderr,
-> -                    "PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
-> -                    (type == 2) ? "pr" : "hv");
-> -        }
-> -#endif
->          goto err;
->      }
->  
-> -- 
-> 2.45.2
-> 
 
