@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B7A94D60F
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD02A94D616
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scU2z-00028x-UT; Fri, 09 Aug 2024 14:09:05 -0400
+	id 1scU30-0002Cb-SM; Fri, 09 Aug 2024 14:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2x-000216-Hc
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:03 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1scU2y-00025s-NV
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:04 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2v-0007E6-VQ
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:03 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2eeb1ba0481so30874251fa.2
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:09:01 -0700 (PDT)
+ id 1scU2w-0007EF-OI
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:04 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2f0271b0ae9so23785321fa.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:09:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723226940; x=1723831740; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723226941; x=1723831741; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bV8ikeaAUAZQosDzE0s/Lkzb0lfb7R8ZRGC15xmyP3s=;
- b=NE6YcxpG8tdtCKlblXo/m1YgdzVv30kKs9PNzojYf2OT3ubH/42Bzk/NUEqjlo8dFF
- SuLeC4jIyJIQ1Ng2gWth6mPZbrfvcrT3bXO4gBwnNo1P5AWIkCCVN0ygoIpbWtl+Sn+T
- vTREyz+a33IX3beHIGKFjj5BIevIMYliGsJ86PZjcfz2Sf8++rJtd0GjXjiFhjk9WvHq
- 8KGCBlG/++pStfjmEQLH0Ug2cJugDPNnEHe+FV/dTihzpImogDJzne+9QI+N5KKrBDsT
- zhosazDznbC8eXCctdYgMtd0GiK959Z2UFSwDld19Axa7DcpNOcl/nhYOGCUGCGRWI3x
- w9/A==
+ :reply-to; bh=OTKwxuPziiy0+9qyVmM4AyVNPdnxPukHZnKDv7thDS0=;
+ b=jegS4DYaDY0hCVV+NeObu9yuZEO/d6owZgQEwiAD7xMd0pbmj0bgSeYk0rQnV4VwB+
+ de0oMGsEGw2nF2pdvEgAyfFpqPSKos4BLvf6i1FG0I87kAZDEfPwJjzwbccy3SkURde+
+ n733lB3OY2HLVWD3zNHsFES+6TcrdVDMkPxKuCN8gY4H/Jc2vYgeE8iNFozApG8RkUuh
+ aZ6ivFq5GKc7wbn19vw/efmm3rwkYb1uqPmMprBTw5gPZzPzPNrOFqD6workj3DbDyWl
+ vo+V2+Zb30/P4T31jTVXygNJX0iqA+4WD5SjkVo0N6zMcYR3SQsfVrR5JW3rli2TOEyo
+ GH0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723226940; x=1723831740;
+ d=1e100.net; s=20230601; t=1723226941; x=1723831741;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bV8ikeaAUAZQosDzE0s/Lkzb0lfb7R8ZRGC15xmyP3s=;
- b=qXjYsN/qxkW7X0hQuvuPinr7GzVfIll9pidbQzjtz99aZb1Aubxlggpa6Iq8WvHPfz
- 6y23+pXYKp+MQLTYmlSG1CHbuWUHPklBrKsPqxrLCsaSQkf0Ek6100YWcPz1/oQZPfln
- Xs7H4r9tB8BwFFlpBkMEYlMiCanpbncr7QJIdHAYnVlM4XzEiaUr8ZzTqyjwq3ZsvjCn
- 5sAEWevjRphDUuNJUgpgfjXJPnPnhkAV2UAOGDy22ZRp028h/rgngo+mvTwAGrS5GvV7
- uL2OrdNmaxPCToEymdPBJ2bCkOE5lnfIBevRkX5p9397VjOP8E4yoFn5JJ+DbXtjtUIm
- WZeg==
-X-Gm-Message-State: AOJu0YxzJAICRQXWcnisnWMtr5OtVxVCZ0iWAzJIKpe+GqY1wbPrziSi
- sf0GPHcVIsfhyqdSSapwEW41dxhmaIWloTrNeY01u3dSACBwZ8J+cPRpgsdue4OEOLJs9AeNVmS
- /
-X-Google-Smtp-Source: AGHT+IFRLiBj6Zml026NmTbtvJ1BIH4KJliOlLIDGxzxIlmluvlXCSfzpt4eUiEBPM6RzhMVZKKqAQ==
-X-Received: by 2002:a2e:f12:0:b0:2ef:2f53:c300 with SMTP id
- 38308e7fff4ca-2f1a6c778efmr15952001fa.28.1723226940028; 
+ bh=OTKwxuPziiy0+9qyVmM4AyVNPdnxPukHZnKDv7thDS0=;
+ b=bJCJtRQqSEUDBxx1UQ5d5KAVykx/RLWNucZlTmq39tuoigTf5qlnGsqhvILJKq4n5/
+ g0VrsAT2kKWvtOPCDuYW+hQNIX9jSQ4IBq0oojGkjqzt4ZIGfGkb6GJxjkks66v4L4WO
+ LLNqMR499yEkdBF6Kzw/k862FFMlUPGO1xobsam+rnRTADrFU//grdqXU+KzIh8q6csC
+ v+Tkk3dTvHD890Ru4u70PtRotAJ1k2rIEyQw1n1HM9GAiNj2lqgyqhAKwrNftn1V0WZB
+ NGtw3BbvadjNupbWWJhS91w63X8s6R6Z/SSAH6xjI3kEXQn19si0yrHPQyWWS0zugALl
+ 6e4g==
+X-Gm-Message-State: AOJu0Yx6Vtq6GSda2ZF43YUD94eFxEaKqGDB+Ynwrg+ysAhV0mHfotAg
+ X7WuU4gNk7VE/IacCtN1GRIx31W3spML35PizINl/oOYkNNz/Jm6YIb7fxBwAMirbf6X4Rpe9/f
+ e
+X-Google-Smtp-Source: AGHT+IGmz4CoUcJ5S5EgVqzAUXDlT0bafavuNsRmNwNytbLIxpdtTvSR+YvA7E+rdJFiLDGVr1YdyQ==
+X-Received: by 2002:a05:651c:b29:b0:2ee:5ed4:792f with SMTP id
+ 38308e7fff4ca-2f1a6d0034amr18342261fa.2.1723226940590; 
  Fri, 09 Aug 2024 11:09:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.08.59
+ ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.09.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Aug 2024 11:08:59 -0700 (PDT)
+ Fri, 09 Aug 2024 11:09:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/11] docs: Typo fix in live disk backup
-Date: Fri,  9 Aug 2024 19:08:32 +0100
-Message-Id: <20240809180835.1243269-9-peter.maydell@linaro.org>
+Subject: [PULL 09/11] target/arm: add support for PMUv3 64-bit PMCCNTR in
+ AArch32 mode
+Date: Fri,  9 Aug 2024 19:08:33 +0100
+Message-Id: <20240809180835.1243269-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809180835.1243269-1-peter.maydell@linaro.org>
 References: <20240809180835.1243269-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,32 +92,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Blake <eblake@redhat.com>
+From: Alex Richardson <alexrichardson@google.com>
 
-Add in the missing space in the section header.
+In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
+PMCCNTR was added. In QEMU we forgot to implement this, so only
+provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
+sysreg for AArch64, adding the 64-bit AArch32 version is easy.
 
-Fixes: 1084159b31 ("qapi: deprecate drive-backup", v6.2.0)
-Signed-off-by: Eric Blake <eblake@redhat.com>
+We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
+in the ARMv8 architecture. This is consistent with how we
+handle the existing PMCCNTR support, where we always implement
+it for all v7 CPUs. This is arguably something we should
+clean up so it is gated on ARM_FEATURE_PMU and/or an ID
+register check for the relevant PMU version, but we should
+do that as its own tidyup rather than being inconsistent between
+this PMCCNTR accessor and the others.
+
+See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
+
+Signed-off-by: Alex Richardson <alexrichardson@google.com>
+Message-id: 20240801220328.941866-1-alexrichardson@google.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/interop/live-block-operations.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/helper.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/docs/interop/live-block-operations.rst b/docs/interop/live-block-operations.rst
-index 691429c7afe..6b549ede7c9 100644
---- a/docs/interop/live-block-operations.rst
-+++ b/docs/interop/live-block-operations.rst
-@@ -931,8 +931,8 @@ Shutdown the guest, by issuing the ``quit`` QMP command::
-     }
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 8fb4b474e83..94900667c33 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -5952,6 +5952,12 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
+       .access = PL1_RW, .accessfn = access_trap_aa32s_el1,
+       .writefn = sdcr_write,
+       .fieldoffset = offsetoflow32(CPUARMState, cp15.mdcr_el3) },
++    { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
++      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
++      .cp = 15, .crm = 9, .opc1 = 0,
++      .access = PL0_RW, .resetvalue = 0, .fgt = FGT_PMCCNTR_EL0,
++      .readfn = pmccntr_read, .writefn = pmccntr_write,
++      .accessfn = pmreg_access_ccntr },
+ };
  
- 
--Live disk backup --- ``blockdev-backup`` and the deprecated``drive-backup``
-----------------------------------------------------------------------------
-+Live disk backup --- ``blockdev-backup`` and the deprecated ``drive-backup``
-+----------------------------------------------------------------------------
- 
- The ``blockdev-backup`` (and the deprecated ``drive-backup``) allows
- you to create a point-in-time snapshot.
+ /* These are present only when EL1 supports AArch32 */
 -- 
 2.34.1
 
