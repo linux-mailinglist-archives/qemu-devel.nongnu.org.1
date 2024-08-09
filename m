@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D3B94D60A
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D8394D615
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scU2d-0000xx-L1; Fri, 09 Aug 2024 14:08:43 -0400
+	id 1scU2f-00016W-Vl; Fri, 09 Aug 2024 14:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2c-0000ww-0w
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:42 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1scU2d-0000xy-5e
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:43 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2Z-0007C1-Q0
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:41 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3686b554cfcso1208533f8f.1
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:08:39 -0700 (PDT)
+ id 1scU2a-0007C5-Tt
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:42 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3684407b2deso1263620f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723226918; x=1723831718; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723226919; x=1723831719; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jhQP03+tlFIXCNvACIpxrmWqMTiMtqMMEpE7GGG91S4=;
- b=BAOg1q2xhDlp3QLZNTMmk66nLK1SPBTUQAD5lWrPsnsBA0A8sBpqXQf5X4j3pi+Ujt
- tBaqGDST2n/0y668bv5uy6mu7ZkEvMLqRqTbQYorZFzyWLGK4xMkwpd9GSf83Uiy6ku7
- yD5QtpL1GWYuk+/xMhnpM7IO3z7MLE4G66xBLKKsJkZ5jdcR9jHhIE0XKrZPn0gHFc5g
- ojbDxUDL8+fsd58TuvklQMLzNwIUcYBOlHb3XCxw/rUsEs6JWv7RgpfUozbr2MFhriob
- dDkCQcPB2X9DLBzblCRspdyajF39ASS6HxSOXuLg5ohv7y8EMdD83A+bgMkYTUyi6zaJ
- GXcg==
+ :reply-to; bh=9H8W0O0b1Ww323Eya3NUzzCuyPiKzt+1Rqu3lq0GOBs=;
+ b=Z2YPnO3BEUFXgX0OUNHn4jXBqVYCdz/hk4bdotPv8j76VDRxtP+bLAbjO6QF5x+TeT
+ TZVidLI+h8cBUbDQyJGPnb4aAnZLstG6yRINDZ3pwP3DvCLuWUpqJ94Uamji125tr46p
+ Qv8OA0LBD+oExy/8wDbg9VvLFz14ZOOPTM96YHRZhFAHDyN59AHiCagmwPDlH8vw3tJK
+ B65kRsY7yt8Mz4Q3Umr+B6tvwLoPy4LHJRBVxzIIhbSqoS7kGnuOGQ5RSmy73rTWorI3
+ WHb5fCVMzWhpytMqyPl88WoLXrEGzDfcxKjibvIOjgnKumGXwGqzOS5zVYAffy5q3MCl
+ pQ6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723226918; x=1723831718;
+ d=1e100.net; s=20230601; t=1723226919; x=1723831719;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jhQP03+tlFIXCNvACIpxrmWqMTiMtqMMEpE7GGG91S4=;
- b=UbYCr7f/LoENJJWfnpa9SkIVEff3zm273hSJnrLW0IMKX0C98W9jtp7UBF8I0a+vCv
- ZeVnpOThWcTJFov4xQpXp6SVwhznEfZrF/4cBHwHKRl9dS69+h9o1cn9Vl5IK9EcnH0d
- E6D/Y3oJWhkFs6LCtcFzGKtPGntUoQrC3DgEUUEUqM9Sf41tkjv8/rc2XX3bEvnzwrhJ
- cHTkpH9muzKDWWr5/ySVyLF+RzJXvUCoQmVM7sCWQLXR7SqctT0Zkec/bBvLP3N4/XXX
- dDwr1RR7HnsEQUvj7u6Dw2z/esukr/CrQFrJWiNsNd0+Ft3mFoawLQIR0MyUD4u2ztmR
- oa5w==
-X-Gm-Message-State: AOJu0YwEx7FR5QbEGp/QeNAAP+T1NfXwXs8BHWoGC3cWFLHhwmc3Rhfl
- S3CjuEjVOFnGO91VhAQT5/6lYqGARmCODBZzCeD9ZX+VjjmXdJaJA0+ntvrG3bhhBOWLrW3Uf+y
- B
-X-Google-Smtp-Source: AGHT+IGx4kc0F+g6sGvC5+OVlRvFJ8cteY/oNBFuxVigFm1/udHUhbHZtKHuuzZcVaRP0PvpnErESA==
-X-Received: by 2002:a5d:6552:0:b0:368:3198:5ac4 with SMTP id
- ffacd0b85a97d-36d60346adbmr1685448f8f.39.1723226918077; 
+ bh=9H8W0O0b1Ww323Eya3NUzzCuyPiKzt+1Rqu3lq0GOBs=;
+ b=PO5GZRQbfmPx2TRZIb16QxfmBH6UTZz4QsRn8OKte2vxbRcmlLMJxCTVz2ZqRgvYgb
+ bITe9looHr1xmzk1PxYtoYpm/Mbuk+a7SXD6FHO4Uju/aeAWjGHYBvqi+2JVJ38wxB0H
+ 6YrWemgvWyEi0xx+kqgtkdI7GY33KqAoImTQBNW8ohVUZPmaCtpAKXDj6fW8q0kBkiBc
+ PvQBlF3abecQP6MevFjAsDsooyR9p/N9e458LfkqCbb8/Trk7GzWHGZzUfBOVH7tunsr
+ uVLQPUtF50fh5GCiOh+ynLVvgajvZk+9+9WWyYSu0CXyJqylC/zoNRx/6mOGuRvlts7f
+ mjgQ==
+X-Gm-Message-State: AOJu0YyEcL9vP9pkXkJw33xS7OT22F+GF6XQXVVI5kQi+R89LDHVoXXo
+ bdXi7leACp2cGTZ696JqMPEC3/I+Xq13dowNTfBrQK3UdQkY9UhE1YJiI5bAwu+lzepBy0wErjJ
+ j
+X-Google-Smtp-Source: AGHT+IGyIqLACViZKl7GbGD+tUL/2MFBIOkiBElfrunkUJCM0KzRQSFKZ2fl2FhPy2YBzcKdVJdLRg==
+X-Received: by 2002:adf:fb46:0:b0:367:96d6:4c2d with SMTP id
+ ffacd0b85a97d-36d5e4d2ad4mr1756404f8f.25.1723226918692; 
  Fri, 09 Aug 2024 11:08:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.08.37
+ ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.08.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Aug 2024 11:08:37 -0700 (PDT)
+ Fri, 09 Aug 2024 11:08:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/11] target/arm: Fix BTI versus CF_PCREL
-Date: Fri,  9 Aug 2024 19:08:25 +0100
-Message-Id: <20240809180835.1243269-2-peter.maydell@linaro.org>
+Subject: [PULL 02/11] include: Fix typo in name of MAKE_IDENTFIER macro
+Date: Fri,  9 Aug 2024 19:08:26 +0100
+Message-Id: <20240809180835.1243269-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809180835.1243269-1-peter.maydell@linaro.org>
 References: <20240809180835.1243269-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,219 +92,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+In commit bb71846325e23 we added some macro magic to avoid
+variable-shadowing when using some of our more complicated
+macros. One of the internal components of this is a macro
+named MAKE_IDENTFIER. Fix the typo in its name: it should
+be MAKE_IDENTIFIER.
 
-With pcrel, we cannot check the guarded page bit at translation
-time, as different mappings of the same physical page may or may
-not have the GP bit set.
+Commit created with
+ sed -i -e 's/MAKE_IDENTFIER/MAKE_IDENTIFIER/g' include/qemu/*.h include/qapi/qmp/qobject.h
 
-Instead, add a couple of helpers to check the page at runtime,
-after all other filters that might obviate the need for the check.
-
-The set_btype_for_br call must be moved after the gen_a64_set_pc
-call to ensure the current pc can still be computed.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240802003028.795476-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240801102516.3843780-1-peter.maydell@linaro.org
 ---
- target/arm/tcg/helper-a64.h    |  3 ++
- target/arm/tcg/translate.h     |  2 --
- target/arm/tcg/helper-a64.c    | 39 +++++++++++++++++++++
- target/arm/tcg/translate-a64.c | 64 ++++++++--------------------------
- 4 files changed, 56 insertions(+), 52 deletions(-)
+ include/qapi/qmp/qobject.h | 2 +-
+ include/qemu/atomic.h      | 2 +-
+ include/qemu/compiler.h    | 2 +-
+ include/qemu/osdep.h       | 6 +++---
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index 371388f61b5..481007bf397 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -133,6 +133,9 @@ DEF_HELPER_4(cpyfp, void, env, i32, i32, i32)
- DEF_HELPER_4(cpyfm, void, env, i32, i32, i32)
- DEF_HELPER_4(cpyfe, void, env, i32, i32, i32)
+diff --git a/include/qapi/qmp/qobject.h b/include/qapi/qmp/qobject.h
+index 89b97d88bca..256d782688c 100644
+--- a/include/qapi/qmp/qobject.h
++++ b/include/qapi/qmp/qobject.h
+@@ -54,7 +54,7 @@ struct QObject {
+     typeof(obj) _obj = (obj);                                   \
+     _obj ? container_of(&_obj->base, QObject, base) : NULL;     \
+ })
+-#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTFIER(_obj))
++#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTIFIER(_obj))
  
-+DEF_HELPER_FLAGS_1(guarded_page_check, TCG_CALL_NO_WG, void, env)
-+DEF_HELPER_FLAGS_2(guarded_page_br, TCG_CALL_NO_RWG, void, env, tl)
-+
- DEF_HELPER_FLAGS_5(gvec_fdiv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_fdiv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_fdiv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index a8672c857c1..01c217f4a45 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -163,8 +163,6 @@ typedef struct DisasContext {
-     uint8_t dcz_blocksize;
-     /* A copy of cpu->gm_blocksize. */
-     uint8_t gm_blocksize;
--    /* True if this page is guarded.  */
--    bool guarded_page;
-     /* True if the current insn_start has been updated. */
-     bool insn_start_updated;
-     /* Bottom two bits of XScale c15_cpar coprocessor access control reg */
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index c60d2a7ec96..21a9abd90a6 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -1877,3 +1877,42 @@ void HELPER(cpyfe)(CPUARMState *env, uint32_t syndrome, uint32_t wdesc,
- {
-     do_cpye(env, syndrome, wdesc, rdesc, false, GETPC());
- }
-+
-+static bool is_guarded_page(CPUARMState *env, target_ulong addr, uintptr_t ra)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    return page_get_flags(addr) & PAGE_BTI;
-+#else
-+    CPUTLBEntryFull *full;
-+    void *host;
-+    int mmu_idx = cpu_mmu_index(env_cpu(env), true);
-+    int flags = probe_access_full(env, addr, 0, MMU_INST_FETCH, mmu_idx,
-+                                  false, &host, &full, ra);
-+
-+    assert(!(flags & TLB_INVALID_MASK));
-+    return full->extra.arm.guarded;
-+#endif
-+}
-+
-+void HELPER(guarded_page_check)(CPUARMState *env)
-+{
-+    /*
-+     * We have already verified that bti is enabled, and that the
-+     * instruction at PC is not ok for BTYPE.  This is always at
-+     * the beginning of a block, so PC is always up-to-date and
-+     * no unwind is required.
-+     */
-+    if (is_guarded_page(env, env->pc, 0)) {
-+        raise_exception(env, EXCP_UDEF, syn_btitrap(env->btype),
-+                        exception_target_el(env));
-+    }
-+}
-+
-+void HELPER(guarded_page_br)(CPUARMState *env, target_ulong pc)
-+{
-+    /*
-+     * We have already checked for branch via x16 and x17.
-+     * What remains for choosing BTYPE is checking for a guarded page.
-+     */
-+    env->btype = is_guarded_page(env, pc, GETPC()) ? 3 : 1;
-+}
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 148be2826ec..28a10135032 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1507,7 +1507,14 @@ static void set_btype_for_br(DisasContext *s, int rn)
- {
-     if (dc_isar_feature(aa64_bti, s)) {
-         /* BR to {x16,x17} or !guard -> 1, else 3.  */
--        set_btype(s, rn == 16 || rn == 17 || !s->guarded_page ? 1 : 3);
-+        if (rn == 16 || rn == 17) {
-+            set_btype(s, 1);
-+        } else {
-+            TCGv_i64 pc = tcg_temp_new_i64();
-+            gen_pc_plus_diff(s, pc, 0);
-+            gen_helper_guarded_page_br(tcg_env, pc);
-+            s->btype = -1;
-+        }
-     }
- }
+ /* Required for qobject_to() */
+ #define QTYPE_CAST_TO_QNull     QTYPE_QNULL
+diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
+index dc4118ddd9e..7a3f2e6576b 100644
+--- a/include/qemu/atomic.h
++++ b/include/qemu/atomic.h
+@@ -128,7 +128,7 @@
+     _val;                                               \
+     })
+ #define qatomic_rcu_read(ptr) \
+-    qatomic_rcu_read_internal((ptr), MAKE_IDENTFIER(_val))
++    qatomic_rcu_read_internal((ptr), MAKE_IDENTIFIER(_val))
  
-@@ -1521,8 +1528,8 @@ static void set_btype_for_blr(DisasContext *s)
+ #define qatomic_rcu_set(ptr, i) do {                   \
+     qemu_build_assert(sizeof(*ptr) <= ATOMIC_REG_SIZE); \
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index 554c5ce7df7..c06954ccb41 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -38,7 +38,7 @@
+ #endif
  
- static bool trans_BR(DisasContext *s, arg_r *a)
- {
--    gen_a64_set_pc(s, cpu_reg(s, a->rn));
-     set_btype_for_br(s, a->rn);
-+    gen_a64_set_pc(s, cpu_reg(s, a->rn));
-     s->base.is_jmp = DISAS_JUMP;
-     return true;
- }
-@@ -1581,8 +1588,8 @@ static bool trans_BRAZ(DisasContext *s, arg_braz *a)
-     }
+ /* Expands into an identifier stemN, where N is another number each time */
+-#define MAKE_IDENTFIER(stem) glue(stem, __COUNTER__)
++#define MAKE_IDENTIFIER(stem) glue(stem, __COUNTER__)
  
-     dst = auth_branch_target(s, cpu_reg(s, a->rn), tcg_constant_i64(0), !a->m);
--    gen_a64_set_pc(s, dst);
-     set_btype_for_br(s, a->rn);
-+    gen_a64_set_pc(s, dst);
-     s->base.is_jmp = DISAS_JUMP;
-     return true;
- }
-@@ -11878,37 +11885,6 @@ static bool trans_FAIL(DisasContext *s, arg_OK *a)
-     return true;
- }
+ #ifndef likely
+ #define likely(x)   __builtin_expect(!!(x), 1)
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 4cc4c32b144..fe7c3c5f673 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -399,7 +399,7 @@ void QEMU_ERROR("code path is reachable")
+     })
+ #undef MIN
+ #define MIN(a, b) \
+-    MIN_INTERNAL((a), (b), MAKE_IDENTFIER(_a), MAKE_IDENTFIER(_b))
++    MIN_INTERNAL((a), (b), MAKE_IDENTIFIER(_a), MAKE_IDENTIFIER(_b))
  
--/**
-- * is_guarded_page:
-- * @env: The cpu environment
-- * @s: The DisasContext
-- *
-- * Return true if the page is guarded.
-- */
--static bool is_guarded_page(CPUARMState *env, DisasContext *s)
--{
--    uint64_t addr = s->base.pc_first;
--#ifdef CONFIG_USER_ONLY
--    return page_get_flags(addr) & PAGE_BTI;
--#else
--    CPUTLBEntryFull *full;
--    void *host;
--    int mmu_idx = arm_to_core_mmu_idx(s->mmu_idx);
--    int flags;
--
--    /*
--     * We test this immediately after reading an insn, which means
--     * that the TLB entry must be present and valid, and thus this
--     * access will never raise an exception.
--     */
--    flags = probe_access_full(env, addr, 0, MMU_INST_FETCH, mmu_idx,
--                              false, &host, &full, 0);
--    assert(!(flags & TLB_INVALID_MASK));
--
--    return full->extra.arm.guarded;
--#endif
--}
--
- /**
-  * btype_destination_ok:
-  * @insn: The instruction at the branch destination
-@@ -12151,19 +12127,6 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+ #define MAX_INTERNAL(a, b, _a, _b)                      \
+     ({                                                  \
+@@ -408,7 +408,7 @@ void QEMU_ERROR("code path is reachable")
+     })
+ #undef MAX
+ #define MAX(a, b) \
+-    MAX_INTERNAL((a), (b), MAKE_IDENTFIER(_a), MAKE_IDENTFIER(_b))
++    MAX_INTERNAL((a), (b), MAKE_IDENTIFIER(_a), MAKE_IDENTIFIER(_b))
  
-     if (dc_isar_feature(aa64_bti, s)) {
-         if (s->base.num_insns == 1) {
--            /*
--             * At the first insn of the TB, compute s->guarded_page.
--             * We delayed computing this until successfully reading
--             * the first insn of the TB, above.  This (mostly) ensures
--             * that the softmmu tlb entry has been populated, and the
--             * page table GP bit is available.
--             *
--             * Note that we need to compute this even if btype == 0,
--             * because this value is used for BR instructions later
--             * where ENV is not available.
--             */
--            s->guarded_page = is_guarded_page(env, s);
--
-             /* First insn can have btype set to non-zero.  */
-             tcg_debug_assert(s->btype >= 0);
+ #ifdef __COVERITY__
+ # define MIN_CONST(a, b) ((a) < (b) ? (a) : (b))
+@@ -440,7 +440,7 @@ void QEMU_ERROR("code path is reachable")
+         _a == 0 ? _b : (_b == 0 || _b > _a) ? _a : _b;  \
+     })
+ #define MIN_NON_ZERO(a, b) \
+-    MIN_NON_ZERO_INTERNAL((a), (b), MAKE_IDENTFIER(_a), MAKE_IDENTFIER(_b))
++    MIN_NON_ZERO_INTERNAL((a), (b), MAKE_IDENTIFIER(_a), MAKE_IDENTIFIER(_b))
  
-@@ -12172,12 +12135,13 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-              * priority -- below debugging exceptions but above most
-              * everything else.  This allows us to handle this now
-              * instead of waiting until the insn is otherwise decoded.
-+             *
-+             * We can check all but the guarded page check here;
-+             * defer the latter to a helper.
-              */
-             if (s->btype != 0
--                && s->guarded_page
-                 && !btype_destination_ok(insn, s->bt, s->btype)) {
--                gen_exception_insn(s, 0, EXCP_UDEF, syn_btitrap(s->btype));
--                return;
-+                gen_helper_guarded_page_check(tcg_env);
-             }
-         } else {
-             /* Not the first insn: btype must be 0.  */
+ /*
+  * Round number down to multiple. Safe when m is not a power of 2 (see
 -- 
 2.34.1
 
