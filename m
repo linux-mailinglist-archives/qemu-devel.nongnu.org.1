@@ -2,76 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D473294CF83
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 13:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECBC494D07C
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 14:47:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scO6z-00007b-0O; Fri, 09 Aug 2024 07:48:49 -0400
+	id 1scP0q-0004Yf-FR; Fri, 09 Aug 2024 08:46:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lkp@intel.com>) id 1scO6v-0008WT-9q
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 07:48:45 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1scP0W-0004U1-GT
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 08:46:20 -0400
+Received: from mx1.zhaoxin.com ([210.0.225.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lkp@intel.com>) id 1scO6o-0003Ci-1F
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 07:48:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723204118; x=1754740118;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xzbTSU7hvjS4ZqdqP09hBUAYcDwniEeE/J0sXofj5Hs=;
- b=cWsQ/f+QHd/IG2xxYpOT6hpY8NGEiG6retpTOKPV9PBO4NJ2+kQ3UQGK
- wEB0zKTo7goSSl2Woz02T1OCmwV+CTmeDU0CJnXT1ki8x6TUpPoEGnEjj
- Z1+pgDKWNOhTCpstXXjaOnS5Z5v5NxXkxFo/rhPgicf57rJkBhD21yPIY
- jLNL0qYRIDxXFuE2i9DuCgXyFxseY30GUMyr1j5S4fchq3bGu+ZDFUic/
- gR7LL56nz3nscsdGgu4BKiQhowGlT8YcrjtW21pEb7vd1R4gNo++hfXkm
- aXUE+ex31RLcmcIyW9uDq40EAMf/erXEddlq04FWlPgrKTDbBrk5IV5cS A==;
-X-CSE-ConnectionGUID: +1SZl31MQT6wumtJTF+FAA==
-X-CSE-MsgGUID: ugY9y998S8+r/qIY0guW+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21548730"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="21548730"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 04:48:35 -0700
-X-CSE-ConnectionGUID: GmvAt9TMShyFFtIoHfNpOg==
-X-CSE-MsgGUID: 9XXBcAUVSH6fAeMx6zhw7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="62500435"
-Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
- by orviesa004.jf.intel.com with ESMTP; 09 Aug 2024 04:48:30 -0700
-Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
- (envelope-from <lkp@intel.com>) id 1scO6d-0007u6-2v;
- Fri, 09 Aug 2024 11:48:28 +0000
-Date: Fri, 9 Aug 2024 19:48:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org,
- linux-mm@kvack.org, dan.j.williams@intel.com,
- vishal.l.verma@intel.com, Jonathan.Cameron@huawei.com,
- alison.schofield@intel.com
-Cc: oe-kbuild-all@lists.linux.dev, bp@alien8.de, dave.jiang@intel.com,
- dave@stgolabs.net, ira.weiny@intel.com, james.morse@arm.com,
- linmiaohe@huawei.com, mchehab@kernel.org, nao.horiguchi@gmail.com,
- rric@kernel.org, tony.luck@intel.com, ruansy.fnst@fujitsu.com
-Subject: Re: [PATCH v4 2/2] cxl: avoid duplicated report from MCE & device
-Message-ID: <202408091914.TFbjPuNQ-lkp@intel.com>
-References: <20240808151328.707869-3-ruansy.fnst@fujitsu.com>
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1scP0P-0003lA-5I
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 08:46:10 -0400
+X-ASG-Debug-ID: 1723207540-086e23761230e30001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx1.zhaoxin.com with ESMTP id pyRLOBn9QsUf4yHG (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Fri, 09 Aug 2024 20:45:40 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 9 Aug
+ 2024 20:45:40 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::dcd1:d46d:263:77e]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::dcd1:d46d:263:77e%7]) with mapi id
+ 15.01.2507.039; Fri, 9 Aug 2024 20:45:40 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ewan-server.zhaoxin.com (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 9 Aug
+ 2024 17:43:00 +0800
+From: EwanHai <ewanhai-oc@zhaoxin.com>
+To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <xiaoyao.li@intel.com>
+CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>,
+ <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>, <liamni@zhaoxin.com>,
+ <frankzhu@zhaoxin.com>
+Subject: [PATCH v3 0/4] Add support for Zhaoxin Yongfeng CPU model and
+Date: Fri, 9 Aug 2024 05:42:55 -0400
+X-ASG-Orig-Subj: [PATCH v3 0/4] Add support for Zhaoxin Yongfeng CPU model and
+Message-ID: <20240809094259.119221-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240808151328.707869-3-ruansy.fnst@fujitsu.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=lkp@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 8/9/2024 8:45:39 PM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1723207540
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2081
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.128793
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
+ helo=mx1.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,42 +93,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shiyang,
+This patch series introduces support for the Zhaoxin Yongfeng CPU model and
+includes improvements and updates specific to Zhaoxin CPUs (including vendo=
+r
+"Centaurhauls" and "Shanghai"). The changes ensure that QEMU can correctly
+identify and emulate Zhaoxin CPUs, accurately reflecting their functionalit=
+y
+and performance characteristics.
 
-kernel test robot noticed the following build warnings:
+### Summary of changes
+EwanHai (4):
+  target/i386: Add support for Zhaoxin CPU vendor identification
+  target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
+  target/i386: Introduce Zhaoxin Yongfeng CPU model
+  target/i386: Mask CMPLegacy bit in CPUID[0x80000001].ECX for Zhaoxin
+    CPUs
 
-[auto build test WARNING on tip/x86/core]
-[also build test WARNING on cxl/next linus/master v6.11-rc2 next-20240809]
-[cannot apply to cxl/pending]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+ target/i386/cpu.c | 131 ++++++++++++++++++++++++++++++++++++++++++++--
+ target/i386/cpu.h |  41 ++++++++++++++-
+ 2 files changed, 167 insertions(+), 5 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shiyang-Ruan/cxl-core-introduce-device-reporting-poison-hanlding/20240809-013658
-base:   tip/x86/core
-patch link:    https://lore.kernel.org/r/20240808151328.707869-3-ruansy.fnst%40fujitsu.com
-patch subject: [PATCH v4 2/2] cxl: avoid duplicated report from MCE & device
-config: x86_64-randconfig-121-20240809 (https://download.01.org/0day-ci/archive/20240809/202408091914.TFbjPuNQ-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240809/202408091914.TFbjPuNQ-lkp@intel.com/reproduce)
+v3 -> v2:
+1. Added a more detailed description of the CPUID[0x80000001].ECX.CMPLegacy
+bit masking.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408091914.TFbjPuNQ-lkp@intel.com/
+v2 link:
+https://lore.kernel.org/all/20240704112511.184257-1-ewanhai-oc@zhaoxin.com/
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/cxl/core/mbox.c:1465:1: sparse: sparse: symbol 'cxl_mce_records' was not declared. Should it be static?
-   drivers/cxl/core/mbox.c: note: in included file (through include/linux/gfp.h, include/linux/xarray.h, include/linux/list_lru.h, ...):
-   include/linux/mmzone.h:2018:40: sparse: sparse: self-comparison always evaluates to false
 
-vim +/cxl_mce_records +1465 drivers/cxl/core/mbox.c
+v2 -> v1:
+1. Removed VIA-related information from the patch description to avoid
+misunderstanding.
+2. Replaced CPUID_VENDOR_VIA with CPUID_VENDOR_ZHAOXIN1 because the
+"Centaurhauls" vendor ID now belongs to Zhaoxin.The previous CPUID_VENDOR_V=
+IA
+macro was only defined but never used in QEMU, making this change
+straightforward.
 
-  1464	
-> 1465	DEFINE_XARRAY(cxl_mce_records);
-  1466	
+v1 link:
+https://lore.kernel.org/qemu-devel/20240625091905.1325205-1-ewanhai-
+oc@zhaoxin.com/
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+### Known Issues
+1. Issue with VMX Preemption Timer Rate on Yongfeng CPU:
+   - Description: On Yongfeng CPUs, the VMX preemption timer rate is 128,
+     meaning that bits 4:0 of MSR_IA32_VMX_MISC_CTLS should be set to 7.
+     However, due to Intel's rate being 5, the Linux kernel has hardcoded
+     this value as 5: `#define VMX_MISC_EMULATED_PREEMPTION_TIMER_RATE 5`.
+   - Impact: This discrepancy can cause incorrect behavior in the VMX
+     preemption timer on Yongfeng CPUs.
+   - Workaround: A patch to correct this issue in the Linux kernel is
+     currently being prepared and will be submitted soon.
+
+--=20
+2.34.1
+
 
