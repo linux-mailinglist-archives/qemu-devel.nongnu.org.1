@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B1E94D60B
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:09:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E47694D60D
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scU2x-0001yr-9N; Fri, 09 Aug 2024 14:09:03 -0400
+	id 1scU2z-000266-Bs; Fri, 09 Aug 2024 14:09:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2u-0001xk-OZ
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:00 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1scU2x-00020F-AQ
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:03 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2s-0007Dl-5N
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:00 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-36868fcb919so1413301f8f.2
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:08:57 -0700 (PDT)
+ id 1scU2v-0007E0-6O
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:03 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-42817bee9e8so17076715e9.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723226937; x=1723831737; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723226939; x=1723831739; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=eVnCY3qbuf5yLSqsOtwFDfk5cUSu4Pud+DjVgvKddbU=;
- b=FmvDQkMtUFDbWqraL1xnvsbM5wxsXBJrCYeiMBFIc+asJ6vJahAL7nim3/4eHnhPnz
- n//cl1XXrIN5pUtnKhgs26e3+Q8lO9QLWqK4KLNliOia0qXowsb9wTVyL1i92+T+rOCR
- dlvlZcZPiH5ce6yVqIelh2Q030uxHLl/I3l2L9vrMhj6dkjRYiWgqgum/sPndEZp350B
- IjkRlXGKSbPNzEPmhGyqtQe5fgLcF4JsNUNtPyHsU5AIB6FHa3mlQVTtNF6cp+Qy1Tlu
- SfpNwLpuPGK9fCEYci1KtzOOsdzoa6/yYNuk5gd9c3EaYY1KCl4iSrPukmR4gGXFOhAH
- 0l5g==
+ :reply-to; bh=B0ZX+BKezJrv3F6YmQherbds9uPIif5DbFUZSAqPArs=;
+ b=KjEF6SV6VTOLFKAxj+2VVrqE7wIBfCap8uSDi2xEvGLH4rxzcmczbWkEVwskRGUMwN
+ wl86FJCEKkbNYyVePpGIyoohV3ob6U1MdBPdCshLcCsW8NKlEY0nkKzeKvGF12kwBIUY
+ Oem0uX2nUXDz2Hw7OcFrryeIftHe465Xxh6Tais0vB8yJx1tOpfudiSI23A2SSnzPYz5
+ 60VjtST4gy7W+jvBwYRQJNfTXJWnb03Hop2WsEeP0gUFRWItEr85LN+HdqzxKb1qlQ1J
+ NA+3IuF8UDnwBdOT0G56V/upOnKcQnGCR9MLb7rZq2o72F+D+mi3Bi/Ja7rP85AqOp9C
+ 37ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723226937; x=1723831737;
+ d=1e100.net; s=20230601; t=1723226939; x=1723831739;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eVnCY3qbuf5yLSqsOtwFDfk5cUSu4Pud+DjVgvKddbU=;
- b=D2y6U2YGd4BPsCfjGp93YJX6eEyLOQGyySrs2z3lQQAdJaqSCc7oPNm5Jixb14HwyS
- K5pBCbqA6xSOY0Mq0QWdFTUnTXABFSDFuRCRLpOQmNXLwwqNsiG4n/f+e03lv1wc+d3j
- zi3qCuWp5c7GRk9g178Anp0/6TS8PmOKUahKHUx6yCmh1ZbWxFV3gso89M+b9mBGDVSm
- Le2IXmXTciwSEdq1vMhFA9zJiIAfKCPUZ7vSmj4k9sS8gkdGJp3Twd0mRQrcsmveBfWu
- JYLuz6/gOstsBOz3ouJRdr/503mo8OmfK/b96nY7JSXNqlM6A6yfRjWfE7XMGxaNfvO/
- n1vQ==
-X-Gm-Message-State: AOJu0Yz1tVSFFNSazhkuFMz4xjaWNfA9KtadKN3s0XsNqEeGLUbR1RqA
- RoxylsVG1Gc69jEBTdOyEalXRMftme5+hR3ZcEmb1xAkuUq/QFwK7owdsoI96vWlirdui0ImAEr
- L
-X-Google-Smtp-Source: AGHT+IHY9uBYR75FJdTa6r3S2Wa2eM5Pw7kV713Ce5j5Lf5iZvQcAipmX8W8chTs7twW7pQ9v7m5Yw==
-X-Received: by 2002:adf:ed52:0:b0:367:8e53:7fd7 with SMTP id
- ffacd0b85a97d-36d5fe78063mr1642524f8f.28.1723226936414; 
- Fri, 09 Aug 2024 11:08:56 -0700 (PDT)
+ bh=B0ZX+BKezJrv3F6YmQherbds9uPIif5DbFUZSAqPArs=;
+ b=rBpFVgZP4Jfbdh/Ewox41KCAnOkfgBUdp5Av1uWf0zUckXM9FF1+jtkYVS2/EIQ1eq
+ RNPre7wdk4fyPU43aPRSaS6hmP5a3KtsO9QFpGR5E2gaVwIO1ecSwTKsu+YvJriUQxKM
+ tW9AKRXp/pNP0TAdcOlN75J6FF23gTvl7C5O8t5QdM4W1v2fqDotNdCfkOI4IV18d/qH
+ 9pbJhVjmsga2IJNHp54o0H06OYpHWMLbitNY1ue+6m/ZCOefzUo857085XWYrUAQzyOT
+ A/x2QioWFgZgHDl/w+/Ow52KPASRqJylVSE2DhlIMK0t6sral/QWmQb83ssVJHWO3i1x
+ hehg==
+X-Gm-Message-State: AOJu0Yx4ypARc0p8ND1U9lU2tT+63TOr67/n39pD2a5W0KqZrguyi0sd
+ 9JYIgHqITCxf1JlTgXFuXMVPg2Mycij+YLG/Bn+Qbb7m8pNnTV5XBIR+Nec5TXqjcrXq8tumrOD
+ 3
+X-Google-Smtp-Source: AGHT+IHzMTOf/KpTaNbuSLC8n2ArlEblMGSsACLvCZT744EqR9HdtMfGryEzFAuqOSuZ29pwEYoRcA==
+X-Received: by 2002:a05:600c:4f92:b0:428:36e:be59 with SMTP id
+ 5b1f17b1804b1-429c3a23bc6mr16552335e9.11.1723226939438; 
+ Fri, 09 Aug 2024 11:08:59 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.08.48
+ ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.08.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Aug 2024 11:08:48 -0700 (PDT)
+ Fri, 09 Aug 2024 11:08:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/11] docs/interop/prl-xml.txt: Convert to rST
-Date: Fri,  9 Aug 2024 19:08:30 +0100
-Message-Id: <20240809180835.1243269-7-peter.maydell@linaro.org>
+Subject: [PULL 07/11] docs/interop/prl-xml.rst: Fix minor grammar nits
+Date: Fri,  9 Aug 2024 19:08:31 +0100
+Message-Id: <20240809180835.1243269-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809180835.1243269-1-peter.maydell@linaro.org>
 References: <20240809180835.1243269-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,402 +91,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert prl-xml.txt to rST format.
+Fix some minor grammar nits in the prl-xml documentation.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-id: 20240801170131.3977807-5-peter.maydell@linaro.org
+Message-id: 20240801170131.3977807-6-peter.maydell@linaro.org
 ---
- MAINTAINERS              |   1 +
- docs/interop/index.rst   |   1 +
- docs/interop/prl-xml.rst | 187 +++++++++++++++++++++++++++++++++++++++
- docs/interop/prl-xml.txt | 158 ---------------------------------
- 4 files changed, 189 insertions(+), 158 deletions(-)
- create mode 100644 docs/interop/prl-xml.rst
- delete mode 100644 docs/interop/prl-xml.txt
+ docs/interop/prl-xml.rst | 73 +++++++++++++++++++++-------------------
+ 1 file changed, 39 insertions(+), 34 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ae8bed8c757..3584d6a6c6d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3965,6 +3965,7 @@ S: Supported
- F: block/parallels.c
- F: block/parallels-ext.c
- F: docs/interop/parallels.rst
-+F: docs/interop/prl-xml.rst
- T: git https://src.openvz.org/scm/~den/qemu.git parallels
- 
- qed
-diff --git a/docs/interop/index.rst b/docs/interop/index.rst
-index 70bba62d907..999e44eae19 100644
---- a/docs/interop/index.rst
-+++ b/docs/interop/index.rst
-@@ -16,6 +16,7 @@ are useful for making QEMU interoperate with other software.
-    live-block-operations
-    nbd
-    parallels
-+   prl-xml
-    pr-helper
-    qmp-spec
-    qemu-ga
 diff --git a/docs/interop/prl-xml.rst b/docs/interop/prl-xml.rst
-new file mode 100644
-index 00000000000..aacf11f4c44
---- /dev/null
+index aacf11f4c44..5bb63bb93a4 100644
+--- a/docs/interop/prl-xml.rst
 +++ b/docs/interop/prl-xml.rst
-@@ -0,0 +1,187 @@
-+Parallels Disk Format
-+=====================
-+
-+..
-+   Copyright (c) 2015-2017, Virtuozzo, Inc.
-+   Authors:
-+        2015 Denis Lunev <den@openvz.org>
-+        2015 Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
-+        2016-2017 Klim Kireev <klim.kireev@virtuozzo.com>
-+        2016-2017 Edgar Kaziakhmedov <edgar.kaziakhmedov@virtuozzo.com>
-+
-+   This work is licensed under the terms of the GNU GPL, version 2 or later.
-+   See the COPYING file in the top-level directory.
-+
-+This specification contains minimal information about Parallels Disk Format,
-+which is enough to proper work with QEMU. Nevertheless, Parallels Cloud Server
-+and Parallels Desktop are able to add some unspecified nodes to xml and use
-+them, but they are for internal work and don't affect functionality. Also it
-+uses auxiliary xml ``Snapshot.xml``, which allows to store optional snapshot
-+information, but it doesn't influence open/read/write functionality. QEMU and
-+other software should not use fields not covered in this document and
-+``Snapshot.xml`` file and must leave them as is.
-+
-+Parallels disk consists of two parts: the set of snapshots and the disk
-+descriptor file, which stores information about all files and snapshots.
-+
-+Definitions
-+-----------
-+
-+Snapshot
-+  a record of the contents captured at a particular time, capable
-+  of storing current state. A snapshot has UUID and parent UUID.
-+
-+Snapshot image
-+  an overlay representing the difference between this
-+  snapshot and some earlier snapshot.
-+
-+Overlay
-+  an image storing the different sectors between two captured states.
-+
-+Root image
-+  snapshot image with no parent, the root of snapshot tree.
-+
-+Storage
-+  the backing storage for a subset of the virtual disk. When
-+  there is more than one storage in a Parallels disk then that
-+  is referred to as a split image. In this case every storage
-+  covers specific address space area of the disk and has its
-+  particular root image. Split images are not considered here
-+  and are not supported. Each storage consists of disk
-+  parameters and a list of images. The list of images always
-+  contains a root image and may also contain overlays. The
-+  root image can be an expandable Parallels image file or
-+  plain. Overlays must be expandable.
-+
-+Description file
-+  ``DiskDescriptor.xml`` stores information about disk parameters,
-+  snapshots, storages.
-+
-+Top Snapshot
-+  The overlay between actual state and some previous snapshot.
-+  It is not a snapshot in the classical sense because it
-+  serves as the active image that the guest writes to.
-+
-+Sector
-+  a 512-byte data chunk.
-+
-+Description file
-+----------------
-+
-+All information is placed in a single XML element
-+``Parallels_disk_image``.
-+The element has only one attribute ``Version``, that must be ``1.0``.
-+
-+Schema of ``DiskDescriptor.xml``::
-+
-+ <Parallels_disk_image Version="1.0">
-+    <Disk_Parameters>
-+        ...
-+    </Disk_Parameters>
-+    <StorageData>
-+        ...
-+    </StorageData>
-+    <Snapshots>
-+        ...
-+    </Snapshots>
-+ </Parallels_disk_image>
-+
-+``Disk_Parameters`` element
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The ``Disk_Parameters`` element describes the physical layout of the
-+virtual disk and some general settings.
-+
-+The ``Disk_Parameters`` element MUST contain the following child elements:
-+
-+* ``Disk_size`` - number of sectors in the disk,
-+  desired size of the disk.
-+* ``Cylinders`` - number of the disk cylinders.
-+* ``Heads``     - number of the disk heads.
-+* ``Sectors``   - number of the disk sectors per cylinder
-+  (sector size is 512 bytes)
-+  Limitation: Product of the ``Heads``, ``Sectors`` and ``Cylinders``
-+  values MUST be equal to the value of the Disk_size parameter.
-+* ``Padding``   - must be 0. Parallels Cloud Server and Parallels Desktop may
-+  use padding set to 1, however this case is not covered
-+  by this spec, QEMU and other software should not open
-+  such disks and should not create them.
-+
-+``StorageData`` element
-+^^^^^^^^^^^^^^^^^^^^^^^
-+
-+This element of the file describes the root image and all snapshot images.
-+
-+The ``StorageData`` element consists of the ``Storage`` child element,
-+as shown below::
-+
-+ <StorageData>
-+    <Storage>
-+        ...
-+    </Storage>
-+ </StorageData>
-+
-+A ``Storage`` element has following child elements:
-+
-+* ``Start``     - start sector of the storage, in case of non split storage
-+  equals to 0.
-+* ``End``       - number of sector following the last sector, in case of non
-+  split storage equals to ``Disk_size``.
-+* ``Blocksize`` - storage cluster size, number of sectors per one cluster.
-+  Cluster size for each "Compressed" (see below) image in
-+  parallels disk must be equal to this field. Note: cluster
-+  size for Parallels Expandable Image is in ``tracks`` field of
-+  its header (see :doc:`parallels`).
-+* Several ``Image`` child elements.
-+
-+Each ``Image`` element has following child elements:
-+
-+* ``GUID`` - image identifier, UUID in curly brackets.
-+  For instance, ``{12345678-9abc-def1-2345-6789abcdef12}.``
-+  The GUID is used by the Snapshots element to reference images
-+  (see below)
-+* ``Type`` - image type of the element. It can be:
-+
-+  * ``Plain`` for raw files.
-+  * ``Compressed`` for expanding disks.
-+
-+* ``File`` - path to image file. Path can be relative to
-+  ``DiskDescriptor.xml`` or absolute.
-+
-+``Snapshots`` element
-+^^^^^^^^^^^^^^^^^^^^^
-+
-+The ``Snapshots`` element describes the snapshot relations with the snapshot tree.
-+
-+The element contains the set of ``Shot`` child elements, as shown below::
-+
-+ <Snapshots>
-+    <TopGUID> ... </TopGUID> /* Optional child element */
-+    <Shot>
-+        ...
-+    </Shot>
-+    <Shot>
-+        ...
-+    </Shot>
-+    ...
-+ </Snapshots>
-+
-+Each ``Shot`` element contains the following child elements:
-+
-+* ``GUID``       - an image GUID.
-+* ``ParentGUID`` - GUID of the image of the parent snapshot.
-+
-+The software may traverse snapshots from child to parent using ``<ParentGUID>``
-+field as reference. ``ParentGUID`` of root snapshot is
-+``{00000000-0000-0000-0000-000000000000}``. There should be only one root
-+snapshot. Top snapshot could be described via two ways: via ``TopGUID`` child
-+element of the ``Snapshots`` element or via predefined GUID
-+``{5fbaabe3-6958-40ff-92a7-860e329aab41}``. If ``TopGUID`` is defined,
-+predefined GUID is interpreted as usual GUID. All snapshot images
-+(except Top Snapshot) should be
-+opened read-only. There is another predefined GUID,
-+``BackupID = {704718e1-2314-44c8-9087-d78ed36b0f4e}``, which is used by
-+original and some third-party software for backup, QEMU and other
-+software may operate with images with ``GUID = BackupID`` as usual,
-+however, it is not recommended to use this
-+GUID for new disks. Top snapshot cannot have this GUID.
-diff --git a/docs/interop/prl-xml.txt b/docs/interop/prl-xml.txt
-deleted file mode 100644
-index cf9b3fba265..00000000000
---- a/docs/interop/prl-xml.txt
-+++ /dev/null
-@@ -1,158 +0,0 @@
--= License =
--
--Copyright (c) 2015-2017, Virtuozzo, Inc.
--Authors:
--        2015 Denis Lunev <den@openvz.org>
--        2015 Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
--        2016-2017 Klim Kireev <klim.kireev@virtuozzo.com>
--        2016-2017 Edgar Kaziakhmedov <edgar.kaziakhmedov@virtuozzo.com>
--
--This work is licensed under the terms of the GNU GPL, version 2 or later.
--See the COPYING file in the top-level directory.
--
--This specification contains minimal information about Parallels Disk Format,
+@@ -13,15 +13,15 @@ Parallels Disk Format
+    See the COPYING file in the top-level directory.
+ 
+ This specification contains minimal information about Parallels Disk Format,
 -which is enough to proper work with QEMU. Nevertheless, Parallels Cloud Server
 -and Parallels Desktop are able to add some unspecified nodes to xml and use
--them, but they are for internal work and don't affect functionality. Also it
--uses auxiliary xml "Snapshot.xml", which allows to store optional snapshot
++which is enough to properly work with QEMU. Nevertheless, Parallels Cloud Server
++and Parallels Desktop are able to add some unspecified nodes to the xml and use
+ them, but they are for internal work and don't affect functionality. Also it
+-uses auxiliary xml ``Snapshot.xml``, which allows to store optional snapshot
 -information, but it doesn't influence open/read/write functionality. QEMU and
 -other software should not use fields not covered in this document and
--Snapshot.xml file and must leave them as is.
--
--= Parallels Disk Format =
--
+-``Snapshot.xml`` file and must leave them as is.
++uses auxiliary xml ``Snapshot.xml``, which allows storage of optional snapshot
++information, but this doesn't influence open/read/write functionality. QEMU and
++other software should not use fields not covered in this document or the
++``Snapshot.xml`` file, and must leave them as is.
+ 
 -Parallels disk consists of two parts: the set of snapshots and the disk
--descriptor file, which stores information about all files and snapshots.
--
--== Definitions ==
--    Snapshot       a record of the contents captured at a particular time,
--                   capable of storing current state. A snapshot has UUID and
--                   parent UUID.
--
-- Snapshot image    an overlay representing the difference between this
--                   snapshot and some earlier snapshot.
--
--    Overlay        an image storing the different sectors between two captured
--                   states.
--
--   Root image      snapshot image with no parent, the root of snapshot tree.
--
--    Storage        the backing storage for a subset of the virtual disk. When
--                   there is more than one storage in a Parallels disk then that
--                   is referred to as a split image. In this case every storage
--                   covers specific address space area of the disk and has its
--                   particular root image. Split images are not considered here
--                   and are not supported. Each storage consists of disk
--                   parameters and a list of images. The list of images always
--                   contains a root image and may also contain overlays. The
--                   root image can be an expandable Parallels image file or
--                   plain. Overlays must be expandable.
--
--  Description      DiskDescriptor.xml stores information about disk parameters,
--     file          snapshots, storages.
--
--     Top           The overlay between actual state and some previous snapshot.
--   Snapshot        It is not a snapshot in the classical sense because it
--                   serves as the active image that the guest writes to.
--
--    Sector         a 512-byte data chunk.
--
--== Description file ==
--All information is placed in a single XML element Parallels_disk_image.
--The element has only one attribute "Version", that must be 1.0.
--Schema of DiskDescriptor.xml:
--
--<Parallels_disk_image Version="1.0">
--    <Disk_Parameters>
--        ...
--    </Disk_Parameters>
--    <StorageData>
--        ...
--    </StorageData>
--    <Snapshots>
--        ...
--    </Snapshots>
--</Parallels_disk_image>
--
--== Disk_Parameters element ==
--The Disk_Parameters element describes the physical layout of the virtual disk
--and some general settings.
--
--The Disk_Parameters element MUST contain the following child elements:
--    * Disk_size - number of sectors in the disk,
--                  desired size of the disk.
--    * Cylinders - number of the disk cylinders.
--    * Heads     - number of the disk heads.
--    * Sectors   - number of the disk sectors per cylinder
--                  (sector size is 512 bytes)
--                  Limitation: Product of the Heads, Sectors and Cylinders
--                  values MUST be equal to the value of the Disk_size parameter.
--    * Padding   - must be 0. Parallels Cloud Server and Parallels Desktop may
--                  use padding set to 1, however this case is not covered
--                  by this spec, QEMU and other software should not open
--                  such disks and should not create them.
--
--== StorageData element ==
--This element of the file describes the root image and all snapshot images.
--
--The StorageData element consists of the Storage child element, as shown below:
--<StorageData>
--    <Storage>
--        ...
--    </Storage>
--</StorageData>
--
--A Storage element has following child elements:
--    * Start     - start sector of the storage, in case of non split storage
--                  equals to 0.
--    * End       - number of sector following the last sector, in case of non
--                  split storage equals to Disk_size.
--    * Blocksize - storage cluster size, number of sectors per one cluster.
--                  Cluster size for each "Compressed" (see below) image in
--                  parallels disk must be equal to this field. Note: cluster
--                  size for Parallels Expandable Image is in 'tracks' field of
--                  its header (see docs/interop/parallels.txt).
--    * Several Image child elements.
--
--Each Image element has following child elements:
--    * GUID - image identifier, UUID in curly brackets.
--             For instance, {12345678-9abc-def1-2345-6789abcdef12}.
--             The GUID is used by the Snapshots element to reference images
--             (see below)
--    * Type - image type of the element. It can be:
--             "Plain" for raw files.
--             "Compressed" for expanding disks.
--    * File - path to image file. Path can be relative to DiskDescriptor.xml or
--             absolute.
--
--== Snapshots element ==
--The Snapshots element describes the snapshot relations with the snapshot tree.
--
--The element contains the set of Shot child elements, as shown below:
--<Snapshots>
--    <TopGUID> ... </TopGUID> /* Optional child element */
--    <Shot>
--        ...
--    </Shot>
--    <Shot>
--        ...
--    </Shot>
--    ...
--</Snapshots>
--
--Each Shot element contains the following child elements:
--    * GUID       - an image GUID.
--    * ParentGUID - GUID of the image of the parent snapshot.
--
--The software may traverse snapshots from child to parent using <ParentGUID>
--field as reference. ParentGUID of root snapshot is
--{00000000-0000-0000-0000-000000000000}. There should be only one root
--snapshot. Top snapshot could be described via two ways: via TopGUID child
--element of the Snapshots element or via predefined GUID
--{5fbaabe3-6958-40ff-92a7-860e329aab41}. If TopGUID is defined, predefined GUID is
--interpreted as usual GUID. All snapshot images (except Top Snapshot) should be
++A Parallels disk consists of two parts: the set of snapshots and the disk
+ descriptor file, which stores information about all files and snapshots.
+ 
+ Definitions
+@@ -29,7 +29,7 @@ Definitions
+ 
+ Snapshot
+   a record of the contents captured at a particular time, capable
+-  of storing current state. A snapshot has UUID and parent UUID.
++  of storing current state. A snapshot has a UUID and a parent UUID.
+ 
+ Snapshot image
+   an overlay representing the difference between this
+@@ -39,13 +39,13 @@ Overlay
+   an image storing the different sectors between two captured states.
+ 
+ Root image
+-  snapshot image with no parent, the root of snapshot tree.
++  a snapshot image with no parent, the root of the snapshot tree.
+ 
+ Storage
+   the backing storage for a subset of the virtual disk. When
+   there is more than one storage in a Parallels disk then that
+   is referred to as a split image. In this case every storage
+-  covers specific address space area of the disk and has its
++  covers a specific address space area of the disk and has its
+   particular root image. Split images are not considered here
+   and are not supported. Each storage consists of disk
+   parameters and a list of images. The list of images always
+@@ -55,7 +55,7 @@ Storage
+ 
+ Description file
+   ``DiskDescriptor.xml`` stores information about disk parameters,
+-  snapshots, storages.
++  snapshots, and storages.
+ 
+ Top Snapshot
+   The overlay between actual state and some previous snapshot.
+@@ -70,9 +70,9 @@ Description file
+ 
+ All information is placed in a single XML element
+ ``Parallels_disk_image``.
+-The element has only one attribute ``Version``, that must be ``1.0``.
++The element has only one attribute, ``Version``, which must be ``1.0``.
+ 
+-Schema of ``DiskDescriptor.xml``::
++The schema of ``DiskDescriptor.xml``::
+ 
+  <Parallels_disk_image Version="1.0">
+     <Disk_Parameters>
+@@ -100,11 +100,11 @@ The ``Disk_Parameters`` element MUST contain the following child elements:
+ * ``Heads``     - number of the disk heads.
+ * ``Sectors``   - number of the disk sectors per cylinder
+   (sector size is 512 bytes)
+-  Limitation: Product of the ``Heads``, ``Sectors`` and ``Cylinders``
++  Limitation: The product of the ``Heads``, ``Sectors`` and ``Cylinders``
+   values MUST be equal to the value of the Disk_size parameter.
+ * ``Padding``   - must be 0. Parallels Cloud Server and Parallels Desktop may
+-  use padding set to 1, however this case is not covered
+-  by this spec, QEMU and other software should not open
++  use padding set to 1; however this case is not covered
++  by this specification. QEMU and other software should not open
+   such disks and should not create them.
+ 
+ ``StorageData`` element
+@@ -121,20 +121,20 @@ as shown below::
+     </Storage>
+  </StorageData>
+ 
+-A ``Storage`` element has following child elements:
++A ``Storage`` element has the following child elements:
+ 
+ * ``Start``     - start sector of the storage, in case of non split storage
+   equals to 0.
+ * ``End``       - number of sector following the last sector, in case of non
+   split storage equals to ``Disk_size``.
+ * ``Blocksize`` - storage cluster size, number of sectors per one cluster.
+-  Cluster size for each "Compressed" (see below) image in
+-  parallels disk must be equal to this field. Note: cluster
+-  size for Parallels Expandable Image is in ``tracks`` field of
++  The cluster size for each "Compressed" (see below) image in
++  a parallels disk must be equal to this field. Note: the cluster
++  size for a Parallels Expandable Image is in the ``tracks`` field of
+   its header (see :doc:`parallels`).
+ * Several ``Image`` child elements.
+ 
+-Each ``Image`` element has following child elements:
++Each ``Image`` element has the following child elements:
+ 
+ * ``GUID`` - image identifier, UUID in curly brackets.
+   For instance, ``{12345678-9abc-def1-2345-6789abcdef12}.``
+@@ -145,7 +145,7 @@ Each ``Image`` element has following child elements:
+   * ``Plain`` for raw files.
+   * ``Compressed`` for expanding disks.
+ 
+-* ``File`` - path to image file. Path can be relative to
++* ``File`` - path to image file. The path can be relative to
+   ``DiskDescriptor.xml`` or absolute.
+ 
+ ``Snapshots`` element
+@@ -171,17 +171,22 @@ Each ``Shot`` element contains the following child elements:
+ * ``GUID``       - an image GUID.
+ * ``ParentGUID`` - GUID of the image of the parent snapshot.
+ 
+-The software may traverse snapshots from child to parent using ``<ParentGUID>``
+-field as reference. ``ParentGUID`` of root snapshot is
+-``{00000000-0000-0000-0000-000000000000}``. There should be only one root
+-snapshot. Top snapshot could be described via two ways: via ``TopGUID`` child
+-element of the ``Snapshots`` element or via predefined GUID
++The software may traverse snapshots from child to parent using the
++``<ParentGUID>`` field as reference. The ``ParentGUID`` of the root
++snapshot is ``{00000000-0000-0000-0000-000000000000}``.
++There should be only one root snapshot.
++
++The Top snapshot could be
++described via two ways: via the ``TopGUID`` child
++element of the ``Snapshots`` element, or via the predefined GUID
+ ``{5fbaabe3-6958-40ff-92a7-860e329aab41}``. If ``TopGUID`` is defined,
+-predefined GUID is interpreted as usual GUID. All snapshot images
+-(except Top Snapshot) should be
 -opened read-only. There is another predefined GUID,
--BackupID = {704718e1-2314-44c8-9087-d78ed36b0f4e}, which is used by original and
--some third-party software for backup, QEMU and other software may operate with
--images with GUID = BackupID as usual, however, it is not recommended to use this
++the predefined GUID is interpreted as a normal GUID. All snapshot images
++(except the Top Snapshot) should be
++opened read-only.
++
++There is another predefined GUID,
+ ``BackupID = {704718e1-2314-44c8-9087-d78ed36b0f4e}``, which is used by
+-original and some third-party software for backup, QEMU and other
+-software may operate with images with ``GUID = BackupID`` as usual,
+-however, it is not recommended to use this
 -GUID for new disks. Top snapshot cannot have this GUID.
++original and some third-party software for backup. QEMU and other
++software may operate with images with ``GUID = BackupID`` as usual.
++However, it is not recommended to use this
++GUID for new disks. The Top snapshot cannot have this GUID.
 -- 
 2.34.1
 
