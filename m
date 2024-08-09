@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3356294D60C
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A036C94D620
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:12:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scU3G-0002rz-S7; Fri, 09 Aug 2024 14:09:22 -0400
+	id 1scU5k-000125-Q5; Fri, 09 Aug 2024 14:11:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU38-0002cJ-28
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:14 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1scU5j-0000xf-5G
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:11:55 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU36-0007Ez-5L
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:13 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-36868fcb919so1413442f8f.2
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:09:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1scU5h-0007ig-7d
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:11:54 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-428243f928cso15882025e9.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:11:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723226950; x=1723831750; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y9/XnuauRRdGNB5+R3kAgyNx59VWh+he+xrVnHsAoO8=;
- b=Zf5WlLYe0k7jXqj6Xfq2eJinHrjFah5/m/KCXTDCO0EaQ3cDkb6+5+bP833kYdha6M
- I4svKiIWNByLIavroP3mxCKOa4EdVSnbpLBmexStsRnZ5tZCEmJmfb8B5z9L1whZ/qLf
- ruDMROuWpX3l8NG0oYdiVyW1RB3znKvY65U2yD5V64GMRFhMlZK/bMxUiquFANr+d6UU
- hfTpyimC4NIJVhTxvBjR8idVLz6o9A4zYP77rXBFb/NeZblBCNuafn3QOWKKyNyqFNZX
- darFQM9fN3B4h+9HoWBmQSqs77fmsdXk2X85CRHXcMYz3k+qWBpapXEmqBvXp0Yxow+b
- honw==
+ d=linaro.org; s=google; t=1723227111; x=1723831911; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:cc:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=WJXTJBx2vwwBFc0SAiYoyltbFsLGX3/32nAN4Xaa99I=;
+ b=JmMear1BZcKJfCOXO08H0B5UiEu0tS8erWvDRizK+zsXfhjo2ozU/LDLbH06FdH+UN
+ fS2YBT6cL4g83GkYjQuG5kZG1/R2TVnDdlqad4RQEAXztXtg7DmiMo5fdQyazKCWHYia
+ qtPCVjYa1+44R5jl0RidZnxNF0xqNnAVtaputiHiAEHgJ2Aw9klYDc1glLAaPYSZZJ5y
+ jc9mBy6pUT+kcQd+tGdIu0dNEXehrbw00SQifoJ0XC9yGWe4sEXGIF4uJlwIerDNwAnE
+ ij8i3+s4aoLAknwC/oNnp8qY8aKyQFYhJvcyC3TOeNPwGtBjwnZXGAtKnALrIqAmGx0g
+ ID9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723226950; x=1723831750;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=y9/XnuauRRdGNB5+R3kAgyNx59VWh+he+xrVnHsAoO8=;
- b=XD4Q+dCmilA/9tPYydOVyecSYxxiPjeLOqbVZybExUVGIlVBku5xPQDaHHASezh52+
- QJ4m5OjBo+GK6FhSihPklZmn70smLBqnhJ0nLtt8t1NycqSmahDQSZy2IsTkHSNcpLn1
- m6Baa8bF6riqD4kxLJSwB9gok2QNv71PtyG9zvlalp9htkgM5j2tmRDrs2kuCw6e+vLL
- v4h7N36zvSZrzTOhemVU7W9IjaZ5/QrWugluowuaVatATXIHWXsXE16NHylhMmVvJT/6
- kpJ//zKWpd3ZB7sReGe44NfB69C37RvcN6cji8Xgep7eTKaiNa8hQl1ZT6L0EDSrQ8ww
- A8cg==
-X-Gm-Message-State: AOJu0YwsadN3X2HgCF1lID2ELlp9HfJRG/nERdBo/MK0fTBP102tz+I7
- uUmpQxbnY1h7GAza6vNMKL80GDBgdODBMzF1WvhPpdR+9bwuKkZD5AQ2zBIfoZmMB9l1mxhjXZ4
- t
-X-Google-Smtp-Source: AGHT+IG3jbN2V7bl3rHn+FSI3etZjSeiN4lhid4rGMMIAjpiZZebansF/c+8VJxN4ZhFuDoj0wI8UQ==
-X-Received: by 2002:adf:fe8b:0:b0:363:e0e2:eeff with SMTP id
- ffacd0b85a97d-36d5fa9d8b5mr2193544f8f.20.1723226950594; 
- Fri, 09 Aug 2024 11:09:10 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.09.10
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Aug 2024 11:09:10 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 11/11] arm/virt: place power button pin number on a define
-Date: Fri,  9 Aug 2024 19:08:35 +0100
-Message-Id: <20240809180835.1243269-12-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240809180835.1243269-1-peter.maydell@linaro.org>
-References: <20240809180835.1243269-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1723227111; x=1723831911;
+ h=content-transfer-encoding:in-reply-to:cc:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WJXTJBx2vwwBFc0SAiYoyltbFsLGX3/32nAN4Xaa99I=;
+ b=WqDkeyqKQ+IekpgzBG0Me8VRWh7fuEwlDOFq/UPXo3KQTehvuFP7VxcuGwjaqdb7qC
+ iImo0tNQZMccISwSUPktRXnOHVHDeqSyOUsZ3tgCKH4OOiBpdnbtXiZyehP0IXQ0ec12
+ xGObEvsEzhq06TZjFsGL54M+DM/jGcqg6XPcIj8WOHYnJMKfgcS0XZP1QZto3iU+zYpc
+ XyNX9Mei4ZDIOpILg/4q5v3uAlDPc3qfRnoItRJt41BwHKdzo5WS4o1fxGc0Dyv/AST8
+ KiuGbjC5hcc1C6udkV43IZU0jlWdMDftwTPrWUjlv69UvxwUV78Kk2gAuNO4NBZkvWRH
+ tkVA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXXgT9Gk/OPB0x9e6e84wVQ7lStHvhCFDwW47vrxdvhrNS9sgaBXbjO0ng6a2pDsrHwJ/x6l/p/but6xdGmvgh+j6Fc6ns=
+X-Gm-Message-State: AOJu0YyzdULUB30xqoysAWPw5BsF8CPFbmJaA4BvodyJon434IaM0cR/
+ Vz7jM4de0KkVme9G8+Wwl8+guCs5fC4TaDtf0hqf0xeUcrS1JLMt4EBY9V/36QY=
+X-Google-Smtp-Source: AGHT+IHQM/FnDA3MGscKmzLY0FA/IQNqUWoPqHVwVPm2PU3MR3fxooV3s1J2JyXQS3/87XV3VaDgPw==
+X-Received: by 2002:a05:6000:f:b0:368:255e:7235 with SMTP id
+ ffacd0b85a97d-36d5f9a2a78mr1556317f8f.16.1723227111085; 
+ Fri, 09 Aug 2024 11:11:51 -0700 (PDT)
+Received: from [192.168.38.175] (54.red-88-29-166.dynamicip.rima-tde.net.
+ [88.29.166.54]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36e4c36ba72sm143493f8f.16.2024.08.09.11.11.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 09 Aug 2024 11:11:50 -0700 (PDT)
+Message-ID: <1c84a15e-5083-4199-a0f3-59fb3c71e421@linaro.org>
+Date: Fri, 9 Aug 2024 20:11:47 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 15/57] target/mips: Pass ptw_mmu_idx down from
+ mips_cpu_tlb_fill
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240202055036.684176-1-richard.henderson@linaro.org>
+ <20240202055036.684176-17-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+In-Reply-To: <20240202055036.684176-17-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,94 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Hi Richard,
 
-Having magic numbers inside the code is not a good idea, as it
-is error-prone. So, instead, create a macro with the number
-definition.
+On 2/2/24 06:49, Richard Henderson wrote:
+> Rather than adjust env->hflags so that the value computed
+> by cpu_mmu_index() changes, compute the mmu_idx that we
+> want directly and pass it down.
+> 
+> Introduce symbolic constants for MMU_{KERNEL,ERL}_IDX.
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/mips/cpu.h                   |  4 +++-
+>   target/mips/tcg/sysemu/tlb_helper.c | 32 ++++++++++++-----------------
+>   2 files changed, 16 insertions(+), 20 deletions(-)
 
-Link: https://lore.kernel.org/qemu-devel/CAFEAcA-PYnZ-32MRX+PgvzhnoAV80zBKMYg61j2f=oHaGfwSsg@mail.gmail.com/
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-id: ef0e7f5fca6cd94eda415ecee670c3028c671b74.1723121692.git.mchehab+huawei@kernel.org
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/hw/arm/virt.h    | 3 +++
- hw/arm/virt-acpi-build.c | 6 +++---
- hw/arm/virt.c            | 7 ++++---
- 3 files changed, 10 insertions(+), 6 deletions(-)
+> @@ -944,12 +940,10 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+>            * Memory reads during hardware page table walking are performed
+>            * as if they were kernel-mode load instructions.
+>            */
+> -        int mode = (env->hflags & MIPS_HFLAG_KSU);
+> -        bool ret_walker;
+> -        env->hflags &= ~MIPS_HFLAG_KSU;
+> -        ret_walker = page_table_walk_refill(env, address, mmu_idx);
+> -        env->hflags |= mode;
+> -        if (ret_walker) {
+> +        int ptw_mmu_idx = (env->hflags & MIPS_HFLAG_ERL ?
+> +                           MMU_ERL_IDX : MMU_KERNEL_IDX);
 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index ab961bb6a9b..a4d937ed45a 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -47,6 +47,9 @@
- /* See Linux kernel arch/arm64/include/asm/pvclock-abi.h */
- #define PVTIME_SIZE_PER_CPU 64
- 
-+/* GPIO pins */
-+#define GPIO_PIN_POWER_BUTTON  3
-+
- enum {
-     VIRT_FLASH,
-     VIRT_MEM,
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index e10cad86dd7..f76fb117adf 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -154,10 +154,10 @@ static void acpi_dsdt_add_gpio(Aml *scope, const MemMapEntry *gpio_memmap,
-     aml_append(dev, aml_name_decl("_CRS", crs));
- 
-     Aml *aei = aml_resource_template();
--    /* Pin 3 for power button */
--    const uint32_t pin_list[1] = {3};
-+
-+    const uint32_t pin = GPIO_PIN_POWER_BUTTON;
-     aml_append(aei, aml_gpio_int(AML_CONSUMER, AML_EDGE, AML_ACTIVE_HIGH,
--                                 AML_EXCLUSIVE, AML_PULL_UP, 0, pin_list, 1,
-+                                 AML_EXCLUSIVE, AML_PULL_UP, 0, &pin, 1,
-                                  "GPO0", NULL, 0));
-     aml_append(dev, aml_name_decl("_AEI", aei));
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 719e83e6a1e..687fe0bb8bc 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1004,7 +1004,7 @@ static void virt_powerdown_req(Notifier *n, void *opaque)
-     if (s->acpi_dev) {
-         acpi_send_event(s->acpi_dev, ACPI_POWER_DOWN_STATUS);
-     } else {
--        /* use gpio Pin 3 for power button event */
-+        /* use gpio Pin for power button event */
-         qemu_set_irq(qdev_get_gpio_in(gpio_key_dev, 0), 1);
-     }
- }
-@@ -1013,7 +1013,8 @@ static void create_gpio_keys(char *fdt, DeviceState *pl061_dev,
-                              uint32_t phandle)
- {
-     gpio_key_dev = sysbus_create_simple("gpio-key", -1,
--                                        qdev_get_gpio_in(pl061_dev, 3));
-+                                        qdev_get_gpio_in(pl061_dev,
-+                                                         GPIO_PIN_POWER_BUTTON));
- 
-     qemu_fdt_add_subnode(fdt, "/gpio-keys");
-     qemu_fdt_setprop_string(fdt, "/gpio-keys", "compatible", "gpio-keys");
-@@ -1024,7 +1025,7 @@ static void create_gpio_keys(char *fdt, DeviceState *pl061_dev,
-     qemu_fdt_setprop_cell(fdt, "/gpio-keys/poweroff", "linux,code",
-                           KEY_POWER);
-     qemu_fdt_setprop_cells(fdt, "/gpio-keys/poweroff",
--                           "gpios", phandle, 3, 0);
-+                           "gpios", phandle, GPIO_PIN_POWER_BUTTON, 0);
- }
- 
- #define SECURE_GPIO_POWEROFF 0
--- 
-2.34.1
+Checking https://gitlab.com/qemu-project/qemu/-/issues/2470.
+
+Parenthesis are mis-placed.
+
+           int ptw_mmu_idx = (env->hflags & MIPS_HFLAG_ERL) ?
+                              MMU_ERL_IDX : MMU_KERNEL_IDX;
+
+Revisiting, we loose possible MMU_USER_IDX value but
+- we don't use it
+- this is sysemu code so we only expect MMU_KERNEL_IDX
+
+Is that right?
+
+> +
+> +        if (page_table_walk_refill(env, address, ptw_mmu_idx)) {
+>               ret = get_physical_address(env, &physical, &prot, address,
+>                                          access_type, mmu_idx);
+>               if (ret == TLBRET_MATCH) {
 
 
