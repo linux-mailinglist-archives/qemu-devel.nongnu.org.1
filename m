@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7DF94CB97
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 09:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7154B94CB9D
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 09:47:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scKIG-0006yP-TY; Fri, 09 Aug 2024 03:44:12 -0400
+	id 1scKKA-0002mc-II; Fri, 09 Aug 2024 03:46:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1scKID-0006xq-1G
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:44:09 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1scKK8-0002iF-E0
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:46:08 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1scKIA-0002im-Dx
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:44:08 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-7a0b2924e52so1045342a12.2
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 00:42:03 -0700 (PDT)
+ id 1scKK5-0002vj-SR
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 03:46:08 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-70d25b5b6b0so1448607b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 00:44:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1723189322; x=1723794122;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1723189443; x=1723794243;
  darn=nongnu.org; 
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
  bh=/waCfZIpwHr1OgYBTlJkVrmnPH0POYFcg1/H/+p2zcM=;
- b=1SqfJQm1/cqvdviFTQICFlJQYJnGADgbOMtv0UmXcwHMxY07mzd9SdgC+gBy1e4vXm
- 6QRmaBn3HVwwqoL17DnLH23rseetyL4ZFZa+c717455tqBAn0CAHsqp79Rm90qMX5GqP
- wgLBQHVvuyp4VlmLMTCdXPfERmh2ZlKULT1AvUGmtXMnAwK+812dv4qNvm0GxtkDtS3h
- d8r/c55q2wtet8hCjl131MVU2f0hgFWVsz7RbfwpaORW2RxTdxgKV13Dvifhbg5BWRDG
- mxv1GSIkCVSnaDmNsUM7HgE1ml8jweWj8gyPxpSFfzWtd3A2MyyxAOloA8l6RyMhyMoI
- Nmiw==
+ b=WdCasAfUjJGffUqv/TQN6Io0jeXBtx00fn/7H3WlDjbuOedd8HOsHBMpl7+lbDT31f
+ LbsyX+ew9UHHCh4llxZOsreXRFn3dm6kpocGud4SufDTPV6A4FSgc2LqulP3h47l+5xg
+ HdMmGM5ooTxrFMs7EkINzKBgBz7NWqSAeec5WcV3imPaH+wxzypuV+2cokIDvs9lNAV7
+ zNgj5kUsj0UVYVhd/h76sBUMa2sFlyww/5RqZRxl1sMPvqzU9an1tS6njE5fIwWAii2h
+ xlb+ybZbGR8uGWKdKjfaDrtHdixKexhtnncStT2aiWvw/32BP8f/ustVY4xovxIsugtQ
+ DULg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723189322; x=1723794122;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
+ d=1e100.net; s=20230601; t=1723189443; x=1723794243;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
  bh=/waCfZIpwHr1OgYBTlJkVrmnPH0POYFcg1/H/+p2zcM=;
- b=TWuEvdEgNj9S5/SkaBkD0aclcNayQAI0jK1dE2XvNaXiJrAvHCqg8GnAknfg+FOMuM
- poQl4WLRFj6EO/egKc8Cn8ke5vzTTnHHcAqUyOr7FJb7EkBMmm68dF8BQPV6zidLnoFq
- 8R2TDJdADHfUjFMdUHoDEjvMurlCtbWz4TKwvUvPwJsLtXCOlV4bCx6ihDYtav2CIMaN
- JOIEz3ZJfTGyRLFPvflHi4fRmvsJLhuYsWbdIo7FiXN2iplQNUmhqmJczfksbRIPCL9q
- xJDbKqGQw2zZL9Qgf2g5OXM8KiORejLDUsmQGVmyO4oArk3KDn4UCE+ENif5F01pCFqd
- UfkQ==
-X-Gm-Message-State: AOJu0YwysZXyzB+AIffYaUNBhgpgFjIalcWCtph7zBjebpYVcepuuxzl
- SPkTxxcCsgmlpkx2u654Q8D7ur57oabmvRIt4Si87ILQflVZAvyeZJagJrKzlgFv7pWggQ4WkAA
- KUkabAA==
-X-Google-Smtp-Source: AGHT+IFf7iRq3fmjiElJbsNDlbaW3Ida2C1MyBko4/j2Vw9twiyS2oJUjvv9+bUb8dQxzSEPuW7KjA==
-X-Received: by 2002:a05:6a20:cfa2:b0:1c6:a777:4cfa with SMTP id
- adf61e73a8af0-1c89fe97a70mr952184637.13.1723189320941; 
- Fri, 09 Aug 2024 00:42:00 -0700 (PDT)
-Received: from c74-1708-dev.zelin.local ([85.208.104.155])
+ b=vwz/3sA62KgGgqrlr+I2Eb+9U6tYQBz4vSj5ee3XLKaXCM0enY6hQQGTsS9AOTopjV
+ 9Budxs+oD1XnumkiDu1eGG9btHjo57EbApQghvqdCzkK9Ij82mzfPq4h0yCfhxceadHO
+ LPmw+GYfmPANOF77md6n1nSPu6lJqaIER1dSh3d8ZSU2RwQ70qH09/8gYTcH+kq37w0o
+ yE+SXIXn6zP6Lfyk1BL227BtyXIw3HGeejmvRNFJ241kre3VpDiLSKtQRezEWtr8TGfy
+ L6fHlKtMKYnCA/Nw4Q+2PpNcsIfWdFPeyOFa9IUvJ1GFFDO9q0vegU3wDQL367/nP9pX
+ ZzYw==
+X-Gm-Message-State: AOJu0YxMGx3tDqdSgatsu9VkZ4YoL3BHPNiZ/xWxN0XY8Co7yhSXnkrZ
+ x6lhf3AUkTs8aOdu+TrGhcY4AIGD8GuI4ODiCFScw8ZERuOBcCU0GN2lgNzatI65DvGrwqE8O7s
+ /KvLgBA==
+X-Google-Smtp-Source: AGHT+IF8vcxHFwak5VEvoQqOvO5aDEiPjD49SxIvxht4Mu6/PL8/awbnAXYDlGNGLF4ZhMJaGCOcbQ==
+X-Received: by 2002:a05:6a00:4b4f:b0:70a:efd7:ada1 with SMTP id
+ d2e1a72fcca58-710dc75fa1amr627257b3a.17.1723189442151; 
+ Fri, 09 Aug 2024 00:44:02 -0700 (PDT)
+Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d1b3addc29sm4655642a91.29.2024.08.09.00.41.59
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 09 Aug 2024 00:42:00 -0700 (PDT)
+ d2e1a72fcca58-710cb22a455sm2123212b3a.71.2024.08.09.00.44.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Aug 2024 00:44:01 -0700 (PDT)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  yong.huang@smartx.com
 Subject: [PATCH v1 0/5] Guestperf: miscellaneous refinement and enrichment 
-Date: Fri,  9 Aug 2024 15:41:50 +0800
+Date: Fri,  9 Aug 2024 15:43:31 +0800
 Message-Id: <cover.1723189080.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.11.0
-Received-SPF: none client-ip=2607:f8b0:4864:20::534;
- envelope-from=yong.huang@smartx.com; helo=mail-pg1-x534.google.com
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
