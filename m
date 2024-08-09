@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5832B94C9F7
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 07:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0723894CA51
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 08:16:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scIdO-0007tY-2p; Fri, 09 Aug 2024 01:57:54 -0400
+	id 1scIue-00042o-0A; Fri, 09 Aug 2024 02:15:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1scIdK-0007sQ-V1; Fri, 09 Aug 2024 01:57:51 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1scIdI-0000O0-NK; Fri, 09 Aug 2024 01:57:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723183069; x=1754719069;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xnP+MSR/wvIrA5raQK0NBZEHIJRmZdfsczn+tYlznUM=;
- b=KbRu3k59tDZczK4V4XKTxUgUTCgH5X0AB6Hvdn71Q0uVyiWWigtzK42t
- /QHmC+kKLBTu5e4Inc0qtxbdGMOElI3FtGlDSexB1IMRCWKicVqLlnaut
- XYZzADtQSkmS3rhrRqwQEOdb9xw3qOMraXEIR3jC+4Jmt88Kq28BNAmJf
- zTNbzWqiBgjvVwNKwsdArsgtLECACz6jIht9Zz6H8eXL8FrFx0bzC1fhH
- cJe4sUMpm39xgwva7RzrPqiyBKB9IvLp9mcUQYSbfKW3IxeO5QSz+0az9
- gQeieP3oGUHY0n00oJ1bhUDwF8x5qhraT329QUE42BnmuP35f98omiNvW w==;
-X-CSE-ConnectionGUID: Vl/VQxicTvyAGdbhv2pTLQ==
-X-CSE-MsgGUID: kUsXEP44QNmt5MChrH0CNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="20905618"
-X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="20905618"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 22:57:39 -0700
-X-CSE-ConnectionGUID: WDs2KvbSQLWNIMcbVD4wjQ==
-X-CSE-MsgGUID: tkfS8gnOSyeGcFimJ4QBTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="80702279"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 08 Aug 2024 22:57:37 -0700
-Date: Fri, 9 Aug 2024 14:13:28 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
- kvm@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/2] kvm: replace fprintf with error_report() in
- kvm_init() for error conditions
-Message-ID: <ZrWziCQWgLogq+lV@intel.com>
-References: <20240809051054.1745641-1-anisinha@redhat.com>
- <20240809051054.1745641-2-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1scItu-0003z2-Tq
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 02:15:00 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1scItt-0003Ck-29
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 02:14:58 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1ff4fa918afso11775985ad.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Aug 2024 23:14:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1723184094; x=1723788894; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=k5qy/5prhvgTOwQHTkUZHocecIV6jjH4fWe50Mu90BQ=;
+ b=fUYq7XXbpO7p2Jk5om9PI27k9+uPcQw1gghr52TSAw2FpcK5Cw4sN8bkuZwoiefrKI
+ kf7FPNSSO+2NianTjLU0cum079WcFmT+3E4oYTdyipkuBnwn3I1EaZTDqIrp7JAhCBq+
+ UZb9BJk8yuv8veOx6mc0jNO6RPv0Y6L7/ufKNxzTnsCeuNys+W/rPlB2EPqWJQAVGSs3
+ nqVXGKGCfz68tBQNNLsWrHQGQFyyRjSD5k9zwwJ2KFLBNSaD7ViA55T1u0l4AB+/PqAv
+ RP5z2jFhwz/Sml/5nC04mF3lAmKOMeNkDnyzQZVR8YWQ7v9brC/nNlD6xj/ChdbRDbp+
+ QhCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723184094; x=1723788894;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k5qy/5prhvgTOwQHTkUZHocecIV6jjH4fWe50Mu90BQ=;
+ b=jrtQW/YpetdPsBR/0HgoUXf26S9r2ZRk0FrUSjuSmG9dMf3bAj4tmgpDGRWNIURTPh
+ VkhbnIjuAh+XPfymshovd8kgeI/VVh/H3oOf+RbVHgd7c4soeFH7K3Ywl1CbgJS9DFSH
+ +wQ85vZA8PIBebOeS0oyc0FJxn+8sxPkN2NYgdklhIiQS8bTnmtKFvq8rlgcEdYFxJcu
+ jvUYCe9HSCCmNgU8Et6JF0UtN42co1ENzAXVcKFDVIddMxOzQ6fOI+1Lpi+niiaoM+uT
+ Zsb3lT+ug1JjI5ajfVBgDu1uBki0u19jUXUWCvhkrhL1tL1lgnwowIYuDJANZtUG8eJK
+ rWYQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVmvZvZbGmzSPqTgxJpSkXjOmJy0f/esehIzpsXDonFTRXQ7dxSsWhDiBwUmHl49F5vHo+q2g6bToKKJrxMsSeYSETl1eY=
+X-Gm-Message-State: AOJu0YxOa5YXKuIaQoAV6eTrout/ou/B6iZUm6h5smpHWAisVHGkdWPc
+ F5FJjTYy6bDyilH9oXsDcomBl/UpYokc3moeLJ+Ly6LF9nbMegi2WRTgxriJg8Q=
+X-Google-Smtp-Source: AGHT+IHvAr7Y9cdJkn0CFlslQkzs+hC7wWtanb++9wwhHiiZBTSW1xuO62qXyLpeg5re2VsCi543vw==
+X-Received: by 2002:a17:902:ced2:b0:1f6:f0fe:6cc9 with SMTP id
+ d9443c01a7336-200ae5f1fd6mr4553375ad.54.1723184094009; 
+ Thu, 08 Aug 2024 23:14:54 -0700 (PDT)
+Received: from sunil-laptop ([106.51.198.16]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1ff592aa11csm134322995ad.272.2024.08.08.23.14.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Aug 2024 23:14:53 -0700 (PDT)
+Date: Fri, 9 Aug 2024 11:44:47 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Haibo Xu <haibo1.xu@intel.com>
+Cc: alistair.francis@wdc.com, xiaobo55x@gmail.com,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/3] tests/acpi: Add empty ACPI SRAT data file for RISC-V
+Message-ID: <ZrWz15zqkTX3sYl_@sunil-laptop>
+References: <0e30216273f2f59916bc651350578d8e8bc3a75f.1723172696.git.haibo1.xu@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240809051054.1745641-2-anisinha@redhat.com>
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+In-Reply-To: <0e30216273f2f59916bc651350578d8e8bc3a75f.1723172696.git.haibo1.xu@intel.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,92 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 09, 2024 at 10:40:53AM +0530, Ani Sinha wrote:
-> Date: Fri,  9 Aug 2024 10:40:53 +0530
-> From: Ani Sinha <anisinha@redhat.com>
-> Subject: [PATCH v2 1/2] kvm: replace fprintf with error_report() in
->  kvm_init() for error conditions
-> X-Mailer: git-send-email 2.45.2
+On Fri, Aug 09, 2024 at 11:09:47AM +0800, Haibo Xu wrote:
+> As per process documented (steps 1-3) in bios-tables-test.c, add
+> empty AML data file for RISC-V ACPI SRAT table and add the entry
+> in bios-tables-test-allowed-diff.h.
 > 
-> error_report() is more appropriate for error situations. Replace fprintf with
-> error_report. Cosmetic. No functional change.
-> 
-> CC: qemu-trivial@nongnu.org
-> CC: zhao1.liu@intel.com
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
 > ---
->  accel/kvm/kvm-all.c | 40 ++++++++++++++++++----------------------
->  1 file changed, 18 insertions(+), 22 deletions(-)
+>  tests/data/acpi/riscv64/virt/SRAT.numamem   | 0
+>  tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+>  2 files changed, 1 insertion(+)
+>  create mode 100644 tests/data/acpi/riscv64/virt/SRAT.numamem
 > 
-> changelog:
-> v2: fix a bug.
+> diff --git a/tests/data/acpi/riscv64/virt/SRAT.numamem b/tests/data/acpi/riscv64/virt/SRAT.numamem
+> new file mode 100644
+> index 0000000000..e69de29bb2
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> index dfb8523c8b..a3e01d2eb7 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> @@ -1 +1,2 @@
+>  /* List of comma-separated changed AML files to ignore */
+> +"tests/data/acpi/riscv64/virt/SRAT.numamem",
 
-Generally good to me. Only some nits below, otherwise,
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
->  #ifdef TARGET_S390X
->          if (ret == -EINVAL) {
-> -            fprintf(stderr,
-> -                    "Host kernel setup problem detected. Please verify:\n");
-> -            fprintf(stderr, "- for kernels supporting the switch_amode or"
-> -                    " user_mode parameters, whether\n");
-> -            fprintf(stderr,
-> -                    "  user space is running in primary address space\n");
-> -            fprintf(stderr,
-> -                    "- for kernels supporting the vm.allocate_pgste sysctl, "
-> -                    "whether it is enabled\n");
-> +            error_report("Host kernel setup problem detected. Please verify:");
-
-The doc of error_report() said it doesn't want multiple sentences or trailing
-punctuation:
-
-"The resulting message should be a single phrase, with no newline or trailing
-punctuation."
-
-So I think these extra messages (with complex formatting & content) are
-better printed with error_printf() as I suggested in [1].
-
-[1]: https://lore.kernel.org/qemu-devel/ZrWP0fWPNzeAvjja@intel.com/T/#m953afd879eb6279fcdf03cda594c43f1829bdffe
-
-> +            error_report("- for kernels supporting the switch_amode or"
-> +                        " user_mode parameters, whether");
-> +            error_report("  user space is running in primary address space");
-> +            error_report("- for kernels supporting the vm.allocate_pgste "
-> +                        "sysctl, whether it is enabled");
->          }
->  #elif defined(TARGET_PPC)
->          if (ret == -EINVAL) {
-> -            fprintf(stderr,
-> -                    "PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
-> -                    (type == 2) ? "pr" : "hv");
-> +            error_report("PPC KVM module is not loaded. Try modprobe kvm_%s.",
-> +                        (type == 2) ? "pr" : "hv");
-
-Same here. A trailing punctuation. If possible, feel free to refer to
-the comment in [1].
-
->          }
->  #endif
-
-[snip]
-
-> @@ -2542,8 +2538,8 @@ static int kvm_init(MachineState *ms)
->      }
->      if (missing_cap) {
->          ret = -EINVAL;
-> -        fprintf(stderr, "kvm does not support %s\n%s",
-> -                missing_cap->name, upgrade_note);
-> +        error_report("kvm does not support %s", missing_cap->name);
-> +        error_report("%s", upgrade_note);
-
-"upgrade_note" string also has the trailing punctuation, and it's
-also better to use error_printf() to replace the 2nd error_report().
-
-For this patch, error_report() is already a big step forward, so I think
-these few nits doesn't block this patch.
-
-Thank you for your patience.
-Zhao
-
+Thanks,
+Sunil
 
