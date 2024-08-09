@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD02A94D616
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134ED94D613
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scU30-0002Cb-SM; Fri, 09 Aug 2024 14:09:06 -0400
+	id 1scU3E-0002eQ-Eu; Fri, 09 Aug 2024 14:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2y-00025s-NV
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:04 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ id 1scU38-0002cI-1l
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:14 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2w-0007EF-OI
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:04 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2f0271b0ae9so23785321fa.1
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:09:02 -0700 (PDT)
+ id 1scU35-0007Ew-JF
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:09:13 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-369c609d0c7so1775434f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723226941; x=1723831741; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723226950; x=1723831750; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OTKwxuPziiy0+9qyVmM4AyVNPdnxPukHZnKDv7thDS0=;
- b=jegS4DYaDY0hCVV+NeObu9yuZEO/d6owZgQEwiAD7xMd0pbmj0bgSeYk0rQnV4VwB+
- de0oMGsEGw2nF2pdvEgAyfFpqPSKos4BLvf6i1FG0I87kAZDEfPwJjzwbccy3SkURde+
- n733lB3OY2HLVWD3zNHsFES+6TcrdVDMkPxKuCN8gY4H/Jc2vYgeE8iNFozApG8RkUuh
- aZ6ivFq5GKc7wbn19vw/efmm3rwkYb1uqPmMprBTw5gPZzPzPNrOFqD6workj3DbDyWl
- vo+V2+Zb30/P4T31jTVXygNJX0iqA+4WD5SjkVo0N6zMcYR3SQsfVrR5JW3rli2TOEyo
- GH0g==
+ :reply-to; bh=jquWz0USW85lcynOd+V15nNwRrJbu/joQPKxFZlMmk0=;
+ b=WQIwxzahEbk5TtQe53/t2dj3VLdxR0tAvSKmHpGENWXu6Zi9vzuJUK19TWaPoHofm+
+ +rMzQXccEV8GbxabRLcXLT25R1Tk+BDbtDnU4ivxpMIE3SsRlxasWaDRQy1T7cVsmVdv
+ 2TzRIawn5y5/vejNvaiT5d7FZ0Pesw0FyFs8LzcD+pyRflXWITXmKQJaXI8I4AAxdi/W
+ 4FnKXy9K/nAGMx9NKhuintoOTaMxA4SEuns51eHJe+Akr7CR4vzBnvRr6G2311N13Zxu
+ RXbKi7Z3I2n/JjEmbdxMJHy2oZEz5Omyq+5tAGjkbZ0nLaGCmwtsPyRKVvpgm2HGQXfj
+ CE7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723226941; x=1723831741;
+ d=1e100.net; s=20230601; t=1723226950; x=1723831750;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OTKwxuPziiy0+9qyVmM4AyVNPdnxPukHZnKDv7thDS0=;
- b=bJCJtRQqSEUDBxx1UQ5d5KAVykx/RLWNucZlTmq39tuoigTf5qlnGsqhvILJKq4n5/
- g0VrsAT2kKWvtOPCDuYW+hQNIX9jSQ4IBq0oojGkjqzt4ZIGfGkb6GJxjkks66v4L4WO
- LLNqMR499yEkdBF6Kzw/k862FFMlUPGO1xobsam+rnRTADrFU//grdqXU+KzIh8q6csC
- v+Tkk3dTvHD890Ru4u70PtRotAJ1k2rIEyQw1n1HM9GAiNj2lqgyqhAKwrNftn1V0WZB
- NGtw3BbvadjNupbWWJhS91w63X8s6R6Z/SSAH6xjI3kEXQn19si0yrHPQyWWS0zugALl
- 6e4g==
-X-Gm-Message-State: AOJu0Yx6Vtq6GSda2ZF43YUD94eFxEaKqGDB+Ynwrg+ysAhV0mHfotAg
- X7WuU4gNk7VE/IacCtN1GRIx31W3spML35PizINl/oOYkNNz/Jm6YIb7fxBwAMirbf6X4Rpe9/f
- e
-X-Google-Smtp-Source: AGHT+IGmz4CoUcJ5S5EgVqzAUXDlT0bafavuNsRmNwNytbLIxpdtTvSR+YvA7E+rdJFiLDGVr1YdyQ==
-X-Received: by 2002:a05:651c:b29:b0:2ee:5ed4:792f with SMTP id
- 38308e7fff4ca-2f1a6d0034amr18342261fa.2.1723226940590; 
- Fri, 09 Aug 2024 11:09:00 -0700 (PDT)
+ bh=jquWz0USW85lcynOd+V15nNwRrJbu/joQPKxFZlMmk0=;
+ b=kzvhkgAR1IErBFTopVqPTV9t9QtfwCULxok4FvxayofYPHJr6rMVFgkOvlSd26cEeq
+ Wf0+QXecC4QueAY49ZGP3QKNmkEockEs6HN1j1oYDBy6BC5wAR2jP1taEffCdDXTa+eh
+ EJtUbAEy3lrB3y4wGhP2jkA9zHBrZgDv0TjS3Z1gh+atF9FLHDc5brJ5SMrsMh/bwUOS
+ o1ilQCFYebGhIgs4rWW7ciNHbattY5knUGKwmOA5xyegRtb1o8UrZ3VcGj0Kdz2ve0Gi
+ +6fHCwz/v+m/cZhls3LgUS3lVlHtDC9bhIt+qWgD8VaeosSHKehd/8neCd/c//7CNx1A
+ stXQ==
+X-Gm-Message-State: AOJu0YxgGtibGNK3ZXi1V585RjaQJpoGifxEXES0AepsBYHoDGe02GtA
+ G+hQLPERZEBs+UKQuYuUrMOnDWYUzL/cYzBCsU6UzM/ZJU1JMVTOxaq4mIozDgHuSkihqumyl/d
+ i
+X-Google-Smtp-Source: AGHT+IGks1AxJW21O1k59IG+rqXlynqIv6KrJ6vyWJ8pe9XmbJAb+S6snsja4Mv6z4jYtXp6f0M3GQ==
+X-Received: by 2002:adf:ee50:0:b0:368:6596:edba with SMTP id
+ ffacd0b85a97d-36d5fd7e9b0mr1986551f8f.39.1723226949954; 
+ Fri, 09 Aug 2024 11:09:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.09.00
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 09 Aug 2024 11:09:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/11] target/arm: add support for PMUv3 64-bit PMCCNTR in
- AArch32 mode
-Date: Fri,  9 Aug 2024 19:08:33 +0100
-Message-Id: <20240809180835.1243269-10-peter.maydell@linaro.org>
+Subject: [PULL 10/11] hw/core/ptimer: fix timer zero period condition for freq
+ > 1GHz
+Date: Fri,  9 Aug 2024 19:08:34 +0100
+Message-Id: <20240809180835.1243269-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809180835.1243269-1-peter.maydell@linaro.org>
 References: <20240809180835.1243269-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,49 +92,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Richardson <alexrichardson@google.com>
+From: Jianzhou Yue <JianZhou.Yue@verisilicon.com>
 
-In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
-PMCCNTR was added. In QEMU we forgot to implement this, so only
-provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
-sysreg for AArch64, adding the 64-bit AArch32 version is easy.
+The real period is zero when both period and period_frac are zero.
+Check the method ptimer_set_freq, if freq is larger than 1000 MHz,
+the period is zero, but the period_frac is not, in this case, the
+ptimer will work but the current code incorrectly recognizes that
+the ptimer is disabled.
 
-We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
-in the ARMv8 architecture. This is consistent with how we
-handle the existing PMCCNTR support, where we always implement
-it for all v7 CPUs. This is arguably something we should
-clean up so it is gated on ARM_FEATURE_PMU and/or an ID
-register check for the relevant PMU version, but we should
-do that as its own tidyup rather than being inconsistent between
-this PMCCNTR accessor and the others.
-
-See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
-
-Signed-off-by: Alex Richardson <alexrichardson@google.com>
-Message-id: 20240801220328.941866-1-alexrichardson@google.com
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2306
+Signed-off-by: JianZhou Yue <JianZhou.Yue@verisilicon.com>
+Message-id: 3DA024AEA8B57545AF1B3CAA37077D0FB75E82C8@SHASXM03.verisilicon.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/core/ptimer.c         |  4 ++--
+ tests/unit/ptimer-test.c | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8fb4b474e83..94900667c33 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5952,6 +5952,12 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-       .access = PL1_RW, .accessfn = access_trap_aa32s_el1,
-       .writefn = sdcr_write,
-       .fieldoffset = offsetoflow32(CPUARMState, cp15.mdcr_el3) },
-+    { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
-+      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
-+      .cp = 15, .crm = 9, .opc1 = 0,
-+      .access = PL0_RW, .resetvalue = 0, .fgt = FGT_PMCCNTR_EL0,
-+      .readfn = pmccntr_read, .writefn = pmccntr_write,
-+      .accessfn = pmreg_access_ccntr },
- };
+diff --git a/hw/core/ptimer.c b/hw/core/ptimer.c
+index b1517592c6b..1d8964d8044 100644
+--- a/hw/core/ptimer.c
++++ b/hw/core/ptimer.c
+@@ -83,7 +83,7 @@ static void ptimer_reload(ptimer_state *s, int delta_adjust)
+         delta = s->delta = s->limit;
+     }
  
- /* These are present only when EL1 supports AArch32 */
+-    if (s->period == 0) {
++    if (s->period == 0 && s->period_frac == 0) {
+         if (!qtest_enabled()) {
+             fprintf(stderr, "Timer with period zero, disabling\n");
+         }
+@@ -309,7 +309,7 @@ void ptimer_run(ptimer_state *s, int oneshot)
+ 
+     assert(s->in_transaction);
+ 
+-    if (was_disabled && s->period == 0) {
++    if (was_disabled && s->period == 0 && s->period_frac == 0) {
+         if (!qtest_enabled()) {
+             fprintf(stderr, "Timer with period zero, disabling\n");
+         }
+diff --git a/tests/unit/ptimer-test.c b/tests/unit/ptimer-test.c
+index 04b5f4e3d03..08240594bbd 100644
+--- a/tests/unit/ptimer-test.c
++++ b/tests/unit/ptimer-test.c
+@@ -763,6 +763,33 @@ static void check_oneshot_with_load_0(gconstpointer arg)
+     ptimer_free(ptimer);
+ }
+ 
++static void check_freq_more_than_1000M(gconstpointer arg)
++{
++    const uint8_t *policy = arg;
++    ptimer_state *ptimer = ptimer_init(ptimer_trigger, NULL, *policy);
++    bool no_round_down = (*policy & PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
++
++    triggered = false;
++
++    ptimer_transaction_begin(ptimer);
++    ptimer_set_freq(ptimer, 2000000000);
++    ptimer_set_limit(ptimer, 8, 1);
++    ptimer_run(ptimer, 1);
++    ptimer_transaction_commit(ptimer);
++
++    qemu_clock_step(3);
++
++    g_assert_cmpuint(ptimer_get_count(ptimer), ==, no_round_down ? 3 : 2);
++    g_assert_false(triggered);
++
++    qemu_clock_step(1);
++
++    g_assert_cmpuint(ptimer_get_count(ptimer), ==, 0);
++    g_assert_true(triggered);
++
++    ptimer_free(ptimer);
++}
++
+ static void add_ptimer_tests(uint8_t policy)
+ {
+     char policy_name[256] = "";
+@@ -857,6 +884,12 @@ static void add_ptimer_tests(uint8_t policy)
+                               policy_name),
+         g_memdup2(&policy, 1), check_oneshot_with_load_0, g_free);
+     g_free(tmp);
++
++    g_test_add_data_func_full(
++        tmp = g_strdup_printf("/ptimer/freq_more_than_1000M policy=%s",
++                              policy_name),
++        g_memdup2(&policy, 1), check_freq_more_than_1000M, g_free);
++    g_free(tmp);
+ }
+ 
+ static void add_all_ptimer_policies_comb_tests(void)
 -- 
 2.34.1
 
