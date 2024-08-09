@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA39A94CBF8
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 10:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D248394CBF6
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 10:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scKjt-0005p9-4a; Fri, 09 Aug 2024 04:12:45 -0400
+	id 1scKk3-00061r-58; Fri, 09 Aug 2024 04:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1scKjr-0005mQ-VS
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 04:12:43 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1scKju-0005vo-BG
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 04:12:46 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1scKjq-0006o8-6N
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 04:12:43 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1fc52394c92so17668745ad.1
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 01:12:41 -0700 (PDT)
+ id 1scKjs-0006oz-Op
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 04:12:46 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-7a115c427f1so1307903a12.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 01:12:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1723191160; x=1723795960; darn=nongnu.org;
+ d=sifive.com; s=google; t=1723191162; x=1723795962; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lnyy3iG1ppUhes/NXnsprwtoY4OtwR9FbGvONHrEws4=;
- b=nlrU6lLUynn10G5MHcr8kOnc/xCk6hqT67bgo3/FIrJhRYWxRPtIq3YAnQn3Mi7OAy
- X3aZsMEfwYxzvB2qaHSSyfYZhPC3TJnjWaujqX0Y8y9OfL3VX+CjnS3qS5drO9mIb6PD
- 5wc3yRDibWUnIfO2hWpVt0+uJv4pFrZwyyHdyxAuloslkiriR7TCwHpEVB13PrPUqX/r
- P8ZILJKmRBBUMNkbxVdQU6YpV8BIKFqqhMa8BP7rjHpc2rWbQ0sdmEslRc2agRiKGIpX
- b8rD3KVE6RRP9PrbJOJNOscks5qqHNlKDhEg/idEwfM9JeRtBiEtarQ8btD8n72Fvg8h
- fZFQ==
+ bh=riPnYasURW77Dz2ZwVlvtuzpt5ZqhwUi415BFr5uQMs=;
+ b=BBGlJkyIvFc7cnkwsxndlrhqvwzFDnenCliYCb+Ypt3H8ZX5oEy8j8OhfwsGFSGPiT
+ rUo3NCl9bYEm+E+9RaenZOF24Lak+yCiMGnz+a2GuWgy/ceGr5WX1z4nXDP9pBABCDIS
+ Ep9dCU0Eev00YAx6zECSa86yact/noFKIbE7Pos7saOrpT8yZ7bLkie83wMWYPC+/gjW
+ Nn9paJkRtTbvYcAU+8bd6ZY77IXpTZrqS605SgUGdTt5EMmlyw/WhzuYzPHT8JURn375
+ 5/GQ/l6o8aF+0J6MqBy/wVFcvQ5D2lNbj58BDgog3XWk5F6IPAuJxt77UTKPb+ap7OIz
+ Q0lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723191160; x=1723795960;
+ d=1e100.net; s=20230601; t=1723191162; x=1723795962;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lnyy3iG1ppUhes/NXnsprwtoY4OtwR9FbGvONHrEws4=;
- b=JtFvds4AbAvZi3xMNeQ/Gu91cjqXObgYoQnm1UakvJ6QVI4r6Jqkuz8joQxSLWtIQb
- RjNyAi9wCP1YbgLqeF6HSXWeWAJRcZ2Z7Nh01srxZeujt9w9bgwfx1WB6aoav+hk1gDt
- GlJ+RLa4EN5hYldjZIFB5aNy1r5E9OG5Fr5pZKUaSw3ubJDI5BP+egsEbbcU1CRo1u6H
- 3+WU1CmH/gcm8bWvc8i0OlMFliDSUVqarXljTssIcrsZ7NDBse21yNgvIYjuFrQKQZD7
- y2o2tpoT5V5ilwNlScfv1uj8o9aKj7IntCCyXDsGvqFzkmznH82ilcvHoLqxVQJXnf7F
- Qyhg==
-X-Gm-Message-State: AOJu0Yw+IReHab9ZRpPT8FPGTkdjQdyKnBBqHWKE/zhDA5hFqvvO96vP
- QLL271t4HOBN/oDNvRcvByR4FlOdJl1p1sN35Z31F3q72PGI3fZtj2XKZF6NuOjLsA5kFNclsU/
- Tdj9xR1oMDTFPRJZNoPow9KhRRUJAyYSMwGB9gpDdo2iC2tyUC7b1iV5C2hEnmC9GouwazF+S7H
- OfUYRcX6Vq0StyMHhwYMPrB9N3C698PfNN/K5aBw==
-X-Google-Smtp-Source: AGHT+IFBgG0clyz7afN9hi4gW03bwRKThMZ1JXg/HKqNLrxWgOUMocZsinWjmK5J27VcOwe2nM9XSQ==
-X-Received: by 2002:a17:902:d4c8:b0:1fb:9280:c970 with SMTP id
- d9443c01a7336-200ae4db87fmr6802285ad.7.1723191160068; 
- Fri, 09 Aug 2024 01:12:40 -0700 (PDT)
+ bh=riPnYasURW77Dz2ZwVlvtuzpt5ZqhwUi415BFr5uQMs=;
+ b=fCaI7y9yhX84fUiqj1sJ08p941fXFA19HCPKGUBQ2CmRE+C26u/CA3QOyUb63mDMWj
+ 6l+QglMoERGxPUMtOqsS4Qhc/FYh2YtVRCfGEkv1m4hlY+krhu2tUs2QcamYIl/LJTxP
+ yLBiFXa2oiNBGiG4ST+euF2ry+IhPegbQr2GLPSDdREp5FpKuE6sKaUpgn5JW4fsdHP2
+ zvm1LQIWRUpdFMDJlbpX5fyr2519N91qIFYMmXWtUwsl7b2Jkh+s9pF/vt3fI4np7PFo
+ YuVC1xsYMN3Unka1SHF7vvx6uE/QxQcfmSkNO8aSl41+44IB7fzXRD6g7cgTAgoJWWZT
+ 7WXQ==
+X-Gm-Message-State: AOJu0YwdLlfv4R0uGNsIJ0gz/rsSQkkobUh7JOEiChXnE9fMI4sFfR18
+ xIQYrEqQY1pHCTkXrThP+a7qyXB1oSM6Sk+eeR7KtzC4xtSOARfFmuqCBel5kfu8QwAf8NbX3BE
+ ourFEOKU6PQmVbz4fpsJrMZW+FXtpoSNCU5pnVzFAKOv88oahhU9cht0CsG/8gSf89iwyKAHWoW
+ NCQLIMcAfd7P2SwU0UfpER949Pl7JEbYsf0pNi4Q==
+X-Google-Smtp-Source: AGHT+IFKKPAYoETCMuKCeXr2CwdLER/abdxO7bgP/hZ5dtBM9pHST60eB95q8yv0siAjyk4XZPhwYA==
+X-Received: by 2002:a17:902:fb10:b0:1fd:96e1:802a with SMTP id
+ d9443c01a7336-200ae60cf79mr6505065ad.59.1723191162520; 
+ Fri, 09 Aug 2024 01:12:42 -0700 (PDT)
 Received: from sw07.internal.sifive.com ([4.53.31.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ff592b6cfbsm136391185ad.306.2024.08.09.01.12.39
+ d9443c01a7336-1ff592b6cfbsm136391185ad.306.2024.08.09.01.12.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Aug 2024 01:12:39 -0700 (PDT)
+ Fri, 09 Aug 2024 01:12:42 -0700 (PDT)
 From: Tommy Wu <tommy.wu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
 Cc: frank.chang@sifive.com, palmer@dabbelt.com, alistair.francis@wdc.com,
  alistair23@gmail.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
  dbarboza@ventanamicro.com, Tommy Wu <tommy.wu@sifive.com>
-Subject: [PATCH v5 4/5] target/riscv: Add Smrnmi mnret instruction.
-Date: Fri,  9 Aug 2024 01:12:26 -0700
-Message-Id: <20240809081227.1588508-5-tommy.wu@sifive.com>
+Subject: [PATCH v5 5/5] target/riscv: Add Smrnmi cpu extension.
+Date: Fri,  9 Aug 2024 01:12:27 -0700
+Message-Id: <20240809081227.1588508-6-tommy.wu@sifive.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240809081227.1588508-1-tommy.wu@sifive.com>
 References: <20240809081227.1588508-1-tommy.wu@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=tommy.wu@sifive.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=tommy.wu@sifive.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,126 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds a new instruction `mnret`. `mnret` is an M-mode-only
-instruction that uses the values in `mnepc` and `mnstatus` to return to the
-program counter, privilege mode, and virtualization mode of the
-interrupted context.
+This adds the properties for ISA extension Smrnmi.
 
 Signed-off-by: Frank Chang <frank.chang@sifive.com>
 Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 ---
- target/riscv/helper.h                         |  1 +
- target/riscv/insn32.decode                    |  3 ++
- .../riscv/insn_trans/trans_privileged.c.inc   | 12 +++++
- target/riscv/op_helper.c                      | 46 +++++++++++++++++++
- 4 files changed, 62 insertions(+)
+ target/riscv/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index 451261ce5a..16ea240d26 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -131,6 +131,7 @@ DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
- #ifndef CONFIG_USER_ONLY
- DEF_HELPER_1(sret, tl, env)
- DEF_HELPER_1(mret, tl, env)
-+DEF_HELPER_1(mnret, tl, env)
- DEF_HELPER_1(wfi, void, env)
- DEF_HELPER_1(wrs_nto, void, env)
- DEF_HELPER_1(tlb_flush, void, env)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index c45b8fa1d8..d320631e8c 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -121,6 +121,9 @@ wfi         0001000    00101 00000 000 00000 1110011
- sfence_vma  0001001    ..... ..... 000 00000 1110011 @sfence_vma
- sfence_vm   0001000    00100 ..... 000 00000 1110011 @sfence_vm
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 98e6940e93..7ee7b9c4ee 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -184,6 +184,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
+     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
++    ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+     ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, has_priv_1_11),
+@@ -1514,6 +1515,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
  
-+# *** NMI ***
-+mnret       0111000    00010 00000 000 00000 1110011
-+
- # *** RV32I Base Instruction Set ***
- lui      ....................       ..... 0110111 @u
- auipc    ....................       ..... 0010111 @u
-diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
-index bc5263a4e0..06bc20dda4 100644
---- a/target/riscv/insn_trans/trans_privileged.c.inc
-+++ b/target/riscv/insn_trans/trans_privileged.c.inc
-@@ -106,6 +106,18 @@ static bool trans_mret(DisasContext *ctx, arg_mret *a)
- #endif
- }
- 
-+static bool trans_mnret(DisasContext *ctx, arg_mnret *a)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    gen_helper_mnret(cpu_pc, tcg_env);
-+    tcg_gen_exit_tb(NULL, 0); /* no chaining */
-+    ctx->base.is_jmp = DISAS_NORETURN;
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
- static bool trans_wfi(DisasContext *ctx, arg_wfi *a)
- {
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 25a5263573..3e26392e65 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -353,6 +353,52 @@ target_ulong helper_mret(CPURISCVState *env)
-     return retpc;
- }
- 
-+target_ulong helper_mnret(CPURISCVState *env)
-+{
-+    if (!riscv_cpu_cfg(env)->ext_smrnmi) {
-+        /* RNMI feature is not presented. */
-+        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-+    }
-+
-+    if (!(env->priv >= PRV_M)) {
-+        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-+    }
-+
-+    /* Get return PC from mnepc CSR. */
-+    target_ulong retpc = env->mnepc;
-+    if (!riscv_has_ext(env, RVC) && (retpc & 0x3)) {
-+        riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, GETPC());
-+    }
-+
-+    /* Get previous privilege level from mnstatus CSR. */
-+    target_ulong prev_priv = get_field(env->mnstatus, MNSTATUS_MNPP);
-+
-+    if (riscv_cpu_cfg(env)->pmp &&
-+        !pmp_get_num_rules(env) && (prev_priv != PRV_M)) {
-+        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-+    }
-+
-+    target_ulong prev_virt = get_field(env->mnstatus, MNSTATUS_MNPV) &&
-+                             (prev_priv != PRV_M);
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, true);
-+
-+    /*
-+     * If MNRET changes the privilege mode to a mode
-+     * less privileged than M, it also sets mstatus.MPRV to 0.
-+     */
-+    if (prev_priv < PRV_M) {
-+        env->mstatus = set_field(env->mstatus, MSTATUS_MPRV, false);
-+    }
-+
-+    if (riscv_has_ext(env, RVH) && prev_virt) {
-+        riscv_cpu_swap_hypervisor_regs(env);
-+    }
-+
-+    riscv_cpu_set_mode(env, prev_priv, prev_virt);
-+
-+    return retpc;
-+}
-+
- void helper_wfi(CPURISCVState *env)
- {
-     CPUState *cs = env_cpu(env);
+     MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
+     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
++    MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
+     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
+     MULTI_EXT_CFG_BOOL("ssaia", ext_ssaia, false),
+     MULTI_EXT_CFG_BOOL("svade", ext_svade, false),
 -- 
 2.39.3
 
