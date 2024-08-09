@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D8394D615
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32ED194D608
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 20:09:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scU2f-00016W-Vl; Fri, 09 Aug 2024 14:08:46 -0400
+	id 1scU2h-0001AU-1P; Fri, 09 Aug 2024 14:08:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2d-0000xy-5e
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:43 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1scU2e-00013D-JB
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:44 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1scU2a-0007C5-Tt
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:42 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3684407b2deso1263620f8f.1
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:08:40 -0700 (PDT)
+ id 1scU2b-0007CG-G0
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 14:08:44 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3687fd09251so1249716f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 11:08:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723226919; x=1723831719; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723226920; x=1723831720; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9H8W0O0b1Ww323Eya3NUzzCuyPiKzt+1Rqu3lq0GOBs=;
- b=Z2YPnO3BEUFXgX0OUNHn4jXBqVYCdz/hk4bdotPv8j76VDRxtP+bLAbjO6QF5x+TeT
- TZVidLI+h8cBUbDQyJGPnb4aAnZLstG6yRINDZ3pwP3DvCLuWUpqJ94Uamji125tr46p
- Qv8OA0LBD+oExy/8wDbg9VvLFz14ZOOPTM96YHRZhFAHDyN59AHiCagmwPDlH8vw3tJK
- B65kRsY7yt8Mz4Q3Umr+B6tvwLoPy4LHJRBVxzIIhbSqoS7kGnuOGQ5RSmy73rTWorI3
- WHb5fCVMzWhpytMqyPl88WoLXrEGzDfcxKjibvIOjgnKumGXwGqzOS5zVYAffy5q3MCl
- pQ6w==
+ :reply-to; bh=pcTrq9FcAyVIHTx7LxJip+z/+kVAskuuP786YAuXnNs=;
+ b=FuuBvA32aIjAfy551kYFl6UtHGCj+lwrx685YKx62sUm/LWH1a5hF2cCH7cW96Aq9N
+ 0mTHPP1jYksCef/ZPH4km1+TEBWSBeVXPiKFWtYZ1AgTLdPx/ATb59FIaceFBoNWludz
+ IHNQyKHZT4FQ/6ofD0hVNPT/ZbE5RmhqVj7EWYsV+Tz19zcbjBImNBxdrCXxMdLiy9GD
+ lUKKtTJbStp1IyPNxM8FSZUbgM+5j5LpPaZP34gY4y9UBqNFrevPCwWnIDhPRTD/ayux
+ F08J0lDS0yo2tI/nbAuLlA+oWDr8KqywgCNBl7kXTJEmPU7ARGzJ/THgeJLccNri/+gB
+ GBfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723226919; x=1723831719;
+ d=1e100.net; s=20230601; t=1723226920; x=1723831720;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9H8W0O0b1Ww323Eya3NUzzCuyPiKzt+1Rqu3lq0GOBs=;
- b=PO5GZRQbfmPx2TRZIb16QxfmBH6UTZz4QsRn8OKte2vxbRcmlLMJxCTVz2ZqRgvYgb
- bITe9looHr1xmzk1PxYtoYpm/Mbuk+a7SXD6FHO4Uju/aeAWjGHYBvqi+2JVJ38wxB0H
- 6YrWemgvWyEi0xx+kqgtkdI7GY33KqAoImTQBNW8ohVUZPmaCtpAKXDj6fW8q0kBkiBc
- PvQBlF3abecQP6MevFjAsDsooyR9p/N9e458LfkqCbb8/Trk7GzWHGZzUfBOVH7tunsr
- uVLQPUtF50fh5GCiOh+ynLVvgajvZk+9+9WWyYSu0CXyJqylC/zoNRx/6mOGuRvlts7f
- mjgQ==
-X-Gm-Message-State: AOJu0YyEcL9vP9pkXkJw33xS7OT22F+GF6XQXVVI5kQi+R89LDHVoXXo
- bdXi7leACp2cGTZ696JqMPEC3/I+Xq13dowNTfBrQK3UdQkY9UhE1YJiI5bAwu+lzepBy0wErjJ
- j
-X-Google-Smtp-Source: AGHT+IGyIqLACViZKl7GbGD+tUL/2MFBIOkiBElfrunkUJCM0KzRQSFKZ2fl2FhPy2YBzcKdVJdLRg==
-X-Received: by 2002:adf:fb46:0:b0:367:96d6:4c2d with SMTP id
- ffacd0b85a97d-36d5e4d2ad4mr1756404f8f.25.1723226918692; 
- Fri, 09 Aug 2024 11:08:38 -0700 (PDT)
+ bh=pcTrq9FcAyVIHTx7LxJip+z/+kVAskuuP786YAuXnNs=;
+ b=l5+Nkqss/4CfOTpE5M1nW10lL7Xn+gWTezVomxo0vpCyhdbW92uEMDHSAnc8GWex8n
+ ScRdgeen7p/cSq2HGG1RGGYTjsJki7faa+g7qg2VKgKzxW7y4Ygpc/ruUEAVKLk340LQ
+ nxV8zZFw6VlkOUeqSvFgk9K27j0HLDHuqQuei/dkCz+toLLRjZvrnDItKjHTAA73gRfo
+ XPfrmGmLVwsCpjMH7nMA1wRuPQCCJ3icXGzNsSaz8GBLO1rL1rFORIHis3yFz1LRk7V9
+ VwIuGv3z7gCBfjQChXKBP9P3OFdTDEI82jKdKvnO2Ahkp20PY5KuAw/ccY6Qv4a1yC7g
+ Ch2g==
+X-Gm-Message-State: AOJu0YwQc23x2ioacDVkcztYhcio9Z0p0M5LBk6n0hLn164wqZMMprj6
+ xwK5xyTMaRu+uCoi8luIXtbSUF4HHU0f+xAFie3j4VQMXboCZbiOm4wXMnr5Gt8e2tG43T/xrsY
+ Z
+X-Google-Smtp-Source: AGHT+IFiAvQXSt/3E9HAVd0jKxOdpcbBA/SkSbNcXmdFPm6vLLNn51dTjzZED898rY5nUOD5MGzOlQ==
+X-Received: by 2002:adf:f089:0:b0:368:7a18:908c with SMTP id
+ ffacd0b85a97d-36d612eaf2bmr1972586f8f.51.1723226919249; 
+ Fri, 09 Aug 2024 11:08:39 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36e4c937b6esm132262f8f.32.2024.08.09.11.08.38
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 09 Aug 2024 11:08:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/11] include: Fix typo in name of MAKE_IDENTFIER macro
-Date: Fri,  9 Aug 2024 19:08:26 +0100
-Message-Id: <20240809180835.1243269-3-peter.maydell@linaro.org>
+Subject: [PULL 03/11] docs/specs/rocker.txt: Convert to rST
+Date: Fri,  9 Aug 2024 19:08:27 +0100
+Message-Id: <20240809180835.1243269-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809180835.1243269-1-peter.maydell@linaro.org>
 References: <20240809180835.1243269-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,96 +92,605 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit bb71846325e23 we added some macro magic to avoid
-variable-shadowing when using some of our more complicated
-macros. One of the internal components of this is a macro
-named MAKE_IDENTFIER. Fix the typo in its name: it should
-be MAKE_IDENTIFIER.
-
-Commit created with
- sed -i -e 's/MAKE_IDENTFIER/MAKE_IDENTIFIER/g' include/qemu/*.h include/qapi/qmp/qobject.h
+Convert the rocker.txt specification document to rST format.  We make
+extensive use of the :: marker to introduce a literal block for all
+the tables and ASCII art, rather than trying to convert the tables to
+rST table syntax.  This produces a valid rST document without needing
+a huge diff.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240801102516.3843780-1-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240801170131.3977807-2-peter.maydell@linaro.org
 ---
- include/qapi/qmp/qobject.h | 2 +-
- include/qemu/atomic.h      | 2 +-
- include/qemu/compiler.h    | 2 +-
- include/qemu/osdep.h       | 6 +++---
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ MAINTAINERS                           |   2 +-
+ docs/specs/index.rst                  |   1 +
+ docs/specs/{rocker.txt => rocker.rst} | 181 +++++++++++++-------------
+ 3 files changed, 93 insertions(+), 91 deletions(-)
+ rename docs/specs/{rocker.txt => rocker.rst} (91%)
 
-diff --git a/include/qapi/qmp/qobject.h b/include/qapi/qmp/qobject.h
-index 89b97d88bca..256d782688c 100644
---- a/include/qapi/qmp/qobject.h
-+++ b/include/qapi/qmp/qobject.h
-@@ -54,7 +54,7 @@ struct QObject {
-     typeof(obj) _obj = (obj);                                   \
-     _obj ? container_of(&_obj->base, QObject, base) : NULL;     \
- })
--#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTFIER(_obj))
-+#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTIFIER(_obj))
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 10af2126329..36becfaf494 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2465,7 +2465,7 @@ S: Maintained
+ F: hw/net/rocker/
+ F: qapi/rocker.json
+ F: tests/rocker/
+-F: docs/specs/rocker.txt
++F: docs/specs/rocker.rst
  
- /* Required for qobject_to() */
- #define QTYPE_CAST_TO_QNull     QTYPE_QNULL
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index dc4118ddd9e..7a3f2e6576b 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -128,7 +128,7 @@
-     _val;                                               \
-     })
- #define qatomic_rcu_read(ptr) \
--    qatomic_rcu_read_internal((ptr), MAKE_IDENTFIER(_val))
-+    qatomic_rcu_read_internal((ptr), MAKE_IDENTIFIER(_val))
+ e1000x
+ M: Dmitry Fleytman <dmitry.fleytman@gmail.com>
+diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+index be899b49c28..6495ed5ed9e 100644
+--- a/docs/specs/index.rst
++++ b/docs/specs/index.rst
+@@ -35,3 +35,4 @@ guest hardware that is specific to QEMU.
+    vmcoreinfo
+    vmgenid
+    rapl-msr
++   rocker
+diff --git a/docs/specs/rocker.txt b/docs/specs/rocker.rst
+similarity index 91%
+rename from docs/specs/rocker.txt
+rename to docs/specs/rocker.rst
+index 1857b317030..3a7fc6a7e0e 100644
+--- a/docs/specs/rocker.txt
++++ b/docs/specs/rocker.rst
+@@ -1,23 +1,23 @@
+ Rocker Network Switch Register Programming Guide
+-Copyright (c) Scott Feldman <sfeldma@gmail.com>
+-Copyright (c) Neil Horman <nhorman@tuxdriver.com>
+-Version 0.11, 12/29/2014
++************************************************
  
- #define qatomic_rcu_set(ptr, i) do {                   \
-     qemu_build_assert(sizeof(*ptr) <= ATOMIC_REG_SIZE); \
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index 554c5ce7df7..c06954ccb41 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -38,7 +38,7 @@
- #endif
+-LICENSE
+-=======
++..
++   Copyright (c) Scott Feldman <sfeldma@gmail.com>
++   Copyright (c) Neil Horman <nhorman@tuxdriver.com>
++   Version 0.11, 12/29/2014
  
- /* Expands into an identifier stemN, where N is another number each time */
--#define MAKE_IDENTFIER(stem) glue(stem, __COUNTER__)
-+#define MAKE_IDENTIFIER(stem) glue(stem, __COUNTER__)
+-This program is free software; you can redistribute it and/or modify
+-it under the terms of the GNU General Public License as published by
+-the Free Software Foundation; either version 2 of the License, or
+-(at your option) any later version.
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2 of the License, or
++   (at your option) any later version.
  
- #ifndef likely
- #define likely(x)   __builtin_expect(!!(x), 1)
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 4cc4c32b144..fe7c3c5f673 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -399,7 +399,7 @@ void QEMU_ERROR("code path is reachable")
-     })
- #undef MIN
- #define MIN(a, b) \
--    MIN_INTERNAL((a), (b), MAKE_IDENTFIER(_a), MAKE_IDENTFIER(_b))
-+    MIN_INTERNAL((a), (b), MAKE_IDENTIFIER(_a), MAKE_IDENTIFIER(_b))
+-This program is distributed in the hope that it will be useful,
+-but WITHOUT ANY WARRANTY; without even the implied warranty of
+-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+-GNU General Public License for more details.
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++   GNU General Public License for more details.
  
- #define MAX_INTERNAL(a, b, _a, _b)                      \
-     ({                                                  \
-@@ -408,7 +408,7 @@ void QEMU_ERROR("code path is reachable")
-     })
- #undef MAX
- #define MAX(a, b) \
--    MAX_INTERNAL((a), (b), MAKE_IDENTFIER(_a), MAKE_IDENTFIER(_b))
-+    MAX_INTERNAL((a), (b), MAKE_IDENTIFIER(_a), MAKE_IDENTIFIER(_b))
+-SECTION 1: Introduction
+-=======================
++Introduction
++============
  
- #ifdef __COVERITY__
- # define MIN_CONST(a, b) ((a) < (b) ? (a) : (b))
-@@ -440,7 +440,7 @@ void QEMU_ERROR("code path is reachable")
-         _a == 0 ? _b : (_b == 0 || _b > _a) ? _a : _b;  \
-     })
- #define MIN_NON_ZERO(a, b) \
--    MIN_NON_ZERO_INTERNAL((a), (b), MAKE_IDENTFIER(_a), MAKE_IDENTFIER(_b))
-+    MIN_NON_ZERO_INTERNAL((a), (b), MAKE_IDENTIFIER(_a), MAKE_IDENTIFIER(_b))
+ Overview
+ --------
+@@ -29,25 +29,25 @@ software.
+ Notations and Conventions
+ -------------------------
  
- /*
-  * Round number down to multiple. Safe when m is not a power of 2 (see
+-o In register descriptions, [n:m] indicates a range from bit n to bit m,
+-inclusive.
+-o Use of leading 0x indicates a hexadecimal number.
+-o Use of leading 0b indicates a binary number.
+-o The use of RSVD or Reserved indicates that a bit or field is reserved for
+-future use.
+-o Field width is in bytes, unless otherwise noted.
+-o Register are (R) read-only, (R/W) read/write, (W) write-only, or (COR) clear
+-on read
+-o TLV values in network-byte-order are designated with (N).
++* In register descriptions, [n:m] indicates a range from bit n to bit m,
++  inclusive.
++* Use of leading 0x indicates a hexadecimal number.
++* Use of leading 0b indicates a binary number.
++* The use of RSVD or Reserved indicates that a bit or field is reserved for
++  future use.
++* Field width is in bytes, unless otherwise noted.
++* Register are (R) read-only, (R/W) read/write, (W) write-only, or (COR) clear
++  on read
++* TLV values in network-byte-order are designated with (N).
+ 
+ 
+-SECTION 2: PCI Configuration Registers
+-======================================
++PCI Configuration Registers
++===========================
+ 
+ PCI Configuration Space
+ -----------------------
+ 
+-Each switch instance registers as a PCI device with PCI configuration space:
++Each switch instance registers as a PCI device with PCI configuration space::
+ 
+ 	offset	width	description		value
+ 	---------------------------------------------
+@@ -74,11 +74,10 @@ Each switch instance registers as a PCI device with PCI configuration space:
+ 	0x41	1	Retry count
+ 	0x42	2	Reserved
+ 
++        * Assigned by sub-system implementation
+ 
+-* Assigned by sub-system implementation
+-
+-SECTION 3: Memory-Mapped Register Space
+-=======================================
++Memory-Mapped Register Space
++============================
+ 
+ There are two memory-mapped BARs.  BAR0 maps device register space and is
+ 0x2000 in size.  BAR1 maps MSI-X vector and PBA tables and is also 0x2000 in
+@@ -89,7 +88,7 @@ byte registers with one 4-byte access, and 8 byte registers with either two
+ 4-byte accesses or a single 8-byte access.  In the case of two 4-byte accesses,
+ access must be lower and then upper 4-bytes, in that order.
+ 
+-BAR0 device register space is organized as follows:
++BAR0 device register space is organized as follows::
+ 
+ 	offset		description
+ 	------------------------------------------------------
+@@ -105,7 +104,7 @@ Reads to reserved registers read back as 0.
+ 
+ No fancy stuff like write-combining is enabled on any of the registers.
+ 
+-BAR1 MSI-X register space is organized as follows:
++BAR1 MSI-X register space is organized as follows::
+ 
+ 	offset		description
+ 	------------------------------------------------------
+@@ -113,8 +112,8 @@ BAR1 MSI-X register space is organized as follows:
+ 	0x1000-0x1fff	MSI-X PBA table
+ 
+ 
+-SECTION 4: Interrupts, DMA, and Endianness
+-==========================================
++Interrupts, DMA, and Endianness
++===============================
+ 
+ PCI Interrupts
+ --------------
+@@ -122,7 +121,7 @@ PCI Interrupts
+ The device supports only MSI-X interrupts.  BAR1 memory-mapped region contains
+ the MSI-X vector and PBA tables, with support for up to 256 MSI-X vectors.
+ 
+-The vector assignment is:
++The vector assignment is::
+ 
+ 	vector		description
+ 	-----------------------------------------------------
+@@ -134,7 +133,7 @@ The vector assignment is:
+ 			  Tx vector is even
+ 			  Rx vector is odd
+ 
+-A MSI-X vector table entry is 16 bytes:
++A MSI-X vector table entry is 16 bytes::
+ 
+ 	field		offset	width	description
+ 	-------------------------------------------------------------
+@@ -170,7 +169,7 @@ ring, and hardware will set this bit when the descriptor is complete.
+ Descriptor ring sizes must be a power of 2 and range from 2 to 64K entries.
+ Descriptor rings' base address must be 8-byte aligned.  Descriptors must be
+ packed within ring.  Each descriptor in each ring must also be aligned on an 8
+-byte boundary.  Each descriptor ring will have these registers:
++byte boundary.  Each descriptor ring will have these registers::
+ 
+ 	DMA_DESC_xxx_BASE_ADDR, offset 0x1000 + (x * 32), 64-bit, (R/W)
+ 	DMA_DESC_xxx_SIZE, offset 0x1008 + (x * 32), 32-bit, (R/W)
+@@ -180,7 +179,7 @@ byte boundary.  Each descriptor ring will have these registers:
+ 	DMA_DESC_xxx_CREDITS, offset 0x1018 + (x * 32), 32-bit, (R/W)
+ 	DMA_DESC_xxx_RSVD1, offset 0x101c + (x * 32), 32-bit, (R/W)
+ 
+-Where x is descriptor ring index:
++Where x is descriptor ring index::
+ 
+ 	index		ring
+ 	--------------------
+@@ -203,14 +202,14 @@ written past TAIL.  To do so would wrap the ring.  An empty ring is when HEAD
+ == TAIL.  A full ring is when HEAD is one position behind TAIL.  Both HEAD and
+ TAIL increment and modulo wrap at the ring size.
+ 
+-CTRL register bits:
++CTRL register bits::
+ 
+ 	bit	name		description
+ 	------------------------------------------------------------------------
+ 	[0]	CTRL_RESET	Reset the descriptor ring
+ 	[1:31]	Reserved
+ 
+-All descriptor types share some common fields:
++All descriptor types share some common fields::
+ 
+ 	field			width	description
+ 	-------------------------------------------------------------------
+@@ -234,7 +233,7 @@ filled in by the switch.  Likewise, the switch will ignore unknown fields
+ filled in by software.
+ 
+ Descriptor payload buffer is 8-byte aligned and TLVs are 8-byte aligned.  The
+-value within a TLV is also 8-byte aligned.  The (packed, 8 byte) TLV header is:
++value within a TLV is also 8-byte aligned.  The (packed, 8 byte) TLV header is::
+ 
+ 	field	width	description
+ 	-----------------------------
+@@ -246,7 +245,7 @@ The alignment requirements for descriptors and TLVs are to avoid unaligned
+ access exceptions in software.  Note that the payload for each TLV is also
+ 8 byte aligned.
+ 
+-Figure 1 shows an example descriptor buffer with two TLVs.
++Figure 1 shows an example descriptor buffer with two TLVs::
+ 
+                   <------- 8 bytes ------->
+ 
+@@ -316,11 +315,11 @@ network packet data.  All non-network-packet TLV multi-byte values will be LE.
+ TLV values in network-byte-order are designated with (N).
+ 
+ 
+-SECTION 5: Test Registers
+-=========================
++Test Registers
++==============
+ 
+ Rocker has several test registers to support troubleshooting register access,
+-interrupt generation, and DMA operations:
++interrupt generation, and DMA operations::
+ 
+ 	TEST_REG, offset 0x0010, 32-bit (R/W)
+ 	TEST_REG64, offset 0x0018, 64-bit (R/W)
+@@ -338,7 +337,7 @@ for that vector.
+ 
+ To test basic DMA operations, allocate a DMA-able host buffer and put the
+ buffer address into TEST_DMA_ADDR and size into TEST_DMA_SIZE.  Then, write to
+-TEST_DMA_CTRL to manipulate the buffer contents.  TEST_DMA_CTRL operations are:
++TEST_DMA_CTRL to manipulate the buffer contents.  TEST_DMA_CTRL operations are::
+ 
+ 	operation		value	description
+ 	-----------------------------------------------------------
+@@ -351,14 +350,14 @@ issue exists.  In particular, buffers that start on odd-8-byte boundary and/or
+ span multiple PAGE sizes should be tested.
+ 
+ 
+-SECTION 6: Ports
+-================
++Ports
++=====
+ 
+ Physical and Logical Ports
+ ------------------------------------
+ 
+ The switch supports up to 62 physical (front-panel) ports.  Register
+-PORT_PHYS_COUNT returns the actual number of physical ports available:
++PORT_PHYS_COUNT returns the actual number of physical ports available::
+ 
+ 	PORT_PHYS_COUNT, offset 0x0304, 32-bit, (R)
+ 
+@@ -369,7 +368,7 @@ Front-panel ports and logical tunnel ports are mapped into a single 32-bit port
+ space.  A special CPU port is assigned port 0.  The front-panel ports are
+ mapped to ports 1-62.  A special loopback port is assigned port 63.  Logical
+ tunnel ports are assigned ports 0x0001000-0x0001ffff.
+-To summarize the port assignments:
++To summarize the port assignments::
+ 
+ 	port			mapping
+ 	-------------------------------------------------------
+@@ -391,14 +390,14 @@ set/get the mode for front-panel ports, see port settings, below.
+ Port Settings
+ -------------
+ 
+-Link status for all front-panel ports is available via PORT_PHYS_LINK_STATUS:
++Link status for all front-panel ports is available via PORT_PHYS_LINK_STATUS::
+ 
+ 	PORT_PHYS_LINK_STATUS, offset 0x0310, 64-bit, (R)
+ 
+ 	Value is port bitmap.  Bits 0 and 63 always read 0.  Bits 1-62
+ 	read 1 for link UP and 0 for link DOWN for respective front-panel ports.
+ 
+-Other properties for front-panel ports are available via DMA CMD descriptors:
++Other properties for front-panel ports are available via DMA CMD descriptors::
+ 
+ 	Get PORT_SETTINGS descriptor:
+ 
+@@ -438,7 +437,7 @@ Port Enable
+ -----------
+ 
+ Front-panel ports are initially disabled, which means port ingress and egress
+-packets will be dropped.  To enable or disable a port, use PORT_PHYS_ENABLE:
++packets will be dropped.  To enable or disable a port, use PORT_PHYS_ENABLE::
+ 
+ 	PORT_PHYS_ENABLE: offset 0x0318, 64-bit, (R/W)
+ 
+@@ -447,15 +446,15 @@ packets will be dropped.  To enable or disable a port, use PORT_PHYS_ENABLE:
+ 	Default is 0.
+ 
+ 
+-SECTION 7: Switch Control
+-=========================
++Switch Control
++==============
+ 
+ This section covers switch-wide register settings.
+ 
+ Control
+ -------
+ 
+-This register is used for low level control of the switch.
++This register is used for low level control of the switch::
+ 
+ 	CONTROL: offset 0x0300, 32-bit, (W)
+ 
+@@ -468,18 +467,18 @@ Switch ID
+ ---------
+ 
+ The switch has a SWITCH_ID to be used by software to uniquely identify the
+-switch:
++switch::
+ 
+ 	SWITCH_ID: offset 0x0320, 64-bit, (R)
+ 
+ 	Value is opaque to switch software and no special encoding is implied.
+ 
+ 
+-SECTION 8: Events
+-=================
++Events
++======
+ 
+ Non-I/O asynchronous events from the device are notified to the host using the
+-event ring.  The TLV structure for events is:
++event ring.  The TLV structure for events is::
+ 
+ 	field		width	description
+ 	---------------------------------------------------
+@@ -491,7 +490,7 @@ event ring.  The TLV structure for events is:
+ Link Changed Event
+ ------------------
+ 
+-When link status changes on a physical port, this event is generated.
++When link status changes on a physical port, this event is generated::
+ 
+ 	field		width	description
+ 	---------------------------------------------------
+@@ -510,6 +509,8 @@ driver should install to the device the MAC/VLAN on the port into the bridge
+ table.  Once installed, the MAC/VLAN is known on the port and this event will
+ no longer be generated.
+ 
++::
++
+ 	field		width	description
+ 	---------------------------------------------------
+ 	INFO		<nest>
+@@ -518,8 +519,8 @@ no longer be generated.
+ 	  VLAN		2	VLAN ID
+ 
+ 
+-SECTION 9: CPU Packet Processing
+-================================
++CPU Packet Processing
++=====================
+ 
+ Ingress packets directed to the host CPU for further processing are delivered
+ in the DMA RX ring.  Likewise, host CPU originating packets destined to egress
+@@ -540,7 +541,7 @@ software that Tx is complete and software resources (e.g. skb) backing packet
+ can be released.
+ 
+ Figure 2 shows an example 3-fragment packet queued with one Tx descriptor.  A
+-TLV is used for each packet fragment.
++TLV is used for each packet fragment::
+ 
+ 	                                           pkt frag 1
+ 	                                           +–––––––+  +–+
+@@ -570,7 +571,7 @@ TLV is used for each packet fragment.
+ 
+ 				fig 2.
+ 
+-The TLVs for Tx descriptor buffer are:
++The TLVs for Tx descriptor buffer are::
+ 
+ 	field			width	description
+ 	---------------------------------------------------------------------
+@@ -600,7 +601,7 @@ The TLVs for Tx descriptor buffer are:
+ 	    TX_FRAG_ADDR	8	DMA address of packet fragment
+ 	    TX_FRAG_LEN		2	Packet fragment length
+ 
+-Possible status return codes in descriptor on completion are:
++Possible status return codes in descriptor on completion are::
+ 
+ 	DESC_COMP_ERR	reason
+ 	--------------------------------------------------------------------
+@@ -623,7 +624,7 @@ worst-case packet size.  A single Rx descriptor will contain the entire Rx
+ packet data in one RX_FRAG.  Other Rx TLVs describe and hardware offloads
+ performed on the packet, such as checksum validation.
+ 
+-The TLVs for Rx descriptor buffer are:
++The TLVs for Rx descriptor buffer are::
+ 
+ 	field		width	description
+ 	---------------------------------------------------
+@@ -649,7 +650,7 @@ The TLVs for Rx descriptor buffer are:
+ Offload forward RX_FLAG indicates the device has already forwarded the packet
+ so the host CPU should not also forward the packet.
+ 
+-Possible status return codes in descriptor on completion are:
++Possible status return codes in descriptor on completion are::
+ 
+ 	DESC_COMP_ERR	reason
+ 	--------------------------------------------------------------------
+@@ -660,14 +661,14 @@ Possible status return codes in descriptor on completion are:
+ 			packet data TLV and other TLVs.
+ 
+ 
+-SECTION 10: OF-DPA Mode
+-======================
++OF-DPA Mode
++===========
+ 
+ OF-DPA mode allows the switch to offload flow packet processing functions to
+ hardware.  An OpenFlow controller would communicate with an OpenFlow agent
+ installed on the switch.  The OpenFlow agent would (directly or indirectly)
+ communicate with the Rocker switch driver, which in turn would program switch
+-hardware with flow functionality, as defined in OF-DPA.  The block diagram is:
++hardware with flow functionality, as defined in OF-DPA.  The block diagram is::
+ 
+ 		+–––––––––––––––----–––+
+ 		|        OF            |
+@@ -696,14 +697,14 @@ OF-DPA Flow Table Interface
+ 
+ There are commands to add, modify, delete, and get stats of flow table entries.
+ The commands are issued using the DMA CMD descriptor ring.  The following
+-commands are defined:
++commands are defined::
+ 
+ 	CMD_ADD:		add an entry to flow table
+ 	CMD_MOD:		modify an entry in flow table
+ 	CMD_DEL:		delete an entry from flow table
+ 	CMD_GET_STATS:		get stats for flow entry
+ 
+-TLVs for add and modify commands are:
++TLVs for add and modify commands are::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -723,14 +724,14 @@ TLVs for add and modify commands are:
+ 
+ Additional TLVs based on flow table ID:
+ 
+-Table ID 0: ingress port
++Table ID 0: ingress port::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+ 	OF_DPA_IN_PPORT		4	ingress physical port number
+ 	OF_DPA_GOTO_TBL		2	goto table ID; zero to drop
+ 
+-Table ID 10: vlan
++Table ID 10: vlan::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -740,7 +741,7 @@ Table ID 10: vlan
+ 	OF_DPA_GOTO_TBL		2	goto table ID; zero to drop
+ 	OF_DPA_NEW_VLAN_ID	2 (N)	new vlan ID
+ 
+-Table ID 20: termination mac
++Table ID 20: termination mac::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -757,7 +758,7 @@ Table ID 20: termination mac
+ 	OF_DPA_OUT_PPORT	2	if specified, must be
+ 					controller, set zero otherwise
+ 
+-Table ID 30: unicast routing
++Table ID 30: unicast routing::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -772,7 +773,7 @@ Table ID 30: unicast routing
+ 	OF_DPA_GROUP_ID		4	data for GROUP action must
+ 					be an L3 Unicast group entry
+ 
+-Table ID 40: multicast routing
++Table ID 40: multicast routing::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -797,7 +798,7 @@ Table ID 40: multicast routing
+ 	OF_DPA_GROUP_ID		4	data for GROUP action must
+ 					be an L3 multicast group entry
+ 
+-Table ID 50: bridging
++Table ID 50: bridging::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -818,7 +819,7 @@ Table ID 50: bridging
+ 					restricted to CONTROLLER,
+ 					set to 0 otherwise
+ 
+-Table ID 60: acl policy
++Table ID 60: acl policy::
+ 
+ 	field			width	description
+ 	----------------------------------------------------
+@@ -890,7 +891,7 @@ Table ID 60: acl policy
+ 					dropped (all other instructions
+ 					ignored)
+ 
+-TLVs for flow delete and get stats command are:
++TLVs for flow delete and get stats command are::
+ 
+ 	field			width	description
+ 	---------------------------------------------------
+@@ -898,7 +899,7 @@ TLVs for flow delete and get stats command are:
+ 	OF_DPA_COOKIE		8	Cookie
+ 
+ On completion of get stats command, the descriptor buffer is written back with
+-the following TLVs:
++the following TLVs::
+ 
+ 	field			width	description
+ 	---------------------------------------------------
+@@ -906,7 +907,7 @@ the following TLVs:
+ 	OF_DPA_STAT_RX_PKTS	8	Received packets
+ 	OF_DPA_STAT_TX_PKTS	8	Transmit packets
+ 
+-Possible status return codes in descriptor on completion are:
++Possible status return codes in descriptor on completion are::
+ 
+ 	DESC_COMP_ERR	command			reason
+ 	--------------------------------------------------------------------
+@@ -928,14 +929,14 @@ Group Table Interface
+ 
+ There are commands to add, modify, delete, and get stats of group table
+ entries.  The commands are issued using the DMA CMD descriptor ring.  The
+-following commands are defined:
++following commands are defined::
+ 
+ 	CMD_ADD:		add an entry to group table
+ 	CMD_MOD:		modify an entry in group table
+ 	CMD_DEL:		delete an entry from group table
+ 	CMD_GET_STATS:		get stats for group entry
+ 
+-TLVs for add and modify commands are:
++TLVs for add and modify commands are::
+ 
+ 	field			width	description
+ 	-----------------------------------------------------------
+@@ -969,7 +970,7 @@ TLVs for add and modify commands are:
+ 	  FLOW_SRC_MAC		6	(types 1, 2, 5)
+ 	  FLOW_DST_MAC		6	(types 1, 2)
+ 
+-TLVs for flow delete and get stats command are:
++TLVs for flow delete and get stats command are::
+ 
+ 	field			width	description
+ 	-----------------------------------------------------------
+@@ -977,7 +978,7 @@ TLVs for flow delete and get stats command are:
+ 	FLOW_GROUP_ID		2	Flow group ID
+ 
+ On completion of get stats command, the descriptor buffer is written back with
+-the following TLVs:
++the following TLVs::
+ 
+ 	field			width	description
+ 	---------------------------------------------------
+@@ -986,7 +987,7 @@ the following TLVs:
+ 	FLOW_STAT_REF_COUNT	4	Flow reference count
+ 	FLOW_STAT_BUCKET_COUNT	4	Flow bucket count
+ 
+-Possible status return codes in descriptor on completion are:
++Possible status return codes in descriptor on completion are::
+ 
+ 	DESC_COMP_ERR	command			reason
+ 	--------------------------------------------------------------------
 -- 
 2.34.1
 
