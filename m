@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6AA94CD19
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 11:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF0B94CD57
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Aug 2024 11:32:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1scLjP-00053I-QH; Fri, 09 Aug 2024 05:16:19 -0400
+	id 1scLxG-0001zu-FZ; Fri, 09 Aug 2024 05:30:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1scLjM-0004oa-Gf
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 05:16:17 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1scLxC-0001yR-Ms
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 05:30:34 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1scLjJ-0006i5-BY
- for qemu-devel@nongnu.org; Fri, 09 Aug 2024 05:16:15 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2f01e9f53e3so30004871fa.1
- for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 02:16:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1scLxA-0000KC-9g
+ for qemu-devel@nongnu.org; Fri, 09 Aug 2024 05:30:34 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-428fb103724so16470185e9.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Aug 2024 02:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723194971; x=1723799771; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723195830; x=1723800630; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kqlCEH87/NeUA8Q2MvkoHSXaVgPPuUPGNbx4rpR5vdo=;
- b=lcvzrzxT2HV5gGI1vVVQZpmbLueLuPzDfWygOWV0rcl9RGSS94MIULnOhTVPFLthXk
- qi7/B6ly5GWQq1ALkPbz1eHwX0GB8F1kltNyeXSKN8OQpOT4erQiTxMZcCvPEd5CYKwQ
- w0A955a9KUN/YhAN+lbCwZTn1oHpV2DQdKDdsRjMXqu99g63WEektHFvnouKXZlungmD
- vJZMtS4O5QuLCDMjiDtunTv2CNSwygqgmjNjnhMJJBjrEKPkBLrIDMub4lnDYhLA0BW0
- XMu1WxJF2Rnf1zhNd+VIsaX/QjzdIg1vhaeZOiCPIUqeMjaT6VQPJTEFZTh7QRnMHQ1k
- dQuw==
+ bh=WTXFjiUw5Bp4dZ4P9iTQAoR26OCDVV5O5ZIqNR6ttXo=;
+ b=ZbQGGBxsUqL+9GnZOTpMFnEkaVJqBeaZMeg7efBH0ZqyLyz0Bw7ZP1lDx2uPKevjQm
+ QwR/XmKfdrJ5lvJe1TK4x3odTpxauiKi+g9tERE5+puuX0PtKza5y7jd0W2rJ7wDEuZC
+ QqU5W46AteZE+KajUvOhdjWKvZ50UC0VMyAQsy+Wpi3YSfev9SgHaBQN6jgkpyvPnE8r
+ wqgX/XZSnbch1c6SUKkMP2Ns+/4VYZ0skwY7Z7vxCI5Kq/SYI8M+RAUzr29kkiRrEuTs
+ 6nHTEmu1ucLplKCwC3OK8ivgI1oCVqOM6lhJCh5gq3e33OXLbRlqdQZ77GPgvGC+EGzn
+ k8iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723194971; x=1723799771;
+ d=1e100.net; s=20230601; t=1723195830; x=1723800630;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kqlCEH87/NeUA8Q2MvkoHSXaVgPPuUPGNbx4rpR5vdo=;
- b=dcLuExYwV7RncZPgtTNArkLP25i3RmANaiW+rCZR0HqPl6qG0YQfjND/QWefNBWtOK
- 4/k0J4aymrsrZwru6pZIdKWNLYC/IVtbx6nhahWFWZfsxR/I5mh4vVS3XZBbmkW20dHb
- R2nci/mx+YUkMciyG0vIopYZkzq5h0fRCeajNeYOVdS3fCAhk2HOnyc+lipbQKovSwk2
- w4GCCI2I9XVDRjHiajr5v4GMHWbDoEpSJIA9CpW3fH6sfis9efusYphvFiaxLn10YRz3
- sEUGAuzyVFJPIUOELddUjPMKys5zC1uj/5kLMtCjZEyjMbAQOq47KsHI6dsrl6q+NQLi
- 6G7A==
-X-Gm-Message-State: AOJu0YylT7UbCLwNpRXZ4aB/kb3KXVB1pfpjh/LBKA6nmfNYY+9R+3w1
- bbeBF3ftRn3js80F61cuV4x20ZFX1KTxtNRXr3URsrpk2f++BtmOXm1dMIRPNTo=
-X-Google-Smtp-Source: AGHT+IEfH2eovvRFU5CfEkRKTHh4N0jgDr3YFgxddGpeI8aunBdmUJLML3WlDzh6RlRlORh87etDGA==
-X-Received: by 2002:a2e:be90:0:b0:2ef:2ba5:d214 with SMTP id
- 38308e7fff4ca-2f1a6c4d1cemr9983341fa.4.1723194970510; 
- Fri, 09 Aug 2024 02:16:10 -0700 (PDT)
+ bh=WTXFjiUw5Bp4dZ4P9iTQAoR26OCDVV5O5ZIqNR6ttXo=;
+ b=TXl8cvhFx8dtIXSoqDy+duFA1C2zK+MoRlC1M99S5vBcRwyK/5cjmBzf5zVPKR95aL
+ rTrAc0h0TF7iC4QeaukZwB0JIoim2q57a4DTeRm6uagjmXFke0oFpOI/uOrEl7VAmNSJ
+ yp6F/vIIce+tgEGOp8G5gmKiR+8ttTeq/zyxgZkIb4vYs+WLJV8rKCTarBPNNHu7fblC
+ 2rFuGDk5bUzB2y9hqGQGRkuGWLkfq4YpwrZeCOKVh978NroSXd5smaxPyIBfvLSudFCL
+ ppyGd4PT6a8mKzHNOQrqo4fSv6KQzBi0iE3uqD8TfLEv4oYYu1CHRFpc3IsHh82i9pXN
+ 8wIA==
+X-Gm-Message-State: AOJu0YxXABwnmxVy3zouSz/xSkNaA2P0u4jy4mF1v7QZZBTV/km30HpC
+ t/YR1lXkbKYsQ7iPuTLHLUlStmt4TN8SVIBCsiN1qoXX17iVSIiXX6FFkdUftss=
+X-Google-Smtp-Source: AGHT+IE2kOvm5jYMZiltc3fT9+yWha2f7l9SEStT1cOlFQ7BoScLKVHUtFWIY6lmySr2vwOgFlSQxw==
+X-Received: by 2002:a5d:6691:0:b0:368:6bb:f79e with SMTP id
+ ffacd0b85a97d-36d6829eadbmr913471f8f.4.1723195830340; 
+ Fri, 09 Aug 2024 02:30:30 -0700 (PDT)
 Received: from [192.168.178.175] (41.red-95-127-42.staticip.rima-tde.net.
  [95.127.42.41]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4290598e970sm116998785e9.24.2024.08.09.02.16.08
+ ffacd0b85a97d-36d271576c1sm4682692f8f.21.2024.08.09.02.30.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Aug 2024 02:16:10 -0700 (PDT)
-Message-ID: <e7c65f33-2438-4c9b-89f9-b1749868e11e@linaro.org>
-Date: Fri, 9 Aug 2024 11:16:06 +0200
+ Fri, 09 Aug 2024 02:30:29 -0700 (PDT)
+Message-ID: <9080f7e5-a40d-4cbd-a734-74578dd27894@linaro.org>
+Date: Fri, 9 Aug 2024 11:30:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] virtio-gpu: Correct virgl_renderer_resource_get_info()
- error check
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, Helge Konetzka <hk@zapateado.de>,
- Ganapathi Kamath <hgkamath@hotmail.com>
-References: <20240129073921.446869-1-dmitry.osipenko@collabora.com>
+Subject: Re: [RFC PATCH 03/23] scripts: add script to generate C header files
+ from SVD XML files
+To: Octavian Purdila <tavip@google.com>, John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, stefanst@google.com,
+ pbonzini@redhat.com, alex.bennee@linaro.org, thuth@redhat.com,
+ peter.maydell@linaro.org, marcandre.lureau@redhat.com,
+ alistair@alistair23.me, berrange@redhat.com, crosa@redhat.com,
+ bleal@redhat.com
+References: <20240805201719.2345596-1-tavip@google.com>
+ <20240805201719.2345596-4-tavip@google.com>
+ <CAFn=p-abeXP+dUtp_gwH3dcD5DT-sTAFg=udVugrzcU1r8fXpA@mail.gmail.com>
+ <CAGWr4cQL_LMWmEUdoPprRSp2k=CkQ0UJp5Q45qbAtUvvE6fDHg@mail.gmail.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240129073921.446869-1-dmitry.osipenko@collabora.com>
+In-Reply-To: <CAGWr4cQL_LMWmEUdoPprRSp2k=CkQ0UJp5Q45qbAtUvvE6fDHg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,78 +99,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dmitry,
+On 9/8/24 00:30, Octavian Purdila wrote:
+> On Thu, Aug 8, 2024 at 2:56 PM John Snow <jsnow@redhat.com> wrote:
 
-On 29/1/24 08:39, Dmitry Osipenko wrote:
-> virgl_renderer_resource_get_info() returns errno and not -1 on error.
 
-So basically we were ignoring all errors...
-
-Could some errors just be safely ignored? Because apparently
-this patch now gives troubles, see:
-https://gitlab.com/qemu-project/qemu/-/issues/2490
-Can you help us there?
-
-Regards,
-
-Phil.
-
-> Correct the return-value check.
+>>> diff --git a/configure b/configure
+>>> index 5ad1674ca5..811bfa5d54 100755
+>>> --- a/configure
+>>> +++ b/configure
+>>> @@ -956,7 +956,7 @@ mkvenv="$python ${source_path}/python/scripts/mkvenv.py"
+>>>   # Finish preparing the virtual environment using vendored .whl files
+>>>
+>>>   $mkvenv ensuregroup --dir "${source_path}/python/wheels" \
+>>> -     ${source_path}/pythondeps.toml meson || exit 1
+>>> +     ${source_path}/pythondeps.toml meson svd-gen-header || exit 1
+>>
 > 
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> ---
+> Hi John,
 > 
-> v2: - Fixed similar incorrect error-checking in vhost-user-gpu
->      - Added r-b from Marc
+> Thanks for reviewing!
 > 
->   contrib/vhost-user-gpu/virgl.c | 6 +++---
->   hw/display/virtio-gpu-virgl.c  | 2 +-
->   2 files changed, 4 insertions(+), 4 deletions(-)
+>>
+>> I haven't read the rest of this series; I'm chiming in solely from the build/python maintainer angle. Do we *always* need pysvd, no matter how QEMU was configured? Adding it to the meson line here is a very big hammer.
+>>
 > 
-> diff --git a/contrib/vhost-user-gpu/virgl.c b/contrib/vhost-user-gpu/virgl.c
-> index d1ccdf7d0668..51da0e3667f9 100644
-> --- a/contrib/vhost-user-gpu/virgl.c
-> +++ b/contrib/vhost-user-gpu/virgl.c
-> @@ -327,7 +327,7 @@ virgl_get_resource_info_modifiers(uint32_t resource_id,
->   #ifdef VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION
->       struct virgl_renderer_resource_info_ext info_ext;
->       ret = virgl_renderer_resource_get_info_ext(resource_id, &info_ext);
-> -    if (ret < 0) {
-> +    if (ret) {
->           return ret;
->       }
->   
-> @@ -335,7 +335,7 @@ virgl_get_resource_info_modifiers(uint32_t resource_id,
->       *modifiers = info_ext.modifiers;
->   #else
->       ret = virgl_renderer_resource_get_info(resource_id, info);
-> -    if (ret < 0) {
-> +    if (ret) {
->           return ret;
->       }
->   
-> @@ -372,7 +372,7 @@ virgl_cmd_set_scanout(VuGpu *g,
->           uint64_t modifiers = 0;
->           ret = virgl_get_resource_info_modifiers(ss.resource_id, &info,
->                                                   &modifiers);
-> -        if (ret == -1) {
-> +        if (ret) {
->               g_critical("%s: illegal resource specified %d\n",
->                          __func__, ss.resource_id);
->               cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 8bb7a2c21fe7..9f34d0e6619c 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -181,7 +181,7 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
->           memset(&info, 0, sizeof(info));
->           ret = virgl_renderer_resource_get_info(ss.resource_id, &info);
->   #endif
-> -        if (ret == -1) {
-> +        if (ret) {
->               qemu_log_mask(LOG_GUEST_ERROR,
->                             "%s: illegal resource specified %d\n",
->                             __func__, ss.resource_id);
+> I think the minimum we can do is to install it only if CONFIG_ARM is
+> enabled. That might change in the future if the models we create with
+> pysvd are enabled for other architectures.
+
+Similarly on how we manage libfdt, you can have meson defines
+SVDGEN as:
+
+   config_host_data.set('CONFIG_SVDGEN', svd_gen_header.found())
+
+Then declare SVDGEN in Kconfig.host, and finally use in the Kconfigs:
+
+   config FLEXCOMM_UART
+       bool
+       depends on SVDGEN
+
+   config RT500
+       bool
+       depends on ARM
+       select FLEXCOMM_UART
+
+See for FDT examples:
+
+$ git grep 'depends on.*FDT'
+hw/core/Kconfig:10:    depends on FDT
+hw/i386/Kconfig:118:    depends on I386 && FDT
+hw/loongarch/Kconfig:4:    depends on LOONGARCH64 && FDT
+hw/mips/Kconfig:84:    depends on MIPS64 && !TARGET_BIG_ENDIAN && FDT
+hw/ppc/Kconfig:4:    depends on PPC64 && FDT
+hw/ppc/Kconfig:29:    depends on PPC64 && FDT
+hw/ppc/Kconfig:58:    depends on PPC && FDT
+hw/ppc/Kconfig:77:    depends on PPC && FDT
+hw/ppc/Kconfig:174:    depends on PPC && FDT
+hw/ppc/Kconfig:180:    depends on PPC && FDT
+hw/ppc/Kconfig:186:    depends on PPC && FDT
+hw/rx/Kconfig:11:    depends on RX && FDT
+hw/xtensa/Kconfig:17:    depends on XTENSA && FDT
+
+>> If not, consider looking at how sphinx (the "docs" group) is only conditionally installed into the configure venv and mimic that using the appropriate configure flags that necessitate the availability of pyvsd for the QEMU build.
+> 
+> Thanks for the pointer, I'll take a look.
+> 
+>>
+>> We also need to provide a way for pysvd to be available offline; some packages are available via distro libs and if this package is available for every distro we officially support, that's sufficient (but requires updates to our various docker and VM test configuration files to add the new dependency). Otherwise, like we do for meson, we need to vendor the wheel in the tree so offline tarball builds will continue to work.
+>>
+>> It looks like pysvd is a pure python package with no dependencies, so it should be OK to vendor it in qemu.git/python/wheels/ - look at qemu.git/python/scripts/vendor.py and consider updating and running this script.
+> 
+> Thanks, I'll look at it and add it in v2.
+> 
+>>
+>> (The real blocker here is that RPM builds are performed offline and dependencies that cannot be satisfied via rpm can't be added through pip. We need any one of these to be true: (A) pyvsd is available (of a sufficient version) in all distro repositories we target; (B) This build feature is conditional and nobody minds if it never gets enabled for RPM builds; (C) The package can be vendored.)
+>>
+>> ~~js
+>>
+>> That said, you might be the first person I've seen outside of Paolo and I to brave mucking around with the python build venv. You deserve a bravery sticker :)
+>>
+>>>
+>>>   # At this point, we expect Meson to be installed and available.
+>>>   # We expect mkvenv or pip to have created pyvenv/bin/meson for us.
+>>> diff --git a/meson.build b/meson.build
+>>> index ec59effca2..dee587483b 100644
+>>> --- a/meson.build
+>>> +++ b/meson.build
+>>> @@ -3235,6 +3235,10 @@ tracetool_depends = files(
+>>>     'scripts/tracetool/vcpu.py'
+>>>   )
+>>>
+>>> +svd_gen_header = [
+>>> +  python, files('scripts/svd-gen-header.py')
+>>> +]
+>>> +
+>>>   qemu_version_cmd = [find_program('scripts/qemu-version.sh'),
+>>>                       meson.current_source_dir(),
+>>>                       get_option('pkgversion'), meson.project_version()]
+>>> diff --git a/python/setup.cfg b/python/setup.cfg
+>>> index 48668609d3..bc830c541a 100644
+>>> --- a/python/setup.cfg
+>>> +++ b/python/setup.cfg
+>>> @@ -45,6 +45,7 @@ devel =
+>>>       urwid >= 2.1.2
+>>>       urwid-readline >= 0.13
+>>>       Pygments >= 2.9.0
+>>> +    pysvd >= 0.2.3
+>>>
 
 
