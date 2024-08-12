@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337C694E65D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 08:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D2294E663
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 08:06:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdOAp-0008M9-8J; Mon, 12 Aug 2024 02:04:55 -0400
+	id 1sdOAt-00005P-Ss; Mon, 12 Aug 2024 02:04:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdOAn-0008LW-06
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 02:04:53 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdOAr-0008VW-Nj
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 02:04:57 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdOAl-00023G-5C
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 02:04:52 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-36d2a601c31so1958360f8f.0
- for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 23:04:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdOAq-00023U-2I
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 02:04:57 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-428101fa30aso29874715e9.3
+ for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 23:04:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723442689; x=1724047489; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723442694; x=1724047494; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OmxQ1UiezJn7kEH2xHoYS23Qe841zRKWJ62bwFmeLhM=;
- b=mkZ/Y1/U4LMuvEpnBYTjKpgjLs4VManZs9pjR3WHWbo03nL9WvQ7T3Ud8VzpQsehb3
- vrfqBqZ6SF6m5qGWB28z9fMUy01MRivKKp41ULy2vBv3XNIaXRz5C5wCIaruNyjH1jPI
- 1+lBj/VE2j2twzPtlVhJj9NpKaK/rdLxNn48UvHEdyYa24zFWCumWsE+IxYYE54Oyr9c
- INCssD1gQ0yS7qwPvDsWVbCYEfu44aY0Xx8ZoQmaA9MNjqKm9tkHD47XcK2MEKy4jcv/
- ZX/8kBZkk+NSX79Bt2oroCDIwpTu0T9WqVMJw7Rd3ul3pLEscjpGBP9xQAqc3E42swWL
- yPVg==
+ bh=z9fJcAFxs5RPqlywFK5Pcr5sIz2IiGoqrVmS5jgrKfs=;
+ b=NT1qJAGK20EbL9mPxde2uHSAKlpsoyfYuXdKqFD8XFGVKgeRgE/CT/CZegbWuDrcn5
+ CB/pu1NO/Gfm3o/OoYEfJgrJscXxeFIT//HhnZuKOGBJeSU2fAjXySQTkRCzC9zyl7YJ
+ 26ajYI/MAaKDCDh0iaFr9QFeql0VT+7pgOn4LQlKXEW+3SU7MJpu5e3lfw44QequJGR6
+ Dbcxw1opuH7KGzqv/+UJ/lJGlrddOpfnrlXhCdFcoweVk+YOLAyuFuJq1xyvOm0qKHE1
+ UfkcoUGgxAT4l2gcowk37llItQEkcKr2JkxFwlS3ekOoMX+HQlfnPW0T3mJuvkEOPP1Z
+ t+mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723442689; x=1724047489;
+ d=1e100.net; s=20230601; t=1723442694; x=1724047494;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OmxQ1UiezJn7kEH2xHoYS23Qe841zRKWJ62bwFmeLhM=;
- b=Y061VzWtT4BjGMDMsRG6Gy1mhZF2QmGCLRJWnH67SNa7DseWm+0uODp5QKAwPI2RbG
- C+yjagagl5IQGdKC/pJ3IDUtDTvNInGOyr17Iat2OHhOnIja6dQK+Ghlf5/HqdRXa4of
- dOg3kn8Dkk+81yfudYc+kUZZElsBd6rnziuDOYh6yOJVl4lJMSfcNyOJG9Th9FVCqS1B
- fdNiu6Q4KwgqbvpbfwlrGrG9zYpZZvyk1Oh+7BDCPBucX7t23XbYsPIZHm/DvEdDlNEq
- 15NK5SNJic3A/FqJxAaOAaVTpqOejzuQzBChi9C8niHNbotqN+KwQ/rIL9h31A3hd0sP
- hSMw==
+ bh=z9fJcAFxs5RPqlywFK5Pcr5sIz2IiGoqrVmS5jgrKfs=;
+ b=N/s87EGQ8jiJWKf/UuhXK9jYGFIWBZm1khsouPCj6VrLoUKPjZHEpZD7EN1m1F+xwC
+ raulo0kuvfrC0pIP5TzBeneTKu+9DtLi9/7kjc9e1VIi+hITZaAiCJbqIOCxVJoNPsXe
+ R1Scj8nl5yKKokcZw5AnbkF7wWFVT6EiCWs9S8WbBCOQ3INFMVgRao+2+SkwhNEbLULh
+ GstyHGmqFRuMmrOXMCgnuy9yh6qEuRplCUheRZeAFx59hANobiLaoLy3ui6JQUv+k9r7
+ ymq0qqX4GbyQZZ+EkJaAD9d4xnYudxkuaqKpYRxmrZmtmT0AVvQv1e2j6XbPm7kgF3va
+ 8wcw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVv2ZiPdM3D+vmL0yFgu00iXvliM6ZtrbNU4t81DjBwss5fchIXK+9WD8VoOSi24ltYjjPDs3aFHUoU@nongnu.org
-X-Gm-Message-State: AOJu0YxRX1T0zuOQD/EgNYK64Pxla6y2Md1vGDFGYjFrHor4Z6dEew6I
- KNIikTITAXVsSKwHmYH8H4f+PlSna+/H16+iZCh7iSjUl+iE3/5puytIyo+TIdE=
-X-Google-Smtp-Source: AGHT+IGVHzz+Fq6g2lGzyCzR1cKIkwPwhyOMAF4K+y7EKhieq2WS8DckNGo+DAgPlBNpMYOlMOp8xg==
-X-Received: by 2002:a5d:4204:0:b0:368:41e0:16c0 with SMTP id
- ffacd0b85a97d-36d5e3c2b97mr4490881f8f.22.1723442689002; 
- Sun, 11 Aug 2024 23:04:49 -0700 (PDT)
+ AJvYcCWiBcvk94dtSTLpV7KHjS3F4L+RG3MPmmCZ3AxvhSsmFsPXyVOwkcvDzPFwj1I9qxtROq4bBXUaY+7eUrqh70HSJ9DPlOk=
+X-Gm-Message-State: AOJu0Ywj0eIqN0WobAY1JkzoyzfGQWW4xL/vy3qNOXNNKwq7E7VvckIk
+ Rm5uMA7M95SGG7qC4CWyfih0bviZxiL0MXM//xE8ySBKq4niONWveqZXWorenrw=
+X-Google-Smtp-Source: AGHT+IH/6LTr+Ywl8hmLDrjNqRMqvicfyLiqjHGlrda6mPr0hZ+bFv6uQfxfT+uKqOVCTIUZWqONeQ==
+X-Received: by 2002:a05:600c:1988:b0:428:141b:ddfc with SMTP id
+ 5b1f17b1804b1-429c3a5802amr69256995e9.31.1723442694044; 
+ Sun, 11 Aug 2024 23:04:54 -0700 (PDT)
 Received: from [192.168.71.175] (133.170.88.92.rev.sfr.net. [92.88.170.133])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4f0a6d76sm6484940f8f.115.2024.08.11.23.04.47
+ ffacd0b85a97d-36e4f0a6d76sm6484940f8f.115.2024.08.11.23.04.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 11 Aug 2024 23:04:48 -0700 (PDT)
-Message-ID: <2506e429-b5ca-4ff1-99a0-2df157321c4d@linaro.org>
-Date: Mon, 12 Aug 2024 07:35:11 +0200
+ Sun, 11 Aug 2024 23:04:53 -0700 (PDT)
+Message-ID: <b759261e-8545-4ffb-871b-29ed830d70ff@linaro.org>
+Date: Mon, 12 Aug 2024 07:39:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1] target/mips: Fix execution mode in
- page_table_walk_refill()
+Subject: Re: [PATCH 3/3] target/i386: Assert MMX and XMM registers in range
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Aleksandar Rikalo
- <arikalo@gmail.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Waldemar Brodkorb <wbx@uclibc-ng.org>
-References: <20240811165407.26312-1-philmd@linaro.org>
- <be719b7b-9096-4d15-9947-8e4003de302d@linaro.org>
+Cc: pbonzini@redhat.com
+References: <20240812025844.58956-1-richard.henderson@linaro.org>
+ <20240812025844.58956-4-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <be719b7b-9096-4d15-9947-8e4003de302d@linaro.org>
+In-Reply-To: <20240812025844.58956-4-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +94,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/8/24 02:48, Richard Henderson wrote:
-> On 8/12/24 02:54, Philippe Mathieu-Daudé wrote:
->> When refactoring page_table_walk_refill() in commit 4e999bf419
->> we replaced the execution mode and forced it to kernel mode.
->> Restore the previous behavior to also get supervisor / user modes.
->>
->> Reported-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
->> Reported-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2470
->> Fixes: 4e999bf419 ("target/mips: Pass ptw_mmu_idx down from 
->> mips_cpu_tlb_fill")
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/mips/tcg/sysemu/tlb_helper.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/mips/tcg/sysemu/tlb_helper.c 
->> b/target/mips/tcg/sysemu/tlb_helper.c
->> index 3ba6d369a6..e7ae4f0bef 100644
->> --- a/target/mips/tcg/sysemu/tlb_helper.c
->> +++ b/target/mips/tcg/sysemu/tlb_helper.c
->> @@ -940,8 +940,9 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr 
->> address, int size,
->>            * Memory reads during hardware page table walking are 
->> performed
->>            * as if they were kernel-mode load instructions.
->>            */
->> -        int ptw_mmu_idx = (env->hflags & MIPS_HFLAG_ERL ?
->> -                           MMU_ERL_IDX : MMU_KERNEL_IDX);
->> +        int ptw_mmu_idx = (env->hflags & MIPS_HFLAG_ERL)
->> +                          ? MMU_ERL_IDX
->> +                          : (env->hflags & MIPS_HFLAG_KSU);
+On 12/8/24 04:58, Richard Henderson wrote:
+> The mmx assert would fire without the fix for #2495.
 > 
-> This contradicts the comment above.
-> If this code change is correct, then the comment isn't.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/i386/tcg/emit.c.inc | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
 
-OK.
-
-> But the comment certainly makes sense -- page tables are never 
-> accessible to user mode.
-
-But we are still dropping the supervisor mode, so OK if I
-reword as:
-
-"Restore the previous behavior to also get supervisor modes."
-
-?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
