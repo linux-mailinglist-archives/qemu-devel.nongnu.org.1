@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6586A94E546
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 04:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5319994E542
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 04:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdLGs-0004OO-HE; Sun, 11 Aug 2024 22:58:58 -0400
+	id 1sdLGu-0004W4-GC; Sun, 11 Aug 2024 22:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdLGq-0004Hf-BJ
- for qemu-devel@nongnu.org; Sun, 11 Aug 2024 22:58:56 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1sdLGs-0004Nw-05
+ for qemu-devel@nongnu.org; Sun, 11 Aug 2024 22:58:58 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdLGo-0003em-JL
- for qemu-devel@nongnu.org; Sun, 11 Aug 2024 22:58:56 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-70d1fb6c108so2690617b3a.3
- for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 19:58:54 -0700 (PDT)
+ id 1sdLGq-0003h1-Fx
+ for qemu-devel@nongnu.org; Sun, 11 Aug 2024 22:58:57 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-710d0995e21so2371729b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 19:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723431533; x=1724036333; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723431535; x=1724036335; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uTnoluISZ2MwVzhPbDJiXvg9KVOpgY1wyPYE6S/EINo=;
- b=fjxCcQruuUVdQseaoTzlwptQeVoVQxjpVkCLNO9z9roGao3Lx5dyxbONt/7PngZPio
- LRMRQwocq4EOzHf7OwzluKznbaT4fZsiE/+kZ83o5VH9DrOAjVkxK5lhEbGJBuOXJoMc
- OwHIgTyk2EF8FZ92aBUobrClVylyoKqxNHj8HRWQHox9Ubyvtc43IM23eQlBOmnvHfxK
- gcQyrDK1t3ZeDsQqXQlbtjlyggv5dSV7Sn9jpl27fKzKHJGMv5P5PYBHUM108lYWoaPv
- PZvwTpaeYlXET3S6ztpPxygkvmHCMH2NrI4Oq7V5pSuALjnOLv3Jynr635MAuDIfcee6
- mSIQ==
+ bh=RRhHm135dGLBKgHTs5Bk6uiyESpFu38TL3b65HCIA00=;
+ b=TYmYP7kEiGi6Ybujhlfdcn2HdF/jG9zxqxDaxZZ3u5ps6I98Ul9+CZKQUVRXq3MdoA
+ X+QarAwZO8xT3ocSLd7zybfS3dAdtfy9clgtE+fKg2Qz5tlevO26vZvD17ReM9FfIXMZ
+ ubPAdStf87nUBBxzKPA5+G8w98lpD/kUPtMts0bNTTY/3oD2kU0SAy18ShLrue9SjaGc
+ 16cHGjVgJaSa7CtvMtJUjdxuYmcQ89EJA2NZlFlH90jhdJXmkaoGKUa+ug5Wf1d+BNH3
+ Cf//7chCot6UoPaaECwczxp0QkK6N7UL6pPYmHlLTyGciBf1CCqwAwbSklxVBqNImwjh
+ qq0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723431533; x=1724036333;
+ d=1e100.net; s=20230601; t=1723431535; x=1724036335;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uTnoluISZ2MwVzhPbDJiXvg9KVOpgY1wyPYE6S/EINo=;
- b=Go8PT91Tcx6qO31qJ+UbTMHUn01BaQYRfXXmz4RsY7t57D+jio8mmyGJx7IYrpZF5u
- kMI9xYFScWey9HbEAB05sIfC8/sZTlJBpMqSvri7zkaKmAiUMukHEg1Cfl8LblNjTWGl
- F9w2SMBKpMYMzCGuutO7y9iGx1hPYpEsgg50m1DXkjbixxypnb5UV4HJHPQXMqJLP+Kd
- EVeXExj4Y2zNGM4nvqbS9SP02ySGNfLF3i24vfheJ+Ny25kNPkpRMIH8QmCS+xHodFcs
- tFml8d18Pcn9kLEUlPdlpi/K6RIV8NBlWTCqEWbPmG7pvYlSOYUJsqgr5cLRlQvz+vtj
- plVw==
-X-Gm-Message-State: AOJu0YwnOd40gcJQGaHR79sI2GsHvCOVOiD+yBXoxQilzkW1nTBiWH1l
- TOvOh13qWwHWEToOsxe1RoPPFy+AbIr7bK5YsuX89ZtN3GjXECeX1eFtMK1VNKeGiXUavYJ1zaK
- rork=
-X-Google-Smtp-Source: AGHT+IFp8T8ktTiyPWuzR72QnaLlPB9/uu6ZEzxIptx6nmDRIgZ0KXqKR78Zd06YruQeERaruMmrcQ==
-X-Received: by 2002:a05:6a00:23c7:b0:706:284f:6a68 with SMTP id
- d2e1a72fcca58-710dcaecfb3mr6227691b3a.23.1723431532714; 
- Sun, 11 Aug 2024 19:58:52 -0700 (PDT)
+ bh=RRhHm135dGLBKgHTs5Bk6uiyESpFu38TL3b65HCIA00=;
+ b=uY3Ax2e6LTe0kYXNx54zRCYOKLOTVmLu8e+/oVVsyh1YztEQIybzR+dvkMdogiOyK+
+ HPqP20RDRAmcr0u+c/PJrhp4+ay+WCWzUnIafkCjIgNuK6L/uu5CA557lu06HncHTYXX
+ pwRdOzCeKo2wzQFcEicGDiWZ5RCd31pijXBQ1Bw0VwI8X4/VyHJ2+eY6Rcqhcaw7ct6Q
+ KlmM9fK2LiEPITLZ9zFJQSd3z2ACK05utXBozbXgf60ncVT1WHUGlnrA0pLxVMQZx1wu
+ 7gsJlx5gtynKXyW9WoD487CCeJG0Vv0OstxrWhce7KnVz9lJMjhnjhgG052mCBVeWyMD
+ hYJw==
+X-Gm-Message-State: AOJu0YzaMS44l6ASsq0iJZB5AaLN3fruNJH91QkRSqwnlrInX0MARolf
+ AaCBz0DQ2gHAWzQr7aH1vamd6X6XPdHBl6Oz4z3G1REH9sf//liYxmMQk4W1B4ZuA4vH3GRYLgX
+ jQNk=
+X-Google-Smtp-Source: AGHT+IGrkLo9fWBpsiO0Y2iwqHpkxetwZw+0N9VF770hB1YmLFkdgp4bogxObX0pCsC/KSoB62gp7Q==
+X-Received: by 2002:a05:6a00:b56:b0:710:9d5e:8a3 with SMTP id
+ d2e1a72fcca58-710dcaa69fbmr5541620b3a.30.1723431535076; 
+ Sun, 11 Aug 2024 19:58:55 -0700 (PDT)
 Received: from stoup.. ([203.30.4.111]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-710e5a43b49sm2984841b3a.100.2024.08.11.19.58.50
+ d2e1a72fcca58-710e5a43b49sm2984841b3a.100.2024.08.11.19.58.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Aug 2024 19:58:52 -0700 (PDT)
+ Sun, 11 Aug 2024 19:58:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	qemu-stable@nongnu.org
-Subject: [PATCH 1/3] target/i386: Do not apply REX to MMX operands
-Date: Mon, 12 Aug 2024 12:58:42 +1000
-Message-ID: <20240812025844.58956-2-richard.henderson@linaro.org>
+Cc: pbonzini@redhat.com
+Subject: [PATCH 2/3] target/i386: Use unit not type in decode_modrm
+Date: Mon, 12 Aug 2024 12:58:43 +1000
+Message-ID: <20240812025844.58956-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240812025844.58956-1-richard.henderson@linaro.org>
 References: <20240812025844.58956-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,30 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: qemu-stable@nongnu.org
-Fixes: b3e22b2318a ("target/i386: add core of new i386 decoder")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2495
+Rather that enumerating the types that can produce
+MMX operands, examine the unit.  No functional change.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/decode-new.c.inc | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ target/i386/tcg/decode-new.c.inc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index b22210f45d..03138b3876 100644
+index 03138b3876..30be9237c3 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -1979,7 +1979,10 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
-             op->unit = X86_OP_SSE;
-         }
-     get_reg:
--        op->n = ((get_modrm(s, env) >> 3) & 7) | REX_R(s);
-+        op->n = ((get_modrm(s, env) >> 3) & 7);
+@@ -1799,13 +1799,13 @@ static void decode_root(DisasContext *s, CPUX86State *env, X86OpEntry *entry, ui
+ }
+ 
+ 
+-static int decode_modrm(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+-                        X86DecodedOp *op, X86OpType type)
++static int decode_modrm(DisasContext *s, CPUX86State *env,
++                        X86DecodedInsn *decode, X86DecodedOp *op)
+ {
+     int modrm = get_modrm(s, env);
+     if ((modrm >> 6) == 3) {
+         op->n = (modrm & 7);
+-        if (type != X86_TYPE_Q && type != X86_TYPE_N) {
 +        if (op->unit != X86_OP_MMX) {
-+            op->n |= REX_R(s);
-+        }
+             op->n |= REX_B(s);
+         }
+     } else {
+@@ -2040,7 +2040,7 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+         /* fall through */
+     case X86_TYPE_nop:  /* modrm operand decoded but not fetched */
+     get_modrm:
+-        decode_modrm(s, env, decode, op, type);
++        decode_modrm(s, env, decode, op);
          break;
  
-     case X86_TYPE_E:  /* ALU modrm operand */
+     case X86_TYPE_O:  /* Absolute address encoded in the instruction */
 -- 
 2.43.0
 
