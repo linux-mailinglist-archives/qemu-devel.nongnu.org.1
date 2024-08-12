@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038EC94EDC1
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 15:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A38FB94EDB7
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 15:07:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdUl3-0004uc-EM; Mon, 12 Aug 2024 09:06:45 -0400
+	id 1sdUl4-0004xu-7f; Mon, 12 Aug 2024 09:06:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sdUkx-0004bw-W0
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 09:06:40 -0400
+ id 1sdUkx-0004bp-VY
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 09:06:39 -0400
 Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sdUks-00047X-2g
+ id 1sdUks-00047h-2t
  for qemu-devel@nongnu.org; Mon, 12 Aug 2024 09:06:38 -0400
 Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2ef2d96164aso46453331fa.3
- for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 06:06:32 -0700 (PDT)
+ 38308e7fff4ca-2eeb1ba040aso58548011fa.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 06:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723467990; x=1724072790; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1723467991; x=1724072791; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fsU79nmQ1AQVXUbNSxYwoeBBAkcfnxSMEvBp2lKDwWA=;
- b=C87fvWOXYf04yLU59xfYVHEZw8f14FGvbveQn4em1wZBV59rNuloyXvpIlLi282w/3
- jqVnZ8hTuAgzxte64Yc5hNBGXuPtdJSQN2UvJ2Sk9nB1BJDxEI6ZlZ9xqNTtwnpgtBV3
- W4XY8dM1i0rfZuQ5gHDVVvbHJODrQ6vYSQgyHvru+LQ8r+yQAVF07c9dYUKeCDqBwSel
- UYbNjAz+tCZm+UmNZIgef5tFuhMzueFUV3pegND7O/BsEWQWRmxamfbvCZhyyIwzlWAM
- ojdb9YdMahk2upauCL6Ncl0g4HvsHWMN2FRIFfMNkqb4XfoZlEnjUd3s0p30qBuWybJ4
- il4A==
+ bh=zpYqNKXAVuA0a+6/wfjyGjtY9ZeW5tCWM6T6raDN/Y4=;
+ b=cDo3WM7s3MFu9evk1VPKsYOuJ3dpm1VqxP4I7tju3/S8owEWbPJ1uJUxVe+CPS/dPG
+ dj+d8iegAke0cP7eSypPnCNJY5Dqcb8ZSs+rCfT4xlVhRdZGDxIRyoottTShAj0qB9Hw
+ fvpQi8RyjocUkovwbFK7g6MIM6BDjD850N64cms3BfkAe6MwLirtBNyweSpI2cAnnQGk
+ B1hrl+CYm1Hm2krkruzoT9a0zNdepXrsKNGQbaYedaOh9hriyq8uXE5sylV6SHtedk1l
+ MPabXaUN7N/gb+Xw0a6akoKaYjEpK8B/RXPh04nt3CRRUk+FNAYnoIOYpUUtlwySbLNd
+ Yc3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723467990; x=1724072790;
+ d=1e100.net; s=20230601; t=1723467991; x=1724072791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fsU79nmQ1AQVXUbNSxYwoeBBAkcfnxSMEvBp2lKDwWA=;
- b=WmuQufmz66Pc3jJuiwvIq+Wb1vvSmU8hC6+OnrhPcv0eAUznK9n11SJdGAtoOSrHrj
- b4jqEJgixuAfutJoB6MeqJlZsQIi7/JsP7GLRuzyd/jac1wHLoMvMH63RFu6l8pw1AzW
- k2cCmQoUCVMKySG6cW1UpYNmqH8dLsx1E6x0Zan55JhyK2TBilNvumggWT6PkNiwkg7i
- k/epS13gqJhhF0JP4lRY7g0InWGhXb3SZDMHxKQFqJcEeDnTYtClMk/HFhQ4TlqRYx6z
- buQN4cJTSQD752titje212SyBoPI8eqNbouao6Eg4g0VwuzSvbiq0JtORX0qlpQKgei0
- TKmA==
-X-Gm-Message-State: AOJu0YxdKxxBYjT5w/La3oCp8glrBSrgYUBvxtKR/iqi7vX3N1ed8ErF
- 17KRJu2cO/r+cybvbwYAC2lHxdsR79XZADMbgOuOHOvLHEiH2lsxn8vJfBLS
-X-Google-Smtp-Source: AGHT+IExi6OAtMSH2lj/PgBrg+LlxDZERUpkwQQHEWkaEtSD3XJV0ILUPZ6rtXYIo0sScSOwNbS7/Q==
-X-Received: by 2002:a05:6512:6d1:b0:52e:941d:7039 with SMTP id
- 2adb3069b0e04-532136a4e69mr29594e87.59.1723467989238; 
- Mon, 12 Aug 2024 06:06:29 -0700 (PDT)
+ bh=zpYqNKXAVuA0a+6/wfjyGjtY9ZeW5tCWM6T6raDN/Y4=;
+ b=iq+gT1njCDBvLzcRmzhR/6FSDc5YNmeCxnegUwTPeY3m87XebBWqmSqSq/sFEQujer
+ 81ZTzJ1NPxH6sWePjpu+zh9T3AT6OsPUkKsbSB0gRCRG89uvtWt0aGKTEBGg97u6cEvu
+ khkGI6mnH+A3PHckzIm6c8lyQUxDjKj2TeQIHlo07OuHwTqJu+q9ahF5PSvagvMUbCJm
+ 0/dQeoH0CMqFWf6Ri4XimXWD6lUxyDLj5GIskb8PnaDO9IasALEQZBo04EBUKMEnmDRJ
+ eth2sLmObkpEaa4qg2RnKGJqt+yrfJxX7mCwEOoFnarUurPzPdHNRmdFZsp59vFdgi7u
+ tfgA==
+X-Gm-Message-State: AOJu0YxP3PLpfUWakdmrBMaqtsOqH8XiUAlKUM8muV1eZFB4SpLVT4O0
+ a+1abunn8rGPCtiQ3Lu4wpaAx7C2Enmp0gQ4xaV9R8A209zqk99pFWKlFIVz
+X-Google-Smtp-Source: AGHT+IFbDkFVn4nHNTgp2rSK1ep8EB3W/CnGnNoziWsVxIa3hCXemD+rWCA6eJi3qacG+boCLJdOoQ==
+X-Received: by 2002:a2e:2414:0:b0:2ef:1808:7523 with SMTP id
+ 38308e7fff4ca-2f2b714d294mr1493031fa.18.1723467990279; 
+ Mon, 12 Aug 2024 06:06:30 -0700 (PDT)
 Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53200f42667sm739978e87.294.2024.08.12.06.06.28
+ 38308e7fff4ca-2f291df3c4esm8503311fa.40.2024.08.12.06.06.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Aug 2024 06:06:28 -0700 (PDT)
+ Mon, 12 Aug 2024 06:06:29 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
  peter.maydell@linaro.org, alex.bennee@linaro.org, xenia.ragiadakou@amd.com,
  jason.andryuk@amd.com, edgar.iglesias@amd.com,
  xen-devel@lists.xenproject.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v1 08/10] hw/xen: pvh-common: Add support for creating
- PCIe/GPEX
-Date: Mon, 12 Aug 2024 15:06:03 +0200
-Message-ID: <20240812130606.90410-9-edgar.iglesias@gmail.com>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v1 09/10] hw/i386/xen: Add a Xen PVH x86 machine
+Date: Mon, 12 Aug 2024 15:06:04 +0200
+Message-ID: <20240812130606.90410-10-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240812130606.90410-1-edgar.iglesias@gmail.com>
 References: <20240812130606.90410-1-edgar.iglesias@gmail.com>
@@ -98,140 +102,230 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Add support for optionally creating a PCIe/GPEX controller.
+This adds a Xen PVH x86 machine based on the PVH Common
+module used by the ARM PVH machine.
 
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/xen/xen-pvh-common.c         | 66 +++++++++++++++++++++++++++++++++
- include/hw/xen/xen-pvh-common.h | 10 ++++-
- 2 files changed, 75 insertions(+), 1 deletion(-)
+ hw/i386/xen/meson.build |   1 +
+ hw/i386/xen/xen-pvh.c   | 196 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 197 insertions(+)
+ create mode 100644 hw/i386/xen/xen-pvh.c
 
-diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
-index 69a2dbdb6d..b1432e4bd9 100644
---- a/hw/xen/xen-pvh-common.c
-+++ b/hw/xen/xen-pvh-common.c
-@@ -120,6 +120,59 @@ static void xen_enable_tpm(XenPVHCommonState *s)
- }
- #endif
+diff --git a/hw/i386/xen/meson.build b/hw/i386/xen/meson.build
+index 3f0df8bc07..c73c62b8e3 100644
+--- a/hw/i386/xen/meson.build
++++ b/hw/i386/xen/meson.build
+@@ -4,6 +4,7 @@ i386_ss.add(when: 'CONFIG_XEN', if_true: files(
+ ))
+ i386_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
+   'xen-hvm.c',
++  'xen-pvh.c',
+ ))
  
-+static void xen_set_pci_intx_irq(void *opaque, int irq, int level)
+ i386_ss.add(when: 'CONFIG_XEN_BUS', if_true: files(
+diff --git a/hw/i386/xen/xen-pvh.c b/hw/i386/xen/xen-pvh.c
+new file mode 100644
+index 0000000000..9c3d3fc58d
+--- /dev/null
++++ b/hw/i386/xen/xen-pvh.c
+@@ -0,0 +1,196 @@
++/*
++ * QEMU Xen PVH x86 Machine
++ *
++ * Copyright (c) 2024 Advanced Micro Devices, Inc.
++ * Written by Edgar E. Iglesias <edgar.iglesias@amd.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qapi/visitor.h"
++#include "qemu/error-report.h"
++#include "hw/boards.h"
++#include "sysemu/sysemu.h"
++#include "hw/xen/arch_hvm.h"
++#include "hw/xen/xen.h"
++#include "hw/xen/xen-pvh-common.h"
++
++#define TYPE_XEN_PVH_X86  MACHINE_TYPE_NAME("xenpvh")
++OBJECT_DECLARE_SIMPLE_TYPE(XenPVHx86State, XEN_PVH_X86)
++
++#define PVH_MAX_CPUS 128
++
++struct XenPVHx86State {
++    /*< private >*/
++    MachineState parent;
++
++    DeviceState *cpu[PVH_MAX_CPUS];
++    XenPVHCommonState pvh;
++
++    /*
++     * We provide these properties to allow Xen to move things to other
++     * addresses for example when users need to accomodate the memory-map
++     * for 1:1 mapped devices/memory.
++     */
++    struct {
++        MemMapEntry ram_low, ram_high;
++        MemMapEntry pci_ecam, pci_mmio, pci_mmio_high;
++    } cfg;
++};
++
++static void xenpvh_cpu_new(MachineState *ms,
++                           XenPVHx86State *xp,
++                           int cpu_idx,
++                           int64_t apic_id)
 +{
-+    if (xen_set_pci_intx_level(xen_domid, 0, 0, 0, irq, level)) {
-+        error_report("xendevicemodel_set_pci_intx_level failed");
-+    }
++    Object *cpu = object_new(ms->cpu_type);
++
++    object_property_add_child(OBJECT(ms), "cpu[*]", cpu);
++    object_property_set_uint(cpu, "apic-id", apic_id, &error_fatal);
++    qdev_realize(DEVICE(cpu), NULL, &error_fatal);
++    object_unref(cpu);
++
++    xp->cpu[cpu_idx] = DEVICE(cpu);
 +}
 +
-+static inline void xenpvh_gpex_init(XenPVHCommonState *s,
-+                                    MemoryRegion *sysmem,
-+                                    hwaddr ecam_base, hwaddr ecam_size,
-+                                    hwaddr mmio_base, hwaddr mmio_size,
-+                                    hwaddr mmio_high_base,
-+                                    hwaddr mmio_high_size,
-+                                    int intx_irq_base)
++static void xenpvh_init(MachineState *ms)
 +{
-+    MemoryRegion *ecam_reg;
-+    MemoryRegion *mmio_reg;
-+    DeviceState *dev;
++    XenPVHx86State *xp = XEN_PVH_X86(ms);
++    const struct {
++        const char *name;
++        MemMapEntry *map;
++    } map[] = {
++        { "ram-low", &xp->cfg.ram_low },
++        { "ram-high", &xp->cfg.ram_high },
++        { "pci-ecam", &xp->cfg.pci_ecam },
++        { "pci-mmio", &xp->cfg.pci_mmio },
++        { "pci-mmio-high", &xp->cfg.pci_mmio_high },
++    };
 +    int i;
 +
-+    object_initialize_child(OBJECT(s), "gpex", &s->pci.gpex,
-+                            TYPE_GPEX_HOST);
-+    dev = DEVICE(&s->pci.gpex);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    object_initialize_child(OBJECT(ms), "pvh", &xp->pvh, TYPE_XEN_PVH_COMMON);
++    object_property_set_int(OBJECT(&xp->pvh), "max-cpus", ms->smp.max_cpus,
++                            &error_abort);
++    object_property_set_int(OBJECT(&xp->pvh), "ram-size", ms->ram_size,
++                            &error_abort);
 +
-+    ecam_reg = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
-+    memory_region_add_subregion(sysmem, ecam_base, ecam_reg);
++    for (i = 0; i < ARRAY_SIZE(map); i++) {
++        g_autofree char *base_name = g_strdup_printf("%s-base", map[i].name);
++        g_autofree char *size_name = g_strdup_printf("%s-size", map[i].name);
 +
-+    mmio_reg = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
-+
-+    if (mmio_size) {
-+        memory_region_init_alias(&s->pci.mmio_alias, OBJECT(dev), "pcie-mmio",
-+                                 mmio_reg, mmio_base, mmio_size);
-+        memory_region_add_subregion(sysmem, mmio_base, &s->pci.mmio_alias);
++        object_property_set_int(OBJECT(&xp->pvh), base_name, map[i].map->base,
++                                 &error_abort);
++        object_property_set_int(OBJECT(&xp->pvh), size_name, map[i].map->size,
++                                 &error_abort);
 +    }
 +
-+    if (mmio_high_size) {
-+        memory_region_init_alias(&s->pci.mmio_high_alias, OBJECT(dev),
-+                "pcie-mmio-high",
-+                mmio_reg, mmio_high_base, mmio_high_size);
-+        memory_region_add_subregion(sysmem, mmio_high_base,
-+                &s->pci.mmio_high_alias);
-+    }
++    /* GSI's 16 - 20 are used for legacy PCIe INTX IRQs.  */
++    object_property_set_int(OBJECT(&xp->pvh), "pci-intx-irq-base", 16,
++                            &error_abort);
 +
-+    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+        qemu_irq irq = qemu_allocate_irq(xen_set_pci_intx_irq, s, i);
++    sysbus_realize(SYS_BUS_DEVICE(&xp->pvh), &error_abort);
 +
-+        sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-+        gpex_set_irq_num(GPEX_HOST(dev), i, intx_irq_base + i);
-+        xen_set_pci_link_route(i, intx_irq_base + i);
++    /* Create dummy cores. This will indirectly create the APIC MSI window.  */
++    for (i = 0; i < ms->smp.cpus; i++) {
++        xenpvh_cpu_new(ms, xp, i, i);
 +    }
 +}
 +
- static void xen_pvh_realize(DeviceState *dev, Error **errp)
- {
-     XenPVHCommonState *s = XEN_PVH_COMMON(dev);
-@@ -152,6 +205,14 @@ static void xen_pvh_realize(DeviceState *dev, Error **errp)
-         warn_report("tpm-base-addr is not provided. TPM will not be enabled");
-     }
- #endif
++#define XENPVH_PROP_MEMMAP_SETTER(n, f)                                    \
++static void xenpvh_set_ ## n ## _ ## f(Object *obj, Visitor *v,            \
++                                       const char *name, void *opaque,     \
++                                       Error **errp)                       \
++{                                                                          \
++    XenPVHx86State *xp = XEN_PVH_X86(obj);                                 \
++    uint64_t value;                                                        \
++                                                                           \
++    if (!visit_type_size(v, name, &value, errp)) {                         \
++        return;                                                            \
++    }                                                                      \
++    xp->cfg.n.f = value;                                                   \
++}
 +
-+    if (s->cfg.ecam.size) {
-+        xenpvh_gpex_init(s, sysmem,
-+                         s->cfg.ecam.base, s->cfg.ecam.size,
-+                         s->cfg.mmio.base, s->cfg.mmio.size,
-+                         s->cfg.mmio_high.base, s->cfg.mmio_high.size,
-+                         s->cfg.pci_intx_irq_base);
-+    }
- }
- 
- #define DEFINE_PROP_MEMMAP(n, f) \
-@@ -165,10 +226,15 @@ static Property xen_pvh_properties[] = {
-     DEFINE_PROP_MEMMAP("ram-high", ram_high),
-     DEFINE_PROP_MEMMAP("virtio-mmio", virtio_mmio),
-     DEFINE_PROP_MEMMAP("tpm", tpm),
-+    DEFINE_PROP_MEMMAP("pci-ecam", ecam),
-+    DEFINE_PROP_MEMMAP("pci-mmio", mmio),
-+    DEFINE_PROP_MEMMAP("pci-mmio-high", mmio_high),
-     DEFINE_PROP_UINT32("virtio-mmio-num", XenPVHCommonState,
-                        cfg.virtio_mmio_num, 0),
-     DEFINE_PROP_UINT32("virtio-mmio-irq-base", XenPVHCommonState,
-                        cfg.virtio_mmio_irq_base, 0),
-+    DEFINE_PROP_UINT32("pci-intx-irq-base", XenPVHCommonState,
-+                       cfg.pci_intx_irq_base, 0),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/include/hw/xen/xen-pvh-common.h b/include/hw/xen/xen-pvh-common.h
-index e958b441fd..faacfca70e 100644
---- a/include/hw/xen/xen-pvh-common.h
-+++ b/include/hw/xen/xen-pvh-common.h
-@@ -29,17 +29,25 @@ typedef struct XenPVHCommonState {
-         MemoryRegion high;
-     } ram;
- 
-+    struct {
-+        GPEXHost gpex;
-+        MemoryRegion mmio_alias;
-+        MemoryRegion mmio_high_alias;
-+    } pci;
++#define XENPVH_PROP_MEMMAP_GETTER(n, f)                                    \
++static void xenpvh_get_ ## n ## _ ## f(Object *obj, Visitor *v,            \
++                                       const char *name, void *opaque,     \
++                                       Error **errp)                       \
++{                                                                          \
++    XenPVHx86State *xp = XEN_PVH_X86(obj);                                 \
++    uint64_t value = xp->cfg.n.f;                                          \
++                                                                           \
++    visit_type_uint64(v, name, &value, errp);                              \
++}
 +
-     struct {
-         uint64_t ram_size;
-         uint32_t max_cpus;
-         uint32_t virtio_mmio_num;
-         uint32_t virtio_mmio_irq_base;
-+        uint32_t pci_intx_irq_base;
-         struct {
-             uint64_t base;
-             uint64_t size;
-         } ram_low, ram_high,
-           virtio_mmio,
--          tpm;
-+          tpm,
-+          ecam, mmio, mmio_high;
-     } cfg;
- } XenPVHCommonState;
- #endif
++#define XENPVH_PROP_MEMMAP(n)              \
++    XENPVH_PROP_MEMMAP_SETTER(n, base)     \
++    XENPVH_PROP_MEMMAP_SETTER(n, size)     \
++    XENPVH_PROP_MEMMAP_GETTER(n, base)     \
++    XENPVH_PROP_MEMMAP_GETTER(n, size)
++
++
++XENPVH_PROP_MEMMAP(ram_low)
++XENPVH_PROP_MEMMAP(ram_high)
++XENPVH_PROP_MEMMAP(pci_ecam)
++XENPVH_PROP_MEMMAP(pci_mmio)
++XENPVH_PROP_MEMMAP(pci_mmio_high)
++
++static void xenpvh_instance_init(Object *obj)
++{
++    XenPVHx86State *xp = XEN_PVH_X86(obj);
++
++    /* Default memmap.  */
++    xp->cfg.ram_low.base = 0x0;
++    xp->cfg.ram_low.size = 0x80000000U;
++    xp->cfg.ram_high.base = 0xC000000000ULL;
++    xp->cfg.ram_high.size = 0x4000000000ULL;
++}
++
++static void xenpvh_machine_class_init(ObjectClass *oc, void *data)
++{
++    MachineClass *mc = MACHINE_CLASS(oc);
++
++    mc->desc = "Xen PVH x86 machine";
++    mc->init = xenpvh_init;
++    mc->max_cpus = PVH_MAX_CPUS;
++    mc->default_cpu_type = TARGET_DEFAULT_CPU_TYPE;
++    mc->default_machine_opts = "accel=xen";
++    /* Set explicitly here to make sure that real ram_size is passed */
++    mc->default_ram_size = 0;
++
++#define OC_MEMMAP_PROP(c, prop_name, name)                               \
++do {                                                                     \
++    object_class_property_add(c, prop_name "-base", "uint64_t",          \
++                              xenpvh_get_ ## name ## _base,              \
++                              xenpvh_set_ ## name ## _base, NULL, NULL); \
++    object_class_property_set_description(oc, prop_name "-base",         \
++                              prop_name " base address");                \
++    object_class_property_add(c, prop_name "-size", "uint64_t",          \
++                              xenpvh_get_ ## name ## _size,              \
++                              xenpvh_set_ ## name ## _size, NULL, NULL); \
++    object_class_property_set_description(oc, prop_name "-size",         \
++                              prop_name " size of memory region");       \
++} while (0)
++
++    OC_MEMMAP_PROP(oc, "ram-low", ram_low);
++    OC_MEMMAP_PROP(oc, "ram-high", ram_high);
++    OC_MEMMAP_PROP(oc, "pci-ecam", pci_ecam);
++    OC_MEMMAP_PROP(oc, "pci-mmio", pci_mmio);
++    OC_MEMMAP_PROP(oc, "pci-mmio-high", pci_mmio_high);
++}
++
++static const TypeInfo xenpvh_machine_type = {
++    .name = TYPE_XEN_PVH_X86,
++    .parent = TYPE_MACHINE,
++    .class_init = xenpvh_machine_class_init,
++    .instance_init = xenpvh_instance_init,
++    .instance_size = sizeof(XenPVHx86State),
++};
++
++static void xenpvh_machine_register_types(void)
++{
++    type_register_static(&xenpvh_machine_type);
++}
++
++type_init(xenpvh_machine_register_types)
 -- 
 2.43.0
 
