@@ -2,82 +2,148 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730B094E904
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 10:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B36DD94E905
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 10:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdQrG-00012w-E2; Mon, 12 Aug 2024 04:56:54 -0400
+	id 1sdQsA-00041T-O7; Mon, 12 Aug 2024 04:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sdQrE-0000zW-Dx; Mon, 12 Aug 2024 04:56:52 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sdQrC-0007fb-D1; Mon, 12 Aug 2024 04:56:52 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5a108354819so5257345a12.0; 
- Mon, 12 Aug 2024 01:56:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723453008; x=1724057808; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Pwj1l/v8vmo0WVQsRXxiPvKgQwT9EeGJS92n+uiDDlU=;
- b=GUbCQ87xKGbL15m/o6OkV0vkXLnIIOb7vzy8lt2IES/YMC0/uP8nTHedsIbbMcjnUC
- R473727uu4plAY03bKf1oXLb2YPS5W9XOE2CaLLgflEdOsO1xHiYIhfFLJof9/SwzgzG
- VF52ps1tmJ0cjt4s3dLn/DAbLgMcpOSjG1UFhfAyTJe55LBJymfUmxkbmr0kpk2lZ7Jr
- yKU84xncCSoUuwioxPvzypeSaXP5EXUwu1vEvrtq3pkat3GVDmAkQEHXIcmSVl8zutRt
- 01tyKQCeoYWLxM+YtYnrSuaiQljYDSyQAKTPPxLPFrcHkDt2iwUlaQ8/9dny4W1EHvxf
- AQWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723453008; x=1724057808;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Pwj1l/v8vmo0WVQsRXxiPvKgQwT9EeGJS92n+uiDDlU=;
- b=f7wTrAloe/dEsH1hlZaiFRXTWbA49oiISRh8PtRqy+YBehMPxj511+uUud/covOAAi
- fdw6P2bf5tJzkLZ543bg3T2EKifVPV0JQqpKteAmOIytpnDi0IsgNaNuFOAmkvdYJyHh
- TlkKIK4Dx0sqQdoez6ON12uD9fK1b5JFBhK9F2YeUc4RKzf3sPFU4TJmH6eNDJ05shZt
- EGq1Wo479MwKQOJEgA+EZ/+ryQ66Tu+Qzf1JNAXdTOS7xbydmNC80YY6NGYMn0q16RX3
- 8P1VXdB3EtIRFWahfExO6vO7r0RnKmb/YCLhnmQ2gYhEsK32jYpzSRVFraTwpbSR/rnB
- V5Dw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX8NbedVqjnGNqJs/QwOpuWjoq0Lxiev99GbtzlyHvNoUSYzDuQK6HCJNzSHn9SyUyam+l+T8d+3dFW8tPzSWl9LhSTKG2wCdfFhpbNN5f0hlGN+k/TAoEyGKU=
-X-Gm-Message-State: AOJu0YybQOkg27y3/21GPpg4tEyrfdD0p/1V7BLsLod8PCO+HlBdq47+
- 0OLXYmrFsoKeECRQNG0R8sobp1KVM2T37347KnlR/k+Jkr1rX7ZY
-X-Google-Smtp-Source: AGHT+IEWS6twxHNRfU8xhbBpUg03fQTQ9ZuQqRvmMbNKf1S7TVmJW/CjOLAHbynrW9Ys9DZoIzy9+w==
-X-Received: by 2002:a05:6402:358a:b0:5a4:2c8:abda with SMTP id
- 4fb4d7f45d1cf-5bd0a50a533mr6107529a12.3.1723453007410; 
- Mon, 12 Aug 2024 01:56:47 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-183-028-074.77.183.pool.telefonica.de.
- [77.183.28.74]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5bd1a602e67sm1914053a12.97.2024.08.12.01.56.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Aug 2024 01:56:47 -0700 (PDT)
-Date: Mon, 12 Aug 2024 08:56:42 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-CC: qemu-stable@nongnu.org
-Subject: Re: [PATCH 0/2] target/arm: Fix EL3-is-AArch32 mmu indexes
-In-Reply-To: <20240809160430.1144805-1-peter.maydell@linaro.org>
-References: <20240809160430.1144805-1-peter.maydell@linaro.org>
-Message-ID: <607DEC48-4E7B-4985-97C4-8F80785BA83D@gmail.com>
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1sdQs4-0003eS-8g
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 04:57:44 -0400
+Received: from mail-vi1eur03on20713.outbound.protection.outlook.com
+ ([2a01:111:f403:260c::713]
+ helo=EUR03-VI1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1sdQs2-0007iH-Lz
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 04:57:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iC/YXE+Hik7luJczzJf93QjjzNEDGPJE7maRWzjWH/3QLdXzM91jrgdM77wn7ZxJOQ75dgMArtPJcLwa3AmnZdj3hVDfdo3teINTGESAlTupW2FWz3oxgQQezB6FhIEsKYz3AcseZFeC7k2cJbh9Lv0QE43t2fbUcWmrUPMY9Da/XboUC6fGbYLnCbaZQJvYA1rEQxANVlSn2u4cjO5q4NRqxY6yxahVfOB91Wvtsg/baXHiFm3pIdsA4LOkQ3vvH/P+7Tul4FHXpG8ltQS57ZljVZdsZ3BmO5UobpTJG4sGL0ItgpE24T32epUVv+UN1/LEVXQgc8Brd6nAttXqxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PiLYr6cKt7luk7O1NOvwQRLUNRsuZS5iXUa0Hy/Bh9g=;
+ b=MeQaJf9zJrHYNmrSjMUDZS2rFEnIL/EfXv+pdcS7S4ALT3SwvEdRYGR24C2xaqnoiOvi/teeI1jDdY9uJhmUtAe0cqn2mYXCO+CnsA4Fdmsxwdan40Ozqo0SlfSEFyqR3mFEXWb1HFml4kKtvYwv1IRKGRUFlre3v0TLp1Dhs3d5MErkHOE70p4NgvxpaNPAb9DxGzeuI3P5NZ6y4ZbmHxvkGSzQhI9KnxS6JPBSXKYyjIM7unDklT+zx/8OCzuZ/yN1gw6T+ijxHRazvcB+YFZ8rECHdj7ULNDh8No9agmpqaozPe+8AL918G/QpGiA0j/N6hznZelx/rgJVRUU0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PiLYr6cKt7luk7O1NOvwQRLUNRsuZS5iXUa0Hy/Bh9g=;
+ b=eRWZwsALpHw89b9HzojLQPsl3dXo28Oi20kSgFcobpWbiAEj+8IEsc4KIb5lUSRjSeEJzqvc4mEAhZZvXOsJMliM5WKxSI33TeYCASrBelDhG/R85XEZ1pEEVdxfsDxV6iLyZYIgOxdUf5LF0eZFjhlm2Xqm9bB3NnWXuh2Xy1m0TTB6Y76MoE1i4/apXmMy1FRMjpoBNQn1U5gM6l225amo5Jo0qn7DqUOBNylb9d04La7aefJTvoelhOC3RhBCXdqesNxPAO+D+lYfZVnhBLG8NscAo0Q37JW0VSYCYavKVpA954uar1hXSMkuZTcFlPd04tNPEEmv73La2wwtlg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
+ (2603:10a6:800:205::19) by DB5PR08MB10253.eurprd08.prod.outlook.com
+ (2603:10a6:10:4a9::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.13; Mon, 12 Aug
+ 2024 08:57:33 +0000
+Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
+ ([fe80::cebf:31ab:1e25:cfb5]) by VI0PR08MB10743.eurprd08.prod.outlook.com
+ ([fe80::cebf:31ab:1e25:cfb5%5]) with mapi id 15.20.7875.012; Mon, 12 Aug 2024
+ 08:57:33 +0000
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, cfontana@suse.de,
+ kraxel@redhat.com, laurent@vivier.eu, mjt@tls.msk.ru
+Subject: [PATCH v2 0/1] module: Move local_err initialization to the loop in
+ module_load_qom_all()
+Date: Mon, 12 Aug 2024 10:57:24 +0200
+Message-ID: <20240812085725.1093540-1-alexander.ivanov@virtuozzo.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: WA1P291CA0003.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:19::6) To VI0PR08MB10743.eurprd08.prod.outlook.com
+ (2603:10a6:800:205::19)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52c.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10743:EE_|DB5PR08MB10253:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66feff55-348e-413d-3328-08dcbaaccdcd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|52116014|38350700014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?UTvpTVmYE17PUv65Qe7tFSd2ZWqFO0mh142mk6FSmZFOTXF7vueUmgi+ciDr?=
+ =?us-ascii?Q?oFcwTqEmPxUe3dWtikgXxiB/+Ge85Toi5H6BGnI1EPY9WP8ldgyquqxrva+J?=
+ =?us-ascii?Q?ywq3rkNz5Lsu3SASe7/fDVFNDniwYPE8PH1gELkYHqqO8YgAOjME6uoKZkKE?=
+ =?us-ascii?Q?PL02+GjMJArEdCJ0CzmLThyQDCqrZnMCTDDs88KDd1tg6TOKnR2KAjzo09Oe?=
+ =?us-ascii?Q?ynov/l5rxo/NkEpvzWfuTH+F2meDOFGawMKGexq5lhxldEmAH8tZxjbLu2Sb?=
+ =?us-ascii?Q?P16nAn6eHhYCT7GBR/GyAg2l/bGfiDwTcGwNCYxIq3ikJZP/F2r8VU1Mcwne?=
+ =?us-ascii?Q?93usbZibkC2qF3Sz5ILJtnhTccBuzUutgdU7/JziD7wuENi5SmahGtyGI2lN?=
+ =?us-ascii?Q?wiF+HRx7SSBGK2Ox24DGtfPwa4Z6Ufv4Tx+0dvXyYea/Au91vCRxHgifgME0?=
+ =?us-ascii?Q?EcgpeeWHGQNTv+KLAxx7E1Hu0CZ/9qojdooJ/Gjj0ffr7Vl1hUI3xsYxjVoD?=
+ =?us-ascii?Q?caJ7ZwKEy+p6dBsgizEtEMI+FxoBI7uLl6pmkBzkg3g7YKOC8tQTHF9pXna4?=
+ =?us-ascii?Q?RO0TZGoFE85HsZ9oJWizOF7cGI0QzpqKQrmy5Jd1JgayBK/MNIq5twnJdtap?=
+ =?us-ascii?Q?ATerOqFL8KF1BAUGMG4viuKKG726B1idaIjjPljiD5aHNZQ024crdv+3IlRP?=
+ =?us-ascii?Q?EHhILKjXsfpyo8EgDzk+Ogv81/BN1BDy9iVpuG5j1RF++/t21xcolQfVp0o5?=
+ =?us-ascii?Q?48cWctyD3vVRTdJYpQ7nfTijU9EJBVw7U07KDVnJqx3OC9pnhSzHzzsak9zT?=
+ =?us-ascii?Q?tdH/O0diy3112sVIFciOAo/RUZTbd2iN6KdZZXDT9BCo83FxE5uOHu+Do26V?=
+ =?us-ascii?Q?+kkyVinVOEiRNdJ73YSNWuFxJjW5HcY1Y0VOViU/5RMDUtt2Qcrgex91fODu?=
+ =?us-ascii?Q?0jzvVQGmyIhunvuauZnGiJkxOwFpN1N1lraWjrsI4GBZYwnGNHQcCSjGJ5rs?=
+ =?us-ascii?Q?OYQ4WhF5x8/CIz6rF17Nw//3Eqm5a36AS0LlIfUxS9gzeCmPB4q0FrQiGtUb?=
+ =?us-ascii?Q?uxtaHtDUwjiqQ6urc17ZHQMA7StqYqZuDVF3xreImszv3SlqyqEOTO64EZO8?=
+ =?us-ascii?Q?vbxIDRySCAaE485l11qe2AtcsBFwACVAiG5erBVVPfFlAgZZLQFL0K5B/ORi?=
+ =?us-ascii?Q?uDnPk6DVndOQIbrMJQu6gI/BbUfv3sTN/J78Nr/0pPQ/3fS76O6bcA2FKY8C?=
+ =?us-ascii?Q?o1+XfBA6GBfIlRtKYNwreHlYCRhaSsz/wDHhM5ro6xBIsGM3sRdc194M+Nfq?=
+ =?us-ascii?Q?IUwDgigBjaeaxPQr7+FrWpaREhpawjPH6044M+j2GjN0inT7e4ucyKb5Y1bU?=
+ =?us-ascii?Q?JfdrZLVru+tvofBglcm35Yqb/Ff+S10SkLXwtzIVDI89WlVfGw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10743.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kxPmZvAlPwQUP+WEms3hAUh7ivQ3i184dOxtkWRrhtpy84blHAxHfKR7DsK/?=
+ =?us-ascii?Q?Yz3jiIkKJWrXD4wYC7OCqxyoV1x6aZUKwcac+Ybtf5xSkoF3U0pSxS+aQCQn?=
+ =?us-ascii?Q?4wHbT9LrFZIPljMLGj9ZQymP8UPEVg+vkEyRdD5Mv5V+qgeKsgq+ims/mLXx?=
+ =?us-ascii?Q?he6iUqKohlIk8GitGbWCHQi8tjRaso2lWC1HK64DdYAzGA0RjPj2HxeIGWZR?=
+ =?us-ascii?Q?vGPhzlRGmO353BVhWoXNQ0EML0jkM7yPM3HhHFJUTdpvZOCkoWp9Fm6WDKI5?=
+ =?us-ascii?Q?PI1YcQiNobRhVSAFNALrTE8mqlFyhefriHx+AAzsrC1RAjlvG31CKRGCBPRe?=
+ =?us-ascii?Q?M04DAp5aKwPDadlLBL3YWOzsTUUJ2O/WK5cAbn0D/ZLQvqBBY49usZKk+52o?=
+ =?us-ascii?Q?sf38l/SLVB1jyT8Rx8m8wO9Lq7KnihpX6gZtN6FJtBnnm3N3Ii4UAw129rW1?=
+ =?us-ascii?Q?6b4vkn50kUb76fO1CiR170pnaSkH9gyteKYRt+0yPkOMphaI3fbMTkL2etM0?=
+ =?us-ascii?Q?2h0lzpIUO2AzE0jt0nb1oRErrq9zJLRoOeTnzj+7TtquMZKv+XkL7ncKpSoH?=
+ =?us-ascii?Q?JJVI0Ntp4q8SnTOQ839YSfn4DU/BSbJPRL6Rs6pArkDj1hKRzGRZblOoYo9l?=
+ =?us-ascii?Q?PrRqRS0GRwfTIfxSty32P7GBOZvziuXrZUNizipdC1Kp/6J2HKKBRT+J+5WQ?=
+ =?us-ascii?Q?eoRsR8Fcs3cr5/T1xy1/Keb+mxYBYn45YNezQKMCfQ33aeg1v9sCj/dzBYDP?=
+ =?us-ascii?Q?bLYzS2pwYz09gkXTCPOL1OkhAPLiZvkXq78Q6ONGys3WCdQ7vuSvrlhXtN+J?=
+ =?us-ascii?Q?X5IQX2+SOXQDBwQcM2s8WN5iRCXT0cMDDN9Z9yZ9KOhvDMHze2JctXynwVd2?=
+ =?us-ascii?Q?iNyNVR0S0aA33Kye0uGVfQ4y4KEAOEJQdwm7gKLw0a1reKob+LMpnQBqtfRZ?=
+ =?us-ascii?Q?ZmlmeZp6w6p5ro/RZ6AnnLTTPFEsSOIHlDGUN/kXS2Au8fiHTYVmHVlO0+Lf?=
+ =?us-ascii?Q?XhIJkkAXDp7Y+Y2IhES/cno8OmplpZLa2OBIWgJ7VC22XdhQaq9PUdee1H7H?=
+ =?us-ascii?Q?sHpBlQZYTQSg9jDyDOU0VdM5I8kSSwfTmzGixLjpGfv4KsvywXGlIaMmFnNe?=
+ =?us-ascii?Q?7wzqydbKUlgUJeTHgq65FoGnn3yeGLYnayMZ4PeMg7dfbYOA1v0Yr9Be8kAk?=
+ =?us-ascii?Q?O0umkOnhWmwK5zNbU7I9WacDNiBxCNMX0HoybXo4rxZW289pSyQB7Pfp2zhw?=
+ =?us-ascii?Q?L7rQebUrn6EMsKmEhcBLUmFXXjjo0OT1Z8g9keqZN5aIuO0N58BmWuVyEn7x?=
+ =?us-ascii?Q?dvo74SJ0Fv3H1PvLXf/7N73w0gHTr9lXJ2SaEv2z/bPO5EVef9LkI6nNoTNo?=
+ =?us-ascii?Q?2roGmWGNOmn30SnG5mc1Os9RblAa8OmB5m8obVz01qs4g1xZ5R9qiC0mdK1Q?=
+ =?us-ascii?Q?LS8OemUSbVE4SLnbC5aJZrlfmbVqduxWEyESmjgI/6aPBOViiYqX8yBnNEmj?=
+ =?us-ascii?Q?D7138FM/8feBQeFZr9wHQggVvoSqyDT0q1jU9/aN0r/BJOghApP72931zdRQ?=
+ =?us-ascii?Q?04DQOvKpdVmUr5oxQqfHK7lsqymZ7HRDP+MsP7v3rB1szIAxsA/opbS52ZVN?=
+ =?us-ascii?Q?qdhOmjk7AugnTLL3VzZ7vPE=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66feff55-348e-413d-3328-08dcbaaccdcd
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10743.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 08:57:33.2463 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /HUXme2GFdRN+9HthXWqdmY65Dq0JUwAiF69cuA8wdCK9UKyS3U8Qwi4NxP0BdvAxPzK45ie7UVmrAq7J90Ij43p6PSUPk1O0teYdx6FH7o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5PR08MB10253
+Received-SPF: pass client-ip=2a01:111:f403:260c::713;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR03-VI1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,88 +159,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+After updating QEMU modules previously executed QEMU processes crash
+on module loading. It happens because error_setg() calls with a not NULL
+errp argument.
 
+There is a discussion - https://issues.redhat.com/browse/RHEL-29848
 
-Am 9=2E August 2024 16:04:28 UTC schrieb Peter Maydell <peter=2Emaydell@li=
-naro=2Eorg>:
->Our current usage of MMU indexes when EL3 is AArch32 is confused=2E
->Architecturally, when EL3 is AArch32, all Secure code runs under the
->Secure PL1&0 translation regime:
-> * code at EL3, which might be Mon, or SVC, or any of the
->   other privileged modes (PL1)
-> * code at EL0 (Secure PL0)
->
->This is different from when EL3 is AArch64, in which case EL3 is its
->own translation regime, and EL1 and EL0 (whether AArch32 or AArch64)
->have their own regime=2E
->
->We claimed to be mapping Secure PL1 to our ARMMMUIdx_EL3, but didn't
->do anything special about Secure PL0, which meant it used the same
->ARMMMUIdx_EL10_0 that NonSecure PL0 does=2E  This resulted in a bug
->where arm_sctlr() incorrectly picked the NonSecure SCTLR as the
->controlling register when in Secure PL0, which meant we were
->spuriously generating alignment faults because we were looking at the
->wrong SCTLR control bits=2E
->
->The use of ARMMMUIdx_EL3 for Secure PL1 also resulted in the bug that
->we wouldn't honour the PAN bit for Secure PL1, because there's no
->equivalent _PAN mmu index for it=2E
->
->We could fix this in one of two ways:
-> * The most straightforward is to add new MMU indexes EL30_0,
->   EL30_3, EL30_3_PAN to correspond to "Secure PL1&0 at PL0",
->   "Secure PL1&0 at PL1", and "Secure PL1&0 at PL1 with PAN"=2E
->   This matches how we use indexes for the AArch64 regimes, and
->   preserves propirties like being able to determine the privilege
->   level from an MMU index without any other information=2E However
->   it would add two MMU indexes (we can share one with ARMMMUIdx_EL3),
->   and we are already using 14 of the 16 the core TLB code permits=2E
->
-> * The more complicated approach is the one we take here=2E We use
->   the same MMU indexes (E10_0, E10_1, E10_1_PAN) for Secure PL1&0
->   than we do for NonSecure PL1&0=2E This saves on MMU indexes, but
->   means we need to check in some places whether we're in the
->   Secure PL1&0 regime or not before we interpret an MMU index=2E
->
->Patch 1 cleans up an out of date comment about MMU index
->usage; patch 2 is the actual bug fix=2E
->
->This fixes the bug with the repro case in the bug report, and it
->also passes "make check", but I don't have a huge range of
->Secure AArch32 test images to test with=2E I guess it ought to go
->into 9=2E1 as a bugfix, but the nature of the patch means it's
->not very easy to be confident it doesn't introduce any new bugs=2E=2E=2E
->
->Bernhard: I suspect this is the same bug you reported a few months
->back in this thread:
->https://lore=2Ekernel=2Eorg/qemu-devel/C875173E-4B5B-4F71-8CF4-4325F7AB76=
-29@gmail=2Ecom/
-> -- if you're able to test that this patchset fixes your test
->case as well, that would be great=2E
+Note: The commit subject was changed. Previously it was called "module:
+Prevent crash by resetting local_err in  module_load_qom_all()"
 
-Hi Peter,
+v2: Move local_err initialization inside the loop.
 
-indeed this fixes my guest, too! Thanks for keeping me updated=2E
+Alexander Ivanov (1):
+  module: Move local_err initialization to the loop in
+    module_load_qom_all()
 
-Series:
-Tested-by: Bernhard Beschow <shentey@gmail=2Ecom>
+ util/module.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
->thanks
->-- PMM
->
->Peter Maydell (2):
->  target/arm: Update translation regime comment for new features
->  target/arm: Fix usage of MMU indexes when EL3 is AArch32
->
-> target/arm/cpu=2Eh               | 50 ++++++++++++++++++++++------------
-> target/arm/internals=2Eh         | 27 +++++++++++++++---
-> target/arm/tcg/translate=2Eh     |  2 ++
-> target/arm/helper=2Ec            | 34 +++++++++++++++--------
-> target/arm/ptw=2Ec               |  6 +++-
-> target/arm/tcg/hflags=2Ec        |  4 +++
-> target/arm/tcg/translate-a64=2Ec |  2 +-
-> target/arm/tcg/translate=2Ec     |  9 +++---
-> 8 files changed, 95 insertions(+), 39 deletions(-)
->
+-- 
+2.43.0
+
 
