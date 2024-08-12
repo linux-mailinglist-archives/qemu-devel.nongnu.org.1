@@ -2,203 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC194F68A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 20:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7978694F6B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 20:28:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdZeI-0007CZ-Mh; Mon, 12 Aug 2024 14:20:06 -0400
+	id 1sdZmG-00009P-Bb; Mon, 12 Aug 2024 14:28:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sdZeC-00078t-Ro
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 14:20:03 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sdZmD-0008VO-QZ
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 14:28:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sdZe9-0004sj-9G
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 14:19:59 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47CHXTTY024073;
- Mon, 12 Aug 2024 18:19:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- corp-2023-11-20; bh=vZ9MhK41ycwCpARPpuwxidOQsONrhQ1JeHwLwDKh0XQ=; b=
- Q7UwkxXXG7uIehxKzXhTYV0dotGLSPUmsFRh9BseMshM5N7AQYziD2+yJY6wjdN8
- Xj37pbzwcLrcg36p0n0rL+N5TUfCOVhTW+3/re8tlat3UZdH7pUOL38XpYZq20qf
- BqQk3hLTf22fcgvFKQcuKEuUKZvnmmMTmlHpUmOYaiI7SfnOqaftL4T8cr0JuE3z
- 1+5GvsH3+Eqywojs8Q5CKjn+wyZB4u6lPj6tYpDoxvS9qXV/dgg7O61OwhgM7Zru
- PY2WytK+h6yDGN0BclvJT0qONzBFEoJxQdJHQbfPohmwKqvAkpcXXUzlLv4j1AE8
- A+gI9shOVk5I3m+A/HzYxg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40x08ck9cu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Aug 2024 18:19:53 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 47CGj8c7017662; Mon, 12 Aug 2024 18:19:51 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12lp2043.outbound.protection.outlook.com [104.47.66.43])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 40wxn8bmv5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Aug 2024 18:19:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nSLWYb/nzmh/A+scmfbHPqaOlY5tUebbjlp2VgrAftUKCXGwK7vX1pCXhw89T2Trjp+SHdzwCv/eV6Vh/lPrrD5XhvhSqCeehz/I8Vw9h32o+91R2WLLdpwj9rBlzJbnKrdAVUT0c4RLQwOGOJn68vPR/1BcDfjEyjrwqTczbI5Yl7hCv5n8X8PE4deLDhjQT6F2nz9W8iQWhhTLW54+4MR3lBpBh6bGLIiHKr8ojX4e+HnkXjgHFPvsU1mO/p3qzYtrpsbS7ofZVvcJc/0IcXvg/VzK/7Y7Qihh9wXjhb5OhoytdrzlxlSf8QAQz9cL1uqEEc/zmn/IMHj6s4nM2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vZ9MhK41ycwCpARPpuwxidOQsONrhQ1JeHwLwDKh0XQ=;
- b=aHdxhdodKsGcNTBHrwJOVOTkayvHfXoDr6bZ3R9JqwCHgrLk2b1jy1TWYc/t9F5xjxIk1EJjbm/nezXGdZ9FS/FV4Ln/0KYNnAjs3MAZcvC5e+a1W5ShN2lNC8hbXvZTUiRh3koeevhas9OpRvicrqIaRSuhctR6UUZmzr7kOxizroNan0/Lb+SrlkBXVsr8kJTz43m0rqTH3Wo2/Mp74v690vv6UABdznTHYwpXfnFXxr6QO7IqdNAtGeyCy7mnBTW9CGLI7MJW2fPn1H/54Vmhj8RSJxDiSg9OpKg9dvxgJpYqzpeVCLn5+dpyQXVnDaEWA02Ciz0cvr+tu+vspA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vZ9MhK41ycwCpARPpuwxidOQsONrhQ1JeHwLwDKh0XQ=;
- b=mzaFBNaZSDa82WqPzNQS2WEhpZrMGyNBHdCgCqiNgnI3gz4LXA3YeMlCTuMm2rP/7yE5vH2AvfI2XIBcNCFdGJmHRmbohynOxq78k2FRSR7yzgYVKhr8S1LgXRwX6fWrDXR6euY7MuXvB25drWofeoGNAHg4ZSKoAIFYlsJMHMc=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by IA1PR10MB6217.namprd10.prod.outlook.com (2603:10b6:208:3a6::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.15; Mon, 12 Aug
- 2024 18:19:29 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%7]) with mapi id 15.20.7875.012; Mon, 12 Aug 2024
- 18:19:29 +0000
-Message-ID: <4054526f-165a-4bc8-9c7b-2ef359e87e7c@oracle.com>
-Date: Mon, 12 Aug 2024 14:19:26 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 0/8] Live update: vfio
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <1720558737-451106-1-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <1720558737-451106-1-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR13CA0033.namprd13.prod.outlook.com
- (2603:10b6:208:160::46) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sdZmB-0006Z0-2w
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 14:28:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723487291;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1dO7bvay9JIsu8zjXDiXTfklspmavhHfx+R+MA7Geg0=;
+ b=YzPlnNfyo6JTReryx4dClGv94hpSWYIgTEw3uK05v+bt1FM7GEZbRcOn0M9NiMxW5Yx8lF
+ ayd7N4QjBMGNN27fu9lvjEQ4uN6qimnBNMFPGi+Z9BrCIoy0Gk50d+j0S5P+WSqNJp1Evg
+ TEnnSmJqppgrKb0XTK869/6Md+AX6n8=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-333-MyMOrdi1PcyvmOJnz9MVhg-1; Mon, 12 Aug 2024 14:27:40 -0400
+X-MC-Unique: MyMOrdi1PcyvmOJnz9MVhg-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1fc6a863751so33222715ad.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 11:27:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723487258; x=1724092058;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1dO7bvay9JIsu8zjXDiXTfklspmavhHfx+R+MA7Geg0=;
+ b=wt9RZ07J1LP16EdKwsOWmYK+KL/F5DFWf7Y2YEXJI1a63Z4zztUWUwbVNrBqetT+C/
+ hwhkOIAV9aukvZYMO4rzSRyzlOOWHfY+Yg7cGsd2z3sPVSJ+MtAvkCqwQb9QYTlSrxZi
+ F2ptWLtIOMDepQpWytZcc2I9lTz1Sk1x3kTSJHzrPG/N/EJpFUeU7764AMZx7xWYLHtv
+ 19ZeWiRbu3RLcMGm1ysHpKUgswC9OcAxAYHsGhzKpGDHfxhWFqB1fucOme+MPe35zTky
+ iS/KVcAj7dEFlk13jQqbSj9HrOx3jlr0VleS/ReS8b1eSDbmFuJIxpR8Kh+Xp2R81yF7
+ AkZA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV6B7QIEIoM/TzT605/zz51zaTI61QHnMI4W4RDlnpdJYPQsuUtQGGQYsOwao8IykiankUCzFL1VqQbLkyxAhrwR3U510Q=
+X-Gm-Message-State: AOJu0YztZPL8Qt+CActMMNzSsqIiuOrBUwNn/fEvKyM/lRgyPsWUqPt7
+ EHairlgREbrcAWgTIED/Bt6YrqMqvMy88yc5tdmGNOFeUireL4Exjzrb3UqitmDbCv3xyz03H4G
+ k0LhuXrOwqpDhtJkBl9xeGAZW+rpwgo9y+bIpTjXQ93E1LyeTUaF3IumSZUqOtz1WP7YIXsUP70
+ Re2Fi14kqVVNZ6yS/0xz7TGUOEV73QDm5uqjw=
+X-Received: by 2002:a17:902:db08:b0:1fc:6b8b:4918 with SMTP id
+ d9443c01a7336-201ca1c0606mr13997515ad.41.1723487258057; 
+ Mon, 12 Aug 2024 11:27:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECXeWPMU5gVTdvjTj/z+h8PJq0AELoTH7DRP49DgBtZdvMcVRFgNuQ4SQR7+B5JeyTo1KVUfdIgucORwLh+1A=
+X-Received: by 2002:a17:902:db08:b0:1fc:6b8b:4918 with SMTP id
+ d9443c01a7336-201ca1c0606mr13997275ad.41.1723487257663; Mon, 12 Aug 2024
+ 11:27:37 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|IA1PR10MB6217:EE_
-X-MS-Office365-Filtering-Correlation-Id: f54b3523-7f5b-4d31-e4a5-08dcbafb4e79
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?U1p4dm44a25xOVNKWUtDSG93UjUyZzlRZVdXak9xTWJDdzhTL2VRR1cyNFU0?=
- =?utf-8?B?M2V1WUhYbUE2bWRxMHNKUmUzREdHb0lFcFFpTEkwdzRSRDVRdUMzY3RXS0pV?=
- =?utf-8?B?cVdxdllmV1hBeFpUQlJTWnZXK3Q2am8rRmtFWW5tajJpWnJueHVRVnhqTmJO?=
- =?utf-8?B?TUZ2amFJTlM0R2NyWGFKQ0tVeWw0aGxDOHhhYVBGcWZpajR6UWlUTHAvR2pO?=
- =?utf-8?B?OXpLRzM1Vkp0bDNzRXdPUUJRcGRKNkFrTjB4MTBXbXdOQnZQQitoVERac21l?=
- =?utf-8?B?dE1wVDF5c0tVR1preEhsMUlnVGh0b3ZlRTNxOUVKTXRiWms5Nzd6OEg0Yjh1?=
- =?utf-8?B?bDZtcWkweGs0dFZpUGdROVhYelhDTkVqTS9ZMVJmQ1dJQXNUditEaXlnbDhF?=
- =?utf-8?B?MEhmV09pMS9RUzNibFpYQjBWTCsyUHFpWXU0Z0dWa29DVjM5RXFjUjVhV2xF?=
- =?utf-8?B?M3pCSjh6dHhoMytFdVIzSkVXR2hka1lmTXlsYXlBMEwydjVGVW9EVWNwMkJM?=
- =?utf-8?B?VmNyak16YjNBOVJQUnMxa3N2V2FjRnJteGZtbjhVaUNQUGdnZG13N1JJdTFV?=
- =?utf-8?B?SmhqTHBpY1dHdE1URmkzeDBCQmNkTG1RcVJMdHZnalZQd1owcVZReUdlM1Zr?=
- =?utf-8?B?N3d1RXo2RDhtc3RvZWpuU1lDMUpmWnUrSDY1VDN4WXRoa1YzQ2Vyb21rTWRV?=
- =?utf-8?B?dDJBSVpHZzVxWGp4VnhRQnBhNDRWeFNqWXpmU25HV24vSXIvM3RzUUNFMmww?=
- =?utf-8?B?dkpOcWx6OUFaNzhVU2o0NUs2dnlHL3ZNZXdJOGJ2SStFNit2WklmR0lUZG1H?=
- =?utf-8?B?U0JTZ052eHIzaFpqckNzaHEvR1hzUTFWdFVZcmYyZmxPL2tJc2NkRkllYnRm?=
- =?utf-8?B?V2Z2SXc3TUg2NHJBbE1QTkExeUtXdXhFdTZTTWlVMjVveXRlQTZRUC9IWisy?=
- =?utf-8?B?Tmd3ZTJhYUtyN1JnZldWUXM3TDV2L1B1MkNjd0g5NnFpbDJMbzhqdjNkMXJR?=
- =?utf-8?B?QkRqeUZkZXd2TlhtVkZ1SmFNS0p1SktKeXVETXh5NUFNVitpRGdDNEdVZ2Ir?=
- =?utf-8?B?c3J2UEY2SEpTeG05L2tsK3pBSldGUU83eDlpY1pVb1NsUkJqRktxODgySHlw?=
- =?utf-8?B?QjZjNFZKcTZvdXd4QWh6Nk0wNER1dW1HTlI4dklLSDMwbUI0dlAwNjBObU5Y?=
- =?utf-8?B?Ky9NdDQ2eitWeDBiUTRDbFJmYTEzdGFVRm5qRlRmcGs1aENKMWZFcWNuWFh5?=
- =?utf-8?B?cTIzcVM5a1M1Vy9nOTdUU2tNVm40dWRwUVFMczRSS2ZDSTV2VzhlMVRKcDhx?=
- =?utf-8?B?OFBSc2JlTzF1UHQ4YWFqSWVSaXgrUnNPZE1NRGVBbFBSQWtyRFdmd3FrUHMy?=
- =?utf-8?B?YTdrTkJyRUQxUVAxNEU4akNmQUhSQU1KZDZVaElaOFBLaWp1QWMrUUgvSmtx?=
- =?utf-8?B?V2RKUVhRY1AxcWt1a2NNRlFSUC9QdVBPMlc4TXNnSFdVaW0ydVBSUzNDNDhq?=
- =?utf-8?B?Sk1uTzhNOTRRSkhoZFpCTlBsZHR5SDlQTXBrd2VkWnYyellzbVgyRzRhZWVj?=
- =?utf-8?B?MVRaNUdYWHRWeU9ucEtvMGxXWlRjQU56U2VmRVFoSmhqaXU2bnQybnArUVcr?=
- =?utf-8?B?S1hJZ2JyOUkwZERYdDIrN28vOUl5YW92YVBLRjVCUmYwS0QzVXBYQktXWjVR?=
- =?utf-8?B?ekVhQ0FwQnlHVFhLUDJlQVkxOCsrL2JRRWhXVjBlckdZSTRyZ0hVSlllWXFm?=
- =?utf-8?Q?ZaEIa46uIWaNBfk/nQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NU1OL0l4SjV5eUpEcGc1Qyt1K2UzNk05RGhmSVNoWC9zTU9OVTN2VU9lNmxa?=
- =?utf-8?B?R3dOM3FWUE0rL0VvSGpnWmxMTk11S3Nrd1FhRC80NWl5cndCYUxDRTV6RWs1?=
- =?utf-8?B?cVFodE1VRGJJM1I1QzBPdnc0SHI0cUt2OStiNW1VK2ZrUXZQZW5QN3o3VDky?=
- =?utf-8?B?UmtrclVVZzMwdFlxQjBKcVZMM0hoN09tTTFvYk5DVEVuVTVDS1FTMDVIN0I2?=
- =?utf-8?B?ZWJrSFpTTXM1VmsxRXRaUmtZc2dTYnZnR3FwTytDUkdRMFVZdC9oYkZwMXgx?=
- =?utf-8?B?eW5YV3hySVhUazY1ZDZQS0F2VnY1Vlg5L09xdnJiRzE4UkFVbHk0VnRkeHk4?=
- =?utf-8?B?Ym1WRW56eHFKL1Y3L0VXOFpFcmM2TWV4QXlyZlRGbURvbXk3TVlwZVZtQkkz?=
- =?utf-8?B?amp2VEZBZ0VTVlFaOWJtbkRqSnJoQzhFRnBldGkzUGRLZmVmTmZkR1BtcFIy?=
- =?utf-8?B?a3k4UUo3WGhaTm5FVGpaS1FOaUNhQWRscTJnZlplcTZYLzNwN2FLL2d3OHEz?=
- =?utf-8?B?Q1g0MkdVL00xOTM3ZnN6V1c2TXl2bS9tNGc5cElFM1BjNm1TT2NONzRrcGhx?=
- =?utf-8?B?ZS9MRU1xYmZSc1FsQ1pIbGUvbDdYZ01xZWFhWW9QL0lVR3VraGRnTDFjV3M3?=
- =?utf-8?B?MEdpWWVWZWpYTzFpRmZKUWMyNndTdlBZMGxFYjN0RnhrVWkweE5FOUlYSGkr?=
- =?utf-8?B?MExvdEVITFZpeVp0RExNTGRPaWJjR0xrcGNUa3pqVmZMMnNKRGJoL0E0WGRP?=
- =?utf-8?B?WHZsb1VhM3F4SEY3OVcwaWI0U3Q2dTIzeEZzLzBZdzNLcGZ0SXVmMkZaRkJ2?=
- =?utf-8?B?MUEwYmRVdlM0WWIrblZmRll3Y0c0MFF3OG9jcVdPMkRXbS8zNVNmTlNSZ1pi?=
- =?utf-8?B?ZlppbDNoR1B5dmxXU25PSEZ2N2k4MG1tV2VTb3l4VXRQanlrTExVdkt0TEhh?=
- =?utf-8?B?czg3QldmUjF5Uk9IVk5Ia0NiNWpiTjdBQlV0OS9KTnRBUGFlODZUaEI0blhi?=
- =?utf-8?B?WVJQbVhvMHp0K0pBaGp4RElKaW50UVBQQzJRcXJVbGphcnBnNUNRbFYwOWpC?=
- =?utf-8?B?b3dDczU1SExqbmRuRDhySDMxU2NRSmhRUFZnMk1SZk9oZng2TFRNNXUralVh?=
- =?utf-8?B?dmhKbGgwMEdxMHBXNHdITWNlMEtvWkxLdUlxdzVjSTRHNHdXZzZFVXhOaDhJ?=
- =?utf-8?B?Q1RPdHZwMTY3UXJobkRNMWFvWXRUVndwVkN2REM1aWRnblFRREgwbXkxQjBy?=
- =?utf-8?B?dWFWOVJGc0xKVzVydmJSVzVYMTd0NENIdk5WZFpobXZOZExWZjhuTjVrQWRh?=
- =?utf-8?B?Z2RNeWNDNFRoaGNERDlIdnJlaWIzQlVMMXZzdDZOM09ZWGpWdDIzeExYR01q?=
- =?utf-8?B?T2VVWFJLdFlZcFhhbFFiem5NVVVvUlJESTdxK1FxL09tVURUTTJ3NE9Pa0Ey?=
- =?utf-8?B?VjdwWkFrSitkOWl4QkxaZEVqMGFKRnhpQkpTWFBQV0ovdENod05jNXdoZmpO?=
- =?utf-8?B?Q0RjVWZvS2tPVFU2OHNVYUMxWnVibmZRSlprT09yNTQwM1Ewa2pzWHJJLyt2?=
- =?utf-8?B?SUFDdlBsTzc0bXVJdkNhNWJPY01kaDUwckNxNHVtTXRqYXR2L1ZLY1JPcVd1?=
- =?utf-8?B?YytuV0lhQzJReFRXUG9FOGJkemM3YjA5WnJNWUJQdUw5djBoRmt6dkFCL3Rq?=
- =?utf-8?B?d1dhYW8vWFg2Y3lxNkdIMlM4cVVhdU9HWUhkdG5LZ0F5UWNObUdLYnR3U3dT?=
- =?utf-8?B?Zldob3dxdnFOUkZKRmZXTExNWW9udElnakVWWmhTWTF5ZU1ZR2M2R2U1RTE4?=
- =?utf-8?B?RjR2RndCU0NYU1F6WEdUVUs3UFBCSHhLLzF3ekc3MS9JWHJCblBTbGNUdmtI?=
- =?utf-8?B?cVo3RmZENkJZYkxYMUI3bEIreHA0M3dqa1ZUUG5KeFB6bU0zcEhqZ2pPdVRL?=
- =?utf-8?B?L1FHUEw4YkhldlQzRkMwL25oWElGcnk5Si9DUVlubjZKanpyZDdidVRDV2Vq?=
- =?utf-8?B?dklhUUxmMS9Ta3FSbGRBSEhFbGloWkpFMEJYOEcrbWFub1dPelhWVkRFenBi?=
- =?utf-8?B?YXB6STltWUZjd3VsLzVpbVhDeEpNZVRUSFpwWTd0WmZXb21zckw1dEJmK0Ir?=
- =?utf-8?B?dllnYnQ4WlpUdWhIdHUvRXE3VzA2ejJuWGd6TFNRTzBPOHVXRnJ3M3BSR1Jw?=
- =?utf-8?B?MlE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: YrIuOl+ZOdn1mKLMvPspgHCOYXMijk+lE2eQpk0qu5rCrnvQz6b5J5A3pJhZ2Zo4isTfhKaC7YpJ6+xXnfDaBCtX3keUDlrqaya9PATiqJRRSF5RsO5oj/Uw62AtkDjc1odl3gs989dlGGGPPl+9FI8rTAz+X6mrDRQxbNM7p4knfnFyvF6Qjuq75rJyr2+nzgJdxbicmm5DYmjfWhhDbsKlb8DaSm4mAhMs6Pq0B6Lyak/Z4xDzn/yBPrYtnXTYsmpWcEwA7FVv7I7n7bSTzaO05ZBSDklkDqUFg+R1EFyn3pI8Ghnhr6iJCb93gsDI9HqKrftyXLrBP3l9X+iuECyRsjrS69Smj5RbAzhrJIcCU8TRtCmT0xLRR7aMZm02y6ADQYFhn4l7I/CF9iXpIFwUpdkRiP9qCDsBCy7K4tSIO97ajRb4B4GuC/ckBRgnKLfaHNA44QA2cYhJFpJFIdaxuv5fcrwzyNAoi6UmCB2Jy0bjEwOUZJM7XXwCUMSCO/5IhUdMWkklJ7LatLXdEy6mzVpE7Y8hgUmsjyYp5wg4efAhUKfwbmqVnBjmNdLfKNk5Oo1GuxYClXVxC3uwOarFzJezIC7W54u9bCcojkI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f54b3523-7f5b-4d31-e4a5-08dcbafb4e79
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 18:19:29.7101 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nNbPeihpjocgp1C3KaAjIZowVsCZZPy2+A6wkalyITclFnjC3mau24NlDafgqomWnM3PdUuv9s4868jAhufNwMugKhARZUAUnRwnV9QPvok=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6217
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-12_12,2024-08-12_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- adultscore=0 spamscore=0
- phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
- definitions=main-2408120136
-X-Proofpoint-ORIG-GUID: ftqWq70pGnHXu0MaaXsPZAbeRvObbPNf
-X-Proofpoint-GUID: ftqWq70pGnHXu0MaaXsPZAbeRvObbPNf
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20240412080617.1299883-1-sf@sfritsch.de>
+ <dnqsifhslb7mtidrzadsz6254ykmb4bjz2cenzryonz7wbjz4g@vj56wcuwgx25>
+ <1eaf1f92-10f3-0270-a1b4-e95801c367dc@sfritsch.de>
+In-Reply-To: <1eaf1f92-10f3-0270-a1b4-e95801c367dc@sfritsch.de>
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 12 Aug 2024 14:27:25 -0400
+Message-ID: <CAFn=p-Y1sAXfzx6cWEgeYyMyG3yn1vEpDmV2K8qWtLx4otm4tw@mail.gmail.com>
+Subject: Re: [PATCH] dma-helpers: Fix iovec alignment
+To: Stefan Fritsch <sf@sfritsch.de>
+Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-stable@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000c4b5d9061f80a5e2"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -215,51 +100,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all, any comments or RBs?  This should be a slam dunk.  Alex reviewed
-9 versions of this code and all feedback has been incorporated.  The only
-significant change in this version is the addition of support for the
-two container types: legacy and iommufd.
+--000000000000c4b5d9061f80a5e2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-- Steve
+On Tue, Apr 16, 2024 at 7:54=E2=80=AFAM Stefan Fritsch <sf@sfritsch.de> wro=
+te:
 
-On 7/9/2024 4:58 PM, Steve Sistare wrote:
-> Support vfio devices with the cpr-exec live migration mode.
-> See the commit messages of the individual patches for details.
-> No user-visible interfaces are added.
-> 
-> This series is extracted from the following and updated for the latest QEMU:
->    [PATCH V9 00/46] Live Update
->    https://lore.kernel.org/qemu-devel/1658851843-236870-1-git-send-email-steven.sistare@oracle.com/
-> 
-> This series depends on the following, which is based on commit 44b7329de469:
->    [PATCH V2 00/11] Live update: cpr-exec
->    https://lore.kernel.org/qemu-devel/1719776434-435013-1-git-send-email-steven.sistare@oracle.com/
-> 
-> Steve Sistare (8):
->    migration: cpr_needed_for_reuse
->    pci: export msix_is_pending
->    vfio-pci: refactor for cpr
->    vfio-pci: cpr part 1 (fd and dma)
->    vfio-pci: cpr part 2 (msi)
->    vfio-pci: cpr part 3 (intx)
->    vfio: vfio_find_ram_discard_listener
->    vfio-pci: recover from unmap-all-vaddr failure
-> 
->   hw/pci/msix.c                         |   2 +-
->   hw/pci/pci.c                          |  13 ++
->   hw/vfio/common.c                      |  88 ++++++++--
->   hw/vfio/container.c                   | 139 ++++++++++++---
->   hw/vfio/cpr-legacy.c                  | 162 ++++++++++++++++++
->   hw/vfio/cpr.c                         |  24 ++-
->   hw/vfio/meson.build                   |   3 +-
->   hw/vfio/pci.c                         | 308 +++++++++++++++++++++++++++++-----
->   include/hw/pci/msix.h                 |   1 +
->   include/hw/vfio/vfio-common.h         |  10 ++
->   include/hw/vfio/vfio-container-base.h |   7 +
->   include/migration/cpr.h               |   1 +
->   include/migration/vmstate.h           |   2 +
->   migration/cpr.c                       |   5 +
->   14 files changed, 682 insertions(+), 83 deletions(-)
->   create mode 100644 hw/vfio/cpr-legacy.c
-> 
+> adding John Snow to CC because he investigated this in 2020.
+>
+> On Fri, 12 Apr 2024, Eric Blake wrote:
+>
+> > On Fri, Apr 12, 2024 at 10:06:17AM +0200, Stefan Fritsch wrote:
+> > > Commit 99868af3d0 changed the hardcoded constant BDRV_SECTOR_SIZE to =
+a
+> > > dynamic field 'align' but introduced a bug. qemu_iovec_discard_back()
+> > > is now passed the wanted iov length instead of the actually required
+> > > amount that should be removed from the end of the iov.
+> > >
+> > > The bug can likely only be hit in uncommon configurations, e.g. with
+> > > icount enabled or when reading from disk directly to device memory.
+> > >
+> > > Fixes: 99868af3d0a75cf6 ("dma-helpers: explicitly pass alignment into
+> DMA helpers")
+> > > Signed-off-by: Stefan Fritsch <sf@sfritsch.de>
+> > > ---
+> > >  system/dma-helpers.c | 3 +--
+> > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > Wow, that bug has been latent for a while (2016, v2.8.0).  As such, I
+> > don't think it's worth holding up 9.0 for, but it is definitely worth
+> > cc'ing qemu-stable (done now).
+>
+> we had some more internal discussions and did some more googling, and it
+> turns out that this is actually part of a known issue:
+>
+> https://lists.nongnu.org/archive/html/qemu-block/2020-07/msg01866.html
+> https://gitlab.com/qemu-project/qemu/-/issues/259
+>
+> In the above mail to qemu-block, John Snow listed 4 problems in the code
+> but my patch only fixes the first one. Considering that the code may also
+> write data to the wrong place (problem 2), I wonder if an assert in the
+> same place would be better until the underlying issues have been fixed?
+>
+
+Whew, it's been such a long time since I've looked at this, I barely
+remember. I think my email now knows more about the problem than *I*
+currently do. I'm glad I wrote it ...
+
+I do not currently know what happens if you fix the first issue but not the
+other four; I don't know if it gets passably "less broken" or if it causes
+other bigger issues... and I don't have the bandwidth to test that out
+currently, my apologies.
+
+If there's a renewed interest in fixing this, I can try to start ramping
+back up on it, but I have a few other projects to finish first, but
+possibly I could discuss this at KVM Forum to help delineate the work into
+manageable chunks.
+
+~js
+
+--000000000000c4b5d9061f80a5e2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Apr 16, 2024 at 7:54=E2=80=AF=
+AM Stefan Fritsch &lt;<a href=3D"mailto:sf@sfritsch.de" target=3D"_blank">s=
+f@sfritsch.de</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">adding John Snow to CC because he investigated this in 2020.<b=
+r>
+<br>
+On Fri, 12 Apr 2024, Eric Blake wrote:<br>
+<br>
+&gt; On Fri, Apr 12, 2024 at 10:06:17AM +0200, Stefan Fritsch wrote:<br>
+&gt; &gt; Commit 99868af3d0 changed the hardcoded constant BDRV_SECTOR_SIZE=
+ to a<br>
+&gt; &gt; dynamic field &#39;align&#39; but introduced a bug. qemu_iovec_di=
+scard_back()<br>
+&gt; &gt; is now passed the wanted iov length instead of the actually requi=
+red<br>
+&gt; &gt; amount that should be removed from the end of the iov.<br>
+&gt; &gt; <br>
+&gt; &gt; The bug can likely only be hit in uncommon configurations, e.g. w=
+ith<br>
+&gt; &gt; icount enabled or when reading from disk directly to device memor=
+y.<br>
+&gt; &gt; <br>
+&gt; &gt; Fixes: 99868af3d0a75cf6 (&quot;dma-helpers: explicitly pass align=
+ment into DMA helpers&quot;)<br>
+&gt; &gt; Signed-off-by: Stefan Fritsch &lt;<a href=3D"mailto:sf@sfritsch.d=
+e" target=3D"_blank">sf@sfritsch.de</a>&gt;<br>
+&gt; &gt; ---<br>
+&gt; &gt;=C2=A0 system/dma-helpers.c | 3 +--<br>
+&gt; &gt;=C2=A0 1 file changed, 1 insertion(+), 2 deletions(-)<br>
+&gt; <br>
+&gt; Wow, that bug has been latent for a while (2016, v2.8.0).=C2=A0 As suc=
+h, I<br>
+&gt; don&#39;t think it&#39;s worth holding up 9.0 for, but it is definitel=
+y worth<br>
+&gt; cc&#39;ing qemu-stable (done now).<br>
+<br>
+we had some more internal discussions and did some more googling, and it <b=
+r>
+turns out that this is actually part of a known issue:<br>
+<br>
+<a href=3D"https://lists.nongnu.org/archive/html/qemu-block/2020-07/msg0186=
+6.html" rel=3D"noreferrer" target=3D"_blank">https://lists.nongnu.org/archi=
+ve/html/qemu-block/2020-07/msg01866.html</a><br>
+<a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/259" rel=3D"norefe=
+rrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/issues/259</=
+a><br>
+<br>
+In the above mail to qemu-block, John Snow listed 4 problems in the code <b=
+r>
+but my patch only fixes the first one. Considering that the code may also <=
+br>
+write data to the wrong place (problem 2), I wonder if an assert in the <br=
+>
+same place would be better until the underlying issues have been fixed?<br>=
+</blockquote><div><br></div><div>Whew, it&#39;s been such a long time since=
+ I&#39;ve looked at this, I barely remember. I think my email now knows mor=
+e about the problem than *I* currently do. I&#39;m glad I wrote it ...<br><=
+/div><div><br></div><div>I do not currently know what happens if you fix th=
+e first issue but not the other four; I don&#39;t know if it gets passably =
+&quot;less broken&quot; or if it causes other bigger issues... and I don&#3=
+9;t have the bandwidth to test that out currently, my apologies.</div><div>=
+<br></div><div>If there&#39;s a renewed interest in fixing this, I can try =
+to start ramping back up on it, but I have a few other projects to finish f=
+irst, but possibly I could discuss this at KVM Forum to help delineate the =
+work into manageable chunks.</div><div><br></div><div>~js<br></div></div></=
+div>
+
+--000000000000c4b5d9061f80a5e2--
+
 
