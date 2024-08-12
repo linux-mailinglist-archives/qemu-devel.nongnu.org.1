@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE90394E40D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 02:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79FA494E407
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 02:45:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdJBK-0003cg-8R; Sun, 11 Aug 2024 20:45:06 -0400
+	id 1sdJBN-0003gO-TT; Sun, 11 Aug 2024 20:45:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdJBH-0003TI-3O
- for qemu-devel@nongnu.org; Sun, 11 Aug 2024 20:45:03 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1sdJBI-0003a4-QA
+ for qemu-devel@nongnu.org; Sun, 11 Aug 2024 20:45:04 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdJBF-0001eX-4M
- for qemu-devel@nongnu.org; Sun, 11 Aug 2024 20:45:02 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-200aa78d35aso12554535ad.3
- for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 17:45:00 -0700 (PDT)
+ id 1sdJBH-0001ev-5O
+ for qemu-devel@nongnu.org; Sun, 11 Aug 2024 20:45:04 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-710bdddb95cso2127070b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 17:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723423499; x=1724028299; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=u47FnAda6gSQy1TJPew4WmYrmGo8lcQrSgewPMLMudI=;
- b=Sp8Ywk/KDsY1h5pR/9eoz6dckkdsfGBG49D34XOhuRz5IhCUzvnix9sKN6RdizKgDK
- RFV4u+ErYulK0rtVp4xLD+q4LCqDnMnRktjmrT7O8b8ZDfbcVqWeMK+U1JRU19RkOlsD
- Eu+gtiNM8glX6Stj9pF9CVDjjuji3PfOgdwdb12CNvKlrOijY0ySLlfaqIw6OQ5hqbkS
- Qam0cegTUmDGYC4O0Vs1+vRiZ6EEYxxb63VgyB4lNQTkRVzUpt5DAeMlfd531UgC+QCU
- xyWGT45NjdJ09fYy7DhLLgDM0nz2n3oI7KWG3wJIyWsNX0nNInApa4CuS86KopCcBlLe
- I6Aw==
+ d=linaro.org; s=google; t=1723423502; x=1724028302; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aG6Wn5JGKqOVYo7oiDwgDKG/Csj9cM6r0yseNWt8qsc=;
+ b=Il7YuguIHrWFNDEpQjhmPZVqKbKblsY5aE47NOGJjkgSSzYsxPX34nuKQbdTQcQkH/
+ WRsY6Fj1qqUWjNOEN/5R/HpKcU8VRV92Tv4IRhMNfePo5ESvbacb0sbXYGNUl76S0ksf
+ WKTUo5C3f8KlmcbniIL/QCgKMx3HhvtpBB+4Pq7A5gk3or0I0egZl3Q826ykMslukpuK
+ C10XyVwrsVNjcxqg2LllM0vqEZAZhYaQo8ZQPBwRT7Rj4Bwrhj4xcGQhnFmR5YODjieT
+ QPhkknI3jaTT1VYCGVuQ5fBrikb6+B5FkHvs9WIqD/CSEfJqP4JmHYKWqYNNsps6F1uH
+ GQyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723423499; x=1724028299;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=u47FnAda6gSQy1TJPew4WmYrmGo8lcQrSgewPMLMudI=;
- b=DySdy5LKzgjUdikcleI/zPObPA8jx+U89bJDiwxsr0rCB9RX7ZPqRHgF+dxLAa4Xw8
- FR5HMDRN4KoEdI7d7f4X4FKrM8YlVnauWCFORW0D9e73tU1lQr+gzIogQRNwoRsSJbXQ
- NujugLCC0FfDm2Bs/fSMIACDKdBFIIAn8H+cGUkHyga1LQGHeod8abJg6cqCibodaJ2c
- QyqQPCz0LD+K4/Fhxp+qL4etbawXx/I14Xu+q05BLlquZkI7r0XSZe4t4RxGHLJD+p/r
- l/e58vRmZEi3Y9ScCODmdB9R6w32umEl5vP+RkD3CrNzNWYrzudPStIG3NpeM+S+TuBK
- LmVg==
-X-Gm-Message-State: AOJu0YxHTusfgyISMxyXG39B7xFoo19pfk8eBxvNIuZG4v1+lVtKosQB
- RbDxezxgmIcMxiGmncwFCQf6V6OCyNbcrw51Gh7Go6FQ2YSgICy0C3SLt3Mp1y2JpKBi3RnzIBn
- hn3c=
-X-Google-Smtp-Source: AGHT+IEOBwIx/abZVDzRkOS1uWRaWizsCt4iVxR1/v4tLCjwySZaFEz7yDiB8K1jPklhPw6IQsNEQQ==
-X-Received: by 2002:a17:903:2a8d:b0:1fb:5e1f:f5e1 with SMTP id
- d9443c01a7336-200ae5975famr56969505ad.26.1723423499232; 
- Sun, 11 Aug 2024 17:44:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723423502; x=1724028302;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aG6Wn5JGKqOVYo7oiDwgDKG/Csj9cM6r0yseNWt8qsc=;
+ b=LpysB25hxep4+6ObhTa3ZysgZrPo6UUvYBqk3ArFIVCUISB/SRcPbSkT9woZcj2DNb
+ Xd6lMqkDBV31ETLQJAhbPZxRMlXE/T+V8QzrkBSSP3PXLIknD7e0f9E4EXaKLsqW0BD7
+ jjAZPVEg/mM3x/0EszYj0Anc9mV3U78IOg9q8fJNuuaZJdfm0aqh3qkCX70uRb2PcHFW
+ hc3BWuzMxOMr7SShhH73+jF86/QF3ZryVMT73SIFYkU37BGismgfGI42TxDAOrchPhF5
+ 5eoFapBK4ZfFttDNlC5ZaIolm4JqyFB4pPzaRrARjfqGKsdH/GuNoBjR7m5vDbuGtksG
+ 3m5g==
+X-Gm-Message-State: AOJu0YyiLmNdecLKRWE3l3gQBK6BFKd8ljdg8muFLiLSHBpK+WTQsPI4
+ CsItpWTWAzFzx8rSWaPjpaLjmejkDFvP7TvwDmQAiSCDgBQNMAKzsNbnRL5Ycqqph8EJmdFybZd
+ H4xQ=
+X-Google-Smtp-Source: AGHT+IHeow8Yi+zSQV4Vu8N5MmUbeeT/MdKcq8/nw7auLPn8Q26aylgotDXYvb0Kmoo25Z/zj7z4zA==
+X-Received: by 2002:a05:6a20:438c:b0:1c0:eba5:e192 with SMTP id
+ adf61e73a8af0-1c89fd220damr6173779637.27.1723423501556; 
+ Sun, 11 Aug 2024 17:45:01 -0700 (PDT)
 Received: from stoup.. ([203.30.4.111]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-200bbb3b758sm27089435ad.257.2024.08.11.17.44.57
+ d9443c01a7336-200bbb3b758sm27089435ad.257.2024.08.11.17.44.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Aug 2024 17:44:58 -0700 (PDT)
+ Sun, 11 Aug 2024 17:45:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu
-Subject: [PATCH for-9.2 v2 0/4] target/m68k: Implement fmove.p
-Date: Mon, 12 Aug 2024 10:44:47 +1000
-Message-ID: <20240812004451.13711-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 1/4] target/m68k: Introduce M68K_FEATURE_FPU_PACKED_DECIMAL
+Date: Mon, 12 Aug 2024 10:44:48 +1000
+Message-ID: <20240812004451.13711-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240812004451.13711-1-richard.henderson@linaro.org>
+References: <20240812004451.13711-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,38 +91,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement packed decimal real conversions.
+Set for 68020 and 68030, but does nothing so far.
 
-Changes for v2:
-  * Generate the complete set of powers of 10 for floatx80.
-    This was enough to get 9.9999999999999999e999 properly rounded.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/m68k/cpu.h | 2 ++
+ target/m68k/cpu.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-
-r~
-
-
-Richard Henderson (4):
-  target/m68k: Introduce M68K_FEATURE_FPU_PACKED_DECIMAL
-  target/m68k: Implement packed decimal real loads
-  target/m68k: Implement packed decimal real stores
-  tests/tcg/m68k: Add packed decimal tests
-
- target/m68k/cpu.h                |    2 +
- target/m68k/helper.h             |    3 +
- target/m68k/cpu.c                |    2 +
- target/m68k/fpu_helper.c         |  201 ++
- target/m68k/gen-floatx80-pow10.c |   30 +
- target/m68k/translate.c          |   49 +-
- tests/tcg/m68k/packeddecimal-1.c |   41 +
- tests/tcg/m68k/packeddecimal-2.c |   42 +
- target/m68k/floatx80-pow10.c.inc | 4933 ++++++++++++++++++++++++++++++
- tests/tcg/m68k/Makefile.target   |    4 +-
- 10 files changed, 5293 insertions(+), 14 deletions(-)
- create mode 100644 target/m68k/gen-floatx80-pow10.c
- create mode 100644 tests/tcg/m68k/packeddecimal-1.c
- create mode 100644 tests/tcg/m68k/packeddecimal-2.c
- create mode 100644 target/m68k/floatx80-pow10.c.inc
-
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index b5bbeedb7a..7114324e4d 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -553,6 +553,8 @@ enum m68k_features {
+     M68K_FEATURE_MOVEFROMSR_PRIV,
+     /* Exception frame with format+vector (from 68010) */
+     M68K_FEATURE_EXCEPTION_FORMAT_VEC,
++    /* FPU supports packed decimal real format */
++    M68K_FEATURE_FPU_PACKED_DECIMAL,
+ };
+ 
+ static inline bool m68k_feature(CPUM68KState *env, int feature)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 1d49f4cb23..65058dd052 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -182,6 +182,7 @@ static void m68020_cpu_initfn(Object *obj)
+     m68k_set_feature(env, M68K_FEATURE_MSP);
+     m68k_set_feature(env, M68K_FEATURE_UNALIGNED_DATA);
+     m68k_set_feature(env, M68K_FEATURE_TRAPCC);
++    m68k_set_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
+ }
+ 
+ /*
+@@ -224,6 +225,7 @@ static void m68040_cpu_initfn(Object *obj)
+ 
+     m68030_cpu_initfn(obj);
+     m68k_unset_feature(env, M68K_FEATURE_M68030);
++    m68k_unset_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
+     m68k_set_feature(env, M68K_FEATURE_M68040);
+ }
+ 
 -- 
 2.43.0
 
