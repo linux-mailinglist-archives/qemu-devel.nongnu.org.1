@@ -2,62 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EABA94E541
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 04:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B4294E544
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 04:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdLDm-0007g3-Fp; Sun, 11 Aug 2024 22:55:46 -0400
+	id 1sdLGp-0004Dj-Pp; Sun, 11 Aug 2024 22:58:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1sdLDj-0007eA-Sf; Sun, 11 Aug 2024 22:55:43 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1sdLDh-0003Ui-4x; Sun, 11 Aug 2024 22:55:43 -0400
-Received: from mail.andestech.com (ATCPCS31.andestech.com [10.0.1.89])
- by Atcsqr.andestech.com with ESMTPS id 47C2tJq6085654
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Aug 2024 10:55:19 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.12) by ATCPCS31.andestech.com
- (10.0.1.89) with Microsoft SMTP Server (TLS) id 14.3.498.0; Mon, 12 Aug 2024
- 10:55:20 +0800
-Date: Mon, 12 Aug 2024 10:55:19 +0800
-To: Alistair Francis <alistair23@gmail.com>
-CC: <qemu-devel@nongnu.org>, <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>, <peterx@redhat.com>, <david@redhat.com>,
- <philmd@linaro.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
- <bmeng.cn@gmail.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>
-Subject: Re: [PATCH v8 8/8] hw/riscv/virt: Add IOPMP support
-Message-ID: <Zrl5l9r0c45BL4YG@ethan84-VirtualBox>
-References: <20240715095702.1222213-1-ethan84@andestech.com>
- <20240715101434.1249621-1-ethan84@andestech.com>
- <CAKmqyKPgqNaT1A0+pk6srrtPQqs6=SUX_etg55hU3rxPbuFVsA@mail.gmail.com>
- <ZrXsFaBndB0zTONi@ethan84-VirtualBox>
- <CAKmqyKMAr9oXz99ndNkPFaXvCSaVcr0pskKW=HbrYoBh2qmezg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sdLGn-0004Ce-Kz
+ for qemu-devel@nongnu.org; Sun, 11 Aug 2024 22:58:53 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sdLGm-0003ef-5Z
+ for qemu-devel@nongnu.org; Sun, 11 Aug 2024 22:58:53 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-70d316f0060so3077242b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 19:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723431530; x=1724036330; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=F5IYVpzSZ0U9UxZYhFSQtU8A7Jtfs2iGA3kmqgdiJlU=;
+ b=e1qlAzKISqhNKweaZNQ+nx41MVbc5aY+UWF6dbrKKrxRw5qchiDiJ17esFUj5bdltT
+ pZbEeUQRmjWS8IlUQ+H69jl8N4Xc0hFOBUaXGaCa6esQ0ut5FK2AlmAM+iVR8wcEdJQh
+ Qutw4DOtcZ4ahe5M5adNVgXadUEa2Tc0Uyd+pXRnM7K/q2t5eO7vI2ek6Q9gdc5oSgGm
+ tt1MN/9hZRegpjyRIYFfeUdFTzcGgugqX93I1Os5P5Ka7iFUNxyyfRFyd0jrr9ogbCpN
+ X/7TLl+fK0QN+WNS8TeCFrPoS/ubQznrUM98ZwqA7mAKQIf4+qlL/PQCA+LOLF3mDcUp
+ f/UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723431530; x=1724036330;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=F5IYVpzSZ0U9UxZYhFSQtU8A7Jtfs2iGA3kmqgdiJlU=;
+ b=IHlQkMrqFRpVjCseMwUHVBpa7m+fW1Gz1i3SW29D5FDYo7h7q+q96HZVKx9x5nzKhJ
+ pBmQpOOI1giItA3evFDlE7zw49LTO3dhslofzKxOPUDJrJBPnSWXCAGDHhHSyoMbtJXZ
+ FgFvnSz4Iy70pKyQ1ZGe3ytLR1RLXGuP1IQNXku36Vx5K4o68VM5OOi96OWZXTiakLES
+ MzHmLYyKf7iYcLNN0qKwP8+9kHJTzEvkuARyC6FXltLIp6TEdPNxgTvsAxPsIKd1I0Yi
+ uclcMZZIHElkYcAyAQlpTBFg/xnN2acA0puI3/h9YAC1syXd7KeQ1XJyI7gP9TE1W161
+ Oa6g==
+X-Gm-Message-State: AOJu0YznIuy1E72Yoj2AYCpJpCfBUYSDlTAD8qLs1TBjzJQgBkS6bRmh
+ sypl4uIX074jAyo9pH5APTdjlbb53Ga0pOEw4AaC3ABpC0EX2L3/wcwzfMlTKC1yTJc3EqyaS5O
+ sdoA=
+X-Google-Smtp-Source: AGHT+IFNnVb2z/a/ECRPt71QG6SpCQbfCKb2QDBzE5PwPRUWsfofGddA5Z01W8GuJQntNGstrjroFQ==
+X-Received: by 2002:a05:6a21:3945:b0:1c6:ecee:1851 with SMTP id
+ adf61e73a8af0-1c8a1f3facemr13171188637.22.1723431530000; 
+ Sun, 11 Aug 2024 19:58:50 -0700 (PDT)
+Received: from stoup.. ([203.30.4.111]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-710e5a43b49sm2984841b3a.100.2024.08.11.19.58.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 Aug 2024 19:58:49 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+Subject: [PATCH for-9.1 0/3] target/i386: Do not apply REX to MMX operands
+Date: Mon, 12 Aug 2024 12:58:41 +1000
+Message-ID: <20240812025844.58956-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKmqyKMAr9oXz99ndNkPFaXvCSaVcr0pskKW=HbrYoBh2qmezg@mail.gmail.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.12]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 47C2tJq6085654
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,65 +85,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 12, 2024 at 10:48:40AM +1000, Alistair Francis wrote:
-> [EXTERNAL MAIL]
-> 
-> On Fri, Aug 9, 2024 at 8:14 PM Ethan Chen <ethan84@andestech.com> wrote:
-> >
-> > On Thu, Aug 08, 2024 at 02:01:13PM +1000, Alistair Francis wrote:
-> > >
-> > > On Mon, Jul 15, 2024 at 8:15 PM Ethan Chen via <qemu-devel@nongnu.org> wrote:
-> > > >
-> > > > - Add 'iopmp=on' option to enable IOPMP. It adds an iopmp device virt machine
-> > > >   to protect all regions of system memory, and configures RRID of CPU.
-> > > >
-> > > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > > > ---
-> > > >  docs/system/riscv/virt.rst |  5 +++
-> > > >  hw/riscv/Kconfig           |  1 +
-> > > >  hw/riscv/virt.c            | 63 ++++++++++++++++++++++++++++++++++++++
-> > > >  include/hw/riscv/virt.h    |  5 ++-
-> > > >  4 files changed, 73 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-> > > > index 9a06f95a34..9fd006ccc2 100644
-> > > > --- a/docs/system/riscv/virt.rst
-> > > > +++ b/docs/system/riscv/virt.rst
-> > > > @@ -116,6 +116,11 @@ The following machine-specific options are supported:
-> > > >    having AIA IMSIC (i.e. "aia=aplic-imsic" selected). When not specified,
-> > > >    the default number of per-HART VS-level AIA IMSIC pages is 0.
-> > > >
-> > > > +- iopmp=[on|off]
-> > > > +
-> > > > +  When this option is "on", an IOPMP device is added to machine. IOPMP checks
-> > > > +  memory transcations in system memory. This option is assumed to be "off".
-> > >
-> > > We probably should have a a little more here. You don't even mention
-> > > that this is the rapid-k model.
-> >
-> > I'll provide more details.
-> >
-> > >
-> > > It might be worth adding a `model` field, to make it easier to add
-> > > other models in the future. Thoughts?
-> > >
-> >
-> > I think the IOPMP model should be a device property and not
-> > configured here.
-> 
-> It should be a device property, but then how does a user configure
-> that? I guess users can globally set device props, but it's a bit
-> clunky
->
+Fixes #2495.
 
-Because IOPMP has a lot props, I think it is better to configure them 
-through global device props instead of machine option.
+r~
 
-Thanks,
-Ethan Chen
+Richard Henderson (3):
+  target/i386: Do not apply REX to MMX operands
+  target/i386: Use unit not type in decode_modrm
+  target/i386: Assert MMX and XMM registers in range
+
+ target/i386/tcg/decode-new.c.inc | 13 ++++++++-----
+ target/i386/tcg/emit.c.inc       |  9 +++++++--
+ 2 files changed, 15 insertions(+), 7 deletions(-)
+
+-- 
+2.43.0
+
 
