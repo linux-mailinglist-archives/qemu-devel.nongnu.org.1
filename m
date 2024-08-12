@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA2F94E40C
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 02:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 563F394E40B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 02:45:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdJBV-0004LR-Ej; Sun, 11 Aug 2024 20:45:17 -0400
+	id 1sdJBU-0004IL-OS; Sun, 11 Aug 2024 20:45:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdJBS-0004Bj-Fw
+ id 1sdJBS-0004BP-DT
  for qemu-devel@nongnu.org; Sun, 11 Aug 2024 20:45:14 -0400
 Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdJBP-0001qI-9h
+ id 1sdJBQ-0001qN-DV
  for qemu-devel@nongnu.org; Sun, 11 Aug 2024 20:45:14 -0400
 Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1fc60c3ead4so24138155ad.0
- for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 17:45:09 -0700 (PDT)
+ d9443c01a7336-1fc56fd4de1so24526655ad.0
+ for <qemu-devel@nongnu.org>; Sun, 11 Aug 2024 17:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723423509; x=1724028309; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723423511; x=1724028311; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gu+m1wrAgLfBqjJZHrhZgxShGSNTXztMSGapiL7T5q0=;
- b=sAHi4cg45QLtnYgjG+4CTO9fRGKRZ9WI1foSAixKTDGN7dnR3HoLCvXPPXLENOW0/Z
- 1oQcI73LXqDAUJd1eAYteKgjoCSeUFXIB2TgmH3K9QYxR9LH0hXkJjVBdVJPcQTxmKAZ
- 0d3y7cSnMGT6nZwgKOMOOTFkmtsrkAzDNlCXLgyOIxpnIMwJzMLHtlSqzZ3CfN/qJW5H
- 8sbhkifNAm9oqHjOPx/BGf11VT/4+SeE1jPQeP7NUhdRhZm3/9NxYqM9Zq8VrUhBHebU
- yIJCuzezE3hvuJb6AzPjNrULIMLtnxBm8XdKTX/m7gfA6tWoW9gVxCiL92uda8szcMgP
- gAZg==
+ bh=mp0XkpG61PtXDqfyfYbuypiIVu7oZ1X7in7htVkQn/E=;
+ b=FXdmnbFZgIBDWjXY+1McpZQAUkJpZXIGM+C142iBF8bHv7NEG3wLAKRy0eTR1t9csn
+ fcih4XZJJXlMJpBZwTPkbot8LTgxuJ7a1CCiN3iiQsqbk6v6w9l7SIr+KpyzU2EI7IXb
+ wXzvlULOZGbYytCj/xJoW2hTY1Td0El049go1B2/vuemDXLXDFEap7RvY+sUzKTHsIoQ
+ d9hlpx4PQlC35ljL9VAfmovRvmMl+oSdkW2q4SzJoh6uhCe/3MR5NkE0S64dfoAkH7Qa
+ KuGbNOvZeQdt13b/68dPr3pu9r57tHoQCdNyWkBKUeVkCKuWOyZ2rB7fVQ0OrwwtIurs
+ 6yjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723423509; x=1724028309;
+ d=1e100.net; s=20230601; t=1723423511; x=1724028311;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gu+m1wrAgLfBqjJZHrhZgxShGSNTXztMSGapiL7T5q0=;
- b=tk0987HA6RDE1NAsFa9EOceKIVugPVe0/Q47n3lNHCFjndgPn+CMqFRWLQNR0JaABB
- ZMd/Vi4Z0RhgpCbuckK6mSk9T+H1J25ngZzPYZ7YMmGyH3YBXRzlFrdt2DJ0KIKDbSsS
- 0hjnkLkAnCPha3FUFV61s1yzEL7wH6dL6tQ7ZdBTmjyQfnipjfuXuAT9xcKDM09IoM6C
- f2yLC5DQJrnLaNMICaC9gu415DmIRWxjiZVxk3LafJXS97ACKdTABnCTYJxurAClzOMP
- 2IZZrLuS9+5AeRruNf0YidtdA33X5C1x/X7Efu9eAwKFDBi4gewjcAo0vAQ01qRvmKvB
- z05Q==
-X-Gm-Message-State: AOJu0Yz8MmYDqGtZbYsV8W6R2HtuFPl9KSzCTXZpvt8eWnWsDqu7aEnA
- warQsZPKaq2pBodApZ/lK07lV/yqcDnQkXFjBxzGCbFLFtdndwGwpgvkjIVJGxigPB6I6N6P6cn
- VkXI=
-X-Google-Smtp-Source: AGHT+IGS8beaCwXdHZxkaGi7i8+YCTxwnZl0b8Oe4jMOei+psZ6Gz3FYoRHfQ3gIik0OxNMEW5leQQ==
-X-Received: by 2002:a17:903:1c6:b0:1fd:cda0:2f4c with SMTP id
- d9443c01a7336-200ae5022f7mr55916075ad.18.1723423508606; 
- Sun, 11 Aug 2024 17:45:08 -0700 (PDT)
+ bh=mp0XkpG61PtXDqfyfYbuypiIVu7oZ1X7in7htVkQn/E=;
+ b=XuyJumSmJ7g9g8poZFAyC0Ohao1WyspHMU4Xu8PQuJR3Oaa0k8NvoXL3qxMW+tJKSv
+ qDnS8ArLeqfERKhnML9+9ykXozQ5oGDGmctl1r/I0Emj7ufnFKmXjYXy/TrM+Hyhovtf
+ MMUJRNCR8iSAhoxdx5kHp3c9GDKuAt9mXZ8vj34zUM23CWmgpH0jZUPspb8HBSxUi5AP
+ 8NdEAMjL1jwNVSmFKuvT/fMPA060SnvBzukhKdU/BrjY1QfJS8hPiHKqzhDytYfhdLkH
+ Um77BrK4K+ejRZpHbGgcsiPYBjQ1qXhJqbAgc4+Owuaw9fIdobc01pE352TzRenzOmQ+
+ z8ig==
+X-Gm-Message-State: AOJu0YzfXRMNKNEkp9eu3tmcI3m48kM3Sc0QIp7CKN2gQCKUer6hBr7O
+ cfumXCejv4wHUsbvH+nfQnJBd7knymdJt4MtQAvQV3MewLqvdJTRG5JRbun+Wu6aJ4/m4F+o5D2
+ 4qH0=
+X-Google-Smtp-Source: AGHT+IH+HKZYycDwUv9rOXZjx6v3l4YYv7P71cU5fvxc6yWzmyp5oIaChPElXkz1ZAqDzm2QzMbwUQ==
+X-Received: by 2002:a17:902:e845:b0:1f9:e2c0:d962 with SMTP id
+ d9443c01a7336-20096baa066mr168650355ad.31.1723423510915; 
+ Sun, 11 Aug 2024 17:45:10 -0700 (PDT)
 Received: from stoup.. ([203.30.4.111]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-200bbb3b758sm27089435ad.257.2024.08.11.17.45.06
+ d9443c01a7336-200bbb3b758sm27089435ad.257.2024.08.11.17.45.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Aug 2024 17:45:08 -0700 (PDT)
+ Sun, 11 Aug 2024 17:45:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu
-Subject: [PATCH v2 3/4] target/m68k: Implement packed decimal real stores
-Date: Mon, 12 Aug 2024 10:44:50 +1000
-Message-ID: <20240812004451.13711-4-richard.henderson@linaro.org>
+Subject: [PATCH v2 4/4] tests/tcg/m68k: Add packed decimal tests
+Date: Mon, 12 Aug 2024 10:44:51 +1000
+Message-ID: <20240812004451.13711-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240812004451.13711-1-richard.henderson@linaro.org>
 References: <20240812004451.13711-1-richard.henderson@linaro.org>
@@ -91,221 +91,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2488
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/helper.h     |   1 +
- target/m68k/fpu_helper.c | 112 +++++++++++++++++++++++++++++++++++++++
- target/m68k/translate.c  |  27 ++++++++--
- 3 files changed, 137 insertions(+), 3 deletions(-)
+ tests/tcg/m68k/packeddecimal-1.c | 41 +++++++++++++++++++++++++++++++
+ tests/tcg/m68k/packeddecimal-2.c | 42 ++++++++++++++++++++++++++++++++
+ tests/tcg/m68k/Makefile.target   |  4 ++-
+ 3 files changed, 86 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/m68k/packeddecimal-1.c
+ create mode 100644 tests/tcg/m68k/packeddecimal-2.c
 
-diff --git a/target/m68k/helper.h b/target/m68k/helper.h
-index 2c71361451..21af6adb39 100644
---- a/target/m68k/helper.h
-+++ b/target/m68k/helper.h
-@@ -127,6 +127,7 @@ DEF_HELPER_3(chk, void, env, s32, s32)
- DEF_HELPER_4(chk2, void, env, s32, s32, s32)
- 
- DEF_HELPER_FLAGS_3(load_pdr_to_fx80, TCG_CALL_NO_RWG, void, env, fp, tl)
-+DEF_HELPER_FLAGS_4(store_fx80_to_pdr, TCG_CALL_NO_RWG, void, env, tl, fp, int)
- 
- #if !defined(CONFIG_USER_ONLY)
- DEF_HELPER_3(ptest, void, env, i32, i32)
-diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
-index 50b0e36cbe..0c9c3b7b64 100644
---- a/target/m68k/fpu_helper.c
-+++ b/target/m68k/fpu_helper.c
-@@ -750,6 +750,29 @@ void HELPER(fcosh)(CPUM68KState *env, FPReg *res, FPReg *val)
-     res->d = floatx80_cosh(val->d, &env->fp_status);
- }
- 
-+/* 10**0 through 10**18 */
-+static const int64_t i64_pow10[] = {
-+    1ll,
-+    10ll,
-+    100ll,
-+    1000ll,
-+    10000ll,
-+    100000ll,
-+    1000000ll,
-+    10000000ll,
-+    100000000ll,
-+    1000000000ll,
-+    10000000000ll,
-+    100000000000ll,
-+    1000000000000ll,
-+    10000000000000ll,
-+    100000000000000ll,
-+    1000000000000000ll,
-+    10000000000000000ll,
-+    100000000000000000ll,
-+    1000000000000000000ll,
+diff --git a/tests/tcg/m68k/packeddecimal-1.c b/tests/tcg/m68k/packeddecimal-1.c
+new file mode 100644
+index 0000000000..5433acd17b
+--- /dev/null
++++ b/tests/tcg/m68k/packeddecimal-1.c
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Test packed decimal real conversion to long double. */
++
++#include <stdio.h>
++
++struct T {
++    unsigned int d[3];
++    long double f;
 +};
 +
- static const floatx80 floatx80_pow10[] = {
- #include "floatx80-pow10.c.inc"
- };
-@@ -838,3 +861,92 @@ void HELPER(load_pdr_to_fx80)(CPUM68KState *env, FPReg *res, target_ulong addr)
-     t = int64_to_floatx80(mant, &env->fp_status),
-     res->d = floatx80_scale10i(t, exp, &env->fp_status);
- }
++static const struct T tests[] = {
++    { { 0x00000001, 0x00000000, 0x00000000 }, 1.0e0l },
++    { { 0x01000001, 0x00000000, 0x00000000 }, 1.0e1l },
++    { { 0x00100001, 0x00000000, 0x00000000 }, 1.0e10l },
++    { { 0x00000000, 0x10000000, 0x00000000 }, 0.1e0l },
++    { { 0x41000001, 0x00000000, 0x00000000 }, 1.0e-1l },
++    { { 0x85000005, 0x55550000, 0x00000000 }, -5.5555e5l },
++    { { 0x09990009, 0x99999999, 0x99999999 }, 9.9999999999999999e999l },
++    { { 0x03210001, 0x23456789, 0x12345678 }, 1.2345678912345678e123l },
++    { { 0x00000000, 0x00000000, 0x00000000 }, 0.0l },
++    { { 0x80000000, 0x00000000, 0x00000000 }, -0.0l },
++    { { 0x09990000, 0x00000000, 0x00000000 }, 0.0e999l },
++};
 +
-+void HELPER(store_fx80_to_pdr)(CPUM68KState *env, target_ulong addr,
-+                               FPReg *srcp, int kfactor)
++int main()
 +{
-+    floatx80 x = srcp->d;
-+    int len, exp2, exp10;
-+    uint64_t res_lo;
-+    uint32_t res_hi;
-+    int64_t y;
++    int ret = 0;
 +
-+    res_lo = x.low;
-+    exp2 = x.high & 0x7fff;
-+    if (unlikely(exp2 == 0x7fff)) {
-+        /* NaN and Inf */
-+        res_hi = (uint32_t)x.high << 16;
-+        goto done;
-+    }
++    for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
++        const struct T *t = &tests[i];
++        long double f;
 +
-+    /* Copy the sign bit to the output, and then x = abs(x). */
-+    res_hi = (x.high & 0x8000u) << 16;
-+    x.high &= 0x7fff;
++        asm("fmove.p (%1),%0" : "=f"(f) : "a"(t->d));
 +
-+    if (exp2 == 0) {
-+        if (res_lo == 0) {
-+            /* +/- 0 */
-+            goto done;
-+        }
-+        /* denormal */
-+        exp2 = -0x3fff - clz64(res_lo);
-+    } else {
-+        exp2 -= 0x3fff;
-+    }
-+
-+    /*
-+     * Begin with an approximation of log2(x) via the base 2 exponent.
-+     * Adjust, so that we compute the value scaled by 10**17, which will
-+     * allows an integer to be extracted to match the output digits.
-+     */
-+    exp10 = (exp2 * 30102) / 100000;
-+    while (1) {
-+        floatx80 t;
-+
-+        /* kfactor controls the number of output digits */
-+        if (kfactor <= 0) {
-+            /* kfactor is number of digits right of the decimal point. */
-+            len = exp10 - kfactor;
-+        } else {
-+            /* kfactor is number of significant digits */
-+            len = kfactor;
-+        }
-+        len = MIN(MAX(len, 1), 17);
-+
-+        /*
-+         * Scale, so that we have the requested number of digits
-+         * left of the decimal point.  Convert to integer, which
-+         * handles the rounding (and may force adjustment of exp10).
-+         */
-+        t = floatx80_scale10i(x, len - 1 - exp10, &env->fp_status);
-+        y = floatx80_to_int64(t, &env->fp_status);
-+        if (y < i64_pow10[len - 1]) {
-+            exp10--;
-+        } else if (y < i64_pow10[len]) {
-+            break;
-+        } else {
-+            exp10++;
++        if (f != t->f) {
++            fprintf(stderr, "Mismatch at %d: %.17Le != %.17Le\n", i, f, t->f);
++            ret = 1;
 +        }
 +    }
-+
-+    /* Output the mantissa. */
-+    res_hi |= y / i64_pow10[len - 1];
-+    res_lo = 0;
-+    for (int i = 1; i < len; ++i) {
-+        int64_t d = (y / i64_pow10[len - 1 - i]) % 10;
-+        res_lo |= d << (64 - i * 4);
-+    }
-+
-+    /* Output the exponent. */
-+    if (exp10 < 0) {
-+        res_hi |= 0x40000000;
-+        exp10 = -exp10;
-+    }
-+    for (int i = 24; exp10; i -= 4, exp10 /= 10) {
-+        res_hi |= (exp10 % 10) << i;
-+    }
-+
-+ done:
-+    cpu_stl_be_data_ra(env, addr, res_hi, GETPC());
-+    cpu_stq_be_data_ra(env, addr + 4, res_lo, GETPC());
++    return ret;
 +}
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 59e7d27393..fb5ecce0c3 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -119,6 +119,8 @@ typedef struct DisasContext {
-     int done_mac;
-     int writeback_mask;
-     TCGv writeback[8];
-+    uint16_t insn;
-+    uint16_t ext;
-     bool ss_active;
- } DisasContext;
- 
-@@ -671,6 +673,7 @@ static inline int ext_opsize(int ext, int pos)
-     case 4: return OS_WORD;
-     case 5: return OS_DOUBLE;
-     case 6: return OS_BYTE;
-+    case 7: return OS_PACKED; /* store, dynamic k-factor */
-     default:
-         g_assert_not_reached();
-     }
-@@ -1010,11 +1013,25 @@ static void gen_store_fp(DisasContext *s, int opsize, TCGv addr, TCGv_ptr fp,
-         tcg_gen_qemu_st_i64(t64, tmp, index, MO_TEUQ);
-         break;
-     case OS_PACKED:
-+        if (!m68k_feature(s->env, M68K_FEATURE_FPU_PACKED_DECIMAL)) {
-+            gen_exception(s, s->base.pc_next, EXCP_FP_UNIMP);
-+            break;
-+        }
-         /*
--         * unimplemented data type on 68040/ColdFire
--         * FIXME if needed for another FPU
-+         * For stores we must recover k-factor, either from an
-+         * immediate or the low 7 bits of a D register.
-          */
--        gen_exception(s, s->base.pc_next, EXCP_FP_UNIMP);
-+        switch ((s->ext >> 10) & 7) {
-+        case 3:
-+            tcg_gen_movi_i32(tmp, sextract32(s->ext, 0, 7));
-+            break;
-+        case 7:
-+            tcg_gen_sextract_i32(tmp, DREG(s->ext, 4), 0, 7);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        gen_helper_store_fx80_to_pdr(tcg_env, addr, fp, tmp);
-         break;
-     default:
-         g_assert_not_reached();
-@@ -4940,6 +4957,8 @@ DISAS_INSN(fpu)
-     TCGv_ptr cpu_src, cpu_dest;
- 
-     ext = read_im16(env, s);
-+    s->ext = ext;
+diff --git a/tests/tcg/m68k/packeddecimal-2.c b/tests/tcg/m68k/packeddecimal-2.c
+new file mode 100644
+index 0000000000..3547dc7b84
+--- /dev/null
++++ b/tests/tcg/m68k/packeddecimal-2.c
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Test packed decimal real conversion from long double, dynamic k-factor */
 +
-     opmode = ext & 0x7f;
-     switch ((ext >> 13) & 7) {
-     case 0:
-@@ -6042,6 +6061,8 @@ static void m68k_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     CPUM68KState *env = cpu_env(cpu);
-     uint16_t insn = read_im16(env, dc);
++#include <stdio.h>
++
++struct T {
++    unsigned int d[3];
++    long double lf;
++    int kfactor;
++};
++
++static const struct T tests[] = {
++    { { 0x00000001, 0x00000000, 0x00000000 }, 1.0e0l, 0 },
++    { { 0x00100001, 0x00000000, 0x00000000 }, 1.0e10l, 0 },
++    { { 0x41000001, 0x00000000, 0x00000000 }, 1.0e-1l, 0 },
++    { { 0x85000005, 0x55550000, 0x00000000 }, -5.5555e5l, 5 },
++    { { 0x45000005, 0x55550000, 0x00000000 }, 5.5555e-5l, 5 },
++    { { 0x05000002, 0x22220000, 0x00000000 }, 2.2222e5, 99 },
++    { { 0x05000002, 0x22220000, 0x00000000 }, 2.2222e5, 5 },
++    { { 0x05000002, 0x20000000, 0x00000000 }, 2.2222e5, 2 },
++};
++
++int main()
++{
++    int ret = 0;
++
++    for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
++        const struct T *t = &tests[i];
++        unsigned int out[3];
++
++        asm("fmove.p %1,(%0),%2"
++            : : "a"(out), "f"(t->lf), "d"(t->kfactor) : "memory");
++
++        if (out[0] != t->d[0] || out[1] != t->d[1] || out[2] != t->d[2]) {
++            fprintf(stderr, "Mismatch at %d: %08x%08x%08x != %08x%08x%08x\n",
++                    i, out[0], out[1], out[2],
++                    t->d[0], t->d[1], t->d[2]);
++            ret = 1;
++        }
++    }
++    return ret;
++}
+diff --git a/tests/tcg/m68k/Makefile.target b/tests/tcg/m68k/Makefile.target
+index 33f7b1b127..b505260b79 100644
+--- a/tests/tcg/m68k/Makefile.target
++++ b/tests/tcg/m68k/Makefile.target
+@@ -4,4 +4,6 @@
+ #
  
-+    dc->insn = insn;
-+    dc->ext = 0;
-     opcode_table[insn](env, dc, insn);
-     do_writebacks(dc);
- 
+ VPATH += $(SRC_PATH)/tests/tcg/m68k
+-TESTS += trap denormal
++TESTS += trap denormal packeddecimal-1 packeddecimal-2
++
++run-packeddecimal-%: QEMU_OPTS += -cpu m68020
 -- 
 2.43.0
 
