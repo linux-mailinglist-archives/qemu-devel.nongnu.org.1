@@ -2,105 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0DD94EA13
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 11:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3BC94E9F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 11:38:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdRXZ-000459-3m; Mon, 12 Aug 2024 05:40:37 -0400
+	id 1sdRU3-0002yV-1i; Mon, 12 Aug 2024 05:36:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sdRXU-0003sn-LZ
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 05:40:32 -0400
-Received: from fout4-smtp.messagingengine.com ([103.168.172.147])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sdRTz-0002xN-H4
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 05:36:55 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sdRXS-0004xk-Jf
- for qemu-devel@nongnu.org; Mon, 12 Aug 2024 05:40:32 -0400
-Received: from phl-compute-04.internal (phl-compute-04.nyi.internal
- [10.202.2.44])
- by mailfout.nyi.internal (Postfix) with ESMTP id E2A0C138FDD4;
- Mon, 12 Aug 2024 05:40:26 -0400 (EDT)
-Received: from wimap26 ([10.202.2.86])
- by phl-compute-04.internal (MEProxy); Mon, 12 Aug 2024 05:40:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm1; t=1723455626;
- x=1723542026; bh=sJeydjNcU8vl+opa87K9WeMbOK+ymacO6tLDmScqFHc=; b=
- PsRya9tL8/3913RKPH1LN6jGNMTxqornSR/Td851VdTy23tAbt9pfTantI2PIpgh
- 4Rv3OnG+kuP3NuJwjsCROWkQfsEau8BT6jqYSBO/O9TQVNKjuKY8Hoj2hxLX4DYx
- KWjnyMeBzRYTbfskLtfHkXqiT6xo7c0T1rQTUT7z9KayJV98QOdQLTDtH61X0VdF
- F5VwuH5Egu4WYTSlcu6/fFZmW4m1dEGyjnev9mteQsgKU7QDZb5cDiTsCQfDbEdY
- p4oJmkQcvJlJheTXrT4mZZs+ox2wOgYfbc5Iqaw2BpYqr4mALIFrcSFshXc98esN
- yu90RA1z7qkk88TYPRsYXQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723455626; x=
- 1723542026; bh=sJeydjNcU8vl+opa87K9WeMbOK+ymacO6tLDmScqFHc=; b=U
- y/YuNYmK61xd/rShYnBYOmVvOAIBpQi1FHNBSxdFOwN1uJ06EkS3vYmXVQ0gvnRh
- dEUO3rN+T+BQShm5JpbaRQeOyrxDHn+NhENHN4ay3ORAHw+bpWUWw2SYSIdpI9dl
- wjyRLmtoP30iEqkUM8hbIOgtzLKbu3MggRSC5W9mit/1OlJFRcHWrEWNtxFOXyYj
- Pm5YLe5dMN4yB+TO0xr4R3t6zkbia0UB/DPLPLxEFeG0xuVHD0HaMar0hcyFnyPs
- 8si2UEWIlpVPjmPLiEXxwXJsgPSYMKGNuHUyVueajouhu0+XzoTQ5bnVHxwqB8CV
- aHjKGA9l1g9YNt3Izws+Q==
-X-ME-Sender: <xms:iti5ZnVh2XCOqxfcjesTpHWs0ljl-BOq1gN8Qq6fF8IHPXn09_Y72A>
- <xme:iti5Zvm47--NFp3nYZ1PanRYVvEkPnVKS_bIIBU6FuqxzgIu9kU_ExOSLzN9xR_ls
- TX3IgpEiZSBETv_Nc4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddttddgudekucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
- rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
- htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
- necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
- hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepudffvdelhedvleejtddvveei
- jeeiledujeefudefteetffffleeukefftefhkeejnecuffhomhgrihhnpehgihhtlhgrsg
- drtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
- pehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhope
- ejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegruhhrvghlihgvnhesrghurhgv
- lhefvddrnhgvthdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghooh
- htlhhinhdrtghomhdprhgtphhtthhopegrrhhikhgrlhhosehgmhgrihhlrdgtohhmpdhr
- tghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdprhgtphhtthhopehrihgthh
- grrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdprhgtphhtthhopehqvghm
- uhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigsgiesuhgtlhhisg
- gtqdhnghdrohhrgh
-X-ME-Proxy: <xmx:iti5ZjbQLfTW2DVAwTcN_3cn5ccOM8oCVIHITbkfmYIYEm5XXp7Mlg>
- <xmx:iti5ZiWXPSuQ4BTjaUq5vvIa302dYZ1q3HnXOS11GFf1a6FVEX6KUg>
- <xmx:iti5ZhldZGfGpxmTA1-uKvLjTwZpvGvDzv1JuUUHaguMHMJRfkr8VQ>
- <xmx:iti5Zve1UjM4MkeVdBVG36_MjXwYmDkpanlTzSfad_Se_4a53nqWoQ>
- <xmx:iti5ZvYNZg6oeETE4rF62Pks59zUs4Z7q_WfTyjjLht2mqMo78v8OQcz>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 5006F19C0089; Mon, 12 Aug 2024 05:40:26 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sdRTv-0004Xf-Ui
+ for qemu-devel@nongnu.org; Mon, 12 Aug 2024 05:36:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723455412; x=1754991412;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=NQSRiD51P6+T0C4YuC9FKWrTU7LbpgpOqR+oy2IoxX8=;
+ b=agLDL6andLpeS4oCno+B8pZi7PFIUWR4afaNkhbInqTykQzatZZi+DSU
+ Gz7tRSjww/H/jKbTODpc0V3SS/NQHi4xAMHHFjePJOZ6RGPys9JgWM8JX
+ Laf7rF6EgfRi08TxWoYC1UgX9c1ocgsspRclUBJy0C9zaKjAtZGRwdOxP
+ GkaxGeUOHMvHA3aeYcQKj+qSXrq50yTgyPqGIRkvOtLpPDr0JCWU/A3gj
+ PQN8B3SjCNHTKbEVNnQkxiT1rpsrJUq817EfmLpXTcbtWKQ1EudsuooI0
+ Revm9h9i5fHwoObItm9JDscUE+gFD5AcpWvEhCroTfpAORzn8XtJ321LU A==;
+X-CSE-ConnectionGUID: EujbUJynS2yn1PP1SV3UfA==
+X-CSE-MsgGUID: gnWTCeXFT+O33ACbPs5XXQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11161"; a="25323561"
+X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; d="scan'208";a="25323561"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2024 02:36:48 -0700
+X-CSE-ConnectionGUID: /5z746NvQfWn6W1PyIR6gQ==
+X-CSE-MsgGUID: y/9p3Pv4SB+wTJFFE8Lbuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; d="scan'208";a="81438418"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa002.fm.intel.com with ESMTP; 12 Aug 2024 02:36:45 -0700
+Date: Mon, 12 Aug 2024 17:52:36 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: EwanHai <ewanhai-oc@zhaoxin.com>
+Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, qemu-devel@nongnu.org,
+ ewanhai@zhaoxin.com, cobechen@zhaoxin.com, rockcui@zhaoxin.com,
+ louisqi@zhaoxin.com, liamni@zhaoxin.com, frankzhu@zhaoxin.com
+Subject: Re: [PATCH v3 4/4] target/i386: Mask CMPLegacy bit in
+ CPUID[0x80000001].ECX for Zhaoxin CPUs
+Message-ID: <ZrnbZBwATjGBHzWY@intel.com>
+References: <20240809094259.119221-1-ewanhai-oc@zhaoxin.com>
+ <20240809094259.119221-5-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
-Date: Mon, 12 Aug 2024 10:40:06 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "QEMU devel" <qemu-devel@nongnu.org>
-Cc: "Richard Henderson" <richard.henderson@linaro.org>,
- "Aurelien Jarno" <aurelien@aurel32.net>,
- "Aleksandar Rikalo" <arikalo@gmail.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- "Waldemar Brodkorb" <wbx@uclibc-ng.org>
-Message-Id: <6ca024d7-27f8-4037-b93f-429fe16da0ca@app.fastmail.com>
-In-Reply-To: <20240811165407.26312-1-philmd@linaro.org>
-References: <20240811165407.26312-1-philmd@linaro.org>
-Subject: Re: [PATCH-for-9.1] target/mips: Fix execution mode in
- page_table_walk_refill()
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.147;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout4-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240809094259.119221-5-ewanhai-oc@zhaoxin.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,53 +83,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Aug 09, 2024 at 05:42:59AM -0400, EwanHai wrote:
+> Date: Fri, 9 Aug 2024 05:42:59 -0400
+> From: EwanHai <ewanhai-oc@zhaoxin.com>
+> Subject: [PATCH v3 4/4] target/i386: Mask CMPLegacy bit in
+>  CPUID[0x80000001].ECX for Zhaoxin CPUs
+> X-Mailer: git-send-email 2.34.1
+> 
+> Zhaoxin CPUs (including vendors "Shanghai" and "Centaurhauls") handle the
+> CMPLegacy bit similarly to Intel CPUs. Therefore, this commit masks the
+> CMPLegacy bit in CPUID[0x80000001].ECX for Zhaoxin CPUs, just as it is done
+> for Intel CPUs.
+> 
+> AMD uses the CMPLegacy bit (CPUID[0x80000001].ECX.bit1) along with other CPUID
+> information to enumerate platform topology (e.g., the number of logical
+> processors per package). However, for Intel and other CPUs that follow Intel's
+> behavior, CPUID[0x80000001].ECX.bit1 is reserved.
+> 
+> - Impact on Intel and similar CPUs:
+> This change has no effect on Intel and similar CPUs, as the goal is to
+> accurately emulate CPU CPUID information.
+> 
+> - Impact on Linux Guests running on Intel (and similar) vCPUs:
+> During boot, Linux checks if the CPU supports Hyper-Threading.
+> If it detects
 
+Maybe "For the kernel before v6.9, if it detects"? About this change,
+see the below comment...
 
-=E5=9C=A82024=E5=B9=B48=E6=9C=8811=E6=97=A5=E5=85=AB=E6=9C=88 =E4=B8=8B=E5=
-=8D=885:54=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=93=EF=BC=9A
-> When refactoring page_table_walk_refill() in commit 4e999bf419
-> we replaced the execution mode and forced it to kernel mode.
-> Restore the previous behavior to also get supervisor / user modes.
->
-> Reported-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-> Reported-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2470
-> Fixes: 4e999bf419 ("target/mips: Pass ptw_mmu_idx down from mips_cpu_t=
-lb_fill")
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> X86_FEATURE_CMP_LEGACY, it assumes Hyper-Threading is not supported. For Intel
+> and similar vCPUs, if the CMPLegacy bit is not masked in CPUID[0x80000001].ECX,
+> Linux will incorrectly assume that Hyper-Threading is not supported, even if
+> the vCPU does support it.
 
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+...It seems this issue exists in the kernel before v6.9. Thomas'
+topology refactoring has fixed this behavior:
+* commit 22d63660c35e ("x86/cpu: Use common topology code for Intel")
+* commit 598e719c40d6 ("x86/cpu: Use common topology code for Centaur
+  and Zhaoxin")
 
-Thanks!
-
+> Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 > ---
->  target/mips/tcg/sysemu/tlb_helper.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/target/mips/tcg/sysemu/tlb_helper.c=20
-> b/target/mips/tcg/sysemu/tlb_helper.c
-> index 3ba6d369a6..e7ae4f0bef 100644
-> --- a/target/mips/tcg/sysemu/tlb_helper.c
-> +++ b/target/mips/tcg/sysemu/tlb_helper.c
-> @@ -940,8 +940,9 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr address=
-,=20
-> int size,
->           * Memory reads during hardware page table walking are=20
-> performed
->           * as if they were kernel-mode load instructions.
->           */
-> -        int ptw_mmu_idx =3D (env->hflags & MIPS_HFLAG_ERL ?
-> -                           MMU_ERL_IDX : MMU_KERNEL_IDX);
-> +        int ptw_mmu_idx =3D (env->hflags & MIPS_HFLAG_ERL)
-> +                          ? MMU_ERL_IDX
-> +                          : (env->hflags & MIPS_HFLAG_KSU);
->=20
->          if (page_table_walk_refill(env, address, ptw_mmu_idx)) {
->              ret =3D get_physical_address(env, &physical, &prot, addre=
-ss,
-> --=20
-> 2.45.2
+>  target/i386/cpu.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
---=20
-- Jiaxun
+Just the above nit. Otherwise, LGTM,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+
 
