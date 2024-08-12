@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE64F94EDBA
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 15:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E902194EDC3
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Aug 2024 15:08:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdUkt-0004GS-Gb; Mon, 12 Aug 2024 09:06:35 -0400
+	id 1sdUku-0004LD-NX; Mon, 12 Aug 2024 09:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sdUkk-0003sE-KG; Mon, 12 Aug 2024 09:06:26 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ id 1sdUkm-0003zz-Mx; Mon, 12 Aug 2024 09:06:30 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sdUki-00046J-Np; Mon, 12 Aug 2024 09:06:26 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52f01613acbso5890016e87.1; 
- Mon, 12 Aug 2024 06:06:23 -0700 (PDT)
+ id 1sdUkj-00046P-EL; Mon, 12 Aug 2024 09:06:26 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-52f025bc147so4940358e87.3; 
+ Mon, 12 Aug 2024 06:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723467981; x=1724072781; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1723467982; x=1724072782; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kOLz6jSGUU8Xiq4wmRd5lgikGGH6JiIyvQ0oMaht6JA=;
- b=WX1kArF3QfH+VhbBB9xwWiXRVJCoTWxVJK8LOYG+9v57f1WqKxSFiR7FESGQbqoYC+
- bGy2QtwgW+NJgCD2zlSU4wwHJecWVjtB3VNBPgu9q1JVgwFLJLpNR5szdqbDfx6dgm0P
- obutMNrncGZmoa54zg3o5gw/qZ0NN1wSfl5Zb60xWy1yJ3uoMp69akydCuuSQcuyaYLS
- bHxV6awYILWSk5mmTpw9jiH9ktOSqaK3sxeACG29/08QZmD1lhnp49QXJvK5sENv2T2H
- DYGO1mrOUBYmEXy9dSzmtpD+xmKigudg7CohRs8qgtzHaxHHtOEE0mR4ue+WJFMzSI4Y
- 0OdA==
+ bh=xwk/c9fy7uMLWpwC3gxJL5qXeUXnd09Co6O9sN+JUhY=;
+ b=Do70/WIyKcQqsaxL/jNIVm1OfMzzar5gGlHqD3KsT7Pp5u8125TLDVZ67peKOwO8Yk
+ fdoB8rEv9BjeGs8dufHT2EPW9gnmtcH8TAx3/q+6YiTAgSnS3BF1pqSgg/UMYUUAMeU4
+ 50QWEAiammNoyPjim8YXfZmRh/B0lCsWN4NtUwgbJTzNfp+uQ5UCM20x6i5GIrxfzJCw
+ JRkGlxel4FOd4EtF76+gZNpO/0fI1jfZL4/gxY3rWvJOOMmoE+t46215CdBlFlJBZ557
+ OCGlztg43d5E67/CNPgaoISba/kCr5uS3ppiaiDJ47PHsDn4G0p6s355mgR7KXyXHYfB
+ 3mSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723467981; x=1724072781;
+ d=1e100.net; s=20230601; t=1723467982; x=1724072782;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kOLz6jSGUU8Xiq4wmRd5lgikGGH6JiIyvQ0oMaht6JA=;
- b=rDRRMnMy5rFYO/KFoN/Q9knSrSdd8WFiA5Y8Rtt1cyZc8IX3qkbCPRmYxZvDxELWsB
- 0GxjQinkEOtujKFXVXj0AB5j6qxQqqZqw2hhp3zgSmkoueURIelRXru6jriGfUXYxNp3
- LsfQjRUFspGUm8YQmQ24Q/W5Stc15Dvg7sMYBE040wf8rmQ2aYaV+PuJlj/ofEacgWSh
- oJEW1r0pyIL8LtLKgskRVMdllbPMEuxySofjn3O6DVa5HGZRLlnjIWrNb4BNP494udO1
- cuXPuWdIM4xHR+hatpN0Hn2dmM4H2EuwPdUgOdYPbJD8GIjLv58ooFTbzVna5hUBULsT
- GyPQ==
+ bh=xwk/c9fy7uMLWpwC3gxJL5qXeUXnd09Co6O9sN+JUhY=;
+ b=mfWvbX9qff5XJpyMip0+dd4/ph4XU6sAv3fpddgotQzQPYnGEB+Y7zquUyZitUvoMn
+ JvXs4/i7K7UYc1y4FfxIvB9ueWCxflc0ErlwAXFiAYZ1TWTGNNekMpdNIh2XzCXQsRcz
+ 2x+KaX0fGXLsZYiDKtVQhhT7MwiiEy7UztriXF89jhuSFxuptcos9lr6nrkhuiAznHyW
+ /ExGGjwTErCcjDFlRUUV7UlTEi0f7PD4MidO2OsDkAWD21MfMgumsBuGgMrk/Xds3myR
+ WWs8GtH9BBLSPInKX9846eEbvLDQtcoUke7OiRNFyxNnFFTMFGyGXHPmhNVwwmmvzIcI
+ N19A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVYYDWii4OvoKgSs7Zt/DmIAv/hnKEVuhO1SZVjJf1X437V0BssBbLTWjvPt6/v6KLhrMV0ljKNtA==@nongnu.org
-X-Gm-Message-State: AOJu0Yx65yjNRXOfvLSIZ5zlybvWky+Y4p4aI2QPhWZME+a8Of2lGCpZ
- gUKYV0mEFRZxZm2bAKS6SdvK0pcEJaY0su3hmRhv8CVkKrZTScQ2fhQ/AXOl
-X-Google-Smtp-Source: AGHT+IFVFpgUsSJvoRktx9P5RahE3NL+hK1oSSRb0VxLTivi6mQbcvmAYVxkizJenzqOQTjrR9idAw==
-X-Received: by 2002:a05:6512:4020:b0:531:5b03:b1f7 with SMTP id
- 2adb3069b0e04-5321367c4ecmr11696e87.10.1723467980688; 
- Mon, 12 Aug 2024 06:06:20 -0700 (PDT)
+ AJvYcCXHdmCqO/WW7TcZF3kL+dWhcDy97X/1f/oektHLnlH2rYHkR36OIQ2jF0krKVbutGTtZAMi4ZaJ0W5yFl5qcuxf5ao8
+X-Gm-Message-State: AOJu0YyE3wUCN3k62Skbj1Cl6tRa86WOA5Eo3BzCupmtna3ZF5qO2kNW
+ pmKlYY07FAy+Exkm25VJcpDM4z9FyAdor+/vDsmjWexGVTfKccPlJKwrKBJ7
+X-Google-Smtp-Source: AGHT+IFqodcbXvvGQbYAmgjAlCjjHyzPPhL/5h6u/IlGoF6PnqI7PI9+Ax4L4kxnxBVCA+PqtUfB/w==
+X-Received: by 2002:a05:6512:10d1:b0:52e:76e8:e18e with SMTP id
+ 2adb3069b0e04-5321364a598mr46079e87.7.1723467981708; 
+ Mon, 12 Aug 2024 06:06:21 -0700 (PDT)
 Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53200f4227csm730447e87.279.2024.08.12.06.06.19
+ 2adb3069b0e04-53200f42164sm727333e87.256.2024.08.12.06.06.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Aug 2024 06:06:19 -0700 (PDT)
+ Mon, 12 Aug 2024 06:06:21 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
  peter.maydell@linaro.org, alex.bennee@linaro.org, xenia.ragiadakou@amd.com,
  jason.andryuk@amd.com, edgar.iglesias@amd.com,
  xen-devel@lists.xenproject.org, qemu-arm@nongnu.org
-Subject: [PATCH v1 03/10] hw/arm: xenpvh: Tweak machine description
-Date: Mon, 12 Aug 2024 15:05:58 +0200
-Message-ID: <20240812130606.90410-4-edgar.iglesias@gmail.com>
+Subject: [PATCH v1 04/10] hw/arm: xenpvh: Add support for SMP guests
+Date: Mon, 12 Aug 2024 15:05:59 +0200
+Message-ID: <20240812130606.90410-5-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240812130606.90410-1-edgar.iglesias@gmail.com>
 References: <20240812130606.90410-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,27 +96,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Tweak machine description to better express that this is
-a Xen PVH machine for ARM.
+Add SMP support for Xen PVH ARM guests. Create max_cpus ioreq
+servers to handle hotplug.
 
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/arm/xen_arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/xen_arm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 766a194fa1..5f75cc3779 100644
+index 5f75cc3779..ef8315969c 100644
 --- a/hw/arm/xen_arm.c
 +++ b/hw/arm/xen_arm.c
-@@ -216,7 +216,7 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
- {
+@@ -173,7 +173,7 @@ static void xen_arm_init(MachineState *machine)
  
+     xen_init_ram(machine);
+ 
+-    xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
++    xen_register_ioreq(xam->state, machine->smp.max_cpus, &xen_memory_listener);
+ 
+     xen_create_virtio_mmio_devices(xam);
+ 
+@@ -218,7 +218,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
      MachineClass *mc = MACHINE_CLASS(oc);
--    mc->desc = "Xen Para-virtualized PC";
-+    mc->desc = "Xen PVH ARM machine";
+     mc->desc = "Xen PVH ARM machine";
      mc->init = xen_arm_init;
-     mc->max_cpus = 1;
+-    mc->max_cpus = 1;
++    /* MAX number of vcpus supported by Xen.  */
++    mc->max_cpus = GUEST_MAX_VCPUS;
      mc->default_machine_opts = "accel=xen";
+     /* Set explicitly here to make sure that real ram_size is passed */
+     mc->default_ram_size = 0;
 -- 
 2.43.0
 
