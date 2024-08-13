@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5542950DD2
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D7C950DDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdy3i-0005Bn-7H; Tue, 13 Aug 2024 16:23:58 -0400
+	id 1sdy3g-00054X-MG; Tue, 13 Aug 2024 16:23:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy3d-00051h-9U
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:54 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1sdy3Y-0004m4-Ns
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:49 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy3N-0006BO-EE
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:53 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-52fc4388a64so8199453e87.1
+ id 1sdy3M-0006BB-MN
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:48 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-428ec6c190eso45335595e9.1
  for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1723580615; x=1724185415; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yKD7jTj6Nf0+e/1hZyzKkWpKuU283fm5mnyf6o/tDJg=;
- b=FIjgdpfIez5HdkW9Kg+ECabF4IWJ56stoQlCOLD7Gbch8BAjb8pwGw/W2shi0FvOw5
- j4kJW1EgUAR91p43/z83OmQncjeWdodnvGAEXPPM9j1gbnGGp4dgEqlwlHatkoyrY0yC
- mP0RQ7VsE3pFHXcdd8gs3iaFclLPJvqeZ0mds2Xq+jXx/nHUkOj1PFZugIH5e6l+ECy7
- dCa3eF70iduVf0IYeUuey4bBIYvRxe6K0MBoQDJV+1+pJzTVnvcdI9xM/2gcNlzEvqez
- Skt63o5zYw/r+iwJdqqrXu7wRKGl95UY3cqTa/7kibYfxAT79whJe4a+QNrZyvqkSKbI
- hXEw==
+ bh=4KDdZuSuiVhnWoZHnKqWrh7zo/0jiKBE4EcFSl+sGnw=;
+ b=uz+LQiadjM+BmePIRXmF7F+6pDYcAAsc30SxzpmA7qNHYS6KfUN0wO3tPMhlg2ZtBO
+ 3lLjzB3UTlAnNqdx7OPBJaK3b5kmAvIWsUWp3ebExDOK75R0mlZthjLNj5aOkXdFp5cu
+ 22/YOb8rwZsh4WTITDU53smKE47TzwZ60Je2/E9o8+KPib3lkf230/47gw5O9hIl0MXH
+ q5/yGiqYNyhAjGKgiANErKn98y8CNEq8Z71Qp3rzgg5jxCGf7A1bWmHC/888PDZ7iYeK
+ Y/1Sy7wZAvb2CPof6/GJIWWNMlysmzACfw7ZALGSOvP2adL7w+efkBBpIbBJshAVEz1t
+ Yoxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1723580615; x=1724185415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yKD7jTj6Nf0+e/1hZyzKkWpKuU283fm5mnyf6o/tDJg=;
- b=dnZBzhyVHs5WBwlJCyLAmLI99oEVwewBxVHYlUMCoqLhbH2do+9Ko0u0AarL8r3RKU
- vhLWleSBH6ZcHzF8W7aeIs6ohed5jaSazLa62eFn/SeMTEiJZOGTDEQrd2iVCyuBQWou
- dSGcoW+bJcx+IH+gfUsPZjI5shRYeF7ej5CrMoTlL39jMnt/OqxUXAlew/wNgZRV0KJE
- aOvgKO8bvsD+KkBmx25EXxIRth6lFnZG8pWNK2U7TItg4fuWfSvQ5cJ4kCWOkHEsoJ5+
- Fvzk6KrRT+7EEo1nIaj0QyMSrFH2RrvFtseUESj2ssXoZsXc/HvFyIq9MwZVtTA0acgF
- iNtg==
-X-Gm-Message-State: AOJu0Yykiuz/LgilbPxMHnBvQLXeGdSXu6YcgTkCvMyHxbMEurf6LHWv
- 0T+gjPpvxU9OOZkA3G1EaJnviYbUCvjbK6HXwY3zGvcRANSI6gWjCYSGuHi8MZI=
-X-Google-Smtp-Source: AGHT+IFYzyLoE270W+WofOCfgUcyOUdrs+aYXrTSO0xXscbAltL5AOxMO0ddGDb3dLKASsg0cgJSog==
-X-Received: by 2002:a05:6512:39cc:b0:52e:ff2a:217 with SMTP id
- 2adb3069b0e04-532edbbee55mr307421e87.50.1723580614179; 
+ bh=4KDdZuSuiVhnWoZHnKqWrh7zo/0jiKBE4EcFSl+sGnw=;
+ b=ZLMeQTfzx5nBYwhSIbU2WzMhnSFdcO+SvxnN3ZctAXwCGcZeECuR2BBvH+3AOnjmdV
+ f6tBMr09dpV9YNy3Aozm19GcJrqg82KScC7RjXskuFW4dPPNAb/+TJkGkSnNPNj8ouOp
+ XYQuAcw/ZcrjccLJcHIJLOj9+yo2+azt85gikfhe71xabDA+12V70awauzM4I010mgAI
+ Xz4owfF1JLgVd53XIShehJ+y670CXcNsobkNFCNAQh+LmTRPLxl0/BZBA1GGVusCrEf8
+ zpoj9aY3HErF9LWYAR1s0rFNCYlLf7B8aQOasz2UjOY3p7K/3Exfes7k2qYS7F8MSMih
+ afcQ==
+X-Gm-Message-State: AOJu0YyrRMVAWghpX/32ElaG+G5lO1NyFbCbbVoak+TtMhRFnVh4MJOz
+ 5hIk1SF22BCheGjdeExjk1l4q2P1xIpmUL5MX7/dwGpQa5Btv2HLbsnZY5Evu2k=
+X-Google-Smtp-Source: AGHT+IGG4BwgTjQUccNi8P3sQj9A6II4AYnB4PGbLoGYZE4fKFdWnkZpoRV3PqMexpKds/kZ78uLjw==
+X-Received: by 2002:a05:600c:511e:b0:426:61ef:ec36 with SMTP id
+ 5b1f17b1804b1-429dd1e551amr4907685e9.0.1723580614570; 
  Tue, 13 Aug 2024 13:23:34 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4c9385d3sm11271592f8f.42.2024.08.13.13.23.30
+ 5b1f17b1804b1-429deb810f5sm667535e9.44.2024.08.13.13.23.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 13 Aug 2024 13:23:30 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8CE945F8C5;
+ by draig.lan (Postfix) with ESMTP id A52215F92C;
  Tue, 13 Aug 2024 21:23:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -87,18 +87,19 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH v2 02/21] Makefile: trigger re-configure on updated pythondeps
-Date: Tue, 13 Aug 2024 21:23:10 +0100
-Message-Id: <20240813202329.1237572-3-alex.bennee@linaro.org>
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Gustavo Romero <gustavo.romero@linaro.org>
+Subject: [PATCH v2 03/21] configure: Fix arch detection for GDB_HAS_MTE
+Date: Tue, 13 Aug 2024 21:23:11 +0100
+Message-Id: <20240813202329.1237572-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240813202329.1237572-1-alex.bennee@linaro.org>
 References: <20240813202329.1237572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,32 +122,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we add additional deps for meson we need to ensure we trigger a
-reconfigure to make sure everything is set up.
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240731140232.22193-1-alex.bennee@linaro.org>
+GDB_HAS_MTE must only be set if GDB supports the aarch64 arch, so the
+test if "aarch64" string is present must be against GDB-related
+'$gdb_arches' variable and not against '$arch' variable.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Message-Id: <20240804161850.2646299-2-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240807114059.2339021-3-alex.bennee@linaro.org>
+Message-Id: <20240807114059.2339021-4-alex.bennee@linaro.org>
 ---
- Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 02a257584b..917c9a34d1 100644
---- a/Makefile
-+++ b/Makefile
-@@ -78,7 +78,8 @@ x := $(shell rm -rf meson-private meson-info meson-logs)
- endif
+diff --git a/configure b/configure
+index 019fcbd0ef..a3aa257fd3 100755
+--- a/configure
++++ b/configure
+@@ -1673,7 +1673,7 @@ for target in $target_list; do
+           echo "GDB=$gdb_bin" >> $config_target_mak
+       fi
  
- # 1. ensure config-host.mak is up-to-date
--config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh $(SRC_PATH)/VERSION
-+config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh \
-+		$(SRC_PATH)/pythondeps.toml $(SRC_PATH)/VERSION
- 	@echo config-host.mak is out-of-date, running configure
- 	@if test -f meson-private/coredata.dat; then \
- 	  ./config.status --skip-meson; \
+-      if test "${arch}" = "aarch64" && version_ge ${gdb_version##* } 15.0; then
++      if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge ${gdb_version##* } 15.0; then
+           echo "GDB_HAS_MTE=y" >> $config_target_mak
+       fi
+ 
 -- 
 2.39.2
 
