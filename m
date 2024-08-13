@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C090C950247
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 12:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01852950248
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 12:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdocW-0006Ha-C4; Tue, 13 Aug 2024 06:19:16 -0400
+	id 1sdoch-0006Uf-R6; Tue, 13 Aug 2024 06:19:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdocS-0006F5-9H
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 06:19:14 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdocf-0006U7-IP
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 06:19:25 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdocP-0005ni-EN
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 06:19:11 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5bd1a9bdce4so3423603a12.3
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 03:19:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdocd-0005oJ-N5
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 06:19:25 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2f0dfdc9e16so63370511fa.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 03:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723544347; x=1724149147; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=S4gqtzN0g+Peu+kfHBMaU05Kz8NthaJxJJdcasZ0kms=;
- b=Ll2HOfUyihIZrfJrenDM5hMDtvNl5WG6pQG54T1h/G/xtVS4vwD/2ft2S0vmNNEdNd
- 8lvKtE8PYUwet10NeYpKHa0JJROOt/GqIGBociN0lxUuy6SaFrfIvV9mFuWubbGFZExi
- Nrlkb5XFD0p6vriRegOf+GtCS66dSPIDSLT8MF3X0xkOJUGREb5XWHiy3+LBq7bIEK2X
- EyTlZ5P11fVlWNQlEORwptmRMvC18faORfMC0wk/8qoWT2q3nvrFnvUxdeJFNVfmpjUF
- hShGGOYRli1962PlK7I78AdIvxzBKzunkFHoyLJaFmM2rjnLBtNYbhdo1sqsITLmDFvw
- 3LHg==
+ d=linaro.org; s=google; t=1723544362; x=1724149162; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lA8uJXpJ/5fYFYlheHCIQUkasDjz5vKdapmYLx+X7e0=;
+ b=U0TmQD0zaW4fVqXRZtYi+r/oabh2OV+nGnpxGZaoDP+2zUcqlyEIRG3lPNL9MKHteM
+ mL0QhEypGsvlxENdwvTJlJmM9lG7IxORnoyBAaqJ0Dw3AjLp/zfyhSsWzfQgcXzc6pDD
+ cWjf1IvM+FOR0d5l2SiJyar6PvlqkLBdZgC0kq5RG/WkFvvhSSOsamu6fglVCcYBUFz1
+ Z9rdtr7skUr0KDmmHtKJ/+H9KhKAbBxa9ksMinlQLmNLa7MMek2t5hj9jsSDWM83X8fL
+ zJMRXDHtyJoyuBgcuZgFEyVrDqNflP8Ms2BkgT54GKM/7ZfG6ogT/Oma98HmeBz4YRgZ
+ APTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723544347; x=1724149147;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=S4gqtzN0g+Peu+kfHBMaU05Kz8NthaJxJJdcasZ0kms=;
- b=MNjPglAlh5D0bXSH7RFdcxegiCq5rVgqFW7KAV5OiTFQrmGF+Gli+IwFUa5nXr1Djz
- 2kf6/+TYAF+o0dff5z4RwdYGrHANeLIjwy4Xs2SzYa7JAHKSXv4uqIAg9kTOHvtm9GLl
- vG/CdXJ0EIDprAnINW3vg0BDIQbmIayErkEx4VpGVb/QjrvQdrik/LQ1ZsuugR2Kdoqw
- WlfBJTQ56Zz7PqKr/mxEwaeQ4FRnZAeUArPuPc832kGh8IYaf7Tub04+NaywIPj9Ptg0
- pwqHYakKcTPwA9+EVhEqDLughLmaJ8V1KUM+Sm76NMXp/5ARBLNQM0kthfWmp4B3dVg1
- o96Q==
-X-Gm-Message-State: AOJu0YwK4QH213BcZN9F1IRwDxpgcO+UZrNRIc94Yn3GweFxevfgYdjt
- mV4VAAqMEvJu/EIFTI5n7yitjkrXLod/vPiFNEYM2dTcPUIMdNNA8FqcDtgMd/ca3ATVbnciwn7
- YGmY=
-X-Google-Smtp-Source: AGHT+IGd0Ng921ehikKq7GI5wea7c+yxEc9jSRNxH0fXsXHHKXDVKfQ5ec6fhtBT4WONre0Q7sXfvQ==
-X-Received: by 2002:a05:6402:2791:b0:572:9962:7f0 with SMTP id
- 4fb4d7f45d1cf-5bd44c7c7b2mr2321922a12.34.1723544347115; 
- Tue, 13 Aug 2024 03:19:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723544362; x=1724149162;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lA8uJXpJ/5fYFYlheHCIQUkasDjz5vKdapmYLx+X7e0=;
+ b=AkVnJvE+gHIL6ZdsF7Ykh9BqFaeZUo2KBA0fP2uF5oB2PA2tcOUClifySQwV3JJsV7
+ JJXqGXbj+lBW408j6Eu3pDT0ET4Z0Ob3dwi2GBsBmD9QMDlFB50fbzuxmC8DHi3wZPKP
+ yQCrTNZL+neuLSkX4iSypNiYJox8Xnp67Y5IMXzueotXJRNVUi/QFGy5MEurYmfT83HR
+ lS3SmizsVyjtGu48fOppnVS/goa0ibgW3zlhp25Qnbib5TFlgbCHgcI2lSivNyLXkpc9
+ jmkFindTN03QVhyzQ//IU1Mv9N25Fb9vdB7Eu+jprDd+ZXBJDS380VIVBOoCSA4SwYHe
+ 8OVQ==
+X-Gm-Message-State: AOJu0YwmNAcw03QrBxfS1ZeQSLnVeEn5yfJ1k5H0bUs80nJePHFGFm/H
+ AnflZaC6mgLUfa5jNYwXQOUU0qemBJPpuS3hs8OrIZOO9nZp6uvzbTFhgANMrrEeIPa0pGJ80/S
+ XecE=
+X-Google-Smtp-Source: AGHT+IEyqflq6Pl8VxJ9lZUmgtGAU7kpLCARNI0gu+c/YaqILxA7QXlA36JJ8daHTGMD1FW/fB2qVQ==
+X-Received: by 2002:a2e:a7ca:0:b0:2ee:8453:5164 with SMTP id
+ 38308e7fff4ca-2f2b70cb3c9mr24176611fa.0.1723544361515; 
+ Tue, 13 Aug 2024 03:19:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.129.17])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5bd196a61e2sm2845362a12.51.2024.08.13.03.19.03
+ 4fb4d7f45d1cf-5bd196a7a11sm2852621a12.53.2024.08.13.03.19.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Aug 2024 03:19:06 -0700 (PDT)
+ Tue, 13 Aug 2024 03:19:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aurelien Jarno <aurelien@aurel32.net>,
@@ -63,15 +64,18 @@ Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Aleksandar Rikalo <arikalo@gmail.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Waldemar Brodkorb <wbx@uclibc-ng.org>
-Subject: [PATCH-for-9.1 v2 0/2] target/mips: Use correct MMU index in get_pte()
-Date: Tue, 13 Aug 2024 12:18:54 +0200
-Message-ID: <20240813101856.49469-1-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 1/2] target/mips: Pass page table entry size in
+ bytes to get_pte()
+Date: Tue, 13 Aug 2024 12:18:55 +0200
+Message-ID: <20240813101856.49469-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240813101856.49469-1-philmd@linaro.org>
+References: <20240813101856.49469-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,16 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Propage ptw_mmu_idx to get_pte() and use it via
-the cpu_ld/st_code_mmu() API.
+In order to simplify a bit, pass the PTE size in
+bytes rather than bits.
 
-Philippe Mathieu-Daudé (2):
-  target/mips: Pass page table entry size in bytes to get_pte()
-  target/mips: Use correct MMU index in get_pte()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/mips/tcg/sysemu/tlb_helper.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
- target/mips/tcg/sysemu/tlb_helper.c | 35 ++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
-
+diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
+index 3ba6d369a6..a8caf3ade8 100644
+--- a/target/mips/tcg/sysemu/tlb_helper.c
++++ b/target/mips/tcg/sysemu/tlb_helper.c
+@@ -592,13 +592,13 @@ static void raise_mmu_exception(CPUMIPSState *env, target_ulong address,
+  * resulting in a TLB or XTLB Refill exception.
+  */
+ 
+-static bool get_pte(CPUMIPSState *env, uint64_t vaddr, int entry_size,
++static bool get_pte(CPUMIPSState *env, uint64_t vaddr, unsigned entry_bytes,
+         uint64_t *pte)
+ {
+-    if ((vaddr & ((entry_size >> 3) - 1)) != 0) {
++    if ((vaddr & (entry_bytes - 1)) != 0) {
+         return false;
+     }
+-    if (entry_size == 64) {
++    if (entry_bytes == 8) {
+         *pte = cpu_ldq_code(env, vaddr);
+     } else {
+         *pte = cpu_ldl_code(env, vaddr);
+@@ -607,11 +607,11 @@ static bool get_pte(CPUMIPSState *env, uint64_t vaddr, int entry_size,
+ }
+ 
+ static uint64_t get_tlb_entry_layout(CPUMIPSState *env, uint64_t entry,
+-        int entry_size, int ptei)
++                                     unsigned entry_bytes, int ptei)
+ {
+     uint64_t result = entry;
+     uint64_t rixi;
+-    if (ptei > entry_size) {
++    if (ptei > entry_bytes >> 3) {
+         ptei -= 32;
+     }
+     result >>= (ptei - 2);
+@@ -630,8 +630,8 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+     int psn = (env->CP0_PWCtl >> CP0PC_PSN) & 0x3F;
+     int hugepg = (env->CP0_PWCtl >> CP0PC_HUGEPG) & 0x1;
+     int pf_ptew = (env->CP0_PWField >> CP0PF_PTEW) & 0x3F;
+-    uint32_t direntry_size = 1 << (directory_shift + 3);
+-    uint32_t leafentry_size = 1 << (leaf_shift + 3);
++    uint32_t direntry_size = 1 << directory_shift;
++    uint32_t leafentry_size = 1 << leaf_shift;
+     uint64_t entry;
+     uint64_t paddr;
+     int prot;
+@@ -768,7 +768,7 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+     ptoffset0 = (ptindex >> 1) << (leaf_shift + 1);
+     ptoffset1 = ptoffset0 | (1 << (leaf_shift));
+ 
+-    leafentry_size = 1 << (leaf_shift + 3);
++    leafentry_size = 1 << leaf_shift;
+ 
+     /* Global Directory */
+     if (gdw > 0) {
 -- 
 2.45.2
 
