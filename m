@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EFC94FEB4
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 09:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B8894FF02
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 09:44:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdlt4-0007pw-V5; Tue, 13 Aug 2024 03:24:10 -0400
+	id 1sdmBf-0005a1-LI; Tue, 13 Aug 2024 03:43:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sdlt2-0007p1-54
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 03:24:08 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sdlsy-0005DL-IJ
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 03:24:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723533845; x=1755069845;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=7siAXfH4vGMl9r7bsM+nUcgReCSpYam1MbKp9VHaf3Y=;
- b=YZ0FDzGHUdx5mDRD+M08hPBKB8YEh6NVu3QnqPFWapb5KBR7ghAtxhU5
- K8beu3Vm6FxAEN2u3klcZ3kFKL/zdPaF2nndLt+HgGStl4cigNdItkWul
- zkeOMK85qDlPTtEA66JcyLJui+39Ru2ccW+aWt0qmR4GPSwzFILM/1ZXC
- 0LDCSktRk4fXer/iW8tG3ufFWvb004BkZe8hSRvakOC7u6sxcoxJFKHZN
- IDo/YVNcngYDk1/9VLCd00Ks8XGoycLUq0unEgrB0jQtqupxfwad6uSuT
- XM7NSm99W/tHmzFVEFHoPJtGWb5wY9tHbWLaHNV3CaDxOIXXg7KTPpaF7 Q==;
-X-CSE-ConnectionGUID: 3yJHQS6iSTiasxYT6bd2FQ==
-X-CSE-MsgGUID: Umo9T3D6T9COsW3kNL1EfQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="32355914"
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="32355914"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 00:23:56 -0700
-X-CSE-ConnectionGUID: Ko+71QNHTqWUFj2+plLDzg==
-X-CSE-MsgGUID: PJdHNFfdT9mMJu7tLaf7hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="59141910"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 13 Aug 2024 00:23:54 -0700
-Date: Tue, 13 Aug 2024 15:39:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- John Levon <john.levon@nutanix.com>, Manish <manish.mishra@nutanix.com>
-Subject: Re: [PATCH v2] i386/cpu: Introduce enable_cpuid_0x1f to force
- exposing CPUID 0x1f
-Message-ID: <ZrsNwS+OEZaKrlcX@intel.com>
-References: <20240813033145.279307-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sdmBd-0005Yf-V3
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 03:43:21 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sdmBb-0007ve-Dq
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 03:43:21 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-70d2ae44790so3641317b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 00:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723534997; x=1724139797; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KBSwiNqa049bJ062w81vEeg7cRT0njdTw2Mnb0cEUns=;
+ b=bDVG3A5qnP+mRukh24WMnz7inA0stRmD2a/Zh4mePMoUmKOVijCtZkyZF5suVIWk/I
+ OrTHmeHLL5b5vd/Wg3eaqjIGFzUqS9rNn5KjMyq/zC60s2YqO48rIyp4q8gtnsXzkaHX
+ O9/GxYyqD3mgPfbxNvjnHKRWYagLwsHZFgjos6gmbUqAbZ0xylOaFqDJhmXwBjTm4Dh1
+ wTRlGHvBnt1SuAh/dLwmnL1Xe8tT2lYP36gMVsn/rL5v5mNoqgDKhcEfpqjyfWG+PB65
+ /m63lXQH6lPngwe0M3CQF59hfDBJi9Nag2/zjgfTELMXCA6EuVjQ3FHGdltEepqxEVpd
+ DsAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723534997; x=1724139797;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KBSwiNqa049bJ062w81vEeg7cRT0njdTw2Mnb0cEUns=;
+ b=bjC5OhS8VqKOZroisFzpV+rlyeA89QA52S6j9gAsiBvmMIvMGRdjAGXH0oqzxVhYMK
+ jT0KDh96uWx4kqpt9i+GklQ/yQcw7HDqI25meMcRBsGbRJ3TupbiUn5KxIsWp/CHbjXX
+ IFuRfiNAU5/UrSGHKrkfdkHTRlmOHxFiADl3s5E1BB5W/tkaXjLNJHZQQT+anKvcDP6f
+ 9jOkyUtx7fXkQ4vRUCNsXIta423y2XWinbh2g9r/WGHgdmYfbXmjwzx898xg1ZI6GSYc
+ Hw0qG7PPPH7tgr3tNtsiY04A2gg205pUkslkn77FI6urLBq040EzPtaKxX2NrVp//C9o
+ E6xg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXoH0MKmbFzNOszrTFkByjx30tl+G7NopQaECyfF8pZQhKfNchhbw0gQAt5pwdx29sVNbRuQvqlQ+h1g6a3WI9Q6OgXB1k=
+X-Gm-Message-State: AOJu0YwrHny7G6xIiVvE15pTQ7qQZjAsr03/D+q5+gYbYAqlWZV3jrnx
+ G5H9EmkYHI7drzunJ+xrpJtdv9F2alDT3hxBtcJeOd1R6j7m4AdYoSF1JVkaOIw=
+X-Google-Smtp-Source: AGHT+IFYZ+r57K3J4+uxAIUAAphOygIurLmP5x4FhBADzZviVBu+DQepn+S6wJfVUrmMHkmmIcv/WQ==
+X-Received: by 2002:a05:6a00:1a8c:b0:70d:244b:cad9 with SMTP id
+ d2e1a72fcca58-712552273camr3231565b3a.28.1723534997064; 
+ Tue, 13 Aug 2024 00:43:17 -0700 (PDT)
+Received: from [192.168.1.113] ([203.30.4.111])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-710e5a43e48sm5247584b3a.98.2024.08.13.00.43.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Aug 2024 00:43:16 -0700 (PDT)
+Message-ID: <aa7facef-acda-4846-98d5-2f7584515035@linaro.org>
+Date: Tue, 13 Aug 2024 17:43:07 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240813033145.279307-1-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv32: Fix masking of physical address
+To: Andrew Jones <ajones@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com,
+ zong.li@sifive.com, liwei1518@gmail.com, cwshu@andestech.com,
+ dbarboza@ventanamicro.com
+References: <20240813071355.310710-2-ajones@ventanamicro.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240813071355.310710-2-ajones@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,48 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 12, 2024 at 11:31:45PM -0400, Xiaoyao Li wrote:
-> Date: Mon, 12 Aug 2024 23:31:45 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v2] i386/cpu: Introduce enable_cpuid_0x1f to force exposing
->  CPUID 0x1f
-> X-Mailer: git-send-email 2.34.1
+On 8/13/24 17:13, Andrew Jones wrote:
+> C doesn't extend the sign bit for unsigned types since there isn't a
+> sign bit to extend. This means a promotion of a u32 to a u64 results
+> in the upper 32 bits of the u64 being zero. If that result is then
+> used as a mask on another u64 the upper 32 bits will be cleared. rv32
+> physical addresses may be up to 34 bits wide, so we don't want to
+> clear the high bits while page aligning the address. The fix is to
+> revert to using target_long, since a signed type will get extended.
 > 
-> Currently, QEMU exposes CPUID 0x1f to guest only when necessary, i.e.,
-> when topology level that cannot be enumerated by leaf 0xB, e.g., die or
-> module level, are configured for the guest, e.g., -smp xx,dies=2.
-> 
-> However, 1) TDX architecture forces to require CPUID 0x1f to configure CPU
-> topology. and 2) There is a bug in Windows that Windows 10/11 expects valid
-> 0x1f leafs when the maximum basic leaf > 0x1f[1].
-> 
-> Introduce a bool flag, enable_cpuid_0x1f, in CPU for the cases that
-> require CPUID leaf 0x1f to be exposed to guest. For case 2), introduce
-> a user settable property, "x-cpuid-0x1f" ,as well, which provides an opt-in
-> interface for people to run the buggy Windows as a workaround. The default
-> value of the property is set to false, thus making no effect on existing
-> setup.
-> 
-> Introduce a new function x86_has_cpuid_0x1f(), which is the warpper of
-> cpu->enable_cpuid_0x1f and x86_has_extended_topo() to check if it needs
-> to enable cpuid leaf 0x1f for the guest.
-> 
-> [1] https://lore.kernel.org/qemu-devel/20240724075226.212882-1-manish.mishra@nutanix.com/
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Fixes: af3fc195e3c8 ("target/riscv: Change the TLB page size depends on PMP entries.")
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 > ---
-> changes in v2:
->  - Add more details in commit message;
->  - introduce a separate function x86_has_cpuid_0x1f() instead of
->    modifying x86_has_extended_topo();
-> ---
->  target/i386/cpu.c     | 5 +++--
->  target/i386/cpu.h     | 9 +++++++++
->  target/i386/kvm/kvm.c | 2 +-
->  3 files changed, 13 insertions(+), 3 deletions(-)
+>   target/riscv/cpu_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index 395a1d914061..dfef1b20d1e8 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -1323,7 +1323,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+>       int ret = TRANSLATE_FAIL;
+>       int mode = mmuidx_priv(mmu_idx);
+>       /* default TLB page size */
+> -    target_ulong tlb_size = TARGET_PAGE_SIZE;
+> +    target_long tlb_size = TARGET_PAGE_SIZE;
 
-This wrapper x86_has_cpuid_0x1f() looks good for me.
+If rv32 physical addresses are 34 bits, then you probably didn't want target_*long at all.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
+r~
 
