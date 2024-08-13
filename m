@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B629508E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 17:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F25E9508E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 17:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdtKq-0005la-IA; Tue, 13 Aug 2024 11:21:20 -0400
+	id 1sdtKl-000564-IK; Tue, 13 Aug 2024 11:21:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sdtKc-0004sP-1w
+ id 1sdtKc-0004sQ-28
  for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:21:07 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sdtKW-0004ds-HC
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:21:03 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-428178fc07eso39044535e9.3
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 08:20:58 -0700 (PDT)
+ id 1sdtKW-0004du-Hr
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:21:04 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-52f025bc147so6518409e87.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 08:21:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723562457; x=1724167257; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=k92uxQUphhX97lbQN89xDPP6Ys3FVrzqxypU/0YUiUo=;
- b=AQcdB/8zQmYQ9Pbvbq1mQyf1PJJ3zu3UCCihiMXFkCE0ZVfdcD+drJqAlQSnEq74Rn
- KXi4YFlMAr8dekzRPjyt+HOXUsV462ITgioSASQZXyxjYfjuQKTguu4mdIyM/fj3DUQ3
- DG3N7cJWM27veCxIqL9U4lC9zameU2tbZyBL6WLMhuVnkEeXoQ/7kHukx4VSbf7NMvpA
- wEOl36iBN2b7EtbKyX6Va45sChDB7YRzCd/t4uugxzpU5SgyMDvYuYFuMLPaNJIQj911
- q+Rza/cexpeuQRbO7lFkclfUFAY55KQUyW3xTKgPxMbkZ1KrVTsZqumbKoJFbmGsrFjX
- GrYg==
+ d=linaro.org; s=google; t=1723562458; x=1724167258; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=jVktBdEeVfNZEE6GZ7T90l8yWHTJZu2wzXIiHmL8XoE=;
+ b=cu307PRwEL2I03rv5Go6jz0WJNISgyEZlMrsNep09nEN72daXcKbhaEfNMLN2LOBTz
+ DDaxl5wZeF1eUHwX0SNGxysD8eEAK8jl2773KSDgCDwaEOJH1rAzuSI15lKg0mxYsSGA
+ ZcJCBTG8WXiU4R8nUX56HcBzikTH/SwaixEW49L6LD8nryiPN/WBwt6DhLcoB6mN5sYj
+ S7aCozc4yQMxRrybxLfZHS2k7HlSNFeRiT4KRTlglxYop002H28V4SUVHQldYbk5bf/y
+ pPRdtDDgZc+7dVunTYRo2doyJI02KfqYR85b38wtIKdlg+9UJEUYICWLEGYi4w050YwM
+ BuAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723562457; x=1724167257;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k92uxQUphhX97lbQN89xDPP6Ys3FVrzqxypU/0YUiUo=;
- b=rjej5XXoineohJAzhZogsdq2DEi2bz04pgnWvrMyh1sl67+8JRYO2ANb/nJXJK96bC
- gcLzu+eCDLgOx3GCZGkW8UmaCTSHfxSJYlLrBOprv+1Z5AtrPAVpVUm9BTZoXn9d8CCI
- YPqLJiO8sjNzca1+iEdYXuBKqcufv96gtgOt09T7Csd50K8OCP15lbTVc7HwkjjZhxPR
- bzvRb9vid6mhi9cjMZ8h4XigpJBF7VSfQ4t2zVxL6wFV38fko5pUQKyX+dF4hV8yOJtT
- XUbbOaZaaDs3WtLCbAwCEk+/8sfD1yCni4mzn4izmSupVMdjC8c4k7gBl3OWFWczEiVx
- gLlA==
-X-Gm-Message-State: AOJu0YymWpLQkiAfaV/VZWUOayPhzZ3o372OwIcwrooIq5veBZtII+xc
- LwHhHc+t0X03MxYKhp6TKs/edtX81TanRf3mQe1QG0FPWYzivmciV99EKmuYJXRDYTNTZaUkbtg
- v
-X-Google-Smtp-Source: AGHT+IGYMGr++M8/yd4xkJLPfhb4lNFNTrtrTsvIT/ioPboT8+Ihw74ZbyAeGAl9FA9xXh8J4bIhFQ==
-X-Received: by 2002:a5d:5f4a:0:b0:368:8007:e26c with SMTP id
- ffacd0b85a97d-3716ccfb977mr3139603f8f.29.1723562456851; 
- Tue, 13 Aug 2024 08:20:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723562458; x=1724167258;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jVktBdEeVfNZEE6GZ7T90l8yWHTJZu2wzXIiHmL8XoE=;
+ b=pWgYtgr3pe4V1Rl7rNojPdxSt8VtH6Nwgd5BxeEFjvTX10178UnRG8ZGj9h2WmcZVA
+ VwkIjXTMNI6aULCogo5oHO4LocU1I0rk/nbuwC7rOC0ddeiaEdxl9s1XvHqMNY2Ac2+1
+ vP+4coZNAmPe9hNqj81zAAwFjDDqPSul8sFGo/UBLn11S5cTUVnICjeIrI2Uoeu/OcJP
+ f9yBwe4MKy8BYsLo3Xm1RHeNO+NyoJ/ImV6Cf2wzeOGAwRI/K7Hc4WF62Ew0xf1HeeD/
+ X1M2Kx1SFP8FcFJxnHfh5f73H5vu2Ar6uZLzdQe/I6LsNvOSuPOKC+zHUneqWr+JVHOi
+ QDvA==
+X-Gm-Message-State: AOJu0Yw5cnQ9WlrBCs8qlgXr8+AN4qZCU00FIsl1hSDo3n+Ak7X9rlCH
+ 1LSPVSVoKnuR+INy+mngMrSv/o+kMJDWj9I6RknlB1dnD6gobGblyH1lNFUlekjoIYLldx9xk5r
+ 7
+X-Google-Smtp-Source: AGHT+IFnjlj5YTd3CkSzgPGwf5wUqx09CxhP+cz7rBxJ3YehcjdfSNaAXQM73G81buRrjbZqN4Af2Q==
+X-Received: by 2002:a05:6512:2314:b0:530:e28a:3c17 with SMTP id
+ 2adb3069b0e04-5321365d343mr2751205e87.25.1723562457321; 
+ Tue, 13 Aug 2024 08:20:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-36e4cfee676sm10654792f8f.49.2024.08.13.08.20.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 08:20:56 -0700 (PDT)
+ Tue, 13 Aug 2024 08:20:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/4] target-arm queue
-Date: Tue, 13 Aug 2024 16:20:50 +0100
-Message-Id: <20240813152054.2445099-1-peter.maydell@linaro.org>
+Subject: [PULL 1/4] hw/misc/stm32l4x5_rcc: Add validation for MCOPRE and
+ MCOSEL values
+Date: Tue, 13 Aug 2024 16:20:51 +0100
+Message-Id: <20240813152054.2445099-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240813152054.2445099-1-peter.maydell@linaro.org>
+References: <20240813152054.2445099-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,50 +92,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Three last bugfixes to sneak into rc2 if we can. The fix
-for the EL3-is-AArch32-and-we-run-code-at-EL0 bug is the
-most important one here I think (though also the most risky).
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-thanks
--- PMM
+This commit adds validation checks for the MCOPRE and MCOSEL values in
+the rcc_update_cfgr_register function. If the MCOPRE value exceeds
+0b100 or the MCOSEL value exceeds 0b111, an error is logged and the
+corresponding clock mux is disabled. This helps in identifying and
+handling invalid configurations in the RCC registers.
 
-The following changes since commit 9eb51530c12ae645b91e308d16196c68563ea883:
+Reproducer:
+cat << EOF | qemu-system-aarch64 -display \
+none -machine accel=qtest, -m 512M -machine b-l475e-iot01a -qtest \
+stdio
+writeq 0x40021008 0xffffffff
+EOF
 
-  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-08-13 07:59:32 +1000)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2356
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/misc/stm32l4x5_rcc.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-are available in the Git repository at:
+diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
+index 417bd5e85f6..59d428fa662 100644
+--- a/hw/misc/stm32l4x5_rcc.c
++++ b/hw/misc/stm32l4x5_rcc.c
+@@ -543,19 +543,31 @@ static void rcc_update_cfgr_register(Stm32l4x5RccState *s)
+     uint32_t val;
+     /* MCOPRE */
+     val = FIELD_EX32(s->cfgr, CFGR, MCOPRE);
+-    assert(val <= 0b100);
+-    clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
+-                         1, 1 << val);
++    if (val > 0b100) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid MCOPRE value: 0x%"PRIx32"\n",
++                      __func__, val);
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
++    } else {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
++                             1, 1 << val);
++    }
+ 
+     /* MCOSEL */
+     val = FIELD_EX32(s->cfgr, CFGR, MCOSEL);
+-    assert(val <= 0b111);
+-    if (val == 0) {
++    if (val > 0b111) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid MCOSEL value: 0x%"PRIx32"\n",
++                      __func__, val);
+         clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
+     } else {
+-        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], true);
+-        clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
+-                             val - 1);
++        if (val == 0) {
++            clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
++        } else {
++            clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], true);
++            clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
++                                 val - 1);
++        }
+     }
+ 
+     /* STOPWUCK */
+-- 
+2.34.1
 
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240813
-
-for you to fetch changes up to 4c2c0474693229c1f533239bb983495c5427784d:
-
-  target/arm: Fix usage of MMU indexes when EL3 is AArch32 (2024-08-13 11:44:53 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/misc/stm32l4x5_rcc: Add validation for MCOPRE and MCOSEL values
- * target/arm: Clear high SVE elements in handle_vec_simd_wshli
- * target/arm: Fix usage of MMU indexes when EL3 is AArch32
-
-----------------------------------------------------------------
-Peter Maydell (2):
-      target/arm: Update translation regime comment for new features
-      target/arm: Fix usage of MMU indexes when EL3 is AArch32
-
-Richard Henderson (1):
-      target/arm: Clear high SVE elements in handle_vec_simd_wshli
-
-Zheyu Ma (1):
-      hw/misc/stm32l4x5_rcc: Add validation for MCOPRE and MCOSEL values
-
- target/arm/cpu.h               | 50 +++++++++++++++++++++++++++---------------
- target/arm/internals.h         | 27 +++++++++++++++++++----
- target/arm/tcg/translate.h     |  2 ++
- hw/misc/stm32l4x5_rcc.c        | 28 ++++++++++++++++-------
- target/arm/helper.c            | 34 ++++++++++++++++++----------
- target/arm/ptw.c               |  6 ++++-
- target/arm/tcg/hflags.c        |  4 ++++
- target/arm/tcg/translate-a64.c |  3 ++-
- target/arm/tcg/translate.c     |  9 ++++----
- 9 files changed, 116 insertions(+), 47 deletions(-)
 
