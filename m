@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368BD950DFC
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96316950DCF
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:25:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdyA0-0008BP-P5; Tue, 13 Aug 2024 16:30:28 -0400
+	id 1sdy4B-0007Yw-S4; Tue, 13 Aug 2024 16:24:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy9t-0007rA-Tm
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:30:21 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1sdy41-0006hd-V4
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:24:18 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy9p-0007hO-Sj
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:30:21 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5af326eddb2so363823a12.1
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:30:11 -0700 (PDT)
+ id 1sdy3Y-0006Je-Fs
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:24:17 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3685a5e7d3cso3639570f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:23:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723581010; x=1724185810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723580625; x=1724185425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U/qnItM0U27UVVqG1z6IvgJtaIK4Kvloy70lZ6Kixi0=;
- b=fIJ4SzX1zihH4tIRKCBshNOqk7omZiJZ20vilw0ItpslrStbGTol7GysE7T8NsKwS9
- jNT3EoN1mB1rkMOSyLfx3AGKa+PDYuFIpQ0WaQ27shVdm2fMlT0G404F8y85cjE0kxMM
- 67XHfnpvZT2k67jM4k2ljJ5jY79ydIh7TkSXG+zZuy5hyvzH80h/ouzdlaX955ibz7az
- 6m4odo+YZltSbcU2P3MgH3HzCnm6qeR7NgVtjcZbTlMUAuwzpDsUrUNl3b6u7nt1Jz6o
- cRvX5KZ9Wcz7YC2lgzd8x7ztMAAE5OoQmNGDuo4a5wfy2ShPxetno7MLyqnPt4z0U5C6
- 8t0A==
+ bh=/5zKsXaXwrEo4pGBpcSfU84L/65BuquefdOBBeKcqhg=;
+ b=cPVvYHJafNG4aZYnutbCAah1kyFesnq+5VNbyTNqI9+4zBDHyDb+t93UUtiE6KltBI
+ 9c7GUQUTaUzcsu5i/XsltPEMgMhVCFbI8GCPK/2x9sk425z49NQ6OB2EOGNFCPL+d7q6
+ JnioTUeERV6+sL1WCfj+Iqv1c2QO3QIyaLWGXddvrrJOuSkmOzt4zLspMmOH46/lYHVj
+ rzWbqpuax1My7/8zPZo6CKeAYv/ZKEjQRTrasjhzbEMu0et8UOpNE0D0lBhBcHTXpjwr
+ k8zjuJZN8v6BtaEAGMC+mT36Do/X4SP7mOeMOoO1us/hbiIOgBzjfh9z4FKs+RKS9WEN
+ cXhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723581010; x=1724185810;
+ d=1e100.net; s=20230601; t=1723580625; x=1724185425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U/qnItM0U27UVVqG1z6IvgJtaIK4Kvloy70lZ6Kixi0=;
- b=D81K6Cs/4NV4H6FfFLXiiaBpLolr2nhIZ1ABebYrBaXKmQHZPtxPS34gMytK6FLNXi
- FJfCd++22Ygjua6R3txz0lrRvV4kZMo2/qYi4FLk1rajQuJOXfVtLmXO1aCZ8TZL1GBh
- cUKedyXKC0H73rlCI3XlWsZTTDkVmpZoxYz/PbWRFjdAPrCR66+AGKCtXZ8Pv/WfIrLj
- udlt1kONOx5Rqwk0YKStIRIXZfhcnU58txSJyhwOkOQY8juVQDUaXF7y8krtLe6MYaiv
- IO4N0sDXAeKY1JQnKvLj1hXnwKCWfbzlkQhjqzMu+uoS30tywhrMuyERLbRXNPgcDMFI
- eyxQ==
-X-Gm-Message-State: AOJu0YyXRvxfy7OIupxQzcARual9jRvTCPW/MwDuhuCthAimyJfp9OqP
- mpxcDKYNqh4g2uYcivyIDHoH63o1cjR7Q34a+XIYD7MC2+itaoawX2lJ2/IXdx4=
-X-Google-Smtp-Source: AGHT+IH9uzjvTYPVpT3Br+bjN6brxJD3Redqyexys/XEKFirexgpF1o3kViF9C5go3TtT0azwtoqOA==
-X-Received: by 2002:a17:907:f729:b0:a7d:c352:c502 with SMTP id
- a640c23a62f3a-a8362d64c1emr74542666b.30.1723581009952; 
- Tue, 13 Aug 2024 13:30:09 -0700 (PDT)
+ bh=/5zKsXaXwrEo4pGBpcSfU84L/65BuquefdOBBeKcqhg=;
+ b=PPLNY8dAgRQsiCXHeJKP9QPq7WLzsykqP2BGopuFputj1AtNOzfL7BMC8oJ38FGxyQ
+ rhgJid5b4i1K21EDd+CFSS/7gFK0pqm9JPuyQLOwLP2vIM3wA/SLuxxsGP9O4wNQX1+J
+ TN1rZgLXvkKsKQifDS69RWKDbpOzxYgzp7rUNYVGPqfBNxL+OXkGVDLMHwMmHuLMAyBX
+ tEW1TAKPoLcP0lh9Upna7ulo/4iYANMDqFy+eZgQDE3wDUPSuZxaN/bi2uwjc/XvDN6r
+ dzHcp11Ui2siCRMoo4Yhn33YPCSzDUHxVRsesSW8HFijNlAyLBBICRI6xHXSy3ls/goR
+ OfKg==
+X-Gm-Message-State: AOJu0Ywpf7dlEsRagrz5AriZ9bcHBNNSOrTM/d3dQrWJtOvz4HTUTNDd
+ ZuP1L1TIxpHHYJcs+Zn2I6lPTyoEZWlTb0ZiOuE2yeom3tVI4r2TSlC7AoKUYTc=
+X-Google-Smtp-Source: AGHT+IGArDWsoEcwOvzn8dC0t4xiaFUC9edLbCVkwWxOqo9exwED/2QoMwGKBxVP8u16sG+Z1jDXRg==
+X-Received: by 2002:a5d:4985:0:b0:367:9769:35b0 with SMTP id
+ ffacd0b85a97d-37177756b87mr471286f8f.4.1723580625112; 
+ Tue, 13 Aug 2024 13:23:45 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a80f3fb3581sm95891166b.88.2024.08.13.13.30.08
+ ffacd0b85a97d-36e4c36ba5csm11299186f8f.2.2024.08.13.13.23.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 13:30:09 -0700 (PDT)
+ Tue, 13 Aug 2024 13:23:40 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 61C4060642;
+ by draig.lan (Postfix) with ESMTP id 7859860773;
  Tue, 13 Aug 2024 21:23:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,17 +88,17 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Jason Wang <jasowang@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH v2 20/21] docs/devel: update tcg-plugins page
-Date: Tue, 13 Aug 2024 21:23:28 +0100
-Message-Id: <20240813202329.1237572-21-alex.bennee@linaro.org>
+Subject: [PATCH v2 21/21] plugins: fix race condition with scoreboards
+Date: Tue, 13 Aug 2024 21:23:29 +0100
+Message-Id: <20240813202329.1237572-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240813202329.1237572-1-alex.bennee@linaro.org>
 References: <20240813202329.1237572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -123,135 +123,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reflect recent changes on API (inline ops) and new plugins.
+A deadlock can be created if a new vcpu (a) triggers a scoreboard
+reallocation, and another vcpu (b) wants to create a new scoreboard at
+the same time.
 
+In this case, (a) holds the plugin lock, and starts an exclusive
+section, waiting for (b). But at the same time, (b) is waiting for
+plugin lock.
+
+The solution is to drop the lock before entering the exclusive section.
+
+This bug can be easily reproduced by creating a callback for any tb
+exec, that allocates a new scoreboard. In this case, as soon as we reach
+more than 16 vcpus, the deadlock occurs.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2344
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240812231945.169310-1-pierrick.bouvier@linaro.org>
+Message-Id: <20240812220748.95167-2-pierrick.bouvier@linaro.org>
+[AJB: tweak var position to meet coding style]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/about/emulation.rst   | 49 ++++++++++++++++++++++++++++++++------
- docs/devel/tcg-plugins.rst | 13 ++++++----
- 2 files changed, 50 insertions(+), 12 deletions(-)
+ plugins/core.c | 43 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index c03033e4e9..eea1261baa 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -207,8 +207,8 @@ Once built a program can be run with multiple plugins loaded each with
- their own arguments::
+diff --git a/plugins/core.c b/plugins/core.c
+index 12c67b4b4e..2897453cac 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -214,30 +214,49 @@ CPUPluginState *qemu_plugin_create_vcpu_state(void)
  
-   $QEMU $OTHER_QEMU_ARGS \
--      -plugin contrib/plugin/libhowvec.so,inline=on,count=hint \
--      -plugin contrib/plugin/libhotblocks.so
-+      -plugin contrib/plugins/libhowvec.so,inline=on,count=hint \
-+      -plugin contrib/plugins/libhotblocks.so
- 
- Arguments are plugin specific and can be used to modify their
- behaviour. In this case the howvec plugin is being asked to use inline
-@@ -219,6 +219,14 @@ Linux user-mode emulation also evaluates the environment variable
- 
-   QEMU_PLUGIN="file=contrib/plugins/libhowvec.so,inline=on,count=hint" $QEMU
- 
-+QEMU plugins avoid to write directly to stdin/stderr, and use the log provided
-+by the API (see function ``qemu_plugin_outs``).
-+To show output, you may use this additional parameter::
+ static void plugin_grow_scoreboards__locked(CPUState *cpu)
+ {
+-    if (cpu->cpu_index < plugin.scoreboard_alloc_size) {
++    size_t scoreboard_size = plugin.scoreboard_alloc_size;
++    bool need_realloc = false;
 +
-+  $QEMU $OTHER_QEMU_ARGS \
-+    -d plugin \
-+    -plugin contrib/plugins/libhowvec.so,inline=on,count=hint
-+
- Example Plugins
- ~~~~~~~~~~~~~~~
++    if (cpu->cpu_index < scoreboard_size) {
+         return;
+     }
  
-@@ -260,8 +268,7 @@ Behaviour can be tweaked with the following arguments:
-   * - Option
-     - Description
-   * - inline=true|false
--    - Use faster inline addition of a single counter. Not per-cpu and not
--      thread safe.
-+    - Use faster inline addition of a single counter.
-   * - idle=true|false
-     - Dump the current execution stats whenever the guest vCPU idles
+-    bool need_realloc = FALSE;
+-    while (cpu->cpu_index >= plugin.scoreboard_alloc_size) {
+-        plugin.scoreboard_alloc_size *= 2;
+-        need_realloc = TRUE;
++    while (cpu->cpu_index >= scoreboard_size) {
++        scoreboard_size *= 2;
++        need_realloc = true;
+     }
  
-@@ -381,6 +388,15 @@ run::
-   160          1      0
-   135          1      0
++    if (!need_realloc) {
++        return;
++    }
  
-+Test inline operations
-+......................
-+
-+``tests/plugins/inline.c``
-+
-+This plugin is used for testing all inline operations, conditional callbacks and
-+scoreboard. It prints a per-cpu summary of all events.
-+
-+
- Hot Blocks
- ..........
+-    if (!need_realloc || QLIST_EMPTY(&plugin.scoreboards)) {
+-        /* nothing to do, we just updated sizes for future scoreboards */
++    if (QLIST_EMPTY(&plugin.scoreboards)) {
++        /* just update size for future scoreboards */
++        plugin.scoreboard_alloc_size = scoreboard_size;
+         return;
+     }
  
-@@ -394,9 +410,6 @@ with linux-user execution as system emulation tends to generate
- re-translations as blocks from different programs get swapped in and
- out of system memory.
- 
--If your program is single-threaded you can use the ``inline`` option for
--slightly faster (but not thread safe) counters.
--
- Example::
- 
-   $ qemu-aarch64 \
-@@ -736,6 +749,28 @@ The plugin will log the reason of exit, for example::
- 
-   0xd4 reached, exiting
- 
-+Limit instructions per second
-+.............................
++    /*
++     * A scoreboard creation/deletion might be in progress. If a new vcpu is
++     * initialized at the same time, we are safe, as the new
++     * plugin.scoreboard_alloc_size was not yet written.
++     */
++    qemu_rec_mutex_unlock(&plugin.lock);
 +
-+This plugin can limit the number of Instructions Per Second that are executed::
-+
-+    # get number of instructions
-+    $ num_insn=$(./build/qemu-x86_64 -plugin ./build/tests/plugin/libinsn.so -d plugin /bin/true |& grep total | sed -e 's/.*: //')
-+    # limit speed to execute in 10 seconds
-+    $ time ./build/qemu-x86_64 -plugin ./build/contrib/plugins/libips.so,ips=$(($num_insn/10)) /bin/true
-+    real 10.000s
-+
-+
-+.. list-table:: IPS arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - ips=N
-+    - Maximum number of instructions per cpu that can be executed in one second.
-+      The plugin will sleep when the given number of instructions is reached.
-+
- Other emulation features
- ------------------------
+     /* cpus must be stopped, as tb might still use an existing scoreboard. */
+     start_exclusive();
+-    struct qemu_plugin_scoreboard *score;
+-    QLIST_FOREACH(score, &plugin.scoreboards, entry) {
+-        g_array_set_size(score->data, plugin.scoreboard_alloc_size);
++    /* re-acquire lock */
++    qemu_rec_mutex_lock(&plugin.lock);
++    /* in case another vcpu is created between unlock and exclusive section. */
++    if (scoreboard_size > plugin.scoreboard_alloc_size) {
++        struct qemu_plugin_scoreboard *score;
++        QLIST_FOREACH(score, &plugin.scoreboards, entry) {
++            g_array_set_size(score->data, scoreboard_size);
++        }
++        plugin.scoreboard_alloc_size = scoreboard_size;
++        /* force all tb to be flushed, as scoreboard pointers were changed. */
++        tb_flush(cpu);
+     }
+-    /* force all tb to be flushed, as scoreboard pointers were changed. */
+-    tb_flush(cpu);
+     end_exclusive();
+ }
  
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index d8725c2854..9463692c41 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -61,11 +61,14 @@ translation event the plugin has an option to enumerate the
- instructions in a block of instructions and optionally register
- callbacks to some or all instructions when they are executed.
- 
--There is also a facility to add an inline event where code to
--increment a counter can be directly inlined with the translation.
--Currently only a simple increment is supported. This is not atomic so
--can miss counts. If you want absolute precision you should use a
--callback which can then ensure atomicity itself.
-+There is also a facility to add inline instructions doing various operations,
-+like adding or storing an immediate value. It is also possible to execute a
-+callback conditionally, with condition being evaluated inline. All those inline
-+operations are associated to a ``scoreboard``, which is a thread-local storage
-+automatically expanded when new cores/threads are created and that can be
-+accessed/modified in a thread-safe way without any lock needed. Combining inline
-+operations and conditional callbacks offer a more efficient way to instrument
-+binaries, compared to classic callbacks.
- 
- Finally when QEMU exits all the registered *atexit* callbacks are
- invoked.
 -- 
 2.39.2
 
