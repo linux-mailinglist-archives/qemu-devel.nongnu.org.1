@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD738950182
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 11:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD229501A9
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 11:53:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdo7T-0007Xx-V6; Tue, 13 Aug 2024 05:47:13 -0400
+	id 1sdoCc-00053x-5U; Tue, 13 Aug 2024 05:52:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdo7O-0007Wj-8W
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 05:47:07 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1sdoCZ-00052f-MZ
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 05:52:27 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdo7M-0001EC-8W
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 05:47:06 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2cb5e0b020eso4084066a91.2
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 02:47:03 -0700 (PDT)
+ id 1sdoCX-0001yA-Ua
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 05:52:27 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-7a1be7b5d70so3751111a12.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 02:52:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723542422; x=1724147222; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=+O6tEfQz5lUPeGvFYdt3re9qjwA4R55lMLBHq/WO0OE=;
- b=QOH0tPjm6ulWxs0MFSjc2jHZS0HlB80bWRpjzICc3CCay2lhWSEZQDplbLwSR00cHb
- XEOPN/4DvdcDxCHSd4ChAG5CCwqSFsaOFXtw2XeAZIEv0Ih7mkmYsRzKxW6HBted9cPt
- RFZ2kSp8h4qvOTABMilIwXQgbxLZRqbOh98wQ3IJFKV9WGqPhjYvTi/RZUZB0217CTdk
- J6Qea8Iyrf6hrZd4KY5BzpVp+o+iGYp6BssSpThF+szt8PzX1sAFTTCmrSiyy5AgIUWG
- etnDBjEYUpx8syut1dwQcn/xzFERXwx4jP5mgY8EnLNGzVWOwYAQcjNmi9P/WoZ4LU1C
- UZ9g==
+ d=linaro.org; s=google; t=1723542744; x=1724147544; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HKddCzONxp6Ew5E7TLBEDVzECHDPn4E2wda03pMwp0U=;
+ b=GhL0UL69wUXPYddPiigHiDDi0VM9okO52Ms3cg0H/5hidwdvSvyjESTsFFUp5DerVc
+ CB9tPAtxRSYWzxWOslCLnMf4W7zvXCLqHng6M41++g9s65FvKW/Ub+1WXAhGRYV+DCID
+ NWZWLj64YGPGXbnpJzVXG7zRcijigQfjLlqTAaiMJZ9SmcLGIdDjBH0JI28O8aWYQLyy
+ ysVKD1I2DBuUmTmRlnwOuPnQvPsjVm94wXwllA8Z+XjtAmFryomLyaQAPQ5ECSy+Znw0
+ AH3iOJS9HNAaZZVDBSCpgcUFOiHjw2dOehSUQ4y+Ae83T7eZgVtNbOkIr4QWnIeOAmmy
+ d5Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723542422; x=1724147222;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+O6tEfQz5lUPeGvFYdt3re9qjwA4R55lMLBHq/WO0OE=;
- b=ALiNZqacSjqjPdUhaXO+jEKf20aiZ2CnU6MK5KJ7NWDEz//NPIDNnhcoWuj/cDoIAF
- 2A99UaQv4ZdXc/LqeYsr8tm3xhL+iCedN40FW5X4OAQ7etyvTqkgO6rmAMtBuAg6mnVL
- 5iiUzGVQgs1xtcPoD00EVLLok6DRPEGTBON0PkyOe72WciiSR54BKThwy0sTInJoUPCR
- 49BXVUCMZ3xgBnWqyrrlu5yxCHRAdQcgxjLOyA6bsqtVUtj7rPyUrbBHtrPwVejWePlj
- vmv2atHVRTzwBO3qGzfxClvyXRw2atY/gSkJ2+DmyqGmpg7myNNyKFNlad+2rIuSCIas
- olOw==
-X-Gm-Message-State: AOJu0Yy0i00USh25nnHhZUEEJgJ0+HvYobGdbuds41VuBsATlSXAHysJ
- QS7n3bneMsZqvp78Dk34OzPkZh523Hyi7M1NTqz3hEZvaMn+KrPqGkE/0cFh5uc1i/ANluxtl2z
- Sv4s=
-X-Google-Smtp-Source: AGHT+IHAVj81WnOVBpXmwzETfNPUF1KfNnB+MoOdNVjqNvkNtPaV038Jh4wH7X41VPECybMtLQlWkw==
-X-Received: by 2002:a17:90b:b05:b0:2ca:5a46:cbc8 with SMTP id
- 98e67ed59e1d1-2d39265245dmr3356282a91.26.1723542422050; 
- Tue, 13 Aug 2024 02:47:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723542744; x=1724147544;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HKddCzONxp6Ew5E7TLBEDVzECHDPn4E2wda03pMwp0U=;
+ b=iObO938sksQQXAWdxBKSg6sWcNLyBYFLqNtyXJwKb/hf0rwlf/aHfdzHwrCIyGBrFW
+ qVgc4UAevDRSsZkmAeBExknMUQsoXZMM8euvTLJR9eykv+bTrOCb9rqlYMCiR9mS7SYX
+ AZ1BeRUsl7dAcmS1uMYeHsPjtcfPNfOoXOK7TmfhK7/gsG4CieXXq0wuOY0Z6wwBlFCb
+ K5SLRTBkHbbOCGO1bSnx/ilX+4zkcV4ktDRRm+gTzMS9s97pO63suoM3a6dGkmadZhRV
+ 87jT5aQHLy1y5cggCuOCjncfDgC7EUjvkyrybwyHvgj4T58JS2QJ2xxAPRnAD3Jbp+h5
+ pFAw==
+X-Gm-Message-State: AOJu0YwcZsqR8GY9Jv7NnTyVAJuiG9OEbRhW7yx+S76KOv7A2CWY234G
+ qGdYLW9zlYRRulldFQ3X6j7IZo+tpidL+1JwpHdgzU75/8BFnxL/D3HU8m9aUwkr9Gxaj4NJvyK
+ ov3g=
+X-Google-Smtp-Source: AGHT+IEOW5IY//lmG/RwuUEZ/CPA5arsE1E7SBUKajbe1+4SPOoW5WQ2gwMVVXwMZ6QghaHu2Yj/3A==
+X-Received: by 2002:a17:90a:1b8a:b0:2cb:58e1:abc8 with SMTP id
+ 98e67ed59e1d1-2d3942cdf1fmr3443920a91.21.1723542743971; 
+ Tue, 13 Aug 2024 02:52:23 -0700 (PDT)
 Received: from stoup.. ([203.30.4.111]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d1c9c9d745sm9968126a91.28.2024.08.13.02.47.00
+ 98e67ed59e1d1-2d1c9ca796fsm10851876a91.30.2024.08.13.02.52.22
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 02:47:01 -0700 (PDT)
+ Tue, 13 Aug 2024 02:52:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH for-9.1] linux-user: Preserve NULL hit in target_mmap
- subroutines
-Date: Tue, 13 Aug 2024 19:46:54 +1000
-Message-ID: <20240813094654.306430-1-richard.henderson@linaro.org>
+Subject: [PATCH for-9.2? 0/2] meson: Rationalize sanitizer configuration
+Date: Tue, 13 Aug 2024 19:52:14 +1000
+Message-ID: <20240813095216.306555-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,69 +87,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not pass guest_base to the host mmap instead of zero hint.
+In the CI that we actually run (x86) we don't want to use ASan,
+only UBSan, we jump through --extra-cflags hoops to make that
+happen, and we fail to disable function sanitizer during normal
+configuration.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2353
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/mmap.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+In the CI that we don't run, we enable ASan and fail to disable
+function sanitizer.  So its a bit lucky that don't run it.
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 4d09a72fad..6418e811f6 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -560,9 +560,13 @@ static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
-                             int host_prot, int flags, int page_flags,
-                             int fd, off_t offset)
- {
--    void *p, *want_p = g2h_untagged(start);
-+    void *p, *want_p = NULL;
-     abi_ulong last;
- 
-+    if (start || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        want_p = g2h_untagged(start);
-+    }
-+
-     p = mmap(want_p, len, host_prot, flags, fd, offset);
-     if (p == MAP_FAILED) {
-         return -1;
-@@ -610,11 +614,15 @@ static abi_long mmap_h_lt_g(abi_ulong start, abi_ulong len, int host_prot,
-                             int mmap_flags, int page_flags, int fd,
-                             off_t offset, int host_page_size)
- {
--    void *p, *want_p = g2h_untagged(start);
-+    void *p, *want_p = NULL;
-     off_t fileend_adj = 0;
-     int flags = mmap_flags;
-     abi_ulong last, pass_last;
- 
-+    if (start || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        want_p = g2h_untagged(start);
-+    }
-+
-     if (!(flags & MAP_ANONYMOUS)) {
-         struct stat sb;
- 
-@@ -740,12 +748,16 @@ static abi_long mmap_h_gt_g(abi_ulong start, abi_ulong len,
-                             int flags, int page_flags, int fd,
-                             off_t offset, int host_page_size)
- {
--    void *p, *want_p = g2h_untagged(start);
-+    void *p, *want_p = NULL;
-     off_t host_offset = offset & -host_page_size;
-     abi_ulong last, real_start, real_last;
-     bool misaligned_offset = false;
-     size_t host_len;
- 
-+    if (start || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        want_p = g2h_untagged(start);
-+    }
-+
-     if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-         /*
-          * Adjust the offset to something representable on the host.
+Split the --enable-santizers config option, and move stuff back
+to meson.build from .gitlab-ci.d.
+
+
+r~
+
+
+Richard Henderson (2):
+  meson: Split --enable-sanitizers to --enable-{asan,ubsan}
+  meson: Move -fsanitize=undefined into normal configuraton
+
+ tests/qtest/fdc-test.c                        |  2 +-
+ .gitlab-ci.d/buildtest.yml                    | 10 +++----
+ .../custom-runners/ubuntu-22.04-aarch64.yml   |  2 +-
+ .../custom-runners/ubuntu-22.04-s390x.yml     |  2 +-
+ docs/devel/fuzzing.rst                        |  4 +--
+ meson.build                                   | 26 ++++++++++++++-----
+ meson_options.txt                             |  6 +++--
+ scripts/meson-buildoptions.sh                 |  9 ++++---
+ tests/docker/test-debug                       |  4 +--
+ 9 files changed, 41 insertions(+), 24 deletions(-)
+
 -- 
 2.43.0
 
