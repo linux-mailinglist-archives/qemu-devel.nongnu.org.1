@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF98A95046A
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 14:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F595047C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 14:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdqHR-0004r8-Vl; Tue, 13 Aug 2024 08:05:38 -0400
+	id 1sdqKl-0005fw-UN; Tue, 13 Aug 2024 08:09:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sdqGr-0004oj-Jt
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 08:05:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sdqKF-0005N5-Jm
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 08:08:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sdqGp-0006Z5-Uu
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 08:05:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sdqKB-00079E-TD
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 08:08:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723550697;
+ s=mimecast20190719; t=1723550903;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Hm76Ih3Z8sXGuCo0700NTk2e+j4pd96/pDpyBLORIss=;
- b=ZbrrgJtfkUO5Dkkbvcag0DPJJ+Nd5lGeWUSy5uAIJrzcAgk9VRl6PykCNCJV05IZ1gOXmJ
- lB76BrRDesC7lNLkJlxePUUGPv8TvTCrFxxBpBXQ4BQKEBoUXIhn7+QOhUYvQAyWptVwrN
- /Lanb7Q3MZh6vGkhJHtj03kNSefcMzA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Y0oKPLOAoBSL1FVJdA71OuWvvhPEDii20GqxQJKpTQU=;
+ b=eM38niU4tWHOQEPN/H3GqFv4nbcw3MiDvEinosV+7dxbfhpPXMz9II2eGVtfDSs6Co3VeK
+ u0NjTAH6G68TD4IIL4JtvKNDzS2oXuwYW+xf/ljG2dc6/b5AJ+utcnuSGdhk8KT6cFlxax
+ mpqbY05ASnp9Fr+5mZJRxNFecKKYL9U=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-KuzpkudMMFia1twKuSIyOQ-1; Tue, 13 Aug 2024 08:04:55 -0400
-X-MC-Unique: KuzpkudMMFia1twKuSIyOQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-428207daff2so37086045e9.0
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 05:04:54 -0700 (PDT)
+ us-mta-231-Y4tlFAT5MLuzpcmdkEZUwA-1; Tue, 13 Aug 2024 08:08:20 -0400
+X-MC-Unique: Y4tlFAT5MLuzpcmdkEZUwA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52f00bde210so6248008e87.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 05:08:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723550694; x=1724155494;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hm76Ih3Z8sXGuCo0700NTk2e+j4pd96/pDpyBLORIss=;
- b=oRmTy4K7To/KefssQ6uE8rT9Dz4xUMMLTtfDJK+zzTlPxejOUNeWtFb0N8UhN3yHHi
- F+dFiRf1vlMnebLlKoPwVNMpOG2/UgE1NRHDQynf/95XpKOYx365cyjjWMwBWRRBifmT
- UEeWa9A0e3Si08qV7Ks+pyRoXrWmvfJZs6WhXrS+eFohpM1zUjTu5Z4yCKgdQhD+274N
- HPdQkVIO7Ktqi+vKWxMTjxXpch/yYFMq8Juu8ohcgJXhgwFaP0kXYd3LD63nRplhnzjd
- H3pyIOVHseTOfNpigwJjZEaZ5JHzNxJD+nigN21qB/Ge2AP4WbnhqwJyt6TzmcD5z0RN
- o+ew==
-X-Gm-Message-State: AOJu0YwXeH1fQ1wc3HrwLB733jx5CupVuNOOT6n4mbMADvL7rJqcT3G0
- FCJxbqemCTUW3FOiwHRMDVxrilcdcz+D8MiDsdYZ9tbFs7AoHegpPlN0aATveGwnxde0EUisMLZ
- G2GCHU9oTOMvQP82PM2SAodRpBkPbT5nDxzeY9y9u1pRObjL/xnqY
-X-Received: by 2002:a05:600c:4f0d:b0:426:5cdf:2674 with SMTP id
- 5b1f17b1804b1-429d47f5c0dmr26740715e9.4.1723550693949; 
- Tue, 13 Aug 2024 05:04:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbajtwQ2ChoOYWGvnTPktdwhjCqnPtsOshKJSxoerQSh7xvqxGctxUqRikgRa4r3Y5dBT9tA==
-X-Received: by 2002:a05:600c:4f0d:b0:426:5cdf:2674 with SMTP id
- 5b1f17b1804b1-429d47f5c0dmr26740375e9.4.1723550693351; 
- Tue, 13 Aug 2024 05:04:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1723550899; x=1724155699;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:from:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y0oKPLOAoBSL1FVJdA71OuWvvhPEDii20GqxQJKpTQU=;
+ b=YtK5VE5Xt8cnVPEHTbjhdfIz20ofJF6/ExfdsSvKspIuX1yw1Y62YubQqBeGKYQtWJ
+ hTC/8Lauj/OEHemTefLLg/cNHvmEpOGQaJvjZgDDtjbgGtEk3w9DYoDRThrxPUAt7WeT
+ 3joox2DVwBCNV2lK2FldshBzzMAFzGqrj+iZcuBANtfGlMXwcgBvcPmRpjrmTEK9G8gk
+ HnNl++JYOHPLa1GB1cRBBYxS/RUkI8J+8coK2u/1vBlaZjrA6/qhGbFPiT1QQrMRNAiE
+ eMOHKFC2Vg8kcL4/gj0zMtJ988w3GANNMK19FHz7cyCAlHlpgfeqLt+jXApV5hBH8S+K
+ lxpg==
+X-Gm-Message-State: AOJu0Yw3sK1HQHJKVBMgfXKC59kJeVJ+95ydyFbaDRid8JQ2YyPNR1I1
+ SB/LnJzWs4gp28oDlXBIgxj67jqwqHZmEbmRqmnn8d/Q5Jol6g9XeLvdDfYzdMufjwNXN1h4Ook
+ TdsF6pgr9dTQIm/YA1IDes4JtgaZXPLubfuwIbx+wt+rfp5CCe3bV
+X-Received: by 2002:a05:6512:1293:b0:530:c239:6fad with SMTP id
+ 2adb3069b0e04-532135a6c4fmr2629098e87.0.1723550898606; 
+ Tue, 13 Aug 2024 05:08:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0aL6gHWwBi5Mg8+wn3k5bEp7fXbSNzK1rJ7U58ZmyEKpf/0XoWhldyHTcwzVM1zJTIHckkw==
+X-Received: by 2002:a05:6512:1293:b0:530:c239:6fad with SMTP id
+ 2adb3069b0e04-532135a6c4fmr2629055e87.0.1723550897926; 
+ Tue, 13 Aug 2024 05:08:17 -0700 (PDT)
 Received: from [10.33.192.191] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429c750e510sm136608945e9.13.2024.08.13.05.04.52
+ 5b1f17b1804b1-429c751a547sm137645935e9.23.2024.08.13.05.08.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Aug 2024 05:04:52 -0700 (PDT)
-Message-ID: <ccbfe942-7a44-4f52-a100-73a852b81cfb@redhat.com>
-Date: Tue, 13 Aug 2024 14:04:51 +0200
+ Tue, 13 Aug 2024 05:08:17 -0700 (PDT)
+Message-ID: <ffc248f6-5066-4d8c-84de-97b8cf562901@redhat.com>
+Date: Tue, 13 Aug 2024 14:08:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 13/24] tests/functional: Convert the s390x avocado
  tests into standalone tests
+From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Nina Schoetterl-Glausch <nsg@linux.ibm.com>
@@ -82,8 +83,8 @@ References: <20240730170347.4103919-1-berrange@redhat.com>
  <0f30e83a-2048-4dcb-ba41-47920c62e1e1@linaro.org>
  <ZqvIHb15uzWZw6Qt@redhat.com>
  <8756361d-fc46-4a04-bcba-9200d739c404@linaro.org>
+ <ccbfe942-7a44-4f52-a100-73a852b81cfb@redhat.com>
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -126,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <8756361d-fc46-4a04-bcba-9200d739c404@linaro.org>
+In-Reply-To: <ccbfe942-7a44-4f52-a100-73a852b81cfb@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -138,7 +139,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,51 +155,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/08/2024 15.25, Philippe Mathieu-Daudé wrote:
-> On 1/8/24 19:38, Daniel P. Berrangé wrote:
->> On Thu, Aug 01, 2024 at 07:11:01PM +0200, Philippe Mathieu-Daudé wrote:
->>> On 30/7/24 19:03, Daniel P. Berrangé wrote:
->>>> From: Thomas Huth <thuth@redhat.com>
+On 13/08/2024 14.04, Thomas Huth wrote:
+> On 02/08/2024 15.25, Philippe Mathieu-Daudé wrote:
+>> On 1/8/24 19:38, Daniel P. Berrangé wrote:
+>>> On Thu, Aug 01, 2024 at 07:11:01PM +0200, Philippe Mathieu-Daudé wrote:
+>>>> On 30/7/24 19:03, Daniel P. Berrangé wrote:
+>>>>> From: Thomas Huth <thuth@redhat.com>
+>>>>>
+>>>>> These tests use archive.lzma_uncompress() from the Avocado utils,
+>>>>> so provide a small helper function for this, based on the
+>>>>> standard lzma module from Python instead.
+>>>>>
+>>>>> And while we're at it, replace the MD5 hashes in the topology test
+>>>>> with proper SHA256 hashes, since MD5 should not be used anymore
+>>>>> nowadays.
+>>>>>
+>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>>> ---
+>>>>>    MAINTAINERS                                   |  4 +-
+>>>>>    tests/functional/meson.build                  |  6 ++
+>>>>>    tests/functional/qemu_test/utils.py           | 14 +++
+>>>>>    .../test_s390x_ccw_virtio.py}                 | 79 ++++++++---------
+>>>>>    .../test_s390x_topology.py}                   | 86 ++++++++-----------
+>>>>>    5 files changed, 94 insertions(+), 95 deletions(-)
+>>>>>    rename tests/{avocado/machine_s390_ccw_virtio.py => 
+>>>>> functional/test_s390x_ccw_virtio.py} (85%)
+>>>>>    mode change 100644 => 100755
+>>>>>    rename tests/{avocado/s390_topology.py => 
+>>>>> functional/test_s390x_topology.py} (88%)
+>>>>>    mode change 100644 => 100755
 >>>>
->>>> These tests use archive.lzma_uncompress() from the Avocado utils,
->>>> so provide a small helper function for this, based on the
->>>> standard lzma module from Python instead.
+>>>> Conversion LGTM, so:
 >>>>
->>>> And while we're at it, replace the MD5 hashes in the topology test
->>>> with proper SHA256 hashes, since MD5 should not be used anymore
->>>> nowadays.
+>>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >>>>
->>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>> ---
->>>>    MAINTAINERS                                   |  4 +-
->>>>    tests/functional/meson.build                  |  6 ++
->>>>    tests/functional/qemu_test/utils.py           | 14 +++
->>>>    .../test_s390x_ccw_virtio.py}                 | 79 ++++++++---------
->>>>    .../test_s390x_topology.py}                   | 86 ++++++++-----------
->>>>    5 files changed, 94 insertions(+), 95 deletions(-)
->>>>    rename tests/{avocado/machine_s390_ccw_virtio.py => 
->>>> functional/test_s390x_ccw_virtio.py} (85%)
->>>>    mode change 100644 => 100755
->>>>    rename tests/{avocado/s390_topology.py => 
->>>> functional/test_s390x_topology.py} (88%)
->>>>    mode change 100644 => 100755
+>>>> Now while testing I'm getting errors, but maybe pre-existing...
 >>>
->>> Conversion LGTM, so:
+>>> What host arch / OS are you running tests from ?
 >>>
->>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>
->>> Now while testing I'm getting errors, but maybe pre-existing...
+>>> I got through the full set of testing on Fedora x86_64, so
+>>> wondering if something differs.
 >>
->> What host arch / OS are you running tests from ?
->>
->> I got through the full set of testing on Fedora x86_64, so
->> wondering if something differs.
+>> Linux s390x but I'm not in the KVM group, I need to find
+>> another place to run these (or ask Alex :P).
 > 
-> Linux s390x but I'm not in the KVM group, I need to find
-> another place to run these (or ask Alex :P).
+> Sounds like a pre-existing problem ... I guess the test should check whether 
+> it can access /dev/kvm before trying to use it...?
 
-Sounds like a pre-existing problem ... I guess the test should check whether 
-it can access /dev/kvm before trying to use it...?
+Ah, no, I missed your comment in your earlier patch that kvm_available() 
+already checks this ... so the problem must be something else?
 
   Thomas
 
