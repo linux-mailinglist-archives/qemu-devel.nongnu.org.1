@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51E4950AD0
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 18:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E15C950AC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 18:54:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdulf-0005Ax-3M; Tue, 13 Aug 2024 12:53:07 -0400
+	id 1sdulc-0004zR-Ca; Tue, 13 Aug 2024 12:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sdulX-0004jK-Ty
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:52:59 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1sdula-0004sh-7b
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:53:02 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sdulV-0001AJ-CD
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:52:59 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-42809d6e719so44051265e9.3
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 09:52:56 -0700 (PDT)
+ id 1sdulW-0001BY-JQ
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:53:00 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-36bb2047bf4so3736062f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 09:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723567975; x=1724172775; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723567976; x=1724172776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bcli30XoP28wm47c8WADhprJ+6f5OQ2N6n8H2nSEE5o=;
- b=h0gsFBKqd2+tEItQ6TLBdS/rL+9nUBIfXDKQBeo8A1NGFC9yeg92CTo0DJuFeD5oAI
- NPteMnQuq6/lrqpY+aJx6FB23nhfbyimDKCHyLA5VVnuBOwVB/ZTUcO2PzOJQ3KUowXO
- ut6HxiBP+yz5qnJhOCMQk3NsFTH2QxPCBtmkAPVKLuLkSLYdTCzfaPO/tEquAisYHQHe
- 3hXBtyBaeA1O+7XgK8H/6vUfhmJ0nyyJml2OzqSBF9Ac0qWstJimt5yVZ+N3zEl1ODzB
- 4p9diSpyGc8YGu/PHNtEsTptyRalz2zseLYmPCsgB0VyXBXraqZLComC3c4+/X+fT0+m
- wX0w==
+ bh=Lbre056sEPIRICp8dPk/YvoBv3UqLB0jF2TdtHhkVeA=;
+ b=X3PYe7WZxZE70Pcu6AqNFo4Tkq3KbVAg4etg4rYJA7bctQqcz5wr6WpXmRMAn1BWQ0
+ cpRYe+Pk0g3eayDT13VdmCy8XAdR3UCllvBmibkummyv/TxtxtUeabr2xbnyTmuctWyc
+ H4PpII/7RQjhp51tdA8UtSp9kWIECXafRnhwYxaqy3wxUPJU2LVpukbaokeOGKX3lKkm
+ mcROF8cDv5BqSkTk9W5FMx34DFpFx6wLcOpT3IJDG4wER7zo3RwR7S5Ra/z4Lq7Z3IuH
+ X7mq+cpAPRItQ/P/Ydk6+t699OleWeewurVfyHILm2/Z0Jkwl1mhkN+WULq2kYesoANC
+ nb0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723567975; x=1724172775;
+ d=1e100.net; s=20230601; t=1723567976; x=1724172776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bcli30XoP28wm47c8WADhprJ+6f5OQ2N6n8H2nSEE5o=;
- b=YjGcH7kQAgfd3WWk2hObZKIaHlUR480MotAat9hiXAr+VPFFrHP1fOfTCXia2QkLt8
- RseYoOirU6o5Qh6SPBDujbO1RrSrevbZNuFGdpKR901j1EDfwQOpNFNYUogFOgEQYMvQ
- mti0Jn7gWWttATTujX1Dhbm2JYAL0UuA6MSeHaOsjgyyagRYl+Cpht4V+xiK9WB41sVb
- baYAW5kVjSYUgFKMGvFtixxnu7oNRO677fi3C6mmXM3uEhP7RIRsPnSCK2zPFCAZWZ3D
- L3sHSS/JGB//q7sGhoWOCG1uFDvZ0LEnZah7NJooiTTUcl22/wIuJFI4wuIxmd72jUyQ
- RIXw==
-X-Gm-Message-State: AOJu0YzJvf/I1ZVeP7/F3t82a5Rv6ErpUlq4R028Q90tG57XZDVhnnMz
- KGQPXGMrque9XGUJAAXYFphA2iT0kGnU+ybfyllRQ/rVybhJOErl1oGwGmSZ3fMx9/ILMjaYz85
- +
-X-Google-Smtp-Source: AGHT+IFZF4sxRy7wE+1ngMM/MIlfpQ7gezjvFJh4ktuZlnZfjY3zTBVs794vdkFZ2xQWmg7nKNnpiQ==
-X-Received: by 2002:a05:600c:3103:b0:426:5ee3:728b with SMTP id
- 5b1f17b1804b1-429dd236442mr1184085e9.13.1723567975235; 
+ bh=Lbre056sEPIRICp8dPk/YvoBv3UqLB0jF2TdtHhkVeA=;
+ b=px/ccmYXHiGxPWB/RJrqzl2S0DF6HaV6Ol+teets9NOyGBM1LsKUHzwtYiqXBSSjzi
+ pVlpG43cbWYq0vSVOyYYZIw9AMI0ruiiyuH2g95ISJG5pB/o5HHwkdDg6vq5ScaVOHSP
+ DRut6Q2/6ueiUMCi/7vhzo00nzy0BHB+enSd9HPmTy8ibmNtchmyz7T+1VKf1WPhL1/x
+ 7GVudtDDDunfedAsfZRhahF9H8SmTb9bUs3DvSMTU9dNZekKZKsxPO83SEalXxc/rEsS
+ cMwX1gwJnGHHSphL+/RkdDtPEAatuUI1aYfgKXKOjk6+nF+lKb9+c4H9nXTz7e94f8g9
+ /GhA==
+X-Gm-Message-State: AOJu0YyMKN9hSn/69LF07aPHekeKKfMl+yTqef+URbtsfL+XWszPWyvc
+ /opsRokQaomPvKhb/OxxVbO5FKASxlwIQcuBU5sVBTehUVkt5+7Ow5wxixjuubml3SSY28ZTxq4
+ 1
+X-Google-Smtp-Source: AGHT+IExnm9L/pJacatfxoLNPxAHKBZlG3V5vhRPdotgNdjhCIHckQIf3TvrnGnCYOKJq3LvSvymlw==
+X-Received: by 2002:a05:6000:1549:b0:368:4def:921f with SMTP id
+ ffacd0b85a97d-37177768ac8mr138305f8f.11.1723567975938; 
  Tue, 13 Aug 2024 09:52:55 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429c77374a5sm147347015e9.30.2024.08.13.09.52.54
+ 5b1f17b1804b1-429c77374a5sm147347015e9.30.2024.08.13.09.52.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 09:52:54 -0700 (PDT)
+ Tue, 13 Aug 2024 09:52:55 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
@@ -66,24 +66,24 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH for-9.2 04/10] target/alpha,
- hppa: Remove unused parent_reset fields
-Date: Tue, 13 Aug 2024 17:52:44 +0100
-Message-Id: <20240813165250.2717650-5-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 05/10] hw/dma/xilinx_axidma: Use semicolon at end of
+ statement, not comma
+Date: Tue, 13 Aug 2024 17:52:45 +0100
+Message-Id: <20240813165250.2717650-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240813165250.2717650-1-peter.maydell@linaro.org>
 References: <20240813165250.2717650-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,60 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Alpha and HPPA CPU class structs include a 'parent_reset'
-field which is never used; delete them.
-
-(These targets don't seem to implement reset at all; if they did they
-should do it using the three-phase reset mechanism, which uses a
-'ResettablePhases parent_phases' field instead of the old
-'DeviceReset parent_reset' field.)
+In axidma_class_init() we accidentally used a comma at the end of
+a statement rather than a semicolon. This has no ill effects, but
+it's obviously not intended and it means that Coccinelle scripts
+for instance will fail to match on the two statements. Use a
+semicolon instead.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/alpha/cpu.h | 2 --
- target/hppa/cpu.h  | 2 --
- 2 files changed, 4 deletions(-)
+ hw/dma/xilinx_axidma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
-index f9e2ecb90ab..3556d3227f8 100644
---- a/target/alpha/cpu.h
-+++ b/target/alpha/cpu.h
-@@ -267,7 +267,6 @@ struct ArchCPU {
- /**
-  * AlphaCPUClass:
-  * @parent_realize: The parent class' realize handler.
-- * @parent_reset: The parent class' reset handler.
-  *
-  * An Alpha CPU model.
-  */
-@@ -275,7 +274,6 @@ struct AlphaCPUClass {
-     CPUClass parent_class;
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+index c9cfc3169b8..7707634253a 100644
+--- a/hw/dma/xilinx_axidma.c
++++ b/hw/dma/xilinx_axidma.c
+@@ -626,7 +626,7 @@ static void axidma_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
  
-     DeviceRealize parent_realize;
--    DeviceReset parent_reset;
- };
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 2bcb3b602b8..d34710f0aa9 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -281,7 +281,6 @@ struct ArchCPU {
- /**
-  * HPPACPUClass:
-  * @parent_realize: The parent class' realize handler.
-- * @parent_reset: The parent class' reset handler.
-  *
-  * An HPPA CPU model.
-  */
-@@ -289,7 +288,6 @@ struct HPPACPUClass {
-     CPUClass parent_class;
- 
-     DeviceRealize parent_realize;
--    DeviceReset parent_reset;
- };
- 
- #include "exec/cpu-all.h"
+-    dc->realize = xilinx_axidma_realize,
++    dc->realize = xilinx_axidma_realize;
+     dc->reset = xilinx_axidma_reset;
+     device_class_set_props(dc, axidma_properties);
+ }
 -- 
 2.34.1
 
