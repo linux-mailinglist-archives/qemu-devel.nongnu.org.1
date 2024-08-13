@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E7794FFDB
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 10:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D7594FFEB
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 10:33:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdmtM-0005tT-Se; Tue, 13 Aug 2024 04:28:32 -0400
+	id 1sdmxe-0005gb-HK; Tue, 13 Aug 2024 04:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdmtK-0005sU-V6
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 04:28:30 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdmxc-0005b7-Lx
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 04:32:56 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdmtJ-0005jW-B4
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 04:28:30 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-52efdf02d13so8639444e87.2
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 01:28:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdmxa-0006Ll-Sd
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 04:32:56 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a7a83a968ddso505321966b.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 01:32:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723537707; x=1724142507; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723537973; x=1724142773; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=C2dcd/MnpZ8v72aLdJKBRsWw+8Ha1UH03gZIJXyjOrE=;
- b=geHdFlrC/FK5pFkFs/OKOH5VjJTG55XBbYAypecQTPZHFjVAn7kjYDXlctmCGu6xgY
- CBms+WDlLGOsoz83qy/N/Rclt4W6Gh5Owo91QixDLtJrrJBI6ta0B/RmE9h3TcfSfB0Y
- zU5jpXqyz2QkM+5g8vEjEsxNYWU8cW6FPJDtAfXSI89GcM2IQDVmqAQOso96egpFzed8
- FF+jkZMsF5xu4rdxcyPvCbec4OJmoFxdcCC5mnYpZHG0A3PkgCzOEAhUGO/GJXZpPPJT
- ShkpuVk/pyfMlEN+lfR28VNBCKCe7Cs9sNfNy1FtSa42hqA5R9MNonZjGo/Uod6FoMJU
- FKiw==
+ bh=K39hCVxZDiwh10XPpZXeqLUXFggILY6z0KTzVQEe+E4=;
+ b=HFfhxJI3OURRRJUIibjkh6yGZOe8xU6vfNsB3nKqzWzu8yO7rMwVtT3wS9OucXHWEc
+ gxs6XjKrbPjvOQNif4w8XsGwdtTZMiZvmbtLTuNDxfAyelDywCH1wC+Ko01CiYLGMrhM
+ F4nMm/uC8gyjRVkXLW17WR8UdampjV0PUKANBws8EzgJpnOnMh+V9KdpHL65Ut+uHzpJ
+ DQM8k5omtCnFDxadCUJpJMm4SCUZw3te0+1A6ujLCGdpDPXGMWKDLuIqqFYls/7aPxqK
+ E8OyhVsmVSH3MZj3mWYUCYaeVPrJLNJCcoYlj0oqi+Oqu3tKFvHGds0/gX2HqmxHiT5L
+ oJZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723537707; x=1724142507;
+ d=1e100.net; s=20230601; t=1723537973; x=1724142773;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C2dcd/MnpZ8v72aLdJKBRsWw+8Ha1UH03gZIJXyjOrE=;
- b=gLYCORw3WoI5f5AJHdvrqgehM80pgXtwAqtwjN3OdPKSe96BfZdW/g6uyRB1N+6dLD
- wbUMV0HZgjLCctfkeh+WxqLkEu91g7JZfNczMWRXE0rv6eNg8IA3lJg1BZTdL6j8HqVy
- BSrlKaswmwmlqQcMRMx1HL4AStaNZGgKWQjgA5Jyfg5cblhSHHtyNpEQDUwRaQs2lN+0
- RpRdJuHNf7pkozPQE+FRlDPDF7Khca4wKbJ6MHhCIzpw95gi7gYNvyNz1mjDnG+ZO/bq
- NWXyKI8VeX0z6SxJAOLsU0OEJVwKVPHodJPT41In1D6BLvQ5lpKlL5SVyf4f96u5LjaR
- gdcw==
-X-Gm-Message-State: AOJu0Yw+JwuVYiA6Zm8dCgH7FSabdnSLx957NMdZkSEvKz1C66OJ69h1
- go3CY5lpzpl0XMwp/d70r9GR2AK43L7iV0iJKGDLnIozORSrjLJYZ6JvpEWc8zY=
-X-Google-Smtp-Source: AGHT+IF/l4mdJJu2qUMw2X287dHk4ueEfrtIEPOlvh/7mXBDEJ2k2XFEd1/fDllwwXRsIbvpBVMsYQ==
-X-Received: by 2002:a05:6512:3c8b:b0:530:d334:e0f1 with SMTP id
- 2adb3069b0e04-53213681798mr2406447e87.41.1723537707022; 
- Tue, 13 Aug 2024 01:28:27 -0700 (PDT)
+ bh=K39hCVxZDiwh10XPpZXeqLUXFggILY6z0KTzVQEe+E4=;
+ b=gWxbagPf2/Ft7YoHfyKeJ41Ig8HKy/OwGA79PXwFjgzCwmfsrPpzJuQqhSE0U+h+Qu
+ LheqxqWJMoqKiC+Y0cfA+9JUYzKkgFhIKVXC2/F0xEBdYmWMC776h/o2SBBHQyE8jgBL
+ RKr7iKKM4Kvx09OV+LBF+nqgsd5M/oxk9awb/dAzF/kJisxujOuVjhxccZJKu5ffcu0L
+ E2f7nWfVdQHAzlssW5CenSKxl9l57cjfLw3cbQU7nMGDE/YYFFMTDl8yVDM44Bybbrh6
+ 3AgQgmXox4aqgxCRG0hTE0Fymd8SDxZBtZtE1Htw1muPMC2ZPUigxtCAqo9ZUNHUCQ/c
+ SdTw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXzqtK7qyhwV/sZJWPj+1MAoLr7WHVZ15hLm1h3l2FGQTXqem3Xq54/gUX6Urfm2bAyozhk0YxZGQ6kKlKDzxDz1mo7UUA=
+X-Gm-Message-State: AOJu0YxnTMQgV8f+ZUPbklDUoFYpuq5lsRGQ/6gy2bwOjINzreg6LnN3
+ q9c7RkjBnNIrWw7IMY+tiyk/AITmo005GTOFc0YwWVO2Duz1KEQUYs0CRZIi8Yc=
+X-Google-Smtp-Source: AGHT+IFdofLhOfFifpA+P7ZaxNI4/pULSNg6TgI01r5b24JFRuedSJkXPHAnHJVSh0WZqCxdNAEkdg==
+X-Received: by 2002:a17:907:d861:b0:a77:c95e:9b1c with SMTP id
+ a640c23a62f3a-a80ed1c14f1mr213588866b.27.1723537973011; 
+ Tue, 13 Aug 2024 01:32:53 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.129.17])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a80f4183aa5sm49026966b.211.2024.08.13.01.28.20
+ a640c23a62f3a-a80f3fafb6csm49649766b.75.2024.08.13.01.32.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Aug 2024 01:28:26 -0700 (PDT)
-Message-ID: <b7f837dd-a58a-4912-9400-514fd5cdac4d@linaro.org>
-Date: Tue, 13 Aug 2024 10:28:16 +0200
+ Tue, 13 Aug 2024 01:32:52 -0700 (PDT)
+Message-ID: <e9ea37c6-a9b4-4708-bfce-0869d1bd9cbb@linaro.org>
+Date: Tue, 13 Aug 2024 10:32:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 05/23] hw: add register access utility functions
-To: Octavian Purdila <tavip@google.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, stefanst@google.com,
- pbonzini@redhat.com, alex.bennee@linaro.org, thuth@redhat.com,
- marcandre.lureau@redhat.com, alistair@alistair23.me, berrange@redhat.com,
- jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com
+Subject: Re: [RFC PATCH 03/23] scripts: add script to generate C header files
+ from SVD XML files
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Octavian Purdila <tavip@google.com>, John Snow <jsnow@redhat.com>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, stefanst@google.com,
+ alex.bennee@linaro.org, thuth@redhat.com, peter.maydell@linaro.org,
+ marcandre.lureau@redhat.com, alistair@alistair23.me, crosa@redhat.com,
+ bleal@redhat.com
 References: <20240805201719.2345596-1-tavip@google.com>
- <20240805201719.2345596-6-tavip@google.com>
- <CAFEAcA8w47gZYV8GBQa3fNf1cBWNtm_k4DAdnOVt4RWBdSrghg@mail.gmail.com>
- <CAGWr4cSwJPMngzA7DAHRHu7eJkWGhzxuAMB2fbGRnNAx-7AR7g@mail.gmail.com>
+ <20240805201719.2345596-4-tavip@google.com>
+ <CAFn=p-abeXP+dUtp_gwH3dcD5DT-sTAFg=udVugrzcU1r8fXpA@mail.gmail.com>
+ <CAGWr4cQL_LMWmEUdoPprRSp2k=CkQ0UJp5Q45qbAtUvvE6fDHg@mail.gmail.com>
+ <9080f7e5-a40d-4cbd-a734-74578dd27894@linaro.org>
+ <CABgObfY1hGKhBjwjDeKSSd5uxbe8Lc5=hVL6psB0NLbnX1bJ0g@mail.gmail.com>
+ <ZrXokj7du0YgRHpz@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAGWr4cSwJPMngzA7DAHRHu7eJkWGhzxuAMB2fbGRnNAx-7AR7g@mail.gmail.com>
+In-Reply-To: <ZrXokj7du0YgRHpz@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,44 +105,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/8/24 23:14, Octavian Purdila wrote:
-> On Mon, Aug 12, 2024 at 8:33 AM Peter Maydell <peter.maydell@linaro.org> wrote:
->>
->> On Mon, 5 Aug 2024 at 21:17, Octavian Purdila <tavip@google.com> wrote:
+On 9/8/24 11:59, Daniel P. Berrangé wrote:
+> On Fri, Aug 09, 2024 at 11:42:38AM +0200, Paolo Bonzini wrote:
+>> On Fri, Aug 9, 2024 at 11:30 AM Philippe Mathieu-Daudé
+>> <philmd@linaro.org> wrote:
 >>>
->>> Add register access utility functions for device models, like checking
->>> aligned access and reading and writing to a register backstore.
+>>> On 9/8/24 00:30, Octavian Purdila wrote:
+>>>> On Thu, Aug 8, 2024 at 2:56 PM John Snow <jsnow@redhat.com> wrote:
+>>>
+>>>
+>>>>>> diff --git a/configure b/configure
+>>>>>> index 5ad1674ca5..811bfa5d54 100755
+>>>>>> --- a/configure
+>>>>>> +++ b/configure
+>>>>>> @@ -956,7 +956,7 @@ mkvenv="$python ${source_path}/python/scripts/mkvenv.py"
+>>>>>>    # Finish preparing the virtual environment using vendored .whl files
+>>>>>>
+>>>>>>    $mkvenv ensuregroup --dir "${source_path}/python/wheels" \
+>>>>>> -     ${source_path}/pythondeps.toml meson || exit 1
+>>>>>> +     ${source_path}/pythondeps.toml meson svd-gen-header || exit 1
+>>>>>
+>>>>
+>>>> Hi John,
+>>>>
+>>>> Thanks for reviewing!
+>>>>
+>>>>>
+>>>>> I haven't read the rest of this series; I'm chiming in solely from the build/python maintainer angle. Do we *always* need pysvd, no matter how QEMU was configured? Adding it to the meson line here is a very big hammer.
+>>>>>
+>>>>
+>>>> I think the minimum we can do is to install it only if CONFIG_ARM is
+>>>> enabled. That might change in the future if the models we create with
+>>>> pysvd are enabled for other architectures.
+>>>
+>>> Similarly on how we manage libfdt, you can have meson defines
+>>> SVDGEN as:
+>>>
+>>>     config_host_data.set('CONFIG_SVDGEN', svd_gen_header.found())
+>>>
+>>> Then declare SVDGEN in Kconfig.host, and finally use in the Kconfigs:
 >>
->>
->>> Signed-off-by: Octavian Purdila <tavip@google.com>
->>> ---
->>>   include/hw/regs.h | 89 +++++++++++++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 89 insertions(+)
->>>   create mode 100644 include/hw/regs.h
-
-
->>> +/*
->>> + * reg32_read
->>> + * @base: base address
->>> + * @addr: register offset in bytes
->>> + *
->>> + * Returns: 32bit value from register backstore
->>> + */
->>> +static inline uint32_t reg32_read(void *base, uint32_t addr)
->>> +{
->>> +    return *(uint32_t *)(base + addr);
->>> +}
->>
->> Pointer type handling looks suspicious here -- if
->> the thing we're accessing is really a uint32_t* then
->> we should take that; if it isn't then casting it to
->> one and dereferencing might be reading unaligned memory.
->>
+>> That would force people to install pysvd on the host, which is a pity
+>> for such a small and little-known library.  We have used submodules
+>> in the past for much larger and common dependencies, for example
+>> capstone.
 > 
-> It is used for performing generic accesses to generated structs (patch
-> 3/23) which should be aligned in the way that are used in the patch
-> set. If we decide to keep it, I'll add a note regarding alignment.
+> As mentioned elsewhere in thsi threads, IMHO we shoud not be running
+> this generator during the build at all. It should be run once to
+> create the headers needed for a particular device & the output committed
+> to QEMU. There after any changes to the header (if any) need reviewing
+> to ensure they don't imply an impact on guest ABI. This avoids having
+> the 8.6 MB XML file in QEMU git too, as well as the pysvd dep on the
+> host. Only the very rare times when we create a new device would need
+> to have the pysvd code & XML.
 
-Could we use ldl_he_p() instead?
-
+OK, fine by me, as long as we don't end in a similar use of dtc where
+we use distrib dtc to rebuild outdated dts and emit a bunch of pointless
+warnings cluttering the build output and that nobody agrees how to fix.
 
