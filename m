@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C8294FD03
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 07:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E000894FD06
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 07:07:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdjff-0008P7-8l; Tue, 13 Aug 2024 01:02:11 -0400
+	id 1sdjkN-00006Q-R2; Tue, 13 Aug 2024 01:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdjex-0007s0-GX
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 01:01:34 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sdjkD-00005j-KZ
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 01:06:54 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sdjep-0006l9-0x
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 01:01:20 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-70f5ef740b7so4565263b3a.2
- for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 22:01:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sdjkB-0007ew-Sv
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 01:06:53 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-70d18d4b94cso3761780b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 22:06:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723525277; x=1724130077; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aMLKLLCNJ0AUdvXFmkiQutbYqgOOkpGjoBioSTGxcus=;
- b=nRHACUhnh1nLmpM2BCBvYQazJvJ4HZ/pVJUO1ByGsGnZxYOwSW5HQeKcuLZUClgIg4
- mKB1sHoQ38gMck7mP79M2c/gl0Q19o5hF3hTlY0HZ2E7/aqMlgapBH+jCvI8RNua2NJV
- 5UAV87WgS9xe2kCzZ0S1IgwJi2Y9mdAvW38okDw7+jcoIUsYTLUiwu9FclaxWHAiUJAq
- m/vN884HIoOrWV2zrZUisM8sc9KIWOEgkEv1v6QPsM1Nm1i5Aw3kkK+6+1fIlS+bHNBo
- 0Tux3NLNji+siNWLLJRdyIUAHQXDT/OZZv6paDxO4eXyR0dSIOb+SBTj7ip4+Xef49VE
- UktA==
+ d=gmail.com; s=20230601; t=1723525608; x=1724130408; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lNYFeOuj85AE3awp13lR8/SoEsR70saTNGG/oaEQdwE=;
+ b=UZ66AyOADprc88wG0UZsBiAxWl3Q/BgFQXhV0zfxPXKMM6HJImMEvGLAzQYgZlTF59
+ X2vJoQ2G5ajBzCVqJlhR+NFq5oi2nIK/MRQV/yWP+XaF32hBJAQc0pMyHQWfpHyX7Ceg
+ d6uvpqo9IRuVvYgBu+DxwisLTh+4UVpYOR6vjmAFYF68GiOvDK1SHVyCpKFMsVKY+/Ra
+ QxIOCBm81ylP5mlPiknIo0uhJm60k6oIpDrSZGf9jXvzoHfHWD1zhP/aXYrhpH/18WcV
+ jO9pkol/sh83t9sOGNBrPO1ZHn9RgOPfAmJxF82UMPqFI5sVie5mFAdectnPXSsXgKnV
+ AjFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723525277; x=1724130077;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aMLKLLCNJ0AUdvXFmkiQutbYqgOOkpGjoBioSTGxcus=;
- b=Knid189o4voEMTEaoP20ergw6AIHnbHGUF2K3VRkReQroKF/JbLXTSDWkEY/DT68uB
- RoPpuS0zaALpnsn4D9mvPH0BkPgt2UYcbNKUSPZMEfQkYcEilOutOuI23ru7d22hVQoM
- pewvaGggq/l4Ej1S9WcVLBZvH5zaUjvE9EEMQj0Yki4I7WWs4mVWOHL7QQLvPGiW9Bo6
- WUoHBLFEIGxxENbvbaT1ZcpgAxgnnPmJrXd8axgy3I9AeBfyZPoka6JmKErwBjyMsavf
- D0sVXDJSgJnrGTaUgqneC9q7g8tChUqoL074suoAmngEShi/JfdNgC5SFDrFUxbx4Jx4
- B/NA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVZeQ8h20ryp9n8fzm6XgkPKvLizzbcMUtKVDiMz/tpCYf/z/55sHINfKzQuPocCnZiczguYFzNa5zEfO9kVgZQULT2G4o=
-X-Gm-Message-State: AOJu0Yypa7cc8BIaRb/GgUHKOUOtETVG/HioCEVU8Hr0j52B8NMqSvV4
- FUXQ2/9EOAGRhA8PaeXOnj9IxdUSCQ5MmvBmxjQpMisoasOK8yv0HZLjlqaF754=
-X-Google-Smtp-Source: AGHT+IE/GOUu8CLQROoJjGBJFXisBm8HlsxfGp8KSZ02bsmO77515DnSh9zJksyHB9ZKpOlrsWM91A==
-X-Received: by 2002:a05:6a00:1248:b0:705:b6d3:4f15 with SMTP id
- d2e1a72fcca58-7125523a066mr2387006b3a.25.1723525276951; 
- Mon, 12 Aug 2024 22:01:16 -0700 (PDT)
-Received: from [192.168.1.113] ([203.30.4.111])
+ d=1e100.net; s=20230601; t=1723525608; x=1724130408;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lNYFeOuj85AE3awp13lR8/SoEsR70saTNGG/oaEQdwE=;
+ b=uH89HyDp0AYgnGcc7KBvFOBWWMl5zH47ujIpzd9z8MCa/s/OHmz4yIHaJcV9+LMz0K
+ joOuPakjLM6Y+M+Z3JlA0czXJh2q1j96CmdWhuhE3jMaPOdMqGxJBVCqNgvYSHB8SoQ+
+ C4zXbP8NSg2IC0sBzSlhiBPNmc21m1xV6FFK04JZ7FhDGUEIWHSNr/SHIXNquKlH38dW
+ rqMNTOqWAx8tvv4vaMN/uAJ+fn+uIEcgyfyDs0VYBzu3tiDi9TSSW6q86zHpd1Vix5Ai
+ QqPOM14iddRUAVoUUUTi0qPGtHTSDF+fkxyYYj/q+DlKmfJOPR5NE0UbUDCD08xUMFT3
+ 3W5Q==
+X-Gm-Message-State: AOJu0YzLK3ujiqBg77huv7kedr9CMBds2fjCSnlbc4iRXN+dppbY8qMh
+ wrLpAOLr/l+p5uVj+l5XvuHBCGDHS5EHcw+27AiqmGZiDqJnRYEAZ8JaSFCf
+X-Google-Smtp-Source: AGHT+IHP97dS9zsUo2t3kah6akFT94qGGadxT6VT/jxNBf3KNOFZeY5Wi1LBYo2mWb9TdY+MOZ51LQ==
+X-Received: by 2002:a05:6a00:2d93:b0:705:a450:a993 with SMTP id
+ d2e1a72fcca58-712551a124fmr3123222b3a.17.1723525608463; 
+ Mon, 12 Aug 2024 22:06:48 -0700 (PDT)
+Received: from wheely.local0.net ([1.145.66.74])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-710e5a4362fsm4968314b3a.99.2024.08.12.22.01.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Aug 2024 22:01:16 -0700 (PDT)
-Message-ID: <1472852d-c174-4a75-9ddc-0979647a7c5e@linaro.org>
-Date: Tue, 13 Aug 2024 15:01:07 +1000
+ d2e1a72fcca58-710e5874ddcsm4846449b3a.28.2024.08.12.22.06.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Aug 2024 22:06:48 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v6 00/10] replay: fixes and new test cases
+Date: Tue, 13 Aug 2024 15:06:27 +1000
+Message-ID: <20240813050638.446172-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/1] Block patches
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, qemu-block@nongnu.org, Thomas Huth
- <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Richard Henderson <rth@twiddle.net>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20240812155558.88189-1-stefanha@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240812155558.88189-1-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,25 +95,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/13/24 01:55, Stefan Hajnoczi wrote:
-> The following changes since commit 0f397dcfecc9211d12c2c720c01eb32f0eaa7d23:
-> 
->    Merge tag 'pull-nbd-2024-08-08' ofhttps://repo.or.cz/qemu/ericb into staging (2024-08-09 08:40:37 +1000)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/stefanha/qemu.git tags/block-pull-request
-> 
-> for you to fetch changes up to 547c4e50929ec6c091d9c16a7b280e829b12b463:
-> 
->    block/blkio: use FUA flag on write zeroes only if supported (2024-08-12 11:41:29 -0400)
-> 
-> ----------------------------------------------------------------
-> Pull request
-> 
-> Fix for hosts with an older libblkio.
+Since v5, I cut down the series significantly to just the better
+reviewed parts, without adding new CI testing, since there are
+still be a few hiccups. aarch64 had some hangs Alex noticed, and
+x86_64 doesn't seem to be working anymore for me (with the big
+replay_linux.py test). But with this series, things are much closer,
+ppc64 does get through replay_linux.py (but requires some ppc
+specific fixes and the new test to be added, so I leave that out
+for now).
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+Hopefully we can get this minimal series in and in the next
+release I'll try to get something stable enough for CI so it
+doesn't keep breaking.
 
-r~
+Thanks,
+Nick
+
+Nicholas Piggin (10):
+  scripts/replay-dump.py: Update to current rr record format
+  scripts/replay-dump.py: rejig decoders in event number order
+  tests/avocado: excercise scripts/replay-dump.py in replay tests
+  replay: allow runstate shutdown->running when replaying trace
+  Revert "replay: stop us hanging in rr_wait_io_event"
+  tests/avocado: replay_kernel.py add x86-64 q35 machine test
+  chardev: set record/replay on the base device of a muxed device
+  virtio-net: Use replay_schedule_bh_event for bhs that affect machine
+    state
+  virtio-net: Use virtual time for RSC timers
+  savevm: Fix load_snapshot error path crash
+
+ include/sysemu/replay.h        |   5 -
+ include/sysemu/runstate.h      |   1 +
+ accel/tcg/tcg-accel-ops-rr.c   |   2 +-
+ chardev/char.c                 |  71 +++++++++-----
+ hw/net/virtio-net.c            |  17 ++--
+ migration/savevm.c             |   1 +
+ replay/replay.c                |  23 +----
+ system/runstate.c              |  31 +++++-
+ scripts/replay-dump.py         | 167 ++++++++++++++++++++++-----------
+ tests/avocado/replay_kernel.py |  31 +++++-
+ tests/avocado/replay_linux.py  |  10 ++
+ 11 files changed, 245 insertions(+), 114 deletions(-)
+
+-- 
+2.45.2
+
 
