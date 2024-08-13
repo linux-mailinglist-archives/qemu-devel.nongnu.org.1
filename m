@@ -2,97 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147419503D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 13:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71375950407
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 13:47:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdppZ-0006ZN-9M; Tue, 13 Aug 2024 07:36:49 -0400
+	id 1sdpzz-0004X8-7d; Tue, 13 Aug 2024 07:47:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>) id 1sdppR-0006HP-TS
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 07:36:42 -0400
-Received: from mail.weilnetz.de ([37.120.169.71]
- helo=mail.v2201612906741603.powersrv.de)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sdpzo-0004SF-Et
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 07:47:24 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>) id 1sdppP-0002ZI-5u
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 07:36:41 -0400
-Received: from [192.168.179.52] (pd9f54f9e.dip0.t-ipconnect.de
- [217.245.79.158])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.v2201612906741603.powersrv.de (Postfix) with ESMTPSA id DC310DA08DB
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:36:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weilnetz.de; s=dkim;
- t=1723548995;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
- bh=PFvbRee+jeMzzVB7eCQ7JjFSmAnuQ5CN0eDbUzzx2cw=;
- b=P3NJ6UBLiZTLJlvG7V0jHA1nTTjxCRQT10c5LZZ0dTRruKVuiI4y0U4SStRivy+4OnO3CM
- aFgPZx9GzFISFTaCER42x0OgRrE4qtj9SZkZUlRsrRuiD97A6Y8Hfp5aZ+2GWPFmfCSl/1
- zRKtb26QB6ZU3oIX9A2IU1Fqy7X/B9K1Ok5co9gk0+HIL813fROEYwpdJWCMhK9KAblv+R
- CJPxv7MYSH2cksoGahzRGMML3R85T5SvHspM2isNKAw2p29IKJRI34EYEDVl2xiGhUTG3W
- UYUu+UfO7DaRZiKLwrAcgAojf293rcbyHsYYS5yHVBcYB4yOySXBjrfk0aPD9Q==
-Message-ID: <585da1f0-d755-47e0-bde3-eed6ca39c417@weilnetz.de>
-Date: Tue, 13 Aug 2024 13:36:35 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sdpzm-0004BH-Aa
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 07:47:23 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3db1eb76702so3976298b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 04:47:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723549640; x=1724154440; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Amw2WQykDTl9X0eWkdz4Yrc8U1P+hKWtArbAtUoA5GA=;
+ b=Mo+A+E8ZWgFNt/3lfs7f1Afss0HSFkdfbuTr02qHi51SOCAH/4TS3hB4vyP1M0DU8m
+ ypsmx9exkwPGgg8lQiuAn6wxKFvwGKojocmMPeFoGUM2uAy3+WUoKH2O5HyxSikammd4
+ br+nUvuVfuMzsDpK6UHr9EKkt5rr8VsQxc2gEBpGBKo3SCDMDU4FizfvXNN2qM0vfU7p
+ 6ZXeSX/1gIiTJIWSTyvO1bmgvyuILQ/Vg2gEOGiS4tj5fq9g7njRBDIJ6QQp6niDiLm6
+ jHphwCMxMrioEWUXVrytUq2/uCA7270BhrcIHnj3U265aj3N43D5FjToRVPnMwoiyPws
+ dHJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723549640; x=1724154440;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Amw2WQykDTl9X0eWkdz4Yrc8U1P+hKWtArbAtUoA5GA=;
+ b=HGKAr4ExYysCl2b1YYIWTiNg1G9ZxhFciTTSrrKbnT3QZckqnUcpZCs1l8idQFa3of
+ B4yOlratNAyv6oOwZUt5L26/VtHVHJp80splUwa/pYvVLpnse53PIS7pGQ9ix5PeBV30
+ SeJENqbos/wHwqWn5L766f/AqK9Ts2mhTNwtfJByikFtULj4dqaXluF727kCf9QY9MsB
+ SedhPqhMELZ8AoVFmfhuaWvSDEpSHmTxp8Mjh5zEQL9gHnmb4oecjAQT/flCIuYjMrVi
+ A5297p4a5b4dsb71WGTxV8PaB7v3xdPXJ8JoEn4Ozd1JV/Dp8PuK5bLux4pUCZa2cUbK
+ +24g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWdyR/BdN6oLD/PbIA1XmGLQzgofgdvjFNCCauIH5A8cL2gha7FjAvSpGigTDhmtLdAQ0C4fDgFuCnmT7gd0KdSlcC1LkA=
+X-Gm-Message-State: AOJu0Yw+HqkAQHCNRfJPaVzy0EU7/TPN5acTHIwetxELsgA6yM3AgVbI
+ GT1aDqAlE4rxX6E3Rf/WvhM0zTxUHFo/CDC7+kUFB9upBBl5Wp8fTup+qMdujoM=
+X-Google-Smtp-Source: AGHT+IFE7mISOPlnt2P/82IRfOe5XmADcyVzVQA62gkBIC6rBoq6VlyG3JD2NSbNAYpQ17SptFkPHA==
+X-Received: by 2002:a05:6808:179b:b0:3dc:39e9:e04 with SMTP id
+ 5614622812f47-3dd1ee2c00cmr4186814b6e.20.1723549640464; 
+ Tue, 13 Aug 2024 04:47:20 -0700 (PDT)
+Received: from [192.168.1.113] ([203.30.4.111])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7c6979eb64asm1298403a12.34.2024.08.13.04.47.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Aug 2024 04:47:20 -0700 (PDT)
+Message-ID: <0a241265-e7d9-45f8-8724-fec38f43626a@linaro.org>
+Date: Tue, 13 Aug 2024 21:47:11 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: qemu-devel <qemu-devel@nongnu.org>
-Subject: Drop support for Python 3.7?
-Autocrypt: addr=sw@weilnetz.de; keydata=
- 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
+Subject: Re: [PATCH-for-9.1] buildsys: Fix building without plugins on Darwin
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20240813112457.92560-1-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240813112457.92560-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.120.169.71; envelope-from=sw@weilnetz.de;
- helo=mail.v2201612906741603.powersrv.de
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,33 +96,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Stefan Weil <sw@weilnetz.de>
-From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On 8/13/24 21:24, Philippe Mathieu-Daudé wrote:
+> Since commit 0082475e26 the plugin symbol list is unconditionally
+> added to the linker flags, leading to a build failure:
+> 
+>    Undefined symbols for architecture arm64:
+>      "_qemu_plugin_entry_code", referenced from:
+>          <initial-undefines>
+>    ...
+>    ld: symbol(s) not found for architecture arm64
+>    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+>    ninja: build stopped: subcommand failed.
+> 
+> Fix by restricting the whole meson file to the --enable-plugins
+> configure argument.
+> 
+> Fixes: 0082475e26 ("meson: merge plugin_ldflags into emulator_link_args")
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   plugins/meson.build | 50 +++++++++++++++++++++++----------------------
+>   1 file changed, 26 insertions(+), 24 deletions(-)
 
-I just saw that the documentation still mentions that QEMU supports 
-Python 3.7.
-
-Python 3.7 is an unsupported Python version since about one year. 
-Therefore I suggest to update the documentation for QEMU 9.1.0 and 
-replace 3.7 by 3.8 as lowest supported version.
-
-In addition the code which still mentions Python 3.7 or even 3.5 and 3.6 
-could be reviewed and maybe simplified, but I think this is less urgent 
-and can be done after QEMU release 9.1.0.
-
-Regards
-Stefan W.
-
-$ git grep -i python.*3.7
-docs/about/build-platforms.rst:  As of QEMU |version|, the minimum 
-supported version of Python is 3.7.
-python/qemu/qmp/util.py:Python 3.7+.
-scripts/qapi/introspect.py:    # TODO: Remove after Python 3.7 adds 
-@dataclass:
-scripts/qapi/source.py:    # Replace with @dataclass in Python 3.7+
-tests/qapi-schema/test-qapi.py:        # dict (requires Python 3.7)
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
