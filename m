@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741F4950B06
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 19:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB74C950B1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 19:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sduum-00079P-Jn; Tue, 13 Aug 2024 13:02:32 -0400
+	id 1sduyJ-0005T8-TU; Tue, 13 Aug 2024 13:06:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sduuh-0006rD-Lo; Tue, 13 Aug 2024 13:02:28 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sduuf-0002hG-Ug; Tue, 13 Aug 2024 13:02:27 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52efd8807aaso7623889e87.3; 
- Tue, 13 Aug 2024 10:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723568542; x=1724173342; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=JGJpkmzwhAHPEBfWQMTLg/zF6IPgm68M3yUmp2d77TM=;
- b=c6pDxC0W4QcigvorQAKUZIVfU88yQU0BhuoyCjOjii2tu5jxQO5CL+GYL/apd83vE8
- MU7BLxk9SHHEn2kT9UMgwllh0Y75LNtv8BllkO7KFEVnz0Tb7YQjOnQFC2GxIAXzWs1E
- WvQBgYQGHhB0wLXy9HQBgcbyMeNSpaHOcsxH/XZk8K9aC6C/JE90FBO251d4SeJRV29L
- SdNYryS9CwPN7R7n71++jAFkGb+2MN36v1COZlV1INTR6v9v/55y6ltlUZ4QiphjUBZE
- hChiFYwJoTBlOR2RppAnd3pZ5MSDo5pLVwlrWq19vh4TPGaNEiapDDX/yk8nJIkY6fq1
- MPZQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sduyE-0005Cf-V8
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 13:06:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sduyD-000374-8u
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 13:06:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723568764;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5E+Zx4qNMQOjvqcd8nTsICa9sF4C2u9SUGf4qbqIJp0=;
+ b=EZiA+nNb3PbbR4NoTRNmi1KKc+YrEgY1vTl2mlNZuSl/rXJdiuqNAltAN/GRTmK+Bcyshq
+ VSua7oTTcYJJYQKVf79VZn/5j0dzu6XxzhV6NyVGBfDMtTaSub1JwM/MNOAZWZSvXB0/hE
+ ZGOfCEA6S2QtK0/S2O/IoaMg2VETOgI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-3nuib-vDPemEEqdsKc5eaA-1; Tue, 13 Aug 2024 13:06:01 -0400
+X-MC-Unique: 3nuib-vDPemEEqdsKc5eaA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a79c35c28f1so455549366b.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 10:06:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723568542; x=1724173342;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JGJpkmzwhAHPEBfWQMTLg/zF6IPgm68M3yUmp2d77TM=;
- b=TO1jQ9fjeueiCAj/LiqdYAxW6qEFhVwmIdy00CgvaRhNM1HiNbjz5wHb98vj4lj9N6
- CUlBLmEcv2uaqA7CpU4lVTnEyazfC1fckQImsoVIoSo6GFhaMMb9OxH17UqyyQdfd0kE
- OjwLrOTz7yfKcB+url9Sy/XT2juFKn0MeoEvi/Jgj0kMF9erJ8/FGZxsPnrUaE9dd06j
- ukP9E5ELBWorzW/CBwNukX9fyxJX1OBC136j1zBVfWvOOYs4/kH1KH3XDu2gtZ+H7Mco
- Kf3Ga4Le1IkLMLqFjne5cc+776hoF5+gHt6u0TIsWFdMk9VaGyFx3QZZIBxYVQDXaEo3
- Z2tg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUzNftJtCp47Uv3DcjdYW4RHPNbtiJHIWvVNkt3YzB33yYMbilcGwJkRzU+tzQuQZaWXZsedRTVv6C6olycXpjszL1e
-X-Gm-Message-State: AOJu0YxcDEB3yAUZCxRAGY2bH3wJTTdPiF1+zO3zTTWCqYVqOWj2C67E
- 9L9x++bwV7PjuI0EMF3yL2SZpt+CGHFw4dSL4pb+j7gXaqq8bP7U
-X-Google-Smtp-Source: AGHT+IHZuurj1sUG8YFtdeInfXPdWplweffYruWCp+QQjqA/XiC02As6mGM3q9lJSfLX6jrUtjaRPw==
-X-Received: by 2002:a2e:90cd:0:b0:2f1:585b:f326 with SMTP id
- 38308e7fff4ca-2f3aa1fe856mr50841fa.45.1723568541128; 
- Tue, 13 Aug 2024 10:02:21 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ d=1e100.net; s=20230601; t=1723568760; x=1724173560;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5E+Zx4qNMQOjvqcd8nTsICa9sF4C2u9SUGf4qbqIJp0=;
+ b=huIezF5Hq6wrs0pZYd077nDfT7fq7B365eQUQ98qUZVDY/1xmw+FVor/ULj2nLzpNM
+ 6lt9KvIFoD/HE2xp+XNJnLZg3HO5roWhO1GcvRt0Bug16vwxZxWBXHCuAdAWWUrUyiNz
+ 6OqXRSswi2m9biy3nsCpj5Eq8wfZpPOsBVGFR0yzo4SBrY0jftJbK8ny+k7mno730kk1
+ piQfwG7eGMPTu6ICCNd2NVE1map3USXf8/Pj3z5d8JUxL4LIY65B5m7I0ymJasuddLZP
+ QJdXjw2K+DWK55VQG8XcG2m+3jfUtzGooWUFy1fTVnvm0/Mx7925VQppUC4Y2UcAqDjA
+ aLPw==
+X-Gm-Message-State: AOJu0Yze2XYUYqJvqIz2TwNJTg4afZLkFE7AhBLB4ITGVpsQdgVa9Sbs
+ FKSKPw3zQP8ujGyoxAZcnWJmebOVIhX/avy3N4Xu/gu2BLR6D43TZ3W5+2WKt/2Pmb8fI3Aw2Wf
+ tp80XYJ8qP7XxsjukkuU6NRuuCB3RuryfHRZibcdUdBSZznuFEz/UCSI66KIv2XV2XG618EZB7t
+ M5xdKYfcrUwhsskF4no6Dt/Z/ahOeknnbn3KV3
+X-Received: by 2002:a17:907:3f8b:b0:a7d:a008:abca with SMTP id
+ a640c23a62f3a-a80ed2d6162mr311837766b.56.1723568759831; 
+ Tue, 13 Aug 2024 10:05:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2ErBRXrURnmX1kGcu7k/Kp6vpVo2v4lkdnqORfiw5U1gXLvXEzderH94vc/IaNQPMMULDDA==
+X-Received: by 2002:a17:907:3f8b:b0:a7d:a008:abca with SMTP id
+ a640c23a62f3a-a80ed2d6162mr311834266b.56.1723568759265; 
+ Tue, 13 Aug 2024 10:05:59 -0700 (PDT)
+Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2f29203d817sm11755511fa.99.2024.08.13.10.02.19
+ a640c23a62f3a-a80f4183762sm82623566b.202.2024.08.13.10.05.58
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 10:02:20 -0700 (PDT)
-Date: Tue, 13 Aug 2024 19:02:19 +0200
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: qemu-devel@nongnu.org, anthony@xenproject.org, paul@xen.org,
- peter.maydell@linaro.org, alex.bennee@linaro.org,
- xenia.ragiadakou@amd.com, jason.andryuk@amd.com,
- edgar.iglesias@amd.com, xen-devel@lists.xenproject.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH v1 04/10] hw/arm: xenpvh: Add support for SMP guests
-Message-ID: <ZruRm34zIMtUm7oH@zapote>
-References: <20240812130606.90410-1-edgar.iglesias@gmail.com>
- <20240812130606.90410-5-edgar.iglesias@gmail.com>
- <alpine.DEB.2.22.394.2408121650590.298534@ubuntu-linux-20-04-desktop>
+ Tue, 13 Aug 2024 10:05:58 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL for-9.1 0/6] Miscellaneous fixes for QEMU 9.1-rc
+Date: Tue, 13 Aug 2024 19:05:49 +0200
+Message-ID: <20240813170556.104193-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2408121650590.298534@ubuntu-linux-20-04-desktop>
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,59 +98,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 12, 2024 at 06:47:17PM -0700, Stefano Stabellini wrote:
-> On Mon, 12 Aug 2024, Edgar E. Iglesias wrote:
-> > From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-> > 
-> > Add SMP support for Xen PVH ARM guests. Create max_cpus ioreq
-> > servers to handle hotplug.
-> > 
-> > Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-> > ---
-> >  hw/arm/xen_arm.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> > index 5f75cc3779..ef8315969c 100644
-> > --- a/hw/arm/xen_arm.c
-> > +++ b/hw/arm/xen_arm.c
-> > @@ -173,7 +173,7 @@ static void xen_arm_init(MachineState *machine)
-> >  
-> >      xen_init_ram(machine);
-> >  
-> > -    xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
-> > +    xen_register_ioreq(xam->state, machine->smp.max_cpus, &xen_memory_listener);
-> >  
-> >      xen_create_virtio_mmio_devices(xam);
-> >  
-> > @@ -218,7 +218,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
-> >      MachineClass *mc = MACHINE_CLASS(oc);
-> >      mc->desc = "Xen PVH ARM machine";
-> >      mc->init = xen_arm_init;
-> > -    mc->max_cpus = 1;
-> > +    /* MAX number of vcpus supported by Xen.  */
-> > +    mc->max_cpus = GUEST_MAX_VCPUS;
-> 
-> Will this cause allocations of data structures with 128 elements?
-> Looking at hw/xen/xen-hvm-common.c:xen_do_ioreq_register it seems
-> possible? Or hw/xen/xen-hvm-common.c:xen_do_ioreq_register is called
+The following changes since commit 9eb51530c12ae645b91e308d16196c68563ea883:
 
-Yes, in theory there's probably overhead with this but as you correctly
-noted below, a PVH aware xl will set the max_cpus option to a lower value.
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-08-13 07:59:32 +1000)
 
-With a non-pvh aware xl, I was a little worried about the overhead
-but I couldn't see any visible slow-down on ARM neither in boot or in network
-performance (I didn't run very sophisticated benchmarks).
+are available in the Git repository at:
 
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-> later on with the precise vCPU value which should be provided to QEMU
-> via the -smp command line option
-> (tools/libs/light/libxl_dm.c:libxl__build_device_model_args_new)?
+for you to fetch changes up to 3ef11c991e501768f2fa646e8438f075be1cd2f5:
 
-Yes, a pvh aware xl will for example pass -smp 2,maxcpus=4 based on
-values from the xl.cfg. If the user doesn't set maxvcpus in xl.cfg, xl
-will set maxvcpus to the same value as vcpus.
+  po: update Italian translation (2024-08-13 19:01:42 +0200)
 
-Best regards,
-Edgar
+----------------------------------------------------------------
+* fix --static compilation of hexagon
+* fix incorrect application of REX to MMX operands
+* fix crash on module load
+* update Italian translation
+
+----------------------------------------------------------------
+Alexander Ivanov (1):
+      module: Prevent crash by resetting local_err in module_load_qom_all()
+
+Alyssa Ross (1):
+      target/hexagon: don't look for static glib
+
+Paolo Bonzini (1):
+      po: update Italian translation
+
+Richard Henderson (3):
+      target/i386: Do not apply REX to MMX operands
+      target/i386: Use unit not type in decode_modrm
+      target/i386: Assert MMX and XMM registers in range
+
+ util/module.c                    |  2 +-
+ target/i386/tcg/decode-new.c.inc | 13 ++++++++-----
+ target/i386/tcg/emit.c.inc       |  9 +++++++--
+ po/it.po                         |  2 +-
+ target/hexagon/meson.build       |  2 +-
+ 5 files changed, 18 insertions(+), 10 deletions(-)
+-- 
+2.46.0
+
 
