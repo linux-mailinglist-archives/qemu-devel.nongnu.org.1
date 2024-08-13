@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF735950B26
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 19:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 158A1950B20
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 19:06:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sduyk-0006xH-6f; Tue, 13 Aug 2024 13:06:38 -0400
+	id 1sduya-0006RY-Tt; Tue, 13 Aug 2024 13:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sduyY-0006Vx-9o
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 13:06:27 -0400
+ id 1sduyV-0006FA-8w
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 13:06:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sduyP-00038B-79
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 13:06:26 -0400
+ id 1sduyR-00038N-Ih
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 13:06:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723568776;
+ s=mimecast20190719; t=1723568779;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HtuZZEJtTULFZZPJE3He16hpHtco94gG0U5/hl5SQmY=;
- b=a0ntNwS9faLIx2z/MIvyq3wOGOUiupeb9pUvukWVl6ssV6DN7VM4qFTJZVj/zTnfbc/zut
- wBouWMhWoUYu0/VQeNRMgQWU2Je6huYiXejZ/o1aTfVnYp9HADf5vWJihioeGDvlsCJJE9
- b7lOB/7zLcLH5EvLNK6tM8BQdEy3aA4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=83GI1fDfDMGezYy05oq4L94LxUNct25QLDIJmFGGzPE=;
+ b=E0+/QDUPRXG7s1BRegkDiLooxO91XWq5iI4RMmd30Fj/EnxuPlGk00aq4hoEh+6bzJpv/e
+ dNnvxllqY9/eAGa1q2t3cCqIKab+n2fqShvh1D5ow7dBDQDBDFxZwEyvESYlvLZLh/wBSo
+ 8NEHb7rGXVUTWjwf6udryJriRwPauS0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-4qC13e5zPDeOYU7MPEU9yA-1; Tue, 13 Aug 2024 13:06:15 -0400
-X-MC-Unique: 4qC13e5zPDeOYU7MPEU9yA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5a766a51b0dso4662124a12.1
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 10:06:14 -0700 (PDT)
+ us-mta-78-YDsk1ZeDNxOZ1ays2ZKOEg-1; Tue, 13 Aug 2024 13:06:17 -0400
+X-MC-Unique: YDsk1ZeDNxOZ1ays2ZKOEg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5bb8fc3df4aso4310808a12.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 10:06:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723568772; x=1724173572;
+ d=1e100.net; s=20230601; t=1723568776; x=1724173576;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HtuZZEJtTULFZZPJE3He16hpHtco94gG0U5/hl5SQmY=;
- b=WDutkj29O/9tJ27c1Z52eEW8wb/1bKDXpY5LoafaW2YiMuhBRPxHzDNrLyA2E2jDO4
- jJT8PdYZQa+tJjOkVZpy/H+HaVq2ETE7oL2wFQpzOiV2PYh7IXhwZzDgGQJ7rNNGCPLZ
- luWr8CcMoUoBX0PHlXtgwhX5YP6MSWE1cJuhTsorUTxEsR+8fQedKA1HE+UR5hj4uZAb
- HoeBTqPAPUq/uWL+fXGWCxiM0goXTDrR5/qeqWtct3oCbrTdVcgFhpxAHmJPrw3Md2gD
- r/2SX1aqYrTBGNqEKu/ZKpvvpp5rcc0TZzy+QT/z+hhU0Soigpd65yB1WnTOYLDqBfFh
- U+cw==
-X-Gm-Message-State: AOJu0YzMBIKf1CGCH8ogbxmsBT8pI3poZD87tJSz4kH5zBse/koNYTJl
- /iX8NW+e1ZM6ukQqGTSM645xZ2HYGGHNIIAeuvNkSs5lkj1ICrzQUFG22CO0XFvk2BMrM7C7SBO
- tQ9CqD7/4ASeBY/tF7lewiWWFuc8tehVZv9igYeJ29bQykiyV81Gk5V4wSfds3/SpcGyUALbmJO
- N4eREB4lP9qiiAzrrIBo7jBdlnQS31lo14vrgy
-X-Received: by 2002:a05:6402:42d1:b0:5a3:5218:3f91 with SMTP id
- 4fb4d7f45d1cf-5bea1cadcf2mr142082a12.24.1723568772236; 
- Tue, 13 Aug 2024 10:06:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWEI+p9XKYUaVzRx7R4YDk8Ris67+PTxP6sFpaocDfGTlPRq7Jdzaj4RDuATDXjQGvuM4Onw==
-X-Received: by 2002:a05:6402:42d1:b0:5a3:5218:3f91 with SMTP id
- 4fb4d7f45d1cf-5bea1cadcf2mr142033a12.24.1723568771511; 
- Tue, 13 Aug 2024 10:06:11 -0700 (PDT)
+ bh=83GI1fDfDMGezYy05oq4L94LxUNct25QLDIJmFGGzPE=;
+ b=qUXqImvyEnHCAgugzPX4I5NGvXbtypmnIcSymNkBbABtp5HhETDGUL1yyuMxbebVbn
+ lsjuix2fX4TswoMNe68wCPTsGAICKY7cZ93N2NeFtSDHF1yjYNC/GlaMN7X7ed0Oygd3
+ 4JwG9B1xO4FXWyySL6OWFuj0GM9YZAL1nxzCwv43jCdigU0UmGQMOCauvxDD/Pvlqy/C
+ 37oBcmHUN+I5/dOrYcAQCB8SNoA0rQGIQRhUYdXqo9ktYHnd+NkY0ZFp2f/XQxWx3wKd
+ tpw2UvY1Xtu+Y3IC3JvrnFtKGQ+KuqK0RcTsNTm/C+SSGCiLmZ62TUQAQa7e0HpgkLUq
+ tUOQ==
+X-Gm-Message-State: AOJu0YyuIwS62AfRvADe4YaPbzSGNVOOd88ko94Huygj5gFrFamT3drN
+ GpheusZXEg8K6ntsYmc9UlLHSwKK7CMjch1Ja7QLDG+DlXMqe5qBLK7cJatqZjkztOpsDspHmMg
+ 5qDHtDM3Hj0jLkg2BlfufMLCekBBotkcjGSCbx3YTvYyqTMSZYBaxlfO6/xNfTq2W74qG7b0YxK
+ F9jkIqL9HR+Vp/nlChyoat2hQJPU/tQJbH7O0E
+X-Received: by 2002:a05:6402:2354:b0:5a2:a0d9:c1a2 with SMTP id
+ 4fb4d7f45d1cf-5bea1cad0damr102262a12.26.1723568776191; 
+ Tue, 13 Aug 2024 10:06:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzsM50zCb89/RGNNWmZqNRMHD0zqp5+0Wk7Sa/qvkIIWqFubrprvfAZomrRgjuwBQlsXB67g==
+X-Received: by 2002:a05:6402:2354:b0:5a2:a0d9:c1a2 with SMTP id
+ 4fb4d7f45d1cf-5bea1cad0damr102238a12.26.1723568775739; 
+ Tue, 13 Aug 2024 10:06:15 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5bd1a5e04e1sm3036790a12.77.2024.08.13.10.06.10
+ 4fb4d7f45d1cf-5bd190ad1bcsm3114523a12.30.2024.08.13.10.06.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 10:06:11 -0700 (PDT)
+ Tue, 13 Aug 2024 10:06:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/6] target/i386: Assert MMX and XMM registers in range
-Date: Tue, 13 Aug 2024 19:05:53 +0200
-Message-ID: <20240813170556.104193-5-pbonzini@redhat.com>
+Cc: Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
+ Claudio Fontana <cfontana@suse.de>, "Denis V. Lunev" <den@openvz.org>,
+ qemu-stable@nongnu.org
+Subject: [PULL 5/6] module: Prevent crash by resetting local_err in
+ module_load_qom_all()
+Date: Tue, 13 Aug 2024 19:05:54 +0200
+Message-ID: <20240813170556.104193-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240813170556.104193-1-pbonzini@redhat.com>
 References: <20240813170556.104193-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -85,8 +86,9 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.125,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,46 +104,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
-The mmx assert would fire without the fix for #2495.
+Set local_err to NULL after it has been freed in error_report_err(). This
+avoids triggering assert(*errp == NULL) failure in error_setv() when
+local_err is reused in the loop.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20240812025844.58956-4-richard.henderson@linaro.org
+Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Reviewed-by: Claudio Fontana <cfontana@suse.de>
+Reviewed-by: Denis V. Lunev <den@openvz.org>
+Link: https://lore.kernel.org/r/20240809121340.992049-2-alexander.ivanov@virtuozzo.com
+[Do the same by moving the declaration instead. - Paolo]
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/emit.c.inc | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ util/module.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 016dce81464..22a06897fb7 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -33,8 +33,13 @@
- #define TCG_TARGET_extract_tl_valid     TCG_TARGET_extract_i32_valid
- #endif
- 
-+#define MMX_OFFSET(reg)                        \
-+  ({ assert((reg) >= 0 && (reg) <= 7);         \
-+     offsetof(CPUX86State, fpregs[reg].mmx); })
- 
--#define ZMM_OFFSET(reg) offsetof(CPUX86State, xmm_regs[reg])
-+#define ZMM_OFFSET(reg)                        \
-+  ({ assert((reg) >= 0 && (reg) <= 15);        \
-+     offsetof(CPUX86State, xmm_regs[reg]); })
- 
- typedef void (*SSEFunc_i_ep)(TCGv_i32 val, TCGv_ptr env, TCGv_ptr reg);
- typedef void (*SSEFunc_l_ep)(TCGv_i64 val, TCGv_ptr env, TCGv_ptr reg);
-@@ -168,7 +173,7 @@ static int vector_elem_offset(X86DecodedOp *op, MemOp ot, int n)
- static void compute_mmx_offset(X86DecodedOp *op)
+diff --git a/util/module.c b/util/module.c
+index 32e263163c7..3eb0f06df16 100644
+--- a/util/module.c
++++ b/util/module.c
+@@ -354,13 +354,13 @@ int module_load_qom(const char *type, Error **errp)
+ void module_load_qom_all(void)
  {
-     if (!op->has_ea) {
--        op->offset = offsetof(CPUX86State, fpregs[op->n].mmx) + mmx_offset(op->ot);
-+        op->offset = MMX_OFFSET(op->n) + mmx_offset(op->ot);
-     } else {
-         op->offset = offsetof(CPUX86State, mmx_t0) + mmx_offset(op->ot);
+     const QemuModinfo *modinfo;
+-    Error *local_err = NULL;
+ 
+     if (module_loaded_qom_all) {
+         return;
      }
+ 
+     for (modinfo = module_info; modinfo->name != NULL; modinfo++) {
++        Error *local_err = NULL;
+         if (!modinfo->objs) {
+             continue;
+         }
 -- 
 2.46.0
 
