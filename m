@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E15C950AC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 18:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD51950ACE
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 18:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdulc-0004zR-Ca; Tue, 13 Aug 2024 12:53:04 -0400
+	id 1sdulb-0004vZ-Jv; Tue, 13 Aug 2024 12:53:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sdula-0004sh-7b
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:53:02 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1sdulZ-0004p4-AO
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:53:01 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sdulW-0001BY-JQ
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:53:00 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-36bb2047bf4so3736062f8f.2
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 09:52:58 -0700 (PDT)
+ id 1sdulW-0001Bu-4T
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 12:53:01 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-369c609d0c7so3997175f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 09:52:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723567976; x=1724172776; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723567977; x=1724172777; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lbre056sEPIRICp8dPk/YvoBv3UqLB0jF2TdtHhkVeA=;
- b=X3PYe7WZxZE70Pcu6AqNFo4Tkq3KbVAg4etg4rYJA7bctQqcz5wr6WpXmRMAn1BWQ0
- cpRYe+Pk0g3eayDT13VdmCy8XAdR3UCllvBmibkummyv/TxtxtUeabr2xbnyTmuctWyc
- H4PpII/7RQjhp51tdA8UtSp9kWIECXafRnhwYxaqy3wxUPJU2LVpukbaokeOGKX3lKkm
- mcROF8cDv5BqSkTk9W5FMx34DFpFx6wLcOpT3IJDG4wER7zo3RwR7S5Ra/z4Lq7Z3IuH
- X7mq+cpAPRItQ/P/Ydk6+t699OleWeewurVfyHILm2/Z0Jkwl1mhkN+WULq2kYesoANC
- nb0g==
+ bh=5khXz8nIOa0NpRClvdoX2r8/4f/59m4scjcy4bo663o=;
+ b=zShRKooIWhMzaOkvvkQWO9Ng9dbt6dfGQSy54R+86/wMTyAfODMbTX0vHiStjL/KXq
+ ajwQYbaQ6eQJ15FxEjQtvG+p6fpyQyhNzrdIisyZ504ArAJf50V820J2ptdzKoN492SR
+ Gyms0NvsnYoKh73wHlmCyRhgt8H3vb9wKZK8GHbUPhVOacPZic7NxiRA69j8Y+HOmCF5
+ 24ugrHQhZF7lT9f0rMeqEII/hGONSb5TO/dPuI5xcW0OgQDtV5J22iNL9iNycwSTAcvf
+ rryNIqqZF7IRW7u2GBV7fAJz3WGfJSWkQLJnNATVmhPEeMbA5sYxz1unJfgABdQ8JWpb
+ bMPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723567976; x=1724172776;
+ d=1e100.net; s=20230601; t=1723567977; x=1724172777;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lbre056sEPIRICp8dPk/YvoBv3UqLB0jF2TdtHhkVeA=;
- b=px/ccmYXHiGxPWB/RJrqzl2S0DF6HaV6Ol+teets9NOyGBM1LsKUHzwtYiqXBSSjzi
- pVlpG43cbWYq0vSVOyYYZIw9AMI0ruiiyuH2g95ISJG5pB/o5HHwkdDg6vq5ScaVOHSP
- DRut6Q2/6ueiUMCi/7vhzo00nzy0BHB+enSd9HPmTy8ibmNtchmyz7T+1VKf1WPhL1/x
- 7GVudtDDDunfedAsfZRhahF9H8SmTb9bUs3DvSMTU9dNZekKZKsxPO83SEalXxc/rEsS
- cMwX1gwJnGHHSphL+/RkdDtPEAatuUI1aYfgKXKOjk6+nF+lKb9+c4H9nXTz7e94f8g9
- /GhA==
-X-Gm-Message-State: AOJu0YyMKN9hSn/69LF07aPHekeKKfMl+yTqef+URbtsfL+XWszPWyvc
- /opsRokQaomPvKhb/OxxVbO5FKASxlwIQcuBU5sVBTehUVkt5+7Ow5wxixjuubml3SSY28ZTxq4
- 1
-X-Google-Smtp-Source: AGHT+IExnm9L/pJacatfxoLNPxAHKBZlG3V5vhRPdotgNdjhCIHckQIf3TvrnGnCYOKJq3LvSvymlw==
-X-Received: by 2002:a05:6000:1549:b0:368:4def:921f with SMTP id
- ffacd0b85a97d-37177768ac8mr138305f8f.11.1723567975938; 
- Tue, 13 Aug 2024 09:52:55 -0700 (PDT)
+ bh=5khXz8nIOa0NpRClvdoX2r8/4f/59m4scjcy4bo663o=;
+ b=Rwi+hYnzRuMsRpuQbmnMbNPiXBI43LHrUPrSx33jubuW6clvgzt7iyZ8hb1yv53sHy
+ ymS+77nLWWofmEyjAnWUsjfPAD1W7lOLJCgzbFluA8+iVfYVkpcYn7K36xssF6zZe7DY
+ hZhVQzZKNL4UnwfswKgSo7A2gbGc8OD8fCTZoIS93JZyD6aQeIsVPYs6b0zsHJvJjDRX
+ kKw6K7OV9+/SOVj0vPQ/GOZt8u9AQ/S2R2VViGhgfxuFUP7o4a5V7QlsUfzH+HMPrtTH
+ ZPmteN5VTarOH4H3v5OlOpt5Kaq6uZngiFSKoHTMpnBsMJg+vegpDvFsBg0Jg96MITwd
+ xm0Q==
+X-Gm-Message-State: AOJu0Yy3wP80iNvjuXpU0JGze0xy+i9CAT083MMoOtrDIdz+TydSHE/T
+ pfiAydGgUZEfjQg79MsOMgwNaRmVON2+xoUCSs/REkeChNSCXGWjvKKmvnSNTuhlbbM5BvH+Wm/
+ r
+X-Google-Smtp-Source: AGHT+IHa4P2Rt/PwsLIXZVREVsrEgNR0O+p8fNKkO/2H6+JgcosPugYb6lHWbbYeCjAXw0HC22O0Ag==
+X-Received: by 2002:a05:6000:1971:b0:368:7282:51d6 with SMTP id
+ ffacd0b85a97d-3717775dddamr210728f8f.21.1723567976601; 
+ Tue, 13 Aug 2024 09:52:56 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429c77374a5sm147347015e9.30.2024.08.13.09.52.55
+ 5b1f17b1804b1-429c77374a5sm147347015e9.30.2024.08.13.09.52.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 09:52:55 -0700 (PDT)
+ Tue, 13 Aug 2024 09:52:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
@@ -66,24 +66,24 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH for-9.2 05/10] hw/dma/xilinx_axidma: Use semicolon at end of
- statement, not comma
-Date: Tue, 13 Aug 2024 17:52:45 +0100
-Message-Id: <20240813165250.2717650-6-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 06/10] hw/remote/message.c: Don't directly invoke
+ DeviceClass:reset
+Date: Tue, 13 Aug 2024 17:52:46 +0100
+Message-Id: <20240813165250.2717650-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240813165250.2717650-1-peter.maydell@linaro.org>
 References: <20240813165250.2717650-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,30 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In axidma_class_init() we accidentally used a comma at the end of
-a statement rather than a semicolon. This has no ill effects, but
-it's obviously not intended and it means that Coccinelle scripts
-for instance will fail to match on the two statements. Use a
-semicolon instead.
+Directly invoking the DeviceClass::reset method is a bad idea,
+because if the device is using three-phase reset then it relies on
+transitional reset machinery which is likely to disappear at some
+point.
+
+Reset the device in the standard way, by calling device_cold_reset().
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/dma/xilinx_axidma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/remote/message.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
-index c9cfc3169b8..7707634253a 100644
---- a/hw/dma/xilinx_axidma.c
-+++ b/hw/dma/xilinx_axidma.c
-@@ -626,7 +626,7 @@ static void axidma_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/remote/message.c b/hw/remote/message.c
+index 50f6bf2d495..38ae6c75b4e 100644
+--- a/hw/remote/message.c
++++ b/hw/remote/message.c
+@@ -215,13 +215,10 @@ fail:
+ static void process_device_reset_msg(QIOChannel *ioc, PCIDevice *dev,
+                                      Error **errp)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
+-    DeviceClass *dc = DEVICE_GET_CLASS(dev);
+     DeviceState *s = DEVICE(dev);
+     MPQemuMsg ret = { 0 };
  
--    dc->realize = xilinx_axidma_realize,
-+    dc->realize = xilinx_axidma_realize;
-     dc->reset = xilinx_axidma_reset;
-     device_class_set_props(dc, axidma_properties);
- }
+-    if (dc->reset) {
+-        dc->reset(s);
+-    }
++    device_cold_reset(s);
+ 
+     ret.cmd = MPQEMU_CMD_RET;
+ 
 -- 
 2.34.1
 
