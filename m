@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893A794FB4E
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 03:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E0D94FB50
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 03:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdgbs-0005bY-K1; Mon, 12 Aug 2024 21:46:04 -0400
+	id 1sdgdF-0002MX-AS; Mon, 12 Aug 2024 21:47:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1sdgbq-0005VM-Lv; Mon, 12 Aug 2024 21:46:02 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ id 1sdgdC-0002Db-Qm; Mon, 12 Aug 2024 21:47:26 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1sdgbn-00009j-Hj; Mon, 12 Aug 2024 21:46:00 -0400
+ id 1sdgd7-0000HU-Uu; Mon, 12 Aug 2024 21:47:26 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id AE593614F9;
- Tue, 13 Aug 2024 01:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C6FC4AF09;
- Tue, 13 Aug 2024 01:45:55 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id 6F0B06151C;
+ Tue, 13 Aug 2024 01:47:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CFBC4AF0D;
+ Tue, 13 Aug 2024 01:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1723513557;
- bh=c7qNRpyDUtvju/qAk+YMAJaPGvskpjD01S2agnEPCiQ=;
+ s=k20201202; t=1723513640;
+ bh=fMn8dtUROSmqJUNq0JhJUJsk6JPdhvOhOc2jEf7/A9o=;
  h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=ilrZNn1Te05ZkG2uzeYAKdlwv80dCsj2//lN8yzLyuVj3U/Qyj7iqwjWW4+6Ro42A
- IWzDqc2V3vtHcBfR1AoBMwl3cFrGLVP041j8EVPqhDA2yH+bq7agTFsbxsTqrx42tq
- DG3R1GKtLEIhbFK3vPbIDKPGuC0h3WW7ptTqKMpC/FU1a+bazY2t1lnkzKFQFFAJT9
- 9t8u+tgiP3xY+tvMwjuW+BFptD2aFkutHgPHIestZf+yWGiqFAjvHK5wIaH3NWHvl9
- nuvaMGxA33Mh92kR7w62I+He8YnVAtNXACPTIA99bO8tTcbXotSTuuk4pEPTyA+pky
- fcVOQAqxDiLXw==
-Date: Mon, 12 Aug 2024 18:45:54 -0700 (PDT)
+ b=urp84KlH+9mVHG3gXIHHqyYE9L/j0qFLU5qEooK4sM9aGZ9oCL+FLaJb8+fVvC4Ff
+ CjKD9eBGmyK7Laxkdq085YiJhqISw3IenQHdSrzDE73lgB4+r/SjEakswvLj8GjvWd
+ R8rzz0dNDPzLxTYxYr9Fa9wHC5CIHfjM30QpN30ElK6fn112oU9G5wvxuEu9WHzpoO
+ eayk5KUaukLhOcFkGP7DZhQXGSbLbyTla/XO9ayBaaca2+gqjaYF9NcbFXQnRdSa5U
+ P2Mh8GirKSOPN30GARr/a5FpJ/H4Slslzl8zF4dcYHqEgNE95vTtPsgAOTmLz3kElX
+ 7a3GPUSMMxHrQ==
+Date: Mon, 12 Aug 2024 18:47:17 -0700 (PDT)
 From: Stefano Stabellini <sstabellini@kernel.org>
 X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
 To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
@@ -39,23 +39,22 @@ cc: qemu-devel@nongnu.org, sstabellini@kernel.org, anthony@xenproject.org,
  paul@xen.org, peter.maydell@linaro.org, alex.bennee@linaro.org, 
  xenia.ragiadakou@amd.com, jason.andryuk@amd.com, edgar.iglesias@amd.com, 
  xen-devel@lists.xenproject.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH v1 03/10] hw/arm: xenpvh: Tweak machine description
-In-Reply-To: <20240812130606.90410-4-edgar.iglesias@gmail.com>
-Message-ID: <alpine.DEB.2.22.394.2408121647440.298534@ubuntu-linux-20-04-desktop>
+Subject: Re: [PATCH v1 04/10] hw/arm: xenpvh: Add support for SMP guests
+In-Reply-To: <20240812130606.90410-5-edgar.iglesias@gmail.com>
+Message-ID: <alpine.DEB.2.22.394.2408121650590.298534@ubuntu-linux-20-04-desktop>
 References: <20240812130606.90410-1-edgar.iglesias@gmail.com>
- <20240812130606.90410-4-edgar.iglesias@gmail.com>
+ <20240812130606.90410-5-edgar.iglesias@gmail.com>
 User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=139.178.84.217;
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
  envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.126,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,32 +74,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Mon, 12 Aug 2024, Edgar E. Iglesias wrote:
 > From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 > 
-> Tweak machine description to better express that this is
-> a Xen PVH machine for ARM.
+> Add SMP support for Xen PVH ARM guests. Create max_cpus ioreq
+> servers to handle hotplug.
 > 
 > Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-
-
 > ---
->  hw/arm/xen_arm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  hw/arm/xen_arm.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
 > diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> index 766a194fa1..5f75cc3779 100644
+> index 5f75cc3779..ef8315969c 100644
 > --- a/hw/arm/xen_arm.c
 > +++ b/hw/arm/xen_arm.c
-> @@ -216,7 +216,7 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
->  {
+> @@ -173,7 +173,7 @@ static void xen_arm_init(MachineState *machine)
 >  
+>      xen_init_ram(machine);
+>  
+> -    xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
+> +    xen_register_ioreq(xam->state, machine->smp.max_cpus, &xen_memory_listener);
+>  
+>      xen_create_virtio_mmio_devices(xam);
+>  
+> @@ -218,7 +218,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
 >      MachineClass *mc = MACHINE_CLASS(oc);
-> -    mc->desc = "Xen Para-virtualized PC";
-> +    mc->desc = "Xen PVH ARM machine";
+>      mc->desc = "Xen PVH ARM machine";
 >      mc->init = xen_arm_init;
->      mc->max_cpus = 1;
->      mc->default_machine_opts = "accel=xen";
-> -- 
-> 2.43.0
-> 
+> -    mc->max_cpus = 1;
+> +    /* MAX number of vcpus supported by Xen.  */
+> +    mc->max_cpus = GUEST_MAX_VCPUS;
+
+Will this cause allocations of data structures with 128 elements?
+Looking at hw/xen/xen-hvm-common.c:xen_do_ioreq_register it seems
+possible? Or hw/xen/xen-hvm-common.c:xen_do_ioreq_register is called
+later on with the precise vCPU value which should be provided to QEMU
+via the -smp command line option
+(tools/libs/light/libxl_dm.c:libxl__build_device_model_args_new)?
+
 
