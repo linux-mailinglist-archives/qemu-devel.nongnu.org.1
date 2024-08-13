@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C689508AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 17:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B629508E4
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 17:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdtEc-0005m4-1o; Tue, 13 Aug 2024 11:14:54 -0400
+	id 1sdtKq-0005la-IA; Tue, 13 Aug 2024 11:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdtEa-0005iN-MB
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:14:52 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sdtKc-0004sP-1w
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:21:07 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sdtEZ-0003q5-1k
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:14:52 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42816ca797fso41565465e9.2
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 08:14:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sdtKW-0004ds-HC
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:21:03 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-428178fc07eso39044535e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 08:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723562089; x=1724166889; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lo6LVl9048dCRbf34Uz7ZrLtE5qX/YOrOn2Y11Gf99s=;
- b=VK86lm51CG9RqakWYMy1mEZGv/gpRmSrZ7JsmOCgN+M0r9nGSPrSjISpC6afu2cgid
- tLkBZHuVFWCr8qDxlue0W4OPaq1K4Hwcm/Ek/29RR6+SZv1q8++Mr4uMHBsL2tlL6U5G
- D8C3kSeeeyFdQY4ItGoJKNXIhaztay71tmZO3k/I/G2t8MR26MhPxAGZihz5Ns8GdZDQ
- 8LsZGsZzAzwB2dp9olJXx02HxfBdHS/llaOykonSGFeNbgoK0rc/dR/MxpklNdLUo1ev
- qa1ho9gCy9N/UaK0ihRBpp61nfGbs3t1ES6j6WohK1eQNVSmKGWSFQPDdGX4vdcjPb+t
- Iqlw==
+ d=linaro.org; s=google; t=1723562457; x=1724167257; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=k92uxQUphhX97lbQN89xDPP6Ys3FVrzqxypU/0YUiUo=;
+ b=AQcdB/8zQmYQ9Pbvbq1mQyf1PJJ3zu3UCCihiMXFkCE0ZVfdcD+drJqAlQSnEq74Rn
+ KXi4YFlMAr8dekzRPjyt+HOXUsV462ITgioSASQZXyxjYfjuQKTguu4mdIyM/fj3DUQ3
+ DG3N7cJWM27veCxIqL9U4lC9zameU2tbZyBL6WLMhuVnkEeXoQ/7kHukx4VSbf7NMvpA
+ wEOl36iBN2b7EtbKyX6Va45sChDB7YRzCd/t4uugxzpU5SgyMDvYuYFuMLPaNJIQj911
+ q+Rza/cexpeuQRbO7lFkclfUFAY55KQUyW3xTKgPxMbkZ1KrVTsZqumbKoJFbmGsrFjX
+ GrYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723562089; x=1724166889;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lo6LVl9048dCRbf34Uz7ZrLtE5qX/YOrOn2Y11Gf99s=;
- b=unOq+xHVqwTKxEUUqT24EHiDe9M/PW8AiMld7Z/wRERynZH0Cu93aXrIqt+/1skyfE
- HeItnfOHJKJUkGojVjFeLEfpxcKV+SCPVXBv5pu68UzBtsf1m/tumWE0uHMmx3XiB5sl
- 24AoMx3hMf8xD1xY42ezzS/mvDv3ifcWXk0MWGn3Y2boQa3CREfsfv//zvzXp8fHOK/6
- D4/DlD8NkLinPKNNRFoprzzDg5d/frM3EWaBqBq469XSKiRFlx72p4JUR3/07JKJqgY0
- qF76tPH5/JYN0Y2LtQppGlVLvz/uol28WjRk98/nyGTuqGBhsAFMAUSteQQED8kengLg
- NTVg==
-X-Gm-Message-State: AOJu0YzwsfSpVwhCxdQebD4pvDOLkLUIi8Ls3S62IMLMWpiCeElM9pct
- IfPmmhRHuHQvc2G3Rk266EJTBgBapdsiB4+rAmv/k7kb37cNp1Gn/wpMa+qewqw=
-X-Google-Smtp-Source: AGHT+IF9fYkhNRm87Viv8jg4CoU9UcnnKZRbwQLXyaxgpUx1JE5Tzehorapg+xoEZ9f+1C+c7CYU0A==
-X-Received: by 2002:a05:6000:1050:b0:367:434f:ca9a with SMTP id
- ffacd0b85a97d-3716cc5474emr2552382f8f.0.1723562088927; 
- Tue, 13 Aug 2024 08:14:48 -0700 (PDT)
-Received: from [192.168.5.175] (80.red-88-28-4.dynamicip.rima-tde.net.
- [88.28.4.80]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4cfeeb09sm10657887f8f.51.2024.08.13.08.14.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Aug 2024 08:14:48 -0700 (PDT)
-Message-ID: <c23a6547-fc94-48e2-aaa0-af4febca1e20@linaro.org>
-Date: Tue, 13 Aug 2024 17:14:43 +0200
+ d=1e100.net; s=20230601; t=1723562457; x=1724167257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=k92uxQUphhX97lbQN89xDPP6Ys3FVrzqxypU/0YUiUo=;
+ b=rjej5XXoineohJAzhZogsdq2DEi2bz04pgnWvrMyh1sl67+8JRYO2ANb/nJXJK96bC
+ gcLzu+eCDLgOx3GCZGkW8UmaCTSHfxSJYlLrBOprv+1Z5AtrPAVpVUm9BTZoXn9d8CCI
+ YPqLJiO8sjNzca1+iEdYXuBKqcufv96gtgOt09T7Csd50K8OCP15lbTVc7HwkjjZhxPR
+ bzvRb9vid6mhi9cjMZ8h4XigpJBF7VSfQ4t2zVxL6wFV38fko5pUQKyX+dF4hV8yOJtT
+ XUbbOaZaaDs3WtLCbAwCEk+/8sfD1yCni4mzn4izmSupVMdjC8c4k7gBl3OWFWczEiVx
+ gLlA==
+X-Gm-Message-State: AOJu0YymWpLQkiAfaV/VZWUOayPhzZ3o372OwIcwrooIq5veBZtII+xc
+ LwHhHc+t0X03MxYKhp6TKs/edtX81TanRf3mQe1QG0FPWYzivmciV99EKmuYJXRDYTNTZaUkbtg
+ v
+X-Google-Smtp-Source: AGHT+IGYMGr++M8/yd4xkJLPfhb4lNFNTrtrTsvIT/ioPboT8+Ihw74ZbyAeGAl9FA9xXh8J4bIhFQ==
+X-Received: by 2002:a5d:5f4a:0:b0:368:8007:e26c with SMTP id
+ ffacd0b85a97d-3716ccfb977mr3139603f8f.29.1723562456851; 
+ Tue, 13 Aug 2024 08:20:56 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36e4cfee676sm10654792f8f.49.2024.08.13.08.20.56
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Aug 2024 08:20:56 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/4] target-arm queue
+Date: Tue, 13 Aug 2024 16:20:50 +0100
+Message-Id: <20240813152054.2445099-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1] buildsys: Fix building without plugins on Darwin
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Helge Konetzka <hk@zapateado.de>, Thomas Huth <thuth@redhat.com>
-References: <20240813112457.92560-1-philmd@linaro.org>
- <87o75wa5kq.fsf@draig.linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87o75wa5kq.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,31 +88,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/8/24 15:57, Alex Bennée wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> Since commit 0082475e26 the plugin symbol list is unconditionally
->> added to the linker flags, leading to a build failure:
->>
->>    Undefined symbols for architecture arm64:
->>      "_qemu_plugin_entry_code", referenced from:
->>          <initial-undefines>
->>    ...
->>    ld: symbol(s) not found for architecture arm64
->>    clang: error: linker command failed with exit code 1 (use -v to see invocation)
->>    ninja: build stopped: subcommand failed.
->>
->> Fix by restricting the whole meson file to the --enable-plugins
->> configure argument.
->>
->> Fixes: 0082475e26 ("meson: merge plugin_ldflags into emulator_link_args")
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Queued to maintainer/for-9.1, thanks.
+Three last bugfixes to sneak into rc2 if we can. The fix
+for the EL3-is-AArch32-and-we-run-code-at-EL0 bug is the
+most important one here I think (though also the most risky).
 
-Thanks, possibly also:
+thanks
+-- PMM
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2476
+The following changes since commit 9eb51530c12ae645b91e308d16196c68563ea883:
 
-(Cc'ing Helge to confirm)
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-08-13 07:59:32 +1000)
+
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240813
+
+for you to fetch changes up to 4c2c0474693229c1f533239bb983495c5427784d:
+
+  target/arm: Fix usage of MMU indexes when EL3 is AArch32 (2024-08-13 11:44:53 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hw/misc/stm32l4x5_rcc: Add validation for MCOPRE and MCOSEL values
+ * target/arm: Clear high SVE elements in handle_vec_simd_wshli
+ * target/arm: Fix usage of MMU indexes when EL3 is AArch32
+
+----------------------------------------------------------------
+Peter Maydell (2):
+      target/arm: Update translation regime comment for new features
+      target/arm: Fix usage of MMU indexes when EL3 is AArch32
+
+Richard Henderson (1):
+      target/arm: Clear high SVE elements in handle_vec_simd_wshli
+
+Zheyu Ma (1):
+      hw/misc/stm32l4x5_rcc: Add validation for MCOPRE and MCOSEL values
+
+ target/arm/cpu.h               | 50 +++++++++++++++++++++++++++---------------
+ target/arm/internals.h         | 27 +++++++++++++++++++----
+ target/arm/tcg/translate.h     |  2 ++
+ hw/misc/stm32l4x5_rcc.c        | 28 ++++++++++++++++-------
+ target/arm/helper.c            | 34 ++++++++++++++++++----------
+ target/arm/ptw.c               |  6 ++++-
+ target/arm/tcg/hflags.c        |  4 ++++
+ target/arm/tcg/translate-a64.c |  3 ++-
+ target/arm/tcg/translate.c     |  9 ++++----
+ 9 files changed, 116 insertions(+), 47 deletions(-)
 
