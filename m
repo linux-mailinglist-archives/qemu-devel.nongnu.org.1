@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8741950DCB
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5542950DD2
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:25:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdy3Y-0004ez-Mh; Tue, 13 Aug 2024 16:23:49 -0400
+	id 1sdy3i-0005Bn-7H; Tue, 13 Aug 2024 16:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy3T-0004VN-Mi
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:44 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1sdy3d-00051h-9U
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:54 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy3K-0006AE-K5
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:43 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-368584f9e36so2907382f8f.2
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:23:32 -0700 (PDT)
+ id 1sdy3N-0006BO-EE
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:23:53 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-52fc4388a64so8199453e87.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723580611; x=1724185411; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723580615; x=1724185415; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ucw1R3kvRxMvMZ60jr55/f9I1k+aTtfbeXhRVA2qPf0=;
- b=RmhmXwIp07XWFUEQZTx0Y2Sdkg4qOV5ZpincRbmpaQUAcg6KlJPzRGHBxXVcXZ4wEk
- 4UamNJoXNWGvQZRwq91YV8zczLP9hTMn4VWcosWaYBgEAFZDIpBvxhMVhKFqcFc2x5wv
- pbrhOfEkbd/Vv6tgrbyo10O7xuODiNKDVJrOZsPWSTiLNubLhD8l4JV56ItsN+jiO5zp
- 4fSeCzhVYFWwpZAHWf5ie5I76UjvvBcucE2wffREoFidHmW4DlmbZVap2ElVB01xPkEg
- sH36eS3Wk0RjALII3X5AFGKy+Hbqvw5ACLTzoKiU07806JzxUP+ULp/xDC0ERxDL/MQK
- +INg==
+ bh=yKD7jTj6Nf0+e/1hZyzKkWpKuU283fm5mnyf6o/tDJg=;
+ b=FIjgdpfIez5HdkW9Kg+ECabF4IWJ56stoQlCOLD7Gbch8BAjb8pwGw/W2shi0FvOw5
+ j4kJW1EgUAR91p43/z83OmQncjeWdodnvGAEXPPM9j1gbnGGp4dgEqlwlHatkoyrY0yC
+ mP0RQ7VsE3pFHXcdd8gs3iaFclLPJvqeZ0mds2Xq+jXx/nHUkOj1PFZugIH5e6l+ECy7
+ dCa3eF70iduVf0IYeUuey4bBIYvRxe6K0MBoQDJV+1+pJzTVnvcdI9xM/2gcNlzEvqez
+ Skt63o5zYw/r+iwJdqqrXu7wRKGl95UY3cqTa/7kibYfxAT79whJe4a+QNrZyvqkSKbI
+ hXEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723580611; x=1724185411;
+ d=1e100.net; s=20230601; t=1723580615; x=1724185415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ucw1R3kvRxMvMZ60jr55/f9I1k+aTtfbeXhRVA2qPf0=;
- b=eV8nQAd6UYN0gztjjx0JjouQ7RNhNZgM2IyWynOxzii/rtIl2aG6f3fb9j5NZRwgsB
- gfJo3yhkr2/7N+B+wLScjHqHhgFivYuXkKnu0hTvHor62sGcCnQyRMSZTOu0H/o6jvXH
- apvgeUysEjgSEyxI+myZlXJFDHKJ6MF7Yz1CaB6IHqZwxNcmJltYrDvi1TaXfVneNfHw
- LtN82KnQlYYOEbsuOC89EWspeaUn2Cd/q52U5m1+tQCQGnlWDkjrC+xlv4aQTCwGOpRQ
- ACdl9dnFye6xDboGbUJ0g2J/PLu/sJmS9m+TGbzsWPvdmex45rIROwMPxgG7+G0boE0B
- UecQ==
-X-Gm-Message-State: AOJu0Yzfi2C++5N5DUt6tJt8Lm/IBIJAnXUPr0w8zkVjxM6T59wxDR+8
- AAjjtpxTce5QkJwln/qmdoOX6lyLuwBcC9Kj3hrAfqUwAth95NesOIuy5irqwFw=
-X-Google-Smtp-Source: AGHT+IEHUa8SMsB+heQResqgZkOo1Uia2USd6ZGBumq7MKEHUaZArPeEKQca7zVlUjyHzl4PKoRMPA==
-X-Received: by 2002:adf:e5c3:0:b0:368:3717:10b3 with SMTP id
- ffacd0b85a97d-3717775c791mr508831f8f.8.1723580610895; 
- Tue, 13 Aug 2024 13:23:30 -0700 (PDT)
+ bh=yKD7jTj6Nf0+e/1hZyzKkWpKuU283fm5mnyf6o/tDJg=;
+ b=dnZBzhyVHs5WBwlJCyLAmLI99oEVwewBxVHYlUMCoqLhbH2do+9Ko0u0AarL8r3RKU
+ vhLWleSBH6ZcHzF8W7aeIs6ohed5jaSazLa62eFn/SeMTEiJZOGTDEQrd2iVCyuBQWou
+ dSGcoW+bJcx+IH+gfUsPZjI5shRYeF7ej5CrMoTlL39jMnt/OqxUXAlew/wNgZRV0KJE
+ aOvgKO8bvsD+KkBmx25EXxIRth6lFnZG8pWNK2U7TItg4fuWfSvQ5cJ4kCWOkHEsoJ5+
+ Fvzk6KrRT+7EEo1nIaj0QyMSrFH2RrvFtseUESj2ssXoZsXc/HvFyIq9MwZVtTA0acgF
+ iNtg==
+X-Gm-Message-State: AOJu0Yykiuz/LgilbPxMHnBvQLXeGdSXu6YcgTkCvMyHxbMEurf6LHWv
+ 0T+gjPpvxU9OOZkA3G1EaJnviYbUCvjbK6HXwY3zGvcRANSI6gWjCYSGuHi8MZI=
+X-Google-Smtp-Source: AGHT+IFYzyLoE270W+WofOCfgUcyOUdrs+aYXrTSO0xXscbAltL5AOxMO0ddGDb3dLKASsg0cgJSog==
+X-Received: by 2002:a05:6512:39cc:b0:52e:ff2a:217 with SMTP id
+ 2adb3069b0e04-532edbbee55mr307421e87.50.1723580614179; 
+ Tue, 13 Aug 2024 13:23:34 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37172483bd9sm2664164f8f.0.2024.08.13.13.23.30
+ ffacd0b85a97d-36e4c9385d3sm11271592f8f.42.2024.08.13.13.23.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 13 Aug 2024 13:23:30 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 778BC5F8BB;
+ by draig.lan (Postfix) with ESMTP id 8CE945F8C5;
  Tue, 13 Aug 2024 21:23:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,25 +88,24 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Jason Wang <jasowang@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH v2 01/21] tests/avocado: Re-enable gdbsim-r5f562n8 testing
- U-Boot
-Date: Tue, 13 Aug 2024 21:23:09 +0100
-Message-Id: <20240813202329.1237572-2-alex.bennee@linaro.org>
+Subject: [PATCH v2 02/21] Makefile: trigger re-configure on updated pythondeps
+Date: Tue, 13 Aug 2024 21:23:10 +0100
+Message-Id: <20240813202329.1237572-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240813202329.1237572-1-alex.bennee@linaro.org>
 References: <20240813202329.1237572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,37 +121,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+If we add additional deps for meson we need to ensure we trigger a
+reconfigure to make sure everything is set up.
 
-We disabled all RX tests on commit 9b45cc9931 ("docs/devel:
-rationalise unstable gitlab tests under FLAKY_TESTS") for
-being flaky. However I don't recall the U-Boot test to fail
-(the problematic line checking the 'version' string is already
-commented out), and I'm running this test reliably, so re-enable
-it.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Message-Id: <20240801172332.65701-1-philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240731140232.22193-1-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240807114059.2339021-2-alex.bennee@linaro.org>
+Message-Id: <20240807114059.2339021-3-alex.bennee@linaro.org>
 ---
- tests/avocado/machine_rx_gdbsim.py | 2 --
- 1 file changed, 2 deletions(-)
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/avocado/machine_rx_gdbsim.py b/tests/avocado/machine_rx_gdbsim.py
-index 412a7a5089..a83873b738 100644
---- a/tests/avocado/machine_rx_gdbsim.py
-+++ b/tests/avocado/machine_rx_gdbsim.py
-@@ -22,8 +22,6 @@ class RxGdbSimMachine(QemuSystemTest):
-     timeout = 30
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
+diff --git a/Makefile b/Makefile
+index 02a257584b..917c9a34d1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -78,7 +78,8 @@ x := $(shell rm -rf meson-private meson-info meson-logs)
+ endif
  
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
-     def test_uboot(self):
-         """
-         U-Boot and checks that the console is operational.
+ # 1. ensure config-host.mak is up-to-date
+-config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh $(SRC_PATH)/VERSION
++config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh \
++		$(SRC_PATH)/pythondeps.toml $(SRC_PATH)/VERSION
+ 	@echo config-host.mak is out-of-date, running configure
+ 	@if test -f meson-private/coredata.dat; then \
+ 	  ./config.status --skip-meson; \
 -- 
 2.39.2
 
