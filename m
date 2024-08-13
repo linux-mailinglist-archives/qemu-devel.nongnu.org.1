@@ -2,92 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3FD950937
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 17:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D9D950941
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 17:40:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdtYX-0005nS-D1; Tue, 13 Aug 2024 11:35:29 -0400
+	id 1sdtcf-00029T-9U; Tue, 13 Aug 2024 11:39:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sdtYU-0005mw-JA
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:35:26 -0400
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1sdtcd-00028z-PP
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:39:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sdtYS-0006zq-DJ
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:35:26 -0400
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1sdtcb-0007LD-VU
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 11:39:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723563322;
+ s=mimecast20190719; t=1723563579;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0spfjn0k/6/2Qto+WA6uu27PzJZhhTSBayB+tH/whSI=;
- b=iLMSZQNyV1SnfmdXndzsfZ1aEbkBkqqu07obslyW4IAgI3HrfM3UrhzLqZSnFKTYKm+vbo
- ntCTZxTbQNsZzcPQIc7UF03owFSqK7oGbTazyG9JO2dbN/JpDUgEPUvUsGFAUcZfNB9qLy
- HqsXter4TQd4/rlKWzTWcyAdscU8ywg=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-rRPTLfNUN7ahUecgsdOKBw-1; Tue, 13 Aug 2024 11:35:20 -0400
-X-MC-Unique: rRPTLfNUN7ahUecgsdOKBw-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-44fea369811so8032681cf.0
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 08:35:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723563320; x=1724168120;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0spfjn0k/6/2Qto+WA6uu27PzJZhhTSBayB+tH/whSI=;
- b=FSXos8dMDDSM8NSaBLBmF2jmnsgT3FjqzX26QniyDhyxmU07ykb+nGaOWGt03+yRZM
- h/7LtT2kkoRWVbR3LkppwK2luhHXsckI24G/Xx4GoprG4eivilKy6Kf90oCM9BsjD8+D
- eFx1TCB7/uroAEcOgZNBUlh4X1Q0Pe7C7Ty0cVUcKnqUJ7c2azDD+LrdNN5CJudmzeov
- aETqSi2fOKL72ZzuU26Yb8TiPj9YlVFIdWpMwdcSJw04JJhNzi7F1RXQvOgPYYZRezfS
- SbFfB5P4ht8MbcbTnjSdVKC2LetBGavBRLmmSqgzSwuXT2yzN9b9BJj0ruT0gOi32dOG
- KsGA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWnFd0tyWb4zT+WrSgmuhVsImj2ChNPiOULOXm3A0PyMZ9PsgxaeA9OO1OYoPFee+2OzBMh0Zba0j+3j/8TSjJecNLfKyc=
-X-Gm-Message-State: AOJu0Yzi58xXysNQVenOcZ++9StwVFQ0HY5rqHGQjyNuw1SIOidMzVWo
- 3C8CdSrCrg5y/vB0LbOo/jqS1KzTdhfK44LHNz/H2XmzpAcRfdoHcuT/A/z4ECrcHD3Ed6TVCFf
- pPsb2N7+ixjo5F5Thyc11QJ/MhNlP+c2sn6AUNThvBCyEsIuOTgwd
-X-Received: by 2002:a05:620a:1a8b:b0:79f:b3c:8fc3 with SMTP id
- af79cd13be357-7a4e4ecabeamr182395085a.6.1723563320089; 
- Tue, 13 Aug 2024 08:35:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhVwLLx2sBRB6v1M4BfQiOIfYVC1imChfCvH4uydYWf68dLIZhq1Y0z+RI2NLcBkIWwR3xXA==
-X-Received: by 2002:a05:620a:1a8b:b0:79f:b3c:8fc3 with SMTP id
- af79cd13be357-7a4e4ecabeamr182392685a.6.1723563319529; 
- Tue, 13 Aug 2024 08:35:19 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a4c7d71bddsm350860185a.38.2024.08.13.08.35.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Aug 2024 08:35:18 -0700 (PDT)
-Date: Tue, 13 Aug 2024 11:35:15 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: Igor Mammedov <imammedo@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2 01/11] machine: alloc-anon option
-Message-ID: <Zrt9M00rDk3EUdNM@x1n>
-References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
- <1719776434-435013-2-git-send-email-steven.sistare@oracle.com>
- <20240716111955.01d1d2b9@imammedo.users.ipa.redhat.com>
- <88945053-6918-4096-ac55-0ef4b946b241@oracle.com>
- <20240729142932.6667c5b5@imammedo.users.ipa.redhat.com>
- <369f6786-1146-4d5e-a9a5-c0b0b5f45bf7@oracle.com>
- <64b8934e-2655-4224-aaf1-e125e6469f87@oracle.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=KF7ksS8mqinHtAwsYaED5eVUUKaymGfylxECt6NmKJg=;
+ b=KrU1Gco/k6gUXysseefNjxDxBik1CQ0deRLeRv7LYgU71B1cMxuuuCxPpGBnhfNWKDKjQE
+ jngLngGM6d/2wOjrlPslFIWJZsDaXPfYAV4F7mpsoPKtkm2Rbg17xkId1XfbncUTsqkaag
+ jdzKGPOWmLZnguHJkt9dLcpGVFqv6qM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-Vyc0lhDjNISq361-ZkrEtg-1; Tue,
+ 13 Aug 2024 11:39:35 -0400
+X-MC-Unique: Vyc0lhDjNISq361-ZkrEtg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8F12D1955F66; Tue, 13 Aug 2024 15:39:34 +0000 (UTC)
+Received: from rh-jmarcin.redhat.com (unknown [10.45.226.69])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 96B45300019C; Tue, 13 Aug 2024 15:39:32 +0000 (UTC)
+From: Juraj Marcin <jmarcin@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juraj Marcin <jmarcin@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 0/4] virtio-mem: Implement support for suspend+wake-up with
+ plugged memory
+Date: Tue, 13 Aug 2024 17:39:16 +0200
+Message-ID: <20240813153922.311788-1-jmarcin@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <64b8934e-2655-4224-aaf1-e125e6469f87@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -112,162 +80,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 12, 2024 at 02:37:59PM -0400, Steven Sistare wrote:
-> On 8/8/2024 2:32 PM, Steven Sistare wrote:
-> > On 7/29/2024 8:29 AM, Igor Mammedov wrote:
-> > > On Sat, 20 Jul 2024 16:28:25 -0400
-> > > Steven Sistare <steven.sistare@oracle.com> wrote:
-> > > 
-> > > > On 7/16/2024 5:19 AM, Igor Mammedov wrote:
-> > > > > On Sun, 30 Jun 2024 12:40:24 -0700
-> > > > > Steve Sistare <steven.sistare@oracle.com> wrote:
-> > > > > > Allocate anonymous memory using mmap MAP_ANON or memfd_create depending
-> > > > > > on the value of the anon-alloc machine property.  This affects
-> > > > > > memory-backend-ram objects, guest RAM created with the global -m option
-> > > > > > but without an associated memory-backend object and without the -mem-path
-> > > > > > option
-> > > > > nowadays, all machines were converted to use memory backend for VM RAM.
-> > > > > so -m option implicitly creates memory-backend object,
-> > > > > which will be either MEMORY_BACKEND_FILE if -mem-path present
-> > > > > or MEMORY_BACKEND_RAM otherwise.
-> > > > 
-> > > > Yes.  I dropped an an important adjective, "implicit".
-> > > > 
-> > > >     "guest RAM created with the global -m option but without an explicit associated
-> > > >     memory-backend object and without the -mem-path option"
-> > > > 
-> > > > > > To access the same memory in the old and new QEMU processes, the memory
-> > > > > > must be mapped shared.  Therefore, the implementation always sets
-> > > > > > RAM_SHARED if alloc-anon=memfd, except for memory-backend-ram, where the
-> > > > > > user must explicitly specify the share option.  In lieu of defining a new
-> > > > > so statement at the top that memory-backend-ram is affected is not
-> > > > > really valid?
-> > > > 
-> > > > memory-backend-ram is affected by alloc-anon.  But in addition, the user must
-> > > > explicitly add the "share" option.  I don't implicitly set share in this case,
-> > > > because I would be overriding the user's specification of the memory object's property,
-> > > > which would be private if omitted.
-> > > 
-> > > instead of touching implicit RAM (-m), it would be better to error out
-> > > and ask user to provide properly configured memory-backend explicitly.
-> > > 
-> > > > 
-> > > > > > RAM flag, at the lowest level the implementation uses RAM_SHARED with fd=-1
-> > > > > > as the condition for calling memfd_create.
-> > > > > 
-> > > > > In general I do dislike adding yet another option that will affect
-> > > > > guest RAM allocation (memory-backends  should be sufficient).
-> > > > > 
-> > > > > However I do see that you need memfd for device memory (vram, roms, ...).
-> > > > > Can we just use memfd/shared unconditionally for those and
-> > > > > avoid introducing a new confusing option?
-> > > > 
-> > > > The Linux kernel has different tunables for backing memfd's with huge pages, so we
-> > > > could hurt performance if we unconditionally change to memfd.  The user should have
-> > > > a choice for any segment that is large enough for huge pages to improve performance,
-> > > > which potentially is any memory-backend-object.  The non memory-backend objects are
-> > > > small, and it would be OK to use memfd unconditionally for them.
-> > 
-> > Thanks everyone for your feedback.  The common theme is that you dislike that the
-> > new option modifies the allocation of memory-backend-objects.  OK, accepted.  I propose
-> > to remove that interaction, and document in the QAPI which backends work for CPR.
-> > Specifically, memory-backend-memfd or memory-backend-file object is required,
-> > with share=on (which is the default for memory-backend-memfd).  CPR will be blocked
-> > otherwise.  The legacy -m option without an explicit memory-backend-object will not
-> > support CPR.
-> > 
-> > Non memory-backend-objects (ramblocks not described on the qemu command line) will always
-> > be allocated using memfd_create (on Linux only).  The alloc-anon option is deleted.
-> > The logic in ram_block_add becomes:
-> > 
-> >      if (!new_block->host) {
-> >          if (xen_enabled()) {
-> >              ...
-> >          } else if (!object_dynamic_cast(new_block->mr->parent_obj.parent,
-> >                                          TYPE_MEMORY_BACKEND)) {
-> >              qemu_memfd_create()
-> >          } else {
-> >              qemu_anon_ram_alloc()
-> >          }
-> > 
-> > Is that acceptable to everyone?  Igor, Peter, Daniel?
+Currently, the virtio-mem device would unplug all the memory with any
+reset request, including when the machine wakes up from a suspended
+state (deep sleep). This would lead to a loss of the contents of the
+guest memory and therefore is disabled by the virtio-mem Linux Kernel
+driver unless the VIRTIO_MEM_F_PERSISTENT_SUSPEND virtio feature is
+exposed. [1]
 
-Sorry for a late reply.
+To make deep sleep with virtio-mem possible, we need to differentiate
+cold start reset from wake-up reset. The first patch updates
+qemu_system_reset() and MachineClass children to accept ResetType
+instead of ShutdownCause, which then could be passed down the device
+tree. The second patch then introduces the new reset type for the
+wake-up event and updates the i386 wake-up method (only architecture
+using the explicit wake-up method).
 
-I think this may not work as David pointed out? Where AFAIU it will switch
-many old anon use cases to use memfd, aka, shmem, and it might be
-problematic when share=off: we have double memory consumption issue with
-shmem with private mapping.
+The third patch replaces LegacyReset with the Resettable interface in
+virtio-mem, so the memory device can access the reset type in the hold
+phase. The last patch of the series implements the final support in the
+hold phase of the virtio-mem reset callback and exposes
+VIRTIO_MEM_F_PERSISTENT_SUSPEND to the kernel.
 
-I assume that includes things like "-m", "memory-backend-ram", and maybe
-more.  IIUC memory consumption of the VM will double with them.
+[1]: https://lore.kernel.org/all/20240318120645.105664-1-david@redhat.com/
 
-> 
-> In a simple test here are the NON-memory-backend-object ramblocks which
-> are allocated with memfd_create in my new proposal:
-> 
->   memfd_create system.flash0 3653632 @ 0x7fffe1000000 2 rw
->   memfd_create system.flash1 540672 @ 0x7fffe0c00000 2 rw
->   memfd_create pc.rom 131072 @ 0x7fffe0800000 2 rw
->   memfd_create vga.vram 16777216 @ 0x7fffcac00000 2 rw
->   memfd_create vga.rom 65536 @ 0x7fffe0400000 2 rw
->   memfd_create /rom@etc/acpi/tables 2097152 @ 0x7fffca400000 6 rw
->   memfd_create /rom@etc/table-loader 65536 @ 0x7fffca000000 6 rw
->   memfd_create /rom@etc/acpi/rsdp 4096 @ 0x7fffc9c00000 6 rw
-> 
-> Of those, only a subset are mapped for DMA, per the existing QEMU logic,
-> no changes from me:
-> 
->   dma_map: pc.rom 131072 @ 0x7fffe0800000 ro
->   dma_map: vga.vram 16777216 @ 0x7fffcac00000 rw
->   dma_map: vga.rom 65536 @ 0x7fffe0400000 ro
+v2:
+- Removed unnecessary include directives changes
+- Updated RESET_TYPE_WAKEUP documentation
+- Removed unnecessary interface from VirtIOMEMClass type info
 
-I wonder whether there's any case that the "rom"s can be DMA target at
-all..  I understand it's logically possible to be READ from as ROMs, but I
-am curious what happens if we don't map them at all when they're ROMs, or
-whether there's any device that can (in real life) DMA from device ROMs,
-and for what use.
+Juraj Marcin (4):
+  reset: Use ResetType for qemu_devices_reset() and
+    MachineClass::reset()
+  reset: Add RESET_TYPE_WAKEUP
+  virtio-mem: Use new Resettable framework instead of LegacyReset
+  virtio-mem: Add support for suspend+wake-up with plugged memory
 
->   dma_map: 0000:3a:10.0 BAR 0 mmaps[0] 16384 @ 0x7ffff7fef000 rw
->   dma_map: 0000:3a:10.0 BAR 3 mmaps[0] 12288 @ 0x7ffff7fec000 rw
-> 
-> system.flash0 is excluded by the vfio listener because it is a rom_device.
-> The rom@etc blocks are excluded because their MemoryRegions are not added to
-> any container region, so the flatmem traversal of the AS used by the listener
-> does not see them.
-> 
-> The BARs should not be mapped IMO, and I propose excluding them in the
-> iommufd series:
->   https://lore.kernel.org/qemu-devel/1721502937-87102-3-git-send-email-steven.sistare@oracle.com/
-
-Looks like this is clear now that they should be there.
-
-> 
-> Note that the old-QEMU contents of all ramblocks must be preserved, just like
-> in live migration.  Live migration copies the contents in the stream.  Live update
-> preserves the contents in place by preserving the memfd.  Thus memfd serves
-> two purposes: preserving old contents, and preserving DMA mapped pinned pages.
-
-IMHO the 1st purpose is a fake one.  IOW:
-
-  - Preserving content will be important on large RAM/ROM regions.  When
-    it's small, it shouldn't matter a huge deal, IMHO, because this is
-    about "how fast we can migrate / live upgrade'.  IOW, this is not a
-    functional requirement.
-
-  - DMA mapped pinned pages: instead this is a hard requirement that we
-    must make sure these pages are fd-based, because only a fd-based
-    mapping can persist the pages (via page cache).
-
-IMHO we shouldn't mangle them, and we should start with sticking with the
-2nd goal here.  To be explicit, if we can find a good replacement for
--alloc-anon, IMHO we could still migrate the ramblocks only fall into the
-1st purpose category, e.g. device ROMs, hopefully even if they're pinned,
-they should never be DMAed to/from.
-
-Thanks,
+ docs/devel/reset.rst           |  8 ++++++
+ hw/arm/aspeed.c                |  4 +--
+ hw/arm/mps2-tz.c               |  4 +--
+ hw/core/reset.c                |  5 +---
+ hw/hppa/machine.c              |  4 +--
+ hw/i386/microvm.c              |  4 +--
+ hw/i386/pc.c                   |  6 ++---
+ hw/ppc/pegasos2.c              |  4 +--
+ hw/ppc/pnv.c                   |  4 +--
+ hw/ppc/spapr.c                 |  6 ++---
+ hw/s390x/s390-virtio-ccw.c     |  4 +--
+ hw/virtio/virtio-mem.c         | 48 ++++++++++++++++++++++++----------
+ hw/virtio/virtio-qmp.c         |  3 +++
+ include/hw/boards.h            |  3 ++-
+ include/hw/resettable.h        |  2 ++
+ include/hw/virtio/virtio-mem.h |  4 +++
+ include/sysemu/reset.h         |  5 ++--
+ system/runstate.c              | 13 +++++++--
+ 18 files changed, 88 insertions(+), 43 deletions(-)
 
 -- 
-Peter Xu
+2.46.0
 
 
