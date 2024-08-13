@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCF5950DFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E733950DFD
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 22:31:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdy9v-0007po-JS; Tue, 13 Aug 2024 16:30:23 -0400
+	id 1sdy9y-0007vu-22; Tue, 13 Aug 2024 16:30:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy9q-0007br-4G
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:30:18 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ id 1sdy9s-0007jP-0h
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:30:20 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sdy9m-0007h8-W8
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:30:17 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a728f74c23dso650427366b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:30:10 -0700 (PDT)
+ id 1sdy9o-0007hY-0X
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 16:30:19 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5b8c2a6135eso422659a12.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 13:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723581009; x=1724185809; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723581010; x=1724185810; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kSADMN12Nw21+GOzmibenkJLReuL6R8Ic7sSt3Nh96Q=;
- b=I4hrz39Uj77eae4gpRyGdB3bD39XFZjBxDIEZNdSSZcTi8P9Xf3U3538UKlDVecmUa
- h8VaLefziNgF0KpwADjV7SjvpUorfiMp/mN17milKoy+ORw5EeTfB5GZQjIJX+1m4JG0
- 8nuFiUQvTwBh1o8Rq8/PfH0uQ4GCnm+ntokydAGpXN8B6z0sTuGlTXj4dB3JNKJpG4Td
- huGttiIJoE+ZykqnMr9rOQjNf8cTwqG8viC7sAlyoiYZozLgu3TiEP8VoTeca8f4YIhh
- 0xbKeNmOt/K5CwCWdOA+wBmGXv7crxNSkrRn1Z5zystAUTlC9/Kgl7b5cDnuELUOoKal
- BhpA==
+ bh=XVE4Pvz3IZII7dYV43iuSfh2ifoz5mFOdZgYMpOo9h8=;
+ b=BKAAiiVjWNlnxqZDlQiOO3KQLw6HIKbdq58MTDF8Syp3t/ex1kCSsqcmN004jRsQ0P
+ sQYB/D69s/joleZzjA+FAIjd5XxHf1GZMV0pln7qys00azeoVGysHYnqBE/CWpKXbWHJ
+ nIWMyQ0sERMtZMVBzoJ1otrC/XmU4z5Dt/ZVzc70XpqboCZFqt+Yy4I44OSVHvCEIlGS
+ xnL/kPTUBMyIrF8J5n0kihbRZdi3R6GsEbvCTuiVu/IX1L/mfXMbTDTCiZ5eS1VXqOpn
+ j8AeFxYfQbX3Uxzh4QN+2GLI+vceVh+d4Lt9TQbkMkHs5KeVnLYWyaGl+Ns1E5SwVMcC
+ kQUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723581009; x=1724185809;
+ d=1e100.net; s=20230601; t=1723581010; x=1724185810;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kSADMN12Nw21+GOzmibenkJLReuL6R8Ic7sSt3Nh96Q=;
- b=rfMvPYHVpz65I9Xf5Yoqa5jA4x0UahOsGPqsBkbhCktcIxA4yqJCB5dCNJ9FvjLaqk
- 5oWSqL21BfGIaEsm4TD4U3SidWpKjs6mljitmYlxp6nuEcUc1bOK+l7/xasuXTzoOgCB
- eYp0L2rSX0blU5LzeRDZc+CX8sw62XE/K0RCQhAB7/P9m92BA3LbL3w2ExEgJklYfir8
- gxv98M1PPJuY0CA7zLBKxMPiYTpk7lJHfHccEcW+UEWdX/t0UuG4eX9z8rlA0pNYJGIc
- eLVILwynl0Wb1tExTuITJSHlrlQIl/vWW0uDkSBHUcAZ2KkhBgR3wPw4mmAr0ZuhHUEl
- ac7A==
-X-Gm-Message-State: AOJu0YyR3uiSISvyiuNobaKSHjIRoA3bWkQbZH2INUtvlZuli7WrxQsT
- M8FbgPSBxsKiHn8Cm0zrllp5m62MKiZ4BXdSbho/b5rsM2KfO+6pd6Jv1K7Wo/I=
-X-Google-Smtp-Source: AGHT+IF2NgFFUaQ5gFbiOqfH7vQ9P62+OjgyYVDmvKgygXvhJsOgUVm56mfdRn+KJhR8B47o6vlqiQ==
-X-Received: by 2002:a17:907:1b19:b0:a80:f840:9004 with SMTP id
- a640c23a62f3a-a8366c1eca6mr35463466b.12.1723581008771; 
- Tue, 13 Aug 2024 13:30:08 -0700 (PDT)
+ bh=XVE4Pvz3IZII7dYV43iuSfh2ifoz5mFOdZgYMpOo9h8=;
+ b=tuxMPoERbXwm+K8IzNJDWr8zj8eDF0sKq5EgJ8kpxLqKV5FV4R32hTjn9BTLbPS6sa
+ a5JJKS2CNGY8yk+WlHhlInMdXiC9mM4Da29OnVNpZi4vjFfDkhFFewMXZges7BLlRsxn
+ WJ12baw5PIaDWQPRWxYnf06zFBKf7vdkkPHLw7JsyzFCB6z9eSmcvMwPjSi0osXCoPw4
+ WyA7kZ1Ctoiz6YyVxh7O5v1iRno+wTzXNOuUG/BUFse+Mw7K5nlukxksDDg9Zil7VDkV
+ biXSeKos/1gCwWjHZFnekuvClWqCi4nORNVqFskdf5lmagrUUz+vIkVIBpIHyYPlSyoN
+ vr+Q==
+X-Gm-Message-State: AOJu0YwtdpaLi4yNB9g2/KUnkcOVVqy8jzOk8BjBKBr3Y4QzK5jA2+df
+ Xa+l4ozP5mh0zc2A0XIrUF5m/Rw/YtkLNx6hV4iMGkylSfGkQRSSHHX6eLdABQU=
+X-Google-Smtp-Source: AGHT+IHEv28L4BGJd4b6CZFQT407tF8GibjZG5hbfzEUj6UuE2OAkaFLAdDyJoNukxMJVYpuoxdCXw==
+X-Received: by 2002:a05:6402:2553:b0:5a0:d5f2:1be with SMTP id
+ 4fb4d7f45d1cf-5bd461909damr3959795a12.8.1723581009434; 
+ Tue, 13 Aug 2024 13:30:09 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a80f3fa69c3sm96997266b.55.2024.08.13.13.30.08
+ 4fb4d7f45d1cf-5bd196a756esm3155219a12.52.2024.08.13.13.30.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 13 Aug 2024 13:30:08 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2456F604E8;
+ by draig.lan (Postfix) with ESMTP id 4318860607;
  Tue, 13 Aug 2024 21:23:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,25 +88,26 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Jason Wang <jasowang@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 18/21] savevm: Fix load_snapshot error path crash
-Date: Tue, 13 Aug 2024 21:23:26 +0100
-Message-Id: <20240813202329.1237572-19-alex.bennee@linaro.org>
+ Stefan Weil <sw@weilnetz.de>
+Subject: [PATCH v2 19/21] docs: Fix some typos (found by typos) and grammar
+ issues
+Date: Tue, 13 Aug 2024 21:23:27 +0100
+Message-Id: <20240813202329.1237572-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240813202329.1237572-1-alex.bennee@linaro.org>
 References: <20240813202329.1237572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,30 +123,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Stefan Weil via <qemu-devel@nongnu.org>
 
-An error path missed setting *errp, which can cause a NULL deref.
+Fix the misspellings of "overriden" also in code comments.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20240813050638.446172-11-npiggin@gmail.com>
+Signed-off-by: Stefan Weil <sw@weilnetz.de>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20240813125638.395461-1-sw@weilnetz.de>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- migration/savevm.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/devel/migration/uadk-compression.rst | 4 ++--
+ docs/interop/qemu-ga.rst                  | 2 +-
+ docs/tools/qemu-vmsr-helper.rst           | 4 ++--
+ qapi/rocker.json                          | 4 ++--
+ include/exec/memory.h                     | 2 +-
+ hw/arm/smmu-common.c                      | 2 +-
+ qga/main.c                                | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 85958d7b09..6bb404b9c8 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3288,6 +3288,7 @@ bool load_snapshot(const char *name, const char *vmstate,
-     /* Don't even try to load empty VM states */
-     ret = bdrv_snapshot_find(bs_vm_state, &sn, name);
-     if (ret < 0) {
-+        error_setg(errp, "Snapshot can not be found");
-         return false;
-     } else if (sn.vm_state_size == 0) {
-         error_setg(errp, "This is a disk-only snapshot. Revert to it "
+diff --git a/docs/devel/migration/uadk-compression.rst b/docs/devel/migration/uadk-compression.rst
+index 3f73345dd5..64cadebd21 100644
+--- a/docs/devel/migration/uadk-compression.rst
++++ b/docs/devel/migration/uadk-compression.rst
+@@ -114,7 +114,7 @@ Make sure all these above kernel configurations are selected.
+ 
+ Accelerator dev node permissions
+ --------------------------------
+-Harware accelerators(eg: HiSilicon Kunpeng Zip accelerator) gets registered to
++Hardware accelerators (eg: HiSilicon Kunpeng Zip accelerator) gets registered to
+ UADK and char devices are created in dev directory. In order to access resources
+ on hardware accelerator devices, write permission should be provided to user.
+ 
+@@ -134,7 +134,7 @@ How To Use UADK Compression In QEMU Migration
+   Set ``migrate_set_parameter multifd-compression uadk``
+ 
+ Since UADK uses Shared Virtual Addressing(SVA) and device access virtual memory
+-directly it is possible that SMMUv3 may enounter page faults while walking the
++directly it is possible that SMMUv3 may encounter page faults while walking the
+ IO page tables. This may impact the performance. In order to mitigate this,
+ please make sure to specify ``-mem-prealloc`` parameter to the destination VM
+ boot parameters.
+diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
+index 9c7380896a..11f7bae460 100644
+--- a/docs/interop/qemu-ga.rst
++++ b/docs/interop/qemu-ga.rst
+@@ -50,7 +50,7 @@ Options
+ .. option:: -c, --config=PATH
+ 
+   Configuration file path (the default is |CONFDIR|\ ``/qemu-ga.conf``,
+-  unless overriden by the QGA_CONF environment variable)
++  unless overridden by the QGA_CONF environment variable)
+ 
+ .. option:: -m, --method=METHOD
+ 
+diff --git a/docs/tools/qemu-vmsr-helper.rst b/docs/tools/qemu-vmsr-helper.rst
+index 6ec87b49d9..9ce10b9af9 100644
+--- a/docs/tools/qemu-vmsr-helper.rst
++++ b/docs/tools/qemu-vmsr-helper.rst
+@@ -17,8 +17,8 @@ driver to advertise and monitor the power consumption or accumulated energy
+ consumption of different power domains, such as CPU packages, DRAM, and other
+ components when available.
+ 
+-However those register are accesible under priviliged access (CAP_SYS_RAWIO).
+-QEMU can use an external helper to access those priviliged register.
++However those registers are accessible under privileged access (CAP_SYS_RAWIO).
++QEMU can use an external helper to access those privileged registers.
+ 
+ :program:`qemu-vmsr-helper` is that external helper; it creates a listener
+ socket which will accept incoming connections for communication with QEMU.
+diff --git a/qapi/rocker.json b/qapi/rocker.json
+index 6950ca9602..73c7363b16 100644
+--- a/qapi/rocker.json
++++ b/qapi/rocker.json
+@@ -42,7 +42,7 @@
+ ##
+ # @RockerPortDuplex:
+ #
+-# An eumeration of port duplex states.
++# An enumeration of port duplex states.
+ #
+ # @half: half duplex
+ #
+@@ -55,7 +55,7 @@
+ ##
+ # @RockerPortAutoneg:
+ #
+-# An eumeration of port autoneg states.
++# An enumeration of port autoneg states.
+ #
+ # @off: autoneg is off
+ #
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 02f7528ec0..296fd068c0 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1852,7 +1852,7 @@ void memory_region_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n);
+  * memory_region_unregister_iommu_notifier: unregister a notifier for
+  * changes to IOMMU translation entries.
+  *
+- * @mr: the memory region which was observed and for which notity_stopped()
++ * @mr: the memory region which was observed and for which notify_stopped()
+  *      needs to be called
+  * @n: the notifier to be removed.
+  */
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index d73ad62211..3f82728758 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -674,7 +674,7 @@ error:
+ 
+ /*
+  * combine S1 and S2 TLB entries into a single entry.
+- * As a result the S1 entry is overriden with combined data.
++ * As a result the S1 entry is overridden with combined data.
+  */
+ static void combine_tlb(SMMUTLBEntry *tlbe, SMMUTLBEntry *tlbe_s2,
+                         dma_addr_t iova, SMMUTransCfg *cfg)
+diff --git a/qga/main.c b/qga/main.c
+index b8f7b1e4a3..50186760bf 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -257,7 +257,7 @@ QEMU_COPYRIGHT "\n"
+ "\n"
+ "  -c, --config=PATH configuration file path (default is\n"
+ "                    %s/qemu-ga.conf\n"
+-"                    unless overriden by the QGA_CONF environment variable)\n"
++"                    unless overridden by the QGA_CONF environment variable)\n"
+ "  -m, --method      transport method: one of unix-listen, virtio-serial,\n"
+ "                    isa-serial, or vsock-listen (virtio-serial is the default)\n"
+ "  -p, --path        device/socket path (the default for virtio-serial is:\n"
 -- 
 2.39.2
 
