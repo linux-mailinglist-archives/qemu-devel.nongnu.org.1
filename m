@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7046B94FDF8
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 08:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB82194FDFC
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Aug 2024 08:38:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sdlAH-0007WM-9h; Tue, 13 Aug 2024 02:37:53 -0400
+	id 1sdlAN-0008A8-0e; Tue, 13 Aug 2024 02:37:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sdlAA-0007Jc-Md
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 02:37:47 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1sdlAF-0007gw-HY
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 02:37:53 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sdlA9-0006UL-7B
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 02:37:46 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2cb64529a36so3440522a91.0
- for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 23:37:43 -0700 (PDT)
+ id 1sdlAC-0006Up-Sz
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 02:37:50 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7bcf8077742so3675161a12.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Aug 2024 23:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1723531063; x=1724135863;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1723531067; x=1724135867;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=K5bDA3kbj4aI3tc5UHvikrRJGrmEJbDMhb9LbvuEW9c=;
- b=jr8pjMyD3Vj0Jkn311TfKWayGumdk+E4PigLJy+lXdpEhQoMxhHh9wJ2ABCkeXnsqq
- GOaQgwPGaroxr9moLNFqmhkAwRDCub+rpucLOpGlF1PIOsg+9cnaj+4NsBx3mPDmh48s
- XnB4eHHS3q+n1vwMOOOxneGZbDphQaRGbMKp+DXEfSgfl2d97jLauw8ZI36WUXELx23I
- 2s6A5HXGh9+UqTfbSpDI2bZmFb33Nnh0rc9fFxbUZOyVCtssximk/aWvObkl/ePu9vQo
- w/I9eBkEGV3aHQ6q6LKEpnO60kz9Fk8+wH5jdlYDCchSSlN19lI5faadpX76FSkuexbY
- ZcYw==
+ :reply-to; bh=+42c5gGiKcfaS9Ju95w5EqxMNlhh/OqheyuSjM0gous=;
+ b=GMeet9QwIcSW7CccUi4Kb2fWUW8va2TCpa0Bnavbb+F6dW3zuGu+bokZ8fsFtm53bm
+ w2KZWKY8vV+Fx/hkWSPoj8x1XgWjAJuIKxu/KFk5nmBKBE4bSmApfFOSsaZiILyti7vJ
+ c4ZmDVOxMZiTYXx1Q9ChPMskXBtD8KknmxHarKyUBIbDKTlJqqaY13L4NzfPb6KJe96m
+ wLoIn5mIC4aZrGswWWG7EP9ET62OKpBZ3zD00c4TEFpLIYSjQPR/mdx5HZR06rlI2+Mn
+ PylLnW2KpWUw5mlRZOuDs05dtx/xRNBACqkeBsUF84ypYWTVpmhHqChfzaABcIu919Mk
+ YFVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723531063; x=1724135863;
+ d=1e100.net; s=20230601; t=1723531067; x=1724135867;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K5bDA3kbj4aI3tc5UHvikrRJGrmEJbDMhb9LbvuEW9c=;
- b=G8xIEnMG/kKeHbQ8ZR3gMg5foIEqSCbY/ojpsLpuNZeg9JMMovhUwoSc/QY6hMg2/G
- NvfQ91waNgRuUNxOKX154QPCm3aoTobEwAmexcvrdPyNIrJAAlKCscyR9I9BNpOSGV39
- 9fyhhoGoyIX3Q9nOF8Xc+W9PRdxaC9JMNU8/ysngHsdHAbVvbnIjY5OgX1KSHAWZyor3
- EIjxK48G+laBONBNq8uikuli7j/QGW7T7nRULtDptrjgTleqeZXdNoOnPMH1DgKFO1KM
- DVUnuWnAvFtXd7nJZiEkYWI/CB1X1vTTV0ccsZAfVFLJasNGDPFYRHevrWKwKphrcLuI
- r9IQ==
-X-Gm-Message-State: AOJu0YyAQM6gy46F7T9sAUv1uC6yLokl9dxyEJbJ8qzKlMFGGhnKU9/p
- nP1ZOKObpaqmvfEQRpc5p85N04KpobAYi7jFsq0MqbyOmfAIqNTggoJt24sotmg=
-X-Google-Smtp-Source: AGHT+IGIR+HsQ/34qPixsQzlLTmVMPhJg/+aX+bdh8S0OqdiasWISKkxO58UIeI0GJV0zikat+1HYA==
-X-Received: by 2002:a17:90a:dd82:b0:2c9:8a4b:b4d3 with SMTP id
- 98e67ed59e1d1-2d39265f681mr2449417a91.43.1723531062587; 
- Mon, 12 Aug 2024 23:37:42 -0700 (PDT)
+ bh=+42c5gGiKcfaS9Ju95w5EqxMNlhh/OqheyuSjM0gous=;
+ b=Rhqxis6DAH0D6fIzEXoijQZzcutx79ehB8jqD9EgLzKTw84T24QvqefiyT1UP1EL1H
+ RWDknfCLp3FybvPcjpj71gUfnJavaulKdHj1Bi0I5pljCuCq/0fROsEWqu4qPRLupZBV
+ nh2Xg8PvLpobE+caVSsbsC3Epf1iDoOV3JSefSMBElCa9MJjZdbAJz2IuwIgnDIR3RDS
+ JIyY8AjUZ3/VDBDVx4k9RChsB3WZhbzl1VC6XfMfMUXWA9FHLu5FRN5ABpkgg5SU2Xeq
+ yv+6ZQ424TVb9/tQZRQrmB6TQx8ZmUvoTPcybcdw0gQUC3ez89A6IOYlVR0r5Sj9keZ+
+ dLZQ==
+X-Gm-Message-State: AOJu0YxrC0cNhbYkJ+rIFakIHtOldvg38qpQZZ9YVAQUbPhip4SMlBS8
+ 8ScvFrA59yuOVUit2Oyja52I9SSN84p6RJxyb6r1Y6iA3W/BkaUSLALUgl98oC0=
+X-Google-Smtp-Source: AGHT+IGajeKLi0558siYbfsWxIpwxXWp2zMyvjMsCw/alMSaWIZ7QC3KtxAia44f7w4ZWqfDo6HT2g==
+X-Received: by 2002:a05:6a20:2d0c:b0:1c4:a7a0:a7d4 with SMTP id
+ adf61e73a8af0-1c8d74456eemr3800627637.7.1723531067336; 
+ Mon, 12 Aug 2024 23:37:47 -0700 (PDT)
 Received: from localhost ([157.82.202.230])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2d39882bc89sm343126a91.1.2024.08.12.23.37.39
+ d9443c01a7336-201cd130045sm6672135ad.50.2024.08.12.23.37.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Aug 2024 23:37:42 -0700 (PDT)
+ Mon, 12 Aug 2024 23:37:46 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 13 Aug 2024 15:37:06 +0900
-Subject: [PATCH for-9.2 v7 7/9] virtio-net: Implement SR-IOV VF
+Date: Tue, 13 Aug 2024 15:37:07 +0900
+Subject: [PATCH for-9.2 v7 8/9] docs: Document composable SR-IOV device
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240813-sriov-v7-7-8515e3774df7@daynix.com>
+Message-Id: <20240813-sriov-v7-8-8515e3774df7@daynix.com>
 References: <20240813-sriov-v7-0-8515e3774df7@daynix.com>
 In-Reply-To: <20240813-sriov-v7-0-8515e3774df7@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -78,14 +78,15 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::1029;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1029.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,26 +102,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A virtio-net device can be added as a SR-IOV VF to another virtio-pci
-device that will be the PF.
-
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/virtio/virtio-net-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS           |  1 +
+ docs/system/index.rst |  1 +
+ docs/system/sriov.rst | 36 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 38 insertions(+)
 
-diff --git a/hw/virtio/virtio-net-pci.c b/hw/virtio/virtio-net-pci.c
-index e03543a70a75..dba4987d6e04 100644
---- a/hw/virtio/virtio-net-pci.c
-+++ b/hw/virtio/virtio-net-pci.c
-@@ -75,6 +75,7 @@ static void virtio_net_pci_class_init(ObjectClass *klass, void *data)
-     k->device_id = PCI_DEVICE_ID_VIRTIO_NET;
-     k->revision = VIRTIO_PCI_ABI_VERSION;
-     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
-+    k->sriov_vf_user_creatable = true;
-     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
-     device_class_set_props(dc, virtio_net_properties);
-     vpciklass->realize = virtio_net_pci_realize;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e34c2bd4cda2..72b3c6736088 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2011,6 +2011,7 @@ F: hw/pci-bridge/*
+ F: qapi/pci.json
+ F: docs/pci*
+ F: docs/specs/*pci*
++F: docs/system/sriov.rst
+ 
+ PCIE DOE
+ M: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+diff --git a/docs/system/index.rst b/docs/system/index.rst
+index c21065e51932..718e9d3c56bb 100644
+--- a/docs/system/index.rst
++++ b/docs/system/index.rst
+@@ -39,3 +39,4 @@ or Hypervisor.Framework.
+    multi-process
+    confidential-guest-support
+    vm-templating
++   sriov
+diff --git a/docs/system/sriov.rst b/docs/system/sriov.rst
+new file mode 100644
+index 000000000000..a851a66a4b8b
+--- /dev/null
++++ b/docs/system/sriov.rst
+@@ -0,0 +1,36 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
++Compsable SR-IOV device
++=======================
++
++SR-IOV (Single Root I/O Virtualization) is an optional extended capability of a
++PCI Express device. It allows a single physical function (PF) to appear as
++multiple virtual functions (VFs) for the main purpose of eliminating software
++overhead in I/O from virtual machines.
++
++There are devices with predefined SR-IOV configurations, but it is also possible
++to compose an SR-IOV device yourself. Composing an SR-IOV device is currently
++only supported by virtio-net-pci.
++
++Users can configure an SR-IOV-capable virtio-net device by adding
++virtio-net-pci functions to a bus. Below is a command line example:
++
++.. code-block:: shell
++
++    -netdev user,id=n -netdev user,id=o
++    -netdev user,id=p -netdev user,id=q
++    -device pcie-root-port,id=b
++    -device virtio-net-pci,bus=b,addr=0x0.0x3,netdev=q,sriov-pf=f
++    -device virtio-net-pci,bus=b,addr=0x0.0x2,netdev=p,sriov-pf=f
++    -device virtio-net-pci,bus=b,addr=0x0.0x1,netdev=o,sriov-pf=f
++    -device virtio-net-pci,bus=b,addr=0x0.0x0,netdev=n,id=f
++
++The VFs specify the paired PF with ``sriov-pf`` property. The PF must be
++added after all VFs. It is the user's responsibility to ensure that VFs have
++function numbers larger than one of the PF, and that the function numbers
++have a consistent stride.
++
++You may also need to perform additional steps to activate the SR-IOV feature on
++your guest. For Linux, refer to [1]_.
++
++.. [1] https://docs.kernel.org/PCI/pci-iov-howto.html
 
 -- 
 2.46.0
