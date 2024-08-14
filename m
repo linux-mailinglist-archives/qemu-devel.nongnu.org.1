@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCC5952052
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 18:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9859520C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 19:13:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seH7A-0004QU-63; Wed, 14 Aug 2024 12:44:48 -0400
+	id 1seHXz-0000hT-A9; Wed, 14 Aug 2024 13:12:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1seH78-0004Pw-11
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 12:44:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1seH76-0002Ln-Fx
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 12:44:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723653882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=erdV0C39tgYWZRKxE1+NQz9R3647EY6jag+HGv6dCRo=;
- b=VXrjS3pxsAbfxpPHBsF7BTs9yDOdTvqfs0a647pByizJWpL41WZUMGB+CLg3VPQPhpWql+
- +C6pyjX40xtB3vCBEEzss4Fzc8M39ArIdR4eCY8kCXejvnxWiVUbBb5qy1LKZDXNJrNvyH
- ABgmXFIVifinujNYzdMzpRm8RYiAkHQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-474-oesTO6jtND6jqgMaLYi6CQ-1; Wed, 14 Aug 2024 12:44:41 -0400
-X-MC-Unique: oesTO6jtND6jqgMaLYi6CQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-428fc34f41bso51850925e9.3
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 09:44:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1seHXj-0000ET-Fa
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 13:12:15 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1seHXa-0006CO-S3
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 13:12:15 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1fd66cddd07so589115ad.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 10:12:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723655524; x=1724260324; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Htp/8g1R2z3d38RDUYPogVSSaWK2pqHvMB0hVXVdWXw=;
+ b=WrkA7QBYj0jxMAp3IH1dn3iN+T/p/6kZLP59CVLDvsDhcrAp9NKLFC6MAuGHFYekjh
+ JS7KTTviw/we6kzu8BO6ypxGGuuVkzlA8ywVpAgoBhDSbbh1n3bzbgVb9J+z1lqkPARD
+ PeSigcmTif7OD4G7R0dXrN79vsIsHjBQb/Puvk9oyGb9BVhsdcuk1jpzKLMzMvcbaQMD
+ Jp+dy6XEfKOR4lSzu28JKY+otsD8y2Fb735aNER06yL1JqUMbU+X1Zszprx2p/8v8nst
+ bz5jCIHDYgn0f4RmYv52rD8Y6PtDjprpBJdLeD0tx6ayP1B2XkpavsLfA/gMD4szgZ1B
+ fIzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723653879; x=1724258679;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=erdV0C39tgYWZRKxE1+NQz9R3647EY6jag+HGv6dCRo=;
- b=LZ0XpY5UzNNvOdF7Y+/7PiJ+f6q/Oss36BRtStstFapZjJuhD+mAhQmMNf/zq1rhfz
- qLqq7kuclUtcpGXZ405rcgLrFaAUn6htbbpGD9yErGelVYJt8ALBH8yoSVHnaWpdjAA/
- ZhtFNadWEunSm1QiAgFaCSfo6HHerwS/fx2PT3iKmuu/ypPB5SXNUeuFbiaBqu9qtD9M
- kNibCHka2JeHNnEKZ2GSBT6Elof+xY4Jko1PeKkRnkyVadAxgpCfk9DwZqFVWa2QeWnD
- Gx2wTBGB1EvY0vDv/KJU0v3P2sX/+qKmDgil0MZejnS5z46NutISFVgBXUijijcU6MhZ
- Wmow==
-X-Gm-Message-State: AOJu0YxIaCqrRsgOmeGIBTYevN+AxDNwzXL4Srhs8pWrksXMCpkuh2RY
- oM9Qwzdxtem8Qo07hKgdf3GlIqRUN7qtNJ/Y613CDZISEUj6fE0XTvbkQWJA0IamNAaTlavOehO
- j0ifDhUs8NQJCVuSZVg110adLnBi86sWW/LgCSjjcj/QLYTnFKaXhqf7QUq+8ULBq79FUAdiYCU
- sVzWQ7DcPBl8x6wPA1zM+sJJgYUo4rKLxRoKoj
-X-Received: by 2002:a05:600c:470a:b0:426:6c70:dd9c with SMTP id
- 5b1f17b1804b1-429dd26c28bmr25953535e9.31.1723653879259; 
- Wed, 14 Aug 2024 09:44:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLK25T3TX32NzfACVHi4J3OUHHKlIW6rN0P5THW5SH5iECctRz2B/V+p2SM+0SXdAmD7JXnw==
-X-Received: by 2002:a05:600c:470a:b0:426:6c70:dd9c with SMTP id
- 5b1f17b1804b1-429dd26c28bmr25953315e9.31.1723653878702; 
- Wed, 14 Aug 2024 09:44:38 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
+ d=1e100.net; s=20230601; t=1723655524; x=1724260324;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Htp/8g1R2z3d38RDUYPogVSSaWK2pqHvMB0hVXVdWXw=;
+ b=ErRXZ/RBZ35bP0LMJlJHKXmP/uSrogu9BpYt9SrwmiWe6pyDZtaItPPoDlvfAWvXZ3
+ ++58JVo8zmXZjYl9aeXlKXhvOmlFk9j+phDoxXWSSt4yTeW6jHR954MBadK0roei00mC
+ TVxPM22J4zu9e4X2bW6PNFYgmUNxEQnkdfQsQAUTYqaAMkBxJzBUXxLGDq/J+r7gb2GB
+ QdseVCs5KtJsDzJiNcOGgVVo4YoLfzD5Edv0XG64m44hybqF6SzOKzLMAB1pLG0LIK7B
+ mZ8q2G7wbVbAdY4o8rNNV+Vy+ynp3c1X2LuZzyBRJGfGTowRTLPtrRNIPWyrHHLO9+VB
+ 7oWQ==
+X-Gm-Message-State: AOJu0YyGIqFsbgQ8Bt1BHRWPimzbPG9Fa6XODfluL2rbA/DqjoOt+dP/
+ 7HRaNjbaLv7lKQiBGQK3R1/hZTnLzFvRfpWsXat+9uIKMyLUfoOiXG2rT/29FrLs5IDWN/LmJC0
+ IO0M=
+X-Google-Smtp-Source: AGHT+IETPkjiP32R23n1L+lgXiz7FUq2+2pRy2MPK5HVKPfPEe+6AsVieMnKEKbFzsWCaeqABPMWfw==
+X-Received: by 2002:a17:903:2446:b0:200:9535:cf13 with SMTP id
+ d9443c01a7336-201d6393a5cmr43674185ad.1.1723655523921; 
+ Wed, 14 Aug 2024 10:12:03 -0700 (PDT)
+Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37184283603sm450136f8f.73.2024.08.14.09.44.35
+ d9443c01a7336-201cd1c8783sm31813895ad.245.2024.08.14.10.12.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 09:44:35 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ Wed, 14 Aug 2024 10:12:03 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anthony Harivel <aharivel@redhat.com>
-Subject: [PULL 1/1] target/i386: Fix arguments for vmsr_read_thread_stat()
-Date: Wed, 14 Aug 2024 18:44:32 +0200
-Message-ID: <20240814164432.271179-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240814164432.271179-1-pbonzini@redhat.com>
-References: <20240814164432.271179-1-pbonzini@redhat.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 0/4] build qemu with gcc and tsan
+Date: Wed, 14 Aug 2024 10:11:48 -0700
+Message-Id: <20240814171152.575634-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.135,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,45 +100,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anthony Harivel <aharivel@redhat.com>
+While working on a concurrency bug, I gave a try to tsan builds for QEMU. I
+noticed it didn't build out of the box with recent gcc, so I fixed compilation.
+In more, updated documentation to explain how to build a sanitized glib to avoid
+false positives related to glib synchronisation primitives.
 
-Snapshot of the stat utime and stime for each thread, taken before and
-after the pause, must be stored in separate locations
+Pierrick Bouvier (4):
+  meson: hide tsan related warnings
+  target/i386: fix build warning (gcc-12 -fsanitize=thread)
+  target/s390x: fix build warning (gcc-12 -fsanitize=thread)
+  docs/devel: update tsan build documentation
 
-Signed-off-by: Anthony Harivel <aharivel@redhat.com>
-Link: https://lore.kernel.org/r/20240807124320.1741124-2-aharivel@redhat.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/kvm/kvm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ docs/devel/testing.rst       | 26 ++++++++++++++++++++++----
+ meson.build                  | 10 +++++++++-
+ target/i386/kvm/kvm.c        |  4 ++--
+ target/s390x/tcg/translate.c |  1 -
+ 4 files changed, 33 insertions(+), 8 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 31f149c9902..2fa88ef1e37 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2712,8 +2712,8 @@ static void *kvm_msr_energy_thread(void *data)
-             thd_stat[i].thread_id = thread_ids[i];
-             vmsr_read_thread_stat(vmsr->pid,
-                                   thd_stat[i].thread_id,
--                                  thd_stat[i].utime,
--                                  thd_stat[i].stime,
-+                                  &thd_stat[i].utime[0],
-+                                  &thd_stat[i].stime[0],
-                                   &thd_stat[i].cpu_id);
-             thd_stat[i].pkg_id =
-                 vmsr_get_physical_package_id(thd_stat[i].cpu_id);
-@@ -2777,8 +2777,8 @@ static void *kvm_msr_energy_thread(void *data)
-         for (int i = 0; i < num_threads; i++) {
-             vmsr_read_thread_stat(vmsr->pid,
-                                   thd_stat[i].thread_id,
--                                  thd_stat[i].utime,
--                                  thd_stat[i].stime,
-+                                  &thd_stat[i].utime[1],
-+                                  &thd_stat[i].stime[1],
-                                   &thd_stat[i].cpu_id);
- 
-             if (vmsr->pid < 0) {
 -- 
-2.46.0
+2.39.2
 
 
