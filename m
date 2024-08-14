@@ -2,91 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5A19520C4
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 19:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 688FA9520DB
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 19:15:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seHXm-0000Pe-Sz; Wed, 14 Aug 2024 13:12:20 -0400
+	id 1seHan-0003lj-3A; Wed, 14 Aug 2024 13:15:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seHXg-0000BP-Qs
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 13:12:14 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seHXe-0006DL-CI
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 13:12:12 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-201d6ac1426so646545ad.1
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 10:12:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723655529; x=1724260329; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cUn79WU14zqlH0c8ZH40FfQUSvZAWtp5MDwWi4t6xwQ=;
- b=JmphD9tMByaiGwa4V/M0iw0DqnZtFtQr1qGtn8E/v7q/7BFiGheQKVwirWqz82DW6H
- sFbl2ivpjGLLiiseWjDklVHJ9ofD+DpXtyK0TGNZXfJATtdugo7i+sqTajoNlJJ6QBGK
- HwBbZNoHdUzLc6DBdFWeq+FV6p6FiU4HDM08Zq4GL9jhvMRWhKRpgJqblazeb8oJi0w1
- k1jo6r9PqakI9qcYCfFkwiCcL/fr/ZemnaPZQONAO26kjYMJxSI1VYa85tcYc6/tqrKc
- JBLHoMu9e5tBWkhWLAgKMZFFBpRLhINBEVOmlOc9MxJrHfZ1yxRTH3iOvNmDwphGBn8M
- iHFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723655529; x=1724260329;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cUn79WU14zqlH0c8ZH40FfQUSvZAWtp5MDwWi4t6xwQ=;
- b=Q6nQbZ5uGKJOM3JbRoWXCMRl1Tny+TH9rmxBHKElVNZB8aK1BBcuLfQsAOiXo+L6ZV
- bXB3Ggb4dEDf54EGiMQgVac05DNgW+nKHFbwtZ/IScP76qEmOSwjLn0dXF1tTNrdlNYd
- wzdeacxx8Eangj26anAn0YuEoXAfJYZL58ttDDjkzKltP4KGusRmLT7EMwNfWwK/FibF
- BTuW/YMdyM4rIvGY9UwoXjIFB/JVf/mWewlnZ4gwVSZJPRhzV3DDZW9Nnxt3heQ1KyDl
- uQTtko4K3fCNK/eB1kvE0mUSgGGolTfPwgVOFnRA1KYw6SQACKm6qXXpQsRH8v6DxH7r
- VtpQ==
-X-Gm-Message-State: AOJu0YzaevXKnpmA8xWL+20ZPLzoEuoPE4KW2rS/ugXvfSjtmRpoVBV+
- U4kliRMh6FiYKFh+Ut3VC2fm0gZHy28qnJH482+E6LfM73Del0B0a5wwhiya4UGc7gbyB+randj
- YT0s=
-X-Google-Smtp-Source: AGHT+IF+qUN2vveY66Ij/WyYMf+GIVFkloNhj3V93djFOJp9OQYrH4QfFyL2zD6FZH+F77yZjz45FQ==
-X-Received: by 2002:a17:903:11c8:b0:1ff:49c:1562 with SMTP id
- d9443c01a7336-201d64d8afcmr37992915ad.56.1723655528927; 
- Wed, 14 Aug 2024 10:12:08 -0700 (PDT)
-Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201cd1c8783sm31813895ad.245.2024.08.14.10.12.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 10:12:08 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 4/4] docs/devel: update tsan build documentation
-Date: Wed, 14 Aug 2024 10:11:52 -0700
-Message-Id: <20240814171152.575634-5-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240814171152.575634-1-pierrick.bouvier@linaro.org>
-References: <20240814171152.575634-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1seHag-0003Uj-AQ; Wed, 14 Aug 2024 13:15:18 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1seHad-00076M-Cj; Wed, 14 Aug 2024 13:15:17 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 65DF861B24;
+ Wed, 14 Aug 2024 17:15:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345F8C4AF0F;
+ Wed, 14 Aug 2024 17:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1723655713;
+ bh=CNLvWdFSpWetfnrk3/sCACP6QDOdIi1nd9Px9y/UFMs=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=TfzfbRKD9wGn4D9M8fk4CCETgUFtL32SrbiMFdKE23lCkGfwf1rDw55LhbzMvFBrT
+ EgdUBKJ3s6013h0AiFvGZ31h4DL306mX7ipmx/kgLFP+FXQUhBZPEPKzTZoqRpTYXm
+ kvNM4Fuo6gi+MmF1P9/KaxhpzPiqjTREwkdgbSP+R+YYswCBTfT3YfjQGRsfQyKZ0d
+ g8WdX2pvpPsNS5K8lwY5VjMoG/rkLf+fQadbaz9t7//pKNCKrAy9ltNyfxcy+fh+6v
+ ojvvVZN6XlBObYLsOXrzEBX25z9bdqs7K7PLsJ75lbXZ8IasDPqo7L78Oi7XSlpBAY
+ vCucE9LlzDM1Q==
+Date: Wed, 14 Aug 2024 19:15:06 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Eric Blake <eblake@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, <linux-kernel@vger.kernel.org>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v7 04/10] qapi/acpi-hest: add an interface to do generic
+ CPER error injection
+Message-ID: <20240814191506.21894ac7@foz.lan>
+In-Reply-To: <20240814145322.00002dcb@Huawei.com>
+References: <cover.1723591201.git.mchehab+huawei@kernel.org>
+ <c44e6c39e6cf95a738999b721cdf71e4887258a9.1723591201.git.mchehab+huawei@kernel.org>
+ <20240814145322.00002dcb@Huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.135,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,60 +76,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mention it's now possible to build with gcc, instead of clang, and
-explain how to build a sanitized glib version.
----
- docs/devel/testing.rst | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+Em Wed, 14 Aug 2024 14:53:22 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
 
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index af73d3d64fb..f10cfc3f786 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -634,20 +634,38 @@ Building and Testing with TSan
- It is possible to build and test with TSan, with a few additional steps.
- These steps are normally done automatically in the docker.
- 
--There is a one time patch needed in clang-9 or clang-10 at this time:
-+TSan is supported for clang and gcc.
-+One particularity of sanitizers is that all the code, including shared objects
-+dependencies, should be built with it.
-+In the case of TSan, any synchronization primitive from glib (GMutex for
-+instance) will not be recognized, and will lead to false positives.
-+
-+To build a tsan version of glib:
- 
- .. code::
- 
--  sed -i 's/^const/static const/g' \
--      /usr/lib/llvm-10/lib/clang/10.0.0/include/sanitizer/tsan_interface.h
-+   $ git clone --depth=1 --branch=2.81.0 https://github.com/GNOME/glib.git
-+   $ cd glib
-+   $ CFLAGS="-O2 -g -fsanitize=thread" meson build
-+   $ ninja -C build
- 
- To configure the build for TSan:
- 
- .. code::
- 
--  ../configure --enable-tsan --cc=clang-10 --cxx=clang++-10 \
-+  ../configure --enable-tsan \
-                --disable-werror --extra-cflags="-O0"
- 
-+When executing qemu, don't forget to point to tsan glib:
-+
-+.. code::
-+
-+   $ glib_dir=/path/to/glib
-+   $ export LD_LIBRARY_PATH=$glib_dir/build/gio:$glib_dir/build/glib:$glib_dir/build/gmodule:$glib_dir/build/gobject:$glib_dir/build/gthread
-+   # check correct version is used
-+   $ ldd build/qemu-x86_64 | grep glib
-+   $ qemu-system-x86_64 ...
-+
- The runtime behavior of TSAN is controlled by the TSAN_OPTIONS environment
- variable.
- 
--- 
-2.39.2
+> On Wed, 14 Aug 2024 01:23:26 +0200
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> 
+> > Creates a QMP command to be used for generic ACPI APEI hardware error
+> > injection (HEST) via GHESv2.
+> > 
+> > The actual GHES code will be added at the followup patch.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> 
+> A few trivial things from a quick glance at this
+> (to remind myself of how this fits together).
+> 
+> > diff --git a/hw/acpi/Kconfig b/hw/acpi/Kconfig
+> > index e07d3204eb36..73ffbb82c150 100644
+> > --- a/hw/acpi/Kconfig
+> > +++ b/hw/acpi/Kconfig
+> > @@ -51,6 +51,11 @@ config ACPI_APEI
+> >      bool
+> >      depends on ACPI
+> >  
+> > +config GHES_CPER
+> > +    bool
+> > +    depends on ACPI_APEI
+> > +    default y
+> > +
+> >  config ACPI_PCI
+> >      bool
+> >      depends on ACPI && PCI
+> > diff --git a/hw/acpi/ghes_cper.c b/hw/acpi/ghes_cper.c
+> > new file mode 100644
+> > index 000000000000..92ca84d738de
+> > --- /dev/null
+> > +++ b/hw/acpi/ghes_cper.c
+> > @@ -0,0 +1,33 @@  
+> 
+> > +#include "qapi/qapi-commands-acpi-hest.h"
+> > +#include "hw/acpi/ghes.h"
+> > +
+> > +void qmp_ghes_cper(const char *qmp_cper,
+> > +                   Error **errp)  
 
+Heh, with all code changes, this is not a lot simpler than before ;-)
+
+I'll address it on a next spin.
+
+> That's a very short line wrap.
+> 
+> > +{
+> > +
+> > +    uint8_t *cper;
+> > +    size_t  len;
+> > +
+> > +    cper = qbase64_decode(qmp_cper, -1, &len, errp);
+> > +    if (!cper) {
+> > +        error_setg(errp, "missing GHES CPER payload");
+> > +        return;
+> > +    }
+> > +
+> > +    /* TODO: call a function at ghes */
+> > +}  
+> 
+> > diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+> > index 419a97d5cbd9..99d12d69c864 100644
+> > --- a/include/hw/acpi/ghes.h
+> > +++ b/include/hw/acpi/ghes.h
+> > @@ -23,6 +23,7 @@
+> >  #define ACPI_GHES_H
+> >  
+> >  #include "hw/acpi/bios-linker-loader.h"
+> > +#include "qapi/error.h"  
+> Odd to have an include added with no other changes in file?
+> Wrong patch maybe?  Or should it be included by a c file instead?
+
+Removing it would cause a compilation breakage. It might be moved
+to a c file, but patch 5/10 requires it at ghes.h, as it adds
+this to ghes.h:
+
+	void ghes_record_cper_errors(uint8_t *cper, size_t len,
+        	                     enum AcpiGhesNotifyType notify,Error **errp);
+
+So, instead of poking around moving this to/from .c/.h, I opted to
+place it on its final place.
+
+> >  #include "qemu/notify.h"
+> >  
+> >  extern NotifierList acpi_generic_error_notifiers;
+> > diff --git a/qapi/acpi-hest.json b/qapi/acpi-hest.json  
+> 
+> 
+
+
+
+Thanks,
+Mauro
 
