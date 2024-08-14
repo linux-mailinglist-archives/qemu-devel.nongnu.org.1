@@ -2,109 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33BB952610
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 00:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2EA95263E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 01:38:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seMwC-0001J3-SI; Wed, 14 Aug 2024 18:57:52 -0400
+	id 1seNY5-0001fL-Bn; Wed, 14 Aug 2024 19:37:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1seMwA-0001Gz-50; Wed, 14 Aug 2024 18:57:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1seMw8-00015B-18; Wed, 14 Aug 2024 18:57:49 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47EHtNxv013013;
- Wed, 14 Aug 2024 22:57:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- R4rBzep3wt8cwF8iJPcpyPemhVqeacKhVyDXdn6hDLY=; b=tW5yhGUlNLsMKxnx
- iAGkV7fI2TRQ2u9plrjMlmK558/vzkX8m9+QtV4H6VsOE6m9yzWOmbD6la434cdP
- pXd9XhwMVA2619gzVu9j8xjOtOrbgvTovEbdTPFuWVtLlzTtUgRFw/fjhGZeZ/D7
- alyHhpSQXQ60YTHUA5JuN4Gjgkb8RY7CrEVghgqvsClXEt/xD1q/0rbEeYdcD+C0
- +rDi7NYdeD3uvr2Sz+prKgBSEBX4T9nG/ErFRlG9MJ26sqqccP6AApApxQr05ZA+
- rDPxJXRCtTgOVNy2ssinzVGA2sdRQ0ez3KhP1H1eF3UI1qfcjKf+HlCpJ9Ri3sfN
- 7HMMIA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4111d693kq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Aug 2024 22:57:43 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47EMurnq012331;
- Wed, 14 Aug 2024 22:57:42 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4111d693kh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Aug 2024 22:57:42 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 47EJe93x010088; Wed, 14 Aug 2024 22:57:41 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40xjx0uyr3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Aug 2024 22:57:41 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 47EMvb9M53674384
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Aug 2024 22:57:39 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 447FB20043;
- Wed, 14 Aug 2024 22:57:37 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 76E2A20040;
- Wed, 14 Aug 2024 22:57:36 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.152.108.100])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 Aug 2024 22:57:36 +0000 (GMT)
-Message-ID: <e7478b1e0116882c5cbbff61fac5f2221841877c.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 3/4] target/s390x: fix build warning (gcc-12
- -fsanitize=thread)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Beraldo Leal <bleal@redhat.com>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Paolo
- Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Wainer dos Santos
- Moschetta <wainersm@redhat.com>, qemu-s390x@nongnu.org, "Daniel P."
- =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Alex =?ISO-8859-1?Q?Benn=E9e?=
- <alex.bennee@linaro.org>
-Date: Thu, 15 Aug 2024 00:57:35 +0200
-In-Reply-To: <20240814224132.897098-4-pierrick.bouvier@linaro.org>
-References: <20240814224132.897098-1-pierrick.bouvier@linaro.org>
- <20240814224132.897098-4-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1seNY2-0001cK-Gg
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:36:58 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1seNY0-0006Vn-Jl
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:36:58 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-710dc3015bfso273251b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 16:36:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723678614; x=1724283414; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IGS4bdB+9eTz8vEajfbjLybPSF9As7459mfj2MYdVLM=;
+ b=U/VEeuU4kqeH3Uo1QavS0a3UtqFvyF+3BPyRpdA3667GnkbL9HWYCll4IxxgB01/NB
+ DQaEaugOfWqQXf4zNYB6DsOHY4qPXqdqbBYP/mVEUueRYtPPh4oT5fSO8O2X5oQeniy3
+ +snXcnMKfrwViDU83fAKHlOkLFp8Uwag8YW2GQ+4YEaCNnrJ4e8ARNnHKwAxB39QSfNZ
+ Yab/aejCXDGW1rG/xpC4ShL3Cw23awvOBjE3md03i81TnHEb0sb1KHOCYCVZQ8VTvsva
+ k8RX/tsytHIKnHVnlU3G9DqyEIgkUDKN8PeQNGYj6ZkNq9kqdk97XT3GUgNS1sQ45jIJ
+ le7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723678614; x=1724283414;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IGS4bdB+9eTz8vEajfbjLybPSF9As7459mfj2MYdVLM=;
+ b=A6Y2SYxBmcGi1d/i4+3I4WJnXgRJtoa/UO/g7BH34GYZx8kVkmzKC7uBc/MGpZWpjQ
+ 2HEhFfi94+pnTUpep5QCosmmDf5s3j3JIDACwfElTl0NA4b/zIqjE+KXVM/Q9dy694nS
+ f1sOac+R9ajS9PLFTWhR8ZwqFL3KMmhY7BEYt4tsRahk3/BKW4FHncFVLSt7AjRo8EJt
+ mxx0ARsMPtuley62LQZN6F7sVBQn5JAzg3TPu0GgDfM9cJb9ceTk2eU+e3IZCt644kNi
+ yEI2q/By5CXXim963cAESjjU4otQR1nOcRih8Owt9p2Jocz/mX9Tj6v+2bEJxiz//Tdz
+ 9FUg==
+X-Gm-Message-State: AOJu0YxQNqMAuIkjwBl1BDYJ9X4vsJuW7YhDrHUBwYweKJVK/gBvj5xz
+ wwTwSPK4Na+ZnnZhRJ0lGPk38FlTgt6pCqtfgquvsoBHTu/OtMW9esXl8RddvDzDSHa4eE8JhFU
+ prhg=
+X-Google-Smtp-Source: AGHT+IH7wecuekXYjvlhhCkSj2GHQkSQ7yLoM80iPnOzvTYZB78x4u0hbyvDI9YVJ32U6JgY4ZB6PQ==
+X-Received: by 2002:a05:6a00:6f14:b0:70d:2e89:de2b with SMTP id
+ d2e1a72fcca58-71276efcab5mr2243861b3a.4.1723678614548; 
+ Wed, 14 Aug 2024 16:36:54 -0700 (PDT)
+Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7127aef57dfsm112164b3a.115.2024.08.14.16.36.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Aug 2024 16:36:54 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/6] build contrib/plugins using meson
+Date: Wed, 14 Aug 2024 16:36:39 -0700
+Message-Id: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AuD4AOgyxvUz_qqmdMkzwrQKCGm8U92K
-X-Proofpoint-ORIG-GUID: tiqy8AfNNfwo-eIdKn9mriTFTZZj3Fqg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-14_18,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=841 phishscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 adultscore=0
- bulkscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408140157
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,16 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-08-14 at 15:41 -0700, Pierrick Bouvier wrote:
-> Found on debian stable.
->=20
-> ../target/s390x/tcg/translate.c: In function =E2=80=98get_mem_index=E2=80=
-=99:
-> ../target/s390x/tcg/translate.c:398:1: error: control reaches end of
-> non-void function [-Werror=3Dreturn-type]
-> =C2=A0 398 | }
->=20
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Contrib plugins have been built out of tree so far, thanks to a Makefile.
+However, it is quite inconvenient for maintenance, as we may break them,
+especially for specific architectures.
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+First patches are fixing warnings for existing plugins, then we add meson
+support, and finally, we remove Makefile for contrib/plugins.
+
+Based on the proposal of Anton Kochkov on associated gitlab issue.
+Solves: https://gitlab.com/qemu-project/qemu/-/issues/1710
+
+Pierrick Bouvier (6):
+  contrib/plugins/execlog: fix warning
+  contrib/plugins/cache: fix warning when compiling on 32bits host
+  contrib/plugins/hwprofile: fix warning when compiling on 32bits host
+  contrib/plugins/hotblocks: fix warning when compiling on 32bits host
+  meson: build contrib/plugins with meson
+  contrib/plugins: remove Makefile for contrib/plugins
+
+ configure                   | 18 --------
+ Makefile                    | 10 -----
+ meson.build                 |  4 ++
+ contrib/plugins/cache.c     |  6 +--
+ contrib/plugins/execlog.c   |  4 +-
+ contrib/plugins/hotblocks.c |  4 +-
+ contrib/plugins/hwprofile.c |  9 ++--
+ contrib/plugins/Makefile    | 85 -------------------------------------
+ contrib/plugins/meson.build | 23 ++++++++++
+ 9 files changed, 39 insertions(+), 124 deletions(-)
+ delete mode 100644 contrib/plugins/Makefile
+ create mode 100644 contrib/plugins/meson.build
+
+-- 
+2.39.2
+
 
