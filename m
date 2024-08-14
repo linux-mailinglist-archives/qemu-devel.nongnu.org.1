@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2B19521E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 20:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A14A9521E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 20:17:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seIXQ-0005Lr-Ji; Wed, 14 Aug 2024 14:16:00 -0400
+	id 1seIXT-0005Om-3S; Wed, 14 Aug 2024 14:16:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1seIXK-0005Bd-Gd; Wed, 14 Aug 2024 14:15:55 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1seIXL-0005CF-Iu; Wed, 14 Aug 2024 14:15:55 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1seIXI-0000BN-97; Wed, 14 Aug 2024 14:15:53 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3684eb5be64so103093f8f.3; 
- Wed, 14 Aug 2024 11:15:50 -0700 (PDT)
+ id 1seIXJ-0000Bq-Lj; Wed, 14 Aug 2024 14:15:55 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-367963ea053so123367f8f.2; 
+ Wed, 14 Aug 2024 11:15:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723659348; x=1724264148; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1723659351; x=1724264151; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PSWabqmMSPNuyrCef/bxoDt40mO7++0ig/XfeMli7rs=;
- b=K/RIqLPPVRaeXy2AXy+bvt8DVp4vVI5W8VMc76b15oqN1Ir4QvN5JjbWaZBkflghXM
- wGFaNikDCrd+p7AMQ+t0w1NrX4PRanFhwWgVBZ7GoYglgaIozJtFqMi50n6g6Kx+v4wH
- novMUncD3Opy8Suj2ciWg9F/q4RNhZyteZk32NUAXgNNNe5tjAU643gImCUfHMNvQel4
- HITct7IYjKKsweG4hk9FIoTUr842EcYR0RRauiPgzkAY+RyL79ui3+La2e0ZbV++a4GN
- sYsmU/pbQKekjuOTQINups2BR6dx7nef2bNQuIH4hpnx7vAbJhrzw/pk/ixN0gU1MwmK
- X7Mg==
+ bh=pgBwQcTsY5kig6ob6QbX8yg1wENWhX6GNFsHsRJ5hkg=;
+ b=geKisHJU+JXMwAG6C4BTlrnuawxFB9ezTbXMCKR1WUz4aKGrOuR4wwPGvTsIYolqAP
+ yK097NWXc6fdGzZN4/N+/v1z5gdGcafhURNVAaFwVz73X6wlv3QEX8IMhuI9Ta/EfAUU
+ Rh07XJOOgGYNyRKvCUHwNgED2wF8yPRf08jCQVKSYF/Yk6FUqLV8CtGRufT3JVZnOz9r
+ JzUCIEIWsECq+jEEoOKW8IvBO3Y/+2/LUqaBFRvtmf8zp4/Aj1PeLBdyyT0G5D7eCdF0
+ Rmst1Qc4/yLGLoxFsmpGnEAAw7zN0RgwNypH5u/09JTipwCpGsnnr6ZlUBS05DINfm2m
+ hpUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723659348; x=1724264148;
+ d=1e100.net; s=20230601; t=1723659351; x=1724264151;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PSWabqmMSPNuyrCef/bxoDt40mO7++0ig/XfeMli7rs=;
- b=Zel5S9nkOnSeGwUyBnegPGBldBCpAmMm+xOzrkmY85HVI9GGKLO6UpJ677dCb4AFeW
- l3Ax8CEmLi1N7OvcxB21sWPOuJ+2XNyPUXqlFG0DlFLDr1WVcHjI1TRMflk4NIWg/ghq
- 98K2M7E42VcAbuGJmeL3aAmlMsPvxt3p4eRpchkTV+tB53rjaMIlTd41Nw+ym0/QgHVE
- Kw7pqw68QcTnmlxWHzWLEPuyNI3ubc8oz6sEz5OlX3qnI292LDVM/r4H7wQhnMh+AvwU
- YISf5uOxPb40oj13ZYXxBjY9KUifYBsS7lUd6VrO6uomHaouc+JL3KgIxPdRK1/PbOdX
- +29A==
+ bh=pgBwQcTsY5kig6ob6QbX8yg1wENWhX6GNFsHsRJ5hkg=;
+ b=VoRQgn9nrFWIbiOctRkoP0Lqw5d8C14WC52fmAweW4w/hrfi4SCJj0PEjjP8zkUuxF
+ tLFnWEggtLZKwbNYvKN+qO7xkms3x4ueFWc49bYfxqAzsns6yeg29BhIPwFAbi3igPkr
+ J7mPkvacrhWzxi/ElWB74i3BDRjVRUVNsXH9XyXT11QI6nE65yr2xqxkGNU/5rBQrR5o
+ MYp5qzx/W0+z58qSZkFo0tb5eXIdMKYahqHfN2dU6/naT+L5GtLoAAahC2z1J4H5ri9u
+ gnhLHmWYXNSmulYNwlOV1qjscK95WcPG+qv2Up+45PSM60w3Z3n5oQN4c2pnyLO41g0x
+ MAfQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUdcEW+yQFFUyNFp0JnsD+4e1o9fHmbCNOVt73rTFy2DP8ZhbAa6WUqY/BJMlR0ZpNwnh643tiC5l4UJkDnL9gFRQHOyAbec4qalb5MT1HWcqlcNpRGKNXXblifLE6kP8Y3gXzmKiW4dfrrSyU3dZI=
-X-Gm-Message-State: AOJu0YxqyNoJVpOuYZZRlZ//Fzyiy0EtImoR4RD3ekd/mQHesOGr8+jN
- K0KK/VUMKwbw18o2tvdfaIeZdr8cgbuR4nUwkHGa/ZpS+MUji9FSLVtbpA==
-X-Google-Smtp-Source: AGHT+IEQP6rxpvHVq+oPpo9q52svzEbTT12R6XzH+X2rh299C3bfP2GCBDmvxyE0csH+CCYP3zQ/SA==
-X-Received: by 2002:a05:6000:1a48:b0:367:96a8:d94b with SMTP id
- ffacd0b85a97d-37177820468mr2101517f8f.57.1723659348381; 
- Wed, 14 Aug 2024 11:15:48 -0700 (PDT)
+ AJvYcCWHFUsAoeSgS89RMqKyHIk2q6H+WCeoTpUog+hMfJzJHUrDK0kRuQQuCztxzwuDnl77V1dGYKUgxAgJpTA7u2n4+G7Ol1xgK4Fu1DsbI2fyNboHIB9VEyGrF93WIkHXY2n+FA3X7aDOW4yhxMEG3h8=
+X-Gm-Message-State: AOJu0YysjUwqvfj5R2yiEdxTnq/sU0eoTZSmugCYZLZbb/V6HB+xmKDr
+ yQhhZWANcTzQaz8u7BqsXkAS1hElbVgShSJKUBDu7R/r/DzPv6SrBuQrUA==
+X-Google-Smtp-Source: AGHT+IFX9LTvjT3b7ve5IYdfE3ktHjzApsErplWUB3VfLFvs2c4uwvRGIPQi/aciDQ8IYA5f6LLZ3A==
+X-Received: by 2002:adf:f4cf:0:b0:371:869b:4e5e with SMTP id
+ ffacd0b85a97d-371869b4f83mr478621f8f.1.1723659350403; 
+ Wed, 14 Aug 2024 11:15:50 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-078-055-049-243.78.55.pool.telefonica.de. [78.55.49.243])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36e4c937bb9sm13557625f8f.34.2024.08.14.11.15.46
+ ffacd0b85a97d-36e4c937bb9sm13557625f8f.34.2024.08.14.11.15.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 11:15:48 -0700 (PDT)
+ Wed, 14 Aug 2024 11:15:50 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
@@ -96,16 +96,16 @@ Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  qemu-riscv@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Song Gao <gaosong@loongson.cn>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 1/5] hw: Remove unused inclusion of hw/char/serial.h
-Date: Wed, 14 Aug 2024 20:15:30 +0200
-Message-ID: <20240814181534.218964-2-shentey@gmail.com>
+Subject: [PATCH 2/5] hw/char/serial: Remove unused funtion
+Date: Wed, 14 Aug 2024 20:15:31 +0200
+Message-ID: <20240814181534.218964-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240814181534.218964-1-shentey@gmail.com>
 References: <20240814181534.218964-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -128,62 +128,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The serial port's frequency is set via the "baudbase" property nowadays.
+
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/char/riscv_htif.c | 1 -
- hw/ppc/prep.c        | 1 -
- hw/riscv/sifive_e.c  | 1 -
- hw/riscv/sifive_u.c  | 1 -
- 4 files changed, 4 deletions(-)
+ include/hw/char/serial.h | 2 --
+ hw/char/serial.c         | 7 -------
+ 2 files changed, 9 deletions(-)
 
-diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
-index 9bef60def1..54fd55c3e6 100644
---- a/hw/char/riscv_htif.c
-+++ b/hw/char/riscv_htif.c
-@@ -24,7 +24,6 @@
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "hw/char/riscv_htif.h"
--#include "hw/char/serial.h"
- #include "chardev/char.h"
- #include "chardev/char-fe.h"
- #include "qemu/timer.h"
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 4eb5477069..fb58c312ac 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -25,7 +25,6 @@
+diff --git a/include/hw/char/serial.h b/include/hw/char/serial.h
+index 6e14099ee7..40aad21df3 100644
+--- a/include/hw/char/serial.h
++++ b/include/hw/char/serial.h
+@@ -93,8 +93,6 @@ struct SerialMM {
+ extern const VMStateDescription vmstate_serial;
+ extern const MemoryRegionOps serial_io_ops;
  
- #include "qemu/osdep.h"
- #include "hw/rtc/m48t59.h"
--#include "hw/char/serial.h"
- #include "hw/block/fdc.h"
- #include "net/net.h"
- #include "hw/isa/isa.h"
-diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
-index 87d9602383..5a1959f2a9 100644
---- a/hw/riscv/sifive_e.c
-+++ b/hw/riscv/sifive_e.c
-@@ -35,7 +35,6 @@
- #include "hw/boards.h"
- #include "hw/loader.h"
- #include "hw/sysbus.h"
--#include "hw/char/serial.h"
- #include "hw/misc/unimp.h"
- #include "target/riscv/cpu.h"
- #include "hw/riscv/riscv_hart.h"
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index af5f923f54..efc8443c84 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -43,7 +43,6 @@
- #include "hw/irq.h"
- #include "hw/loader.h"
- #include "hw/sysbus.h"
--#include "hw/char/serial.h"
- #include "hw/cpu/cluster.h"
- #include "hw/misc/unimp.h"
- #include "hw/sd/sd.h"
+-void serial_set_frequency(SerialState *s, uint32_t frequency);
+-
+ #define TYPE_SERIAL "serial"
+ OBJECT_DECLARE_SIMPLE_TYPE(SerialState, SERIAL)
+ 
+diff --git a/hw/char/serial.c b/hw/char/serial.c
+index d8b2db5082..6c5c4a23c7 100644
+--- a/hw/char/serial.c
++++ b/hw/char/serial.c
+@@ -951,13 +951,6 @@ static void serial_unrealize(DeviceState *dev)
+     qemu_unregister_reset(serial_reset, s);
+ }
+ 
+-/* Change the main reference oscillator frequency. */
+-void serial_set_frequency(SerialState *s, uint32_t frequency)
+-{
+-    s->baudbase = frequency;
+-    serial_update_parameters(s);
+-}
+-
+ const MemoryRegionOps serial_io_ops = {
+     .read = serial_ioport_read,
+     .write = serial_ioport_write,
 -- 
 2.46.0
 
