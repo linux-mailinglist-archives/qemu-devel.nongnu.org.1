@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7778595263D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 01:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96661952640
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 01:38:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seNY6-0001kV-Mg; Wed, 14 Aug 2024 19:37:02 -0400
+	id 1seNYB-00023A-7b; Wed, 14 Aug 2024 19:37:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seNY5-0001hB-B2
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:01 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1seNY6-0001ki-8h
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:02 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seNY3-0006W9-Oc
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:01 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-70d18d4b94cso276342b3a.2
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 16:36:59 -0700 (PDT)
+ id 1seNY4-0006WR-Lt
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:02 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-70f5ef740b7so319819b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 16:37:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723678618; x=1724283418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723678619; x=1724283419; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OHisr3UikbRag7D0QJ33pcI9STMq6DpazTYXpbTOwMY=;
- b=HBLcCOEgy0DeFQZLiiV76slyZ9lgCegKElLLLIVNeseNl0Q+gYs9oauvw2tGIJjxmh
- od5kaI5mcalpQWoz6Z9OZIAhXNN3vQvjxbywkZoOOOPQ7xe9Swhb6bbTfO5aSELPbDpd
- DnyJG7v9GHwqoyF3mAeTRMaC8QFGnI47HGIeB8lpfj3auROc9yI8BH6TpmhDlvPsupJy
- 7z/Uy9Ny62CbxAVPDuaw33mdE6gNjXH4oVxyzy2GoV3aFZQ6sP/7vTOBwGuhqlNPUgn8
- HvZvRwtJaaWVEXpxOwESdNf98Un24oJf6HI4X+I56baF3Gaa1+n07niWKN0fPykh0vec
- 37Yg==
+ bh=bzoJvs+/ktmRvV/uludFrSeMjpPKw38xy+lGwp2LWAA=;
+ b=CqIMZho1iQIzGr/SHFL9AtS4K0w0BAfgozvIyT26wP3J+eJxtF5m/jjt/1CPhiSrRm
+ 35XlCvnFZbumzBuKYuGA3yhf12ZpuC5lvrxdYI++XzXmPqytzGrt0jJDzRmg5eu+jy6c
+ 0TLXGD5YnTp4JI3qwobtYD4LQ/k13bQ5WU6UOqpC3d3tTSiSGoS0+QzKZEnsp41aei2v
+ HlgHHW/A6cvcJ+59fOrdQLsu2KvXlHXiNjQQnn8McqPKGN2UkjHz8bXWVpWPuk1LwEV8
+ okfrsylTxNa7u9CoH4I3fE0rVK9pNvAnEk79xpO0FXpFG/Cn+shmisCAxzedYBzuv23o
+ d6IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723678618; x=1724283418;
+ d=1e100.net; s=20230601; t=1723678619; x=1724283419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OHisr3UikbRag7D0QJ33pcI9STMq6DpazTYXpbTOwMY=;
- b=vvRPne89dE5AQbmPH+bRZRXyKR0lT6IsEb4u0coXNVWO0nxHljWgsit92KhZN0wFvw
- FNt0PVC6drFhNBRK2f32V8/1a9Xxv+9w93PxYRfC8QGK43feX88KbWY7VCaxVzLu6m4W
- nErOEL3N1WCbz6qZg8jLBUrSSVoWQLu/kTUw0FzU5MKQVFRKnVxqW56tZARORr5f2ru1
- YJ8doIN4v8f4wsXBQ3iMIvdiAiGPUIH2EEyvn7WtCfZbtLaz0m8DNy9XTeCxScPOBKW+
- ZHhmucZP/FwxWdrlUGuzwO5FCHDRHpinBcrT/JYMPS94TaD7dpq9l+VUn6FxxdrRkNve
- yA4A==
-X-Gm-Message-State: AOJu0Yyg0vmenKneoAU5Axr7VP/ttzve3fi05hfK18qYpqFQVPo8OEWc
- oQ7SBPwvtxJtU+PCGL/oPy0AXLpiboSMdScKenLercIjiCHaNG7zpHSvHI7tQinKbT6Tku1qbLz
- aMk0=
-X-Google-Smtp-Source: AGHT+IHXyYUb+nK7n0KwdvSo1ZfOGSVr8GxiCN3LqPpbhOi8eh+FyIDNujNiCWlLU8tqU6H38Vfcuw==
-X-Received: by 2002:a05:6a20:6f0e:b0:1c8:92ed:7c5e with SMTP id
- adf61e73a8af0-1c8eaeb3b5emr5140262637.23.1723678618196; 
- Wed, 14 Aug 2024 16:36:58 -0700 (PDT)
+ bh=bzoJvs+/ktmRvV/uludFrSeMjpPKw38xy+lGwp2LWAA=;
+ b=L8H/DJ00/ipzbaUmNqyiaytLkFhm6zZcOTthgQhb9kHjKc42+EFZiWHzwBP31GLgZj
+ MBqWNTC5D5eoS/RMFXW49g485VtzPXdV3gFT8eL5CtcSxfLGi2CmJCOzt0fh4CI8EmcK
+ iUyhXjyF69+mKAB5wY3n2dxxEg4TxP8qDb9vRpv4JqJcqAaFlYxazhkUXmsnQNgN2kAI
+ VIEc0NQ9btHFGWXt/JpN0efsaWsVGa0M3Z6SETZQVnyJJth8PFPV1OgrW/nJgLxC71k9
+ m39Xb2UGHy+krRXKbj+ujlZMoNfVHG9T6Uz1GRXTedC9vFwUEo1WduoSxpfwcJxBil5A
+ fZag==
+X-Gm-Message-State: AOJu0Ywo4uJcrpnd44ZeNueVgJKMzRNevs3X+q3IpSa3yR9MoNZxBJwC
+ 8o2yLWe07xBGgMGuNxkapvBeBGXoX/+xiN/yY/OeKcyCTbXWNGg5R1EtV8IQ4DUMdtqZqwELE3K
+ h1gs=
+X-Google-Smtp-Source: AGHT+IEerxmprREtG28hemAszEAk+gOmixw605ol/n/naRl7+bng26g1gKIb3JJm1IVAqIZYrhQ9pg==
+X-Received: by 2002:a05:6a00:1ad1:b0:706:29e6:2ed2 with SMTP id
+ d2e1a72fcca58-712670fa392mr6336540b3a.5.1723678619237; 
+ Wed, 14 Aug 2024 16:36:59 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127aef57dfsm112164b3a.115.2024.08.14.16.36.57
+ d2e1a72fcca58-7127aef57dfsm112164b3a.115.2024.08.14.16.36.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 16:36:57 -0700 (PDT)
+ Wed, 14 Aug 2024 16:36:58 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -67,17 +67,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/6] contrib/plugins/hwprofile: fix warning when compiling on
+Subject: [PATCH 4/6] contrib/plugins/hotblocks: fix warning when compiling on
  32bits host
-Date: Wed, 14 Aug 2024 16:36:42 -0700
-Message-Id: <20240814233645.944327-4-pierrick.bouvier@linaro.org>
+Date: Wed, 14 Aug 2024 16:36:43 -0700
+Message-Id: <20240814233645.944327-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
 References: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,68 +102,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Found on debian stable (i386).
 
-../contrib/plugins/hwprofile.c: In function 'new_location':
-../contrib/plugins/hwprofile.c:172:32: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  172 |     g_hash_table_insert(table, (gpointer) off_or_pc, loc);
-      |                                ^
-../contrib/plugins/hwprofile.c: In function 'vcpu_haddr':
-../contrib/plugins/hwprofile.c:227:19: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-  227 |             off = (uint64_t) udata;
-      |                   ^
-../contrib/plugins/hwprofile.c:232:62: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  232 |                                                              (gpointer) off);
-      |                                                              ^
-../contrib/plugins/hwprofile.c: In function 'vcpu_tb_trans':
-../contrib/plugins/hwprofile.c:250:26: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  250 |         gpointer udata = (gpointer) (source ? qemu_plugin_insn_vaddr(insn) : 0);
+../contrib/plugins/hotblocks.c: In function 'vcpu_tb_trans':
+../contrib/plugins/hotblocks.c:117:56: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+  117 |     cnt = (ExecCount *) g_hash_table_lookup(hotblocks, (gconstpointer) hash);
+      |                                                        ^
+../contrib/plugins/hotblocks.c:126:40: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+  126 |         g_hash_table_insert(hotblocks, (gpointer) hash, (gpointer) cnt);
       |
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/hwprofile.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ contrib/plugins/hotblocks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/plugins/hwprofile.c b/contrib/plugins/hwprofile.c
-index 739ac0c66b5..ee94a74ad94 100644
---- a/contrib/plugins/hwprofile.c
-+++ b/contrib/plugins/hwprofile.c
-@@ -165,7 +165,7 @@ static DeviceCounts *new_count(const char *name, uint64_t base)
-     return count;
- }
- 
--static IOLocationCounts *new_location(GHashTable *table, uint64_t off_or_pc)
-+static IOLocationCounts *new_location(GHashTable *table, uintptr_t off_or_pc)
+diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
+index 02bc5078bdd..d540f1b7f0b 100644
+--- a/contrib/plugins/hotblocks.c
++++ b/contrib/plugins/hotblocks.c
+@@ -109,9 +109,9 @@ static void vcpu_tb_exec(unsigned int cpu_index, void *udata)
+ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
  {
-     IOLocationCounts *loc = g_new0(IOLocationCounts, 1);
-     loc->off_or_pc = off_or_pc;
-@@ -201,7 +201,7 @@ static void vcpu_haddr(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
-         return;
-     } else {
-         const char *name = qemu_plugin_hwaddr_device_name(hwaddr);
--        uint64_t off = qemu_plugin_hwaddr_phys_addr(hwaddr);
-+        uintptr_t off = qemu_plugin_hwaddr_phys_addr(hwaddr);
-         bool is_write = qemu_plugin_mem_is_store(meminfo);
-         DeviceCounts *counts;
+     ExecCount *cnt;
+-    uint64_t pc = qemu_plugin_tb_vaddr(tb);
++    uintptr_t pc = qemu_plugin_tb_vaddr(tb);
+     size_t insns = qemu_plugin_tb_n_insns(tb);
+-    uint64_t hash = pc ^ insns;
++    uintptr_t hash = pc ^ insns;
  
-@@ -224,7 +224,7 @@ static void vcpu_haddr(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
- 
-         /* either track offsets or source of access */
-         if (source) {
--            off = (uint64_t) udata;
-+            off = (uintptr_t) udata;
-         }
- 
-         if (pattern || source) {
-@@ -247,7 +247,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- 
-     for (i = 0; i < n; i++) {
-         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
--        gpointer udata = (gpointer) (source ? qemu_plugin_insn_vaddr(insn) : 0);
-+        gpointer udata = (gpointer) (
-+                source ? (uintptr_t) qemu_plugin_insn_vaddr(insn) : 0);
-         qemu_plugin_register_vcpu_mem_cb(insn, vcpu_haddr,
-                                          QEMU_PLUGIN_CB_NO_REGS,
-                                          rw, udata);
+     g_mutex_lock(&lock);
+     cnt = (ExecCount *) g_hash_table_lookup(hotblocks, (gconstpointer) hash);
 -- 
 2.39.2
 
