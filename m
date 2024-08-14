@@ -2,76 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD7A9516DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFE0951695
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1se9bl-0000ez-66; Wed, 14 Aug 2024 04:43:53 -0400
+	id 1se9Nw-0001E0-T5; Wed, 14 Aug 2024 04:29:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5956f96c7e=ian.brockbank@cirrus.com>)
- id 1se9bh-0000NT-6v; Wed, 14 Aug 2024 04:43:49 -0400
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5956f96c7e=ian.brockbank@cirrus.com>)
- id 1se9bf-0005zY-8F; Wed, 14 Aug 2024 04:43:48 -0400
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
- by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47E4gOKg023234;
- Wed, 14 Aug 2024 03:43:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- PODMain02222019; bh=BpG6B539a4OdKFkJyo/rvorQIsMi6L/7XRdL6Y07Hh4=; b=
- KfGsboNnHwMBUlW2RBcDnbk+3M3rzVnrRe5zbJ60W+Vsbp5HLtbyoxwFU7MXJKc9
- uPTxOkuCvW9O7s26vW4l8+hTloXV8r4IFdEr/lG+9DZBpsnMNnDHbn7q3XldRaR7
- 3TLT8fZerF2Vxl7a+Gft3R3Fk0hkwf/lh/yHAzFxNXUiABR0c5CuoRqx7JR6pVZU
- g9azXzRV/vGx85oWYNcfHcVCVWVP1jQAIq7zKlgysA7F8yKDO2tClUxIwWJf2dRX
- T4dm3R/4sqeATI7U7/o3CTOSdAynC0m8pJDmn0SaE+k2aoUfu71lGe0catFECT28
- mZjCADTDGNal75l0CxQHZQ==
-Received: from ausex02.ad.cirrus.com ([141.131.3.21])
- by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 40x4mhmb8r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Aug 2024 03:43:39 -0500 (CDT)
-Received: from ausex01.ad.cirrus.com (141.131.37.95) by ausex02.ad.cirrus.com
- (141.131.37.96) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 14 Aug
- 2024 03:43:38 -0500
-Received: from EDIN7BQBTG3.ad.cirrus.com (141.131.38.212) by
- anon-ausex01.ad.cirrus.com (141.131.37.95) with Microsoft SMTP Server id
- 15.2.1544.9 via Frontend Transport; Wed, 14 Aug 2024 03:43:36 -0500
-From: Ian Brockbank <Ian.Brockbank@cirrus.com>
-To: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>
-CC: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
- <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, Weiwei Li
- <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Ian Brockbank
- <ian.brockbank@cirrus.com>, LIU Zhiwei <zhiwei_liu@c-sky.com>
-Subject: [PATCH 06/11] target/riscv: Update CSR xtvec in CLIC mode
-Date: Wed, 14 Aug 2024 09:27:39 +0100
-Message-ID: <20240814083836.12256-16-Ian.Brockbank@cirrus.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240814083836.12256-1-Ian.Brockbank@cirrus.com>
-References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html>
- <20240814083836.12256-1-Ian.Brockbank@cirrus.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1se9Nu-0001Ay-OW
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:29:34 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1se9Nk-0003tk-VD
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:29:34 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a80eab3945eso255588166b.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 01:29:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723624161; x=1724228961; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pLikub/S5it/yNkS3p4Lua3X0XSWS5vsfui2YgVGLHs=;
+ b=pfpyA8UZ2Ehu2AAp0wR9USZ04v5hUqdMSgIxtFDIOEq1srFUEyI6scP95lt7C/E5/Q
+ nYv6cfjoPYpHd7z55t0olsjR2m8cbWWpySqKBGI8ROZlRINRRtCy0FYTxq3JaUKuII5X
+ 71TTRDpQPRdU+8m+Z2H8JBxJ0JaAhjykZDo6JLkmdjsUcGar32kp/b01O3kXXu+qxTzT
+ 4ib0aOJaMRf4p8HJAuJfBiAIwxP0w2iEVjZ2zpe2AFs0B1oeTPExcaUhalO5pKeKPWbf
+ VnFzfw28F91rrIWPKzBXpjnWmzOmTUIVEk/G9SENjYtYb6qIQWxB2m2PoTfIDoeTk+1P
+ muHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723624161; x=1724228961;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pLikub/S5it/yNkS3p4Lua3X0XSWS5vsfui2YgVGLHs=;
+ b=FP9q3I2rGgHBnRZ88eJCako41X+oUMZdhBq5yC3jlJHq3OHQGer+XsHvjhAr6sPZ4q
+ S/5k0tGhaJXxrHdidC4sQ5iBX0gvEdnqfqBOJxRUQOEl7sWckqqn/YqlBrmv7F0eLru4
+ mq6XqBTZ/dW4Rk7f9k/fhnu9lwP9kOQ1QQt89MUqzm3Is8qluWV8Iqu6HDByF2lvsBtE
+ E71WVlBb38SecC+SmVltc1NwGp+xbJoMrlUnzWh1lnSj3r0Wp0qvORKjTGWLhjStLq/C
+ sGF9Z0/fZOZfY+QD3y+cKFo4+bBmJ9LsupV1pxiRakPh0oWsrmJ26AI+7fQeREAX2fHL
+ UIVw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVza9QKJH4JDghj3MBWYXcXlGxILjDQMMDGHbD6Ivmd/5fo7k2SXe6L79j4HOyKvVnTvzRGbacWX+oEzQBs0YEysIq1DXg=
+X-Gm-Message-State: AOJu0YzldVemzXD1jSyh4FXwORn6puhBBWCNepGiu9sxrqSefFwRU0Pi
+ bn1pBIFAjapPtJOjGh6LAhTrFaqLrupj1w0bIY/ZfORnpfsDL9uHAfO4anmdwtw=
+X-Google-Smtp-Source: AGHT+IGV1oNc8DiVrgtanEUXhh4oVOC5PGoYr7xIhYv82H3zWBsfv7B9ux9RTz4prrnu2K/Acac3jQ==
+X-Received: by 2002:a17:907:7e9b:b0:a7d:2f42:db54 with SMTP id
+ a640c23a62f3a-a8367086687mr143154266b.65.1723624161308; 
+ Wed, 14 Aug 2024 01:29:21 -0700 (PDT)
+Received: from [192.168.69.100] (rsa59-h02-176-184-32-161.dsl.sta.abo.bbox.fr.
+ [176.184.32.161]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a80f411aef3sm145561266b.106.2024.08.14.01.29.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Aug 2024 01:29:20 -0700 (PDT)
+Message-ID: <3d03ecff-ab9b-422f-8b4b-6b3b1a20e810@linaro.org>
+Date: Wed, 14 Aug 2024 10:29:08 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: mc0j2OrmnRKsZRZFDUxxX5E83bhixuvI
-X-Proofpoint-GUID: mc0j2OrmnRKsZRZFDUxxX5E83bhixuvI
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=67.231.152.168;
- envelope-from=prvs=5956f96c7e=ian.brockbank@cirrus.com;
- helo=mx0b-001ae601.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/21] buildsys: Fix building without plugins on Darwin
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Michael Roth <michael.roth@amd.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Weiwei Li
+ <liwei1518@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Eric Auger <eric.auger@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ qemu-arm@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Jiri Pirko <jiri@resnulli.us>, Eric Blake <eblake@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ John Snow <jsnow@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ qemu-riscv@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jason Wang <jasowang@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Helge Konetzka <hk@zapateado.de>
+References: <20240813202329.1237572-1-alex.bennee@linaro.org>
+ <20240813202329.1237572-9-alex.bennee@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240813202329.1237572-9-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,192 +119,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ian Brockbank <ian.brockbank@cirrus.com>
+On 13/8/24 22:23, Alex Bennée wrote:
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Since commit 0082475e26 the plugin symbol list is unconditionally
+> added to the linker flags, leading to a build failure:
+> 
+>    Undefined symbols for architecture arm64:
+>      "_qemu_plugin_entry_code", referenced from:
+>          <initial-undefines>
+>    ...
+>    ld: symbol(s) not found for architecture arm64
+>    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+>    ninja: build stopped: subcommand failed.
+> 
+> Fix by restricting the whole meson file to the --enable-plugins
+> configure argument.
+> 
+> Fixes: 0082475e26 ("meson: merge plugin_ldflags into emulator_link_args")
 
-The new CLIC interrupt-handling mode is encoded as a new state in the
-existing WARL xtvec register, where the low two bits of are 11.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2476
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@c-sky.com>
-Signed-off-by: Ian Brockbank <ian.brockbank@cirrus.com>
----
- target/riscv/cpu.h      |  2 ++
- target/riscv/cpu_bits.h |  2 ++
- target/riscv/csr.c      | 63 ++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 63 insertions(+), 4 deletions(-)
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-Id: <20240813112457.92560-1-philmd@linaro.org>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   plugins/meson.build | 50 +++++++++++++++++++++++----------------------
+>   1 file changed, 26 insertions(+), 24 deletions(-)
+> 
+> diff --git a/plugins/meson.build b/plugins/meson.build
+> index 18a0303bff..1cc039d29b 100644
+> --- a/plugins/meson.build
+> +++ b/plugins/meson.build
+> @@ -1,3 +1,7 @@
+> +if not get_option('plugins')
+> +  subdir_done()
+> +endif
+> +
+>   # Modules need more symbols than just those in plugins/qemu-plugins.symbols
+>   if not enable_modules
+>     if host_os == 'darwin'
+> @@ -12,29 +16,27 @@ if not enable_modules
+>     endif
+>   endif
+>   
+> -if get_option('plugins')
+> -  if host_os == 'windows'
+> -    dlltool = find_program('dlltool', required: true)
+> +if host_os == 'windows'
+> +  dlltool = find_program('dlltool', required: true)
+>   
+> -    # Generate a .lib file for plugins to link against.
+> -    # First, create a .def file listing all the symbols a plugin should expect to have
+> -    # available in qemu
+> -    win32_plugin_def = configure_file(
+> -      input: files('qemu-plugins.symbols'),
+> -      output: 'qemu_plugin_api.def',
+> -      capture: true,
+> -      command: ['sed', '-e', '0,/^/s//EXPORTS/; s/[{};]//g', '@INPUT@'])
+> -    # then use dlltool to assemble a delaylib.
+> -    win32_qemu_plugin_api_lib = configure_file(
+> -      input: win32_plugin_def,
+> -      output: 'libqemu_plugin_api.a',
+> -      command: [dlltool, '--input-def', '@INPUT@',
+> -                '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
+> -    )
+> -  endif
+> -  specific_ss.add(files(
+> -    'loader.c',
+> -    'core.c',
+> -    'api.c',
+> -  ))
+> +  # Generate a .lib file for plugins to link against.
+> +  # First, create a .def file listing all the symbols a plugin should expect to have
+> +  # available in qemu
+> +  win32_plugin_def = configure_file(
+> +    input: files('qemu-plugins.symbols'),
+> +    output: 'qemu_plugin_api.def',
+> +    capture: true,
+> +    command: ['sed', '-e', '0,/^/s//EXPORTS/; s/[{};]//g', '@INPUT@'])
+> +  # then use dlltool to assemble a delaylib.
+> +  win32_qemu_plugin_api_lib = configure_file(
+> +    input: win32_plugin_def,
+> +    output: 'libqemu_plugin_api.a',
+> +    command: [dlltool, '--input-def', '@INPUT@',
+> +              '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
+> +  )
+>   endif
+> +specific_ss.add(files(
+> +  'loader.c',
+> +  'core.c',
+> +  'api.c',
+> +))
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 12aa8cf6b1..05a014db03 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -283,11 +283,13 @@ struct CPUArchState {
-     target_ulong medeleg;
-
-     target_ulong stvec;
-+    target_ulong stvt; /* clic-spec */
-     target_ulong sepc;
-     target_ulong scause;
-     target_ulong sintthresh; /* clic-spec */
-
-     target_ulong mtvec;
-+    target_ulong mtvt; /* clic-spec */
-     target_ulong mepc;
-     target_ulong mcause;
-     target_ulong mtval;  /* since: priv-1.10.0 */
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 0ed44ec0a8..279a6f889b 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -153,6 +153,7 @@
- #define CSR_MIE             0x304
- #define CSR_MTVEC           0x305
- #define CSR_MCOUNTEREN      0x306
-+#define CSR_MTVT            0x307 /* clic-spec-draft */
-
- /* 32-bit only */
- #define CSR_MSTATUSH        0x310
-@@ -192,6 +193,7 @@
- #define CSR_SIE             0x104
- #define CSR_STVEC           0x105
- #define CSR_SCOUNTEREN      0x106
-+#define CSR_STVT            0x107 /* clic-spec-draft */
-
- /* Supervisor Configuration CSRs */
- #define CSR_SENVCFG         0x10A
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 276ef7856e..be0071fd25 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -2170,9 +2170,23 @@ static RISCVException read_mtvec(CPURISCVState *env,=
- int csrno,
- static RISCVException write_mtvec(CPURISCVState *env, int csrno,
-                                   target_ulong val)
- {
--    /* bits [1:0] encode mode; 0 =3D direct, 1 =3D vectored, 2 >=3D reserv=
-ed */
--    if ((val & 3) < 2) {
-+    /*
-+     * bits [1:0] encode mode; 0 =3D direct, 1 =3D vectored, 3 =3D CLIC,
-+     * others reserved
-+     */
-+    target_ulong mode =3D get_field(val, XTVEC_MODE);
-+    target_ulong fullmode =3D val & XTVEC_FULL_MODE;
-+    if (mode <=3D XTVEC_CLINT_VECTORED) {
-         env->mtvec =3D val;
-+    } else if (XTVEC_CLIC =3D=3D fullmode && env->clic) {
-+        /*
-+         * CLIC mode hardwires xtvec bits 2-5 to zero.
-+         * Layout:
-+         *   XLEN-1:6   base (WARL)
-+         *   5:2        submode (WARL)  - 0000 for CLIC
-+         *   1:0        mode (WARL)     - 11 for CLIC
-+         */
-+        env->mtvec =3D (val & XTVEC_NBASE) | XTVEC_CLIC;
-     } else {
-         qemu_log_mask(LOG_UNIMP, "CSR_MTVEC: reserved mode not supported\n=
-");
-     }
-@@ -2271,6 +2285,18 @@ static RISCVException write_mcounteren(CPURISCVState=
- *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
-
-+static int read_mtvt(CPURISCVState *env, int csrno, target_ulong *val)
-+{
-+    *val =3D env->mtvt;
-+    return RISCV_EXCP_NONE;
-+}
-+
-+static int write_mtvt(CPURISCVState *env, int csrno, target_ulong val)
-+{
-+    env->mtvt =3D val & XTVEC_NBASE;
-+    return RISCV_EXCP_NONE;
-+}
-+
- /* Machine Trap Handling */
- static RISCVException read_mscratch_i128(CPURISCVState *env, int csrno,
-                                          Int128 *val)
-@@ -3122,9 +3148,24 @@ static RISCVException read_stvec(CPURISCVState *env,=
- int csrno,
- static RISCVException write_stvec(CPURISCVState *env, int csrno,
-                                   target_ulong val)
- {
--    /* bits [1:0] encode mode; 0 =3D direct, 1 =3D vectored, 2 >=3D reserv=
-ed */
--    if ((val & 3) < 2) {
-+    /*
-+     * bits [1:0] encode mode; 0 =3D direct, 1 =3D vectored, 3 =3D CLIC,
-+     * others reserved
-+     */
-+    target_ulong mode =3D val & XTVEC_MODE;
-+    target_ulong fullmode =3D val & XTVEC_FULL_MODE;
-+    if (mode <=3D XTVEC_CLINT_VECTORED) {
-         env->stvec =3D val;
-+    } else if (XTVEC_CLIC =3D=3D fullmode && env->clic) {
-+        /*
-+         * If only CLIC mode is supported, writes to bit 1 are also ignore=
-d and
-+         * it is always set to one. CLIC mode hardwires xtvec bits 2-5 to =
-zero.
-+         * Layout:
-+         *   XLEN-1:6   base (WARL)
-+         *   5:2        submode (WARL)  - 0000 for CLIC
-+         *   1:0        mode (WARL)     - 11 for CLIC
-+         */
-+        env->stvec =3D (val & XTVEC_NBASE) | XTVEC_CLIC;
-     } else {
-         qemu_log_mask(LOG_UNIMP, "CSR_STVEC: reserved mode not supported\n=
-");
-     }
-@@ -3149,6 +3190,18 @@ static RISCVException write_scounteren(CPURISCVState=
- *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
-
-+static int read_stvt(CPURISCVState *env, int csrno, target_ulong *val)
-+{
-+    *val =3D env->stvt;
-+    return RISCV_EXCP_NONE;
-+}
-+
-+static int write_stvt(CPURISCVState *env, int csrno, target_ulong val)
-+{
-+    env->stvt =3D val & XTVEC_NBASE;
-+    return RISCV_EXCP_NONE;
-+}
-+
- /* Supervisor Trap Handling */
- static RISCVException read_sscratch_i128(CPURISCVState *env, int csrno,
-                                          Int128 *val)
-@@ -5666,11 +5719,13 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D {
-                              write_mhpmcounterh                         },
-
-     /* Machine Mode Core Level Interrupt Controller */
-+    [CSR_MTVT]           =3D { "mtvt",       clic,  read_mtvt, write_mtvt =
-},
-     [CSR_MINTSTATUS]     =3D { "mintstatus", clic,  read_mintstatus       =
-},
-     [CSR_MINTTHRESH]     =3D { "mintthresh", clic,  read_mintthresh,
-                              write_mintthresh },
-
-     /* Supervisor Mode Core Level Interrupt Controller */
-+    [CSR_STVT]           =3D { "stvt",       clic,  read_stvt, write_stvt =
-},
-     [CSR_SINTSTATUS]     =3D { "sintstatus", clic,  read_sintstatus       =
-},
-     [CSR_SINTTHRESH]     =3D { "sintthresh", clic,  read_sintthresh,
-                              write_sintthresh },
---
-2.46.0.windows.1
-This message and any attachments may contain privileged and confidential in=
-formation that is intended solely for the person(s) to whom it is addressed=
-. If you are not an intended recipient you must not: read; copy; distribute=
-; discuss; take any action in or make any reliance upon the contents of thi=
-s message; nor open or read any attachment. If you have received this messa=
-ge in error, please notify us as soon as possible on the following telephon=
-e number and destroy this message including any attachments. Thank you. Cir=
-rus Logic International (UK) Ltd and Cirrus Logic International Semiconduct=
-or Ltd are companies registered in Scotland, with registered numbers SC0898=
-39 and SC495735 respectively. Our registered office is at 7B Nightingale Wa=
-y, Quartermile, Edinburgh, EH3 9EG, UK. Tel: +44 (0)131 272 7000. www.cirru=
-s.com
 
