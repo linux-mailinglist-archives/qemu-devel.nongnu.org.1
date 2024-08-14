@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE48951617
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E075951616
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1se8ys-0003wu-5f; Wed, 14 Aug 2024 04:03:42 -0400
+	id 1se8yq-0003lo-D0; Wed, 14 Aug 2024 04:03:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1se8yK-0002pS-Sl
+ id 1se8yK-0002pR-Pw
  for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:17 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1se8xv-0007rt-Qz
+ id 1se8xw-0007sl-Cs
  for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723622563; x=1755158563;
+ t=1723622564; x=1755158564;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=X3na6+L70Cfx64EUlxwZzmPxVDrsGV+622+OsmsswRI=;
- b=HW4H3ZAB1VCB86q2h+4iU+YAzXgoBS1ExjizY5WpL+5VhkfeZjnkLgyb
- 3DquqIM4xbnCOQroa7IL3vDNDNeJrZUOAwIWunNUYI4IDx8XnrM3FZ4kX
- gcoNMN9NBwnzipE58h5a822+jk9doedXZWzxotrUMiiY3+11LL4XaXU4g
- Lm4rIzUnNO/4CMwEXV0c0hzrspUd4MkptvCPT1oN27IWmfp89t4PQILIF
- sdCve7WXRwtlgZ52YUHqItdGrbnxUhPkMECNFRMkuSgJkiUquAXh04HVT
- mHF9s5pwpPT3krIZ20ZQKxl8fcSOEeT+x/zD7kgxI46LILN9er1i+gcwU Q==;
-X-CSE-ConnectionGUID: ZIlyPCHkQpmHZF/PSiBTSg==
-X-CSE-MsgGUID: rK9YP794S8uAbpYltJXILg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25584478"
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25584478"
+ bh=l9ibDxi4pjx2BEry03rv9wc5np14WZq/dpLp+/IOpk4=;
+ b=gY1BDT+ACDS1TcuZpq3P1DZ6wou0wTPcX1dRBhRQ9J6X/MXmCmbZwYdQ
+ 7Db86exWx3C+C9s2ItrkDflzObbMQRrMorF3tUCQvqNXNQEqsOawCuB4A
+ CA2ds9zWjevLiMm+F70RqQOHoiElnIrONol7JORz/w0LlMSn1yzAOERWd
+ Vyy6mytZaJHccBSN8tkMHufvZY/qmow6NInhtDVAKn/N64NhWcg0U+TUq
+ u5u9FOBGDEkmKAs2PT84I2VZufAKiea6OdtpURtmBLML4npBqrhCpTqBN
+ R9UbSoi368nu2e+LJADQXzalNeayDXh7PRbgwV7u2TwklyculDtiS1uEJ w==;
+X-CSE-ConnectionGUID: wmIs9s2kQVy6s7ujJjR4PQ==
+X-CSE-MsgGUID: GBZSj6Z4QjW5CvCE5X1xHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25584481"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25584481"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 01:02:39 -0700
-X-CSE-ConnectionGUID: BUEn6TXQQ9G9BU38uK4/2g==
-X-CSE-MsgGUID: sSJofb4dTDqskubB5/BOIg==
+ 14 Aug 2024 01:02:41 -0700
+X-CSE-ConnectionGUID: w+NWm/qsQEObMRIL6k8yPQ==
+X-CSE-MsgGUID: SZlHgF/pR8av3GAvF8+zDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59048952"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59048955"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 01:02:37 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 01:02:38 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	kvm@vger.kernel.org,
 	xiaoyao.li@intel.com
-Subject: [PATCH 4/9] i386/cpu: Construct valid CPUID leaf 5 iff
- CPUID_EXT_MONITOR
-Date: Wed, 14 Aug 2024 03:54:26 -0400
-Message-Id: <20240814075431.339209-5-xiaoyao.li@intel.com>
+Subject: [PATCH 5/9] i386/cpu: Construct CPUID 2 as stateful iff times > 1
+Date: Wed, 14 Aug 2024 03:54:27 -0400
+Message-Id: <20240814075431.339209-6-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240814075431.339209-1-xiaoyao.li@intel.com>
 References: <20240814075431.339209-1-xiaoyao.li@intel.com>
@@ -82,37 +81,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When CPUID_EXT_MONITOR is not set, it means no support of MONITOR/MWAIT
-leaf, i.e., CPUID leaf 5.
+When times == 1, the CPUID leaf 2 is not stateful.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/cpu.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ target/i386/kvm/kvm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 03376ccf3e75..5bee84333089 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6553,10 +6553,14 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         break;
-     case 5:
-         /* MONITOR/MWAIT Leaf */
--        *eax = cpu->mwait.eax; /* Smallest monitor-line size in bytes */
--        *ebx = cpu->mwait.ebx; /* Largest monitor-line size in bytes */
--        *ecx = cpu->mwait.ecx; /* flags */
--        *edx = cpu->mwait.edx; /* mwait substates */
-+        if (env->features[FEAT_1_ECX] & CPUID_EXT_MONITOR) {
-+            *eax = cpu->mwait.eax; /* Smallest monitor-line size in bytes */
-+            *ebx = cpu->mwait.ebx; /* Largest monitor-line size in bytes */
-+            *ecx = cpu->mwait.ecx; /* flags */
-+            *edx = cpu->mwait.edx; /* mwait substates */
-+        } else {
-+            *eax = *ebx = *ecx = *edx = 0;
-+        }
-         break;
-     case 6:
-         /* Thermal and Power Leaf */
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index c168ff5691df..6618259f265c 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1818,10 +1818,12 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
+             int times;
+ 
+             c->function = i;
+-            c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
+-                       KVM_CPUID_FLAG_STATE_READ_NEXT;
+             cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
+             times = c->eax & 0xff;
++            if (times > 1) {
++                c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
++                           KVM_CPUID_FLAG_STATE_READ_NEXT;
++            }
+ 
+             for (j = 1; j < times; ++j) {
+                 if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
 -- 
 2.34.1
 
