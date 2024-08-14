@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7714C951C08
+	by mail.lfdr.de (Postfix) with ESMTPS id 7289D951C07
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 15:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seEEG-0006dH-SQ; Wed, 14 Aug 2024 09:39:56 -0400
+	id 1seEEQ-00074t-84; Wed, 14 Aug 2024 09:40:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1seEEE-0006cV-IH
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 09:39:54 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1seEEO-00073j-4j
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 09:40:04 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1seEED-0004Pz-0m
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 09:39:54 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4281ca54fd3so49416265e9.2
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 06:39:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1seEEM-0004RB-CE
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 09:40:03 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3684bea9728so3910054f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 06:40:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723642790; x=1724247590; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723642800; x=1724247600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IzGby2LfOJ0PSTr7E7Scgqvd+RTVUALDNaU5gvfZclk=;
- b=GtunYBGEiiyutsKssbQyMEOfYVAkyc7rc14UmmxdApvT7WwlDooeuYs8E3soKK+T1L
- 6uk4NdQTuJkKQO9APFrFmegO8KcvWfz2UVPSwpMtO78BKSzbCSTojMztzOs7u0LNP/ZZ
- 0xwbKWa5SAKxc3/AEsAABky7Wdl1kXU8C0/JOp6ZG+Czimv3KM53tQt1jRFgX2Vv19Yb
- gLidHj4nuDGge/xDz4/4brEjTeVVl7cnaA7SD2fMal69RsXMwjrUSYa0UI8TGogMVUdM
- 9EXavST58zb+22myN+LjOUmZYGryKlDu6xGsHbk3awJOcSPXGmstqtl/IAy9SU8rs1B0
- oY0A==
+ bh=jxLHqx+S5C+GI1KIVnOAvNeyCE7KTQMJVIjAY6qG4kE=;
+ b=M1JdrgpRAdN78DDRdwZPpPQ6Rg2uIMpne6tJIlimLIaVcRbH5ucqqfewk9HSm2nupo
+ 06umrhXuUT/GtIkaA04cNOAvB7TWKA8ISJphj13WrQgjW4hlcVNuFpwFIusGdTwkjzc9
+ U+COr1Uml0kAmD5/wojJqM4pcNmOQEk1wkyNOCfw6tm1PwFHUfJp3dFlYHvRL4mbzKmR
+ gTJf+/b0nqkdbX7VonjOVQUqhA2fx3SIU5CN+ZVcE5WTE9Qdo3layuwPJEP2Xok3l8X6
+ HAUwq0ZfFCXFD/KGPoDARygWptYeRqkVXhbkMCdln1uFqh928wqrL7by6xo25eoj/hRd
+ 4jPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723642790; x=1724247590;
+ d=1e100.net; s=20230601; t=1723642800; x=1724247600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IzGby2LfOJ0PSTr7E7Scgqvd+RTVUALDNaU5gvfZclk=;
- b=KZDLzAh/M6aFnMoKxTvlP6DmD+iYDO2S5XUrO+CqXCmPsZL1iliUpbQZ+DlC86wmIR
- ss9lcPG/cxe//GqT3fl1MG3qajbd6TJIWHBuid3gJeI3dwgqnNNnIHfiMLlfnUQBgYQi
- 04GIGNi6UTdPRj+G5IAjIZ4EDAnjFocQ5k3WfA5PhLTwylSAXscVDp6c7Mou5R/6DTX1
- RsvfZbrThzNMDTqMD4emjuJn5gb405vMGR6PVLZK17Q3e7rLzShE+T5bBgabJrQlrDka
- 5Ff0ntvyHOOYNqw2/OHwplzj6Dq5XrvSkvBJJTrmRAV4Ldi1xaJXF97MYECP4oxFXsOo
- fFsw==
-X-Gm-Message-State: AOJu0YyeYGJ7SY044lQ6x2Qq0vfVZv9EjZBlbyjuypSvMC4EFS26lwz+
- NyDc0JCiZo1E9pa2ccuE8W10mNUjB+0I8XGhjXWaUgtV507iD5LW3rzpvl8VsGDT4UNPJwm77FH
- mfOA=
-X-Google-Smtp-Source: AGHT+IECNJAuWIyAvPQ6Fg6noo3XvXNdo0VYHynBZeINMsbEvo/pCg/PfgGfa8qvvT88ft5k9v5Z6Q==
-X-Received: by 2002:a05:600c:a42:b0:426:5f06:5462 with SMTP id
- 5b1f17b1804b1-429dd268f31mr19589125e9.37.1723642790057; 
- Wed, 14 Aug 2024 06:39:50 -0700 (PDT)
+ bh=jxLHqx+S5C+GI1KIVnOAvNeyCE7KTQMJVIjAY6qG4kE=;
+ b=LOEDR9aIVdELHweDaOslm1F+L9AoMW+wfw4lK/x7MFtHcDHK/kuaz3PbHcOMmAM/La
+ 5Y6KAaFAHF9MCD6DESnaJX86FX3ZT2RZe7oNY/xfwa8vm3u8QkdxjEbNBsmXQ1oMAECt
+ 1XTpynICXHcouVCM/9Ruuo3WPxefiASO9hUdPP+AxMdfn0/TaAUFf91NaMpjyqQ9hpwp
+ v6DThI6fXzTmE9xMjcOnMlDliAiwktKOe2H0gAdtm/OEX3awfQ9fH0hwmuBKq9WUx6xS
+ SNAgyAk0uEEWJIkUPnxwv4Imf0Fc2KdlXHMMQA3v5TAurF1h4MSlgp/iWi4+E0KsTI+M
+ e7Vw==
+X-Gm-Message-State: AOJu0YzmIZnj/XEm1Hwz++VWsmRPqyAj7SlW0HxjMSwvYP/AD8z+W6W7
+ Le1Er9PcqUEHfMRhhXjmzNdQNP9z3jTiM7Py1IoROkHadofTC0PdbbKDfhJD0vk4YHk7E9CN+k4
+ F+hY=
+X-Google-Smtp-Source: AGHT+IGpWkFi07doCplbrzZz3dDjDbBNd+a4oenVB3ShtBAM2SIzkFdS4igdKIPRnNpaw4/eIWu+3g==
+X-Received: by 2002:adf:fa4a:0:b0:367:8ff0:e022 with SMTP id
+ ffacd0b85a97d-37177837cb2mr1780181f8f.63.1723642800475; 
+ Wed, 14 Aug 2024 06:40:00 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.208.57])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429ded4e3f4sm20354515e9.37.2024.08.14.06.39.40
+ ffacd0b85a97d-36e4c938280sm12912096f8f.36.2024.08.14.06.39.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 14 Aug 2024 06:39:49 -0700 (PDT)
+ Wed, 14 Aug 2024 06:40:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>,
  YunQiang Su <syq@debian.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 1/4] linux-user/mips: Do not try to use removed R5900
- CPU
-Date: Wed, 14 Aug 2024 15:39:25 +0200
-Message-ID: <20240814133928.6746-2-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
+ =?UTF-8?q?Johnathan=20H=E1=BB=AFu=20Tr=C3=AD?= <nhtri2003@gmail.com>
+Subject: [PATCH-for-9.1 2/4] linux-user/mips: Select Octeon68XX CPU for Octeon
+ binaries
+Date: Wed, 14 Aug 2024 15:39:26 +0200
+Message-ID: <20240814133928.6746-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240814133928.6746-1-philmd@linaro.org>
 References: <20240814133928.6746-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,49 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-R5900 emulation was removed in commit 823f2897bd.
-Remove it from ELF parsing in order to avoid:
+The Octeon68XX CPU is available since commit 9a6046a655
+("target/mips: introduce Cavium Octeon CPU model").
 
-  $ qemu-mipsn32 ./test5900
-  qemu-mipsn32: unable to find CPU model 'R5900'
-
-This reverts commit 4d9e5a0eb7df6e98ac6cf5e16029f35dd05b9537.
-
-Fixes: 823f2897bd ("target/mips: Disable R5900 support")
+Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1722
+Reported-by: Johnathan Hữu Trí <nhtri2003@gmail.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/mips/target_elf.h   | 3 ---
- linux-user/mips64/target_elf.h | 3 ---
- 2 files changed, 6 deletions(-)
+ linux-user/mips64/target_elf.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index b965e86b2b..71a32315a8 100644
---- a/linux-user/mips/target_elf.h
-+++ b/linux-user/mips/target_elf.h
-@@ -12,9 +12,6 @@ static inline const char *cpu_get_model(uint32_t eflags)
-     if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
-         return "mips32r6-generic";
-     }
--    if ((eflags & EF_MIPS_MACH) == EF_MIPS_MACH_5900) {
--        return "R5900";
--    }
-     if (eflags & EF_MIPS_NAN2008) {
-         return "P5600";
-     }
 diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
-index 5f2f2df29f..ec55d8542a 100644
+index ec55d8542a..ce6fb6541e 100644
 --- a/linux-user/mips64/target_elf.h
 +++ b/linux-user/mips64/target_elf.h
-@@ -12,9 +12,6 @@ static inline const char *cpu_get_model(uint32_t eflags)
+@@ -9,6 +9,14 @@
+ #define MIPS64_TARGET_ELF_H
+ static inline const char *cpu_get_model(uint32_t eflags)
+ {
++    switch (eflags & EF_MIPS_MACH) {
++    case EF_MIPS_MACH_OCTEON:
++    case EF_MIPS_MACH_OCTEON2:
++    case EF_MIPS_MACH_OCTEON3:
++        return "Octeon68XX";
++    default:
++        break;
++    }
      if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_64R6) {
          return "I6400";
      }
--    if ((eflags & EF_MIPS_MACH) == EF_MIPS_MACH_5900) {
--        return "R5900";
--    }
-     return "5KEf";
- }
- #endif
 -- 
 2.45.2
 
