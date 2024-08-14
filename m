@@ -2,89 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A07C9511D6
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 04:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10795951111
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 02:33:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1se3NE-0003lo-3J; Tue, 13 Aug 2024 22:04:28 -0400
+	id 1se1w6-000476-2u; Tue, 13 Aug 2024 20:32:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1se3NA-0003i4-Qt
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 22:04:25 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1se3N8-00063A-OL
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 22:04:24 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-7bcf8077742so4410089a12.0
- for <qemu-devel@nongnu.org>; Tue, 13 Aug 2024 19:04:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723601060; x=1724205860; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CY6BzFhLlJJqWWiDABcCBX3Ss/pqRNMIuNL9bhFq/lo=;
- b=UoEu/Mi8/aNwFhiCaddL+hyZnKcYXgKB+MKYc4Pt12qXY5Zazga9pd+e2tKUVKeGAR
- mqY+3jLQD/NqZMNDsHBKB9ME8OOqXzHY4s8t9b7SYrLqwr6YOdd4PizGlf7jkomZl9j1
- ZVNpnymMZVtSef7ap4uE4kquuR73alnK2a2EzMbiHhz9rhfuvTeb+vhCagL4QblI1keF
- XujrXn009WbyMoFd6VNQzM/wUdaqTKJQ2/OWnLH2830CYePtvbu1uRFK11KJDrYM1/CD
- tlSZB2lYtJag4FTHYh7IaK4tQsd/WOzjsfFNH3WjoB0tBbzY4lEd41FlZyICs5Uqfu6j
- 5aJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723601060; x=1724205860;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CY6BzFhLlJJqWWiDABcCBX3Ss/pqRNMIuNL9bhFq/lo=;
- b=KnTGqzDx9q0SxqUKaS3AIyi2rzLJC42e66kRdHAFiLHEFJVgWNRahipeYswKGOxIDl
- YwrpCKY7TU/6TV3omPB+zlPr8P12GVE0Aya6FDgpHatnRtHm1UFrZproG7H6DLgNBAsX
- fHNT8eIIXqXuFdJH0RvZWNNXcX6p1pRsBByeINkKghcOd013NPaFDBIdq91Ho3cNL1UT
- jwYeHNGJJlJrsmD7BPcZds7cVcNaafcKiWCarPe5p1MJOPGlDmHojDMAMGIwelQaC232
- lxWLworsUrOUoaFc4YsrYenJ1Z8qMNjZsJ6m0F4CFS3EfOi7BkQfIf4K+G0INsyr5/84
- pRmw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHYtsy96tBioXgkW37opDNqzRJcH+ueN3FxvHdv4+UTE06Fo3qd+cv1bQzNkMe2OIpZgwamZvFIyInoY7Uhy2xrmiN55U=
-X-Gm-Message-State: AOJu0YxL0ZhE5iFvBTsHCvVrwqgEwoG6t+qbbA4NeA9e/WODOyJIglIV
- 9eS2RWwjGw+AIpM5UKOsPCLcaWwy4WEK/L+wcXRe9tpdZZoDew3cnwTpIikhWkc=
-X-Google-Smtp-Source: AGHT+IE2RSbd/8Jn67j9h7Y+GARv7SXXLjV5hN5go/bAMSzaZNfbMB5zYTZwgCBTmcUyMrd+ZqK9Iw==
-X-Received: by 2002:a05:6a20:9f07:b0:1c4:c795:ee6a with SMTP id
- adf61e73a8af0-1c8eae900camr1959634637.28.1723601059970; 
- Tue, 13 Aug 2024 19:04:19 -0700 (PDT)
-Received: from [192.168.1.113] ([203.30.4.111])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-710e5a8c454sm6350013b3a.180.2024.08.13.19.04.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Aug 2024 19:04:19 -0700 (PDT)
-Message-ID: <149df4e8-f51c-4925-8c65-e8e10fed85a3@linaro.org>
-Date: Wed, 14 Aug 2024 12:04:13 +1000
+ (Exim 4.90_1) (envelope-from <junjie.mao@intel.com>)
+ id 1se1w1-00042z-To
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 20:32:18 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <junjie.mao@intel.com>)
+ id 1se1vz-0000Vg-Na
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 20:32:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723595536; x=1755131536;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fgPq3h73yNiD8ho0c/JGZLhZi3ISiF7r56nmaDy7kOQ=;
+ b=hMalRzeBpiW00ibcSzVUJkTN8gSq/AUYSRGy4nup0JLgMi+pQtrXEqlS
+ CBb0ES+OMEjp1WWuJIrshEXCaZsMhUxRme4HQkiaDRBM/j37GgFs0jfno
+ mJs1Vd52pRU2RWKRJdPUZqErpJ5X3mmgzcnFeDnrNkViyxY8yzNTxiRh9
+ Fi3rI8lCrMbQV/t7QhsFlmQN6Zcv7oxYFVDmo7Er/+voL62whUdXvat0d
+ 0+xzzW+MJxafU5RH9zoBDOFwxZWEgCqdZCqgNJwlmnI5epbdURA4lRU8b
+ usBRyZjxClKIouCCPsxZkhrGGG7aku7aM0uDMsc/D6xY6iZbDaXccvBDA A==;
+X-CSE-ConnectionGUID: awrwGoZORNWczbfWFrFh3w==
+X-CSE-MsgGUID: 7CLKFmPXTg2SEcMgPU4rpQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21346387"
+X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; d="scan'208";a="21346387"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2024 17:32:10 -0700
+X-CSE-ConnectionGUID: WPVf1yB6Qry1b8taGrLdkQ==
+X-CSE-MsgGUID: QoevMzA7TlCicX50SSR6sA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; d="scan'208";a="58472723"
+Received: from junjie-optiplex-7080.sh.intel.com (HELO localhost.localdomain)
+ ([10.239.48.46])
+ by fmviesa006.fm.intel.com with ESMTP; 13 Aug 2024 17:32:06 -0700
+From: Junjie Mao <junjie.mao@intel.com>
+To: manos.pitsidianakis@linaro.org,
+	pbonzini@redhat.com
+Cc: alex.bennee@linaro.org, armbru@redhat.com, berrange@redhat.com,
+ gustavo.romero@linaro.org, mads@ynddal.dk, marcandre.lureau@redhat.com,
+ peter.maydell@linaro.org, philmd@linaro.org, pierrick.bouvier@linaro.org,
+ qemu-devel@nongnu.org, richard.henderson@linaro.org, rowan.hart@intel.com,
+ stefanha@redhat.com, thuth@redhat.com, zhao1.liu@intel.com
+Subject: [RFC PATCH 0/2] meson: Specify Rust edition by rust_std=20XX
+Date: Wed, 14 Aug 2024 17:08:18 +0800
+Message-Id: <20240814090820.1251026-1-junjie.mao@intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 03/15] tcg: Fix register allocation constraints
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20240813113436.831-1-zhiwei_liu@linux.alibaba.com>
- <20240813113436.831-4-zhiwei_liu@linux.alibaba.com>
- <2efe353a-4700-4632-b919-e43cb039c2c0@linaro.org>
- <1e61235e-1cb8-4bc1-9983-6e8dc0c3b406@linux.alibaba.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <1e61235e-1cb8-4bc1-9983-6e8dc0c3b406@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=junjie.mao@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_06_12=1.947,
+ DKIMWL_WL_HIGH=-0.125, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,16 +82,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/14/24 10:58, LIU Zhiwei wrote:
-> Thus if we want to use all registers of vectors, we have to add a dynamic constraint on 
-> register allocation based on IR types.
+The official way to specify Rust edition in meson is the rust_std build option
+[1]. It is used for generating --edition rustc options and filling
+rust-project.json which provides project layout information to
+rust-analyzer. Specifying Rust edition by rust_args instead causes meson to
+generate "edition": "--edition" in rust-project.json, which is invalid.
 
-My comment vs patch 4 is that you can't do that, at least not without large changes to TCG.
+Replace "--edition" rust_args with overriding of rust_std and build.rust_std to
+fix the generated rust-project.json.
 
-In addition, I said that the register pressure on vector regs is not high enough to 
-justify such changes.  There is, so far, little benefit in having more than 4 or 5 vector 
-registers, much less 32.  Thus 7 (lmul 4, omitting v0) is sufficient.
+The rust_std option is part of the build environment and has two forms: rust_std
+for the host machine and build.rust_std for the build machine. Specify both in
+meson.build for completeness.
 
+The default_options argument of project() is not used because it does not work
+for rust_std in subprojects in meson 1.5.1.
 
-r~
+This series is based on Paolo's refinement [2] to Manos's rust-pl011-rfc-v6
+[3]. Feel free to squash these changes into that series.
+
+[1] https://github.com/mesonbuild/meson/pull/7934
+[2] https://gitlab.com/bonzini/qemu/-/tree/rust-for-manos
+[3] https://lore.kernel.org/qemu-devel/rust-pl011-rfc-v6.git.manos.pitsidianakis@linaro.org
+
+Junjie Mao (2):
+  meson: subprojects: Specify Rust edition by rust_std=20XX
+  rust: Specify Rust edition by rust_std=20XX
+
+ rust/hw/char/pl011/meson.build                                | 4 +---
+ rust/meson.build                                              | 4 +---
+ rust/qemu-api/meson.build                                     | 2 +-
+ subprojects/packagefiles/arbitrary-int-1-rs/meson.build       | 4 +---
+ subprojects/packagefiles/bilge-impl-0.2-rs/meson.build        | 2 +-
+ subprojects/packagefiles/either-1-rs/meson.build              | 2 +-
+ subprojects/packagefiles/itertools-0.11-rs/meson.build        | 2 +-
+ subprojects/packagefiles/proc-macro-error-1-rs/meson.build    | 2 +-
+ .../packagefiles/proc-macro-error-attr-1-rs/meson.build       | 2 +-
+ subprojects/packagefiles/proc-macro2-1-rs/meson.build         | 2 +-
+ subprojects/packagefiles/quote-1-rs/meson.build               | 2 +-
+ subprojects/packagefiles/syn-2-rs/meson.build                 | 2 +-
+ subprojects/packagefiles/unicode-ident-1-rs/meson.build       | 4 +---
+ 13 files changed, 13 insertions(+), 21 deletions(-)
+
+--
+2.30.2
 
