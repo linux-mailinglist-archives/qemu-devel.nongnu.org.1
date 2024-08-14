@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96661952640
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 01:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F9A95263C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 01:38:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seNYB-00023A-7b; Wed, 14 Aug 2024 19:37:07 -0400
+	id 1seNY9-0001to-0G; Wed, 14 Aug 2024 19:37:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seNY6-0001ki-8h
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:02 -0400
+ id 1seNY7-0001p8-D1
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:03 -0400
 Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seNY4-0006WR-Lt
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:02 -0400
+ id 1seNY5-0006Wa-PL
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:03 -0400
 Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-70f5ef740b7so319819b3a.2
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 16:37:00 -0700 (PDT)
+ d2e1a72fcca58-710bdddb95cso243734b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 16:37:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723678619; x=1724283419; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723678620; x=1724283420; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bzoJvs+/ktmRvV/uludFrSeMjpPKw38xy+lGwp2LWAA=;
- b=CqIMZho1iQIzGr/SHFL9AtS4K0w0BAfgozvIyT26wP3J+eJxtF5m/jjt/1CPhiSrRm
- 35XlCvnFZbumzBuKYuGA3yhf12ZpuC5lvrxdYI++XzXmPqytzGrt0jJDzRmg5eu+jy6c
- 0TLXGD5YnTp4JI3qwobtYD4LQ/k13bQ5WU6UOqpC3d3tTSiSGoS0+QzKZEnsp41aei2v
- HlgHHW/A6cvcJ+59fOrdQLsu2KvXlHXiNjQQnn8McqPKGN2UkjHz8bXWVpWPuk1LwEV8
- okfrsylTxNa7u9CoH4I3fE0rVK9pNvAnEk79xpO0FXpFG/Cn+shmisCAxzedYBzuv23o
- d6IQ==
+ bh=6xxCvfMwAVvNf1Qjn5/JJVvbogoK1VhpQom3xuwjm28=;
+ b=aiQWDBY6zf8f1lj7oc9D7HtAADOZBVFGBccCyPqKtc+1BOlfwk++OO4SoDNC8NJr4B
+ qwNAoT/qeqWHHrOysJwV+A40oMgbQ0EHTKGmHy0sIDOynHUws1e7+MQeq901lfUy1Mzs
+ oiURi0WKVHYkErEenCH/8bRx8DQb5YRsU3wBBlY+LAnAgXIjQB8crsedJJ8AqtmXnhf1
+ HxJnnq6Ei6V8wIq29qZaeosok+ZWmBiPTih1VosHFfjWsAIoodST/5moYFAc5bj10A1l
+ v/KRiUBBsQX6i5aUoyiI66/ZWQ04IlYYwA80Qz0lIandR5YhTClnyGEkdzr7PHu6ijVe
+ y4CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723678619; x=1724283419;
+ d=1e100.net; s=20230601; t=1723678620; x=1724283420;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bzoJvs+/ktmRvV/uludFrSeMjpPKw38xy+lGwp2LWAA=;
- b=L8H/DJ00/ipzbaUmNqyiaytLkFhm6zZcOTthgQhb9kHjKc42+EFZiWHzwBP31GLgZj
- MBqWNTC5D5eoS/RMFXW49g485VtzPXdV3gFT8eL5CtcSxfLGi2CmJCOzt0fh4CI8EmcK
- iUyhXjyF69+mKAB5wY3n2dxxEg4TxP8qDb9vRpv4JqJcqAaFlYxazhkUXmsnQNgN2kAI
- VIEc0NQ9btHFGWXt/JpN0efsaWsVGa0M3Z6SETZQVnyJJth8PFPV1OgrW/nJgLxC71k9
- m39Xb2UGHy+krRXKbj+ujlZMoNfVHG9T6Uz1GRXTedC9vFwUEo1WduoSxpfwcJxBil5A
- fZag==
-X-Gm-Message-State: AOJu0Ywo4uJcrpnd44ZeNueVgJKMzRNevs3X+q3IpSa3yR9MoNZxBJwC
- 8o2yLWe07xBGgMGuNxkapvBeBGXoX/+xiN/yY/OeKcyCTbXWNGg5R1EtV8IQ4DUMdtqZqwELE3K
- h1gs=
-X-Google-Smtp-Source: AGHT+IEerxmprREtG28hemAszEAk+gOmixw605ol/n/naRl7+bng26g1gKIb3JJm1IVAqIZYrhQ9pg==
-X-Received: by 2002:a05:6a00:1ad1:b0:706:29e6:2ed2 with SMTP id
- d2e1a72fcca58-712670fa392mr6336540b3a.5.1723678619237; 
- Wed, 14 Aug 2024 16:36:59 -0700 (PDT)
+ bh=6xxCvfMwAVvNf1Qjn5/JJVvbogoK1VhpQom3xuwjm28=;
+ b=aVQ9ld/3zI15o0MbWpr991vQP/+OMe+PbQPRABH6qokz8p6cPZjg/beDavBHrASUoB
+ Hx76TrrDIMPDxwGuQftnr+86QBA07a8qEnGd8lPoKLij6di3i+hM9YNsNiOP5LK9yu5O
+ tlLpwwL/wSswGWOdwmx/gcW0tOLbzKIfR5v2IwmbQK1ZwV+Al0FpUsT5naOEhAuYYpVu
+ EQSkqPr4ZMigwBqScfnKiWnz4hFm9YEV57Y5xR9xPiBSUv7/SYR4R6Ngzc6nERfOyg+F
+ 8eM/+/W5p/FV42w8MnWCFRGCzBHGEzSjC5ToUicqNhKsnKLafvDGrF8oOIaNwDGiGlcn
+ HeyA==
+X-Gm-Message-State: AOJu0YxLUHk4vqBwMCSUc0O5xsp1MF/9LnQxkyH3TsjEUSLqKc7M0/VP
+ 6M1+RLKWcimvvDQvE0Sg0BfmNw4cuQ/mc6JUMMiVBvJsHc4yhHFMF5NgqaqA4InuKnlUTYe45Ad
+ UFBw=
+X-Google-Smtp-Source: AGHT+IEB++ca/kEhIM7Xhy6J0p9gyqcx9Z6lEU++DwNjIjAiRgGm0xyZ4Sb71DVMzfeye7LSxlhT0A==
+X-Received: by 2002:a05:6a20:d49b:b0:1c6:b364:dbd1 with SMTP id
+ adf61e73a8af0-1c8eae6f450mr6196973637.19.1723678620260; 
+ Wed, 14 Aug 2024 16:37:00 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127aef57dfsm112164b3a.115.2024.08.14.16.36.58
+ d2e1a72fcca58-7127aef57dfsm112164b3a.115.2024.08.14.16.36.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 16:36:58 -0700 (PDT)
+ Wed, 14 Aug 2024 16:36:59 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -67,10 +67,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/6] contrib/plugins/hotblocks: fix warning when compiling on
- 32bits host
-Date: Wed, 14 Aug 2024 16:36:43 -0700
-Message-Id: <20240814233645.944327-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 5/6] meson: build contrib/plugins with meson
+Date: Wed, 14 Aug 2024 16:36:44 -0700
+Message-Id: <20240814233645.944327-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
 References: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
@@ -100,37 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Found on debian stable (i386).
+Tried to unify this meson.build with tests/tcg/plugins/meson.build but
+the resulting modules are not output in the right directory.
 
-../contrib/plugins/hotblocks.c: In function 'vcpu_tb_trans':
-../contrib/plugins/hotblocks.c:117:56: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  117 |     cnt = (ExecCount *) g_hash_table_lookup(hotblocks, (gconstpointer) hash);
-      |                                                        ^
-../contrib/plugins/hotblocks.c:126:40: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  126 |         g_hash_table_insert(hotblocks, (gpointer) hash, (gpointer) cnt);
-      |
+Originally proposed by Anton Kochkov, thank you!
 
+Solves: https://gitlab.com/qemu-project/qemu/-/issues/1710
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/hotblocks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ meson.build                 |  4 ++++
+ contrib/plugins/meson.build | 23 +++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+ create mode 100644 contrib/plugins/meson.build
 
-diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index 02bc5078bdd..d540f1b7f0b 100644
---- a/contrib/plugins/hotblocks.c
-+++ b/contrib/plugins/hotblocks.c
-@@ -109,9 +109,9 @@ static void vcpu_tb_exec(unsigned int cpu_index, void *udata)
- static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- {
-     ExecCount *cnt;
--    uint64_t pc = qemu_plugin_tb_vaddr(tb);
-+    uintptr_t pc = qemu_plugin_tb_vaddr(tb);
-     size_t insns = qemu_plugin_tb_n_insns(tb);
--    uint64_t hash = pc ^ insns;
-+    uintptr_t hash = pc ^ insns;
+diff --git a/meson.build b/meson.build
+index 52e5aa95cc0..4efe1e782ba 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3627,6 +3627,10 @@ subdir('accel')
+ subdir('plugins')
+ subdir('ebpf')
  
-     g_mutex_lock(&lock);
-     cnt = (ExecCount *) g_hash_table_lookup(hotblocks, (gconstpointer) hash);
++if 'CONFIG_TCG' in config_all_accel
++  subdir('contrib/plugins')
++endif
++
+ common_user_inc = []
+ 
+ subdir('common-user')
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+new file mode 100644
+index 00000000000..a0e026d25e2
+--- /dev/null
++++ b/contrib/plugins/meson.build
+@@ -0,0 +1,23 @@
++t = []
++if get_option('plugins')
++  foreach i : ['cache', 'drcov', 'execlog', 'hotblocks', 'hotpages', 'howvec',
++               'hwprofile', 'ips', 'lockstep', 'stoptrigger']
++    if host_os == 'windows'
++      t += shared_module(i, files(i + '.c') + 'win32_linker.c',
++                        include_directories: '../../include/qemu',
++                        link_depends: [win32_qemu_plugin_api_lib],
++                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
++                        dependencies: glib)
++
++    else
++      t += shared_module(i, files(i + '.c'),
++                        include_directories: '../../include/qemu',
++                        dependencies: glib)
++    endif
++  endforeach
++endif
++if t.length() > 0
++  alias_target('contrib-plugins', t)
++else
++  run_target('contrib-plugins', command: find_program('true'))
++endif
 -- 
 2.39.2
 
