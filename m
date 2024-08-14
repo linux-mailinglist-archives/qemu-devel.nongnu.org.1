@@ -2,71 +2,173 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2DE951CA5
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 16:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7C8951F24
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 17:53:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seEg2-0007aD-H2; Wed, 14 Aug 2024 10:08:38 -0400
+	id 1seGJW-0002yO-9N; Wed, 14 Aug 2024 11:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <engguopeng@buaa.edu.cn>)
- id 1seEA8-0005nT-Ub
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 09:35:41 -0400
-Received: from azure-sdnproxy.icoremail.net ([52.237.72.81])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <engguopeng@buaa.edu.cn>) id 1seEA5-0003s1-As
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 09:35:40 -0400
+ (Exim 4.90_1)
+ (envelope-from <prvs=5956f96c7e=ian.brockbank@cirrus.com>)
+ id 1seEjJ-00041v-Fs; Wed, 14 Aug 2024 10:12:02 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]
+ helo=mx0b-001ae601.pphosted.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <prvs=5956f96c7e=ian.brockbank@cirrus.com>)
+ id 1seEjH-0001UP-7r; Wed, 14 Aug 2024 10:12:01 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+ by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47E5j9sj020215;
+ Wed, 14 Aug 2024 09:11:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ PODMain02222019; bh=0xhPdHmXZmdAvWdp2m+ftoiBi0ikUjdHs7gqbB1tYLo=; b=
+ jZKWn6FgxLStzJbBK+XsafvQw1DliLs5pbtqFgk1hwEIcVBBq9kLmUhGQaQt9Dmh
+ m74k9r7+U91omFCwfqg/SuCAT8RD5Ran8E4/GnI2/u6auVek8ufoRcdbAhVBIXJl
+ Lz/eWfVLKEC1tK+Q0CYUYX45CPRpO+f6EFmQLxo5nIAhqnakPvYbIUC0Gducyum8
+ nC8u9DB3YjVarZmWqRvVh30qANJIhfWIVJQNItDau5+2Dls1iyNyJrDBzhpgfrt/
+ Vng0EqYf8D6fPKId6PtMHRKmW3KPzuNamNV0DVt89tAS0d3ND4voNGfB9cm89QuV
+ 0HUT/1z4KW0Sh3JKwib9KQ==
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
+ by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 40x5kwmnxv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 Aug 2024 09:11:45 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OrS0gmsezEolbrcoAfcTNjbJWWBbHnGn4Ls4eKZhvKLjk/tEjOO5rUwkwAMUYoT1lReCfTeKRpa6yYe3xFJgTwN/zdIW2DuHNr0dP4BNuI+K0OBsmi0VP5Tr+On1TeMo2cupoYWMUJVARZrutByIQde21yeQ4j5Al72hn1xsCGXXtfHlL9d188m32XO6Ow7LGCNmITZOCQ95idSLQa9Vq7R7s9D3CBCtLakUhcLw9KgTYKaxriAlMl8XBoBh1DIkLn84SBqOOgRv/22f7JJ24+7ZLGBX9xHdIfGKFa113SlhAuO52Q+bT9DSywhZU1gPSepuiQzLBwpEwWNEtCXY6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0xhPdHmXZmdAvWdp2m+ftoiBi0ikUjdHs7gqbB1tYLo=;
+ b=ZyV8aK/zdnE5wG0GPYzpoe9OwvSfR1NstNOkEmTdrQwyTWJnL4Q1oAJ4rYIPZ/0hTfrEm1SMCzXRm81Xbz4aKgAKKrymP3MW62gdwPDFlKYD1XYUPswwSkcbMbTUz5VtyvJPPYIqhvhQ0ADkV4bVDwRbAvW3SuJuJWEPZSTSG3fugOY8beUbRCVPIuf5ILIBAIuXcbCMhTzy8aRWsDlT3KqnJXxBfsJCveujoPsd7Zac+OhIkjsUN2hfCIp6knAb+VwZrh0wxl9hdOnHf9pAiKumO15D2FoFVtXD8phhQZywkktszwm3Yu/iSDtlzoTcXx18TnxA1He2sFX5Wfv2dw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cirrus.com; dmarc=pass action=none header.from=cirrus.com;
+ dkim=pass header.d=cirrus.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
- Message-ID:MIME-Version:Content-Transfer-Encoding; bh=emLaVKASAR
- pJE/jzq2vtaV8x0Qsgu6jmAqCVcMc0hAM=; b=lpyHEmGxw8lLf0K3RxKWrkUvYI
- 93pXhJ61Ztr6Kv4bV8sV5df+VuLKdjG05Om7KdRabqw9OBjET893Q9BLHYSl4++7
- cYf8ItcNq+SdmJoFebAVpZ9aI+MSqwwTZjqkKLO8OLmBU5QkbzwuMHpordfWO8qK
- 11RFxAHhY9CAJYWu4=
-Received: from gp-VMware-Virtual-Platform.localdomain (unknown
- [139.227.253.190])
- by coremail-app1 (Coremail) with SMTP id OCz+CgBXv7uZsrxmjP5bAA--.5830S2;
- Wed, 14 Aug 2024 21:35:23 +0800 (CST)
-From: peng guo <engguopeng@buaa.edu.cn>
-To: jonathan.cameron@huawei.com,
-	fan.ni@samsung.com
-Cc: qemu-devel@nongnu.org,
-	peng guo <engguopeng@buaa.edu.cn>
-Subject: [PATCH] hw/cxl: fixed the determination of illegal physical addresses
-Date: Wed, 14 Aug 2024 21:35:18 +0800
-Message-ID: <20240814133518.23393-1-engguopeng@buaa.edu.cn>
-X-Mailer: git-send-email 2.43.0
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0xhPdHmXZmdAvWdp2m+ftoiBi0ikUjdHs7gqbB1tYLo=;
+ b=bAGDd7zTzeKR7/Pln6aVJgMQJ0U1XTHnNJd+8fMNqFg40CdMbcJ34bLFRfSVKTY3Ng5G4Jue6Utg+3968RBGEOoQq74svzdpgKfumOMK6V+DTPRAFcZ4q1UmBtMboBtJE+IF4WHhgAG4X0KbEjQX4lLggQoJ5idhxz06iageAh4=
+Received: from PH0PR19MB5193.namprd19.prod.outlook.com (2603:10b6:510:96::22)
+ by DS7PR19MB5951.namprd19.prod.outlook.com (2603:10b6:8:7e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.23; Wed, 14 Aug
+ 2024 14:11:42 +0000
+Received: from PH0PR19MB5193.namprd19.prod.outlook.com
+ ([fe80::7e57:c9bd:575b:48cf]) by PH0PR19MB5193.namprd19.prod.outlook.com
+ ([fe80::7e57:c9bd:575b:48cf%5]) with mapi id 15.20.7875.016; Wed, 14 Aug 2024
+ 14:11:42 +0000
+From: Ian Brockbank <Ian.Brockbank@cirrus.com>
+To: Ian Brockbank <Ian.Brockbank@cirrus.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>
+CC: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: RE: [PATCH 00/11] RISC-V: support CLIC v0.9 specification
+Thread-Topic: [PATCH 00/11] RISC-V: support CLIC v0.9 specification
+Thread-Index: AQHa7iVkq0n+hCrii0a0WDxdf/aSZLImywcw
+Date: Wed, 14 Aug 2024 14:11:41 +0000
+Message-ID: <PH0PR19MB5193D8D5C670FA4C11DB684780872@PH0PR19MB5193.namprd19.prod.outlook.com>
+References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html>
+ <20240814083836.12256-1-Ian.Brockbank@cirrus.com>
+In-Reply-To: <20240814083836.12256-1-Ian.Brockbank@cirrus.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR19MB5193:EE_|DS7PR19MB5951:EE_
+x-ms-office365-filtering-correlation-id: a7d36d33-7875-4d4d-f2db-08dcbc6b057f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?62Is0Rr1fFONVepzgtW4Kf8e7oYZth4Cv61JOElrdvYDn1dPIOheHG6m7UGE?=
+ =?us-ascii?Q?Yxu1RWKwgaSmJsvDyr31RPeU1DaqnKHdx//1TIVhUdc7MxspkKdTK4zS+XO3?=
+ =?us-ascii?Q?sqVpXB2mGrODLfRkBExTBWHczOfd8YpFhBrVKtT773GL2bQhZDhi7LToTIYw?=
+ =?us-ascii?Q?R5Ld5Z+VKYDpCvFdQ9VMQ7tnPYEh0aDJzWbOIrGWdqIqJGxvlYZMFKiIU5zz?=
+ =?us-ascii?Q?MXGaw+9HHvUl9GnEvvXS+8MzMJplfQ7H7qNgpCfRtdQDGwSRfcsevkp+MLJC?=
+ =?us-ascii?Q?OJNhNoshFa+DigWnQatfek+knp+pkEEVniUlSufje1hR9bF227Z4y32j6ObG?=
+ =?us-ascii?Q?WIxYlvOa9v1WDvhE29ZPXaWxg0VroVDqIn5cpxlApmGgAlf6ySsqX3rFyOHx?=
+ =?us-ascii?Q?MS2grHos2py3n5UO9TgImYyyHFKsrCmN49VJ2WiAZ15YAXfQziE0FRXmNuj/?=
+ =?us-ascii?Q?7Dhjct1JbXmqEoYO4aq9cOrL8bwHqHD4xe5SFoVP/c1MfX8UOHfeUtuUDLOy?=
+ =?us-ascii?Q?0I+fK51ydb3AXrLyZJahOVbbj2L93FnOEyV81FcbJ7M+p/ghRal8fEo+5Ybl?=
+ =?us-ascii?Q?CpjG97pxjEYvKmTf1W7DkKGwju9E3kNHrZmjzRPzW0L/wIEf932jt4Q3WaBb?=
+ =?us-ascii?Q?vIv5W3XTn0lbvmX5Lvf+kGcRCXzm9XU2L97SIfETSbGxpo/NdyPjHXpRbflW?=
+ =?us-ascii?Q?eATo0wEgC8CLqZFDqyCywyuHy247jQyK1bnG4XbesRCRtt8Z5Ah8dfapUWdB?=
+ =?us-ascii?Q?KXc93k/60zE5v2YYZ+agEkAntMTBLJ4HzVL43fvCeuT/b4TrFlAsOaQ/p46q?=
+ =?us-ascii?Q?Syu18h8uLpArY/1SVD7mWH0oR+KAFflUfYkFIuxGahBCRsix92msrwQCGHkB?=
+ =?us-ascii?Q?J+sR82yA1sUMvbxs/Y9le4cXe0oJm+NT8s4GLH3Dq850qdiwq2xePvdxEN6Q?=
+ =?us-ascii?Q?Sy/6GApZsYohIBsNjhojoWz43EeTNIgP0wBfuquCakUOwmEq8f63P7BiBWeA?=
+ =?us-ascii?Q?V2KDqEmwqH9d+1UKlCBefcdUnPfVA5kSTWGtu3GJrroarSBS6l01d6yHzkf8?=
+ =?us-ascii?Q?0lTPTbd+ITFiHUGKwS5aTeNkbR4NG1fthsGKjGYacaWQst19YASVKSqrPJol?=
+ =?us-ascii?Q?h9YxY9OU6CZBsSduuFKEI00imvCVy5kjr4O/d1Uki9OX33xwMUQdTfG+ulRX?=
+ =?us-ascii?Q?6QddR18vyeLocSWhga5fdih58LVsPq8nS9H1I7uCHC1in9tygQRPU4/0dqOv?=
+ =?us-ascii?Q?Wcb6TAf4CQiZMbhRu3aJvxnKZolmBxH+r0UHJ/dyWNbAbLfYhrU8beTA6gWN?=
+ =?us-ascii?Q?NU0yjYH8ipMVfavAObl7wGNBKJo97ljW1k9U5IcAt5CGy8f96rCxJtZSf/x7?=
+ =?us-ascii?Q?6ZTuMss=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR19MB5193.namprd19.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?MRIal/3vmbFWJlbHZIL+BV3kfuwuYnnGhJg6NjD3NJ6qvZ+jJBjg3do0tVWC?=
+ =?us-ascii?Q?iBZcnvDoZS+7FotCus2Z0MEm3uKnZVMToEZ/YUzxHhmC6BEaDvflxjXSwynU?=
+ =?us-ascii?Q?kmRY/fHzxxzn7Kw/jnCP+rXTGwbSLuUYdIJ9WiFYiyM6c4vGcYIQ1WrGrTj1?=
+ =?us-ascii?Q?A4I+0s0j5Tf3oD9p5jWHdn9IKJ1JIr29TSzi7hl6Y3PFcx45V594/Eonz4Bt?=
+ =?us-ascii?Q?VZi4Eg2DuzeI6X3NJnyffDDjQ6LaJXqeDRDofotgn4nEuSx/ABVyt8uRQeIU?=
+ =?us-ascii?Q?cHjgDvAIMXqkwGOQ/kX7LI5lkdqj31YZfBGSUQsa0W7OuQDqXHRd0xGzsRL/?=
+ =?us-ascii?Q?U+i9LSLAPPG25X0+C09h8y5NgWwoS9tLQJs1x2/mcVxhlPHkxPpNz/JZOyri?=
+ =?us-ascii?Q?ehQyM0nTyyLjw6qjkEHvu3C8saAcmxA6HbaSkvuFqD66vsJQ/2FBdI6l233v?=
+ =?us-ascii?Q?W/BYdHrlM0tMEeEqXKWZbocQvcck8OowCOSk+Tam4dVEC0F6zE9iAAqiiWIS?=
+ =?us-ascii?Q?N4YvhmEJbXspCQB1BupU8tWo9ILDeZlZtwma0P5cssfdQyoSkCgAkI8wTute?=
+ =?us-ascii?Q?sQ0C253WJoegujwGBRm6uPaQcTNb5wExwEiDxzeNU4ZfeaQORjwIXCEq59XV?=
+ =?us-ascii?Q?B94CQEQdW04kA+IQyapNaDvycPkNPxMnrX2gNgt/S+ftIzQSBRH4FwfL155n?=
+ =?us-ascii?Q?CWO2qAThOxFThAGYikAOqtontfdXeItQBdvXnUXu1WVvo/Regm5JuCKjS42i?=
+ =?us-ascii?Q?Z6Yld2YmjFXIYW8VCxK1siPQ2saJHM9duOIcYf58NRvmikk7GcmaZCaTCYeP?=
+ =?us-ascii?Q?4qn+D7q10Pru0qnXEe8HMMC2JchRQ+/a+iMo7FMYOxHYxmXVjdb1blj4M3/f?=
+ =?us-ascii?Q?9+c8SwfhtGTJqRJsteB5n2FYrsjzEYMD3JxabV9mEzmYfdUg0PX7uo0ervWV?=
+ =?us-ascii?Q?jBEco5TAuCApOVFE0Fohtzvu4juBMBZZPgSp3im6kPPubb15qwyPbUFPSu0C?=
+ =?us-ascii?Q?gBaI0+L/mB0Vgn82gGjT0+L38u3o4T/N5e5ru+cX/IJoG4T8cniqQ+w4wzfe?=
+ =?us-ascii?Q?t3uopl0hPZP/Nb3S8tEqK+j0+EATd6Laic2OOvoCri0D7fwMvi7enyCZ4EB7?=
+ =?us-ascii?Q?qaYjg0N2viDld7zMnNFmdojd/iNhtxrgack9DH9XzLSvqgMLAI3I3CqZuu1D?=
+ =?us-ascii?Q?To076M1KYIBJ6s67BVz4c36av2pmmMZZdp+sD740q6TqIKM9bTrFlwKYIWka?=
+ =?us-ascii?Q?6v0jX4lNxtxmp5oKlshRIiiDCBdA+2C4fYLHMAnTHGsJgpdeyPIv1Pxsf0ga?=
+ =?us-ascii?Q?mOoHSWXpKy2HMR7C4psXkH7ihuaF84M9cZFxxETpAP6n59mt3rr2rbr5gyJO?=
+ =?us-ascii?Q?LV/PO/poKtRxOSCZ2tZ1Vd4snc1jID4ZTN8alTCORYID58uV2SV1MwV3Cgek?=
+ =?us-ascii?Q?xiWBmzsJNZKoEy5hS9JNgt0vm7xxVw6g4il5XvxNMbMdh0rK+gnBlrrnvUe1?=
+ =?us-ascii?Q?Ik6Cy7pr4v2twrlJacRD/41KLXAi4b+P46j5yJ/jofIZsJZvX2DifGcqelvk?=
+ =?us-ascii?Q?JPlb8LueRqp1d8gAt4gqM1TwnkjW7kbVveOfNPIf?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: OCz+CgBXv7uZsrxmjP5bAA--.5830S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw4fCFyDJr45Ary8Zw1rXrb_yoW8Wry7pr
- s3Kr4Svw1rKay7ZFs7t3ykXw4UCrWxKFZIkrWDuwn5Gryqgr45ZF13KayIv3s8J34xJa4r
- Zr4jqr4DCa1jyF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUk21xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
- w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
- IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
- z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
- Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
- 6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
- vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v
- 1sIEY20_Aw1UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr
- 4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxG
- rwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8Jw
- CI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2
- z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
-X-CM-SenderInfo: d2isijirrujqpexdthxhgxhubq/
-Received-SPF: pass client-ip=52.237.72.81; envelope-from=engguopeng@buaa.edu.cn;
- helo=azure-sdnproxy.icoremail.net
+X-OriginatorOrg: cirrus.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR19MB5193.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7d36d33-7875-4d4d-f2db-08dcbc6b057f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2024 14:11:41.9348 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kPtBip9uRZSRVrk4CjtfHdROp262YPG00GUA10TMtpR5JxNXnYpQHfJ+HRuoA94jJ65cwQLZGI7f4K/4Q/iSUK7ScnFm1EOkD4BAO1/3muI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR19MB5951
+X-Proofpoint-ORIG-GUID: kz-WcyeHZjX9KMAzdARnkUt0aOuE-FSj
+X-Proofpoint-GUID: kz-WcyeHZjX9KMAzdARnkUt0aOuE-FSj
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=67.231.149.25;
+ envelope-from=prvs=5956f96c7e=ian.brockbank@cirrus.com;
+ helo=mx0b-001ae601.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 14 Aug 2024 10:08:34 -0400
+X-Mailman-Approved-At: Wed, 14 Aug 2024 11:53:28 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,44 +183,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When physical address range in the input payload of scan media command
-exceeds static_mem_size but does not exceed the sum of static and dynamic
-memory, the scan media mailbox command unexpectedly returns an invalid input.
+Apologies. Please ignore this patchset.
 
-It is handled differently depending on whether dynamic memory is present
-or not.If dynamic memory exists, check whether the address range of the 
-request exceeds the range of static memory and dynamic memory.If dynamic 
-memory does not exist, then check whether the address range of the request 
-exceeds the static memory size.
+Something seems to have gone wrong during the preparation and merge to curr=
+ent; I am working on a replacement, and will send v2 once I am happy with i=
+t.
 
-Fixes: d61cc5b6a8d3 ("hw/cxl: Add get scan media capabilities cmd support")
-Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
----
- hw/cxl/cxl-mailbox-utils.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Ian Brockbank C.Eng.
+Senior Staff Software Engineer
+Cirrus Logic | cirrus.com | t: +44 131 272 7145 | m: +44 7554 008061 |@badg=
+ertaming
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 3ebbd32e10..b23c6b9b0b 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1943,11 +1943,12 @@ static CXLRetCode cmd_media_scan_media(const struct cxl_cmd *cmd,
-     }
-     query_length = ldq_le_p(&in->length) * CXL_CACHE_LINE_SIZE;
- 
--    if (query_start + query_length > cxl_dstate->static_mem_size) {
--        return CXL_MBOX_INVALID_PA;
--    }
--    if (ct3d->dc.num_regions && query_start + query_length >=
-+    if (ct3d->dc.num_regions) {
-+        if (query_start + query_length >=
-             cxl_dstate->static_mem_size + ct3d->dc.total_capacity) {
-+                return CXL_MBOX_INVALID_PA;
-+            }
-+    } else if (query_start + query_length > cxl_dstate->static_mem_size) {
-         return CXL_MBOX_INVALID_PA;
-     }
- 
--- 
-2.43.0
 
+> -----Original Message-----
+> From: Ian Brockbank <Ian.Brockbank@cirrus.com>
+> Sent: Wednesday, August 14, 2024 9:27 AM
+> To: qemu-devel@nongnu.org; qemu-riscv@nongnu.org
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>; Alistair Francis
+> <alistair.francis@wdc.com>; Bin Meng <bmeng.cn@gmail.com>; Weiwei Li
+> <liwei1518@gmail.com>; Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com>; Liu Zhiwei <zhiwei_liu@linux.alibaba.com>;
+> Ian Brockbank <Ian.Brockbank@cirrus.com>
+> Subject: [PATCH 00/11] RISC-V: support CLIC v0.9 specification
+>
+> [Resending to include qemu-devel and add numbers to the patches]
+>
+> This patch set gives an implementation of "RISC-V Core-Local Interrupt
+> Controller(CLIC) Version 0.9-draft-20210217". It comes from [1], where
+> you can find the pdf format or the source code.
+>
+> This is based on the implementation from 2021 by Liu Zhiwei [3], who took
+> over the job from Michael Clark, who gave the first implementation of
+> clic-v0.7 specification [2]. I believe this implementation addresses all
+> the comments in Liu Zhiwei's RFC patch thread.
+>
+> This implementation follows the CLIC 0.9-stable draft at 14 March 2024,
+> with the following exceptions and implementation details:
+>  - the CLIC control registers are memory-mapped as per earlier drafts (in
+>    particular version 0.9-draft, 20 June 2023)
+>  - the indirect CSR control in 0.9-stable is not implemented
+>  - the vector table can be either handler addresses (as per the spec)
+>    or a jump table where each entry is processed as an instruction,
+>    selectable with version number v0.9-jmp
+>  - each hart is assigned its own CLIC block
+>  - if PRV_S and/or PRV_M are supported, they are currently assumed to
+> follow
+>    the PRV_M registers; a subsequent update will address this
+>  - support for PRV_S and PRV_M is selectable at CLIC instantiation
+>  - PRV_S and PRV_U registers are currently separate from PRV_M; a
+> subsequent
+>    update will turn them into filtered views onto the PRV_M registers
+>  - each hart is assigned its own CLIC block
+>  - support for PRV_S and PRV_M is selectable at CLIC instantiation by
+>    passing in a base address for the given modes; a base address of 0 is
+>    treated as not supported
+>  - PRV_S and PRV_U registers are mapped  onto the PRV_M controls with
+>    appropriate filtering for the access mode
+>  - the RISCV virt machine has been updated to allow CLIC emulation by
+>    passing "machine=3Dvirt,clic=3Don" on the command line; various other
+>    parameters have been added to allow finer control of the CLIC behavior
+>
+> The implementation (in jump-table mode) has been verified to match the
+> Cirrus Logic silicon (PRV_M only), which is based upon the Pulp
+> implementation [4] as of June 2023.
+>
+> The implementation also includes a selection of qtests designed to verify
+> operation in all possible combinations of PRV_M, PRV_S and PRV_U.
+>
+> [1] specification website: https://github.com/riscv/riscv-fast-interrupt.
+> [2] Michael Clark origin work:
+> https://github.com/sifive/riscv-qemu/tree/sifive-clic.
+> [3] RFC Patch submission by Liu Zhiwei:
+> https://lists.gnu.org/archive/html/qemu-devel/2021-04/msg01417.html
+> [4] Pulp implementation of CLIC: https://github.com/pulp-platform/clic
+>
+> Ian Brockbank (11):
+>     target/riscv: Add CLIC CSR mintstatus
+>     target/riscv: Update CSR xintthresh in CLIC mode
+>     hw/intc: Add CLIC device
+>     target/riscv: Update CSR xie in CLIC mode
+>     target/riscv: Update CSR xip in CLIC mode
+>     target/riscv: Update CSR xtvec in CLIC mode
+>     target/riscv: Update CSR xnxti in CLIC mode
+>     target/riscv: Update interrupt handling in CLIC mode
+>     target/riscv: Update interrupt return in CLIC mode
+>     hw/riscv: add CLIC into virt machine
+>     tests: add riscv clic qtest case and a function in qtest
+
+This message may contain privileged and/or confidential information. If it =
+appears you received this message in error, please notify us by reply email=
+ and then delete the message. Thank you.
+
+Cirrus Logic International (UK) Ltd and Cirrus Logic International Semicond=
+uctor Ltd are companies registered in Scotland, with registered numbers SC0=
+89839 and SC495735 respectively. Our registered office is at 7B Nightingale=
+ Way, Quartermile, Edinburgh, EH3 9EG, UK.
 
