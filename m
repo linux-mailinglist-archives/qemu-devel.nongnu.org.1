@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E075951616
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464D7951618
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:05:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1se8yq-0003lo-D0; Wed, 14 Aug 2024 04:03:40 -0400
+	id 1se8ys-00040A-Mv; Wed, 14 Aug 2024 04:03:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1se8yK-0002pR-Pw
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:17 -0400
+ id 1se8yT-0002tK-1H
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:23 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1se8xw-0007sl-Cs
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:08 -0400
+ id 1se8yJ-0007sc-4T
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723622564; x=1755158564;
+ t=1723622587; x=1755158587;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=l9ibDxi4pjx2BEry03rv9wc5np14WZq/dpLp+/IOpk4=;
- b=gY1BDT+ACDS1TcuZpq3P1DZ6wou0wTPcX1dRBhRQ9J6X/MXmCmbZwYdQ
- 7Db86exWx3C+C9s2ItrkDflzObbMQRrMorF3tUCQvqNXNQEqsOawCuB4A
- CA2ds9zWjevLiMm+F70RqQOHoiElnIrONol7JORz/w0LlMSn1yzAOERWd
- Vyy6mytZaJHccBSN8tkMHufvZY/qmow6NInhtDVAKn/N64NhWcg0U+TUq
- u5u9FOBGDEkmKAs2PT84I2VZufAKiea6OdtpURtmBLML4npBqrhCpTqBN
- R9UbSoi368nu2e+LJADQXzalNeayDXh7PRbgwV7u2TwklyculDtiS1uEJ w==;
-X-CSE-ConnectionGUID: wmIs9s2kQVy6s7ujJjR4PQ==
-X-CSE-MsgGUID: GBZSj6Z4QjW5CvCE5X1xHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25584481"
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25584481"
+ bh=Y3Zdg2gkuvf92qw6n0gEjAnA5h7Gl2EFlz23K8pA8v4=;
+ b=KGe73R7DX4BnQUffUvnNcOxkBUWOjTD6Mq7+41oQuyL9qYX+5cSS/up0
+ B7ybgXIAT30okQj7We8muph8ao3hCrjCZXckmwexhCfVzqVBSEjPVykxP
+ G6hy5f3q2IrF1v4R0pBWCnEk1/uw3wp6bqQhrQzRHZS0E+MZ4LdF+nOew
+ tX9hM6w9+UYxquVuc9OmzZnssrAC5cK/ztqB1kzVbFf9he2a8GNSZfivG
+ EoOTPzOs295eC/W4ZBvZEb9ZC0HysUZkhAgNi2nbTssntqaXTSqkGjOsG
+ yRvabzv5OTVaq39MaUe9FSirJAUHSxcjFAav5aEJwUhgNWHWgm9WGhYgz A==;
+X-CSE-ConnectionGUID: GwpXFdTARb6RHq0SMBPuuw==
+X-CSE-MsgGUID: mHGtlY0rRVqiR+tTU+5u9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25584490"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25584490"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Aug 2024 01:02:41 -0700
-X-CSE-ConnectionGUID: w+NWm/qsQEObMRIL6k8yPQ==
-X-CSE-MsgGUID: SZlHgF/pR8av3GAvF8+zDA==
+X-CSE-ConnectionGUID: sbz+iBpqTWSIEzia/8Shwg==
+X-CSE-MsgGUID: X6d4oiFnSamnUzsFLavRKA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59048955"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59048958"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 01:02:38 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 01:02:40 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	kvm@vger.kernel.org,
 	xiaoyao.li@intel.com
-Subject: [PATCH 5/9] i386/cpu: Construct CPUID 2 as stateful iff times > 1
-Date: Wed, 14 Aug 2024 03:54:27 -0400
-Message-Id: <20240814075431.339209-6-xiaoyao.li@intel.com>
+Subject: [PATCH 6/9] i386/cpu: Set topology info in 0x80000008.ECX only for
+ AMD CPUs
+Date: Wed, 14 Aug 2024 03:54:28 -0400
+Message-Id: <20240814075431.339209-7-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240814075431.339209-1-xiaoyao.li@intel.com>
 References: <20240814075431.339209-1-xiaoyao.li@intel.com>
@@ -81,32 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When times == 1, the CPUID leaf 2 is not stateful.
+The whole ECX of CPUID 0x80000008 is reserved for Intel.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/kvm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index c168ff5691df..6618259f265c 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1818,10 +1818,12 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
-             int times;
- 
-             c->function = i;
--            c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
--                       KVM_CPUID_FLAG_STATE_READ_NEXT;
-             cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-             times = c->eax & 0xff;
-+            if (times > 1) {
-+                c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
-+                           KVM_CPUID_FLAG_STATE_READ_NEXT;
-+            }
- 
-             for (j = 1; j < times; ++j) {
-                 if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 5bee84333089..7a4835289760 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6944,7 +6944,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+              *eax |= (cpu->guest_phys_bits << 16);
+         }
+         *ebx = env->features[FEAT_8000_0008_EBX];
+-        if (threads_per_pkg > 1) {
++        if (threads_per_pkg > 1 && IS_AMD_CPU(env)) {
+             /*
+              * Bits 15:12 is "The number of bits in the initial
+              * Core::X86::Apic::ApicId[ApicId] value that indicate
 -- 
 2.34.1
 
