@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F95A95160F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CCB951614
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 10:04:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1se8ym-0003IY-O5; Wed, 14 Aug 2024 04:03:36 -0400
+	id 1se8yt-00044v-MJ; Wed, 14 Aug 2024 04:03:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1se8yT-0002tJ-1N
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:23 -0400
+ id 1se8yT-0002tI-0z
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:24 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1se8yL-0007rt-9N
+ id 1se8yL-0007sl-4D
  for qemu-devel@nongnu.org; Wed, 14 Aug 2024 04:03:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1723622589; x=1755158589;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+1CShJKpDmVBjOQNUIrC3GWrHShE0+pF4rvqTJMJim8=;
- b=B1OVSrxgfqxn6/VYAbhQpQd/vRDDXI2iB5P+7PnDzydv/2RLfNkYJd7z
- WAgHVIIImGfg4c8UflJxf6wLO1Zw7udzh4ZRevg7NZQxBK+txyGQhC6dZ
- sIxxkTQJ8Tdm+WgfpNVKuyx8bP1TWsq1qQb8yMOj5DJuVXq2qmdTP+nMg
- 0qt515Sy6mwADjF/9gOx2F21rbd02BpS5JrRHA/guwN509a22wLyL0h3O
- xWStRds2h7U1PvC5n4FOxpSU5XS2DYB2RQMGS79+4Be5cbwwc2hs8RJck
- wlRClMxcvuePTsyWUva82qZ+DaaA43N/ZBu7bBtTIkpyrBLaCfBbvl/8h w==;
-X-CSE-ConnectionGUID: ph3zYcS0RiymqV8OAZl5Lw==
-X-CSE-MsgGUID: tQJf5YMTSUmHh1LLbBTr8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25584500"
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25584500"
+ bh=YQXU1V8cjOIRfFnAkE3ZUsJxcIpDFj6x85Y7iJEOblI=;
+ b=TYzM23AsAf9p6dfW+88Q1nlM0rzvVhU0YDmNH1Hne1q4QMzEl9q8xkSW
+ EP0sZBvx8fzYSS+fNcWcSglxvhrYHeD7yS74zZo8sWNDLAZJN2CJsGJW5
+ 6BjiWKGqSFmckC/DpGmIl48ObTJ0uST0npySw9K0BDL5QjolgpJA0dMVX
+ P/m9xU0EZOhu6fvCROJjZSZtAFTiWQ6xmoKrZ5CoYTYLhBWR/Qy2U81k3
+ OvmQo4WZsn4TlV761vrMDMKYB3NGIencFkj80DRLj4GtqFTH0o45UOGKU
+ 5wMhdZqScdy0q6Dz78MUunUvpLOtNunTExY5R7D7RoOK6NPUsXF5gDXJ0 w==;
+X-CSE-ConnectionGUID: PFdy1yh/TbuBFS/wW4Py9w==
+X-CSE-MsgGUID: 7Nar7dGnTsOZQAsaKeafYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25584506"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25584506"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 01:02:43 -0700
-X-CSE-ConnectionGUID: KEfZ5W48QYaoJauvCfm6gQ==
-X-CSE-MsgGUID: 0Haszx6eSjqibH/f847CBQ==
+ 14 Aug 2024 01:02:44 -0700
+X-CSE-ConnectionGUID: aHkv1BIkToCVIdaFFa7Yyg==
+X-CSE-MsgGUID: t1AZl/TdSAq9Ftp1CBFuKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59048963"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59048966"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 01:02:42 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 01:02:43 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	kvm@vger.kernel.org,
 	xiaoyao.li@intel.com
-Subject: [PATCH 7/9] i386/cpu: Suppress CPUID values not defined by Intel
-Date: Wed, 14 Aug 2024 03:54:29 -0400
-Message-Id: <20240814075431.339209-8-xiaoyao.li@intel.com>
+Subject: [PATCH 8/9] i386/cpu: Drop AMD alias bits in FEAT_8000_0001_EDX for
+ non-AMD guests
+Date: Wed, 14 Aug 2024 03:54:30 -0400
+Message-Id: <20240814075431.339209-9-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240814075431.339209-1-xiaoyao.li@intel.com>
 References: <20240814075431.339209-1-xiaoyao.li@intel.com>
@@ -81,43 +82,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some CPUID leaves are defined by AMD while it also gets exposed to Intel
-VMs by QEMU. It causes no issue with current VMs however it will not work
-with Intel TDX because these CPUID leaves are enforced by TDX module as
-reserved.
-
-Stop to advertise them to Intel VMs when vendor_cpuid_only is true.
+The AMD alias bits are reserved for Intel.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/cpu.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ target/i386/cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 7a4835289760..fed805e04aeb 100644
+index fed805e04aeb..85ce405ece80 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6863,12 +6863,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+@@ -6118,6 +6118,11 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
+ #endif
          break;
-     case 0x80000000:
-         *eax = env->cpuid_xlevel;
--        *ebx = env->cpuid_vendor1;
--        *edx = env->cpuid_vendor2;
--        *ecx = env->cpuid_vendor3;
-+        if (cpu->vendor_cpuid_only && IS_INTEL_CPU(env)) {
-+            *ebx = *ecx = *edx = 0;
-+        } else {
-+            *ebx = env->cpuid_vendor1;
-+            *edx = env->cpuid_vendor2;
-+            *ecx = env->cpuid_vendor3;
+ 
++    case FEAT_8000_0001_EDX:
++        if (cpu && !IS_AMD_CPU(&cpu->env)) {
++            unavail = CPUID_EXT2_AMD_ALIASES;
 +        }
++        break;
+     default:
          break;
-     case 0x80000001:
--        *eax = env->cpuid_version;
-+        *eax = (cpu->vendor_cpuid_only && IS_INTEL_CPU(env)) ? 0 : env->cpuid_version;
-         *ebx = 0;
-         *ecx = env->features[FEAT_8000_0001_ECX];
-         *edx = env->features[FEAT_8000_0001_EDX];
+     }
 -- 
 2.34.1
 
