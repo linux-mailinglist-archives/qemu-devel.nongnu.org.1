@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D03951A6B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 13:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 178F7951A7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 13:59:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seCaO-0006yd-0b; Wed, 14 Aug 2024 07:54:40 -0400
+	id 1seCdR-00044E-CQ; Wed, 14 Aug 2024 07:57:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1seCaL-0006y7-UU
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 07:54:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1seCaJ-00030z-Ir
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 07:54:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723636473;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=x+PAFk7vUGr4hK6CLgZFb4PyqJIqsXhixW2vNZQBtmk=;
- b=Z68F2FRTIKLaIRyC6o7/9upOqtM3Zr68lYuV/nqKfIdpL9Bl7cSK1mCGRQXHPskeZjXzNy
- rt+4JrBvVbNCy2ccNxhIfiLsNdbG0qd4mWND8xg4KlULK0bbDi/ozQRrRwnLNg7/U1tm9f
- GIEmUlGxqVF1Z2eZt97kgkwndHoFs8A=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-PEGruH0dNAWZLqWP-LJKPQ-1; Wed, 14 Aug 2024 07:54:31 -0400
-X-MC-Unique: PEGruH0dNAWZLqWP-LJKPQ-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-66628e9ec89so139872627b3.1
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 04:54:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
+ id 1seCdN-000416-QM
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 07:57:45 -0400
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
+ id 1seCdM-0003XY-5Z
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 07:57:45 -0400
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-492a01bce97so2300398137.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 04:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1723636663; x=1724241463; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5HgKv16iVxwQfwScMaNGnAY3+6Nxz4ksJ0KeJnbS76A=;
+ b=aSvuWlhJVHgGhX28eba3QI1YO+gsV6CWHCJpRXODKdGbs8Q2Bk5HjAMP2siLdNi1DK
+ oeBcAFO4ZZnV2bAvm2yZOVmTHYGsgK9q2iNEbvvsFH97znZ4T0ypInMAIacgm12QyuMr
+ Lw82BMqDArOkbjpO7LEC2TKve9kAi6pBtEdQA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723636471; x=1724241271;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1723636663; x=1724241463;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=x+PAFk7vUGr4hK6CLgZFb4PyqJIqsXhixW2vNZQBtmk=;
- b=rxRkjEnfjEhnXkU42F+leqmUZhHaqZwF6QadPt9rKB05Gf94neF4KhFR6ZgGlBGLmW
- a7mZny6Xoo483qX7cV0zqyeuTyVklM5SjSsIX1rHD/SeYBMXKGZWW6jFU2QwM/jPFPc2
- ZFL5/VYlojMVnY1Svu2SFxTlRa7+f90DdpQNU1QAcbduBWQ+N94L7YqVeed8GE+pN+Dt
- HQ6RgiEbiYFZ8s6olpbmBSLY1heRldwE8/65f7FKbHopwSxkRalNvEKkrRsfxji0YJr/
- DaPQkCym/vpfIXIktwWfQqouXLm2Bc1ppfQekxFFqSuK4Hu28RYp4DrDUfQea3YlAo5c
- ulYg==
-X-Gm-Message-State: AOJu0YyAbRvlKGB4+vzlJYmn57LrUum0os5B9pLnonLTLrJpcAdA6mUZ
- 7lKfNWxiXKYR9/mmNYtLyOTgv2KEGFGtmADnjAEfjODpQqilY0Ug+RM5iy8M3FeGUHDN6zhfoZc
- e1LnSN+prrZglT2KG9mYt8DnXkAtIcbNX7LO+T2mobLFz/HJU3xxT4Zaa1j3W2FRP/AdGMfgbYR
- jHW626PYKmH94sIS+wemJkXr2hThw=
-X-Received: by 2002:a05:6902:2186:b0:e0e:89f8:4f8a with SMTP id
- 3f1490d57ef6-e1155ab12ffmr2562178276.23.1723636471159; 
- Wed, 14 Aug 2024 04:54:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOwxr8jljjDDrOrhvfn2iyXZOiOhRXTv9ksCzFnYTth+ldM4rJNfa7F79/csGpehPKqV7ALEq39nXHhy6kbmY=
-X-Received: by 2002:a05:6902:2186:b0:e0e:89f8:4f8a with SMTP id
- 3f1490d57ef6-e1155ab12ffmr2562170276.23.1723636470856; Wed, 14 Aug 2024
- 04:54:30 -0700 (PDT)
+ bh=5HgKv16iVxwQfwScMaNGnAY3+6Nxz4ksJ0KeJnbS76A=;
+ b=q2NlN9ZJzU0gjYB4lAgTxST9D2GN6VdCGbwQX+wHrnhd/ooXwQH3wiyp0m+ggGGEkS
+ D8PBUF5NpKpWm9OZRtOEyFs/KvwG0XGUhRfzN4hPlYc9LvuuBbzPxZylbjZcGVnvNv4Z
+ F26bwVy0B50im4yciKUAZ0x/jQRSgDcFdfQGI8Rcw+k/JPWJkB/TUb3WqC39i5KLwOKO
+ Pn7DUxCE6yae8v6mlKiLF9Uo/6OyBcLRNC5Xlti29wHjQTKD6kzgUOEC1W/4VraqIXHG
+ 1Tc9qCVh+auprf+z5kVvOsvaKtom3pyqBb+T4abQXWsBa9W7EWTcDvCM+JBX+XLeFn4b
+ +Eig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU7H6kX0bOJmcRfP0R8Ss9wI9SG5HZ6ZSlrBDQiQEX4soPXAUyodRSSEDPhPSoI/eHgoQDC5sylD6HMdjAhq1IEi1wO1XM=
+X-Gm-Message-State: AOJu0YxdLpqlcz0bpakCW0g3VCWshUVmlZK0BCXENVew9HMA8Mjo5SZm
+ A+aziJnhkWmFJda1/2KCoJCrAPB0EVeF3NgCtL7U5o3EJ8vZ0+7f2ehJP6OPXQ==
+X-Google-Smtp-Source: AGHT+IEFYvA+QBzicW2wIC4WRnvGgadCkAZ7gUGbFIAPALtDxxtDiTc6KvxyNzphzr5w0LXKlBwHXA==
+X-Received: by 2002:a05:6102:390a:b0:492:aa42:e0ce with SMTP id
+ ada2fe7eead31-497599d6ca1mr3003013137.20.1723636662850; 
+ Wed, 14 Aug 2024 04:57:42 -0700 (PDT)
+Received: from denia.c.googlers.com.com
+ (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6bd82c5f375sm43001586d6.14.2024.08.14.04.57.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Aug 2024 04:57:42 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ righi.andrea@gmail.com
+Cc: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v5 0/3] hw/i386/acpi: Pre-compute the _PRT table
+Date: Wed, 14 Aug 2024 11:56:08 +0000
+Message-ID: <20240814115736.1580337-1-ribalda@chromium.org>
+X-Mailer: git-send-email 2.46.0.76.ge559c4bf1a-goog
 MIME-Version: 1.0
-References: <20240813031115.129000-1-demeng@redhat.com>
-In-Reply-To: <20240813031115.129000-1-demeng@redhat.com>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Wed, 14 Aug 2024 14:54:19 +0300
-Message-ID: <CAPMcbCpcQ76EeLxDkAwn6jRQjPEbHzz9QMNDNiX54r+kqxo5Vg@mail.gmail.com>
-Subject: Re: [PATCH] qemu-guest-agent: Update the logfile path of
- qga-fsfreeze-hook.log
-To: Dehan Meng <demeng@redhat.com>
-Cc: qemu-devel@nongnu.org, mrezanin@redhat.com
-Content-Type: multipart/alternative; boundary="000000000000915ef3061fa363eb"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=ribalda@chromium.org; helo=mail-vs1-xe2f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.135,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,99 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000915ef3061fa363eb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Today for x86 the _PRT() table is computed in runtime.
+Under some configurations, computing the _PRT table can take more than
+30 seconds and the ACPI timeout is violated.
 
-This bug looks specific to the RedHat SELinux configuration.
-Is this any reason to move LOGFILE except this?
+This patchset modifies _PRT() to return a pre-computed table.
 
-Best Regards,
-Konstantin Kostiuk.
+Changelog v3->v4 Thanks Richard:
+- Make link_name struct static
 
+Changelog v3->v4 Thanks Igor:
+- Add missing files to tests/qtest/bios-tables-test-allowed-diff.h
 
-On Tue, Aug 13, 2024 at 6:11=E2=80=AFAM Dehan Meng <demeng@redhat.com> wrot=
-e:
+Changelog v2->v3 Thanks Michael:
+- Code style
+- Add cover letter
 
-> Since '/var/log/qga-fsfreeze-hook.log' is not included to proper
-> selinux context 'system_u:object_r:virt_qemu_ga_log_t:s0', it
-> should be changed to '/var/log/qemu-ga/qga-fsfreeze-hook.log'
->
-> Jira: https://issues.redhat.com/browse/RHEL-52250
-> Signed-off-by: Dehan Meng <demeng@redhat.com>
-> ---
->  scripts/qemu-guest-agent/fsfreeze-hook | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/qemu-guest-agent/fsfreeze-hook
-> b/scripts/qemu-guest-agent/fsfreeze-hook
-> index 13aafd4845..98aad5e18b 100755
-> --- a/scripts/qemu-guest-agent/fsfreeze-hook
-> +++ b/scripts/qemu-guest-agent/fsfreeze-hook
-> @@ -7,7 +7,7 @@
->  # "freeze" argument before the filesystem is frozen. And for fsfreeze-th=
-aw
->  # request, it is issued with "thaw" argument after filesystem is thawed.
->
-> -LOGFILE=3D/var/log/qga-fsfreeze-hook.log
-> +LOGFILE=3D/var/log/qemu-ga/qga-fsfreeze-hook.log
->  FSFREEZE_D=3D$(dirname -- "$0")/fsfreeze-hook.d
->
->  # Check whether file $1 is a backup or rpm-generated file and should be
-> ignored
-> --
-> 2.40.1
->
->
+Ricardo Ribalda (3):
+  tests/acpi: pc: allow DSDT acpi table changes
+  hw/i386/acpi-build: Return a pre-computed _PRT table
+  tests/acpi: pc: update golden masters for DSDT
 
---000000000000915ef3061fa363eb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ hw/i386/acpi-build.c                 | 120 +++++----------------------
+ tests/data/acpi/x86/pc/DSDT          | Bin 6830 -> 8527 bytes
+ tests/data/acpi/x86/pc/DSDT.acpierst | Bin 6741 -> 8438 bytes
+ tests/data/acpi/x86/pc/DSDT.acpihmat | Bin 8155 -> 9852 bytes
+ tests/data/acpi/x86/pc/DSDT.bridge   | Bin 13701 -> 15398 bytes
+ tests/data/acpi/x86/pc/DSDT.cphp     | Bin 7294 -> 8991 bytes
+ tests/data/acpi/x86/pc/DSDT.dimmpxm  | Bin 8484 -> 10181 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbridge | Bin 6781 -> 8478 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbrroot | Bin 3337 -> 5034 bytes
+ tests/data/acpi/x86/pc/DSDT.ipmikcs  | Bin 6902 -> 8599 bytes
+ tests/data/acpi/x86/pc/DSDT.memhp    | Bin 8189 -> 9886 bytes
+ tests/data/acpi/x86/pc/DSDT.nohpet   | Bin 6688 -> 8385 bytes
+ tests/data/acpi/x86/pc/DSDT.numamem  | Bin 6836 -> 8533 bytes
+ tests/data/acpi/x86/pc/DSDT.roothp   | Bin 10623 -> 12320 bytes
+ tests/data/acpi/x86/q35/DSDT.cxl     | Bin 9714 -> 13148 bytes
+ tests/data/acpi/x86/q35/DSDT.viot    | Bin 9464 -> 14615 bytes
+ 16 files changed, 22 insertions(+), 98 deletions(-)
 
-<div dir=3D"ltr"><div>This bug looks specific to the RedHat SELinux configu=
-ration.</div><div>Is this any reason to move LOGFILE except this?<br></div>=
-<div><br></div><div><div><div dir=3D"ltr" class=3D"gmail_signature" data-sm=
-artmail=3D"gmail_signature"><div dir=3D"ltr"><div>Best Regards,</div><div>K=
-onstantin Kostiuk.</div></div></div></div><br></div></div><br><div class=3D=
-"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 13, 2024 at=
- 6:11=E2=80=AFAM Dehan Meng &lt;<a href=3D"mailto:demeng@redhat.com">demeng=
-@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">Since &#39;/var/log/qga-fsfreeze-hook.log&#39; is not included t=
-o proper<br>
-selinux context &#39;system_u:object_r:virt_qemu_ga_log_t:s0&#39;, it<br>
-should be changed to &#39;/var/log/qemu-ga/qga-fsfreeze-hook.log&#39;<br>
-<br>
-Jira: <a href=3D"https://issues.redhat.com/browse/RHEL-52250" rel=3D"norefe=
-rrer" target=3D"_blank">https://issues.redhat.com/browse/RHEL-52250</a><br>
-Signed-off-by: Dehan Meng &lt;<a href=3D"mailto:demeng@redhat.com" target=
-=3D"_blank">demeng@redhat.com</a>&gt;<br>
----<br>
-=C2=A0scripts/qemu-guest-agent/fsfreeze-hook | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
-<br>
-diff --git a/scripts/qemu-guest-agent/fsfreeze-hook b/scripts/qemu-guest-ag=
-ent/fsfreeze-hook<br>
-index 13aafd4845..98aad5e18b 100755<br>
---- a/scripts/qemu-guest-agent/fsfreeze-hook<br>
-+++ b/scripts/qemu-guest-agent/fsfreeze-hook<br>
-@@ -7,7 +7,7 @@<br>
-=C2=A0# &quot;freeze&quot; argument before the filesystem is frozen. And fo=
-r fsfreeze-thaw<br>
-=C2=A0# request, it is issued with &quot;thaw&quot; argument after filesyst=
-em is thawed.<br>
-<br>
--LOGFILE=3D/var/log/qga-fsfreeze-hook.log<br>
-+LOGFILE=3D/var/log/qemu-ga/qga-fsfreeze-hook.log<br>
-=C2=A0FSFREEZE_D=3D$(dirname -- &quot;$0&quot;)/fsfreeze-hook.d<br>
-<br>
-=C2=A0# Check whether file $1 is a backup or rpm-generated file and should =
-be ignored<br>
--- <br>
-2.40.1<br>
-<br>
-</blockquote></div>
-
---000000000000915ef3061fa363eb--
+-- 
+2.46.0.76.ge559c4bf1a-goog
 
 
