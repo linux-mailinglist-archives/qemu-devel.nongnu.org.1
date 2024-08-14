@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40B6951110
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 02:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D31E951112
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Aug 2024 02:33:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1se1wI-0004my-6s; Tue, 13 Aug 2024 20:32:34 -0400
+	id 1se1w6-0004H3-R4; Tue, 13 Aug 2024 20:32:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <junjie.mao@intel.com>)
- id 1se1wG-0004lS-Gd
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 20:32:32 -0400
+ id 1se1w4-0004AX-Ij
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 20:32:20 -0400
 Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <junjie.mao@intel.com>)
- id 1se1w1-0000W4-3n
- for qemu-devel@nongnu.org; Tue, 13 Aug 2024 20:32:32 -0400
+ id 1se1w2-0000Vg-OX
+ for qemu-devel@nongnu.org; Tue, 13 Aug 2024 20:32:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723595537; x=1755131537;
+ t=1723595539; x=1755131539;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Ev9OeDx8uE6NsRQabK3FPE9C8KcR0iSM0s5jwh8vN80=;
- b=I8uSxH1VmMpgyAAJSD2VVdVju+43BijPk1/NIT4JPtJ2QpHD4CtXH25D
- IOpiXXy9WifXwp2gS1ieVnoS80ZWh/+amjPph3x5GFVVAnwyg8kuTiZyJ
- cWFVtQqArhj/c57CbF9PnyJX+MPDKti+Pmqt1c0mnBCeLdcO9yTNp8i1D
- fF2HtayntdFTO9eqbxUe1ZK8pTw0ciiNWhZ55ZjxIUWDpTYDhxspRcmCf
- d+zWOOzpjvFKzAakm/BW7n7GYPq2po7FGZwmNqoqz3Y2C2DO8j25p1gsP
- 4WkeUjnJOI8cRyxADlCUYdCgm3aYDi8YikROzp+ercdnd8jhdns3Ws1H2 Q==;
-X-CSE-ConnectionGUID: Mn1pGZkcSu+MWhUUUywUOA==
-X-CSE-MsgGUID: mDKj3mAkRBCZi7PU24rhTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21346396"
-X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; d="scan'208";a="21346396"
+ bh=tnoGK4zKgNlqRyvEJd6ur7OOGmPN9kW2wVQiLIDtklo=;
+ b=KJ5E89EGpWQPGmf6Nr4JosmOpWkgYnclwggtNtcLOfJ+fpUzHQ9Jsm1E
+ 0O2zNDsKO9F6+1zNPYRLnJq14YCTNdw33qaipS4+lcjkSpXmlreTzCQ/U
+ B4roWEGpKfg5KV8YjRfpQ8PRyWc4FbqDRRy/Xey6OYcpgVWeUaXAUn2XZ
+ yCsflRyzwHqPvGWtMJXygsbVbYOshxhXBSbzx4r++o0zLII3f284zG0DP
+ PC1ml8RX1kgVmDDa9oYcY/y1CgPRS7W3dhdYV4Ldu8ivICSSXQN0i94VT
+ IafXqAgqQ8neu9LvFofta3+ecMWatysatgNzPeMV0uJJ3X6v4m+1d+bYe Q==;
+X-CSE-ConnectionGUID: 8Dq7ztlWQfKXHhlTho3MjQ==
+X-CSE-MsgGUID: TqrDEs0FSAWvUirbrFRPqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21346405"
+X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; d="scan'208";a="21346405"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 17:32:15 -0700
-X-CSE-ConnectionGUID: 8BI/hIOtR0itKObw5ZQYOQ==
-X-CSE-MsgGUID: G6s2W3tORau6Vj3jOlD9mw==
+ 13 Aug 2024 17:32:18 -0700
+X-CSE-ConnectionGUID: pYY0dv08Q/qxsxTl3MnYFA==
+X-CSE-MsgGUID: t0459Ns3Q0GaSDHPi6vKiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; d="scan'208";a="58472756"
+X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; d="scan'208";a="58472763"
 Received: from junjie-optiplex-7080.sh.intel.com (HELO localhost.localdomain)
  ([10.239.48.46])
- by fmviesa006.fm.intel.com with ESMTP; 13 Aug 2024 17:32:10 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 13 Aug 2024 17:32:15 -0700
 From: Junjie Mao <junjie.mao@intel.com>
 To: manos.pitsidianakis@linaro.org,
 	pbonzini@redhat.com
@@ -52,10 +52,9 @@ Cc: alex.bennee@linaro.org, armbru@redhat.com, berrange@redhat.com,
  peter.maydell@linaro.org, philmd@linaro.org, pierrick.bouvier@linaro.org,
  qemu-devel@nongnu.org, richard.henderson@linaro.org, rowan.hart@intel.com,
  stefanha@redhat.com, thuth@redhat.com, zhao1.liu@intel.com
-Subject: [RFC PATCH 1/2] meson: subprojects: Specify Rust edition by
- rust_std=20XX
-Date: Wed, 14 Aug 2024 17:08:19 +0800
-Message-Id: <20240814090820.1251026-2-junjie.mao@intel.com>
+Subject: [RFC PATCH 2/2] rust: Specify Rust edition by rust_std=20XX
+Date: Wed, 14 Aug 2024 17:08:20 +0800
+Message-Id: <20240814090820.1251026-3-junjie.mao@intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240814090820.1251026-1-junjie.mao@intel.com>
 References: <20240814090820.1251026-1-junjie.mao@intel.com>
@@ -63,13 +62,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.18; envelope-from=junjie.mao@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_06_12=1.947,
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_06_12=1.947,
  DKIMWL_WL_HIGH=-0.125, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,168 +86,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Junjie Mao <junjie.mao@intel.com>
 ---
- subprojects/packagefiles/arbitrary-int-1-rs/meson.build       | 4 +---
- subprojects/packagefiles/bilge-impl-0.2-rs/meson.build        | 2 +-
- subprojects/packagefiles/either-1-rs/meson.build              | 2 +-
- subprojects/packagefiles/itertools-0.11-rs/meson.build        | 2 +-
- subprojects/packagefiles/proc-macro-error-1-rs/meson.build    | 2 +-
- .../packagefiles/proc-macro-error-attr-1-rs/meson.build       | 2 +-
- subprojects/packagefiles/proc-macro2-1-rs/meson.build         | 2 +-
- subprojects/packagefiles/quote-1-rs/meson.build               | 2 +-
- subprojects/packagefiles/syn-2-rs/meson.build                 | 2 +-
- subprojects/packagefiles/unicode-ident-1-rs/meson.build       | 4 +---
- 10 files changed, 10 insertions(+), 14 deletions(-)
+ rust/hw/char/pl011/meson.build | 4 +---
+ rust/meson.build               | 4 +---
+ rust/qemu-api/meson.build      | 2 +-
+ 3 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/subprojects/packagefiles/arbitrary-int-1-rs/meson.build b/subprojects/packagefiles/arbitrary-int-1-rs/meson.build
-index 9cba82365f..34a189cbae 100644
---- a/subprojects/packagefiles/arbitrary-int-1-rs/meson.build
-+++ b/subprojects/packagefiles/arbitrary-int-1-rs/meson.build
-@@ -7,10 +7,8 @@ _arbitrary_int_rs = static_library(
-   'arbitrary_int',
+diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
+index 1c139d3af9..518d4924a9 100644
+--- a/rust/hw/char/pl011/meson.build
++++ b/rust/hw/char/pl011/meson.build
+@@ -7,10 +7,8 @@ bilge_impl_dep = dependency('bilge-impl-0.2-rs')
+ _libpl011_rs = static_library(
+   'pl011',
    files('src/lib.rs'),
-   gnu_symbol_visibility: 'hidden',
 +  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
--  rust_args: [
+   rust_abi: 'c',
+-  rust_args: rust_args + [
 -    '--edition', '2021',
 -  ],
-   dependencies: [],
- )
-
-diff --git a/subprojects/packagefiles/bilge-impl-0.2-rs/meson.build b/subprojects/packagefiles/bilge-impl-0.2-rs/meson.build
-index e0c51c7375..80243c7024 100644
---- a/subprojects/packagefiles/bilge-impl-0.2-rs/meson.build
-+++ b/subprojects/packagefiles/bilge-impl-0.2-rs/meson.build
-@@ -22,8 +22,8 @@ rust = import('rust')
- _bilge_impl_rs = rust.proc_macro(
-   'bilge_impl',
-   files('src/lib.rs'),
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_args: [
--    '--edition', '2021',
-     '--cfg', 'use_fallback',
-     '--cfg', 'feature="syn-error"',
-     '--cfg', 'feature="proc-macro"',
-diff --git a/subprojects/packagefiles/either-1-rs/meson.build b/subprojects/packagefiles/either-1-rs/meson.build
-index 07240b8708..a5842eb3a6 100644
---- a/subprojects/packagefiles/either-1-rs/meson.build
-+++ b/subprojects/packagefiles/either-1-rs/meson.build
-@@ -7,9 +7,9 @@ _either_rs = static_library(
-   'either',
-   files('src/lib.rs'),
-   gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2018', 'build.rust_std=2018'],
-   rust_abi: 'rust',
-   rust_args: [
--    '--edition', '2018',
-     '--cfg', 'feature="use_std"',
-     '--cfg', 'feature="use_alloc"',
-   ],
-diff --git a/subprojects/packagefiles/itertools-0.11-rs/meson.build b/subprojects/packagefiles/itertools-0.11-rs/meson.build
-index da731ca032..13d2d27019 100644
---- a/subprojects/packagefiles/itertools-0.11-rs/meson.build
-+++ b/subprojects/packagefiles/itertools-0.11-rs/meson.build
-@@ -11,9 +11,9 @@ _itertools_rs = static_library(
-   'itertools',
-   files('src/lib.rs'),
-   gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2018', 'build.rust_std=2018'],
-   rust_abi: 'rust',
-   rust_args: [
--    '--edition', '2018',
-     '--cfg', 'feature="use_std"',
-     '--cfg', 'feature="use_alloc"',
-   ],
-diff --git a/subprojects/packagefiles/proc-macro-error-1-rs/meson.build b/subprojects/packagefiles/proc-macro-error-1-rs/meson.build
-index 20f2e99a87..38ea7b89d3 100644
---- a/subprojects/packagefiles/proc-macro-error-1-rs/meson.build
-+++ b/subprojects/packagefiles/proc-macro-error-1-rs/meson.build
-@@ -16,9 +16,9 @@ syn_dep = dependency('syn-2-rs', native: true)
- _proc_macro_error_rs = static_library(
-   'proc_macro_error',
-   files('src/lib.rs'),
-+  override_options: ['rust_std=2018', 'build.rust_std=2018'],
-   rust_abi: 'rust',
-   rust_args: [
--    '--edition', '2018',
-     '--cfg', 'use_fallback',
-     '--cfg', 'feature="syn-error"',
-     '--cfg', 'feature="proc-macro"',
-diff --git a/subprojects/packagefiles/proc-macro-error-attr-1-rs/meson.build b/subprojects/packagefiles/proc-macro-error-attr-1-rs/meson.build
-index 1aafd41795..d900c54cfd 100644
---- a/subprojects/packagefiles/proc-macro-error-attr-1-rs/meson.build
-+++ b/subprojects/packagefiles/proc-macro-error-attr-1-rs/meson.build
-@@ -13,8 +13,8 @@ rust = import('rust')
- _proc_macro_error_attr_rs = rust.proc_macro(
-   'proc_macro_error_attr',
-   files('src/lib.rs'),
-+  override_options: ['rust_std=2018', 'build.rust_std=2018'],
-   rust_args: [
--    '--edition', '2018',
-     '--cfg', 'use_fallback',
-     '--cfg', 'feature="syn-error"',
-     '--cfg', 'feature="proc-macro"'
-diff --git a/subprojects/packagefiles/proc-macro2-1-rs/meson.build b/subprojects/packagefiles/proc-macro2-1-rs/meson.build
-index 6796d75295..8e601b50cc 100644
---- a/subprojects/packagefiles/proc-macro2-1-rs/meson.build
-+++ b/subprojects/packagefiles/proc-macro2-1-rs/meson.build
-@@ -11,9 +11,9 @@ _proc_macro2_rs = static_library(
-   'proc_macro2',
-   files('src/lib.rs'),
-   gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: [
--    '--edition', '2021',
-     '--cfg', 'feature="proc-macro"',
-     '--cfg', 'no_literal_byte_character',
-     '--cfg', 'no_literal_c_string',
-diff --git a/subprojects/packagefiles/quote-1-rs/meson.build b/subprojects/packagefiles/quote-1-rs/meson.build
-index a9c2fb9b61..d36609bd3c 100644
---- a/subprojects/packagefiles/quote-1-rs/meson.build
-+++ b/subprojects/packagefiles/quote-1-rs/meson.build
-@@ -11,9 +11,9 @@ _quote_rs = static_library(
-   'quote',
-   files('src/lib.rs'),
-   gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: [
--    '--edition', '2021',
-     '--cfg', 'feature="proc-macro"',
-   ],
    dependencies: [
-diff --git a/subprojects/packagefiles/syn-2-rs/meson.build b/subprojects/packagefiles/syn-2-rs/meson.build
-index b4666473fb..a53335f309 100644
---- a/subprojects/packagefiles/syn-2-rs/meson.build
-+++ b/subprojects/packagefiles/syn-2-rs/meson.build
-@@ -15,9 +15,9 @@ _syn_rs = static_library(
-   'syn',
-   files('src/lib.rs'),
+     bilge_dep,
+     bilge_impl_dep,
+diff --git a/rust/meson.build b/rust/meson.build
+index c321fa455e..590e9397c3 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -2,10 +2,8 @@ _lib_bindings_rs = static_library(
+   '_bindings_rs',
+   bindings_rs,
    gnu_symbol_visibility: 'hidden',
 +  override_options: ['rust_std=2021', 'build.rust_std=2021'],
    rust_abi: 'rust',
-   rust_args: [
--    '--edition', '2021',
-     '--cfg', 'feature="full"',
-     '--cfg', 'feature="derive"',
-     '--cfg', 'feature="parsing"',
-diff --git a/subprojects/packagefiles/unicode-ident-1-rs/meson.build b/subprojects/packagefiles/unicode-ident-1-rs/meson.build
-index 77c581f40a..54f2376854 100644
---- a/subprojects/packagefiles/unicode-ident-1-rs/meson.build
-+++ b/subprojects/packagefiles/unicode-ident-1-rs/meson.build
-@@ -7,10 +7,8 @@ _unicode_ident_rs = static_library(
-   'unicode_ident',
-   files('src/lib.rs'),
-   gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
--  rust_args: [
+-  rust_args: rust_args + [
 -    '--edition', '2021',
 -  ],
-   dependencies: [],
-   native: true,
  )
+
+ subdir('qemu-api')
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index a169872026..997d478309 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -2,9 +2,9 @@ _qemu_api_rs = static_library(
+   'qemu_api',
+   [files('src/lib.rs')],
+   gnu_symbol_visibility: 'hidden',
++  override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+   rust_args: rust_args + [
+-    '--edition', '2021',
+     '--cfg', 'MESON_BINDINGS_RS',
+   ],
+   link_with: [
 --
 2.30.2
 
