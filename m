@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170F29527B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 03:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E95952822
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 05:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sePhT-0005nb-5v; Wed, 14 Aug 2024 21:54:51 -0400
+	id 1seQnR-0003Ym-07; Wed, 14 Aug 2024 23:05:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sePhE-0005VI-Rb; Wed, 14 Aug 2024 21:54:37 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1seQnO-0003Y9-Oj
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 23:05:02 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sePhC-0003mQ-Co; Wed, 14 Aug 2024 21:54:36 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-6c5bcb8e8edso421749a12.2; 
- Wed, 14 Aug 2024 18:54:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1seQnM-00089L-8n
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 23:05:02 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7b594936e9bso390752a12.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 20:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723686872; x=1724291672; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1bvHodl2jEUsnoYK8bbKlLRBXcXSo+b9l+ftccdVbUA=;
- b=HkL2FbhF7Q8suVtoPFmcYApFusrtpbZp6TM1JluDSX+Ie45dEFcKVq6wxK2D6lQtr/
- BLYKJr7XE3u7iGlCU+s9V02+SXf1JE3i/L6RkcMjIJpF4DVtQdxu9wX0augzE7Dyqeq7
- 9hqdIUXC+2XUBhycnm1f9HE+5YtaUgnQQPCnmvtG3v6H1XgFA1sMgzfA6zIa8ILEb3wR
- Ufz7nsAx/WFfzqOXX+VJoUX0v4+MtbvWfZMgESVuOfWEvfqcD2yVF3aKXoTGZSPfnTk+
- rKdUze+YhaVKClLH38Q2c4AUHKERG6a/vnvF9WPaSImxlQtBJpqaYAWzx/Ot7nCWYq2Z
- 7LVQ==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1723691098; x=1724295898;
+ darn=nongnu.org; 
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3DX798KJjiuRgjfvgEh0375rvJiUpk5MZkPDbsGw5Xg=;
+ b=JwK7de7fbcI0KaXkkb7qFCEohaioT8IkZuke8Jq2hYEJuSBCTjKqmequh613O58hXY
+ 0/M57IBkGRxvKDL0EvLAVnpsc5uDB/N76YH4iHfS0Z3KaG0aKNcmYJduZnZQQa96NqQv
+ t0mDFu7Kf1bDZLcb5qFdWK1Z98Ro5e79awtLqcGghlAqDoRyoO1wNz5UWiYr1adJiDgk
+ LNVNf2CdE1H12NJTQOKg2g4PISvGBb14/Hv+IU3ca7z4+Zwg6ispO4cbClbZSfOs2Zax
+ 82CgrZOyfR6qt80ywMbwS7QRT2kGw8vD2A7KceItik6enewJMjMPAR3XGx8eFyWeed6r
+ xmEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723686872; x=1724291672;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1bvHodl2jEUsnoYK8bbKlLRBXcXSo+b9l+ftccdVbUA=;
- b=Hbhzj3NWjnH0iH4C2KTKjjmxth61oAO3ZkVDsFHemaPEjto9AgAhrq2JnQwj9DrpwW
- QbFEBOmv7Flw5ZBByK2kgc70qhgHR0UTrhccxwFDKRTpnQmwO2pBz37Kc35aumjLBmGR
- GBACrclq0GSezdhHgn3L7QuHq4AXK/iYZVQ2ZaExypSm17eI0f0YoaYliC9hdWEsRZfx
- 17Ae1Z0dzixm5QBOqkA0hJDBwx+mwcx9g65JydVZzjnotVt5f5ee2XfMHFcZQoiJiz04
- WE4T1vWWDeYckBlXjtdJ0qFXfMHOchG4KiIAIsHIZUFkhZSc+XgK7FYhZbwzo402zneb
- bbow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV9dysyFZuEgHYKgjvndjPXS2jdVmpJpF88WUOUj3eRpnOW6qJIopZkyhmOcaZQp2PAoPIm9XkTCe9I7RaBRTrD3nPczAZncwJqEYsIlkg8yx31XYCYy8DaoSL48w==
-X-Gm-Message-State: AOJu0YyPOqMiMbWqhNuo+Na6z1u51yCNS9O4YQVd+uki8SWrDQU4GkbV
- /umuPPVX2+VbAcZmzsjWn0imsfxyrLrio53tW8Dm/Z2OjE4gR8o4
-X-Google-Smtp-Source: AGHT+IF1nbHAslh5XjgPsDe0fTMdCgyOHiUdKzoOPGUtwEiOQdH19dV8CHJTlhD5gcLX2FsLcSoDQQ==
-X-Received: by 2002:a17:90a:eacb:b0:2d3:b60c:45e7 with SMTP id
- 98e67ed59e1d1-2d3b60c46e1mr3328850a91.32.1723686871716; 
- Wed, 14 Aug 2024 18:54:31 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d396a59287sm2477688a91.0.2024.08.14.18.54.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 18:54:31 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: alex.bennee@linaro.org,
-	qemu-devel@nongnu.org,
-	peter.maydell@linaro.org
-Cc: alistair23@gmail.com, dbarboza@ventanamicro.com, palmer@dabbelt.com,
- qemu-riscv@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com,
- Bin Meng <bmeng.cn@gmail.com>, liwei1518@gmail.com,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 2/2] hw/char: sifive_uart: Print uart charecters async
-Date: Thu, 15 Aug 2024 11:54:10 +1000
-Message-ID: <20240815015410.369925-3-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815015410.369925-1-alistair.francis@wdc.com>
-References: <20240815015410.369925-1-alistair.francis@wdc.com>
+ d=1e100.net; s=20230601; t=1723691098; x=1724295898;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3DX798KJjiuRgjfvgEh0375rvJiUpk5MZkPDbsGw5Xg=;
+ b=JoKRiDiNlc1WPyDfrGRL+G8Rv7+flVReFvQ5CBGexMcnBCeEiGk8fBBoCjjtivjLrR
+ YNqImml0KGlym3P+Wb+y+VdGhnfbE/6FbwkkNacsLeqBGRnDrxACOPc9IVpH2kvv9P9x
+ LhzTqDHaeSmS7PZivxk7eu/rPo5wL23O6HpZE4L9q7o3OT3eNzbhSojoBNHB2dTGCny6
+ jK3AHV5fPjtHk1DUG9hoLWq44jIC2Y4XLE2JQPVqJnLZRHv6ahQm1DNPcKrXJ8sNDIle
+ fQ+lnDCtuiRGinJIYmpzAKJ++R5KpqBhIfr8lRW37MCWTXlW54jOUl1CtsMLgNP2uQV4
+ SLIw==
+X-Gm-Message-State: AOJu0YwWv1Xzxo3L2dfESLJ/xp0acPI3318w20RhmlbuHMdvlBsWgUGt
+ G/0cpkfpsXVi3vT9PPdQKpMr1sPKZlAcx9RCKmBhV9Jjl2sjl/fi+Rwzx1Ugf/g=
+X-Google-Smtp-Source: AGHT+IH+58NogNgyAS6GggNyAZflmpcO10hcFC24VmuVVbjT0lIu0nC3dEEiv50yHsgBiahRRcuhgQ==
+X-Received: by 2002:a05:6a20:9c8a:b0:1c8:a0c4:2349 with SMTP id
+ adf61e73a8af0-1c8eafaa07bmr6483860637.45.1723691098351; 
+ Wed, 14 Aug 2024 20:04:58 -0700 (PDT)
+Received: from localhost ([157.82.202.230])
+ by smtp.gmail.com with UTF8SMTPSA id
+ d9443c01a7336-201f02fe5a8sm3125115ad.40.2024.08.14.20.04.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Aug 2024 20:04:57 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Date: Thu, 15 Aug 2024 12:04:44 +0900
+Subject: [PATCH v2] contrib/plugins: Add a plugin to generate basic block
+ vectors
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240815-bb-v2-1-6222ee98297b@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAEtwvWYC/yWMwQ7CIBAFf6XZs5gCWtCT/2F6gLLYPQgGDGnT8
+ O/SepyXN7NBxkSY4d5tkLBQphgaiFMH02zCCxm5xiB6cekHrpm17CalVs55NVwttOMnoafliDz
+ HxjPlb0zr0Sx8X/+65nLXC2ecoffWKuUMWv9wZg20nKf4hrHW+gMk4BpBlQAAAA==
+To: =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Alexandre Iooss <erdnaxe@crans.org>, 
+ Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ Beraldo Leal <bleal@redhat.com>
+Cc: qemu-devel@nongnu.org, Yotaro Nada <yotaro.nada@gmail.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,204 +103,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current approach of using qemu_chr_fe_write() and ignoring the
-return values results in dropped charecters [1].
+SimPoint is a widely used tool to find the ideal microarchitecture
+simulation points so Valgrind[2] and Pin[3] support generating basic
+block vectors for use with them. Let's add a corresponding plugin to
+QEMU too.
 
-Let's update the SiFive UART to use a async sifive_uart_xmit() function
-to transmit the charecters and apply back preassure to the guest with
-the SIFIVE_UART_TXFIFO_FULL status.
+Note that this plugin has a different goal with tests/plugin/bb.c.
 
-This should avoid dropped charecters and more realisiticly model the
-hardware.
+This plugin creates a vector for each constant interval instead of
+counting the execution of basic blocks for the entire run and able to
+describe the change of execution behavior. Its output is also
+syntactically simple and better suited for parsing, while the output of
+tests/plugin/bb.c is more human-readable.
 
-1: https://gitlab.com/qemu-project/qemu/-/issues/2114
+[1] https://cseweb.ucsd.edu/~calder/simpoint/
+[2] https://valgrind.org/docs/manual/bbv-manual.html
+[3] https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-dynamic-binary-instrumentation-tool.html
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Yotaro Nada <yotaro.nada@gmail.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/char/sifive_uart.h | 17 +++++++-
- hw/char/sifive_uart.c         | 81 +++++++++++++++++++++++++++++++++--
- 2 files changed, 92 insertions(+), 6 deletions(-)
+Changes in v2:
+- Merged files variable into the global scoreboard.
+- Added a lock for bbs.
+- Added a summary to contrib/plugins/bbv.c.
+- Rebased.
+- Link to v1: https://lore.kernel.org/r/20240813-bb-v1-1-effbb77daebf@daynix.com
+---
+ docs/about/emulation.rst |  30 +++++++++
+ contrib/plugins/bbv.c    | 158 +++++++++++++++++++++++++++++++++++++++++++++++
+ contrib/plugins/Makefile |   1 +
+ 3 files changed, 189 insertions(+)
 
-diff --git a/include/hw/char/sifive_uart.h b/include/hw/char/sifive_uart.h
-index 7f6c79f8bd..73379457a0 100644
---- a/include/hw/char/sifive_uart.h
-+++ b/include/hw/char/sifive_uart.h
-@@ -48,9 +48,13 @@ enum {
-     SIFIVE_UART_IP_RXWM       = 2  /* Receive watermark interrupt pending */
- };
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index c03033e4e956..72d7846ab6f8 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -381,6 +381,36 @@ run::
+   160          1      0
+   135          1      0
  
-+#define SIFIVE_UART_TXFIFO_FULL    0x80000000
++Basic Block Vectors
++...................
 +
- #define SIFIVE_UART_GET_TXCNT(txctrl)   ((txctrl >> 16) & 0x7)
- #define SIFIVE_UART_GET_RXCNT(rxctrl)   ((rxctrl >> 16) & 0x7)
++``contrib/plugins/bbv.c``
 +
- #define SIFIVE_UART_RX_FIFO_SIZE 8
-+#define SIFIVE_UART_TX_FIFO_SIZE 8
++The bbv plugin allows you to generate basic block vectors for use with the
++`SimPoint <https://cseweb.ucsd.edu/~calder/simpoint/>`__ analysis tool.
++
++.. list-table:: Basic block vectors arguments
++  :widths: 20 80
++  :header-rows: 1
++
++  * - Option
++    - Description
++  * - interval=N
++    - The interval to generate a basic block vector specified by the number of
++      instructions (Default: N = 100000000)
++  * - outfile=PATH
++    - The path to output files.
++      It will be suffixed with ``.N.bb`` where ``N`` is a vCPU index.
++
++Example::
++
++  $ qemu-aarch64 \
++    -plugin contrib/plugins/libbbv.so,interval=100,outfile=sha1 \
++    tests/tcg/aarch64-linux-user/sha1
++  SHA1=15dd99a1991e0b3826fede3deffc1feba42278e6
++  $ du sha1.0.bb
++  23128   sha1.0.bb
++
+ Hot Blocks
+ ..........
  
- #define TYPE_SIFIVE_UART "riscv.sifive.uart"
- OBJECT_DECLARE_SIMPLE_TYPE(SiFiveUARTState, SIFIVE_UART)
-@@ -63,13 +67,22 @@ struct SiFiveUARTState {
-     qemu_irq irq;
-     MemoryRegion mmio;
-     CharBackend chr;
--    uint8_t rx_fifo[SIFIVE_UART_RX_FIFO_SIZE];
--    uint8_t rx_fifo_len;
+diff --git a/contrib/plugins/bbv.c b/contrib/plugins/bbv.c
+new file mode 100644
+index 000000000000..41139f423fe2
+--- /dev/null
++++ b/contrib/plugins/bbv.c
+@@ -0,0 +1,158 @@
++/*
++ * Generate basic block vectors for use with the SimPoint analysis tool.
++ * SimPoint: https://cseweb.ucsd.edu/~calder/simpoint/
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+    uint32_t txfifo;
-     uint32_t ie;
-     uint32_t ip;
-     uint32_t txctrl;
-     uint32_t rxctrl;
-     uint32_t div;
++#include <stdio.h>
++#include <glib.h>
 +
-+    uint8_t rx_fifo[SIFIVE_UART_RX_FIFO_SIZE];
-+    uint8_t rx_fifo_len;
++#include <qemu-plugin.h>
 +
-+    uint8_t tx_fifo[SIFIVE_UART_TX_FIFO_SIZE];
-+    uint32_t tx_level;
++typedef struct Bb {
++    struct qemu_plugin_scoreboard *count;
++    unsigned int index;
++} Bb;
 +
-+    QEMUTimer *fifo_trigger_handle;
-+    uint64_t char_tx_time;
- };
- 
- SiFiveUARTState *sifive_uart_create(MemoryRegion *address_space, hwaddr base,
-diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
-index 7fc6787f69..f517500df4 100644
---- a/hw/char/sifive_uart.c
-+++ b/hw/char/sifive_uart.c
-@@ -64,6 +64,64 @@ static void sifive_uart_update_irq(SiFiveUARTState *s)
-     }
- }
- 
-+static gboolean sifive_uart_xmit(void *do_not_use, GIOCondition cond,
-+                                 void *opaque)
++typedef struct Vcpu {
++    uint64_t count;
++    FILE *file;
++} Vcpu;
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++static GHashTable *bbs;
++static GRWLock bbs_lock;
++static char *filename;
++static struct qemu_plugin_scoreboard *vcpus;
++static uint64_t interval = 100000000;
++
++static void plugin_exit(qemu_plugin_id_t id, void *p)
 +{
-+    SiFiveUARTState *s = opaque;
-+    int ret;
-+
-+    /* instant drain the fifo when there's no back-end */
-+    if (!qemu_chr_fe_backend_connected(&s->chr)) {
-+        s->tx_level = 0;
-+        return G_SOURCE_REMOVE;
++    for (int i = 0; i < qemu_plugin_num_vcpus(); i++) {
++        fclose(((Vcpu *)qemu_plugin_scoreboard_find(vcpus, i))->file);
 +    }
 +
-+    ret = qemu_chr_fe_write(&s->chr, s->tx_fifo, s->tx_level);
++    g_hash_table_unref(bbs);
++    g_free(filename);
++    qemu_plugin_scoreboard_free(vcpus);
++}
 +
-+    if (ret >= 0) {
-+        s->tx_level -= ret;
-+        memmove(s->tx_fifo, s->tx_fifo + ret, s->tx_level);
++static void free_bb(void *data)
++{
++    qemu_plugin_scoreboard_free(((Bb *)data)->count);
++    g_free(data);
++}
++
++static qemu_plugin_u64 count_u64(void)
++{
++    return qemu_plugin_scoreboard_u64_in_struct(vcpus, Vcpu, count);
++}
++
++static qemu_plugin_u64 bb_count_u64(Bb *bb)
++{
++    return qemu_plugin_scoreboard_u64(bb->count);
++}
++
++static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
++{
++    g_autofree gchar *vcpu_filename = NULL;
++    Vcpu *vcpu = qemu_plugin_scoreboard_find(vcpus, vcpu_index);
++
++    vcpu_filename = g_strdup_printf("%s.%u.bb", filename, vcpu_index);
++    vcpu->file = fopen(vcpu_filename, "w");
++}
++
++static void vcpu_interval_exec(unsigned int vcpu_index, void *udata)
++{
++    Vcpu *vcpu = qemu_plugin_scoreboard_find(vcpus, vcpu_index);
++    GHashTableIter iter;
++    void *value;
++
++    if (!vcpu->file) {
++        return;
 +    }
 +
-+    if (s->tx_level) {
-+        guint r = qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP,
-+                                        sifive_uart_xmit, s);
-+        if (!r) {
-+            s->tx_level = 0;
-+            return G_SOURCE_REMOVE;
++    vcpu->count -= interval;
++
++    fputc('T', vcpu->file);
++
++    g_rw_lock_reader_lock(&bbs_lock);
++    g_hash_table_iter_init(&iter, bbs);
++
++    while (g_hash_table_iter_next(&iter, NULL, &value)) {
++        Bb *bb = value;
++        uint64_t bb_count = qemu_plugin_u64_get(bb_count_u64(bb), vcpu_index);
++
++        if (!bb_count) {
++            continue;
++        }
++
++        fprintf(vcpu->file, ":%u:%" PRIu64 " ", bb->index, bb_count);
++        qemu_plugin_u64_set(bb_count_u64(bb), vcpu_index, 0);
++    }
++
++    g_rw_lock_reader_unlock(&bbs_lock);
++    fputc('\n', vcpu->file);
++}
++
++static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
++{
++    uint64_t n_insns = qemu_plugin_tb_n_insns(tb);
++    uint64_t vaddr = qemu_plugin_tb_vaddr(tb);
++    Bb *bb = g_hash_table_lookup(bbs, &vaddr);
++
++    if (!bb) {
++        uint64_t *key = g_new(uint64_t, 1);
++
++        *key = vaddr;
++        bb = g_new(Bb, 1);
++        bb->count = qemu_plugin_scoreboard_new(sizeof(uint64_t));
++        bb->index = g_hash_table_size(bbs);
++        g_rw_lock_writer_lock(&bbs_lock);
++        g_hash_table_insert(bbs, key, bb);
++        g_rw_lock_writer_unlock(&bbs_lock);
++    }
++
++    qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
++        tb, QEMU_PLUGIN_INLINE_ADD_U64, count_u64(), n_insns);
++
++    qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
++        tb, QEMU_PLUGIN_INLINE_ADD_U64, bb_count_u64(bb), n_insns);
++
++    qemu_plugin_register_vcpu_tb_exec_cond_cb(
++        tb, vcpu_interval_exec, QEMU_PLUGIN_CB_NO_REGS,
++        QEMU_PLUGIN_COND_GE, count_u64(), interval, NULL);
++}
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
++                                           const qemu_info_t *info,
++                                           int argc, char **argv)
++{
++    for (int i = 0; i < argc; i++) {
++        char *opt = argv[i];
++        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
++        if (g_strcmp0(tokens[0], "interval") == 0) {
++            interval = g_ascii_strtoull(tokens[1], NULL, 10);
++        } else if (g_strcmp0(tokens[0], "outfile") == 0) {
++            filename = tokens[1];
++            tokens[1] = NULL;
++        } else {
++            fprintf(stderr, "option parsing failed: %s\n", opt);
++            return -1;
 +        }
 +    }
 +
-+    /* Clear the TX Full bit */
-+    if (s->tx_level != SIFIVE_UART_TX_FIFO_SIZE) {
-+        s->txfifo &= ~SIFIVE_UART_TXFIFO_FULL;
++    if (!filename) {
++        fputs("outfile unspecified\n", stderr);
++        return -1;
 +    }
 +
-+    sifive_uart_update_irq(s);
-+    return G_SOURCE_REMOVE;
++    bbs = g_hash_table_new_full(g_int64_hash, g_int64_equal, g_free, free_bb);
++    vcpus = qemu_plugin_scoreboard_new(sizeof(Vcpu));
++    qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
++    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
++    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
++
++    return 0;
 +}
-+
-+static void sifive_uart_write_tx_fifo(SiFiveUARTState *s, const uint8_t *buf,
-+                                      int size)
-+{
-+    uint64_t current_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+
-+    if (size > SIFIVE_UART_TX_FIFO_SIZE - s->tx_level) {
-+        size = SIFIVE_UART_TX_FIFO_SIZE - s->tx_level;
-+        qemu_log_mask(LOG_GUEST_ERROR, "sifive_uart: TX FIFO overflow");
-+    }
-+
-+    memcpy(s->tx_fifo + s->tx_level, buf, 1);
-+    s->tx_level += 1;
-+
-+    if (s->tx_level == SIFIVE_UART_TX_FIFO_SIZE) {
-+        s->txfifo |= SIFIVE_UART_TXFIFO_FULL;
-+    }
-+
-+    timer_mod(s->fifo_trigger_handle, current_time +
-+              (s->char_tx_time * 4));
-+}
-+
- static uint64_t
- sifive_uart_read(void *opaque, hwaddr addr, unsigned int size)
- {
-@@ -82,7 +140,7 @@ sifive_uart_read(void *opaque, hwaddr addr, unsigned int size)
-         return 0x80000000;
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+index edf256cd9d11..6936591b1022 100644
+--- a/contrib/plugins/Makefile
++++ b/contrib/plugins/Makefile
+@@ -13,6 +13,7 @@ TOP_SRC_PATH = $(SRC_PATH)/../..
+ VPATH += $(SRC_PATH)
  
-     case SIFIVE_UART_TXFIFO:
--        return 0; /* Should check tx fifo */
-+        return s->txfifo;
-     case SIFIVE_UART_IE:
-         return s->ie;
-     case SIFIVE_UART_IP:
-@@ -106,12 +164,10 @@ sifive_uart_write(void *opaque, hwaddr addr,
- {
-     SiFiveUARTState *s = opaque;
-     uint32_t value = val64;
--    unsigned char ch = value;
- 
-     switch (addr) {
-     case SIFIVE_UART_TXFIFO:
--        qemu_chr_fe_write(&s->chr, &ch, 1);
--        sifive_uart_update_irq(s);
-+        sifive_uart_write_tx_fifo(s, (uint8_t *) &value, 1);
-         return;
-     case SIFIVE_UART_IE:
-         s->ie = val64;
-@@ -131,6 +187,13 @@ sifive_uart_write(void *opaque, hwaddr addr,
-                   __func__, (int)addr, (int)value);
- }
- 
-+static void fifo_trigger_update(void *opaque)
-+{
-+    SiFiveUARTState *s = opaque;
-+
-+    sifive_uart_xmit(NULL, G_IO_OUT, s);
-+}
-+
- static const MemoryRegionOps sifive_uart_ops = {
-     .read = sifive_uart_read,
-     .write = sifive_uart_write,
-@@ -197,6 +260,9 @@ static void sifive_uart_realize(DeviceState *dev, Error **errp)
- {
-     SiFiveUARTState *s = SIFIVE_UART(dev);
- 
-+    s->fifo_trigger_handle = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                          fifo_trigger_update, s);
-+
-     qemu_chr_fe_set_handlers(&s->chr, sifive_uart_can_rx, sifive_uart_rx,
-                              sifive_uart_event, sifive_uart_be_change, s,
-                              NULL, true);
-@@ -206,12 +272,19 @@ static void sifive_uart_realize(DeviceState *dev, Error **errp)
- static void sifive_uart_reset_enter(Object *obj, ResetType type)
- {
-     SiFiveUARTState *s = SIFIVE_UART(obj);
-+
-+    s->txfifo = 0;
-     s->ie = 0;
-     s->ip = 0;
-     s->txctrl = 0;
-     s->rxctrl = 0;
-     s->div = 0;
-+
-+    s->tx_level = 0;
-     s->rx_fifo_len = 0;
-+
-+    memset(s->rx_fifo, 0, SIFIVE_UART_RX_FIFO_SIZE);
-+    memset(s->tx_fifo, 0, SIFIVE_UART_TX_FIFO_SIZE);
- }
- 
- static void sifive_uart_reset_hold(Object *obj, ResetType type)
+ NAMES :=
++NAMES += bbv
+ NAMES += execlog
+ NAMES += hotblocks
+ NAMES += hotpages
+
+---
+base-commit: 31669121a01a14732f57c49400bc239cf9fd505f
+change-id: 20240618-bb-93387ddf765b
+
+Best regards,
 -- 
-2.46.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
