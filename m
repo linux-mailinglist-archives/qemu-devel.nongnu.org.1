@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD7B953635
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9FF95362E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:50:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebnF-0003va-Sn; Thu, 15 Aug 2024 10:49:37 -0400
+	id 1sebnB-0003OV-Da; Thu, 15 Aug 2024 10:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn0-0003GB-4Q
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:23 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1sebmz-0003D8-EY
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:21 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebmx-0000Cf-5Y
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:20 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5a10835487fso1540953a12.1
+ id 1sebmx-0000Cc-AB
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:21 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-52efbb55d24so1813171e87.1
  for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723733358; x=1724338158; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723733357; x=1724338157; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6qa09G1wxoease4Cu4sCuCaUUU6r75hWrRIJjosTbxU=;
- b=WCe8LRdCXDfVlYm4pqnRhDHxWH5YHRnnPM8NQeb7Za2boxVapsHn++imRHT0LTcW5u
- grzR15lQKqXnQXxfvJhLCEXSOEzmlbHfUub0CUcUwtdvks3NuKypsrPGGxBfZasD2E7K
- eJzQRRqcb7jnbsF2628Wg4cpNVfLG+To40Twg3HdVyBk8YO74y6cI3bhBnWNagYHPWne
- q4hHKb0Pw5caK9qy/Ut9DiT6FQY/DJl3rdG9DgYkTT+GHLpUwDOOv0Qq3h8smv4eamB4
- aU1slm4gXvcmxqpB5qq2BWutS94zd2zwZ55EnrXINA8lCIh8S+B2y0pbX/+Wyg7u/7C+
- zx4w==
+ bh=XlVm4bFaARcVP1rknNRsQtAnzRUhJ++dQu53YaEvbis=;
+ b=sfhJmv6AsHrQt/9f3ulpstXjZUq5Dre0ZzQsdk6WBeo04HVijLY5fz8IsdH8gpE/Mf
+ bjbeBiiIbXpsg46ad3A8rsyeodmXD5IOzYIqzO4Bha/WmbcUo77xIsuxTHa8nCjZ5b40
+ cJQE+2GRpOjGCvJicpEHlKYEvLfqGO5OJM2sSgBysgOK6Da3ITgPxuxmMx8zOO/xg3Bm
+ i0TaGJhKYqPTUJFiuGTcLt4r2VDgYEiAGK/UALQ9Ct4ncaVKHLdwI+Kpl89NW3/Uy8wz
+ UgEVRQqcJDTQMOe68AVrS7AyLpeCH1r5fl9UpDHiPIxF3+A7Fo+bsFwh7tMaBwkKDdHe
+ S/Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723733358; x=1724338158;
+ d=1e100.net; s=20230601; t=1723733357; x=1724338157;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6qa09G1wxoease4Cu4sCuCaUUU6r75hWrRIJjosTbxU=;
- b=Jkh45CX9eg79spHiDoNMSUpV2scD1TZJ+pOke4BFGYe4r9YX/FZ2KoYBx8gXker6Z1
- cs3+qfZDAOs7Q+E33TBgZyGFaayo51KemHTEE2Ia2tWFtQIGyXWg7eTYTwkEKXGzZCbx
- DmmnLJ7vYq+WMHlxSTcIA0h8sLB3h5heVaVsDTpvjdDqOnthMZPsaCIygVcZsO+J1D82
- OuDWlhqYPZRmkhyH/QrUWeCHED+ahcHPEPT2VpPr/Iey0w7e3uwqzJ/4INJ/NyeX6I7d
- V8DQFqGnj78e2teOebMvc1ts2hmMQCh05lf8+XtTgmCt27y6WS2skJa991XUg0Z+PPET
- oASw==
-X-Gm-Message-State: AOJu0YyF2OrFjkaJhL6h0IBGi/qc6iZk+hAy3n3wZLoV5FPzKJUamZgg
- w0am5NDnWxyXF6W1Ka/cTGhp0FXYRTYzHrqyxkGr9VctfF+kqOzM8LPYcUVK7FE=
-X-Google-Smtp-Source: AGHT+IHfI52dvC6OqQXSPocpfhnlQTaTV5SCNu8BxKIkNJ0EN6xI3YXiY2B69GiBkO77L/Y0gH0wGA==
-X-Received: by 2002:a17:907:803:b0:a80:d64f:6734 with SMTP id
- a640c23a62f3a-a8367070b7dmr432663066b.60.1723733357286; 
- Thu, 15 Aug 2024 07:49:17 -0700 (PDT)
+ bh=XlVm4bFaARcVP1rknNRsQtAnzRUhJ++dQu53YaEvbis=;
+ b=w+ielk/ihscMvLL2CplE6JBoYnJ9Z53Kz9CtTIGeohzR4wRgaDIAgzEtxf39upr22j
+ 8I1PDCTlC7CbBJZ+kNj8ZPNbBVb0CDhgCLUNZzEvqIz1gPuSlEH/Z4fwqL91iWx9jIxx
+ 4SonzEGFWmg3CZe4XQQ+HCg293HCsjUOTrDFv89K409DBJzUzMKnWa1hC1Snx9H6RyIA
+ rQMRHmtqr+52h1fZ3fhIL9GgzBJoWfllBxWX39ofH4jl9vfZX91s9yvh40nhV+KCSoLA
+ pSS9s5i6GDoQ03jV32vsOmakR+7e8BAGO1aSqYlpOZuMr44NQL8a8Xxosg2B2aW4dgQR
+ 5zRg==
+X-Gm-Message-State: AOJu0YyjNs3WEeef9D1eZX+NiwORgK6/c4w9jc4RcKqE4NpR8SBHDiyh
+ Fmf6bmyMxuWTki0Bu7Qaz28YePcRjUV0SvJduTMh7luPyI0MlhzJPWqz/EuIzlQ=
+X-Google-Smtp-Source: AGHT+IHcL4qbC5MZgNQOgWzymD8gZCDlv44EIwf363GkVNkeKJ8rFhcRUCHGV8017F69yBZgax7Zng==
+X-Received: by 2002:a05:6512:33c2:b0:52e:716a:1898 with SMTP id
+ 2adb3069b0e04-532edbd145cmr5432741e87.58.1723733356960; 
+ Thu, 15 Aug 2024 07:49:16 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a838393599asm112187266b.132.2024.08.15.07.49.14
+ a640c23a62f3a-a83838cfac5sm111481866b.80.2024.08.15.07.49.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 15 Aug 2024 07:49:14 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2BABB5F940;
+ by draig.lan (Postfix) with ESMTP id 4000B5F953;
  Thu, 15 Aug 2024 15:49:12 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 05/21] configure: Fix GDB version detection for GDB_HAS_MTE
-Date: Thu, 15 Aug 2024 15:48:55 +0100
-Message-Id: <20240815144911.1931487-6-alex.bennee@linaro.org>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 06/21] scripts/checkpatch: more checks on files imported from
+ Linux
+Date: Thu, 15 Aug 2024 15:48:56 +0100
+Message-Id: <20240815144911.1931487-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240815144911.1931487-1-alex.bennee@linaro.org>
 References: <20240815144911.1931487-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,33 +98,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-The test gdbstub/test-mte.py requires a GDB version that supports the
-qIsAddressTagged packet. According to GDB NEWS [0], this packet was
-first made available in the GDB 15.1 release, not in 15.0, so this
-commit fixes it in configure.
+If a file imported from Linux is touched, emit a warning and suggest
+using scripts/update-linux-headers.sh.
 
-[0] https://www.sourceware.org/gdb/news/
+Also check that updating imported files from Linux are not mixed with
+other changes, in which case emit an error.
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2477
-Message-Id: <20240804161850.2646299-4-gustavo.romero@linaro.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20240718072050.9503-1-sgarzare@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240813202329.1237572-6-alex.bennee@linaro.org>
+Message-Id: <20240813202329.1237572-7-alex.bennee@linaro.org>
 
-diff --git a/configure b/configure
-index 97de85d710..d08b71f14b 100755
---- a/configure
-+++ b/configure
-@@ -1675,7 +1675,7 @@ for target in $target_list; do
-           echo "GDB=$gdb_bin" >> $config_target_mak
-       fi
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index ff373a7083..65b6f46f90 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -1374,6 +1374,9 @@ sub process {
+ 	my $in_header_lines = $file ? 0 : 1;
+ 	my $in_commit_log = 0;		#Scanning lines before patch
+ 	my $reported_maintainer_file = 0;
++	my $reported_mixing_imported_file = 0;
++	my $in_imported_file = 0;
++	my $in_no_imported_file = 0;
+ 	my $non_utf8_charset = 0;
  
--      if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge $gdb_version 15.0; then
-+      if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge $gdb_version 15.1; then
-           echo "GDB_HAS_MTE=y" >> $config_target_mak
-       fi
+ 	our @report = ();
+@@ -1673,6 +1676,27 @@ sub process {
+ # ignore non-hunk lines and lines being removed
+ 		next if (!$hunk_line || $line =~ /^-/);
+ 
++# Check that updating imported files from Linux are not mixed with other changes
++		if ($realfile =~ /^(linux-headers|include\/standard-headers)\//) {
++			if (!$in_imported_file) {
++				WARN("added, moved or deleted file(s) " .
++				     "imported from Linux, are you using " .
++				     "scripts/update-linux-headers.sh?\n" .
++				     $herecurr);
++			}
++			$in_imported_file = 1;
++		} else {
++			$in_no_imported_file = 1;
++		}
++
++		if (!$reported_mixing_imported_file &&
++		    $in_imported_file && $in_no_imported_file) {
++			ERROR("headers imported from Linux should be self-" .
++			      "contained in a patch with no other changes\n" .
++			      $herecurr);
++			$reported_mixing_imported_file = 1;
++		}
++
+ # ignore files that are being periodically imported from Linux
+ 		next if ($realfile =~ /^(linux-headers|include\/standard-headers)\//);
  
 -- 
 2.39.2
