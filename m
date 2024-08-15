@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560929526D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 02:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E909526D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 02:22:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seOFK-000551-JI; Wed, 14 Aug 2024 20:21:42 -0400
+	id 1seOFG-0004lF-Co; Wed, 14 Aug 2024 20:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1seOFH-0004x3-PG
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 20:21:39 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1seOFD-0004iJ-Rj
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 20:21:35 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1seOFB-0004GQ-De
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 20:21:39 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-201d6ac1426so3584715ad.1
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 17:21:31 -0700 (PDT)
+ id 1seOFA-0004GZ-T0
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 20:21:35 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1fd640a6454so4834635ad.3
+ for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 17:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1723681290; x=1724286090; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1723681291; x=1724286091; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HmK5TfyzY33ZDiQRuyZXJNi/WWVL1YCFzt6nYT2pdjg=;
- b=KKZfbfH3BczfZ+zjc4T68q76WqRRffxYxyUlzKtg83XpGVDdq2HZdBTf40Vttf2tP9
- Vk0zcdeHpBcxKPFWJ1rZHHRarH0+yxtgVuo4S5zCkIc3CErgL0MAWFkGWXPxN2HFQnBd
- CIgRAxY7xx0g+HQdzR+VX0mgeDfMULXAOtrOqbk/oiDBI/FxkTz0KvGv/GIpQ67cw/s1
- sM4DpVSbRTWgQ1SlCtDV/gJgTiH4/OuTiXemqkuYD8Oa9gcbbAPoQoXt5wSjQKgRFEeu
- JopINRCxfL/fJYLZ9VI4CbML1Sr+aGvAWYBNjDjojXUw5HHJ4nASqGwK7l2TfqZxqBgE
- 4ajA==
+ bh=AbsMGU759tw6NTBLURH2+15n6uWZy/9JB+FIZCPq28k=;
+ b=GlnqZM1PRUd7dNfPv+7HetvcogKyPxA9rrfAio6BXbQafpP+ymk5qD5wGR3H5JgZdk
+ 2whu6jIAURhlnju6CJk3Ot4HHv2408kVdVXbinrj7xA67FDfYLEfN8hfXNsXVOy9NUQl
+ B4Dmv4ACaubjAEAyXqUrTb8e6Rj1Ot0efIShwhPoTxGYNmRPK2rzJbBfkIWs94bomOQ4
+ TOoKQd0Lju1FFbKDsHy8iCBsRNpPaI/NPkawVLhucfUDcK7K3CDNl+xqEgQLIUm4gFyL
+ BRcQVXQzW/J6y8a08Dx6mNKxaa/nGYZu1peGhXzOxZ5lkeiBXC5YfoN9ACvj/MlLoUuu
+ x6gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723681290; x=1724286090;
+ d=1e100.net; s=20230601; t=1723681291; x=1724286091;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HmK5TfyzY33ZDiQRuyZXJNi/WWVL1YCFzt6nYT2pdjg=;
- b=L4a2rLn3SsPBHD2bsd+T82hUplRUTrFpy3vXUgYy0Rmk27o1mjstXGSbjbOhqAq0G5
- UNG37KJYraO2cjeGqrkr7xBtFzk8ahQ9ZrplpCG9neMhQjeeoOCeKKnGzZlblpKSjRcd
- GMes1zvbZkEcR8l8fZcSblXq5hlUQLBn8ZQDBR1o/+wziZTtygoIghD9/r9bLU7tBbOg
- J6BSrWhzZjBaSa+LZRWYsxksSP9E2xuxSmdcpdqtOL2IJs7IEsU1ISVwgAA/n7VaX02O
- 5oCNvrBb/H7r8bowJelvL559hXtgvknBlPjb4XA4VuI2TQvXR5wlEamCFnLqGYMqw7n1
- wurw==
+ bh=AbsMGU759tw6NTBLURH2+15n6uWZy/9JB+FIZCPq28k=;
+ b=a+b3+qI21BUoIrkwKCabXFVR6iIMGgWRAVDBUmw68bBinOuJytU+sEQuo+toO6/nTW
+ DsIycGUIBkE2+F5yLwfVy1C5yJTTEpA1W4BJQGDBWJmlAoUbITkquPcG/+lds5XKeGV7
+ V39PsHpV5dycBeL6c56rK5ILA2XL10hfsCUsNrnXEWXBb0JEqGorxstoQDlU56N0ZGZq
+ Q2d1oKMm1qATP2QwWj3EF500tUFMreTdNY8NVnHQMhgFvJE/dxh1T7cyJY2qR0ePhQK8
+ 7Ev/l+UB4Q/peu+22q8X7TwFlmzpJn9kdBtQhuZNEOGXd5+dWOcWFyo3GKaBxPtRw81v
+ aVjw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWZdTTfGi/Z3gf4EcgGtIUVfFsjQS0hxNThO2fUlfLHwC1EwGa+Q3uSwQrQxX+nC+oVaZao+lqozTHrwsY90lrdN5LLjUg=
-X-Gm-Message-State: AOJu0YwgcwZEJFcMD8LZaqUVtmU1osDvhnzo5VhxOSAqNkXnuSw/uObB
- xHPh6nggFCpnvtK+6BYkRrPogh5QBibUN86cG7NfJgmv5uEYGAyyrHC/3gyQ3I0=
-X-Google-Smtp-Source: AGHT+IFb2DCwe69SlQCgwvHfSEHhTESIz0otyIVLzPm1ArFTxy6MDYD5ke/O/8awxmTUVcRO8gXlVQ==
-X-Received: by 2002:a17:902:c949:b0:1fd:a5a2:5817 with SMTP id
- d9443c01a7336-201d63c73f1mr51410245ad.31.1723681289519; 
- Wed, 14 Aug 2024 17:21:29 -0700 (PDT)
+ AJvYcCWIixEr7+qJ3ZTKhpLV98KDUiLX9SJ3u9OeArgIw1SVcbqW456fK4oWhM0SHqku/Y/NseU54AqBrGjoj52hy0rREarG6i4=
+X-Gm-Message-State: AOJu0Yxz5a8YmAa2mkixkGlNmBVyoi1AssJolZi/ZfvHZal6Xu0SHiAz
+ Dt6lnlIViqAfHNFu765c6oYPGUcuzO8TbokuO7WcIZb90s3FUU6++bNz68cbiNo=
+X-Google-Smtp-Source: AGHT+IHh9tej7HYgHwOTYzXgvNuOU+Tl4Urdf7y/QSlXDGNk9JQyL23PO5xSro8jePyawXNiDYwXmA==
+X-Received: by 2002:a17:903:1104:b0:1fd:7fac:a539 with SMTP id
+ d9443c01a7336-201d63abfa0mr48415205ad.16.1723681291280; 
+ Wed, 14 Aug 2024 17:21:31 -0700 (PDT)
 Received: from DY4X0N7X05.bytedance.net ([72.29.204.230])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f02faa03sm1961185ad.19.2024.08.14.17.21.28
+ d9443c01a7336-201f02faa03sm1961185ad.19.2024.08.14.17.21.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 14 Aug 2024 17:21:29 -0700 (PDT)
+ Wed, 14 Aug 2024 17:21:31 -0700 (PDT)
 From: Yichen Wang <yichen.wang@bytedance.com>
 To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,24 +71,25 @@ To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
 Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
  "Zou, Nanhai" <nanhai.zou@intel.com>,
  "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
- "Yichen Wang" <yichen.wang@bytedance.com>
-Subject: [PATCH v7 1/5] docs/migration: add qatzip compression feature
-Date: Wed, 14 Aug 2024 17:21:20 -0700
-Message-Id: <20240815002124.65384-2-yichen.wang@bytedance.com>
+ "Yichen Wang" <yichen.wang@bytedance.com>,
+ Bryan Zhang <bryan.zhang@bytedance.com>
+Subject: [PATCH v7 2/5] meson: Introduce 'qatzip' feature to the build system
+Date: Wed, 14 Aug 2024 17:21:21 -0700
+Message-Id: <20240815002124.65384-3-yichen.wang@bytedance.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20240815002124.65384-1-yichen.wang@bytedance.com>
 References: <20240815002124.65384-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=yichen.wang@bytedance.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,200 +105,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuan Liu <yuan1.liu@intel.com>
+From: Bryan Zhang <bryan.zhang@bytedance.com>
 
-add Intel QATzip compression method introduction
+Add a 'qatzip' feature, which is automatically disabled, and which
+depends on the QATzip library if enabled.
 
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Yichen Wang <yichen.wang@bytedance.com>
+Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
 ---
- docs/devel/migration/features.rst           |   1 +
- docs/devel/migration/qatzip-compression.rst | 165 ++++++++++++++++++++
- 2 files changed, 166 insertions(+)
- create mode 100644 docs/devel/migration/qatzip-compression.rst
+ meson.build                   | 10 ++++++++++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/docs/devel/migration/features.rst b/docs/devel/migration/features.rst
-index 58f8fd9e16..8f431d52f9 100644
---- a/docs/devel/migration/features.rst
-+++ b/docs/devel/migration/features.rst
-@@ -14,3 +14,4 @@ Migration has plenty of features to support different use cases.
-    CPR
-    qpl-compression
-    uadk-compression
-+   qatzip-compression
-diff --git a/docs/devel/migration/qatzip-compression.rst b/docs/devel/migration/qatzip-compression.rst
-new file mode 100644
-index 0000000000..a7f755eb7f
---- /dev/null
-+++ b/docs/devel/migration/qatzip-compression.rst
-@@ -0,0 +1,165 @@
-+==================
-+QATzip Compression
-+==================
-+In scenarios with limited network bandwidth, the ``QATzip`` solution can help
-+users save a lot of host CPU resources by accelerating compression and
-+decompression through the Intel QuickAssist Technology(``QAT``) hardware.
+diff --git a/meson.build b/meson.build
+index c2a050b844..5daaea15df 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1257,6 +1257,14 @@ if not get_option('uadk').auto() or have_system
+      uadk = declare_dependency(dependencies: [libwd, libwd_comp])
+   endif
+ endif
 +
++qatzip = not_found
++if not get_option('qatzip').auto() or have_system
++  qatzip = dependency('qatzip', version: '>=1.1.2',
++                      required: get_option('qatzip'),
++                      method: 'pkg-config')
++endif
 +
-+The following test was conducted using 8 multifd channels and 10Gbps network
-+bandwidth. The results show that, compared to zstd, ``QATzip`` significantly
-+saves CPU resources on the sender and reduces migration time. Compared to the
-+uncompressed solution, ``QATzip`` greatly improves the dirty page processing
-+capability, indicated by the Pages per Second metric, and also reduces the
-+total migration time.
-+
-+::
-+
-+   VM Configuration: 16 vCPU and 64G memory
-+   VM Workload: all vCPUs are idle and 54G memory is filled with Silesia data.
-+   QAT Devices: 4
-+   |-----------|--------|---------|----------|----------|------|------|
-+   |8 Channels |Total   |down     |throughput|pages per | send | recv |
-+   |           |time(ms)|time(ms) |(mbps)    |second    | cpu %| cpu% |
-+   |-----------|--------|---------|----------|----------|------|------|
-+   |qatzip     |   16630|       28|     10467|   2940235|   160|   360|
-+   |-----------|--------|---------|----------|----------|------|------|
-+   |zstd       |   20165|       24|      8579|   2391465|   810|   340|
-+   |-----------|--------|---------|----------|----------|------|------|
-+   |none       |   46063|       40|     10848|    330240|    45|    85|
-+   |-----------|--------|---------|----------|----------|------|------|
-+
-+
-+QATzip Compression Framework
-+============================
-+
-+``QATzip`` is a user space library which builds on top of the Intel QuickAssist
-+Technology user space library, to provide extended accelerated compression and
-+decompression services.
-+
-+For more ``QATzip`` introduction, please refer to `QATzip Introduction
-+<https://github.com/intel/QATzip?tab=readme-ov-file#introductionl>`_
-+
-+::
-+
-+  +----------------+
-+  | MultiFd Thread |
-+  +-------+--------+
-+          |
-+          | compress/decompress
-+  +-------+--------+
-+  | QATzip library |
-+  +-------+--------+
-+          |
-+  +-------+--------+
-+  |  QAT library   |
-+  +-------+--------+
-+          |         user space
-+  --------+---------------------
-+          |         kernel space
-+   +------+-------+
-+   |  QAT  Driver |
-+   +------+-------+
-+          |
-+   +------+-------+
-+   | QAT Devices  |
-+   +--------------+
-+
-+
-+QATzip Installation
-+-------------------
-+
-+The ``QATzip`` installation package has been integrated into some Linux
-+distributions and can be installed directly. For example, the Ubuntu Server
-+24.04 LTS system can be installed using below command
-+
-+.. code-block:: shell
-+
-+   #apt search qatzip
-+   libqatzip-dev/noble 1.2.0-0ubuntu3 amd64
-+     Intel QuickAssist user space library development files
-+
-+   libqatzip3/noble 1.2.0-0ubuntu3 amd64
-+     Intel QuickAssist user space library
-+
-+   qatzip/noble,now 1.2.0-0ubuntu3 amd64 [installed]
-+     Compression user-space tool for Intel QuickAssist Technology
-+
-+   #sudo apt install libqatzip-dev libqatzip3 qatzip
-+
-+If your system does not support the ``QATzip`` installation package, you can
-+use the source code to build and install, please refer to `QATzip source code installation
-+<https://github.com/intel/QATzip?tab=readme-ov-file#build-intel-quickassist-technology-driver>`_
-+
-+QAT Hardware Deployment
-+-----------------------
-+
-+``QAT`` supports physical functions(PFs) and virtual functions(VFs) for
-+deployment, and users can configure ``QAT`` resources for migration according
-+to actual needs. For more details about ``QAT`` deployment, please refer to
-+`Intel QuickAssist Technology Documentation
-+<https://intel.github.io/quickassist/index.html>`_
-+
-+For more ``QAT`` hardware introduction, please refer to `intel-quick-assist-technology-overview
-+<https://www.intel.com/content/www/us/en/architecture-and-technology/intel-quick-assist-technology-overview.html>`_
-+
-+How To Use QATzip Compression
-+=============================
-+
-+1 - Install ``QATzip`` library
-+
-+2 - Build ``QEMU`` with ``--enable-qatzip`` parameter
-+
-+  E.g. configure --target-list=x86_64-softmmu --enable-kvm ``--enable-qatzip``
-+
-+3 - Set ``migrate_set_parameter multifd-compression qatzip``
-+
-+4 - Set ``migrate_set_parameter multifd-qatzip-level comp_level``, the default
-+comp_level value is 1, and it supports levels from 1 to 9
-+
-+QAT Memory Requirements
-+=======================
-+
-+The user needs to reserve system memory for the QAT memory management to
-+allocate DMA memory. The size of the reserved system memory depends on the
-+number of devices used for migration and the number of multifd channels.
-+
-+Because memory usage depends on QAT configuration, please refer to `QAT Memory
-+Driver Queires
-+<https://intel.github.io/quickassist/PG/infrastructure_debugability.html?highlight=memory>`_
-+for memory usage calculation.
-+
-+.. list-table:: An example of a PF used for migration
-+  :header-rows: 1
-+
-+  * - Number of channels
-+    - Sender memory usage
-+    - Receiver memory usage
-+  * - 2
-+    - 10M
-+    - 10M
-+  * - 4
-+    - 12M
-+    - 14M
-+  * - 8
-+    - 16M
-+    - 20M
-+
-+How To Choose Between QATzip and QPL
-+====================================
-+Starting from Intel 4th Gen Intel Xeon Scalable processors, codenamed Sapphire
-+Rapids processor(``SPR``), it supports multiple build-in accelerators including
-+``QAT`` and ``IAA``, the former can accelerate ``QATzip``, and the latter is
-+used to accelerate ``QPL``.
-+
-+Here are some suggestions:
-+
-+1 - If your live migration scenario is limited network bandwidth and ``QAT``
-+hardware resources exceed ``IAA``, then use the ``QATzip`` method, which
-+can save a lot of host CPU resources for compression.
-+
-+2 - If your system cannot support shared virtual memory(SVM) technology, please
-+use ``QATzip`` method because ``QPL`` performance is not good without SVM
-+support.
-+
-+3 - For other scenarios, please use the ``QPL`` method first.
+ virgl = not_found
+ 
+ have_vhost_user_gpu = have_tools and host_os == 'linux' and pixman.found()
+@@ -2405,6 +2413,7 @@ config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
+ config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_UADK', uadk.found())
++config_host_data.set('CONFIG_QATZIP', qatzip.found())
+ config_host_data.set('CONFIG_FUSE', fuse.found())
+ config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
+ config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
+@@ -4528,6 +4537,7 @@ summary_info += {'lzfse support':     liblzfse}
+ summary_info += {'zstd support':      zstd}
+ summary_info += {'Query Processing Library support': qpl}
+ summary_info += {'UADK Library support': uadk}
++summary_info += {'qatzip support':    qatzip}
+ summary_info += {'NUMA host support': numa}
+ summary_info += {'capstone':          capstone}
+ summary_info += {'libpmem support':   libpmem}
+diff --git a/meson_options.txt b/meson_options.txt
+index 0269fa0f16..f7b652b30d 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -261,6 +261,8 @@ option('qpl', type : 'feature', value : 'auto',
+        description: 'Query Processing Library support')
+ option('uadk', type : 'feature', value : 'auto',
+        description: 'UADK Library support')
++option('qatzip', type: 'feature', value: 'auto',
++       description: 'QATzip compression support')
+ option('fuse', type: 'feature', value: 'auto',
+        description: 'FUSE block device export')
+ option('fuse_lseek', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index c97079a38c..5f377a6d81 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -163,6 +163,7 @@ meson_options_help() {
+   printf "%s\n" '  pixman          pixman support'
+   printf "%s\n" '  plugins         TCG plugins via shared library loading'
+   printf "%s\n" '  png             PNG support with libpng'
++  printf "%s\n" '  qatzip          QATzip compression support'
+   printf "%s\n" '  qcow1           qcow1 image format support'
+   printf "%s\n" '  qed             qed image format support'
+   printf "%s\n" '  qga-vss         build QGA VSS support (broken with MinGW)'
+@@ -427,6 +428,8 @@ _meson_option_parse() {
+     --enable-png) printf "%s" -Dpng=enabled ;;
+     --disable-png) printf "%s" -Dpng=disabled ;;
+     --prefix=*) quote_sh "-Dprefix=$2" ;;
++    --enable-qatzip) printf "%s" -Dqatzip=enabled ;;
++    --disable-qatzip) printf "%s" -Dqatzip=disabled ;;
+     --enable-qcow1) printf "%s" -Dqcow1=enabled ;;
+     --disable-qcow1) printf "%s" -Dqcow1=disabled ;;
+     --enable-qed) printf "%s" -Dqed=enabled ;;
 -- 
 Yichen Wang
 
