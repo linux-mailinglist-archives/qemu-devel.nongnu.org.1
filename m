@@ -2,140 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BDE9535BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD01C95363D
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebem-0004gV-0v; Thu, 15 Aug 2024 10:40:52 -0400
+	id 1sebn1-0003Bn-Mx; Thu, 15 Aug 2024 10:49:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sebej-0004eS-Il
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:40:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sebeh-00075K-JC
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:40:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1723732846;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=RY9PCd1v+srDKi6BEszkReRepAVmQcVUEaM/58PChDo=;
- b=MCBJsvsFbR9KvJPDSp2Kn2o/erQ2Umnkzc47klt8XTQufXih0Otd4RAeexojt4/Kyf9/im
- BR35kue5SrmSOIUWDBaMI2+UH1kBJtNgyTAz9r/uz9AO95m/GON9qu593x06Z5xp1nRBG/
- +a+eYwRWFbj4flerYpmOgCibJzqga+Y=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-Z15_J1e2Oe6IhSBto1jwOQ-1; Thu, 15 Aug 2024 10:40:44 -0400
-X-MC-Unique: Z15_J1e2Oe6IhSBto1jwOQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-368448dfe12so1007324f8f.1
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:40:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sebmx-00036w-MQ
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:19 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sebmv-0000Bl-1I
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:19 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5b5b67d0024so1288614a12.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723733354; x=1724338154; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=g1i8FNivYpeAFOmR72AaEwCVagScAYeMii2EtYMaJis=;
+ b=iLmgrHX+bWuABFrlGnArDYmHgzLwqanxR8J1kxvPqHw2uaW21WUnGgHs1ohWI7NhnQ
+ Ea2kxTbwKIo94Azbq+md4m5a9IdmGQefGy53FQ7/h3krnnZalDDISGsMyw0kZFirl5S6
+ +PbZMVH3KORqhFpSkauPyF0yL9HojwYNXPF6jkZo4rNLrMi9S+K7JWa5OhpkddRUTuNL
+ WiJK+0nTs+PD+lQTkl42ynlMxG3jKCMx1e95+GcQKvXjBEKXUh4VgfIm4sQUQH2USirm
+ S7edz0625KSKSMBP0Bh1sq0txVB2atrESvMnDhUcYbGh/CPkLGUV36ZLRICwOrAzHduv
+ Rpow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723732843; x=1724337643;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RY9PCd1v+srDKi6BEszkReRepAVmQcVUEaM/58PChDo=;
- b=DhNXwZBnkuTwP/cUmc6ZvZPJWEjQdpd5+0esSKP+HaJcYcMlh6zyofqC3ZdDHNg27O
- iagQCeAouOqndl6zuhHtBePJH6kSbIszGr8uwRYIxfdl94qnSeJhZIlBcyuZkLUotuvP
- oJEN6RXo4pmJrGqWdvgm25VAF9oFs8BT2q0iMxfscNHu5d5AkqFrjtcL77ZB2KncJrJx
- Btia3GrrBrj9z46eco9ZCLbku2k/pFSiXzSMr6i3SoDMh9qZRE/4Yeww+HSRKGT2CjyI
- TlvUCpNTtBRB2rK+5x1gmrhUh6gRf+jS8hx61Gt2OToGrMyEVkZUT4OkXNQ/3wvQTlhR
- XCvw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWpBJCyxh0wSjQdGZyBiVilm3F5dm7y6J470OtTi8YVYcZiC0xXXgs3aGYL4Sq+0HfcOvBciqSHrr3ljD8zrfJ0Ybd8ohQ=
-X-Gm-Message-State: AOJu0YzlfN7//RrRS8i2N6WCVMkZOrkOhO7VvFk6wpR4C5VTidgEF7tC
- Eu5MAi91yHtN3P8BXmeY3NlPnZdERJBk7asXFBg7Gv8lcdHP1d3kvdoaGIPQwniPsyAV1/lW/dp
- gcpiBKrJHbtmNT2L43l1jdQu5lXGgBxjMuvxQ2N4vmIgHbPupTyv7
-X-Received: by 2002:adf:f64f:0:b0:368:3562:7c76 with SMTP id
- ffacd0b85a97d-37186b8625bmr2261530f8f.3.1723732843492; 
- Thu, 15 Aug 2024 07:40:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKtpiZjIM27p0k9b4V8VrzTBWix8sTkoZAhDYiCXZHGM49I4uJC4ykv1hUJFDW6IbbqEgtZg==
-X-Received: by 2002:adf:f64f:0:b0:368:3562:7c76 with SMTP id
- ffacd0b85a97d-37186b8625bmr2261494f8f.3.1723732842985; 
- Thu, 15 Aug 2024 07:40:42 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-177-15.web.vodafone.de.
- [109.43.177.15]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37189849818sm1689686f8f.33.2024.08.15.07.40.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Aug 2024 07:40:42 -0700 (PDT)
-Message-ID: <a13f1945-b783-4416-83ef-27b586d7a015@redhat.com>
-Date: Thu, 15 Aug 2024 16:40:41 +0200
+ d=1e100.net; s=20230601; t=1723733354; x=1724338154;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g1i8FNivYpeAFOmR72AaEwCVagScAYeMii2EtYMaJis=;
+ b=NsMC2axEAFqVn024uzQ1p+XYvh01ZBSTgkH5jMZ7HJUs2/C2Igwvsrl7jBgp07ueUu
+ beBHsvof70HbPdh1pUB0ZWY1ORto0ovRwWnoj8chkY+vRTfaYJDCtroski/0sdA+0Ice
+ MlsXgRDc/sZ9SlZipsnwQwILW3iUO8RL7Z+ZtZZDgL8XrrgjpcG1w4Pkom804cYZDCmp
+ kDfmDaJJclPGH9vpnr4P4nI+LCV1JoV5YcpymuU1nwMCdriQKq9EmwicKh2gQmN4nGQ/
+ RuwWf4rL493SRBWig2MCwFgR/b3m/TDW4TlJCzPo/SI5uPeJommTauajZNv76TD2BAD9
+ MkBQ==
+X-Gm-Message-State: AOJu0Yxy531Jn5Qq6pDLvIuFmUBNqN1PzPN43Uc4FJiOZnO+mSMjlqwT
+ jRkkypYMTP0F7w76TqztbYfO3cuLGaEt1PsQA+WC/ioLn7su/mFXEeXvdcDtML7p+UYd3dy9D3Y
+ t
+X-Google-Smtp-Source: AGHT+IHDvXkObiTdTJwVJ3dFxyHIU/YdViq7mE9ieuIaFIynktTZw1Vt/GAGdyS7ZSOXvCn4S5fzoQ==
+X-Received: by 2002:a17:907:f74b:b0:a77:bfca:da57 with SMTP id
+ a640c23a62f3a-a8367058e51mr456332866b.44.1723733354181; 
+ Thu, 15 Aug 2024 07:49:14 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a83838c6998sm113683866b.19.2024.08.15.07.49.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Aug 2024 07:49:12 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B37975F8E4;
+ Thu, 15 Aug 2024 15:49:11 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL for 9.1 00/21] Some fixes for 9.1-rc3 (build, replay, docs,
+ plugins)
+Date: Thu, 15 Aug 2024 15:48:50 +0100
+Message-Id: <20240815144911.1931487-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] tests/avocado: exec_command should not consume
- console output
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20240805232814.267843-1-npiggin@gmail.com>
- <20240805232814.267843-2-npiggin@gmail.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240805232814.267843-2-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,42 +93,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/08/2024 01.28, Nicholas Piggin wrote:
-> _console_interaction reads data from the console even when there is only
-> an input string to send, and no output data to wait on. This can cause
-> lines to be missed by wait_for_console_pattern calls that follows an
-> exec_command. Fix this by not reading the console if there is no pattern
-> to wait for.
-> 
-> This solves occasional hangs in ppc_hv_tests.py, usually when run on KVM
-> hosts that are fast enough to output important lines quickly enough to be
-> consumed by exec_command, so they get missed by subsequent wait for
-> pattern calls.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   tests/avocado/avocado_qemu/__init__.py | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
-> index a3da2a96bb..ef935614cf 100644
-> --- a/tests/avocado/avocado_qemu/__init__.py
-> +++ b/tests/avocado/avocado_qemu/__init__.py
-> @@ -135,6 +135,13 @@ def _console_interaction(test, success_message, failure_message,
->               vm.console_socket.sendall(send_string.encode())
->               if not keep_sending:
->                   send_string = None # send only once
-> +
-> +        # Only consume console output if waiting for something
-> +        if success_message is None and failure_message is None:
-> +            if send_string is None:
-> +                break
-> +            continue
-> +
->           try:
->               msg = console.readline().decode().strip()
->           except UnicodeDecodeError:
+The following changes since commit b0d6c037ea0a825192285f149af72a73a1baaa04:
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+  Update version for v9.1.0-rc2 release (2024-08-15 20:32:37 +1000)
+
+are available in the Git repository at:
+
+  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-9.1-rc3-150824-1
+
+for you to fetch changes up to f39cbfc9f8dcb17e8168735acb6fb75638d9904f:
+
+  plugins: fix race condition with scoreboards (2024-08-15 12:10:23 +0100)
+
+----------------------------------------------------------------
+Some fixes for 9.1-rc3 (build, replay, docs, plugins)
+
+  - re-enable gdbsim-r5f562n8 test
+  - ensure updates to python deps re-trigger configure
+  - tweak configure detection of GDB MTE support
+  - make checkpatch emit more warnings on updating headers
+  - allow i386 access_ptr to force slow path for plugins
+  - fixe some replay regressions
+  - update the replay-dump tool
+  - better handle muxed chardev during replay
+  - clean up TCG plugins docs to mention scoreboards
+  - fix plugin scoreboard race condition
+
+----------------------------------------------------------------
+Alex Bennée (2):
+      Makefile: trigger re-configure on updated pythondeps
+      target/i386: allow access_ptr to force slow path on failed probe
+
+Gustavo Romero (3):
+      configure: Fix arch detection for GDB_HAS_MTE
+      configure: Avoid use of param. expansion when using gdb_version
+      configure: Fix GDB version detection for GDB_HAS_MTE
+
+Nicholas Piggin (10):
+      scripts/replay-dump.py: Update to current rr record format
+      scripts/replay-dump.py: rejig decoders in event number order
+      tests/avocado: excercise scripts/replay-dump.py in replay tests
+      replay: allow runstate shutdown->running when replaying trace
+      Revert "replay: stop us hanging in rr_wait_io_event"
+      tests/avocado: replay_kernel.py add x86-64 q35 machine test
+      chardev: set record/replay on the base device of a muxed device
+      virtio-net: Use replay_schedule_bh_event for bhs that affect machine state
+      virtio-net: Use virtual time for RSC timers
+      savevm: Fix load_snapshot error path crash
+
+Philippe Mathieu-Daudé (2):
+      tests/avocado: Re-enable gdbsim-r5f562n8 testing U-Boot
+      buildsys: Fix building without plugins on Darwin
+
+Pierrick Bouvier (2):
+      docs/devel: update tcg-plugins page
+      plugins: fix race condition with scoreboards
+
+Stefan Weil (1):
+      docs: Fix some typos (found by typos) and grammar issues
+
+Stefano Garzarella (1):
+      scripts/checkpatch: more checks on files imported from Linux
+
+ docs/about/emulation.rst                  |  49 +++++++--
+ docs/devel/migration/uadk-compression.rst |   4 +-
+ docs/devel/tcg-plugins.rst                |  13 ++-
+ docs/interop/qemu-ga.rst                  |   2 +-
+ docs/tools/qemu-vmsr-helper.rst           |   4 +-
+ configure                                 |   8 +-
+ Makefile                                  |   3 +-
+ qapi/rocker.json                          |   4 +-
+ include/exec/memory.h                     |   2 +-
+ include/sysemu/replay.h                   |   5 -
+ include/sysemu/runstate.h                 |   1 +
+ accel/tcg/tcg-accel-ops-rr.c              |   2 +-
+ chardev/char.c                            |  71 +++++++++----
+ hw/arm/smmu-common.c                      |   2 +-
+ hw/net/virtio-net.c                       |  17 +--
+ migration/savevm.c                        |   1 +
+ plugins/core.c                            |  43 +++++---
+ qga/main.c                                |   2 +-
+ replay/replay.c                           |  23 +---
+ system/runstate.c                         |  31 +++++-
+ target/i386/tcg/access.c                  |  27 +++--
+ plugins/meson.build                       |  50 ++++-----
+ scripts/checkpatch.pl                     |  24 +++++
+ scripts/replay-dump.py                    | 167 ++++++++++++++++++++----------
+ tests/avocado/machine_rx_gdbsim.py        |   2 -
+ tests/avocado/replay_kernel.py            |  31 +++++-
+ tests/avocado/replay_linux.py             |  10 ++
+ 27 files changed, 406 insertions(+), 192 deletions(-)
+
+-- 
+2.39.2
 
 
