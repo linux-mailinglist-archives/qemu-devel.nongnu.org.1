@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA58952ED9
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 15:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21865952F38
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 15:30:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seaH1-0002gz-A7; Thu, 15 Aug 2024 09:12:15 -0400
+	id 1seaXD-0008Em-H8; Thu, 15 Aug 2024 09:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1seaGy-0002YL-Jm
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 09:12:12 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1seaXA-0008EH-Om
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 09:28:56 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1seaGw-0001JL-2m
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 09:12:12 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-37189d8e637so365467f8f.3
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 06:12:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1seaX4-0003tc-AX
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 09:28:55 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-7aa7703cf08so766844a12.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 06:28:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723727528; x=1724332328; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dUYdiSB91Owjfbe3qfsRkuZlpaUqKUBYcIWMaFHQa1k=;
- b=xoZ43qJpRQz7i5GaOSfZ18gslGYgRUkp8nhrn6NWbZF8fh0PV7O0FejOd4NyMxyADx
- D+YiZUcsrhIUNzIwi2QxWkNbaIGR+IjpJGkl8fiWiv74hKNjBuaFElXTThIjCr4ViMAj
- KpTNQeA3eHbx8zqx3axUZfe0F8BZ0YDC2gkcpuVmp+9UOhC3h1YAUUY45VX9HkhvE7Lx
- Qvom/MJjq2DxxOoiAzBsRmyY60N2htjen/6zGRVBI9LdF3MHaIUpJiHUTqR5Px6SS6Xf
- Fg7u0aiUFuqvGhizKu0KpIHObSAgryr8izYlS76flY9sZAJS8gpAAVF5ZaTbeov8LfQx
- Fhhg==
+ d=gmail.com; s=20230601; t=1723728528; x=1724333328; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oNUupxzUt6PQF7ZYggtXA4wLU4blipzCjFbD7TBcW1k=;
+ b=SSQ0XaCd6ONZWUBWDlYwnK6FC7pETlafecLBMoWcpp3K7RQ+x8ZBIvV9mTi/sl9yTC
+ CwFSDS23/YYaR9s0nZrkJhUCNwg2g7rynI7KD+GcQfsN/+N8sYn7WaPMDHAlr8PG3/Wj
+ vpSJjMHwdyO2zeL+8+FZdlnByP6E8iJCTTG+ydAHdC7mu6rt22Al5A0FOG6e5t8XTAfy
+ L6ls4mdsQq9e+/Tx+75gK0jyUCCg26xT0+0bhnCjhwdFthnXwT7lPo12PUf6lzaBNlOk
+ rMUS7vc8rkwj56y164LX+nkAgloou0oV/9/Dnfe2gM+Q4TXbJr6nN948wo7VgF3Wa/1K
+ dnFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723727528; x=1724332328;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dUYdiSB91Owjfbe3qfsRkuZlpaUqKUBYcIWMaFHQa1k=;
- b=UPpyrwPHE5rHLCoHpTyA/C0J/K1EMF7DpvrrWHVkgWO4tJfBrYXatPiNqXLiV2xQnE
- 28R7VEww8Wp83CPoYnjlfkOLWHtDQirFrO8uyrOND4fEHgd6TpCS7g63VnL8DFeyHUKy
- wTEZH+nNJTczViBDI8n5OcFTBAJojB29uh1EDjTFyEN+KBs8SDMJz/w4cixEwpcWmNAe
- 99Xn2XMY/BDmPN94aUqDHMXh/PqV/z9fd7ajsBlQeleQr0tFFYCewvsDkSLS+wBBNAyo
- ha/Ft/pb+JwQqdAnNBA9dswCpNXyZWFXrS3Ts1bsoa5iaWYwwYRHoc2/NKdooFGN33+M
- Poww==
-X-Gm-Message-State: AOJu0YzCnyHgWukpkwNhiJ4Nwg/8i0r+aGrxy0Ulq5H86haLiIz8YPFK
- 8akIDJ8fFOhwKSphMQMd0ZcSBmdjoskwyMfcUb+2BInz6zddJQUnHlrCs/6MRGMUacqgQEskTbk
- u
-X-Google-Smtp-Source: AGHT+IEDnD3X5IwvbW3u4gle1NP3s9fF8xxrWbTaUPppzRXMeeVLeC+UvMFtph4uek9nXigeN5VimA==
-X-Received: by 2002:a05:6000:4008:b0:368:3b1f:fe40 with SMTP id
- ffacd0b85a97d-3717778b7bdmr5878939f8f.20.1723727528438; 
- Thu, 15 Aug 2024 06:12:08 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429ded19627sm48269935e9.5.2024.08.15.06.12.08
+ d=1e100.net; s=20230601; t=1723728528; x=1724333328;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oNUupxzUt6PQF7ZYggtXA4wLU4blipzCjFbD7TBcW1k=;
+ b=FZzCANoJRsw2E4P66Wb0qaclOSk6DuRW6NefljcDf30VfKPEbkTdydSit5G83M9541
+ 8IQOG9NjP3G7z4FQ3gbr+ElLaKQRJTQ2iFw/S0CWNgSGvPhWquEaYA2nN35a6lXAou/v
+ nEkYN1D8xkCx7J0fYWc1Qjo7w0G2UVEb1ECHYwetl5OSqIlDmeSZeme3Z5hAk6x1BCtn
+ wObITyfn3ag33Pafh7sjd9nJqYSBy++9xeIvyfnB65TuKgnd+tprXL4khEt/U8f/h/hp
+ uqL6VPdFxGO91MBBS9wfT1mGJCUhe50gCAEoYrhYEQwD9rwhNybLpsQPCuCljuoWIFTm
+ 2xxA==
+X-Gm-Message-State: AOJu0Yz6PThGlJiSb9CxEswMKqimWaTcCeEolO+kjly91P98Ed5Yq83j
+ +C8Z6bt0cFV1pGTUBMZWd7OUN8h6VRRTddqZmoFntxT7mdXaVvhz7JqaMCdc
+X-Google-Smtp-Source: AGHT+IHGNoY/V1sSXicfDJ38EUk6luPEQBiWjYlN0uBaSwDKYc99V0EPgXo/5I+nQ2VnB/2JZS73bw==
+X-Received: by 2002:a17:902:f60d:b0:202:1fe:9fdd with SMTP id
+ d9443c01a7336-20201fead09mr831275ad.24.1723728527667; 
+ Thu, 15 Aug 2024 06:28:47 -0700 (PDT)
+Received: from wheely.local0.net (219-90-179-190.ip.adam.com.au.
+ [219.90.179.190]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-201f038b455sm10014055ad.214.2024.08.15.06.28.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 06:12:08 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ Thu, 15 Aug 2024 06:28:47 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH for-9.2 2/2] kvm: Remove unreachable code in
- kvm_dirty_ring_reaper_thread()
-Date: Thu, 15 Aug 2024 14:12:06 +0100
-Message-Id: <20240815131206.3231819-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240815131206.3231819-1-peter.maydell@linaro.org>
-References: <20240815131206.3231819-1-peter.maydell@linaro.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [RFC PATCH 0/2] async: rework async event API for replay
+Date: Thu, 15 Aug 2024 23:28:35 +1000
+Message-ID: <20240815132838.615330-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,37 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The code at the tail end of the loop in kvm_dirty_ring_reaper_thread()
-is unreachable, because there is no way for execution to leave the
-loop. Replace it with a g_assert_not_reached().
+Continuing the conversation from the thread about record/replay
+virtio fix. Here is a sketch of how we could improve the naming
+convention so users of bh don't have to know about record/replay.
 
-(The code has always been unreachable, right from the start
-when the function was added in commit b4420f198dd8.)
+Thanks,
+Nick
 
-Resolves: Coverity CID 1547687
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- accel/kvm/kvm-all.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+Nicholas Piggin (2):
+  async: rework async event API for replay
+  async: add debugging assertions for record/replay in bh APIs
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 6c4cb263ba3..fe4cd721d9b 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -1525,11 +1525,7 @@ static void *kvm_dirty_ring_reaper_thread(void *data)
-         r->reaper_iteration++;
-     }
- 
--    trace_kvm_dirty_ring_reaper("exit");
--
--    rcu_unregister_thread();
--
--    return NULL;
-+    g_assert_not_reached();
- }
- 
- static void kvm_dirty_ring_reaper_init(KVMState *s)
+ docs/devel/replay.rst              |  7 ++--
+ include/block/aio.h                | 35 +++++++++++++++--
+ include/sysemu/replay.h            |  2 +-
+ block.c                            |  4 +-
+ block/block-backend.c              | 24 +++++++-----
+ block/io.c                         |  5 ++-
+ block/iscsi.c                      |  5 ++-
+ block/nfs.c                        | 10 +++--
+ block/null.c                       |  4 +-
+ block/nvme.c                       |  8 ++--
+ hw/ide/core.c                      |  7 ++--
+ hw/scsi/scsi-bus.c                 |  6 +--
+ monitor/monitor.c                  |  2 +-
+ monitor/qmp.c                      |  5 ++-
+ qapi/qmp-dispatch.c                |  4 +-
+ replay/replay-events.c             | 25 ++++++------
+ stubs/replay-tools.c               |  2 +-
+ util/aio-wait.c                    |  2 +-
+ util/async.c                       | 63 ++++++++++++++++++++++++++++--
+ util/main-loop.c                   |  2 +-
+ util/thread-pool.c                 |  8 ++--
+ scripts/block-coroutine-wrapper.py |  2 +-
+ 22 files changed, 164 insertions(+), 68 deletions(-)
+
 -- 
-2.34.1
+2.45.2
 
 
