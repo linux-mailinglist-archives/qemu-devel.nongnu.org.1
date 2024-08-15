@@ -2,87 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B9595263F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 01:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7526A9526CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 02:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seNYB-00024M-JB; Wed, 14 Aug 2024 19:37:07 -0400
+	id 1seODU-0000Ym-NB; Wed, 14 Aug 2024 20:19:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seNY8-0001uI-Ly
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:04 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1seNY6-0006Ws-Rt
- for qemu-devel@nongnu.org; Wed, 14 Aug 2024 19:37:04 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-710dc3015bfso273299b3a.0
- for <qemu-devel@nongnu.org>; Wed, 14 Aug 2024 16:37:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723678621; x=1724283421; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=88ldzGJFn7KJzwoVt5WZkhf1Vk0R2+WAedFjkHAyIrQ=;
- b=K48EKCOZiqaOEnnrsAxehpKQQee4Xd53aDD8XexaqAVE4E3n2RN9B102AMf/wv+zrL
- eHpSpbNr2T9heS/H8YQc0JXGsXc3bqF7mxXfn5jYyPSuqwQBjWiKPuz64nHRWALfyCa+
- coFvQ5bYcCCdyO8+mMdI83stQTrPvOV5Ll4Hwt5gzOTUpqKHh1yvBnLHs6wk+0pIfH8O
- pVVArkbkMJVwicQDt7kro+6RQit464eUnn5NMTilI4SAN1TyRAqv2lIhiqRtoPThQY13
- wX21eA9IYjVPiv3VSH/PbV0JyIsZ2kP6NUxBF4GaSKD6B2eLoEepKrGoYwiQrVoZp2DM
- PNMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723678621; x=1724283421;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=88ldzGJFn7KJzwoVt5WZkhf1Vk0R2+WAedFjkHAyIrQ=;
- b=hW3JorGDnA5z23NTW9mjjA5dli3kM/XS5G74DX7QQ17jmhCl5eokPfaJ9E9vAdW9vS
- zd4JuGYkBqGuhz5/M9N0IzhgbEB29T5ybN7BZugbzOFWdmFCNso4NQScky0fisGsoeuM
- VWCedHwPi9zVu0/zX0i1x2HQAix601xHyCwCQNX2BO8V1A5gIo82EqW5ex0daupgTsZN
- b6fstnDx8uI+ONpbPTT2y1owYbNQR9xC0e0q9h2M+Qsm85zr7nB/0mu6eMjWm0pEFbIT
- aVhIgmh0C7jMPIMImh4kz3sKUgbHqSPQjNq2F29dLSFAk5FsBZe5oVL7SsTwmhA5Asnv
- FZXQ==
-X-Gm-Message-State: AOJu0YzRAxqNbO+EoVCGt7lYX9JXfOiaA/h1eTmFQp75BbI/3Urbi1MY
- oN3BexRu4UuOXpWBfzI2i7NmTYztIvIBBfLNB2ddKnoYMrUsSWJMhKQiqbgmle2C6yQJZXXE127
- W/vI=
-X-Google-Smtp-Source: AGHT+IHTpXB1r7SxrWpLyZCf18ZQfm08NLcPLsgct9EyGMm8FW1vHPtTpw424UztofHbop/0WqlDww==
-X-Received: by 2002:a05:6a20:85af:b0:1c8:de01:e7e5 with SMTP id
- adf61e73a8af0-1c8f85c7766mr1325780637.15.1723678621299; 
- Wed, 14 Aug 2024 16:37:01 -0700 (PDT)
-Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::b861])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127aef57dfsm112164b3a.115.2024.08.14.16.37.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 16:37:00 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6/6] contrib/plugins: remove Makefile for contrib/plugins
-Date: Wed, 14 Aug 2024 16:36:45 -0700
-Message-Id: <20240814233645.944327-7-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
-References: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1seODR-0000YI-ID
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 20:19:45 -0400
+Received: from sin.source.kernel.org ([145.40.73.55])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1seODP-0003vI-5g
+ for qemu-devel@nongnu.org; Wed, 14 Aug 2024 20:19:45 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id B45DDCE1B04;
+ Thu, 15 Aug 2024 00:19:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E260C116B1;
+ Thu, 15 Aug 2024 00:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1723681170;
+ bh=9IHO+IHlt+Bd47+QggcZMinljdOBWoC9h40/wIqMC3Q=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=XPFlIutVOqaRrr2IAnjhalrqcHb28oShUtLiBvz3nfby2tNneHmk9qHlJ5Mf3X4Eb
+ AaR8unaUKM855Yuy6diNyiFCh/VX76I8MytwSWhGUYSHN6kBvKU0BOwC+E/Z+wRAZW
+ /E+qDqkGayTP/xIRtNgQj5Uu0B5Xv5s5zHcLl3nF1vud4Ta/4DnhelOkrgXsJdt7Rk
+ iMXX2etVZna7PdcEcceBxk7nLJYHQugvzhB9cC7Khy+wJX7DRdKblR1iU5xmgPaDnk
+ 7hAib7vMmXl6cBwk8lpP8zqsK0xlfgixqqtwn8QirijW1Orl6D8uuVXgK3c7bGEOcw
+ xHqJIIjzdzVhQ==
+Date: Wed, 14 Aug 2024 17:19:28 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+cc: Stefano Stabellini <sstabellini@kernel.org>, qemu-devel@nongnu.org, 
+ anthony@xenproject.org, paul@xen.org, peter.maydell@linaro.org, 
+ alex.bennee@linaro.org, xenia.ragiadakou@amd.com, jason.andryuk@amd.com, 
+ edgar.iglesias@amd.com, xen-devel@lists.xenproject.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH v1 09/10] hw/i386/xen: Add a Xen PVH x86 machine
+In-Reply-To: <ZrzSRPPNYxeh98J4@zapote>
+Message-ID: <alpine.DEB.2.22.394.2408141718510.298534@ubuntu-linux-20-04-desktop>
+References: <20240812130606.90410-1-edgar.iglesias@gmail.com>
+ <20240812130606.90410-10-edgar.iglesias@gmail.com>
+ <alpine.DEB.2.22.394.2408121840230.298534@ubuntu-linux-20-04-desktop>
+ <ZrzSRPPNYxeh98J4@zapote>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=sstabellini@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.135,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,179 +80,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now replaced by meson build.
+On Wed, 14 Aug 2024, Edgar E. Iglesias wrote:
+> On Mon, Aug 12, 2024 at 06:48:52PM -0700, Stefano Stabellini wrote:
+> > On Mon, 12 Aug 2024, Edgar E. Iglesias wrote:
+> > > From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+> > > 
+> > > This adds a Xen PVH x86 machine based on the PVH Common
+> > > module used by the ARM PVH machine.
+> > > 
+> > > Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+> > > ---
+> > >  hw/i386/xen/meson.build |   1 +
+> > >  hw/i386/xen/xen-pvh.c   | 196 ++++++++++++++++++++++++++++++++++++++++
+> > >  2 files changed, 197 insertions(+)
+> > >  create mode 100644 hw/i386/xen/xen-pvh.c
+> > > 
+> > > diff --git a/hw/i386/xen/meson.build b/hw/i386/xen/meson.build
+> > > index 3f0df8bc07..c73c62b8e3 100644
+> > > --- a/hw/i386/xen/meson.build
+> > > +++ b/hw/i386/xen/meson.build
+> > > @@ -4,6 +4,7 @@ i386_ss.add(when: 'CONFIG_XEN', if_true: files(
+> > >  ))
+> > >  i386_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
+> > >    'xen-hvm.c',
+> > > +  'xen-pvh.c',
+> > >  ))
+> > >  
+> > >  i386_ss.add(when: 'CONFIG_XEN_BUS', if_true: files(
+> > > diff --git a/hw/i386/xen/xen-pvh.c b/hw/i386/xen/xen-pvh.c
+> > > new file mode 100644
+> > > index 0000000000..9c3d3fc58d
+> > > --- /dev/null
+> > > +++ b/hw/i386/xen/xen-pvh.c
+> > > @@ -0,0 +1,196 @@
+> > > +/*
+> > > + * QEMU Xen PVH x86 Machine
+> > > + *
+> > > + * Copyright (c) 2024 Advanced Micro Devices, Inc.
+> > > + * Written by Edgar E. Iglesias <edgar.iglesias@amd.com>
+> > > + *
+> > > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > > + */
+> > > +
+> > > +#include "qemu/osdep.h"
+> > > +#include "qapi/error.h"
+> > > +#include "qapi/visitor.h"
+> > > +#include "qemu/error-report.h"
+> > > +#include "hw/boards.h"
+> > > +#include "sysemu/sysemu.h"
+> > > +#include "hw/xen/arch_hvm.h"
+> > > +#include "hw/xen/xen.h"
+> > > +#include "hw/xen/xen-pvh-common.h"
+> > > +
+> > > +#define TYPE_XEN_PVH_X86  MACHINE_TYPE_NAME("xenpvh")
+> > > +OBJECT_DECLARE_SIMPLE_TYPE(XenPVHx86State, XEN_PVH_X86)
+> > > +
+> > > +#define PVH_MAX_CPUS 128
+> > > +
+> > > +struct XenPVHx86State {
+> > > +    /*< private >*/
+> > > +    MachineState parent;
+> > > +
+> > > +    DeviceState *cpu[PVH_MAX_CPUS];
+> > > +    XenPVHCommonState pvh;
+> > > +
+> > > +    /*
+> > > +     * We provide these properties to allow Xen to move things to other
+> > > +     * addresses for example when users need to accomodate the memory-map
+> > > +     * for 1:1 mapped devices/memory.
+> > > +     */
+> > > +    struct {
+> > > +        MemMapEntry ram_low, ram_high;
+> > > +        MemMapEntry pci_ecam, pci_mmio, pci_mmio_high;
+> > 
+> > Can we use the same properties already present under XenPVHCommonState?
+> > 
+> > 
+> > 
+> > > +    } cfg;
+> > > +};
+> > > +
+> > > +static void xenpvh_cpu_new(MachineState *ms,
+> > > +                           XenPVHx86State *xp,
+> > > +                           int cpu_idx,
+> > > +                           int64_t apic_id)
+> > > +{
+> > > +    Object *cpu = object_new(ms->cpu_type);
+> > > +
+> > > +    object_property_add_child(OBJECT(ms), "cpu[*]", cpu);
+> > > +    object_property_set_uint(cpu, "apic-id", apic_id, &error_fatal);
+> > > +    qdev_realize(DEVICE(cpu), NULL, &error_fatal);
+> > > +    object_unref(cpu);
+> > > +
+> > > +    xp->cpu[cpu_idx] = DEVICE(cpu);
+> > 
+> > 
+> > Why do we need to create CPU devices in QEMU given that we are only
+> > doing device emulation? I guess it is because ....
+> > 
+> > 
+> > 
+> > > +}
+> > > +
+> > > +static void xenpvh_init(MachineState *ms)
+> > > +{
+> > > +    XenPVHx86State *xp = XEN_PVH_X86(ms);
+> > > +    const struct {
+> > > +        const char *name;
+> > > +        MemMapEntry *map;
+> > > +    } map[] = {
+> > > +        { "ram-low", &xp->cfg.ram_low },
+> > > +        { "ram-high", &xp->cfg.ram_high },
+> > > +        { "pci-ecam", &xp->cfg.pci_ecam },
+> > > +        { "pci-mmio", &xp->cfg.pci_mmio },
+> > > +        { "pci-mmio-high", &xp->cfg.pci_mmio_high },
+> > > +    };
+> > > +    int i;
+> > > +
+> > > +    object_initialize_child(OBJECT(ms), "pvh", &xp->pvh, TYPE_XEN_PVH_COMMON);
+> > > +    object_property_set_int(OBJECT(&xp->pvh), "max-cpus", ms->smp.max_cpus,
+> > > +                            &error_abort);
+> > > +    object_property_set_int(OBJECT(&xp->pvh), "ram-size", ms->ram_size,
+> > > +                            &error_abort);
+> > > +
+> > > +    for (i = 0; i < ARRAY_SIZE(map); i++) {
+> > > +        g_autofree char *base_name = g_strdup_printf("%s-base", map[i].name);
+> > > +        g_autofree char *size_name = g_strdup_printf("%s-size", map[i].name);
+> > > +
+> > > +        object_property_set_int(OBJECT(&xp->pvh), base_name, map[i].map->base,
+> > > +                                 &error_abort);
+> > > +        object_property_set_int(OBJECT(&xp->pvh), size_name, map[i].map->size,
+> > > +                                 &error_abort);
+> > > +    }
+> > > +
+> > > +    /* GSI's 16 - 20 are used for legacy PCIe INTX IRQs.  */
+> > > +    object_property_set_int(OBJECT(&xp->pvh), "pci-intx-irq-base", 16,
+> > > +                            &error_abort);
+> > > +
+> > > +    sysbus_realize(SYS_BUS_DEVICE(&xp->pvh), &error_abort);
+> > > +
+> > > +    /* Create dummy cores. This will indirectly create the APIC MSI window.  */
+> > 
+> > ... of the APIC MSI window ?
+> 
+> 
+> Yes, exactly. I did have a first version without the CPUs that only had
+> the MSI window but there was a bit of disentanglement needed and some
+> other issue that I forgot. Note that with TCG disabled, this doesn't
+> have the any CPU emulation so it doesn't affect our small PVH config
+> very much. I could look into the MSI windows again though.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- configure                | 18 ---------
- Makefile                 | 10 -----
- contrib/plugins/Makefile | 85 ----------------------------------------
- 3 files changed, 113 deletions(-)
- delete mode 100644 contrib/plugins/Makefile
-
-diff --git a/configure b/configure
-index 019fcbd0ef7..2c0f708cd0a 100755
---- a/configure
-+++ b/configure
-@@ -1030,7 +1030,6 @@ if test "$static" = "yes" ; then
- fi
- if test "$plugins" != "no"; then
-   plugins=yes
--  subdirs="$subdirs contrib/plugins"
- fi
- 
- cat > $TMPC << EOF
-@@ -1531,7 +1530,6 @@ LINKS="$LINKS .gdbinit scripts" # scripts needed by relative path in .gdbinit
- LINKS="$LINKS tests/avocado tests/data"
- LINKS="$LINKS tests/qemu-iotests/check tests/qemu-iotests/Makefile"
- LINKS="$LINKS python"
--LINKS="$LINKS contrib/plugins/Makefile "
- for f in $LINKS ; do
-     if [ -e "$source_path/$f" ]; then
-         symlink "$source_path/$f" "$f"
-@@ -1614,22 +1612,6 @@ if test "$default_targets" = "yes"; then
-   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
- fi
- 
--# contrib/plugins configuration
--echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
--echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
--echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
--echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
--echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
--if test "$host_os" = windows; then
--  echo "DLLTOOL=$dlltool" >> contrib/plugins/$config_host_mak
--fi
--if test "$host_os" = darwin; then
--  echo "CONFIG_DARWIN=y" >> contrib/plugins/$config_host_mak
--fi
--if test "$host_os" = windows; then
--  echo "CONFIG_WIN32=y" >> contrib/plugins/$config_host_mak
--fi
--
- # tests/tcg configuration
- mkdir -p tests/tcg
- echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
-diff --git a/Makefile b/Makefile
-index 02a257584ba..e474fbe50de 100644
---- a/Makefile
-+++ b/Makefile
-@@ -186,11 +186,6 @@ SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
- $(SUBDIR_RULES):
- 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
- 
--ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
--.PHONY: plugins
--plugins: contrib/plugins/all
--endif
--
- .PHONY: recurse-all recurse-clean
- recurse-all: $(addsuffix /all, $(SUBDIRS))
- recurse-clean: $(addsuffix /clean, $(SUBDIRS))
-@@ -306,11 +301,6 @@ help:
- 	$(call print-help,cscope,Generate cscope index)
- 	$(call print-help,sparse,Run sparse on the QEMU source)
- 	@echo  ''
--ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
--	@echo  'Plugin targets:'
--	$(call print-help,plugins,Build the example TCG plugins)
--	@echo  ''
--endif
- 	@echo  'Cleaning targets:'
- 	$(call print-help,clean,Remove most generated files but keep the config)
- 	$(call print-help,distclean,Remove all generated files)
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-deleted file mode 100644
-index edf256cd9d1..00000000000
---- a/contrib/plugins/Makefile
-+++ /dev/null
-@@ -1,85 +0,0 @@
--# -*- Mode: makefile -*-
--#
--# This Makefile example is fairly independent from the main makefile
--# so users can take and adapt it for their build. We only really
--# include config-host.mak so we don't have to repeat probing for
--# programs that the main configure has already done for us.
--#
--
--include config-host.mak
--
--TOP_SRC_PATH = $(SRC_PATH)/../..
--
--VPATH += $(SRC_PATH)
--
--NAMES :=
--NAMES += execlog
--NAMES += hotblocks
--NAMES += hotpages
--NAMES += howvec
--
--# The lockstep example communicates using unix sockets,
--# and can't be easily made to work on windows.
--ifneq ($(CONFIG_WIN32),y)
--NAMES += lockstep
--endif
--
--NAMES += hwprofile
--NAMES += cache
--NAMES += drcov
--NAMES += ips
--NAMES += stoptrigger
--
--ifeq ($(CONFIG_WIN32),y)
--SO_SUFFIX := .dll
--LDLIBS += $(shell $(PKG_CONFIG) --libs glib-2.0)
--else
--SO_SUFFIX := .so
--endif
--
--SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
--
--# The main QEMU uses Glib extensively so it is perfectly fine to use it
--# in plugins (which many example do).
--PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
--PLUGIN_CFLAGS += -fPIC -Wall
--PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
--
--# Helper that honours V=1 so we get some output when compiling
--quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
--quiet-command = $(call quiet-@,$2,$3)$1
--
--# for including , in command strings
--COMMA := ,
--
--all: $(SONAMES)
--
--%.o: %.c
--	$(call quiet-command, \
--		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
--	        BUILD, plugin $@)
--
--ifeq ($(CONFIG_WIN32),y)
--lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
--	$(call quiet-command, \
--		$(CC) -shared -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--else ifeq ($(CONFIG_DARWIN),y)
--lib%$(SO_SUFFIX): %.o
--	$(call quiet-command, \
--		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--else
--lib%$(SO_SUFFIX): %.o
--	$(call quiet-command, \
--		$(CC) -shared -o $@ $^ $(LDLIBS), \
--		LINK, plugin $@)
--endif
--
--
--clean:
--	rm -f *.o *$(SO_SUFFIX) *.d
--	rm -Rf .libs
--
--.PHONY: all clean
--.SECONDARY:
--- 
-2.39.2
-
+no, I think this is OK, especially if the number of CPUs is accurate
 
