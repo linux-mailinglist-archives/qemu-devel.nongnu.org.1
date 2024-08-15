@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A4E952DB0
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 13:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6ACF952DB6
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 13:45:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seYsV-0007qS-9L; Thu, 15 Aug 2024 07:42:51 -0400
+	id 1seYsX-0007zH-HZ; Thu, 15 Aug 2024 07:42:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1seYsT-0007le-C4
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:42:49 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1seYsV-0007vB-TK
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:42:51 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1seYsR-0002Ce-Er
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:42:49 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2f032cb782dso7543341fa.3
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 04:42:47 -0700 (PDT)
+ id 1seYsU-0002D7-2G
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:42:51 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a8385f38fcdso44073466b.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 04:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723722165; x=1724326965; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723722168; x=1724326968; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FzUpp6Fi1RnlgfSqrQ44A3uw7FwtxkcGzmQ+3Wqxx7k=;
- b=nTZZZJDED5ETg3Nr/jvJRvYWwKiu2TARhFCK5+WsVM9neGrff2k9V0bqfsYFK6lmRe
- 9MMFHAkr303N+TFTN5b9e09nTtsOzGI0WD8vue+B/XPec2cN1+1IhXyKVrVDopIpR3xm
- XxNenF3wjyjhXEIxvnXaYqSFCgsr6ZfnEacF1vOHyWqqtFXBBgec2S+/SR7fko5FmaM2
- 4pmqoOzaeFU/4N+HSvdvAh2Jn1jHUbPSKPEoE844PT7Lam5G+JFCPsmGT1fjZygZnfX/
- 3s5WjP0dTXmWJif+R3Xl/vS6udAyKpJiT4sQQBVth4qRB5vEAcQlF1EiKyQHSfk1ideh
- psZw==
+ :reply-to; bh=NLQUtwlH5ru+31+0LhHDTaTOLuXgK1ZwJpwr1P2FRCY=;
+ b=CpRePxwG7U36K3cDowN6uQ3w+sIuOE2KGAfuZshrUmcXaSCX1VOSoMssyn2Qcnslso
+ rWZumGy8ykwFIKqNiMUW7/OuSCL+/roReYaMgh/NUwEgp5DavkRh00i1Yaz/npzngETK
+ qo7AqmLBFobiNx052bkAOka3IPCFSXiD/VI3RhMRNF/XtgdRabG254z54zuDgQJO+HfI
+ aoNXuYRO0bjLL+g2Nk/gHhbx7zl0+XAQe+c0KZzQk8jhlA5h3q9Ue8np7xsB4R+iG/xi
+ 8Oh1lDd0+TiEGMa7ciahwn4nsSFLO0ZObuxTAVV+2w0R2goI20wMJ8WCnM0ehB9w8yfi
+ IOJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723722165; x=1724326965;
+ d=1e100.net; s=20230601; t=1723722168; x=1724326968;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FzUpp6Fi1RnlgfSqrQ44A3uw7FwtxkcGzmQ+3Wqxx7k=;
- b=iedEWtorgxtg9k0NscI0beQqFux/8d1oU0vBAbwwBMiOYUPHEr7Oq2Q33xa8MyJzQU
- C4Om8k8MMOsSb1WwPC1GksQW4dKKUEN21rgHdp01zYjOgu1/LUKiZ/LDeUnREHf/HEzg
- 7BXOpFlUTDYCMxjZ5X3GO1/VIbdUcCoLN39JkivVyR54MVGuG1TJGgIiufYLXAHxgs3q
- qOZiotiuHBs7V6S5u8xPwXKQ55mOGvv3wE/ixkvqXl2MYLUUoAXN++Hgp07Q3O7h5RxX
- IE62oGjx6g0SO/RRE/gZ8r5Vbrp83+6YsNmZiOhBAfcFikh+VxqgVj4WH17hlCgBfA/0
- us0A==
-X-Gm-Message-State: AOJu0YwJNWu7DS1P/SWO80eCRlMGbeWFV7MjEbiNsXOEJedJiVV+VRno
- umZz+0wk2G0S6zc6FVzzCQraOuTW/zjCyJG/IWlMmK+XLNmc11Pg4Z2zDztPd3s=
-X-Google-Smtp-Source: AGHT+IGeI9y+BQkOMLUrhP3hqn9MlEkhUq6NtXKkVTFziFoiDwgVV/9XdapMuZUsyaKpIJ8gqR405w==
-X-Received: by 2002:a05:6512:3195:b0:530:aba8:d37a with SMTP id
- 2adb3069b0e04-532edbae1d3mr3360658e87.37.1723722165225; 
- Thu, 15 Aug 2024 04:42:45 -0700 (PDT)
+ bh=NLQUtwlH5ru+31+0LhHDTaTOLuXgK1ZwJpwr1P2FRCY=;
+ b=f4N1UpRQRuLHZS80NkhXjcTcYpFHfXF9/ktqMYyBzPHwP76DzN69YTlWHv32TQ1ORY
+ Iuw35V9MFXiM46DSSS1D9ODsQF6SccmEwRNkOgq4pUBYWpa1QSEHn64l7xemWGaBm+u+
+ 3uv9HHUf9RFKliyi/l33TdXhd2nS7vvcW1fSq2prgvPxrkg3PxezfUSsbArq+sqJjoWn
+ GHiehB2BCChOVSdTlPfDOJr84GbF68M+/HJDnypUSX4CoW44iuBCYsCMM0Wu1Ui5Ruyn
+ cmRVB9r9u8iknc8xTL+XS4oK+cZOwYFMO0XLGi3JUVYuAsCpe8iq7j8BjnhjYFSMHqAr
+ CStQ==
+X-Gm-Message-State: AOJu0YwtVcM3xYZ1c4j2qsOs9oX/A13pREIZQHZ8Aeu553Bp4G4ir8gS
+ FuHoAnBHzesHxehcCoPGdafrKTxUW2iwftshWMM9ADO2TQ6AVjL2mE/y7hEu8bc=
+X-Google-Smtp-Source: AGHT+IERsraj+SrcVseP+cgiZcrfAHCBR4dNRpY3FpMeC3WLEio67G4chgDg13MNW0jagopDpKXJsw==
+X-Received: by 2002:a17:907:1b0d:b0:a77:c30c:341 with SMTP id
+ a640c23a62f3a-a83663fa418mr387411266b.0.1723722168285; 
+ Thu, 15 Aug 2024 04:42:48 -0700 (PDT)
 Received: from [127.0.1.1] (adsl-26.37.6.162.tellas.gr. [37.6.162.26])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a83838c6bf1sm89547966b.21.2024.08.15.04.42.42
+ a640c23a62f3a-a83838c6bf1sm89547966b.21.2024.08.15.04.42.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 04:42:44 -0700 (PDT)
+ Thu, 15 Aug 2024 04:42:48 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 15 Aug 2024 14:42:18 +0300
-Subject: [PATCH v7 1/7] Require meson version 1.5.0
+Date: Thu, 15 Aug 2024 14:42:19 +0300
+Subject: [PATCH v7 2/7] build-sys: Add rust feature option
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240815-rust-pl011-v7-1-975135e98831@linaro.org>
+Message-Id: <20240815-rust-pl011-v7-2-975135e98831@linaro.org>
 References: <20240815-rust-pl011-v7-0-975135e98831@linaro.org>
 In-Reply-To: <20240815-rust-pl011-v7-0-975135e98831@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,30 +83,30 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Gustavo Romero <gustavo.romero@linaro.org>, rowan.hart@intel.com, 
  Mads Ynddal <mads@ynddal.dk>, Markus Armbruster <armbru@redhat.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2847;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5382;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=gbp6ZWDM9aBE3sP/4abftjNYYPlmCRvIHyPSrr8nbBM=;
+ bh=BxaqJcEWLkToyju8S1kw437QUrcpEwLDC4lAb4m/ZVA=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm12ZW10MnhDa2VOc0NZVG83UnhXd05Ud0EzRXNlCkx1MGw0RStaTlpMai9uY1Nh
- d1dKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnIzcHJRQUt
- DUkIzS2Nkd2YzNEowTkttRC80N2h3RGJrUGkzcm9uV3U0dXEvaVJEdUQ4ZG9scjZIc25KT2tlOQ
- o3d3doNjlQakZxMFM0VUw5ZVhDNXZJdTZ4ZlFKVlhwcXlRbU01NjA5alFuSEFobmxBTUFyWFNXe
- WljelNQS3dWCjB1RjA5MTNHMXVCTTBPWWI2c0hqbnFCYXVWbE9QNkcyZlVoVi9BdjF4VnM1MVda
- VWw2U2U1N29PY3k1Sjh0S0cKVXczbFJxWmdWNHNaSWFtTEpERWx6bTd1TWpINWN3ZG5SZmRBTi9
- PTGtIc3pMNjA2ZkxkKysyd3pBRGxzRUgvdQpRclVDdEdSTjNFQUFXUjhFREZZRFowSW1xcGdxbD
- d2OXVrcjZjbGZNclFQSFdrbHNIKy96Y3BrSldJQXM0RWJpCmx1WlNLSVEyYUR1MUk0NGQ2S3N3Q
- 1llclAreDh0ZE1UTGdaVThqbzEwdmxoM3RzZ0ZaT0Q4Nm9MRDRFK3JTakoKVi96NklFcXlFc1Vq
- bXJuZGZtUjEzK0VoakcxRlMycU52UlAvVi9EZEFiVVFtSDkveUZYMEtjMEwzeDQ3R2c1cApNVE9
- GSVJtU0Ztb2h1elhMajJ1TlF3ZkRDdTdQbXcvYnRoVDBhQURGRlEvYXJ3TGRjdkxQM2t1WnE1T1
- UycWtDCk1oY1VydEZzMnYvRWxIZHNDdk45NGVURXpoRjZNK2tvSGk3TWo0WmhrbzZ3b3g4RE5oR
- GhZL0hjM0p6aWp0QU8KcVRSc2Q3aE82YlljcU1aUHFUMmNhRTdUMHBWN1RCeVhwcXF1QkZyN3kr
- NVUycnF5dEVDUUEraXQvaW96bGltRwozaVBtVGV4Ry8zb1B1a0RTcCtaT3RyR1pQWVNnTGRMVVU
- zTDFXTUp2aTlCdjVlUWN3WDczSzk1WU91MDc1OU54CkppRHI1dz09Cj1WdzU4Ci0tLS0tRU5EIF
+ 25RQWNzbVlnQm12ZW11ZlNNdEVGMVkrQjIraDk0K2UrbmpHSVFzCitUQk9QSWR4WTBkWWxJbzg1
+ NmFKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnIzcHJnQUt
+ DUkIzS2Nkd2YzNEowRVhaRC80NUdlWmJVT2VHS0RpMWtMSVhuSndPWVBKYjM0SHhVbVd3cVNxRA
+ pJRmVDU0dxbzdnQndRSWRPaEpBVVJLOGZONkU1VXl3NHAvQzdnTjliV3dkZXUrNnB2N0JjTlVXT
+ 2RVTWhhcERPCi93SGY3Mi9HckdXWUpNK2RMaGprbkRTM2tsZDZYSW04cVkvTHlyelF6dWNTd0h6
+ UWwraE5vODVuYmk3SVdkRmEKbllYRTdET3pSbU0yTm56K1E3QktobHYxOHRtR0sxUSs0TUlRRGJ
+ wdFBsYitPdXJIKzlpZExEU1cvbmZVUHprOQpTZ29DUGlEbk54c3BENi9vRGhVbCtua3J0Nnh5SF
+ BZMzk1Y2Z2NXRyOU8zbkdDYnQ5dXF0cnpHMnFxV1VPM0FvCnJCaVRuRWtxa21FVVVsOTNFU0lVK
+ 2w2VXY2M0Ftd1RoaWxXMVEvbnlCRkNOUUswNFpQLzFhdStyb2hjYnNheTIKUzhMTWZjcUxKRmpS
+ VlNVQ3R2MUhiRDJQbjk3dGdIeFdUaGI3dHZCNUxCTFV3bE1Ea2tCWkxjbTJWQVJ3VEoxUwo3MU4
+ vTGRQSS8vVWhmZHdYQjBVRjhCTWxEWTc3b2RYMHFZYVZxcW5rSFBJcVowbi8yaDYrbnZ4b3FCTn
+ pXM2k1CnFXZUNyUG9TaEhDZVpoTnFBMFZ5U29OR2UzMjlqN2JOeWR5WUttTTNEQjVnZ0VhS3R5O
+ WhjbnZZVkR4U1lTS1EKcklHL2VJVnBGdTRTc2pYSy83TmM3dkUxWGhHQmJtR05RZE11RU42VDlt
+ aDZtQU1mbWRjWjdIc01menhtYXR4VgozWlhTOW9MTDIrbThYMnJrc1o5ajM5OTlxWlNnbVJmcUk
+ yMkdkRndObjg5MUlKTlpCNlFwenVLSVpmdWJPc2RuCjJKbHFJQT09Cj1nMGhQCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -129,79 +129,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+Add rust feature in meson.build, configure, to prepare for adding Rust
+code in the followup commits.
 
-This is needed for Rust support.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- meson.build                                |   2 +-
- python/scripts/vendor.py                   |   4 ++--
- python/wheels/meson-1.2.3-py3-none-any.whl | Bin 964928 -> 0 bytes
- python/wheels/meson-1.5.0-py3-none-any.whl | Bin 0 -> 959846 bytes
- pythondeps.toml                            |   2 +-
- tests/lcitool/mappings.yml                 |   2 +-
- 6 files changed, 5 insertions(+), 5 deletions(-)
+ MAINTAINERS                   |  5 +++++
+ meson.build                   | 25 ++++++++++++++++++++++++-
+ Kconfig                       |  1 +
+ Kconfig.host                  |  3 +++
+ meson_options.txt             |  3 +++
+ rust/Kconfig                  |  0
+ scripts/meson-buildoptions.sh |  3 +++
+ 7 files changed, 39 insertions(+), 1 deletion(-)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3584d6a6c6..0bc8e515da 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4243,6 +4243,11 @@ F: docs/sphinx/
+ F: docs/_templates/
+ F: docs/devel/docs.rst
+ 
++Rust build system integration
++M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++S: Maintained
++F: rust/Kconfig
++
+ Miscellaneous
+ -------------
+ Performance Tools and Tests
 diff --git a/meson.build b/meson.build
-index 81ecd4bae7..7eb4b8a41c 100644
+index 7eb4b8a41c..67eb4eda64 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1,4 +1,4 @@
--project('qemu', ['c'], meson_version: '>=1.1.0',
-+project('qemu', ['c'], meson_version: '>=1.5.0',
-         default_options: ['warning_level=1', 'c_std=gnu11', 'cpp_std=gnu++11', 'b_colorout=auto',
-                           'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true'],
-         version: files('VERSION'))
-diff --git a/python/scripts/vendor.py b/python/scripts/vendor.py
-index 07aff97cca..0405e910b4 100755
---- a/python/scripts/vendor.py
-+++ b/python/scripts/vendor.py
-@@ -41,8 +41,8 @@ def main() -> int:
-     parser.parse_args()
+@@ -70,6 +70,22 @@ if host_os == 'darwin' and \
+   all_languages += ['objc']
+   objc = meson.get_compiler('objc')
+ endif
++if get_option('rust').enabled() and meson.version().version_compare('<1.0.0')
++  error('Rust support requires Meson version >=1.0.0')
++endif
++have_rust = false
++if not get_option('rust').disabled() and add_languages('rust', required: get_option('rust'), native: false)
++  rustc = meson.get_compiler('rust')
++  have_rust = true
++  if rustc.version().version_compare('<1.80.0')
++    if get_option('rust').enabled()
++      error('rustc version ' + rustc.version() + ' is unsupported: Please upgrade to at least 1.80.0')
++    else
++      warning('rustc version ' + rustc.version() + ' is unsupported: Disabling Rust compilation. Please upgrade to at least 1.80.0 to use Rust.')
++      have_rust = false
++    endif
++  endif
++endif
  
-     packages = {
--        "meson==1.2.3":
--        "4533a43c34548edd1f63a276a42690fce15bde9409bcf20c4b8fa3d7e4d7cac1",
-+        "meson==1.5.0":
-+        "52b34f4903b882df52ad0d533146d4b992c018ea77399f825579737672ae7b20",
-     }
+ dtrace = not_found
+ stap = not_found
+@@ -2131,6 +2147,7 @@ endif
  
-     vendor_dir = Path(__file__, "..", "..", "wheels").resolve()
-diff --git a/python/wheels/meson-1.2.3-py3-none-any.whl b/python/wheels/meson-1.2.3-py3-none-any.whl
-deleted file mode 100644
-index a8b84e5f11..0000000000
-Binary files a/python/wheels/meson-1.2.3-py3-none-any.whl and /dev/null differ
-diff --git a/python/wheels/meson-1.5.0-py3-none-any.whl b/python/wheels/meson-1.5.0-py3-none-any.whl
+ config_host_data = configuration_data()
+ 
++config_host_data.set('CONFIG_HAVE_RUST', have_rust)
+ audio_drivers_selected = []
+ if have_system
+   audio_drivers_available = {
+@@ -3076,7 +3093,8 @@ host_kconfig = \
+   (host_os == 'linux' ? ['CONFIG_LINUX=y'] : []) + \
+   (multiprocess_allowed ? ['CONFIG_MULTIPROCESS_ALLOWED=y'] : []) + \
+   (vfio_user_server_allowed ? ['CONFIG_VFIO_USER_SERVER_ALLOWED=y'] : []) + \
+-  (hv_balloon ? ['CONFIG_HV_BALLOON_POSSIBLE=y'] : [])
++  (hv_balloon ? ['CONFIG_HV_BALLOON_POSSIBLE=y'] : []) + \
++  (have_rust ? ['CONFIG_HAVE_RUST=y'] : [])
+ 
+ ignored = [ 'TARGET_XML_FILES', 'TARGET_ABI_DIR', 'TARGET_ARCH' ]
+ 
+@@ -4287,6 +4305,11 @@ if 'objc' in all_languages
+ else
+   summary_info += {'Objective-C compiler': false}
+ endif
++summary_info += {'Rust support':      have_rust}
++if have_rust
++  summary_info += {'rustc version':      rustc.version()}
++  summary_info += {'rustc':      ' '.join(rustc.cmd_array())}
++endif
+ option_cflags = (get_option('debug') ? ['-g'] : [])
+ if get_option('optimization') != 'plain'
+   option_cflags += ['-O' + get_option('optimization')]
+diff --git a/Kconfig b/Kconfig
+index fb6a24a2de..63ca7f46df 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -4,3 +4,4 @@ source accel/Kconfig
+ source target/Kconfig
+ source hw/Kconfig
+ source semihosting/Kconfig
++source rust/Kconfig
+diff --git a/Kconfig.host b/Kconfig.host
+index 17f405004b..4ade7899d6 100644
+--- a/Kconfig.host
++++ b/Kconfig.host
+@@ -52,3 +52,6 @@ config VFIO_USER_SERVER_ALLOWED
+ 
+ config HV_BALLOON_POSSIBLE
+     bool
++
++config HAVE_RUST
++    bool
+diff --git a/meson_options.txt b/meson_options.txt
+index 0269fa0f16..fa94a5ce97 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -371,3 +371,6 @@ option('hexagon_idef_parser', type : 'boolean', value : true,
+ 
+ option('x86_version', type : 'combo', choices : ['0', '1', '2', '3', '4'], value: '1',
+        description: 'tweak required x86_64 architecture version beyond compiler default')
++
++option('rust', type: 'feature', value: 'auto',
++       description: 'Rust support')
+diff --git a/rust/Kconfig b/rust/Kconfig
 new file mode 100644
-index 0000000000..c7edeb37ad
-Binary files /dev/null and b/python/wheels/meson-1.5.0-py3-none-any.whl differ
-diff --git a/pythondeps.toml b/pythondeps.toml
-index f6e590fdd8..a1c6ca9662 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -19,7 +19,7 @@
- 
- [meson]
- # The install key should match the version in python/wheels/
--meson = { accepted = ">=1.1.0", installed = "1.2.3", canary = "meson" }
-+meson = { accepted = ">=1.5.0", installed = "1.5.0", canary = "meson" }
- 
- [docs]
- # Please keep the installed versions in sync with docs/requirements.txt
-diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-index 03b974ad02..9721016e0d 100644
---- a/tests/lcitool/mappings.yml
-+++ b/tests/lcitool/mappings.yml
-@@ -63,7 +63,7 @@ mappings:
- pypi_mappings:
-   # Request more recent version
-   meson:
--    default: meson==0.63.2
-+    default: meson==1.5.0
- 
-   # Drop packages that need devel headers
-   python3-numpy:
+index 0000000000..e69de29bb2
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index c97079a38c..5e8a225a6b 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -170,6 +170,7 @@ meson_options_help() {
+   printf "%s\n" '  rbd             Ceph block device driver'
+   printf "%s\n" '  rdma            Enable RDMA-based migration'
+   printf "%s\n" '  replication     replication support'
++  printf "%s\n" '  rust            Rust support'
+   printf "%s\n" '  rutabaga-gfx    rutabaga_gfx support'
+   printf "%s\n" '  sdl             SDL user interface'
+   printf "%s\n" '  sdl-image       SDL Image support for icons'
+@@ -452,6 +453,8 @@ _meson_option_parse() {
+     --disable-replication) printf "%s" -Dreplication=disabled ;;
+     --enable-rng-none) printf "%s" -Drng_none=true ;;
+     --disable-rng-none) printf "%s" -Drng_none=false ;;
++    --enable-rust) printf "%s" -Drust=enabled ;;
++    --disable-rust) printf "%s" -Drust=disabled ;;
+     --enable-rutabaga-gfx) printf "%s" -Drutabaga_gfx=enabled ;;
+     --disable-rutabaga-gfx) printf "%s" -Drutabaga_gfx=disabled ;;
+     --enable-safe-stack) printf "%s" -Dsafe_stack=true ;;
 
 -- 
 2.44.0
