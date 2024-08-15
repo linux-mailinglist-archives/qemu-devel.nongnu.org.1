@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CCF95362F
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE17953631
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:50:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebmy-00036W-Js; Thu, 15 Aug 2024 10:49:20 -0400
+	id 1sebmz-00038s-P7; Thu, 15 Aug 2024 10:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebmv-00034k-Rg
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:17 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1sebmx-00035j-5V
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:19 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebmt-0000Bh-Us
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:17 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5b9d48d1456so1639897a12.1
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:15 -0700 (PDT)
+ id 1sebmv-0000C5-2x
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:18 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a7a8caef11fso132200066b.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723733354; x=1724338154; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723733355; x=1724338155; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yWTKlDd6LK1VooQusJJbhCpW5WJ0iCeY5ofYJWN9ldI=;
- b=wwRl0KHBVClQxe4erm2www7r3dC1S034jYSo8lvdK8ti0kUhnPKUUjUkmw0MmHhB91
- 7Aee7YrX7pMOjyDT1pz+5MHQQ1rmUay0qsuQlnE5TwtfwVzNTt7g36wa7Inc5oM5b7X5
- ZfZlvJwgemy2S37zT6bnko/fqJljDgLlj2ZGcp4kWk1PMmUUNz2SoRix8+Fiy7u4o/6b
- tG6HjGvDrNHOz9+8hSat3IQCNrMYMp+XxgzP8PT8bo0/Nh6MJH8x7o9+x5L2DW8pQXcP
- jZmj9BEaNkmv0+9SPMw8G5o/h4VvH4aDsR+ayvihN4/qixVapASMcuzL/vFNiHdLmq7x
- vsWA==
+ bh=F7MaSXOA/ZMqYEU3CV7ts37a7U6olYGDg0a62DJzx+I=;
+ b=aaADOblkc4sebtpewmj5xDjfARvgFj9KkBL3JoEqh3dUYpdGr3Hr+R/xCleszv6Jon
+ ZKl48AlozDyz4IUuOYY24amcTgQhEGe7gbmXNt333Kce4f83w1So5/zLytvjR2whXwpi
+ SUaaGkY/BwAl1lxJdD2ajJYRrQnf5VAUsNNcwm7I6AG4E+60g/YBrGG3vRE7DUF3FCyl
+ LbHflch3bA/zIifU9cG9MPV1ZShb8MI1S/Ww1E1yA9dPVQljR5BRmG+qAhGdhUdCVV+1
+ g6jeb/woiuOVe3G/smig49eNI9JVYF5HvT47/3b2lCTRpTynWiMnTtmwyXBgk/jRer6m
+ JVKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723733354; x=1724338154;
+ d=1e100.net; s=20230601; t=1723733355; x=1724338155;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yWTKlDd6LK1VooQusJJbhCpW5WJ0iCeY5ofYJWN9ldI=;
- b=aqRogeEvPVz5Mf3moR/v+40reFPwsjWq404CPlsSXHBeiMgevq6if5NhNhs7tSxx/F
- uLbBKSdDmFkD6pKmZaOH2QVasPKZXXPoHcqjsUDvYkAumgba231knvzCa4CSHvuLIr/A
- MJQye9z0wI/JmdHXCG1XGLT8KcJOdC+PmssqwHo7EdtX+yF34WgCPsRfojBY2CJiBo/e
- dTQ3xQ8uzGtQvut9xPROgYMAZbXt8sWAPZf+agLXz4gAXs1L38sU3ZK+AigKlcvxAOF6
- nw4gmR0xu9FCCcfUSpg1V6znAJ5pOKqqEgtZHOJjUeYUDtGfquJ7vwX8AWKBkDgF0flw
- mlVA==
-X-Gm-Message-State: AOJu0YwiHqq8JzLq49PRR9je0jkh85Z4Y4QVgySGz+UeORfhZ3xl3AwL
- +vwMkRrQ3+XnhZUe1bNiil1Gs9XNk5Su/eP8emPfilwH2OjCMaFhdj0gjLZQ1zI=
-X-Google-Smtp-Source: AGHT+IENyghTMykpQlzwhyebQBu97V2cNcAdQG8P+4fqGQiMKtZCLui91LF8lWF9Iasbg2HL7FHObg==
-X-Received: by 2002:a05:6402:280a:b0:5a1:4f76:1a25 with SMTP id
- 4fb4d7f45d1cf-5beb3c255fcmr2917353a12.17.1723733353544; 
- Thu, 15 Aug 2024 07:49:13 -0700 (PDT)
+ bh=F7MaSXOA/ZMqYEU3CV7ts37a7U6olYGDg0a62DJzx+I=;
+ b=N95y8xMB2cHqYveRQS03rQdPj9XeQhpxkKjSCOrAXF0mQBGUbceUNehK1qsgKZdVhR
+ qqpidcFCdtAQ1u/yr4aFJ9cDGrAzA89LXH3fr7FPS62bL0K8acTeZoow0ryamTEOpOXX
+ V00fxNzq3djnU9VYuHmsBE8gUEzblMmzwlXFw5s419VAqAFwmNRoiBTNWsNIsNHtw5rP
+ /Zk5wV/lHDwZPLgTPFwPKpmBx0QGCqw8bp92pBUOxgxfZJFBvbXyPVZir4pKk7iV8ALe
+ BLmfwK0YzWpsV1INXCuo7zFnE8mBKIE0jHRRsxqbPX0LZZsJ5h9fCIMUZ17C52VBLpN6
+ p2uQ==
+X-Gm-Message-State: AOJu0YyJG+VosXPWvK6fTQPXJuFaeOsDqDg3fPfUWvJ0mw6UgODOyeqt
+ Mc9CXUYBMvFoY7EExRLDNMagHUB9RH+2c+5XJnkcDE2+rjX23hX4GfnARzn+Plc=
+X-Google-Smtp-Source: AGHT+IFGiI0wj4jUT5H/YHq84MNolYeeugOqs5LW8Q6o4GefIeSVnW6TIoR73a0GYB/+Xh1oJrGsXA==
+X-Received: by 2002:a17:907:3daa:b0:a77:de2a:aef7 with SMTP id
+ a640c23a62f3a-a83670063a3mr523966166b.44.1723733354788; 
+ Thu, 15 Aug 2024 07:49:14 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5bebc081a19sm967489a12.86.2024.08.15.07.49.12
+ a640c23a62f3a-a838393564csm112001666b.128.2024.08.15.07.49.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 07:49:12 -0700 (PDT)
+ Thu, 15 Aug 2024 07:49:13 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C85AB5F8ED;
+ by draig.lan (Postfix) with ESMTP id DFA4D5F904;
  Thu, 15 Aug 2024 15:49:11 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 01/21] tests/avocado: Re-enable gdbsim-r5f562n8 testing U-Boot
-Date: Thu, 15 Aug 2024 15:48:51 +0100
-Message-Id: <20240815144911.1931487-2-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PULL 02/21] Makefile: trigger re-configure on updated pythondeps
+Date: Thu, 15 Aug 2024 15:48:52 +0100
+Message-Id: <20240815144911.1931487-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240815144911.1931487-1-alex.bennee@linaro.org>
 References: <20240815144911.1931487-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,34 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+If we add additional deps for meson we need to ensure we trigger a
+reconfigure to make sure everything is set up.
 
-We disabled all RX tests on commit 9b45cc9931 ("docs/devel:
-rationalise unstable gitlab tests under FLAKY_TESTS") for
-being flaky. However I don't recall the U-Boot test to fail
-(the problematic line checking the 'version' string is already
-commented out), and I'm running this test reliably, so re-enable
-it.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Message-Id: <20240801172332.65701-1-philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240813202329.1237572-2-alex.bennee@linaro.org>
+Message-Id: <20240813202329.1237572-3-alex.bennee@linaro.org>
 
-diff --git a/tests/avocado/machine_rx_gdbsim.py b/tests/avocado/machine_rx_gdbsim.py
-index 412a7a5089..a83873b738 100644
---- a/tests/avocado/machine_rx_gdbsim.py
-+++ b/tests/avocado/machine_rx_gdbsim.py
-@@ -22,8 +22,6 @@ class RxGdbSimMachine(QemuSystemTest):
-     timeout = 30
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
+diff --git a/Makefile b/Makefile
+index 02a257584b..917c9a34d1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -78,7 +78,8 @@ x := $(shell rm -rf meson-private meson-info meson-logs)
+ endif
  
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--
-     def test_uboot(self):
-         """
-         U-Boot and checks that the console is operational.
+ # 1. ensure config-host.mak is up-to-date
+-config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh $(SRC_PATH)/VERSION
++config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh \
++		$(SRC_PATH)/pythondeps.toml $(SRC_PATH)/VERSION
+ 	@echo config-host.mak is out-of-date, running configure
+ 	@if test -f meson-private/coredata.dat; then \
+ 	  ./config.status --skip-meson; \
 -- 
 2.39.2
 
