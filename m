@@ -2,88 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FD9953645
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD87C95364D
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:54:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebnI-0004E2-Ga; Thu, 15 Aug 2024 10:49:40 -0400
+	id 1sebpo-0005Os-Kn; Thu, 15 Aug 2024 10:52:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn5-0003aR-8F
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:27 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sebpm-0005Ib-O4
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:52:14 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn2-0000Dr-Cm
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:26 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a7aac70e30dso120862566b.1
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sebpi-0000eS-IT
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:52:14 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2f01e9f53e3so15952311fa.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:52:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723733363; x=1724338163; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fGNwWa3S5TX7tw+jVxHwopux+SCGaD9vnHCk/doezEQ=;
- b=TEradAnQNc2vat9wviJ0YlSOR+iYRNK5Md2UgbZ2CGu4ikk0fsM5iS1IwZuOUMpVDs
- s1wCAuL+1IWS0JbCnS99fJ4BzqSBEAdCtX9blWUpm5fxL5w6IGxv1dNijYTxGkZYEeYi
- bReg9k+Yvlcfpe5RLmrJdJ+C4xxFmb7+BTD+8YAlGbKzUSRzhKKY4xSq2bM3GO1YRGu8
- sftTUXw39akPMU8ZP17NF/Ie+18Cofx6jri4jbwFT50hir7i7pgER5L7dnThl6Psif7j
- JYaPEdlKjC0GWITM1b6RZU1qLj2M7aweKsA/k874a5DXnzd+hlv8A6NezVR7c1Q2+CSC
- Idsw==
+ d=linaro.org; s=google; t=1723733527; x=1724338327; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Form3l+Y9Es8kJTAeBAesEFa2D4OSAQ1T21kXvuuHII=;
+ b=gBI/gUuBlqBTk4457rLBx3gVA8loU+sQsQg5+P40k3P+Whm7USS63AGavVUxl5ufd5
+ wHBJbP7jhpAXsgJjtkEPhGMT6hCcipQCkYdBr7g3bS6mzoBBQ3nBwq6yINhhdu52kjCs
+ kCQTmEAZ7n/YXyQf+h0v6/Dq8brse1yMPc9lVBBqskzYgbhlRD0JcGQLb2ueI10yX6K9
+ WVq+xYbbB2vLzaL27JVbhzz1ugV0QCggH76q/FAJypcUoBC9XdaFclM8oymyMDz4LM1O
+ +UWPZWk+aJSEg7l0Zg77Nm6b494VXNZhKl7X6e02PMtbPRjFjzAynsRMQBYGhsRtXNmR
+ mxIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723733363; x=1724338163;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fGNwWa3S5TX7tw+jVxHwopux+SCGaD9vnHCk/doezEQ=;
- b=tuswgPRJrqRA6zICxyTD8YE5rU3fVh7MX2VwVDutwJBopvm54pbNHI7MkvYTb4d9v/
- +BqQNZHHYeNs6ig1skV75hC1EkicS1bGKWkeNDhfhD7BwAzpZC1TFJm8cqvcrjGsBILz
- AfuHGDkkei1/zLCA1mqHNxUtmNJcEbeB3OpuGxrPhRI2qCpL6mmdTYK0QfNkRpyUmqO8
- G1uzIW9lpfOvnGYxESwBI6XURhLxqy4h66kMKwzQZDhl2U1YlphJGRagKwQQqMP5Lmcg
- a9wbWZ+w+RVL4DQPxMxrdrsd3jF9AnxbrQ8C0Ho6FQ8VANiO7CEH3x3F/vaBR7737DYz
- FU9g==
-X-Gm-Message-State: AOJu0YzuixN3NxeQppnajZ5zvy5vYdmhsryW6T4L4CvqltqpvUxIZPP6
- J8tt+SMM8guz+keOSZDpOJGcAxJUmvUypaT8Xue+AkuozQidBZJvk4mBPVTtCOzlUrWu1ubSU8g
- 6
-X-Google-Smtp-Source: AGHT+IFG+JYdR8k28AF8t9wmxtN9aFr6ywujt3U9J0/xHVK7QUhooazY37v4RAVC7Hfg0OThu1yHbQ==
-X-Received: by 2002:a17:907:d58f:b0:a77:d7f1:42eb with SMTP id
- a640c23a62f3a-a8366d396ebmr495271366b.23.1723733362446; 
- Thu, 15 Aug 2024 07:49:22 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a83838cefe0sm112307466b.47.2024.08.15.07.49.18
+ d=1e100.net; s=20230601; t=1723733527; x=1724338327;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Form3l+Y9Es8kJTAeBAesEFa2D4OSAQ1T21kXvuuHII=;
+ b=bMnwXblOplMDSGo053XIlxbrSBiUw0P5xefb8q33DdwYwowsBZPAJE4VnU+8S3ijTR
+ Y7XnWcPEJbm7gBziH75CjAvKshIN7Ur/bSNUGa4sh0u5UE0VC1FiBgA4H3+Of1vKFYzq
+ ckWqSCxmFdXPkryN1hEO9YVCwRZfaiNG4kLc3Bk70ZLAiT1Lv5nHuK7LXD4aiMN6JjPI
+ mI/UL7wgkyUFM2bh50dzuZK2BhyoJjHTcNKvdFgltqjdCViXSXZdzS2WI8eeb0hLOOoG
+ D+mBV5Yn41+KMrrnOuE/hN1L4HL86HNoBikVxKvEKjMzyHj7quo+Yj+TS9A1y/gyYZcM
+ Sdig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV80SV2zyH6BzES2clSL6H6Ozzmwa/jXqm88tY/z5tc4XDs9q7nbvPqc8vh3Rp47hqB945gnLR8OkyHn5+ZKmRwFpRHA8o=
+X-Gm-Message-State: AOJu0Yy4Wy7ag+flhkgU7qq8TzBuzJ2R+tR05HYmdljkuEnikTWr9F7Z
+ rIkLz2jFxv2VUxdZG4dZGB0jjbPJjXIMPnwDs79S1PdDNGhdR6ugCNyoQjoBhpU=
+X-Google-Smtp-Source: AGHT+IEPXQ+DX/0lApDeGM66C4oRZWsZ5dhhyURys8hul+nlJXTwp8dBKZ7MVald++CxDLA3pR5SzQ==
+X-Received: by 2002:a2e:bd86:0:b0:2ef:2c3c:512a with SMTP id
+ 38308e7fff4ca-2f3aa300b4cmr65909951fa.42.1723733527225; 
+ Thu, 15 Aug 2024 07:52:07 -0700 (PDT)
+Received: from meli-email.org (adsl-26.37.6.162.tellas.gr. [37.6.162.26])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a83838c73e6sm114588666b.11.2024.08.15.07.52.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 07:49:20 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B35ED5F8ED;
- Thu, 15 Aug 2024 15:49:13 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thu, 15 Aug 2024 07:52:06 -0700 (PDT)
+Date: Thu, 15 Aug 2024 17:50:35 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>,
+ ARM TCG CPUs <qemu-arm@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Junjie Mao <junjie.mao@intel.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 21/21] plugins: fix race condition with scoreboards
-Date: Thu, 15 Aug 2024 15:49:11 +0100
-Message-Id: <20240815144911.1931487-22-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240815144911.1931487-1-alex.bennee@linaro.org>
-References: <20240815144911.1931487-1-alex.bennee@linaro.org>
+ Gustavo Romero <gustavo.romero@linaro.org>, rowan.hart@intel.com,
+ Mads Ynddal <mads@ynddal.dk>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v7 6/7] rust: add crate to expose bindings and interfaces
+User-Agent: meli 0.8.7
+References: <20240815-rust-pl011-v7-0-975135e98831@linaro.org>
+ <20240815-rust-pl011-v7-6-975135e98831@linaro.org>
+ <9f6c96fd-bb0c-4014-bba1-70986f4bb384@linaro.org>
+In-Reply-To: <9f6c96fd-bb0c-4014-bba1-70986f4bb384@linaro.org>
+Message-ID: <i9lat.di1u9m6k136b@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,97 +110,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+On Thu, 15 Aug 2024 17:01, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>Hi Manos,
+>
+>On 15/8/24 13:42, Manos Pitsidianakis wrote:
+>> Add rust/qemu-api, which exposes rust-bindgen generated FFI bindings and
+>> provides some declaration macros for symbols visible to the rest of
+>> QEMU.
+>> 
+>> Co-authored-by: Junjie Mao <junjie.mao@intel.com>
+>> Co-authored-by: Paolo Bonzini <pbonzini@redhat.com>
+>> Signed-off-by: Junjie Mao <junjie.mao@intel.com>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> ---
+>>   MAINTAINERS                       |   6 ++
+>>   rust/meson.build                  |   9 +++
+>>   rust/qemu-api/.gitignore          |   2 +
+>>   rust/qemu-api/Cargo.lock          |   7 +++
+>>   rust/qemu-api/Cargo.toml          |  23 +++++++
+>>   rust/qemu-api/README.md           |  17 +++++
+>>   rust/qemu-api/build.rs            |  13 ++++
+>>   rust/qemu-api/meson.build         |  17 +++++
+>>   rust/qemu-api/rustfmt.toml        |   1 +
+>>   rust/qemu-api/src/bindings.rs     |   7 +++
+>>   rust/qemu-api/src/definitions.rs  | 108 ++++++++++++++++++++++++++++++++
+>>   rust/qemu-api/src/device_class.rs | 128 ++++++++++++++++++++++++++++++++++++++
+>>   rust/qemu-api/src/lib.rs          | 100 +++++++++++++++++++++++++++++
+>>   rust/qemu-api/src/tests.rs        |  48 ++++++++++++++
+>>   rust/rustfmt.toml                 |   7 +++
+>>   15 files changed, 493 insertions(+)
+>> 
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 5464cb2b03..56a88048d2 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -3348,6 +3348,12 @@ F: hw/core/register.c
+>>   F: include/hw/register.h
+>>   F: include/hw/registerfields.h
+>>   
+>> +Rust
+>> +M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> +S: Maintained
+>> +F: rust/qemu-api
+>> +F: rust/rustfmt.toml
+>
+>Few lines in docs/devel/rust.rst would be welcomed,
 
-A deadlock can be created if a new vcpu (a) triggers a scoreboard
-reallocation, and another vcpu (b) wants to create a new scoreboard at
-the same time.
+In another patch. There's so much to do!
 
-In this case, (a) holds the plugin lock, and starts an exclusive
-section, waiting for (b). But at the same time, (b) is waiting for
-plugin lock.
+>
+>> diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+>> new file mode 100644
+>> index 0000000000..51260cbe42
+>> --- /dev/null
+>> +++ b/rust/qemu-api/Cargo.toml
+>> @@ -0,0 +1,23 @@
+>> +[package]
+>> +name = "qemu_api"
+>> +version = "0.1.0"
+>> +edition = "2021"
+>
+>> +license = "GPL-2.0 OR GPL-3.0-or-later"
+>
+>in particular explaining the license choice.
+>
+>Should all rust code use it?
 
-The solution is to drop the lock before entering the exclusive section.
-
-This bug can be easily reproduced by creating a callback for any tb
-exec, that allocates a new scoreboard. In this case, as soon as we reach
-more than 16 vcpus, the deadlock occurs.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2344
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240812220748.95167-2-pierrick.bouvier@linaro.org>
-[AJB: tweak var position to meet coding style]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240813202329.1237572-22-alex.bennee@linaro.org>
-
-diff --git a/plugins/core.c b/plugins/core.c
-index 12c67b4b4e..2897453cac 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -214,30 +214,49 @@ CPUPluginState *qemu_plugin_create_vcpu_state(void)
- 
- static void plugin_grow_scoreboards__locked(CPUState *cpu)
- {
--    if (cpu->cpu_index < plugin.scoreboard_alloc_size) {
-+    size_t scoreboard_size = plugin.scoreboard_alloc_size;
-+    bool need_realloc = false;
-+
-+    if (cpu->cpu_index < scoreboard_size) {
-         return;
-     }
- 
--    bool need_realloc = FALSE;
--    while (cpu->cpu_index >= plugin.scoreboard_alloc_size) {
--        plugin.scoreboard_alloc_size *= 2;
--        need_realloc = TRUE;
-+    while (cpu->cpu_index >= scoreboard_size) {
-+        scoreboard_size *= 2;
-+        need_realloc = true;
-     }
- 
-+    if (!need_realloc) {
-+        return;
-+    }
- 
--    if (!need_realloc || QLIST_EMPTY(&plugin.scoreboards)) {
--        /* nothing to do, we just updated sizes for future scoreboards */
-+    if (QLIST_EMPTY(&plugin.scoreboards)) {
-+        /* just update size for future scoreboards */
-+        plugin.scoreboard_alloc_size = scoreboard_size;
-         return;
-     }
- 
-+    /*
-+     * A scoreboard creation/deletion might be in progress. If a new vcpu is
-+     * initialized at the same time, we are safe, as the new
-+     * plugin.scoreboard_alloc_size was not yet written.
-+     */
-+    qemu_rec_mutex_unlock(&plugin.lock);
-+
-     /* cpus must be stopped, as tb might still use an existing scoreboard. */
-     start_exclusive();
--    struct qemu_plugin_scoreboard *score;
--    QLIST_FOREACH(score, &plugin.scoreboards, entry) {
--        g_array_set_size(score->data, plugin.scoreboard_alloc_size);
-+    /* re-acquire lock */
-+    qemu_rec_mutex_lock(&plugin.lock);
-+    /* in case another vcpu is created between unlock and exclusive section. */
-+    if (scoreboard_size > plugin.scoreboard_alloc_size) {
-+        struct qemu_plugin_scoreboard *score;
-+        QLIST_FOREACH(score, &plugin.scoreboards, entry) {
-+            g_array_set_size(score->data, scoreboard_size);
-+        }
-+        plugin.scoreboard_alloc_size = scoreboard_size;
-+        /* force all tb to be flushed, as scoreboard pointers were changed. */
-+        tb_flush(cpu);
-     }
--    /* force all tb to be flushed, as scoreboard pointers were changed. */
--    tb_flush(cpu);
-     end_exclusive();
- }
- 
--- 
-2.39.2
-
+It's an OR, so all rust code can use GPL-2.0 like the rest of QEMU.
 
