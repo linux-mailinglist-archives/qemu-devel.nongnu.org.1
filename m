@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E612953649
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 895D7953637
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:51:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebnK-0004Np-Rw; Thu, 15 Aug 2024 10:49:42 -0400
+	id 1sebnL-0004Le-A7; Thu, 15 Aug 2024 10:49:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn4-0003Vt-3j
+ id 1sebn4-0003Wj-B2
  for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:27 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn2-0000Dm-2G
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:25 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5bebd3b7c22so881407a12.0
+ id 1sebn1-0000Di-T4
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:26 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2f01e9f53e3so15908381fa.1
  for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1723733362; x=1724338162; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q14NFcjm+pOoVDQJIzMT7lWclsNqJbgHZCvrVMkJVPA=;
- b=X3hMY+d36VaFj6tWAMdcMu+SwliPV2N/R3jif1BlRK8EwqzBjHCp2RWqpC0IqgBUo1
- LyWtrPk4J18AH1D7giV2fDG9+qzNa1JV5hxvbQaDUwOe219HMKfdDlGfR6XyVi8ETWl1
- 37S2KqbuuWelohA+DI444nB9QOCqJEKzROZLfPhGXTRD4/kByCv6t5lE0kOsHJDjXdY3
- AQRuDKcjqD2tVSuh2UYzFxYfpsa03UXjElQEYm72bhTbM6Mj/RPfbDQ7v2ZQ/x1c0DeS
- 8Yl3PorN6bHGcsFSRmPz4qaxiCiiYFSv8fTWnPWIT56h+v+IyREv1/CTv3Mn+XvrBrDy
- l+Xg==
+ bh=aOj2cgvMvGGvvAwDFJY/i7+D7jI4xMnmqcjq9GVb3BQ=;
+ b=hoIQySz3fOp8NAtyT23B9ad5O/YAHSJk3fA8ewT0NspYq7zvPaFVu6DClT6zjVcHLK
+ 37ayg7N9z8nr1+GDzOyJlUM/DbzqaZm8AkDT0STf6Fo9qf3uBb0BeAio6o2DBR9+rtRt
+ icTid+lDZ2xHU9J7BXaHN+xnw4oB60CwLP2HEk4ckKdcBn/96Bc8Q3Or+DigU95RReHc
+ /NCc9qX2xds1CVn0dbuM/f0S8eTlV1w2+piQZb4r+z16wpoIiTDzY9wSnWNcsIWBRb2B
+ k3zTuZT5aC191x7H4inSBw5IQsyT+owaN4uE7QgH7lkzItfo/rKvF9VVQbG8qobN2Sy7
+ CoDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1723733362; x=1724338162;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q14NFcjm+pOoVDQJIzMT7lWclsNqJbgHZCvrVMkJVPA=;
- b=vlxSTxTgtN0cmOe5TYKcSX4x2MjJM8xxJ8GDluvdGwpC+gMLFPPoHT2Uyy6LfmX44T
- F9j3W8j+i5/OUdenhwd4+4GjC+U5kiwU7Ywm/Snzvdqowj9FzGqjQp8ahQ5MYwDhUZoh
- cHJjuigAmIP5jK0iBKLJOZcGs2PEEKsouUhRdhYvmMWLuIMf4BY4r4kQ+KlPb4RrQNPT
- AGj6OvWSnWnb4KNESpifF1Z7gKuaYQ+F6nf9vX64Je1JP3CYb6cGetiSce1RFP6J03TR
- g03paBn6JgGEx+1GpCUvueMi+YhR+un39BPvJcWb7vgplLr4oR/ZoAvsBTcnAIQt5hTb
- 1iUw==
-X-Gm-Message-State: AOJu0Yzkbki2jKTyHNopZXySJu55j0zmSjnv5DUsml8cZHxzZNXjYdN4
- I8QEAa5eJDy6klzNUT4hKB/qbgHEPDJ3DrpnFFgWQCki73ynv/KrXCEQTF/9+Is=
-X-Google-Smtp-Source: AGHT+IGSLzj0jLlcFFdgKGNL1moTkKTD+RSr8ZHkEKmu5ihEzUTw2aIQvSJ8nj1PR9CEijArGRGvnQ==
-X-Received: by 2002:a17:907:e2d7:b0:a7a:acae:3419 with SMTP id
- a640c23a62f3a-a837ce46bc2mr294083166b.28.1723733362137; 
- Thu, 15 Aug 2024 07:49:22 -0700 (PDT)
+ bh=aOj2cgvMvGGvvAwDFJY/i7+D7jI4xMnmqcjq9GVb3BQ=;
+ b=OMDOLOIgmoa9/hyTzNV/w0zPDwFltXu0AjxzWldY7OAgKNrdEiXZrZjFRI2FWDT4/x
+ ki0+xFIU18ZGsVlbYC8Rv06SrRY6ydh4wvzQUopldvW1KvNB9/KXWC3pSeqLl0+CVGg5
+ as9aNcBdjPebn/p14xnbNKKvjD5BEC71l6HCNqTZCX+s2lZMfF++IdBCp3OHF7xQ2ysS
+ xDgpLdqkljOSGxpWEzkMGTIjZ5lucYJ4VHAgvSkQhc+DyTZHSBJ/vhlVqwJfAynQ165f
+ fj5gLXgEjIttJhb8XLbgDIAMqCwEqb6OQ4SfEej8g+ry15xJraw+4edSE6HmrXZm554c
+ X6fw==
+X-Gm-Message-State: AOJu0Yw1DdasYgKN8MbEnCuo7TvKBBSws/fn7C5Y5YjBfHalT2zrmSum
+ FgNi7YZW1JN2eYl0j3BWo+EZYT4HCD8K1mReM9PirBxOn2pU/aP3KUH4pkDyIzw=
+X-Google-Smtp-Source: AGHT+IHRt2mu9zgT2DnLwWUlbpdFU+rI3JPPqFqEql1LRzDDs3Fndaq7ZpPqLVBo2SV7ZaL9JYiLxg==
+X-Received: by 2002:a2e:99d1:0:b0:2f2:9df8:e64e with SMTP id
+ 38308e7fff4ca-2f3aa1df09dmr42915991fa.11.1723733361248; 
+ Thu, 15 Aug 2024 07:49:21 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a83838cf9c3sm112156966b.70.2024.08.15.07.49.15
+ a640c23a62f3a-a8383946441sm113194966b.148.2024.08.15.07.49.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 15 Aug 2024 07:49:20 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CFDD85FD40;
+ by draig.lan (Postfix) with ESMTP id EA87C5FD74;
  Thu, 15 Aug 2024 15:49:12 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-Subject: [PULL 12/21] replay: allow runstate shutdown->running when replaying
- trace
-Date: Thu, 15 Aug 2024 15:49:02 +0100
-Message-Id: <20240815144911.1931487-13-alex.bennee@linaro.org>
+Subject: [PULL 13/21] Revert "replay: stop us hanging in rr_wait_io_event"
+Date: Thu, 15 Aug 2024 15:49:03 +0100
+Message-Id: <20240815144911.1931487-14-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240815144911.1931487-1-alex.bennee@linaro.org>
 References: <20240815144911.1931487-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,104 +100,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-When replaying a trace, it is possible to go from shutdown to running
-with a reverse-debugging step. This can be useful if the problem being
-debugged triggers a reset or shutdown.
+This reverts commit 1f881ea4a444ef36a8b6907b0b82be4b3af253a2.
 
-This can be tested by making a recording of a machine that shuts down,
-then using -action shutdown=pause when replaying it. Continuing to the
-end of the trace then reverse-stepping in gdb crashes due to invalid
-runstate transition.
+That commit causes reverse_debugging.py test failures, and does
+not seem to solve the root cause of the problem x86-64 still
+hangs in record/replay tests.
 
-Just permitting the transition seems to be all that's necessary for
-reverse-debugging to work well in such a state.
+The problem with short-cutting the iowait that was taken during
+record phase is that related events will not get consumed at the
+same points (e.g., reading the clock).
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+A hang with zero icount always seems to be a symptom of an earlier
+problem that has caused the recording to become out of synch with
+the execution and consumption of events by replay.
+
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20240813050638.446172-5-npiggin@gmail.com>
+Message-Id: <20240813050638.446172-6-npiggin@gmail.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240813202329.1237572-13-alex.bennee@linaro.org>
+Message-Id: <20240813202329.1237572-14-alex.bennee@linaro.org>
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index e210a37abf..11c7ff3ffb 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -9,6 +9,7 @@ void runstate_set(RunState new_state);
- RunState runstate_get(void);
- bool runstate_is_running(void);
- bool runstate_needs_reset(void);
-+void runstate_replay_enable(void);
+diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+index f229b2109c..8102fa54f0 100644
+--- a/include/sysemu/replay.h
++++ b/include/sysemu/replay.h
+@@ -73,11 +73,6 @@ int replay_get_instructions(void);
+ /*! Updates instructions counter in replay mode. */
+ void replay_account_executed_instructions(void);
  
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
+-/**
+- * replay_can_wait: check if we should pause for wait-io
+- */
+-bool replay_can_wait(void);
+-
+ /* Processing clocks and other time sources */
  
+ /*! Save the specified clock */
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 48c38714bd..c59c77da4b 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -109,7 +109,7 @@ static void rr_wait_io_event(void)
+ {
+     CPUState *cpu;
+ 
+-    while (all_cpu_threads_idle() && replay_can_wait()) {
++    while (all_cpu_threads_idle()) {
+         rr_stop_kick_timer();
+         qemu_cond_wait_bql(first_cpu->halt_cond);
+     }
 diff --git a/replay/replay.c b/replay/replay.c
-index a2c576c16e..b8564a4813 100644
+index b8564a4813..895fa6b67a 100644
 --- a/replay/replay.c
 +++ b/replay/replay.c
-@@ -385,6 +385,8 @@ static void replay_enable(const char *fname, int mode)
-         replay_fetch_data_kind();
-     }
- 
-+    runstate_replay_enable();
-+
-     replay_init_events();
+@@ -451,27 +451,6 @@ void replay_start(void)
+     replay_enable_events();
  }
  
-diff --git a/system/runstate.c b/system/runstate.c
-index c833316f6d..a0e2a5fd22 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -181,6 +181,12 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE__MAX, RUN_STATE__MAX },
- };
- 
-+static const RunStateTransition replay_play_runstate_transitions_def[] = {
-+    { RUN_STATE_SHUTDOWN, RUN_STATE_RUNNING},
-+
-+    { RUN_STATE__MAX, RUN_STATE__MAX },
-+};
-+
- static bool runstate_valid_transitions[RUN_STATE__MAX][RUN_STATE__MAX];
- 
- bool runstate_check(RunState state)
-@@ -188,14 +194,33 @@ bool runstate_check(RunState state)
-     return current_run_state == state;
- }
- 
--static void runstate_init(void)
-+static void transitions_set_valid(const RunStateTransition *rst)
+-/*
+- * For none/record the answer is yes.
+- */
+-bool replay_can_wait(void)
+-{
+-    if (replay_mode == REPLAY_MODE_PLAY) {
+-        /*
+-         * For playback we shouldn't ever be at a point we wait. If
+-         * the instruction count has reached zero and we have an
+-         * unconsumed event we should go around again and consume it.
+-         */
+-        if (replay_state.instruction_count == 0 && replay_state.has_unread_data) {
+-            return false;
+-        } else {
+-            replay_sync_error("Playback shouldn't have to iowait");
+-        }
+-    }
+-    return true;
+-}
+-
+-
+ void replay_finish(void)
  {
-     const RunStateTransition *p;
- 
--    memset(&runstate_valid_transitions, 0, sizeof(runstate_valid_transitions));
--    for (p = &runstate_transitions_def[0]; p->from != RUN_STATE__MAX; p++) {
-+    for (p = rst; p->from != RUN_STATE__MAX; p++) {
-         runstate_valid_transitions[p->from][p->to] = true;
-     }
-+}
-+
-+void runstate_replay_enable(void)
-+{
-+    assert(replay_mode != REPLAY_MODE_NONE);
-+
-+    if (replay_mode == REPLAY_MODE_PLAY) {
-+        /*
-+         * When reverse-debugging, it is possible to move state from
-+         * shutdown to running.
-+         */
-+        transitions_set_valid(&replay_play_runstate_transitions_def[0]);
-+    }
-+}
-+
-+static void runstate_init(void)
-+{
-+    memset(&runstate_valid_transitions, 0, sizeof(runstate_valid_transitions));
-+
-+    transitions_set_valid(&runstate_transitions_def[0]);
- 
-     qemu_mutex_init(&vmstop_lock);
- }
+     if (replay_mode == REPLAY_MODE_NONE) {
 -- 
 2.39.2
 
