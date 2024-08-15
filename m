@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237E8953642
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C33595365C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:56:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebnH-00045H-Ep; Thu, 15 Aug 2024 10:49:39 -0400
+	id 1sebtz-0007wV-S7; Thu, 15 Aug 2024 10:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn6-0003ec-9Y
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:29 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1sebts-0007an-49
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:56:29 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebn4-0000EM-Di
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:28 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a7a9cf7d3f3so135897666b.1
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:26 -0700 (PDT)
+ id 1sebto-00014T-53
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:56:27 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5bebd3b7c22so890888a12.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:56:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723733365; x=1724338165; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723733780; x=1724338580; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UBR0r40jCRTspwNEStddr6vUXgECDiH3mfiz9pfztnM=;
- b=jB40umleR5f85DzfTxAFI25FwzUWKKumtNscJGHmOzBKWvg3NGwOu2ThoVAZ+K6YuN
- xmiarQZreEKyIrhcpKCefet7ImLkv2gS8HMXLHFUOnnoc/HGRU7Zpc9hmYYQsI8M0saK
- 8tr/zdo+43yRbgqyxTb8XlPIXAQswEsuWedZBGrancwRhBj6rUT8dIjMCnGwxEBO/RiY
- ye/VuG4w2OGoV9pRFaZjJQh2e7OYGXUx/6IUdY7VyE5TM5foQfYvfVSJjDg+wvQR8Yze
- PxmidGNdgOBH0OhqgHcoaNPlBeniPz0dw/HhLU5yHTc24aduZOCnGvJj8tW3sxbKa/eX
- cJlw==
+ bh=7vFtKZMCqZ//aDW9JM8+1eoo4MiLhC2zYG7YF5q15rM=;
+ b=phvu/T9SnomwTs47tYDaem6MvlkKJ6Z6ukZ1X/bHeA4aYLlUESLJ+ne9kUlJPQ+L0G
+ v2K37YQkgP+jg7AZAe85LcXNIrj6bhDkSMz4cSxnIDvN7TsYjk3Xse15d7fB/u/jhdKO
+ wyHzsBFimU9qbaTeQX5SgYnw1Qu/nOp7mjxLEMQcplTi3uisV5ymS736VYdHkmXXZcwc
+ I6+bokGiCie8MOnLudxiOANjTCPrc+ZoZZBfV3zZVC24CpytDNQWrasTtkayluHaJHKQ
+ 6vRgabSZcx0UXhSAuZC8+QI177bIcKPIKkBvifwv/5QPXFF1RRtx41EuZ4x2ks/ZMPN/
+ XTUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723733365; x=1724338165;
+ d=1e100.net; s=20230601; t=1723733780; x=1724338580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UBR0r40jCRTspwNEStddr6vUXgECDiH3mfiz9pfztnM=;
- b=a/l1aRuYCWnvetPUkENEfwy9NuC98ivzaDdZR5JjGopZqo/MLw56FnEuLZVatp1nMr
- 8HsijR0W4jAJD5eaQSEMjyQ1Zmoi4MJCRROoKdiTFZAwSqD+dvMF7Aapu0ynJMl/VCgK
- +l2jXAUFuxMrNosbEr9ywjaucWckwgeCS6wxHG+0aZpuTEgzwP5waNqUkgTTgXC9Gjvi
- 1bEXYhhdzbwwa+b/k0mc3kMA2xMB3bxUC5+74o0uUrp4d3zzN5/a0vKqmD5x8SxfUEE/
- 8swIca1ILONpQCXdufL+P83B+yUWvS5gccddU/hcCGGGHQ3DkaTxNThHGJ6E1WPzj32L
- xEgw==
-X-Gm-Message-State: AOJu0YzRmCYUhMTwN+uqTZTinP9VLB3+dJKYoHDA5UjGUR7WIsoBOAJC
- gG9ta5/scPgd5ODjwsBUsREcnXkQXbVVIxU6SP1FQE27Ug3bvdzuxTCiwb72OgQ=
-X-Google-Smtp-Source: AGHT+IGzCWa4rpICawVcDkjOLELPmUCXjQufyc710s0ueQV7SxhwHssgVB3t737Jjd4JFVVIstVo8Q==
-X-Received: by 2002:a17:907:f19e:b0:a7a:9d1e:3b25 with SMTP id
- a640c23a62f3a-a8366d758abmr414830966b.30.1723733364459; 
- Thu, 15 Aug 2024 07:49:24 -0700 (PDT)
+ bh=7vFtKZMCqZ//aDW9JM8+1eoo4MiLhC2zYG7YF5q15rM=;
+ b=S77UbVFtNUwimFxHVk0PVZ3oBPaf0Kkh6PCWjZ9p9qDGxmLQDq3HaeW62hk9BDGE2C
+ XlTy/Hv7wj8ykUUN7i671a6xt7tp1R6wDLoNbn6OW/W4U29ic9FfpOnk4UWm2CznTb5K
+ EHLjAFft6YjuPqb0CpVE1XmYY5uX/hffwPJUu6ql1+iTGI94GR3Tyu0SE6cZgU0R7Thf
+ MtRlGcHATGlbsUBZoqHLUEyN5Xce/Qrg+AwaKvdQc21/1Cix82dcRxC7oIcD3wIV4vDQ
+ K52YTrCK4mtfo5g/f77/SuYLOl90JlfxdJHEpfHhVgBfwkL/63eyImUCewUqQHn5Zh/T
+ h/Wg==
+X-Gm-Message-State: AOJu0YzjQBxjGcdQ/GiO1RgAuWpBZxhgOggDE06ZYWZ7oBm24NJVaN8B
+ ao9RbNcns2t1N6Wd8V3xhL3/ZFvXdr1oSkk3fp97T/RGfEgL06AYaLiSySKaE5c=
+X-Google-Smtp-Source: AGHT+IEdvW69uizgr/OssDuGL/mJIkDRhSrDYVv1+9FYzxBVxzhHUX/DxDpoxUfI1O9/a9EugGCu1g==
+X-Received: by 2002:a17:907:7f13:b0:a72:5967:b34 with SMTP id
+ a640c23a62f3a-a837cce9ab7mr292721766b.22.1723733779664; 
+ Thu, 15 Aug 2024 07:56:19 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a83838cf05dsm112111966b.53.2024.08.15.07.49.17
+ a640c23a62f3a-a83838c6975sm112618766b.41.2024.08.15.07.56.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 07:49:20 -0700 (PDT)
+ Thu, 15 Aug 2024 07:56:18 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 39D2C6007F;
+ by draig.lan (Postfix) with ESMTP id 503B860263;
  Thu, 15 Aug 2024 15:49:13 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 16/21] virtio-net: Use replay_schedule_bh_event for bhs that
- affect machine state
-Date: Thu, 15 Aug 2024 15:49:06 +0100
-Message-Id: <20240815144911.1931487-17-alex.bennee@linaro.org>
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 17/21] virtio-net: Use virtual time for RSC timers
+Date: Thu, 15 Aug 2024 15:49:07 +0100
+Message-Id: <20240815144911.1931487-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240815144911.1931487-1-alex.bennee@linaro.org>
 References: <20240815144911.1931487-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,73 +99,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The regular qemu_bh_schedule() calls result in non-deterministic
-execution of the bh in record-replay mode, which causes replay failure.
+Receive coalescing is visible to the target machine, so its timers
+should use virtual time like other timers in virtio-net, to be
+compatible with record-replay.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20240813050638.446172-9-npiggin@gmail.com>
+Message-Id: <20240813050638.446172-10-npiggin@gmail.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240813202329.1237572-17-alex.bennee@linaro.org>
+Message-Id: <20240813202329.1237572-18-alex.bennee@linaro.org>
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 08aa0b65e3..10ebaae5e2 100644
+index 10ebaae5e2..ed33a32877 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -40,6 +40,7 @@
- #include "migration/misc.h"
- #include "standard-headers/linux/ethtool.h"
- #include "sysemu/sysemu.h"
-+#include "sysemu/replay.h"
- #include "trace.h"
- #include "monitor/qdev.h"
- #include "monitor/monitor.h"
-@@ -417,7 +418,7 @@ static void virtio_net_set_status(struct VirtIODevice *vdev, uint8_t status)
-                 timer_mod(q->tx_timer,
-                                qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + n->tx_timeout);
-             } else {
--                qemu_bh_schedule(q->tx_bh);
-+                replay_bh_schedule_event(q->tx_bh);
-             }
-         } else {
-             if (q->tx_timer) {
-@@ -2672,7 +2673,7 @@ static void virtio_net_tx_complete(NetClientState *nc, ssize_t len)
-          */
-         virtio_queue_set_notification(q->tx_vq, 0);
-         if (q->tx_bh) {
--            qemu_bh_schedule(q->tx_bh);
-+            replay_bh_schedule_event(q->tx_bh);
-         } else {
-             timer_mod(q->tx_timer,
-                       qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + n->tx_timeout);
-@@ -2838,7 +2839,7 @@ static void virtio_net_handle_tx_bh(VirtIODevice *vdev, VirtQueue *vq)
-         return;
+@@ -2124,7 +2124,7 @@ static void virtio_net_rsc_purge(void *opq)
+     chain->stat.timer++;
+     if (!QTAILQ_EMPTY(&chain->buffers)) {
+         timer_mod(chain->drain_timer,
+-              qemu_clock_get_ns(QEMU_CLOCK_HOST) + chain->n->rsc_timeout);
++              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + chain->n->rsc_timeout);
      }
-     virtio_queue_set_notification(vq, 0);
--    qemu_bh_schedule(q->tx_bh);
-+    replay_bh_schedule_event(q->tx_bh);
  }
  
- static void virtio_net_tx_timer(void *opaque)
-@@ -2921,7 +2922,7 @@ static void virtio_net_tx_bh(void *opaque)
-     /* If we flush a full burst of packets, assume there are
-      * more coming and immediately reschedule */
-     if (ret >= n->tx_burst) {
--        qemu_bh_schedule(q->tx_bh);
-+        replay_bh_schedule_event(q->tx_bh);
-         q->tx_waiting = 1;
-         return;
+@@ -2360,7 +2360,7 @@ static size_t virtio_net_rsc_do_coalesce(VirtioNetRscChain *chain,
+         chain->stat.empty_cache++;
+         virtio_net_rsc_cache_buf(chain, nc, buf, size);
+         timer_mod(chain->drain_timer,
+-              qemu_clock_get_ns(QEMU_CLOCK_HOST) + chain->n->rsc_timeout);
++              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + chain->n->rsc_timeout);
+         return size;
      }
-@@ -2935,7 +2936,7 @@ static void virtio_net_tx_bh(void *opaque)
-         return;
-     } else if (ret > 0) {
-         virtio_queue_set_notification(q->tx_vq, 0);
--        qemu_bh_schedule(q->tx_bh);
-+        replay_bh_schedule_event(q->tx_bh);
-         q->tx_waiting = 1;
+ 
+@@ -2598,7 +2598,7 @@ static VirtioNetRscChain *virtio_net_rsc_lookup_chain(VirtIONet *n,
+         chain->max_payload = VIRTIO_NET_MAX_IP6_PAYLOAD;
+         chain->gso_type = VIRTIO_NET_HDR_GSO_TCPV6;
      }
- }
+-    chain->drain_timer = timer_new_ns(QEMU_CLOCK_HOST,
++    chain->drain_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+                                       virtio_net_rsc_purge, chain);
+     memset(&chain->stat, 0, sizeof(chain->stat));
+ 
 -- 
 2.39.2
 
