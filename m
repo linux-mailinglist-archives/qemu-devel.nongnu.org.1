@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2289533B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E85F09533E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:21:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebJR-0001wm-52; Thu, 15 Aug 2024 10:18:49 -0400
+	id 1sebKt-00089H-3F; Thu, 15 Aug 2024 10:20:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sebJP-0001rI-Al
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:18:47 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sebKl-0007fl-KD
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:20:13 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sebJN-0003VP-IX
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:18:47 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5b8c2a6117aso504114a12.0
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:18:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sebKi-0003nh-RU
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:20:10 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2f035ae0fd1so11245011fa.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:20:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723731524; x=1724336324; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723731606; x=1724336406; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5ktXRN3L6nhgf7kfoPz50UQErPBwCIwP3ToUUpy4xxA=;
- b=yuBEKnf+eC9XAzxgdGvo0EGaxsRd1N8w6ffMTo1ao/Q+MtiffagY5pje41xPD/1qY3
- BHUPYTERhWP0aRvuuuBzh9FhkcnFyDdEJFWKqQQnriOhZ3fiHfnmMEDqRt/0HtR4gFy+
- V+WPG2bilPl8euyCN9OdY4m/3+C/bGmV0bpHu70HZzvYfYPIJ04j4J3LMA+Z/5tbXyfa
- u94YCLc+rrM8lmWbgpjgBtB0qhm34GPlmd0Wwa4+zkeG8VybmSkY77b8S/He/iOSq+s8
- jsmYTfSoEUqGOKJ6VpRhGCiFtc33xB32YyCMsdeQTvRv7ACeg/yPPfr7+b7g212YpJnN
- 5Pnw==
+ bh=SFuSrwMBstTqOta4hVA8b8IOSdqyLaYQbqnp28bJ/aE=;
+ b=Py8RPv+rzkK+Hy2v6y2v4ZchVHQBwoKg+iohsIEcyMWQOMFQCuhvYqSO48SEnedMp0
+ 6ONd+Qvwy19v9GwI1K+87C0VZZh8mv7Y/Qp77NRwvU7SJUAhCzUzhP2xf9MV3LbSlgtH
+ pjGixpzzYNKa/NB2RiyOpUM2n4yywA0Fd6zmO4lCzv9Gs4U4xKT9hJy7VdGRoT+ewEZe
+ cV2wp7RksA0ID4cuVO0aXNuR5LLjWF5xv/+0fR86O+3umNLkzPctQmxPnRZYl6ZiyjwL
+ vDS3ivw5cvnb5F1ELgvd71zS2rLPNMtFr6wcp7RqlDyvMr9q7V2kH1VJBOMQOrzOCaXP
+ MRVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723731524; x=1724336324;
+ d=1e100.net; s=20230601; t=1723731606; x=1724336406;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5ktXRN3L6nhgf7kfoPz50UQErPBwCIwP3ToUUpy4xxA=;
- b=AW5EuSEIFDJcQdo3f9yxm/wW3mZXHnBeyh/aXBaP+0iPtWBqXnBrd/Z4dey8qSN/Ng
- X0JNgjIxlqtZD3sTFE+ZbYpuo1UETcFRaw3cgfH23EwPL5Hh/j9HUb1MnuP4oKbRtWTu
- yL3BsVTNqrfpqe0aAxJpnWsssOhiHqjZJwF+9t8Engmq/FBuWsXFLAakNteobBsiUzyE
- CUlZXjeeTiha7E8zy50tUAuI/RNwso1yWTmLT76iljTe9A3vgZjrb+IyuCehRWSSaxM2
- bqM09abZLbY+i5SL8mOF2Xj9aMGiMYv67sL8f2QoybUI0HuPUHWlBal5KEA+bEtJWIiu
- zP9g==
-X-Gm-Message-State: AOJu0Yyl+gf6QKdl3tDzLLbfa4QTKud0jr5dZsi119CJlhY5KFBGgkvv
- 0iNK75pnUjiKGY4S/t0Q0U+SS+vutOHGum4TqKPTH2Ex2GunK25lsZ1+5puizv0=
-X-Google-Smtp-Source: AGHT+IE3hhTpmXk/+f2CzROVsAphMTFlFZo1QnHeai9/9RDcGOPxQVhnmNd7RSlIvqhLiUimmEdzVg==
-X-Received: by 2002:a05:6402:50c6:b0:5a2:65cb:7335 with SMTP id
- 4fb4d7f45d1cf-5bea1c7ce61mr5657509a12.19.1723731523493; 
- Thu, 15 Aug 2024 07:18:43 -0700 (PDT)
+ bh=SFuSrwMBstTqOta4hVA8b8IOSdqyLaYQbqnp28bJ/aE=;
+ b=WSXFxv4XN38pox2j/teE5gKr/fExCoJsYR5+1OBX33K+d5Mp8pSu3Hfp8FW04sIaQk
+ tUZxDkKTdAjbx+yi8EDXqk950o28vrTu/kDkHCIEXl+PwiEChqi50OhvfKwyIXDaL2Pa
+ 6xoY6EByiST+ibK5kmw3Dmqn1/s5e43b1mWIp6f/q1TpHBZhOYjIXAuQPc+LPk2nvIG+
+ LtOgh6mlzr+8vvOiJIjgn/SRoRI4lAa4XEdBucnEzjkmH0tyXr1V52MogSfEspemStPk
+ 5M/nPXtZvBitWTVWbavZB5/WFAPNou6YGfWFNmYgSg4UrwSrMs6jKilzMu3wRpN5441Y
+ H9jA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVm38s3+tFvDMCCf2XKt9/QlQGuY+jZdoy1dfNkcUem50pddPXB1yUBk6uFLwQPkkkc0PgaPh8i9SB5FHOq1/2b9iz/ITA=
+X-Gm-Message-State: AOJu0YyPqPYLNe5LAU8N1PDAxeHQ78q3qGMWnnNmWnXbGiBnm0rM45Bt
+ wJuKdEvG4PoPAEYIIKXT5GOZhSCdOHhPHt+8zIFNhJTB4z84254xpK5+uhgZs8Y=
+X-Google-Smtp-Source: AGHT+IEvKfj8S115NLs1rMZukA+EvtR/T6xrtrmM+rsBSdcSaz2w6woDuwyVOJgbEUptqbOYap+Dow==
+X-Received: by 2002:a05:651c:19a9:b0:2ef:2525:be90 with SMTP id
+ 38308e7fff4ca-2f3aa200791mr49906281fa.31.1723731605955; 
+ Thu, 15 Aug 2024 07:20:05 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.202.43])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5bebbbe2a02sm943169a12.18.2024.08.15.07.18.39
+ 4fb4d7f45d1cf-5bebbe7f17bsm960376a12.59.2024.08.15.07.19.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Aug 2024 07:18:43 -0700 (PDT)
-Message-ID: <b5587a20-d2ad-4dfa-aba5-0154ebe8c61d@linaro.org>
-Date: Thu, 15 Aug 2024 16:18:36 +0200
+ Thu, 15 Aug 2024 07:20:05 -0700 (PDT)
+Message-ID: <4da9c616-4c22-44ad-8c36-c787e920a9b6@linaro.org>
+Date: Thu, 15 Aug 2024 16:19:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Removing python/qemu/qmp
-To: John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <CAFn=p-ZJZ1BScebJtgGmFBwV4n2Yhyha6WFAmVe9_T2c4ML7Dw@mail.gmail.com>
+Subject: Re: [PATCH for-9.2] hw/vfio/pci.c: Use correct type in
+ trace_vfio_msix_early_setup()
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20240815135245.3325267-1-peter.maydell@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFn=p-ZJZ1BScebJtgGmFBwV4n2Yhyha6WFAmVe9_T2c4ML7Dw@mail.gmail.com>
+In-Reply-To: <20240815135245.3325267-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,18 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/8/24 15:58, John Snow wrote:
-> Hi Paolo,
+On 15/8/24 15:52, Peter Maydell wrote:
+> The tracepoint trace_vfio_msix_early_setup() uses "int" for the type
+> of the table_bar argument, but we use this to print a uint32_t.
+> Coverity warns that this means that we could end up treating it as a
+> negative number.
 > 
-> Let's discuss finally dropping the qemu.qmp lib out of qemu.git in favor 
-> of using the standalone package at 
-> https://gitlab.com/qemu-project/python-qemu-qmp/ 
-> <https://gitlab.com/qemu-project/python-qemu-qmp/>
+> We only use this in printing the value in the tracepoint, so
+> mishandling it as a negative number would be harmless, but it's
+> better to use the right type in the tracepoint.  Use uint64_t to
+> match how we print the table_offset in the vfio_msix_relo()
+> tracepoint.
+> 
+> Resolves: Coverity CID 1547690
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   hw/vfio/trace-events | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
-> Thoughts? Lets schedule a call to discuss if we can. (Anyone else 
-> interested can join if they want.)
-
-Next community call is next week on Tuesday 20, 2pm UTC.
-(https://meet.jit.si/kvmcallmeeting)
 
