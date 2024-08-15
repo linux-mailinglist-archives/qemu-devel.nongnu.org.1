@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9FF95362E
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A7A953632
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 16:50:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sebnB-0003OV-Da; Thu, 15 Aug 2024 10:49:35 -0400
+	id 1sebnB-0003Tw-Dk; Thu, 15 Aug 2024 10:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebmz-0003D8-EY
+ id 1sebmz-0003EB-Md
  for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:21 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sebmx-0000Cc-AB
+ id 1sebmx-0000Cm-JR
  for qemu-devel@nongnu.org; Thu, 15 Aug 2024 10:49:21 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-52efbb55d24so1813171e87.1
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:18 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a8385f38fcdso62758566b.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 07:49:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723733357; x=1724338157; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723733358; x=1724338158; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XlVm4bFaARcVP1rknNRsQtAnzRUhJ++dQu53YaEvbis=;
- b=sfhJmv6AsHrQt/9f3ulpstXjZUq5Dre0ZzQsdk6WBeo04HVijLY5fz8IsdH8gpE/Mf
- bjbeBiiIbXpsg46ad3A8rsyeodmXD5IOzYIqzO4Bha/WmbcUo77xIsuxTHa8nCjZ5b40
- cJQE+2GRpOjGCvJicpEHlKYEvLfqGO5OJM2sSgBysgOK6Da3ITgPxuxmMx8zOO/xg3Bm
- i0TaGJhKYqPTUJFiuGTcLt4r2VDgYEiAGK/UALQ9Ct4ncaVKHLdwI+Kpl89NW3/Uy8wz
- UgEVRQqcJDTQMOe68AVrS7AyLpeCH1r5fl9UpDHiPIxF3+A7Fo+bsFwh7tMaBwkKDdHe
- S/Rw==
+ bh=O/2O2QWI/Uf5GFig2yGm0H8WH7A5Eq7y7uzfXzjAjGQ=;
+ b=VHI+ezQy9nJYvXNJ9KJNSjLGmRnEBI80BE+9s1djV91H1MWGtTQYuhjSHD9pQNeiUs
+ TNsXQd9pQwKEfD4Dz+jOmVb2FlFEIfyLZKR7pdecxCKOGdY/YaHlgnRSQnOclntV1pGT
+ JbO/UFTNLoeyhYfdTn105lt8Ls2oZhkfMC8vOiOs9GMtBfnNeeWe9G4r+vFh/oUZ3k2o
+ w47ymYNjhCgPskd4eLk3IFhYg2FfvCCOOJEqijopCIjaynetAkhCbIbfLgGm6wG1yByD
+ XkdouJW/is6JF6W5VZsCeDPbMS10zUXxUvVNRE9pKAqi1+kg5w8p0bbQA/z+yWfyJ1E+
+ PybQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723733357; x=1724338157;
+ d=1e100.net; s=20230601; t=1723733358; x=1724338158;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XlVm4bFaARcVP1rknNRsQtAnzRUhJ++dQu53YaEvbis=;
- b=w+ielk/ihscMvLL2CplE6JBoYnJ9Z53Kz9CtTIGeohzR4wRgaDIAgzEtxf39upr22j
- 8I1PDCTlC7CbBJZ+kNj8ZPNbBVb0CDhgCLUNZzEvqIz1gPuSlEH/Z4fwqL91iWx9jIxx
- 4SonzEGFWmg3CZe4XQQ+HCg293HCsjUOTrDFv89K409DBJzUzMKnWa1hC1Snx9H6RyIA
- rQMRHmtqr+52h1fZ3fhIL9GgzBJoWfllBxWX39ofH4jl9vfZX91s9yvh40nhV+KCSoLA
- pSS9s5i6GDoQ03jV32vsOmakR+7e8BAGO1aSqYlpOZuMr44NQL8a8Xxosg2B2aW4dgQR
- 5zRg==
-X-Gm-Message-State: AOJu0YyjNs3WEeef9D1eZX+NiwORgK6/c4w9jc4RcKqE4NpR8SBHDiyh
- Fmf6bmyMxuWTki0Bu7Qaz28YePcRjUV0SvJduTMh7luPyI0MlhzJPWqz/EuIzlQ=
-X-Google-Smtp-Source: AGHT+IHcL4qbC5MZgNQOgWzymD8gZCDlv44EIwf363GkVNkeKJ8rFhcRUCHGV8017F69yBZgax7Zng==
-X-Received: by 2002:a05:6512:33c2:b0:52e:716a:1898 with SMTP id
- 2adb3069b0e04-532edbd145cmr5432741e87.58.1723733356960; 
- Thu, 15 Aug 2024 07:49:16 -0700 (PDT)
+ bh=O/2O2QWI/Uf5GFig2yGm0H8WH7A5Eq7y7uzfXzjAjGQ=;
+ b=M25g6LnvPDicAbCn4NV3/T1wPl8BKKP0jHksnhToab1q6lv+sVl98vx2jYF1u4MUC0
+ ZYulSYvaC3+E6Ee/j0GMo2+uzFGsT5RWi7rfvhR9f74fejUbfremG6m6Hrknzawpy5y6
+ QPp6boqalZA3ZNbm3Y/zTaQdYSYJyxenMp6wVp0t04guhOeE0xmqzqrWk6LD+7ORaak0
+ waHog0hK/VvqEEYfBiiZ7SpcpCQKKFD+s5ToJNi5xsUUIdz9ewJ6NDARPwcTQzfhpff1
+ UZJQCLmEelXl0RCkv1BrNrUKNDNZ5vKYvNj711khWuH79dHCFxDX7OIibbSvGC61jWCZ
+ D48w==
+X-Gm-Message-State: AOJu0YxRYzwMgf1ItVHZ1yU8DlLr+5yi3+ryG8INsGCRl82lfM1pxe/I
+ XdMKuXkywXFGgpnPdtACEfMy6U2kQ1tlORKcOvhfaQICbhyxtUMhv9pX3b0okvc=
+X-Google-Smtp-Source: AGHT+IHXTM05zKcMC3ai7A5C/iBWIIgK3CctC56tk/IKn4JZbRNe8vqdBLyxeG6i9ObU80ciNjkSQg==
+X-Received: by 2002:a17:906:cad9:b0:a7d:a29e:5c33 with SMTP id
+ a640c23a62f3a-a8366c36624mr400869666b.28.1723733357602; 
+ Thu, 15 Aug 2024 07:49:17 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a83838cfac5sm111481866b.80.2024.08.15.07.49.14
+ a640c23a62f3a-a83838c6c07sm112618866b.43.2024.08.15.07.49.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 15 Aug 2024 07:49:14 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4000B5F953;
+ by draig.lan (Postfix) with ESMTP id 59A465F95A;
  Thu, 15 Aug 2024 15:49:12 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 06/21] scripts/checkpatch: more checks on files imported from
- Linux
-Date: Thu, 15 Aug 2024 15:48:56 +0100
-Message-Id: <20240815144911.1931487-7-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 07/21] target/i386: allow access_ptr to force slow path on
+ failed probe
+Date: Thu, 15 Aug 2024 15:48:57 +0100
+Message-Id: <20240815144911.1931487-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240815144911.1931487-1-alex.bennee@linaro.org>
 References: <20240815144911.1931487-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,63 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+When we are using TCG plugin memory callbacks probe_access_internal
+will return TLB_MMIO to force the slow path for memory access. This
+results in probe_access returning NULL but the x86 access_ptr function
+happily accepts an empty haddr resulting in segfault hilarity.
 
-If a file imported from Linux is touched, emit a warning and suggest
-using scripts/update-linux-headers.sh.
+Check for an empty haddr to prevent the segfault and enable plugins to
+track all the memory operations for the x86 save/restore helpers. As
+we also want to run the slow path when instrumenting *-user we should
+also not have the short cutting test_ptr macro.
 
-Also check that updating imported files from Linux are not mixed with
-other changes, in which case emit an error.
-
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20240718072050.9503-1-sgarzare@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2489
+Fixes: 6d03226b42 (plugins: force slow path when plugins instrument memory ops)
+Reviewed-by: Alexandre Iooss <erdnaxe@crans.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240813202329.1237572-7-alex.bennee@linaro.org>
+Message-Id: <20240813202329.1237572-8-alex.bennee@linaro.org>
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index ff373a7083..65b6f46f90 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -1374,6 +1374,9 @@ sub process {
- 	my $in_header_lines = $file ? 0 : 1;
- 	my $in_commit_log = 0;		#Scanning lines before patch
- 	my $reported_maintainer_file = 0;
-+	my $reported_mixing_imported_file = 0;
-+	my $in_imported_file = 0;
-+	my $in_no_imported_file = 0;
- 	my $non_utf8_charset = 0;
+diff --git a/target/i386/tcg/access.c b/target/i386/tcg/access.c
+index 56a1181ea5..e68b73a24b 100644
+--- a/target/i386/tcg/access.c
++++ b/target/i386/tcg/access.c
+@@ -58,6 +58,11 @@ static void *access_ptr(X86Access *ac, vaddr addr, unsigned len)
  
- 	our @report = ();
-@@ -1673,6 +1676,27 @@ sub process {
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
+     assert(addr >= ac->vaddr);
  
-+# Check that updating imported files from Linux are not mixed with other changes
-+		if ($realfile =~ /^(linux-headers|include\/standard-headers)\//) {
-+			if (!$in_imported_file) {
-+				WARN("added, moved or deleted file(s) " .
-+				     "imported from Linux, are you using " .
-+				     "scripts/update-linux-headers.sh?\n" .
-+				     $herecurr);
-+			}
-+			$in_imported_file = 1;
-+		} else {
-+			$in_no_imported_file = 1;
-+		}
++    /* No haddr means probe_access wants to force slow path */
++    if (!ac->haddr1) {
++        return NULL;
++    }
 +
-+		if (!$reported_mixing_imported_file &&
-+		    $in_imported_file && $in_no_imported_file) {
-+			ERROR("headers imported from Linux should be self-" .
-+			      "contained in a patch with no other changes\n" .
-+			      $herecurr);
-+			$reported_mixing_imported_file = 1;
-+		}
-+
- # ignore files that are being periodically imported from Linux
- 		next if ($realfile =~ /^(linux-headers|include\/standard-headers)\//);
+ #ifdef CONFIG_USER_ONLY
+     assert(offset <= ac->size1 - len);
+     return ac->haddr1 + offset;
+@@ -78,17 +83,11 @@ static void *access_ptr(X86Access *ac, vaddr addr, unsigned len)
+ #endif
+ }
  
+-#ifdef CONFIG_USER_ONLY
+-# define test_ptr(p)  true
+-#else
+-# define test_ptr(p)  likely(p)
+-#endif
+-
+ uint8_t access_ldb(X86Access *ac, vaddr addr)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint8_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         return ldub_p(p);
+     }
+     return cpu_ldub_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
+@@ -98,7 +97,7 @@ uint16_t access_ldw(X86Access *ac, vaddr addr)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint16_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         return lduw_le_p(p);
+     }
+     return cpu_lduw_le_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
+@@ -108,7 +107,7 @@ uint32_t access_ldl(X86Access *ac, vaddr addr)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint32_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         return ldl_le_p(p);
+     }
+     return cpu_ldl_le_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
+@@ -118,7 +117,7 @@ uint64_t access_ldq(X86Access *ac, vaddr addr)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint64_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         return ldq_le_p(p);
+     }
+     return cpu_ldq_le_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
+@@ -128,7 +127,7 @@ void access_stb(X86Access *ac, vaddr addr, uint8_t val)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint8_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         stb_p(p, val);
+     } else {
+         cpu_stb_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
+@@ -139,7 +138,7 @@ void access_stw(X86Access *ac, vaddr addr, uint16_t val)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint16_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         stw_le_p(p, val);
+     } else {
+         cpu_stw_le_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
+@@ -150,7 +149,7 @@ void access_stl(X86Access *ac, vaddr addr, uint32_t val)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint32_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         stl_le_p(p, val);
+     } else {
+         cpu_stl_le_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
+@@ -161,7 +160,7 @@ void access_stq(X86Access *ac, vaddr addr, uint64_t val)
+ {
+     void *p = access_ptr(ac, addr, sizeof(uint64_t));
+ 
+-    if (test_ptr(p)) {
++    if (likely(p)) {
+         stq_le_p(p, val);
+     } else {
+         cpu_stq_le_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
 -- 
 2.39.2
 
