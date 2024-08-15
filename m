@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C81952DAC
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 13:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9056E952DBD
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Aug 2024 13:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1seYsU-0007li-Df; Thu, 15 Aug 2024 07:42:50 -0400
+	id 1seYw0-0000q8-JE; Thu, 15 Aug 2024 07:46:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1seYsR-0007kv-MU
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:42:47 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1seYvx-0000iS-V6
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:46:26 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1seYsP-0002CZ-UX
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:42:47 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-52f025ab3a7so1122398e87.2
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 04:42:45 -0700 (PDT)
+ id 1seYvr-0002oU-Lr
+ for qemu-devel@nongnu.org; Thu, 15 Aug 2024 07:46:25 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-52f024f468bso958880e87.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 04:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723722164; x=1724326964; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723722376; x=1724327176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:references
  :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YraZGJ9bJr3ONnmuBTPkzJUV2p5ou6G6xUlSy78rDf8=;
- b=Ha268RC/nbCamBmzUQemSFSSvdVmijfUYjoM3KrbL4rILZwizgAn5p36oEYt/e/Cbs
- E9PPgqOP8dbqCAlddqvvzZyqqeZXzCyuVCgaJ6YQ+dkE37+HS7VsHc0luuSY7g3+ZvHR
- RpiHvoprFekeywPhkakpxTD9OlP6LOlAwUZT3pJCn9NbRMVAIDCic0T7bmFM/aeJD24a
- LV2u8OY/b7MxKFYXV8xv4DrqgqcsoASYg1tMsQ1rrIYwxhfYxPLGyLkesax0UH0Oc+6e
- NMaEN8lGQXHOss74Lr2cjbqmkBWxZmp6+dsP3sq2CouxvY13IyS091WUnWna9PG3p/ty
- R/mQ==
+ :reply-to; bh=sRXLtN9vDGTYCD1HEZtf+foSACu9AHjipALVFxy6RXg=;
+ b=EDW/voEI0ZTWA7VteZJTc9BaQCArHevhoseCtJZtq4wP1DI2a6oUDisS4DCRLLruBw
+ U/eHjPlLY/ZzPgaRqKxt36bxYDHoEEvN8MqUGpU2az0Vj/MxfdjRQpC6zgrQa1bAFoxj
+ FlKa06v0nxjJPMtnhvxbrDOp+rQpSU7AwHAOt6Gh1Ch5cDjwhawCqlTyIwuGFI1PLOv+
+ wkrJxbREu4ToxncApZgP5g9Xy7fzIq52zVp5dJ8PV7RIejiu5zeOE0V/xej5+cMuKL/s
+ EdWKEwy6Wu1AfspGIoNGRQ5s5Ek4h+Ox0p9H8ZmYZVEcpUPbXHPawzSRmX734ESnFZQr
+ 43yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723722164; x=1724326964;
+ d=1e100.net; s=20230601; t=1723722376; x=1724327176;
  h=content-transfer-encoding:mime-version:message-id:date:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YraZGJ9bJr3ONnmuBTPkzJUV2p5ou6G6xUlSy78rDf8=;
- b=Gmq/nYsnXLt5MiN0G1inPW/dHix8eszwjbQ1QeKOr8lg0gQcZ9fGdIRLJCYwTelvTZ
- Ht98I9alxg1FfNL7zOLqEB9Lcw1xsYVMmoAnzPx7McoHZFaJg8cTTcl1ml1zJSQxFiqk
- OxboFu6R9kqU0QDY5C8ln0lZdtKYdsRJUZEsTz11XrSXA1nFKXwjII/nQn2xiV9ttlzg
- LlfNiibbZAh0Foxi+Fkz7IXf074a6cwCk12W6CISABMhikDpb9kJDrkVwszeh8tENhr/
- N4shhICftMo4nXCU8rcZYDi9M/QfxnMUzo8Jy4Z8YmcxudzI9xTGoHW4R6EI6dfoy8bD
- Eiag==
+ bh=sRXLtN9vDGTYCD1HEZtf+foSACu9AHjipALVFxy6RXg=;
+ b=bTRSDaeYvFJO8TvIncUN/Mp2Mc04LMK7cFMIz+ZJf5oC1ZOSlcBp8u/RLVo+fr9nzn
+ ngahHg1p05TPQPswa04+H5qi5W92NeRVhzBgkeIwBBMwbNdvT2NbgHnW269veffCti6J
+ DzmrQc0rWv+N2VLuMrquASab83VIQSeHNrNaee0Eeudf6xlRfCXUOkarNmNbXurW4gJQ
+ zeVKolfWsUX9KYhA3Ff558U6YrJSMwU+cYd+7n2aG+TKpkKFyR2wIwLxlizu/JIM//yp
+ AKBnKg2EpmhXbAKfIrz5UNRuQ9eq9CoUQTvx2fwU+NSc6V0plC583jYWOqStBKLcYRzn
+ ilyw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXa+VJghdLbGI0sC+i8miLJnGMIUHv35ocdPld/ydRooDBdlc+qgHg75TQbLHO6mkTTY80i2dYIOP4m@nongnu.org
-X-Gm-Message-State: AOJu0YxTb5W9B2Rpz1IVyVWJe6AXi2VEIjtM2wEimVCxZVOjL1FXuTvU
- B4YfdSUX/x1XtkhQrqaU59+pLneS/M/acW3CO+e5vRKgTpig0JSQou0WN1tfw6Y=
-X-Google-Smtp-Source: AGHT+IFT13DNS+3kg9UcIuGDMqYgKU7AOrfp3pff4jCyTU6dRD71sfdy/v41514fk8sgKbi0whPhaQ==
-X-Received: by 2002:a05:6512:2216:b0:52c:cc2e:1c45 with SMTP id
- 2adb3069b0e04-532eda6bda2mr3636529e87.15.1723722163660; 
- Thu, 15 Aug 2024 04:42:43 -0700 (PDT)
+ AJvYcCVYGox9xVc3Ez4W7T/YgJE+m+reHvdYnYP46a43CHkPLddjTrohj2yPtsYtPY67QfAEzArLOUTt1sm+douUbC6vsZkjDpQ=
+X-Gm-Message-State: AOJu0YyYeRVSouP9zK/bPTUPH8jY9Q9H0Q0cpRZtOjD/P0hGkktsSJc+
+ ZzmHUrxWB7l/JCj7sFyDRiWoAPnEKgjCsHO4BEW2W9PIzA6nxZ33yeXeamIP/D1XV7ztRU73AxE
+ O
+X-Google-Smtp-Source: AGHT+IHAWW69tldBZOLwdXozvGJep8+MOUCMlC27mkFYcuix286xcBm43FSYFNOu9F/BEYR/79ovAw==
+X-Received: by 2002:a05:6512:31d3:b0:52c:8979:9627 with SMTP id
+ 2adb3069b0e04-532eda66b52mr3411926e87.3.1723722375437; 
+ Thu, 15 Aug 2024 04:46:15 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a83839464ebsm87914866b.155.2024.08.15.04.42.42
+ a640c23a62f3a-a83838eedf1sm90295366b.91.2024.08.15.04.46.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 04:42:43 -0700 (PDT)
+ Thu, 15 Aug 2024 04:46:14 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CEA1E5F8E4;
- Thu, 15 Aug 2024 12:42:41 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id D19145F8E4;
+ Thu, 15 Aug 2024 12:46:13 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,  qemu-devel@nongnu.org,
- Mahmoud Mandour <ma.mandourr@gmail.com>,  Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>,  Alexandre Iooss <erdnaxe@crans.org>,  Thomas Huth
- <thuth@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 0/6] build contrib/plugins using meson
-In-Reply-To: <CABgObfa8GTo06hm0oDT+GUy-_6z=FVH2xnLWFcpm39_=_p4LNQ@mail.gmail.com>
- (Paolo Bonzini's message of "Thu, 15 Aug 2024 08:00:00 +0200")
+ Paolo Bonzini <pbonzini@redhat.com>,  Mahmoud Mandour
+ <ma.mandourr@gmail.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH 2/6] contrib/plugins/cache: fix warning when compiling
+ on 32bits host
+In-Reply-To: <491b34f6-a81a-4793-984c-6a588910d0e1@redhat.com> (Thomas Huth's
+ message of "Thu, 15 Aug 2024 10:11:53 +0200")
 References: <20240814233645.944327-1-pierrick.bouvier@linaro.org>
- <CABgObfa8GTo06hm0oDT+GUy-_6z=FVH2xnLWFcpm39_=_p4LNQ@mail.gmail.com>
-Date: Thu, 15 Aug 2024 12:42:41 +0100
-Message-ID: <87y14y2ery.fsf@draig.linaro.org>
+ <20240814233645.944327-3-pierrick.bouvier@linaro.org>
+ <491b34f6-a81a-4793-984c-6a588910d0e1@redhat.com>
+Date: Thu, 15 Aug 2024 12:46:13 +0100
+Message-ID: <87ttfm2em2.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,46 +105,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Thomas Huth <thuth@redhat.com> writes:
 
-> On Thu, Aug 15, 2024 at 1:37=E2=80=AFAM Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
->> Contrib plugins have been built out of tree so far, thanks to a Makefile.
->> However, it is quite inconvenient for maintenance, as we may break them,
->> especially for specific architectures.
->>
->> First patches are fixing warnings for existing plugins, then we add meson
->> support, and finally, we remove Makefile for contrib/plugins.
->>
->> Based on the proposal of Anton Kochkov on associated gitlab issue.
->> Solves: https://gitlab.com/qemu-project/qemu/-/issues/1710
+> On 15/08/2024 01.36, Pierrick Bouvier wrote:
+>> Found on debian stable (i386).
+>> ../contrib/plugins/cache.c: In function 'vcpu_tb_trans':
+>> ../contrib/plugins/cache.c:477:30: error: cast from pointer to integer o=
+f different size [-Werror=3Dpointer-to-int-cast]
+>>    477 |             effective_addr =3D (uint64_t) qemu_plugin_insn_hadd=
+r(insn);
+>>        |
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>   contrib/plugins/cache.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>> diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
+>> index 512ef6776b7..82ed734d6d4 100644
+>> --- a/contrib/plugins/cache.c
+>> +++ b/contrib/plugins/cache.c
+>> @@ -471,12 +471,12 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, str=
+uct qemu_plugin_tb *tb)
+>>       n_insns =3D qemu_plugin_tb_n_insns(tb);
+>>       for (i =3D 0; i < n_insns; i++) {
+>>           struct qemu_plugin_insn *insn =3D qemu_plugin_tb_get_insn(tb, =
+i);
+>> -        uint64_t effective_addr;
+>> +        uintptr_t effective_addr;
+>>             if (sys) {
+>> -            effective_addr =3D (uint64_t) qemu_plugin_insn_haddr(insn);
+>> +            effective_addr =3D (uintptr_t) qemu_plugin_insn_haddr(insn);
+>>           } else {
+>> -            effective_addr =3D (uint64_t) qemu_plugin_insn_vaddr(insn);
+>> +            effective_addr =3D (uintptr_t)
+>> qemu_plugin_insn_vaddr(insn);
+>>           }
 >
-> Is the bug actually still there?
->
-> The Makefile explains why it was done this way:
->
-> # This Makefile example is fairly independent from the main makefile
-> # so users can take and adapt it for their build. We only really
-> # include config-host.mak so we don't have to repeat probing for
-> # programs that the main configure has already done for us.
->
-> In other words we should also take into account that there is a
-> documentation benefit to having a Makefile that works across Windows,
-> Darwin and generic ELF Unices. Anyway Philippe, Akihiko and Alex are
-> the best people to decide.
+> Is this the right fix? I assume effective_addr stores an address of
+> the guest, so if the guest is 64-bit and the host is 32-bit, you now
+> lose the upper bits of the address...?
 
-We could keep the Makefile as an example but the meson file looks fairly
-easy to read. However it keeps growing warts to adapt to the fact its
-not integrated with the wider project.
+I think the problem is higher up, it was a mistake to have:
 
-> One argument from moving contrib/plugins to meson is that the Windows
-> case depends on libqemu_plugin_api.a which is built with meson(*);
-> that said, libqemu_plugin_api.a should be installed - which would
-> justify it being used from an "external" makefile.
+  void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn);
+
+return *void, at least vaddr returns an explicit 64 bit value which can
+hold everything (at a slight expense to 32bit emulation hosts, but
+seriously stop doing that we've been in the 64bit world for some time
+now).
+
 >
-> Paolo
+> The casting for qemu_plugin_insn_vaddr is not required at all since it
+> already returns an uint64_t, so you can remoe that one. For the haddr
+> part, maybe do a double-cast:
 >
-> (*) by the way,
+>   effective_addr =3D (uint64_t)(uintptr_t)qemu_plugin_insn_haddr(insn)
+>
+> ?
+>
+>  Thomas
 
 --=20
 Alex Benn=C3=A9e
