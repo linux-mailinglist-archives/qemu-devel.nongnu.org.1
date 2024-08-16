@@ -2,84 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D8395484A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 13:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CD7954AA4
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 15:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sevTt-00084k-3m; Fri, 16 Aug 2024 07:50:57 -0400
+	id 1sewZP-0006a6-H2; Fri, 16 Aug 2024 09:00:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sevTq-00084B-Tp
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 07:50:54 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sevTo-00018p-Vf
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 07:50:54 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-70d2b921cdfso1544905b3a.0
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 04:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723809050; x=1724413850; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=OkBr1xUbWvZyC5vs+/WZ0yK7wzImK+NBfcMdOKzbEIo=;
- b=lOmKeWCAIbDGE1VH53JrqLnEobhezAUNAwjaHDzoGZRpxmmAwKn9bUd062Z488K7WN
- kefRZCYYyhzDtXTvaYCVpHvDwSyszTmwW/9DEjRqfJa72mTDYzzorxgFdKY7SYCLlXDX
- SvkGn7butAQlaPv+RFzQd80KzEDMJYFAoW+NH79iMECiF8VwlzU2GuOVTARQd3mBpLDe
- ApxGNwFAkjP+XdAdQuxulT04vCUeNT8oZoLzL8r8mcsHCscinfhD8GpSe4vCNdf7QFux
- GH1hxNfAGEm5nDLW/XMboQINq9uEU0zCf5MuO1bCQWs7zcZW07eo0Po/xDKnMZQwPZpD
- fviA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723809050; x=1724413850;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OkBr1xUbWvZyC5vs+/WZ0yK7wzImK+NBfcMdOKzbEIo=;
- b=srKXVXnjdrOw/oWKzkQT0+v70f8vHPMxn3AkYEgxXoGugPMpY/9WdOzWzdmR45aQ/h
- q2ZTOH+Cri7qSAXRP9Dp/zVVdoW0q5fKH9FufHeF3KLUDdm8+tIM1qCT/af8ydMbLxVU
- 45gLav7Mn39JKZibOUX6ZNAghKhN2o2seRjRyBLtkqnWSAAKsUTDn0Rp3F8CgD5XOUgA
- mr4vlablq9rBhgQosE/SofgmKGHxdoiTzt8W6enzjEKqSb3bm0iIt9JnJuuRadR0Mwjd
- sUG258WFbLxP7+Byo8yOTy9WUQZ3C/SykE67bIIzwTU44E/7kJJvUa5ggj6JzMeqwK+d
- A13g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXIrtVOd1QKZ+7V4QMz28fmTAkinbC3Y30ZsAzxc9q8tnrCWLsH6gNaxF9vRJ5HdiRXXripVUSr8XruW+zv0ALXZ2toZw0=
-X-Gm-Message-State: AOJu0Yy8sIftyIBZmNKdMoHwv+Z0orCw5p8Z5fJV0dhTPlDn1lKtw/1g
- t3SseqLJ1OQRJfmPyZRx96ZXCnfoCTq5XbLBs8o/DSgp3UPyrRj6hWIjkfMRhqA=
-X-Google-Smtp-Source: AGHT+IEeG96W5l8jdte9YJV3ckCsGjgl12N7IDb5H1hASpO/fj2NLeimrhOac7l46Ze/dkf6lZfgUg==
-X-Received: by 2002:a05:6a20:43a9:b0:1c3:ce0f:bfb7 with SMTP id
- adf61e73a8af0-1c904f88ce3mr3237972637.21.1723809050222; 
- Fri, 16 Aug 2024 04:50:50 -0700 (PDT)
-Received: from [192.168.1.113] ([203.30.4.109])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127aef5f30sm2472810b3a.105.2024.08.16.04.50.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Aug 2024 04:50:49 -0700 (PDT)
-Message-ID: <dbbdfd50-5caf-42f2-91ef-a1d88e8391b9@linaro.org>
-Date: Fri, 16 Aug 2024 21:50:43 +1000
+ (Exim 4.90_1) (envelope-from <zuoboqun@baidu.com>)
+ id 1ser5r-0000I0-0d
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:09:51 -0400
+Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zuoboqun@baidu.com>)
+ id 1ser5o-0002E5-64
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:09:50 -0400
+To: qemu-devel <qemu-devel@nongnu.org>
+CC: "Michael S . Tsirkin" <mst@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>, zuoboqun
+ <zuoboqun@baidu.com>
+Subject: [PATCH] vhost_net: configure all host notifiers in a single MR
+ transaction
+Date: Fri, 16 Aug 2024 15:08:35 +0800
+Message-ID: <20240816070835.8309-1-zuoboqun@baidu.com>
+X-Mailer: git-send-email 2.42.0.windows.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/5] Some small tests and s390x fixes
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-References: <20240816072218.27125-1-thuth@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240816072218.27125-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.127.72.15]
+X-ClientProxiedBy: BC-Mail-Ex13.internal.baidu.com (172.31.51.53) To
+ BJHW-MAIL-EX26.internal.baidu.com (10.127.64.41)
+X-FEAS-Client-IP: 10.127.64.14
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=220.181.50.185; envelope-from=zuoboqun@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 16 Aug 2024 09:00:13 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,32 +55,286 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  zuoboqun <zuoboqun@baidu.com>
+From:  zuoboqun via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/24 17:22, Thomas Huth wrote:
->   Hi Richard!
-> 
-> The following changes since commit b0d6c037ea0a825192285f149af72a73a1baaa04:
-> 
->    Update version for v9.1.0-rc2 release (2024-08-15 20:32:37 +1000)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/thuth/qemu.git tags/pull-request-2024-08-16
-> 
-> for you to fetch changes up to b4be15a9f9e73fa2e7c46da559f10afc94018984:
-> 
->    ci: refresh package lists with lcitool (2024-08-16 09:16:03 +0200)
-> 
-> ----------------------------------------------------------------
-> * Fix a potential build warning in the s390x target code
-> * Check for the availability of __attribute__((gcc_struct)) on MSYS2
-> * Fix skipUnless decorators in Avocado tests
-> * Add missing gtk-vnc package to the CI jobs
+This allows the vhost_net device which has multiple virtqueues to batch
+the setup of all its host notifiers. This significantly reduces the
+vhost_net device starting and stoping time, e.g. the time spend
+on enabling notifiers reduce from 630ms to 75ms and the time spend on
+disabling notifiers reduce from 441ms to 45ms for a VM with 192 vCPUs
+and 15 vhost-user-net devices (64vq per device) in our case.
 
+Signed-off-by: zuoboqun <zuoboqun@baidu.com>
+---
+ hw/net/vhost_net.c        | 155 +++++++++++++++++++++++++++++++++++---
+ hw/virtio/vhost.c         |   6 +-
+ include/hw/virtio/vhost.h |   4 +
+ 3 files changed, 150 insertions(+), 15 deletions(-)
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index a788e6937e..28a9aca1a7 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -160,6 +160,135 @@ void vhost_net_save_acked_features(NetClientState *nc)
+ #endif
+ }
+ 
++static void vhost_net_disable_notifiers_nvhosts(VirtIODevice *dev,
++                NetClientState *ncs, int data_queue_pairs, int nvhosts)
++{
++    VirtIONet *n = VIRTIO_NET(dev);
++    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(dev)));
++    struct vhost_net *net;
++    struct vhost_dev *hdev;
++    int r, i, j;
++    NetClientState *peer;
++
++    /*
++     * Batch all the host notifiers in a single transaction to avoid
++     * quadratic time complexity in address_space_update_ioeventfds().
++     */
++    memory_region_transaction_begin();
++
++    for (i = 0; i < nvhosts; i++) {
++        if (i < data_queue_pairs) {
++            peer = qemu_get_peer(ncs, i);
++        } else {
++            peer = qemu_get_peer(ncs, n->max_queue_pairs);
++        }
++
++        net = get_vhost_net(peer);
++        hdev = &net->dev;
++        for (j = 0; j < hdev->nvqs; j++) {
++            r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus),
++                                             hdev->vq_index + j,
++                                             false);
++            if (r < 0) {
++                error_report("vhost %d VQ %d notifier cleanup failed: %d",
++                              i, j, -r);
++            }
++            assert(r >= 0);
++        }
++    }
++    /*
++     * The transaction expects the ioeventfds to be open when it
++     * commits. Do it now, before the cleanup loop.
++     */
++    memory_region_transaction_commit();
++
++    for (i = 0; i < nvhosts; i++) {
++        if (i < data_queue_pairs) {
++            peer = qemu_get_peer(ncs, i);
++        } else {
++            peer = qemu_get_peer(ncs, n->max_queue_pairs);
++        }
++
++        net = get_vhost_net(peer);
++        hdev = &net->dev;
++        for (j = 0; j < hdev->nvqs; j++) {
++            virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus),
++                                             hdev->vq_index + j);
++        }
++        virtio_device_release_ioeventfd(dev);
++    }
++}
++
++static int vhost_net_enable_notifiers(VirtIODevice *dev,
++                NetClientState *ncs, int data_queue_pairs, int cvq)
++{
++    VirtIONet *n = VIRTIO_NET(dev);
++    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(dev)));
++    int nvhosts = data_queue_pairs + cvq;
++    struct vhost_net *net;
++    struct vhost_dev *hdev;
++    int r, i, j;
++    NetClientState *peer;
++
++    /*
++     * Batch all the host notifiers in a single transaction to avoid
++     * quadratic time complexity in address_space_update_ioeventfds().
++     */
++    memory_region_transaction_begin();
++
++    for (i = 0; i < nvhosts; i++) {
++        if (i < data_queue_pairs) {
++            peer = qemu_get_peer(ncs, i);
++        } else {
++            peer = qemu_get_peer(ncs, n->max_queue_pairs);
++        }
++
++        net = get_vhost_net(peer);
++        hdev = &net->dev;
++        /*
++         * We will pass the notifiers to the kernel, make sure that QEMU
++         * doesn't interfere.
++         */
++        r = virtio_device_grab_ioeventfd(dev);
++        if (r < 0) {
++            error_report("binding does not support host notifiers");
++            memory_region_transaction_commit();
++            goto fail_nvhosts;
++        }
++
++        for (j = 0; j < hdev->nvqs; j++) {
++            r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus),
++                                             hdev->vq_index + j,
++                                             true);
++            if (r < 0) {
++                error_report("vhost %d VQ %d notifier binding failed: %d",
++                              i, j, -r);
++                memory_region_transaction_commit();
++                vhost_dev_disable_notifiers_nvqs(hdev, dev, j);
++                goto fail_nvhosts;
++            }
++        }
++    }
++
++    memory_region_transaction_commit();
++
++    return 0;
++fail_nvhosts:
++    vhost_net_disable_notifiers_nvhosts(dev, ncs, data_queue_pairs, i);
++    return r;
++}
++
++/*
++ * Stop processing guest IO notifications in qemu.
++ * Start processing them in vhost in kernel.
++ */
++static void vhost_net_disable_notifiers(VirtIODevice *dev,
++                NetClientState *ncs, int data_queue_pairs, int cvq)
++{
++    vhost_net_disable_notifiers_nvhosts(dev, ncs, data_queue_pairs,
++                                        data_queue_pairs + cvq);
++}
++
+ static int vhost_net_get_fd(NetClientState *backend)
+ {
+     switch (backend->info->type) {
+@@ -270,11 +399,6 @@ static int vhost_net_start_one(struct vhost_net *net,
+         }
+     }
+ 
+-    r = vhost_dev_enable_notifiers(&net->dev, dev);
+-    if (r < 0) {
+-        goto fail_notifiers;
+-    }
+-
+     r = vhost_dev_start(&net->dev, dev, false);
+     if (r < 0) {
+         goto fail_start;
+@@ -326,8 +450,6 @@ fail:
+     }
+     vhost_dev_stop(&net->dev, dev, false);
+ fail_start:
+-    vhost_dev_disable_notifiers(&net->dev, dev);
+-fail_notifiers:
+     return r;
+ }
+ 
+@@ -349,7 +471,6 @@ static void vhost_net_stop_one(struct vhost_net *net,
+     if (net->nc->info->stop) {
+         net->nc->info->stop(net->nc);
+     }
+-    vhost_dev_disable_notifiers(&net->dev, dev);
+ }
+ 
+ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
+@@ -394,10 +515,16 @@ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
+         }
+      }
+ 
++    r = vhost_net_enable_notifiers(dev, ncs, data_queue_pairs, cvq);
++    if (r < 0) {
++        error_report("Error enabling host notifiers: %d", -r);
++        goto err;
++    }
++
+     r = k->set_guest_notifiers(qbus->parent, total_notifiers, true);
+     if (r < 0) {
+         error_report("Error binding guest notifier: %d", -r);
+-        goto err;
++        goto err_host_notifiers;
+     }
+ 
+     for (i = 0; i < nvhosts; i++) {
+@@ -412,19 +539,19 @@ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
+             r = vhost_set_vring_enable(peer, peer->vring_enable);
+ 
+             if (r < 0) {
+-                goto err_start;
++                goto err_guest_notifiers;
+             }
+         }
+ 
+         r = vhost_net_start_one(get_vhost_net(peer), dev);
+         if (r < 0) {
+-            goto err_start;
++            goto err_guest_notifiers;
+         }
+     }
+ 
+     return 0;
+ 
+-err_start:
++err_guest_notifiers:
+     while (--i >= 0) {
+         peer = qemu_get_peer(ncs, i < data_queue_pairs ?
+                                   i : n->max_queue_pairs);
+@@ -435,6 +562,8 @@ err_start:
+         fprintf(stderr, "vhost guest notifier cleanup failed: %d\n", e);
+         fflush(stderr);
+     }
++err_host_notifiers:
++    vhost_net_disable_notifiers(dev, ncs, data_queue_pairs, cvq);
+ err:
+     return r;
+ }
+@@ -466,6 +595,8 @@ void vhost_net_stop(VirtIODevice *dev, NetClientState *ncs,
+         fflush(stderr);
+     }
+     assert(r >= 0);
++
++    vhost_net_disable_notifiers(dev, ncs, data_queue_pairs, cvq);
+ }
+ 
+ void vhost_net_cleanup(struct vhost_net *net)
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 06fc71746e..7c5ef81b55 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1682,9 +1682,9 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+     memset(hdev, 0, sizeof(struct vhost_dev));
+ }
+ 
+-static void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
+-                                             VirtIODevice *vdev,
+-                                             unsigned int nvqs)
++void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
++                                      VirtIODevice *vdev,
++                                      unsigned int nvqs)
+ {
+     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+     int i, r;
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index d75faf46e9..c75be46c06 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -171,6 +171,10 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+  */
+ void vhost_dev_cleanup(struct vhost_dev *hdev);
+ 
++void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
++                                      VirtIODevice *vdev,
++                                      unsigned int nvqs);
++
+ /**
+  * vhost_dev_enable_notifiers() - enable event notifiers
+  * @hdev: common vhost_dev structure
+-- 
+2.42.0.windows.2
 
-r~
 
