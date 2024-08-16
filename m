@@ -2,211 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45326954F9A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 19:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAA0954FE0
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 19:17:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf0TB-0004wf-VO; Fri, 16 Aug 2024 13:10:35 -0400
+	id 1sf0Zj-0007Hc-QX; Fri, 16 Aug 2024 13:17:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sf0T1-0004lo-OB
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:10:24 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sf0St-0007Ml-BL
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:10:22 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47GFiRPN013535;
- Fri, 16 Aug 2024 17:10:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- corp-2023-11-20; bh=4OvsUsY7ptVbii42cn9F70qR3LF7v2JP3P/u1Lae0A8=; b=
- h5mWwNRmUxwhiZHW6On5qnFUU5/MpAWtpYyyefrMbhjgZroN6ufwu52XWUOkdA31
- b3RKf6oHHN8yLYA0piMpIRrfvSI1tGE4J9LH7CUJJZepoxCAYVlzCtG1bCPZ40+k
- Qa9NGmOrkrpxMcpOVAAf7XWTU/hpx7+YuLblad/hZvUlp1oNJfPLycPwl0BR+yRh
- FsyMLz1mqjfKBrT0TC0VTClRhRGfNce9QqYnWnqZCIs7xHVQOKuqgbOkCWAisvMA
- JIxaRx2xg23b3QqlQpapa+JPAaGWPEloBAzs1Ltiho1+pxl5ALRlyhqVNGzt5z9w
- S01IHba/M9VH76NJz28azg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40wyttn1xt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Aug 2024 17:10:11 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 47GFiAql003907; Fri, 16 Aug 2024 17:10:10 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2045.outbound.protection.outlook.com [104.47.70.45])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 40wxncgwn9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Aug 2024 17:10:10 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aFsMF6gyYWfhAJ8S2GwaPVThe3Y372QukBGk994xd4ASOu1DhHpQcb9Sx3+KrFvXa11wiK0/JDZLIwj5qDKLG2VTIRh44VdhOUkHfF/6zDN0Hl/fFvXsqeAHFYK8J27xdJBvf25ztYQpTbdh/5S8vX6eF5jO5ulHwIM6GYu86sGSBP0AIOqXwp3PXMFns1GfLP8JDfDIM/ujUyJ543H2xci+3Wgmyf8S7BBQ0RTYZTXBCS+viPlQAS3OJloasMcfyn82hI0+sNjuYJ9KHj7954gQJP1Gv/XXgS6SroyRQ6ab0SaIZipfz/RhgBP10Pt0gZWWkjvGhoI1cg9Tq6MLPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4OvsUsY7ptVbii42cn9F70qR3LF7v2JP3P/u1Lae0A8=;
- b=f047HMEQZDvYUQTjacTmgfw+ebQDuZzeTmLs6UD8R12NubKA87jEfZK1w1edK6fvKVVP/0jiGC7AgegBwdkWh4aBMs00glancNSZ+sOdrGuR2PpZ6jgYVvY6dvs1pYEq6NKMhlw4qsLC90BZR/fdUKQEzlmjAVxkK+KdGi6G5ANuHy3c3aWQLfD1w5Ct444WXRfa4LnSJdK1m7tydCdmYfVb9TpYRs2JgVZ2OFGWg3m7pTsCqhJJnBysQRIuI8xMaZRSyL/HE55ikKeAQRxuaVVSafq0MPtfegetFBRhYSe+YPLp1hQOIVTV2TvCa6KoKp1RGjaBVcnjiV5yYwhWXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4OvsUsY7ptVbii42cn9F70qR3LF7v2JP3P/u1Lae0A8=;
- b=xkAAl5tMx96a7BMNrJvmxm8k2JhuQvHNRoH/lEOJN4I5+yEI8wbGN4je6DYduJ4gXZnMwxFGlEfjy+CTo+UMPxXimqLpO+iGeFy4yEG2QFuSKf+bkK/eZdNB7JVX+0sQxASiUKDnOfmWu8c3lTVqC6qE6L43wqPFOLsg+jymBgc=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by SJ2PR10MB7810.namprd10.prod.outlook.com (2603:10b6:a03:578::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.9; Fri, 16 Aug
- 2024 17:10:07 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%7]) with mapi id 15.20.7875.016; Fri, 16 Aug 2024
- 17:10:07 +0000
-Message-ID: <aa789f70-145f-42a1-a0c1-175190867d85@oracle.com>
-Date: Fri, 16 Aug 2024 13:10:02 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 06/11] migration: fix mismatched GPAs during cpr
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
- <1719776434-435013-7-git-send-email-steven.sistare@oracle.com>
- <ZpqUGYclrONQEuc7@x1n> <571a4f84-693c-43d4-a43a-52a53a1091e1@oracle.com>
- <ZrvFXCRPczXvCu2n@x1n> <5f763763-1479-4585-98ce-83fcec03b4db@oracle.com>
- <Zr9li88goR-YKcng@x1n>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <Zr9li88goR-YKcng@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0096.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::11) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sf0Zh-0007BS-FS
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:17:17 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sf0Zf-00005h-45
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:17:17 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id EACE01FB5D;
+ Fri, 16 Aug 2024 17:17:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1723828630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L9H3PG+aUx3swI3Attbv90lpGucUVS9L4+EaOebnv6k=;
+ b=XDGw/qgUf72S7RKz2k6KVvateNlxuH5V0hcFQ4JOt5N43a1ft85FDveBiCnXrvZwx3uHDe
+ LXlkQqd5lA1ILN0Q5bPaBIheC+PnsdwPl7yRZFoq77WBe9e0PxvN1VRgtDjaPzrRK5kl6G
+ TRXpgdv7DXdtEVH8MJhq7h2zDqg6RHw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1723828630;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L9H3PG+aUx3swI3Attbv90lpGucUVS9L4+EaOebnv6k=;
+ b=+rogWnGR2k/7eo8sXPDP7jlNRhrOltDOkYtnl+OR3lyJDp1EmzgEX63TRRbJYeuEBYf5k2
+ Ex4t1ejeGXdmVsDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1723828629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L9H3PG+aUx3swI3Attbv90lpGucUVS9L4+EaOebnv6k=;
+ b=sNAVnwPJ8t7bKKo7fXiJX54VRYkE7HUFVGZAtw+B6DIZYcSBMzpSWZYisbpD3vbYOMfNG7
+ zf+SkZJ7NKVvfH6igG0vBFTxDSPBB8M13y+fsVZmR5uvLGOcrV1Z5CfqbzVZlqqLy2hot6
+ pYj3UGmAPwDAimzCN/yAV7BVcPL/ceI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1723828629;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L9H3PG+aUx3swI3Attbv90lpGucUVS9L4+EaOebnv6k=;
+ b=Q8/aZ6rRMYNvyhj63BGCO7utabSWgPGS3ojvh3h+qEoGUEN1afYUrilKs28M4Hp5qzhFFh
+ qIOuB1tHvdCCQGAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67CA713A2F;
+ Fri, 16 Aug 2024 17:17:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id vDu/C5WJv2bYOAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 16 Aug 2024 17:17:09 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Yichen Wang <yichen.wang@bytedance.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, =?utf-8?Q?M?=
+ =?utf-8?Q?arc-Andr=C3=A9?=
+ Lureau <marcandre.lureau@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Eric Blake
+ <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>, "Ho-Ren (Jack) Chuang"
+ <horenchuang@bytedance.com>, Yichen Wang <yichen.wang@bytedance.com>
+Subject: Re: [PATCH v7 1/5] docs/migration: add qatzip compression feature
+In-Reply-To: <20240815002124.65384-2-yichen.wang@bytedance.com>
+References: <20240815002124.65384-1-yichen.wang@bytedance.com>
+ <20240815002124.65384-2-yichen.wang@bytedance.com>
+Date: Fri, 16 Aug 2024 14:17:06 -0300
+Message-ID: <87ttfk5qwd.fsf@suse.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|SJ2PR10MB7810:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb186ec7-8896-4af6-6d1f-08dcbe164716
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?c1grWjc4Ym5zd2NDdHhKQ0d0NzBFTzVwS0JwZXF0Skl4eVRtdkI0aVVDOTAw?=
- =?utf-8?B?RTE4Vk5MUmQ1RlRNUURKY1ptK2lKVHRqdnpDcDg2NkwybjN0dk5RMUM4WFAz?=
- =?utf-8?B?MDliTzY4d3hDcWVLMm5RR0pRVUFwK3QvNTdYZmhKT1ZtUC9MNVFZbFZiNHNY?=
- =?utf-8?B?Z2FKSTRhcDFlOGpYK09kZzNEK1MycFVlRjhGT3paclFOMlM1RUdPTWV3TjVh?=
- =?utf-8?B?Qmp0UDFQajNydU0yUFRGdVZqZlJMUFJoNlZCSXJIVk4wQ0t5NExNVGZsZ3JK?=
- =?utf-8?B?UUR2b0dwZm44OWRLOU1pUWkrdDhkS2JrazZONlhJVWNpeHM2SXBxZitIVFBh?=
- =?utf-8?B?QXYrK2tzZ3owaVpNOUllYjc3ekkwTlg1OGxTTUFUNUU1cUNvUTNyU1NGUFFO?=
- =?utf-8?B?bWVzazJCVHR3eEFiRkZUdjlyRkIzM1BSZ1lHbzJyR2NQaEZ1YWIxMzVrR0pF?=
- =?utf-8?B?T1U1djlVUk84QVRBYmNKRGxiUlpxL2ZrRjU3VkkyV1hRbnYwZ0dxZWIrU3NN?=
- =?utf-8?B?OFd0dy9LQzFtb1Izdy9hUFB6NFBqcUU0ZFZFazFLZUs4MnYzWWRRWGZEeEVP?=
- =?utf-8?B?S0FLdDlvR3p1dEFoa2M3bUVaZjdMOUJyL3FRNHR0TzZ4U3BCMGh2VU9zVVNS?=
- =?utf-8?B?LzBWOHZNWE9WNmV3YnBadVpmQ0U5MmRJQmpwQU1EdVRQSmhWdmN4WHpPSXRy?=
- =?utf-8?B?RUwwV09Qc3JWWDZXTUlrZzcrR3VrRXNvRmh5QnZqQ3ZRRjdrRmRXTUV5eWxt?=
- =?utf-8?B?dlltUTVqRlFtN25oUzNZTkxIQWdxc3JabFVTZ000MU5PVkhTNEI4UnAvQlA4?=
- =?utf-8?B?WmpBbVBBS3BtcFZTejV4MGQ2RzJHdnloamdNS2J5M3pQUTR0MUdlWWQwOURl?=
- =?utf-8?B?dG5oSWZyRVAwVy8xTDBHNFh6clJtaEFKNjlVeFIrZ3RmaW1lTytXSWZaOUFO?=
- =?utf-8?B?T3AzUG5qN1NRZ2dIdlhjTFlZdkVHZDdnTEJ3UG4rQ0VyRHYvanVHZkd0dEV3?=
- =?utf-8?B?Q0NuT1pEdE55QW5OaTRTY2p1N2ZUbTF1dXVMajhFdWhhdUpJV0diQWtuNWlT?=
- =?utf-8?B?WGR6Z3lkSFJvbVJSdFo5eEc3T0UvSFpXdDQ1aWxmaHA4T0Y0a3FDdzRHN2Qw?=
- =?utf-8?B?dmFhZGhaaTR3YzZSbEpCTnVncncybGNCMDlZMTdOczJncEtZcjJKTm5ESXJ5?=
- =?utf-8?B?cDJsbGdIMkFpcXVaWDVnbHMxbCtXNDFKeUlJK29yb05sbldUY2hQSkZrZTZm?=
- =?utf-8?B?SmJOZVN1bnhZZmlkbUpsaURTdHZtc3RzSE1aYUFRZElkazR1NmtlR0k1T0N0?=
- =?utf-8?B?QVFscU9XTXZqVFFNakFMUWg5blkrWWt5eXMyTE4wc2dsR2hiMUZJUEwzVm53?=
- =?utf-8?B?TVVxdGZvay9oMERSTjRWeW12SCtFRTdWVGlzKzhYbHBnWVN5c3BYYkIvbTJ1?=
- =?utf-8?B?QWpCMGpCRHNaV1NERy94cjkzRHQ4VFRIcEI0RzNpekhvUzBjS09LTzRsMzMv?=
- =?utf-8?B?UUk2ZHVxZTJFZ0RaL1pPdXk0U0cvSmZXcU5YaVRQOTZ6SVFzZ2RMWW9tb1ps?=
- =?utf-8?B?MUZHaVZKTjRyK1VQL1IrVW4rOVlRZlg1MzdOenZLdnc1L1lWc0c4RHVLb3E1?=
- =?utf-8?B?VnI3Q2VrQnJDZTJ5WXFMWEpGM0VBM3FiS2lvaU9VUWQrRW92UWkyOXJvK0lT?=
- =?utf-8?B?WlNTSlN4cXhEVnY1OE5rcjdrYjhQSnJGVE1mWkdJN2ZVaVVYcHUxeWxJOUpR?=
- =?utf-8?B?MkpBVFJzclBNMEFqTjBXVmcrVDBzd05zTGRYV3F1WWdidDEvNEJ4VTMxN0E3?=
- =?utf-8?B?RzE4MFRyYUxySVY3TXh6QT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(7416014)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q21mZFhhZ2RqZHl0VHg1Z3loOVhMMTdMT01sN3liQTNWRU1FUHN4bXVnV1Qr?=
- =?utf-8?B?YnFNWXI0S1BYZjJRSkE2Znc3dFdJTkw4TDB4WGJnYUtFVlV3V09ZZzlTWHpN?=
- =?utf-8?B?enpPVUl6TExzNldWRS9mbmc4YVN4OVU4NWhaR3VOYVJrUXZGZXdNSkp1eHRH?=
- =?utf-8?B?aUtQb0l3bERiTzVOU00zVm5TR2pYSE12Q2dFWUJJeGN6RnBmUTcvaHphaHkr?=
- =?utf-8?B?S1hBWG01S1AwV0l4RTRabUNOWTkwVGJqWkU1Wm9TSGs4QUxNamExSE1PSmJu?=
- =?utf-8?B?WWp6NVlPSVM1T1VSdUdQYkQ0SjVFZWFSSW1XUjV1blpTMjlJTjBDYkZEb3F6?=
- =?utf-8?B?WEtrM1NYODdwbThlRGVzaFd5YUtROVBZY0gzRXRkc1dvcVV0alRITENmRE16?=
- =?utf-8?B?amRPU2tiTHZoallKMDN6MkxPMlhJaGZWa1JZcDExMXIrQUhQRVpYOXZYOXdi?=
- =?utf-8?B?SHJXVnlJSjIxRnJQYmVrOVpOaFFjOHU3ejI2QnVYRlFrM1hDekVlSGQ2M0NG?=
- =?utf-8?B?Znl2WFVxV3VxekVzSGlaUnFheDBSOGtVUnppMW9CZmRydmMxMlFJZnNLVnVm?=
- =?utf-8?B?VmFUSGN4TUxuWDROL2d1TGJOQ3hIZXR3VWtrMWJzK3pFL1hYT1cwdkVUUjlm?=
- =?utf-8?B?akNDVlFLa0pOcFNtbTJ0b1hjdjRxaGxhNFcvQW1wZnB1dUJLMkRjTE04bTVM?=
- =?utf-8?B?MitucXhWb3E1cDAxaDFlRkw1LzIvakVJV0xuNklBaGpvalh2SHppRHMrZ2R1?=
- =?utf-8?B?Nkd4QVFxd0hHWVFoa09MS2JxWmtrdlZxMHAycFNwb1MvRDdkdEI4ckNuaWJi?=
- =?utf-8?B?UnlhaXA4ZGVnT1FpbXNaaDJnOW9jTlV6aGI1WkFFQThoRHdyVEoybVJ1dmZp?=
- =?utf-8?B?ck9pVGFrbk9pR2h6R3JoNWkzaVdZOGRMUnp2NjJJYTdZNnpaK2VGYitrSjI1?=
- =?utf-8?B?TlZ6T0wvblFWUm9Lc2JJVWRhVmMxVDRiczdmMkpueTF5N2F6UkM2ZXZ4Kzhj?=
- =?utf-8?B?aVNHZzFZck9qdloyci8xSk5oazlLT0lZS0liOHRFRExQZk8wUGt3Ui8vdERq?=
- =?utf-8?B?ZG9DdFEydVk1cU44czNCeWhSd0VheHYrYlBpcEZHc0lTRzFFWTAyclRNdFp1?=
- =?utf-8?B?VFdPUlN4eGJnWmd4OHRLVGpnQjNLd1htNkNMTWV2Lzh1dXVUa0hBUzZ5Y2hw?=
- =?utf-8?B?c2NiNVJpVkRzSjhMZmpMYzVxT2JlbjVSYTNDb0NqaFlYK3FsRExwamRhZG9h?=
- =?utf-8?B?bUswRzVMYThWM3FCeFdjTkFqQkUzSmx0aElwd3dkVEVMOUV3WTBhc0dlaUtu?=
- =?utf-8?B?cUhxV0ZEOWJEazhRcHVBZkRLUks2QkYxM09zOW9OZGcxMWsrQkRldGhYcjNp?=
- =?utf-8?B?SUE2b2gzS3VuZDFHQWduTEhkd1ZVUEdjNFBMUzBzejhIK3h0dG04VElTWmlh?=
- =?utf-8?B?UFBlSEFWTVFsMVlvRURuUG9kdjVxYTBVL29rNWEwelllZGZlaHhTeUpLR0NX?=
- =?utf-8?B?RzBmcjBuMnBsamZoUDhDeXEydytHaXpVdTEwUS9FSkcwdUQ1dTN0NWJJV1lY?=
- =?utf-8?B?dUx3dFFGYytGTVZtcklZd2YrZTExQUdPbTdrRjBsa211R1hiN2ZDaWpPVjZv?=
- =?utf-8?B?aVRrM1BtSWFveUtPbjF3UU9WZk5KRGUwVlF5RHBuS0xVQks5MmVaNENXZ3kr?=
- =?utf-8?B?ODE3TUFFaUFYS01oUXU0aERnOFBhNTdDM2FGRzRXMTZ0RXA0WHFER2Z2Rjg1?=
- =?utf-8?B?a2hWZVp2bkN4dTFzbmsrUXlCa3dtSi9QMVRlOHdaT1NHVzcwMG1MZ0VkNGZw?=
- =?utf-8?B?S2E2bEpPY1lwTmxnbmNLTUQ3VEpYQm5GTnJnajZ6cHFzZGRxVXdpSzkvWmI1?=
- =?utf-8?B?cW5rYWZRU09hQnV1aUVHeTlQbHFVeTFQbGlkcWpPMy9uQXM5WXJkTGJlZXNH?=
- =?utf-8?B?dWZlb0kxZkk5ejZTcy81M1E2TUUvVHJFZCtVMXlKa1ZiZkMyVkR2VURsbW9Q?=
- =?utf-8?B?ejd6dmsvMUszYWNNVjFkWTNpV0RPVGtEYk9nTjA5Ti80eXUzMVZ1a1MzUjY0?=
- =?utf-8?B?TDNSZTJZTkRPREJ5WDIyeGJKaHdtYlRuaVhsdmVCL3h5S05MU2lGczVkZmNY?=
- =?utf-8?B?dlowdWNyT1ZyMUNTS0ZxaVBCazhCL1F0cG1YOXptdDRiblBkSmNNYmp5bDNO?=
- =?utf-8?B?Znc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: MHmKqhuKtyHGDr12W9kUwFCp31F5mNVqOYlqltjnVQI10+VC9hZXH77ZLR3WVvthB4hCplKchaK7YuOYvvynXnTXX+wLQDQffYJdFS1axLVfxNVRdb7GbyjhoHsZMfCWxUWG/RzM1xuQOcJlzRqmorZFXvRYoJqCy35DiLXRoEFoseMfeOrfIZf4JfGau9r5zOba7u3sCqvD4Vg1QtKyRkV4XXVxvSS2we0p1Px5ZbJti1aKUMVF1+Qz+PfAi6yuivr5sStOGd7LknrkFQ7n44Uoh2dXRQHv+/+lAMxTKKSyZTLTd3KfLSb0YRp0tFQcDeovM4pVpn9Tg+2HbAmKCusmC/CSQ8qwBs0pYlPpRszuigaj9W7zVqgBclklF7bmjafVXQlWm5J09TTRq1RfLN/eCv8AsKN8uOnhnLyy4bt3dcr63czHU6oapzfbBMPF2msnFY6rBKmYLgRsPwmbLukTVEWUOt4wHlQxTE5jmkO9vU1ekgM0LHHGd//W130C2l+2QJ9NLdVXiIovqbmHzekiwzldsW8+FX4Vl1MDB8F2UJ2IE/LEeGKXKA+EGlSqnMGaLxPZLWyf2ekUanbYCjeqQ2IQflnKgfgtdkCih8A=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb186ec7-8896-4af6-6d1f-08dcbe164716
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2024 17:10:07.2474 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AxHwCAeow1NDe7ZuKvjdYaL4qdhGUz7vwpshYbBdC8p3pr82xGhmir7l/pWQxEAx3CE5E2U+eUe7zRI44VHubiMmJSOG6xwNzKm99t95FtU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7810
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-16_11,2024-08-16_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2407110000 definitions=main-2408160121
-X-Proofpoint-ORIG-GUID: MdplCWKJKO_HGMkHC9DBN81qWr-4XKNG
-X-Proofpoint-GUID: MdplCWKJKO_HGMkHC9DBN81qWr-4XKNG
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.26 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.16)[-0.813]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ RCPT_COUNT_TWELVE(0.00)[16]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, intel.com:url, intel.com:email,
+ imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.26
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -222,100 +122,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/2024 10:43 AM, Peter Xu wrote:
-> On Thu, Aug 15, 2024 at 04:54:58PM -0400, Steven Sistare wrote:
->> On 8/13/2024 4:43 PM, Peter Xu wrote:
->>> On Wed, Aug 07, 2024 at 05:04:26PM -0400, Steven Sistare wrote:
->>>> On 7/19/2024 12:28 PM, Peter Xu wrote:
->>>>> On Sun, Jun 30, 2024 at 12:40:29PM -0700, Steve Sistare wrote:
->>>>>> For new cpr modes, ramblock_is_ignored will always be true, because the
->>>>>> memory is preserved in place rather than copied.  However, for an ignored
->>>>>> block, parse_ramblock currently requires that the received address of the
->>>>>> block must match the address of the statically initialized region on the
->>>>>> target.  This fails for a PCI rom block, because the memory region address
->>>>>> is set when the guest writes to a BAR on the source, which does not occur
->>>>>> on the target, causing a "Mismatched GPAs" error during cpr migration.
->>>>>
->>>>> Is this a common fix with/without cpr mode?
->>>>>
->>>>> It looks to me mr->addr (for these ROMs) should only be set in PCI config
->>>>> region updates as you mentioned.  But then I didn't figure out when they're
->>>>> updated on dest in live migration: the ramblock info was sent at the
->>>>> beginning of migration, so it doesn't even have PCI config space migrated;
->>>>> I thought the real mr->addr should be in there.
->>>>>
->>>>> I also failed to understand yet on why the mr->addr check needs to be done
->>>>> by ignore-shared only.  Some explanation would be greatly helpful around
->>>>> this area..
->>>>
->>>> The error_report does not bite for normal migration because migrate_ram_is_ignored()
->>>> is false for the problematic blocks, so the block->mr->addr check is not
->>>> performed.  However, mr->addr is never fixed up in this case, which is a
->>>> quiet potential bug, and this patch fixes that with the "has_addr" check.
->>>>
->>>> For cpr-exec, migrate_ram_is_ignored() is true for all blocks,
->>>> because we do not copy the contents over the migration stream, we preserve the
->>>> memory in place.  So we fall into the block->mr->addr sanity check and fail
->>>> with the original code.
->>>
->>> OK I get your point now.  However this doesn't look right, instead I start
->>> to question why we need to send mr->addr at all..
->>>
->>> As I said previously, AFAIU mr->addr should only be updated when there's
->>> some PCI config space updates so that it moves the MR around in the address
->>> space based on how guest drivers / BIOS (?) set things up.  Now after these
->>> days not looking, and just started to look at this again, I think the only
->>> sane place to do this update is during a post_load().
->>>
->>> And if we start to check some of the memory_region_set_address() users,
->>> that's exactly what happened..
->>>
->>>     - ich9_pm_iospace_update(), update addr for ICH9LPCPMRegs.io, where
->>>       ich9_pm_post_load() also invokes it.
->>>
->>>     - pm_io_space_update(), updates PIIX4PMState.io, where
->>>       vmstate_acpi_post_load() also invokes it.
->>>
->>> I stopped here just looking at the initial two users, it looks all sane to
->>> me that it only got updated there, because the update requires pci config
->>> space being migrated first.
->>>
->>> IOW, I don't think having mismatched mr->addr is wrong at this stage.
->>> Instead, I don't see why we should send mr->addr at all in this case during
->>> as early as SETUP, and I don't see anything justifies the mr->addr needs to
->>> be verified in parse_ramblock() since ignore-shared introduced by Yury in
->>> commit fbd162e629aaf8 in 2019.
->>>
->>> We can't drop mr->addr now when it's on-wire, but I think we should drop
->>> the error report and addr check, instead of this patch.
->>
->> As it turns out, my test case triggers this bug because it sets x-ignore-shared,
->> but x-ignore-shared is not needed for cpr-exec, because migrate_ram_is_ignored
->> is true for all blocks when mode==cpr-exec.  So, the best fix for the GPAs bug
->> for me is to stop setting x-ignore-shared.  I will drop this patch.
->>
->> I agree that post_load is the right place to restore mr->addr, and I don't
->> understand why commit fbd162e629aaf8 added the error report, but I am going
->> to leave it as is.
-> 
-> Ah, I didn't notice that cpr special cased migrate_ram_is_ignored()..
-> 
-> Shall we stick with the old check, but always require cpr to rely on
-> ignore-shared?
-> 
-> Then we replace this patch with removing the error_report, probably
-> together with not caring about whatever is received at all.. would that be
-> cleaner?
+Yichen Wang <yichen.wang@bytedance.com> writes:
 
-migrate_ram_is_ignored() is called in many places and must return true for
-cpr-exec/cpr-transfer, independently of migrate_ignore_shared.  That logic
-must remain as is.
+> From: Yuan Liu <yuan1.liu@intel.com>
+>
+> add Intel QATzip compression method introduction
+>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Yichen Wang <yichen.wang@bytedance.com>
+> ---
+>  docs/devel/migration/features.rst           |   1 +
+>  docs/devel/migration/qatzip-compression.rst | 165 ++++++++++++++++++++
+>  2 files changed, 166 insertions(+)
+>  create mode 100644 docs/devel/migration/qatzip-compression.rst
+>
+> diff --git a/docs/devel/migration/features.rst b/docs/devel/migration/features.rst
+> index 58f8fd9e16..8f431d52f9 100644
+> --- a/docs/devel/migration/features.rst
+> +++ b/docs/devel/migration/features.rst
+> @@ -14,3 +14,4 @@ Migration has plenty of features to support different use cases.
+>     CPR
+>     qpl-compression
+>     uadk-compression
+> +   qatzip-compression
+> diff --git a/docs/devel/migration/qatzip-compression.rst b/docs/devel/migration/qatzip-compression.rst
+> new file mode 100644
+> index 0000000000..a7f755eb7f
+> --- /dev/null
+> +++ b/docs/devel/migration/qatzip-compression.rst
+> @@ -0,0 +1,165 @@
+> +==================
+> +QATzip Compression
+> +==================
+> +In scenarios with limited network bandwidth, the ``QATzip`` solution can help
+> +users save a lot of host CPU resources by accelerating compression and
+> +decompression through the Intel QuickAssist Technology(``QAT``) hardware.
+> +
+> +
+> +The following test was conducted using 8 multifd channels and 10Gbps network
+> +bandwidth. The results show that, compared to zstd, ``QATzip`` significantly
+> +saves CPU resources on the sender and reduces migration time. Compared to the
+> +uncompressed solution, ``QATzip`` greatly improves the dirty page processing
+> +capability, indicated by the Pages per Second metric, and also reduces the
+> +total migration time.
+> +
+> +::
+> +
+> +   VM Configuration: 16 vCPU and 64G memory
+> +   VM Workload: all vCPUs are idle and 54G memory is filled with Silesia data.
+> +   QAT Devices: 4
+> +   |-----------|--------|---------|----------|----------|------|------|
+> +   |8 Channels |Total   |down     |throughput|pages per | send | recv |
+> +   |           |time(ms)|time(ms) |(mbps)    |second    | cpu %| cpu% |
+> +   |-----------|--------|---------|----------|----------|------|------|
+> +   |qatzip     |   16630|       28|     10467|   2940235|   160|   360|
+> +   |-----------|--------|---------|----------|----------|------|------|
+> +   |zstd       |   20165|       24|      8579|   2391465|   810|   340|
+> +   |-----------|--------|---------|----------|----------|------|------|
+> +   |none       |   46063|       40|     10848|    330240|    45|    85|
+> +   |-----------|--------|---------|----------|----------|------|------|
+> +
+> +
+> +QATzip Compression Framework
+> +============================
+> +
+> +``QATzip`` is a user space library which builds on top of the Intel QuickAssist
+> +Technology user space library, to provide extended accelerated compression and
+> +decompression services.
 
-The cleanest change is no change, just dropping this patch.  I was just confused
-when I set x-ignore-shared for the test.
+"user space library" seems to be duplicated in this sentence.
 
-However, if an unsuspecting user sets x-ignore-shared, it will trigger this error,
-so perhaps I should delete the error_report.
+> +
+> +For more ``QATzip`` introduction, please refer to `QATzip Introduction
+> +<https://github.com/intel/QATzip?tab=readme-ov-file#introductionl>`_
+> +
+> +::
+> +
+> +  +----------------+
+> +  | MultiFd Thread |
+> +  +-------+--------+
+> +          |
+> +          | compress/decompress
+> +  +-------+--------+
+> +  | QATzip library |
+> +  +-------+--------+
+> +          |
+> +  +-------+--------+
+> +  |  QAT library   |
+> +  +-------+--------+
+> +          |         user space
+> +  --------+---------------------
+> +          |         kernel space
+> +   +------+-------+
+> +   |  QAT  Driver |
+> +   +------+-------+
+> +          |
+> +   +------+-------+
+> +   | QAT Devices  |
+> +   +--------------+
+> +
+> +
+> +QATzip Installation
+> +-------------------
+> +
+> +The ``QATzip`` installation package has been integrated into some Linux
+> +distributions and can be installed directly. For example, the Ubuntu Server
+> +24.04 LTS system can be installed using below command
+> +
+> +.. code-block:: shell
+> +
+> +   #apt search qatzip
+> +   libqatzip-dev/noble 1.2.0-0ubuntu3 amd64
+> +     Intel QuickAssist user space library development files
+> +
+> +   libqatzip3/noble 1.2.0-0ubuntu3 amd64
+> +     Intel QuickAssist user space library
+> +
+> +   qatzip/noble,now 1.2.0-0ubuntu3 amd64 [installed]
+> +     Compression user-space tool for Intel QuickAssist Technology
+> +
+> +   #sudo apt install libqatzip-dev libqatzip3 qatzip
+> +
+> +If your system does not support the ``QATzip`` installation package, you can
+> +use the source code to build and install, please refer to `QATzip source code installation
+> +<https://github.com/intel/QATzip?tab=readme-ov-file#build-intel-quickassist-technology-driver>`_
+> +
+> +QAT Hardware Deployment
+> +-----------------------
+> +
+> +``QAT`` supports physical functions(PFs) and virtual functions(VFs) for
+> +deployment, and users can configure ``QAT`` resources for migration according
+> +to actual needs. For more details about ``QAT`` deployment, please refer to
+> +`Intel QuickAssist Technology Documentation
+> +<https://intel.github.io/quickassist/index.html>`_
+> +
+> +For more ``QAT`` hardware introduction, please refer to `intel-quick-assist-technology-overview
+> +<https://www.intel.com/content/www/us/en/architecture-and-technology/intel-quick-assist-technology-overview.html>`_
+> +
+> +How To Use QATzip Compression
+> +=============================
+> +
+> +1 - Install ``QATzip`` library
+> +
+> +2 - Build ``QEMU`` with ``--enable-qatzip`` parameter
+> +
+> +  E.g. configure --target-list=x86_64-softmmu --enable-kvm ``--enable-qatzip``
+> +
+> +3 - Set ``migrate_set_parameter multifd-compression qatzip``
+> +
+> +4 - Set ``migrate_set_parameter multifd-qatzip-level comp_level``, the default
+> +comp_level value is 1, and it supports levels from 1 to 9
+> +
+> +QAT Memory Requirements
+> +=======================
+> +
+> +The user needs to reserve system memory for the QAT memory management to
+> +allocate DMA memory. The size of the reserved system memory depends on the
+> +number of devices used for migration and the number of multifd channels.
+> +
+> +Because memory usage depends on QAT configuration, please refer to `QAT Memory
+> +Driver Queires
 
-- Steve
+Queries
+
+> +<https://intel.github.io/quickassist/PG/infrastructure_debugability.html?highlight=memory>`_
+> +for memory usage calculation.
+> +
+> +.. list-table:: An example of a PF used for migration
+> +  :header-rows: 1
+> +
+> +  * - Number of channels
+> +    - Sender memory usage
+> +    - Receiver memory usage
+> +  * - 2
+> +    - 10M
+> +    - 10M
+> +  * - 4
+> +    - 12M
+> +    - 14M
+> +  * - 8
+> +    - 16M
+> +    - 20M
+> +
+> +How To Choose Between QATzip and QPL
+> +====================================
+> +Starting from Intel 4th Gen Intel Xeon Scalable processors, codenamed Sapphire
+> +Rapids processor(``SPR``), it supports multiple build-in accelerators including
+> +``QAT`` and ``IAA``, the former can accelerate ``QATzip``, and the latter is
+> +used to accelerate ``QPL``.
+
+This sentence needs some work. "Intel" seems to be duplicated, unless
+there's a comma somewhere in there to define the subject of the sentence
+("it supports"). s/build-in/built-in/ and the last comma before the
+"and" can be dropped.
+
+> +
+> +Here are some suggestions:
+> +
+> +1 - If your live migration scenario is limited network bandwidth and ``QAT``
+> +hardware resources exceed ``IAA``, then use the ``QATzip`` method, which
+> +can save a lot of host CPU resources for compression.
+> +
+> +2 - If your system cannot support shared virtual memory(SVM) technology, please
+> +use ``QATzip`` method because ``QPL`` performance is not good without SVM
+> +support.
+> +
+> +3 - For other scenarios, please use the ``QPL`` method first.
+
+These would be better without the possessives: "If the live migration",
+"If the system". Also, this is a nitpick, but "please" doesn't really
+fit a technical document.
 
