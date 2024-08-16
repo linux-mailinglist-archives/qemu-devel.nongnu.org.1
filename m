@@ -2,57 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0169553EB
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 01:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A8B955403
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 02:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf6gp-0005Fv-9k; Fri, 16 Aug 2024 19:49:03 -0400
+	id 1sf6re-00036r-Ap; Fri, 16 Aug 2024 20:00:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
- id 1sf6gj-0005Ej-QP
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 19:48:57 -0400
-Received: from secure.fsr.com ([64.126.132.23])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
- id 1sf6gi-0000PK-0c
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 19:48:57 -0400
-Received: from [192.168.254.26] (syn-098-146-201-045.res.spectrum.com
- [98.146.201.45]) (Authenticated sender: chauser)
- by secure.fsr.com (Postfix) with ESMTPSA id 3A3F7354BF;
- Fri, 16 Aug 2024 16:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pullman.com;
- s=mail1; t=1723852130;
- bh=I6NaKKuU6hmfrWGdruuBX+Cq3Azp/hmOcJ6L4O1b7wE=;
- h=Date:Subject:To:From;
- b=GDMiuw+tdQoLMzHOynOEeJkbwtYsD8kzB+GsZsQIpkPtQmfraOVhUu5+JZ+7cz+YQ
- +1EtkwhRUfW4IiRqS7roBWmv+jASQaLnF9XOBr3B82EAnmfUJZiXRw9dDknfgj74+y
- ikG77/9kfioHciCZoCkaQp7lFOVghjWqi+TA21hI=
-Message-ID: <aa172755-faf8-4587-a4e8-d1cbfdc139b1@pullman.com>
-Date: Fri, 16 Aug 2024 16:48:49 -0700
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sf6rY-00035x-Vr
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 20:00:09 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sf6rW-0001sU-Rd
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 20:00:08 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2020ac89cabso10279225ad.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 17:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1723852804; x=1724457604; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hThVIS0NMDVyIHD+K67zvnuEC7Gg05r1u9JYA+DTPYw=;
+ b=HlaGyiQDhHfpzgG2UIEAn1vDorDBIq6RTA3t4x6PTiAHTJeWRpGcaW9PdVFW6UH8fW
+ xFphueTCzUERv/cjolPv4SGwUhqeBWjlN4vWF5CKyJ/D7Bm2zekU3di4hvdeS9zY9/03
+ 20NMW4Raemv7j+rB/rq/DeOLE/j8dHZtZFcv0CbqpXiFm3DFFtEAm7du7tx+vKo23xBq
+ Ln+uuFQh2y4wiZOpjB9CvboSfCHfJRG5eJ0SEIpQwEsxP8kuAJFzZji0X/1eIOFWT08S
+ Skpzx7wK3lk22q+BkbpKlQwwIl1LSC/XmSMsLOgIKV2aNsyCOJRY/vrg4tVL92EN/XbP
+ UPog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723852804; x=1724457604;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hThVIS0NMDVyIHD+K67zvnuEC7Gg05r1u9JYA+DTPYw=;
+ b=NvHhhmWu6WNiw0yZCKGNHxhxEEzyyp9wxdqtu1n2MpZdkAIZIRbgAfQ2sPB0YPEt23
+ 1zYH/XOpYmq65uPGod/FMuq/FHnmh1qO21YqBbFOY6Pa2hfI84HC5Fjx8SGiPG+lFuht
+ 4rNjl5cw9E1K000yHw5r2EgkdniZc5wmytqpNm8rWOlXR+oJ8qSmkFafvsjLp7srVQ+b
+ mjpWS89IEwtFPy9n9QaiaDKhjmpNJare/X8e0CM/XamGOBgbM1Y1GAIGDuZqm0mGdtYb
+ 4B8NTgP12xN8kVQrFDl0LZ7TcbiF8ZFcEtciDpkGfsfvn1N4TYjAdsGlxvGlIESZGab6
+ Vvng==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXbFLoJtoWoy0elsa6Q+oshp5gzYmXETEUfHV1Zn0mjY+yFWB+vFTTHV9/hrwUUfL61Rakz+TCuRPUJhzb9/X7jM7CmGJo=
+X-Gm-Message-State: AOJu0Yw8PcKreEslw04v1rhGqevlxHJHLmhfk/qnMbx1Gvu3xWO2UGya
+ V7gg+NyBfFRr5CmsTeyAfcVewMNA4W39C4RmUkjjnJRB/K4T4zZgohFOJF8Aj55/pt4lKQpWFfY
+ l7fM=
+X-Google-Smtp-Source: AGHT+IE5z+4od9pW4s6FiAs2YjwtRbHZpqujN8HtScJOySlEeDGch/WK5ITxCfl2d8VCZyZEzIt8Ow==
+X-Received: by 2002:a17:903:2343:b0:1ff:622c:277d with SMTP id
+ d9443c01a7336-20203f314a0mr48278585ad.46.1723852803369; 
+ Fri, 16 Aug 2024 17:00:03 -0700 (PDT)
+Received: from [192.168.1.113] ([203.30.4.109])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-201f02fb465sm30434975ad.51.2024.08.16.17.00.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 16 Aug 2024 17:00:02 -0700 (PDT)
+Message-ID: <a1bb747e-f2b1-4eec-97cd-0c7614623aed@linaro.org>
+Date: Sat, 17 Aug 2024 09:59:58 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH for-9.2 v3 0/6] target/sparc: emulate floating point queue
  when raising fp traps
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+To: Carl Hauser <chauser@pullman.com>, qemu-devel@nongnu.org
 References: <20240816072311.353234-1-richard.henderson@linaro.org>
  <501c22c3-d8e3-4439-a958-549e9a772ffd@pullman.com>
  <2c1d0942-1428-47a7-bd37-29c16d596761@pullman.com>
  <092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org>
-Content-Language: en-GB
-From: Carl Hauser <chauser@pullman.com>
-In-Reply-To: <092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org>
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=64.126.132.23; envelope-from=chauser@pullman.com;
- helo=secure.fsr.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ <a06ebc2a-e67b-49d9-91a8-ae2a7a1d8b9d@pullman.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <a06ebc2a-e67b-49d9-91a8-ae2a7a1d8b9d@pullman.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- MIME_HTML_ONLY=0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,45 +100,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>Further info: </p>
-    <p>netbsd panics in the kernel trap handler; unfortunately it does
-      not include the fsr in the panic message, but I expect it will be
-      the same as on Solaris.<br>
-    </p>
-    <p>linux raises SIGFPE in the application that caused the exception.
-      Not surprising since we've seen before that linux is blissfully
-      unaware of the floating point queue.</p>
-    <p>-- Carl<br>
-    </p>
-    <div class="moz-cite-prefix">On 8/16/24 15:05, Richard Henderson
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org">On
-      8/17/24 07:46, Carl Hauser wrote:
-      <br>
-      <blockquote type="cite">OK, I think the problem is the handling of
-        dc-&gt;fsr_qne in trans_STDFQ, lines 4583 and 4593 -- the code
-        is evaluating dc-&gt;fsr_qne at translation time and not at
-        runtime.
-        <br>
-      </blockquote>
-      <br>
-      That's what patch 4 does, ensure that the runtime value is
-      available at translation time.
-      <br>
-      <br>
-      <br>
-      r~
-      <br>
-      <br>
-    </blockquote>
-  </body>
-</html>
+On 8/17/24 08:58, Carl Hauser wrote:
+> Yes, but ...
+> 
+> isn't the state of dc->fsr_qne at translation time irrelevant?
+
+No, because patch 4 made it part of the hashed TB state.
+It's checked and verified, generating a new TB if state does not match.
+
+> And changing it at 
+> translation time (line 4593) is dangerous (because it pertains to runtime, not translation 
+> time); i.e. why is 0 stored at both translation time (4593) and at runtime (4591)?
+
+That keeps the translation time state in sync with the runtime state until the end of the TB.
+
+
+r~
 
