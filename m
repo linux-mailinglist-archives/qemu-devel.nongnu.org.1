@@ -2,81 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3411F9542AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C33A9542C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1serJB-0007d4-Q8; Fri, 16 Aug 2024 03:23:37 -0400
+	id 1serNC-0004q8-IP; Fri, 16 Aug 2024 03:27:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1serJ9-0007XG-QX
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:23:35 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1serJ7-00044i-QV
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:23:35 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-20202df1c2fso5491355ad.1
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 00:23:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723793012; x=1724397812; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eY2K2/64+QKeWeBSKyuHFBnKeWv7V3FsHg7jq9ZTy0Y=;
- b=htwc9HDy9A5i1b3ySgrLTt1bDGsUOaAmdgPBG0/do1ATFHrmTXxwJhbsUOJxcUkgks
- 2bvnHhCOx+8wf93ftYdnWZE+xkGt+P02M726jFFdMD98p+Da0D+dL/TONOLivyTj53Dl
- G9GHCDsX/jqSIKOunuW4V5eKkD19eq/pcLvq/nYGqVS/iEPosbQpCzt/HxNus/O/AYHc
- U1xB160psscd2/9S+CH9tyc5Rw//1fRVh/W5gBiKLl5CmyDURmlcovbAK9mbZ6njKvGF
- qfZ7c85gkwpCXq8Yo5C8gbvb4QiQpINAFKAhI0Azx1+gQqDm6hfgG1Mz1/Ja0x3T9+Ag
- CXvg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1serN8-0004gg-2g
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:27:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1serN6-0004qz-9A
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:27:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723793257;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=sJSm/jGTC4tUTBvOBAMB7a8PYPC9+98lPMDKUbxCEC4=;
+ b=gp0x44TuXqsI7UZsig+97mbXPCTpN3F+laYdXIpV82ORl+IihLbBTeQ7h/kS6e1C8E9J2P
+ awuhphY+l0WKLt56XKj8w2Bjm/4XeE+Uk3nbiQWtGG4MBXwSMFBwDfst8E93Qv0wvQyDqb
+ QCnHLjL8fsLvXVfFms891lLDgJoZIjI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-98-LCEazGRQPQe7XPWqR3axGQ-1; Fri, 16 Aug 2024 03:27:36 -0400
+X-MC-Unique: LCEazGRQPQe7XPWqR3axGQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42816aacabcso12512885e9.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 00:27:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723793012; x=1724397812;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eY2K2/64+QKeWeBSKyuHFBnKeWv7V3FsHg7jq9ZTy0Y=;
- b=aEkRVIHTCkMDgEzCqjPHup06gaMx9rrFRQwWoOt4hFd+u0MeQNLiIciwoUjM2Yk6IF
- 2vW1vcruTaRgzgyIj542BgNrZWzwRI1Y97cP3krbYs6SxJ6gxvJEE9SLAw8VnrBCUqrm
- ISQb1O/cC4huvW70urRW3iAnx1VmF5Zt1dCT1V6/PvDT9MWclEgf4mikGoy/wJFD5T2y
- MCmKUbHyzga3gRoCJ/yvRVb7pV+MzFBdB735+sJnMzcqgnUhTIlqOudeWpmLmBrQwIzt
- a+IsswkJirRwo4v9lIX+YleOyYbiynBEgL7gHrzQG+Qm/m8PvWFcam7J5Ee+UWlWNrZI
- Yd9g==
-X-Gm-Message-State: AOJu0Yyxe1p5PqoDUhqxZZI0Mm+yuNgLW3Gw4erF+Xbqj/c1PEvflOBg
- sgKiQPjneV0b3sP1Sq6C0Ljzj4/sK1zOqz8kJ5JE/SEMZYnJ0B/uLBk6H9eZfUcJWh+TFST/mzZ
- /S2I=
-X-Google-Smtp-Source: AGHT+IETvN1H6mgHjSKA+hzSjemJzQx9Q9EdAwQuyAtKy/60xf74yVwhro81lq6qRMuY8/6RW0s+fg==
-X-Received: by 2002:a17:903:3607:b0:1fb:9cbf:b4e3 with SMTP id
- d9443c01a7336-2020625cdf1mr30627165ad.22.1723793011911; 
- Fri, 16 Aug 2024 00:23:31 -0700 (PDT)
-Received: from stoup.. (2403-580a-f89b-0-1b6b-8c7b-90f9-144f.ip6.aussiebb.net.
- [2403:580a:f89b:0:1b6b:8c7b:90f9:144f])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f037588esm20195525ad.171.2024.08.16.00.23.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Aug 2024 00:23:31 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: chauser@pullman.com
-Subject: [PATCH v3 6/6] target/sparc: Add gen_trap_if_nofpu_fpexception
-Date: Fri, 16 Aug 2024 17:23:11 +1000
-Message-ID: <20240816072311.353234-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240816072311.353234-1-richard.henderson@linaro.org>
-References: <20240816072311.353234-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1723793255; x=1724398055;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sJSm/jGTC4tUTBvOBAMB7a8PYPC9+98lPMDKUbxCEC4=;
+ b=cv76W6icchKwi29LbMTsUDmbCoIVuw5aAkkBkM1BmNDxMwzyTFM3RXzolkeJdNL5L8
+ pvda3Xw3hzuk1cyDtEi7VUpRXtlTnimTYPgSSLY98OzSlNHCNhoAsZ5nKX82U5Z89lEw
+ YEerfseBQesEYepgqq7Rjpesf6zzd4ImYwFzQKloHMV9ZoAqMPeSZf0HpjpIPbqNJG4r
+ hilInPyKXv1Emc8wqwJEKtvm0Iz25sfs/d0897Sw+wRvf/ErLxgEP5aqedwBga0KTDEJ
+ h6Lk/MD3ey2drpSXwM1ATWLXmfTF6HQ6QsyuVQyTbfa46QlrJoKHPOncqecUtUSsU2Jw
+ cHRw==
+X-Gm-Message-State: AOJu0YwJDDfULll9rwyDjInjUu/HQ72M5JcUnWjsMuKAnTdmRJJUxN2V
+ 0Sy73EqKWV48Ut1SjG53gqm8Sp7tn3MgG24cScBd8fqTyl5EnmFNAbpXLHy0o2F0T2uHE7rObKk
+ rfz5TnnP3AyC7nMqSMocgHaQ1Nccw7AB1srr6dt2yMvDYraRA0SOT
+X-Received: by 2002:a05:600c:5106:b0:426:66a2:b200 with SMTP id
+ 5b1f17b1804b1-429ed63113bmr12493885e9.0.1723793255087; 
+ Fri, 16 Aug 2024 00:27:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOnxt7LuUBFAb1lZfrUrKuNHoeUHRRXBeas2UkxgRi2Ht/V3u6YXaL/BcAlpoMi4HSi0/FWA==
+X-Received: by 2002:a05:600c:5106:b0:426:66a2:b200 with SMTP id
+ 5b1f17b1804b1-429ed63113bmr12493625e9.0.1723793254589; 
+ Fri, 16 Aug 2024 00:27:34 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-177-15.web.vodafone.de.
+ [109.43.177.15]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-429ed648f00sm15079675e9.7.2024.08.16.00.27.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 16 Aug 2024 00:27:34 -0700 (PDT)
+Message-ID: <bfd436ad-f76d-4bc3-b92f-cf9aaca9c7f5@redhat.com>
+Date: Fri, 16 Aug 2024 09:27:32 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] meson: Use -fno-sanitize=function when available
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20240816-function-v3-1-32ff225e550e@daynix.com>
+ <3d417232-ba66-4781-8278-a6a31987b54c@redhat.com>
+ <337e647e-3edf-475c-8e37-de3d28b30340@daynix.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <337e647e-3edf-475c-8e37-de3d28b30340@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,297 +150,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Model fp_exception state, in which only fp stores are allowed
-until such time as the FQ has been flushed.
+On 16/08/2024 09.12, Akihiko Odaki wrote:
+> On 2024/08/16 16:03, Thomas Huth wrote:
+>> On 16/08/2024 08.22, Akihiko Odaki wrote:
+>>> Commit 23ef50ae2d0c (".gitlab-ci.d/buildtest.yml: Use
+>>> -fno-sanitize=function in the clang-system job") adds
+>>> -fno-sanitize=function for the CI but doesn't add the flag in the
+>>> other context. Add it to meson.build for such. It is not removed from
+>>> .gitlab-ci.d/buildtest.yml because -fno-sanitize=function in meson.build
+>>> does not affect --extra-cflags due to argument ordering.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> ---
+>>> Changes in v3:
+>>> - I was not properly dropping the change of .gitlab-ci.d/buildtest.yml
+>>>    but only updated the message. v3 fixes this. (Thomas Huth)
+>>> - Link to v2: 
+>>> https://lore.kernel.org/r/20240729-function-v2-1-2401ab18b30b@daynix.com
+>>>
+>>> Changes in v2:
+>>> - Dropped the change of: .gitlab-ci.d/buildtest.yml
+>>> - Link to v1: 
+>>> https://lore.kernel.org/r/20240714-function-v1-1-cc2acb4171ba@daynix.com
+>>> ---
+>>>   meson.build | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/meson.build b/meson.build
+>>> index 5613b62a4f42..a4169c572ba9 100644
+>>> --- a/meson.build
+>>> +++ b/meson.build
+>>> @@ -609,6 +609,7 @@ if host_os != 'openbsd' and \
+>>>   endif
+>>>   qemu_common_flags += cc.get_supported_arguments(hardening_flags)
+>>> +qemu_common_flags += cc.get_supported_arguments('-fno-sanitize=function')
+>>
+>> As I mentioned in my last mail: I think it would make sense to move this 
+>> at the end of the "if get_option('tsan')" block in meson.build, since this 
+>> apparently only fixes the use of "--enable-sanitizers", and cannot fix the 
+>> "--extra-cflags" that a user might have specified?
+> 
+> Sorry, I missed it. It cannot fix --extra-cflags, but it should be able to 
+> fix compiler flags specified by compiler distributor.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/sparc/translate.c | 90 +++++++++++++++++++++++++++-------------
- 1 file changed, 61 insertions(+), 29 deletions(-)
+Oh, you mean that there are distros that enable -fsanitize=function by 
+default? Can you name one? If so, I think that information should go into 
+the patch description...?
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 6d4c0e79c9..46eb27c497 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -1465,15 +1465,48 @@ static void gen_op_fpexception_im(DisasContext *dc, int ftt)
-     gen_exception(dc, TT_FP_EXCP);
- }
- 
--static int gen_trap_ifnofpu(DisasContext *dc)
-+static bool gen_trap_ifnofpu(DisasContext *dc)
- {
- #if !defined(CONFIG_USER_ONLY)
-     if (!dc->fpu_enabled) {
-         gen_exception(dc, TT_NFPU_INSN);
--        return 1;
-+        return true;
-     }
- #endif
--    return 0;
-+    return false;
-+}
-+
-+static bool gen_trap_iffpexception(DisasContext *dc)
-+{
-+#if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
-+    /*
-+     * There are 3 states for the sparc32 fpu:
-+     * Normally the fpu is in fp_execute, and all insns are allowed.
-+     * When an exception is signaled, it moves to fp_exception_pending state.
-+     * Upon seeing the next FPop, the fpu moves to fp_exception state,
-+     * populates the FQ, and generates an fp_exception trap.
-+     * The fpu remains in fp_exception state until FQ becomes empty
-+     * after execution of a STDFQ instruction.  While the fpu is in
-+     * fp_exception state, and FPop, fp load or fp branch insn will
-+     * return to fp_exception_pending state, set FSR.FTT to sequence_error,
-+     * and the insn will not be entered into the FQ.
-+     *
-+     * In QEMU, we do not model the fp_exception_pending state and
-+     * instead populate FQ and raise the exception immediately.
-+     * But we can still honor fp_exception state by noticing when
-+     * the FQ is not empty.
-+     */
-+    if (dc->fsr_qne) {
-+        gen_op_fpexception_im(dc, FSR_FTT_SEQ_ERROR);
-+        return true;
-+    }
-+#endif
-+    return false;
-+}
-+
-+static bool gen_trap_if_nofpu_fpexception(DisasContext *dc)
-+{
-+    return gen_trap_ifnofpu(dc) || gen_trap_iffpexception(dc);
- }
- 
- /* asi moves */
-@@ -2643,7 +2676,7 @@ static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
- {
-     DisasCompare cmp;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     gen_fcompare(&cmp, a->cc, a->cond);
-@@ -4482,7 +4515,7 @@ static bool do_ld_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp sz)
-     if (addr == NULL) {
-         return false;
-     }
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (sz == MO_128 && gen_trap_float128(dc)) {
-@@ -4510,6 +4543,7 @@ static bool do_st_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp sz)
-     if (addr == NULL) {
-         return false;
-     }
-+    /* Store insns are ok in fp_exception_pending state. */
-     if (gen_trap_ifnofpu(dc)) {
-         return true;
-     }
-@@ -4574,7 +4608,7 @@ static bool trans_LDFSR(DisasContext *dc, arg_r_r_ri *a)
-     if (addr == NULL) {
-         return false;
-     }
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4598,7 +4632,7 @@ static bool do_ldxfsr(DisasContext *dc, arg_r_r_ri *a, bool entire)
-     if (addr == NULL) {
-         return false;
-     }
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4635,6 +4669,7 @@ static bool do_stfsr(DisasContext *dc, arg_r_r_ri *a, MemOp mop)
-     if (addr == NULL) {
-         return false;
-     }
-+    /* Store insns are ok in fp_exception_pending state. */
-     if (gen_trap_ifnofpu(dc)) {
-         return true;
-     }
-@@ -4677,7 +4712,7 @@ static bool do_ff(DisasContext *dc, arg_r_r *a,
- {
-     TCGv_i32 tmp;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4718,7 +4753,7 @@ static bool do_env_ff(DisasContext *dc, arg_r_r *a,
- {
-     TCGv_i32 tmp;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4738,7 +4773,7 @@ static bool do_env_fd(DisasContext *dc, arg_r_r *a,
-     TCGv_i32 dst;
-     TCGv_i64 src;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4758,7 +4793,7 @@ static bool do_dd(DisasContext *dc, arg_r_r *a,
- {
-     TCGv_i64 dst, src;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4780,7 +4815,7 @@ static bool do_env_dd(DisasContext *dc, arg_r_r *a,
- {
-     TCGv_i64 dst, src;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4820,7 +4855,7 @@ static bool do_env_df(DisasContext *dc, arg_r_r *a,
-     TCGv_i64 dst;
-     TCGv_i32 src;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -4863,7 +4898,7 @@ static bool do_env_qq(DisasContext *dc, arg_r_r *a,
- {
-     TCGv_i128 t;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
-@@ -4884,7 +4919,7 @@ static bool do_env_fq(DisasContext *dc, arg_r_r *a,
-     TCGv_i128 src;
-     TCGv_i32 dst;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
-@@ -4907,7 +4942,7 @@ static bool do_env_dq(DisasContext *dc, arg_r_r *a,
-     TCGv_i128 src;
-     TCGv_i64 dst;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
-@@ -4930,7 +4965,7 @@ static bool do_env_qf(DisasContext *dc, arg_r_r *a,
-     TCGv_i32 src;
-     TCGv_i128 dst;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
-@@ -4953,10 +4988,7 @@ static bool do_env_qd(DisasContext *dc, arg_r_r *a,
-     TCGv_i64 src;
-     TCGv_i128 dst;
- 
--    if (gen_trap_ifnofpu(dc)) {
--        return true;
--    }
--    if (gen_trap_float128(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -5013,7 +5045,7 @@ static bool do_env_fff(DisasContext *dc, arg_r_r_r *a,
- {
-     TCGv_i32 src1, src2;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -5222,7 +5254,7 @@ static bool do_env_ddd(DisasContext *dc, arg_r_r_r *a,
- {
-     TCGv_i64 dst, src1, src2;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -5246,7 +5278,7 @@ static bool trans_FsMULd(DisasContext *dc, arg_r_r_r *a)
-     TCGv_i64 dst;
-     TCGv_i32 src1, src2;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (!(dc->def->features & CPU_FEATURE_FSMULD)) {
-@@ -5355,7 +5387,7 @@ static bool do_env_qqq(DisasContext *dc, arg_r_r_r *a,
- {
-     TCGv_i128 src1, src2;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
-@@ -5379,7 +5411,7 @@ static bool trans_FdMULq(DisasContext *dc, arg_r_r_r *a)
-     TCGv_i64 src1, src2;
-     TCGv_i128 dst;
- 
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
-@@ -5469,7 +5501,7 @@ static bool do_fcmps(DisasContext *dc, arg_FCMPs *a, bool e)
-     if (avail_32(dc) && a->cc != 0) {
-         return false;
-     }
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -5493,7 +5525,7 @@ static bool do_fcmpd(DisasContext *dc, arg_FCMPd *a, bool e)
-     if (avail_32(dc) && a->cc != 0) {
-         return false;
-     }
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
- 
-@@ -5517,7 +5549,7 @@ static bool do_fcmpq(DisasContext *dc, arg_FCMPq *a, bool e)
-     if (avail_32(dc) && a->cc != 0) {
-         return false;
-     }
--    if (gen_trap_ifnofpu(dc)) {
-+    if (gen_trap_if_nofpu_fpexception(dc)) {
-         return true;
-     }
-     if (gen_trap_float128(dc)) {
--- 
-2.43.0
+  Thomas
+
 
 
