@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEE59550AD
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCEC9550AF
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 20:19:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf1Wr-0003vL-5H; Fri, 16 Aug 2024 14:18:25 -0400
+	id 1sf1Wz-00045M-Sc; Fri, 16 Aug 2024 14:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
- id 1sezhc-0003FB-Tc
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 12:21:24 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
+ id 1sezwZ-00031K-Ff
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 12:36:51 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
- id 1sezha-0000Cc-DY
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 12:21:24 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4281c164408so15196565e9.1
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 09:21:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
+ id 1sezwX-0002K1-Op
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 12:36:51 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2d3f39e7155so89776a91.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 09:36:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723825279; x=1724430079; darn=nongnu.org;
+ d=schmorgal.com; s=google; t=1723826206; x=1724431006; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=k2a8wZIm05R7plSdjrg5kNp3Tv6BG06tA1WKCBKzCKg=;
- b=V2qrImzkVdY0dvQh8ePIFGyqSU8KPWxMnZJ0ZQX3vzjFHHdh+lRKuyEBGZvX76JhcZ
- j0baQ6B9I5NtEPAcGwdFDv2QRYFytql5X58WTgVhEBZ/TtTkjqF3qmUqbt4vX7GrObs1
- LU6suQftjlwi+7odcjHikEaW/t+pgtm3ZfPsU/aEIdQDfFYa5Lx4KmOBUr6zr2lZQtn1
- 9UY5a1RIBlsUM8gWuIouzjXeNYH/3Hc4QCTtdwt5dDyzIJ3dgqV08/qXVUxDR4J1yONF
- I/tZ2GtR/y/0nyxMbWQKYDsa252IXH2vFbXnOeIcwgMhhWbiWnyKV/g2kbjeQdp5AbmP
- ONvw==
+ bh=89/7hZF+8IhsBx3iy+MY5AfZGvKvI2UgmGN78UfgphU=;
+ b=eo1VlpKgX9h2Q+vQDWXk2hi6ByxHmBfT2SEgtc2W6lTeQM4Xw+N8sKqlyNNGiYvIV4
+ X2y9POVk7sQOLMIjj5JbVlDuJseoW4G8VGe+sgixmWtMkRMqoWHKRjjZeE030yZavcH0
+ PA5eKot91l5Rxm+9xwsIGRHHckuTLo3TbrHaA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723825279; x=1724430079;
+ d=1e100.net; s=20230601; t=1723826206; x=1724431006;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=k2a8wZIm05R7plSdjrg5kNp3Tv6BG06tA1WKCBKzCKg=;
- b=VrwJdFBILA0OMAAAa2YQ16UnkCYA638mdJf73tGWO9wisfPCFylocwA6LMqewYHtNl
- zQWhn8GuRi+y/G3KIad83/jso98Y1+hDDEFt6AQ3wJurijeOxpFiKU+lD69G1mj7LvnY
- HMBdWP6weyc1xMQ5amj5R/OqE3FFHJ/pey/QS6Ijvc+JyPIYT1rhkRAFe7sLcoYhrw46
- 3vikVA5o6tugswbSxgSR0ERkqrf2NK0G2u6Tz+7CkV2rYu9G2xAi33rnjX1z5dLaXGRI
- /Xu6w0F5XBmVukzq99AiApCAJ7f5ox4mJ5qcVdvo3uQoDGDTIh4zWQDlMRIOJZW5+bdW
- ciSw==
-X-Gm-Message-State: AOJu0YwIJ2bdg1OTuJp7D17GgAQVDPiMKKdSLU5q7v067VwwylGVRxVB
- lhIZsieUzdCTArOmNTUKtHR+FkRtbH1ulpH55cHd+T9PcWlv4nVKCMMvNRrluFU=
-X-Google-Smtp-Source: AGHT+IEHkQJBNmQ+uAqGfdE9gIofSXMVrQkjaOMym65F9iVtPRWWxd4UJkaMEm55hr1S8c4/qFfrKg==
-X-Received: by 2002:a05:600c:458b:b0:428:1663:2c2e with SMTP id
- 5b1f17b1804b1-429ed7a6b76mr21603425e9.17.1723825278913; 
- Fri, 16 Aug 2024 09:21:18 -0700 (PDT)
-Received: from localhost.localdomain
- ([2a06:c701:4869:8e00:fd40:3d83:5141:6edb])
+ bh=89/7hZF+8IhsBx3iy+MY5AfZGvKvI2UgmGN78UfgphU=;
+ b=kZ7wzJAU8vux63zHNOvA5fkD/lrHqW7CGm6z1yaeWYQ58PFuFRFxcOUGwCTwwViwY4
+ CSHC44anqN2cXefE1wAWkmMqfzGKWiRWE3VbT/y1bnh1v1nbHT+8TKGfRTcyzwegA45q
+ 0Avaj7BB7jlxD0LaJbv5OFj/Cw9MjrC27roMJZm0k85MtY7vfOnYCYRxhTDCMYGNfbGX
+ ypsAPH4K1kXGQYaImAICoUns6aPF4Vb+9prPAp4mjVPJmOZY/2X9B4pV4P8sXMIBwDk2
+ d3z/y6uVkZvRKT1s7WV+82wIZz8cfYqbQ/NGiRzy7O4Hrq0yN/Jw21AeKusW4p5VzjaP
+ HDiw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWaf2AtBQlqGtiAUZDey5819phWro73ZY8RUZNqeFwwWazfBHuGt0R4aeX7sFrTxXxPpYiUDlxcSDLAylAQhKZfNSFYDbI=
+X-Gm-Message-State: AOJu0YwzeX/3+2pu9nE6RijO9VJFY9WdAvFoHupawMRvtPw84v/ERpNt
+ DmWu2bPw3sfSRsXOBn2NecsGn0FZ9mzOdz6JHJ23JStBGjZI9TAp64SBwQN31Ho=
+X-Google-Smtp-Source: AGHT+IH09VAB6F42k1mnj0+F5rRqiCemyiTXjaWBuD0kcW53KDKQa40FRI8R/Nx/I3CnDPDZOrNiVw==
+X-Received: by 2002:a17:90b:1055:b0:2d3:c37b:7681 with SMTP id
+ 98e67ed59e1d1-2d3e1dcc1d7mr2145031a91.5.1723826206272; 
+ Fri, 16 Aug 2024 09:36:46 -0700 (PDT)
+Received: from doug-ryzen-5700G.. ([50.37.200.153])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429ded35991sm79966185e9.21.2024.08.16.09.21.17
+ 98e67ed59e1d1-2d3e2e6b201sm2134285a91.15.2024.08.16.09.36.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Aug 2024 09:21:18 -0700 (PDT)
-From: Elisha Hollander <just4now666666@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Elisha Hollander <just4now666666@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 1/1] allow using a higher icount
-Date: Fri, 16 Aug 2024 16:20:43 +0000
-Message-Id: <20240816162044.5764-1-just4now666666@gmail.com>
-X-Mailer: git-send-email 2.30.2
+ Fri, 16 Aug 2024 09:36:45 -0700 (PDT)
+From: Doug Brown <doug@schmorgal.com>
+To: Vikram Garhwal <vikram.garhwal@amd.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ Doug Brown <doug@schmorgal.com>
+Subject: [PATCH 0/5] hw/net/can/xlnx-versal-canfd: Miscellaneous fixes
+Date: Fri, 16 Aug 2024 09:35:00 -0700
+Message-Id: <20240816163504.789393-1-doug@schmorgal.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=just4now666666@gmail.com; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=doug@schmorgal.com; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 16 Aug 2024 14:18:21 -0400
+X-Mailman-Approved-At: Fri, 16 Aug 2024 14:18:27 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,53 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Elisha Hollander <just4now666666@gmail.com>
----
- accel/tcg/cpu-exec.c      | 4 +---
- accel/tcg/icount-common.c | 4 ++--
- 2 files changed, 3 insertions(+), 5 deletions(-)
+This series fixes several problems I ran into while trying to simulate
+the AMD/Xilinx Versal CANFD controller in the xlnx-versal-virt machine
+using Xilinx's v6.6_LTS_2024.1 kernel. With all of these patches
+applied, everything works correctly alongside actual CAN devices.
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 8163295f34..4c2baf8ed4 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -95,11 +95,10 @@ static void align_clocks(SyncClocks *sc, CPUState *cpu)
- static void print_delay(const SyncClocks *sc)
- {
-     static float threshold_delay;
--    static int64_t last_realtime_clock;
-     static int nb_prints;
- 
-     if (icount_align_option &&
--        sc->realtime_clock - last_realtime_clock >= MAX_DELAY_PRINT_RATE &&
-+        sc->diff_clk >= MAX_DELAY_PRINT_RATE &&
-         nb_prints < MAX_NB_PRINTS) {
-         if ((-sc->diff_clk / (float)1000000000LL > threshold_delay) ||
-             (-sc->diff_clk / (float)1000000000LL <
-@@ -109,7 +108,6 @@ static void print_delay(const SyncClocks *sc)
-                         threshold_delay - 1,
-                         threshold_delay);
-             nb_prints++;
--            last_realtime_clock = sc->realtime_clock;
-         }
-     }
- }
-diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
-index 8d3d3a7e9d..f07f8baf4d 100644
---- a/accel/tcg/icount-common.c
-+++ b/accel/tcg/icount-common.c
-@@ -46,8 +46,8 @@
-  * is TCG-specific, and does not need to be built for other accels.
-  */
- static bool icount_sleep = true;
--/* Arbitrarily pick 1MIPS as the minimum allowable speed.  */
--#define MAX_ICOUNT_SHIFT 10
-+/* Arbitrarily pick the minimum allowable speed.  */
-+#define MAX_ICOUNT_SHIFT 30
- 
- /* Do not count executed instructions */
- ICountMode use_icount = ICOUNT_DISABLED;
+- IRQs were accidentally not being delivered due to having a level other
+  than 1. The IRQ count in /proc/interrupts in Linux was stuck at 0.
+- Incoming CAN FD frames were being treated as non-FD.
+- The CAN IDs were garbled in both RX and TX directions.
+- The byte ordering was wrong in the data in both directions.
+- Incoming CAN FD frames with DLC = 1-7 weren't handled correctly.
+
+I don't have any actual Versal hardware to compare behavior against, but
+with these changes, it plays nicely with SocketCAN on the host system.
+
+Doug Brown (5):
+  hw/net/can/xlnx-versal-canfd: Fix interrupt level
+  hw/net/can/xlnx-versal-canfd: Fix CAN FD flag check
+  hw/net/can/xlnx-versal-canfd: Translate CAN ID registers
+  hw/net/can/xlnx-versal-canfd: Fix byte ordering
+  hw/net/can/xlnx-versal-canfd: Handle RX of short FD frames
+
+ hw/net/can/xlnx-versal-canfd.c | 82 +++++++++++++++++++++++++++-------
+ 1 file changed, 67 insertions(+), 15 deletions(-)
+
 -- 
-2.30.2
+2.34.1
 
 
