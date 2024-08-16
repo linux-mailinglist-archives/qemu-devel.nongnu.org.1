@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C3095526E
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 23:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58871955271
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 23:33:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf4Yf-0005K1-4M; Fri, 16 Aug 2024 17:32:29 -0400
+	id 1sf4Yh-0005Vg-Mu; Fri, 16 Aug 2024 17:32:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sf4YZ-0005IN-UJ
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 17:32:24 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1sf4Yf-0005No-1K
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 17:32:29 -0400
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sf4YX-0000Xe-UQ
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 17:32:23 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3717ff2358eso1271873f8f.1
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1sf4YX-0000Xg-Tj
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 17:32:28 -0400
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-39d26a8f9dbso5326465ab.1
  for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 14:32:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723843937; x=1724448737; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FQh0QJhCbLd86zDXPRNkn3AQi7dFzwG3ifnJG1Chf3E=;
- b=hWw6SWaw1ae+6gCKd9c4HCuLO8Duj5yBXBQuKL6aJYM/OucJeMJYFTUYLeoHFKqo3H
- syFRvgmhC22IROzYQkjkMyBl4weN9KIV9/NLvpfR6Jwv4oL5fMvk27//2JznhmIYZEE6
- D+/tNIr7aRhTuzTOxmjcqOURUESVUUC3NBHDVR1FwgeSl0GcqyiN07wq5k5//vwiltO8
- Znhg38a2q02s0DyF1+kSQPjlpJqfr5wGq2hv+5gj7Y4gyKyjja6XO55wizU4iTVhKz3X
- Fr5L7fqIUc4VqLwOHJnVPJZtyPHcfMi9JkwEAC7fPM6ZxBI8nmL4jXS2TntM+9yqFA+K
- EjbA==
+ d=gmail.com; s=20230601; t=1723843940; x=1724448740; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ywAl+DfJiQVp1+6HyV0YRi+VIkZot69GPtIV0XSlNQ4=;
+ b=fqMNbkVWjA0lSlWHQCQ6S4UawWiuCPj9KIhXAyC72AxXSCGp4SRjAvBhlxF39xbxOa
+ m3JxAvS4Dh1L0kvI+cipQt3d6P0eXNmt7OxTlVU0j35xxEDiTITVjMRV6hASUCFlbYSm
+ NGs0agmbOxVE+ZFv/WhiVWFX4zMPQ2LHEd7rovBrOujPVLpfyZRNH4ZzVSWje4ghqaxy
+ sfQ559pmTTmWU3sm6ggYNp8J7RGOottTKuUUl6vFp7vs5Wh+kJmOcwSRMKVgq9ECgecQ
+ +sgaWXLfHMStPyGOLzNDJ4uPRdDjWsNzya9UFuaGUh6Nh9TUJkQr2XK6jDUllHClX6DM
+ BAZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723843937; x=1724448737;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FQh0QJhCbLd86zDXPRNkn3AQi7dFzwG3ifnJG1Chf3E=;
- b=lv2g4n1/ncbehaZnuY9eJI3jHpPpnWvpZ/k7TFUo+a8roUMqTY/U8NjJ2Gv9XO53EB
- wB2bP7BnQC5miiQztERR9tQaATnQLcbgudv54jajp5mUe67fFCKEuOm2YhR5SwuKAHTC
- P7gMLI/WHJhKIAEX076AoFWJqtKDZdyQm0M3HxkI7uSFc/4xLK/GPlvBDxjf3GoIyNTX
- 6YAdOe7WIPhQMbGrIlflTN/nMexWDQx/4ReMtopSgLIleW1JYwXT7ZU1tYJ2zy9EkU9c
- IffvbyVmrk0d6TYdoP/phKM+JnNWqFImOLzpJlyLNmMKmvSum96gW6zcQcqxrb+r1K4L
- 4w8w==
-X-Gm-Message-State: AOJu0YyQoEZFEm5OXLEKTTRvLvMGOzUwHi9KHM8AdsQB9baiXcDi1G2b
- ikQlTGVljILIN7Hud7D48JyRq+uqKakw/jowG0uKdXOYAZqb/zbTzjMybtiCigZNKunNvfk7gRc
- Kgdk=
-X-Google-Smtp-Source: AGHT+IE8g/Ps27UkjbOHNXP+NCjw5BRnFpEFXd6F83bwC6hCm7s64qsjh/3ulNGMhqyj8yK/xnlN+g==
-X-Received: by 2002:a5d:498b:0:b0:368:48e6:5056 with SMTP id
- ffacd0b85a97d-37194641ed7mr2724486f8f.22.1723843936007; 
- Fri, 16 Aug 2024 14:32:16 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.151.17])
+ d=1e100.net; s=20230601; t=1723843940; x=1724448740;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ywAl+DfJiQVp1+6HyV0YRi+VIkZot69GPtIV0XSlNQ4=;
+ b=e4TGNpDeZlX2O5dLwQgyCUELk450GcldECQL3rw8tIkefHgkMSWkdgl93TjRoduEeH
+ 3OGhLyAqbbUhkYqrbn3UsyWkxY+/Gq3de7ezzrbAw+NA9zuGUzYh486ly+tq1H5voFzy
+ PeM9HOJ7pjojAKWhmRA0kbZH/9177pIsSLFI0VAvcjUSRs8FWy6YiyrlpEwwAfMhoW3y
+ PmdN169M/tne/swr6QZNpt8NEZgJtm8Y2st+KZcjha0yLkqTuwsWNLKGRy4vRS43lTpX
+ GgKto8R+aIk1gMybxvqrIvBTVboLlxkVesobnL+KIv58EiUCRdaHaEsKf66V/9gOCxme
+ BZiQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUylgTP1tT7d0WObPXY+mK3n0wrzaRZH13/vdVa8XBUQWk4NTBSHPEEIhPI1sSqu5jbnf6CjyDE+Mid@nongnu.org
+X-Gm-Message-State: AOJu0YwuKQ2b3xtvKNVWOWPYSQwQH5cLL1emlpoy46fDLUPbounKLVk9
+ qndahMkfWrtTI040B+KIx4ZcdbKwb3/t47RT4BBZ8fVc+mJkTnmcOcVONw==
+X-Google-Smtp-Source: AGHT+IEGV9kV3gdrhnl1xE4xnvsL5kBf7hewAv2qMnt2zosd412S9qsFfmWwlTZG7DbIVFWH9arTEw==
+X-Received: by 2002:a05:6e02:1d8e:b0:39b:4ec2:c5c1 with SMTP id
+ e9e14a558f8ab-39d26d5faffmr50317945ab.18.1723843940459; 
+ Fri, 16 Aug 2024 14:32:20 -0700 (PDT)
+Received: from DESKTOPUU50BPD ([2601:284:8201:81c0:8166:7e5b:29b6:51cb])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-371898aabf5sm4394219f8f.97.2024.08.16.14.32.11
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Aug 2024 14:32:15 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] gitlab-ci: Replace build_script -> step_script in Cirrus jobs
-Date: Fri, 16 Aug 2024 23:32:03 +0200
-Message-ID: <20240816213203.18350-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
+ e9e14a558f8ab-39d1ec0305esm16013455ab.29.2024.08.16.14.32.19
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 16 Aug 2024 14:32:20 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Brian Cain'" <bcain@quicinc.com>,
+	<qemu-devel@nongnu.org>
+Cc: <quic_mathbern@quicinc.com>, <sidneym@quicinc.com>,
+ <quic_mliebel@quicinc.com>
+References: <20240816190620.1418311-1-bcain@quicinc.com>
+ <20240816190620.1418311-3-bcain@quicinc.com>
+In-Reply-To: <20240816190620.1418311-3-bcain@quicinc.com>
+Subject: RE: [PATCH 3/3] target/hexagon: add enums for event, cause
+Date: Fri, 16 Aug 2024 15:32:19 -0600
+Message-ID: <019c01daf023$c629f110$527dd330$@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQHkSSDsbHa0lsPsUwH6PIsqcGtF+gLPBuBasgE8+dA=
+Content-Language: en-us
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,42 +100,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Long due upgrade, see [1]:
 
-  In GitLab Runner 13.2 a translation for step_script to
-  build_script was added to the custom executor. In 14.0
-  the build_script stage will be replaced with step_script.
 
-We are using GitLab 17 [2]!
+> -----Original Message-----
+> From: Brian Cain <bcain@quicinc.com>
+> Sent: Friday, August 16, 2024 1:06 PM
+> To: qemu-devel@nongnu.org
+> Cc: bcain@quicinc.com; quic_mathbern@quicinc.com;
+> sidneym@quicinc.com; quic_mliebel@quicinc.com;
+> ltaylorsimpson@gmail.com
+> Subject: [PATCH 3/3] target/hexagon: add enums for event, cause
+> 
+> Signed-off-by: Brian Cain <bcain@quicinc.com>
+> ---
+>  target/hexagon/cpu_bits.h | 22 ++++++++++++++--------
+>  1 file changed, 14 insertions(+), 8 deletions(-)
 
-This removes the following warning:
+Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 
-  WARNING: Starting with version 17.0 the 'build_script'
-  stage will be replaced with 'step_script':
-  https://gitlab.com/groups/gitlab-org/-/epics/6112
-
-[1] https://about.gitlab.com/releases/2021/05/22/gitlab-13-12-released/#remove-translation-from-stepscript-to-buildscript-in-custom-executor
-[2] https://about.gitlab.com/releases/2024/05/16/gitlab-17-0-released/
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- .gitlab-ci.d/cirrus/build.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/.gitlab-ci.d/cirrus/build.yml b/.gitlab-ci.d/cirrus/build.yml
-index 43dd52dd19..102cdbd8b1 100644
---- a/.gitlab-ci.d/cirrus/build.yml
-+++ b/.gitlab-ci.d/cirrus/build.yml
-@@ -26,7 +26,7 @@ build_task:
-     - git clone --depth 100 "$CI_REPOSITORY_URL" .
-     - git fetch origin "$CI_COMMIT_REF_NAME"
-     - git reset --hard "$CI_COMMIT_SHA"
--  build_script:
-+  step_script:
-     - mkdir build
-     - cd build
-     - ../configure --enable-werror $CONFIGURE_ARGS
--- 
-2.45.2
 
 
