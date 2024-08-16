@@ -2,119 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DBE95505E
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEE59550AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 20:19:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf1CT-0007wj-Oa; Fri, 16 Aug 2024 13:57:21 -0400
+	id 1sf1Wr-0003vL-5H; Fri, 16 Aug 2024 14:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sf1CR-0007wE-Ok
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:57:19 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
+ id 1sezhc-0003FB-Tc
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 12:21:24 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sf1CD-0005Eu-Ce
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:57:19 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7BA6C22878;
- Fri, 16 Aug 2024 17:57:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1723831023; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pR/UoN9/E44L4n2whK4d6Mp0ooouYsXb8OSb0/YOZM4=;
- b=X+DfrzqZVl4d72Mx7e00jt8n0xRIgP1YuT3CrsaNIMuAyhir96inEMaQitabmGpa8OiJGN
- cK7VBWZu0lcYDbxEj9yPRVsCtbQCkvu8arCPzSLHuvYGzRPoDFdVfC4tDhW9EyohEwromF
- mOQbcfMlbcTQEKrySl0Pavq8Yes3jLw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1723831023;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pR/UoN9/E44L4n2whK4d6Mp0ooouYsXb8OSb0/YOZM4=;
- b=4+51J7WPjjqy1QEFC2VrVp88tVv8BoYojjwvGB8SsjN8TxS5N6ToZ45fNBcLrQ//ftKK94
- n30VOjgNTAWTllDA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=X+DfrzqZ;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4+51J7WP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1723831023; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pR/UoN9/E44L4n2whK4d6Mp0ooouYsXb8OSb0/YOZM4=;
- b=X+DfrzqZVl4d72Mx7e00jt8n0xRIgP1YuT3CrsaNIMuAyhir96inEMaQitabmGpa8OiJGN
- cK7VBWZu0lcYDbxEj9yPRVsCtbQCkvu8arCPzSLHuvYGzRPoDFdVfC4tDhW9EyohEwromF
- mOQbcfMlbcTQEKrySl0Pavq8Yes3jLw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1723831023;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pR/UoN9/E44L4n2whK4d6Mp0ooouYsXb8OSb0/YOZM4=;
- b=4+51J7WPjjqy1QEFC2VrVp88tVv8BoYojjwvGB8SsjN8TxS5N6ToZ45fNBcLrQ//ftKK94
- n30VOjgNTAWTllDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC58F1397F;
- Fri, 16 Aug 2024 17:57:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id la0/LO6Sv2ZIQgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 16 Aug 2024 17:57:02 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Alex Williamson
- <alex.williamson@redhat.com>, Cedric Le Goater <clg@redhat.com>, "Michael
- S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>, Philippe
- Mathieu-Daude <philmd@linaro.org>, David Hildenbrand <david@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: Re: [RFC V1 10/12] migration/ram: old host address
-In-Reply-To: <1721502937-87102-11-git-send-email-steven.sistare@oracle.com>
-References: <1721502937-87102-1-git-send-email-steven.sistare@oracle.com>
- <1721502937-87102-11-git-send-email-steven.sistare@oracle.com>
-Date: Fri, 16 Aug 2024 14:57:00 -0300
-Message-ID: <87ikw05p1v.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
+ id 1sezha-0000Cc-DY
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 12:21:24 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4281c164408so15196565e9.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 09:21:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1723825279; x=1724430079; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=k2a8wZIm05R7plSdjrg5kNp3Tv6BG06tA1WKCBKzCKg=;
+ b=V2qrImzkVdY0dvQh8ePIFGyqSU8KPWxMnZJ0ZQX3vzjFHHdh+lRKuyEBGZvX76JhcZ
+ j0baQ6B9I5NtEPAcGwdFDv2QRYFytql5X58WTgVhEBZ/TtTkjqF3qmUqbt4vX7GrObs1
+ LU6suQftjlwi+7odcjHikEaW/t+pgtm3ZfPsU/aEIdQDfFYa5Lx4KmOBUr6zr2lZQtn1
+ 9UY5a1RIBlsUM8gWuIouzjXeNYH/3Hc4QCTtdwt5dDyzIJ3dgqV08/qXVUxDR4J1yONF
+ I/tZ2GtR/y/0nyxMbWQKYDsa252IXH2vFbXnOeIcwgMhhWbiWnyKV/g2kbjeQdp5AbmP
+ ONvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723825279; x=1724430079;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=k2a8wZIm05R7plSdjrg5kNp3Tv6BG06tA1WKCBKzCKg=;
+ b=VrwJdFBILA0OMAAAa2YQ16UnkCYA638mdJf73tGWO9wisfPCFylocwA6LMqewYHtNl
+ zQWhn8GuRi+y/G3KIad83/jso98Y1+hDDEFt6AQ3wJurijeOxpFiKU+lD69G1mj7LvnY
+ HMBdWP6weyc1xMQ5amj5R/OqE3FFHJ/pey/QS6Ijvc+JyPIYT1rhkRAFe7sLcoYhrw46
+ 3vikVA5o6tugswbSxgSR0ERkqrf2NK0G2u6Tz+7CkV2rYu9G2xAi33rnjX1z5dLaXGRI
+ /Xu6w0F5XBmVukzq99AiApCAJ7f5ox4mJ5qcVdvo3uQoDGDTIh4zWQDlMRIOJZW5+bdW
+ ciSw==
+X-Gm-Message-State: AOJu0YwIJ2bdg1OTuJp7D17GgAQVDPiMKKdSLU5q7v067VwwylGVRxVB
+ lhIZsieUzdCTArOmNTUKtHR+FkRtbH1ulpH55cHd+T9PcWlv4nVKCMMvNRrluFU=
+X-Google-Smtp-Source: AGHT+IEHkQJBNmQ+uAqGfdE9gIofSXMVrQkjaOMym65F9iVtPRWWxd4UJkaMEm55hr1S8c4/qFfrKg==
+X-Received: by 2002:a05:600c:458b:b0:428:1663:2c2e with SMTP id
+ 5b1f17b1804b1-429ed7a6b76mr21603425e9.17.1723825278913; 
+ Fri, 16 Aug 2024 09:21:18 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2a06:c701:4869:8e00:fd40:3d83:5141:6edb])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-429ded35991sm79966185e9.21.2024.08.16.09.21.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Aug 2024 09:21:18 -0700 (PDT)
+From: Elisha Hollander <just4now666666@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Elisha Hollander <just4now666666@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 1/1] allow using a higher icount
+Date: Fri, 16 Aug 2024 16:20:43 +0000
+Message-Id: <20240816162044.5764-1-just4now666666@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 7BA6C22878
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.47 / 50.00]; BAYES_HAM(-2.96)[99.82%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; MIME_TRACE(0.00)[0:+];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCPT_COUNT_TWELVE(0.00)[12]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MISSING_XM_UA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo, suse.de:mid, suse.de:dkim]
-X-Spam-Score: -6.47
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=just4now666666@gmail.com; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 16 Aug 2024 14:18:21 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,103 +93,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
+Signed-off-by: Elisha Hollander <just4now666666@gmail.com>
+---
+ accel/tcg/cpu-exec.c      | 4 +---
+ accel/tcg/icount-common.c | 4 ++--
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-> Remember the RAMBlock host address as host_old during migration, for use
-> by CPR.  The iommufd interface to update the virtual address of DMA
-> mappings requires it.
->
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  hw/core/machine.c       | 6 ++++++
->  include/exec/ramblock.h | 1 +
->  migration/migration.h   | 2 ++
->  migration/options.c     | 2 ++
->  migration/ram.c         | 7 +++++++
->  5 files changed, 18 insertions(+)
->
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 9676953..0ac16b8 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -35,6 +35,12 @@
->  #include "hw/virtio/virtio-iommu.h"
->  #include "audio/audio.h"
->  
-> +/* TBD: register hw_compat_9_1 with machines */
-> +GlobalProperty hw_compat_9_1[] = {
-> +    { "migration", "send-host-old", "off"},
-> +};
-> +const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
-> +
->  GlobalProperty hw_compat_9_0[] = {
->      {"arm-cpu", "backcompat-cntfrq", "true" },
->      {"scsi-disk-base", "migrate-emulated-scsi-request", "false" },
-> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-> index 64484cd..8f1c535 100644
-> --- a/include/exec/ramblock.h
-> +++ b/include/exec/ramblock.h
-> @@ -28,6 +28,7 @@ struct RAMBlock {
->      struct rcu_head rcu;
->      struct MemoryRegion *mr;
->      uint8_t *host;
-> +    uint64_t host_old;
->      uint8_t *colo_cache; /* For colo, VM's ram cache */
->      ram_addr_t offset;
->      ram_addr_t used_length;
-> diff --git a/migration/migration.h b/migration/migration.h
-> index 38aa140..b5e3151 100644
-> --- a/migration/migration.h
-> +++ b/migration/migration.h
-> @@ -442,6 +442,8 @@ struct MigrationState {
->       */
->      uint8_t clear_bitmap_shift;
->  
-> +    bool send_host_old;
-> +
->      /*
->       * This save hostname when out-going migration starts
->       */
-> diff --git a/migration/options.c b/migration/options.c
-> index 7526f9f..197cb86 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -92,6 +92,8 @@ Property migration_properties[] = {
->                        clear_bitmap_shift, CLEAR_BITMAP_SHIFT_DEFAULT),
->      DEFINE_PROP_BOOL("x-preempt-pre-7-2", MigrationState,
->                       preempt_pre_7_2, false),
-> +    DEFINE_PROP_BOOL("send-host-old", MigrationState,
-> +                     send_host_old, true),
->  
->      /* Migration parameters */
->      DEFINE_PROP_UINT8("x-throttle-trigger-threshold", MigrationState,
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 1e1e05e..8644917 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -3030,6 +3030,9 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
->              qemu_put_byte(f, strlen(block->idstr));
->              qemu_put_buffer(f, (uint8_t *)block->idstr, strlen(block->idstr));
->              qemu_put_be64(f, block->used_length);
-> +            if (migrate_get_current()->send_host_old) {
-> +                qemu_put_be64(f, (uint64_t)block->host);
-> +            }
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 8163295f34..4c2baf8ed4 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -95,11 +95,10 @@ static void align_clocks(SyncClocks *sc, CPUState *cpu)
+ static void print_delay(const SyncClocks *sc)
+ {
+     static float threshold_delay;
+-    static int64_t last_realtime_clock;
+     static int nb_prints;
+ 
+     if (icount_align_option &&
+-        sc->realtime_clock - last_realtime_clock >= MAX_DELAY_PRINT_RATE &&
++        sc->diff_clk >= MAX_DELAY_PRINT_RATE &&
+         nb_prints < MAX_NB_PRINTS) {
+         if ((-sc->diff_clk / (float)1000000000LL > threshold_delay) ||
+             (-sc->diff_clk / (float)1000000000LL <
+@@ -109,7 +108,6 @@ static void print_delay(const SyncClocks *sc)
+                         threshold_delay - 1,
+                         threshold_delay);
+             nb_prints++;
+-            last_realtime_clock = sc->realtime_clock;
+         }
+     }
+ }
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index 8d3d3a7e9d..f07f8baf4d 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -46,8 +46,8 @@
+  * is TCG-specific, and does not need to be built for other accels.
+  */
+ static bool icount_sleep = true;
+-/* Arbitrarily pick 1MIPS as the minimum allowable speed.  */
+-#define MAX_ICOUNT_SHIFT 10
++/* Arbitrarily pick the minimum allowable speed.  */
++#define MAX_ICOUNT_SHIFT 30
+ 
+ /* Do not count executed instructions */
+ ICountMode use_icount = ICOUNT_DISABLED;
+-- 
+2.30.2
 
-This requires an update of scripts/analyze-migration.py. Could be done
-on the side.
-
->              if (migrate_postcopy_ram() &&
->                  block->page_size != max_hg_page_size) {
->                  qemu_put_be64(f, block->page_size);
-> @@ -4021,6 +4024,10 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
->  
->      assert(block);
->  
-> +    if (migrate_get_current()->send_host_old) {
-> +        block->host_old = qemu_get_be64(f);
-> +    }
-> +
->      if (migrate_mapped_ram()) {
->          parse_ramblock_mapped_ram(f, block, length, &local_err);
->          if (local_err) {
 
