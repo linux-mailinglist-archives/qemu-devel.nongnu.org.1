@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2122A9542F4
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D3A9542D9
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1serXZ-0000KH-C6; Fri, 16 Aug 2024 03:38:29 -0400
+	id 1serXB-000720-80; Fri, 16 Aug 2024 03:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1serXX-0000CH-6g; Fri, 16 Aug 2024 03:38:27 -0400
-Received: from sin.source.kernel.org ([145.40.73.55])
+ id 1serX9-0006vv-Ny
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:38:03 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1serXJ-0005ub-9E; Fri, 16 Aug 2024 03:38:26 -0400
+ id 1serX7-0005w2-Hp
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:38:03 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 8BE8FCE1EF7;
- Fri, 16 Aug 2024 07:37:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717A9C4AF15;
+ by sin.source.kernel.org (Postfix) with ESMTP id 2F31BCE1EFE;
+ Fri, 16 Aug 2024 07:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A306C4AF11;
  Fri, 16 Aug 2024 07:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1723793873;
- bh=nFa18EP1VntHvi50soKrL++v7UfmRI3rSREy+WDR8ps=;
+ bh=1dC6qge5j6u0iMd7Y9iF2l9tSLTNhq/Z8HDaN5NFEKg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BQJq1HE1XGM9SJjGfeUOBcsmlY9qq5GHcVd8J1W5Ovq6j5eayzm2mLF5yF0PFUJer
- P6hGOpC1x57m1IwdRwr1Dkhs8Z40Qhl2RCYM/lKwYnzBrVl/Z8hAEmFq/jERBYW044
- eGBMwmLRotxuTOu27WXzEKYPbiFLZweoDszIcbhbrnr4+OFI+bPNI5O2xR0seEMpLb
- O6zPFNxneQ7VS4RNHw0txVk07newFQT/uBXEsrfFqiKmc6feRtimdsvsCJV3XFapCd
- srWhHMOVM2zjh6+v6cveD/5QsEVYQimUoxxR3CuLbqk6zm9GwBHd6ou8Pqre6+arkA
- xvrtxOV5FOqdQ==
+ b=DXF2kbFOu/d0z+t1Ms+g5NWG//Ep0IG5elrFrqpzaQwKmFjK24inwdZMTckRHm7Dz
+ ZR3SyNvp0Sl+GxTr4rmgvWYkdMVdoelD4KYiKyi+DkKmWOexSe6tz4HzaN4tYzUlN7
+ Blbt8I3FgFnoUdTpooR3xBIiZ+6n8RqECQarWWVpkDzPwcbHMVead9+KQZKC5Zx640
+ hmlPQAdkwwmI4j+doVKPmRLBxrU1mO31F4cz1MqHnOkKocome/JoIteJx/DkWGjz3G
+ 16PMdVYWFgiOtSRkUZACyWV8aRlE9rNVLnbR8lLHljvqq89UVyHNxyrf/fitwTVBiH
+ ZsNHrSBB1BXUg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1serWx-000000055ev-2oNH; Fri, 16 Aug 2024 09:37:51 +0200
+ id 1serWx-000000055ez-2v1X; Fri, 16 Aug 2024 09:37:51 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Peter Maydell <peter.maydell@linaro.org>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v8 10/13] target/arm: add an experimental mpidr arm cpu
- property object
-Date: Fri, 16 Aug 2024 09:37:42 +0200
-Message-ID: <2e1c52c861bdb33b95334bb3598038a73426f5c6.1723793768.git.mchehab+huawei@kernel.org>
+ Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
+ linux-kernel@vger.kernel.org, qemu-devel@nongnu.org
+Subject: [PATCH v8 11/13] scripts/arm_processor_error.py: retrieve mpidr if
+ not filled
+Date: Fri, 16 Aug 2024 09:37:43 +0200
+Message-ID: <9fab07e7af3efaae9546ab2c7b12b2482ba02da5.1723793768.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.1723793768.git.mchehab+huawei@kernel.org>
 References: <cover.1723793768.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55;
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
  envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -74,89 +76,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Accurately injecting an ARM Processor error ACPI/APEI GHES
-error record requires the value of the ARM Multiprocessor
-Affinity Register (mpidr).
-
-While ARM implements it, this is currently not visible.
-
-Add a field at CPU storing it, and place it at arm_cpu_properties
-as experimental, thus allowing it to be queried via QMP using
-qom-get function.
+Add support to retrieve mpidr value via qom-get.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- target/arm/cpu.c    |  1 +
- target/arm/cpu.h    |  1 +
- target/arm/helper.c | 10 ++++++++--
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ scripts/arm_processor_error.py | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 19191c239181..30fcf0a10f46 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2619,6 +2619,7 @@ static ObjectClass *arm_cpu_class_by_name(const char *cpu_model)
+diff --git a/scripts/arm_processor_error.py b/scripts/arm_processor_error.py
+index 62e0c5662232..0a16d4f0d8b1 100644
+--- a/scripts/arm_processor_error.py
++++ b/scripts/arm_processor_error.py
+@@ -5,12 +5,10 @@
+ #
+ # Copyright (C) 2024 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
  
- static Property arm_cpu_properties[] = {
-     DEFINE_PROP_UINT64("midr", ARMCPU, midr, 0),
-+    DEFINE_PROP_UINT64("x-mpidr", ARMCPU, mpidr, 0),
-     DEFINE_PROP_UINT64("mp-affinity", ARMCPU,
-                         mp_affinity, ARM64_AFFINITY_INVALID),
-     DEFINE_PROP_INT32("node-id", ARMCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 9a3fd595621f..3ad4de793409 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1033,6 +1033,7 @@ struct ArchCPU {
-         uint64_t reset_pmcr_el0;
-     } isar;
-     uint64_t midr;
-+    uint64_t mpidr;
-     uint32_t revidr;
-     uint32_t reset_fpsid;
-     uint64_t ctr;
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 0a582c1cd3b3..d6e7aa069489 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -4690,7 +4690,7 @@ static uint64_t mpidr_read_val(CPUARMState *env)
-     return mpidr;
- }
+-# TODO: current implementation has dummy defaults.
+-#
+-# For a better implementation, a QMP addition/call is needed to
+-# retrieve some data for ARM Processor Error injection:
+-#
+-#   - ARM registers: power_state, mpidr.
++# Note: currently it lacks a method to fill the ARM Processor Error CPER
++# psci field from emulation. On a real hardware, this is filled only
++# when a CPU is not running. Implementing support for it to simulate a
++# real hardware is not trivial.
  
--static uint64_t mpidr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-+static uint64_t mpidr_read(CPUARMState *env)
- {
-     unsigned int cur_el = arm_current_el(env);
+ import argparse
+ import re
+@@ -174,11 +172,24 @@ def send_cper(self, args):
+         else:
+             cper["running-state"] = 0
  
-@@ -4700,6 +4700,11 @@ static uint64_t mpidr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     return mpidr_read_val(env);
- }
- 
-+static uint64_t mpidr_read_ri(CPUARMState *env, const ARMCPRegInfo *ri)
-+{
-+    return mpidr_read(env);
-+}
++        if args.mpidr:
++            cper["mpidr-el1"] = arg["mpidr"]
++        elif cpus:
++            cmd_arg = {
++                'path': cpus[0],
++                'property': "x-mpidr"
++            }
++            ret = qmp_cmd.send_cmd("qom-get", cmd_arg, may_open=True)
++            if isinstance(ret, int):
++                cper["mpidr-el1"] = ret
++            else:
++                cper["mpidr-el1"] = 0
 +
- static const ARMCPRegInfo lpae_cp_reginfo[] = {
-     /* NOP AMAIR0/1 */
-     { .name = "AMAIR0", .state = ARM_CP_STATE_BOTH,
-@@ -9721,7 +9726,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-             { .name = "MPIDR_EL1", .state = ARM_CP_STATE_BOTH,
-               .opc0 = 3, .crn = 0, .crm = 0, .opc1 = 0, .opc2 = 5,
-               .fgt = FGT_MPIDR_EL1,
--              .access = PL1_R, .readfn = mpidr_read, .type = ARM_CP_NO_RAW },
-+              .access = PL1_R, .readfn = mpidr_read_ri, .type = ARM_CP_NO_RAW },
-         };
- #ifdef CONFIG_USER_ONLY
-         static const ARMCPRegUserSpaceInfo mpidr_user_cp_reginfo[] = {
-@@ -9731,6 +9736,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         modify_arm_cp_regs(mpidr_cp_reginfo, mpidr_user_cp_reginfo);
- #endif
-         define_arm_cp_regs(cpu, mpidr_cp_reginfo);
-+        cpu->mpidr = mpidr_read(env);
-     }
+         if arm_valid_init:
+             if args.affinity:
+                 cper["valid"] |= self.arm_valid_bits["affinity"]
  
-     if (arm_feature(env, ARM_FEATURE_AUXCR)) {
+-            if args.mpidr:
++            if "mpidr-el1" in cper:
+                 cper["valid"] |= self.arm_valid_bits["mpidr"]
+ 
+             if "running-state" in cper:
+@@ -362,7 +373,7 @@ def send_cper(self, args):
+                 if isinstance(ret, int):
+                     arg["midr-el1"] = ret
+ 
+-        util.data_add(data, arg.get("mpidr-el1", 0), 8)
++        util.data_add(data, cper["mpidr-el1"], 8)
+         util.data_add(data, arg.get("midr-el1", 0), 8)
+         util.data_add(data, cper["running-state"], 4)
+         util.data_add(data, arg.get("psci-state", 0), 4)
 -- 
 2.46.0
 
