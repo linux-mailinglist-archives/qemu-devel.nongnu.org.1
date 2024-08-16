@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F63955395
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 01:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0169553EB
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 01:50:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf5uE-0003tv-MS; Fri, 16 Aug 2024 18:58:50 -0400
+	id 1sf6gp-0005Fv-9k; Fri, 16 Aug 2024 19:49:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
- id 1sf5uB-0003tA-8I
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 18:58:47 -0400
+ id 1sf6gj-0005Ej-QP
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 19:48:57 -0400
 Received: from secure.fsr.com ([64.126.132.23])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
- id 1sf5u5-0002DO-7h
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 18:58:47 -0400
+ id 1sf6gi-0000PK-0c
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 19:48:57 -0400
 Received: from [192.168.254.26] (syn-098-146-201-045.res.spectrum.com
  [98.146.201.45]) (Authenticated sender: chauser)
- by secure.fsr.com (Postfix) with ESMTPSA id CDB1634DC0;
- Fri, 16 Aug 2024 15:58:37 -0700 (PDT)
+ by secure.fsr.com (Postfix) with ESMTPSA id 3A3F7354BF;
+ Fri, 16 Aug 2024 16:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pullman.com;
- s=mail1; t=1723849118;
- bh=R/8qz1WUwyaoKLwA35Q5WrLWvOCFRd+awYhCf0VHl1g=;
+ s=mail1; t=1723852130;
+ bh=I6NaKKuU6hmfrWGdruuBX+Cq3Azp/hmOcJ6L4O1b7wE=;
  h=Date:Subject:To:From;
- b=jUBwP3L+lGaJ2eHhUk9FmMwkO9CSD34E2Wn/dlGERmZJJTRJGdvkdxA1lBSyy2g2e
- cLjiMohbjXyTYlRkI1kyYbz+EbXXiew7GhTNG9Z2UgTzuJki7JtdoFb0nU36AaVLdN
- RLbwQUTHa3+AY8FWJFTJw0ii9K7wBcW7d+PJ1R88=
-Message-ID: <a06ebc2a-e67b-49d9-91a8-ae2a7a1d8b9d@pullman.com>
-Date: Fri, 16 Aug 2024 15:58:36 -0700
+ b=GDMiuw+tdQoLMzHOynOEeJkbwtYsD8kzB+GsZsQIpkPtQmfraOVhUu5+JZ+7cz+YQ
+ +1EtkwhRUfW4IiRqS7roBWmv+jASQaLnF9XOBr3B82EAnmfUJZiXRw9dDknfgj74+y
+ ikG77/9kfioHciCZoCkaQp7lFOVghjWqi+TA21hI=
+Message-ID: <aa172755-faf8-4587-a4e8-d1cbfdc139b1@pullman.com>
+Date: Fri, 16 Aug 2024 16:48:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH for-9.2 v3 0/6] target/sparc: emulate floating point queue
@@ -44,7 +44,7 @@ Content-Language: en-GB
 From: Carl Hauser <chauser@pullman.com>
 In-Reply-To: <092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org>
 Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=64.126.132.23; envelope-from=chauser@pullman.com;
  helo=secure.fsr.com
 X-Spam_score_int: -19
@@ -75,15 +75,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-    <p>Yes, but ...</p>
-    <p>isn't the state of dc-&gt;fsr_qne at translation time irrelevant?
-      And changing it at translation time (line 4593) is dangerous
-      (because it pertains to runtime, not translation time); i.e. why
-      is 0 stored at both translation time (4593) and at runtime (4591)?
-      I think that the if on line 4583 needs to be a run-time test. But
-      I get very tangled up in these distinctions. For me, generating a
-      call to a helper function instead of trying to generate all the
-      correct logic made it easier to keep straight what was happening.<br>
+    <p>Further info: </p>
+    <p>netbsd panics in the kernel trap handler; unfortunately it does
+      not include the fsr in the panic message, but I expect it will be
+      the same as on Solaris.<br>
+    </p>
+    <p>linux raises SIGFPE in the application that caused the exception.
+      Not surprising since we've seen before that linux is blissfully
+      unaware of the floating point queue.</p>
+    <p>-- Carl<br>
     </p>
     <div class="moz-cite-prefix">On 8/16/24 15:05, Richard Henderson
       wrote:<br>
