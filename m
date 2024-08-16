@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2B8954ADD
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 15:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10AD954B07
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 15:23:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sewpa-00006i-6d; Fri, 16 Aug 2024 09:17:26 -0400
+	id 1sewuM-00059y-2n; Fri, 16 Aug 2024 09:22:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sewpW-00005o-K9
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:17:24 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sewuI-000581-PV
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:20 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sewpT-0006ju-4u
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:17:21 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-428178fc07eso13606395e9.3
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 06:17:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sewuG-0007jw-9B
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:18 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-428f5c0833bso16161095e9.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 06:22:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723814236; x=1724419036; darn=nongnu.org;
+ d=linaro.org; s=google; t=1723814534; x=1724419334; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3s5jOdTrAiEUgXbaiSvG7TfWdlhfq0DM9hXaeA8tn/4=;
- b=XKT07/kE/9Ca6CxTlPoFaf78HpTgI6Ii/L/km1bIgsqgCB6ZObY8q/KYHikwbh+16I
- HD5vJRHCkjxkx5s3FmJrsFOboUg9m8ZDeZ0EXJPWocwEi9gsS2lKVx51Wo1sA00NvebL
- z6PZ6W1VTCCTDO3P96mbY7V7lYw/z3pUL2HVAM6ZMir91bNJfiQEFwIrXaP0cfWA7TCW
- nT1Zga4aR2Igct0LkJyP4CVqxyNc4ezOJp3zkw+uvzXXX/qCUOAc68joER3moqnSfl2C
- 1pFF/dAaUbIVeQSbERH43QHMKIkz8/cKM2il7FUXFcHSrp9naE5rc5e+xBtteuilh/iY
- JXkQ==
+ bh=pgqsoRr6u7uYuDiHRia4sFMDUVvp3Aw+9Kef5/KmriY=;
+ b=k5pn8HlCex2RU8AYOlDKrgrEdbfasAKz9OKBHP9ABjcTz7gOzqqqj3NCQqTAIMzH6V
+ liS+e4zNMLEqpqO1EM7xvxnFdjJma/m83Zadfcfv9P/RUZaX4AGEvINHCJJz9QNBZ1D0
+ CfQOHGFctldfWGs2d8trQRr0tF03emlVcJTU18W8WLLWvKsKtD0pMr90JkWqG/J1S6f4
+ j6c7r+7ePqt4kbE9Yz+G3+FLrrX34ci8faedKhUGga+QKffal9tIY6K+F0RiXmv+4tpu
+ Rrwh/zEwzDAJi8u3XCzh/2W4vhikfjrbPuCWSkLXMurM6RUZdi0nQyOHGtq0L+tQ+mJy
+ p8uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723814236; x=1724419036;
+ d=1e100.net; s=20230601; t=1723814534; x=1724419334;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=3s5jOdTrAiEUgXbaiSvG7TfWdlhfq0DM9hXaeA8tn/4=;
- b=mu+TEXR6pe/Ej6gYbe1h7nkghqZxQ4+8ieAJ7seIn0kXZvvg3WwgRD3PfTiFPvjIVP
- 5qpUWgeP8n3VHDLUAnFrrYKgKgTnUPriUQckp+iQWEwCR+hllEkFGhu6RkAZGJYl8bbj
- GcUtumxppS1qZR1arDSptM0hZ5Li25lc57vgNZ1jciVL0CX27KYsvIAbIjE+xBZBNkzz
- 0wODhuecFifTbDoi9iYq98lIgbhrEvT4CsrRKk/tgKrtnBQJPegJzMIm9sZr25Lvcy1c
- 86Ctw06IvH7bgT/yeKoHh+9YF2pfu+IgJH/paeMCX8UZcpwG6Pm89C0WIZKzfBoSksXN
- Upgg==
-X-Gm-Message-State: AOJu0YxskBizvBF0Aqkv5+hYYx6d48k3ebEHPgr1F5TBoqTnWbcbzpuY
- Qm+PkWyccVwkLleQfdQF/AcHBTrAeV5yj76KFGPGrMZT9uPTMaQhldDBpSGMlOE/uQHmMvpp0bk
- c
-X-Google-Smtp-Source: AGHT+IGbGMXjFdQGhn8XAMcbQCY74O/GEuQtrtky9F/tATwKQir39//ozYT3Ehi83xFKu4vHHMnesw==
-X-Received: by 2002:a05:600c:3552:b0:426:593c:9351 with SMTP id
- 5b1f17b1804b1-429ed7a5f31mr19968005e9.6.1723814235573; 
- Fri, 16 Aug 2024 06:17:15 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429eeadfafbsm18223025e9.47.2024.08.16.06.17.14
+ bh=pgqsoRr6u7uYuDiHRia4sFMDUVvp3Aw+9Kef5/KmriY=;
+ b=p0YVmeqOQtjx2C31mb0AYYYCNZL5+VAEgIRTbO9dd43c+gOl0qF8wu91EtyjnXl2PV
+ dZADlOUit3QyRFmfzVB3EKgawuc2D1aqUK2BofMVTj3osxfwgweebQUyZu/IZRE/Iblt
+ cBB03r59L7MQifnLviW1J8CpCYYPqmrIFguySE9hctE/i2GckZZ1MNvMuorV6YrtTVUp
+ P6SVptisNajdgeLIUS5nTjrqOlD0UpTHsyyS3IOFZA8KOD4UylscbxYxdXoyQr4CneCt
+ GPYBB+pVzEzFPZhWJDgSy6MhvaVh2knBxmeuzFp8gMwHQ6KMNFS2fJuxDNgn8Zv9zx2U
+ Dxyw==
+X-Gm-Message-State: AOJu0Yyc26BjmzAl4zvEcVzQJiJ0omSBjMcmye+PCPkuy24oYTI4TsBO
+ kPFBR/8PBpzqmMFvp0Vja0qG3RspNTJ1v4fsr6B/IgnzW6HMyb9hH/7UcOp8HDiNgLMS6SFOUd6
+ 8
+X-Google-Smtp-Source: AGHT+IGO0rB7ggvvS3A1nUT2spW5kigyBKKzvn5QT6GzLKP+tRvCnHO/3C+FSHQufhYHTGSPgt+suQ==
+X-Received: by 2002:a5d:6481:0:b0:367:8418:fde4 with SMTP id
+ ffacd0b85a97d-37194b956bcmr2137199f8f.7.1723814534273; 
+ Fri, 16 Aug 2024 06:22:14 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-371898ab855sm3631948f8f.105.2024.08.16.06.22.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Aug 2024 06:17:15 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BF6B35F867;
- Fri, 16 Aug 2024 14:17:13 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ Fri, 16 Aug 2024 06:22:13 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL v2 for 9.1 00/21] Some fixes for 9.1-rc3 (build, replay, docs,
- plugins)
-Date: Fri, 16 Aug 2024 14:17:13 +0100
-Message-Id: <20240816131713.2321664-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH for-9.2 0/7] docs/devel: Convert txt files to rST
+Date: Fri, 16 Aug 2024 14:22:05 +0100
+Message-Id: <20240816132212.3602106-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,98 +90,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit ecdfa31beb1f7616091bedba79dfdf9ee525ed9d:
+This patchset converts a collection of the remaining txt files in
+docs/devel to rST format. At this point in the release cycle
+I'm targeting 9.2 for these.
 
-  Merge tag 'pull-request-2024-08-16' of https://gitlab.com/thuth/qemu into staging (2024-08-16 18:18:27 +1000)
+Patches 1-5 are simple conversions.  In patch 6 I move the
+QemuLockCnt APIs to their own header file; this is so that we can
+include the kernel-doc generated APIs in lockcnt.rst (since
+kernel-doc works on a per-file basis).
 
-are available in the Git repository at:
+Paolo: can you confirm that you mean GPLv2-or-later for the lockcnt
+code?  There's no explicit license comment in either util/lockcnt.c
+or include/qemu/thread.h.
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-9.1-rc3-160824-1
+(There's one .txt file left in docs/devel after this, but I don't
+think it's very useful so I propose to delete it and will send a
+separate patch for that.)
 
-for you to fetch changes up to 278035fc81510bd88501afb78bd5ab652beffa76:
+thanks
+-- PMM
 
-  plugins: fix race condition with scoreboards (2024-08-16 14:13:07 +0100)
+Peter Maydell (7):
+  docs/devel/blkdebug: Convert to rST format
+  docs/devel/blkverify: Convert to rST format
+  docs/devel/lockcnt: Convert to rST format
+  docs/devel/multiple-iothreads: Convert to rST format
+  docs/devel/rcu: Convert to rST format
+  include: Move QemuLockCnt APIs to their own header
+  docs/devel/lockcnt: Include kernel-doc API documentation
 
-----------------------------------------------------------------
-Some fixes for 9.1-rc3 (build, replay, docs, plugins)
-
-  - re-enable gdbsim-r5f562n8 test
-  - ensure updates to python deps re-trigger configure
-  - tweak configure detection of GDB MTE support
-  - make checkpatch emit more warnings on updating headers
-  - allow i386 access_ptr to force slow path for plugins
-  - fixe some replay regressions
-  - update the replay-dump tool
-  - better handle muxed chardev during replay
-  - clean up TCG plugins docs to mention scoreboards
-  - fix plugin scoreboard race condition
-
-----------------------------------------------------------------
-Alex Bennée (2):
-      Makefile: trigger re-configure on updated pythondeps
-      target/i386: allow access_ptr to force slow path on failed probe
-
-Gustavo Romero (3):
-      configure: Fix arch detection for GDB_HAS_MTE
-      configure: Avoid use of param. expansion when using gdb_version
-      configure: Fix GDB version detection for GDB_HAS_MTE
-
-Nicholas Piggin (10):
-      scripts/replay-dump.py: Update to current rr record format
-      scripts/replay-dump.py: rejig decoders in event number order
-      tests/avocado: excercise scripts/replay-dump.py in replay tests
-      replay: allow runstate shutdown->running when replaying trace
-      Revert "replay: stop us hanging in rr_wait_io_event"
-      tests/avocado: replay_kernel.py add x86-64 q35 machine test
-      chardev: set record/replay on the base device of a muxed device
-      virtio-net: Use replay_schedule_bh_event for bhs that affect machine state
-      virtio-net: Use virtual time for RSC timers
-      savevm: Fix load_snapshot error path crash
-
-Philippe Mathieu-Daudé (2):
-      tests/avocado: Re-enable gdbsim-r5f562n8 testing U-Boot
-      buildsys: Fix building without plugins on Darwin
-
-Pierrick Bouvier (2):
-      docs/devel: update tcg-plugins page
-      plugins: fix race condition with scoreboards
-
-Stefan Weil (1):
-      docs: Fix some typos (found by typos) and grammar issues
-
-Stefano Garzarella (1):
-      scripts/checkpatch: more checks on files imported from Linux
-
- docs/about/emulation.rst                  |  49 +++++++--
- docs/devel/migration/uadk-compression.rst |   4 +-
- docs/devel/tcg-plugins.rst                |  13 ++-
- docs/interop/qemu-ga.rst                  |   2 +-
- docs/tools/qemu-vmsr-helper.rst           |   4 +-
- configure                                 |   8 +-
- Makefile                                  |   3 +-
- qapi/rocker.json                          |   4 +-
- include/exec/memory.h                     |   2 +-
- include/sysemu/replay.h                   |   5 -
- include/sysemu/runstate.h                 |   1 +
- accel/tcg/tcg-accel-ops-rr.c              |   2 +-
- chardev/char.c                            |  71 +++++++++----
- hw/arm/smmu-common.c                      |   2 +-
- hw/net/virtio-net.c                       |  17 +--
- migration/savevm.c                        |   1 +
- plugins/core.c                            |  43 +++++---
- qga/main.c                                |   2 +-
- replay/replay.c                           |  23 +---
- system/runstate.c                         |  31 +++++-
- target/i386/tcg/access.c                  |  27 +++--
- plugins/meson.build                       |  50 ++++-----
- scripts/checkpatch.pl                     |  24 +++++
- scripts/replay-dump.py                    | 167 ++++++++++++++++++++----------
- tests/avocado/machine_rx_gdbsim.py        |   2 -
- tests/avocado/replay_kernel.py            |  31 +++++-
- tests/avocado/replay_linux.py             |  10 ++
- 27 files changed, 406 insertions(+), 192 deletions(-)
+ MAINTAINERS                                 |   8 +-
+ docs/devel/blkdebug.rst                     | 177 ++++++++++++++++++++
+ docs/devel/blkdebug.txt                     | 162 ------------------
+ docs/devel/{blkverify.txt => blkverify.rst} |  30 ++--
+ docs/devel/index-api.rst                    |   1 +
+ docs/devel/index-build.rst                  |   2 +
+ docs/devel/index-internals.rst              |   2 +
+ docs/devel/{lockcnt.txt => lockcnt.rst}     |  89 +++++-----
+ docs/devel/multiple-iothreads.rst           | 139 +++++++++++++++
+ docs/devel/multiple-iothreads.txt           | 130 --------------
+ docs/devel/{rcu.txt => rcu.rst}             | 172 +++++++++----------
+ include/block/aio.h                         |   1 +
+ include/hw/core/cpu.h                       |   1 +
+ include/qemu/lockcnt.h                      | 130 ++++++++++++++
+ include/qemu/thread.h                       | 111 ------------
+ accel/accel-blocker.c                       |   1 +
+ hw/core/cpu-common.c                        |   1 +
+ util/aio-posix.c                            |   1 +
+ util/aio-win32.c                            |   1 +
+ util/async.c                                |   1 +
+ util/fdmon-epoll.c                          |   1 +
+ util/lockcnt.c                              |   1 +
+ 22 files changed, 608 insertions(+), 554 deletions(-)
+ create mode 100644 docs/devel/blkdebug.rst
+ delete mode 100644 docs/devel/blkdebug.txt
+ rename docs/devel/{blkverify.txt => blkverify.rst} (77%)
+ rename docs/devel/{lockcnt.txt => lockcnt.rst} (75%)
+ create mode 100644 docs/devel/multiple-iothreads.rst
+ delete mode 100644 docs/devel/multiple-iothreads.txt
+ rename docs/devel/{rcu.txt => rcu.rst} (73%)
+ create mode 100644 include/qemu/lockcnt.h
 
 -- 
-2.39.2
+2.34.1
 
 
