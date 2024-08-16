@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8101D954B09
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3B4954B0A
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 15:24:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sewuQ-0005Qt-PT; Fri, 16 Aug 2024 09:22:26 -0400
+	id 1sewuQ-0005AY-1r; Fri, 16 Aug 2024 09:22:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sewuK-000597-MC
+ id 1sewuK-00058M-9g
  for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:20 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sewuH-0007k0-7k
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:20 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4281faefea9so13831155e9.2
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 06:22:16 -0700 (PDT)
+ id 1sewuH-0007k3-FK
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:19 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3719753d365so329409f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 06:22:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1723814535; x=1724419335; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+qDfeY+CsvBUJu7CFKOtFh4EY2RJKFqnGcNsx1NoFx4=;
- b=lLNr/K3QeQ7ARwo1nnHRnMBfEQlxaklE85pxr8pvnjvvy0uZlsI2XHCHNi5rqmc86v
- p4ptX5iUDU8y/GQCngm2GnnwyZmOiPWadrhUVJGaUHHno/luJ/sJ3fUsRjGChozwydLD
- MyN128P2EfL0W0LC8vNr/kJenDTHv9nkjHzKGr5BnyG0B2iXz2oJQVQA8psXcSYwTXj/
- 6Z4c0RENxm3JZDf4cRZq/a7SpDECAVjU2O86xi4xguqwTQd0KWt9trH9/5QCOptAGbtl
- dvNx0Y+xp+JlAvC9EJccwazEAdxZ1VVEt5Z9huS7qVMCGP0aFU+I+z6oMehyRbzpDQZr
- cNRw==
+ bh=L3BYyoFuiUhi097Go1IdQzbbTPVpAV8zdtNg6dApNEU=;
+ b=J0EN+EmQx8V2LrNaxrckjspv+g/23rnQZw0XXM15V7rrJM1uKtjTKi/X0JW9vLmGel
+ pfcxbAh2e1Ye0xxX4wqr2GyfhR8HOCR8xlQWgmBEV06B6UzkuhAQTGv1Y0MRWymgs/V0
+ BILz2Cq9Qor3obJomOx7U1vVE9oXoYScFlFVCji6Enpb6esIvHcWvf5x2HbdN8phLndy
+ 8Awz6qsOMR959WUHAblHDIPE8W/iqwh+fZM9nKuYDFGlOxypx9Auvcb/uLqscNw3BELN
+ qlgN93+Sxpi27tOcKaCldafuXaII1GVBEXRSMDKNGJUvwKfR+i97n4uxIoXQE4SD+Aka
+ kQfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1723814535; x=1724419335;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+qDfeY+CsvBUJu7CFKOtFh4EY2RJKFqnGcNsx1NoFx4=;
- b=Fs9w4JpsAhfSIa7Za3XiRkl3gjuOyRScIrtFqbREsRONZrP6TcYBlOoxXI2uET2/ig
- acM17I7StlfIg97E339aWQR2wjepxPf9l78fPXu3rtVS6yd63wYKDb8EqUkLqlarDqrV
- N7DLyH9puCmimVEQWgm3p2Zms3cslBvPzclI3Uc+6e2e8pVctLdC5DDFhlcz97Z/qOZV
- 38HDrvSwCHhJosrDTcmfqvjpK6zKtaGvbN/ruxBjTHPgEAhtbDeeNxQ2QjKz8oBmchiP
- J+LblCfevi3b39KVfTJA7kshQp3wAsK0j+LILJ/qpcTZlJYAL5cRkMJAbj9ZKseuGLct
- z50A==
-X-Gm-Message-State: AOJu0YzwZvsPEY3lWPuYlBJG/XDefxLerisb9lKMwBfqv88OB1yxQGLI
- ggOXBRPCAxSF1p8BJ6TMcSQfwJwAOCX/QSvNi+QSDlhK6o5EKlXnqgrQwMNWPu7rtY3UlP3lz1k
- Y
-X-Google-Smtp-Source: AGHT+IHD9HdZOmNwrGd38VGkIRMdVdizqRIEkJxVJwu/k/RfR7I6U6FI3bkIzZzQdErliciSB8959g==
-X-Received: by 2002:adf:ef4b:0:b0:368:3ee5:e3e1 with SMTP id
- ffacd0b85a97d-37194314e6emr2086023f8f.7.1723814534888; 
- Fri, 16 Aug 2024 06:22:14 -0700 (PDT)
+ bh=L3BYyoFuiUhi097Go1IdQzbbTPVpAV8zdtNg6dApNEU=;
+ b=TAX0y+tE7HDNwvEkpOcL7ylYGZ7pEOdElBzqnc0LcjsYrtX+AtJihpkg/gaKtDt8mx
+ aAYnvI2f0URi2jqT1heQOrxDi/nw9oHPeJnseAAoRV3Qql+2kc4NrdnxkKC4huFXhQ3H
+ Xp8pvxwDqrzfIpD1lLi3LROrJqNRcObjcKuX1Fe5HCiUEhS46oDJoNW+OwG9tAW2iH5f
+ TBvIkci5C32c4o8uX0Fo0EHoWL5sBV5lHSYZomFP3WimZgj4M/mY1q2FSQBVSYmqAMcK
+ g1N7wlkslDQbEEenJSW/zoDjtiAEkEEZVE6S9fxUmK6FMK3hpwhPClR8g67z/rahxonN
+ JMBg==
+X-Gm-Message-State: AOJu0Yw70+GqqqqeFVgz16nGA8fKxnvbEkQfTZ3YRAD6CKNHNyaLkCqy
+ DExItae1iWEHCvsPm67Yg50eqTwOGiCZP4MOVnYst5PnhcV78LhmWL0SWNaToGsv7fdh0fKgFbQ
+ Z
+X-Google-Smtp-Source: AGHT+IG4oyYbdCOLq7ErxdT7m0wtT+/At885LDS58iJUq46gVTm5u2Piyn9vS0USHKuQLXAnVcEx3Q==
+X-Received: by 2002:adf:f1c2:0:b0:368:3789:1a2 with SMTP id
+ ffacd0b85a97d-37194641ac2mr1951421f8f.21.1723814535469; 
+ Fri, 16 Aug 2024 06:22:15 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-371898ab855sm3631948f8f.105.2024.08.16.06.22.14
+ ffacd0b85a97d-371898ab855sm3631948f8f.105.2024.08.16.06.22.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Aug 2024 06:22:14 -0700 (PDT)
+ Fri, 16 Aug 2024 06:22:15 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 1/7] docs/devel/blkdebug: Convert to rST format
-Date: Fri, 16 Aug 2024 14:22:06 +0100
-Message-Id: <20240816132212.3602106-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/7] docs/devel/blkverify: Convert to rST format
+Date: Fri, 16 Aug 2024 14:22:07 +0100
+Message-Id: <20240816132212.3602106-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240816132212.3602106-1-peter.maydell@linaro.org>
 References: <20240816132212.3602106-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,394 +93,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert blkdebug.txt to rST format.  We put it into index-build.rst
-because it falls under the "test" part of "QEMU Build and Test
-System".
+Convert blkverify.txt to rST format.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-At least, index-build seemed the most plausible home to me...
----
- MAINTAINERS                |   1 +
- docs/devel/blkdebug.rst    | 177 +++++++++++++++++++++++++++++++++++++
- docs/devel/blkdebug.txt    | 162 ---------------------------------
- docs/devel/index-build.rst |   1 +
- 4 files changed, 179 insertions(+), 162 deletions(-)
- create mode 100644 docs/devel/blkdebug.rst
- delete mode 100644 docs/devel/blkdebug.txt
+ MAINTAINERS                                 |  1 +
+ docs/devel/{blkverify.txt => blkverify.rst} | 30 ++++++++++++---------
+ docs/devel/index-build.rst                  |  1 +
+ 3 files changed, 19 insertions(+), 13 deletions(-)
+ rename docs/devel/{blkverify.txt => blkverify.rst} (77%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 3584d6a6c6d..ca0a5c731f5 100644
+index ca0a5c731f5..e9dd1180077 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4015,6 +4015,7 @@ M: Hanna Reitz <hreitz@redhat.com>
+@@ -3938,6 +3938,7 @@ M: Stefan Hajnoczi <stefanha@redhat.com>
  L: qemu-block@nongnu.org
  S: Supported
- F: block/blkdebug.c
-+F: docs/devel/blkdebug.rst
+ F: block/blkverify.c
++F: docs/devel/blkverify.rst
  
- vpc
- M: Kevin Wolf <kwolf@redhat.com>
-diff --git a/docs/devel/blkdebug.rst b/docs/devel/blkdebug.rst
-new file mode 100644
-index 00000000000..63887c9aa9c
---- /dev/null
-+++ b/docs/devel/blkdebug.rst
-@@ -0,0 +1,177 @@
-+Block I/O error injection using ``blkdebug``
-+============================================
-+
-+..
-+   Copyright (C) 2014-2015 Red Hat Inc
-+
-+   This work is licensed under the terms of the GNU GPL, version 2 or later.  See
-+   the COPYING file in the top-level directory.
-+
-+The ``blkdebug`` block driver is a rule-based error injection engine.  It can be
-+used to exercise error code paths in block drivers including ``ENOSPC`` (out of
-+space) and ``EIO``.
-+
-+This document gives an overview of the features available in ``blkdebug``.
-+
-+Background
-+----------
-+Block drivers have many error code paths that handle I/O errors.  Image formats
-+are especially complex since metadata I/O errors during cluster allocation or
-+while updating tables happen halfway through request processing and require
-+discipline to keep image files consistent.
-+
-+Error injection allows test cases to trigger I/O errors at specific points.
-+This way, all error paths can be tested to make sure they are correct.
-+
-+Rules
-+-----
-+The ``blkdebug`` block driver takes a list of "rules" that tell the error injection
-+engine when to fail an I/O request.
-+
-+Each I/O request is evaluated against the rules.  If a rule matches the request
-+then its "action" is executed.
-+
-+Rules can be placed in a configuration file; the configuration file
-+follows the same .ini-like format used by QEMU's ``-readconfig`` option, and
-+each section of the file represents a rule.
-+
-+The following configuration file defines a single rule::
-+
-+  $ cat blkdebug.conf
-+  [inject-error]
-+  event = "read_aio"
-+  errno = "28"
-+
-+This rule fails all aio read requests with ``ENOSPC`` (28).  Note that the errno
-+value depends on the host.  On Linux, see
-+``/usr/include/asm-generic/errno-base.h`` for errno values.
-+
-+Invoke QEMU as follows::
-+
-+  $ qemu-system-x86_64
-+        -drive if=none,cache=none,file=blkdebug:blkdebug.conf:test.img,id=drive0 \
-+        -device virtio-blk-pci,drive=drive0,id=virtio-blk-pci0
-+
-+Rules support the following attributes:
-+
-+``event``
-+  which type of operation to match (e.g. ``read_aio``, ``write_aio``,
-+  ``flush_to_os``, ``flush_to_disk``).  See `Events`_ for
-+  information on events.
-+
-+``state``
-+  (optional) the engine must be in this state number in order for this
-+  rule to match.  See `State transitions`_ for information
-+  on states.
-+
-+``errno``
-+  the numeric errno value to return when a request matches this rule.
-+  The errno values depend on the host since the numeric values are not
-+  standardized in the POSIX specification.
-+
-+``sector``
-+  (optional) a sector number that the request must overlap in order to
-+  match this rule
-+
-+``once``
-+  (optional, default ``off``) only execute this action on the first
-+  matching request
-+
-+``immediately``
-+  (optional, default ``off``) return a NULL ``BlockAIOCB``
-+  pointer and fail without an errno instead.  This
-+  exercises the code path where ``BlockAIOCB`` fails and the
-+  caller's ``BlockCompletionFunc`` is not invoked.
-+
-+Events
-+------
-+Block drivers provide information about the type of I/O request they are about
-+to make so rules can match specific types of requests.  For example, the ``qcow2``
-+block driver tells ``blkdebug`` when it accesses the L1 table so rules can match
-+only L1 table accesses and not other metadata or guest data requests.
-+
-+The core events are:
-+
-+``read_aio``
-+  guest data read
-+
-+``write_aio``
-+  guest data write
-+
-+``flush_to_os``
-+  write out unwritten block driver state (e.g. cached metadata)
-+
-+``flush_to_disk``
-+  flush the host block device's disk cache
-+
-+See ``qapi/block-core.json:BlkdebugEvent`` for the full list of events.
-+You may need to grep block driver source code to understand the
-+meaning of specific events.
-+
-+State transitions
-+-----------------
-+There are cases where more power is needed to match a particular I/O request in
-+a longer sequence of requests.  For example::
-+
-+  write_aio
-+  flush_to_disk
-+  write_aio
-+
-+How do we match the 2nd ``write_aio`` but not the first?  This is where state
-+transitions come in.
-+
-+The error injection engine has an integer called the "state" that always starts
-+initialized to 1.  The state integer is internal to ``blkdebug`` and cannot be
-+observed from outside but rules can interact with it for powerful matching
-+behavior.
-+
-+Rules can be conditional on the current state and they can transition to a new
-+state.
-+
-+When a rule's "state" attribute is non-zero then the current state must equal
-+the attribute in order for the rule to match.
-+
-+For example, to match the 2nd write_aio::
-+
-+  [set-state]
-+  event = "write_aio"
-+  state = "1"
-+  new_state = "2"
-+
-+  [inject-error]
-+  event = "write_aio"
-+  state = "2"
-+  errno = "5"
-+
-+The first ``write_aio`` request matches the ``set-state`` rule and transitions from
-+state 1 to state 2.  Once state 2 has been entered, the ``set-state`` rule no
-+longer matches since it requires state 1.  But the ``inject-error`` rule now
-+matches the next ``write_aio`` request and injects ``EIO`` (5).
-+
-+State transition rules support the following attributes:
-+
-+``event``
-+  which type of operation to match (e.g. ``read_aio``, ``write_aio``,
-+  ``flush_to_os`, ``flush_to_disk``).  See `Events`_ for
-+  information on events.
-+
-+``state``
-+  (optional) the engine must be in this state number in order for this
-+  rule to match
-+
-+``new_state``
-+  transition to this state number
-+
-+Suspend and resume
-+------------------
-+Exercising code paths in block drivers may require specific ordering amongst
-+concurrent requests.  The "breakpoint" feature allows requests to be halted on
-+a ``blkdebug`` event and resumed later.  This makes it possible to achieve
-+deterministic ordering when multiple requests are in flight.
-+
-+Breakpoints on ``blkdebug`` events are associated with a user-defined ``tag`` string.
-+This tag serves as an identifier by which the request can be resumed at a later
-+point.
-+
-+See the ``qemu-io(1)`` ``break``, ``resume``, ``remove_break``, and ``wait_break``
-+commands for details.
-diff --git a/docs/devel/blkdebug.txt b/docs/devel/blkdebug.txt
-deleted file mode 100644
-index 0b0c128d356..00000000000
---- a/docs/devel/blkdebug.txt
-+++ /dev/null
-@@ -1,162 +0,0 @@
--Block I/O error injection using blkdebug
------------------------------------------
--Copyright (C) 2014-2015 Red Hat Inc
--
--This work is licensed under the terms of the GNU GPL, version 2 or later.  See
--the COPYING file in the top-level directory.
--
--The blkdebug block driver is a rule-based error injection engine.  It can be
--used to exercise error code paths in block drivers including ENOSPC (out of
--space) and EIO.
--
--This document gives an overview of the features available in blkdebug.
--
--Background
------------
--Block drivers have many error code paths that handle I/O errors.  Image formats
--are especially complex since metadata I/O errors during cluster allocation or
--while updating tables happen halfway through request processing and require
--discipline to keep image files consistent.
--
--Error injection allows test cases to trigger I/O errors at specific points.
--This way, all error paths can be tested to make sure they are correct.
--
--Rules
-------
--The blkdebug block driver takes a list of "rules" that tell the error injection
--engine when to fail an I/O request.
--
--Each I/O request is evaluated against the rules.  If a rule matches the request
--then its "action" is executed.
--
--Rules can be placed in a configuration file; the configuration file
--follows the same .ini-like format used by QEMU's -readconfig option, and
--each section of the file represents a rule.
--
--The following configuration file defines a single rule:
--
--  $ cat blkdebug.conf
--  [inject-error]
--  event = "read_aio"
--  errno = "28"
--
--This rule fails all aio read requests with ENOSPC (28).  Note that the errno
--value depends on the host.  On Linux, see
--/usr/include/asm-generic/errno-base.h for errno values.
--
--Invoke QEMU as follows:
--
--  $ qemu-system-x86_64
--        -drive if=none,cache=none,file=blkdebug:blkdebug.conf:test.img,id=drive0 \
--        -device virtio-blk-pci,drive=drive0,id=virtio-blk-pci0
--
--Rules support the following attributes:
--
--  event - which type of operation to match (e.g. read_aio, write_aio,
--          flush_to_os, flush_to_disk).  See the "Events" section for
--          information on events.
--
--  state - (optional) the engine must be in this state number in order for this
--          rule to match.  See the "State transitions" section for information
--          on states.
--
--  errno - the numeric errno value to return when a request matches this rule.
--          The errno values depend on the host since the numeric values are not
--          standardized in the POSIX specification.
--
--  sector - (optional) a sector number that the request must overlap in order to
--           match this rule
--
--  once - (optional, default "off") only execute this action on the first
--         matching request
--
--  immediately - (optional, default "off") return a NULL BlockAIOCB
--                pointer and fail without an errno instead.  This
--                exercises the code path where BlockAIOCB fails and the
--                caller's BlockCompletionFunc is not invoked.
--
--Events
--------
--Block drivers provide information about the type of I/O request they are about
--to make so rules can match specific types of requests.  For example, the qcow2
--block driver tells blkdebug when it accesses the L1 table so rules can match
--only L1 table accesses and not other metadata or guest data requests.
--
--The core events are:
--
--  read_aio - guest data read
--
--  write_aio - guest data write
--
--  flush_to_os - write out unwritten block driver state (e.g. cached metadata)
--
--  flush_to_disk - flush the host block device's disk cache
--
--See qapi/block-core.json:BlkdebugEvent for the full list of events.
--You may need to grep block driver source code to understand the
--meaning of specific events.
--
--State transitions
-------------------
--There are cases where more power is needed to match a particular I/O request in
--a longer sequence of requests.  For example:
--
--  write_aio
--  flush_to_disk
--  write_aio
--
--How do we match the 2nd write_aio but not the first?  This is where state
--transitions come in.
--
--The error injection engine has an integer called the "state" that always starts
--initialized to 1.  The state integer is internal to blkdebug and cannot be
--observed from outside but rules can interact with it for powerful matching
--behavior.
--
--Rules can be conditional on the current state and they can transition to a new
--state.
--
--When a rule's "state" attribute is non-zero then the current state must equal
--the attribute in order for the rule to match.
--
--For example, to match the 2nd write_aio:
--
--  [set-state]
--  event = "write_aio"
--  state = "1"
--  new_state = "2"
--
--  [inject-error]
--  event = "write_aio"
--  state = "2"
--  errno = "5"
--
--The first write_aio request matches the set-state rule and transitions from
--state 1 to state 2.  Once state 2 has been entered, the set-state rule no
--longer matches since it requires state 1.  But the inject-error rule now
--matches the next write_aio request and injects EIO (5).
--
--State transition rules support the following attributes:
--
--  event - which type of operation to match (e.g. read_aio, write_aio,
--          flush_to_os, flush_to_disk).  See the "Events" section for
--          information on events.
--
--  state - (optional) the engine must be in this state number in order for this
--          rule to match
--
--  new_state - transition to this state number
--
--Suspend and resume
--------------------
--Exercising code paths in block drivers may require specific ordering amongst
--concurrent requests.  The "breakpoint" feature allows requests to be halted on
--a blkdebug event and resumed later.  This makes it possible to achieve
--deterministic ordering when multiple requests are in flight.
--
--Breakpoints on blkdebug events are associated with a user-defined "tag" string.
--This tag serves as an identifier by which the request can be resumed at a later
--point.
--
--See the qemu-io(1) break, resume, remove_break, and wait_break commands for
--details.
+ bochs
+ M: Stefan Hajnoczi <stefanha@redhat.com>
+diff --git a/docs/devel/blkverify.txt b/docs/devel/blkverify.rst
+similarity index 77%
+rename from docs/devel/blkverify.txt
+rename to docs/devel/blkverify.rst
+index aca826c51cc..2a71778b5e3 100644
+--- a/docs/devel/blkverify.txt
++++ b/docs/devel/blkverify.rst
+@@ -1,8 +1,10 @@
+-= Block driver correctness testing with blkverify =
++Block driver correctness testing with ``blkverify``
++===================================================
+ 
+-== Introduction ==
++Introduction
++------------
+ 
+-This document describes how to use the blkverify protocol to test that a block
++This document describes how to use the ``blkverify`` protocol to test that a block
+ driver is operating correctly.
+ 
+ It is difficult to test and debug block drivers against real guests.  Often
+@@ -11,12 +13,13 @@ of the executable.  Other times obscure errors are raised by a program inside
+ the guest.  These issues are extremely hard to trace back to bugs in the block
+ driver.
+ 
+-Blkverify solves this problem by catching data corruption inside QEMU the first
++``blkverify`` solves this problem by catching data corruption inside QEMU the first
+ time bad data is read and reporting the disk sector that is corrupted.
+ 
+-== How it works ==
++How it works
++------------
+ 
+-The blkverify protocol has two child block devices, the "test" device and the
++The ``blkverify`` protocol has two child block devices, the "test" device and the
+ "raw" device.  Read/write operations are mirrored to both devices so their
+ state should always be in sync.
+ 
+@@ -25,13 +28,14 @@ contents to the "test" image.  The idea is that the "raw" device will handle
+ read/write operations correctly and not corrupt data.  It can be used as a
+ reference for comparison against the "test" device.
+ 
+-After a mirrored read operation completes, blkverify will compare the data and
++After a mirrored read operation completes, ``blkverify`` will compare the data and
+ raise an error if it is not identical.  This makes it possible to catch the
+ first instance where corrupt data is read.
+ 
+-== Example ==
++Example
++-------
+ 
+-Imagine raw.img has 0xcd repeated throughout its first sector:
++Imagine raw.img has 0xcd repeated throughout its first sector::
+ 
+     $ ./qemu-io -c 'read -v 0 512' raw.img
+     00000000:  cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd  ................
+@@ -42,7 +46,7 @@ Imagine raw.img has 0xcd repeated throughout its first sector:
+     read 512/512 bytes at offset 0
+     512.000000 bytes, 1 ops; 0.0000 sec (97.656 MiB/sec and 200000.0000 ops/sec)
+ 
+-And test.img is corrupt, its first sector is zeroed when it shouldn't be:
++And test.img is corrupt, its first sector is zeroed when it shouldn't be::
+ 
+     $ ./qemu-io -c 'read -v 0 512' test.img
+     00000000:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+@@ -53,17 +57,17 @@ And test.img is corrupt, its first sector is zeroed when it shouldn't be:
+     read 512/512 bytes at offset 0
+     512.000000 bytes, 1 ops; 0.0000 sec (81.380 MiB/sec and 166666.6667 ops/sec)
+ 
+-This error is caught by blkverify:
++This error is caught by ``blkverify``::
+ 
+     $ ./qemu-io -c 'read 0 512' blkverify:a.img:b.img
+     blkverify: read sector_num=0 nb_sectors=4 contents mismatch in sector 0
+ 
+-A more realistic scenario is verifying the installation of a guest OS:
++A more realistic scenario is verifying the installation of a guest OS::
+ 
+     $ ./qemu-img create raw.img 16G
+     $ ./qemu-img create -f qcow2 test.qcow2 16G
+     $ ./qemu-system-x86_64 -cdrom debian.iso \
+           -drive file=blkverify:raw.img:test.qcow2
+ 
+-If the installation is aborted when blkverify detects corruption, use qemu-io
++If the installation is aborted when ``blkverify`` detects corruption, use ``qemu-io``
+ to explore the contents of the disk image at the sector in question.
 diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
-index 90b406ca0ed..3a912aefcfa 100644
+index 3a912aefcfa..a8f7c5cdebc 100644
 --- a/docs/devel/index-build.rst
 +++ b/docs/devel/index-build.rst
-@@ -18,3 +18,4 @@ the basics if you are adding new files and targets to the build.
-    qapi-code-gen
+@@ -19,3 +19,4 @@ the basics if you are adding new files and targets to the build.
     fuzzing
     control-flow-integrity
-+   blkdebug
+    blkdebug
++   blkverify
 -- 
 2.34.1
 
