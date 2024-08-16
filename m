@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F366E954FB5
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 19:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E72954FB1
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 19:12:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf0TL-0006Sg-19; Fri, 16 Aug 2024 13:10:43 -0400
+	id 1sf0TN-0006dA-Lp; Fri, 16 Aug 2024 13:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sf0T7-00058s-NG
+ id 1sf0T7-00058r-Mz
  for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:10:31 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sf0T1-0007Na-HK
+ id 1sf0T4-0007Nu-6d
  for qemu-devel@nongnu.org; Fri, 16 Aug 2024 13:10:29 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-7a1843b4cdbso1673660a12.2
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 10:10:22 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-20203988f37so11051025ad.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 10:10:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723828221; x=1724433021; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1723828224; x=1724433024; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lfzjBG7+9yzLMDJFHDoCCaXekwfn4Gr8dayPzH/NfvM=;
- b=NeMg7fnG7dFLhDdV3JzwiRYzIsILEtnTrIkLA20ievOapY2FExwiSfCHZ1yeYhJbtI
- mibOFyXmzPbdy3F4bTZAzx2o7C7UI0uR5qS1MTkKy01ifkEh9CAh0R8MM5d/HbpmoMZc
- xOG8tJNrzbzIGMdaA15/cs3azgTRA3SmAcR9QR2YjQS4HXZnT1XSJjnEw6UCznXyi/8q
- CAcXx6Jlj/d2DQS0qKi17X+Yuub2WVOsWiFUhA9EU3TI8d4JZnpnTkt3omSvMenZ8XCg
- M2gYy8wPcwtzAEirQB55K/wTaudRjIo82KuTea32bEwDoglhbNo1WKg/LQx7HFV7BdiT
- AFWQ==
+ bh=Ltx3coYvH4EqEQjQYY11IM0VCXZXqxusmpe5jU7Dxo0=;
+ b=mbXIW9X81Nk7T9nvo4e0w4OrGPIH0XOcQdBnIglFenYoN0HS8pxHo7Q4LS/I/zlLFY
+ ZD6jQvg7pBkCCdbGmIdI5IPgQ61R4TvZzvd1iKN+cuQDJDEb2SUe8nerx/xBAz4sPlrx
+ 1FeyPomPPg9yhn82m9+VXbWFvorAp25Zk5PCmXMybVqQgeLL0oD40dI3dWVC5UgeNvGl
+ QIS2ZtfkrhzqR1pCwVZ2SzhIysFh5+xJaeXq4cdPWnUDrsKuY4J7u1r1Wle0PghUDzCD
+ FHQLUA3iMLGpdKZNa+uT45A0JQ7srzjkOCgrVQZ0+GXbjsppQCJzoIPxt7p7EWWiEfwH
+ V37g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723828221; x=1724433021;
+ d=1e100.net; s=20230601; t=1723828224; x=1724433024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lfzjBG7+9yzLMDJFHDoCCaXekwfn4Gr8dayPzH/NfvM=;
- b=CXNr2LZIkfdeR7hLV1RwEy5vDtZAOjFqiLP/48MgOjHlUZ8JIfZLLxBIhQHymEGqUf
- AOTJFJI6P4aAWCdX7xddT+6PtCCHLb+1iiOx18IlcBElarLoQHl6QbuW3st7v375Cuhi
- E03UxOACrWM1jSLQ7H11RHBD2ZEssSfhqb+Kc/5TdA9+syVdK1pnDgqsTMidMxS9SzhS
- 0f0LP8oriojlmlsTIUMo12y7wPuAbb5EXwMgTMYRTBjpiDxkdT6PJICUCVUnzMSBXitV
- /6+7DxdpFk2Ga/2HUfeSI5e5mQqjnCMkyLMhXt79s1+5M3Ke2/8EUrg6lyRzuGGlI+bU
- n/9Q==
-X-Gm-Message-State: AOJu0YwXVsxU+ULJfokJtn64Es1mgQ5ISIruWnI+PAD/9oD4zGph+4oh
- yEqFk6txpnhwneNIrDshLIVN0rIoR6+LW7AAq+4rN3G+tMi+fliCyuiKzhG7C/4=
-X-Google-Smtp-Source: AGHT+IHrukgL00U/0e/iKJODEncnQSTgnnnmZj/L7RhTrnqD0S0O5GbHzkGfPZrbBaxDETV92bUcCQ==
-X-Received: by 2002:a17:90b:1e03:b0:2d3:dca0:89b7 with SMTP id
- 98e67ed59e1d1-2d40533a66emr152704a91.3.1723828220562; 
- Fri, 16 Aug 2024 10:10:20 -0700 (PDT)
+ bh=Ltx3coYvH4EqEQjQYY11IM0VCXZXqxusmpe5jU7Dxo0=;
+ b=dMD1NRLxvsbH5XuSWniCcAdtUAb1Q6Lw2+W/C0O4kqO4dGFLhUsPDHdsGI4wIZqWtl
+ PtJIdWK9mEMB5dRCCxqFRozTFJ8ZHkheykETRKiy0vnWQzQIZuPIFTKU2qboZ4cmkB+Q
+ ICejuGwvpBuhetQ8Xepn/Ooyhmjp3dTwK5IRO508g49OLtNwsJicyagNfWH6c9h0KSGe
+ 56MUrAzDplu1V8yTTrUg3wh2GJHWs3XXroAjHC4Bg0SjuET3Aa0fy+uac0wOCLzGqhTe
+ gjDkzvxUMY5ITfypeUMDwspKpHeSvJvHhORcFbTEsocuuznj2mAsq4pDhcwISdQsZ7ok
+ IuMA==
+X-Gm-Message-State: AOJu0YzXLLnxiNCIfTayd0BcKcAwmZD3b3aKSkWdhCh+N/DEfIi1sY1l
+ VgQ6bBGBuc+DrQ7lxfhGnfWfYB2/2g/ORsfkgEwlVMC/ZRgSeaWtVSnnR7xrDCQ=
+X-Google-Smtp-Source: AGHT+IE8gsZBF1y9p4hZ1aOmfpozfo3gl0F++DiGOokbc3ArL7gseqNXSkxtlsyQxRHp1s646qAjLA==
+X-Received: by 2002:a17:90a:fa06:b0:2d3:da99:b41b with SMTP id
+ 98e67ed59e1d1-2d3dffc6078mr3607095a91.17.1723828223315; 
+ Fri, 16 Aug 2024 10:10:23 -0700 (PDT)
 Received: from localhost.localdomain (121-45-122-195.tpgi.com.au.
  [121.45.122.195]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d3ac7ca33dsm5988407a91.6.2024.08.16.10.10.18
+ 98e67ed59e1d1-2d3ac7ca33dsm5988407a91.6.2024.08.16.10.10.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Aug 2024 10:10:20 -0700 (PDT)
+ Fri, 16 Aug 2024 10:10:23 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Corbin <mark@dibsco.co.uk>, Warner Losh <imp@bsdimp.com>,
- Ajeet Singh <itachis@FreeBSD.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 08/17] bsd-user: Implement RISC-V sysarch system call
- emulation
-Date: Sat, 17 Aug 2024 03:09:40 +1000
-Message-Id: <20240816170949.238511-9-itachis@FreeBSD.org>
+ Ajeet Singh <itachis@FreeBSD.org>, Jessica Clarke <jrtc27@jrtc27.com>,
+ Kyle Evans <kevans@FreeBSD.org>
+Subject: [PATCH v2 09/17] bsd-user: Add RISC-V thread setup and initialization
+ support
+Date: Sat, 17 Aug 2024 03:09:41 +1000
+Message-Id: <20240816170949.238511-10-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240816170949.238511-1-itachis@FreeBSD.org>
 References: <20240816170949.238511-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=itachis6234@gmail.com; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,27 +98,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Added the 'do_freebsd_arch_sysarch' function to emulate the 'sysarch'
-system call for the RISC-V architecture.
-Currently, this function returns '-TARGET_EOPNOTSUPP' to indicate that
-the operation is not supported.
+Implemented functions for setting up and initializing threads in the
+RISC-V architecture.
+The 'target_thread_set_upcall' function sets up the stack pointer,
+program counter, and function argument for new threads.
+The 'target_thread_init' function initializes thread registers based on
+the provided image information.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Co-authored-by: Jessica Clarke <jrtc27@jrtc27.com>
+Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 ---
- bsd-user/riscv/target_arch_sysarch.h | 41 ++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 bsd-user/riscv/target_arch_sysarch.h
+ bsd-user/riscv/target_arch_thread.h | 47 +++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_thread.h
 
-diff --git a/bsd-user/riscv/target_arch_sysarch.h b/bsd-user/riscv/target_arch_sysarch.h
+diff --git a/bsd-user/riscv/target_arch_thread.h b/bsd-user/riscv/target_arch_thread.h
 new file mode 100644
-index 0000000000..9af42331b4
+index 0000000000..4596d3d51f
 --- /dev/null
-+++ b/bsd-user/riscv/target_arch_sysarch.h
-@@ -0,0 +1,41 @@
++++ b/bsd-user/riscv/target_arch_thread.h
+@@ -0,0 +1,47 @@
 +/*
-+ *  RISC-V sysarch() system call emulation
++ *  RISC-V thread support
 + *
 + *  Copyright (c) 2019 Mark Corbin
 + *
@@ -136,28 +139,34 @@ index 0000000000..9af42331b4
 + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_ARCH_SYSARCH_H
-+#define TARGET_ARCH_SYSARCH_H
++#ifndef TARGET_ARCH_THREAD_H
++#define TARGET_ARCH_THREAD_H
 +
-+#include "target_syscall.h"
-+#include "target_arch.h"
-+
-+static inline abi_long do_freebsd_arch_sysarch(CPURISCVState *env, int op,
-+        abi_ulong parms)
++/* Compare with cpu_set_upcall() in riscv/riscv/vm_machdep.c */
++static inline void target_thread_set_upcall(CPURISCVState *regs,
++    abi_ulong entry, abi_ulong arg, abi_ulong stack_base,
++    abi_ulong stack_size)
 +{
++    abi_ulong sp;
 +
-+    return -TARGET_EOPNOTSUPP;
++    sp = (abi_ulong)(stack_base + stack_size) & ~(16 - 1);
++
++    regs->gpr[xSP] = sp;
++    regs->pc = entry;
++    regs->gpr[xA0] = arg;
 +}
 +
-+static inline void do_freebsd_arch_print_sysarch(
-+        const struct syscallname *name, abi_long arg1, abi_long arg2,
-+        abi_long arg3, abi_long arg4, abi_long arg5, abi_long arg6)
++/* Compare with exec_setregs() in riscv/riscv/machdep.c */
++static inline void target_thread_init(struct target_pt_regs *regs,
++    struct image_info *infop)
 +{
-+
-+    gemu_log("UNKNOWN OP: %d, " TARGET_ABI_FMT_lx ")", (int)arg1, arg2);
++    regs->sepc = infop->entry;
++    regs->regs[xRA] = infop->entry;
++    regs->regs[xA0] = infop->start_stack;               
++    regs->regs[xSP] = ROUND_DOWN(infop->start_stack,16);
 +}
 +
-+#endif /* TARGET_ARCH_SYSARCH_H */
++#endif /* TARGET_ARCH_THREAD_H */
 -- 
 2.34.1
 
