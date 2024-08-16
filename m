@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E958953EBA
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 03:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0D3953EED
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 03:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1selRS-0001fJ-05; Thu, 15 Aug 2024 21:07:46 -0400
+	id 1selp4-00058l-JW; Thu, 15 Aug 2024 21:32:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1selRM-0001Lg-TS
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 21:07:40 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1selRK-0002Nu-SP
- for qemu-devel@nongnu.org; Thu, 15 Aug 2024 21:07:40 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7a1c7857a49so1110645a12.1
- for <qemu-devel@nongnu.org>; Thu, 15 Aug 2024 18:07:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1723770457; x=1724375257;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3wB6e2A/CQG22NVfxbNPvHs+WpR1ymge8PxcVI9UwAM=;
- b=2mbsygRjlEyoTU/0j7D6PX1LGSfv+x8Dt0wTWcmx3YktGp+yy1dbjM2fX9pFSX1/5z
- EIwNJE0sVAzJB2Wmi2ez5dXQQ+6IdQoEBW/xO633VIxwrAsclewfshfxgiaT6/7gpfUO
- 77KJEaIWRjTNLl3yTZh3PL6RFF8hwI8fx4oPKv6Bz3FMDSIkvwcl5ZCfr05n3fxCci9b
- FhcWm3RwKZPB8oNlpWprZGPBmkdgggBHBYQbmDr/GwB2ULmiSAkqC8zxshVPrfmqM4rV
- 4YyvKQ7GwNhFHMo9DTAUQV/r7p5t7oVM7KlWjcUSGS9PxYpMnDzaO/Z0eEwrs+KA/z1B
- ArnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723770457; x=1724375257;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3wB6e2A/CQG22NVfxbNPvHs+WpR1ymge8PxcVI9UwAM=;
- b=fhFDIeLjPaKhtIg9EQMYymxcWdbzHn5sos9bNOM7eG4ehARxgvYT5gUxi2UmdosyhH
- eoP6d6egLPN3SeUq9FalmhCgcSgOBuMq6jOSrCOGI4gT1z5NDT2esklJ3/8Dk+CgsmTm
- cqdk+EAXe67a8kgAUqH0Kw577bNqIxFDra+EW9+FDN5nPCIKYnSPeW5aX1o7vFwbIVMk
- Uo0XFGlzHVMEN7sqAoN18CA60hhfWWYCwzqlzP2GHvxAQN5ceU/3V4ndijYZYoHv0dOp
- 2veq9m4jE0OMyT2McDENk+jMXTQXwHjUH0qYlflP0kL656ay+AlQC5WNu50TKzCsid1K
- EELg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXeicijk6XJfkYhuJzO1oWKep0G64e25PJc0G+VGpKsBt5Wvwyvi5w8EkBcx88j8jB5LSTz8BZsGmOhwN8S+j3+TwP7PZA=
-X-Gm-Message-State: AOJu0YzwAbZmQg7yRkqgYTMLPIYTRWLy2PukpG4/goA26Ma1KtH0VtaS
- ZtRLG6V7JjnM1Hij85S3DRALXzpzbq+HQOm0A1JgHHU31ryvhvlpbx/eNMc1C6Q=
-X-Google-Smtp-Source: AGHT+IFvjhSL8gQ99R1qRwo4/pnOvlcZB/0bGJsS4D3Drb0G+fiawPUdivroJK6/UCojjqhiRAey8w==
-X-Received: by 2002:a05:6a20:d50c:b0:1c6:91e1:f0fc with SMTP id
- adf61e73a8af0-1c905053553mr1563260637.48.1723770457319; 
- Thu, 15 Aug 2024 18:07:37 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127ae120cdsm1604806b3a.77.2024.08.15.18.07.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Aug 2024 18:07:37 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, richard.henderson@linaro.org,
- bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, pbonzini@redhat.com, jim.shu@sifive.com,
- andy.chiu@sifive.com, kito.cheng@sifive.com,
- Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v4 16/16] target/riscv: add trace-hooks for each case of
- sw-check exception
-Date: Thu, 15 Aug 2024 18:07:10 -0700
-Message-ID: <20240816010711.3055425-17-debug@rivosinc.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240816010711.3055425-1-debug@rivosinc.com>
-References: <20240816010711.3055425-1-debug@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1selp2-00057V-F6; Thu, 15 Aug 2024 21:32:08 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>)
+ id 1seloz-0006Q5-V1; Thu, 15 Aug 2024 21:32:08 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxHJsLrL5mt7gVAA--.13677S3;
+ Fri, 16 Aug 2024 09:31:56 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by front1 (Coremail) with SMTP id qMiowMBxNOIJrL5mp1QWAA--.37769S3;
+ Fri, 16 Aug 2024 09:31:54 +0800 (CST)
+Subject: Re: [PATCH for-9.1] linux-user: Handle short reads in mmap_h_gt_g
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20240815213231.303424-1-richard.henderson@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <67c74443-43ee-e432-c05c-9e1c7c27ccb0@loongson.cn>
+Date: Fri, 16 Aug 2024 09:32:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240815213231.303424-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=debug@rivosinc.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: qMiowMBxNOIJrL5mp1QWAA--.37769S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tw18trW5JF43Zr4kJF4fZwc_yoW8Gw47pF
+ 90q3Z5Jr45t3W7ZFsxCry0gFnYqF48t3WUK3srJ34rZ3yvqF1fWrn8G3Z0qFWkXFy8AF45
+ ZFsIyFsFka1q9rgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UWHqcU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-2.843, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,134 +78,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Violations to control flow rules setup by zicfilp and zicfiss lead to
-software check exceptions. To debug and fix such sw check issues in guest
-, add trace-hooks for each case.
+ÔÚ 2024/8/16 ÉÏÎç5:32, Richard Henderson Ð´µÀ:
+> In particular, if an image has a large bss, we can hit
+> EOF before reading all host_len bytes of the mapping.
+>
+> Cc: qemu-stable@nongnu.org
+> Fixes: eb5027ac618 ("linux-user: Split out mmap_h_gt_g")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2504
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   linux-user/mmap.c | 19 +++++++++++++++----
+>   1 file changed, 15 insertions(+), 4 deletions(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Tested-by: Song Gao <gaosong@loongson.cn>
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- target/riscv/helper.h                         |  3 +++
- target/riscv/insn_trans/trans_rvi.c.inc       |  3 +++
- target/riscv/insn_trans/trans_rvzicfiss.c.inc |  1 +
- target/riscv/op_helper.c                      | 13 +++++++++++++
- target/riscv/trace-events                     |  6 ++++++
- target/riscv/translate.c                      |  2 ++
- 6 files changed, 28 insertions(+)
-
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index e946ba61fd..6e90fbd225 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -123,6 +123,9 @@ DEF_HELPER_2(cbo_zero, void, env, tl)
- 
- /* helper to raise sw check exception */
- DEF_HELPER_2(raise_sw_check_excep, void, env, tl)
-+/* helper functions to trace riscv cfi violations */
-+DEF_HELPER_3(zicfilp_label_mismatch, void, env, tl, tl)
-+DEF_HELPER_3(zicfiss_ra_mismatch, void, env, tl, tl)
- 
- /* Special functions */
- DEF_HELPER_2(csrr, tl, env, int)
-diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
-index 936b430282..7021f8d3da 100644
---- a/target/riscv/insn_trans/trans_rvi.c.inc
-+++ b/target/riscv/insn_trans/trans_rvi.c.inc
-@@ -54,6 +54,7 @@ static bool trans_lpad(DisasContext *ctx, arg_lpad *a)
-             /*
-              * misaligned, according to spec we should raise sw check exception
-              */
-+            trace_zicfilp_unaligned_lpad_instr(ctx->base.pc_first);
-             gen_helper_raise_sw_check_excep(tcg_env,
-                 tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL));
-             return true;
-@@ -66,6 +67,8 @@ static bool trans_lpad(DisasContext *ctx, arg_lpad *a)
-         TCGv tmp = tcg_temp_new();
-         tcg_gen_extract_tl(tmp, get_gpr(ctx, xT2, EXT_NONE), 12, 20);
-         tcg_gen_brcondi_tl(TCG_COND_EQ, tmp, a->label, skip);
-+        gen_helper_zicfilp_label_mismatch(tcg_env, tcg_constant_tl(a->label),
-+            tmp);
-         gen_helper_raise_sw_check_excep(tcg_env,
-             tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL));
-         gen_set_label(skip);
-diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-index 67f5c7804a..f1cf7ca438 100644
---- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-@@ -45,6 +45,7 @@ static bool gen_sspopchk(DisasContext *ctx, int rs1_reg)
-                        mxl_memop(ctx) | MO_ALIGN);
-     TCGv rs1 = get_gpr(ctx, rs1_reg, EXT_NONE);
-     tcg_gen_brcond_tl(TCG_COND_EQ, data, rs1, skip);
-+    gen_helper_zicfiss_ra_mismatch(tcg_env, data, rs1);
-     gen_helper_raise_sw_check_excep(tcg_env,
-         tcg_constant_tl(RISCV_EXCP_SW_CHECK_BCFI_TVAL));
-     gen_set_label(skip);
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 9ec19c4afa..b681f0f1aa 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -24,6 +24,7 @@
- #include "exec/exec-all.h"
- #include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
-+#include "trace.h"
- 
- /* Exceptions processing helpers */
- G_NORETURN void riscv_raise_exception(CPURISCVState *env,
-@@ -265,6 +266,18 @@ void helper_raise_sw_check_excep(CPURISCVState *env, target_ulong swcheck_code)
-     riscv_raise_exception(env, RISCV_EXCP_SW_CHECK, GETPC());
- }
- 
-+void helper_zicfilp_label_mismatch(CPURISCVState *env, target_ulong lpad_label,
-+                                   target_ulong t2_label)
-+{
-+    trace_zicfilp_lpad_reg_mismatch(lpad_label, t2_label);
-+}
-+
-+void helper_zicfiss_ra_mismatch(CPURISCVState *env, target_ulong ssra,
-+                                target_ulong rs1)
-+{
-+    trace_zicfiss_sspopchk_reg_mismatch(ssra, rs1);
-+}
-+
- #ifndef CONFIG_USER_ONLY
- 
- target_ulong helper_sret(CPURISCVState *env)
-diff --git a/target/riscv/trace-events b/target/riscv/trace-events
-index 49ec4d3b7d..9d5b61a2da 100644
---- a/target/riscv/trace-events
-+++ b/target/riscv/trace-events
-@@ -9,3 +9,9 @@ pmpaddr_csr_write(uint64_t mhartid, uint32_t addr_index, uint64_t val) "hart %"
- 
- mseccfg_csr_read(uint64_t mhartid, uint64_t val) "hart %" PRIu64 ": read mseccfg, val: 0x%" PRIx64
- mseccfg_csr_write(uint64_t mhartid, uint64_t val) "hart %" PRIu64 ": write mseccfg, val: 0x%" PRIx64
-+
-+# zicfiss/lp
-+zicfiss_sspopchk_reg_mismatch(uint64_t ssra, uint64_t rs1) "shadow_stack_ra: 0x%" PRIx64 ", rs1: 0x%" PRIx64
-+zicfilp_missing_lpad_instr(uint64_t pc_first) "pc_first: 0x%" PRIx64
-+zicfilp_unaligned_lpad_instr(uint64_t pc_next) "pc_next: 0x%" PRIx64
-+zicfilp_lpad_reg_mismatch(uint64_t lpad_label, uint64_t t2_label) "lpad_label: 0x%" PRIx64 ", t2_label: 0x%" PRIx64
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 6fa98e88d9..fbef430848 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -35,6 +35,7 @@
- #undef  HELPER_H
- 
- #include "tcg/tcg-cpu.h"
-+#include "trace.h"
- 
- /* global register indices */
- static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc, cpu_vl, cpu_vstart;
-@@ -1348,6 +1349,7 @@ static void riscv_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-          */
-         tcg_set_insn_param(tcg_ctx->cfi_lp_check, 1,
-                            tcgv_i32_arg(tcg_constant_i32(1)));
-+        trace_zicfilp_missing_lpad_instr(ctx->base.pc_first);
-     }
- }
- 
--- 
-2.44.0
+Thanks.
+Song Gao
+> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+> index 6418e811f6..de9ab13754 100644
+> --- a/linux-user/mmap.c
+> +++ b/linux-user/mmap.c
+> @@ -853,10 +853,21 @@ static abi_long mmap_h_gt_g(abi_ulong start, abi_ulong len,
+>       }
+>   
+>       if (misaligned_offset) {
+> -        /* TODO: The read could be short. */
+> -        if (pread(fd, p, host_len, offset + real_start - start) != host_len) {
+> -            do_munmap(p, host_len);
+> -            return -1;
+> +        size_t o = 0;
+> +        while (1) {
+> +            ssize_t r = pread(fd, p + o, host_len - o,
+> +                              o + offset + real_start - start);
+> +            if (likely(r == host_len - o) || r == 0) {
+> +                /* Complete or EOF */
+> +                break;
+> +            }
+> +            if (unlikely(r == -1)) {
+> +                /* Error */
+> +                do_munmap(p, host_len);
+> +                return -1;
+> +            }
+> +            /* Short read -- iterate */
+> +            o += r;
+>           }
+>           if (!(host_prot & PROT_WRITE)) {
+>               mprotect(p, host_len, host_prot);
 
 
