@@ -2,52 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434F19542CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FDC9542D0
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:36:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1serPh-0007Rl-NE; Fri, 16 Aug 2024 03:30:21 -0400
+	id 1serUS-000356-Cm; Fri, 16 Aug 2024 03:35:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1serPf-0007N2-9y
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:30:19 -0400
-Received: from mail-a.sr.ht ([46.23.81.152])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1serUO-0002wo-PL
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:35:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1serPc-0005Cm-Mh
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:30:19 -0400
-DKIM-Signature: a=rsa-sha256; bh=ESf9+WorO2fP3G+BO4K7PMyiivcJoU67Iz781a+uYwQ=; 
- c=simple/simple; d=git.sr.ht;
- h=From:Date:Subject:Reply-to:To:Cc; 
- q=dns/txt; s=20240113; t=1723793413; v=1;
- b=KWliRnUUEXHMbffxMibLJ5JQHrAr0MbdQ6pHS3aqopkyPibTqLg0iRlksJKuIqJ949q18Iu7
- +Q8do48igN9V5/BrGklfaXZQgyaCAKEY2N/NqjVjIqfGvkB6Bqo5PH/HZ5fV2a6/h9jFIZozmqv
- Pe9YX99/9SMYmNlUuxpMalD/KO9B3MBQ3UXt8UI9QGKUHDhW/WxryaHYKG/cN5Ll7J28xu7wOt7
- b5yzhXclLG4IWTcvOasLb+EWJmvZJfPL8y4UiRTIelX8WHQ9lKcxXdXQ2NZ3FakSysVLDNkSNUu
- mJIu1LCiNzehR5X/VyGGxD/AkY8SQFBFwuImBJbjkDpkw==
-Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id 0D09020316;
- Fri, 16 Aug 2024 07:30:13 +0000 (UTC)
-From: ~liuxu <liuxu@git.sr.ht>
-Date: Fri, 16 Aug 2024 07:30:12 +0000
-Subject: [PATCH qemu v4 0/1] target/riscv: Add Zilsd and Zclsd extension
- support
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1serUM-0005eu-PS
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:35:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1723793706;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=H4u8nxgWC/gqO0RGPQQ9ymKXs7Pit6FP+5zYMtUSoOg=;
+ b=jQ3908aLGLvDffCN5vygRNg+xrgY2XxXpHFTkG7w4BKQ5TTPPbyrpMCuXSfUZoKSv5qqMI
+ xehviIG5tWFX8cAiO9w4OJTS94lInxBwifcIxrTGBdsZCKYx3OWtL/c2rm5l08bJsO338g
+ tdxVIzqZqWVgvtzA/ZsbZY7o0jmFYO4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-6IJl0-otOUqOYIxM7vfnQQ-1; Fri, 16 Aug 2024 03:35:05 -0400
+X-MC-Unique: 6IJl0-otOUqOYIxM7vfnQQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a7a8d5ad9bcso116679166b.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 00:35:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1723793704; x=1724398504;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=H4u8nxgWC/gqO0RGPQQ9ymKXs7Pit6FP+5zYMtUSoOg=;
+ b=ujd2mqCQMxhrRtfFPxVPcXSH+uUMHjDde0AsLhLSkJqeTazjAzVup6q/h17Vdk5Q/E
+ xOcXznXXpYP9F63j5p0neiPOSyQxowKm3rcQLpVHp/5V8jyAhsMZVAMrZR6hB+qGe37W
+ aK5Qi021Z+LJMvZiaZkJKjZ3cWeZlpraogfv7r+JxxOzLjmYmteAS2xblkHad2HNmgcv
+ BIEjVJ9Edg2YOPwG4pi65nhDbwtuu8+nzdWlvaTUMD6UPPhnVmQkKLRSZjdMcKta3t/G
+ xFxkKor7aU46nzV+bMbCzjI2Y4H1Gx8dUO6D65yhKfHDBA2QfxOJIQqQN80qPePV8RvI
+ 8uvQ==
+X-Gm-Message-State: AOJu0Ywr1hR0uEOZRaWSDZ/Bxl9cRUCxR9xzWsSbojZKiL8dphY0htqk
+ u/6bjOsu0GZaR2+3IJNp9IYlfHV+n9vIqfrc0TgeL4ZfIsKb/hnE97UThZWOjGtMrOfDJXo5FEB
+ EZjC5QXhRK1tbRoECkNINmwKZ4URPRab+zaGp8TsEkTrStmGqbJk6
+X-Received: by 2002:a17:907:9489:b0:a77:dafb:2bf9 with SMTP id
+ a640c23a62f3a-a8392a11535mr103945066b.49.1723793703807; 
+ Fri, 16 Aug 2024 00:35:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGjCB1tg5Pgitu0PpRtOzE9/VS4NWwU/MnzaBykcxPEXDtWwGXU+5tu4kIMAhAFFZvedSEnA==
+X-Received: by 2002:a17:907:9489:b0:a77:dafb:2bf9 with SMTP id
+ a640c23a62f3a-a8392a11535mr103941666b.49.1723793703056; 
+ Fri, 16 Aug 2024 00:35:03 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:17d:3378:6322:e9ee:713:b9ed])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8383745e66sm214218566b.0.2024.08.16.00.34.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Aug 2024 00:35:02 -0700 (PDT)
+Date: Fri, 16 Aug 2024 03:34:55 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [RFC PATCH 0/2] async: rework async event API for replay
+Message-ID: <20240816033046-mutt-send-email-mst@kernel.org>
+References: <20240815132838.615330-1-npiggin@gmail.com>
+ <20240815113029-mutt-send-email-mst@kernel.org>
+ <D3GZ90ORAGBC.EPV2C5TYYGKG@gmail.com>
 MIME-Version: 1.0
-Message-ID: <172379341272.30818.9359380874395527120-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair23@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
- helo=mail-a.sr.ht
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D3GZ90ORAGBC.EPV2C5TYYGKG@gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,29 +102,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~liuxu <liuxu@nucleisys.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Last reply: https://lists.gnu.org/archive/html/qemu-
-devel/2024-08/msg01631.html
+On Fri, Aug 16, 2024 at 12:23:50PM +1000, Nicholas Piggin wrote:
+> On Fri Aug 16, 2024 at 1:30 AM AEST, Michael S. Tsirkin wrote:
+> > On Thu, Aug 15, 2024 at 11:28:35PM +1000, Nicholas Piggin wrote:
+> > > Continuing the conversation from the thread about record/replay
+> > > virtio fix. Here is a sketch of how we could improve the naming
+> > > convention so users of bh don't have to know about record/replay.
+> > > 
+> > > Thanks,
+> > > Nick
+> >
+> > The API looks ok to me.
+> 
+> Thanks for taking a look. In that case let's go with the fixes for
+> now so we have rr regression tests in a bit better state, and I will
+> resend for 9.2.
+> 
+> Thanks,
+> Nick
 
-This version no longer separates the implementation of Zilsd and Zclsd
-extensions.
+No, this is big because you are structuring this wrong.
+Work, then rework ... I do not really like this kind of thing.
 
-lxx (1):
-  target/riscv: Add Zilsd and Zclsd extension support
-
- target/riscv/cpu.c                        |   4 +
- target/riscv/cpu_cfg.h                    |   2 +
- target/riscv/insn16.decode                |   8 ++
- target/riscv/insn32.decode                |  12 +-
- target/riscv/insn_trans/trans_zilsd.c.inc | 128 ++++++++++++++++++++++
- target/riscv/tcg/tcg-cpu.c                |  16 +++
- target/riscv/translate.c                  |   1 +
- 7 files changed, 169 insertions(+), 2 deletions(-)
- create mode 100644 target/riscv/insn_trans/trans_zilsd.c.inc
+Add sane APIs and use them keeping old ones around, reworking old code
+can wait for 9.2.
 
 -- 
-2.45.2
+MST
+
 
