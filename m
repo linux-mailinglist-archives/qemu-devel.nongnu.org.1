@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D3A9542D9
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 359D69542EA
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 09:39:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1serXB-000720-80; Fri, 16 Aug 2024 03:38:05 -0400
+	id 1serX9-0006sa-4z; Fri, 16 Aug 2024 03:38:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1serX9-0006vv-Ny
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:38:03 -0400
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ id 1serX4-0006c4-UP; Fri, 16 Aug 2024 03:37:58 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1serX7-0005w2-Hp
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 03:38:03 -0400
+ id 1serX2-0005uJ-4T; Fri, 16 Aug 2024 03:37:58 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 2F31BCE1EFE;
- Fri, 16 Aug 2024 07:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A306C4AF11;
+ by dfw.source.kernel.org (Postfix) with ESMTP id D509B62110;
+ Fri, 16 Aug 2024 07:37:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C56C4AF1B;
  Fri, 16 Aug 2024 07:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1723793873;
- bh=1dC6qge5j6u0iMd7Y9iF2l9tSLTNhq/Z8HDaN5NFEKg=;
+ bh=/UrLD39uTtqzLQxF34eTLlBfA+BnxRQyD1jfJGYlCXg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=DXF2kbFOu/d0z+t1Ms+g5NWG//Ep0IG5elrFrqpzaQwKmFjK24inwdZMTckRHm7Dz
- ZR3SyNvp0Sl+GxTr4rmgvWYkdMVdoelD4KYiKyi+DkKmWOexSe6tz4HzaN4tYzUlN7
- Blbt8I3FgFnoUdTpooR3xBIiZ+6n8RqECQarWWVpkDzPwcbHMVead9+KQZKC5Zx640
- hmlPQAdkwwmI4j+doVKPmRLBxrU1mO31F4cz1MqHnOkKocome/JoIteJx/DkWGjz3G
- 16PMdVYWFgiOtSRkUZACyWV8aRlE9rNVLnbR8lLHljvqq89UVyHNxyrf/fitwTVBiH
- ZsNHrSBB1BXUg==
+ b=bmr4TPJOs8R126ZTZujoL+kcn4vqs4uJF2xQupXLwWPFzrqf73Bc6iWDbnBEsEzPA
+ 5Vn7z74PF+PHT8U9y9vhXVH+olR89WFT2N4yV0UptS7U4hBHn+Sif18rUMP8YHxuwP
+ tMlvrX5tRlJ6NTjCPzfA80YIhvJZXihhEKsdHWZin/8oo/OUQ/U4PCkNF023/498Gp
+ PTnhYX372f1bmpVv0z9OqhxR0NwEoFhCT36YVBSErUM3yvjRtoFut6N9kvHDsyJYkd
+ hRxn9x+chujIKeIkBGiA60VOvsIyhRUevXnHAZnvOQNwPjXbhPxKifQWiDHMMyn1jv
+ 21I5Y/d2caiGg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1serWx-000000055ez-2v1X; Fri, 16 Aug 2024 09:37:51 +0200
+ id 1serWx-000000055f3-31wS; Fri, 16 Aug 2024 09:37:51 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
- linux-kernel@vger.kernel.org, qemu-devel@nongnu.org
-Subject: [PATCH v8 11/13] scripts/arm_processor_error.py: retrieve mpidr if
- not filled
-Date: Fri, 16 Aug 2024 09:37:43 +0200
-Message-ID: <9fab07e7af3efaae9546ab2c7b12b2482ba02da5.1723793768.git.mchehab+huawei@kernel.org>
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v8 12/13] acpi/ghes: cleanup generic error data logic
+Date: Fri, 16 Aug 2024 09:37:44 +0200
+Message-ID: <d91565e9ac1c59bd2bb22b06256f5fefcb43a973.1723793768.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.1723793768.git.mchehab+huawei@kernel.org>
 References: <cover.1723793768.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=mchehab+huawei@kernel.org; helo=sin.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
 X-Spam_score_int: -44
 X-Spam_score: -4.5
 X-Spam_bar: ----
@@ -76,69 +74,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support to retrieve mpidr value via qom-get.
+Remove comments that are obvious.
+
+No functional changes.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- scripts/arm_processor_error.py | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ hw/acpi/ghes.c | 38 +++++++++++++++-----------------------
+ 1 file changed, 15 insertions(+), 23 deletions(-)
 
-diff --git a/scripts/arm_processor_error.py b/scripts/arm_processor_error.py
-index 62e0c5662232..0a16d4f0d8b1 100644
---- a/scripts/arm_processor_error.py
-+++ b/scripts/arm_processor_error.py
-@@ -5,12 +5,10 @@
- #
- # Copyright (C) 2024 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index 4f7b6c5ad2b6..a822a5eafaa0 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -130,34 +130,28 @@ static void build_ghes_hw_error_notification(GArray *table, const uint8_t type)
+  * ACPI 6.1: 18.3.2.7.1 Generic Error Data
+  */
+ static void acpi_ghes_generic_error_data(GArray *table,
+-                const uint8_t *section_type, uint32_t error_severity,
+-                uint8_t validation_bits, uint8_t flags,
+-                uint32_t error_data_length, QemuUUID fru_id,
+-                uint64_t time_stamp)
++                                         const uint8_t *section_type,
++                                         uint32_t error_severity,
++                                         uint8_t validation_bits,
++                                         uint8_t flags,
++                                         uint32_t error_data_length,
++                                         QemuUUID fru_id,
++                                         uint64_t time_stamp)
+ {
+     const uint8_t fru_text[20] = {0};
  
--# TODO: current implementation has dummy defaults.
--#
--# For a better implementation, a QMP addition/call is needed to
--# retrieve some data for ARM Processor Error injection:
--#
--#   - ARM registers: power_state, mpidr.
-+# Note: currently it lacks a method to fill the ARM Processor Error CPER
-+# psci field from emulation. On a real hardware, this is filled only
-+# when a CPU is not running. Implementing support for it to simulate a
-+# real hardware is not trivial.
- 
- import argparse
- import re
-@@ -174,11 +172,24 @@ def send_cper(self, args):
-         else:
-             cper["running-state"] = 0
- 
-+        if args.mpidr:
-+            cper["mpidr-el1"] = arg["mpidr"]
-+        elif cpus:
-+            cmd_arg = {
-+                'path': cpus[0],
-+                'property': "x-mpidr"
-+            }
-+            ret = qmp_cmd.send_cmd("qom-get", cmd_arg, may_open=True)
-+            if isinstance(ret, int):
-+                cper["mpidr-el1"] = ret
-+            else:
-+                cper["mpidr-el1"] = 0
+-    /* Section Type */
+     g_array_append_vals(table, section_type, 16);
+-
+-    /* Error Severity */
+     build_append_int_noprefix(table, error_severity, 4);
 +
-         if arm_valid_init:
-             if args.affinity:
-                 cper["valid"] |= self.arm_valid_bits["affinity"]
+     /* Revision */
+     build_append_int_noprefix(table, 0x300, 2);
+-    /* Validation Bits */
++
+     build_append_int_noprefix(table, validation_bits, 1);
+-    /* Flags */
+     build_append_int_noprefix(table, flags, 1);
+-    /* Error Data Length */
+     build_append_int_noprefix(table, error_data_length, 4);
  
--            if args.mpidr:
-+            if "mpidr-el1" in cper:
-                 cper["valid"] |= self.arm_valid_bits["mpidr"]
+-    /* FRU Id */
+     g_array_append_vals(table, fru_id.data, ARRAY_SIZE(fru_id.data));
+-
+-    /* FRU Text */
+     g_array_append_vals(table, fru_text, sizeof(fru_text));
+-
+-    /* Timestamp */
+     build_append_int_noprefix(table, time_stamp, 8);
+ }
  
-             if "running-state" in cper:
-@@ -362,7 +373,7 @@ def send_cper(self, args):
-                 if isinstance(ret, int):
-                     arg["midr-el1"] = ret
+@@ -165,19 +159,17 @@ static void acpi_ghes_generic_error_data(GArray *table,
+  * Generic Error Status Block
+  * ACPI 6.1: 18.3.2.7.1 Generic Error Data
+  */
+-static void acpi_ghes_generic_error_status(GArray *table, uint32_t block_status,
+-                uint32_t raw_data_offset, uint32_t raw_data_length,
+-                uint32_t data_length, uint32_t error_severity)
++static void acpi_ghes_generic_error_status(GArray *table,
++                                           uint32_t block_status,
++                                           uint32_t raw_data_offset,
++                                           uint32_t raw_data_length,
++                                           uint32_t data_length,
++                                           uint32_t error_severity)
+ {
+-    /* Block Status */
+     build_append_int_noprefix(table, block_status, 4);
+-    /* Raw Data Offset */
+     build_append_int_noprefix(table, raw_data_offset, 4);
+-    /* Raw Data Length */
+     build_append_int_noprefix(table, raw_data_length, 4);
+-    /* Data Length */
+     build_append_int_noprefix(table, data_length, 4);
+-    /* Error Severity */
+     build_append_int_noprefix(table, error_severity, 4);
+ }
  
--        util.data_add(data, arg.get("mpidr-el1", 0), 8)
-+        util.data_add(data, cper["mpidr-el1"], 8)
-         util.data_add(data, arg.get("midr-el1", 0), 8)
-         util.data_add(data, cper["running-state"], 4)
-         util.data_add(data, arg.get("psci-state", 0), 4)
 -- 
 2.46.0
 
