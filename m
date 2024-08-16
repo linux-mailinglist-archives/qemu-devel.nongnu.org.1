@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10AD954B07
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 15:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8101D954B09
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Aug 2024 15:24:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sewuM-00059y-2n; Fri, 16 Aug 2024 09:22:22 -0400
+	id 1sewuQ-0005Qt-PT; Fri, 16 Aug 2024 09:22:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sewuI-000581-PV
+ id 1sewuK-000597-MC
  for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:20 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sewuG-0007jw-9B
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:18 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-428f5c0833bso16161095e9.0
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 06:22:15 -0700 (PDT)
+ id 1sewuH-0007k0-7k
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 09:22:20 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4281faefea9so13831155e9.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 06:22:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723814534; x=1724419334; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=pgqsoRr6u7uYuDiHRia4sFMDUVvp3Aw+9Kef5/KmriY=;
- b=k5pn8HlCex2RU8AYOlDKrgrEdbfasAKz9OKBHP9ABjcTz7gOzqqqj3NCQqTAIMzH6V
- liS+e4zNMLEqpqO1EM7xvxnFdjJma/m83Zadfcfv9P/RUZaX4AGEvINHCJJz9QNBZ1D0
- CfQOHGFctldfWGs2d8trQRr0tF03emlVcJTU18W8WLLWvKsKtD0pMr90JkWqG/J1S6f4
- j6c7r+7ePqt4kbE9Yz+G3+FLrrX34ci8faedKhUGga+QKffal9tIY6K+F0RiXmv+4tpu
- Rrwh/zEwzDAJi8u3XCzh/2W4vhikfjrbPuCWSkLXMurM6RUZdi0nQyOHGtq0L+tQ+mJy
- p8uw==
+ d=linaro.org; s=google; t=1723814535; x=1724419335; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+qDfeY+CsvBUJu7CFKOtFh4EY2RJKFqnGcNsx1NoFx4=;
+ b=lLNr/K3QeQ7ARwo1nnHRnMBfEQlxaklE85pxr8pvnjvvy0uZlsI2XHCHNi5rqmc86v
+ p4ptX5iUDU8y/GQCngm2GnnwyZmOiPWadrhUVJGaUHHno/luJ/sJ3fUsRjGChozwydLD
+ MyN128P2EfL0W0LC8vNr/kJenDTHv9nkjHzKGr5BnyG0B2iXz2oJQVQA8psXcSYwTXj/
+ 6Z4c0RENxm3JZDf4cRZq/a7SpDECAVjU2O86xi4xguqwTQd0KWt9trH9/5QCOptAGbtl
+ dvNx0Y+xp+JlAvC9EJccwazEAdxZ1VVEt5Z9huS7qVMCGP0aFU+I+z6oMehyRbzpDQZr
+ cNRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723814534; x=1724419334;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pgqsoRr6u7uYuDiHRia4sFMDUVvp3Aw+9Kef5/KmriY=;
- b=p0YVmeqOQtjx2C31mb0AYYYCNZL5+VAEgIRTbO9dd43c+gOl0qF8wu91EtyjnXl2PV
- dZADlOUit3QyRFmfzVB3EKgawuc2D1aqUK2BofMVTj3osxfwgweebQUyZu/IZRE/Iblt
- cBB03r59L7MQifnLviW1J8CpCYYPqmrIFguySE9hctE/i2GckZZ1MNvMuorV6YrtTVUp
- P6SVptisNajdgeLIUS5nTjrqOlD0UpTHsyyS3IOFZA8KOD4UylscbxYxdXoyQr4CneCt
- GPYBB+pVzEzFPZhWJDgSy6MhvaVh2knBxmeuzFp8gMwHQ6KMNFS2fJuxDNgn8Zv9zx2U
- Dxyw==
-X-Gm-Message-State: AOJu0Yyc26BjmzAl4zvEcVzQJiJ0omSBjMcmye+PCPkuy24oYTI4TsBO
- kPFBR/8PBpzqmMFvp0Vja0qG3RspNTJ1v4fsr6B/IgnzW6HMyb9hH/7UcOp8HDiNgLMS6SFOUd6
- 8
-X-Google-Smtp-Source: AGHT+IGO0rB7ggvvS3A1nUT2spW5kigyBKKzvn5QT6GzLKP+tRvCnHO/3C+FSHQufhYHTGSPgt+suQ==
-X-Received: by 2002:a5d:6481:0:b0:367:8418:fde4 with SMTP id
- ffacd0b85a97d-37194b956bcmr2137199f8f.7.1723814534273; 
+ d=1e100.net; s=20230601; t=1723814535; x=1724419335;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+qDfeY+CsvBUJu7CFKOtFh4EY2RJKFqnGcNsx1NoFx4=;
+ b=Fs9w4JpsAhfSIa7Za3XiRkl3gjuOyRScIrtFqbREsRONZrP6TcYBlOoxXI2uET2/ig
+ acM17I7StlfIg97E339aWQR2wjepxPf9l78fPXu3rtVS6yd63wYKDb8EqUkLqlarDqrV
+ N7DLyH9puCmimVEQWgm3p2Zms3cslBvPzclI3Uc+6e2e8pVctLdC5DDFhlcz97Z/qOZV
+ 38HDrvSwCHhJosrDTcmfqvjpK6zKtaGvbN/ruxBjTHPgEAhtbDeeNxQ2QjKz8oBmchiP
+ J+LblCfevi3b39KVfTJA7kshQp3wAsK0j+LILJ/qpcTZlJYAL5cRkMJAbj9ZKseuGLct
+ z50A==
+X-Gm-Message-State: AOJu0YzwZvsPEY3lWPuYlBJG/XDefxLerisb9lKMwBfqv88OB1yxQGLI
+ ggOXBRPCAxSF1p8BJ6TMcSQfwJwAOCX/QSvNi+QSDlhK6o5EKlXnqgrQwMNWPu7rtY3UlP3lz1k
+ Y
+X-Google-Smtp-Source: AGHT+IHD9HdZOmNwrGd38VGkIRMdVdizqRIEkJxVJwu/k/RfR7I6U6FI3bkIzZzQdErliciSB8959g==
+X-Received: by 2002:adf:ef4b:0:b0:368:3ee5:e3e1 with SMTP id
+ ffacd0b85a97d-37194314e6emr2086023f8f.7.1723814534888; 
  Fri, 16 Aug 2024 06:22:14 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-371898ab855sm3631948f8f.105.2024.08.16.06.22.13
+ ffacd0b85a97d-371898ab855sm3631948f8f.105.2024.08.16.06.22.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Aug 2024 06:22:13 -0700 (PDT)
+ Fri, 16 Aug 2024 06:22:14 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH for-9.2 0/7] docs/devel: Convert txt files to rST
-Date: Fri, 16 Aug 2024 14:22:05 +0100
-Message-Id: <20240816132212.3602106-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/7] docs/devel/blkdebug: Convert to rST format
+Date: Fri, 16 Aug 2024 14:22:06 +0100
+Message-Id: <20240816132212.3602106-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240816132212.3602106-1-peter.maydell@linaro.org>
+References: <20240816132212.3602106-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,67 +93,394 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset converts a collection of the remaining txt files in
-docs/devel to rST format. At this point in the release cycle
-I'm targeting 9.2 for these.
+Convert blkdebug.txt to rST format.  We put it into index-build.rst
+because it falls under the "test" part of "QEMU Build and Test
+System".
 
-Patches 1-5 are simple conversions.  In patch 6 I move the
-QemuLockCnt APIs to their own header file; this is so that we can
-include the kernel-doc generated APIs in lockcnt.rst (since
-kernel-doc works on a per-file basis).
-
-Paolo: can you confirm that you mean GPLv2-or-later for the lockcnt
-code?  There's no explicit license comment in either util/lockcnt.c
-or include/qemu/thread.h.
-
-(There's one .txt file left in docs/devel after this, but I don't
-think it's very useful so I propose to delete it and will send a
-separate patch for that.)
-
-thanks
--- PMM
-
-Peter Maydell (7):
-  docs/devel/blkdebug: Convert to rST format
-  docs/devel/blkverify: Convert to rST format
-  docs/devel/lockcnt: Convert to rST format
-  docs/devel/multiple-iothreads: Convert to rST format
-  docs/devel/rcu: Convert to rST format
-  include: Move QemuLockCnt APIs to their own header
-  docs/devel/lockcnt: Include kernel-doc API documentation
-
- MAINTAINERS                                 |   8 +-
- docs/devel/blkdebug.rst                     | 177 ++++++++++++++++++++
- docs/devel/blkdebug.txt                     | 162 ------------------
- docs/devel/{blkverify.txt => blkverify.rst} |  30 ++--
- docs/devel/index-api.rst                    |   1 +
- docs/devel/index-build.rst                  |   2 +
- docs/devel/index-internals.rst              |   2 +
- docs/devel/{lockcnt.txt => lockcnt.rst}     |  89 +++++-----
- docs/devel/multiple-iothreads.rst           | 139 +++++++++++++++
- docs/devel/multiple-iothreads.txt           | 130 --------------
- docs/devel/{rcu.txt => rcu.rst}             | 172 +++++++++----------
- include/block/aio.h                         |   1 +
- include/hw/core/cpu.h                       |   1 +
- include/qemu/lockcnt.h                      | 130 ++++++++++++++
- include/qemu/thread.h                       | 111 ------------
- accel/accel-blocker.c                       |   1 +
- hw/core/cpu-common.c                        |   1 +
- util/aio-posix.c                            |   1 +
- util/aio-win32.c                            |   1 +
- util/async.c                                |   1 +
- util/fdmon-epoll.c                          |   1 +
- util/lockcnt.c                              |   1 +
- 22 files changed, 608 insertions(+), 554 deletions(-)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+At least, index-build seemed the most plausible home to me...
+---
+ MAINTAINERS                |   1 +
+ docs/devel/blkdebug.rst    | 177 +++++++++++++++++++++++++++++++++++++
+ docs/devel/blkdebug.txt    | 162 ---------------------------------
+ docs/devel/index-build.rst |   1 +
+ 4 files changed, 179 insertions(+), 162 deletions(-)
  create mode 100644 docs/devel/blkdebug.rst
  delete mode 100644 docs/devel/blkdebug.txt
- rename docs/devel/{blkverify.txt => blkverify.rst} (77%)
- rename docs/devel/{lockcnt.txt => lockcnt.rst} (75%)
- create mode 100644 docs/devel/multiple-iothreads.rst
- delete mode 100644 docs/devel/multiple-iothreads.txt
- rename docs/devel/{rcu.txt => rcu.rst} (73%)
- create mode 100644 include/qemu/lockcnt.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3584d6a6c6d..ca0a5c731f5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4015,6 +4015,7 @@ M: Hanna Reitz <hreitz@redhat.com>
+ L: qemu-block@nongnu.org
+ S: Supported
+ F: block/blkdebug.c
++F: docs/devel/blkdebug.rst
+ 
+ vpc
+ M: Kevin Wolf <kwolf@redhat.com>
+diff --git a/docs/devel/blkdebug.rst b/docs/devel/blkdebug.rst
+new file mode 100644
+index 00000000000..63887c9aa9c
+--- /dev/null
++++ b/docs/devel/blkdebug.rst
+@@ -0,0 +1,177 @@
++Block I/O error injection using ``blkdebug``
++============================================
++
++..
++   Copyright (C) 2014-2015 Red Hat Inc
++
++   This work is licensed under the terms of the GNU GPL, version 2 or later.  See
++   the COPYING file in the top-level directory.
++
++The ``blkdebug`` block driver is a rule-based error injection engine.  It can be
++used to exercise error code paths in block drivers including ``ENOSPC`` (out of
++space) and ``EIO``.
++
++This document gives an overview of the features available in ``blkdebug``.
++
++Background
++----------
++Block drivers have many error code paths that handle I/O errors.  Image formats
++are especially complex since metadata I/O errors during cluster allocation or
++while updating tables happen halfway through request processing and require
++discipline to keep image files consistent.
++
++Error injection allows test cases to trigger I/O errors at specific points.
++This way, all error paths can be tested to make sure they are correct.
++
++Rules
++-----
++The ``blkdebug`` block driver takes a list of "rules" that tell the error injection
++engine when to fail an I/O request.
++
++Each I/O request is evaluated against the rules.  If a rule matches the request
++then its "action" is executed.
++
++Rules can be placed in a configuration file; the configuration file
++follows the same .ini-like format used by QEMU's ``-readconfig`` option, and
++each section of the file represents a rule.
++
++The following configuration file defines a single rule::
++
++  $ cat blkdebug.conf
++  [inject-error]
++  event = "read_aio"
++  errno = "28"
++
++This rule fails all aio read requests with ``ENOSPC`` (28).  Note that the errno
++value depends on the host.  On Linux, see
++``/usr/include/asm-generic/errno-base.h`` for errno values.
++
++Invoke QEMU as follows::
++
++  $ qemu-system-x86_64
++        -drive if=none,cache=none,file=blkdebug:blkdebug.conf:test.img,id=drive0 \
++        -device virtio-blk-pci,drive=drive0,id=virtio-blk-pci0
++
++Rules support the following attributes:
++
++``event``
++  which type of operation to match (e.g. ``read_aio``, ``write_aio``,
++  ``flush_to_os``, ``flush_to_disk``).  See `Events`_ for
++  information on events.
++
++``state``
++  (optional) the engine must be in this state number in order for this
++  rule to match.  See `State transitions`_ for information
++  on states.
++
++``errno``
++  the numeric errno value to return when a request matches this rule.
++  The errno values depend on the host since the numeric values are not
++  standardized in the POSIX specification.
++
++``sector``
++  (optional) a sector number that the request must overlap in order to
++  match this rule
++
++``once``
++  (optional, default ``off``) only execute this action on the first
++  matching request
++
++``immediately``
++  (optional, default ``off``) return a NULL ``BlockAIOCB``
++  pointer and fail without an errno instead.  This
++  exercises the code path where ``BlockAIOCB`` fails and the
++  caller's ``BlockCompletionFunc`` is not invoked.
++
++Events
++------
++Block drivers provide information about the type of I/O request they are about
++to make so rules can match specific types of requests.  For example, the ``qcow2``
++block driver tells ``blkdebug`` when it accesses the L1 table so rules can match
++only L1 table accesses and not other metadata or guest data requests.
++
++The core events are:
++
++``read_aio``
++  guest data read
++
++``write_aio``
++  guest data write
++
++``flush_to_os``
++  write out unwritten block driver state (e.g. cached metadata)
++
++``flush_to_disk``
++  flush the host block device's disk cache
++
++See ``qapi/block-core.json:BlkdebugEvent`` for the full list of events.
++You may need to grep block driver source code to understand the
++meaning of specific events.
++
++State transitions
++-----------------
++There are cases where more power is needed to match a particular I/O request in
++a longer sequence of requests.  For example::
++
++  write_aio
++  flush_to_disk
++  write_aio
++
++How do we match the 2nd ``write_aio`` but not the first?  This is where state
++transitions come in.
++
++The error injection engine has an integer called the "state" that always starts
++initialized to 1.  The state integer is internal to ``blkdebug`` and cannot be
++observed from outside but rules can interact with it for powerful matching
++behavior.
++
++Rules can be conditional on the current state and they can transition to a new
++state.
++
++When a rule's "state" attribute is non-zero then the current state must equal
++the attribute in order for the rule to match.
++
++For example, to match the 2nd write_aio::
++
++  [set-state]
++  event = "write_aio"
++  state = "1"
++  new_state = "2"
++
++  [inject-error]
++  event = "write_aio"
++  state = "2"
++  errno = "5"
++
++The first ``write_aio`` request matches the ``set-state`` rule and transitions from
++state 1 to state 2.  Once state 2 has been entered, the ``set-state`` rule no
++longer matches since it requires state 1.  But the ``inject-error`` rule now
++matches the next ``write_aio`` request and injects ``EIO`` (5).
++
++State transition rules support the following attributes:
++
++``event``
++  which type of operation to match (e.g. ``read_aio``, ``write_aio``,
++  ``flush_to_os`, ``flush_to_disk``).  See `Events`_ for
++  information on events.
++
++``state``
++  (optional) the engine must be in this state number in order for this
++  rule to match
++
++``new_state``
++  transition to this state number
++
++Suspend and resume
++------------------
++Exercising code paths in block drivers may require specific ordering amongst
++concurrent requests.  The "breakpoint" feature allows requests to be halted on
++a ``blkdebug`` event and resumed later.  This makes it possible to achieve
++deterministic ordering when multiple requests are in flight.
++
++Breakpoints on ``blkdebug`` events are associated with a user-defined ``tag`` string.
++This tag serves as an identifier by which the request can be resumed at a later
++point.
++
++See the ``qemu-io(1)`` ``break``, ``resume``, ``remove_break``, and ``wait_break``
++commands for details.
+diff --git a/docs/devel/blkdebug.txt b/docs/devel/blkdebug.txt
+deleted file mode 100644
+index 0b0c128d356..00000000000
+--- a/docs/devel/blkdebug.txt
++++ /dev/null
+@@ -1,162 +0,0 @@
+-Block I/O error injection using blkdebug
+-----------------------------------------
+-Copyright (C) 2014-2015 Red Hat Inc
+-
+-This work is licensed under the terms of the GNU GPL, version 2 or later.  See
+-the COPYING file in the top-level directory.
+-
+-The blkdebug block driver is a rule-based error injection engine.  It can be
+-used to exercise error code paths in block drivers including ENOSPC (out of
+-space) and EIO.
+-
+-This document gives an overview of the features available in blkdebug.
+-
+-Background
+-----------
+-Block drivers have many error code paths that handle I/O errors.  Image formats
+-are especially complex since metadata I/O errors during cluster allocation or
+-while updating tables happen halfway through request processing and require
+-discipline to keep image files consistent.
+-
+-Error injection allows test cases to trigger I/O errors at specific points.
+-This way, all error paths can be tested to make sure they are correct.
+-
+-Rules
+------
+-The blkdebug block driver takes a list of "rules" that tell the error injection
+-engine when to fail an I/O request.
+-
+-Each I/O request is evaluated against the rules.  If a rule matches the request
+-then its "action" is executed.
+-
+-Rules can be placed in a configuration file; the configuration file
+-follows the same .ini-like format used by QEMU's -readconfig option, and
+-each section of the file represents a rule.
+-
+-The following configuration file defines a single rule:
+-
+-  $ cat blkdebug.conf
+-  [inject-error]
+-  event = "read_aio"
+-  errno = "28"
+-
+-This rule fails all aio read requests with ENOSPC (28).  Note that the errno
+-value depends on the host.  On Linux, see
+-/usr/include/asm-generic/errno-base.h for errno values.
+-
+-Invoke QEMU as follows:
+-
+-  $ qemu-system-x86_64
+-        -drive if=none,cache=none,file=blkdebug:blkdebug.conf:test.img,id=drive0 \
+-        -device virtio-blk-pci,drive=drive0,id=virtio-blk-pci0
+-
+-Rules support the following attributes:
+-
+-  event - which type of operation to match (e.g. read_aio, write_aio,
+-          flush_to_os, flush_to_disk).  See the "Events" section for
+-          information on events.
+-
+-  state - (optional) the engine must be in this state number in order for this
+-          rule to match.  See the "State transitions" section for information
+-          on states.
+-
+-  errno - the numeric errno value to return when a request matches this rule.
+-          The errno values depend on the host since the numeric values are not
+-          standardized in the POSIX specification.
+-
+-  sector - (optional) a sector number that the request must overlap in order to
+-           match this rule
+-
+-  once - (optional, default "off") only execute this action on the first
+-         matching request
+-
+-  immediately - (optional, default "off") return a NULL BlockAIOCB
+-                pointer and fail without an errno instead.  This
+-                exercises the code path where BlockAIOCB fails and the
+-                caller's BlockCompletionFunc is not invoked.
+-
+-Events
+-------
+-Block drivers provide information about the type of I/O request they are about
+-to make so rules can match specific types of requests.  For example, the qcow2
+-block driver tells blkdebug when it accesses the L1 table so rules can match
+-only L1 table accesses and not other metadata or guest data requests.
+-
+-The core events are:
+-
+-  read_aio - guest data read
+-
+-  write_aio - guest data write
+-
+-  flush_to_os - write out unwritten block driver state (e.g. cached metadata)
+-
+-  flush_to_disk - flush the host block device's disk cache
+-
+-See qapi/block-core.json:BlkdebugEvent for the full list of events.
+-You may need to grep block driver source code to understand the
+-meaning of specific events.
+-
+-State transitions
+------------------
+-There are cases where more power is needed to match a particular I/O request in
+-a longer sequence of requests.  For example:
+-
+-  write_aio
+-  flush_to_disk
+-  write_aio
+-
+-How do we match the 2nd write_aio but not the first?  This is where state
+-transitions come in.
+-
+-The error injection engine has an integer called the "state" that always starts
+-initialized to 1.  The state integer is internal to blkdebug and cannot be
+-observed from outside but rules can interact with it for powerful matching
+-behavior.
+-
+-Rules can be conditional on the current state and they can transition to a new
+-state.
+-
+-When a rule's "state" attribute is non-zero then the current state must equal
+-the attribute in order for the rule to match.
+-
+-For example, to match the 2nd write_aio:
+-
+-  [set-state]
+-  event = "write_aio"
+-  state = "1"
+-  new_state = "2"
+-
+-  [inject-error]
+-  event = "write_aio"
+-  state = "2"
+-  errno = "5"
+-
+-The first write_aio request matches the set-state rule and transitions from
+-state 1 to state 2.  Once state 2 has been entered, the set-state rule no
+-longer matches since it requires state 1.  But the inject-error rule now
+-matches the next write_aio request and injects EIO (5).
+-
+-State transition rules support the following attributes:
+-
+-  event - which type of operation to match (e.g. read_aio, write_aio,
+-          flush_to_os, flush_to_disk).  See the "Events" section for
+-          information on events.
+-
+-  state - (optional) the engine must be in this state number in order for this
+-          rule to match
+-
+-  new_state - transition to this state number
+-
+-Suspend and resume
+-------------------
+-Exercising code paths in block drivers may require specific ordering amongst
+-concurrent requests.  The "breakpoint" feature allows requests to be halted on
+-a blkdebug event and resumed later.  This makes it possible to achieve
+-deterministic ordering when multiple requests are in flight.
+-
+-Breakpoints on blkdebug events are associated with a user-defined "tag" string.
+-This tag serves as an identifier by which the request can be resumed at a later
+-point.
+-
+-See the qemu-io(1) break, resume, remove_break, and wait_break commands for
+-details.
+diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
+index 90b406ca0ed..3a912aefcfa 100644
+--- a/docs/devel/index-build.rst
++++ b/docs/devel/index-build.rst
+@@ -18,3 +18,4 @@ the basics if you are adding new files and targets to the build.
+    qapi-code-gen
+    fuzzing
+    control-flow-integrity
++   blkdebug
 -- 
 2.34.1
 
