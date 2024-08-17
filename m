@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D054C955418
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 02:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F84B95546A
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 02:55:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sf77z-00008m-V1; Fri, 16 Aug 2024 20:17:07 -0400
+	id 1sf7iW-0005SQ-Ji; Fri, 16 Aug 2024 20:54:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sf77v-00007o-Fr
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 20:17:04 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <samuel.holland@sifive.com>)
+ id 1sf7HY-00056W-EI
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 20:27:00 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sf77u-00042C-19
- for qemu-devel@nongnu.org; Fri, 16 Aug 2024 20:17:03 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-202146e9538so7413755ad.3
- for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 17:17:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <samuel.holland@sifive.com>)
+ id 1sf7HW-0005OL-IF
+ for qemu-devel@nongnu.org; Fri, 16 Aug 2024 20:27:00 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-267b7ef154aso1714818fac.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Aug 2024 17:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723853820; x=1724458620; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+smS3V05s5eWuvLPAQ5vrnyr59tDdVA+fGI337pmeCE=;
- b=XYtwWew4lBKtHEimZ2+gm3NRZncKFHDBSm84Fast+TfoJWsvGDx6GfnsNVicAxPN4d
- kwzUmdK2NvwcwMcswbPbNLoagqztGef/jUSf+0pkVPoN2n92grtZeIpEA9+2AQdfew+m
- U+pTllODiK+biEod5SiCgD476Khm18pQjA60qynFSb6xmt0Lg1fDdBYMj784TveJSYiW
- D4Uc4yPyAU+5yJO+AOUasJxpflfC5Z6Ka556s2+jEOR5EVhfod8CX422CVig9gwQugnF
- CtANYCb+Q8Wa2FSZRqyVxgk5CvkHE2QU6gDMkhjCcz9rufHXZPhfIIjWv73OqrU/9ORl
- DdmQ==
+ d=sifive.com; s=google; t=1723854413; x=1724459213; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6mBzLqL6MdSQlxiCxzjBTnD6Jwm1kjbNkQm4sK+PO4k=;
+ b=VMgLuG5CyyrPo6XoJe4rK66cPYDSBT1jDotjKI4y65SXpE2rCorpvC3+Nxf5fkBVm3
+ 2CTo40uD+KCK3DCwg6ND69LCHcG2vBNDZc7uMCXFqQcjgqm0+8g7xdlU/W1/KEHOWjqO
+ Br2cAWkHCzrl2IKwNVqzi6a38tnCJ8Hy1aQNl5Ap/bkDMQ1gd7TcX9JUVsS2QgemITHe
+ PKLERp5Fg2bl9SsJujD0tgwWEi+RaGeNYqVtNv5iGzCPRwRjZQPAgbnKhPMfl73LQpVS
+ Yv/Dol2ksunyThqF28IAHmmjrBKMBQkQ1AeWrvyjf7ll78dqtzeTlUI0+v2qS4ThPOeZ
+ SRew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723853820; x=1724458620;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+smS3V05s5eWuvLPAQ5vrnyr59tDdVA+fGI337pmeCE=;
- b=a12J5OfhWNhVpMsmgOqG7V/+YUDbPlYaW0P0djc6YOHdy6L1qSztfycrnnef+mmwMm
- kcvGropjxFCU9nF5frgIlaEnV0WxAI2xkX5fVEGxwEiEXm7zG76Xd0wD1r3oy2OY+yxu
- H2WiO6huTpqe86Xey+KbChGjMY1/TIZOukwlMEranG13M1WfJquIXXBuA94ZQPV9HqKJ
- PADLi71IqykvBnxoKNHSzFdHib3nXL/GMAi6U/ZtJzlkV9tQlPdKRYqHAuxhSU1/OyTU
- 1UQe+xtC8b03DNhquZbIE8B564dyt359pTq2BrJdPAroKgHJwZAnL6seX0WIhHeSsBiV
- wAxQ==
+ d=1e100.net; s=20230601; t=1723854413; x=1724459213;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6mBzLqL6MdSQlxiCxzjBTnD6Jwm1kjbNkQm4sK+PO4k=;
+ b=wt6pUgf4Eegok0Vg0ldCQV+KwwABm2hzIY6+o+uF3ESxEHwHLiWQ3w/6ZdwPDF5035
+ sC48V+XIgOMRYGFXE2rQOlv0cqTcjuB85gO+wF2xrrKHUyjFMRpQS1CUfvtokbt7lx0D
+ fYZ0X857KIFR1OuxJGtzW8kHbLNJblUuVrb3WoIVwGKFb3htA5hMny8Rc8Mtn+0Arz+3
+ NqebPLvmkwa89yCpm6w4NOpoadYKvbzkMqKckN2m0KNaItYew9gE0YFiTob1LI7lsBaP
+ NOAzLbPWaQpWQjfOGbBDr1XL0PJHQEjF9hBYYBKM1w0KXqSbyUZZj+Fkg9tdmJHStDqf
+ i4ew==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWtXMz6mjgRH8cIDrHD/Md6D9RApbPi34YYIpJXw737fulxSNrU3qe8VOTqWFr0l+5oTJrcWs32GZOpMRgJ9yEHndzzm68=
-X-Gm-Message-State: AOJu0YzLAIW9etJCm7i+5xFqPdI4DpHpxF3YnfywxozoQGhEhqdqzYdI
- HZ0GVGvwpJjQ5HxI925HQMCMr+LY+2oWLZHUTxVhN77BqC+0fvxEt1YHtTPIghg=
-X-Google-Smtp-Source: AGHT+IGvMUccN0ysHQ9Nz1KeHOz1ajXQhvQyrGxIUmBD50E9MMiE/gLzBjG3djLgFPtx/RfjqKmI9Q==
-X-Received: by 2002:a17:902:e84a:b0:201:f2a4:cf94 with SMTP id
- d9443c01a7336-20203eb5532mr51712465ad.29.1723853820017; 
- Fri, 16 Aug 2024 17:17:00 -0700 (PDT)
-Received: from [192.168.1.113] ([203.30.4.109])
+ AJvYcCU8owVh+gXgchkkCYPIAtJg4AXQ8P/inzUkNDoPtaKSPRFgIuCwD0/Jpi2bi3TWhlQ82T9j1GS3Art/+RH1agiGkIhCREA=
+X-Gm-Message-State: AOJu0Yxbgj3A5OqeR2aLngPs9VJINJAJp64qQT+pvISxVrVdHzvkNTp7
+ 61Wn/h/sUiW7rFx6dnI3tpzwEHrRKJO0NtnS7tuPEAPGuRHHwurS2zuEHKEL6UQ=
+X-Google-Smtp-Source: AGHT+IHmDwGcwfB5GaS4fg2IwtZxaPZPIEhKGxGi0+Xi8AJ3N7CsYZ8GItDdWoR5ZRK2Et1sXhgbkg==
+X-Received: by 2002:a05:6870:6387:b0:268:952b:d2a4 with SMTP id
+ 586e51a60fabf-270341e0c73mr1301704fac.32.1723854413580; 
+ Fri, 16 Aug 2024 17:26:53 -0700 (PDT)
+Received: from sw06.internal.sifive.com ([4.53.31.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f022c72bsm30659735ad.0.2024.08.16.17.16.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Aug 2024 17:16:59 -0700 (PDT)
-Message-ID: <e2aa8b92-4cb1-4fcf-92b7-eadb86893ccf@linaro.org>
-Date: Sat, 17 Aug 2024 10:16:55 +1000
+ d2e1a72fcca58-7127aef5457sm3152654b3a.127.2024.08.16.17.26.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Aug 2024 17:26:53 -0700 (PDT)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: qemu-riscv@nongnu.org
+Cc: Samuel Holland <samuel.holland@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Vijai Kumar K <vijai@behindbytes.com>,
+ Weiwei Li <liwei1518@gmail.com>, qemu-devel@nongnu.org
+Subject: [PATCH] hw/riscv: Respect firmware ELF entry point
+Date: Fri, 16 Aug 2024 17:25:02 -0700
+Message-ID: <20240817002651.3209701-1-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.2 v3 0/6] target/sparc: emulate floating point queue
- when raising fp traps
-To: Carl Hauser <chauser@pullman.com>, qemu-devel@nongnu.org
-References: <20240816072311.353234-1-richard.henderson@linaro.org>
- <501c22c3-d8e3-4439-a958-549e9a772ffd@pullman.com>
- <2c1d0942-1428-47a7-bd37-29c16d596761@pullman.com>
- <092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org>
- <aa172755-faf8-4587-a4e8-d1cbfdc139b1@pullman.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <aa172755-faf8-4587-a4e8-d1cbfdc139b1@pullman.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=samuel.holland@sifive.com; helo=mail-oa1-x32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 16 Aug 2024 20:54:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,13 +96,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/17/24 09:48, Carl Hauser wrote:
-> netbsd panics in the kernel trap handler; unfortunately it does not include the fsr in the 
-> panic message, but I expect it will be the same as on Solaris.
+When riscv_load_firmware() loads an ELF, the ELF segment addresses are
+used, not the passed-in firmware_load_addr. The machine models assume
+the firmware entry point is what they provided for firmware_load_addr,
+and use that address to generate the boot ROM, so if the ELF is linked
+at any other address, the boot ROM will jump to empty memory.
 
-Ok, I have reproduced this with netbsd 9.3.
-I'll have a look.
+Pass back the ELF entry point to use when generating the boot ROM, so
+the boot ROM can jump to firmware loaded anywhere in RAM. For example,
+on the virt machine, this allows using an OpenSBI fw_dynamic.elf built
+with FW_TEXT_START values other than 0x80000000.
 
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+---
 
-r~
+ hw/riscv/boot.c            | 11 ++++++-----
+ hw/riscv/microchip_pfsoc.c |  2 +-
+ hw/riscv/opentitan.c       |  3 ++-
+ hw/riscv/shakti_c.c        | 13 ++++++-------
+ hw/riscv/sifive_u.c        |  4 ++--
+ hw/riscv/spike.c           |  5 +++--
+ hw/riscv/virt.c            |  4 ++--
+ include/hw/riscv/boot.h    |  4 ++--
+ 8 files changed, 24 insertions(+), 22 deletions(-)
+
+diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+index 47281ca853..9115ecd91f 100644
+--- a/hw/riscv/boot.c
++++ b/hw/riscv/boot.c
+@@ -128,11 +128,11 @@ char *riscv_find_firmware(const char *firmware_filename,
+ 
+ target_ulong riscv_find_and_load_firmware(MachineState *machine,
+                                           const char *default_machine_firmware,
+-                                          hwaddr firmware_load_addr,
++                                          hwaddr *firmware_load_addr,
+                                           symbol_fn_t sym_cb)
+ {
+     char *firmware_filename;
+-    target_ulong firmware_end_addr = firmware_load_addr;
++    target_ulong firmware_end_addr = *firmware_load_addr;
+ 
+     firmware_filename = riscv_find_firmware(machine->firmware,
+                                             default_machine_firmware);
+@@ -148,7 +148,7 @@ target_ulong riscv_find_and_load_firmware(MachineState *machine,
+ }
+ 
+ target_ulong riscv_load_firmware(const char *firmware_filename,
+-                                 hwaddr firmware_load_addr,
++                                 hwaddr *firmware_load_addr,
+                                  symbol_fn_t sym_cb)
+ {
+     uint64_t firmware_entry, firmware_end;
+@@ -159,15 +159,16 @@ target_ulong riscv_load_firmware(const char *firmware_filename,
+     if (load_elf_ram_sym(firmware_filename, NULL, NULL, NULL,
+                          &firmware_entry, NULL, &firmware_end, NULL,
+                          0, EM_RISCV, 1, 0, NULL, true, sym_cb) > 0) {
++        *firmware_load_addr = firmware_entry;
+         return firmware_end;
+     }
+ 
+     firmware_size = load_image_targphys_as(firmware_filename,
+-                                           firmware_load_addr,
++                                           *firmware_load_addr,
+                                            current_machine->ram_size, NULL);
+ 
+     if (firmware_size > 0) {
+-        return firmware_load_addr + firmware_size;
++        return *firmware_load_addr + firmware_size;
+     }
+ 
+     error_report("could not load firmware '%s'", firmware_filename);
+diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+index 7725dfbde5..f9a3b43d2e 100644
+--- a/hw/riscv/microchip_pfsoc.c
++++ b/hw/riscv/microchip_pfsoc.c
+@@ -613,7 +613,7 @@ static void microchip_icicle_kit_machine_init(MachineState *machine)
+ 
+     /* Load the firmware */
+     firmware_end_addr = riscv_find_and_load_firmware(machine, firmware_name,
+-                                                     firmware_load_addr, NULL);
++                                                     &firmware_load_addr, NULL);
+ 
+     if (kernel_as_payload) {
+         kernel_start_addr = riscv_calc_kernel_start_addr(&s->soc.u_cpus,
+diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+index 436503f1ba..e2830e9dc2 100644
+--- a/hw/riscv/opentitan.c
++++ b/hw/riscv/opentitan.c
+@@ -98,7 +98,8 @@ static void opentitan_machine_init(MachineState *machine)
+         memmap[IBEX_DEV_RAM].base, machine->ram);
+ 
+     if (machine->firmware) {
+-        riscv_load_firmware(machine->firmware, memmap[IBEX_DEV_RAM].base, NULL);
++        hwaddr firmware_load_addr = memmap[IBEX_DEV_RAM].base;
++        riscv_load_firmware(machine->firmware, &firmware_load_addr, NULL);
+     }
+ 
+     if (machine->kernel_filename) {
+diff --git a/hw/riscv/shakti_c.c b/hw/riscv/shakti_c.c
+index 3888034c2b..2dccc1eff2 100644
+--- a/hw/riscv/shakti_c.c
++++ b/hw/riscv/shakti_c.c
+@@ -45,6 +45,7 @@ static void shakti_c_machine_state_init(MachineState *mstate)
+ {
+     ShaktiCMachineState *sms = RISCV_SHAKTI_MACHINE(mstate);
+     MemoryRegion *system_memory = get_system_memory();
++    hwaddr firmware_load_addr = shakti_c_memmap[SHAKTI_C_RAM].base;
+ 
+     /* Initialize SoC */
+     object_initialize_child(OBJECT(mstate), "soc", &sms->soc,
+@@ -56,16 +57,14 @@ static void shakti_c_machine_state_init(MachineState *mstate)
+                                 shakti_c_memmap[SHAKTI_C_RAM].base,
+                                 mstate->ram);
+ 
++    if (mstate->firmware) {
++        riscv_load_firmware(mstate->firmware, &firmware_load_addr, NULL);
++    }
++
+     /* ROM reset vector */
+-    riscv_setup_rom_reset_vec(mstate, &sms->soc.cpus,
+-                              shakti_c_memmap[SHAKTI_C_RAM].base,
++    riscv_setup_rom_reset_vec(mstate, &sms->soc.cpus, firmware_load_addr,
+                               shakti_c_memmap[SHAKTI_C_ROM].base,
+                               shakti_c_memmap[SHAKTI_C_ROM].size, 0, 0);
+-    if (mstate->firmware) {
+-        riscv_load_firmware(mstate->firmware,
+-                            shakti_c_memmap[SHAKTI_C_RAM].base,
+-                            NULL);
+-    }
+ }
+ 
+ static void shakti_c_machine_instance_init(Object *obj)
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index af5f923f54..35a689309d 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -515,7 +515,7 @@ static void sifive_u_machine_init(MachineState *machine)
+     SiFiveUState *s = RISCV_U_MACHINE(machine);
+     MemoryRegion *system_memory = get_system_memory();
+     MemoryRegion *flash0 = g_new(MemoryRegion, 1);
+-    target_ulong start_addr = memmap[SIFIVE_U_DEV_DRAM].base;
++    hwaddr start_addr = memmap[SIFIVE_U_DEV_DRAM].base;
+     target_ulong firmware_end_addr, kernel_start_addr;
+     const char *firmware_name;
+     uint32_t start_addr_hi32 = 0x00000000;
+@@ -589,7 +589,7 @@ static void sifive_u_machine_init(MachineState *machine)
+ 
+     firmware_name = riscv_default_firmware_name(&s->soc.u_cpus);
+     firmware_end_addr = riscv_find_and_load_firmware(machine, firmware_name,
+-                                                     start_addr, NULL);
++                                                     &start_addr, NULL);
+ 
+     if (machine->kernel_filename) {
+         kernel_start_addr = riscv_calc_kernel_start_addr(&s->soc.u_cpus,
+diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+index 64074395bc..fceb91d946 100644
+--- a/hw/riscv/spike.c
++++ b/hw/riscv/spike.c
+@@ -198,6 +198,7 @@ static void spike_board_init(MachineState *machine)
+     MemoryRegion *system_memory = get_system_memory();
+     MemoryRegion *mask_rom = g_new(MemoryRegion, 1);
+     target_ulong firmware_end_addr = memmap[SPIKE_DRAM].base;
++    hwaddr firmware_load_addr = memmap[SPIKE_DRAM].base;
+     target_ulong kernel_start_addr;
+     char *firmware_name;
+     uint32_t fdt_load_addr;
+@@ -290,7 +291,7 @@ static void spike_board_init(MachineState *machine)
+     /* Load firmware */
+     if (firmware_name) {
+         firmware_end_addr = riscv_load_firmware(firmware_name,
+-                                                memmap[SPIKE_DRAM].base,
++                                                &firmware_load_addr,
+                                                 htif_symbol_callback);
+         g_free(firmware_name);
+     }
+@@ -320,7 +321,7 @@ static void spike_board_init(MachineState *machine)
+     riscv_load_fdt(fdt_load_addr, machine->fdt);
+ 
+     /* load the reset vector */
+-    riscv_setup_rom_reset_vec(machine, &s->soc[0], memmap[SPIKE_DRAM].base,
++    riscv_setup_rom_reset_vec(machine, &s->soc[0], firmware_load_addr,
+                               memmap[SPIKE_MROM].base,
+                               memmap[SPIKE_MROM].size, kernel_entry,
+                               fdt_load_addr);
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 9981e0f6c9..aef5e284a7 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1336,7 +1336,7 @@ static void virt_machine_done(Notifier *notifier, void *data)
+                                      machine_done);
+     const MemMapEntry *memmap = virt_memmap;
+     MachineState *machine = MACHINE(s);
+-    target_ulong start_addr = memmap[VIRT_DRAM].base;
++    hwaddr start_addr = memmap[VIRT_DRAM].base;
+     target_ulong firmware_end_addr, kernel_start_addr;
+     const char *firmware_name = riscv_default_firmware_name(&s->soc[0]);
+     uint64_t fdt_load_addr;
+@@ -1368,7 +1368,7 @@ static void virt_machine_done(Notifier *notifier, void *data)
+     }
+ 
+     firmware_end_addr = riscv_find_and_load_firmware(machine, firmware_name,
+-                                                     start_addr, NULL);
++                                                     &start_addr, NULL);
+ 
+     pflash_blk0 = pflash_cfi01_get_blk(s->flash[0]);
+     if (pflash_blk0) {
+diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
+index a2e4ae9cb0..18bfe9f7bf 100644
+--- a/include/hw/riscv/boot.h
++++ b/include/hw/riscv/boot.h
+@@ -35,13 +35,13 @@ target_ulong riscv_calc_kernel_start_addr(RISCVHartArrayState *harts,
+                                           target_ulong firmware_end_addr);
+ target_ulong riscv_find_and_load_firmware(MachineState *machine,
+                                           const char *default_machine_firmware,
+-                                          hwaddr firmware_load_addr,
++                                          hwaddr *firmware_load_addr,
+                                           symbol_fn_t sym_cb);
+ const char *riscv_default_firmware_name(RISCVHartArrayState *harts);
+ char *riscv_find_firmware(const char *firmware_filename,
+                           const char *default_machine_firmware);
+ target_ulong riscv_load_firmware(const char *firmware_filename,
+-                                 hwaddr firmware_load_addr,
++                                 hwaddr *firmware_load_addr,
+                                  symbol_fn_t sym_cb);
+ target_ulong riscv_load_kernel(MachineState *machine,
+                                RISCVHartArrayState *harts,
+-- 
+2.45.1
+
 
