@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50D4955733
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 12:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F680955745
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 12:32:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sfGeK-00085d-KB; Sat, 17 Aug 2024 06:27:08 -0400
+	id 1sfGeM-00088V-9b; Sat, 17 Aug 2024 06:27:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <33nrAZgUKChMCtE18z77z4x.v759x5D-wxEx4676z6D.7Az@flex--tavip.bounces.google.com>)
- id 1sfGdz-0006Y8-Je
- for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:48 -0400
-Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
+ <34HrAZgUKChUEvG3A19916z.x97Bz7F-yzGz689818F.9C1@flex--tavip.bounces.google.com>)
+ id 1sfGe3-0006lK-1J
+ for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:52 -0400
+Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <33nrAZgUKChMCtE18z77z4x.v759x5D-wxEx4676z6D.7Az@flex--tavip.bounces.google.com>)
- id 1sfGdw-0003J5-6l
- for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:46 -0400
-Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-6c8f99fef10so2830223a12.3
- for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 03:26:39 -0700 (PDT)
+ <34HrAZgUKChUEvG3A19916z.x97Bz7F-yzGz689818F.9C1@flex--tavip.bounces.google.com>)
+ id 1sfGdz-0003Jo-BO
+ for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:50 -0400
+Received: by mail-pg1-x54a.google.com with SMTP id
+ 41be03b00d2f7-7a267d9e7b0so2230370a12.2
+ for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 03:26:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1723890399; x=1724495199; darn=nongnu.org;
+ d=google.com; s=20230601; t=1723890402; x=1724495202; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=Upd9FeYdowY3IZShEUb1HXBlUbq++p8JkY3ix5d4D/M=;
- b=Y5b9lJ/xid4nppwhvvusxDfP8VvZIqI3oFZq/ONkXKw7OxbhLxG3JA9dCZuAwcmJlj
- W+GNznWX1pUZDxlCN9/v8+7WHYZrYUafU1szE0pD/Uh6M7rZXTxcyb4c9yukqRp+O72i
- WEdr3yj8V8LqGIMuAhkvNSWTAPfN3zpCboHxuSHUeJvwbpPzA8ogR0nYI6H/72YcDf+d
- MavnxUxIqdvl2zcCj9Vq2Te1r46Sw4RUtNxD6sosjN0/KeztwcF7Sg/FY1tsfNDiKH4k
- 4wPyAfGrN8gW2sBM0OfX2vSiE6V+DB0gaif7+UAqMrSxEpjhJZ8rY/1A5V+1TDO0NmRR
- CX2g==
+ bh=jrfugPeSIojLMkZyOUDpR5lNbRABMXvASxgVCAUl6jI=;
+ b=C4SvhjMPebb0BUE8eLnJlXTjYP1hRkvaM0H/uzT1Fhj3jNcNugeLkLbJHKyPYA15XH
+ CMgVDxaH3Jzv01XAzdt5DZn2Tqo26NI3jnKR4bSECUVgl0vFrGC0uNp/EOvC3OsEKmlB
+ W7MBzEZlSZPGL9fnoE6wjLv2nCC+8Yu4JGzUH/aa4W83A6xAhZgcD6YPKG/SooOW7QZg
+ Njn7xqXFFrC5WkOVvmrGZFp34JU8PWeciMcC8HS6d6I4kOi8ya/lf26CsjCs1pmvfvVD
+ dBtI0JF352VFuxpJBRuMzQfKQffX4Z5xbzUJSFRlzZ9PqQ3sfXNVvFOAyY56vnpDh4TI
+ nZzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723890399; x=1724495199;
+ d=1e100.net; s=20230601; t=1723890402; x=1724495202;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Upd9FeYdowY3IZShEUb1HXBlUbq++p8JkY3ix5d4D/M=;
- b=l6QuisLL2aSKXi0kOWCLStp5zpkCBuLXl2Se0je6AIA7JoutJ/BM40KJRwW5VUK1cp
- ui6JzJu5/7NmXCzNJ4ZjKC4+VkAeAy3O/B4LoDdR1YTr/VQLyAIGO3GrxWu/y1P1+5TG
- XuNhu/yKjNuhBQ6XKT0NnsUIAQhFtWrvlIAqBjejMyFElaY90cGfwiJq5HTqXG5qbToM
- /orges7aoqONnGRYUhEHHuUlhLqMKUOZrfTdrQzqL/9/DyTTZ/JSCW7XOq0WRbnk7zix
- ekCVxop9LhyjGcu6lxOpBinjx3hek/hwvhSqpkWFJSnLA4xrB4c/gdOVHdoFgTZqei/5
- Pz3Q==
-X-Gm-Message-State: AOJu0YzjXbjsSFdiDWp7AlfGlbfPUfcS/bUYq74Fdw055ZZqFUSAG/9G
- JP7O6shSlxAwqfo6Ygx27SV8n4XqMSwqk29Lle5gGNrGK1QA+gRgZ5Kd9PNVRQEg+TPMtD4q8br
- Ony3boNRf58ZbpvzuCiLqBKQgixxQOJ5XPpGaYyW5Ky5qdL5jrHa/F1rUWoPwyzMLvnb/Iu9tfU
- r7uASPK3mE5b2jQvVqCmQ6CJSzwg==
-X-Google-Smtp-Source: AGHT+IGFCQhCHSaXkndnnYNVcH3SLN/Fw3Mm2mFM5Gs9rAwFxGZ3cB9xCDyPpDVegQclw5fCSqQwaCRlWQ==
+ bh=jrfugPeSIojLMkZyOUDpR5lNbRABMXvASxgVCAUl6jI=;
+ b=P83W+4Kj0sL44XZyVpwQWaquNp8K/n3L81kAFGFob7vKnz3n2jRtcbIXZ7HALNzrbC
+ AnYCFnc5W8vzt4XyK/d+7PWJLioDsSfGLujiKy/8orQMAr99j0ljo/u0UJC0fjVkN6Td
+ wIoFTngwK9SrjZPgcUPS7dbKOHytwitxtVzRBuevlpTr0v43gpaKTpvFfF4gaZN9Ofk1
+ wH8teTwVl5EZC0TPhTKYJXAL7svnu3w8C/uFRzvSaOvETMC9bs4KOX1tHLQJk2w0ffgp
+ +178kRcAcYlfZ+IhbbaizNezoCNGFIAw8LwekFj6ZlRXB4JQJ/yrXJ1g6MyYuZtvTWUK
+ PmsQ==
+X-Gm-Message-State: AOJu0YyKJB4vfthSI426bIZUN4RsndNc4tb+7bLV1c5lSdqzFeiyNCPU
+ 0ZiY4pt23KHErUYnWUWxLlxzZY+itx/+28AhcabEbf43SLZMANiE++jqTaFbAmU4col1W5dO/A9
+ pBdURtj6rLUOKPZPB/KA/MBdkca5AOu9fyooCXaFawU1fPnEJ0LEOOznu+W0u7f10rVtl7Vg5Vt
+ BoyCAIPTZABX9e0Gn+IDZshARNTA==
+X-Google-Smtp-Source: AGHT+IHaZll7FNxDwUjRwcF04hm24gyLNoSa3B7s6lzVwGAosu6Lf2SHaDxeIhEnAq1L3JTWKq4SCNv/eg==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a17:902:ecd1:b0:202:156:c4c6 with
- SMTP id
- d9443c01a7336-20203f1cdbamr5626085ad.9.1723890398382; Sat, 17 Aug 2024
- 03:26:38 -0700 (PDT)
-Date: Sat, 17 Aug 2024 03:25:59 -0700
+ (user=tavip job=sendgmr) by 2002:a05:6a02:581:b0:7a1:95c1:de3f
+ with SMTP id
+ 41be03b00d2f7-7c975f682c9mr10767a12.0.1723890400429; Sat, 17 Aug 2024
+ 03:26:40 -0700 (PDT)
+Date: Sat, 17 Aug 2024 03:26:00 -0700
 In-Reply-To: <20240817102606.3996242-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240817102606.3996242-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
-Message-ID: <20240817102606.3996242-17-tavip@google.com>
-Subject: [RFC PATCH v2 16/23] test/unit: add spi-tester
+Message-ID: <20240817102606.3996242-18-tavip@google.com>
+Subject: [RFC PATCH v2 17/23] test/unit: add unit tests for flexcomm spi
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -69,9 +69,9 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  alistair@alistair23.me, berrange@redhat.com, philmd@linaro.org, 
  jsnow@redhat.com, crosa@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=33nrAZgUKChMCtE18z77z4x.v759x5D-wxEx4676z6D.7Az@flex--tavip.bounces.google.com;
- helo=mail-pg1-x549.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
+ envelope-from=34HrAZgUKChUEvG3A19916z.x97Bz7F-yzGz689818F.9C1@flex--tavip.bounces.google.com;
+ helo=mail-pg1-x54a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -79,7 +79,7 @@ X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a simple SPI peripheral that echoes back received data. Useful for
-testing SPI controllers.
+From: Sebastian Ene <sebastianene@google.com>
 
+Add master and loopback tests for flexcomm spi.
+
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+[tavip: add master mode test]
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- tests/unit/spi_tester.h | 32 +++++++++++++++++++++++
- tests/unit/spi_tester.c | 57 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 89 insertions(+)
- create mode 100644 tests/unit/spi_tester.h
- create mode 100644 tests/unit/spi_tester.c
+ tests/unit/test-flexcomm-spi.c | 201 +++++++++++++++++++++++++++++++++
+ tests/unit/meson.build         |  12 ++
+ 2 files changed, 213 insertions(+)
+ create mode 100644 tests/unit/test-flexcomm-spi.c
 
-diff --git a/tests/unit/spi_tester.h b/tests/unit/spi_tester.h
+diff --git a/tests/unit/test-flexcomm-spi.c b/tests/unit/test-flexcomm-spi.c
 new file mode 100644
-index 0000000000..16e08d2b5c
+index 0000000000..c15c8e608b
 --- /dev/null
-+++ b/tests/unit/spi_tester.h
-@@ -0,0 +1,32 @@
++++ b/tests/unit/test-flexcomm-spi.c
+@@ -0,0 +1,201 @@
 +/*
-+ * Simple SPI peripheral device used for SPI controller testing.
-+ *
 + * Copyright (c) 2024 Google LLC.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
@@ -122,91 +122,222 @@ index 0000000000..16e08d2b5c
 + * This work is licensed under the terms of the GNU GPL, version 2 or later.
 + * See the COPYING file in the top-level directory.
 + */
-+
-+#ifndef TESTS_UNIT_SPI_TESTER_H
-+#define TESTS_UNIT_SPI_TESTER_H
 +
 +#include "qemu/osdep.h"
++
++#include "qemu/config-file.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "qemu/bswap.h"
++#include "qapi/error.h"
++#include "qemu/sockets.h"
++#include "sysemu/sysemu.h"
++#include "qemu/main-loop.h"
++#include "qemu/option.h"
++#include "exec/memory.h"
 +#include "hw/irq.h"
-+#include "hw/ssi/ssi.h"
-+#include "qemu/timer.h"
 +#include "hw/qdev-properties.h"
++#include "hw/qdev-core.h"
 +
-+#define TYPE_SPI_TESTER "spi-tester"
-+#define SPI_TESTER(obj) OBJECT_CHECK(SpiTesterState, (obj), TYPE_SPI_TESTER)
++#include "hw/misc/flexcomm.h"
++#include "spi_tester.h"
++#include "sysbus-mock.h"
++#include "reg-utils.h"
++
++/* The number of words sent on the SPI in loopback mode. */
++#define SEQ_LOOPBACK_MODE   (8)
++
++/* This value is used to set the cycle counter for the spi tester */
++#define SPI_TESTER_CONFIG (0x10)
++
++#define FLEXCOMM_BASE 0x40106000UL
++#define FLEXCOMM_SPI_BASE FLEXCOMM_BASE
 +
 +typedef struct {
-+    SSIPeripheral ssidev;
-+    bool cs;
-+} SpiTesterState;
++    DeviceState *dev;
++    DeviceState *periph;
++    bool irq;
++} TestFixture;
 +
-+#endif /* TESTS_UNIT_SPI_TESTER_H */
-diff --git a/tests/unit/spi_tester.c b/tests/unit/spi_tester.c
-new file mode 100644
-index 0000000000..e055d25990
---- /dev/null
-+++ b/tests/unit/spi_tester.c
-@@ -0,0 +1,57 @@
-+/*
-+ * Simple SPI peripheral echo device used for SPI controller testing.
-+ *
-+ * Copyright (c) 2024 Google LLC.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "spi_tester.h"
-+
-+static uint32_t spi_tester_transfer(SSIPeripheral *dev, uint32_t value)
++/* Callback for the interrupt line. */
++static void spi_irq_set(void *opaque, int line, int level)
 +{
-+    SpiTesterState *s = SPI_TESTER(dev);
++    TestFixture *f = (TestFixture *)opaque;
 +
-+    if (s->cs) {
-+        return 0;
++    f->irq = level;
++}
++
++/*
++ * Test fixture initialization.
++ */
++static void set_up(TestFixture *f, gconstpointer data)
++{
++    FlexcommState *s;
++
++    f->dev = qdev_new(TYPE_FLEXCOMM);
++    g_assert(f->dev);
++
++    s = FLEXCOMM(f->dev);
++    s->irq = qemu_allocate_irq(spi_irq_set, f, 0);
++
++    if (data != NULL) {
++        qdev_prop_set_int32(DEVICE(f->dev), "functions", (uintptr_t)data);
 +    }
 +
-+    return value;
++    qdev_realize_and_unref(f->dev, NULL, &error_abort);
++    sysbus_mmio_map(SYS_BUS_DEVICE(f->dev), 0, FLEXCOMM_BASE);
++
++    device_cold_reset(f->dev);
++
++    f->periph = ssi_create_peripheral(s->spi, TYPE_SPI_TESTER);
++    s->cs[0] = qdev_get_gpio_in_named(f->periph, SSI_GPIO_CS, 0);
 +}
 +
-+static void spi_tester_realize(SSIPeripheral *d, Error **errp)
++static void tear_down(TestFixture *f, gconstpointer user_data)
 +{
++    qdev_unrealize(f->dev);
++    qdev_unrealize(DEVICE(f->periph));
++    g_free(f->dev);
 +}
 +
-+static int spi_tester_set_cs(SSIPeripheral *dev, bool select)
++static void configure_spi(TestFixture *f, bool master, bool is_loopback_mode)
 +{
-+    SpiTesterState *s = SPI_TESTER(dev);
++    uint32_t tmp;
 +
-+    s->cs = select;
++    /* Select and lock SPI */
++    tmp = FLEXCOMM_PERSEL_SPI;
++    FIELD_DP32(tmp, FLEXCOMM_PSELID, LOCK, 1);
++    REG32_WRITE(f->dev, FLEXCOMM, PSELID, tmp);
 +
-+    return 0;
++    /* Disable the FIFO */
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, CFG, ENABLE, 0);
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, FIFOCFG, ENABLETX, 0);
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, FIFOCFG, ENABLERX, 0);
++
++    if (is_loopback_mode) {
++        /* Set up SPI interface - loop mode, master mode */
++        REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, CFG, LOOP, 1);
++        g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, CFG, LOOP) == 1);
++    }
++
++    if (master) {
++        REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, CFG, MASTER, 1);
++        g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, CFG, MASTER) == 1);
++    } else {
++        REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, CFG, MASTER, 0);
++        g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, CFG, MASTER) == 0);
++    }
++
++    /* Enable the FIFO */
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, FIFOCFG, ENABLETX, 1);
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, FIFOCFG, ENABLERX, 1);
++
++    /* Enable the SPI */
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, CFG, ENABLE, 1);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, CFG, ENABLE) == 1);
 +}
 +
-+static void spi_tester_class_init(ObjectClass *klass, void *data)
++/* The SPI controller running in master mode can run in loopback mode for */
++/* internal testing. Transmit and receive lines are connected together. */
++static void loopback_test(TestFixture *f, gconstpointer user_data)
 +{
-+    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
++    configure_spi(f, true, true);
 +
-+    k->realize     = spi_tester_realize;
-+    k->transfer    = spi_tester_transfer;
-+    k->set_cs      = spi_tester_set_cs;
-+    k->cs_polarity = SSI_CS_LOW;
++    /* Write a sequence */
++    for (int i = 0; i < SEQ_LOOPBACK_MODE; i++) {
++        REG32_WRITE(f->dev, FLEXCOMM_SPI, FIFOWR, i);
++    }
++
++    /* Read the sequence back */
++    for (int i = 0; i < SEQ_LOOPBACK_MODE; i++) {
++        g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFORD, RXDATA) == i);
++    }
 +}
 +
-+static const TypeInfo spi_tester_types[] = {
-+    {
-+        .name          = TYPE_SPI_TESTER,
-+        .parent        = TYPE_SSI_PERIPHERAL,
-+        .instance_size = sizeof(SpiTesterState),
-+        .class_init    = spi_tester_class_init,
-+    },
-+};
++static void spi_master_test(TestFixture *f, gconstpointer user_data)
++{
++    uint32_t tmp;
 +
-+DEFINE_TYPES(spi_tester_types);
++    configure_spi(f, true, false);
++
++    REG32_WRITE_FIELD(f->dev, FLEXCOMM_SPI, CFG, LSBF, 1);
++
++    /* single 16bit word transfer */
++
++    tmp = FIELD_DP32(0x1122, FLEXCOMM_SPI_FIFOWR, EOT, 1);
++    tmp = FIELD_DP32(tmp, FLEXCOMM_SPI_FIFOWR, TXSSEL0_N, 1);
++    tmp = FIELD_DP32(tmp, FLEXCOMM_SPI_FIFOWR, LEN, 0xF);
++    REG32_WRITE(f->dev, FLEXCOMM_SPI, FIFOWR, tmp);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFOSTAT, RXNOTEMPTY) == 1);
++    g_assert_cmpuint(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFORD, RXDATA),
++                     ==, 0x1122);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFOSTAT, RXNOTEMPTY) == 0);
++
++    /* multi word 8 bits transfer */
++
++    tmp = FIELD_DP32(0x11, FLEXCOMM_SPI_FIFOWR, TXSSEL0_N, 1);
++    tmp = FIELD_DP32(tmp, FLEXCOMM_SPI_FIFOWR, LEN, 0x7);
++    REG32_WRITE(f->dev, FLEXCOMM_SPI, FIFOWR, tmp);
++    tmp = 0x22;
++    FIELD_DP32(tmp, FLEXCOMM_SPI_FIFOWR, EOT, 1);
++    FIELD_DP32(tmp, FLEXCOMM_SPI_FIFOWR, TXSSEL0_N, 1);
++    FIELD_DP32(tmp, FLEXCOMM_SPI_FIFOWR, LEN, 0x7);
++    REG32_WRITE(f->dev, FLEXCOMM_SPI, FIFOWR, tmp);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFOSTAT, RXNOTEMPTY) == 1);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFORD, RXDATA) == 0x11);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFOSTAT, RXNOTEMPTY) == 1);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFORD, RXDATA) == 0x22);
++    g_assert(REG32_READ_FIELD(f->dev, FLEXCOMM_SPI, FIFOSTAT, RXNOTEMPTY) == 0);
++}
++
++
++/* mock-up */
++const PropertyInfo qdev_prop_chr;
++
++int main(int argc, char **argv)
++{
++    qemu_init_main_loop(&error_abort);
++    socket_init();
++
++    g_test_init(&argc, &argv, NULL);
++
++    /* Initialize object types. */
++    sysbus_mock_init();
++    module_call_init(MODULE_INIT_QOM);
++    qemu_add_opts(&qemu_chardev_opts);
++
++    g_test_add("/flexcomm-spi/loopback", TestFixture,
++               (gconstpointer)(1 << FLEXCOMM_FUNC_SPI),
++               set_up, loopback_test, tear_down);
++
++    g_test_add("/flexcomm-spi/master", TestFixture,
++               (gconstpointer)(1 << FLEXCOMM_FUNC_SPI),
++               set_up, spi_master_test, tear_down);
++
++    return g_test_run();
++}
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index 033e98483f..7a28e7b521 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -176,6 +176,18 @@ if have_system
+       meson.project_source_root() / 'hw/ssi/flexcomm_spi.c',
+       meson.project_source_root() / 'hw/ssi/ssi.c',
+     ],
++    'test-flexcomm-spi': [
++      qom, hwcore, migration, chardev,
++      meson.project_source_root() / 'hw/core/gpio.c',
++      meson.project_source_root() / 'tests/unit/sysbus-mock.c',
++      meson.project_source_root() / 'hw/misc/flexcomm.c',
++      meson.project_source_root() / 'hw/char/flexcomm_usart.c',
++      meson.project_source_root() / 'hw/i2c/flexcomm_i2c.c',
++      meson.project_source_root() / 'hw/i2c/core.c',
++      meson.project_source_root() / 'hw/ssi/flexcomm_spi.c',
++      meson.project_source_root() / 'hw/ssi/ssi.c',
++      'spi_tester.c',
++    ],
+   }
+   if config_host_data.get('CONFIG_INOTIFY1')
+     tests += {'test-util-filemonitor': []}
 -- 
 2.46.0.184.g6999bdac58-goog
 
