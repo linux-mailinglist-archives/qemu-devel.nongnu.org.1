@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF5395574A
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 12:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7287955748
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Aug 2024 12:33:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sfGeE-0007Ni-Ji; Sat, 17 Aug 2024 06:27:02 -0400
+	id 1sfGeE-0006kO-31; Sat, 17 Aug 2024 06:27:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3x3rAZgUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com>)
- id 1sfGdk-0006IV-2r
- for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:37 -0400
-Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
+ <3yXrAZgUKCvwxezmtksskpi.gsquiqy-hiziprsrkry.svk@flex--tavip.bounces.google.com>)
+ id 1sfGdh-0006Ft-PT
+ for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:30 -0400
+Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3x3rAZgUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com>)
- id 1sfGdf-0003FI-Bz
- for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:31 -0400
-Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-5e4df21f22dso2254001a12.0
- for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 03:26:18 -0700 (PDT)
+ <3yXrAZgUKCvwxezmtksskpi.gsquiqy-hiziprsrkry.svk@flex--tavip.bounces.google.com>)
+ id 1sfGdf-0003Fe-1v
+ for qemu-devel@nongnu.org; Sat, 17 Aug 2024 06:26:29 -0400
+Received: by mail-pg1-x54a.google.com with SMTP id
+ 41be03b00d2f7-6507e2f0615so2314246a12.1
+ for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 03:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1723890377; x=1724495177; darn=nongnu.org;
+ d=google.com; s=20230601; t=1723890378; x=1724495178; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=FVNYijpYFtbfaDyQGxsk5OhIQ8sQjh7sQW2Q7Qw6WEo=;
- b=gZHD/EwxQNautVvBImGMTPeDLU1v2UfY2rX0PhBDx1DYg0IUtQzUB19R9RmtbkhfQZ
- WFHDP2IJgqXk4pTQrG4pS+77yprLg0Up3nfAeSIbtZUALcFWJKx0/QtTvW/hPMlsKCQu
- 48f/HIiYlqDwDdLozrBOKtZMu3qrZiCZqW0pDMXcjkWFVaQFwYKPk1W0XyxiyUU1mIW3
- M5yugEWOV1qTfoEGwEMCuVM0AzvvSGqCFLB3UE5gW5CfSvQqJK9Ncdg5/kBZgp2i8JDI
- b4rBLQacje5miy72cc2vQvlwc8uqSpYIzD1XA44Gf4MoK7/RZbWESc/s0lWBFhPbDqu2
- CM5Q==
+ bh=pXYuaLkVN9XEUa9twQAaD4EBLjrrL0bAtjxvWVUlbaE=;
+ b=NCcfBAIwrq0tDVJbXrDEHlgH/qHVW4GWsNWj+F2oVsPK/mkAL0P3+Cx4u0hHnjct+C
+ GgmCgviWg8StIzGwPpc8MVB0cYdA2ok/At6aPOUEcShFzT6m4+MvYbjYTNR/VkYybd5t
+ ouScjseWkKYYRzA7Z9y+Eu+/jT3muk9VEonVnll4bdZvGSzaFXPoXoSJVp49y1OBWiKE
+ 2EVhWGuQ0wY1ePVIH6PERf9AaCBfNd/EQVnadKUluWFfAEfvJY3e5CchAUW0JB7B9iW0
+ QSAQgvteqdnISD2IodphFbJVjUUlZkYSqx2BwK4Xsel+rSnpzFGen3w7FjcxIo7N0pMc
+ 4MaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723890377; x=1724495177;
+ d=1e100.net; s=20230601; t=1723890378; x=1724495178;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FVNYijpYFtbfaDyQGxsk5OhIQ8sQjh7sQW2Q7Qw6WEo=;
- b=NXjcO9sjgrEl556H0iLkpxjsEdObueHDEsu89ua/7cGjFIM0UCTJE6jT4uo/L2CwZF
- so5GY0kFoshQ9AIL4o1dt5cSB+Iqcv1mncoDYn1yTp6tdtXZ5sMHyLAOqGSn43YFYKYh
- hH7d+XsSKVotE8hZWlJFamsyCRcR24a4pdOU7zTIUe0x0WDyUeTQCR6eKyUJ+X8T7oLQ
- 2mVGaFlnnce87n2gXD+aFYhdqfNrYSKvy1xTUR8QMGOcmeKP4f6GOfOGTd09Rjw9M2Ds
- 6O5JB5SxSA0MIWIMhzzUUUaNKBGCA5y7ZvEe0NkEr7gBvJ7EprwwxjgasE96YOn4KERL
- b9ww==
-X-Gm-Message-State: AOJu0YxcKetieGtpaVhurjQtWUTp6hbnu1qkAKpys429F5ht6y0L8nET
- WNPHa2fE5OLxQ7czOnGgTXUNI7WZm8443PfYG5aUtu4v4O3iOn8zPAgxIOZWZSbTWJiVbOKCjb8
- LBwxleP3kvGkqs47yaTht3p7bRxkmltPy+ZM6Byki/YNGgTG+8GfdU+6n52fJD1HhWPH+kFjrYU
- 1SUVpHr1il6U8hWgt9hbvz7BY2dA==
-X-Google-Smtp-Source: AGHT+IFuMo4GRP8A1pErMqDsDMGK0GSXNVR4IZPiVh6XRSK1ciwW7Ikz1en5Ytn2Jail2Gz0UZghsKhphA==
+ bh=pXYuaLkVN9XEUa9twQAaD4EBLjrrL0bAtjxvWVUlbaE=;
+ b=YSxf5NVjX/tadRN2rnnxKPmMOFDqz43Pg3KSkl6EWgaQhopVPoZhHqOPa89v7VFHPU
+ T6VPtRVhJZtJxblRwmPAEKkNhf5Azb7YZxHhy5MlJQEX/SQbk3usGG1r05kotMsxo8uT
+ WBr3Te07lwZvTvjvN5pbjj7IecZn6WMtVpkEq3ddVmH+r1wFbQT2G6ezDWRFkT/46Zzm
+ S2WFIEK8S6dgcvaAcEnG+SOoLS99jzKK4mOY2piEUru6IaYdMntYn+iK3Zc7aK3BX1tH
+ xMfkgflnlixQ7ZnTt/I3c7BBRV2C36Nv4Qsn6ZFdfy4KbyVXqiDwzgdsLwkMlf26Qqra
+ AeMA==
+X-Gm-Message-State: AOJu0YyWMG7Jekuh0GracUoD8KfHY0W2JLIz1QCtOat/LvLEYXKEG+2g
+ tLWWAlGp7HHhA6qTCB6+G6/nB2kHJfoUbnQN+lrNTNLFh4AEwsWUMUKZt0qsSQ3wPBZCHmYo4ri
+ yeNnck4YuwJ4FxXsdv0OeNmhwOjwtfhSOGHYLhAvc0Wq7Gz9Rq8WJbmW9Kv6ws1dgFJOM9zTqIM
+ 65IwnZVp5jp2WKjjUWhWIxcSAvzw==
+X-Google-Smtp-Source: AGHT+IH0T4nvwG2zPXbnPodUW9H0YDQr7bAHSGr09nZruSNQs/uB9gdIMpwCmTyVi+pJuDu4LWwy2UHIBA==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a05:6a02:590:b0:718:84ed:abe7
- with SMTP id
- 41be03b00d2f7-7ca488fb5e5mr7695a12.4.1723890375445; Sat, 17 Aug 2024 03:26:15
+ (user=tavip job=sendgmr) by 2002:a05:6a02:5a4:b0:718:da6:277e with
+ SMTP id
+ 41be03b00d2f7-7c9790eb4demr9639a12.2.1723890377114; Sat, 17 Aug 2024 03:26:17
  -0700 (PDT)
-Date: Sat, 17 Aug 2024 03:25:47 -0700
+Date: Sat, 17 Aug 2024 03:25:48 -0700
 In-Reply-To: <20240817102606.3996242-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240817102606.3996242-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
-Message-ID: <20240817102606.3996242-5-tavip@google.com>
-Subject: [RFC PATCH v2 04/23] Add mcux-soc-svd subproject
+Message-ID: <20240817102606.3996242-6-tavip@google.com>
+Subject: [RFC PATCH v2 05/23] hw: add register access utility functions
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -69,9 +69,9 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  alistair@alistair23.me, berrange@redhat.com, philmd@linaro.org, 
  jsnow@redhat.com, crosa@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=3x3rAZgUKCvovcxkriqqing.eqosgow-fgxgnpqpipw.qti@flex--tavip.bounces.google.com;
- helo=mail-pg1-x549.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
+ envelope-from=3yXrAZgUKCvwxezmtksskpi.gsquiqy-hiziprsrkry.svk@flex--tavip.bounces.google.com;
+ helo=mail-pg1-x54a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -95,107 +95,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add mcux-soc-svd subproject that contains SVD files that are going to
-be used to generate C header with register layout definitions and
-other helpers to create device models.
-
-Guard the subproject by a configuration option since it is rarely
-going to be used - whenever new headers will be generated. It is
-unlikely that already generated headers will be updated, with the
-exception of minor hardware revisions.
-
-Also export the rt595 SVD file which is going to be used by subsequent
-patches.
-
-TBD: switch to a qemu gitlab fork before merge
+Add register access utility functions for device models, like checking
+aligned access.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- hw/arm/svd/meson.build                            | 4 ++++
- meson_options.txt                                 | 3 +++
- scripts/meson-buildoptions.sh                     | 4 ++++
- subprojects/.gitignore                            | 1 +
- subprojects/mcux-soc-svd.wrap                     | 5 +++++
- subprojects/packagefiles/mcux-soc-svd/meson.build | 5 +++++
- 6 files changed, 22 insertions(+)
- create mode 100644 hw/arm/svd/meson.build
- create mode 100644 subprojects/mcux-soc-svd.wrap
- create mode 100644 subprojects/packagefiles/mcux-soc-svd/meson.build
+ include/hw/regs.h | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+ create mode 100644 include/hw/regs.h
 
-diff --git a/hw/arm/svd/meson.build b/hw/arm/svd/meson.build
+diff --git a/include/hw/regs.h b/include/hw/regs.h
 new file mode 100644
-index 0000000000..7d83d2ccbc
+index 0000000000..692428af12
 --- /dev/null
-+++ b/hw/arm/svd/meson.build
-@@ -0,0 +1,4 @@
-+if get_option('mcux-soc-svd')
-+  mcux_soc_svd = subproject('mcux-soc-svd')
-+  rt595 = mcux_soc_svd.get_variable('rt595')
-+endif
-diff --git a/meson_options.txt b/meson_options.txt
-index 4c1583eb40..25f827078a 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -366,3 +366,6 @@ option('qemu_ga_version', type: 'string', value: '',
- 
- option('hexagon_idef_parser', type : 'boolean', value : true,
-        description: 'use idef-parser to automatically generate TCG code for the Hexagon frontend')
++++ b/include/hw/regs.h
+@@ -0,0 +1,34 @@
++/*
++ * Useful macros/functions for register handling.
++ *
++ * Copyright (c) 2021 Google LLC
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+option('mcux-soc-svd', type : 'boolean', value : false,
-+       description: 'enable targets to generate C headers from mcux-soc-svd')
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 6ce5a8b72a..2c1e501806 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -40,6 +40,8 @@ meson_options_help() {
-   printf "%s\n" '  --enable-lto             Use link time optimization'
-   printf "%s\n" '  --enable-malloc=CHOICE   choose memory allocator to use [system] (choices:'
-   printf "%s\n" '                           jemalloc/system/tcmalloc)'
-+  printf "%s\n" '  --enable-mcux-soc-svd    enable targets to generate C headers from mcux-'
-+  printf "%s\n" '                           soc-svd'
-   printf "%s\n" '  --enable-module-upgrades try to load modules from alternate paths for'
-   printf "%s\n" '                           upgrades'
-   printf "%s\n" '  --enable-rng-none        dummy RNG, avoid using /dev/(u)random and'
-@@ -390,6 +392,8 @@ _meson_option_parse() {
-     --enable-malloc-trim) printf "%s" -Dmalloc_trim=enabled ;;
-     --disable-malloc-trim) printf "%s" -Dmalloc_trim=disabled ;;
-     --mandir=*) quote_sh "-Dmandir=$2" ;;
-+    --enable-mcux-soc-svd) printf "%s" -Dmcux-soc-svd=true ;;
-+    --disable-mcux-soc-svd) printf "%s" -Dmcux-soc-svd=false ;;
-     --enable-membarrier) printf "%s" -Dmembarrier=enabled ;;
-     --disable-membarrier) printf "%s" -Dmembarrier=disabled ;;
-     --enable-module-upgrades) printf "%s" -Dmodule_upgrades=true ;;
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index adca0266be..bca8693ef4 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -6,3 +6,4 @@
- /keycodemapdb
- /libvfio-user
- /slirp
-+/mcux-soc-svd
-diff --git a/subprojects/mcux-soc-svd.wrap b/subprojects/mcux-soc-svd.wrap
-new file mode 100644
-index 0000000000..80d18e8561
---- /dev/null
-+++ b/subprojects/mcux-soc-svd.wrap
-@@ -0,0 +1,5 @@
-+[wrap-git]
-+url = https://github.com/nxp-mcuxpresso/mcux-soc-svd/
-+revision = 7f6f9ef7420144fe14cd9bc4d8e0e3523232da04
-+patch_directory = mcux-soc-svd
-+depth = 1
-diff --git a/subprojects/packagefiles/mcux-soc-svd/meson.build b/subprojects/packagefiles/mcux-soc-svd/meson.build
-new file mode 100644
-index 0000000000..37c537d040
---- /dev/null
-+++ b/subprojects/packagefiles/mcux-soc-svd/meson.build
-@@ -0,0 +1,5 @@
-+project('mcux-soc-svd')
++#ifndef HW_REGS_H
++#define HW_REGS_H
 +
-+fs = import('fs')
++#include "exec/hwaddr.h"
 +
-+rt595 = fs.copyfile('MIMXRT595S/MIMXRT595S_cm33.xml')
++/*
++ * reg32_aligned_access
++ * @addr: address to check
++ * @size: size of access
++ *
++ * Check if access to a hardware address is 32bit aligned.
++ *
++ * Returns: true if access is 32bit aligned, false otherwise
++ */
++static inline bool reg32_aligned_access(hwaddr addr, unsigned size)
++{
++    if (size != 4 || addr % 4 != 0) {
++        return false;
++    }
++    return true;
++}
++
++#endif /* HW_REGS_H */
 -- 
 2.46.0.184.g6999bdac58-goog
 
