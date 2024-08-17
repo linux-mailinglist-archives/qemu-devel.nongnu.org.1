@@ -2,85 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F447955A03
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Aug 2024 00:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A358955A6D
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Aug 2024 01:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sfRXX-0000yJ-Dd; Sat, 17 Aug 2024 18:04:51 -0400
+	id 1sfTHa-0000cB-Hj; Sat, 17 Aug 2024 19:56:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sfRXU-0000xi-Ql
- for qemu-devel@nongnu.org; Sat, 17 Aug 2024 18:04:48 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sfRXT-0003TV-37
- for qemu-devel@nongnu.org; Sat, 17 Aug 2024 18:04:48 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-70968db52d0so3417432a34.3
- for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 15:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1723932285; x=1724537085; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=6ZsaievVq39Pm0l3UynHIOpLHY5AVNf5CLxHtmwOnTM=;
- b=Uqc2KXVhFH+Pp7b5NAqTpVepex24+izjlaFvVdlSy3qrpLAHIfd++XjK4b9Vk60boG
- eSgpHjdqVnXGfoiuC9SMIExiGtWNuZVg4VGSdzc3pdEuXNrsk/oQeB+XYYNsqfBM2Zp1
- T1InThGLv7F7mzlQd4hqy1h04eF89haPL/T4/2q/mqXEc1rGSZ2zYbWjGWZeY6fOSkeB
- yKnrzuqMijBgbpXYzWQSwmEY9mzD9ZdJFYtD67t/q6U941In1JYi7nmFUXDKtAFaRPsN
- Gp7w/yN8tAgjCEqFsA121SQRuEskg6WdJamxQapcaO5Aoi2VeWoVM4jYdrkS+19x930d
- Mgzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723932285; x=1724537085;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6ZsaievVq39Pm0l3UynHIOpLHY5AVNf5CLxHtmwOnTM=;
- b=SFX5Q5H1oQsnks5ARj8fm8orBLUkRuvCxTgy6UZmglqFeooLqoW3trf4vc84DZfP64
- px266mj5AZrEzbLm9HpVAK8+5wlLUdXTg0+/hZ0aHxe0W4P+LvowB/dvYAOcT719Uu2m
- 9T748kcq6dWKS96Z/1MLlBNRiZ7GNpgASBCn0HM0kHQpZkiQiE99FCOmFqBEADvzG1+q
- ktYA8J6o0guVP1+o5LItt3Hs8qiV8oGoEpUtjP7WPp/u4SWFpazDLWmuliaZGL4+b0zH
- CM9R8kzKuLKg2ruSu2Vn/hmw6sbw8fLHQf9vnKOpCRo1La5BEQUyYIl3cNmgKUBPLPmc
- k5gg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUVGfJJCn+iowgFeDsocfJZ2UxezHXA+3DKBtk7rG6N6vLU4XndrvZijRUr+b/08BLna42k3x8fXJL/eWNOdrl2Oi/tTCw=
-X-Gm-Message-State: AOJu0YysKwm9Bj4ps3wMFmBhWNEg6Ga1i1u+AKZ00j0yfYk5boW7IMfN
- sLNxrinc/R5SaJ7s45afpKqloRrSLmO7BSHGtvFZDYqyRceHrpEeVu8FpXy18wSqVsXmHFu/Azk
- py5c=
-X-Google-Smtp-Source: AGHT+IE0nmPpALVBcT+8A2l13g37QP+uZcGH/tf6AoxBTEJEdSzCdlRDyrHA33A7iiAV3GGbTViQIw==
-X-Received: by 2002:a05:6830:6e8e:b0:703:6989:5b04 with SMTP id
- 46e09a7af769-70cac8bcc04mr10399958a34.31.1723932284968; 
- Sat, 17 Aug 2024 15:04:44 -0700 (PDT)
-Received: from [192.168.1.113] ([203.30.4.109])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d418e7b76csm1586501a91.2.2024.08.17.15.04.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Aug 2024 15:04:44 -0700 (PDT)
-Message-ID: <52eff0d6-ab85-4c6f-a4d9-78738b4cdcdf@linaro.org>
-Date: Sun, 18 Aug 2024 08:04:39 +1000
+ (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
+ id 1sfTHX-0000bd-5M
+ for qemu-devel@nongnu.org; Sat, 17 Aug 2024 19:56:27 -0400
+Received: from secure.fsr.com ([64.126.132.23])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
+ id 1sfTHV-0001GS-CE
+ for qemu-devel@nongnu.org; Sat, 17 Aug 2024 19:56:26 -0400
+Received: from [192.168.254.26] (syn-098-146-201-045.res.spectrum.com
+ [98.146.201.45]) (Authenticated sender: chauser)
+ by secure.fsr.com (Postfix) with ESMTPSA id 64252BEF84;
+ Sat, 17 Aug 2024 16:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pullman.com;
+ s=mail1; t=1723938974;
+ bh=+y3w1ozCP6jn4B56/zp2khL85fl0ryRrCKY6SGZ3RH4=;
+ h=Date:Subject:To:From;
+ b=T2PISCpPnfAZ/mCBFLfSbXa3eAIw7ptnSJ8K15+0v4SyKXD/fj/CkECrR8/toHnDA
+ 4gdUs4ywUTSTfHQ02mJSjlzcK4OkOkY9zamvINC7J1TzUQr1IrHy8NC5z47cfe44TQ
+ 8wdae/uUgQchHEZJcdzfS2FOTC4ccMuVSUZB4HE0=
+Message-ID: <643b37f1-2383-478e-9d00-77d1c2ea885e@pullman.com>
+Date: Sat, 17 Aug 2024 16:56:12 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v2 for 9.1 00/21] Some fixes for 9.1-rc3 (build, replay,
- docs, plugins)
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-References: <20240816131713.2321664-1-alex.bennee@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240816131713.2321664-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Subject: Re: [PATCH for-9.2 v3 0/6] target/sparc: emulate floating point queue
+ when raising fp traps
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240816072311.353234-1-richard.henderson@linaro.org>
+ <501c22c3-d8e3-4439-a958-549e9a772ffd@pullman.com>
+ <2c1d0942-1428-47a7-bd37-29c16d596761@pullman.com>
+ <092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org>
+ <aa172755-faf8-4587-a4e8-d1cbfdc139b1@pullman.com>
+ <e2aa8b92-4cb1-4fcf-92b7-eadb86893ccf@linaro.org>
+Content-Language: en-GB
+From: Carl Hauser <chauser@pullman.com>
+In-Reply-To: <e2aa8b92-4cb1-4fcf-92b7-eadb86893ccf@linaro.org>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=64.126.132.23; envelope-from=chauser@pullman.com;
+ helo=secure.fsr.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ MIME_HTML_ONLY=0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,34 +71,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/24 23:17, Alex Bennée wrote:
-> The following changes since commit ecdfa31beb1f7616091bedba79dfdf9ee525ed9d:
-> 
->    Merge tag 'pull-request-2024-08-16' ofhttps://gitlab.com/thuth/qemu into staging (2024-08-16 18:18:27 +1000)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-9.1-rc3-160824-1
-> 
-> for you to fetch changes up to 278035fc81510bd88501afb78bd5ab652beffa76:
-> 
->    plugins: fix race condition with scoreboards (2024-08-16 14:13:07 +0100)
-> 
-> ----------------------------------------------------------------
-> Some fixes for 9.1-rc3 (build, replay, docs, plugins)
-> 
->    - re-enable gdbsim-r5f562n8 test
->    - ensure updates to python deps re-trigger configure
->    - tweak configure detection of GDB MTE support
->    - make checkpatch emit more warnings on updating headers
->    - allow i386 access_ptr to force slow path for plugins
->    - fixe some replay regressions
->    - update the replay-dump tool
->    - better handle muxed chardev during replay
->    - clean up TCG plugins docs to mention scoreboards
->    - fix plugin scoreboard race condition
-
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
-
-r~
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>I changed target.c:4597 from return true; to return
+      advance_pc(dc); and it worked.<br>
+    </p>
+    <div class="moz-cite-prefix">On 8/16/24 17:16, Richard Henderson
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:e2aa8b92-4cb1-4fcf-92b7-eadb86893ccf@linaro.org">On
+      8/17/24 09:48, Carl Hauser wrote:
+      <br>
+      <blockquote type="cite">netbsd panics in the kernel trap handler;
+        unfortunately it does not include the fsr in the panic message,
+        but I expect it will be the same as on Solaris.
+        <br>
+      </blockquote>
+      <br>
+      Ok, I have reproduced this with netbsd 9.3.
+      <br>
+      I'll have a look.
+      <br>
+      <br>
+      <br>
+      r~
+      <br>
+      <br>
+    </blockquote>
+  </body>
+</html>
 
