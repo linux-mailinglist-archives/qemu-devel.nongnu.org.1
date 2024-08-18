@@ -2,92 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370B7955B00
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Aug 2024 07:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93718955B54
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Aug 2024 08:35:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sfYDf-0000n6-QR; Sun, 18 Aug 2024 01:12:47 -0400
+	id 1sfZUM-0004lQ-JP; Sun, 18 Aug 2024 02:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sfYAp-0000Vy-No
- for qemu-devel@nongnu.org; Sun, 18 Aug 2024 01:09:52 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ (Exim 4.90_1) (envelope-from <wsh@wshooper.org>) id 1sfZUB-0004kQ-Fu
+ for qemu-devel@nongnu.org; Sun, 18 Aug 2024 02:33:57 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sfYAm-00086o-H4
- for qemu-devel@nongnu.org; Sun, 18 Aug 2024 01:09:50 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-5d5b1e33fa8so2069854eaf.3
- for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 22:09:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wsh@wshooper.org>) id 1sfZU9-00048E-5K
+ for qemu-devel@nongnu.org; Sun, 18 Aug 2024 02:33:55 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-3db23a608eeso2347416b6e.1
+ for <qemu-devel@nongnu.org>; Sat, 17 Aug 2024 23:33:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1723957787; x=1724562587;
+ d=wshooper-org.20230601.gappssmtp.com; s=20230601; t=1723962830; x=1724567630;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+VmZtAurK5BZp3Wo9KpHrlMa21eSaefLw++XZLPg5kw=;
- b=tjv3ZkuSzscRMIG+eCsveFgS4ylD+yYJsEhFTgweQnFfzo6z/cjiyuu3rkHUvttKQW
- mzhLjx8zwWmGUlEDNl7wIBE9Yz8jEu+45cplJP9EDmT9arXgFgaalwUDxtkZZKojzlSV
- t4YBB5FrVyovvHW91THB8F3DECoTeUaYudOJ/XD45GrO6aLg6L4fc7sgCwPkSrN7uaBM
- LjmjXHBTpWjDTW/gES5wHSpToyKeGupDfJn/FYStLmv9QLxd7yAjK4Ibqvj+QOR5QxuA
- Zj7WLpsHyQ6sMvfdlGwhZmujsHPC2P/oNL1xKLVzqc35rgsUH8N6DNopMlvgKsdas0fG
- yJzw==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0OhiIxpJkNFluxrVI0ZxVzkgEYfQ9vkEsD6MIsBKeP0=;
+ b=1A7XkQSkFTQaDn4Nq0VOu/nC83eBsCczO+n9hGluLygthcTB92rO/lHt0lJBPw8kWD
+ 3Q4uNNslY3kQrdTKFz0HbQIddCOoKx1A8Q/GB6aNOQCcekgdBb1lnHJKIJ45BGpJYLe1
+ ANV6GtLjLwm7xil0dQKdoNiDmuTClI7EAwaz52pV+zur48C/wZV3QO6TaqaDdvXzL5xq
+ ZdmlX61zTUJUiDkAXEkYTgCTzBx2SL02Yu80DVbayndTuk5fTM8siyPQikObgCGdaCAb
+ lYZLFwVK2vIBg7S58Vqsq2AoLpg8/1YrE5OsKRz1Y6b2YoN66J1EuQBW7qrtbKu0cesZ
+ rq2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723957787; x=1724562587;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+VmZtAurK5BZp3Wo9KpHrlMa21eSaefLw++XZLPg5kw=;
- b=Jf/V1qnkJi0amc5uHtM2V9TGkdLsmP4lo4SigHmAqoXusHyouOMnIiBNz8nmej06jt
- 9YLJ6ptUeKbqDqYKeXpfmIVon0iY7I1AOvCCbK+uu+FKqrV2EoFhbbWt3FyOu9qcnvBg
- ngaLzbif6Af+SBWTzn6LiPHbY9tCU+UYIkkltSUEj+ADKU9lohedZHuP8BVARYv8Po19
- uT9qX0b5MdK+tFYr5MOMNT6JoLFXAR07GXJ53BZ56jlv8puTnKtoGemuLksS2aVyvR7q
- xE5MSqo6nbR+jtqFGUybVY5gtJ66Dv7vztsmJYBv3RUZJqSOqBPS/4DCKJVHsYb0eOMq
- NqTQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVjmGLb3ou+5lVra8rz8wMtZDOIbGBmc/teacyPzqJKBtEtzJrqGBpjYiZUAQmR23oqKzafd3pl1kab2wyVcxCXfePO7CU=
-X-Gm-Message-State: AOJu0YxurFrPgbGS+n4hHcKS3PiQuGF1qMbkFXPg8WUP06wGwmMRzHun
- z1pBL317Oap83Gn5jzFiB2dEx+A0tAEodkMGVSZKWY6A5k3Ww4ugWV9EEemzGLw=
-X-Google-Smtp-Source: AGHT+IHBue/sKdkKf8UeiCSRoFkevoI4PUj0lHQNJRYdzcwobgE6/OdnF0kJHofeVI/KT0IM8lk0vQ==
-X-Received: by 2002:a05:6358:7f13:b0:1ad:14ec:a002 with SMTP id
- e5c5f4694b2df-1b39331deb6mr1054842755d.26.1723957787022; 
- Sat, 17 Aug 2024 22:09:47 -0700 (PDT)
-Received: from [10.100.1.231] ([157.82.128.7])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7c6b61a71fbsm4768171a12.9.2024.08.17.22.09.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Aug 2024 22:09:46 -0700 (PDT)
-Message-ID: <15263e84-bec2-4d11-ac29-2861cc772bf2@daynix.com>
-Date: Sun, 18 Aug 2024 14:09:42 +0900
+ d=1e100.net; s=20230601; t=1723962830; x=1724567630;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0OhiIxpJkNFluxrVI0ZxVzkgEYfQ9vkEsD6MIsBKeP0=;
+ b=r9E2J6CTswt0bwrIBs5ZDib2vUIFg8BcGvwsRqzy5bcy3i6+4LNAkI2W7F6obc7xlL
+ sIwYXJEZgNh5wDMbIEEGie1AHn134QlmAOu/i9LWm0Sf4bgYhVpyaIMh48x+OzxlLu2A
+ 2PnnNq7PtsHxy85doC7/mGDqWtJFogPUdeMOFiTXAVW5dcjHbsErmAU7phSCeP+yyB5J
+ vNOF5vq9mdbJxCYb6HKOqQU9rtNsTpWhMrRvJejvcTHfehIH6uuMxHldj0iHCWM3Ex5R
+ iwc7qRWHEZIsrf2m6717XoTrPxlGVzEks5ov/2YQJHhT20/LfMbVks8QP+v1mLBMBAPq
+ is8A==
+X-Gm-Message-State: AOJu0Yz0ZOS5k4p4ER65U26qbVP6b7jjdLMJ2MkDhIY4Y+5oN76VrIIL
+ CfqgIsLHLLQGIRA4XL/iqrFuZdOmU4CXYBfJYkeeQnLY0gGEX6mm8FpWe6LEzx0XFAl+x41M4gX
+ dBos=
+X-Google-Smtp-Source: AGHT+IGeUtJi3XMcbJpzSYZwb/yYFee94fQ8CzrMx5A40yCvFS/5GHeqbhyDRNRqbh5NfPGHz9gFiw==
+X-Received: by 2002:a05:6808:3008:b0:3dd:2c1d:8d08 with SMTP id
+ 5614622812f47-3dd3add4edamr7386230b6e.31.1723962830188; 
+ Sat, 17 Aug 2024 23:33:50 -0700 (PDT)
+Received: from localhost.localdomain (syn-076-081-243-074.biz.spectrum.com.
+ [76.81.243.74]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7c6b61ca26csm4859210a12.36.2024.08.17.23.33.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 17 Aug 2024 23:33:49 -0700 (PDT)
+From: William Hooper <wsh@wshooper.org>
+To: qemu-devel@nongnu.org
+Cc: Bin Meng <bin.meng@windriver.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] net/vmnet: Pad short Ethernet frames
+Date: Sat, 17 Aug 2024 23:33:44 -0700
+Message-Id: <20240818063344.6969-1-wsh@wshooper.org>
+In-Reply-To: <CANto9c6QV-KAuUau_CqK-rVsyNB=42HQ3AHuQPn34yMs2-iPkg@mail.gmail.com>
+References: <CANto9c6QV-KAuUau_CqK-rVsyNB=42HQ3AHuQPn34yMs2-iPkg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] virtio-net: Add support for USO features
-To: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- dmitry.fleytman@gmail.com, jasowang@redhat.com, sriram.yagnaraman@est.tech,
- sw@weilnetz.de, qemu-devel@nongnu.org, yan@daynix.com,
- Fabiano Rosas <farosas@suse.de>, devel@lists.libvirt.org
-References: <c7447c6c-0562-4e0f-bc1b-61a1430c9852@daynix.com>
- <20240805060544-mutt-send-email-mst@kernel.org>
- <2b62780c-a6cb-4262-beb5-81d54c14f545@daynix.com>
- <20240806092822-mutt-send-email-mst@kernel.org>
- <890f9d0a-3ded-488d-b274-8be9c38b5df3@daynix.com>
- <20240808065339-mutt-send-email-mst@kernel.org>
- <274ccd97-a473-4937-a57b-0029a18069c9@daynix.com>
- <20240808070912-mutt-send-email-mst@kernel.org> <ZrTTCIpXLmW8c5Kv@x1n>
- <20240808104559-mutt-send-email-mst@kernel.org> <ZrTjaZPyjDuJZK36@x1n>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ZrTjaZPyjDuJZK36@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c29;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc29.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::236;
+ envelope-from=wsh@wshooper.org; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -109,41 +91,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/08/09 0:25, Peter Xu wrote:
-> On Thu, Aug 08, 2024 at 10:47:28AM -0400, Michael S. Tsirkin wrote:
->> On Thu, Aug 08, 2024 at 10:15:36AM -0400, Peter Xu wrote:
->>> On Thu, Aug 08, 2024 at 07:12:14AM -0400, Michael S. Tsirkin wrote:
->>>> This is too big of a hammer. People already use what you call "cross
->>>> migrate" and have for years. We are not going to stop developing
->>>> features just because someone suddenly became aware of some such bit.
->>>> If you care, you will have to work to solve the problem properly -
->>>> nacking half baked hacks is the only tool maintainers have to make
->>>> people work on hard problems.
->>>
->>> IMHO this is totally different thing.  It's not about proposing a new
->>> feature yet so far, it's about how we should fix a breakage first.
->>>
->>> And that's why I think we should fix it even in the simple way first, then
->>> we consider anything more benefitial from perf side without breaking
->>> anything, which should be on top of that.
->>>
->>> Thanks,
->>
->> As I said, once the quick hack is merged people stop caring.
-> 
-> IMHO it's not a hack. It's a proper fix to me to disable it by default for
-> now.
-> 
-> OTOH, having it ON always even knowing it can break migration is a hack to
-> me, when we don't have anything else to guard the migration.
+At least on macOS 12.7.2, vmnet doesn't pad Ethernet frames, such as the
+host's ARP replies, to the minimum size (60 bytes before the frame check
+sequence) defined in IEEE Std 802.3-2022, so guests' Ethernet device
+drivers may drop them with "frame too short" errors.
 
-I think neither of them is a hack; they just deal with different 
-scenarios summarized in [1]. We need apply a solution appropriate for 
-each scenario, or we will end up with a broken system.
+This patch calls eth_pad_short_frame() to add padding, as in net/tap.c
+and net/slirp.c. Thanks to Bin Meng and Philippe Mathieu-Daudé for
+reviewing an earlier version.
 
-Regards,
-Akihiko Odaki
+Signed-off-by: William Hooper <wsh@wshooper.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2058
+---
+ net/vmnet-common.m | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-[1] 
-https://lore.kernel.org/r/770300ac-7ed3-4aba-addb-b3f987cc6376@daynix.com/
+diff --git a/net/vmnet-common.m b/net/vmnet-common.m
+index 30c4e53c13..bce1cc590d 100644
+--- a/net/vmnet-common.m
++++ b/net/vmnet-common.m
+@@ -18,6 +18,7 @@
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "sysemu/runstate.h"
++#include "net/eth.h"
+ 
+ #include <vmnet/vmnet.h>
+ #include <dispatch/dispatch.h>
+@@ -147,10 +148,25 @@ static int vmnet_read_packets(VmnetState *s)
+  */
+ static void vmnet_write_packets_to_qemu(VmnetState *s)
+ {
++    uint8_t *pkt;
++    size_t pktsz;
++    uint8_t min_pkt[ETH_ZLEN];
++    size_t min_pktsz;
++
+     while (s->packets_send_current_pos < s->packets_send_end_pos) {
+-        ssize_t size = qemu_send_packet_async(&s->nc,
+-                                      s->iov_buf[s->packets_send_current_pos].iov_base,
+-                                      s->packets_buf[s->packets_send_current_pos].vm_pkt_size,
++        pkt = s->iov_buf[s->packets_send_current_pos].iov_base;
++        pktsz = s->packets_buf[s->packets_send_current_pos].vm_pkt_size;
++
++        if (net_peer_needs_padding(&s->nc)) {
++            min_pktsz = sizeof(min_pkt);
++
++            if (eth_pad_short_frame(min_pkt, &min_pktsz, pkt, pktsz)) {
++                pkt = min_pkt;
++                pktsz = min_pktsz;
++            }
++        }
++
++        ssize_t size = qemu_send_packet_async(&s->nc, pkt, pktsz,
+                                       vmnet_send_completed);
+ 
+         if (size == 0) {
+-- 
+2.37.1
 
