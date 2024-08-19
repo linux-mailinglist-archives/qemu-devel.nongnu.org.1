@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE9F957837
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D78F957840
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:55:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgBGF-0007qv-Lb; Mon, 19 Aug 2024 18:54:04 -0400
+	id 1sgBGJ-00009C-Ds; Mon, 19 Aug 2024 18:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBF0-0002Pa-BQ
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:47 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBF4-0002mk-PK
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:53 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEy-0000pr-NS
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:46 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-428141be2ddso37493345e9.2
- for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBF2-0000qE-ML
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:50 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-37196229343so2253352f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724107962; x=1724712762; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724107967; x=1724712767; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3pBm6V4tkAnYFc+ZirSS/Y/4pdgPe/X+of3pcxo2Q7E=;
- b=INfzaB0Ks+ahSo489RyNOjB7L15rmMqUWzCuft3oyjRsJJsvpEAwQCri1RdKMjhvht
- jw+KeHFuKQYb9zy1Ux4b7YJH7SfpMsWs/2mtJV7MSE7bVTeBNVhMxqDm1bl/nWnz7vQX
- 4avz+ME0I6I41NJYM4fueDTYdWuG9WQASlUuis0Qmv6au3YIG1tVjUUghGcvJxDxynmb
- SLyQyFKQYQSI5j3ych84IckmVwvPLRFT870LcQwpbL2YS5hVyPAA0h0PETlRjWBOBNZE
- 0UqCLjpXXbfB7wKiBFVCFNHhSM0hfUGbQ7YVo2s1nQx1xUV9a+J8DeZB84vHikf4PYjx
- VU+Q==
+ bh=8Rpj0D5ZMl/IBwW6NXczoFAZCXLiZ4uNQ1t/B/Sarn0=;
+ b=uhN6TedFXli2mt+RFohEyh5171RnC2ndEU8AUp9Sh8L7WG4ROgCceYy/A5IS9Oaw9s
+ 2xAT5QBU6tbILcgcfsLeWeknNwTCC0Aimsiyon+GtE4nQp9IWPpNZ6lSpjZdLXgSZ2Z+
+ 6mNtZM9fbQZ0fLX4ORdC2o1wV6058lbLITOXIBQaLZWahb9COHwjdoU//2KQN6jCbJ2Z
+ dWBzroGChHkSgbTLanzLUuhYQAgO1mQqfSOXnzJ2//CmpSwRz0WidwpobnLd1HglkixL
+ WKDEUrbICbpHLL6t5FbWomYvx5e7nwYbSGf2Mv+4P/5GXEy+/mpAgcv0GA1BjT9RKzzS
+ Y2AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724107962; x=1724712762;
+ d=1e100.net; s=20230601; t=1724107967; x=1724712767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3pBm6V4tkAnYFc+ZirSS/Y/4pdgPe/X+of3pcxo2Q7E=;
- b=aBJUjQEX/Uk38t3zrzIxgfb0f16/JJAvHeYm7fjhWletgkrNZk3XWynhVoTErCVym6
- asKiz61S1k1dXJ82pTadQsWy7bhqYNZ07WMHn0n+ZVlypafzvQm1m6GnfYGtNWhyp3NB
- gLLOaMWe5sdK0IrYETRUmLWEUnXBukOaUNbNS3eQ46j7FtQT0mCjCT4e0WoTu/5ufr3Y
- Hn/KcDqcdcLA57iBgtzsPqg1SqD4QKLfh5hGJr04Ribkyn8DrfQG+JevU5xI0DAQicjR
- 36Gz2qufPWlajf9+ImKXTY0LYEBwkXJ56eX4CLaJcjsKIgLRQ+ocP1EL+ztpj2G3JfM4
- U5pA==
-X-Gm-Message-State: AOJu0YyANwwngx6xsiqr27b7mJT0z3EBTjG7ePKOzSuqP+6VhVxxBOq9
- KGO8MNSgPKeZ4a/i/CftN+4brRmJe0ShpE6PkOUO9aZIg1BCWSMf4oFt5P4Cbe20HSWjxExQOg9
- QGYg=
-X-Google-Smtp-Source: AGHT+IGCsDoBkmmL9a6NkyCXQz+PNOWnKA5h4I+zJkmOwB+9ePw3LsP+7F1zreFZlQw+OcjjwrSc3Q==
-X-Received: by 2002:a05:600c:1f83:b0:426:5e91:3ff1 with SMTP id
- 5b1f17b1804b1-429ed7d1a13mr84497905e9.24.1724107962118; 
- Mon, 19 Aug 2024 15:52:42 -0700 (PDT)
+ bh=8Rpj0D5ZMl/IBwW6NXczoFAZCXLiZ4uNQ1t/B/Sarn0=;
+ b=vwmI/Z9m8x1cFppGwgvi0izTNJbgTEmTD5y9Zi9pGwfFEd8YatALGsRm3I3FdXyrk9
+ nCVfUdShT5Sjs7ob7D1wbr3fHm6m99vUIeHmaFzE8D2+kaxGkY6ANXxPuE2ij+2l2wjT
+ MBl9rlBkm69uGygunkAbOXbx4F0FL5Dljqb/jEYUy+ATHYGcBiAyB0CHrTJFJpN0FwJ/
+ AjysBgocZVP1OCFXzeRovKSUVKAl7zBny6onrLpLrjukPItEwQvzWyIaEBZ84Mx3f7Jn
+ bNqEtfWSyh+rXvc5nUb/kbo9N1NZoIh+ydQ78KnMes27EYq8/rGNv9u2VtPLLXMqhaIB
+ 8CkQ==
+X-Gm-Message-State: AOJu0YwIVkSkHQzOBCZGGLxh1PTIEXVO8WbdYWzhoawqPNweGRoouHP6
+ CN/rMUp5d23KxC5dNPdajWwqQkrjrDCV8Hs/bs7YgggYEzCDuVWFFGoIsuAPou48LnpY94zmDOE
+ nQxU=
+X-Google-Smtp-Source: AGHT+IELigD0cS7VR5ltft6sqKDFpDlXbKn8GNqQVP3OgcfVSDZPkpns+vxxwwSrXm6C12yjX28iTw==
+X-Received: by 2002:adf:ec04:0:b0:371:7e73:eb43 with SMTP id
+ ffacd0b85a97d-37194694f88mr8068307f8f.42.1724107966740; 
+ Mon, 19 Aug 2024 15:52:46 -0700 (PDT)
 Received: from localhost.localdomain (88-178-97-237.subs.proxad.net.
  [88.178.97.237]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-371898497f0sm11573714f8f.39.2024.08.19.15.52.41
+ 5b1f17b1804b1-429ded2931asm173290985e9.17.2024.08.19.15.52.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Aug 2024 15:52:41 -0700 (PDT)
+ Mon, 19 Aug 2024 15:52:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Kamil=20Szcz=C4=99k?= <kamil@szczek.dev>,
  Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/20] hw/i386/pc: Unify vmport=auto handling
-Date: Tue, 20 Aug 2024 00:51:14 +0200
-Message-ID: <20240819225116.17928-19-philmd@linaro.org>
+Subject: [PULL 19/20] hw/i386/pc: Ensure vmport prerequisites are fulfilled
+Date: Tue, 20 Aug 2024 00:51:15 +0200
+Message-ID: <20240819225116.17928-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240819225116.17928-1-philmd@linaro.org>
 References: <20240819225116.17928-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,70 +95,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kamil Szczęk <kamil@szczek.dev>
 
-The code which translates vmport=auto to on/off is currently separate
-for each PC machine variant, while being functionally equivalent.
-This moves the translation into a shared initialization function, while
-also tightening the enum assertion.
+Since commit 4ccd5fe22feb95137d325f422016a6473541fe9f ('pc: add option
+to disable PS/2 mouse/keyboard'), the vmport will not be created unless
+the i8042 PS/2 controller is enabled. To avoid confusion, let's fail if
+vmport was explicitly requested, but the i8042 controller is disabled.
+This also changes the behavior of vmport=auto to take i8042 controller
+availability into account.
 
 Signed-off-by: Kamil Szczęk <kamil@szczek.dev>
 Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <v8pz1uwgIYWkidgZK-o8H-qJvnSyl0641XVmNO43Qls307AA3QRPuad_py6xGe0JAxB6yDEe76oZ8tau_n-2Y6sJBCKzCujNbEUUFhd-ahI=@szczek.dev>
+Message-ID: <0MS3y5E-hHqODIhiuFxmCnIrXd612JIGq31UuMsz4KGCKZ_wWuF-PHGKTRSGS0nWaPEddOdF4YOczHdgorulECPo792OhWov7O9BBF6UMX4=@szczek.dev>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc.c      | 5 +++++
- hw/i386/pc_piix.c | 5 -----
- hw/i386/pc_q35.c  | 5 -----
- 3 files changed, 5 insertions(+), 10 deletions(-)
+ hw/i386/pc.c    | 11 ++++++++---
+ qemu-options.hx |  4 ++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index c74931d577..72229a24ff 100644
+index 72229a24ff..7779c88a91 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -1217,6 +1217,11 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-         isa_realize_and_unref(pcms->pcspk, isa_bus, &error_fatal);
+@@ -1075,7 +1075,7 @@ static const MemoryRegionOps ioportF0_io_ops = {
+ };
+ 
+ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
+-                            bool create_i8042, bool no_vmport)
++                            bool create_i8042, bool no_vmport, Error **errp)
+ {
+     int i;
+     DriveInfo *fd[MAX_FD];
+@@ -1100,6 +1100,10 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
      }
  
-+    assert(pcms->vmport >= 0 && pcms->vmport < ON_OFF_AUTO__MAX);
-+    if (pcms->vmport == ON_OFF_AUTO_AUTO) {
-+        pcms->vmport = xen_enabled() ? ON_OFF_AUTO_OFF : ON_OFF_AUTO_ON;
-+    }
-+
+     if (!create_i8042) {
++        if (!no_vmport) {
++            error_setg(errp,
++                       "vmport requires the i8042 controller to be enabled");
++        }
+         return;
+     }
+ 
+@@ -1219,12 +1223,13 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+ 
+     assert(pcms->vmport >= 0 && pcms->vmport < ON_OFF_AUTO__MAX);
+     if (pcms->vmport == ON_OFF_AUTO_AUTO) {
+-        pcms->vmport = xen_enabled() ? ON_OFF_AUTO_OFF : ON_OFF_AUTO_ON;
++        pcms->vmport = (xen_enabled() || !pcms->i8042_enabled)
++            ? ON_OFF_AUTO_OFF : ON_OFF_AUTO_ON;
+     }
+ 
      /* Super I/O */
      pc_superio_init(isa_bus, create_fdctrl, pcms->i8042_enabled,
-                     pcms->vmport != ON_OFF_AUTO_ON);
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index d9e69243b4..347afa4c37 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -310,11 +310,6 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+-                    pcms->vmport != ON_OFF_AUTO_ON);
++                    pcms->vmport != ON_OFF_AUTO_ON, &error_fatal);
+ }
  
-     pc_vga_init(isa_bus, pcmc->pci_enabled ? pcms->pcibus : NULL);
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
+diff --git a/qemu-options.hx b/qemu-options.hx
+index d99084a5ee..d94e2cbbae 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -68,8 +68,8 @@ SRST
  
--    assert(pcms->vmport != ON_OFF_AUTO__MAX);
--    if (pcms->vmport == ON_OFF_AUTO_AUTO) {
--        pcms->vmport = xen_enabled() ? ON_OFF_AUTO_OFF : ON_OFF_AUTO_ON;
--    }
--
-     /* init basic PC hardware */
-     pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
-                          !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 9d108b194e..f2d8edfa84 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -276,11 +276,6 @@ static void pc_q35_init(MachineState *machine)
-         x86_register_ferr_irq(x86ms->gsi[13]);
-     }
+     ``vmport=on|off|auto``
+         Enables emulation of VMWare IO port, for vmmouse etc. auto says
+-        to select the value based on accel. For accel=xen the default is
+-        off otherwise the default is on.
++        to select the value based on accel and i8042. For accel=xen or
++        i8042=off the default is off otherwise the default is on.
  
--    assert(pcms->vmport != ON_OFF_AUTO__MAX);
--    if (pcms->vmport == ON_OFF_AUTO_AUTO) {
--        pcms->vmport = ON_OFF_AUTO_ON;
--    }
--
-     /* init basic PC hardware */
-     pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, !mc->no_floppy,
-                          0xff0104);
+     ``dump-guest-core=on|off``
+         Include guest memory in a core dump. The default is on.
 -- 
 2.45.2
 
