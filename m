@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5321F956F75
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 17:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 188FA956FD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:08:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sg4mb-0004A0-9u; Mon, 19 Aug 2024 11:59:01 -0400
+	id 1sg4vb-0005ym-UR; Mon, 19 Aug 2024 12:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=954944eb4=graf@amazon.de>)
- id 1sg4mX-00049H-Nr
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 11:58:57 -0400
-Received: from smtp-fw-80007.amazon.com ([99.78.197.218])
+ (Exim 4.90_1)
+ (envelope-from <prvs=5961d01319=ian.brockbank@cirrus.com>)
+ id 1sg4vX-0005sx-Sg; Mon, 19 Aug 2024 12:08:15 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]
+ helo=mx0b-001ae601.pphosted.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=954944eb4=graf@amazon.de>)
- id 1sg4mV-0005ct-67
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 11:58:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1724083136; x=1755619136;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=IuY8N5ze9iM8+wa+G6OVMiRT1CobA7gQArX+d3qve/U=;
- b=AWHmJ7D6HPT52uz0XZ9Fy3HZhkksHuojlux95CsvydCQf8G89aZTfDim
- X70jTbMtS908q7WPa9DRqOTi13FPxe6yGAFafBdSF+B9kAQwQEPG1bY6o
- SYZDi2b/DNt9NoVNMGVih2Q48KQ5Jd++kEyp8CUmPIeZboqNXc3hst2gb A=;
-X-IronPort-AV: E=Sophos;i="6.10,159,1719878400"; d="scan'208";a="322248185"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO
- smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
- by smtp-border-fw-80007.pdx80.corp.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 15:58:48 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:55678]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.118:2525]
- with esmtp (Farcaster)
- id 56f92258-5f09-45d4-9df4-2e9d757aaa82; Mon, 19 Aug 2024 15:58:47 +0000 (UTC)
-X-Farcaster-Flow-ID: 56f92258-5f09-45d4-9df4-2e9d757aaa82
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 19 Aug 2024 15:58:43 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Mon, 19 Aug 2024
- 15:58:40 +0000
-Message-ID: <5a7cd886-0694-45ed-a0fc-6bf69c5ed97f@amazon.com>
-Date: Mon, 19 Aug 2024 17:58:38 +0200
+ (Exim 4.90_1)
+ (envelope-from <prvs=5961d01319=ian.brockbank@cirrus.com>)
+ id 1sg4vV-0006x1-QQ; Mon, 19 Aug 2024 12:08:15 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+ by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47JF6kfa004018;
+ Mon, 19 Aug 2024 11:07:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ PODMain02222019; bh=CTBn2WQgxjV9HstSP0zkV4cvwhWuzTA6WEBVfacCLU8=; b=
+ AXB7KgE2t3pNjS8SWBsUN0r2VMkSmRu0sTU2NDtOLeW4SYcDrl58efiakn0Lkp8Q
+ V3ukLux7+4F7G/Rl/PyhWf6jgZX1Nr/E4ohPROV8FK3XD69x379YiutpyMc/cvXp
+ jf6LR8YR/o2+RqCTAwI+M01va8/NPAxcFEWlQTETmmrxyAK6eYZ4wABVyrj+Gx60
+ aaiFY7vvg11l53dU5ar1r/2eyddK4r+XxQo5GdYWsUI2xpukdaXrmKj2vqyFuB6B
+ y4jDxc2Hrq+esNNTPqWgC2ap43dTOxLgi3AU46KKBOLhX0WiTdN0Z8dmfIA2Yj2s
+ I8f2yKQgsZ3tjyLZKa95/A==
+Received: from ausex02.ad.cirrus.com ([141.131.3.21])
+ by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 412s8x1x57-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Aug 2024 11:07:56 -0500 (CDT)
+Received: from ausex01.ad.cirrus.com (141.131.37.95) by ausex02.ad.cirrus.com
+ (141.131.37.96) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
+ 2024 11:07:55 -0500
+Received: from EDIN7BQBTG3.ad.cirrus.com (141.131.38.212) by
+ anon-ausex01.ad.cirrus.com (141.131.37.95) with Microsoft SMTP Server id
+ 15.2.1544.9 via Frontend Transport; Mon, 19 Aug 2024 11:07:53 -0500
+From: Ian Brockbank <Ian.Brockbank@cirrus.com>
+To: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>
+CC: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Ian Brockbank
+ <ian.brockbank@cirrus.com>
+Subject: [PATCH 00/11 v2] RISC-V: support CLIC v0.9 specification
+Date: Mon, 19 Aug 2024 17:02:08 +0100
+Message-ID: <20240819160742.27586-1-Ian.Brockbank@cirrus.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html>
+References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] machine/nitro-enclave: Add built-in Nitro Secure
- Module device
-To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-CC: <qemu-devel@nongnu.org>, <agraf@csgraf.de>, <stefanha@redhat.com>,
- <pbonzini@redhat.com>, <slp@redhat.com>, <richard.henderson@linaro.org>,
- <eduardo@habkost.net>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
- <berrange@redhat.com>, <philmd@linaro.org>
-References: <20240818114257.21456-1-dorjoychy111@gmail.com>
- <20240818114257.21456-5-dorjoychy111@gmail.com>
- <bffedf65-6046-4264-a2fe-011ff8c58860@amazon.com>
- <CAFfO_h6eSmizJuSwRSQ1+gzeVBfmsmrLiN0mCXYuQFXGaJ4_Vw@mail.gmail.com>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <CAFfO_h6eSmizJuSwRSQ1+gzeVBfmsmrLiN0mCXYuQFXGaJ4_Vw@mail.gmail.com>
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=99.78.197.218;
- envelope-from=prvs=954944eb4=graf@amazon.de; helo=smtp-fw-80007.amazon.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.134,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: 1hR6MrH6FeYr0AP99NSuhHpCrCRY_fji
+X-Proofpoint-GUID: 1hR6MrH6FeYr0AP99NSuhHpCrCRY_fji
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=67.231.149.25;
+ envelope-from=prvs=5961d01319=ian.brockbank@cirrus.com;
+ helo=mx0b-001ae601.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,52 +87,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ck9uIDE5LjA4LjI0IDE3OjI4LCBEb3Jqb3kgQ2hvd2RodXJ5IHdyb3RlOgo+IEhleSBBbGV4LAo+
-Cj4gT24gTW9uLCBBdWcgMTksIDIwMjQgYXQgNDoxM+KAr1BNIEFsZXhhbmRlciBHcmFmIDxncmFm
-QGFtYXpvbi5jb20+IHdyb3RlOgo+PiBIZXkgRG9yam95LAo+Pgo+PiBPbiAxOC4wOC4yNCAxMzo0
-MiwgRG9yam95IENob3dkaHVyeSB3cm90ZToKPj4+IEFXUyBOaXRybyBFbmNsYXZlcyBoYXZlIGJ1
-aWx0LWluIE5pdHJvIFNlY3VyZSBNb2R1bGUgKE5TTSkgZGV2aWNlIHdoaWNoCj4+PiBpcyB1c2Vk
-IGZvciBzdHJpcHBlZCBkb3duIFRQTSBmdW5jdGlvbmFsaXR5IGxpa2UgYXR0ZXN0YXRpb24uIFRo
-aXMgY29tbWl0Cj4+PiBhZGRzIHRoZSBidWlsdC1pbiBOU00gZGV2aWNlIGluIHRoZSBuaXRyby1l
-bmNsYXZlIG1hY2hpbmUgdHlwZS4KPj4+Cj4+PiBJbiBOaXRybyBFbmNsYXZlcywgYWxsIHRoZSBQ
-Q1JzIHN0YXJ0IGluIGEga25vd24gemVybyBzdGF0ZSBhbmQgdGhlIGZpcnN0Cj4+PiAxNiBQQ1Jz
-IGFyZSBsb2NrZWQgZnJvbSBib290IGFuZCByZXNlcnZlZC4gVGhlIFBDUjAsIFBDUjEsIFBDUjIg
-YW5kIFBDUjgKPj4+IGNvbnRhaW4gdGhlIFNIQTM4NCBoYXNoZXMgcmVsYXRlZCB0byB0aGUgRUlG
-IGZpbGUgdXNlZCB0byBib290IHRoZQo+Pj4gVk0gZm9yIHZhbGlkYXRpb24uCj4+Pgo+Pj4gU29t
-ZSBvcHRpb25hbCBuaXRyby1lbmNsYXZlIG1hY2hpbmUgb3B0aW9ucyBoYXZlIGJlZW4gYWRkZWQ6
-Cj4+PiAgICAgICAtICdpZCc6IEVuY2xhdmUgaWRlbnRpZmllciwgcmVmbGVjdGVkIGluIHRoZSBt
-b2R1bGUtaWQgb2YgdGhlIE5TTQo+Pj4gZGV2aWNlLiBJZiBub3QgcHJvdmlkZWQsIGEgZGVmYXVs
-dCBpZCB3aWxsIGJlIHNldC4KPj4+ICAgICAgIC0gJ3BhcmVudC1yb2xlJzogUGFyZW50IGluc3Rh
-bmNlIElBTSByb2xlIEFSTiwgcmVmbGVjdGVkIGluIFBDUjMKPj4+IG9mIHRoZSBOU00gZGV2aWNl
-Lgo+Pj4gICAgICAgLSAncGFyZW50LWlkJzogUGFyZW50IGluc3RhbmNlIGlkZW50aWZpZXIsIHJl
-ZmxlY3RlZCBpbiBQQ1I0IG9mIHRoZQo+Pj4gTlNNIGRldmljZS4KPj4+Cj4+PiBTaWduZWQtb2Zm
-LWJ5OiBEb3Jqb3kgQ2hvd2RodXJ5IDxkb3Jqb3ljaHkxMTFAZ21haWwuY29tPgo+Pj4gLS0tCj4+
-PiAgICBjcnlwdG8vbWVzb24uYnVpbGQgICAgICAgICAgICAgIHwgICAyICstCj4+PiAgICBjcnlw
-dG8veDUwOS11dGlscy5jICAgICAgICAgICAgIHwgIDczICsrKysrKysrKysrCj4+Cj4+IENhbiB5
-b3UgcGxlYXNlIHB1dCB0aGlzIG5ldyBBUEkgaW50byBpdHMgb3duIHBhdGNoIGZpbGU/Cj4+Cj4+
-Cj4+PiAgICBody9jb3JlL2VpZi5jICAgICAgICAgICAgICAgICAgIHwgMjI1ICsrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrLS0tCj4+PiAgICBody9jb3JlL2VpZi5oICAgICAgICAgICAgICAg
-ICAgIHwgICA1ICstCj4+Cj4+IFRoZXNlIGNoYW5nZXMgdG8gZWlmLmMgc2hvdWxkIGlkZWFsbHkg
-YWxyZWFkeSBiZSBwYXJ0IG9mIHRoZSBwYXRjaCB0aGF0Cj4+IGludHJvZHVjZXMgZWlmLmMgKHBh
-dGNoIDEpLCBubz8gSW4gZmFjdCwgZG8geW91IHRoaW5rIHlvdSBjYW4gbWFrZSB0aGUKPj4gd2hv
-bGUgZWlmIGxvZ2ljIGl0cyBvd24gcGF0Y2ggZmlsZT8KPj4KPiBHb29kIHBvaW50LiBJIGd1ZXNz
-IGl0IHNob3VsZCBiZSBwb3NzaWJsZSBpZiBJIGhhdmUgdGhlIHZpcnRpby1uc20KPiBkZXZpY2Ug
-Y29tbWl0IGZpcnN0IGFuZCB0aGVuIGFkZCB0aGUgbWFjaGluZS9uaXRyby1lbmNsYXZlIGNvbW1p
-dCB3aXRoCj4gZnVsbCBzdXBwb3J0IHdpdGggdGhlIGRldmljZXMuIFRoYXQgd2lsbCBvZiBjb3Vy
-c2UgbWFrZSB0aGUKPiBtYWNoaW5lL25pdHJvLWVuY2xhdmUgY29tbWl0IGxhcmdlci4gV2hhdCBk
-byB5b3UgdGhpbms/CgoKQXMgbG9uZyBhcyBub3RoaW5nIGNvbXBpbGVzIHRoZSBjb2RlLCBpdCBj
-YW4gcmVseSBvbiBub3QgeWV0IGltcGxlbWVudGVkIApmdW5jdGlvbnMuIFNvIGl0J3MgcGVyZmVj
-dGx5IGxlZ2l0IHRvIGFkZCBhbGwgeW91ciBjb2RlIGluIGluZGl2aWR1YWwgCmNvbW1pdHMgYW5k
-IHRoZW4gYXQgdGhlIGVuZCBhZGQgdGhlIG1lc29uLmJ1aWxkIGNoYW5nZSB0aGF0IGltcGxlbWVu
-dHMgCnRoZSBjb25maWcgb3B0aW9uLiBIb3cgYWJvdXQgdGhlIG9yZGVyIGJlbG93PwoKKiBDcnlw
-dG8gcGF0Y2ggZm9yIFNIQTM4NAoqIENyeXB0byBwYXRjaCBmb3IgeDUwOSBmaW5nZXJwcmludAoq
-IE5TTSBkZXZpY2UgZW11bGF0aW9uIChpbmNsdWRpbmcgbGliY2JvciBjaGVjaywgaW50cm9kdWNl
-cyAKQ09ORklHX1ZJUlRJT19OU00pCiogRUlGIGZvcm1hdCBwYXJzaW5nIChub3QgY29tcGlsZWQg
-eWV0KQoqIE5pdHJvIEVuY2xhdmVzIG1hY2hpbmUgKGludHJvZHVjZXMgQ09ORklHX05JVFJPX0VO
-Q0xBVkUpCiogTml0cm8gRW5jbGF2ZXMgZG9jcwoKCkFsZXgKCgoKCkFtYXpvbiBXZWIgU2Vydmlj
-ZXMgRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApLcmF1c2Vuc3RyLiAzOAoxMDExNyBC
-ZXJsaW4KR2VzY2hhZWZ0c2Z1ZWhydW5nOiBDaHJpc3RpYW4gU2NobGFlZ2VyLCBKb25hdGhhbiBX
-ZWlzcwpFaW5nZXRyYWdlbiBhbSBBbXRzZ2VyaWNodCBDaGFybG90dGVuYnVyZyB1bnRlciBIUkIg
-MjU3NzY0IEIKU2l0ejogQmVybGluClVzdC1JRDogREUgMzY1IDUzOCA1OTcK
+[Resubmission now the merge is correct]
 
+This patch set gives an implementation of "RISC-V Core-Local Interrupt
+Controller(CLIC) Version 0.9-draft-20210217". It comes from [1], where
+you can find the pdf format or the source code.
+
+This is based on the implementation from 2021 by Liu Zhiwei [3], who took
+over the job from Michael Clark, who gave the first implementation of
+clic-v0.7 specification [2]. I believe this implementation addresses all
+the comments in Liu Zhiwei's RFC patch thread.
+
+This implementation follows the CLIC 0.9-stable draft at 14 March 2024,
+with the following exceptions and implementation details:
+ - the CLIC control registers are memory-mapped as per earlier drafts (in
+   particular version 0.9-draft, 20 June 2023)
+ - the indirect CSR control in 0.9-stable is not implemented
+ - the vector table can be either handler addresses (as per the spec)
+   or a jump table where each entry is processed as an instruction,
+   selectable with version number v0.9-jmp
+ - each hart is assigned its own CLIC block
+ - if PRV_S and/or PRV_M are supported, they are currently assumed to follo=
+w
+   the PRV_M registers; a subsequent update will address this
+ - support for PRV_S and PRV_M is selectable at CLIC instantiation
+ - PRV_S and PRV_U registers are currently separate from PRV_M; a subsequen=
+t
+   update will turn them into filtered views onto the PRV_M registers
+ - each hart is assigned its own CLIC block
+ - support for PRV_S and PRV_M is selectable at CLIC instantiation by
+   passing in a base address for the given modes; a base address of 0 is
+   treated as not supported
+ - PRV_S and PRV_U registers are mapped  onto the PRV_M controls with
+   appropriate filtering for the access mode
+ - the RISCV virt machine has been updated to allow CLIC emulation by
+   passing "machine=3Dvirt,clic=3Don" on the command line; various other
+   parameters have been added to allow finer control of the CLIC behavior
+
+The implementation (in jump-table mode) has been verified to match the
+Cirrus Logic silicon (PRV_M only), which is based upon the Pulp
+implementation [4] as of June 2023.
+
+The implementation also includes a selection of qtests designed to verify
+operation in all possible combinations of PRV_M, PRV_S and PRV_U.
+
+[1] specification website: https://github.com/riscv/riscv-fast-interrupt.
+[2] Michael Clark origin work:
+https://github.com/sifive/riscv-qemu/tree/sifive-clic.
+[3] RFC Patch submission by Liu Zhiwei:
+https://lists.gnu.org/archive/html/qemu-devel/2021-04/msg01417.html
+[4] Pulp implementation of CLIC: https://github.com/pulp-platform/clic
+
+Ian Brockbank (11):
+    target/riscv: Add CLIC CSR mintstatus
+    target/riscv: Update CSR xintthresh in CLIC mode
+    hw/intc: Add CLIC device
+    target/riscv: Update CSR xie in CLIC mode
+    target/riscv: Update CSR xip in CLIC mode
+    target/riscv: Update CSR xtvec in CLIC mode
+    target/riscv: Update CSR xnxti in CLIC mode
+    target/riscv: Update interrupt handling in CLIC mode
+    target/riscv: Update interrupt return in CLIC mode
+    hw/riscv: add CLIC into virt machine
+    tests: add riscv clic qtest case and a function in qtest
+
+This message and any attachments may contain privileged and confidential in=
+formation that is intended solely for the person(s) to whom it is addressed=
+. If you are not an intended recipient you must not: read; copy; distribute=
+; discuss; take any action in or make any reliance upon the contents of thi=
+s message; nor open or read any attachment. If you have received this messa=
+ge in error, please notify us as soon as possible on the following telephon=
+e number and destroy this message including any attachments. Thank you. Cir=
+rus Logic International (UK) Ltd and Cirrus Logic International Semiconduct=
+or Ltd are companies registered in Scotland, with registered numbers SC0898=
+39 and SC495735 respectively. Our registered office is at 7B Nightingale Wa=
+y, Quartermile, Edinburgh, EH3 9EG, UK. Tel: +44 (0)131 272 7000. www.cirru=
+s.com
 
