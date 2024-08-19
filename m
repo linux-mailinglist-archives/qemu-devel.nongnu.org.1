@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4199955E80
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Aug 2024 20:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C6D9560D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 03:21:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sfkWK-00022g-CR; Sun, 18 Aug 2024 14:20:52 -0400
+	id 1sfr3m-0006Bq-B5; Sun, 18 Aug 2024 21:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sfkWJ-00021k-3u
- for qemu-devel@nongnu.org; Sun, 18 Aug 2024 14:20:51 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sfr3k-00069P-BB; Sun, 18 Aug 2024 21:19:48 -0400
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sfkWH-0001YB-8d
- for qemu-devel@nongnu.org; Sun, 18 Aug 2024 14:20:50 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2021537a8e6so16849165ad.2
- for <qemu-devel@nongnu.org>; Sun, 18 Aug 2024 11:20:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sfr3i-0004fy-N1; Sun, 18 Aug 2024 21:19:48 -0400
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-4f51981b1beso1268609e0c.2; 
+ Sun, 18 Aug 2024 18:19:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1724005247; x=1724610047; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OS4MzMo2V3PyM3KnIiKBExxRQzlzxJxkSDId0GUaBew=;
- b=AoObRqEl09byAGQUtl0F87es591ijzJp9VoRpbKax2MpXCR5CUycCaB6hzMU7VtqC2
- Cp6+g/j9JIVMZ6I58fPkrfG9PEZFu5Kob53IjWZJyOaB9p9k7u1CwZt+3UmLkAFE2tb1
- kiX4dh0W/CLwhAqM7J8WE/i+LgFY5mZONs1eXs24sfDYlY0iu0bCTbTENq/e5PypFYtW
- 4iP+M+6SrMKdA58A/a8L6/MuD/OkvVCEcOP5RpzRHaJl23Yx/8aoUxWuGPRFMIzSvNZ2
- hDy8nQxabUovgTtunr8LpDebwpwWPkkcukaNyzxUUpNV5FRzl/FpxvYDzygvPe8bATtt
- urPQ==
+ d=gmail.com; s=20230601; t=1724030385; x=1724635185; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oUvlVOeAEry/s9UMgf+wh6xooEFlNwLz8N7xW8MIXlY=;
+ b=FZ/qbW7rSLoOe2VUmURCnmuhpiyWWLsad8eeiR69bjuLsfKm9aFdVcDu7rSubr2uZa
+ yQbaRzwU/T0JUMzgZ3rb5gWTcxF8T0W3aVJtpC1p3bvMcRS2O31WamtfY275TsLLID8w
+ iSadJtz2fphhhN4NmSxWMI/fGMfDqV0J84YoKI2esDdf24Kdx2p+M42qyBkwe2Nf4Sbo
+ zQaxYIIYvNQ7kkFe7K6oNTNlVXx7DiEWdOCdRr8ukvpijq64f8wtaZ2wuuvmgfevilOv
+ AS8qTjU9vmRaJWz8l68M8BQ28CakXHcx07yBRK3ZbHb3yZchF6ULPpxyqVyZ2jbBDAEY
+ QN/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724005247; x=1724610047;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OS4MzMo2V3PyM3KnIiKBExxRQzlzxJxkSDId0GUaBew=;
- b=IEJcd9c3XjLjBG7WBsyuN9GdZxYU52olBRuF5Xyw6KGPGU4kLanC6XFI3sNjw6DX4F
- RWMtAbLFMjf96UUvZIw+omgow4V+xwJwhjg9cBeNIGElGFAiUIWDI6CLIaEXiBa7UxsB
- wuIWn1tFaYutPNhAB03y+S8SVFFGepiQgJtq21cYNuOzXkM7n82zPvU2C/1ZaTOylDd+
- 2AMBS20ZSLuUtCVMfi3RtcLqC76pPtm2B3vRMnSYaor/YrxijFvkJcOkQYPnJPXK6t6r
- p5di2h2Ct5otF2B1St5I2NevE1oITqm3zixjY2zQDo8EU1MyZ1iEYbP027PyD8uGe4/a
- N8JA==
-X-Gm-Message-State: AOJu0YyxGtwxoc76ygbuINK0fET8e91+Er89Iq5Ny/hpCxSF0f5sDf+Q
- OqbR2IMhP48piJ48v/EHtV76H0HwZoo3SZnPK0xXrJshKsQTTtn0cA9s6i71bUM=
-X-Google-Smtp-Source: AGHT+IE4D30EMJINoqSVqrXvkY2uSBTWZuIQWUeSW0cc2f/LDRxMA3fT+F88KHruREzS3Z682sOioQ==
-X-Received: by 2002:a17:902:e74b:b0:202:35a8:42 with SMTP id
- d9443c01a7336-20235a8015bmr37195185ad.49.1724005247385; 
- Sun, 18 Aug 2024 11:20:47 -0700 (PDT)
-Received: from [192.168.68.110] ([179.133.97.250])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f03194b2sm52583735ad.86.2024.08.18.11.20.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Aug 2024 11:20:46 -0700 (PDT)
-Message-ID: <2eafad44-d9d7-43c5-8ded-72fe0bed10fa@ventanamicro.com>
-Date: Sun, 18 Aug 2024 15:20:42 -0300
+ d=1e100.net; s=20230601; t=1724030385; x=1724635185;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oUvlVOeAEry/s9UMgf+wh6xooEFlNwLz8N7xW8MIXlY=;
+ b=KHuW5iIEm5zNaQ9c1zq0cUGsUTmws0o+F1TlDwwz3rCauAtt0ALVZEOW7aUgWWxdzR
+ OM3gwTVjmzFRLm4KJ9gk6gzOYIf2SCWW7wrnfwiUCI5hQNQKZuw3ARR4bDCLwX2DVqKw
+ aot4K+N32ciD634hrHFqjXa1PEGBRmOTJmvhDNHbrbXdoiUbsv3fN3S9W0k26gAw/njU
+ xr6dCXVPWOmXVixRk1NtmQFfBzu46IDJDIEFglCPeZVzkHc7zaj2ntkVzk/FBMaOi36I
+ /lxj/wi/zgSrADwpiTdyjWnh4V+We1pqjyMCoQfa88xGZkSRLi3IlZoR+71PCm8ub/4v
+ u2bA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX6u4YlPUkdEloE5j5ycmg7kFi7aw8RIx2CsaBw7FWxdzS5AMIO9IyyoeLMQtAumHjQqT843y4FvhQggDLLF2VO5GxAs8s=
+X-Gm-Message-State: AOJu0YyJmymtNolySoDeHq7X0Laee8froJPtEUmvTnSaGha6tzZ4u67D
+ HpNFy6NtV1BgeGig6nHq4MHhJLIDuU2cR8LiI+v8PnbbNbxXA6AheCbGIj1cEvMqzel6LOm35S1
+ Gww/mAZs70YmJaqjg9L3Juyp5iCU=
+X-Google-Smtp-Source: AGHT+IGVix57xLbtQ+y1xl0m9glAeLWQdaPMDNpHM4e9guP1XDV6Cm5dA20A+1SmzPRYw/gj3J1am9KELQj1SzYCZPg=
+X-Received: by 2002:a05:6122:2a07:b0:4f6:a85d:38b3 with SMTP id
+ 71dfb90a1353d-4fc6ca10d25mr11961948e0c.13.1724030384934; Sun, 18 Aug 2024
+ 18:19:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.2 v6 03/12] hw/riscv: add RISC-V IOMMU base emulation
+References: <20240816160743.220374-4-ajones@ventanamicro.com>
+ <20240816160743.220374-6-ajones@ventanamicro.com>
+In-Reply-To: <20240816160743.220374-6-ajones@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 19 Aug 2024 11:19:18 +1000
+Message-ID: <CAKmqyKOXS+Fmb1Jxzwh3fAkeKi5eXQZ+JKkc3H77XjKrrKXe-Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] hw/riscv/virt: Introduce strict-dt
 To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, jason.chien@sifive.com, frank.chang@sifive.com,
- Tomasz Jeznach <tjeznach@rivosinc.com>, Sebastien Boeuf <seb@rivosinc.com>
-References: <20240801154334.1009852-1-dbarboza@ventanamicro.com>
- <20240801154334.1009852-4-dbarboza@ventanamicro.com>
- <20240817-08bebc0e0a1cd92c2d9aff8a@orel>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240817-08bebc0e0a1cd92c2d9aff8a@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, dbarboza@ventanamicro.com, 
+ Anup Patel <apatel@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,102 +91,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sat, Aug 17, 2024 at 2:08=E2=80=AFAM Andrew Jones <ajones@ventanamicro.c=
+om> wrote:
+>
+> Older firmwares and OS kernels which use deprecated device tree
+> properties or are missing support for new properties may not be
+> tolerant of fully compliant device trees. When divergence to the
+> bindings specifications is harmless for new firmwares and OS kernels
+> which are compliant, then it's probably better to also continue
+> supporting the old firmwares and OS kernels by generating
+> non-compliant device trees. The '#msi-cells=3D<0>' property of the
+> imsic is one such property. Generating that property doesn't provide
+> anything necessary (no '#msi-cells' property or an '#msi-cells'
+> property with a value of zero mean the same thing) but it does
+> cause PCI devices to fail to find the MSI controller on Linux and,
+> for that reason, riscv virt doesn't currently generate it despite
+> that putting the DT out of compliance. For users that want a
+> compliant DT and know their software supports it, introduce a machine
+> property 'strict-dt' to do so. We also drop the one redundant
+> property that uses a deprecated name when strict-dt is enabled.
+>
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> ---
+>  docs/system/riscv/virt.rst | 11 ++++++++++
+>  hw/riscv/virt.c            | 43 ++++++++++++++++++++++++++++++--------
+>  include/hw/riscv/virt.h    |  1 +
+>  3 files changed, 46 insertions(+), 9 deletions(-)
+>
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index 9a06f95a3444..f08d0a053051 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -116,6 +116,17 @@ The following machine-specific options are supported=
+:
+>    having AIA IMSIC (i.e. "aia=3Daplic-imsic" selected). When not specifi=
+ed,
+>    the default number of per-HART VS-level AIA IMSIC pages is 0.
+>
+> +- strict-dt=3D[on|off]
 
+Hmm... I don't love the idea of having yet another command line option.
 
-On 8/17/24 8:34 AM, Andrew Jones wrote:
-> On Thu, Aug 01, 2024 at 12:43:24PM GMT, Daniel Henrique Barboza wrote:
->> From: Tomasz Jeznach <tjeznach@rivosinc.com>
->>
->> The RISC-V IOMMU specification is now ratified as-per the RISC-V
->> international process. The latest frozen specifcation can be found at:
->>
->> https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
->>
->> Add the foundation of the device emulation for RISC-V IOMMU. It includes
->> support for s-stage (sv32, sv39, sv48, sv57 caps) and g-stage (sv32x4,
->> sv39x4, sv48x4, sv57x4 caps).
->>
->> Other capabilities like ATS and DBG support will be added incrementally
->> in the next patches.
->>
->> Co-developed-by: Sebastien Boeuf <seb@rivosinc.com>
->> Signed-off-by: Sebastien Boeuf <seb@rivosinc.com>
->> Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
+Does this really buy us a lot? Eventually we should deprecate the
+invalid DT bindings anyway
 
-  (...)
-
->> +/* Redirect MSI write for given GPA. */
->> +static MemTxResult riscv_iommu_msi_write(RISCVIOMMUState *s,
->> +    RISCVIOMMUContext *ctx, uint64_t gpa, uint64_t data,
->> +    unsigned size, MemTxAttrs attrs)
->> +{
->> +    MemTxResult res;
->> +    dma_addr_t addr;
->> +    uint64_t intn;
->> +    uint32_t n190;
->> +    uint64_t pte[2];
->> +    int fault_type = RISCV_IOMMU_FQ_TTYPE_UADDR_WR;
->> +    int cause;
->> +
->> +    /* Interrupt File Number */
->> +    intn = _pext_u64(PPN_DOWN(gpa), ctx->msi_addr_mask);
->> +    if (intn >= 256) {
->> +        /* Interrupt file number out of range */
->> +        res = MEMTX_ACCESS_ERROR;
->> +        cause = RISCV_IOMMU_FQ_CAUSE_MSI_LOAD_FAULT;
->> +        goto err;
->> +    }
->> +
->> +    /* fetch MSI PTE */
->> +    addr = PPN_PHYS(get_field(ctx->msiptp, RISCV_IOMMU_DC_MSIPTP_PPN));
->> +    addr = addr | (intn * sizeof(pte));
->> +    res = dma_memory_read(s->target_as, addr, &pte, sizeof(pte),
->> +            MEMTXATTRS_UNSPECIFIED);
->> +    if (res != MEMTX_OK) {
->> +        if (res == MEMTX_DECODE_ERROR) {
->> +            cause = RISCV_IOMMU_FQ_CAUSE_MSI_PT_CORRUPTED;
->> +        } else {
->> +            cause = RISCV_IOMMU_FQ_CAUSE_MSI_LOAD_FAULT;
->> +        }
->> +        goto err;
->> +    }
->> +
->> +    le64_to_cpus(&pte[0]);
->> +    le64_to_cpus(&pte[1]);
->> +
->> +    if (!(pte[0] & RISCV_IOMMU_MSI_PTE_V) || (pte[0] & RISCV_IOMMU_MSI_PTE_C)) {
->> +        /*
->> +         * The spec mentions that: "If msipte.C == 1, then further
->> +         * processing to interpret the PTE is implementation
->> +         * defined.". We'll abort with cause = 262 for this
->> +         * case too.
->> +         */
->> +        res = MEMTX_ACCESS_ERROR;
->> +        cause = RISCV_IOMMU_FQ_CAUSE_MSI_INVALID;
->> +        goto err;
->> +    }
->> +
->> +    switch (get_field(pte[0], RISCV_IOMMU_MSI_PTE_M)) {
->> +    case RISCV_IOMMU_MSI_PTE_M_BASIC:
->> +        /* MSI Pass-through mode */
->> +        addr = PPN_PHYS(get_field(pte[0], RISCV_IOMMU_MSI_PTE_PPN));
->> +        addr = addr | (gpa & TARGET_PAGE_MASK);
-> 
-> I'm not sure what the idea was with this (maybe a misunderstanding of how
-> guest interrupt files get targeted?), but we shouldn't be modifying the
-> result of a translation with the input to that translation. It breaks
-> translations where guest imsic address bits don't strictly overlap host
-> imsic address bits and it allows the guest to access host memory it
-> shouldn't. The fix is just to remove the line.
-
-I'll remove this line in v7. Thanks,
-
-
-Daniel
-
-> 
-> Thanks,
-> drew
+Alistair
 
