@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D52956FE9
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 336EE956FE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:13:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sg4zH-0001v5-3F; Mon, 19 Aug 2024 12:12:07 -0400
+	id 1sg4zh-0003x9-Mh; Mon, 19 Aug 2024 12:12:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sg4zE-0001qP-Ge
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 12:12:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sg4yz-0007NZ-6R
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 12:12:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724083907;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=f7JzUeTSG5FPZ2iH6og7MUng4XkiLbA7YsaaK4RsYgw=;
- b=ES5hrjq6uDRQur+G6/Y8JKMWSLL4letdFd1plsAu4bqBKfAgI3UPqy2ZT1MGD8ChmtYFmc
- pCUTVv/SvAiSmP3XZFJDatUJdf7XhAoN/a2F70n6SNi6gzBqsM58uslyHBq5lqt2sTdGCu
- 2922aApY3qI+qUBIyO7f++52bOJ/BOc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-84QoGaN_PxG35j-6jUuG_w-1; Mon,
- 19 Aug 2024 12:11:43 -0400
-X-MC-Unique: 84QoGaN_PxG35j-6jUuG_w-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB0821955D57; Mon, 19 Aug 2024 16:11:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.145])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 87C4F19560AD; Mon, 19 Aug 2024 16:11:34 +0000 (UTC)
-Date: Mon, 19 Aug 2024 17:11:30 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Roy Hopkins <roy.hopkins@suse.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
- =?utf-8?B?SsO2cmc=?= Roedel <jroedel@suse.com>
-Subject: Re: [PATCH v5 01/16] meson: Add optional dependency on IGVM library
-Message-ID: <ZsNush7nw86ZT9_g@redhat.com>
-References: <cover.1723560001.git.roy.hopkins@suse.com>
- <e91b60f15b87d0eb3e9e6319cce1e57f684536b5.1723560001.git.roy.hopkins@suse.com>
+ (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
+ id 1sg4zg-0003rq-0M
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 12:12:32 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
+ id 1sg4za-0007aw-SH
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 12:12:31 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-5daa4f8f1c4so1798727eaf.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 09:12:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724083945; x=1724688745; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lmZQV+gQhNfX7Q3pNIqrG5VdJ+3DXbcpTYllJY08p/k=;
+ b=ETyMwDjVXgwmQP31tDceZ4cObeyg1XzZbKSvBcH/MJbK6gGaXCGb4IwXmULQjrBx21
+ OXIc2s5EGSPUXq0E9Ucb2H7U8PwoiMct/8uI7yPN3P7bvC66Ry+gAROnQczjyDJ+tzWl
+ L3+SVv1jcyiENt9fJDIYtH0nfu8ZIL6CKBNSPT3RvLSIxLte+Au12kyCILPN4uYJbS54
+ j5o1sCMjDndQTY2GJ8j0lYxpT9qD0pC+j/Wf+arIK9dz5NpJ5vT8RZU1WWpERmc4CSoZ
+ yG5uCsDIwhqrXce6K9Aoa/MTz/revyaioxNrDgAauo06nIqEt8o3Pw9YFr4MJx/toCCg
+ kDuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724083945; x=1724688745;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lmZQV+gQhNfX7Q3pNIqrG5VdJ+3DXbcpTYllJY08p/k=;
+ b=ld8f5ZjR9W867Y/Ez6yyJfMW/ovu8xjMFMTpAeOw52UOy4GK3O5gjgejIXwiV9tIDA
+ r4lEHwbh1U99L5AEKMQ5e0jDIBkAuWBp8y57wxRyNf4ANGgoUKytvg+J4kd/v+PbsCWR
+ SRJUpmd/UdfCofSH19LcJivLYcZ+xTOmlNf2yEf224KtzYM59QKrmWWRSb50HyM/56UE
+ 8KLYS2I+XW+V0LK0xCw7bmSLNmDyMJ/wgSNAaooSDxEUZv2QUTqCQZx/7CsYhsmbbsNJ
+ XrJxw+uA4lRfT7A8dPmQ4IbjoqyevWwtP5ESXHj5j8/Qe7xr02ktofv0Vf0BZpDUqs6U
+ kzFg==
+X-Gm-Message-State: AOJu0YxNZ/BHiGyEn06NdmQROQf04lYbjfjYbQruC3KOMbGA+ww+Hnsf
+ SRI4E4grOzfVRKIee4Cm15w3lkwPgO/Xafwjx1dkSWLuOPxcJimNRAnpmoQijdxhdzZNlCAeyua
+ j02+RVEb4U8phXxvz5u0VMZhr8/Q=
+X-Google-Smtp-Source: AGHT+IFWt902jNOTDHHOluMU2YEcA/BC8X18zUMuUscYEypwRLbPFDUAm2EHaow6sVeZZ8nEWrLE9L/nh+hFkws6NFo=
+X-Received: by 2002:a05:6359:5a92:b0:1aa:a01a:23dc with SMTP id
+ e5c5f4694b2df-1b3931b8c6amr1645933655d.15.1724083945351; Mon, 19 Aug 2024
+ 09:12:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e91b60f15b87d0eb3e9e6319cce1e57f684536b5.1723560001.git.roy.hopkins@suse.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.134,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240818114257.21456-1-dorjoychy111@gmail.com>
+ <20240818114257.21456-5-dorjoychy111@gmail.com>
+ <bffedf65-6046-4264-a2fe-011ff8c58860@amazon.com>
+ <CAFfO_h6eSmizJuSwRSQ1+gzeVBfmsmrLiN0mCXYuQFXGaJ4_Vw@mail.gmail.com>
+ <5a7cd886-0694-45ed-a0fc-6bf69c5ed97f@amazon.com>
+In-Reply-To: <5a7cd886-0694-45ed-a0fc-6bf69c5ed97f@amazon.com>
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Date: Mon, 19 Aug 2024 22:12:18 +0600
+Message-ID: <CAFfO_h6fvuhCg4tOKS=nmAN5i+Pxa_1=LLdSbXTu67sU-g4iFg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/6] machine/nitro-enclave: Add built-in Nitro Secure
+ Module device
+To: Alexander Graf <graf@amazon.com>
+Cc: qemu-devel@nongnu.org, agraf@csgraf.de, stefanha@redhat.com, 
+ pbonzini@redhat.com, slp@redhat.com, richard.henderson@linaro.org, 
+ eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com, 
+ berrange@redhat.com, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=dorjoychy111@gmail.com; helo=mail-oo1-xc35.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,41 +93,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 13, 2024 at 04:01:03PM +0100, Roy Hopkins wrote:
-> The IGVM library allows Independent Guest Virtual Machine files to be
-> parsed and processed. IGVM files are used to configure guest memory
-> layout, initial processor state and other configuration pertaining to
-> secure virtual machines.
-> 
-> This adds the --enable-igvm configure option, enabled by default, which
-> attempts to locate and link against the IGVM library via pkgconfig and
-> sets CONFIG_IGVM if found.
-> 
-> The library is added to the system_ss target in backends/meson.build
-> where the IGVM parsing will be performed by the ConfidentialGuestSupport
-> object.
-> 
-> Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  backends/meson.build          | 3 +++
->  meson.build                   | 8 ++++++++
->  meson_options.txt             | 2 ++
->  scripts/meson-buildoptions.sh | 3 +++
->  4 files changed, 16 insertions(+)
+On Mon, Aug 19, 2024 at 9:58=E2=80=AFPM Alexander Graf <graf@amazon.com> wr=
+ote:
+>
+>
+> On 19.08.24 17:28, Dorjoy Chowdhury wrote:
+> > Hey Alex,
+> >
+> > On Mon, Aug 19, 2024 at 4:13=E2=80=AFPM Alexander Graf <graf@amazon.com=
+> wrote:
+> >> Hey Dorjoy,
+> >>
+> >> On 18.08.24 13:42, Dorjoy Chowdhury wrote:
+> >>> AWS Nitro Enclaves have built-in Nitro Secure Module (NSM) device whi=
+ch
+> >>> is used for stripped down TPM functionality like attestation. This co=
+mmit
+> >>> adds the built-in NSM device in the nitro-enclave machine type.
+> >>>
+> >>> In Nitro Enclaves, all the PCRs start in a known zero state and the f=
+irst
+> >>> 16 PCRs are locked from boot and reserved. The PCR0, PCR1, PCR2 and P=
+CR8
+> >>> contain the SHA384 hashes related to the EIF file used to boot the
+> >>> VM for validation.
+> >>>
+> >>> Some optional nitro-enclave machine options have been added:
+> >>>       - 'id': Enclave identifier, reflected in the module-id of the N=
+SM
+> >>> device. If not provided, a default id will be set.
+> >>>       - 'parent-role': Parent instance IAM role ARN, reflected in PCR=
+3
+> >>> of the NSM device.
+> >>>       - 'parent-id': Parent instance identifier, reflected in PCR4 of=
+ the
+> >>> NSM device.
+> >>>
+> >>> Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+> >>> ---
+> >>>    crypto/meson.build              |   2 +-
+> >>>    crypto/x509-utils.c             |  73 +++++++++++
+> >>
+> >> Can you please put this new API into its own patch file?
+> >>
+> >>
+> >>>    hw/core/eif.c                   | 225 ++++++++++++++++++++++++++++=
++---
+> >>>    hw/core/eif.h                   |   5 +-
+> >>
+> >> These changes to eif.c should ideally already be part of the patch tha=
+t
+> >> introduces eif.c (patch 1), no? In fact, do you think you can make the
+> >> whole eif logic its own patch file?
+> >>
+> > Good point. I guess it should be possible if I have the virtio-nsm
+> > device commit first and then add the machine/nitro-enclave commit with
+> > full support with the devices. That will of course make the
+> > machine/nitro-enclave commit larger. What do you think?
+>
+>
+> As long as nothing compiles the code, it can rely on not yet implemented
+> functions. So it's perfectly legit to add all your code in individual
+> commits and then at the end add the meson.build change that implements
+> the config option. How about the order below?
+>
+> * Crypto patch for SHA384
+> * Crypto patch for x509 fingerprint
+> * NSM device emulation (including libcbor check, introduces
+> CONFIG_VIRTIO_NSM)
+> * EIF format parsing (not compiled yet)
+> * Nitro Enclaves machine (introduces CONFIG_NITRO_ENCLAVE)
+> * Nitro Enclaves docs
+>
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Sounds good to me. Thanks Alex!
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Regards,
+Dorjoy
 
