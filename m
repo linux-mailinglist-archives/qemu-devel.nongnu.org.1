@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD36956298
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 06:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1169C95628C
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 06:23:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sfty1-0006dt-3n; Mon, 19 Aug 2024 00:26:05 -0400
+	id 1sftu2-0004ke-6G; Mon, 19 Aug 2024 00:21:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sfttY-0004aB-JT
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:21:28 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ id 1sfttm-0004eH-3X
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:21:45 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sfttV-0004HC-H2
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:21:28 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-5d5c7f24372so2602102eaf.0
- for <qemu-devel@nongnu.org>; Sun, 18 Aug 2024 21:21:24 -0700 (PDT)
+ id 1sfttk-0004Hh-H9
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:21:41 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1fec34f94abso32400765ad.2
+ for <qemu-devel@nongnu.org>; Sun, 18 Aug 2024 21:21:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724041284; x=1724646084; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724041298; x=1724646098; darn=nongnu.org;
  h=content-transfer-encoding:content-language:in-reply-to:mime-version
  :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9zMBFLaUmtC+DIxiu4oheIM8uCLkqi+EyyEj4w3QR8w=;
- b=AhSDdOpIwoYgrr0cclrnSrjTlO2/1cbB4g7fezYkHath/AcqE6/uXHnKdawKPdeRIa
- X8xy57EGToWoQkvaHhQ53gcZ1q1Raa5fyOa97TtYokdQccaxJ5yVb7aCDLi99Tt7z42H
- zkMLVEEFtBQqb51E//dK28gRRqbtR03ugXRWLoL3/363k7Dj8mloMWBP/+gvi2xCbDUw
- oUy2okQqRoZLPWj7IgXPdjBAF9ofc09cGOXIc4xqZhOMSl9+7LYCvq1BCD3oS5WT5gJU
- UatMipGvC15EWhldSd/6cfPJp1HIyMpQwNf6qdXhtHu+H/ws031r1qTKVy52qMep4ZZE
- jB6w==
+ bh=Ey2/XL3x4dsLSO0Rau9u/e+UZKi3H/ZDUx6iNciV5G8=;
+ b=s9k5dMlJJyCE2oFW5/Z5SuYNXHMJnqpEcrAGrAZLRm4Ya9PGSu8x6fX+DIpNDufFJS
+ 94gWk9JwUzxOOywZiGSz+LHm7ulu6pSN/mAP+JJ5pbMYzATONW1PqPGNazsYq+wwLwkK
+ cGfpb59LM/bVKK2PrRUhzcOyMtAAbFR0CNi4vLUK+NSCfHURXPw2npFg7PI3xfoSerZ/
+ hEw98aRy9pdSwntD6hkdY/Asx8o/dkUxQC9ettM+E3xfkFaWDSQ4X0vssoZ3lGnk/++r
+ h1N2LSUnk7Fmwe6Ay1TFNBkQUj17lOPOQvMow4usS7LEKnbtGy1H+6fUid6JM6V7ayfh
+ FqsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724041284; x=1724646084;
+ d=1e100.net; s=20230601; t=1724041298; x=1724646098;
  h=content-transfer-encoding:content-language:in-reply-to:mime-version
  :user-agent:date:message-id:from:references:cc:to:subject
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9zMBFLaUmtC+DIxiu4oheIM8uCLkqi+EyyEj4w3QR8w=;
- b=P6Xq5yHx8gdtOJD9nQiYN+O9H12a04RoBpumhuGI/TNg2WI8teiclUibjd3zLI9tmJ
- PmG63hGucNd0Nbtr2sPxgY5wmM4VG1PBtOwXZKScO5muj7k0fnq9WlwnOeaZkCJVluTy
- ZD/6lWlHb0wnPh8htdAS7x6k2kA0r2hmqa6FtTsM7N0roDh0DNnifE8jiF9WXxFAxgWy
- DSoq2DpyA6pqOyyoh1vyFbDcIMSipq8d4sbgAS7+ztDZcvZj0whRmWXAJ/AwjP0wQ85S
- vG/xrSOvbeaBMrI5GZxRjFStzTHMEdS0xyagl/1sY4I7hnOGycfKde39qU/kpLNg5Nrk
- tlZA==
+ bh=Ey2/XL3x4dsLSO0Rau9u/e+UZKi3H/ZDUx6iNciV5G8=;
+ b=p4baOjUT5pxLMRei9Sr92t0+r1yKxQsMeV5NzJzkw95229F6CzmNDG8RMaY5WW4EaM
+ xbpOVqCTsTsTkD/F07k+2DYYQJWRoprQgfARQ9DKkCY8uVTX9GFIJkyehuvjqsNDf8Ug
+ mqz2DFr/XyLNGRp58C/Xactbtdvy+Hz7XdiRFqCnaaRdM1BjwGiHpL3yWU63a3EsMmZH
+ DtwUPSLmZtlfud3ka6hNG+/FN3dxJA+2wyqPJ8KP4GyFiwo04CQXlIyDzhbWlMTK/LCu
+ uwOqnrVZI7gSXMq/x5+VQGFrabg9DShhq6bjKQUXMMoXpJozp75Kg1I5b8525oZmieV3
+ FtUw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV2ztaDw1uDqE8JeUp5lmAEaT9Mp3oE1BznGvJlAdFwd0oI53pqHOp0hORaRS5/sXocIwgdUWwrPckDoS3NoGHSBk8wXQQ=
-X-Gm-Message-State: AOJu0YwxUriFJ23tb2XXAb9U5YWL5qSHrSVXjH+cjq8D0qwCtRyScP3g
- u4xtn0yA+eN8e0LYS2OtcBGDSoP7BOQfqwLMHIQeEvx2qXIiql0M8OIMtQIdnd4=
-X-Google-Smtp-Source: AGHT+IEf8Q7/4W0fWIddamgDNe4FKal2aZCyI1xTaFnY6BC1hm07senB8BqZybM4OGwy4Hi05KU6Ag==
-X-Received: by 2002:a05:6358:478e:b0:19f:5a42:d2bd with SMTP id
- e5c5f4694b2df-1b393282954mr1606058055d.22.1724041283597; 
- Sun, 18 Aug 2024 21:21:23 -0700 (PDT)
+ AJvYcCWJNg/x7UCGdc7jLSwRVk1alZp44Qa4xtq2qZXpIth/eNRK71HrpcqdUCwCDE92LdCfhTEsjcQn2cW8vSKeu4IQBOhBZpM=
+X-Gm-Message-State: AOJu0Yx/rIJVaUttjqpRbR1yQH0rRH6WyoG/3yqaG3ZR5nJvtv2ODOGn
+ nd90fl5dFg3OH2L3w0/1kivHIwR/ScqFQsxNjBU9UVajSA/JCkEJ877prCaoKy0=
+X-Google-Smtp-Source: AGHT+IHwa6X2nceJCtPoVJnBuO4GBi+E1eKkqPaAi+Og+jHn2va1DEatQSTNbVhbUPQlkkec2GjeUQ==
+X-Received: by 2002:a17:902:ccca:b0:1fb:1afb:b864 with SMTP id
+ d9443c01a7336-20203e4a727mr104783795ad.5.1724041298061; 
+ Sun, 18 Aug 2024 21:21:38 -0700 (PDT)
 Received: from [192.168.0.103] ([191.205.40.123])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127ae669b7sm5891811b3a.88.2024.08.18.21.21.21
+ d9443c01a7336-201f03a1974sm55998565ad.276.2024.08.18.21.21.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Aug 2024 21:21:23 -0700 (PDT)
-Subject: Re: [PATCH 1/8] hw/pci-host/designware: Declare CPU QOM types using
- DEFINE_TYPES() macro
+ Sun, 18 Aug 2024 21:21:37 -0700 (PDT)
+Subject: Re: [PATCH 2/8] hw/pci-host/designware: Initialize root function in
+ host bridge realize
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
 References: <20231012121857.31873-1-philmd@linaro.org>
- <20231012121857.31873-2-philmd@linaro.org>
+ <20231012121857.31873-3-philmd@linaro.org>
 From: Gustavo Romero <gustavo.romero@linaro.org>
-Message-ID: <2f3df725-0d99-97d0-af7b-7054036e4228@linaro.org>
-Date: Mon, 19 Aug 2024 01:21:19 -0300
+Message-ID: <16a3fd1e-09a9-87d8-5e63-d7c3ab5a48b7@linaro.org>
+Date: Mon, 19 Aug 2024 01:21:34 -0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20231012121857.31873-2-philmd@linaro.org>
+In-Reply-To: <20231012121857.31873-3-philmd@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=gustavo.romero@linaro.org; helo=mail-oo1-xc2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
 X-Spam_bar: ---
@@ -104,88 +104,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Hi Phil,
 
 On 10/12/23 9:18 AM, Philippe Mathieu-Daudé wrote:
-> When multiple QOM types are registered in the same file,
-> it is simpler to use the the DEFINE_TYPES() macro. In
-> particular because type array declared with such macro
-> are easier to review.
+> There are no root function properties exposed by the host
+> bridge, so using a 2-step QOM creation isn't really useful.
 > 
-> Remove a pointless structure declaration in "designware.h".
+> Simplify by creating the root function when the host bridge
+> is realized.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   include/hw/pci-host/designware.h |  2 --
->   hw/pci-host/designware.c         | 39 ++++++++++++++------------------
->   2 files changed, 17 insertions(+), 24 deletions(-)
+>   hw/pci-host/designware.c | 15 ++++-----------
+>   1 file changed, 4 insertions(+), 11 deletions(-)
 > 
-> diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
-> index 908f3d946b..c484e377a8 100644
-> --- a/include/hw/pci-host/designware.h
-> +++ b/include/hw/pci-host/designware.h
-> @@ -31,8 +31,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIEHost, DESIGNWARE_PCIE_HOST)
->   #define TYPE_DESIGNWARE_PCIE_ROOT "designware-pcie-root"
->   OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERoot, DESIGNWARE_PCIE_ROOT)
->   
-> -struct DesignwarePCIERoot;
-> -
->   typedef struct DesignwarePCIEViewport {
->       DesignwarePCIERoot *root;
->   
 > diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-> index 6f5442f108..304eca1b5c 100644
+> index 304eca1b5c..692e0731cd 100644
 > --- a/hw/pci-host/designware.c
 > +++ b/hw/pci-host/designware.c
-> @@ -746,28 +746,23 @@ static void designware_pcie_host_init(Object *obj)
->       qdev_prop_set_bit(DEVICE(root), "multifunction", false);
+> @@ -707,6 +707,10 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
+>                          "pcie-bus-address-space");
+>       pci_setup_iommu(pci->bus, designware_pcie_host_set_iommu, s);
+>   
+> +    object_initialize_child(OBJECT(dev), "root", &s->root,
+> +                            TYPE_DESIGNWARE_PCIE_ROOT);
+> +    qdev_prop_set_int32(DEVICE(&s->root), "addr", PCI_DEVFN(0, 0));
+> +    qdev_prop_set_bit(DEVICE(&s->root), "multifunction", false);
+>       qdev_realize(DEVICE(&s->root), BUS(pci->bus), &error_fatal);
 >   }
 >   
-> -static const TypeInfo designware_pcie_root_info = {
-> -    .name = TYPE_DESIGNWARE_PCIE_ROOT,
-> -    .parent = TYPE_PCI_BRIDGE,
-> -    .instance_size = sizeof(DesignwarePCIERoot),
-> -    .class_init = designware_pcie_root_class_init,
-> -    .interfaces = (InterfaceInfo[]) {
-> -        { INTERFACE_PCIE_DEVICE },
-> -        { }
-> +static const TypeInfo designware_pcie_types[] = {
-> +    {
-> +        .name           = TYPE_DESIGNWARE_PCIE_HOST,
-> +        .parent         = TYPE_PCI_HOST_BRIDGE,
-> +        .instance_size  = sizeof(DesignwarePCIEHost),
-> +        .instance_init  = designware_pcie_host_init,
-> +        .class_init     = designware_pcie_host_class_init,
-> +    }, {
-> +        .name           = TYPE_DESIGNWARE_PCIE_ROOT,
-> +        .parent         = TYPE_PCI_BRIDGE,
-> +        .instance_size  = sizeof(DesignwarePCIERoot),
-> +        .class_init     = designware_pcie_root_class_init,
-> +        .interfaces     = (InterfaceInfo[]) {
-> +            { INTERFACE_PCIE_DEVICE },
-> +            { }
-> +        },
->       },
->   };
+> @@ -736,22 +740,11 @@ static void designware_pcie_host_class_init(ObjectClass *klass, void *data)
+>       dc->vmsd = &vmstate_designware_pcie_host;
+>   }
 >   
-> -static const TypeInfo designware_pcie_host_info = {
-> -    .name       = TYPE_DESIGNWARE_PCIE_HOST,
-> -    .parent     = TYPE_PCI_HOST_BRIDGE,
-> -    .instance_size = sizeof(DesignwarePCIEHost),
-> -    .instance_init = designware_pcie_host_init,
-> -    .class_init = designware_pcie_host_class_init,
-> -};
-> -
-> -static void designware_pcie_register(void)
+> -static void designware_pcie_host_init(Object *obj)
 > -{
-> -    type_register_static(&designware_pcie_root_info);
-> -    type_register_static(&designware_pcie_host_info);
+> -    DesignwarePCIEHost *s = DESIGNWARE_PCIE_HOST(obj);
+> -    DesignwarePCIERoot *root = &s->root;
+> -
+> -    object_initialize_child(obj, "root", root, TYPE_DESIGNWARE_PCIE_ROOT);
+> -    qdev_prop_set_int32(DEVICE(root), "addr", PCI_DEVFN(0, 0));
+> -    qdev_prop_set_bit(DEVICE(root), "multifunction", false);
 > -}
-> -type_init(designware_pcie_register)
-> +DEFINE_TYPES(designware_pcie_types)
+> -
+>   static const TypeInfo designware_pcie_types[] = {
+>       {
+>           .name           = TYPE_DESIGNWARE_PCIE_HOST,
+>           .parent         = TYPE_PCI_HOST_BRIDGE,
+>           .instance_size  = sizeof(DesignwarePCIEHost),
+> -        .instance_init  = designware_pcie_host_init,
+>           .class_init     = designware_pcie_host_class_init,
+>       }, {
+>           .name           = TYPE_DESIGNWARE_PCIE_ROOT,
 > 
 
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-
-This patch can get merged independently of this series.
+I could not find any mention in the docs recommending the use of
+init/realize pair only when properties could be consumed. Anyways,
+you agreed with Peter's comment (I agree too), so I understand this
+patch will be drop since it doesn't affect the other patches in the
+series.
 
 
 Cheers,
