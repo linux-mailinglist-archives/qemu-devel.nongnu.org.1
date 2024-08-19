@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F41D956958
+	by mail.lfdr.de (Postfix) with ESMTPS id BD930956959
 	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 13:33:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sg0cG-0004Xd-2w; Mon, 19 Aug 2024 07:32:04 -0400
+	id 1sg0cO-0004k4-Cl; Mon, 19 Aug 2024 07:32:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sg0cD-0004Vr-Lp; Mon, 19 Aug 2024 07:32:01 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1sg0cJ-0004in-Sn; Mon, 19 Aug 2024 07:32:08 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sg0cB-0007so-RY; Mon, 19 Aug 2024 07:32:01 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-202376301e6so5809865ad.0; 
- Mon, 19 Aug 2024 04:31:59 -0700 (PDT)
+ id 1sg0cH-0007tE-Sg; Mon, 19 Aug 2024 07:32:07 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-201fbd0d7c2so24158335ad.0; 
+ Mon, 19 Aug 2024 04:32:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724067118; x=1724671918; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0Q0WRL3MjlfD2sGyNmGan0k6158IInmLjELt4dS2Xec=;
- b=M1swBtJXZLHReNFMPBcYXtTv7bw3JlVuIfDNW4bGiHGsRNn53V58XCyDrmXVqY9ubR
- ejWCvpCjXPEbeemXA0TfWkaNaZmn1QJs36tzvUJYzPLY4LzwkUtwveZQ/9DzpwfN/OQ6
- +7jSSZWVLgbby/bc5C52zFt9eRFwHIBYyRzvyhRrp559tMJlQ4QNjQMcaHBbx9oLsZX4
- 2Cir7jJnx6azQEk1eE7IYQpjZP5ox8agy71WCMLuU9S/Z7lIu3yWC5XTYR5rgVqup+Zg
- Kh/5da/0SKGcQq2r390dv0Q46Pw/W86vO6fqT0q/oBkfWjnPs8VJ6KDLmdExIT0yGK9D
- 2jrQ==
+ d=gmail.com; s=20230601; t=1724067124; x=1724671924; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=021PAq7IpXYIvnIVv8yykD2C9A93y9EXWvxSgWQNcyk=;
+ b=ByB9CW46n/C9Z1E0eppec16imzZPmsXiXWfRxHGDyMOnNLRh4q0nT4ykmBRlbWncPx
+ Qcg4GqcCXlE8gj8ZlvoH53QrrV3D4X1kDNpqIc3Cy3DaTi3gt6gp3GYQkn6hrwEljaPb
+ VCxQlP8s8Sm2yASYfyP0VC8kwr36nzECdaif23/li4ODXvBZspRrwwnzwa0j7hcvMUz/
+ +RXNJRkFm2xc2XGVMVGh4ggy+BKNzNOdh+dhiIgDETUIKdkhB0Ev9RLmRR4FqTmTExPw
+ rVHfONRDs9qu2JLqgrbUgm6QUIiBForJFrEgTZZOrYDGy1BUCVmxxhOVI/8qpeFjlMcy
+ 4EgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724067118; x=1724671918;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0Q0WRL3MjlfD2sGyNmGan0k6158IInmLjELt4dS2Xec=;
- b=hxFcgW63Jz/m+Uounl21e3nQG1f22/wknH9HbfUQZiqVx5j3n5JAJeqN8AKw45MJq1
- ENhvUkZKNyXrjdO6/l1z/h1xbD+SZOR+bkIdonKbBe3U1VW0OwA0sg+lbfi7hT+akeqK
- 1M4wRAkU6ivkjqq3AVam7QMUN2mOOa0kAXKRtbdG9KKqnbTZ9UAaL/YZfNL5+h+i2LEk
- Qav9J31QD0dkrNPbBkj7BnK9H9VmxbtpIpB/SsPcAiQmgepvmwEX7pzWOSdiLA6uzg7P
- zhCuvLU5MJDdSTIKbRtS4Xuvwu+ehfUZOZxYHzaDmBRmvhhNCi7EXdloUx8r7rn7nuqy
- QLlQ==
+ d=1e100.net; s=20230601; t=1724067124; x=1724671924;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=021PAq7IpXYIvnIVv8yykD2C9A93y9EXWvxSgWQNcyk=;
+ b=XUmIVVy1FyVuBTLOgWs/XYsUZRLNnEHg5U3tnAzgNrfyJzTCFWgOV40m+hKlHGAUBf
+ 3HWxtHB3/BbP2WLV3KaaHtobLMfVG02+6HpIrCKDrm+XR5kcngW5D/krKbWzkW7rzUq5
+ arNf58exc36uc9XtflqnsyylUaNS3y3w3czrQxygY0/RkXcNb/wYwJiuhGO+/J++Q//R
+ c0VDwiEwniNK99O7Oo2ydF8t9bE0tjo0c9N7n4Y6F6p/zqwLIzvhS5TfoX0/loH0feUC
+ T4WuyoVTwnz/vavkJkBUbDMyTrpTVtgJobmY/5UkNq4QuzEslobdUtXdERMu/lmu3U4s
+ tpww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV9YiyVC3G+Cib+3Snz7261Jc4+rGzCYk9xXigyhjpcycG5yr2l/rfUeJVXrZQA4LTQzfzy9eJiy6Fq7PcXGlw2L7b3lCo1gdr3aeIvyXZkUagoDXVstx/iFeQXMg==
-X-Gm-Message-State: AOJu0Ywf1slOwgVEU74cvVs4PSaNAd37bwQ2ijph5TLRmXeK04WxZMBp
- 1vMDKoxyuiiuj72UaqZgrJftGzyAHQ7biEJsvUAKuJpN1UX/5VyZ
-X-Google-Smtp-Source: AGHT+IHudqouSK8axqyXAbWo9yJcVOZfykgiJLAK21/SamjcKI7/IIWUgk1Slnm3ekvUu6Peme09Vw==
-X-Received: by 2002:a17:902:e847:b0:202:435b:2112 with SMTP id
- d9443c01a7336-202435b22d3mr30189895ad.34.1724067117753; 
- Mon, 19 Aug 2024 04:31:57 -0700 (PDT)
+ AJvYcCWtmCwAZ/+FNILVCIMp8p60b9jYaHdkWxbZHUeEkMyH3UEcSuVUDPQwBYnOZBfzGrJZ/+jlZ0Xc+V1vHP2q1a2NNtCnC+CwyXMffSa7FVLj//Q2wcGswJszMrTG3g==
+X-Gm-Message-State: AOJu0YzItAAsplxd8GfpHzLxIgKMXYljxV+z5kcRQ4PN0LcU0T0guW+Q
+ WKiy/5lmB9wy6IfV+HBjK4RSrf6+mnvL7cKPfwroKvWJUqs+AP6P
+X-Google-Smtp-Source: AGHT+IE3dYfue1VGocS7gztoDn7V5ccsnhmGclrjfY6RCgAHj4ZxfR81GQhL4p+wMK33lTJ64Q5r5w==
+X-Received: by 2002:a17:902:da8a:b0:1fd:8c25:415d with SMTP id
+ d9443c01a7336-20203ed3a00mr83580015ad.36.1724067123559; 
+ Mon, 19 Aug 2024 04:32:03 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f038a84esm61263445ad.189.2024.08.19.04.31.52
+ d9443c01a7336-201f038a84esm61263445ad.189.2024.08.19.04.31.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Aug 2024 04:31:57 -0700 (PDT)
+ Mon, 19 Aug 2024 04:32:03 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: peter.maydell@linaro.org,
@@ -69,15 +70,16 @@ Cc: liwei1518@gmail.com, atishp@rivosinc.com, palmer@dabbelt.com,
  Alistair Francis <Alistair.Francis@wdc.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v2 0/2] riscv: char: Avoid dropped charecters
-Date: Mon, 19 Aug 2024 21:31:46 +1000
-Message-ID: <20240819113148.3007047-1-alistair.francis@wdc.com>
+Subject: [PATCH v2 1/2] hw/char: riscv_htif: Use blocking qemu_chr_fe_write_all
+Date: Mon, 19 Aug 2024 21:31:47 +1000
+Message-ID: <20240819113148.3007047-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240819113148.3007047-1-alistair.francis@wdc.com>
+References: <20240819113148.3007047-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,24 +103,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series fixes: https://gitlab.com/qemu-project/qemu/-/issues/2114
+The current approach of using qemu_chr_fe_write() and ignoring the
+return values results in dropped charecters [1]. Ideally we want to
+report FIFO status to the guest, but the HTIF isn't a real UART, so we
+don't really have a way to do that.
 
-This converts the RISC-V charecter device callers of qemu_chr_fe_write()
-to either use qemu_chr_fe_write_all() or to call qemu_chr_fe_write() async
-and act on the return value.
+Instead let's just use qemu_chr_fe_write_all() so at least we don't drop
+charecters.
 
-v2:
- - Use Fifo8 for the Sifive UART instead of a custom FIFO
+1: https://gitlab.com/qemu-project/qemu/-/issues/2114
 
-Alistair Francis (2):
-  hw/char: riscv_htif: Use blocking qemu_chr_fe_write_all
-  hw/char: sifive_uart: Print uart charecters async
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ hw/char/riscv_htif.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
- include/hw/char/sifive_uart.h | 17 ++++++-
- hw/char/riscv_htif.c          | 12 ++++-
- hw/char/sifive_uart.c         | 88 +++++++++++++++++++++++++++++++++--
- 3 files changed, 109 insertions(+), 8 deletions(-)
-
+diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
+index 9bef60def1..d40b542948 100644
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+@@ -218,7 +218,11 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
+                     tswap64(syscall[3]) == HTIF_CONSOLE_CMD_PUTC) {
+                     uint8_t ch;
+                     cpu_physical_memory_read(tswap64(syscall[2]), &ch, 1);
+-                    qemu_chr_fe_write(&s->chr, &ch, 1);
++                    /*
++                     * XXX this blocks entire thread. Rewrite to use
++                     * qemu_chr_fe_write and background I/O callbacks
++                     */
++                    qemu_chr_fe_write_all(&s->chr, &ch, 1);
+                     resp = 0x100 | (uint8_t)payload;
+                 } else {
+                     qemu_log_mask(LOG_UNIMP,
+@@ -237,7 +241,11 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
+             return;
+         } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
+             uint8_t ch = (uint8_t)payload;
+-            qemu_chr_fe_write(&s->chr, &ch, 1);
++            /*
++             * XXX this blocks entire thread. Rewrite to use
++             * qemu_chr_fe_write and background I/O callbacks
++             */
++            qemu_chr_fe_write_all(&s->chr, &ch, 1);
+             resp = 0x100 | (uint8_t)payload;
+         } else {
+             qemu_log("HTIF device %d: unknown command\n", device);
 -- 
 2.46.0
 
