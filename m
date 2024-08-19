@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983FF95783A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F5C957836
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgBGF-0007qd-Lz; Mon, 19 Aug 2024 18:54:04 -0400
+	id 1sgBGA-00078Q-Vq; Mon, 19 Aug 2024 18:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEr-0001rZ-QW
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:40 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEx-000265-7a
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:45 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEp-0000mg-8n
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:36 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4281ca54fd3so38751555e9.2
- for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEu-0000nl-82
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:41 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-37196229343so2253264f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724107953; x=1724712753; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724107957; x=1724712757; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CfFtvwBUu6O5iys7XE1dWmkEu565Z9xC0zCU21IHrTk=;
- b=dUQya8JDiDTeZj10U3FuTExL9MYWkrIW9I6W9reYNgC9WQ0eG9EEkVkHGAS1ColXHR
- 5oTwuVDeaqvtFEn/j0qmycx+IjNNQmYc6Nw+pxplOpJKxoT1rRK1/Dkh/8/qJ4wdodHE
- Fo9Jlgdfn/K8RxDo0nyt3k8xJhgCWfr0fg8z7OONdNHih9PG4/9k0KJg82WPsUAam/fh
- u5dBu2nC6UQ/aApMowBQ9K9NxN8kNH4TBEAjhJnvhklL2JdEMAagPVEt3tjGRFIlNXYR
- NVj34ZHKF75iFg/c0cwHqBdrY+PwYjg8o1OUkBkYOM9Zvh8syO3+0nrIQ9AlTqKmPacZ
- kgWg==
+ bh=z09RW6IFcneNIVHjMWauhlzcbq2Ve54pkQqfOcA3PEg=;
+ b=ElViYo1jGB/IydxtVP/35FT7U3FFTpX/428tiEaJLxqRZB4tTZ9WeRMPX7Swu2jFfr
+ XqtvjTHtMIm5IWyj7R8+2K0Kj7ith2tYYEdP7z9WMlSgnHfS1si+XRj7yaEoZ8hFxfUE
+ w8dPyabSsTVef0ENlT5J8FSC1QRPbI9B7MMZMfnVqx13nmdzaCuJEgM7pAqfCxO2HDKT
+ P6hDyGUq9TKz69gpr6afpbybBZwqZ9ifp99CcUlTrXsrHLGHdknIX6IYtQdadR7xhOgy
+ KNnObPjIybEAPDLqnfxRtsV92RRIW3r720Sg6ppBvu+UdULVKBzx8n5Gye+NDBFR8yax
+ thoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724107953; x=1724712753;
+ d=1e100.net; s=20230601; t=1724107957; x=1724712757;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CfFtvwBUu6O5iys7XE1dWmkEu565Z9xC0zCU21IHrTk=;
- b=RCYGTvyTr9h561UOX2dYuq9jIzCosz9OH+oRoclHwmOJyRh/F1rSlNNWJ9nLJ+6dNH
- BwPOxQp+zydaYlYOkLY8j01Zx9o1gVHLevjSDNDUR9DqR51vmL5p/AG8oUXKUPXpzqOl
- gi1crrbCbLMqec67o5Ctpx4cUap/k0cKgdWaWjdPZC4l8LUfg+knhyAitfe+GHVj0HQd
- RxtZxMabFZaY6JPuF7RbYRY8cKnP6Klf9ou94qwtNfJGMWRCt/tUcBnNr5XpcVbHlCBk
- gYgCSv0OwCeqMmmxdWe4PtKsE8ZITS++wMnvKTGUF6VlTw1mLWHeUtHbbQg1RLP0PdHA
- ohNw==
-X-Gm-Message-State: AOJu0Yyx42akQu1UMRFYY+g2bS6w9AiSL8gdYnfdLbH0bafp6b7TRojT
- FKG++IlswqwQnhpOk4WvgjPf+cBODHVRjnURKNS44Lrd9aMSojNeSdukvJdr0tQ+ZSMvIg7FSPN
- Ilrw=
-X-Google-Smtp-Source: AGHT+IHrQr4YwIT9vzFLmUWWj50emigoEoElZZMUbBMnBJhvxKUtG8dDJm3ZwXFuFNKG2TBfWqcy9A==
-X-Received: by 2002:adf:a408:0:b0:368:4910:8f49 with SMTP id
- ffacd0b85a97d-37194315ae6mr10221794f8f.12.1724107953195; 
- Mon, 19 Aug 2024 15:52:33 -0700 (PDT)
+ bh=z09RW6IFcneNIVHjMWauhlzcbq2Ve54pkQqfOcA3PEg=;
+ b=Edwg6IiexN59XPFobe0lvy3Krq2BrMt1/e4mzCoS4JzOULCdcVfl9h9xk0k8Py0Wtb
+ HSFhN4UtCLTZaeUHRxlNAfHB5KUv0xvd4ZdLnU5FL6vGl6xHJflPDsf2Yvrhpoa3F20M
+ km8YOn/pFM/eb5QKoyN+iesBWvCcq5iKdeOCLocEJ2Ojb26I7QfceE0Hvxx3w5XfOVQG
+ ZcSjDgkFo9KaDIFB8tO6OyJyvNWr56CZuVHujI1TWO1hxOxZzYyGDNt9aHxBmL3/P/jY
+ tTLt+t+JNS12cDBdNSR3kZRF50tAmOjxoJCxo0U6Ymp53DEaBE3xLnnbE5aJihv0dTzp
+ 5fwA==
+X-Gm-Message-State: AOJu0YxhExjoiMrzyL0NEecQiU/nQUPGIA3BqM4j3vvVLq2Vq+vo5jAf
+ Vn1+SnglESO1Ic9MoOX5Yj9szvx4NOA/I9U/9DTpXSmvkCP0L7LSub1QmJnGUCEsjOJEdoiLhHq
+ gA3s=
+X-Google-Smtp-Source: AGHT+IFppZc2C2k0jzdRIXeMYR2BrPwxSECWzKO6v6Mvlb+8GJrm4Spb218TdNBcu+z6fuTLjTe1qw==
+X-Received: by 2002:adf:9785:0:b0:371:8e67:7a90 with SMTP id
+ ffacd0b85a97d-371946a4f3emr7195327f8f.49.1724107957546; 
+ Mon, 19 Aug 2024 15:52:37 -0700 (PDT)
 Received: from localhost.localdomain (88-178-97-237.subs.proxad.net.
  [88.178.97.237]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37189896be4sm11657731f8f.77.2024.08.19.15.52.32
+ ffacd0b85a97d-37189849831sm11585295f8f.30.2024.08.19.15.52.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Aug 2024 15:52:32 -0700 (PDT)
+ Mon, 19 Aug 2024 15:52:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org,
+Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/20] target/sparc: Restrict STQF to sparcv9
-Date: Tue, 20 Aug 2024 00:51:12 +0200
-Message-ID: <20240819225116.17928-17-philmd@linaro.org>
+Subject: [PULL 17/20] hw/ppc/Kconfig: Add missing SERIAL_ISA dependency to
+ POWERNV machine
+Date: Tue, 20 Aug 2024 00:51:13 +0200
+Message-ID: <20240819225116.17928-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240819225116.17928-1-philmd@linaro.org>
 References: <20240819225116.17928-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,47 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Prior to sparcv9, the same encoding was STDFQ.
+The machine calls serial_hds_isa_init() which is provided by serial-isa.c,
+guarded by SERIAL_ISA.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 06c060d9e5b ("target/sparc: Move simple fp load/store to decodetree")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240816072311.353234-2-richard.henderson@linaro.org>
+Message-ID: <20240814181534.218964-4-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/insns.decode | 2 +-
- target/sparc/translate.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/ppc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index fbcb4f7aef..5fd478191a 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -644,7 +644,7 @@ STF         11 ..... 100100 ..... . .............          @r_r_ri_na
- STFSR       11 00000 100101 ..... . .............          @n_r_ri
- STXFSR      11 00001 100101 ..... . .............          @n_r_ri
- {
--  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na
-+  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na # v9
-   STDFQ     11 ----- 100110 ----- - -------------
- }
- STDF        11 ..... 100111 ..... . .............          @d_r_ri_na
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 113639083b..c803e8d1ba 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -4521,7 +4521,7 @@ static bool do_st_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp sz)
- 
- TRANS(STF, ALL, do_st_fpr, a, MO_32)
- TRANS(STDF, ALL, do_st_fpr, a, MO_64)
--TRANS(STQF, ALL, do_st_fpr, a, MO_128)
-+TRANS(STQF, 64, do_st_fpr, a, MO_128)
- 
- TRANS(STFA, 64, do_st_fpr, a, MO_32)
- TRANS(STDFA, 64, do_st_fpr, a, MO_64)
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index c235519881..5addad1124 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -39,6 +39,7 @@ config POWERNV
+     select PCI_POWERNV
+     select PCA9552
+     select PCA9554
++    select SERIAL_ISA
+     select SSI
+     select SSI_M25P80
+     select PNV_SPI
 -- 
 2.45.2
 
