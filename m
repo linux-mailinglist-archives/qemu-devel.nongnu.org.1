@@ -2,96 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A276956B37
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 14:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7EF956A4A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 14:04:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sg1q9-0000KJ-F9; Mon, 19 Aug 2024 08:50:29 -0400
+	id 1sg16Q-0004ha-5s; Mon, 19 Aug 2024 08:03:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <grovesaustin@gmail.com>)
- id 1sfrsu-0006GM-G2
- for qemu-devel@nongnu.org; Sun, 18 Aug 2024 22:12:40 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <grovesaustin@gmail.com>)
- id 1sfrss-0005hb-9a
- for qemu-devel@nongnu.org; Sun, 18 Aug 2024 22:12:40 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-5d5e97b8a22so2303136eaf.2
- for <qemu-devel@nongnu.org>; Sun, 18 Aug 2024 19:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724033557; x=1724638357; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
- :reply-to; bh=kuLzrxHtd3ErSvy/xkwzVOEiflzs3mXlwCUfMyo1XlY=;
- b=Ev6a3/rjtA9z+UmyWuHMew9UqGjuTRhDhjn2M3iji56XeSZfuCvBUT0qAHFokhEsIJ
- tUnkREHeEWoHlphyp0zOT46E/q/8fLYAGQz5lq3fAVAlAiNceG+vwER1YNZbW2g3Ur1n
- mIdadJ0Jx7Sws54c9JlTc+3lJis7kPUCTUwFiYJ9sdAvLOXO3OsVnd74McDz9lcJlPlY
- 9w6c635k7xBQS50xS1ti2hsdClz5zDzCiO8ZdCg/yTSbbESho0wWUE/8uCmNCC2V/HDZ
- sriqpRGcxAF5MXzt/0tWdTYmYv3yc6w1/r4sVM+UndfMSsndcxjjkvIveYH4Zz5vASj5
- ++eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724033557; x=1724638357;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kuLzrxHtd3ErSvy/xkwzVOEiflzs3mXlwCUfMyo1XlY=;
- b=VQ7KZSeOEqird7il47ICIAmWEXwrTgurfJtHh6lnP0kLeNaxhTmx/jcMTiEOOfxbbi
- ALMrUHpkeU6Z2EGt/HN+BHfiqT4fB+rzXkpf2e/MwWMrRN21kPQgE8W5JeXPIGe+z3Ob
- Asf59xFEZ4CDfl+Yo2C/0fYhIVWwWmIoxE9OPAzItWsEJNu289mMQxl2sMJmIxZGOLCm
- gu9wbRqTwTv7UrL7dHXAeFyr/dXTjn9r5xoiPstLYS0WAzJ0e+vhCXr2qIWZLujkL+7m
- uRbkyRsu7JanxGTsWy1H7o988Q3O/NBXWeDKk68qK6hNJqtu8HXYSfBVd63TK2BwK1g2
- RdkQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUfEfeWX1iw3vIVJlK7SiXgbJh/BJOD2i2EiIj0ImF2fUUgi1UNMrdBvAG9rFs6cIN1VJAWIU3AYi3PufvDt99hpTlwZF0=
-X-Gm-Message-State: AOJu0YyoaBBqOFpGxCKXrWjO3cL2g7ikSoUG/Z4FpjkVY5ce3U/FQBHB
- SbDMVPlwQU2tSRFdmcsaUl2z8ikFkrxOlj8gEueqYR1DUY2vr56q
-X-Google-Smtp-Source: AGHT+IGPFkOOeEpckRDFCUVwQIGGQr/JsPZgxRaMEz2IAoGo+sQFEwWCNUAzmF3eAuk+/dJ8qwreqw==
-X-Received: by 2002:a05:6820:1624:b0:5da:a2fd:5af9 with SMTP id
- 006d021491bc7-5daa2fd7235mr7883905eaf.8.1724033556730; 
- Sun, 18 Aug 2024 19:12:36 -0700 (PDT)
-Received: from Borg-110.local (syn-070-114-203-196.res.spectrum.com.
- [70.114.203.196]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5da8cf83db6sm1928759eaf.33.2024.08.18.19.12.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Aug 2024 19:12:36 -0700 (PDT)
-Date: Sun, 18 Aug 2024 21:12:34 -0500
-From: John Groves <John@groves.net>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, 
- linux-cxl@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>, 
- Ira Weiny <ira.weiny@intel.com>, virtualization@lists.linux.dev, 
- Oscar Salvador <osalvador@suse.de>, qemu-devel@nongnu.org,
- Dave Jiang <dave.jiang@intel.com>, 
- Dan Williams <dan.j.williams@intel.com>, linuxarm@huawei.com,
- wangkefeng.wang@huawei.com, 
- John Groves <jgroves@micron.com>, Fan   Ni <fan.ni@samsung.com>, 
- Navneet   Singh <navneet.singh@intel.com>,
- =?utf-8?B?4oCcTWljaGFlbCBTLiBUc2lya2lu4oCd?= <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [RFC] Virtualizing tagged disaggregated memory capacity (app
- specific, multi host shared)
-Message-ID: <sjz2xzwkgkq6bun5lssqbsimbggczarotpjdhcsq3itoq5h7jc@x5ormqciwofo>
-References: <20240815172223.00001ca7@Huawei.com>
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sg16N-0004gN-9x
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 08:03:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sg16K-00059U-R4
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 08:03:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1724068985;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+Z4P7MEOyE57BzTzXjsp1+ExYU3jRxXMUpoguGosYG8=;
+ b=b/uM0gvSXHtprVZLcuRneLUe+kUqqmsnudSo8TR2/84FmjgHLRswGxwWyH4rq/XDoQr5Zr
+ v8nVoXXYyE1J/mm+VOwDO6lK+RUbEOsP/f66GJO4+VQzgsU32P6r0AqpjIIZoeWa5QY0lM
+ Kw878WMSJDBKgXQSglb6NULalYi5Asw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-oxXvGRnVMm-A5KYphbeoyQ-1; Mon,
+ 19 Aug 2024 08:03:02 -0400
+X-MC-Unique: oxXvGRnVMm-A5KYphbeoyQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1FE7C1955F08; Mon, 19 Aug 2024 12:03:00 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.74.17.132])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A3C161955BEE; Mon, 19 Aug 2024 12:02:54 +0000 (UTC)
+From: Prasad Pandit <ppandit@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: farosas@suse.de, jasowang@redhat.com, mcoqueli@redhat.com, mst@redhat.com,
+ peterx@redhat.com, pjp@fedoraproject.org
+Subject: [RFC-PATCH v2] vhost-user: add a request-reply lock
+Date: Mon, 19 Aug 2024 17:32:48 +0530
+Message-ID: <20240819120248.170180-1-ppandit@redhat.com>
+In-Reply-To: <20240808095147.291626-3-ppandit@redhat.com>
+References: <20240808095147.291626-3-ppandit@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815172223.00001ca7@Huawei.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=grovesaustin@gmail.com; helo=mail-oo1-xc29.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.134,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 19 Aug 2024 08:50:24 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,117 +81,357 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/08/15 05:22PM, Jonathan Cameron wrote:
-> Introduction
-> ============
-> 
-> If we think application specific memory (including inter-host shared memory) is
-> a thing, it will also be a thing people want to use with virtual machines,
-> potentially nested. So how do we present it at the Host to VM boundary?
-> 
-> This RFC is perhaps premature given we haven't yet merged upstream support for
-> the bare metal case. However I'd like to get the discussion going given we've
-> touched briefly on this in a number of CXL sync calls and it is clear no one is
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-Excellent write-up, thanks Jonathan.
+QEMU threads use vhost_user_write/read calls to send
+and receive request/reply messages from a vhost-user
+device. When multiple threads communicate with the
+same vhost-user device, they can receive each other's
+messages, resulting in an erroneous state.
 
-Hannes' idea of an in-person discussion at LPC is a great idea - count me in.
+When fault_thread exits upon completion of Postcopy
+migration, it sends a 'postcopy_end' message to the
+vhost-user device. But sometimes 'postcopy_end' message
+is sent while vhost device is being setup via
+vhost_dev_start().
 
-As the proprietor of famfs [1] I have many thoughts.
+     Thread-1                           Thread-2
 
-First, I like the concept of application-specific memory (ASM), but I wonder
-if there might be a better term for it. ASM suggests that there is one
-application, but I'd suggest that a more concise statement of the concept
-is that the Linux kernel never accesses or mutates the memory - even though
-multiple apps might share it (e.g. via famfs). It's a subtle point, but
-an important one for RAS etc. ASM might better be called non-kernel-managed
-memory - though that name does not have as good a ring to it. Will mull this
-over further...
+ vhost_dev_start                    postcopy_ram_incoming_cleanup
+ vhost_device_iotlb_miss            postcopy_notify
+ vhost_backend_update_device_iotlb  vhost_user_postcopy_notifier
+ vhost_user_send_device_iotlb_msg   vhost_user_postcopy_end
+ process_message_reply              process_message_reply
+ vhost_user_read                    vhost_user_read
+ vhost_user_read_header             vhost_user_read_header
+ "Fail to update device iotlb"      "Failed to receive reply to postcopy_end"
 
-Now a few level-setting comments on CXL and Dynamic Capacity Devices (DCDs),
-some of which will be obvious to many of you:
+This creates confusion when vhost-user device receives
+'postcopy_end' message while it is trying to update
+IOTLB entries.
 
-* A DCD is just a memory device with an allocator and host-level
-  access-control built in.
-* Usable memory from a DCD is not available until the fabric manger (likely
-  on behalf of an orchestrator) performs an Initiate Dynamic Capacity Add
-  command to the DCD.
-* A DCD allocation has a tag (uuid) which is the invariant way of identifying
-  the memory from that allocation.
-* The tag becomes known to the host from the DCD extents provided via
-  a CXL event following succesful allocation.
-* The memory associated with a tagged allocation will surface as a dax device
-  on each host that has access to it. But of course dax device naming &
-  numbering won't be consistent across separate hosts - so we need to use
-  the uuid's to find specific memory.
+ vhost_user_read_header:
+  700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+ vhost_device_iotlb_miss:
+  700871,700871: Fail to update device iotlb
+ vhost_user_postcopy_end:
+  700871,700900: Failed to receive reply to postcopy_end
+ vhost_user_read_header:
+  700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
 
-A few less foundational observations:
+Here fault thread seems to end the postcopy migration
+while another thread is starting the vhost-user device.
 
-* It does not make sense to "online" shared or sharable memory as system-ram,
-  because system-ram gets zeroed, which blows up use cases for sharable memory.
-  So the default for sharable memory must be devdax mode.
-* Tags are mandatory for sharable allocations, and allowed but optional for
-  non-sharable allocations. The implication is that non-sharable allocations
-  may get onlined automatically as system-ram, so we don't need a namespace
-  for those. (I argued for mandatory tags on all allocations - hey you don't
-  have to use them - but encountered objections and dropped it.)
-* CXL access control only goes to host root ports; CXL has no concept of
-  giving access to a VM. So some component on a host (perhaps logically
-  an orchestrator component) needs to plumb memory to VMs as appropriate.
+Add a mutex lock to hold for one request-reply cycle
+and avoid such race condition.
 
-So tags are a namespace to find specific memory "allocations" (which in the
-CXL consortium, we usually refer to as "tagged capacity").
+Fixes: 46343570c06e ("vhost+postcopy: Wire up POSTCOPY_END notify")
+Suggested-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+---
+ hw/virtio/vhost-user.c         | 74 ++++++++++++++++++++++++++++++++++
+ include/hw/virtio/vhost-user.h |  3 ++
+ 2 files changed, 77 insertions(+)
 
-In an orchestrated environment, the orchestrator would allocate resources
-(including tagged memory capacity), make that capacity visible on the right
-host(s), and then provide the tag when starting the app if needed.
+v2:
+ - Place QEMU_LOCK_GUARD near the vhost_user_write() calls, holding
+   the lock for longer fails some tests during rpmbuild(8).
+ - rpmbuild(8) fails for some SRPMs, not all. RHEL-9 SRPM builds with
+   this patch, whereas Fedora SRPM does not build.
+ - The host OS also seems to affect rpmbuild(8). Some SRPMs build well
+   on RHEL-9, but not on Fedora-40 machine.
 
-if (e.g.) the memory cotains a famfs file system, famfs needs the uuid of the
-root memory allocation to find the right memory device. Once mounted, it's a
-file sytem so apps can be directed to the mount path. Apps that consume the
-dax devices directly also need the uuid because /dev/dax0.0 is not invariant
-across a cluster...
+v1: https://lore.kernel.org/qemu-devel/20240808095147.291626-3-ppandit@redhat.com/#R
 
-I have been assuming that when the CXL stack discovers a new DCD allocation,
-it will configure the devdax device and provide some way to find it by tag.
-/sys/cxl/<tag>/dev or whatever. That works as far as it goes, but I'm coming
-around to thinking that the uuid-to-dax map should not be overtly CXL-specific.
-
-General thoughts regarding VMs and qemu
-
-Physical connections to CXL memory are handled by physical servers. I don't
-think there is a scenario in which a VM should interact directly with the
-pcie function(s) of CXL devices. They will be configured as dax devices
-(findable by their tags!) by the host OS, and should be provided to VMs
-(when appropriate) as DAX devices. And software in a VM needs to be able to
-find the right DAX device the same way it would running on bare metal - by
-the tag.
-
-Qemu can already get memory from files (-object memory-backend-file,...), and
-I believe this works whether it's an actual file or a devdax device. So far,
-so good.
-
-Qemu can back a virtual pmem device by one of these, but currently (AFAIK)
-not a virtual devdax device. I think virtual devdax is needed as a first-class
-abstraction. If we can add the tag as a property of the memory-backend-file,
-we're almost there - we just need away to lookup a daxdev by tag.
-
-Summary thoughts:
-
-* A mechanism for resolving tags to "tagged capacity" devdax devices is
-  essential (and I don't think there are specific proposals about this
-  mechanism so far).
-* Said mechanism should not be explicitly CXL-specific.
-* Finding a tagged capacity devdax device in a VM should work the same as it
-  does running on bare metal.
-* The file-backed (and devdax-backed) devdax abstraction is needed in qemu.
-* Beyond that, I'm not yet sure what the lookup mechanism should be. Extra
-  points for being easy to implement in both physical and virtual systems.
-
-Thanks for teeing this up!
-John
-
-
-[1] https://github.com/cxl-micron-reskit/famfs/blob/master/README.md
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 00561daa06..7b030ae2cd 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -24,6 +24,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/uuid.h"
+ #include "qemu/sockets.h"
++#include "qemu/lockable.h"
+ #include "sysemu/runstate.h"
+ #include "sysemu/cryptodev.h"
+ #include "migration/postcopy-ram.h"
+@@ -446,6 +447,10 @@ static int vhost_user_set_log_base(struct vhost_dev *dev, uint64_t base,
+         .hdr.size = sizeof(msg.payload.log),
+     };
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     /* Send only once with first queue pair */
+     if (dev->vq_index != 0) {
+         return 0;
+@@ -664,6 +669,7 @@ static int send_remove_regions(struct vhost_dev *dev,
+                                bool reply_supported)
+ {
+     struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
+     struct vhost_memory_region *shadow_reg;
+     int i, fd, shadow_reg_idx, ret;
+     ram_addr_t offset;
+@@ -685,6 +691,8 @@ static int send_remove_regions(struct vhost_dev *dev,
+             vhost_user_fill_msg_region(&region_buffer, shadow_reg, 0);
+             msg->payload.mem_reg.region = region_buffer;
+ 
++            QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+             ret = vhost_user_write(dev, msg, NULL, 0);
+             if (ret < 0) {
+                 return ret;
+@@ -718,6 +726,7 @@ static int send_add_regions(struct vhost_dev *dev,
+                             bool reply_supported, bool track_ramblocks)
+ {
+     struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
+     int i, fd, ret, reg_idx, reg_fd_idx;
+     struct vhost_memory_region *reg;
+     MemoryRegion *mr;
+@@ -746,6 +755,8 @@ static int send_add_regions(struct vhost_dev *dev,
+             vhost_user_fill_msg_region(&region_buffer, reg, offset);
+             msg->payload.mem_reg.region = region_buffer;
+ 
++            QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+             ret = vhost_user_write(dev, msg, &fd, 1);
+             if (ret < 0) {
+                 return ret;
+@@ -893,6 +904,7 @@ static int vhost_user_set_mem_table_postcopy(struct vhost_dev *dev,
+                                              bool config_mem_slots)
+ {
+     struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
+     int fds[VHOST_MEMORY_BASELINE_NREGIONS];
+     size_t fd_num = 0;
+     VhostUserMsg msg_reply;
+@@ -926,6 +938,8 @@ static int vhost_user_set_mem_table_postcopy(struct vhost_dev *dev,
+             return ret;
+         }
+ 
++        QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+         ret = vhost_user_write(dev, &msg, fds, fd_num);
+         if (ret < 0) {
+             return ret;
+@@ -1005,6 +1019,7 @@ static int vhost_user_set_mem_table(struct vhost_dev *dev,
+                                     struct vhost_memory *mem)
+ {
+     struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
+     int fds[VHOST_MEMORY_BASELINE_NREGIONS];
+     size_t fd_num = 0;
+     bool do_postcopy = u->postcopy_listen && u->postcopy_fd.handler;
+@@ -1044,6 +1059,8 @@ static int vhost_user_set_mem_table(struct vhost_dev *dev,
+             return ret;
+         }
+ 
++        QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+         ret = vhost_user_write(dev, &msg, fds, fd_num);
+         if (ret < 0) {
+             return ret;
+@@ -1089,6 +1106,10 @@ static int vhost_user_get_u64(struct vhost_dev *dev, int request, uint64_t *u64)
+         return 0;
+     }
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -1138,6 +1159,10 @@ static int vhost_user_write_sync(struct vhost_dev *dev, VhostUserMsg *msg,
+         }
+     }
+ 
++/*  struct vhost_user *u = dev->opaque;
++ *  struct VhostUserState *us = u->user;
++ *  QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++ */
+     ret = vhost_user_write(dev, msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -1277,6 +1302,8 @@ static int vhost_user_get_vring_base(struct vhost_dev *dev,
+         .hdr.size = sizeof(msg.payload.state),
+     };
+     struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
+ 
+     VhostUserHostNotifier *n = fetch_notifier(u->user, ring->index);
+     if (n) {
+@@ -1669,6 +1696,9 @@ int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
+     };
+     memcpy(msg.payload.object.uuid, uuid, sizeof(msg.payload.object.uuid));
+ 
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -1889,6 +1919,9 @@ static int vhost_setup_backend_channel(struct vhost_dev *dev)
+         msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+     }
+ 
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, &sv[1], 1);
+     if (ret) {
+         goto out;
+@@ -1993,6 +2026,9 @@ static int vhost_user_postcopy_advise(struct vhost_dev *dev, Error **errp)
+         .hdr.flags = VHOST_USER_VERSION,
+     };
+ 
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         error_setg(errp, "Failed to send postcopy_advise to vhost");
+@@ -2051,6 +2087,9 @@ static int vhost_user_postcopy_listen(struct vhost_dev *dev, Error **errp)
+ 
+     trace_vhost_user_postcopy_listen();
+ 
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         error_setg(errp, "Failed to send postcopy_listen to vhost");
+@@ -2080,6 +2119,9 @@ static int vhost_user_postcopy_end(struct vhost_dev *dev, Error **errp)
+ 
+     trace_vhost_user_postcopy_end_entry();
+ 
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         error_setg(errp, "Failed to send postcopy_end to vhost");
+@@ -2372,6 +2414,10 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
+         msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+     }
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -2396,6 +2442,10 @@ static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
+         .payload.iotlb = *imsg,
+     };
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -2428,6 +2478,10 @@ static int vhost_user_get_config(struct vhost_dev *dev, uint8_t *config,
+ 
+     assert(config_len <= VHOST_USER_MAX_CONFIG_SIZE);
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     msg.payload.config.offset = 0;
+     msg.payload.config.size = config_len;
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+@@ -2492,6 +2546,10 @@ static int vhost_user_set_config(struct vhost_dev *dev, const uint8_t *data,
+     p = msg.payload.config.region;
+     memcpy(p, data, size);
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -2570,6 +2628,10 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
+         }
+     }
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     msg.payload.session.op_code = backend_info->op_code;
+     msg.payload.session.session_id = backend_info->session_id;
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+@@ -2662,6 +2724,9 @@ static int vhost_user_get_inflight_fd(struct vhost_dev *dev,
+         return 0;
+     }
+ 
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         return ret;
+@@ -2757,6 +2822,7 @@ bool vhost_user_init(VhostUserState *user, CharBackend *chr, Error **errp)
+     user->memory_slots = 0;
+     user->notifiers = g_ptr_array_new_full(VIRTIO_QUEUE_MAX / 4,
+                                            &vhost_user_state_destroy);
++    qemu_mutex_init(&user->vhost_user_request_reply_lock);
+     return true;
+ }
+ 
+@@ -2769,6 +2835,7 @@ void vhost_user_cleanup(VhostUserState *user)
+     user->notifiers = (GPtrArray *) g_ptr_array_free(user->notifiers, true);
+     memory_region_transaction_commit();
+     user->chr = NULL;
++    qemu_mutex_destroy(&user->vhost_user_request_reply_lock);
+ }
+ 
+ 
+@@ -2902,6 +2969,9 @@ static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
+         return -ENOTSUP;
+     }
+ 
++    struct VhostUserState *us = vu->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, &fd, 1);
+     close(fd);
+     if (ret < 0) {
+@@ -2965,6 +3035,10 @@ static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
+         return -ENOTSUP;
+     }
+ 
++    struct vhost_user *u = dev->opaque;
++    struct VhostUserState *us = u->user;
++    QEMU_LOCK_GUARD(&us->vhost_user_request_reply_lock);
++
+     ret = vhost_user_write(dev, &msg, NULL, 0);
+     if (ret < 0) {
+         error_setg_errno(errp, -ret,
+diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+index 324cd8663a..e96f12d449 100644
+--- a/include/hw/virtio/vhost-user.h
++++ b/include/hw/virtio/vhost-user.h
+@@ -67,6 +67,9 @@ typedef struct VhostUserState {
+     GPtrArray *notifiers;
+     int memory_slots;
+     bool supports_config;
++
++    /* Hold lock for a request-reply cycle */
++    QemuMutex vhost_user_request_reply_lock;
+ } VhostUserState;
+ 
+ /**
+-- 
+2.46.0
 
 
