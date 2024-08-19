@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56D1957839
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C9B957835
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgBFm-0003y5-Tc; Mon, 19 Aug 2024 18:53:40 -0400
+	id 1sgBGB-00078d-0Y; Mon, 19 Aug 2024 18:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEY-0000wM-MR
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:22 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEd-00013p-0Q
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:25 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEW-0000k6-F3
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:17 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42819654737so37535685e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEb-0000kR-Ct
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:22 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3718706cf8aso3057250f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724107934; x=1724712734; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724107940; x=1724712740; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gH5ZVKOWkjk4IlT33UjiZBwifnlYiOD0/fyxwxSrNuk=;
- b=Vz9NUEdmngJJ7rRYp54QNUv49p7JmFrC0uYgt4bG/DxNmDYY1mMlYAFmqeAb8aqJLc
- Q4fxgzZnf0nh87ZxU9S3hRUDBKINw91flDUsP+ppl3apEBPXZrKE8R7SVTAKrToHyVmV
- gQnQou/dqAOVXE3E1wJpCODG03nukGClFwJjmxsMiACyEEM2CLNE+7hs8e/HRoQU8vRc
- yjByaJJrer0EWCxbJmP3LRev/XhaafLua8wkmGE1I6+6Ansk3FEj9jBOd0aoXY8TCKhK
- 3TyGBetRKKE1Xb0radJ3u/XpA7dIx4mb+RULPN3ZYBvpqlbD/fPBP8WzJxNEXWgDCwld
- hA5w==
+ bh=i525VHbDEEdaYNDK1SbTy9eAffjoVCoTHAg3yOkOeL4=;
+ b=YCbxlXOcQw/1wfI80a4tUMlaW6O/Ls60Tspa/tcTA3iyMCyKIzdFGO27njlsjeM3Bs
+ ouwNO03szdjhn1KD4eRxpWSxgmuYn5txOeziivBVJCzWRMaJDIvkO9cbIHy3fgTjtkgY
+ xBUR+EuGzX8kJF/LOAaMUKFoRT35k/3H/iQHT+3qMfGveiw7pKmyMgNy7Rtq8kUDHkPy
+ hcsBcH9cm/BT4XHFHsQHDhXy8w+DJVy55KsHxNl+UfwE8szbBjyfZ1XQfYDkiKnIxzE+
+ JsFjOeOBXHAaMaAXVtG0md3glm+R1lt3sj8Gu0txXrFcBAyrJJS+PnoPhCzFYlhzsFYu
+ 2BIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724107934; x=1724712734;
+ d=1e100.net; s=20230601; t=1724107940; x=1724712740;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gH5ZVKOWkjk4IlT33UjiZBwifnlYiOD0/fyxwxSrNuk=;
- b=MXU+SU6Q9EGzYckGim7UFwL8IlpQaP3odw8AMYlMcQ3sAx8SvDxSpFbWHL+H1oCL75
- AkaPd6taGbf9tWP41sRvbEpI+wcbdYS8DL9ZixfMvx4oYgfLBV3vMjk4Nyi0XENyt4ZF
- ROro3oysfCTFwiwh+d3jlEgx0GgBeFaK5DBCF7yhQ1UtxDRd65RyBebUZgzq5p0dkYD6
- r67ReYHzAGSi7XM64F4+bhRDqmHpRcGbkBjPt+zm0MdV4/I/xGLeBuoBYedeGIwxhpiB
- 8TwYwJVOk0cXpO5540uwXnoS/IPhrYYkDPJ8Kp2KBbaOLskLaM50ZvLZgQrGNa/Ixi2c
- Ca4g==
-X-Gm-Message-State: AOJu0Yy5MC5TgDDDBvIRG1QzWiSkBwuUdEPgtiGnqT5hCpSStiH1yssU
- NUDhqowktkmIZH9fxxa8vtWofIPJ0IHgINw/kOujrpvz9gokmqr27qBDg+8h4l+yQTq2HnovLQ8
- SMhY=
-X-Google-Smtp-Source: AGHT+IGAgZ8Nebntb1v26tGrEE4MkMcJ25HwcDm3w8PL/mnReUCAK5Mo2gjFpzpkx+uscjVr+PElNQ==
-X-Received: by 2002:a7b:cc04:0:b0:42a:a6d2:3270 with SMTP id
- 5b1f17b1804b1-42aa6d23365mr69737375e9.21.1724107934480; 
- Mon, 19 Aug 2024 15:52:14 -0700 (PDT)
+ bh=i525VHbDEEdaYNDK1SbTy9eAffjoVCoTHAg3yOkOeL4=;
+ b=oiSxYU42J+WwZHkkZ1NMKDqQeHvdn0p2U6qjr5f0muT/xQvaxh0GKsHlj3/owBKXM1
+ +CjQyBk+ZBDRxlr+ewKJxUtK7NMsBFAQO0YMywnV0nppzOhQp36gUb8BZG9raoNkVQmu
+ BVbjzb74lWOn+VKc+n26JPEV+lNkV1UB6Wd5DNrIa2IsWsU2RdZDMVokxBBMo+Ugvz7w
+ G3KJMevpqGWDrcJJbhMCLj0KqOrmf49Xc9uLtlm+68FZ8DWYAVftQJNEHSO+HhtepmQp
+ W8sRLjlod5EhtOQ0U8z4AdXLrHlY+T0HgyfVcnvWHxo7pdZWY2VddnYZ2Ql3kn53EoJ5
+ elRw==
+X-Gm-Message-State: AOJu0YwEkmNQifVOtuswNAVhC15gyEFZOTfXCzETQ3YjLKH0r8xIJLzd
+ UQFbIHYBfMliK4lAyzV0FpUFZcHnDAIVVKNz78xYayoPeBDyUFmLtRV65TUhG4XiKqhSJ7WH0tm
+ nozg=
+X-Google-Smtp-Source: AGHT+IHNfQLkqA2Cyy3T06sUUzcs+V5NfBtNgOyyq/MrTopBY32pDIND7ZknCm2RrCUmQPGCxLsy6Q==
+X-Received: by 2002:adf:b307:0:b0:368:4edc:611e with SMTP id
+ ffacd0b85a97d-37194344041mr7950257f8f.14.1724107939545; 
+ Mon, 19 Aug 2024 15:52:19 -0700 (PDT)
 Received: from localhost.localdomain (88-178-97-237.subs.proxad.net.
  [88.178.97.237]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429ed4a857bsm124559175e9.0.2024.08.19.15.52.13
+ 5b1f17b1804b1-429ded367ebsm179600455e9.25.2024.08.19.15.52.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Aug 2024 15:52:14 -0700 (PDT)
+ Mon, 19 Aug 2024 15:52:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/20] linux-user/mips: Select Loongson CPU for Loongson
- binaries
-Date: Tue, 20 Aug 2024 00:51:08 +0200
-Message-ID: <20240819225116.17928-13-philmd@linaro.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 13/20] tests/avocado: exec_command should not consume console
+ output
+Date: Tue, 20 Aug 2024 00:51:09 +0200
+Message-ID: <20240819225116.17928-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240819225116.17928-1-philmd@linaro.org>
 References: <20240819225116.17928-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,30 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240814133928.6746-5-philmd@linaro.org>
----
- linux-user/mips64/target_elf.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+From: Nicholas Piggin <npiggin@gmail.com>
 
-diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
-index a3a8b2e385..502af9d278 100644
---- a/linux-user/mips64/target_elf.h
-+++ b/linux-user/mips64/target_elf.h
-@@ -14,6 +14,12 @@ static inline const char *cpu_get_model(uint32_t eflags)
-     case EF_MIPS_MACH_OCTEON2:
-     case EF_MIPS_MACH_OCTEON3:
-         return "Octeon68XX";
-+    case EF_MIPS_MACH_LS2E:
-+        return "Loongson-2E";
-+    case EF_MIPS_MACH_LS2F:
-+        return "Loongson-2F";
-+    case EF_MIPS_MACH_LS3A:
-+        return "Loongson-3A1000";
-     default:
-         break;
-     }
+_console_interaction reads data from the console even when there is only
+an input string to send, and no output data to wait on. This can cause
+lines to be missed by wait_for_console_pattern calls that follows an
+exec_command. Fix this by not reading the console if there is no pattern
+to wait for.
+
+This solves occasional hangs in ppc_hv_tests.py, usually when run on KVM
+hosts that are fast enough to output important lines quickly enough to be
+consumed by exec_command, so they get missed by subsequent wait for
+pattern calls.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240805232814.267843-2-npiggin@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/avocado/avocado_qemu/__init__.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
+index a3da2a96bb..ef935614cf 100644
+--- a/tests/avocado/avocado_qemu/__init__.py
++++ b/tests/avocado/avocado_qemu/__init__.py
+@@ -135,6 +135,13 @@ def _console_interaction(test, success_message, failure_message,
+             vm.console_socket.sendall(send_string.encode())
+             if not keep_sending:
+                 send_string = None # send only once
++
++        # Only consume console output if waiting for something
++        if success_message is None and failure_message is None:
++            if send_string is None:
++                break
++            continue
++
+         try:
+             msg = console.readline().decode().strip()
+         except UnicodeDecodeError:
 -- 
 2.45.2
 
