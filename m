@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9AE95783C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 983FF95783A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgBGJ-0008LZ-8R; Mon, 19 Aug 2024 18:54:07 -0400
+	id 1sgBGF-0007qd-Lz; Mon, 19 Aug 2024 18:54:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEm-0001er-SW
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:37 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEr-0001rZ-QW
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:40 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEl-0000lV-0M
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:32 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3718e416297so2192366f8f.2
- for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEp-0000mg-8n
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:36 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4281ca54fd3so38751555e9.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724107949; x=1724712749; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724107953; x=1724712753; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YLodpe9emd/ELJf5C6nKnsNO7KrpM2yyxOGgNuXlJKo=;
- b=HuP6PAhQ1CEo2lALJ/3qCnOhQoiX47grui/E/8RmnJf6VZtYK5UwyMVyRp7TdFy5M2
- MWRtC60+dy0hfpqHVDd71M1y/SvjDK8TiZDg7lkRfERcqJeVxoCd/lNyWhSJWJ8uEVFe
- kzveIRb1h2JR0QB236FDJenNdi4HgeqAlWVV6cbWnYlm0FIiaeOugGftyoe7dXIO07BC
- bYI8/l/nwfMlV+i8Um8QcrFjkIZ4LLiXk7a/Syhc+Dh6XR31BY1YUzttOuppYXegStm1
- HHvskCIpysMjKyBBApdHHhgzYNWlEzDlKsmMFRjljOvzvNs11Cu9bDlDNeTT9jqwb9dr
- Rw/Q==
+ bh=CfFtvwBUu6O5iys7XE1dWmkEu565Z9xC0zCU21IHrTk=;
+ b=dUQya8JDiDTeZj10U3FuTExL9MYWkrIW9I6W9reYNgC9WQ0eG9EEkVkHGAS1ColXHR
+ 5oTwuVDeaqvtFEn/j0qmycx+IjNNQmYc6Nw+pxplOpJKxoT1rRK1/Dkh/8/qJ4wdodHE
+ Fo9Jlgdfn/K8RxDo0nyt3k8xJhgCWfr0fg8z7OONdNHih9PG4/9k0KJg82WPsUAam/fh
+ u5dBu2nC6UQ/aApMowBQ9K9NxN8kNH4TBEAjhJnvhklL2JdEMAagPVEt3tjGRFIlNXYR
+ NVj34ZHKF75iFg/c0cwHqBdrY+PwYjg8o1OUkBkYOM9Zvh8syO3+0nrIQ9AlTqKmPacZ
+ kgWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724107949; x=1724712749;
+ d=1e100.net; s=20230601; t=1724107953; x=1724712753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YLodpe9emd/ELJf5C6nKnsNO7KrpM2yyxOGgNuXlJKo=;
- b=jX/Ux8ilF6+gl8dHgzJYPFfNT0EHa8lpbjHr3dmVWKuFfG/s3dSIKQMm66QoI81mpN
- ftDnkmmAXEK0vOzMouKbSZ4KtZZnpnCBok0morbNTcpPmTRSMEjLlmNAOBZ+aEuwUOaR
- Xq1avN8RHAJGt71DZqnQfbx6RH46H1HvC3fLfO9PgAcvTqAKC8J6NTHDKHtgP+LLrDix
- slMg8KmnQ9KbdOU+BH/JDPtrq51zUoeqKskgUPQjP2yuTofDBwUICSmY9ikOM6pyk+/F
- J2w1YgzUH8eQg7Nji4iGNKgo+sSwIux2GyAEl6BPw6zz2QtYVTyM4c3SVSKCN372444d
- ULPA==
-X-Gm-Message-State: AOJu0YyWRGyMkAePi6P3s6NYNakjjid80TPHVra7VJO+24I1g0uA/igq
- 6AMc8v2n7VT+8lknJRwrsSGj7IYz4OS8mBfKBJTDAAjv//RVLWiD0Papa3leyBG3x5jzRchSXqB
- SHkQ=
-X-Google-Smtp-Source: AGHT+IH4QyNjHxSTCswrtiCsxg78C4gM8AFwE1pH3jIjZI4n+euGbm6aoq/O6alaOdiudfXfh1rp/Q==
-X-Received: by 2002:a05:6000:1112:b0:371:728e:d000 with SMTP id
- ffacd0b85a97d-3719431768fmr7207896f8f.1.1724107948725; 
- Mon, 19 Aug 2024 15:52:28 -0700 (PDT)
+ bh=CfFtvwBUu6O5iys7XE1dWmkEu565Z9xC0zCU21IHrTk=;
+ b=RCYGTvyTr9h561UOX2dYuq9jIzCosz9OH+oRoclHwmOJyRh/F1rSlNNWJ9nLJ+6dNH
+ BwPOxQp+zydaYlYOkLY8j01Zx9o1gVHLevjSDNDUR9DqR51vmL5p/AG8oUXKUPXpzqOl
+ gi1crrbCbLMqec67o5Ctpx4cUap/k0cKgdWaWjdPZC4l8LUfg+knhyAitfe+GHVj0HQd
+ RxtZxMabFZaY6JPuF7RbYRY8cKnP6Klf9ou94qwtNfJGMWRCt/tUcBnNr5XpcVbHlCBk
+ gYgCSv0OwCeqMmmxdWe4PtKsE8ZITS++wMnvKTGUF6VlTw1mLWHeUtHbbQg1RLP0PdHA
+ ohNw==
+X-Gm-Message-State: AOJu0Yyx42akQu1UMRFYY+g2bS6w9AiSL8gdYnfdLbH0bafp6b7TRojT
+ FKG++IlswqwQnhpOk4WvgjPf+cBODHVRjnURKNS44Lrd9aMSojNeSdukvJdr0tQ+ZSMvIg7FSPN
+ Ilrw=
+X-Google-Smtp-Source: AGHT+IHrQr4YwIT9vzFLmUWWj50emigoEoElZZMUbBMnBJhvxKUtG8dDJm3ZwXFuFNKG2TBfWqcy9A==
+X-Received: by 2002:adf:a408:0:b0:368:4910:8f49 with SMTP id
+ ffacd0b85a97d-37194315ae6mr10221794f8f.12.1724107953195; 
+ Mon, 19 Aug 2024 15:52:33 -0700 (PDT)
 Received: from localhost.localdomain (88-178-97-237.subs.proxad.net.
  [88.178.97.237]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-371aa455abesm7173818f8f.111.2024.08.19.15.52.27
+ ffacd0b85a97d-37189896be4sm11657731f8f.77.2024.08.19.15.52.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Aug 2024 15:52:28 -0700 (PDT)
+ Mon, 19 Aug 2024 15:52:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/20] contrib/plugins/execlog: Fix shadowed declaration warning
-Date: Tue, 20 Aug 2024 00:51:11 +0200
-Message-ID: <20240819225116.17928-16-philmd@linaro.org>
+Subject: [PULL 16/20] target/sparc: Restrict STQF to sparcv9
+Date: Tue, 20 Aug 2024 00:51:12 +0200
+Message-ID: <20240819225116.17928-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240819225116.17928-1-philmd@linaro.org>
 References: <20240819225116.17928-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,41 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Found on debian stable.
+Prior to sparcv9, the same encoding was STDFQ.
 
-../contrib/plugins/execlog.c: In function ‘vcpu_tb_trans’:
-../contrib/plugins/execlog.c:236:22: error: declaration of ‘n’ shadows a previous local [-Werror=shadow=local]
-  236 |             for (int n = 0; n < all_reg_names->len; n++) {
-      |                      ^
-../contrib/plugins/execlog.c:184:12: note: shadowed declaration is here
-  184 |     size_t n = qemu_plugin_tb_n_insns(tb);
-      |
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240814233645.944327-2-pierrick.bouvier@linaro.org>
+Cc: qemu-stable@nongnu.org
+Fixes: 06c060d9e5b ("target/sparc: Move simple fp load/store to decodetree")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240816072311.353234-2-richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- contrib/plugins/execlog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/sparc/insns.decode | 2 +-
+ target/sparc/translate.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 1c1601cc0b..d67d010761 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -181,8 +181,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-     bool check_regs_this = rmatches;
-     bool check_regs_next = false;
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index fbcb4f7aef..5fd478191a 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -644,7 +644,7 @@ STF         11 ..... 100100 ..... . .............          @r_r_ri_na
+ STFSR       11 00000 100101 ..... . .............          @n_r_ri
+ STXFSR      11 00001 100101 ..... . .............          @n_r_ri
+ {
+-  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na
++  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na # v9
+   STDFQ     11 ----- 100110 ----- - -------------
+ }
+ STDF        11 ..... 100111 ..... . .............          @d_r_ri_na
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 113639083b..c803e8d1ba 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -4521,7 +4521,7 @@ static bool do_st_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp sz)
  
--    size_t n = qemu_plugin_tb_n_insns(tb);
--    for (size_t i = 0; i < n; i++) {
-+    size_t n_insns = qemu_plugin_tb_n_insns(tb);
-+    for (size_t i = 0; i < n_insns; i++) {
-         char *insn_disas;
-         uint64_t insn_vaddr;
+ TRANS(STF, ALL, do_st_fpr, a, MO_32)
+ TRANS(STDF, ALL, do_st_fpr, a, MO_64)
+-TRANS(STQF, ALL, do_st_fpr, a, MO_128)
++TRANS(STQF, 64, do_st_fpr, a, MO_128)
  
+ TRANS(STFA, 64, do_st_fpr, a, MO_32)
+ TRANS(STDFA, 64, do_st_fpr, a, MO_64)
 -- 
 2.45.2
 
