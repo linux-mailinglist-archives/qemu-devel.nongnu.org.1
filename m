@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D9595783D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9AE95783C
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:55:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgBGL-0000YN-3G; Mon, 19 Aug 2024 18:54:09 -0400
+	id 1sgBGJ-0008LZ-8R; Mon, 19 Aug 2024 18:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEk-0001XQ-7d
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:32 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEm-0001er-SW
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:37 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEi-0000lF-8H
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:29 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-428178fc07eso36558065e9.3
- for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEl-0000lV-0M
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:32 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3718e416297so2192366f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724107944; x=1724712744; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724107949; x=1724712749; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zTcmfZovDL+2at9UVP/rP8+xQ32AOJCb5fxO6lUcn8c=;
- b=iVejb+2gPz99XEHK8h1RETbg9cK8rfLjdGDAfDjlbKl/32I00aV8+KcUvl4ZomZXyF
- L9bon/fVj17yjVEalWdDnm1MLktf+qLQXKjzFC5ZdXhuZ5FISlU5KgOd7LyKNMhy7nal
- 2aq8DB6igQ3RejcFyCuWDosllzm5m22CRM1bQhCefWTWLEFKlUCC1a9VPMkcADbTgWVV
- 7sKSOLwFC4j6GPc9wlbIDGSFr4OItbLVE/bjv+YN6thaQqKfg9Q2qh1Pd6VSGlpKPUt9
- ZRMg3Xb1KeFJ633QqwneG80tCayuFjOAiN9aHdQ46cunUUudd6sVcEa5CCC3rV4KD+sx
- irVA==
+ bh=YLodpe9emd/ELJf5C6nKnsNO7KrpM2yyxOGgNuXlJKo=;
+ b=HuP6PAhQ1CEo2lALJ/3qCnOhQoiX47grui/E/8RmnJf6VZtYK5UwyMVyRp7TdFy5M2
+ MWRtC60+dy0hfpqHVDd71M1y/SvjDK8TiZDg7lkRfERcqJeVxoCd/lNyWhSJWJ8uEVFe
+ kzveIRb1h2JR0QB236FDJenNdi4HgeqAlWVV6cbWnYlm0FIiaeOugGftyoe7dXIO07BC
+ bYI8/l/nwfMlV+i8Um8QcrFjkIZ4LLiXk7a/Syhc+Dh6XR31BY1YUzttOuppYXegStm1
+ HHvskCIpysMjKyBBApdHHhgzYNWlEzDlKsmMFRjljOvzvNs11Cu9bDlDNeTT9jqwb9dr
+ Rw/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724107944; x=1724712744;
+ d=1e100.net; s=20230601; t=1724107949; x=1724712749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zTcmfZovDL+2at9UVP/rP8+xQ32AOJCb5fxO6lUcn8c=;
- b=c0XvAoSYWvaMtnHqowkT9EH28YgLgezXG0dnXszz+leE/tpD9GNoXQOgCkSB2tD+3K
- K6ob8YIcqb0CHqwmIx9uj3hPq7/LCaoF6SAWr3A4EYBDZDkCHX1lhWC8iXCtvOOqr8Qg
- Q5hD2kNZDn72C7uWkT8+dkAJwoeKYv0zee+ZLSEaOUZ6R54MrCQYNYbf/9nKVNNGvFo6
- MeQhJAlqbZefa3V08aXq1cQ2JoysecuWr7I8gHVFxl9Goeiq6XN7n7oOJ0TQwo7Cd6OV
- UMHSwHZT3eeaNzz6s4/6PmKHDjxlZfJQP1mNZ+3nBFyJvJ/03wyGUIPvdrglI8vAHpbQ
- zmzA==
-X-Gm-Message-State: AOJu0YypHU9NZeKhTbaQ+8JqrqX6UTLsVTtE8cRS3R/Nq2Z5NC7B1nSR
- 6TdT9yAuuh88aXrrwrTWiTRhq+f+6k19rk0Lox6RzPeTlGuYUXONVLZRbgjDKogLgB30tDvEeDx
- nxaQ=
-X-Google-Smtp-Source: AGHT+IHudnoR6LWmE2RVxE9W9gG2+NwY6H/GTDeY9O1ynzVttZGeR3lWRbgHRUCneLg9BfNStPVTfg==
-X-Received: by 2002:a05:600c:4455:b0:427:d8f7:b718 with SMTP id
- 5b1f17b1804b1-429ed7e43d7mr87042175e9.24.1724107944227; 
- Mon, 19 Aug 2024 15:52:24 -0700 (PDT)
+ bh=YLodpe9emd/ELJf5C6nKnsNO7KrpM2yyxOGgNuXlJKo=;
+ b=jX/Ux8ilF6+gl8dHgzJYPFfNT0EHa8lpbjHr3dmVWKuFfG/s3dSIKQMm66QoI81mpN
+ ftDnkmmAXEK0vOzMouKbSZ4KtZZnpnCBok0morbNTcpPmTRSMEjLlmNAOBZ+aEuwUOaR
+ Xq1avN8RHAJGt71DZqnQfbx6RH46H1HvC3fLfO9PgAcvTqAKC8J6NTHDKHtgP+LLrDix
+ slMg8KmnQ9KbdOU+BH/JDPtrq51zUoeqKskgUPQjP2yuTofDBwUICSmY9ikOM6pyk+/F
+ J2w1YgzUH8eQg7Nji4iGNKgo+sSwIux2GyAEl6BPw6zz2QtYVTyM4c3SVSKCN372444d
+ ULPA==
+X-Gm-Message-State: AOJu0YyWRGyMkAePi6P3s6NYNakjjid80TPHVra7VJO+24I1g0uA/igq
+ 6AMc8v2n7VT+8lknJRwrsSGj7IYz4OS8mBfKBJTDAAjv//RVLWiD0Papa3leyBG3x5jzRchSXqB
+ SHkQ=
+X-Google-Smtp-Source: AGHT+IH4QyNjHxSTCswrtiCsxg78C4gM8AFwE1pH3jIjZI4n+euGbm6aoq/O6alaOdiudfXfh1rp/Q==
+X-Received: by 2002:a05:6000:1112:b0:371:728e:d000 with SMTP id
+ ffacd0b85a97d-3719431768fmr7207896f8f.1.1724107948725; 
+ Mon, 19 Aug 2024 15:52:28 -0700 (PDT)
 Received: from localhost.localdomain (88-178-97-237.subs.proxad.net.
  [88.178.97.237]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3718985a6ddsm11569150f8f.58.2024.08.19.15.52.23
+ ffacd0b85a97d-371aa455abesm7173818f8f.111.2024.08.19.15.52.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Aug 2024 15:52:23 -0700 (PDT)
+ Mon, 19 Aug 2024 15:52:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/20] tests/avocado: Mark ppc_hv_tests.py as non-flaky after
- fixed console interaction
-Date: Tue, 20 Aug 2024 00:51:10 +0200
-Message-ID: <20240819225116.17928-15-philmd@linaro.org>
+Subject: [PULL 15/20] contrib/plugins/execlog: Fix shadowed declaration warning
+Date: Tue, 20 Aug 2024 00:51:11 +0200
+Message-ID: <20240819225116.17928-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240819225116.17928-1-philmd@linaro.org>
 References: <20240819225116.17928-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,31 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Now that exec_command doesn't incorrectly consume console output,
-and guest time is set correctly, ppc_hv_tests.py is working more
-reliably. Try marking it non-flaky.
+Found on debian stable.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20240805232814.267843-3-npiggin@gmail.com>
+../contrib/plugins/execlog.c: In function ‘vcpu_tb_trans’:
+../contrib/plugins/execlog.c:236:22: error: declaration of ‘n’ shadows a previous local [-Werror=shadow=local]
+  236 |             for (int n = 0; n < all_reg_names->len; n++) {
+      |                      ^
+../contrib/plugins/execlog.c:184:12: note: shadowed declaration is here
+  184 |     size_t n = qemu_plugin_tb_n_insns(tb);
+      |
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240814233645.944327-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/avocado/ppc_hv_tests.py | 1 -
- 1 file changed, 1 deletion(-)
+ contrib/plugins/execlog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
-index bf8822bb97..0e83bbac71 100644
---- a/tests/avocado/ppc_hv_tests.py
-+++ b/tests/avocado/ppc_hv_tests.py
-@@ -45,7 +45,6 @@ def missing_deps():
- # QEMU already installed and use that.
- # XXX: The order of these tests seems to matter, see git blame.
- @skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
--@skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck due to console handling problem')
- @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
- @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
- class HypervisorTest(QemuSystemTest):
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index 1c1601cc0b..d67d010761 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -181,8 +181,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+     bool check_regs_this = rmatches;
+     bool check_regs_next = false;
+ 
+-    size_t n = qemu_plugin_tb_n_insns(tb);
+-    for (size_t i = 0; i < n; i++) {
++    size_t n_insns = qemu_plugin_tb_n_insns(tb);
++    for (size_t i = 0; i < n_insns; i++) {
+         char *insn_disas;
+         uint64_t insn_vaddr;
+ 
 -- 
 2.45.2
 
