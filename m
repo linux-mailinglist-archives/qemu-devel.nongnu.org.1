@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF0B956FF8
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F080956FFB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:14:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sg51P-0005F7-Sr; Mon, 19 Aug 2024 12:14:20 -0400
+	id 1sg514-0002ve-HB; Mon, 19 Aug 2024 12:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=5961d01319=ian.brockbank@cirrus.com>)
- id 1sg51L-0004yy-B3; Mon, 19 Aug 2024 12:14:15 -0400
+ id 1sg50z-0002fo-TJ; Mon, 19 Aug 2024 12:13:53 -0400
 Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]
  helo=mx0b-001ae601.pphosted.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=5961d01319=ian.brockbank@cirrus.com>)
- id 1sg51G-0007hC-Ln; Mon, 19 Aug 2024 12:14:15 -0400
+ id 1sg50w-0007ew-Ne; Mon, 19 Aug 2024 12:13:53 -0400
 Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
- by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47JF6kgG004018;
- Mon, 19 Aug 2024 11:11:36 -0500
+ by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47JF7MJZ004354;
+ Mon, 19 Aug 2024 11:11:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- PODMain02222019; bh=B8DLQvKLhrx+ODVEVv6MS/qGMzbh77KzgX40R1FVarM=; b=
- XG8Sgq8rkZvxqxTPS5X8OxhJVhO/fevPSewpocEifG4V8Uy/yPohJ0RQiuflZ9By
- U3isF3ubE2LmZYPlfMFU764YWic/Cso5Gr7ok9v1AmhESqOJ/mngG0PDawh+s6jf
- AOuN2JIakYmy8x8CGFIGXy297zs0uHOBCu1yNJFeZCtoW/gzkC/uyWMUmKeVWktw
- Mg0BmC88vZLDpuZMuS9lMIPoSamrQjIRC3sLFdahhZXV2TGKcfor6xlVoETj/wfK
- rRKQ6iwy2D1Pn7s5bH/yQFIEkjkn649origGfwgL93JF4W8+KoXABUFtOR08PGqR
- FBKUQ67d0zL0f1G63jwcwg==
-Received: from ausex01.ad.cirrus.com ([141.131.3.19])
- by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 412s8x1xbd-1
+ PODMain02222019; bh=Kh0J827/tPkbI7tTFUBS1BO0Ju/5crRUVVFFRvSeKns=; b=
+ Cy+IwyRLtqOVtSe/ww+q+ORRTd/NSd6VFxoY1v4mnQqf+A4Gbn/uTVMXnGBlEIgb
+ KnpNr8/YZ4qjHq7QbNqezMvoQOyZTVC2zcARslOu7B1adnnble6m1/IktZdX6wVD
+ Fthx5z9OhS7d348tzf9h0sXH64kKg8XE+PeOt9NGltykX/GxVGSrEKwKTJF1zgTo
+ 6ugJH0qcVzwQNHaZtOjTxqiu5ANMy7FSlwlGXd33Vl4AoytWibT/50My02+Rmj4q
+ 5Q0Uv68TxiIQt6REPnSPkUAilVPj3dHnFYQzHiKD/3jQUDSimJpSeQhwqBCpDtvr
+ 7q9D+rEigGq0rVgpxlNcYg==
+Received: from ausex02.ad.cirrus.com ([141.131.3.21])
+ by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 412s8x1xbk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2024 11:11:35 -0500 (CDT)
-Received: from ausex01.ad.cirrus.com (141.131.37.95) by ausex01.ad.cirrus.com
- (141.131.37.95) with Microsoft SMTP Server (version=TLS1_2,
+ Mon, 19 Aug 2024 11:11:39 -0500 (CDT)
+Received: from ausex01.ad.cirrus.com (141.131.37.95) by ausex02.ad.cirrus.com
+ (141.131.37.96) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
- 2024 11:11:34 -0500
+ 2024 11:11:38 -0500
 Received: from EDIN7BQBTG3.ad.cirrus.com (141.131.38.212) by
  anon-ausex01.ad.cirrus.com (141.131.37.95) with Microsoft SMTP Server id
- 15.2.1544.9 via Frontend Transport; Mon, 19 Aug 2024 11:11:32 -0500
+ 15.2.1544.9 via Frontend Transport; Mon, 19 Aug 2024 11:11:36 -0500
 From: Ian Brockbank <Ian.Brockbank@cirrus.com>
 To: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>
 CC: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
@@ -50,9 +50,9 @@ CC: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
  <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Ian Brockbank
  <ian.brockbank@cirrus.com>, LIU Zhiwei <zhiwei_liu@c-sky.com>
-Subject: [PATCH 08/11 v2] target/riscv: Update interrupt handling in CLIC mode
-Date: Mon, 19 Aug 2024 17:02:19 +0100
-Message-ID: <20240819160742.27586-12-Ian.Brockbank@cirrus.com>
+Subject: [PATCH 09/11 v2] target/riscv: Update interrupt return in CLIC mode
+Date: Mon, 19 Aug 2024 17:02:20 +0100
+Message-ID: <20240819160742.27586-13-Ian.Brockbank@cirrus.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240819160742.27586-1-Ian.Brockbank@cirrus.com>
 References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html>
@@ -60,9 +60,9 @@ References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: prNILGHpb-fk1DJ5VRtaFFAaByPb5zvy
-X-Proofpoint-GUID: prNILGHpb-fk1DJ5VRtaFFAaByPb5zvy
-X-Proofpoint-Spam-Reason: orgsafe
+X-Proofpoint-ORIG-GUID: wzBUiUkS4eOJWSbD--dw31DdESHTtSj-
+X-Proofpoint-GUID: wzBUiUkS4eOJWSbD--dw31DdESHTtSj-
+X-Proofpoint-Spam-Reason: safe
 Received-SPF: pass client-ip=67.231.149.25;
  envelope-from=prvs=5961d01319=ian.brockbank@cirrus.com;
  helo=mx0b-001ae601.pphosted.com
@@ -90,261 +90,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ian Brockbank <ian.brockbank@cirrus.com>
 
-Decode CLIC interrupt information from exccode, includes interrupt
-privilege mode, interrupt level, and irq number.
+When a vectored interrupt is selected and serviced, the hardware will
+automatically clear the corresponding pending bit in edge-triggered mode.
+This may lead to a lower privilege interrupt pending forever.
 
-Then update CSRs xcause, xstatus, xepc, xintstatus and jump to
-correct PC according to the CLIC specification.
+Therefore when interrupts return, pull a pending interrupt to service.
 
 Signed-off-by: LIU Zhiwei <zhiwei_liu@c-sky.com>
 Signed-off-by: Ian Brockbank <ian.brockbank@cirrus.com>
 ---
- target/riscv/cpu_helper.c | 129 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 119 insertions(+), 10 deletions(-)
+ target/riscv/op_helper.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 395a1d9140..944afb68d2 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -24,6 +24,7 @@
- #include "internals.h"
- #include "pmu.h"
- #include "exec/exec-all.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/page-protection.h"
- #include "instmap.h"
- #include "tcg/tcg-op.h"
-@@ -33,6 +34,7 @@
- #include "cpu_bits.h"
- #include "debug.h"
- #include "tcg/oversized-guest.h"
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index 25a5263573..b6ca3ad598 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -25,7 +25,11 @@
+ #include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+
+-/* Exceptions processing helpers */
++#if !defined(CONFIG_USER_ONLY)
 +#include "hw/intc/riscv_clic.h"
-
- int riscv_env_mmu_index(CPURISCVState *env, bool ifetch)
++#endif
++
++/* Exception processing helpers */
+ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+                                       uint32_t exception, uintptr_t pc)
  {
-@@ -428,6 +430,20 @@ int riscv_cpu_vsirq_pending(CPURISCVState *env)
-                                     (irqs | irqs_f_vs), env->hviprio);
- }
+@@ -259,6 +263,7 @@ void helper_cbo_inval(CPURISCVState *env, target_ulong =
+address)
 
-+static int riscv_cpu_local_irq_mode_enabled(CPURISCVState *env, int mode)
-+{
-+    switch (mode) {
-+    case PRV_M:
-+        return env->priv < PRV_M ||
-+            (env->priv =3D=3D PRV_M && get_field(env->mstatus, MSTATUS_MIE=
-));
-+    case PRV_S:
-+        return env->priv < PRV_S ||
-+            (env->priv =3D=3D PRV_S && get_field(env->mstatus, MSTATUS_SIE=
-));
-+    default:
-+        return false;
-+    }
-+}
-+
- static int riscv_cpu_local_irq_pending(CPURISCVState *env)
+ #ifndef CONFIG_USER_ONLY
+
++/* Return from PRV_S interrupt */
+ target_ulong helper_sret(CPURISCVState *env)
  {
-     uint64_t irqs, pending, mie, hsie, vsie, irqs_f, irqs_f_vs;
-@@ -506,6 +522,18 @@ bool riscv_cpu_exec_interrupt(CPUState *cs, int interr=
-upt_request)
-             return true;
-         }
+     uint64_t mstatus;
+@@ -292,8 +297,17 @@ target_ulong helper_sret(CPURISCVState *env)
      }
-+    if (interrupt_request & CPU_INTERRUPT_CLIC) {
-+        RISCVCPU *cpu =3D RISCV_CPU(cs);
-+        CPURISCVState *env =3D &cpu->env;
-+        int mode =3D get_field(env->exccode, RISCV_EXCP_CLIC_MODE);
-+        int enabled =3D riscv_cpu_local_irq_mode_enabled(env, mode);
-+        if (enabled) {
-+            cs->exception_index =3D RISCV_EXCP_CLIC | env->exccode;
-+            cs->interrupt_request =3D cs->interrupt_request & ~CPU_INTERRU=
-PT_CLIC;
-+            riscv_cpu_do_interrupt(cs);
-+            return true;
-+        }
+     env->mstatus =3D mstatus;
+
++    if (riscv_clic_is_clic_mode(env)) {
++        /* Update mintstatus with the PRV_S information */
++        target_ulong spil =3D get_field(env->scause, SCAUSE_SPIL);
++        env->mintstatus =3D set_field(env->mintstatus, MINTSTATUS_SIL, spi=
+l);
++        env->scause =3D set_field(env->scause, SCAUSE_SPIE, 1);
++        env->scause =3D set_field(env->scause, SCAUSE_SPP, PRV_U);
++        riscv_clic_get_next_interrupt(env->clic);
 +    }
-     return false;
++
+     if (riscv_has_ext(env, RVH) && !env->virt_enabled) {
+-        /* We support Hypervisor extensions and virtulisation is disabled =
+*/
++        /* We support Hypervisor extensions and virtualization is disabled=
+ */
+         target_ulong hstatus =3D env->hstatus;
+
+         prev_virt =3D get_field(hstatus, HSTATUS_SPV);
+@@ -312,6 +326,7 @@ target_ulong helper_sret(CPURISCVState *env)
+     return retpc;
  }
 
-@@ -1641,6 +1669,60 @@ static target_ulong riscv_transformed_insn(CPURISCVS=
-tate *env,
-     return xinsn;
- }
-
-+static target_ulong riscv_intr_pc(CPURISCVState *env, target_ulong tvec,
-+                                  target_ulong tvt, bool async,
-+                                  int cause, int mode)
-+{
-+    int mode1 =3D tvec & XTVEC_MODE;
-+    int mode2 =3D tvec & XTVEC_FULL_MODE;
-+
-+    if (!async) {
-+        return tvec & XTVEC_OBASE;
-+    }
-+    /* bits [1:0] encode mode; 0 =3D direct, 1 =3D vectored, 2 >=3D reserv=
-ed */
-+    switch (mode1) {
-+    case XTVEC_CLINT_DIRECT:
-+        return tvec & XTVEC_OBASE;
-+    case XTVEC_CLINT_VECTORED:
-+        return (tvec & XTVEC_OBASE) + cause * 4;
-+    default:
-+        if (env->clic && (mode2 =3D=3D XTVEC_CLIC)) {
-+            /* Non-vectored, clicintattr[i].shv =3D 0 || cliccfg.nvbits =
-=3D 0 */
-+            if (!riscv_clic_shv_interrupt(env->clic, cause)) {
-+                /* NBASE =3D mtvec[XLEN-1:6]<<6 */
-+                return tvec & XTVEC_NBASE;
-+            } else {
-+                /*
-+                 * pc :=3D M[TBASE + XLEN/8 * exccode)] & ~1,
-+                 * TBASE =3D mtvt[XLEN-1:6]<<6
-+                 */
-+                int size =3D TARGET_LONG_BITS / 8;
-+                target_ulong tbase =3D (tvt & XTVEC_NBASE) + size * cause;
-+                void *host =3D tlb_vaddr_to_host(env, tbase, MMU_DATA_LOAD=
-, mode);
-+                if (host !=3D NULL) {
-+                    target_ulong new_pc =3D tbase;
-+                    if (!riscv_clic_use_jump_table(env->clic)) {
-+                        /*
-+                         * Standard CLIC: the vector entry is a function p=
-ointer
-+                         * so look up the destination.
-+                         */
-+                        new_pc =3D ldn_p(host, size);
-+                        host =3D tlb_vaddr_to_host(env, new_pc,
-+                                                 MMU_INST_FETCH, mode);
-+                    }
-+                    if (host) {
-+                        return new_pc;
-+                    }
-+                }
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "CLIC: load trap handler error!\n");
-+                exit(1);
-+            }
-+        }
-+        g_assert_not_reached();
-+    }
-+}
-+
- /*
-  * Handle Traps
-  *
-@@ -1654,12 +1736,14 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     bool virt =3D env->virt_enabled;
-     bool write_gva =3D false;
-     uint64_t s;
-+    int mode, level, irq;
-
-     /*
-      * cs->exception is 32-bits wide unlike mcause which is XLEN-bits wide
-      * so we mask off the MSB and separate into trap type and cause.
-      */
--    bool async =3D !!(cs->exception_index & RISCV_EXCP_INT_FLAG);
-+    bool clic =3D !!(cs->exception_index & RISCV_EXCP_CLIC);
-+    bool async =3D !!(cs->exception_index & RISCV_EXCP_INT_FLAG) || clic;
-     target_ulong cause =3D cs->exception_index & RISCV_EXCP_INT_MASK;
-     uint64_t deleg =3D async ? env->mideleg : env->medeleg;
-     bool s_injected =3D env->mvip & (1 << cause) & env->mvien &&
-@@ -1746,6 +1830,28 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         }
++/* Return from PRV_M interrupt */
+ target_ulong helper_mret(CPURISCVState *env)
+ {
+     if (!(env->priv >=3D PRV_M)) {
+@@ -344,6 +359,16 @@ target_ulong helper_mret(CPURISCVState *env)
      }
+     env->mstatus =3D mstatus;
 
-+    if (clic) {
-+        riscv_clic_decode_exccode(cause, &mode, &level, &irq);
-+        cause =3D irq | get_field(env->mstatus, MSTATUS_MPP) << XCAUSE_XPP=
-_SHIFT;
-+        switch (mode) {
-+        case PRV_M:
-+            cause |=3D get_field(env->mintstatus, MINTSTATUS_MIL)
-+                     << XCAUSE_XPIL_SHIFT;
-+            cause |=3D get_field(env->mstatus, MSTATUS_MIE) << XCAUSE_XPIE=
-_SHIFT;
-+            env->mintstatus =3D set_field(env->mintstatus, MINTSTATUS_MIL,=
- level);
-+            break;
-+        case PRV_S:
-+            cause |=3D get_field(env->mintstatus, MINTSTATUS_SIL)
-+                     << XCAUSE_XPIL_SHIFT;
-+            cause |=3D get_field(env->mstatus, MSTATUS_SPIE) << XCAUSE_XPI=
-E_SHIFT;
-+            env->mintstatus =3D set_field(env->mintstatus, MINTSTATUS_SIL,=
- level);
-+            break;
-+        }
-+    } else {
-+        mode =3D env->priv <=3D PRV_S && cause < 64 &&
-+            ((deleg >> cause) & 1 || s_injected || vs_injected) ? PRV_S : =
-PRV_M;
++    if (riscv_clic_is_clic_mode(env)) {
++        /* Update mintstatus with the PRV_M information */
++        target_ulong mpil =3D get_field(env->mcause, MCAUSE_MPIL);
++        env->mintstatus =3D set_field(env->mintstatus, MINTSTATUS_MIL, mpi=
+l);
++        env->mcause =3D set_field(env->mcause, MCAUSE_MPIE, 1);
++        env->mcause =3D set_field(env->mcause, MCAUSE_MPP,
++                                riscv_has_ext(env, RVU) ? PRV_U : PRV_M);
++        riscv_clic_get_next_interrupt(env->clic);
 +    }
 +
-     trace_riscv_trap(env->mhartid, async, cause, env->pc, tval,
-                      riscv_cpu_get_trap_name(cause, async));
-
-@@ -1755,8 +1861,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-                   __func__, env->mhartid, async, cause, env->pc, tval,
-                   riscv_cpu_get_trap_name(cause, async));
-
--    if (env->priv <=3D PRV_S && cause < 64 &&
--        (((deleg >> cause) & 1) || s_injected || vs_injected)) {
-+    if (PRV_S =3D=3D mode) {
-         /* handle the trap in S-mode */
-         if (riscv_has_ext(env, RVH)) {
-             uint64_t hdeleg =3D async ? env->hideleg : env->hedeleg;
-@@ -1765,7 +1870,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-                 (((hdeleg >> cause) & 1) || vs_injected)) {
-                 /* Trap to VS mode */
-                 /*
--                 * See if we need to adjust cause. Yes if its VS mode inte=
-rrupt
-+                 * See if we need to adjust cause. Yes if it's VS mode int=
-errupt
-                  * no if hypervisor has delegated one of hs mode's interru=
-pt
-                  */
-                 if (async && (cause =3D=3D IRQ_VS_TIMER || cause =3D=3D IR=
-Q_VS_SOFT ||
-@@ -1796,13 +1901,15 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         s =3D set_field(s, MSTATUS_SPP, env->priv);
-         s =3D set_field(s, MSTATUS_SIE, 0);
-         env->mstatus =3D s;
--        env->scause =3D cause | ((target_ulong)async << (TARGET_LONG_BITS =
-- 1));
-+        if (async) {
-+            env->scause =3D cause | SCAUSE_INT;
-+        }
-         env->sepc =3D env->pc;
-         env->stval =3D tval;
-         env->htval =3D htval;
-         env->htinst =3D tinst;
--        env->pc =3D (env->stvec >> 2 << 2) +
--                  ((async && (env->stvec & 3) =3D=3D 1) ? cause * 4 : 0);
-+        env->pc =3D riscv_intr_pc(env, env->stvec, env->stvt, async,
-+                                cause & SCAUSE_EXCCODE, PRV_S);
-         riscv_cpu_set_mode(env, PRV_S, virt);
-     } else {
-         /* handle the trap in M-mode */
-@@ -1827,13 +1934,15 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         s =3D set_field(s, MSTATUS_MPP, env->priv);
-         s =3D set_field(s, MSTATUS_MIE, 0);
-         env->mstatus =3D s;
--        env->mcause =3D cause | ~(((target_ulong)-1) >> async);
-+        if (async) {
-+            env->mcause =3D cause | MCAUSE_INT;
-+        }
-         env->mepc =3D env->pc;
-         env->mtval =3D tval;
-         env->mtval2 =3D mtval2;
-         env->mtinst =3D tinst;
--        env->pc =3D (env->mtvec >> 2 << 2) +
--                  ((async && (env->mtvec & 3) =3D=3D 1) ? cause * 4 : 0);
-+        env->pc =3D riscv_intr_pc(env, env->mtvec, env->mtvt, async,
-+                                cause & MCAUSE_EXCCODE, PRV_M);
-         riscv_cpu_set_mode(env, PRV_M, virt);
+     if (riscv_has_ext(env, RVH) && prev_virt) {
+         riscv_cpu_swap_hypervisor_regs(env);
      }
-
 --
 2.46.0.windows.1
 This message and any attachments may contain privileged and confidential in=
