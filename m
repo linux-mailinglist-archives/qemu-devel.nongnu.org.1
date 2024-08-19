@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F080956FFB
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC62956FEB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 18:13:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sg514-0002ve-HB; Mon, 19 Aug 2024 12:13:58 -0400
+	id 1sg4zH-0001vL-41; Mon, 19 Aug 2024 12:12:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=5961d01319=ian.brockbank@cirrus.com>)
- id 1sg50z-0002fo-TJ; Mon, 19 Aug 2024 12:13:53 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]
- helo=mx0b-001ae601.pphosted.com)
+ id 1sg4zA-0001Z6-6I; Mon, 19 Aug 2024 12:12:00 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=5961d01319=ian.brockbank@cirrus.com>)
- id 1sg50w-0007ew-Ne; Mon, 19 Aug 2024 12:13:53 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
- by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47JF7MJZ004354;
- Mon, 19 Aug 2024 11:11:39 -0500
+ id 1sg4z6-0007Rb-8j; Mon, 19 Aug 2024 12:11:59 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+ by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47JF7dSI014567;
+ Mon, 19 Aug 2024 11:11:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- PODMain02222019; bh=Kh0J827/tPkbI7tTFUBS1BO0Ju/5crRUVVFFRvSeKns=; b=
- Cy+IwyRLtqOVtSe/ww+q+ORRTd/NSd6VFxoY1v4mnQqf+A4Gbn/uTVMXnGBlEIgb
- KnpNr8/YZ4qjHq7QbNqezMvoQOyZTVC2zcARslOu7B1adnnble6m1/IktZdX6wVD
- Fthx5z9OhS7d348tzf9h0sXH64kKg8XE+PeOt9NGltykX/GxVGSrEKwKTJF1zgTo
- 6ugJH0qcVzwQNHaZtOjTxqiu5ANMy7FSlwlGXd33Vl4AoytWibT/50My02+Rmj4q
- 5Q0Uv68TxiIQt6REPnSPkUAilVPj3dHnFYQzHiKD/3jQUDSimJpSeQhwqBCpDtvr
- 7q9D+rEigGq0rVgpxlNcYg==
-Received: from ausex02.ad.cirrus.com ([141.131.3.21])
- by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 412s8x1xbk-1
+ PODMain02222019; bh=OYxYjEmv+8IBn8zuhaulDEnH+AOoV5azivhId3Zg+tc=; b=
+ hyzfEQJ8jPUAku7FJrzde37QYvrE3SslyUg9SE+uCuIUqhkMBi3tbz26izWl4mdp
+ KswlCmtjpObU61avolQqKvuJZNBuQ2pHDHb0tKOHS8+GsSw5CvRSMtICoomzL86A
+ W04PVNddsjZFuH3p3nPnSOCEv5v90sQFI746yYqALBGAsQQWB/l9izj0wYzAwrQ9
+ NfT929AEJrUjhIpIMhtQ+bsH+ZTfnp1Oz/UzDCaop4ht1tl8JqL+BzaDHXkDVqA5
+ vQwB9uQupSoGdSFZ80/ljjygNSh8i3qZHYWfhZcy6LZAX0ogCKmJSgDXX3jsDec5
+ tZAGy6vSILDee0CFIhe93Q==
+Received: from ausex01.ad.cirrus.com ([141.131.3.19])
+ by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 412r9hsxbh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2024 11:11:39 -0500 (CDT)
-Received: from ausex01.ad.cirrus.com (141.131.37.95) by ausex02.ad.cirrus.com
- (141.131.37.96) with Microsoft SMTP Server (version=TLS1_2,
+ Mon, 19 Aug 2024 11:11:47 -0500 (CDT)
+Received: from ausex01.ad.cirrus.com (141.131.37.95) by ausex01.ad.cirrus.com
+ (141.131.37.95) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
- 2024 11:11:38 -0500
+ 2024 11:11:46 -0500
 Received: from EDIN7BQBTG3.ad.cirrus.com (141.131.38.212) by
  anon-ausex01.ad.cirrus.com (141.131.37.95) with Microsoft SMTP Server id
- 15.2.1544.9 via Frontend Transport; Mon, 19 Aug 2024 11:11:36 -0500
+ 15.2.1544.9 via Frontend Transport; Mon, 19 Aug 2024 11:11:39 -0500
 From: Ian Brockbank <Ian.Brockbank@cirrus.com>
 To: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>
 CC: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
  <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, Weiwei Li
  <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Ian Brockbank
- <ian.brockbank@cirrus.com>, LIU Zhiwei <zhiwei_liu@c-sky.com>
-Subject: [PATCH 09/11 v2] target/riscv: Update interrupt return in CLIC mode
-Date: Mon, 19 Aug 2024 17:02:20 +0100
-Message-ID: <20240819160742.27586-13-Ian.Brockbank@cirrus.com>
+ <ian.brockbank@cirrus.com>, Ian Brockbank <Ian.Brockbank@cirrus.com>
+Subject: [PATCH 10/11 v2] hw/riscv: add CLIC into virt machine
+Date: Mon, 19 Aug 2024 17:02:21 +0100
+Message-ID: <20240819160742.27586-14-Ian.Brockbank@cirrus.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240819160742.27586-1-Ian.Brockbank@cirrus.com>
 References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html>
@@ -60,10 +59,10 @@ References: <https://lists.gnu.org/archive/html/qemu-riscv/2024-08/msg00234.html
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: wzBUiUkS4eOJWSbD--dw31DdESHTtSj-
-X-Proofpoint-GUID: wzBUiUkS4eOJWSbD--dw31DdESHTtSj-
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=67.231.149.25;
+X-Proofpoint-GUID: ov-vTmIYCBI2zn1UzUAR-hZOL9kNRO3k
+X-Proofpoint-ORIG-GUID: ov-vTmIYCBI2zn1UzUAR-hZOL9kNRO3k
+X-Proofpoint-Spam-Reason: orgsafe
+Received-SPF: pass client-ip=67.231.152.168;
  envelope-from=prvs=5961d01319=ian.brockbank@cirrus.com;
  helo=mx0b-001ae601.pphosted.com
 X-Spam_score_int: -27
@@ -88,94 +87,408 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ian Brockbank <ian.brockbank@cirrus.com>
-
-When a vectored interrupt is selected and serviced, the hardware will
-automatically clear the corresponding pending bit in edge-triggered mode.
-This may lead to a lower privilege interrupt pending forever.
-
-Therefore when interrupts return, pull a pending interrupt to service.
-
-Signed-off-by: LIU Zhiwei <zhiwei_liu@c-sky.com>
-Signed-off-by: Ian Brockbank <ian.brockbank@cirrus.com>
+Signed-off-by: Ian Brockbank<ian.brockbank@cirrus.com>
 ---
- target/riscv/op_helper.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ hw/riscv/virt.c         | 235 +++++++++++++++++++++++++++++++++++++++-
+ include/hw/riscv/virt.h |  35 ++++++
+ 2 files changed, 267 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 25a5263573..b6ca3ad598 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -25,7 +25,11 @@
- #include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
-
--/* Exceptions processing helpers */
-+#if !defined(CONFIG_USER_ONLY)
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index cef41c150a..68d614ad5c 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1,4 +1,4 @@
+-/*
++ /*
+  * QEMU RISC-V VirtIO Board
+  *
+  * Copyright (c) 2017 SiFive, Inc.
+@@ -39,6 +39,7 @@
+ #include "hw/firmware/smbios.h"
+ #include "hw/intc/riscv_aclint.h"
+ #include "hw/intc/riscv_aplic.h"
 +#include "hw/intc/riscv_clic.h"
-+#endif
-+
-+/* Exception processing helpers */
- G_NORETURN void riscv_raise_exception(CPURISCVState *env,
-                                       uint32_t exception, uintptr_t pc)
- {
-@@ -259,6 +263,7 @@ void helper_cbo_inval(CPURISCVState *env, target_ulong =
-address)
-
- #ifndef CONFIG_USER_ONLY
-
-+/* Return from PRV_S interrupt */
- target_ulong helper_sret(CPURISCVState *env)
- {
-     uint64_t mstatus;
-@@ -292,8 +297,17 @@ target_ulong helper_sret(CPURISCVState *env)
+ #include "hw/intc/sifive_plic.h"
+ #include "hw/misc/sifive_test.h"
+ #include "hw/platform-bus.h"
+@@ -72,6 +73,7 @@ static const MemMapEntry virt_memmap[] =3D {
+     [VIRT_MROM] =3D         {     0x1000,        0xf000 },
+     [VIRT_TEST] =3D         {   0x100000,        0x1000 },
+     [VIRT_RTC] =3D          {   0x101000,        0x1000 },
++    [VIRT_CLIC] =3D         {  0x2000000, VIRT_CLIC_MAX_SIZE(VIRT_CPUS_MAX=
+)},
+     [VIRT_CLINT] =3D        {  0x2000000,       0x10000 },
+     [VIRT_ACLINT_SSWI] =3D  {  0x2F00000,        0x4000 },
+     [VIRT_PCIE_PIO] =3D     {  0x3000000,       0x10000 },
+@@ -424,6 +426,37 @@ static void create_fdt_socket_aclint(RISCVVirtState *s=
+,
      }
-     env->mstatus =3D mstatus;
-
-+    if (riscv_clic_is_clic_mode(env)) {
-+        /* Update mintstatus with the PRV_S information */
-+        target_ulong spil =3D get_field(env->scause, SCAUSE_SPIL);
-+        env->mintstatus =3D set_field(env->mintstatus, MINTSTATUS_SIL, spi=
-l);
-+        env->scause =3D set_field(env->scause, SCAUSE_SPIE, 1);
-+        env->scause =3D set_field(env->scause, SCAUSE_SPP, PRV_U);
-+        riscv_clic_get_next_interrupt(env->clic);
-+    }
-+
-     if (riscv_has_ext(env, RVH) && !env->virt_enabled) {
--        /* We support Hypervisor extensions and virtulisation is disabled =
-*/
-+        /* We support Hypervisor extensions and virtualization is disabled=
- */
-         target_ulong hstatus =3D env->hstatus;
-
-         prev_virt =3D get_field(hstatus, HSTATUS_SPV);
-@@ -312,6 +326,7 @@ target_ulong helper_sret(CPURISCVState *env)
-     return retpc;
  }
 
-+/* Return from PRV_M interrupt */
- target_ulong helper_mret(CPURISCVState *env)
- {
-     if (!(env->priv >=3D PRV_M)) {
-@@ -344,6 +359,16 @@ target_ulong helper_mret(CPURISCVState *env)
-     }
-     env->mstatus =3D mstatus;
++static void create_fdt_socket_clic(RISCVVirtState *s,
++                                   const MemMapEntry *memmap, int socket)
++{
++    g_autofree char *clic_name =3D NULL;
++    g_autofree uint32_t *clic_cells =3D NULL;
++    unsigned long mclicbase;
++    MachineState *ms =3D MACHINE(s);
++    static const char * const clic_compat[1] =3D {
++        "riscv,clic-0.9"
++    };
++
++    /*
++     * The spec doesn't define a memory layout, other than to say that eac=
+h
++     * CLIC should be on a 4KiB boundary if memory-mapped.
++     * This implementation makes all the CLICs contiguous, in the order M,=
+ S, U,
++     * and assumes the worst-case size.
++     * TODO: create entries for each CLIC on the system.
++     */
++    mclicbase =3D memmap[VIRT_CLIC].base;
++    clic_name =3D g_strdup_printf("/soc/clic@%lx", mclicbase);
++    qemu_fdt_add_subnode(ms->fdt, clic_name);
++    qemu_fdt_setprop_string_array(ms->fdt, clic_name, "compatible",
++                                  (char **)&clic_compat,
++                                  ARRAY_SIZE(clic_compat));
++    qemu_fdt_setprop_cells(ms->fdt, clic_name, "regs",
++        0x0, mclicbase, 0x0, memmap[VIRT_CLIC].size);
++    qemu_fdt_setprop_cell(ms->fdt, clic_name, "riscv,num-sources",
++                          VIRT_IRQCHIP_NUM_SOURCES);
++    riscv_socket_fdt_write_id(ms, clic_name, socket);
++}
++
+ static void create_fdt_socket_plic(RISCVVirtState *s,
+                                    const MemMapEntry *memmap, int socket,
+                                    uint32_t *phandle, uint32_t *intc_phand=
+les,
+@@ -759,7 +792,10 @@ static void create_fdt_sockets(RISCVVirtState *s, cons=
+t MemMapEntry *memmap,
 
-+    if (riscv_clic_is_clic_mode(env)) {
-+        /* Update mintstatus with the PRV_M information */
-+        target_ulong mpil =3D get_field(env->mcause, MCAUSE_MPIL);
-+        env->mintstatus =3D set_field(env->mintstatus, MINTSTATUS_MIL, mpi=
-l);
-+        env->mcause =3D set_field(env->mcause, MCAUSE_MPIE, 1);
-+        env->mcause =3D set_field(env->mcause, MCAUSE_MPP,
-+                                riscv_has_ext(env, RVU) ? PRV_U : PRV_M);
-+        riscv_clic_get_next_interrupt(env->clic);
+         create_fdt_socket_memory(s, memmap, socket);
+
+-        if (virt_aclint_allowed() && s->have_aclint) {
++
++        if (s->have_clic) {
++            create_fdt_socket_clic(s, memmap, socket);
++        } else if (virt_aclint_allowed() && s->have_aclint) {
+             create_fdt_socket_aclint(s, memmap, socket,
+                                      &intc_phandles[phandle_pos]);
+         } else if (tcg_enabled()) {
+@@ -1206,6 +1242,37 @@ static DeviceState *virt_create_plic(const MemMapEnt=
+ry *memmap, int socket,
+     return ret;
+ }
+
++static DeviceState *virt_create_clic(RISCVVirtState *s, uint64_t clic_base=
+,
++                                     int hartid)
++{
++    DeviceState *ret;
++    uint32_t block_size =3D VIRT_CLIC_HART_SIZE(s->clic_prv_s, s->clic_prv=
+_u);
++    uint64_t mclicbase =3D clic_base + hartid * block_size;
++    uint64_t sclicbase =3D 0;
++    uint64_t uclicbase =3D 0;
++
++    /*
++     * The spec doesn't define a memory layout, other than to say that eac=
+h
++     * CLIC should be on a 4KiB boundary if memory-mapped.
++     * This implementation makes all the CLICs contiguous, in the order M,=
+ S, U.
++     */
++    if (s->clic_prv_s) {
++        sclicbase =3D mclicbase + VIRT_CLIC_BLOCK_SIZE;
++    }
++    if (s->clic_prv_u) {
++        uclicbase =3D mclicbase + VIRT_CLIC_BLOCK_SIZE;
++        if (s->clic_prv_s) {
++            uclicbase +=3D VIRT_CLIC_BLOCK_SIZE;
++        }
++    }
++    ret =3D riscv_clic_create(mclicbase, sclicbase, uclicbase,
++                            hartid, VIRT_IRQCHIP_NUM_SOURCES,
++                            s->clic_intctlbits,
++                            s->clic_version);
++
++    return ret;
++}
++
+ static DeviceState *virt_create_aia(RISCVVirtAIAType aia_type, int aia_gue=
+sts,
+                                     const MemMapEntry *memmap, int socket,
+                                     int base_hartid, int hart_count)
+@@ -1505,7 +1572,7 @@ static void virt_machine_init(MachineState *machine)
+                             i * memmap[VIRT_ACLINT_SSWI].size,
+                         base_hartid, hart_count, true);
+             }
+-        } else if (tcg_enabled()) {
++        } else if (tcg_enabled() && !s->have_clic) {
+             /* Per-socket SiFive CLINT */
+             riscv_aclint_swi_create(
+                     memmap[VIRT_CLINT].base + i * memmap[VIRT_CLINT].size,
+@@ -1527,6 +1594,12 @@ static void virt_machine_init(MachineState *machine)
+                                             hart_count);
+         }
+
++        /* CLIC if present - needs to come after PLIC */
++        if (s->have_clic) {
++            s->irqchip[i] =3D virt_create_clic(s, memmap[VIRT_CLIC].base,
++                                             base_hartid);
++        }
++
+         /* Try to use different IRQCHIP instance based device type */
+         if (i =3D=3D 0) {
+             mmio_irqchip =3D s->irqchip[i];
+@@ -1710,6 +1783,134 @@ static void virt_set_aclint(Object *obj, bool value=
+, Error **errp)
+     s->have_aclint =3D value;
+ }
+
++static bool virt_get_clic(Object *obj, Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++
++    return s->have_clic;
++}
++
++static void virt_set_clic(Object *obj, bool value, Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++
++    s->have_clic =3D value;
++}
++
++static char *virt_get_clic_mode(Object *obj, Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++    const char *val;
++
++    if (s->have_clic) {
++        if (s->clic_prv_s && s->clic_prv_u) {
++            val =3D "msu";
++        } else if (s->clic_prv_s) {
++            val =3D "ms";
++        } else if (s->clic_prv_u) {
++            val =3D "mu";
++        } else {
++            val =3D "m";
++        }
++    } else {
++        val =3D "none";
 +    }
 +
-     if (riscv_has_ext(env, RVH) && prev_virt) {
-         riscv_cpu_swap_hypervisor_regs(env);
-     }
++    return g_strdup(val);
++}
++
++static void virt_set_clic_mode(Object *obj, const char *val, Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++    const char *c =3D val;
++
++    s->have_clic =3D true;
++
++    s->clic_prv_s =3D false;
++    s->clic_prv_u =3D false;
++
++    /* The mode is encoded with m =3D machine, s =3D PRV_S, u =3D PRV_U */
++    while (*c && !*errp) {
++        switch (*c) {
++        case 'm':
++        case 'M':
++            /* Machine mode is implicit and always enabled */
++            break;
++        case 's':
++        case 'S':
++            s->clic_prv_s =3D true;
++            break;
++        case 'u':
++        case 'U':
++            s->clic_prv_u =3D true;
++            break;
++        default:
++            error_setg(errp, "Invalid CLIC interrupt mode %c in %s", *c, v=
+al);
++            error_append_hint(errp, "Valid values are m, s and u.\n");
++            break;
++        }
++        ++c;
++    }
++}
++
++static char *virt_get_clic_version(Object *obj, Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++    return g_strdup(s->clic_version);
++}
++
++static void virt_set_clic_version(Object *obj, const char *val, Error **er=
+rp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++    g_autofree char **tokens =3D g_strsplit(val, "-", 2);
++
++    if (0 !=3D strcmp(tokens[0], "v0.9")) {
++        error_setg(errp, "Invalid CLIC version %s", tokens[0]);
++        error_append_hint(errp,
++                          "Only v0.9 is supported. The 'v' is required.\n"=
+);
++        return;
++    }
++
++    if (tokens[1]) {
++        if (0 !=3D strcmp(tokens[1], "jmp")) {
++            error_setg(errp, "Invalid CLIC version suffix -%s", tokens[1])=
+;
++            error_append_hint(errp, "Only -jmp is supported.\n");
++            return;
++        }
++    }
++
++    s->clic_version =3D g_strdup(val);
++    s->have_clic =3D true;
++}
++
++static void virt_get_clicintctlbits(Object *obj, Visitor *v,
++                                    const char *name, void *opaque,
++                                    Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++    uint8_t value =3D s->clic_intctlbits;
++
++    visit_type_uint8(v, name, &value, errp);
++}
++
++static void virt_set_clicintctlbits(Object *obj, Visitor *v,
++                                    const char *name, void *opaque,
++                                    Error **errp)
++{
++    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
++    uint8_t value;
++
++    if (!visit_type_uint8(v, name, &value, errp)) {
++        return;
++    }
++    if (value > MAX_CLIC_INTCTLBITS) {
++        error_setg(errp, "CLIC intctlbits must be <=3D %d; was %d",
++                   MAX_CLIC_INTCTLBITS, value);
++    }
++
++    s->clic_intctlbits =3D value;
++}
++
+ bool virt_is_acpi_enabled(RISCVVirtState *s)
+ {
+     return s->acpi !=3D ON_OFF_AUTO_OFF;
+@@ -1767,6 +1968,7 @@ static void virt_machine_class_init(ObjectClass *oc, =
+void *data)
+ {
+     MachineClass *mc =3D MACHINE_CLASS(oc);
+     HotplugHandlerClass *hc =3D HOTPLUG_HANDLER_CLASS(oc);
++    ObjectProperty *op =3D NULL;
+
+     mc->desc =3D "RISC-V VirtIO board";
+     mc->init =3D virt_machine_init;
+@@ -1799,6 +2001,33 @@ static void virt_machine_class_init(ObjectClass *oc,=
+ void *data)
+                                           "enable/disable emulating "
+                                           "ACLINT devices");
+
++    object_class_property_add_bool(oc, "clic", virt_get_clic,
++                                   virt_set_clic);
++    object_class_property_set_description(oc, "clic",
++                                          "Set on/off to enable/disable "
++                                          "emulating CLIC devices");
++    object_class_property_add_str(oc, "clic-mode", virt_get_clic_mode,
++                                   virt_set_clic_mode);
++    object_class_property_set_description(oc, "clic-mode",
++                                          "Specify supported CLIC modes: "
++                                          "m =3D machine (always enabled),=
+ "
++                                          "s =3D PRV_S, u =3D PRV_U");
++    op =3D object_class_property_add_str(oc, "clic-version",
++                                       virt_get_clic_version,
++                                       virt_set_clic_version);
++    object_property_set_default_str(op, VIRT_CLIC_VERSION);
++    object_class_property_set_description(oc, "clic-version",
++                                          "Set the CLIC version to use. "
++                                          "Valid values are v0.9 and v0.9-=
+jmp");
++    op =3D object_class_property_add(oc, "clic-intctlbits", "uint8",
++                                   virt_get_clicintctlbits,
++                                   virt_set_clicintctlbits,
++                                   NULL, NULL);
++    object_property_set_default_uint(op, 8);
++    object_class_property_set_description(oc, "clic-intctlbits",
++                                          "The number of intctl bits used =
+in "
++                                          "this CLIC implementation");
++
+     object_class_property_add_str(oc, "aia", virt_get_aia,
+                                   virt_set_aia);
+     object_class_property_set_description(oc, "aia",
+diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+index c0dc41ff9a..d0a245608c 100644
+--- a/include/hw/riscv/virt.h
++++ b/include/hw/riscv/virt.h
+@@ -55,6 +55,11 @@ struct RISCVVirtState {
+
+     int fdt_size;
+     bool have_aclint;
++    bool have_clic;
++    bool clic_prv_s;
++    bool clic_prv_u;
++    uint8_t clic_intctlbits;
++    char *clic_version;
+     RISCVVirtAIAType aia_type;
+     int aia_guests;
+     char *oem_id;
+@@ -71,6 +76,7 @@ enum {
+     VIRT_RTC,
+     VIRT_CLINT,
+     VIRT_ACLINT_SSWI,
++    VIRT_CLIC,
+     VIRT_PLIC,
+     VIRT_APLIC_M,
+     VIRT_APLIC_S,
+@@ -113,6 +119,35 @@ enum {
+ #define VIRT_PLIC_SIZE(__num_context) \
+     (VIRT_PLIC_CONTEXT_BASE + (__num_context) * VIRT_PLIC_CONTEXT_STRIDE)
+
++#define VIRT_CLIC_INTCLTBITS    3
++#define VIRT_CLIC_VERSION       "v0.9"
++#define VIRT_CLIC_MAX_IRQS      0x1000
++#define VIRT_CLIC_CONTEXT_BASE  0x1000
++#define VIRT_CLIC_CONTEXT_COUNT(_prv_s, _prv_u) \
++    (1 + ((_prv_s) ? 1 : 0) + ((_prv_u) ? 1 : 0))
++#define VIRT_CLIC_FULL_CONTEXT_COUNT VIRT_CLIC_CONTEXT_COUNT(1, 1)
++#define VIRT_CLIC_ALIGN_BITS    12
++#define VIRT_CLIC_ALIGN_MASK    ((1U << VIRT_CLIC_ALIGN_BITS) - 1)
++/* Round up to next 4KiB alignment boundary */
++#define VIRT_CLIC_ALIGN(_base_addr) \
++    (((_base_addr) + VIRT_CLIC_ALIGN_MASK) & VIRT_CLIC_ALIGN_MASK)
++#define VIRT_CLIC_INT_SIZE(_irq_count) ((_irq_count) * 4)
++/*
++ * The spec doesn't define a memory layout, other than to say that each
++ * CLIC should be on a 4KiB boundary if memory-mapped.
++ * This implementation makes all the CLICs contiguous, in the order M, S, =
+U,
++ * and assumes the worst-case size.
++ */
++#define VIRT_CLIC_BLOCK_SIZE \
++    (VIRT_CLIC_CONTEXT_BASE + VIRT_CLIC_INT_SIZE(VIRT_CLIC_MAX_IRQS))
++#define VIRT_CLIC_HART_SIZE(_prv_s, _prv_u) \
++    (VIRT_CLIC_CONTEXT_COUNT(_prv_s, _prv_u) * VIRT_CLIC_BLOCK_SIZE)
++#define VIRT_CLIC_SIZE(_hart_count, _prv_s, _prv_u) \
++    ((_hart_count) * VIRT_CLIC_HART_SIZE(_prv_s, _prv_u))
++#define VIRT_CLIC_MAX_HART_SIZE VIRT_CLIC_HART_SIZE(1, 1)
++#define VIRT_CLIC_MAX_SIZE(_hart_count) \
++    ((_hart_count) * VIRT_CLIC_MAX_HART_SIZE)
++
+ #define FDT_PCI_ADDR_CELLS    3
+ #define FDT_PCI_INT_CELLS     1
+ #define FDT_PLIC_ADDR_CELLS   0
 --
 2.46.0.windows.1
 This message and any attachments may contain privileged and confidential in=
