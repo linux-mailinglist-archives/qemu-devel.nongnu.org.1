@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C5A957832
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8B9957838
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 00:54:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgBFJ-00022x-84; Mon, 19 Aug 2024 18:53:07 -0400
+	id 1sgBFg-0003g3-P7; Mon, 19 Aug 2024 18:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEF-0000em-FD
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:01 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEK-0000ko-F7
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:07 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBED-0000im-RW
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:51:59 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-429e29933aaso36681315e9.0
- for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:51:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sgBEI-0000jR-Sd
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 18:52:04 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42817bee9e8so37480285e9.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Aug 2024 15:52:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724107916; x=1724712716; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724107920; x=1724712720; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r9dq7opeWVZG3BtwY0r0XLR76Nuys55wAqLRnBp/jbM=;
- b=gfI7ZNmZYRuHprksljSI+Wz5RAIY1tuAU4cLs0RdH79qsOHfdW0ha3ar7div2HX8G1
- ZQcjFxdg/l5eSh2IMz7pjlm7lzI/28BnXUA8E051Bge6cx1wA/t3fy1AIWakvoZt30D0
- ni+SzjBsLdZ5VDpneOj57wcz0+4bVQYF8VYcgvcrfzZVKsNBhvMzCwELv3SPTCxIcT3q
- 43PAVsyJXjfHvYOZ405ZzhLwPoInAPAiVTeaMmvHongxhba9RYxvJ8yuTrTNEwOH8K3b
- nx1YgNzc7YOrg22Og8/G9MA66nXkmKOBxAcL3uYvYGNw9CKDh5nbcQgB8MEIe3lV/BWg
- 1I0g==
+ bh=/KeoVIja/7tKrspHJMKvsDmwZQwxRpxJr8dhRzojKqI=;
+ b=MfLifjU2i555wbFMdf1MFblMU9IH48g34wEGdX2EzVjPjKNXvApoufP7FDTOzfY/oN
+ TUeDK1Dm7IRQGh/OVMuyvbI0ITmABytCy4nCTTEZxE29H7pgN0aQFSmVJoivQQ1865MS
+ L9TmMK/t7I2zi4MUqDxSZb7Kja5eb/2xUVsl/anFijHBWDMvXnX4vS8nZ0u6o2XoM6SB
+ nzEk7Enr5vmnJ7sPPgXuDyBdSIg5JRARXv8B8HuLdKrxFHBDay8GXbN92kukyQxCXIWc
+ wh6euSks82YjLK7MiM0aiQfXaMlEE2BOjoFYhw+Vzmq88ZmWm7g9/SIVHy1nGfemAWXB
+ 5Adg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724107916; x=1724712716;
+ d=1e100.net; s=20230601; t=1724107920; x=1724712720;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r9dq7opeWVZG3BtwY0r0XLR76Nuys55wAqLRnBp/jbM=;
- b=GCj6ogLiAvWncai7HCJRDQ+fkBV1Cbs7e34XXUzDRrpXVaeMWPgF23+ShlPg6B8s9W
- acYnbgZOrUoXoufXTvziL9snNTzv7cb7C4RS1nwX6mZRHj6Z1PjJH4wlWWcUA4J3txhh
- EJBnDj5q1Nxyqqo/bpcobOhGvNZ4a4CqLBMLUxj6+VIeNvCD9Xq6pfTrcR7ud2e9f87Z
- d5tH6w5VA6Y4QCADqwnq25B3YpwPsJuKN9bOUH+OziESalnVVCXlnalxR3t7z5uFQ502
- K/pmoMk5VYL7be2TXxpBB1xdnveUcjfRVPsyWNkBc1q1gNe32xMbQItfjLg22jVPIaL/
- +tvg==
-X-Gm-Message-State: AOJu0YyV27fAhQYHfT88KKfrku8Y/3Bxmu2WR7VhtbVUiALSzbRJC/+T
- Pszklr1a3Dqzw6S2zQKfpWZbChSHfs5wTkS/XUqPrKRPqU0pQ/jZEnlfcgb3tX9a6sIu9J7Gqzh
- Q4AY=
-X-Google-Smtp-Source: AGHT+IH3avEpLYouBO8BKbwI8iTPf+GWGZA41+Mzx3b0n30Arpea26YUrQ7BRhLJ0NgNpMs0cGe5kA==
-X-Received: by 2002:a05:600c:310f:b0:426:5b21:97fa with SMTP id
- 5b1f17b1804b1-429ed7e432cmr101753805e9.29.1724107915886; 
- Mon, 19 Aug 2024 15:51:55 -0700 (PDT)
+ bh=/KeoVIja/7tKrspHJMKvsDmwZQwxRpxJr8dhRzojKqI=;
+ b=HgyPSqSRkCkjcXDMDrMkDraZxIofOEbXbZFWCBIXuNfTdl2pjKVDdzPK768CU/2MgZ
+ xgAqTUCQuWwFIbyH+iG4pv94nJWimgB+U3ttBx3abntB3wmVzCnqBQTTJ+thrf2GHbPv
+ EQy6CejQzV9Fob8zaDgNiD3S67F4qQy7isQ0fN9RMpa06lE8FTC1fCnqHr/wOaS5XTqB
+ sUNbul+twhU8xgqeKkyUBb45bRtscEgcMZt91sBpBffmHmX0pgs4wwt6uWwT31BxUO0g
+ iOqehSBHsZO/kksMhfNAUZjtzWzDBmtloe5YD80XcVg6f3g+Z28mVVbHvhR7HIYVubAN
+ 56rA==
+X-Gm-Message-State: AOJu0Yz+lDeTMPcgDuz/jWzFW5PIK8/8KYNfs/h7zn+H17Nb5yPd01CX
+ RZGRiKhrAzxoS3dXT7ZzfbloKQW/1NXOQyoSgm6uBDeR7wlk7LeH2ag6SqYUMSoY9m36v3529uA
+ GrqU=
+X-Google-Smtp-Source: AGHT+IEEN29pAplJanjaz4jgjl2pcEqL13XSEHtlqMX2TMaK/f/PAzUwEtRBCOeFQTe0VBrK2vzdLw==
+X-Received: by 2002:adf:f707:0:b0:368:4c38:a669 with SMTP id
+ ffacd0b85a97d-3719431e865mr7125144f8f.10.1724107920329; 
+ Mon, 19 Aug 2024 15:52:00 -0700 (PDT)
 Received: from localhost.localdomain (88-178-97-237.subs.proxad.net.
  [88.178.97.237]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-429ded1813dsm181831585e9.7.2024.08.19.15.51.55
+ ffacd0b85a97d-371898bb588sm11561680f8f.115.2024.08.19.15.51.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Aug 2024 15:51:55 -0700 (PDT)
+ Mon, 19 Aug 2024 15:51:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/20] hw/remote/message.c: Don't directly invoke
- DeviceClass:reset
-Date: Tue, 20 Aug 2024 00:51:04 +0200
-Message-ID: <20240819225116.17928-9-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 09/20] linux-user/mips: Do not try to use removed R5900 CPU
+Date: Tue, 20 Aug 2024 00:51:05 +0200
+Message-ID: <20240819225116.17928-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240819225116.17928-1-philmd@linaro.org>
 References: <20240819225116.17928-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,43 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+R5900 emulation was removed in commit 823f2897bd.
+Remove it from ELF parsing in order to avoid:
 
-Directly invoking the DeviceClass::reset method is a bad idea,
-because if the device is using three-phase reset then it relies on
-transitional reset machinery which is likely to disappear at some
-point.
+  $ qemu-mipsn32 ./test5900
+  qemu-mipsn32: unable to find CPU model 'R5900'
 
-Reset the device in the standard way, by calling device_cold_reset().
+This reverts commit 4d9e5a0eb7df6e98ac6cf5e16029f35dd05b9537.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240813165250.2717650-7-peter.maydell@linaro.org>
+Fixes: 823f2897bd ("target/mips: Disable R5900 support")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240814133928.6746-2-philmd@linaro.org>
 ---
- hw/remote/message.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ linux-user/mips/target_elf.h   | 3 ---
+ linux-user/mips64/target_elf.h | 3 ---
+ 2 files changed, 6 deletions(-)
 
-diff --git a/hw/remote/message.c b/hw/remote/message.c
-index 50f6bf2d49..38ae6c75b4 100644
---- a/hw/remote/message.c
-+++ b/hw/remote/message.c
-@@ -215,13 +215,10 @@ fail:
- static void process_device_reset_msg(QIOChannel *ioc, PCIDevice *dev,
-                                      Error **errp)
- {
--    DeviceClass *dc = DEVICE_GET_CLASS(dev);
-     DeviceState *s = DEVICE(dev);
-     MPQemuMsg ret = { 0 };
- 
--    if (dc->reset) {
--        dc->reset(s);
+diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
+index b965e86b2b..71a32315a8 100644
+--- a/linux-user/mips/target_elf.h
++++ b/linux-user/mips/target_elf.h
+@@ -12,9 +12,6 @@ static inline const char *cpu_get_model(uint32_t eflags)
+     if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
+         return "mips32r6-generic";
+     }
+-    if ((eflags & EF_MIPS_MACH) == EF_MIPS_MACH_5900) {
+-        return "R5900";
 -    }
-+    device_cold_reset(s);
- 
-     ret.cmd = MPQEMU_CMD_RET;
- 
+     if (eflags & EF_MIPS_NAN2008) {
+         return "P5600";
+     }
+diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
+index 5f2f2df29f..ec55d8542a 100644
+--- a/linux-user/mips64/target_elf.h
++++ b/linux-user/mips64/target_elf.h
+@@ -12,9 +12,6 @@ static inline const char *cpu_get_model(uint32_t eflags)
+     if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_64R6) {
+         return "I6400";
+     }
+-    if ((eflags & EF_MIPS_MACH) == EF_MIPS_MACH_5900) {
+-        return "R5900";
+-    }
+     return "5KEf";
+ }
+ #endif
 -- 
 2.45.2
 
