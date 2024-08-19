@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1169C95628C
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 06:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9340A956299
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Aug 2024 06:27:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sftu2-0004ke-6G; Mon, 19 Aug 2024 00:21:58 -0400
+	id 1sftyI-0006t9-O1; Mon, 19 Aug 2024 00:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sfttm-0004eH-3X
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:21:45 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1sftu9-0005RI-GI
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:22:05 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sfttk-0004Hh-H9
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:21:41 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1fec34f94abso32400765ad.2
- for <qemu-devel@nongnu.org>; Sun, 18 Aug 2024 21:21:39 -0700 (PDT)
+ id 1sftu6-0004K8-8F
+ for qemu-devel@nongnu.org; Mon, 19 Aug 2024 00:22:05 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-710ece280b6so2847170b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 18 Aug 2024 21:22:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724041298; x=1724646098; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724041321; x=1724646121; darn=nongnu.org;
  h=content-transfer-encoding:content-language:in-reply-to:mime-version
  :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ey2/XL3x4dsLSO0Rau9u/e+UZKi3H/ZDUx6iNciV5G8=;
- b=s9k5dMlJJyCE2oFW5/Z5SuYNXHMJnqpEcrAGrAZLRm4Ya9PGSu8x6fX+DIpNDufFJS
- 94gWk9JwUzxOOywZiGSz+LHm7ulu6pSN/mAP+JJ5pbMYzATONW1PqPGNazsYq+wwLwkK
- cGfpb59LM/bVKK2PrRUhzcOyMtAAbFR0CNi4vLUK+NSCfHURXPw2npFg7PI3xfoSerZ/
- hEw98aRy9pdSwntD6hkdY/Asx8o/dkUxQC9ettM+E3xfkFaWDSQ4X0vssoZ3lGnk/++r
- h1N2LSUnk7Fmwe6Ay1TFNBkQUj17lOPOQvMow4usS7LEKnbtGy1H+6fUid6JM6V7ayfh
- FqsQ==
+ bh=N2LjqyCT6rO7vXKqOxfsdOjN6oNqGyfd9gAZ6OyDIX4=;
+ b=tE+j2IvQbxnVnVwbqFBRGB/hEc7ZhqjWcLcXUfAjs+1mRG8wt9dOBK2Kc5hQOY80+Q
+ 63TxaBvt3ZUaOsOVK4/26sMOGt/DR20CmrZpq2KUzMnsESAGPoKEyW4CwENUJIlGKm6R
+ Y7TKGAn+mTw9s4Cc4n3vv1a59OJCk8IoxqwcuIs4Y1oX6v7NuKIT4QfB0ePfpjwMwL06
+ IvJJNKRmH18A912NcBhi4TNZf3W6KxlQBBjL/YzBJltuXXqOel4licOw7pV7cqRlGiXY
+ GQi9X4x0+CgtbyNSFjTk0avIXxABOGkJtOdoKbo0nlXhfriHErILPc7pjsnPZHD8iO5r
+ 6BXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724041298; x=1724646098;
+ d=1e100.net; s=20230601; t=1724041321; x=1724646121;
  h=content-transfer-encoding:content-language:in-reply-to:mime-version
  :user-agent:date:message-id:from:references:cc:to:subject
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ey2/XL3x4dsLSO0Rau9u/e+UZKi3H/ZDUx6iNciV5G8=;
- b=p4baOjUT5pxLMRei9Sr92t0+r1yKxQsMeV5NzJzkw95229F6CzmNDG8RMaY5WW4EaM
- xbpOVqCTsTsTkD/F07k+2DYYQJWRoprQgfARQ9DKkCY8uVTX9GFIJkyehuvjqsNDf8Ug
- mqz2DFr/XyLNGRp58C/Xactbtdvy+Hz7XdiRFqCnaaRdM1BjwGiHpL3yWU63a3EsMmZH
- DtwUPSLmZtlfud3ka6hNG+/FN3dxJA+2wyqPJ8KP4GyFiwo04CQXlIyDzhbWlMTK/LCu
- uwOqnrVZI7gSXMq/x5+VQGFrabg9DShhq6bjKQUXMMoXpJozp75Kg1I5b8525oZmieV3
- FtUw==
+ bh=N2LjqyCT6rO7vXKqOxfsdOjN6oNqGyfd9gAZ6OyDIX4=;
+ b=i+ci3Zk/kKjYxyTwQ6E0gO4GfJQripdpAIe8ZUR9WJeY7EKmmD97aFKqu4gx07mb/k
+ e9+veqPpGUnSk9Em1C4MXDF2IFvGJ1TaSjclqJB8FdM4NRQUecaWDFb3Q72/HXlvCwm3
+ iFHgovX9I94lM95SKZj2vf8bQdm0goAkUvhGtJqcr/zmhyfTyw4DDEj9Q15yPKplhwKh
+ KCd8w0vZnm27HUFuUHP9NZcC7mt+Ka7ugOhQdwu652DZWcr94rxtIKkESgqchVvg95Ni
+ CzZExRqMIXMp8Bc0ywddRDPCeslNtE7jXjy0Szu/mQF8fXdlY0gc7EMTo1el/MsIRxzf
+ 4ECw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJNg/x7UCGdc7jLSwRVk1alZp44Qa4xtq2qZXpIth/eNRK71HrpcqdUCwCDE92LdCfhTEsjcQn2cW8vSKeu4IQBOhBZpM=
-X-Gm-Message-State: AOJu0Yx/rIJVaUttjqpRbR1yQH0rRH6WyoG/3yqaG3ZR5nJvtv2ODOGn
- nd90fl5dFg3OH2L3w0/1kivHIwR/ScqFQsxNjBU9UVajSA/JCkEJ877prCaoKy0=
-X-Google-Smtp-Source: AGHT+IHwa6X2nceJCtPoVJnBuO4GBi+E1eKkqPaAi+Og+jHn2va1DEatQSTNbVhbUPQlkkec2GjeUQ==
-X-Received: by 2002:a17:902:ccca:b0:1fb:1afb:b864 with SMTP id
- d9443c01a7336-20203e4a727mr104783795ad.5.1724041298061; 
- Sun, 18 Aug 2024 21:21:38 -0700 (PDT)
+ AJvYcCUfYgG5ZLDEji5UXSU92gxAWAxC7Os3ZSe6HOwrv+7jNdq+kgo8cYi4mw0Yx0tNYd5oYcX9+poaXY6fK0zNb7SthmXlmj8=
+X-Gm-Message-State: AOJu0YyWHFOYuCL9CVQbyyVnUOMjg2nItddqUTpRUFl6mDXRqWmQ0sdM
+ mtw6P8IrwxoLPWSqmEHacpfLDc+p/CvHXnnFWtpJHSoK8vlw5zobdzUeed+1Rdw=
+X-Google-Smtp-Source: AGHT+IHSX27sB8DHDWkIkw2eQlMfE3gQff9rMsJZ84bYGwem25J29O3Cq8ub6RLjX41byKESgFazOQ==
+X-Received: by 2002:a05:6a20:d706:b0:1c4:d540:46c with SMTP id
+ adf61e73a8af0-1c905052b1bmr9489800637.47.1724041320746; 
+ Sun, 18 Aug 2024 21:22:00 -0700 (PDT)
 Received: from [192.168.0.103] ([191.205.40.123])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f03a1974sm55998565ad.276.2024.08.18.21.21.35
+ d9443c01a7336-201f03a4c33sm55920265ad.284.2024.08.18.21.21.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Aug 2024 21:21:37 -0700 (PDT)
-Subject: Re: [PATCH 2/8] hw/pci-host/designware: Initialize root function in
- host bridge realize
+ Sun, 18 Aug 2024 21:22:00 -0700 (PDT)
+Subject: Re: [PATCH 3/8] hw/pci-host/designware: Add 'host_mem' variable for
+ clarity
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
 References: <20231012121857.31873-1-philmd@linaro.org>
- <20231012121857.31873-3-philmd@linaro.org>
+ <20231012121857.31873-4-philmd@linaro.org>
 From: Gustavo Romero <gustavo.romero@linaro.org>
-Message-ID: <16a3fd1e-09a9-87d8-5e63-d7c3ab5a48b7@linaro.org>
-Date: Mon, 19 Aug 2024 01:21:34 -0300
+Message-ID: <97ea999c-38a6-36d4-ce78-e3b0793b8572@linaro.org>
+Date: Mon, 19 Aug 2024 01:21:55 -0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20231012121857.31873-3-philmd@linaro.org>
+In-Reply-To: <20231012121857.31873-4-philmd@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
 X-Spam_bar: ---
@@ -104,62 +104,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Hi Phil,
 
 On 10/12/23 9:18 AM, Philippe Mathieu-Daudé wrote:
-> There are no root function properties exposed by the host
-> bridge, so using a 2-step QOM creation isn't really useful.
-> 
-> Simplify by creating the root function when the host bridge
-> is realized.
+> designware_pcie_root_realize() uses get_system_memory()
+> as the "host side memory region", as opposed to the "PCI
+> side" one. Introduce the 'host_mem' variable for clarity.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   hw/pci-host/designware.c | 15 ++++-----------
->   1 file changed, 4 insertions(+), 11 deletions(-)
+>   hw/pci-host/designware.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 > 
 > diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-> index 304eca1b5c..692e0731cd 100644
+> index 692e0731cd..bacb2bdb2d 100644
 > --- a/hw/pci-host/designware.c
 > +++ b/hw/pci-host/designware.c
-> @@ -707,6 +707,10 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
->                          "pcie-bus-address-space");
->       pci_setup_iommu(pci->bus, designware_pcie_host_set_iommu, s);
+> @@ -393,6 +393,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+>   {
+>       DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(dev);
+>       DesignwarePCIEHost *host = designware_pcie_root_to_host(root);
+> +    MemoryRegion *host_mem = get_system_memory();
+>       MemoryRegion *address_space = &host->pci.memory;
+>       PCIBridge *br = PCI_BRIDGE(dev);
+>       DesignwarePCIEViewport *viewport;
+> @@ -433,7 +434,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+>           viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
 >   
-> +    object_initialize_child(OBJECT(dev), "root", &s->root,
-> +                            TYPE_DESIGNWARE_PCIE_ROOT);
-> +    qdev_prop_set_int32(DEVICE(&s->root), "addr", PCI_DEVFN(0, 0));
-> +    qdev_prop_set_bit(DEVICE(&s->root), "multifunction", false);
->       qdev_realize(DEVICE(&s->root), BUS(pci->bus), &error_fatal);
->   }
+>           source      = &host->pci.address_space_root;
+> -        destination = get_system_memory();
+> +        destination = host_mem;
+>           direction   = "Inbound";
 >   
-> @@ -736,22 +740,11 @@ static void designware_pcie_host_class_init(ObjectClass *klass, void *data)
->       dc->vmsd = &vmstate_designware_pcie_host;
->   }
+>           /*
+> @@ -458,7 +459,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
 >   
-> -static void designware_pcie_host_init(Object *obj)
-> -{
-> -    DesignwarePCIEHost *s = DESIGNWARE_PCIE_HOST(obj);
-> -    DesignwarePCIERoot *root = &s->root;
-> -
-> -    object_initialize_child(obj, "root", root, TYPE_DESIGNWARE_PCIE_ROOT);
-> -    qdev_prop_set_int32(DEVICE(root), "addr", PCI_DEVFN(0, 0));
-> -    qdev_prop_set_bit(DEVICE(root), "multifunction", false);
-> -}
-> -
->   static const TypeInfo designware_pcie_types[] = {
->       {
->           .name           = TYPE_DESIGNWARE_PCIE_HOST,
->           .parent         = TYPE_PCI_HOST_BRIDGE,
->           .instance_size  = sizeof(DesignwarePCIEHost),
-> -        .instance_init  = designware_pcie_host_init,
->           .class_init     = designware_pcie_host_class_init,
->       }, {
->           .name           = TYPE_DESIGNWARE_PCIE_ROOT,
+>           destination = &host->pci.memory;
+>           direction   = "Outbound";
+> -        source      = get_system_memory();
+> +        source      = host_mem;
+>   
+>           /*
+>            * Configure MemoryRegion implementing CPU -> PCI memory
 > 
 
-I could not find any mention in the docs recommending the use of
-init/realize pair only when properties could be consumed. Anyways,
-you agreed with Peter's comment (I agree too), so I understand this
-patch will be drop since it doesn't affect the other patches in the
-series.
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+
+This patch can get merged independently of this series.
 
 
 Cheers,
