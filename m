@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40940958A20
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22970958BDA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 18:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgQAr-0005F8-3k; Tue, 20 Aug 2024 10:49:30 -0400
+	id 1sgRJO-0002mi-7o; Tue, 20 Aug 2024 12:02:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sgQAl-00056l-D7
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:49:23 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <nabiev.arman13@gmail.com>)
+ id 1sgQGW-0007E0-8b
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:55:20 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sgQAj-0006M1-8P
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:49:23 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-42812945633so49501165e9.0
- for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:49:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nabiev.arman13@gmail.com>)
+ id 1sgQGU-00073n-IK
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:55:20 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2f3f07ac2dcso7600071fa.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:55:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724165360; x=1724770160; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cX04CHrSO6RPXxQ10TYYxqNDsV8QV6DrYzWSCmg9HZE=;
- b=FzJ7wVj2E7IMABY3xTBwuf/0mhtu/9WQR3kAvHQAqoAuc5C5/33yWnDZH7/4e96JhP
- 8R0FiCu3qfb23441dFbV72hQVjYuc8VZjY59eQkfKPEzmdS+q531tDUxmG2jUrMYxw34
- /262iBVpE7CNgQvNfNpik8elsMKidFC/k/akMYYjCb+7xHYlxpxaQQH2/lq43UfLS1wh
- rIuDDx40INCdfVNb9d3SMcoFuZj9lQhIE/vpz6xV/50oJWM84/+H7RTuE3/qrsF4u2/W
- 8Ykw7AJayhYx3tjNY26kDLmZEqMmNYgxVlj2PL8BL61squOpjD6j50YG9Mg32DYrEtLI
- 5tuA==
+ d=gmail.com; s=20230601; t=1724165716; x=1724770516; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YMi8DrVycOLvdw6yYgwYc/xGvgpSlzsOz+MpW7aB4iI=;
+ b=E8gQK/C/HEzgA54ZoN0g0nLHS5cM1zO7EqQpzhX8JUCPayoZxn3fwr2UglCDp7N8ID
+ ac37SMI1jhPkhjyGCAAiQ+7X1U3NGBwt1vOw0AFFFTN1rrx7fIqjD+jUNpj8oAlU53zY
+ je3Fz0Dhbc3YFYrSJ/lfOQgMSb7/cUUczEQM2P4ihyYbpO4mdclvDtfDSwnB41XuaLb7
+ BqMcjzqrTlXgBSH+d8jA9qdqPUOFYlmb663A+98FXdkpKz0pjUuZxmkE+wdgABurQsqu
+ AasbUbqUmBsxMjIF2R3EjrTg6Kos9YFVt0uze3UKG0jkBDgMU9mwbdF8CLh5+91FoiW9
+ VhpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724165360; x=1724770160;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cX04CHrSO6RPXxQ10TYYxqNDsV8QV6DrYzWSCmg9HZE=;
- b=U+UJHY4iQGO3aP/6kWYpyE8Ol783xJ4h3FqvYyXieRiEl8t+edYHkxYenAQiAq7FPA
- EgBuvMIs1+ldDZk3pm08FvdqmFSxa7GdfoOs2J2uWXKBvA32Yi6zuj+RxQ3I7diDa0SZ
- +j641uxZxuOez95ewrkg4LeIPp2mhTKZHxgxMSObhoshwARPSZl4zRpRZBNCiiNXvnY0
- Gfa37ANKJd87thVCinmZQknzVz5uUh4A/dRP2g3HpXtDn0haJwWexS/4/VrgdK0mOiVC
- 380JAoJCNOsdZuBYuGke6a3eiicpvG/zG+6mBm2kePh4R1qut0QYInb7hhZRVBrU86Sh
- Rc6g==
-X-Gm-Message-State: AOJu0YyKII19Gz/36l4iqRtoiCFQb3svpKohYyuy6UIOTkiFIwBUw65a
- esxWC5jdy5BmYXZAnAZxXHw4iIIJwFKdOwCfeptTjvbGySknUdczDfblC68jF3IbTbDJDM99LGi
- 8
-X-Google-Smtp-Source: AGHT+IHnDWcnCJrEnwVDXUDlG9y1adhxClOcx1t4xLNuadOY1NmlcCtCLEVXevJl97xfA6K11JTCHA==
-X-Received: by 2002:adf:ab18:0:b0:371:8ec6:f2f0 with SMTP id
- ffacd0b85a97d-3719432dcc3mr8507017f8f.16.1724165359671; 
- Tue, 20 Aug 2024 07:49:19 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1724165716; x=1724770516;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YMi8DrVycOLvdw6yYgwYc/xGvgpSlzsOz+MpW7aB4iI=;
+ b=Ft2xwbUoG3ctQegFW3SAtVjYkFLnuPh59z3ifZ1pYxSnCpMCe9LJg+hqnaPxvSNEz3
+ x/e12eRQIkAGTuYJc6qXa09BGD4+AUcbZcc/CAEaJ8V93V6/O+bGX/kp2Vir14VoY7Zk
+ Erl+wl/PLk48pVC7ELRygOqJC0Qa6u6hv84txVpvdb1aQBBVoptpBlsb5sHpBsqH8TdU
+ jOjq+CsclhQF2KZqF24P9+pn4qZY3tHlU3XbgE6p0NXTJ6EJZnXZZtyJlDHyAG0u/iRQ
+ XbLKNiFQkMfVWaAH20/Dvq9eQ3DW9d3nIkzunyXI/wlpkBTHw73TMzASnsO8aGkE5pYO
+ abbg==
+X-Gm-Message-State: AOJu0YyVZpw9gOnJ4QnGgLk3/Bqidehi7/n5nZkrKM8JU+MhA0RIhy+C
+ VXuW7vx16FnNpPdi1kyxdFLjRAdmQaWNrq1h2HpUtJGRjeQP2PAWG1pNEb1W
+X-Google-Smtp-Source: AGHT+IGSrivFLxvmMGtcHXtRKYrztoG6hMsVsewFfm+LHj6rzycEmrBOS5b/pzI2PNOEyWn79KOcLA==
+X-Received: by 2002:a05:6512:10cd:b0:52c:dbee:bdb0 with SMTP id
+ 2adb3069b0e04-5331c6f0578mr9970551e87.59.1724165715301; 
+ Tue, 20 Aug 2024 07:55:15 -0700 (PDT)
+Received: from armanpc.intra.ispras.ru ([145.255.10.144])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3718983a306sm13334672f8f.15.2024.08.20.07.49.18
+ 2adb3069b0e04-533416b40c1sm196028e87.111.2024.08.20.07.55.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Aug 2024 07:49:18 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ Tue, 20 Aug 2024 07:55:14 -0700 (PDT)
+From: nabiev.arman13@gmail.com
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH for-9.2 9/9] tests/qtest/migration-test: Don't leak QTestState
- in test_multifd_tcp_cancel()
-Date: Tue, 20 Aug 2024 15:49:12 +0100
-Message-Id: <20240820144912.320744-10-peter.maydell@linaro.org>
+Cc: armanincredible <nabiev.arman13@gmail.com>
+Subject: [PATCH] ppc: fixed incorrect name filed in vmstate_tlbemb_entry
+Date: Tue, 20 Aug 2024 17:55:14 +0300
+Message-Id: <20240820145514.63046-1-nabiev.arman13@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240820144912.320744-1-peter.maydell@linaro.org>
-References: <20240820144912.320744-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=nabiev.arman13@gmail.com; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 20 Aug 2024 12:02:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,40 +90,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In test_multifd_tcp_cancel() we create three QEMU processes: 'from',
-'to' and 'to2'.  We clean up (via qtest_quit()) 'from' and 'to2' when
-we call test_migrate_end(), but never clean up 'to', which results in
-this leak:
+From: armanincredible <nabiev.arman13@gmail.com>
 
-Direct leak of 336 byte(s) in 1 object(s) allocated from:
-    #0 0x55e984fcd328 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f328) (BuildId: 710d409b68bb04427009e9ca6e1b63ff8af785d3)
-    #1 0x7f0878b39c50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
-    #2 0x55e98503a172 in qtest_spawn_qemu tests/qtest/libqtest.c:397:21
-    #3 0x55e98502bc4a in qtest_init_internal tests/qtest/libqtest.c:471:9
-    #4 0x55e98502c5b7 in qtest_init_with_env tests/qtest/libqtest.c:533:21
-    #5 0x55e9850eef0f in test_migrate_start tests/qtest/migration-test.c:857:11
-    #6 0x55e9850eb01d in test_multifd_tcp_cancel tests/qtest/migration-test.c:3297:9
-    #7 0x55e985103407 in migration_test_wrapper tests/qtest/migration-helpers.c:456:5
-
-Call qtest_quit() on 'to' to clean it up once it has exited.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: armanincredible <nabiev.arman13@gmail.com>
 ---
- tests/qtest/migration-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/ppc/machine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 04122120987..169ef0209c7 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -3322,6 +3322,7 @@ static void test_multifd_tcp_cancel(void)
-     /* Make sure QEMU process "to" exited */
-     qtest_set_expected_status(to, EXIT_FAILURE);
-     qtest_wait_qemu(to);
-+    qtest_quit(to);
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index 731dd8df35..d433fd45fc 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -621,7 +621,7 @@ static bool tlbemb_needed(void *opaque)
+ }
  
-     args = (MigrateStart){
-         .only_target = true,
+ static const VMStateDescription vmstate_tlbemb = {
+-    .name = "cpu/tlb6xx",
++    .name = "cpu/tlbemb",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = tlbemb_needed,
 -- 
 2.34.1
 
