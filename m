@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9287D95895F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8108D95895B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:32:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgPsb-00021h-MJ; Tue, 20 Aug 2024 10:30:37 -0400
+	id 1sgPt1-0002Dx-Cm; Tue, 20 Aug 2024 10:31:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sgPs2-0001tm-Pq
+ id 1sgPs2-0001tn-Se
  for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:30:04 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sgPrx-0001VH-9a
+ id 1sgPry-0001WT-U2
  for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:30:00 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2f3ce5bc7b4so33506101fa.2
- for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:29:55 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-52f042c15e3so5074684e87.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:29:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724164194; x=1724768994; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1wqHo/ZnPjHlrmdKYJtuWm38+7FAW/gtzhAalcKMwBA=;
- b=gf/Iqd4rmQ9+9c2v2kI8qMV2Fu90W1a+hT+LHo0KuPybEw5mKpRSQbCfJ+w9F9l/qW
- gUbxQjuE3sAm2UGgbv0sD3e+6bHw4sfF8q4Ol4UernEc/QZm5SB1sUFiEzei4+oIePL5
- FpwwRWhCu7Ga1WTn7LAJmSYZBPOhGmGBPXboqlcqMiXD+B7aGp5QEwJD/98zTDJvkpSX
- NhLs7mmANwP3fyE8JxAHEM2Lj/zaA0Z1thZWadxHApmwacHkwDYp1Rnmrsa3qZdZmoDG
- L1NX6uPx3m71whwGD7R0H9+8bKYx/KzoAYWz3dpOagq9711Gd36cCpYDCvWRerFkTD38
- QXLA==
+ d=gmail.com; s=20230601; t=1724164195; x=1724768995; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0FTAVDz3Cw1uxIbhjmeqEYJqdjw34VbylOmDWLTwvx4=;
+ b=ly7XO/c6HEIngNjvBaNFLeM1xyixORSPa9ejCW0LZD8dDSe+6Retn6BmGJFz3uvqb/
+ JfxoriLu3hNjI+lnA+Wyxe4rtrvWOU4AFccWLAo3gIkfmYBrp40PZ/fICF+ba7tBjquH
+ VRmVSHevY7c3XGm8y8pH2hM33brr+R6829Kmu5bw+r51xJnkcg/jF40ZP+X1Xm//oBW2
+ toU9cFZajoDUtUWnmtT3oqLlfcPmxebokVzzsy9jJRypNgzExJxmpBO8rY04y1ynvftJ
+ GCv0MMsOXhhveJgDgO+ADcyb9dFPIc6xDFxG04O+VGiXHk8lHZt5Zl3nMG0tgKNh6eL8
+ FzTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724164194; x=1724768994;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1wqHo/ZnPjHlrmdKYJtuWm38+7FAW/gtzhAalcKMwBA=;
- b=eFg/gpMQEYjtSB9CEuzccgzTyg+5JfIhRfM0WyyUXFS/uobFe4PAQd85oWbrobEuYv
- 1T/zQjkkmaeXsdSxsMX54nxE5soTXFLyaKOy/WAbH4zvNXtB20g+7Ox2PoksF5iG3wlO
- SPF/dolMtV4KBsELa19P2Z1FuV3lXkwVhuIilorHcmMqX15c2mB1S7iuxwZBNJvq+k6n
- OTGJn8UVz1weZyZ8G2Etn1jiwTLaPMGXqxSfLAgsSIGh+dR0R215KB5bgvuJTa8yC+i3
- BLB/OwVv0KvIFvy579CsNSmUcbpaTLIDyMEt+WcjTeRcCRUk5C57t+RwS2ClnoV5hkB2
- 3IGw==
-X-Gm-Message-State: AOJu0YywNaR3Wo8WZ5lGTfb1D+1cl3fiD+6KvSHq67Yf/r0prd+9VTZw
- Il1S9FzMuqBV7yi3tBhwn0u4dORYW5vnWBizzuhiPs7/SNR6sadR9LcKpZWI
-X-Google-Smtp-Source: AGHT+IHmXoWvrk+gxIHZjEW1LKuL3xcHNfeuaWwnRfQPlxHkqzHlE5tf/66Ts3wZhxRwZDt8IqN6DQ==
-X-Received: by 2002:a05:651c:199e:b0:2ef:296d:1dda with SMTP id
- 38308e7fff4ca-2f3be57810fmr104068131fa.1.1724164193085; 
- Tue, 20 Aug 2024 07:29:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1724164195; x=1724768995;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0FTAVDz3Cw1uxIbhjmeqEYJqdjw34VbylOmDWLTwvx4=;
+ b=pJzR7Xq/B6riRfV/YyOY8Fkhr0oP11I2afeMSoqfvyMZEHyf0Lq7p+hreXgtF/n6IE
+ U4/WTRU4W5wNK1yMjHYYUjzNuKNUvhQ6LAWVfGejw4DUoX84qodc02+KhxSKts9TWUK1
+ qjkYJCZ+TKswahbf5MeuTigHpI2dG0hvAOFNu1Ak+Cy/+NN+18MRRYqBefhfOJPO/TJY
+ zEgAsB4pItolCIrOi4kWIhDi/UgwXBl++B8e72ksYOhSOpQbgxj+fkTlTDVFfAygt+RV
+ 2HgTd8a6WD+bmPNkzzfFKbPnnV3Q0G6eCu32AtRqNF5uuAV1nO2rtSg5duBaXdmsDZRY
+ jWzg==
+X-Gm-Message-State: AOJu0Yw5yV7hz9cvYWkNI5a/xSzUfcAbkT2wLIOLQlLQAtwipF9ANofW
+ FLn5blOjeFotYVioiqA8MbJvFrW7++IWDy1lHC1Vv9ZJxKS0ukmXZ1+Vd46W
+X-Google-Smtp-Source: AGHT+IFrPcDRBYvfqjcvKbmWjLtw+0FlYqh8Z0iVHC/dcsRC/BqjVUCiAdvRhyukGAYN9Iw59X5/Ew==
+X-Received: by 2002:a05:6512:2824:b0:533:415e:cd9a with SMTP id
+ 2adb3069b0e04-533415ee2demr694896e87.23.1724164194086; 
+ Tue, 20 Aug 2024 07:29:54 -0700 (PDT)
 Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2f3b748db7dsm18217371fa.36.2024.08.20.07.29.52
+ 2adb3069b0e04-5330d3afa66sm1772714e87.7.2024.08.20.07.29.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Aug 2024 07:29:52 -0700 (PDT)
+ Tue, 20 Aug 2024 07:29:53 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
  peter.maydell@linaro.org, alex.bennee@linaro.org, xenia.ragiadakou@amd.com,
  jason.andryuk@amd.com, edgar.iglesias@amd.com,
  xen-devel@lists.xenproject.org
-Subject: [PATCH v2 00/12] xen: pvh: Partial QOM:fication with new x86 PVH
- machine
-Date: Tue, 20 Aug 2024 16:29:37 +0200
-Message-ID: <20240820142949.533381-1-edgar.iglesias@gmail.com>
+Subject: [PATCH v2 01/12] MAINTAINERS: Add docs/system/arm/xenpvh.rst
+Date: Tue, 20 Aug 2024 16:29:38 +0200
+Message-ID: <20240820142949.533381-2-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240820142949.533381-1-edgar.iglesias@gmail.com>
+References: <20240820142949.533381-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,77 +96,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-This series breaks out parts of the ARM PVH support into an abstract
-machine that other targets can reuse.. There's a bit of refactoring
-and some bug-fixes along the way.
+Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-Finally we add a new x86 xen-pvh machine.
-
-The corresponding changes in Xen for PVH x86 are work in progress
-(by Xenia Ragiadakou). You can find a current version here:
-https://github.com/edgarigl/xen/tree/edgar/virtio-pvh-upstream 
-
-I've briefly described the steps to run Xen PVH x86 guests here
-(including example guest kernel config, xl.cfg and xl command-lines):
-https://github.com/edgarigl/docs/blob/master/xen/pvh/xenpvh-x86.md
-
-Cheers,
-Edgar
-
-ChangeLog:
-
-v1 -> v2:
-* Use an abstract PVH Machine to share code between arch specific
-  PVH machines. This allows more sharing than a using a device component.
-* Add comments describing our PCI INTX support.
-* Allow the PVH target specific implementation to provide PCI
-  INTX delivery via class methods.
-* Clarify use of mc->max_cpus in comments.
-* Use GUEST_MAX_VCPUS mc->max_cpus on ARM.
-* Use HVM_MAX_VCPUS mc->max_cpus on x86.
-* pvh-common: Directly use s->cfg. members when creating gpex.
-* pvh-common: Clarify use of pci-ecam-size in comments.
-* x86/xen-pvh: Create smp.max_cpus nr of dummy cores (not smp.cpus).
-* x86/xen-pvh: Replace static array holding dummy cores with a dynamic one.
-* Move stubbed Xen/ARM functions from hw/arm/xen_arm.c into xen-stubs.c
-
-Edgar E. Iglesias (12):
-  MAINTAINERS: Add docs/system/arm/xenpvh.rst
-  hw/arm: xenpvh: Update file header to use SPDX
-  hw/arm: xenpvh: Tweak machine description
-  hw/arm: xenpvh: Add support for SMP guests
-  hw/arm: xenpvh: Remove double-negation in warning
-  hw/arm: xenpvh: Move stubbed functions to xen-stubs.c
-  hw/arm: xenpvh: Break out a common PVH machine
-  hw/arm: xenpvh: Rename xen_arm.c -> xen-pvh.c
-  hw/arm: xenpvh: Reverse virtio-mmio creation order
-  hw/xen: pvh-common: Add support for creating PCIe/GPEX
-  hw/i386/xen: Add a Xen PVH x86 machine
-  docs/system/i386: xenpvh: Add a basic description
-
- MAINTAINERS                     |   2 +
- docs/system/i386/xenpvh.rst     |  49 +++++
- docs/system/target-i386.rst     |   1 +
- hw/arm/meson.build              |   5 +-
- hw/arm/trace-events             |   5 -
- hw/arm/xen-pvh.c                |  89 ++++++++
- hw/arm/xen-stubs.c              |  32 +++
- hw/arm/xen_arm.c                | 267 -----------------------
- hw/i386/xen/meson.build         |   1 +
- hw/i386/xen/xen-pvh.c           | 121 +++++++++++
- hw/xen/meson.build              |   1 +
- hw/xen/trace-events             |   4 +
- hw/xen/xen-pvh-common.c         | 362 ++++++++++++++++++++++++++++++++
- include/hw/xen/xen-pvh-common.h |  88 ++++++++
- 14 files changed, 754 insertions(+), 273 deletions(-)
- create mode 100644 docs/system/i386/xenpvh.rst
- create mode 100644 hw/arm/xen-pvh.c
- create mode 100644 hw/arm/xen-stubs.c
- delete mode 100644 hw/arm/xen_arm.c
- create mode 100644 hw/i386/xen/xen-pvh.c
- create mode 100644 hw/xen/xen-pvh-common.c
- create mode 100644 include/hw/xen/xen-pvh-common.h
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3584d6a6c6..c2fb0c2f42 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -559,6 +559,7 @@ F: include/hw/xen/
+ F: include/sysemu/xen.h
+ F: include/sysemu/xen-mapcache.h
+ F: stubs/xen-hw-stub.c
++F: docs/system/arm/xenpvh.rst
+ 
+ Guest CPU Cores (NVMM)
+ ----------------------
 -- 
 2.43.0
 
