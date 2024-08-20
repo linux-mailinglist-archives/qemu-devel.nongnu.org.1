@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B347B958963
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0F0958979
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:35:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgPuK-0005Gd-NY; Tue, 20 Aug 2024 10:32:24 -0400
+	id 1sgPuM-00060W-H1; Tue, 20 Aug 2024 10:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sgPs5-0001ve-Eq; Tue, 20 Aug 2024 10:30:10 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1sgPs5-0001vf-Eu; Tue, 20 Aug 2024 10:30:10 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sgPrz-0001X8-W5; Tue, 20 Aug 2024 10:30:02 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-52efa16aad9so6910456e87.0; 
- Tue, 20 Aug 2024 07:29:58 -0700 (PDT)
+ id 1sgPs1-0001YV-5m; Tue, 20 Aug 2024 10:30:03 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-530e2235688so5928731e87.3; 
+ Tue, 20 Aug 2024 07:29:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724164196; x=1724768996; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724164198; x=1724768998; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N6K1JnQDB3GxWbgLc2L3O0RRJjZo+EVTDK5d5nCO5jo=;
- b=cmvN7qBaYXqERhqeCKewVAtXXP84WgIwc80yx/jb/ihfB3XsQZtDFH1jf/fGRO5kK0
- +1tXLpTn7T2Il0+Xf5k/jLw0WkYFxKs2QR+zPRCAiWmm1QUU1hVw6EKw87a/KjvSIOg+
- Ellh+z96mHlcE/UQsFHoOJ5pYvRhdi4AE7t8SBPiG5F30QB85p+c8wx0COOWrBVNz5a/
- 9uaMcnkXe/KdwVnle9ggjbuY5up0g0UPtiiii2WUbgV5bg3iNN0z0S94MpbBmg2rqqj8
- c9HjjulnWntmnVsAYnqnHczPaIpv3KIX2YnYZ5qLBSQFMuajLdyeu5H+l9ZcbPCkSpv+
- 7flg==
+ bh=cXrv0E3MFlFU+ItFyAOjyjeGygFPyj9i38Ckg44wQ0M=;
+ b=RSM7IEJbcP/A+jhS6nwB8Dh3judFJFApvUqWs6LEus5xfjcaa4U4uMcUzXKzNCaZNq
+ L6vHVySbpGG26+V4iKLYUaPJ8Zw8MpCYExniMXge3G7EHQNuW/iKVD9fhzoT9ZwIqjIY
+ yrcL1ZlUEHOL/EV/Nd4ws8KFxPl0+k94a4HE+HwLofj8I8U2Oud0zueTYSuXQVWnfA//
+ nI1Ox55dekivJV4tcNLhjmA6/eng1yV5jjwQw6ZcByuZI2DlpHnw74Aq70ga03glVSRC
+ QUhMbgQQWi50i40kJhhOuRe1fkBH4UtyUJszST27Ljave8qMHlKwW16y3tnYpSf0ydft
+ m24Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724164196; x=1724768996;
+ d=1e100.net; s=20230601; t=1724164198; x=1724768998;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N6K1JnQDB3GxWbgLc2L3O0RRJjZo+EVTDK5d5nCO5jo=;
- b=ZV+618zq/yUx6bMyAIIsgYXavQxmBLrbby0U3aG1/hSNbFtI5L4sSRqXTftm8vU38u
- YeH+3J90H4au7m7iaGDArYbvbO67kEmLGbxBpsNZfnQjmSTQ3shORW15+pEqnVpLGuxG
- /eu5+oQ6b92XlxfNC3yF3eXZmZ+WqOBAKcRPSKHMKeB36ndE7KEX03qqYLWdSi0OEcbc
- oCFx9ASgSKkTXbIJubrrmfJbgzvcLYIA3vVuBTcOaeB3QqGMyo7mzDFLgz4KQFhgi38t
- eEVKTRO4Rz3cL5aCDB0Kb6cGb39Hu5pHUJhMeLLFwewSER8HtL9PNko9n9CpswqvcPD/
- V4Yg==
+ bh=cXrv0E3MFlFU+ItFyAOjyjeGygFPyj9i38Ckg44wQ0M=;
+ b=DNz6BMfVTotk7VrIhFLo+aU4vfUPDr91COz/E79QorII86+K9hM87BCOMp/SRcFWpn
+ Sp+VCeQtbktzf+/S0rtx7E+bIdqajBUxn2M2CQFnLZw6w2pnx2LdhxMcpcpmrA+KV94Z
+ t21bHOS4W6A4e3F0vdG/LnD0JFSze66pCNp1Ll86J+DAu3FgIhedtibTTmyOjp59bhzr
+ DP8M4IRedDw7afc6VKq3yhY6xLwG3NESFUkUUjry/YHOBJciTg33OBRr9y8tfpa4GRKU
+ kcG1HjD2htYfYw4/oHzIgx4KWnFMJuE+eFZcc6R6rAjzltz5AQzlBYc7JRGBMtdSGhhf
+ qYVA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVX2hpyhThxBIMKI3YP5vfxLuMcRhoHFw1mwnuJYUg+0YwzM8WOlNOzTmaHHnhEmfRYVx0diLA4NJEoNJMPwXGd1viT
-X-Gm-Message-State: AOJu0Yze/Wplt1/CctIotoBwXAXvmEvYpLN3wa4Z6MlITQvlXALYsLfq
- 11AcG34g0ItkvATOg4sYsyNWPt9yVDkExE3Jp8DFf7IEASF7QjASv+YAI8l/
-X-Google-Smtp-Source: AGHT+IERWznLEeJJPBmVGgbqZsGGHpjiqbNNsmHg/7CXZqA1iSzt7K9nFEzoO0ph3Q9aeI604W1JJQ==
-X-Received: by 2002:a05:6512:138b:b0:52c:e3bd:c70b with SMTP id
- 2adb3069b0e04-5331c690c37mr9543219e87.1.1724164195374; 
- Tue, 20 Aug 2024 07:29:55 -0700 (PDT)
+ AJvYcCX64dAr+XMF9JzMmZATOclW+4kFA8WTAA380v/jr61hpFYK+Sq56YprdZiCJyfJWa5RqWUV3NHwzA==@nongnu.org
+X-Gm-Message-State: AOJu0Ywdo5NDfZEkxQKr2cp4MoA67gZY1r7VlvtYUnCIkrH0sefZpAjN
+ S2kmZFhjQGcdKy2f65moJf6KTYp9LLdSXMMT7TVKbJ/NLGvgaUNnI9Amplof
+X-Google-Smtp-Source: AGHT+IEUHrJ/SYDaIj+10HjdHpBx8iCW0Ws8VM3nxx/08/Kowr+gNMxcGQJYD8Ll+OK5SPcAIO861w==
+X-Received: by 2002:a05:6512:1085:b0:52f:413:7e8c with SMTP id
+ 2adb3069b0e04-5331c6a2a5bmr10786717e87.14.1724164196933; 
+ Tue, 20 Aug 2024 07:29:56 -0700 (PDT)
 Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53345d17c33sm53420e87.128.2024.08.20.07.29.54
+ 2adb3069b0e04-5330d3b8f77sm1773996e87.72.2024.08.20.07.29.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Aug 2024 07:29:54 -0700 (PDT)
+ Tue, 20 Aug 2024 07:29:55 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
  peter.maydell@linaro.org, alex.bennee@linaro.org, xenia.ragiadakou@amd.com,
  jason.andryuk@amd.com, edgar.iglesias@amd.com,
  xen-devel@lists.xenproject.org, qemu-arm@nongnu.org
-Subject: [PATCH v2 02/12] hw/arm: xenpvh: Update file header to use SPDX
-Date: Tue, 20 Aug 2024 16:29:39 +0200
-Message-ID: <20240820142949.533381-3-edgar.iglesias@gmail.com>
+Subject: [PATCH v2 03/12] hw/arm: xenpvh: Tweak machine description
+Date: Tue, 20 Aug 2024 16:29:40 +0200
+Message-ID: <20240820142949.533381-4-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240820142949.533381-1-edgar.iglesias@gmail.com>
 References: <20240820142949.533381-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +96,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Update file header to use SPDX and remove stray empty
-comment line.
-
-No functional changes.
+Tweak machine description to better express that this is
+a Xen PVH machine for ARM.
 
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 ---
- hw/arm/xen_arm.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ hw/arm/xen_arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 6fad829ede..766a194fa1 100644
+index 766a194fa1..5f75cc3779 100644
 --- a/hw/arm/xen_arm.c
 +++ b/hw/arm/xen_arm.c
-@@ -1,24 +1,7 @@
- /*
-  * QEMU ARM Xen PVH Machine
-  *
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-- * THE SOFTWARE.
-+ * SPDX-License-Identifier: MIT
-  */
+@@ -216,7 +216,7 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
+ {
  
- #include "qemu/osdep.h"
+     MachineClass *mc = MACHINE_CLASS(oc);
+-    mc->desc = "Xen Para-virtualized PC";
++    mc->desc = "Xen PVH ARM machine";
+     mc->init = xen_arm_init;
+     mc->max_cpus = 1;
+     mc->default_machine_opts = "accel=xen";
 -- 
 2.43.0
 
