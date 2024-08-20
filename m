@@ -2,116 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483B7958CC9
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 19:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B3F958CCF
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 19:10:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgSLH-0003nf-Lx; Tue, 20 Aug 2024 13:08:23 -0400
+	id 1sgSMI-0005z1-1F; Tue, 20 Aug 2024 13:09:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1sgSKz-0003ln-MU; Tue, 20 Aug 2024 13:08:07 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1sgSMC-0005it-8c
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:09:20 -0400
+Received: from mail-qv1-xf33.google.com ([2607:f8b0:4864:20::f33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1sgSKv-0007bQ-NG; Tue, 20 Aug 2024 13:08:04 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 73FE02001C;
- Tue, 20 Aug 2024 17:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724173679; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
- b=OrzpHgqe02If0yDulW04EoFSjsXt6A9QZSqw0elFsMU49Q6tgOINh10oC1UswCTn0vY2vE
- R39nWah0abN/bbwkBRGdbHGSud+tFB3i46/OEx8kR/pYWSI7gcLghh2jW95beQPQjM6Ipt
- wziN7ddcFZvPVbFIzW7jCXIzs/kkLqI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724173679;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
- b=qvQPnR3Tc/vrh0jqvAvOW+hvJTDn9osdIMAVD4cA+W/Zvm/RjHZAgqeZZawKpO9s7uOIqi
- MSbml0oA7FkwAYCA==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OrzpHgqe;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qvQPnR3T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724173679; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
- b=OrzpHgqe02If0yDulW04EoFSjsXt6A9QZSqw0elFsMU49Q6tgOINh10oC1UswCTn0vY2vE
- R39nWah0abN/bbwkBRGdbHGSud+tFB3i46/OEx8kR/pYWSI7gcLghh2jW95beQPQjM6Ipt
- wziN7ddcFZvPVbFIzW7jCXIzs/kkLqI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724173679;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
- b=qvQPnR3Tc/vrh0jqvAvOW+hvJTDn9osdIMAVD4cA+W/Zvm/RjHZAgqeZZawKpO9s7uOIqi
- MSbml0oA7FkwAYCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CED4B13770;
- Tue, 20 Aug 2024 17:07:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gMTcJG3NxGZfUwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 Aug 2024 17:07:57 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org
-Subject: [PULL 1/1] migration/multifd: Free MultiFDRecvParams::data
-Date: Tue, 20 Aug 2024 14:07:41 -0300
-Message-Id: <20240820170741.27055-2-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240820170741.27055-1-farosas@suse.de>
-References: <20240820170741.27055-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1sgSM8-0007gd-SD
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:09:19 -0400
+Received: by mail-qv1-xf33.google.com with SMTP id
+ 6a1803df08f44-6bf6721aae5so28270806d6.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 10:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1724173753; x=1724778553; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7EjcXAOq9+3JLtxJRHDvGE7uwPOOnbw/Nc3MnxorsDY=;
+ b=VcLS1kqaEhCYKN2d8UM1waS/MHQoLQTq4axJ5blWaHfd+U7y5TYDYZBAqe97xmwCtZ
+ R5bvqxNd4DTlagYnDWIYISi5w4QiWq2CJ2NLLjRKRzMSlu4GQiy1dF4+P1t/jAueZKH5
+ PEjZ892hwUd25hG50bfoqlkny7CYag5tD2W/CJRvBHJ9k5H4uAIDJ7VodbOi9s1rsCxz
+ lqIaD78NbnBcCO1GRVg17hjo5xZN+M8J8RzHgVjCmjWM4J4vpCOAockgpFCAEs7vDDxD
+ syE6do6lOPSFkFyD0zQcdZ7rbXufkNL9ZRq+QBJmmOX/8KsQMsbAHkuv0MOA9DjEQ/t3
+ uYGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724173753; x=1724778553;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7EjcXAOq9+3JLtxJRHDvGE7uwPOOnbw/Nc3MnxorsDY=;
+ b=C3/c+hm0LRPocBLYTf5izGU5DKqJollreCbaGidvrdCbdTSQvKj6gOWpX63lcHn7mJ
+ W87DYh2zNO1DHr+XBnt1CBcvE06G0tCSpa2KtDPXtx2CjkCLZqUbNJvy6KnsjwXkwbcn
+ JC2gIzialDAQ/7RxjXu55dEsX8QayVulO0tM91atl5memdRLaWNKB6PG35KBqS3bSLrq
+ eA+rKAJIbx5rMehBVCPdBCCutEu2IdcU06DZY1BzmC9TDGI9YG1xvi6Yako+TiZHq9H8
+ Jsc9gCHpcqGP4oC2BOhXzxoO+n2nMro+tW9FidW/mhP1NPJ13y1ZGD+b801qURH7Cs7I
+ dn9w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW7UaD3WF7faBxKr1Ju1D/tppy0ntFznHPA6fah0sh3syPN2SU89HDulnZc8bRCvOR5fPNt6Mc0KWaO@nongnu.org
+X-Gm-Message-State: AOJu0YwsXFH2fGTLFgDgBColKvnIiOUzuRZpkxDsc08HktaBDkjrS0gI
+ crNXI5IQcJ489D15HnubhM9KVqaws/4pjLr69HKuRkZqRM388E97LmS1EPXe6rU=
+X-Google-Smtp-Source: AGHT+IFOtR9O5YWGJkOb58XBHkdl8t/+uwNb5cj6NgCt2WKBQHUOdeFLdIzqorq9hdWZy+BlKqr7pQ==
+X-Received: by 2002:a05:6214:3b89:b0:6bf:6b8a:40a1 with SMTP id
+ 6a1803df08f44-6bf7cdeda50mr150990626d6.29.1724173752448; 
+ Tue, 20 Aug 2024 10:09:12 -0700 (PDT)
+Received: from DY4X0N7X05.bytedance.net
+ (ec2-52-8-182-0.us-west-1.compute.amazonaws.com. [52.8.182.0])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6bf6fef2372sm53599576d6.114.2024.08.20.10.09.10
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 20 Aug 2024 10:09:11 -0700 (PDT)
+From: Yichen Wang <yichen.wang@bytedance.com>
+To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Yichen Wang" <yichen.wang@bytedance.com>,
+ "Xiaoning Ding" <xiaoning.ding@bytedance.com>
+Subject: [PATCH v8 0/5] Implement QATzip compression method
+Date: Tue, 20 Aug 2024 10:09:02 -0700
+Message-Id: <20240820170907.6788-1-yichen.wang@bytedance.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 73FE02001C
-X-Spam-Score: -5.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[];
- ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[]; MIME_TRACE(0.00)[0:+];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email, imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f33;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,91 +103,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+v8:
+- Rebase changes on top of 2eefd4fcec4b8fe41ceee2a8f00cdec1fe81b75c;
+- Fix typo and grammars in documentation and comments; 
 
-In multifd_recv_setup() we allocate (among other things)
- * a MultiFDRecvData struct to multifd_recv_state::data
- * a MultiFDRecvData struct to each multfd_recv_state->params[i].data
+v7:
+- Rebase changes on top of 0173b97a219c63062972744682eba46c560fb7f3
+- Added QAT memory requirement introduction in documentations;
+- Change the configuration options detection to auto in meson;
+- Enhance the auto-fallback mechanism to align with QPL behavior;
 
-(Then during execution we might swap these pointers around.)
+v6:
+- Rebase changes on top of 4ea7e9cd882f1574c129d67431784fecc426d23b
+- Address comments, typos, and styling issues
+- Re-factor QAT setup()/cleanup() logic
 
-But in multifd_recv_cleanup() we free multifd_recv_state->data
-in multifd_recv_cleanup_state() but we don't ever free the
-multifd_recv_state->params[i].data. This results in a memory
-leak reported by LeakSanitizer:
+v5:
+- Rebase changes on top of 59084feb256c617063e0dbe7e64821ae8852d7cf
+- Add documentations about migration with qatzip accerlation
+- Remove multifd-qatzip-sw-fallback option
 
-(cd build/asan && \
-   ASAN_OPTIONS="fast_unwind_on_malloc=0:strip_path_prefix=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../" \
-   QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-   ./tests/qtest/migration-test --tap -k -p /x86_64/migration/multifd/file/mapped-ram )
-[...]
-Direct leak of 72 byte(s) in 3 object(s) allocated from:
-    #0 0x561cc0afcfd8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218efd8) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
-    #1 0x7f89d37acc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
-    #2 0x561cc1e9c83c in multifd_recv_setup migration/multifd.c:1606:19
-    #3 0x561cc1e68618 in migration_ioc_process_incoming migration/migration.c:972:9
-    #4 0x561cc1e3ac59 in migration_channel_process_incoming migration/channel.c:45:9
-    #5 0x561cc1e4fa0b in file_accept_incoming_migration migration/file.c:132:5
-    #6 0x561cc30f2c0c in qio_channel_fd_source_dispatch io/channel-watch.c:84:12
-    #7 0x7f89d37a3c43 in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
-    #8 0x7f89d37a3c43 in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
-    #9 0x561cc3b21659 in glib_pollfds_poll util/main-loop.c:287:9
-    #10 0x561cc3b1ff93 in os_host_main_loop_wait util/main-loop.c:310:5
-    #11 0x561cc3b1fb5c in main_loop_wait util/main-loop.c:589:11
-    #12 0x561cc1da2917 in qemu_main_loop system/runstate.c:801:9
-    #13 0x561cc3796c1c in qemu_default_main system/main.c:37:14
-    #14 0x561cc3796c67 in main system/main.c:48:12
-    #15 0x7f89d163bd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
-    #16 0x7f89d163be3f in __libc_start_main csu/../csu/libc-start.c:392:3
-    #17 0x561cc0a79fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+v4:
+- Rebase changes on top of 1a2d52c7fcaeaaf4f2fe8d4d5183dccaeab67768
+- Move the IOV initialization to qatzip implementation
+- Only use qatzip to compress normal pages
 
-Direct leak of 24 byte(s) in 1 object(s) allocated from:
-    #0 0x561cc0afcfd8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218efd8) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
-    #1 0x7f89d37acc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
-    #2 0x561cc1e9bed9 in multifd_recv_setup migration/multifd.c:1588:32
-    #3 0x561cc1e68618 in migration_ioc_process_incoming migration/migration.c:972:9
-    #4 0x561cc1e3ac59 in migration_channel_process_incoming migration/channel.c:45:9
-    #5 0x561cc1e4fa0b in file_accept_incoming_migration migration/file.c:132:5
-    #6 0x561cc30f2c0c in qio_channel_fd_source_dispatch io/channel-watch.c:84:12
-    #7 0x7f89d37a3c43 in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
-    #8 0x7f89d37a3c43 in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
-    #9 0x561cc3b21659 in glib_pollfds_poll util/main-loop.c:287:9
-    #10 0x561cc3b1ff93 in os_host_main_loop_wait util/main-loop.c:310:5
-    #11 0x561cc3b1fb5c in main_loop_wait util/main-loop.c:589:11
-    #12 0x561cc1da2917 in qemu_main_loop system/runstate.c:801:9
-    #13 0x561cc3796c1c in qemu_default_main system/main.c:37:14
-    #14 0x561cc3796c67 in main system/main.c:48:12
-    #15 0x7f89d163bd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
-    #16 0x7f89d163be3f in __libc_start_main csu/../csu/libc-start.c:392:3
-    #17 0x561cc0a79fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+v3:
+- Rebase changes on top of master
+- Merge two patches per Fabiano Rosas's comment
+- Add versions into comments and documentations
 
-SUMMARY: AddressSanitizer: 96 byte(s) leaked in 4 allocation(s).
+v2:
+- Rebase changes on top of recent multifd code changes.
+- Use QATzip API 'qzMalloc' and 'qzFree' to allocate QAT buffers.
+- Remove parameter tuning and use QATzip's defaults for better
+  performance.
+- Add parameter to enable QAT software fallback.
 
-Free the params[i].data too.
+v1:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-12/msg03761.html
 
-Cc: qemu-stable@nongnu.org
-Fixes: d117ed0699d41 ("migration/multifd: Allow receiving pages without packets")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/multifd.c | 2 ++
- 1 file changed, 2 insertions(+)
+* Performance
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 552f9723c8..a6db05502a 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1357,6 +1357,8 @@ static void multifd_recv_cleanup_channel(MultiFDRecvParams *p)
-     qemu_mutex_destroy(&p->mutex);
-     qemu_sem_destroy(&p->sem_sync);
-     qemu_sem_destroy(&p->sem);
-+    g_free(p->data);
-+    p->data = NULL;
-     g_free(p->name);
-     p->name = NULL;
-     p->packet_len = 0;
+We present updated performance results. For circumstantial reasons, v1
+presented performance on a low-bandwidth (1Gbps) network.
+
+Here, we present updated results with a similar setup as before but with
+two main differences:
+
+1. Our machines have a ~50Gbps connection, tested using 'iperf3'.
+2. We had a bug in our memory allocation causing us to only use ~1/2 of
+the VM's RAM. Now we properly allocate and fill nearly all of the VM's
+RAM.
+
+Thus, the test setup is as follows:
+
+We perform multifd live migration over TCP using a VM with 64GB memory.
+We prepare the machine's memory by powering it on, allocating a large
+amount of memory (60GB) as a single buffer, and filling the buffer with
+the repeated contents of the Silesia corpus[0]. This is in lieu of a more
+realistic memory snapshot, which proved troublesome to acquire.
+
+We analyze CPU usage by averaging the output of 'top' every second
+during migration. This is admittedly imprecise, but we feel that it
+accurately portrays the different degrees of CPU usage of varying
+compression methods.
+
+We present the latency, throughput, and CPU usage results for all of the
+compression methods, with varying numbers of multifd threads (4, 8, and
+16).
+
+[0] The Silesia corpus can be accessed here:
+https://sun.aei.polsl.pl//~sdeor/index.php?page=silesia
+
+** Results
+
+4 multifd threads:
+
+    |---------------|---------------|----------------|---------|---------|
+    |method         |time(sec)      |throughput(mbps)|send cpu%|recv cpu%|
+    |---------------|---------------|----------------|---------|---------|
+    |qatzip         | 23.13         | 8749.94        |117.50   |186.49   |
+    |---------------|---------------|----------------|---------|---------|
+    |zlib           |254.35         |  771.87        |388.20   |144.40   |
+    |---------------|---------------|----------------|---------|---------|
+    |zstd           | 54.52         | 3442.59        |414.59   |149.77   |
+    |---------------|---------------|----------------|---------|---------|
+    |none           | 12.45         |43739.60        |159.71   |204.96   |
+    |---------------|---------------|----------------|---------|---------|
+
+8 multifd threads:
+
+    |---------------|---------------|----------------|---------|---------|
+    |method         |time(sec)      |throughput(mbps)|send cpu%|recv cpu%|
+    |---------------|---------------|----------------|---------|---------|
+    |qatzip         | 16.91         |12306.52        |186.37   |391.84   |
+    |---------------|---------------|----------------|---------|---------|
+    |zlib           |130.11         | 1508.89        |753.86   |289.35   |
+    |---------------|---------------|----------------|---------|---------|
+    |zstd           | 27.57         | 6823.23        |786.83   |303.80   |
+    |---------------|---------------|----------------|---------|---------|
+    |none           | 11.82         |46072.63        |163.74   |238.56   |
+    |---------------|---------------|----------------|---------|---------|
+
+16 multifd threads:
+
+    |---------------|---------------|----------------|---------|---------|
+    |method         |time(sec)      |throughput(mbps)|send cpu%|recv cpu%|
+    |---------------|---------------|----------------|---------|---------|
+    |qatzip         |18.64          |11044.52        | 573.61  |437.65   |
+    |---------------|---------------|----------------|---------|---------|
+    |zlib           |66.43          | 2955.79        |1469.68  |567.47   |
+    |---------------|---------------|----------------|---------|---------|
+    |zstd           |14.17          |13290.66        |1504.08  |615.33   |
+    |---------------|---------------|----------------|---------|---------|
+    |none           |16.82          |32363.26        | 180.74  |217.17   |
+    |---------------|---------------|----------------|---------|---------|
+
+** Observations
+
+- In general, not using compression outperforms using compression in a
+  non-network-bound environment.
+- 'qatzip' outperforms other compression workers with 4 and 8 workers,
+  achieving a ~91% latency reduction over 'zlib' with 4 workers, and a
+~58% latency reduction over 'zstd' with 4 workers.
+- 'qatzip' maintains comparable performance with 'zstd' at 16 workers,
+  showing a ~32% increase in latency. This performance difference
+becomes more noticeable with more workers, as CPU compression is highly
+parallelizable.
+- 'qatzip' compression uses considerably less CPU than other compression
+  methods. At 8 workers, 'qatzip' demonstrates a ~75% reduction in
+compression CPU usage compared to 'zstd' and 'zlib'.
+- 'qatzip' decompression CPU usage is less impressive, and is even
+  slightly worse than 'zstd' and 'zlib' CPU usage at 4 and 16 workers.
+
+
+Bryan Zhang (4):
+  meson: Introduce 'qatzip' feature to the build system
+  migration: Add migration parameters for QATzip
+  migration: Introduce 'qatzip' compression method
+  tests/migration: Add integration test for 'qatzip' compression method
+
+Yuan Liu (1):
+  docs/migration: add qatzip compression feature
+
+ docs/devel/migration/features.rst           |   1 +
+ docs/devel/migration/qatzip-compression.rst | 165 ++++++++
+ hw/core/qdev-properties-system.c            |   2 +-
+ meson.build                                 |  10 +
+ meson_options.txt                           |   2 +
+ migration/meson.build                       |   1 +
+ migration/migration-hmp-cmds.c              |   4 +
+ migration/multifd-qatzip.c                  | 394 ++++++++++++++++++++
+ migration/multifd.h                         |   5 +-
+ migration/options.c                         |  34 ++
+ migration/options.h                         |   1 +
+ qapi/migration.json                         |  21 ++
+ scripts/meson-buildoptions.sh               |   3 +
+ tests/qtest/migration-test.c                |  27 ++
+ 14 files changed, 667 insertions(+), 3 deletions(-)
+ create mode 100644 docs/devel/migration/qatzip-compression.rst
+ create mode 100644 migration/multifd-qatzip.c
+
 -- 
-2.35.3
+Yichen Wang
 
 
