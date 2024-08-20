@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF76C958A26
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C62958A2A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgQAj-0004sC-Na; Tue, 20 Aug 2024 10:49:21 -0400
+	id 1sgQAn-0005AD-CX; Tue, 20 Aug 2024 10:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sgQAg-0004qu-8z
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:49:18 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1sgQAi-0004wU-QS
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:49:21 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sgQAe-0006Kt-JW
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:49:18 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42809d6e719so47468635e9.3
- for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:49:16 -0700 (PDT)
+ id 1sgQAf-0006L4-LT
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:49:19 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42808071810so45306025e9.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:49:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724165354; x=1724770154; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724165355; x=1724770155; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S5Xnpwm/2BcL3d4m231YwlBL4X22xMDqaWfh+yoj+U0=;
- b=slTLsnkTkCH0hIHiqg9xzNB2Oiq9Y4FmDW1LbZ7vnugW58LbnY0qOZBmKbgKUMFIb8
- fE6JT1Vme48Ko67zcoIVoosvY0l0Zwr/5yMjGhXQO1wkXvz5Cr5cHsaebB71femvVHoE
- DA0zxdKpshgb7PpYWOrVBO0nyIs4Jdi0qVTpRcDpB1FCChlv3Zw6/fMXDPLCXrDDE1La
- cY1tX5yewjQel6K/44b2OPP7Mgh5T2WKRhRFDYJwgG9MEpCBpdpiepxe4jVEQ7mBYWTE
- vaKlj6Iu1Z0MUHDLGc9OrEhJ5N4kNKoif+6XufRaqPLjFYiExI8deGLlot+UeSQZLxxU
- tbDg==
+ bh=i63bqDS44eEn4ijbQfvAhZ8JfystuRSkXcF0FbTNIZI=;
+ b=XTY3PdeZq0fx1dR8IZwhhebK6GxrBiFeCzucKmt/6a6nedm3lAnnwTjUWOY8Ev1WQM
+ tk4mY0oW6m+xQAeD8KU0ohDX0S/T13DtT0H3S7cQYqTNO7jQnYSBgB/ag0V6KVS+5Gql
+ 3hJtH9T0K3SAhXwizfLElPKp72pSxwCdBA8sjB+h9Kj0Q9+LE+psoBWCrKkfQIR7+G++
+ HruDiyAR2s/1bHISfRgqZRlCldnUoqH4b6SaFy4QtnyW+S/hSbYg2buO77r3L0sq97kf
+ JvqQfmi4s/zVVDR0Z0JOrN3fkGzayU2T5mZL/QUSlWLuHLmg7Ui+RZrPWyXiPNHoSYaY
+ am2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724165354; x=1724770154;
+ d=1e100.net; s=20230601; t=1724165355; x=1724770155;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S5Xnpwm/2BcL3d4m231YwlBL4X22xMDqaWfh+yoj+U0=;
- b=nTBepKbQ1AxjXPXnhINkQhZTxpsXDDY5Ry6q9SG5182P7qGCmnGLQYG8H41HSnylXQ
- uZ4cC8xVHxBCt8L4CITbECTERmYK1462LGERJE44japueSP1NJqCb6cAgAydSIayHjNQ
- HbeGudYMJ3DT+SYLstPp2qgAm3akwtfTOliGN6M0ep2/x2s6KubjqIYQQUVraRw0mOAO
- fNQzDOPpfPjBz6F32sxZPUQiq77cZ1p15aN9YoEHvTo8ELxIbaoAjNOsAJ/f0Iw+gcez
- ukgigt3QBIN6/lw3SWfZgSlrUMPxdT7NKEoZVQv4l50Rhb0eMIK81r37J0i8Ctrs4X8P
- bJ8g==
-X-Gm-Message-State: AOJu0Yz85c4EVCUQAVKExSaq6HtcK+5C6EUjzBnU7bVixq2d6I3G2BUH
- AQJVQMQ868oBWENd+cWJ0qyBIQLRq8R3k7zG+a6NAlOcI+sCIyDEW7duOtACgBfNSJl41PHfPs5
- Q
-X-Google-Smtp-Source: AGHT+IHkvYzRz0RzdI3KyfVGbO0HJTwceWyNwtenMvo+lUyHBppZj99TqUV0cFOZMxiHeaGUSvdIlw==
-X-Received: by 2002:a5d:608c:0:b0:371:7e1b:871b with SMTP id
- ffacd0b85a97d-371c5fd0571mr1356984f8f.29.1724165354491; 
- Tue, 20 Aug 2024 07:49:14 -0700 (PDT)
+ bh=i63bqDS44eEn4ijbQfvAhZ8JfystuRSkXcF0FbTNIZI=;
+ b=mFkejoehsEGDzGdcmJrfZhNID0DtYywCCMmofUmORaCLWFh9Qv6/vZMZrZ5wASIE9/
+ tk+wUHdSycORHsD0txSHPZJfnyrVYZ7DbPlOcfuekv9TZTHyHWiayKB1XO3weK4E7xMJ
+ h826kYrZIdKAd93eOVE7UjcTHV6C8A7UCDEDIMQqhHzsOyvKZfnYOqwHjnrgHdpjUHUG
+ N4CpsWySTDyIdkwnve2hms2TwRgD0sHwe5biK2qdePowDuHrbPO1UHw5Eh5PyN3tWyLB
+ x7xPIOMlzReDFCnGh5QZQiiUxjlv405ciUErrqP3tg/cyy0XqaKBAAEZURl5uey0r8tJ
+ fw0Q==
+X-Gm-Message-State: AOJu0YxTIVjKf+t981Z2AkEmz3VfTUqQLr9624tcZrgNyuTVdMBKAWD/
+ SD1XaFUOp7ybdLv7FRZEcFlylbknBm9jAfa1gvx37YIJBZfsQX7PpwK0fk7q+zncCmg8018BGxe
+ /
+X-Google-Smtp-Source: AGHT+IFJ+ckHQ3+S9h9nSmLwb0iAz36+alydO17x4JsUJkFcGASkYrvrmp9827tz4G3cvAZ0dIgtjA==
+X-Received: by 2002:adf:fe0f:0:b0:371:6fb9:95a with SMTP id
+ ffacd0b85a97d-371944534c0mr11032323f8f.34.1724165355021; 
+ Tue, 20 Aug 2024 07:49:15 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3718983a306sm13334672f8f.15.2024.08.20.07.49.14
@@ -61,17 +61,17 @@ From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH for-9.2 1/9] tests/qtest/migration-test: Fix bootfile cleanup
- handling
-Date: Tue, 20 Aug 2024 15:49:04 +0100
-Message-Id: <20240820144912.320744-2-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 2/9] tests/qtest/migration-test: Don't leak resp in
+ multifd_mapped_ram_fdset_end()
+Date: Tue, 20 Aug 2024 15:49:05 +0100
+Message-Id: <20240820144912.320744-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240820144912.320744-1-peter.maydell@linaro.org>
 References: <20240820144912.320744-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,81 +94,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If you invoke the migration-test binary in such a way that it doesn't run
-any tests, then we never call bootfile_create(), and at the end of
-main() bootfile_delete() will try to unlink(NULL), which is not valid.
-This can happen if for instance you tell the test binary to run a
-subset of tests that turns out to be empty, like this:
+In multifd_mapped_ram_fdset_end() we call qtest_qmp() but forgot
+to unref the response QDict we get back, which means it is leaked:
 
- (cd build/asan && QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test --tap -k -p bang)
- # random seed: R02S6501b289ff8ced4231ba452c3a87bc6f
- # Skipping test: userfaultfd not available
- 1..0
- ../../tests/qtest/migration-test.c:182:12: runtime error: null pointer passed as argument 1, which is declared to never be null
- /usr/include/unistd.h:858:48: note: nonnull attribute specified here
+Indirect leak of 4120 byte(s) in 1 object(s) allocated from:
+    #0 0x55c0c095d318 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f318) (BuildI
+d: 07f667506452d6c467dbc06fd95191966d3e91b4)
+    #1 0x7f186f939c50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
+    #2 0x55c0c0ae9b01 in qdict_new qobject/qdict.c:30:13
+    #3 0x55c0c0afc16c in parse_object qobject/json-parser.c:317:12
+    #4 0x55c0c0afb90f in parse_value qobject/json-parser.c:545:16
+    #5 0x55c0c0afb579 in json_parser_parse qobject/json-parser.c:579:14
+    #6 0x55c0c0afa21d in json_message_process_token qobject/json-streamer.c:92:12
+    #7 0x55c0c0bca2e5 in json_lexer_feed_char qobject/json-lexer.c:313:13
+    #8 0x55c0c0bc97ce in json_lexer_feed qobject/json-lexer.c:350:9
+    #9 0x55c0c0afabbc in json_message_parser_feed qobject/json-streamer.c:121:5
+    #10 0x55c0c09cbd52 in qmp_fd_receive tests/qtest/libqmp.c:86:9
+    #11 0x55c0c09be69b in qtest_qmp_receive_dict tests/qtest/libqtest.c:760:12
+    #12 0x55c0c09bca77 in qtest_qmp_receive tests/qtest/libqtest.c:741:27
+    #13 0x55c0c09bee9d in qtest_vqmp tests/qtest/libqtest.c:812:12
+    #14 0x55c0c09bd257 in qtest_qmp tests/qtest/libqtest.c:835:16
+    #15 0x55c0c0a87747 in multifd_mapped_ram_fdset_end tests/qtest/migration-test.c:2393:12
+    #16 0x55c0c0a85eb3 in test_file_common tests/qtest/migration-test.c:1978:9
+    #17 0x55c0c0a746a3 in test_multifd_file_mapped_ram_fdset tests/qtest/migration-test.c:2437:5
+    #18 0x55c0c0a93237 in migration_test_wrapper tests/qtest/migration-helpers.c:458:5
+    #19 0x7f186f958aed in test_case_run debian/build/deb/../../../glib/gtestutils.c:2930:15
+    #20 0x7f186f958aed in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3018:16
+    #21 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #22 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #23 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #24 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #25 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #26 0x7f186f958faa in g_test_run_suite debian/build/deb/../../../glib/gtestutils.c:3109:18
+    #27 0x7f186f959055 in g_test_run debian/build/deb/../../../glib/gtestutils.c:2231:7
+    #28 0x7f186f959055 in g_test_run debian/build/deb/../../../glib/gtestutils.c:2218:1
+    #29 0x55c0c0a6e427 in main tests/qtest/migration-test.c:4033:11
 
-Conversely, because we call bootfile_create() once per test
-but only call bootfile_delete() at the end of the whole test
-run, we will leak the memory we used for bootpath when we
-overwrite it.
-
-Handle these by:
- * making bootfile_delete() handle not needing to do anything
-   because bootfile_create() was never called
- * making bootfile_create() call bootfile_delete() first to
-   tidy up any previous bootfile before it creates a fresh one
+Unref the object after we've confirmed that it is what we expect.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-I spotted this because I was trying to run a single subtest and
-messed up the test name so it didn't match anything :-)
-The second part was noticed by LeakSanitizer.
----
- tests/qtest/migration-test.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ tests/qtest/migration-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 70b606b8886..5cf238a4f05 100644
+index 5cf238a4f05..6aba527340b 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -144,12 +144,23 @@ static char *bootpath;
- #include "tests/migration/ppc64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
- 
-+static void bootfile_delete(void)
-+{
-+    if (!bootpath) {
-+        return;
-+    }
-+    unlink(bootpath);
-+    g_free(bootpath);
-+    bootpath = NULL;
-+}
-+
- static void bootfile_create(char *dir, bool suspend_me)
- {
-     const char *arch = qtest_get_arch();
-     unsigned char *content;
-     size_t len;
- 
-+    bootfile_delete();
-     bootpath = g_strdup_printf("%s/bootsect", dir);
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         /* the assembled x86 boot sector should be exactly one sector large */
-@@ -177,13 +188,6 @@ static void bootfile_create(char *dir, bool suspend_me)
-     fclose(bootfile);
+@@ -2395,6 +2395,7 @@ static void multifd_mapped_ram_fdset_end(QTestState *from, QTestState *to,
+     g_assert(qdict_haskey(resp, "return"));
+     fdsets = qdict_get_qlist(resp, "return");
+     g_assert(fdsets && qlist_empty(fdsets));
++    qobject_unref(resp);
  }
  
--static void bootfile_delete(void)
--{
--    unlink(bootpath);
--    g_free(bootpath);
--    bootpath = NULL;
--}
--
- /*
-  * Wait for some output in the serial output file,
-  * we get an 'A' followed by an endless string of 'B's
+ static void *multifd_mapped_ram_fdset_dio(QTestState *from, QTestState *to)
 -- 
 2.34.1
 
