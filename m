@@ -2,87 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40261958CC8
+	by mail.lfdr.de (Postfix) with ESMTPS id 483B7958CC9
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 19:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgSLH-0003mw-CC; Tue, 20 Aug 2024 13:08:23 -0400
+	id 1sgSLH-0003nf-Lx; Tue, 20 Aug 2024 13:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sgSKx-0003kx-LI
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:08:03 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1sgSKz-0003ln-MU; Tue, 20 Aug 2024 13:08:07 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sgSKu-0007bJ-Sw
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:08:02 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1sgSKv-0007bQ-NG; Tue, 20 Aug 2024 13:08:04 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 6350D2001A;
- Tue, 20 Aug 2024 17:07:57 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 73FE02001C;
+ Tue, 20 Aug 2024 17:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724173677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
- b=cn4czjfodJTGokFl90WmwyQtgGI7Q9MA2gvfXG/XbYlXiva0131PU0rd5GzqMHZx2Oc4Ge
- qNt+bj7zPlUvnbDBDzLCw9j2HpMhqZn66KhYzTOrICCoTN8wOAMQ5bvkzWhwEUy7FF+eIR
- burC4wef2npXRkXqlssnzIr4qu/1tDA=
+ t=1724173679; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
+ b=OrzpHgqe02If0yDulW04EoFSjsXt6A9QZSqw0elFsMU49Q6tgOINh10oC1UswCTn0vY2vE
+ R39nWah0abN/bbwkBRGdbHGSud+tFB3i46/OEx8kR/pYWSI7gcLghh2jW95beQPQjM6Ipt
+ wziN7ddcFZvPVbFIzW7jCXIzs/kkLqI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724173677;
+ s=susede2_ed25519; t=1724173679;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
- b=GqfBUMTcTTa+giTF7xYfDxjo6Ce+NPIGOeh8qYFotvFmTP8E6REZ1KrXt2uyRJm+JCSfsz
- 6FsowirmTS+NvhDw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
+ b=qvQPnR3Tc/vrh0jqvAvOW+hvJTDn9osdIMAVD4cA+W/Zvm/RjHZAgqeZZawKpO9s7uOIqi
+ MSbml0oA7FkwAYCA==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OrzpHgqe;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qvQPnR3T
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724173677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
- b=cn4czjfodJTGokFl90WmwyQtgGI7Q9MA2gvfXG/XbYlXiva0131PU0rd5GzqMHZx2Oc4Ge
- qNt+bj7zPlUvnbDBDzLCw9j2HpMhqZn66KhYzTOrICCoTN8wOAMQ5bvkzWhwEUy7FF+eIR
- burC4wef2npXRkXqlssnzIr4qu/1tDA=
+ t=1724173679; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
+ b=OrzpHgqe02If0yDulW04EoFSjsXt6A9QZSqw0elFsMU49Q6tgOINh10oC1UswCTn0vY2vE
+ R39nWah0abN/bbwkBRGdbHGSud+tFB3i46/OEx8kR/pYWSI7gcLghh2jW95beQPQjM6Ipt
+ wziN7ddcFZvPVbFIzW7jCXIzs/kkLqI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724173677;
+ s=susede2_ed25519; t=1724173679;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
- b=GqfBUMTcTTa+giTF7xYfDxjo6Ce+NPIGOeh8qYFotvFmTP8E6REZ1KrXt2uyRJm+JCSfsz
- 6FsowirmTS+NvhDw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XLw0kKg9KVAuTkembzTxqyMpoF7BRWSo5aG/NLnlwpM=;
+ b=qvQPnR3Tc/vrh0jqvAvOW+hvJTDn9osdIMAVD4cA+W/Zvm/RjHZAgqeZZawKpO9s7uOIqi
+ MSbml0oA7FkwAYCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 370EE13770;
- Tue, 20 Aug 2024 17:07:55 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CED4B13770;
+ Tue, 20 Aug 2024 17:07:57 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 9KVuO2vNxGZfUwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 Aug 2024 17:07:55 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id gMTcJG3NxGZfUwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 20 Aug 2024 17:07:57 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 0/1] Migration patches for 2024-08-20
-Date: Tue, 20 Aug 2024 14:07:40 -0300
-Message-Id: <20240820170741.27055-1-farosas@suse.de>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org
+Subject: [PULL 1/1] migration/multifd: Free MultiFDRecvParams::data
+Date: Tue, 20 Aug 2024 14:07:41 -0300
+Message-Id: <20240820170741.27055-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240820170741.27055-1-farosas@suse.de>
+References: <20240820170741.27055-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.57 / 50.00]; BAYES_HAM(-2.78)[99.04%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.985];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+X-Rspamd-Queue-Id: 73FE02001C
+X-Spam-Score: -5.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-5.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.57
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[];
+ ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email, imap1.dmz-prg2.suse.org:rdns,
+ imap1.dmz-prg2.suse.org:helo]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
@@ -106,31 +127,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 075fd020afe3150a0e6c4b049705b358b597b65a:
+From: Peter Maydell <peter.maydell@linaro.org>
 
-  Merge tag 'nvme-next-pull-request' of https://gitlab.com/birkelund/qemu into staging (2024-08-20 16:51:15 +1000)
+In multifd_recv_setup() we allocate (among other things)
+ * a MultiFDRecvData struct to multifd_recv_state::data
+ * a MultiFDRecvData struct to each multfd_recv_state->params[i].data
 
-are available in the Git repository at:
+(Then during execution we might swap these pointers around.)
 
-  https://gitlab.com/farosas/qemu.git tags/migration-20240820-pull-request
+But in multifd_recv_cleanup() we free multifd_recv_state->data
+in multifd_recv_cleanup_state() but we don't ever free the
+multifd_recv_state->params[i].data. This results in a memory
+leak reported by LeakSanitizer:
 
-for you to fetch changes up to 4c107870e8b2ba3951ee0c46123f1c3b5d3a19d3:
+(cd build/asan && \
+   ASAN_OPTIONS="fast_unwind_on_malloc=0:strip_path_prefix=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../" \
+   QTEST_QEMU_BINARY=./qemu-system-x86_64 \
+   ./tests/qtest/migration-test --tap -k -p /x86_64/migration/multifd/file/mapped-ram )
+[...]
+Direct leak of 72 byte(s) in 3 object(s) allocated from:
+    #0 0x561cc0afcfd8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218efd8) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+    #1 0x7f89d37acc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
+    #2 0x561cc1e9c83c in multifd_recv_setup migration/multifd.c:1606:19
+    #3 0x561cc1e68618 in migration_ioc_process_incoming migration/migration.c:972:9
+    #4 0x561cc1e3ac59 in migration_channel_process_incoming migration/channel.c:45:9
+    #5 0x561cc1e4fa0b in file_accept_incoming_migration migration/file.c:132:5
+    #6 0x561cc30f2c0c in qio_channel_fd_source_dispatch io/channel-watch.c:84:12
+    #7 0x7f89d37a3c43 in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
+    #8 0x7f89d37a3c43 in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
+    #9 0x561cc3b21659 in glib_pollfds_poll util/main-loop.c:287:9
+    #10 0x561cc3b1ff93 in os_host_main_loop_wait util/main-loop.c:310:5
+    #11 0x561cc3b1fb5c in main_loop_wait util/main-loop.c:589:11
+    #12 0x561cc1da2917 in qemu_main_loop system/runstate.c:801:9
+    #13 0x561cc3796c1c in qemu_default_main system/main.c:37:14
+    #14 0x561cc3796c67 in main system/main.c:48:12
+    #15 0x7f89d163bd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #16 0x7f89d163be3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #17 0x561cc0a79fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
 
-  migration/multifd: Free MultiFDRecvParams::data (2024-08-20 12:44:13 -0300)
+Direct leak of 24 byte(s) in 1 object(s) allocated from:
+    #0 0x561cc0afcfd8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218efd8) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+    #1 0x7f89d37acc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
+    #2 0x561cc1e9bed9 in multifd_recv_setup migration/multifd.c:1588:32
+    #3 0x561cc1e68618 in migration_ioc_process_incoming migration/migration.c:972:9
+    #4 0x561cc1e3ac59 in migration_channel_process_incoming migration/channel.c:45:9
+    #5 0x561cc1e4fa0b in file_accept_incoming_migration migration/file.c:132:5
+    #6 0x561cc30f2c0c in qio_channel_fd_source_dispatch io/channel-watch.c:84:12
+    #7 0x7f89d37a3c43 in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
+    #8 0x7f89d37a3c43 in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
+    #9 0x561cc3b21659 in glib_pollfds_poll util/main-loop.c:287:9
+    #10 0x561cc3b1ff93 in os_host_main_loop_wait util/main-loop.c:310:5
+    #11 0x561cc3b1fb5c in main_loop_wait util/main-loop.c:589:11
+    #12 0x561cc1da2917 in qemu_main_loop system/runstate.c:801:9
+    #13 0x561cc3796c1c in qemu_default_main system/main.c:37:14
+    #14 0x561cc3796c67 in main system/main.c:48:12
+    #15 0x7f89d163bd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #16 0x7f89d163be3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #17 0x561cc0a79fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
 
-----------------------------------------------------------------
-Migration pull request
+SUMMARY: AddressSanitizer: 96 byte(s) leaked in 4 allocation(s).
 
-- Peter's fix for a leak in multifd recv side
+Free the params[i].data too.
 
-----------------------------------------------------------------
-
-Peter Maydell (1):
-  migration/multifd: Free MultiFDRecvParams::data
-
+Cc: qemu-stable@nongnu.org
+Fixes: d117ed0699d41 ("migration/multifd: Allow receiving pages without packets")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
  migration/multifd.c | 2 ++
  1 file changed, 2 insertions(+)
 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 552f9723c8..a6db05502a 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -1357,6 +1357,8 @@ static void multifd_recv_cleanup_channel(MultiFDRecvParams *p)
+     qemu_mutex_destroy(&p->mutex);
+     qemu_sem_destroy(&p->sem_sync);
+     qemu_sem_destroy(&p->sem);
++    g_free(p->data);
++    p->data = NULL;
+     g_free(p->name);
+     p->name = NULL;
+     p->packet_len = 0;
 -- 
 2.35.3
 
