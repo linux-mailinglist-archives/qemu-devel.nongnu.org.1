@@ -2,46 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC369958CA2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 18:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0176958CA3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 19:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgSBt-0006wT-B0; Tue, 20 Aug 2024 12:58:41 -0400
+	id 1sgSCv-0008Ka-6N; Tue, 20 Aug 2024 12:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
- id 1sgSBp-0006vN-Ep
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 12:58:37 -0400
+ id 1sgSCi-0007lj-Sk
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 12:59:34 -0400
 Received: from secure.fsr.com ([64.126.132.23])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chauser@pullman.com>)
- id 1sgSBk-0006Cl-Fr
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 12:58:37 -0400
+ id 1sgSCh-0006IB-A8
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 12:59:32 -0400
 Received: from [192.168.254.26] (syn-098-146-201-045.res.spectrum.com
  [98.146.201.45]) (Authenticated sender: chauser)
- by secure.fsr.com (Postfix) with ESMTPSA id CA2BBBD0C2;
- Tue, 20 Aug 2024 09:58:27 -0700 (PDT)
+ by secure.fsr.com (Postfix) with ESMTPSA id 66CE5BD615;
+ Tue, 20 Aug 2024 09:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pullman.com;
- s=mail1; t=1724173108;
- bh=iHDSJ15lM7vjupwwLeMXA20+bAvFY5dftE/2Nf4IbgI=;
+ s=mail1; t=1724173169;
+ bh=21m9bo10lAGEHzt/tVJHI1t0hJFe4MTKbWmnFaSy1t0=;
  h=Date:Subject:To:From;
- b=HU/mfpwqX9kPgFtKELJMU+Md1xKeJDwefTVbaY7G0jF0jCUxERmJbXiurIGFtv1RV
- mA5B9R/bmlDOpQsjfA/YqkCK/HMC/Nxd8IKG5eGt8Jk5DdketDyZOIMmL5ZFtMzL97
- /pqvLf3caILmDQa+ZNgsExkl5RrAnacIoJp30cOo=
-Message-ID: <d3a12dd9-182d-4c97-955b-197f100b1feb@pullman.com>
-Date: Tue, 20 Aug 2024 09:58:26 -0700
+ b=PVdbDIDrExO1h1N6lRxry9IulBUARvd1NhMrlScqzyOvPU1AGu2Bcga/MZhToY1ru
+ W7AxnKOMVECLC8+tgKLc537JbPJrotmGTarw19fIY+XoLLiQ/A/GE1abk1hxPmpm7R
+ ZKop6RWOB0YyrrEIvHRlHhPUV84gUgpUPmHVpn+A=
+Message-ID: <24c5b02b-c401-4081-aa46-f745592002ca@pullman.com>
+Date: Tue, 20 Aug 2024 09:59:28 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/char: suppress sunmouse events with no changes
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <cb338cdc-d09d-4513-ba16-5ff3f792bbfe@pullman.com>
- <d8bbf72d-29e5-465b-a8aa-508ed2960631@linaro.org>
+Subject: Re: [PATCH for-9.2 v3 0/6] target/sparc: emulate floating point queue
+ when raising fp traps -- CORRECTION
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240816072311.353234-1-richard.henderson@linaro.org>
+ <501c22c3-d8e3-4439-a958-549e9a772ffd@pullman.com>
+ <2c1d0942-1428-47a7-bd37-29c16d596761@pullman.com>
+ <092fdfde-7305-467c-9131-6f5d2128c58f@linaro.org>
+ <aa172755-faf8-4587-a4e8-d1cbfdc139b1@pullman.com>
+ <e2aa8b92-4cb1-4fcf-92b7-eadb86893ccf@linaro.org>
+ <275021f0-887c-4de8-a86d-ad9abc83df95@pullman.com>
+ <6d973ff1-10af-4f1a-be07-501199216b50@linaro.org>
 Content-Language: en-GB
 From: Carl Hauser <chauser@pullman.com>
-In-Reply-To: <d8bbf72d-29e5-465b-a8aa-508ed2960631@linaro.org>
+In-Reply-To: <6d973ff1-10af-4f1a-be07-501199216b50@linaro.org>
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=64.126.132.23; envelope-from=chauser@pullman.com;
@@ -75,81 +80,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-    <p>Yes, just equality, no masking needed. Boneheaded.</p>
-    <p>I think I could figure out how to do the state migration if
-      that's the direction you want to go.</p>
-    <p>I don't think I could do the migration to
-      qemu_input_handler_register, especially as I would think that the
-      keyboard should be done at the same time.</p>
-    <p>I'll wait on a V2 patch with the equality fix for a decision
-      about migration/vs new style.<br>
-    </p>
+    <p>Do you want me to submit a patch set fixing this or will you?</p>
     <p>-- Carl<br>
     </p>
-    <div class="moz-cite-prefix">On 8/20/24 00:34, Richard Henderson
+    <div class="moz-cite-prefix">On 8/18/24 19:42, Richard Henderson
       wrote:<br>
     </div>
     <blockquote type="cite"
-      cite="mid:d8bbf72d-29e5-465b-a8aa-508ed2960631@linaro.org">On
-      8/20/24 09:18, Carl Hauser wrote:
+      cite="mid:6d973ff1-10af-4f1a-be07-501199216b50@linaro.org">On
+      8/18/24 10:03, Carl Hauser wrote:
       <br>
-      <blockquote type="cite">@@ -959,6 +960,15 @@ static void
-        sunmouse_event(void *opaque,
-        <br>
-              int ch;
-        <br>
-        <br>
-              trace_escc_sunmouse_event(dx, dy, buttons_state);
-        <br>
-        +
-        <br>
-        +    /* Don't send duplicate events without motion */
-        <br>
-        +    if (dx == 0 &amp;&amp;
-        <br>
-        +        dy == 0 &amp;&amp;
-        <br>
-        +        (s-&gt;sunmouse_prev_state ^ buttons_state) == 0) {
+      <blockquote type="cite">I changed translate.c:4597 from return
+        true; to return advance_pc(dc); and it worked.
         <br>
       </blockquote>
       <br>
-      Were you intending to mask vs MOUSE_EVENT_*BUTTON?
-      <br>
-      Otherwise this is just plain equality.
-      <br>
-      <br>
-      <blockquote type="cite">diff --git a/include/hw/char/escc.h
-        b/include/hw/char/escc.h
-        <br>
-        index 5669a5b811..bc5ba4f564 100644
-        <br>
-        --- a/include/hw/char/escc.h
-        <br>
-        +++ b/include/hw/char/escc.h
-        <br>
-        @@ -46,6 +46,7 @@ typedef struct ESCCChannelState {
-        <br>
-              uint8_t rx, tx;
-        <br>
-              QemuInputHandlerState *hs;
-        <br>
-              char *sunkbd_layout;
-        <br>
-        +    int sunmouse_prev_state;
-        <br>
-      </blockquote>
-      <br>
-      This adds new state that must be migrated.
-      <br>
-      <br>
-      While the patch is relatively simple, I do wonder if this code
-      could be improved by converting away from the legacy mouse
-      interface to qemu_input_handler_register. Especially if that might
-      help avoid needing to add migration state that isn't "really" part
-      of the device.
-      <br>
-      <br>
-      Mark?
+      Whoops, yes indeed.  Thanks for the catch.
       <br>
       <br>
       <br>
