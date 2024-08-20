@@ -2,70 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D9A958CB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 19:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40261958CC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 19:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgSFK-0007Si-JE; Tue, 20 Aug 2024 13:02:14 -0400
+	id 1sgSLH-0003mw-CC; Tue, 20 Aug 2024 13:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sgSF3-0007Pv-NT
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:02:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sgSF0-000708-TB
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:01:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724173312;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cq463I5TyqkdBM1YHG6rncybz6uVDLWuHrPOT90Hrhg=;
- b=EbEKDiBu26oD2QjL/MhSrKgDW3CMF4aN64//sa8NWxn2Fbqd0j+BqQD9q/mJnK+9ePrrro
- wvH161BmuWOR1yTxzfLuyM7j44Mz0c0P4hUEQ9xAv4G942jhnRvSQ7a0fykP41WUFLH3Hk
- n0A5xWqEzvt6xQkNftUDcvVpj1hn/qY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-oi8i-6wlN2qHPbYYxZRurw-1; Tue,
- 20 Aug 2024 13:01:50 -0400
-X-MC-Unique: oi8i-6wlN2qHPbYYxZRurw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sgSKx-0003kx-LI
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:08:03 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sgSKu-0007bJ-Sw
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 13:08:02 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0C6011955BFC; Tue, 20 Aug 2024 17:01:48 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.17])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CEC0119560AD; Tue, 20 Aug 2024 17:01:44 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Yonggang Luo <luoyonggang@gmail.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefan Weil <sw@weilnetz.de>,
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 6350D2001A;
+ Tue, 20 Aug 2024 17:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724173677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
+ b=cn4czjfodJTGokFl90WmwyQtgGI7Q9MA2gvfXG/XbYlXiva0131PU0rd5GzqMHZx2Oc4Ge
+ qNt+bj7zPlUvnbDBDzLCw9j2HpMhqZn66KhYzTOrICCoTN8wOAMQ5bvkzWhwEUy7FF+eIR
+ burC4wef2npXRkXqlssnzIr4qu/1tDA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724173677;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
+ b=GqfBUMTcTTa+giTF7xYfDxjo6Ce+NPIGOeh8qYFotvFmTP8E6REZ1KrXt2uyRJm+JCSfsz
+ 6FsowirmTS+NvhDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724173677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
+ b=cn4czjfodJTGokFl90WmwyQtgGI7Q9MA2gvfXG/XbYlXiva0131PU0rd5GzqMHZx2Oc4Ge
+ qNt+bj7zPlUvnbDBDzLCw9j2HpMhqZn66KhYzTOrICCoTN8wOAMQ5bvkzWhwEUy7FF+eIR
+ burC4wef2npXRkXqlssnzIr4qu/1tDA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724173677;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=z862uK9sj7173dIjv/buZa3UNv6lp+ar8kxX7ypLB+Y=;
+ b=GqfBUMTcTTa+giTF7xYfDxjo6Ce+NPIGOeh8qYFotvFmTP8E6REZ1KrXt2uyRJm+JCSfsz
+ 6FsowirmTS+NvhDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 370EE13770;
+ Tue, 20 Aug 2024 17:07:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 9KVuO2vNxGZfUwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 20 Aug 2024 17:07:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2] .gitlab-ci.d/windows.yml: Disable the qtests in the MSYS2
- job
-Date: Tue, 20 Aug 2024 19:01:42 +0200
-Message-ID: <20240820170142.55324-1-thuth@redhat.com>
+Subject: [PULL 0/1] Migration patches for 2024-08-20
+Date: Tue, 20 Aug 2024 14:07:40 -0300
+Message-Id: <20240820170741.27055-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spamd-Result: default: False [-2.57 / 50.00]; BAYES_HAM(-2.78)[99.04%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.985];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.57
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,94 +106,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The qtests are broken since a while in the MSYS2 job in the gitlab-CI,
-likely due to some changes in the MSYS2 environment. So far nobody has
-neither a clue what's going wrong here, nor an idea how to fix this
-(in fact most QEMU developers even don't have a Windows environment
-available for properly analyzing this problem), so we should disable the
-qtests here for the time being to get at least test coverage again
-for the remaining tests that are run here.
+The following changes since commit 075fd020afe3150a0e6c4b049705b358b597b65a:
 
-Since we already get compile-test coverage for the system emulation
-in the cross-win64-system job, and since the MSYS2 job is one of the
-longest running jobs in our CI (it takes more than 1 hour to complete),
-let's seize the opportunity and also cut the run time by disabling
-the system emulation completely here, including the libraries that
-are only useful for system emulation. In case somebody ever figures
-out the failure of the qtests on MSYS2, we can revert this patch
-to get everything back.
+  Merge tag 'nvme-next-pull-request' of https://gitlab.com/birkelund/qemu into staging (2024-08-20 16:51:15 +1000)
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- This decreases the runtime of the job from ~ 70 minutes to
- ~ 45 minutes for me.
+are available in the Git repository at:
 
- .gitlab-ci.d/windows.yml | 26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+  https://gitlab.com/farosas/qemu.git tags/migration-20240820-pull-request
 
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index a83f23a786..759e9a76b5 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -17,12 +17,7 @@ msys2-64bit:
-     # This feature doesn't (currently) work with PowerShell, it stops
-     # the echo'ing of commands being run and doesn't show any timing
-     FF_SCRIPT_SECTIONS: 0
--    # do not remove "--without-default-devices"!
--    # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
--    # changed to compile QEMU with the --without-default-devices switch
--    # for this job, because otherwise the build could not complete within
--    # the project timeout.
--    CONFIGURE_ARGS:  --target-list=sparc-softmmu --without-default-devices -Ddebug=false -Doptimization=0
-+    CONFIGURE_ARGS: --disable-system --enable-tools -Ddebug=false -Doptimization=0
-     # The Windows git is a bit older so override the default
-     GIT_FETCH_EXTRA_FLAGS: --no-tags --prune --quiet
-   artifacts:
-@@ -81,33 +76,16 @@ msys2-64bit:
-       bison diffutils flex
-       git grep make sed
-       mingw-w64-x86_64-binutils
--      mingw-w64-x86_64-capstone
-       mingw-w64-x86_64-ccache
-       mingw-w64-x86_64-curl
--      mingw-w64-x86_64-cyrus-sasl
--      mingw-w64-x86_64-dtc
-       mingw-w64-x86_64-gcc
-       mingw-w64-x86_64-glib2
--      mingw-w64-x86_64-gnutls
--      mingw-w64-x86_64-gtk3
--      mingw-w64-x86_64-libgcrypt
--      mingw-w64-x86_64-libjpeg-turbo
-       mingw-w64-x86_64-libnfs
--      mingw-w64-x86_64-libpng
-       mingw-w64-x86_64-libssh
--      mingw-w64-x86_64-libtasn1
--      mingw-w64-x86_64-libusb
--      mingw-w64-x86_64-lzo2
--      mingw-w64-x86_64-nettle
-       mingw-w64-x86_64-ninja
-       mingw-w64-x86_64-pixman
-       mingw-w64-x86_64-pkgconf
-       mingw-w64-x86_64-python
--      mingw-w64-x86_64-SDL2
--      mingw-w64-x86_64-SDL2_image
--      mingw-w64-x86_64-snappy
--      mingw-w64-x86_64-spice
--      mingw-w64-x86_64-usbredir
-       mingw-w64-x86_64-zstd"
-   - Write-Output "Running build at $(Get-Date -Format u)"
-   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
-@@ -120,7 +98,7 @@ msys2-64bit:
-   - mkdir build
-   - cd build
-   - ..\msys64\usr\bin\bash -lc "ccache --zero-stats"
--  - ..\msys64\usr\bin\bash -lc "../configure --enable-fdt=system $CONFIGURE_ARGS"
-+  - ..\msys64\usr\bin\bash -lc "../configure $CONFIGURE_ARGS"
-   - ..\msys64\usr\bin\bash -lc "make"
-   - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
-   - ..\msys64\usr\bin\bash -lc "ccache --show-stats"
+for you to fetch changes up to 4c107870e8b2ba3951ee0c46123f1c3b5d3a19d3:
+
+  migration/multifd: Free MultiFDRecvParams::data (2024-08-20 12:44:13 -0300)
+
+----------------------------------------------------------------
+Migration pull request
+
+- Peter's fix for a leak in multifd recv side
+
+----------------------------------------------------------------
+
+Peter Maydell (1):
+  migration/multifd: Free MultiFDRecvParams::data
+
+ migration/multifd.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
 -- 
-2.46.0
+2.35.3
 
 
