@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8BB095895D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6899589F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 16:45:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgPt9-0002tL-LB; Tue, 20 Aug 2024 10:31:12 -0400
+	id 1sgQ6A-0000Ym-Ua; Tue, 20 Aug 2024 10:44:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sgPsI-0001xc-JQ
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:30:20 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sgQ67-0000Xd-2S
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:44:35 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sgPsG-0001uj-UY
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:30:18 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2f3f0a31ab2so6157631fa.0
- for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:30:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sgQ64-0005Z0-RE
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 10:44:34 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-429e29933aaso43305715e9.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 07:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724164215; x=1724769015; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KdxPAmDEdUAtpsJzqv9PT9FKB3N+OoRAOYXGitcO7RQ=;
- b=H5h4oBu+8Bm7wLMOkmyP1pY2LoGx5SKmUBmPaoVbrjysmWZHrzwoi0fTTOAXO+qZ5b
- kiu8JrNbQ66iwOQshtEsyeMAnoZ5g2BzVgWDc+iKWSGOHuq1DfjNFf+akbDd4gg1NAgw
- oJXD85qUE2btrds8pAwlErMicNPhXUvz/ra/1sQ1ilT73auIhhq7HUYF8YoEWpmRpMUN
- LOBNqmFv38pIcH853L4yRb7unp2IXbwrq7nL52WO9JtUJkqfm930xS0G1RjlFOWfmZ5K
- 2hSdRCS+5XnE+BKETtndA4AkBpQ5ZffWHGBqGJ494vOen1lp8Psj7OiwFQuOkjDcA+oI
- cxfg==
+ d=linaro.org; s=google; t=1724165070; x=1724769870; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jMTfh60pZgpwtOsRiM0kPB17tfn1jZZzt39WO8xs1HQ=;
+ b=Jk/2FBH2ghoEDJG68qJolXQcolj6qIhYPCv1aHfTC9iA9KJxQiyzrQVE6wLMRDH3Xy
+ zsx64HH6WXqiUAMVjY2k8RaLngXlvYK8d3p+7rRAYjx0Qk0Gpmw43IHSFHjCffxC1+m4
+ /rmOWIESrRrIHyufdFE14sJ+28JorXRBVcneUX4mFmncbI8weuzW3rf6tAiFifMnX7h1
+ vbuZmNu3UOlmjSP36orhP278y6Z3abVJYUBqdf76ZtObWphWRWQ1MYYpLoOWmv4ddeYl
+ 2eLI1xhuwkUGEINkZ83vA22y1AfwlygBuL5ABAlIiNjp9eHFxFXxyxj/zKV3FKpy0xY+
+ DB8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724164215; x=1724769015;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KdxPAmDEdUAtpsJzqv9PT9FKB3N+OoRAOYXGitcO7RQ=;
- b=Sc/iSEC1p0cyFaUgzJ6xJYCr2+UxruyKhi+gPOqHmRPDwjS6O6MGOQLiMtj09l4xZq
- t96sMJ/zM4eX+qkAnaA4rtyO1VgOKh++i5JyVPndOsoDSQBzlTzzpaLisGiTgA0YBE5l
- VK6rdb4Z+1/dhose5bw4rmGBdzsQivbNR1PkD77VsSM2vrmRKdivO6VG7mfn1EAQhXdW
- yGtlwojhSh9f2lL7giQZ1HJdBNsAgEfxLYcd7g9bUnyiBwg1EHJfwRasNZCRDn5IqKGX
- eNWo2IKx/3xgRXK2a2jsMVlhhXZYhFS1R97s3a2VU5YoD5/8aR5azxATnkEebDPmxCk5
- TGGg==
-X-Gm-Message-State: AOJu0YyPHQmOPRU1TLExVqJLaIMQCuKRcUto7eTegvrmtz66HiKd5bE3
- lV8fniLB93SypsS9Da09SH8T8okutQAMWrMiAjGsKTjKrM8IxCQeBcJgt9sB
-X-Google-Smtp-Source: AGHT+IH2aSjaMdTU2w0L6jdfmyJXJpGAlgjDdskYkq7lMNexOEvEkzPUF5ILk79x6nw61ZRcBw/gvA==
-X-Received: by 2002:a05:6512:3195:b0:530:d088:233f with SMTP id
- 2adb3069b0e04-5331c6d99c0mr9799180e87.40.1724164213973; 
- Tue, 20 Aug 2024 07:30:13 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ d=1e100.net; s=20230601; t=1724165070; x=1724769870;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jMTfh60pZgpwtOsRiM0kPB17tfn1jZZzt39WO8xs1HQ=;
+ b=UA1RiTnxj3vn+kY2v5fHnLOWKtzm+k/e2Ps4+ler7/4Bcg3CW86xBRTGbOar9r1a6O
+ UOv4ZhO+ZsTmySwC6l3/XIjTTLr7fSKXsOWBs+JXyrZdO5vwd5Rjr0OqNKkDkscbo/XN
+ Lpb7F06+p1IGZDWDXBEpAp548lVG/iMBXRiL4dN1mU4toy9W6gCNpvCN1SQ9gvJ2bV00
+ HBmpF0dwU0Vbwm0XNXMyCf62Fr/ArAPfwFHo5OF5jrayG+wfWzxSflPm9Gq7vM0t2pmr
+ sx2GUSbCHuID5FBtEKsNOZo7wmOnYfjnVCV6qq+fsD5KtHk0Ev0tuHuO9C9i6wNOj86A
+ lBCw==
+X-Gm-Message-State: AOJu0Yxc2HvQS8uIK9qvjfP889N//NqewyfUbKdGoRfi6aY4aFORfScx
+ 4rqZxxU70bl5qnkwUi6AoANZEHuX18zFOpIsjEsXhGdbfb0wEUVWnbJaBj0y2dJMbYkJY4EA2uZ
+ M
+X-Google-Smtp-Source: AGHT+IH90o0kY57HHJesl8nY4qa74NmQRgM+McKbrRoVBb3GxkUPmsYZHlFghX4oUTt8wLQjC1amjg==
+X-Received: by 2002:a5d:5110:0:b0:34d:ae98:4e7 with SMTP id
+ ffacd0b85a97d-3719469531fmr9051762f8f.41.1724165070374; 
+ Tue, 20 Aug 2024 07:44:30 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-5330d41ec8bsm1774535e87.217.2024.08.20.07.30.13
+ ffacd0b85a97d-3718985a6d1sm13423340f8f.57.2024.08.20.07.44.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Aug 2024 07:30:13 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+ Tue, 20 Aug 2024 07:44:30 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- peter.maydell@linaro.org, alex.bennee@linaro.org, xenia.ragiadakou@amd.com,
- jason.andryuk@amd.com, edgar.iglesias@amd.com,
- xen-devel@lists.xenproject.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 12/12] docs/system/i386: xenpvh: Add a basic description
-Date: Tue, 20 Aug 2024 16:29:49 +0200
-Message-ID: <20240820142949.533381-13-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240820142949.533381-1-edgar.iglesias@gmail.com>
-References: <20240820142949.533381-1-edgar.iglesias@gmail.com>
+Cc: Peter Xu <peterx@redhat.com>,
+	Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH for-9.1?] migration/multifd: Free MultiFDRecvParams::data
+Date: Tue, 20 Aug 2024 15:44:29 +0100
+Message-Id: <20240820144429.320176-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,97 +90,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+In multifd_recv_setup() we allocate (among other things)
+ * a MultiFDRecvData struct to multifd_recv_state::data
+ * a MultiFDRecvData struct to each multfd_recv_state->params[i].data
 
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+(Then during execution we might swap these pointers around.)
+
+But in multifd_recv_cleanup() we free multifd_recv_state->data
+in multifd_recv_cleanup_state() but we don't ever free the
+multifd_recv_state->params[i].data. This results in a memory
+leak reported by LeakSanitizer:
+
+(cd build/asan && \
+   ASAN_OPTIONS="fast_unwind_on_malloc=0:strip_path_prefix=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../" \
+   QTEST_QEMU_BINARY=./qemu-system-x86_64 \
+   ./tests/qtest/migration-test --tap -k -p /x86_64/migration/multifd/file/mapped-ram )
+[...]
+Direct leak of 72 byte(s) in 3 object(s) allocated from:
+    #0 0x561cc0afcfd8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218efd8) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+    #1 0x7f89d37acc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
+    #2 0x561cc1e9c83c in multifd_recv_setup migration/multifd.c:1606:19
+    #3 0x561cc1e68618 in migration_ioc_process_incoming migration/migration.c:972:9
+    #4 0x561cc1e3ac59 in migration_channel_process_incoming migration/channel.c:45:9
+    #5 0x561cc1e4fa0b in file_accept_incoming_migration migration/file.c:132:5
+    #6 0x561cc30f2c0c in qio_channel_fd_source_dispatch io/channel-watch.c:84:12
+    #7 0x7f89d37a3c43 in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
+    #8 0x7f89d37a3c43 in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
+    #9 0x561cc3b21659 in glib_pollfds_poll util/main-loop.c:287:9
+    #10 0x561cc3b1ff93 in os_host_main_loop_wait util/main-loop.c:310:5
+    #11 0x561cc3b1fb5c in main_loop_wait util/main-loop.c:589:11
+    #12 0x561cc1da2917 in qemu_main_loop system/runstate.c:801:9
+    #13 0x561cc3796c1c in qemu_default_main system/main.c:37:14
+    #14 0x561cc3796c67 in main system/main.c:48:12
+    #15 0x7f89d163bd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #16 0x7f89d163be3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #17 0x561cc0a79fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+
+Direct leak of 24 byte(s) in 1 object(s) allocated from:
+    #0 0x561cc0afcfd8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218efd8) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+    #1 0x7f89d37acc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
+    #2 0x561cc1e9bed9 in multifd_recv_setup migration/multifd.c:1588:32
+    #3 0x561cc1e68618 in migration_ioc_process_incoming migration/migration.c:972:9
+    #4 0x561cc1e3ac59 in migration_channel_process_incoming migration/channel.c:45:9
+    #5 0x561cc1e4fa0b in file_accept_incoming_migration migration/file.c:132:5
+    #6 0x561cc30f2c0c in qio_channel_fd_source_dispatch io/channel-watch.c:84:12
+    #7 0x7f89d37a3c43 in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
+    #8 0x7f89d37a3c43 in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
+    #9 0x561cc3b21659 in glib_pollfds_poll util/main-loop.c:287:9
+    #10 0x561cc3b1ff93 in os_host_main_loop_wait util/main-loop.c:310:5
+    #11 0x561cc3b1fb5c in main_loop_wait util/main-loop.c:589:11
+    #12 0x561cc1da2917 in qemu_main_loop system/runstate.c:801:9
+    #13 0x561cc3796c1c in qemu_default_main system/main.c:37:14
+    #14 0x561cc3796c67 in main system/main.c:48:12
+    #15 0x7f89d163bd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #16 0x7f89d163be3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #17 0x561cc0a79fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: be72e086d4e47b172b0a72779972213fd9916466)
+
+SUMMARY: AddressSanitizer: 96 byte(s) leaked in 4 allocation(s).
+
+Free the params[i].data too.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d117ed0699d41 ("migration/multifd: Allow receiving pages without packets")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS                 |  1 +
- docs/system/i386/xenpvh.rst | 49 +++++++++++++++++++++++++++++++++++++
- docs/system/target-i386.rst |  1 +
- 3 files changed, 51 insertions(+)
- create mode 100644 docs/system/i386/xenpvh.rst
+This bug was in the 9.0 release, so not a regression we absolutely
+must fix for 9.1. I have also only tested this by running the
+migration-test test suite.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c2fb0c2f42..c14ac014e2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -560,6 +560,7 @@ F: include/sysemu/xen.h
- F: include/sysemu/xen-mapcache.h
- F: stubs/xen-hw-stub.c
- F: docs/system/arm/xenpvh.rst
-+F: docs/system/i386/xenpvh.rst
- 
- Guest CPU Cores (NVMM)
- ----------------------
-diff --git a/docs/system/i386/xenpvh.rst b/docs/system/i386/xenpvh.rst
-new file mode 100644
-index 0000000000..354250f073
---- /dev/null
-+++ b/docs/system/i386/xenpvh.rst
-@@ -0,0 +1,49 @@
-+Xen PVH machine (``xenpvh``)
-+=========================================
-+
-+Xen supports a spectrum of types of guests that vary in how they depend
-+on HW virtualization features, emulation models and paravirtualization.
-+PVH is a mode that uses HW virtualization features (like HVM) but tries
-+to avoid emulation models and instead use passthrough or
-+paravirtualized devices.
-+
-+QEMU can be used to provide PV virtio devices on an emulated PCIe controller.
-+That is the purpose of this minimal machine.
-+
-+Supported devices
-+-----------------
-+
-+The x86 Xen PVH QEMU machine provide the following devices:
-+
-+- RAM
-+- GPEX host bridge
-+- virtio-pci devices
-+
-+The idea is to only connect virtio-pci devices but in theory any compatible
-+PCI device model will work depending on Xen and guest support.
-+
-+Running
-+-------
-+
-+The Xen tools will typically construct a command-line and launch QEMU
-+for you when needed. But here's an example of what it can look like in
-+case you need to construct one manually:
-+
-+.. code-block:: console
-+
-+    qemu-system-i386 -xen-domid 3 -no-shutdown        \
-+      -chardev socket,id=libxl-cmd,path=/var/run/xen/qmp-libxl-3,server=on,wait=off \
-+      -mon chardev=libxl-cmd,mode=control             \
-+      -chardev socket,id=libxenstat-cmd,path=/var/run/xen/qmp-libxenstat-3,server=on,wait=off \
-+      -mon chardev=libxenstat-cmd,mode=control        \
-+      -nodefaults                                     \
-+      -no-user-config                                 \
-+      -xen-attach -name g0                            \
-+      -vnc none                                       \
-+      -display none                                   \
-+      -device virtio-net-pci,id=nic0,netdev=net0,mac=00:16:3e:5c:81:78 \
-+      -netdev type=tap,id=net0,ifname=vif3.0-emu,br=xenbr0,script=no,downscript=no \
-+      -smp 4,maxcpus=4                                \
-+      -nographic                                      \
-+      -machine xenpvh,ram-low-base=0,ram-low-size=2147483648,ram-high-base=4294967296,ram-high-size=2147483648,pci-ecam-base=824633720832,pci-ecam-size=268435456,pci-mmio-base=4026531840,pci-mmio-size=33554432,pci-mmio-high-base=824902156288,pci-mmio-high-size=68719476736 \
-+      -m 4096
-diff --git a/docs/system/target-i386.rst b/docs/system/target-i386.rst
-index 1b8a1f248a..23e84e3ba7 100644
---- a/docs/system/target-i386.rst
-+++ b/docs/system/target-i386.rst
-@@ -26,6 +26,7 @@ Architectural features
-    i386/cpu
-    i386/hyperv
-    i386/xen
-+   i386/xenpvh
-    i386/kvm-pv
-    i386/sgx
-    i386/amd-memory-encryption
+NB that the tests themselves have a pile of leaks; I'm about to send
+a separate patchseries for those.
+
+ migration/multifd.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 552f9723c82..a6db05502aa 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -1357,6 +1357,8 @@ static void multifd_recv_cleanup_channel(MultiFDRecvParams *p)
+     qemu_mutex_destroy(&p->mutex);
+     qemu_sem_destroy(&p->sem_sync);
+     qemu_sem_destroy(&p->sem);
++    g_free(p->data);
++    p->data = NULL;
+     g_free(p->name);
+     p->name = NULL;
+     p->packet_len = 0;
 -- 
-2.43.0
+2.34.1
 
 
