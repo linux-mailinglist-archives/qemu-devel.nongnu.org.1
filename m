@@ -2,73 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFB5957A76
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 02:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D5A957B41
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 03:58:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgCfI-0007M6-1P; Mon, 19 Aug 2024 20:24:00 -0400
+	id 1sgE7E-00035v-2l; Mon, 19 Aug 2024 21:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sgCf7-0006RI-Nq
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 20:23:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sgE7C-00034M-8Y; Mon, 19 Aug 2024 21:56:54 -0400
+Received: from out30-118.freemail.mail.aliyun.com ([115.124.30.118])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sgCf6-0003vQ-49
- for qemu-devel@nongnu.org; Mon, 19 Aug 2024 20:23:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724113426;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=djrLVOxNjhTkJaYMvjaJgjyI+LpTJmogtLtfxxjcqvM=;
- b=HiZw/MLuvKbiylymC74TbYFrxD1xpQBFW/C+pih6LxKvjT8nFlkPFgrhDF8v9D3b6thslt
- KdpZXDFBX+SoVZa8d/npoZohQd85p9l4FuvB2C19EPp8Wj2SrKiwfVWVxOztVEg9sy0XTN
- Ut7Omy6z5vTFAuiXtccGjouuQ8kl4Oo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-68-EGIJiM86MamjCYN6V2OjaQ-1; Mon,
- 19 Aug 2024 20:23:43 -0400
-X-MC-Unique: EGIJiM86MamjCYN6V2OjaQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB6A01955D54; Tue, 20 Aug 2024 00:23:42 +0000 (UTC)
-Received: from scv.localdomain (unknown [10.22.8.20])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 880FA19560A3; Tue, 20 Aug 2024 00:23:40 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Beraldo Leal <bleal@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 8/8] python/qapi: remove redundant linter configuration
-Date: Mon, 19 Aug 2024 20:23:17 -0400
-Message-ID: <20240820002318.1380276-9-jsnow@redhat.com>
-In-Reply-To: <20240820002318.1380276-1-jsnow@redhat.com>
-References: <20240820002318.1380276-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1sgE79-0006vC-JM; Mon, 19 Aug 2024 21:56:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1724118999; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=nA809LtVfKWVOwke62uMihCDUdWhyXWDWY+4FRYQ9ag=;
+ b=kq1fI1ykY0zgzVhsFh5sIWX/fUiHxq0T8T8lsjKjkixognPZpCfP8gxAkvyrY7+Pr+pEFR45j04JC5wsFRyQUYPfBlKgmk0MFgouxxr5TL4QoVliJ9wmX6lhGIv+v4gQB69rbUQRRSQxgz19D+afJDFsihA5ftmQAGK8juGsYzY=
+Received: from 30.166.65.10(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0WDGbxRD_1724118996) by smtp.aliyun-inc.com;
+ Tue, 20 Aug 2024 09:56:37 +0800
+Message-ID: <8788fae2-14ca-4af2-a075-bf20a533f540@linux.alibaba.com>
+Date: Tue, 20 Aug 2024 09:56:07 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 08/15] tcg/riscv: Add support for basic vector opcodes
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
+ TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+References: <20240813113436.831-1-zhiwei_liu@linux.alibaba.com>
+ <20240813113436.831-9-zhiwei_liu@linux.alibaba.com>
+ <ae44194c-776a-48aa-8567-c56b5e7c4167@linaro.org>
+Content-Language: en-US
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <ae44194c-776a-48aa-8567-c56b5e7c4167@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.134,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.118;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-118.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,121 +67,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the qemu.qapi module is checked by the standard python tests,
-we don't need separate configuration for it anymore.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- python/qemu/qapi/.flake8    |  3 --
- python/qemu/qapi/.isort.cfg |  7 -----
- python/qemu/qapi/mypy.ini   |  4 ---
- python/qemu/qapi/pylintrc   | 61 -------------------------------------
- 4 files changed, 75 deletions(-)
- delete mode 100644 python/qemu/qapi/.flake8
- delete mode 100644 python/qemu/qapi/.isort.cfg
- delete mode 100644 python/qemu/qapi/mypy.ini
- delete mode 100644 python/qemu/qapi/pylintrc
+On 2024/8/14 17:13, Richard Henderson wrote:
+> On 8/13/24 21:34, LIU Zhiwei wrote:
+>> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+>>
+>> Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+>> Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+>> ---
+>>   tcg/riscv/tcg-target-con-set.h |  1 +
+>>   tcg/riscv/tcg-target.c.inc     | 33 +++++++++++++++++++++++++++++++++
+>>   2 files changed, 34 insertions(+)
+>>
+>> diff --git a/tcg/riscv/tcg-target-con-set.h 
+>> b/tcg/riscv/tcg-target-con-set.h
+>> index d73a62b0f2..8a0de18257 100644
+>> --- a/tcg/riscv/tcg-target-con-set.h
+>> +++ b/tcg/riscv/tcg-target-con-set.h
+>> @@ -23,3 +23,4 @@ C_O1_I4(r, r, rI, rM, rM)
+>>   C_O2_I4(r, r, rZ, rZ, rM, rM)
+>>   C_O0_I2(v, r)
+>>   C_O1_I1(v, r)
+>> +C_O1_I2(v, v, v)
+>> diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+>> index f60913e805..650b5eff1a 100644
+>> --- a/tcg/riscv/tcg-target.c.inc
+>> +++ b/tcg/riscv/tcg-target.c.inc
+>> @@ -289,6 +289,12 @@ typedef enum {
+>>       OPC_VSE32_V = 0x6027 | V_SUMOP,
+>>       OPC_VSE64_V = 0x7027 | V_SUMOP,
+>>   +    OPC_VADD_VV = 0x57 | V_OPIVV,
+>> +    OPC_VSUB_VV = 0x8000057 | V_OPIVV,
+>> +    OPC_VAND_VV = 0x24000057 | V_OPIVV,
+>> +    OPC_VOR_VV = 0x28000057 | V_OPIVV,
+>> +    OPC_VXOR_VV = 0x2c000057 | V_OPIVV,
+>> +
+>>       OPC_VMV_V_V = 0x5e000057 | V_OPIVV,
+>>       OPC_VMV_V_I = 0x5e000057 | V_OPIVI,
+>>       OPC_VMV_V_X = 0x5e000057 | V_OPIVX,
+>> @@ -2158,6 +2164,21 @@ static void tcg_out_vec_op(TCGContext *s, 
+>> TCGOpcode opc,
+>>       case INDEX_op_st_vec:
+>>           tcg_out_st(s, type, a0, a1, a2);
+>>           break;
+>> +    case INDEX_op_add_vec:
+>> +        tcg_out_opc_vv(s, OPC_VADD_VV, a0, a1, a2, true);
+>> +        break;
+>> +    case INDEX_op_sub_vec:
+>> +        tcg_out_opc_vv(s, OPC_VSUB_VV, a0, a1, a2, true);
+>> +        break;
+>> +    case INDEX_op_and_vec:
+>> +        tcg_out_opc_vv(s, OPC_VAND_VV, a0, a1, a2, true);
+>> +        break;
+>> +    case INDEX_op_or_vec:
+>> +        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a1, a2, true);
+>> +        break;
+>> +    case INDEX_op_xor_vec:
+>> +        tcg_out_opc_vv(s, OPC_VXOR_VV, a0, a1, a2, true);
+>> +        break;
+>
+> As with load/store/move, and/or/xor can avoid changing element type.
+> Thus I think the vtype setup before the switch is premature.
 
-diff --git a/python/qemu/qapi/.flake8 b/python/qemu/qapi/.flake8
-deleted file mode 100644
-index a873ff67309..00000000000
---- a/python/qemu/qapi/.flake8
-+++ /dev/null
-@@ -1,3 +0,0 @@
--[flake8]
--# Prefer pylint's bare-except checks to flake8's
--extend-ignore = E722
-diff --git a/python/qemu/qapi/.isort.cfg b/python/qemu/qapi/.isort.cfg
-deleted file mode 100644
-index 643caa1fbd6..00000000000
---- a/python/qemu/qapi/.isort.cfg
-+++ /dev/null
-@@ -1,7 +0,0 @@
--[settings]
--force_grid_wrap=4
--force_sort_within_sections=True
--include_trailing_comma=True
--line_length=72
--lines_after_imports=2
--multi_line_output=3
-diff --git a/python/qemu/qapi/mypy.ini b/python/qemu/qapi/mypy.ini
-deleted file mode 100644
-index 8109470a031..00000000000
---- a/python/qemu/qapi/mypy.ini
-+++ /dev/null
-@@ -1,4 +0,0 @@
--[mypy]
--strict = True
--disallow_untyped_calls = False
--python_version = 3.8
-diff --git a/python/qemu/qapi/pylintrc b/python/qemu/qapi/pylintrc
-deleted file mode 100644
-index c028a1f9f51..00000000000
---- a/python/qemu/qapi/pylintrc
-+++ /dev/null
-@@ -1,61 +0,0 @@
--[MASTER]
--
--[MESSAGES CONTROL]
--
--# Disable the message, report, category or checker with the given id(s). You
--# can either give multiple identifiers separated by comma (,) or put this
--# option multiple times (only on the command line, not in the configuration
--# file where it should appear only once). You can also use "--disable=all" to
--# disable everything first and then reenable specific checks. For example, if
--# you want to run only the similarities checker, you can use "--disable=all
--# --enable=similarities". If you want to run only the classes checker, but have
--# no Warning level messages displayed, use "--disable=all --enable=classes
--# --disable=W".
--disable=consider-using-f-string,
--        fixme,
--        missing-docstring,
--        too-many-arguments,
--        too-many-branches,
--        too-many-instance-attributes,
--        too-many-statements,
--        useless-option-value,
--
--[REPORTS]
--
--[REFACTORING]
--
--[MISCELLANEOUS]
--
--[LOGGING]
--
--[BASIC]
--
--# Good variable names regexes, separated by a comma. If names match any regex,
--# they will always be accepted.
--#
--# Suppress complaints about short names.  PEP-8 is cool with them,
--# and so are we.
--good-names-rgxs=^[_a-z][_a-z0-9]?$
--
--[VARIABLES]
--
--[STRING]
--
--[SPELLING]
--
--[FORMAT]
--
--[SIMILARITIES]
--
--# Ignore import statements themselves when computing similarities.
--ignore-imports=yes
--
--[TYPECHECK]
--
--[CLASSES]
--
--[IMPORTS]
--
--[DESIGN]
--
--[EXCEPTIONS]
--- 
-2.45.0
+Agree. We have implemented this feature on the v2 patch set.
 
+Thanks,
+Zhiwei
+
+>
+>
+> r~
 
