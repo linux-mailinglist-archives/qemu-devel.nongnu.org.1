@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF0B958BD9
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 18:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD78958BF2
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Aug 2024 18:09:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgRJP-0003Da-6Q; Tue, 20 Aug 2024 12:02:23 -0400
+	id 1sgROk-0006iR-Io; Tue, 20 Aug 2024 12:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sgRJ9-0002UR-NN
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 12:02:09 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sgRJ7-0007N8-Nh
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 12:02:07 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-7141b04e7a3so334465b3a.3
- for <qemu-devel@nongnu.org>; Tue, 20 Aug 2024 09:02:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724169723; x=1724774523; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Fdy+/mPgHXYFV6LXpgIdVTCmsAHi684eeT3IjHbx5VU=;
- b=kAW4QEeaxnuzloflj/cn0DWlCslXmCtWebM3xuF2iLa7+60LOMtWNDPacHDDoE+nEL
- Jlzwks9iqyNoHNqZ/Xni3VlbvBu6y4zQjBqSCGj8gz/khoEgSUQDochtkRwD45cTrqYJ
- oIOWwMTLQrwkYnkO9v8QKXiComc/M48YdJJ7wpPNURYJYIYmANyouyVCpIelLdGR08PN
- LVQC4UI/8T3prRUsGU8mwC8bxrTVoutYwqG0E5a9j2xO22Pmg5k0puYAmsOX3QEHPfdR
- psUYg9sJa9QEpYo5sC8t4/wRG/oNBNp7qjnJZedw1IbGLu877f6lT6R3VaW/gil9AMo9
- pJEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724169723; x=1724774523;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Fdy+/mPgHXYFV6LXpgIdVTCmsAHi684eeT3IjHbx5VU=;
- b=eP5IrR7AyodUoByR0XH5IPpkrK2BkbvZRcVXEpLVd5Nc/ZF1UrNEjUF9qXweo4WKw4
- NbAvxOuhsld+K1HUw2FH/tjaUEnZFkPnz8Px6O5tso0UM00sCKBHNy1ZLrp6KWUVFKt8
- wcBHD6x/WVgF4jM4graSIma9LCIxYf9mYqy8QjwS5gauEPwqhMz2diaLzVYUPxf9/aDs
- yR0NG284atpOII5s0nlVsO1ZzCKLnt0ii9axmy0N7TRVpCSSEHhgg0oKMhvLKB8hp2GT
- iIpNw4mkqWXfiQUnx8J5X3JJJ0t07+FOO7A+tFYow01rrP/G0913eJUFW4UaZNeT0W2j
- kVIw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWiusu30ezHPpnj/+/o/DE1/bWGMtcsEX4ZLiP2KlFycuwUBbtzIIA5xGCwDUyImQe6Fy/k2NZKpjVY2oBEyxUDYj8YhFw=
-X-Gm-Message-State: AOJu0YymIL8et7HYU+eF1kPjB69yixFeTgGoOAtrDsTTS+UA2QIyXHo0
- tM2K8y3bqQ0e0Y8QHIZxYZlxx8Xm0+ETyIQU2AErCV3E8F+jNz9j5Vmo4QtZEVuTyyBp3re5Hou
- 71RQLVA==
-X-Google-Smtp-Source: AGHT+IF3kf1sOSfexLrfFLP+1rdFNNzJSGRnEhyKd114+jH+h4t3wEU+JROgNvNBdFHTSuVOo0T3hw==
-X-Received: by 2002:a05:6a00:2d9f:b0:710:4d08:e094 with SMTP id
- d2e1a72fcca58-713c4dfbe65mr17838599b3a.2.1724169722841; 
- Tue, 20 Aug 2024 09:02:02 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::27bd? ([2604:3d08:9384:1d00::27bd])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7127add68desm8387424b3a.29.2024.08.20.09.02.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Aug 2024 09:02:02 -0700 (PDT)
-Message-ID: <5fcf8fcb-c100-4d3b-aca0-a9a46a7b7040@linaro.org>
-Date: Tue, 20 Aug 2024 09:02:01 -0700
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1sgROb-0006eJ-7U; Tue, 20 Aug 2024 12:07:45 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1sgROV-0007wc-HK; Tue, 20 Aug 2024 12:07:42 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47KF5G0A006880;
+ Tue, 20 Aug 2024 16:07:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=corp-2023-11-20; bh=cBmYNJwYE+Ja6q
+ e6SOE37s/WD+XN67n2JgcBPBwjKV0=; b=bhbRwCY2Jmy/1+2ePJg6CpWqFmdCOO
+ 0NhDblLgBt9GM0t/NkBW+1hXH2bNE6F6gu6grGrns94KkAMByVvdYKe1cLwFx+bj
+ yU3necc8qeVZu5zW/iAmm8IVKLUkMoT9xF8YSeYmZbzeClkk0rPCGoscpMttuMg0
+ zA3d9P4XumBQczdJnMHXivOS6c+mAb017EEqmq3nm2dovqKDcAo8pksGzANcHL6u
+ QgXVLjpmL1L/pcGgfl9FxHnlrTSsDN/+TcOSVzUx4XC9FxGhG5LB6LuK5LSpaIwa
+ o5uCCqHtXWnByog3PmaUfwvZwfNqSBISj3XzZhBot4lCql5CQime/7iw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 412m4uwfy3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Aug 2024 16:07:26 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 47KG0bqL035302; Tue, 20 Aug 2024 16:07:26 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 414w1c48d4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Aug 2024 16:07:26 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47KG7POl010967;
+ Tue, 20 Aug 2024 16:07:25 GMT
+Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 414w1c48cf-1; Tue, 20 Aug 2024 16:07:25 +0000
+From: Alan Adamson <alan.adamson@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: alan.adamson@oracle.com, kbusch@kernel.org, its@irrelevant.dk,
+ qemu-block@nongnu.org
+Subject: [PATCH 0/1] hw/nvme: add atomic write support
+Date: Tue, 20 Aug 2024 09:11:22 -0700
+Message-ID: <20240820161123.316887-1-alan.adamson@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.1] target/i386: Fix tss access size in switch_tss_ra
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240819074052.207783-1-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240819074052.207783-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-20_11,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ spamscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408200119
+X-Proofpoint-ORIG-GUID: qm3AnmaS0YR9uJOB49QcFLhsVrNFj3kO
+X-Proofpoint-GUID: qm3AnmaS0YR9uJOB49QcFLhsVrNFj3kO
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=alan.adamson@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,44 +95,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/19/24 00:40, Richard Henderson wrote:
-> The two limit_max variables represent size - 1, just like the
-> encoding in the GDT, thus the 'old' access was off by one.
-> Access the minimal size of the new tss: the complete tss contains
-> the iopb, which may be a larger block than the access api expects,
-> and irrelevant because the iopb is not accessed during the
-> switch itself.
-> 
-> Fixes: 8b131065080a ("target/i386/tcg: use X86Access for TSS access")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2511
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/i386/tcg/seg_helper.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-> index bab552cd53..3b8fd827e1 100644
-> --- a/target/i386/tcg/seg_helper.c
-> +++ b/target/i386/tcg/seg_helper.c
-> @@ -378,7 +378,7 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
->   
->       /* X86Access avoids memory exceptions during the task switch */
->       mmu_index = cpu_mmu_index_kernel(env);
-> -    access_prepare_mmu(&old, env, env->tr.base, old_tss_limit_max,
-> +    access_prepare_mmu(&old, env, env->tr.base, old_tss_limit_max + 1,
->                          MMU_DATA_STORE, mmu_index, retaddr);
->   
->       if (source == SWITCH_TSS_CALL) {
-> @@ -386,7 +386,8 @@ static int switch_tss_ra(CPUX86State *env, int tss_selector,
->           probe_access(env, tss_base, 2, MMU_DATA_STORE,
->                        mmu_index, retaddr);
->       }
-> -    access_prepare_mmu(&new, env, tss_base, tss_limit,
-> +    /* While true tss_limit may be larger, we don't access the iopb here. */
-> +    access_prepare_mmu(&new, env, tss_base, tss_limit_max + 1,
->                          MMU_DATA_LOAD, mmu_index, retaddr);
->   
->       /* save the current state in the old TSS */
+Since there is work in the Linux NVMe Driver community to add Atomic Write
+support, it would be desirable to be able to test it with qemu nvme emulation.
+ 
+This patch will focus on supporting NVMe controller atomic write parameters (AWUN and
+AWUPF) but can be extended to support Namespace parameters (NAWUN and NAWUPF)
+and Boundaries (NABSN, NABO, and NABSPF).
+ 
+Atomic Write Parameters for NVMe QEMU
+-------------------------------------
+New NVMe QEMU Parameters (See NVMe Specification for details):
+        atomic.dn (default off) - Set the value of Disable Normal.
+        atomic.awun=UINT16 (default: 0)
+        atomic.awupf=UINT16 (default: 0)
+ 
+qemu command line example:
+        qemu-system-x86_64 -cpu host --enable-kvm -smp cpus=4 -no-reboot -m 8192M -drive file=./disk.img,if=ide \
+        -boot c -device e1000,netdev=net0,mac=DE:CC:CC:EF:99:88 -netdev tap,id=net0 \
+	-device nvme,id=nvme-ctrl-0,serial=nvme-1,atomic.dn=off,atomic.awun=15,atomic.awupf=7 \
+        -drive file=./nvme.img,if=none,id=nvm-1 -device nvme-ns,drive=nvm-1,bus=nvme-ctrl-0 nvme-ns,drive=nvm-1,bus=nvme-ctrl-0
+ 
+Making Writes Atomic:
+---------------------
+Currently, as the nvme emulator walks through the Submission Queue (SQ)
+(nvme_process_sq()), it takes each request (read/write/etc) off the SQ and starts its
+execution and then continues on with the next SQ entry until all entries are started. It
+is likely, multiple requests (from multiple SQs) will be executing in parallel and acting
+on a common LBA range.  This prevents writes from completing atomically. When a write
+completes atomically, either all or none of the LBAs will be committed to media.  This
+means writes to a common LBA range can not be done in parallel if writes are going to
+be atomic. The nvme emulator does not currently guarantee this and LBAs
+from multiple requests may get committed.  The fio test shown below, comfirms this.
+ 
+Prior to taking a command off of a SQ, a check needs to be done to determine if it
+conflicts atomically with a currently executing command.
+ 
+bool nvme_atomic_write_check() - Checks a NVMe command to determine if it can be started,
+or if it conflicts atomically with a currently executing command.
+ 
+Returns:   NVME_ATOMIC_NO_START - The command atomically conflicts with a currently
+           executing command and can not be started.
+ 
+           NVME_ATOMIC_START_ATOMIC  - The command is an atomic write, does not
+           conflict atomically with a currently executing command, and can be started.
+ 
+           NVME_ATOMIC_START_NONATOMIC - The command is not an atomic write, but it
+           can be started.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+If a command is blocked from being started, nvme_process_sq() needs to be rescheduled.
+ 
+Implementation:
+---------------
+Each SQ maintains a list of executing requests (sq->out_req_list). When a command is
+taken off the SQ to start executing it, it is placed on out_req_list and removed when
+the command completes and placed on the Completion Queue (CQ). When nvme_process_sq()
+is executing and looking to take a command off the SQ, nvme_atomic_write_check() is
+called to determine if it is atomically safe to start executing the command. If it is
+safe, nvme_atomic_write_check() will return NVME_ATOMIC_START_ATOMIC or
+NVME_ATOMIC_START_NONATOMIC. nvme_process_sq() then pulls the command off the SQ,
+places an associated request onto out_req_list. If it is not atomically safe,
+(nvme_atomic_write_check() returns NVME_ATOMIC_NO_START). The command remains on the SQ,
+and processing of that SQ stops and nvme_process_sq() will be rescheduled.
+When nvme_atomic_write_check() is called, the out_req_list for each SQ is walked and the
+LBA range of the command to be started is compared with each executing request.
+
+What is the Maximum Atomic Write Size?
+--------------------------------------
+By default the qemu parameter atomic.awun specifices that maximum atomic write size which
+will be used by maximum atomic Write size. If Disable Normal is set to true with qemu
+parameter atomic.dn or with the SET FEATURE command, the atomic.awupf value will specify
+the maximum atomic write size.
+
+Testing
+-------
+NVMe QEMU Parameters used: atomic.dn=off,atomic.awun=63,atomic.awupf=63
+ 
+# nvme id-ctrl /dev/nvme0 | grep awun
+awun      : 15
+# nvme id-ctrl /dev/nvme0 | grep awupf
+awupf     : 7
+# nvme id-ctrl /dev/nvme0 | grep acwu
+acwu      : 0    < Since qemu-nvme doesn't support Compare and Write, this is always zero
+# nvme get-feature /dev/nvme0  -f 0xa
+get-feature:0x0a (Write Atomicity Normal), Current value:00000000
+#
+ 
+# fio --filename=/dev/nvme0n1 --direct=1 --rw=randwrite --bs=32k --iodepth=256 --name=iops --numjobs=50 --verify=crc64 --verify_fatal=1 --ioengine=libaio
+ 
+When executed without atomic write support, eventually the following error will be
+observed:
+        crc64: verify failed at file /dev/nvme0n1 offset 857669632, length 32768
+(requested block: offset=857669632, length=32768, flags=88)
+            Expected CRC: 9c87d3539dafdca0
+            Received CRC: d521f7ea3b69d2ee
+ 
+When executed with atomic write support, this error no longer happens.
+ 
+Future Work
+-----------
+- Namespace support (NAWUN, NAWUPF and NACWU)
+- Namespace Boundary support (NABSN, NABO, and NABSPF)
+- Atomic Compare and Write Unit (ACWU)
+
+
+Alan Adamson (1):
+  hw/nvme: add atomic write support
+
+ hw/nvme/ctrl.c | 161 +++++++++++++++++++++++++++++++++++++++++++++++++
+ hw/nvme/nvme.h |  12 ++++
+ 2 files changed, 173 insertions(+)
+
+-- 
+2.43.5
+
 
