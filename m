@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFEB95967A
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 10:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C549596A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 10:35:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgghY-0005pV-VY; Wed, 21 Aug 2024 04:28:20 -0400
+	id 1sgghn-0006uY-Tl; Wed, 21 Aug 2024 04:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sgghW-0005j9-Uv
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 04:28:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sgghf-0006ND-7p
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 04:28:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sgghV-0004He-9o
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 04:28:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sgghb-0004IE-KP
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 04:28:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724228896;
+ s=mimecast20190719; t=1724228902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kRmDkZ7VDtFzYBQca9+/DhVv4A6yw4Wz1ZG6Z3cesOY=;
- b=fK8p6hZk9uet05aKGghdZyEHA6BAuLUdPHApxdz54A4gyKhHWIv54yyHZpMFgO3rsnvJtc
- a36ExF757uWBbcIlB7SOtOt52LCLxNJwFal27anNMIznDWNn7JFWDZoUY9w6TzkvhqvQkr
- yd3Pxf/rtkvFCj7pZy25bx+sc2y35jk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=A5kC5Qzur/c1N3fRZ14CnciFWroFFpxCKqSAE4WE5eI=;
+ b=Q03/Ugi0Y/UkVEQkHMnUtKH0ydjvZcl094Bm/kT7MxWM+cYfwvhkqcJ0UXWMlj2r49r8Vc
+ 9K+XDQSEapSlNaENv0XdD4sBfJ2yMRh1Pes+GbBiVFSCv86oz5fUg0CI3Ntt3A1NDbELbr
+ WjjJ209vDZK+hTG1ABZ78GMs1uFv1ng=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-JsCL2DSaMIiQphGQkOxrmg-1; Wed,
- 21 Aug 2024 04:28:13 -0400
-X-MC-Unique: JsCL2DSaMIiQphGQkOxrmg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-343-23P1_ZZ6OGCjr8pcpiVWgg-1; Wed,
+ 21 Aug 2024 04:28:17 -0400
+X-MC-Unique: 23P1_ZZ6OGCjr8pcpiVWgg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BE9671955D48; Wed, 21 Aug 2024 08:28:11 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 185F31955D4A; Wed, 21 Aug 2024 08:28:15 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-191.str.redhat.com
  [10.33.192.191])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F11051955DD6; Wed, 21 Aug 2024 08:28:07 +0000 (UTC)
+ id 15B7A1955DD6; Wed, 21 Aug 2024 08:28:11 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org,
@@ -52,22 +52,23 @@ Cc: Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v4 04/35] Bump avocado to 103.0
-Date: Wed, 21 Aug 2024 10:27:05 +0200
-Message-ID: <20240821082748.65853-5-thuth@redhat.com>
+Subject: [PATCH v4 05/35] tests/avocado/avocado_qemu: Fix the "from"
+ statements in linuxtest.py
+Date: Wed, 21 Aug 2024 10:27:06 +0200
+Message-ID: <20240821082748.65853-6-thuth@redhat.com>
 In-Reply-To: <20240821082748.65853-1-thuth@redhat.com>
 References: <20240821082748.65853-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
 X-Spam_bar: +
 X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
@@ -86,57 +87,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cleber Rosa <crosa@redhat.com>
+Without this change, the new Avocado v103 fails to find the tests
+that are based on the LinuxTest class.
 
-This bumps Avocado to latest the LTS release.
-
-An LTS release is one that can receive bugfixes and guarantees
-stability for a much longer period and has incremental minor releases
-made.
-
-Even though the 103.0 LTS release is pretty a rewrite of Avocado when
-compared to 88.1, the behavior of all existing tests under
-tests/avocado has been extensively tested no regression in behavior
-was found.
-
-To keep behavior of jobs as close as possible with previous version,
-this version bump keeps the execution serial (maximum of one task at a
-time being run).
-
-Reference: https://avocado-framework.readthedocs.io/en/103.0/releases/lts/103_0.html
-Signed-off-by: Cleber Rosa <crosa@redhat.com>
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-ID: <20240806173119.582857-2-crosa@redhat.com>
+Suggested-by: Cleber Rosa <crosa@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pythondeps.toml        | 2 +-
- tests/Makefile.include | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/avocado/avocado_qemu/linuxtest.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/pythondeps.toml b/pythondeps.toml
-index f6e590fdd8..175cf99241 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -30,5 +30,5 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
- # Note that qemu.git/python/ is always implicitly installed.
- # Prefer an LTS version when updating the accepted versions of
- # avocado-framework, for example right now the limit is 92.x.
--avocado-framework = { accepted = "(>=88.1, <93.0)", installed = "88.1", canary = "avocado" }
-+avocado-framework = { accepted = "(>=103.0, <104.0)", installed = "103.0", canary = "avocado" }
- pycdlib = { accepted = ">=1.11.0" }
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 6618bfed70..537804d101 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -141,7 +141,7 @@ check-avocado: check-venv $(TESTS_RESULTS_DIR) get-vm-images
-             --show=$(AVOCADO_SHOW) run --job-results-dir=$(TESTS_RESULTS_DIR) \
-             $(if $(AVOCADO_TAGS),, --filter-by-tags-include-empty \
- 			--filter-by-tags-include-empty-key) \
--            $(AVOCADO_CMDLINE_TAGS) \
-+            $(AVOCADO_CMDLINE_TAGS) --max-parallel-tasks=1 \
-             $(if $(GITLAB_CI),,--failfast) $(AVOCADO_TESTS), \
-             "AVOCADO", "tests/avocado")
+diff --git a/tests/avocado/avocado_qemu/linuxtest.py b/tests/avocado/avocado_qemu/linuxtest.py
+index e1dc838b1c..66fb9f1507 100644
+--- a/tests/avocado/avocado_qemu/linuxtest.py
++++ b/tests/avocado/avocado_qemu/linuxtest.py
+@@ -13,8 +13,8 @@
  
+ from avocado.utils import cloudinit, datadrainer, process, vmimage
+ 
+-from . import LinuxSSHMixIn
+-from . import QemuSystemTest
++from avocado_qemu import LinuxSSHMixIn
++from avocado_qemu import QemuSystemTest
+ 
+ if os.path.islink(os.path.dirname(os.path.dirname(__file__))):
+     # The link to the avocado tests dir in the source code directory
 -- 
 2.46.0
 
