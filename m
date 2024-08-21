@@ -2,97 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81378959E60
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 15:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66651959BA6
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 14:21:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sglAY-0000vS-L4; Wed, 21 Aug 2024 09:14:34 -0400
+	id 1sgkJt-0003aS-Kl; Wed, 21 Aug 2024 08:20:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yc01.jeong@samsung.com>)
- id 1sgbBk-0002NC-RF
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:35:09 -0400
-Received: from mailout3.samsung.com ([203.254.224.33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yc01.jeong@samsung.com>)
- id 1sgbBh-0007OL-Ny
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:35:08 -0400
-Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20240821023502epoutp03d6eb5ad5a0fdc3df4e2437d12f4c3f8d~tncUdZnef0325603256epoutp03A
- for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 02:35:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20240821023502epoutp03d6eb5ad5a0fdc3df4e2437d12f4c3f8d~tncUdZnef0325603256epoutp03A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1724207702;
- bh=oK9TosyU+tU+v44bqNhWkIMGnuXQSQIIajL48CtDwaM=;
- h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
- b=UG6K/Jtv78FQXfYD+sfRBewf9rlk0aU8+a7GlkLCA68mF0wH7bld3sN1krV+cUKBo
- gvdxOCCN6wc6HhQtLf0Yj9EIMTnNtlpYXcfUkRmxqyiFZSMkqT0XFGmIJlkcWMYeek
- v+Rtj5prPJ/kJNLdQEUwle13b0yxUmOTfKW54bhw=
-Received: from epsmgec1p1.samsung.com (unknown [182.195.42.51]) by
- epcas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20240821023501epcas1p1da5a0ee714be3a9042b128dd5513588a~tncUKRf-X0575805758epcas1p1k;
- Wed, 21 Aug 2024 02:35:01 +0000 (GMT)
-X-AuditID: b6c32a33-faa0ca8000002320-44-66c552551175
-Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
- epsmgec1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
- CE.94.08992.55255C66; Wed, 21 Aug 2024 11:35:01 +0900 (KST)
-Mime-Version: 1.0
-Subject: [PATCH 3/4] hw/ufs: ufs attribute read/write test implemented
-From: =?UTF-8?B?7KCV7Jyg7LCs?= <yc01.jeong@samsung.com>
-To: =?UTF-8?B?6rmA7KCc7Jqx?= <jeuk20.kim@samsung.com>
-CC: =?UTF-8?B?7KCV7Jyg7LCs?= <yc01.jeong@samsung.com>, "thuth@redhat.com"
- <thuth@redhat.com>, "lvivier@redhat.com" <lvivier@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "jeongyuchan0629@gmail.com"
- <jeongyuchan0629@gmail.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-In-Reply-To: <20240821023025epcms1p4de36db95f4d3a66727f128ef6be860e4@epcms1p4>
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20240821023501epcms1p1af3e6eb45517d1a1526b32f44c9bc355@epcms1p1>
-Date: Wed, 21 Aug 2024 11:35:01 +0900
-X-CMS-MailID: 20240821023501epcms1p1af3e6eb45517d1a1526b32f44c9bc355
-Content-Transfer-Encoding: 7bit
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1sgkJq-0003ZI-Kn
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 08:20:07 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1sgkJn-0006pI-RP
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 08:20:06 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-20230059241so28473715ad.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 05:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724242800; x=1724847600; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ioyKvyZFvOIDOmEo4sxiuRbkZ44LGlflb7KP/Z1UayA=;
+ b=kCwtnKIUR2755Ph4tpXVvSaiyl9HeSQZLqejCxpKTMSqH66IZZ9+D9ote6EzTMZc5H
+ EvEHvKZKI8dDUrFV1fAj4n5/A0fRkOX1z4GYrxXgOAaUjPAv9KhHrdii0iifOqYcYNAH
+ z45zvXD2nrnFGx4JP2aOEQiU4y+emF/jSmy5RxqPhYMhWziwh7MhJb9GTdzQsEFP4flK
+ NftX1wtvgNahIaXClVu25ox5nuYiRpyvq6D5H4gRrnnQjWpkegONAyJzUuaIisMREMcA
+ nWgndmv+4XuhNI9OmiHeRIcn6JCCJ5nl3aQl4MJF5T9EnY/EXRNUgR+w7hRJJmYP+6Wk
+ +2yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724242800; x=1724847600;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ioyKvyZFvOIDOmEo4sxiuRbkZ44LGlflb7KP/Z1UayA=;
+ b=BZjPv7KXboEad6SLt+DXic8Qa8al3qKxwYI8QxtRzJYG++/Rz9ciSQQRjyOQ7TJMBs
+ 47Ut/O+8tQzEiTxnchM0ka5w2ok+FyKBrwBmOlaHnjKd3jfXIfpXvA20gWiHceARcru2
+ uxt2Y+UECSi8mRARTuCXr/4mgZ/ABiny4Xn4M/Ixf4h/5JYK3hEeGH0eUJdP5iWFRX0D
+ p4jR7jtCpXBkYIe+cMZ2xtH95fr3j5ayX/FKKTFvyvqPKQLrGGX2NSGSPo+p+38Eidhh
+ atM2muEWROaTgh1u9StUnRiNHdeDdA7jLSXwYQSYWKqbny95ndaiZERETffo+uZxnDnA
+ hDEQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUvbTT0MKq/TLF4X3k7z+W/dPOl4qBUTSKee/4JJPnCniXTpM02weiPJDnyLW/x1/WGEqFYs0/TLYXS@nongnu.org
+X-Gm-Message-State: AOJu0Yw3pRAdtD6bev/q5bF4kSwZgDbed8YbIUB9ETRxzIfbXZwgUs0o
+ VFhrGxO7Dm1aHY0JwZ/ROSkK5P1OTkBV+q7fbGSLr6tfVsvccZfU
+X-Google-Smtp-Source: AGHT+IHcH7dr+fW792vjdlOhku31egi4BaphXiHHZpmplxMEqd4wtCCDrMlniSaaHlw1G00UgbfI4w==
+X-Received: by 2002:a17:902:db11:b0:1fb:93d6:9fef with SMTP id
+ d9443c01a7336-20367d57d43mr25941805ad.38.1724242799866; 
+ Wed, 21 Aug 2024 05:19:59 -0700 (PDT)
+Received: from valdaarhun.localnet ([223.233.81.109])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-201f03197fasm93141085ad.85.2024.08.21.05.19.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Aug 2024 05:19:59 -0700 (PDT)
+From: Sahil <icegambit91@gmail.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org,
+ Sahil Siddiq <sahilcdq@proton.me>
+Subject: Re: [RFC v3 3/3] vhost: Allocate memory for packed vring
+Date: Wed, 21 Aug 2024 17:49:55 +0530
+Message-ID: <1901750.tdWV9SEqCh@valdaarhun>
+In-Reply-To: <CAJaqyWf3Vv6LvCHvRtpdZFQrhVHMOUTdzhJGj7PkbVDYeKox_w@mail.gmail.com>
+References: <20240802112138.46831-1-sahilcdq@proton.me>
+ <8454459.NyiUUSuA9g@valdaarhun>
+ <CAJaqyWf3Vv6LvCHvRtpdZFQrhVHMOUTdzhJGj7PkbVDYeKox_w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOIsWRmVeSWpSXmKPExsWy7bCmnm5o0NE0g7aL+hY9r/axWdzfeo3R
- 4lODlMX+bf9YLY737mCxWHnMxmL32ZlsDuweO2fdZfd4cm0zk8f7fVfZPPq2rGIMYInisklJ
- zcksSy3St0vgyjj0ZSZrwZ6Qiqlvz7A1MH506mLk5JAQMJF4+PAqexcjF4eQwA5GiRcfLzJ1
- MXJw8AoISvzdIQxSIyzgJrFq83sWEFtIQEHix/KbbBBxS4nPT6aB2WwC5hLvJ11nBLFFBEwl
- /nxfxwIyk1lgGZPE45sTmCCW8UrMaH/KAmFLS2xfvhWsgVPAT2L252VQNaISN1e/ZYex3x+b
- zwhhi0i03jvLDGELSjz4uZsR5E4JAUmJ9a81IcL1EjeuPWaDsGskHrXdghqjL3GtYyMLxFu+
- Eis7WUHCLAKqEltbu6DKXSTOvb8ENp1ZQF5i+9s5zCDlzAKaEut36UOE+STefe1hhXlkx7wn
- UAerSCy6+B5qjJTE1xPrmCEO85DYf88ZEmhTGSW2fimcwCg/CxG0s5DsmoWwawEj8ypGsdSC
- 4tz01GTDAkO94sTc4tK8dL3k/NxNjOC0oWW8g/Hy/H96hxiZOBgPMUpwMCuJ8Ha/PJgmxJuS
- WFmVWpQfX1Sak1p8iFGag0VJnPfMlbJUIYH0xJLU7NTUgtQimCwTB6dUA9NyDjPLFfsOvnm6
- eHeGhDHvzUYvXiaRc5uv7fBc/H6VUUjXX/HFiWJ2mQlvg+pdM780eF//8FH2+vTGxm/qqzOW
- K23/IHHQReVr+5fTkx9arjYw01wgwHducviBaaul3yfcyLrNKP3kaL/4z6sqO/ce7/JIWtzz
- 1SP/rlqE8l33Z1oLWU/IXj9fUGC4asutyIcaE94fjN/xJIu1q79hzxuF7PK+tJC3bH5ZDbzK
- 1RlVm05x2p/cueiHzoVFt05dVvz2Rd5msrOPmtnD9LxbC0/+/FbFW5+9KC/Ht3HfhXNtXKcj
- mPzcAsUmiS4/vPH0gsgK740Rsxp8LzgKmwRN1nn947fHLOeFL8wDm89vURZTYinOSDTUYi4q
- TgQAtsCL1YoDAAA=
-X-CMS-RootMailID: 20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10
-References: <20240821023025epcms1p4de36db95f4d3a66727f128ef6be860e4@epcms1p4>
- <CGME20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10@epcms1p1>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=yc01.jeong@samsung.com; helo=mailout3.samsung.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=icegambit91@gmail.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 21 Aug 2024 09:14:17 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,212 +94,190 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: yc01.jeong@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From 3341c347a70783c5e60a963501e63cb5da8f2e1f Mon Sep 17 00:00:00 2001
-From: Yoochan Jeong <yc01.jeong@samsung.com>
-Date: Wed, 21 Aug 2024 09:09:32 +0900
-Subject: [PATCH 3/4] hw/ufs: ufs attribute read/write test implemented
+Hi,
 
-New test function "ufstest_attr_request" added, which can check one's
-virtual UFS device can properly read and write its attribute data.
-It tests if reading and writing attributes work properly. There are
-some testcases that are intended to make an error caused by writing an
-invalid value, allocating an invalid selector and permission issues.
+Sorry for the late reply.
 
-Based on: 20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d@epcms2p3
-Signed-off-by: Yoochan Jeong <yc01.jeong@samsung.com>
----
- tests/qtest/ufs-test.c | 166 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 166 insertions(+)
+On Tuesday, August 13, 2024 12:23:55=E2=80=AFPM GMT+5:30 Eugenio Perez Mart=
+in wrote:
+> [...]
+> > I think I have understood what's going on in "vhost_vdpa_svq_map_rings",
+> > "vhost_vdpa_svq_map_ring" and "vhost_vdpa_dma_map". But based on
+> > what I have understood it looks like the driver area is getting mapped =
+to
+> > an iova which is read-only for vhost_vdpa. Please let me know where I am
+> > going wrong.
+>=20
+> You're not going wrong there. The device does not need to write into
+> this area, so we map it read only.
+>=20
+> > Consider the following implementation in hw/virtio/vhost_vdpa.c:
+> > > size_t device_size =3D vhost_svq_device_area_size(svq);
+> > > size_t driver_size =3D vhost_svq_driver_area_size(svq);
+> >=20
+> > The driver size includes the descriptor area and the driver area. For
+> > packed vq, the driver area is the "driver event suppression" structure
+> > which should be read-only for the device according to the virtio spec
+> > (section 2.8.10) [1].
+> >=20
+> > > size_t avail_offset;
+> > > bool ok;
+> > >=20
+> > > vhost_svq_get_vring_addr(svq, &svq_addr);
+> >=20
+> > Over here "svq_addr.desc_user_addr" will point to the descriptor area
+> > while "svq_addr.avail_user_addr" will point to the driver area/driver
+> > event suppression structure.
+> >=20
+> > > driver_region =3D (DMAMap) {
+> > >=20
+> > >     .translated_addr =3D svq_addr.desc_user_addr,
+> > >     .size =3D driver_size - 1,
+> > >     .perm =3D IOMMU_RO,
+> > >=20
+> > > };
+> >=20
+> > This region points to the descriptor area and its size encompasses the
+> > driver area as well with RO permission.
+> >=20
+> > > ok =3D vhost_vdpa_svq_map_ring(v, &driver_region, errp);
+> >=20
+> > The above function checks the value of needle->perm and sees that it is
+> > RO.
+> >=20
+> > It then calls "vhost_vdpa_dma_map" with the following arguments:
+> > > r =3D vhost_vdpa_dma_map(v->shared, v->address_space_id, needle->iova,
+> > >=20
+> > >                                                needle->size + 1,
+> > >                                                (void
+> > >                                                *)(uintptr_t)needle->t=
+ra
+> > >                                                nslated_addr,
+> > >                                                needle->perm =3D=3D
+> > >                                                IOMMU_RO);
+> >=20
+> > Since needle->size includes the driver area as well, the driver area wi=
+ll
+> > be mapped to a RO page in the device's address space, right?
+>=20
+> Yes, the device does not need to write into the descriptor area in the
+> supported split virtqueue case. So the descriptor area is also mapped
+> RO at this moment.
+>=20
+> This change in the packed virtqueue case, so we need to map it RW.
 
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index f93de9f1f2..a8fd2f1acc 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -620,6 +620,171 @@ static void ufstest_flag_request(void *obj, void *data, QGuestAllocator *alloc)
-     ufs_exit(ufs, alloc);
- }
- 
-+static void ufstest_attr_request(void *obj, void *data, QGuestAllocator *alloc)
-+{
-+    QUfs *ufs = obj;
-+
-+    UtpTransferReqDesc utrd;
-+    UtpUpiuRsp rsp_upiu;
-+    ufs_init(ufs, alloc);
-+
-+    /* Read Readable Attributes*/
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_BOOT_LU_EN, 0, 0, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.opcode, ==, UFS_UPIU_QUERY_OPCODE_READ_ATTR);
-+    g_assert_cmpuint(rsp_upiu.qr.idn, ==, UFS_QUERY_ATTR_IDN_BOOT_LU_EN);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_BKOPS_STATUS, 0, 0, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    /* Write Writable Attributes & Read Again */
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0x03, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x03));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0x07, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x07));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x03));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x07));
-+
-+    /* Write Invalid Value (Intended Error) */
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0x10, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
-+                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==,
-+                     UFS_QUERY_RESULT_INVALID_VALUE);
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x03));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_CNTX_CONF, 0, 15, 0x10, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
-+                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==,
-+                     UFS_QUERY_RESULT_INVALID_VALUE);
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_CNTX_CONF, 0, 15, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    /* Read Write-Only Attribute (Intended Error) */
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_SECONDS_PASSED, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
-+                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==,
-+                     UFS_QUERY_RESULT_NOT_READABLE);
-+
-+    /* Write Read-Only Attribute (Intended Error) */
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_POWER_MODE, 0, 0, 0x01, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
-+                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==,
-+                     UFS_QUERY_RESULT_NOT_WRITEABLE);
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_POWER_MODE, 0, 0, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    /* Invalid Selector (Intended Error)*/
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_CNTX_CONF, 0, 16, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
-+                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==,
-+                     UFS_QUERY_RESULT_INVALID_SELECTOR);
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_CNTX_CONF, 0, 15, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    /* Reset Written Attributes */
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
-+                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0, &utrd, &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    ufs_exit(ufs, alloc);
-+}
-+
- static void drive_destroy(void *path)
- {
-     unlink(path);
-@@ -688,6 +853,7 @@ static void ufs_register_nodes(void)
-     qos_add_test("init", "ufs", ufstest_init, NULL);
-     qos_add_test("read-write", "ufs", ufstest_read_write, &io_test_opts);
-     qos_add_test("flag read-write", "ufs", ufstest_flag_request, &io_test_opts);
-+    qos_add_test("attr read-write", "ufs", ufstest_attr_request, &io_test_opts);
- }
- 
- libqos_init(ufs_register_nodes);
--- 
-2.34.1
+I understand this now. I'll see how the implementation can be modified to t=
+ake
+this into account. I'll see if making the driver area and descriptor ring h=
+elps.
+
+> > > if (unlikely(!ok)) {
+> > >=20
+> > >     error_prepend(errp, "Cannot create vq driver region: ");
+> > >     return false;
+> > >=20
+> > > }
+> > > addr->desc_user_addr =3D driver_region.iova;
+> > > avail_offset =3D svq_addr.avail_user_addr - svq_addr.desc_user_addr;
+> > > addr->avail_user_addr =3D driver_region.iova + avail_offset;
+> >=20
+> > I think "addr->desc_user_addr" and "addr->avail_user_addr" will both be
+> > mapped to a RO page in the device's address space.
+> >=20
+> > > device_region =3D (DMAMap) {
+> > >=20
+> > >     .translated_addr =3D svq_addr.used_user_addr,
+> > >     .size =3D device_size - 1,
+> > >     .perm =3D IOMMU_RW,
+> > >=20
+> > > };
+> >=20
+> > The device area/device event suppression structure on the other hand wi=
+ll
+> > be mapped to a RW page.
+> >=20
+> > I also think there are other issues with the current state of the patch.
+> > According to the virtio spec (section 2.8.10) [1], the "device event
+> > suppression" structure needs to be write-only for the device but is
+> > mapped to a RW page.
+>=20
+> Yes, I'm not sure if all IOMMU supports write-only maps to be honest.
+
+Got it. I think it should be alright to defer this issue until later.
+
+> > Another concern I have is regarding the driver area size for packed vq.=
+ In
+> >=20
+> > "hw/virtio/vhost-shadow-virtqueue.c" of the current patch:
+> > > size_t vhost_svq_driver_area_size(const VhostShadowVirtqueue *svq)
+> > > {
+> > >=20
+> > >     size_t desc_size =3D sizeof(vring_desc_t) * svq->vring.num;
+> > >     size_t avail_size =3D offsetof(vring_avail_t, ring[svq->vring.num=
+]) +
+> > >    =20
+> > >                                                               sizeof(=
+uin
+> > >                                                               t16_t);
+> > >    =20
+> > >     return ROUND_UP(desc_size + avail_size, qemu_real_host_page_size(=
+));
+> > >=20
+> > > }
+> > >=20
+> > > [...]
+> > >=20
+> > > size_t vhost_svq_memory_packed(const VhostShadowVirtqueue *svq)
+> > > {
+> > >=20
+> > >     size_t desc_size =3D sizeof(struct vring_packed_desc) * svq->num_=
+free;
+> > >     size_t driver_event_suppression =3D sizeof(struct
+> > >     vring_packed_desc_event);
+> > >     size_t device_event_suppression =3D sizeof(struct
+> > >     vring_packed_desc_event);
+> > >    =20
+> > >     return ROUND_UP(desc_size + driver_event_suppression +
+> > >     device_event_suppression,> >    =20
+> > >                     qemu_real_host_page_size());
+> > >=20
+> > > }
+> >=20
+> > The size returned by "vhost_svq_driver_area_size" might not be the actu=
+al
+> > driver size which is given by desc_size + driver_event_suppression,
+> > right? Will this have to be changed too?
+>=20
+> Yes, you're right this needs to be changed too.
+
+Understood. I'll modify this too.
+
+I have been trying to test my changes so far as well. I am not very clear on
+a few things.
+
+Q1.
+I built QEMU from source with my changes and followed the vdpa_sim +
+vhost_vdpa tutorial [1]. The VM seems to be running fine. How do I check
+if the packed format is being used instead of the split vq format for shadow
+virtqueues? I know the packed format is used when virtio_vdev has got the
+VIRTIO_F_RING_PACKED bit enabled. Is there a way of checking that this is
+the case?
+
+Q2.
+What's the recommended way to see what's going on under the hood? I tried
+using the -D option so QEMU's logs are written to a file but the file was e=
+mpty.
+Would using qemu with -monitor stdio or attaching gdb to the QEMU VM be
+worthwhile?
+
+Thanks,
+Sahil
+
+[1] https://www.redhat.com/en/blog/hands-vdpa-what-do-you-do-when-you-aint-=
+got-hardware-part-1
+
 
 
