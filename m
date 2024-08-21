@@ -2,100 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800AF959AF2
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 13:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA83959E61
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 15:15:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgjxL-0004HW-LP; Wed, 21 Aug 2024 07:56:51 -0400
+	id 1sglAR-0000M8-Sv; Wed, 21 Aug 2024 09:14:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1sgjxD-0004FO-Nt
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 07:56:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <yc01.jeong@samsung.com>)
+ id 1sgb4Y-0001OL-8J
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:27:42 -0400
+Received: from mailout1.samsung.com ([203.254.224.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1sgjxA-0003g8-Gq
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 07:56:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724241396;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FTk8NqyEH/ClGTImGEZhfmhQdhqhqGIIJFGatRNRaAo=;
- b=Ip7KIW2CpmSX05bhvtekYdPW9FsKXBYxsHbknMncI0A9DqVzjtg/HDaWKnQkA5x2xhPDoO
- RZLbxKQZuavx648YkJQtcNs4uYHCf3XZUMXX2jWBMOdYD7mi+oT435xnencLNZSjTC6mSs
- qN+8889U/geplDW4YEflS9NJ/1ieS2c=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-CBnDwyXvOzGwWl5zed_mfw-1; Wed, 21 Aug 2024 07:56:35 -0400
-X-MC-Unique: CBnDwyXvOzGwWl5zed_mfw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-371ab0c02e0so3131171f8f.3
- for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 04:56:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724241394; x=1724846194;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FTk8NqyEH/ClGTImGEZhfmhQdhqhqGIIJFGatRNRaAo=;
- b=QDIMtT+6j0nQlVKnr7H9Vch9JCJuu6ZrN4Clw2qmsh1KK/NQQ1OO5x41Tj5LnDCjQF
- pdhbKqpaMiUtVFCAAqiQGuq3UDNkQmDPNGOQkjGGSISP5HwhE5dZk0bJgZM1gNV76ZLV
- CJZZwpES/6hAVwt6kQKEZ6W2V3aFFoLGVYPM5wpF9pGri2Vc9jnZa9Ti1WqR0/a5ROxj
- ZAGkcksecVfEJVGXOjZJD3CFVxRf+hihrSsS3DoCufq2cOehT/klfBvFSPr3Pqj3iJj9
- 6EIG/WCuzuD1Ik/lgIh5MANdcvOh5Xsb9/bEO3l3CbrpZgaxLdePS0A3VJWjKhXyXlX4
- BX8g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV8RqILuM8+59k9Cfx5mZTM9RABGFDsgwRJirDvzcm7pYZ03ATZ1PWRFIHun1vK5Ok33yD59Jv9zeJ0@nongnu.org
-X-Gm-Message-State: AOJu0YyzjE6+x9DhxEqsHH4am57WU9qPSx2K7e0jP8TacysHcQAehvh1
- xzGBxxZoZhagz5Sa7bPf48+LLZv0RgjjCSw4XB/1G7sV2TOZ0Gwj262Wv5xEW2jODAVU/4lM8dU
- /PvDQGdBgjayQChvK9j7YVq2eIA67qEovad6TlVMKwniPrKFXpuwppAkI+MS0jbJzf9J3MgtoTf
- v29ppGMqkylHp1cTxVLaWLWlGXl3s=
-X-Received: by 2002:a5d:5905:0:b0:371:8e85:c58e with SMTP id
- ffacd0b85a97d-372fd5b9191mr1601346f8f.33.1724241394111; 
- Wed, 21 Aug 2024 04:56:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHI43RXtF50+ldSepP/Ckx9pYGuDR7XB/tqb1AW6TggI58xvDnxuDRNdFC0ON8rmmH2L7qr591zgigYM6uOEjs=
-X-Received: by 2002:a5d:5905:0:b0:371:8e85:c58e with SMTP id
- ffacd0b85a97d-372fd5b9191mr1601322f8f.33.1724241393559; Wed, 21 Aug 2024
- 04:56:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240820170907.6788-1-yichen.wang@bytedance.com>
- <20240820170907.6788-4-yichen.wang@bytedance.com>
-In-Reply-To: <20240820170907.6788-4-yichen.wang@bytedance.com>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Wed, 21 Aug 2024 17:26:16 +0530
-Message-ID: <CAE8KmOypgmrWR6dxAz7iQ=3k+fTXSMKs6kUTUdRisGcq22p8Pw@mail.gmail.com>
-Subject: Re: [PATCH v8 3/5] migration: Add migration parameters for QATzip
-To: Yichen Wang <yichen.wang@bytedance.com>
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, 
- Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>, 
- "Zou, Nanhai" <nanhai.zou@intel.com>,
- "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>, 
- Xiaoning Ding <xiaoning.ding@bytedance.com>,
- Bryan Zhang <bryan.zhang@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.138,
+ (Exim 4.90_1) (envelope-from <yc01.jeong@samsung.com>)
+ id 1sgb4S-0006Yo-7j
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:27:41 -0400
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20240821022727epoutp012c82c5ed93187316cf6beb4dadf7983b~tnVs9_Bge1953819538epoutp01a
+ for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 02:27:27 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20240821022727epoutp012c82c5ed93187316cf6beb4dadf7983b~tnVs9_Bge1953819538epoutp01a
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1724207247;
+ bh=6tiRZHwnZKExrFVNMQJZvItEGtEj3DhO89ay/P6KYDU=;
+ h=Subject:Reply-To:From:To:CC:Date:References:From;
+ b=KovFZ70vl7mT1EcuPtcYeiTa+oQgYn+6VjSFsOQvZyqAg1Yl8Ob05q1l6ZVugcQJo
+ rTNaxzYFpB66CixAKCb2Pb/eVSSL+QnNl6/qiAP3j+ZWCzSi1CyxwZaabrFQrqCQYy
+ v4ZoOnUhnhCDsYsMjfgUS8oB/jn1QG0Jf0OxIC2g=
+Received: from epsmges1p4.samsung.com (unknown [182.195.42.56]) by
+ epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20240821022727epcas1p2b4f8230d9273311378c03f2cca39aea3~tnVseL-TC2587125871epcas1p2R;
+ Wed, 21 Aug 2024 02:27:27 +0000 (GMT)
+X-AuditID: b6c32a38-995ff70000002812-f0-66c5508e088c
+Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+ epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
+ A7.87.10258.E8055C66; Wed, 21 Aug 2024 11:27:26 +0900 (KST)
+Mime-Version: 1.0
+Subject: [PATCH 0/4] hw/ufs: ufs device testing function added and modified
+From: =?UTF-8?B?7KCV7Jyg7LCs?= <yc01.jeong@samsung.com>
+To: =?UTF-8?B?6rmA7KCc7Jqx?= <jeuk20.kim@samsung.com>
+CC: "thuth@redhat.com" <thuth@redhat.com>, "lvivier@redhat.com"
+ <lvivier@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "jeongyuchan0629@gmail.com"
+ <jeongyuchan0629@gmail.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10@epcms1p1>
+Date: Wed, 21 Aug 2024 11:27:26 +0900
+X-CMS-MailID: 20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrGIsWRmVeSWpSXmKPExsWy7bCmrm5fwNE0gztTTCx6Xu1js7i/9Rqj
+ xacGKYv92/6xWhzv3cFisfKYjQObx85Zd9k9nlzbzOTxft9VNo++LasYA1iiuGxSUnMyy1KL
+ 9O0SuDI6pi9iK7jEXvFr3UemBsY5bF2MnBwSAiYSP54sYeli5OIQEtjBKPFkxiymLkYODl4B
+ QYm/O4RBaoQFvCWOX21gArGFBBQkfiy/yQYRt5T4/GQamM0mYC7xftJ1RhBbRMBU4s/3dSwg
+ NrPAR0aJaX8FIHbxSsxof8oCYUtLbF++lRHCFpW4ufotO4z9/th8qLiIROu9s8wQtqDEg5+7
+ GUFOkxCQlFj/WhMiXC9x49pjqFdqJB613YIaoy9xrWMj2CpeAV+JhcuPgtksAqoSzSfWQNW7
+ SBzvXMMMcaa8xPa3c5hBxjMLaEqs36UPEeaTePe1hxXm+h3znjBB2CoSiy6+hxojJfH1xDpm
+ iMs8JPbfc4YEVKBE+9e97BMY5WYhgnMWkl2zEHYtYGRexSiWWlCcm55abFhgolecmFtcmpeu
+ l5yfu4kRnBS0LHYwzn37Qe8QIxMH4yFGCQ5mJRHe7pcH04R4UxIrq1KL8uOLSnNSiw8xSnOw
+ KInznrlSliokkJ5YkpqdmlqQWgSTZeLglGpgCvZKP17YcTenN8On0/z5V+bpaa1i86qDDtzm
+ OxNw4dvKE5y7dKZXvLz/pTrBXq98oYfP0d76z394j3DtbPZwF5e48KkzWfzP79l/U7hTnwbJ
+ s9tzbRO1392w9GuDhM69+tuKrrZePROPpl+6lKLIqX5iO+c6QT7pk/PMXaOlnfW+p545t8b5
+ Bkdwa9G/BHnTW55KyqdtN6zbJPSVO3rb3jvm5/qEXgiWP1tzxT95yf23WSozO27efMV/QGli
+ 44v7UrfVD4e+4u2WPDtndnn/39pLPg0VU+48jorOl35mvdtS88tLGcXTEgaLO4yL3pS/0fgR
+ oPX6taLge7nIgCfvls5Skw0K3mw4sabIZrGeEktxRqKhFnNRcSIA5dZt/HkDAAA=
+X-CMS-RootMailID: 20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10
+References: <CGME20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10@epcms1p1>
+Received-SPF: pass client-ip=203.254.224.24;
+ envelope-from=yc01.jeong@samsung.com; helo=mailout1.samsung.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 21 Aug 2024 09:14:16 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,225 +100,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: yc01.jeong@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Aug 2024 at 22:40, Yichen Wang <yichen.wang@bytedance.com> wrote:
-> Adds support for migration parameters to control QATzip compression
-> level and to enable/disable software fallback when QAT hardware is
-> unavailable. This is a preparatory commit for a subsequent commit that
-> will actually use QATzip compression.
+From 936ef0a907bcf16809f9980c2d37e8fcb13697d2 Mon Sep 17 00:00:00 2001
+From: Yoochan Jeong <yc01.jeong@samsung.com>
+Date: Wed, 21 Aug 2024 10:45:28 +0900
+Subject: [PATCH 0/4] hw/ufs: ufs device testing function added and modified
 
-* Is the check whether "QAT hardware is available" happening in this
-patch? (I couldn't spot it).
-* The informatory notice "This is a preparatory commit for..." could
-be moved to the cover-letter, instead of commit message. (Not sure how
-it helps to log it in git history)
+Previously, it was only able to test virtual UFS devices if they properly
+read and write storage data. In this patch, three test functions are added
+to test if virtual UFS devices properly read and write its metadata.
+Each functions test reading and writing flags, attributes and descriptors.
+Related minor bugs and errors are also fixed.
 
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
-> Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
-> Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
-> ---
->  migration/migration-hmp-cmds.c |  4 ++++
->  migration/options.c            | 34 ++++++++++++++++++++++++++++++++++
->  migration/options.h            |  1 +
->  qapi/migration.json            | 18 ++++++++++++++++++
->  4 files changed, 57 insertions(+)
->
-> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> index 7d608d26e1..28165cfc9e 100644
-> --- a/migration/migration-hmp-cmds.c
-> +++ b/migration/migration-hmp-cmds.c
-> @@ -576,6 +576,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
->          p->has_multifd_zlib_level = true;
->          visit_type_uint8(v, param, &p->multifd_zlib_level, &err);
->          break;
-> +    case MIGRATION_PARAMETER_MULTIFD_QATZIP_LEVEL:
-> +        p->has_multifd_qatzip_level = true;
-> +        visit_type_uint8(v, param, &p->multifd_qatzip_level, &err);
-> +        break;
->      case MIGRATION_PARAMETER_MULTIFD_ZSTD_LEVEL:
->          p->has_multifd_zstd_level = true;
->          visit_type_uint8(v, param, &p->multifd_zstd_level, &err);
-> diff --git a/migration/options.c b/migration/options.c
-> index 645f55003d..147cd2b8fd 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -55,6 +55,13 @@
->  #define DEFAULT_MIGRATE_MULTIFD_COMPRESSION MULTIFD_COMPRESSION_NONE
->  /* 0: means nocompress, 1: best speed, ... 9: best compress ratio */
->  #define DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL 1
-> +/*
-> + * 1: best speed, ... 9: best compress ratio
-> + * There is some nuance here. Refer to QATzip documentation to understand
-> + * the mapping of QATzip levels to standard deflate levels.
-> + */
-> +#define DEFAULT_MIGRATE_MULTIFD_QATZIP_LEVEL 1
-> +
->  /* 0: means nocompress, 1: best speed, ... 20: best compress ratio */
->  #define DEFAULT_MIGRATE_MULTIFD_ZSTD_LEVEL 1
->
-> @@ -123,6 +130,9 @@ Property migration_properties[] = {
->      DEFINE_PROP_UINT8("multifd-zlib-level", MigrationState,
->                        parameters.multifd_zlib_level,
->                        DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL),
-> +    DEFINE_PROP_UINT8("multifd-qatzip-level", MigrationState,
-> +                      parameters.multifd_qatzip_level,
-> +                      DEFAULT_MIGRATE_MULTIFD_QATZIP_LEVEL),
->      DEFINE_PROP_UINT8("multifd-zstd-level", MigrationState,
->                        parameters.multifd_zstd_level,
->                        DEFAULT_MIGRATE_MULTIFD_ZSTD_LEVEL),
-> @@ -787,6 +797,13 @@ int migrate_multifd_zlib_level(void)
->      return s->parameters.multifd_zlib_level;
->  }
->
-> +int migrate_multifd_qatzip_level(void)
-> +{
-> +    MigrationState *s = migrate_get_current();
-> +
-> +    return s->parameters.multifd_qatzip_level;
-> +}
-> +
->  int migrate_multifd_zstd_level(void)
->  {
->      MigrationState *s = migrate_get_current();
-> @@ -892,6 +909,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
->      params->multifd_compression = s->parameters.multifd_compression;
->      params->has_multifd_zlib_level = true;
->      params->multifd_zlib_level = s->parameters.multifd_zlib_level;
-> +    params->has_multifd_qatzip_level = true;
-> +    params->multifd_qatzip_level = s->parameters.multifd_qatzip_level;
->      params->has_multifd_zstd_level = true;
->      params->multifd_zstd_level = s->parameters.multifd_zstd_level;
->      params->has_xbzrle_cache_size = true;
-> @@ -946,6 +965,7 @@ void migrate_params_init(MigrationParameters *params)
->      params->has_multifd_channels = true;
->      params->has_multifd_compression = true;
->      params->has_multifd_zlib_level = true;
-> +    params->has_multifd_qatzip_level = true;
->      params->has_multifd_zstd_level = true;
->      params->has_xbzrle_cache_size = true;
->      params->has_max_postcopy_bandwidth = true;
-> @@ -1038,6 +1058,14 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
->          return false;
->      }
->
-> +    if (params->has_multifd_qatzip_level &&
-> +        ((params->multifd_qatzip_level > 9) ||
-> +        (params->multifd_qatzip_level < 1))) {
-> +        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "multifd_qatzip_level",
-> +                   "a value between 1 and 9");
-> +        return false;
-> +    }
-> +
->      if (params->has_multifd_zstd_level &&
->          (params->multifd_zstd_level > 20)) {
->          error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "multifd_zstd_level",
-> @@ -1195,6 +1223,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
->      if (params->has_multifd_compression) {
->          dest->multifd_compression = params->multifd_compression;
->      }
-> +    if (params->has_multifd_qatzip_level) {
-> +        dest->multifd_qatzip_level = params->multifd_qatzip_level;
-> +    }
->      if (params->has_multifd_zlib_level) {
->          dest->multifd_zlib_level = params->multifd_zlib_level;
->      }
-> @@ -1315,6 +1346,9 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
->      if (params->has_multifd_compression) {
->          s->parameters.multifd_compression = params->multifd_compression;
->      }
-> +    if (params->has_multifd_qatzip_level) {
-> +        s->parameters.multifd_qatzip_level = params->multifd_qatzip_level;
-> +    }
->      if (params->has_multifd_zlib_level) {
->          s->parameters.multifd_zlib_level = params->multifd_zlib_level;
->      }
-> diff --git a/migration/options.h b/migration/options.h
-> index a2397026db..a0bd6edc06 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -78,6 +78,7 @@ uint64_t migrate_max_postcopy_bandwidth(void);
->  int migrate_multifd_channels(void);
->  MultiFDCompression migrate_multifd_compression(void);
->  int migrate_multifd_zlib_level(void);
-> +int migrate_multifd_qatzip_level(void);
->  int migrate_multifd_zstd_level(void);
->  uint8_t migrate_throttle_trigger_threshold(void);
->  const char *migrate_tls_authz(void);
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 7324571e92..f4c27426c8 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -792,6 +792,11 @@
->  #     speed, and 9 means best compression ratio which will consume
->  #     more CPU.  Defaults to 1.  (Since 5.0)
->  #
-> +# @multifd-qatzip-level: Set the compression level to be used in live
-> +#     migration. The level is an integer between 1 and 9, where 1 means
-> +#     the best compression speed, and 9 means the best compression
-> +#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
-> +#
->  # @multifd-zstd-level: Set the compression level to be used in live
->  #     migration, the compression level is an integer between 0 and 20,
->  #     where 0 means no compression, 1 means the best compression
-> @@ -852,6 +857,7 @@
->             'xbzrle-cache-size', 'max-postcopy-bandwidth',
->             'max-cpu-throttle', 'multifd-compression',
->             'multifd-zlib-level', 'multifd-zstd-level',
-> +           'multifd-qatzip-level',
->             'block-bitmap-mapping',
->             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
->             'vcpu-dirty-limit',
-> @@ -967,6 +973,11 @@
->  #     speed, and 9 means best compression ratio which will consume
->  #     more CPU.  Defaults to 1.  (Since 5.0)
->  #
-> +# @multifd-qatzip-level: Set the compression level to be used in live
-> +#     migration. The level is an integer between 1 and 9, where 1 means
-> +#     the best compression speed, and 9 means the best compression
-> +#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
-> +#
->  # @multifd-zstd-level: Set the compression level to be used in live
->  #     migration, the compression level is an integer between 0 and 20,
->  #     where 0 means no compression, 1 means the best compression
-> @@ -1040,6 +1051,7 @@
->              '*max-cpu-throttle': 'uint8',
->              '*multifd-compression': 'MultiFDCompression',
->              '*multifd-zlib-level': 'uint8',
-> +            '*multifd-qatzip-level': 'uint8',
->              '*multifd-zstd-level': 'uint8',
->              '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-> @@ -1171,6 +1183,11 @@
->  #     speed, and 9 means best compression ratio which will consume
->  #     more CPU.  Defaults to 1.  (Since 5.0)
->  #
-> +# @multifd-qatzip-level: Set the compression level to be used in live
-> +#     migration. The level is an integer between 1 and 9, where 1 means
-> +#     the best compression speed, and 9 means the best compression
-> +#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
-> +#
->  # @multifd-zstd-level: Set the compression level to be used in live
->  #     migration, the compression level is an integer between 0 and 20,
->  #     where 0 means no compression, 1 means the best compression
-> @@ -1241,6 +1258,7 @@
->              '*max-cpu-throttle': 'uint8',
->              '*multifd-compression': 'MultiFDCompression',
->              '*multifd-zlib-level': 'uint8',
-> +            '*multifd-qatzip-level': 'uint8',
->              '*multifd-zstd-level': 'uint8',
->              '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-> --
-> Yichen Wang
+Yoochan Jeong (4):
+  hw/ufs: minor bug fixes related to ufs-test
+  hw/ufs: ufs flag read/write test implemented
+  hw/ufs: ufs attribute read/write test implemented
+  hw/ufs: ufs descriptor read test implemented
 
-'multifd-qatzip-level' related changes look okay.
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+ hw/ufs/ufs.c           |  26 ++-
+ tests/qtest/ufs-test.c | 414 ++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 432 insertions(+), 8 deletions(-)
 
-Thank you.
----
-  - Prasad
+-- 
+2.34.1
 
 
