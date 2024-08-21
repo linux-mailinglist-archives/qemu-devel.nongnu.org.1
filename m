@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9187959E62
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 15:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E8B959E6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 15:15:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sglAY-0000jn-Du; Wed, 21 Aug 2024 09:14:34 -0400
+	id 1sglAU-0000Pi-8N; Wed, 21 Aug 2024 09:14:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yc01.jeong@samsung.com>)
- id 1sgb9a-0001sm-AT
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:32:54 -0400
-Received: from mailout1.samsung.com ([203.254.224.24])
+ id 1sgbAt-00024v-IO
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:34:15 -0400
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yc01.jeong@samsung.com>)
- id 1sgb9W-00074T-L2
- for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:32:54 -0400
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
- by mailout1.samsung.com (KnoxPortal) with ESMTP id
- 20240821023245epoutp01f83a0804d6fd04552f712065019e8968~tnaVPfXzC2284722847epoutp01I
- for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 02:32:45 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
- 20240821023245epoutp01f83a0804d6fd04552f712065019e8968~tnaVPfXzC2284722847epoutp01I
+ id 1sgbAo-000789-Pn
+ for qemu-devel@nongnu.org; Tue, 20 Aug 2024 22:34:15 -0400
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20240821023405epoutp0479ebd9095d1118374d7d0ab328e8503c~tnbf7N7761606216062epoutp04G
+ for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 02:34:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20240821023405epoutp0479ebd9095d1118374d7d0ab328e8503c~tnbf7N7761606216062epoutp04G
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1724207565;
- bh=N6uyiVAmxim8U0k7mpyvuJCgeFofxB0uCWjTNL6vsZY=;
+ s=mail20170921; t=1724207645;
+ bh=/jnEXg82krZrCK9RGKVhlkHKL0aHSxH2jLNY8e03PA0=;
  h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
- b=cdqgwOGuqwe9Z4Rb129EnJ3LQDZaXiuPfvFP1Zf+t7sr/pxq0Lvcw15oT6sfDp0hj
- 1AzlYKIYXgIwEZYh6TnlaK5RbpKpEldoBpvxcbk8Vhd3its1wV2SohkurUmoiekD7j
- P/5Tt4AiZgtP3gYCqei8LeRda8jyOw5YnQ3IjckQ=
+ b=EleQdOaS9Vk2oIW9GG3Ipk6+qdBNThsGvb3oH35evvxLC1Chm52EtnBcWgxhz14LS
+ WiJMy62mcsH7BZuwJdd5gmraZs93bUz/NEmoOO+z1HOnDbKpGU+V+uovzWZQ+tdvtY
+ hUxZVyeweObdCdAWkbnDKwwCncdKCQ+D5OzMK0Ak=
 Received: from epsmges1p4.samsung.com (unknown [182.195.42.56]) by
- epcas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20240821023245epcas1p1cd8fa7dbae7f73653208bfb041b26786~tnaVAU8O31099710997epcas1p1Q;
- Wed, 21 Aug 2024 02:32:45 +0000 (GMT)
-X-AuditID: b6c32a38-995ff70000002812-71-66c551cd5fbf
-Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+ epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20240821023405epcas1p2ef2e059ba13c8207f54837b0c91ed65c~tnbfn-yjX2808428084epcas1p2r;
+ Wed, 21 Aug 2024 02:34:05 +0000 (GMT)
+X-AuditID: b6c32a38-995ff70000002812-30-66c5521de89d
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
  epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
- 92.E8.10258.DC155C66; Wed, 21 Aug 2024 11:32:45 +0900 (KST)
+ 8F.49.10258.D1255C66; Wed, 21 Aug 2024 11:34:05 +0900 (KST)
 Mime-Version: 1.0
-Subject: [PATCH 1/4] hw/ufs: minor bug fixes related to ufs-test
+Subject: [PATCH 2/4] hw/ufs: ufs flag read/write test implemented
 From: =?UTF-8?B?7KCV7Jyg7LCs?= <yc01.jeong@samsung.com>
 To: =?UTF-8?B?6rmA7KCc7Jqx?= <jeuk20.kim@samsung.com>
 CC: =?UTF-8?B?7KCV7Jyg7LCs?= <yc01.jeong@samsung.com>, "thuth@redhat.com"
@@ -55,33 +55,33 @@ X-Drm-Type: N,general
 X-Msg-Generator: Mail
 X-Msg-Type: PERSONAL
 X-Reply-Demand: N
-Message-ID: <20240821023245epcms1p31ada9c24041d9b34f7e9938abe93189b@epcms1p3>
-Date: Wed, 21 Aug 2024 11:32:45 +0900
-X-CMS-MailID: 20240821023245epcms1p31ada9c24041d9b34f7e9938abe93189b
+Message-ID: <20240821023405epcms1p5c389077e4d12b814f75a50218ea0dd9f@epcms1p5>
+Date: Wed, 21 Aug 2024 11:34:05 +0900
+X-CMS-MailID: 20240821023405epcms1p5c389077e4d12b814f75a50218ea0dd9f
 Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 101P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrJIsWRmVeSWpSXmKPExsWy7bCmru7ZwKNpBo3NvBY9r/axWdzfeo3R
- 4lODlMX+bf9YLY737mCxWHnMxmL32ZlsDuweO2fdZfd4cm0zk8f7fVfZPPq2rGIMYInisklJ
- zcksSy3St0vgymju+c1a8Muw4tHdw+wNjB1qXYycHBICJhL/n3xm6WLk4hAS2MEoseziMyCH
- g4NXQFDi7w5hkBphAQeJdR3H2UFsIQEFiR/Lb7JBxC0lPj+ZBmazCZhLvJ90nRHEFhEwlfjz
- fR3YTGaBZUwSj29OYIJYxisxo/0pC4QtLbF9+VawBk4BP4nZn5dB1YhK3Fz9lh3Gfn9sPiOE
- LSLReu8sM4QtKPHg525GkDslBCQl1r/WhAjXS9y49pgNwq6ReNR2C2qMvsS1jo1ga3kFfCUu
- L94GVsMioCrxZSfMWheJy8/vgK1iFpCX2P52DjPIeGYBTYn1u/QhwnwS7772sMJ8smPeE6hW
- FYlFF99DrZWS+HpiHTPEZR4S++85Q0J2KqPEie4ulgmM8rMQgTsLybJZCMsWMDKvYhRLLSjO
- TU8tNiww0StOzC0uzUvXS87P3cQITh1aFjsY5779oHeIkYmD8RCjBAezkghv98uDaUK8KYmV
- ValF+fFFpTmpxYcYpTlYlMR5z1wpSxUSSE8sSc1OTS1ILYLJMnFwSjUwtTQuOfLhjPo3topt
- rHV3Ano0/goZmz07tezN2aC4yff2Z0mcULm9tfZMaoLa8VsnkzXlfj9vEFv0Qeb2H/VPH1dv
- bW7Otpe2FLE2kvSWjcreFXAxX+Ttc4nZ0sq7djR/mzZn/6Wz6uGx1R671rKu//CxQUYvWDx5
- 3lkWqdrdzCJZYckdTyeHNU2WVL/jmBjubZL7R+q4WYUZyzv5vTXL45vMJsl7sfLm8M6/dK5j
- pmX3pdrlXDpKXJ1CTO1P9HuUimqSF6ysLOm5tnHG2n0TMnsmzHZWzC/e2GA5+ciz0/Nbn5+d
- adbFumf1xjUZ2zMV3f/dZ3e4KsMgttdq4nJV0ScyqiJqTxR0eZZU/c5XYinOSDTUYi4qTgQA
- 8jq6EIwDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOIsWRmVeSWpSXmKPExsWy7bCmvq5s0NE0g3M7RC16Xu1js7i/9Rqj
+ xacGKYv92/6xWhzv3cFisfKYjcXuszPZHNg9ds66y+7x5NpmJo/3+66yefRtWcUYwBLFZZOS
+ mpNZllqkb5fAlXHhlUjBd+2K99u+sDcwPlHqYuTgkBAwkWh+otbFyMUhJLCDUeJzw3d2kDiv
+ gKDE3x3CXYycHMICjhIXpq1jB7GFBBQkfiy/yQYRt5T4/GQamM0mYC7xftJ1RhBbRMBU4s/3
+ dSwgM5kFljFJPL45gQkkISHAKzGj/SkLhC0tsX35VrAGTgE/idmfl0HViErcXP2WHcZ+f2w+
+ I4QtItF67ywzhC0o8eDnbkaI+yUl1r/WhAjXS9y49pgNwq6ReNR2C2qMvsS1jo1ga3kFfCV2
+ nJoCNoZFQFVixY8pUPUuEt0Lr4HZzALyEtvfzmEGGc8soCmxfpc+RJhP4t3XHlaYT3bMewJ1
+ sYrEoovvocZISXw9sY4Z4jIPif33nCEhO5VRYuW+fqYJjPKzEIE7C8myWQjLFjAyr2IUSy0o
+ zk1PLTYsMNErTswtLs1L10vOz93ECE4bWhY7GOe+/aB3iJGJg/EQowQHs5IIb/fLg2lCvCmJ
+ lVWpRfnxRaU5qcWHGKU5WJTEec9cKUsVEkhPLEnNTk0tSC2CyTJxcEo1MGXM29dfPLOFY4ln
+ fyljp19QleYGztXKBmET+7juM9wXZLwlt5hB7UuPkXfZycfTOt6c2rg+8uWLH3oi6rE+Nw+c
+ CK/YcbyN//MqNQttiy8farVsOI6KNlXOfyT0YJrcUtZsHnde6Xk3PZbniscom0yx3bfwhatd
+ TkzHOzvlLteqsCW69mVbF+asZns+k1Ntbc1p/kkn9U7yLXZS0sq24em0Vpx/73/Qe6tNK760
+ 9di8EGplOLfxRvcWXe+Xfz6WT358NPhlXmfJ08ovCkrhd74xndhgce9xbuz9p13mwnv35rzf
+ NKtDJkjttZ3Hxn9h7D01UyzmXP1b2VhQJ7BZcM300M4Em5UzNiQte1e1W4mlOCPRUIu5qDgR
+ AF+Uf2mKAwAA
 X-CMS-RootMailID: 20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10
 References: <20240821023025epcms1p4de36db95f4d3a66727f128ef6be860e4@epcms1p4>
- <CGME20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10@epcms1p3>
-Received-SPF: pass client-ip=203.254.224.24;
- envelope-from=yc01.jeong@samsung.com; helo=mailout1.samsung.com
+ <CGME20240821022726epcms1p127d8cd71ca3e1354592de8a4a5c97a10@epcms1p5>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=yc01.jeong@samsung.com; helo=mailout4.samsung.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
 X-Spam_bar: ----
@@ -108,145 +108,122 @@ Reply-To: yc01.jeong@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From d0ae8e25aec4ae7d222a2ea667d5ddb61f14fe02 Mon Sep 17 00:00:00 2001
+From fa2187660e82e7772c2061b22ba9eab95e92f77c Mon Sep 17 00:00:00 2001
 From: Yoochan Jeong <yc01.jeong@samsung.com>
-Date: Wed, 21 Aug 2024 09:03:06 +0900
-Subject: [PATCH 1/4] hw/ufs: minor bug fixes related to ufs-test
+Date: Wed, 21 Aug 2024 09:08:18 +0900
+Subject: [PATCH 2/4] hw/ufs: ufs flag read/write test implemented
 
-Minor bugs and errors related to ufs-test are resolved. Some
-permissions and code implementations that are not synchronized
-with the ufs spec are edited.
+New test function "ufstest_flag_request" added, which can check one's
+virtual UFS device can properly read and write its flag data. It tests
+if reading, setting, clearing and toggling flags work properly. There
+are some testcases that are intended to make an error caused by
+permission issues.
 
 Based on: 20240802051902epcms2p319bc095a15eaef8de4e6955f6718371d@epcms2p3
 Signed-off-by: Yoochan Jeong <yc01.jeong@samsung.com>
 ---
- hw/ufs/ufs.c           | 26 +++++++++++++++++++++-----
- tests/qtest/ufs-test.c | 12 +++++++++---
- 2 files changed, 30 insertions(+), 8 deletions(-)
+ tests/qtest/ufs-test.c | 81 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index ce2c96aeea..9472a3c14a 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -971,7 +971,7 @@ static const int attr_permission[UFS_QUERY_ATTR_IDN_COUNT] = {
-         UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
-     [UFS_QUERY_ATTR_IDN_EE_STATUS] = UFS_QUERY_ATTR_READ,
-     [UFS_QUERY_ATTR_IDN_SECONDS_PASSED] = UFS_QUERY_ATTR_WRITE,
--    [UFS_QUERY_ATTR_IDN_CNTX_CONF] = UFS_QUERY_ATTR_READ,
-+    [UFS_QUERY_ATTR_IDN_CNTX_CONF] = UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
-     [UFS_QUERY_ATTR_IDN_FFU_STATUS] = UFS_QUERY_ATTR_READ,
-     [UFS_QUERY_ATTR_IDN_PSA_STATE] = UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
-     [UFS_QUERY_ATTR_IDN_PSA_DATA_SIZE] =
-@@ -1038,7 +1038,7 @@ static QueryRespCode ufs_exec_query_flag(UfsRequest *req, int op)
-     }
- 
-     *(((uint8_t *)&u->flags) + idn) = value;
--    req->rsp_upiu.qr.value = cpu_to_be32(value);
-+    req->rsp_upiu.qr.value = value;
-     return UFS_QUERY_RESULT_SUCCESS;
- }
- 
-@@ -1148,8 +1148,11 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
- {
-     UfsHc *u = req->hc;
-     uint8_t idn = req->req_upiu.qr.idn;
-+    uint8_t selector = req->req_upiu.qr.selector;
-     uint32_t value;
-     QueryRespCode ret;
-+    const uint8_t UFS_QUERY_ATTR_CNTX_CONF_SELECTOR = 15;
-+    const uint32_t UFS_QUERY_ATTR_MAXVALUE = 0x0F;
- 
-     ret = ufs_attr_check_idn_valid(idn, op);
-     if (ret) {
-@@ -1159,10 +1162,20 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
-     if (op == UFS_QUERY_ATTR_READ) {
-         value = ufs_read_attr_value(u, idn);
-     } else {
--        value = be32_to_cpu(req->req_upiu.qr.value);
-+        value = req->req_upiu.qr.value;
-+        if (idn == UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL &&
-+            value > UFS_QUERY_ATTR_MAXVALUE) {
-+            return UFS_QUERY_RESULT_INVALID_VALUE;
-+        }
-+        if (idn == UFS_QUERY_ATTR_IDN_CNTX_CONF) {
-+            if (selector != UFS_QUERY_ATTR_CNTX_CONF_SELECTOR) {
-+                return UFS_QUERY_RESULT_INVALID_SELECTOR;
-+            } else if (value == 0x00 || value > UFS_QUERY_ATTR_MAXVALUE) {
-+                return UFS_QUERY_RESULT_INVALID_VALUE;
-+            }
-+        }
-         ufs_write_attr_value(u, idn, value);
-     }
--
-     req->rsp_upiu.qr.value = cpu_to_be32(value);
-     return UFS_QUERY_RESULT_SUCCESS;
- }
-@@ -1287,9 +1300,12 @@ static QueryRespCode ufs_read_desc(UfsRequest *req)
-     UfsHc *u = req->hc;
-     QueryRespCode status;
-     uint8_t idn = req->req_upiu.qr.idn;
-+    uint8_t selector = req->req_upiu.qr.selector;
-     uint16_t length = be16_to_cpu(req->req_upiu.qr.length);
-     InterconnectDescriptor desc;
--
-+    if (selector != 0) {
-+        return UFS_QUERY_RESULT_INVALID_SELECTOR;
-+    }
-     switch (idn) {
-     case UFS_QUERY_DESC_IDN_DEVICE:
-         memcpy(&req->rsp_upiu.qr.data, &u->device_desc, sizeof(u->device_desc));
 diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index 82ec3f0671..d70c2ee4a3 100644
+index d70c2ee4a3..f93de9f1f2 100644
 --- a/tests/qtest/ufs-test.c
 +++ b/tests/qtest/ufs-test.c
-@@ -119,8 +119,10 @@ static void ufs_send_nop_out(QUfs *ufs, uint8_t slot,
+@@ -540,6 +540,86 @@ static void ufstest_read_write(void *obj, void *data, QGuestAllocator *alloc)
+     ufs_exit(ufs, alloc);
+ }
  
- static void ufs_send_query(QUfs *ufs, uint8_t slot, uint8_t query_function,
-                            uint8_t query_opcode, uint8_t idn, uint8_t index,
-+                           uint8_t selector, uint32_t attr_value,
-                            UtpTransferReqDesc *utrd_out, UtpUpiuRsp *rsp_out)
- {
-+    const uint16_t UFS_QUERY_DESC_MAXLENGTH = 0x62;
-     /* Build up utp transfer request descriptor */
-     UtpTransferReqDesc utrd = ufs_build_req_utrd(ufs->cmd_desc_addr, slot,
-                                                  UFS_UTP_NO_DATA_TRANSFER, 0);
-@@ -136,13 +138,16 @@ static void ufs_send_query(QUfs *ufs, uint8_t slot, uint8_t query_function,
-     req_upiu.header.query_func = query_function;
-     req_upiu.header.task_tag = slot;
-     /*
--     * QEMU UFS does not currently support Write descriptor and Write attribute,
-+     * QEMU UFS does not currently support Write descriptor,
-      * so the value of data_segment_length is always 0.
-      */
-     req_upiu.header.data_segment_length = 0;
-     req_upiu.qr.opcode = query_opcode;
-     req_upiu.qr.idn = idn;
-     req_upiu.qr.index = index;
-+    req_upiu.qr.selector = selector;
-+    req_upiu.qr.value = attr_value;
-+    req_upiu.qr.length = UFS_QUERY_DESC_MAXLENGTH;
-     qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
-                    sizeof(req_upiu));
- 
-@@ -344,7 +349,7 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-     /* Set fDeviceInit flag via query request */
-     ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-                    UFS_UPIU_QUERY_OPCODE_SET_FLAG,
--                   UFS_QUERY_FLAG_IDN_FDEVICEINIT, 0, &utrd, &rsp_upiu);
++static void ufstest_flag_request(void *obj, void *data, QGuestAllocator *alloc)
++{
++    QUfs *ufs = obj;
++
++    UtpTransferReqDesc utrd;
++    UtpUpiuRsp rsp_upiu;
++    ufs_init(ufs, alloc);
++
++    /* Read read-only flag */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_FLAG,
 +                   UFS_QUERY_FLAG_IDN_FDEVICEINIT, 0, 0, 0, &utrd, &rsp_upiu);
-     g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.opcode, ==, UFS_UPIU_QUERY_OPCODE_READ_FLAG);
++    g_assert_cmpuint(rsp_upiu.qr.idn, ==, UFS_QUERY_FLAG_IDN_FDEVICEINIT);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, 0);
++
++    /* Flag Set, Clear, Toggle Test with fDeviceLifeSpanModeEn */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_FLAG,
++                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, 0);
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_SET_FLAG,
++                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, 1);
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_CLEAR_FLAG,
++                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, 0);
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_TOGGLE_FLAG,
++                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, 1);
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_TOGGLE_FLAG,
++                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, 0);
++
++    /* Read Write-only Flag (Intended Failure) */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_FLAG,
++                   UFS_QUERY_FLAG_IDN_PURGE_ENABLE, 0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
++                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
++    g_assert_cmpuint(rsp_upiu.header.response, ==,
++                     UFS_QUERY_RESULT_NOT_READABLE);
++
++    /* Write Read-Only Flag (Intended Failure) */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_SET_FLAG, UFS_QUERY_FLAG_IDN_BUSY_RTC,
++                   0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
++                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
++    g_assert_cmpuint(rsp_upiu.header.response, ==,
++                     UFS_QUERY_RESULT_NOT_WRITEABLE);
++
++    ufs_exit(ufs, alloc);
++}
++
+ static void drive_destroy(void *path)
+ {
+     unlink(path);
+@@ -607,6 +687,7 @@ static void ufs_register_nodes(void)
+     }
+     qos_add_test("init", "ufs", ufstest_init, NULL);
+     qos_add_test("read-write", "ufs", ufstest_read_write, &io_test_opts);
++    qos_add_test("flag read-write", "ufs", ufstest_flag_request, &io_test_opts);
+ }
  
-     /* Wait for device to reset */
-@@ -353,7 +358,8 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-         qtest_clock_step(ufs->dev.bus->qts, 100);
-         ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-                        UFS_UPIU_QUERY_OPCODE_READ_FLAG,
--                       UFS_QUERY_FLAG_IDN_FDEVICEINIT, 0, &utrd, &rsp_upiu);
-+                       UFS_QUERY_FLAG_IDN_FDEVICEINIT, 0, 0, 0, &utrd,
-+                       &rsp_upiu);
-     } while (be32_to_cpu(rsp_upiu.qr.value) != 0 &&
-              g_get_monotonic_time() < end_time);
-     g_assert_cmpuint(be32_to_cpu(rsp_upiu.qr.value), ==, 0);
+ libqos_init(ufs_register_nodes);
 -- 
 2.34.1
 
