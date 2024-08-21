@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66651959BA6
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 14:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A51CD959C94
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 14:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgkJt-0003aS-Kl; Wed, 21 Aug 2024 08:20:09 -0400
+	id 1sgksk-0003rt-5l; Wed, 21 Aug 2024 08:56:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1sgkJq-0003ZI-Kn
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 08:20:07 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1sgkJn-0006pI-RP
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 08:20:06 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-20230059241so28473715ad.3
- for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 05:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724242800; x=1724847600; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ioyKvyZFvOIDOmEo4sxiuRbkZ44LGlflb7KP/Z1UayA=;
- b=kCwtnKIUR2755Ph4tpXVvSaiyl9HeSQZLqejCxpKTMSqH66IZZ9+D9ote6EzTMZc5H
- EvEHvKZKI8dDUrFV1fAj4n5/A0fRkOX1z4GYrxXgOAaUjPAv9KhHrdii0iifOqYcYNAH
- z45zvXD2nrnFGx4JP2aOEQiU4y+emF/jSmy5RxqPhYMhWziwh7MhJb9GTdzQsEFP4flK
- NftX1wtvgNahIaXClVu25ox5nuYiRpyvq6D5H4gRrnnQjWpkegONAyJzUuaIisMREMcA
- nWgndmv+4XuhNI9OmiHeRIcn6JCCJ5nl3aQl4MJF5T9EnY/EXRNUgR+w7hRJJmYP+6Wk
- +2yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724242800; x=1724847600;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ioyKvyZFvOIDOmEo4sxiuRbkZ44LGlflb7KP/Z1UayA=;
- b=BZjPv7KXboEad6SLt+DXic8Qa8al3qKxwYI8QxtRzJYG++/Rz9ciSQQRjyOQ7TJMBs
- 47Ut/O+8tQzEiTxnchM0ka5w2ok+FyKBrwBmOlaHnjKd3jfXIfpXvA20gWiHceARcru2
- uxt2Y+UECSi8mRARTuCXr/4mgZ/ABiny4Xn4M/Ixf4h/5JYK3hEeGH0eUJdP5iWFRX0D
- p4jR7jtCpXBkYIe+cMZ2xtH95fr3j5ayX/FKKTFvyvqPKQLrGGX2NSGSPo+p+38Eidhh
- atM2muEWROaTgh1u9StUnRiNHdeDdA7jLSXwYQSYWKqbny95ndaiZERETffo+uZxnDnA
- hDEQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUvbTT0MKq/TLF4X3k7z+W/dPOl4qBUTSKee/4JJPnCniXTpM02weiPJDnyLW/x1/WGEqFYs0/TLYXS@nongnu.org
-X-Gm-Message-State: AOJu0Yw3pRAdtD6bev/q5bF4kSwZgDbed8YbIUB9ETRxzIfbXZwgUs0o
- VFhrGxO7Dm1aHY0JwZ/ROSkK5P1OTkBV+q7fbGSLr6tfVsvccZfU
-X-Google-Smtp-Source: AGHT+IHcH7dr+fW792vjdlOhku31egi4BaphXiHHZpmplxMEqd4wtCCDrMlniSaaHlw1G00UgbfI4w==
-X-Received: by 2002:a17:902:db11:b0:1fb:93d6:9fef with SMTP id
- d9443c01a7336-20367d57d43mr25941805ad.38.1724242799866; 
- Wed, 21 Aug 2024 05:19:59 -0700 (PDT)
-Received: from valdaarhun.localnet ([223.233.81.109])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201f03197fasm93141085ad.85.2024.08.21.05.19.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Aug 2024 05:19:59 -0700 (PDT)
-From: Sahil <icegambit91@gmail.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org,
- Sahil Siddiq <sahilcdq@proton.me>
-Subject: Re: [RFC v3 3/3] vhost: Allocate memory for packed vring
-Date: Wed, 21 Aug 2024 17:49:55 +0530
-Message-ID: <1901750.tdWV9SEqCh@valdaarhun>
-In-Reply-To: <CAJaqyWf3Vv6LvCHvRtpdZFQrhVHMOUTdzhJGj7PkbVDYeKox_w@mail.gmail.com>
-References: <20240802112138.46831-1-sahilcdq@proton.me>
- <8454459.NyiUUSuA9g@valdaarhun>
- <CAJaqyWf3Vv6LvCHvRtpdZFQrhVHMOUTdzhJGj7PkbVDYeKox_w@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1sgksb-0003jB-8N
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 08:56:01 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1sgksW-0004yj-R6
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 08:55:58 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47LBtUT2012222;
+ Wed, 21 Aug 2024 12:55:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=corp-2023-11-20; bh=oYHc0wo4VsroPM
+ 0U1RmaQspQu5CjBFclup9VoEuJ8yw=; b=J3wU73RH04uu8GfkFZoicmSX/g3bQV
+ XhqqQ7zFisKEKNmb/OP/301wu1DBqzpRB5DaHZCID7CFBTGt5z8fXQUREJwU4vLN
+ rFY/IMYvaRt1nsDstuwH/+ZyQ1hSdwqoTJFy+3Qvb07FgF5aC2/bbcnk2sUpy8zG
+ bSLSvbS0nZd5SJqpVHONWuow3piPUedqOysFuisoocvlQmEAlqbFyVFaAUt8ZYWH
+ F67hvNHTTo1M6Ee4ZJaFkhN9RTtt4HXbKFZlf4w/eiilp9WtOYNxu5u3qrmddDo8
+ XKFszo2cKLJtf4kXCdiBGmaWqgtlUn/RlIjyFFFOqDVMsfZgIG5NYP3g==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 412m6gfg0h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Aug 2024 12:55:52 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 47LBNxES011300; Wed, 21 Aug 2024 12:55:52 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 415fb23m5s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Aug 2024 12:55:52 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47LCtpoO002465;
+ Wed, 21 Aug 2024 12:55:51 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-39-201-48.vpn.oracle.com
+ [10.39.201.48])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 415fb23m55-1; Wed, 21 Aug 2024 12:55:51 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: eperezma@redhat.com, mst@redhat.com, leiyang@redhat.com, peterx@redhat.com,
+ dtatulea@nvidia.com, jasowang@redhat.com, si-wei.liu@oracle.com,
+ boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [RFC 0/2] Handling aliased guest memory maps in vhost-vDPA SVQs
+Date: Wed, 21 Aug 2024 08:55:44 -0400
+Message-ID: <20240821125548.749143-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=icegambit91@gmail.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-21_09,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ phishscore=0 adultscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=936 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408210094
+X-Proofpoint-ORIG-GUID: PP4Nwvw0qKRnxvrW4wUOvewYiiPGucUm
+X-Proofpoint-GUID: PP4Nwvw0qKRnxvrW4wUOvewYiiPGucUm
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,187 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The guest may overlap guest memory regions when mapping IOVA to HVA
+translations in the IOVA->HVA tree. This means that different HVAs, that
+correspond to different guest memory region mappings, may translate to
+the same IOVA. This can cause conflicts when a mapping is incorrectly
+referenced.
 
-Sorry for the late reply.
+For example, consider this example of mapped guest memory regions:
 
-On Tuesday, August 13, 2024 12:23:55=E2=80=AFPM GMT+5:30 Eugenio Perez Mart=
-in wrote:
-> [...]
-> > I think I have understood what's going on in "vhost_vdpa_svq_map_rings",
-> > "vhost_vdpa_svq_map_ring" and "vhost_vdpa_dma_map". But based on
-> > what I have understood it looks like the driver area is getting mapped =
-to
-> > an iova which is read-only for vhost_vdpa. Please let me know where I am
-> > going wrong.
->=20
-> You're not going wrong there. The device does not need to write into
-> this area, so we map it read only.
->=20
-> > Consider the following implementation in hw/virtio/vhost_vdpa.c:
-> > > size_t device_size =3D vhost_svq_device_area_size(svq);
-> > > size_t driver_size =3D vhost_svq_driver_area_size(svq);
-> >=20
-> > The driver size includes the descriptor area and the driver area. For
-> > packed vq, the driver area is the "driver event suppression" structure
-> > which should be read-only for the device according to the virtio spec
-> > (section 2.8.10) [1].
-> >=20
-> > > size_t avail_offset;
-> > > bool ok;
-> > >=20
-> > > vhost_svq_get_vring_addr(svq, &svq_addr);
-> >=20
-> > Over here "svq_addr.desc_user_addr" will point to the descriptor area
-> > while "svq_addr.avail_user_addr" will point to the driver area/driver
-> > event suppression structure.
-> >=20
-> > > driver_region =3D (DMAMap) {
-> > >=20
-> > >     .translated_addr =3D svq_addr.desc_user_addr,
-> > >     .size =3D driver_size - 1,
-> > >     .perm =3D IOMMU_RO,
-> > >=20
-> > > };
-> >=20
-> > This region points to the descriptor area and its size encompasses the
-> > driver area as well with RO permission.
-> >=20
-> > > ok =3D vhost_vdpa_svq_map_ring(v, &driver_region, errp);
-> >=20
-> > The above function checks the value of needle->perm and sees that it is
-> > RO.
-> >=20
-> > It then calls "vhost_vdpa_dma_map" with the following arguments:
-> > > r =3D vhost_vdpa_dma_map(v->shared, v->address_space_id, needle->iova,
-> > >=20
-> > >                                                needle->size + 1,
-> > >                                                (void
-> > >                                                *)(uintptr_t)needle->t=
-ra
-> > >                                                nslated_addr,
-> > >                                                needle->perm =3D=3D
-> > >                                                IOMMU_RO);
-> >=20
-> > Since needle->size includes the driver area as well, the driver area wi=
-ll
-> > be mapped to a RO page in the device's address space, right?
->=20
-> Yes, the device does not need to write into the descriptor area in the
-> supported split virtqueue case. So the descriptor area is also mapped
-> RO at this moment.
->=20
-> This change in the packed virtqueue case, so we need to map it RW.
+              HVA                            GPA                         IOVA
+-------------------------------  --------------------------- ----------------------------
+[0x7f7903e00000, 0x7f7983e00000) [0x0, 0x80000000)           [0x1000, 0x80000000)
+[0x7f7983e00000, 0x7f9903e00000) [0x100000000, 0x2080000000) [0x80001000, 0x2000001000)
+[0x7f7903ea0000, 0x7f7903ec0000) [0xfeda0000, 0xfedc0000)    [0x2000001000, 0x2000021000)
 
-I understand this now. I'll see how the implementation can be modified to t=
-ake
-this into account. I'll see if making the driver area and descriptor ring h=
-elps.
+The last HVA range [0x7f7903ea0000, 0x7f7903ec0000) is contained within
+the first HVA range [0x7f7903e00000, 0x7f7983e00000). Despite this, the
+GPA ranges for the first and third mappings don't overlap, so the guest
+sees them as different physical memory regions.
 
-> > > if (unlikely(!ok)) {
-> > >=20
-> > >     error_prepend(errp, "Cannot create vq driver region: ");
-> > >     return false;
-> > >=20
-> > > }
-> > > addr->desc_user_addr =3D driver_region.iova;
-> > > avail_offset =3D svq_addr.avail_user_addr - svq_addr.desc_user_addr;
-> > > addr->avail_user_addr =3D driver_region.iova + avail_offset;
-> >=20
-> > I think "addr->desc_user_addr" and "addr->avail_user_addr" will both be
-> > mapped to a RO page in the device's address space.
-> >=20
-> > > device_region =3D (DMAMap) {
-> > >=20
-> > >     .translated_addr =3D svq_addr.used_user_addr,
-> > >     .size =3D device_size - 1,
-> > >     .perm =3D IOMMU_RW,
-> > >=20
-> > > };
-> >=20
-> > The device area/device event suppression structure on the other hand wi=
-ll
-> > be mapped to a RW page.
-> >=20
-> > I also think there are other issues with the current state of the patch.
-> > According to the virtio spec (section 2.8.10) [1], the "device event
-> > suppression" structure needs to be write-only for the device but is
-> > mapped to a RW page.
->=20
-> Yes, I'm not sure if all IOMMU supports write-only maps to be honest.
+So, for example, say we're given an HVA of 0x7f7903eb0000 when we go to
+unmap the mapping associated with this address. This HVA technically
+fits in the first and third mapped HVA ranges.
 
-Got it. I think it should be alright to defer this issue until later.
+When we go to search the IOVA->HVA tree, we'll stop at the first mapping
+whose HVA range accommodates our given HVA. Given that IOVATrees are
+GTrees which are balanced binary red-black trees, the search will stop
+at the first mapping, which has an HVA range of [0x7f7903e00000,
+0x7f7983e00000).
 
-> > Another concern I have is regarding the driver area size for packed vq.=
- In
-> >=20
-> > "hw/virtio/vhost-shadow-virtqueue.c" of the current patch:
-> > > size_t vhost_svq_driver_area_size(const VhostShadowVirtqueue *svq)
-> > > {
-> > >=20
-> > >     size_t desc_size =3D sizeof(vring_desc_t) * svq->vring.num;
-> > >     size_t avail_size =3D offsetof(vring_avail_t, ring[svq->vring.num=
-]) +
-> > >    =20
-> > >                                                               sizeof(=
-uin
-> > >                                                               t16_t);
-> > >    =20
-> > >     return ROUND_UP(desc_size + avail_size, qemu_real_host_page_size(=
-));
-> > >=20
-> > > }
-> > >=20
-> > > [...]
-> > >=20
-> > > size_t vhost_svq_memory_packed(const VhostShadowVirtqueue *svq)
-> > > {
-> > >=20
-> > >     size_t desc_size =3D sizeof(struct vring_packed_desc) * svq->num_=
-free;
-> > >     size_t driver_event_suppression =3D sizeof(struct
-> > >     vring_packed_desc_event);
-> > >     size_t device_event_suppression =3D sizeof(struct
-> > >     vring_packed_desc_event);
-> > >    =20
-> > >     return ROUND_UP(desc_size + driver_event_suppression +
-> > >     device_event_suppression,> >    =20
-> > >                     qemu_real_host_page_size());
-> > >=20
-> > > }
-> >=20
-> > The size returned by "vhost_svq_driver_area_size" might not be the actu=
-al
-> > driver size which is given by desc_size + driver_event_suppression,
-> > right? Will this have to be changed too?
->=20
-> Yes, you're right this needs to be changed too.
+However, the correct mapping to remove in this case is the third mapping
+because the HVA to GPA translation would result in a GPA of 0xfedb0000,
+which only fits in the third mapping's GPA range.
+--------
 
-Understood. I'll modify this too.
+To avoid this issue, we can create a GPA->IOVA tree for guest memory
+mappings and use the GPA to find the correct IOVA translation, as GPAs
+wont overlap and will always translate to the correct IOVA.
 
-I have been trying to test my changes so far as well. I am not very clear on
-a few things.
+To accommodate this solution, we decouple the IOVA allocator, where all
+allocated IOVA ranges are stored in an IOVA-only tree (iova_map), and
+split the current IOVA->HVA tree into a GPA->IOVA tree (guest memory)
+and a IOVA->SVQ HVA tree (host-only memory). In other words, any
+allocated IOVA ranges are stored in an IOVA-only tree, any guest memory
+mappings are placed inside of the GPA->IOVA tree, and lastly any
+host-only memory mappings are stored in the IOVA->SVQ HVA tree.
 
-Q1.
-I built QEMU from source with my changes and followed the vdpa_sim +
-vhost_vdpa tutorial [1]. The VM seems to be running fine. How do I check
-if the packed format is being used instead of the split vq format for shadow
-virtqueues? I know the packed format is used when virtio_vdev has got the
-VIRTIO_F_RING_PACKED bit enabled. Is there a way of checking that this is
-the case?
+--------
+This series is a different approach of [1] and is based off of [2],
+where this issue was originally discovered.
 
-Q2.
-What's the recommended way to see what's going on under the hood? I tried
-using the -D option so QEMU's logs are written to a file but the file was e=
-mpty.
-Would using qemu with -monitor stdio or attaching gdb to the QEMU VM be
-worthwhile?
+RFC v1:
+-------
+ * Alternative approach of [1].
+ * First attempt to address this issue found in [2].
 
-Thanks,
-Sahil
+[1] https://lore.kernel.org/qemu-devel/20240410100345.389462-1-eperezma@redhat.com
+[2] https://lore.kernel.org/qemu-devel/20240201180924.487579-1-eperezma@redhat.com
 
-[1] https://www.redhat.com/en/blog/hands-vdpa-what-do-you-do-when-you-aint-=
-got-hardware-part-1
+Jonah Palmer (2):
+  vhost-vdpa: Decouple the IOVA allocator
+  vhost-vdpa: Implement GPA->IOVA & IOVA->SVQ HVA trees
 
+ hw/virtio/vhost-iova-tree.c        | 91 ++++++++++++++++++++++++++++--
+ hw/virtio/vhost-iova-tree.h        |  6 +-
+ hw/virtio/vhost-shadow-virtqueue.c | 48 +++++++++++++---
+ hw/virtio/vhost-vdpa.c             | 43 +++++++++-----
+ include/qemu/iova-tree.h           | 22 ++++++++
+ net/vhost-vdpa.c                   | 13 ++++-
+ util/iova-tree.c                   | 46 +++++++++++++++
+ 7 files changed, 240 insertions(+), 29 deletions(-)
+
+-- 
+2.43.5
 
 
