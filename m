@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327E195A71C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 23:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FC295A70A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Aug 2024 23:52:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sgtDq-0005Dx-A3; Wed, 21 Aug 2024 17:50:30 -0400
+	id 1sgtDq-0005Hc-Vd; Wed, 21 Aug 2024 17:50:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sgtDn-00056J-N9
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 17:50:27 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sgtDp-0005CV-7y
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 17:50:29 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sgtDm-00085D-2H
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 17:50:27 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-20202df1c2fso8608175ad.1
- for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 14:50:25 -0700 (PDT)
+ id 1sgtDn-00085i-BA
+ for qemu-devel@nongnu.org; Wed, 21 Aug 2024 17:50:28 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-202376301e6so1387695ad.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 14:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724277025; x=1724881825;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724277026; x=1724881826;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NjZJpddrUYMLka+s3BuiKelWfoIA0sOQqw+ndLoWex0=;
- b=D3tAQx7p1nzD8z9Qbv7fmMTqaD8+kMX96fiWU1OYLgRyyF17OMXyhmzqvGC7jD8Hqw
- daiDAmYT87UHE4Rg0ZN1uYVEGBniSZ220+I/9cjRu+WQ2cxsO3urcQVgVNe55ZCRYo5G
- Ux3bvWnQtnTLnGMfxGGIxX+s8meGkYYUYmyMxkHeza9YJ17fPu7tyFPAhyozg0vDgZlz
- iKwK9x7TeYvhpSxhTZqqsdqqX/MuP4+HCzV1L9DJhRASsjoc+dOp9oUPKR4snD5i2Ej6
- B00YaWFhX7gqe0NNrls5eyzlouLOF6Yr3PPutAWNfjfZb5P58zajmId3PJ42sDVBA61O
- eL6w==
+ bh=Kc+5TYTwD9rlsnR3t1eH9CG1EZ2ambfIqbtNRVrBCCI=;
+ b=njmBbMrYMbxZHWbWr/dOBLGH67l+Z7LAbjbT40zBbagJVv0vz+YdidK8/nhtl0hxo+
+ W7XPwH4MkjLGG9JNIDk98BmoG97FC0zRVBIVb7DHTYZDATQvTrHBU3NVg51Pewyp2O12
+ F5zIQfqSOfibuLDmBWFeK3wP8xTfbiSQlsRDI/h0CBTbspBKMWaNQ7k+iX6yhT1Vctp7
+ nt8J77067Qj09WyspuPZOlN8+CPiapy/ADTX5ePM4L74dYB9Euc3seRXriW3TbFlxuCD
+ fvtrxto5xarn7zKhNvEqHWgU4Lre6upJ8HdxlGifC5qtA0zsuKU+LeZgniQgYhGttC0+
+ eovQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724277025; x=1724881825;
+ d=1e100.net; s=20230601; t=1724277026; x=1724881826;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NjZJpddrUYMLka+s3BuiKelWfoIA0sOQqw+ndLoWex0=;
- b=LPe4bMQzpFzNIIjjCMxXMQ+R1gNeDkfLtpHEzqKfnZ5NvQIwmDF1OfahFtrUyRVgyA
- H6/AdJnp8QT5kQOxMfh9hoEiuf9uVDuz6hkf8EWfFDMnxcXiPRXqaGJnFoSxiLqny3dc
- BhBAtZq1il/UlEkYepW29+MKBqVezMkDgFctoMk706CUZSF6x/szPBgm8Vrv2LvnXFQB
- cr6ikLVNtyVMMkB0zkJfkIFirBBMfgu0DvOYspoQfDMhHEoAfxq5i5YcdJcVyFnjEJvS
- Q7SQOB/8DPIuoWaOQFjMSKyeHEHIo7jtiggzlwTzfZDAmC/ldpYCcBl4G1xeL/Fq8/hs
- Iu/Q==
+ bh=Kc+5TYTwD9rlsnR3t1eH9CG1EZ2ambfIqbtNRVrBCCI=;
+ b=fsNuQpqkjcRHdN3iILO8gvYo51PObTsePbZiwK+oj37OpidOfL4kqU0w2pHva0Qy/M
+ SS1gxv6gaRHr7/VW+FYdUVqRLMmbXmB2qXMPq7dr30rMD0pv+62s6H6N38N6rdEuacMH
+ pKAieVB/JhQnnS5dvduHPep84VndcqM2uhxYQQyi4c1ULlJODvu5zb+ZEtjNKnLj2dax
+ dySJm64x2A87fabBlVSixos+ZyorJamVIqaIOGvob/rQTniTvEav2VLrn2KR/lOf6InI
+ Up+oALlr9xSOUuHySpPBg1T4P34eHByTyZnl3XkbIwBc/kxvHXYBLEGUAYcy61OxyVHa
+ ZZAQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZJeQ26jyByDLMMbHNwtttu9XQI9tX3+IVIH3AGK+aahsQTDkF0JsQRiU2NotgMPKHJXojyv2c4LHV@nongnu.org
-X-Gm-Message-State: AOJu0YzqqFLndz2VMy7Hct9RoVxZw3qW1aOwv+3U8QMlITTGkqAEWFLG
- IH2ZQzOoI2l4cDZRCebmHbbzOJ9/rnVH9chDjQssrSYRMnNAk3kQVLXRroD0MjnObj140VIUF04
- J
-X-Google-Smtp-Source: AGHT+IGw9aJUomE46Za1+eitEVO8u4mknwXbr7u5DBMrjoywHxLzE8vCV6hVqOSqFemVNgx3VlhX0g==
-X-Received: by 2002:a17:903:41cc:b0:202:4480:1d58 with SMTP id
- d9443c01a7336-2037ee2947amr11072225ad.12.1724277024428; 
- Wed, 21 Aug 2024 14:50:24 -0700 (PDT)
+ AJvYcCWGJdXD0uxjpnQJOKun4ChJVkzJtzLR1xUt0SAE1jNscxem8F/aApscIrPCueo96iEnaN+GFjvY2Esl@nongnu.org
+X-Gm-Message-State: AOJu0Yzwk4M7OwsfO0javWKfpeDjtTaSV+4woQBLqmY6V/PBRI2oVjD2
+ ibFT49bnjtJckgX78LK/VPoXeL+tC2ymLeSy5ZUfVV5P7NBlTDS0UYRXgsv/tAU=
+X-Google-Smtp-Source: AGHT+IExXuL7JI9IFQEWeDffkw8aNOQMjIWw5ZBEnsB/9C5ohWyUhxPQTE9lsmlohNITJK7iE0GjwA==
+X-Received: by 2002:a17:902:f601:b0:203:6821:a839 with SMTP id
+ d9443c01a7336-2036821a896mr47773545ad.8.1724277025803; 
+ Wed, 21 Aug 2024 14:50:25 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-203859ef0fdsm586345ad.248.2024.08.21.14.50.23
+ d9443c01a7336-203859ef0fdsm586345ad.248.2024.08.21.14.50.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Aug 2024 14:50:24 -0700 (PDT)
+ Wed, 21 Aug 2024 14:50:25 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -68,17 +67,17 @@ Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
  kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v6 04/16] target/riscv: additional code information for sw
- check
-Date: Wed, 21 Aug 2024 14:50:02 -0700
-Message-ID: <20240821215014.3859190-5-debug@rivosinc.com>
+Subject: [PATCH v6 05/16] target/riscv: tracking indirect branches (fcfi) for
+ zicfilp
+Date: Wed, 21 Aug 2024 14:50:03 -0700
+Message-ID: <20240821215014.3859190-6-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240821215014.3859190-1-debug@rivosinc.com>
 References: <20240821215014.3859190-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=debug@rivosinc.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,58 +99,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sw check exception support was recently added. This patch further augments
-sw check exception by providing support for additional code which is
-provided in *tval. Adds `sw_check_code` field in cpuarchstate. Whenever
-sw check exception is raised *tval gets the value deposited in
-`sw_check_code`.
+zicfilp protects forward control flow (if enabled) by enforcing all
+indirect call and jmp must land on a landing pad instruction `lpad`. If
+target of an indirect call or jmp is not `lpad` then cpu/hart must raise
+a sw check exception with tval = 2.
+
+This patch implements the mechanism using TCG. Target architecture branch
+instruction must define the end of a TB. Using this property, during
+translation of branch instruction, TB flag = FCFI_LP_EXPECTED can be set.
+Translation of target TB can check if FCFI_LP_EXPECTED flag is set and a
+flag (fcfi_lp_expected) can be set in DisasContext. If `lpad` gets
+translated, fcfi_lp_expected flag in DisasContext can be cleared. Else
+it'll fault.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Co-developed-by: Jim Shu <jim.shu@sifive.com>
+Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu.h        | 2 ++
- target/riscv/cpu_helper.c | 2 ++
- target/riscv/csr.c        | 1 +
- 3 files changed, 5 insertions(+)
+ target/riscv/cpu.h        |  3 +++
+ target/riscv/cpu_bits.h   |  3 +++
+ target/riscv/cpu_helper.c | 12 ++++++++++++
+ target/riscv/translate.c  | 20 ++++++++++++++++++++
+ 4 files changed, 38 insertions(+)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7be0fa30f7..11c6513a90 100644
+index 11c6513a90..edf540339a 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -224,6 +224,8 @@ struct CPUArchState {
+@@ -606,6 +606,9 @@ FIELD(TB_FLAGS, ITRIGGER, 22, 1)
+ FIELD(TB_FLAGS, VIRT_ENABLED, 23, 1)
+ FIELD(TB_FLAGS, PRIV, 24, 2)
+ FIELD(TB_FLAGS, AXL, 26, 2)
++/* zicfilp needs a TB flag to track indirect branches */
++FIELD(TB_FLAGS, FCFI_ENABLED, 28, 1)
++FIELD(TB_FLAGS, FCFI_LP_EXPECTED, 29, 1)
  
-     /* elp state for zicfilp extension */
-     bool      elp;
-+    /* sw check code for sw check exception */
-+    target_ulong sw_check_code;
- #ifdef CONFIG_USER_ONLY
-     uint32_t elf_flags;
-     bool ufcfien;
+ #ifdef TARGET_RISCV32
+ #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index b05ebe6f29..900769ce60 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -685,6 +685,9 @@ typedef enum RISCVException {
+     RISCV_EXCP_SEMIHOST = 0x3f,
+ } RISCVException;
+ 
++/* zicfilp defines lp violation results in sw check with tval = 2*/
++#define RISCV_EXCP_SW_CHECK_FCFI_TVAL      2
++
+ #define RISCV_EXCP_INT_FLAG                0x80000000
+ #define RISCV_EXCP_INT_MASK                0x7fffffff
+ 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 12484ca7d2..9f08a67a9e 100644
+index 9f08a67a9e..3a56bea8b9 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -1761,6 +1761,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-                 cs->watchpoint_hit = NULL;
-             }
-             break;
-+        case RISCV_EXCP_SW_CHECK:
-+            tval = env->sw_check_code;
-         default:
-             break;
-         }
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 5771a14848..a5a969a377 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1179,6 +1179,7 @@ static const uint64_t all_ints = M_MODE_INTERRUPTS | S_MODE_INTERRUPTS |
-                          (1ULL << (RISCV_EXCP_INST_PAGE_FAULT)) | \
-                          (1ULL << (RISCV_EXCP_LOAD_PAGE_FAULT)) | \
-                          (1ULL << (RISCV_EXCP_STORE_PAGE_FAULT)) | \
-+                         (1ULL << (RISCV_EXCP_SW_CHECK)) | \
-                          (1ULL << (RISCV_EXCP_INST_GUEST_PAGE_FAULT)) | \
-                          (1ULL << (RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT)) | \
-                          (1ULL << (RISCV_EXCP_VIRT_INSTRUCTION_FAULT)) | \
+@@ -133,6 +133,18 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+         flags = FIELD_DP32(flags, TB_FLAGS, VILL, 1);
+     }
+ 
++    if (cpu_get_fcfien(env)) {
++        /*
++         * For Forward CFI, only the expectation of a lpcll at
++         * the start of the block is tracked (which can only happen
++         * when FCFI is enabled for the current processor mode). A jump
++         * or call at the end of the previous TB will have updated
++         * env->elp to indicate the expectation.
++         */
++        flags = FIELD_DP32(flags, TB_FLAGS, FCFI_LP_EXPECTED, env->elp);
++        flags = FIELD_DP32(flags, TB_FLAGS, FCFI_ENABLED, 1);
++    }
++
+ #ifdef CONFIG_USER_ONLY
+     fs = EXT_STATUS_DIRTY;
+     vs = EXT_STATUS_DIRTY;
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index acba90f170..f364a54af6 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -116,6 +116,9 @@ typedef struct DisasContext {
+     bool frm_valid;
+     bool insn_start_updated;
+     const GPtrArray *decoders;
++    /* zicfilp extension. fcfi_enabled, lp expected or not */
++    bool fcfi_enabled;
++    bool fcfi_lp_expected;
+ } DisasContext;
+ 
+ static inline bool has_ext(DisasContext *ctx, uint32_t ext)
+@@ -1238,6 +1241,8 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->pm_base_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_BASE_ENABLED);
+     ctx->ztso = cpu->cfg.ext_ztso;
+     ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
++    ctx->fcfi_lp_expected = FIELD_EX32(tb_flags, TB_FLAGS, FCFI_LP_EXPECTED);
++    ctx->fcfi_enabled = FIELD_EX32(tb_flags, TB_FLAGS, FCFI_ENABLED);
+     ctx->zero = tcg_constant_tl(0);
+     ctx->virt_inst_excp = false;
+     ctx->decoders = cpu->decoders;
+@@ -1270,6 +1275,21 @@ static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+     decode_opc(env, ctx, opcode16);
+     ctx->base.pc_next += ctx->cur_insn_len;
+ 
++    /*
++     * instr decode of `lpad` should have lowered fcfi_lp_expected.
++     * If not `lpad`, raise sw check exception.
++     */
++    if (ctx->fcfi_lp_expected) {
++        /* Emit after insn_start, i.e. before the op following insn_start. */
++        tcg_ctx->emit_before_op = QTAILQ_NEXT(ctx->base.insn_start, link);
++        tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
++                      tcg_env, offsetof(CPURISCVState, sw_check_code));
++        gen_helper_raise_exception(tcg_env,
++                      tcg_constant_i32(RISCV_EXCP_SW_CHECK));
++        tcg_ctx->emit_before_op = NULL;
++        ctx->base.is_jmp = DISAS_NORETURN;
++    }
++
+     /* Only the first insn within a TB is allowed to cross a page boundary. */
+     if (ctx->base.is_jmp == DISAS_NEXT) {
+         if (ctx->itrigger || !is_same_page(&ctx->base, ctx->base.pc_next)) {
 -- 
 2.44.0
 
