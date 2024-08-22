@@ -2,90 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3748595BEAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 21:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F9C95BF67
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 22:07:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shDE8-0002Nv-3J; Thu, 22 Aug 2024 15:12:08 -0400
+	id 1shE4E-0003JM-Px; Thu, 22 Aug 2024 16:05:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1shDE1-0002NG-H7
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 15:12:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1shDDy-0006YD-F2
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 15:12:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724353916;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kjn0FXapyM+mTZ3w5mFzCqjM7SK8gs7n4qXDiKMCaqk=;
- b=SxZTs6AOQ905we9pzUDpgw2+ISTLOInDprsbbnEmDl3Yix94w/8g25blV4nfyfvGHeC8Y3
- 7O3HlCAKTWvyMqXUmgxk4Pp+2ErOyT9ccSMDx3AIwVejqlxZ6p815WSpZbavlxcRWc1ZSN
- vZ+OfVfzyQ0pIYq17nFeaFRN9+wdSVo=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-yts0eaTOPXm3f2U9LIHXtw-1; Thu, 22 Aug 2024 15:11:54 -0400
-X-MC-Unique: yts0eaTOPXm3f2U9LIHXtw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6bf6bcee8ccso13668386d6.0
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 12:11:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724353914; x=1724958714;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <tavip@google.com>) id 1shE48-0003Gw-Kd
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 16:05:52 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tavip@google.com>) id 1shE45-0006fx-2n
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 16:05:51 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5bebb241fddso839a12.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 13:05:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1724357145; x=1724961945; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kjn0FXapyM+mTZ3w5mFzCqjM7SK8gs7n4qXDiKMCaqk=;
- b=svQldu+6rYPE9AVKGLVWBb8HMrh4M2pLf51+7Jbjgt9zxGGvMekVbOTMQLa50qgXai
- wdX9lrn603egZo1nHTZC0qS0w09ZjlVcl+wY0IuqfvZMlDR0e6UHULGW4dHswPAu/mAx
- dnlyWv+VIG5ClSgrQHsSYJXqojT1tW6qedRqCYexXZ/QRJ8ps5LRKQleUkDErnWLbfVv
- oOHU2BWiJjIHQtx20k2EkgNB+mjd8ksDXMby10qgZrksgBzQEpmnuOMXHAAj8HU7U6jM
- 1PWR3DX60FWGH85EcXoRJ6Q+UcC7yX0SukMSzqUkF4U/38jwmuCY89/RLBiXBaV1KDat
- gfsg==
-X-Gm-Message-State: AOJu0YxY8o+mFwBR2qf53lBi/7CqWUpj3K8M+/BUvb10pdDpi3sKk9K+
- WWwMKjSQ89Esyz3Udd4YYjBuloStRcsgnNXSQwOQLG51A3Il/w7ETNMEsMD8Leqg7UIaq6bK9Sa
- McxnJYdi/Zq3yxTBIzfqvb3UQWPx3bbQS77/2n0BMsVB+3vY3y8wL
-X-Received: by 2002:a05:6214:2e4a:b0:6bf:6e0f:1a18 with SMTP id
- 6a1803df08f44-6c155d5b688mr66681106d6.8.1724353914277; 
- Thu, 22 Aug 2024 12:11:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYqLLEr4vAxYr7TyRkckC3rk6/FO+UY+NzljT8oN+SwryhzkVtBGRTaLrdaIHyyTwuCMj9bw==
-X-Received: by 2002:a05:6214:2e4a:b0:6bf:6e0f:1a18 with SMTP id
- 6a1803df08f44-6c155d5b688mr66680916d6.8.1724353913915; 
- Thu, 22 Aug 2024 12:11:53 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c162dcd10esm10446046d6.105.2024.08.22.12.11.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Aug 2024 12:11:53 -0700 (PDT)
-Date: Thu, 22 Aug 2024 15:11:51 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH v3 12/14] migration/multifd: Allow multifd sync without
- flush
-Message-ID: <ZseNd77DUXe62mL0@x1n>
-References: <20240801123516.4498-1-farosas@suse.de>
- <20240801123516.4498-13-farosas@suse.de> <ZsdhY2ijx9nhSdLz@x1n>
- <Zsdi432b2dobNhMj@x1n> <87ttfcxzc5.fsf@suse.de>
- <Zsd3O_OCbpyctm-K@x1n> <87le0oxwg4.fsf@suse.de>
+ bh=LHjw9TuxbXlkebqSQdiQuYwr40RhVog8KVJbsePag34=;
+ b=cWQcN3NuOslqR9465K1AKXioANTfkqSYQjz5KHkveJYPTgyb7ri7N3dfLmXhZuEgWD
+ VqSuXaKAc0vQc8tAlWRdFPKJp2sfhD2b9ZvIh6Zmi7lAN0GKRK2D+Wht2petH/XpKAPc
+ HnltRS0rVFKZ8EEfyctreKOnNGsDZ2kWeN06DXirmP2DYZC/MOc29OWgYm8R3K3TCqj0
+ zdLT47PNjJ+QNmbwuHjlvMfdOEUQKXpmVEntmWN4PkpZEE8Xf9Sq71agLIQ83WT1kGkr
+ 03xjIGNAisiinw/zeNpA4H3UlRXCgn9v+uC9nqFoUvRvXkdnwC89fbYTEobuxklZEDxg
+ lDLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724357145; x=1724961945;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LHjw9TuxbXlkebqSQdiQuYwr40RhVog8KVJbsePag34=;
+ b=WgdYIjPOKPEz/nxjDL5oLhfFxzZXbSxMxxR67tOmNbStu6SGMOB+RtMIjhak6u/L5N
+ pN68nJb1m/7ShKskBhbxsR+hhGR73o4Fcfkfk1HpIMWIkPZWOwI3icN3u5g07OW6zNcx
+ JYtgoyyz9h0LqkAxRah3h34IgLH7zo9/cjpokAzkX16ORvOmIhyi2HdeyuQ898bWJ0R/
+ mV3klxj6IA1ReOFFBW6diDORpygavqIakGnnqzw3YH0uXNDl4REHQNwDAWY+wSlHTzhJ
+ i6mvFiX/IvD8reg9y9xESIX4FZ0e4k5nr6lStXnPouIcFol/09SAn7lVLjdaj4w7x+2z
+ MmRw==
+X-Gm-Message-State: AOJu0YxS6+dw5MiN2jFptsUqywbbF76Y7ORkbDdvvWILs4i0b/iUoAd7
+ MQUeDq0ZOwsTzUja9UXqsCOzbQ5bkxzypI/XtmeMoDLf02xI1wwSK4u0lVuo22Nk9tGh190DOG+
+ QAnRnqpsvBaZJFAJwGQa68adQIYlMPxTT6d1s
+X-Google-Smtp-Source: AGHT+IEFu3g6h5KWslR3XSlVIC6zId0q/ccWNf4NqAl/DrltZTyO0uqtblzVh9B9bzmk8JmaaqP3wB7BvcixI6+6szo=
+X-Received: by 2002:a05:6402:40c5:b0:5be:ce7d:ad0d with SMTP id
+ 4fb4d7f45d1cf-5c086ad8aa2mr51956a12.0.1724357144242; Thu, 22 Aug 2024
+ 13:05:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87le0oxwg4.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+References: <20240817102606.3996242-1-tavip@google.com>
+ <CAFEAcA8gg1u4_HwG9QOHj4RqfHgNLkT5nHLTFNrcaHdgL+zEPQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA8gg1u4_HwG9QOHj4RqfHgNLkT5nHLTFNrcaHdgL+zEPQ@mail.gmail.com>
+From: Octavian Purdila <tavip@google.com>
+Date: Thu, 22 Aug 2024 13:05:33 -0700
+Message-ID: <CAGWr4cQ7rWaCo3q71+EaTQMXf1p-pdxL88s5tg_kzeLNo7DTRA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/23] NXP i.MX RT595, ARM SVD and device model
+ unit tests
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, stefanst@google.com, 
+ pbonzini@redhat.com, thuth@redhat.com, marcandre.lureau@redhat.com, 
+ alistair@alistair23.me, berrange@redhat.com, philmd@linaro.org, 
+ jsnow@redhat.com, crosa@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=tavip@google.com; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,108 +91,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 22, 2024 at 03:07:55PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Thu, Aug 22, 2024 at 02:05:30PM -0300, Fabiano Rosas wrote:
-> >> Peter Xu <peterx@redhat.com> writes:
-> >> 
-> >> > On Thu, Aug 22, 2024 at 12:03:47PM -0400, Peter Xu wrote:
-> >> >> On Thu, Aug 01, 2024 at 09:35:14AM -0300, Fabiano Rosas wrote:
-> >> >> > Separate the multifd sync from flushing the client data to the
-> >> >> > channels. These two operations are closely related but not strictly
-> >> >> > necessary to be executed together.
-> >> >> > 
-> >> >> > The multifd sync is intrinsic to how multifd works. The multiple
-> >> >> > channels operate independently and may finish IO out of order in
-> >> >> > relation to each other. This applies also between the source and
-> >> >> > destination QEMU.
-> >> >> > 
-> >> >> > Flushing the data that is left in the client-owned data structures
-> >> >> > (e.g. MultiFDPages_t) prior to sync is usually the right thing to do,
-> >> >> > but that is particular to how the ram migration is implemented with
-> >> >> > several passes over dirty data.
-> >> >> > 
-> >> >> > Make these two routines separate, allowing future code to call the
-> >> >> > sync by itself if needed. This also allows the usage of
-> >> >> > multifd_ram_send to be isolated to ram code.
-> >> >> 
-> >> >> What's the usage of sync but not flush here?
-> >> >
-> >> > Oh I think I see your point.. I think flush+sync is always needed, it's
-> >> > just that RAM may not always be the one to flush, but something else.
-> >> > Makes sense then.
-> >> >
-> >> 
-> >> I'm thinking of "flush" here as a last multifd_send() before sync. We
-> >> need multiple multifd_send() along the migration to send the data, but
-> >> we might not need this extra flush. It could be that there's nothing to
-> >> flush and the code guarantees it:
-> >> 
-> >>  <populate MultiFDSendData>
-> >>  multifd_send()
-> >>  sync
-> >> 
-> >> Where RAM currently does:
-> >> 
-> >>  multifd_queue_page()
-> >>  multifd_queue_page()
-> >>  multifd_queue_page()
-> >>  ...
-> >>  multifd_queue_page()
-> >>  multifd_send()
-> >>  sync
-> >> 
-> >> Today there is a multifd_send() inside multifd_queue_page() and the
-> >> amount sent depends on the ram.c code. At the time sync gets called,
-> >> there could be data queued but not yet sent. Another client (not ram)
-> >> could just produce data in a deterministic manner and match that with
-> >> calls to multifd_send().
+On Thu, Aug 22, 2024 at 6:28=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> On Sat, 17 Aug 2024 at 11:26, Octavian Purdila <tavip@google.com> wrote:
 > >
-> > I hope I read it alright.. I suppose you meant we have chance to do:
+> > This patch set adds support for NXP's RT500 MCU [1] and the RT595
+> > EVK[2]. More RT500 device models will be submitted in future patch sets=
+.
 > >
-> >   ram_send()
-> >   vfio_send()
-> >   flush()
+> > The goal of this first patch set is to provide a minimal set that
+> > allows running the NXP MCU SDK hello world example[4].
 > >
-> > Instead of:
+> > The patch set introduces a (python) tool that generates C header files
+> > from ARM SVD files[3]. This significantly reduces the effort to write
+> > a new device model by automatically generating: register definitions
+> > and layout (including bit fields), register names for easier debugging
+> > and tracing, reset register values, register write masks, etc.
 > >
-> >   ram_send()
-> >   flush()
-> >   vfio_send()
-> >   flush()
+> > The generated files are commited and not generated at compile
+> > time. Build targets are created so that they can be easily regenerated
+> > if needed.
 > >
-> > Am I right?
-> 
-> Not really. I'm saying that RAM doesn't always send the data, that's why
-> it needs a final flush before sync:
-> 
-> multifd_queue_page()
->     if (multifd_queue_empty(pages)) {
->         multifd_enqueue(pages, offset);
->     }
->     
->     if (multifd_queue_full(pages)) {
->         multifd_send_pages()   <-- this might not happen
->     }
->     multifd_enqueue()
-> 
-> multifd_send_sync_main()
->     if (pages->num) { <-- data left unsent
->        multifd_send() <-- flush
->     }
->     <sync routine>
+> > It also introduces unit tests for device models. To allow accessing
+> > registers from unit tests a system bus mock is created.
+> >
+> > This can potentially introduce maintainance issues, due to mocks or
+> > unit tests getting outdated when code is refactored. However, I think
+> > this is not an issue in this case because the APIs we mocked (system
+> > bus MMIO access) or directly used (irq APIs, chardev APIs, clock tree
+> > APIs) to interact with device models are stable at this
+> > point. Anecdotally, our experience seems to confirm this: we only run
+> > into one (trivially fixed) breaking upstream change (gpio getting
+> > removed from hwcore) in the last three years.
+>
+> My main issue with the mocking is that it introduces a
+> completely different way of testing devices that is
+> not the same as what we use for any existing device.
+> QEMU already has too many places where there are multiple
+> different ways or styles of doing something, so adding a
+> new one should be a high bar (e.g. "this lets us test XYZ
+> that would be impossible in the old way") and preferably
+> also have a transition plan for how we would be
+> deprecating and dropping the old way of doing things.
+>
+> So my inclination here is to say "you said that you could
+> do the testing of this device with qtest, so use qtest".
 
-I see now.
+Looks like I missed some things when I looked at it, probably minor or
+a matter of preference in the great scheme of things. It might still
+be worth mentioning them here.
 
-At least for now I'd expect VFIO doesn't need to use sync at all, not
-before the kernel ABI changes. It's just that when that comes we may need
-to move that final sync() out of ram code then, but before a migration
-completes, to cover both.
+In patch 19 we are testing exposed clocks and AFAICS there are no
+qtest APIs for that. We can probably add a qest API for that though.
 
-It's ok then, my R-b holds.
+In patch 9 we are using internal APIs exposed by the generic flexcom
+device to check that device selection works as expected. I don't see
+how we can reimplement that with qtest, this is a classic example of
+what unit tests can enable vs functional testing.
 
--- 
-Peter Xu
+There are also a few things that are a bit cumbersome to do with
+qtest. In patch 13 and 16 we introduce i2c and spi echo test devices
+to test i2c/spi transactions. I've noticed that device qtests use an
+existing i2c peripheral for tests. We could add the i2c and spi test
+devices to qemu and have them enabled by default. Or continue using
+existing spi/i2c peripherals for testing spi/i2c controllers for
+qtests which I personally don't like because it requires knowledge of
+specific peripherals.
 
+That being said, I'll go ahead and switch to qtests, if only to better
+understand advantages / disadvantages and separate this patch from the
+bigger device unit tests discussion.
+
+> If we were designing a "test devices" framework from
+> scratch, using mocks would probably be a strong candidate
+> for that design, but we aren't starting from scratch.
+
+I still think that writing device tests as unit tests is better:
+ - devices can be tested independently
+ - we can test more, including internal behaviour and APIs, error paths, et=
+c.
+ - enable sanitizers by default for device tests*
+
+I wonder what people think and what would be a path to enable device
+unit tests. What would we need to prove, besides converting existing
+device qtests to unit tests, which I can certainly help with.
+
+*I was surprised to see that sanitizers are not enabled by default on
+unit tests when host dependencies are available, what is preventing
+that?
 
