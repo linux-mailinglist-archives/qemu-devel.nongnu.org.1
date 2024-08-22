@@ -2,63 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4D295BF01
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 21:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1BD95BE01
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 20:09:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shDdR-00035B-5M; Thu, 22 Aug 2024 15:38:17 -0400
+	id 1shCE8-0005I6-LQ; Thu, 22 Aug 2024 14:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <a.fatoum@pengutronix.de>)
- id 1shApo-00024r-AM
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 12:38:52 -0400
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <a.fatoum@pengutronix.de>)
- id 1shApl-00015z-4V
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 12:38:52 -0400
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.whiteo.stw.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1shApe-0001vr-9l; Thu, 22 Aug 2024 18:38:42 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1shApd-002I7V-NU; Thu, 22 Aug 2024 18:38:41 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
- by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
- (envelope-from <a.fatoum@pengutronix.de>) id 1shApd-00FcSr-22;
- Thu, 22 Aug 2024 18:38:41 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: qemu-devel@nongnu.org,
-	Stafford Horne <shorne@gmail.com>
-Cc: openrisc@lists.librecores.org,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH RESEND] hw/openrisc/openrisc_sim: keep serial@90000000 as
- default
-Date: Thu, 22 Aug 2024 18:38:38 +0200
-Message-Id: <20240822163838.3722764-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1shCE6-0005Gz-QL
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:08:02 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1shCE4-00062e-KN
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:08:02 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 75BF221E33;
+ Thu, 22 Aug 2024 18:07:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724350078; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wwy9q01N33iO37JUc7rNn4zce8cDVd7anrqVSNI7FXw=;
+ b=SXYOHIVFUvsk3ITXEY5swEefMDXgFcKHS5b6CmuR4UKaKi86jRAs75OmRwpTrcVFxkHMPX
+ RkX4lNs8+xx4H+7p6UVtm072RWiaNFocy8v/PmYhoiUUjPocx+/3ZsFSDPAhQ0GsWIx9OL
+ pMnmAU9xPU50FMyDf/9adCy/x5MiovY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724350078;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wwy9q01N33iO37JUc7rNn4zce8cDVd7anrqVSNI7FXw=;
+ b=FlUk+EWkEqc/uLfbwvUragWJxrtzrIXTcTsnOk/jRpOhISF2FVc7lHJp/GsuLQF23+JcwX
+ gaJt/auwvAa88CCA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SXYOHIVF;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FlUk+EWk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724350078; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wwy9q01N33iO37JUc7rNn4zce8cDVd7anrqVSNI7FXw=;
+ b=SXYOHIVFUvsk3ITXEY5swEefMDXgFcKHS5b6CmuR4UKaKi86jRAs75OmRwpTrcVFxkHMPX
+ RkX4lNs8+xx4H+7p6UVtm072RWiaNFocy8v/PmYhoiUUjPocx+/3ZsFSDPAhQ0GsWIx9OL
+ pMnmAU9xPU50FMyDf/9adCy/x5MiovY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724350078;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wwy9q01N33iO37JUc7rNn4zce8cDVd7anrqVSNI7FXw=;
+ b=FlUk+EWkEqc/uLfbwvUragWJxrtzrIXTcTsnOk/jRpOhISF2FVc7lHJp/GsuLQF23+JcwX
+ gaJt/auwvAa88CCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E5C1213297;
+ Thu, 22 Aug 2024 18:07:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id obCEKn1+x2anIwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 22 Aug 2024 18:07:57 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
+Subject: Re: [PATCH v3 12/14] migration/multifd: Allow multifd sync without
+ flush
+In-Reply-To: <Zsd3O_OCbpyctm-K@x1n>
+References: <20240801123516.4498-1-farosas@suse.de>
+ <20240801123516.4498-13-farosas@suse.de> <ZsdhY2ijx9nhSdLz@x1n>
+ <Zsdi432b2dobNhMj@x1n> <87ttfcxzc5.fsf@suse.de> <Zsd3O_OCbpyctm-K@x1n>
+Date: Thu, 22 Aug 2024 15:07:55 -0300
+Message-ID: <87le0oxwg4.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: qemu-devel@nongnu.org
-Received-SPF: pass client-ip=2a0a:edc0:2:b01:1d::104;
- envelope-from=a.fatoum@pengutronix.de; helo=metis.whiteo.stw.pengutronix.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 75BF221E33
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MID_RHS_MATCH_FROM(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 22 Aug 2024 15:38:06 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,45 +127,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We used to only have a single UART on the platform and it was located at
-address 0x90000000. When the number of UARTs was increased to 4, the
-first UART remained at its location, but instead of being the first one
-to be registered, it became the last.
+Peter Xu <peterx@redhat.com> writes:
 
-This caused QEMU to pick 0x90000300 as the default UART, which broke
-software that hardcoded the address of 0x90000000 and expected its
-output to be visible when the user configured only a single console.
+> On Thu, Aug 22, 2024 at 02:05:30PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Thu, Aug 22, 2024 at 12:03:47PM -0400, Peter Xu wrote:
+>> >> On Thu, Aug 01, 2024 at 09:35:14AM -0300, Fabiano Rosas wrote:
+>> >> > Separate the multifd sync from flushing the client data to the
+>> >> > channels. These two operations are closely related but not strictly
+>> >> > necessary to be executed together.
+>> >> > 
+>> >> > The multifd sync is intrinsic to how multifd works. The multiple
+>> >> > channels operate independently and may finish IO out of order in
+>> >> > relation to each other. This applies also between the source and
+>> >> > destination QEMU.
+>> >> > 
+>> >> > Flushing the data that is left in the client-owned data structures
+>> >> > (e.g. MultiFDPages_t) prior to sync is usually the right thing to do,
+>> >> > but that is particular to how the ram migration is implemented with
+>> >> > several passes over dirty data.
+>> >> > 
+>> >> > Make these two routines separate, allowing future code to call the
+>> >> > sync by itself if needed. This also allows the usage of
+>> >> > multifd_ram_send to be isolated to ram code.
+>> >> 
+>> >> What's the usage of sync but not flush here?
+>> >
+>> > Oh I think I see your point.. I think flush+sync is always needed, it's
+>> > just that RAM may not always be the one to flush, but something else.
+>> > Makes sense then.
+>> >
+>> 
+>> I'm thinking of "flush" here as a last multifd_send() before sync. We
+>> need multiple multifd_send() along the migration to send the data, but
+>> we might not need this extra flush. It could be that there's nothing to
+>> flush and the code guarantees it:
+>> 
+>>  <populate MultiFDSendData>
+>>  multifd_send()
+>>  sync
+>> 
+>> Where RAM currently does:
+>> 
+>>  multifd_queue_page()
+>>  multifd_queue_page()
+>>  multifd_queue_page()
+>>  ...
+>>  multifd_queue_page()
+>>  multifd_send()
+>>  sync
+>> 
+>> Today there is a multifd_send() inside multifd_queue_page() and the
+>> amount sent depends on the ram.c code. At the time sync gets called,
+>> there could be data queued but not yet sent. Another client (not ram)
+>> could just produce data in a deterministic manner and match that with
+>> calls to multifd_send().
+>
+> I hope I read it alright.. I suppose you meant we have chance to do:
+>
+>   ram_send()
+>   vfio_send()
+>   flush()
+>
+> Instead of:
+>
+>   ram_send()
+>   flush()
+>   vfio_send()
+>   flush()
+>
+> Am I right?
 
-This caused regressions[1] in the barebox test suite when updating to a
-newer QEMU. As there seems to be no good reason to register the UARTs in
-inverse order, let's register them by ascending address, so existing
-software can remain oblivious to the additional UART ports.
+Not really. I'm saying that RAM doesn't always send the data, that's why
+it needs a final flush before sync:
 
-[1]: https://lore.barebox.org/barebox/707e7c50-aad1-4459-8796-0cc54bab32e2@pengutronix.de/T/#m5da26e8a799033301489a938b5d5667b81cef6ad
----
-v1 -> RESEND:
-  - expand addressees beyond apparently defunct openrisc@lists.librecores.org
+multifd_queue_page()
+    if (multifd_queue_empty(pages)) {
+        multifd_enqueue(pages, offset);
+    }
+    
+    if (multifd_queue_full(pages)) {
+        multifd_send_pages()   <-- this might not happen
+    }
+    multifd_enqueue()
 
-NOTE: I am not familiar with QEMU internals, so please let me know
-if registration in inverse order served a particular purpose.
----
- hw/openrisc/openrisc_sim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+multifd_send_sync_main()
+    if (pages->num) { <-- data left unsent
+       multifd_send() <-- flush
+    }
+    <sync routine>
 
-diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
-index bffd6f721f7b..d147b00e4817 100644
---- a/hw/openrisc/openrisc_sim.c
-+++ b/hw/openrisc/openrisc_sim.c
-@@ -265,7 +265,7 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-         serial_irq = get_cpu_irq(cpus, 0, irq_pin);
-     }
-     serial_mm_init(get_system_memory(), base, 0, serial_irq, 115200,
--                   serial_hd(OR1KSIM_UART_COUNT - uart_idx - 1),
-+                   serial_hd(uart_idx),
-                    DEVICE_NATIVE_ENDIAN);
- 
-     /* Add device tree node for serial. */
--- 
-2.39.2
-
+>
+>> 
+>> > If you want, you may touch up the commit message to clarify that.  E.g. I
+>> > still don't see any use case that we want to sync without a flush, that
+>> > part might be a bit ambiguous.
+>> >
+>> > If my understanding is correct, take this:
+>> >
+>> > Reviewed-by: Peter Xu <peterx@redhat.com>
+>> 
 
