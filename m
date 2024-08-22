@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F3695B320
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 12:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC67195B322
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 12:44:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh5HF-0003DS-F6; Thu, 22 Aug 2024 06:42:49 -0400
+	id 1sh5HL-0003Nj-0M; Thu, 22 Aug 2024 06:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HD-0003Cy-6M
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:47 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HJ-0003Mk-0T
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:53 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HB-00019e-G0
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:46 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-371893dd249so284021f8f.2
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 03:42:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HH-00019q-CN
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:52 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-429da8b5feaso5881415e9.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 03:42:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724323362; x=1724928162; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zYTncKdl2H5JJa9yqMpXByipGyIEcUC+PC0v0Mplmdg=;
- b=D7PT5Bm+hmSACyPHmmBspcHzBz9ltccmGV81ETNBee3AXHCvbCmBQhcggmVZA+Ww14
- dZTpmOu7OaTLt0VLV0BfDgN/yjaGuKHJBRs1WIgL7VBPQskuG6okyuVWSj9orTa9chG/
- kynV8agtwQSXsdz5xEsdVHPMO1b1HZp0y5cbCOhEHTH8GWysdlpV2kh3Ag7AtNevekRE
- Uzg+Z+6YaGxEmpTEN+40kKJCaf8E9yz5iFty0l5kV1UE2qVj64wlbp2Rye6beD+g2zNC
- zp4teUd/1Xfkd6Q98fnmOhFugjAy7Le4O8O14YYOPppxtZPWsI9zw9mTLWqlsLI2itJk
- /qMw==
+ d=linaro.org; s=google; t=1724323369; x=1724928169; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tf5HkEASfWzSVkOHOTgGoEk72uRFvrW6k14mphVk1H0=;
+ b=ANf96sQMZBvQbIiGnmhb96fuw2QP3naQWMHOEnzHZxZzHdlYVabA5PtjW9tEf5HIDU
+ Ppl8C50j37JMlIA0GnywSoqfOWMn0sQ5ouB497Ok7YIvHyEsJ+AzBCp7q0uiRcsgIMbT
+ do04FxUMGDrkHfKKkZh//OU7N0XpKPboZaK4PKMEYfvfqCJ9TeW4Vflt7mdwLzZgomt/
+ d7ofp88qOJcZK74zg2Q8TEqkth56I/E1mp7XO3alpD4F4CalHPsswNJBc/b6hMqgeJ0h
+ DFBkXDbFxQFb7U4I1S+fGp+c6Hm7t+Ds+jnQJptNJ/qMrSJEaVHhftl0SKUzF3xJ0isE
+ ic+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724323362; x=1724928162;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zYTncKdl2H5JJa9yqMpXByipGyIEcUC+PC0v0Mplmdg=;
- b=Y1A2ww6Qn7lkAld5APyqmodaP5741HdjYqW5Z31SSsFoORslngSXbZJoFuWbVcfGDP
- pa3m89PYCC2GRP15q9MNiE+b2gh41qEc+bbGIYlXQeRDjt1Ay0wxujIEYPGlVhJt4ZZU
- /FUzc8Iv4dfT1E7vGz6k25TFwZdK7CCv7ok5Ebq2Nu8aXpPFoYrW6Zd11BKdbgrbqX9O
- T5k05G4w+bZAMVfpQuALWPbFplwPg705B2I27J4MmD6sK29x+x0FHjVlIJB60oi4ma1C
- 4dMEixgy7LQLHCJeAxbrwJJA9Ddi9ZP4y3vW6ebAYs/tW3yESTMEbotfrZvFdQnA+vNV
- 1luQ==
-X-Gm-Message-State: AOJu0YzLdjpQUbDOWuuc0eByWQ47q7WEcgqdamWVEFV9sEcW/BAEJsUV
- d0FtpfEtBBjXBmVU/zerL54QOLn7PNZNiC9adHybdRQmlkIGoR5B/oeePVswSjEAbkkn+RBF86F
- u
-X-Google-Smtp-Source: AGHT+IE+SW7WIbINgFMdPe7tdCOqu7Qe3axPi5CieLB/8GeDq5c2e3hSlRJiQyKw9AlRJ+4A3g/WGg==
-X-Received: by 2002:a5d:4bc5:0:b0:368:3b1a:8350 with SMTP id
- ffacd0b85a97d-372fd58d51fmr2902239f8f.19.1724323362137; 
- Thu, 22 Aug 2024 03:42:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1724323369; x=1724928169;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tf5HkEASfWzSVkOHOTgGoEk72uRFvrW6k14mphVk1H0=;
+ b=LPujlFdlQrmlDe6PAlMggYnNkakBZCnanj2IYs+EOJ5N3QeHCsDRXUpXjQth05K9J1
+ +4TztJlMXAreC3/8t3QSBWt1xjefRIzD9GTqxLzDQb5G9EcwbtMXXIb80dj6oxVhzWUy
+ GXgtL/1c0dk3aAb3DcCJ6xOBdVCgW0B7feFpMhxXqJy4gwfA2nwMl6CfPiudyxyeZxy0
+ i4SHBNDawUDIm6SYo1XKRNLofAbcPoTZ+Mhj9Q5T2CfzHKlRfLJ2U1y1tvdg4gBp4J//
+ dP1Wv7V1g5vEE6Y4zS4tbktFIyfPcfjqOnRCZpcWf0l4AUSAXsGJgE6YBlE2uA/E0Yv5
+ 1LFQ==
+X-Gm-Message-State: AOJu0YzM+ZEYa9PTBJlQJ7f4qH4tTa1PHmUWkza3EgD2wRDuTkhi8jHy
+ 4uBA+KI3xzPQAwIoYM2EyWyU553KXxNo9ib44DK44Sw8lTKj0NiCpQzPPQdd0KWfQnzOZjwmiFU
+ s
+X-Google-Smtp-Source: AGHT+IGkmIw0oBJY7sc/5az8852481Gnh6aba4tZdmtjwKNv7+On97E4XkPs+vguyUWlzMRyVVyQsw==
+X-Received: by 2002:a05:600c:1e8f:b0:426:5e8e:aa48 with SMTP id
+ 5b1f17b1804b1-42ac55dfe1cmr13537755e9.22.1724323369120; 
+ Thu, 22 Aug 2024 03:42:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.153])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37308265ae6sm1348923f8f.109.2024.08.22.03.42.40
+ 5b1f17b1804b1-42ac500e119sm20623675e9.0.2024.08.22.03.42.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Aug 2024 03:42:41 -0700 (PDT)
+ Thu, 22 Aug 2024 03:42:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 0/3] tests/functional: Convert ARM bFLT linux-user avocado test
-Date: Thu, 22 Aug 2024 12:42:35 +0200
-Message-ID: <20240822104238.75045-1-philmd@linaro.org>
+Subject: [PATCH 1/3] tests/functional: Add QemuUserTest class
+Date: Thu, 22 Aug 2024 12:42:36 +0200
+Message-ID: <20240822104238.75045-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240822104238.75045-1-philmd@linaro.org>
+References: <20240822104238.75045-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,60 +94,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the single user-mode test.
+Per commit 5334df4822 ("tests/avocado: Introduce
+QemuUserTest base class"):
 
-Warning, missing rework in tests/functional/meson.build,
-however dirty tested using:
+  Similarly to the 'System' Test base class with methods
+  for testing system emulation, the QemuUserTest class
+  contains methods useful to test user-mode emulation.
 
--- >8 --
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index f8e482a87c..44f8c2aa48 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -29,4 +29,3 @@ tests_generic = [
- tests_arm_thorough = [
--  'arm_canona1100',
--  'arm_n8x0',
-+  'arm_bflt',
- ]
-@@ -124,3 +123,3 @@ foreach speed : ['quick', 'thorough']
-   foreach dir : target_dirs
--    if not dir.endswith('-softmmu')
-+    if dir.endswith('-softmmu')
-       continue
-@@ -129,3 +128,3 @@ foreach speed : ['quick', 'thorough']
-     target_base = dir.split('-')[0]
--    test_emulator = emulators['qemu-system-' + target_base]
-+    test_emulator = emulators['qemu-' + target_base]
-
-@@ -146,3 +145,3 @@ foreach speed : ['quick', 'thorough']
-     test_env.set('QEMU_TEST_QEMU_BINARY',
--                 meson.global_build_root() / 'qemu-system-' + target_base)
-+                 meson.global_build_root() / 'qemu-' + target_base)
-     test_env.set('QEMU_BUILD_ROOT', meson.project_build_root())
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-
-  $ make check-func-arm SPEED=thorough QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-  1/1 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_bflt  OK    0.22s   1 subtests passed
-
-Based-on: <20240821082748.65853-1-thuth@redhat.com>
-Based-on: <20240822095045.72643-1-philmd@linaro.org>
-
-Philippe Mathieu-Daudé (3):
-  tests/functional: Add QemuUserTest class
-  tests/functional: Convert ARM bFLT linux-user avocado test
-  tests/avocado: Remove unused QemuUserTest class
-
- tests/avocado/avocado_qemu/__init__.py | 19 +--------
- tests/avocado/load_bflt.py             | 54 --------------------------
  tests/functional/qemu_test/__init__.py |  2 +-
- tests/functional/qemu_test/testcase.py | 17 ++++++++
- tests/functional/qemu_test/utils.py    |  9 +++++
- tests/functional/test_arm_bflt.py      | 44 +++++++++++++++++++++
- 6 files changed, 72 insertions(+), 73 deletions(-)
- delete mode 100644 tests/avocado/load_bflt.py
- create mode 100755 tests/functional/test_arm_bflt.py
+ tests/functional/qemu_test/testcase.py | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index db05c8f412..6e9b017264 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -11,4 +11,4 @@
+ from .cmd import has_cmd, has_cmds, run_cmd, is_readable_executable_file, \
+     interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
+     exec_command, exec_command_and_wait_for_pattern
+-from .testcase import QemuSystemTest, QemuBaseTest
++from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 18314be9d1..aa0146265a 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -13,6 +13,7 @@
+ 
+ import logging
+ import os
++import subprocess
+ import pycotap
+ import sys
+ import unittest
+@@ -70,6 +71,22 @@ def main():
+         unittest.main(module = None, testRunner = tr, argv=["__dummy__", path])
+ 
+ 
++class QemuUserTest(QemuBaseTest):
++
++    def setUp(self):
++        super().setUp('qemu-')
++        self._ldpath = []
++
++    def add_ldpath(self, ldpath):
++        self._ldpath.append(os.path.abspath(ldpath))
++
++    def run_cmd(self, bin_path, args=[]):
++        return subprocess.run([self.qemu_bin]
++                              + ["-L %s" % ldpath for ldpath in self._ldpath]
++                              + [bin_path]
++                              + args,
++                              text=True, capture_output=True)
++
+ class QemuSystemTest(QemuBaseTest):
+     """Facilitates system emulation tests."""
+ 
 -- 
 2.45.2
 
