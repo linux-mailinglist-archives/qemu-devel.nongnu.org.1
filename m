@@ -2,109 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0B295B300
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 12:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F3695B320
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 12:43:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh59Y-0006QX-Bf; Thu, 22 Aug 2024 06:34:52 -0400
+	id 1sh5HF-0003DS-F6; Thu, 22 Aug 2024 06:42:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1sh59I-0006PD-65; Thu, 22 Aug 2024 06:34:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1sh59B-0008Hh-3X; Thu, 22 Aug 2024 06:34:30 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47M6ejZh017352;
- Thu, 22 Aug 2024 10:34:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- ibcuAMMDcg/XpEcqa8XUNv5uP8hdSFRuZU/sylQRtOU=; b=G08l2qCfmF9XcldB
- 9r8FEQ8WeoHactJ1cRV1RNCHwPoHmMOBNAOqZNGBTda0ettAhkjQPcymaKIPin8V
- DHZjLU4BGHfnPH0AYxCtrk0mmtv9rtd13z4lKAvZlm4Gs4LCET61UiaJi5e3/ezO
- cHAdMAQrhGcYqapSXopfWahaXGWObTOotctzicxUk57i00Em4XTHZFCN3qpCOsqu
- xvCOs94Awq98QLo3Z1oFA/i6y3KAOC1DNRLpy4EHgYqoNIJBmgBvIFqySAPg9nGr
- A3IjoGGqmnWRdcAC74+XGoo6DzKCJecgYhKc2L/XQf+h4M7Wgkg3YR6PFUz3F2pW
- Pao0og==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412ma0fehj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Aug 2024 10:34:24 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47MAYNta028092;
- Thu, 22 Aug 2024 10:34:23 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412ma0fehe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Aug 2024 10:34:23 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47M7xTKE017649;
- Thu, 22 Aug 2024 10:34:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4138w3bxqk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Aug 2024 10:34:22 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 47MAYFiu56426866
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Aug 2024 10:34:17 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AFBF020049;
- Thu, 22 Aug 2024 10:34:15 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 099F920040;
- Thu, 22 Aug 2024 10:34:15 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.179.14.156]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 22 Aug 2024 10:34:14 +0000 (GMT)
-Message-ID: <8050216dbbdd0762347d8e14f17d030ff8874283.camel@linux.ibm.com>
-Subject: Re: [PATCH for-9.2 00/10] s390: Convert virtio-ccw, cpu to
- three-phase reset, and followup cleanup
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Peter Maydell <peter.maydell@linaro.org>, Christian Borntraeger
- <borntraeger@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, David
- Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, Eric
- Farman <farman@linux.ibm.com>
-Date: Thu, 22 Aug 2024 12:34:14 +0200
-In-Reply-To: <CAFEAcA8FFiiMXTcMR0WRP=Nhw3-+LYoP=X4OYrm5tnrp4L-wGQ@mail.gmail.com>
-References: <20240813165250.2717650-1-peter.maydell@linaro.org>
- <14c38495-131f-4798-bf41-da442ede23eb@linux.ibm.com>
- <CAFEAcA8FFiiMXTcMR0WRP=Nhw3-+LYoP=X4OYrm5tnrp4L-wGQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HD-0003Cy-6M
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:47 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HB-00019e-G0
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:46 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-371893dd249so284021f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 03:42:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1724323362; x=1724928162; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zYTncKdl2H5JJa9yqMpXByipGyIEcUC+PC0v0Mplmdg=;
+ b=D7PT5Bm+hmSACyPHmmBspcHzBz9ltccmGV81ETNBee3AXHCvbCmBQhcggmVZA+Ww14
+ dZTpmOu7OaTLt0VLV0BfDgN/yjaGuKHJBRs1WIgL7VBPQskuG6okyuVWSj9orTa9chG/
+ kynV8agtwQSXsdz5xEsdVHPMO1b1HZp0y5cbCOhEHTH8GWysdlpV2kh3Ag7AtNevekRE
+ Uzg+Z+6YaGxEmpTEN+40kKJCaf8E9yz5iFty0l5kV1UE2qVj64wlbp2Rye6beD+g2zNC
+ zp4teUd/1Xfkd6Q98fnmOhFugjAy7Le4O8O14YYOPppxtZPWsI9zw9mTLWqlsLI2itJk
+ /qMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724323362; x=1724928162;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zYTncKdl2H5JJa9yqMpXByipGyIEcUC+PC0v0Mplmdg=;
+ b=Y1A2ww6Qn7lkAld5APyqmodaP5741HdjYqW5Z31SSsFoORslngSXbZJoFuWbVcfGDP
+ pa3m89PYCC2GRP15q9MNiE+b2gh41qEc+bbGIYlXQeRDjt1Ay0wxujIEYPGlVhJt4ZZU
+ /FUzc8Iv4dfT1E7vGz6k25TFwZdK7CCv7ok5Ebq2Nu8aXpPFoYrW6Zd11BKdbgrbqX9O
+ T5k05G4w+bZAMVfpQuALWPbFplwPg705B2I27J4MmD6sK29x+x0FHjVlIJB60oi4ma1C
+ 4dMEixgy7LQLHCJeAxbrwJJA9Ddi9ZP4y3vW6ebAYs/tW3yESTMEbotfrZvFdQnA+vNV
+ 1luQ==
+X-Gm-Message-State: AOJu0YzLdjpQUbDOWuuc0eByWQ47q7WEcgqdamWVEFV9sEcW/BAEJsUV
+ d0FtpfEtBBjXBmVU/zerL54QOLn7PNZNiC9adHybdRQmlkIGoR5B/oeePVswSjEAbkkn+RBF86F
+ u
+X-Google-Smtp-Source: AGHT+IE+SW7WIbINgFMdPe7tdCOqu7Qe3axPi5CieLB/8GeDq5c2e3hSlRJiQyKw9AlRJ+4A3g/WGg==
+X-Received: by 2002:a5d:4bc5:0:b0:368:3b1a:8350 with SMTP id
+ ffacd0b85a97d-372fd58d51fmr2902239f8f.19.1724323362137; 
+ Thu, 22 Aug 2024 03:42:42 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.206.153])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37308265ae6sm1348923f8f.109.2024.08.22.03.42.40
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 22 Aug 2024 03:42:41 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH 0/3] tests/functional: Convert ARM bFLT linux-user avocado test
+Date: Thu, 22 Aug 2024 12:42:35 +0200
+Message-ID: <20240822104238.75045-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eZMIobqmgtvoKJHPHgdbslQXOKdSowTH
-X-Proofpoint-ORIG-GUID: GEYA43oBWJ_IgAw5XgRovmO1BazOztdn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-22_03,2024-08-19_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- mlxlogscore=947 lowpriorityscore=0 phishscore=0 spamscore=0 malwarescore=0
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408220079
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,31 +91,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-08-14 at 21:06 +0100, Peter Maydell wrote:
-> On Wed, 14 Aug 2024 at 15:22, Christian Borntraeger
-> <borntraeger@linux.ibm.com> wrote:
-> >=20
-> > Am 13.08.24 um 18:52 schrieb Peter Maydell:
-> > > The main aim of this patchseries is to remove the two remaining uses
-> > > of device_class_set_parent_reset() in the tree, which are virtio-ccw
-> > > and the s390 CPU class. Doing that lets us do some followup cleanup.
-> > > (The diffstat looks alarming but is almost all coccinelle automated
-> > > changes.)
-> > >=20
-> > > Note that my testing here has only been "make check" and
-> > > "make check-avocado", which I know doesn't really exercise reset
-> > > very heavily.
->=20
-> > Nina, can you have a look at those patches?
->=20
-> If you plan to do any testing you'll want to locally fix the
-> silly mistake I made in patch 2 (a RESET_TYPE_COLD where
-> it should say RESET_TYPE_S390_CPU_NORMAL) -- see the review
-> comments on that patch. Sorry about that one...
->=20
-> thanks
-> -- PMM
->=20
+Convert the single user-mode test.
 
-I'll run it through our CI and see if anything pops up.
+Warning, missing rework in tests/functional/meson.build,
+however dirty tested using:
+
+-- >8 --
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index f8e482a87c..44f8c2aa48 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -29,4 +29,3 @@ tests_generic = [
+ tests_arm_thorough = [
+-  'arm_canona1100',
+-  'arm_n8x0',
++  'arm_bflt',
+ ]
+@@ -124,3 +123,3 @@ foreach speed : ['quick', 'thorough']
+   foreach dir : target_dirs
+-    if not dir.endswith('-softmmu')
++    if dir.endswith('-softmmu')
+       continue
+@@ -129,3 +128,3 @@ foreach speed : ['quick', 'thorough']
+     target_base = dir.split('-')[0]
+-    test_emulator = emulators['qemu-system-' + target_base]
++    test_emulator = emulators['qemu-' + target_base]
+
+@@ -146,3 +145,3 @@ foreach speed : ['quick', 'thorough']
+     test_env.set('QEMU_TEST_QEMU_BINARY',
+-                 meson.global_build_root() / 'qemu-system-' + target_base)
++                 meson.global_build_root() / 'qemu-' + target_base)
+     test_env.set('QEMU_BUILD_ROOT', meson.project_build_root())
+---
+
+  $ make check-func-arm SPEED=thorough QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
+  1/1 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_bflt  OK    0.22s   1 subtests passed
+
+Based-on: <20240821082748.65853-1-thuth@redhat.com>
+Based-on: <20240822095045.72643-1-philmd@linaro.org>
+
+Philippe Mathieu-Daudé (3):
+  tests/functional: Add QemuUserTest class
+  tests/functional: Convert ARM bFLT linux-user avocado test
+  tests/avocado: Remove unused QemuUserTest class
+
+ tests/avocado/avocado_qemu/__init__.py | 19 +--------
+ tests/avocado/load_bflt.py             | 54 --------------------------
+ tests/functional/qemu_test/__init__.py |  2 +-
+ tests/functional/qemu_test/testcase.py | 17 ++++++++
+ tests/functional/qemu_test/utils.py    |  9 +++++
+ tests/functional/test_arm_bflt.py      | 44 +++++++++++++++++++++
+ 6 files changed, 72 insertions(+), 73 deletions(-)
+ delete mode 100644 tests/avocado/load_bflt.py
+ create mode 100755 tests/functional/test_arm_bflt.py
+
+-- 
+2.45.2
+
 
