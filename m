@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E3A95B321
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 12:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3E195B31F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 12:43:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh5HR-0003XO-HR; Thu, 22 Aug 2024 06:43:02 -0400
+	id 1sh5HZ-0003hS-Ga; Thu, 22 Aug 2024 06:43:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HP-0003Wk-UP
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:59 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HW-0003gy-VN
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:43:06 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HN-0001A6-TO
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:42:59 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-37182eee02dso349587f8f.1
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 03:42:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sh5HV-0001AN-EV
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 06:43:06 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3717de33d58so323933f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 03:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724323376; x=1724928176; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724323383; x=1724928183; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DC8WY1PhyTAf9am5ZSe2JMSlfNoWjsSxlIuu/lXOwxk=;
- b=KXlFDSlXcJ7ZDQdDXRcnWfghd1SjHNoUjXpVIMnBm5UdDRFd1ORv9cyy4HyIm/L0N1
- Q3Vlwure3OgzxkFHmeP4Za/N4m+qVHeyQuzt4SV5v7ZwnPv7H2TpD8+Df2C2VM7O+4I2
- rb1g/LrovNsJ8PTPM7zNXUuZS2PFUeu0OMteM3b/j1gL8vg9RBxgMvfLgaFBdfwsPvvm
- 1wIWTHJYlxTuJNHsh/WpW25UTmdsp/AxC8/XF74S6RlUlpgKMXGVg2ecmlJRnw+f8jfy
- IdZBYJNGlZv92xdoHw9zakVWto1w3q4e0cqyvLKluzUN7NWS3yWY51TBWhnSmmRv6KsC
- YVWQ==
+ bh=a4qja5+51Vsbcc1haEmPRmBh3XPr17SQDcwk8vlpqiY=;
+ b=sAzIgTYkYfg1N4hVgk9wCtZqeTLjO1Asu1nuJkLFr/vWsn9txJZ39rKP24F+suTqdo
+ 4im3GitPSoSM8430wHBO84L0wbSiKKbgX0zAyhoeKffBV8n/mxchJ+eHRWBRyfGaMjhN
+ yHDAlDyMfA390NLdUn97NA9zwW3SwF09fqWQQn/yoO8vB19SLh36s/MXdqFiTvTKorkN
+ gMVAm+GTELDjeB+Nc5GnjO9Dvj5XaxdDHZS6Aqj4K6Mc9VKAzkZI4IgR56XrtILGKT6c
+ ew4jhTCrcAsH/4OUG/lruarYf6eV+uplCvKr6YIQ03CLS/tsTEEFbMqoiEGwatUMDnoZ
+ xZSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724323376; x=1724928176;
+ d=1e100.net; s=20230601; t=1724323383; x=1724928183;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DC8WY1PhyTAf9am5ZSe2JMSlfNoWjsSxlIuu/lXOwxk=;
- b=oViHZdB5VsxO/9x5d5t//PldktA3IZ9o22TfP4AoVGoSkQFeW898f+CW4kDQdwnuZQ
- uAsyAUxIFzUnV0FvEilrhRICPutoQHAFiqAF9L+nwi88BiJPAis+uiTlhT6f4S093kI1
- 864MEgEADLmoDvt1g6BdmYeeLdVL6R8vOEaEkMG2VNqkUo9W5vm+U25lUQ+oXKz83jZM
- Tx4+GS7VkE7rvAUWWSJfNTZanAXdbD4oemuVfRQvIvbO5mWK0tTvjLL27Q2wtcsoM2Ay
- wf52OtmEQAMVoL6jPg4FMlxz33UovT7mrHJu0HZBG0p8rbqmZBFNr1bJpeEJWOKi1kSW
- 7H5A==
-X-Gm-Message-State: AOJu0YwUOq1+zNDPqwrEALC1M0gLfsNaCS07P8g8NrMqv+6v6UGTne0t
- BQgpIB0f8CBqQOPOMwEFP9KkcMSkR5F9nBpySrdWUjlc2y1r2ZlJPRbixOwwPVEFP9glfTlBTtd
- 0
-X-Google-Smtp-Source: AGHT+IF0txux8SMKsMk+6xA7HolxzrMWXAJtS+DYe713cIRf694nJ6GwfX5soAUQJwwu3pTgR+O9nw==
-X-Received: by 2002:adf:b317:0:b0:360:8c88:ab82 with SMTP id
- ffacd0b85a97d-373052a6411mr1584842f8f.30.1724323375957; 
- Thu, 22 Aug 2024 03:42:55 -0700 (PDT)
+ bh=a4qja5+51Vsbcc1haEmPRmBh3XPr17SQDcwk8vlpqiY=;
+ b=Hn3LB451cOf8kahrR02/FFMcrEbmipf9sjq3yv6hsxsoa9wAOp5IZlERKG1F3MUk7Y
+ GK9n8zMe3Ucl/N9Me/RV8Y7JK+CCVSMu1Rd8inA/2lrnKJLWkerJlPKtrVhwDoB9b5sb
+ m9QUb7E/ediOeRYpxZQxRPpKPZF0zs7XGabnb9/QJCl7hqLnwGSTYRx5G1bSdKc4fz5U
+ kF+adbzfSHyFaqBqSWLeuOQT9Rufolea1nZT0EtL1pJI36XKshGg0g42Uus1Z4xDzrbb
+ UWf+eEV0ftK3DRh8gFi03tA/AjNsjpb3ynyzE0MJT6Br0Id4tTy19S2LgVtLMa78OL2+
+ a/ag==
+X-Gm-Message-State: AOJu0YzV7S7udMtMgluQPJ+Lui7M755fZIF7brMt7V+QI15/R0CS5mNa
+ neIrAl7hbB8227eqHcy2bhmZ1pYAN5D8F1nlPvJXV30lo/lmo2rhuWccoiNsOZ+zXuIxep8fyIo
+ I
+X-Google-Smtp-Source: AGHT+IF0M+b74v//fn+N9BgIx7kVUqUFVrOuIAXQCZAln2TTRZNILk9OTMYGMZIZQTZxAqiak1mLBw==
+X-Received: by 2002:a05:6000:b09:b0:371:937a:326c with SMTP id
+ ffacd0b85a97d-372fd73184amr2755660f8f.57.1724323382727; 
+ Thu, 22 Aug 2024 03:43:02 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.153])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-373082657bdsm1356514f8f.107.2024.08.22.03.42.54
+ ffacd0b85a97d-3730821a92csm1344234f8f.93.2024.08.22.03.43.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Aug 2024 03:42:55 -0700 (PDT)
+ Thu, 22 Aug 2024 03:43:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 2/3] tests/functional: Convert ARM bFLT linux-user avocado test
-Date: Thu, 22 Aug 2024 12:42:37 +0200
-Message-ID: <20240822104238.75045-3-philmd@linaro.org>
+Subject: [PATCH 3/3] tests/avocado: Remove unused QemuUserTest class
+Date: Thu, 22 Aug 2024 12:42:38 +0200
+Message-ID: <20240822104238.75045-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240822104238.75045-1-philmd@linaro.org>
 References: <20240822104238.75045-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,155 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Straight forward conversion. Update the SHA1 hashes to
-SHA256 hashes since SHA1 should not be used anymore nowadays.
-Expose cpio_extract() in qemu_test.utils for possible reuse.
+The single test that was using the QemuUserTest class
+has been converted to the functional test framework.
+This class is now unused, remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Missing meson plumbing, i.e. adding to tests_arm_thorough[]
----
- tests/avocado/load_bflt.py          | 54 -----------------------------
- tests/functional/qemu_test/utils.py |  9 +++++
- tests/functional/test_arm_bflt.py   | 44 +++++++++++++++++++++++
- 3 files changed, 53 insertions(+), 54 deletions(-)
- delete mode 100644 tests/avocado/load_bflt.py
- create mode 100755 tests/functional/test_arm_bflt.py
+ tests/avocado/avocado_qemu/__init__.py | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
-diff --git a/tests/avocado/load_bflt.py b/tests/avocado/load_bflt.py
-deleted file mode 100644
-index 264489ee25..0000000000
---- a/tests/avocado/load_bflt.py
-+++ /dev/null
-@@ -1,54 +0,0 @@
--# Test the bFLT loader format
--#
--# Copyright (C) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
--#
--# SPDX-License-Identifier: GPL-2.0-or-later
--
--import os
--import bz2
--import subprocess
--
--from avocado import skipUnless
--from avocado_qemu import QemuUserTest
--from avocado_qemu import has_cmd
--
--
--class LoadBFLT(QemuUserTest):
--
--    def extract_cpio(self, cpio_path):
--        """
--        Extracts a cpio archive into the test workdir
--
--        :param cpio_path: path to the cpio archive
--        """
--        cwd = os.getcwd()
--        os.chdir(self.workdir)
--        with bz2.open(cpio_path, 'rb') as archive_cpio:
--            subprocess.run(['cpio', '-i'], input=archive_cpio.read(),
--                           stderr=subprocess.DEVNULL)
--        os.chdir(cwd)
--
--    @skipUnless(*has_cmd('cpio'))
--    @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
--    def test_stm32(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=linux_user
--        :avocado: tags=quick
--        """
--        # See https://elinux.org/STM32#User_Space
--        rootfs_url = ('https://elinux.org/images/5/51/'
--                      'Stm32_mini_rootfs.cpio.bz2')
--        rootfs_hash = '9f065e6ba40cce7411ba757f924f30fcc57951e6'
--        rootfs_path_bz2 = self.fetch_asset(rootfs_url, asset_hash=rootfs_hash)
--        busybox_path = os.path.join(self.workdir, "bin/busybox")
--
--        self.extract_cpio(rootfs_path_bz2)
--
--        res = self.run(busybox_path)
--        ver = 'BusyBox v1.24.0.git (2015-02-03 22:17:13 CET) multi-call binary.'
--        self.assertIn(ver, res.stdout_text)
--
--        res = self.run(busybox_path, ['uname', '-a'])
--        unm = 'armv7l GNU/Linux'
--        self.assertIn(unm, res.stdout_text)
-diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
-index 99eae5fc45..2a1cb60d38 100644
---- a/tests/functional/qemu_test/utils.py
-+++ b/tests/functional/qemu_test/utils.py
-@@ -12,6 +12,7 @@
- import lzma
- import os
- import shutil
-+import subprocess
- import tarfile
+diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
+index 0d57addfea..0e4ecea7a0 100644
+--- a/tests/avocado/avocado_qemu/__init__.py
++++ b/tests/avocado/avocado_qemu/__init__.py
+@@ -17,7 +17,7 @@
+ import uuid
  
- def archive_extract(archive, dest_dir, member=None):
-@@ -45,3 +46,11 @@ def lzma_uncompress(xz_path, output_path):
-         except:
-             os.remove(output_path)
-             raise
-+
-+def cpio_extract(cpio_handle, output_path):
-+    cwd = os.getcwd()
-+    os.chdir(output_path)
-+    subprocess.run(['cpio', '-i'],
-+                   input=cpio_handle.read(),
-+                   stderr=subprocess.DEVNULL)
-+    os.chdir(cwd)
-diff --git a/tests/functional/test_arm_bflt.py b/tests/functional/test_arm_bflt.py
-new file mode 100755
-index 0000000000..281925d11a
---- /dev/null
-+++ b/tests/functional/test_arm_bflt.py
-@@ -0,0 +1,44 @@
-+#!/usr/bin/env python3
-+#
-+# Test the bFLT loader format
-+#
-+# Copyright (C) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+import bz2
-+
-+from qemu_test import QemuUserTest, Asset
-+from qemu_test import has_cmd
-+from qemu_test.utils import cpio_extract
-+from unittest import skipUnless
-+
-+
-+class LoadBFLT(QemuUserTest):
-+
-+    ASSET_ROOTFS = Asset(
-+        ('https://elinux.org/images/5/51/Stm32_mini_rootfs.cpio.bz2'),
-+         'eefb788e4980c9e8d6c9d60ce7d15d4da6bf4fbc6a80f487673824600d5ba9cc')
-+
-+    @skipUnless(*has_cmd('cpio'))
-+    @skipUnless(os.getenv('QEMU_TEST_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
-+    def test_stm32(self):
-+        # See https://elinux.org/STM32#User_Space
-+        rootfs_path_bz2 = self.ASSET_ROOTFS.fetch()
-+        busybox_path = os.path.join(self.workdir, "bin/busybox")
-+
-+        with bz2.open(rootfs_path_bz2, 'rb') as cpio_handle:
-+            cpio_extract(cpio_handle, self.workdir)
-+
-+        res = self.run_cmd(busybox_path)
-+        ver = 'BusyBox v1.24.0.git (2015-02-03 22:17:13 CET) multi-call binary.'
-+        self.assertIn(ver, res.stdout)
-+
-+        res = self.run_cmd(busybox_path, ['uname', '-a'])
-+        unm = 'armv7l GNU/Linux'
-+        self.assertIn(unm, res.stdout)
-+
-+
-+if __name__ == '__main__':
-+    QemuUserTest.main()
+ import avocado
+-from avocado.utils import process, ssh
++from avocado.utils import ssh
+ from avocado.utils.path import find_command
+ 
+ from qemu.machine import QEMUMachine
+@@ -384,23 +384,6 @@ def tearDown(self):
+         super().tearDown()
+ 
+ 
+-class QemuUserTest(QemuBaseTest):
+-    """Facilitates user-mode emulation tests."""
+-
+-    def setUp(self):
+-        self._ldpath = []
+-        super().setUp('qemu-')
+-
+-    def add_ldpath(self, ldpath):
+-        self._ldpath.append(os.path.abspath(ldpath))
+-
+-    def run(self, bin_path, args=[]):
+-        qemu_args = " ".join(["-L %s" % ldpath for ldpath in self._ldpath])
+-        bin_args = " ".join(args)
+-        return process.run("%s %s %s %s" % (self.qemu_bin, qemu_args,
+-                                            bin_path, bin_args))
+-
+-
+ class LinuxSSHMixIn:
+     """Contains utility methods for interacting with a guest via SSH."""
+ 
 -- 
 2.45.2
 
